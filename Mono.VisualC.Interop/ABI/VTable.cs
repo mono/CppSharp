@@ -19,37 +19,34 @@ namespace Mono.VisualC.Interop.ABI {
                 protected IntPtr basePtr, vtPtr;
 
                 public virtual int EntryCount { get; protected set; }
+                public virtual int EntrySize {
+                        get { return Marshal.SizeOf (typeof (IntPtr)); }
+                }
 
-                public abstract int EntrySize { get; }
-                public abstract void EmitVirtualCall (ILGenerator il, IntPtr native, int index);
+                public abstract MethodInfo PrepareVirtualCall (MethodInfo target, ILGenerator callsite, FieldInfo vtableField,
+                                                               LocalBuilder native, int vtableIndex);
 
                 // Creates a new VTable
                 public VTable (Delegate[] overrides)
                 {
                         EntryCount = overrides.Length;
-
-                        int vtableSize = EntryCount * EntrySize;
-                        IntPtr vtEntryPtr;
-
                         basePtr = IntPtr.Zero;
-                        vtPtr = Marshal.AllocHGlobal (vtableSize);
+                        vtPtr = IntPtr.Zero;
+                }
 
-                        try {
-                                int offset = 0;
-                                for (int i = 0; i < EntryCount; i++) {
+                public virtual void WriteOverrides (Delegate[] overrides)
+                {
+                        IntPtr vtEntryPtr;
+                        int offset = 0;
+                        for (int i = 0; i < EntryCount; i++) {
 
-                                        if (overrides [i] != null) // managed override
-                                                vtEntryPtr = Marshal.GetFunctionPointerForDelegate (overrides [i]);
-                                        else
-                                                vtEntryPtr = IntPtr.Zero;
+                                if (overrides [i] != null) // managed override
+                                        vtEntryPtr = Marshal.GetFunctionPointerForDelegate (overrides [i]);
+                                else
+                                        vtEntryPtr = IntPtr.Zero;
 
-                                        Marshal.WriteIntPtr (vtPtr, offset, vtEntryPtr);
-                                        offset += EntrySize;
-                                }
-                        } catch {
-
-                                Marshal.FreeHGlobal (vtPtr);
-                                throw;
+                                Marshal.WriteIntPtr (vtPtr, offset, vtEntryPtr);
+                                offset += EntrySize;
                         }
                 }
 
@@ -102,16 +99,21 @@ namespace Mono.VisualC.Interop.ABI {
                         Dispose (false);
                 }
 
-                public static bool BindOverridesOnly (MemberInfo member, object obj)
+                public static bool BindToSignatureAndAttribute (MemberInfo member, object obj)
                 {
-                        bool result = BindAny (member, obj);
+                        bool result = BindToSignature (member, obj);
                         if (member.GetCustomAttributes (typeof (OverrideNativeAttribute), true).Length != 1)
                                 return false;
 
                         return result;
                 }
+<<<<<<< HEAD
 
                 public static bool BindAny (MemberInfo member, object obj)
+=======
+                
+                public static bool BindToSignature (MemberInfo member, object obj)
+>>>>>>> Refactored and completed managed VTable implementation. Prepared for
                 {
                         MethodInfo imethod = (MethodInfo) obj;
                         MethodInfo candidate = (MethodInfo) member;

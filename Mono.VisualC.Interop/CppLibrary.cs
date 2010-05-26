@@ -60,7 +60,7 @@ namespace Mono.VisualC.Interop
 
 		// For a class that may have fields with no virtual methods to be overridden
 		public Iface GetClass<Iface,NativeLayout> (string className)
-                                where Iface : ICppInstantiatable
+                                where Iface : ICppClassInstantiatable
                                 where NativeLayout : struct
                 {
 
@@ -69,9 +69,9 @@ namespace Mono.VisualC.Interop
 
 		// For a class that may have fields and virtual methods to be overridden
 		public Iface GetClass<Iface,NativeLayout,Managed> (string className)
-                                where Iface : ICppOverridable<Managed>
+                                where Iface : ICppClassOverridable<Managed>
                                 where NativeLayout : struct
-                                where Managed : ICppInstance
+                                where Managed : ICppObject
                 {
 
 			return Abi.ImplementClass<Iface, NativeLayout> (interopModule, typeof (Managed), Name, className);

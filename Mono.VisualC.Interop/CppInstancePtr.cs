@@ -11,7 +11,7 @@ using System;
 using System.Runtime.InteropServices;
 
 namespace Mono.VisualC.Interop {
-        public struct CppInstancePtr : ICppInstance {
+        public struct CppInstancePtr : ICppObject {
                 private IntPtr ptr;
                 private bool manageMemory;
 

@@ -8,6 +8,7 @@
 //
 
 using System;
+using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 
@@ -26,6 +27,7 @@ namespace Mono.VisualC.Interop.ABI {
                 protected Type interfaceType, layoutType, wrapperType;
                 protected string library, className;
 
+                protected VTable vtable;
                 protected FieldBuilder vtableField;
                 protected ILGenerator ctorIL;
 
@@ -41,15 +43,15 @@ namespace Mono.VisualC.Interop.ABI {
                         this.wrapperType = wrapperType;
 
                         MethodInfo[] methods = interfaceType.GetMethods ();
+                        var managedOverrides = from method in methods
+                                               where Modifiers.IsVirtual (method)
+                                               orderby method.MetadataToken
+                                               select GetManagedOverrideTrampoline (method, VTable.BindToSignatureAndAttribute);
 
-                        // sort methods into declaration order
-                        //  TODO: This is kinda kludgy isn't it?
-                        Array.Sort (methods, (x, y) => x.MetadataToken - y.MetadataToken);
-
-                        int vtableIndex = 0;
-                        List<Delegate> vtableDelegates = new List<Delegate>();
+                        vtable = MakeVTable (managedOverrides.ToArray ());
 
                         // Implement all methods
+                        int vtableIndex = 0;
                         for (int i = 0; i < methods.Length; i++) {
                                 // Skip over special methods like property accessors -- properties will be handled later
                                 if (methods [i].IsSpecialName)
@@ -57,14 +59,8 @@ namespace Mono.VisualC.Interop.ABI {
 
                                 DefineMethod (methods [i], vtableIndex);
 
-                                if (!Modifiers.IsVirtual (methods [i]))
-                                        continue;
-
-                                MethodInfo overrideTarget = FindManagedOverrideTarget (methods [i], VTable.BindOverridesOnly);
-                                if (overrideTarget != null)
-                                        vtableDelegates.Insert(vtableIndex, GetManagedOverrideTrampoline (methods [i], overrideTarget));
-
-                                vtableIndex++;
+                                if (Modifiers.IsVirtual (methods [i]))
+                                        vtableIndex++;
                         }
 
                         DefineImplType ();
@@ -107,7 +103,7 @@ namespace Mono.VisualC.Interop.ABI {
 
                 protected virtual VTable MakeVTable (Delegate[] overrides)
                 {
-                        return new VTableManaged (overrides);
+                        return new VTableManaged (implModule, overrides);
                 }
 
                 // The members below must be implemented for a given C++ ABI:
@@ -158,8 +154,8 @@ namespace Mono.VisualC.Interop.ABI {
                         EmitCheckDisposed (il, nativePtr, methodType);
 
                         MethodInfo nativeMethod;
-                        if (!Modifiers.IsVirtual (interfaceMethod)) {
-                                nativeMethod = null;
+                        if (Modifiers.IsVirtual (interfaceMethod))
+                                nativeMethod = vtable.PrepareVirtualCall (interfaceMethod, il, vtableField, nativePtr, index);
                         else
                                 nativeMethod = GetPInvokeForMethod (interfaceMethod);
 
@@ -175,9 +171,8 @@ namespace Mono.VisualC.Interop.ABI {
                         default: // regular native method
                                 EmitCallNative (il, nativeMethod, parameterTypes.Length, nativePtr);
                                 break;
-                        }
-                        } else
 
+                        }
 
                         il.Emit (OpCodes.Ret);
                         return trampoline;
@@ -233,8 +228,12 @@ namespace Mono.VisualC.Interop.ABI {
                  * Implements the managed trampoline that will be invoked from the vtable by native C++ code when overriding
                  *  the specified C++ virtual method with the specified managed one.
                  */
-                protected virtual Delegate GetManagedOverrideTrampoline (MethodInfo interfaceMethod, MethodInfo targetMethod)
+                protected virtual Delegate GetManagedOverrideTrampoline (MethodInfo interfaceMethod, MemberFilter binder)
                 {
+                        MethodInfo targetMethod = FindManagedOverrideTarget (interfaceMethod, binder);
+                        if (targetMethod == null)
+                                return null;
+
                         Type delegateType = Util.GetDelegateTypeForMethodInfo (implModule, interfaceMethod);
                         Type[] parameterTypes = Util.GetMethodParameterTypes (interfaceMethod, true);
 

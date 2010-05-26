@@ -9,21 +9,39 @@ using Mono.VisualC.Interop;
 
 namespace CPPPOC {
 
+<<<<<<< HEAD
 	public class CSimpleClass : ICppInstance {
 
 		private interface __ICSimpleClass : ICppOverridable<CSimpleClass> {
+=======
+	public class CSimpleClass : ICppObject {
+
+                #region C++ Header
+                // This interface is analogous to the C++ class public header -- it defines the
+                //  C++ class's interface. The order of methods must be the same as in the C++ header.
+		private interface __ICSimpleClass : ICppClassOverridable<CSimpleClass> {
+                        // constructor
+>>>>>>> Refactored and completed managed VTable implementation. Prepared for
                         void CSimpleClass(CppInstancePtr ths, int value);
+
 			void M0(CppInstancePtr ths);
 			[Virtual] void V0(CppInstancePtr ths, int x, int y);
 			void M1(CppInstancePtr ths, int x);
 			[Virtual] void V1(CppInstancePtr ths, int x);
 			void M2(CppInstancePtr ths, int x, int y);
 			[Virtual] void V2(CppInstancePtr ths);
+
+                        // a C++ field directly accessible to managed code
 			CppField<int> value {get;}
 		}
+
+                // This struct defines the C++ class's memory footprint.
+                //  Basically, it includes both the class's public and private fields.
+                //  Again, the order must be the same as in the C++ header.
 		private struct __CSimpleClass {
 			public int value;
 		}
+                #endregion
 
 		private static __ICSimpleClass _impl;
 

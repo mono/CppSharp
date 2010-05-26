@@ -8,6 +8,7 @@
 //
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 using System.Reflection;
@@ -19,15 +20,19 @@ namespace Mono.VisualC.Interop.ABI {
 
                 public VTableCOM (Delegate[] entries) : base(entries)
                 {
+                        int managedOverrides = (from entry in entries
+                                                where entry != null
+                                                select entry).Count();
+
+                        vtPtr = Marshal.AllocHGlobal ((EntryCount + managedOverrides) * EntrySize);
+                        WriteOverrides (entries);
                 }
 
-                public override int EntrySize {
-                        get { return Marshal.SizeOf (typeof (IntPtr)); }
-                }
+               public override MethodInfo PrepareVirtualCall (MethodInfo target, ILGenerator callsite, FieldInfo vtableField,
+                                                              LocalBuilder native, int vtableIndex)
+               {
+                        throw new System.NotImplementedException ();
+               }
 
-                public override T GetDelegateForNative<T> (IntPtr native, int index)
-                {
-                        return default(T);
-                }
         }
 }

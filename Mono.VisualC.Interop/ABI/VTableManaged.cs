@@ -17,15 +17,55 @@ using System.Runtime.InteropServices;
 namespace Mono.VisualC.Interop.ABI {
 	public class VTableManaged : VTable {
 
-		public VTableManaged (Delegate[] entries) : base(entries)
+                private Type[] delegateTypes;
+                private ModuleBuilder implModule;
+
+		public VTableManaged (ModuleBuilder implModule, Delegate[] entries) : base(entries)
                 {
+                        this.implModule = implModule;
+                        this.delegateTypes = new Type [EntryCount];
+
+                        for (int i = 0; i < EntryCount; i++) {
+                                if (entries [i] != null)
+                                        delegateTypes [i] = entries [i].GetType ();
+                        }
+
+                        vtPtr = Marshal.AllocHGlobal (EntryCount * EntrySize);
+                        WriteOverrides (entries);
 		}
 
-                public override int EntrySize {
-                        get { return Marshal.SizeOf (typeof (IntPtr)); }
+                public override MethodInfo PrepareVirtualCall (MethodInfo target, ILGenerator callsite, FieldInfo vtableField,
+                                                               LocalBuilder native, int vtableIndex)
+                {
+                        if (delegateTypes [vtableIndex] == null)
+                                delegateTypes [vtableIndex] = Util.GetDelegateTypeForMethodInfo (implModule, target);
+
+                        MethodInfo getDelegate = typeof (VTableManaged).GetMethod ("GetDelegateForNative").MakeGenericMethod (delegateTypes [vtableIndex]);
+
+                        // load this._vtable
+                        callsite.Emit (OpCodes.Ldarg_0);
+                        callsite.Emit (OpCodes.Ldfld, vtableField);
+                        // call this._vtable.GetDelegateForNative(IntPtr native, int vtableIndex)
+                        callsite.Emit (OpCodes.Ldloc_S, native);
+                        callsite.Emit (OpCodes.Ldc_I4, vtableIndex);
+                        callsite.Emit (OpCodes.Callvirt, getDelegate);
+                        // check for null
+                        Label notNull = callsite.DefineLabel ();
+                        callsite.Emit (OpCodes.Dup);
+                        callsite.Emit (OpCodes.Brtrue_S, notNull);
+                        callsite.Emit (OpCodes.Pop);
+                        // mono bug makes it crash here instead of throwing a NullReferenceException--so do it ourselves
+                        callsite.Emit (OpCodes.Ldstr, "Native VTable contains null...possible abstract class???");
+                        callsite.Emit (OpCodes.Newobj, typeof (NullReferenceException).GetConstructor (new Type[] {typeof (string)}));
+                        callsite.Emit (OpCodes.Throw);
+                        callsite.MarkLabel (notNull);
+
+                        return delegateTypes [vtableIndex].GetMethod ("Invoke");
+
                 }
 
-		public override T GetDelegateForNative<T> (IntPtr native, int index)
+
+		public T GetDelegateForNative<T> (IntPtr native, int index) where T : class /*Delegate*/
                 {
 			IntPtr vtable = Marshal.ReadIntPtr (native);
 			if (vtable == vtPtr) // do not return managed overrides
