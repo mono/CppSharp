@@ -42,7 +42,18 @@ namespace Mono.VisualC.Interop.ABI {
                         this.layoutType = typeof (NLayout);
                         this.wrapperType = wrapperType;
 
-                        MethodInfo[] methods = interfaceType.GetMethods ();
+                        DefineImplType ();
+
+                        var methods = ( // get all methods defined on the interface
+                                       from method in interfaceType.GetMethods ()
+                                       orderby method.MetadataToken
+                                       select method
+                                      ).Union( // ... as well as those defined on inherited interfaces
+                                       from iface in interfaceType.GetInterfaces ()
+                                       from method in iface.GetMethods ()
+                                       select method
+                                      );
+
                         var managedOverrides = from method in methods
                                                where Modifiers.IsVirtual (method)
                                                orderby method.MetadataToken
@@ -52,18 +63,16 @@ namespace Mono.VisualC.Interop.ABI {
 
                         // Implement all methods
                         int vtableIndex = 0;
-                        for (int i = 0; i < methods.Length; i++) {
+                        foreach (var method in methods) {
                                 // Skip over special methods like property accessors -- properties will be handled later
-                                if (methods [i].IsSpecialName)
+                                if (method.IsSpecialName)
                                         continue;
 
-                                DefineMethod (methods [i], vtableIndex);
+                                DefineMethod (method, vtableIndex);
 
-                                if (Modifiers.IsVirtual (methods [i]))
+                                if (Modifiers.IsVirtual (method))
                                         vtableIndex++;
                         }
-
-                        DefineImplType ();
 
                         // Implement all properties
                         foreach (var property in interfaceType.GetProperties ())
