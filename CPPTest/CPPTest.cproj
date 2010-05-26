@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B01E6282-144E-481A-8E1F-95F708DFBC2D}</ProjectGuid>
+    <Compiler>
+      <Compiler ctype="GccCompiler" />
+    </Compiler>
+    <Language>C</Language>
+    <Target>Bin</Target>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineSymbols>DEBUG MONODEVELOP</DefineSymbols>
+    <SourceDirectory>.</SourceDirectory>
+    <OutputName>CPPTest</OutputName>
+    <CompileTarget>SharedLibrary</CompileTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release</OutputPath>
+    <DefineSymbols>MONODEVELOP</DefineSymbols>
+    <SourceDirectory>.</SourceDirectory>
+    <OptimizationLevel>3</OptimizationLevel>
+    <OutputName>CPPTest</OutputName>
+    <CompileTarget>Bin</CompileTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Mac|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>build\Debug</OutputPath>
+    <ExtraLinkerArguments>-dynamic</ExtraLinkerArguments>
+    <DefineSymbols>DEBUG MONODEVELOP</DefineSymbols>
+    <SourceDirectory>.</SourceDirectory>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="Build" command="xcodebuild -configuration Debug" workingdir="${ProjectDir}" />
+        <Command type="AfterBuild" command="cp ./build/Debug/libCPPTest.dylib ../CPPPOC/bin/Mac" workingdir="${ProjectDir}" />
+      </CustomCommands>
+    </CustomCommands>
+    <OutputName>libCPPTest.dylib</OutputName>
+    <CompileTarget>Bin</CompileTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Linux|AnyCPU' ">
+    <OutputPath>build\Debug</OutputPath>
+    <DefineSymbols>DEBUG MONODEVELOP</DefineSymbols>
+    <CompileTarget>SharedLibrary</CompileTarget>
+    <OutputName>libCPPTest.so</OutputName>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="AfterBuild" command="cp ./build/Debug/libCPPTest.so ../CPPPOC/bin/Linux" workingdir="${ProjectDir}" />
+      </CustomCommands>
+    </CustomCommands>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="CPPTest.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CPPTest.cpp" />
+  </ItemGroup>
+</Project>
