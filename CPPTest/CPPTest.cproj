@@ -19,6 +19,11 @@
     <SourceDirectory>.</SourceDirectory>
     <OutputName>CPPTest</OutputName>
     <CompileTarget>SharedLibrary</CompileTarget>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="Build" command="echo Nothing to do" />
+      </CustomCommands>
+    </CustomCommands>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release</OutputPath>

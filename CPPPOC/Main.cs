@@ -20,6 +20,7 @@ namespace CPPPOC
 			CSimpleClass csc2 = new CSimpleClass(2);
 			try {
 
+                                csc1.V0(25, 50);
 				csc1.M0();
 				Console.WriteLine("Managed code got value: {0}", csc1.value);
 				csc2.M0();

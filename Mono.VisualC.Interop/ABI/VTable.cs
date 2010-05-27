@@ -30,6 +30,7 @@ namespace Mono.VisualC.Interop.ABI {
                 public VTable (Delegate[] overrides)
                 {
                         EntryCount = overrides.Length;
+                        Console.WriteLine ("VTable entry count: {0}", EntryCount);
                         basePtr = IntPtr.Zero;
                         vtPtr = IntPtr.Zero;
                 }

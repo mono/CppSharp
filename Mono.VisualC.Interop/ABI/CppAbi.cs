@@ -33,7 +33,7 @@ namespace Mono.VisualC.Interop.ABI {
 
                 public virtual Iface ImplementClass<Iface, NLayout> (ModuleBuilder implModule, Type wrapperType, string lib, string className)
                         where NLayout : struct
-                      //where Iface : ICppNativeInterface or ICppNativeInterfaceManaged
+                      //where Iface : ICppClassInstantiatable or ICppClassOverridable
                 {
                         this.implModule = implModule;
                         this.library = lib;
@@ -174,7 +174,7 @@ namespace Mono.VisualC.Interop.ABI {
                                 break;
 
                         case MethodType.NativeDtor:
-                                EmitDestruct (il, nativeMethod, parameterTypes.Length, nativePtr);
+                                EmitDestruct (il, nativeMethod, parameterTypes.Length, cppInstancePtr, nativePtr);
                                 break;
 
                         default: // regular native method
@@ -347,16 +347,29 @@ namespace Mono.VisualC.Interop.ABI {
                                                                                                 new Type[] { typeof (int) }, null));
                 }
 
-                protected virtual void EmitConstruct (ILGenerator il, MethodInfo nativeMethod, int parameterCount, LocalBuilder nativePtr)
+                protected virtual void EmitConstruct (ILGenerator il, MethodInfo nativeMethod, int parameterCount,
+                                                      LocalBuilder nativePtr)
                 {
                         EmitCallNative (il, nativeMethod, parameterCount, nativePtr);
                         EmitInitVTable (il, nativePtr);
                 }
 
-                protected virtual void EmitDestruct (ILGenerator il, MethodInfo nativeMethod, int parameterCount, LocalBuilder nativePtr)
+                protected virtual void EmitDestruct (ILGenerator il, MethodInfo nativeMethod, int parameterCount,
+                                                     LocalBuilder cppInstancePtr, LocalBuilder nativePtr)
                 {
+                        // bail if we weren't alloc'd by managed code
+                        Label bail = il.DefineLabel ();
+
+                        il.Emit (OpCodes.Ldloca_S, cppInstancePtr);
+                        //il.Emit (OpCodes.Dup);
+                        //il.Emit (OpCodes.Brfalse_S, bail);
+                        il.Emit (OpCodes.Call, typeof (CppInstancePtr).GetProperty ("IsManagedAlloc").GetGetMethod ());
+                        il.Emit (OpCodes.Brfalse_S, bail);
+
                         EmitResetVTable (il, nativePtr);
                         EmitCallNative (il, nativeMethod, parameterCount, nativePtr);
+
+                        il.MarkLabel (bail);
                 }
 
                 /**
@@ -364,7 +377,8 @@ namespace Mono.VisualC.Interop.ABI {
                  * GetPInvokeForMethod or the MethodInfo of a vtable method.
                  * To complete method, emit OpCodes.Ret.
                  */
-                protected virtual void EmitCallNative (ILGenerator il, MethodInfo nativeMethod, int parameterCount, LocalBuilder nativePtr)
+                protected virtual void EmitCallNative (ILGenerator il, MethodInfo nativeMethod, int parameterCount,
+                                                       LocalBuilder nativePtr)
                 {
                         il.Emit (OpCodes.Ldloc_S, nativePtr);
                         for (int i = 2; i <= parameterCount; i++)
@@ -403,7 +417,8 @@ namespace Mono.VisualC.Interop.ABI {
                  * want to call and pass the stackHeight for the call. If no vtable exists, this method
                  * will emit code to pop the arguments off the stack.
                  */
-                protected virtual void EmitVTableOp(ILGenerator il, MethodInfo method, int stackHeight, bool throwOnNoVTable)
+                protected virtual void EmitVTableOp(ILGenerator il, MethodInfo method, int stackHeight,
+                                                    bool throwOnNoVTable)
                 {
                         // prepare a jump; do not call vtable method if no vtable
                         Label noVirt = il.DefineLabel ();
@@ -438,7 +453,8 @@ namespace Mono.VisualC.Interop.ABI {
                         il.MarkLabel (dontPushOrThrow);
                 }
 
-                protected virtual void EmitLoadInstancePtr (ILGenerator il, Type firstParamType, out LocalBuilder cppip, out LocalBuilder native)
+                protected virtual void EmitLoadInstancePtr (ILGenerator il, Type firstParamType, out LocalBuilder cppip,
+                                                            out LocalBuilder native)
                 {
                         cppip = null;
                         native = il.DeclareLocal (typeof (IntPtr));
