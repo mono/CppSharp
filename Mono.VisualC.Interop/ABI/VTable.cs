@@ -107,13 +107,8 @@ namespace Mono.VisualC.Interop.ABI {
 
                         return result;
                 }
-<<<<<<< HEAD
 
-                public static bool BindAny (MemberInfo member, object obj)
-=======
-                
                 public static bool BindToSignature (MemberInfo member, object obj)
->>>>>>> Refactored and completed managed VTable implementation. Prepared for
                 {
                         MethodInfo imethod = (MethodInfo) obj;
                         MethodInfo candidate = (MethodInfo) member;

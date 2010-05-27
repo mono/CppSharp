@@ -8,12 +8,6 @@ using System.Runtime.InteropServices;
 using Mono.VisualC.Interop;
 
 namespace CPPPOC {
-
-<<<<<<< HEAD
-	public class CSimpleClass : ICppInstance {
-
-		private interface __ICSimpleClass : ICppOverridable<CSimpleClass> {
-=======
 	public class CSimpleClass : ICppObject {
 
                 #region C++ Header
@@ -21,7 +15,6 @@ namespace CPPPOC {
                 //  C++ class's interface. The order of methods must be the same as in the C++ header.
 		private interface __ICSimpleClass : ICppClassOverridable<CSimpleClass> {
                         // constructor
->>>>>>> Refactored and completed managed VTable implementation. Prepared for
                         void CSimpleClass(CppInstancePtr ths, int value);
 
 			void M0(CppInstancePtr ths);

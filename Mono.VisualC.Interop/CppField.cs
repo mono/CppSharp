@@ -23,16 +23,6 @@ namespace Mono.VisualC.Interop {
                         get {
                                 Type retType = typeof (T);
                                 object retVal;
-<<<<<<< HEAD
-                                     if (retType.Equals(typeof(Byte)))
-                                                retVal = Marshal.ReadByte(ip.Native, fieldOffset);
-                                else if (retType.Equals(typeof(Int16)))
-                                                retVal = Marshal.ReadInt16(ip.Native, fieldOffset);
-                                else if (retType.Equals(typeof(Int32)))
-                                                retVal = Marshal.ReadInt32(ip.Native, fieldOffset);
-                                else throw new NotImplementedException("Cannot read C++ fields of type " + retType.Name);
-
-=======
                                      if (retType.Equals (typeof (Byte)))
                                                 retVal = Marshal.ReadByte (ip.Native, fieldOffset);
                                 else if (retType.Equals (typeof (Int16)))
@@ -40,8 +30,7 @@ namespace Mono.VisualC.Interop {
                                 else if (retType.Equals (typeof (Int32)))
                                                 retVal = Marshal.ReadInt32 (ip.Native, fieldOffset);
                                 else throw new NotImplementedException ("Cannot read C++ fields of type " + retType.Name);
-                                
->>>>>>> Refactored and completed managed VTable implementation. Prepared for
+
                                 return (T)retVal;
                         }
                         set {
@@ -53,7 +42,7 @@ namespace Mono.VisualC.Interop {
                                                 Marshal.WriteInt16 (ip.Native, fieldOffset, (Int16)setVal);
                                 else if (setType.Equals (typeof (Int32)))
                                                 Marshal.WriteInt32 (ip.Native, fieldOffset, (Int32)setVal);
-                                else throw new NotImplementedException("Cannot write C++ fields of type " + setType.Name);
+                                else throw new NotImplementedException ("Cannot write C++ fields of type " + setType.Name);
                         }
                 }
         }
