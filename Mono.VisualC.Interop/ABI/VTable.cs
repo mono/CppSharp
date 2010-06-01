@@ -17,8 +17,11 @@ using System.Runtime.InteropServices;
 namespace Mono.VisualC.Interop.ABI {
         public abstract class VTable : IDisposable {
                 protected IntPtr basePtr, vtPtr;
+                protected Delegate[] overrides;
 
-                public virtual int EntryCount { get; protected set; }
+                public virtual int EntryCount {
+                        get { return overrides.Length; }
+                }
                 public virtual int EntrySize {
                         get { return Marshal.SizeOf (typeof (IntPtr)); }
                 }
@@ -29,16 +32,14 @@ namespace Mono.VisualC.Interop.ABI {
                 // Creates a new VTable
                 public VTable (Delegate[] overrides)
                 {
-                        EntryCount = overrides.Length;
-                        Console.WriteLine ("VTable entry count: {0}", EntryCount);
-                        basePtr = IntPtr.Zero;
-                        vtPtr = IntPtr.Zero;
+                        this.overrides = overrides;
+                        this.basePtr = IntPtr.Zero;
+                        this.vtPtr = IntPtr.Zero;
                 }
 
-                public virtual void WriteOverrides (Delegate[] overrides)
+                protected virtual void WriteOverrides (int offset)
                 {
                         IntPtr vtEntryPtr;
-                        int offset = 0;
                         for (int i = 0; i < EntryCount; i++) {
 
                                 if (overrides [i] != null) // managed override

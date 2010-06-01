@@ -25,7 +25,7 @@ namespace Mono.VisualC.Interop.ABI {
                                                 select entry).Count();
 
                         vtPtr = Marshal.AllocHGlobal ((EntryCount + managedOverrides) * EntrySize);
-                        WriteOverrides (entries);
+                        WriteOverrides (0);
                 }
 
                public override MethodInfo PrepareVirtualCall (MethodInfo target, ILGenerator callsite, FieldInfo vtableField,

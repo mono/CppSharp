@@ -19,7 +19,8 @@ namespace CPPPOC
 			CSimpleClass csc1 = new CSimpleClass(CreateCSimpleSubClass(10));
 			CSimpleClass csc2 = new CSimpleClass(2);
 			try {
-
+                                //TODO: This still calls managed V0 on CSimpleClass first, even though it's an
+                                // instance of a more-derived class.
                                 csc1.V0(25, 50);
 				csc1.M0();
 				Console.WriteLine("Managed code got value: {0}", csc1.value);

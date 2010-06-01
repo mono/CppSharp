@@ -16,31 +16,26 @@ using System.Runtime.InteropServices;
 
 namespace Mono.VisualC.Interop.ABI {
 	public class VTableManaged : VTable {
-
-                private Type[] delegateTypes;
                 private ModuleBuilder implModule;
 
 		public VTableManaged (ModuleBuilder implModule, Delegate[] entries) : base(entries)
                 {
                         this.implModule = implModule;
-                        this.delegateTypes = new Type [EntryCount];
+                        this.vtPtr = Marshal.AllocHGlobal (EntryCount * EntrySize);
 
-                        for (int i = 0; i < EntryCount; i++) {
-                                if (entries [i] != null)
-                                        delegateTypes [i] = entries [i].GetType ();
-                        }
-
-                        vtPtr = Marshal.AllocHGlobal (EntryCount * EntrySize);
-                        WriteOverrides (entries);
+                        WriteOverrides (0);
 		}
 
                 public override MethodInfo PrepareVirtualCall (MethodInfo target, ILGenerator callsite, FieldInfo vtableField,
                                                                LocalBuilder native, int vtableIndex)
                 {
-                        if (delegateTypes [vtableIndex] == null)
-                                delegateTypes [vtableIndex] = Util.GetDelegateTypeForMethodInfo (implModule, target);
+                        Type delegateType;
+                        if (overrides [vtableIndex] != null)
+                                delegateType = overrides [vtableIndex].GetType ();
+                        else
+                                delegateType = Util.GetDelegateTypeForMethodInfo (implModule, target);
 
-                        MethodInfo getDelegate = typeof (VTableManaged).GetMethod ("GetDelegateForNative").MakeGenericMethod (delegateTypes [vtableIndex]);
+                        MethodInfo getDelegate = typeof (VTableManaged).GetMethod ("GetDelegateForNative").MakeGenericMethod (delegateType);
 
                         // load this._vtable
                         callsite.Emit (OpCodes.Ldarg_0);
@@ -60,7 +55,7 @@ namespace Mono.VisualC.Interop.ABI {
                         callsite.Emit (OpCodes.Throw);
                         callsite.MarkLabel (notNull);
 
-                        return delegateTypes [vtableIndex].GetMethod ("Invoke");
+                        return delegateType.GetMethod ("Invoke");
 
                 }
 
