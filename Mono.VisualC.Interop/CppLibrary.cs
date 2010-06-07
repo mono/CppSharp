@@ -23,8 +23,8 @@ namespace Mono.VisualC.Interop
 
 	public sealed class CppLibrary
         {
-		private static AssemblyBuilder interopAssembly;
-                private static ModuleBuilder interopModule;
+		internal static AssemblyBuilder interopAssembly;
+                internal static ModuleBuilder interopModule;
 
 		private CppAbi abi;
 		private string name;
@@ -64,7 +64,7 @@ namespace Mono.VisualC.Interop
                                 where NativeLayout : struct
                 {
 
-			return Abi.ImplementClass<Iface, NativeLayout> (interopModule, null, Name, className);
+			return Abi.ImplementClass<Iface, NativeLayout> (null, Name, className);
 		}
 
 		// For a class that may have fields and virtual methods to be overridden
@@ -74,7 +74,7 @@ namespace Mono.VisualC.Interop
                                 where Managed : ICppObject
                 {
 
-			return Abi.ImplementClass<Iface, NativeLayout> (interopModule, typeof (Managed), Name, className);
+			return Abi.ImplementClass<Iface, NativeLayout> (typeof (Managed), Name, className);
 		}
 		// TODO: Define a method for pure virtual classes (no NativeLayout)?
 

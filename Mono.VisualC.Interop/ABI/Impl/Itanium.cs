@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 
 namespace Mono.VisualC.Interop.ABI {
 
-	public class Itanium : CppAbi {
+	public class ItaniumAbi : CppAbi {
 
-		public Itanium() {}
+		public ItaniumAbi() {}
 
 		public override CallingConvention DefaultCallingConvention {
 			get {

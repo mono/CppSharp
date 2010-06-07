@@ -31,11 +31,22 @@ namespace Mono.VisualC.Interop.ABI {
                 protected FieldBuilder vtableField;
                 protected ILGenerator ctorIL;
 
-                public virtual Iface ImplementClass<Iface, NLayout> (ModuleBuilder implModule, Type wrapperType, string lib, string className)
+                // default settings that subclasses can override:
+                protected MakeVTableDelegate makeVTableMethod = VTable.DefaultImplementation;
+                protected MemberFilter vtableOverrideFilter = VTable.BindToSignatureAndAttribute;
+
+
+                private struct EmptyNativeLayout { }
+                public Iface ImplementClass<Iface> (Type wrapperType, string lib, string className)
+                {
+                        return this.ImplementClass<Iface,EmptyNativeLayout> (wrapperType, lib, className);
+                }
+
+                public virtual Iface ImplementClass<Iface, NLayout> (Type wrapperType, string lib, string className)
                         where NLayout : struct
                       //where Iface : ICppClassInstantiatable or ICppClassOverridable
                 {
-                        this.implModule = implModule;
+                        this.implModule = CppLibrary.interopModule;
                         this.library = lib;
                         this.className = className;
                         this.interfaceType = typeof (Iface);
@@ -43,6 +54,15 @@ namespace Mono.VisualC.Interop.ABI {
                         this.wrapperType = wrapperType;
 
                         DefineImplType ();
+
+                        var properties = ( // get all properties defined on the interface
+                                          from property in interfaceType.GetProperties ()
+                                          select property
+                                         ).Union( // ... as well as those defined on inherited interfaces
+                                          from iface in interfaceType.GetInterfaces ()
+                                          from property in iface.GetProperties ()
+                                          select property
+                                         );
 
                         var methods = ( // get all methods defined on the interface
                                        from method in interfaceType.GetMethods ()
@@ -57,9 +77,9 @@ namespace Mono.VisualC.Interop.ABI {
                         var managedOverrides = from method in methods
                                                where Modifiers.IsVirtual (method)
                                                orderby method.MetadataToken
-                                               select GetManagedOverrideTrampoline (method, VTable.BindToSignatureAndAttribute);
+                                               select GetManagedOverrideTrampoline (method, vtableOverrideFilter);
 
-                        vtable = MakeVTable (managedOverrides.ToArray ());
+                        vtable = makeVTableMethod (managedOverrides.ToArray ());
 
                         // Implement all methods
                         int vtableIndex = 0;
@@ -75,9 +95,8 @@ namespace Mono.VisualC.Interop.ABI {
                         }
 
                         // Implement all properties
-                        foreach (var property in interfaceType.GetProperties ())
-                                DefineFieldProperty (property);
-
+                        foreach (var property in properties)
+                                DefineProperty (property);
 
                         ctorIL.Emit (OpCodes.Ret);
                         return (Iface)Activator.CreateInstance (implType.CreateType (), vtable);
@@ -108,11 +127,6 @@ namespace Mono.VisualC.Interop.ABI {
                                 // we're just allocing extra memory.
                                 return Marshal.SizeOf (layoutType) + FieldOffsetPadding;
                         }
-                }
-
-                protected virtual VTable MakeVTable (Delegate[] overrides)
-                {
-                        return new VTableManaged (implModule, overrides);
                 }
 
                 // The members below must be implemented for a given C++ ABI:
@@ -147,9 +161,17 @@ namespace Mono.VisualC.Interop.ABI {
 
                         // 1. Generate managed trampoline to call native method
                         MethodBuilder trampoline = GetMethodBuilder (interfaceMethod);
+
                         ILGenerator il = trampoline.GetILGenerator ();
 
-                        if (methodType == MethodType.ManagedAlloc) {
+                        if (methodType == MethodType.NoOp) {
+                                // return NULL if method is supposed to return a value
+                                // TODO: this will make value types explode?
+                                if (!interfaceMethod.ReturnType.Equals (typeof (void)))
+                                        il.Emit (OpCodes.Ldnull);
+                                il.Emit (OpCodes.Ret);
+                                return trampoline;
+                        } else if (methodType == MethodType.ManagedAlloc) {
                                 EmitManagedAlloc (il);
                                 il.Emit (OpCodes.Ret);
                                 return trampoline;
@@ -187,7 +209,7 @@ namespace Mono.VisualC.Interop.ABI {
                         return trampoline;
                 }
 
-                protected virtual PropertyBuilder DefineFieldProperty (PropertyInfo property)
+                protected virtual PropertyBuilder DefineProperty (PropertyInfo property)
                 {
                         if (property.CanWrite)
                                 throw new InvalidProgramException ("Properties in C++ interface must be read-only.");
@@ -196,29 +218,35 @@ namespace Mono.VisualC.Interop.ABI {
                         string methodName = imethod.Name;
                         string propName = property.Name;
                         Type retType = imethod.ReturnType;
+                        FieldBuilder fieldData;
 
-                        if ((!retType.IsGenericType) || (!retType.GetGenericTypeDefinition ().Equals (typeof (CppField<>))))
+                        // C++ interface properties are either to return the VTable or to access C++ fields
+                        if (retType.IsGenericType && retType.GetGenericTypeDefinition ().Equals (typeof (CppField<>))) {
+                                // define a new field for the property
+                                fieldData = implType.DefineField ("__" + propName + "_Data", retType, FieldAttributes.InitOnly | FieldAttributes.Private);
+
+                                // init our field data with a new instance of CppField
+                                // first, get field offset
+                                ctorIL.Emit (OpCodes.Ldarg_0);
+
+                                /* TODO: Code prolly should not emit hardcoded offsets n such, in case we end up saving these assemblies in the future.
+                                *  Something more like this perhaps? (need to figure out how to get field offset padding into this)
+                                *       ctorIL.Emit(OpCodes.Ldtoken, nativeLayout);
+                                *       ctorIL.Emit(OpCodes.Call, typeof(Type).GetMethod("GetTypeFromHandle"));
+                                *       ctorIL.Emit(OpCodes.Ldstr, propName);
+                                *       ctorIL.Emit(OpCodes.Call, typeof(Marshal).GetMethod("OffsetOf"));
+                                */
+                                int fieldOffset = ((int)Marshal.OffsetOf (layoutType, propName)) + FieldOffsetPadding;
+                                ctorIL.Emit (OpCodes.Ldc_I4, fieldOffset);
+                                ctorIL.Emit (OpCodes.Newobj, retType.GetConstructor (new Type[] { typeof(int) }));
+
+                                ctorIL.Emit (OpCodes.Stfld, fieldData);
+                        } else if (retType.Equals (typeof (VTable)))
+                                fieldData = vtableField;
+                          else
                                 throw new InvalidProgramException ("Properties in C++ interface can only be of type CppField.");
 
                         PropertyBuilder fieldProp = implType.DefineProperty (propName, PropertyAttributes.None, retType, Type.EmptyTypes);
-                        FieldBuilder fieldData = implType.DefineField ("__" + propName + "_Data", retType, FieldAttributes.InitOnly | FieldAttributes.Private);
-
-                        // init our field data with a new instance of CppField
-                        // first, get field offset
-                        ctorIL.Emit (OpCodes.Ldarg_0);
-
-                        /* TODO: Code prolly should not emit hardcoded offsets n such, in case we end up saving these assemblies in the future.
-                         *  Something more like this perhaps? (need to figure out how to get field offset padding into this)
-                         *       ctorIL.Emit(OpCodes.Ldtoken, nativeLayout);
-                         *       ctorIL.Emit(OpCodes.Call, typeof(Type).GetMethod("GetTypeFromHandle"));
-                         *       ctorIL.Emit(OpCodes.Ldstr, propName);
-                         *       ctorIL.Emit(OpCodes.Call, typeof(Marshal).GetMethod("OffsetOf"));
-                         */
-                        int fieldOffset = ((int)Marshal.OffsetOf (layoutType, propName)) + FieldOffsetPadding;
-                        ctorIL.Emit (OpCodes.Ldc_I4, fieldOffset);
-                        ctorIL.Emit (OpCodes.Newobj, retType.GetConstructor (new Type[] { typeof(int) }));
-
-                        ctorIL.Emit (OpCodes.Stfld, fieldData);
 
                         MethodAttributes methodAttr = MethodAttributes.Public | MethodAttributes.Virtual | MethodAttributes.SpecialName | MethodAttributes.HideBySig;
                         MethodBuilder fieldGetter = implType.DefineMethod (methodName, methodAttr, retType, Type.EmptyTypes);
@@ -252,6 +280,7 @@ namespace Mono.VisualC.Interop.ABI {
                         DynamicMethod trampolineIn = new DynamicMethod (wrapperType.Name + "_" + interfaceMethod.Name + "_FromNative", interfaceMethod.ReturnType,
                                                                         parameterTypes, typeof (CppInstancePtr).Module, true);
 
+                        Util.ApplyMethodParameterAttributes (interfaceMethod, trampolineIn);
                         ILGenerator il = trampolineIn.GetILGenerator ();
 
                         // for static methods:
@@ -301,7 +330,7 @@ namespace Mono.VisualC.Interop.ABI {
                         Type[] parameterTypes = Util.GetMethodParameterTypes (interfaceMethod, false);
                         MethodBuilder methodBuilder = implType.DefineMethod (interfaceMethod.Name, MethodAttributes.Public | MethodAttributes.Virtual,
                                                                              interfaceMethod.ReturnType, parameterTypes);
-
+                        Util.ApplyMethodParameterAttributes (interfaceMethod, methodBuilder);
                         return methodBuilder;
                 }
 

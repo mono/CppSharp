@@ -8,19 +8,53 @@
 //
 
 using System;
+using System.Reflection.Emit;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
+
+using Mono.VisualC.Interop.ABI;
 
 namespace Mono.VisualC.Interop {
         public struct CppInstancePtr : ICppObject {
                 private IntPtr ptr;
                 private bool manageMemory;
 
+                private static Dictionary<Type,object> implCache = new Dictionary<Type,object> ();
+                public static CppInstancePtr ForManagedObject<Iface,TWrapper> (TWrapper managed)
+                        where Iface : ICppClassOverridable<TWrapper>
+                {
+                        object cachedImpl;
+                        Iface impl;
+
+                        if (!implCache.TryGetValue (typeof (Iface), out cachedImpl))
+                        {
+                                // Since we're only using the VTable to allow C++ code to call managed methods,
+                                //  there is no advantage to using VTableCOM. Also, VTableCOM is based on this.
+                                VirtualOnlyAbi virtualABI = new VirtualOnlyAbi (VTableManaged.Implementation, VTable.BindToSignature);
+                                impl = virtualABI.ImplementClass<Iface> (typeof (TWrapper), string.Empty, string.Empty);
+                                implCache.Add (typeof (Iface), impl);
+                        }
+                        else
+                                impl = (Iface)cachedImpl;
+
+                        CppInstancePtr instance = impl.Alloc (managed);
+                        impl.ClassVTable.InitInstance ((IntPtr)instance);
+
+                        return instance;
+                }
+
                 // Alloc a new C++ instance
                 internal CppInstancePtr (int nativeSize, object managedWrapper)
                 {
                         // Under the hood, we're secretly subclassing this C++ class to store a
                         // handle to the managed wrapper.
-                        ptr = Marshal.AllocHGlobal (nativeSize + Marshal.SizeOf (typeof (IntPtr)));
+                        int allocSize = nativeSize + Marshal.SizeOf (typeof (IntPtr));
+                        ptr = Marshal.AllocHGlobal (allocSize);
+
+                        // zero memory for sanity
+                        byte[] zeroArray = new byte [allocSize];
+                        Marshal.Copy (zeroArray, 0, ptr, allocSize);
 
                         IntPtr handlePtr = GetGCHandle (managedWrapper);
                         Marshal.WriteIntPtr (ptr, nativeSize, handlePtr);

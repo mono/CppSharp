@@ -18,9 +18,15 @@ namespace Mono.VisualC.Interop.ABI {
 	public class VTableManaged : VTable {
                 private ModuleBuilder implModule;
 
-		public VTableManaged (ModuleBuilder implModule, Delegate[] entries) : base(entries)
+                private static VTable MakeVTableManaged (Delegate[] entries)
                 {
-                        this.implModule = implModule;
+                        return new VTableManaged (entries);
+                }
+                public static MakeVTableDelegate Implementation = MakeVTableManaged;
+
+		private VTableManaged (Delegate[] entries) : base(entries)
+                {
+                        this.implModule = CppLibrary.interopModule;
                         this.vtPtr = Marshal.AllocHGlobal (EntryCount * EntrySize);
 
                         WriteOverrides (0);
@@ -60,7 +66,7 @@ namespace Mono.VisualC.Interop.ABI {
                 }
 
 
-		public T GetDelegateForNative<T> (IntPtr native, int index) where T : class /*Delegate*/
+		public virtual T GetDelegateForNative<T> (IntPtr native, int index) where T : class /*Delegate*/
                 {
 			IntPtr vtable = Marshal.ReadIntPtr (native);
 			if (vtable == vtPtr) // do not return managed overrides

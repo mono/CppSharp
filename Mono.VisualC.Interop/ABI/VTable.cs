@@ -15,8 +15,19 @@ using System.Reflection.Emit;
 using System.Runtime.InteropServices;
 
 namespace Mono.VisualC.Interop.ABI {
+        public delegate VTable MakeVTableDelegate (Delegate[] overrides);
+
         public abstract class VTable : IDisposable {
+
+                // The COM-interop-based implemenation is the default because it offers better
+                //  performance (I think?) than the fully-managed implementation.
+                public static MakeVTableDelegate DefaultImplementation = VTableManaged.Implementation;
+
                 protected IntPtr basePtr, vtPtr;
+
+                // This is a bit of a misnomer since the Length of the array will be equal
+                //  to the number of entries in the vtable; entries that aren't overridden
+                //  will be NULL.
                 protected Delegate[] overrides;
 
                 public virtual int EntryCount {
@@ -29,7 +40,7 @@ namespace Mono.VisualC.Interop.ABI {
                 public abstract MethodInfo PrepareVirtualCall (MethodInfo target, ILGenerator callsite, FieldInfo vtableField,
                                                                LocalBuilder native, int vtableIndex);
 
-                // Creates a new VTable
+                // Subclasses must allocate vtPtr!
                 public VTable (Delegate[] overrides)
                 {
                         this.overrides = overrides;
@@ -54,17 +65,17 @@ namespace Mono.VisualC.Interop.ABI {
 
                 public virtual void InitInstance (IntPtr instance)
                 {
-                        if (basePtr == IntPtr.Zero) {
+                       if (basePtr == IntPtr.Zero) {
                                 basePtr = Marshal.ReadIntPtr (instance);
+                                if ((basePtr != IntPtr.Zero) && (basePtr != vtPtr)) {
+                                        int offset = 0;
+                                        for (int i = 0; i < EntryCount; i++) {
 
-                                int offset = 0;
-                                for (int i = 0; i < EntryCount; i++) {
+                                                if (overrides [i] == null)
+                                                        Marshal.WriteIntPtr (vtPtr, offset, Marshal.ReadIntPtr (basePtr, offset));
 
-                                        IntPtr vtEntryPtr = Marshal.ReadIntPtr (vtPtr, offset);
-                                        if (vtEntryPtr == IntPtr.Zero)
-                                                Marshal.WriteIntPtr (vtPtr, offset, Marshal.ReadIntPtr (basePtr, offset));
-
-                                        offset += EntrySize;
+                                                offset += EntrySize;
+                                        }
                                 }
                         }
 
@@ -89,7 +100,7 @@ namespace Mono.VisualC.Interop.ABI {
                 }
 
                 // TODO: This WON'T usually be called because VTables are associated with classes
-                //  and managed C++ class wrappers are staticly held?
+                //  (not instances) and managed C++ class wrappers are staticly held?
                 public void Dispose ()
                 {
                         Dispose (true);

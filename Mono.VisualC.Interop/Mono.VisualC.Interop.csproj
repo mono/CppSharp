@@ -54,7 +54,6 @@
     <Compile Include="CppLibrary.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="ABI\CppAbi.cs" />
-    <Compile Include="ABI\Impl\Itanium.cs" />
     <Compile Include="Interfaces.cs" />
     <Compile Include="ABI\VTableManaged.cs" />
     <Compile Include="Attributes.cs" />
@@ -64,6 +63,8 @@
     <Compile Include="ABI\VTable.cs" />
     <Compile Include="Util.cs" />
     <Compile Include="ABI\MethodType.cs" />
+    <Compile Include="ABI\Impl\VirtualOnlyAbi.cs" />
+    <Compile Include="ABI\Impl\Itanium.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

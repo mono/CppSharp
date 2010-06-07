@@ -64,5 +64,19 @@ namespace Mono.VisualC.Interop {
 
                         return parameterTypes;
                 }
+
+                public static void ApplyMethodParameterAttributes (MethodInfo source, MethodBuilder target)
+                {
+                        ParameterInfo[] parameters = source.GetParameters ();
+                        foreach (var parameter in parameters)
+                                target.DefineParameter (parameter.Position, parameter.Attributes, parameter.Name);
+                }
+
+                public static void ApplyMethodParameterAttributes (MethodInfo source, DynamicMethod target)
+                {
+                        ParameterInfo[] parameters = source.GetParameters ();
+                        foreach (var parameter in parameters)
+                                target.DefineParameter (parameter.Position, parameter.Attributes, parameter.Name);
+                }
         }
 }

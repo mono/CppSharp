@@ -13,7 +13,7 @@ namespace CPPPOC
 		public static void Main(string[] args)
 		{
 			// bind all wrapper classes to their native implementations
-			CppLibrary cppTest = new CppLibrary("CPPTest", new Mono.VisualC.Interop.ABI.Itanium());
+			CppLibrary cppTest = new CppLibrary("CPPTest", new Mono.VisualC.Interop.ABI.ItaniumAbi());
 			CSimpleClass.Bind(cppTest);
 
 			CSimpleClass csc1 = new CSimpleClass(CreateCSimpleSubClass(10));
