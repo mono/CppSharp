@@ -48,6 +48,7 @@
     <Compile Include="ABI\MethodType.cs" />
     <Compile Include="ABI\Impl\ItaniumAbi.cs" />
     <Compile Include="ABI\Impl\VirtualOnlyAbi.cs" />
+    <Compile Include="ABI\Impl\MsvcAbi.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

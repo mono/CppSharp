@@ -7,13 +7,13 @@ using System.Runtime.InteropServices;
 
 using Mono.VisualC.Interop;
 
-namespace CPPPOC {
+namespace Tests.Support {
 	public class CSimpleClass : ICppObject {
 
                 #region C++ Header
                 // This interface is analogous to the C++ class public header -- it defines the
                 //  C++ class's interface. The order of methods must be the same as in the C++ header.
-		private interface __ICSimpleClass : ICppClassOverridable<CSimpleClass> {
+		public interface ICSimpleClass : ICppClassOverridable<CSimpleClass> {
                         // constructor
                         void CSimpleClass(CppInstancePtr ths, int value);
 
@@ -30,15 +30,15 @@ namespace CPPPOC {
                 // This struct defines the C++ class's memory footprint.
                 //  Basically, it includes both the class's public and private fields.
                 //  Again, the order must be the same as in the C++ header.
-		private struct __CSimpleClass {
+		public struct _CSimpleClass {
 			public int value;
 		}
                 #endregion
 
-		private static __ICSimpleClass _impl;
+		public static ICSimpleClass _impl;
 
 		public static void Bind(CppLibrary lib) {
-			_impl = lib.GetClass<__ICSimpleClass,__CSimpleClass,CSimpleClass>("CSimpleClass");
+			_impl = lib.GetClass<ICSimpleClass,_CSimpleClass,CSimpleClass>("CSimpleClass");
 		}
 
 		private CppInstancePtr _native;
@@ -89,12 +89,6 @@ namespace CPPPOC {
 		public virtual void V1(int x) {
 			Console.WriteLine("Managed V1({0})", x);
 			_impl.V1(_native, x);
-		}
-
-		[OverrideNative]
-		public virtual void V2() {
-			Console.WriteLine("Managed V2()");
-			_impl.V2(_native);
 		}
 
 		public void Dispose() {

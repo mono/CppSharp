@@ -137,7 +137,7 @@ namespace Mono.VisualC.Interop.ABI {
                 protected virtual void DefineImplType ()
                 {
 
-                        impl_type = impl_module.DefineType (impl_module.Name + "_" + interface_type.Name + "_Impl",
+                        impl_type = impl_module.DefineType (interface_type.Name + "_" + layout_type.Name + "_Impl",
                                                           TypeAttributes.Class | TypeAttributes.Sealed);
                         impl_type.AddInterfaceImplementation (interface_type);
 
