@@ -18,9 +18,10 @@ using Mono.VisualC.Interop.ABI;
 namespace Mono.VisualC.Interop {
         public struct CppInstancePtr : ICppObject {
                 private IntPtr ptr;
-                private bool manageMemory;
+                private bool manage_memory;
 
                 private static Dictionary<Type,object> implCache = new Dictionary<Type,object> ();
+
                 public static CppInstancePtr ForManagedObject<Iface,TWrapper> (TWrapper managed)
                         where Iface : ICppClassOverridable<TWrapper>
                 {
@@ -59,14 +60,14 @@ namespace Mono.VisualC.Interop {
                         IntPtr handlePtr = GetGCHandle (managedWrapper);
                         Marshal.WriteIntPtr (ptr, nativeSize, handlePtr);
 
-                        manageMemory = true;
+                        manage_memory = true;
                 }
 
                 // Alloc a new C++ instance when there is no managed wrapper.
                 internal CppInstancePtr (int nativeSize)
                 {
                         ptr = Marshal.AllocHGlobal (nativeSize);
-                        manageMemory = true;
+                        manage_memory = true;
                 }
 
                 // Get a CppInstancePtr for an existing C++ instance from an IntPtr
@@ -76,7 +77,7 @@ namespace Mono.VisualC.Interop {
                                 throw new ArgumentOutOfRangeException ("native cannot be null pointer");
 
                         ptr = native;
-                        manageMemory = false;
+                        manage_memory = false;
                 }
 
                 // Provide casts to/from IntPtr:
@@ -101,7 +102,7 @@ namespace Mono.VisualC.Interop {
                 }
 
                 public bool IsManagedAlloc {
-                        get { return manageMemory; }
+                        get { return manage_memory; }
                 }
 
                 internal static IntPtr GetGCHandle (object managedWrapper)
@@ -125,11 +126,11 @@ namespace Mono.VisualC.Interop {
                 // TODO: Free GCHandle?
                 public void Dispose ()
                 {
-                        if (manageMemory && ptr != IntPtr.Zero)
+                        if (manage_memory && ptr != IntPtr.Zero)
                                 Marshal.FreeHGlobal (ptr);
 
                         ptr = IntPtr.Zero;
-                        manageMemory = false;
+                        manage_memory = false;
                 }
         }
 }

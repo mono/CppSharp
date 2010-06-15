@@ -22,7 +22,6 @@ namespace CPPPOC {
 			void M1(CppInstancePtr ths, int x);
 			[Virtual] void V1(CppInstancePtr ths, int x);
 			void M2(CppInstancePtr ths, int x, int y);
-			[Virtual] void V2(CppInstancePtr ths);
 
                         // a C++ field directly accessible to managed code
 			CppField<int> value {get;}

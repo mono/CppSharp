@@ -18,11 +18,8 @@ using System.Reflection.Emit;
 
 using Mono.VisualC.Interop.ABI;
 
-namespace Mono.VisualC.Interop
-{
-
-	public sealed class CppLibrary
-        {
+namespace Mono.VisualC.Interop {
+	public sealed class CppLibrary {
 		internal static AssemblyBuilder interopAssembly;
                 internal static ModuleBuilder interopModule;
 

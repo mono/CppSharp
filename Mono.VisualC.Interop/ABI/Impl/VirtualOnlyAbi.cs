@@ -1,3 +1,12 @@
+//
+// Mono.VisualC.Interop.ABI.VirtualOnlyAbi.cs: A generalized C++ ABI that only supports virtual methods
+//
+// Author:
+//   Alexander Corrado (alexander.corrado@gmail.com)
+//
+// Copyright (C) 2010 Alexander Corrado
+//
+
 using System;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -10,8 +19,8 @@ namespace Mono.VisualC.Interop {
 
                 public VirtualOnlyAbi (MakeVTableDelegate makeVTable, MemberFilter vtableOverrideFilter)
                 {
-                        this.makeVTableMethod = makeVTable;
-                        this.vtableOverrideFilter = vtableOverrideFilter;
+                        this.make_vtable_method = makeVTable;
+                        this.vtable_override_filter = vtableOverrideFilter;
                 }
                 public VirtualOnlyAbi () { }
 
