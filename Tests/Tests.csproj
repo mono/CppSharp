@@ -38,11 +38,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CppInstancePtrTests.cs" />
-    <Compile Include="Support\CPPTestLibBase.cs" />
     <Compile Include="Support\CSimpleClass.cs" />
     <Compile Include="CppLibraryTests.cs" />
     <Compile Include="ItaniumAbiTests.cs" />
     <Compile Include="MsvcAbiTests.cs" />
+    <Compile Include="Support\CppMockObject.cs" />
+    <Compile Include="Support\CppNUnitAsserts.cs" />
+    <Compile Include="SharedAbiTests.cs" />
+    <Compile Include="Support\VirtualMethodTestClass.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>

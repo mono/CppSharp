@@ -16,7 +16,7 @@ using Tests.Support;
 
 namespace Tests {
         [TestFixture]
-        public class CppInstancePtrTests : CPPTestLibBase {
+        public class CppInstancePtrTests {
 
                 static CppInstancePtr uninitialized;
 
@@ -24,16 +24,24 @@ namespace Tests {
                 [ExpectedException (typeof (ObjectDisposedException))]
                 public void TestUninitialized ()
                 {
-                        Assert.IsFalse (uninitialized.IsManagedAlloc, "cppip.IsManagedAlloc");
-                        Assert.AreEqual (IntPtr.Zero, uninitialized.Native, "cppip.Native wasn't null pointer");
+                        Assert.IsFalse (uninitialized.IsManagedAlloc, "#A1");
+                        Assert.AreEqual (IntPtr.Zero, uninitialized.Native, "#A2");
                 }
 
                 [Test]
                 public void TestForManagedObject ()
                 {
-                        CppInstancePtr cppip = CppInstancePtr.ForManagedObject<EmptyTestInterface,CPPTestLibBase> (this);
-                        Assert.AreNotEqual (IntPtr.Zero, cppip.Native, "cppip.Native was null pointer");
-                        Assert.IsTrue (cppip.IsManagedAlloc, "cppip.IsManagedAlloc was not true");
+                        CppInstancePtr cppip = CppInstancePtr.ForManagedObject<EmptyTestInterface,CppMockObject> (CppMockObject.Instance);
+                        Assert.AreNotEqual (IntPtr.Zero, cppip.Native, "#A1");
+                        Assert.IsTrue (cppip.IsManagedAlloc, "#A2");
+                        cppip.Dispose ();
+                }
+
+                [Test]
+                [ExpectedException (typeof(ArgumentNullException))]
+                public void TestForNonStaticWrapperWithNull ()
+                {
+                        CppInstancePtr cppip = CppInstancePtr.ForManagedObject<CSimpleClass.ICSimpleClass,CSimpleClass> (null);
                         cppip.Dispose ();
                 }
 
@@ -41,7 +49,7 @@ namespace Tests {
                 [ExpectedException (typeof (ObjectDisposedException))]
                 public void TestDisposed ()
                 {
-                        CppInstancePtr cppip = CppInstancePtr.ForManagedObject<EmptyTestInterface,CPPTestLibBase> (this);
+                        CppInstancePtr cppip = CppInstancePtr.ForManagedObject<EmptyTestInterface,CppMockObject> (CppMockObject.Instance);
                         cppip.Dispose ();
                         // should throw
                         Console.WriteLine (cppip.Native);
@@ -53,7 +61,7 @@ namespace Tests {
                         IntPtr native = CreateCSimpleSubClass (0);
                         CppInstancePtr cppip = new CppInstancePtr (native);
                         Assert.AreEqual (native, cppip.Native);
-                        Assert.IsFalse (cppip.IsManagedAlloc, "cppip.IsManagedAlloc was not false");
+                        Assert.IsFalse (cppip.IsManagedAlloc, "#A1");
                         cppip.Dispose ();
                         DestroyCSimpleSubClass (native);
                 }

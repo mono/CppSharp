@@ -8,11 +8,9 @@
  */
 
 #include <stdio.h>
+#include "NUnit.h"
 
-/* The classes below are exported */
-#pragma GCC visibility push(default)
-
-class CSimpleClass {
+class EXPORT CSimpleClass {
 public:
       int value;
       CSimpleClass (int value) : value (value)
@@ -54,7 +52,7 @@ public:
       }
 };
 
-class CSimpleSubClass : CSimpleClass {
+class EXPORT CSimpleSubClass : CSimpleClass {
 public:
         CSimpleSubClass (int value) : CSimpleClass (value)
         {
@@ -82,5 +80,3 @@ extern "C" {
                 delete obj;
         }
 }
-
-#pragma GCC visibility pop

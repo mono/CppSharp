@@ -22,6 +22,8 @@ namespace Mono.VisualC.Interop {
 
                 private static Dictionary<Type,object> implCache = new Dictionary<Type,object> ();
 
+                // TODO: the managed instance argument may only be NULL if all methods in TWrapper
+                //  that correspond to the virtual methods in Iface are static.
                 public static CppInstancePtr ForManagedObject<Iface,TWrapper> (TWrapper managed)
                         where Iface : ICppClassOverridable<TWrapper>
                 {

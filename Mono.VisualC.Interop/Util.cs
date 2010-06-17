@@ -12,9 +12,14 @@ namespace Mono.VisualC.Interop {
 
                 public static Type GetDelegateTypeForMethodInfo (ModuleBuilder mod, MethodInfo targetMethod)
                 {
+                        // TODO: Actually return the same delegate type instead of creating a new one if
+                        //  a suitable type already exists??
+                        string delTypeName = mod.Name + "_" + targetMethod.Name + "_VTdel";
+                        while (mod.GetType (delTypeName) != null)
+                                delTypeName += "_";
 
                         TypeAttributes typeAttr = TypeAttributes.Class | TypeAttributes.Sealed | TypeAttributes.AnsiClass | TypeAttributes.AutoClass;
-                        TypeBuilder del = mod.DefineType (mod.Name + "_" + targetMethod.Name + "_VTdel", typeAttr, typeof(MulticastDelegate));
+                        TypeBuilder del = mod.DefineType (delTypeName, typeAttr, typeof(MulticastDelegate));
 
 
                         MethodAttributes ctorAttr = MethodAttributes.RTSpecialName | MethodAttributes.HideBySig | MethodAttributes.Public;

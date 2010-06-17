@@ -10,17 +10,16 @@
 using System;
 using NUnit.Framework;
 
-using Mono.VisualC.Interop;
 using Mono.VisualC.Interop.ABI;
-using Tests.Support;
 
 namespace Tests {
         [TestFixture]
-        public class ItaniumAbiTests : CPPTestLibBase {
+        public class ItaniumAbiTests : SharedAbiTests {
 
                 public ItaniumAbiTests () : base (new ItaniumAbi ())
                 {
                 }
+                
         }
 }
 

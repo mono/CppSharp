@@ -17,11 +17,11 @@ namespace Mono.VisualC.Interop {
 
         public interface ICppClass {
                 VTable ClassVTable { get; }
-                void Destruct (CppInstancePtr instance);
         }
 
         public interface ICppClassInstantiatable : ICppClass {
                 CppInstancePtr Alloc ();
+                void Destruct (CppInstancePtr instance);
         }
 
         // It is recommended that managed wrappers implement ICppObject, but
@@ -29,5 +29,6 @@ namespace Mono.VisualC.Interop {
         //  C++ via CppInstancePtr.ForManagedObject.
         public interface ICppClassOverridable<T> : ICppClass /* where T : ICppObject */ {
                 CppInstancePtr Alloc (T managed);
+                void Destruct (CppInstancePtr instance);
         }
 }

@@ -35,65 +35,64 @@ namespace Tests.Support {
 		}
                 #endregion
 
-		public static ICSimpleClass _impl;
+		private CppInstancePtr native;
+                private ICSimpleClass impl;
 
-		public static void Bind(CppLibrary lib) {
-			_impl = lib.GetClass<ICSimpleClass,_CSimpleClass,CSimpleClass>("CSimpleClass");
+		public CSimpleClass(ICSimpleClass impl, int value) {
+                        this.impl = impl;
+			this.native = impl.Alloc(this);
+                        impl.CSimpleClass(native, value);
 		}
 
-		private CppInstancePtr _native;
-
-		public CSimpleClass(int value) {
-			_native = _impl.Alloc(this);
-                        _impl.CSimpleClass(_native, value);
+		public CSimpleClass(ICSimpleClass impl, IntPtr native) {
+                        this.impl = impl;
+			this.native = native;
 		}
 
-		public CSimpleClass(IntPtr native) {
-			_native = native;
+		public IntPtr Native {
+			get { return (IntPtr)native; }
 		}
 
-		public virtual IntPtr Native {
-			get {
-				return (IntPtr)_native;
-			}
-		}
+                public ICSimpleClass Implementation {
+                        get { return impl; }
+                }
 
 		public virtual int value {
 			get {
-				return _impl.value[_native];
+				return impl.value[native];
 			}
 			set {
-				_impl.value[_native] = value;
+				impl.value[native] = value;
 			}
 		}
 
 		public void M0() {
-			_impl.M0(_native);
+			impl.M0(native);
 		}
 
 		public void M1(int x) {
-	                _impl.M1(_native, x);
+	                impl.M1(native, x);
 	        }
 
 		public void M2(int x, int y) {
-			_impl.M2(_native, x, y);
+			impl.M2(native, x, y);
 		}
 
 		[OverrideNative]
 		public virtual void V0(int x, int y) {
 			Console.WriteLine("Managed V0({0}, {1})", x, y);
-			_impl.V0(_native, x, y);
+			impl.V0(native, x, y);
 		}
 
 		[OverrideNative]
 		public virtual void V1(int x) {
 			Console.WriteLine("Managed V1({0})", x);
-			_impl.V1(_native, x);
+			impl.V1(native, x);
 		}
 
 		public void Dispose() {
-			_impl.Destruct(_native);
-			_native.Dispose();
+			impl.Destruct(native);
+			native.Dispose();
 		}
 	}
 

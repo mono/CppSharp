@@ -136,9 +136,8 @@ namespace Mono.VisualC.Interop.ABI {
 
                 protected virtual void DefineImplType ()
                 {
-
-                        impl_type = impl_module.DefineType (interface_type.Name + "_" + layout_type.Name + "_Impl",
-                                                          TypeAttributes.Class | TypeAttributes.Sealed);
+                        string implTypeName = interface_type.Name + "_" + layout_type.Name + "_" + this.GetType ().Name + "_Impl";
+                        impl_type = impl_module.DefineType (implTypeName, TypeAttributes.Class | TypeAttributes.Sealed);
                         impl_type.AddInterfaceImplementation (interface_type);
 
                         vtable_field = impl_type.DefineField ("_vtable", typeof (VTable), FieldAttributes.InitOnly | FieldAttributes.Private);
@@ -267,6 +266,9 @@ namespace Mono.VisualC.Interop.ABI {
                  */
                 protected virtual Delegate GetManagedOverrideTrampoline (MethodInfo interfaceMethod, MemberFilter binder)
                 {
+                        if (wrapper_type == null)
+                                return null;
+
                         MethodInfo targetMethod = FindManagedOverrideTarget (interfaceMethod, binder);
                         if (targetMethod == null)
                                 return null;
@@ -285,12 +287,12 @@ namespace Mono.VisualC.Interop.ABI {
 
                         // for static methods:
                         OpCode callInstruction = OpCodes.Call;
-                        int argLoadStart = 0;
+                        int argLoadStart = 1;
 
                         // for instance methods, we need an instance to call them on!
                         if (!targetMethod.IsStatic) {
                                 callInstruction = OpCodes.Callvirt;
-                                argLoadStart = 1;
+                                //argLoadStart = 1;
 
                                 il.Emit (OpCodes.Ldarg_0);
                                 il.Emit (OpCodes.Ldc_I4, NativeSize);

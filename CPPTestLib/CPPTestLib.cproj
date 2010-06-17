@@ -35,5 +35,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CSimpleClass.cpp" />
+    <Compile Include="VirtualMethodTestClass.cpp" />
+    <Compile Include="NUnit.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="NUnit.h" />
   </ItemGroup>
 </Project>

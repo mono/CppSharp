@@ -17,7 +17,7 @@ using Tests.Support;
 
 namespace Tests {
         [TestFixture]
-        public class CppLibraryTests : CPPTestLibBase {
+        public class CppLibraryTests {
 
                 [Test]
                 [ExpectedException (typeof (ArgumentNullException))]
@@ -47,7 +47,7 @@ namespace Tests {
                 {
                         VirtualOnlyAbi abi = new VirtualOnlyAbi ();
                         CppLibrary cppl = new CppLibrary ("FooLib", abi);
-                        EmptyTestInterface klass = cppl.GetClass<EmptyTestInterface,EmptyTestStruct,CPPTestLibBase> ("FooClass");
+                        EmptyTestInterface klass = cppl.GetClass<EmptyTestInterface,EmptyTestStruct,CppMockObject> ("FooClass");
                         Assert.IsNotNull (klass, "#A1");
                 }
         }
