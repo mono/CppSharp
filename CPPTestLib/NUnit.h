@@ -1,6 +1,14 @@
+//
+// NUnit.h: The NUnit C++ interface
+//
+// Author:
+//   Alexander Corrado (alexander.corrado@gmail.com)
+//
+// Copyright (C) 2010 Alexander Corrado
+//
 
-#ifndef _CPPINTEROP_TESTFRAMEWORK_H_
-#define _CPPINTEROP_TESTFRAMEWORK_H_
+#ifndef _CPPINTEROP_NUNIT_H_
+#define _CPPINTEROP_NUNIT_H_
 
 #ifdef __GNUC__
 #define EXPORT
@@ -103,4 +111,4 @@ class NUnit {
 };
 
 
-#endif /* _CPPINTEROP_TESTFRAMEWORK_H_ */
+#endif /* _CPPINTEROP_NUNIT_H_ */

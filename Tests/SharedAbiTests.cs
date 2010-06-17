@@ -1,3 +1,12 @@
+//
+// SharedAbiTests.cs: Test cases that are shared by all ABIs
+//
+// Author:
+//   Alexander Corrado (alexander.corrado@gmail.com)
+//
+// Copyright (C) 2010 Alexander Corrado
+//
+
 using System;
 using NUnit.Framework;
 

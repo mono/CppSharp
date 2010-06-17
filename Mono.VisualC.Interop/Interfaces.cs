@@ -19,6 +19,8 @@ namespace Mono.VisualC.Interop {
                 VTable ClassVTable { get; }
         }
 
+        // This should go without saying, but the C++ class must have a constructor
+        //  if it is to be instantiatable.
         public interface ICppClassInstantiatable : ICppClass {
                 CppInstancePtr Alloc ();
                 void Destruct (CppInstancePtr instance);

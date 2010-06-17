@@ -1,3 +1,11 @@
+//
+// VirtualMethodTestClass.cpp: A test C++ class used to exercise vtable behavior in CppInterop
+//
+// Author:
+//   Alexander Corrado (alexander.corrado@gmail.com)
+//
+// Copyright (C) 2010 Alexander Corrado
+//
 
 #include "NUnit.h"
 

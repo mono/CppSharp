@@ -1,3 +1,12 @@
+//
+// CppNUnitAsserts.cs: Exposes NUnit Assert methods to C++
+//
+// Author:
+//   Alexander Corrado (alexander.corrado@gmail.com)
+//
+// Copyright (C) 2010 Alexander Corrado
+//
+
 using System;
 using System.Runtime.InteropServices;
 using NUnit.Framework;

@@ -7,8 +7,6 @@ Project("{2857B73E-F847-4B02-9238-064979017E93}") = "CPPTestLib", "CPPTestLib\CP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{3C290CBE-CA39-47F6-B3A0-ACD16C5A38C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestDebugHarness", "TestDebugHarness\TestDebugHarness.csproj", "{AD562CD3-5DEB-4D19-9819-5279C0649AE8}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{4A864586-93C5-4DC1-8A80-F094A88506D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A864586-93C5-4DC1-8A80-F094A88506D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4A864586-93C5-4DC1-8A80-F094A88506D7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AD562CD3-5DEB-4D19-9819-5279C0649AE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AD562CD3-5DEB-4D19-9819-5279C0649AE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AD562CD3-5DEB-4D19-9819-5279C0649AE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AD562CD3-5DEB-4D19-9819-5279C0649AE8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B01E6282-144E-481A-8E1F-95F708DFBC2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B01E6282-144E-481A-8E1F-95F708DFBC2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B01E6282-144E-481A-8E1F-95F708DFBC2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
