@@ -28,7 +28,7 @@ namespace Mono.VisualC.Interop.ABI {
                 protected string library, class_name;
 
                 protected VTable vtable;
-                protected FieldBuilder vtable_field;
+                protected FieldBuilder vtable_field, native_size_field;
                 protected ILGenerator ctor_il;
 
                 // default settings that subclasses can override:
@@ -58,31 +58,45 @@ namespace Mono.VisualC.Interop.ABI {
                         var properties = ( // get all properties defined on the interface
                                           from property in interface_type.GetProperties ()
                                           select property
-                                         ).Union( // ... as well as those defined on inherited interfaces
+                                         ).Union ( // ... as well as those defined on inherited interfaces
                                           from iface in interface_type.GetInterfaces ()
                                           from property in iface.GetProperties ()
                                           select property
                                          );
 
-                        var methods = ( // get all methods defined on the interface
-                                       from method in interface_type.GetMethods ()
-                                       orderby method.MetadataToken
-                                       select method
-                                      ).Union( // ... as well as those defined on inherited interfaces
+                        var methods = ( // get all methods defined on inherited interfaces first
                                        from iface in interface_type.GetInterfaces ()
                                        from method in iface.GetMethods ()
                                        select method
+                                      ).Union ( // ... as well as those defined on this interface
+                                       from method in interface_type.GetMethods ()
+                                       orderby method.MetadataToken
+                                       select method
                                       );
 
-                        var managedOverrides = from method in methods
-                                               where Modifiers.IsVirtual (method)
-                                               orderby method.MetadataToken
-                                               select GetManagedOverrideTrampoline (method, vtable_override_filter);
+                        // TODO: If a method in a base class interface is defined again in a child class
+                        //  interface with exactly the same signature, it will prolly share a vtable slot
 
-                        vtable = make_vtable_method (managedOverrides.ToArray ());
+                        // first, pull in all virtual methods from base classes
+                        var baseVirtualMethods = from iface in interface_type.GetInterfaces ()
+                                                 where iface.Name.Equals ("Base`1")
+                                                 from method in iface.GetGenericArguments ().First ().GetMethods ()
+                                                 where Modifiers.IsVirtual (method)
+                                                 orderby method.MetadataToken
+                                                 select GetManagedOverrideTrampoline (method, vtable_override_filter);
+
+
+                        var virtualMethods = baseVirtualMethods.Concat ( // now create managed overrides for virtuals in this class
+                                                 from method in methods
+                                                 where Modifiers.IsVirtual (method)
+                                                 orderby method.MetadataToken
+                                                 select GetManagedOverrideTrampoline (method, vtable_override_filter)
+                                             );
+
+                        vtable = make_vtable_method (virtualMethods.ToArray ());
+                        int vtableIndex = baseVirtualMethods.Count ();
 
                         // Implement all methods
-                        int vtableIndex = 0;
                         foreach (var method in methods) {
                                 // Skip over special methods like property accessors -- properties will be handled later
                                 if (method.IsSpecialName)
@@ -99,7 +113,7 @@ namespace Mono.VisualC.Interop.ABI {
                                 DefineProperty (property);
 
                         ctor_il.Emit (OpCodes.Ret);
-                        return (Iface)Activator.CreateInstance (impl_type.CreateType (), vtable);
+                        return (Iface)Activator.CreateInstance (impl_type.CreateType (), vtable, NativeSize);
                 }
 
                 // These methods might be more commonly overridden for a given C++ ABI:
@@ -141,8 +155,10 @@ namespace Mono.VisualC.Interop.ABI {
                         impl_type.AddInterfaceImplementation (interface_type);
 
                         vtable_field = impl_type.DefineField ("_vtable", typeof (VTable), FieldAttributes.InitOnly | FieldAttributes.Private);
+                        native_size_field = impl_type.DefineField ("_nativeSize", typeof (int), FieldAttributes.InitOnly | FieldAttributes.Private);
+
                         ConstructorBuilder ctor = impl_type.DefineConstructor (MethodAttributes.Public, CallingConventions.Standard,
-                                                                              new Type[] { typeof (VTable) });
+                                                                              new Type[] { typeof (VTable), typeof (int) });
 
                         ctor_il = ctor.GetILGenerator ();
 
@@ -150,6 +166,10 @@ namespace Mono.VisualC.Interop.ABI {
                         ctor_il.Emit (OpCodes.Ldarg_0);
                         ctor_il.Emit (OpCodes.Ldarg_1);
                         ctor_il.Emit (OpCodes.Stfld, vtable_field);
+                        // this._nativeSize = (native size passed to constructor)
+                        ctor_il.Emit (OpCodes.Ldarg_0);
+                        ctor_il.Emit (OpCodes.Ldarg_2);
+                        ctor_il.Emit (OpCodes.Stfld, native_size_field);
                 }
 
                 protected virtual MethodBuilder DefineMethod (MethodInfo interfaceMethod, int index)
@@ -171,17 +191,28 @@ namespace Mono.VisualC.Interop.ABI {
                                 il.Emit (OpCodes.Ret);
                                 return trampoline;
                         } else if (methodType == MethodType.ManagedAlloc) {
-                                EmitManagedAlloc (il);
+                                EmitManagedAlloc (il, interfaceMethod);
                                 il.Emit (OpCodes.Ret);
                                 return trampoline;
                         }
 
-                        // 2. Load the native C++ instance pointer
-                        LocalBuilder cppInstancePtr, nativePtr;
-                        EmitLoadInstancePtr (il, parameterTypes[0], out cppInstancePtr, out nativePtr);
+                        bool isStatic = true;
+                        LocalBuilder cppInstancePtr = null;
+                        LocalBuilder nativePtr = null;
 
-                        // 3. Make sure our native pointer is a valid reference. If not, throw ObjectDisposedException
-                        EmitCheckDisposed (il, nativePtr, methodType);
+                        // If we're not a static method, do the following ...
+                        if (!Modifiers.IsStatic (interfaceMethod))
+                        {
+                                isStatic = false;
+                                if (parameterTypes.Length < 1)
+                                        throw new ArgumentException ("First argument to non-static C++ method must be IntPtr or CppInstancePtr.");
+
+                                // 2. Load the native C++ instance pointer
+                                EmitLoadInstancePtr (il, parameterTypes[0], out cppInstancePtr, out nativePtr);
+
+                                // 3. Make sure our native pointer is a valid reference. If not, throw ObjectDisposedException
+                                EmitCheckDisposed (il, nativePtr, methodType);
+                        }
 
                         MethodInfo nativeMethod;
                         if (Modifiers.IsVirtual (interfaceMethod))
@@ -199,7 +230,7 @@ namespace Mono.VisualC.Interop.ABI {
                                 break;
 
                         default: // regular native method
-                                EmitCallNative (il, nativeMethod, parameterTypes.Length, nativePtr);
+                                EmitCallNative (il, nativeMethod, isStatic, parameterTypes.Length, nativePtr);
                                 break;
 
                         }
@@ -219,7 +250,7 @@ namespace Mono.VisualC.Interop.ABI {
                         Type retType = imethod.ReturnType;
                         FieldBuilder fieldData;
 
-                        // C++ interface properties are either to return the VTable or to access C++ fields
+                        // C++ interface properties are either to return the VTable, get NativeSize, or to access C++ fields
                         if (retType.IsGenericType && retType.GetGenericTypeDefinition ().Equals (typeof (CppField<>))) {
                                 // define a new field for the property
                                 fieldData = impl_type.DefineField ("__" + propName + "_Data", retType, FieldAttributes.InitOnly | FieldAttributes.Private);
@@ -242,6 +273,8 @@ namespace Mono.VisualC.Interop.ABI {
                                 ctor_il.Emit (OpCodes.Stfld, fieldData);
                         } else if (retType.Equals (typeof (VTable)))
                                 fieldData = vtable_field;
+                          else if (retType.Equals (typeof (int)))
+                                fieldData = native_size_field;
                           else
                                 throw new InvalidProgramException ("Properties in C++ interface can only be of type CppField.");
 
@@ -360,11 +393,18 @@ namespace Mono.VisualC.Interop.ABI {
                  *  Emits IL to allocate the memory for a new instance of the C++ class.
                  *  To complete method, emit OpCodes.Ret.
                  */
-                protected virtual void EmitManagedAlloc (ILGenerator il)
+                protected virtual void EmitManagedAlloc (ILGenerator il, MethodInfo interfaceMethod)
                 {
-
-                        //TODO: Do not hard-emit native size in case assembly is saved?
-                        il.Emit (OpCodes.Ldc_I4, NativeSize);
+                        Type paramType = interfaceMethod.GetParameters () [0].ParameterType;
+                        if (typeof (ICppObject).IsAssignableFrom (paramType))
+                        {
+                                // TODO: This is probably going to be causing us to alloc too much memory
+                                //  if the ICppObject is returning impl.NativeSize + base.NativeSize. (We get FieldOffsetPadding
+                                //  each time).
+                                il.Emit (OpCodes.Ldarg_1);
+                                il.Emit (OpCodes.Callvirt, typeof (ICppObject).GetProperty ("NativeSize").GetGetMethod ());
+                        } else
+                                il.Emit (OpCodes.Ldfld, native_size_field);
 
                         if (wrapper_type != null) {
                                 // load managed object
@@ -381,7 +421,7 @@ namespace Mono.VisualC.Interop.ABI {
                 protected virtual void EmitConstruct (ILGenerator il, MethodInfo nativeMethod, int parameterCount,
                                                       LocalBuilder nativePtr)
                 {
-                        EmitCallNative (il, nativeMethod, parameterCount, nativePtr);
+                        EmitCallNative (il, nativeMethod, false, parameterCount, nativePtr);
                         EmitInitVTable (il, nativePtr);
                 }
 
@@ -398,7 +438,7 @@ namespace Mono.VisualC.Interop.ABI {
                         il.Emit (OpCodes.Brfalse_S, bail);
 
                         EmitResetVTable (il, nativePtr);
-                        EmitCallNative (il, nativeMethod, parameterCount, nativePtr);
+                        EmitCallNative (il, nativeMethod, false, parameterCount, nativePtr);
 
                         il.MarkLabel (bail);
                 }
@@ -408,11 +448,16 @@ namespace Mono.VisualC.Interop.ABI {
                  * GetPInvokeForMethod or the MethodInfo of a vtable method.
                  * To complete method, emit OpCodes.Ret.
                  */
-                protected virtual void EmitCallNative (ILGenerator il, MethodInfo nativeMethod, int parameterCount,
+                protected virtual void EmitCallNative (ILGenerator il, MethodInfo nativeMethod, bool isStatic, int parameterCount,
                                                        LocalBuilder nativePtr)
                 {
-                        il.Emit (OpCodes.Ldloc_S, nativePtr);
-                        for (int i = 2; i <= parameterCount; i++)
+                        int argLoadStart = 1; // For static methods, just strip off arg0 (.net this pointer)
+                        if (!isStatic)
+                        {
+                                argLoadStart = 2; // For instance methods, strip off CppInstancePtr and pass the corresponding IntPtr
+                                il.Emit (OpCodes.Ldloc_S, nativePtr);
+                        }
+                        for (int i = argLoadStart; i <= parameterCount; i++)
                                 il.Emit (OpCodes.Ldarg, i);
 
                         il.Emit (OpCodes.Call, nativeMethod);
@@ -500,7 +545,7 @@ namespace Mono.VisualC.Interop.ABI {
                         } else if (firstParamType.Equals (typeof (IntPtr)))
                                 il.Emit (OpCodes.Stloc_S, native);
                         else
-                                throw new ArgumentException ("First argument to C++ method must be IntPtr or CppInstancePtr.");
+                                throw new ArgumentException ("First argument to non-static C++ method must be IntPtr or CppInstancePtr.");
                 }
 
                 protected virtual void EmitCheckManagedAlloc (ILGenerator il, LocalBuilder cppip)

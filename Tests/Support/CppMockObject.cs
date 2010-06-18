@@ -28,6 +28,12 @@ namespace Tests.Support {
                         }
                 }
 
+                public int NativeSize {
+                        get {
+                                throw new NotImplementedException ();
+                        }
+                }
+
                 public void Dispose ()
                 {
                         throw new System.NotImplementedException ();

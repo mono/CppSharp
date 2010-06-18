@@ -75,8 +75,8 @@ namespace Mono.VisualC.Interop {
                 // Get a CppInstancePtr for an existing C++ instance from an IntPtr
                 public CppInstancePtr (IntPtr native)
                 {
-                        if (native == IntPtr.Zero)
-                                throw new ArgumentOutOfRangeException ("native cannot be null pointer");
+                        //if (native == IntPtr.Zero)
+                        //        throw new ArgumentOutOfRangeException ("native cannot be null pointer");
 
                         ptr = native;
                         manage_memory = false;
@@ -100,6 +100,12 @@ namespace Mono.VisualC.Interop {
                                         throw new ObjectDisposedException ("CppInstancePtr");
 
                                 return ptr;
+                        }
+                }
+
+                public int NativeSize {
+                        get {
+                                throw new NotImplementedException ();
                         }
                 }
 

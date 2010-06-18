@@ -53,6 +53,10 @@ namespace Tests.Support {
 			get { return (IntPtr)native; }
 		}
 
+                public int NativeSize {
+                        get { return impl.NativeSize; }
+                }
+
                 public ICSimpleClass Implementation {
                         get { return impl; }
                 }

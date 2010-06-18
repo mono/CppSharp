@@ -52,18 +52,41 @@ namespace Mono.VisualC.Interop.ABI {
 
 			nm.Append("E");
 
-			if (parameters.Length == 1) { //only the C++ "this" object
+                        int argStart = (Modifiers.IsStatic (methodInfo)? 0 : 1);
+
+			if (parameters.Length == argStart) { // no args (other than C++ "this" object)
 				nm.Append("v");
-			} else for (int i = 1; i < parameters.Length; i++) {
-				nm.Append(GetTypeCode(parameters[i].ParameterType));
+			} else for (int i = argStart; i < parameters.Length; i++) {
+				nm.Append(GetTypeCode(parameters[i]));
 			}
 
 			return nm.ToString();
 		}
 
-		protected virtual string GetTypeCode(Type t) {
-			if (t.Equals(typeof(int))) return "i";
-			throw new NotSupportedException("Unsupported parameter type: " + t.ToString());
+		protected virtual string GetTypeCode(ParameterInfo param) {
+
+                        Type type = Modifiers.GetMangleType (param);
+                        Type element = type;
+                        StringBuilder code = new StringBuilder ();
+
+                        if (type.IsByRef)
+                        {
+                                code.Append ("R");
+                                element = type.GetElementType ();
+                        }
+
+                        if (type.IsArray)
+                        {
+                                code.Append ("P");
+                                element = type.GetElementType ();
+                        }
+
+			     if (element.Equals (typeof (int))) code.Append ("i");
+                        else if (element.Equals (typeof (string))) code.Append ("Pc"); // char *
+                        else if (typeof (ICppObject).IsAssignableFrom (element)) { code.Append(element.Name.Length); code.Append(element.Name); }
+                        else throw new NotSupportedException ("Unsupported parameter type: " + type.ToString ());
+
+                        return code.ToString ();
 		}
 
 	}

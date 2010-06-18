@@ -4,10 +4,11 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.50727</ProductVersion>
-    <ProjectGuid>{4A864586-93C5-4DC1-8A80-F094A88506D7}</ProjectGuid>
-    <OutputType>Library</OutputType>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace>Mono.VisualC.Interop</RootNamespace>
+    <ProjectGuid>{66212CA6-B8C2-4307-ADDE-DAFEAAB339B9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Qt</RootNamespace>
+    <AssemblyName>QtBindings</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -18,7 +19,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
-    <AssemblyName>Mono.VisualC.Interop</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -27,35 +27,34 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
-    <AssemblyName>CPPInterop</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CppLibrary.cs" />
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="ABI\CppAbi.cs" />
-    <Compile Include="Interfaces.cs" />
-    <Compile Include="ABI\VTableManaged.cs" />
-    <Compile Include="Attributes.cs" />
-    <Compile Include="CppInstancePtr.cs" />
-    <Compile Include="CppField.cs" />
-    <Compile Include="ABI\VTableCOM.cs" />
-    <Compile Include="ABI\VTable.cs" />
-    <Compile Include="Util.cs" />
-    <Compile Include="ABI\MethodType.cs" />
-    <Compile Include="ABI\Impl\ItaniumAbi.cs" />
-    <Compile Include="ABI\Impl\VirtualOnlyAbi.cs" />
-    <Compile Include="ABI\Impl\MsvcAbi.cs" />
-    <Compile Include="CppObjectMarshaler.cs" />
+    <Compile Include="Libs.cs" />
+    <Compile Include="Gui\QApplication.cs" />
+    <Compile Include="Core\QGlobal.cs" />
+    <Compile Include="Core\QCoreApplication.cs" />
+    <Compile Include="Core\QObject.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Mono.VisualC.Interop\Mono.VisualC.Interop.csproj">
+      <Project>{4A864586-93C5-4DC1-8A80-F094A88506D7}</Project>
+      <Name>Mono.VisualC.Interop</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="QtBindings.dll.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Gui\" />
+    <Folder Include="Core\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <Folder Include="ABI\" />
-    <Folder Include="ABI\Impl\" />
-  </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
       <Properties InternalTargetFrameworkVersion="3.5" />
