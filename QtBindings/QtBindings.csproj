@@ -19,6 +19,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -27,6 +28,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -38,6 +40,12 @@
     <Compile Include="Core\QGlobal.cs" />
     <Compile Include="Core\QCoreApplication.cs" />
     <Compile Include="Core\QObject.cs" />
+    <Compile Include="Gui\QPushButton.cs" />
+    <Compile Include="Gui\QPaintDevice.cs" />
+    <Compile Include="Gui\QWidget.cs" />
+    <Compile Include="Gui\QAbstractButton.cs" />
+    <Compile Include="Core\QString.cs" />
+    <Compile Include="Core\QSize.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mono.VisualC.Interop\Mono.VisualC.Interop.csproj">

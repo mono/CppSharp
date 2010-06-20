@@ -18,12 +18,7 @@ namespace Mono.VisualC.Interop.ABI {
 	public class VTableManaged : VTable {
                 private ModuleBuilder implModule;
 
-                private static VTable MakeVTableManaged (Delegate[] entries)
-                {
-                        return new VTableManaged (entries);
-                }
-                public static MakeVTableDelegate Implementation = MakeVTableManaged;
-
+                public static MakeVTableDelegate Implementation = (entries) => { return new VTableManaged (entries); };
 		private VTableManaged (Delegate[] entries) : base(entries)
                 {
                         this.implModule = CppLibrary.interopModule;

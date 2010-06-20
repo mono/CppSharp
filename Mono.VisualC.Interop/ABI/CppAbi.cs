@@ -75,25 +75,23 @@ namespace Mono.VisualC.Interop.ABI {
                                       );
 
                         // TODO: If a method in a base class interface is defined again in a child class
-                        //  interface with exactly the same signature, it will prolly share a vtable slot
+                        //  interface with exactly the same signature, it will prolly share a vtable slot?????
 
                         // first, pull in all virtual methods from base classes
-                        var baseVirtualMethods = from iface in interface_type.GetInterfaces ()
-                                                 where iface.Name.Equals ("Base`1")
-                                                 from method in iface.GetGenericArguments ().First ().GetMethods ()
-                                                 where Modifiers.IsVirtual (method)
-                                                 orderby method.MetadataToken
-                                                 select GetManagedOverrideTrampoline (method, vtable_override_filter);
-
-
+                        var baseVirtualMethods = GetBaseVirtualMethods (interface_type);
                         var virtualMethods = baseVirtualMethods.Concat ( // now create managed overrides for virtuals in this class
                                                  from method in methods
                                                  where Modifiers.IsVirtual (method)
                                                  orderby method.MetadataToken
                                                  select GetManagedOverrideTrampoline (method, vtable_override_filter)
-                                             );
+                                                );
 
-                        vtable = make_vtable_method (virtualMethods.ToArray ());
+                        // ONLY make vtable if there are virtual methods
+                        if (virtualMethods.Any ())
+                                vtable = make_vtable_method (virtualMethods.ToArray ());
+                        else
+                                vtable = null;
+
                         int vtableIndex = baseVirtualMethods.Count ();
 
                         // Implement all methods
@@ -114,6 +112,30 @@ namespace Mono.VisualC.Interop.ABI {
 
                         ctor_il.Emit (OpCodes.Ret);
                         return (Iface)Activator.CreateInstance (impl_type.CreateType (), vtable, NativeSize);
+                }
+
+                protected virtual IEnumerable<Delegate> GetBaseVirtualMethods (Type searchStart)
+                {
+                        var bases = from baseIface in searchStart.GetInterfaces ()
+                                     where baseIface.Name.Equals ("Base`1")
+                                     from iface in baseIface.GetGenericArguments ()
+                                     select iface;
+
+                        List<Delegate> virtualMethods = new List<Delegate> ();
+
+                        foreach (var iface in bases)
+                        {
+                                virtualMethods.AddRange (GetBaseVirtualMethods (iface));
+
+                                var methods = from method in iface.GetMethods ()
+                                                 where Modifiers.IsVirtual (method)
+                                                 orderby method.MetadataToken
+                                                 select GetManagedOverrideTrampoline (method, vtable_override_filter);
+
+                                virtualMethods.AddRange (methods);
+                        }
+
+                        return virtualMethods;
                 }
 
                 // These methods might be more commonly overridden for a given C++ ABI:
@@ -315,7 +337,7 @@ namespace Mono.VisualC.Interop.ABI {
                         DynamicMethod trampolineIn = new DynamicMethod (wrapper_type.Name + "_" + interfaceMethod.Name + "_FromNative", interfaceMethod.ReturnType,
                                                                         parameterTypes, typeof (CppInstancePtr).Module, true);
 
-                        Util.ApplyMethodParameterAttributes (interfaceMethod, trampolineIn);
+                        Util.ApplyMethodParameterAttributes (interfaceMethod, trampolineIn, true);
                         ILGenerator il = trampolineIn.GetILGenerator ();
 
                         // for static methods:
@@ -365,7 +387,7 @@ namespace Mono.VisualC.Interop.ABI {
                         Type[] parameterTypes = Util.GetMethodParameterTypes (interfaceMethod, false);
                         MethodBuilder methodBuilder = impl_type.DefineMethod (interfaceMethod.Name, MethodAttributes.Public | MethodAttributes.Virtual,
                                                                              interfaceMethod.ReturnType, parameterTypes);
-                        Util.ApplyMethodParameterAttributes (interfaceMethod, methodBuilder);
+                        Util.ApplyMethodParameterAttributes (interfaceMethod, methodBuilder, false);
                         return methodBuilder;
                 }
 
@@ -384,8 +406,8 @@ namespace Mono.VisualC.Interop.ABI {
                                                                               MethodAttributes.Private | MethodAttributes.Static | MethodAttributes.PinvokeImpl,
                                                                               CallingConventions.Any, signature.ReturnType, parameterTypes,
                                                                               DefaultCallingConvention, CharSet.Ansi);
-
                         builder.SetImplementationFlags (builder.GetMethodImplementationFlags () | MethodImplAttributes.PreserveSig);
+                        Util.ApplyMethodParameterAttributes (signature, builder, true);
                         return builder;
                 }
 
@@ -533,19 +555,24 @@ namespace Mono.VisualC.Interop.ABI {
                                                             out LocalBuilder native)
                 {
                         cppip = null;
-                        native = il.DeclareLocal (typeof (IntPtr));
+                        native = null;
 
                         il.Emit (OpCodes.Ldarg_1);
                         if (firstParamType.Equals (typeof (CppInstancePtr))) {
                                 cppip = il.DeclareLocal (typeof (CppInstancePtr));
+                                native = il.DeclareLocal (typeof (IntPtr));
                                 il.Emit (OpCodes.Stloc_S, cppip);
                                 il.Emit (OpCodes.Ldloca_S, cppip);
                                 il.Emit (OpCodes.Call, typeof (CppInstancePtr).GetProperty ("Native").GetGetMethod ());
                                 il.Emit (OpCodes.Stloc_S, native);
-                        } else if (firstParamType.Equals (typeof (IntPtr)))
+                        } else if (firstParamType.Equals (typeof (IntPtr))) {
+                                native = il.DeclareLocal (typeof (IntPtr));
                                 il.Emit (OpCodes.Stloc_S, native);
-                        else
-                                throw new ArgumentException ("First argument to non-static C++ method must be IntPtr or CppInstancePtr.");
+                        } else if (firstParamType.IsByRef) {
+                                native = il.DeclareLocal (firstParamType);
+                                il.Emit (OpCodes.Stloc_S, native);
+                        } else
+                                throw new ArgumentException ("First argument to non-static C++ method must be byref, IntPtr or CppInstancePtr.");
                 }
 
                 protected virtual void EmitCheckManagedAlloc (ILGenerator il, LocalBuilder cppip)

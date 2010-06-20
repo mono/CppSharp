@@ -18,20 +18,45 @@ namespace Mono.VisualC.Interop {
         [AttributeUsage (AttributeTargets.Method)]
         public class StaticAttribute : Attribute {}
 
+        [AttributeUsage (AttributeTargets.Parameter)]
+        public class ConstAttribute : Attribute {}
+
         [AttributeUsage (AttributeTargets.Method)]
         public class OverrideNativeAttribute : Attribute {}
 
         [AttributeUsage (AttributeTargets.Parameter)]
         public class MangleAsAttribute : Attribute {
+                public CppModifiers Modifiers { get; set; }
                 public Type MangleType { get; private set; }
+
+                public bool ByRef {
+                        get { return MangleType.IsByRef; }
+                        set {
+                                if (!MangleType.IsByRef && value)
+                                        MangleType = MangleType.MakeByRefType ();
+                                else if (MangleType.IsByRef && !value)
+                                        MangleType = MangleType.GetElementType ();
+                        }
+                }
                 public MangleAsAttribute (Type mangleType)
                 {
+                        this.Modifiers = CppModifiers.None;
                         this.MangleType = mangleType;
                 }
-                public MangleAsAttribute (string mangleTypeAsString)
+                public MangleAsAttribute (string mangleTypeStr)
                 {
-                        this.MangleType = Type.GetType (mangleTypeAsString);
+                        this.Modifiers = CppModifiers.None;
+                        this.MangleType = Type.GetType (mangleTypeStr);
                 }
+        }
+
+        public enum CppModifiers {
+                None,
+                Const,
+                Pointer,
+                PointerToConst,
+                ConstPointer,
+                ConstPointerToConst
         }
 
         public static class Modifiers {
@@ -46,13 +71,17 @@ namespace Mono.VisualC.Interop {
                         return method.IsDefined (typeof (StaticAttribute), false);
                 }
 
-                public static Type GetMangleType (ParameterInfo param)
+                public static MangleAsAttribute GetMangleInfo (ParameterInfo param)
                 {
                         MangleAsAttribute maa = (MangleAsAttribute)param.GetCustomAttributes (typeof (MangleAsAttribute), false).FirstOrDefault ();
+                        bool isConst = param.IsDefined (typeof (ConstAttribute), false);
                         if (maa == null)
-                                return param.ParameterType;
+                                maa = new MangleAsAttribute (param.ParameterType);
 
-                        return maa.MangleType;
+                        if (isConst)
+                                maa.Modifiers = CppModifiers.Const;
+
+                        return maa;
                 }
         }
 }

@@ -1,14 +1,19 @@
 using System;
-using Qt.Core;
+using Qt.Gui;
 
 
 namespace QtTest {
         class MainClass {
-                public static int Main (string[] args)
+                public static void Main (string[] args)
                 {
-                        using (QCoreApplication app = new QCoreApplication ()) {
+                        using (QApplication app = new QApplication ()) {
+                                using (QPushButton hello = new QPushButton ("Hello world!")) {
 
-                                return app.Exec ();
+                                        hello.Resize (100, 30);
+                                        hello.Visible = true;
+
+                                        app.Exec ();
+                                }
                         }
                 }
         }

@@ -18,12 +18,7 @@ using System.Runtime.InteropServices;
 namespace Mono.VisualC.Interop.ABI {
         public class VTableCOM : VTable {
 
-                private static VTable MakeVTableCOM (Delegate[] entries)
-                {
-                        return new VTableCOM (entries);
-                }
-                public static MakeVTableDelegate Implementation = MakeVTableCOM;
-
+                public static MakeVTableDelegate Implementation = (entries) => { return new VTableCOM (entries); };
                 private VTableCOM (Delegate[] entries) : base(entries)
                 {
                         int managedOverrides = (from entry in entries

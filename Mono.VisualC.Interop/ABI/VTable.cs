@@ -17,7 +17,7 @@ using System.Runtime.InteropServices;
 namespace Mono.VisualC.Interop.ABI {
         public delegate VTable MakeVTableDelegate (Delegate[] overrides);
 
-        // TODO: RTTI
+        // TODO: RTTI .. support virtual inheritance
         public abstract class VTable : IDisposable {
 
                 // The COM-interop-based implemenation is the default because it offers better
