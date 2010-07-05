@@ -50,6 +50,8 @@
     <Compile Include="ABI\Impl\VirtualOnlyAbi.cs" />
     <Compile Include="ABI\Impl\MsvcAbi.cs" />
     <Compile Include="CppObjectMarshaler.cs" />
+    <Compile Include="CppType.cs" />
+    <Compile Include="IEnumerableTransform.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

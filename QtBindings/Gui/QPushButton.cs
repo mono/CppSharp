@@ -8,8 +8,7 @@ namespace Qt.Gui {
                 // C++ interface
                 public interface IQPushButton : ICppClassOverridable<QPushButton>, Base<QAbstractButton.IQAbstractButton> {
                         // ...
-                        void QPushButton (CppInstancePtr @this, [Const] ref QString text,
-                                          QWidget parent);
+                        void QPushButton (CppInstancePtr @this, [MangleAs ("const QString &")] ref QString text, QWidget parent);
                         // ...
                 }
                 // C++ fields

@@ -1,11 +1,12 @@
 using System;
 using System.Linq;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Reflection;
 using System.Reflection.Emit;
 
 namespace Mono.VisualC.Interop {
-        public static class Util {
+        internal static class Util {
 
                 public static MethodInfo GetMethodInfoForDelegate (Type delType)
                 {
@@ -35,12 +36,6 @@ namespace Mono.VisualC.Interop {
                         invokeMethod.SetImplementationFlags (MethodImplAttributes.Runtime | MethodImplAttributes.Managed);
 
                         return del.CreateType ();
-                }
-
-                public static Delegate GetDelegateForMethodInfo (ModuleBuilder mod, MethodInfo targetMethod)
-                {
-                        Type delType = GetDelegateTypeForMethodInfo (mod, targetMethod);
-                        return Delegate.CreateDelegate (delType, targetMethod);
                 }
 
                 public static Type[] GetDelegateParameterTypes (Type delType)

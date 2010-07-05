@@ -9,12 +9,8 @@ namespace Qt.Core {
         public unsafe struct QString {
                 #region Sync with qstring.h
                 public interface IQString : ICppClass {
-                        void QString(ref QString @this,
-                                     [MangleAs (typeof (QChar), Modifiers=CppModifiers.PointerToConst)]
-                                     IntPtr unicode, int size);
+                        void QString(ref QString @this, [MangleAs ("const QChar*")] IntPtr unicode, int size);
                 }
-                [StructLayout (LayoutKind.Sequential)]
-                private struct QChar {}
 
                 [StructLayout (LayoutKind.Sequential)]
                 public struct Data {

@@ -42,16 +42,23 @@ Global
 		StartupItem = Mono.VisualC.Interop\Mono.VisualC.Interop.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1
-		$1.TabWidth = 8
 		$1.NoTabsAfterNonTabs = True
 		$1.RemoveTrailingWhitespace = True
-		$1.inheritsSet = VisualStudio
+		$1.inheritsSet = Mono
 		$1.inheritsScope = text/plain
 		$1.scope = text/x-csharp
 		$0.CSharpFormattingPolicy = $2
+		$2.NamespaceBraceStyle = EndOfLine
+		$2.ClassBraceStyle = EndOfLine
+		$2.InterfaceBraceStyle = EndOfLine
+		$2.StructBraceStyle = EndOfLine
+		$2.EnumBraceStyle = EndOfLine
 		$2.inheritsSet = Mono
 		$2.inheritsScope = text/x-csharp
 		$2.scope = text/x-csharp
+		$0.StandardHeader = $3
+		$3.Text = 
+		$3.inheritsSet = Apache2License
 		name = CPPInterop
 	EndGlobalSection
 EndGlobal

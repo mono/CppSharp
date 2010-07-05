@@ -8,10 +8,10 @@ namespace Qt.Gui {
         public class QApplication : QCoreApplication {
                 #region Sync with qapplication.h
                 // C++ interface
-                protected interface IQApplication : ICppClassOverridable<QApplication>, Base<QCoreApplication.IQCoreApplication> {
+                public interface IQApplication : ICppClassOverridable<QApplication>, Base<QCoreApplication.IQCoreApplication> {
                         // ...
-                        void QApplication (CppInstancePtr @this, [MangleAs ("System.Int32&")] IntPtr argc,
-                                               [MangleAs (typeof (string[]))] IntPtr argv, int version);
+                        void QApplication (CppInstancePtr @this, [MangleAs ("int&")] IntPtr argc,
+                                               [MangleAs ("char**")] IntPtr argv, int version);
                         // ...
                         [Virtual] bool macEventFilter(CppInstancePtr @this, IntPtr eventHandlerCallRef, IntPtr eventRef);
                         // ...

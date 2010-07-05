@@ -10,15 +10,20 @@ namespace Qt {
 
                 static Libs ()
                 {
+                        string lib;
                         CppAbi abi;
                         if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+                        { // for Windows...
+                                lib = "{0}4.dll";
                                 abi = new MsvcAbi ();
-                        else
+                        } else { // for Mac...
+                                lib = "/Library/Frameworks/{0}.framework/Versions/Current/{0}";
                                 abi = new ItaniumAbi ();
+                        }
 
 
-                        QtCore = new CppLibrary ("/Library/Frameworks/QtCore.framework/Versions/Current/QtCore", abi);
-                        QtGui  = new CppLibrary ("/Library/Frameworks/QtGui.framework/Versions/Current/QtGui",  abi);
+                        QtCore = new CppLibrary (string.Format(lib, "QtCore"), abi);
+                        QtGui  = new CppLibrary (string.Format(lib, "QtGui"),  abi);
                 }
         }
 }

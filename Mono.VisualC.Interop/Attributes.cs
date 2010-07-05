@@ -18,48 +18,28 @@ namespace Mono.VisualC.Interop {
         [AttributeUsage (AttributeTargets.Method)]
         public class StaticAttribute : Attribute {}
 
-        [AttributeUsage (AttributeTargets.Parameter)]
-        public class ConstAttribute : Attribute {}
-
         [AttributeUsage (AttributeTargets.Method)]
         public class OverrideNativeAttribute : Attribute {}
 
-        [AttributeUsage (AttributeTargets.Parameter)]
+        [AttributeUsage (AttributeTargets.Parameter | AttributeTargets.ReturnValue)]
         public class MangleAsAttribute : Attribute {
-                public CppModifiers Modifiers { get; set; }
-                public Type MangleType { get; private set; }
+                public CppType MangleType { get; private set; }
 
-                public bool ByRef {
-                        get { return MangleType.IsByRef; }
-                        set {
-                                if (!MangleType.IsByRef && value)
-                                        MangleType = MangleType.MakeByRefType ();
-                                else if (MangleType.IsByRef && !value)
-                                        MangleType = MangleType.GetElementType ();
-                        }
-                }
-                public MangleAsAttribute (Type mangleType)
+                public MangleAsAttribute (CppType mangleType)
                 {
-                        this.Modifiers = CppModifiers.None;
                         this.MangleType = mangleType;
                 }
                 public MangleAsAttribute (string mangleTypeStr)
                 {
-                        this.Modifiers = CppModifiers.None;
-                        this.MangleType = Type.GetType (mangleTypeStr);
+                        this.MangleType = new CppType (mangleTypeStr);
                 }
+		public MangleAsAttribute (params object[] cppTypeSpec)
+		{
+			this.MangleType = new CppType (cppTypeSpec);
+		}
         }
 
-        public enum CppModifiers {
-                None,
-                Const,
-                Pointer,
-                PointerToConst,
-                ConstPointer,
-                ConstPointerToConst
-        }
-
-        public static class Modifiers {
+	public static class Modifiers {
 
                 public static bool IsVirtual (MethodInfo method)
                 {
@@ -71,17 +51,22 @@ namespace Mono.VisualC.Interop {
                         return method.IsDefined (typeof (StaticAttribute), false);
                 }
 
-                public static MangleAsAttribute GetMangleInfo (ParameterInfo param)
+                public static CppType GetMangleType (ParameterInfo param)
                 {
+			CppType mangleType = new CppType ();
                         MangleAsAttribute maa = (MangleAsAttribute)param.GetCustomAttributes (typeof (MangleAsAttribute), false).FirstOrDefault ();
-                        bool isConst = param.IsDefined (typeof (ConstAttribute), false);
-                        if (maa == null)
-                                maa = new MangleAsAttribute (param.ParameterType);
+			if (maa != null)
+				mangleType = maa.MangleType;
 
-                        if (isConst)
-                                maa.Modifiers = CppModifiers.Const;
+			// this means that only CppModifiers were applied .. apply CppType from managed parameter type
+			if (mangleType.ElementType == CppTypes.Unknown && mangleType.ElementTypeName == null)
+				mangleType.Apply (CppType.ForManagedType (param.ParameterType));
+			else if (mangleType.ElementType == CppTypes.Unknown)
+				// FIXME: otherwise, we just assume it's CppTypes.Class for now.
+				mangleType.ElementType = CppTypes.Class;
 
-                        return maa;
+                        return mangleType;
                 }
         }
+
 }

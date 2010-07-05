@@ -454,8 +454,8 @@ namespace Mono.VisualC.Interop.ABI {
                         Label bail = il.DefineLabel ();
 
                         il.Emit (OpCodes.Ldloca_S, cppInstancePtr);
-                        //il.Emit (OpCodes.Dup);
-                        //il.Emit (OpCodes.Brfalse_S, bail);
+                        il.Emit (OpCodes.Brfalse_S, bail);
+                        il.Emit (OpCodes.Ldloca_S, cppInstancePtr);
                         il.Emit (OpCodes.Call, typeof (CppInstancePtr).GetProperty ("IsManagedAlloc").GetGetMethod ());
                         il.Emit (OpCodes.Brfalse_S, bail);
 

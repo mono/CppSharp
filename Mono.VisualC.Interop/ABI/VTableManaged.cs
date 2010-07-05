@@ -56,7 +56,7 @@ namespace Mono.VisualC.Interop.ABI {
                         callsite.Emit (OpCodes.Throw);
                         callsite.MarkLabel (notNull);
 
-                        return delegateType.GetMethod ("Invoke");
+                        return Util.GetMethodInfoForDelegate (delegateType);
 
                 }
 

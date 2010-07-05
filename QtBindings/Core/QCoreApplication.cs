@@ -6,10 +6,10 @@ namespace Qt.Core {
         public class QCoreApplication : QObject {
                 #region Sync with qcoreapplication.h
                 // C++ interface
-                protected interface IQCoreApplication : ICppClassOverridable<QCoreApplication>, Base<QObject.IQObject> {
+                public interface IQCoreApplication : ICppClassOverridable<QCoreApplication>, Base<QObject.IQObject> {
                         // ...
-                        void QCoreApplication (CppInstancePtr @this, [MangleAs ("System.Int32&")] IntPtr argc,
-                                               [MangleAs (typeof (string[]))] IntPtr argv);
+                        void QCoreApplication (CppInstancePtr @this, [MangleAs ("int&")] IntPtr argc,
+                                               [MangleAs ("char**")] IntPtr argv);
                         // ...
                         [Static] int exec ();
                         // ...
