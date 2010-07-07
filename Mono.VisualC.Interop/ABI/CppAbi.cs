@@ -168,7 +168,7 @@ namespace Mono.VisualC.Interop.ABI {
                 // The members below must be implemented for a given C++ ABI:
 
                 public abstract string GetMangledMethodName (MethodInfo methodInfo);
-                public abstract CallingConvention DefaultCallingConvention { get; }
+                public abstract CallingConvention GetCallingConvention (MethodInfo methodInfo);
 
                 protected virtual void DefineImplType ()
                 {
@@ -238,7 +238,8 @@ namespace Mono.VisualC.Interop.ABI {
 
                         MethodInfo nativeMethod;
                         if (Modifiers.IsVirtual (interfaceMethod))
-                                nativeMethod = vtable.PrepareVirtualCall (interfaceMethod, il, vtable_field, nativePtr, index);
+                                nativeMethod = vtable.PrepareVirtualCall (interfaceMethod, GetCallingConvention (interfaceMethod),
+				                                          il, nativePtr, vtable_field, index);
                         else
                                 nativeMethod = GetPInvokeForMethod (interfaceMethod);
 
@@ -328,7 +329,7 @@ namespace Mono.VisualC.Interop.ABI {
                         if (targetMethod == null)
                                 return null;
 
-                        Type delegateType = Util.GetDelegateTypeForMethodInfo (impl_module, interfaceMethod);
+                        Type delegateType = Util.GetDelegateTypeForMethodInfo (impl_module, interfaceMethod, GetCallingConvention (interfaceMethod));
                         Type[] parameterTypes = Util.GetMethodParameterTypes (interfaceMethod, true);
 
                         // TODO: According to http://msdn.microsoft.com/en-us/library/w16z8yc4.aspx
@@ -405,7 +406,7 @@ namespace Mono.VisualC.Interop.ABI {
                         MethodBuilder builder = impl_type.DefinePInvokeMethod ("__$" + signature.Name + "_Impl", library, entryPoint,
                                                                               MethodAttributes.Private | MethodAttributes.Static | MethodAttributes.PinvokeImpl,
                                                                               CallingConventions.Any, signature.ReturnType, parameterTypes,
-                                                                              DefaultCallingConvention, CharSet.Ansi);
+                                                                              GetCallingConvention (signature), CharSet.Ansi);
                         builder.SetImplementationFlags (builder.GetMethodImplementationFlags () | MethodImplAttributes.PreserveSig);
                         Util.ApplyMethodParameterAttributes (signature, builder, true);
                         return builder;

@@ -21,8 +21,9 @@ namespace Mono.VisualC.Interop.ABI {
                 {
                 }
 
-		public override CallingConvention DefaultCallingConvention {
-			get { return CallingConvention.Cdecl; }
+		public override CallingConvention GetCallingConvention (MethodInfo methodInfo)
+		{
+			return CallingConvention.Cdecl;
 		}
 
 		public override string GetMangledMethodName (MethodInfo methodInfo)
@@ -48,11 +49,11 @@ namespace Mono.VisualC.Interop.ABI {
 				break;
 			}
 
-			nm.Append ("E");
+			nm.Append ('E');
                         int argStart = (Modifiers.IsStatic (methodInfo)? 0 : 1);
 
 			if (parameters.Length == argStart) // no args (other than C++ "this" object)
-				nm.Append ("v");
+				nm.Append ('v');
 			else
 				for (int i = argStart; i < parameters.Length; i++)
 					nm.Append (GetTypeCode (Modifiers.GetMangleType (parameters[i])));
@@ -67,14 +68,17 @@ namespace Mono.VisualC.Interop.ABI {
 
 			StringBuilder code = new StringBuilder ();
 
+			var ptrOrRef = For.AnyInputIn (CppModifiers.Pointer, CppModifiers.Reference);
 			var modifierCode = modifiers.Reverse ().Transform (
 				For.AnyInputIn (CppModifiers.Pointer, CppModifiers.Array).Emit ("P"),
 				For.AnyInputIn (CppModifiers.Reference).Emit ("R"),
 
+			        // Itanium mangled names do not include const or volatile unless
+			        //  they modify the type pointed to by pointer or reference.
 				Choose.TopOne (
-					For.AnyInputIn (CppModifiers.Pointer, CppModifiers.Reference).FollowedBy ().AllInputsIn (CppModifiers.Volatile, CppModifiers.Const).InAnyOrder ().Emit ("VK"),
-					For.AnyInputIn (CppModifiers.Pointer, CppModifiers.Reference).FollowedBy ().AnyInputIn(CppModifiers.Volatile).Emit ("V"),
-					For.AnyInputIn (CppModifiers.Pointer, CppModifiers.Reference).FollowedBy ().AnyInputIn(CppModifiers.Const).Emit ("K")
+					For.AllInputsIn (CppModifiers.Volatile, CppModifiers.Const).InAnyOrder ().After (ptrOrRef).Emit ("VK"),
+					For.AnyInputIn(CppModifiers.Volatile).After (ptrOrRef).Emit ("V"),
+					For.AnyInputIn(CppModifiers.Const).After (ptrOrRef).Emit ("K")
 			        )
 			);
 			code.Append (string.Join(string.Empty, modifierCode.ToArray ()));
@@ -89,6 +93,9 @@ namespace Mono.VisualC.Interop.ABI {
 				code.Append ('c');
 				break;
 			case CppTypes.Class:
+			case CppTypes.Struct:
+			case CppTypes.Union:
+			case CppTypes.Enum:
                                 code.Append(mangleType.ElementTypeName.Length);
                                 code.Append(mangleType.ElementTypeName);
 				break;

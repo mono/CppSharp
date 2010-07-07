@@ -90,7 +90,6 @@ namespace Mono.VisualC.Interop {
 			//  pointer types to C++ pointers
 			//  array types to C++ arrays
 			(t) => {
-				if (t.GetElementType () == null) return CppTypes.Unknown;
 				CppType cppType = CppType.ForManagedType (t.GetElementType ());
 				if (t.IsByRef) cppType.Modifiers.Add (CppModifiers.Reference);
 				if (t.IsPointer) cppType.Modifiers.Add (CppModifiers.Pointer);
@@ -105,7 +104,15 @@ namespace Mono.VisualC.Interop {
 		//  this will contain the name of said type
 		public string ElementTypeName { get; set; }
 
-		public List<CppModifiers> Modifiers { get; private set; }
+		private List<CppModifiers> internalModifiers;
+		public List<CppModifiers> Modifiers {
+			get {
+				if (internalModifiers == null)
+					internalModifiers = new List<CppModifiers> ();
+
+				return internalModifiers;
+			}
+		}
 
 		// here, you can pass in things like "const char*" or "const Foo * const"
 		//  DISCLAIMER: this is really just for convenience for now, and is not meant to be able
@@ -118,8 +125,6 @@ namespace Mono.VisualC.Interop {
 		{
 			ElementType = CppTypes.Unknown;
 			ElementTypeName = null;
-
-			Modifiers  = new List<CppModifiers> ();
 
 			Parse (cppTypeSpec);
 		}
@@ -180,11 +185,10 @@ namespace Mono.VisualC.Interop {
 				return;
 			}
 
-
 			Type managedType = type as Type;
 			if (managedType != null) {
 				CppType mapped = CppType.ForManagedType (managedType);
-				Apply (mapped);
+				ApplyTo (mapped);
 				return;
 			}
 		}
@@ -193,15 +197,16 @@ namespace Mono.VisualC.Interop {
 		//  and combines its modifiers into this instance.
 		//  Use when THIS instance may have attributes you want,
 		//  but want the element type of the passed instance.
-		public void Apply (CppType type)
+		public void ApplyTo (CppType type)
 		{
 			ElementType = type.ElementType;
 			ElementTypeName = type.ElementTypeName;
-			if (Modifiers == null) Modifiers = new List<CppModifiers> ();
 
-			List<CppModifiers> oldModifiers = Modifiers;
-			Modifiers = type.Modifiers;
-			Modifiers.AddRange (oldModifiers);
+			List<CppModifiers> oldModifiers = internalModifiers;
+			internalModifiers = type.Modifiers;
+
+			if (oldModifiers != null)
+				Modifiers.AddRange (oldModifiers);
 		}
 
 		/*
@@ -232,9 +237,6 @@ namespace Mono.VisualC.Interop {
 			var mappedType = (from checkType in ManagedTypeMap
 			                  where checkType (type).ElementType != CppTypes.Unknown
 			                  select checkType (type)).FirstOrDefault ();
-
-			if (mappedType.Modifiers == null)
-				mappedType.Modifiers = new List<CppModifiers> ();
 
 			return mappedType;
 		}

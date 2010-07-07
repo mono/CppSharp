@@ -13,7 +13,7 @@ namespace Mono.VisualC.Interop {
                         return delType.GetMethod ("Invoke");
                 }
 
-                public static Type GetDelegateTypeForMethodInfo (ModuleBuilder mod, MethodInfo targetMethod)
+                public static Type GetDelegateTypeForMethodInfo (ModuleBuilder mod, MethodInfo targetMethod, CallingConvention? callingConvention)
                 {
                         // TODO: Actually return the same delegate type instead of creating a new one if
                         //  a suitable type already exists??
@@ -24,6 +24,11 @@ namespace Mono.VisualC.Interop {
                         TypeAttributes typeAttr = TypeAttributes.Class | TypeAttributes.Sealed | TypeAttributes.AnsiClass | TypeAttributes.AutoClass;
                         TypeBuilder del = mod.DefineType (delTypeName, typeAttr, typeof(MulticastDelegate));
 
+			if (callingConvention.HasValue) {
+				ConstructorInfo ufpa = typeof (UnmanagedFunctionPointerAttribute).GetConstructor (new Type [] { typeof (CallingConvention) });
+				CustomAttributeBuilder unmanagedPointer = new CustomAttributeBuilder (ufpa, new object [] { callingConvention.Value });
+				del.SetCustomAttribute (unmanagedPointer);
+			}
 
                         MethodAttributes ctorAttr = MethodAttributes.RTSpecialName | MethodAttributes.HideBySig | MethodAttributes.Public;
                         ConstructorBuilder ctor = del.DefineConstructor (ctorAttr, CallingConventions.Standard, new Type[] { typeof(object), typeof(System.IntPtr) });

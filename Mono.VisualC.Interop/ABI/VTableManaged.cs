@@ -27,14 +27,14 @@ namespace Mono.VisualC.Interop.ABI {
                         WriteOverrides (0);
 		}
 
-                public override MethodInfo PrepareVirtualCall (MethodInfo target, ILGenerator callsite, FieldInfo vtableField,
-                                                               LocalBuilder native, int vtableIndex)
+                public override MethodInfo PrepareVirtualCall (MethodInfo target, CallingConvention callingConvention, ILGenerator callsite,
+		                                               LocalBuilder nativePtr, FieldInfo vtableField, int vtableIndex)
                 {
                         Type delegateType;
                         if (overrides [vtableIndex] != null)
                                 delegateType = overrides [vtableIndex].GetType ();
                         else
-                                delegateType = Util.GetDelegateTypeForMethodInfo (implModule, target);
+                                delegateType = Util.GetDelegateTypeForMethodInfo (implModule, target, callingConvention);
 
                         MethodInfo getDelegate = typeof (VTableManaged).GetMethod ("GetDelegateForNative").MakeGenericMethod (delegateType);
 
@@ -42,7 +42,7 @@ namespace Mono.VisualC.Interop.ABI {
                         callsite.Emit (OpCodes.Ldarg_0);
                         callsite.Emit (OpCodes.Ldfld, vtableField);
                         // call this._vtable.GetDelegateForNative(IntPtr native, int vtableIndex)
-                        callsite.Emit (OpCodes.Ldloc_S, native);
+                        callsite.Emit (OpCodes.Ldloc_S, nativePtr);
                         callsite.Emit (OpCodes.Ldc_I4, vtableIndex);
                         callsite.Emit (OpCodes.Callvirt, getDelegate);
                         // check for null

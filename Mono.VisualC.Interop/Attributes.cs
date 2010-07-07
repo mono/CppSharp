@@ -12,14 +12,16 @@ using System.Linq;
 using System.Reflection;
 
 namespace Mono.VisualC.Interop {
+
+	#region Interface method attributes
         [AttributeUsage (AttributeTargets.Method)]
         public class VirtualAttribute : Attribute {}
-
         [AttributeUsage (AttributeTargets.Method)]
         public class StaticAttribute : Attribute {}
-
+	[AttributeUsage (AttributeTargets.Method)]
+        public class PrivateAttribute : Attribute {}
         [AttributeUsage (AttributeTargets.Method)]
-        public class OverrideNativeAttribute : Attribute {}
+        public class ProtectedAttribute : Attribute {}
 
         [AttributeUsage (AttributeTargets.Parameter | AttributeTargets.ReturnValue)]
         public class MangleAsAttribute : Attribute {
@@ -38,6 +40,10 @@ namespace Mono.VisualC.Interop {
 			this.MangleType = new CppType (cppTypeSpec);
 		}
         }
+	#endregion
+
+        [AttributeUsage (AttributeTargets.Method)]
+        public class OverrideNativeAttribute : Attribute {}
 
 	public static class Modifiers {
 
@@ -45,11 +51,18 @@ namespace Mono.VisualC.Interop {
                 {
                         return method.IsDefined (typeof (VirtualAttribute), false);
                 }
-
                 public static bool IsStatic (MethodInfo method)
                 {
                         return method.IsDefined (typeof (StaticAttribute), false);
                 }
+		public static bool IsPrivate (MethodInfo method)
+		{
+			return method.IsDefined (typeof (PrivateAttribute), false);
+		}
+		public static bool IsProtected (MethodInfo method)
+		{
+			return method.IsDefined (typeof (ProtectedAttribute), false);
+		}
 
                 public static CppType GetMangleType (ParameterInfo param)
                 {
@@ -58,9 +71,10 @@ namespace Mono.VisualC.Interop {
 			if (maa != null)
 				mangleType = maa.MangleType;
 
-			// this means that only CppModifiers were applied .. apply CppType from managed parameter type
+			// this means that either no MangleAsAttribute was defined, or
+			//  only CppModifiers were applied .. apply CppType from managed parameter type
 			if (mangleType.ElementType == CppTypes.Unknown && mangleType.ElementTypeName == null)
-				mangleType.Apply (CppType.ForManagedType (param.ParameterType));
+				mangleType.ApplyTo (CppType.ForManagedType (param.ParameterType));
 			else if (mangleType.ElementType == CppTypes.Unknown)
 				// FIXME: otherwise, we just assume it's CppTypes.Class for now.
 				mangleType.ElementType = CppTypes.Class;

@@ -38,8 +38,8 @@ namespace Mono.VisualC.Interop.ABI {
                         get { return Marshal.SizeOf (typeof (IntPtr)); }
                 }
 
-                public abstract MethodInfo PrepareVirtualCall (MethodInfo target, ILGenerator callsite, FieldInfo vtableField,
-                                                               LocalBuilder native, int vtableIndex);
+                public abstract MethodInfo PrepareVirtualCall (MethodInfo target, CallingConvention callingConvention, ILGenerator callsite,
+		                                               LocalBuilder nativePtr, FieldInfo vtableField, int vtableIndex);
 
                 // Subclasses must allocate vtPtr!
                 public VTable (Delegate[] overrides)

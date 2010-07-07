@@ -29,8 +29,8 @@ namespace Mono.VisualC.Interop.ABI {
                         WriteOverrides (0);
                 }
 
-               public override MethodInfo PrepareVirtualCall (MethodInfo target, ILGenerator callsite, FieldInfo vtableField,
-                                                              LocalBuilder native, int vtableIndex)
+                public override MethodInfo PrepareVirtualCall (MethodInfo target, CallingConvention callingConvention, ILGenerator callsite,
+		                                               LocalBuilder nativePtr, FieldInfo vtableField, int vtableIndex)
                {
                         throw new System.NotImplementedException ();
                }

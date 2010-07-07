@@ -5,18 +5,32 @@ using System.Collections.Generic;
 
 namespace Mono.VisualC.Interop {
 
+	public enum RuleResult {
+		NoMatch,
+		MatchEmit,
+		MatchNoEmit
+	}
 
-	public delegate bool EmitterFunc<TIn, TOut> (InputData<TIn> input, out TOut output);
+	public delegate RuleResult EmitterFunc<TIn, TOut> (InputData<TIn> input, out TOut output);
 
 	public struct InputData<TIn> {
 		public IEnumerable<TIn> AllValues;
-		public LookaheadEnumerator<TIn> Enumerator;
+		public CloneableEnumerator<TIn> Enumerator;
 		public List<IRule<TIn>> MatchedRules;
-		public InputData (IEnumerable<TIn> input,  LookaheadEnumerator<TIn> enumerator)
+		public InputData (IEnumerable<TIn> input,  CloneableEnumerator<TIn> enumerator)
 		{
 			this.AllValues = input;
 			this.Enumerator = enumerator;
 			this.MatchedRules = new List<IRule<TIn>> ();
+		}
+
+		public InputData<TIn> NewContext ()
+		{
+			InputData<TIn> nctx = new InputData<TIn> ();
+			nctx.AllValues = this.AllValues;
+			nctx.Enumerator = this.Enumerator.Clone ();
+			nctx.MatchedRules = this.MatchedRules;
+			return nctx;
 		}
 
 		public TIn Value {
@@ -26,7 +40,7 @@ namespace Mono.VisualC.Interop {
 
 	#region Rules
 	public interface IRule<TIn> {
-		bool SatisfiedBy (InputData<TIn> input);
+		RuleResult SatisfiedBy (InputData<TIn> input);
 	}
 
 	// yields all inputs indescriminately
@@ -34,9 +48,9 @@ namespace Mono.VisualC.Interop {
 		public AnyRule ()
 		{
 		}
-		public bool SatisfiedBy (InputData<TIn> input)
+		public RuleResult SatisfiedBy (InputData<TIn> input)
 		{
-			return true;
+			return RuleResult.MatchEmit;
 		}
 	}
 
@@ -46,9 +60,9 @@ namespace Mono.VisualC.Interop {
 		public UnmatchedRule ()
 		{
 		}
-		public bool SatisfiedBy (InputData<TIn> input)
+		public RuleResult SatisfiedBy (InputData<TIn> input)
 		{
-			return !input.MatchedRules.Any ();
+			return !input.MatchedRules.Any ()? RuleResult.MatchEmit : RuleResult.NoMatch;
 		}
 	}
 
@@ -58,13 +72,13 @@ namespace Mono.VisualC.Interop {
 		public FirstRule ()
 		{
 		}
-		public bool SatisfiedBy (InputData<TIn> input)
+		public RuleResult SatisfiedBy (InputData<TIn> input)
 		{
 			if (!triggered) {
 				triggered = true;
-				return true;
+				return RuleResult.MatchEmit;
 			}
-			return false;
+			return RuleResult.NoMatch;
 		}
 	}
 
@@ -74,18 +88,27 @@ namespace Mono.VisualC.Interop {
 		public LastRule ()
 		{
 		}
-		public bool SatisfiedBy (InputData<TIn> input)
+		public RuleResult SatisfiedBy (InputData<TIn> input)
 		{
-			IEnumerator<TIn> item = input.Enumerator;
+			throw new NotImplementedException ();
+		}
+	}
 
-			while (item.MoveNext ()) {
-				foreach (var prevRule in input.MatchedRules) {
-					if (prevRule.SatisfiedBy (input))
-						return false;
-				}
-			}
+	// yields input if the specified previous rule has already been satisfied
+	public class AfterRule<TIn> : IRule<TIn> {
+		protected IRule<TIn> previousRule;
+		protected bool satisfied = false;
+		public AfterRule (IRule<TIn> previousRule)
+		{
+			this.previousRule = previousRule;
+		}
+		public RuleResult SatisfiedBy (InputData<TIn> input)
+		{
+			if (satisfied)
+				return RuleResult.MatchEmit;
 
-			return true;
+			satisfied = previousRule.SatisfiedBy (input) != RuleResult.NoMatch;
+			return RuleResult.NoMatch;
 		}
 	}
 
@@ -101,9 +124,22 @@ namespace Mono.VisualC.Interop {
 		{
 			this.conditions = conditions;
 		}
-		public bool SatisfiedBy (InputData<TIn> input)
+		public RuleResult SatisfiedBy (InputData<TIn> input)
 		{
-			return conditions.Contains (input.Value);
+			return conditions.Contains (input.Value)? RuleResult.MatchEmit : RuleResult.NoMatch;
+		}
+	}
+
+	public class PredicateRule<TIn> : IRule<TIn> {
+		protected Func<TIn, bool> predicate;
+
+		public PredicateRule (Func<TIn, bool> predicate)
+		{
+			this.predicate = predicate;
+		}
+		public RuleResult SatisfiedBy (InputData<TIn> input)
+		{
+			return predicate (input.Value)? RuleResult.MatchEmit : RuleResult.NoMatch;
 		}
 	}
 
@@ -124,11 +160,11 @@ namespace Mono.VisualC.Interop {
 		{
 			this.conditions = conditions;
 		}
-		public bool SatisfiedBy (InputData<TIn> inputData)
+		public RuleResult SatisfiedBy (InputData<TIn> inputData)
 		{
 			if (verified && verifiedItems.Count > 0) {
 				verifiedItems.Dequeue ();
-				return false;
+				return RuleResult.MatchNoEmit;
 			} else
 				verified = false;
 
@@ -142,51 +178,51 @@ namespace Mono.VisualC.Interop {
 			if (verifiedItems.Count == conditions.Count ()) {
 				verified = true;
 				verifiedItems.Dequeue ();
-				return true;
+				return RuleResult.MatchEmit;
 			} else
 				verifiedItems.Clear ();
 
-			return false;
+			return RuleResult.NoMatch;
 		}
 	}
 
 	public class InOrderRule<TIn> : IRule<TIn> {
-		protected IEnumerable<IRule<TIn>> conditions;
+		protected IEnumerable<TIn> conditions;
 
 		protected bool verified = false;
 		protected int verifiedCount = 0;
 
-		public InOrderRule (params IRule<TIn> [] conditions)
+		public InOrderRule (params TIn [] conditions)
 		{
 			this.conditions = conditions;
 		}
-		public InOrderRule (IEnumerable<IRule<TIn>> conditions)
+		public InOrderRule (IEnumerable<TIn> conditions)
 		{
 			this.conditions = conditions;
 		}
-		public bool SatisfiedBy (InputData<TIn> inputData)
+		public RuleResult SatisfiedBy (InputData<TIn> inputData)
 		{
 			if (verified && verifiedCount > 0) {
 				verifiedCount--;
-				return false;
+				return RuleResult.MatchNoEmit;
 			} else
 				verified = false;
 
-			IEnumerator<IRule<TIn>> condition = conditions.GetEnumerator ();
+			IEnumerator<TIn> condition = conditions.GetEnumerator ();
 			IEnumerator<TIn> input = inputData.Enumerator;
 
-			while (condition.MoveNext () && condition.Current.SatisfiedBy (inputData)) {
+			while (condition.MoveNext () && condition.Equals (input.Current)) {
 				verifiedCount++;
 				if (!input.MoveNext ()) break;
 			}
 			if (verifiedCount == conditions.Count ()) {
 				verified = true;
 				verifiedCount--;
-				return true;
+				return RuleResult.MatchEmit;
 			} else
 				verifiedCount = 0;
 
-			return false;
+			return RuleResult.NoMatch;
 		}
 	}
 
@@ -202,15 +238,19 @@ namespace Mono.VisualC.Interop {
 		{
 			this.rules = rules;
 		}
-		public bool SatisfiedBy (InputData<TIn> input)
+		public RuleResult SatisfiedBy (InputData<TIn> input)
 		{
+			RuleResult finalResult = RuleResult.NoMatch;
 			foreach (var rule in rules) {
-				if (!rule.SatisfiedBy (input))
-					return false;
+				RuleResult result = rule.SatisfiedBy (input.NewContext ());
+				if (result == RuleResult.NoMatch)
+					return RuleResult.NoMatch;
+				if (finalResult != RuleResult.MatchNoEmit)
+					finalResult = result;
 
 				input.MatchedRules.Add (rule);
 			}
-			return true;
+			return finalResult;
 		}
 	}
 
@@ -226,18 +266,18 @@ namespace Mono.VisualC.Interop {
 		{
 			this.rules = rules;
 		}
-		public bool SatisfiedBy (InputData<TIn> input)
+		public RuleResult SatisfiedBy (InputData<TIn> input)
 		{
 			bool satisfied = false;
 			foreach (var rule in rules) {
-				if (!rule.SatisfiedBy (input))
-					continue;
-
-				satisfied = true;
-				input.MatchedRules.Add (rule);
+				RuleResult result = rule.SatisfiedBy (input.NewContext ());
+				if (result != RuleResult.NoMatch) {
+					input.MatchedRules.Add (rule);
+					return result;
+				}
 			}
 
-			return satisfied;
+			return RuleResult.NoMatch;
 		}
 	}
 	#endregion
@@ -278,6 +318,11 @@ namespace Mono.VisualC.Interop {
 			});
 		}
 
+		public static IRule<TIn> InputsWhere<TIn> (Func<TIn, bool> predicate)
+		{
+			return new PredicateRule<TIn> (predicate);
+		}
+
 		public static IRule<TIn> AnyInput<TIn> ()
 		{
 			return new AnyRule<TIn> ();
@@ -307,15 +352,21 @@ namespace Mono.VisualC.Interop {
 
 		public IRule<TIn> AnyInputIn (params TIn[] input)
 		{
-			return additionalRuleCallback(new InSetRule<TIn> (input));
+			return additionalRuleCallback (new InSetRule<TIn> (input));
 		}
 		public IRule<TIn> AnyInputIn (IEnumerable<TIn> input)
 		{
-			return additionalRuleCallback(new InSetRule<TIn> (input));
+			return additionalRuleCallback (new InSetRule<TIn> (input));
 		}
+
+		public IRule<TIn> InputsWhere (Func<TIn, bool> predicate)
+		{
+			return additionalRuleCallback (new PredicateRule<TIn> (predicate));
+		}
+
 		public IRule<TIn> AnyInput ()
 		{
-			return additionalRuleCallback(new AnyRule<TIn> ());
+			return additionalRuleCallback (new AnyRule<TIn> ());
 		}
 	}
 
@@ -331,7 +382,7 @@ namespace Mono.VisualC.Interop {
 
 		public IRule<TIn> InThatOrder ()
 		{
-			return additionalRuleCallback (new InOrderRule<TIn> (sequence.Select (tin => (IRule<TIn>)new InSetRule<TIn> (tin))));
+			return additionalRuleCallback (new InOrderRule<TIn> (sequence));
 		}
 
 		public IRule<TIn> InAnyOrder ()
@@ -347,62 +398,44 @@ namespace Mono.VisualC.Interop {
 			return delegate (InputData<TIn> input, out TOut output) {
 				output = default (TOut);
 				foreach (var rule in rules) {
-					if (rule (input, out output))
-						return true;
-
-					input.Enumerator.Validate ();
+					RuleResult result = rule (input.NewContext (), out output);
+					if (result != RuleResult.NoMatch)
+						return result;
 				}
-				return false;
+				return RuleResult.NoMatch;
 			};
 		}
 	}
 
-	public class LookaheadEnumerator<T> : IEnumerator<T> {
+	public class CloneableEnumerator<T> : IEnumerator<T> {
 		private IEnumerable<T> wrappedEnumerable;
 		private IEnumerator<T> wrappedEnumerator;
 
 		private int position;
-		private bool invalidated;
 
-		public LookaheadEnumerator (IEnumerable<T> enumerable, int position)
+		public CloneableEnumerator (IEnumerable<T> enumerable, int position)
 		{
 			this.wrappedEnumerable = enumerable;
 			this.position = position;
-			this.invalidated = true;
-			Validate ();
+
+			this.wrappedEnumerator = wrappedEnumerable.GetEnumerator ();
+			for (int i = 0; i < position; i++)
+				wrappedEnumerator.MoveNext ();
+		}
+
+		public CloneableEnumerator<T> Clone () {
+			return new CloneableEnumerator<T> (this.wrappedEnumerable, this.position);
 		}
 
 		public void Reset ()
 		{
-			invalidated = true;
 			wrappedEnumerator.Reset ();
-		}
-
-		public void Validate ()
-		{
-			if (!invalidated) return;
-			wrappedEnumerator = wrappedEnumerable.GetEnumerator ();
-			for (int i = 0; i < position; i++)
-				wrappedEnumerator.MoveNext ();
-
-			invalidated = false;
-		}
-
-		public bool ValidMoveNext ()
-		{
-			Validate ();
-			position++;
-			return wrappedEnumerator.MoveNext ();
 		}
 
 		public bool MoveNext ()
 		{
-			invalidated = true;
+			position++;
 			return wrappedEnumerator.MoveNext ();
-		}
-
-		public bool Invalidated {
-			get { return invalidated; }
 		}
 
 		public T Current {
@@ -422,17 +455,16 @@ namespace Mono.VisualC.Interop {
 
 		public static IEnumerable<TOut> Transform<TIn, TOut> (this IEnumerable<TIn> input, params EmitterFunc<TIn, TOut> [] rules)
 		{
-			LookaheadEnumerator<TIn> enumerator = new LookaheadEnumerator<TIn> (input, 0);
+			CloneableEnumerator<TIn> enumerator = new CloneableEnumerator<TIn> (input, 0);
 
-			while (enumerator.ValidMoveNext ()) {
-
+			while (enumerator.MoveNext ()) {
 				InputData<TIn> inputData = new InputData<TIn> (input, enumerator);
+
 				foreach (var rule in rules) {
 					TOut output;
-					if (rule (inputData, out output))
+					if (rule (inputData.NewContext (), out output) == RuleResult.MatchEmit)
 						yield return output;
 
-					enumerator.Validate ();
 				}
 			}
 
@@ -460,15 +492,14 @@ namespace Mono.VisualC.Interop {
 			});
 		}
 
-
-		public static IRule<TIn> FollowedBy<TIn> (this IRule<TIn> previousRules, IRule<TIn> parentheticalRules)
+		public static IRule<TIn> After<TIn> (this IRule<TIn> previousRules, IRule<TIn> parentheticalRules)
 		{
-			return new InOrderRule<TIn> (previousRules, parentheticalRules);
+			return new AndRule<TIn> (new AfterRule<TIn> (parentheticalRules), previousRules);
 		}
-		public static RuleCompound<TIn> FollowedBy<TIn> (this IRule<TIn> previousRules)
+		public static RuleCompound<TIn> After<TIn> (this IRule<TIn> previousRules)
 		{
 			return new RuleCompound<TIn> ((subsequentRules) => {
-				return FollowedBy<TIn> (previousRules, subsequentRules);
+				return After<TIn> (previousRules, subsequentRules);
 			});
 		}
 
@@ -477,12 +508,14 @@ namespace Mono.VisualC.Interop {
 			return delegate (InputData<TIn> input, out TOut output) {
 				output = default (TOut);
 				TIn value = input.Value;
-				if (rule.SatisfiedBy (input)) {
+				RuleResult ruleResult = rule.SatisfiedBy (input);
+
+				if (ruleResult != RuleResult.NoMatch) {
 					input.MatchedRules.Add (rule);
 					output = result (value);
-					return true;
+					return ruleResult;
 				}
-				return false;
+				return RuleResult.NoMatch;
 			};
 		}
 		public static EmitterFunc<TIn, TOut> Emit<TIn, TOut> (this IRule<TIn> rule, TOut result)
