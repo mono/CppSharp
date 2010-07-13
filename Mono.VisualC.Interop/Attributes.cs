@@ -16,10 +16,17 @@ namespace Mono.VisualC.Interop {
 	#region Interface method attributes
         [AttributeUsage (AttributeTargets.Method)]
         public class VirtualAttribute : Attribute {}
+
+	[AttributeUsage (AttributeTargets.Interface)]
+	public class VirtualDestructorAttribute : Attribute {}
+
         [AttributeUsage (AttributeTargets.Method)]
         public class StaticAttribute : Attribute {}
+
+	// FIXME: Will we ever be calling private methods?
 	[AttributeUsage (AttributeTargets.Method)]
         public class PrivateAttribute : Attribute {}
+
         [AttributeUsage (AttributeTargets.Method)]
         public class ProtectedAttribute : Attribute {}
 
@@ -44,37 +51,46 @@ namespace Mono.VisualC.Interop {
 
         [AttributeUsage (AttributeTargets.Method)]
         public class OverrideNativeAttribute : Attribute {}
+}
 
-	public static class Modifiers {
+namespace Mono.VisualC.Interop.ABI {
+using Mono.VisualC.Interop;
 
-                public static bool IsVirtual (MethodInfo method)
+	public partial class CppAbi {
+
+                public virtual bool IsVirtual (MethodInfo method)
                 {
-                        return method.IsDefined (typeof (VirtualAttribute), false);
+			return method.IsDefined (typeof (VirtualAttribute), false);
                 }
-                public static bool IsStatic (MethodInfo method)
+		public virtual bool IsVirtualDtor (MethodInfo method)
+		{
+			return GetMethodType (method) == MethodType.NativeDtor &&
+				interface_type.IsDefined (typeof (VirtualDestructorAttribute), false);
+		}
+                public virtual bool IsStatic (MethodInfo method)
                 {
                         return method.IsDefined (typeof (StaticAttribute), false);
                 }
-		public static bool IsPrivate (MethodInfo method)
+		public virtual bool IsPrivate (MethodInfo method)
 		{
 			return method.IsDefined (typeof (PrivateAttribute), false);
 		}
-		public static bool IsProtected (MethodInfo method)
+		public virtual bool IsProtected (MethodInfo method)
 		{
 			return method.IsDefined (typeof (ProtectedAttribute), false);
 		}
 
-                public static CppType GetMangleType (ParameterInfo param)
+                public virtual CppType GetMangleType (ICustomAttributeProvider icap, Type managedType)
                 {
 			CppType mangleType = new CppType ();
-                        MangleAsAttribute maa = (MangleAsAttribute)param.GetCustomAttributes (typeof (MangleAsAttribute), false).FirstOrDefault ();
+                        MangleAsAttribute maa = (MangleAsAttribute)icap.GetCustomAttributes (typeof (MangleAsAttribute), false).FirstOrDefault ();
 			if (maa != null)
 				mangleType = maa.MangleType;
 
 			// this means that either no MangleAsAttribute was defined, or
 			//  only CppModifiers were applied .. apply CppType from managed parameter type
 			if (mangleType.ElementType == CppTypes.Unknown && mangleType.ElementTypeName == null)
-				mangleType.ApplyTo (CppType.ForManagedType (param.ParameterType));
+				mangleType.ApplyTo (CppType.ForManagedType (managedType));
 			else if (mangleType.ElementType == CppTypes.Unknown)
 				// FIXME: otherwise, we just assume it's CppTypes.Class for now.
 				mangleType.ElementType = CppTypes.Class;

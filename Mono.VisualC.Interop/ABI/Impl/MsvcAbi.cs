@@ -8,23 +8,27 @@
 //
 
 using System;
+using System.Linq;
 using System.Text;
 using System.Reflection;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 using Mono.VisualC.Interop;
 
 namespace Mono.VisualC.Interop.ABI {
+
+	// FIXME: No 64-bit support
         public class MsvcAbi : CppAbi {
                 public MsvcAbi ()
                 {
                 }
 
-                public override CallingConvention GetCallingConvention (MethodInfo methodInfo)
+                public override CallingConvention? GetCallingConvention (MethodInfo methodInfo)
 		{
-                        // FIXME: Varargs methods..?
+                        // FIXME: Varargs methods ... ?
 
-			if (Modifiers.IsStatic (methodInfo))
+			if (IsStatic (methodInfo))
 				return CallingConvention.Cdecl;
 			else
 				return CallingConvention.ThisCall;
@@ -38,30 +42,37 @@ namespace Mono.VisualC.Interop.ABI {
 
 			StringBuilder nm = new StringBuilder ("?", 30);
 
+			if (methodType == MethodType.NativeCtor)
+				nm.Append ("?0");
+			else if (methodType == MethodType.NativeDtor)
+				nm.Append ("?1");
+			else
+				nm.Append (methodName).Append ('@');
+
 			// FIXME: This has to include not only the name of the immediate containing class,
 			//  but also all names of containing classes and namespaces up the hierarchy.
-			nm.Append (methodName).Append ('@').Append (class_name).Append ("@@");
+			nm.Append (class_name).Append ("@@");
 
 			// function modifiers are a matrix of consecutive uppercase letters
 			// depending on access type and virtual (far)/static (far)/far modifiers
 
 			// first, access type
 			char funcModifier = 'Q'; // (public)
-			if (Modifiers.IsProtected (methodInfo))
+			if (IsProtected (methodInfo))
 				funcModifier = 'I';
-			else if (Modifiers.IsPrivate (methodInfo))
+			else if (IsPrivate (methodInfo)) // (probably don't need this)
 				funcModifier = 'A';
 
 			// now, offset based on other modifiers
-			if (Modifiers.IsStatic (methodInfo))
-				funcModifier += 2;
-			else if (Modifiers.IsVirtual (methodInfo)) // (do we need this?)
-				funcModifier += 4;
+			if (IsStatic (methodInfo))
+				funcModifier += (char)2;
+			else if (IsVirtual (methodInfo) || IsVirtualDtor (methodInfo))
+				funcModifier += (char)4;
 
 			nm.Append (funcModifier);
 
 			// FIXME: deal with storage classes for "this" i.e. the "const" in -> int foo () const;
-			if (!Modifiers.IsStatic (methodInfo))
+			if (!IsStatic (methodInfo))
 				nm.Append ('A');
 
 			switch (GetCallingConvention (methodInfo)) {
@@ -80,9 +91,100 @@ namespace Mono.VisualC.Interop.ABI {
 			}
 
 			// FIXME: handle const, volatile modifiers on return type
-			nm.Append ("?A");
+			// FIXME: the manual says this is only omitted for simple types.. are we doing the right thing here?
+			CppType returnType = GetMangleType (methodInfo.ReturnTypeCustomAttributes, methodInfo.ReturnType);
+			if (returnType.ElementType == CppTypes.Class ||
+			    returnType.ElementType == CppTypes.Struct ||
+			    returnType.ElementType == CppTypes.Union)
+				nm.Append ("?A");
 
-                }
+			if (methodType == MethodType.NativeCtor || methodType == MethodType.NativeDtor)
+				nm.Append ('@');
+			else
+				nm.Append (GetTypeCode (returnType));
+
+			int argStart = (IsStatic (methodInfo)? 0 : 1);
+			if (parameters.Length == argStart) { // no args (other than C++ "this" object)
+				nm.Append ("XZ");
+				return nm.ToString ();
+			} else
+				for (int i = argStart; i < parameters.Length; i++)
+					nm.Append (GetTypeCode (GetMangleType (parameters [i], parameters [i].ParameterType)));
+
+			nm.Append ("@Z");
+			return nm.ToString ();
+		}
+
+		public virtual string GetTypeCode (CppType mangleType)
+		{
+			CppTypes element = mangleType.ElementType;
+			IEnumerable<CppModifiers> modifiers = mangleType.Modifiers;
+
+			StringBuilder code = new StringBuilder ();
+
+			var ptr = For.AnyInputIn (CppModifiers.Pointer);
+			var ptrRefOrArray = For.AnyInputIn (CppModifiers.Pointer, CppModifiers.Reference, CppModifiers.Array);
+
+			var modifierCode = modifiers.Reverse ().Transform (
+
+				Choose.TopOne (
+					For.AllInputsIn (CppModifiers.Const, CppModifiers.Volatile).InAnyOrder ().After (ptrRefOrArray).Emit ('D'),
+			                For.AnyInputIn (CppModifiers.Const).After (ptrRefOrArray).Emit ('B'),
+					For.AnyInputIn (CppModifiers.Volatile).After (ptrRefOrArray).Emit ('C'),
+			                For.AnyInput<CppModifiers> ().After (ptrRefOrArray).Emit ('A')
+			        ),
+
+				For.AnyInputIn (CppModifiers.Array).Emit ('Q'),
+				For.AnyInputIn (CppModifiers.Reference).Emit ('A'),
+
+				Choose.TopOne (
+			                ptr.After ().AllInputsIn (CppModifiers.Const, CppModifiers.Volatile).InAnyOrder ().Emit ('S'),
+					ptr.After ().AnyInputIn (CppModifiers.Const).Emit ('Q'),
+			                ptr.After ().AnyInputIn (CppModifiers.Volatile).Emit ('R'),
+			                ptr.Emit ('P')
+                                ),
+
+			        ptrRefOrArray.AtEnd ().Emit ('A')
+			);
+			code.Append (modifierCode.ToArray ());
+
+			switch (element) {
+			case CppTypes.Void:
+				code.Append ('X');
+				break;
+			case CppTypes.Int:
+				code.Append (modifiers.Transform (
+					For.AllInputsIn (CppModifiers.Unsigned, CppModifiers.Short).InAnyOrder ().Emit ('G')
+				).DefaultIfEmpty ('H').ToArray ());
+				break;
+			case CppTypes.Char:
+				code.Append ('D');
+				break;
+			case CppTypes.Class:
+				code.Append ('V');
+                                code.Append(mangleType.ElementTypeName);
+				code.Append ("@@");
+				break;
+			case CppTypes.Struct:
+				code.Append ('U');
+                                code.Append(mangleType.ElementTypeName);
+				code.Append ("@@");
+				break;
+			case CppTypes.Union:
+				code.Append ('T');
+                                code.Append(mangleType.ElementTypeName);
+				code.Append ("@@");
+				break;
+			case CppTypes.Enum:
+				code.Append ("W4");
+                                code.Append(mangleType.ElementTypeName);
+				code.Append ("@@");
+				break;
+
+			}
+
+                        return code.ToString ();
+		}
 
         }
 }

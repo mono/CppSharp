@@ -4,7 +4,8 @@ using Mono.VisualC.Interop;
 using Mono.VisualC.Interop.ABI;
 
 namespace Qt {
-        internal static class Libs {
+	// Will be internal; public for testing
+        public static class Libs {
                 public static CppLibrary QtCore = null;
                 public static CppLibrary QtGui = null;
 

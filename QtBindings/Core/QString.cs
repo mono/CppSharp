@@ -1,7 +1,9 @@
 using System;
 using System.Text;
 using System.Runtime.InteropServices;
+
 using Mono.VisualC.Interop;
+using Mono.VisualC.Interop.ABI;
 
 namespace Qt.Core {
         //TODO: Will this leak?

@@ -13,61 +13,22 @@ namespace Mono.VisualC.Interop {
                         return delType.GetMethod ("Invoke");
                 }
 
-                public static Type GetDelegateTypeForMethodInfo (ModuleBuilder mod, MethodInfo targetMethod, CallingConvention? callingConvention)
-                {
-                        // TODO: Actually return the same delegate type instead of creating a new one if
-                        //  a suitable type already exists??
-                        string delTypeName = mod.Name + "_" + targetMethod.Name + "_VTdel";
-                        while (mod.GetType (delTypeName) != null)
-                                delTypeName += "_";
-
-                        TypeAttributes typeAttr = TypeAttributes.Class | TypeAttributes.Sealed | TypeAttributes.AnsiClass | TypeAttributes.AutoClass;
-                        TypeBuilder del = mod.DefineType (delTypeName, typeAttr, typeof(MulticastDelegate));
-
-			if (callingConvention.HasValue) {
-				ConstructorInfo ufpa = typeof (UnmanagedFunctionPointerAttribute).GetConstructor (new Type [] { typeof (CallingConvention) });
-				CustomAttributeBuilder unmanagedPointer = new CustomAttributeBuilder (ufpa, new object [] { callingConvention.Value });
-				del.SetCustomAttribute (unmanagedPointer);
-			}
-
-                        MethodAttributes ctorAttr = MethodAttributes.RTSpecialName | MethodAttributes.HideBySig | MethodAttributes.Public;
-                        ConstructorBuilder ctor = del.DefineConstructor (ctorAttr, CallingConventions.Standard, new Type[] { typeof(object), typeof(System.IntPtr) });
-                        ctor.SetImplementationFlags (MethodImplAttributes.Runtime | MethodImplAttributes.Managed);
-
-                        Type[] parameterTypes = GetMethodParameterTypes (targetMethod, true);
-                        MethodAttributes methodAttr = MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.NewSlot | MethodAttributes.Virtual;
-
-                        MethodBuilder invokeMethod = del.DefineMethod ("Invoke", methodAttr, targetMethod.ReturnType, parameterTypes);
-                        invokeMethod.SetImplementationFlags (MethodImplAttributes.Runtime | MethodImplAttributes.Managed);
-
-                        return del.CreateType ();
-                }
-
                 public static Type[] GetDelegateParameterTypes (Type delType)
                 {
                         MethodInfo invoke = GetMethodInfoForDelegate (delType);
                         if (invoke == null)
                                 return null;
 
-                        return GetMethodParameterTypes (invoke, false);
+                        return GetMethodParameterTypes (invoke);
                 }
 
-                public static Type[] GetMethodParameterTypes (MethodInfo method, bool forPInvoke)
+                public static Type[] GetMethodParameterTypes (MethodInfo method)
                 {
                         ParameterInfo[] parameters = method.GetParameters ();
                         Type[] parameterTypes = new Type [parameters.Length];
 
-                        for (int i = 0; i < parameters.Length; i++) {
-                                if (forPInvoke) {
-                                        if (parameters [i].ParameterType.Equals (typeof (CppInstancePtr)))
-                                                parameterTypes [i] = typeof (IntPtr);
-                                        else if (parameters [i].ParameterType.IsPointer)
-                                                parameterTypes [i] = parameters [i].ParameterType.GetElementType ().MakeByRefType ();
-                                        else
-                                                parameterTypes [i] = parameters [i].ParameterType;
-                                } else
+                        for (int i = 0; i < parameters.Length; i++)
                                         parameterTypes [i] = parameters [i].ParameterType;
-                        }
 
                         return parameterTypes;
                 }
@@ -94,8 +55,10 @@ namespace Mono.VisualC.Interop {
                         MarshalAsAttribute existingMarshalAs = param.GetCustomAttributes (typeof (MarshalAsAttribute),
                                                                                           false).FirstOrDefault () as MarshalAsAttribute;
 
-                        if (forPInvoke && typeof (ICppObject).IsAssignableFrom (param.ParameterType) &&
-                            !param.ParameterType.Equals (typeof (CppInstancePtr)) && existingMarshalAs == null)
+                       /* if (forPInvoke &&
+			    typeof (ICppObject).IsAssignableFrom (param.ParameterType) &&
+                            !param.ParameterType.Equals (typeof (CppInstancePtr)) &&
+			    existingMarshalAs == null)
                         {
                                ConstructorInfo ctor = typeof (MarshalAsAttribute).GetConstructor (new Type[] { typeof (UnmanagedType) });
                                object[] args = new object [] { UnmanagedType.CustomMarshaler };
@@ -105,7 +68,7 @@ namespace Mono.VisualC.Interop {
                                marshalAsAttr = new CustomAttributeBuilder (ctor, args, fields, values);
                                attr = attr | ParameterAttributes.HasFieldMarshal;
 
-                        } else if (forPInvoke && existingMarshalAs != null) {
+                        } else */ if (forPInvoke && existingMarshalAs != null) {
                                 // TODO: This still doesn't feel like it's working right..
                                ConstructorInfo ctor = typeof (MarshalAsAttribute).GetConstructor (new Type[] { typeof (UnmanagedType) });
                                object[] args = new object [] { existingMarshalAs.Value };

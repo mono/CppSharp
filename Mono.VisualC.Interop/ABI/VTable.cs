@@ -15,21 +15,22 @@ using System.Reflection.Emit;
 using System.Runtime.InteropServices;
 
 namespace Mono.VisualC.Interop.ABI {
-        public delegate VTable MakeVTableDelegate (Delegate[] overrides);
+        public delegate VTable MakeVTableDelegate (IList<Type> delegateTypes, Delegate [] overrides);
 
         // TODO: RTTI .. support virtual inheritance
         public abstract class VTable : IDisposable {
 
-                // The COM-interop-based implemenation is the default because it offers better
-                //  performance (I think?) than the fully-managed implementation.
                 public static MakeVTableDelegate DefaultImplementation = VTableManaged.Implementation;
 
                 protected IntPtr basePtr, vtPtr;
 
-                // This is a bit of a misnomer since the Length of the array will be equal
-                //  to the number of entries in the vtable; entries that aren't overridden
-                //  will be NULL.
-                protected Delegate[] overrides;
+		// FIXME: Either make this a lazy list that only generates the delegate type if
+		//  it is needed, and/or cache generated delegate types (see FIXME in CppAbi::DefineVTableDelegate)
+		protected IList<Type> delegate_types;
+
+                // The Length of the array will be equal to the number of entries in the vtable;
+		// entries that aren't overridden will be NULL.
+                protected Delegate [] overrides;
 
                 public virtual int EntryCount {
                         get { return overrides.Length; }
@@ -38,12 +39,13 @@ namespace Mono.VisualC.Interop.ABI {
                         get { return Marshal.SizeOf (typeof (IntPtr)); }
                 }
 
-                public abstract MethodInfo PrepareVirtualCall (MethodInfo target, CallingConvention callingConvention, ILGenerator callsite,
+                public abstract MethodInfo PrepareVirtualCall (MethodInfo target, CallingConvention? callingConvention, ILGenerator callsite,
 		                                               LocalBuilder nativePtr, FieldInfo vtableField, int vtableIndex);
 
                 // Subclasses must allocate vtPtr!
-                public VTable (Delegate[] overrides)
+                public VTable (IList<Type> delegateTypes, Delegate [] overrides)
                 {
+			this.delegate_types = delegateTypes;
                         this.overrides = overrides;
                         this.basePtr = IntPtr.Zero;
                         this.vtPtr = IntPtr.Zero;

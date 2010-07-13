@@ -18,18 +18,12 @@ using System.Runtime.InteropServices;
 namespace Mono.VisualC.Interop.ABI {
         public class VTableCOM : VTable {
 
-                public static MakeVTableDelegate Implementation = (entries) => { return new VTableCOM (entries); };
-                private VTableCOM (Delegate[] entries) : base(entries)
+                public static MakeVTableDelegate Implementation = (types, overrides) => { return new VTableCOM (types, overrides); };
+                private VTableCOM (IList<Type> types, Delegate [] overrides) : base(types, overrides)
                 {
-                        int managedOverrides = (from entry in entries
-                                                where entry != null
-                                                select entry).Count();
-
-                        vtPtr = Marshal.AllocHGlobal ((EntryCount + managedOverrides) * EntrySize);
-                        WriteOverrides (0);
                 }
 
-                public override MethodInfo PrepareVirtualCall (MethodInfo target, CallingConvention callingConvention, ILGenerator callsite,
+                public override MethodInfo PrepareVirtualCall (MethodInfo target, CallingConvention? callingConvention, ILGenerator callsite,
 		                                               LocalBuilder nativePtr, FieldInfo vtableField, int vtableIndex)
                {
                         throw new System.NotImplementedException ();

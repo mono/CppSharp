@@ -32,8 +32,6 @@ namespace Mono.VisualC.Interop {
 
                         if (!implCache.TryGetValue (typeof (Iface), out cachedImpl))
                         {
-                                // Since we're only using the VTable to allow C++ code to call managed methods,
-                                //  there is no advantage to using VTableCOM. Also, VTableCOM is based on this.
                                 VirtualOnlyAbi virtualABI = new VirtualOnlyAbi (VTableManaged.Implementation, VTable.BindToSignature);
                                 impl = virtualABI.ImplementClass<Iface> (typeof (TWrapper), string.Empty, string.Empty);
                                 implCache.Add (typeof (Iface), impl);

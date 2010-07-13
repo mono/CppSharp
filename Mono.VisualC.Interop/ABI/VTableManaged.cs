@@ -16,26 +16,19 @@ using System.Runtime.InteropServices;
 
 namespace Mono.VisualC.Interop.ABI {
 	public class VTableManaged : VTable {
-                private ModuleBuilder implModule;
 
-                public static MakeVTableDelegate Implementation = (entries) => { return new VTableManaged (entries); };
-		private VTableManaged (Delegate[] entries) : base(entries)
+                public static MakeVTableDelegate Implementation = (types, overrides) => { return new VTableManaged (types, overrides); };
+		private VTableManaged (IList<Type> types, Delegate [] overrides) : base(types, overrides)
                 {
-                        this.implModule = CppLibrary.interopModule;
                         this.vtPtr = Marshal.AllocHGlobal (EntryCount * EntrySize);
 
                         WriteOverrides (0);
 		}
 
-                public override MethodInfo PrepareVirtualCall (MethodInfo target, CallingConvention callingConvention, ILGenerator callsite,
+                public override MethodInfo PrepareVirtualCall (MethodInfo target, CallingConvention? callingConvention, ILGenerator callsite,
 		                                               LocalBuilder nativePtr, FieldInfo vtableField, int vtableIndex)
                 {
-                        Type delegateType;
-                        if (overrides [vtableIndex] != null)
-                                delegateType = overrides [vtableIndex].GetType ();
-                        else
-                                delegateType = Util.GetDelegateTypeForMethodInfo (implModule, target, callingConvention);
-
+                        Type delegateType = delegate_types [vtableIndex];
                         MethodInfo getDelegate = typeof (VTableManaged).GetMethod ("GetDelegateForNative").MakeGenericMethod (delegateType);
 
                         // load this._vtable

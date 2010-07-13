@@ -121,7 +121,7 @@ namespace Mono.VisualC.Interop {
 		{
 		}
 
-		public CppType (params object[] cppTypeSpec)
+		public CppType (params object[] cppTypeSpec) : this ()
 		{
 			ElementType = CppTypes.Unknown;
 			ElementTypeName = null;

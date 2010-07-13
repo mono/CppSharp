@@ -8,6 +8,7 @@ namespace Qt.Gui {
         public class QWidget : QObject {
                 #region Sync with qwidget.h
                 // C++ interface
+		[VirtualDestructor]
                 public interface IQWidget : ICppClassOverridable<QWidget>, Base<QObject.IQObject>, Base<QPaintDevice.IQPaintDevice> {
                         // ...
                         void QWidget (CppInstancePtr @this, QWidget parent, /*Qt::WindowFlags */ int f);
@@ -56,6 +57,7 @@ namespace Qt.Gui {
                         [Virtual] bool focusNextPrevChild (CppInstancePtr @this, bool next);
 
                         // TODO: Determine correct number of vtable slots here too...
+			/*
                         [Virtual] void foo1 (CppInstancePtr @this);
                         [Virtual] void foo2 (CppInstancePtr @this);
                         [Virtual] void foo3 (CppInstancePtr @this);
@@ -64,6 +66,7 @@ namespace Qt.Gui {
                         [Virtual] void foo6 (CppInstancePtr @this);
                         [Virtual] void foo7 (CppInstancePtr @this);
                         [Virtual] void foo8 (CppInstancePtr @this);
+                        */
                 }
                 // C++ fields
                 private struct _QWidget {

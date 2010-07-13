@@ -1,5 +1,6 @@
 using System;
 using Mono.VisualC.Interop;
+using Mono.VisualC.Interop.ABI;
 
 namespace Qt.Gui {
         public class QPaintDevice : ICppObject {

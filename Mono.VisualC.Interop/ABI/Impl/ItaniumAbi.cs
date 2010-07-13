@@ -21,7 +21,7 @@ namespace Mono.VisualC.Interop.ABI {
                 {
                 }
 
-		public override CallingConvention GetCallingConvention (MethodInfo methodInfo)
+		public override CallingConvention? GetCallingConvention (MethodInfo methodInfo)
 		{
 			return CallingConvention.Cdecl;
 		}
@@ -50,13 +50,13 @@ namespace Mono.VisualC.Interop.ABI {
 			}
 
 			nm.Append ('E');
-                        int argStart = (Modifiers.IsStatic (methodInfo)? 0 : 1);
+                        int argStart = (IsStatic (methodInfo)? 0 : 1);
 
 			if (parameters.Length == argStart) // no args (other than C++ "this" object)
 				nm.Append ('v');
 			else
 				for (int i = argStart; i < parameters.Length; i++)
-					nm.Append (GetTypeCode (Modifiers.GetMangleType (parameters[i])));
+					nm.Append (GetTypeCode (GetMangleType (parameters [i], parameters [i].ParameterType)));
 
 			return nm.ToString ();
 		}

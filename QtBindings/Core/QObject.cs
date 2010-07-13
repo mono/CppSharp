@@ -6,6 +6,7 @@ namespace Qt.Core {
         public class QObject : ICppObject {
                 #region Sync with qobject.h
                 // C++ interface
+		[VirtualDestructor]
                 public interface IQObject : ICppClassOverridable<QObject> {
                         // ...
                         [Virtual] /*QMetaObject */ IntPtr metaObject(CppInstancePtr @this);

@@ -8,6 +8,7 @@ namespace Qt.Gui {
         public class QApplication : QCoreApplication {
                 #region Sync with qapplication.h
                 // C++ interface
+		[VirtualDestructor]
                 public interface IQApplication : ICppClassOverridable<QApplication>, Base<QCoreApplication.IQCoreApplication> {
                         // ...
                         void QApplication (CppInstancePtr @this, [MangleAs ("int&")] IntPtr argc,
@@ -22,12 +23,14 @@ namespace Qt.Gui {
 
                         // TODO: HACK! Yeah... I'm not calculating the right number of vtable slots somewhere...
                         //   ... add dummy methods until I figure it out...
+			/*
                         [Virtual] void foo1 (CppInstancePtr @this);
                         [Virtual] void foo2 (CppInstancePtr @this);
                         [Virtual] void foo3 (CppInstancePtr @this);
                         [Virtual] void foo4 (CppInstancePtr @this);
                         [Virtual] void foo5 (CppInstancePtr @this);
                         [Virtual] void foo6 (CppInstancePtr @this);
+                        */
                 }
                 // C++ fields
                 private struct _QApplication {

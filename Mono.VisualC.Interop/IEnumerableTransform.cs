@@ -108,6 +108,7 @@ namespace Mono.VisualC.Interop {
 				return RuleResult.MatchEmit;
 
 			satisfied = previousRule.SatisfiedBy (input) != RuleResult.NoMatch;
+
 			return RuleResult.NoMatch;
 		}
 	}
@@ -268,7 +269,6 @@ namespace Mono.VisualC.Interop {
 		}
 		public RuleResult SatisfiedBy (InputData<TIn> input)
 		{
-			bool satisfied = false;
 			foreach (var rule in rules) {
 				RuleResult result = rule.SatisfiedBy (input.NewContext ());
 				if (result != RuleResult.NoMatch) {
@@ -277,6 +277,22 @@ namespace Mono.VisualC.Interop {
 				}
 			}
 
+			return RuleResult.NoMatch;
+		}
+	}
+
+	public class AtEndRule<TIn> : IRule<TIn> {
+		protected IRule<TIn> rule;
+
+		public AtEndRule (IRule<TIn> rule)
+		{
+			this.rule = rule;
+		}
+		public RuleResult SatisfiedBy (InputData<TIn> input)
+		{
+			RuleResult rr = rule.SatisfiedBy (input);
+			if (!input.Enumerator.MoveNext ())
+				return rr;
 			return RuleResult.NoMatch;
 		}
 	}
@@ -451,6 +467,15 @@ namespace Mono.VisualC.Interop {
 
 	public static class EnumerableSequenceExtensions {
 
+		// helper
+
+		public static IEnumerable<T> With<T> (this IEnumerable<T> current, T additionalValue)
+		{
+			foreach (var output in current)
+				yield return output;
+			yield return additionalValue;
+		}
+
 		// Transforms an IEnumerable into another by specific rules.
 
 		public static IEnumerable<TOut> Transform<TIn, TOut> (this IEnumerable<TIn> input, params EmitterFunc<TIn, TOut> [] rules)
@@ -501,6 +526,11 @@ namespace Mono.VisualC.Interop {
 			return new RuleCompound<TIn> ((subsequentRules) => {
 				return After<TIn> (previousRules, subsequentRules);
 			});
+		}
+
+		public static IRule<TIn> AtEnd<TIn> (this IRule<TIn> previousRules)
+		{
+			return new AtEndRule<TIn> (previousRules);
 		}
 
 		public static EmitterFunc<TIn, TOut> Emit<TIn, TOut> (this IRule<TIn> rule, Func<TIn, TOut> result)

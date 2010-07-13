@@ -46,5 +46,9 @@
       <Project>{66212CA6-B8C2-4307-ADDE-DAFEAAB339B9}</Project>
       <Name>QtBindings</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Mono.VisualC.Interop\Mono.VisualC.Interop.csproj">
+      <Project>{4A864586-93C5-4DC1-8A80-F094A88506D7}</Project>
+      <Name>Mono.VisualC.Interop</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

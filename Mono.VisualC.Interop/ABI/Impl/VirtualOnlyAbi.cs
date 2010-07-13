@@ -11,9 +11,8 @@ using System;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.InteropServices;
-using Mono.VisualC.Interop.ABI;
 
-namespace Mono.VisualC.Interop {
+namespace Mono.VisualC.Interop.ABI {
 
         public class VirtualOnlyAbi : CppAbi {
 
@@ -37,10 +36,10 @@ namespace Mono.VisualC.Interop {
                         throw new NotSupportedException ("Name mangling is not supported by this class. All C++ interface methods must be declared virtual.");
                 }
 
-                public override CallingConvention DefaultCallingConvention {
-                        get {
-                                throw new NotSupportedException ("This class does not support this property.");
-                        }
+                public override CallingConvention? GetCallingConvention (MethodInfo methodInfo)
+		{
+			// Use platform default
+                        return null;
                 }
         }
 }

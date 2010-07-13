@@ -6,6 +6,7 @@ namespace Qt.Core {
         public class QCoreApplication : QObject {
                 #region Sync with qcoreapplication.h
                 // C++ interface
+		[VirtualDestructor]
                 public interface IQCoreApplication : ICppClassOverridable<QCoreApplication>, Base<QObject.IQObject> {
                         // ...
                         void QCoreApplication (CppInstancePtr @this, [MangleAs ("int&")] IntPtr argc,

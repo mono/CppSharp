@@ -5,6 +5,7 @@ namespace Qt.Gui {
         public class QAbstractButton : QWidget {
                  #region Sync with qabstractbutton.h
                 // C++ interface
+		[VirtualDestructor]
                 public interface IQAbstractButton : ICppClassOverridable<QAbstractButton>, Base<QWidget.IQWidget> {
                         // ...
                         void QAbstractButton (CppInstancePtr @this, QWidget parent);

@@ -28,11 +28,11 @@ namespace Mono.VisualC.Interop {
 
 		static CppLibrary ()
                 {
-			AssemblyName assemblyName = new AssemblyName ("__CPPLibraryImplAssembly");
-                        string moduleName = "__CPPLibraryImplModule";
+			AssemblyName assemblyName = new AssemblyName ("__CppLibraryImplAssembly");
+                        string moduleName = "CppLibraryImplAssembly.dll";
 
-			interopAssembly = AppDomain.CurrentDomain.DefineDynamicAssembly (assemblyName, AssemblyBuilderAccess.Run);
-                        interopModule = interopAssembly.DefineDynamicModule (moduleName);
+			interopAssembly = AppDomain.CurrentDomain.DefineDynamicAssembly (assemblyName, AssemblyBuilderAccess.RunAndSave);
+                        interopModule = interopAssembly.DefineDynamicModule (moduleName, moduleName, true);
 		}
 
 		public CppLibrary (string name, CppAbi abi)
@@ -53,6 +53,12 @@ namespace Mono.VisualC.Interop {
 
 		public CppAbi Abi {
 			get { return abi; }
+		}
+
+		// Mainly for debugging at this point
+		public static void SaveInteropAssembly ()
+		{
+			interopAssembly.Save ("CppLibraryImplAssembly.dll");
 		}
 
                 // For working with a class that you are not instantiating

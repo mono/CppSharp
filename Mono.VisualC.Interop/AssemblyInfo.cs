@@ -31,4 +31,4 @@ using System.Runtime.CompilerServices;
 
 [assembly: CLSCompliant(true)]
 // TODO: This will not work if we ever support saving these assemblies
-[assembly: InternalsVisibleTo("__CPPLibraryImplAssembly")]
+[assembly: InternalsVisibleTo("__CppLibraryImplAssembly")]

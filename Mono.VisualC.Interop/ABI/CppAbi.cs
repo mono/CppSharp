@@ -17,9 +17,11 @@ using System.Runtime.InteropServices;
 
 namespace Mono.VisualC.Interop.ABI {
 
-        //TODO: Exception handling, operator overloading etc.
-        //TODO: Allow interface to override default calling convention
-        public abstract class CppAbi {
+        //FIXME: Exception handling, operator overloading etc.
+        //FIXME: Allow interface to override default calling convention
+	//FIXME: Better interface validation- for example, throw exception
+	//  when [VirtualDestructor] is applied to base interface but not derived
+        public abstract partial class CppAbi {
 
                 protected ModuleBuilder impl_module;
                 protected TypeBuilder impl_type;
@@ -31,112 +33,9 @@ namespace Mono.VisualC.Interop.ABI {
                 protected FieldBuilder vtable_field, native_size_field;
                 protected ILGenerator ctor_il;
 
-                // default settings that subclasses can override:
+                // Default settings that subclasses can override:
                 protected MakeVTableDelegate make_vtable_method = VTable.DefaultImplementation;
                 protected MemberFilter vtable_override_filter = VTable.BindToSignatureAndAttribute;
-
-
-                private struct EmptyNativeLayout { }
-                public Iface ImplementClass<Iface> (Type wrapperType, string lib, string className)
-                {
-                        return this.ImplementClass<Iface,EmptyNativeLayout> (wrapperType, lib, className);
-                }
-
-                public virtual Iface ImplementClass<Iface, NLayout> (Type wrapperType, string lib, string className)
-                        where NLayout : struct
-                      //where Iface : ICppClassInstantiatable or ICppClassOverridable
-                {
-                        this.impl_module = CppLibrary.interopModule;
-                        this.library = lib;
-                        this.class_name = className;
-                        this.interface_type = typeof (Iface);
-                        this.layout_type = typeof (NLayout);
-                        this.wrapper_type = wrapperType;
-
-                        DefineImplType ();
-
-                        var properties = ( // get all properties defined on the interface
-                                          from property in interface_type.GetProperties ()
-                                          select property
-                                         ).Union ( // ... as well as those defined on inherited interfaces
-                                          from iface in interface_type.GetInterfaces ()
-                                          from property in iface.GetProperties ()
-                                          select property
-                                         );
-
-                        var methods = ( // get all methods defined on inherited interfaces first
-                                       from iface in interface_type.GetInterfaces ()
-                                       from method in iface.GetMethods ()
-                                       select method
-                                      ).Union ( // ... as well as those defined on this interface
-                                       from method in interface_type.GetMethods ()
-                                       orderby method.MetadataToken
-                                       select method
-                                      );
-
-                        // TODO: If a method in a base class interface is defined again in a child class
-                        //  interface with exactly the same signature, it will prolly share a vtable slot?????
-
-                        // first, pull in all virtual methods from base classes
-                        var baseVirtualMethods = GetBaseVirtualMethods (interface_type);
-                        var virtualMethods = baseVirtualMethods.Concat ( // now create managed overrides for virtuals in this class
-                                                 from method in methods
-                                                 where Modifiers.IsVirtual (method)
-                                                 orderby method.MetadataToken
-                                                 select GetManagedOverrideTrampoline (method, vtable_override_filter)
-                                                );
-
-                        // ONLY make vtable if there are virtual methods
-                        if (virtualMethods.Any ())
-                                vtable = make_vtable_method (virtualMethods.ToArray ());
-                        else
-                                vtable = null;
-
-                        int vtableIndex = baseVirtualMethods.Count ();
-
-                        // Implement all methods
-                        foreach (var method in methods) {
-                                // Skip over special methods like property accessors -- properties will be handled later
-                                if (method.IsSpecialName)
-                                        continue;
-
-                                DefineMethod (method, vtableIndex);
-
-                                if (Modifiers.IsVirtual (method))
-                                        vtableIndex++;
-                        }
-
-                        // Implement all properties
-                        foreach (var property in properties)
-                                DefineProperty (property);
-
-                        ctor_il.Emit (OpCodes.Ret);
-                        return (Iface)Activator.CreateInstance (impl_type.CreateType (), vtable, NativeSize);
-                }
-
-                protected virtual IEnumerable<Delegate> GetBaseVirtualMethods (Type searchStart)
-                {
-                        var bases = from baseIface in searchStart.GetInterfaces ()
-                                     where baseIface.Name.Equals ("Base`1")
-                                     from iface in baseIface.GetGenericArguments ()
-                                     select iface;
-
-                        List<Delegate> virtualMethods = new List<Delegate> ();
-
-                        foreach (var iface in bases)
-                        {
-                                virtualMethods.AddRange (GetBaseVirtualMethods (iface));
-
-                                var methods = from method in iface.GetMethods ()
-                                                 where Modifiers.IsVirtual (method)
-                                                 orderby method.MetadataToken
-                                                 select GetManagedOverrideTrampoline (method, vtable_override_filter);
-
-                                virtualMethods.AddRange (methods);
-                        }
-
-                        return virtualMethods;
-                }
 
                 // These methods might be more commonly overridden for a given C++ ABI:
 
@@ -159,7 +58,7 @@ namespace Mono.VisualC.Interop.ABI {
                 protected virtual int NativeSize {
                         get {
                                 // By default: native size = C++ class size + field offset padding (usually just vtable pointer)
-                                // TODO: Only include vtable ptr if there are virtual functions? Here I guess it doesn't really matter,
+                                // FIXME: Only include vtable ptr if there are virtual functions? Here I guess it doesn't really matter,
                                 // we're just allocing extra memory.
                                 return Marshal.SizeOf (layout_type) + FieldOffsetPadding;
                         }
@@ -168,7 +67,138 @@ namespace Mono.VisualC.Interop.ABI {
                 // The members below must be implemented for a given C++ ABI:
 
                 public abstract string GetMangledMethodName (MethodInfo methodInfo);
-                public abstract CallingConvention GetCallingConvention (MethodInfo methodInfo);
+                public abstract CallingConvention? GetCallingConvention (MethodInfo methodInfo);
+
+		private struct EmptyNativeLayout { }
+
+		// The ImplementClass overrides are the main entry point to the Abi API:
+
+                public Iface ImplementClass<Iface> (Type wrapperType, string lib, string className)
+                {
+                        return this.ImplementClass<Iface,EmptyNativeLayout> (wrapperType, lib, className);
+                }
+
+                public virtual Iface ImplementClass<Iface, NLayout> (Type wrapperType, string lib, string className)
+                        where NLayout : struct
+                      //where Iface : ICppClassInstantiatable or ICppClassOverridable
+                {
+                        this.impl_module = CppLibrary.interopModule;
+                        this.library = lib;
+                        this.class_name = className;
+                        this.interface_type = typeof (Iface);
+                        this.layout_type = typeof (NLayout);
+                        this.wrapper_type = wrapperType;
+
+                        DefineImplType ();
+
+                        var properties = GetProperties ();
+                        var methods = GetMethods (interface_type);
+			var bases = GetBasesRecursive (interface_type);
+
+			IEnumerable<MethodInfo> baseVirtualMethods = Enumerable.Empty<MethodInfo> ();
+
+			if (bases.Any ()) // FIXME: We're assuming that first declared base is non-virtual primary base (and thus shares primary vtable)
+				baseVirtualMethods = from method in GetVirtualMethods (bases.First ())
+			                             select method;
+
+			var vtableSlots = from method in baseVirtualMethods.Concat (GetVirtualMethods (interface_type))
+			                  let delegateType = DefineVTableDelegate (method)
+			                  select new { DelegateType = delegateType,
+			                               Override = GetManagedOverrideTrampoline (method, delegateType, vtable_override_filter)
+			                             };
+
+			var virtualDtorSlots = from iface in bases.With (interface_type)
+			                       where iface.IsDefined (typeof (VirtualDestructorAttribute), false)
+			                       from i in new int [] { 0, 1 }
+			                       select new { DelegateType = (Type)null, Override = (Delegate)null };
+
+			vtableSlots = vtableSlots.Concat (virtualDtorSlots);
+
+                        // ONLY make vtable if there are virtual methods
+                        if (vtableSlots.Any ())
+                                vtable = make_vtable_method (vtableSlots.Select (s => s.DelegateType).ToList (),
+			                                     vtableSlots.Select (s => s.Override).ToArray ());
+                        else
+                                vtable = null;
+
+                        int vtableIndex = baseVirtualMethods.Count ();
+
+                        // Implement all methods
+                        foreach (var method in methods) {
+                                DefineMethod (method, vtableIndex);
+
+                                if (IsVirtual (method))
+                                        vtableIndex++;
+                        }
+
+                        // Implement all properties
+                        foreach (var property in properties)
+                                DefineProperty (property);
+
+                        ctor_il.Emit (OpCodes.Ret);
+                        return (Iface)Activator.CreateInstance (impl_type.CreateType (), vtable, NativeSize);
+                }
+
+		protected virtual IEnumerable<PropertyInfo> GetProperties ()
+		{
+			return ( // get all properties defined on the interface
+			        from property in interface_type.GetProperties ()
+			        select property
+			       ).Union ( // ... as well as those defined on inherited interfaces
+			        from iface in interface_type.GetInterfaces ()
+			        from property in iface.GetProperties ()
+			        select property
+			       );
+		}
+
+		protected virtual IEnumerable<MethodInfo> GetMethods (Type interfaceType)
+		{
+			// get all methods defined on inherited interfaces first
+			var methods = (
+				       from iface in interfaceType.GetInterfaces ()
+			               from method in iface.GetMethods ()
+			               where !method.IsSpecialName
+				       select method
+			              ).Concat (
+			               from method in interfaceType.GetMethods ()
+			               where !method.IsSpecialName
+			               orderby method.MetadataToken
+			               select method
+			              );
+
+			return methods;
+		}
+
+		protected virtual IEnumerable<MethodInfo> GetVirtualMethods (Type interfaceType)
+		{
+			var delegates = (
+			                 from method in GetMethods (interfaceType)
+			                 where IsVirtual (method)
+			                 select method
+			                );
+			return delegates;
+		}
+
+                protected virtual IEnumerable<Type> GetBasesRecursive (Type searchStart)
+                {
+                        var immediateBases = (
+			                      from baseIface in searchStart.GetInterfaces ()
+                                              where baseIface.Name.Equals ("Base`1")
+                                              from iface in baseIface.GetGenericArguments ()
+                                              select iface
+			                     );
+
+			if (!immediateBases.Any ())
+				return Enumerable.Empty<Type> ();
+
+			List<Type> allBases = new List<Type> ();
+			foreach (var baseInterface in immediateBases) {
+				allBases.AddRange (GetBasesRecursive (baseInterface));
+				allBases.Add (baseInterface);
+			}
+
+			return allBases;
+                }
 
                 protected virtual void DefineImplType ()
                 {
@@ -198,7 +228,7 @@ namespace Mono.VisualC.Interop.ABI {
                 {
                         // 0. Introspect method
                         MethodType methodType = GetMethodType (interfaceMethod);
-                        Type[] parameterTypes = Util.GetMethodParameterTypes (interfaceMethod, false);
+                        Type[] parameterTypes = Util.GetMethodParameterTypes (interfaceMethod);
 
                         // 1. Generate managed trampoline to call native method
                         MethodBuilder trampoline = GetMethodBuilder (interfaceMethod);
@@ -207,7 +237,7 @@ namespace Mono.VisualC.Interop.ABI {
 
                         if (methodType == MethodType.NoOp) {
                                 // return NULL if method is supposed to return a value
-                                // TODO: this will make value types explode?
+                                // FIXME: this will make value types explode?
                                 if (!interfaceMethod.ReturnType.Equals (typeof (void)))
                                         il.Emit (OpCodes.Ldnull);
                                 il.Emit (OpCodes.Ret);
@@ -223,7 +253,7 @@ namespace Mono.VisualC.Interop.ABI {
                         LocalBuilder nativePtr = null;
 
                         // If we're not a static method, do the following ...
-                        if (!Modifiers.IsStatic (interfaceMethod))
+                        if (!IsStatic (interfaceMethod))
                         {
                                 isStatic = false;
                                 if (parameterTypes.Length < 1)
@@ -237,23 +267,28 @@ namespace Mono.VisualC.Interop.ABI {
                         }
 
                         MethodInfo nativeMethod;
-                        if (Modifiers.IsVirtual (interfaceMethod))
+			bool isVirtual;
+
+                        if (IsVirtual (interfaceMethod)) {
+				isVirtual = true;
                                 nativeMethod = vtable.PrepareVirtualCall (interfaceMethod, GetCallingConvention (interfaceMethod),
 				                                          il, nativePtr, vtable_field, index);
-                        else
+			} else {
+				isVirtual = false;
                                 nativeMethod = GetPInvokeForMethod (interfaceMethod);
+			}
 
                         switch (methodType) {
                         case MethodType.NativeCtor:
-                                EmitConstruct (il, nativeMethod, parameterTypes.Length, nativePtr);
+                                EmitConstruct (il, nativeMethod, parameterTypes, nativePtr);
                                 break;
 
                         case MethodType.NativeDtor:
-                                EmitDestruct (il, nativeMethod, parameterTypes.Length, cppInstancePtr, nativePtr);
+                                EmitDestruct (il, nativeMethod, isVirtual, parameterTypes, cppInstancePtr, nativePtr);
                                 break;
 
                         default: // regular native method
-                                EmitCallNative (il, nativeMethod, isStatic, parameterTypes.Length, nativePtr);
+                                EmitCallNative (il, nativeMethod, isStatic, parameterTypes, nativePtr);
                                 break;
 
                         }
@@ -320,7 +355,7 @@ namespace Mono.VisualC.Interop.ABI {
                  * Implements the managed trampoline that will be invoked from the vtable by native C++ code when overriding
                  *  the specified C++ virtual method with the specified managed one.
                  */
-                protected virtual Delegate GetManagedOverrideTrampoline (MethodInfo interfaceMethod, MemberFilter binder)
+                protected virtual Delegate GetManagedOverrideTrampoline (MethodInfo interfaceMethod, Type delegateType, MemberFilter binder)
                 {
                         if (wrapper_type == null)
                                 return null;
@@ -329,8 +364,7 @@ namespace Mono.VisualC.Interop.ABI {
                         if (targetMethod == null)
                                 return null;
 
-                        Type delegateType = Util.GetDelegateTypeForMethodInfo (impl_module, interfaceMethod, GetCallingConvention (interfaceMethod));
-                        Type[] parameterTypes = Util.GetMethodParameterTypes (interfaceMethod, true);
+                        Type[] parameterTypes = GetParameterTypesForPInvoke (interfaceMethod).ToArray ();
 
                         // TODO: According to http://msdn.microsoft.com/en-us/library/w16z8yc4.aspx
                         // The dynamic method created with this constructor has access to public and internal members of all the types contained in module m.
@@ -385,7 +419,7 @@ namespace Mono.VisualC.Interop.ABI {
                 protected virtual MethodBuilder GetMethodBuilder (MethodInfo interfaceMethod)
                 {
 
-                        Type[] parameterTypes = Util.GetMethodParameterTypes (interfaceMethod, false);
+                        Type[] parameterTypes = Util.GetMethodParameterTypes (interfaceMethod);
                         MethodBuilder methodBuilder = impl_type.DefineMethod (interfaceMethod.Name, MethodAttributes.Public | MethodAttributes.Virtual,
                                                                              interfaceMethod.ReturnType, parameterTypes);
                         Util.ApplyMethodParameterAttributes (interfaceMethod, methodBuilder, false);
@@ -401,16 +435,47 @@ namespace Mono.VisualC.Interop.ABI {
                         if (entryPoint == null)
                                 throw new NotSupportedException ("Could not mangle method name.");
 
-                        Type[] parameterTypes = Util.GetMethodParameterTypes (signature, true);
+                        Type[] parameterTypes = GetParameterTypesForPInvoke (signature).ToArray ();
 
                         MethodBuilder builder = impl_type.DefinePInvokeMethod ("__$" + signature.Name + "_Impl", library, entryPoint,
                                                                               MethodAttributes.Private | MethodAttributes.Static | MethodAttributes.PinvokeImpl,
-                                                                              CallingConventions.Any, signature.ReturnType, parameterTypes,
-                                                                              GetCallingConvention (signature), CharSet.Ansi);
+                                                                              CallingConventions.Standard, signature.ReturnType, parameterTypes,
+                                                                              GetCallingConvention (signature).Value, CharSet.Ansi);
                         builder.SetImplementationFlags (builder.GetMethodImplementationFlags () | MethodImplAttributes.PreserveSig);
                         Util.ApplyMethodParameterAttributes (signature, builder, true);
                         return builder;
                 }
+
+		protected virtual Type DefineVTableDelegate (MethodInfo targetMethod)
+		{
+		        // FIXME: Actually return the same delegate type instead of creating a new one if
+                        //  a suitable type already exists??
+			CallingConvention? callingConvention = GetCallingConvention (targetMethod);
+                        string delTypeName = "_" + targetMethod.DeclaringType.Name + "_" + targetMethod.Name + "_VTdel";
+                        while (CppLibrary.interopModule.GetType (delTypeName) != null)
+                                delTypeName += "_";
+
+                        TypeAttributes typeAttr = TypeAttributes.Class | TypeAttributes.Sealed | TypeAttributes.AnsiClass | TypeAttributes.AutoClass;
+                        TypeBuilder del = CppLibrary.interopModule.DefineType (delTypeName, typeAttr, typeof(MulticastDelegate));
+
+			if (callingConvention.HasValue) {
+				ConstructorInfo ufpa = typeof (UnmanagedFunctionPointerAttribute).GetConstructor (new Type [] { typeof (CallingConvention) });
+				CustomAttributeBuilder unmanagedPointer = new CustomAttributeBuilder (ufpa, new object [] { callingConvention.Value });
+				del.SetCustomAttribute (unmanagedPointer);
+			}
+
+                        MethodAttributes ctorAttr = MethodAttributes.RTSpecialName | MethodAttributes.HideBySig | MethodAttributes.Public;
+                        ConstructorBuilder ctor = del.DefineConstructor (ctorAttr, CallingConventions.Standard, new Type[] { typeof(object), typeof(System.IntPtr) });
+                        ctor.SetImplementationFlags (MethodImplAttributes.Runtime | MethodImplAttributes.Managed);
+
+                        Type[] parameterTypes = GetParameterTypesForPInvoke (targetMethod).ToArray ();
+                        MethodAttributes methodAttr = MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.NewSlot | MethodAttributes.Virtual;
+
+                        MethodBuilder invokeMethod = del.DefineMethod ("Invoke", methodAttr, targetMethod.ReturnType, parameterTypes);
+                        invokeMethod.SetImplementationFlags (MethodImplAttributes.Runtime | MethodImplAttributes.Managed);
+
+                        return del.CreateType ();
+		}
 
                 /**
                  *  Emits IL to allocate the memory for a new instance of the C++ class.
@@ -441,29 +506,37 @@ namespace Mono.VisualC.Interop.ABI {
                                                                                                 new Type[] { typeof (int) }, null));
                 }
 
-                protected virtual void EmitConstruct (ILGenerator il, MethodInfo nativeMethod, int parameterCount,
+                protected virtual void EmitConstruct (ILGenerator il, MethodInfo nativeMethod, Type [] parameterTypes,
                                                       LocalBuilder nativePtr)
                 {
-                        EmitCallNative (il, nativeMethod, false, parameterCount, nativePtr);
+                        EmitCallNative (il, nativeMethod, false, parameterTypes, nativePtr);
                         EmitInitVTable (il, nativePtr);
                 }
 
-                protected virtual void EmitDestruct (ILGenerator il, MethodInfo nativeMethod, int parameterCount,
+                protected virtual void EmitDestruct (ILGenerator il, MethodInfo nativeMethod, bool isVirtual, Type [] parameterTypes,
                                                      LocalBuilder cppInstancePtr, LocalBuilder nativePtr)
                 {
                         // bail if we weren't alloc'd by managed code
                         Label bail = il.DefineLabel ();
+			Label retNormal = il.DefineLabel ();
 
                         il.Emit (OpCodes.Ldloca_S, cppInstancePtr);
-                        il.Emit (OpCodes.Brfalse_S, bail);
+                        il.Emit (OpCodes.Brfalse_S, bail); // <- FIXME? (would this ever branch?)
                         il.Emit (OpCodes.Ldloca_S, cppInstancePtr);
                         il.Emit (OpCodes.Call, typeof (CppInstancePtr).GetProperty ("IsManagedAlloc").GetGetMethod ());
                         il.Emit (OpCodes.Brfalse_S, bail);
 
                         EmitResetVTable (il, nativePtr);
-                        EmitCallNative (il, nativeMethod, false, parameterCount, nativePtr);
+                        EmitCallNative (il, nativeMethod, false, parameterTypes, nativePtr);
+			il.Emit (OpCodes.Br_S, retNormal);
 
+			// before we bail, we have to pop the vtbl delegate from the stack if this
+			//  is a virtual destructor
                         il.MarkLabel (bail);
+			if (isVirtual)
+				il.Emit (OpCodes.Pop);
+
+			il.MarkLabel (retNormal);
                 }
 
                 /**
@@ -471,7 +544,7 @@ namespace Mono.VisualC.Interop.ABI {
                  * GetPInvokeForMethod or the MethodInfo of a vtable method.
                  * To complete method, emit OpCodes.Ret.
                  */
-                protected virtual void EmitCallNative (ILGenerator il, MethodInfo nativeMethod, bool isStatic, int parameterCount,
+                protected virtual void EmitCallNative (ILGenerator il, MethodInfo nativeMethod, bool isStatic, Type [] parameterTypes,
                                                        LocalBuilder nativePtr)
                 {
                         int argLoadStart = 1; // For static methods, just strip off arg0 (.net this pointer)
@@ -480,11 +553,32 @@ namespace Mono.VisualC.Interop.ABI {
                                 argLoadStart = 2; // For instance methods, strip off CppInstancePtr and pass the corresponding IntPtr
                                 il.Emit (OpCodes.Ldloc_S, nativePtr);
                         }
-                        for (int i = argLoadStart; i <= parameterCount; i++)
-                                il.Emit (OpCodes.Ldarg, i);
+                        for (int i = argLoadStart; i <= parameterTypes.Length; i++) {
+				EmitSpecialParameterMarshal (il, parameterTypes [i - 1]);
+				il.Emit (OpCodes.Ldarg, i);
+			}
 
                         il.Emit (OpCodes.Call, nativeMethod);
                 }
+
+		// Note: when this is modified, usually GetParameterTypesForPInvoke types should be updated too
+		protected virtual void EmitSpecialParameterMarshal (ILGenerator il, Type parameterType)
+		{
+			// auto marshal bool to C++ bool type (0 = false , 1 = true )
+			// auto marshal ICppObject
+		}
+
+		protected virtual IEnumerable<Type> GetParameterTypesForPInvoke (MethodInfo method)
+		{
+			var originalTypes = Util.GetMethodParameterTypes (method);
+
+			var pinvokeTypes = originalTypes.Transform (
+				// CppInstancePtr implements ICppObject
+				For.InputsWhere ((Type t) => typeof (ICppObject).IsAssignableFrom (t)).Emit (typeof (IntPtr)),
+			        For.UnmatchedInput<Type> ().Emit (t => t)
+			);
+			return pinvokeTypes;
+		}
 
                 /**
                  * Emits IL to set the vtable pointer of the instance (if class has a vtable).

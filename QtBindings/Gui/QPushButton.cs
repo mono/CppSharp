@@ -6,6 +6,7 @@ namespace Qt.Gui {
         public class QPushButton : QAbstractButton {
                  #region Sync with qpushbutton.h
                 // C++ interface
+		[VirtualDestructor]
                 public interface IQPushButton : ICppClassOverridable<QPushButton>, Base<QAbstractButton.IQAbstractButton> {
                         // ...
                         void QPushButton (CppInstancePtr @this, [MangleAs ("const QString &")] ref QString text, QWidget parent);
@@ -26,7 +27,7 @@ namespace Qt.Gui {
                         impl.QPushButton (native, ref text, parent);
                 }
 
-                public QPushButton (string text) : this (text, null)
+                public QPushButton (string text) : this (text, (QWidget)null)
                 {
                 }
 
