@@ -15,7 +15,7 @@ namespace Qt {
                         CppAbi abi;
                         if (Environment.OSVersion.Platform == PlatformID.Win32NT)
                         { // for Windows...
-                                lib = "{0}4.dll";
+                                lib = "{0}d4.dll";
                                 abi = new MsvcAbi ();
                         } else { // for Mac...
                                 lib = "/Library/Frameworks/{0}.framework/Versions/Current/{0}";

@@ -34,7 +34,7 @@ namespace Qt.Core {
 
                 private static IQString impl = Qt.Libs.QtCore.GetClass<IQString> ("QString");
 
-                public QString (string str)
+                public QString (string str) : this ()
                 {
                         IntPtr strPtr = Marshal.StringToHGlobalUni (str);
                         impl.QString (ref this, strPtr, str.Length);
