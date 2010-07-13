@@ -69,7 +69,7 @@ namespace Mono.VisualC.Interop {
                                attr = attr | ParameterAttributes.HasFieldMarshal;
 
                         } else */ if (forPInvoke && existingMarshalAs != null) {
-                                // TODO: This still doesn't feel like it's working right..
+                                // FIXME: This still doesn't feel like it's working right.. especially for virtual functions
                                ConstructorInfo ctor = typeof (MarshalAsAttribute).GetConstructor (new Type[] { typeof (UnmanagedType) });
                                object[] args = new object [] { existingMarshalAs.Value };
 

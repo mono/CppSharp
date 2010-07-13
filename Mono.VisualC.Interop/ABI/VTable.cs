@@ -15,13 +15,14 @@ using System.Reflection.Emit;
 using System.Runtime.InteropServices;
 
 namespace Mono.VisualC.Interop.ABI {
-        public delegate VTable MakeVTableDelegate (IList<Type> delegateTypes, Delegate [] overrides);
+        public delegate VTable MakeVTableDelegate (IList<Type> delegateTypes, IList<Delegate> overrides, int paddingTop, int paddingBottom);
 
         // TODO: RTTI .. support virtual inheritance
         public abstract class VTable : IDisposable {
 
                 public static MakeVTableDelegate DefaultImplementation = VTableManaged.Implementation;
 
+		protected int paddingTop, paddingBottom;
                 protected IntPtr basePtr, vtPtr;
 
 		// FIXME: Either make this a lazy list that only generates the delegate type if
@@ -30,10 +31,10 @@ namespace Mono.VisualC.Interop.ABI {
 
                 // The Length of the array will be equal to the number of entries in the vtable;
 		// entries that aren't overridden will be NULL.
-                protected Delegate [] overrides;
+                protected IList<Delegate> overrides;
 
                 public virtual int EntryCount {
-                        get { return overrides.Length; }
+                        get { return overrides.Count; }
                 }
                 public virtual int EntrySize {
                         get { return Marshal.SizeOf (typeof (IntPtr)); }
@@ -42,18 +43,21 @@ namespace Mono.VisualC.Interop.ABI {
                 public abstract MethodInfo PrepareVirtualCall (MethodInfo target, CallingConvention? callingConvention, ILGenerator callsite,
 		                                               LocalBuilder nativePtr, FieldInfo vtableField, int vtableIndex);
 
-                // Subclasses must allocate vtPtr!
-                public VTable (IList<Type> delegateTypes, Delegate [] overrides)
+                // Subclasses should allocate vtPtr and then call WriteOverrides
+                public VTable (IList<Type> delegateTypes, IList<Delegate> overrides, int paddingTop, int paddingBottom)
                 {
 			this.delegate_types = delegateTypes;
                         this.overrides = overrides;
                         this.basePtr = IntPtr.Zero;
                         this.vtPtr = IntPtr.Zero;
+			this.paddingTop = paddingTop;
+			this.paddingBottom = paddingBottom;
                 }
 
-                protected virtual void WriteOverrides (int offset)
+                protected virtual void WriteOverrides ()
                 {
                         IntPtr vtEntryPtr;
+			int currentOffset = paddingTop;
                         for (int i = 0; i < EntryCount; i++) {
 
                                 if (overrides [i] != null) // managed override
@@ -61,8 +65,8 @@ namespace Mono.VisualC.Interop.ABI {
                                 else
                                         vtEntryPtr = IntPtr.Zero;
 
-                                Marshal.WriteIntPtr (vtPtr, offset, vtEntryPtr);
-                                offset += EntrySize;
+                                Marshal.WriteIntPtr (vtPtr, currentOffset, vtEntryPtr);
+                                currentOffset += EntrySize;
                         }
                 }
 
@@ -71,15 +75,23 @@ namespace Mono.VisualC.Interop.ABI {
                        if (basePtr == IntPtr.Zero) {
                                 basePtr = Marshal.ReadIntPtr (instance);
                                 if ((basePtr != IntPtr.Zero) && (basePtr != vtPtr)) {
-                                        int offset = 0;
+					// FIXME: This could probably be a more efficient memcpy
+                                        for(int i = 0; i < paddingTop; i++)
+                                                Marshal.WriteByte(vtPtr, i, Marshal.ReadByte(basePtr, i));
+
+                                        int currentOffset = paddingTop;
                                         for (int i = 0; i < EntryCount; i++) {
 
                                                 if (overrides [i] == null)
-                                                        Marshal.WriteIntPtr (vtPtr, offset, Marshal.ReadIntPtr (basePtr, offset));
+                                                        Marshal.WriteIntPtr (vtPtr, currentOffset, Marshal.ReadIntPtr (basePtr, currentOffset));
 
-                                                offset += EntrySize;
+                                                currentOffset += EntrySize;
                                         }
-                                }
+
+					// FIXME: This could probably be a more efficient memcpy
+                                        for(int i = 0; i < paddingBottom; i++)
+                                                Marshal.WriteByte(vtPtr, currentOffset + i, Marshal.ReadByte(basePtr, currentOffset + i));
+				}
                         }
 
                         Marshal.WriteIntPtr (instance, vtPtr);

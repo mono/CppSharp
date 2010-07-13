@@ -18,8 +18,8 @@ using System.Runtime.InteropServices;
 namespace Mono.VisualC.Interop.ABI {
         public class VTableCOM : VTable {
 
-                public static MakeVTableDelegate Implementation = (types, overrides) => { return new VTableCOM (types, overrides); };
-                private VTableCOM (IList<Type> types, Delegate [] overrides) : base(types, overrides)
+                public static MakeVTableDelegate Implementation = (types, overrides, paddingTop, paddingBottom) => { return new VTableCOM (types, overrides, paddingTop, paddingBottom); };
+                private VTableCOM (IList<Type> types, IList<Delegate> overrides, int paddingTop, int paddingBottom) : base(types, overrides, paddingTop, paddingBottom)
                 {
                 }
 

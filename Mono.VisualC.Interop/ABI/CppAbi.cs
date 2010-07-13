@@ -19,8 +19,6 @@ namespace Mono.VisualC.Interop.ABI {
 
         //FIXME: Exception handling, operator overloading etc.
         //FIXME: Allow interface to override default calling convention
-	//FIXME: Better interface validation- for example, throw exception
-	//  when [VirtualDestructor] is applied to base interface but not derived
         public abstract partial class CppAbi {
 
                 protected ModuleBuilder impl_module;
@@ -54,6 +52,16 @@ namespace Mono.VisualC.Interop.ABI {
                 public virtual int FieldOffsetPadding {
                         get { return Marshal.SizeOf (typeof (IntPtr)); }
                 }
+
+		// the padding in the data pointed to by the vtable pointer before the list of function pointers starts
+		public virtual int VTableTopPadding {
+			get { return 0; }
+		}
+
+		// the amount of extra room alloc'd after the function pointer list of the vtbl
+		public virtual int VTableBottomPadding {
+			get { return 0; }
+		}
 
                 protected virtual int NativeSize {
                         get {
@@ -92,32 +100,21 @@ namespace Mono.VisualC.Interop.ABI {
                         DefineImplType ();
 
                         var properties = GetProperties ();
-                        var methods = GetMethods (interface_type);
-			var bases = GetBasesRecursive (interface_type);
+                        var methods = GetMethods ();
+			var baseVirtualMethods = GetBaseVirtualMethods ();
 
-			IEnumerable<MethodInfo> baseVirtualMethods = Enumerable.Empty<MethodInfo> ();
-
-			if (bases.Any ()) // FIXME: We're assuming that first declared base is non-virtual primary base (and thus shares primary vtable)
-				baseVirtualMethods = from method in GetVirtualMethods (bases.First ())
-			                             select method;
-
-			var vtableSlots = from method in baseVirtualMethods.Concat (GetVirtualMethods (interface_type))
-			                  let delegateType = DefineVTableDelegate (method)
-			                  select new { DelegateType = delegateType,
-			                               Override = GetManagedOverrideTrampoline (method, delegateType, vtable_override_filter)
-			                             };
-
-			var virtualDtorSlots = from iface in bases.With (interface_type)
-			                       where iface.IsDefined (typeof (VirtualDestructorAttribute), false)
-			                       from i in new int [] { 0, 1 }
-			                       select new { DelegateType = (Type)null, Override = (Delegate)null };
-
-			vtableSlots = vtableSlots.Concat (virtualDtorSlots);
+			// FIXME: Lazy generate vtable delegates and cache them
+			List<Type> delegateTypes = new List<Type> ();
+			List<Delegate> delegates = new List<Delegate> ();
+			foreach (var method in baseVirtualMethods.Concat (GetVirtualMethods ())) {
+				Type delType = DefineVTableDelegate (method);
+				delegateTypes.Add (delType);
+				delegates.Add (GetManagedOverrideTrampoline (method, delType, vtable_override_filter));
+			}
 
                         // ONLY make vtable if there are virtual methods
-                        if (vtableSlots.Any ())
-                                vtable = make_vtable_method (vtableSlots.Select (s => s.DelegateType).ToList (),
-			                                     vtableSlots.Select (s => s.Override).ToArray ());
+                        if (delegateTypes.Count > 0)
+                                vtable = make_vtable_method (delegateTypes, delegates, VTableTopPadding, VTableBottomPadding);
                         else
                                 vtable = null;
 
@@ -151,6 +148,10 @@ namespace Mono.VisualC.Interop.ABI {
 			       );
 		}
 
+		protected IEnumerable<MethodInfo> GetMethods ()
+		{
+			return GetMethods (interface_type);
+		}
 		protected virtual IEnumerable<MethodInfo> GetMethods (Type interfaceType)
 		{
 			// get all methods defined on inherited interfaces first
@@ -169,6 +170,10 @@ namespace Mono.VisualC.Interop.ABI {
 			return methods;
 		}
 
+		protected IEnumerable<MethodInfo> GetVirtualMethods ()
+		{
+			return GetVirtualMethods (interface_type);
+		}
 		protected virtual IEnumerable<MethodInfo> GetVirtualMethods (Type interfaceType)
 		{
 			var delegates = (
@@ -179,15 +184,41 @@ namespace Mono.VisualC.Interop.ABI {
 			return delegates;
 		}
 
-                protected virtual IEnumerable<Type> GetBasesRecursive (Type searchStart)
-                {
-                        var immediateBases = (
-			                      from baseIface in searchStart.GetInterfaces ()
-                                              where baseIface.Name.Equals ("Base`1")
-                                              from iface in baseIface.GetGenericArguments ()
-                                              select iface
-			                     );
+		protected virtual IEnumerable<MethodInfo> GetBaseVirtualMethods ()
+		{
+			var bases = GetBasesRecursive ();
+			if (!bases.Any ())
+				return Enumerable.Empty<MethodInfo> ();
 
+			var virtualMethods = from iface in bases
+				             from method in GetVirtualMethods (iface)
+					     select method;
+
+			return virtualMethods;
+		}
+
+		protected IEnumerable<Type> GetImmediateBases ()
+		{
+			return GetImmediateBases (interface_type);
+		}
+		protected virtual IEnumerable<Type> GetImmediateBases (Type interfaceType)
+		{
+			var immediateBases = (
+			                      from baseIface in interfaceType.GetInterfaces ()
+			                      where baseIface.Name.Equals ("Base`1")
+			                      from iface in baseIface.GetGenericArguments ()
+			                      select iface
+			                     );
+			return immediateBases;
+		}
+
+		protected IEnumerable<Type> GetBasesRecursive ()
+		{
+			return GetBasesRecursive (interface_type);
+		}
+		protected IEnumerable<Type> GetBasesRecursive (Type searchStart)
+		{
+			var immediateBases = GetImmediateBases (searchStart);
 			if (!immediateBases.Any ())
 				return Enumerable.Empty<Type> ();
 
@@ -198,7 +229,7 @@ namespace Mono.VisualC.Interop.ABI {
 			}
 
 			return allBases;
-                }
+		}
 
                 protected virtual void DefineImplType ()
                 {
@@ -554,8 +585,8 @@ namespace Mono.VisualC.Interop.ABI {
                                 il.Emit (OpCodes.Ldloc_S, nativePtr);
                         }
                         for (int i = argLoadStart; i <= parameterTypes.Length; i++) {
-				EmitSpecialParameterMarshal (il, parameterTypes [i - 1]);
 				il.Emit (OpCodes.Ldarg, i);
+				EmitSpecialParameterMarshal (il, parameterTypes [i - 1]);
 			}
 
                         il.Emit (OpCodes.Call, nativeMethod);
@@ -565,6 +596,17 @@ namespace Mono.VisualC.Interop.ABI {
 		protected virtual void EmitSpecialParameterMarshal (ILGenerator il, Type parameterType)
 		{
 			// auto marshal bool to C++ bool type (0 = false , 1 = true )
+			if (parameterType.Equals (typeof (bool))) {
+				Label isTrue = il.DefineLabel ();
+				Label done = il.DefineLabel ();
+				il.Emit (OpCodes.Brtrue_S, isTrue);
+				il.Emit (OpCodes.Ldc_I4_0);
+				il.Emit (OpCodes.Br_S, done);
+				il.MarkLabel (isTrue);
+				il.Emit (OpCodes.Ldc_I4_1);
+				il.MarkLabel (done);
+				//il.Emit (OpCodes.Conv_I1);
+			}
 			// auto marshal ICppObject
 		}
 
@@ -573,8 +615,11 @@ namespace Mono.VisualC.Interop.ABI {
 			var originalTypes = Util.GetMethodParameterTypes (method);
 
 			var pinvokeTypes = originalTypes.Transform (
+			        For.AnyInputIn (typeof (bool)).Emit (typeof (byte)),
+
 				// CppInstancePtr implements ICppObject
 				For.InputsWhere ((Type t) => typeof (ICppObject).IsAssignableFrom (t)).Emit (typeof (IntPtr)),
+
 			        For.UnmatchedInput<Type> ().Emit (t => t)
 			);
 			return pinvokeTypes;

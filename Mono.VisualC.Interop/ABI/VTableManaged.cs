@@ -17,12 +17,11 @@ using System.Runtime.InteropServices;
 namespace Mono.VisualC.Interop.ABI {
 	public class VTableManaged : VTable {
 
-                public static MakeVTableDelegate Implementation = (types, overrides) => { return new VTableManaged (types, overrides); };
-		private VTableManaged (IList<Type> types, Delegate [] overrides) : base(types, overrides)
+                public static MakeVTableDelegate Implementation = (types, overrides, paddingTop, paddingBottom) => { return new VTableManaged (types, overrides, paddingTop, paddingBottom); };
+		private VTableManaged (IList<Type> types, IList<Delegate> overrides, int paddingTop, int paddingBottom) : base(types, overrides, paddingTop, paddingBottom)
                 {
-                        this.vtPtr = Marshal.AllocHGlobal (EntryCount * EntrySize);
-
-                        WriteOverrides (0);
+                        this.vtPtr = Marshal.AllocHGlobal ((EntryCount * EntrySize) + paddingTop + paddingBottom);
+                        WriteOverrides ();
 		}
 
                 public override MethodInfo PrepareVirtualCall (MethodInfo target, CallingConvention? callingConvention, ILGenerator callsite,
@@ -60,7 +59,7 @@ namespace Mono.VisualC.Interop.ABI {
 			if (vtable == vtPtr) // do not return managed overrides
 				vtable = basePtr;
 
-			IntPtr ftnptr = Marshal.ReadIntPtr (vtable, index * EntrySize);
+			IntPtr ftnptr = Marshal.ReadIntPtr (vtable, (index * EntrySize) + paddingTop);
 			if (ftnptr == IntPtr.Zero)
 				return null;
 

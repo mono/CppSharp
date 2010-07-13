@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Mono.VisualC.Interop;
 
@@ -8,12 +9,11 @@ namespace Qt.Gui {
         public class QWidget : QObject {
                 #region Sync with qwidget.h
                 // C++ interface
-		[VirtualDestructor]
                 public interface IQWidget : ICppClassOverridable<QWidget>, Base<QObject.IQObject>, Base<QPaintDevice.IQPaintDevice> {
                         // ...
                         void QWidget (CppInstancePtr @this, QWidget parent, /*Qt::WindowFlags */ int f);
                         // ...
-                        [Virtual] void setVisible (CppInstancePtr @this, bool visible);
+                        [Virtual] void setVisible (CppInstancePtr @this, /*[MarshalAs (UnmanagedType.U1)]*/ bool visible);
                         // ...
                         void resize (CppInstancePtr @this, [MangleAs ("const QSize &")] ref QSize size);
                         // ...
@@ -56,17 +56,12 @@ namespace Qt.Gui {
                         // ... protected:
                         [Virtual] bool focusNextPrevChild (CppInstancePtr @this, bool next);
 
-                        // TODO: Determine correct number of vtable slots here too...
-			/*
-                        [Virtual] void foo1 (CppInstancePtr @this);
-                        [Virtual] void foo2 (CppInstancePtr @this);
-                        [Virtual] void foo3 (CppInstancePtr @this);
-                        [Virtual] void foo4 (CppInstancePtr @this);
-                        [Virtual] void foo5 (CppInstancePtr @this);
-                        [Virtual] void foo6 (CppInstancePtr @this);
-                        [Virtual] void foo7 (CppInstancePtr @this);
-                        [Virtual] void foo8 (CppInstancePtr @this);
-                        */
+			[Virtual] void styleChange (CppInstancePtr @this, IntPtr qStyle); // compat
+			[Virtual] void enabledChange (CppInstancePtr @this, bool arg); // compat
+			[Virtual] void paletteChange (CppInstancePtr @this, /*const QPalette &*/ IntPtr qPalette); // compat
+			[Virtual] void fontChange (CppInstancePtr @this, /*const QFont &*/ IntPtr qFont); // compat
+			[Virtual] void windowActivationChange (CppInstancePtr @this, bool arg); // compat
+			[Virtual] void languageChange(CppInstancePtr @this); // compat
                 }
                 // C++ fields
                 private struct _QWidget {
@@ -87,6 +82,7 @@ namespace Qt.Gui {
                                 throw new NotImplementedException ();
                         }
                         set {
+				//Debug.Assert (false, "Attach debugger now.");
                                 impl.setVisible (native, value);
                         }
                 }
@@ -101,7 +97,7 @@ namespace Qt.Gui {
                 //  sizeof(QWidget) [impl.NativeSize] + sizeof(QObject) [base.NativeSize] + sizeof(QPaintDevice) [????]
                 // Works for now because we're already alloc'ing too much memory!!? (NativeSize property contains vtbl pointer)
                 public override int NativeSize {
-                        get { return impl.NativeSize + base.NativeSize; }
+                        get { return impl.NativeSize + base.NativeSize + 4; }
                 }
 
                 public override void Dispose ()

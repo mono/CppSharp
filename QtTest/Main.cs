@@ -7,6 +7,7 @@ namespace QtTest {
         class MainClass {
                 public static void Main (string[] args)
                 {
+                    //System.Diagnostics.Debug.Assert(false, "Whao");
                         using (QApplication app = new QApplication ()) {
                                 using (QPushButton hello = new QPushButton ("Hello world!")) {
 

@@ -19,20 +19,28 @@ using Mono.VisualC.Interop;
 namespace Mono.VisualC.Interop.ABI {
 
 	// FIXME: No 64-bit support
-        public class MsvcAbi : CppAbi {
-                public MsvcAbi ()
-                {
-                }
-
-                public override CallingConvention? GetCallingConvention (MethodInfo methodInfo)
+	public class MsvcAbi : CppAbi {
+		public MsvcAbi ()
 		{
-                        // FIXME: Varargs methods ... ?
+		}
+
+		public override CallingConvention? GetCallingConvention (MethodInfo methodInfo)
+		{
+			// FIXME: Varargs methods ... ?
 
 			if (IsStatic (methodInfo))
 				return CallingConvention.Cdecl;
 			else
 				return CallingConvention.ThisCall;
-                }
+		}
+
+		// AFIK, MSVC places only its first base's virtual methods in the derived class's
+		//  primary vtable. 
+		protected override IEnumerable<Type> GetImmediateBases (Type interfaceType)
+		{
+			var immediateBases = base.GetImmediateBases (interfaceType);
+			return immediateBases.Take (1);
+		}
 
                 public override string GetMangledMethodName (MethodInfo methodInfo)
                 {

@@ -6,7 +6,6 @@ namespace Qt.Core {
         public class QObject : ICppObject {
                 #region Sync with qobject.h
                 // C++ interface
-		[VirtualDestructor]
                 public interface IQObject : ICppClassOverridable<QObject> {
                         // ...
                         [Virtual] /*QMetaObject */ IntPtr metaObject(CppInstancePtr @this);
@@ -14,6 +13,7 @@ namespace Qt.Core {
                         [Virtual] int qt_metacall(CppInstancePtr @this, /*QMetaObject::Call */ int qMetaObjectCall, int x, /*void **/ IntPtr p);
                         // ...
                         void QObject (CppInstancePtr @this, QObject parent);
+			[VirtualDestructor] void vdtor (CppInstancePtr @this);
                         // ...
                         [Virtual] bool @event (CppInstancePtr @this, IntPtr qEvent);
                         [Virtual] bool eventFilter (CppInstancePtr @this, IntPtr qObject, IntPtr qEvent);
