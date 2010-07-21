@@ -6,15 +6,17 @@ namespace Qt.Core {
         public class QCoreApplication : QObject {
                 #region Sync with qcoreapplication.h
                 // C++ interface
-                public interface IQCoreApplication : ICppClassOverridable<QCoreApplication>, Base<QObject.IQObject> {
+                public interface IQCoreApplication : ICppClassOverridable<QCoreApplication> {
                         // ...
-                        void QCoreApplication (CppInstancePtr @this, [MangleAs ("int&")] IntPtr argc,
-                                               [MangleAs ("char**")] IntPtr argv);
+                        [Constructor] void QCoreApplication (CppInstancePtr @this, [MangleAs ("int&")] IntPtr argc,
+                                                             [MangleAs ("char**")] IntPtr argv);
                         // ...
                         [Static] int exec ();
                         // ...
                         [Virtual] bool notify (CppInstancePtr @this, IntPtr qObject, IntPtr qEvent);
                         [Virtual] bool compressEvent (CppInstancePtr @this, IntPtr qEvent, IntPtr qObject, IntPtr qPostEventList);
+
+			[Virtual, Destructor] void Destruct (CppInstancePtr @this);
                 }
                 // C++ fields
                 private struct _QCoreApplication {
@@ -26,34 +28,33 @@ namespace Qt.Core {
                 protected IntPtr argv;
 
 
-                public QCoreApplication () : base (IntPtr.Zero)
+                public QCoreApplication () : base (impl.TypeInfo)
                 {
-                        this.native = impl.Alloc (this);
+                        Native = impl.Alloc (this);
                         InitArgcAndArgv ();
-                        impl.QCoreApplication (native, argc, argv);
+                        impl.QCoreApplication (Native, argc, argv);
                 }
 
-                public QCoreApplication (IntPtr native) : base (native)
+                public QCoreApplication (IntPtr native) : base (impl.TypeInfo)
                 {
+			Native = native;
                 }
 
-                // TODO: Should this be virtual in C#? was static in C++, but alas,
-                //  I made it an instance, since that seems to fit .net semantics a bit better...
-                //  but if I don't make it virtual, then what to do about Exec () in QApplication?
+		internal QCoreApplication (CppTypeInfo subClass) : base (impl.TypeInfo)
+		{
+			subClass.AddBase (impl.TypeInfo);
+		}
+
                 public virtual int Exec ()
                 {
                         return impl.exec ();
                 }
 
-                public override int NativeSize {
-                        get { return impl.NativeSize + base.NativeSize; }
-                }
-
                 public override void Dispose ()
                 {
-                        impl.Destruct (native);
+                        impl.Destruct (Native);
                         FreeArgcAndArgv ();
-                        native.Dispose ();
+                        Native.Dispose ();
                 }
 
                 protected void InitArgcAndArgv ()

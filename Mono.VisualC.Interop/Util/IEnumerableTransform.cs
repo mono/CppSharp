@@ -1,9 +1,129 @@
+//
+// Mono.VisualC.Interop.Util.IEnumerableTransform.cs: Rule-based transformation for IEnumerable
+//
+// Author:
+//   Alexander Corrado (alexander.corrado@gmail.com)
+//
+// Copyright (C) 2010 Alexander Corrado
+//
+
 using System;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Mono.VisualC.Interop {
+namespace Mono.VisualC.Interop.Util {
+
+
+	public static class IEnumerableTransform {
+
+		// Transforms an IEnumerable into another by specific rules.
+
+		public static IEnumerable<TOut> Transform<TIn, TOut> (this IEnumerable<TIn> input, params EmitterFunc<TIn, TOut> [] rules)
+		{
+			CloneableEnumerator<TIn> enumerator = new CloneableEnumerator<TIn> (input, 0);
+
+			while (enumerator.MoveNext ()) {
+				InputData<TIn> inputData = new InputData<TIn> (input, enumerator);
+
+				foreach (var rule in rules) {
+					TOut output;
+					if (rule (inputData.NewContext (), out output) == RuleResult.MatchEmit)
+						yield return output;
+
+				}
+			}
+
+		}
+
+		public static IRule<TIn> And<TIn> (this IRule<TIn> previousRules, IRule<TIn> parentheticalRules)
+		{
+			return new AndRule<TIn> (previousRules, parentheticalRules);
+		}
+		public static RuleCompound<TIn> And<TIn> (this IRule<TIn> previousRules)
+		{
+			return new RuleCompound<TIn> ((subsequentRules) => {
+				return And<TIn> (previousRules, subsequentRules);
+			});
+		}
+
+		public static IRule<TIn> Or<TIn> (this IRule<TIn> previousRules, IRule<TIn> parentheticalRules)
+		{
+			return new OrRule<TIn> (previousRules, parentheticalRules);
+		}
+		public static RuleCompound<TIn> Or<TIn> (this IRule<TIn> previousRules)
+		{
+			return new RuleCompound<TIn> ((subsequentRules) => {
+				return Or<TIn> (previousRules, subsequentRules);
+			});
+		}
+
+		public static IRule<TIn> After<TIn> (this IRule<TIn> previousRules, IRule<TIn> parentheticalRules)
+		{
+			return new AndRule<TIn> (new AfterRule<TIn> (parentheticalRules), previousRules);
+		}
+		public static RuleCompound<TIn> After<TIn> (this IRule<TIn> previousRules)
+		{
+			return new RuleCompound<TIn> ((subsequentRules) => {
+				return After<TIn> (previousRules, subsequentRules);
+			});
+		}
+
+		public static IRule<TIn> AtEnd<TIn> (this IRule<TIn> previousRules)
+		{
+			return new AtEndRule<TIn> (previousRules);
+		}
+
+		public static EmitterFunc<TIn, TOut> Emit<TIn, TOut> (this IRule<TIn> rule, Func<TIn, TOut> result)
+		{
+			return delegate (InputData<TIn> input, out TOut output) {
+				output = default (TOut);
+				TIn value = input.Value;
+				RuleResult ruleResult = rule.SatisfiedBy (input);
+
+				if (ruleResult != RuleResult.NoMatch) {
+					input.MatchedRules.Add (rule);
+					output = result (value);
+					return ruleResult;
+				}
+				return RuleResult.NoMatch;
+			};
+		}
+		public static EmitterFunc<TIn, TOut> Emit<TIn, TOut> (this IRule<TIn> rule, TOut result)
+		{
+			return Emit (rule, (input) => result);
+		}
+
+		// helpers:
+
+		public static IEnumerable<T> With<T> (this IEnumerable<T> current, T additionalValue)
+		{
+			foreach (var output in current)
+				yield return output;
+			yield return additionalValue;
+		}
+
+		public static int SequenceHashCode<T> (this IEnumerable<T> sequence)
+		{
+			int hash = 0;
+			foreach (var item in sequence)
+				hash ^= item.GetHashCode ();
+
+			return hash;
+		}
+
+		// FIXME: Faster way to do this?
+		public static void AddFirst<T> (this List<T> list, IEnumerable<T> items)
+		{
+			T [] temp = new T [list.Count];
+			list.CopyTo (temp, 0);
+			list.Clear ();
+			list.AddRange (items);
+			list.AddRange (temp);
+	        }
+
+
+	}
 
 	public enum RuleResult {
 		NoMatch,
@@ -463,96 +583,6 @@ namespace Mono.VisualC.Interop {
 		public void Dispose ()
 		{
 		}
-	}
-
-	public static class EnumerableSequenceExtensions {
-
-		// helper
-
-		public static IEnumerable<T> With<T> (this IEnumerable<T> current, T additionalValue)
-		{
-			foreach (var output in current)
-				yield return output;
-			yield return additionalValue;
-		}
-
-		// Transforms an IEnumerable into another by specific rules.
-
-		public static IEnumerable<TOut> Transform<TIn, TOut> (this IEnumerable<TIn> input, params EmitterFunc<TIn, TOut> [] rules)
-		{
-			CloneableEnumerator<TIn> enumerator = new CloneableEnumerator<TIn> (input, 0);
-
-			while (enumerator.MoveNext ()) {
-				InputData<TIn> inputData = new InputData<TIn> (input, enumerator);
-
-				foreach (var rule in rules) {
-					TOut output;
-					if (rule (inputData.NewContext (), out output) == RuleResult.MatchEmit)
-						yield return output;
-
-				}
-			}
-
-		}
-
-		public static IRule<TIn> And<TIn> (this IRule<TIn> previousRules, IRule<TIn> parentheticalRules)
-		{
-			return new AndRule<TIn> (previousRules, parentheticalRules);
-		}
-		public static RuleCompound<TIn> And<TIn> (this IRule<TIn> previousRules)
-		{
-			return new RuleCompound<TIn> ((subsequentRules) => {
-				return And<TIn> (previousRules, subsequentRules);
-			});
-		}
-
-		public static IRule<TIn> Or<TIn> (this IRule<TIn> previousRules, IRule<TIn> parentheticalRules)
-		{
-			return new OrRule<TIn> (previousRules, parentheticalRules);
-		}
-		public static RuleCompound<TIn> Or<TIn> (this IRule<TIn> previousRules)
-		{
-			return new RuleCompound<TIn> ((subsequentRules) => {
-				return Or<TIn> (previousRules, subsequentRules);
-			});
-		}
-
-		public static IRule<TIn> After<TIn> (this IRule<TIn> previousRules, IRule<TIn> parentheticalRules)
-		{
-			return new AndRule<TIn> (new AfterRule<TIn> (parentheticalRules), previousRules);
-		}
-		public static RuleCompound<TIn> After<TIn> (this IRule<TIn> previousRules)
-		{
-			return new RuleCompound<TIn> ((subsequentRules) => {
-				return After<TIn> (previousRules, subsequentRules);
-			});
-		}
-
-		public static IRule<TIn> AtEnd<TIn> (this IRule<TIn> previousRules)
-		{
-			return new AtEndRule<TIn> (previousRules);
-		}
-
-		public static EmitterFunc<TIn, TOut> Emit<TIn, TOut> (this IRule<TIn> rule, Func<TIn, TOut> result)
-		{
-			return delegate (InputData<TIn> input, out TOut output) {
-				output = default (TOut);
-				TIn value = input.Value;
-				RuleResult ruleResult = rule.SatisfiedBy (input);
-
-				if (ruleResult != RuleResult.NoMatch) {
-					input.MatchedRules.Add (rule);
-					output = result (value);
-					return ruleResult;
-				}
-				return RuleResult.NoMatch;
-			};
-		}
-		public static EmitterFunc<TIn, TOut> Emit<TIn, TOut> (this IRule<TIn> rule, TOut result)
-		{
-			return Emit (rule, (input) => result);
-		}
-
 	}
 }
 

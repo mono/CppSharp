@@ -20,31 +20,20 @@ namespace Qt.Gui {
                 #endregion
 
                 private static IQPaintDevice impl = Qt.Libs.QtGui.GetClass<IQPaintDevice,_QPaintDevice,QPaintDevice> ("QPaintDevice");
-                protected CppInstancePtr native;
-
-                /* no point to this - subclasses will call QPaintDevice (IntPtr.Zero)
-                protected QPaintDevice ()
-                {
-
-                }
-                */
+                public CppInstancePtr Native { get; protected set; }
 
                 public QPaintDevice (IntPtr native)
                 {
-                        this.native = native;
+                        Native = native;
                 }
 
-                public IntPtr Native {
-                        get { return (IntPtr)native; }
-                }
-
-                public virtual int NativeSize {
-                        get { return impl.NativeSize; }
-                }
+		internal QPaintDevice (CppTypeInfo subClass)
+		{
+			subClass.AddBase (impl.TypeInfo);
+		}
 
                 public void Dispose ()
                 {
-                        throw new Exception ("This should never be called!");
                 }
         }
 }

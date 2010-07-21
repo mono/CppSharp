@@ -8,10 +8,10 @@ namespace Qt.Gui {
         public class QApplication : QCoreApplication {
                 #region Sync with qapplication.h
                 // C++ interface
-                public interface IQApplication : ICppClassOverridable<QApplication>, Base<QCoreApplication.IQCoreApplication> {
+                public interface IQApplication : ICppClassOverridable<QApplication> {
                         // ...
-                        void QApplication (CppInstancePtr @this, [MangleAs ("int&")] IntPtr argc,
-                                               [MangleAs ("char**")] IntPtr argv, int version);
+                        [Constructor] void QApplication (CppInstancePtr @this, [MangleAs ("int&")] IntPtr argc,
+                                                         [MangleAs ("char**")] IntPtr argv, int version);
                         // ...
                         [Virtual] bool macEventFilter(CppInstancePtr @this, IntPtr eventHandlerCallRef, IntPtr eventRef);
                         // ...
@@ -19,6 +19,8 @@ namespace Qt.Gui {
                         [Virtual] void saveState(CppInstancePtr @this, IntPtr qSessionManager);  // was QSessionManager&
                         // ...
                         [Static] int exec ();
+
+			[Virtual, Destructor] void Destruct (CppInstancePtr @this);
                 }
                 // C++ fields
                 private struct _QApplication {
@@ -27,31 +29,33 @@ namespace Qt.Gui {
 
                 private static IQApplication impl = Qt.Libs.QtGui.GetClass<IQApplication,_QApplication,QApplication> ("QApplication");
 
-                public QApplication () : base (IntPtr.Zero)
+                public QApplication () : base (impl.TypeInfo)
                 {
-                        this.native = impl.Alloc (this);
+                        Native = impl.Alloc (this);
                         InitArgcAndArgv ();
-                        impl.QApplication (native, argc, argv, QGlobal.QT_VERSION);
+                        impl.QApplication (Native, argc, argv, QGlobal.QT_VERSION);
                 }
 
-                public QApplication (IntPtr native) : base (native)
+                public QApplication (IntPtr native) : base (impl.TypeInfo)
                 {
+			Native = native;
                 }
+
+		internal QApplication (CppTypeInfo subClass) : base (impl.TypeInfo)
+		{
+			subClass.AddBase (impl.TypeInfo);
+		}
 
                 public override int Exec ()
                 {
                         return impl.exec ();
                 }
 
-                public override int NativeSize {
-                        get { return impl.NativeSize + base.NativeSize; }
-                }
-
                 public override void Dispose ()
                 {
-                        impl.Destruct (native);
+                        impl.Destruct (Native);
                         FreeArgcAndArgv ();
-                        native.Dispose ();
+                        Native.Dispose ();
                 }
 
         }

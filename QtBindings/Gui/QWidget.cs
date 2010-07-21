@@ -9,11 +9,11 @@ namespace Qt.Gui {
         public class QWidget : QObject {
                 #region Sync with qwidget.h
                 // C++ interface
-                public interface IQWidget : ICppClassOverridable<QWidget>, Base<QObject.IQObject>, Base<QPaintDevice.IQPaintDevice> {
+                public interface IQWidget : ICppClassOverridable<QWidget> {
                         // ...
-                        void QWidget (CppInstancePtr @this, QWidget parent, /*Qt::WindowFlags */ int f);
+                        [Constructor] void QWidget (CppInstancePtr @this, QWidget parent, /*Qt::WindowFlags */ int f);
                         // ...
-                        [Virtual] void setVisible (CppInstancePtr @this, /*[MarshalAs (UnmanagedType.U1)]*/ bool visible);
+                        [Virtual] void setVisible (CppInstancePtr @this, bool visible);
                         // ...
                         void resize (CppInstancePtr @this, [MangleAs ("const QSize &")] ref QSize size);
                         // ...
@@ -73,9 +73,22 @@ namespace Qt.Gui {
 
                 // TODO: ctor ...
 
-                public QWidget (IntPtr native) : base (native)
+                public QWidget (IntPtr native) : this ()
                 {
+			Native = native;
                 }
+
+		internal QWidget (CppTypeInfo subClass) : this ()
+		{
+			subClass.AddBase (impl.TypeInfo);
+		}
+
+		private QWidget ()
+			: base (impl.TypeInfo) // Add QObject as base class
+		{
+			// FIXME: Hold on to this object and create methods for it on this class?
+			new QPaintDevice (impl.TypeInfo); // Add QPaintDevice as base class
+		}
 
                 public bool Visible {
                         get {
@@ -83,21 +96,14 @@ namespace Qt.Gui {
                         }
                         set {
 				//Debug.Assert (false, "Attach debugger now.");
-                                impl.setVisible (native, value);
+                                impl.setVisible (Native, value);
                         }
                 }
 
                 public void Resize (int width, int height)
                 {
                         QSize s = new QSize (width, height);
-                        impl.resize (native, ref s);
-                }
-
-                // TODO: HELP! I think this really should be:
-                //  sizeof(QWidget) [impl.NativeSize] + sizeof(QObject) [base.NativeSize] + sizeof(QPaintDevice) [????]
-                // Works for now because we're already alloc'ing too much memory!!? (NativeSize property contains vtbl pointer)
-                public override int NativeSize {
-                        get { return impl.NativeSize + base.NativeSize + 4; }
+                        impl.resize (Native, ref s);
                 }
 
                 public override void Dispose ()

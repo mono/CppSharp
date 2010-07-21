@@ -16,9 +16,8 @@ namespace Mono.VisualC.Interop.ABI {
 
         public class VirtualOnlyAbi : CppAbi {
 
-                public VirtualOnlyAbi (MakeVTableDelegate makeVTable, MemberFilter vtableOverrideFilter)
+                public VirtualOnlyAbi (MemberFilter vtableOverrideFilter)
                 {
-                        this.make_vtable_method = makeVTable;
                         this.vtable_override_filter = vtableOverrideFilter;
                 }
                 public VirtualOnlyAbi () { }

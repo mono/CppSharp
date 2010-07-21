@@ -14,11 +14,16 @@ using System.Reflection;
 namespace Mono.VisualC.Interop {
 
 	#region Interface method attributes
-        [AttributeUsage (AttributeTargets.Method)]
-        public class VirtualAttribute : Attribute {}
 
 	[AttributeUsage (AttributeTargets.Method)]
-	public class VirtualDestructorAttribute : Attribute {}
+	public class ConstructorAttribute : Attribute {}
+
+	[AttributeUsage (AttributeTargets.Method)]
+	public class DestructorAttribute : Attribute {}
+
+
+        [AttributeUsage (AttributeTargets.Method)]
+        public class VirtualAttribute : Attribute {}
 
         [AttributeUsage (AttributeTargets.Method)]
         public class StaticAttribute : Attribute {}
@@ -42,7 +47,7 @@ namespace Mono.VisualC.Interop {
                 {
                         this.MangleType = new CppType (mangleTypeStr);
                 }
-		public MangleAsAttribute (params object[] cppTypeSpec)
+		public MangleAsAttribute (params object [] cppTypeSpec)
 		{
 			this.MangleType = new CppType (cppTypeSpec);
 		}
@@ -60,30 +65,8 @@ using Mono.VisualC.Interop;
 
                 public virtual bool IsVirtual (MethodInfo method)
                 {
-			return method.IsDefined (typeof (VirtualAttribute), false) ||
-				method.IsDefined (typeof (VirtualDestructorAttribute), false);
+			return method.IsDefined (typeof (VirtualAttribute), false);
                 }
-
-		// Ok, this is tricky.. return true if this class has a [VirtualDestructor]
-		//  or any of its bases do, up the hierarchy.
-		public virtual bool IsVirtualDtor (MethodInfo method)
-		{
-			return HasVirtualDtor () && GetMethodType (method) == MethodType.NativeDtor;
-		}
-		public bool HasVirtualDtor ()
-		{
-			return HasVirtualDtor (interface_type);
-		}
-		public virtual bool HasVirtualDtor (Type interfaceType)
-		{
-			var methods = from iface in GetBasesRecursive ().With (interface_type)
-			              from method in GetMethods (iface)
-			              where method.IsDefined (typeof (VirtualDestructorAttribute), false)
-			              select method;
-
-			return methods.Any ();
-		}
-
                 public virtual bool IsStatic (MethodInfo method)
                 {
                         return method.IsDefined (typeof (StaticAttribute), false);

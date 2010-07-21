@@ -6,42 +6,45 @@ namespace Qt.Gui {
         public class QPushButton : QAbstractButton {
                  #region Sync with qpushbutton.h
                 // C++ interface
-                public interface IQPushButton : ICppClassOverridable<QPushButton>, Base<QAbstractButton.IQAbstractButton> {
+                public interface IQPushButton : ICppClassOverridable<QPushButton> {
                         // ...
-                        void QPushButton (CppInstancePtr @this, [MangleAs ("const QString &")] ref QString text, QWidget parent);
+                        [Constructor] void QPushButton (CppInstancePtr @this, [MangleAs ("const QString &")] ref QString text, QWidget parent);
                         // ...
+			[Virtual, Destructor] void Destruct (CppInstancePtr @this);
                 }
                 // C++ fields
                 private struct _QPushButton {
                 }
                 #endregion
 
-                private IQPushButton impl = Qt.Libs.QtGui.GetClass<IQPushButton,_QPushButton,QPushButton> ("QPushButton");
+                private static IQPushButton impl = Qt.Libs.QtGui.GetClass<IQPushButton,_QPushButton,QPushButton> ("QPushButton");
 
-                public QPushButton (string btnText, QWidget parent) : base (IntPtr.Zero)
+                public QPushButton (string btnText, QWidget parent) : base (impl.TypeInfo)
                 {
-                        this.native = impl.Alloc (this);
+                        Native = impl.Alloc (this);
 
                         QString text = btnText;
-                        impl.QPushButton (native, ref text, parent);
+                        impl.QPushButton (Native, ref text, parent);
                 }
 
                 public QPushButton (string text) : this (text, (QWidget)null)
                 {
                 }
 
-                public QPushButton (IntPtr native) : base (native)
+                public QPushButton (IntPtr native) : base (impl.TypeInfo)
                 {
+			Native = native;
                 }
 
-                public override int NativeSize {
-                        get { return impl.NativeSize + base.NativeSize; }
-                }
+		internal QPushButton (CppTypeInfo subClass) : base (impl.TypeInfo)
+		{
+			subClass.AddBase (impl.TypeInfo);
+		}
 
                 public override void Dispose ()
                 {
-                        impl.Destruct (native);
-                        native.Dispose ();
+                        impl.Destruct (Native);
+                        Native.Dispose ();
                 }
         }
 }

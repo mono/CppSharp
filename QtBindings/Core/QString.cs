@@ -11,7 +11,7 @@ namespace Qt.Core {
         public unsafe struct QString {
                 #region Sync with qstring.h
                 public interface IQString : ICppClass {
-                        void QString(ref QString @this, [MangleAs ("const QChar*")] IntPtr unicode, int size);
+                        [Constructor] void QString(ref QString @this, [MangleAs ("const QChar*")] IntPtr unicode, int size);
                 }
 
                 [StructLayout (LayoutKind.Sequential)]

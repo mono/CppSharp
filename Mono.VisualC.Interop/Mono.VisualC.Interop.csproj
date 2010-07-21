@@ -42,21 +42,27 @@
     <Compile Include="Attributes.cs" />
     <Compile Include="CppInstancePtr.cs" />
     <Compile Include="CppField.cs" />
-    <Compile Include="ABI\VTableCOM.cs" />
     <Compile Include="ABI\VTable.cs" />
-    <Compile Include="Util.cs" />
     <Compile Include="ABI\MethodType.cs" />
     <Compile Include="ABI\Impl\ItaniumAbi.cs" />
     <Compile Include="ABI\Impl\VirtualOnlyAbi.cs" />
     <Compile Include="ABI\Impl\MsvcAbi.cs" />
     <Compile Include="CppObjectMarshaler.cs" />
     <Compile Include="CppType.cs" />
-    <Compile Include="IEnumerableTransform.cs" />
+    <Compile Include="CppTypeInfo.cs" />
+    <Compile Include="ABI\Impl\ItaniumTypeInfo.cs" />
+    <Compile Include="Util\IEnumerableTransform.cs" />
+    <Compile Include="Util\LazyGeneratedList.cs" />
+    <Compile Include="Util\DelegateTypeCache.cs" />
+    <Compile Include="Util\ReflectionHelper.cs" />
+    <Compile Include="ABI\Impl\MsvcTypeInfo.cs" />
+    <Compile Include="Util\MethodSignature.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="ABI\" />
     <Folder Include="ABI\Impl\" />
+    <Folder Include="Util\" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

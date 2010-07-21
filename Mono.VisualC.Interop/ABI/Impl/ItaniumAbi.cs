@@ -14,6 +14,8 @@ using System.Reflection;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
+using Mono.VisualC.Interop.Util;
+
 namespace Mono.VisualC.Interop.ABI {
 	public class ItaniumAbi : CppAbi {
 
@@ -21,27 +23,9 @@ namespace Mono.VisualC.Interop.ABI {
                 {
                 }
 
-		// Itanium puts all its virtual dtors at the bottom of the vtable (2 slots each).
-		//  Since we will never be in a position of calling a dtor virtually, we can just pad the vtable out.
-		public override bool IsVirtual (MethodInfo method)
+		protected override CppTypeInfo MakeTypeInfo (IEnumerable<MethodInfo> virtualMethods)
 		{
-			return base.IsVirtual (method) && !method.IsDefined (typeof (VirtualDestructorAttribute), false);
-		}
-		public override int VTableBottomPadding {
-			get {
-				int vtableBottomPadding = 0;
-				bool hasVdtor = false;
-				int vdtorPadding = Marshal.SizeOf (typeof (IntPtr)) * 2;
-
-				foreach (var iface in GetBasesRecursive ().With (interface_type)) {
-					if (hasVdtor || HasVirtualDtor (iface)) {
-						vtableBottomPadding += vdtorPadding;
-						hasVdtor = true;
-					}
-				}
-
-				return vtableBottomPadding;
-			}
+			return new ItaniumTypeInfo (this, virtualMethods, layout_type);
 		}
 
 		public override CallingConvention? GetCallingConvention (MethodInfo methodInfo)

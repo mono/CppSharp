@@ -12,8 +12,8 @@ namespace Qt.Core {
                         [Virtual] /*void */ IntPtr qt_metacast(CppInstancePtr @this, string s);
                         [Virtual] int qt_metacall(CppInstancePtr @this, /*QMetaObject::Call */ int qMetaObjectCall, int x, /*void **/ IntPtr p);
                         // ...
-                        void QObject (CppInstancePtr @this, QObject parent);
-			[VirtualDestructor] void vdtor (CppInstancePtr @this);
+                        [Constructor] void QObject (CppInstancePtr @this, QObject parent);
+			[Virtual, Destructor] void Destruct (CppInstancePtr @this);
                         // ...
                         [Virtual] bool @event (CppInstancePtr @this, IntPtr qEvent);
                         [Virtual] bool eventFilter (CppInstancePtr @this, IntPtr qObject, IntPtr qEvent);
@@ -30,35 +30,32 @@ namespace Qt.Core {
                 #endregion
 
                 private static IQObject impl = Qt.Libs.QtCore.GetClass<IQObject,_QObject,QObject> ("QObject");
-                protected CppInstancePtr native;
+		public CppInstancePtr Native { get; protected set; }
 
                 public QObject (QObject parent)
                 {
-                        native = impl.Alloc (this);
-                        impl.QObject (native, parent);
+                        Native = impl.Alloc (this);
+                        impl.QObject (Native, parent);
                 }
 
-                public QObject () : this (null)
+                public QObject () : this ((QObject)null)
                 {
                 }
 
                 public QObject (IntPtr native)
                 {
-                        this.native = native;
+                        Native = native;
                 }
 
-                public IntPtr Native {
-                        get { return (IntPtr)native; }
-                }
-
-                public virtual int NativeSize {
-                        get { return impl.NativeSize; }
-                }
+		internal QObject (CppTypeInfo subClass)
+		{
+			subClass.AddBase (impl.TypeInfo);
+		}
 
                 public virtual void Dispose ()
                 {
-                        impl.Destruct (native);
-                        native.Dispose ();
+                        impl.Destruct (Native);
+                        Native.Dispose ();
                 }
 
         }

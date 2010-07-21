@@ -20,7 +20,7 @@ namespace Mono.VisualC.Interop {
                 private IntPtr ptr;
                 private bool manage_memory;
 
-                private static Dictionary<Type,object> implCache = new Dictionary<Type,object> ();
+                private static Dictionary<Type,object> implCache = null;
 
                 // TODO: the managed instance argument may only be NULL if all methods in TWrapper
                 //  that correspond to the virtual methods in Iface are static.
@@ -30,9 +30,12 @@ namespace Mono.VisualC.Interop {
                         object cachedImpl;
                         Iface impl;
 
+			if (implCache == null)
+				implCache = new Dictionary<Type,object> ();
+
                         if (!implCache.TryGetValue (typeof (Iface), out cachedImpl))
                         {
-                                VirtualOnlyAbi virtualABI = new VirtualOnlyAbi (VTableManaged.Implementation, VTable.BindToSignature);
+                                VirtualOnlyAbi virtualABI = new VirtualOnlyAbi (VTable.BindToSignature);
                                 impl = virtualABI.ImplementClass<Iface> (typeof (TWrapper), string.Empty, string.Empty);
                                 implCache.Add (typeof (Iface), impl);
                         }
@@ -40,7 +43,7 @@ namespace Mono.VisualC.Interop {
                                 impl = (Iface)cachedImpl;
 
                         CppInstancePtr instance = impl.Alloc (managed);
-                        impl.ClassVTable.InitInstance ((IntPtr)instance);
+                        impl.TypeInfo.VTable.InitInstance ((IntPtr)instance);
 
                         return instance;
                 }
@@ -73,8 +76,8 @@ namespace Mono.VisualC.Interop {
                 // Get a CppInstancePtr for an existing C++ instance from an IntPtr
                 public CppInstancePtr (IntPtr native)
                 {
-                        //if (native == IntPtr.Zero)
-                        //        throw new ArgumentOutOfRangeException ("native cannot be null pointer");
+                        if (native == IntPtr.Zero)
+                                throw new ArgumentOutOfRangeException ("native cannot be null pointer");
 
                         ptr = native;
                         manage_memory = false;
@@ -100,6 +103,10 @@ namespace Mono.VisualC.Interop {
                                 return ptr;
                         }
                 }
+
+		CppInstancePtr ICppObject.Native {
+			get { return this; }
+		}
 
                 public int NativeSize {
                         get {

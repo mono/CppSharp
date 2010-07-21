@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 using Mono.VisualC.Interop;
+using Mono.VisualC.Interop.Util;
 
 namespace Mono.VisualC.Interop.ABI {
 
@@ -22,6 +23,11 @@ namespace Mono.VisualC.Interop.ABI {
 	public class MsvcAbi : CppAbi {
 		public MsvcAbi ()
 		{
+		}
+
+		protected override CppTypeInfo MakeTypeInfo (IEnumerable<MethodInfo> virtualMethods)
+		{
+			return new MsvcTypeInfo (this, virtualMethods, layout_type);
 		}
 
 		public override CallingConvention? GetCallingConvention (MethodInfo methodInfo)
@@ -32,14 +38,6 @@ namespace Mono.VisualC.Interop.ABI {
 				return CallingConvention.Cdecl;
 			else
 				return CallingConvention.ThisCall;
-		}
-
-		// AFIK, MSVC places only its first base's virtual methods in the derived class's
-		//  primary vtable. 
-		protected override IEnumerable<Type> GetImmediateBases (Type interfaceType)
-		{
-			var immediateBases = base.GetImmediateBases (interfaceType);
-			return immediateBases.Take (1);
 		}
 
                 public override string GetMangledMethodName (MethodInfo methodInfo)
@@ -74,7 +72,7 @@ namespace Mono.VisualC.Interop.ABI {
 			// now, offset based on other modifiers
 			if (IsStatic (methodInfo))
 				funcModifier += (char)2;
-			else if (IsVirtual (methodInfo) || IsVirtualDtor (methodInfo))
+			else if (IsVirtual (methodInfo))
 				funcModifier += (char)4;
 
 			nm.Append (funcModifier);

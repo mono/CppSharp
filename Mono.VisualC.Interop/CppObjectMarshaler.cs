@@ -16,7 +16,7 @@ namespace Mono.VisualC.Interop {
                         if (cppObject == null)
                                 throw new ArgumentException ("Object to marshal must implement ICppObject");
 
-                        return cppObject.Native;
+                        return (IntPtr)cppObject.Native;
                 }
 
                 public object MarshalNativeToManaged (IntPtr pNativeData)

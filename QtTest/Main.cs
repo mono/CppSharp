@@ -9,11 +9,15 @@ namespace QtTest {
                 {
                     //System.Diagnostics.Debug.Assert(false, "Whao");
                         using (QApplication app = new QApplication ()) {
-                                using (QPushButton hello = new QPushButton ("Hello world!")) {
+                                using (QPushButton hello = new QPushButton ("Hello world!"),
+				                   hello2 = new QPushButton ("Another button")) {
 
                                         hello.Resize (100, 30);
-					CppLibrary.SaveInteropAssembly ();
+					hello2.Resize (200, 30);
+
+					//CppLibrary.SaveInteropAssembly ();
                                         hello.Visible = true;
+					hello2.Visible = true;
 
                                         app.Exec ();
 
