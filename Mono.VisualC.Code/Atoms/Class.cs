@@ -18,26 +18,32 @@ namespace Mono.VisualC.Code.Atoms {
 			Struct
 		}
 		public struct BaseClass {
-			public Class Class;
+			public string Name;
 			public Access Access;
 			public bool IsVirtual;
 		}
 		
 		public string Name { get; set; }
 		public string StaticCppLibrary { get; set; }
+		public Definition DefinedAs { get; set; }
 
 		public IEnumerable<BaseClass> Bases { get; set; }
-		public Definition DefinedAs { get; set; }
-		
+		public IList<string> TemplateArguments { get; set; }
+
 		public Class (string name)
 		{
 			Name = name;
 			Bases = Enumerable.Empty<BaseClass> ();
+			TemplateArguments = new List<string> ();
 		}
 
 		internal protected override CodeObject InsideCodeNamespace (CodeNamespace ns)
 		{
 			var wrapper = new CodeTypeDeclaration (Name) { TypeAttributes = TypeAttributes.Public };
+
+			foreach (var arg in TemplateArguments)
+				wrapper.TypeParameters.Add (arg);
+
 			var iface = CreateInterface ();
 			var native = CreateNativeLayout ();
 			
@@ -45,7 +51,7 @@ namespace Mono.VisualC.Code.Atoms {
 			wrapper.Members.Add (native);
 
 			// FIXME: For now, we'll have the managed wrapper extend from the first public base class
-			string managedBase = Bases.Where (b => b.Access == Access.Public).Select (b => b.Class.Name).FirstOrDefault ();
+			string managedBase = Bases.Where (b => b.Access == Access.Public).Select (b => b.Name).FirstOrDefault ();
 			if (managedBase == null) {
 
 				managedBase = typeof (ICppObject).Name;
@@ -56,7 +62,7 @@ namespace Mono.VisualC.Code.Atoms {
 					Name = "Native",
 					Type = new CodeTypeReference (typeof (CppInstancePtr)),
 					HasSet = false,
-					Attributes = MemberAttributes.Public
+					Attributes = MemberAttributes.Public | MemberAttributes.Final
 				};
 				nativeProperty.GetStatements.Add (new CodeMethodReturnStatement (new CodeFieldReferenceExpression (new CodeThisReferenceExpression (), nativeField.Name)));
 
@@ -135,7 +141,7 @@ namespace Mono.VisualC.Code.Atoms {
 					case Access.Private: writer.Write ("private "); break;
 					}
 					
-					writer.Write (baseClass.Class.Name);
+					writer.Write (baseClass.Name);
 					
 					if (!bce.MoveNext ())
 						break;

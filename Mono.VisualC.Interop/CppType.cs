@@ -14,6 +14,8 @@ using System.Text.RegularExpressions;
 using System.Reflection;
 using System.Collections.Generic;
 
+using Mono.VisualC.Interop.Util;
+
 namespace Mono.VisualC.Interop {
 
 	public enum CppModifiers {
@@ -50,61 +52,77 @@ namespace Mono.VisualC.Interop {
 			{ "\\&", CppModifiers.Reference }
 		};
 
-		/*
 		public static Dictionary<CppModifiers,string> Stringify = new Dictionary<CppModifiers, string> () {
 			{ CppModifiers.Pointer, "*" },
 			{ CppModifiers.Array, "[]" },
 			{ CppModifiers.Reference, "&" }
 		};
-		*/
-
-		public static List<Func<CppType,Type>> ElementTypeToManagedMap = new List<Func<CppType, Type>> () {
-			(t) => { return t.ElementType == CppTypes.Class || t.ElementType == CppTypes.Struct? typeof (ICppObject) : null; },
-			(t) => { return t.ElementType == CppTypes.Char && t.Modifiers.Contains (CppModifiers.Pointer)? typeof (string) : null; },
-
-			(t) => { return t.ElementType == CppTypes.Int && t.Modifiers.Contains (CppModifiers.Short) && t.Modifiers.Contains (CppModifiers.Unsigned)? typeof (ushort) : null; },
-			(t) => { return t.ElementType == CppTypes.Int && t.Modifiers.Contains (CppModifiers.Long) && t.Modifiers.Contains (CppModifiers.Unsigned)? typeof (ulong) : null; },
-			(t) => { return t.ElementType == CppTypes.Int && t.Modifiers.Contains (CppModifiers.Short)? typeof (short) : null; },
-			(t) => { return t.ElementType == CppTypes.Int && t.Modifiers.Contains (CppModifiers.Long)? typeof (long) : null; },
-			(t) => { return t.ElementType == CppTypes.Int && t.Modifiers.Contains (CppModifiers.Unsigned)? typeof (uint) : null; },
-
-			(t) => { return t.ElementType == CppTypes.Void?   typeof (void)   : null; },
-			(t) => { return t.ElementType == CppTypes.Bool?   typeof (bool)   : null; },
-			(t) => { return t.ElementType == CppTypes.Char?   typeof (char)   : null; },
-			(t) => { return t.ElementType == CppTypes.Int?    typeof (int)    : null; },
-			(t) => { return t.ElementType == CppTypes.Float?  typeof (float)  : null; },
-			(t) => { return t.ElementType == CppTypes.Double? typeof (double) : null; }
-		};
 
 		// FIXME: Passing these as delegates allows for the flexibility of doing processing on the
 		//  type (i.e. to correctly mangle the function pointer arguments if the managed type is a delegate),
 		//  however this does not make it very easy to override the default mappings at runtime.
-		public static List<Func<Type,CppType>> ManagedToCppTypeMap = new List<Func<Type,CppType>> () {
-			(t) => { return typeof (void).Equals (t)  ? CppTypes.Void   : CppTypes.Unknown;  },
-			(t) => { return typeof (bool).Equals (t)  ? CppTypes.Bool   : CppTypes.Unknown;  },
-			(t) => { return typeof (char).Equals (t)  ? CppTypes.Char   : CppTypes.Unknown;  },
-			(t) => { return typeof (int).Equals (t)   ? CppTypes.Int    : CppTypes.Unknown;  },
-			(t) => { return typeof (float).Equals (t) ? CppTypes.Float  : CppTypes.Unknown;  },
-			(t) => { return typeof (double).Equals (t)? CppTypes.Double : CppTypes.Unknown;  },
+		public static List<Func<CppType,Type>> CppTypeToManagedMap = new List<Func<CppType, Type>> () {
+			(t) => (t.ElementType == CppTypes.Class ||
+			        t.ElementType == CppTypes.Struct ||
+			       (t.ElementType == CppTypes.Unknown && t.ElementTypeName != null)) &&
+			       (t.Modifiers.Count (m => m == CppModifiers.Pointer) == 1 ||
+			        t.Modifiers.Contains (CppModifiers.Reference))? typeof (ICppObject) : null,
 
-			(t) => { return typeof (short).Equals (t) ? new CppType (CppModifiers.Short, CppTypes.Int) : CppTypes.Unknown; },
-			(t) => { return typeof (long).Equals (t)  ? new CppType (CppModifiers.Long, CppTypes.Int)  : CppTypes.Unknown; },
-			(t) => { return typeof (uint).Equals (t)  ? new CppType (CppModifiers.Unsigned, CppTypes.Int) : CppTypes.Unknown; },
-			(t) => { return typeof (ushort).Equals (t)? new CppType (CppModifiers.Unsigned, CppModifiers.Short, CppTypes.Int) : CppTypes.Unknown; },
-			(t) => { return typeof (ulong).Equals (t)?  new CppType (CppModifiers.Unsigned, CppModifiers.Long, CppTypes.Int) : CppTypes.Unknown; },
+			// void* gets IntPtr
+			(t) => t.ElementType == CppTypes.Void && t.Modifiers.Contains (CppModifiers.Pointer)? typeof (IntPtr) : null,
+
+			// single pointer to char gets string
+			(t) => t.ElementType == CppTypes.Char && t.Modifiers.Count (m => m == CppModifiers.Pointer) == 1? typeof (string) : null,
+			// pointer to pointer to char gets StringBuilder
+			(t) => t.ElementType == CppTypes.Char && t.Modifiers.Count (m => m == CppModifiers.Pointer) == 2? typeof (StringBuilder) : null,
+
+			// convert single pointers to primatives to managed byref
+			(t) => t.Modifiers.Count (m => m == CppModifiers.Pointer) == 1? t.WithoutModifier (CppModifiers.Pointer).ToManagedType ().MakeByRefType () : null,
+			// more than one level of indirection gets IntPtr type
+			(t) => t.Modifiers.Contains (CppModifiers.Pointer)? typeof (IntPtr) : null,
+
+			(t) => t.Modifiers.Contains (CppModifiers.Reference)? t.WithoutModifier (CppModifiers.Reference).ToManagedType ().MakeByRefType () : null,
+
+			(t) => t.ElementType == CppTypes.Int && t.Modifiers.Contains (CppModifiers.Short) && t.Modifiers.Contains (CppModifiers.Unsigned)? typeof (ushort) : null,
+			(t) => t.ElementType == CppTypes.Int && t.Modifiers.Contains (CppModifiers.Long) && t.Modifiers.Contains (CppModifiers.Unsigned)? typeof (ulong) : null,
+			(t) => t.ElementType == CppTypes.Int && t.Modifiers.Contains (CppModifiers.Short)? typeof (short) : null,
+			(t) => t.ElementType == CppTypes.Int && t.Modifiers.Contains (CppModifiers.Long)? typeof (long) : null,
+			(t) => t.ElementType == CppTypes.Int && t.Modifiers.Contains (CppModifiers.Unsigned)? typeof (uint) : null,
+
+			(t) => t.ElementType == CppTypes.Void?   typeof (void)   : null,
+			(t) => t.ElementType == CppTypes.Bool?   typeof (bool)   : null,
+			(t) => t.ElementType == CppTypes.Char?   typeof (char)   : null,
+			(t) => t.ElementType == CppTypes.Int?    typeof (int)    : null,
+			(t) => t.ElementType == CppTypes.Float?  typeof (float)  : null,
+			(t) => t.ElementType == CppTypes.Double? typeof (double) : null
+		};
+
+		public static List<Func<Type,CppType>> ManagedToCppTypeMap = new List<Func<Type,CppType>> () {
+			(t) => typeof (void).Equals (t)  ? CppTypes.Void   : CppTypes.Unknown,
+			(t) => typeof (bool).Equals (t)  ? CppTypes.Bool   : CppTypes.Unknown,
+			(t) => typeof (char).Equals (t)  ? CppTypes.Char   : CppTypes.Unknown,
+			(t) => typeof (int).Equals (t)   ? CppTypes.Int    : CppTypes.Unknown,
+			(t) => typeof (float).Equals (t) ? CppTypes.Float  : CppTypes.Unknown,
+			(t) => typeof (double).Equals (t)? CppTypes.Double : CppTypes.Unknown,
+
+			(t) => typeof (short).Equals (t) ? new CppType (CppModifiers.Short, CppTypes.Int) : CppTypes.Unknown,
+			(t) => typeof (long).Equals (t)  ? new CppType (CppModifiers.Long, CppTypes.Int)  : CppTypes.Unknown,
+			(t) => typeof (uint).Equals (t)  ? new CppType (CppModifiers.Unsigned, CppTypes.Int) : CppTypes.Unknown,
+			(t) => typeof (ushort).Equals (t)? new CppType (CppModifiers.Unsigned, CppModifiers.Short, CppTypes.Int) : CppTypes.Unknown,
+			(t) => typeof (ulong).Equals (t)?  new CppType (CppModifiers.Unsigned, CppModifiers.Long, CppTypes.Int) : CppTypes.Unknown,
 
 			// strings mangle as "const char*" by default
-			(t) => { return typeof (string).Equals (t)? new CppType (CppModifiers.Const, CppTypes.Char, CppModifiers.Pointer) : CppTypes.Unknown; },
+			(t) => typeof (string).Equals (t)? new CppType (CppModifiers.Const, CppTypes.Char, CppModifiers.Pointer) : CppTypes.Unknown,
 			// StringBuilder gets "char*"
-			(t) => { return typeof (StringBuilder).Equals (t)? new CppType (CppTypes.Char, CppModifiers.Pointer) : CppTypes.Unknown; },
+			(t) => typeof (StringBuilder).Equals (t)? new CppType (CppTypes.Char, CppModifiers.Pointer) : CppTypes.Unknown,
 
 			// delegate types get special treatment
-			(t) => { return typeof (Delegate).IsAssignableFrom (t)? CppType.ForDelegate (t) : CppTypes.Unknown; },
+			(t) => typeof (Delegate).IsAssignableFrom (t)? CppType.ForDelegate (t) : CppTypes.Unknown,
 
 			// ... and of course ICppObjects do too!
 			// FIXME: We assume c++ class not struct. There should probably be an attribute
 			//   we can apply to managed wrappers to indicate if the underlying C++ type is actually declared struct
-			(t) => { return typeof (ICppObject).IsAssignableFrom (t)? new CppType (CppTypes.Class, t.Name, CppModifiers.Pointer) : CppTypes.Unknown; },
+			(t) => typeof (ICppObject).IsAssignableFrom (t)? new CppType (CppTypes.Class, t.Name, CppModifiers.Pointer) : CppTypes.Unknown,
 
 			// convert managed type modifiers to C++ type modifiers like so:
 			//  ref types to C++ references
@@ -218,7 +236,7 @@ namespace Mono.VisualC.Interop {
 		//  and combines its modifiers into this instance.
 		//  Use when THIS instance may have attributes you want,
 		//  but want the element type of the passed instance.
-		public void ApplyTo (CppType type)
+		public CppType ApplyTo (CppType type)
 		{
 			ElementType = type.ElementType;
 			ElementTypeName = type.ElementTypeName;
@@ -228,14 +246,58 @@ namespace Mono.VisualC.Interop {
 
 			if (oldModifiers != null)
 				Modifiers.AddRange (oldModifiers);
+
+			return this;
 		}
 
-		/*
+		// Removes the modifiers from the passed instance from this instance
+		public CppType Subtract (CppType type)
+		{
+			if (internalModifiers == null)
+				return this;
+
+			foreach (var modifier in type.Modifiers) {
+				for (int i = 0; i < internalModifiers.Count; i++) {
+					if (internalModifiers [i] == modifier)
+						internalModifiers.RemoveAt (i--);
+				}
+			}
+
+			return this;
+		}
+
+		public override bool Equals (object obj)
+		{
+			if (obj == null)
+				return false;
+			if (obj.GetType () != typeof(CppType))
+				return false;
+			CppType other = (CppType)obj;
+
+			// FIXME: the order of some modifiers is not significant
+			return ((internalModifiers == null && other.internalModifiers == null) ||
+			         internalModifiers.SequenceEqual (other.internalModifiers)) &&
+			       ElementType == other.ElementType &&
+			       ElementTypeName == other.ElementTypeName;
+		}
+
+
+		public override int GetHashCode ()
+		{
+			unchecked {
+				return (internalModifiers != null? internalModifiers.SequenceHashCode () : 0) ^
+				        ElementType.GetHashCode () ^
+				       (ElementTypeName != null? ElementTypeName.GetHashCode () : 0);
+			}
+		}
+
+
 		public override string ToString ()
 		{
 			StringBuilder cppTypeString = new StringBuilder ();
 
-			cppTypeString.Append (Enum.GetName (typeof (CppTypes), ElementType).ToLower ());
+			if (ElementType != CppTypes.Unknown)
+				cppTypeString.Append (Enum.GetName (typeof (CppTypes), ElementType).ToLower ());
 
 			if (ElementTypeName != null)
 				cppTypeString.Append (" ").Append (ElementTypeName);
@@ -250,43 +312,43 @@ namespace Mono.VisualC.Interop {
 
 			return cppTypeString.ToString ();
 		}
-		*/
 
 		public Type ToManagedType ()
 		{
-			return ToManagedType (false);
-		}
-		public Type ToManagedType (bool usePointerTypes)
-		{
 			CppType me = this;
-			Type mappedType = (from checkType in ElementTypeToManagedMap
+			Type mappedType = (from checkType in CppTypeToManagedMap
 			                   where checkType (me) != null
 			                   select checkType (me)).FirstOrDefault ();
 
-			if (mappedType == null)
-				return null;
-
-			// FIXME: not ideal to have this test here
-			if (typeof (string).Equals (mappedType) || typeof (ICppObject).Equals (mappedType))
-				return mappedType;
-
-
-			if (Modifiers.Contains (CppModifiers.Pointer) && !usePointerTypes)
-				return typeof (IntPtr);
-			else if (Modifiers.Contains (CppModifiers.Pointer))
-				mappedType = mappedType.MakePointerType ();
-			else if (Modifiers.Contains (CppModifiers.Array))
-				mappedType = mappedType.MakeArrayType ();
-
 			return mappedType;
+		}
+
+		public CppType Modify (CppModifiers modifier)
+		{
+			CppType newType = this;
+			var newModifier = new CppModifiers [] { modifier };
+
+			if (newType.internalModifiers != null)
+				newType.internalModifiers.AddFirst (newModifier);
+			else
+				newType.internalModifiers = new List<CppModifiers> (newModifier);
+
+			return newType;
+		}
+
+		public CppType WithoutModifier (CppModifiers modifier)
+		{
+			CppType newType = this;
+			newType.internalModifiers = new List<CppModifiers> (newType.Modifiers.Without (modifier));
+			return newType;
 		}
 
 		public static CppType ForManagedType (Type type)
 		{
 
-			var mappedType = (from checkType in ManagedToCppTypeMap
-			                  where checkType (type).ElementType != CppTypes.Unknown
-			                  select checkType (type)).FirstOrDefault ();
+			CppType mappedType = (from checkType in ManagedToCppTypeMap
+			                      where checkType (type).ElementType != CppTypes.Unknown
+			                      select checkType (type)).FirstOrDefault ();
 
 			return mappedType;
 		}
@@ -298,8 +360,6 @@ namespace Mono.VisualC.Interop {
 
 			throw new NotImplementedException ();
 		}
-
-
 
 		public static implicit operator CppType (CppTypes type) {
 			return new CppType (type);

@@ -103,6 +103,14 @@ namespace Mono.VisualC.Interop.Util {
 			yield return additionalValue;
 		}
 
+
+		public static IEnumerable<T> Without<T> (this IEnumerable<T> current, T unwantedValue)
+		{
+			foreach (var output in current)
+				if (!output.Equals (unwantedValue))
+					yield return output;
+		}
+
 		public static int SequenceHashCode<T> (this IEnumerable<T> sequence)
 		{
 			int hash = 0;

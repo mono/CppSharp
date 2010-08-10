@@ -18,7 +18,7 @@
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Commandlineparameters>-f=qobject.xml</Commandlineparameters>
+    <Commandlineparameters>-f=/Users/Alex/OpenSource/gccxml/gccxml-build/bin/qobject.xml -o=.</Commandlineparameters>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -61,6 +61,10 @@
     <ProjectReference Include="..\Mono.VisualC.Code\Mono.VisualC.Code.csproj">
       <Project>{A22BF9D9-BBCB-4462-BE08-0F4D5280B180}</Project>
       <Name>Mono.VisualC.Code</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mono.VisualC.Interop\Mono.VisualC.Interop.csproj">
+      <Project>{4A864586-93C5-4DC1-8A80-F094A88506D7}</Project>
+      <Name>Mono.VisualC.Interop</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>
