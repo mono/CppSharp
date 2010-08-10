@@ -67,17 +67,29 @@ namespace Mono.VisualC.Interop {
 			if (TypeComplete)
 				return;
 
+			// by default, do not add another vtable pointer for this new base class
+			AddBase (baseType, false);
+		}
+
+		protected virtual void AddBase (CppTypeInfo baseType, bool addVTablePointer)
+		{
 			BaseClasses.Add (baseType);
-			int newVirtualMethodCount = baseType.VirtualMethods.Count;
 
-			for (int i = 0; i < newVirtualMethodCount; i++)
-				VirtualMethods.Insert (BaseVTableSlots + i, baseType.VirtualMethods [i]);
+			if (!addVTablePointer) {
+				// If we're not adding a vtptr, then all this base class's virtual methods go in primary vtable
+				// Skew the offsets of this subclass's vmethods to account for the new base vmethods.
 
-			BaseVTableSlots += newVirtualMethodCount;
-			VTableDelegateTypes.Skew (newVirtualMethodCount);
-			VTableOverrides.Skew (newVirtualMethodCount);
+				int newVirtualMethodCount = baseType.VirtualMethods.Count;
+				for (int i = 0; i < newVirtualMethodCount; i++)
+					VirtualMethods.Insert (BaseVTableSlots + i, baseType.VirtualMethods [i]);
+	
+				BaseVTableSlots += newVirtualMethodCount;
+				VTableDelegateTypes.Skew (newVirtualMethodCount);
+				VTableOverrides.Skew (newVirtualMethodCount);
+			}
 
-			field_offset_padding += Marshal.SizeOf (baseType.NativeLayout) + baseType.field_offset_padding;
+			field_offset_padding += baseType.native_size +
+				(addVTablePointer? baseType.FieldOffsetPadding : baseType.field_offset_padding);
 		}
 
 		public int CountBases (Func<CppTypeInfo, bool> predicate)
@@ -90,9 +102,12 @@ namespace Mono.VisualC.Interop {
 			return count;
 		}
 
+		// FIXME: Make this thread safe?
 		public virtual void CompleteType ()
 		{
-			if (TypeComplete) return;
+			if (TypeComplete)
+				return;
+
 			foreach (var baseClass in BaseClasses)
 				baseClass.CompleteType ();
 

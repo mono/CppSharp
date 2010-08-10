@@ -22,7 +22,7 @@ namespace Mono.VisualC.Code {
 			return ccu;
 		}
 
-		internal protected override CodeObject InsideCodeCompileUnit (CodeCompileUnit ccu)
+		internal protected override object InsideCodeCompileUnit (CodeCompileUnit ccu)
 		{
 			CodeNamespace ns = new CodeNamespace (ManagedNamespace);
 			ns.Imports.Add (new CodeNamespaceImport ("Mono.VisualC.Interop"));
@@ -31,7 +31,7 @@ namespace Mono.VisualC.Code {
 			return ns;
 		}
 
-		internal protected override CodeObject InsideCodeNamespace (CodeNamespace ns)
+		internal protected override object InsideCodeNamespace (CodeNamespace ns)
 		{
 			foreach (var atom in Atoms)
 				atom.Visit (ns);

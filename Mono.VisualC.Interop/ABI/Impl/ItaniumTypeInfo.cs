@@ -11,6 +11,7 @@ namespace Mono.VisualC.Interop.ABI {
 		public ItaniumTypeInfo (ItaniumAbi abi, IEnumerable<MethodInfo> virtualMethods, Type nativeLayout)
 			: base (abi, virtualMethods, nativeLayout)
 		{
+			// Remove all virtual destructors from their declared position in the vtable
 			for (int i = 0; i < VirtualMethods.Count; i++) {
 				if (Abi.GetMethodType (VirtualMethods [i]) != MethodType.NativeDtor)
 					continue;
@@ -27,6 +28,9 @@ namespace Mono.VisualC.Interop.ABI {
 
 		public override void AddBase (CppTypeInfo baseType)
 		{
+			if (TypeComplete)
+				return;
+
 			hasVirtualDtor |= ((ItaniumTypeInfo)baseType).HasVirtualDestructor;
 			base.AddBase (baseType);
 		}

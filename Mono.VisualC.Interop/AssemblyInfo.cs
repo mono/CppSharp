@@ -30,5 +30,5 @@ using System.Runtime.CompilerServices;
 //[assembly: AssemblyKeyFile("")]
 
 [assembly: CLSCompliant(true)]
-// TODO: This will not work if we ever support saving these assemblies
+// FIXME: This will not work if we ever support saving these assemblies
 [assembly: InternalsVisibleTo("__CppLibraryImplAssembly")]

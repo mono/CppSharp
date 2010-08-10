@@ -29,7 +29,7 @@ namespace Mono.VisualC.Code.Atoms {
 				writer.WriteLine ("#define {0}", Name);
 		}
 
-		internal protected override CodeObject InsideCodeNamespace (CodeNamespace ns)
+		internal protected override object InsideCodeNamespace (CodeNamespace ns)
 		{
 			if (!value_set)
 				return null;
@@ -46,7 +46,7 @@ namespace Mono.VisualC.Code.Atoms {
 			return constants;
 		}
 
-		internal protected override CodeObject InsideCodeTypeDeclaration (CodeTypeDeclaration decl)
+		internal protected override object InsideCodeTypeDeclaration (CodeTypeDeclaration decl)
 		{
 			if (!value_set)
 				return null;

@@ -18,13 +18,10 @@ namespace Mono.VisualC.Interop.ABI {
 			if (TypeComplete)
 				return;
 
-			if (BaseClasses.Count == 0) {
-				base.AddBase (baseType);
-				return;
-			}
-
-			BaseClasses.Add (baseType);
-			field_offset_padding += baseType.NativeSize;
+			if (BaseClasses.Count == 0)
+				base.AddBase (baseType, false);
+			else
+				base.AddBase (baseType, true);
 		}
 
 	}

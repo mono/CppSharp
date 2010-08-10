@@ -103,12 +103,38 @@ namespace Mono.VisualC.Interop.Util {
 			yield return additionalValue;
 		}
 
+		public static bool StartsWith<T> (this IEnumerable<T> current, IEnumerable<T> beginning)
+		{
+			IEnumerator<T> currentEnum = current.GetEnumerator ();
+			IEnumerator<T> beginEnum = beginning.GetEnumerator ();
+
+			while (currentEnum.MoveNext ()) {
+				if (!beginEnum.MoveNext ())
+					return true;
+
+				if (!currentEnum.Current.Equals (beginEnum.Current))
+					return false;
+			}
+			return !beginEnum.MoveNext ();
+		}
 
 		public static IEnumerable<T> Without<T> (this IEnumerable<T> current, T unwantedValue)
 		{
-			foreach (var output in current)
+			foreach (var output in current) {
 				if (!output.Equals (unwantedValue))
 					yield return output;
+			}
+		}
+
+		public static IEnumerable<T> WithoutFirst<T> (this IEnumerable<T> current, T unwantedValue)
+		{
+			bool first = true;
+			foreach (var output in current) {
+				if (first && output.Equals (unwantedValue))
+					first = false;
+				else
+					yield return output;
+			}
 		}
 
 		public static int SequenceHashCode<T> (this IEnumerable<T> sequence)

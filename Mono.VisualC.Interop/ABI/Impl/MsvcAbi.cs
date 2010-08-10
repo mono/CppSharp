@@ -77,9 +77,13 @@ namespace Mono.VisualC.Interop.ABI {
 
 			nm.Append (funcModifier);
 
-			// FIXME: deal with storage classes for "this" i.e. the "const" in -> int foo () const;
-			if (!IsStatic (methodInfo))
-				nm.Append ('A');
+			// FIXME: deal with other storage classes for "this" i.e. the "volatile" in -> int foo () volatile;
+			if (!IsStatic (methodInfo)) {
+				if (IsConst (methodInfo))
+					nm.Append ('B');
+				else
+					nm.Append ('A');
+			}
 
 			switch (GetCallingConvention (methodInfo)) {
 			case CallingConvention.Cdecl:

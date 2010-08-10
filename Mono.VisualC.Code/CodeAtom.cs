@@ -9,34 +9,39 @@ namespace Mono.VisualC.Code {
 
 	public abstract class CodeAtom {
 
-		internal protected virtual void Visit (CodeObject obj)
+		internal protected virtual void Visit (object obj)
 		{
-			CodeObject result = obj;
+			object result = obj;
 
 			while (result != null) {
-				if (result is CodeCompileUnit)      { result = InsideCodeCompileUnit (result as CodeCompileUnit); continue; }
-				if (result is CodeNamespace)        { result = InsideCodeNamespace (result as CodeNamespace); continue; }
-				if (result is CodeTypeDeclaration)  { result = InsideCodeTypeDeclaration (result as CodeTypeDeclaration); continue; }
-
+				if (result is CodeCompileUnit)         { result = InsideCodeCompileUnit (result as CodeCompileUnit); continue; }
+				if (result is CodeNamespace)           { result = InsideCodeNamespace (result as CodeNamespace); continue; }
+				if (result is CodeTypeDeclaration)     { result = InsideCodeTypeDeclaration (result as CodeTypeDeclaration); continue; }
+				if (result is CodeMemberMethod)        { result = InsideCodeStatementCollection (((CodeMemberMethod)result).Statements); continue; }
+				if (result is CodeStatementCollection) { result = InsideCodeStatementCollection (result as CodeStatementCollection); continue; }
 				break;
 			}
 		}
 
-		internal protected virtual CodeObject InsideCodeCompileUnit (CodeCompileUnit ccu)
+		internal protected virtual object InsideCodeCompileUnit (CodeCompileUnit ccu)
 		{
 			return null;
 		}
 
-		internal protected virtual CodeObject InsideCodeNamespace (CodeNamespace ns)
+		internal protected virtual object InsideCodeNamespace (CodeNamespace ns)
 		{
 			return null;
 		}
 
-		internal protected virtual CodeObject InsideCodeTypeDeclaration (CodeTypeDeclaration decl)
+		internal protected virtual object InsideCodeTypeDeclaration (CodeTypeDeclaration decl)
 		{
 			return null;
 		}
 
+		internal protected virtual object InsideCodeStatementCollection (CodeStatementCollection stmts)
+		{
+			return null;
+		}
 		public abstract void Write (TextWriter writer);
 	}
 }

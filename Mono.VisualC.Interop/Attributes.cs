@@ -28,6 +28,10 @@ namespace Mono.VisualC.Interop {
         [AttributeUsage (AttributeTargets.Method)]
         public class StaticAttribute : Attribute {}
 
+	// used for the const "this" - for example: int value () const;
+	[AttributeUsage (AttributeTargets.Method)]
+	public class ConstAttribute : Attribute {}
+
 	// FIXME: Will we ever be calling private methods?
 	[AttributeUsage (AttributeTargets.Method)]
         public class PrivateAttribute : Attribute {}
@@ -71,6 +75,10 @@ using Mono.VisualC.Interop;
                 {
                         return method.IsDefined (typeof (StaticAttribute), false);
                 }
+		public virtual bool IsConst (MethodInfo method)
+		{
+			return method.IsDefined (typeof (ConstAttribute), false);
+		}
 		public virtual bool IsPrivate (MethodInfo method)
 		{
 			return method.IsDefined (typeof (PrivateAttribute), false);

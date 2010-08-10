@@ -41,6 +41,11 @@
     <Compile Include="CodeUnit.cs" />
     <Compile Include="Access.cs" />
     <Compile Include="Atoms\Method.cs" />
+    <Compile Include="Atoms\Enumeration.cs" />
+    <Compile Include="CodeDomExtensions.cs" />
+    <Compile Include="Atoms\Property.cs" />
+    <Compile Include="Atoms\Field.cs" />
+    <Compile Include="Atoms\Union.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

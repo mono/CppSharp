@@ -23,8 +23,8 @@ namespace Mono.VisualC.Interop {
 		internal static AssemblyBuilder interopAssembly;
                 internal static ModuleBuilder interopModule;
 
-		private CppAbi abi;
-		private string name;
+		public CppAbi Abi { get; private set; }
+		public string Name { get; private set; }
 
 		static CppLibrary ()
                 {
@@ -35,6 +35,18 @@ namespace Mono.VisualC.Interop {
                         interopModule = interopAssembly.DefineDynamicModule (moduleName, moduleName, true);
 		}
 
+		public CppLibrary (string name)
+		{
+
+			if (name == null)
+				throw new ArgumentNullException ("Name cannot be NULL.");
+
+			this.Name = name;
+
+			// FIXME: This is where we'd auto detect the ABI
+			this.Abi = new ItaniumAbi ();
+		}
+
 		public CppLibrary (string name, CppAbi abi)
                 {
 
@@ -43,16 +55,8 @@ namespace Mono.VisualC.Interop {
                         if (abi == null)
                                 throw new ArgumentNullException ("Abi cannot be NULL.");
 
-                        this.name = name;
-			this.abi = abi;
-		}
-
-		public string Name {
-			get { return name; }
-		}
-
-		public CppAbi Abi {
-			get { return abi; }
+                        this.Name = name;
+			this.Abi = abi;
 		}
 
 		// Mainly for debugging at this point

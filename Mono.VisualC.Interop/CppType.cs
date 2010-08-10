@@ -18,18 +18,7 @@ using Mono.VisualC.Interop.Util;
 
 namespace Mono.VisualC.Interop {
 
-	public enum CppModifiers {
-                Const,
-                Pointer,
-		Array,
-		Reference,
-		Volatile,
-		// ---
-		Signed,
-		Unsigned,
-		Short,
-		Long
-        }
+	// These can be used anywhere a CppType could be used.
 	public enum CppTypes {
 		Unknown,
 		Class,
@@ -41,22 +30,12 @@ namespace Mono.VisualC.Interop {
 		Char,
 		Int,
 		Float,
-		Double
+		Double,
+		// for template type parameters
+		Typename
 	}
 
 	public struct CppType {
-
-		public static Dictionary<string,CppModifiers> Tokenize = new Dictionary<string, CppModifiers> () {
-			{ "\\*", CppModifiers.Pointer },
-			{ "\\[\\s*\\]", CppModifiers.Array },
-			{ "\\&", CppModifiers.Reference }
-		};
-
-		public static Dictionary<CppModifiers,string> Stringify = new Dictionary<CppModifiers, string> () {
-			{ CppModifiers.Pointer, "*" },
-			{ CppModifiers.Array, "[]" },
-			{ CppModifiers.Reference, "&" }
-		};
 
 		// FIXME: Passing these as delegates allows for the flexibility of doing processing on the
 		//  type (i.e. to correctly mangle the function pointer arguments if the managed type is a delegate),
@@ -73,15 +52,18 @@ namespace Mono.VisualC.Interop {
 
 			// single pointer to char gets string
 			(t) => t.ElementType == CppTypes.Char && t.Modifiers.Count (m => m == CppModifiers.Pointer) == 1? typeof (string) : null,
-			// pointer to pointer to char gets StringBuilder
-			(t) => t.ElementType == CppTypes.Char && t.Modifiers.Count (m => m == CppModifiers.Pointer) == 2? typeof (StringBuilder) : null,
+			// pointer to pointer to char gets string[]
+			(t) => t.ElementType == CppTypes.Char && t.Modifiers.Count (m => m == CppModifiers.Pointer) == 2? typeof (string).MakeArrayType () : null,
+
+			// arrays
+			(t) => t.Modifiers.Contains (CppModifiers.Array)? t.Subtract (CppModifiers.Array).ToManagedType ().MakeArrayType () : null,
 
 			// convert single pointers to primatives to managed byref
-			(t) => t.Modifiers.Count (m => m == CppModifiers.Pointer) == 1? t.WithoutModifier (CppModifiers.Pointer).ToManagedType ().MakeByRefType () : null,
+			(t) => t.Modifiers.Count (m => m == CppModifiers.Pointer) == 1? t.Subtract (CppModifiers.Pointer).ToManagedType ().MakeByRefType () : null,
 			// more than one level of indirection gets IntPtr type
 			(t) => t.Modifiers.Contains (CppModifiers.Pointer)? typeof (IntPtr) : null,
 
-			(t) => t.Modifiers.Contains (CppModifiers.Reference)? t.WithoutModifier (CppModifiers.Reference).ToManagedType ().MakeByRefType () : null,
+			(t) => t.Modifiers.Contains (CppModifiers.Reference)? t.Subtract (CppModifiers.Reference).ToManagedType ().MakeByRefType () : null,
 
 			(t) => t.ElementType == CppTypes.Int && t.Modifiers.Contains (CppModifiers.Short) && t.Modifiers.Contains (CppModifiers.Unsigned)? typeof (ushort) : null,
 			(t) => t.ElementType == CppTypes.Int && t.Modifiers.Contains (CppModifiers.Long) && t.Modifiers.Contains (CppModifiers.Unsigned)? typeof (ulong) : null,
@@ -143,6 +125,8 @@ namespace Mono.VisualC.Interop {
 		//  this will contain the name of said type
 		public string ElementTypeName { get; set; }
 
+		// this is initialized lazily to avoid unnecessary heap
+		//  allocations if possible
 		private List<CppModifiers> internalModifiers;
 		public List<CppModifiers> Modifiers {
 			get {
@@ -156,7 +140,7 @@ namespace Mono.VisualC.Interop {
 		// here, you can pass in things like "const char*" or "const Foo * const"
 		//  DISCLAIMER: this is really just for convenience for now, and is not meant to be able
 		//  to parse even moderately complex C++ type declarations.
-		public CppType (string type) : this (Regex.Split (type, "\\s+(?!\\])"))
+		public CppType (string type) : this (Regex.Split (type, "\\s+(?![^\\>]*\\>|[^\\[\\]]*\\])"))
 		{
 		}
 
@@ -168,67 +152,55 @@ namespace Mono.VisualC.Interop {
 			Parse (cppTypeSpec);
 		}
 
-		private void Parse (object [] modifiers)
+		private void Parse (object [] parts)
 		{
-			for (int i = 0; i < modifiers.Length; i++) {
+			foreach (object part in parts) {
 
-				if (modifiers [i] is CppModifiers) {
-					Modifiers.Add ((CppModifiers)modifiers [i]);
+				if (part is CppModifiers) {
+					Modifiers.Add ((CppModifiers)part);
 					continue;
 				}
 
-				string strModifier = modifiers [i] as string;
-				if (strModifier != null) {
-					// FIXME: Use Enum.TryParse here if we decide to make this NET_4_0 only
-					try {
-						Modifiers.Add ((CppModifiers)Enum.Parse (typeof (CppModifiers), strModifier, true));
-						continue;
-					} catch { }
+				if (part is CppModifiers []) {
+					Modifiers.AddRange ((CppModifiers [])part);
+					continue;
 				}
 
-				// must be a type name
-				ParseType (modifiers [i]);
-			}
-		}
-
-		private void ParseType (object type)
-		{
-			if (type is CppTypes) {
-				ElementType = (CppTypes)type;
-				ElementTypeName = null;
-				return;
-			}
-
-			string strType = type as string;
-			if (strType != null) {
-				// strip tokens off type name
-				foreach (var token in Tokenize) {
-					foreach (var match in Regex.Matches (strType, token.Key))
-						Modifiers.Add (token.Value);
-
-					strType = Regex.Replace (strType, token.Key, string.Empty);
+				if (part is CppTypes) {
+					ElementType = (CppTypes)part;
+					continue;
 				}
 
-				// FIXME: Use Enum.TryParse here if we decide to make this NET_4_0 only
-				try {
-					CppTypes parsed = (CppTypes)Enum.Parse (typeof (CppTypes), strType, true);
-					ElementType = parsed;
-					ElementTypeName = null;
-					return;
-				} catch { }
+				Type managedType = part as Type;
+				if (managedType != null) {
+					CppType mapped = CppType.ForManagedType (managedType);
+					ApplyTo (mapped);
+					continue;
+				}
 
-				// it's the element type name
-				strType = strType.Trim ();
-				if (!strType.Equals (string.Empty))
-					ElementTypeName = strType;
-				return;
-			}
+				string strPart = part as string;
+				if (strPart != null) {
+					var parsed = CppModifiers.Parse (strPart);
+					if (parsed.Any ()) {
+						Modifiers.AddRange (parsed);
+						strPart = CppModifiers.Remove (strPart);
+					}
 
-			Type managedType = type as Type;
-			if (managedType != null) {
-				CppType mapped = CppType.ForManagedType (managedType);
-				ApplyTo (mapped);
-				return;
+					// if we have something left, it must be a type name
+					strPart = strPart.Trim ();
+					if (strPart != "") {
+
+						// FIXME: Use Enum.TryParse here if we decide to make this NET_4_0 only
+						try {
+							CppTypes cppTypes = (CppTypes)Enum.Parse (typeof (CppTypes), strPart, true);
+							ElementType = cppTypes;
+							continue;
+						} catch { }
+
+						// otherwise it is the element type name...
+						ElementTypeName = strPart;
+					}
+				}
 			}
 		}
 
@@ -242,7 +214,7 @@ namespace Mono.VisualC.Interop {
 			ElementTypeName = type.ElementTypeName;
 
 			List<CppModifiers> oldModifiers = internalModifiers;
-			internalModifiers = type.Modifiers;
+			internalModifiers = type.internalModifiers;
 
 			if (oldModifiers != null)
 				Modifiers.AddRange (oldModifiers);
@@ -250,33 +222,54 @@ namespace Mono.VisualC.Interop {
 			return this;
 		}
 
-		// Removes the modifiers from the passed instance from this instance
+		// Removes the modifiers on the passed instance from this instance
 		public CppType Subtract (CppType type)
 		{
 			if (internalModifiers == null)
 				return this;
 
-			foreach (var modifier in type.Modifiers) {
-				for (int i = 0; i < internalModifiers.Count; i++) {
-					if (internalModifiers [i] == modifier)
-						internalModifiers.RemoveAt (i--);
-				}
-			}
+			CppType current = this;
+			foreach (var modifier in ((IEnumerable<CppModifiers>)type.Modifiers).Reverse ())
+				current = current.Subtract (modifier);
 
-			return this;
+			return current;
+		}
+		public CppType Subtract (CppModifiers modifier)
+		{
+			CppType newType = this;
+			newType.internalModifiers = new List<CppModifiers> (((IEnumerable<CppModifiers>)newType.Modifiers).Reverse ().WithoutFirst (modifier));
+			return newType;
+		}
+
+		// note: this adds modifiers "backwards" (it is mainly used by the generator)
+		public CppType Modify (CppModifiers modifier)
+		{
+			CppType newType = this;
+			var newModifier = new CppModifiers [] { modifier };
+
+			if (newType.internalModifiers != null)
+				newType.internalModifiers.AddFirst (newModifier);
+			else
+				newType.internalModifiers = new List<CppModifiers> (newModifier);
+
+			return newType;
 		}
 
 		public override bool Equals (object obj)
 		{
 			if (obj == null)
 				return false;
-			if (obj.GetType () != typeof(CppType))
+			if (obj.GetType () == typeof (CppTypes))
+				return Equals (new CppType (obj));
+			if (obj.GetType () != typeof (CppType))
 				return false;
 			CppType other = (CppType)obj;
 
 			// FIXME: the order of some modifiers is not significant
-			return ((internalModifiers == null && other.internalModifiers == null) ||
-			         internalModifiers.SequenceEqual (other.internalModifiers)) &&
+			return (((internalModifiers == null || !internalModifiers.Any ()) &&
+			         (other.internalModifiers == null || !other.internalModifiers.Any ())) ||
+			        (internalModifiers != null && other.internalModifiers != null &&
+			         internalModifiers.SequenceEqual (other.internalModifiers))) &&
 			       ElementType == other.ElementType &&
 			       ElementTypeName == other.ElementTypeName;
 		}
@@ -291,23 +284,27 @@ namespace Mono.VisualC.Interop {
 			}
 		}
 
-
 		public override string ToString ()
 		{
 			StringBuilder cppTypeString = new StringBuilder ();
 
-			if (ElementType != CppTypes.Unknown)
+			if (ElementType != CppTypes.Unknown && ElementType != CppTypes.Typename)
 				cppTypeString.Append (Enum.GetName (typeof (CppTypes), ElementType).ToLower ());
 
-			if (ElementTypeName != null)
-				cppTypeString.Append (" ").Append (ElementTypeName);
+			if (ElementTypeName != null && ElementType != CppTypes.Typename) {
+				if (cppTypeString.Length > 0)
+					cppTypeString.Append (' ');
+				cppTypeString.Append (ElementTypeName);
+			}
 
-			foreach (var modifier in Modifiers) {
-				string stringified;
-				if (!Stringify.TryGetValue (modifier, out stringified))
-					stringified = Enum.GetName (typeof (CppModifiers), modifier).ToLower ();
+			if (internalModifiers != null) {
+				foreach (var modifier in internalModifiers) {
+					string stringified = modifier.ToString ();
 
-				cppTypeString.Append (" ").Append (stringified);
+					if (cppTypeString.Length > 0)
+						cppTypeString.Append (' ');
+					cppTypeString.Append (stringified);
+				}
 			}
 
 			return cppTypeString.ToString ();
@@ -321,26 +318,6 @@ namespace Mono.VisualC.Interop {
 			                   select checkType (me)).FirstOrDefault ();
 
 			return mappedType;
-		}
-
-		public CppType Modify (CppModifiers modifier)
-		{
-			CppType newType = this;
-			var newModifier = new CppModifiers [] { modifier };
-
-			if (newType.internalModifiers != null)
-				newType.internalModifiers.AddFirst (newModifier);
-			else
-				newType.internalModifiers = new List<CppModifiers> (newModifier);
-
-			return newType;
-		}
-
-		public CppType WithoutModifier (CppModifiers modifier)
-		{
-			CppType newType = this;
-			newType.internalModifiers = new List<CppModifiers> (newType.Modifiers.Without (modifier));
-			return newType;
 		}
 
 		public static CppType ForManagedType (Type type)
