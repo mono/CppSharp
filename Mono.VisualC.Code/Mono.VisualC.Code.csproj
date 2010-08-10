@@ -5,10 +5,10 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{AD0F9378-789C-4AF1-B0DD-6DD9A63C3401}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>generator</RootNamespace>
-    <AssemblyName>generator</AssemblyName>
+    <ProjectGuid>{A22BF9D9-BBCB-4462-BE08-0F4D5280B180}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AssemblyName>Mono.VisualC.Code</AssemblyName>
+    <RootNamespace>Mono.VisualC.Code</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -18,7 +18,7 @@
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Commandlineparameters>-f=qobject.xml</Commandlineparameters>
+    <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -26,41 +26,35 @@
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Main.cs" />
-    <Compile Include="Options.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System">
-    </Reference>
-    <Reference Include="System.Xml">
-    </Reference>
-    <Reference Include="System.Xml.Linq">
-    </Reference>
+    <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="CodeAtom.cs" />
+    <Compile Include="Atoms\Preprocessor.cs" />
+    <Compile Include="CodeContainer.cs" />
+    <Compile Include="Atoms\Class.cs" />
+    <Compile Include="CodeUnit.cs" />
+    <Compile Include="Access.cs" />
+    <Compile Include="Atoms\Method.cs" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="Atoms\" />
+  </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
       <Properties InternalTargetFrameworkVersion="3.5" />
     </MonoDevelop>
   </ProjectExtensions>
   <ItemGroup>
-    <None Include="class.template">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="interface.template">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="struct.template">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Mono.VisualC.Code\Mono.VisualC.Code.csproj">
-      <Project>{A22BF9D9-BBCB-4462-BE08-0F4D5280B180}</Project>
-      <Name>Mono.VisualC.Code</Name>
+    <ProjectReference Include="..\Mono.VisualC.Interop\Mono.VisualC.Interop.csproj">
+      <Project>{4A864586-93C5-4DC1-8A80-F094A88506D7}</Project>
+      <Name>Mono.VisualC.Interop</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

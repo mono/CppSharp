@@ -8,6 +8,12 @@ using System.Xml.Linq;
 using System.Collections.Generic;
 using System.Linq;
 
+using Mono.VisualC.Code;
+using Mono.VisualC.Code.Atoms;
+
+using System.CodeDom.Compiler;
+using Microsoft.CSharp;
+
 namespace CPPInterop {
 	class Generator {
 
@@ -76,7 +82,6 @@ namespace CPPInterop {
 
 		public void Run ()
 		{
-
 			XmlDocument xmldoc = new XmlDocument ();
 			xmldoc.Load (Source);
 			XmlNodeList namespaces = xmldoc.SelectNodes ("/GCC_XML/Namespace[@name != '::' and @name != '' and @name != 'std']");
@@ -91,10 +96,14 @@ namespace CPPInterop {
 				if (Classes.ContainsKey (name))
 					continue;
 
+				var cu = new CodeUnit { ManagedNamespace = "Qt.Core" };
+				var classAtom = new Class (name) { StaticCppLibrary = "Qt.Libs.QtCore" };
+				cu.Atoms.AddLast (classAtom);
+
 				string size = clas.Attributes["size"].Value;
 				string members = clas.Attributes["members"].Value;
 
-				StringBuilder str = new StringBuilder();
+				//StringBuilder str = new StringBuilder();
 				foreach (string id in members.Split(new char[]{' '})) {
 					if (id.Equals (String.Empty))
 						continue;
@@ -110,18 +119,27 @@ namespace CPPInterop {
 					if (n.Attributes["access"] == null || n.Attributes["access"].Value != "public")
 						continue;
 
-					str.Append ("\t\t\t");
+					//str.Append ("\t\t\t");
 					string mname = n.Attributes["name"].Value;
 
 					XmlNode ret = find (xmldoc.DocumentElement, n.Attributes["returns"]);
 
 					string rett = ret.Attributes["name"].Value;
-					bool virt = ret.Attributes["virtual"] != null && ret.Attributes["virtual"].Value == "1";
+					bool virt = n.Attributes["virtual"] != null && n.Attributes["virtual"].Value == "1";
+					bool stat = n.Attributes["static"] != null && n.Attributes["static"].Value == "1";
 
-					if (virt)
-						str.Append ("[Virtual] ");
-					str.Append (rett + " " + mname + " (CppInstancePtr @this");
+					//if (virt)
+						//str.Append ("[Virtual] ");
 
+					//str.Append (rett + " " + mname + " (CppInstancePtr @this");
+
+					List<Method.Parameter> args = new List<Method.Parameter> ();
+					var methodAtom = new Method (mname) {
+						RetType = rett,
+						IsVirtual = virt,
+						IsStatic = stat,
+						Parameters = args
+					};
 
 					int c = 0;
 					foreach (XmlNode arg in n.SelectNodes ("Argument")) {
@@ -133,11 +151,15 @@ namespace CPPInterop {
 
 						XmlNode argt = find (xmldoc.DocumentElement, arg.Attributes["type"].Value);
 						string argtype = argt.Attributes["name"].Value;
-						str.Append (", " + argtype + " " + argname);
+						//str.Append (", " + argtype + " " + argname);
+						args.Add (new Method.Parameter { Name = argname, Type = argtype });
+
+						// tee hee
 						c++;
 					}
 
-					str.AppendLine (");");
+					//str.AppendLine (");");
+					classAtom.Atoms.AddLast (methodAtom);
 				}
 
 				Classes.Add (name, sanitize(name) + ".cs");
@@ -145,6 +167,7 @@ namespace CPPInterop {
 				FileStream fs = File.Create (Path.Combine (Dir, Classes[name]));
 				StreamWriter sw = new StreamWriter(fs);
 
+				/*
 				StringBuilder sb = new StringBuilder();
 				string strstruct = String.Format (templateStruct, name);
 				string strinterface = String.Format (templateInterface, name, "", str.ToString());
@@ -156,6 +179,9 @@ namespace CPPInterop {
 				                          strstruct,
 				                          size));
 				sw.Write (sb.ToString());
+				*/
+				new CSharpCodeProvider ().GenerateCodeFromCompileUnit (cu.WrapperToCodeDom (), sw, new CodeGeneratorOptions ());
+
 				sw.Flush ();
 				sw.Close ();
 			}

@@ -58,10 +58,28 @@ namespace Mono.VisualC.Interop {
 		};
 		*/
 
+		public static List<Func<CppType,Type>> ElementTypeToManagedMap = new List<Func<CppType, Type>> () {
+			(t) => { return t.ElementType == CppTypes.Class || t.ElementType == CppTypes.Struct? typeof (ICppObject) : null; },
+			(t) => { return t.ElementType == CppTypes.Char && t.Modifiers.Contains (CppModifiers.Pointer)? typeof (string) : null; },
+
+			(t) => { return t.ElementType == CppTypes.Int && t.Modifiers.Contains (CppModifiers.Short) && t.Modifiers.Contains (CppModifiers.Unsigned)? typeof (ushort) : null; },
+			(t) => { return t.ElementType == CppTypes.Int && t.Modifiers.Contains (CppModifiers.Long) && t.Modifiers.Contains (CppModifiers.Unsigned)? typeof (ulong) : null; },
+			(t) => { return t.ElementType == CppTypes.Int && t.Modifiers.Contains (CppModifiers.Short)? typeof (short) : null; },
+			(t) => { return t.ElementType == CppTypes.Int && t.Modifiers.Contains (CppModifiers.Long)? typeof (long) : null; },
+			(t) => { return t.ElementType == CppTypes.Int && t.Modifiers.Contains (CppModifiers.Unsigned)? typeof (uint) : null; },
+
+			(t) => { return t.ElementType == CppTypes.Void?   typeof (void)   : null; },
+			(t) => { return t.ElementType == CppTypes.Bool?   typeof (bool)   : null; },
+			(t) => { return t.ElementType == CppTypes.Char?   typeof (char)   : null; },
+			(t) => { return t.ElementType == CppTypes.Int?    typeof (int)    : null; },
+			(t) => { return t.ElementType == CppTypes.Float?  typeof (float)  : null; },
+			(t) => { return t.ElementType == CppTypes.Double? typeof (double) : null; }
+		};
+
 		// FIXME: Passing these as delegates allows for the flexibility of doing processing on the
 		//  type (i.e. to correctly mangle the function pointer arguments if the managed type is a delegate),
 		//  however this does not make it very easy to override the default mappings at runtime.
-		public static List<Func<Type,CppType>> ManagedTypeMap = new List<Func<Type,CppType>> () {
+		public static List<Func<Type,CppType>> ManagedToCppTypeMap = new List<Func<Type,CppType>> () {
 			(t) => { return typeof (void).Equals (t)  ? CppTypes.Void   : CppTypes.Unknown;  },
 			(t) => { return typeof (bool).Equals (t)  ? CppTypes.Bool   : CppTypes.Unknown;  },
 			(t) => { return typeof (char).Equals (t)  ? CppTypes.Char   : CppTypes.Unknown;  },
@@ -71,6 +89,9 @@ namespace Mono.VisualC.Interop {
 
 			(t) => { return typeof (short).Equals (t) ? new CppType (CppModifiers.Short, CppTypes.Int) : CppTypes.Unknown; },
 			(t) => { return typeof (long).Equals (t)  ? new CppType (CppModifiers.Long, CppTypes.Int)  : CppTypes.Unknown; },
+			(t) => { return typeof (uint).Equals (t)  ? new CppType (CppModifiers.Unsigned, CppTypes.Int) : CppTypes.Unknown; },
+			(t) => { return typeof (ushort).Equals (t)? new CppType (CppModifiers.Unsigned, CppModifiers.Short, CppTypes.Int) : CppTypes.Unknown; },
+			(t) => { return typeof (ulong).Equals (t)?  new CppType (CppModifiers.Unsigned, CppModifiers.Long, CppTypes.Int) : CppTypes.Unknown; },
 
 			// strings mangle as "const char*" by default
 			(t) => { return typeof (string).Equals (t)? new CppType (CppModifiers.Const, CppTypes.Char, CppModifiers.Pointer) : CppTypes.Unknown; },
@@ -231,10 +252,39 @@ namespace Mono.VisualC.Interop {
 		}
 		*/
 
+		public Type ToManagedType ()
+		{
+			return ToManagedType (false);
+		}
+		public Type ToManagedType (bool usePointerTypes)
+		{
+			CppType me = this;
+			Type mappedType = (from checkType in ElementTypeToManagedMap
+			                   where checkType (me) != null
+			                   select checkType (me)).FirstOrDefault ();
+
+			if (mappedType == null)
+				return null;
+
+			// FIXME: not ideal to have this test here
+			if (typeof (string).Equals (mappedType) || typeof (ICppObject).Equals (mappedType))
+				return mappedType;
+
+
+			if (Modifiers.Contains (CppModifiers.Pointer) && !usePointerTypes)
+				return typeof (IntPtr);
+			else if (Modifiers.Contains (CppModifiers.Pointer))
+				mappedType = mappedType.MakePointerType ();
+			else if (Modifiers.Contains (CppModifiers.Array))
+				mappedType = mappedType.MakeArrayType ();
+
+			return mappedType;
+		}
+
 		public static CppType ForManagedType (Type type)
 		{
 
-			var mappedType = (from checkType in ManagedTypeMap
+			var mappedType = (from checkType in ManagedToCppTypeMap
 			                  where checkType (type).ElementType != CppTypes.Unknown
 			                  select checkType (type)).FirstOrDefault ();
 
