@@ -47,10 +47,7 @@ namespace Mono.VisualC.Interop {
 
 		public override bool Equals (object obj)
 		{
-			if (obj == null)
-				return false;
-
-			return GetType ().Equals (obj.GetType ());
+			return this == obj as CppModifiers;
 		}
 		public override int GetHashCode ()
 		{
@@ -59,13 +56,13 @@ namespace Mono.VisualC.Interop {
 
 		public static bool operator == (CppModifiers a, CppModifiers b)
 		{
-			if (a != null && b != null)
-				return a.Equals (b);
-
-			if (a == null && b == null)
+			if ((object)a == (object)b)
 				return true;
 
-			return false;
+			if ((object)a == null || (object)b == null)
+				return false;
+
+			return a.GetHashCode () == b.GetHashCode ();
 		}
 		public static bool operator != (CppModifiers a, CppModifiers b)
 		{
