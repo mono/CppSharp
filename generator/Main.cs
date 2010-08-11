@@ -341,6 +341,9 @@ namespace CPPInterop {
 		{
 			XmlNode n = root.SelectSingleNode ("/GCC_XML/*[@id='" + id + "']");
 
+			string name = "unknown";
+			if (n.Attributes ["name"] != null)
+				name = n.Attributes ["name"].Value;
 			switch (n.Name) {
 			case "ArrayType": return findType (root, n.Attributes ["type"].Value, modifiers.Modify (CppModifiers.Array));
 			case "PointerType": return findType (root, n.Attributes ["type"].Value, modifiers.Modify (CppModifiers.Pointer));
@@ -351,9 +354,9 @@ namespace CPPInterop {
 
 			case "Typedef": return findType (root, n.Attributes ["type"].Value, modifiers);
 
-			case "FundamentalType": return modifiers.ApplyTo (new CppType (n.Attributes ["name"].Value));
-			case "Class": return modifiers.ApplyTo (new CppType (CppTypes.Class, n.Attributes ["name"].Value));
-			case "Struct": return modifiers.ApplyTo (new CppType (CppTypes.Struct, n.Attributes ["name"].Value));
+			case "FundamentalType": return modifiers.ApplyTo (new CppType (name));
+			case "Class": return modifiers.ApplyTo (new CppType (CppTypes.Class, name));
+			case "Struct": return modifiers.ApplyTo (new CppType (CppTypes.Struct, name));
 			case "Union": return modifiers.ApplyTo (ProcessUnion (root, n));
 			case "Enumeration": return modifiers.ApplyTo (ProcessEnum (n));
 
