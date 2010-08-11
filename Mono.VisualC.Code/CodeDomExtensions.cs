@@ -29,7 +29,7 @@ namespace Mono.VisualC.Code {
 			if (managedType == typeof (ICppObject))
 				managedType = null;
 
-			return new CodeTypeReference (managedType.FullName ?? t.ElementTypeName, tempParm.ToArray ());
+			return new CodeTypeReference (managedType != null ? managedType.FullName : t.ElementTypeName, tempParm.ToArray ());
 		}
 
 		public static CodeTypeReference [] TypeParameterReferences (this CodeTypeDeclaration ctd)
