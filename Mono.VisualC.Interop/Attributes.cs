@@ -10,6 +10,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using System.Diagnostics;
 
 namespace Mono.VisualC.Interop {
 
@@ -29,6 +30,7 @@ namespace Mono.VisualC.Interop {
         public class StaticAttribute : Attribute {}
 
 	// used for the const "this" - for example: int value () const;
+	//  use MangleAsAttribute for const parameters
 	[AttributeUsage (AttributeTargets.Method)]
 	public class ConstAttribute : Attribute {}
 
@@ -56,10 +58,25 @@ namespace Mono.VisualC.Interop {
 			this.MangleType = new CppType (cppTypeSpec);
 		}
         }
+
+	// for testing:
+	[AttributeUsage (AttributeTargets.Method)]
+	public class ValidateBindingsAttribute : Attribute {
+		public string MangledName { get; set; }
+		public Type Abi { get; set; }
+
+		public ValidateBindingsAttribute (string mangledName)
+		{
+			MangledName = mangledName;
+		}
+	}
+
 	#endregion
 
+	#region Wrapper method attributes
         [AttributeUsage (AttributeTargets.Method)]
         public class OverrideNativeAttribute : Attribute {}
+	#endregion
 }
 
 namespace Mono.VisualC.Interop.ABI {
@@ -105,6 +122,12 @@ using Mono.VisualC.Interop;
 
                         return mangleType;
                 }
+
+		[Conditional ("VALIDATE")]
+		public virtual void ValidateBindings (MemberInfo member)
+		{
+			throw new NotImplementedException ();
+		}
         }
 
 }

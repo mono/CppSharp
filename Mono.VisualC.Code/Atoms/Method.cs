@@ -6,14 +6,11 @@ using System.Collections.Generic;
 using System.CodeDom;
 
 using Mono.VisualC.Interop;
+using Mono.VisualC.Interop.ABI;
 
 namespace Mono.VisualC.Code.Atoms {
 
 	public class Method : CodeContainer {
-		public struct Parameter {
-			public string Name;
-			public CppType Type;
-		}
 
 		public string Name { get; set; }
 		public Access Access  { get; set; }
@@ -24,23 +21,55 @@ namespace Mono.VisualC.Code.Atoms {
 		public bool IsDestructor { get; set; }
 
 		public CppType RetType { get; set; }
-		public IList<Parameter> Parameters { get; set; }
-		
+		public IList<NameTypePair<CppType>> Parameters { get; set; }
+
+		// for testing:
+		// FIXME: make this Nullable, auto implemented property and remove bool field once this won't cause gmcs to crash
+		public NameTypePair<Type> Mangled {
+			get {
+				if (!hasMangledInfo) throw new InvalidOperationException ("No mangle info present.");
+				return mangled;
+			}
+			set {
+				mangled = value;
+				hasMangledInfo = true;
+			}
+
+		}
+		private NameTypePair<Type> mangled;
+		private bool hasMangledInfo = false;
+
+
 		public Method (string name)
 		{
 			Name = name;
-			Parameters = new List<Parameter> ();
+			Parameters = new List<NameTypePair<CppType>> ();
 		}
 
 		internal protected override object InsideCodeTypeDeclaration (CodeTypeDeclaration decl)
 		{
 			if (decl.IsClass) {
+				// FIXME: add commented methods to wrappers too? for now, I say let's reduce code clutter.
+				if (CommentedOut)
+					return null;
+
 				var method = CreateWrapperMethod ();
 				decl.Members.Add (method);
 				return method;
 
-			} else if (decl.IsInterface)
-				decl.Members.Add (CreateInterfaceMethod ());
+			} else if (decl.IsInterface) {
+				CodeTypeMember member;
+
+				if (CommentedOut) {
+					member = new CodeSnippetTypeMember ();
+					member.Comments.Add (new CodeCommentStatement (Comment));
+					member.Comments.Add (new CodeCommentStatement (CreateInterfaceMethod ().CommentOut (current_code_provider)));
+
+				} else
+					member = CreateInterfaceMethod ();
+
+				decl.Members.Add (member);
+			}
 
 			return null;
 		}
@@ -52,7 +81,7 @@ namespace Mono.VisualC.Code.Atoms {
 				arguments.Add (new CodeFieldReferenceExpression (new CodeThisReferenceExpression (), "Native"));
 
 			foreach (var param in Parameters) {
-				// FIXME: handle typenames
+				// FIXME: handle typenames better
 				if (param.Type.ElementType != CppTypes.Typename) {
 					Type managedType = param.Type.ToManagedType ();
 					if (managedType != null && managedType.IsByRef) {
@@ -93,7 +122,13 @@ namespace Mono.VisualC.Code.Atoms {
 			else
 				method.Parameters.Add (new CodeParameterDeclarationExpression (typeof (CppInstancePtr).Name, "this"));
 
-			AddParameters (method, true);
+			if (hasMangledInfo)
+				method.CustomAttributes.Add (new CodeAttributeDeclaration ("ValidateBindings",
+				                                                           new CodeAttributeArgument (new CodePrimitiveExpression (Mangled.Name)),
+				                                                           new CodeAttributeArgument ("Abi", new CodeTypeOfExpression (Mangled.Type))));
+			foreach (var param in GetParameterDeclarations (true))
+				method.Parameters.Add (param);
+
 			return method;
 		}
 
@@ -128,7 +163,9 @@ namespace Mono.VisualC.Code.Atoms {
 			else if (IsVirtual && !IsDestructor)
 				method.CustomAttributes.Add (new CodeAttributeDeclaration ("OverrideNative"));
 
-			AddParameters (method, false);
+			foreach (var param in GetParameterDeclarations (false))
+				method.Parameters.Add (param);
+
 			return method;
 		}
 
@@ -152,7 +189,12 @@ namespace Mono.VisualC.Code.Atoms {
 			}
 		}
 
-		private void AddParameters (CodeMemberMethod method, bool includeMangleAttribute)
+		public IEnumerable<CodeParameterDeclarationExpression> GetParameterDeclarations ()
+		{
+			return GetParameterDeclarations (false);
+		}
+
+		private IEnumerable<CodeParameterDeclarationExpression> GetParameterDeclarations (bool includeMangleAttribute)
 		{
 			foreach (var param in Parameters) {
 				CodeParameterDeclarationExpression paramDecl;
@@ -174,7 +216,7 @@ namespace Mono.VisualC.Code.Atoms {
 				if (includeMangleAttribute && !IsVirtual && !paramStr.Equals (string.Empty))
 					paramDecl.CustomAttributes.Add (new CodeAttributeDeclaration ("MangleAs", new CodeAttributeArgument (new CodePrimitiveExpression (paramStr))));
 
-				method.Parameters.Add (paramDecl);
+				yield return paramDecl;
 			}
 		}
 

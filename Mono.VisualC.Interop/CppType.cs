@@ -31,6 +31,7 @@ namespace Mono.VisualC.Interop {
 		Int,
 		Float,
 		Double,
+		WChar_T,
 		// for template type parameters
 		Typename
 	}
@@ -51,7 +52,8 @@ namespace Mono.VisualC.Interop {
 			(t) => t.ElementType == CppTypes.Void && t.Modifiers.Contains (CppModifiers.Pointer)? typeof (IntPtr) : null,
 
 			// single pointer to char gets string
-			(t) => t.ElementType == CppTypes.Char && t.Modifiers.Count (m => m == CppModifiers.Pointer) == 1? typeof (string) : null,
+			// same with wchar_t (needs marshaling attribute though!)
+			(t) => (t.ElementType == CppTypes.Char || t.ElementType == CppTypes.WChar_T) && t.Modifiers.Count (m => m == CppModifiers.Pointer) == 1? typeof (string) : null,
 			// pointer to pointer to char gets string[]
 			(t) => t.ElementType == CppTypes.Char && t.Modifiers.Count (m => m == CppModifiers.Pointer) == 2? typeof (string).MakeArrayType () : null,
 

@@ -30,6 +30,7 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="Options.cs" />
+    <Compile Include="MethodSignature.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System">

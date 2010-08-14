@@ -46,6 +46,7 @@
     <Compile Include="Atoms\Property.cs" />
     <Compile Include="Atoms\Field.cs" />
     <Compile Include="Atoms\Union.cs" />
+    <Compile Include="NameTypePair.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

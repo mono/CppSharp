@@ -4,13 +4,25 @@ using System.IO;
 using System.Collections.Generic;
 
 using System.CodeDom;
+using System.CodeDom.Compiler;
 
 namespace Mono.VisualC.Code {
 
 	public abstract class CodeAtom {
 
+		public string Comment { get; set; }
+		public bool CommentedOut { get; set; }
+
+		protected CodeDomProvider current_code_provider;
+
 		internal protected virtual void Visit (object obj)
 		{
+			Visit (obj, current_code_provider);
+		}
+
+		internal protected virtual void Visit (object obj, CodeDomProvider provider)
+		{
+			current_code_provider = provider;
 			object result = obj;
 
 			while (result != null) {
@@ -21,6 +33,8 @@ namespace Mono.VisualC.Code {
 				if (result is CodeStatementCollection) { result = InsideCodeStatementCollection (result as CodeStatementCollection); continue; }
 				break;
 			}
+
+			current_code_provider = null;
 		}
 
 		internal protected virtual object InsideCodeCompileUnit (CodeCompileUnit ccu)

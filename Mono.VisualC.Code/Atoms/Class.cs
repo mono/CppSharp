@@ -45,7 +45,7 @@ namespace Mono.VisualC.Code.Atoms {
 			return wrapper;
 		}
 
-		private CodeTypeDeclaration CreateWrapperClass ()
+		public CodeTypeDeclaration CreateWrapperClass ()
 		{
 			var wrapper = new CodeTypeDeclaration (Name) { TypeAttributes = TypeAttributes.Public };
 			foreach (var arg in TemplateArguments)
@@ -102,18 +102,25 @@ namespace Mono.VisualC.Code.Atoms {
 					atom.Visit (wrapper);
 			}
 
-			if (dispose == null)
-				wrapper.Members.Add (CreateDestructorlessDispose ());
-			else if (hasOverrides)
+			if (dispose == null) {
+				dispose = CreateDestructorlessDispose ();
+				wrapper.Members.Add (dispose);
+			}
+
+			if (hasOverrides)
 				dispose.Attributes |= MemberAttributes.Override;
 
 			return wrapper;
 		}
 
-		private CodeTypeDeclaration CreateInterface (CodeTypeDeclaration wrapper)
+		public CodeTypeDeclaration CreateInterface ()
+		{
+			return CreateInterface (null);
+		}
+		public CodeTypeDeclaration CreateInterface (CodeTypeDeclaration wrapper)
 		{
 			var iface = new CodeTypeDeclaration ("I" + Name) {
-				TypeAttributes = TypeAttributes.Interface | TypeAttributes.NestedPublic,
+				TypeAttributes = TypeAttributes.Interface | (wrapper != null? TypeAttributes.NestedPublic : TypeAttributes.Public),
 				Attributes = MemberAttributes.Public,
 				IsInterface = true
 			};
@@ -121,7 +128,10 @@ namespace Mono.VisualC.Code.Atoms {
 			foreach (var arg in TemplateArguments)
 				iface.TypeParameters.Add (arg);
 
-			iface.BaseTypes.Add (new CodeTypeReference (typeof (ICppClassOverridable<>).Name, wrapper.TypeReference ()));
+			if (wrapper != null)
+				iface.BaseTypes.Add (new CodeTypeReference (typeof (ICppClassOverridable<>).Name, wrapper.TypeReference ()));
+			else
+				iface.BaseTypes.Add (new CodeTypeReference (typeof (ICppClass).Name));
 
 			foreach (var atom in Atoms)
 				atom.Visit (iface);
@@ -129,7 +139,7 @@ namespace Mono.VisualC.Code.Atoms {
 			return iface;
 		}
 
-		private CodeTypeDeclaration CreateNativeLayout ()
+		public CodeTypeDeclaration CreateNativeLayout ()
 		{
 			var native = new CodeTypeDeclaration ("_" + Name) {
 				TypeAttributes = TypeAttributes.NestedPrivate | TypeAttributes.SequentialLayout,

@@ -36,15 +36,21 @@ namespace Mono.VisualC.Code.Atoms {
 			return field;
 		}
 
+		// FIXME: Handle fixed size arrays? Can't really see a good way to do that yet.
 		public CodeTypeReference TypeReference {
 			get {
+
+				if (Type.Modifiers.Count > 0) {
+					CppModifiers lastModifier = Type.Modifiers [Type.Modifiers.Count - 1];
+					if (lastModifier == CppModifiers.Pointer || lastModifier == CppModifiers.Reference)
+						return new CodeTypeReference (typeof (IntPtr));
+				}
+
+				if (Type.ElementType == CppTypes.Enum || Type.ElementType == CppTypes.Union)
+					return new CodeTypeReference (Type.ElementTypeName);
+
 				if (Type.ElementType == CppTypes.Typename)
 					return new CodeTypeReference (Type.ElementTypeName, CodeTypeReferenceOptions.GenericTypeParameter);
-
-				if (Type.Modifiers.Contains (CppModifiers.Pointer) || Type.Modifiers.Contains (CppModifiers.Reference))
-					return new CodeTypeReference (typeof (IntPtr));
-
-				// FIXME: Handle arrays (fixed size?)
 
 				Type managedType = Type.ToManagedType ();
 				if (managedType != null)

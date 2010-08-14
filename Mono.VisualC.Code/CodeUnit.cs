@@ -4,6 +4,7 @@ using System.IO;
 using System.Collections.Generic;
 
 using System.CodeDom;
+using System.CodeDom.Compiler;
 
 namespace Mono.VisualC.Code {
 	public class CodeUnit : CodeContainer {
@@ -14,10 +15,10 @@ namespace Mono.VisualC.Code {
 		{
 		}
 		
-		public virtual CodeCompileUnit WrapperToCodeDom ()
+		public virtual CodeCompileUnit WrapperToCodeDom (CodeDomProvider provider)
 		{
 			CodeCompileUnit ccu = new CodeCompileUnit ();
-			Visit (ccu);
+			Visit (ccu, provider);
 
 			return ccu;
 		}
