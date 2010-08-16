@@ -47,7 +47,7 @@ namespace Mono.VisualC.Code.Atoms {
 				}
 
 				if (Type.ElementType == CppTypes.Enum || Type.ElementType == CppTypes.Union)
-					return new CodeTypeReference (Type.ElementTypeName);
+					return Type.TypeReference ();
 
 				if (Type.ElementType == CppTypes.Typename)
 					return new CodeTypeReference (Type.ElementTypeName, CodeTypeReferenceOptions.GenericTypeParameter);

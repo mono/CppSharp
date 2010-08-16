@@ -30,7 +30,7 @@ namespace Mono.VisualC.Interop.ABI {
                         return defaultType;
                 }
 
-                public override string GetMangledMethodName (MethodInfo methodInfo)
+                protected override string GetMangledMethodName (MethodInfo methodInfo)
                 {
                         throw new NotSupportedException ("Name mangling is not supported by this class. All C++ interface methods must be declared virtual.");
                 }

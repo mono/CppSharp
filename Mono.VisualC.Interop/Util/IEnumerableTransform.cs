@@ -155,6 +155,10 @@ namespace Mono.VisualC.Interop.Util {
 			list.AddRange (items);
 			list.AddRange (temp);
 	        }
+		public static void AddFirst<T> (this List<T> list, T item)
+		{
+			list.Insert (0, item);
+		}
 
 
 	}

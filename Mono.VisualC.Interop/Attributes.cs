@@ -10,7 +10,6 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using System.Diagnostics;
 
 namespace Mono.VisualC.Interop {
 
@@ -61,11 +60,11 @@ namespace Mono.VisualC.Interop {
 
 	// for testing:
 	[AttributeUsage (AttributeTargets.Method)]
-	public class ValidateBindingsAttribute : Attribute {
+	public class AbiTestAttribute : Attribute {
 		public string MangledName { get; set; }
 		public Type Abi { get; set; }
 
-		public ValidateBindingsAttribute (string mangledName)
+		public AbiTestAttribute (string mangledName)
 		{
 			MangledName = mangledName;
 		}
@@ -115,7 +114,7 @@ using Mono.VisualC.Interop;
 			// this means that either no MangleAsAttribute was defined, or
 			//  only CppModifiers were applied .. apply CppType from managed parameter type
 			if (mangleType.ElementType == CppTypes.Unknown && mangleType.ElementTypeName == null)
-				mangleType.ApplyTo (CppType.ForManagedType (managedType));
+				mangleType.CopyTypeFrom (CppType.ForManagedType (managedType));
 			else if (mangleType.ElementType == CppTypes.Unknown)
 				// FIXME: otherwise, we just assume it's CppTypes.Class for now.
 				mangleType.ElementType = CppTypes.Class;
@@ -123,11 +122,6 @@ using Mono.VisualC.Interop;
                         return mangleType;
                 }
 
-		[Conditional ("VALIDATE")]
-		public virtual void ValidateBindings (MemberInfo member)
-		{
-			throw new NotImplementedException ();
-		}
         }
 
 }

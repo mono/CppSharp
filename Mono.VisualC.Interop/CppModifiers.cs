@@ -12,37 +12,79 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
+using Mono.VisualC.Interop.Util;
+
 namespace Mono.VisualC.Interop {
 
 	public abstract class CppModifiers {
 
 		// This can be added to at runtime to support other modifiers
-		public static readonly Dictionary<string,Func<Match,CppModifiers>> Tokenize = new Dictionary<string,Func<Match,CppModifiers>> () {
-			{ "\\bconst\\b", m => CppModifiers.Const },
-			{ "\\*", m => CppModifiers.Pointer },
-			{ "\\[([^\\]]*)\\]", m => m.Groups [1].Success && m.Groups [1].Value.Trim () != ""? new ArrayModifier (int.Parse (m.Groups [1].Value)) : CppModifiers.Array },
-			{ "\\&", m => CppModifiers.Reference },
-			{ "\\bvolatile\\b", m => CppModifiers.Volatile },
-			{ "\\bsigned\\b", m => CppModifiers.Signed },
-			{ "\\bunsigned\\b", m => CppModifiers.Unsigned },
-			{ "\\bshort\\b", m => CppModifiers.Short },
-			{ "\\blong\\b", m => CppModifiers.Long },
-			{ "\\<(.*)\\>", m => m.Groups [1].Success && m.Groups [1].Value.Trim () != ""? new TemplateModifier (m.Groups [1].Value) : CppModifiers.Template }
+		// The list should be prioritized, in that the first items should be modifiers that can potentially contain other modifiers
+		public static readonly Dictionary<string,Action<Match,List<CppModifiers>>> Tokenize = new Dictionary<string,Action<Match,List<CppModifiers>>> () {
+			{ "\\<(.*)\\>", (m,l) => l.AddFirst (m.Groups [1].Success && m.Groups [1].Value.Trim () != ""? new TemplateModifier (m.Groups [1].Value) : CppModifiers.Template) },
+			{ "\\[([^\\]]*)\\]", (m,l) => l.Add (m.Groups [1].Success && m.Groups [1].Value.Trim () != ""? new ArrayModifier (int.Parse (m.Groups [1].Value)) : CppModifiers.Array) },
+			{ "\\bconst\\b", (m,l) => l.Add (CppModifiers.Const) },
+			{ "\\*", (m,l) => l.Add (CppModifiers.Pointer) },
+			{ "\\&", (m,l) => l.Add (CppModifiers.Reference) },
+			{ "\\bvolatile\\b", (m,l) => l.Add (CppModifiers.Volatile) },
+			{ "\\bunsigned\\b", (m,l) => l.Add (CppModifiers.Unsigned) },
+			{ "\\bsigned\\b", (m,l) => l.Add (CppModifiers.Signed) },
+			{ "\\bshort\\b", (m,l) => l.Add (CppModifiers.Short) },
+			{ "\\blong\\b", (m,l) => l.Add (CppModifiers.Long) }
 		};
 
-		public static IEnumerable<CppModifiers> Parse (string input)
-		{
-			foreach (var token in Tokenize) {
-				foreach (Match match in Regex.Matches (input, token.Key))
-					yield return token.Value (match);
-			}
+		private struct Token {
+			public Action<Match, List<CppModifiers>> action;
+			public Match match;
 		}
+		private static IEnumerable<Token> Tokenizer (string input) {
+
+			foreach (var token in Tokenize) {
+				Match match;
+
+				while ((match = Regex.Match (input, token.Key)) != null && match.Success) {
+					yield return new Token { match = match, action = token.Value };
+					input = input.Remove (match.Index, match.Length);
+				}
+			}
+
+		}
+
+		public static List<CppModifiers> Parse (string input)
+		{
+			List<CppModifiers> cpm = new List<CppModifiers> ();
+			var tokenizer = Tokenizer (input);
+
+			foreach (var token in tokenizer.OrderBy (t => t.match.Index))
+				token.action (token.match, cpm);
+
+			return cpm;
+		}
+
+		// removes any modifiers from the passed input
 		public static string Remove (string input)
 		{
 			foreach (var token in Tokenize)
 				input = Regex.Replace (input, token.Key, "");
 
 			return input;
+		}
+
+		// normalizes the order of order-agnostic modifiers
+		public static IEnumerable<CppModifiers> NormalizeOrder (IEnumerable<CppModifiers> modifiers)
+		{
+			var parts = modifiers.Transform (
+			        For.AllInputsIn (CppModifiers.Unsigned, CppModifiers.Long).InAnyOrder ().Emit (new CppModifiers [] { CppModifiers.Unsigned, CppModifiers.Long }),
+			        For.AllInputsIn (CppModifiers.Signed, CppModifiers.Long).InAnyOrder ().Emit (new CppModifiers [] { CppModifiers.Signed, CppModifiers.Long }),
+			        For.AllInputsIn (CppModifiers.Unsigned, CppModifiers.Short).InAnyOrder ().Emit (new CppModifiers [] { CppModifiers.Unsigned, CppModifiers.Short }),
+			        For.AllInputsIn (CppModifiers.Signed, CppModifiers.Short).InAnyOrder ().Emit (new CppModifiers [] { CppModifiers.Signed, CppModifiers.Short }),
+
+			        For.UnmatchedInput<CppModifiers> ().Emit (cppmod => new CppModifiers [] { cppmod })
+			);
+
+			foreach (var array in parts)
+				foreach (var item in array)
+					yield return item;
 		}
 
 		public override bool Equals (object obj)

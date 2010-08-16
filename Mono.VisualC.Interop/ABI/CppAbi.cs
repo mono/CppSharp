@@ -57,8 +57,13 @@ namespace Mono.VisualC.Interop.ABI {
 
 		// The members below must be implemented for a given C++ ABI:
 
-		public abstract string GetMangledMethodName (MethodInfo methodInfo);
 		public abstract CallingConvention? GetCallingConvention (MethodInfo methodInfo);
+		protected abstract string GetMangledMethodName (MethodInfo methodInfo);
+		public string GetMangledMethodName (string className, MethodInfo methodInfo)
+		{
+			class_name = className;
+			return GetMangledMethodName (methodInfo);
+		}
 
 		// The ImplementClass overrides are the main entry point to the Abi API:
 

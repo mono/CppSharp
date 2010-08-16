@@ -24,7 +24,6 @@ namespace Mono.VisualC.Code.Atoms {
 			public bool IsVirtual;
 		}
 		
-		public string Name { get; set; }
 		public string StaticCppLibrary { get; set; }
 		public Definition DefinedAs { get; set; }
 
@@ -40,16 +39,32 @@ namespace Mono.VisualC.Code.Atoms {
 
 		internal protected override object InsideCodeNamespace (CodeNamespace ns)
 		{
-			var wrapper = CreateWrapperClass ();
-			ns.Types.Add (wrapper);
-			return wrapper;
+			ns.Types.Add (CreateWrapperClass ());
+			return null;
+		}
+
+		internal protected override object InsideCodeTypeDeclaration (CodeTypeDeclaration decl)
+		{
+			if (!decl.IsClass)
+				return null;
+
+			decl.Members.Add (CreateWrapperClass ());
+			return null;
 		}
 
 		public CodeTypeDeclaration CreateWrapperClass ()
 		{
-			var wrapper = new CodeTypeDeclaration (Name) { TypeAttributes = TypeAttributes.Public };
+			var wrapper = new CodeTypeDeclaration (Name) {
+				Attributes = MemberAttributes.Public,
+				TypeAttributes = TypeAttributes.Public
+			};
 			foreach (var arg in TemplateArguments)
 				wrapper.TypeParameters.Add (arg);
+
+			if (Atoms.Count == 0) {
+				wrapper.Comments.Add (new CodeCommentStatement ("FIXME: This type is a stub."));
+				return wrapper;
+			}
 
 			var iface = CreateInterface (wrapper);
 			wrapper.Members.Add (iface);
@@ -88,17 +103,21 @@ namespace Mono.VisualC.Code.Atoms {
 					native.TypeReference (),
 					wrapper.TypeReference ()
 				};
-				var getClassMethod = new CodeMethodReferenceExpression (new CodeTypeReferenceExpression (StaticCppLibrary), "GetClass", types);
+				var getClassMethod = new CodeMethodReferenceExpression (new CodeTypeReferenceExpression (new CodeTypeReference (StaticCppLibrary, CodeTypeReferenceOptions.GlobalReference)), "GetClass", types);
 				implField.InitExpression = new CodeMethodInvokeExpression (getClassMethod, new CodePrimitiveExpression (Name));
 			}
 			wrapper.Members.Add (implField);
 
+			// always add native subclass ctor
+			wrapper.Members.Add (CreateNativeSubclassConstructor (hasOverrides));
+
 			CodeMemberMethod dispose = null;
 			foreach (var atom in Atoms) {
 				Method method = atom as Method;
-				if (method != null && method.IsDestructor)
+				if (method != null && method.IsDestructor) {
 					dispose = (CodeMemberMethod)method.InsideCodeTypeDeclaration (wrapper);
-				else
+					atom.Visit (dispose);
+				} else
 					atom.Visit (wrapper);
 			}
 
@@ -151,6 +170,26 @@ namespace Mono.VisualC.Code.Atoms {
 				atom.Visit (native);
 
 			return native;
+		}
+
+		private CodeConstructor CreateNativeSubclassConstructor (bool callBase)
+		{
+			var ctor = new CodeConstructor {
+				Name = this.Name,
+				Attributes = MemberAttributes.Assembly
+			};
+			ctor.Parameters.Add (new CodeParameterDeclarationExpression (typeof (CppTypeInfo).Name, "subClass"));
+
+			// FIXME: Again, will this always work?
+			var implTypeInfo = new CodeFieldReferenceExpression (new CodeFieldReferenceExpression { FieldName = "impl" }, "TypeInfo");
+
+			if (callBase)
+				ctor.BaseConstructorArgs.Add (implTypeInfo);
+
+			var addBase = new CodeMethodInvokeExpression (new CodeArgumentReferenceExpression ("subClass"), "AddBase", implTypeInfo);
+			ctor.Statements.Add (addBase);
+
+			return ctor;
 		}
 
 		private CodeMemberMethod CreateDestructorlessDispose ()

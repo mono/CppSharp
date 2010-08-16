@@ -18,7 +18,11 @@ namespace Mono.VisualC.Code {
 		public virtual CodeCompileUnit WrapperToCodeDom (CodeDomProvider provider)
 		{
 			CodeCompileUnit ccu = new CodeCompileUnit ();
-			Visit (ccu, provider);
+			ccu.UserData ["CodeAtom"] = this;
+
+			current_code_provider = provider;
+			Visit (ccu);
+			current_code_provider = null;
 
 			return ccu;
 		}
@@ -27,8 +31,10 @@ namespace Mono.VisualC.Code {
 		{
 			CodeNamespace ns = new CodeNamespace (ManagedNamespace);
 			ns.Imports.Add (new CodeNamespaceImport ("Mono.VisualC.Interop"));
-			ccu.Namespaces.Add (ns);
 
+			ns.UserData ["CodeCompileUnit"] = ccu;
+
+			ccu.Namespaces.Add (ns);
 			return ns;
 		}
 

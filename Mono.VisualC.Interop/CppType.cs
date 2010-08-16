@@ -58,14 +58,14 @@ namespace Mono.VisualC.Interop {
 			(t) => t.ElementType == CppTypes.Char && t.Modifiers.Count (m => m == CppModifiers.Pointer) == 2? typeof (string).MakeArrayType () : null,
 
 			// arrays
-			(t) => t.Modifiers.Contains (CppModifiers.Array)? t.Subtract (CppModifiers.Array).ToManagedType ().MakeArrayType () : null,
+			(t) => t.Modifiers.Contains (CppModifiers.Array) && (t.Subtract (CppModifiers.Array).ToManagedType () != null)? t.Subtract (CppModifiers.Array).ToManagedType ().MakeArrayType () : null,
 
 			// convert single pointers to primatives to managed byref
-			(t) => t.Modifiers.Count (m => m == CppModifiers.Pointer) == 1? t.Subtract (CppModifiers.Pointer).ToManagedType ().MakeByRefType () : null,
+			(t) => t.Modifiers.Count (m => m == CppModifiers.Pointer) == 1 && (t.Subtract (CppModifiers.Pointer).ToManagedType () != null)? t.Subtract (CppModifiers.Pointer).ToManagedType ().MakeByRefType () : null,
 			// more than one level of indirection gets IntPtr type
 			(t) => t.Modifiers.Contains (CppModifiers.Pointer)? typeof (IntPtr) : null,
 
-			(t) => t.Modifiers.Contains (CppModifiers.Reference)? t.Subtract (CppModifiers.Reference).ToManagedType ().MakeByRefType () : null,
+			(t) => t.Modifiers.Contains (CppModifiers.Reference) && (t.Subtract (CppModifiers.Reference).ToManagedType () != null)? t.Subtract (CppModifiers.Reference).ToManagedType ().MakeByRefType () : null,
 
 			(t) => t.ElementType == CppTypes.Int && t.Modifiers.Contains (CppModifiers.Short) && t.Modifiers.Contains (CppModifiers.Unsigned)? typeof (ushort) : null,
 			(t) => t.ElementType == CppTypes.Int && t.Modifiers.Contains (CppModifiers.Long) && t.Modifiers.Contains (CppModifiers.Unsigned)? typeof (ulong) : null,
@@ -127,6 +127,9 @@ namespace Mono.VisualC.Interop {
 		//  this will contain the name of said type
 		public string ElementTypeName { get; set; }
 
+		// may be null, and will certainly be null if ElementTypeName is null
+		public string [] Namespaces { get; set; }
+
 		// this is initialized lazily to avoid unnecessary heap
 		//  allocations if possible
 		private List<CppModifiers> internalModifiers;
@@ -150,10 +153,13 @@ namespace Mono.VisualC.Interop {
 		{
 			ElementType = CppTypes.Unknown;
 			ElementTypeName = null;
+			Namespaces = null;
+			internalModifiers = null;
 
 			Parse (cppTypeSpec);
 		}
 
+		// FIXME: This makes no attempt to actually verify that the parts compose a valid C++ type.
 		private void Parse (object [] parts)
 		{
 			foreach (object part in parts) {
@@ -176,21 +182,34 @@ namespace Mono.VisualC.Interop {
 				Type managedType = part as Type;
 				if (managedType != null) {
 					CppType mapped = CppType.ForManagedType (managedType);
-					ApplyTo (mapped);
+					CopyTypeFrom (mapped);
 					continue;
 				}
 
 				string strPart = part as string;
 				if (strPart != null) {
 					var parsed = CppModifiers.Parse (strPart);
-					if (parsed.Any ()) {
-						Modifiers.AddRange (parsed);
+					if (parsed.Count > 0) {
+						if (internalModifiers == null)
+							internalModifiers = parsed;
+						else
+							internalModifiers.AddRange (parsed);
+
 						strPart = CppModifiers.Remove (strPart);
 					}
 
 					// if we have something left, it must be a type name
 					strPart = strPart.Trim ();
 					if (strPart != "") {
+
+						string [] qualifiedName = strPart.Split (new string [] { "::" }, StringSplitOptions.RemoveEmptyEntries);
+						int numNamespaces = qualifiedName.Length - 1;
+						if (numNamespaces > 0) {
+							Namespaces = new string [numNamespaces];
+							for (int i = 0; i < numNamespaces; i++)
+								Namespaces [i] = qualifiedName [i];
+						}
+						strPart = qualifiedName [numNamespaces];
 
 						// FIXME: Use Enum.TryParse here if we decide to make this NET_4_0 only
 						try {
@@ -210,10 +229,11 @@ namespace Mono.VisualC.Interop {
 		//  and combines its modifiers into this instance.
 		//  Use when THIS instance may have attributes you want,
 		//  but want the element type of the passed instance.
-		public CppType ApplyTo (CppType type)
+		public CppType CopyTypeFrom (CppType type)
 		{
 			ElementType = type.ElementType;
 			ElementTypeName = type.ElementTypeName;
+			Namespaces = type.Namespaces;
 
 			List<CppModifiers> oldModifiers = internalModifiers;
 			internalModifiers = type.internalModifiers;
@@ -267,11 +287,16 @@ namespace Mono.VisualC.Interop {
 				return false;
 			CppType other = (CppType)obj;
 
-			// FIXME: the order of some modifiers is not significant
 			return (((internalModifiers == null || !internalModifiers.Any ()) &&
 			         (other.internalModifiers == null || !other.internalModifiers.Any ())) ||
 			        (internalModifiers != null && other.internalModifiers != null &&
-			         internalModifiers.SequenceEqual (other.internalModifiers))) &&
+			         CppModifiers.NormalizeOrder (internalModifiers).SequenceEqual (CppModifiers.NormalizeOrder (other.internalModifiers)))) &&
+
+			       (((Namespaces == null || !Namespaces.Any ()) &&
+			         (other.Namespaces == null || !other.Namespaces.Any ())) ||
+			        (Namespaces != null && other.Namespaces != null &&
+			         Namespaces.SequenceEqual (other.Namespaces))) &&
+
 			       ElementType == other.ElementType &&
 			       ElementTypeName == other.ElementTypeName;
 		}
@@ -282,6 +307,7 @@ namespace Mono.VisualC.Interop {
 			unchecked {
 				return (internalModifiers != null? internalModifiers.SequenceHashCode () : 0) ^
 				        ElementType.GetHashCode () ^
+				       (Namespaces != null? Namespaces.SequenceHashCode () : 0) ^
 				       (ElementTypeName != null? ElementTypeName.GetHashCode () : 0);
 			}
 		}
@@ -291,25 +317,22 @@ namespace Mono.VisualC.Interop {
 			StringBuilder cppTypeString = new StringBuilder ();
 
 			if (ElementType != CppTypes.Unknown && ElementType != CppTypes.Typename)
-				cppTypeString.Append (Enum.GetName (typeof (CppTypes), ElementType).ToLower ());
+				cppTypeString.Append (Enum.GetName (typeof (CppTypes), ElementType).ToLower ()).Append (' ');
 
-			if (ElementTypeName != null && ElementType != CppTypes.Typename) {
-				if (cppTypeString.Length > 0)
-					cppTypeString.Append (' ');
-				cppTypeString.Append (ElementTypeName);
+			if (Namespaces != null) {
+				foreach (var ns in Namespaces)
+					cppTypeString.Append (ns).Append ("::");
 			}
+
+			if (ElementTypeName != null && ElementType != CppTypes.Typename)
+				cppTypeString.Append (ElementTypeName);
 
 			if (internalModifiers != null) {
-				foreach (var modifier in internalModifiers) {
-					string stringified = modifier.ToString ();
-
-					if (cppTypeString.Length > 0)
-						cppTypeString.Append (' ');
-					cppTypeString.Append (stringified);
-				}
+				foreach (var modifier in internalModifiers)
+					cppTypeString.Append (' ').Append (modifier.ToString ());
 			}
 
-			return cppTypeString.ToString ();
+			return cppTypeString.ToString ().Trim ();
 		}
 
 		public Type ToManagedType ()

@@ -25,7 +25,23 @@ namespace Mono.VisualC.Code.Atoms {
 
 		internal protected override object InsideCodeNamespace (CodeNamespace ns)
 		{
+			ns.Types.Add (CreateEnumType ());
+			return null;
+		}
+
+		internal protected override object InsideCodeTypeDeclaration (CodeTypeDeclaration decl)
+		{
+			if (!decl.IsClass)
+				return null;
+
+			decl.Members.Add (CreateEnumType ());
+			return null;
+		}
+
+		public CodeTypeDeclaration CreateEnumType ()
+		{
 			var type = new CodeTypeDeclaration (Name) {
+				Attributes = MemberAttributes.Public,
 				TypeAttributes = TypeAttributes.Public,
 				IsEnum = true
 			};
@@ -33,7 +49,6 @@ namespace Mono.VisualC.Code.Atoms {
 			foreach (Item i in Items)
 				type.Members.Add (new CodeMemberField (typeof (int), i.Name) { InitExpression = new CodePrimitiveExpression (i.Value) });
 
-			ns.Types.Add (type);
 			return type;
 		}
 

@@ -66,7 +66,6 @@ namespace Mono.VisualC.Code.Atoms {
 			NotDefined
 		}
 		public Condition IfCondition {get; set;}
-		public string Name {get; set;}
 		public PoundIfDef (Condition condition, string name) {
 			IfCondition = condition;
 			Name = name;

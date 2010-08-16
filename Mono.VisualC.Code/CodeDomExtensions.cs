@@ -14,8 +14,11 @@ namespace Mono.VisualC.Code {
 
 		public static CodeComment CommentOut (this CodeTypeMember code, CodeDomProvider provider)
 		{
-			// FIXME: Not implemented ini mono
-			//return CommentOut (provider.GenerateCodeFromMember, code);
+			// FIXME: Not implemented in mono
+			try {
+				return CommentOut (provider.GenerateCodeFromMember, code);
+			} catch (NotImplementedException) {}
+
 			return new CodeComment ();
 		}
 		public static CodeComment CommentOut (this CodeStatement code, CodeDomProvider provider)
@@ -53,11 +56,15 @@ namespace Mono.VisualC.Code {
 			               from p in m.Types
 			               select p.TypeReference (true);
 
-			Type managedType = useManagedType? t.ToManagedType () : null;
-			if (managedType == typeof (ICppObject))
-				managedType = null;
+			Type managedType = useManagedType && (t.ElementType != CppTypes.Typename)? t.ToManagedType () : null;
 
-			return new CodeTypeReference (managedType != null ? managedType.FullName : t.ElementTypeName, tempParm.ToArray ());
+			if ((managedType == null || managedType == typeof (ICppObject)) && t.ElementTypeName != null) {
+				string qualifiedName = t.Namespaces != null? string.Join (".", t.Namespaces) + "." + t.ElementTypeName : t.ElementTypeName;
+				return new CodeTypeReference (qualifiedName, tempParm.ToArray ());
+			} else if (managedType != null)
+				return new CodeTypeReference (managedType.FullName, tempParm.ToArray ());
+
+			return null;
 		}
 
 		public static CodeTypeReference [] TypeParameterReferences (this CodeTypeDeclaration ctd)

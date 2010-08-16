@@ -21,13 +21,12 @@ using System.CodeDom.Compiler;
 using Microsoft.CSharp;
 
 namespace CPPInterop {
-	class Generator {
-		public static readonly Regex TemplateRegEx = new Regex ("([^\\<]+)\\<(.+)\\>$");
+	public class Generator {
 		public static readonly string [] genericTypeArgs = new string [] { "T", "U", "V", "W", "X", "Y", "Z" };
 
 		public string Source { get; set; }
 		public string Dir {get; set;}
-		public bool ShouldValidate { get; set; }
+		public bool AbiTest { get; set; }
 		public string Library {get; set;}
 
 		private string nspace;
@@ -35,23 +34,26 @@ namespace CPPInterop {
 			get { return nspace; }
 			set {
 				nspace = value;
-				enumerations.ManagedNamespace = value;
-				unions.ManagedNamespace = value;
+				Tree.ManagedNamespace = value;
+				//enumerations.ManagedNamespace = value;
+				//unions.ManagedNamespace = value;
 			}
 		}
 
 		public Dictionary<string, string> Classes;
-		public HashSet<string> Enumerations;
-		public HashSet<string> Unions;
-		public Dictionary<string,CodeTypeDeclaration> UnknownTypes;
+		public HashSet<string> UnknownTypes;
 
 		public CodeDomProvider Provider { get; set; }
 		public CodeGeneratorOptions Options { get; set; }
 
-		private CodeUnit currentUnit;
-		private CodeUnit enumerations;
-		private CodeUnit unions;
+		private CodeUnit Tree { get; set; }
+		//private CodeUnit currentUnit;
+		//private CodeUnit enumerations;
+		//private CodeUnit unions;
 		private Dictionary<string,Property> properties;
+
+		private int enumCount = 0;
+		private int unionCount = 0;
 
 		private HashSet<string> fileList;
 
@@ -61,7 +63,7 @@ namespace CPPInterop {
 			Generator gen = new Generator ();
 			var p = new OptionSet () {
 				{ "h|?|help", v => help = v != null },
-				{ "validate", v => gen.ShouldValidate = v != null },
+				{ "testabi", v => gen.AbiTest = v != null },
 				{ "f=", v => gen.Source = v },
 				{ "o=", v => gen.Dir = v },
 				{ "ns=", v => gen.Namespace = v },
@@ -112,13 +114,11 @@ namespace CPPInterop {
 		public Generator ()
 		{
 			Classes = new Dictionary<string, string>();
-			UnknownTypes = new Dictionary<string,CodeTypeDeclaration> ();
+			UnknownTypes = new HashSet<string> ();
 
-			Enumerations = new HashSet<string> ();
-			Unions = new HashSet<string> ();
-
-			enumerations = new CodeUnit { ManagedNamespace = Namespace };
-			unions = new CodeUnit { ManagedNamespace = Namespace };
+			Tree = new CodeUnit { ManagedNamespace = Namespace };
+			//enumerations = new CodeUnit { ManagedNamespace = Namespace };
+			//unions = new CodeUnit { ManagedNamespace = Namespace };
 			properties = new Dictionary<string, Property> ();
 
 			fileList = new HashSet<string> ();
@@ -127,77 +127,101 @@ namespace CPPInterop {
 		public void Run ()
 		{
 			Console.WriteLine ("Generating bindings...");
-
 			XmlDocument xmldoc = new XmlDocument ();
 			xmldoc.Load (Source);
 
-			// FIXME: Support namespaces!!!
-			//XmlNodeList namespaces = xmldoc.SelectNodes ("/GCC_XML/Namespace[@name != '::' and @name != '' and @name != 'std']");
-
 			ProcessClasses (xmldoc);
+
+			// save files
+			Save ();
 			GenerateStaticLibField ();
 
-			if (enumerations.Atoms.Any ())
-				SaveFile (enumerations.WrapperToCodeDom (Provider), "Enums");
-			if (unions.Atoms.Any ())
-				SaveFile (unions.WrapperToCodeDom (Provider), "Unions");
+			Console.WriteLine ("Validating bindings...");
+			GenerateUnknownTypeStubs ();
+			Assembly asm = Validate ();
 
-			if (ShouldValidate) {
-				GenerateUnknownTypeStubs ();
-				Validate ();
-				//File.Delete (fileList.Where (f => f.StartsWith ("UnknownTypes")).Single ());
+			if (asm != null && AbiTest) {
+				Console.WriteLine ("Testing Itanium ABI name mangling against bindings...");
+				TestAbi (asm);
 			}
+			//File.Delete (fileList.Where (f => f.StartsWith ("UnknownTypes")).Single ());
+
 		}
+
+
+
+		public void Save ()
+		{
+			//if (enumerations.Atoms.Any ())
+			//	SaveFile (enumerations.WrapperToCodeDom (Provider), "Enums");
+			//if (unions.Atoms.Any ())
+			//	SaveFile (unions.WrapperToCodeDom (Provider), "Unions");
+
+			SaveFile (Tree.WrapperToCodeDom (Provider), "FlatFile");
+		}
+
+
 
 		void ProcessClasses (XmlDocument xmldoc)
 		{
-			XmlNodeList classes = xmldoc.SelectNodes ("/GCC_XML/Class[not(@incomplete)]");
+			// FIXME: Figure out how to eliminate struct noise
+			XmlNodeList classes = xmldoc.SelectNodes ("/GCC_XML/Class[not(@incomplete)]" /* |/GCC_XML/Struct[not(@incomplete)]" */);
 			foreach (XmlNode clas in classes) {
 				var f = xmldoc.SelectSingleNode ("/GCC_XML/File[@id='" + clas.Attributes["file"].Value + "']/@name");
 				if (f != null && f.Value.StartsWith ("/"))
 					continue;
 
-				string name = clas.Attributes["name"].Value;
-				if (Classes.ContainsKey (name))
+				if (clas.Attributes ["name"] == null || clas.Attributes ["name"].Value == "")
 					continue;
 
-				// FIXME: better way to do this
+				//currentUnit = new CodeUnit { ManagedNamespace = Namespace };
+
+				string name = clas.Attributes ["name"].Value;
+				string ns = GetNamespace (xmldoc.DocumentElement, clas);
+				CppType currentType = new CppType (clas.Name.ToLower (), ns != null? ns + "::" + name : name);
+				IEnumerable<CodeAtom> nested = null;
+
+				// FIXME: better way to do this (GCC-XML output doesn't seem to leave much choice)
 				CppType [] replaceArgs = null;
-				Match m = TemplateRegEx.Match (name);
-				if (m.Success) {
-					string baseName = m.Groups [1].Value;
-					if (Classes.ContainsKey (baseName))
+				var templated = currentType.Modifiers.OfType<CppModifiers.TemplateModifier> ().SingleOrDefault ();
+				if (templated != null) {
+					string baseName = currentType.ElementTypeName;
+					if (CheckType (currentType, true, out nested))
 						continue;
 
-					replaceArgs = m.Groups [2].Value.Split (',').Select (s => new CppType (s)).ToArray ();
+					replaceArgs = templated.Types;
+
 					string [] ras = new string [replaceArgs.Length];
 					string [] letters = new string [replaceArgs.Length];
 					for (int i = 0; i < replaceArgs.Length; i++) {
 						letters [i] = genericTypeArgs [i];
 						ras [i] = string.Format ("{0} with {1}", replaceArgs [i].ToString (), letters [i]);
 					}
-
 					Console.Error.WriteLine ("Warning: Creating generic type {0}<{1}> from the instantiated template {2} by replacing {3} (very buggy!!!)", baseName, string.Join (",", letters), name, string.Join (", ", ras));
-					name = baseName;
-				}
 
-				currentUnit = new CodeUnit { ManagedNamespace = Namespace };
+					name = baseName;
+				} else if (CheckType (currentType, true, out nested))
+					continue;
+
+
 				var classAtom = new Class (name) {
 					StaticCppLibrary = string.Format ("{0}.Libs.{1}", Namespace, Library)
 				};
+				GetContainer (xmldoc.DocumentElement, clas, Tree).Atoms.AddLast (classAtom);
+				//GetContainer (xmldoc.DocumentElement, clas, currentUnit).Atoms.AddLast (classAtom);
+
+				if (nested != null) {
+					foreach (var orphan in nested)
+						classAtom.Atoms.AddLast (orphan);
+				}
+
+				// add tempate type args
 				if (replaceArgs != null) {
 					for (int i = 0; i < replaceArgs.Length; i++)
 						classAtom.TemplateArguments.Add (genericTypeArgs [i]);
 				}
 
-				currentUnit.Atoms.AddLast (classAtom);
-				Classes.Add (name, fname (name));
-
-				CppType currentType = new CppType (CppTypes.Class, name);;
-				if (replaceArgs != null)
-					currentType.Modify (new CppModifiers.TemplateModifier (replaceArgs));
-				CheckType (currentType);
-
+				// FIXME: Handle when base class name is fully qualified
 				foreach (XmlNode baseNode in clas.SelectNodes ("Base")) {
 					classAtom.Bases.Add (new Class.BaseClass {
 						Name = find (xmldoc.DocumentElement, baseNode.Attributes ["type"]).Attributes ["name"].Value,
@@ -264,7 +288,7 @@ namespace CPPInterop {
 					};
 
 
-					if (ShouldValidate)
+					if (AbiTest)
 						methodAtom.Mangled = new NameTypePair<Type> { Name = n.Attributes ["mangled"].Value, Type = typeof (ItaniumAbi) };
 
 					XmlNodeList argNodes = n.SelectNodes ("Argument");
@@ -291,7 +315,7 @@ namespace CPPInterop {
 					}
 
 					// Try to filter out duplicate methods
-					MethodSignature sig = new MethodSignature { Name = methodAtom.FormattedName, Arguments = argTypes };
+					MethodSignature sig = new MethodSignature (methodAtom.FormattedName, argTypes);
 					string conflictingSig;
 					if (methods.TryGetValue (sig, out conflictingSig)) {
 						// FIXME: add comment to explain why it's commented out
@@ -337,9 +361,15 @@ namespace CPPInterop {
 						string pname = methodAtom.FormattedName.Substring (3);
 						Property propertyAtom = null;
 
-						// ...AND there is a corresponding getter method, then assume it's a property setter
-						if (properties.TryGetValue (pname, out propertyAtom) || findMethod (xmldoc.DocumentElement, members, getterName) != null) {
-
+						// ...AND there is a corresponding getter method that returns the right type, then assume it's a property setter
+						bool doIt = false;
+						if (properties.TryGetValue (pname, out propertyAtom)) {
+							doIt = propertyAtom.Getter.RetType.Equals (methodAtom.Parameters [0].Type);
+						} else {
+							XmlNode getter = findMethod (xmldoc.DocumentElement, members, getterName);
+							doIt = (getter != null && findType (xmldoc.DocumentElement, getter.Attributes ["returns"]).Equals (methodAtom.Parameters [0].Type));
+						}
+						if (doIt) {
 							if (propertyAtom != null) {
 								propertyAtom.Setter = methodAtom;
 							} else {
@@ -361,72 +391,205 @@ namespace CPPInterop {
 				}
 
 
-				SaveFile (currentUnit.WrapperToCodeDom (Provider), name);
+				//SaveFile (currentUnit.WrapperToCodeDom (Provider), name);
 			}
 		}
 
-		void Validate ()
+		Assembly Validate ()
 		{
-			Console.WriteLine ("Validating bindings...");
-
 			var compileParams = new CompilerParameters {
 				GenerateInMemory = true,
+				IncludeDebugInformation = true,
+				WarningLevel = 0,
 				TreatWarningsAsErrors = false
 			};
 			compileParams.ReferencedAssemblies.Add (typeof (CppLibrary).Assembly.CodeBase);
 
 			CompilerResults results = Provider.CompileAssemblyFromFile (compileParams, fileList.ToArray ());
+			var errors = results.Errors.Cast<CompilerError> ().Where (e => !e.IsWarning);
 
-			if (results.Errors.Count > 0) {
-				foreach (CompilerError error in results.Errors)
-					Console.Error.WriteLine ("{0}({1},{2}): error {3}: {4}", error.FileName, error.Line, error.Column, error.ErrorNumber, error.ErrorText);
+			int count = 0;
+			foreach (var error in errors) {
 
-				Console.Error.WriteLine ("Validation failed with {0} compilation errors.", results.Errors.Count);
+				if (count == 0) {
+					foreach (var fix in Postfixes.List) {
+						if (fix.TryFix (error.ErrorText, this))
+							return Validate ();
+					}
+				}
+
+				Console.Error.WriteLine ("{0}({1},{2}): error {3}: {4}", error.FileName, error.Line, error.Column, error.ErrorNumber, error.ErrorText);
+				count++;
 			}
+			if (count > 0)
+				Console.Error.WriteLine ("Validation failed with {0} compilation errors.", count);
+			else
+				Console.WriteLine ("Bindings compiled successfully.");
 
-			//Type [] types = validationAssembly.GetExportedTypes ();
-			// do stuff...
+
+			return results.CompiledAssembly;
+		}
+
+		void TestAbi (Assembly assembly)
+		{
+			var classes = assembly.GetExportedTypes ().Select (t => new { Name = Regex.Replace (t.Name, "\\`.$", ""), Interface = t.GetNestedType ("I" + t.Name)})
+			                                          .Where (k => k.Interface != null);
+			var abi = new ItaniumAbi ();
+
+			foreach (var klass in classes) {
+				bool klassSuccess = true;
+
+				foreach (var method in klass.Interface.GetMethods ()) {
+
+					var testAttribute = (AbiTestAttribute)method.GetCustomAttributes (typeof (AbiTestAttribute), false).FirstOrDefault ();
+
+					string expected = testAttribute.MangledName;
+					string actual = abi.GetMangledMethodName (klass.Name, method);
+
+					if (actual != expected) {
+						Console.Error.WriteLine ("Error: Expected \"{0}\" but got \"{1}\" when mangling method \"{2}\" in class \"{3}\"", expected, actual, method.ToString (), klass.Name);
+						klassSuccess = false;
+					}
+				}
+
+				if (klassSuccess)
+					Console.WriteLine ("Successfully mangled all method names in class \"" + klass.Name + "\"");
+			}
 
 		}
 
-		CppType ProcessEnum (XmlNode enm)
+		string GetNamespace (XmlNode root, XmlNode n)
+		{
+			XmlNode ns = find (root, n.Attributes ["context"]);
+			if (ns == null)
+				return null;
+
+			string nsname;
+			if (ns.Name == "Namespace")
+				nsname = ns.Attributes ["name"].Value;
+			else if (ns.Name == "Class" || ns.Name == "Struct")
+				nsname = new CppType (ns.Attributes ["name"].Value).ElementTypeName;
+			else
+				throw new NotSupportedException ("Unknown context: " + ns.Name);
+
+			if (nsname == "::")
+				return null;
+
+			string parent = GetNamespace (root, ns);
+			if (parent != null)
+				return parent + "::" + nsname;
+
+			return nsname;
+		}
+
+		CodeContainer GetContainer (XmlNode root, XmlNode n, CodeContainer def)
+		{
+			XmlNode ns = find (root, n.Attributes ["context"]);
+			if (ns == null)
+				return def;
+
+			string nsname;
+			if (ns.Name == "Namespace")
+				nsname = ns.Attributes ["name"].Value;
+			else if (ns.Name == "Class" || ns.Name == "Struct")
+				nsname = new CppType (ns.Attributes ["name"].Value).ElementTypeName;
+			else
+				throw new NotSupportedException ("Unknown context: " + ns.Name);
+
+			if (nsname == "::")
+				return def;
+
+			CodeContainer parent = GetContainer (root, ns, def);
+			CodeContainer container = parent.Atoms.OfType<CodeContainer> ().Where (a => a.Name == nsname).SingleOrDefault ();
+
+			if (container == null) {
+				container = new Namespace (nsname);
+				parent.Atoms.AddLast (container);
+			}
+
+			return container;
+		}
+
+		public CodeContainer GetPath (string [] pathNames)
+		{
+			return GetPath (Tree, pathNames, false);
+		}
+
+		static CodeContainer GetPath (CodeContainer root, string [] pathNames, bool create)
+		{
+			foreach (var item in pathNames) {
+				CodeContainer prospect = root.Atoms.OfType<CodeContainer> ().Where (a => a.Name == item).SingleOrDefault ();
+				if (prospect == null) {
+					if (create) {
+						prospect = new Namespace (item);
+						root.Atoms.AddLast (prospect);
+					} else
+						return null;
+				}
+
+				root = prospect;
+			}
+
+			return root;
+		}
+
+		CppType ProcessEnum (XmlNode root, XmlNode enm)
 		{
 			bool hasName = false;
-			string ename = "Enum" + Enumerations.Count;
+			string ename = "Enum" + enumCount++;
 
 			if (enm.Attributes ["name"] != null && enm.Attributes ["name"].Value != "") {
 				hasName = true;
 				ename = enm.Attributes ["name"].Value;
 			}
 
-			if (!hasName || !Enumerations.Contains (ename)) {
+			CppType enumType = new CppType (CppTypes.Enum, ename);
 
-				Enumeration enumAtom = new Enumeration (enm.Attributes ["name"].Value);
-				foreach (XmlNode v in enm.SelectNodes ("EnumValue"))
-					enumAtom.Items.Add (new Enumeration.Item { Name = v.Attributes ["name"].Value, Value = Convert.ToInt32 (v.Attributes ["init"].Value) });
-	
-				if (hasName) // assume it might be shared between classes
-					enumerations.Atoms.AddLast (enumAtom);
-				else
-					currentUnit.Atoms.AddLast (enumAtom);
-
-				Enumerations.Add (ename);
+			if (hasName) {
+				string ns = GetNamespace (root, enm);
+				if (ns != null)
+					enumType = new CppType (CppTypes.Enum, ns + "::" + ename);
 			}
 
-			return new CppType (CppTypes.Enum, ename);
+			IEnumerable<CodeAtom> dontCare;
+			if (!hasName || !CheckType (enumType, true, out dontCare)) {
+
+				Enumeration enumAtom = new Enumeration (ename);
+				foreach (XmlNode v in enm.SelectNodes ("EnumValue"))
+					enumAtom.Items.Add (new Enumeration.Item { Name = v.Attributes ["name"].Value, Value = Convert.ToInt32 (v.Attributes ["init"].Value) });
+
+				//GetContainer (root, enm, flatUnit).Atoms.AddLast (enumAtom);
+
+				CodeContainer nested = GetContainer (root, enm, Tree);//GetContainer (root, enm, currentUnit);
+				//if (hasName && !(nested is Class)) // assume it might be used by other classes
+				//	GetContainer (root, enm, enumerations).Atoms.AddLast (enumAtom);
+				//else
+					nested.Atoms.AddLast (enumAtom);
+			}
+
+			return enumType;
 		}
 
 		CppType ProcessUnion (XmlNode root, XmlNode union)
 		{
 			bool hasName = false;
-			string uname = "Union" + Unions.Count;
+			string uname = "Union" + unionCount++;
 
 			if (union.Attributes ["name"] != null && union.Attributes ["name"].Value != "") {
 				hasName = true;
 				uname = union.Attributes ["name"].Value;
 			}
 
-			if (!hasName || !Unions.Contains (uname)) {
+			CppType unionType = new CppType (CppTypes.Union, uname);
+
+			if (hasName) {
+				string ns = GetNamespace (root, union);
+				if (ns != null)
+					unionType = new CppType (CppTypes.Union, ns + "::" + uname);
+			}
+
+			IEnumerable<CodeAtom> orphans = null;
+			if (!hasName || !CheckType (unionType, true, out orphans)) {
 
 				Union unionAtom = new Union (uname);
 				foreach (string id in union.Attributes["members"].Value.Split (' ').Where (id => !id.Equals (string.Empty))) {
@@ -439,16 +602,22 @@ namespace CPPInterop {
 					Field field = new Field (n.Attributes ["name"].Value, findType (root, n.Attributes ["type"]));
 					unionAtom.Atoms.AddLast (field);
 				}
-	
-				if (hasName) // assume it might be shared between classes
-					unions.Atoms.AddLast (unionAtom);
-				else
-					currentUnit.Atoms.AddLast (unionAtom);
 
-				Unions.Add (uname);
+				//GetContainer (root, union, flatUnit).Atoms.AddLast (unionAtom);
+
+				CodeContainer nested = GetContainer (root, union, Tree);//GetContainer (root, union, currentUnit);
+				//if (hasName && !(nested is Class)) // assume it might be used by other classes
+				//	GetContainer (root, union, unions).Atoms.AddLast (unionAtom);
+				//else
+					nested.Atoms.AddLast (unionAtom);
+
+				if (orphans != null) {
+					foreach (var orphan in orphans)
+						unionAtom.Atoms.AddLast (orphan);
+				}
 			}
 
-			return new CppType (CppTypes.Union, uname);
+			return unionType;
 		}
 
 		void GenerateStaticLibField ()
@@ -476,22 +645,61 @@ namespace CPPInterop {
 		}
 
 		void GenerateUnknownTypeStubs ()
-		{
+		{/*
 			var ccu = new CodeCompileUnit ();
 			var ns = new CodeNamespace (Namespace);
 
-			foreach (var type in UnknownTypes)
-				ns.Types.Add (type.Value);
+			foreach (var type in UnknownTypes) {
+				var ctd = type.Value as CodeTypeDeclaration;
+				var newNS = type.Value as CodeNamespace;
+
+				if (ctd != null)
+					ns.Types.Add (ctd);
+				else
+					ccu.Namespaces.Add (newNS);
+			}
 
 			ccu.Namespaces.Add (ns);
 			SaveFile (ccu, "UnknownTypes");
+			*/
+
+			var ukt = UnknownTypes.ToArray ();
+			foreach (var unknownType in ukt) {
+				CodeContainer container = Tree;
+				CppType type = new CppType (unknownType);
+				IEnumerable<CodeAtom> orphans;
+
+				if (CheckType (type, true, out orphans))
+					continue;
+
+				if (type.Namespaces != null)
+					container = GetPath (Tree, type.Namespaces, true);
+
+				var atom = new Class (type.ElementTypeName);
+
+				int i = 0;
+				foreach (var param in type.Modifiers.OfType<CppModifiers.TemplateModifier> ()) {
+					if (param.Types != null) {
+						foreach (var t in param.Types)
+							atom.TemplateArguments.Add (genericTypeArgs [i++]);
+					} else
+						atom.TemplateArguments.Add (genericTypeArgs [i++]);
+				}
+
+				if (orphans != null) {
+					foreach (var orphan in orphans)
+						atom.Atoms.AddLast (orphan);
+				}
+
+				container.Atoms.AddLast (atom);
+			}
 		}
 
 		void SaveFile (CodeCompileUnit ccu, string baseName)
 		{
 			string name = Path.Combine (Dir, fname (baseName));
 			if (File.Exists (name) && fileList.Contains (name))
-				return;
+				File.Delete (name);
 			if (File.Exists (name) && !fileList.Contains (name)) {
 				int i = 1;
 				while (File.Exists (Path.Combine (Dir, fname (baseName + i))))
@@ -513,6 +721,8 @@ namespace CPPInterop {
 		{
 			// FIXME: The order of some modifiers is not significant.. is this a problem?
 			if (/* inType.ElementType == toReplace.ElementType && */
+			    ((inType.Namespaces != null && toReplace.Namespaces != null && inType.Namespaces.SequenceEqual (toReplace.Namespaces)) ||
+			        inType.Namespaces == null && toReplace.Namespaces == null) &&
 			    inType.ElementTypeName == toReplace.ElementTypeName &&
 			    inType.Modifiers.StartsWith (toReplace.Modifiers))
 				return new CppType (CppTypes.Typename, tn, inType.Modifiers.Skip (toReplace.Modifiers.Count).ToArray ());
@@ -524,31 +734,80 @@ namespace CPPInterop {
 			return inType;
 		}
 
-		// FIXME: Do something trickier than just throw ElementTypeName in here?
-		void CheckType (CppType cpptype)
+		// returns true if the type was already created
+		bool CheckType (CppType type)
 		{
-			string type = cpptype.ElementTypeName;
-			if (type == null) return;
+			IEnumerable<CodeAtom> dontCare;
+			return CheckType (type, false, out dontCare);
+		}
+		bool CheckType (CppType type, bool toBeCreated, out IEnumerable<CodeAtom> orphanedAtoms)
+		{
+			orphanedAtoms = null;
+			if (type.ElementTypeName == null || type.ElementTypeName == "" || type.ElementType == CppTypes.Typename)
+				return true;
 
-			bool typeFound = Classes.ContainsKey (type) || Enumerations.Contains (type) || Unions.Contains (type);
-			bool alreadyUnknown = UnknownTypes.ContainsKey (type);
+			// check template parameters recursively
+			foreach (var paramType in type.Modifiers.OfType<CppModifiers.TemplateModifier> ().Where (t => t.Types != null).SelectMany (t => t.Types))
+				CheckType (paramType);
 
-			if (!typeFound && !alreadyUnknown) {
-				var ctd = new CodeTypeDeclaration (type) {
+			bool typeFound = false;
+			type.ElementType = CppTypes.Unknown;
+			for (int i = 0; i < type.Modifiers.Count; i++) {
+				if (type.Modifiers [i] != CppModifiers.Template)
+					type.Modifiers.RemoveAt (i);
+			}
+
+			string qualifiedName = type.ToString ();
+			bool alreadyUnknown = UnknownTypes.Contains (qualifiedName);
+
+			CodeContainer place = Tree;
+			if (type.Namespaces != null)
+				place = GetPath (type.Namespaces);
+
+			if (place != null) {
+				typeFound = place.Atoms.OfType<Class> ().Where (c => c.Name == type.ElementTypeName).Any () ||
+				            place.Atoms.OfType<Enumeration> ().Where (e => e.Name == type.ElementTypeName).Any () ||
+				            place.Atoms.OfType<Union> ().Where (u => u.Name == type.ElementTypeName).Any ();
+
+				var sameNamedNamespace = place.Atoms.OfType<Namespace> ().Where (ns => ns.Name == type.ElementTypeName).SingleOrDefault ();
+				if (sameNamedNamespace != null) {
+					orphanedAtoms = sameNamedNamespace.Atoms;
+
+					// FIXME: This could potentially be very slow
+					Tree.Atoms.Remove (sameNamedNamespace);
+					//currentUnit.Atoms.Remove (sameNamedNamespace);
+					//enumerations.Atoms.Remove (sameNamedNamespace);
+					//unions.Atoms.Remove (sameNamedNamespace);
+				}
+			}
+
+			if (!typeFound && !toBeCreated && !alreadyUnknown) {
+				/*CodeObject codeObject;
+
+				var ctd = new CodeTypeDeclaration (type.ElementTypeName) {
 					TypeAttributes = TypeAttributes.Public,
-					IsClass = true,
-					IsPartial = true
+					IsClass = true
 				};
 
-				if (cpptype.Modifiers.Contains (CppModifiers.Template)) {
-					var template = cpptype.Modifiers.OfType<CppModifiers.TemplateModifier> ().Single ();
+				codeObject = ctd;
+
+				if (type.Namespaces != null) {
+					var ns = new CodeNamespace (Namespace + "." + string.Join (".", type.Namespaces));
+					ns.Types.Add (ctd);
+					codeObject = ns;
+				}
+
+				var template = type.Modifiers.OfType<CppModifiers.TemplateModifier> ().SingleOrDefault ();
+				if (template != null) {
 					for (int i = 0; i < template.Types.Length; i++)
 						ctd.TypeParameters.Add (genericTypeArgs [i]);
 				}
+				 */
+				UnknownTypes.Add (qualifiedName);
+			} else if ((typeFound || toBeCreated) && alreadyUnknown)
+				UnknownTypes.Remove (qualifiedName);
 
-				UnknownTypes.Add (type, ctd);
-			} else if (typeFound && alreadyUnknown)
-				UnknownTypes.Remove (type);
+			return typeFound;
 		}
 
 		static XmlNode find (XmlNode root, XmlAttribute att)
@@ -602,14 +861,14 @@ namespace CPPInterop {
 
 			case "Typedef": return findType (root, n.Attributes ["type"].Value, modifiers);
 
-			case "FundamentalType": return modifiers.ApplyTo (new CppType (name));
-			case "Class": return modifiers.ApplyTo (new CppType (CppTypes.Class, name));
-			case "Struct": return modifiers.ApplyTo (new CppType (CppTypes.Struct, name));
-			case "Union": return modifiers.ApplyTo (ProcessUnion (root, n));
-			case "Enumeration": return modifiers.ApplyTo (ProcessEnum (n));
+			case "FundamentalType": return modifiers.CopyTypeFrom (new CppType (name));
+			case "Class": return modifiers.CopyTypeFrom (new CppType (CppTypes.Class, name));
+			case "Struct": return modifiers.CopyTypeFrom (new CppType (CppTypes.Struct, name));
+			case "Union": return modifiers.CopyTypeFrom (ProcessUnion (root, n));
+			case "Enumeration": return modifiers.CopyTypeFrom (ProcessEnum (root, n));
 
 			// FIXME: support function pointers betters
-			case "FunctionType": return modifiers.ApplyTo (CppTypes.Void);
+			case "FunctionType": return modifiers.CopyTypeFrom (CppTypes.Void);
 			}
 
 			throw new NotImplementedException ("Unknown type node: " + n.Name);

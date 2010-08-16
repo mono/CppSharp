@@ -8,8 +8,6 @@ namespace Mono.VisualC.Code.Atoms {
 
 	public class Union : CodeContainer {
 
-		public string Name { get; set; }
-
 		public Union (string name)
 		{
 			Name = name;
@@ -19,9 +17,11 @@ namespace Mono.VisualC.Code.Atoms {
 		{
 			var union = new CodeTypeDeclaration (Name) {
 				Attributes = MemberAttributes.Public,
-				TypeAttributes = TypeAttributes.Public | TypeAttributes.ExplicitLayout,
+				TypeAttributes = TypeAttributes.Public,
 				IsStruct = true
 			};
+			var explicitLayout = new CodeAttributeArgument (new CodeFieldReferenceExpression (new CodeTypeReferenceExpression (typeof (LayoutKind)), "Explicit"));
+			union.CustomAttributes.Add (new CodeAttributeDeclaration (new CodeTypeReference (typeof (StructLayoutAttribute)), explicitLayout));
 
 			foreach (var atom in Atoms) {
 				Field field = atom as Field;
@@ -44,6 +44,9 @@ namespace Mono.VisualC.Code.Atoms {
 
 		internal protected override object InsideCodeTypeDeclaration (CodeTypeDeclaration decl)
 		{
+			if (!decl.IsClass)
+				return null;
+
 			decl.Members.Add (CreateUnionType ());
 			return null;
 		}

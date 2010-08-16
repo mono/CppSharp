@@ -33,7 +33,7 @@ namespace Mono.VisualC.Interop.ABI {
 			return CallingConvention.Cdecl;
 		}
 
-		public override string GetMangledMethodName (MethodInfo methodInfo)
+		protected override string GetMangledMethodName (MethodInfo methodInfo)
                 {
 			string methodName = methodInfo.Name;
                         MethodType methodType = GetMethodType (methodInfo);

@@ -18,7 +18,7 @@
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Commandlineparameters>-f=/Users/Alex/OpenSource/gccxml/gccxml-build/bin/qapplication.xml -o=.</Commandlineparameters>
+    <Commandlineparameters>--testabi -f=/Users/Alex/OpenSource/gccxml/gccxml-build/bin/qapplication.xml -o=. --ns=Foo --lib=LibFoo</Commandlineparameters>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -31,6 +31,7 @@
     <Compile Include="Main.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="MethodSignature.cs" />
+    <Compile Include="Postfixes.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System">
