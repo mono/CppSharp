@@ -51,20 +51,20 @@ dnl package checks, per config
 
 
 AC_CONFIG_FILES([
-Mono.VisualC.Interop/mono.visualc.interop.pc
-Mono.VisualC.Interop/Makefile
-Tests/tests.pc
-Tests/Makefile
-QtBindings/qtbindings.pc
-QtBindings/Makefile
-Mono.VisualC.Code/mono.visualc.code.pc
-Mono.VisualC.Code/Makefile
-generator/generator
-generator/Makefile
-QtTest/qttest
-QtTest/Makefile
+src/Mono.VisualC.Interop/mono.visualc.interop.pc
+src/Mono.VisualC.Interop/Makefile
+src/Tests/tests.pc
+src/Tests/Makefile
+src/QtBindings/qtbindings.pc
+src/QtBindings/Makefile
+src/Mono.VisualC.Code/mono.visualc.code.pc
+src/Mono.VisualC.Code/Makefile
+src/generator/generator
+src/generator/Makefile
+src/QtTest/qttest
+src/QtTest/Makefile
+src/Makefile
 Makefile
-
 ])
 
 AC_OUTPUT
