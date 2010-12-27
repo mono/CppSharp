@@ -1,0 +1,6 @@
+Name: Mono.VisualC.Code
+Description: Mono.VisualC.Code
+Version: 0.1
+
+Requires: 
+Libs: -r:@expanded_libdir@/@PACKAGE@/Mono.VisualC.Code.dll

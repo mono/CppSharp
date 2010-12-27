@@ -1,0 +1,6 @@
+Name: Mono.VisualC.Interop
+Description: Mono.VisualC.Interop
+Version: 0.1
+
+Requires: 
+Libs: -r:@expanded_libdir@/@PACKAGE@/CPPInterop.dll

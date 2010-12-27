@@ -1,0 +1,6 @@
+Name: QtBindings
+Description: QtBindings
+Version: 0.1
+
+Requires: 
+Libs: -r:@expanded_libdir@/@PACKAGE@/QtBindings.dll
