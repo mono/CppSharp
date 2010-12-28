@@ -56,19 +56,20 @@ all: $(ASSEMBLY) $(PROGRAMFILES) $(LINUX_PKGCONFIG)
 
 FILES = \
 	AssemblyInfo.cs \
-	CodeAtom.cs \
-	Atoms/Preprocessor.cs \
-	CodeContainer.cs \
-	Atoms/Class.cs \
-	CodeUnit.cs \
 	Access.cs \
-	Atoms/Method.cs \
-	Atoms/Enumeration.cs \
+	CodeAtom.cs \
+	CodeContainer.cs \
+	CodeUnit.cs \
 	CodeDomExtensions.cs \
-	Atoms/Property.cs \
+	NameTypePair.cs \
+	Atoms/Class.cs \
+	Atoms/Enumeration.cs \
 	Atoms/Field.cs \
-	Atoms/Union.cs \
-	NameTypePair.cs 
+	Atoms/Method.cs \
+	Atoms/Namespace.cs \
+	Atoms/Preprocessor.cs \
+	Atoms/Property.cs \
+	Atoms/Union.cs
 
 DATA_FILES = 
 

@@ -61,8 +61,9 @@ all: $(ASSEMBLY) $(PROGRAMFILES) $(BINARIES)
 
 FILES = \
 	Main.cs \
+	MethodSignature.cs \
 	Options.cs \
-	MethodSignature.cs 
+	Postfixes.cs
 
 DATA_FILES = 
 
