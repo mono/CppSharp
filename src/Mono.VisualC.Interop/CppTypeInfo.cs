@@ -58,7 +58,7 @@ namespace Mono.VisualC.Interop {
 		public bool TypeComplete { get; private set; }
 
 		protected int native_size;
-		protected int field_offset_padding;
+		protected int field_offset_padding_without_vtptr;
 
 		private VTable lazy_vtable;
 
@@ -76,7 +76,7 @@ namespace Mono.VisualC.Interop {
 			TypeComplete = false;
 
 			native_size = Marshal.SizeOf (nativeLayout);
-			field_offset_padding = 0;
+			field_offset_padding_without_vtptr = 0;
 
 			lazy_vtable = null;
 		}
@@ -107,8 +107,8 @@ namespace Mono.VisualC.Interop {
 				VTableOverrides.PrependLast (baseType.VTableOverrides);
 			}
 
-			field_offset_padding += baseType.native_size +
-				(addVTablePointer? baseType.FieldOffsetPadding : baseType.field_offset_padding);
+			field_offset_padding_without_vtptr += baseType.native_size +
+				(addVTablePointer? baseType.FieldOffsetPadding : baseType.field_offset_padding_without_vtptr);
 		}
 
 		public int CountBases (Func<CppTypeInfo, bool> predicate)
@@ -174,7 +174,7 @@ namespace Mono.VisualC.Interop {
 		// the extra padding to allocate at the top of the class before the fields begin
 		//  (by default, just the vtable pointer)
 		public virtual int FieldOffsetPadding {
-			get { return field_offset_padding + (VirtualMethods.Any ()? Marshal.SizeOf (typeof (IntPtr)) : 0); }
+			get { return field_offset_padding_without_vtptr + (VirtualMethods.Any ()? Marshal.SizeOf (typeof (IntPtr)) : 0); }
 		}
 
 		// the padding in the data pointed to by the vtable pointer before the list of function pointers starts
