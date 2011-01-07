@@ -37,13 +37,16 @@ namespace Mono.VisualC.Interop.Util {
 		private TItem [] cache;
 		private Func<int, TItem> generator;
 
-		private int skew;
+		private LazyGeneratedList<TItem> previous;
+		private LazyGeneratedList<TItem> next;
+		private int lead, follow;
 
 		public LazyGeneratedList (int count, Func<int, TItem> generator)
 		{
 			this.cache = new TItem [count];
 			this.generator = generator;
-			this.skew = 0;
+			this.lead = 0;
+			this.follow = 0;
 		}
 
 		public IEnumerator<TItem> GetEnumerator ()
@@ -57,7 +60,7 @@ namespace Mono.VisualC.Interop.Util {
 		}
 
 		public int Count {
-			get { return cache.Length + skew; }
+			get { return lead + cache.Length + follow; }
 		}
 
 		public bool IsReadOnly {
@@ -66,8 +69,19 @@ namespace Mono.VisualC.Interop.Util {
 
 		public TItem this [int index] {
 			get {
-				int realIndex = index - skew;
-				if (realIndex < 0) return null;
+				if (index < lead) {
+					if (previous != null && index > 0)
+						return previous [index];
+					throw new IndexOutOfRangeException (index.ToString ());
+				}
+
+				int realIndex = index - lead;
+				if (realIndex > cache.Length) {
+					int followIndex = realIndex - cache.Length;
+					if (next != null && followIndex < follow)
+						return next [followIndex];
+					throw new IndexOutOfRangeException (index.ToString ());
+				}
 
 				if (cache [realIndex] == null)
 					cache [realIndex] = generator (realIndex);
@@ -79,9 +93,49 @@ namespace Mono.VisualC.Interop.Util {
 			}
 		}
 
-		public void Skew (int skew)
+		/* Visual aid for the behavior of the following methods:
+
+			|<Prepended Range><Generated Range><Appended Range>|
+                         ^               ^                 ^              ^
+                         PrependFirst    PrependLast       AppendFirst    AppendLast
+		*/
+
+		public void AppendFirst (LazyGeneratedList<TItem> list)
 		{
-			this.skew += skew;
+			follow += list.Count;
+			if (next != null)
+				list.AppendLast (next);
+
+			next = list;
+		}
+
+		public void AppendLast (LazyGeneratedList<TItem> list)
+		{
+			if (next == null)
+				next = list;
+			else
+				next.AppendLast (list);
+
+			follow += list.Count;
+		}
+
+		public void PrependFirst (LazyGeneratedList<TItem> list)
+		{
+			if (previous == null)
+				previous = list;
+			else
+				previous.PrependFirst (list);
+
+			lead += list.Count;
+		}
+
+		public void PrependLast (LazyGeneratedList<TItem> list)
+		{
+			lead += list.Count;
+			if (previous != null)
+				list.PrependFirst (previous);
+
+			previous = list;
 		}
 
 		// FIXME: Should probably implement these 3 at some point

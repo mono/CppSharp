@@ -103,8 +103,8 @@ namespace Mono.VisualC.Interop {
 					VirtualMethods.Insert (BaseVTableSlots + i, baseType.VirtualMethods [i]);
 	
 				BaseVTableSlots += newVirtualMethodCount;
-				VTableDelegateTypes.Skew (newVirtualMethodCount);
-				VTableOverrides.Skew (newVirtualMethodCount);
+				VTableDelegateTypes.PrependLast (baseType.VTableDelegateTypes);
+				VTableOverrides.PrependLast (baseType.VTableOverrides);
 			}
 
 			field_offset_padding += baseType.native_size +
