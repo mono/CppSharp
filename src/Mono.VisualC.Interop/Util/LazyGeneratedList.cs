@@ -39,14 +39,18 @@ namespace Mono.VisualC.Interop.Util {
 
 		private LazyGeneratedList<TItem> previous;
 		private LazyGeneratedList<TItem> next;
-		private int lead, follow;
+		private int lead, content, follow;
+
+		private HashSet<int> removed;
 
 		public LazyGeneratedList (int count, Func<int, TItem> generator)
 		{
 			this.cache = new TItem [count];
 			this.generator = generator;
 			this.lead = 0;
+			this.content = count;
 			this.follow = 0;
+			this.removed = new HashSet<int> ();
 		}
 
 		public IEnumerator<TItem> GetEnumerator ()
@@ -60,7 +64,7 @@ namespace Mono.VisualC.Interop.Util {
 		}
 
 		public int Count {
-			get { return lead + cache.Length + follow; }
+			get { return lead + content + follow; }
 		}
 
 		public bool IsReadOnly {
@@ -69,35 +73,40 @@ namespace Mono.VisualC.Interop.Util {
 
 		public TItem this [int index] {
 			get {
-				if (index < lead) {
-					if (previous != null && index > 0)
-						return previous [index];
-					throw new IndexOutOfRangeException (index.ToString ());
-				}
-
-				int realIndex = index - lead;
-				if (realIndex > cache.Length) {
-					int followIndex = realIndex - cache.Length;
-					if (next != null && followIndex < follow)
-						return next [followIndex];
-					throw new IndexOutOfRangeException (index.ToString ());
-				}
-
-				if (cache [realIndex] == null)
-					cache [realIndex] = generator (realIndex);
-
-				return cache [realIndex];
+				return ForIndex (index, i => previous [i], i => (cache [i] == null? (cache [i] = generator (i)) : cache [i]), i => next [i]);
 			}
 			set {
 				throw new NotSupportedException ("This IList is read only");
 			}
 		}
 
+		private TItem ForIndex (int index, Func<int,TItem> leadAction, Func<int,TItem> contentAction, Func<int,TItem> followAction)
+		{
+			if (removed.Contains (index))
+				index++;
+
+			if (index < lead) {
+				if (previous != null && index >= 0)
+					return leadAction (index);
+				throw new IndexOutOfRangeException (index.ToString ());
+			}
+
+			int realIndex = index - lead;
+			if (realIndex >= content) {
+				int followIndex = realIndex - content;
+				if (next != null && followIndex < follow)
+					return followAction (followIndex);
+				throw new IndexOutOfRangeException (index.ToString ());
+			}
+
+			return contentAction (realIndex);
+		}
+
 		/* Visual aid for the behavior of the following methods:
 
 			|<Prepended Range><Generated Range><Appended Range>|
-                         ^               ^                 ^              ^
-                         PrependFirst    PrependLast       AppendFirst    AppendLast
+			 ^               ^                 ^              ^
+			 PrependFirst    PrependLast       AppendFirst    AppendLast
 		*/
 
 		public void AppendFirst (LazyGeneratedList<TItem> list)
@@ -159,7 +168,11 @@ namespace Mono.VisualC.Interop.Util {
 		}
 		public void RemoveAt (int index)
 		{
-			throw new NotImplementedException ();
+			while (removed.Contains (index))
+				index++;
+
+			removed.Add (index);
+			content--;
 		}
 		public void Add (TItem item)
 		{

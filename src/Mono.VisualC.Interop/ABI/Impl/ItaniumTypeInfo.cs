@@ -41,6 +41,8 @@ namespace Mono.VisualC.Interop.ABI {
 
 				hasVirtualDtor = true;
 				VirtualMethods.RemoveAt (i);
+				VTableDelegateTypes.RemoveAt (i);
+				VTableOverrides.RemoveAt (i);
 				break;
 			}
 		}
@@ -58,7 +60,7 @@ namespace Mono.VisualC.Interop.ABI {
 				return;
 
 			hasVirtualDtor |= ((ItaniumTypeInfo)baseType).HasVirtualDestructor;
-			base.AddBase (baseType);
+			base.AddBase (baseType, false);
 		}
 
 		// Itanium puts all its virtual dtors at the bottom of the vtable (2 slots each).
