@@ -29,6 +29,8 @@ namespace Mono.VisualC.Code.Atoms {
 		private void CreateNamespace (CodeCompileUnit ccu, string name)
 		{
 			CodeNamespace ns = new CodeNamespace (name);
+            ns.Imports.Add (new CodeNamespaceImport ("System"));
+            ns.Imports.Add (new CodeNamespaceImport ("System.Runtime.InteropServices"));
 			ns.Imports.Add (new CodeNamespaceImport ("Mono.VisualC.Interop"));
 
 			ns.UserData ["CodeCompileUnit"] = ccu;

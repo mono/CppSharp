@@ -30,7 +30,9 @@ namespace Mono.VisualC.Code {
 		internal protected override object InsideCodeCompileUnit (CodeCompileUnit ccu)
 		{
 			CodeNamespace ns = new CodeNamespace (ManagedNamespace);
-			ns.Imports.Add (new CodeNamespaceImport ("Mono.VisualC.Interop"));
+            ns.Imports.Add (new CodeNamespaceImport ("System"));
+            ns.Imports.Add (new CodeNamespaceImport ("System.Runtime.InteropServices"));
+            ns.Imports.Add (new CodeNamespaceImport ("Mono.VisualC.Interop"));
 
 			ns.UserData ["CodeCompileUnit"] = ccu;
 

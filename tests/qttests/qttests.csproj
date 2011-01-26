@@ -1,1 +1,104 @@
-<?xml version="1.0" encoding="utf-8"?><Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">  <PropertyGroup>    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>    <ProductVersion>8.0.50727</ProductVersion>    <SchemaVersion>2.0</SchemaVersion>    <ProjectGuid>{8DBA7E4A-7736-499A-85AC-0524535B880A}</ProjectGuid>    <OutputType>Exe</OutputType>    <RootNamespace>qttests</RootNamespace>    <AssemblyName>qttests</AssemblyName>  </PropertyGroup>  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">    <DebugSymbols>true</DebugSymbols>    <DebugType>full</DebugType>    <Optimize>false</Optimize>    <OutputPath>bin\Debug</OutputPath>    <DefineConstants>DEBUG</DefineConstants>    <ErrorReport>prompt</ErrorReport>    <WarningLevel>4</WarningLevel>    <Externalconsole>true</Externalconsole>  </PropertyGroup>  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">    <DebugType>none</DebugType>    <Optimize>false</Optimize>    <OutputPath>bin\Release</OutputPath>    <ErrorReport>prompt</ErrorReport>    <WarningLevel>4</WarningLevel>    <Externalconsole>true</Externalconsole>  </PropertyGroup>  <ItemGroup>    <Reference Include="System" />  </ItemGroup>  <ItemGroup>    <Compile Include="Main.cs" />    <Compile Include="AssemblyInfo.cs" />    <Compile Include="..\output\Element.cs">      <Link>QtBindings\Element.cs</Link>    </Compile>    <Compile Include="..\output\Enums.cs">      <Link>QtBindings\Enums.cs</Link>    </Compile>    <Compile Include="..\output\Lib_Lib.cs">      <Link>QtBindings\Lib_Lib.cs</Link>    </Compile>    <Compile Include="..\output\QAbstractButton.cs">      <Link>QtBindings\QAbstractButton.cs</Link>    </Compile>    <Compile Include="..\output\QAtomicInt.cs">      <Link>QtBindings\QAtomicInt.cs</Link>    </Compile>    <Compile Include="..\output\QBasicAtomicInt.cs">      <Link>QtBindings\QBasicAtomicInt.cs</Link>    </Compile>    <Compile Include="..\output\QBool.cs">      <Link>QtBindings\QBool.cs</Link>    </Compile>    <Compile Include="..\output\QByteArray.cs">      <Link>QtBindings\QByteArray.cs</Link>    </Compile>    <Compile Include="..\output\QByteRef.cs">      <Link>QtBindings\QByteRef.cs</Link>    </Compile>    <Compile Include="..\output\QChar.cs">      <Link>QtBindings\QChar.cs</Link>    </Compile>    <Compile Include="..\output\QCharRef.cs">      <Link>QtBindings\QCharRef.cs</Link>    </Compile>    <Compile Include="..\output\QColor.cs">      <Link>QtBindings\QColor.cs</Link>    </Compile>    <Compile Include="..\output\QDataStream.cs">      <Link>QtBindings\QDataStream.cs</Link>    </Compile>    <Compile Include="..\output\QFlag.cs">      <Link>QtBindings\QFlag.cs</Link>    </Compile>    <Compile Include="..\output\QFlags.cs">      <Link>QtBindings\QFlags.cs</Link>    </Compile>    <Compile Include="..\output\QGenericArgument.cs">      <Link>QtBindings\QGenericArgument.cs</Link>    </Compile>    <Compile Include="..\output\QGenericReturnArgument.cs">      <Link>QtBindings\QGenericReturnArgument.cs</Link>    </Compile>    <Compile Include="..\output\QIncompatibleFlag.cs">      <Link>QtBindings\QIncompatibleFlag.cs</Link>    </Compile>    <Compile Include="..\output\QInternal.cs">      <Link>QtBindings\QInternal.cs</Link>    </Compile>    <Compile Include="..\output\QIODevice.cs">      <Link>QtBindings\QIODevice.cs</Link>    </Compile>    <Compile Include="..\output\QLatin1String.cs">      <Link>QtBindings\QLatin1String.cs</Link>    </Compile>    <Compile Include="..\output\QLine.cs">      <Link>QtBindings\QLine.cs</Link>    </Compile>    <Compile Include="..\output\QLinearGradient.cs">      <Link>QtBindings\QLinearGradient.cs</Link>    </Compile>    <Compile Include="..\output\QLineF.cs">      <Link>QtBindings\QLineF.cs</Link>    </Compile>    <Compile Include="..\output\QList.cs">      <Link>QtBindings\QList.cs</Link>    </Compile>    <Compile Include="..\output\QMatrix.cs">      <Link>QtBindings\QMatrix.cs</Link>    </Compile>    <Compile Include="..\output\QObject.cs">      <Link>QtBindings\QObject.cs</Link>    </Compile>    <Compile Include="..\output\QObjectData.cs">      <Link>QtBindings\QObjectData.cs</Link>    </Compile>    <Compile Include="..\output\QObjectUserData.cs">      <Link>QtBindings\QObjectUserData.cs</Link>    </Compile>    <Compile Include="..\output\QPainterPath.cs">      <Link>QtBindings\QPainterPath.cs</Link>    </Compile>    <Compile Include="..\output\QPainterPathPrivate.cs">      <Link>QtBindings\QPainterPathPrivate.cs</Link>    </Compile>    <Compile Include="..\output\QPainterPathStroker.cs">      <Link>QtBindings\QPainterPathStroker.cs</Link>    </Compile>    <Compile Include="..\output\QPalette.cs">      <Link>QtBindings\QPalette.cs</Link>    </Compile>    <Compile Include="..\output\QPixmap.cs">      <Link>QtBindings\QPixmap.cs</Link>    </Compile>    <Compile Include="..\output\QPoint.cs">      <Link>QtBindings\QPoint.cs</Link>    </Compile>    <Compile Include="..\output\QPointF.cs">      <Link>QtBindings\QPointF.cs</Link>    </Compile>    <Compile Include="..\output\QPolygon.cs">      <Link>QtBindings\QPolygon.cs</Link>    </Compile>    <Compile Include="..\output\QPolygonF.cs">      <Link>QtBindings\QPolygonF.cs</Link>    </Compile>    <Compile Include="..\output\QRadialGradient.cs">      <Link>QtBindings\QRadialGradient.cs</Link>    </Compile>    <Compile Include="..\output\QRect.cs">      <Link>QtBindings\QRect.cs</Link>    </Compile>    <Compile Include="..\output\QRectF.cs">      <Link>QtBindings\QRectF.cs</Link>    </Compile>    <Compile Include="..\output\QRegion.cs">      <Link>QtBindings\QRegion.cs</Link>    </Compile>    <Compile Include="..\output\QScopedPointer.cs">      <Link>QtBindings\QScopedPointer.cs</Link>    </Compile>    <Compile Include="..\output\QSize.cs">      <Link>QtBindings\QSize.cs</Link>    </Compile>    <Compile Include="..\output\QSizeF.cs">      <Link>QtBindings\QSizeF.cs</Link>    </Compile>    <Compile Include="..\output\QString.cs">      <Link>QtBindings\QString.cs</Link>    </Compile>    <Compile Include="..\output\QStringRef.cs">      <Link>QtBindings\QStringRef.cs</Link>    </Compile>    <Compile Include="..\output\QSysInfo.cs">      <Link>QtBindings\QSysInfo.cs</Link>    </Compile>    <Compile Include="..\output\QTypeInfo.cs">      <Link>QtBindings\QTypeInfo.cs</Link>    </Compile>    <Compile Include="..\output\QVector.cs">      <Link>QtBindings\QVector.cs</Link>    </Compile>    <Compile Include="..\output\QWidgetData.cs">      <Link>QtBindings\QWidgetData.cs</Link>    </Compile>    <Compile Include="..\output\Enums1.cs">      <Link>QtBindings\Enums1.cs</Link>    </Compile>    <Compile Include="..\output\Enums2.cs">      <Link>QtBindings\Enums2.cs</Link>    </Compile>    <Compile Include="..\output\QBrush.cs">      <Link>QtBindings\QBrush.cs</Link>    </Compile>    <Compile Include="..\output\QBrush1.cs">      <Link>QtBindings\QBrush1.cs</Link>    </Compile>    <Compile Include="..\output\QByteArray1.cs">      <Link>QtBindings\QByteArray1.cs</Link>    </Compile>    <Compile Include="..\output\QChar1.cs">      <Link>QtBindings\QChar1.cs</Link>    </Compile>    <Compile Include="..\output\QConicalGradient.cs">      <Link>QtBindings\QConicalGradient.cs</Link>    </Compile>    <Compile Include="..\output\QCursor.cs">      <Link>QtBindings\QCursor.cs</Link>    </Compile>    <Compile Include="..\output\QExplicitlySharedDataPointer.cs">      <Link>QtBindings\QExplicitlySharedDataPointer.cs</Link>    </Compile>    <Compile Include="..\output\QFlags1.cs">      <Link>QtBindings\QFlags1.cs</Link>    </Compile>    <Compile Include="..\output\QFlags2.cs">      <Link>QtBindings\QFlags2.cs</Link>    </Compile>    <Compile Include="..\output\QFont.cs">      <Link>QtBindings\QFont.cs</Link>    </Compile>    <Compile Include="..\output\QFontInfo.cs">      <Link>QtBindings\QFontInfo.cs</Link>    </Compile>    <Compile Include="..\output\QFontMetrics.cs">      <Link>QtBindings\QFontMetrics.cs</Link>    </Compile>    <Compile Include="..\output\QFontMetricsF.cs">      <Link>QtBindings\QFontMetricsF.cs</Link>    </Compile>    <Compile Include="..\output\QGradient.cs">      <Link>QtBindings\QGradient.cs</Link>    </Compile>    <Compile Include="..\output\QGradient1.cs">      <Link>QtBindings\QGradient1.cs</Link>    </Compile>    <Compile Include="..\output\QGraphicsBlurEffect.cs">      <Link>QtBindings\QGraphicsBlurEffect.cs</Link>    </Compile>    <Compile Include="..\output\QGraphicsColorizeEffect.cs">      <Link>QtBindings\QGraphicsColorizeEffect.cs</Link>    </Compile>    <Compile Include="..\output\QGraphicsDropShadowEffect.cs">      <Link>QtBindings\QGraphicsDropShadowEffect.cs</Link>    </Compile>    <Compile Include="..\output\QGraphicsEffect.cs">      <Link>QtBindings\QGraphicsEffect.cs</Link>    </Compile>    <Compile Include="..\output\QGraphicsOpacityEffect.cs">      <Link>QtBindings\QGraphicsOpacityEffect.cs</Link>    </Compile>    <Compile Include="..\output\QIcon.cs">      <Link>QtBindings\QIcon.cs</Link>    </Compile>    <Compile Include="..\output\QImage.cs">      <Link>QtBindings\QImage.cs</Link>    </Compile>    <Compile Include="..\output\QImage1.cs">      <Link>QtBindings\QImage1.cs</Link>    </Compile>    <Compile Include="..\output\QImageTextKeyLang.cs">      <Link>QtBindings\QImageTextKeyLang.cs</Link>    </Compile>    <Compile Include="..\output\QIODevice1.cs">      <Link>QtBindings\QIODevice1.cs</Link>    </Compile>    <Compile Include="..\output\QKeySequence.cs">      <Link>QtBindings\QKeySequence.cs</Link>    </Compile>    <Compile Include="..\output\QLineF1.cs">      <Link>QtBindings\QLineF1.cs</Link>    </Compile>    <Compile Include="..\output\QList1.cs">      <Link>QtBindings\QList1.cs</Link>    </Compile>    <Compile Include="..\output\QMargins.cs">      <Link>QtBindings\QMargins.cs</Link>    </Compile>    <Compile Include="..\output\QPaintDevice.cs">      <Link>QtBindings\QPaintDevice.cs</Link>    </Compile>    <Compile Include="..\output\QPainterPath1.cs">      <Link>QtBindings\QPainterPath1.cs</Link>    </Compile>    <Compile Include="..\output\QPainterPath2.cs">      <Link>QtBindings\QPainterPath2.cs</Link>    </Compile>    <Compile Include="..\output\QPainterPathStroker1.cs">      <Link>QtBindings\QPainterPathStroker1.cs</Link>    </Compile>    <Compile Include="..\output\QPixmap1.cs">      <Link>QtBindings\QPixmap1.cs</Link>    </Compile>    <Compile Include="..\output\QPolygonF1.cs">      <Link>QtBindings\QPolygonF1.cs</Link>    </Compile>    <Compile Include="..\output\QPushButton.cs">      <Link>QtBindings\QPushButton.cs</Link>    </Compile>    <Compile Include="..\output\QRegExp.cs">      <Link>QtBindings\QRegExp.cs</Link>    </Compile>    <Compile Include="..\output\QScopedPointer1.cs">      <Link>QtBindings\QScopedPointer1.cs</Link>    </Compile>    <Compile Include="..\output\QSharedData.cs">      <Link>QtBindings\QSharedData.cs</Link>    </Compile>    <Compile Include="..\output\QSharedData1.cs">      <Link>QtBindings\QSharedData1.cs</Link>    </Compile>    <Compile Include="..\output\QSizePolicy.cs">      <Link>QtBindings\QSizePolicy.cs</Link>    </Compile>    <Compile Include="..\output\QString1.cs">      <Link>QtBindings\QString1.cs</Link>    </Compile>    <Compile Include="..\output\QStringList.cs">      <Link>QtBindings\QStringList.cs</Link>    </Compile>    <Compile Include="..\output\QStringMatcher.cs">      <Link>QtBindings\QStringMatcher.cs</Link>    </Compile>    <Compile Include="..\output\QStringRef1.cs">      <Link>QtBindings\QStringRef1.cs</Link>    </Compile>    <Compile Include="..\output\QTransform.cs">      <Link>QtBindings\QTransform.cs</Link>    </Compile>    <Compile Include="..\output\QVector1.cs">      <Link>QtBindings\QVector1.cs</Link>    </Compile>    <Compile Include="..\output\QWidget.cs">      <Link>QtBindings\QWidget.cs</Link>    </Compile>  </ItemGroup>  <ItemGroup>    <Folder Include="QtBindings\" />  </ItemGroup>  <ItemGroup>    <ProjectReference Include="..\..\src\Mono.VisualC.Interop\Mono.VisualC.Interop.csproj">      <Project>{4A864586-93C5-4DC1-8A80-F094A88506D7}</Project>      <Name>Mono.VisualC.Interop</Name>    </ProjectReference>    <ProjectReference Include="..\..\src\Mono.VisualC.Code\Mono.VisualC.Code.csproj">      <Project>{A22BF9D9-BBCB-4462-BE08-0F4D5280B180}</Project>      <Name>Mono.VisualC.Code</Name>    </ProjectReference>  </ItemGroup>  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />  <ProjectExtensions>    <MonoDevelop>      <Properties InternalTargetFrameworkVersion="3.5" xmlns="" />    </MonoDevelop>  </ProjectExtensions></Project>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8DBA7E4A-7736-499A-85AC-0524535B880A}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>qttests</RootNamespace>
+    <AssemblyName>qttests</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <PublishUrl>http://localhost/qttests/</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Externalconsole>true</Externalconsole>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Externalconsole>true</Externalconsole>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Main.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="..\output\FlatFile.cs">
+      <Link>QtBindings\FlatFile.cs</Link>
+    </Compile>
+    <Compile Include="..\output\Lib_Lib.cs">
+      <Link>QtBindings\Lib_Lib.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Mono.VisualC.Code\Mono.VisualC.Code.csproj">
+      <Project>{A22BF9D9-BBCB-4462-BE08-0F4D5280B180}</Project>
+      <Name>Mono.VisualC.Code</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Mono.VisualC.Interop\Mono.VisualC.Interop.csproj">
+      <Project>{4A864586-93C5-4DC1-8A80-F094A88506D7}</Project>
+      <Name>Mono.VisualC.Interop</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties InternalTargetFrameworkVersion="3.5" xmlns="" />
+    </MonoDevelop>
+  </ProjectExtensions>
+</Project>

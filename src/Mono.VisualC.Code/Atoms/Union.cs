@@ -20,8 +20,8 @@ namespace Mono.VisualC.Code.Atoms {
 				TypeAttributes = TypeAttributes.Public,
 				IsStruct = true
 			};
-			var explicitLayout = new CodeAttributeArgument (new CodeFieldReferenceExpression (new CodeTypeReferenceExpression (typeof (LayoutKind)), "Explicit"));
-			union.CustomAttributes.Add (new CodeAttributeDeclaration (new CodeTypeReference (typeof (StructLayoutAttribute)), explicitLayout));
+//			var explicitLayout = new CodeAttributeArgument (new CodeFieldReferenceExpression (new CodeTypeReferenceExpression (typeof (short)), (short)LayoutKind.Explicit));
+			union.CustomAttributes.Add (new CodeAttributeDeclaration (new CodeTypeReference (typeof (StructLayoutAttribute)), new CodeAttributeArgument (new CodePrimitiveExpression ((short)LayoutKind.Explicit))));
 
 			foreach (var atom in Atoms) {
 				Field field = atom as Field;

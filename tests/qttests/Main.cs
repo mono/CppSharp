@@ -1,5 +1,5 @@
 using System;
-using Qt.Gui;
+
 using Mono.VisualC.Interop;
 
 namespace qttests {
