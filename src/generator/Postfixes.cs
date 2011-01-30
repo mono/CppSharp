@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using Mono.VisualC.Code;
 using Mono.VisualC.Code.Atoms;
 
-namespace CPPInterop {
+namespace Mono.VisualC.Tools.Generator {
 
 	public static class Postfixes {
 		public static readonly List<IPostfix> List = new List<IPostfix> () {

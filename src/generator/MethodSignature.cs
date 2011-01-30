@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using Mono.VisualC.Interop;
 using Mono.VisualC.Interop.Util;
 
-namespace CPPInterop {
+namespace Mono.VisualC.Tools.Generator {
 
 	// This is the best I could come up with to prevent duplicate managed
 	//  signatures. The problem is, most of the types don't exist yet.

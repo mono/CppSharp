@@ -20,7 +20,7 @@ using System.CodeDom;
 using System.CodeDom.Compiler;
 using Microsoft.CSharp;
 
-namespace CPPInterop {
+namespace Mono.VisualC.Tools.Generator {
 	public class Generator {
 		public static readonly string [] genericTypeArgs = new string [] { "T", "U", "V", "W", "X", "Y", "Z" };
 
@@ -180,89 +180,15 @@ namespace CPPInterop {
 			SaveFile (Tree.WrapperToCodeDom (Provider), "FlatFile");
 		}
 
-        static Dictionary<string, Dictionary<string, Entry>> typelist;
-        static Dictionary<string, Entry> idlist;
 
-        class Entry
-        {
+	/***************************************************************************/
 
-            public string id;
-            public string type;
-            public string name;
-            public string computedName;
-            public string reftype;
-            public Dictionary<string, string> attributes;
-            public List<Entry> children;
-            public bool isCreated;
-            public CodeAtom atom;
-            public Class Class {
-                get { return (Class)atom; }
-            }
-            public CppType cppType;
-            public bool isTemplate;
-
-            List<Entry> members;
-
-
-            public List<Entry> Members {
-                get {
-                    if (members == null) {
-                        members = new List<Entry>();
-                        if (HasValue ("members")) {
-                            var m = this["members"].ToString ().Split (' ').Where (id => !id.Equals (string.Empty)).ToArray ();
-                            members.AddRange (from o in m where idlist.ContainsKey (o) select idlist[o]);
-                        }
-                    }
-                    return members;
-                }
-            }
-
-            public bool CheckValue (string key, string name) {
-                return attributes.ContainsKey (key) && attributes[key] == name;
-            }
-
-            public string this[string key] {
-                get { return HasValue (key) ? attributes[key] : null; }
-            }
-
-            public bool HasValue (string key) {
-                return attributes.ContainsKey (key) && attributes[key] != "";
-            }
-
-            public bool IsTrue (string key) {
-                return attributes.ContainsKey (key) && attributes[key] == "1";
-            }
-
-            public Entry Base {
-                get {
-                    if (HasValue ("type"))
-                        return idlist[reftype];
-                    return this;
-                }
-            }
-
-            public Entry Namespace {
-                get
-                {
-                    if (HasValue ("context"))
-                        return idlist[this["context"]].Namespace;
-                    return this;
-                }
-            }
-
-            public static Entry Find (string name)
-            {
-                if (idlist.ContainsKey (name))
-                    return idlist[name];
-                return (from o in idlist where o.Value.name == name select o.Value).FirstOrDefault ();
-            }
-        }
 
         List<Entry> Preprocess (XmlDocument xmldoc)
         {
             XmlNode node = xmldoc.SelectSingleNode ("/GCC_XML");
-            typelist = new Dictionary<string, Dictionary<string, Entry>> ();
-            idlist = new Dictionary<string, Entry> ();
+            Entry.typelist = new Dictionary<string, Dictionary<string, Entry>> ();
+            Entry.idlist = new Dictionary<string, Entry> ();
             return Preprocess(node);
         }
 
@@ -297,18 +223,18 @@ namespace CPPInterop {
                 else
                     e.children = new List<Entry> ();
 
-                if (!typelist.ContainsKey (e.type))
-                    typelist[e.type] = new Dictionary<string, Entry> ();
+                if (!Entry.typelist.ContainsKey (e.type))
+                    Entry.typelist[e.type] = new Dictionary<string, Entry> ();
 
                 if (entry.ContainsKey ("id"))
-                    idlist.Add (e.id, e);
+                    Entry.idlist.Add (e.id, e);
 
                 string id = e.id;
                 int count = 0;
-                while (typelist[e.type].ContainsKey (id)) {
+                while (Entry.typelist[e.type].ContainsKey (id)) {
                     id = e.id + "|" + count++;
                 }
-                typelist[e.type].Add (id, e);
+                Entry.typelist[e.type].Add (id, e);
                 data.Add (e);
             }
             return data;
@@ -316,25 +242,22 @@ namespace CPPInterop {
 
         void PreprocessClasses (List<Entry> entries)
         {
-            entries.RemoveAll (o => o.type == "Class" &&
+            entries.RemoveAll (o => (o.type == "Class" || o.type == "Struct") &&
                                 (o.IsTrue ("incomplete") ||
                                 !o.HasValue ("name") ||
-                                (idlist[o["file"]].name.StartsWith ("/"))
+                                (Entry.idlist[o["file"]].name.StartsWith ("/"))
                                 ));
         }
 
         void ProcessClasses (List<Entry> entries)
         {
-            foreach (Entry clas in entries.Where (o => o.type == "Class"))
+            foreach (Entry clas in entries.Where (o => o.type == "Class" || o.type == "Struct"))
             {
                 //onsole.WriteLine (clas.name);
-                bool bb;
-                if (clas.name.StartsWith ("QGraphicsBlurEffect"))
-                    bb = true;
+                //bool bb;
+                //if (clas.name.StartsWith ("QGraphicsBlurEffect"))
+                 //   bb = true;
                 clas.computedName = clas.name;
-                clas.atom = new Class (clas.computedName) {
-                    StaticCppLibrary = string.Format ("{0}.Libs.{1}", Namespace, Library)
-                };
 
                 string ns = GetNamespace (clas);
                 CppType currentType = new CppType (clas.type.ToLower (), ns != null ? ns + "::" + clas.computedName : clas.computedName);
@@ -368,6 +291,10 @@ namespace CPPInterop {
                     clas.computedName = baseName;
                 } else if (IsCreated (currentType, true, out nested))
                     continue;
+
+		clas.atom = new Class (clas.computedName) {
+                    StaticCppLibrary = string.Format ("{0}.Libs.{1}", Namespace, Library)
+                };
 
                 GetContainer (clas, Tree).Atoms.AddLast (clas.atom);
 
@@ -422,7 +349,7 @@ namespace CPPInterop {
 
                     // Now we're processing a method...
 
-                    if (member.CheckValue ("access", "public") ||
+                    if (!member.CheckValue ("access", "public") ||
                         (member.HasValue ("overrides") && !dtor) ||
                         !member.IsTrue ("extern"))
                         continue;
@@ -430,7 +357,7 @@ namespace CPPInterop {
                     string mname = member.name;
 
 
-                    CppType retType = member.HasValue ("returns") ? findType (idlist[member["returns"]]) : CppTypes.Void;
+                    CppType retType = member.HasValue ("returns") ? findType (Entry.idlist[member["returns"]]) : CppTypes.Void;
                     if (replaceArgs != null) {
                         for (int i = 0; i < replaceArgs.Length; i++)
                             retType = replaceType (retType, replaceArgs[i], genericTypeArgs[i]);
@@ -479,7 +406,7 @@ namespace CPPInterop {
                     if (methods.TryGetValue (sig, out conflictingSig)) {
                         // FIXME: add comment to explain why it's commented out
                         string demangled = member.attributes["demangled"];
-                        Console.Error.WriteLine ("Warning: Method \"{0}\" in class {1} omitted because it conflicts with \"{2}\"", demangled, name, conflictingSig);
+                        //Console.Error.WriteLine ("Warning: Method \"{0}\" in class {1} omitted because it conflicts with \"{2}\"", demangled, name, conflictingSig);
                         methodAtom.Comment = string.Format ("FIXME:Method \"{0}\" omitted because it conflicts with \"{1}\"", demangled, conflictingSig);
                         methodAtom.CommentedOut = true;
                     } else
@@ -515,8 +442,7 @@ namespace CPPInterop {
                     if (mname.ToLower ().StartsWith ("set") && retType.Equals (CppTypes.Void) && methodAtom.Parameters.Count == 1 &&
                         clas.Members.Where (o => o.name == mname).FirstOrDefault () == null) {
 
-                        string getterName = "translate(@name, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = '" +
-                            mname.Substring (3).TrimStart ('_').ToLower () + "'";
+                        string getterName = mname.Substring (3).TrimStart ('_').ToLower ();
 
                         string pname = methodAtom.FormattedName.Substring (3);
                         Property propertyAtom = null;
@@ -527,7 +453,7 @@ namespace CPPInterop {
                             doIt = propertyAtom.Getter != null && propertyAtom.Getter.RetType.Equals (methodAtom.Parameters[0].Type);
                         } else {
                             Entry getter = clas.Members.Where (o => o.name == getterName).FirstOrDefault ();
-                            doIt = (getter != null && findType (idlist[getter.attributes["returns"]]).Equals (methodAtom.Parameters[0].Type));
+                            doIt = (getter != null && findType (Entry.idlist[getter.attributes["returns"]]).Equals (methodAtom.Parameters[0].Type));
                         }
                         if (doIt) {
                             if (propertyAtom != null) {
@@ -853,7 +779,7 @@ namespace CPPInterop {
         string GetNamespace (Entry entry)
         {
             string nsname;
-            if (idlist[entry["context"]] == null)
+            if (Entry.idlist[entry["context"]] == null)
                 return null;
 
             Entry ns = entry.Namespace;
@@ -901,7 +827,7 @@ namespace CPPInterop {
         CodeContainer GetContainer (Entry entry, CodeContainer def)
         {
             string nsname;
-            if (idlist[entry.attributes["context"]] == null)
+            if (Entry.idlist[entry.attributes["context"]] == null)
                 return null;
 
             Entry ns = entry.Namespace;

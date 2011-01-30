@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -40,7 +40,7 @@
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Commandlineparameters>--testabi -f=/Users/Alex/OpenSource/gccxml/gccxml-build/bin/qapplication.xml -o=. --ns=Foo --lib=LibFoo</Commandlineparameters>
+    <Commandlineparameters>-f=/Users/Alex/OpenSource/cppinterop/tests/QObject.xml -o=output</Commandlineparameters>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -56,6 +56,7 @@
     <Compile Include="Options.cs" />
     <Compile Include="MethodSignature.cs" />
     <Compile Include="Postfixes.cs" />
+    <Compile Include="Entry.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System">
@@ -67,11 +68,6 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ProjectExtensions>
-    <MonoDevelop>
-      <Properties InternalTargetFrameworkVersion="3.5" />
-    </MonoDevelop>
-  </ProjectExtensions>
   <ItemGroup>
     <ProjectReference Include="..\Mono.VisualC.Code\Mono.VisualC.Code.csproj">
       <Project>{A22BF9D9-BBCB-4462-BE08-0F4D5280B180}</Project>
@@ -98,13 +94,5 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="QtGui.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 </Project>
