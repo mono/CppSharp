@@ -1,0 +1,16 @@
+*.pidb
+configure
+install-sh
+aclocal.m4
+config.status
+config.log
+autom4te.cache
+missing
+*Makefile
+*Makefile.in
+*.dll
+*.exe
+bin/
+*.userprefs
+tests/output
+src/generator/generator

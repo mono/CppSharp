@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -91,11 +91,6 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ProjectExtensions>
-    <MonoDevelop>
-      <Properties InternalTargetFrameworkVersion="3.5" />
-    </MonoDevelop>
-  </ProjectExtensions>
   <ItemGroup>
     <ProjectReference Include="..\Mono.VisualC.Interop\Mono.VisualC.Interop.csproj">
       <Project>{4A864586-93C5-4DC1-8A80-F094A88506D7}</Project>
