@@ -328,8 +328,15 @@ namespace Mono.VisualC.Tools.Generator {
 							retType = replaceType (retType, templated.Types[i], genericTypeArgs[i]);
 					}
 
-					var methodAtom = new Method (dtor ? "Destruct" : mname) { RetType = retType, IsVirtual = member.IsTrue ("virtual"), IsStatic = member.IsTrue ("static"), IsConst = member.IsTrue ("const"), IsConstructor = ctor, IsDestructor = dtor };
-
+					var methodAtom = new Method (dtor ? "Destruct" : mname) {
+						RetType = retType,
+						IsVirtual = member.IsTrue ("virtual"),
+						IsStatic = member.IsTrue ("static"),
+						IsConst = member.IsTrue ("const"),
+						IsConstructor = ctor,
+						IsDestructor = dtor,
+						Klass = clas.Class
+					};
 
 					if (AbiTest)
 						methodAtom.Mangled = new NameTypePair<Type> { Name = member.attributes["mangled"], Type = typeof(ItaniumAbi) };

@@ -23,6 +23,7 @@ namespace Mono.VisualC.Code.Atoms {
 		public CppType RetType { get; set; }
 
 		public IList<NameTypePair<CppType>> Parameters { get; set; }
+		public Class Klass { get; set; }
 
 		private string formatted_name;
 
@@ -284,6 +285,8 @@ namespace Mono.VisualC.Code.Atoms {
 							sb.Append (Name [i]);
 					}
 					formatted_name = sb.ToString ();
+					if (formatted_name == Klass.Name)
+						formatted_name += "1";
 				}
 				return formatted_name;
 			}
