@@ -359,7 +359,6 @@ namespace Mono.VisualC.Tools.Generator {
 							argname = arg.name;
 
 						CppType argtype = findType (clas.Class, arg.Base, removed);
-						var templat = argtype.Modifiers.OfType<CppModifiers.TemplateModifier> ().SingleOrDefault ();
 						if (templated != null) {
 							for (int i = 0; i < templated.Types.Length; i++)
 								argtype = replaceType (argtype, templated.Types[i], genericTypeArgs[i]);
@@ -394,7 +393,8 @@ namespace Mono.VisualC.Tools.Generator {
 
 					// if it's const, returns a value, has no parameters, and there is no other method with the same name
 					//  in this class assume it's a property getter (for now?)
-					if (methodAtom.IsConst && !retType.Equals (CppTypes.Void) && !methodAtom.Parameters.Any () && clas.Members.Where (o => o.name == mname).FirstOrDefault () == null) {
+					if (methodAtom.IsConst && !retType.Equals (CppTypes.Void) && !methodAtom.Parameters.Any () &&
+					    clas.Members.Where (o => o.name == mname).FirstOrDefault () == null) {
 						var pname = methodAtom.FormattedName;
 						Property propertyAtom;
 
@@ -411,7 +411,8 @@ namespace Mono.VisualC.Tools.Generator {
 
 					// if it's name starts with "set", does not return a value, and has one arg (besides this ptr)
 					// and there is no other method with the same name...
-					if (mname.ToLower ().StartsWith ("set") && retType.Equals (CppTypes.Void) && methodAtom.Parameters.Count == 1 && clas.Members.Where (o => o.name == mname).FirstOrDefault () == null) {
+					if (mname.ToLower ().StartsWith ("set") && retType.Equals (CppTypes.Void) &&
+					    methodAtom.Parameters.Count == 1 && clas.Members.Where (o => o.name == mname).FirstOrDefault () == null) {
 
 						string getterName = mname.Substring (3).TrimStart ('_').ToLower ();
 
@@ -851,13 +852,10 @@ namespace Mono.VisualC.Tools.Generator {
 			case "Class":
 				if (removed.Contains (entry))
 					return modifiers.CopyTypeFrom (CppTypes.Unknown);
-				if (entry.Class != null && entry.Class.GenericName != null) {
+				if (entry.Class.GenericName != null) {
 					if (clas == entry.Class) {
-						Console.WriteLine ("Replacing {0} with {1}", name, entry.Class.GenericName);
 						return modifiers.CopyTypeFrom (new CppType (CppTypes.Class, entry.Class.GenericName));
 					} else {
-						Console.WriteLine ("Replacing {0} with Unknown", name);
-//						return modifiers.CopyTypeFrom (new CppType (CppTypes.Class, name));
 						return modifiers.CopyTypeFrom (CppTypes.Unknown);
 					}
 				} else
@@ -865,17 +863,14 @@ namespace Mono.VisualC.Tools.Generator {
 			case "Struct":
 				if (removed.Contains (entry))
 					return modifiers.CopyTypeFrom (CppTypes.Unknown);
-				Console.WriteLine ("Return struct {0}", name);
 				return modifiers.CopyTypeFrom (new CppType (CppTypes.Struct, name));
 			case "Union":
 				if (removed.Contains (entry))
 					return modifiers.CopyTypeFrom (CppTypes.Unknown);
-				Console.WriteLine ("Return union {0}", entry.name);
 				return modifiers.CopyTypeFrom (ProcessUnion (clas, entry, removed));
 			case "Enumeration":
 				if (removed.Contains (entry))
 					return modifiers.CopyTypeFrom (CppTypes.Unknown);
-				Console.WriteLine ("Return enumeration {0}", entry.name);
 				return modifiers.CopyTypeFrom (ProcessEnum (entry));
 
 			// FIXME: support function pointers betters

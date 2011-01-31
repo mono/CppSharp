@@ -89,6 +89,11 @@ namespace Mono.VisualC.Tools.Generator {
 				where o.Value.name == name
 				select o.Value).FirstOrDefault ();
 		}
+
+		public override string ToString ()
+		{
+			return String.Format ("{0} - {1}", name, computedName);
+		}
 	}
 }
 
