@@ -273,7 +273,7 @@ namespace Mono.VisualC.Tools.Generator {
 
 				// FIXME: Handle when base class name is fully qualified
 				foreach (Entry bs in clas.children.Where (o => o.type == "Base")) {
-					clas.Class.Bases.Add (new Class.BaseClass { Name = bs.Base.name, Access = bs.CheckValue ("access", "public") ? Access.Public : bs.CheckValue ("access", "protected") ? Access.Protected : Access.Private, IsVirtual = bs.IsTrue ("virtual") });
+					clas.Class.Bases.Add (new Class.BaseClass { Name = bs.Base.Class != null ? (bs.Base.Class.GenericName ?? bs.Base.Class.Name) : bs.computedName, Access = bs.CheckValue ("access", "public") ? Access.Public : bs.CheckValue ("access", "protected") ? Access.Protected : Access.Private, IsVirtual = bs.IsTrue ("virtual") });
 				}
 
 				IEnumerable<CodeAtom> nested = null;
