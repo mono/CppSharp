@@ -17,12 +17,12 @@ using Mono.VisualC.Interop.Util;
 namespace Mono.VisualC.Interop {
 
 	public abstract class CppModifiers {
-
+		static int tmp;
 		// This can be added to at runtime to support other modifiers
 		// The list should be prioritized, in that the first items should be modifiers that can potentially contain other modifiers
 		public static readonly Dictionary<string,Action<Match,List<CppModifiers>>> Tokenize = new Dictionary<string,Action<Match,List<CppModifiers>>> () {
 			{ "\\<(.*)\\>", (m,l) => l.AddFirst (m.Groups [1].Success && m.Groups [1].Value.Trim () != ""? new TemplateModifier (m.Groups [1].Value) : CppModifiers.Template) },
-			{ "\\[([^\\]]*)\\]", (m,l) => l.Add (m.Groups [1].Success && m.Groups [1].Value.Trim () != ""? new ArrayModifier (int.Parse (m.Groups [1].Value)) : CppModifiers.Array) },
+			{ "\\[([^\\]]*)\\]", (m,l) => l.Add (m.Groups [1].Success && m.Groups [1].Value.Trim () != "" && int.TryParse (m.Groups [1].Value, out tmp) ? new ArrayModifier (int.Parse (m.Groups [1].Value)) : CppModifiers.Array) },
 			{ "\\bconst\\b", (m,l) => l.Add (CppModifiers.Const) },
 			{ "\\*", (m,l) => l.Add (CppModifiers.Pointer) },
 			{ "\\&", (m,l) => l.Add (CppModifiers.Reference) },
