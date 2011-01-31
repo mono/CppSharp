@@ -168,7 +168,7 @@ namespace Mono.VisualC.Code.Atoms {
 
 				// FIXME: Only add MangleAs attribute if the managed type chosen would mangle differently by default
 				if (!IsVirtual && !paramStr.Equals (string.Empty))
-					param.CustomAttributes.Add (new CodeAttributeDeclaration ("MangleAs", new CodeAttributeArgument (new CodePrimitiveExpression (paramStr))));
+					param.CustomAttributes.Add (new CodeAttributeDeclaration ("MangleAsAttribute", new CodeAttributeArgument (new CodePrimitiveExpression (paramStr))));
 
 				method.Parameters.Add (param);
 			}
