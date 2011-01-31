@@ -22,8 +22,10 @@ namespace Mono.VisualC.Tools.Generator {
 			// FIXME: Subtract more?
 			Arguments = args.Select (a => a.Subtract (CppModifiers.Const))
 					.Select (a => a.Subtract (CppModifiers.Volatile))
-			                .Select (a => a.Modifiers.Count (m => m == CppModifiers.Long) > 1? a.Subtract (CppModifiers.Long) : a)
-			                .Select (a => a.ElementType == CppTypes.Char? a.Subtract (CppModifiers.Unsigned).Subtract (CppModifiers.Signed) : a);
+					.Select (a => a.Subtract (CppModifiers.Pointer))
+					.Select (a => a.Subtract (CppModifiers.Reference))
+	                .Select (a => a.Modifiers.Count (m => m == CppModifiers.Long) > 1 ? a.Subtract (CppModifiers.Long) : a)
+	                .Select (a => a.ElementType == CppTypes.Char? a.Subtract (CppModifiers.Unsigned).Subtract (CppModifiers.Signed) : a);
 		}
 
 		public override bool Equals (object obj)
