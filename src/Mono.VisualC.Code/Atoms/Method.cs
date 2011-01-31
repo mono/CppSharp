@@ -116,7 +116,7 @@ namespace Mono.VisualC.Code.Atoms {
 
 			var invoke = new CodeMethodInvokeExpression (impl, Name, arguments.ToArray ());
 
-			if (RetType.Equals (CppTypes.Void))
+			if (RetType.Equals (CppTypes.Void) || IsConstructor)
 				stmts.Add (invoke);
 			else
 				stmts.Add (new CodeMethodReturnStatement (invoke));
