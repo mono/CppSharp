@@ -128,10 +128,10 @@ namespace Mono.VisualC.Tools.Generator {
 			List<Entry> entries = Preprocess (xmldoc);
 
 			Console.WriteLine ("\tPreprocessing Classes");
-			PreprocessClasses (entries);
+			List<Entry> removed = PreprocessClasses (entries);
 
 			Console.WriteLine ("\tProcessing Classes");
-			ProcessClasses (entries);
+			ProcessClasses (entries, removed);
 
 			// save files
 			Console.WriteLine ("\tSaving Classes");
@@ -224,62 +224,43 @@ namespace Mono.VisualC.Tools.Generator {
 			return data;
 		}
 
-		void PreprocessClasses (List<Entry> entries)
+		List<Entry> PreprocessClasses (List<Entry> entries)
 		{
+			List<Entry> removed = new List<Entry> (entries.Where (o => (o.type == "Class" || o.type == "Struct") && (o.IsTrue ("incomplete") || !o.HasValue ("name") || (Entry.idlist[o["file"]].name.StartsWith ("/")))));
 			entries.RemoveAll (o => (o.type == "Class" || o.type == "Struct") && (o.IsTrue ("incomplete") || !o.HasValue ("name") || (Entry.idlist[o["file"]].name.StartsWith ("/"))));
-		}
 
-		void ProcessClasses (List<Entry> entries)
-		{
 			foreach (Entry clas in entries.Where (o => o.type == "Class" || o.type == "Struct")) {
-				//onsole.WriteLine (clas.name);
-				//bool bb;
-				//if (clas.name.StartsWith ("QGraphicsBlurEffect"))
-				//   bb = true;
 				clas.computedName = clas.name;
 
 				string ns = GetNamespace (clas);
 				CppType currentType = new CppType (clas.type.ToLower (), ns != null ? ns + "::" + clas.computedName : clas.computedName);
 
-				IEnumerable<CodeAtom> nested = null;
-
-
 				// FIXME: better way to do this (GCC-XML output doesn't seem to leave much choice)
-				CppType [] replaceArgs = null;
 				var templated = currentType.Modifiers.OfType<CppModifiers.TemplateModifier> ().SingleOrDefault ();
 				if (templated != null) {
 					clas.isTemplate = true;
 					string baseName = currentType.ElementTypeName;
-					if (IsCreated (currentType, true, out nested))
-						continue;
-
-					replaceArgs = templated.Types;
-
-					string [] ras = new string[replaceArgs.Length];
-					string [] letters = new string[replaceArgs.Length];
-					for (int i = 0; i < replaceArgs.Length; i++) {
-						letters[i] = genericTypeArgs[i];
-						ras[i] = string.Format ("{0} with {1}", replaceArgs[i].ToString (), letters[i]);
-					}
-					Console.Error.WriteLine ("Warning: Creating generic type {0}<{1}> from the instantiated template {2} by replacing {3} (very buggy!!!)", baseName, string.Join (",", letters), clas.computedName, string.Join (", ", ras));
-
+					string computedName = clas.computedName;
 					clas.computedName = baseName;
-				} else if (IsCreated (currentType, true, out nested))
-					continue;
 
-				clas.atom = new Class (clas.computedName) { StaticCppLibrary = string.Format ("{0}.Libs.{1}", Namespace, Library) };
+					clas.atom = new Class (clas.computedName) {
+						StaticCppLibrary = string.Format ("{0}.Libs.{1}", Namespace, Library),
+						OriginalType = currentType
+					};
 
-				GetContainer (clas, Tree).Atoms.AddLast (clas.atom);
+					int i = 0;
+					foreach (var t in templated.Types)
+						clas.Class.TemplateArguments.Add (genericTypeArgs[i++]);
 
-				if (nested != null) {
-					foreach (var orphan in nested)
-						clas.Class.Atoms.AddLast (orphan);
-				}
-
-				// add template type args
-				if (replaceArgs != null) {
-					for (int i = 0; i < replaceArgs.Length; i++)
-						clas.Class.TemplateArguments.Add (genericTypeArgs[i]);
+					clas.Class.GenericName = String.Format ("{0}<{1}>", baseName, string.Join (",", clas.Class.TemplateArguments.ToArray ()));
+					Console.Error.WriteLine ("Warning: Creating generic type {0}<{1}> from the instantiated template {2} (very buggy!!!)",
+					                         baseName,
+					                         string.Join (",", clas.Class.TemplateArguments.ToArray ()), computedName);
+				} else {
+					clas.atom = new Class (clas.computedName) {
+						StaticCppLibrary = string.Format ("{0}.Libs.{1}", Namespace, Library),
+						OriginalType = currentType
+					};
 				}
 
 				// FIXME: Handle when base class name is fully qualified
@@ -287,6 +268,25 @@ namespace Mono.VisualC.Tools.Generator {
 					clas.Class.Bases.Add (new Class.BaseClass { Name = bs.Base.name, Access = bs.CheckValue ("access", "public") ? Access.Public : bs.CheckValue ("access", "protected") ? Access.Protected : Access.Private, IsVirtual = bs.IsTrue ("virtual") });
 				}
 
+				IEnumerable<CodeAtom> nested = null;
+				if (IsCreated (clas.Class.OriginalType, true, out nested))
+					continue;
+
+				GetContainer (clas, Tree).Atoms.AddLast (clas.atom);
+				if (nested != null) {
+					foreach (var orphan in nested)
+						clas.Class.Atoms.AddLast (orphan);
+				}
+			}
+
+			return removed;
+		}
+
+		void ProcessClasses (List<Entry> entries, List<Entry> removed)
+		{
+			foreach (Entry clas in entries.Where (o => o.type == "Class" || o.type == "Struct")) {
+
+				var templated = clas.Class.OriginalType.Modifiers.OfType<CppModifiers.TemplateModifier> ().SingleOrDefault ();
 				Dictionary<MethodSignature, string> methods = new Dictionary<MethodSignature, string> ();
 
 				foreach (Entry member in clas.Members) {
@@ -304,7 +304,7 @@ namespace Mono.VisualC.Tools.Generator {
 					case "Method":
 						break;
 					case "Field":
-						CppType fieldType = findType (member.Base);
+						CppType fieldType = findType (clas.Class, member.Base, removed);
 						string fieldName = "field" + fieldCount++;
 						if (member.name != "")
 							fieldName = member.name;
@@ -321,11 +321,11 @@ namespace Mono.VisualC.Tools.Generator {
 
 					string mname = member.name;
 
+					CppType retType = member.HasValue ("returns") ? findType (clas.Class, Entry.idlist[member["returns"]], removed) : CppTypes.Void;
 
-					CppType retType = member.HasValue ("returns") ? findType (Entry.idlist[member["returns"]]) : CppTypes.Void;
-					if (replaceArgs != null) {
-						for (int i = 0; i < replaceArgs.Length; i++)
-							retType = replaceType (retType, replaceArgs[i], genericTypeArgs[i]);
+					if (templated != null) {
+						for (int i = 0; i < templated.Types.Length; i++)
+							retType = replaceType (retType, templated.Types[i], genericTypeArgs[i]);
 					}
 
 					var methodAtom = new Method (dtor ? "Destruct" : mname) { RetType = retType, IsVirtual = member.IsTrue ("virtual"), IsStatic = member.IsTrue ("static"), IsConst = member.IsTrue ("const"), IsConstructor = ctor, IsDestructor = dtor };
@@ -343,11 +343,11 @@ namespace Mono.VisualC.Tools.Generator {
 						else
 							argname = arg.name;
 
-						CppType argtype = findType (arg.Base);
+						CppType argtype = findType (clas.Class, arg.Base, removed);
 						var templat = argtype.Modifiers.OfType<CppModifiers.TemplateModifier> ().SingleOrDefault ();
-						if (replaceArgs != null) {
-							for (int i = 0; i < replaceArgs.Length; i++)
-								argtype = replaceType (argtype, replaceArgs[i], genericTypeArgs[i]);
+						if (templated != null) {
+							for (int i = 0; i < templated.Types.Length; i++)
+								argtype = replaceType (argtype, templated.Types[i], genericTypeArgs[i]);
 						}
 
 						methodAtom.Parameters.Add (new NameTypePair<CppType> { Name = argname, Type = argtype });
@@ -409,7 +409,7 @@ namespace Mono.VisualC.Tools.Generator {
 							doIt = propertyAtom.Getter != null && propertyAtom.Getter.RetType.Equals (methodAtom.Parameters[0].Type);
 						} else {
 							Entry getter = clas.Members.Where (o => o.name == getterName).FirstOrDefault ();
-							doIt = (getter != null && findType (Entry.idlist[getter.attributes["returns"]]).Equals (methodAtom.Parameters[0].Type));
+							doIt = (getter != null && findType (clas.Class, Entry.idlist[getter.attributes["returns"]], removed).Equals (methodAtom.Parameters[0].Type));
 						}
 						if (doIt) {
 							if (propertyAtom != null) {
@@ -915,7 +915,7 @@ namespace Mono.VisualC.Tools.Generator {
 		//    return enumType;
 		//}
 
-		CppType ProcessUnion (Entry entry)
+		CppType ProcessUnion (Class clas, Entry entry, List<Entry> removed)
 		{
 			string fullName = entry.name;
 			if (entry.name == "") {
@@ -932,7 +932,7 @@ namespace Mono.VisualC.Tools.Generator {
 				Union unionAtom = new Union (fullName);
 
 				foreach (Entry m in entry.Members.Where (o => o.type == "Field")) {
-					Field field = new Field (m.name, findType (m.Base));
+					Field field = new Field (m.name, findType (clas, m.Base, removed));
 					unionAtom.Atoms.AddLast (field);
 				}
 
@@ -1053,10 +1053,12 @@ namespace Mono.VisualC.Tools.Generator {
 				int i = 0;
 				foreach (var param in type.Modifiers.OfType<CppModifiers.TemplateModifier> ()) {
 					if (param.Types != null) {
-						foreach (var t in param.Types)
+						foreach (var t in param.Types) {
 							atom.TemplateArguments.Add (genericTypeArgs[i++]);
-					} else
+						}
+					} else {
 						atom.TemplateArguments.Add (genericTypeArgs[i++]);
+					}
 				}
 
 				if (orphans != null) {
@@ -1201,14 +1203,14 @@ namespace Mono.VisualC.Tools.Generator {
 		//    return root.SelectSingleNode (string.Format ("/GCC_XML/Method[({0}) and ({1})]", predicate, isMember));
 		//}
 
-		CppType findType (Entry entry)
+		CppType findType (Class clas, Entry entry, List<Entry> removed)
 		{
 			if (entry == null)
 				return CppTypes.Unknown;
-			return findType (entry, new CppType ());
+			return findType (clas, entry, removed, new CppType ());
 		}
 
-		CppType findType (Entry entry, CppType modifiers)
+		CppType findType (Class clas, Entry entry, List<Entry> removed, CppType modifiers)
 		{
 			if (entry == null)
 				return CppTypes.Unknown;
@@ -1216,28 +1218,49 @@ namespace Mono.VisualC.Tools.Generator {
 
 			switch (entry.type) {
 			case "ArrayType":
-				return findType (entry.Base, modifiers.Modify (CppModifiers.Array));
+				return findType (clas, entry.Base, removed, modifiers.Modify (CppModifiers.Array));
 			case "PointerType":
-				return findType (entry.Base, modifiers.Modify (CppModifiers.Pointer));
+				return findType (clas, entry.Base, removed, modifiers.Modify (CppModifiers.Pointer));
 			case "ReferenceType":
-				return findType (entry.Base, modifiers.Modify (CppModifiers.Reference));
+				return findType (clas, entry.Base, removed, modifiers.Modify (CppModifiers.Reference));
 			case "CvQualifiedType":
-				return findType (entry.Base, modifiers.Modify ((from c in entry.attributes
+				return findType (clas, entry.Base, removed, modifiers.Modify ((from c in entry.attributes
 					where c.Key == "const" && c.Value == "1"
 					select CppModifiers.Const).DefaultIfEmpty (CppModifiers.Volatile).First ()));
 
 			case "Typedef":
-				return findType (entry.Base, modifiers);
+				return findType (clas, entry.Base, removed, modifiers);
 
 			case "FundamentalType":
 				return modifiers.CopyTypeFrom (new CppType (name));
 			case "Class":
-				return modifiers.CopyTypeFrom (new CppType (CppTypes.Class, name));
+				if (removed.Contains (entry))
+					return modifiers.CopyTypeFrom (CppTypes.Unknown);
+				if (entry.Class != null && entry.Class.GenericName != null) {
+					if (clas == entry.Class) {
+						Console.WriteLine ("Replacing {0} with {1}", name, entry.Class.GenericName);
+						return modifiers.CopyTypeFrom (new CppType (CppTypes.Class, entry.Class.GenericName));
+					} else {
+						Console.WriteLine ("Replacing {0} with Unknown", name);
+//						return modifiers.CopyTypeFrom (new CppType (CppTypes.Class, name));
+						return modifiers.CopyTypeFrom (CppTypes.Unknown);
+					}
+				} else
+					return modifiers.CopyTypeFrom (new CppType (CppTypes.Class, name));
 			case "Struct":
+				if (removed.Contains (entry))
+					return modifiers.CopyTypeFrom (CppTypes.Unknown);
+				Console.WriteLine ("Return struct {0}", name);
 				return modifiers.CopyTypeFrom (new CppType (CppTypes.Struct, name));
 			case "Union":
-				return modifiers.CopyTypeFrom (ProcessUnion (entry));
+				if (removed.Contains (entry))
+					return modifiers.CopyTypeFrom (CppTypes.Unknown);
+				Console.WriteLine ("Return union {0}", entry.name);
+				return modifiers.CopyTypeFrom (ProcessUnion (clas, entry, removed));
 			case "Enumeration":
+				if (removed.Contains (entry))
+					return modifiers.CopyTypeFrom (CppTypes.Unknown);
+				Console.WriteLine ("Return enumeration {0}", entry.name);
 				return modifiers.CopyTypeFrom (ProcessEnum (entry));
 
 			// FIXME: support function pointers betters

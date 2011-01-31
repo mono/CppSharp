@@ -40,7 +40,7 @@
     <DefineConstants>DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Commandlineparameters>-f=/Users/Alex/OpenSource/cppinterop/tests/QObject.xml -o=output</Commandlineparameters>
+    <Commandlineparameters>-f=QObject.xml -o=output</Commandlineparameters>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">

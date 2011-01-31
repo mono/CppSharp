@@ -29,6 +29,8 @@ namespace Mono.VisualC.Code.Atoms {
 
 		public IList<BaseClass> Bases { get; set; }
 		public IList<string> TemplateArguments { get; set; }
+		public string GenericName {get; set;}
+		public CppType OriginalType {get; set;}
 
 		public Class (string name)
 		{
