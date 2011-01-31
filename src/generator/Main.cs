@@ -226,8 +226,16 @@ namespace Mono.VisualC.Tools.Generator {
 
 		List<Entry> PreprocessClasses (List<Entry> entries)
 		{
+			List<string> filter = new List<string>() {
+				"QItemSelection"
+			};
+
+
 			List<Entry> removed = new List<Entry> (entries.Where (o => (o.type == "Class" || o.type == "Struct") && (o.IsTrue ("incomplete") || !o.HasValue ("name") || (Entry.idlist[o["file"]].name.StartsWith ("/")))));
+			removed.AddRange (entries.Where (o => filter.Contains (o.name)).ToList ());
 			entries.RemoveAll (o => (o.type == "Class" || o.type == "Struct") && (o.IsTrue ("incomplete") || !o.HasValue ("name") || (Entry.idlist[o["file"]].name.StartsWith ("/"))));
+			entries.RemoveAll (o => filter.Contains (o.name));
+
 
 			foreach (Entry clas in entries.Where (o => o.type == "Class" || o.type == "Struct")) {
 				clas.computedName = clas.name;
