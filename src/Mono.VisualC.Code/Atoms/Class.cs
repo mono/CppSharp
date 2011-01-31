@@ -65,6 +65,17 @@ namespace Mono.VisualC.Code.Atoms {
 
 			if (Atoms.Count == 0) {
 				wrapper.Comments.Add (new CodeCommentStatement ("FIXME: This type is a stub."));
+				string m = CreateBaseImplementation (wrapper);
+				wrapper.BaseTypes.Add (m);
+				wrapper.Members.Add (new CodeMemberMethod { Name = "Dispose", Attributes = MemberAttributes.Public});
+
+				var ctor = new CodeConstructor {
+					Name = this.Name,
+					Attributes = MemberAttributes.Assembly
+				};
+				ctor.Parameters.Add (new CodeParameterDeclarationExpression (typeof (CppTypeInfo).Name, "subClass"));
+
+				wrapper.Members.Add (ctor);
 				return wrapper;
 			}
 
@@ -79,21 +90,8 @@ namespace Mono.VisualC.Code.Atoms {
 			bool hasOverrides = true;
 
 			if (managedBase == null) {
-				managedBase = typeof (ICppObject).Name;
 				hasOverrides = false;
-
-				// Add Native property
-				var nativeField = new CodeMemberField (typeof (CppInstancePtr).Name, "native_ptr") { Attributes = MemberAttributes.Family };
-				var nativeProperty = new CodeMemberProperty {
-					Name = "Native",
-					Type = new CodeTypeReference (typeof (CppInstancePtr).Name),
-					HasSet = false,
-					Attributes = MemberAttributes.Public | MemberAttributes.Final
-				};
-				nativeProperty.GetStatements.Add (new CodeMethodReturnStatement (new CodeFieldReferenceExpression (new CodeThisReferenceExpression (), nativeField.Name)));
-
-				wrapper.Members.Add (nativeField);
-				wrapper.Members.Add (nativeProperty);
+				managedBase = CreateBaseImplementation (wrapper);
 			}
 			wrapper.BaseTypes.Add (managedBase);
 
@@ -132,6 +130,25 @@ namespace Mono.VisualC.Code.Atoms {
 				dispose.Attributes |= MemberAttributes.Override;
 
 			return wrapper;
+		}
+
+		string CreateBaseImplementation (CodeTypeDeclaration wrapper)
+		{
+			string managedBase = typeof (ICppObject).Name;
+
+			// Add Native property
+			var nativeField = new CodeMemberField (typeof (CppInstancePtr).Name, "native_ptr") { Attributes = MemberAttributes.Family };
+			var nativeProperty = new CodeMemberProperty {
+				Name = "Native",
+				Type = new CodeTypeReference (typeof (CppInstancePtr).Name),
+				HasSet = false,
+				Attributes = MemberAttributes.Public | MemberAttributes.Final
+			};
+			nativeProperty.GetStatements.Add (new CodeMethodReturnStatement (new CodeFieldReferenceExpression (new CodeThisReferenceExpression (), nativeField.Name)));
+
+			wrapper.Members.Add (nativeField);
+			wrapper.Members.Add (nativeProperty);
+			return managedBase;
 		}
 
 		public CodeTypeDeclaration CreateInterface ()
