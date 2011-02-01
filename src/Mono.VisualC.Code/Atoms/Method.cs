@@ -141,13 +141,13 @@ namespace Mono.VisualC.Code.Atoms {
 				method.ReturnType = new CodeTypeReference (typeof (void));
 			}
 
-			if (IsVirtual)	   method.CustomAttributes.Add (new CodeAttributeDeclaration ("Virtual"));
-			if (IsConstructor) method.CustomAttributes.Add (new CodeAttributeDeclaration ("Constructor"));
-			if (IsDestructor)  method.CustomAttributes.Add (new CodeAttributeDeclaration ("Destructor"));
-			if (IsConst)       method.CustomAttributes.Add (new CodeAttributeDeclaration ("Const"));
+			if (IsVirtual)	   method.CustomAttributes.Add (new CodeAttributeDeclaration (typeof (VirtualAttribute).Name));
+			if (IsConstructor) method.CustomAttributes.Add (new CodeAttributeDeclaration (typeof (ConstructorAttribute).Name));
+			if (IsDestructor)  method.CustomAttributes.Add (new CodeAttributeDeclaration (typeof (DestructorAttribute).Name));
+			if (IsConst)       method.CustomAttributes.Add (new CodeAttributeDeclaration (typeof (ConstAttribute).Name));
 
 			if (IsStatic)
-				method.CustomAttributes.Add (new CodeAttributeDeclaration ("Static"));
+				method.CustomAttributes.Add (new CodeAttributeDeclaration (typeof (StaticAttribute).Name));
 			else
 				method.Parameters.Add (new CodeParameterDeclarationExpression (typeof (CppInstancePtr).Name, "this"));
 
@@ -168,7 +168,7 @@ namespace Mono.VisualC.Code.Atoms {
 
 				// FIXME: Only add MangleAs attribute if the managed type chosen would mangle differently by default
 				if (!IsVirtual && !paramStr.Equals (string.Empty))
-					param.CustomAttributes.Add (new CodeAttributeDeclaration ("MangleAsAttribute", new CodeAttributeArgument (new CodePrimitiveExpression (paramStr))));
+					param.CustomAttributes.Add (new CodeAttributeDeclaration (typeof (MangleAsAttribute).Name, new CodeAttributeArgument (new CodePrimitiveExpression (paramStr))));
 
 				method.Parameters.Add (param);
 			}
@@ -209,7 +209,7 @@ namespace Mono.VisualC.Code.Atoms {
 				//  get the intended effect if the managed method is overridden and the native method is not.
 				method.Attributes |= MemberAttributes.Final;
 			else if (IsVirtual && !IsDestructor)
-				method.CustomAttributes.Add (new CodeAttributeDeclaration ("OverrideNative"));
+				method.CustomAttributes.Add (new CodeAttributeDeclaration (typeof (OverrideNativeAttribute).Name));
 
 			for (int i = 0; i < Parameters.Count; i++) {
 				var param = GenerateParameterDeclaration (Parameters [i]);
