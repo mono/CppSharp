@@ -53,7 +53,7 @@ namespace Mono.VisualC.Code.Atoms {
 		internal protected override object InsideCodeTypeDeclaration (CodeTypeDeclaration decl)
 		{
 			if (decl.IsClass) {
-				var method = CreateWrapperMethod (decl.BaseTypes [0].BaseType != typeof (ICppObject).Name);
+				var method = CreateWrapperMethod ();
 
 				if (method == null || CommentedOut)
 					return null;
@@ -176,7 +176,7 @@ namespace Mono.VisualC.Code.Atoms {
 			return method;
 		}
 
-		private CodeMemberMethod CreateWrapperMethod (bool hasBase)
+		private CodeMemberMethod CreateWrapperMethod ()
 		{
 			CodeMemberMethod method;
 
@@ -185,9 +185,16 @@ namespace Mono.VisualC.Code.Atoms {
 					Name = FormattedName,
 					Attributes = MemberAttributes.Public
 				};
-				if (hasBase)
-					ctor.BaseConstructorArgs.Add (new CodeFieldReferenceExpression (new CodeFieldReferenceExpression { FieldName = "impl" }, "TypeInfo"));
-
+				if (Klass.Bases.Count > 0) {
+					var typeInfo = new CodeFieldReferenceExpression (new CodeFieldReferenceExpression { FieldName = "impl" }, "TypeInfo");
+					ctor.BaseConstructorArgs.Add (typeInfo);
+					// The first public base class can use the subclass ctor as above, but for the rest, we do this to get the right CppTypeInfo
+					foreach (Class.BaseClass bc in Klass.Bases.Where (b => b.Access == Access.Public).Skip (1)) {
+						// FIXME: This won't work if one of the base classes ends up being generic
+						ctor.Statements.Add (new CodeObjectCreateExpression (bc.Name, typeInfo));
+					}
+					ctor.Statements.Add (new CodeMethodInvokeExpression (typeInfo, "CompleteType"));
+				}
 				method = ctor;
 			} else if (IsDestructor)
 				method = new CodeMemberMethod {
