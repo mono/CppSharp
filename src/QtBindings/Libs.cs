@@ -13,7 +13,10 @@ namespace Qt {
                 {
                         string lib;
                         CppAbi abi;
-                        if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+						if (Environment.OSVersion.Platform == PlatformID.Unix) {
+							lib = "{0}.so";
+							abi = new ItaniumAbi ();
+                        } else if (Environment.OSVersion.Platform == PlatformID.Win32NT)
                         { // for Windows...
                                 lib = "{0}d4.dll";
                                 abi = new MsvcAbi ();
