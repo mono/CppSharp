@@ -63,7 +63,8 @@ FILES = \
 	Main.cs \
 	MethodSignature.cs \
 	Options.cs \
-	Postfixes.cs
+	Postfixes.cs \
+	Entry.cs
 
 DATA_FILES = 
 
