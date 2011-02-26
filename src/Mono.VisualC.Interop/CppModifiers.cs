@@ -17,7 +17,9 @@ using Mono.VisualC.Interop.Util;
 namespace Mono.VisualC.Interop {
 
 	public abstract class CppModifiers {
+		#pragma warning disable 0414
 		static int tmp;
+		#pragma warning restore
 		// This can be added to at runtime to support other modifiers
 		// The list should be prioritized, in that the first items should be modifiers that can potentially contain other modifiers
 		public static readonly Dictionary<string,Action<Match,List<CppModifiers>>> Tokenize = new Dictionary<string,Action<Match,List<CppModifiers>>> () {
