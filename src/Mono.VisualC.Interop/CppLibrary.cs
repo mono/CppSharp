@@ -21,23 +21,22 @@ using Mono.VisualC.Interop.ABI;
 namespace Mono.VisualC.Interop {
 	public sealed class CppLibrary {
 		internal static AssemblyBuilder interopAssembly;
-                internal static ModuleBuilder interopModule;
+		internal static ModuleBuilder interopModule;
 
 		public CppAbi Abi { get; private set; }
 		public string Name { get; private set; }
 
 		static CppLibrary ()
-                {
+		{
 			AssemblyName assemblyName = new AssemblyName ("__CppLibraryImplAssembly");
-                        string moduleName = "CppLibraryImplAssembly.dll";
+			string moduleName = "CppLibraryImplAssembly.dll";
 
 			interopAssembly = AppDomain.CurrentDomain.DefineDynamicAssembly (assemblyName, AssemblyBuilderAccess.RunAndSave);
-                        interopModule = interopAssembly.DefineDynamicModule (moduleName, moduleName, true);
+			interopModule = interopAssembly.DefineDynamicModule (moduleName, moduleName, true);
 		}
 
 		public CppLibrary (string name)
 		{
-
 			if (name == null)
 				throw new ArgumentNullException ("Name cannot be NULL.");
 
@@ -48,14 +47,13 @@ namespace Mono.VisualC.Interop {
 		}
 
 		public CppLibrary (string name, CppAbi abi)
-                {
-
+		{
 			if (name == null)
 				throw new ArgumentNullException ("Name cannot be NULL.");
-                        if (abi == null)
-                                throw new ArgumentNullException ("Abi cannot be NULL.");
+			if (abi == null)
+				throw new ArgumentNullException ("Abi cannot be NULL.");
 
-                        this.Name = name;
+			this.Name = name;
 			this.Abi = abi;
 		}
 
@@ -65,38 +63,35 @@ namespace Mono.VisualC.Interop {
 			interopAssembly.Save ("CppLibraryImplAssembly.dll");
 		}
 
-                // For working with a class that you are not instantiating
-                //  from managed code and where access to fields is not necessary
-                public Iface GetClass<Iface> (string className)
-                                where Iface : ICppClass
-                {
+		// For working with a class that you are not instantiating
+		//  from managed code and where access to fields is not necessary
+		public Iface GetClass<Iface> (string className)
+			where Iface : ICppClass
+		{
+			return Abi.ImplementClass<Iface> (null, Name, className);
+		}
 
-                        return Abi.ImplementClass<Iface> (null, Name, className);
-                }
-
-                // For instantiating or working with a class that may have fields
-                //  but where overriding virtual methods in managed code is not necessary
+		// For instantiating or working with a class that may have fields
+		//  but where overriding virtual methods in managed code is not necessary
 		public Iface GetClass<Iface,NativeLayout> (string className)
-                                where Iface : ICppClassInstantiatable
-                                where NativeLayout : struct
-                {
-
+			where Iface : ICppClassInstantiatable
+			where NativeLayout : struct
+		{
 			return Abi.ImplementClass<Iface, NativeLayout> (null, Name, className);
 		}
 
 		/* The most powerful override. Allows the following from managed code:
-                 *      + Instantiation
-                 *      + Field access
-                 *      + Virtual method overriding
-                 */
+		 *      + Instantiation
+		 *      + Field access
+		 *      + Virtual method overriding
+		 */
 		public Iface GetClass<Iface,NativeLayout,Managed> (string className)
-                                where Iface : ICppClassOverridable<Managed>
-                                where NativeLayout : struct
-                                where Managed : ICppObject
-                {
-
+			where Iface : ICppClassOverridable<Managed>
+			where NativeLayout : struct
+			where Managed : ICppObject
+		{
 			return Abi.ImplementClass<Iface, NativeLayout> (typeof (Managed), Name, className);
 		}
 
-        }
+	}
 }

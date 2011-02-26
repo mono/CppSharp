@@ -54,11 +54,10 @@ namespace Mono.VisualC.Interop.Util {
 			DelegateSignature other = (DelegateSignature)obj;
 
 			return CallingConvention == other.CallingConvention &&
-			       ((ParameterTypes == null && other.ParameterTypes == null) ||
+				((ParameterTypes == null && other.ParameterTypes == null) ||
 				 ParameterTypes.SequenceEqual (other.ParameterTypes)) &&
-			       ReturnType.Equals (other.ReturnType);
+				ReturnType.Equals (other.ReturnType);
 		}
-
 
 		public override int GetHashCode ()
 		{

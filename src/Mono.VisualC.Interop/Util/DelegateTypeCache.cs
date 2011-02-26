@@ -20,7 +20,6 @@ namespace Mono.VisualC.Interop.Util {
 
 		private static Dictionary<DelegateSignature, Type> type_cache;
 
-
 		public static Type GetDelegateType (MethodInfo signature, CallingConvention? callingConvention)
 		{
 			return GetDelegateType (ReflectionHelper.GetMethodParameterTypes (signature), signature.ReturnType, callingConvention);
@@ -45,10 +44,10 @@ namespace Mono.VisualC.Interop.Util {
 
 		private static Type CreateDelegateType (DelegateSignature signature)
 		{
-                        string delTypeName = signature.UniqueName;
+			string delTypeName = signature.UniqueName;
 
-                        TypeAttributes typeAttr = TypeAttributes.Class | TypeAttributes.Sealed | TypeAttributes.AnsiClass | TypeAttributes.AutoClass;
-                        TypeBuilder del = CppLibrary.interopModule.DefineType (delTypeName, typeAttr, typeof(MulticastDelegate));
+			TypeAttributes typeAttr = TypeAttributes.Class | TypeAttributes.Sealed | TypeAttributes.AnsiClass | TypeAttributes.AutoClass;
+			TypeBuilder del = CppLibrary.interopModule.DefineType (delTypeName, typeAttr, typeof(MulticastDelegate));
 
 			if (signature.CallingConvention.HasValue) {
 				ConstructorInfo ufpa = typeof (UnmanagedFunctionPointerAttribute).GetConstructor (new Type [] { typeof (CallingConvention) });
@@ -56,17 +55,17 @@ namespace Mono.VisualC.Interop.Util {
 				del.SetCustomAttribute (unmanagedPointer);
 			}
 
-                        MethodAttributes ctorAttr = MethodAttributes.RTSpecialName | MethodAttributes.HideBySig | MethodAttributes.Public;
-                        ConstructorBuilder ctor = del.DefineConstructor (ctorAttr, CallingConventions.Standard, new Type[] { typeof(object), typeof(System.IntPtr) });
-                        ctor.SetImplementationFlags (MethodImplAttributes.Runtime | MethodImplAttributes.Managed);
+			MethodAttributes ctorAttr = MethodAttributes.RTSpecialName | MethodAttributes.HideBySig | MethodAttributes.Public;
+			ConstructorBuilder ctor = del.DefineConstructor (ctorAttr, CallingConventions.Standard, new Type[] { typeof(object), typeof(System.IntPtr) });
+			ctor.SetImplementationFlags (MethodImplAttributes.Runtime | MethodImplAttributes.Managed);
 
-                        Type [] parameterTypes = signature.ParameterTypes.ToArray ();
-                        MethodAttributes methodAttr = MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.NewSlot | MethodAttributes.Virtual;
+			Type [] parameterTypes = signature.ParameterTypes.ToArray ();
+			MethodAttributes methodAttr = MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.NewSlot | MethodAttributes.Virtual;
 
-                        MethodBuilder invokeMethod = del.DefineMethod ("Invoke", methodAttr, signature.ReturnType, parameterTypes);
-                        invokeMethod.SetImplementationFlags (MethodImplAttributes.Runtime | MethodImplAttributes.Managed);
+			MethodBuilder invokeMethod = del.DefineMethod ("Invoke", methodAttr, signature.ReturnType, parameterTypes);
+			invokeMethod.SetImplementationFlags (MethodImplAttributes.Runtime | MethodImplAttributes.Managed);
 
-                        return del.CreateType ();
+			return del.CreateType ();
 		}
 	}
 

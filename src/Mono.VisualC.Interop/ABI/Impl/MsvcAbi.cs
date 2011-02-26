@@ -40,10 +40,10 @@ namespace Mono.VisualC.Interop.ABI {
 				return CallingConvention.ThisCall;
 		}
 
-                protected override string GetMangledMethodName (MethodInfo methodInfo)
-                {
-                        string methodName = methodInfo.Name;
-                        MethodType methodType = GetMethodType (methodInfo);
+		protected override string GetMangledMethodName (MethodInfo methodInfo)
+		{
+			string methodName = methodInfo.Name;
+			MethodType methodType = GetMethodType (methodInfo);
 			ParameterInfo [] parameters = methodInfo.GetParameters ();
 
 			StringBuilder nm = new StringBuilder ("?", 30);
@@ -172,30 +172,29 @@ namespace Mono.VisualC.Interop.ABI {
 				break;
 			case CppTypes.Class:
 				code.Append ('V');
-                                code.Append(mangleType.ElementTypeName);
+				code.Append(mangleType.ElementTypeName);
 				code.Append ("@@");
 				break;
 			case CppTypes.Struct:
 				code.Append ('U');
-                                code.Append(mangleType.ElementTypeName);
+				code.Append(mangleType.ElementTypeName);
 				code.Append ("@@");
 				break;
 			case CppTypes.Union:
 				code.Append ('T');
-                                code.Append(mangleType.ElementTypeName);
+				code.Append(mangleType.ElementTypeName);
 				code.Append ("@@");
 				break;
 			case CppTypes.Enum:
 				code.Append ("W4");
-                                code.Append(mangleType.ElementTypeName);
+				code.Append(mangleType.ElementTypeName);
 				code.Append ("@@");
 				break;
-
 			}
 
-                        return code.ToString ();
+			return code.ToString ();
 		}
 
-        }
+	}
 }
 

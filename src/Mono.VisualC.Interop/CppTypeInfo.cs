@@ -146,17 +146,17 @@ namespace Mono.VisualC.Interop {
 		}
 
 		public virtual int NativeSize {
-                        get {
+			get {
 				CompleteType ();
 				return native_size + FieldOffsetPadding;
-                        }
-                }
+			}
+		}
 
 		// the extra padding to allocate at the top of the class before the fields begin
 		//  (by default, just the vtable pointer)
 		public virtual int FieldOffsetPadding {
-                        get { return field_offset_padding + (VirtualMethods.Any ()? Marshal.SizeOf (typeof (IntPtr)) : 0); }
-                }
+			get { return field_offset_padding + (VirtualMethods.Any ()? Marshal.SizeOf (typeof (IntPtr)) : 0); }
+		}
 
 		// the padding in the data pointed to by the vtable pointer before the list of function pointers starts
 		public virtual int VTableTopPadding {

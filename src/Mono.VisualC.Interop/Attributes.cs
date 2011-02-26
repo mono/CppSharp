@@ -22,11 +22,11 @@ namespace Mono.VisualC.Interop {
 	public class DestructorAttribute : Attribute {}
 
 
-        [AttributeUsage (AttributeTargets.Method)]
-        public class VirtualAttribute : Attribute {}
+	[AttributeUsage (AttributeTargets.Method)]
+	public class VirtualAttribute : Attribute {}
 
-        [AttributeUsage (AttributeTargets.Method)]
-        public class StaticAttribute : Attribute {}
+	[AttributeUsage (AttributeTargets.Method)]
+	public class StaticAttribute : Attribute {}
 
 	// used for the const "this" - for example: int value () const;
 	//  use MangleAsAttribute for const parameters
@@ -35,28 +35,28 @@ namespace Mono.VisualC.Interop {
 
 	// FIXME: Will we ever be calling private methods?
 	[AttributeUsage (AttributeTargets.Method)]
-        public class PrivateAttribute : Attribute {}
+	public class PrivateAttribute : Attribute {}
 
-        [AttributeUsage (AttributeTargets.Method)]
-        public class ProtectedAttribute : Attribute {}
+	[AttributeUsage (AttributeTargets.Method)]
+	public class ProtectedAttribute : Attribute {}
 
-        [AttributeUsage (AttributeTargets.Parameter | AttributeTargets.ReturnValue)]
-        public class MangleAsAttribute : Attribute {
-                public CppType MangleType { get; private set; }
+	[AttributeUsage (AttributeTargets.Parameter | AttributeTargets.ReturnValue)]
+	public class MangleAsAttribute : Attribute {
+		public CppType MangleType { get; private set; }
 
-                public MangleAsAttribute (CppType mangleType)
-                {
-                        this.MangleType = mangleType;
-                }
-                public MangleAsAttribute (string mangleTypeStr)
-                {
-                        this.MangleType = new CppType (mangleTypeStr);
-                }
+		public MangleAsAttribute (CppType mangleType)
+		{
+			this.MangleType = mangleType;
+		}
+		public MangleAsAttribute (string mangleTypeStr)
+		{
+			this.MangleType = new CppType (mangleTypeStr);
+		}
 		public MangleAsAttribute (params object [] cppTypeSpec)
 		{
 			this.MangleType = new CppType (cppTypeSpec);
 		}
-        }
+	}
 
 	// for testing:
 	[AttributeUsage (AttributeTargets.Method)]
@@ -73,8 +73,8 @@ namespace Mono.VisualC.Interop {
 	#endregion
 
 	#region Wrapper method attributes
-        [AttributeUsage (AttributeTargets.Method)]
-        public class OverrideNativeAttribute : Attribute {}
+	[AttributeUsage (AttributeTargets.Method)]
+	public class OverrideNativeAttribute : Attribute {}
 	#endregion
 }
 
@@ -83,14 +83,14 @@ using Mono.VisualC.Interop;
 
 	public partial class CppAbi {
 
-                public virtual bool IsVirtual (MethodInfo method)
-                {
+		public virtual bool IsVirtual (MethodInfo method)
+		{
 			return method.IsDefined (typeof (VirtualAttribute), false);
-                }
-                public virtual bool IsStatic (MethodInfo method)
-                {
-                        return method.IsDefined (typeof (StaticAttribute), false);
-                }
+		}
+		public virtual bool IsStatic (MethodInfo method)
+		{
+			return method.IsDefined (typeof (StaticAttribute), false);
+		}
 		public virtual bool IsConst (MethodInfo method)
 		{
 			return method.IsDefined (typeof (ConstAttribute), false);
@@ -104,10 +104,10 @@ using Mono.VisualC.Interop;
 			return method.IsDefined (typeof (ProtectedAttribute), false);
 		}
 
-                public virtual CppType GetMangleType (ICustomAttributeProvider icap, Type managedType)
-                {
+		public virtual CppType GetMangleType (ICustomAttributeProvider icap, Type managedType)
+		{
 			CppType mangleType = new CppType ();
-                        MangleAsAttribute maa = (MangleAsAttribute)icap.GetCustomAttributes (typeof (MangleAsAttribute), false).FirstOrDefault ();
+			MangleAsAttribute maa = (MangleAsAttribute)icap.GetCustomAttributes (typeof (MangleAsAttribute), false).FirstOrDefault ();
 			if (maa != null)
 				mangleType = maa.MangleType;
 
@@ -119,9 +119,9 @@ using Mono.VisualC.Interop;
 				// FIXME: otherwise, we just assume it's CppTypes.Class for now.
 				mangleType.ElementType = CppTypes.Class;
 
-                        return mangleType;
-                }
+			return mangleType;
+		}
 
-        }
+	}
 
 }

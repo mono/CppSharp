@@ -20,8 +20,8 @@ namespace Mono.VisualC.Interop.ABI {
 	public class ItaniumAbi : CppAbi {
 
 		public ItaniumAbi ()
-                {
-                }
+		{
+		}
 
 		protected override CppTypeInfo MakeTypeInfo (IEnumerable<MethodInfo> virtualMethods)
 		{
@@ -34,9 +34,9 @@ namespace Mono.VisualC.Interop.ABI {
 		}
 
 		protected override string GetMangledMethodName (MethodInfo methodInfo)
-                {
+		{
 			string methodName = methodInfo.Name;
-                        MethodType methodType = GetMethodType (methodInfo);
+			MethodType methodType = GetMethodType (methodInfo);
 			ParameterInfo [] parameters = methodInfo.GetParameters ();
 
 			StringBuilder nm = new StringBuilder ("_ZN", 30);
@@ -57,7 +57,7 @@ namespace Mono.VisualC.Interop.ABI {
 			}
 
 			nm.Append ('E');
-                        int argStart = (IsStatic (methodInfo)? 0 : 1);
+			int argStart = (IsStatic (methodInfo)? 0 : 1);
 
 			if (parameters.Length == argStart) // no args (other than C++ "this" object)
 				nm.Append ('v');
@@ -80,8 +80,8 @@ namespace Mono.VisualC.Interop.ABI {
 				For.AnyInputIn (CppModifiers.Pointer, CppModifiers.Array).Emit ("P"),
 				For.AnyInputIn (CppModifiers.Reference).Emit ("R"),
 
-			        // Itanium mangled names do not include const or volatile unless
-			        //  they modify the type pointed to by pointer or reference.
+				// Itanium mangled names do not include const or volatile unless
+				//  they modify the type pointed to by pointer or reference.
 				Choose.TopOne (
 					For.AllInputsIn (CppModifiers.Volatile, CppModifiers.Const).InAnyOrder ().After (ptrOrRef).Emit ("VK"),
 					For.AnyInputIn(CppModifiers.Volatile).After (ptrOrRef).Emit ("V"),
@@ -103,13 +103,13 @@ namespace Mono.VisualC.Interop.ABI {
 			case CppTypes.Struct:
 			case CppTypes.Union:
 			case CppTypes.Enum:
-                                code.Append(mangleType.ElementTypeName.Length);
-                                code.Append(mangleType.ElementTypeName);
+				code.Append(mangleType.ElementTypeName.Length);
+				code.Append(mangleType.ElementTypeName);
 				break;
 
 			}
 
-                        return code.ToString ();
+			return code.ToString ();
 		}
 
 

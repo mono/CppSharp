@@ -19,15 +19,15 @@ using Mono.VisualC.Interop.Util;
 namespace Mono.VisualC.Interop.ABI {
 	public class VTableManaged : VTable {
 
-                public static MakeVTableDelegate Implementation = metadata => { return new VTableManaged (metadata); };
+		public static MakeVTableDelegate Implementation = metadata => { return new VTableManaged (metadata); };
 		private VTableManaged (CppTypeInfo metadata) : base (metadata)
-                {
-                        this.vtPtr = Marshal.AllocHGlobal ((EntryCount * EntrySize) + typeInfo.VTableTopPadding + typeInfo.VTableBottomPadding);
-                        WriteOverrides ();
+		{
+			this.vtPtr = Marshal.AllocHGlobal ((EntryCount * EntrySize) + typeInfo.VTableTopPadding + typeInfo.VTableBottomPadding);
+			WriteOverrides ();
 		}
 
 		public override T GetVirtualCallDelegate<T> (IntPtr native, int index)
-                {
+		{
 			IntPtr vtable = Marshal.ReadIntPtr (native);
 			if (vtable == vtPtr) // do not return managed overrides
 				vtable = basePtr;
@@ -42,14 +42,13 @@ namespace Mono.VisualC.Interop.ABI {
 
 	}
 
-        /*
-		protected static Type GetNativeLayoutType(MethodInfo thisMethod) {
-			ParameterInfo[] parameters = thisMethod.GetParameters();
-			if (parameters.Length < 1) return null;
+	/*
+	  protected static Type GetNativeLayoutType(MethodInfo thisMethod) {
+	  ParameterInfo[] parameters = thisMethod.GetParameters();
+	  if (parameters.Length < 1) return null;
 
-			Type nativeLayoutType = parameters[0].ParameterType.GetElementType();
-			return nativeLayoutType;
-		}
-         */
-
+	  Type nativeLayoutType = parameters[0].ParameterType.GetElementType();
+	  return nativeLayoutType;
+	  }
+	*/
 }
