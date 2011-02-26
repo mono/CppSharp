@@ -430,7 +430,10 @@ namespace Mono.VisualC.Interop.ABI {
 											  LocalBuilder nativePtr)
 		{
 			EmitCallNative (il, nativeMethod, false, parameterTypes, nativePtr);
-			EmitInitVTable (il, nativePtr);
+			//
+			// FIXME: Why is this needed ? When using the itanium abi, the c++ ctor
+			// initalizes it. Maybe msvc needs it ?
+			//EmitInitVTable (il, nativePtr);
 		}
 
 		protected virtual void EmitDestruct (ILGenerator il, MethodInfo nativeMethod, Type [] parameterTypes,
