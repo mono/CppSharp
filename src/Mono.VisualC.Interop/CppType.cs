@@ -201,7 +201,6 @@ namespace Mono.VisualC.Interop {
 					// if we have something left, it must be a type name
 					strPart = strPart.Trim ();
 					if (strPart != "") {
-
 						string [] qualifiedName = strPart.Split (new string [] { "::" }, StringSplitOptions.RemoveEmptyEntries);
 						int numNamespaces = qualifiedName.Length - 1;
 						if (numNamespaces > 0) {
@@ -211,15 +210,31 @@ namespace Mono.VisualC.Interop {
 						}
 						strPart = qualifiedName [numNamespaces];
 
-						// FIXME: Use Enum.TryParse here if we decide to make this NET_4_0 only
-						try {
-							CppTypes cppTypes = (CppTypes)Enum.Parse (typeof (CppTypes), strPart, true);
-							ElementType = cppTypes;
-							continue;
-						} catch { }
-
-						// otherwise it is the element type name...
-						ElementTypeName = strPart;
+						// FIXME: Fix this mess
+						switch (strPart) {
+						case "void":
+							ElementType = CppTypes.Void;
+							break;
+						case "bool":
+							ElementType = CppTypes.Bool;
+							break;
+						case "char":
+							ElementType = CppTypes.Char;
+							break;
+						case "int":
+							ElementType = CppTypes.Int;
+							break;
+						case "float":
+							ElementType = CppTypes.Float;
+							break;
+						case "double":
+							ElementType = CppTypes.Double;
+							break;
+						default:
+							// otherwise it is the element type name...
+							ElementTypeName = strPart;
+							break;
+						}
 					}
 				}
 			}
