@@ -40,6 +40,18 @@ namespace Mono.VisualC.Interop {
 	[AttributeUsage (AttributeTargets.Method)]
 	public class ProtectedAttribute : Attribute {}
 
+	[AttributeUsage (AttributeTargets.Method)]
+	public class InlineAttribute : Attribute {}
+
+	[AttributeUsage (AttributeTargets.Method)]
+	public class ArtificialAttribute : Attribute {}
+
+	[AttributeUsage (AttributeTargets.Method)]
+	public class CopyConstructorAttribute : Attribute {}
+
+	[AttributeUsage (AttributeTargets.Parameter)]
+	public class ByValAttribute : Attribute {}
+
 	[AttributeUsage (AttributeTargets.Parameter | AttributeTargets.ReturnValue)]
 	public class MangleAsAttribute : Attribute {
 		public CppType MangleType { get; private set; }
@@ -102,6 +114,10 @@ using Mono.VisualC.Interop;
 		public virtual bool IsProtected (MethodInfo method)
 		{
 			return method.IsDefined (typeof (ProtectedAttribute), false);
+		}
+		public virtual bool IsInline (MethodInfo method)
+		{
+			return method.IsDefined (typeof (InlineAttribute), false);
 		}
 
 		public virtual CppType GetMangleType (ICustomAttributeProvider icap, Type managedType)
