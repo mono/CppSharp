@@ -65,6 +65,7 @@ src/QtTest/qttest
 src/QtTest/Makefile
 src/generator2/generator
 src/generator2/Makefile
+src/qt/Makefile
 src/Makefile
 tests2/Makefile
 Makefile

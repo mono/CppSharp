@@ -1,0 +1,9 @@
+QObject
+QApplication
+QCoreApplication
+QWidget
+QAbstractButton
+QPushButton
+QPaintDevice
+QString
+QSize
