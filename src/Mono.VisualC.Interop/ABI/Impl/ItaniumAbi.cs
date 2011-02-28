@@ -23,9 +23,19 @@ namespace Mono.VisualC.Interop.ABI {
 		{
 		}
 
-		protected override CppTypeInfo MakeTypeInfo (IEnumerable<MethodInfo> virtualMethods)
+		protected override CppTypeInfo MakeTypeInfo (IEnumerable<MethodInfo> methods, IEnumerable<MethodInfo> virtualMethods)
 		{
-			return new ItaniumTypeInfo (this, virtualMethods, layout_type);
+			bool hasExplicitCopyCtor = false;
+			bool hasExplicitDtor = false;
+
+			foreach (var m in methods) {
+				if (m.IsDefined (typeof (CopyConstructorAttribute), false) && !m.IsDefined (typeof (ArtificialAttribute), false))
+					hasExplicitCopyCtor = true;
+				if (m.IsDefined (typeof (DestructorAttribute), false) && !m.IsDefined (typeof (ArtificialAttribute), false))
+					hasExplicitDtor = true;
+			}
+
+			return new ItaniumTypeInfo (this, virtualMethods, layout_type) { HasExplicitCopyCtor = hasExplicitCopyCtor, HasExplicitDtor = hasExplicitDtor };
 		}
 
 		public override CallingConvention? GetCallingConvention (MethodInfo methodInfo)
@@ -35,12 +45,17 @@ namespace Mono.VisualC.Interop.ABI {
 
 		protected override string GetMangledMethodName (MethodInfo methodInfo)
 		{
+			var compressMap = new Dictionary<string, int> ();
+
 			string methodName = methodInfo.Name;
 			MethodType methodType = GetMethodType (methodInfo);
 			ParameterInfo [] parameters = methodInfo.GetParameters ();
 
 			StringBuilder nm = new StringBuilder ("_ZN", 30);
 			nm.Append (class_name.Length).Append (class_name);
+			compressMap [class_name] = compressMap.Count;
+
+			// FIXME: Implement compression completely
 
 			switch (methodType) {
 			case MethodType.NativeCtor:
@@ -63,12 +78,16 @@ namespace Mono.VisualC.Interop.ABI {
 				nm.Append ('v');
 			else
 				for (int i = argStart; i < parameters.Length; i++)
-					nm.Append (GetTypeCode (GetMangleType (parameters [i], parameters [i].ParameterType)));
+					nm.Append (GetTypeCode (GetMangleType (parameters [i], parameters [i].ParameterType), compressMap));
 
 			return nm.ToString ();
 		}
 
-		public virtual string GetTypeCode (CppType mangleType)
+		public virtual string GetTypeCode (CppType mangleType) {
+			return GetTypeCode (mangleType, new Dictionary<string, int> ());
+		}
+
+		string GetTypeCode (CppType mangleType, Dictionary<string, int> compressMap)
 		{
 			CppTypes element = mangleType.ElementType;
 			IEnumerable<CppModifiers> modifiers = mangleType.Modifiers;
@@ -102,16 +121,81 @@ namespace Mono.VisualC.Interop.ABI {
 			case CppTypes.Class:
 			case CppTypes.Struct:
 			case CppTypes.Union:
-			case CppTypes.Enum:
-				code.Append(mangleType.ElementTypeName.Length);
-				code.Append(mangleType.ElementTypeName);
+			case CppTypes.Enum: {
+				int cid;
+				if (compressMap.TryGetValue (mangleType.ElementTypeName, out cid)) {
+					if (cid == 0)
+						code.Append ("S_");
+					else
+						throw new NotImplementedException ();
+				} else {
+					code.Append(mangleType.ElementTypeName.Length);
+					code.Append(mangleType.ElementTypeName);
+				}
 				break;
-
+			}
 			}
 
 			return code.ToString ();
 		}
 
+		public override PInvokeSignature GetPInvokeSignature (CppTypeInfo typeInfo, MethodInfo method) {
+			Type returnType = method.ReturnType;
+
+			bool retClass = false;
+			bool retByAddr = false;
+
+			if (typeof (ICppObject).IsAssignableFrom (returnType)) {
+				retClass = true;
+				if ((typeInfo as ItaniumTypeInfo).HasExplicitCopyCtor ||
+					(typeInfo as ItaniumTypeInfo).HasExplicitDtor) {
+					// Section 3.1.4:
+					// Classes with non-default copy ctors/destructors are returned using a
+					// hidden argument
+					retByAddr = true;
+				}
+			}
+
+			ParameterInfo[] parameters = method.GetParameters ();
+
+			var ptypes = new List<Type> ();
+			var pmarshal = new List<ParameterMarshal> ();
+			// FIXME: Handle ByVal attributes
+			foreach (var pi in parameters) {
+				Type t = pi.ParameterType;
+				Type ptype = t;
+				ParameterMarshal m = ParameterMarshal.Default;
+
+				if (t == typeof (bool)) {
+					ptype = typeof (byte);
+				} else if (typeof (ICppObject).IsAssignableFrom (t) && t != typeof (CppInstancePtr)) {
+					if (pi.IsDefined (typeof (ByValAttribute), false)) {
+						m = ParameterMarshal.ClassByVal;
+						// Can't use an interface/cattr since the native layout type is private
+						// Pass it as a type argument to I<Foo> ?
+						var f = t.GetField ("native_layout", BindingFlags.Static|BindingFlags.NonPublic);
+						if (f == null || f.FieldType != typeof (Type))
+							throw new NotImplementedException ("Type '" + t + "' needs to have a 'native_layout' field before it can be passed by value.");
+						ptype = (Type)f.GetValue (null);
+					} else {
+						ptype = typeof (IntPtr);
+						m = ParameterMarshal.ClassByRef;
+					}
+				} else if (typeof (ICppObject).IsAssignableFrom (t)) {
+					// CppInstancePtr implements ICppObject
+					ptype = typeof (IntPtr);
+				}
+				ptypes.Add (ptype);
+				pmarshal.Add (m);
+			}
+
+			if (retByAddr) {
+				ptypes.Insert (0, typeof (IntPtr));
+				pmarshal.Insert (0, ParameterMarshal.Default);
+			}
+
+			return new PInvokeSignature { OrigMethod = method, ParameterTypes = ptypes, ParameterMarshallers = pmarshal, ReturnType = returnType, ReturnClass = retClass, ReturnByAddr = retByAddr };
+		}
 
 
 	}

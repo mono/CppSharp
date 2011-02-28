@@ -25,7 +25,7 @@ namespace Mono.VisualC.Interop.ABI {
 		{
 		}
 
-		protected override CppTypeInfo MakeTypeInfo (IEnumerable<MethodInfo> virtualMethods)
+		protected override CppTypeInfo MakeTypeInfo (IEnumerable<MethodInfo> methods, IEnumerable<MethodInfo> virtualMethods)
 		{
 			return new MsvcTypeInfo (this, virtualMethods, layout_type);
 		}
@@ -190,6 +190,7 @@ namespace Mono.VisualC.Interop.ABI {
 				code.Append(mangleType.ElementTypeName);
 				code.Append ("@@");
 				break;
+
 			}
 
 			return code.ToString ();

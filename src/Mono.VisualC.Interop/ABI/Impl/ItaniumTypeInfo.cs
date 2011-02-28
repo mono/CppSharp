@@ -26,6 +26,9 @@ namespace Mono.VisualC.Interop.ABI {
 			get { return hasVirtualDtor; }
 		}
 
+		public bool HasExplicitCopyCtor { get; set; }
+		public bool HasExplicitDtor { get; set; }
+
 		public override void AddBase (CppTypeInfo baseType)
 		{
 			if (TypeComplete)

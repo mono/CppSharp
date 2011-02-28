@@ -14,10 +14,37 @@ using System.Reflection.Emit;
 
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
 
 using Mono.VisualC.Interop.Util;
 
 namespace Mono.VisualC.Interop.ABI {
+
+	//
+	// Marshalling to be done for a single parameter
+	//
+	public enum ParameterMarshal {
+		Default = 0,
+		ClassByRef = 1,
+		ClassByVal = 2
+	}
+
+	//
+	// Describes the signature of the pinvoke wrapper of a c++ method, along with
+	// marshalling information
+	//
+	public class PInvokeSignature {
+		// The original c# method this signature was generated from
+		public MethodInfo OrigMethod;
+		public List<Type> ParameterTypes { get; set; }
+		public List<ParameterMarshal> ParameterMarshallers { get; set; }
+		public Type ReturnType { get; set; }
+		// Whenever to return a class value
+		public bool ReturnClass { get; set; }
+		// Whenever to return a class value by passing a hidden first argument
+		// Used by the itanium c++ abi
+		public bool ReturnByAddr { get; set; }
+	}
 
 	//FIXME: Exception handling, operator overloading etc.
 	//FIXME: Allow interface to override default calling convention
@@ -87,7 +114,7 @@ namespace Mono.VisualC.Interop.ABI {
 
 			var properties = GetProperties ();
 			var methods = GetMethods ();
- 			CppTypeInfo typeInfo = MakeTypeInfo (methods.Where (m => IsVirtual (m)));
+ 			CppTypeInfo typeInfo = MakeTypeInfo (methods, methods.Where (m => IsVirtual (m)));
 
 			// Implement all methods
 			int vtableIndex = 0;
@@ -103,7 +130,7 @@ namespace Mono.VisualC.Interop.ABI {
 			return (Iface)Activator.CreateInstance (impl_type.CreateType (), typeInfo);
 		}
 
-		protected virtual CppTypeInfo MakeTypeInfo (IEnumerable<MethodInfo> virtualMethods)
+		protected virtual CppTypeInfo MakeTypeInfo (IEnumerable<MethodInfo> methods, IEnumerable<MethodInfo> virtualMethods)
 		{
 			return new CppTypeInfo (this, virtualMethods, layout_type);
 		}
@@ -197,6 +224,8 @@ namespace Mono.VisualC.Interop.ABI {
 			bool isStatic = IsStatic (interfaceMethod);
 			LocalBuilder cppInstancePtr = null;
 			LocalBuilder nativePtr = null;
+			LocalBuilder retVal = null;
+			LocalBuilder retArg = null;
 
 			// If we're an instance method, load up the "this" pointer
 			if (!isStatic)
@@ -213,21 +242,73 @@ namespace Mono.VisualC.Interop.ABI {
 
 			MethodInfo nativeMethod;
 
+			var psig = GetPInvokeSignature (typeInfo, interfaceMethod);
+
+			if (psig.ReturnClass) {
+				Debug.Assert (wrapper_type != null);
+				retVal = il.DeclareLocal (wrapper_type);
+				// Construct the manager wrapper object
+				var ctor = wrapper_type.GetConstructor (BindingFlags.Instance | BindingFlags.NonPublic, null, new Type [] { typeof (CppLibrary) }, null);
+				Debug.Assert (ctor != null);
+				il.Emit (OpCodes.Ldnull);
+				il.Emit (OpCodes.Newobj, ctor);
+				il.Emit (OpCodes.Stloc, retVal);
+
+				psig.ReturnType = layout_type;
+			}
+
+			if (psig.ReturnByAddr) {
+				//
+				// When using the Itanium c++ abi, some classes are returned by passing a
+				// hidden first argument.
+				//
+				// Put the address of the native return memory into a local
+				retArg = il.DeclareLocal (typeof (IntPtr));
+				il.Emit (OpCodes.Ldloc, retVal);
+				EmitLoadNativePtr (il);
+				il.Emit (OpCodes.Stloc, retArg);
+				psig.ReturnType = typeof (void);
+			}
+
 			if (IsVirtual (interfaceMethod) && methodType != MethodType.NativeDtor)
 				nativeMethod = EmitPrepareVirtualCall (il, typeInfo, nativePtr, vtableIndex++);
 			else
-				nativeMethod = GetPInvokeForMethod (interfaceMethod);
+				nativeMethod = GetPInvokeForMethod (interfaceMethod, psig);
 
 			switch (methodType) {
 			case MethodType.NativeCtor:
-				EmitConstruct (il, nativeMethod, parameterTypes, nativePtr);
+				EmitConstruct (il, nativeMethod, psig, nativePtr);
 				break;
+
 			case MethodType.NativeDtor:
-				EmitDestruct (il, nativeMethod, parameterTypes, cppInstancePtr, nativePtr);
+				EmitDestruct (il, nativeMethod, psig, cppInstancePtr, nativePtr);
 				break;
+
 			default:
-				EmitCallNative (il, nativeMethod, isStatic, parameterTypes, nativePtr);
+				EmitNativeCall (il, nativeMethod, isStatic, psig, nativePtr, retArg);
 				break;
+			}
+
+			if (psig.ReturnClass) {
+				if (!psig.ReturnByAddr) {
+					//
+					// The method return a struct in native format which is on the stack,
+					// have to copy into the native memory belonging to our object
+					//
+
+					// Save the method return value
+					var rval = il.DeclareLocal (layout_type);
+					il.Emit (OpCodes.Stloc, rval);
+					// Load the ptr to the native memory (dest)
+					il.Emit (OpCodes.Ldloc, retVal);
+					EmitLoadNativePtr (il);
+					// Load the address of the method return value (src)
+					il.Emit (OpCodes.Ldloca, rval);
+					// Copy
+					il.Emit (OpCodes.Cpobj, layout_type);
+				}
+				
+				il.Emit (OpCodes.Ldloc, retVal);
 			}
 
 			il.Emit (OpCodes.Ret);
@@ -303,13 +384,13 @@ namespace Mono.VisualC.Interop.ABI {
 			if (targetMethod == null)
 				return null;
 
-			Type[] parameterTypes = GetParameterTypesForPInvoke (interfaceMethod).ToArray ();
+			var psig = GetPInvokeSignature (typeInfo, interfaceMethod);
 
 			// TODO: According to http://msdn.microsoft.com/en-us/library/w16z8yc4.aspx
 			// The dynamic method created with this constructor has access to public and internal members of all the types contained in module m.
 			// This does not appear to hold true, so we also disable JIT visibility checks.
-			DynamicMethod trampolineIn = new DynamicMethod (wrapper_type.Name + "_" + interfaceMethod.Name + "_FromNative", interfaceMethod.ReturnType,
-                                                                        parameterTypes, typeof (CppInstancePtr).Module, true);
+			DynamicMethod trampolineIn = new DynamicMethod (wrapper_type.Name + "_" + interfaceMethod.Name + "_FromNative", psig.ReturnType,
+															psig.ParameterTypes.ToArray (), typeof (CppInstancePtr).Module, true);
 
 			ReflectionHelper.ApplyMethodParameterAttributes (interfaceMethod, trampolineIn, true);
 			ILGenerator il = trampolineIn.GetILGenerator ();
@@ -330,7 +411,7 @@ namespace Mono.VisualC.Interop.ABI {
 				il.Emit (OpCodes.Call, getManagedObj);
 			}
 
-			for (int i = argLoadStart; i < parameterTypes.Length; i++) {
+			for (int i = argLoadStart; i < psig.ParameterTypes.Count; i++) {
 				il.Emit (OpCodes.Ldarg, i);
 			}
 			il.Emit (OpCodes.Tailcall);
@@ -363,24 +444,29 @@ namespace Mono.VisualC.Interop.ABI {
 			MethodBuilder methodBuilder = impl_type.DefineMethod (interfaceMethod.Name, MethodAttributes.Public | MethodAttributes.Virtual,
 																  interfaceMethod.ReturnType, parameterTypes);
 			ReflectionHelper.ApplyMethodParameterAttributes (interfaceMethod, methodBuilder, false);
+
 			return methodBuilder;
 		}
 
 		/**
 		 * Defines a new MethodBuilder that calls the specified C++ (non-virtual) method using its mangled name
 		 */
-		protected virtual MethodBuilder GetPInvokeForMethod (MethodInfo signature)
+		protected virtual MethodBuilder GetPInvokeForMethod (MethodInfo signature, PInvokeSignature psig)
 		{
 			string entryPoint = GetMangledMethodName (signature);
 			if (entryPoint == null)
 				throw new NotSupportedException ("Could not mangle method name.");
 
-			Type [] parameterTypes = GetParameterTypesForPInvoke (signature).ToArray ();
+			string lib;
+			if (IsInline (signature))
+				lib = library + "-inline";
+			else
+				lib = library;
 
-			MethodBuilder builder = impl_type.DefinePInvokeMethod ("__$" + signature.Name + "_Impl", library, entryPoint,
-                                                                              MethodAttributes.Private | MethodAttributes.Static | MethodAttributes.PinvokeImpl,
-                                                                              CallingConventions.Standard, signature.ReturnType, parameterTypes,
-                                                                              GetCallingConvention (signature).Value, CharSet.Ansi);
+			MethodBuilder builder = impl_type.DefinePInvokeMethod ("__$" + signature.Name + "_Impl", lib, entryPoint,
+																   MethodAttributes.Private | MethodAttributes.Static | MethodAttributes.PinvokeImpl,
+																   CallingConventions.Standard, psig.ReturnType, psig.ParameterTypes.ToArray (),
+																   GetCallingConvention (signature).Value, CharSet.Ansi);
 			builder.SetImplementationFlags (builder.GetMethodImplementationFlags () | MethodImplAttributes.PreserveSig);
 			ReflectionHelper.ApplyMethodParameterAttributes (signature, builder, true);
 			return builder;
@@ -419,24 +505,22 @@ namespace Mono.VisualC.Interop.ABI {
 			if (wrapper_type != null) {
 				// load managed wrapper
 				il.Emit (OpCodes.Ldarg_1);
-				il.Emit (OpCodes.Newobj, typeof (CppInstancePtr).GetConstructor (BindingFlags.Instance | BindingFlags.NonPublic, null,
-																				 new Type[] { typeof (int), typeof (object) }, null));
+				il.Emit (OpCodes.Newobj, typeof (CppInstancePtr).GetConstructor (BindingFlags.Instance | BindingFlags.NonPublic, null, new Type[] { typeof (int), typeof (object) }, null));
 			} else
-				il.Emit (OpCodes.Newobj, typeof (CppInstancePtr).GetConstructor (BindingFlags.Instance | BindingFlags.NonPublic, null,
-																				 new Type[] { typeof (int) }, null));
+				il.Emit (OpCodes.Newobj, typeof (CppInstancePtr).GetConstructor (BindingFlags.Instance | BindingFlags.NonPublic, null, new Type[] { typeof (int) }, null));
 		}
 
-		protected virtual void EmitConstruct (ILGenerator il, MethodInfo nativeMethod, Type [] parameterTypes,
+		protected virtual void EmitConstruct (ILGenerator il, MethodInfo nativeMethod, 
+											  PInvokeSignature psig,
 											  LocalBuilder nativePtr)
 		{
-			EmitCallNative (il, nativeMethod, false, parameterTypes, nativePtr);
-			//
-			// FIXME: Why is this needed ? When using the itanium abi, the c++ ctor
-			// initalizes it. Maybe msvc needs it ?
+			EmitNativeCall (il, nativeMethod, false, psig, nativePtr, null);
+			// FIXME: Why is this needed ? The c++ ctor initializes it
 			//EmitInitVTable (il, nativePtr);
 		}
 
-		protected virtual void EmitDestruct (ILGenerator il, MethodInfo nativeMethod, Type [] parameterTypes,
+		protected virtual void EmitDestruct (ILGenerator il, MethodInfo nativeMethod,
+											 PInvokeSignature psig,
 											 LocalBuilder cppInstancePtr, LocalBuilder nativePtr)
 		{
 			// bail if we weren't alloc'd by managed code
@@ -449,7 +533,7 @@ namespace Mono.VisualC.Interop.ABI {
 			il.Emit (OpCodes.Brfalse_S, bail);
 
 			EmitResetVTable (il, nativePtr);
-			EmitCallNative (il, nativeMethod, false, parameterTypes, nativePtr);
+			EmitNativeCall (il, nativeMethod, false, psig, nativePtr, null);
 
 			il.MarkLabel (bail);
 		}
@@ -459,54 +543,142 @@ namespace Mono.VisualC.Interop.ABI {
 		 * GetPInvokeForMethod or the MethodInfo of a vtable method.
 		 * To complete method, emit OpCodes.Ret.
 		 */
-		protected virtual void EmitCallNative (ILGenerator il, MethodInfo nativeMethod, bool isStatic, Type [] parameterTypes,
-											   LocalBuilder nativePtr)
+		protected virtual void EmitNativeCall (ILGenerator il, MethodInfo nativeMethod,
+											   bool isStatic, PInvokeSignature psig,
+											   LocalBuilder nativePtr, LocalBuilder retArg)
 		{
-			int argLoadStart = 1; // For static methods, just strip off arg0 (.net this pointer)
-			if (!isStatic)
-			{
-				argLoadStart = 2; // For instance methods, strip off CppInstancePtr and pass the corresponding IntPtr
-				il.Emit (OpCodes.Ldloc_S, nativePtr);
+			//
+			// The managed signature looks like this:
+			// (<.net this>, @this (if not static), <additional args>
+			// The native signature looks like this:
+			// (<hidden retarg if present>, @this, <additional args>)
+			//
+			// The managed argument index, skip .net this
+			int aindex = 1;
+
+			// Do conversions
+
+			LocalBuilder[] args = new LocalBuilder [psig.ParameterTypes.Count];
+			aindex = 1;
+			for (int pindex = 0; pindex < psig.ParameterTypes.Count; pindex++) {
+				if (!isStatic && pindex == 0) {
+					// For instance methods, strip off CppInstancePtr and pass the corresponding IntPtr
+					args [pindex] = nativePtr;
+					aindex ++;
+					continue;
+				}
+
+				Type ptype = psig.ParameterTypes [pindex];
+				switch (psig.ParameterMarshallers [pindex]) {
+				case ParameterMarshal.Default:
+					// FIXME: Why is this needed ?
+					// auto marshal bool to C++ bool type (0 = false , 1 = true )
+					if (ptype.Equals (typeof (bool))) {
+						args [pindex] = il.DeclareLocal (typeof (bool));
+						Label isTrue = il.DefineLabel ();
+						Label done = il.DefineLabel ();
+						il.Emit (OpCodes.Ldarg, aindex);
+						il.Emit (OpCodes.Brtrue_S, isTrue);
+						il.Emit (OpCodes.Ldc_I4_0);
+						il.Emit (OpCodes.Br_S, done);
+						il.MarkLabel (isTrue);
+						il.Emit (OpCodes.Ldc_I4_1);
+						il.MarkLabel (done);
+						il.Emit (OpCodes.Stloc, args [pindex]);
+						//il.Emit (OpCodes.Conv_I1);
+					}
+					break;
+				case ParameterMarshal.ClassByRef: {
+					args [pindex] = il.DeclareLocal (typeof (IntPtr));
+					// Pass the native pointer of the class
+					// Null check
+					Label isNull = il.DefineLabel ();
+					Label contLabel = il.DefineLabel ();
+					il.Emit (OpCodes.Ldarg, aindex);
+					il.Emit (OpCodes.Brfalse_S, isNull);
+					// Non-null case
+					il.Emit (OpCodes.Ldarg, aindex);
+					EmitLoadNativePtr (il);
+					// FIXME: Dispose check
+					il.Emit (OpCodes.Br_S, contLabel);
+					// Null case
+					il.MarkLabel (isNull);
+					il.Emit (OpCodes.Ldnull);
+					il.Emit (OpCodes.Conv_I);
+					// Common case
+					il.MarkLabel (contLabel);
+					il.Emit (OpCodes.Stloc, args [pindex]);
+					break;
+				}
+				case ParameterMarshal.ClassByVal: {
+					// Pass a copy of the native memory of the class
+					args [pindex] = il.DeclareLocal (ptype);
+					Label normalLabel = il.DefineLabel ();
+					il.Emit (OpCodes.Ldarg, aindex);
+					il.Emit (OpCodes.Brtrue_S, normalLabel);
+					// Null case
+					il.Emit (OpCodes.Ldstr, "Cannot pass null object of type '" + ptype.DeclaringType + "' to c++ by value");
+					il.Emit (OpCodes.Newobj, typeof (ArgumentException).GetConstructor (new Type[] { typeof(string) }));
+					il.Emit (OpCodes.Throw);
+					// Non-null case
+					il.MarkLabel (normalLabel);
+					// Dest
+					il.Emit (OpCodes.Ldloca, args [pindex]);
+					// Load the native ptr of the object (src)
+					il.Emit (OpCodes.Ldarg, aindex);
+					EmitLoadNativePtr (il);
+					// FIXME: Dispose check
+					// Copy
+					il.Emit (OpCodes.Cpobj, ptype);
+					break;
+				}
+				default:
+					throw new NotImplementedException ();
+				}
+
+				aindex ++;
 			}
-			for (int i = argLoadStart; i <= parameterTypes.Length; i++) {
-				il.Emit (OpCodes.Ldarg, i);
-				EmitSpecialParameterMarshal (il, parameterTypes [i - 1]);
+
+			// Pass arguments
+
+			aindex = 1;
+			int pindexStart = 0;
+
+			if (retArg != null) {
+				pindexStart ++;
+				il.Emit (OpCodes.Ldloc, retArg);
 			}
+
+			for (int pindex = pindexStart; pindex < psig.ParameterTypes.Count; pindex++) {
+				// The first argument is the .net this argument
+				if (args [pindex] != null)
+					il.Emit (OpCodes.Ldloc, args [pindex]);
+				else
+					il.Emit (OpCodes.Ldarg, aindex);
+
+				aindex ++;
+			}
+
+			// Make the call
 
 			il.Emit (OpCodes.Call, nativeMethod);
 		}
 
-		// Note: when this is modified, usually GetParameterTypesForPInvoke types should be updated too
-		protected virtual void EmitSpecialParameterMarshal (ILGenerator il, Type parameterType)
-		{
-			// auto marshal bool to C++ bool type (0 = false , 1 = true )
-			if (parameterType.Equals (typeof (bool))) {
-				Label isTrue = il.DefineLabel ();
-				Label done = il.DefineLabel ();
-				il.Emit (OpCodes.Brtrue_S, isTrue);
-				il.Emit (OpCodes.Ldc_I4_0);
-				il.Emit (OpCodes.Br_S, done);
-				il.MarkLabel (isTrue);
-				il.Emit (OpCodes.Ldc_I4_1);
-				il.MarkLabel (done);
-				//il.Emit (OpCodes.Conv_I1);
-			}
-			// auto marshal ICppObject
-		}
-
-		public virtual IEnumerable<Type> GetParameterTypesForPInvoke (MethodInfo method)
-		{
+		public virtual PInvokeSignature GetPInvokeSignature (CppTypeInfo typeInfo, MethodInfo method) {
 			var originalTypes = ReflectionHelper.GetMethodParameterTypes (method);
 
 			var pinvokeTypes = originalTypes.Transform (
 			        For.AnyInputIn (typeof (bool)).Emit (typeof (byte)),
 
 				// CppInstancePtr implements ICppObject
-				For.InputsWhere ((Type t) => typeof (ICppObject).IsAssignableFrom (t)).Emit (typeof (IntPtr)),
+					For.InputsWhere ((Type t) => typeof (ICppObject).IsAssignableFrom (t)).Emit (typeof (IntPtr)),
 
 			        For.UnmatchedInput<Type> ().Emit (t => t)
 			);
-			return pinvokeTypes;
+
+			Type returnType = method.ReturnType;
+
+			return new PInvokeSignature { OrigMethod = method, ParameterTypes = pinvokeTypes.ToList (), ReturnType = returnType };
 		}
 
 		/**
@@ -584,7 +756,7 @@ namespace Mono.VisualC.Interop.ABI {
 		}
 
 		protected virtual void EmitLoadInstancePtr (ILGenerator il, Type firstParamType, out LocalBuilder cppip,
-                                                            out LocalBuilder native)
+													out LocalBuilder native)
 		{
 			cppip = null;
 			native = null;
@@ -605,6 +777,17 @@ namespace Mono.VisualC.Interop.ABI {
 				il.Emit (OpCodes.Stloc_S, native);
 			} else
 				throw new ArgumentException ("First argument to non-static C++ method must be byref, IntPtr or CppInstancePtr.");
+		}
+
+		// Emit obj.Native.Native
+		// On enter, the stack should contain a reference to a CppInstancePtr
+		// On exit, it contains an IntPtr
+		void EmitLoadNativePtr (ILGenerator il) {
+			LocalBuilder cppip = il.DeclareLocal (typeof (CppInstancePtr));
+			il.Emit (OpCodes.Call, typeof (ICppObject).GetMethod ("get_Native"));
+			il.Emit (OpCodes.Stloc_S, cppip);
+			il.Emit (OpCodes.Ldloca_S, cppip);
+			il.Emit (OpCodes.Call, typeof (CppInstancePtr).GetProperty ("Native").GetGetMethod ());
 		}
 
 		protected virtual void EmitCheckManagedAlloc (ILGenerator il, LocalBuilder cppip)
@@ -639,5 +822,4 @@ namespace Mono.VisualC.Interop.ABI {
 			}
 		}
 	}
-
 }

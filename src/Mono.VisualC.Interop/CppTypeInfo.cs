@@ -179,7 +179,8 @@ namespace Mono.VisualC.Interop {
 		public virtual DelegateSignature GetVTableDelegateSignature (int index)
 		{
 			MethodInfo method = VirtualMethods [index];
-			return new DelegateSignature () { ParameterTypes = Abi.GetParameterTypesForPInvoke (method),
+			var psig = Abi.GetPInvokeSignature (this, method);
+			return new DelegateSignature () { ParameterTypes = psig.ParameterTypes,
 			                                  ReturnType = method.ReturnType,
 			                                  CallingConvention = Abi.GetCallingConvention (method) };
 		}
