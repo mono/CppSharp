@@ -171,9 +171,9 @@ public class Generator
 
 		// Compute bases
 		foreach (Class klass in classes) {
-			foreach (Node bn in klass.Node.Children.Where (o => o.Type == "Base")) {			
-				//Class baseClass = nodeToClass [bn.NodeForAttr ("type")];
-				throw new NotImplementedException ();
+			foreach (Node bn in klass.Node.Children.Where (o => o.Type == "Base")) {
+				Class baseClass = NodeToClass [bn.NodeForAttr ("type")];
+				klass.BaseClasses.Add (baseClass);
 			}
 		}
 
@@ -202,6 +202,9 @@ public class Generator
 						fieldName = n.Name;
 					else
 						fieldName = "field" + fieldCount++;
+					if (CppTypeToCodeDomType (fieldType) == null)
+						// FIXME: Assume IntPtr
+						fieldType = ((CppType)CppTypes.Void).Modify (CppModifiers.Pointer);
 					klass.Fields.Add (new Field (fieldName, fieldType));
 					break;
 				case "Constructor":
@@ -222,7 +225,6 @@ public class Generator
 				if (!n.IsTrue ("extern") && !n.IsTrue ("inline"))
 					continue;
 
-				// FIXME: Casing
 				string name = dtor ? "Destruct" : n.Name;
 
 				var method = new Method (n) {
@@ -236,17 +238,22 @@ public class Generator
 						IsDestructor = dtor
 				};
 
+				bool skip = false;
+
 				CppType retType;
 				if (n.HasValue ("returns"))
 					retType = GetType (n.NodeForAttr ("returns"));
 				else
 					retType = CppTypes.Void;
 				if (retType.ElementType == CppTypes.Unknown)
-					throw new NotImplementedException ();
+					skip = true;
+				if (CppTypeToCodeDomType (retType) == null) {
+					Console.WriteLine ("\t\tS: " + retType);
+					skip = true;
+				}
 
 				method.ReturnType = retType;
 
-				bool skip = false;
 				int c = 0;
 				List<CppType> argTypes = new List<CppType> ();
 				foreach (Node arg in n.Children.Where (o => o.Type == "Argument")) {
@@ -259,6 +266,11 @@ public class Generator
 					CppType argtype = GetType (GetTypeNode (arg));
 					if (argtype.ElementType == CppTypes.Unknown) {
 						//Console.WriteLine ("Skipping method " + klass.Name + "::" + member.Name + " () because it has an argument with unknown type '" + TypeNodeToString (arg) + "'.");
+						skip = true;
+					}
+
+					if (CppTypeToCodeDomType (argtype) == null) {
+						Console.WriteLine ("\t\tS: " + argtype);
 						skip = true;
 					}
 
@@ -277,6 +289,12 @@ public class Generator
 				Console.WriteLine ("\t" + klass.Name + "." + method.Name);
 
 				klass.Methods.Add (method);
+			}
+
+			Field f2 = klass.Fields.FirstOrDefault (f => f.Type.ElementType == CppTypes.Unknown);
+			if (f2 != null) {
+				Console.WriteLine ("Skipping " + klass.Name + " because field " + f2.Name + " has unknown type.");
+				klass.Disable = true;
 			}
 		}
 	}
@@ -302,10 +320,17 @@ public class Generator
 			else
 				throw new NotImplementedException ();
 		case "Class":
-			// FIXME: Missing classes
+		case "Struct":
+			if (!NodeToClass.ContainsKey (n)) {
+				if (modifiers.Modifiers.Count () == 1 && modifiers.Modifiers [0] == CppModifiers.Pointer)
+					// Map these to void*
+					return modifiers.CopyTypeFrom (CppTypes.Void);
+				else
+					return CppTypes.Unknown;
+			}
 			return modifiers.CopyTypeFrom (new CppType (CppTypes.Class, NodeToClass [n].Name));
 		default:
-			throw new NotImplementedException (n.Type);
+			return CppTypes.Unknown;
 		}
 	}
 
@@ -313,11 +338,32 @@ public class Generator
 		return Node.IdToNode [n.Attributes ["type"]];
 	}
 
-	public CodeTypeReference CppTypeToCodeDomType (CppType t) {
+	// Return the CodeDom type reference corresponding to T, or null
+	public CodeTypeReference CppTypeToCodeDomType (CppType t, out bool byref) {
 		CodeTypeReference rtype = null;
-		// FIXME: Modifiers
+
+		byref = false;
+		Type mtype = t.ToManagedType ();
+		if (mtype != null) {
+			if (mtype.IsByRef) {
+				byref = true;
+				mtype = mtype.GetElementType ();
+			}
+			return new CodeTypeReference (mtype);
+		}
+
+		if (t.Modifiers.Count > 0 && t.ElementType != CppTypes.Void && t.ElementType != CppTypes.Class)
+			return null;
 		switch (t.ElementType) {
 		case CppTypes.Void:
+			if (t.Modifiers.Count > 0) {
+				if (t.Modifiers.Count == 1 && t.Modifiers [0] == CppModifiers.Pointer)
+					rtype = new CodeTypeReference (typeof (IntPtr));
+				else
+					return null;
+			} else {
+				rtype = new CodeTypeReference (typeof (void));
+			}
 			break;
 		case CppTypes.Bool:
 			rtype = new CodeTypeReference (typeof (bool));
@@ -325,14 +371,29 @@ public class Generator
 		case CppTypes.Int:
 			rtype = new CodeTypeReference (typeof (int));
 			break;
+		case CppTypes.Float:
+			rtype = new CodeTypeReference (typeof (float));
+			break;
+		case CppTypes.Double:
+			rtype = new CodeTypeReference (typeof (double));
+			break;
+		case CppTypes.Char:
+			rtype = new CodeTypeReference (typeof (char));
+			break;
 		case CppTypes.Class:
 			// FIXME: Full name
 			rtype = new CodeTypeReference (t.ElementTypeName);
 			break;
 		default:
-			throw new NotImplementedException (t.ToString ());
+			return null;
 		}
 		return rtype;
+	}
+
+	public CodeTypeReference CppTypeToCodeDomType (CppType t) {
+		bool byref;
+		
+		return CppTypeToCodeDomType (t, out byref);
 	}
 
 	void GenerateCode () {
@@ -353,9 +414,9 @@ public class Generator
 
 			var decl = new CodeTypeDeclaration ("Libs");
 
-			var field = new CodeMemberField (new CodeTypeReference ("CppLibrary"), "Test");
+			var field = new CodeMemberField (new CodeTypeReference ("CppLibrary"), LibBaseName);
 			field.Attributes = MemberAttributes.Public|MemberAttributes.Static;
-			field.InitExpression = new CodeObjectCreateExpression (new CodeTypeReference ("CppLibrary"), new CodeExpression [] { new CodePrimitiveExpression ("Test") });
+			field.InitExpression = new CodeObjectCreateExpression (new CodeTypeReference ("CppLibrary"), new CodeExpression [] { new CodePrimitiveExpression (LibBaseName) });
 			decl.Members.Add (field);
 
 			ns.Types.Add (decl);
@@ -370,13 +431,16 @@ public class Generator
 
 		// Generate user classes
 		foreach (Class klass in Classes) {
+			if (klass.Disable)
+				continue;
+
 			var cu = new CodeCompileUnit ();
 			var ns = new CodeNamespace (Namespace);
 			ns.Imports.Add(new CodeNamespaceImport("System"));
 			ns.Imports.Add(new CodeNamespaceImport("Mono.VisualC.Interop"));
 			cu.Namespaces.Add (ns);
 
-			ns.Types.Add (klass.GenerateClass (this, libDecl));
+			ns.Types.Add (klass.GenerateClass (this, libDecl, LibBaseName));
 
 			//Provider.GenerateCodeFromCompileUnit(cu, Console.Out, CodeGenOptions);
 			using (TextWriter w = File.CreateText (Path.Combine (OutputDir, klass.Name + ".cs"))) {

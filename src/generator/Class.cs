@@ -12,6 +12,7 @@ class Class
 {
 	public Class (Node n) {
 		Node = n;
+		BaseClasses = new List<Class> ();
 		Methods = new List<Method> ();
 		Fields = new List<Field> ();
 	}
@@ -26,6 +27,10 @@ class Class
 		}
 	}
 
+	public List<Class> BaseClasses {
+		get; set;
+	}
+
 	public List<Method> Methods {
 		get; set;
 	}
@@ -34,11 +39,19 @@ class Class
 		get; set;
 	}
 
-	public CodeTypeDeclaration GenerateClass (Generator g, CodeTypeDeclaration libDecl) {
+	public bool Disable {
+		get; set;
+	}
+
+	public CodeTypeDeclaration GenerateClass (Generator g, CodeTypeDeclaration libDecl, string libFieldName) {
 		var decl = new CodeTypeDeclaration (Name);
 		decl.IsPartial = true;
-		// FIXME: Inheritance
-		decl.BaseTypes.Add (new CodeTypeReference ("ICppObject"));
+		if (BaseClasses.Count > 0)
+			decl.BaseTypes.Add (new CodeTypeReference (BaseClasses [0].Name));
+		else
+			decl.BaseTypes.Add (new CodeTypeReference ("ICppObject"));
+
+		bool hasBase = BaseClasses.Count > 0;
 
 		var layout = new CodeTypeDeclaration ("_" + Name);
 		layout.IsStruct = true;
@@ -63,34 +76,47 @@ class Class
 
 		var implField = new CodeMemberField (new CodeTypeReference (iface.Name), "impl");
 		implField.Attributes = MemberAttributes.Private|MemberAttributes.Static;
-		var getclass = new CodeMethodReferenceExpression (new CodeFieldReferenceExpression (new CodeTypeReferenceExpression (libDecl.Name), "Test"), "GetClass", new CodeTypeReference [] { new CodeTypeReference (iface.Name), new CodeTypeReference (layout.Name), new CodeTypeReference (decl.Name) });
+		var getclass = new CodeMethodReferenceExpression (new CodeFieldReferenceExpression (new CodeTypeReferenceExpression (libDecl.Name), libFieldName), "GetClass", new CodeTypeReference [] { new CodeTypeReference (iface.Name), new CodeTypeReference (layout.Name), new CodeTypeReference (decl.Name) });
 		implField.InitExpression = new CodeMethodInvokeExpression (getclass, new CodeExpression [] { new CodePrimitiveExpression (Name) });
 		decl.Members.Add (implField);
 		//private static IClass impl = global::CppTests.Libs.Test.GetClass <IClass, _Class, Class>("Class");
 
-		var ptrField = new CodeMemberField (new CodeTypeReference ("CppInstancePtr"), "native_ptr");
-		ptrField.Attributes = MemberAttributes.Family;
-		decl.Members.Add (ptrField);
+		if (!hasBase) {
+			var ptrField = new CodeMemberField (new CodeTypeReference ("CppInstancePtr"), "native_ptr");
+			ptrField.Attributes = MemberAttributes.Family;
+			decl.Members.Add (ptrField);
+		}
 
 		var allocCtor = new CodeConstructor () {
 			};
 		allocCtor.Parameters.Add (new CodeParameterDeclarationExpression (new CodeTypeReference ("CppLibrary"), "dummy"));
 		allocCtor.Statements.Add (new CodeAssignStatement (new CodeFieldReferenceExpression (null, "native_ptr"), new CodeMethodInvokeExpression (new CodeMethodReferenceExpression (new CodeFieldReferenceExpression (null, "impl"), "Alloc"), new CodeExpression [] { new CodeThisReferenceExpression () })));
+		if (hasBase) {
+			var implTypeInfo = new CodeFieldReferenceExpression (new CodeFieldReferenceExpression { FieldName = "impl" }, "TypeInfo");
+			allocCtor.BaseConstructorArgs.Add (implTypeInfo);
+		}
 		decl.Members.Add (allocCtor);
 
 		var subclassCtor = new CodeConstructor () {
+				Attributes = MemberAttributes.Family
 			};
 		subclassCtor.Parameters.Add (new CodeParameterDeclarationExpression (new CodeTypeReference ("CppTypeInfo"), "subClass"));
 		subclassCtor.Statements.Add (new CodeExpressionStatement (new CodeMethodInvokeExpression (new CodeMethodReferenceExpression (new CodeArgumentReferenceExpression ("subClass"), "AddBase"), new CodeExpression [] { new CodeFieldReferenceExpression (new CodeFieldReferenceExpression (null, "impl"), "TypeInfo") })));
+		if (hasBase) {
+			var implTypeInfo = new CodeFieldReferenceExpression (new CodeFieldReferenceExpression { FieldName = "impl" }, "TypeInfo");
+			subclassCtor.BaseConstructorArgs.Add (implTypeInfo);
+		}
 		decl.Members.Add (subclassCtor);
 
-		var nativeProperty = new CodeMemberProperty () {
-				Name = "Native",
-				Type = new CodeTypeReference ("CppInstancePtr"),
-				Attributes = MemberAttributes.Public|MemberAttributes.Final
-		};
-		nativeProperty.GetStatements.Add (new CodeMethodReturnStatement (new CodeFieldReferenceExpression (new CodeThisReferenceExpression (), "native_ptr")));
-		decl.Members.Add (nativeProperty);
+		if (!hasBase) {
+			var nativeProperty = new CodeMemberProperty () {
+					Name = "Native",
+						Type = new CodeTypeReference ("CppInstancePtr"),
+						Attributes = MemberAttributes.Public|MemberAttributes.Final
+						};
+			nativeProperty.GetStatements.Add (new CodeMethodReturnStatement (new CodeFieldReferenceExpression (new CodeThisReferenceExpression (), "native_ptr")));
+			decl.Members.Add (nativeProperty);
+		}
 
 		var disposeMethod = new CodeMemberMethod () {
 				Name = "Dispose",
@@ -103,7 +129,13 @@ class Class
 
 		foreach (Method m in Methods) {
 			iface.Members.Add (m.GenerateIFaceMethod (g));
-			decl.Members.Add (m.GenerateWrapperMethod (g));
+
+			var cm = m.GenerateWrapperMethod (g);
+			if (m.IsConstructor && hasBase) {
+				var implTypeInfo = new CodeFieldReferenceExpression (new CodeFieldReferenceExpression { FieldName = "impl" }, "TypeInfo");
+				(cm as CodeConstructor).BaseConstructorArgs.Add (implTypeInfo);
+			}
+			decl.Members.Add (cm);
 		}
 
 		return decl;

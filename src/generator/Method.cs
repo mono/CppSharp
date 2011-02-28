@@ -64,6 +64,10 @@ class Method
 		get; set;
 	}
 
+	string GetCSharpMethodName (string name) {
+		return "" + Char.ToUpper (name [0]) + name.Substring (1);
+	}
+
 	public CodeMemberMethod GenerateIFaceMethod (Generator g) {
 		var method = new CodeMemberMethod () {
 				Name = Name
@@ -73,12 +77,15 @@ class Method
 			method.Parameters.Add (new CodeParameterDeclarationExpression (new CodeTypeReference ("CppInstancePtr"), "this"));
 
 		CodeTypeReference rtype = g.CppTypeToCodeDomType (ReturnType);
-		if (rtype != null)
-			method.ReturnType = rtype;
+		method.ReturnType = rtype;
 
 		foreach (var p in Parameters) {
 			CppType ptype = p.Item2;
-			var param = new CodeParameterDeclarationExpression (g.CppTypeToCodeDomType (ptype), p.Item1);
+			bool byref;
+			var ctype = g.CppTypeToCodeDomType (ptype, out byref);
+			var param = new CodeParameterDeclarationExpression (ctype, p.Item1);
+			if (byref)
+				param.Direction = FieldDirection.Ref;
 			if (!IsVirtual && !ptype.ToString ().Equals (string.Empty))
 				param.CustomAttributes.Add (new CodeAttributeDeclaration ("MangleAsAttribute", new CodeAttributeArgument (new CodePrimitiveExpression (ptype.ToString ()))));
 			// FIXME: Structs too
@@ -114,22 +121,25 @@ class Method
 
 		if (IsConstructor)
 			method = new CodeConstructor () {
-					Name = Name
+					Name = GetCSharpMethodName (Name)
 						};
 		else
 			method = new CodeMemberMethod () {
-					Name = Name
+					Name = GetCSharpMethodName (Name)
 						};
 		method.Attributes = MemberAttributes.Public;
 		if (IsStatic)
 			method.Attributes |= MemberAttributes.Static;
 
 		CodeTypeReference rtype = g.CppTypeToCodeDomType (ReturnType);
-		if (rtype != null)
-			method.ReturnType = rtype;
+		method.ReturnType = rtype;
 
 		foreach (var p in Parameters) {
-			var param = new CodeParameterDeclarationExpression (g.CppTypeToCodeDomType (p.Item2), p.Item1);
+			bool byref;
+			var ptype = g.CppTypeToCodeDomType (p.Item2, out byref);
+			var param = new CodeParameterDeclarationExpression (ptype, p.Item1);
+			if (byref)
+				param.Direction = FieldDirection.Ref;
 			method.Parameters.Add (param);
 		}
 
@@ -142,11 +152,18 @@ class Method
 		CodeExpression[] args = new CodeExpression [Parameters.Count + (IsStatic ? 0 : 1)];
 		if (!IsStatic)
 			args [0] = new CodeFieldReferenceExpression (null, "Native");
-		for (int i = 0; i < Parameters.Count; ++i)
-			args [i + (IsStatic ? 0 : 1)] = new CodeArgumentReferenceExpression (Parameters [i].Item1);
+		for (int i = 0; i < Parameters.Count; ++i) {
+			bool byref;
+			g.CppTypeToCodeDomType (Parameters [i].Item2, out byref);
+			CodeExpression arg = new CodeArgumentReferenceExpression (Parameters [i].Item1);
+			if (byref)
+				arg = new CodeDirectionExpression (FieldDirection.Ref, arg);
+			args [i + (IsStatic ? 0 : 1)] = arg;
+		}
+
 		var call = new CodeMethodInvokeExpression (new CodeMethodReferenceExpression (new CodeFieldReferenceExpression (null, "impl"), Name), args);
 
-		if (rtype == null || IsConstructor)
+		if (rtype.BaseType == "System.Void" || IsConstructor)
 			method.Statements.Add (call);
 		else
 			method.Statements.Add (new CodeMethodReturnStatement (call));
