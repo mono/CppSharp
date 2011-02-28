@@ -1,7 +1,7 @@
 
 top_srcdir=../..
 
-default: libhello.so Hello.xml Hello.exe
+all: libhello.so Hello.xml Hello.exe
 
 libhello.so: Hello.cpp Hello.h
 	$(CXX) -fPIC --shared -o $@ Hello.cpp
@@ -11,7 +11,7 @@ Hello.xml: Hello.h
 
 output gen:
 	$(RM) -r output
-	mono $(top_srcdir)/src/generator/bin/Debug/generator.exe -f=Hello.xml -ns=Hello -lib=hello
+	mono $(top_srcdir)/src/generator2/bin/Debug/generator.exe -ns=Hello -lib=hello Hello.xml
 
 INTEROP_DLL = \
 	$(top_srcdir)/src/Mono.VisualC.Interop/bin/Debug/Mono.VisualC.Interop.dll

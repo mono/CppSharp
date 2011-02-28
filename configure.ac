@@ -68,6 +68,8 @@ src/generator2/Makefile
 src/qt/Makefile
 src/Makefile
 tests2/Makefile
+examples/Makefile
+examples/Hello/Makefile
 Makefile
 ])
 
