@@ -10,11 +10,9 @@ ASSEMBLY = bin/Debug/generator.exe
 ASSEMBLY_MDB = $(ASSEMBLY).mdb
 COMPILE_TARGET = exe
 PROJECT_REFERENCES =  \
-	../Mono.VisualC.Code/bin/Debug/Mono.VisualC.Code.dll \
 	../Mono.VisualC.Interop/bin/Debug/Mono.VisualC.Interop.dll
 BUILD_DIR = bin/Debug
 
-MONO_VISUALC_CODE_DLL_SOURCE=../Mono.VisualC.Code/bin/Debug/Mono.VisualC.Code.dll
 MONO_VISUALC_INTEROP_DLL_SOURCE=../Mono.VisualC.Interop/bin/Debug/Mono.VisualC.Interop.dll
 MONO_VISUALC_INTEROP_DLL=$(BUILD_DIR)/Mono.VisualC.Interop.dll
 GENERATOR_EXE_MDB_SOURCE=bin/Debug/generator.exe.mdb
@@ -30,11 +28,9 @@ ASSEMBLY = bin/Release/generator.exe
 ASSEMBLY_MDB = 
 COMPILE_TARGET = exe
 PROJECT_REFERENCES =  \
-	../Mono.VisualC.Code/bin/Release/Mono.VisualC.Code.dll \
 	../Mono.VisualC.Interop/bin/Release/CPPInterop.dll
 BUILD_DIR = bin/Release
 
-MONO_VISUALC_CODE_DLL_SOURCE=../Mono.VisualC.Code/bin/Release/Mono.VisualC.Code.dll
 MONO_VISUALC_INTEROP_DLL=
 GENERATOR_EXE_MDB=
 CPPINTEROP_DLL_SOURCE=../Mono.VisualC.Interop/bin/Release/CPPInterop.dll
@@ -46,7 +42,6 @@ AL=al2
 SATELLITE_ASSEMBLY_NAME=$(notdir $(basename $(ASSEMBLY))).resources.dll
 
 PROGRAMFILES = \
-	$(MONO_VISUALC_CODE_DLL) \
 	$(MONO_VISUALC_INTEROP_DLL) \
 	$(GENERATOR_EXE_MDB) \
 	$(CPPINTEROP_DLL)  
@@ -56,15 +51,16 @@ BINARIES = \
 
 
 RESGEN=resgen2
-	
+
 all: $(ASSEMBLY) $(PROGRAMFILES) $(BINARIES) 
 
 FILES = \
-	Main.cs \
-	MethodSignature.cs \
+	Generator.cs \
 	Options.cs \
-	Postfixes.cs \
-	Entry.cs
+	Node.cs	\
+	Class.cs \
+	Method.cs \
+	Field.cs
 
 DATA_FILES = 
 
@@ -85,10 +81,8 @@ CLEANFILES = $(PROGRAMFILES) $(BINARIES)
 
 include $(top_srcdir)/Makefile.include
 
-MONO_VISUALC_CODE_DLL = $(BUILD_DIR)/Mono.VisualC.Code.dll
 GENERATOR = $(BUILD_DIR)/generator
 
-$(eval $(call emit-deploy-target,MONO_VISUALC_CODE_DLL))
 $(eval $(call emit-deploy-target,MONO_VISUALC_INTEROP_DLL))
 $(eval $(call emit-deploy-wrapper,GENERATOR,generator,x))
 $(eval $(call emit-deploy-target,CPPINTEROP_DLL))

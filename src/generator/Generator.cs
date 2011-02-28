@@ -1,0 +1,389 @@
+//
+// Generator.cs: C++ Interop Code Generator
+//
+//
+
+using System;
+using System.IO;
+using System.Collections.Generic;
+using System.Xml;
+using System.Linq;
+using System.Reflection;
+using System.CodeDom;
+using System.CodeDom.Compiler;
+using Microsoft.CSharp;
+
+using NDesk.Options;
+
+using Mono.VisualC.Interop;
+
+public class Generator
+{
+	// Command line arguments
+	string OutputDir;
+	string Namespace;
+	string LibBaseName;
+	string InputFileName;
+	string FilterFile;
+
+	CodeDomProvider Provider;
+	CodeGeneratorOptions CodeGenOptions;
+
+	// Classes to generate code for
+	Dictionary<string, string> Filters;
+
+	public static int Main (String[] args) {
+		var generator = new Generator ();
+		generator.Run (args);
+		return 0;
+	}
+
+	int ParseArguments (String[] args) {
+		bool help = false;
+
+		var p = new OptionSet {
+				{ "h|?|help", "Show this help message", v => help = v != null },
+				{ "o=", "Set the output directory", v => OutputDir = v },
+				{ "ns=|namespace=", "Set the namespace of the generated code", v => Namespace = v },
+				{ "lib=", "The base name of the C++ library, i.e. 'qt' for libqt.so", v =>LibBaseName = v },
+				{ "filters=", "A file containing filter directives for filtering classes", v => FilterFile = v }
+			};
+
+		try {
+			args = p.Parse (args).ToArray ();
+		} catch (OptionException) {
+			Console.WriteLine ("Try `generator --help' for more information.");
+			return 1;
+		}
+
+		if (help) {
+			p.WriteOptionDescriptions (Console.Error);
+			return 1;
+		}
+
+		if (args.Length != 1) {
+			Console.WriteLine ("Usage: generator <options> <input xml file>");
+			return 1;
+		}
+
+		InputFileName = args [0];
+
+		if (LibBaseName == null) {
+			Console.WriteLine ("The --lib= option is required.");
+			return 1;
+		}
+
+		if (OutputDir == null)
+			OutputDir = "output";
+
+		return 0;
+	}
+
+	void Run (String[] args) {
+		if (ParseArguments (args) != 0) {
+			Environment.Exit (1);
+		}
+
+		Node root = LoadXml (InputFileName);
+
+		if (FilterFile != null)
+			LoadFilters (FilterFile);
+
+		CreateClasses (root);
+
+		CreateMethods ();
+
+		GenerateCode ();
+	}
+
+	Node LoadXml (string file) {
+		XmlReader reader = XmlReader.Create (file, new XmlReaderSettings ());
+
+		Node[] parents = new Node [1024];
+
+		Node root = null;
+
+		while (reader.Read()) {
+			if (reader.IsStartElement ()) {
+				string type = reader.Name;
+
+				var attributes = new Dictionary<string, string> ();
+				while (reader.MoveToNextAttribute ()) {
+					attributes [reader.Name] = reader.Value;
+				}
+
+				Node n = new Node {
+						Id = "",
+						Type = type,
+						Attributes = attributes,
+						Children = new List<Node> ()
+				};
+
+				if (attributes.ContainsKey ("id")) {
+					n.Id = attributes ["id"];
+					Node.IdToNode [n.Id] = n;
+				}
+
+				if (attributes.ContainsKey ("name"))
+					n.Name = attributes ["name"];
+
+				if (parents [reader.Depth - 1] != null) {
+					//Console.WriteLine (parents [reader.Depth - 1].type + " -> " + e.type);
+					parents [reader.Depth - 1].Children.Add (n);
+				}
+				parents [reader.Depth] = n;
+
+				if (n.Type == "GCC_XML" && root == null)
+					root = n;
+			}
+		}
+
+		return root;
+	}
+
+	void LoadFilters (string file) {
+		Filters = new Dictionary <string, string> ();
+		foreach (string s in File.ReadAllLines (file)) {
+			Filters [s] = s;
+		}
+	}
+
+	List<Class> Classes;
+	Dictionary<Node, Class> NodeToClass;
+
+	void CreateClasses (Node root) {
+		List<Node> classNodes = root.Children.Where (o => o.Type == "Class" || o.Type == "Struct").ToList ();
+		classNodes.RemoveAll (o => o.IsTrue ("incomplete") || !o.HasValue ("name"));
+
+		if (Filters != null)
+			classNodes.RemoveAll (o => !Filters.ContainsKey (o.Name));
+
+		List<Class> classes = new List<Class> ();
+		NodeToClass = new Dictionary <Node, Class> ();
+
+		foreach (Node n in classNodes) {
+			Console.WriteLine (n.Name);
+
+			Class klass = new Class (n);
+			classes.Add (klass);
+			NodeToClass [n] = klass;
+		}
+
+		// Compute bases
+		foreach (Class klass in classes) {
+			foreach (Node bn in klass.Node.Children.Where (o => o.Type == "Base")) {			
+				//Class baseClass = nodeToClass [bn.NodeForAttr ("type")];
+				throw new NotImplementedException ();
+			}
+		}
+
+		Classes = classes;
+	}
+
+	void CreateMethods () {
+		foreach (Class klass in Classes) {
+			if (!klass.Node.HasValue ("members"))
+				continue;
+
+			int fieldCount = 0;
+			foreach (string id in klass.Node ["members"].Split (' ')) {
+				if (id == "")
+					continue;
+				Node n = Node.IdToNode [id];
+
+				bool ctor = false;
+				bool dtor = false;
+
+				switch (n.Type) {
+				case "Field":
+					CppType fieldType = GetType (GetTypeNode (n));
+					string fieldName;
+					if (n.Name != "")
+						fieldName = n.Name;
+					else
+						fieldName = "field" + fieldCount++;
+					klass.Fields.Add (new Field (fieldName, fieldType));
+					break;
+				case "Constructor":
+					ctor = true;
+					break;
+				case "Destructor":
+					dtor = true;
+					break;
+				case "Method":
+					break;
+				default:
+					continue;
+				}
+
+				if (!n.CheckValue ("access", "public") || (n.HasValue ("overrides") && !dtor))
+					continue;
+
+				if (!n.IsTrue ("extern") && !n.IsTrue ("inline"))
+					continue;
+
+				// FIXME: Casing
+				string name = dtor ? "Destruct" : n.Name;
+
+				var method = new Method (n) {
+						Name = name,
+						IsVirtual = n.IsTrue ("virtual"),
+						IsStatic = n.IsTrue ("static"),
+						IsConst = n.IsTrue ("const"),
+						IsInline = n.IsTrue ("inline"),
+						IsArtificial = n.IsTrue ("artificial"),
+						IsConstructor = ctor,
+						IsDestructor = dtor
+				};
+
+				CppType retType;
+				if (n.HasValue ("returns"))
+					retType = GetType (n.NodeForAttr ("returns"));
+				else
+					retType = CppTypes.Void;
+				if (retType.ElementType == CppTypes.Unknown)
+					throw new NotImplementedException ();
+
+				method.ReturnType = retType;
+
+				bool skip = false;
+				int c = 0;
+				List<CppType> argTypes = new List<CppType> ();
+				foreach (Node arg in n.Children.Where (o => o.Type == "Argument")) {
+					string argname;
+					if (arg.Name == null || arg.Name == "")
+						argname = "arg" + c;
+					else
+						argname = arg.Name;
+
+					CppType argtype = GetType (GetTypeNode (arg));
+					if (argtype.ElementType == CppTypes.Unknown) {
+						//Console.WriteLine ("Skipping method " + klass.Name + "::" + member.Name + " () because it has an argument with unknown type '" + TypeNodeToString (arg) + "'.");
+						skip = true;
+					}
+
+					method.Parameters.Add (new Tuple<string, CppType> (argname, argtype));
+					argTypes.Add (argtype);
+
+					c++;
+				}
+				if (skip)
+					continue;
+
+				// FIXME: More complete type name check
+				if (ctor && argTypes.Count == 1 && argTypes [0].ElementType == CppTypes.Class && argTypes [0].ElementTypeName == klass.Name && argTypes [0].Modifiers.Count == 2 && argTypes [0].Modifiers.Contains (CppModifiers.Const) && argTypes [0].Modifiers.Contains (CppModifiers.Reference))
+					method.IsCopyCtor = true;
+				
+				Console.WriteLine ("\t" + klass.Name + "." + method.Name);
+
+				klass.Methods.Add (method);
+			}
+		}
+	}
+
+	// Return a CppType for the type node N, return CppTypes.Unknown for unknown types
+	CppType GetType (Node n) {
+		return GetType (n, new CppType ());
+	}
+
+	CppType GetType (Node n, CppType modifiers) {
+		switch (n.Type) {
+		case "ArrayType":
+			return GetType (GetTypeNode (n), modifiers.Modify (CppModifiers.Array));
+		case "PointerType":
+			return GetType (GetTypeNode (n), modifiers.Modify (CppModifiers.Pointer));
+		case "ReferenceType":
+			return GetType (GetTypeNode (n), modifiers.Modify (CppModifiers.Reference));
+		case "FundamentalType":
+			return modifiers.CopyTypeFrom (new CppType (n.Name));
+		case "CvQualifiedType":
+			if (n.IsTrue ("const"))
+				return GetType (GetTypeNode (n), modifiers.Modify (CppModifiers.Const));
+			else
+				throw new NotImplementedException ();
+		case "Class":
+			// FIXME: Missing classes
+			return modifiers.CopyTypeFrom (new CppType (CppTypes.Class, NodeToClass [n].Name));
+		default:
+			throw new NotImplementedException (n.Type);
+		}
+	}
+
+	Node GetTypeNode (Node n) {
+		return Node.IdToNode [n.Attributes ["type"]];
+	}
+
+	public CodeTypeReference CppTypeToCodeDomType (CppType t) {
+		CodeTypeReference rtype = null;
+		// FIXME: Modifiers
+		switch (t.ElementType) {
+		case CppTypes.Void:
+			break;
+		case CppTypes.Bool:
+			rtype = new CodeTypeReference (typeof (bool));
+			break;
+		case CppTypes.Int:
+			rtype = new CodeTypeReference (typeof (int));
+			break;
+		case CppTypes.Class:
+			// FIXME: Full name
+			rtype = new CodeTypeReference (t.ElementTypeName);
+			break;
+		default:
+			throw new NotImplementedException (t.ToString ());
+		}
+		return rtype;
+	}
+
+	void GenerateCode () {
+		Directory.CreateDirectory (OutputDir);
+
+		Provider = new CSharpCodeProvider ();
+		CodeGenOptions = new CodeGeneratorOptions { BlankLinesBetweenMembers = false };
+
+		CodeTypeDeclaration libDecl = null;
+
+		// Generate Libs class
+		{
+			var cu = new CodeCompileUnit ();
+			var ns = new CodeNamespace (Namespace);
+			ns.Imports.Add(new CodeNamespaceImport("System"));
+			ns.Imports.Add(new CodeNamespaceImport("Mono.VisualC.Interop"));
+			cu.Namespaces.Add (ns);
+
+			var decl = new CodeTypeDeclaration ("Libs");
+
+			var field = new CodeMemberField (new CodeTypeReference ("CppLibrary"), "Test");
+			field.Attributes = MemberAttributes.Public|MemberAttributes.Static;
+			field.InitExpression = new CodeObjectCreateExpression (new CodeTypeReference ("CppLibrary"), new CodeExpression [] { new CodePrimitiveExpression ("Test") });
+			decl.Members.Add (field);
+
+			ns.Types.Add (decl);
+
+			libDecl = decl;
+
+			//Provider.GenerateCodeFromCompileUnit(cu, Console.Out, CodeGenOptions);
+			using (TextWriter w = File.CreateText (Path.Combine (OutputDir, "Libs.cs"))) {
+				Provider.GenerateCodeFromCompileUnit(cu, w, CodeGenOptions);
+			}
+		}
+
+		// Generate user classes
+		foreach (Class klass in Classes) {
+			var cu = new CodeCompileUnit ();
+			var ns = new CodeNamespace (Namespace);
+			ns.Imports.Add(new CodeNamespaceImport("System"));
+			ns.Imports.Add(new CodeNamespaceImport("Mono.VisualC.Interop"));
+			cu.Namespaces.Add (ns);
+
+			ns.Types.Add (klass.GenerateClass (this, libDecl));
+
+			//Provider.GenerateCodeFromCompileUnit(cu, Console.Out, CodeGenOptions);
+			using (TextWriter w = File.CreateText (Path.Combine (OutputDir, klass.Name + ".cs"))) {
+				// These are reported for the fields of the native layout structures
+				Provider.GenerateCodeFromCompileUnit (new CodeSnippetCompileUnit("#pragma warning disable 0414, 0169"), w, CodeGenOptions);
+				Provider.GenerateCodeFromCompileUnit(cu, w, CodeGenOptions);
+			}
+		}
+	}
+}
