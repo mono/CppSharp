@@ -1,0 +1,32 @@
+Directory structure
+-------------------
+
+src/
+  Mono.VisualC.Interop
+    The runtime library
+  generator
+    The old binding generator
+  generator2
+    The new binding generator
+  qt
+    Auto generated Qt bindings + test program
+
+tests2/
+  Regression tests
+
+examples/
+  Hello
+    Small, Hello, World! example
+
+Inlining
+--------
+
+Inline methods are mapped to a shared library name libFoo-inline.so where libFoo.so is the
+original shared library we are binding to. This library should be compiled using gcc's 
+-fkeep-inline-functions option:
+
+g++ `pkg-config --cflags QtCore QtGui` --shared -fPIC -o libQtGui-inline.so -fkeep-inline-functions qt-gui.cpp `pkg-config --libs QtCore QtGui`
+
+
+
+    
