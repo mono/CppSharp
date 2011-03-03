@@ -60,7 +60,9 @@ FILES = \
 	Node.cs	\
 	Class.cs \
 	Method.cs \
-	Field.cs
+	Field.cs \
+	Parameter.cs \
+	Property.cs
 
 DATA_FILES = 
 

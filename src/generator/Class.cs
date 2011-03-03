@@ -15,6 +15,7 @@ class Class
 		BaseClasses = new List<Class> ();
 		Methods = new List<Method> ();
 		Fields = new List<Field> ();
+		Properties = new List<Property> ();
 	}
 
 	public Node Node {
@@ -36,6 +37,10 @@ class Class
 	}
 
 	public List<Field> Fields {
+		get; set;
+	}
+
+	public List<Property> Properties {
 		get; set;
 	}
 
@@ -130,12 +135,18 @@ class Class
 		foreach (Method m in Methods) {
 			iface.Members.Add (m.GenerateIFaceMethod (g));
 
-			var cm = m.GenerateWrapperMethod (g);
-			if (m.IsConstructor && hasBase) {
-				var implTypeInfo = new CodeFieldReferenceExpression (new CodeFieldReferenceExpression { FieldName = "impl" }, "TypeInfo");
-				(cm as CodeConstructor).BaseConstructorArgs.Add (implTypeInfo);
+			if (m.GenWrapperMethod) {
+				var cm = m.GenerateWrapperMethod (g);
+				if (m.IsConstructor && hasBase) {
+					var implTypeInfo = new CodeFieldReferenceExpression (new CodeFieldReferenceExpression { FieldName = "impl" }, "TypeInfo");
+					(cm as CodeConstructor).BaseConstructorArgs.Add (implTypeInfo);
+				}
+				decl.Members.Add (cm);
 			}
-			decl.Members.Add (cm);
+		}
+
+		foreach (Property p in Properties) {
+			decl.Members.Add (p.GenerateProperty (g));
 		}
 
 		return decl;

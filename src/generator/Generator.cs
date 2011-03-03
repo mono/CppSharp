@@ -185,12 +185,15 @@ public class Generator
 			if (!klass.Node.HasValue ("members"))
 				continue;
 
-			int fieldCount = 0;
+			List<Node> members = new List<Node> ();
 			foreach (string id in klass.Node ["members"].Split (' ')) {
 				if (id == "")
 					continue;
-				Node n = Node.IdToNode [id];
+				members.Add (Node.IdToNode [id]);
+			}
 
+			int fieldCount = 0;
+			foreach (Node n in members) {
 				bool ctor = false;
 				bool dtor = false;
 
@@ -248,7 +251,7 @@ public class Generator
 				if (retType.ElementType == CppTypes.Unknown)
 					skip = true;
 				if (CppTypeToCodeDomType (retType) == null) {
-					Console.WriteLine ("\t\tS: " + retType);
+					//Console.WriteLine ("\t\tS: " + retType);
 					skip = true;
 				}
 
@@ -270,11 +273,11 @@ public class Generator
 					}
 
 					if (CppTypeToCodeDomType (argtype) == null) {
-						Console.WriteLine ("\t\tS: " + argtype);
+						//Console.WriteLine ("\t\tS: " + argtype);
 						skip = true;
 					}
 
-					method.Parameters.Add (new Tuple<string, CppType> (argname, argtype));
+					method.Parameters.Add (new Parameter (argname, argtype));
 					argTypes.Add (argtype);
 
 					c++;
@@ -291,12 +294,76 @@ public class Generator
 				klass.Methods.Add (method);
 			}
 
+			foreach (Method method in klass.Methods) {
+				if (AddAsQtProperty (klass, method))
+					method.GenWrapperMethod = false;
+			}
+
 			Field f2 = klass.Fields.FirstOrDefault (f => f.Type.ElementType == CppTypes.Unknown);
 			if (f2 != null) {
 				Console.WriteLine ("Skipping " + klass.Name + " because field " + f2.Name + " has unknown type.");
 				klass.Disable = true;
 			}
 		}
+	}
+
+	//
+	// Property support
+	// This is QT specific
+	//
+    bool AddAsQtProperty (Class klass, Method method) {
+		// if it's const, returns a value, has no parameters, and there is no other method with the same name
+		//  in this class assume it's a property getter (for now?)
+		if (method.IsConst && !method.ReturnType.Equals (CppTypes.Void) && !method.Parameters.Any () &&
+			klass.Methods.Where (o => o.Name == method.Name).FirstOrDefault () == method) {
+			Property property;
+
+			property = klass.Properties.Where (o => o.Name == method.FormattedName).FirstOrDefault ();
+			if (property != null) {
+				property.GetMethod = method;
+			} else {
+				property = new Property (method.FormattedName, method.ReturnType) { GetMethod = method };
+				klass.Properties.Add (property);
+			}
+
+			return true;
+		}
+
+		// if it's name starts with "set", does not return a value, and has one arg (besides this ptr)
+		// and there is no other method with the same name...
+		if (method.Name.ToLower ().StartsWith ("set") && method.ReturnType.Equals (CppTypes.Void) &&
+			method.Parameters.Count == 1 && klass.Methods.Where (o => o.Name == method.Name).Count () == 1) {
+			string getterName = method.Name.Substring (3).TrimStart ('_').ToLower ();
+
+			string pname = method.FormattedName.Substring (3);
+			Property property = null;
+
+			// ...AND there is a corresponding getter method that returns the right type, then assume it's a property setter
+			bool doIt = false;
+			property = klass.Properties.Where (o => o.Name == pname).FirstOrDefault ();
+			if (property != null) {
+				doIt = property.GetMethod != null && property.GetMethod.ReturnType.Equals (method.Parameters[0].Type);
+			} else {
+				Method getter = klass.Methods.Where (o => o.Name == getterName).FirstOrDefault ();
+				doIt = getter != null && getter.ReturnType.Equals (method.Parameters[0].Type);
+			}
+			if (doIt) {
+				if (property != null) {
+					property.SetMethod = method;
+				} else {
+					property = new Property (pname, method.Parameters [0].Type) { SetMethod = method };
+					klass.Properties.Add (property);
+				}
+
+				// set the method's arg name to "value" so that the prop setter works right
+				var valueParam = method.Parameters[0];
+				valueParam.Name = "value";
+
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	// Return a CppType for the type node N, return CppTypes.Unknown for unknown types

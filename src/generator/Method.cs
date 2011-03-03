@@ -13,7 +13,8 @@ class Method
 {
 	public Method (Node node) {
 		Node = node;
-	    Parameters = new List<Tuple<string, CppType>> ();
+	    Parameters = new List<Parameter> ();
+		GenWrapperMethod = true;
 	}
 
 	public Node Node {
@@ -56,12 +57,23 @@ class Method
 		get; set;
 	}
 
+	public bool GenWrapperMethod {
+		get; set;
+	}
+
 	public CppType ReturnType {
 		get; set;
 	}
 
-	public List<Tuple<string, CppType>> Parameters {
+	public List<Parameter> Parameters {
 		get; set;
+	}
+
+	// The C# method name
+	public string FormattedName {
+		get {
+			return "" + Char.ToUpper (Name [0]) + Name.Substring (1);
+		}
 	}
 
 	string GetCSharpMethodName (string name) {
@@ -80,10 +92,10 @@ class Method
 		method.ReturnType = rtype;
 
 		foreach (var p in Parameters) {
-			CppType ptype = p.Item2;
+			CppType ptype = p.Type;
 			bool byref;
 			var ctype = g.CppTypeToCodeDomType (ptype, out byref);
-			var param = new CodeParameterDeclarationExpression (ctype, p.Item1);
+			var param = new CodeParameterDeclarationExpression (ctype, p.Name);
 			if (byref)
 				param.Direction = FieldDirection.Ref;
 			if (!IsVirtual && !ptype.ToString ().Equals (string.Empty))
@@ -136,8 +148,8 @@ class Method
 
 		foreach (var p in Parameters) {
 			bool byref;
-			var ptype = g.CppTypeToCodeDomType (p.Item2, out byref);
-			var param = new CodeParameterDeclarationExpression (ptype, p.Item1);
+			var ptype = g.CppTypeToCodeDomType (p.Type, out byref);
+			var param = new CodeParameterDeclarationExpression (ptype, p.Name);
 			if (byref)
 				param.Direction = FieldDirection.Ref;
 			method.Parameters.Add (param);
@@ -154,8 +166,8 @@ class Method
 			args [0] = new CodeFieldReferenceExpression (null, "Native");
 		for (int i = 0; i < Parameters.Count; ++i) {
 			bool byref;
-			g.CppTypeToCodeDomType (Parameters [i].Item2, out byref);
-			CodeExpression arg = new CodeArgumentReferenceExpression (Parameters [i].Item1);
+			g.CppTypeToCodeDomType (Parameters [i].Type, out byref);
+			CodeExpression arg = new CodeArgumentReferenceExpression (Parameters [i].Name);
 			if (byref)
 				arg = new CodeDirectionExpression (FieldDirection.Ref, arg);
 			args [i + (IsStatic ? 0 : 1)] = arg;
