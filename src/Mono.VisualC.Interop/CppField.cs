@@ -38,31 +38,73 @@ namespace Mono.VisualC.Interop {
 			this.fieldOffset = fieldOffset;
 		}
 
-		public T this [CppInstancePtr ip] {
-			get {
-				Type retType = typeof (T);
+                public T this [CppInstancePtr ip] {
+                        get {
+
+				Type retType = typeof (T).IsEnum? Enum.GetUnderlyingType (typeof (T)) : typeof (T);
 				object retVal;
-				if (retType.Equals (typeof (Byte)))
+
+				     if (retType.Equals (typeof (Byte)))
 					retVal = Marshal.ReadByte (ip.Native, fieldOffset);
 				else if (retType.Equals (typeof (Int16)))
 					retVal = Marshal.ReadInt16 (ip.Native, fieldOffset);
 				else if (retType.Equals (typeof (Int32)))
 					retVal = Marshal.ReadInt32 (ip.Native, fieldOffset);
-				else throw new NotImplementedException ("Cannot read C++ fields of type " + retType.Name);
+
+				else if (typeof (ICppObject).IsAssignableFrom (retType)) {
+
+					var ptr = Marshal.ReadIntPtr (ip.Native, fieldOffset);
+					if (ptr == IntPtr.Zero)
+						return default (T);
+
+					var ctor = retType.GetConstructor (new Type [] { typeof (IntPtr) });
+					if (ctor != null) {
+
+						retVal = ctor.Invoke (new object [] { ptr });
+
+					} else {
+						ctor = retType.GetConstructor (new Type [] { typeof (CppInstancePtr) });
+						if (ctor == null)
+							throw new NotSupportedException ("Type " + retType.Name + " does not have a constructor that takes either IntPtr or CppInstancePtr.");
+
+						retVal = ctor.Invoke (new object [] { new CppInstancePtr (ptr) });
+					}
+
+				} else {
+					throw new NotSupportedException ("Cannot read C++ fields of type " + retType.Name);
+				}
 
 				return (T)retVal;
-			}
-			set {
-				Type setType = typeof (T);
+                        }
+                        set {
+				Type setType = typeof (T).IsEnum? Enum.GetUnderlyingType (typeof (T)) : typeof (T);
 				object setVal = value;
-				if (setType.Equals (typeof (Byte)))
+
+				     if (setType.Equals (typeof (Byte)))
 					Marshal.WriteByte (ip.Native, fieldOffset, (byte)setVal);
+
 				else if (setType.Equals (typeof (Int16)))
 					Marshal.WriteInt16 (ip.Native, fieldOffset, (Int16)setVal);
+
 				else if (setType.Equals (typeof (Int32)))
 					Marshal.WriteInt32 (ip.Native, fieldOffset, (Int32)setVal);
-				else throw new NotImplementedException ("Cannot write C++ fields of type " + setType.Name);
-			}
-		}
-	}
+
+				else if (typeof (ICppObject).IsAssignableFrom (setType)) {
+
+					if (value == null) {
+						Marshal.WriteIntPtr (ip.Native, fieldOffset, IntPtr.Zero);
+
+					} else {
+
+						var cppobj = (ICppObject)value;
+						Marshal.WriteIntPtr (ip.Native, fieldOffset, (IntPtr)cppobj.Native);
+					}
+
+				} else {
+					throw new NotSupportedException ("Cannot write C++ fields of type " + setType.Name);
+				}
+
+                        }
+                }
+        }
 }
