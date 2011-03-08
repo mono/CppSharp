@@ -11,16 +11,16 @@ Hello.xml: Hello.h
 
 output gen:
 	$(RM) -r output
-	mono $(top_srcdir)/src/generator2/bin/Debug/generator.exe -ns=Hello -lib=hello Hello.xml
+	mono $(top_srcdir)/src/generator/bin/Debug/generator.exe -ns=Hello -lib=hello Hello.xml
 
 INTEROP_DLL = \
 	$(top_srcdir)/src/Mono.VisualC.Interop/bin/Debug/Mono.VisualC.Interop.dll
 
 HelloBinding.dll: output
-	mcs -out:$@ -target:library -r:$(INTEROP_DLL) output/*.cs
+	$(GMCS) -out:$@ -target:library -r:$(INTEROP_DLL) output/*.cs
 
 Hello.exe: HelloBinding.dll Hello.cs
-	mcs -out:$@ -target:exe -r:$(INTEROP_DLL) -r:HelloBinding.dll Hello.cs
+	$(GMCS) -out:$@ -target:exe -r:$(INTEROP_DLL) -r:HelloBinding.dll Hello.cs
 
 clean:
 	$(RM) -r output libhello.so Hello.xml Hello.exe HelloBinding.dll

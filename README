@@ -5,9 +5,7 @@ src/
   Mono.VisualC.Interop
     The runtime library
   generator
-    The old binding generator
-  generator2
-    The new binding generator
+    The binding generator
   qt
     Auto generated Qt bindings + test program
 

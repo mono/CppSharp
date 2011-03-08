@@ -1,7 +1,7 @@
 dnl Warning: This is an automatically generated file, do not edit!
 dnl Process this file with autoconf to produce a configure script.
 AC_PREREQ([2.54])
-AC_INIT([CPPInterop], [0.1])
+AC_INIT([CPPInterop], [0.99.1])
 AM_INIT_AUTOMAKE([foreign])
 AM_MAINTAINER_MODE
 
@@ -63,8 +63,6 @@ src/generator/generator
 src/generator/Makefile
 src/QtTest/qttest
 src/QtTest/Makefile
-src/generator2/generator
-src/generator2/Makefile
 src/qt/Makefile
 src/Makefile
 tests2/Makefile

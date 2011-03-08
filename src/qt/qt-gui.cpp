@@ -10,6 +10,9 @@
 #define QT_NO_STYLE_WINDOWSMOBILE
 #define QT_NO_QWSEMBEDWIDGET
 
+// this one was annoying to track down!
+#define QT_NO_TRANSLATION
+
 #include <QtCore>
 #include <QtGui>
 

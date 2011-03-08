@@ -10,16 +10,16 @@ qt-gui.xml: qt-gui.h
 
 generated: qt-gui.xml
 	$(RM) -r generated
-	mono --debug $(top_srcdir)/src/generator2/bin/Debug/generator.exe -o=generated -ns=Qt.Gui -lib=QtGui --filters=qt-gui-filters.txt qt-gui.xml
+	mono --debug $(top_srcdir)/src/generator/bin/Debug/generator.exe -o=generated -ns=Qt.Gui -lib=QtGui --filters=qt-gui-filters.txt qt-gui.xml
 
 libQtGui-inline.so: qt-gui.cpp
 	g++ `pkg-config --cflags QtCore QtGui` --shared -fPIC -o $@ -fkeep-inline-functions qt-gui.cpp `pkg-config --libs QtCore QtGui`
 
 Qt.Gui-binding.dll: generated
-	mcs -out:$@ -target:library -unsafe -r:$(INTEROP_DLL) generated/*.cs
+	$(GMCS) -out:$@ -target:library -unsafe -r:$(INTEROP_DLL) generated/*.cs
 
 hello.exe: Qt.Gui-binding.dll hello.cs libQtGui-inline.so
-	mcs -out:$@ -target:exe -r:$(INTEROP_DLL) -r:Qt.Gui-binding.dll hello.cs
+	$(GMCS) -out:$@ -target:exe -r:$(INTEROP_DLL) -r:Qt.Gui-binding.dll hello.cs
 
 clean:
 	$(RM) -rf generated hello.exe qt-gui.xml Qt.Gui-binding.dll libQtGui-inline.so
