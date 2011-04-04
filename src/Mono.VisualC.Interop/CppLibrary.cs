@@ -38,12 +38,29 @@ using System.Reflection.Emit;
 using Mono.VisualC.Interop.ABI;
 
 namespace Mono.VisualC.Interop {
+
+	public enum InlineMethods {
+
+		// Normally, C++ inline methods are not exported from the library, so C++ interop cannot call them.
+		//  This is the default option. It throws a NotImplementedException if you try to call the native version of one of these methods.
+		//  Use this if you reimplement the inline methods in managed code, or if they are not to be available in the bindings.
+		NotPresent,
+
+		// Expect the inline methods to be present in the specified library
+		//  For example, if the library was compiled with GCC's -fkeep-inline-functions option
+		Present,
+
+		// Expect the inline methods to be exported in a separate library named %name%-inline
+		SurrogateLib,
+	}
+
 	public sealed class CppLibrary {
 		internal static AssemblyBuilder interopAssembly;
 		internal static ModuleBuilder interopModule;
 
 		public CppAbi Abi { get; private set; }
 		public string Name { get; private set; }
+		public InlineMethods InlineMethodPolicy { get; private set; }
 
 		static CppLibrary ()
 		{
@@ -55,17 +72,17 @@ namespace Mono.VisualC.Interop {
 		}
 
 		public CppLibrary (string name)
+			: this (name, InlineMethods.NotPresent)
 		{
-			if (name == null)
-				throw new ArgumentNullException ("Name cannot be NULL.");
-
-			this.Name = name;
-
-			// FIXME: This is where we'd auto detect the ABI
-			this.Abi = new ItaniumAbi ();
 		}
 
-		public CppLibrary (string name, CppAbi abi)
+		public CppLibrary (string name, InlineMethods inlinePolicy)
+			: this (name, new ItaniumAbi (), inlinePolicy)
+		{
+			//FIXME: Ideally we would auto-detect ABI here.
+		}
+
+		public CppLibrary (string name, CppAbi abi, InlineMethods inlinePolicy)
 		{
 			if (name == null)
 				throw new ArgumentNullException ("Name cannot be NULL.");
@@ -74,6 +91,7 @@ namespace Mono.VisualC.Interop {
 
 			this.Name = name;
 			this.Abi = abi;
+			this.InlineMethodPolicy = inlinePolicy;
 		}
 
 		// Mainly for debugging at this point
@@ -87,7 +105,7 @@ namespace Mono.VisualC.Interop {
 		public Iface GetClass<Iface> (string className)
 			where Iface : ICppClass
 		{
-			return Abi.ImplementClass<Iface> (null, Name, className);
+			return Abi.ImplementClass<Iface> (null, this, className);
 		}
 
 		// For instantiating or working with a class that may have fields
@@ -96,7 +114,7 @@ namespace Mono.VisualC.Interop {
 			where Iface : ICppClassInstantiatable
 			where NativeLayout : struct
 		{
-			return Abi.ImplementClass<Iface, NativeLayout> (null, Name, className);
+			return Abi.ImplementClass<Iface, NativeLayout> (null, this, className);
 		}
 
 		/* The most powerful override. Allows the following from managed code:
@@ -109,7 +127,7 @@ namespace Mono.VisualC.Interop {
 			where NativeLayout : struct
 			where Managed : ICppObject
 		{
-			return Abi.ImplementClass<Iface, NativeLayout> (typeof (Managed), Name, className);
+			return Abi.ImplementClass<Iface, NativeLayout> (typeof (Managed), this, className);
 		}
 
 	}

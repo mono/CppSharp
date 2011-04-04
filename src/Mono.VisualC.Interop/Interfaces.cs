@@ -30,6 +30,8 @@ using System;
 using Mono.VisualC.Interop.ABI;
 
 namespace Mono.VisualC.Interop {
+
+	// Part of the contract for ICppObject is a public constructor that takes CppInstancePtr (native constructor)
 	public interface ICppObject : IDisposable {
 		CppInstancePtr Native { get; }
 	}
@@ -47,7 +49,9 @@ namespace Mono.VisualC.Interop {
 	// It is recommended that managed wrappers implement ICppObject, but
 	//  I'm not making it required so that any arbitrary object can be exposed to
 	//  C++ via CppInstancePtr.ForManagedObject.
-	public interface ICppClassOverridable<T> : ICppClass /* where T : ICppObject */ {
-		CppInstancePtr Alloc (T managed);
+	public interface ICppClassOverridable<TManaged> : ICppClassInstantiatable
+		/* where TManaged : ICppObject */
+	{
+		CppInstancePtr Alloc (TManaged managed);
 	}
 }

@@ -49,7 +49,7 @@ namespace Mono.VisualC.Interop {
 	[AttributeUsage (AttributeTargets.Method)]
 	public class CopyConstructorAttribute : Attribute {}
 
-	[AttributeUsage (AttributeTargets.Parameter)]
+	[AttributeUsage (AttributeTargets.Parameter | AttributeTargets.ReturnValue)]
 	public class ByValAttribute : Attribute {}
 
 	[AttributeUsage (AttributeTargets.Parameter | AttributeTargets.ReturnValue)]
@@ -118,6 +118,18 @@ using Mono.VisualC.Interop;
 		public virtual bool IsInline (MethodInfo method)
 		{
 			return method.IsDefined (typeof (InlineAttribute), false);
+		}
+		public virtual bool IsArtificial (MethodInfo method)
+		{
+			return method.IsDefined (typeof (ArtificialAttribute), false);
+		}
+		public virtual bool IsCopyConstructor (MethodInfo method)
+		{
+			return method.IsDefined (typeof (CopyConstructorAttribute), false);
+		}
+		public virtual bool IsByVal (ICustomAttributeProvider icap)
+		{
+			return icap.IsDefined (typeof (ByValAttribute), false);
 		}
 
 		public virtual CppType GetMangleType (ICustomAttributeProvider icap, Type managedType)

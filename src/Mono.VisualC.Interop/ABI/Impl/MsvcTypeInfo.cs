@@ -29,9 +29,11 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Reflection;
 
+using Mono.VisualC.Interop.Util;
+
 namespace Mono.VisualC.Interop.ABI {
 	public class MsvcTypeInfo : CppTypeInfo {
-		public MsvcTypeInfo (MsvcAbi abi, IEnumerable<MethodInfo> virtualMethods, Type nativeLayout)
+		public MsvcTypeInfo (MsvcAbi abi, IEnumerable<PInvokeSignature> virtualMethods, Type nativeLayout)
 			: base (abi, virtualMethods, nativeLayout)
 		{
 		}

@@ -55,7 +55,7 @@ namespace Mono.VisualC.Interop {
 			if (!implCache.TryGetValue (typeof (Iface), out cachedImpl))
 			{
 				VirtualOnlyAbi virtualABI = new VirtualOnlyAbi (VTable.BindToSignature);
-				impl = virtualABI.ImplementClass<Iface> (typeof (TWrapper), string.Empty, string.Empty);
+				impl = virtualABI.ImplementClass<Iface> (typeof (TWrapper), new CppLibrary (string.Empty), string.Empty);
 				implCache.Add (typeof (Iface), impl);
 			}
 			else
@@ -86,7 +86,7 @@ namespace Mono.VisualC.Interop {
 		}
 
 		// Alloc a new C++ instance when there is no managed wrapper.
-		internal CppInstancePtr (int nativeSize)
+		public CppInstancePtr (int nativeSize)
 		{
 			ptr = Marshal.AllocHGlobal (nativeSize);
 			manage_memory = true;
@@ -125,12 +125,6 @@ namespace Mono.VisualC.Interop {
 
 		CppInstancePtr ICppObject.Native {
 			get { return this; }
-		}
-
-		public int NativeSize {
-			get {
-				throw new NotImplementedException ();
-			}
 		}
 
 		public bool IsManagedAlloc {

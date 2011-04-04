@@ -37,7 +37,7 @@ namespace Mono.VisualC.Interop.Util {
 
 	public static class DelegateTypeCache {
 
-		private static Dictionary<DelegateSignature, Type> type_cache;
+		private static Dictionary<BasicSignature, Type> type_cache;
 
 		public static Type GetDelegateType (MethodInfo signature, CallingConvention? callingConvention)
 		{
@@ -45,13 +45,13 @@ namespace Mono.VisualC.Interop.Util {
 		}
 		public static Type GetDelegateType (IEnumerable<Type> parameterTypes, Type returnType, CallingConvention? callingConvention)
 		{
-			return GetDelegateType (new DelegateSignature () { ParameterTypes = parameterTypes, ReturnType = returnType, CallingConvention = callingConvention });
+			return GetDelegateType (new BasicSignature { ParameterTypes = parameterTypes.ToList (), ReturnType = returnType, CallingConvention = callingConvention });
 		}
-		public static Type GetDelegateType (DelegateSignature signature)
+		public static Type GetDelegateType (BasicSignature signature)
 		{
 			Type delegateType;
 			if (type_cache == null)
-				type_cache = new Dictionary<DelegateSignature, Type> ();
+				type_cache = new Dictionary<BasicSignature, Type> ();
 
 			if (!type_cache.TryGetValue (signature, out delegateType)) {
 				delegateType = CreateDelegateType (signature);
@@ -61,7 +61,7 @@ namespace Mono.VisualC.Interop.Util {
 			return delegateType;
 		}
 
-		private static Type CreateDelegateType (DelegateSignature signature)
+		private static Type CreateDelegateType (BasicSignature signature)
 		{
 			string delTypeName = signature.UniqueName;
 

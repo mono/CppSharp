@@ -44,9 +44,9 @@ namespace Mono.VisualC.Interop.ABI {
 		{
 		}
 
-		protected override CppTypeInfo MakeTypeInfo (IEnumerable<MethodInfo> methods, IEnumerable<MethodInfo> virtualMethods)
+		protected override CppTypeInfo MakeTypeInfo (IEnumerable<PInvokeSignature> methods)
 		{
-			return new MsvcTypeInfo (this, virtualMethods, layout_type);
+			return new MsvcTypeInfo (this, methods.Where (m => IsVirtual (m.OrigMethod)), layout_type);
 		}
 
 		public override CallingConvention? GetCallingConvention (MethodInfo methodInfo)
@@ -209,7 +209,6 @@ namespace Mono.VisualC.Interop.ABI {
 				code.Append(mangleType.ElementTypeName);
 				code.Append ("@@");
 				break;
-
 			}
 
 			return code.ToString ();

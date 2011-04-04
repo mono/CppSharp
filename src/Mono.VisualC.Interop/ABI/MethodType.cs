@@ -27,6 +27,7 @@ using System;
 namespace Mono.VisualC.Interop {
 	public enum MethodType {
 		NoOp,
+		NotImplemented,
 		Native,
 		NativeCtor,
 		NativeDtor,

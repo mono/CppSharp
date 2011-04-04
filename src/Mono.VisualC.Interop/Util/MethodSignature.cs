@@ -35,9 +35,9 @@ using System.Collections.Generic;
 
 namespace Mono.VisualC.Interop.Util {
 
-	public struct DelegateSignature {
+	public class BasicSignature {
 		public CallingConvention? CallingConvention { get; set; }
-		public IEnumerable<Type> ParameterTypes { get; set; }
+		public List<Type> ParameterTypes { get; set; }
 		public Type ReturnType { get; set; }
 
 		private string uniqueName;
@@ -64,18 +64,23 @@ namespace Mono.VisualC.Interop.Util {
 			}
 		}
 
+		public bool IsCompatibleWith (BasicSignature other)
+		{
+			return CallingConvention == other.CallingConvention &&
+			       ((ParameterTypes == null && other.ParameterTypes == null) ||
+			         ParameterTypes.SequenceEqual (other.ParameterTypes)) &&
+			       ReturnType.Equals (other.ReturnType);
+		}
+
 		public override bool Equals (object obj)
 		{
 			if (obj == null)
 				return false;
-			if (obj.GetType () != typeof(DelegateSignature))
+			if (obj.GetType () != typeof(BasicSignature))
 				return false;
-			DelegateSignature other = (DelegateSignature)obj;
+			BasicSignature other = (BasicSignature)obj;
 
-			return CallingConvention == other.CallingConvention &&
-				((ParameterTypes == null && other.ParameterTypes == null) ||
-				 ParameterTypes.SequenceEqual (other.ParameterTypes)) &&
-				ReturnType.Equals (other.ReturnType);
+			return IsCompatibleWith (other);
 		}
 
 		public override int GetHashCode ()
@@ -88,10 +93,9 @@ namespace Mono.VisualC.Interop.Util {
 		}
 	}
 
-	public struct MethodSignature {
+	public class MethodSignature : BasicSignature {
 		public string Name { get; set; }
 		public MethodType Type { get; set; }
-		public DelegateSignature Signature { get; set; }
 
 		public override bool Equals (object obj)
 		{
@@ -100,21 +104,27 @@ namespace Mono.VisualC.Interop.Util {
 			if (obj.GetType () != typeof(MethodSignature))
 				return false;
 			MethodSignature other = (MethodSignature)obj;
-			return Signature.Equals (other.Signature) &&
+
+			return IsCompatibleWith (other) &&
 			       Type == other.Type &&
-			      (Type != MethodType.Native || Name.Equals (other.Name));
+			      (Name.Equals (other.Name) || Type != MethodType.Native);
 		}
 
 
 		public override int GetHashCode ()
 		{
 			unchecked {
-				return Signature.GetHashCode () ^
+				return base.GetHashCode () ^
 				       Type.GetHashCode () ^
 				      (Type == MethodType.Native? Name.GetHashCode () : 0);
 			}
 		}
 
+	}
+
+	public class PInvokeSignature : MethodSignature {
+		// The original c# method this signature was generated from
+		public MethodInfo OrigMethod;
 	}
 }
 

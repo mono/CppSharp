@@ -30,6 +30,7 @@ using System;
 using System.Linq;
 using System.Text;
 using System.Reflection;
+using System.Reflection.Emit;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
@@ -42,21 +43,36 @@ namespace Mono.VisualC.Interop.ABI {
 		{
 		}
 
-		protected override CppTypeInfo MakeTypeInfo (IEnumerable<MethodInfo> methods, IEnumerable<MethodInfo> virtualMethods)
+		protected override CppTypeInfo MakeTypeInfo (IEnumerable<PInvokeSignature> methods)
 		{
-			bool hasExplicitCopyCtor = false;
-			bool hasExplicitDtor = false;
-
-			foreach (var m in methods) {
-				if (m.IsDefined (typeof (CopyConstructorAttribute), false) && !m.IsDefined (typeof (ArtificialAttribute), false))
-					hasExplicitCopyCtor = true;
-				if (m.IsDefined (typeof (DestructorAttribute), false) && !m.IsDefined (typeof (ArtificialAttribute), false))
-					hasExplicitDtor = true;
-			}
-
-			return new ItaniumTypeInfo (this, virtualMethods, layout_type) { HasExplicitCopyCtor = hasExplicitCopyCtor, HasExplicitDtor = hasExplicitDtor };
+			return new CppTypeInfo (this, GetVirtualMethodSlots (methods), layout_type);
 		}
 
+		private IEnumerable<PInvokeSignature> GetVirtualMethodSlots (IEnumerable<PInvokeSignature> methods)
+		{
+			foreach (var method in methods) {
+				if (!IsVirtual (method.OrigMethod))
+					continue;
+
+				yield return method;
+
+				// Itanium has extra slot for virt dtor
+				if (method.Type == MethodType.NativeDtor)
+					yield return null;
+			}
+		}
+
+		protected override MethodBuilder DefineMethod (PInvokeSignature sig, CppTypeInfo typeInfo, ref int vtableIndex)
+		{
+			var builder = base.DefineMethod (sig, typeInfo, ref vtableIndex);
+
+			// increment vtableIndex an extra time for that extra vdtor slot (already incremented once in base)
+			if (IsVirtual (sig.OrigMethod) && sig.Type == MethodType.NativeDtor)
+				vtableIndex++;
+
+			return builder;
+		}
+		
 		public override CallingConvention? GetCallingConvention (MethodInfo methodInfo)
 		{
 			return CallingConvention.Cdecl;
@@ -71,6 +87,10 @@ namespace Mono.VisualC.Interop.ABI {
 			ParameterInfo [] parameters = methodInfo.GetParameters ();
 
 			StringBuilder nm = new StringBuilder ("_ZN", 30);
+
+			if (IsConst (methodInfo))
+				nm.Append ('K');
+
 			nm.Append (class_name.Length).Append (class_name);
 			compressMap [class_name] = compressMap.Count;
 
@@ -158,63 +178,6 @@ namespace Mono.VisualC.Interop.ABI {
 			return code.ToString ();
 		}
 
-		public override PInvokeSignature GetPInvokeSignature (CppTypeInfo typeInfo, MethodInfo method) {
-			Type returnType = method.ReturnType;
-
-			bool retClass = false;
-			bool retByAddr = false;
-
-			if (typeof (ICppObject).IsAssignableFrom (returnType)) {
-				retClass = true;
-				if ((typeInfo as ItaniumTypeInfo).HasExplicitCopyCtor ||
-					(typeInfo as ItaniumTypeInfo).HasExplicitDtor) {
-					// Section 3.1.4:
-					// Classes with non-default copy ctors/destructors are returned using a
-					// hidden argument
-					retByAddr = true;
-				}
-			}
-
-			ParameterInfo[] parameters = method.GetParameters ();
-
-			var ptypes = new List<Type> ();
-			var pmarshal = new List<ParameterMarshal> ();
-			// FIXME: Handle ByVal attributes
-			foreach (var pi in parameters) {
-				Type t = pi.ParameterType;
-				Type ptype = t;
-				ParameterMarshal m = ParameterMarshal.Default;
-
-				if (t == typeof (bool)) {
-					ptype = typeof (byte);
-				} else if (typeof (ICppObject).IsAssignableFrom (t) && t != typeof (CppInstancePtr)) {
-					if (pi.IsDefined (typeof (ByValAttribute), false)) {
-						m = ParameterMarshal.ClassByVal;
-						// Can't use an interface/cattr since the native layout type is private
-						// Pass it as a type argument to I<Foo> ?
-						var f = t.GetField ("native_layout", BindingFlags.Static|BindingFlags.NonPublic);
-						if (f == null || f.FieldType != typeof (Type))
-							throw new NotImplementedException ("Type '" + t + "' needs to have a 'native_layout' field before it can be passed by value.");
-						ptype = (Type)f.GetValue (null);
-					} else {
-						ptype = typeof (IntPtr);
-						m = ParameterMarshal.ClassByRef;
-					}
-				} else if (typeof (ICppObject).IsAssignableFrom (t)) {
-					// CppInstancePtr implements ICppObject
-					ptype = typeof (IntPtr);
-				}
-				ptypes.Add (ptype);
-				pmarshal.Add (m);
-			}
-
-			if (retByAddr) {
-				ptypes.Insert (0, typeof (IntPtr));
-				pmarshal.Insert (0, ParameterMarshal.Default);
-			}
-
-			return new PInvokeSignature { OrigMethod = method, ParameterTypes = ptypes, ParameterMarshallers = pmarshal, ReturnType = returnType, ReturnClass = retClass, ReturnByAddr = retByAddr };
-		}
 
 
 	}

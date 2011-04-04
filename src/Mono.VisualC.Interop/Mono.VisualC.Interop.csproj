@@ -74,7 +74,6 @@
     <Compile Include="CppObjectMarshaler.cs" />
     <Compile Include="CppType.cs" />
     <Compile Include="CppTypeInfo.cs" />
-    <Compile Include="ABI\Impl\ItaniumTypeInfo.cs" />
     <Compile Include="Util\IEnumerableTransform.cs" />
     <Compile Include="Util\LazyGeneratedList.cs" />
     <Compile Include="Util\DelegateTypeCache.cs" />
