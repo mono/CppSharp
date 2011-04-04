@@ -38,8 +38,8 @@ namespace Mono.VisualC.Interop {
 			this.fieldOffset = fieldOffset;
 		}
 
-                public T this [CppInstancePtr ip] {
-                        get {
+		public T this [CppInstancePtr ip] {
+			get {
 
 				Type retType = typeof (T).IsEnum? Enum.GetUnderlyingType (typeof (T)) : typeof (T);
 				object retVal;
@@ -75,8 +75,8 @@ namespace Mono.VisualC.Interop {
 				}
 
 				return (T)retVal;
-                        }
-                        set {
+			}
+			set {
 				Type setType = typeof (T).IsEnum? Enum.GetUnderlyingType (typeof (T)) : typeof (T);
 				object setVal = value;
 
@@ -104,7 +104,7 @@ namespace Mono.VisualC.Interop {
 					throw new NotSupportedException ("Cannot write C++ fields of type " + setType.Name);
 				}
 
-                        }
-                }
-        }
+			}
+		}
+	}
 }
