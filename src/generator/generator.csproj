@@ -30,7 +30,6 @@
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -52,11 +51,14 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Main.cs" />
     <Compile Include="Options.cs" />
-    <Compile Include="MethodSignature.cs" />
-    <Compile Include="Postfixes.cs" />
-    <Compile Include="Entry.cs" />
+    <Compile Include="Class.cs" />
+    <Compile Include="Field.cs" />
+    <Compile Include="Generator.cs" />
+    <Compile Include="Method.cs" />
+    <Compile Include="Node.cs" />
+    <Compile Include="Parameter.cs" />
+    <Compile Include="Property.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System">
