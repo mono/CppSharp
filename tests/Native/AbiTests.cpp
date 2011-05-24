@@ -1,5 +1,5 @@
 
-#include "test.h"
+#include "AbiTests.h"
 
 ClassWithCopyCtor::ClassWithCopyCtor(const ClassWithCopyCtor& f) {
 	x = f.x;

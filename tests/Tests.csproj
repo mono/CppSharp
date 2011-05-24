@@ -30,7 +30,6 @@
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -56,47 +55,46 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="nunit.core, Version=2.4.8.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />
-    <Reference Include="nunit.framework, Version=2.4.8.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="CppInstancePtrTests.cs" />
-    <Compile Include="Support\CSimpleClass.cs" />
-    <Compile Include="CppLibraryTests.cs" />
-    <Compile Include="ItaniumAbiTests.cs" />
-    <Compile Include="MsvcAbiTests.cs" />
     <Compile Include="Support\CppMockObject.cs" />
     <Compile Include="Support\CppNUnitAsserts.cs" />
-    <Compile Include="SharedAbiTests.cs" />
-    <Compile Include="Support\VirtualMethodTestClass.cs" />
+    <Compile Include="CppInstancePtrTests.cs" />
+    <Compile Include="AbiTests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\CPPTestLib\CPPTestLib.cproj">
-      <Project>{B01E6282-144E-481A-8E1F-95F708DFBC2D}</Project>
-      <Name>CPPTestLib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Mono.VisualC.Interop\Mono.VisualC.Interop.csproj">
-      <Project>{4A864586-93C5-4DC1-8A80-F094A88506D7}</Project>
-      <Name>Mono.VisualC.Interop</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
       <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>true</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
       <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Native\NUnit.cpp" />
+    <None Include="Native\NUnit.h" />
+    <None Include="Native\AbiTests.cpp" />
+    <None Include="Native\AbiTests.h" />
+  </ItemGroup>
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="true" RelativeMakefileName="Makefile.am" IsAutotoolsProject="true" RelativeConfigureInPath="..">
+          <BuildFilesVar Sync="true" Name="MANAGED" />
+          <DeployFilesVar />
+          <ResourcesVar />
+          <OthersVar />
+          <GacRefVar Name="REFERENCES" />
+          <AsmRefVar Name="REFERENCES" />
+          <ProjectRefVar Name="REFERENCES" />
+        </MonoDevelop.Autotools.MakefileInfo>
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
+  <ItemGroup>
+    <Reference Include="nunit.framework, Version=2.4.8.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />
+    <Reference Include="System" />
   </ItemGroup>
 </Project>

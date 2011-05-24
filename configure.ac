@@ -1,4 +1,3 @@
-dnl Warning: This is an automatically generated file, do not edit!
 dnl Process this file with autoconf to produce a configure script.
 AC_PREREQ([2.54])
 AC_INIT([CPPInterop], [0.99.1])
@@ -16,6 +15,11 @@ SHAMROCK_EXPAND_BINDIR
 SHAMROCK_EXPAND_DATADIR
 
 AC_PROG_INSTALL
+
+AC_PATH_PROG(MONO, mono, no)
+if test "x$MONO" = "xno"; then
+	AC_MSG_ERROR([mono Not found])
+fi
 
 AC_PATH_PROG(GMCS, mcs, no)
 if test "x$GMCS" = "xno"; then
@@ -46,6 +50,8 @@ fi
 
 
 dnl package checks, common for all configs
+
+PKG_CHECK_MODULES([MONO_NUNIT], [mono-nunit])
 
 dnl package checks, per config
 

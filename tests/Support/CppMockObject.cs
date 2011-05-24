@@ -22,7 +22,7 @@ namespace Tests.Support {
                 {
                 }
 
-                public IntPtr Native {
+                public CppInstancePtr Native {
                         get {
                                 throw new System.NotImplementedException ();
                         }

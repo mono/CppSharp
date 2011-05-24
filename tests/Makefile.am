@@ -7,17 +7,20 @@ INTEROP_DLL = \
 TEST_DLL = $(BUILD_DIR)/Test.dll
 
 HDR = \
-	Native/test.h
+	Native/AbiTests.h
 
 NATIVE = \
 	Native/NUnit.cpp \
-	Native/test.cpp
+	Native/AbiTests.cpp
 
 MANAGED =  \
+	AbiTests.cs \
+	CppInstancePtrTests.cs \
 	Support/CppMockObject.cs \
-	Support/CppNUnitAsserts.cs \
-	test.cs
+	Support/CppNUnitAsserts.cs
 	
+REFERENCES =  \
+	-pkg:mono-nunit
 
 all: $(TEST_DLL)
 
@@ -32,10 +35,10 @@ $(BUILD_DIR)/libTest-inline.so: $(HEADERS) $(NATIVE)
 
 generated: test.xml
 	$(RM) -r generated
-	mono --debug $(BUILD_DIR)/generator.exe -o=$@ -ns=CppTests -lib=Test test.xml
+	mono --debug $(BUILD_DIR)/generator.exe -o=$@ -ns=Tests -lib=Test test.xml
 
 $(TEST_DLL): generated $(MANAGED) $(BUILD_DIR)/libTest.so $(BUILD_DIR)/libTest-inline.so
-	mcs -out:$@ -target:library -unsafe -r:$(INTEROP_DLL) generated/*.cs $(MANAGED)
+	mcs -out:$@ -target:library -unsafe $(REFERENCES) -r:$(INTEROP_DLL) generated/*.cs $(MANAGED)
 
 clean:
 	$(RM) -rf $(TEST_DLL) generated $(BUILD_DIR)/libTest.so $(BUILD_DIR)/libTest-inline.so test.xml

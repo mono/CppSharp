@@ -38,39 +38,15 @@ namespace Tests {
                 }
 
                 [Test]
-                [ExpectedException (typeof(ArgumentNullException))]
-                public void TestForNonStaticWrapperWithNull ()
-                {
-                        CppInstancePtr cppip = CppInstancePtr.ForManagedObject<CSimpleClass.ICSimpleClass,CSimpleClass> (null);
-                        cppip.Dispose ();
-                }
-
-                [Test]
                 [ExpectedException (typeof (ObjectDisposedException))]
                 public void TestDisposed ()
                 {
                         CppInstancePtr cppip = CppInstancePtr.ForManagedObject<EmptyTestInterface,CppMockObject> (CppMockObject.Instance);
                         cppip.Dispose ();
                         // should throw
-                        Console.WriteLine (cppip.Native);
+                        Assert.Fail ();
                 }
 
-                [Test]
-                public void TestFromNativePtr ()
-                {
-                        IntPtr native = CreateCSimpleSubClass (0);
-                        CppInstancePtr cppip = new CppInstancePtr (native);
-                        Assert.AreEqual (native, cppip.Native);
-                        Assert.IsFalse (cppip.IsManagedAlloc, "#A1");
-                        cppip.Dispose ();
-                        DestroyCSimpleSubClass (native);
-                }
-
-                [DllImport("CPPTestLib")]
-                private static extern IntPtr CreateCSimpleSubClass (int x);
-
-                [DllImport("CPPTestLib")]
-                private static extern void DestroyCSimpleSubClass (IntPtr cppip);
         }
 }
 

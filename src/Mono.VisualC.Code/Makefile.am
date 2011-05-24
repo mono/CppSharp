@@ -31,8 +31,6 @@ MONO_VISUALC_CODE_DLL_MDB=
 endif
 
 COMPILE_TARGET = library
-PROJECT_REFERENCES =  \
-	$(BUILD_DIR)/Mono.VisualC.Interop.dll
 
 AL=al2
 SATELLITE_ASSEMBLY_NAME=$(notdir $(basename $(ASSEMBLY))).resources.dll
@@ -97,6 +95,6 @@ $(build_xamlg_list): %.xaml.g.cs: %.xaml
 
 $(ASSEMBLY_MDB): $(ASSEMBLY)
 
-$(ASSEMBLY): $(build_sources) $(build_resources) $(build_datafiles) $(DLL_REFERENCES) $(PROJECT_REFERENCES) $(build_xamlg_list) $(build_satellite_assembly_list)
+$(ASSEMBLY): $(build_sources) $(build_resources) $(build_datafiles) $(DLL_REFERENCES) $(build_xamlg_list) $(build_satellite_assembly_list)
 	mkdir -p $(shell dirname $(ASSEMBLY))
 	$(ASSEMBLY_COMPILER_COMMAND) $(ASSEMBLY_COMPILER_FLAGS) -out:$(ASSEMBLY) -target:$(COMPILE_TARGET) $(build_sources_embed) $(build_resources_embed) $(build_references_ref)
