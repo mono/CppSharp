@@ -1,50 +1,45 @@
 
-EXTRA_DIST =  
-
-# Warning: This is an automatically generated file, do not edit!
+EXTRA_DIST = m4/expansions.m4
 
 if ENABLE_DEBUG
-ASSEMBLY_COMPILER_COMMAND = gmcs
+ASSEMBLY_COMPILER_COMMAND = mcs
 ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -warn:4 -optimize- -debug "-define:DEBUG"
-ASSEMBLY = bin/Debug/generator.exe
-ASSEMBLY_MDB = $(ASSEMBLY).mdb
-COMPILE_TARGET = exe
-PROJECT_REFERENCES =  \
-	../Mono.VisualC.Interop/bin/Debug/Mono.VisualC.Interop.dll
-BUILD_DIR = bin/Debug
+BUILD_DIR = $(top_srcdir)/bin/Debug
 
-MONO_VISUALC_INTEROP_DLL_SOURCE=../Mono.VisualC.Interop/bin/Debug/Mono.VisualC.Interop.dll
+ASSEMBLY = $(BUILD_DIR)/generator.exe
+ASSEMBLY_MDB = $(ASSEMBLY).mdb
+
+MONO_VISUALC_INTEROP_DLL_SOURCE=$(BUILD_DIR)/Mono.VisualC.Interop.dll
 MONO_VISUALC_INTEROP_DLL=$(BUILD_DIR)/Mono.VisualC.Interop.dll
-GENERATOR_EXE_MDB_SOURCE=bin/Debug/generator.exe.mdb
+GENERATOR_EXE_MDB_SOURCE=$(BUILD_DIR)/generator.exe.mdb
 GENERATOR_EXE_MDB=$(BUILD_DIR)/generator.exe.mdb
-CPPINTEROP_DLL=
 
 endif
 
 if ENABLE_RELEASE
-ASSEMBLY_COMPILER_COMMAND = gmcs
-ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -warn:4 -optimize-
-ASSEMBLY = bin/Release/generator.exe
-ASSEMBLY_MDB = 
-COMPILE_TARGET = exe
-PROJECT_REFERENCES =  \
-	../Mono.VisualC.Interop/bin/Release/CPPInterop.dll
-BUILD_DIR = bin/Release
+ASSEMBLY_COMPILER_COMMAND = mcs
+ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -warn:4 -optimize+
+BUILD_DIR = $(top_srcdir)/bin/Release
 
-MONO_VISUALC_INTEROP_DLL=
-GENERATOR_EXE_MDB=
-CPPINTEROP_DLL_SOURCE=../Mono.VisualC.Interop/bin/Release/CPPInterop.dll
-CPPINTEROP_DLL=$(BUILD_DIR)/CPPInterop.dll
+ASSEMBLY = $(BUILD_DIR)/generator.exe
+ASSEMBLY_MDB = 
+
+MONO_VISUALC_INTEROP_DLL_SOURCE=$(BUILD_DIR)/Mono.VisualC.Interop.dll
+MONO_VISUALC_INTEROP_DLL=$(BUILD_DIR)/Mono.VisualC.Interop.dll
+GENERATOR_EXE_MDB= 
 
 endif
+
+COMPILE_TARGET = exe
+PROJECT_REFERENCES =  \
+	$(BUILD_DIR)/Mono.VisualC.Interop.dll
 
 AL=al2
 SATELLITE_ASSEMBLY_NAME=$(notdir $(basename $(ASSEMBLY))).resources.dll
 
 PROGRAMFILES = \
 	$(MONO_VISUALC_INTEROP_DLL) \
-	$(GENERATOR_EXE_MDB) \
-	$(CPPINTEROP_DLL)  
+	$(GENERATOR_EXE_MDB)
 
 BINARIES = \
 	$(GENERATOR)  
@@ -54,13 +49,13 @@ RESGEN=resgen2
 
 all: $(ASSEMBLY) $(PROGRAMFILES) $(BINARIES) 
 
-FILES = \
-	Generator.cs \
-	Options.cs \
-	Node.cs	\
+FILES =  \
 	Class.cs \
-	Method.cs \
 	Field.cs \
+	Generator.cs \
+	Method.cs \
+	Node.cs \
+	Options.cs \
 	Parameter.cs \
 	Property.cs
 
@@ -72,10 +67,12 @@ EXTRAS = \
 	generator.in 
 
 REFERENCES =  \
+	../Mono.VisualC.Code/bin/Debug/Mono.VisualC.Code.dll \
+	../Mono.VisualC.Interop/bin/Debug/Mono.VisualC.Interop.dll \
 	System \
+	System.Core \
 	System.Xml \
-	System.Xml.Linq \
-	System.Core
+	System.Xml.Linq
 
 DLL_REFERENCES = 
 

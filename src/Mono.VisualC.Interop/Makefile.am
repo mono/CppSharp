@@ -1,16 +1,13 @@
 
-EXTRA_DIST =  
-
-# Warning: This is an automatically generated file, do not edit!
+EXTRA_DIST = m4/expansions.m4
 
 if ENABLE_DEBUG
-ASSEMBLY_COMPILER_COMMAND = gmcs
+ASSEMBLY_COMPILER_COMMAND = mcs
 ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -warn:4 -optimize- -debug "-define:DEBUG"
-ASSEMBLY = bin/Debug/Mono.VisualC.Interop.dll
+BUILD_DIR = $(top_srcdir)/bin/Debug
+
+ASSEMBLY = $(BUILD_DIR)/Mono.VisualC.Interop.dll
 ASSEMBLY_MDB = $(ASSEMBLY).mdb
-COMPILE_TARGET = library
-PROJECT_REFERENCES = 
-BUILD_DIR = bin/Debug
 
 MONO_VISUALC_INTEROP_DLL_MDB_SOURCE=bin/Debug/Mono.VisualC.Interop.dll.mdb
 MONO_VISUALC_INTEROP_DLL_MDB=$(BUILD_DIR)/Mono.VisualC.Interop.dll.mdb
@@ -18,17 +15,19 @@ MONO_VISUALC_INTEROP_DLL_MDB=$(BUILD_DIR)/Mono.VisualC.Interop.dll.mdb
 endif
 
 if ENABLE_RELEASE
-ASSEMBLY_COMPILER_COMMAND = gmcs
-ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -warn:4 -optimize-
-ASSEMBLY = bin/Release/CPPInterop.dll
+ASSEMBLY_COMPILER_COMMAND = mcs
+ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -warn:4 -optimize+
+BUILD_DIR = $(top_srcdir)/bin/Release
+
+ASSEMBLY = $(BUILD_DIR)/Mono.VisualC.Interop.dll
 ASSEMBLY_MDB = 
-COMPILE_TARGET = library
-PROJECT_REFERENCES = 
-BUILD_DIR = bin/Release
 
 MONO_VISUALC_INTEROP_DLL_MDB=
 
 endif
+
+COMPILE_TARGET = library
+PROJECT_REFERENCES = 
 
 AL=al2
 SATELLITE_ASSEMBLY_NAME=$(notdir $(basename $(ASSEMBLY))).resources.dll
@@ -44,31 +43,30 @@ RESGEN=resgen2
 	
 all: $(ASSEMBLY) $(PROGRAMFILES) $(LINUX_PKGCONFIG) 
 
-FILES = \
-	CppLibrary.cs \
-	AssemblyInfo.cs \
+FILES =  \
 	ABI/CppAbi.cs \
-	Interfaces.cs \
-	ABI/VTableManaged.cs \
-	Attributes.cs \
-	CppInstancePtr.cs \
-	CppField.cs \
-	ABI/VTable.cs \
-	ABI/MethodType.cs \
 	ABI/Impl/ItaniumAbi.cs \
-	ABI/Impl/VirtualOnlyAbi.cs \
 	ABI/Impl/MsvcAbi.cs \
+	ABI/Impl/MsvcTypeInfo.cs \
+	ABI/Impl/VirtualOnlyAbi.cs \
+	ABI/MethodType.cs \
+	ABI/VTable.cs \
+	ABI/VTableManaged.cs \
+	AssemblyInfo.cs \
+	Attributes.cs \
+	CppField.cs \
+	CppInstancePtr.cs \
+	CppLibrary.cs \
+	CppModifiers.cs \
 	CppObjectMarshaler.cs \
 	CppType.cs \
 	CppTypeInfo.cs \
-	ABI/Impl/ItaniumTypeInfo.cs \
+	Interfaces.cs \
+	Util/DelegateTypeCache.cs \
 	Util/IEnumerableTransform.cs \
 	Util/LazyGeneratedList.cs \
-	Util/DelegateTypeCache.cs \
-	Util/ReflectionHelper.cs \
-	ABI/Impl/MsvcTypeInfo.cs \
 	Util/MethodSignature.cs \
-	CppModifiers.cs 
+	Util/ReflectionHelper.cs 
 
 DATA_FILES = 
 

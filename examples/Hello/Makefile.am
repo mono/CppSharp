@@ -1,29 +1,37 @@
 
 top_srcdir=../..
 
-all: libhello.so Hello.xml Hello.exe
+if ENABLE_DEBUG
+BUILD_DIR=$(top_srcdir)/bin/Debug
+endif
 
-libhello.so: Hello.cpp Hello.h
+if ENABLE_RELEASE
+BUILD_DIR=$(top_srcdir)/bin/Release
+endif
+
+INTEROP_DLL = \
+	$(BUILD_DIR)/Mono.VisualC.Interop.dll
+
+HELLO_EXE = \
+	$(BUILD_DIR)/Hello.exe
+
+all: $(BUILD_DIR)/libhello.so Hello.xml $(HELLO_EXE)
+
+$(BUILD_DIR)/libhello.so: Hello.cpp Hello.h
 	$(CXX) -fPIC --shared -o $@ Hello.cpp
 
 Hello.xml: Hello.h
 	gccxml -fxml=$@ Hello.h
 
-output gen:
-	$(RM) -r output
-	mono $(top_srcdir)/src/generator/bin/Debug/generator.exe -ns=Hello -lib=hello Hello.xml
+generated: Hello.xml
+	$(RM) -r generated
+	mono $(BUILD_DIR)/generator.exe -ns=Hello -lib=hello -o=$@ Hello.xml
 
-INTEROP_DLL = \
-	$(top_srcdir)/src/Mono.VisualC.Interop/bin/Debug/Mono.VisualC.Interop.dll
-
-HelloBinding.dll: output
-	$(GMCS) -out:$@ -target:library -r:$(INTEROP_DLL) output/*.cs
-
-Hello.exe: HelloBinding.dll Hello.cs
-	$(GMCS) -out:$@ -target:exe -r:$(INTEROP_DLL) -r:HelloBinding.dll Hello.cs
+$(HELLO_EXE): generated Hello.cs
+	$(GMCS) -out:$@ -target:exe -r:$(INTEROP_DLL) generated/*.cs Hello.cs
 
 clean:
-	$(RM) -r output libhello.so Hello.xml Hello.exe HelloBinding.dll
+	$(RM) -r generated libhello.so Hello.xml $(HELLO_EXE)
 
 run: Hello.exe
-	MONO_PATH=$(top_srcdir)/src/Mono.VisualC.Interop/bin/Debug mono Hello.exe
+	mono --debug $(HELLO_EXE)

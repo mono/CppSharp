@@ -17,9 +17,9 @@ SHAMROCK_EXPAND_DATADIR
 
 AC_PROG_INSTALL
 
-AC_PATH_PROG(GMCS, gmcs, no)
+AC_PATH_PROG(GMCS, mcs, no)
 if test "x$GMCS" = "xno"; then
-        AC_MSG_ERROR([gmcs Not found])
+        AC_MSG_ERROR([mcs Not found])
 fi
 
 
@@ -53,19 +53,15 @@ dnl package checks, per config
 AC_CONFIG_FILES([
 src/Mono.VisualC.Interop/mono.visualc.interop.pc
 src/Mono.VisualC.Interop/Makefile
-src/Tests/tests.pc
-src/Tests/Makefile
 src/QtBindings/qtbindings.pc
 src/QtBindings/Makefile
 src/Mono.VisualC.Code/mono.visualc.code.pc
 src/Mono.VisualC.Code/Makefile
 src/generator/generator
 src/generator/Makefile
-src/QtTest/qttest
-src/QtTest/Makefile
 src/qt/Makefile
 src/Makefile
-tests2/Makefile
+tests/Makefile
 examples/Makefile
 examples/Hello/Makefile
 Makefile
