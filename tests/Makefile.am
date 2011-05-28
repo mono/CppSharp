@@ -7,15 +7,14 @@ INTEROP_DLL = \
 TEST_DLL = $(BUILD_DIR)/Test.dll
 
 HDR = \
-	Native/AbiTests.h
+	Native/ByValTests.h
 
 NATIVE = \
 	Native/NUnit.cpp \
-	Native/AbiTests.cpp
+	Native/ByValTests.cpp
 
 MANAGED =  \
-	AbiTests.cs \
-	CppInstancePtrTests.cs \
+	ByValTests.cs \
 	Support/CppMockObject.cs \
 	Support/CppNUnitAsserts.cs
 	
