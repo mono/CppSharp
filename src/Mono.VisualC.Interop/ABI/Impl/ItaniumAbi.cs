@@ -39,8 +39,18 @@ using Mono.VisualC.Interop.Util;
 namespace Mono.VisualC.Interop.ABI {
 	public class ItaniumAbi : CppAbi {
 
-		public ItaniumAbi ()
+		public static readonly ItaniumAbi Instance = new ItaniumAbi ();
+
+		private bool? hasNonDefaultCopyCtorOrDtor;
+
+		private ItaniumAbi ()
 		{
+		}
+
+		public override Iface ImplementClass<Iface, NLayout> (Type wrapperType, CppLibrary lib, string className)
+		{
+			hasNonDefaultCopyCtorOrDtor = null;
+			return base.ImplementClass<Iface, NLayout> (wrapperType, lib, className);
 		}
 
 		protected override CppTypeInfo MakeTypeInfo (IEnumerable<PInvokeSignature> methods)
@@ -142,8 +152,8 @@ namespace Mono.VisualC.Interop.ABI {
 				//  they modify the type pointed to by pointer or reference.
 				Choose.TopOne (
 					For.AllInputsIn (CppModifiers.Volatile, CppModifiers.Const).InAnyOrder ().After (ptrOrRef).Emit ("VK"),
-					For.AnyInputIn(CppModifiers.Volatile).After (ptrOrRef).Emit ("V"),
-					For.AnyInputIn(CppModifiers.Const).After (ptrOrRef).Emit ("K")
+					For.AnyInputIn  (CppModifiers.Volatile).After (ptrOrRef).Emit ("V"),
+					For.AnyInputIn  (CppModifiers.Const).After (ptrOrRef).Emit ("K")
 			        )
 			);
 			code.Append (string.Join(string.Empty, modifierCode.ToArray ()));
@@ -168,8 +178,8 @@ namespace Mono.VisualC.Interop.ABI {
 					else
 						throw new NotImplementedException ();
 				} else {
-					code.Append(mangleType.ElementTypeName.Length);
-					code.Append(mangleType.ElementTypeName);
+					code.Append (mangleType.ElementTypeName.Length);
+					code.Append (mangleType.ElementTypeName);
 				}
 				break;
 			}
@@ -178,6 +188,57 @@ namespace Mono.VisualC.Interop.ABI {
 			return code.ToString ();
 		}
 
+		// Section 3.1.4:
+		// Classes with non-default copy ctors/destructors are returned using a hidden
+		// argument
+		bool ReturnByHiddenArgument (MethodInfo method)
+		{
+			if (!IsByVal (method.ReturnTypeCustomAttributes))
+				return false;
+
+			if (hasNonDefaultCopyCtorOrDtor == null)
+				hasNonDefaultCopyCtorOrDtor = GetMethods ().Any (m => (IsCopyConstructor (m) || GetMethodType (m) == MethodType.NativeDtor) && !IsArtificial (m));
+
+			return hasNonDefaultCopyCtorOrDtor.Value;
+		}
+
+		public override PInvokeSignature GetPInvokeSignature (MethodInfo method)
+		{
+			var psig = base.GetPInvokeSignature (method);
+
+			if (ReturnByHiddenArgument (method)) {
+				psig.ParameterTypes.Insert (0, typeof (IntPtr));
+				psig.ReturnType = typeof (void);
+			}
+
+			return psig;
+		}
+
+		protected override void EmitNativeCall (ILGenerator il, MethodInfo nativeMethod, PInvokeSignature psig, LocalBuilder nativePtr)
+		{
+			var method = psig.OrigMethod;
+			LocalBuilder returnValue = null;
+			var hiddenReturnByValue = ReturnByHiddenArgument (method);
+
+			if (hiddenReturnByValue)
+			{
+				returnValue = il.DeclareLocal (typeof (CppInstancePtr));
+
+				EmitGetTypeInfo (il, method.ReturnType);
+				il.Emit (OpCodes.Call, typeinfo_nativesize);
+				il.Emit (OpCodes.Newobj, cppip_fromsize);
+				il.Emit (OpCodes.Stloc, returnValue);
+				il.Emit (OpCodes.Ldloca, returnValue);
+				il.Emit (OpCodes.Call, cppip_native);
+			}
+
+			base.EmitNativeCall (il, nativeMethod, psig, nativePtr);
+
+			if (hiddenReturnByValue) {
+				il.Emit (OpCodes.Ldloc, returnValue);
+				EmitCreateCppObjectFromNative (il, method.ReturnType);
+			}
+		}
 
 
 	}

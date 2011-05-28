@@ -40,7 +40,10 @@ namespace Mono.VisualC.Interop.ABI {
 
 	// FIXME: No 64-bit support
 	public class MsvcAbi : CppAbi {
-		public MsvcAbi ()
+
+		public static readonly MsvcAbi Instance = new MsvcAbi ();
+
+		private MsvcAbi ()
 		{
 		}
 

@@ -22,7 +22,12 @@ namespace Mono.VisualC.Interop.ABI {
 
 	//FIXME: Exception handling, operator overloading etc.
 	//FIXME: Allow interface to override default calling convention
+
+	// Subclasses should be singletons
 	public abstract partial class CppAbi {
+		// (other part of this partial class in Attributes.cs)
+
+		// These fields are specific to the class we happen to be implementing:
 		protected ModuleBuilder impl_module;
 		protected TypeBuilder impl_type;
 
@@ -33,27 +38,31 @@ namespace Mono.VisualC.Interop.ABI {
 		protected FieldBuilder typeinfo_field;
 		protected ILGenerator ctor_il;
 
+		// These fields are specific to the ABI:
+		protected Dictionary<Type,CppTypeInfo> wrapper_to_typeinfo = new Dictionary<Type, CppTypeInfo> ();
 		protected MemberFilter vtable_override_filter = VTable.BindToSignatureAndAttribute;
 
 		// Cache some frequently used methodinfos:
-		private static readonly MethodInfo typeinfo_nativesize   = typeof (CppTypeInfo).GetProperty ("NativeSize").GetGetMethod ();
-		private static readonly MethodInfo typeinfo_vtable       = typeof (CppTypeInfo).GetProperty ("VTable").GetGetMethod ();
-		private static readonly MethodInfo typeinfo_adjvcall     = typeof (CppTypeInfo).GetMethod ("GetAdjustedVirtualCall");
-		private static readonly MethodInfo typeinfo_fieldoffset  = typeof (CppTypeInfo).GetProperty ("FieldOffsetPadding").GetGetMethod ();
-		private static readonly MethodInfo vtable_initinstance   = typeof (VTable).GetMethod ("InitInstance");
-		private static readonly MethodInfo vtable_resetinstance  = typeof (VTable).GetMethod ("ResetInstance");
-		private static readonly MethodInfo cppobj_native         = typeof (ICppObject).GetProperty ("Native").GetGetMethod ();
-		private static readonly MethodInfo cppip_native          = typeof (CppInstancePtr).GetProperty ("Native").GetGetMethod ();
-		private static readonly MethodInfo cppip_managedalloc    = typeof (CppInstancePtr).GetProperty ("IsManagedAlloc").GetGetMethod ();
-		private static readonly MethodInfo cppip_getmanaged      = typeof (CppInstancePtr).GetMethod ("GetManaged", BindingFlags.Static | BindingFlags.NonPublic);
-		private static readonly ConstructorInfo cppip_fromnative = typeof (CppInstancePtr).GetConstructor (new Type [] { typeof (IntPtr) });
-		private static readonly ConstructorInfo cppip_fromsize   = typeof (CppInstancePtr).GetConstructor (new Type [] { typeof (int) });
-		private static readonly ConstructorInfo cppip_fromsize_managed = typeof (CppInstancePtr).GetConstructor (BindingFlags.Instance | BindingFlags.NonPublic, null,
+		protected static readonly MethodInfo typeinfo_nativesize   = typeof (CppTypeInfo).GetProperty ("NativeSize").GetGetMethod ();
+		protected static readonly MethodInfo typeinfo_vtable       = typeof (CppTypeInfo).GetProperty ("VTable").GetGetMethod ();
+		protected static readonly MethodInfo typeinfo_adjvcall     = typeof (CppTypeInfo).GetMethod ("GetAdjustedVirtualCall");
+		protected static readonly MethodInfo typeinfo_fieldoffset  = typeof (CppTypeInfo).GetProperty ("FieldOffsetPadding").GetGetMethod ();
+		protected static readonly MethodInfo vtable_initinstance   = typeof (VTable).GetMethod ("InitInstance");
+		protected static readonly MethodInfo vtable_resetinstance  = typeof (VTable).GetMethod ("ResetInstance");
+		protected static readonly MethodInfo cppobj_native         = typeof (ICppObject).GetProperty ("Native").GetGetMethod ();
+		protected static readonly MethodInfo cppip_native          = typeof (CppInstancePtr).GetProperty ("Native").GetGetMethod ();
+		protected static readonly MethodInfo cppip_managedalloc    = typeof (CppInstancePtr).GetProperty ("IsManagedAlloc").GetGetMethod ();
+		protected static readonly MethodInfo cppip_getmanaged      = typeof (CppInstancePtr).GetMethod ("GetManaged", BindingFlags.Static | BindingFlags.NonPublic);
+		protected static readonly ConstructorInfo cppip_fromnative = typeof (CppInstancePtr).GetConstructor (new Type [] { typeof (IntPtr) });
+		protected static readonly ConstructorInfo cppip_fromsize   = typeof (CppInstancePtr).GetConstructor (new Type [] { typeof (int) });
+		protected static readonly ConstructorInfo cppip_fromsize_managed = typeof (CppInstancePtr).GetConstructor (BindingFlags.Instance | BindingFlags.NonPublic, null,
 		                                                                                                         new Type[] { typeof (int), typeof (object) }, null);
-		private static readonly ConstructorInfo notimplementedexception = typeof (NotImplementedException).GetConstructor (new Type [] { typeof (string) });
-		private static readonly MethodInfo type_gettypefromhandle = typeof (Type).GetMethod ("GetTypeFromHandle");
-		private static readonly MethodInfo marshal_offsetof       = typeof (Marshal).GetMethod ("OffsetOf");
-		private static readonly MethodInfo marshal_structuretoptr = typeof (Marshal).GetMethod ("StructureToPtr");
+		protected static readonly ConstructorInfo notimplementedexception = typeof (NotImplementedException).GetConstructor (new Type [] { typeof (string) });
+		protected static readonly MethodInfo type_gettypefromhandle  = typeof (Type).GetMethod ("GetTypeFromHandle");
+		protected static readonly MethodInfo marshal_offsetof        = typeof (Marshal).GetMethod ("OffsetOf");
+		protected static readonly MethodInfo marshal_structuretoptr  = typeof (Marshal).GetMethod ("StructureToPtr");
+		protected static readonly ConstructorInfo dummytypeinfo_ctor = typeof (DummyCppTypeInfo).GetConstructor (Type.EmptyTypes);
+		protected static readonly MethodInfo dummytypeinfo_getbase   = typeof (DummyCppTypeInfo).GetProperty ("BaseTypeInfo").GetGetMethod ();
 
 
 		// These methods might be more commonly overridden for a given C++ ABI:
@@ -86,13 +95,14 @@ namespace Mono.VisualC.Interop.ABI {
 
 		private struct EmptyNativeLayout { }
 		public Iface ImplementClass<Iface> (Type wrapperType, CppLibrary lib, string className)
+			where Iface : ICppClass
 		{
 			return this.ImplementClass<Iface,EmptyNativeLayout> (wrapperType, lib, className);
 		}
 
 		public virtual Iface ImplementClass<Iface, NLayout> (Type wrapperType, CppLibrary lib, string className)
 			where NLayout : struct
-		//where Iface : ICppClassInstantiatable or ICppClassOverridable
+			where Iface : ICppClass
 		{
 			this.impl_module = CppLibrary.interopModule;
 			this.library = lib;
@@ -105,7 +115,10 @@ namespace Mono.VisualC.Interop.ABI {
 
 			var properties = GetProperties ();
 			var methods = GetMethods ().Select (m => GetPInvokeSignature (m));
+
  			var typeInfo = MakeTypeInfo (methods);
+			if (wrapperType != null)
+				wrapper_to_typeinfo.Add (wrapperType, typeInfo);
 
 			// Implement all methods
 			int vtableIndex = 0;
@@ -555,15 +568,8 @@ namespace Mono.VisualC.Interop.ABI {
 
 				if (IsByVal (icap)) {
 
-					// Can't use an interface/cattr since the native layout type is private
-					// Pass it as a type argument to I<Foo> ?
-					var f = t.GetField ("native_layout", BindingFlags.Static|BindingFlags.NonPublic);
-					if (f == null || f.FieldType != typeof (Type))
-						throw new NotImplementedException ("Type '" + t + "' needs to have a 'native_layout' field before it can be passed by value.");
-					t = (Type)f.GetValue (null);
-					if (!t.IsValueType)
-						throw new NotSupportedException ("The value for 'native_layout' for type '" + t + "' must be a value type.");
-					return t;
+					var typeInfo = GetTypeInfo (t);
+					return typeInfo != null? typeInfo.NativeLayout : layout_type;
 
 				} else { // by ref
 
@@ -645,6 +651,9 @@ namespace Mono.VisualC.Interop.ABI {
 		// The value it is marshaling will be on the stack.
 		protected virtual void EmitInboundMarshal (ILGenerator il, Type nativeType, Type targetType)
 		{
+			if (nativeType == typeof (void))
+				return; // <- yes, this is necessary
+
 			var next = il.DefineLabel ();
 
 			// marshal IntPtr -> ICppObject
@@ -688,6 +697,46 @@ namespace Mono.VisualC.Interop.ABI {
 			}
 
 			il.MarkLabel (next);
+		}
+
+		// Gets a typeinfo for another ICppObject.
+		// Might return null for the type we're currently emitting.
+		protected virtual CppTypeInfo GetTypeInfo (Type otherWrapperType)
+		{
+			CppTypeInfo info;
+			if (wrapper_to_typeinfo.TryGetValue (otherWrapperType, out info))
+				return info;
+
+			if (otherWrapperType == wrapper_type)
+				return null;
+
+			// pass a "dummy" type info to subclass ctor to trigger the creation of the real one
+			try {
+				Activator.CreateInstance (otherWrapperType, (CppTypeInfo)(new DummyCppTypeInfo ()));
+
+			} catch (MissingMethodException mme) {
+
+				throw new InvalidProgramException (string.Format ("Type `{0}' implements ICppObject but does not contain a public constructor that takes CppTypeInfo", otherWrapperType));
+			}
+
+			return wrapper_to_typeinfo [otherWrapperType];
+		}
+
+		// Does the above passthru at runtime.
+		// This is perhaps a kludgy/roundabout way for pulling the type info for another
+		//  ICppObject at runtime, but I think this keeps the wrappers clean.
+		protected virtual void EmitGetTypeInfo (ILGenerator il, Type targetType)
+		{
+			// check for a subclass constructor (i.e. a public ctor in the wrapper that takes CppTypeInfo)
+			var ctor = targetType.GetConstructor (BindingFlags.ExactBinding | BindingFlags.Public | BindingFlags.Instance, null, new Type [] { typeof (CppTypeInfo) }, null);
+			if (ctor == null)
+				throw new InvalidProgramException (string.Format ("Type `{0}' implements ICppObject but does not contain a public constructor that takes CppTypeInfo", targetType));
+
+			il.Emit (OpCodes.Newobj, dummytypeinfo_ctor);
+			il.Emit (OpCodes.Dup);
+			il.Emit (OpCodes.Newobj, ctor);
+			il.Emit (OpCodes.Pop);
+			il.Emit (OpCodes.Call, dummytypeinfo_getbase);
 		}
 
 		// Expects CppInstancePtr on stack. No null check performed

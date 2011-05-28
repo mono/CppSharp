@@ -95,6 +95,10 @@ namespace Mono.VisualC.Interop {
 			lazy_vtable = null;
 		}
 
+		protected CppTypeInfo ()
+		{
+		}
+
 		public virtual void AddBase (CppTypeInfo baseType)
 		{
 
@@ -210,6 +214,17 @@ namespace Mono.VisualC.Interop {
 			get { return 0; }
 		}
 		
+	}
+
+	// This is used internally by CppAbi:
+	internal class DummyCppTypeInfo : CppTypeInfo {
+
+		public CppTypeInfo BaseTypeInfo { get; set; }
+
+		public override void AddBase (CppTypeInfo baseType)
+		{
+			BaseTypeInfo = baseType;
+		}
 	}
 }
 

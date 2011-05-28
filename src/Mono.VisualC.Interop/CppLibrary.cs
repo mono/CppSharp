@@ -77,7 +77,7 @@ namespace Mono.VisualC.Interop {
 		}
 
 		public CppLibrary (string name, InlineMethods inlinePolicy)
-			: this (name, new ItaniumAbi (), inlinePolicy)
+			: this (name, ItaniumAbi.Instance, inlinePolicy)
 		{
 			//FIXME: Ideally we would auto-detect ABI here.
 		}
