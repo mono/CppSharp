@@ -28,17 +28,17 @@ test.xml: $(HDR)
 	gccxml -fxml=$@ --gccxml-cxxflags -c $(HDR)
 
 $(BUILD_DIR)/libTest.so: $(HEADERS) $(NATIVE)
-	g++ -fPIC --shared -o $@ $(NATIVE)
+	g++ -fPIC --shared -m32 -o $@ $(NATIVE)
 
 $(BUILD_DIR)/libTest-inline.so: $(HEADERS) $(NATIVE)
-	g++ -fPIC --shared -fkeep-inline-functions -o $@ $(NATIVE)
+	g++ -fPIC --shared -m32 -fkeep-inline-functions -o $@ $(NATIVE)
 
 generated: test.xml
 	$(RM) -r generated
-	mono --debug $(BUILD_DIR)/generator.exe -o=$@ -ns=Tests -lib=Test test.xml
+	mono --debug $(BUILD_DIR)/generator.exe -o=$@ -ns=Tests -lib=Test -inline=surrogatelib test.xml
 
 $(TEST_DLL): generated $(MANAGED) $(BUILD_DIR)/libTest.so $(BUILD_DIR)/libTest-inline.so
-	mcs -out:$@ -target:library -unsafe $(REFERENCES) -r:$(INTEROP_DLL) generated/*.cs $(MANAGED)
+	mcs -debug -out:$@ -target:library -unsafe $(REFERENCES) -r:$(INTEROP_DLL) generated/*.cs $(MANAGED)
 
 clean:
 	$(RM) -rf $(TEST_DLL) generated $(BUILD_DIR)/libTest.so $(BUILD_DIR)/libTest-inline.so test.xml

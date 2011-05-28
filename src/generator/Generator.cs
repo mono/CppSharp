@@ -25,6 +25,7 @@ public class Generator
 	string LibBaseName;
 	string InputFileName;
 	string FilterFile;
+	InlineMethods InlinePolicy;
 
 	CodeDomProvider Provider;
 	CodeGeneratorOptions CodeGenOptions;
@@ -43,10 +44,11 @@ public class Generator
 
 		var p = new OptionSet {
 				{ "h|?|help", "Show this help message", v => help = v != null },
-				{ "o=", "Set the output directory", v => OutputDir = v },
+				{ "o=|out=", "Set the output directory", v => OutputDir = v },
 				{ "ns=|namespace=", "Set the namespace of the generated code", v => Namespace = v },
 				{ "lib=", "The base name of the C++ library, i.e. 'qt' for libqt.so", v =>LibBaseName = v },
-				{ "filters=", "A file containing filter directives for filtering classes", v => FilterFile = v }
+				{ "filters=", "A file containing filter directives for filtering classes", v => FilterFile = v },
+				{ "inline=", "Inline methods in lib are: notpresent (default), present, surrogatelib (present in %lib%-inline)", v => InlinePolicy = (InlineMethods)Enum.Parse (typeof (InlineMethods), v, true) }
 			};
 
 		try {
@@ -241,6 +243,9 @@ public class Generator
 						IsDestructor = dtor
 				};
 
+				if (dtor)
+					method.GenWrapperMethod = false;
+
 				bool skip = false;
 
 				CppType retType;
@@ -395,7 +400,7 @@ public class Generator
 				else
 					return CppTypes.Unknown;
 			}
-			return modifiers.CopyTypeFrom (new CppType (CppTypes.Class, NodeToClass [n].Name));
+			return modifiers.CopyTypeFrom (new CppType (n.Type == "Class"? CppTypes.Class : CppTypes.Struct, NodeToClass [n].Name));
 		default:
 			return CppTypes.Unknown;
 		}
@@ -411,7 +416,7 @@ public class Generator
 
 		byref = false;
 		Type mtype = t.ToManagedType ();
-		if (mtype != null) {
+		if (mtype != null && mtype != typeof (ICppObject)) {
 			if (mtype.IsByRef) {
 				byref = true;
 				mtype = mtype.GetElementType ();
@@ -419,9 +424,12 @@ public class Generator
 			return new CodeTypeReference (mtype);
 		}
 
-		if (t.Modifiers.Count > 0 && t.ElementType != CppTypes.Void && t.ElementType != CppTypes.Class)
-			return null;
+		// Why is this here?
+		//if (t.Modifiers.Count > 0 && t.ElementType != CppTypes.Void && t.ElementType != CppTypes.Class)
+		//	return null;
 		switch (t.ElementType) {
+		// These cases should all be handled by ToManagedType, no?
+		/*
 		case CppTypes.Void:
 			if (t.Modifiers.Count > 0) {
 				if (t.Modifiers.Count == 1 && t.Modifiers [0] == CppModifiers.Pointer)
@@ -447,7 +455,9 @@ public class Generator
 		case CppTypes.Char:
 			rtype = new CodeTypeReference (typeof (char));
 			break;
+		*/
 		case CppTypes.Class:
+		case CppTypes.Struct:
 			// FIXME: Full name
 			rtype = new CodeTypeReference (t.ElementTypeName);
 			break;
@@ -483,7 +493,7 @@ public class Generator
 
 			var field = new CodeMemberField (new CodeTypeReference ("CppLibrary"), LibBaseName);
 			field.Attributes = MemberAttributes.Public|MemberAttributes.Static;
-			field.InitExpression = new CodeObjectCreateExpression (new CodeTypeReference ("CppLibrary"), new CodeExpression [] { new CodePrimitiveExpression (LibBaseName) });
+			field.InitExpression = new CodeObjectCreateExpression (new CodeTypeReference ("CppLibrary"), new CodeExpression [] { new CodePrimitiveExpression (LibBaseName), new CodeFieldReferenceExpression (new CodeTypeReferenceExpression (typeof (InlineMethods).Name), InlinePolicy.ToString ()) });
 			decl.Members.Add (field);
 
 			ns.Types.Add (decl);
@@ -512,7 +522,7 @@ public class Generator
 			//Provider.GenerateCodeFromCompileUnit(cu, Console.Out, CodeGenOptions);
 			using (TextWriter w = File.CreateText (Path.Combine (OutputDir, klass.Name + ".cs"))) {
 				// These are reported for the fields of the native layout structures
-				Provider.GenerateCodeFromCompileUnit (new CodeSnippetCompileUnit("#pragma warning disable 0414, 0169"), w, CodeGenOptions);
+				//Provider.GenerateCodeFromCompileUnit (new CodeSnippetCompileUnit("#pragma warning disable 0414, 0169"), w, CodeGenOptions);
 				Provider.GenerateCodeFromCompileUnit(cu, w, CodeGenOptions);
 			}
 		}

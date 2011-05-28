@@ -31,7 +31,13 @@ using Mono.VisualC.Interop.ABI;
 
 namespace Mono.VisualC.Interop {
 
-	// Part of the contract for ICppObject is a public constructor that takes CppInstancePtr (native constructor)
+	// The contract for ICppObject requires implementations to have the following constructors:
+	//  + A public constructor that takes CppInstancePtr (native constructor)
+	//  + A public constructor that takes CppTypeInfo, and as its sole operation,
+	//     calls AddBase on that passed CppTypeInfo, passing its own typeinfo (subclass constructor)
+	//  NOTE: It is important that the subclass constructor have no side effects.
+	//  All constructors for wrappers of native subclasses must call the subclass constructor for the
+	//   wrappers of their base class(es).
 	public interface ICppObject : IDisposable {
 		CppInstancePtr Native { get; }
 	}

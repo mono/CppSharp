@@ -108,13 +108,20 @@ class Method
 	public CodeMemberMethod GenerateIFaceMethod (Generator g) {
 		var method = new CodeMemberMethod () {
 				Name = Name
-					};
+		};
 
 		if (!IsStatic)
 			method.Parameters.Add (new CodeParameterDeclarationExpression (new CodeTypeReference ("CppInstancePtr"), "this"));
 
 		CodeTypeReference rtype = g.CppTypeToCodeDomType (ReturnType);
 		method.ReturnType = rtype;
+		if ((ReturnType.ElementType == CppTypes.Class || ReturnType.ElementType == CppTypes.Struct) &&
+			!ReturnType.Modifiers.Contains (CppModifiers.Pointer) &&
+			!ReturnType.Modifiers.Contains (CppModifiers.Reference) &&
+			!ReturnType.Modifiers.Contains (CppModifiers.Array))
+		{
+			method.ReturnTypeCustomAttributes.Add (new CodeAttributeDeclaration ("ByVal"));
+		}
 
 		foreach (var p in Parameters) {
 			CppType ptype = p.Type;
@@ -125,9 +132,13 @@ class Method
 				param.Direction = FieldDirection.Ref;
 			if (!IsVirtual && !ptype.ToString ().Equals (string.Empty))
 				param.CustomAttributes.Add (new CodeAttributeDeclaration ("MangleAsAttribute", new CodeAttributeArgument (new CodePrimitiveExpression (ptype.ToString ()))));
-			// FIXME: Structs too
-			if (ptype.ElementType == CppTypes.Class && !ptype.Modifiers.Contains (CppModifiers.Reference) && !ptype.Modifiers.Contains (CppModifiers.Pointer))
+			if ((ptype.ElementType == CppTypes.Class || ptype.ElementType == CppTypes.Struct) &&
+				!ptype.Modifiers.Contains (CppModifiers.Pointer) &&
+				!ptype.Modifiers.Contains (CppModifiers.Reference) &&
+				!ptype.Modifiers.Contains (CppModifiers.Array))
+			{
 				param.CustomAttributes.Add (new CodeAttributeDeclaration ("ByVal"));
+			}
 			method.Parameters.Add (param);
 		}
 
