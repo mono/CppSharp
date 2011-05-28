@@ -68,18 +68,12 @@
     <Reference Include="System.Xml.Linq">
     </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="Mono.VisualC.Interop, Version=1.0.4164.32966, Culture=neutral, PublicKeyToken=null">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\Debug\Mono.VisualC.Interop.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <ProjectReference Include="..\Mono.VisualC.Code\Mono.VisualC.Code.csproj">
-      <Project>{A22BF9D9-BBCB-4462-BE08-0F4D5280B180}</Project>
-      <Name>Mono.VisualC.Code</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Mono.VisualC.Interop\Mono.VisualC.Interop.csproj">
-      <Project>{4A864586-93C5-4DC1-8A80-F094A88506D7}</Project>
-      <Name>Mono.VisualC.Interop</Name>
-    </ProjectReference>
-  </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>

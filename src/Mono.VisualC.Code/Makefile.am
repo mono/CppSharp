@@ -73,7 +73,7 @@ EXTRAS = \
 	mono.visualc.code.pc.in 
 
 REFERENCES =  \
-	../Mono.VisualC.Interop/bin/Debug/Mono.VisualC.Interop.dll \
+	../../bin/Debug/Mono.VisualC.Interop.dll \
 	System \
 	System.Core
 

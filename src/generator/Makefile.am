@@ -65,8 +65,7 @@ EXTRAS = \
 	generator.in 
 
 REFERENCES =  \
-	../Mono.VisualC.Code/bin/Debug/Mono.VisualC.Code.dll \
-	../Mono.VisualC.Interop/bin/Debug/Mono.VisualC.Interop.dll \
+	../../bin/Debug/Mono.VisualC.Interop.dll \
 	System \
 	System.Core \
 	System.Xml \
