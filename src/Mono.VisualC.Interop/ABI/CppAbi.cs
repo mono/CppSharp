@@ -136,7 +136,7 @@ namespace Mono.VisualC.Interop.ABI {
 
 		protected virtual CppTypeInfo MakeTypeInfo (IEnumerable<PInvokeSignature> methods)
 		{
-			return new CppTypeInfo (this, methods.Where (m => IsVirtual (m.OrigMethod)), layout_type);
+			return new CppTypeInfo (this, methods.Where (m => IsVirtual (m.OrigMethod)), layout_type, wrapper_type);
 		}
 
 		protected virtual IEnumerable<PropertyInfo> GetProperties ()

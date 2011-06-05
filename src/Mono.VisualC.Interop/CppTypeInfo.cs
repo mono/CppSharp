@@ -44,7 +44,8 @@ namespace Mono.VisualC.Interop {
 	public class CppTypeInfo {
 
 		public CppAbi Abi { get; private set; }
-		public Type NativeLayout {get; private set; }
+		public Type NativeLayout { get; private set; }
+		public Type WrapperType { get; private set; }
 
 		public IList<PInvokeSignature> VirtualMethods { get; private set; } // read only version
 		protected List<PInvokeSignature> virtual_methods;
@@ -69,10 +70,11 @@ namespace Mono.VisualC.Interop {
 
 		private VTable lazy_vtable;
 
-		public CppTypeInfo (CppAbi abi, IEnumerable<PInvokeSignature> virtualMethods, Type nativeLayout)
+		public CppTypeInfo (CppAbi abi, IEnumerable<PInvokeSignature> virtualMethods, Type nativeLayout, Type/*?*/ wrapperType)
 		{
 			Abi = abi;
 			NativeLayout = nativeLayout;
+			WrapperType = wrapperType;
 
 			virtual_methods = new List<PInvokeSignature> (virtualMethods);
 			VirtualMethods = new ReadOnlyCollection<PInvokeSignature> (virtual_methods);
@@ -128,6 +130,12 @@ namespace Mono.VisualC.Interop {
 
 			field_offset_padding_without_vtptr += baseType.native_size +
 				(addVTablePointer? baseType.FieldOffsetPadding : baseType.field_offset_padding_without_vtptr);
+		}
+
+		public virtual TBase Cast<TBase> (ICppObject instance)
+			where TBase : ICppObject
+		{
+			throw new NotImplementedException ();
 		}
 
 		public int CountBases (Func<CppTypeInfo, bool> predicate)

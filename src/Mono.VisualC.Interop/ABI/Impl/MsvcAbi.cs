@@ -49,7 +49,7 @@ namespace Mono.VisualC.Interop.ABI {
 
 		protected override CppTypeInfo MakeTypeInfo (IEnumerable<PInvokeSignature> methods)
 		{
-			return new MsvcTypeInfo (this, methods.Where (m => IsVirtual (m.OrigMethod)), layout_type);
+			return new MsvcTypeInfo (this, methods.Where (m => IsVirtual (m.OrigMethod)), layout_type, wrapper_type);
 		}
 
 		public override CallingConvention? GetCallingConvention (MethodInfo methodInfo)
