@@ -74,11 +74,9 @@ namespace Mono.VisualC.Interop.Util {
 
 		public override bool Equals (object obj)
 		{
-			if (obj == null)
+			var other = obj as BasicSignature;
+			if (other == null)
 				return false;
-			if (obj.GetType () != typeof(BasicSignature))
-				return false;
-			BasicSignature other = (BasicSignature)obj;
 
 			return IsCompatibleWith (other);
 		}
@@ -97,13 +95,11 @@ namespace Mono.VisualC.Interop.Util {
 		public string Name { get; set; }
 		public MethodType Type { get; set; }
 
-		public override bool Equals (object obj)
+		public new bool Equals (object obj)
 		{
-			if (obj == null)
+			var other = obj as MethodSignature;
+			if (other == null)
 				return false;
-			if (obj.GetType () != typeof(MethodSignature))
-				return false;
-			MethodSignature other = (MethodSignature)obj;
 
 			return IsCompatibleWith (other) &&
 			       Type == other.Type &&
@@ -111,7 +107,7 @@ namespace Mono.VisualC.Interop.Util {
 		}
 
 
-		public override int GetHashCode ()
+		public new int GetHashCode ()
 		{
 			unchecked {
 				return base.GetHashCode () ^
