@@ -173,6 +173,31 @@ class Class
 			}
 		}
 
+		// Add all members inherited from non-primary bases
+		// With the exception of virtual methods that have been overridden, these methods must be called
+		//  thru a cast to the base class that performs a this ptr adjustment
+		foreach (var baseClass in BaseClasses.Skip (1)) {
+			foreach (var method in baseClass.Methods) {
+				if (method.IsConstructor || (method.IsVirtual && Methods.Any (m => m.Node.CheckValue ("overrides", method.Node.Id))))
+					continue;
+
+				if (method.GenWrapperMethod)
+					decl.Members.Add (method.GenerateInheritedWrapperMethod (g, baseClass));
+			}
+			foreach (var prop in baseClass.Properties) {
+				decl.Members.Add (prop.GenerateInheritedProperty (g, baseClass));
+			}
+
+			// generate implicit cast to base class
+			// 1. Create field to cache base casts
+			decl.Members.Add (new CodeMemberField (baseClass.Name, baseClass.Name + "_base"));
+
+			// 2. Add op_Implicit
+			// FIXME: Can't figure out language-neutral way to do this with codedom.. C# only for now
+			decl.Members.Add (new CodeSnippetTypeMember (string.Format ("public static implicit operator {0}({1} subClass) {{\n\t\t\tif (subClass.{2} == null)\n\t\t\t\tsubClass.{2} = impl.TypeInfo.Cast<{0}>(subClass);\n\t\t\treturn subClass.{2};\n\t\t}}\n\t\t", baseClass.Name, Name, baseClass.Name + "_base")));
+
+		}
+
 		foreach (Property p in Properties) {
 			decl.Members.Add (p.GenerateProperty (g));
 		}

@@ -28,6 +28,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.CodeDom;
 using System.CodeDom.Compiler;
@@ -164,23 +165,22 @@ class Method
 		return method;
 	}
 
-	public CodeMemberMethod GenerateWrapperMethod (Generator g) {
+	public CodeMemberMethod GenerateWrapperDeclaration (Generator g) {
 		CodeMemberMethod method;
 
 		if (IsConstructor)
 			method = new CodeConstructor () {
-					Name = GetCSharpMethodName (Name)
-						};
+				Name = GetCSharpMethodName (Name)
+			};
 		else
 			method = new CodeMemberMethod () {
-					Name = GetCSharpMethodName (Name)
-						};
+				Name = GetCSharpMethodName (Name)
+			};
 		method.Attributes = MemberAttributes.Public;
 		if (IsStatic)
 			method.Attributes |= MemberAttributes.Static;
 
-		CodeTypeReference rtype = g.CppTypeToCodeDomType (ReturnType);
-		method.ReturnType = rtype;
+		method.ReturnType = g.CppTypeToCodeDomType (ReturnType);
 
 		foreach (var p in Parameters) {
 			bool byref;
@@ -191,27 +191,58 @@ class Method
 			method.Parameters.Add (param);
 		}
 
-		if (IsConstructor) {
-            //this.native_ptr = impl.Alloc(this);
-			method.Statements.Add (new CodeAssignStatement (new CodeFieldReferenceExpression (null, "native_ptr"), new CodeMethodInvokeExpression (new CodeMethodReferenceExpression (new CodeFieldReferenceExpression (null, "impl"), "Alloc"), new CodeExpression [] { new CodeThisReferenceExpression () })));
-		}
+		return method;
+	}
 
-		// Call the iface method
-		CodeExpression[] args = new CodeExpression [Parameters.Count + (IsStatic ? 0 : 1)];
-		if (!IsStatic)
-			args [0] = new CodeFieldReferenceExpression (null, "Native");
+	IEnumerable<CodeExpression> GetArgumentExpressions (Generator g) {
 		for (int i = 0; i < Parameters.Count; ++i) {
 			bool byref;
 			g.CppTypeToCodeDomType (Parameters [i].Type, out byref);
 			CodeExpression arg = new CodeArgumentReferenceExpression (Parameters [i].Name);
 			if (byref)
 				arg = new CodeDirectionExpression (FieldDirection.Ref, arg);
+			yield return arg;
+		}
+		yield break;
+	}
+
+	// for methods inherited from non-primary bases
+	public CodeMemberMethod GenerateInheritedWrapperMethod (Generator g, Class baseClass) {
+		var method = GenerateWrapperDeclaration (g);
+		var args = GetArgumentExpressions (g).ToArray ();
+
+		var call = new CodeMethodInvokeExpression (new CodeCastExpression (baseClass.Name, new CodeThisReferenceExpression ()), method.Name, args);
+
+		if (method.ReturnType.BaseType == "System.Void")
+			method.Statements.Add (call);
+		else
+			method.Statements.Add (new CodeMethodReturnStatement (call));
+
+		return method;
+	}
+
+	public CodeMemberMethod GenerateWrapperMethod (Generator g) {
+		var method = GenerateWrapperDeclaration (g);
+
+		if (IsConstructor) {
+            //this.native_ptr = impl.Alloc(this);
+			method.Statements.Add (new CodeAssignStatement (new CodeFieldReferenceExpression (null, "native_ptr"), new CodeMethodInvokeExpression (new CodeMethodReferenceExpression (new CodeFieldReferenceExpression (null, "impl"), "Alloc"), new CodeExpression [] { new CodeThisReferenceExpression () })));
+		}
+
+		// Call the iface method
+		var args = new CodeExpression [Parameters.Count + (IsStatic ? 0 : 1)];
+		if (!IsStatic)
+			args [0] = new CodeFieldReferenceExpression (null, "Native");
+
+		var i = 0;
+		foreach (var arg in GetArgumentExpressions (g)) {
 			args [i + (IsStatic ? 0 : 1)] = arg;
+			i++;
 		}
 
 		var call = new CodeMethodInvokeExpression (new CodeMethodReferenceExpression (new CodeFieldReferenceExpression (null, "impl"), Name), args);
 
-		if (rtype.BaseType == "System.Void" || IsConstructor)
+		if (method.ReturnType.BaseType == "System.Void" || IsConstructor)
 			method.Statements.Add (call);
 		else
 			method.Statements.Add (new CodeMethodReturnStatement (call));

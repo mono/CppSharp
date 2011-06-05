@@ -29,6 +29,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 
@@ -85,6 +86,10 @@ class Node {
 	}
 
 	public bool CheckValue (string key, string name) {
-		return Attributes.ContainsKey (key) && Attributes[key] == name;
+		return Attributes.ContainsKey (key) && Attributes[key].Trim () == name.Trim ();
+	}
+
+	public bool CheckValueList (string key, string name) {
+		return Attributes.ContainsKey (key) && Attributes[key].Split (' ').Contains (name.Trim ());
 	}
 }

@@ -224,10 +224,9 @@ public class Generator
 					continue;
 				}
 
-				if (!n.CheckValue ("access", "public") || (n.HasValue ("overrides") && !dtor))
-					continue;
-
-				if (!n.IsTrue ("extern") && !n.IsTrue ("inline"))
+				if (!n.CheckValue ("access", "public") || // exclude non-public methods
+				   (!dtor && n.HasValue ("overrides") && klass.BaseClasses [0].Node.CheckValueList ("members", n.Attributes ["overrides"])) || // excl. virtual methods from primary base (except dtor)
+				   (!n.IsTrue ("extern") && !n.IsTrue ("inline")))
 					continue;
 
 				string name = dtor ? "Destruct" : n.Name;
@@ -243,7 +242,7 @@ public class Generator
 						IsDestructor = dtor
 				};
 
-				if (dtor)
+				if (dtor || method.IsArtificial)
 					method.GenWrapperMethod = false;
 
 				bool skip = false;
@@ -477,7 +476,7 @@ public class Generator
 		Directory.CreateDirectory (OutputDir);
 
 		Provider = new CSharpCodeProvider ();
-		CodeGenOptions = new CodeGeneratorOptions { BlankLinesBetweenMembers = false };
+		CodeGenOptions = new CodeGeneratorOptions { BlankLinesBetweenMembers = false, IndentString = "\t" };
 
 		CodeTypeDeclaration libDecl = null;
 

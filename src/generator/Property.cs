@@ -62,7 +62,19 @@ class Property
 			p.GetStatements.Add (new CodeMethodReturnStatement (new CodeMethodInvokeExpression (new CodeMethodReferenceExpression (new CodeFieldReferenceExpression (null, "impl"), GetMethod.Name), new CodeExpression [] { new CodeFieldReferenceExpression (null, "Native") })));
 		}
 		if (SetMethod != null) {
-			p.SetStatements.Add (new CodeMethodInvokeExpression (new CodeMethodReferenceExpression (new CodeFieldReferenceExpression (null, "impl"), SetMethod.Name), new CodeExpression [] { new CodeFieldReferenceExpression (null, "Native"), new CodeArgumentReferenceExpression ("value") }));
+			p.SetStatements.Add (new CodeMethodInvokeExpression (new CodeMethodReferenceExpression (new CodeFieldReferenceExpression (null, "impl"), SetMethod.Name), new CodeExpression [] { new CodeFieldReferenceExpression (null, "Native"), new CodePropertySetValueReferenceExpression () }));
+		}
+		return p;
+	}
+
+	public CodeMemberProperty GenerateInheritedProperty (Generator g, Class baseClass) {
+		var p = new CodeMemberProperty () { Name = Name, Attributes = MemberAttributes.Public|MemberAttributes.Final };
+		p.Type = g.CppTypeToCodeDomType (Type);
+		if (GetMethod != null) {
+			p.GetStatements.Add (new CodeMethodReturnStatement (new CodePropertyReferenceExpression (new CodeCastExpression (baseClass.Name, new CodeThisReferenceExpression ()), GetMethod.Name)));
+		}
+		if (SetMethod != null) {
+			p.SetStatements.Add (new CodeAssignStatement (new CodePropertyReferenceExpression (new CodeCastExpression (baseClass.Name, new CodeThisReferenceExpression ()), SetMethod.Name), new CodePropertySetValueReferenceExpression ()));
 		}
 		return p;
 	}
