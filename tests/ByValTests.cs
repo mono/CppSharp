@@ -6,10 +6,10 @@ using Tests.Support;
 namespace Tests {
 
 	[TestFixture]
-	public class AbiTests {
+	public class ByValTests {
 
 		[Test]
-		public void test_0_class_return ()
+		public void TestClassReturn ()
 		{
 			// Section 3.1.4:
 			// Classes with non-default copy ctors/destructors are returned using a hidden
@@ -27,7 +27,7 @@ namespace Tests {
 
 		// An object as ref argument
 		[Test]
-		public void test_0_class_arg ()
+		public void TestClassArg ()
 		{
 			var c1 = new Class (4);
 			var c2 = new Class (5);
@@ -38,7 +38,7 @@ namespace Tests {
 
 		// A null object as ref argument
 		[Test]
-		public void test_0_class_arg_null ()
+		public void TestClassArgNull ()
 		{
 			var c1 = new Class (4);
 			Assert.That (c1.IsNull (null), "#1");
@@ -46,7 +46,7 @@ namespace Tests {
 
 		// An object as byval argument
 		[Test]
-		public void test_0_class_arg_byval ()
+		public void TestClassArgByval ()
 		{
 			var c1 = new Class (4);
 			var c2 = new Class (5);
@@ -58,7 +58,7 @@ namespace Tests {
 		// A null object as byval argument
 		[Test]
 		[ExpectedException (typeof (ArgumentException))]
-		public void test_0_class_arg_byval_null ()
+		public void TestClassArgByvalNull ()
 		{
 			var c1 = new Class (4);
 			c1.CopyFromValue (null);

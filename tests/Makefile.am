@@ -6,41 +6,47 @@ INTEROP_DLL = \
 
 TEST_DLL = $(BUILD_DIR)/Test.dll
 
-HDR = \
-	Native/ByValTests.h
-
 NATIVE = \
-	Native/NUnit.cpp \
-	Native/ByValTests.cpp
+	ByValTests \
+	VirtualTests
 
 MANAGED =  \
 	ByValTests.cs \
 	Support/CppMockObject.cs \
-	Support/CppNUnitAsserts.cs
+	Support/CppNUnitAsserts.cs \
+	VirtualTests.cs
 	
 REFERENCES =  \
 	-pkg:mono-nunit
 
+NATIVE_SRC = \
+ 	$(addprefix Native/,$(NATIVE))
+
 all: $(TEST_DLL)
 
-test.xml: $(HDR)
-	gccxml -fxml=$@ --gccxml-cxxflags -c $(HDR)
+%.cpp: %.h
 
-$(BUILD_DIR)/libTest.so: $(HEADERS) $(NATIVE)
-	g++ -fPIC --shared -m32 -o $@ $(NATIVE)
+%.xml: $(addsuffix .h,$(NATIVE_SRC))
+	gccxml -fxml=$@ --gccxml-cxxflags -c Native/$*.h
 
-$(BUILD_DIR)/libTest-inline.so: $(HEADERS) $(NATIVE)
-	g++ -fPIC --shared -m32 -fkeep-inline-functions -o $@ $(NATIVE)
+$(BUILD_DIR)/libTest.so: $(addsuffix .cpp,$(NATIVE_SRC))
+	$(CXX) -fPIC --shared -m32 -o $@ $^
 
-generated: test.xml
+$(BUILD_DIR)/libTest-inline.so: $(addsuffix .cpp,$(NATIVE_SRC))
+	$(CXX) -fPIC --shared -m32 -fkeep-inline-functions -o $@ $^
+
+generated: $(addsuffix .xml,$(NATIVE))
 	$(RM) -r generated
-	mono --debug $(BUILD_DIR)/generator.exe -o=$@ -ns=Tests -lib=Test -inline=surrogatelib test.xml
+	$(foreach X,$?, \
+		mono --debug $(BUILD_DIR)/generator.exe -o=$@ -ns=Tests -lib=Test -inline=surrogatelib $(X) && \
+	) \
+	echo Bindings generated successfully.
 
 $(TEST_DLL): generated $(MANAGED) $(BUILD_DIR)/libTest.so $(BUILD_DIR)/libTest-inline.so
 	mcs -debug -out:$@ -target:library -unsafe $(REFERENCES) -r:$(INTEROP_DLL) generated/*.cs $(MANAGED)
 
 clean:
-	$(RM) -rf $(TEST_DLL) generated $(BUILD_DIR)/libTest.so $(BUILD_DIR)/libTest-inline.so test.xml
+	$(RM) -rf $(TEST_DLL) generated $(BUILD_DIR)/libTest.so $(BUILD_DIR)/libTest-inline.so $(addsuffix .xml,$(NATIVE))
 
 run: $(TEST_DLL)
 	nunit-console -nologo $(TEST_DLL)

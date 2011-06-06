@@ -53,6 +53,7 @@
     <Compile Include="Support\CppMockObject.cs" />
     <Compile Include="Support\CppNUnitAsserts.cs" />
     <Compile Include="ByValTests.cs" />
+    <Compile Include="VirtualTests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -71,6 +72,8 @@
     <None Include="Native\NUnit.h" />
     <None Include="Native\ByValTests.cpp" />
     <None Include="Native\ByValTests.h" />
+    <None Include="Native\VirtualTests.h" />
+    <None Include="Native\VirtualTests.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
