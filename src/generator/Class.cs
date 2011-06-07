@@ -119,26 +119,37 @@ class Class
 			decl.Members.Add (ptrField);
 		}
 
+		var implTypeInfo = new CodeFieldReferenceExpression (new CodeFieldReferenceExpression { FieldName = "impl" }, "TypeInfo");
+		CodeStatement [] initNonPrimaryBases = null;
+		if (BaseClasses.Count > 1) {
+			initNonPrimaryBases = new CodeStatement [BaseClasses.Count - 1];
+			for (var i = 1; i <= initNonPrimaryBases.Length; i++) {
+				initNonPrimaryBases [i - 1] = new CodeExpressionStatement (new CodeObjectCreateExpression (BaseClasses [i].Name, implTypeInfo));
+			}
+		}
+
 		var nativeCtor = new CodeConstructor () {
 			Attributes = MemberAttributes.Public
 		};
+		if (hasBase) {
+			nativeCtor.BaseConstructorArgs.Add (implTypeInfo);
+			if (initNonPrimaryBases != null)
+				nativeCtor.Statements.AddRange (initNonPrimaryBases);
+		}
 		nativeCtor.Parameters.Add (new CodeParameterDeclarationExpression (new CodeTypeReference ("CppInstancePtr"), "native"));
 		nativeCtor.Statements.Add (new CodeAssignStatement (new CodeFieldReferenceExpression (null, "native_ptr"), new CodeArgumentReferenceExpression ("native")));
-		if (hasBase) {
-			var implTypeInfo = new CodeFieldReferenceExpression (new CodeFieldReferenceExpression { FieldName = "impl" }, "TypeInfo");
-			nativeCtor.BaseConstructorArgs.Add (implTypeInfo);
-		}
 		decl.Members.Add (nativeCtor);
 
 		var subclassCtor = new CodeConstructor () {
 				Attributes = MemberAttributes.Public
 		};
+		if (hasBase) {
+			subclassCtor.BaseConstructorArgs.Add (implTypeInfo);
+			if (initNonPrimaryBases != null)
+				subclassCtor.Statements.AddRange (initNonPrimaryBases);
+		}
 		subclassCtor.Parameters.Add (new CodeParameterDeclarationExpression (new CodeTypeReference ("CppTypeInfo"), "subClass"));
 		subclassCtor.Statements.Add (new CodeExpressionStatement (new CodeMethodInvokeExpression (new CodeMethodReferenceExpression (new CodeArgumentReferenceExpression ("subClass"), "AddBase"), new CodeExpression [] { new CodeFieldReferenceExpression (new CodeFieldReferenceExpression (null, "impl"), "TypeInfo") })));
-		if (hasBase) {
-			var implTypeInfo = new CodeFieldReferenceExpression (new CodeFieldReferenceExpression { FieldName = "impl" }, "TypeInfo");
-			subclassCtor.BaseConstructorArgs.Add (implTypeInfo);
-		}
 		decl.Members.Add (subclassCtor);
 
 		if (!hasBase) {
@@ -155,6 +166,8 @@ class Class
 				Name = "Dispose",
 				Attributes = MemberAttributes.Public
 		};
+		if (hasBase)
+			disposeMethod.Attributes |= MemberAttributes.Override;
 		if (Methods.Any (m => m.IsDestructor))
 			disposeMethod.Statements.Add (new CodeExpressionStatement (new CodeMethodInvokeExpression (new CodeMethodReferenceExpression (new CodeFieldReferenceExpression (null, "impl"), "Destruct"), new CodeExpression [] { new CodeFieldReferenceExpression (null, "Native") })));
 		disposeMethod.Statements.Add (new CodeExpressionStatement (new CodeMethodInvokeExpression (new CodeMethodReferenceExpression (new CodeFieldReferenceExpression (null, "Native"), "Dispose"))));
@@ -166,8 +179,11 @@ class Class
 			if (m.GenWrapperMethod) {
 				var cm = m.GenerateWrapperMethod (g);
 				if (m.IsConstructor && hasBase) {
-					var implTypeInfo = new CodeFieldReferenceExpression (new CodeFieldReferenceExpression { FieldName = "impl" }, "TypeInfo");
 					(cm as CodeConstructor).BaseConstructorArgs.Add (implTypeInfo);
+					if (initNonPrimaryBases != null) {
+						foreach (var init in initNonPrimaryBases.Reverse ())
+							cm.Statements.Insert (0, init);
+					}
 				}
 				decl.Members.Add (cm);
 			}
