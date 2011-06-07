@@ -91,7 +91,7 @@ namespace Mono.VisualC.Interop {
 			BaseVTableSlots = 0;
 			TypeComplete = false;
 
-			native_size = Marshal.SizeOf (nativeLayout);
+			native_size = nativeLayout.GetFields ().Any ()? Marshal.SizeOf (nativeLayout) : 0;
 			field_offset_padding_without_vtptr = 0;
 
 			lazy_vtable = null;
@@ -104,19 +104,21 @@ namespace Mono.VisualC.Interop {
 		public virtual void AddBase (CppTypeInfo baseType)
 		{
 
-			// by default, do not add another vtable pointer for this new base class
+			// by default, do not add another vtable for this new base class
 			AddBase (baseType, false);
 		}
 
-		protected virtual void AddBase (CppTypeInfo baseType, bool addVTablePointer)
+		protected virtual void AddBase (CppTypeInfo baseType, bool addVTable)
 		{
 			if (TypeComplete)
 				return;
 
 			base_classes.Add (baseType);
 
-			if (!addVTablePointer) {
-				// If we're not adding a vtptr, then all this base class's virtual methods go in primary vtable
+			bool addVTablePointer = addVTable || base_classes.Count > 1;
+
+			if (!addVTable) {
+				// If we're not adding a new vtable, then all this base class's virtual methods go in primary vtable
 				// Skew the offsets of this subclass's vmethods to account for the new base vmethods.
 
 				int newVirtualMethodCount = baseType.virtual_methods.Count;
@@ -126,6 +128,9 @@ namespace Mono.VisualC.Interop {
 				BaseVTableSlots += newVirtualMethodCount;
 				vt_delegate_types.PrependLast (baseType.vt_delegate_types);
 				vt_overrides.PrependLast (baseType.vt_overrides);
+
+			} else {
+				// FIXME: Implement this when we get around to msvc again ?
 			}
 
 			field_offset_padding_without_vtptr += baseType.native_size +
@@ -135,7 +140,32 @@ namespace Mono.VisualC.Interop {
 		public virtual TBase Cast<TBase> (ICppObject instance)
 			where TBase : ICppObject
 		{
-			throw new NotImplementedException ();
+			var targetType = typeof (TBase);
+			var found = false;
+			int offset = 0;
+
+			foreach (var baseClass in base_classes) {
+				if (baseClass.WrapperType.Equals (targetType)) {
+					found = true;
+					break;
+				}
+
+				offset += baseClass.NativeSize;
+			}
+
+			if (!found)
+				throw new InvalidCastException ("Cannot cast an instance of " + instance.GetType () + " to " + targetType);
+
+			// Construct a new targetType wrapper, passing in our offset this ptr.
+			// FIXME: If the object was alloc'd by managed code, the allocating wrapper (i.e. "instance") will still free the memory when
+			//  it is Disposed, even if wrappers created here still exist and are pointing to it. :/
+			// The casted wrapper created here may be Disposed safely though.
+			// FIXME: On NET_4_0 use IntPtr.Add
+			var cppip = new CppInstancePtr (new IntPtr (instance.Native.Native.ToInt64 () + offset));
+
+			// Ugh, this requires boxing of cppip AND some slow reflection.. please cache the result of this!
+			// FIXME: Perhaps Reflection.Emit all possible base casts and eliminate this beast?
+			return (TBase)Activator.CreateInstance (targetType, cppip);
 		}
 
 		public int CountBases (Func<CppTypeInfo, bool> predicate)
@@ -157,24 +187,30 @@ namespace Mono.VisualC.Interop {
 				baseClass.CompleteType ();
 
 			TypeComplete = true;
-			RemoveVTableDuplicates (ms => true);
+
+			// Tthis predicate ensures that duplicates are only removed
+			// if declared in different classes (i.e. overridden methods).
+			// We usually want to allow the same exact virtual methods to appear
+			// multiple times, in the case of nonvirtual diamond inheritance, for example.
+			RemoveVTableDuplicates ((pi1, pi2) => !pi1.OrigMethod.Equals (pi2.OrigMethod));
 		}
 
-		protected virtual void RemoveVTableDuplicates (Predicate<MethodSignature> pred)
+		protected virtual void RemoveVTableDuplicates (Func<PInvokeSignature,PInvokeSignature,bool> pred)
 		{
 			// check that any virtual methods overridden in a subclass are only included once
-			var vsignatures = new HashSet<MethodSignature> ();
+			var vsignatures = new Dictionary<MethodSignature,PInvokeSignature> (MethodSignature.EqualityComparer);
 
 			for (int i = 0; i < virtual_methods.Count; i++) {
 				var sig = virtual_methods [i];
 				if (sig == null)
 					continue;
 
-				if (vsignatures.Contains (sig)) {
-					if (pred (sig))
+				PInvokeSignature existing;
+				if (vsignatures.TryGetValue (sig, out existing)) {
+					if (pred (sig, existing))
 						virtual_methods.RemoveAt (i--);
 				} else {
-					vsignatures.Add (sig);
+					vsignatures.Add (sig, sig);
 				}
 			}
 		}
@@ -183,8 +219,6 @@ namespace Mono.VisualC.Interop {
 		{
 			return VTable.GetVirtualCallDelegate<T> (native, BaseVTableSlots + derivedVirtualMethodIndex);
 		}
-
-		//public virtual long GetFieldOffset (
 
 		public virtual VTable VTable {
 			get {

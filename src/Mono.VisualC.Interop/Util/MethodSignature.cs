@@ -92,6 +92,8 @@ namespace Mono.VisualC.Interop.Util {
 	}
 
 	public class MethodSignature : BasicSignature {
+		public static readonly IEqualityComparer<MethodSignature> EqualityComparer = new MethodSignatureEqualityComparer ();
+
 		public string Name { get; set; }
 		public MethodType Type { get; set; }
 
@@ -116,6 +118,16 @@ namespace Mono.VisualC.Interop.Util {
 			}
 		}
 
+		private class MethodSignatureEqualityComparer : IEqualityComparer<MethodSignature> {
+			public bool Equals (MethodSignature x, MethodSignature y)
+			{
+				return x.Equals (y);
+			}
+			public int GetHashCode (MethodSignature obj)
+			{
+				return obj.GetHashCode ();
+			}
+		}
 	}
 
 	public class PInvokeSignature : MethodSignature {

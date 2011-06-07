@@ -80,6 +80,7 @@
     <Compile Include="ABI\Impl\MsvcTypeInfo.cs" />
     <Compile Include="Util\MethodSignature.cs" />
     <Compile Include="CppModifiers.cs" />
+    <Compile Include="ABI\Impl\ItaniumTypeInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

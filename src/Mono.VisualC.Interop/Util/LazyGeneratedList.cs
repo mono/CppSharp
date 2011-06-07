@@ -34,11 +34,36 @@ namespace Mono.VisualC.Interop.Util {
 
 	public class LazyGeneratedList<TItem> : IList<TItem> where TItem : class {
 
+		private class Node<TItem> where TItem : class {
+
+			public LazyGeneratedList<TItem> List { get; set; }
+			public Node<TItem> Next { get; set; }
+			public Node (LazyGeneratedList<TItem> list, Node<TItem> next)
+			{
+				this.List = list;
+				this.Next = next;
+			}
+			public void AppendNext (Node<TItem> node)
+			{
+				if (Next == null)
+					Next = node;
+				else
+					Next.AppendNext (node);
+			}
+			public TItem this [int index] {
+				get {
+					if (index >= List.Count)
+						return Next [index - List.Count];
+					return List [index];
+				}
+			}
+		}
+
 		private TItem [] cache;
 		private Func<int, TItem> generator;
 
-		private LazyGeneratedList<TItem> previous;
-		private LazyGeneratedList<TItem> next;
+		private Node<TItem> previous;
+		private Node<TItem> next;
 		private int lead, content, follow;
 
 		private HashSet<int> removed;
@@ -112,39 +137,35 @@ namespace Mono.VisualC.Interop.Util {
 		public void AppendFirst (LazyGeneratedList<TItem> list)
 		{
 			follow += list.Count;
-			if (next != null)
-				list.AppendLast (next);
-
-			next = list;
+			next = new Node<TItem> (list, next);
 		}
 
 		public void AppendLast (LazyGeneratedList<TItem> list)
 		{
+			var node = new Node<TItem> (list, null);
 			if (next == null)
-				next = list;
+				next = node;
 			else
-				next.AppendLast (list);
+				next.AppendNext (node);
 
 			follow += list.Count;
 		}
 
-		public void PrependFirst (LazyGeneratedList<TItem> list)
+		public void PrependLast (LazyGeneratedList<TItem> list)
 		{
+			var node = new Node<TItem> (list, null);
 			if (previous == null)
-				previous = list;
+				previous = node;
 			else
-				previous.PrependFirst (list);
+				previous.AppendNext (node);
 
 			lead += list.Count;
 		}
 
-		public void PrependLast (LazyGeneratedList<TItem> list)
+		public void PrependFirst (LazyGeneratedList<TItem> list)
 		{
 			lead += list.Count;
-			if (previous != null)
-				list.PrependFirst (previous);
-
-			previous = list;
+			previous = new Node<TItem> (list, previous);
 		}
 
 		// FIXME: Should probably implement these 3 at some point

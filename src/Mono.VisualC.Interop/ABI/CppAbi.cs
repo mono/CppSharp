@@ -343,6 +343,9 @@ namespace Mono.VisualC.Interop.ABI {
 				return null;
 
 			var sig = typeInfo.VirtualMethods [vtableIndex];
+			if (sig == null)
+				return null;
+
 			var interfaceMethod = sig.OrigMethod;
 			var targetMethod = FindManagedOverrideTarget (interfaceMethod);
 			if (targetMethod == null)

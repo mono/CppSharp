@@ -55,7 +55,7 @@ namespace Mono.VisualC.Interop.ABI {
 
 		protected override CppTypeInfo MakeTypeInfo (IEnumerable<PInvokeSignature> methods)
 		{
-			return new CppTypeInfo (this, GetVirtualMethodSlots (methods), layout_type, wrapper_type);
+			return new ItaniumTypeInfo (this, GetVirtualMethodSlots (methods), layout_type, wrapper_type);
 		}
 
 		private IEnumerable<PInvokeSignature> GetVirtualMethodSlots (IEnumerable<PInvokeSignature> methods)
