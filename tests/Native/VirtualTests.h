@@ -4,8 +4,9 @@ protected:
 	int num;
 public:
 	NumberClass (int n);
-	virtual int Number () const;
 	virtual int NegativeNumber () const;
+	virtual int Number () const;
+	virtual ~NumberClass ();
 };
 
 class AdderClass : public NumberClass {
@@ -48,4 +49,5 @@ protected:
 public:
 	ClassThatOverridesStuff (int num, int my);
 	virtual int Number () const;
+	virtual int BaseNumber () const;
 };

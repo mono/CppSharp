@@ -11,7 +11,11 @@ int NumberClass::Number () const
 }
 int NumberClass::NegativeNumber () const
 {
-	return -(this->num);
+	return -(this->Number ());
+}
+NumberClass::~NumberClass ()
+{
+	this->num = 0;
 }
 
 
@@ -60,4 +64,8 @@ ClassThatOverridesStuff::ClassThatOverridesStuff (int num, int my)
 int ClassThatOverridesStuff::Number () const
 {
 	return this->myNum;
+}
+int ClassThatOverridesStuff::BaseNumber () const
+{
+	return this->NumberClass::Number ();
 }

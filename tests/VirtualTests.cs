@@ -74,7 +74,8 @@ namespace Tests {
 			var cls = new ClassThatOverridesStuff (5, 3);
 			Assert.AreEqual (3, cls.Number, "#1");
 			Assert.AreEqual (3, ((NumberClass)cls).Number, "#2");
-			Assert.AreEqual (-5, cls.NegativeNumber, "#3");
+			Assert.AreEqual (-3, cls.NegativeNumber, "#3");
+			Assert.AreEqual (5, cls.BaseNumber, "#4");
 		}
 
 
