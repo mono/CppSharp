@@ -61,8 +61,6 @@ src/Mono.VisualC.Interop/mono.visualc.interop.pc
 src/Mono.VisualC.Interop/Makefile
 src/QtBindings/qtbindings.pc
 src/QtBindings/Makefile
-src/Mono.VisualC.Code/mono.visualc.code.pc
-src/Mono.VisualC.Code/Makefile
 src/generator/generator
 src/generator/Makefile
 src/qt/Makefile
