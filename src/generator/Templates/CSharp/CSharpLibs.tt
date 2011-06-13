@@ -1,0 +1,19 @@
+﻿<#@ template language="C#" inherits="Base" #>
+// -------------------------------------------------------------------------
+//  C++ libarary declarations
+//  Generated on <#= DateTime.Now #>
+//
+//  This file was auto generated. Do not edit.
+// -------------------------------------------------------------------------
+
+using System;
+using Mono.VisualC.Interop;
+
+namespace <#= Generator.Namespace #> {
+
+	public static partial class Libs {
+
+		public static readonly CppLibrary <#= Generator.LibBaseName #> = new CppLibrary ("<#= Generator.LibBaseName #>", InlineMethods.<#= Generator.InlinePolicy.ToString () #>);
+
+	}
+}

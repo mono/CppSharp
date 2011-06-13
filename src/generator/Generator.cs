@@ -9,34 +9,51 @@ using System.Collections.Generic;
 using System.Xml;
 using System.Linq;
 using System.Reflection;
-using System.CodeDom;
-using System.CodeDom.Compiler;
-using Microsoft.CSharp;
 
+using Templates;
 using NDesk.Options;
-
 using Mono.VisualC.Interop;
 
-public class Generator
-{
-	// Command line arguments
-	string OutputDir;
-	string Namespace;
-	string LibBaseName;
-	string InputFileName;
-	string FilterFile;
-	InlineMethods InlinePolicy;
+public class Generator {
 
-	CodeDomProvider Provider;
-	CodeGeneratorOptions CodeGenOptions;
+	// Command line arguments
+	public string OutputDir { get; set; }
+	public string Namespace { get; set; }
+	public string LibBaseName { get; set; }
+	public string InputFileName { get; set; }
+	public string FilterFile { get; set; }
+	public InlineMethods InlinePolicy { get; set; }
 
 	// Classes to generate code for
-	Dictionary<string, string> Filters;
+	public List<Class> Classes { get; set; }
+	public Dictionary<Node, Class> NodeToClass { get; set; }
+	public Dictionary<string, string> Filters { get; set; }
+
+	// Code templates
+	public ITemplate Libs { get; set; }
+	public ITemplate Class { get; set; }
 
 	public static int Main (String[] args) {
 		var generator = new Generator ();
 		generator.Run (args);
 		return 0;
+	}
+
+	void Run (String[] args) {
+		if (ParseArguments (args) != 0) {
+			Environment.Exit (1);
+		}
+
+		Node root = LoadXml (InputFileName);
+
+		if (FilterFile != null)
+			LoadFilters (FilterFile);
+
+		CreateClasses (root);
+
+		CreateMethods ();
+
+		GenerateCode ();
 	}
 
 	int ParseArguments (String[] args) {
@@ -68,6 +85,10 @@ public class Generator
 			return 1;
 		}
 
+		// Code templates
+		Libs = new CSharpLibs ();
+		Class = new CSharpClass ();
+
 		InputFileName = args [0];
 
 		if (LibBaseName == null) {
@@ -79,23 +100,6 @@ public class Generator
 			OutputDir = "output";
 
 		return 0;
-	}
-
-	void Run (String[] args) {
-		if (ParseArguments (args) != 0) {
-			Environment.Exit (1);
-		}
-
-		Node root = LoadXml (InputFileName);
-
-		if (FilterFile != null)
-			LoadFilters (FilterFile);
-
-		CreateClasses (root);
-
-		CreateMethods ();
-
-		GenerateCode ();
 	}
 
 	Node LoadXml (string file) {
@@ -149,9 +153,6 @@ public class Generator
 			Filters [s] = s;
 		}
 	}
-
-	List<Class> Classes;
-	Dictionary<Node, Class> NodeToClass;
 
 	void CreateClasses (Node root) {
 		List<Node> classNodes = root.Children.Where (o => o.Type == "Class" || o.Type == "Struct").ToList ();
@@ -207,9 +208,7 @@ public class Generator
 						fieldName = n.Name;
 					else
 						fieldName = "field" + fieldCount++;
-					if (CppTypeToCodeDomType (fieldType) == null)
-						// FIXME: Assume IntPtr
-						fieldType = ((CppType)CppTypes.Void).Modify (CppModifiers.Pointer);
+
 					klass.Fields.Add (new Field (fieldName, fieldType));
 					break;
 				case "Constructor":
@@ -254,7 +253,7 @@ public class Generator
 					retType = CppTypes.Void;
 				if (retType.ElementType == CppTypes.Unknown)
 					skip = true;
-				if (CppTypeToCodeDomType (retType) == null) {
+				if (CppTypeToManaged (retType) == null) {
 					//Console.WriteLine ("\t\tS: " + retType);
 					skip = true;
 				}
@@ -276,7 +275,7 @@ public class Generator
 						skip = true;
 					}
 
-					if (CppTypeToCodeDomType (argtype) == null) {
+					if (CppTypeToManaged (argtype) == null) {
 						//Console.WriteLine ("\t\tS: " + argtype);
 						skip = true;
 					}
@@ -409,120 +408,46 @@ public class Generator
 		return Node.IdToNode [n.Attributes ["type"]];
 	}
 
-	// Return the CodeDom type reference corresponding to T, or null
-	public CodeTypeReference CppTypeToCodeDomType (CppType t, out bool byref) {
-		CodeTypeReference rtype = null;
+	// Return the System.Type name corresponding to T, or null
+	//  Returned as a string, because other wrappers do not have System.Types yet
+	public string CppTypeToManaged (CppType t) {
 
-		byref = false;
 		Type mtype = t.ToManagedType ();
 		if (mtype != null && mtype != typeof (ICppObject)) {
-			if (mtype.IsByRef) {
-				byref = true;
-				mtype = mtype.GetElementType ();
-			}
-			return new CodeTypeReference (mtype);
+			return mtype.FullName;
 		}
 
-		// Why is this here?
-		//if (t.Modifiers.Count > 0 && t.ElementType != CppTypes.Void && t.ElementType != CppTypes.Class)
-		//	return null;
 		switch (t.ElementType) {
-		// These cases should all be handled by ToManagedType, no?
-		/*
-		case CppTypes.Void:
-			if (t.Modifiers.Count > 0) {
-				if (t.Modifiers.Count == 1 && t.Modifiers [0] == CppModifiers.Pointer)
-					rtype = new CodeTypeReference (typeof (IntPtr));
-				else
-					return null;
-			} else {
-				rtype = new CodeTypeReference (typeof (void));
-			}
-			break;
-		case CppTypes.Bool:
-			rtype = new CodeTypeReference (typeof (bool));
-			break;
-		case CppTypes.Int:
-			rtype = new CodeTypeReference (typeof (int));
-			break;
-		case CppTypes.Float:
-			rtype = new CodeTypeReference (typeof (float));
-			break;
-		case CppTypes.Double:
-			rtype = new CodeTypeReference (typeof (double));
-			break;
-		case CppTypes.Char:
-			rtype = new CodeTypeReference (typeof (char));
-			break;
-		*/
+
 		case CppTypes.Class:
 		case CppTypes.Struct:
 			// FIXME: Full name
-			rtype = new CodeTypeReference (t.ElementTypeName);
-			break;
-		default:
-			return null;
-		}
-		return rtype;
-	}
+			return t.ElementTypeName;
 
-	public CodeTypeReference CppTypeToCodeDomType (CppType t) {
-		bool byref;
-		
-		return CppTypeToCodeDomType (t, out byref);
+		}
+
+		return null;
 	}
 
 	void GenerateCode () {
 		Directory.CreateDirectory (OutputDir);
 
-		Provider = new CSharpCodeProvider ();
-		CodeGenOptions = new CodeGeneratorOptions { BlankLinesBetweenMembers = false, IndentString = "\t" };
-
-		CodeTypeDeclaration libDecl = null;
-
-		// Generate Libs class
-		{
-			var cu = new CodeCompileUnit ();
-			var ns = new CodeNamespace (Namespace);
-			ns.Imports.Add(new CodeNamespaceImport("System"));
-			ns.Imports.Add(new CodeNamespaceImport("Mono.VisualC.Interop"));
-			cu.Namespaces.Add (ns);
-
-			var decl = new CodeTypeDeclaration ("Libs");
-
-			var field = new CodeMemberField (new CodeTypeReference ("CppLibrary"), LibBaseName);
-			field.Attributes = MemberAttributes.Public|MemberAttributes.Static;
-			field.InitExpression = new CodeObjectCreateExpression (new CodeTypeReference ("CppLibrary"), new CodeExpression [] { new CodePrimitiveExpression (LibBaseName), new CodeFieldReferenceExpression (new CodeTypeReferenceExpression (typeof (InlineMethods).Name), InlinePolicy.ToString ()) });
-			decl.Members.Add (field);
-
-			ns.Types.Add (decl);
-
-			libDecl = decl;
-
-			//Provider.GenerateCodeFromCompileUnit(cu, Console.Out, CodeGenOptions);
-			using (TextWriter w = File.CreateText (Path.Combine (OutputDir, "Libs.cs"))) {
-				Provider.GenerateCodeFromCompileUnit(cu, w, CodeGenOptions);
-			}
+		// Generate Libs file
+		using (TextWriter w = File.CreateText (Path.Combine (OutputDir, "Libs.cs"))) {
+			Libs.Generator = this;
+			w.Write (Libs.TransformText ());
 		}
+
 
 		// Generate user classes
 		foreach (Class klass in Classes) {
 			if (klass.Disable)
 				continue;
 
-			var cu = new CodeCompileUnit ();
-			var ns = new CodeNamespace (Namespace);
-			ns.Imports.Add(new CodeNamespaceImport("System"));
-			ns.Imports.Add(new CodeNamespaceImport("Mono.VisualC.Interop"));
-			cu.Namespaces.Add (ns);
-
-			ns.Types.Add (klass.GenerateClass (this, libDecl, LibBaseName));
-
-			//Provider.GenerateCodeFromCompileUnit(cu, Console.Out, CodeGenOptions);
 			using (TextWriter w = File.CreateText (Path.Combine (OutputDir, klass.Name + ".cs"))) {
-				// These are reported for the fields of the native layout structures
-				//Provider.GenerateCodeFromCompileUnit (new CodeSnippetCompileUnit("#pragma warning disable 0414, 0169"), w, CodeGenOptions);
-				Provider.GenerateCodeFromCompileUnit(cu, w, CodeGenOptions);
+				Class.Generator = this;
+				Class.Class = klass;
+				w.Write (Class.TransformText ());
 			}
 		}
 	}

@@ -55,7 +55,11 @@ FILES =  \
 	Node.cs \
 	Options.cs \
 	Parameter.cs \
-	Property.cs
+	Property.cs \
+	Templates/Base.cs \
+	Templates/BaseMembers.cs \
+	Templates/CSharp/CSharpClass.cs \
+	Templates/CSharp/CSharpLibs.cs
 
 DATA_FILES = 
 

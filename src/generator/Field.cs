@@ -34,8 +34,8 @@ using System.CodeDom.Compiler;
 
 using Mono.VisualC.Interop;
 
-class Field
-{
+public class Field {
+
 	public Field (string name, CppType type) {
 		Name = name;
 		Type = type;

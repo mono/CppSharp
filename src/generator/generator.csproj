@@ -7,7 +7,6 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{AD0F9378-789C-4AF1-B0DD-6DD9A63C3401}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>generator</RootNamespace>
     <AssemblyName>generator</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileUpgradeFlags>
@@ -30,6 +29,7 @@
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <RootNamespace>Templates</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -58,6 +58,16 @@
     <Compile Include="Node.cs" />
     <Compile Include="Parameter.cs" />
     <Compile Include="Property.cs" />
+    <Compile Include="Templates\Base.cs">
+      <DependentUpon>Base.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\BaseMembers.cs" />
+    <Compile Include="Templates\CSharp\CSharpClass.cs">
+      <DependentUpon>CSharpClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\CSharp\CSharpLibs.cs">
+      <DependentUpon>CSharpLibs.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System">
@@ -67,10 +77,6 @@
     <Reference Include="System.Xml.Linq">
     </Reference>
     <Reference Include="System.Core" />
-    <Reference Include="Mono.VisualC.Interop, Version=1.0.4180.30887, Culture=neutral, PublicKeyToken=null">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\Debug\Mono.VisualC.Interop.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -105,4 +111,28 @@
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
+  <ItemGroup>
+    <ProjectReference Include="..\Mono.VisualC.Interop\Mono.VisualC.Interop.csproj">
+      <Project>{4A864586-93C5-4DC1-8A80-F094A88506D7}</Project>
+      <Name>Mono.VisualC.Interop</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Templates\Base.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>Base.cs</LastGenOutput>
+    </None>
+    <None Include="Templates\CSharp\CSharpClass.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>CSharpClass.cs</LastGenOutput>
+    </None>
+    <None Include="Templates\CSharp\CSharpLibs.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>CSharpLibs.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Templates\" />
+    <Folder Include="Templates\CSharp\" />
+  </ItemGroup>
 </Project>

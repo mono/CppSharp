@@ -36,7 +36,7 @@ using System.Collections.Generic;
 //
 // This class represents an XML node read from the output of gccxml
 //
-class Node {
+public class Node {
 
 	// The XML element type
 	public string Type {

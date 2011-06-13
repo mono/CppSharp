@@ -28,14 +28,14 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Linq;
-using System.CodeDom;
-using System.CodeDom.Compiler;
 
-class Class
-{
+using Templates;
+
+public class Class {
+
 	public Class (Node n) {
 		Node = n;
 		BaseClasses = new List<Class> ();
@@ -74,150 +74,4 @@ class Class
 		get; set;
 	}
 
-	public CodeTypeDeclaration GenerateClass (Generator g, CodeTypeDeclaration libDecl, string libFieldName) {
-		var decl = new CodeTypeDeclaration (Name);
-		var hasBase = BaseClasses.Count > 0;
-		decl.IsPartial = true;
-
-		if (hasBase)
-			decl.BaseTypes.Add (new CodeTypeReference (BaseClasses [0].Name));
-		else
-			decl.BaseTypes.Add (new CodeTypeReference ("ICppObject"));
-
-		var layout = new CodeTypeDeclaration ("_" + Name) {
-			IsStruct = true,
-			TypeAttributes = TypeAttributes.NotPublic
-		};
-		decl.Members.Add (layout);
-
-		foreach (var f in Fields) {
-			var field = new CodeMemberField {
-				Name = f.Name,
-				Type = g.CppTypeToCodeDomType (f.Type),
-				Attributes = MemberAttributes.Public
-			};
-			layout.Members.Add (field);
-		}
-
-		var iface = new CodeTypeDeclaration ("I" + Name);
-		iface.IsInterface = true;
-		iface.BaseTypes.Add (new CodeTypeReference ("ICppClassOverridable", new CodeTypeReference [] { new CodeTypeReference (decl.Name) }));
-		decl.Members.Add (iface);
-
-		var implField = new CodeMemberField (new CodeTypeReference (iface.Name), "impl") {
-			Attributes = MemberAttributes.Private | MemberAttributes.Static
-		};
-		var getclass = new CodeMethodReferenceExpression (new CodeFieldReferenceExpression (new CodeTypeReferenceExpression (libDecl.Name), libFieldName), "GetClass", new CodeTypeReference [] { new CodeTypeReference (iface.Name), new CodeTypeReference (layout.Name), new CodeTypeReference (decl.Name) });
-		implField.InitExpression = new CodeMethodInvokeExpression (getclass, new CodeExpression [] { new CodePrimitiveExpression (Name) });
-		decl.Members.Add (implField);
-		//private static IClass impl = global::CppTests.Libs.Test.GetClass <IClass, _Class, Class>("Class");
-
-		if (!hasBase) {
-			var ptrField = new CodeMemberField (new CodeTypeReference ("CppInstancePtr"), "native_ptr") {
-				Attributes = MemberAttributes.Family
-			};
-			decl.Members.Add (ptrField);
-		}
-
-		var implTypeInfo = new CodeFieldReferenceExpression (new CodeFieldReferenceExpression { FieldName = "impl" }, "TypeInfo");
-		CodeStatement [] initNonPrimaryBases = null;
-		if (BaseClasses.Count > 1) {
-			initNonPrimaryBases = new CodeStatement [BaseClasses.Count - 1];
-			for (var i = 1; i <= initNonPrimaryBases.Length; i++) {
-				initNonPrimaryBases [i - 1] = new CodeExpressionStatement (new CodeObjectCreateExpression (BaseClasses [i].Name, implTypeInfo));
-			}
-		}
-
-		var nativeCtor = new CodeConstructor () {
-			Attributes = MemberAttributes.Public
-		};
-		if (hasBase) {
-			nativeCtor.BaseConstructorArgs.Add (implTypeInfo);
-			if (initNonPrimaryBases != null)
-				nativeCtor.Statements.AddRange (initNonPrimaryBases);
-		}
-		nativeCtor.Parameters.Add (new CodeParameterDeclarationExpression (new CodeTypeReference ("CppInstancePtr"), "native"));
-		nativeCtor.Statements.Add (new CodeAssignStatement (new CodeFieldReferenceExpression (null, "native_ptr"), new CodeArgumentReferenceExpression ("native")));
-		decl.Members.Add (nativeCtor);
-
-		var subclassCtor = new CodeConstructor () {
-				Attributes = MemberAttributes.Public
-		};
-		if (hasBase) {
-			subclassCtor.BaseConstructorArgs.Add (implTypeInfo);
-			if (initNonPrimaryBases != null)
-				subclassCtor.Statements.AddRange (initNonPrimaryBases);
-		}
-		subclassCtor.Parameters.Add (new CodeParameterDeclarationExpression (new CodeTypeReference ("CppTypeInfo"), "subClass"));
-		subclassCtor.Statements.Add (new CodeExpressionStatement (new CodeMethodInvokeExpression (new CodeMethodReferenceExpression (new CodeArgumentReferenceExpression ("subClass"), "AddBase"), new CodeExpression [] { new CodeFieldReferenceExpression (new CodeFieldReferenceExpression (null, "impl"), "TypeInfo") })));
-		decl.Members.Add (subclassCtor);
-
-		if (!hasBase) {
-			var nativeProperty = new CodeMemberProperty () {
-				Name = "Native",
-				Type = new CodeTypeReference ("CppInstancePtr"),
-				Attributes = MemberAttributes.Public|MemberAttributes.Final
-			};
-			nativeProperty.GetStatements.Add (new CodeMethodReturnStatement (new CodeFieldReferenceExpression (new CodeThisReferenceExpression (), "native_ptr")));
-			decl.Members.Add (nativeProperty);
-		}
-
-		var disposeMethod = new CodeMemberMethod () {
-				Name = "Dispose",
-				Attributes = MemberAttributes.Public
-		};
-		if (hasBase)
-			disposeMethod.Attributes |= MemberAttributes.Override;
-		if (Methods.Any (m => m.IsDestructor))
-			disposeMethod.Statements.Add (new CodeExpressionStatement (new CodeMethodInvokeExpression (new CodeMethodReferenceExpression (new CodeFieldReferenceExpression (null, "impl"), "Destruct"), new CodeExpression [] { new CodeFieldReferenceExpression (null, "Native") })));
-		disposeMethod.Statements.Add (new CodeExpressionStatement (new CodeMethodInvokeExpression (new CodeMethodReferenceExpression (new CodeFieldReferenceExpression (null, "Native"), "Dispose"))));
-		decl.Members.Add (disposeMethod);
-
-		foreach (Method m in Methods) {
-			iface.Members.Add (m.GenerateIFaceMethod (g));
-
-			if (m.GenWrapperMethod) {
-				var cm = m.GenerateWrapperMethod (g);
-				if (m.IsConstructor && hasBase) {
-					(cm as CodeConstructor).BaseConstructorArgs.Add (implTypeInfo);
-					if (initNonPrimaryBases != null) {
-						foreach (var init in initNonPrimaryBases.Reverse ())
-							cm.Statements.Insert (0, init);
-					}
-				}
-				decl.Members.Add (cm);
-			}
-		}
-
-		// Add all members inherited from non-primary bases
-		// With the exception of virtual methods that have been overridden, these methods must be called
-		//  thru a cast to the base class that performs a this ptr adjustment
-		foreach (var baseClass in BaseClasses.Skip (1)) {
-			foreach (var method in baseClass.Methods) {
-				if (method.IsConstructor || (method.IsVirtual && Methods.Any (m => m.Node.CheckValue ("overrides", method.Node.Id))))
-					continue;
-
-				if (method.GenWrapperMethod)
-					decl.Members.Add (method.GenerateInheritedWrapperMethod (g, baseClass));
-			}
-			foreach (var prop in baseClass.Properties) {
-				decl.Members.Add (prop.GenerateInheritedProperty (g, baseClass));
-			}
-
-			// generate implicit cast to base class
-			// 1. Create field to cache base casts
-			decl.Members.Add (new CodeMemberField (baseClass.Name, baseClass.Name + "_base"));
-
-			// 2. Add op_Implicit
-			// FIXME: Can't figure out language-neutral way to do this with codedom.. C# only for now
-			decl.Members.Add (new CodeSnippetTypeMember (string.Format ("public static implicit operator {0}({1} subClass) {{\n\t\t\tif (subClass.{2} == null)\n\t\t\t\tsubClass.{2} = impl.TypeInfo.Cast<{0}>(subClass);\n\t\t\treturn subClass.{2};\n\t\t}}\n\t\t", baseClass.Name, Name, baseClass.Name + "_base")));
-
-		}
-
-		foreach (Property p in Properties) {
-			decl.Members.Add (p.GenerateProperty (g));
-		}
-
-		return decl;
-	}
 }

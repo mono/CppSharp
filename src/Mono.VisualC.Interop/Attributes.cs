@@ -86,7 +86,16 @@ namespace Mono.VisualC.Interop {
 
 	#region Wrapper method attributes
 	[AttributeUsage (AttributeTargets.Method)]
-	public class OverrideNativeAttribute : Attribute {}
+	public class OverrideNativeAttribute : Attribute {
+		public string NativeMethod { get; set; }
+		public OverrideNativeAttribute ()
+		{
+		}
+		public OverrideNativeAttribute (string nativeMethod)
+		{
+			this.NativeMethod = nativeMethod;
+		}
+	}
 	#endregion
 }
 

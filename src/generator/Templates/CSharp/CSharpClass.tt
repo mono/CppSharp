@@ -1,0 +1,318 @@
+﻿<#@ template language="C#" inherits="Base" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="Mono.VisualC.Interop" #>
+<#
+	var hasBase = Class.BaseClasses.Count > 0;
+	var wrapper = Class.Name;
+	var iface   = "I" + Class.Name;
+	var layout  = "_" + Class.Name;
+
+	var initBases = "{";
+	if (hasBase) {
+		initBases = "\t: base (impl.TypeInfo) {";
+		foreach (var nonPrimaryBase in Class.BaseClasses.Skip (1)) {
+			initBases = string.Format ("{0}\n\t\t\tnew {1} (impl.TypeInfo);", initBases, nonPrimaryBase.Name);
+		}
+	}
+#>
+// -------------------------------------------------------------------------
+//  Managed wrapper for <#= Class.Name #>
+//  Generated from <#= Path.GetFileName (Generator.InputFileName) #> on <#= DateTime.Now #>
+//
+//  This file was auto generated. Do not edit.
+// -------------------------------------------------------------------------
+
+using System;
+using Mono.VisualC.Interop;
+
+namespace <#= Generator.Namespace #> {
+
+	public partial class <#= wrapper #> : <#= GetBaseString () #> {
+
+		private static readonly <#= iface #> impl = Libs.<#= Generator.LibBaseName #>.GetClass<<#= iface + "," + layout + "," + wrapper #>> ("<#= Class.Name #>");
+<# if (!hasBase) { #>
+		public CppInstancePtr Native { get; protected set; }
+<# } #>
+
+<# /* Interface */ #>
+		public interface <#= iface #> : ICppClassOverridable<<#= wrapper #>> {
+<# PushIndent ("\t\t\t");
+	foreach (var method in Class.Methods) {
+		Write (CurrentIndent);
+
+		if (method.IsVirtual)     Write ("[Virtual] ");
+		if (method.IsStatic)      Write ("[Static] ");
+		if (method.IsArtificial)  Write ("[Artificial] ");
+		if (method.IsInline)      Write ("[Inline] ");
+		if (method.IsConst)       Write ("[Const] ");
+		if (method.IsConstructor) Write ("[Constructor] ");
+		if (method.IsDestructor)  Write ("[Destructor] ");
+		if (method.IsCopyCtor)    Write ("[CopyConstructor] ");
+
+		if (IsByVal (method.ReturnType)) {
+			Write ("[return: ByVal] ");
+		}
+		Write (GetCSharpType (Generator.CppTypeToManaged (method.ReturnType)));
+		Write (" ");
+		Write (method.Name);
+
+		Write (" (");
+		if (!method.IsStatic) {
+			Write ("CppInstancePtr @this");
+			if (method.Parameters.Count != 0)
+				Write (", ");
+		}
+
+		WriteParameters (method.Parameters, true, !method.IsVirtual);
+		Write (");\n");
+	}
+	ClearIndent (); #>
+		}
+<# /* Native layout */ #>
+		private struct <#= layout #> {
+<# foreach (var field in Class.Fields) { #>
+			public <#= GetCSharpType (Generator.CppTypeToManaged (field.Type)) #> <#= field.Name #>;
+<# } #>
+		}
+
+<# /* Native constructor */ #>
+		public <#= wrapper #> (CppInstancePtr native)
+		<#= initBases #>
+			Native = native;
+		}
+
+<# /* Subclass constructor */ #>
+		public <#= wrapper #> (CppTypeInfo subClass)
+		<#= initBases #>
+			subClass.AddBase (impl.TypeInfo);
+		}
+
+<# /* Wrapper methods */ #>
+<# PushIndent ("\t\t");
+		foreach (var method in Class.Methods.Where (m => m.GenWrapperMethod)) {
+
+			WriteMethodHeader (method, initBases);
+
+			if (method.IsConstructor) {
+				Write ("Native = impl.Alloc (this);\n");
+				Write (CurrentIndent);
+			}
+
+			Write (string.Format ("impl.{0} (", method.Name));
+			if (!method.IsStatic) {
+				Write ("Native");
+				if (method.Parameters.Count != 0)
+					Write (", ");
+			}
+
+			WriteParameters (method.Parameters, false, false);
+			PopIndent ();
+			Write (string.Format (");\n{0}}}\n\n", CurrentIndent));
+	}
+	ClearIndent (); #>
+
+<# /* Wrapper properties */ #>
+<# PushIndent ("\t\t");
+		foreach (var prop in Class.Properties) {
+			var type = GetCSharpType (Generator.CppTypeToManaged (prop.Type));
+
+			Write (CurrentIndent + "public ");
+
+			if ((prop.GetMethod == null || prop.GetMethod.IsVirtual) &&
+			    (prop.SetMethod == null || prop.SetMethod.IsVirtual))
+				Write ("virtual ");
+
+			Write (type);
+			Write (" ");
+			Write (prop.Name);
+			Write (" {\n");
+
+			PushIndent ("\t");
+			Write (CurrentIndent);
+
+			if (prop.GetMethod != null) {
+				if (prop.GetMethod.IsVirtual)
+					Write (string.Format ("[OverrideNative (\"{0}\")] ", prop.GetMethod.Name));
+
+				Write ("get {\n");
+				PushIndent ("\t");
+				WriteLine (string.Format ("return impl.{0} (Native);", prop.GetMethod.Name));
+				PopIndent ();
+				WriteLine ("}");
+			}
+			if (prop.SetMethod != null) {
+				if (prop.SetMethod.IsVirtual)
+					Write (string.Format ("[OverrideNative (\"{0}\")] ", prop.SetMethod.Name));
+
+				Write ("set {\n");
+				PushIndent ("\t");
+				WriteLine (string.Format ("impl.{0} (Native, value);", prop.SetMethod.Name));
+				PopIndent ();
+				WriteLine ("}");
+			}
+
+			PopIndent ();
+			WriteLine ("}\n");
+		}
+		ClearIndent (); #>
+
+<# /* Make this wrapper castable to non-primary bases */
+foreach (var npBase in Class.BaseClasses.Skip (1)) {
+	var npImpl = npBase.Name + "_impl";
+#>
+		// Non-primary base class implementation for <#= npBase.Name #>:
+		private <#= npBase.Name #> <#= npImpl #>;
+		public static implicit operator <#= npBase.Name #>(<#= wrapper #> subClass)
+		{
+			if (subClass.<#= npImpl #> == null)
+				subClass.<#= npImpl #> = impl.TypeInfo.Cast<<#= npBase.Name #>> (subClass);
+			return subClass.<#= npImpl #>;
+		}
+
+<# PushIndent ("\t\t");
+		foreach (var method in npBase.Methods) {
+			// With the exception of virtual methods that have been overridden, these methods must be called
+			//  thru a cast to the base class that performs a this ptr adjustment
+			if (!method.GenWrapperMethod || method.IsConstructor || method.IsStatic ||
+			    (method.IsVirtual && Class.Methods.Any (m => m.Node.CheckValue ("overrides", method.Node.Id))))
+				continue;
+
+			WriteMethodHeader (method, initBases);
+
+			Write (string.Format ("(({0})this).{1} (", npBase.Name, method.FormattedName));
+
+			WriteParameters (method.Parameters, false, false);
+			PopIndent ();
+			Write (string.Format (");\n{0}}}\n\n", CurrentIndent));
+		}
+		ClearIndent ();
+} #>
+
+		public <#= hasBase? "override" : "virtual" #> void Dispose ()
+		{
+<# if (Class.Methods.Any (m => m.IsDestructor && !m.IsArtificial)) { #>
+			impl.Destruct (Native);
+<# } #>
+			Native.Dispose ();
+		}
+
+	}
+}
+
+<#+
+private void WriteMethodHeader (Method method, string initBases)
+{
+	var returnType = GetCSharpType (Generator.CppTypeToManaged (method.ReturnType));
+
+	if (method.IsVirtual)
+		WriteLine (string.Format ("[OverrideNative (\"{0}\")]", method.Name));
+
+	Write (CurrentIndent + "public ");
+	if (method.IsConstructor) {
+		Write (method.FormattedName);
+	} else {
+		if (method.IsStatic)  Write ("static ");
+		if (method.IsVirtual) Write ("virtual ");
+		// ...?
+		Write (returnType);
+		Write (" ");
+		Write (method.FormattedName);
+	}
+
+	Write (" (");
+	WriteParameters (method.Parameters, true, false);
+	Write (")\n");
+
+	if (method.IsConstructor)
+		WriteLine (initBases);
+	else
+		WriteLine ("{");
+
+	PushIndent ("\t");
+	Write (CurrentIndent);
+
+	if (returnType != "void")
+		Write ("return ");
+}
+
+private void WriteParameters (IList<Parameter> parameters, bool writeType, bool writeAttributes)
+{
+	for (var i = 0; i < parameters.Count; i++) {
+		if (i != 0)
+			Write (", ");
+
+		var type = GetCSharpType (Generator.CppTypeToManaged (parameters [i].Type));
+
+		if (writeAttributes) {
+			var mangleAs = parameters [i].Type.ToString ();
+			if (mangleAs != "" && mangleAs != type)
+				Write (string.Format ("[MangleAs (\"{0}\")] ", mangleAs));
+			if (IsByVal (parameters [i].Type))
+				Write ("[ByVal] ");
+		}
+
+		if (type.EndsWith ("&")) {
+			Write ("ref ");
+			type = GetCSharpType (type.TrimEnd ('&'));
+		}
+
+		if (writeType) {
+			Write (type);
+			Write (" ");
+		}
+
+		Write (parameters [i].Name);
+	}
+}
+
+private string GetCSharpType (string str)
+{
+	switch (str) {
+	case "System.Void":    return "void";
+	case "System.Boolean": return "bool";
+	case "System.Byte":    return "byte";
+	case "System.SByte":   return "sbyte";
+	case "System.Char":    return "char";
+	case "System.Int16":   return "short";
+	case "System.UInt16":  return "ushort";
+	case "System.Decimal": return "decimal";
+	case "System.Single":  return "float";
+	case "System.Double":  return "double";
+	case "System.Int32":   return "int";
+	case "System.UInt32":  return "uint";
+	case "System.Int64":   return "long";
+	case "System.UInt64":  return "ulong";
+	case "System.Object":  return "object";
+	case "System.String":  return "string";
+	}
+
+	var lastDot = str.LastIndexOf ('.');
+	if (str.StartsWith ("System") && lastDot == "System".Length)
+		return str.Substring (lastDot + 1);
+
+	return str;
+}
+
+private string GetBaseString ()
+{
+	if (Class.BaseClasses.Count == 0)
+		return "ICppObject";
+
+	var str = Class.BaseClasses [0].Name;
+	if (Class.BaseClasses.Count > 1) {
+		str = string.Format ("{0} /*, {1} */", str, string.Join (", ", Class.BaseClasses.Skip (1).Select (bc => bc.Name).ToArray ()));
+	}
+
+	return str;
+}
+
+private bool IsByVal (CppType t)
+{
+	return ((t.ElementType == CppTypes.Class || t.ElementType == CppTypes.Struct) &&
+	        !t.Modifiers.Contains (CppModifiers.Pointer) &&
+	        !t.Modifiers.Contains (CppModifiers.Reference) &&
+	        !t.Modifiers.Contains (CppModifiers.Array));
+}
+#>
