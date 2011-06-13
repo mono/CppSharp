@@ -67,7 +67,7 @@
     <Reference Include="System.Xml.Linq">
     </Reference>
     <Reference Include="System.Core" />
-    <Reference Include="Mono.VisualC.Interop, Version=1.0.4175.35169, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="Mono.VisualC.Interop, Version=1.0.4180.30887, Culture=neutral, PublicKeyToken=null">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\Debug\Mono.VisualC.Interop.dll</HintPath>
     </Reference>
