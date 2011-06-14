@@ -35,6 +35,7 @@ class ClassWithNonVirtualBases : public AdderClass, public MultiplierClass {
 public:
 	// num is not shared between AdderClass and MultiplierClass; Add and Multiply should operate on different numbers
 	ClassWithNonVirtualBases (int addN, int multN) : AdderClass (addN), MultiplierClass (multN) {}
+	virtual void CallMultiply (int n) { this->Multiply (n); }
 };
 class ClassWithVirtualBases : public AdderClassWithVirtualBase, public MultiplierClassWithVirtualBase {
 public:

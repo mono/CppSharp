@@ -25,7 +25,6 @@ namespace Tests {
 		}
 
 		[Test]
-		[Ignore ("virtual inheritance not implemented yet")]
 		public void TestVirtualCallOnVirtualBaseClass ()
 		{
 			var cls = new AdderClassWithVirtualBase (8);
@@ -52,7 +51,6 @@ namespace Tests {
 		}
 
 		[Test]
-		[Ignore ("virtual inheritance not implemented yet")]
 		public void TestMultipleVirtualBases ()
 		{
 			var cls = new ClassWithVirtualBases (4);
@@ -76,6 +74,51 @@ namespace Tests {
 			Assert.AreEqual (3, ((NumberClass)cls).Number, "#2");
 			Assert.AreEqual (-3, cls.NegativeNumber, "#3");
 			Assert.AreEqual (5, cls.BaseNumber, "#4");
+		}
+
+		class ManagedOverride1 : NumberClass {
+
+			public ManagedOverride1 () : base (3)
+			{
+			}
+
+			public override int Number {
+				get {
+					return 25;
+				}
+			}
+		}
+
+		[Test]
+		public void TestManagedOverride1 ()
+		{
+			var cls = new ManagedOverride1 ();
+			Assert.AreEqual (-25, cls.NegativeNumber, "#1");
+		}
+
+		class ManagedOverride2 : ClassWithNonVirtualBases {
+
+			public ManagedOverride2 () : base (5, 3)
+			{
+			}
+
+			// override virtual member inherited from non-primary base
+			public override void Multiply (int n)
+			{
+				this.MultiplierClass.Multiply (10);
+			}
+		}
+
+		[Test]
+		public void TestManagedOverride2 ()
+		{
+			var cls = new ManagedOverride2 ();
+			cls.Multiply (3);
+			Assert.AreEqual (5, cls.Number, "#1");
+			Assert.AreEqual (30, ((MultiplierClass)cls).Number, "#2");
+			cls.CallMultiply (2);
+			Assert.AreEqual (5, cls.Number, "#3");
+			Assert.AreEqual (300, ((MultiplierClass)cls).Number, "#4");
 		}
 
 
