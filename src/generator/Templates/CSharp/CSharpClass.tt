@@ -54,7 +54,7 @@ namespace <#= Generator.Namespace #> {
 		if (IsByVal (method.ReturnType)) {
 			Write ("[return: ByVal] ");
 		}
-		Write (GetCSharpType (Generator.CppTypeToManaged (method.ReturnType)));
+		Write (GetCSharpType (method.ReturnType));
 		Write (" ");
 		Write (method.Name);
 
@@ -68,14 +68,31 @@ namespace <#= Generator.Namespace #> {
 		WriteParameters (method.Parameters, true, !method.IsVirtual);
 		Write (");\n");
 	}
+	foreach (var field in Class.Fields.Where (f => f.Access != Access.@private)) {
+		WriteLine ("CppField<{0}> {1} {{ get; }}", GetCSharpType (field.Type), field.Name);
+	}
 	ClearIndent (); #>
 		}
 <# /* Native layout */ #>
 		private struct <#= layout #> {
 <# foreach (var field in Class.Fields) { #>
-			public <#= GetCSharpType (Generator.CppTypeToManaged (field.Type)) #> <#= field.Name #>;
+			public <#= GetCSharpType (field.Type) #> <#= field.Name #>;
 <# } #>
 		}
+
+<# /* Native fields */ #>
+<# PushIndent ("\t\t");
+	foreach (var field in Class.Fields.Where (f => f.Access != Access.@private)) {
+		WriteLine ("{0} {1} {2} {{", field.Access, GetCSharpType (field.Type), field.Name); #>
+			get {
+				return impl.<#= field.Name #> [Native];
+			}
+			set {
+				impl.<#= field.Name #> [Native] = value;
+			}
+		}
+<# }
+   ClearIndent(); #>
 
 <# /* Native constructor */ #>
 		public <#= wrapper #> (CppInstancePtr native)
@@ -100,7 +117,7 @@ namespace <#= Generator.Namespace #> {
 				Write (CurrentIndent);
 			}
 
-			Write (string.Format ("impl.{0} (", method.Name));
+			Write ("impl.{0} (", method.Name);
 			if (!method.IsStatic) {
 				Write ("Native");
 				if (method.Parameters.Count != 0)
@@ -109,14 +126,14 @@ namespace <#= Generator.Namespace #> {
 
 			WriteParameters (method.Parameters, false, false);
 			PopIndent ();
-			Write (string.Format (");\n{0}}}\n\n", CurrentIndent));
+			Write (");\n{0}}}\n\n", CurrentIndent);
 	}
 	ClearIndent (); #>
 
 <# /* Wrapper properties */ #>
 <# PushIndent ("\t\t");
 		foreach (var prop in Class.Properties) {
-			var type = GetCSharpType (Generator.CppTypeToManaged (prop.Type));
+			var type = GetCSharpType (prop.Type);
 
 			Write (CurrentIndent + "public ");
 
@@ -134,21 +151,21 @@ namespace <#= Generator.Namespace #> {
 
 			if (prop.GetMethod != null) {
 				if (prop.GetMethod.IsVirtual)
-					Write (string.Format ("[OverrideNative (\"{0}\")] ", prop.GetMethod.Name));
+					Write ("[OverrideNative (\"{0}\")] ", prop.GetMethod.Name);
 
 				Write ("get {\n");
 				PushIndent ("\t");
-				WriteLine (string.Format ("return impl.{0} (Native);", prop.GetMethod.Name));
+				WriteLine ("return impl.{0} (Native);", prop.GetMethod.Name);
 				PopIndent ();
 				WriteLine ("}");
 			}
 			if (prop.SetMethod != null) {
 				if (prop.SetMethod.IsVirtual)
-					Write (string.Format ("[OverrideNative (\"{0}\")] ", prop.SetMethod.Name));
+					Write ("[OverrideNative (\"{0}\")] ", prop.SetMethod.Name);
 
 				Write ("set {\n");
 				PushIndent ("\t");
-				WriteLine (string.Format ("impl.{0} (Native, value);", prop.SetMethod.Name));
+				WriteLine ("impl.{0} (Native, value);", prop.SetMethod.Name);
 				PopIndent ();
 				WriteLine ("}");
 			}
@@ -160,15 +177,21 @@ namespace <#= Generator.Namespace #> {
 
 <# /* Make this wrapper castable to non-primary bases */
 foreach (var npBase in Class.BaseClasses.Skip (1)) {
-	var npImpl = npBase.Name + "_impl";
+	var prop = npBase.Name;
+	var field = prop + "_lazy";
 #>
 		// Non-primary base class implementation for <#= npBase.Name #>:
-		private <#= npBase.Name #> <#= npImpl #>;
+		private <#= npBase.Name #> <#= field #>;
+		public <#= npBase.Name #> <#= prop #> {
+			get {
+				if (<#= field #> == null)
+					<#= field #> = impl.TypeInfo.Cast<<#= npBase.Name #>> (this);
+				return <#= field #>;
+			}
+		}
 		public static implicit operator <#= npBase.Name #>(<#= wrapper #> subClass)
 		{
-			if (subClass.<#= npImpl #> == null)
-				subClass.<#= npImpl #> = impl.TypeInfo.Cast<<#= npBase.Name #>> (subClass);
-			return subClass.<#= npImpl #>;
+			return subClass.<#= prop #>;
 		}
 
 <# PushIndent ("\t\t");
@@ -181,11 +204,11 @@ foreach (var npBase in Class.BaseClasses.Skip (1)) {
 
 			WriteMethodHeader (method, initBases);
 
-			Write (string.Format ("(({0})this).{1} (", npBase.Name, method.FormattedName));
+			Write ("{0}.{1} (", prop, method.FormattedName);
 
 			WriteParameters (method.Parameters, false, false);
 			PopIndent ();
-			Write (string.Format (");\n{0}}}\n\n", CurrentIndent));
+			Write (");\n{0}}}\n\n", CurrentIndent);
 		}
 		ClearIndent ();
 } #>
@@ -204,10 +227,10 @@ foreach (var npBase in Class.BaseClasses.Skip (1)) {
 <#+
 private void WriteMethodHeader (Method method, string initBases)
 {
-	var returnType = GetCSharpType (Generator.CppTypeToManaged (method.ReturnType));
+	var returnType = GetCSharpType (method.ReturnType);
 
 	if (method.IsVirtual)
-		WriteLine (string.Format ("[OverrideNative (\"{0}\")]", method.Name));
+		WriteLine ("[OverrideNative (\"{0}\")]", method.Name);
 
 	Write (CurrentIndent + "public ");
 	if (method.IsConstructor) {
@@ -243,12 +266,12 @@ private void WriteParameters (IList<Parameter> parameters, bool writeType, bool 
 		if (i != 0)
 			Write (", ");
 
-		var type = GetCSharpType (Generator.CppTypeToManaged (parameters [i].Type));
+		var type = GetCSharpType (parameters [i].Type);
 
 		if (writeAttributes) {
 			var mangleAs = parameters [i].Type.ToString ();
 			if (mangleAs != "" && mangleAs != type)
-				Write (string.Format ("[MangleAs (\"{0}\")] ", mangleAs));
+				Write ("[MangleAs (\"{0}\")] ", mangleAs);
 			if (IsByVal (parameters [i].Type))
 				Write ("[ByVal] ");
 		}
@@ -265,6 +288,11 @@ private void WriteParameters (IList<Parameter> parameters, bool writeType, bool 
 
 		Write (parameters [i].Name);
 	}
+}
+
+private string GetCSharpType (CppType t)
+{
+	return GetCSharpType (Generator.CppTypeToManaged (t));
 }
 
 private string GetCSharpType (string str)

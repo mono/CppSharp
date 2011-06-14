@@ -13,7 +13,7 @@ namespace <#= Generator.Namespace #> {
 
 	public static partial class Libs {
 
-		public static readonly CppLibrary <#= Generator.LibBaseName #> = new CppLibrary ("<#= Generator.LibBaseName #>", InlineMethods.<#= Generator.InlinePolicy.ToString () #>);
+		public static readonly CppLibrary <#= Generator.LibBaseName #> = new CppLibrary ("<#= Generator.LibBaseName #>", InlineMethods.<#= Generator.InlinePolicy #>);
 
 	}
 }

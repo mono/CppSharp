@@ -209,7 +209,7 @@ public class Generator {
 					else
 						fieldName = "field" + fieldCount++;
 
-					klass.Fields.Add (new Field (fieldName, fieldType));
+					klass.Fields.Add (new Field (fieldName, fieldType, (Access)Enum.Parse (typeof (Access), n ["access"])));
 					break;
 				case "Constructor":
 					ctor = true;

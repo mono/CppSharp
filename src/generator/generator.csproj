@@ -68,6 +68,7 @@
     <Compile Include="Templates\CSharp\CSharpLibs.cs">
       <DependentUpon>CSharpLibs.tt</DependentUpon>
     </Compile>
+    <Compile Include="Access.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System">

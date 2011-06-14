@@ -36,9 +36,10 @@ using Mono.VisualC.Interop;
 
 public class Field {
 
-	public Field (string name, CppType type) {
+	public Field (string name, CppType type, Access access) {
 		Name = name;
 		Type = type;
+		Access = access;
 	}
 
 	public string Name {
@@ -46,6 +47,10 @@ public class Field {
 	}
 
 	public CppType Type {
+		get; set;
+	}
+
+	public Access Access {
 		get; set;
 	}
 }

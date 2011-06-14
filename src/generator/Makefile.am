@@ -48,6 +48,7 @@ RESGEN=resgen2
 all: $(ASSEMBLY) $(PROGRAMFILES) $(BINARIES) 
 
 FILES =  \
+	Access.cs \
 	Class.cs \
 	Field.cs \
 	Generator.cs \

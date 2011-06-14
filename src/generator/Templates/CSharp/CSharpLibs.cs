@@ -72,7 +72,7 @@ namespace Templates {
             #line hidden
             
             #line 16 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpLibs.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture( Generator.InlinePolicy.ToString () ));
+            this.Write(this.ToStringHelper.ToStringWithCulture( Generator.InlinePolicy ));
             
             #line default
             #line hidden
