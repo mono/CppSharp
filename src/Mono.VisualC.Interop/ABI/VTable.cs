@@ -134,19 +134,26 @@ namespace Mono.VisualC.Interop.ABI {
 
 		public static bool BindToSignatureAndAttribute (MemberInfo member, object obj)
 		{
-			bool result = BindToSignature (member, obj);
-			if (member.GetCustomAttributes (typeof (OverrideNativeAttribute), true).Length != 1)
+			var overrideNative = member.GetCustomAttributes (typeof (OverrideNativeAttribute), true);
+			if (overrideNative.Length == 0)
 				return false;
 
-			return result;
+			var name = ((OverrideNativeAttribute)overrideNative [0]).NativeMethod ?? member.Name;
+
+			return BindToSignature (member, obj, name);
 		}
 
 		public static bool BindToSignature (MemberInfo member, object obj)
 		{
+			return BindToSignature (member, obj, member.Name);
+		}
+
+		public static bool BindToSignature (MemberInfo member, object obj, string nativeMethod)
+		{
 			MethodInfo imethod = (MethodInfo) obj;
 			MethodInfo candidate = (MethodInfo) member;
 
-			if (!candidate.Name.Equals (imethod.Name))
+			if (nativeMethod != imethod.Name)
 				return false;
 
 			ParameterInfo[] invokeParams = imethod.GetParameters ();
