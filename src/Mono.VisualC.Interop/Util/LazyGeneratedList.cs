@@ -195,6 +195,11 @@ namespace Mono.VisualC.Interop.Util {
 			removed.Add (index);
 			content--;
 		}
+		public void Add (int count)
+		{
+			content += count;
+			Array.Resize (ref cache, content);
+		}
 		public void Add (TItem item)
 		{
 			throw new NotImplementedException ();

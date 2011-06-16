@@ -79,7 +79,7 @@ namespace Mono.VisualC.Interop {
 			byte[] zeroArray = new byte [allocSize];
 			Marshal.Copy (zeroArray, 0, ptr, allocSize);
 
-			IntPtr handlePtr = GetGCHandle (managedWrapper);
+			IntPtr handlePtr = MakeGCHandle (managedWrapper);
 			Marshal.WriteIntPtr (ptr, nativeSize, handlePtr);
 
 			manage_memory = true;
@@ -131,7 +131,7 @@ namespace Mono.VisualC.Interop {
 			get { return manage_memory; }
 		}
 
-		internal static IntPtr GetGCHandle (object managedWrapper)
+		internal static IntPtr MakeGCHandle (object managedWrapper)
 		{
 			// TODO: Dispose() should probably be called at some point on this GCHandle.
 			GCHandle handle = GCHandle.Alloc (managedWrapper, GCHandleType.Normal);

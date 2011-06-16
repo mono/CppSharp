@@ -339,7 +339,7 @@ namespace Mono.VisualC.Interop.ABI {
 		 */
 		internal virtual Delegate GetManagedOverrideTrampoline (CppTypeInfo typeInfo, int vtableIndex)
 		{
-			if (wrapper_type == null)
+			if (typeInfo.WrapperType == null)
 				return null;
 
 			var sig = typeInfo.VirtualMethods [vtableIndex];
@@ -347,7 +347,7 @@ namespace Mono.VisualC.Interop.ABI {
 				return null;
 
 			var interfaceMethod = sig.OrigMethod;
-			var targetMethod = FindManagedOverrideTarget (interfaceMethod);
+			var targetMethod = FindManagedOverrideTarget (typeInfo.WrapperType, interfaceMethod);
 			if (targetMethod == null)
 				return null;
 
@@ -357,7 +357,7 @@ namespace Mono.VisualC.Interop.ABI {
 			// TODO: According to http://msdn.microsoft.com/en-us/library/w16z8yc4.aspx
 			// The dynamic method created with this constructor has access to public and internal members of all the types contained in module m.
 			// This does not appear to hold true, so we also disable JIT visibility checks.
-			var trampolineIn = new DynamicMethod (wrapper_type.Name + "_" + interfaceMethod.Name + "_FromNative", sig.ReturnType,
+			var trampolineIn = new DynamicMethod (typeInfo.WrapperType.Name + "_" + interfaceMethod.Name + "_FromNative", sig.ReturnType,
 			                                      nativeArgs, typeof (CppInstancePtr).Module, true);
 
 			ReflectionHelper.ApplyMethodParameterAttributes (interfaceMethod, trampolineIn, true);
@@ -375,7 +375,7 @@ namespace Mono.VisualC.Interop.ABI {
 				il.Emit (OpCodes.Ldarg_0);
 				il.Emit (OpCodes.Ldc_I4, typeInfo.NativeSize);
 
-				MethodInfo getManagedObj = cppip_getmanaged.MakeGenericMethod (wrapper_type);
+				var getManagedObj = cppip_getmanaged.MakeGenericMethod (typeInfo.WrapperType);
 				il.Emit (OpCodes.Call, getManagedObj);
 			}
 
@@ -391,14 +391,13 @@ namespace Mono.VisualC.Interop.ABI {
 			return trampolineIn.CreateDelegate (typeInfo.VTableDelegateTypes [vtableIndex]);
 		}
 
-		protected virtual MethodInfo FindManagedOverrideTarget (MethodInfo interfaceMethod)
+		protected virtual MethodInfo FindManagedOverrideTarget (Type wrapper, MethodInfo interfaceMethod)
 		{
 			if (interfaceMethod == null)
 				return null;
 
-			// FIXME: Does/should this look in superclasses?
-			MemberInfo [] possibleMembers = wrapper_type.FindMembers (MemberTypes.Method, BindingFlags.Public | BindingFlags.NonPublic |
-																	  BindingFlags.Instance | BindingFlags.Static, vtable_override_filter, interfaceMethod);
+			var possibleMembers = wrapper.FindMembers (MemberTypes.Method, BindingFlags.Public | BindingFlags.NonPublic |
+			                                           BindingFlags.Instance | BindingFlags.Static, vtable_override_filter, interfaceMethod);
 
 			if (possibleMembers.Length > 1)
 				throw new InvalidProgramException ("More than one possible override found when binding virtual method: " + interfaceMethod.Name);

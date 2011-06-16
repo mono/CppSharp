@@ -121,13 +121,14 @@ namespace Mono.VisualC.Interop {
 				// If we're not adding a new vtable, then all this base class's virtual methods go in primary vtable
 				// Skew the offsets of this subclass's vmethods to account for the new base vmethods.
 
-				int newVirtualMethodCount = baseType.virtual_methods.Count;
-				for (int i = 0; i < newVirtualMethodCount; i++)
+				int baseVMethodCount = baseType.virtual_methods.Count;
+				for (int i = 0; i < baseVMethodCount; i++)
 					virtual_methods.Insert (BaseVTableSlots + i, baseType.virtual_methods [i]);
 	
-				BaseVTableSlots += newVirtualMethodCount;
+				BaseVTableSlots += baseVMethodCount;
 				vt_delegate_types.PrependLast (baseType.vt_delegate_types);
-				vt_overrides.PrependLast (baseType.vt_overrides);
+				//vt_overrides.PrependLast (baseType.vt_overrides);
+				vt_overrides.Add (baseVMethodCount);
 
 			} else {
 				// FIXME: Implement this when we get around to msvc again ?
