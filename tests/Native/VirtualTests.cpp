@@ -69,3 +69,16 @@ int ClassThatOverridesStuff::BaseNumber () const
 {
 	return this->NumberClass::Number ();
 }
+NumberClass* ClassThatOverridesStuff::GetInstance (int num, int my)
+{
+	return new ClassThatOverridesStuff (num, my);
+}
+
+ClassThatRoundtrips::ClassThatRoundtrips (NumberClass* managed)
+{
+	this->nc = managed;
+}
+NumberClass* ClassThatRoundtrips::GetIt ()
+{
+	return this->nc;
+}

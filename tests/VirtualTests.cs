@@ -67,13 +67,23 @@ namespace Tests {
 		}
 
 		[Test]
-		public void TestClassThatOverridesStuff ()
+		public void TestNativeOverride1 ()
 		{
 			var cls = new ClassThatOverridesStuff (5, 3);
 			Assert.AreEqual (3, cls.Number, "#1");
 			Assert.AreEqual (3, ((NumberClass)cls).Number, "#2");
 			Assert.AreEqual (-3, cls.NegativeNumber, "#3");
 			Assert.AreEqual (5, cls.BaseNumber, "#4");
+		}
+
+		[Test]
+		public void TestNativeOverride2 ()
+		{
+			var cls = ClassThatOverridesStuff.GetInstance (5, 3);
+			Assert.AreEqual (3, cls.Number, "#1");
+			Assert.AreEqual (3, ((NumberClass)cls).Number, "#2");
+			Assert.AreEqual (-3, cls.NegativeNumber, "#3");
+			Assert.AreEqual (5, ((ClassThatOverridesStuff)cls).BaseNumber, "#4");
 		}
 
 		class ManagedOverride1 : NumberClass {
@@ -105,7 +115,7 @@ namespace Tests {
 			// override virtual member inherited from non-primary base
 			public override void Multiply (int n)
 			{
-				this.MultiplierClass.Multiply (10);
+				base.Multiply (10);
 			}
 		}
 
@@ -113,7 +123,7 @@ namespace Tests {
 		public void TestManagedOverride2 ()
 		{
 			var cls = new ManagedOverride2 ();
-			cls.Multiply (3);
+			cls.Multiply (7);
 			Assert.AreEqual (5, cls.Number, "#1");
 			Assert.AreEqual (30, ((MultiplierClass)cls).Number, "#2");
 			cls.CallMultiply (2);
@@ -121,6 +131,15 @@ namespace Tests {
 			Assert.AreEqual (300, ((MultiplierClass)cls).Number, "#4");
 		}
 
+		[Test]
+		public void TestRoundtripManagedOverride ()
+		{
+			var managed = new ManagedOverride1 ();
+			var roundtripper = new ClassThatRoundtrips (managed);
+			var cls = roundtripper.GetIt ();
+			Assert.AreEqual (25, cls.Number, "#1");
+			Assert.AreEqual (-25, cls.NegativeNumber, "#2");
+		}
 
 	}
 }

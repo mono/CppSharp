@@ -61,7 +61,6 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="ABI\CppAbi.cs" />
     <Compile Include="Interfaces.cs" />
-    <Compile Include="ABI\VTableManaged.cs" />
     <Compile Include="Attributes.cs" />
     <Compile Include="CppInstancePtr.cs" />
     <Compile Include="CppField.cs" />

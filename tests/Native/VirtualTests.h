@@ -51,4 +51,13 @@ public:
 	ClassThatOverridesStuff (int num, int my);
 	virtual int Number () const;
 	virtual int BaseNumber () const;
+	static NumberClass* GetInstance (int num, int my);
+};
+
+class ClassThatRoundtrips {
+protected:
+	NumberClass* nc;
+public:
+	ClassThatRoundtrips (NumberClass* managed);
+	virtual NumberClass* GetIt ();
 };

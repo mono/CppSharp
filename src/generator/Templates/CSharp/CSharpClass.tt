@@ -54,7 +54,10 @@ namespace <#= Generator.Namespace #> {
 		if (IsByVal (method.ReturnType)) {
 			Write ("[return: ByVal] ");
 		}
-		Write (GetCSharpType (method.ReturnType));
+		if (method.IsConstructor)
+			Write ("CppInstancePtr");
+		else
+			Write (GetCSharpType (method.ReturnType));
 		Write (" ");
 		Write (method.Name);
 
@@ -112,14 +115,15 @@ namespace <#= Generator.Namespace #> {
 
 			WriteMethodHeader (method, initBases);
 
-			if (method.IsConstructor) {
-				Write ("Native = impl.Alloc (this);\n");
-				Write (CurrentIndent);
-			}
+			if (method.IsConstructor)
+				Write ("Native = ");
 
 			Write ("impl.{0} (", method.Name);
 			if (!method.IsStatic) {
-				Write ("Native");
+				if (method.IsConstructor)
+					Write ("impl.Alloc (this)");
+				else
+					Write ("Native");
 				if (method.Parameters.Count != 0)
 					Write (", ");
 			}

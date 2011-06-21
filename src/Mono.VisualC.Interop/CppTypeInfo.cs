@@ -216,9 +216,10 @@ namespace Mono.VisualC.Interop {
 			}
 		}
 
-		public virtual T GetAdjustedVirtualCall<T> (IntPtr native, int derivedVirtualMethodIndex) where T : class /* Delegate */
+		public virtual T GetAdjustedVirtualCall<T> (CppInstancePtr instance, int derivedVirtualMethodIndex)
+			where T : class /* Delegate */
 		{
-			return VTable.GetVirtualCallDelegate<T> (native, BaseVTableSlots + derivedVirtualMethodIndex);
+			return VTable.GetVirtualCallDelegate<T> (instance, BaseVTableSlots + derivedVirtualMethodIndex);
 		}
 
 		public virtual VTable VTable {
@@ -228,7 +229,7 @@ namespace Mono.VisualC.Interop {
 					return null;
 
 				if (lazy_vtable == null)
-					lazy_vtable = VTable.DefaultImplementation (this);
+					lazy_vtable = new VTable (this);
 
 				return lazy_vtable;
 			}

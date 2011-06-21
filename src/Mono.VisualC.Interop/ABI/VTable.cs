@@ -27,6 +27,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 
 using System.Reflection;
@@ -34,14 +35,14 @@ using System.Reflection.Emit;
 using System.Runtime.InteropServices;
 
 namespace Mono.VisualC.Interop.ABI {
-	public delegate VTable MakeVTableDelegate (CppTypeInfo metadata);
 
 	// TODO: RTTI .. support virtual inheritance
-	public abstract class VTable : IDisposable {
-		public static MakeVTableDelegate DefaultImplementation = VTableManaged.Implementation;
 
+	public class VTable : IDisposable {
+
+		protected bool initialized;
 		protected CppTypeInfo typeInfo;
-		protected IntPtr basePtr, vtPtr;
+		protected IntPtr vtPtr;
 
 		public virtual int EntryCount {
 			get { return typeInfo.VirtualMethods.Count; }
@@ -50,12 +51,13 @@ namespace Mono.VisualC.Interop.ABI {
 			get { return Marshal.SizeOf (typeof (IntPtr)); }
 		}
 
-		public abstract T GetVirtualCallDelegate<T> (IntPtr native, int vtableIndex) where T : class; /*Delegate*/
-
 		// Subclasses should allocate vtPtr and then call WriteOverrides
 		public VTable (CppTypeInfo typeInfo)
 		{
+			this.initialized = false;
 			this.typeInfo = typeInfo;
+			this.vtPtr = Marshal.AllocHGlobal ((EntryCount * EntrySize) + typeInfo.VTableTopPadding + typeInfo.VTableBottomPadding);
+			WriteOverrides ();
 		}
 
 		protected virtual void WriteOverrides ()
@@ -75,36 +77,54 @@ namespace Mono.VisualC.Interop.ABI {
 			}
 		}
 
-		// FIXME: Make this method unsafe.. it would probably be much faster
-		public virtual void InitInstance (IntPtr instance)
+		public virtual T GetVirtualCallDelegate<T> (CppInstancePtr instance, int index)
+			where T : class /*Delegate*/
 		{
-			if (basePtr == IntPtr.Zero) {
-				basePtr = Marshal.ReadIntPtr (instance);
-				if ((basePtr != IntPtr.Zero) && (basePtr != vtPtr)) {
-					// FIXME: This could probably be a more efficient memcpy
-					for(int i = 0; i < typeInfo.VTableTopPadding; i++)
-						Marshal.WriteByte(vtPtr, i, Marshal.ReadByte(basePtr, i));
+			var vtable = instance.native_vtptr;
 
-					int currentOffset = typeInfo.VTableTopPadding;
-					for (int i = 0; i < EntryCount; i++) {
-						if (Marshal.ReadIntPtr (vtPtr, currentOffset) == IntPtr.Zero)
-							Marshal.WriteIntPtr (vtPtr, currentOffset, Marshal.ReadIntPtr (basePtr, currentOffset));
+			var ftnptr = Marshal.ReadIntPtr (vtable, (index * EntrySize) + typeInfo.VTableTopPadding);
+			if (ftnptr == IntPtr.Zero)
+				throw new NullReferenceException ("Native VTable contains null...possible abstract class???");
 
-						currentOffset += EntrySize;
-					}
-
-					// FIXME: This could probably be a more efficient memcpy
-					for(int i = 0; i < typeInfo.VTableBottomPadding; i++)
-						Marshal.WriteByte(vtPtr, currentOffset + i, Marshal.ReadByte(basePtr, currentOffset + i));
-				}
-			}
-
-			Marshal.WriteIntPtr (instance, vtPtr);
+			var del = Marshal.GetDelegateForFunctionPointer (ftnptr, typeof (T));
+			return del as T;
 		}
 
-		public virtual void ResetInstance (IntPtr instance)
+		// FIXME: Make this method unsafe.. it would probably be much faster
+		public virtual void InitInstance (ref CppInstancePtr instance)
 		{
-			Marshal.WriteIntPtr (instance, basePtr);
+			var basePtr = Marshal.ReadIntPtr (instance.Native);
+			Debug.Assert (basePtr != IntPtr.Zero && basePtr != vtPtr);
+
+			instance.native_vtptr = basePtr;
+
+			if (!initialized) {
+
+				// FIXME: This could probably be a more efficient memcpy
+				for (int i = 0; i < typeInfo.VTableTopPadding; i++)
+					Marshal.WriteByte(vtPtr, i, Marshal.ReadByte(basePtr, i));
+
+				int currentOffset = typeInfo.VTableTopPadding;
+				for (int i = 0; i < EntryCount; i++) {
+					if (Marshal.ReadIntPtr (vtPtr, currentOffset) == IntPtr.Zero)
+						Marshal.WriteIntPtr (vtPtr, currentOffset, Marshal.ReadIntPtr (basePtr, currentOffset));
+
+					currentOffset += EntrySize;
+				}
+
+				// FIXME: This could probably be a more efficient memcpy
+				for (int i = 0; i < typeInfo.VTableBottomPadding; i++)
+					Marshal.WriteByte(vtPtr, currentOffset + i, Marshal.ReadByte(basePtr, currentOffset + i));
+
+				initialized = true;
+			}
+
+			Marshal.WriteIntPtr (instance.Native, vtPtr);
+		}
+
+		public virtual void ResetInstance (CppInstancePtr instance)
+		{
+			Marshal.WriteIntPtr (instance.Native, instance.native_vtptr);
 		}
 
 		public IntPtr Pointer {

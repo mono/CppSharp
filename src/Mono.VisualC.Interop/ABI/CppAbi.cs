@@ -225,7 +225,7 @@ namespace Mono.VisualC.Interop.ABI {
 			if (!isStatic)
 			{
 				if (psig.ParameterTypes.Count == 0)
-					throw new ArgumentException ("First argument to non-static C++ method must be IntPtr or CppInstancePtr.");
+					throw new ArgumentException ("First argument to non-static C++ method must be instance pointer.");
 
 				// 2. Load the native C++ instance pointer
 				EmitLoadInstancePtr (il, interfaceMethod.GetParameters () [0].ParameterType, out cppInstancePtr, out nativePtr);
@@ -237,7 +237,7 @@ namespace Mono.VisualC.Interop.ABI {
 			MethodInfo nativeMethod;
 
 			if (IsVirtual (interfaceMethod) && psig.Type != MethodType.NativeDtor) {
-				nativeMethod = EmitPrepareVirtualCall (il, typeInfo, nativePtr, vtableIndex++);
+				nativeMethod = EmitPrepareVirtualCall (il, typeInfo, cppInstancePtr, vtableIndex++);
 			} else {
 				if (IsVirtual (interfaceMethod))
 					vtableIndex++;
@@ -247,7 +247,7 @@ namespace Mono.VisualC.Interop.ABI {
 
 			switch (psig.Type) {
 			case MethodType.NativeCtor:
-				EmitConstruct (il, nativeMethod, psig, nativePtr);
+				EmitConstruct (il, nativeMethod, psig, cppInstancePtr, nativePtr);
 				break;
 			case MethodType.NativeDtor:
 				EmitDestruct (il, nativeMethod, psig, cppInstancePtr, nativePtr);
@@ -447,15 +447,16 @@ namespace Mono.VisualC.Interop.ABI {
 		 * Emits the IL to load the correct delegate instance and/or retrieve the MethodInfo from the VTable
 		 * for a C++ virtual call.
 		 */
-		protected virtual MethodInfo EmitPrepareVirtualCall (ILGenerator il, CppTypeInfo typeInfo, LocalBuilder native, int vtableIndex)
+		protected virtual MethodInfo EmitPrepareVirtualCall (ILGenerator il, CppTypeInfo typeInfo,
+		                                                     LocalBuilder cppInstancePtr, int vtableIndex)
 		{
 			Type vtableDelegateType = typeInfo.VTableDelegateTypes [vtableIndex];
 			MethodInfo getDelegate  = typeinfo_adjvcall.MakeGenericMethod (vtableDelegateType);
 
-			// this._typeInfo.GetAdjustedVirtualCall<T> (native, vtableIndex);
+			// this._typeInfo.GetAdjustedVirtualCall<T> (cppInstancePtr, vtableIndex);
 			il.Emit (OpCodes.Ldarg_0);
 			il.Emit (OpCodes.Ldfld, typeinfo_field);
-			il.Emit (OpCodes.Ldloc_S, native);
+			il.Emit (OpCodes.Ldloc_S, cppInstancePtr);
 			il.Emit (OpCodes.Ldc_I4, vtableIndex);
 			il.Emit (OpCodes.Callvirt, getDelegate);
 
@@ -481,11 +482,19 @@ namespace Mono.VisualC.Interop.ABI {
 				il.Emit (OpCodes.Newobj, cppip_fromsize);
 		}
 
-		protected virtual void EmitConstruct (ILGenerator il, MethodInfo nativeMethod, PInvokeSignature psig, LocalBuilder nativePtr)
+		protected virtual void EmitConstruct (ILGenerator il, MethodInfo nativeMethod, PInvokeSignature psig,
+		                                      LocalBuilder cppInstancePtr, LocalBuilder nativePtr)
 		{
 			Debug.Assert (psig.Type == MethodType.NativeCtor);
 			EmitNativeCall (il, nativeMethod, psig, nativePtr);
-			EmitInitVTable (il, nativePtr);
+
+			if (cppInstancePtr != null && psig.OrigMethod.ReturnType == typeof (CppInstancePtr)) {
+				EmitInitVTable (il, cppInstancePtr);
+				il.Emit (OpCodes.Ldloc_S, cppInstancePtr);
+
+			} else if (psig.OrigMethod.DeclaringType.GetInterfaces ().Any (i => i.IsGenericType && i.GetGenericTypeDefinition () == typeof (ICppClassOverridable<>))) {
+				throw new InvalidProgramException ("In ICppClassOverridable, native constructors must take as first argument and return CppInstancePtr");
+			}
 		}
 
 		protected virtual void EmitDestruct (ILGenerator il, MethodInfo nativeMethod, PInvokeSignature psig,
@@ -497,19 +506,10 @@ namespace Mono.VisualC.Interop.ABI {
 			if (cppInstancePtr == null)
 				return;
 
-			// bail if we weren't alloc'd by managed code
-			Label bail = il.DefineLabel ();
+			EmitCheckManagedAlloc (il, cppInstancePtr);
 
-			il.Emit (OpCodes.Ldloca_S, cppInstancePtr);
-			il.Emit (OpCodes.Brfalse_S, bail); // <- FIXME? (would this ever branch?)
-			il.Emit (OpCodes.Ldloca_S, cppInstancePtr);
-			il.Emit (OpCodes.Call, cppip_managedalloc);
-			il.Emit (OpCodes.Brfalse_S, bail);
-
-			EmitResetVTable (il, nativePtr);
+			EmitResetVTable (il, cppInstancePtr);
 			EmitNativeCall (il, nativeMethod, psig, nativePtr);
-
-			il.MarkLabel (bail);
 		}
 
 		/**
@@ -538,12 +538,14 @@ namespace Mono.VisualC.Interop.ABI {
 			il.Emit (OpCodes.Call, nativeMethod);
 
 			// Marshal return value
-			EmitInboundMarshal (il, psig.ReturnType, interfaceMethod.ReturnType);
+			if (psig.Type != MethodType.NativeCtor)
+				EmitInboundMarshal (il, psig.ReturnType, interfaceMethod.ReturnType);
 		}
 
 
 		public virtual PInvokeSignature GetPInvokeSignature (MethodInfo method)
 		{
+			var methodType = GetMethodType (method);
 			var parameters = method.GetParameters ();
 			var pinvokeTypes = new List<Type> (parameters.Length);
 
@@ -554,10 +556,11 @@ namespace Mono.VisualC.Interop.ABI {
 			return new PInvokeSignature {
 				OrigMethod = method,
 				Name = GetMangledMethodName (method),
-				Type = GetMethodType (method),
+				Type = methodType,
 				CallingConvention = GetCallingConvention (method),
 				ParameterTypes = pinvokeTypes,
-				ReturnType = ToPInvokeType (method.ReturnType, method.ReturnTypeCustomAttributes)
+				ReturnType = methodType == MethodType.NativeCtor? typeof (void) :
+					ToPInvokeType (method.ReturnType, method.ReturnTypeCustomAttributes)
 			};
 		}
 
@@ -770,19 +773,19 @@ namespace Mono.VisualC.Interop.ABI {
 		 * Emits IL to set the vtable pointer of the instance (if class has a vtable).
 		 * This should usually happen in the managed wrapper of the C++ instance constructor.
 		 */
-		protected virtual void EmitInitVTable (ILGenerator il, LocalBuilder nativePtr)
+		protected virtual void EmitInitVTable (ILGenerator il, LocalBuilder cppip)
 		{
-			// this._typeInfo.VTable.InitInstance (nativePtr);
+			// this._typeInfo.VTable.InitInstance (cppInstancePtr);
 			EmitLoadVTable (il);
-			il.Emit (OpCodes.Ldloc_S, nativePtr);
+			il.Emit (OpCodes.Ldloca_S, cppip);
 			EmitCallVTableMethod (il, vtable_initinstance, 2, false);
 		}
 
-		protected virtual void EmitResetVTable (ILGenerator il, LocalBuilder nativePtr)
+		protected virtual void EmitResetVTable (ILGenerator il, LocalBuilder cppip)
 		{
-			// this._typeInfo.VTable.ResetInstance (nativePtr);
+			// this._typeInfo.VTable.ResetInstance (cppInstancePtr);
 			EmitLoadVTable (il);
-			il.Emit (OpCodes.Ldloc_S, nativePtr);
+			il.Emit (OpCodes.Ldloc_S, cppip);
 			EmitCallVTableMethod (il, vtable_resetinstance, 2, false);
 		}
 
@@ -859,7 +862,7 @@ namespace Mono.VisualC.Interop.ABI {
 			// if not, return
 			Label managedAlloc = il.DefineLabel ();
 			il.Emit (OpCodes.Ldloca_S, cppip);
-			il.Emit (OpCodes.Call, typeof (CppInstancePtr).GetProperty ("IsManagedAlloc").GetGetMethod ());
+			il.Emit (OpCodes.Call, cppip_managedalloc);
 			il.Emit (OpCodes.Brtrue_S, managedAlloc);
 			il.Emit (OpCodes.Ret);
 			il.MarkLabel (managedAlloc);

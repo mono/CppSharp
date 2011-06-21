@@ -36,7 +36,9 @@ using Mono.VisualC.Interop.ABI;
 
 namespace Mono.VisualC.Interop {
 	public struct CppInstancePtr : ICppObject {
+
 		private IntPtr ptr;
+		internal IntPtr native_vtptr;
 		private bool manage_memory;
 
 		private static Dictionary<Type,object> implCache = null;
@@ -62,7 +64,7 @@ namespace Mono.VisualC.Interop {
 				impl = (Iface)cachedImpl;
 
 			CppInstancePtr instance = impl.Alloc (managed);
-			impl.TypeInfo.VTable.InitInstance ((IntPtr)instance);
+			impl.TypeInfo.VTable.InitInstance (ref instance);
 
 			return instance;
 		}
@@ -76,6 +78,7 @@ namespace Mono.VisualC.Interop {
 			ptr = Marshal.AllocHGlobal (allocSize);
 
 			// zero memory for sanity
+			// FIXME: This should be an initblk
 			byte[] zeroArray = new byte [allocSize];
 			Marshal.Copy (zeroArray, 0, ptr, allocSize);
 

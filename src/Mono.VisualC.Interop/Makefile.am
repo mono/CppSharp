@@ -52,7 +52,6 @@ FILES =  \
 	ABI/Impl/VirtualOnlyAbi.cs \
 	ABI/MethodType.cs \
 	ABI/VTable.cs \
-	ABI/VTableManaged.cs \
 	AssemblyInfo.cs \
 	Attributes.cs \
 	CppField.cs \
