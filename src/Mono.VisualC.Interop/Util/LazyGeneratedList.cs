@@ -32,50 +32,19 @@ using System.Collections.Generic;
 
 namespace Mono.VisualC.Interop.Util {
 
-	public class LazyGeneratedList<TItem> : IList<TItem> where TItem : class {
-
-		private class Node<TItem> where TItem : class {
-
-			public LazyGeneratedList<TItem> List { get; set; }
-			public Node<TItem> Next { get; set; }
-			public Node (LazyGeneratedList<TItem> list, Node<TItem> next)
-			{
-				this.List = list;
-				this.Next = next;
-			}
-			public void AppendNext (Node<TItem> node)
-			{
-				if (Next == null)
-					Next = node;
-				else
-					Next.AppendNext (node);
-			}
-			public TItem this [int index] {
-				get {
-					if (index >= List.Count)
-						return Next [index - List.Count];
-					return List [index];
-				}
-			}
-		}
-
+	public class LazyGeneratedList<TItem> : IList<TItem>
+		where TItem : class
+	{
 		private TItem [] cache;
 		private Func<int, TItem> generator;
 
-		private Node<TItem> previous;
-		private Node<TItem> next;
-		private int lead, content, follow;
-
-		private HashSet<int> removed;
+		private int count;
 
 		public LazyGeneratedList (int count, Func<int, TItem> generator)
 		{
 			this.cache = new TItem [count];
 			this.generator = generator;
-			this.lead = 0;
-			this.content = count;
-			this.follow = 0;
-			this.removed = new HashSet<int> ();
+			this.count = count;
 		}
 
 		public IEnumerator<TItem> GetEnumerator ()
@@ -89,86 +58,37 @@ namespace Mono.VisualC.Interop.Util {
 		}
 
 		public int Count {
-			get { return lead + content + follow; }
+			get { return count; }
 		}
 
 		public bool IsReadOnly {
 			get { return true; }
 		}
 
-		public TItem this [int index] {
+		public TItem this [int i] {
 			get {
-				return ForIndex (index, i => previous [i], i => (cache [i] == null? (cache [i] = generator (i)) : cache [i]), i => next [i]);
+				// access to cache [i] will throw the IndexOutOfRange exception for us
+				return cache [i] == null? (cache [i] = generator (i)) : cache [i];
 			}
 			set {
 				throw new NotSupportedException ("This IList is read only");
 			}
 		}
 
-		private TItem ForIndex (int index, Func<int,TItem> leadAction, Func<int,TItem> contentAction, Func<int,TItem> followAction)
+		public void Add (int count)
 		{
-			if (removed.Contains (index))
-				index++;
-
-			if (index < lead) {
-				if (previous != null && index >= 0)
-					return leadAction (index);
-				throw new IndexOutOfRangeException (index.ToString ());
-			}
-
-			int realIndex = index - lead;
-			if (realIndex >= content) {
-				int followIndex = realIndex - content;
-				if (next != null && followIndex < follow)
-					return followAction (followIndex);
-				throw new IndexOutOfRangeException (index.ToString ());
-			}
-
-			return contentAction (realIndex);
+			this.count += count;
+			// flush cache
+			cache = new TItem [this.count];
+		}
+		public void Remove (int count)
+		{
+			this.count -= count;
+			// flush cache
+			cache = new TItem [this.count];
 		}
 
-		/* Visual aid for the behavior of the following methods:
-
-			|<Prepended Range><Generated Range><Appended Range>|
-			 ^               ^                 ^              ^
-			 PrependFirst    PrependLast       AppendFirst    AppendLast
-		*/
-
-		public void AppendFirst (LazyGeneratedList<TItem> list)
-		{
-			follow += list.Count;
-			next = new Node<TItem> (list, next);
-		}
-
-		public void AppendLast (LazyGeneratedList<TItem> list)
-		{
-			var node = new Node<TItem> (list, null);
-			if (next == null)
-				next = node;
-			else
-				next.AppendNext (node);
-
-			follow += list.Count;
-		}
-
-		public void PrependLast (LazyGeneratedList<TItem> list)
-		{
-			var node = new Node<TItem> (list, null);
-			if (previous == null)
-				previous = node;
-			else
-				previous.AppendNext (node);
-
-			lead += list.Count;
-		}
-
-		public void PrependFirst (LazyGeneratedList<TItem> list)
-		{
-			lead += list.Count;
-			previous = new Node<TItem> (list, previous);
-		}
-
-		// FIXME: Should probably implement these 3 at some point
+		// FIXME: Should probably implement these at some point
 		public bool Contains (TItem item)
 		{
 			throw new NotImplementedException ();
@@ -181,24 +101,13 @@ namespace Mono.VisualC.Interop.Util {
 		{
 			throw new NotImplementedException ();
 		}
-
-
 		public void Insert (int index, TItem item)
 		{
 			throw new NotImplementedException ();
 		}
 		public void RemoveAt (int index)
 		{
-			while (removed.Contains (index))
-				index++;
-
-			removed.Add (index);
-			content--;
-		}
-		public void Add (int count)
-		{
-			content += count;
-			Array.Resize (ref cache, content);
+			throw new NotImplementedException ();
 		}
 		public void Add (TItem item)
 		{

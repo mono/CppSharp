@@ -103,9 +103,9 @@ namespace Mono.VisualC.Interop {
 
 		public virtual void AddBase (CppTypeInfo baseType)
 		{
-
-			// by default, do not add another vtable for this new base class
-			AddBase (baseType, false);
+			// by default, if we already have base class(es), this base's virtual methods are not included before the derived class's
+			var addVTable = base_classes.Count >= 1;
+			AddBase (baseType, addVTable);
 		}
 
 		protected virtual void AddBase (CppTypeInfo baseType, bool addVTable)
@@ -114,34 +114,38 @@ namespace Mono.VisualC.Interop {
 				return;
 
 			base_classes.Add (baseType);
-
 			bool addVTablePointer = addVTable || base_classes.Count > 1;
+			int  baseVMethodCount = baseType.virtual_methods.Count;
 
-			if (!addVTable) {
+			if (addVTable) {
+				// If we are adding a new vtable, don't skew the offsets of the of this subclass's methods.
+				//  Instead append the new virtual methods to the end.
+
+				for (int i = 0; i < baseVMethodCount; i++)
+					virtual_methods.Add (baseType.virtual_methods [i]);
+
+				vt_delegate_types.Add (baseVMethodCount);
+				vt_overrides.Add (baseVMethodCount);
+
+			} else {
+
 				// If we're not adding a new vtable, then all this base class's virtual methods go in primary vtable
 				// Skew the offsets of this subclass's vmethods to account for the new base vmethods.
 
-				int baseVMethodCount = baseType.virtual_methods.Count;
 				for (int i = 0; i < baseVMethodCount; i++)
 					virtual_methods.Insert (BaseVTableSlots + i, baseType.virtual_methods [i]);
 	
 				BaseVTableSlots += baseVMethodCount;
-				vt_delegate_types.PrependLast (baseType.vt_delegate_types);
-				//vt_overrides.PrependLast (baseType.vt_overrides);
+				vt_delegate_types.Add (baseVMethodCount);
 				vt_overrides.Add (baseVMethodCount);
-
-			} else {
-				// FIXME: Implement this when we get around to msvc again ?
 			}
 
 			field_offset_padding_without_vtptr += baseType.native_size +
 				(addVTablePointer? baseType.FieldOffsetPadding : baseType.field_offset_padding_without_vtptr);
 		}
 
-		public virtual TBase Cast<TBase> (ICppObject instance)
-			where TBase : ICppObject
+		public virtual CppInstancePtr Cast (ICppObject instance, Type targetType)
 		{
-			var targetType = typeof (TBase);
 			var found = false;
 			int offset = 0;
 
@@ -162,11 +166,7 @@ namespace Mono.VisualC.Interop {
 			//  it is Disposed, even if wrappers created here still exist and are pointing to it. :/
 			// The casted wrapper created here may be Disposed safely though.
 			// FIXME: On NET_4_0 use IntPtr.Add
-			var cppip = new CppInstancePtr (new IntPtr (instance.Native.Native.ToInt64 () + offset));
-
-			// Ugh, this requires boxing of cppip AND some slow reflection.. please cache the result of this!
-			// FIXME: Perhaps Reflection.Emit all possible base casts and eliminate this beast?
-			return (TBase)Activator.CreateInstance (targetType, cppip);
+			return new CppInstancePtr (new IntPtr (instance.Native.Native.ToInt64 () + offset));
 		}
 
 		public int CountBases (Func<CppTypeInfo, bool> predicate)
@@ -189,14 +189,10 @@ namespace Mono.VisualC.Interop {
 
 			TypeComplete = true;
 
-			// Tthis predicate ensures that duplicates are only removed
-			// if declared in different classes (i.e. overridden methods).
-			// We usually want to allow the same exact virtual methods to appear
-			// multiple times, in the case of nonvirtual diamond inheritance, for example.
-			RemoveVTableDuplicates ((pi1, pi2) => !pi1.OrigMethod.Equals (pi2.OrigMethod));
+			RemoveVTableDuplicates ();
 		}
 
-		protected virtual void RemoveVTableDuplicates (Func<PInvokeSignature,PInvokeSignature,bool> pred)
+		protected virtual void RemoveVTableDuplicates ()
 		{
 			// check that any virtual methods overridden in a subclass are only included once
 			var vsignatures = new Dictionary<MethodSignature,PInvokeSignature> (MethodSignature.EqualityComparer);
@@ -208,12 +204,27 @@ namespace Mono.VisualC.Interop {
 
 				PInvokeSignature existing;
 				if (vsignatures.TryGetValue (sig, out existing)) {
-					if (pred (sig, existing))
-						virtual_methods.RemoveAt (i--);
+					OnVTableDuplicate (ref i, sig, existing);
 				} else {
 					vsignatures.Add (sig, sig);
 				}
 			}
+		}
+
+		protected virtual bool OnVTableDuplicate (ref int iter, PInvokeSignature sig, PInvokeSignature dup)
+		{
+			// This predicate ensures that duplicates are only removed
+			// if declared in different classes (i.e. overridden methods).
+			// We usually want to allow the same exact virtual methods to appear
+			// multiple times, in the case of nonvirtual diamond inheritance, for example.
+			if (!sig.OrigMethod.Equals (dup.OrigMethod)) {
+				virtual_methods.RemoveAt (iter--);
+				vt_overrides.Remove (1);
+				vt_delegate_types.Remove (1);
+				return true;
+			}
+
+			return false;
 		}
 
 		public virtual T GetAdjustedVirtualCall<T> (CppInstancePtr instance, int derivedVirtualMethodIndex)

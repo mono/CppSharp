@@ -8,14 +8,8 @@
 	var wrapper = Class.Name;
 	var iface   = "I" + Class.Name;
 	var layout  = "_" + Class.Name;
-
-	var initBases = "{";
-	if (hasBase) {
-		initBases = "\t: base (impl.TypeInfo) {";
-		foreach (var nonPrimaryBase in Class.BaseClasses.Skip (1)) {
-			initBases = string.Format ("{0}\n\t\t\tnew {1} (impl.TypeInfo);", initBases, nonPrimaryBase.Name);
-		}
-	}
+	var layoutClass = (hasBase? "\t: base (impl.TypeInfo)\n\t\t{" : "{") + "\n\t\t\tLayoutClass ();";
+	var initBases   = (Class.BaseClasses.Count > 1 ? "\tInitBases ();\n\t\t}" : "}");
 #>
 // -------------------------------------------------------------------------
 //  Managed wrapper for <#= Class.Name #>
@@ -94,26 +88,25 @@ namespace <#= Generator.Namespace #> {
 				impl.<#= field.Name #> [Native] = value;
 			}
 		}
-<# }
-   ClearIndent(); #>
-
-<# /* Native constructor */ #>
-		public <#= wrapper #> (CppInstancePtr native)
-		<#= initBases #>
-			Native = native;
-		}
+<# } ClearIndent(); #>
 
 <# /* Subclass constructor */ #>
 		public <#= wrapper #> (CppTypeInfo subClass)
-		<#= initBases #>
+		<#= layoutClass #>
 			subClass.AddBase (impl.TypeInfo);
-		}
+		<#= initBases #>
+
+<# /* Native constructor */ #>
+		public <#= wrapper #> (CppInstancePtr native)
+		<#= layoutClass #>
+			Native = native;
+		<#= initBases #>
 
 <# /* Wrapper methods */ #>
 <# PushIndent ("\t\t");
 		foreach (var method in Class.Methods.Where (m => m.GenWrapperMethod)) {
 
-			WriteMethodHeader (method, initBases);
+			WriteMethodHeader (method, layoutClass);
 
 			if (method.IsConstructor)
 				Write ("Native = ");
@@ -129,8 +122,13 @@ namespace <#= Generator.Namespace #> {
 			}
 
 			WriteParameters (method.Parameters, false, false);
+			Write (");\n");
 			PopIndent ();
-			Write (");\n{0}}}\n\n", CurrentIndent);
+
+			if (method.IsConstructor)
+				WriteLine (initBases);
+			else
+				WriteLine ("}");
 	}
 	ClearIndent (); #>
 
@@ -179,23 +177,29 @@ namespace <#= Generator.Namespace #> {
 		}
 		ClearIndent (); #>
 
-<# /* Make this wrapper castable to non-primary bases */
-foreach (var npBase in Class.BaseClasses.Skip (1)) {
-	var prop = npBase.Name;
-	var field = prop + "_lazy";
-#>
-		// Non-primary base class implementation for <#= npBase.Name #>:
-		private <#= npBase.Name #> <#= field #>;
-		public <#= npBase.Name #> <#= prop #> {
-			get {
-				if (<#= field #> == null)
-					<#= field #> = impl.TypeInfo.Cast<<#= npBase.Name #>> (this);
-				return <#= field #>;
-			}
+		public <#= hasBase? "override" : "virtual" #> void Dispose ()
+		{
+<# if (Class.Methods.Any (m => m.IsDestructor && !m.IsArtificial)) { #>
+			impl.Destruct (Native);
+<# } #>
+			Native.Dispose ();
 		}
+
+		private void LayoutClass ()
+		{
+<# foreach (var npBase in Class.BaseClasses.Skip (1)) { #>
+			new <#= npBase.Name #> (impl.TypeInfo);
+<# } #>
+			impl.TypeInfo.CompleteType ();
+		}
+
+<# /* Make this wrapper castable to non-primary bases */
+foreach (var npBase in Class.BaseClasses.Skip (1)) { #>
+		// Non-primary base class implementation for <#= npBase.Name #>:
+		public <#= npBase.Name #> <#= npBase.Name #> { get; protected set; }
 		public static implicit operator <#= npBase.Name #>(<#= wrapper #> subClass)
 		{
-			return subClass.<#= prop #>;
+			return subClass.<#= npBase.Name #>;
 		}
 
 <# PushIndent ("\t\t");
@@ -208,28 +212,27 @@ foreach (var npBase in Class.BaseClasses.Skip (1)) {
 
 			WriteMethodHeader (method, initBases);
 
-			Write ("{0}.{1} (", prop, method.FormattedName);
+			Write ("{0}.{1} (", npBase.Name, method.FormattedName);
 
 			WriteParameters (method.Parameters, false, false);
 			PopIndent ();
 			Write (");\n{0}}}\n\n", CurrentIndent);
 		}
 		ClearIndent ();
-} #>
-
-		public <#= hasBase? "override" : "virtual" #> void Dispose ()
+}
+if (Class.BaseClasses.Count > 1) { #>
+		private void InitBases ()
 		{
-<# if (Class.Methods.Any (m => m.IsDestructor && !m.IsArtificial)) { #>
-			impl.Destruct (Native);
-<# } #>
-			Native.Dispose ();
+<# 		foreach (var npBase in Class.BaseClasses.Skip (1)) { #>
+			<#= npBase.Name #> = new <#= npBase.Name #> (impl.TypeInfo.Cast (this, typeof (<#= npBase.Name #>)));
+<# 		} #>
 		}
-
+<# } #>
 	}
 }
 
 <#+
-private void WriteMethodHeader (Method method, string initBases)
+private void WriteMethodHeader (Method method, string layoutClass)
 {
 	var returnType = GetCSharpType (method.ReturnType);
 
@@ -253,7 +256,7 @@ private void WriteMethodHeader (Method method, string initBases)
 	Write (")\n");
 
 	if (method.IsConstructor)
-		WriteLine (initBases);
+		WriteLine (layoutClass);
 	else
 		WriteLine ("{");
 

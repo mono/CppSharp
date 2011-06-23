@@ -48,7 +48,6 @@ FILES =  \
 	ABI/Impl/ItaniumAbi.cs \
 	ABI/Impl/ItaniumTypeInfo.cs \
 	ABI/Impl/MsvcAbi.cs \
-	ABI/Impl/MsvcTypeInfo.cs \
 	ABI/Impl/VirtualOnlyAbi.cs \
 	ABI/MethodType.cs \
 	ABI/VTable.cs \

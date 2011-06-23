@@ -54,7 +54,7 @@ namespace Mono.VisualC.Interop.ABI {
 		protected static readonly MethodInfo cppip_managedalloc    = typeof (CppInstancePtr).GetProperty ("IsManagedAlloc").GetGetMethod ();
 		protected static readonly MethodInfo cppip_getmanaged      = typeof (CppInstancePtr).GetMethod ("GetManaged", BindingFlags.Static | BindingFlags.NonPublic);
 		protected static readonly ConstructorInfo cppip_fromnative = typeof (CppInstancePtr).GetConstructor (new Type [] { typeof (IntPtr) });
-		protected static readonly ConstructorInfo cppip_fromsize   = typeof (CppInstancePtr).GetConstructor (new Type [] { typeof (int) });
+		protected static readonly ConstructorInfo cppip_fromsize   = typeof (CppInstancePtr).GetConstructor (BindingFlags.Instance | BindingFlags.NonPublic, null, new Type [] { typeof (int) }, null);
 		protected static readonly ConstructorInfo cppip_fromsize_managed = typeof (CppInstancePtr).GetConstructor (BindingFlags.Instance | BindingFlags.NonPublic, null,
 		                                                                                                         new Type[] { typeof (int), typeof (object) }, null);
 		protected static readonly ConstructorInfo notimplementedexception = typeof (NotImplementedException).GetConstructor (new Type [] { typeof (string) });

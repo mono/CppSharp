@@ -76,7 +76,6 @@
     <Compile Include="Util\LazyGeneratedList.cs" />
     <Compile Include="Util\DelegateTypeCache.cs" />
     <Compile Include="Util\ReflectionHelper.cs" />
-    <Compile Include="ABI\Impl\MsvcTypeInfo.cs" />
     <Compile Include="Util\MethodSignature.cs" />
     <Compile Include="CppModifiers.cs" />
     <Compile Include="ABI\Impl\ItaniumTypeInfo.cs" />

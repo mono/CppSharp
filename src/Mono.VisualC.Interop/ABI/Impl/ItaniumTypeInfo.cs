@@ -38,25 +38,38 @@ namespace Mono.VisualC.Interop.ABI {
 		{
 		}
 
-
-		// When adding a non-primary base class's complete vtable, we need to reserve space for
-		//  the stuff before the address point of the vtptr..
-		//  Includes vbase & vcall offsets (virtual inheritance), offset to top, and RTTI info
-		public override void AddBase (CppTypeInfo baseType)
+		protected override void AddBase (CppTypeInfo baseType, bool addVTable)
 		{
-			if (TypeComplete)
-				return;
 
-			if (BaseClasses.Count > 0 && baseType.VirtualMethods.Any ()) { // already have a primary base
+			// When adding a non-primary base class's complete vtable, we need to reserve space for
+			// the stuff before the address point of the vtptr..
+			// Includes vbase & vcall offsets (virtual inheritance), offset to top, and RTTI info
+			if (addVTable) {
 
 				// FIXME: virtual inheritance
-				virtual_methods.Insert (BaseVTableSlots, null);
-				virtual_methods.Insert (BaseVTableSlots, null);
-				BaseVTableSlots += 2;
+				virtual_methods.Add (null);
+				virtual_methods.Add (null);
 
+				vt_overrides.Add (2);
+				vt_delegate_types.Add (2);
 			}
 
-			base.AddBase (baseType);
+			base.AddBase (baseType, addVTable);
+		}
+
+		protected override bool OnVTableDuplicate (ref int iter, PInvokeSignature sig, PInvokeSignature dup)
+		{
+			var isOverride = base.OnVTableDuplicate (ref iter, sig, dup);
+			if (isOverride && sig.Type == MethodType.NativeDtor) {
+
+				// also remove that pesky extra dtor
+				virtual_methods.RemoveAt (iter + 1);
+				vt_overrides.Remove (1);
+				vt_delegate_types.Remove (1);
+				return true;
+			}
+
+			return false;
 		}
 
 	}

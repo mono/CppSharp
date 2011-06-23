@@ -70,6 +70,7 @@ namespace Mono.VisualC.Interop {
 		}
 
 		// Alloc a new C++ instance
+		// NOTE: native_vtptr will be set later after native ctor is called
 		internal CppInstancePtr (int nativeSize, object managedWrapper)
 		{
 			// Under the hood, we're secretly subclassing this C++ class to store a
@@ -89,7 +90,7 @@ namespace Mono.VisualC.Interop {
 		}
 
 		// Alloc a new C++ instance when there is no managed wrapper.
-		public CppInstancePtr (int nativeSize)
+		internal CppInstancePtr (int nativeSize)
 		{
 			ptr = Marshal.AllocHGlobal (nativeSize);
 			manage_memory = true;
@@ -100,6 +101,11 @@ namespace Mono.VisualC.Interop {
 		{
 			if (native == IntPtr.Zero)
 				throw new ArgumentOutOfRangeException ("native cannot be null pointer");
+
+			// Kludge! CppInstancePtr doesn't know whether this class is virtual or not, but we'll just assume that either
+			//  way it's at least sizeof(void*) and read what would be the vtptr anyway. Supposedly, if it's not virtual,
+			//  the wrappers won't use this field anyway...
+			native_vtptr = Marshal.ReadIntPtr (native);
 
 			ptr = native;
 			manage_memory = false;
