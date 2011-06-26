@@ -63,7 +63,7 @@ namespace Mono.VisualC.Interop.ABI {
 		protected static readonly MethodInfo marshal_structuretoptr  = typeof (Marshal).GetMethod ("StructureToPtr");
 		protected static readonly ConstructorInfo dummytypeinfo_ctor = typeof (DummyCppTypeInfo).GetConstructor (Type.EmptyTypes);
 		protected static readonly MethodInfo dummytypeinfo_getbase   = typeof (DummyCppTypeInfo).GetProperty ("BaseTypeInfo").GetGetMethod ();
-
+		protected static readonly FieldInfo  intptr_zero             = typeof (IntPtr).GetField ("Zero");
 
 		// These methods might be more commonly overridden for a given C++ ABI:
 
@@ -626,7 +626,12 @@ namespace Mono.VisualC.Interop.ABI {
 					il.Emit (OpCodes.Ldloca, param);
 					il.Emit (OpCodes.Call, cppip_native);
 
+					il.Emit (OpCodes.Br_S, nextArg);
+
 					il.MarkLabel (nullCase);
+					// Null case
+					il.Emit (OpCodes.Pop);
+					il.Emit (OpCodes.Ldsfld, intptr_zero);
 
 				} else { // by val
 
@@ -640,6 +645,7 @@ namespace Mono.VisualC.Interop.ABI {
 					il.Emit (OpCodes.Ldloc, val);
 
 					il.Emit (OpCodes.Br_S, nextArg);
+
 					il.MarkLabel (nullCase);
 					// Null case
 					il.Emit (OpCodes.Ldstr, "Cannot pass null object of type '" + managedType + "' to c++ by value");
@@ -672,6 +678,7 @@ namespace Mono.VisualC.Interop.ABI {
 
 				il.Emit (OpCodes.Newobj, cppip_fromnative);
 				EmitCreateCppObjectFromNative (il, targetType);
+				il.Emit (OpCodes.Br_S, next);
 
 				il.MarkLabel (isNull);
 				il.Emit (OpCodes.Pop);
