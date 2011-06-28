@@ -41,11 +41,11 @@ namespace Mono.VisualC.Interop.ABI {
 	public class VTable : IDisposable {
 
 		protected bool initialized;
-		protected CppTypeInfo typeInfo;
+		protected CppTypeInfo type_info;
 		protected IntPtr vtPtr;
 
 		public virtual int EntryCount {
-			get { return typeInfo.VirtualMethods.Count; }
+			get { return type_info.VirtualMethods.Count; }
 		}
 		public virtual int EntrySize {
 			get { return Marshal.SizeOf (typeof (IntPtr)); }
@@ -55,17 +55,19 @@ namespace Mono.VisualC.Interop.ABI {
 		public VTable (CppTypeInfo typeInfo)
 		{
 			this.initialized = false;
-			this.typeInfo = typeInfo;
+			this.type_info = typeInfo;
 			this.vtPtr = Marshal.AllocHGlobal ((EntryCount * EntrySize) + typeInfo.VTableTopPadding + typeInfo.VTableBottomPadding);
+
 			WriteOverrides ();
+			CppInstancePtr.RegisterManagedVTable (this);
 		}
 
 		protected virtual void WriteOverrides ()
 		{
 			IntPtr vtEntryPtr;
-			int currentOffset = typeInfo.VTableTopPadding;
+			int currentOffset = type_info.VTableTopPadding;
 			for (int i = 0; i < EntryCount; i++) {
-				Delegate currentOverride = typeInfo.VTableOverrides [i];
+				Delegate currentOverride = type_info.VTableOverrides [i];
 
 				if (currentOverride != null) // managed override
 					vtEntryPtr = Marshal.GetFunctionPointerForDelegate (currentOverride);
@@ -80,9 +82,9 @@ namespace Mono.VisualC.Interop.ABI {
 		public virtual T GetVirtualCallDelegate<T> (CppInstancePtr instance, int index)
 			where T : class /*Delegate*/
 		{
-			var vtable = instance.native_vtptr;
+			var vtable = instance.NativeVTable;
 
-			var ftnptr = Marshal.ReadIntPtr (vtable, (index * EntrySize) + typeInfo.VTableTopPadding);
+			var ftnptr = Marshal.ReadIntPtr (vtable, (index * EntrySize) + type_info.VTableTopPadding);
 			if (ftnptr == IntPtr.Zero)
 				throw new NullReferenceException ("Native VTable contains null...possible abstract class???");
 
@@ -96,15 +98,15 @@ namespace Mono.VisualC.Interop.ABI {
 			var basePtr = Marshal.ReadIntPtr (instance.Native);
 			Debug.Assert (basePtr != IntPtr.Zero && basePtr != vtPtr);
 
-			instance.native_vtptr = basePtr;
+			instance.NativeVTable = basePtr;
 
 			if (!initialized) {
 
 				// FIXME: This could probably be a more efficient memcpy
-				for (int i = 0; i < typeInfo.VTableTopPadding; i++)
+				for (int i = 0; i < type_info.VTableTopPadding; i++)
 					Marshal.WriteByte(vtPtr, i, Marshal.ReadByte(basePtr, i));
 
-				int currentOffset = typeInfo.VTableTopPadding;
+				int currentOffset = type_info.VTableTopPadding;
 				for (int i = 0; i < EntryCount; i++) {
 					if (Marshal.ReadIntPtr (vtPtr, currentOffset) == IntPtr.Zero)
 						Marshal.WriteIntPtr (vtPtr, currentOffset, Marshal.ReadIntPtr (basePtr, currentOffset));
@@ -113,7 +115,7 @@ namespace Mono.VisualC.Interop.ABI {
 				}
 
 				// FIXME: This could probably be a more efficient memcpy
-				for (int i = 0; i < typeInfo.VTableBottomPadding; i++)
+				for (int i = 0; i < type_info.VTableBottomPadding; i++)
 					Marshal.WriteByte(vtPtr, currentOffset + i, Marshal.ReadByte(basePtr, currentOffset + i));
 
 				initialized = true;
@@ -124,7 +126,11 @@ namespace Mono.VisualC.Interop.ABI {
 
 		public virtual void ResetInstance (CppInstancePtr instance)
 		{
-			Marshal.WriteIntPtr (instance.Native, instance.native_vtptr);
+			Marshal.WriteIntPtr (instance.Native, instance.NativeVTable);
+		}
+
+		public CppTypeInfo TypeInfo {
+			get { return type_info; }
 		}
 
 		public IntPtr Pointer {

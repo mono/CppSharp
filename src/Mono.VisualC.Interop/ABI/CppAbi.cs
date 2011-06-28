@@ -52,7 +52,8 @@ namespace Mono.VisualC.Interop.ABI {
 		protected static readonly MethodInfo cppobj_native         = typeof (ICppObject).GetProperty ("Native").GetGetMethod ();
 		protected static readonly MethodInfo cppip_native          = typeof (CppInstancePtr).GetProperty ("Native").GetGetMethod ();
 		protected static readonly MethodInfo cppip_managedalloc    = typeof (CppInstancePtr).GetProperty ("IsManagedAlloc").GetGetMethod ();
-		protected static readonly MethodInfo cppip_getmanaged      = typeof (CppInstancePtr).GetMethod ("GetManaged", BindingFlags.Static | BindingFlags.NonPublic);
+		protected static readonly MethodInfo cppip_tomanaged       = typeof (CppInstancePtr).GetMethod ("ToManaged", BindingFlags.Static | BindingFlags.NonPublic, null, new Type [] { typeof (IntPtr) }, null);
+		protected static readonly MethodInfo cppip_tomanaged_size  = typeof (CppInstancePtr).GetMethod ("ToManaged", BindingFlags.Static | BindingFlags.NonPublic, null, new Type [] { typeof (IntPtr), typeof (int) }, null);
 		protected static readonly ConstructorInfo cppip_fromnative = typeof (CppInstancePtr).GetConstructor (new Type [] { typeof (IntPtr) });
 		protected static readonly ConstructorInfo cppip_fromsize   = typeof (CppInstancePtr).GetConstructor (BindingFlags.Instance | BindingFlags.NonPublic, null, new Type [] { typeof (int) }, null);
 		protected static readonly ConstructorInfo cppip_fromsize_managed = typeof (CppInstancePtr).GetConstructor (BindingFlags.Instance | BindingFlags.NonPublic, null,
@@ -375,7 +376,7 @@ namespace Mono.VisualC.Interop.ABI {
 				il.Emit (OpCodes.Ldarg_0);
 				il.Emit (OpCodes.Ldc_I4, typeInfo.NativeSize);
 
-				var getManagedObj = cppip_getmanaged.MakeGenericMethod (typeInfo.WrapperType);
+				var getManagedObj = cppip_tomanaged_size.MakeGenericMethod (typeInfo.WrapperType);
 				il.Emit (OpCodes.Call, getManagedObj);
 			}
 
@@ -666,6 +667,7 @@ namespace Mono.VisualC.Interop.ABI {
 				return; // <- yes, this is necessary
 
 			var next = il.DefineLabel ();
+			var ptr = il.DeclareLocal (typeof (CppInstancePtr));
 
 			// marshal IntPtr -> ICppObject
 			if (nativeType == typeof (IntPtr) && typeof (ICppObject).IsAssignableFrom (targetType)) {
@@ -677,7 +679,8 @@ namespace Mono.VisualC.Interop.ABI {
 				il.Emit (OpCodes.Brfalse_S, isNull);
 
 				il.Emit (OpCodes.Newobj, cppip_fromnative);
-				EmitCreateCppObjectFromNative (il, targetType);
+				il.Emit (OpCodes.Stloc, ptr);
+				EmitCreateCppObjectFromNative (il, targetType, ptr);
 				il.Emit (OpCodes.Br_S, next);
 
 				il.MarkLabel (isNull);
@@ -690,8 +693,6 @@ namespace Mono.VisualC.Interop.ABI {
 				// Obviously, we lose all managed overrides if we pass by value,
 				//  but this "slicing" happens in vanilla C++ as well
 
-				var ptr = il.DeclareLocal (typeof (CppInstancePtr));
-
 				il.Emit (OpCodes.Box, nativeType); // structure
 
 				il.Emit (OpCodes.Sizeof, nativeType);
@@ -703,9 +704,7 @@ namespace Mono.VisualC.Interop.ABI {
 				il.Emit (OpCodes.Ldc_I4_0); // fDeleteOld
 
 				il.Emit (OpCodes.Call, marshal_structuretoptr);
-
-				il.Emit (OpCodes.Ldloc, ptr);
-				EmitCreateCppObjectFromNative (il, targetType);
+				EmitCreateCppObjectFromNative (il, targetType, ptr);
 			}
 
 			il.MarkLabel (next);
@@ -751,8 +750,8 @@ namespace Mono.VisualC.Interop.ABI {
 			il.Emit (OpCodes.Call, dummytypeinfo_getbase);
 		}
 
-		// Expects CppInstancePtr on stack. No null check performed
-		protected virtual void EmitCreateCppObjectFromNative (ILGenerator il, Type targetType)
+		// Expects cppip = CppInstancePtr local
+		protected virtual void EmitCreateCppObjectFromNative (ILGenerator il, Type targetType, LocalBuilder cppip)
 		{
 			if (targetType == typeof (ICppObject))
 				targetType = typeof (CppInstancePtr);
@@ -762,7 +761,24 @@ namespace Mono.VisualC.Interop.ABI {
 			if (ctor == null)
 				throw new InvalidProgramException (string.Format ("Type `{0}' implements ICppObject but does not contain a public constructor that takes CppInstancePtr", targetType));
 
+
+			// Basically emitting this:
+			// CppInstancePtr.ToManaged<targetType> (native) ?? new targetType (native)
+
+			var hasWrapper = il.DefineLabel ();
+
+			il.Emit (OpCodes.Ldloca, cppip);
+			il.Emit (OpCodes.Call, cppip_native);
+
+			il.Emit (OpCodes.Call, cppip_tomanaged.MakeGenericMethod (targetType));
+			il.Emit (OpCodes.Dup);
+			il.Emit (OpCodes.Brtrue_S, hasWrapper);
+			il.Emit (OpCodes.Pop);
+
+			il.Emit (OpCodes.Ldloc, cppip);
 			il.Emit (OpCodes.Newobj, ctor);
+
+			il.MarkLabel (hasWrapper);
 		}
 
 		/**

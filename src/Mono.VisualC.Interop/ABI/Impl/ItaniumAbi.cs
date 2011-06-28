@@ -235,8 +235,7 @@ namespace Mono.VisualC.Interop.ABI {
 			base.EmitNativeCall (il, nativeMethod, psig, nativePtr);
 
 			if (hiddenReturnByValue) {
-				il.Emit (OpCodes.Ldloc, returnValue);
-				EmitCreateCppObjectFromNative (il, method.ReturnType);
+				EmitCreateCppObjectFromNative (il, method.ReturnType, returnValue);
 			}
 		}
 

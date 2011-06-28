@@ -139,6 +139,7 @@ namespace Tests {
 			var cls = roundtripper.GetIt ();
 			Assert.AreEqual (25, cls.Number, "#1");
 			Assert.AreEqual (-25, cls.NegativeNumber, "#2");
+			Assert.IsNotNull (cls as ManagedOverride1);
 		}
 
 	}

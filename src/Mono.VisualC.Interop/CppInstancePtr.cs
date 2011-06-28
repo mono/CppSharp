@@ -37,11 +37,11 @@ using Mono.VisualC.Interop.ABI;
 namespace Mono.VisualC.Interop {
 	public struct CppInstancePtr : ICppObject {
 
-		private IntPtr ptr;
-		internal IntPtr native_vtptr;
+		private IntPtr ptr, native_vtptr;
 		private bool manage_memory;
 
 		private static Dictionary<Type,object> implCache = null;
+		private static Dictionary<IntPtr,int> managed_vtptr_to_gchandle_offset = null;
 
 		// TODO: the managed instance argument may only be NULL if all methods in TWrapper
 		//  that correspond to the virtual methods in Iface are static.
@@ -102,13 +102,16 @@ namespace Mono.VisualC.Interop {
 			if (native == IntPtr.Zero)
 				throw new ArgumentOutOfRangeException ("native cannot be null pointer");
 
-			// Kludge! CppInstancePtr doesn't know whether this class is virtual or not, but we'll just assume that either
-			//  way it's at least sizeof(void*) and read what would be the vtptr anyway. Supposedly, if it's not virtual,
-			//  the wrappers won't use this field anyway...
-			native_vtptr = Marshal.ReadIntPtr (native);
-
 			ptr = native;
 			manage_memory = false;
+		}
+
+		// Fulfills ICppObject requirement
+		public CppInstancePtr (CppInstancePtr copy)
+		{
+			this.ptr = copy.ptr;
+			this.native_vtptr = copy.native_vtptr;
+			this.manage_memory = copy.manage_memory;
 		}
 
 		// Provide casts to/from IntPtr:
@@ -132,12 +135,39 @@ namespace Mono.VisualC.Interop {
 			}
 		}
 
+		// Internal for now to prevent attempts to read vtptr from non-virtual class
+		internal IntPtr NativeVTable {
+			get {
+
+				if (native_vtptr == IntPtr.Zero) {
+					// For pointers from native code...
+					// Kludge! CppInstancePtr doesn't know whether this class is virtual or not, but we'll just assume that either
+					//  way it's at least sizeof(void*) and read what would be the vtptr anyway. Supposedly, if it's not virtual,
+					//  the wrappers won't use this field anyway...
+					native_vtptr = Marshal.ReadIntPtr (ptr);
+				}
+
+				return native_vtptr;
+			}
+			set {
+				native_vtptr = value;
+			}
+		}
+
 		CppInstancePtr ICppObject.Native {
 			get { return this; }
 		}
 
 		public bool IsManagedAlloc {
 			get { return manage_memory; }
+		}
+
+		internal static void RegisterManagedVTable (VTable vtable)
+		{
+			if (managed_vtptr_to_gchandle_offset == null)
+				managed_vtptr_to_gchandle_offset = new Dictionary<IntPtr, int> ();
+
+			managed_vtptr_to_gchandle_offset [vtable.Pointer] = vtable.TypeInfo.NativeSize;
 		}
 
 		internal static IntPtr MakeGCHandle (object managedWrapper)
@@ -147,9 +177,24 @@ namespace Mono.VisualC.Interop {
 			return GCHandle.ToIntPtr (handle);
 		}
 
+		// This might be made public, but in this form it only works for classes with vtables.
+		//  Returns null if the native ptr passed in does not appear to be a managed instance.
+		//  (i.e. its vtable ptr is not in managed_vtptr_to_gchandle_offset)
+		internal static T ToManaged<T> (IntPtr native) where T : class
+		{
+			if (managed_vtptr_to_gchandle_offset == null)
+				return null;
+
+			int gchOffset;
+			if (!managed_vtptr_to_gchandle_offset.TryGetValue (Marshal.ReadIntPtr (native), out gchOffset))
+				return null;
+
+			return ToManaged<T> (native, gchOffset);
+		}
+
 		// WARNING! This method is not safe. DO NOT call
 		// if we do not KNOW that this instance is managed.
-		internal static T GetManaged<T> (IntPtr native, int nativeSize) where T : class
+		internal static T ToManaged<T> (IntPtr native, int nativeSize) where T : class
 		{
 			IntPtr handlePtr = Marshal.ReadIntPtr (native, nativeSize);
 			GCHandle handle = GCHandle.FromIntPtr (handlePtr);
