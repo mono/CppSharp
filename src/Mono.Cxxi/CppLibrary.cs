@@ -1,11 +1,11 @@
 //
-// Mono.VisualC.Interop.CppLibrary.cs: Represents a native C++ library for interop
+// Mono.Cxxi.CppLibrary.cs: Represents a native C++ library for interop
 //
 // Author:
 //   Alexander Corrado (alexander.corrado@gmail.com)
 //   Andreia Gaita (shana@spoiledcat.net)
 //
-// Copyright (C) 2010 Alexander Corrado
+// Copyright (C) 2010-2011 Alexander Corrado
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -35,9 +35,9 @@ using System.Runtime.InteropServices;
 using System.Reflection;
 using System.Reflection.Emit;
 
-using Mono.VisualC.Interop.ABI;
+using Mono.Cxxi.Abi;
 
-namespace Mono.VisualC.Interop {
+namespace Mono.Cxxi {
 
 	public enum InlineMethods {
 

@@ -1,11 +1,8 @@
-//
-// Mono.VisualC.Interop.ABI.VirtualOnlyAbi.cs: A generalized C++ ABI that only supports virtual methods
-//
 // Author:
 //   Alexander Corrado (alexander.corrado@gmail.com)
 //   Andreia Gaita (shana@spoiledcat.net)
 //
-// Copyright (C) 2010 Alexander Corrado
+// Copyright (C) 2010-2011 Alexander Corrado
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -28,37 +25,32 @@
 
 using System;
 using System.Reflection;
-using System.Reflection.Emit;
-using System.Runtime.InteropServices;
+using System.Runtime.CompilerServices;
 
-namespace Mono.VisualC.Interop.ABI {
+// Information about this assembly is defined by the following attributes.
+// Change them to the values specific to your project.
 
-	public class VirtualOnlyAbi : CppAbi {
+[assembly: AssemblyTitle("Mono.Cxxi")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("")]
+[assembly: AssemblyCopyright("")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
 
-		public VirtualOnlyAbi (MemberFilter vtableOverrideFilter)
-		{
-			this.vtable_override_filter = vtableOverrideFilter;
-		}
-		public VirtualOnlyAbi () { }
+// The assembly version has the format "{Major}.{Minor}.{Build}.{Revision}".
+// The form "{Major}.{Minor}.*" will automatically update the build and revision,
+// and "{Major}.{Minor}.{Build}.*" will update just the revision.
 
-		public override MethodType GetMethodType (MethodInfo imethod)
-		{
-			MethodType defaultType = base.GetMethodType (imethod);
-			if (defaultType == MethodType.NativeCtor || defaultType == MethodType.NativeDtor)
-				return MethodType.NoOp;
-			return defaultType;
-		}
+[assembly: AssemblyVersion("1.0.*")]
 
-		protected override string GetMangledMethodName (MethodInfo methodInfo)
-		{
-			throw new NotSupportedException ("Name mangling is not supported by this class. All C++ interface methods must be declared virtual.");
-		}
+// The following attributes are used to specify the signing key for the assembly,
+// if desired. See the Mono documentation for more information about signing.
 
-		public override CallingConvention? GetCallingConvention (MethodInfo methodInfo)
-		{
-			// Use platform default
-			return null;
-		}
-	}
-}
+//[assembly: AssemblyDelaySign(false)]
+//[assembly: AssemblyKeyFile("")]
 
+[assembly: CLSCompliant(true)]
+// FIXME: This will not work if we ever support saving these assemblies
+[assembly: InternalsVisibleTo("__CppLibraryImplAssembly")]

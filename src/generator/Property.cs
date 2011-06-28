@@ -28,7 +28,7 @@
 using System;
 using System.Collections.Generic;
 
-using Mono.VisualC.Interop;
+using Mono.Cxxi;
 
 public class Property {
 

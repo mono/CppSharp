@@ -1,11 +1,11 @@
 //
-// Mono.VisualC.Interop.ABI.VTable.cs: abstract vtable
+// Mono.Cxxi.Abi.VTable.cs: Managed VTable Implementation
 //
 // Author:
 //   Alexander Corrado (alexander.corrado@gmail.com)
 //   Andreia Gaita (shana@spoiledcat.net)
 //
-// Copyright (C) 2010 Alexander Corrado
+// Copyright (C) 2010-2011 Alexander Corrado
 // 
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -34,7 +34,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Runtime.InteropServices;
 
-namespace Mono.VisualC.Interop.ABI {
+namespace Mono.Cxxi.Abi {
 
 	// TODO: RTTI .. support virtual inheritance
 

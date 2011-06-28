@@ -1,5 +1,4 @@
 using System;
-using Mono.VisualC.Interop;
 
 public class HelloExample
 {

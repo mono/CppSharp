@@ -12,7 +12,7 @@ using System.Reflection;
 
 using Templates;
 using NDesk.Options;
-using Mono.VisualC.Interop;
+using Mono.Cxxi;
 
 public class Generator {
 

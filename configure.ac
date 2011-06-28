@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 AC_PREREQ([2.54])
-AC_INIT([CPPInterop], [0.99.1])
+AC_INIT([Mono.Cxxi], [0.99.1])
 AM_INIT_AUTOMAKE([foreign])
 AM_MAINTAINER_MODE
 
@@ -57,8 +57,8 @@ dnl package checks, per config
 
 
 AC_CONFIG_FILES([
-src/Mono.VisualC.Interop/mono.visualc.interop.pc
-src/Mono.VisualC.Interop/Makefile
+src/Mono.Cxxi/mono.cxxi.pc
+src/Mono.Cxxi/Makefile
 src/QtBindings/qtbindings.pc
 src/QtBindings/Makefile
 src/generator/generator

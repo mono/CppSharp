@@ -2,7 +2,7 @@ top_srcdir = ../
 BUILD_DIR = $(top_srcdir)/bin/Debug
 
 INTEROP_DLL = \
-	$(BUILD_DIR)/Mono.VisualC.Interop.dll
+	$(BUILD_DIR)/Mono.Cxxi.dll
 
 TEST_DLL = $(BUILD_DIR)/Test.dll
 
@@ -12,7 +12,6 @@ NATIVE = \
 
 MANAGED =  \
 	ByValTests.cs \
-	Support/CppMockObject.cs \
 	Support/CppNUnitAsserts.cs \
 	VirtualTests.cs
 	

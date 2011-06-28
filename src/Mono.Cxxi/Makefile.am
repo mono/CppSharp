@@ -6,11 +6,10 @@ ASSEMBLY_COMPILER_COMMAND = mcs
 ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -warn:4 -optimize- -debug "-define:DEBUG"
 BUILD_DIR = $(top_srcdir)/bin/Debug
 
-ASSEMBLY = $(BUILD_DIR)/Mono.VisualC.Interop.dll
+ASSEMBLY = $(BUILD_DIR)/Mono.Cxxi.dll
 ASSEMBLY_MDB = $(ASSEMBLY).mdb
 
-MONO_VISUALC_INTEROP_DLL_MDB_SOURCE=bin/Debug/Mono.VisualC.Interop.dll.mdb
-MONO_VISUALC_INTEROP_DLL_MDB=$(BUILD_DIR)/Mono.VisualC.Interop.dll.mdb
+MONO_CXXI_DLL_MDB=$(BUILD_DIR)/Mono.Cxxi.dll.mdb
 
 endif
 
@@ -19,7 +18,7 @@ ASSEMBLY_COMPILER_COMMAND = mcs
 ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -warn:4 -optimize+
 BUILD_DIR = $(top_srcdir)/bin/Release
 
-ASSEMBLY = $(BUILD_DIR)/Mono.VisualC.Interop.dll
+ASSEMBLY = $(BUILD_DIR)/Mono.Cxxi.dll
 ASSEMBLY_MDB = 
 
 MONO_VISUALC_INTEROP_DLL_MDB=
@@ -33,10 +32,10 @@ AL=al2
 SATELLITE_ASSEMBLY_NAME=$(notdir $(basename $(ASSEMBLY))).resources.dll
 
 PROGRAMFILES = \
-	$(MONO_VISUALC_INTEROP_DLL_MDB)  
+	$(MONO_CXXI_DLL_MDB)
 
 LINUX_PKGCONFIG = \
-	$(MONO_VISUALC_INTEROP_PC)  
+	$(MONO_CXXI_PC)
 
 
 RESGEN=resgen2
@@ -75,7 +74,7 @@ EXTRAS = \
 	ABI \
 	ABI/Impl \
 	Util \
-	mono.visualc.interop.pc.in 
+	mono.cxxi.pc.in
 
 REFERENCES =  \
 	System \
@@ -87,9 +86,9 @@ CLEANFILES = $(PROGRAMFILES) $(LINUX_PKGCONFIG)
 
 include $(top_srcdir)/Makefile.include
 
-MONO_VISUALC_INTEROP_PC = $(BUILD_DIR)/mono.visualc.interop.pc
+MONO_CXXI_PC = $(BUILD_DIR)/mono.cxxi.pc
 
-$(eval $(call emit-deploy-wrapper,MONO_VISUALC_INTEROP_PC,mono.visualc.interop.pc))
+$(eval $(call emit-deploy-wrapper,MONO_CXXI_PC,mono.cxxi.pc))
 
 
 $(eval $(call emit_resgen_targets))

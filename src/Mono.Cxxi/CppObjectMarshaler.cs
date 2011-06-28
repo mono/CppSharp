@@ -2,7 +2,7 @@
 //   Alexander Corrado (alexander.corrado@gmail.com)
 //   Andreia Gaita (shana@spoiledcat.net)
 //
-// Copyright (C) 2010 Alexander Corrado
+// Copyright (C) 2010-2011 Alexander Corrado
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -27,7 +27,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Mono.VisualC.Interop {
+namespace Mono.Cxxi {
 	public class CppObjectMarshaler : ICustomMarshaler {
 		private static CppObjectMarshaler marshaler = null;
 		private CppObjectMarshaler () {

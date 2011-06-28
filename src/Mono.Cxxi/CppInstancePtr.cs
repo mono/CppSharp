@@ -1,11 +1,11 @@
 //
-// Mono.VisualC.Interop.CppInstancePtr.cs: Represents a pointer to a native C++ instance
+// Mono.Cxxi.CppInstancePtr.cs: Represents a pointer to a native C++ instance
 //
 // Author:
 //   Alexander Corrado (alexander.corrado@gmail.com)
 //   Andreia Gaita (shana@spoiledcat.net)
 //
-// Copyright (C) 2010 Alexander Corrado
+// Copyright (C) 2010-2011 Alexander Corrado
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -32,9 +32,9 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 
-using Mono.VisualC.Interop.ABI;
+using Mono.Cxxi.Abi;
 
-namespace Mono.VisualC.Interop {
+namespace Mono.Cxxi {
 	public struct CppInstancePtr : ICppObject {
 
 		private IntPtr ptr, native_vtptr;

@@ -7,7 +7,7 @@
     <ProjectGuid>{4A864586-93C5-4DC1-8A80-F094A88506D7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace>Mono.VisualC.Interop</RootNamespace>
+    <RootNamespace>Mono.Cxxi</RootNamespace>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -39,7 +39,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
-    <AssemblyName>Mono.VisualC.Interop</AssemblyName>
+    <AssemblyName>Mono.Cxxi</AssemblyName>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -59,16 +59,16 @@
   <ItemGroup>
     <Compile Include="CppLibrary.cs" />
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="ABI\CppAbi.cs" />
+    <Compile Include="Abi\CppAbi.cs" />
     <Compile Include="Interfaces.cs" />
     <Compile Include="Attributes.cs" />
     <Compile Include="CppInstancePtr.cs" />
     <Compile Include="CppField.cs" />
-    <Compile Include="ABI\VTable.cs" />
-    <Compile Include="ABI\MethodType.cs" />
-    <Compile Include="ABI\Impl\ItaniumAbi.cs" />
-    <Compile Include="ABI\Impl\VirtualOnlyAbi.cs" />
-    <Compile Include="ABI\Impl\MsvcAbi.cs" />
+    <Compile Include="Abi\VTable.cs" />
+    <Compile Include="Abi\MethodType.cs" />
+    <Compile Include="Abi\Impl\ItaniumAbi.cs" />
+    <Compile Include="Abi\Impl\VirtualOnlyAbi.cs" />
+    <Compile Include="Abi\Impl\MsvcAbi.cs" />
     <Compile Include="CppObjectMarshaler.cs" />
     <Compile Include="CppType.cs" />
     <Compile Include="CppTypeInfo.cs" />
@@ -78,7 +78,7 @@
     <Compile Include="Util\ReflectionHelper.cs" />
     <Compile Include="Util\MethodSignature.cs" />
     <Compile Include="CppModifiers.cs" />
-    <Compile Include="ABI\Impl\ItaniumTypeInfo.cs" />
+    <Compile Include="Abi\Impl\ItaniumTypeInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

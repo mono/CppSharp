@@ -1,8 +1,11 @@
+//
+// Mono.Cxxi.Abi.MethodType.cs: Method annotation for IL codegen
+//
 // Author:
 //   Alexander Corrado (alexander.corrado@gmail.com)
 //   Andreia Gaita (shana@spoiledcat.net)
 //
-// Copyright (C) 2010 Alexander Corrado
+// Copyright (C) 2010-2011 Alexander Corrado
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -24,7 +27,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
-namespace Mono.VisualC.Interop {
+namespace Mono.Cxxi.Abi {
 	public enum MethodType {
 		NoOp,
 		NotImplemented,

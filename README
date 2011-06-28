@@ -2,14 +2,14 @@ Directory structure
 -------------------
 
 src/
-  Mono.VisualC.Interop
+  Mono.Cxxi
     The runtime library
   generator
     The binding generator
   qt
     Auto generated Qt bindings + test program
 
-tests2/
+tests/
   Regression tests
 
 examples/

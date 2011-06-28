@@ -1,11 +1,11 @@
 //
-// Mono.VisualC.Interop.Util.ReflectionHelper.cs: Helper methods for common reflection API tasks
+// Mono.Cxxi.Util.ReflectionHelper.cs: Helper methods for common reflection API tasks
 //
 // Author:
 //   Alexander Corrado (alexander.corrado@gmail.com)
 //   Andreia Gaita (shana@spoiledcat.net)
 //
-// Copyright (C) 2010 Alexander Corrado
+// Copyright (C) 2010-2011 Alexander Corrado
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -33,7 +33,7 @@ using System.Runtime.InteropServices;
 using System.Reflection;
 using System.Reflection.Emit;
 
-namespace Mono.VisualC.Interop.Util {
+namespace Mono.Cxxi.Util {
 	internal static class ReflectionHelper {
 
 		public static MethodInfo GetMethodInfoForDelegate (Type delType)

@@ -1,3 +1,6 @@
+//
+// Mono.Cxxi.Abi.ItaniumTypeInfo.cs: An implementation of the Itanium C++ ABI
+//
 // Author:
 //   Alexander Corrado (alexander.corrado@gmail.com)
 //
@@ -28,9 +31,9 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Reflection;
 
-using Mono.VisualC.Interop.Util;
+using Mono.Cxxi.Util;
 
-namespace Mono.VisualC.Interop.ABI {
+namespace Mono.Cxxi.Abi {
 
 	public class ItaniumTypeInfo : CppTypeInfo {
 		public ItaniumTypeInfo (ItaniumAbi abi, IEnumerable<PInvokeSignature> virtualMethods, Type nativeLayout, Type wrapperType)

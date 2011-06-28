@@ -1,11 +1,11 @@
 //
-// Mono.VisualC.Interop.Util.IEnumerableTransform.cs: Rule-based transformation for IEnumerable
+// Mono.Cxxi.Util.IEnumerableTransform.cs: Rule-based transformation for IEnumerable
 //
 // Author:
 //   Alexander Corrado (alexander.corrado@gmail.com)
 //   Andreia Gaita (shana@spoiledcat.net)
 //
-// Copyright (C) 2010 Alexander Corrado
+// Copyright (C) 2010-2011 Alexander Corrado
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -31,7 +31,7 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Mono.VisualC.Interop.Util {
+namespace Mono.Cxxi.Util {
 
 
 	public static class IEnumerableTransform {

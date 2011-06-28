@@ -1,5 +1,5 @@
 //
-// Mono.VisualC.Interop.Attributes.cs
+// Mono.Cxxi.Attributes.cs
 //
 // Author:
 //   Alexander Corrado (alexander.corrado@gmail.com)
@@ -11,7 +11,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 
-namespace Mono.VisualC.Interop {
+namespace Mono.Cxxi {
 
 	#region Interface method attributes
 
@@ -99,8 +99,8 @@ namespace Mono.VisualC.Interop {
 	#endregion
 }
 
-namespace Mono.VisualC.Interop.ABI {
-using Mono.VisualC.Interop;
+namespace Mono.Cxxi.Abi {
+using Mono.Cxxi;
 
 	public partial class CppAbi {
 

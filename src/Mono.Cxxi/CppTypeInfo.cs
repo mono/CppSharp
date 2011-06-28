@@ -1,11 +1,11 @@
 //
-// Mono.VisualC.Interop.CppTypeInfo.cs: Type metadata for C++ types
+// Mono.Cxxi.CppTypeInfo.cs: Type metadata for C++ types
 //
 // Author:
 //   Alexander Corrado (alexander.corrado@gmail.com)
 //   Andreia Gaita (shana@spoiledcat.net)
 //
-// Copyright (C) 2010 Alexander Corrado
+// Copyright (C) 2010-2011 Alexander Corrado
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -34,10 +34,10 @@ using System.Collections.ObjectModel;
 
 using System.Runtime.InteropServices;
 
-using Mono.VisualC.Interop.ABI;
-using Mono.VisualC.Interop.Util;
+using Mono.Cxxi.Abi;
+using Mono.Cxxi.Util;
 
-namespace Mono.VisualC.Interop {
+namespace Mono.Cxxi {
 
 	// NOTE: As AddBase is called, properties change.
 	//  TypeComplete indicates when the dust has settled.

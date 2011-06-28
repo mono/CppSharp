@@ -9,8 +9,8 @@ BUILD_DIR = $(top_srcdir)/bin/Debug
 ASSEMBLY = $(BUILD_DIR)/generator.exe
 ASSEMBLY_MDB = $(ASSEMBLY).mdb
 
-MONO_VISUALC_INTEROP_DLL_SOURCE=$(BUILD_DIR)/Mono.VisualC.Interop.dll
-MONO_VISUALC_INTEROP_DLL=$(BUILD_DIR)/Mono.VisualC.Interop.dll
+MONO_CXXI_DLL_SOURCE=$(BUILD_DIR)/Mono.Cxxi.dll
+MONO_CXXI_DLL=$(BUILD_DIR)/Mono.Cxxi.dll
 GENERATOR_EXE_MDB_SOURCE=$(BUILD_DIR)/generator.exe.mdb
 GENERATOR_EXE_MDB=$(BUILD_DIR)/generator.exe.mdb
 
@@ -24,8 +24,8 @@ BUILD_DIR = $(top_srcdir)/bin/Release
 ASSEMBLY = $(BUILD_DIR)/generator.exe
 ASSEMBLY_MDB = 
 
-MONO_VISUALC_INTEROP_DLL_SOURCE=$(BUILD_DIR)/Mono.VisualC.Interop.dll
-MONO_VISUALC_INTEROP_DLL=$(BUILD_DIR)/Mono.VisualC.Interop.dll
+MONO_CXXI_DLL_SOURCE=$(BUILD_DIR)/Mono.Cxxi.dll
+MONO_CXXI_DLL=$(BUILD_DIR)/Mono.Cxxi.dll
 GENERATOR_EXE_MDB= 
 
 endif
@@ -36,7 +36,7 @@ AL=al2
 SATELLITE_ASSEMBLY_NAME=$(notdir $(basename $(ASSEMBLY))).resources.dll
 
 PROGRAMFILES = \
-	$(MONO_VISUALC_INTEROP_DLL) \
+	$(MONO_CXXI_DLL) \
 	$(GENERATOR_EXE_MDB)
 
 BINARIES = \
@@ -70,7 +70,7 @@ EXTRAS = \
 	generator.in 
 
 REFERENCES =  \
-	../../bin/Debug/Mono.VisualC.Interop.dll \
+	../../bin/Debug/Mono.Cxxi.dll \
 	System \
 	System.Core \
 	System.Xml \
@@ -84,9 +84,8 @@ include $(top_srcdir)/Makefile.include
 
 GENERATOR = $(BUILD_DIR)/generator
 
-$(eval $(call emit-deploy-target,MONO_VISUALC_INTEROP_DLL))
+$(eval $(call emit-deploy-target,MONO_CXXI_DLL))
 $(eval $(call emit-deploy-wrapper,GENERATOR,generator,x))
-$(eval $(call emit-deploy-target,CPPINTEROP_DLL))
 
 
 $(eval $(call emit_resgen_targets))

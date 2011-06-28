@@ -95,9 +95,9 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\Mono.VisualC.Interop\Mono.VisualC.Interop.csproj">
+    <ProjectReference Include="..\src\Mono.Cxxi\Mono.Cxxi.csproj">
       <Project>{4A864586-93C5-4DC1-8A80-F094A88506D7}</Project>
-      <Name>Mono.VisualC.Interop</Name>
+      <Name>Mono.Cxxi</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

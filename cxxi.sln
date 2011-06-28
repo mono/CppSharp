@@ -1,7 +1,7 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mono.VisualC.Interop", "src\Mono.VisualC.Interop\Mono.VisualC.Interop.csproj", "{4A864586-93C5-4DC1-8A80-F094A88506D7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mono.Cxxi", "src\Mono.Cxxi\Mono.Cxxi.csproj", "{4A864586-93C5-4DC1-8A80-F094A88506D7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "tests\Tests.csproj", "{3C290CBE-CA39-47F6-B3A0-ACD16C5A38C8}"
 EndProject

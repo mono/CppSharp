@@ -10,7 +10,7 @@
 using System;
 using System.Runtime.InteropServices;
 using NUnit.Framework;
-using Mono.VisualC.Interop;
+using Mono.Cxxi;
 
 namespace Tests.Support {
         public static class CppNUnitAsserts {

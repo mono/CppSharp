@@ -27,7 +27,7 @@ using System.Collections.Generic;
 using System.CodeDom;
 using System.CodeDom.Compiler;
 
-using Mono.VisualC.Interop;
+using Mono.Cxxi;
 
 public class Parameter
 {

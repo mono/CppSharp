@@ -2,7 +2,7 @@
 <#@ import namespace="System.IO" #>
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Collections.Generic" #>
-<#@ import namespace="Mono.VisualC.Interop" #>
+<#@ import namespace="Mono.Cxxi" #>
 <#
 	var hasBase = Class.BaseClasses.Count > 0;
 	var wrapper = Class.Name;
@@ -19,7 +19,7 @@
 // -------------------------------------------------------------------------
 
 using System;
-using Mono.VisualC.Interop;
+using Mono.Cxxi;
 
 namespace <#= Generator.Namespace #> {
 

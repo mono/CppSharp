@@ -1,11 +1,11 @@
 //
-// Mono.VisualC.Interop.ABI.ItaniumAbi.cs: An implementation of the Itanium C++ ABI
+// Mono.Cxxi.Abi.ItaniumAbi.cs: An implementation of the Itanium C++ ABI
 //
 // Author:
 //   Alexander Corrado (alexander.corrado@gmail.com)
 //   Andreia Gaita (shana@spoiledcat.net)
 //
-// Copyright (C) 2010 Alexander Corrado
+// Copyright (C) 2010-2011 Alexander Corrado
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -34,9 +34,9 @@ using System.Reflection.Emit;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-using Mono.VisualC.Interop.Util;
+using Mono.Cxxi.Util;
 
-namespace Mono.VisualC.Interop.ABI {
+namespace Mono.Cxxi.Abi {
 	public class ItaniumAbi : CppAbi {
 
 		public static readonly ItaniumAbi Instance = new ItaniumAbi ();

@@ -1,2 +1,2 @@
 
- SUBDIRS =  Mono.VisualC.Interop generator
+ SUBDIRS =  Mono.Cxxi generator

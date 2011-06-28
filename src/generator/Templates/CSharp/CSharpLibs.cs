@@ -30,7 +30,7 @@ namespace Templates {
             #line hidden
             
             #line 4 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpLibs.tt"
-            this.Write("\n//\n//  This file was auto generated. Do not edit.\n// -------------------------------------------------------------------------\n\nusing System;\nusing Mono.VisualC.Interop;\n\nnamespace ");
+            this.Write("\n//\n//  This file was auto generated. Do not edit.\n// -------------------------------------------------------------------------\n\nusing System;\nusing Mono.Cxxi;\n\nnamespace ");
             
             #line default
             #line hidden

@@ -1,11 +1,11 @@
 //
-// Mono.VisualC.Interop.Interfaces.cs
+// Mono.Cxxi.Interfaces.cs
 //
 // Author:
 //   Alexander Corrado (alexander.corrado@gmail.com)
 //   Andreia Gaita (shana@spoiledcat.net)
 //
-// Copyright (C) 2010 Alexander Corrado
+// Copyright (C) 2010-2011 Alexander Corrado
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -27,9 +27,9 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
-using Mono.VisualC.Interop.ABI;
+using Mono.Cxxi.Abi;
 
-namespace Mono.VisualC.Interop {
+namespace Mono.Cxxi {
 
 	// The contract for ICppObject requires implementations to have the following constructors:
 	//  + A public constructor that takes CppInstancePtr (native constructor)

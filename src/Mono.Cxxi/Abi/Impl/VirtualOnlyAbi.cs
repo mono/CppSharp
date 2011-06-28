@@ -1,12 +1,11 @@
 //
-// Field.cs: Represents a field of a C++ class
+// Mono.Cxxi.Abi.VirtualOnlyAbi.cs: A generalized C++ ABI that only supports virtual methods
 //
 // Author:
 //   Alexander Corrado (alexander.corrado@gmail.com)
 //   Andreia Gaita (shana@spoiledcat.net)
-//   Zoltan Varga <vargaz@gmail.com>
 //
-// Copyright (C) 2011 Novell Inc.
+// Copyright (C) 2010-2011 Alexander Corrado
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -28,29 +27,38 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
-using System.Collections.Generic;
-using System.CodeDom;
-using System.CodeDom.Compiler;
+using System.Reflection;
+using System.Reflection.Emit;
+using System.Runtime.InteropServices;
 
-using Mono.Cxxi;
+namespace Mono.Cxxi.Abi {
 
-public class Field {
+	public class VirtualOnlyAbi : CppAbi {
 
-	public Field (string name, CppType type, Access access) {
-		Name = name;
-		Type = type;
-		Access = access;
-	}
+		public VirtualOnlyAbi (MemberFilter vtableOverrideFilter)
+		{
+			this.vtable_override_filter = vtableOverrideFilter;
+		}
+		public VirtualOnlyAbi () { }
 
-	public string Name {
-		get; set;
-	}
+		public override MethodType GetMethodType (MethodInfo imethod)
+		{
+			MethodType defaultType = base.GetMethodType (imethod);
+			if (defaultType == MethodType.NativeCtor || defaultType == MethodType.NativeDtor)
+				return MethodType.NoOp;
+			return defaultType;
+		}
 
-	public CppType Type {
-		get; set;
-	}
+		protected override string GetMangledMethodName (MethodInfo methodInfo)
+		{
+			throw new NotSupportedException ("Name mangling is not supported by this class. All C++ interface methods must be declared virtual.");
+		}
 
-	public Access Access {
-		get; set;
+		public override CallingConvention? GetCallingConvention (MethodInfo methodInfo)
+		{
+			// Use platform default
+			return null;
+		}
 	}
 }
+

@@ -12,7 +12,7 @@ namespace Templates {
     using System.IO;
     using System.Linq;
     using System.Collections.Generic;
-    using Mono.VisualC.Interop;
+    using Mono.Cxxi;
     using System;
     
     
@@ -196,7 +196,7 @@ private bool IsByVal (CppType t)
             #line hidden
             
             #line 16 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
-            this.Write("\n//\n//  This file was auto generated. Do not edit.\n// -------------------------------------------------------------------------\n\nusing System;\nusing Mono.VisualC.Interop;\n\nnamespace ");
+            this.Write("\n//\n//  This file was auto generated. Do not edit.\n// -------------------------------------------------------------------------\n\nusing System;\nusing Mono.Cxxi;\n\nnamespace ");
             
             #line default
             #line hidden

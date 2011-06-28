@@ -1,11 +1,11 @@
 //
-// Mono.VisualC.Interop.CppType.cs: Abstracts a C++ type declaration
+// Mono.Cxxi.CppType.cs: Abstracts a C++ type declaration
 //
 // Author:
 //   Alexander Corrado (alexander.corrado@gmail.com)
 //   Andreia Gaita (shana@spoiledcat.net)
 //
-// Copyright (C) 2010 Alexander Corrado
+// Copyright (C) 2010-2011 Alexander Corrado
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -33,9 +33,9 @@ using System.Text.RegularExpressions;
 using System.Reflection;
 using System.Collections.Generic;
 
-using Mono.VisualC.Interop.Util;
+using Mono.Cxxi.Util;
 
-namespace Mono.VisualC.Interop {
+namespace Mono.Cxxi {
 
 	// These can be used anywhere a CppType could be used.
 	public enum CppTypes {

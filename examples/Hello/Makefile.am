@@ -10,7 +10,7 @@ BUILD_DIR=$(top_srcdir)/bin/Release
 endif
 
 INTEROP_DLL = \
-	$(BUILD_DIR)/Mono.VisualC.Interop.dll
+	$(BUILD_DIR)/Mono.Cxxi.dll
 
 HELLO_EXE = \
 	$(BUILD_DIR)/Hello.exe

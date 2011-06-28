@@ -1,11 +1,11 @@
 //
-// Mono.VisualC.Interop.ABI.MsvcAbi.cs: An implementation of the Microsoft Visual C++ ABI
+// Mono.Cxxi.Abi.MsvcAbi.cs: An implementation of the Microsoft Visual C++ ABI
 //
 // Author:
 //   Alexander Corrado (alexander.corrado@gmail.com)
 //   Andreia Gaita (shana@spoiledcat.net)
 //
-// Copyright (C) 2010 Alexander Corrado
+// Copyright (C) 2010-2011 Alexander Corrado
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -33,10 +33,10 @@ using System.Reflection;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-using Mono.VisualC.Interop;
-using Mono.VisualC.Interop.Util;
+using Mono.Cxxi;
+using Mono.Cxxi.Util;
 
-namespace Mono.VisualC.Interop.ABI {
+namespace Mono.Cxxi.Abi {
 
 	// FIXME: No 64-bit support
 	public class MsvcAbi : CppAbi {
