@@ -54,10 +54,11 @@ public:
 	static NumberClass* GetInstance (int num, int my);
 };
 
-class ClassThatRoundtrips {
+class ClassThatRoundtrips : public MultiplierClass {
 protected:
-	NumberClass* nc;
+	MultiplierClass* that;
 public:
-	ClassThatRoundtrips (NumberClass* managed);
-	virtual NumberClass* GetIt ();
+	ClassThatRoundtrips (int n, MultiplierClass* managed) : MultiplierClass (n) { this->that = managed; }
+	virtual MultiplierClass* GetThat () { return this->that; }
+	virtual MultiplierClass* GetThis () { return this; }
 };

@@ -134,12 +134,25 @@ namespace Tests {
 		[Test]
 		public void TestRoundtripManagedOverride ()
 		{
-			var managed = new ManagedOverride1 ();
-			var roundtripper = new ClassThatRoundtrips (managed);
-			var cls = roundtripper.GetIt ();
-			Assert.AreEqual (25, cls.Number, "#1");
-			Assert.AreEqual (-25, cls.NegativeNumber, "#2");
-			Assert.IsNotNull (cls as ManagedOverride1);
+			var managed = new ManagedOverride2 ();
+			var roundtripper = new ClassThatRoundtrips (7, managed);
+
+			// test primary base ptr from native
+			var cls = roundtripper.GetThis ();
+			Assert.AreSame (roundtripper, cls, "#1");
+			Assert.AreEqual (7, cls.Number, "#2");
+
+			// test non-primary base ptr from native
+			cls = roundtripper.GetThat ();
+			Assert.AreSame ((MultiplierClass)managed, cls, "#3");
+			Assert.AreEqual (3, cls.Number, "#4");
+
+			Assert.AreEqual (3, cls.Number, "#5");
+			cls.Multiply (0);
+			Assert.AreEqual (-30, cls.NegativeNumber, "#6");
+
+			// cast to non-primary subclass
+			Assert.IsNotNull (cls as ManagedOverride2, "#7");
 		}
 
 	}
