@@ -1,5 +1,5 @@
 
-#include "VirtualTests.h"
+#include "InheritanceTests.h"
 
 NumberClass::NumberClass (int n)
 	: num (n)

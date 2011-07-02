@@ -52,8 +52,8 @@
   <ItemGroup>
     <Compile Include="Support\CppMockObject.cs" />
     <Compile Include="Support\CppNUnitAsserts.cs" />
-    <Compile Include="ByValTests.cs" />
-    <Compile Include="VirtualTests.cs" />
+    <Compile Include="MarshalingTests.cs" />
+    <Compile Include="InheritanceTests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -70,10 +70,10 @@
   <ItemGroup>
     <None Include="Native\NUnit.cpp" />
     <None Include="Native\NUnit.h" />
-    <None Include="Native\ByValTests.cpp" />
-    <None Include="Native\ByValTests.h" />
-    <None Include="Native\VirtualTests.h" />
-    <None Include="Native\VirtualTests.cpp" />
+    <None Include="Native\MarshalingTests.cpp" />
+    <None Include="Native\MarshalingTests.h" />
+    <None Include="Native\InheritanceTests.h" />
+    <None Include="Native\InheritanceTests.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>

@@ -6,7 +6,7 @@ using Tests.Support;
 namespace Tests {
 
 	[TestFixture]
-	public class ByValTests {
+	public class MarshalingTests {
 
 		[Test]
 		public void TestClassReturn ()

@@ -4,7 +4,7 @@ using NUnit.Framework;
 namespace Tests {
 
 	[TestFixture]
-	public class VirtualTests {
+	public class InheritanceTests {
 
 		[Test]
 		public void TestVirtualCall ()

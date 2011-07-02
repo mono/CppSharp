@@ -7,13 +7,13 @@ INTEROP_DLL = \
 TEST_DLL = $(BUILD_DIR)/Test.dll
 
 NATIVE = \
-	ByValTests \
-	VirtualTests
+	MarshalingTests \
+	InheritanceTests
 
 MANAGED =  \
-	ByValTests.cs \
-	Support/CppNUnitAsserts.cs \
-	VirtualTests.cs
+	InheritanceTests.cs \
+	MarshalingTests.cs \
+	Support/CppNUnitAsserts.cs
 	
 REFERENCES =  \
 	-pkg:mono-nunit
