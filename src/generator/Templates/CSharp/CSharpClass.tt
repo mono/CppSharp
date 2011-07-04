@@ -8,8 +8,8 @@
 	var wrapper = Class.Name;
 	var iface   = "I" + Class.Name;
 	var layout  = "_" + Class.Name;
-	var layoutClass = (hasBase? "\t: base (impl.TypeInfo)\n\t\t{" : "{") + "\n\t\t\tLayoutClass ();";
-	var initBases   = (Class.BaseClasses.Count > 1 ? "\tInitBases ();\n\t\t}" : "}");
+	var layoutClass = (hasBase? "\t: base (impl.TypeInfo)\n\t\t{" : "{") + "\n\t\t\t__cxxi_LayoutClass ();";
+	var initBases   = (Class.BaseClasses.Count > 1 ? "\t__cxxi_InitBases ();\n\t\t}" : "}");
 #>
 // -------------------------------------------------------------------------
 //  Managed wrapper for <#= Class.Name #>
@@ -106,7 +106,7 @@ namespace <#= Generator.Namespace #> {
 <# PushIndent ("\t\t");
 		foreach (var method in Class.Methods.Where (m => m.GenWrapperMethod)) {
 
-			WriteMethodHeader (method, layoutClass);
+			WriteMethodHeader (method, layoutClass, false, false);
 
 			if (method.IsConstructor)
 				Write ("Native = ");
@@ -185,7 +185,7 @@ namespace <#= Generator.Namespace #> {
 			Native.Dispose ();
 		}
 
-		private void LayoutClass ()
+		private void __cxxi_LayoutClass ()
 		{
 <# foreach (var npBase in Class.BaseClasses.Skip (1)) { #>
 			new <#= npBase.Name #> (impl.TypeInfo);
@@ -195,36 +195,79 @@ namespace <#= Generator.Namespace #> {
 
 <# /* Make this wrapper castable to non-primary bases */
 foreach (var npBase in Class.BaseClasses.Skip (1)) { #>
-		// Non-primary base class implementation for <#= npBase.Name #>:
-		public <#= npBase.Name #> <#= npBase.Name #> { get; protected set; }
+
+#region Non-primary base class implementation for <#= npBase.Name #>
+		private class <#= wrapper + "__" + npBase.Name #> : <#= npBase.Name #> {
+			public <#= wrapper #> instance;
+			public <#= wrapper + "__" + npBase.Name #> (<#= wrapper #> instance)
+				: base (<#= wrapper #>.impl.TypeInfo.Cast (instance, typeof (<#= npBase.Name #>)))
+			{
+				this.instance = instance;
+			}
+
+<# PushIndent ("\t\t\t");
+		foreach (var method in npBase.Methods.Where (m => m.IsVirtual)) {
+
+			if (!method.GenWrapperMethod || Class.Methods.Any (m => m.Node.CheckValue ("overrides", method.Node.Id)))
+				continue;
+
+			/* this is the managed override that has to call the subclass's method */
+			WriteMethodHeader (method, null, true, false);
+
+			Write ("instance.{0} (", npBase.Name + "__" + method.FormattedName);
+
+			WriteParameters (method.Parameters, false, false);
+			PopIndent ();
+			Write (");\n{0}}}\n\n", CurrentIndent);
+
+			/* this is the method that calls the base implementation that the subclass will use */
+			WriteMethodHeader (method, npBase.Name + "__" + method.FormattedName, true, false);
+
+			Write ("base.{0} (", method.FormattedName);
+
+			WriteParameters (method.Parameters, false, false);
+			PopIndent ();
+			Write (");\n{0}}}\n\n", CurrentIndent);
+		}
+		ClearIndent (); #>
+		}
+		private <#= wrapper #>__<#= npBase.Name #> __cxxi_<#= npBase.Name #>;
+		public <#= npBase.Name #> <#= npBase.Name #> { get { return __cxxi_<#= npBase.Name #>; } }
 		public static implicit operator <#= npBase.Name #>(<#= wrapper #> subClass)
 		{
 			return subClass.<#= npBase.Name #>;
 		}
+		public static explicit operator <#= wrapper #>(<#= npBase.Name #> baseClass)
+		{
+			if (baseClass == null) return null;
+			var obj = baseClass as <#= wrapper + "__" + npBase.Name #>;
+			if (obj == null) throw new InvalidCastException ();
+			return obj.instance;
+		}
 
+<# /* Add virtual methods of non-primary bases to this class proper so they can be overridden */ #>
 <# PushIndent ("\t\t");
-		foreach (var method in npBase.Methods) {
-			// With the exception of virtual methods that have been overridden, these methods must be called
-			//  thru a cast to the base class that performs a this ptr adjustment
-			if (!method.GenWrapperMethod || method.IsConstructor || method.IsStatic ||
-			    (method.IsVirtual && Class.Methods.Any (m => m.Node.CheckValue ("overrides", method.Node.Id))))
+		foreach (var method in npBase.Methods.Where (m => m.IsVirtual)) {
+
+			if (!method.GenWrapperMethod || Class.Methods.Any (m => m.Node.CheckValue ("overrides", method.Node.Id)))
 				continue;
 
-			WriteMethodHeader (method, initBases);
+			WriteMethodHeader (method, npBase.Name + "__" + method.FormattedName, true, true);
 
-			Write ("{0}.{1} (", npBase.Name, method.FormattedName);
+			Write ("{0}.{1} (", "__cxxi_" + npBase.Name, npBase.Name + "__" + method.FormattedName);
 
 			WriteParameters (method.Parameters, false, false);
 			PopIndent ();
 			Write (");\n{0}}}\n\n", CurrentIndent);
 		}
 		ClearIndent ();
+WriteLine ("#endregion");
 }
 if (Class.BaseClasses.Count > 1) { #>
-		private void InitBases ()
+		private void __cxxi_InitBases ()
 		{
 <# 		foreach (var npBase in Class.BaseClasses.Skip (1)) { #>
-			<#= npBase.Name #> = new <#= npBase.Name #> (impl.TypeInfo.Cast (this, typeof (<#= npBase.Name #>)));
+			__cxxi_<#= npBase.Name #> = new <#= wrapper + "__" + npBase.Name #> (this);
 <# 		} #>
 		}
 <# } #>
@@ -232,30 +275,31 @@ if (Class.BaseClasses.Count > 1) { #>
 }
 
 <#+
-private void WriteMethodHeader (Method method, string layoutClass)
+private void WriteMethodHeader (Method method, string layoutClass, bool isNonPrimaryOverride, bool @protected)
 {
 	var returnType = GetCSharpType (method.ReturnType);
 
-	if (method.IsVirtual)
+	if (!isNonPrimaryOverride && method.IsVirtual)
 		WriteLine ("[OverrideNative (\"{0}\")]", method.Name);
 
-	Write (CurrentIndent + "public ");
+	Write (CurrentIndent + (@protected? "protected " : "public "));
 	if (method.IsConstructor) {
 		Write (method.FormattedName);
 	} else {
 		if (method.IsStatic)  Write ("static ");
-		if (method.IsVirtual) Write ("virtual ");
+		if (method.IsVirtual && (!isNonPrimaryOverride || layoutClass != null)) Write ("virtual ");
+		else if (isNonPrimaryOverride) Write ("override ");
 		// ...?
 		Write (returnType);
 		Write (" ");
-		Write (method.FormattedName);
+		Write (isNonPrimaryOverride && layoutClass != null? layoutClass : method.FormattedName);
 	}
 
 	Write (" (");
 	WriteParameters (method.Parameters, true, false);
 	Write (")\n");
 
-	if (method.IsConstructor)
+	if (method.IsConstructor && layoutClass != null)
 		WriteLine (layoutClass);
 	else
 		WriteLine ("{");

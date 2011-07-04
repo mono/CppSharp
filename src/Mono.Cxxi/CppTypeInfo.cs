@@ -146,20 +146,42 @@ namespace Mono.Cxxi {
 
 		public virtual CppInstancePtr Cast (ICppObject instance, Type targetType)
 		{
+			var instanceType = instance.GetType ();
 			var found = false;
-			int offset = 0;
+			var offset = 0;
 
-			foreach (var baseClass in base_classes) {
-				if (baseClass.WrapperType.Equals (targetType)) {
-					found = true;
-					break;
+			if (WrapperType.Equals (targetType)) {
+				// check for downcast (base type -> this type)
+
+				foreach (var baseClass in base_classes) {
+					if (baseClass.WrapperType.Equals (instanceType)) {
+						found = true;
+						break;
+					}
+
+					offset -= baseClass.NativeSize;
 				}
 
-				offset += baseClass.NativeSize;
+
+			} else if (WrapperType.IsAssignableFrom (instanceType)) {
+				// check for upcast (this type -> base type)
+
+				foreach (var baseClass in base_classes) {
+					if (baseClass.WrapperType.Equals (targetType)) {
+						found = true;
+						break;
+					}
+
+					offset += baseClass.NativeSize;
+				}
+
+			} else {
+				throw new ArgumentException ("Either instance type or targetType must be equal to wrapper type.");
 			}
 
 			if (!found)
-				throw new InvalidCastException ("Cannot cast an instance of " + instance.GetType () + " to " + targetType);
+				throw new InvalidCastException ("Cannot cast an instance of " + instanceType + " to " + targetType);
+
 
 			// Construct a new targetType wrapper, passing in our offset this ptr.
 			// FIXME: If the object was alloc'd by managed code, the allocating wrapper (i.e. "instance") will still free the memory when

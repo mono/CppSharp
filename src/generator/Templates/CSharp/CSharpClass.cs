@@ -19,32 +19,33 @@ namespace Templates {
     public partial class CSharpClass : Base {
         
         
-        #line 234 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+        #line 277 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
         
-private void WriteMethodHeader (Method method, string layoutClass)
+private void WriteMethodHeader (Method method, string layoutClass, bool isNonPrimaryOverride, bool @protected)
 {
 	var returnType = GetCSharpType (method.ReturnType);
 
-	if (method.IsVirtual)
+	if (!isNonPrimaryOverride && method.IsVirtual)
 		WriteLine ("[OverrideNative (\"{0}\")]", method.Name);
 
-	Write (CurrentIndent + "public ");
+	Write (CurrentIndent + (@protected? "protected " : "public "));
 	if (method.IsConstructor) {
 		Write (method.FormattedName);
 	} else {
 		if (method.IsStatic)  Write ("static ");
-		if (method.IsVirtual) Write ("virtual ");
+		if (method.IsVirtual && (!isNonPrimaryOverride || layoutClass != null)) Write ("virtual ");
+		else if (isNonPrimaryOverride) Write ("override ");
 		// ...?
 		Write (returnType);
 		Write (" ");
-		Write (method.FormattedName);
+		Write (isNonPrimaryOverride && layoutClass != null? layoutClass : method.FormattedName);
 	}
 
 	Write (" (");
 	WriteParameters (method.Parameters, true, false);
 	Write (")\n");
 
-	if (method.IsConstructor)
+	if (method.IsConstructor && layoutClass != null)
 		WriteLine (layoutClass);
 	else
 		WriteLine ("{");
@@ -152,8 +153,8 @@ private bool IsByVal (CppType t)
 	var wrapper = Class.Name;
 	var iface   = "I" + Class.Name;
 	var layout  = "_" + Class.Name;
-	var layoutClass = (hasBase? "\t: base (impl.TypeInfo)\n\t\t{" : "{") + "\n\t\t\tLayoutClass ();";
-	var initBases   = (Class.BaseClasses.Count > 1 ? "\tInitBases ();\n\t\t}" : "}");
+	var layoutClass = (hasBase? "\t: base (impl.TypeInfo)\n\t\t{" : "{") + "\n\t\t\t__cxxi_LayoutClass ();";
+	var initBases   = (Class.BaseClasses.Count > 1 ? "\t__cxxi_InitBases ();\n\t\t}" : "}");
 
             
             #line default
@@ -627,7 +628,7 @@ private bool IsByVal (CppType t)
  PushIndent ("\t\t");
 		foreach (var method in Class.Methods.Where (m => m.GenWrapperMethod)) {
 
-			WriteMethodHeader (method, layoutClass);
+			WriteMethodHeader (method, layoutClass, false, false);
 
 			if (method.IsConstructor)
 				Write ("Native = ");
@@ -753,7 +754,7 @@ private bool IsByVal (CppType t)
             #line hidden
             
             #line 185 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
-            this.Write("\t\t\tNative.Dispose ();\n\t\t}\n\n\t\tprivate void LayoutClass ()\n\t\t{\n");
+            this.Write("\t\t\tNative.Dispose ();\n\t\t}\n\n\t\tprivate void __cxxi_LayoutClass ()\n\t\t{\n");
             
             #line default
             #line hidden
@@ -802,19 +803,7 @@ foreach (var npBase in Class.BaseClasses.Skip (1)) {
             #line hidden
             
             #line 198 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
-            this.Write("\t\t// Non-primary base class implementation for ");
-            
-            #line default
-            #line hidden
-            
-            #line 198 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture( npBase.Name ));
-            
-            #line default
-            #line hidden
-            
-            #line 198 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
-            this.Write(":\n\t\tpublic ");
+            this.Write("\n#region Non-primary base class implementation for ");
             
             #line default
             #line hidden
@@ -826,19 +815,19 @@ foreach (var npBase in Class.BaseClasses.Skip (1)) {
             #line hidden
             
             #line 199 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
-            this.Write(" ");
+            this.Write("\n\t\tprivate class ");
             
             #line default
             #line hidden
             
-            #line 199 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture( npBase.Name ));
+            #line 200 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture( wrapper + "__" + npBase.Name ));
             
             #line default
             #line hidden
             
-            #line 199 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
-            this.Write(" { get; protected set; }\n\t\tpublic static implicit operator ");
+            #line 200 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            this.Write(" : ");
             
             #line default
             #line hidden
@@ -850,132 +839,341 @@ foreach (var npBase in Class.BaseClasses.Skip (1)) {
             #line hidden
             
             #line 200 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
-            this.Write("(");
+            this.Write(" {\n\t\t\tpublic ");
             
             #line default
             #line hidden
             
-            #line 200 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            #line 201 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture( wrapper ));
             
             #line default
             #line hidden
             
-            #line 200 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
-            this.Write(" subClass)\n\t\t{\n\t\t\treturn subClass.");
+            #line 201 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            this.Write(" instance;\n\t\t\tpublic ");
             
             #line default
             #line hidden
             
             #line 202 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture( wrapper + "__" + npBase.Name ));
+            
+            #line default
+            #line hidden
+            
+            #line 202 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            this.Write(" (");
+            
+            #line default
+            #line hidden
+            
+            #line 202 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture( wrapper ));
+            
+            #line default
+            #line hidden
+            
+            #line 202 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            this.Write(" instance)\n\t\t\t\t: base (");
+            
+            #line default
+            #line hidden
+            
+            #line 203 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture( wrapper ));
+            
+            #line default
+            #line hidden
+            
+            #line 203 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            this.Write(".impl.TypeInfo.Cast (instance, typeof (");
+            
+            #line default
+            #line hidden
+            
+            #line 203 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture( npBase.Name ));
             
             #line default
             #line hidden
             
-            #line 202 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
-            this.Write(";\n\t\t}\n\n");
+            #line 203 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            this.Write(")))\n\t\t\t{\n\t\t\t\tthis.instance = instance;\n\t\t\t}\n\n");
             
             #line default
             #line hidden
             
-            #line 205 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
- PushIndent ("\t\t");
-		foreach (var method in npBase.Methods) {
-			// With the exception of virtual methods that have been overridden, these methods must be called
-			//  thru a cast to the base class that performs a this ptr adjustment
-			if (!method.GenWrapperMethod || method.IsConstructor || method.IsStatic ||
-			    (method.IsVirtual && Class.Methods.Any (m => m.Node.CheckValue ("overrides", method.Node.Id))))
+            #line 208 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+ PushIndent ("\t\t\t");
+		foreach (var method in npBase.Methods.Where (m => m.IsVirtual)) {
+
+			if (!method.GenWrapperMethod || Class.Methods.Any (m => m.Node.CheckValue ("overrides", method.Node.Id)))
 				continue;
 
-			WriteMethodHeader (method, initBases);
+			/* this is the managed override that has to call the subclass's method */
+			WriteMethodHeader (method, null, true, false);
 
-			Write ("{0}.{1} (", npBase.Name, method.FormattedName);
+			Write ("instance.{0} (", npBase.Name + "__" + method.FormattedName);
+
+			WriteParameters (method.Parameters, false, false);
+			PopIndent ();
+			Write (");\n{0}}}\n\n", CurrentIndent);
+
+			/* this is the method that calls the base implementation that the subclass will use */
+			WriteMethodHeader (method, npBase.Name + "__" + method.FormattedName, true, false);
+
+			Write ("base.{0} (", method.FormattedName);
+
+			WriteParameters (method.Parameters, false, false);
+			PopIndent ();
+			Write (");\n{0}}}\n\n", CurrentIndent);
+		}
+		ClearIndent (); 
+            
+            #line default
+            #line hidden
+            
+            #line 233 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            this.Write("\t\t}\n\t\tprivate ");
+            
+            #line default
+            #line hidden
+            
+            #line 234 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture( wrapper ));
+            
+            #line default
+            #line hidden
+            
+            #line 234 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            this.Write("__");
+            
+            #line default
+            #line hidden
+            
+            #line 234 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture( npBase.Name ));
+            
+            #line default
+            #line hidden
+            
+            #line 234 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            this.Write(" __cxxi_");
+            
+            #line default
+            #line hidden
+            
+            #line 234 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture( npBase.Name ));
+            
+            #line default
+            #line hidden
+            
+            #line 234 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            this.Write(";\n\t\tpublic ");
+            
+            #line default
+            #line hidden
+            
+            #line 235 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture( npBase.Name ));
+            
+            #line default
+            #line hidden
+            
+            #line 235 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            this.Write(" ");
+            
+            #line default
+            #line hidden
+            
+            #line 235 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture( npBase.Name ));
+            
+            #line default
+            #line hidden
+            
+            #line 235 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            this.Write(" { get { return __cxxi_");
+            
+            #line default
+            #line hidden
+            
+            #line 235 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture( npBase.Name ));
+            
+            #line default
+            #line hidden
+            
+            #line 235 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            this.Write("; } }\n\t\tpublic static implicit operator ");
+            
+            #line default
+            #line hidden
+            
+            #line 236 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture( npBase.Name ));
+            
+            #line default
+            #line hidden
+            
+            #line 236 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            this.Write("(");
+            
+            #line default
+            #line hidden
+            
+            #line 236 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture( wrapper ));
+            
+            #line default
+            #line hidden
+            
+            #line 236 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            this.Write(" subClass)\n\t\t{\n\t\t\treturn subClass.");
+            
+            #line default
+            #line hidden
+            
+            #line 238 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture( npBase.Name ));
+            
+            #line default
+            #line hidden
+            
+            #line 238 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            this.Write(";\n\t\t}\n\t\tpublic static explicit operator ");
+            
+            #line default
+            #line hidden
+            
+            #line 240 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture( wrapper ));
+            
+            #line default
+            #line hidden
+            
+            #line 240 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            this.Write("(");
+            
+            #line default
+            #line hidden
+            
+            #line 240 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture( npBase.Name ));
+            
+            #line default
+            #line hidden
+            
+            #line 240 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            this.Write(" baseClass)\n\t\t{\n\t\t\tif (baseClass == null) return null;\n\t\t\tvar obj = baseClass as ");
+            
+            #line default
+            #line hidden
+            
+            #line 243 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture( wrapper + "__" + npBase.Name ));
+            
+            #line default
+            #line hidden
+            
+            #line 243 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            this.Write(";\n\t\t\tif (obj == null) throw new InvalidCastException ();\n\t\t\treturn obj.instance;\n\t\t}\n\n");
+            
+            #line default
+            #line hidden
+            
+            #line 248 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+ /* Add virtual methods of non-primary bases to this class proper so they can be overridden */ 
+            
+            #line default
+            #line hidden
+            
+            #line 249 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+ PushIndent ("\t\t");
+		foreach (var method in npBase.Methods.Where (m => m.IsVirtual)) {
+
+			if (!method.GenWrapperMethod || Class.Methods.Any (m => m.Node.CheckValue ("overrides", method.Node.Id)))
+				continue;
+
+			WriteMethodHeader (method, npBase.Name + "__" + method.FormattedName, true, true);
+
+			Write ("{0}.{1} (", "__cxxi_" + npBase.Name, npBase.Name + "__" + method.FormattedName);
 
 			WriteParameters (method.Parameters, false, false);
 			PopIndent ();
 			Write (");\n{0}}}\n\n", CurrentIndent);
 		}
 		ClearIndent ();
+WriteLine ("#endregion");
 }
 if (Class.BaseClasses.Count > 1) { 
             
             #line default
             #line hidden
             
-            #line 224 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
-            this.Write("\t\tprivate void InitBases ()\n\t\t{\n");
+            #line 267 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            this.Write("\t\tprivate void __cxxi_InitBases ()\n\t\t{\n");
             
             #line default
             #line hidden
             
-            #line 226 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            #line 269 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
  		foreach (var npBase in Class.BaseClasses.Skip (1)) { 
             
             #line default
             #line hidden
             
-            #line 227 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
-            this.Write("\t\t\t");
+            #line 270 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            this.Write("\t\t\t__cxxi_");
             
             #line default
             #line hidden
             
-            #line 227 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            #line 270 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture( npBase.Name ));
             
             #line default
             #line hidden
             
-            #line 227 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            #line 270 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
             this.Write(" = new ");
             
             #line default
             #line hidden
             
-            #line 227 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture( npBase.Name ));
+            #line 270 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture( wrapper + "__" + npBase.Name ));
             
             #line default
             #line hidden
             
-            #line 227 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
-            this.Write(" (impl.TypeInfo.Cast (this, typeof (");
+            #line 270 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            this.Write(" (this);\n");
             
             #line default
             #line hidden
             
-            #line 227 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture( npBase.Name ));
-            
-            #line default
-            #line hidden
-            
-            #line 227 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
-            this.Write(")));\n");
-            
-            #line default
-            #line hidden
-            
-            #line 228 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            #line 271 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
  		} 
             
             #line default
             #line hidden
             
-            #line 229 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            #line 272 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
             this.Write("\t\t}\n");
             
             #line default
             #line hidden
             
-            #line 230 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            #line 273 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
  } 
             
             #line default
             #line hidden
             
-            #line 231 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
+            #line 274 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
             this.Write("\t}\n}\n\n");
             
             #line default

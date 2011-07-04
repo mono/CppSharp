@@ -45,7 +45,7 @@ namespace Tests {
 			Assert.AreEqual (9, cls.Number, "#3");
 			Assert.AreEqual (3, ((MultiplierClass)cls).Number, "#4");
 
-			cls.Multiply (10);
+			cls.MultiplierClass.Multiply (10);
 			Assert.AreEqual (9, cls.Number, "#5");
 			Assert.AreEqual (30, ((MultiplierClass)cls).Number, "#6");
 		}
@@ -61,7 +61,7 @@ namespace Tests {
 			Assert.AreEqual (9, cls.Number, "#3");
 			Assert.AreEqual (9, ((MultiplierClassWithVirtualBase)cls).Number, "#4");
 
-			cls.Multiply (6);
+			cls.MultiplierClassWithVirtualBase.Multiply (6);
 			Assert.AreEqual (30, cls.Number, "#5");
 			Assert.AreEqual (30, ((MultiplierClassWithVirtualBase)cls).Number, "#6");
 		}
@@ -113,9 +113,9 @@ namespace Tests {
 			}
 
 			// override virtual member inherited from non-primary base
-			public override void Multiply (int n)
+			protected override void MultiplierClass__Multiply (int n)
 			{
-				base.Multiply (10);
+				base.MultiplierClass__Multiply (10);
 			}
 		}
 
@@ -123,7 +123,7 @@ namespace Tests {
 		public void TestManagedOverride2 ()
 		{
 			var cls = new ManagedOverride2 ();
-			cls.Multiply (7);
+			cls.MultiplierClass.Multiply (7);
 			Assert.AreEqual (5, cls.Number, "#1");
 			Assert.AreEqual (30, ((MultiplierClass)cls).Number, "#2");
 			cls.CallMultiply (2);
@@ -152,7 +152,7 @@ namespace Tests {
 			Assert.AreEqual (-30, cls.NegativeNumber, "#6");
 
 			// cast to non-primary subclass
-			Assert.IsNotNull (cls as ManagedOverride2, "#7");
+			Assert.IsNotNull (((ClassWithNonVirtualBases)cls) as ManagedOverride2, "#7");
 		}
 
 	}
