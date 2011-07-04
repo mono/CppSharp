@@ -43,6 +43,8 @@ namespace Mono.Cxxi.Abi {
 
 		protected override void AddBase (CppTypeInfo baseType, bool addVTable)
 		{
+			if (TypeComplete)
+				return;
 
 			// When adding a non-primary base class's complete vtable, we need to reserve space for
 			// the stuff before the address point of the vtptr..
