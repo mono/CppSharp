@@ -26,7 +26,7 @@ all: $(TEST_DLL)
 %.cpp: %.h
 
 %.xml: $(addsuffix .h,$(NATIVE_SRC))
-	gccxml -fxml=$@ --gccxml-cxxflags -c Native/$*.h
+	$(GCCXML) -fxml=$@ --gccxml-cxxflags -c Native/$*.h
 
 $(BUILD_DIR)/libTest.so: $(addsuffix .cpp,$(NATIVE_SRC))
 	$(CXX) -fPIC --shared -m32 -o $@ $^
@@ -42,7 +42,7 @@ generated: $(addsuffix .xml,$(NATIVE))
 	echo Bindings generated successfully.
 
 $(TEST_DLL): generated $(MANAGED) $(BUILD_DIR)/libTest.so $(BUILD_DIR)/libTest-inline.so
-	mcs -debug -out:$@ -target:library -unsafe $(REFERENCES) -r:$(INTEROP_DLL) generated/*.cs $(MANAGED)
+	$(GMCS) -debug -out:$@ -target:library -unsafe $(REFERENCES) -r:$(INTEROP_DLL) generated/*.cs $(MANAGED)
 
 clean:
 	$(RM) -rf $(TEST_DLL) generated $(BUILD_DIR)/libTest.so $(BUILD_DIR)/libTest-inline.so $(addsuffix .xml,$(NATIVE))

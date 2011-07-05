@@ -26,6 +26,10 @@ if test "x$GMCS" = "xno"; then
         AC_MSG_ERROR([mcs Not found])
 fi
 
+AC_PATH_PROG(GCCXML, gccxml, no)
+if test "x$GCCXML" = "xno"; then
+        AC_MSG_ERROR([gccxml Not found])
+fi
 
 AC_ARG_ENABLE(debug,
 	AC_HELP_STRING([--enable-debug],
