@@ -50,7 +50,6 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Support\CppMockObject.cs" />
     <Compile Include="Support\CppNUnitAsserts.cs" />
     <Compile Include="MarshalingTests.cs" />
     <Compile Include="InheritanceTests.cs" />
@@ -98,6 +97,10 @@
     <ProjectReference Include="..\src\Mono.Cxxi\Mono.Cxxi.csproj">
       <Project>{4A864586-93C5-4DC1-8A80-F094A88506D7}</Project>
       <Name>Mono.Cxxi</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\src\generator\generator.csproj">
+      <Project>{AD0F9378-789C-4AF1-B0DD-6DD9A63C3401}</Project>
+      <Name>generator</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

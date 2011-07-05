@@ -2,7 +2,7 @@
 EXTRA_DIST = m4/expansions.m4
 
 if ENABLE_DEBUG
-ASSEMBLY_COMPILER_COMMAND = mcs
+ASSEMBLY_COMPILER_COMMAND = $(GMCS)
 ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -warn:4 -optimize- -debug "-define:DEBUG"
 BUILD_DIR = $(top_srcdir)/bin/Debug
 
@@ -14,7 +14,7 @@ MONO_CXXI_DLL_MDB=$(BUILD_DIR)/Mono.Cxxi.dll.mdb
 endif
 
 if ENABLE_RELEASE
-ASSEMBLY_COMPILER_COMMAND = mcs
+ASSEMBLY_COMPILER_COMMAND = $(GMCS)
 ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -warn:4 -optimize+
 BUILD_DIR = $(top_srcdir)/bin/Release
 
@@ -43,13 +43,13 @@ RESGEN=resgen2
 all: $(ASSEMBLY) $(PROGRAMFILES) $(LINUX_PKGCONFIG) 
 
 FILES =  \
-	ABI/CppAbi.cs \
-	ABI/Impl/ItaniumAbi.cs \
-	ABI/Impl/ItaniumTypeInfo.cs \
-	ABI/Impl/MsvcAbi.cs \
-	ABI/Impl/VirtualOnlyAbi.cs \
-	ABI/MethodType.cs \
-	ABI/VTable.cs \
+	Abi/CppAbi.cs \
+	Abi/Impl/ItaniumAbi.cs \
+	Abi/Impl/ItaniumTypeInfo.cs \
+	Abi/Impl/MsvcAbi.cs \
+	Abi/Impl/VirtualOnlyAbi.cs \
+	Abi/MethodType.cs \
+	Abi/VTable.cs \
 	AssemblyInfo.cs \
 	Attributes.cs \
 	CppField.cs \
@@ -71,8 +71,8 @@ DATA_FILES =
 RESOURCES = 
 
 EXTRAS = \
-	ABI \
-	ABI/Impl \
+	Abi \
+	Abi/Impl \
 	Util \
 	mono.cxxi.pc.in
 
