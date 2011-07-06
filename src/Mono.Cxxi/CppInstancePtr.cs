@@ -70,13 +70,15 @@ namespace Mono.Cxxi {
 		}
 
 		// Alloc a new C++ instance
-		// NOTE: native_vtptr will be set later after native ctor is called
 		internal CppInstancePtr (int nativeSize, object managedWrapper)
 		{
 			// Under the hood, we're secretly subclassing this C++ class to store a
 			// handle to the managed wrapper.
 			int allocSize = nativeSize + Marshal.SizeOf (typeof (IntPtr));
 			ptr = Marshal.AllocHGlobal (allocSize);
+
+			// NOTE: native_vtptr will be set later after native ctor is called
+			native_vtptr = IntPtr.Zero;
 
 			// zero memory for sanity
 			// FIXME: This should be an initblk
@@ -93,6 +95,7 @@ namespace Mono.Cxxi {
 		internal CppInstancePtr (int nativeSize)
 		{
 			ptr = Marshal.AllocHGlobal (nativeSize);
+			native_vtptr = IntPtr.Zero;
 			manage_memory = true;
 		}
 
@@ -103,6 +106,7 @@ namespace Mono.Cxxi {
 				throw new ArgumentOutOfRangeException ("native cannot be null pointer");
 
 			ptr = native;
+			native_vtptr = IntPtr.Zero;
 			manage_memory = false;
 		}
 
