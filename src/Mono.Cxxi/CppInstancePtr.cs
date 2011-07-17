@@ -70,11 +70,11 @@ namespace Mono.Cxxi {
 		}
 
 		// Alloc a new C++ instance
-		internal CppInstancePtr (int nativeSize, object managedWrapper)
+		internal CppInstancePtr (CppTypeInfo typeInfo, object managedWrapper)
 		{
 			// Under the hood, we're secretly subclassing this C++ class to store a
 			// handle to the managed wrapper.
-			int allocSize = nativeSize + Marshal.SizeOf (typeof (IntPtr));
+			int allocSize = typeInfo.GCHandleOffset + IntPtr.Size;
 			ptr = Marshal.AllocHGlobal (allocSize);
 
 			// NOTE: native_vtptr will be set later after native ctor is called
@@ -86,7 +86,7 @@ namespace Mono.Cxxi {
 			Marshal.Copy (zeroArray, 0, ptr, allocSize);
 
 			IntPtr handlePtr = MakeGCHandle (managedWrapper);
-			Marshal.WriteIntPtr (ptr, nativeSize, handlePtr);
+			Marshal.WriteIntPtr (ptr, typeInfo.GCHandleOffset, handlePtr);
 
 			manage_memory = true;
 		}
@@ -97,6 +97,15 @@ namespace Mono.Cxxi {
 			ptr = Marshal.AllocHGlobal (nativeSize);
 			native_vtptr = IntPtr.Zero;
 			manage_memory = true;
+		}
+
+		// Gets a casted CppInstancePtr
+		internal CppInstancePtr (CppInstancePtr instance, int offset)
+		{
+			// FIXME: On NET_4_0 use IntPtr.Add
+			ptr = new IntPtr (instance.Native.ToInt64 () + offset);
+			native_vtptr = IntPtr.Zero;
+			manage_memory = false;
 		}
 
 		// Get a CppInstancePtr for an existing C++ instance from an IntPtr
@@ -171,7 +180,7 @@ namespace Mono.Cxxi {
 			if (managed_vtptr_to_gchandle_offset == null)
 				managed_vtptr_to_gchandle_offset = new Dictionary<IntPtr, int> ();
 
-			managed_vtptr_to_gchandle_offset [vtable.Pointer] = vtable.TypeInfo.NativeSize;
+			managed_vtptr_to_gchandle_offset [vtable.Pointer] = vtable.TypeInfo.GCHandleOffset;
 		}
 
 		internal static IntPtr MakeGCHandle (object managedWrapper)

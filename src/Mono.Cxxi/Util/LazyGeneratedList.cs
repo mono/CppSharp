@@ -47,6 +47,11 @@ namespace Mono.Cxxi.Util {
 			this.count = count;
 		}
 
+		public virtual LazyGeneratedList<TItem> Clone ()
+		{
+			return new LazyGeneratedList<TItem> (count, generator);
+		}
+
 		public IEnumerator<TItem> GetEnumerator ()
 		{
 			for (int i = 0; i < Count; i++)

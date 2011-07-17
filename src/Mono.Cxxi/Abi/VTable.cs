@@ -96,7 +96,10 @@ namespace Mono.Cxxi.Abi {
 		public virtual void InitInstance (ref CppInstancePtr instance)
 		{
 			var basePtr = Marshal.ReadIntPtr (instance.Native);
-			Debug.Assert (basePtr != IntPtr.Zero && basePtr != vtPtr);
+			Debug.Assert (basePtr != IntPtr.Zero);
+
+			if (basePtr == vtPtr)
+				return;
 
 			instance.NativeVTable = basePtr;
 

@@ -202,6 +202,7 @@ foreach (var npBase in Class.BaseClasses.Skip (1)) { #>
 			public <#= wrapper + "__" + npBase.Name #> (<#= wrapper #> instance)
 				: base (<#= wrapper #>.impl.TypeInfo.Cast (instance, typeof (<#= npBase.Name #>)))
 			{
+				<#= wrapper #>.impl.TypeInfo.InitNonPrimaryBase (this, instance, typeof (<#= npBase.Name #>));
 				this.instance = instance;
 			}
 

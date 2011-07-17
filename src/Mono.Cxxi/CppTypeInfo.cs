@@ -60,17 +60,20 @@ namespace Mono.Cxxi {
 		protected List<CppTypeInfo> base_classes;
 
 		// returns the number of vtable slots reserved for the
-		//  base class(es)
+		//  base class(es) before this class's virtual methods start
 		public int BaseVTableSlots { get; protected set; }
 
 		public bool TypeComplete { get; private set; }
+		public bool IsPrimaryBase { get; protected set; } // < True by default. set to False in cases where it is cloned as a non-primary base
 
-		protected int native_size;
+		protected int native_size_without_padding; // <- this refers to the size of all the fields declared in the nativeLayout struct
 		protected int field_offset_padding_without_vtptr;
+		protected int gchandle_offset_delta;
 
 		private VTable lazy_vtable;
 
 		public CppTypeInfo (CppAbi abi, IEnumerable<PInvokeSignature> virtualMethods, Type nativeLayout, Type/*?*/ wrapperType)
+			: this ()
 		{
 			Abi = abi;
 			NativeLayout = nativeLayout;
@@ -85,27 +88,51 @@ namespace Mono.Cxxi {
 			vt_overrides = new LazyGeneratedList<Delegate> (virtual_methods.Count, i => Abi.GetManagedOverrideTrampoline (this, i));
 			VTableOverrides = new ReadOnlyCollection<Delegate> (vt_overrides);
 
-			base_classes = new List<CppTypeInfo> ();
-			BaseClasses = new ReadOnlyCollection<CppTypeInfo> (base_classes);
-
-			BaseVTableSlots = 0;
-			TypeComplete = false;
-
-			native_size = nativeLayout.GetFields ().Any ()? Marshal.SizeOf (nativeLayout) : 0;
-			field_offset_padding_without_vtptr = 0;
-
-			lazy_vtable = null;
+			native_size_without_padding = nativeLayout.GetFields ().Any ()? Marshal.SizeOf (nativeLayout) : 0;
 		}
 
 		protected CppTypeInfo ()
 		{
+			base_classes = new List<CppTypeInfo> ();
+			BaseClasses = new ReadOnlyCollection<CppTypeInfo> (base_classes);
+
+			field_offset_padding_without_vtptr = 0;
+			gchandle_offset_delta = 0;
+			TypeComplete = false;
+			IsPrimaryBase = true;
+			BaseVTableSlots = 0;
+			lazy_vtable = null;
 		}
 
-		public virtual void AddBase (CppTypeInfo baseType)
+		// The contract for Clone is that, if TypeComplete, working with the clone *through the public
+		//  interface* is guaranteed not to affect the original. Note that any subclassses
+		// have access to protected stuff that is not covered by this guarantee.
+		public virtual CppTypeInfo Clone ()
 		{
-			// by default, if we already have base class(es), this base's virtual methods are not included before the derived class's
-			var addVTable = base_classes.Count >= 1;
-			AddBase (baseType, addVTable);
+			return this.MemberwiseClone () as CppTypeInfo;
+		}
+
+		#region Type Layout
+
+		// the extra padding to allocate at the top of the class before the fields begin
+		//  (by default, just the vtable pointer)
+		public virtual int FieldOffsetPadding {
+			get { return field_offset_padding_without_vtptr + (virtual_methods.Count != 0? IntPtr.Size : 0); }
+		}
+
+		public virtual int NativeSize {
+			get { return native_size_without_padding + FieldOffsetPadding; }
+		}
+
+		public virtual int GCHandleOffset {
+			get { return NativeSize + gchandle_offset_delta; }
+		}
+
+
+		public void AddBase (CppTypeInfo baseType)
+		{
+			// by default, only the primary base shares the subclass's primary vtable
+			AddBase (baseType, base_classes.Count >= 1);
 		}
 
 		protected virtual void AddBase (CppTypeInfo baseType, bool addVTable)
@@ -113,9 +140,11 @@ namespace Mono.Cxxi {
 			if (TypeComplete)
 				return;
 
-			base_classes.Add (baseType);
-			bool addVTablePointer = addVTable || base_classes.Count > 1;
-			int  baseVMethodCount = baseType.virtual_methods.Count;
+			bool nonPrimary = base_classes.Count >= 1;
+
+			// by default, only the primary base shares the subclass's vtable ptr
+			var addVTablePointer = addVTable || nonPrimary;
+			var baseVMethodCount = baseType.virtual_methods.Count;
 
 			if (addVTable) {
 				// If we are adding a new vtable, don't skew the offsets of the of this subclass's methods.
@@ -126,6 +155,7 @@ namespace Mono.Cxxi {
 
 				vt_delegate_types.Add (baseVMethodCount);
 				vt_overrides.Add (baseVMethodCount);
+
 
 			} else {
 
@@ -140,65 +170,26 @@ namespace Mono.Cxxi {
 				vt_overrides.Add (baseVMethodCount);
 			}
 
-			field_offset_padding_without_vtptr += baseType.native_size +
+			if (nonPrimary) {
+				// Create a base-in-derived type info w/ a new vtable object
+				// if this is a non-primary base
+
+				baseType = baseType.Clone ();
+				baseType.IsPrimaryBase = false;
+
+				baseType.gchandle_offset_delta += native_size_without_padding + CountBases (b => !b.IsPrimaryBase) * IntPtr.Size;
+				baseType.vt_overrides = baseType.vt_overrides.Clone (); // managed override tramps will be regenerated with correct gchandle offset
+
+				// now, offset all previously added bases
+				foreach (var previousBase in base_classes) {
+					previousBase.gchandle_offset_delta += baseType.NativeSize;
+				}
+			}
+
+			base_classes.Add (baseType);
+
+			field_offset_padding_without_vtptr += baseType.native_size_without_padding +
 				(addVTablePointer? baseType.FieldOffsetPadding : baseType.field_offset_padding_without_vtptr);
-		}
-
-		public virtual CppInstancePtr Cast (ICppObject instance, Type targetType)
-		{
-			var instanceType = instance.GetType ();
-			var found = false;
-			var offset = 0;
-
-			if (WrapperType.Equals (targetType)) {
-				// check for downcast (base type -> this type)
-
-				foreach (var baseClass in base_classes) {
-					if (baseClass.WrapperType.Equals (instanceType)) {
-						found = true;
-						break;
-					}
-
-					offset -= baseClass.NativeSize;
-				}
-
-
-			} else if (WrapperType.IsAssignableFrom (instanceType)) {
-				// check for upcast (this type -> base type)
-
-				foreach (var baseClass in base_classes) {
-					if (baseClass.WrapperType.Equals (targetType)) {
-						found = true;
-						break;
-					}
-
-					offset += baseClass.NativeSize;
-				}
-
-			} else {
-				throw new ArgumentException ("Either instance type or targetType must be equal to wrapper type.");
-			}
-
-			if (!found)
-				throw new InvalidCastException ("Cannot cast an instance of " + instanceType + " to " + targetType);
-
-
-			// Construct a new targetType wrapper, passing in our offset this ptr.
-			// FIXME: If the object was alloc'd by managed code, the allocating wrapper (i.e. "instance") will still free the memory when
-			//  it is Disposed, even if wrappers created here still exist and are pointing to it. :/
-			// The casted wrapper created here may be Disposed safely though.
-			// FIXME: On NET_4_0 use IntPtr.Add
-			return new CppInstancePtr (new IntPtr (instance.Native.Native.ToInt64 () + offset));
-		}
-
-		public int CountBases (Func<CppTypeInfo, bool> predicate)
-		{
-			int count = 0;
-			foreach (var baseClass in base_classes) {
-				count += baseClass.CountBases (predicate);
-				count += predicate (baseClass)? 1 : 0;
-			}
-			return count;
 		}
 
 		public virtual void CompleteType ()
@@ -212,6 +203,122 @@ namespace Mono.Cxxi {
 			TypeComplete = true;
 
 			RemoveVTableDuplicates ();
+		}
+
+		public int CountBases (Func<CppTypeInfo, bool> predicate)
+		{
+			int count = 0;
+			foreach (var baseClass in base_classes) {
+				count += baseClass.CountBases (predicate);
+				count += predicate (baseClass)? 1 : 0;
+			}
+			return count;
+		}
+
+		#endregion
+
+		#region Casting
+
+		protected virtual CppTypeInfo GetCastInfo (Type sourceType, Type targetType, out int offset)
+		{
+			offset = 0;
+
+			if (WrapperType.Equals (targetType)) {
+				// check for downcast (base type -> this type)
+
+				foreach (var baseClass in base_classes) {
+					if (baseClass.WrapperType.Equals (sourceType)) {
+						return baseClass;
+					}
+					offset -= baseClass.NativeSize;
+				}
+
+
+			} else if (WrapperType.IsAssignableFrom (sourceType)) {
+				// check for upcast (this type -> base type)
+
+				foreach (var baseClass in base_classes) {
+					if (baseClass.WrapperType.Equals (targetType)) {
+						return baseClass;
+					}
+					offset += baseClass.NativeSize;
+				}
+
+			} else {
+				throw new ArgumentException ("Either source type or target type must be equal to this wrapper type.");
+			}
+
+			throw new InvalidCastException ("Cannot cast an instance of " + sourceType + " to " + targetType);
+		}
+
+		public virtual CppInstancePtr Cast (ICppObject instance, Type targetType)
+		{
+			int offset;
+			var baseTypeInfo = GetCastInfo (instance.GetType (), targetType, out offset);
+			var result = new CppInstancePtr (instance.Native, offset);
+
+			if (offset > 0 && instance.Native.IsManagedAlloc && baseTypeInfo.VirtualMethods.Count != 0) {
+				// we might need to paste the managed base-in-derived vtptr here --also inits native_vtptr
+				baseTypeInfo.VTable.InitInstance (ref result);
+			}
+
+			return result;
+		}
+
+		public virtual TTarget Cast<TTarget> (ICppObject instance) where TTarget : class
+		{
+			TTarget result;
+			var ptr = Cast (instance, typeof (TTarget));
+
+			// Check for existing instance based on vtable ptr
+			result = CppInstancePtr.ToManaged<TTarget> (ptr.Native);
+
+			// Create a new wrapper if necessary
+			if (result == null)
+				result = Activator.CreateInstance (typeof (TTarget), ptr) as TTarget;
+
+			return result;
+		}
+
+		public virtual void InitNonPrimaryBase (ICppObject baseInDerived, ICppObject derived, Type baseType)
+		{
+			int offset;
+			var baseTypeInfo = GetCastInfo (derived.GetType (), baseType, out offset);
+
+			Marshal.WriteIntPtr (baseInDerived.Native.Native, baseTypeInfo.GCHandleOffset, CppInstancePtr.MakeGCHandle (baseInDerived));
+		}
+
+		#endregion
+
+		#region V-Table
+
+		public virtual VTable VTable {
+			get {
+				CompleteType ();
+				if (!virtual_methods.Any ())
+					return null;
+
+				if (lazy_vtable == null)
+					lazy_vtable = new VTable (this);
+
+				return lazy_vtable;
+			}
+		}
+
+		// the padding in the data pointed to by the vtable pointer before the list of function pointers starts
+		public virtual int VTableTopPadding {
+			get { return 0; }
+		}
+
+		// the amount of extra room alloc'd after the function pointer list of the vtbl
+		public virtual int VTableBottomPadding {
+			get { return 0; }
+		}
+
+		public virtual T GetAdjustedVirtualCall<T> (CppInstancePtr instance, int derivedVirtualMethodIndex)
+			where T : class /* Delegate */
+		{
+			return VTable.GetVirtualCallDelegate<T> (instance, BaseVTableSlots + derivedVirtualMethodIndex);
 		}
 
 		protected virtual void RemoveVTableDuplicates ()
@@ -249,48 +356,7 @@ namespace Mono.Cxxi {
 			return false;
 		}
 
-		public virtual T GetAdjustedVirtualCall<T> (CppInstancePtr instance, int derivedVirtualMethodIndex)
-			where T : class /* Delegate */
-		{
-			return VTable.GetVirtualCallDelegate<T> (instance, BaseVTableSlots + derivedVirtualMethodIndex);
-		}
-
-		public virtual VTable VTable {
-			get {
-				CompleteType ();
-				if (!virtual_methods.Any ())
-					return null;
-
-				if (lazy_vtable == null)
-					lazy_vtable = new VTable (this);
-
-				return lazy_vtable;
-			}
-		}
-
-		public virtual int NativeSize {
-			get {
-				CompleteType ();
-				return native_size + FieldOffsetPadding;
-			}
-		}
-
-		// the extra padding to allocate at the top of the class before the fields begin
-		//  (by default, just the vtable pointer)
-		public virtual int FieldOffsetPadding {
-			get { return field_offset_padding_without_vtptr + (virtual_methods.Any ()? Marshal.SizeOf (typeof (IntPtr)) : 0); }
-		}
-
-		// the padding in the data pointed to by the vtable pointer before the list of function pointers starts
-		public virtual int VTableTopPadding {
-			get { return 0; }
-		}
-
-		// the amount of extra room alloc'd after the function pointer list of the vtbl
-		public virtual int VTableBottomPadding {
-			get { return 0; }
-		}
-		
+		#endregion
 	}
 
 	// This is used internally by CppAbi:
@@ -298,7 +364,7 @@ namespace Mono.Cxxi {
 
 		public CppTypeInfo BaseTypeInfo { get; set; }
 
-		public override void AddBase (CppTypeInfo baseType)
+		protected override void AddBase (CppTypeInfo baseType, bool addVT)
 		{
 			BaseTypeInfo = baseType;
 		}

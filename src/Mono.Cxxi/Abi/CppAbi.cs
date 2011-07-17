@@ -74,8 +74,8 @@ namespace Mono.Cxxi.Abi {
 		protected static readonly MethodInfo cppip_tomanaged_size  = typeof (CppInstancePtr).GetMethod ("ToManaged", BindingFlags.Static | BindingFlags.NonPublic, null, new Type [] { typeof (IntPtr), typeof (int) }, null);
 		protected static readonly ConstructorInfo cppip_fromnative = typeof (CppInstancePtr).GetConstructor (new Type [] { typeof (IntPtr) });
 		protected static readonly ConstructorInfo cppip_fromsize   = typeof (CppInstancePtr).GetConstructor (BindingFlags.Instance | BindingFlags.NonPublic, null, new Type [] { typeof (int) }, null);
-		protected static readonly ConstructorInfo cppip_fromsize_managed = typeof (CppInstancePtr).GetConstructor (BindingFlags.Instance | BindingFlags.NonPublic, null,
-		                                                                                                         new Type[] { typeof (int), typeof (object) }, null);
+		protected static readonly ConstructorInfo cppip_fromtype_managed = typeof (CppInstancePtr).GetConstructor (BindingFlags.Instance | BindingFlags.NonPublic, null,
+		                                                                                                         new Type[] { typeof (CppTypeInfo), typeof (object) }, null);
 		protected static readonly ConstructorInfo notimplementedexception = typeof (NotImplementedException).GetConstructor (new Type [] { typeof (string) });
 		protected static readonly MethodInfo type_gettypefromhandle  = typeof (Type).GetMethod ("GetTypeFromHandle");
 		protected static readonly MethodInfo marshal_offsetof        = typeof (Marshal).GetMethod ("OffsetOf");
@@ -356,6 +356,7 @@ namespace Mono.Cxxi.Abi {
 		 * Implements the managed trampoline that will be invoked from the vtable by native C++ code when overriding
 		 *  the specified C++ virtual method with the specified managed one.
 		 */
+		// FIXME: This should be moved into CppTypeInfo class
 		internal virtual Delegate GetManagedOverrideTrampoline (CppTypeInfo typeInfo, int vtableIndex)
 		{
 			if (typeInfo.WrapperType == null)
@@ -392,7 +393,7 @@ namespace Mono.Cxxi.Abi {
 				argLoadStart = 1;
 
 				il.Emit (OpCodes.Ldarg_0);
-				il.Emit (OpCodes.Ldc_I4, typeInfo.NativeSize);
+				il.Emit (OpCodes.Ldc_I4, typeInfo.GCHandleOffset);
 
 				var getManagedObj = cppip_tomanaged_size.MakeGenericMethod (typeInfo.WrapperType);
 				il.Emit (OpCodes.Call, getManagedObj);
@@ -491,14 +492,15 @@ namespace Mono.Cxxi.Abi {
 			// this._typeInfo.NativeSize
 			il.Emit (OpCodes.Ldarg_0);
 			il.Emit (OpCodes.Ldfld, typeinfo_field);
-			il.Emit (OpCodes.Callvirt, typeinfo_nativesize);
 
 			if (wrapper_type != null && interfaceMethod.GetParameters ().Any ()) {
 				// load managed wrapper
 				il.Emit (OpCodes.Ldarg_1);
-				il.Emit (OpCodes.Newobj, cppip_fromsize_managed);
-			} else
+				il.Emit (OpCodes.Newobj, cppip_fromtype_managed);
+			} else {
+				il.Emit (OpCodes.Callvirt, typeinfo_nativesize);
 				il.Emit (OpCodes.Newobj, cppip_fromsize);
+			}
 		}
 
 		protected virtual void EmitConstruct (ILGenerator il, MethodInfo nativeMethod, PInvokeSignature psig,
@@ -743,7 +745,7 @@ namespace Mono.Cxxi.Abi {
 			try {
 				Activator.CreateInstance (otherWrapperType, (CppTypeInfo)(new DummyCppTypeInfo ()));
 
-			} catch (MissingMethodException mme) {
+			} catch (MissingMethodException) {
 
 				throw new InvalidProgramException (string.Format ("Type `{0}' implements ICppObject but does not contain a public constructor that takes CppTypeInfo", otherWrapperType));
 			}
