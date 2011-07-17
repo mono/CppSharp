@@ -177,13 +177,16 @@ namespace Mono.Cxxi {
 				baseType = baseType.Clone ();
 				baseType.IsPrimaryBase = false;
 
-				baseType.gchandle_offset_delta += native_size_without_padding + CountBases (b => !b.IsPrimaryBase) * IntPtr.Size;
-				baseType.vt_overrides = baseType.vt_overrides.Clone (); // managed override tramps will be regenerated with correct gchandle offset
-
-				// now, offset all previously added bases
+				// offset all previously added bases
 				foreach (var previousBase in base_classes) {
 					previousBase.gchandle_offset_delta += baseType.NativeSize;
 				}
+
+				// offset derived (this) type's gchandle
+				gchandle_offset_delta += baseType.GCHandleOffset;
+
+				baseType.gchandle_offset_delta += native_size_without_padding + CountBases (b => !b.IsPrimaryBase) * IntPtr.Size;
+				baseType.vt_overrides = baseType.vt_overrides.Clone (); // managed override tramps will be regenerated with correct gchandle offset
 			}
 
 			base_classes.Add (baseType);

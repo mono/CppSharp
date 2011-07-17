@@ -112,6 +112,12 @@ namespace Tests {
 			{
 			}
 
+			public override int Number {
+				get {
+					return 25;
+				}
+			}
+
 			// override virtual member inherited from non-primary base
 			protected override void MultiplierClass__Multiply (int n)
 			{
@@ -123,12 +129,12 @@ namespace Tests {
 		public void TestManagedOverride2 ()
 		{
 			var cls = new ManagedOverride2 ();
+			Assert.AreEqual (-25, cls.NegativeNumber, "#1");
 			cls.MultiplierClass.Multiply (7);
-			Assert.AreEqual (5, cls.Number, "#1");
-			Assert.AreEqual (30, ((MultiplierClass)cls).Number, "#2");
+			Assert.AreEqual (30, ((MultiplierClass)cls).Number, "#3");
 			cls.CallMultiply (2);
-			Assert.AreEqual (5, cls.Number, "#3");
-			Assert.AreEqual (300, ((MultiplierClass)cls).Number, "#4");
+			Assert.AreEqual (25, cls.Number, "#2");
+			Assert.AreEqual (300, ((MultiplierClass)cls).Number, "#5");
 		}
 
 		[Test]
