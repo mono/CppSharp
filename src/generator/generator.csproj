@@ -69,14 +69,14 @@
       <DependentUpon>CSharpLibs.tt</DependentUpon>
     </Compile>
     <Compile Include="Access.cs" />
+    <Compile Include="Templates\CSharp\CSharpLanguage.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System">
     </Reference>
     <Reference Include="System.Xml">
     </Reference>
-    <Reference Include="System.Xml.Linq">
-    </Reference>
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

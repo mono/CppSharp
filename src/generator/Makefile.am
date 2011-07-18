@@ -60,6 +60,7 @@ FILES =  \
 	Templates/Base.cs \
 	Templates/BaseMembers.cs \
 	Templates/CSharp/CSharpClass.cs \
+	Templates/CSharp/CSharpLanguage.cs \
 	Templates/CSharp/CSharpLibs.cs
 
 DATA_FILES = 

@@ -51,9 +51,9 @@ namespace <#= Generator.Namespace #> {
 		if (method.IsConstructor)
 			Write ("CppInstancePtr");
 		else
-			Write (GetCSharpType (method.ReturnType));
+			Write (CSharpLanguage.TypeName (method.ReturnType));
 		Write (" ");
-		Write (method.Name);
+		Write (CSharpLanguage.SafeIdentifier (method.Name));
 
 		Write (" (");
 		if (!method.IsStatic) {
@@ -66,26 +66,27 @@ namespace <#= Generator.Namespace #> {
 		Write (");\n");
 	}
 	foreach (var field in Class.Fields.Where (f => f.Access != Access.@private)) {
-		WriteLine ("CppField<{0}> {1} {{ get; }}", GetCSharpType (field.Type), field.Name);
+		WriteLine ("CppField<{0}> {1} {{ get; }}", CSharpLanguage.TypeName (field.Type), CSharpLanguage.SafeIdentifier (field.Name));
 	}
 	ClearIndent (); #>
 		}
 <# /* Native layout */ #>
 		private struct <#= layout #> {
 <# foreach (var field in Class.Fields) { #>
-			public <#= GetCSharpType (field.Type) #> <#= field.Name #>;
+			public <#= CSharpLanguage.TypeName (field.Type) #> <#= CSharpLanguage.SafeIdentifier (field.Name) #>;
 <# } #>
 		}
 
 <# /* Native fields */ #>
 <# PushIndent ("\t\t");
 	foreach (var field in Class.Fields.Where (f => f.Access != Access.@private)) {
-		WriteLine ("{0} {1} {2} {{", field.Access, GetCSharpType (field.Type), field.Name); #>
+		var fieldName = CSharpLanguage.SafeIdentifier (field.Name);
+		WriteLine ("{0} {1} {2} {{", field.Access, CSharpLanguage.TypeName (field.Type), fieldName); #>
 			get {
-				return impl.<#= field.Name #> [Native];
+				return impl.<#= fieldName #> [Native];
 			}
 			set {
-				impl.<#= field.Name #> [Native] = value;
+				impl.<#= fieldName #> [Native] = value;
 			}
 		}
 <# } ClearIndent(); #>
@@ -105,13 +106,13 @@ namespace <#= Generator.Namespace #> {
 <# /* Wrapper methods */ #>
 <# PushIndent ("\t\t");
 		foreach (var method in Class.Methods.Where (m => m.GenWrapperMethod)) {
-
+			var methodName = CSharpLanguage.SafeIdentifier (method.Name);
 			WriteMethodHeader (method, layoutClass, false, false);
 
 			if (method.IsConstructor)
 				Write ("Native = ");
 
-			Write ("impl.{0} (", method.Name);
+			Write ("impl.{0} (", methodName);
 			if (!method.IsStatic) {
 				if (method.IsConstructor)
 					Write ("impl.Alloc (this)");
@@ -135,7 +136,8 @@ namespace <#= Generator.Namespace #> {
 <# /* Wrapper properties */ #>
 <# PushIndent ("\t\t");
 		foreach (var prop in Class.Properties) {
-			var type = GetCSharpType (prop.Type);
+			var propName = CSharpLanguage.SafeIdentifier (prop.Name);
+			var type = CSharpLanguage.TypeName (prop.Type);
 
 			Write (CurrentIndent + "public ");
 
@@ -145,7 +147,7 @@ namespace <#= Generator.Namespace #> {
 
 			Write (type);
 			Write (" ");
-			Write (prop.Name);
+			Write (propName);
 			Write (" {\n");
 
 			PushIndent ("\t");
@@ -165,7 +167,7 @@ namespace <#= Generator.Namespace #> {
 				if (prop.SetMethod.IsVirtual)
 					Write ("[OverrideNative (\"{0}\")] ", prop.SetMethod.Name);
 
-				Write ("set {\n");
+				WriteLine ("set {");
 				PushIndent ("\t");
 				WriteLine ("impl.{0} (Native, value);", prop.SetMethod.Name);
 				PopIndent ();
@@ -278,7 +280,7 @@ if (Class.BaseClasses.Count > 1) { #>
 <#+
 private void WriteMethodHeader (Method method, string layoutClass, bool isNonPrimaryOverride, bool @protected)
 {
-	var returnType = GetCSharpType (method.ReturnType);
+	var returnType = CSharpLanguage.TypeName (method.ReturnType);
 
 	if (!isNonPrimaryOverride && method.IsVirtual)
 		WriteLine ("[OverrideNative (\"{0}\")]", method.Name);
@@ -318,7 +320,7 @@ private void WriteParameters (IList<Parameter> parameters, bool writeType, bool 
 		if (i != 0)
 			Write (", ");
 
-		var type = GetCSharpType (parameters [i].Type);
+		var type = CSharpLanguage.TypeName (parameters [i].Type);
 
 		if (writeAttributes) {
 			var mangleAs = parameters [i].Type.ToString ();
@@ -330,7 +332,7 @@ private void WriteParameters (IList<Parameter> parameters, bool writeType, bool 
 
 		if (type.EndsWith ("&")) {
 			Write ("ref ");
-			type = GetCSharpType (type.TrimEnd ('&'));
+			type = CSharpLanguage.TypeName (type.TrimEnd ('&'));
 		}
 
 		if (writeType) {
@@ -338,41 +340,8 @@ private void WriteParameters (IList<Parameter> parameters, bool writeType, bool 
 			Write (" ");
 		}
 
-		Write (parameters [i].Name);
+		Write (CSharpLanguage.SafeIdentifier (parameters [i].Name));
 	}
-}
-
-private string GetCSharpType (CppType t)
-{
-	return GetCSharpType (Generator.CppTypeToManaged (t));
-}
-
-private string GetCSharpType (string str)
-{
-	switch (str) {
-	case "System.Void":    return "void";
-	case "System.Boolean": return "bool";
-	case "System.Byte":    return "byte";
-	case "System.SByte":   return "sbyte";
-	case "System.Char":    return "char";
-	case "System.Int16":   return "short";
-	case "System.UInt16":  return "ushort";
-	case "System.Decimal": return "decimal";
-	case "System.Single":  return "float";
-	case "System.Double":  return "double";
-	case "System.Int32":   return "int";
-	case "System.UInt32":  return "uint";
-	case "System.Int64":   return "long";
-	case "System.UInt64":  return "ulong";
-	case "System.Object":  return "object";
-	case "System.String":  return "string";
-	}
-
-	var lastDot = str.LastIndexOf ('.');
-	if (str.StartsWith ("System") && lastDot == "System".Length)
-		return str.Substring (lastDot + 1);
-
-	return str;
 }
 
 private string GetBaseString ()

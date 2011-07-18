@@ -410,7 +410,7 @@ public class Generator {
 
 	// Return the System.Type name corresponding to T, or null
 	//  Returned as a string, because other wrappers do not have System.Types yet
-	public string CppTypeToManaged (CppType t) {
+	public static string CppTypeToManaged (CppType t) {
 
 		Type mtype = t.ToManagedType ();
 		if (mtype != null && mtype != typeof (ICppObject)) {
