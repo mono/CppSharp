@@ -376,6 +376,8 @@ public class Generator {
 
 	CppType GetType (Node n, CppType modifiers) {
 		switch (n.Type) {
+		case "Typedef":
+			return GetType (GetTypeNode (n), modifiers);
 		case "ArrayType":
 			return GetType (GetTypeNode (n), modifiers.Modify (CppModifiers.Array));
 		case "PointerType":
