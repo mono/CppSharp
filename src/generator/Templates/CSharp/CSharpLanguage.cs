@@ -22,17 +22,23 @@ namespace Templates {
 			"partial", "yield", "where"
 		};
 
+		public enum Context {
+			Generic,
+			Parameter,
+			Return
+		}
+
 		public static string SafeIdentifier (string proposedName)
 		{
 			return keywords.Contains (proposedName)? "@" + proposedName : proposedName;
 		}
 
-		public static string TypeName (CppType t)
+		public static string TypeName (CppType t, Context context)
 		{
-			return TypeName (Generator.CppTypeToManaged (t));
+			return TypeName (Generator.CppTypeToManaged (t), context);
 		}
 
-		public static string TypeName (string str)
+		public static string TypeName (string str, Context context)
 		{
 			switch (str) {
 			case "System.Void":    return "void";
@@ -51,6 +57,15 @@ namespace Templates {
 			case "System.UInt64":  return "ulong";
 			case "System.Object":  return "object";
 			case "System.String":  return "string";
+			}
+
+			if (str.EndsWith ("&")) {
+				if (context == Context.Parameter)
+					return "ref " + TypeName (str.TrimEnd ('&'), context);
+				if (context == Context.Return)
+					return TypeName (str.TrimEnd ('&'), context);
+				if (context == Context.Generic)
+					return "IntPtr";
 			}
 
 			// we are using System by default

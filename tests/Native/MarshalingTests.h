@@ -67,6 +67,10 @@ public:
 	int GetX () {
 		return x;
 	}
+
+	int& GetXRef () {
+		return x;
+	}
 };
 
 		

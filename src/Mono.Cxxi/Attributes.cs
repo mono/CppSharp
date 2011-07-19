@@ -49,8 +49,13 @@ namespace Mono.Cxxi {
 	[AttributeUsage (AttributeTargets.Method)]
 	public class CopyConstructorAttribute : Attribute {}
 
+	// applied when the target would normally be passed by reference (e.g. class)
 	[AttributeUsage (AttributeTargets.Parameter | AttributeTargets.ReturnValue)]
 	public class ByValAttribute : Attribute {}
+
+	// used for byref return of things that would normally be passed by value (e.g. int&)
+	[AttributeUsage (AttributeTargets.ReturnValue)]
+	public class ByRefAttribute : Attribute {}
 
 	[AttributeUsage (AttributeTargets.Parameter | AttributeTargets.ReturnValue)]
 	public class MangleAsAttribute : Attribute {
@@ -139,6 +144,10 @@ using Mono.Cxxi;
 		public virtual bool IsByVal (ICustomAttributeProvider icap)
 		{
 			return icap.IsDefined (typeof (ByValAttribute), false);
+		}
+		public virtual bool IsByRef (ICustomAttributeProvider icap, Type type)
+		{
+			return type.IsByRef || icap.IsDefined (typeof (ByRefAttribute), false);
 		}
 
 		public virtual CppType GetMangleType (ICustomAttributeProvider icap, Type managedType)

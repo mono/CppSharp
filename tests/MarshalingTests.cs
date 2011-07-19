@@ -63,6 +63,13 @@ namespace Tests {
 			var c1 = new Class (4);
 			c1.CopyFromValue (null);
 		}
+
+		[Test]
+		public void TestByRefReturn ()
+		{
+			var c1 = new Class (7);
+			Assert.AreEqual (7, c1.GetXRef ());
+		}
 	
 	}
 
