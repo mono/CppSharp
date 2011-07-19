@@ -22,12 +22,6 @@ namespace Templates {
 			"partial", "yield", "where"
 		};
 
-		public enum Context {
-			Generic,
-			Parameter,
-			Return
-		}
-
 		public static string SafeIdentifier (string proposedName)
 		{
 			return keywords.Contains (proposedName)? "@" + proposedName : proposedName;
@@ -60,11 +54,11 @@ namespace Templates {
 			}
 
 			if (str.EndsWith ("&")) {
-				if (context == Context.Parameter)
+				if (context.Is (Context.Parameter))
 					return "ref " + TypeName (str.TrimEnd ('&'), context);
-				if (context == Context.Return)
-					return TypeName (str.TrimEnd ('&'), context);
-				if (context == Context.Generic)
+				if (context.Is (Context.Return))
+					return (context.Is (Context.Interface)? "[return: ByRef] " : "") + TypeName (str.TrimEnd ('&'), context);
+				if (context.Is (Context.Generic))
 					return "IntPtr";
 			}
 

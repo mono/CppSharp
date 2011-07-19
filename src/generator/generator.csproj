@@ -70,6 +70,7 @@
     </Compile>
     <Compile Include="Access.cs" />
     <Compile Include="Templates\CSharp\CSharpLanguage.cs" />
+    <Compile Include="Templates\Context.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System">

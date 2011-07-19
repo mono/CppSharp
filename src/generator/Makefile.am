@@ -59,6 +59,7 @@ FILES =  \
 	Property.cs \
 	Templates/Base.cs \
 	Templates/BaseMembers.cs \
+	Templates/Context.cs \
 	Templates/CSharp/CSharpClass.cs \
 	Templates/CSharp/CSharpLanguage.cs \
 	Templates/CSharp/CSharpLibs.cs

@@ -48,13 +48,10 @@ namespace <#= Generator.Namespace #> {
 		if (IsByVal (method.ReturnType)) {
 			Write ("[return: ByVal] ");
 		}
-		if (IsByRef (method.ReturnType)) {
-			Write ("[return: ByRef] ");
-		}
 		if (method.IsConstructor)
 			Write ("CppInstancePtr");
 		else
-			Write (CSharpLanguage.TypeName (method.ReturnType, CSharpLanguage.Context.Return));
+			Write (CSharpLanguage.TypeName (method.ReturnType, Context.Interface | Context.Return));
 		Write (" ");
 		Write (CSharpLanguage.SafeIdentifier (method.Name));
 
@@ -69,14 +66,14 @@ namespace <#= Generator.Namespace #> {
 		Write (");\n");
 	}
 	foreach (var field in Class.Fields.Where (f => f.Access != Access.@private)) {
-		WriteLine ("CppField<{0}> {1} {{ get; }}", CSharpLanguage.TypeName (field.Type, CSharpLanguage.Context.Generic), CSharpLanguage.SafeIdentifier (field.Name));
+		WriteLine ("CppField<{0}> {1} {{ get; }}", CSharpLanguage.TypeName (field.Type, Context.Generic), CSharpLanguage.SafeIdentifier (field.Name));
 	}
 	ClearIndent (); #>
 		}
 <# /* Native layout */ #>
 		private struct <#= layout #> {
 <# foreach (var field in Class.Fields) { #>
-			public <#= CSharpLanguage.TypeName (field.Type, CSharpLanguage.Context.Generic) #> <#= CSharpLanguage.SafeIdentifier (field.Name) #>;
+			public <#= CSharpLanguage.TypeName (field.Type, Context.Generic) #> <#= CSharpLanguage.SafeIdentifier (field.Name) #>;
 <# } #>
 		}
 
@@ -84,7 +81,7 @@ namespace <#= Generator.Namespace #> {
 <# PushIndent ("\t\t");
 	foreach (var field in Class.Fields.Where (f => f.Access != Access.@private)) {
 		var fieldName = CSharpLanguage.SafeIdentifier (field.Name);
-		WriteLine ("{0} {1} {2} {{", field.Access, CSharpLanguage.TypeName (field.Type, CSharpLanguage.Context.Return), fieldName); #>
+		WriteLine ("{0} {1} {2} {{", field.Access, CSharpLanguage.TypeName (field.Type, Context.Wrapper | Context.Return), fieldName); #>
 			get {
 				return impl.<#= fieldName #> [Native];
 			}
@@ -140,7 +137,7 @@ namespace <#= Generator.Namespace #> {
 <# PushIndent ("\t\t");
 		foreach (var prop in Class.Properties) {
 			var propName = CSharpLanguage.SafeIdentifier (prop.Name);
-			var type = CSharpLanguage.TypeName (prop.Type, CSharpLanguage.Context.Return);
+			var type = CSharpLanguage.TypeName (prop.Type, Context.Wrapper | Context.Return);
 
 			Write (CurrentIndent + "public ");
 
@@ -283,7 +280,7 @@ if (Class.BaseClasses.Count > 1) { #>
 <#+
 private void WriteMethodHeader (Method method, string layoutClass, bool isNonPrimaryOverride, bool @protected)
 {
-	var returnType = CSharpLanguage.TypeName (method.ReturnType, CSharpLanguage.Context.Return);
+	var returnType = CSharpLanguage.TypeName (method.ReturnType, Context.Wrapper | Context.Return);
 
 	if (!isNonPrimaryOverride && method.IsVirtual)
 		WriteLine ("[OverrideNative (\"{0}\")]", method.Name);
@@ -323,7 +320,7 @@ private void WriteParameters (IList<Parameter> parameters, bool writeType, bool 
 		if (i != 0)
 			Write (", ");
 
-		var type = CSharpLanguage.TypeName (parameters [i].Type, CSharpLanguage.Context.Parameter);
+		var type = CSharpLanguage.TypeName (parameters [i].Type, Context.Parameter);
 
 		if (writeAttributes) {
 			var mangleAs = parameters [i].Type.ToString ();
@@ -361,11 +358,5 @@ private bool IsByVal (CppType t)
 	        !t.Modifiers.Contains (CppModifiers.Pointer) &&
 	        !t.Modifiers.Contains (CppModifiers.Reference) &&
 	        !t.Modifiers.Contains (CppModifiers.Array));
-}
-private bool IsByRef (CppType t)
-{
-	return ((t.ElementType != CppTypes.Class && t.ElementType != CppTypes.Struct) &&
-			t.Modifiers.Contains (CppModifiers.Pointer) ||
-			t.Modifiers.Contains (CppModifiers.Reference));
 }
 #>
