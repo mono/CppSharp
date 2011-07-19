@@ -8,9 +8,11 @@ TEST_DLL = $(BUILD_DIR)/Test.dll
 
 NATIVE = \
 	MarshalingTests \
-	InheritanceTests
+	InheritanceTests \
+	FieldTests
 
 MANAGED =  \
+	FieldTests.cs \
 	InheritanceTests.cs \
 	MarshalingTests.cs \
 	Support/CppNUnitAsserts.cs

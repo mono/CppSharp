@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -53,6 +53,7 @@
     <Compile Include="Support\CppNUnitAsserts.cs" />
     <Compile Include="MarshalingTests.cs" />
     <Compile Include="InheritanceTests.cs" />
+    <Compile Include="FieldTests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -73,6 +74,8 @@
     <None Include="Native\MarshalingTests.h" />
     <None Include="Native\InheritanceTests.h" />
     <None Include="Native\InheritanceTests.cpp" />
+    <None Include="Native\FieldTests.h" />
+    <None Include="Native\FieldTests.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
