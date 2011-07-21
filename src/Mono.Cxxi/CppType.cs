@@ -87,9 +87,9 @@ namespace Mono.Cxxi {
 			(t) => t.Modifiers.Contains (CppModifiers.Reference) && (t.Subtract (CppModifiers.Reference).ToManagedType () != null)? t.Subtract (CppModifiers.Reference).ToManagedType ().MakeByRefType () : null,
 
 			(t) => t.ElementType == CppTypes.Int && t.Modifiers.Contains (CppModifiers.Short) && t.Modifiers.Contains (CppModifiers.Unsigned)? typeof (ushort) : null,
-			(t) => t.ElementType == CppTypes.Int && t.Modifiers.Contains (CppModifiers.Long) && t.Modifiers.Contains (CppModifiers.Unsigned)? typeof (ulong) : null,
+			(t) => t.ElementType == CppTypes.Int && t.Modifiers.Count (m => m == CppModifiers.Long) == 2 && t.Modifiers.Contains (CppModifiers.Unsigned)? typeof (ulong) : null,
 			(t) => t.ElementType == CppTypes.Int && t.Modifiers.Contains (CppModifiers.Short)? typeof (short) : null,
-			(t) => t.ElementType == CppTypes.Int && t.Modifiers.Contains (CppModifiers.Long)? typeof (long) : null,
+			(t) => t.ElementType == CppTypes.Int && t.Modifiers.Count (m => m == CppModifiers.Long) == 2? typeof (long) : null,
 			(t) => t.ElementType == CppTypes.Int && t.Modifiers.Contains (CppModifiers.Unsigned)? typeof (uint) : null,
 
 			(t) => t.ElementType == CppTypes.Void?   typeof (void)   : null,
@@ -125,17 +125,18 @@ namespace Mono.Cxxi {
 			// ... and of course ICppObjects do too!
 			// FIXME: We assume c++ class not struct. There should probably be an attribute
 			//   we can apply to managed wrappers to indicate if the underlying C++ type is actually declared struct
-			(t) => typeof (ICppObject).IsAssignableFrom (t)? new CppType (CppTypes.Class, t.Name, CppModifiers.Pointer) : CppTypes.Unknown,
+			(t) => typeof (ICppObject).IsAssignableFrom (t)? new CppType (CppTypes.Class, Regex.Replace (t.Name, "`\\d\\d?$", ""), CppModifiers.Pointer) : CppTypes.Unknown,
 
 			// convert managed type modifiers to C++ type modifiers like so:
 			//  ref types to C++ references
 			//  pointer types to C++ pointers
 			//  array types to C++ arrays
 			(t) => {
-				CppType cppType = CppType.ForManagedType (t.GetElementType ());
+				var cppType = CppType.ForManagedType (t.GetElementType () ?? t.GetGenericTypeDefinition ());
 				if (t.IsByRef) cppType.Modifiers.Add (CppModifiers.Reference);
 				if (t.IsPointer) cppType.Modifiers.Add (CppModifiers.Pointer);
 				if (t.IsArray) cppType.Modifiers.Add (CppModifiers.Array);
+				if (t.IsGenericType) cppType.Modifiers.Add (new CppModifiers.TemplateModifier (t.GetGenericArguments ().Select (g => CppType.ForManagedType (g)).ToArray ()));
 				return cppType;
 			}
 		};
