@@ -333,6 +333,9 @@ private void WriteParameters (IList<Parameter> parameters, bool writeType, bool 
 		if (writeType) {
 			Write (type);
 			Write (" ");
+		} else {
+			if (type.StartsWith ("ref "))
+				Write ("ref ");
 		}
 
 		Write (CSharpLanguage.SafeIdentifier (parameters [i].Name));

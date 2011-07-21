@@ -203,6 +203,9 @@ public class Generator {
 				switch (n.Type) {
 				case "Field":
 					CppType fieldType = GetType (GetTypeNode (n));
+					if (fieldType.ElementType == CppTypes.Unknown && fieldType.ElementTypeName == null)
+						fieldType = new CppType (CppTypes.Void, CppModifiers.Pointer);
+
 					string fieldName;
 					if (n.Name != "")
 						fieldName = n.Name;
@@ -318,7 +321,7 @@ public class Generator {
 		// if it's const, returns a value, has no parameters, and there is no other method with the same name
 		//  in this class assume it's a property getter (for now?)
 		if (method.IsConst && !method.ReturnType.Equals (CppTypes.Void) && !method.Parameters.Any () &&
-			klass.Methods.Where (o => o.Name == method.Name).FirstOrDefault () == method) {
+			klass.Methods.Count (o => o.Name == method.Name) == 1) {
 			Property property;
 
 			property = klass.Properties.Where (o => o.Name == method.FormattedName).FirstOrDefault ();
@@ -335,7 +338,7 @@ public class Generator {
 		// if it's name starts with "set", does not return a value, and has one arg (besides this ptr)
 		// and there is no other method with the same name...
 		if (method.Name.ToLower ().StartsWith ("set") && method.ReturnType.Equals (CppTypes.Void) &&
-			method.Parameters.Count == 1 && klass.Methods.Where (o => o.Name == method.Name).Count () == 1) {
+			method.Parameters.Count == 1 && klass.Methods.Count (o => o.Name == method.Name) == 1) {
 			string getterName = method.Name.Substring (3).TrimStart ('_').ToLower ();
 
 			string pname = method.FormattedName.Substring (3);
@@ -394,11 +397,8 @@ public class Generator {
 		case "Class":
 		case "Struct":
 			if (!NodeToClass.ContainsKey (n)) {
-				if (modifiers.Modifiers.Count () == 1 && modifiers.Modifiers [0] == CppModifiers.Pointer)
-					// Map these to void*
-					return modifiers.CopyTypeFrom (CppTypes.Void);
-				else
-					return CppTypes.Unknown;
+				// FIXME: Do something better
+				return CppTypes.Unknown;
 			}
 			return modifiers.CopyTypeFrom (new CppType (n.Type == "Class"? CppTypes.Class : CppTypes.Struct, NodeToClass [n].Name));
 		default:
