@@ -29,6 +29,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using System.Reflection.Emit;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
@@ -43,28 +44,30 @@ namespace Mono.Cxxi {
 	//  TypeComplete indicates when the dust has settled.
 	public class CppTypeInfo {
 
-		public CppAbi Abi { get; private set; }
-		public Type NativeLayout { get; private set; }
-		public Type WrapperType { get; private set; }
+		public CppLibrary Library { get; private set; }
 
-		public IList<PInvokeSignature> VirtualMethods { get; private set; } // read only version
-		protected List<PInvokeSignature> virtual_methods;
-
-		public IList<Type> VTableDelegateTypes { get; private set; } // read only version
-		protected LazyGeneratedList<Type> vt_delegate_types;
-
-		public IList<Delegate> VTableOverrides { get; private set; } // read only version
-		protected LazyGeneratedList<Delegate> vt_overrides;
-
-		public IList<CppTypeInfo> BaseClasses { get; private set; } // read only version
-		protected List<CppTypeInfo> base_classes;
+		public string TypeName { get; private set; }
+		public bool IsPrimaryBase { get; protected set; } // < True by default. set to False in cases where it is cloned as a non-primary base
 
 		// returns the number of vtable slots reserved for the
 		//  base class(es) before this class's virtual methods start
 		public int BaseVTableSlots { get; protected set; }
 
-		public bool TypeComplete { get; private set; }
-		public bool IsPrimaryBase { get; protected set; } // < True by default. set to False in cases where it is cloned as a non-primary base
+		public Type InterfaceType { get; private set; }
+		public Type NativeLayout { get; private set; }
+		public Type WrapperType { get; private set; }
+
+		// read only versions:
+		public IList<PInvokeSignature> VirtualMethods { get; private set; }
+		public IList<Type> VTableDelegateTypes { get; private set; }
+		public IList<Delegate> VTableOverrides { get; private set; }
+		public IList<CppTypeInfo> BaseClasses { get; private set; }
+
+		// backing lists:
+		protected List<PInvokeSignature> virtual_methods;
+		protected LazyGeneratedList<Type> vt_delegate_types;
+		protected LazyGeneratedList<Delegate> vt_overrides;
+		protected List<CppTypeInfo> base_classes;
 
 		protected int native_size_without_padding; // <- this refers to the size of all the fields declared in the nativeLayout struct
 		protected int field_offset_padding_without_vtptr;
@@ -72,23 +75,30 @@ namespace Mono.Cxxi {
 
 		private VTable lazy_vtable;
 
-		public CppTypeInfo (CppAbi abi, IEnumerable<PInvokeSignature> virtualMethods, Type nativeLayout, Type/*?*/ wrapperType)
+		internal EmitInfo emit_info; // <- will be null when the type is done being emitted
+		public bool TypeComplete { get { return emit_info == null; } }
+
+		public CppTypeInfo (CppLibrary lib, string typeName, Type interfaceType, Type nativeLayout, Type/*?*/ wrapperType)
 			: this ()
 		{
-			Abi = abi;
+			Library = lib;
+			TypeName = typeName;
+
+			InterfaceType = interfaceType;
 			NativeLayout = nativeLayout;
 			WrapperType = wrapperType;
 
-			virtual_methods = new List<PInvokeSignature> (virtualMethods);
+			virtual_methods = new List<PInvokeSignature> (Library.Abi.GetVirtualMethodSlots (this, interfaceType));
 			VirtualMethods = new ReadOnlyCollection<PInvokeSignature> (virtual_methods);
 
 			vt_delegate_types = new LazyGeneratedList<Type> (virtual_methods.Count, i => DelegateTypeCache.GetDelegateType (virtual_methods [i]));
 			VTableDelegateTypes = new ReadOnlyCollection<Type> (vt_delegate_types);
 
-			vt_overrides = new LazyGeneratedList<Delegate> (virtual_methods.Count, i => Abi.GetManagedOverrideTrampoline (this, i));
+			vt_overrides = new LazyGeneratedList<Delegate> (virtual_methods.Count, i => Library.Abi.GetManagedOverrideTrampoline (this, i));
 			VTableOverrides = new ReadOnlyCollection<Delegate> (vt_overrides);
 
-			native_size_without_padding = nativeLayout.GetFields ().Any ()? Marshal.SizeOf (nativeLayout) : 0;
+			if (nativeLayout != null)
+				native_size_without_padding = nativeLayout.GetFields ().Any ()? Marshal.SizeOf (nativeLayout) : 0;
 		}
 
 		protected CppTypeInfo ()
@@ -98,10 +108,11 @@ namespace Mono.Cxxi {
 
 			field_offset_padding_without_vtptr = 0;
 			gchandle_offset_delta = 0;
-			TypeComplete = false;
 			IsPrimaryBase = true;
 			BaseVTableSlots = 0;
 			lazy_vtable = null;
+
+			emit_info = new EmitInfo ();
 		}
 
 		// The contract for Clone is that, if TypeComplete, working with the clone *through the public
@@ -197,13 +208,13 @@ namespace Mono.Cxxi {
 
 		public virtual void CompleteType ()
 		{
-			if (TypeComplete)
+			if (emit_info == null)
 				return;
 
 			foreach (var baseClass in base_classes)
 				baseClass.CompleteType ();
 
-			TypeComplete = true;
+			emit_info = null;
 
 			RemoveVTableDuplicates ();
 		}

@@ -56,9 +56,11 @@ namespace Mono.Cxxi {
 
 			if (!implCache.TryGetValue (typeof (Iface), out cachedImpl))
 			{
-				VirtualOnlyAbi virtualABI = new VirtualOnlyAbi (VTable.BindToSignature);
-				impl = virtualABI.ImplementClass<Iface> (typeof (TWrapper), new CppLibrary (string.Empty), string.Empty);
-				implCache.Add (typeof (Iface), impl);
+				// FIXME: fix this? or not...
+				//VirtualOnlyAbi virtualABI = new VirtualOnlyAbi (VTable.BindToSignature);
+				//impl = virtualABI.ImplementClass<Iface> (typeof (TWrapper), new CppLibrary (string.Empty), string.Empty);
+				//implCache.Add (typeof (Iface), impl);
+				throw new NotImplementedException ();
 			}
 			else
 				impl = (Iface)cachedImpl;

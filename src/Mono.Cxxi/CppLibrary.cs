@@ -105,7 +105,8 @@ namespace Mono.Cxxi {
 		public Iface GetClass<Iface> (string className)
 			where Iface : ICppClass
 		{
-			return Abi.ImplementClass<Iface> (null, this, className);
+			var typeInfo = Abi.MakeTypeInfo (this, className, typeof (Iface), null, null);
+			return (Iface)Abi.ImplementClass (typeInfo);
 		}
 
 		// For instantiating or working with a class that may have fields
@@ -114,7 +115,8 @@ namespace Mono.Cxxi {
 			where Iface : ICppClassInstantiatable
 			where NativeLayout : struct
 		{
-			return Abi.ImplementClass<Iface, NativeLayout> (null, this, className);
+			var typeInfo = Abi.MakeTypeInfo (this, className, typeof (Iface), typeof (NativeLayout), null);
+			return (Iface)Abi.ImplementClass (typeInfo);
 		}
 
 		/* The most powerful override. Allows the following from managed code:
@@ -127,7 +129,8 @@ namespace Mono.Cxxi {
 			where NativeLayout : struct
 			where Managed : ICppObject
 		{
-			return Abi.ImplementClass<Iface, NativeLayout> (typeof (Managed), this, className);
+			var typeInfo = Abi.MakeTypeInfo (this, className, typeof (Iface), typeof (NativeLayout), typeof (Managed));
+			return (Iface)Abi.ImplementClass (typeInfo);
 		}
 
 	}

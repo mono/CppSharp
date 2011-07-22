@@ -36,8 +36,11 @@ using Mono.Cxxi.Util;
 namespace Mono.Cxxi.Abi {
 
 	public class ItaniumTypeInfo : CppTypeInfo {
-		public ItaniumTypeInfo (ItaniumAbi abi, IEnumerable<PInvokeSignature> virtualMethods, Type nativeLayout, Type wrapperType)
-			: base (abi, virtualMethods, nativeLayout, wrapperType)
+
+		protected internal bool? has_non_default_copy_ctor_or_dtor;
+
+		public ItaniumTypeInfo (CppLibrary lib, string typeName, Type interfaceType, Type nativeLayout, Type/*?*/ wrapperType)
+			: base (lib, typeName, interfaceType, nativeLayout, wrapperType)
 		{
 		}
 

@@ -41,15 +41,15 @@ namespace Mono.Cxxi.Abi {
 		}
 		public VirtualOnlyAbi () { }
 
-		public override MethodType GetMethodType (MethodInfo imethod)
+		public override MethodType GetMethodType (CppTypeInfo typeInfo, MethodInfo imethod)
 		{
-			MethodType defaultType = base.GetMethodType (imethod);
+			MethodType defaultType = base.GetMethodType (typeInfo, imethod);
 			if (defaultType == MethodType.NativeCtor || defaultType == MethodType.NativeDtor)
 				return MethodType.NoOp;
 			return defaultType;
 		}
 
-		protected override string GetMangledMethodName (MethodInfo methodInfo)
+		protected override string GetMangledMethodName (CppTypeInfo typeInfo, MethodInfo methodInfo)
 		{
 			throw new NotSupportedException ("Name mangling is not supported by this class. All C++ interface methods must be declared virtual.");
 		}

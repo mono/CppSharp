@@ -41,26 +41,18 @@ namespace Mono.Cxxi.Abi {
 
 		public static readonly ItaniumAbi Instance = new ItaniumAbi ();
 
-		private bool? hasNonDefaultCopyCtorOrDtor;
-
 		private ItaniumAbi ()
 		{
 		}
 
-		public override Iface ImplementClass<Iface, NLayout> (Type wrapperType, CppLibrary lib, string className)
+		public override CppTypeInfo MakeTypeInfo (CppLibrary lib, string typeName, Type interfaceType, Type layoutType/*?*/, Type/*?*/ wrapperType)
 		{
-			hasNonDefaultCopyCtorOrDtor = null;
-			return base.ImplementClass<Iface, NLayout> (wrapperType, lib, className);
+			return new ItaniumTypeInfo (lib, typeName, interfaceType, layoutType, wrapperType);
 		}
 
-		protected override CppTypeInfo MakeTypeInfo (IEnumerable<PInvokeSignature> methods)
+		public override IEnumerable<PInvokeSignature> GetVirtualMethodSlots (CppTypeInfo typeInfo, Type interfaceType)
 		{
-			return new ItaniumTypeInfo (this, GetVirtualMethodSlots (methods), layout_type, wrapper_type);
-		}
-
-		private IEnumerable<PInvokeSignature> GetVirtualMethodSlots (IEnumerable<PInvokeSignature> methods)
-		{
-			foreach (var method in methods) {
+			foreach (var method in base.GetVirtualMethodSlots (typeInfo, interfaceType)) {
 				if (!IsVirtual (method.OrigMethod))
 					continue;
 
@@ -72,9 +64,9 @@ namespace Mono.Cxxi.Abi {
 			}
 		}
 
-		protected override MethodBuilder DefineMethod (PInvokeSignature sig, CppTypeInfo typeInfo, ref int vtableIndex)
+		protected override MethodBuilder DefineMethod (CppTypeInfo typeInfo, PInvokeSignature sig, ref int vtableIndex)
 		{
-			var builder = base.DefineMethod (sig, typeInfo, ref vtableIndex);
+			var builder = base.DefineMethod (typeInfo, sig, ref vtableIndex);
 
 			// increment vtableIndex an extra time for that extra vdtor slot (already incremented once in base)
 			if (IsVirtual (sig.OrigMethod) && sig.Type == MethodType.NativeDtor)
@@ -88,12 +80,13 @@ namespace Mono.Cxxi.Abi {
 			return CallingConvention.Cdecl;
 		}
 
-		protected override string GetMangledMethodName (MethodInfo methodInfo)
+		protected override string GetMangledMethodName (CppTypeInfo typeInfo, MethodInfo methodInfo)
 		{
 			var compressMap = new Dictionary<string, int> ();
+			var methodName = methodInfo.Name;
+			var className = typeInfo.TypeName;
 
-			string methodName = methodInfo.Name;
-			MethodType methodType = GetMethodType (methodInfo);
+			MethodType methodType = GetMethodType (typeInfo, methodInfo);
 			ParameterInfo [] parameters = methodInfo.GetParameters ();
 
 			StringBuilder nm = new StringBuilder ("_ZN", 30);
@@ -101,8 +94,8 @@ namespace Mono.Cxxi.Abi {
 			if (IsConst (methodInfo))
 				nm.Append ('K');
 
-			nm.Append (class_name.Length).Append (class_name);
-			compressMap [class_name] = compressMap.Count;
+			nm.Append (className.Length).Append (className);
+			compressMap [className] = compressMap.Count;
 
 			// FIXME: Implement compression completely
 
@@ -191,22 +184,27 @@ namespace Mono.Cxxi.Abi {
 		// Section 3.1.4:
 		// Classes with non-default copy ctors/destructors are returned using a hidden
 		// argument
-		bool ReturnByHiddenArgument (MethodInfo method)
+		bool ReturnByHiddenArgument (CppTypeInfo typeInfo, MethodInfo method)
 		{
+			var iti = (ItaniumTypeInfo)typeInfo;
+
 			if (!IsByVal (method.ReturnTypeCustomAttributes))
 				return false;
 
-			if (hasNonDefaultCopyCtorOrDtor == null)
-				hasNonDefaultCopyCtorOrDtor = GetMethods ().Any (m => (IsCopyConstructor (m) || GetMethodType (m) == MethodType.NativeDtor) && !IsArtificial (m));
+			if (iti.has_non_default_copy_ctor_or_dtor == null)
+				iti.has_non_default_copy_ctor_or_dtor = GetMethods (typeInfo.InterfaceType)
+				                                       .Any (m => (IsCopyConstructor (m) ||
+				                                                     GetMethodType (typeInfo, m) == MethodType.NativeDtor) &&
+					                                              !IsArtificial (m));
 
-			return hasNonDefaultCopyCtorOrDtor.Value;
+			return iti.has_non_default_copy_ctor_or_dtor.Value;
 		}
 
-		public override PInvokeSignature GetPInvokeSignature (MethodInfo method)
+		public override PInvokeSignature GetPInvokeSignature (CppTypeInfo/*?*/ typeInfo, MethodInfo method)
 		{
-			var psig = base.GetPInvokeSignature (method);
+			var psig = base.GetPInvokeSignature (typeInfo, method);
 
-			if (ReturnByHiddenArgument (method)) {
+			if (ReturnByHiddenArgument (typeInfo, method)) {
 				psig.ParameterTypes.Insert (0, typeof (IntPtr));
 				psig.ReturnType = typeof (void);
 			}
@@ -214,11 +212,13 @@ namespace Mono.Cxxi.Abi {
 			return psig;
 		}
 
-		protected override void EmitNativeCall (ILGenerator il, MethodInfo nativeMethod, PInvokeSignature psig, LocalBuilder nativePtr)
+		protected override void EmitNativeCall (CppTypeInfo typeInfo, MethodInfo nativeMethod, PInvokeSignature psig, LocalBuilder nativePtr)
 		{
+			var il = typeInfo.emit_info.current_il;
 			var method = psig.OrigMethod;
+			var hiddenReturnByValue = ReturnByHiddenArgument (typeInfo, method);
+
 			LocalBuilder returnValue = null;
-			var hiddenReturnByValue = ReturnByHiddenArgument (method);
 
 			if (hiddenReturnByValue)
 			{
@@ -226,13 +226,14 @@ namespace Mono.Cxxi.Abi {
 
 				EmitGetTypeInfo (il, method.ReturnType);
 				il.Emit (OpCodes.Call, typeinfo_nativesize);
+
 				il.Emit (OpCodes.Newobj, cppip_fromsize);
 				il.Emit (OpCodes.Stloc, returnValue);
 				il.Emit (OpCodes.Ldloca, returnValue);
 				il.Emit (OpCodes.Call, cppip_native);
 			}
 
-			base.EmitNativeCall (il, nativeMethod, psig, nativePtr);
+			base.EmitNativeCall (typeInfo, nativeMethod, psig, nativePtr);
 
 			if (hiddenReturnByValue) {
 				EmitCreateCppObjectFromNative (il, method.ReturnType, returnValue);

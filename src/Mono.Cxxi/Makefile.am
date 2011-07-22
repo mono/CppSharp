@@ -44,6 +44,7 @@ all: $(ASSEMBLY) $(PROGRAMFILES) $(LINUX_PKGCONFIG)
 
 FILES =  \
 	Abi/CppAbi.cs \
+	Abi/EmitInfo.cs \
 	Abi/Impl/ItaniumAbi.cs \
 	Abi/Impl/ItaniumTypeInfo.cs \
 	Abi/Impl/MsvcAbi.cs \

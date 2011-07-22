@@ -45,18 +45,6 @@ namespace Mono.Cxxi.Abi {
 	public abstract partial class CppAbi {
 		// (other part of this partial class in Attributes.cs)
 
-		// These fields are specific to the class we happen to be implementing:
-		protected ModuleBuilder impl_module;
-		protected TypeBuilder impl_type;
-
-		protected Type interface_type, layout_type, wrapper_type;
-		protected CppLibrary library;
-		protected string class_name;
-
-		protected FieldBuilder typeinfo_field;
-		protected ILGenerator ctor_il;
-
-		// These fields are specific to the ABI:
 		protected Dictionary<Type,CppTypeInfo> wrapper_to_typeinfo = new Dictionary<Type, CppTypeInfo> ();
 		protected MemberFilter vtable_override_filter = VTable.BindToSignatureAndAttribute;
 
@@ -80,15 +68,14 @@ namespace Mono.Cxxi.Abi {
 		protected static readonly MethodInfo type_gettypefromhandle  = typeof (Type).GetMethod ("GetTypeFromHandle");
 		protected static readonly MethodInfo marshal_offsetof        = typeof (Marshal).GetMethod ("OffsetOf");
 		protected static readonly MethodInfo marshal_structuretoptr  = typeof (Marshal).GetMethod ("StructureToPtr");
-		protected static readonly ConstructorInfo dummytypeinfo_ctor = typeof (DummyCppTypeInfo).GetConstructor (Type.EmptyTypes);
-		protected static readonly MethodInfo dummytypeinfo_getbase   = typeof (DummyCppTypeInfo).GetProperty ("BaseTypeInfo").GetGetMethod ();
+		protected static readonly MethodInfo marshal_ptrtostructure  = typeof (Marshal).GetMethod ("PtrToStructure", BindingFlags.Static | BindingFlags.Public, null, new Type [] { typeof (IntPtr), typeof (Type) }, null);
 		protected static readonly FieldInfo  intptr_zero             = typeof (IntPtr).GetField ("Zero");
 
 		// These methods might be more commonly overridden for a given C++ ABI:
 
-		public virtual MethodType GetMethodType (MethodInfo imethod)
+		public virtual MethodType GetMethodType (CppTypeInfo typeInfo, MethodInfo imethod)
 		{
-			if (IsInline (imethod) && library.InlineMethodPolicy == InlineMethods.NotPresent)
+			if (IsInline (imethod) && typeInfo.Library.InlineMethodPolicy == InlineMethods.NotPresent)
 				return MethodType.NotImplemented;
 			else if (imethod.IsDefined (typeof (ConstructorAttribute), false))
 				return MethodType.NativeCtor;
@@ -103,83 +90,63 @@ namespace Mono.Cxxi.Abi {
 		// The members below must be implemented for a given C++ ABI:
 
 		public abstract CallingConvention? GetCallingConvention (MethodInfo methodInfo);
-		protected abstract string GetMangledMethodName (MethodInfo methodInfo);
-		public string GetMangledMethodName (string className, MethodInfo methodInfo)
-		{
-			class_name = className;
-			return GetMangledMethodName (methodInfo);
-		}
+		protected abstract string GetMangledMethodName (CppTypeInfo typeInfo, MethodInfo methodInfo);
 
-		// The ImplementClass overrides are the main entry point to the Abi API:
+		// ---------------------------------
 
 		private struct EmptyNativeLayout { }
-		public Iface ImplementClass<Iface> (Type wrapperType, CppLibrary lib, string className)
-			where Iface : ICppClass
+
+		public virtual ICppClass ImplementClass (CppTypeInfo typeInfo)
 		{
-			return this.ImplementClass<Iface,EmptyNativeLayout> (wrapperType, lib, className);
+			if (typeInfo.WrapperType == null || !wrapper_to_typeinfo.ContainsKey (typeInfo.WrapperType)) {
+
+				if (typeInfo.WrapperType != null)
+					wrapper_to_typeinfo.Add (typeInfo.WrapperType, typeInfo);
+
+				DefineImplType (typeInfo);
+
+				var properties = GetProperties (typeInfo.InterfaceType);
+				var methods = GetMethods (typeInfo.InterfaceType).Select (m => GetPInvokeSignature (typeInfo, m));
+	
+				// Implement all methods
+				int vtableIndex = 0;
+				foreach (var method in methods)
+					DefineMethod (typeInfo, method, ref vtableIndex);
+
+				// Implement all properties
+				foreach (var property in properties)
+					DefineProperty (typeInfo, property);
+
+				typeInfo.emit_info.ctor_il.Emit (OpCodes.Ret);
+				return (ICppClass)Activator.CreateInstance (typeInfo.emit_info.type_builder.CreateType (), typeInfo);
+			}
+
+			throw new InvalidOperationException ("This type has already been implemented");
 		}
 
-		public virtual Iface ImplementClass<Iface, NLayout> (Type wrapperType, CppLibrary lib, string className)
-			where NLayout : struct
-			where Iface : ICppClass
+		public virtual CppTypeInfo MakeTypeInfo (CppLibrary lib, string typeName, Type interfaceType, Type layoutType/*?*/, Type/*?*/ wrapperType)
 		{
-			this.impl_module = CppLibrary.interopModule;
-			this.library = lib;
-			this.class_name = className;
-			this.interface_type = typeof (Iface);
-			this.layout_type = typeof (NLayout);
-			this.wrapper_type = wrapperType;
-
-			DefineImplType ();
-
-			var properties = GetProperties ();
-			var methods = GetMethods ().Select (m => GetPInvokeSignature (m));
-
- 			var typeInfo = MakeTypeInfo (methods);
-			if (wrapperType != null)
-				wrapper_to_typeinfo.Add (wrapperType, typeInfo);
-
-			// Implement all methods
-			int vtableIndex = 0;
-			foreach (var method in methods)
-				DefineMethod (method, typeInfo, ref vtableIndex);
-
-			// Implement all properties
-			foreach (var property in properties)
-				DefineProperty (property);
-
-			ctor_il.Emit (OpCodes.Ret);
-
-			return (Iface)Activator.CreateInstance (impl_type.CreateType (), typeInfo);
+			Debug.Assert (lib.Abi == this);
+			return new CppTypeInfo (lib, typeName, interfaceType, layoutType ?? typeof (EmptyNativeLayout), wrapperType);
 		}
 
-		protected virtual CppTypeInfo MakeTypeInfo (IEnumerable<PInvokeSignature> methods)
+		public virtual IEnumerable<PInvokeSignature> GetVirtualMethodSlots (CppTypeInfo typeInfo, Type interfaceType)
 		{
-			return new CppTypeInfo (this, methods.Where (m => IsVirtual (m.OrigMethod)), layout_type, wrapper_type);
+			return from m in GetMethods (interfaceType)
+	                where IsVirtual (m)
+	                select GetPInvokeSignature (typeInfo, m);
 		}
 
-		protected virtual IEnumerable<PropertyInfo> GetProperties ()
-		{
-			return ( // get all properties defined on the interface
-			        from property in interface_type.GetProperties ()
-			        select property
-			       ).Union ( // ... as well as those defined on inherited interfaces
-			        from iface in interface_type.GetInterfaces ()
-			        from property in iface.GetProperties ()
-			        select property
-			       );
-		}
-
-		protected virtual IEnumerable<MethodInfo> GetMethods ()
+		protected virtual IEnumerable<MethodInfo> GetMethods (Type interfaceType)
 		{
 			// get all methods defined on inherited interfaces first
 			var methods = (
-				       from iface in interface_type.GetInterfaces ()
+				       from iface in interfaceType.GetInterfaces ()
 			               from method in iface.GetMethods ()
 			               where !method.IsSpecialName
 				       select method
 			              ).Concat (
-			               from method in interface_type.GetMethods ()
+			               from method in interfaceType.GetMethods ()
 			               where !method.IsSpecialName
 			               orderby method.MetadataToken
 			               select method
@@ -188,32 +155,52 @@ namespace Mono.Cxxi.Abi {
 			return methods;
 		}
 
-		protected virtual void DefineImplType ()
+		protected virtual IEnumerable<PropertyInfo> GetProperties (Type interfaceType)
 		{
-			string implTypeName = interface_type.Name + "_" + layout_type.Name + "_" + this.GetType ().Name + "_Impl";
-			impl_type = impl_module.DefineType (implTypeName, TypeAttributes.Class | TypeAttributes.Sealed);
-			impl_type.AddInterfaceImplementation (interface_type);
+			return ( // get all properties defined on the interface
+			        from property in interfaceType.GetProperties ()
+			        select property
+			       ).Union ( // ... as well as those defined on inherited interfaces
+			        from iface in interfaceType.GetInterfaces ()
+			        from property in iface.GetProperties ()
+			        select property
+			       );
+		}
 
-			typeinfo_field = impl_type.DefineField ("_typeInfo", typeof (CppTypeInfo), FieldAttributes.InitOnly | FieldAttributes.Private);
+		protected virtual void DefineImplType (CppTypeInfo typeInfo)
+		{
+			string implTypeName = typeInfo.InterfaceType.Name + "_";
+			if (typeInfo.NativeLayout != null)
+				implTypeName += typeInfo.NativeLayout.Name + "_";
+			implTypeName += this.GetType ().Name + "_Impl";
+
+			var impl_type = CppLibrary.interopModule.DefineType (implTypeName, TypeAttributes.Class | TypeAttributes.Sealed);
+			impl_type.AddInterfaceImplementation (typeInfo.InterfaceType);
+
+			var typeinfo_field = impl_type.DefineField ("_typeInfo", typeof (CppTypeInfo), FieldAttributes.InitOnly | FieldAttributes.Private);
 
 			ConstructorBuilder ctor = impl_type.DefineConstructor (MethodAttributes.Public, CallingConventions.Standard,
                                                                               new Type[] { typeof (CppTypeInfo) });
 
-			ctor_il = ctor.GetILGenerator ();
+			var ctor_il = ctor.GetILGenerator ();
 
 			// this._typeInfo = (CppTypeInfo passed to constructor)
 			ctor_il.Emit (OpCodes.Ldarg_0);
 			ctor_il.Emit (OpCodes.Ldarg_1);
 			ctor_il.Emit (OpCodes.Stfld, typeinfo_field);
+
+			typeInfo.emit_info.ctor_il = ctor_il;
+			typeInfo.emit_info.typeinfo_field = typeinfo_field;
+			typeInfo.emit_info.type_builder = impl_type;
 		}
 
-		protected virtual MethodBuilder DefineMethod (PInvokeSignature psig, CppTypeInfo typeInfo, ref int vtableIndex)
+		protected virtual MethodBuilder DefineMethod (CppTypeInfo typeInfo, PInvokeSignature psig, ref int vtableIndex)
 		{
 			var interfaceMethod = psig.OrigMethod;
 
 			// 1. Generate managed trampoline to call native method
-			MethodBuilder trampoline = GetMethodBuilder (interfaceMethod);
-			ILGenerator il = trampoline.GetILGenerator ();
+			var trampoline = GetMethodBuilder (typeInfo, interfaceMethod);
+			var il = typeInfo.emit_info.current_il = trampoline.GetILGenerator ();
 
 			switch (psig.Type) {
 
@@ -231,12 +218,12 @@ namespace Mono.Cxxi.Abi {
 				return trampoline;
 
 			case MethodType.ManagedAlloc:
-				EmitManagedAlloc (il, interfaceMethod);
+				EmitManagedAlloc (typeInfo, interfaceMethod);
 				il.Emit (OpCodes.Ret);
 				return trampoline;
 			}
 
-			bool isStatic = IsStatic (interfaceMethod);
+			var isStatic = IsStatic (interfaceMethod);
 			LocalBuilder cppInstancePtr = null;
 			LocalBuilder nativePtr = null;
 
@@ -256,23 +243,23 @@ namespace Mono.Cxxi.Abi {
 			MethodInfo nativeMethod;
 
 			if (IsVirtual (interfaceMethod) && psig.Type != MethodType.NativeDtor) {
-				nativeMethod = EmitPrepareVirtualCall (il, typeInfo, cppInstancePtr, vtableIndex++);
+				nativeMethod = EmitPrepareVirtualCall (typeInfo, cppInstancePtr, vtableIndex++);
 			} else {
 				if (IsVirtual (interfaceMethod))
 					vtableIndex++;
 
-				nativeMethod = GetPInvokeForMethod (psig);
+				nativeMethod = GetPInvokeForMethod (typeInfo, psig);
 			}
 
 			switch (psig.Type) {
 			case MethodType.NativeCtor:
-				EmitConstruct (il, nativeMethod, psig, cppInstancePtr, nativePtr);
+				EmitConstruct (typeInfo, nativeMethod, psig, cppInstancePtr, nativePtr);
 				break;
 			case MethodType.NativeDtor:
-				EmitDestruct (il, nativeMethod, psig, cppInstancePtr, nativePtr);
+				EmitDestruct (typeInfo, nativeMethod, psig, cppInstancePtr, nativePtr);
 				break;
 			default:
-				EmitNativeCall (il, nativeMethod, psig, nativePtr);
+				EmitNativeCall (typeInfo, nativeMethod, psig, nativePtr);
 				break;
 			}
 
@@ -280,7 +267,7 @@ namespace Mono.Cxxi.Abi {
 			return trampoline;
 		}
 
-		protected virtual PropertyBuilder DefineProperty (PropertyInfo property)
+		protected virtual PropertyBuilder DefineProperty (CppTypeInfo typeInfo, PropertyInfo property)
 		{
 			if (property.CanWrite)
 				throw new InvalidProgramException ("Properties in C++ interface must be read-only.");
@@ -290,17 +277,17 @@ namespace Mono.Cxxi.Abi {
 			var propName = property.Name;
 			var retType = imethod.ReturnType;
 
-			var fieldProp = impl_type.DefineProperty (propName, PropertyAttributes.None, retType, Type.EmptyTypes);
+			var fieldProp = typeInfo.emit_info.type_builder.DefineProperty (propName, PropertyAttributes.None, retType, Type.EmptyTypes);
 
 			var methodAttr = MethodAttributes.Public | MethodAttributes.Virtual | MethodAttributes.SpecialName | MethodAttributes.HideBySig;
-			var fieldGetter = impl_type.DefineMethod (methodName, methodAttr, retType, Type.EmptyTypes);
+			var fieldGetter = typeInfo.emit_info.type_builder.DefineMethod (methodName, methodAttr, retType, Type.EmptyTypes);
 			var il = fieldGetter.GetILGenerator ();
 
 			// C++ interface properties are either to return the CppTypeInfo or to access C++ fields
 			if (retType.IsGenericType && retType.GetGenericTypeDefinition ().Equals (typeof (CppField<>))) {
 
 				// define a new field for the property
-				var fieldData = impl_type.DefineField ("__" + propName + "_Data", retType, FieldAttributes.InitOnly | FieldAttributes.Private);
+				var fieldData = typeInfo.emit_info.type_builder.DefineField ("__" + propName + "_Data", retType, FieldAttributes.InitOnly | FieldAttributes.Private);
 
 				// we need to lazy init the field because we don't have accurate field offset until after
 				// all base classes have been added (by ctor)
@@ -320,13 +307,13 @@ namespace Mono.Cxxi.Abi {
 
 				// first, get field offset
 				//  = ((int)Marshal.OffsetOf (layout_type, propName)) + FieldOffsetPadding;
-				il.Emit(OpCodes.Ldtoken, layout_type);
+				il.Emit(OpCodes.Ldtoken, typeInfo.NativeLayout);
 				il.Emit(OpCodes.Call, type_gettypefromhandle);
 				il.Emit(OpCodes.Ldstr, propName);
 				il.Emit(OpCodes.Call, marshal_offsetof);
 
 				il.Emit (OpCodes.Ldarg_0);
-				il.Emit (OpCodes.Ldfld, typeinfo_field);
+				il.Emit (OpCodes.Ldfld, typeInfo.emit_info.typeinfo_field);
 				il.Emit (OpCodes.Callvirt, typeinfo_fieldoffset);
 
 				il.Emit (OpCodes.Add);
@@ -342,7 +329,7 @@ namespace Mono.Cxxi.Abi {
 
 			} else if (retType.Equals (typeof (CppTypeInfo))) {
 				il.Emit (OpCodes.Ldarg_0);
-				il.Emit (OpCodes.Ldfld, typeinfo_field);
+				il.Emit (OpCodes.Ldfld, typeInfo.emit_info.typeinfo_field);
 				il.Emit (OpCodes.Ret);
 			} else
 				throw new InvalidProgramException ("Properties in C++ interface can only be of type CppField.");
@@ -381,7 +368,7 @@ namespace Mono.Cxxi.Abi {
 			                                      nativeArgs, typeof (CppInstancePtr).Module, true);
 
 			ReflectionHelper.ApplyMethodParameterAttributes (interfaceMethod, trampolineIn, true);
-			ILGenerator il = trampolineIn.GetILGenerator ();
+			var il = trampolineIn.GetILGenerator ();
 
 			// for static (target) methods:
 			OpCode callInstruction = OpCodes.Call;
@@ -430,11 +417,11 @@ namespace Mono.Cxxi.Abi {
 		/**
 		 * Defines a new MethodBuilder with the same signature as the passed MethodInfo
 		 */
-		protected virtual MethodBuilder GetMethodBuilder (MethodInfo interfaceMethod)
+		protected virtual MethodBuilder GetMethodBuilder (CppTypeInfo typeInfo, MethodInfo interfaceMethod)
 		{
-			Type [] parameterTypes = ReflectionHelper.GetMethodParameterTypes (interfaceMethod);
-			MethodBuilder methodBuilder = impl_type.DefineMethod (interfaceMethod.Name, MethodAttributes.Public | MethodAttributes.Virtual,
-																  interfaceMethod.ReturnType, parameterTypes);
+			var parameterTypes = ReflectionHelper.GetMethodParameterTypes (interfaceMethod);
+			var methodBuilder = typeInfo.emit_info.type_builder.DefineMethod (interfaceMethod.Name, MethodAttributes.Public | MethodAttributes.Virtual,
+															                  interfaceMethod.ReturnType, parameterTypes);
 			ReflectionHelper.ApplyMethodParameterAttributes (interfaceMethod, methodBuilder, false);
 			return methodBuilder;
 		}
@@ -442,22 +429,22 @@ namespace Mono.Cxxi.Abi {
 		/**
 		 * Defines a new MethodBuilder that calls the specified C++ (non-virtual) method using its mangled name
 		 */
-		protected virtual MethodBuilder GetPInvokeForMethod (PInvokeSignature sig)
+		protected virtual MethodBuilder GetPInvokeForMethod (CppTypeInfo typeInfo, PInvokeSignature sig)
 		{
-			string entryPoint = sig.Name;
+			var entryPoint = sig.Name;
 			if (entryPoint == null)
 				throw new NotSupportedException ("Could not mangle method name.");
 
 			string lib;
-			if (IsInline (sig.OrigMethod) && library.InlineMethodPolicy == InlineMethods.SurrogateLib)
-				lib = library.Name + "-inline";
+			if (IsInline (sig.OrigMethod) && typeInfo.Library.InlineMethodPolicy == InlineMethods.SurrogateLib)
+				lib = typeInfo.Library.Name + "-inline";
 			else
-				lib = library.Name;
+				lib = typeInfo.Library.Name;
 
-			MethodBuilder builder = impl_type.DefinePInvokeMethod (entryPoint, lib, entryPoint,
-			                                                      MethodAttributes.Private | MethodAttributes.Static | MethodAttributes.PinvokeImpl,
-			                                                      CallingConventions.Standard, sig.ReturnType, sig.ParameterTypes.ToArray (),
-			                                                      sig.CallingConvention.Value, CharSet.Ansi);
+			var builder = typeInfo.emit_info.type_builder.DefinePInvokeMethod (entryPoint, lib, entryPoint,
+			                                             MethodAttributes.Private | MethodAttributes.Static | MethodAttributes.PinvokeImpl,
+			                                             CallingConventions.Standard, sig.ReturnType, sig.ParameterTypes.ToArray (),
+			                                             sig.CallingConvention.Value, CharSet.Ansi);
 			builder.SetImplementationFlags (builder.GetMethodImplementationFlags () | MethodImplAttributes.PreserveSig);
 			ReflectionHelper.ApplyMethodParameterAttributes (sig.OrigMethod, builder, true);
 			return builder;
@@ -467,15 +454,15 @@ namespace Mono.Cxxi.Abi {
 		 * Emits the IL to load the correct delegate instance and/or retrieve the MethodInfo from the VTable
 		 * for a C++ virtual call.
 		 */
-		protected virtual MethodInfo EmitPrepareVirtualCall (ILGenerator il, CppTypeInfo typeInfo,
-		                                                     LocalBuilder cppInstancePtr, int vtableIndex)
+		protected virtual MethodInfo EmitPrepareVirtualCall (CppTypeInfo typeInfo, LocalBuilder cppInstancePtr, int vtableIndex)
 		{
-			Type vtableDelegateType = typeInfo.VTableDelegateTypes [vtableIndex];
-			MethodInfo getDelegate  = typeinfo_adjvcall.MakeGenericMethod (vtableDelegateType);
+			var il = typeInfo.emit_info.current_il;
+			var vtableDelegateType = typeInfo.VTableDelegateTypes [vtableIndex];
+			var getDelegate  = typeinfo_adjvcall.MakeGenericMethod (vtableDelegateType);
 
 			// this._typeInfo.GetAdjustedVirtualCall<T> (cppInstancePtr, vtableIndex);
 			il.Emit (OpCodes.Ldarg_0);
-			il.Emit (OpCodes.Ldfld, typeinfo_field);
+			il.Emit (OpCodes.Ldfld, typeInfo.emit_info.typeinfo_field);
 			il.Emit (OpCodes.Ldloc_S, cppInstancePtr);
 			il.Emit (OpCodes.Ldc_I4, vtableIndex);
 			il.Emit (OpCodes.Callvirt, getDelegate);
@@ -487,13 +474,15 @@ namespace Mono.Cxxi.Abi {
 		 *  Emits IL to allocate the memory for a new instance of the C++ class.
 		 *  To complete method, emit OpCodes.Ret.
 		 */
-		protected virtual void EmitManagedAlloc (ILGenerator il, MethodInfo interfaceMethod)
+		protected virtual void EmitManagedAlloc (CppTypeInfo typeInfo, MethodInfo interfaceMethod)
 		{
+			var il = typeInfo.emit_info.current_il;
+
 			// this._typeInfo.NativeSize
 			il.Emit (OpCodes.Ldarg_0);
-			il.Emit (OpCodes.Ldfld, typeinfo_field);
+			il.Emit (OpCodes.Ldfld, typeInfo.emit_info.typeinfo_field);
 
-			if (wrapper_type != null && interfaceMethod.GetParameters ().Any ()) {
+			if (typeInfo.WrapperType != null && interfaceMethod.GetParameters ().Any ()) {
 				// load managed wrapper
 				il.Emit (OpCodes.Ldarg_1);
 				il.Emit (OpCodes.Newobj, cppip_fromtype_managed);
@@ -503,14 +492,16 @@ namespace Mono.Cxxi.Abi {
 			}
 		}
 
-		protected virtual void EmitConstruct (ILGenerator il, MethodInfo nativeMethod, PInvokeSignature psig,
+		protected virtual void EmitConstruct (CppTypeInfo typeInfo, MethodInfo nativeMethod, PInvokeSignature psig,
 		                                      LocalBuilder cppInstancePtr, LocalBuilder nativePtr)
 		{
 			Debug.Assert (psig.Type == MethodType.NativeCtor);
-			EmitNativeCall (il, nativeMethod, psig, nativePtr);
+			var il = typeInfo.emit_info.current_il;
+
+			EmitNativeCall (typeInfo, nativeMethod, psig, nativePtr);
 
 			if (cppInstancePtr != null && psig.OrigMethod.ReturnType == typeof (CppInstancePtr)) {
-				EmitInitVTable (il, cppInstancePtr);
+				EmitInitVTable (typeInfo, cppInstancePtr);
 				il.Emit (OpCodes.Ldloc_S, cppInstancePtr);
 
 			} else if (psig.OrigMethod.DeclaringType.GetInterfaces ().Any (i => i.IsGenericType && i.GetGenericTypeDefinition () == typeof (ICppClassOverridable<>))) {
@@ -518,10 +509,11 @@ namespace Mono.Cxxi.Abi {
 			}
 		}
 
-		protected virtual void EmitDestruct (ILGenerator il, MethodInfo nativeMethod, PInvokeSignature psig,
+		protected virtual void EmitDestruct (CppTypeInfo typeInfo, MethodInfo nativeMethod, PInvokeSignature psig,
 		                                     LocalBuilder cppInstancePtr, LocalBuilder nativePtr)
 		{
 			Debug.Assert (psig.Type == MethodType.NativeDtor);
+			var il = typeInfo.emit_info.current_il;
 
 			// we don't do anything if the object wasn't managed alloc
 			if (cppInstancePtr == null)
@@ -529,8 +521,8 @@ namespace Mono.Cxxi.Abi {
 
 			EmitCheckManagedAlloc (il, cppInstancePtr);
 
-			EmitResetVTable (il, cppInstancePtr);
-			EmitNativeCall (il, nativeMethod, psig, nativePtr);
+			EmitResetVTable (typeInfo, cppInstancePtr);
+			EmitNativeCall (typeInfo, nativeMethod, psig, nativePtr);
 		}
 
 		/**
@@ -538,8 +530,9 @@ namespace Mono.Cxxi.Abi {
 		 * GetPInvokeForMethod or the MethodInfo of a vtable method.
 		 * To complete method, emit OpCodes.Ret.
 		 */
-		protected virtual void EmitNativeCall (ILGenerator il, MethodInfo nativeMethod, PInvokeSignature psig, LocalBuilder nativePtr)
+		protected virtual void EmitNativeCall (CppTypeInfo typeInfo, MethodInfo nativeMethod, PInvokeSignature psig, LocalBuilder nativePtr)
 		{
+			var il = typeInfo.emit_info.current_il;
 			var interfaceMethod = psig.OrigMethod;
 			var interfaceArgs = interfaceMethod.GetParameters ();
 
@@ -564,9 +557,9 @@ namespace Mono.Cxxi.Abi {
 		}
 
 
-		public virtual PInvokeSignature GetPInvokeSignature (MethodInfo method)
+		public virtual PInvokeSignature GetPInvokeSignature (CppTypeInfo typeInfo, MethodInfo method)
 		{
-			var methodType = GetMethodType (method);
+			var methodType = GetMethodType (typeInfo, method);
 			var parameters = method.GetParameters ();
 			var pinvokeTypes = new List<Type> (parameters.Length);
 
@@ -576,7 +569,7 @@ namespace Mono.Cxxi.Abi {
 
 			return new PInvokeSignature {
 				OrigMethod = method,
-				Name = GetMangledMethodName (method),
+				Name = GetMangledMethodName (typeInfo, method),
 				Type = methodType,
 				CallingConvention = GetCallingConvention (method),
 				ParameterTypes = pinvokeTypes,
@@ -594,8 +587,7 @@ namespace Mono.Cxxi.Abi {
 
 				if (IsByVal (icap)) {
 
-					var typeInfo = GetTypeInfo (t);
-					return typeInfo != null? typeInfo.NativeLayout : layout_type;
+					return GetTypeInfo (t).NativeLayout;
 
 				} else { // by ref
 
@@ -731,16 +723,12 @@ namespace Mono.Cxxi.Abi {
 		}
 
 		// Gets a typeinfo for another ICppObject.
-		// Might return null for the type we're currently emitting.
 		protected virtual CppTypeInfo GetTypeInfo (Type otherWrapperType)
 		{
 			CppTypeInfo info;
 			if (wrapper_to_typeinfo.TryGetValue (otherWrapperType, out info))
 				return info;
-
-			if (otherWrapperType == wrapper_type)
-				return null;
-
+	
 			// pass a "dummy" type info to subclass ctor to trigger the creation of the real one
 			try {
 				Activator.CreateInstance (otherWrapperType, (CppTypeInfo)(new DummyCppTypeInfo ()));
@@ -804,11 +792,13 @@ namespace Mono.Cxxi.Abi {
 		/**
 		 * Emits IL to load the VTable object onto the stack.
 		 */
-		protected virtual void EmitLoadVTable (ILGenerator il)
+		protected virtual void EmitLoadVTable (CppTypeInfo typeInfo)
 		{
+			var il = typeInfo.emit_info.current_il;
+
 			// this._typeInfo.VTable
 			il.Emit (OpCodes.Ldarg_0);
-			il.Emit (OpCodes.Ldfld, typeinfo_field);
+			il.Emit (OpCodes.Ldfld, typeInfo.emit_info.typeinfo_field);
 			il.Emit (OpCodes.Callvirt, typeinfo_vtable);
 		}
 
@@ -816,20 +806,24 @@ namespace Mono.Cxxi.Abi {
 		 * Emits IL to set the vtable pointer of the instance (if class has a vtable).
 		 * This should usually happen in the managed wrapper of the C++ instance constructor.
 		 */
-		protected virtual void EmitInitVTable (ILGenerator il, LocalBuilder cppip)
+		protected virtual void EmitInitVTable (CppTypeInfo typeInfo, LocalBuilder cppip)
 		{
+			var il = typeInfo.emit_info.current_il;
+
 			// this._typeInfo.VTable.InitInstance (cppInstancePtr);
-			EmitLoadVTable (il);
+			EmitLoadVTable (typeInfo);
 			il.Emit (OpCodes.Ldloca_S, cppip);
-			EmitCallVTableMethod (il, vtable_initinstance, 2, false);
+			EmitCallVTableMethod (typeInfo, vtable_initinstance, 2, false);
 		}
 
-		protected virtual void EmitResetVTable (ILGenerator il, LocalBuilder cppip)
+		protected virtual void EmitResetVTable (CppTypeInfo typeInfo, LocalBuilder cppip)
 		{
+			var il = typeInfo.emit_info.current_il;
+
 			// this._typeInfo.VTable.ResetInstance (cppInstancePtr);
-			EmitLoadVTable (il);
+			EmitLoadVTable (typeInfo);
 			il.Emit (OpCodes.Ldloc_S, cppip);
-			EmitCallVTableMethod (il, vtable_resetinstance, 2, false);
+			EmitCallVTableMethod (typeInfo, vtable_resetinstance, 2, false);
 		}
 
 		/**
@@ -840,14 +834,15 @@ namespace Mono.Cxxi.Abi {
 		 * want to call and pass the stackHeight for the call. If no vtable exists, this method
 		 * will emit code to pop the arguments off the stack.
 		 */
-		protected virtual void EmitCallVTableMethod (ILGenerator il, MethodInfo method, int stackHeight,
-		                                             bool throwOnNoVTable)
+		protected virtual void EmitCallVTableMethod (CppTypeInfo typeInfo, MethodInfo method, int stackHeight, bool throwOnNoVTable)
 		{
-			// prepare a jump; do not call vtable method if no vtable
-			Label noVirt = il.DefineLabel ();
-			Label dontPushOrThrow = il.DefineLabel ();
+			var il = typeInfo.emit_info.current_il;
 
-			EmitLoadVTable (il);
+			// prepare a jump; do not call vtable method if no vtable
+			var noVirt = il.DefineLabel ();
+			var dontPushOrThrow = il.DefineLabel ();
+
+			EmitLoadVTable (typeInfo);
 			il.Emit (OpCodes.Brfalse_S, noVirt); // if (vtableInfo == null) goto noVirt
 
 			il.Emit (OpCodes.Callvirt, method); // call method
@@ -903,7 +898,8 @@ namespace Mono.Cxxi.Abi {
 		{
 			// make sure we were allocated by managed code
 			// if not, return
-			Label managedAlloc = il.DefineLabel ();
+			var managedAlloc = il.DefineLabel ();
+
 			il.Emit (OpCodes.Ldloca_S, cppip);
 			il.Emit (OpCodes.Call, cppip_managedalloc);
 			il.Emit (OpCodes.Brtrue_S, managedAlloc);
@@ -917,9 +913,11 @@ namespace Mono.Cxxi.Abi {
 		 */
 		protected virtual void EmitCheckDisposed (ILGenerator il, LocalBuilder native, MethodType methodType)
 		{
-			Label validRef = il.DefineLabel ();
+			var validRef = il.DefineLabel ();
+
 			il.Emit (OpCodes.Ldloc_S, native);
 			il.Emit (OpCodes.Brtrue_S, validRef);
+
 			if (methodType == MethodType.NativeDtor) {
 				il.Emit (OpCodes.Ret);
 				il.MarkLabel (validRef);
