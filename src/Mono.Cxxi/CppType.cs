@@ -132,7 +132,7 @@ namespace Mono.Cxxi {
 			//  pointer types to C++ pointers
 			//  array types to C++ arrays
 			(t) => {
-				var cppType = CppType.ForManagedType (t.GetElementType () ?? t.GetGenericTypeDefinition ());
+				var cppType = CppType.ForManagedType (t.GetElementType () ?? (t.IsGenericType? t.GetGenericTypeDefinition () : t));
 				if (t.IsByRef) cppType.Modifiers.Add (CppModifiers.Reference);
 				if (t.IsPointer) cppType.Modifiers.Add (CppModifiers.Pointer);
 				if (t.IsArray) cppType.Modifiers.Add (CppModifiers.Array);

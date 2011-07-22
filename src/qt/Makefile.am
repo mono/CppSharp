@@ -16,7 +16,7 @@ generated: qt-gui.xml
 #	$(CXX) `pkg-config --cflags QtCore QtGui` --shared -fPIC -o $@ -fkeep-inline-functions qt-gui.cpp `pkg-config --libs QtCore QtGui`
 
 Qt.Gui-binding.dll: generated QString.cs
-	rm generated/QString.cs
+	$(RM) -f generated/QString.cs
 	$(GMCS) -out:$@ -target:library -unsafe -r:$(INTEROP_DLL) generated/*.cs QString.cs
 
 hello.exe: Qt.Gui-binding.dll hello.cs #libQtGui-inline.so

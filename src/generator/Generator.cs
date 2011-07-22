@@ -199,6 +199,7 @@ public class Generator {
 			foreach (Node n in members) {
 				bool ctor = false;
 				bool dtor = false;
+				bool skip = false;
 
 				switch (n.Type) {
 				case "Field":
@@ -226,10 +227,12 @@ public class Generator {
 					continue;
 				}
 
-				if (!n.CheckValue ("access", "public") || // exclude non-public methods
-				   (!dtor && n.HasValue ("overrides") && klass.BaseClasses [0].Node.CheckValueList ("members", n.Attributes ["overrides"])) || // excl. virtual methods from primary base (except dtor)
-				   (!n.IsTrue ("extern") && !n.IsTrue ("inline")))
+				if ((!dtor && n.HasValue ("overrides") && klass.BaseClasses [0].Node.CheckValueList ("members", n.Attributes ["overrides"])) || // excl. virtual methods from primary base (except dtor)
+				    (!n.IsTrue ("extern") && !n.IsTrue ("inline")))
 					continue;
+
+				if (!n.CheckValue ("access", "public")) // exclude non-public methods
+					skip = true;
 
 				string name = dtor ? "Destruct" : n.Name;
 
@@ -247,17 +250,18 @@ public class Generator {
 				if (dtor || method.IsArtificial)
 					method.GenWrapperMethod = false;
 
-				bool skip = false;
-
 				CppType retType;
 				if (n.HasValue ("returns"))
 					retType = GetType (n.NodeForAttr ("returns"));
 				else
 					retType = CppTypes.Void;
-				if (retType.ElementType == CppTypes.Unknown)
+				if (retType.ElementType == CppTypes.Unknown) {
+					retType = CppTypes.Void;
 					skip = true;
+				}
 				if (CppTypeToManaged (retType) == null) {
 					//Console.WriteLine ("\t\tS: " + retType);
+					retType = CppTypes.Void;
 					skip = true;
 				}
 
@@ -275,11 +279,13 @@ public class Generator {
 					CppType argtype = GetType (GetTypeNode (arg));
 					if (argtype.ElementType == CppTypes.Unknown) {
 						//Console.WriteLine ("Skipping method " + klass.Name + "::" + member.Name + " () because it has an argument with unknown type '" + TypeNodeToString (arg) + "'.");
+						argtype = new CppType (CppTypes.Void, CppModifiers.Pointer);
 						skip = true;
 					}
 
 					if (CppTypeToManaged (argtype) == null) {
 						//Console.WriteLine ("\t\tS: " + argtype);
+						argtype = new CppType (CppTypes.Void, CppModifiers.Pointer);
 						skip = true;
 					}
 
@@ -288,8 +294,10 @@ public class Generator {
 
 					c++;
 				}
-				if (skip)
+				if (skip && !method.IsVirtual)
 					continue;
+				else if (skip && method.IsVirtual)
+					method.GenWrapperMethod = false;
 
 				// FIXME: More complete type name check
 				if (ctor && argTypes.Count == 1 && argTypes [0].ElementType == CppTypes.Class && argTypes [0].ElementTypeName == klass.Name && argTypes [0].Modifiers.Count == 2 && argTypes [0].Modifiers.Contains (CppModifiers.Const) && argTypes [0].Modifiers.Contains (CppModifiers.Reference))
