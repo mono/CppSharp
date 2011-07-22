@@ -519,19 +519,7 @@ private bool IsByVal (CppType t)
             #line hidden
             
             #line 96 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
-            this.Write("\n\t\t\tsubClass.AddBase (impl.TypeInfo);\n\t\t");
-            
-            #line default
-            #line hidden
-            
-            #line 98 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture( initBases ));
-            
-            #line default
-            #line hidden
-            
-            #line 98 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
-            this.Write("\n\n");
+            this.Write("\n\t\t\tsubClass.AddBase (impl.TypeInfo);\n\t\t}\n\n");
             
             #line default
             #line hidden

@@ -95,7 +95,7 @@ namespace <#= Generator.Namespace #> {
 		public <#= wrapper #> (CppTypeInfo subClass)
 		<#= layoutClass #>
 			subClass.AddBase (impl.TypeInfo);
-		<#= initBases #>
+		}
 
 <# /* Native constructor */ #>
 		public <#= wrapper #> (CppInstancePtr native)
