@@ -224,8 +224,10 @@ namespace Mono.Cxxi.Abi {
 			{
 				returnValue = il.DeclareLocal (typeof (CppInstancePtr));
 
-				EmitGetTypeInfo (il, method.ReturnType);
-				il.Emit (OpCodes.Call, typeinfo_nativesize);
+				if (typeof (ICppObject).IsAssignableFrom (method.ReturnType))
+					il.Emit (OpCodes.Ldc_I4, GetTypeInfo (method.ReturnType).NativeSize);
+				else if (method.ReturnType.IsValueType)
+					il.Emit (OpCodes.Ldc_I4, Marshal.SizeOf (method.ReturnType));
 
 				il.Emit (OpCodes.Newobj, cppip_fromsize);
 				il.Emit (OpCodes.Stloc, returnValue);

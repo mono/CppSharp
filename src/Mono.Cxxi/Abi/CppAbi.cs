@@ -741,22 +741,7 @@ namespace Mono.Cxxi.Abi {
 			return wrapper_to_typeinfo [otherWrapperType];
 		}
 
-		// Does the above passthru at runtime.
-		// This is perhaps a kludgy/roundabout way for pulling the type info for another
-		//  ICppObject at runtime, but I think this keeps the wrappers clean.
-		protected virtual void EmitGetTypeInfo (ILGenerator il, Type targetType)
-		{
-			// check for a subclass constructor (i.e. a public ctor in the wrapper that takes CppTypeInfo)
-			var ctor = targetType.GetConstructor (BindingFlags.ExactBinding | BindingFlags.Public | BindingFlags.Instance, null, new Type [] { typeof (CppTypeInfo) }, null);
-			if (ctor == null)
-				throw new InvalidProgramException (string.Format ("Type `{0}' implements ICppObject but does not contain a public constructor that takes CppTypeInfo", targetType));
 
-			il.Emit (OpCodes.Newobj, dummytypeinfo_ctor);
-			il.Emit (OpCodes.Dup);
-			il.Emit (OpCodes.Newobj, ctor);
-			il.Emit (OpCodes.Pop);
-			il.Emit (OpCodes.Call, dummytypeinfo_getbase);
-		}
 
 		// Expects cppip = CppInstancePtr local
 		protected virtual void EmitCreateCppObjectFromNative (ILGenerator il, Type targetType, LocalBuilder cppip)
@@ -764,29 +749,36 @@ namespace Mono.Cxxi.Abi {
 			if (targetType == typeof (ICppObject))
 				targetType = typeof (CppInstancePtr);
 
-			// check for a native constructor (i.e. a public ctor in the wrapper that takes CppInstancePtr)
-			var ctor = targetType.GetConstructor (BindingFlags.ExactBinding | BindingFlags.Public | BindingFlags.Instance, null, new Type [] { typeof (CppInstancePtr) }, null);
-			if (ctor == null)
-				throw new InvalidProgramException (string.Format ("Type `{0}' implements ICppObject but does not contain a public constructor that takes CppInstancePtr", targetType));
-
-
-			// Basically emitting this:
-			// CppInstancePtr.ToManaged<targetType> (native) ?? new targetType (native)
-
-			var hasWrapper = il.DefineLabel ();
-
 			il.Emit (OpCodes.Ldloca, cppip);
 			il.Emit (OpCodes.Call, cppip_native);
 
-			il.Emit (OpCodes.Call, cppip_tomanaged.MakeGenericMethod (targetType));
-			il.Emit (OpCodes.Dup);
-			il.Emit (OpCodes.Brtrue_S, hasWrapper);
-			il.Emit (OpCodes.Pop);
+			// check for a native constructor (i.e. a public ctor in the wrapper that takes CppInstancePtr)
+			if (typeof (ICppObject).IsAssignableFrom (targetType)) {
+				var ctor = targetType.GetConstructor (BindingFlags.ExactBinding | BindingFlags.Public | BindingFlags.Instance, null, new Type [] { typeof (CppInstancePtr) }, null);
+				if (ctor == null)
+					throw new InvalidProgramException (string.Format ("Type `{0}' implements ICppObject but does not contain a public constructor that takes CppInstancePtr", targetType));
 
-			il.Emit (OpCodes.Ldloc, cppip);
-			il.Emit (OpCodes.Newobj, ctor);
+				// Basically emitting this:
+				// CppInstancePtr.ToManaged<targetType> (native) ?? new targetType (native)
+	
+				var hasWrapper = il.DefineLabel ();
+	
+				il.Emit (OpCodes.Call, cppip_tomanaged.MakeGenericMethod (targetType));
+				il.Emit (OpCodes.Dup);
+				il.Emit (OpCodes.Brtrue_S, hasWrapper);
+				il.Emit (OpCodes.Pop);
+	
+				il.Emit (OpCodes.Ldloc, cppip);
+				il.Emit (OpCodes.Newobj, ctor);
+	
+				il.MarkLabel (hasWrapper);
 
-			il.MarkLabel (hasWrapper);
+			} else if (targetType.IsValueType) {
+
+				il.Emit (OpCodes.Ldtoken, targetType);
+				il.Emit (OpCodes.Call, marshal_ptrtostructure);
+				il.Emit (OpCodes.Unbox, targetType);
+			}
 		}
 
 		/**
