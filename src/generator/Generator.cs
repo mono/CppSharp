@@ -227,7 +227,7 @@ public class Generator {
 					continue;
 				}
 
-				if ((!dtor && n.HasValue ("overrides") && klass.BaseClasses [0].Node.CheckValueList ("members", n.Attributes ["overrides"])) || // excl. virtual methods from primary base (except dtor)
+				if ((!dtor && n.HasValue ("overrides") && CheckPrimaryBases (klass, b => b.Node.CheckValueList ("members", n.Attributes ["overrides"]))) || // excl. virtual methods from primary base (except dtor)
 				    (!n.IsTrue ("extern") && !n.IsTrue ("inline")))
 					continue;
 
@@ -378,6 +378,15 @@ public class Generator {
 		}
 
 		return false;
+	}
+
+	// Checks klass's primary base, primary base's primary base, and so on up the hierarchy
+	bool CheckPrimaryBases (Class klass, Func<Class, bool> predicate)
+	{
+		if (klass.BaseClasses.Count == 0)
+			return false;
+		var primaryBase = klass.BaseClasses [0];
+		return predicate (primaryBase) || CheckPrimaryBases (primaryBase, predicate);
 	}
 
 	// Return a CppType for the type node N, return CppTypes.Unknown for unknown types
