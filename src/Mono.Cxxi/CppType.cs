@@ -114,6 +114,9 @@ namespace Mono.Cxxi {
 			(t) => typeof (ushort).Equals (t)? new CppType (CppModifiers.Unsigned, CppModifiers.Short, CppTypes.Int) : CppTypes.Unknown,
 			(t) => typeof (ulong).Equals (t)?  new CppType (CppModifiers.Unsigned, CppModifiers.Long, CppTypes.Int) : CppTypes.Unknown,
 
+			(t) => typeof (IntPtr).Equals (t)? new CppType (CppTypes.Void, CppModifiers.Pointer) : CppTypes.Unknown,
+			(t) => typeof (UIntPtr).Equals(t)? new CppType (CppTypes.Void, CppModifiers.Pointer) : CppTypes.Unknown,
+
 			// strings mangle as "const char*" by default
 			(t) => typeof (string).Equals (t)? new CppType (CppModifiers.Const, CppTypes.Char, CppModifiers.Pointer) : CppTypes.Unknown,
 			// StringBuilder gets "char*"
@@ -132,7 +135,7 @@ namespace Mono.Cxxi {
 			//  pointer types to C++ pointers
 			//  array types to C++ arrays
 			(t) => {
-				var cppType = CppType.ForManagedType (t.GetElementType () ?? (t.IsGenericType? t.GetGenericTypeDefinition () : t));
+				var cppType = CppType.ForManagedType (t.GetElementType () ?? (t.IsGenericType? t.GetGenericTypeDefinition () : null));
 				if (t.IsByRef) cppType.Modifiers.Add (CppModifiers.Reference);
 				if (t.IsPointer) cppType.Modifiers.Add (CppModifiers.Pointer);
 				if (t.IsArray) cppType.Modifiers.Add (CppModifiers.Array);
