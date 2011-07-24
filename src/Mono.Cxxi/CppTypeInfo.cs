@@ -198,6 +198,8 @@ namespace Mono.Cxxi {
 
 				baseType.gchandle_offset_delta += native_size_without_padding + CountBases (b => !b.IsPrimaryBase) * IntPtr.Size;
 				baseType.vt_overrides = baseType.vt_overrides.Clone (); // managed override tramps will be regenerated with correct gchandle offset
+			} else {
+				gchandle_offset_delta = baseType.gchandle_offset_delta;
 			}
 
 			base_classes.Add (baseType);
