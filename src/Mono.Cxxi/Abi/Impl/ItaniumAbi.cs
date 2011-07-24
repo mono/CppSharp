@@ -64,6 +64,17 @@ namespace Mono.Cxxi.Abi {
 			}
 		}
 
+		internal override Delegate GetManagedOverrideTrampoline (CppTypeInfo typeInfo, int vtableIndex)
+		{
+
+			// FIXME: HACK! we really need to support by val return types for managed override trampolines
+			if (typeInfo.VirtualMethods [vtableIndex] != null &&
+				IsByVal (typeInfo.VirtualMethods [vtableIndex].OrigMethod.ReturnTypeCustomAttributes))
+				return null;
+
+			return base.GetManagedOverrideTrampoline (typeInfo, vtableIndex);
+		}
+
 		protected override MethodBuilder DefineMethod (CppTypeInfo typeInfo, PInvokeSignature sig, ref int vtableIndex)
 		{
 			var builder = base.DefineMethod (typeInfo, sig, ref vtableIndex);
