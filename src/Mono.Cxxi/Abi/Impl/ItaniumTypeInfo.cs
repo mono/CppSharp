@@ -43,8 +43,8 @@ namespace Mono.Cxxi.Abi {
 			: base (lib, typeName, interfaceType, nativeLayout, wrapperType)
 		{
 		}
-
-		protected override void AddBase (CppTypeInfo baseType, bool addVTable)
+/*
+		protected override void AddBase (CppTypeInfo baseType, BaseVirtualMethods location)
 		{
 			if (TypeComplete)
 				return;
@@ -64,7 +64,7 @@ namespace Mono.Cxxi.Abi {
 
 			base.AddBase (baseType, addVTable);
 		}
-
+*/
 		protected override bool OnVTableDuplicate (ref int iter, PInvokeSignature sig, PInvokeSignature dup)
 		{
 			var isOverride = base.OnVTableDuplicate (ref iter, sig, dup);

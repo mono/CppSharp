@@ -40,6 +40,19 @@ using Mono.Cxxi.Util;
 
 namespace Mono.Cxxi {
 
+	public enum BaseVirtualMethods {
+
+		// Prepends this base's virtual methods to the primary vtable
+		PrependPrimary,
+
+		// Appends this base's virtual methods to the primary vtable
+		AppendPrimary,
+
+		// Creates a new out-of-band vtable for this base's virtual methods
+		NewVTable,
+
+	}
+
 	// NOTE: As AddBase is called, properties change.
 	//  TypeComplete indicates when the dust has settled.
 	public class CppTypeInfo {
@@ -143,69 +156,63 @@ namespace Mono.Cxxi {
 		public void AddBase (CppTypeInfo baseType)
 		{
 			// by default, only the primary base shares the subclass's primary vtable
-			AddBase (baseType, base_classes.Count >= 1);
+			AddBase (baseType, base_classes.Count == 0 ? BaseVirtualMethods.PrependPrimary : BaseVirtualMethods.NewVTable);
 		}
 
-		protected virtual void AddBase (CppTypeInfo baseType, bool addVTable)
+		protected virtual void AddBase (CppTypeInfo baseType, BaseVirtualMethods location)
 		{
 			if (TypeComplete)
 				return;
 
-			bool nonPrimary = base_classes.Count >= 1;
-
-			// by default, only the primary base shares the subclass's vtable ptr
-			var addVTablePointer = addVTable || nonPrimary;
 			var baseVMethodCount = baseType.virtual_methods.Count;
 
-			if (addVTable) {
-				// If we are adding a new vtable, don't skew the offsets of the of this subclass's methods.
-				//  Instead append the new virtual methods to the end.
+			switch (location) {
+
+			case BaseVirtualMethods.PrependPrimary:
+
+				for (int i = 0; i < baseVMethodCount; i++)
+					virtual_methods.Insert (BaseVTableSlots + i, baseType.virtual_methods [i]);
+
+				gchandle_offset_delta = baseType.gchandle_offset_delta;
+
+				BaseVTableSlots += baseVMethodCount;
+				vt_delegate_types.Add (baseVMethodCount);
+				vt_overrides.Add (baseVMethodCount);
+				break;
+
+			case BaseVirtualMethods.AppendPrimary:
 
 				for (int i = 0; i < baseVMethodCount; i++)
 					virtual_methods.Add (baseType.virtual_methods [i]);
 
+				gchandle_offset_delta = baseType.gchandle_offset_delta;
+
 				vt_delegate_types.Add (baseVMethodCount);
 				vt_overrides.Add (baseVMethodCount);
+				break;
 
-
-			} else {
-
-				// If we're not adding a new vtable, then all this base class's virtual methods go in primary vtable
-				// Skew the offsets of this subclass's vmethods to account for the new base vmethods.
-
-				for (int i = 0; i < baseVMethodCount; i++)
-					virtual_methods.Insert (BaseVTableSlots + i, baseType.virtual_methods [i]);
-	
-				BaseVTableSlots += baseVMethodCount;
-				vt_delegate_types.Add (baseVMethodCount);
-				vt_overrides.Add (baseVMethodCount);
-			}
-
-			if (nonPrimary) {
-				// Create a base-in-derived type info w/ a new vtable object
-				// if this is a non-primary base
+			case BaseVirtualMethods.NewVTable:
 
 				baseType = baseType.Clone ();
-				baseType.IsPrimaryBase = false;
+				baseType.IsPrimaryBase = (base_classes.Count == 0);
 
 				// offset all previously added bases
-				foreach (var previousBase in base_classes) {
+				foreach (var previousBase in base_classes)
 					previousBase.gchandle_offset_delta += baseType.NativeSize;
-				}
 
 				// offset derived (this) type's gchandle
 				gchandle_offset_delta += baseType.GCHandleOffset;
 
 				baseType.gchandle_offset_delta += native_size_without_padding + CountBases (b => !b.IsPrimaryBase) * IntPtr.Size;
 				baseType.vt_overrides = baseType.vt_overrides.Clone (); // managed override tramps will be regenerated with correct gchandle offset
-			} else {
-				gchandle_offset_delta = baseType.gchandle_offset_delta;
+				baseType.lazy_vtable = new VTable (baseType);
+				break;
 			}
 
 			base_classes.Add (baseType);
 
 			field_offset_padding_without_vtptr += baseType.native_size_without_padding +
-				(addVTablePointer? baseType.FieldOffsetPadding : baseType.field_offset_padding_without_vtptr);
+				(location == BaseVirtualMethods.NewVTable? baseType.FieldOffsetPadding : baseType.field_offset_padding_without_vtptr);
 		}
 
 		public virtual void CompleteType ()
@@ -380,7 +387,7 @@ namespace Mono.Cxxi {
 
 		public CppTypeInfo BaseTypeInfo { get; set; }
 
-		protected override void AddBase (CppTypeInfo baseType, bool addVT)
+		protected override void AddBase (CppTypeInfo baseType, BaseVirtualMethods location)
 		{
 			BaseTypeInfo = baseType;
 		}
