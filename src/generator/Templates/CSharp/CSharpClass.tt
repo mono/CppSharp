@@ -9,7 +9,8 @@
 	var iface   = "I" + Class.Name;
 	var layout  = "_" + Class.Name;
 	var layoutClass = (hasBase? "\t: base (impl.TypeInfo)\n\t\t{" : "{") + "\n\t\t\t__cxxi_LayoutClass ();";
-	var initBases   = (Class.BaseClasses.Count > 1 ? "\t__cxxi_InitBases ();\n\t\t}" : "}");
+	var overrideInitBases = Generator.CheckPrimaryBases (Class, c => c.BaseClasses.Count > 1);
+	var initBases = ((overrideInitBases || Class.BaseClasses.Count > 1) ? "\t__cxxi_InitBases ();\n\t\t}" : "}");
 #>
 // -------------------------------------------------------------------------
 //  Managed wrapper for <#= Class.Name #>
@@ -266,9 +267,11 @@ foreach (var npBase in Class.BaseClasses.Skip (1)) { #>
 		ClearIndent ();
 WriteLine ("#endregion");
 }
-if (Class.BaseClasses.Count > 1) { #>
-		private void __cxxi_InitBases ()
+
+if (overrideInitBases || Class.BaseClasses.Count > 1) { #>
+		protected <#= overrideInitBases  ? "override" : "virtual" #> void __cxxi_InitBases ()
 		{
+			<#= overrideInitBases? "base.__cxxi_InitBases ();" : "" #>
 <# 		foreach (var npBase in Class.BaseClasses.Skip (1)) { #>
 			__cxxi_<#= npBase.Name #> = new <#= wrapper + "__" + npBase.Name #> (this);
 <# 		} #>

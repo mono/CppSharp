@@ -381,7 +381,7 @@ public class Generator {
 	}
 
 	// Checks klass's primary base, primary base's primary base, and so on up the hierarchy
-	bool CheckPrimaryBases (Class klass, Func<Class, bool> predicate)
+	public bool CheckPrimaryBases (Class klass, Func<Class, bool> predicate)
 	{
 		if (klass.BaseClasses.Count == 0)
 			return false;
