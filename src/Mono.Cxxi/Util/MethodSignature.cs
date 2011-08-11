@@ -130,6 +130,11 @@ namespace Mono.Cxxi.Util {
 				return obj.GetHashCode ();
 			}
 		}
+
+		public override string ToString ()
+		{
+			return string.Format ("[{0} {1} ({2})]", ReturnType.Name, Name, string.Join (", ", ParameterTypes.Select (t => t.Name).ToArray ()));
+		}
 	}
 
 	public class PInvokeSignature : MethodSignature {
