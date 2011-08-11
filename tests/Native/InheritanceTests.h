@@ -50,6 +50,7 @@ protected:
 public:
 	ClassThatOverridesStuff (int num, int my);
 	virtual int Number () const;
+	virtual ~ClassThatOverridesStuff ();
 	virtual int BaseNumber () const;
 	static NumberClass* GetInstance (int num, int my);
 };

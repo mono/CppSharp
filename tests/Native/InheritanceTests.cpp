@@ -69,6 +69,10 @@ int ClassThatOverridesStuff::BaseNumber () const
 {
 	return this->NumberClass::Number ();
 }
+ClassThatOverridesStuff::~ClassThatOverridesStuff ()
+{
+	this->myNum = 0;
+}
 NumberClass* ClassThatOverridesStuff::GetInstance (int num, int my)
 {
 	return new ClassThatOverridesStuff (num, my);
