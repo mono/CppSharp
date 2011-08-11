@@ -65,15 +65,17 @@ namespace Mono.Cxxi.Abi {
 			base.AddBase (baseType, addVTable);
 		}
 */
-		protected override bool OnVTableDuplicate (ref int iter, PInvokeSignature sig, PInvokeSignature dup)
+		protected override bool OnVTableDuplicate (ref int iter, ref int adj, PInvokeSignature sig, PInvokeSignature dup)
 		{
-			var isOverride = base.OnVTableDuplicate (ref iter, sig, dup);
+			var isOverride = base.OnVTableDuplicate (ref iter, ref adj, sig, dup);
 			if (isOverride && sig.Type == MethodType.NativeDtor) {
 
 				// also remove that pesky extra dtor
 				virtual_methods.RemoveAt (iter + 1);
 				vt_overrides.Remove (1);
 				vt_delegate_types.Remove (1);
+				vtable_index_adjustments.Add (0);
+				adj--;
 				return true;
 			}
 

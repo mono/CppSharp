@@ -82,6 +82,8 @@ namespace Mono.Cxxi {
 		protected LazyGeneratedList<Delegate> vt_overrides;
 		protected List<CppTypeInfo> base_classes;
 
+		protected List<int> vtable_index_adjustments;
+
 		protected int native_size_without_padding; // <- this refers to the size of all the fields declared in the nativeLayout struct
 		protected int field_offset_padding_without_vtptr;
 		protected int gchandle_offset_delta;
@@ -109,6 +111,8 @@ namespace Mono.Cxxi {
 
 			vt_overrides = new LazyGeneratedList<Delegate> (virtual_methods.Count, i => Library.Abi.GetManagedOverrideTrampoline (this, i));
 			VTableOverrides = new ReadOnlyCollection<Delegate> (vt_overrides);
+
+			vtable_index_adjustments = new List<int> (virtual_methods.Count);
 
 			if (nativeLayout != null)
 				native_size_without_padding = nativeLayout.GetFields ().Any ()? Marshal.SizeOf (nativeLayout) : 0;
@@ -341,29 +345,33 @@ namespace Mono.Cxxi {
 		public virtual T GetAdjustedVirtualCall<T> (CppInstancePtr instance, int derivedVirtualMethodIndex)
 			where T : class /* Delegate */
 		{
-			return VTable.GetVirtualCallDelegate<T> (instance, BaseVTableSlots + derivedVirtualMethodIndex);
+			var base_adjusted = BaseVTableSlots + derivedVirtualMethodIndex;
+			return VTable.GetVirtualCallDelegate<T> (instance, base_adjusted + vtable_index_adjustments [base_adjusted]);
 		}
 
 		protected virtual void RemoveVTableDuplicates ()
 		{
 			// check that any virtual methods overridden in a subclass are only included once
 			var vsignatures = new Dictionary<MethodSignature,PInvokeSignature> (MethodSignature.EqualityComparer);
+			var adjustment  = 0;
 
 			for (int i = 0; i < virtual_methods.Count; i++) {
+				vtable_index_adjustments.Add (adjustment);
+
 				var sig = virtual_methods [i];
 				if (sig == null)
 					continue;
 
 				PInvokeSignature existing;
 				if (vsignatures.TryGetValue (sig, out existing)) {
-					OnVTableDuplicate (ref i, sig, existing);
+					OnVTableDuplicate (ref i, ref adjustment, sig, existing);
 				} else {
 					vsignatures.Add (sig, sig);
 				}
 			}
 		}
 
-		protected virtual bool OnVTableDuplicate (ref int iter, PInvokeSignature sig, PInvokeSignature dup)
+		protected virtual bool OnVTableDuplicate (ref int iter, ref int adj, PInvokeSignature sig, PInvokeSignature dup)
 		{
 			// This predicate ensures that duplicates are only removed
 			// if declared in different classes (i.e. overridden methods).
@@ -373,6 +381,7 @@ namespace Mono.Cxxi {
 				virtual_methods.RemoveAt (iter--);
 				vt_overrides.Remove (1);
 				vt_delegate_types.Remove (1);
+				adj--;
 				return true;
 			}
 
