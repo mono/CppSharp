@@ -180,12 +180,17 @@ namespace <#= Generator.Namespace #> {
 		}
 		ClearIndent (); #>
 
+		partial void BeforeDestruct ();
+		partial void AfterDestruct ();
+
 		public <#= hasBase? "override" : "virtual" #> void Dispose ()
 		{
+			BeforeDestruct ();
 <# if (Class.Methods.Any (m => m.IsDestructor && !m.IsArtificial)) { #>
 			impl.Destruct (Native);
 <# } #>
 			Native.Dispose ();
+			AfterDestruct ();
 		}
 
 		private void __cxxi_LayoutClass ()
