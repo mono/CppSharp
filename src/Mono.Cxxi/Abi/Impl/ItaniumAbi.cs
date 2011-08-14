@@ -250,6 +250,10 @@ namespace Mono.Cxxi.Abi {
 
 			if (hiddenReturnByValue) {
 				EmitCreateCppObjectFromNative (il, method.ReturnType, returnValue);
+
+				// FIXME: This dispose should prolly be in a Finally block..
+				il.Emit (OpCodes.Ldloca, returnValue);
+				il.Emit (OpCodes.Call, cppip_dispose);
 			}
 		}
 

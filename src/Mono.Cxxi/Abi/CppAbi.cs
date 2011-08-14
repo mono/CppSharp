@@ -60,6 +60,7 @@ namespace Mono.Cxxi.Abi {
 		protected static readonly MethodInfo cppip_managedalloc    = typeof (CppInstancePtr).GetProperty ("IsManagedAlloc").GetGetMethod ();
 		protected static readonly MethodInfo cppip_tomanaged       = typeof (CppInstancePtr).GetMethod ("ToManaged", BindingFlags.Static | BindingFlags.NonPublic, null, new Type [] { typeof (IntPtr) }, null);
 		protected static readonly MethodInfo cppip_tomanaged_size  = typeof (CppInstancePtr).GetMethod ("ToManaged", BindingFlags.Static | BindingFlags.NonPublic, null, new Type [] { typeof (IntPtr), typeof (int) }, null);
+		protected static readonly MethodInfo cppip_dispose         = typeof (CppInstancePtr).GetMethod ("Dispose");
 		protected static readonly ConstructorInfo cppip_fromnative = typeof (CppInstancePtr).GetConstructor (new Type [] { typeof (IntPtr) });
 		protected static readonly ConstructorInfo cppip_fromsize   = typeof (CppInstancePtr).GetConstructor (BindingFlags.Instance | BindingFlags.NonPublic, null, new Type [] { typeof (int) }, null);
 		protected static readonly ConstructorInfo cppip_fromtype_managed = typeof (CppInstancePtr).GetConstructor (BindingFlags.Instance | BindingFlags.NonPublic, null,
@@ -776,8 +777,9 @@ namespace Mono.Cxxi.Abi {
 			} else if (targetType.IsValueType) {
 
 				il.Emit (OpCodes.Ldtoken, targetType);
+				il.Emit (OpCodes.Call, type_gettypefromhandle);
 				il.Emit (OpCodes.Call, marshal_ptrtostructure);
-				il.Emit (OpCodes.Unbox, targetType);
+				il.Emit (OpCodes.Unbox_Any, targetType);
 			}
 		}
 
