@@ -5,6 +5,10 @@ using Mono.Cxxi;
 namespace Qt.Gui {
 	public partial class QCoreApplication {
 		
+		public partial interface IQCoreApplication {
+			[Constructor] CppInstancePtr QCoreApplication (CppInstancePtr @this, [MangleAs ("int&")] IntPtr argc, [MangleAs ("char**")] IntPtr argv);
+		}
+
 		protected IntPtr argc, argv;
 	
 		public QCoreApplication () : base (impl.TypeInfo)

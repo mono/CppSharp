@@ -7,6 +7,7 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Xml;
+using System.Xml.Linq;
 using System.Linq;
 using System.Reflection;
 
@@ -27,7 +28,10 @@ public class Generator {
 	// Classes to generate code for
 	public List<Class> Classes { get; set; }
 	public Dictionary<Node, Class> NodeToClass { get; set; }
-	public Dictionary<string, string> Filters { get; set; }
+
+	private FilterMode default_filter_mode;
+	public FilterMode DefaultFilterMode { get { return default_filter_mode; } set { default_filter_mode = value; } }
+	public Dictionary<string, Filter> Filters { get; set; }
 
 	// Code templates
 	public ITemplate Libs { get; set; }
@@ -47,7 +51,7 @@ public class Generator {
 		Node root = LoadXml (InputFileName);
 
 		if (FilterFile != null)
-			LoadFilters (FilterFile);
+			Filters = Filter.Load (XDocument.Load (FilterFile), out default_filter_mode);
 
 		CreateClasses (root);
 
@@ -147,29 +151,27 @@ public class Generator {
 		return root;
 	}
 
-	void LoadFilters (string file) {
-		Filters = new Dictionary <string, string> ();
-		foreach (string s in File.ReadAllLines (file)) {
-			Filters [s] = s;
-		}
-	}
-
 	void CreateClasses (Node root) {
-		List<Node> classNodes = root.Children.Where (o => o.Type == "Class" || o.Type == "Struct").ToList ();
-		classNodes.RemoveAll (o => o.IsTrue ("incomplete") || !o.HasValue ("name"));
-
-		if (Filters != null)
-			classNodes.RemoveAll (o => !Filters.ContainsKey (o.Name));
+		List<Node> classNodes = root.Children.Where (o =>
+			(o.Type == "Class" ||
+			o.Type == "Struct") &&
+			!(o.IsTrue ("incomplete") ||
+			 !o.HasValue ("name")
+			)).ToList ();
 
 		List<Class> classes = new List<Class> ();
 		NodeToClass = new Dictionary <Node, Class> ();
 
 		foreach (Node n in classNodes) {
-			Console.WriteLine (n.Name);
+			var filter = GetFilterOrDefault (n.Name);
+			if (filter.Mode == FilterMode.Exclude)
+				continue;
 
-			Class klass = new Class (n);
-			classes.Add (klass);
+			var klass = new Class (n);
 			NodeToClass [n] = klass;
+
+			if (filter.Mode != FilterMode.External)
+				classes.Add (klass);
 		}
 
 		// Compute bases
@@ -429,7 +431,7 @@ public class Generator {
 
 	// Return the System.Type name corresponding to T, or null
 	//  Returned as a string, because other wrappers do not have System.Types yet
-	public static string CppTypeToManaged (CppType t) {
+	public string CppTypeToManaged (CppType t) {
 
 		Type mtype = t.ToManagedType ();
 		if (mtype != null && mtype != typeof (ICppObject)) {
@@ -441,7 +443,12 @@ public class Generator {
 		case CppTypes.Class:
 		case CppTypes.Struct:
 			// FIXME: Full name
-			return t.ElementTypeName;
+
+			var filter = GetFilterOrDefault (t.ElementTypeName);
+			if (filter.ImplType == ImplementationType.@struct)
+				return t.ElementTypeName + "&";
+			else
+				return t.ElementTypeName;
 
 		}
 
@@ -469,5 +476,14 @@ public class Generator {
 				w.Write (Class.TransformText ());
 			}
 		}
+	}
+
+	Filter GetFilterOrDefault (string typeName)
+	{
+		Filter result;
+		if (Filters != null && Filters.TryGetValue (typeName, out result))
+			return result;
+
+		return new Filter { TypeName = typeName, Mode = default_filter_mode };
 	}
 }

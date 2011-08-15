@@ -71,6 +71,7 @@
     <Compile Include="Access.cs" />
     <Compile Include="Templates\CSharp\CSharpLanguage.cs" />
     <Compile Include="Templates\Context.cs" />
+    <Compile Include="Filter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System">

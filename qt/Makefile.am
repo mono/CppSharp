@@ -29,7 +29,6 @@ generated: qt-gui-filters.xml qt-gui.xml
 #	$(CXX) -m32 -I. -framework QtGui -framework QtCore -DQ_WS_MAC --shared -fPIC -o $@ -fkeep-inline-functions qt-gui.cpp
 
 Qt.Gui-binding.dll: generated $(addprefix src/,$(HANDWRITTEN))
-	$(RM) -f generated/QString.cs generated/QSize.cs
 	$(GMCS) -debug -out:$@ -target:library -unsafe -r:$(INTEROP_DLL) generated/*.cs $(addprefix src/,$(HANDWRITTEN))
 
 hello.exe: Qt.Gui-binding.dll demos/hello.cs #libQtGui-inline.so

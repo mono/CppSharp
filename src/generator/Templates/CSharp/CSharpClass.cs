@@ -23,7 +23,7 @@ namespace Templates {
         
 private void WriteMethodHeader (Method method, string layoutClass, bool isNonPrimaryOverride, bool @protected)
 {
-	var returnType = CSharpLanguage.TypeName (method.ReturnType, Context.Wrapper | Context.Return);
+	var returnType = CSharpLanguage.TypeName (Generator.CppTypeToManaged (method.ReturnType), Context.Wrapper | Context.Return);
 
 	if (!isNonPrimaryOverride && method.IsVirtual)
 		WriteLine ("[OverrideNative (\"{0}\")]", method.Name);
@@ -63,7 +63,7 @@ private void WriteParameters (IList<Parameter> parameters, bool writeType, bool 
 		if (i != 0)
 			Write (", ");
 
-		var type = CSharpLanguage.TypeName (parameters [i].Type, Context.Parameter);
+		var type = CSharpLanguage.TypeName (Generator.CppTypeToManaged (parameters [i].Type), Context.Parameter);
 
 		if (writeAttributes) {
 			var mangleAs = parameters [i].Type.ToString ();
@@ -283,7 +283,7 @@ private bool IsByVal (CppType t)
             #line hidden
             
             #line 35 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
-            this.Write("\t\tpublic interface ");
+            this.Write("\t\tpublic partial interface ");
             
             #line default
             #line hidden
@@ -332,7 +332,7 @@ private bool IsByVal (CppType t)
 		if (method.IsConstructor)
 			Write ("CppInstancePtr");
 		else
-			Write (CSharpLanguage.TypeName (method.ReturnType, Context.Interface | Context.Return));
+			Write (CSharpLanguage.TypeName (Generator.CppTypeToManaged (method.ReturnType), Context.Interface | Context.Return));
 		Write (" ");
 		Write (CSharpLanguage.SafeIdentifier (method.Name));
 
@@ -347,7 +347,7 @@ private bool IsByVal (CppType t)
 		Write (");\n");
 	}
 	foreach (var field in Class.Fields.Where (f => f.Access != Access.@private)) {
-		WriteLine ("CppField<{0}> {1} {{ get; }}", CSharpLanguage.TypeName (field.Type, Context.Generic), CSharpLanguage.SafeIdentifier (field.Name));
+		WriteLine ("CppField<{0}> {1} {{ get; }}", CSharpLanguage.TypeName (Generator.CppTypeToManaged (field.Type), Context.Generic), CSharpLanguage.SafeIdentifier (field.Name));
 	}
 	ClearIndent (); 
             
@@ -397,7 +397,7 @@ private bool IsByVal (CppType t)
             #line hidden
             
             #line 77 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpClass.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture( CSharpLanguage.TypeName (field.Type, Context.Generic) ));
+            this.Write(this.ToStringHelper.ToStringWithCulture( CSharpLanguage.TypeName (Generator.CppTypeToManaged (field.Type), Context.Generic) ));
             
             #line default
             #line hidden
@@ -442,7 +442,7 @@ private bool IsByVal (CppType t)
  PushIndent ("\t\t");
 	foreach (var field in Class.Fields.Where (f => f.Access != Access.@private)) {
 		var fieldName = CSharpLanguage.SafeIdentifier (field.Name);
-		WriteLine ("{0} {1} {2} {{", field.Access, CSharpLanguage.TypeName (field.Type, Context.Wrapper | Context.Return), fieldName); 
+		WriteLine ("{0} {1} {2} {{", field.Access, CSharpLanguage.TypeName (Generator.CppTypeToManaged (field.Type), Context.Wrapper | Context.Return), fieldName); 
             
             #line default
             #line hidden
@@ -628,7 +628,7 @@ private bool IsByVal (CppType t)
  PushIndent ("\t\t");
 		foreach (var prop in Class.Properties) {
 			var propName = CSharpLanguage.SafeIdentifier (prop.Name);
-			var type = CSharpLanguage.TypeName (prop.Type, Context.Wrapper | Context.Return);
+			var type = CSharpLanguage.TypeName (Generator.CppTypeToManaged (prop.Type), Context.Wrapper | Context.Return);
 
 			Write (CurrentIndent + "public ");
 

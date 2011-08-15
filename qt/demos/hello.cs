@@ -9,9 +9,10 @@ namespace QtTest {
 		public static void Main (string[] args)
 		{
 			using (QApplication app = new QApplication ()) {
-				using (QPushButton hello = new QPushButton ("Hello world!", null)) {
+				using (QPushButton hello = new QPushButton ("Hello world!")) {
 
-					hello.Resize (new QSize (100, 30));
+					var sz = new QSize (100, 30);
+					hello.Resize (ref sz);
 					
 					hello.SetVisible (true);
 					QApplication.Exec ();

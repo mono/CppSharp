@@ -4,8 +4,11 @@ using Mono.Cxxi;
 
 namespace Qt.Gui {
 	public partial class QApplication {
-			
-		
+
+		public partial interface IQApplication {
+			[Constructor] CppInstancePtr QApplication (CppInstancePtr @this, [MangleAs ("int&")] IntPtr argc, [MangleAs ("char**")] IntPtr argv, int version);
+		}
+
 		public QApplication () : base (impl.TypeInfo)
 		{
 			InitArgcAndArgv ();

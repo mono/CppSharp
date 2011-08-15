@@ -27,11 +27,6 @@ namespace Templates {
 			return keywords.Contains (proposedName)? "@" + proposedName : proposedName;
 		}
 
-		public static string TypeName (CppType t, Context context)
-		{
-			return TypeName (Generator.CppTypeToManaged (t), context);
-		}
-
 		public static string TypeName (string str, Context context)
 		{
 			switch (str) {

@@ -51,6 +51,7 @@ FILES =  \
 	Access.cs \
 	Class.cs \
 	Field.cs \
+	Filter.cs \
 	Generator.cs \
 	Method.cs \
 	Node.cs \
