@@ -1,6 +1,6 @@
 #! /bin/sh
 
-PROJECT=CPPInterop
+PROJECT=cxxi
 FILE=
 CONFIGURE=configure.ac
 

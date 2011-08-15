@@ -1,29 +1,42 @@
-top_srcdir = ../..
+top_srcdir = ..
 
 INTEROP_DLL = \
 	$(top_srcdir)/bin/Debug/Mono.Cxxi.dll
 
+HANDWRITTEN = \
+	QString.cs \
+	QApplication.cs \
+	QCoreApplication.cs \
+	QSize.cs \
+	QPushButton.cs
+
 all: hello.exe
 
-qt-gui.xml: qt-gui.h
-	$(GCCXML) -fxml=$@ --gccxml-cxxflags "-m32 -I." /Library/Frameworks/QtGui.framework/Versions/Current/Headers/QtGui
+# HACK: some Mac versions of Qt don't play nice with pkg-config
+QT_FLAGS := `pkg-config --silence-errors --cflags QtCore QtGui || \
+		(ln -s /Library/Frameworks/QtGui.framework/Versions/Current/Headers QtGui && \
+		ln -s /Library/Frameworks/QtCore.framework/Versions/Current/Headers QtCore && \
+		echo "-m32 -I. -I/Library/Frameworks/QtGui.framework/Versions/Current/Headers")`
 
-generated: qt-gui.xml
+qt-gui.xml: qt-gui.h
+	$(GCCXML) -fxml=$@ --gccxml-cxxflags $(QT_FLAGS) $^
+
+generated: qt-gui-filters.xml qt-gui.xml
 	$(RM) -r generated
-	$(MONO) --debug $(top_srcdir)/bin/Debug/generator.exe -o=generated -ns=Qt.Gui -lib=QtGui --filters=qt-gui-filters.txt qt-gui.xml
+	$(MONO) --debug $(top_srcdir)/bin/Debug/generator.exe -o=generated -ns=Qt.Gui -lib=QtGui --filters=$^
 
 #libQtGui-inline.so: qt-gui.cpp
 #	$(CXX) -m32 -I. -framework QtGui -framework QtCore -DQ_WS_MAC --shared -fPIC -o $@ -fkeep-inline-functions qt-gui.cpp
 
-Qt.Gui-binding.dll: generated QString.cs QSize.cs QApplication.cs QCoreApplication.cs
+Qt.Gui-binding.dll: generated $(addprefix src/,$(HANDWRITTEN))
 	$(RM) -f generated/QString.cs generated/QSize.cs
-	$(GMCS) -debug -out:$@ -target:library -unsafe -r:$(INTEROP_DLL) generated/*.cs QString.cs QApplication.cs QCoreApplication.cs QSize.cs
+	$(GMCS) -debug -out:$@ -target:library -unsafe -r:$(INTEROP_DLL) generated/*.cs $(addprefix src/,$(HANDWRITTEN))
 
-hello.exe: Qt.Gui-binding.dll hello.cs #libQtGui-inline.so
-	$(GMCS) -debug -out:$@ -target:exe -r:$(INTEROP_DLL) -r:Qt.Gui-binding.dll hello.cs
+hello.exe: Qt.Gui-binding.dll demos/hello.cs #libQtGui-inline.so
+	$(GMCS) -debug -out:$@ -target:exe -r:$(INTEROP_DLL) -r:Qt.Gui-binding.dll demos/hello.cs
 
 clean:
-	$(RM) -rf generated hello.exe* qt-gui.xml Qt.Gui-binding.dll* libQtGui-inline.so
+	$(RM) -r generated QtCore QtGui hello.exe* qt-gui.xml Qt.Gui-binding.dll* libQtGui-inline.so
 
 run: hello.exe
-	MONO_PATH=.:$(top_srcdir)/bin/Debug $(MONO) --debug --trace=__CppLibraryImplAssembly hello.exe
+	MONO_PATH=.:$(top_srcdir)/bin/Debug $(MONO) --debug hello.exe

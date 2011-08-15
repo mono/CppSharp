@@ -63,12 +63,10 @@ dnl package checks, per config
 AC_CONFIG_FILES([
 src/Mono.Cxxi/mono.cxxi.pc
 src/Mono.Cxxi/Makefile
-src/QtBindings/qtbindings.pc
-src/QtBindings/Makefile
 src/generator/generator
 src/generator/Makefile
-src/qt/Makefile
 src/Makefile
+qt/Makefile
 tests/Makefile
 examples/Makefile
 examples/Hello/Makefile
