@@ -227,6 +227,7 @@ namespace Mono.Cxxi.Abi {
 		{
 			var il = typeInfo.emit_info.current_il;
 			var method = psig.OrigMethod;
+			var returnType = method.ReturnType;
 			var hiddenReturnByValue = ReturnByHiddenArgument (typeInfo, method);
 
 			LocalBuilder returnValue = null;
@@ -235,10 +236,10 @@ namespace Mono.Cxxi.Abi {
 			{
 				returnValue = il.DeclareLocal (typeof (CppInstancePtr));
 
-				if (typeof (ICppObject).IsAssignableFrom (method.ReturnType))
-					il.Emit (OpCodes.Ldc_I4, GetTypeInfo (method.ReturnType).NativeSize);
-				else if (method.ReturnType.IsValueType)
-					il.Emit (OpCodes.Ldc_I4, Marshal.SizeOf (method.ReturnType));
+				if (typeof (ICppObject).IsAssignableFrom (returnType))
+					il.Emit (OpCodes.Ldc_I4, GetTypeInfo (returnType).NativeSize);
+				else if (returnType.IsValueType)
+					il.Emit (OpCodes.Ldc_I4, Marshal.SizeOf (returnType));
 
 				il.Emit (OpCodes.Newobj, cppip_fromsize);
 				il.Emit (OpCodes.Stloc, returnValue);
@@ -249,11 +250,13 @@ namespace Mono.Cxxi.Abi {
 			base.EmitNativeCall (typeInfo, nativeMethod, psig, nativePtr);
 
 			if (hiddenReturnByValue) {
-				EmitCreateCppObjectFromNative (il, method.ReturnType, returnValue);
+				EmitCreateCppObjectFromNative (il, returnType, returnValue);
 
-				// FIXME: This dispose should prolly be in a Finally block..
-				il.Emit (OpCodes.Ldloca, returnValue);
-				il.Emit (OpCodes.Call, cppip_dispose);
+				if (returnType.IsValueType) {
+					// FIXME: This dispose should prolly be in a Finally block..
+					il.Emit (OpCodes.Ldloca, returnValue);
+					il.Emit (OpCodes.Call, cppip_dispose);
+				}
 			}
 		}
 
