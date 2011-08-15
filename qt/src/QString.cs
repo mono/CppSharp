@@ -50,6 +50,11 @@ namespace Qt.Gui {
 			return new QString (str);
 		}
 		
+		public override string ToString ()
+		{
+			return Marshal.PtrToStringUni (d->data, d->size);
+		}
+
 		public QString AddRef ()
 		{
 			d->@ref++;

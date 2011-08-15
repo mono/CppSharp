@@ -13,8 +13,8 @@
 // this one was annoying to track down!
 #define QT_NO_TRANSLATION
 
-#include <QtCore>
-#include <QtGui>
+#include "QtGui/QApplication"
+#include "QtGui/QPushButton"
 
 int main ()
 {

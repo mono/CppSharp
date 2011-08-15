@@ -1,2 +1,0 @@
-#include <QtCore>
-#include <QtGui>
