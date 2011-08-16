@@ -142,6 +142,10 @@ namespace Mono.Cxxi {
 
 		#region Type Layout
 
+		public virtual int Alignment {
+			get { return IntPtr.Size; }
+		}
+
 		// the extra padding to allocate at the top of the class before the fields begin
 		//  (by default, just the vtable pointer)
 		public virtual int FieldOffsetPadding {
@@ -149,7 +153,10 @@ namespace Mono.Cxxi {
 		}
 
 		public virtual int NativeSize {
-			get { return native_size_without_padding + FieldOffsetPadding; }
+			get {
+				var basesize = native_size_without_padding + FieldOffsetPadding;
+				return basesize + (basesize % Alignment);
+			}
 		}
 
 		public virtual int GCHandleOffset {
@@ -169,6 +176,7 @@ namespace Mono.Cxxi {
 				return;
 
 			var baseVMethodCount = baseType.virtual_methods.Count;
+			baseType = baseType.Clone ();
 
 			switch (location) {
 
@@ -197,7 +205,6 @@ namespace Mono.Cxxi {
 
 			case BaseVirtualMethods.NewVTable:
 
-				baseType = baseType.Clone ();
 				baseType.IsPrimaryBase = (base_classes.Count == 0);
 
 				// offset all previously added bases
@@ -208,8 +215,11 @@ namespace Mono.Cxxi {
 				gchandle_offset_delta += baseType.GCHandleOffset;
 
 				baseType.gchandle_offset_delta += native_size_without_padding + CountBases (b => !b.IsPrimaryBase) * IntPtr.Size;
-				baseType.vt_overrides = baseType.vt_overrides.Clone (); // managed override tramps will be regenerated with correct gchandle offset
-				baseType.lazy_vtable = new VTable (baseType);
+
+				// ensure managed override tramps will be regenerated with correct gchandle offset
+				baseType.vt_overrides = new LazyGeneratedList<Delegate> (baseType.virtual_methods.Count, i => Library.Abi.GetManagedOverrideTrampoline (baseType, i));
+				baseType.VTableOverrides = new ReadOnlyCollection<Delegate> (baseType.vt_overrides);
+				baseType.lazy_vtable = null;
 				break;
 			}
 

@@ -48,7 +48,7 @@ namespace Mono.Cxxi.Abi {
 			get { return type_info.VirtualMethods.Count; }
 		}
 		public virtual int EntrySize {
-			get { return Marshal.SizeOf (typeof (IntPtr)); }
+			get { return IntPtr.Size; }
 		}
 
 		// Subclasses should allocate vtPtr and then call WriteOverrides
