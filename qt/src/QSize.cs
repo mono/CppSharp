@@ -7,13 +7,13 @@ namespace Qt.Gui {
 	[StructLayout (LayoutKind.Sequential)]
 	public struct QSize {
 
-		public int wd;
-		public int ht;
+		public int Width;
+		public int Height;
 
 		public QSize (int w, int h)
 		{
-			wd = w;
-			ht = h;
+			this.Width = w;
+			this.Height = h;
 		}
 	}
 }

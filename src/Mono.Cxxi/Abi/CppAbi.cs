@@ -76,7 +76,7 @@ namespace Mono.Cxxi.Abi {
 
 		public virtual MethodType GetMethodType (CppTypeInfo typeInfo, MethodInfo imethod)
 		{
-			if (IsInline (imethod) && typeInfo.Library.InlineMethodPolicy == InlineMethods.NotPresent)
+			if (IsInline (imethod) && !IsVirtual (imethod) && typeInfo.Library.InlineMethodPolicy == InlineMethods.NotPresent)
 				return MethodType.NotImplemented;
 			else if (imethod.IsDefined (typeof (ConstructorAttribute), false))
 				return MethodType.NativeCtor;

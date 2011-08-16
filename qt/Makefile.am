@@ -8,7 +8,8 @@ HANDWRITTEN = \
 	QApplication.cs \
 	QCoreApplication.cs \
 	QSize.cs \
-	QPushButton.cs
+	QPushButton.cs \
+	QWidget.cs
 
 all: hello.exe
 
@@ -25,8 +26,8 @@ generated: qt-gui-filters.xml qt-gui.xml
 	$(RM) -r generated
 	$(MONO) --debug $(top_srcdir)/bin/Debug/generator.exe -o=generated -ns=Qt.Gui -lib=QtGui --filters=$^
 
-#libQtGui-inline.so: qt-gui.cpp
-#	$(CXX) -m32 -I. -framework QtGui -framework QtCore -DQ_WS_MAC --shared -fPIC -o $@ -fkeep-inline-functions qt-gui.cpp
+libQtGui-inline.so: qt-gui.cpp
+	$(CXX) -m32 -I. -framework QtGui -framework QtCore --shared -fPIC -o $@ -fkeep-inline-functions -fdump-class-hierarchy qt-gui.cpp
 
 Qt.Gui-binding.dll: generated $(addprefix src/,$(HANDWRITTEN))
 	$(GMCS) -debug -out:$@ -target:library -unsafe -r:$(INTEROP_DLL) generated/*.cs $(addprefix src/,$(HANDWRITTEN))

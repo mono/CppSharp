@@ -190,15 +190,8 @@ public class Generator {
 			if (!klass.Node.HasValue ("members"))
 				continue;
 
-			List<Node> members = new List<Node> ();
-			foreach (string id in klass.Node ["members"].Split (' ')) {
-				if (id == "")
-					continue;
-				members.Add (Node.IdToNode [id]);
-			}
-
 			int fieldCount = 0;
-			foreach (Node n in members) {
+			foreach (Node n in klass.Node ["members"].Split (new[] {' '}, StringSplitOptions.RemoveEmptyEntries).Select (id => Node.IdToNode [id])) {
 				bool ctor = false;
 				bool dtor = false;
 				bool skip = false;
@@ -234,6 +227,9 @@ public class Generator {
 					continue;
 
 				if (!n.CheckValue ("access", "public")) // exclude non-public methods
+					skip = true;
+
+				if (n.IsTrue ("inline") && InlinePolicy == InlineMethods.NotPresent)
 					skip = true;
 
 				string name = dtor ? "Destruct" : n.Name;
