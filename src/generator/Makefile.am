@@ -50,10 +50,13 @@ all: $(ASSEMBLY) $(PROGRAMFILES) $(BINARIES)
 FILES =  \
 	Access.cs \
 	Class.cs \
+	Enumeration.cs \
 	Field.cs \
 	Filter.cs \
 	Generator.cs \
+	Lib.cs \
 	Method.cs \
+	Namespace.cs \
 	Node.cs \
 	Options.cs \
 	Parameter.cs \
@@ -62,6 +65,7 @@ FILES =  \
 	Templates/BaseMembers.cs \
 	Templates/Context.cs \
 	Templates/CSharp/CSharpClass.cs \
+	Templates/CSharp/CSharpEnum.cs \
 	Templates/CSharp/CSharpLanguage.cs \
 	Templates/CSharp/CSharpLibs.cs
 

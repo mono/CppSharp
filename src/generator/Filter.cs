@@ -28,7 +28,7 @@ public struct Filter {
 		var rules = from rule in doc.Root.Elements ()
 		            let mode = (FilterMode)Enum.Parse (typeof (FilterMode), rule.Name.LocalName)
 		            let impl = (value = (string)rule.Attribute ("implementation")) != null ? (ImplementationType)Enum.Parse (typeof (ImplementationType), value) : ImplementationType.@class
-				    select new Filter { TypeName = rule.Value, Mode = mode, ImplType = impl };
+		            select new Filter { TypeName = rule.Value, Mode = mode, ImplType = impl };
 
 
 		return rules.ToDictionary<Filter,string> (r => r.TypeName);

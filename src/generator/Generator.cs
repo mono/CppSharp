@@ -5,6 +5,7 @@
 
 using System;
 using System.IO;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Linq;
@@ -18,24 +19,24 @@ using Mono.Cxxi;
 public class Generator {
 
 	// Command line arguments
-	public string OutputDir { get; set; }
-	public string Namespace { get; set; }
-	public string LibBaseName { get; set; }
 	public string InputFileName { get; set; }
+	public string OutputDir { get; set; }
 	public string FilterFile { get; set; }
-	public InlineMethods InlinePolicy { get; set; }
+
+	// In the future we might support more than one of these at once...
+	public Lib Lib { get; set; }
 
 	// Classes to generate code for
-	public List<Class> Classes { get; set; }
-	public Dictionary<Node, Class> NodeToClass { get; set; }
+	public Dictionary<Node, Namespace> NodeToNamespace { get; set; }
 
 	private FilterMode default_filter_mode;
 	public FilterMode DefaultFilterMode { get { return default_filter_mode; } set { default_filter_mode = value; } }
 	public Dictionary<string, Filter> Filters { get; set; }
 
 	// Code templates
-	public ITemplate Libs { get; set; }
-	public ITemplate Class { get; set; }
+	public LibsBase LibsTemplate { get; set; }
+	public ClassBase ClassTemplate { get; set; }
+	public EnumBase EnumTemplate { get; set; }
 
 	public static int Main (String[] args) {
 		var generator = new Generator ();
@@ -44,6 +45,9 @@ public class Generator {
 	}
 
 	void Run (String[] args) {
+		Lib = new Lib ();
+		NodeToNamespace = new Dictionary<Node, Namespace> ();
+
 		if (ParseArguments (args) != 0) {
 			Environment.Exit (1);
 		}
@@ -53,9 +57,9 @@ public class Generator {
 		if (FilterFile != null)
 			Filters = Filter.Load (XDocument.Load (FilterFile), out default_filter_mode);
 
-		CreateClasses (root);
+		CreateTypes (root);
 
-		CreateMethods ();
+		CreateMembers ();
 
 		GenerateCode ();
 	}
@@ -66,10 +70,10 @@ public class Generator {
 		var p = new OptionSet {
 				{ "h|?|help", "Show this help message", v => help = v != null },
 				{ "o=|out=", "Set the output directory", v => OutputDir = v },
-				{ "ns=|namespace=", "Set the namespace of the generated code", v => Namespace = v },
-				{ "lib=", "The base name of the C++ library, i.e. 'qt' for libqt.so", v =>LibBaseName = v },
+				{ "ns=|namespace=", "Set the namespace of the generated code", v => Lib.BaseNamespace = v },
+				{ "lib=", "The base name of the C++ library, i.e. 'qt' for libqt.so", v =>Lib.BaseName = v },
 				{ "filters=", "A file containing filter directives for filtering classes", v => FilterFile = v },
-				{ "inline=", "Inline methods in lib are: notpresent (default), present, surrogatelib (present in %lib%-inline)", v => InlinePolicy = (InlineMethods)Enum.Parse (typeof (InlineMethods), v, true) }
+				{ "inline=", "Inline methods in lib are: notpresent (default), present, surrogatelib (present in %lib%-inline)", v => Lib.InlinePolicy = (InlineMethods)Enum.Parse (typeof (InlineMethods), v, true) }
 			};
 
 		try {
@@ -90,14 +94,19 @@ public class Generator {
 		}
 
 		// Code templates
-		Libs = new CSharpLibs ();
-		Class = new CSharpClass ();
+		LibsTemplate = new CSharpLibs ();
+		ClassTemplate = new CSharpClass ();
+		EnumTemplate = new CSharpEnum ();
 
 		InputFileName = args [0];
 
-		if (LibBaseName == null) {
+		if (Lib.BaseName == null) {
 			Console.WriteLine ("The --lib= option is required.");
 			return 1;
+		}
+
+		if (Lib.BaseNamespace == null) {
+			Lib.BaseNamespace = Path.GetFileNameWithoutExtension (Lib.BaseName);
 		}
 
 		if (OutputDir == null)
@@ -151,44 +160,104 @@ public class Generator {
 		return root;
 	}
 
-	void CreateClasses (Node root) {
-		List<Node> classNodes = root.Children.Where (o =>
-			(o.Type == "Class" ||
-			o.Type == "Struct") &&
-			!(o.IsTrue ("incomplete") ||
-			 !o.HasValue ("name")
-			)).ToList ();
+	void CreateTypes (Node root) {
 
-		List<Class> classes = new List<Class> ();
-		NodeToClass = new Dictionary <Node, Class> ();
-
-		foreach (Node n in classNodes) {
-			var filter = GetFilterOrDefault (n.Name);
-			if (filter.Mode == FilterMode.Exclude)
+		foreach (Node n in root.Children) {
+			if (n.IsTrue ("incomplete") || !n.HasValue ("name") || n.Attributes ["name"] == "::")
 				continue;
 
-			var klass = new Class (n);
-			NodeToClass [n] = klass;
+			Namespace ns;
+			switch (n.Type) {
 
-			if (filter.Mode != FilterMode.External)
-				classes.Add (klass);
+			case "Class":
+			case "Struct":
+				ns = new Class (n);
+				break;
+
+			case "Enumeration":
+				ns = new Enumeration (n);
+				break;
+
+			case "Namespace":
+				ns = new Namespace (n);
+				break;
+
+			default:
+				continue;
+
+			}
+
+			NodeToNamespace [n] = ns;
+			Lib.Namespaces.Add (ns);
 		}
 
-		// Compute bases
-		foreach (Class klass in classes) {
+		for (var i = 0; i < Lib.Namespaces.Count; i++) {
+			Namespace ns = Lib.Namespaces [i];
+			SetParentNamespace (ns);
+
+			var filter = GetFilterOrDefault (ns);
+			if (filter.Mode == FilterMode.Exclude)
+				NodeToNamespace.Remove (ns.Node);
+
+			if (filter.Mode != FilterMode.Include) {
+				Lib.Namespaces.RemoveAt (i);
+				i--;
+				continue;
+			}
+
+			var klass = ns as Class;
+			if (klass == null)
+				continue;
+
+			// Compute bases
 			foreach (Node bn in klass.Node.Children.Where (o => o.Type == "Base")) {
-				Class baseClass = NodeToClass [bn.NodeForAttr ("type")];
+				Class baseClass = NodeToNamespace [bn.NodeForAttr ("type")] as Class;
+				Debug.Assert (baseClass != null);
 				klass.BaseClasses.Add (baseClass);
 			}
 		}
-
-		Classes = classes;
 	}
 
-	void CreateMethods () {
-		foreach (Class klass in Classes) {
-			if (!klass.Node.HasValue ("members"))
+	void SetParentNamespace (Namespace ns)
+	{
+		Namespace parent = null;
+		if (ns.Node.HasValue ("context") && NodeToNamespace.TryGetValue (Node.IdToNode [ns.Node.Attributes ["context"]], out parent))
+		{
+			SetParentNamespace (parent);
+			ns.ParentNamespace = parent;
+		}
+	}
+
+	void CreateMembers () {
+
+		foreach (var ns in Lib.Namespaces) {
+
+			var parentClass = ns.ParentNamespace as Class;
+
+			var @enum = ns as Enumeration;
+			if (@enum != null) {
+				if (parentClass != null)
+					parentClass.NestedEnums.Add (@enum);
+
+				foreach (var enumValue in @enum.Node.Children.Where (o => o.Type == "EnumValue")) {
+					int val;
+					var item = new Enumeration.Item { Name = enumValue.Attributes ["name"] };
+
+					if (enumValue.HasValue ("init") && int.TryParse (enumValue.Attributes ["init"], out val))
+						item.Value = val;
+
+					@enum.Items.Add (item);
+				}
+
 				continue;
+			}
+
+			var klass = ns as Class;
+			if (klass == null || !klass.Node.HasValue ("members"))
+				continue;
+
+			if (parentClass != null)
+				parentClass.NestedClasses.Add (klass);
 
 			int fieldCount = 0;
 			foreach (Node n in klass.Node ["members"].Split (new[] {' '}, StringSplitOptions.RemoveEmptyEntries).Select (id => Node.IdToNode [id])) {
@@ -198,7 +267,7 @@ public class Generator {
 
 				switch (n.Type) {
 				case "Field":
-					CppType fieldType = GetType (GetTypeNode (n));
+					var fieldType = GetType (GetTypeNode (n));
 					if (fieldType.ElementType == CppTypes.Unknown && fieldType.ElementTypeName == null)
 						fieldType = new CppType (CppTypes.Void, CppModifiers.Pointer);
 
@@ -210,6 +279,7 @@ public class Generator {
 
 					klass.Fields.Add (new Field (fieldName, fieldType, (Access)Enum.Parse (typeof (Access), n ["access"])));
 					break;
+
 				case "Constructor":
 					ctor = true;
 					break;
@@ -222,20 +292,21 @@ public class Generator {
 					continue;
 				}
 
+				if (n.Name == "timerEvent")
+					Console.WriteLine ("foo");
+
 				if ((!dtor && n.HasValue ("overrides") && CheckPrimaryBases (klass, b => b.Node.CheckValueList ("members", n.Attributes ["overrides"]))) || // excl. virtual methods from primary base (except dtor)
 				    (!n.IsTrue ("extern") && !n.IsTrue ("inline")))
 					continue;
 
-				if (!n.CheckValue ("access", "public")) // exclude non-public methods
-					skip = true;
-
-				if (n.IsTrue ("inline") && InlinePolicy == InlineMethods.NotPresent)
+				if (n.IsTrue ("inline") && Lib.InlinePolicy == InlineMethods.NotPresent)
 					skip = true;
 
 				string name = dtor ? "Destruct" : n.Name;
 
 				var method = new Method (n) {
 						Name = name,
+						Access = (Access)Enum.Parse (typeof (Access), n.Attributes ["access"]),
 						IsVirtual = n.IsTrue ("virtual"),
 						IsStatic = n.IsTrue ("static"),
 						IsConst = n.IsTrue ("const"),
@@ -244,6 +315,9 @@ public class Generator {
 						IsConstructor = ctor,
 						IsDestructor = dtor
 				};
+
+				if (method.Access == Access.@private)
+					skip = true;
 
 				if (dtor || method.IsArtificial)
 					method.GenWrapperMethod = false;
@@ -266,7 +340,7 @@ public class Generator {
 				method.ReturnType = retType;
 
 				int c = 0;
-				List<CppType> argTypes = new List<CppType> ();
+				var argTypes = new List<CppType> ();
 				foreach (Node arg in n.Children.Where (o => o.Type == "Argument")) {
 					string argname;
 					if (arg.Name == null || arg.Name == "")
@@ -274,7 +348,7 @@ public class Generator {
 					else
 						argname = arg.Name;
 
-					CppType argtype = GetType (GetTypeNode (arg));
+					var argtype = GetType (GetTypeNode (arg));
 					if (argtype.ElementType == CppTypes.Unknown) {
 						//Console.WriteLine ("Skipping method " + klass.Name + "::" + member.Name + " () because it has an argument with unknown type '" + TypeNodeToString (arg) + "'.");
 						argtype = new CppType (CppTypes.Void, CppModifiers.Pointer);
@@ -306,8 +380,8 @@ public class Generator {
 				klass.Methods.Add (method);
 			}
 
-			foreach (Method method in klass.Methods) {
-				if (AddAsQtProperty (klass, method))
+			foreach (var method in klass.Methods) {
+				if (AddAsProperty (klass, method))
 					method.GenWrapperMethod = false;
 			}
 
@@ -321,9 +395,8 @@ public class Generator {
 
 	//
 	// Property support
-	// This is QT specific
 	//
-    bool AddAsQtProperty (Class klass, Method method) {
+    bool AddAsProperty (Class klass, Method method) {
 		// if it's const, returns a value, has no parameters, and there is no other method with the same name
 		//  in this class assume it's a property getter (for now?)
 		if (method.IsConst && !method.ReturnType.Equals (CppTypes.Void) && !method.Parameters.Any () &&
@@ -393,6 +466,8 @@ public class Generator {
 	}
 
 	CppType GetType (Node n, CppType modifiers) {
+		var fundamental = CppTypes.Unknown;
+
 		switch (n.Type) {
 		case "Typedef":
 			return GetType (GetTypeNode (n), modifiers);
@@ -410,15 +485,24 @@ public class Generator {
 			else
 				throw new NotImplementedException ();
 		case "Class":
+			fundamental = CppTypes.Class;
+			break;
 		case "Struct":
-			if (!NodeToClass.ContainsKey (n)) {
-				// FIXME: Do something better
-				return CppTypes.Unknown;
-			}
-			return modifiers.CopyTypeFrom (new CppType (n.Type == "Class"? CppTypes.Class : CppTypes.Struct, NodeToClass [n].Name));
+			fundamental = CppTypes.Struct;
+			break;
+		case "Enumeration":
+			fundamental = CppTypes.Enum;
+			break;
 		default:
 			return CppTypes.Unknown;
 		}
+
+		if (!NodeToNamespace.ContainsKey (n)) {
+			// FIXME: Do something better
+			return CppTypes.Unknown;
+		}
+
+		return modifiers.CopyTypeFrom (new CppType (fundamental, NodeToNamespace [n].FullyQualifiedName));
 	}
 
 	Node GetTypeNode (Node n) {
@@ -438,13 +522,15 @@ public class Generator {
 
 		case CppTypes.Class:
 		case CppTypes.Struct:
-			// FIXME: Full name
+		case CppTypes.Enum:
 
-			var filter = GetFilterOrDefault (t.ElementTypeName);
-			if (filter.ImplType == ImplementationType.@struct)
-				return t.ElementTypeName + "&";
+			var filter = GetFilterOrDefault (t);
+			var qname = filter.TypeName.Replace ("::", ".");
+
+			if (filter.ImplType == ImplementationType.@struct && !IsByVal (t))
+				return qname + "&";
 			else
-				return t.ElementTypeName;
+				return qname;
 
 		}
 
@@ -456,30 +542,77 @@ public class Generator {
 
 		// Generate Libs file
 		using (TextWriter w = File.CreateText (Path.Combine (OutputDir, "Libs.cs"))) {
-			Libs.Generator = this;
-			w.Write (Libs.TransformText ());
+			LibsTemplate.Generator = this;
+			LibsTemplate.Libs = new[] { Lib };
+			w.Write (LibsTemplate.TransformText ());
 		}
 
 
-		// Generate user classes
-		foreach (Class klass in Classes) {
-			if (klass.Disable)
+		// Generate user types
+		foreach (Namespace ns in Lib.Namespaces) {
+			if (ns.ParentNamespace is Class)
 				continue;
 
-			using (TextWriter w = File.CreateText (Path.Combine (OutputDir, klass.Name + ".cs"))) {
-				Class.Generator = this;
-				Class.Class = klass;
-				w.Write (Class.TransformText ());
+			var klass = ns as Class;
+			if (klass != null) {
+				if (klass.Disable)
+					continue;
+
+				using (TextWriter w = File.CreateText (Path.Combine (OutputDir, klass.Name + ".cs"))) {
+					ClassTemplate.Generator = this;
+					ClassTemplate.Class = klass;
+					ClassTemplate.Nested = false;
+					w.Write (ClassTemplate.TransformText ());
+				}
+
+				continue;
 			}
+
+			var @enum = ns as Enumeration;
+			if (@enum != null) {
+
+				using (TextWriter w = File.CreateText (Path.Combine (OutputDir, @enum.Name + ".cs"))) {
+					EnumTemplate.Generator = this;
+					EnumTemplate.Enum = @enum;
+					EnumTemplate.Nested = false;
+					w.Write (EnumTemplate.TransformText ());
+				}
+
+				continue;
+			}
+
 		}
 	}
 
-	Filter GetFilterOrDefault (string typeName)
+	static public bool IsByVal (CppType t)
+	{
+		return ((t.ElementType == CppTypes.Class || t.ElementType == CppTypes.Struct) &&
+		        !t.Modifiers.Contains (CppModifiers.Pointer) &&
+		        !t.Modifiers.Contains (CppModifiers.Reference) &&
+		        !t.Modifiers.Contains (CppModifiers.Array));
+	}
+
+	Filter GetFilterOrDefault (Namespace ns)
+	{
+		return GetFilterOrDefault (ns.FullyQualifiedName);
+	}
+
+	Filter GetFilterOrDefault (CppType cpptype)
+	{
+		var fqn = cpptype.ElementTypeName;
+		if (cpptype.Namespaces != null)
+			fqn = string.Join ("::", cpptype.Namespaces) + "::" + fqn;
+
+		var newtype = new CppType (fqn, cpptype.Modifiers.Where (m => m == CppModifiers.Template));
+		return GetFilterOrDefault (newtype.ToString ().Replace (" ", ""));
+	}
+
+	Filter GetFilterOrDefault (string fqn)
 	{
 		Filter result;
-		if (Filters != null && Filters.TryGetValue (typeName, out result))
+		if (Filters != null && Filters.TryGetValue (fqn, out result))
 			return result;
 
-		return new Filter { TypeName = typeName, Mode = default_filter_mode };
+		return new Filter { TypeName = fqn, Mode = default_filter_mode };
 	}
 }

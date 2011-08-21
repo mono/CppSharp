@@ -44,6 +44,10 @@ public class Method {
 		get; set;
 	}
 
+	public Access Access {
+		get; set;
+	}
+
 	public string Name {
 		get; set;
 	}

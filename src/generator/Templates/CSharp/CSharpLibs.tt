@@ -1,6 +1,6 @@
-﻿<#@ template language="C#" inherits="Base" #>
+﻿<#@ template language="C#" inherits="LibsBase" #>
 // -------------------------------------------------------------------------
-//  C++ libarary declarations
+//  C++ library declarations
 //  Generated on <#= DateTime.Now #>
 //
 //  This file was auto generated. Do not edit.
@@ -9,11 +9,11 @@
 using System;
 using Mono.Cxxi;
 
-namespace <#= Generator.Namespace #> {
+namespace <#= Generator.Lib.BaseNamespace #> {
 
 	public static partial class Libs {
-
-		public static readonly CppLibrary <#= Generator.LibBaseName #> = new CppLibrary ("<#= Generator.LibBaseName #>", InlineMethods.<#= Generator.InlinePolicy #>);
-
+<# foreach (var lib in Libs) { #>
+		public static readonly CppLibrary <#= CSharpLanguage.SafeIdentifier (lib.BaseName) #> = new CppLibrary ("<#= lib.BaseName #>", InlineMethods.<#= lib.InlinePolicy #>);
+<# } #>
 	}
 }

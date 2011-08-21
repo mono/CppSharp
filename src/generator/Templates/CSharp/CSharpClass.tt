@@ -1,4 +1,4 @@
-﻿<#@ template language="C#" inherits="Base" #>
+﻿<#@ template language="C#" inherits="ClassBase" #>
 <#@ import namespace="System.IO" #>
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Collections.Generic" #>
@@ -11,6 +11,9 @@
 	var layoutClass = (hasBase? "\t: base (impl.TypeInfo)\n\t\t{" : "{") + "\n\t\t\t__cxxi_LayoutClass ();";
 	var overrideInitBases = Generator.CheckPrimaryBases (Class, c => c.BaseClasses.Count > 1);
 	var initBases = ((overrideInitBases || Class.BaseClasses.Count > 1) ? "\t__cxxi_InitBases ();\n\t\t}" : "}");
+	var @namespace = Generator.Lib.BaseNamespace + (Class.ParentNamespace != null? "." + Class.ParentNamespace.FullyQualifiedName : "");
+
+if (!Nested) {
 #>
 // -------------------------------------------------------------------------
 //  Managed wrapper for <#= Class.Name #>
@@ -22,11 +25,11 @@
 using System;
 using Mono.Cxxi;
 
-namespace <#= Generator.Namespace #> {
-
+namespace <#= @namespace #> {
+<# } /* if !Nested */ #>
 	public partial class <#= wrapper #> : <#= GetBaseString () #> {
 
-		private static readonly <#= iface #> impl = Libs.<#= Generator.LibBaseName #>.GetClass<<#= iface + "," + layout + "," + wrapper #>> ("<#= Class.Name #>");
+		private static readonly <#= iface #> impl = Libs.<#= Generator.Lib.BaseName #>.GetClass<<#= iface + "," + layout + "," + wrapper #>> ("<#= Class.Name #>");
 <# if (!hasBase) { #>
 		public CppInstancePtr Native { get; protected set; }
 <# } #>
@@ -46,7 +49,7 @@ namespace <#= Generator.Namespace #> {
 		if (method.IsDestructor)  Write ("[Destructor] ");
 		if (method.IsCopyCtor)    Write ("[CopyConstructor] ");
 
-		if (IsByVal (method.ReturnType)) {
+		if (Generator.IsByVal (method.ReturnType)) {
 			Write ("[return: ByVal] ");
 		}
 		if (method.IsConstructor)
@@ -69,7 +72,7 @@ namespace <#= Generator.Namespace #> {
 	foreach (var field in Class.Fields.Where (f => f.Access != Access.@private)) {
 		WriteLine ("CppField<{0}> {1} {{ get; }}", CSharpLanguage.TypeName (Generator.CppTypeToManaged (field.Type), Context.Generic), CSharpLanguage.SafeIdentifier (field.Name));
 	}
-	ClearIndent (); #>
+	PopIndent (); #>
 		}
 <# /* Native layout */ #>
 		private struct <#= layout #> {
@@ -90,7 +93,29 @@ namespace <#= Generator.Namespace #> {
 				impl.<#= fieldName #> [Native] = value;
 			}
 		}
-<# } ClearIndent(); #>
+<# } PopIndent(); #>
+
+<# /* Nested classes */ #>
+<# foreach (var klass in Class.NestedClasses) {
+	var oldClass = this.Class;
+	var wasNested = this.Nested;
+
+	this.Class = klass;
+	this.Nested = true;
+
+	Write (this.TransformText ());
+
+	this.Class = oldClass;
+	this.Nested = wasNested;
+} #>
+
+<# /* Nested enums */ #>
+<# foreach (var @enum in Class.NestedEnums) {
+	Generator.EnumTemplate.Generator = Generator;
+	Generator.EnumTemplate.Enum = @enum;
+	Generator.EnumTemplate.Nested = true;
+	Write (Generator.EnumTemplate.TransformText ());
+} #>
 
 <# /* Subclass constructor */ #>
 		public <#= wrapper #> (CppTypeInfo subClass)
@@ -132,7 +157,7 @@ namespace <#= Generator.Namespace #> {
 			else
 				WriteLine ("}");
 	}
-	ClearIndent (); #>
+	PopIndent (); #>
 
 <# /* Wrapper properties */ #>
 <# PushIndent ("\t\t");
@@ -178,7 +203,7 @@ namespace <#= Generator.Namespace #> {
 			PopIndent ();
 			WriteLine ("}\n");
 		}
-		ClearIndent (); #>
+		PopIndent (); #>
 
 		partial void BeforeDestruct ();
 		partial void AfterDestruct ();
@@ -238,7 +263,7 @@ foreach (var npBase in Class.BaseClasses.Skip (1)) { #>
 			PopIndent ();
 			Write (");\n{0}}}\n\n", CurrentIndent);
 		}
-		ClearIndent (); #>
+		PopIndent (); #>
 		}
 		private <#= wrapper #>__<#= npBase.Name #> __cxxi_<#= npBase.Name #>;
 		public <#= npBase.Name #> <#= npBase.Name #> { get { return __cxxi_<#= npBase.Name #>; } }
@@ -269,7 +294,7 @@ foreach (var npBase in Class.BaseClasses.Skip (1)) { #>
 			PopIndent ();
 			Write (");\n{0}}}\n\n", CurrentIndent);
 		}
-		ClearIndent ();
+		PopIndent ();
 WriteLine ("#endregion");
 }
 
@@ -283,7 +308,9 @@ if (overrideInitBases || Class.BaseClasses.Count > 1) { #>
 		}
 <# } #>
 	}
+<# if (!Nested) { #>
 }
+<# } #>
 
 <#+
 private void WriteMethodHeader (Method method, string layoutClass, bool isNonPrimaryOverride, bool @protected)
@@ -293,7 +320,7 @@ private void WriteMethodHeader (Method method, string layoutClass, bool isNonPri
 	if (!isNonPrimaryOverride && method.IsVirtual)
 		WriteLine ("[OverrideNative (\"{0}\")]", method.Name);
 
-	Write (CurrentIndent + (@protected? "protected " : "public "));
+	Write (CurrentIndent + (@protected? "protected" : method.Access.ToString ()) + " ");
 	if (method.IsConstructor) {
 		Write (method.FormattedName);
 	} else {
@@ -334,7 +361,7 @@ private void WriteParameters (IList<Parameter> parameters, bool writeType, bool 
 			var mangleAs = parameters [i].Type.ToString ();
 			if (mangleAs != "" && mangleAs != type)
 				Write ("[MangleAs (\"{0}\")] ", mangleAs);
-			if (IsByVal (parameters [i].Type))
+			if (Generator.IsByVal (parameters [i].Type))
 				Write ("[ByVal] ");
 		}
 
@@ -363,11 +390,4 @@ private string GetBaseString ()
 	return str;
 }
 
-private bool IsByVal (CppType t)
-{
-	return ((t.ElementType == CppTypes.Class || t.ElementType == CppTypes.Struct) &&
-	        !t.Modifiers.Contains (CppModifiers.Pointer) &&
-	        !t.Modifiers.Contains (CppModifiers.Reference) &&
-	        !t.Modifiers.Contains (CppModifiers.Array));
-}
 #>

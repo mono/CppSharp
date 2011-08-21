@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using Mono.Cxxi;
@@ -24,6 +25,7 @@ namespace Templates {
 
 		public static string SafeIdentifier (string proposedName)
 		{
+			proposedName = new string (((IEnumerable<char>)proposedName).Select (c => char.IsLetterOrDigit (c)? c : '_').ToArray ());
 			return keywords.Contains (proposedName)? "@" + proposedName : proposedName;
 		}
 

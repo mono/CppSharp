@@ -72,6 +72,12 @@
     <Compile Include="Templates\CSharp\CSharpLanguage.cs" />
     <Compile Include="Templates\Context.cs" />
     <Compile Include="Filter.cs" />
+    <Compile Include="Enumeration.cs" />
+    <Compile Include="Lib.cs" />
+    <Compile Include="Templates\CSharp\CSharpEnum.cs">
+      <DependentUpon>CSharpEnum.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Namespace.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System">
@@ -121,10 +127,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Templates\Base.tt">
-      <Generator>TextTemplatingFilePreprocessor</Generator>
-      <LastGenOutput>Base.cs</LastGenOutput>
-    </None>
     <None Include="Templates\CSharp\CSharpClass.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>CSharpClass.cs</LastGenOutput>
@@ -132,6 +134,14 @@
     <None Include="Templates\CSharp\CSharpLibs.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>CSharpLibs.cs</LastGenOutput>
+    </None>
+    <None Include="Templates\Base.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>Base.cs</LastGenOutput>
+    </None>
+    <None Include="Templates\CSharp\CSharpEnum.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>CSharpEnum.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -30,31 +30,28 @@
 using System;
 using System.Collections.Generic;
 
-public class Class {
+public class Class : Namespace {
 
-	public Class (Node n) {
-		Node = n;
+	public Class (Node n)
+		: base (n)
+	{
 		BaseClasses = new List<Class> ();
-		Methods = new List<Method> ();
 		Fields = new List<Field> ();
 		Properties = new List<Property> ();
-	}
-
-	public Node Node {
-		get; set;
-	}
-
-	public string Name {
-		get {
-			return Node.Name;
-		}
+		Methods = new List<Method> ();
+		NestedClasses = new List<Class> ();
+		NestedEnums = new List<Enumeration> ();
 	}
 
 	public List<Class> BaseClasses {
 		get; set;
 	}
 
-	public List<Method> Methods {
+	public List<Class> NestedClasses {
+		get; set;
+	}
+
+	public List<Enumeration> NestedEnums {
 		get; set;
 	}
 
@@ -64,6 +61,11 @@ public class Class {
 
 	public List<Property> Properties {
 		get; set;
+	}
+
+	public List<Method> Methods {
+		get;
+		set;
 	}
 
 	public bool Disable {

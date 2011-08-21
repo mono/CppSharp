@@ -1,0 +1,28 @@
+﻿<#@ template language="C#" inherits="EnumBase" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="Mono.Cxxi" #>
+<#
+	var @namespace = Generator.Lib.BaseNamespace + (Enum.ParentNamespace != null? "." + Enum.ParentNamespace.FullyQualifiedName : "");
+
+if (!Nested) {
+#>
+
+// -------------------------------------------------------------------------
+//  Managed enum for <#= Enum.Name #>
+//  Generated from <#= Path.GetFileName (Generator.InputFileName) #> on <#= DateTime.Now #>
+//
+//  This file was auto generated. Do not edit.
+// -------------------------------------------------------------------------
+
+namespace <#= @namespace #> {
+<# } /* if !Nested */ #>
+	public enum <#= Enum.Name #> {
+<# foreach (var item in Enum.Items) { #>
+		<#= item.Name #> = <#= item.Value #>,
+<# } #>
+	}
+<# if (!Nested) { #>
+}
+<# } #>

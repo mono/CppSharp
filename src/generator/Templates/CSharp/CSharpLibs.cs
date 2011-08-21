@@ -12,13 +12,13 @@ namespace Templates {
     using System;
     
     
-    public partial class CSharpLibs : Base {
+    public partial class CSharpLibs : LibsBase {
         
         public override string TransformText() {
             this.GenerationEnvironment = null;
             
             #line 2 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpLibs.tt"
-            this.Write("// -------------------------------------------------------------------------\n//  C++ libarary declarations\n//  Generated on ");
+            this.Write("// -------------------------------------------------------------------------\n//  C++ library declarations\n//  Generated on ");
             
             #line default
             #line hidden
@@ -36,19 +36,31 @@ namespace Templates {
             #line hidden
             
             #line 12 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpLibs.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture( Generator.Namespace ));
+            this.Write(this.ToStringHelper.ToStringWithCulture( Generator.Lib.BaseNamespace ));
             
             #line default
             #line hidden
             
             #line 12 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpLibs.tt"
-            this.Write(" {\n\n\tpublic static partial class Libs {\n\n\t\tpublic static readonly CppLibrary ");
+            this.Write(" {\n\n\tpublic static partial class Libs {\n");
+            
+            #line default
+            #line hidden
+            
+            #line 15 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpLibs.tt"
+ foreach (var lib in Libs) { 
             
             #line default
             #line hidden
             
             #line 16 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpLibs.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture( Generator.LibBaseName ));
+            this.Write("\t\tpublic static readonly CppLibrary ");
+            
+            #line default
+            #line hidden
+            
+            #line 16 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpLibs.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture( CSharpLanguage.SafeIdentifier (lib.BaseName) ));
             
             #line default
             #line hidden
@@ -60,7 +72,7 @@ namespace Templates {
             #line hidden
             
             #line 16 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpLibs.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture( Generator.LibBaseName ));
+            this.Write(this.ToStringHelper.ToStringWithCulture( lib.BaseName ));
             
             #line default
             #line hidden
@@ -72,13 +84,25 @@ namespace Templates {
             #line hidden
             
             #line 16 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpLibs.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture( Generator.InlinePolicy ));
+            this.Write(this.ToStringHelper.ToStringWithCulture( lib.InlinePolicy ));
             
             #line default
             #line hidden
             
             #line 16 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpLibs.tt"
-            this.Write(");\n\n\t}\n}\n");
+            this.Write(");\n");
+            
+            #line default
+            #line hidden
+            
+            #line 17 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpLibs.tt"
+ } 
+            
+            #line default
+            #line hidden
+            
+            #line 18 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpLibs.tt"
+            this.Write("\t}\n}\n");
             
             #line default
             #line hidden
