@@ -54,6 +54,7 @@
     <Compile Include="MarshalingTests.cs" />
     <Compile Include="InheritanceTests.cs" />
     <Compile Include="FieldTests.cs" />
+    <Compile Include="ManglingTests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -76,6 +77,8 @@
     <None Include="Native\InheritanceTests.cpp" />
     <None Include="Native\FieldTests.h" />
     <None Include="Native\FieldTests.cpp" />
+    <None Include="Native\ManglingTests.h" />
+    <None Include="Native\ManglingTests.cpp" />
   </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
