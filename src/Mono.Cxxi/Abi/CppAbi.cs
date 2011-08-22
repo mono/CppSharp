@@ -747,11 +747,11 @@ namespace Mono.Cxxi.Abi {
 		// Expects cppip = CppInstancePtr local
 		protected virtual void EmitCreateCppObjectFromNative (ILGenerator il, Type targetType, LocalBuilder cppip)
 		{
+			CppTypeInfo targetTypeInfo = null;
 			if (targetType == typeof (ICppObject))
 				targetType = typeof (CppInstancePtr);
-
-			il.Emit (OpCodes.Ldloca, cppip);
-			il.Emit (OpCodes.Call, cppip_native);
+			else
+				targetTypeInfo = GetTypeInfo (targetType); // FIXME: woof. do we really have to do this?
 
 			// check for a native constructor (i.e. a public ctor in the wrapper that takes CppInstancePtr)
 			if (typeof (ICppObject).IsAssignableFrom (targetType)) {
@@ -761,14 +761,19 @@ namespace Mono.Cxxi.Abi {
 
 				// Basically emitting this:
 				// CppInstancePtr.ToManaged<targetType> (native) ?? new targetType (native)
+				// ..but ToManaged is only called if there's a vtable (FIXME: otherwise we rewrap)
 	
 				var hasWrapper = il.DefineLabel ();
-	
-				il.Emit (OpCodes.Call, cppip_tomanaged.MakeGenericMethod (targetType));
-				il.Emit (OpCodes.Dup);
-				il.Emit (OpCodes.Brtrue_S, hasWrapper);
-				il.Emit (OpCodes.Pop);
-	
+
+				if (targetTypeInfo != null && targetTypeInfo.VirtualMethods.Any ()) {
+					il.Emit (OpCodes.Ldloca, cppip);
+					il.Emit (OpCodes.Call, cppip_native);
+					il.Emit (OpCodes.Call, cppip_tomanaged.MakeGenericMethod (targetType));
+					il.Emit (OpCodes.Dup);
+					il.Emit (OpCodes.Brtrue_S, hasWrapper);
+					il.Emit (OpCodes.Pop);
+				}
+
 				il.Emit (OpCodes.Ldloc, cppip);
 				il.Emit (OpCodes.Newobj, ctor);
 	
@@ -776,6 +781,9 @@ namespace Mono.Cxxi.Abi {
 
 			} else if (targetType.IsValueType) {
 
+				// (targetType)Marshal.PtrToStructure (CppInstancePtr.Native, typeof (targetType))
+				il.Emit (OpCodes.Ldloca, cppip);
+				il.Emit (OpCodes.Call, cppip_native);
 				il.Emit (OpCodes.Ldtoken, targetType);
 				il.Emit (OpCodes.Call, type_gettypefromhandle);
 				il.Emit (OpCodes.Call, marshal_ptrtostructure);
