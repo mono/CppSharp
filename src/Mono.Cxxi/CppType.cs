@@ -130,8 +130,8 @@ namespace Mono.Cxxi {
 			//   we can apply to managed wrappers to indicate if the underlying C++ type is actually declared struct
 			(t) => typeof (ICppObject).IsAssignableFrom (t)? new CppType (CppTypes.Class, Regex.Replace (t.Name, "`\\d\\d?$", ""), CppModifiers.Pointer) : CppTypes.Unknown,
 
-			// value types that don't fit the above categories...
-			(t) => t.IsValueType? new CppType (CppTypes.Class, Regex.Replace (t.Name, "`\\d\\d?$", "")) : CppTypes.Unknown,
+			// value types or interface (ICppClass) that don't fit the above categories...
+			(t) => t.IsValueType || t.IsInterface? new CppType (CppTypes.Class, Regex.Replace (t.Name, "`\\d\\d?$", "")) : CppTypes.Unknown,
 
 			// convert managed type modifiers to C++ type modifiers like so:
 			//  ref types to C++ references

@@ -95,7 +95,8 @@ namespace Mono.Cxxi.Abi {
 		{
 			var compressMap = new Dictionary<string, int> ();
 			var methodName = methodInfo.Name;
-			var className = typeInfo.TypeName;
+			var type = typeInfo.GetMangleType ();
+			var className = type.ElementTypeName;
 
 			MethodType methodType = GetMethodType (typeInfo, methodInfo);
 			ParameterInfo [] parameters = methodInfo.GetParameters ();
@@ -104,6 +105,11 @@ namespace Mono.Cxxi.Abi {
 
 			if (IsConst (methodInfo))
 				nm.Append ('K');
+
+			if (type.Namespaces != null) {
+				foreach (var ns in type.Namespaces)
+					nm.Append (ns.Length).Append (ns);
+			}
 
 			nm.Append (className.Length).Append (className);
 			compressMap [className] = compressMap.Count;
@@ -182,8 +188,13 @@ namespace Mono.Cxxi.Abi {
 					else
 						throw new NotImplementedException ();
 				} else {
-					code.Append (mangleType.ElementTypeName.Length);
-					code.Append (mangleType.ElementTypeName);
+					if (mangleType.Namespaces != null) {
+						code.Append ('N');
+						foreach (var ns in mangleType.Namespaces)
+							code.Append (ns.Length).Append (ns);
+					}
+
+					code.Append (mangleType.ElementTypeName.Length).Append (mangleType.ElementTypeName);
 				}
 				break;
 			}

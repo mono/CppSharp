@@ -11,7 +11,7 @@
 	var layoutClass = (hasBase? "\t: base (impl.TypeInfo)\n\t\t{" : "{") + "\n\t\t\t__cxxi_LayoutClass ();";
 	var overrideInitBases = Generator.CheckPrimaryBases (Class, c => c.BaseClasses.Count > 1);
 	var initBases = ((overrideInitBases || Class.BaseClasses.Count > 1) ? "\t__cxxi_InitBases ();\n\t\t}" : "}");
-	var @namespace = Generator.Lib.BaseNamespace + (Class.ParentNamespace != null? "." + Class.ParentNamespace.FullyQualifiedName : "");
+	var @namespace = Generator.Lib.BaseNamespace + (Class.ParentNamespace != null? "." + string.Join (".", Class.ParentNamespace.FullyQualifiedName) : "");
 
 if (!Nested) {
 #>
@@ -35,6 +35,7 @@ namespace <#= @namespace #> {
 <# } #>
 
 <# /* Interface */ #>
+		[MangleAs ("<#= Class.MangleType.ToString () #>")]
 		public partial interface <#= iface #> : ICppClassOverridable<<#= wrapper #>> {
 <# PushIndent ("\t\t\t");
 	foreach (var method in Class.Methods) {

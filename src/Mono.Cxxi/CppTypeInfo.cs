@@ -242,6 +242,13 @@ namespace Mono.Cxxi {
 			RemoveVTableDuplicates ();
 		}
 
+		public virtual CppType GetMangleType ()
+		{
+			var mangleType = Library.Abi.GetMangleType (InterfaceType, InterfaceType);
+			mangleType.ElementTypeName = TypeName;
+			return mangleType;
+		}
+
 		public int CountBases (Func<CppTypeInfo, bool> predicate)
 		{
 			int count = 0;

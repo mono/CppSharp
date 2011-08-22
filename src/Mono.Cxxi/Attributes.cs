@@ -57,7 +57,7 @@ namespace Mono.Cxxi {
 	[AttributeUsage (AttributeTargets.ReturnValue)]
 	public class ByRefAttribute : Attribute {}
 
-	[AttributeUsage (AttributeTargets.Parameter | AttributeTargets.ReturnValue)]
+	[AttributeUsage (AttributeTargets.Interface | AttributeTargets.Parameter | AttributeTargets.ReturnValue)]
 	public class MangleAsAttribute : Attribute {
 		public CppType MangleType { get; private set; }
 

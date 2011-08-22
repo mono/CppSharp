@@ -256,6 +256,8 @@ public class Generator {
 			if (klass == null || !klass.Node.HasValue ("members"))
 				continue;
 
+			klass.MangleType = GetType (klass.Node);
+
 			if (parentClass != null)
 				parentClass.NestedClasses.Add (klass);
 
@@ -291,9 +293,6 @@ public class Generator {
 				default:
 					continue;
 				}
-
-				if (n.Name == "timerEvent")
-					Console.WriteLine ("foo");
 
 				if ((!dtor && n.HasValue ("overrides") && CheckPrimaryBases (klass, b => b.Node.CheckValueList ("members", n.Attributes ["overrides"]))) || // excl. virtual methods from primary base (except dtor)
 				    (!n.IsTrue ("extern") && !n.IsTrue ("inline")))
@@ -502,7 +501,7 @@ public class Generator {
 			return CppTypes.Unknown;
 		}
 
-		return modifiers.CopyTypeFrom (new CppType (fundamental, NodeToNamespace [n].FullyQualifiedName));
+		return modifiers.CopyTypeFrom (new CppType (fundamental, string.Join ("::", NodeToNamespace [n].FullyQualifiedName)));
 	}
 
 	Node GetTypeNode (Node n) {
@@ -594,7 +593,7 @@ public class Generator {
 
 	Filter GetFilterOrDefault (Namespace ns)
 	{
-		return GetFilterOrDefault (ns.FullyQualifiedName);
+		return GetFilterOrDefault (string.Join ("::", ns.FullyQualifiedName));
 	}
 
 	Filter GetFilterOrDefault (CppType cpptype)

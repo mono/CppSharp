@@ -27,9 +27,21 @@ public class Namespace {
 		get; set;
 	}
 
-	public string FullyQualifiedName {
+	private string [] fullyQualifiedName;
+	public string [] FullyQualifiedName {
 		get {
-			return ParentNamespace != null? ParentNamespace.FullyQualifiedName + "::" + Name : Name;
+			if (fullyQualifiedName == null) {
+
+				if (ParentNamespace == null) {
+					fullyQualifiedName = new string[] { Name };
+				} else {
+					var parentFqn = ParentNamespace.FullyQualifiedName;
+					fullyQualifiedName = new string[parentFqn.Length + 1];
+					Array.Copy (parentFqn, fullyQualifiedName, parentFqn.Length);
+					fullyQualifiedName [parentFqn.Length] = Name;
+				}
+			}
+			return fullyQualifiedName;
 		}
 	}
 

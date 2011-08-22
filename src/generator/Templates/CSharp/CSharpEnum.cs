@@ -23,7 +23,7 @@ namespace Templates {
             
             #line 6 "/Users/alex/OpenSource/cppinterop/src/generator/Templates/CSharp/CSharpEnum.tt"
 
-	var @namespace = Generator.Lib.BaseNamespace + (Enum.ParentNamespace != null? "." + Enum.ParentNamespace.FullyQualifiedName : "");
+	var @namespace = Generator.Lib.BaseNamespace + (Enum.ParentNamespace != null? "." + string.Join (".", Enum.ParentNamespace.FullyQualifiedName) : "");
 
 if (!Nested) {
 

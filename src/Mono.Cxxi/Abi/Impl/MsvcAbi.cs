@@ -59,7 +59,10 @@ namespace Mono.Cxxi.Abi {
 
 		protected override string GetMangledMethodName (CppTypeInfo typeInfo, MethodInfo methodInfo)
 		{
-			string methodName = methodInfo.Name;
+			var methodName = methodInfo.Name;
+			var type = typeInfo.GetMangleType ();
+			var className = type.ElementTypeName;
+
 			MethodType methodType = GetMethodType (typeInfo, methodInfo);
 			ParameterInfo [] parameters = methodInfo.GetParameters ();
 
@@ -74,7 +77,7 @@ namespace Mono.Cxxi.Abi {
 
 			// FIXME: This has to include not only the name of the immediate containing class,
 			//  but also all names of containing classes and namespaces up the hierarchy.
-			nm.Append (typeInfo.TypeName).Append ("@@");
+			nm.Append (className).Append ("@@");
 
 			// function modifiers are a matrix of consecutive uppercase letters
 			// depending on access type and virtual (far)/static (far)/far modifiers

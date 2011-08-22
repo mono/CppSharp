@@ -30,6 +30,8 @@
 using System;
 using System.Collections.Generic;
 
+using Mono.Cxxi;
+
 public class Class : Namespace {
 
 	public Class (Node n)
@@ -64,6 +66,11 @@ public class Class : Namespace {
 	}
 
 	public List<Method> Methods {
+		get;
+		set;
+	}
+
+	public CppType MangleType {
 		get;
 		set;
 	}

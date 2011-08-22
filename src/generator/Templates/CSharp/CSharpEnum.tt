@@ -4,7 +4,7 @@
 <#@ import namespace="System.Collections.Generic" #>
 <#@ import namespace="Mono.Cxxi" #>
 <#
-	var @namespace = Generator.Lib.BaseNamespace + (Enum.ParentNamespace != null? "." + Enum.ParentNamespace.FullyQualifiedName : "");
+	var @namespace = Generator.Lib.BaseNamespace + (Enum.ParentNamespace != null? "." + string.Join (".", Enum.ParentNamespace.FullyQualifiedName) : "");
 
 if (!Nested) {
 #>
