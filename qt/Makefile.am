@@ -9,7 +9,9 @@ HANDWRITTEN = \
 	QCoreApplication.cs \
 	QSize.cs \
 	QPushButton.cs \
-	QWidget.cs
+	QWidget.cs \
+	QPoint.cs \
+	QFlags.cs
 
 all: hello.exe
 
