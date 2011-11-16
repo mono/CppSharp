@@ -5,6 +5,7 @@
 //   Alexander Corrado (alexander.corrado@gmail.com)
 //
 // Copyright (C) 2010-2011 Alexander Corrado
+// Copyright 2011 Xamarin Inc  (http://www.xamarin.com)
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -750,8 +751,6 @@ namespace Mono.Cxxi.Abi {
 			CppTypeInfo targetTypeInfo = null;
 			if (targetType == typeof (ICppObject))
 				targetType = typeof (CppInstancePtr);
-			else
-				targetTypeInfo = GetTypeInfo (targetType); // FIXME: woof. do we really have to do this?
 
 			// check for a native constructor (i.e. a public ctor in the wrapper that takes CppInstancePtr)
 			if (typeof (ICppObject).IsAssignableFrom (targetType)) {
@@ -765,6 +764,8 @@ namespace Mono.Cxxi.Abi {
 	
 				var hasWrapper = il.DefineLabel ();
 
+				if (targetTypeInfo == null)
+					targetTypeInfo = GetTypeInfo (targetType); // FIXME: woof. do we really have to do this?
 				if (targetTypeInfo != null && targetTypeInfo.VirtualMethods.Any ()) {
 					il.Emit (OpCodes.Ldloca, cppip);
 					il.Emit (OpCodes.Call, cppip_native);
