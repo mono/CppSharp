@@ -98,16 +98,12 @@ namespace <#= @namespace #> {
 
 <# /* Nested classes */ #>
 <# foreach (var klass in Class.NestedClasses) {
-	var oldClass = this.Class;
-	var wasNested = this.Nested;
-
-	this.Class = klass;
-	this.Nested = true;
-
-	Write (this.TransformText ());
-
-	this.Class = oldClass;
-	this.Nested = wasNested;
+	var nestedTempl = new CSharpClass {
+		Generator = this.Generator,
+		Class = klass,
+		Nested = true
+	};
+	Write (nestedTempl.TransformText ());
 } #>
 
 <# /* Nested enums */ #>
