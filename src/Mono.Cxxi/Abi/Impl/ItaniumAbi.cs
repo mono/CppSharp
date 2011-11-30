@@ -108,11 +108,10 @@ namespace Mono.Cxxi.Abi {
 
 			if (type.Namespaces != null) {
 				foreach (var ns in type.Namespaces)
-					nm.Append (ns.Length).Append (ns);
+					nm.Append (GetIdentifier (compressMap, ns));
 			}
 
-			nm.Append (className.Length).Append (className);
-			compressMap [className] = compressMap.Count;
+			nm.Append (GetIdentifier (compressMap, className));
 
 			// FIXME: Implement compression completely
 
@@ -180,27 +179,43 @@ namespace Mono.Cxxi.Abi {
 			case CppTypes.Class:
 			case CppTypes.Struct:
 			case CppTypes.Union:
-			case CppTypes.Enum: {
-				int cid;
-				if (compressMap.TryGetValue (mangleType.ElementTypeName, out cid)) {
-					if (cid == 0)
-						code.Append ("S_");
-					else
-						throw new NotImplementedException ();
-				} else {
-					if (mangleType.Namespaces != null) {
-						code.Append ('N');
-						foreach (var ns in mangleType.Namespaces)
-							code.Append (ns.Length).Append (ns);
-					}
-
-					code.Append (mangleType.ElementTypeName.Length).Append (mangleType.ElementTypeName);
+			case CppTypes.Enum:
+				if (mangleType.Namespaces != null) {
+					code.Append ('N');
+					foreach (var ns in mangleType.Namespaces)
+						code.Append (GetIdentifier (compressMap, ns));
 				}
+
+				code.Append (GetIdentifier (compressMap, mangleType.ElementTypeName));
+
+				if (mangleType.Namespaces != null)
+					code.Append ('E');
 				break;
-			}
+
 			}
 
 			return code.ToString ();
+		}
+
+		string GetIdentifier (Dictionary<string, int> compressMap, string identifier)
+		{
+			int cid;
+			if (compressMap.TryGetValue (identifier, out cid))
+				return cid == 0 ? "S_" : ToBase36String (cid - 1);
+			compressMap [identifier] = compressMap.Count;
+			return identifier.Length.ToString () + identifier;
+		}
+
+		const string Base36 = "0123456789abcdefghijklmnopqrstuvwxyz";
+		string ToBase36String (int input)
+		{
+			var result = new Stack<char> ();
+			while (input != 0)
+			{
+				result.Push (Base36 [input % 36]);
+				input /= 36;
+			}
+			return new string (result.ToArray ());
 		}
 
 		// Section 3.1.4:
