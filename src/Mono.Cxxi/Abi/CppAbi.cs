@@ -766,7 +766,7 @@ namespace Mono.Cxxi.Abi {
 
 				if (targetTypeInfo == null)
 					targetTypeInfo = GetTypeInfo (targetType); // FIXME: woof. do we really have to do this?
-				if (targetTypeInfo != null && targetTypeInfo.VirtualMethods.Any ()) {
+				if (targetTypeInfo != null && targetTypeInfo.HasVTable) {
 					il.Emit (OpCodes.Ldloca, cppip);
 					il.Emit (OpCodes.Call, cppip_native);
 					il.Emit (OpCodes.Call, cppip_tomanaged.MakeGenericMethod (targetType));

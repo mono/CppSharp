@@ -93,6 +93,8 @@ namespace Mono.Cxxi {
 		internal EmitInfo emit_info; // <- will be null when the type is done being emitted
 		public bool TypeComplete { get { return emit_info == null; } }
 
+		#region Construction
+
 		public CppTypeInfo (CppLibrary lib, string typeName, Type interfaceType, Type nativeLayout, Type/*?*/ wrapperType)
 			: this ()
 		{
@@ -139,6 +141,8 @@ namespace Mono.Cxxi {
 		{
 			return this.MemberwiseClone () as CppTypeInfo;
 		}
+
+		#endregion
 
 		#region Type Layout
 
@@ -301,7 +305,7 @@ namespace Mono.Cxxi {
 			var baseTypeInfo = GetCastInfo (instance.GetType (), targetType, out offset);
 			var result = new CppInstancePtr (instance.Native, offset);
 
-			if (offset > 0 && instance.Native.IsManagedAlloc && baseTypeInfo.VirtualMethods.Count != 0) {
+			if (offset > 0 && instance.Native.IsManagedAlloc && baseTypeInfo.HasVTable) {
 				// we might need to paste the managed base-in-derived vtptr here --also inits native_vtptr
 				baseTypeInfo.VTable.InitInstance (ref result);
 			}
@@ -336,10 +340,14 @@ namespace Mono.Cxxi {
 
 		#region V-Table
 
+		public virtual bool HasVTable {
+			get { return VirtualMethods.Any (); }
+		}
+
 		public virtual VTable VTable {
 			get {
 				CompleteType ();
-				if (!virtual_methods.Any ())
+				if (!HasVTable)
 					return null;
 
 				if (lazy_vtable == null)
