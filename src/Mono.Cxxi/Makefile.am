@@ -48,7 +48,6 @@ FILES =  \
 	Abi/Impl/ItaniumAbi.cs \
 	Abi/Impl/ItaniumTypeInfo.cs \
 	Abi/Impl/MsvcAbi.cs \
-	Abi/Impl/VirtualOnlyAbi.cs \
 	Abi/MethodType.cs \
 	Abi/VTable.cs \
 	AssemblyInfo.cs \
@@ -57,7 +56,6 @@ FILES =  \
 	CppInstancePtr.cs \
 	CppLibrary.cs \
 	CppModifiers.cs \
-	CppObjectMarshaler.cs \
 	CppType.cs \
 	CppTypeInfo.cs \
 	Interfaces.cs \

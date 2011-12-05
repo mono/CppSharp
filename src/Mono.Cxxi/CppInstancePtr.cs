@@ -40,36 +40,7 @@ namespace Mono.Cxxi {
 		private IntPtr ptr, native_vtptr;
 		private bool manage_memory;
 
-		private static Dictionary<Type,object> implCache = null;
 		private static Dictionary<IntPtr,int> managed_vtptr_to_gchandle_offset = null;
-
-		// TODO: the managed instance argument may only be NULL if all methods in TWrapper
-		//  that correspond to the virtual methods in Iface are static.
-		public static CppInstancePtr ForManagedObject<Iface,TWrapper> (TWrapper managed)
-			where Iface : ICppClassOverridable<TWrapper>
-		{
-			object cachedImpl;
-			Iface impl;
-
-			if (implCache == null)
-				implCache = new Dictionary<Type,object> ();
-
-			if (!implCache.TryGetValue (typeof (Iface), out cachedImpl))
-			{
-				// FIXME: fix this? or not...
-				//VirtualOnlyAbi virtualABI = new VirtualOnlyAbi (VTable.BindToSignature);
-				//impl = virtualABI.ImplementClass<Iface> (typeof (TWrapper), new CppLibrary (string.Empty), string.Empty);
-				//implCache.Add (typeof (Iface), impl);
-				throw new NotImplementedException ();
-			}
-			else
-				impl = (Iface)cachedImpl;
-
-			CppInstancePtr instance = impl.Alloc (managed);
-			impl.TypeInfo.VTable.InitInstance (ref instance);
-
-			return instance;
-		}
 
 		// Alloc a new C++ instance
 		internal CppInstancePtr (CppTypeInfo typeInfo, object managedWrapper)

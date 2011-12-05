@@ -67,9 +67,7 @@
     <Compile Include="Abi\VTable.cs" />
     <Compile Include="Abi\MethodType.cs" />
     <Compile Include="Abi\Impl\ItaniumAbi.cs" />
-    <Compile Include="Abi\Impl\VirtualOnlyAbi.cs" />
     <Compile Include="Abi\Impl\MsvcAbi.cs" />
-    <Compile Include="CppObjectMarshaler.cs" />
     <Compile Include="CppType.cs" />
     <Compile Include="CppTypeInfo.cs" />
     <Compile Include="Util\IEnumerableTransform.cs" />
