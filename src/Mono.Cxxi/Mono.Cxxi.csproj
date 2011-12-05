@@ -78,6 +78,7 @@
     <Compile Include="CppModifiers.cs" />
     <Compile Include="Abi\Impl\ItaniumTypeInfo.cs" />
     <Compile Include="Abi\EmitInfo.cs" />
+    <Compile Include="Abi\SymbolResolver.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

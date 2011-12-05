@@ -6,6 +6,7 @@
 //   Andreia Gaita (shana@spoiledcat.net)
 //
 // Copyright (C) 2010-2011 Alexander Corrado
+// Copyright 2011 Xamarin Inc  (http://www.xamarin.com)
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -195,6 +196,26 @@ namespace Mono.Cxxi.Abi {
 			}
 
 			return code.ToString ();
+		}
+
+		protected override string GetMangledVTableName (CppTypeInfo typeInfo)
+		{
+			var compressMap = new Dictionary<string, int> ();
+			var type = typeInfo.GetMangleType ();
+			var nm = new StringBuilder ("_ZTV", 30);
+
+			if (type.Namespaces != null) {
+					nm.Append ('N');
+					foreach (var ns in type.Namespaces)
+						nm.Append (GetIdentifier (compressMap, ns));
+			}
+
+			nm.Append (GetIdentifier (compressMap, type.ElementTypeName));
+
+			if (type.Namespaces != null)
+				nm.Append ('E');
+
+			return nm.ToString ();
 		}
 
 		string GetIdentifier (Dictionary<string, int> compressMap, string identifier)

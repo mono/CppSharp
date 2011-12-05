@@ -49,6 +49,7 @@ FILES =  \
 	Abi/Impl/ItaniumTypeInfo.cs \
 	Abi/Impl/MsvcAbi.cs \
 	Abi/MethodType.cs \
+	Abi/SymbolResolver.cs \
 	Abi/VTable.cs \
 	AssemblyInfo.cs \
 	Attributes.cs \

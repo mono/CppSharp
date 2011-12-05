@@ -59,8 +59,10 @@ namespace Mono.Cxxi {
 		internal static ModuleBuilder interopModule;
 
 		public CppAbi Abi { get; private set; }
-		public string Name { get; private set; }
 		public InlineMethods InlineMethodPolicy { get; private set; }
+
+		internal string name;
+		public string Name { get { return name; } }
 
 		static CppLibrary ()
 		{
@@ -89,7 +91,7 @@ namespace Mono.Cxxi {
 			if (abi == null)
 				throw new ArgumentNullException ("Abi cannot be NULL.");
 
-			this.Name = name;
+			this.name = name;
 			this.Abi = abi;
 			this.InlineMethodPolicy = inlinePolicy;
 		}

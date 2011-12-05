@@ -71,6 +71,7 @@ namespace Mono.Cxxi.Abi {
 		protected static readonly MethodInfo marshal_offsetof        = typeof (Marshal).GetMethod ("OffsetOf");
 		protected static readonly MethodInfo marshal_structuretoptr  = typeof (Marshal).GetMethod ("StructureToPtr");
 		protected static readonly MethodInfo marshal_ptrtostructure  = typeof (Marshal).GetMethod ("PtrToStructure", BindingFlags.Static | BindingFlags.Public, null, new Type [] { typeof (IntPtr), typeof (Type) }, null);
+		protected static readonly MethodInfo marshal_writeintptr     = typeof (Marshal).GetMethod ("WriteIntPtr", BindingFlags.Static | BindingFlags.Public, null, new Type [] { typeof (IntPtr), typeof (IntPtr) }, null);
 		protected static readonly FieldInfo  intptr_zero             = typeof (IntPtr).GetField ("Zero");
 
 		// These methods might be more commonly overridden for a given C++ ABI:
@@ -87,6 +88,14 @@ namespace Mono.Cxxi.Abi {
 				return MethodType.NativeDtor;
 
 			return MethodType.Native;
+		}
+
+		// Implementing this is recommended..
+		//  otherwise it is not possible to instantiate classes that have vtables and only implicitly defined ctor
+		// Return null if not implemented or if the symbol name of the vtable for the passed typeInfo cannot be mangled (i.e. because there's no vtable)
+		protected virtual string GetMangledVTableName (CppTypeInfo typeInfo)
+		{
+			return null;
 		}
 
 		// The members below must be implemented for a given C++ ABI:
@@ -120,7 +129,15 @@ namespace Mono.Cxxi.Abi {
 					DefineProperty (typeInfo, property);
 
 				typeInfo.emit_info.ctor_il.Emit (OpCodes.Ret);
-				return (ICppClass)Activator.CreateInstance (typeInfo.emit_info.type_builder.CreateType (), typeInfo);
+
+				var native_vtable = default (IntPtr);
+
+#if INIT_NATIVE_VTABLES
+				var vtable_symbol = GetMangledVTableName (typeInfo);
+				if (vtable_symbol != null)
+					native_vtable = SymbolResolver.ResolveSymbol (SymbolResolver.LoadImage (ref typeInfo.Library.name), vtable_symbol);
+#endif
+				return (ICppClass)Activator.CreateInstance (typeInfo.emit_info.type_builder.CreateType (), typeInfo, native_vtable);
 			}
 
 			throw new InvalidOperationException ("This type has already been implemented");
@@ -180,9 +197,10 @@ namespace Mono.Cxxi.Abi {
 			impl_type.AddInterfaceImplementation (typeInfo.InterfaceType);
 
 			var typeinfo_field = impl_type.DefineField ("_typeInfo", typeof (CppTypeInfo), FieldAttributes.InitOnly | FieldAttributes.Private);
+			var native_vtable_field = impl_type.DefineField ("_nativeVTable", typeof (IntPtr), FieldAttributes.InitOnly | FieldAttributes.Private);
 
 			ConstructorBuilder ctor = impl_type.DefineConstructor (MethodAttributes.Public, CallingConventions.Standard,
-                                                                              new Type[] { typeof (CppTypeInfo) });
+                                                                              new Type[] { typeof (CppTypeInfo), typeof (IntPtr) });
 
 			var ctor_il = ctor.GetILGenerator ();
 
@@ -191,8 +209,14 @@ namespace Mono.Cxxi.Abi {
 			ctor_il.Emit (OpCodes.Ldarg_1);
 			ctor_il.Emit (OpCodes.Stfld, typeinfo_field);
 
+			// this._nativeVTable = (vtable ptr passed to constructor)
+			ctor_il.Emit (OpCodes.Ldarg_0);
+			ctor_il.Emit (OpCodes.Ldarg_2);
+			ctor_il.Emit (OpCodes.Stfld, native_vtable_field);
+
 			typeInfo.emit_info.ctor_il = ctor_il;
 			typeInfo.emit_info.typeinfo_field = typeinfo_field;
+			typeInfo.emit_info.native_vtable_field = native_vtable_field;
 			typeInfo.emit_info.type_builder = impl_type;
 		}
 
@@ -479,8 +503,8 @@ namespace Mono.Cxxi.Abi {
 		protected virtual void EmitManagedAlloc (CppTypeInfo typeInfo, MethodInfo interfaceMethod)
 		{
 			var il = typeInfo.emit_info.current_il;
+			var cppip = il.DeclareLocal (typeof (CppInstancePtr));
 
-			// this._typeInfo.NativeSize
 			il.Emit (OpCodes.Ldarg_0);
 			il.Emit (OpCodes.Ldfld, typeInfo.emit_info.typeinfo_field);
 
@@ -492,6 +516,22 @@ namespace Mono.Cxxi.Abi {
 				il.Emit (OpCodes.Callvirt, typeinfo_nativesize);
 				il.Emit (OpCodes.Newobj, cppip_fromsize);
 			}
+			il.Emit (OpCodes.Stloc, cppip);
+
+			var unknown_native_vtable = il.DefineLabel ();
+			il.Emit (OpCodes.Ldarg_0);
+			il.Emit (OpCodes.Ldfld, typeInfo.emit_info.native_vtable_field);
+			il.Emit (OpCodes.Brfalse_S, unknown_native_vtable);
+
+			il.Emit (OpCodes.Ldloca, cppip);
+			il.Emit (OpCodes.Call, cppip_native);
+
+			il.Emit (OpCodes.Ldarg_0);
+			il.Emit (OpCodes.Ldfld, typeInfo.emit_info.native_vtable_field);
+			il.Emit (OpCodes.Call, marshal_writeintptr);
+
+			il.MarkLabel (unknown_native_vtable);
+			il.Emit (OpCodes.Ldloc, cppip);
 		}
 
 		protected virtual void EmitConstruct (CppTypeInfo typeInfo, MethodInfo nativeMethod, PInvokeSignature psig,
