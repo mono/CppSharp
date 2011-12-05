@@ -6,6 +6,7 @@
 //   Andreia Gaita (shana@spoiledcat.net)
 //
 // Copyright (C) 2010-2011 Alexander Corrado
+// Copyright 2011 Xamarin Inc  (http://www.xamarin.com)
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -44,7 +45,9 @@ namespace Mono.Cxxi {
 				Type retType = typeof (T).IsEnum? Enum.GetUnderlyingType (typeof (T)) : typeof (T);
 				object retVal;
 
-				     if (retType.Equals (typeof (Byte)))
+				     if (retType.Equals (typeof (IntPtr)))
+					retVal = Marshal.ReadIntPtr (ip.Native, fieldOffset);
+				else if (retType.Equals (typeof (Byte)))
 					retVal = Marshal.ReadByte (ip.Native, fieldOffset);
 				else if (retType.Equals (typeof (Int16)))
 					retVal = Marshal.ReadInt16 (ip.Native, fieldOffset);
@@ -80,12 +83,12 @@ namespace Mono.Cxxi {
 				Type setType = typeof (T).IsEnum? Enum.GetUnderlyingType (typeof (T)) : typeof (T);
 				object setVal = value;
 
-				     if (setType.Equals (typeof (Byte)))
+				     if (setType.Equals (typeof (IntPtr)))
+					Marshal.WriteIntPtr (ip.Native, fieldOffset, (IntPtr)setVal);
+				else if (setType.Equals (typeof (Byte)))
 					Marshal.WriteByte (ip.Native, fieldOffset, (byte)setVal);
-
 				else if (setType.Equals (typeof (Int16)))
 					Marshal.WriteInt16 (ip.Native, fieldOffset, (Int16)setVal);
-
 				else if (setType.Equals (typeof (Int32)))
 					Marshal.WriteInt32 (ip.Native, fieldOffset, (Int32)setVal);
 
