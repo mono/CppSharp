@@ -171,11 +171,34 @@ namespace Mono.Cxxi.Abi {
 			switch (element) {
 			case CppTypes.Int:
 				code.Append (modifiers.Transform (
-					For.AllInputsIn (CppModifiers.Unsigned, CppModifiers.Short).InAnyOrder ().Emit ('t')
+					For.AllInputsIn (CppModifiers.Unsigned, CppModifiers.Short).InAnyOrder ().Emit ('t'),
+					For.AnyInputIn (CppModifiers.Short).Emit ('s'),
+					For.AllInputsIn (CppModifiers.Unsigned, CppModifiers.Long, CppModifiers.Long).InAnyOrder ().Emit ('y'),
+					For.AllInputsIn (CppModifiers.Long, CppModifiers.Long).InAnyOrder ().Emit ('x'),
+					For.AllInputsIn (CppModifiers.Unsigned, CppModifiers.Long).InAnyOrder ().Emit ('m'),
+					For.AnyInputIn (CppModifiers.Long).Emit ('l'),
+					For.AnyInputIn (CppModifiers.Unsigned).Emit ('j')
 				).DefaultIfEmpty ('i').ToArray ());
 				break;
+			case CppTypes.Bool:
+				code.Append ('b');
+				break;
 			case CppTypes.Char:
-				code.Append ('c');
+				if (modifiers.Contains (CppModifiers.Signed))
+					code.Append ('a');
+				else if (modifiers.Contains (CppModifiers.Unsigned))
+					code.Append ('h');
+				else
+					code.Append ('c');
+				break;
+			case CppTypes.Float:
+				code.Append ('f');
+				break;
+			case CppTypes.Double:
+				if (modifiers.Contains (CppModifiers.Long))
+					code.Append ('e');
+				else
+					code.Append ('d');
 				break;
 			case CppTypes.Class:
 			case CppTypes.Struct:
