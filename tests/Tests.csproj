@@ -50,7 +50,6 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Support\CppNUnitAsserts.cs" />
     <Compile Include="MarshalingTests.cs" />
     <Compile Include="InheritanceTests.cs" />
     <Compile Include="FieldTests.cs" />

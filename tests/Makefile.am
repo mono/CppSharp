@@ -16,8 +16,7 @@ MANAGED =  \
 	FieldTests.cs \
 	InheritanceTests.cs \
 	ManglingTests.cs \
-	MarshalingTests.cs \
-	Support/CppNUnitAsserts.cs
+	MarshalingTests.cs
 	
 REFERENCES =  \
 	-pkg:mono-nunit

@@ -1,8 +1,6 @@
 using System;
 using NUnit.Framework;
 
-using Tests.Support;
-
 namespace Tests {
 
 	[TestFixture]
