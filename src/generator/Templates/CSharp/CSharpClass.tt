@@ -79,12 +79,18 @@ namespace <#= @namespace #> {
 		public unsafe struct <#= layout #> {
 <# PushIndent ("\t\t\t");
 			foreach (var field in Class.Fields) {
+				// handle byval fields
+				var fieldType = CSharpLanguage.TypeName (Generator.CppTypeToManaged (field.Type), Context.Generic);
+				if (Generator.GetFilterOrDefault (field.Type).ImplType == ImplementationType.@class && Generator.IsByVal (field.Type))
+					fieldType = fieldType + "._" + fieldType;
+
+				// handle fixed-length arrays
 				var array = field.Type.Modifiers.OfType<CppModifiers.ArrayModifier> ().SingleOrDefault (); //FIXME: Handle more than one?
 				if (array != null && array.Size.HasValue) {
-					var elementType = CSharpLanguage.TypeName (Generator.CppTypeToManaged (field.Type), Context.Generic).TrimEnd ('[',']');
-					WriteLine ("public fixed {0} {1} [{2}];", elementType, CSharpLanguage.SafeIdentifier (field.Name), array.Size.Value);
+					fieldType = fieldType.TrimEnd ('[',']');
+					WriteLine ("public fixed {0} {1} [{2}];", fieldType, CSharpLanguage.SafeIdentifier (field.Name), array.Size.Value);
 				} else {
-					WriteLine ("public {0} {1};", CSharpLanguage.TypeName (Generator.CppTypeToManaged (field.Type), Context.Generic), CSharpLanguage.SafeIdentifier (field.Name));
+					WriteLine ("public {0} {1};", fieldType, CSharpLanguage.SafeIdentifier (field.Name));
 				}
 			}
  PopIndent (); #>

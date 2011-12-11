@@ -601,7 +601,7 @@ public class Generator {
 		return GetFilterOrDefault (string.Join ("::", ns.FullyQualifiedName));
 	}
 
-	Filter GetFilterOrDefault (CppType cpptype)
+	public Filter GetFilterOrDefault (CppType cpptype)
 	{
 		var fqn = cpptype.ElementTypeName;
 		if (cpptype.Namespaces != null)
