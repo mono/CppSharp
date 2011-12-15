@@ -1,4 +1,4 @@
-﻿<#@ template language="C#" inherits="ClassBase" #>
+<#@ template language="C#" inherits="ClassBase" #>
 <#@ import namespace="System.IO" #>
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Collections.Generic" #>
@@ -71,15 +71,23 @@ namespace <#= @namespace #> {
 		Write (");\n");
 	}
 	foreach (var field in Class.Fields.Where (f => f.Access != Access.@private)) {
-		WriteLine ("CppField<{0}> {1} {{ get; }}", CSharpLanguage.TypeName (Generator.CppTypeToManaged (field.Type), Context.Generic), CSharpLanguage.SafeIdentifier (field.Name));
+		WriteLine ("CppField<{0}> {1} {{ get; }}", CSharpLanguage.TypeName (Generator.CppTypeToManaged (field.Type), Context.Interface | Context.Generic), CSharpLanguage.SafeIdentifier (field.Name));
 	}
 	PopIndent (); #>
 		}
 <# /* Native layout */ #>
-		private struct <#= layout #> {
-<# foreach (var field in Class.Fields) { #>
-			public <#= CSharpLanguage.TypeName (Generator.CppTypeToManaged (field.Type), Context.Generic) #> <#= CSharpLanguage.SafeIdentifier (field.Name) #>;
-<# } #>
+		public unsafe struct <#= layout #> {
+<# PushIndent ("\t\t\t");
+			foreach (var field in Class.Fields) {
+				var array = field.Type.Modifiers.OfType<CppModifiers.ArrayModifier> ().SingleOrDefault (); //FIXME: Handle more than one?
+				if (array != null && array.Size.HasValue) {
+					var elementType = CSharpLanguage.TypeName (Generator.CppTypeToManaged (field.Type), Context.Generic).TrimEnd ('[',']');
+					WriteLine ("public fixed {0} {1} [{2}];", elementType, CSharpLanguage.SafeIdentifier (field.Name), array.Size.Value);
+				} else {
+					WriteLine ("public {0} {1};", CSharpLanguage.TypeName (Generator.CppTypeToManaged (field.Type), Context.Generic), CSharpLanguage.SafeIdentifier (field.Name));
+				}
+			}
+ PopIndent (); #>
 		}
 
 <# /* Native fields */ #>

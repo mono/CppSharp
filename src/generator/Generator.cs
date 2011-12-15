@@ -471,7 +471,12 @@ public class Generator {
 		case "Typedef":
 			return GetType (GetTypeNode (n), modifiers);
 		case "ArrayType":
-			return GetType (GetTypeNode (n), modifiers.Modify (CppModifiers.Array));
+			CppModifiers mod = null;
+			if (n.Attributes ["max"] != null && n.Attributes ["min"] != null)
+				mod = new CppModifiers.ArrayModifier (int.Parse (n.Attributes ["max"].TrimEnd ('u')) - int.Parse (n.Attributes ["min"].TrimEnd ('u')) + 1);
+			else
+				mod = CppModifiers.Array;
+			return GetType (GetTypeNode (n), modifiers.Modify (mod));
 		case "PointerType":
 			return GetType (GetTypeNode (n), modifiers.Modify (CppModifiers.Pointer));
 		case "ReferenceType":
