@@ -42,6 +42,7 @@ generated: $(addsuffix .xml,$(NATIVE))
 	$(foreach X,$?, \
 		mono --debug $(BUILD_DIR)/generator.exe -o=$@ -ns=Tests -lib=Test -inline=surrogatelib $(X) && \
 	) \
+	$(RM) generated/__*.cs && \
 	echo Bindings generated successfully.
 
 $(TEST_DLL): generated $(MANAGED) $(BUILD_DIR)/libTest.so $(BUILD_DIR)/libTest-inline.so

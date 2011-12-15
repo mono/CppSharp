@@ -52,6 +52,11 @@ if test -z "$CONFIG_REQUESTED" ; then
 	enable_debug=yes
 fi
 
+AC_ARG_ENABLE(examples,
+	AC_HELP_STRING([--enable-examples],
+		[Build examples [default=NO]]),
+		enable_examples=yes, enable_examples=no)
+AM_CONDITIONAL(ENABLE_EXAMPLES, test x$enable_examples = xyes)
 
 dnl package checks, common for all configs
 
@@ -66,10 +71,10 @@ src/Mono.Cxxi/Makefile
 src/generator/generator
 src/generator/Makefile
 src/Makefile
-qt/Makefile
 tests/Makefile
 examples/Makefile
 examples/Hello/Makefile
+examples/qt/Makefile
 Makefile
 ])
 

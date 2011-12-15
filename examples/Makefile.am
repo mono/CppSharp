@@ -1,2 +1,2 @@
 
-SUBDIRS = Hello
+SUBDIRS = Hello qt
