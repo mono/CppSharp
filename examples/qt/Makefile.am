@@ -1,4 +1,4 @@
-top_srcdir = ..
+top_srcdir = ../..
 
 INTEROP_DLL = \
 	$(top_srcdir)/bin/Debug/Mono.Cxxi.dll

@@ -28,7 +28,7 @@ generated: Hello.xml
 	$(MONO) $(BUILD_DIR)/generator.exe -ns=Hello -lib=hello -o=$@ Hello.xml
 
 $(HELLO_EXE): generated Hello.cs
-	$(GMCS) -out:$@ -target:exe -r:$(INTEROP_DLL) generated/*.cs Hello.cs
+	$(GMCS) -unsafe -out:$@ -target:exe -r:$(INTEROP_DLL) generated/*.cs Hello.cs
 
 clean:
 	$(RM) -r generated libhello.so Hello.xml $(HELLO_EXE)
