@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{254AD2D5-F792-C842-A59A-EFC933E51C60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Parser">
+      <UniqueIdentifier>{35E5E65B-7ABF-A54D-AEC8-338693EF5D27}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Parser.lua" />
+    <None Include="..\premake4.lua" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\Parser\CXXABI.h">
+      <Filter>src\Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Parser\Interop.h">
+      <Filter>src\Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Parser\Parser.h">
+      <Filter>src\Parser</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\Parser\Helpers.cpp">
+      <Filter>src\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Parser\Main.cpp">
+      <Filter>src\Parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Parser\Parser.cpp">
+      <Filter>src\Parser</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
