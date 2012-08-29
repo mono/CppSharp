@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{AD0F9378-789C-4AF1-B0DD-6DD9A63C3401}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>generator</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <PublishUrl>http://localhost/generator/</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <RootNamespace>Templates</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\bin\Debug</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Options.cs" />
+    <Compile Include="Class.cs" />
+    <Compile Include="Field.cs" />
+    <Compile Include="Generator.cs" />
+    <Compile Include="Method.cs" />
+    <Compile Include="Node.cs" />
+    <Compile Include="Parameter.cs" />
+    <Compile Include="Property.cs" />
+    <Compile Include="Templates\Base.cs">
+      <DependentUpon>Base.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\BaseMembers.cs" />
+    <Compile Include="Templates\CSharp\CSharpClass.cs">
+      <DependentUpon>CSharpClass.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\CSharp\CSharpLibs.cs">
+      <DependentUpon>CSharpLibs.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Access.cs" />
+    <Compile Include="Templates\CSharp\CSharpLanguage.cs" />
+    <Compile Include="Templates\Context.cs" />
+    <Compile Include="Filter.cs" />
+    <Compile Include="Enumeration.cs" />
+    <Compile Include="Lib.cs" />
+    <Compile Include="Templates\CSharp\CSharpEnum.cs">
+      <DependentUpon>CSharpEnum.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Namespace.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System">
+    </Reference>
+    <Reference Include="System.Xml">
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="true" RelativeMakefileName="Makefile.am" SyncReferences="true" IsAutotoolsProject="true" RelativeConfigureInPath="../..">
+          <BuildFilesVar Sync="true" Name="FILES" />
+          <DeployFilesVar />
+          <ResourcesVar Sync="true" Name="RESOURCES" />
+          <OthersVar />
+          <GacRefVar Sync="true" Name="REFERENCES" />
+          <AsmRefVar Sync="true" Name="REFERENCES" />
+          <ProjectRefVar Sync="true" Name="REFERENCES" />
+        </MonoDevelop.Autotools.MakefileInfo>
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
+  <ItemGroup>
+    <ProjectReference Include="..\Mono.Cxxi\Mono.Cxxi.csproj">
+      <Project>{4A864586-93C5-4DC1-8A80-F094A88506D7}</Project>
+      <Name>Mono.Cxxi</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Templates\CSharp\CSharpClass.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>CSharpClass.cs</LastGenOutput>
+    </None>
+    <None Include="Templates\CSharp\CSharpLibs.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>CSharpLibs.cs</LastGenOutput>
+    </None>
+    <None Include="Templates\Base.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>Base.cs</LastGenOutput>
+    </None>
+    <None Include="Templates\CSharp\CSharpEnum.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>CSharpEnum.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Templates\" />
+    <Folder Include="Templates\CSharp\" />
+  </ItemGroup>
+</Project>
