@@ -1,0 +1,202 @@
+﻿<#@ template debug="true" language="C#" #>
+<#@ output extension=".cs" #>
+using System;
+using System.Runtime.InteropServices;
+
+namespace <#= SafeIdentifier(Library.Name) #>
+{
+<#
+    GenerateDeclarations();
+#>
+}
+
+<#+
+public void GenerateDeclarations()
+{
+    PushIndent(DefaultIndent);
+
+    bool NeedsNewline = false;
+
+    // Generate all the enum declarations for the module.
+    for(int i = 0; i < Module.Global.Enums.Count; ++i)
+    {
+        var E = Module.Global.Enums[i];
+        if (E.Ignore) continue;
+   
+        GenerateEnum(E);
+        NeedsNewline = true;
+        if (i < Module.Global.Enums.Count - 1)
+           WriteLine("");
+    }
+
+    if (NeedsNewline)
+        WriteLine("");
+
+    NeedsNewline = false;
+
+    // Generate all the struct/class declarations for the module.
+    for(int i = 0; i < Module.Global.Classes.Count; ++i)
+    {
+        var C = Module.Global.Classes[i];
+        if (C.Ignore) continue;
+
+        GenerateClass(C);
+        NeedsNewline = true;
+        if (i < Module.Global.Classes.Count - 1)
+           WriteLine("");
+    }
+
+    if (NeedsNewline)
+        WriteLine("");
+
+    if (Module.Global.HasFunctions)
+    {
+        WriteLine("public partial class " + SafeIdentifier(Library.Name));
+        WriteLine("{");
+        PushIndent(DefaultIndent);
+    }
+
+    // Generate all the function declarations for the module.
+    foreach(var E in Module.Global.Functions)
+    {
+        GenerateFunction(E);
+    }
+
+    if (Module.Global.HasFunctions)
+    {
+        PopIndent();
+        WriteLine("}");
+    }
+
+    PopIndent();
+}
+#>
+
+<#+
+public void GenerateTypeCommon(CppType T)
+{
+    GenerateSummary(T.BriefComment);
+    GenerateDebug(T);
+}
+#>
+
+<#+
+public void GenerateClass(Class C)
+{
+    if(C.Ignore) return;
+    GenerateTypeCommon(C);
+
+    Write("public ");
+
+    if (C.IsAbstract)
+        Write("abstract ");
+
+    Write("class {0}", C.Name);
+
+    if (C.HasBase)
+            Write(" : {0}", C.Bases[0].Class.Name);
+
+    WriteLine(String.Empty);
+    WriteLine("{");
+
+    PushIndent(DefaultIndent);
+    foreach(var F in C.Fields)
+    {
+        GenerateTypeCommon(F);
+        WriteLine("public {0} {1};", F.Type, F.Name);
+    }
+    PopIndent();
+
+    WriteLine("}");
+}
+#>
+
+
+<#+
+public void GenerateFunction(Function F)
+{
+    if(F.Ignore) return;
+    GenerateTypeCommon(F);
+#>
+[DllImport("<#= SafeIdentifier(Library.Name) #>.dll")]
+public static extern <#= F.ReturnType #> <#= SafeIdentifier(F.Name) #>(<#+
+for(int i = 0; i < F.Parameters.Count; ++i)
+{
+    var P = F.Parameters[i];
+    Write("{0} {1}", P.Type, SafeIdentifier(P.Name));
+    if (i < F.Parameters.Count - 1)
+       Write(", ");
+}
+#>);
+<#+
+WriteLine("");
+}
+#>
+
+<#+
+public void GenerateDebug(CppType T)
+{
+    if(Options.OutputDebug && !String.IsNullOrWhiteSpace(T.DebugText))
+        WriteLine("// DEBUG: " + T.DebugText);
+}
+#>
+
+<#+
+public void GenerateSummary(string Comment)
+{
+    if(String.IsNullOrWhiteSpace(Comment))
+        return;
+#>
+/// <summary>
+/// <#= Comment #>
+/// </summary>
+<#+
+}
+#>
+
+<#+
+public void GenerateInlineSummary(string Comment)
+{
+    if(String.IsNullOrWhiteSpace(Comment))
+        return;
+#>
+/// <summary> <#= Comment #> </summary>
+<#+
+}
+#>
+
+<#+
+public void GenerateEnum(Enumeration E)
+{
+    if(E.Ignore) return;
+    GenerateTypeCommon(E);
+
+    if(E.Modifiers.HasFlag(Enumeration.EnumModifiers.Flags))
+        WriteLine("[Flags]");
+#>
+public enum <#= SafeIdentifier(E.Name) #>
+<#+
+if(E.Type.Type != PrimitiveType.Int32)
+    WriteLine(" : {0}", E.Type.Type.ConvertToTypeName());
+WriteLine("{");
+
+PushIndent(DefaultIndent);
+for(int i = 0; i < E.Items.Count; ++i)
+{
+    var I = E.Items[i];
+    GenerateInlineSummary(I.Comment);
+    if (I.ExplicitValue)
+        Write(String.Format("{0} = {1}", SafeIdentifier(I.Name), I.Value));
+    else
+        Write(String.Format("{0}", SafeIdentifier(I.Name)));
+
+    if (i < E.Items.Count - 1)
+        WriteLine(",");
+}
+PopIndent();
+WriteLine("");
+#>
+}
+<#+
+}
+#>
