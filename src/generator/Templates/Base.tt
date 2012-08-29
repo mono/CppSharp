@@ -1,2 +1,0 @@
-﻿<#@ template language="C#" #>
-<# /* This is a dummy template that language-specific templates may inherit from */ #>
