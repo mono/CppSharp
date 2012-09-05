@@ -13,6 +13,14 @@ namespace Cxxi
 		{
 		}
 
+		public bool IsPrimitiveType(PrimitiveType Primitive)
+		{
+			var builtin = this as BuiltinType;
+			if (builtin != null)
+				return builtin.Type == Primitive;
+			return false;
+		}
+
 		public override string ToString()
 		{
 			return ToCSharp();
@@ -67,7 +75,10 @@ namespace Cxxi
 
 		public override string ToCSharp()
 		{
-			return string.Format("{0}[{1}]", Type, Size);
+			// C# only supports fixed arrays in unsafe sections
+			// and they are constrained to a set of built-in types.
+			
+			return string.Format("{0}[]", Type);
 		}
 	}
 
@@ -81,6 +92,8 @@ namespace Cxxi
 
 		public override string ToCSharp()
 		{
+			if (ReturnType.IsPrimitiveType(PrimitiveType.Void))
+				return string.Format("Action");
 			return string.Format("Func<{0}>", ReturnType);
 		}
 	}
@@ -128,6 +141,9 @@ namespace Cxxi
 		public override string ToCSharp()
 		{
 			if (Pointee is FunctionType)
+				return Pointee.ToCSharp();
+
+			if (Pointee is TagType)
 				return Pointee.ToCSharp();
 
 			return string.Format("{0}{1}",
