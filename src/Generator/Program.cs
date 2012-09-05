@@ -69,14 +69,20 @@ class Program
 	Library library;
 	Options options;
 
-	public void GenerateCode()
+	public void GenerateCode(LibraryTransform libTransform)
 	{
 		Console.WriteLine("Generating wrapper code...");
 
 		if (library.Modules.Count > 0)
 		{
 			var gen = new Generator(library, options);
-			TransformSDL(gen);
+
+			libTransform.Preprocess(gen);
+
+			gen.Process();
+
+			libTransform.Postprocess(gen);
+
 			gen.Generate();
 		}
 	}
@@ -126,7 +132,8 @@ class Program
 		library = new Library(options.OutputNamespace);
 		
 		ParseCode();
-		GenerateCode();
+
+		GenerateCode(new SDLTransforms());
 	}
 
 	static void Main(String[] args)

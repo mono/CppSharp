@@ -6,7 +6,7 @@ namespace Cxxi
 	/// </summary>
 	class SDLTransforms : LibraryTransform
 	{
-		public override void Transform(Generator g)
+		public void Preprocess(Generator g)
 		{
 			g.IgnoreEnumWithMatchingItem("SDL_FALSE");
 			g.IgnoreEnumWithMatchingItem("DUMMY_ENUM_VALUE");
@@ -40,9 +40,10 @@ namespace Cxxi
 			g.RemovePrefix("SDLK_");
 			g.RemovePrefix("KMOD_");
 			g.RemovePrefix("LOG_CATEGORY_");
+		}
 
-			g.Process();
-
+		public void Postprocess(Generator g)
+		{
 			g.SetNameOfEnumWithName("PIXELTYPE", "PixelType");
 			g.SetNameOfEnumWithName("BITMAPORDER", "BitmapOrder");
 			g.SetNameOfEnumWithName("PACKEDORDER", "PackedOrder");
