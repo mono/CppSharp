@@ -8,20 +8,6 @@ namespace Cxxi
 	/// </summary>
 	public class Declaration
 	{
-		public Declaration()
-		{
-		}
-
-		public Declaration(string name)
-		{
-			Name = name;
-		}
-
-		public override string ToString()
-		{
-			return Name;
-		}
-
 		// Name of the type.
 		public string Name;
 
@@ -36,6 +22,20 @@ namespace Cxxi
 
 		// Contains a debug text of the type declaration.
 		public string DebugText;
+
+		public Declaration()
+		{
+		}
+
+		public Declaration(string name)
+		{
+			Name = name;
+		}
+
+		public override string ToString()
+		{
+			return Name;
+		}
 	}
 
 	/// <summary>
@@ -43,11 +43,11 @@ namespace Cxxi
 	/// </summary>
 	public class MacroDefine : Declaration
 	{
+		// Contains the macro definition text.
+		public string Expression;
+
 		public MacroDefine()
 		{
 		}
-
-		// Contains the macro definition text.
-		public string Expression;
 	}
 }
