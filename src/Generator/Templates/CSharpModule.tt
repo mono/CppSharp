@@ -18,14 +18,14 @@ public void GenerateDeclarations()
     bool NeedsNewline = false;
 
     // Generate all the enum declarations for the module.
-    for(int i = 0; i < Module.Global.Enums.Count; ++i)
+    for(int i = 0; i < Module.Enums.Count; ++i)
     {
-        var E = Module.Global.Enums[i];
+        var E = Module.Enums[i];
         if (E.Ignore) continue;
    
         GenerateEnum(E);
         NeedsNewline = true;
-        if (i < Module.Global.Enums.Count - 1)
+        if (i < Module.Enums.Count - 1)
            WriteLine("");
     }
 
@@ -35,21 +35,21 @@ public void GenerateDeclarations()
     NeedsNewline = false;
 
     // Generate all the struct/class declarations for the module.
-    for(int i = 0; i < Module.Global.Classes.Count; ++i)
+    for(int i = 0; i < Module.Classes.Count; ++i)
     {
-        var C = Module.Global.Classes[i];
+        var C = Module.Classes[i];
         if (C.Ignore) continue;
 
         GenerateClass(C);
         NeedsNewline = true;
-        if (i < Module.Global.Classes.Count - 1)
+        if (i < Module.Classes.Count - 1)
            WriteLine("");
     }
 
     if (NeedsNewline)
         WriteLine("");
 
-    if (Module.Global.HasFunctions)
+    if (Module.HasFunctions)
     {
         WriteLine("public partial class " + SafeIdentifier(Library.Name));
         WriteLine("{");
@@ -57,12 +57,12 @@ public void GenerateDeclarations()
     }
 
     // Generate all the function declarations for the module.
-    foreach(var E in Module.Global.Functions)
+    foreach(var E in Module.Functions)
     {
         GenerateFunction(E);
     }
 
-    if (Module.Global.HasFunctions)
+    if (Module.HasFunctions)
     {
         PopIndent();
         WriteLine("}");
@@ -73,7 +73,7 @@ public void GenerateDeclarations()
 #>
 
 <#+
-public void GenerateTypeCommon(CppType T)
+public void GenerateTypeCommon(Declaration T)
 {
     GenerateSummary(T.BriefComment);
     GenerateDebug(T);
@@ -86,7 +86,7 @@ public void GenerateClass(Class C)
     if(C.Ignore) return;
     GenerateTypeCommon(C);
 
-    Write("public ");
+    Write("public unsafe ");
 
     if (C.IsAbstract)
         Write("abstract ");
@@ -103,7 +103,7 @@ public void GenerateClass(Class C)
     foreach(var F in C.Fields)
     {
         GenerateTypeCommon(F);
-        WriteLine("public {0} {1};", F.Type, F.Name);
+        WriteLine("public {0} {1};", F.Type, SafeIdentifier(F.Name));
     }
     PopIndent();
 
@@ -119,7 +119,7 @@ public void GenerateFunction(Function F)
     GenerateTypeCommon(F);
 #>
 [DllImport("<#= SafeIdentifier(Library.Name) #>.dll")]
-public static extern <#= F.ReturnType #> <#= SafeIdentifier(F.Name) #>(<#+
+public unsafe static extern <#= F.ReturnType #> <#= SafeIdentifier(F.Name) #>(<#+
 for(int i = 0; i < F.Parameters.Count; ++i)
 {
     var P = F.Parameters[i];
@@ -134,7 +134,7 @@ WriteLine("");
 #>
 
 <#+
-public void GenerateDebug(CppType T)
+public void GenerateDebug(Declaration T)
 {
     if(Options.OutputDebug && !String.IsNullOrWhiteSpace(T.DebugText))
         WriteLine("// DEBUG: " + T.DebugText);
