@@ -18,85 +18,85 @@ namespace Cxxi
 		Unavailable
 	}
 
+	/// <summary>
+	/// A module represents a parsed C++ translation unit.
+	/// </summary>
 	[DebuggerDisplay("File = {FileName}, Ignored = {Ignore}")]
-	public class Module
+	public class Module : Namespace
 	{
-		public Module(string File)
+		public Module(string file)
 		{
-			Global = new Namespace();
 			Macros = new List<MacroDefine>();
-			Namespaces = new List<Namespace>();
-			FilePath = File;
+			FilePath = file;
 			Ignore = false;
 		}
 
+		/// Contains the macros present in the unit.
+		public List<MacroDefine> Macros;
+
+		/// If the module should be ignored.
 		public bool Ignore;
+		
+		/// Contains the path to the file.
 		public string FilePath;
 
+		/// Contains the name of the file.
 		public string FileName
 		{
 			get { return Path.GetFileName(FilePath); }
 		}
-
-		public List<MacroDefine> Macros;
-
-		public Namespace Global;
-		public List<Namespace> Namespaces;
-
-		public bool HasDeclarations
-		{
-			get
-			{
-				return Global.HasDeclarations
-					|| Namespaces.Exists(n => n.HasDeclarations);
-			}
-		}
 	}
 
+	/// <summary>
+	/// A library contains all the modules.
+	/// </summary>
 	public class Library
 	{
+		public string Name;
+		public List<Module> Modules;
+
 		public Library(string name)
 		{
 			Name = name;
 			Modules = new List<Module>();
 		}
 
-		public Module FindOrCreateModule(string File)
+		/// Finds an existing module or creates a new one given a file path.
+		public Module FindOrCreateModule(string file)
 		{
-			var module = Modules.Find(m => m.FilePath.Equals(File));
+			var module = Modules.Find(m => m.FilePath.Equals(file));
 
 			if (module == null)
 			{
-				module = new Module(File);
+				module = new Module(file);
 				Modules.Add(module);
 			}
 
 			return module;
 		}
 
-		public Enumeration FindEnum(string Name)
+		/// Finds an existing enum in the library modules.
+		public Enumeration FindEnum(string name)
 		{
 			foreach (var module in Modules)
 			{
-				var type = module.Global.FindEnum(Name);
+				var type = module.FindEnum(name);
 				if (type != null) return type;
 			}
 
 			return null;
 		}
 
-		public Class FindClass(string Name)
+		/// Finds an existing struct/class in the library modules.
+		public Class FindClass(string name, bool create = false)
 		{
 			foreach (var module in Modules)
 			{
-				var type = module.Global.FindClass(Name);
+				var type = module.FindClass(name, create);
 				if (type != null) return type;
 			}
 
 			return null;
 		}
-
-		public string Name { get; set; }
-		public List<Module> Modules { get; set; }
 	}
 }
