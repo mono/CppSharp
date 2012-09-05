@@ -57,6 +57,7 @@
     <Compile Include="Options.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SDL.cs" />
     <Compile Include="Templates\CSharpModule.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

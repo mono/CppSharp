@@ -3,6 +3,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <EnableUnmanagedDebugging>true</EnableUnmanagedDebugging>
     <StartArguments>--debug --ns=SDL -outdir=gen/build/NSDL  SDL/SDL.h</StartArguments>
-    <StartWorkingDirectory>C:\Development\cxxi\bin\</StartWorkingDirectory>
+    <StartWorkingDirectory>C:\Development\cxxi2\bin\</StartWorkingDirectory>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ProjectView>ProjectFiles</ProjectView>
   </PropertyGroup>
 </Project>

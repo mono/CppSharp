@@ -22,6 +22,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Generator", "..\src\Generat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Runtime", "..\src\Runtime\Runtime.csproj", "{6EE1E3FF-B737-4874-B7BC-D1B5297E162C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSDL", "..\bin\gen\build\NSDL\NSDL.csproj", "{77BA1CDF-2DA3-451A-8E4A-A9074236140A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -131,6 +133,20 @@ Global
 		{6EE1E3FF-B737-4874-B7BC-D1B5297E162C}.Release|Win32.Build.0 = Release|x86
 		{6EE1E3FF-B737-4874-B7BC-D1B5297E162C}.Release|x86.ActiveCfg = Release|x86
 		{6EE1E3FF-B737-4874-B7BC-D1B5297E162C}.Release|x86.Build.0 = Release|x86
+		{77BA1CDF-2DA3-451A-8E4A-A9074236140A}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{77BA1CDF-2DA3-451A-8E4A-A9074236140A}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{77BA1CDF-2DA3-451A-8E4A-A9074236140A}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{77BA1CDF-2DA3-451A-8E4A-A9074236140A}.Debug|Win32.ActiveCfg = Debug|x86
+		{77BA1CDF-2DA3-451A-8E4A-A9074236140A}.Debug|Win32.Build.0 = Debug|x86
+		{77BA1CDF-2DA3-451A-8E4A-A9074236140A}.Debug|x86.ActiveCfg = Debug|x86
+		{77BA1CDF-2DA3-451A-8E4A-A9074236140A}.Debug|x86.Build.0 = Debug|x86
+		{77BA1CDF-2DA3-451A-8E4A-A9074236140A}.Release|Any CPU.ActiveCfg = Release|x86
+		{77BA1CDF-2DA3-451A-8E4A-A9074236140A}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{77BA1CDF-2DA3-451A-8E4A-A9074236140A}.Release|Mixed Platforms.Build.0 = Release|x86
+		{77BA1CDF-2DA3-451A-8E4A-A9074236140A}.Release|Win32.ActiveCfg = Release|x86
+		{77BA1CDF-2DA3-451A-8E4A-A9074236140A}.Release|Win32.Build.0 = Release|x86
+		{77BA1CDF-2DA3-451A-8E4A-A9074236140A}.Release|x86.ActiveCfg = Release|x86
+		{77BA1CDF-2DA3-451A-8E4A-A9074236140A}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

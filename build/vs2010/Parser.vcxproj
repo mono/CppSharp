@@ -65,7 +65,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <ProgramDataBaseFileName>$(OutDir)Parser_d.pdb</ProgramDataBaseFileName>
       <ExceptionHandling>false</ExceptionHandling>
-      <AdditionalUsingDirectories>C:\Development\cxxi\bin;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
+      <AdditionalUsingDirectories>$(TargetDir);%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -118,8 +118,6 @@
     <ClInclude Include="..\..\src\Parser\Parser.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\Parser\Helpers.cpp">
-    </ClCompile>
     <ClCompile Include="..\..\src\Parser\Main.cpp">
     </ClCompile>
     <ClCompile Include="..\..\src\Parser\Parser.cpp">
