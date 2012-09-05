@@ -49,7 +49,7 @@ static std::string GetClangResourceDir(const std::string& Dir)
 
 static std::string GetClangBuiltinIncludeDir()
 {
-    using namespace llvm;
+    using namespace llvm; 
     
     SmallString<128> P( GetClangResourceDir(".") );
     llvm::sys::path::append(P, "include");
@@ -77,8 +77,7 @@ void Parser::Setup(ParserOptions^ Opts)
     C->createDiagnostics(ARRAY_SIZE(args), args);
 
     CompilerInvocation* Inv = new CompilerInvocation();
-    CompilerInvocation::CreateFromArgs(*Inv,
-        args,  args + ARRAY_SIZE(args), C->getDiagnostics());
+    CompilerInvocation::CreateFromArgs(*Inv, args,  args + ARRAY_SIZE(args), C->getDiagnostics());
     C->setInvocation(Inv);
 
     TargetOptions& TO = Inv->getTargetOpts();
@@ -91,8 +90,8 @@ void Parser::Setup(ParserOptions^ Opts)
     C->createFileManager();
     C->createSourceManager(C->getFileManager());
 
-	if (Opts->Verbose)
-		C->getHeaderSearchOpts().Verbose = true;
+    if (Opts->Verbose)
+        C->getHeaderSearchOpts().Verbose = true;
 
     // Initialize the default platform headers.
     std::string ResourceDir = GetClangResourceDir(".");
@@ -232,8 +231,9 @@ Cxxi::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
     if (Record->isAnonymousStructOrUnion())
         return nullptr;
 
-    auto RC = gcnew Cxxi::Class();
-    RC->Name = marshalString<E_UTF8>(GetTagDeclName(Record));
+    auto NS = GetNamespace(Record);
+    auto RC = NS->FindClass(
+        marshalString<E_UTF8>(GetTagDeclName(Record)), /* Create */ true);
     RC->IsPOD = Record->isPOD();
 
     // Iterate through the record ctors.
@@ -334,6 +334,116 @@ Cxxi::Field^ Parser::WalkFieldCXX(clang::FieldDecl* FD)
 }
 
 //-----------------------------------//
+
+Cxxi::Namespace^ Parser::GetNamespace(const clang::NamedDecl* ND)
+{
+    using namespace clang;
+    using namespace clix;
+
+    Cxxi::Module^ M = GetModule(ND->getLocation());
+
+    // If the declaration is at global scope, just early exit.
+    const DeclContext *Ctx = ND->getDeclContext();
+    if (Ctx->isTranslationUnit())
+        return M;
+
+    // Else we need to do a more expensive check to get all the namespaces,
+    // and then perform a reverse iteration to get the namespaces in order.
+    typedef SmallVector<const DeclContext *, 8> ContextsTy;
+    ContextsTy Contexts;
+
+    for(; Ctx != nullptr; Ctx = Ctx->getParent())
+        Contexts.push_back(Ctx);
+
+    assert(Contexts.back()->isTranslationUnit());
+    Contexts.pop_back();
+
+    Cxxi::Namespace^ NS = M;
+
+    for (auto I = Contexts.rbegin(), E = Contexts.rend(); I != E; ++I)
+    {
+        const DeclContext* Ctx = *I;
+        
+        switch(Ctx->getDeclKind())
+        {
+        case Decl::Namespace:
+        {
+            const NamespaceDecl* ND = cast<NamespaceDecl>(Ctx);
+            if (ND->isAnonymousNamespace())
+                continue;
+            NS = NS->FindNamespace(marshalString<E_UTF8>(ND->getName()));
+            break;
+        }
+        case Decl::LinkageSpec:
+        {
+            const LinkageSpecDecl* LD = cast<LinkageSpecDecl>(Ctx);
+            continue;
+        }
+        case Decl::CXXRecord:
+        {
+            // FIXME: Ignore record namespaces...
+            // We might be able to translate these to C# nested types.
+            continue;
+        }
+        default:
+        {
+            StringRef Kind = Ctx->getDeclKindName();
+            printf("Unhandled declaration context kind: %s\n", Kind);
+            assert(0 && "Unhandled declaration context kind");
+        } }
+    }
+
+    return NS;
+
+#if 0
+
+    if (const ClassTemplateSpecializationDecl *Spec
+            = dyn_cast<ClassTemplateSpecializationDecl>(*I)) {
+        const TemplateArgumentList &TemplateArgs = Spec->getTemplateArgs();
+        std::string TemplateArgsStr
+        = TemplateSpecializationType::PrintTemplateArgumentList(
+                                            TemplateArgs.data(),
+                                            TemplateArgs.size(),
+                                            P);
+        OS << Spec->getName() << TemplateArgsStr;
+    } else if (const NamespaceDecl *ND = dyn_cast<NamespaceDecl>(*I)) {
+        if (ND->isAnonymousNamespace())
+        OS << "<anonymous namespace>";
+        else
+        OS << *ND;
+    } else if (const RecordDecl *RD = dyn_cast<RecordDecl>(*I)) {
+        if (!RD->getIdentifier())
+        OS << "<anonymous " << RD->getKindName() << '>';
+        else
+        OS << *RD;
+    } else if (const FunctionDecl *FD = dyn_cast<FunctionDecl>(*I)) {
+        const FunctionProtoType *FT = 0;
+        if (FD->hasWrittenPrototype())
+        FT = dyn_cast<FunctionProtoType>(FD->getType()->castAs<FunctionType>());
+
+        OS << *FD << '(';
+        if (FT) {
+        unsigned NumParams = FD->getNumParams();
+        for (unsigned i = 0; i < NumParams; ++i) {
+            if (i)
+            OS << ", ";
+            OS << FD->getParamDecl(i)->getType().stream(P);
+        }
+
+        if (FT->isVariadic()) {
+            if (NumParams > 0)
+            OS << ", ";
+            OS << "...";
+        }
+        }
+        OS << ')';
+    } else {
+        OS << *cast<NamedDecl>(*I);
+    }
+    OS << "::";
+    }
+#endif
+}
 
 static Cxxi::PrimitiveType ConvertBuiltinTypeToCLR(const clang::BuiltinType* Builtin)
 {
@@ -451,7 +561,13 @@ Cxxi::Type^ Parser::ConvertTypeToCLR(clang::QualType QualType)
 
         // Assume that the type has already been defined for now.
         String Name(GetTagDeclName(RD));
-        auto D = Lib->FindClass(marshalString<E_UTF8>(Name));
+
+        // We have to try to find the class type. If there is none yet,
+        // then create it, this is needed to deal properly with forward
+        // referenced types.
+
+        auto NS = GetNamespace(RD);
+        auto D = NS->FindClass(marshalString<E_UTF8>(Name), true /* Create */);
 
         auto TT = gcnew Cxxi::TagType();
         TT->Declaration = D;
@@ -766,8 +882,11 @@ void Parser::WalkDeclaration(clang::Decl* D)
         auto Class = WalkRecordCXX(RD);
         HandleComments(RD, Class);
 
-        auto M = GetModule(RD->getLocation());
-        M->Global->Classes->Add(Class);
+        auto NS = GetNamespace(RD);
+        auto RC = NS->FindClass(marshalString<E_UTF8>(GetTagDeclName(RD)), /* Create */ false);
+
+        if (!RC)
+            NS->Classes->Add(Class);
         
         break;
     }
@@ -781,7 +900,7 @@ void Parser::WalkDeclaration(clang::Decl* D)
         HandleComments(ED, E);
 
         auto M = GetModule(ED->getLocation());
-        M->Global->Enums->Add(E);
+        M->Enums->Add(E);
         
         break;
     }
@@ -795,7 +914,7 @@ void Parser::WalkDeclaration(clang::Decl* D)
         HandleComments(FD, F);
 
         auto M = GetModule(FD->getLocation());
-        M->Global->Functions->Add(F);
+        M->Functions->Add(F);
         
         break;
     }

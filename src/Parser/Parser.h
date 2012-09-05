@@ -32,12 +32,12 @@
 
 public ref struct ParserOptions
 {
-	// C/C++ header file name.
-	System::String^ FileName;
+    // C/C++ header file name.
+    System::String^ FileName;
 
-	Cxxi::Library^ Library;
+    Cxxi::Library^ Library;
 
-	bool Verbose;
+    bool Verbose;
 };
 
 struct Parser
@@ -63,9 +63,11 @@ protected:
     bool IsValidDeclaration(const clang::SourceLocation& Loc);
     std::string GetDeclMangledName(clang::Decl*, clang::TargetCXXABI);
     std::string GetTypeBindName(const clang::Type*);
-    Cxxi::Module^ GetModule(clang::SourceLocation Loc);
-    Cxxi::Type^ ConvertTypeToCLR(clang::QualType QualType);
     void HandleComments(clang::Decl* D, Cxxi::Declaration^);
+    
+    Cxxi::Module^ GetModule(clang::SourceLocation Loc);
+    Cxxi::Namespace^ GetNamespace(const clang::NamedDecl*);
+    Cxxi::Type^ ConvertTypeToCLR(clang::QualType QualType);
 
     gcroot<Cxxi::Library^> Lib;
     llvm::OwningPtr<clang::CompilerInstance> C;
