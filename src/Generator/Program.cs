@@ -81,8 +81,12 @@ class Program
 		}
 	}
 
-	public void ParseNativeHeaders()
+	public void ParseCode()
 	{
+		var Opts = new ParserOptions();
+		Opts.Library = library;
+		Opts.Verbose = false;
+
 		Console.WriteLine("Parsing native code...");
 
 		foreach (var file in options.Headers)
@@ -99,10 +103,8 @@ class Program
 				continue;
 			}
 
-            var Opts = new ParserOptions();
-            Opts.FileName = path;
-            Opts.Library = library;
-            Opts.Verbose = false;
+			var module = new Module(path);
+			Opts.FileName = path;
 
 			if (!ClangParser.Parse(Opts))
 			{
@@ -114,50 +116,6 @@ class Program
 		}
 	}
 
-	void TransformSDL(Generator g)
-	{
-		g.IgnoreEnumWithMatchingItem("SDL_FALSE");
-		g.IgnoreEnumWithMatchingItem("DUMMY_ENUM_VALUE");
-		g.IgnoreEnumWithMatchingItem("SDL_ENOMEM");
-
-		g.SetNameOfEnumWithMatchingItem("SDL_SCANCODE_UNKNOWN", "ScanCode");
-		g.SetNameOfEnumWithMatchingItem("SDLK_UNKNOWN", "Key");
-		g.SetNameOfEnumWithMatchingItem("KMOD_NONE", "KeyModifier");
-		g.SetNameOfEnumWithMatchingItem("SDL_LOG_CATEGORY_CUSTOM", "LogCategory");
-
-		g.GenerateEnumFromMacros("InitFlags", "SDL_INIT_(.*)").SetFlags();
-		g.GenerateEnumFromMacros("Endianness", "SDL_(.*)_ENDIAN");
-		g.GenerateEnumFromMacros("KeyState", "SDL_RELEASED", "SDL_PRESSED");
-
-		g.GenerateEnumFromMacros("AlphaState", "SDL_ALPHA_(.*)");
-
-		g.GenerateEnumFromMacros("HatState", "SDL_HAT_(.*)");
-
-		g.IgnoreModuleWithName("SDL_atomic*");
-		g.IgnoreModuleWithName("SDL_endian*");
-		g.IgnoreModuleWithName("SDL_main*");
-		g.IgnoreModuleWithName("SDL_mutex*");
-		g.IgnoreModuleWithName("SDL_stdinc*");
-
-		g.RemovePrefix("SDL_");
-		g.RemovePrefix("SCANCODE_");
-		g.RemovePrefix("SDLK_");
-		g.RemovePrefix("KMOD_");
-		g.RemovePrefix("LOG_CATEGORY_");
-
-		g.Process();
-
-		g.FindEnum("PIXELTYPE").Name = "PixelType";
-		g.FindEnum("BITMAPORDER").Name = "BitmapOrder";
-		g.FindEnum("PACKEDORDER").Name = "PackedOrder";
-		g.FindEnum("ARRAYORDER").Name = "ArrayOrder";
-		g.FindEnum("PACKEDLAYOUT").Name = "PackedLayout";
-		g.FindEnum("PIXELFORMAT").Name = "PixelFormat";
-		g.FindEnum("assert_state").Name = "AssertState";
-
-		//gen.FindEnum("LOG_CATEGORY").Name = "LogCategory";
-	}
-
 	public void Run(String[] args)
 	{
 		options = new Options();
@@ -167,7 +125,7 @@ class Program
 
 		library = new Library(options.OutputNamespace);
 		
-		ParseNativeHeaders();
+		ParseCode();
 		GenerateCode();
 	}
 

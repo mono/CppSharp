@@ -8,14 +8,14 @@ using Cxxi.Templates;
 
 public partial class Generator
 {
-	public List<Transformation> Transformations { get; set; }
+	public List<ModuleTransform> Transformations { get; set; }
 	
 	Library Library;
 	Options Options;
 
 	public Generator(Library library, Options options)
 	{
-		Transformations = new List<Transformation>();
+		Transformations = new List<ModuleTransform>();
 
 		Library = library;
 		Options = options;
@@ -98,7 +98,7 @@ public partial class Generator
 		// Process everything in the global namespace for now.
 		foreach (var module in Library.Modules)
 		{
-			ProcessNamespace(module.Global);
+			ProcessNamespace(module);
 		}
 	}
 
@@ -117,15 +117,13 @@ public partial class Generator
 		// Process everything in the global namespace for now.
 		foreach (var module in Library.Modules)
 		{
-			Namespace global = module.Global;
-
-			foreach (Enumeration @enum in global.Enums)
+			foreach (Enumeration @enum in module.Enums)
 				TransformEnum(@enum);
 
-			foreach (Function function in global.Functions)
+			foreach (Function function in module.Functions)
 				TransformFunction(function);
 
-			foreach (Class @class in global.Classes)
+			foreach (Class @class in module.Classes)
 				TransformClass(@class);
 		}
 	}
@@ -133,7 +131,7 @@ public partial class Generator
 	void TransformType(Declaration type)
 	{
 		foreach (var transform in Transformations)
-			transform.ProcessType(type);
+			transform.ProcessDeclaration(type);
 	}
 
 	void TransformClass(Class @class)
