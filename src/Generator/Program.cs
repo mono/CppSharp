@@ -7,17 +7,27 @@ using Cxxi;
 
 public class Options
 {
+	public Options()
+	{
+		IncludeDirs = new List<string>();
+		Headers = new List<string>();
+	}
+
 	public bool Verbose = false;
-	public string IncludeDirs;
-	public string OutputDir;
 	public bool ShowHelpText = false;
 	public bool OutputDebug = false;
 	public string OutputNamespace;
+	public string OutputDir;
+	public string Library;
+	public List<string> IncludeDirs;
 	public List<string> Headers;
 }
 
 class Program
 {
+	Library library;
+	Options options;
+
 	static void ShowHelp(OptionSet options)
 	{
 		var module = Process.GetCurrentProcess().MainModule;
@@ -36,11 +46,12 @@ class Program
 			// Parser options
 			{ "C|compiler=", v => new object() },
 			{ "D|defines=", v => new object() },
-			{ "I|include=", v => options.IncludeDirs = v },
+			{ "I|include=", v => options.IncludeDirs.Add(v) },
 			// Generator options
 			{ "ns|namespace=", v => options.OutputNamespace = v },
 			{ "o|outdir=", v => options.OutputDir = v },
 			{ "debug", v => options.OutputDebug = true },
+			{ "lib|library=", v => options.Library = v },
 			// Misc. options
 			{ "v|verbose",  v => { options.Verbose = true; } },
 			{ "h|?|help",   v => options.ShowHelpText = v != null },
@@ -56,7 +67,7 @@ class Program
 		{
 			options.Headers = set.Parse(args);
 		}
-		catch (OptionException ex)
+		catch (OptionException)
 		{
 			Console.WriteLine("Error parsing the command line.");
 			ShowHelp(set);
@@ -66,10 +77,7 @@ class Program
 		return true;
 	}
 
-	Library library;
-	Options options;
-
-	public void GenerateCode(LibraryTransform libTransform)
+	public void GenerateCode(LibraryTransform transform)
 	{
 		Console.WriteLine("Generating wrapper code...");
 
@@ -77,11 +85,11 @@ class Program
 		{
 			var gen = new Generator(library, options);
 
-			libTransform.Preprocess(gen);
+			transform.Preprocess(gen);
 
 			gen.Process();
 
-			libTransform.Postprocess(gen);
+			transform.Postprocess(gen);
 
 			gen.Generate();
 		}
@@ -92,6 +100,7 @@ class Program
 		var Opts = new ParserOptions();
 		Opts.Library = library;
 		Opts.Verbose = false;
+		Opts.IncludeDirs = options.IncludeDirs;
 
 		Console.WriteLine("Parsing native code...");
 
@@ -103,7 +112,7 @@ class Program
 			{
 				path = Path.GetFullPath(file);
 			}
-			catch (ArgumentException ex)
+			catch (ArgumentException)
 			{
 				Console.WriteLine("Invalid path '" + file + "'.");
 				continue;
@@ -129,11 +138,14 @@ class Program
 		if (!ParseCommandLineOptions(args))
 			return;
 
-		library = new Library(options.OutputNamespace);
+		library = new Library(options.OutputNamespace, options.Library);
 		
 		ParseCode();
 
-		GenerateCode(new SDLTransforms());
+		//var transform = new SDLTransforms();
+		var transform = new ClangTransforms();
+
+		GenerateCode(transform);
 	}
 
 	static void Main(String[] args)
