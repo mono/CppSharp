@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Cxxi
+﻿namespace Cxxi
 {
 	/// <summary>
 	/// Represents a C++ declaration.
@@ -15,7 +12,7 @@ namespace Cxxi
 		public string BriefComment;
 
 		// Namespace the type is declared in.
-		public Namespace Namespace;
+		//public Namespace Namespace;
 
 		// Wether the type should be ignored.
 		public bool Ignore;
@@ -36,6 +33,15 @@ namespace Cxxi
 		{
 			return Name;
 		}
+	}
+
+	/// <summary>
+	/// Represents a type definition in C++.
+	/// </summary>
+	public class Typedef : Declaration
+	{
+		/// Type defined.
+		public Type Type;
 	}
 
 	/// <summary>
