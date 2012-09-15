@@ -1,7 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Cxxi
 {
+	public interface TypeTransform
+	{
+		void TransformType(Type type);
+		void TransformTagType(TagType tag);
+		void TransformArrayType(ArrayType array);
+		void TransformFunctionType(FunctionType function);
+		void TransformPointerType(PointerType pointer);
+		void TransformBuiltinType(BuiltinType builtin);
+		void TransformTypedefType (TypedefType typedef);
+		void TransformDeclaration(Declaration declaration);
+	}
+
 	/// <summary>
 	/// Represents a C++ type reference.
 	/// </summary>
@@ -11,21 +24,48 @@ namespace Cxxi
 		{
 		}
 
-		public bool IsPrimitiveType(PrimitiveType Primitive)
+		public bool IsPrimitiveType(PrimitiveType primitive)
 		{
 			var builtin = this as BuiltinType;
 			if (builtin != null)
-				return builtin.Type == Primitive;
+				return builtin.Type == primitive;
 			return false;
 		}
+
+		public bool IsPointerToPrimitiveType(PrimitiveType primitive)
+		{
+			var ptr = this as PointerType;
+			if (ptr == null)
+				return false;
+			return ptr.Pointee.IsPrimitiveType(primitive);
+		}
+
+		public bool IsPointerTo<T>(out T type) where T : Type
+		{
+			var ptr = this as PointerType;
+			
+			if (ptr == null)
+			{
+				type = null;
+				return false;
+			}
+			
+			type = ptr.Pointee as T;
+			return type != null;
+		}
+
+		public virtual void Transform(TypeTransform transform)
+		{
+			transform.TransformType(this);
+		}
+
+		// Converts the type to a C# type.
+		public abstract string ToCSharp();
 
 		public override string ToString()
 		{
 			return ToCSharp();
 		}
-
-		// Converts the type to a C# type.
-		public abstract string ToCSharp();
 	}
 
 	/// <summary>
@@ -44,6 +84,11 @@ namespace Cxxi
 			if (Declaration == null)
 				return string.Empty;
 			return Declaration.Name;
+		}
+
+		public override void Transform(TypeTransform transform)
+		{
+			transform.TransformTagType(this);
 		}
 	}
 
@@ -78,6 +123,11 @@ namespace Cxxi
 			
 			return string.Format("{0}[]", Type);
 		}
+
+		public override void Transform(TypeTransform transform)
+		{
+			Type.Transform(transform);
+		}
 	}
 
 	/// <summary>
@@ -88,11 +138,59 @@ namespace Cxxi
 		// Return type of the function.
 		public Type ReturnType;
 
+		// Argument types.
+		public List<Type> Arguments;
+
+		public FunctionType()
+		{
+			Arguments = new List<Type>();
+		}
+
 		public override string ToCSharp()
 		{
+			string args = string.Empty;
+
+			if (Arguments.Count > 0)
+				args = ToArgumentString();
+
 			if (ReturnType.IsPrimitiveType(PrimitiveType.Void))
-				return string.Format("Action");
-			return string.Format("Func<{0}>", ReturnType);
+			{
+				if (!string.IsNullOrEmpty(args))
+					args = string.Format("<{0}>", args);
+				return string.Format("Action{0}", args);
+			}
+
+			if (!string.IsNullOrEmpty(args))
+				args = string.Format(", {0}", args);
+
+			return string.Format("Func<{0}{1}>",
+				ReturnType.ToCSharp(), args);
+		}
+
+		public string ToArgumentString()
+		{
+			var s = string.Empty;
+
+			for (int i = 0; i < Arguments.Count; ++i)
+			{
+				var arg = Arguments[i];
+				s += arg.ToCSharp();
+				if (i < Arguments.Count - 1)
+					s += ", ";
+			}
+
+			return s;
+		}
+
+		public string ToDelegateString()
+		{
+			return string.Format("delegate {0} {{0}}({1})",
+				ReturnType.ToCSharp(), ToArgumentString());
+		}
+
+		public override void Transform(TypeTransform transform)
+		{
+			ReturnType.Transform(transform);
 		}
 	}
 
@@ -139,13 +237,43 @@ namespace Cxxi
 		public override string ToCSharp()
 		{
 			if (Pointee is FunctionType)
-				return Pointee.ToCSharp();
+			{
+				var function = Pointee as FunctionType;
+				return function.ToCSharp();
+			}
 
 			if (Pointee is TagType)
 				return Pointee.ToCSharp();
 
-			return string.Format("{0}{1}",
-				Pointee, ConvertModifierToString(Modifier));
+			return "IntPtr";
+
+			//return string.Format("{0}{1}",
+			//	Pointee.ToCSharp(), ConvertModifierToString(Modifier));
+		}
+
+		public override void Transform(TypeTransform transform)
+		{
+			Pointee.Transform(transform);
+		}
+	}
+
+	public class TypedefType : Type
+	{
+		public TypedefType()
+		{
+		
+		}
+
+		public Declaration Declaration;
+
+		public override void Transform(TypeTransform transform)
+		{
+			transform.TransformTypedefType(this);
+		}
+
+		public override string ToCSharp()
+		{
+			return Declaration.Name;
 		}
 	}
 
@@ -192,6 +320,10 @@ namespace Cxxi
 		public override string ToCSharp()
 		{
 			return Type.ConvertToTypeName();
+		}
+
+		public override void Transform(TypeTransform transform)
+		{
 		}
 	}
 
