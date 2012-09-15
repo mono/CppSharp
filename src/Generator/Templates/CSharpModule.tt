@@ -32,6 +32,23 @@ public void GenerateDeclarations()
     if (NeedsNewline)
         WriteLine("");
 
+	NeedsNewline = false;
+
+    // Generate all the typedef declarations for the module.
+    for(int i = 0; i < Module.Typedefs.Count; ++i)
+    {
+        var T = Module.Typedefs[i];
+        if (T.Ignore) continue;
+
+        GenerateTypedef(T);
+        NeedsNewline = true;
+        if (i < Module.Typedefs.Count - 1)
+           WriteLine("");
+    }
+
+    if (NeedsNewline)
+        WriteLine("");
+
     NeedsNewline = false;
 
     // Generate all the struct/class declarations for the module.
@@ -73,7 +90,7 @@ public void GenerateDeclarations()
 #>
 
 <#+
-public void GenerateTypeCommon(Declaration T)
+public void GenerateDeclarationCommon(Declaration T)
 {
     GenerateSummary(T.BriefComment);
     GenerateDebug(T);
@@ -84,46 +101,73 @@ public void GenerateTypeCommon(Declaration T)
 public void GenerateClass(Class C)
 {
     if(C.Ignore) return;
-    GenerateTypeCommon(C);
+    GenerateDeclarationCommon(C);
 
+    if (C.IsUnion)
+        WriteLine("[StructLayout(LayoutKind.Explicit)]");
     Write("public unsafe ");
 
     if (C.IsAbstract)
         Write("abstract ");
 
-    Write("class {0}", C.Name);
+    Write("class {0}", SafeIdentifier(C.Name));
 
     if (C.HasBase)
-            Write(" : {0}", C.Bases[0].Class.Name);
+        Write(" : {0}", SafeIdentifier(C.Bases[0].Class.Name));
 
     WriteLine(String.Empty);
     WriteLine("{");
 
-    PushIndent(DefaultIndent);
-    foreach(var F in C.Fields)
-    {
-        GenerateTypeCommon(F);
-        WriteLine("public {0} {1};", F.Type, SafeIdentifier(F.Name));
-    }
-    PopIndent();
+	if (!C.IsOpaque)
+	{
+		PushIndent(DefaultIndent);
+		foreach(var F in C.Fields)
+		{
+			GenerateDeclarationCommon(F);
+			if (C.IsUnion)
+				WriteLine("[FieldOffset({0})]", F.Offset);
+			WriteLine("public {0} {1};", F.Type.ToCSharp(), SafeIdentifier(F.Name));
+		}
+		PopIndent();
+	}
 
     WriteLine("}");
 }
 #>
 
+<#+
+public void GenerateTypedef(Typedef T)
+{
+    if(T.Ignore) return;
+    GenerateDeclarationCommon(T);
+
+	FunctionType func;
+
+	if (T.Type.IsPointerToPrimitiveType(PrimitiveType.Void))
+	{
+		WriteLine("public class " + SafeIdentifier(T.Name) + @" { }");
+		WriteLine("");
+	}
+	else if(T.Type.IsPointerTo<FunctionType>(out func))
+	{
+		WriteLine("public {0};",
+		 string.Format(func.ToDelegateString(), SafeIdentifier(T.Name)));
+	} 
+}
+#>
 
 <#+
 public void GenerateFunction(Function F)
 {
     if(F.Ignore) return;
-    GenerateTypeCommon(F);
+    GenerateDeclarationCommon(F);
 #>
-[DllImport("<#= SafeIdentifier(Library.Name) #>.dll")]
-public unsafe static extern <#= F.ReturnType #> <#= SafeIdentifier(F.Name) #>(<#+
+[DllImport("<#= SafeIdentifier(Library.Native) #>.dll")]
+public unsafe static extern <#= F.ReturnType.ToCSharp() #> <#= SafeIdentifier(F.Name) #>(<#+
 for(int i = 0; i < F.Parameters.Count; ++i)
 {
     var P = F.Parameters[i];
-    Write("{0} {1}", P.Type, SafeIdentifier(P.Name));
+    Write("{0} {1}", P.Type.ToCSharp(), SafeIdentifier(P.Name));
     if (i < F.Parameters.Count - 1)
        Write(", ");
 }
@@ -134,10 +178,10 @@ WriteLine("");
 #>
 
 <#+
-public void GenerateDebug(Declaration T)
+public void GenerateDebug(Declaration decl)
 {
-    if(Options.OutputDebug && !String.IsNullOrWhiteSpace(T.DebugText))
-        WriteLine("// DEBUG: " + T.DebugText);
+    if(Options.OutputDebug && !String.IsNullOrWhiteSpace(decl.DebugText))
+        WriteLine("// DEBUG: " + decl.DebugText);
 }
 #>
 
@@ -169,7 +213,7 @@ public void GenerateInlineSummary(string Comment)
 public void GenerateEnum(Enumeration E)
 {
     if(E.Ignore) return;
-    GenerateTypeCommon(E);
+    GenerateDeclarationCommon(E);
 
     if(E.Modifiers.HasFlag(Enumeration.EnumModifiers.Flags))
         WriteLine("[Flags]");
