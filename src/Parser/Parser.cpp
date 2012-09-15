@@ -516,19 +516,19 @@ Cxxi::Type^ Parser::WalkType(clang::QualType QualType)
         auto TT = Type->getAs<clang::TypedefType>();
         TypedefNameDecl* TD = TT->getDecl();
 
-		auto NS = GetNamespace(TD);
-		auto TDD = NS->FindTypedef(marshalString<E_UTF8>(GetDeclName(TD)));
+        auto NS = GetNamespace(TD);
+        auto TDD = NS->FindTypedef(marshalString<E_UTF8>(GetDeclName(TD)));
 
-		// If we did not find an existing typedef declaration, this is a type
-		// used by the standard library, so we walk the decl to process it.
-		if (!TDD)
-		{
-			TDD = (Cxxi::Typedef^) WalkDeclaration(TD, false);
-			assert(TDD != nullptr);
-		}
+        // If we did not find an existing typedef declaration, this is a type
+        // used by the standard library, so we walk the decl to process it.
+        if (!TDD)
+        {
+            TDD = (Cxxi::Typedef^) WalkDeclaration(TD, false);
+            assert(TDD != nullptr);
+        }
 
-		auto Type = gcnew Cxxi::TypedefType();
-		Type->Declaration = TDD;
+        auto Type = gcnew Cxxi::TypedefType();
+        Type->Declaration = TDD;
 
         return Type;
     }
@@ -580,8 +580,8 @@ Cxxi::Type^ Parser::WalkType(clang::QualType QualType)
         auto F = gcnew Cxxi::FunctionType();
         F->ReturnType = WalkType(FP->getResultType());
 
-		for (unsigned i = 0; i < FP->getNumArgs(); ++i)
-			F->Arguments->Add(WalkType(FP->getArgType(i)));
+        for (unsigned i = 0; i < FP->getNumArgs(); ++i)
+            F->Arguments->Add(WalkType(FP->getArgType(i)));
 
         return F;
     }
@@ -834,8 +834,8 @@ Cxxi::Declaration^ Parser::WalkDeclaration(clang::Decl* D, bool ignoreSystemDecl
     using namespace clang;
     using namespace clix;
 
-	// Ignore declarations that do not come from user-provided
-	// header files.
+    // Ignore declarations that do not come from user-provided
+    // header files.
     if (ignoreSystemDecls && !IsValidDeclaration(D->getLocation()))
         return nullptr;
 
@@ -864,7 +864,7 @@ Cxxi::Declaration^ Parser::WalkDeclaration(clang::Decl* D, bool ignoreSystemDecl
         StringRef AnnotationText = Annotation->getAnnotation();
     }
 
-	Cxxi::Declaration^ Decl;
+    Cxxi::Declaration^ Decl;
 
     switch(D->getKind())
     {
@@ -883,7 +883,7 @@ Cxxi::Declaration^ Parser::WalkDeclaration(clang::Decl* D, bool ignoreSystemDecl
         if (!RC)
             NS->Classes->Add(Class);
         
-		Decl = Class;
+        Decl = Class;
 
         break;
     }
@@ -899,7 +899,7 @@ Cxxi::Declaration^ Parser::WalkDeclaration(clang::Decl* D, bool ignoreSystemDecl
         auto NS = GetNamespace(ED);
         NS->Enums->Add(E);
 
-		Decl = E;
+        Decl = E;
         
         break;
     }
@@ -915,7 +915,7 @@ Cxxi::Declaration^ Parser::WalkDeclaration(clang::Decl* D, bool ignoreSystemDecl
         auto NS = GetNamespace(FD);
         NS->Functions->Add(F);
 
-		Decl = F;
+        Decl = F;
         
         break;
     }
@@ -943,7 +943,7 @@ Cxxi::Declaration^ Parser::WalkDeclaration(clang::Decl* D, bool ignoreSystemDecl
         auto NS = GetNamespace(TD);
         NS->Typedefs->Add(Typedef);
 
-		Decl = Typedef;
+        Decl = Typedef;
             
         break;
     }
@@ -966,7 +966,7 @@ Cxxi::Declaration^ Parser::WalkDeclaration(clang::Decl* D, bool ignoreSystemDecl
         break;
     } };
 
-	return Decl;
+    return Decl;
 }
 
 //-----------------------------------//
