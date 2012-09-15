@@ -16,6 +16,7 @@ namespace Cxxi
 		public List<Enumeration> Enums;
 		public List<Function> Functions;
 		public List<Class> Classes;
+		public List<Typedef> Typedefs;
 
 		public Namespace()
 			: this(null, String.Empty)
@@ -32,6 +33,7 @@ namespace Cxxi
 			Enums = new List<Enumeration>();
 			Functions = new List<Function>();
 			Classes = new List<Class>();
+			Typedefs = new List<Typedef>();
 		}
 
 		public Namespace FindNamespace(string name)
@@ -64,10 +66,17 @@ namespace Cxxi
 			return @class;
 		}
 
+		public Typedef FindTypedef(string name)
+		{
+			return Typedefs.Find(e => e.Name.Equals(name));
+		}
+
 		public T FindType<T>(string name) where T : Declaration
 		{
 			var type = FindEnum(name)
-				?? FindFunction(name) ?? (Declaration)FindClass(name);
+				?? FindFunction(name)
+				?? (Declaration)FindClass(name)
+				?? FindTypedef(name);
 
 			return type as T;
 		}
