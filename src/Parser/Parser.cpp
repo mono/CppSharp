@@ -1,23 +1,23 @@
 /************************************************************************
 *
-* Flush3D <http://www.flush3d.com> © (2008-201x) 
-* Licensed under the LGPL 2.1 (GNU Lesser General Public License)
+* Cxxi
+* Licensed under the simplified BSD license. All rights reserved.
 *
 ************************************************************************/
 
 #include "Parser.h"
+#include "Interop.h"
 
 #include <llvm/Support/Path.h>
 #include <clang/Basic/Version.h>
 #include <clang/Config/config.h>
-#include "clang/AST/ASTContext.h"
-#include "clang/Lex/HeaderSearch.h"
+#include <clang/AST/ASTContext.h>
+#include <clang/Lex/HeaderSearch.h>
 #include <clang/Lex/PreprocessingRecord.h>
-#include "clang/Frontend/HeaderSearchOptions.h"
+#include <clang/Frontend/HeaderSearchOptions.h>
 #include <clang/Frontend/Utils.h>
 #include <clang/Driver/Util.h>
 
-#include "Interop.h"
 #include <string>
 
 //-----------------------------------//
@@ -62,6 +62,7 @@ static std::string GetClangBuiltinIncludeDir()
 void Parser::Setup(ParserOptions^ Opts)
 {
     using namespace clang;
+    using namespace clix;
 
     const char* args[] =
     {
@@ -92,6 +93,12 @@ void Parser::Setup(ParserOptions^ Opts)
 
     if (Opts->Verbose)
         C->getHeaderSearchOpts().Verbose = true;
+
+    for each(System::String^% include in Opts->IncludeDirs)
+    {
+        String s = marshalString<E_UTF8>(include);
+        C->getHeaderSearchOpts().AddPath(s, frontend::Quoted, true, false, true);
+    }
 
     // Initialize the default platform headers.
     std::string ResourceDir = GetClangResourceDir(".");
@@ -180,25 +187,27 @@ std::string Parser::GetDeclMangledName(clang::Decl* D, clang::TargetCXXABI ABI)
 
 //-----------------------------------//
 
+static std::string GetDeclName(const clang::NamedDecl* D)
+{
+    if (const clang::IdentifierInfo *II = D->getIdentifier())
+        return II->getName();
+    return D->getNameAsString();
+}
+
 static std::string GetTagDeclName(const clang::TagDecl* D)
 {
     using namespace clang;
 
-    if (const IdentifierInfo *II = D->getIdentifier())
-        return II->getName();
-    else if (TypedefNameDecl *Typedef = D->getTypedefNameForAnonDecl())
+    if (TypedefNameDecl *Typedef = D->getTypedefNameForAnonDecl())
     {
         assert(Typedef->getIdentifier() && "Typedef without identifier?");
-        return Typedef->getIdentifier()->getName();
+        return GetDeclName(Typedef);
     }
-    else
-        return D->getNameAsString();
 
-    assert(0 && "Expected to have a name");
-    return std::string();
+    return GetDeclName(D);
 }
 
-std::string Parser::GetTypeBindName(const clang::Type* Type)
+std::string Parser::GetTypeName(const clang::Type* Type)
 {
     using namespace clang;
 
@@ -213,12 +222,11 @@ std::string Parser::GetTypeBindName(const clang::Type* Type)
 
     PrintingPolicy pp(C->getLangOpts());
     pp.SuppressTagKeyword = true;
-    //pp.SuppressSpecifiers = true;
 
     std::string TypeName;
     QualType::getAsStringInternal(Type, Qualifiers(), TypeName, pp);
 
-    return std::string();
+    return TypeName;
 }
 
 //-----------------------------------//
@@ -229,12 +237,25 @@ Cxxi::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
     using namespace clix;
 
     if (Record->isAnonymousStructOrUnion())
+    {
+        assert(0);
         return nullptr;
+    }
+
+    if (Record->hasFlexibleArrayMember())
+    {
+        assert(0);
+        return nullptr;
+    }
 
     auto NS = GetNamespace(Record);
     auto RC = NS->FindClass(
         marshalString<E_UTF8>(GetTagDeclName(Record)), /* Create */ true);
     RC->IsPOD = Record->isPOD();
+    RC->IsUnion = Record->isUnion();
+
+    // Get the record layout information.
+    const ASTRecordLayout& Layout = C->getASTContext().getASTRecordLayout(Record);
 
     // Iterate through the record ctors.
     for(auto it = Record->ctor_begin(); it != Record->ctor_end(); ++it)
@@ -260,12 +281,13 @@ Cxxi::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
     for(auto it = Record->field_begin(); it != Record->field_end(); ++it)
     {
         FieldDecl* FD = (*it);
+        
         Cxxi::Field^ Field = WalkFieldCXX(FD);
+        Field->Offset = Layout.getFieldOffset(FD->getFieldIndex());
+
         RC->Fields->Add(Field);
     }
 
-    // Get the record layout information.
-    const ASTRecordLayout& Layout = C->getASTContext().getASTRecordLayout(Record);
     //Debug("Size: %I64d\n", Layout.getSize().getQuantity());
 
     return RC;
@@ -289,10 +311,6 @@ Cxxi::Method^ Parser::WalkMethodCXX(clang::CXXMethodDecl* Method)
         ParmVarDecl* Parm = (*it);
 
         QualType ParmType = Parm->getType();
-        std::string ParmTypeName = GetTypeBindName(ParmType.getTypePtr());
-        
-        Debug("\tParameter: %s %s\n",
-            ParmTypeName.c_str(), Parm->getName().str().c_str());
     }
 
     std::string Mangled = GetDeclMangledName(Method, CXXABI_Microsoft);
@@ -325,7 +343,7 @@ Cxxi::Field^ Parser::WalkFieldCXX(clang::FieldDecl* FD)
 
     Cxxi::Field^ F = gcnew Cxxi::Field();
     F->Name = marshalString<E_UTF8>(FD->getName());
-    F->Type = ConvertTypeToCLR(FD->getType());
+    F->Type = WalkType(FD->getType());
     F->Access = ConvertToAccess(FD->getAccess());
 
     HandleComments(FD, F);
@@ -394,58 +412,9 @@ Cxxi::Namespace^ Parser::GetNamespace(const clang::NamedDecl* ND)
     }
 
     return NS;
-
-#if 0
-
-    if (const ClassTemplateSpecializationDecl *Spec
-            = dyn_cast<ClassTemplateSpecializationDecl>(*I)) {
-        const TemplateArgumentList &TemplateArgs = Spec->getTemplateArgs();
-        std::string TemplateArgsStr
-        = TemplateSpecializationType::PrintTemplateArgumentList(
-                                            TemplateArgs.data(),
-                                            TemplateArgs.size(),
-                                            P);
-        OS << Spec->getName() << TemplateArgsStr;
-    } else if (const NamespaceDecl *ND = dyn_cast<NamespaceDecl>(*I)) {
-        if (ND->isAnonymousNamespace())
-        OS << "<anonymous namespace>";
-        else
-        OS << *ND;
-    } else if (const RecordDecl *RD = dyn_cast<RecordDecl>(*I)) {
-        if (!RD->getIdentifier())
-        OS << "<anonymous " << RD->getKindName() << '>';
-        else
-        OS << *RD;
-    } else if (const FunctionDecl *FD = dyn_cast<FunctionDecl>(*I)) {
-        const FunctionProtoType *FT = 0;
-        if (FD->hasWrittenPrototype())
-        FT = dyn_cast<FunctionProtoType>(FD->getType()->castAs<FunctionType>());
-
-        OS << *FD << '(';
-        if (FT) {
-        unsigned NumParams = FD->getNumParams();
-        for (unsigned i = 0; i < NumParams; ++i) {
-            if (i)
-            OS << ", ";
-            OS << FD->getParamDecl(i)->getType().stream(P);
-        }
-
-        if (FT->isVariadic()) {
-            if (NumParams > 0)
-            OS << ", ";
-            OS << "...";
-        }
-        }
-        OS << ')';
-    } else {
-        OS << *cast<NamedDecl>(*I);
-    }
-    OS << "::";
-    }
-#endif
 }
 
-static Cxxi::PrimitiveType ConvertBuiltinTypeToCLR(const clang::BuiltinType* Builtin)
+static Cxxi::PrimitiveType WalkBuiltinType(const clang::BuiltinType* Builtin)
 {
     using namespace Cxxi;
 
@@ -490,7 +459,7 @@ static Cxxi::PrimitiveType ConvertBuiltinTypeToCLR(const clang::BuiltinType* Bui
 
 //-----------------------------------//
 
-Cxxi::Type^ Parser::ConvertTypeToCLR(clang::QualType QualType)
+Cxxi::Type^ Parser::WalkType(clang::QualType QualType)
 {
     using namespace clang;
     using namespace clix;
@@ -514,7 +483,7 @@ Cxxi::Type^ Parser::ConvertTypeToCLR(clang::QualType QualType)
         assert(Builtin && "Expected a builtin type");
     
         auto BT = gcnew Cxxi::BuiltinType();
-        BT->Type = ConvertBuiltinTypeToCLR(Builtin);
+        BT->Type = WalkBuiltinType(Builtin);
         
         return BT;
     }
@@ -538,21 +507,35 @@ Cxxi::Type^ Parser::ConvertTypeToCLR(clang::QualType QualType)
         
         auto P = gcnew Cxxi::PointerType();
         P->Modifier = Cxxi::PointerType::TypeModifier::Pointer;
-        P->Pointee = ConvertTypeToCLR(Pointer->getPointeeType());
+        P->Pointee = WalkType(Pointer->getPointeeType());
 
         return P;
     }
     case Type::Typedef:
     {
         auto TT = Type->getAs<clang::TypedefType>();
-        const TypedefNameDecl* TND = TT->getDecl();
+        TypedefNameDecl* TD = TT->getDecl();
 
-        return ConvertTypeToCLR(TND->getUnderlyingType());
+		auto NS = GetNamespace(TD);
+		auto TDD = NS->FindTypedef(marshalString<E_UTF8>(GetDeclName(TD)));
+
+		// If we did not find an existing typedef declaration, this is a type
+		// used by the standard library, so we walk the decl to process it.
+		if (!TDD)
+		{
+			TDD = (Cxxi::Typedef^) WalkDeclaration(TD, false);
+			assert(TDD != nullptr);
+		}
+
+		auto Type = gcnew Cxxi::TypedefType();
+		Type->Declaration = TDD;
+
+        return Type;
     }
     case Type::Elaborated:
     {
         auto ET = Type->getAs<clang::ElaboratedType>();
-        return ConvertTypeToCLR(ET->getNamedType());
+        return WalkType(ET->getNamedType());
     }
     case Type::Record:
     {
@@ -577,14 +560,14 @@ Cxxi::Type^ Parser::ConvertTypeToCLR(clang::QualType QualType)
     case Type::Paren:
     {
         auto PT = Type->getAs<clang::ParenType>();
-        return ConvertTypeToCLR(PT->getInnerType());
+        return WalkType(PT->getInnerType());
     }
     case Type::ConstantArray:
     {
         auto AT = AST->getAsConstantArrayType(QualType);
 
         auto A = gcnew Cxxi::ArrayType();
-        A->Type = ConvertTypeToCLR(AT->getElementType());
+        A->Type = WalkType(AT->getElementType());
         A->SizeType = Cxxi::ArrayType::ArraySize::Constant;
         A->Size = AST->getConstantArrayElementCount(AT);
 
@@ -595,19 +578,22 @@ Cxxi::Type^ Parser::ConvertTypeToCLR(clang::QualType QualType)
         auto FP = Type->getAs<clang::FunctionProtoType>();
 
         auto F = gcnew Cxxi::FunctionType();
-        F->ReturnType = ConvertTypeToCLR(FP->getResultType());
+        F->ReturnType = WalkType(FP->getResultType());
+
+		for (unsigned i = 0; i < FP->getNumArgs(); ++i)
+			F->Arguments->Add(WalkType(FP->getArgType(i)));
 
         return F;
     }
     case Type::TypeOf:
     {
         auto TO = Type->getAs<clang::TypeOfType>();
-        return ConvertTypeToCLR(TO->getUnderlyingType());
+        return WalkType(TO->getUnderlyingType());
     }
     case Type::TypeOfExpr:
     {
         auto TO = Type->getAs<clang::TypeOfExprType>();
-        return ConvertTypeToCLR(TO->getUnderlyingExpr()->getType());
+        return WalkType(TO->getUnderlyingExpr()->getType());
     }
     default:
     {   
@@ -631,7 +617,7 @@ Cxxi::Enumeration^ Parser::WalkEnum(clang::EnumDecl* ED)
 
     // Get the underlying integer backing the enum.
     QualType IntType = ED->getIntegerType();
-    E->Type = safe_cast<Cxxi::BuiltinType^>(ConvertTypeToCLR(IntType));
+    E->Type = safe_cast<Cxxi::BuiltinType^>(WalkType(IntType));
 
     for(auto it = ED->enumerator_begin(); it != ED->enumerator_end(); ++it)
     {
@@ -665,7 +651,7 @@ Cxxi::Function^ Parser::WalkFunction(clang::FunctionDecl* FD)
     F->IsVariadic = FD->isVariadic();
     F->IsInline = FD->isInlined();
     F->CallingConvention = Cxxi::CallingConvention::Default;
-    F->ReturnType = ConvertTypeToCLR(FD->getResultType());
+    F->ReturnType = WalkType(FD->getResultType());
 
     for(auto it = FD->param_begin(); it != FD->param_end(); ++it)
     {
@@ -673,7 +659,7 @@ Cxxi::Function^ Parser::WalkFunction(clang::FunctionDecl* FD)
          
          auto P = gcnew Cxxi::Parameter();
          P->Name = marshalString<E_UTF8>(VD->getNameAsString());
-         P->Type = ConvertTypeToCLR(VD->getType());
+         P->Type = WalkType(VD->getType());
          P->HasDefaultValue = VD->hasDefaultArg();
 
          F->Parameters->Add(P);
@@ -741,6 +727,12 @@ Cxxi::Module^ Parser::GetModule(clang::SourceLocation Loc)
 
     SourceManager& SM = C->getSourceManager();
     StringRef File = SM.getFilename(Loc);
+
+    if (!File.data() || File.empty())
+    {
+        assert(0 && "Expected to find a valid file");
+        return nullptr;
+    }
 
     return Lib->FindOrCreateModule(marshalString<E_UTF8>(File));
 }
@@ -837,12 +829,15 @@ void Parser::HandleComments(clang::Decl* D, Cxxi::Declaration^ Decl)
 
 //-----------------------------------//
 
-void Parser::WalkDeclaration(clang::Decl* D)
+Cxxi::Declaration^ Parser::WalkDeclaration(clang::Decl* D, bool ignoreSystemDecls)
 {
     using namespace clang;
+    using namespace clix;
 
-    if (!IsValidDeclaration(D->getLocation()))
-        return;
+	// Ignore declarations that do not come from user-provided
+	// header files.
+    if (ignoreSystemDecls && !IsValidDeclaration(D->getLocation()))
+        return nullptr;
 
     if(NamedDecl* ND = dyn_cast<NamedDecl>(D))
     {
@@ -869,7 +864,7 @@ void Parser::WalkDeclaration(clang::Decl* D)
         StringRef AnnotationText = Annotation->getAnnotation();
     }
 
-    using namespace clix;
+	Cxxi::Declaration^ Decl;
 
     switch(D->getKind())
     {
@@ -888,6 +883,8 @@ void Parser::WalkDeclaration(clang::Decl* D)
         if (!RC)
             NS->Classes->Add(Class);
         
+		Decl = Class;
+
         break;
     }
     case Decl::Enum:
@@ -899,8 +896,10 @@ void Parser::WalkDeclaration(clang::Decl* D)
         auto E = WalkEnum(ED);
         HandleComments(ED, E);
 
-        auto M = GetModule(ED->getLocation());
-        M->Enums->Add(E);
+        auto NS = GetNamespace(ED);
+        NS->Enums->Add(E);
+
+		Decl = E;
         
         break;
     }
@@ -913,8 +912,10 @@ void Parser::WalkDeclaration(clang::Decl* D)
         auto F = WalkFunction(FD);
         HandleComments(FD, F);
 
-        auto M = GetModule(FD->getLocation());
-        M->Functions->Add(F);
+        auto NS = GetNamespace(FD);
+        NS->Functions->Add(F);
+
+		Decl = F;
         
         break;
     }
@@ -924,8 +925,8 @@ void Parser::WalkDeclaration(clang::Decl* D)
         
         for (auto it = LS->decls_begin(); it != LS->decls_end(); ++it)
         {
-            Decl* D = (*it);
-            WalkDeclaration(D);
+            clang::Decl* D = (*it);
+            Decl = WalkDeclaration(D);
         }
         
         break;
@@ -933,21 +934,17 @@ void Parser::WalkDeclaration(clang::Decl* D)
     case Decl::Typedef:
     {
         TypedefDecl* TD = cast<TypedefDecl>(D);
-        
         const QualType& Type = TD->getUnderlyingType();
-        std::string Name = GetTypeBindName(Type.getTypePtr());
 
-        if (Type->isBuiltinType())
-            break;
+        auto Typedef = gcnew Cxxi::Typedef();
+        Typedef->Name = marshalString<E_UTF8>(GetDeclName(TD));
+        Typedef->Type = WalkType(Type);
 
-#if 0
-        // If we have a type name for a previously unnamed type,
-        // then use this name as the name of the original type.
+        auto NS = GetNamespace(TD);
+        NS->Typedefs->Add(Typedef);
 
-        if(auto CType = ConvertTypeToCLR(Type))
-            CType->Name = marshalString<E_UTF8>(Name);
-#endif
-
+		Decl = Typedef;
+            
         break;
     }
     case Decl::Namespace:
@@ -956,8 +953,8 @@ void Parser::WalkDeclaration(clang::Decl* D)
 
         for (auto it = ND->decls_begin(); it != ND->decls_end(); ++it)
         {
-            Decl* D = (*it);
-            WalkDeclaration(D);
+            clang::Decl* D = (*it);
+            Decl = WalkDeclaration(D);
         }
         
         break;
@@ -968,6 +965,8 @@ void Parser::WalkDeclaration(clang::Decl* D)
         //assert(0 && "Unhandled declaration kind");
         break;
     } };
+
+	return Decl;
 }
 
 //-----------------------------------//
@@ -990,8 +989,7 @@ bool Parser::Parse(const std::string& File)
 
     if (!file)
     {
-        Debug("Filename '%s' was not found."
-              "Check your compiler paths.\n", File.c_str());
+        Debug("Filename '%s' was not found.\n", File.c_str());
         return false;
     }
 

@@ -1,7 +1,7 @@
 /************************************************************************
 *
-* Flush3D <http://www.flush3d.com> © (2008-201x) 
-* Licensed under the LGPL 2.1 (GNU Lesser General Public License)
+* Cxxi
+* Licensed under the simplified BSD license. All rights reserved.
 *
 ************************************************************************/
 
@@ -30,8 +30,18 @@
 #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof(arr[0]))
 #define Debug printf
 
+using namespace System::Collections::Generic;
+
 public ref struct ParserOptions
 {
+    ParserOptions()
+    {
+        IncludeDirs = gcnew List<System::String^>();
+    }
+
+    // Include directories
+    List<System::String^>^ IncludeDirs;
+
     // C/C++ header file name.
     System::String^ FileName;
 
@@ -51,23 +61,25 @@ protected:
 
     // AST traversers
     void WalkAST();
-    void WalkDeclaration(clang::Decl* D);
     void WalkMacros(clang::PreprocessingRecord* PR);
+    Cxxi::Declaration^ WalkDeclaration(clang::Decl* D,
+									bool IgnoreSystemDecls = true);
     Cxxi::Enumeration^ WalkEnum(clang::EnumDecl*);
     Cxxi::Function^ WalkFunction(clang::FunctionDecl*);
     Cxxi::Class^ WalkRecordCXX(clang::CXXRecordDecl*);
     Cxxi::Method^ WalkMethodCXX(clang::CXXMethodDecl*);
     Cxxi::Field^ WalkFieldCXX(clang::FieldDecl*);
+    Cxxi::Type^ WalkType(clang::QualType QualType);
 
     // Clang helpers
     bool IsValidDeclaration(const clang::SourceLocation& Loc);
     std::string GetDeclMangledName(clang::Decl*, clang::TargetCXXABI);
-    std::string GetTypeBindName(const clang::Type*);
+    std::string GetTypeName(const clang::Type*);
     void HandleComments(clang::Decl* D, Cxxi::Declaration^);
     
+
     Cxxi::Module^ GetModule(clang::SourceLocation Loc);
     Cxxi::Namespace^ GetNamespace(const clang::NamedDecl*);
-    Cxxi::Type^ ConvertTypeToCLR(clang::QualType QualType);
 
     gcroot<Cxxi::Library^> Lib;
     llvm::OwningPtr<clang::CompilerInstance> C;
