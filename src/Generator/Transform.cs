@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
@@ -35,12 +36,31 @@ namespace Cxxi
 		}
 
 		/// <summary>
+		/// Processes an enum.
+		/// </summary>
+		public virtual bool ProcessEnum(Enumeration @enum)
+		{
+			return false;
+		}
+
+		/// <summary>
 		/// Processes an enum item.
 		/// </summary>
 		public virtual bool ProcessEnumItem(Enumeration.Item item)
 		{
 			return false;
 		}
+	}
+
+	[Flags]
+	public enum RenameFlags
+	{
+		Function,
+		Record,
+		Field,
+		Enum,
+		EnumItem,
+		Declaration = Function | Record | Field | Enum | EnumItem,
 	}
 
 	/// <summary>
@@ -50,6 +70,7 @@ namespace Cxxi
 	{
 		public string Pattern;
 		public string Replacement;
+		public RenameFlags Flags = RenameFlags.Declaration;
 
 		public RenameTransform(string pattern, string replacement)
 		{
@@ -57,13 +78,23 @@ namespace Cxxi
 			Replacement = replacement;
 		}
 
+		public RenameTransform(string pattern, string replacement, RenameFlags flags)
+			: this(pattern, replacement)
+		{
+			Flags = flags;
+		}
+
 		public override bool ProcessDeclaration(Declaration type)
 		{
+			if (!Flags.HasFlag(RenameFlags.Declaration))
+				return false;
 			return Rename(ref type.Name);
 		}
 
 		public override bool ProcessEnumItem(Enumeration.Item item)
 		{
+			if (!Flags.HasFlag(RenameFlags.EnumItem))
+				return false;
 			return Rename(ref item.Name);
 		}
 
@@ -85,14 +116,24 @@ namespace Cxxi
 	{
 		#region Transform Operations
 
+		public void RenameWithPattern(string pattern, string replacement, RenameFlags flags)
+		{
+			Transformations.Add(new RenameTransform(pattern, replacement, flags));
+		}
+
 		public void RemovePrefix(string prefix)
 		{
-			Transformations.Add(new RenameTransform(prefix, String.Empty));
+			Transformations.Add(new RenameTransform("^"+prefix, String.Empty));
+		}
+
+		public void RemovePrefixEnumItem(string prefix)
+		{
+			Transformations.Add(new RenameTransform("^"+prefix, String.Empty, RenameFlags.EnumItem));
 		}
 
 		public void RemoveType(Declaration type)
 		{
-
+			throw new NotImplementedException();
 		}
 
 		#endregion
