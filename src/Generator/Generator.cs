@@ -33,7 +33,7 @@ namespace Cxxi
 			GenerateModules();
 		}
 
-		int UniqueType = 0;
+		int UniqueName = 0;
 
 		void CleanupText(ref string debugText)
 		{
@@ -46,34 +46,50 @@ namespace Cxxi
 			debugText = Regex.Replace(debugText, "\n", "");
 		}
 
-		void ProcessType(Declaration type)
+		void ProcessDeclaration(Declaration decl)
 		{
 			// If after all the transformations the type still does
 			// not have a name, then generate one.
 
-			if (String.IsNullOrWhiteSpace(type.Name))
-				type.Name = String.Format("UnnamedType{0}", UniqueType++);
+			if (string.IsNullOrWhiteSpace(decl.Name))
+				decl.Name = string.Format("Unnamed{0}", UniqueName++);
 
-			CleanupText(ref type.DebugText);
+			CleanupText(ref decl.DebugText);
 		}
 
-		void ProcessTypes<T>(List<T> types) where T : Declaration
+		void ProcessDeclarations<T>(List<T> decls) where T : Declaration
 		{
-			foreach (T type in types)
-				ProcessType(type);
+			foreach (T decl in decls)
+				ProcessDeclaration(decl);
 		}
 
-		void ProcessClasses(List<Class> Classes)
+		void ProcessClasses(List<Class> classes)
 		{
-			ProcessTypes(Classes);
+			ProcessDeclarations(classes);
 
-			foreach (var @class in Classes)
-				ProcessTypes(@class.Fields);
+			foreach (var @class in classes)
+				ProcessDeclarations(@class.Fields);
+		}
+
+		void ProcessTypedefs(Namespace @namespace, List<Typedef> typedefs)
+		{
+			ProcessDeclarations(typedefs);
+
+			foreach (var typedef in typedefs)
+			{
+				var @class = @namespace.FindClass(typedef.Name);
+
+				// Clang will walk the typedef'd tag type and the typedef decl,
+				// so we ignore the class and process just the typedef.
+
+				if (@class != null)
+					typedef.Ignore = true;
+			}
 		}
 
 		void ProcessFunctions(List<Function> Functions)
 		{
-			ProcessTypes(Functions);
+			ProcessDeclarations(Functions);
 
 			foreach (var function in Functions)
 			{
@@ -86,13 +102,16 @@ namespace Cxxi
 					Console.WriteLine(String.Format(s, function.Name));
 				}
 
-				ProcessTypes(function.Parameters);
+				foreach (var param in function.Parameters)
+				{
+					ProcessDeclaration(param);
+				}
 			}
 		}
 
 		void ProcessModules()
 		{
-			if (String.IsNullOrEmpty(Library.Name))
+			if (string.IsNullOrEmpty(Library.Name))
 				Library.Name = "";
 
 			// Process everything in the global namespace for now.
@@ -104,15 +123,16 @@ namespace Cxxi
 
 		void ProcessNamespace(Namespace @namespace)
 		{
-			ProcessTypes(@namespace.Enums);
+			ProcessDeclarations(@namespace.Enums);
 			ProcessFunctions(@namespace.Functions);
 			ProcessClasses(@namespace.Classes);
+			ProcessTypedefs(@namespace, @namespace.Typedefs);
 		}
 
 		void TransformModule()
 		{
-			if (String.IsNullOrEmpty(Library.Name))
-				Library.Name = "";
+			if (string.IsNullOrEmpty(Library.Name))
+				Library.Name = string.Empty;
 
 			// Process everything in the global namespace for now.
 			foreach (var module in Library.Modules)
@@ -125,35 +145,44 @@ namespace Cxxi
 
 				foreach (Class @class in module.Classes)
 					TransformClass(@class);
+
+				foreach (Typedef typedef in module.Typedefs)
+					TransformTypedef(typedef);
 			}
 		}
 
-		void TransformType(Declaration type)
+		void TransformDeclaration(Declaration decl)
 		{
 			foreach (var transform in Transformations)
-				transform.ProcessDeclaration(type);
+				transform.ProcessDeclaration(decl);
+		}
+
+		void TransformTypedef(Typedef typedef)
+		{
+			foreach (var transform in Transformations)
+				transform.ProcessDeclaration(typedef);
 		}
 
 		void TransformClass(Class @class)
 		{
-			TransformType(@class);
+			TransformDeclaration(@class);
 
 			foreach (var field in @class.Fields)
-				TransformType(field);
+				TransformDeclaration(field);
 		}
 
 		void TransformFunction(Function function)
 		{
-			TransformType(function);
+			TransformDeclaration(function);
 
 			foreach (var param in function.Parameters)
-				TransformType(param);
+				TransformDeclaration(param);
 		}
 
 
 		void TransformEnum(Enumeration @enum)
 		{
-			TransformType(@enum);
+			TransformDeclaration(@enum);
 
 			foreach (var transform in Transformations)
 			{
