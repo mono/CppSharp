@@ -24,6 +24,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Runtime", "..\src\Runtime\R
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSDL", "..\bin\gen\build\NSDL\NSDL.csproj", "{77BA1CDF-2DA3-451A-8E4A-A9074236140A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Clang", "..\bin\gen\build\Clang\Clang.csproj", "{546F6CAB-94BB-4B2F-B65E-D19CBF38DB75}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -147,6 +149,18 @@ Global
 		{77BA1CDF-2DA3-451A-8E4A-A9074236140A}.Release|Win32.Build.0 = Release|x86
 		{77BA1CDF-2DA3-451A-8E4A-A9074236140A}.Release|x86.ActiveCfg = Release|x86
 		{77BA1CDF-2DA3-451A-8E4A-A9074236140A}.Release|x86.Build.0 = Release|x86
+		{546F6CAB-94BB-4B2F-B65E-D19CBF38DB75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{546F6CAB-94BB-4B2F-B65E-D19CBF38DB75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{546F6CAB-94BB-4B2F-B65E-D19CBF38DB75}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{546F6CAB-94BB-4B2F-B65E-D19CBF38DB75}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{546F6CAB-94BB-4B2F-B65E-D19CBF38DB75}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{546F6CAB-94BB-4B2F-B65E-D19CBF38DB75}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{546F6CAB-94BB-4B2F-B65E-D19CBF38DB75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{546F6CAB-94BB-4B2F-B65E-D19CBF38DB75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{546F6CAB-94BB-4B2F-B65E-D19CBF38DB75}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{546F6CAB-94BB-4B2F-B65E-D19CBF38DB75}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{546F6CAB-94BB-4B2F-B65E-D19CBF38DB75}.Release|Win32.ActiveCfg = Release|Any CPU
+		{546F6CAB-94BB-4B2F-B65E-D19CBF38DB75}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

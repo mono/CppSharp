@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Libraries\Clang.cs" />
     <Compile Include="Filter.cs" />
     <Compile Include="Generator.cs" />
     <Compile Include="Glob.cs" />
@@ -57,7 +58,7 @@
     <Compile Include="Options.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SDL.cs" />
+    <Compile Include="Libraries\SDL.cs" />
     <Compile Include="Templates\CSharpModule.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
