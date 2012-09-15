@@ -1,5 +1,3 @@
-using System;
-
 namespace Cxxi
 {
 	/// <summary>
@@ -7,6 +5,10 @@ namespace Cxxi
 	/// </summary>
 	public class Field : Declaration
 	{
+		public Type Type;
+		public AccessSpecifier Access;
+		public uint Offset = 0;
+
 		public Field()
 		{
 		}
@@ -17,8 +19,5 @@ namespace Cxxi
 			Type = type;
 			Access = access;
 		}
-
-		public Type Type { get; set; }
-		public AccessSpecifier Access { get; set; }
 	}
 }
