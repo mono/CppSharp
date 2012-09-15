@@ -53,11 +53,13 @@ namespace Cxxi
 	public class Library
 	{
 		public string Name;
+		public string Native;
 		public List<Module> Modules;
 
-		public Library(string name)
+		public Library(string name, string native)
 		{
 			Name = name;
+			Native = native;
 			Modules = new List<Module>();
 		}
 
