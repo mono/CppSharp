@@ -4,7 +4,7 @@ C++ C# interop bridge tool Developer's Manual
 1. Overview
 -----------
 
-This tool allows you to generate bindinds that wrap C/C++ code allowing
+This tool allows you to generate bindings that wrap C/C++ code allowing
 interoperation in another language. This can be useful if you have an
 existing native codebase and want to add scripting support, or want to
 consume an existing native library in your managed code.
