@@ -40,11 +40,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\build\bin\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">bin\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">obj\Debug\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Parser_d</TargetName>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\bin\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">bin\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">obj\Release\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Parser</TargetName>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
@@ -53,7 +53,7 @@
     <ClCompile>
       <AdditionalOptions>/wd4146 /wd4244 /wd4800 /wd4345 /wd4355 /wd4996 /wd4624 /wd4291 /clr %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\..\auth\LLVM\include;..\..\..\auth\LLVM\build\include;..\..\..\auth\LLVM\tools\clang\include;..\..\..\auth\LLVM\build\tools\clang\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\deps\llvm\include;..\deps\llvm\build\include;..\deps\llvm\tools\clang\include;..\deps\llvm\build\tools\clang\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
@@ -76,7 +76,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>LLVMSupport.lib;LLVMAsmParser.lib;LLVMMC.lib;LLVMMCParser.lib;LLVMX86AsmParser.lib;LLVMX86AsmPrinter.lib;LLVMX86Desc.lib;LLVMX86Info.lib;LLVMX86Utils.lib;clangAnalysis.lib;clangBasic.lib;clangAST.lib;clangDriver.lib;clangEdit.lib;clangFrontend.lib;clangLex.lib;clangParse.lib;clangSema.lib;clangSerialization.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
-      <AdditionalLibraryDirectories>..\..\..\auth\LLVM\build\lib\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\deps\llvm\build\lib\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <EntryPointSymbol>
       </EntryPointSymbol>
     </Link>
@@ -113,19 +113,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\Parser\CXXABI.h" />
-    <ClInclude Include="..\..\src\Parser\Interop.h" />
-    <ClInclude Include="..\..\src\Parser\Parser.h" />
+    <ClInclude Include="..\src\Parser\CXXABI.h" />
+    <ClInclude Include="..\src\Parser\Interop.h" />
+    <ClInclude Include="..\src\Parser\Parser.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\Parser\Main.cpp">
-    </ClCompile>
-    <ClCompile Include="..\..\src\Parser\Parser.cpp">
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Parser.lua" />
-    <None Include="..\premake4.lua" />
+    <ClCompile Include="..\src\Parser\Main.cpp" />
+    <ClCompile Include="..\src\Parser\Parser.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

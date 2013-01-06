@@ -8,11 +8,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gcc-generator", "src\gcc-ge
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Legacy", "Legacy", "{CC1EED48-730C-417A-9390-525BBCB518DA}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Parser", "vs2010\Parser.vcxproj", "{C8BF56CF-4CD2-324A-9092-43F508104956}"
-	ProjectSection(ProjectDependencies) = postProject
-		{6BEB8FA2-97AA-40B7-AB92-42F6EDDC4490} = {6BEB8FA2-97AA-40B7-AB92-42F6EDDC4490}
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bridge", "..\src\Bridge\Bridge.csproj", "{6BEB8FA2-97AA-40B7-AB92-42F6EDDC4490}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Generator", "..\src\Generator\Generator.csproj", "{73499B8E-A6A4-42FF-AB8A-754CE2780777}"
@@ -26,11 +21,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Generator.Tests", "..\src\G
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{018A0BF1-788C-4366-BC67-8C4E7D14F5B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Generator.Clang", "..\examples\Clang\Generator.Clang.csproj", "{5439BC03-FA91-4D93-9EA0-4E550C1610F3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Clang", "..\examples\Clang\Clang.csproj", "{5439BC03-FA91-4D93-9EA0-4E550C1610F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Generator.Flood", "..\examples\Flood\Generator.Flood.csproj", "{28455425-1A80-458E-952C-5B0069866AAD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flood", "..\examples\Flood\Flood.csproj", "{28455425-1A80-458E-952C-5B0069866AAD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Generator.SDL", "..\examples\SDL\Generator.SDL.csproj", "{8D642354-FBD5-4551-95A6-09D369B83167}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SDL", "..\examples\SDL\SDL.csproj", "{8D642354-FBD5-4551-95A6-09D369B83167}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Parser", "Parser.vcxproj", "{C8BF56CF-4CD2-324A-9092-43F508104956}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -85,20 +82,6 @@ Global
 		{AD0F9378-789C-4AF1-B0DD-6DD9A63C3401}.Release|Win32.ActiveCfg = Release|x86
 		{AD0F9378-789C-4AF1-B0DD-6DD9A63C3401}.Release|x86.ActiveCfg = Release|x86
 		{AD0F9378-789C-4AF1-B0DD-6DD9A63C3401}.Release|x86.Build.0 = Release|x86
-		{C8BF56CF-4CD2-324A-9092-43F508104956}.Debug|Any CPU.ActiveCfg = Debug|Win32
-		{C8BF56CF-4CD2-324A-9092-43F508104956}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
-		{C8BF56CF-4CD2-324A-9092-43F508104956}.Debug|Mixed Platforms.Build.0 = Debug|Win32
-		{C8BF56CF-4CD2-324A-9092-43F508104956}.Debug|Win32.ActiveCfg = Debug|Win32
-		{C8BF56CF-4CD2-324A-9092-43F508104956}.Debug|Win32.Build.0 = Debug|Win32
-		{C8BF56CF-4CD2-324A-9092-43F508104956}.Debug|x86.ActiveCfg = Debug|Win32
-		{C8BF56CF-4CD2-324A-9092-43F508104956}.Debug|x86.Build.0 = Debug|Win32
-		{C8BF56CF-4CD2-324A-9092-43F508104956}.Release|Any CPU.ActiveCfg = Release|Win32
-		{C8BF56CF-4CD2-324A-9092-43F508104956}.Release|Mixed Platforms.ActiveCfg = Release|Win32
-		{C8BF56CF-4CD2-324A-9092-43F508104956}.Release|Mixed Platforms.Build.0 = Release|Win32
-		{C8BF56CF-4CD2-324A-9092-43F508104956}.Release|Win32.ActiveCfg = Release|Win32
-		{C8BF56CF-4CD2-324A-9092-43F508104956}.Release|Win32.Build.0 = Release|Win32
-		{C8BF56CF-4CD2-324A-9092-43F508104956}.Release|x86.ActiveCfg = Release|Win32
-		{C8BF56CF-4CD2-324A-9092-43F508104956}.Release|x86.Build.0 = Release|Win32
 		{6BEB8FA2-97AA-40B7-AB92-42F6EDDC4490}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6BEB8FA2-97AA-40B7-AB92-42F6EDDC4490}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6BEB8FA2-97AA-40B7-AB92-42F6EDDC4490}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -189,6 +172,20 @@ Global
 		{8D642354-FBD5-4551-95A6-09D369B83167}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{8D642354-FBD5-4551-95A6-09D369B83167}.Release|Win32.ActiveCfg = Release|Any CPU
 		{8D642354-FBD5-4551-95A6-09D369B83167}.Release|x86.ActiveCfg = Release|Any CPU
+		{C8BF56CF-4CD2-324A-9092-43F508104956}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{C8BF56CF-4CD2-324A-9092-43F508104956}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{C8BF56CF-4CD2-324A-9092-43F508104956}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{C8BF56CF-4CD2-324A-9092-43F508104956}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C8BF56CF-4CD2-324A-9092-43F508104956}.Debug|Win32.Build.0 = Debug|Win32
+		{C8BF56CF-4CD2-324A-9092-43F508104956}.Debug|x86.ActiveCfg = Debug|Win32
+		{C8BF56CF-4CD2-324A-9092-43F508104956}.Debug|x86.Build.0 = Debug|Win32
+		{C8BF56CF-4CD2-324A-9092-43F508104956}.Release|Any CPU.ActiveCfg = Release|Win32
+		{C8BF56CF-4CD2-324A-9092-43F508104956}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{C8BF56CF-4CD2-324A-9092-43F508104956}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{C8BF56CF-4CD2-324A-9092-43F508104956}.Release|Win32.ActiveCfg = Release|Win32
+		{C8BF56CF-4CD2-324A-9092-43F508104956}.Release|Win32.Build.0 = Release|Win32
+		{C8BF56CF-4CD2-324A-9092-43F508104956}.Release|x86.ActiveCfg = Release|Win32
+		{C8BF56CF-4CD2-324A-9092-43F508104956}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,7 +1,7 @@
 /************************************************************************
 *
-* Flush3D <http://www.flush3d.com> © (2008-201x) 
-* Licensed under the LGPL 2.1 (GNU Lesser General Public License)
+* Cxxi
+* Licensed under the simplified BSD license. All rights reserved.
 *
 ************************************************************************/
 

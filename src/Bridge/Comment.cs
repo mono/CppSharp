@@ -4,11 +4,11 @@ using System.Text;
 
 namespace Cxxi
 {
-	/// <summary>
-	/// Represents a C++ comment.
-	/// </summary>
-	public class Comment
-	{
+    /// <summary>
+    /// Represents a C++ comment.
+    /// </summary>
+    public class Comment
+    {
 
-	}
+    }
 }

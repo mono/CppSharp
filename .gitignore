@@ -16,3 +16,6 @@ tests/output
 src/generator/generator
 *.pc
 .DS_Store
+vs2010
+llvm
+obj

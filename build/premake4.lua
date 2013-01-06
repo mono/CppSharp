@@ -11,7 +11,7 @@ common_msvc_copts =
   "/wd4355", "/wd4996", "/wd4624", "/wd4291"
 }
 
-solution "Cxxi2"
+solution "Cxxi"
 
 	configurations
 	{ 

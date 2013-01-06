@@ -3,106 +3,173 @@ using System.Collections.Generic;
 
 namespace Cxxi
 {
-	/// <summary>
-	/// Represents a C++ namespace.
-	/// </summary>
-	public class Namespace
-	{
-		public string Name { get; set; }
-		public Namespace Parent { get; set; }
-		public bool IsAnonymous { get; set; }
+    /// <summary>
+    /// Represents a C++ namespace.
+    /// </summary>
+    public class Namespace : Declaration
+    {
+        public Namespace Parent { get; set; }
+        public bool IsAnonymous { get; set; }
 
-		public List<Namespace> Namespaces;
-		public List<Enumeration> Enums;
-		public List<Function> Functions;
-		public List<Class> Classes;
-		public List<Typedef> Typedefs;
+        public List<Namespace> Namespaces;
+        public List<Enumeration> Enums;
+        public List<Function> Functions;
+        public List<Class> Classes;
+        public List<Template> Templates;
+        public List<TypedefDecl> Typedefs;
 
-		public Namespace()
-			: this(null, String.Empty)
-		{
-		}
+        // Translation unit the declaration is contained in.
+        public TranslationUnit TranslationUnit
+        {
+            get
+            {
+                if (this is TranslationUnit)
+                    return this as TranslationUnit;
+                else
+                    return Parent.TranslationUnit;
+            }
+        }
 
-		public Namespace(Namespace parent, string name, bool isAnonymous = false)
-		{
-			Name = name;
-			Parent = parent;
-			IsAnonymous = isAnonymous;
+        /// If the namespace should be ignored.
+        public override bool Ignore
+        {
+            get { return ExplicityIgnored || Parent.Ignore; }
+        }
 
-			Namespaces = new List<Namespace>();
-			Enums = new List<Enumeration>();
-			Functions = new List<Function>();
-			Classes = new List<Class>();
-			Typedefs = new List<Typedef>();
-		}
+        public Namespace()
+            : this(null, String.Empty)
+        {
+        }
 
-		public Namespace FindNamespace(string name)
-		{
-			return Namespaces.Find(e => e.Name.Equals(name));
-		}
+        public Namespace(Namespace parent, string name, bool isAnonymous = false)
+        {
+            Name = name;
+            Parent = parent;
+            IsAnonymous = isAnonymous;
 
-		public Enumeration FindEnum(string name)
-		{
-			return Enums.Find(e => e.Name.Equals(name));
-		}
+            Namespaces = new List<Namespace>();
+            Enums = new List<Enumeration>();
+            Functions = new List<Function>();
+            Classes = new List<Class>();
+            Templates = new List<Template>();
+            Typedefs = new List<TypedefDecl>();
+        }
 
-		public Function FindFunction(string name)
-		{
-			return Functions.Find(e => e.Name.Equals(name));
-		}
+        public Namespace FindNamespace(string name)
+        {
+            return Namespaces.Find(e => e.Name.Equals(name));
+        }
 
-		public Class FindClass(string name, bool create = false)
-		{
-			Class @class = Classes.Find(e => e.Name.Equals(name));
+        public Namespace FindCreateNamespace(string name, Namespace parent)
+        {
+            var @namespace = FindNamespace(name);
 
-			if (@class == null && create)
-			{
-				@class = new Class();
-				@class.Name = name;
+            if (@namespace == null)
+            {
+                @namespace = new Namespace(parent, name);
+                Namespaces.Add(@namespace);
+            }
 
-				Classes.Add(@class);
-			}
+            return @namespace;
+        }
 
-			return @class;
-		}
+        public Enumeration FindEnum(string name, bool createDecl = false)
+        {
+            var @enum = Enums.Find(e => e.Name.Equals(name));
 
-		public Typedef FindTypedef(string name)
-		{
-			return Typedefs.Find(e => e.Name.Equals(name));
-		}
+            if (@enum == null && createDecl)
+            {
+                @enum = new Enumeration() { Name = name, Namespace = this };
+                Enums.Add(@enum);
+            }
 
-		public T FindType<T>(string name) where T : Declaration
-		{
-			var type = FindEnum(name)
-				?? FindFunction(name)
-				?? (Declaration)FindClass(name)
-				?? FindTypedef(name);
+            return @enum;
+        }
 
-			return type as T;
-		}
+        public Function FindFunction(string name, bool createDecl = false)
+        {
+            var function =  Functions.Find(e => e.Name.Equals(name));
 
-		public Enumeration FindEnumWithItem(string name)
-		{
-			return Enums.Find(e => e.ItemsByName.ContainsKey(name));
-		}
+            if (function == null && createDecl)
+            {
+                function = new Function() { Name = name, Namespace = this };
+                Functions.Add(function);
+            }
 
-		public bool HasDeclarations
-		{
-			get
-			{
-				Predicate<Declaration> pred = (t => !t.Ignore);
-				return Enums.Exists(pred) || HasFunctions
-					|| Classes.Exists(pred) || Namespaces.Exists(n => n.HasDeclarations);
-			}
-		}
+            return function;
+        }
 
-		public bool HasFunctions
-		{
-			get
-			{
-				Predicate<Declaration> pred = (t => !t.Ignore);
-				return Functions.Exists(pred) || Namespaces.Exists(n => n.HasFunctions);
-			}
-		}
-	}
+        public Class FindClass(string name, bool createDecl = false)
+        {
+            var @class = Classes.Find(e => e.Name.Equals(name));
+
+            if (@class == null && createDecl)
+            {
+                @class = new Class {Name = name, Namespace = this};
+                Classes.Add(@class);
+            }
+            
+            return @class;
+        }
+
+        public ClassTemplate FindClassTemplate(string name)
+        {
+            return null;
+        }
+
+        public TypedefDecl FindTypedef(string name, bool createDecl = false)
+        {
+            var typedef = Typedefs.Find(e => e.Name.Equals(name));
+            
+            if (typedef == null && createDecl)
+            {
+                typedef = new TypedefDecl { Name = name, Namespace = this };
+                Typedefs.Add(typedef);
+            }
+
+            return typedef;
+        }
+
+        public T FindType<T>(string name) where T : Declaration
+        {
+            var type = FindEnum(name)
+                ?? FindFunction(name)
+                ?? (Declaration)FindClass(name)
+                ?? FindTypedef(name);
+
+            return type as T;
+        }
+
+        public Enumeration FindEnumWithItem(string name)
+        {
+            return Enums.Find(e => e.ItemsByName.ContainsKey(name));
+        }
+
+        public bool HasDeclarations
+        {
+            get
+            {
+                Predicate<Declaration> pred = (t => !t.Ignore);
+                return Enums.Exists(pred) || HasFunctions
+                    || Classes.Exists(pred) || Namespaces.Exists(n => n.HasDeclarations);
+            }
+        }
+
+        public bool HasFunctions
+        {
+            get
+            {
+                Predicate<Declaration> pred = (t => !t.Ignore);
+                return Functions.Exists(pred) || Namespaces.Exists(n => n.HasFunctions);
+            }
+        }
+
+        public bool IsRoot { get { return Parent == null; } }
+
+        public override T Visit<T>(IDeclVisitor<T> visitor)
+        {
+            return default(T);
+            //visitor.VisitNamespace(this);
+        }
+    }
 }

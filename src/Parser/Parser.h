@@ -63,22 +63,28 @@ protected:
     void WalkAST();
     void WalkMacros(clang::PreprocessingRecord* PR);
     Cxxi::Declaration^ WalkDeclaration(clang::Decl* D,
-									bool IgnoreSystemDecls = true);
+        clang::TypeLoc* = 0, bool IgnoreSystemDecls = true);
     Cxxi::Enumeration^ WalkEnum(clang::EnumDecl*);
-    Cxxi::Function^ WalkFunction(clang::FunctionDecl*);
-    Cxxi::Class^ WalkRecordCXX(clang::CXXRecordDecl*);
+    Cxxi::Function^ WalkFunction(clang::FunctionDecl*, bool IsDependent = false);
+    Cxxi::Class^ WalkRecordCXX(clang::CXXRecordDecl*, bool IsDependent = false);
     Cxxi::Method^ WalkMethodCXX(clang::CXXMethodDecl*);
     Cxxi::Field^ WalkFieldCXX(clang::FieldDecl*);
-    Cxxi::Type^ WalkType(clang::QualType QualType);
+    Cxxi::ClassTemplate^ Parser::WalkClassTemplate(clang::ClassTemplateDecl*);
+    Cxxi::FunctionTemplate^ Parser::WalkFunctionTemplate(
+        clang::FunctionTemplateDecl*);
+    Cxxi::Type^ WalkType(clang::QualType, clang::TypeLoc* = 0,
+      bool DesugarType = false);
 
     // Clang helpers
     bool IsValidDeclaration(const clang::SourceLocation& Loc);
-    std::string GetDeclMangledName(clang::Decl*, clang::TargetCXXABI);
+    std::string GetDeclMangledName(clang::Decl*, clang::TargetCXXABI,
+        bool IsDependent = false);
     std::string GetTypeName(const clang::Type*);
     void HandleComments(clang::Decl* D, Cxxi::Declaration^);
-    
+    void WalkFunction(clang::FunctionDecl* FD, Cxxi::Function^ F,
+        bool IsDependent = false);
 
-    Cxxi::Module^ GetModule(clang::SourceLocation Loc);
+    Cxxi::TranslationUnit^ GetModule(clang::SourceLocation Loc);
     Cxxi::Namespace^ GetNamespace(const clang::NamedDecl*);
 
     gcroot<Cxxi::Library^> Lib;

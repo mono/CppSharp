@@ -1,26 +1,94 @@
-using System;
-using System.Collections.Generic;
-
 namespace Cxxi
 {
-	/// <summary>
-	/// Represents a C++ method.
-	/// </summary>
-	public class Method : Function
-	{
+    public enum CXXMethodKind
+    {
+        Normal,
+        Constructor,
+        Destructor,
+        Conversion,
+        Operator,
+        UsingDirective
+    }
 
-		public Method()
-		{
-		}
+    public enum CXXOperatorKind
+    {
+        None,
+        New,
+        Delete,
+        Array_New,
+        Array_Delete,
+        Plus,
+        Minus,
+        Star,
+        Slash,
+        Percent,
+        Caret,
+        Amp,
+        Pipe,
+        Tilde,
+        Exclaim,
+        Equal,
+        Less,
+        Greater,
+        PlusEqual,
+        MinusEqual,
+        StarEqual,
+        SlashEqual,
+        PercentEqual,
+        CaretEqual,
+        AmpEqual,
+        PipeEqual,
+        LessLess,
+        GreaterGreater,
+        LessLessEqual,
+        GreaterGreaterEqual,
+        EqualEqual,
+        ExclaimEqual,
+        LessEqual,
+        GreaterEqual,
+        AmpAmp,
+        PipePipe,
+        PlusPlus,
+        MinusMinus,
+        Comma,
+        ArrowStar,
+        Arrow,
+        Call,
+        Subscript,
+        Conditional
+    }
 
-		public AccessSpecifier Access { get; set; }
+    /// <summary>
+    /// Represents a C++ record method declaration.
+    /// </summary>
+    public class Method : Function
+    {
+        public Method()
+        {
+        }
 
-		public bool IsVirtual { get; set; }
-		public bool IsStatic { get; set; }
-		public bool IsConst { get; set; }
-		public bool IsArtificial { get; set; }
-		public bool IsConstructor { get; set; }
-		public bool IsDestructor { get; set; }
-		public bool IsCopyCtor { get; set; }
-	}
+        public AccessSpecifier Access { get; set; }
+
+        public bool IsVirtual { get; set; }
+        public bool IsStatic { get; set; }
+        public bool IsConst { get; set; }
+        public bool IsImplicit { get; set; }
+
+        public CXXMethodKind Kind;
+        public CXXOperatorKind OperatorKind;
+
+        public bool IsConstructor
+        {
+            get { return Kind == CXXMethodKind.Constructor; }
+        }
+
+        public bool IsDestructor
+        {
+            get { return Kind == CXXMethodKind.Destructor; }
+        }
+
+        public bool IsDefaultConstructor;
+        public bool IsCopyConstructor;
+        public bool IsMoveConstructor;
+    }
 }

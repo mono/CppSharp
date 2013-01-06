@@ -1,59 +1,123 @@
-﻿namespace Cxxi
+﻿using System;
+
+namespace Cxxi
 {
-	/// <summary>
-	/// Represents a C++ declaration.
-	/// </summary>
-	public class Declaration
-	{
-		// Name of the type.
-		public string Name;
+    /// <summary>
+    /// Represents a C++ declaration.
+    /// </summary>
+    public abstract class Declaration
+    {
+        // Namespace the declaration is contained in.
+        public Namespace Namespace;
 
-		// Doxygen-style brief comment.
-		public string BriefComment;
+        private string name;
 
-		// Namespace the type is declared in.
-		//public Namespace Namespace;
+        // Name of the declaration.
+        public string Name
+        {
+            get { return name; }
+            set
+            {
+                name = value;
+                if (string.IsNullOrEmpty(OriginalName))
+                    OriginalName = name;
+            }
+        }
 
-		// Wether the type should be ignored.
-		public bool Ignore;
+        // Name of the declaration.
+        public string OriginalName;
 
-		// Contains a debug text of the type declaration.
-		public string DebugText;
+        public string QualifiedOriginalName
+        {
+            get
+            {
+                return Namespace.IsRoot ? OriginalName
+                    : string.Format("{0}::{1}", Namespace.Name, OriginalName);
+            }
+        }
 
-		public Declaration()
-		{
-		}
+        // Doxygen-style brief comment.
+        public string BriefComment;
 
-		public Declaration(string name)
-		{
-			Name = name;
-		}
+        // Whether the declaration should be ignored.
+        public virtual bool Ignore
+        {
+            get
+            {
+                return ExplicityIgnored || Namespace.Ignore;
+            }
+        }
 
-		public override string ToString()
-		{
-			return Name;
-		}
-	}
+        // Whether the declaration was explicitly ignored.
+        public bool ExplicityIgnored;
 
-	/// <summary>
-	/// Represents a type definition in C++.
-	/// </summary>
-	public class Typedef : Declaration
-	{
-		/// Type defined.
-		public Type Type;
-	}
+        // Contains debug text about the declaration.
+        public string DebugText;
 
-	/// <summary>
-	/// Represents a C preprocessor macro definition.
-	/// </summary>
-	public class MacroDefine : Declaration
-	{
-		// Contains the macro definition text.
-		public string Expression;
+        // True if the declaration is incomplete (no definition).
+        public bool IsIncomplete;
 
-		public MacroDefine()
-		{
-		}
-	}
+        protected Declaration()
+        {
+        }
+
+        protected Declaration(string name)
+        {
+            Name = name;
+        }
+
+        public override string ToString()
+        {
+            return OriginalName;
+        }
+
+        public abstract T Visit<T>(IDeclVisitor<T> visitor);
+    }
+
+    /// <summary>
+    /// Represents a type definition in C++.
+    /// </summary>
+    public class TypedefDecl : Declaration
+    {
+        /// Type defined.
+        public Type Type;
+
+        public override T Visit<T>(IDeclVisitor<T> visitor)
+        {
+            return visitor.VisitTypedefDecl(this);
+        }
+    }
+
+    /// <summary>
+    /// Represents a C preprocessor macro definition.
+    /// </summary>
+    public class MacroDefinition : Declaration
+    {
+        // Contains the macro definition text.
+        public string Expression;
+
+        public MacroDefinition()
+        {
+        }
+
+        public override T Visit<T>(IDeclVisitor<T> visitor)
+        {
+            return visitor.VisitMacroDefinition(this);
+        }
+    }
+
+    public interface IDeclVisitor<out T>
+    {
+        T VisitDeclaration(Declaration decl);
+        T VisitClassDecl(Class @class);
+        T VisitFieldDecl(Field field);
+        T VisitFunctionDecl(Function function);
+        T VisitMethodDecl(Method method);
+        T VisitParameterDecl(Parameter parameter);
+        T VisitTypedefDecl(TypedefDecl typedef);
+        T VisitEnumDecl(Enumeration @enum);
+        T VisitClassTemplateDecl(ClassTemplate template);
+        T VisitFunctionTemplateDecl(FunctionTemplate template);
+        T VisitMacroDefinition(MacroDefinition macro);
+    }
 }
