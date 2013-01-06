@@ -19,13 +19,11 @@ solution "Cxxi2"
 		"Release"
 	}
 	
-	debugdir "bin"
-	
-	startup "Parser"
-	
 	location (action)
 	objdir (action .. "/obj/")
-	targetdir (action .. "/lib/")	
+	targetdir (action .. "/lib/")
+	targetdir (action .. "/bin/")
+	debugdir (action .. "/bin/")
 	
 	configuration "Debug"
 		defines { "DEBUG" }
@@ -36,4 +34,3 @@ solution "Cxxi2"
 		flags { "Optimize" }
 	
 	dofile "Parser.lua"
-

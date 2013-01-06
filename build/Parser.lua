@@ -2,10 +2,7 @@ project "Parser"
 	
 	kind "ConsoleApp"
 	language "C++"
-	
-	targetdir "../bin"
-	debugdir "../bin"
-	
+
 	flags { common_flags }
 
 	configuration "vs*"
@@ -35,8 +32,6 @@ project "Parser"
 		libdirs { "../../LLVM/build/lib/RelWithDebInfo" }    
 	
 	configuration "*"
-	
-
 	
 	links
 	{
