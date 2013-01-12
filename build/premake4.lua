@@ -19,18 +19,19 @@ solution "Cxxi"
 		"Release"
 	}
 	
-	location (action)
-	objdir (action .. "/obj/")
-	targetdir (action .. "/lib/")
-	targetdir (action .. "/bin/")
-	debugdir (action .. "/bin/")
+	objdir (  "../obj/" .. action)
+	targetdir ("../bin/")
+	debugdir ( "../bin/")
+        platforms { "x32" }
 	
 	configuration "Debug"
 		defines { "DEBUG" }
-		targetsuffix "_d"
 	
 	configuration "Release"
 		defines { "NDEBUG" }
 		flags { "Optimize" }
 	
-	dofile "Parser.lua"
+	include "Parser.lua"
+        include "../src/Bridge/Bridge.lua"
+        include "../src/Generator/Generator.lua"
+

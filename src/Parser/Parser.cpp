@@ -109,7 +109,8 @@ void Parser::Setup(ParserOptions^ Opts)
     C->getHeaderSearchOpts().AddPath(GetClangBuiltinIncludeDir(),
         clang::frontend::System, false, false, true);
 
-#ifdef _WIN32
+
+#if defined(WithClangWindowsSystemIncludeDirsPatch)
     std::vector<std::string> SystemDirs
       = clang::driver::GetWindowsSystemIncludeDirs();
     clang::HeaderSearchOptions& HSOpts = C->getHeaderSearchOpts();

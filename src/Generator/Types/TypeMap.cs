@@ -96,8 +96,14 @@ namespace Cxxi.Types
 
                 foreach (var attr in attrs)
                 {
-                    Console.WriteLine("Found typemap: {0}", attr.Type);
-                    TypeMaps[attr.Type] = typeMap;
+                    var attrs = typeMap.GetCustomAttributes(typeof(TypeMapAttribute), true);
+                    if (attrs == null) continue;
+
+                    foreach (TypeMapAttribute attr in attrs)
+                    {
+                        Console.WriteLine("Found typemap: {0}", attr.Type);
+                        TypeMaps[attr.Type] = typeMap;
+                    }
                 }
             }
         }

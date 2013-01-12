@@ -1,9 +1,11 @@
 project "Parser"
 	
-	kind "ConsoleApp"
+	kind     "SharedLib"
 	language "C++"
+        location "."
+        platforms { "x32" }
 
-	flags { common_flags }
+	flags { common_flags, "Managed" }
 
 	configuration "vs*"
 		buildoptions { common_msvc_copts, "/clr" }
@@ -27,7 +29,7 @@ project "Parser"
 	
 	configuration "Debug"
 		libdirs { "../../LLVM/build/lib/Debug" }
-	
+
 	configuration "Release"
 		libdirs { "../../LLVM/build/lib/RelWithDebInfo" }    
 	

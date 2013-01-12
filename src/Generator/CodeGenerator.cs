@@ -198,7 +198,7 @@ namespace Cxxi
 
                 foreach (var type in types)
                 {
-                    var attrs = type.GetCustomAttributes<LibraryTransformAttribute>();
+                    var attrs = type.GetCustomAttributes( typeof(LibraryTransformAttribute), true);
                     if (attrs == null) continue;
 
                     Console.WriteLine("Found library transform: {0}", type.Name);
@@ -207,7 +207,7 @@ namespace Cxxi
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error: assembly '{0}' could not be loaded", path);
+                Console.WriteLine("Error: assembly '{0}' could not be loaded: {1}", path, ex.Message);
                 return false;
             }
 
