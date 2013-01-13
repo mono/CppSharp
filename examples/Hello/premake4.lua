@@ -36,7 +36,7 @@ project "Hello"
 	    buildrule {
 		    description = "Compiling $(InputFile)...",
 		    commands = { 
-			    '..\\..\\bin\\generator.exe -ns=CppCsBind -outdir=CppCsBind -I. hello.h', 
+			    '..\\..\\bin\\generator.exe -vs=10 -ns=CppCsBind -outdir=CppCsBind -I. hello.h', 
 		    },
 		    outputs = { "CppCsBind\\hello_wrapper.cpp" }
 	    }

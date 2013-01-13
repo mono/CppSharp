@@ -44,8 +44,9 @@ namespace Cxxi
                 {
                     Library = library,
                     Verbose = false,
-                    IncludeDirs = options.IncludeDirs,
-                    FileName = file
+                    IncludeDirs = options.IncludeDirs
+                    FileName = file,
+                    toolSetToUse = options.toolset2use
                 };
 
             if (!ClangParser.Parse(parserOptions))
@@ -125,6 +126,7 @@ namespace Cxxi
         public List<string> Headers;
         public string Template;
         public string Assembly;
+        public int toolset2use;
     }
 
     public class Program
@@ -137,7 +139,31 @@ namespace Cxxi
             Console.WriteLine("Generates .NET bindings from C/C++ header files.");
             Console.WriteLine();
             Console.WriteLine("Options:");
-            options.WriteOptionDescriptions(Console.Out);
+
+
+Console.WriteLine(@"
+  --vs, --visualstudio=VALUE     - Visual studio version to use for 
+                                      system include folders.
+        Valid values:
+            0  - autoprobe. (Default)
+            11 - 2012, 10 - 2010, 9  - 2008, 8  - 2005
+        Number can be find out from VSx0COMNTOOLS environment variable.
+
+  -D,   --defines=VALUE          - Specify define for preprocessor.
+                                   (E.g. WIN32, DEBUG)
+  -I,   --include=VALUE          - Add include path
+  --ns, --namespace=VALUE        - Namespace where C# wrappers will reside
+                             
+  -o,   --outdir=VALUE           - Output folder
+        --debug
+        --lib, --library=VALUE 
+  -t,   --template=VALUE       
+  -a,   --assembly=VALUE       
+  
+  -v,   --verbose              
+  -h, -?, --help             
+");
+
         }
 
         static bool ParseCommandLineOptions(String[] args, Options options)
@@ -155,6 +181,7 @@ namespace Cxxi
                     { "t|template=", v => options.Template = v },
                     { "a|assembly=", v => options.Assembly = v },
                     // Misc. options
+                    { "vs|visualstudio=", v => { Int32.TryParse(v, out options.toolset2use); } },
                     { "v|verbose",  v => { options.Verbose = true; } },
                     { "h|?|help",   v => options.ShowHelpText = v != null },
                 };
