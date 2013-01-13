@@ -185,8 +185,7 @@ namespace Cxxi
 
             if (string.IsNullOrWhiteSpace(path))
             {
-                Console.WriteLine("Error: no assembly provided");
-                return false;
+                return true;
             }
 
             try
@@ -220,6 +219,12 @@ namespace Cxxi
 
             if (!ParseCommandLineOptions(args, options))
                 return;
+
+            // We need to know absolute pathes in order to determine correct include pathes.
+            for (int i = 0; i < options.IncludeDirs.Count; i++)
+            {
+                if (options.IncludeDirs[i] == ".") options.IncludeDirs[i] = Directory.GetCurrentDirectory();
+            }
 
             ILibrary library = null;
             if (!ParseLibraryAssembly(options.Assembly, out library))

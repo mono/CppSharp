@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Cxxi.Passes
 {
@@ -21,6 +22,7 @@ namespace Cxxi.Passes
         string GetIncludePath(string filePath)
         {
             string includePath = filePath;
+            string ShortestIncludePath = filePath;
 
             foreach (var path in Options.IncludeDirs)
             {
@@ -29,11 +31,11 @@ namespace Cxxi.Passes
 
                 string inc = filePath.Substring(path.Length);
 
-                if (inc.Length < includePath.Length)
-                    includePath = inc;
+                if (inc.Length < includePath.Length && inc.Length < ShortestIncludePath.Length)
+                    ShortestIncludePath = inc;
             }
 
-            return includePath.TrimStart(new char[] { '\\', '/' });
+            return "..\\" + ShortestIncludePath.TrimStart(new char[] { '\\', '/' });
         }
 
         void TransformModule(TranslationUnit unit)
