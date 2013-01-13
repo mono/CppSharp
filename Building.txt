@@ -71,7 +71,7 @@ your time - runs tests and do everything you don't want it to do.
 In console window type:
 
 > set PATH=C:\Program Files (x86)\Git\bin;%PATH%
-> git clone https://github.com/tapika/cxxi.git cxxi_trunk
+> git clone https://github.com/tapika/cxxi-1.git cxxi_trunk
 > cd cxxi_trunk\build
 > premake4.exe vs2010
 
