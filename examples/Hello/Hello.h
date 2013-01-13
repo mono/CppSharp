@@ -4,5 +4,6 @@ class Hello
 public:
 	Hello ();
 
-	void PrintHello ();
+	void PrintHello(const char* s);
+	bool test1(int i, float f);
 };

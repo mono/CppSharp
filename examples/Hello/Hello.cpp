@@ -3,22 +3,16 @@
 
 using namespace std;
 
-void
-Hello::PrintHello ()
-{
-	cout << "Hello, World!\n";
-}
-
 Hello::Hello ()
 {
 }
 
-int
-main ()
+void Hello::PrintHello(const char* s)
 {
-	Hello h;
+	cout << "PrintHello: " << s << "\n";
+}
 
-	h.PrintHello ();
-
-	return 0;
+bool Hello::test1(int i, float f)
+{
+    return i == f;
 }
