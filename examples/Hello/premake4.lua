@@ -9,10 +9,10 @@ solution "Hello"
 	debugdir ( "./bin/")
 	
 	configuration "Debug"
-		defines { "DEBUG" }
+		defines { "DEBUG", "WIN32" }
 	
 	configuration "Release"
-		defines { "NDEBUG" }
+		defines { "NDEBUG", "WIN32" }
 		flags { "Optimize" }
 
 project "Hello"
@@ -36,7 +36,7 @@ project "Hello"
 	    buildrule {
 		    description = "Compiling $(InputFile)...",
 		    commands = { 
-			    '..\\..\\bin\\generator.exe -vs=10 -ns=CppCsBind -outdir=CppCsBind -I. hello.h', 
+			    '..\\..\\bin\\generator.exe -D=WIN32 -vs=10 -ns=CppCsBind -outdir=CppCsBind -I. hello.h', 
 		    },
 		    outputs = { "CppCsBind\\hello_wrapper.cpp" }
 	    }

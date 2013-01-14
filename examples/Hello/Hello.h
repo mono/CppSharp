@@ -2,6 +2,10 @@
 #include <iostream>
 #include <fstream>
 
+#ifndef WIN32
+    #error "Generator should understand defines as well"
+#endif
+
 class Hello
 {
 public:

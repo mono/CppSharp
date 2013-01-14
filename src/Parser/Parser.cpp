@@ -208,6 +208,12 @@ void Parser::Setup(ParserOptions^ Opts)
         C->getHeaderSearchOpts().AddPath(s, frontend::Angled, true, false, true);
     }
 
+    for each(System::String^% def in Opts->Defines)
+    {
+        String s = marshalString<E_UTF8>(def);
+        C->getPreprocessorOpts().addMacroDef(s);
+    }
+
     // Initialize the default platform headers.
     std::string ResourceDir = GetClangResourceDir(".");
     C->getHeaderSearchOpts().ResourceDir = ResourceDir;

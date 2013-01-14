@@ -37,10 +37,12 @@ public ref struct ParserOptions
     ParserOptions()
     {
         IncludeDirs = gcnew List<System::String^>();
+        Defines = gcnew List<System::String^>();
     }
 
     // Include directories
     List<System::String^>^ IncludeDirs;
+    List<System::String^>^ Defines;
 
     // C/C++ header file name.
     System::String^ FileName;
