@@ -168,7 +168,14 @@ namespace Cxxi.Generators.CLI
             GenerateDeclarationCommon(@class);
 
             if (@class.IsUnion)
-                WriteLine("[StructLayout(LayoutKind.Explicit)]");
+            {
+                // TODO: How to do wrapping of unions?
+                //const string @namespace = "System::Runtime::InteropServices";
+                //WriteLine("[{0}::StructLayout({0}::LayoutKind::Explicit)]",
+                //    @namespace);
+                Console.WriteLine("Unions are not yet implemented");
+            }
+
             Write("public ");
 
             if (@class.IsValueType)
