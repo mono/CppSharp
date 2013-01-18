@@ -80,17 +80,21 @@ namespace Cxxi.Types
             foreach (var assembly in loadedAssemblies)
             {
                 var types = assembly.FindDerivedTypes(typeof(TypeMap));
+                SetupTypeMaps(types);
+            }
+        }
 
-                foreach (var typeMap in types)
+        private void SetupTypeMaps(IEnumerable<System.Type> types)
+        {
+            foreach (var typeMap in types)
+            {
+                var attrs = typeMap.GetCustomAttributes<TypeMapAttribute>();
+                if (attrs == null) continue;
+
+                foreach (var attr in attrs)
                 {
-                    var attrs = typeMap.GetCustomAttributes<TypeMapAttribute>();
-                    if (attrs == null) continue;
-
-                    foreach (var attr in attrs)
-                    {
-                        Console.WriteLine("Found typemap: {0}", attr.Type);
-                        TypeMaps[attr.Type] = typeMap;
-                    }
+                    Console.WriteLine("Found typemap: {0}", attr.Type);
+                    TypeMaps[attr.Type] = typeMap;
                 }
             }
         }
