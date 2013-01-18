@@ -28,7 +28,7 @@ namespace Cxxi.Types
     /// freedom and customization when translating between the source and
     /// target language types.
     /// </summary>
-    public abstract class TypeMap
+    public class TypeMap
     {
         public Type Type { get; set; }
         public Declaration Declaration { get; set; }
@@ -38,9 +38,20 @@ namespace Cxxi.Types
             get { return false; }
         }
 
-        public abstract string Signature();
-        public abstract string MarshalToNative(MarshalContext ctx);
-        public abstract string MarshalFromNative(MarshalContext ctx);
+        public virtual string Signature()
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual string MarshalToNative(MarshalContext ctx)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual string MarshalFromNative(MarshalContext ctx)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class TypeDatabase
