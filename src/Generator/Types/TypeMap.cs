@@ -58,7 +58,13 @@ namespace Cxxi.Types
         }
     }
 
-    public class TypeDatabase
+    public interface ITypeMapDatabase
+    {
+        bool FindTypeMap(Declaration decl, out TypeMap typeMap);
+        bool FindTypeMap(string name, out TypeMap typeMap);
+    }
+
+    public class TypeDatabase : ITypeMapDatabase
     {
         public IDictionary<string, System.Type> TypeMaps { get; set; }
 
