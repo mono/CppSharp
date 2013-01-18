@@ -198,19 +198,20 @@ namespace Cxxi.Generators.CLI
             WriteLine("{");
             WriteLine("public:");
 
-            if (!@class.IsValueType)
+            var nativeType = string.Format("::{0}*", @class.OriginalName);
+
+            if (@class.IsRefType)
             {
                 PushIndent();
-                var nativeType = string.Format("::{0}*", @class.OriginalName);
                 WriteLine("property {0} NativePtr;", nativeType);
                 PopIndent();
                 NewLine();
-
-                // Output a default constructor that takes the native pointer.
-                PushIndent();
-                WriteLine("{0}({1} native);", SafeIdentifier(@class.Name), nativeType);
-                PopIndent();
             }
+
+            // Output a default constructor that takes the native pointer.
+            PushIndent();
+            WriteLine("{0}({1} native);", SafeIdentifier(@class.Name), nativeType);
+            PopIndent();
 
             if (@class.IsValueType)
             {
