@@ -228,6 +228,21 @@ namespace Cxxi.Generators.CLI
                 PopIndent();
             }
 
+            // Generate a property for each field if class is not value type
+            if (@class.IsRefType)
+            {
+                PushIndent();
+                foreach (var field in @class.Fields)
+                {
+                    if (CheckIgnoreField(@class, field))
+                        continue;
+
+                    GenerateDeclarationCommon(field);
+                    GenerateFieldProperty(field);
+                }
+                PopIndent();
+            }
+
             PushIndent();
             foreach (var method in @class.Methods)
             {
@@ -240,6 +255,16 @@ namespace Cxxi.Generators.CLI
             PopIndent();
 
             WriteLine("};");
+        }
+
+        public void GenerateFieldProperty(Field field)
+        {
+            field.Type.Visit<string>(Type.TypePrinter);
+
+            var type = field.Type.Visit(Type.TypePrinter);
+
+            WriteLine("property {0} {1};", type, field.Name);
+            NewLine();
         }
 
         public void GenerateMethod(Method method)
