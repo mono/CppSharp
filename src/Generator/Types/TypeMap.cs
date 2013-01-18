@@ -32,6 +32,11 @@ namespace Cxxi.Types
         public Type Type { get; set; }
         public Declaration Declaration { get; set; }
 
+        public virtual bool IsIgnored
+        {
+            get { return false; }
+        }
+
         public virtual bool IsValueType
         {
             get { return false; }
