@@ -84,10 +84,10 @@ namespace Cxxi.Generators.CLI
             // Generate all the enum declarations for the module.
             for (int i = 0; i < Module.Enums.Count; ++i)
             {
-                var E = Module.Enums[i];
-                if (E.Ignore) continue;
+                var @enum = Module.Enums[i];
+                if (@enum.Ignore) continue;
 
-                GenerateEnum(E);
+                GenerateEnum(@enum);
                 NeedsNewline = true;
                 if (i < Module.Enums.Count - 1)
                     NewLine();
@@ -99,20 +99,16 @@ namespace Cxxi.Generators.CLI
             NeedsNewline = false;
 
             // Generate all the typedef declarations for the module.
-            for (var i = 0; i < Module.Typedefs.Count; ++i)
+            foreach (var typedef in Module.Typedefs)
             {
-                var T = Module.Typedefs[i];
-                if (T.Ignore) continue;
+                if (typedef.Ignore)
+                    continue;
 
-                GenerateTypedef(T);
-                NeedsNewline = true;
+                if (!GenerateTypedef(typedef))
+                    continue;
 
-                if (i < Module.Typedefs.Count - 1)
-                    NewLine();
-            }
-
-            if (NeedsNewline)
                 NewLine();
+            }
 
             NeedsNewline = false;
 
@@ -252,7 +248,7 @@ namespace Cxxi.Generators.CLI
             else
                 Write("{0} {1}(", method.ReturnType, SafeIdentifier(method.Name));
 
-            for (int i = 0; i < method.Parameters.Count; ++i)
+            for (var i = 0; i < method.Parameters.Count; ++i)
             {
                 var param = method.Parameters[i];
                 Write("{0}", TypeSig.GetArgumentString(param));
@@ -263,9 +259,11 @@ namespace Cxxi.Generators.CLI
             WriteLine(");");
         }
 
-        public void GenerateTypedef(TypedefDecl typedef)
+        public bool GenerateTypedef(TypedefDecl typedef)
         {
-            if (typedef.Ignore) return;
+            if (typedef.Ignore)
+                return false;
+
             GenerateDeclarationCommon(typedef);
 
             FunctionType func;
@@ -281,8 +279,9 @@ namespace Cxxi.Generators.CLI
             if (typedef.Type.IsPointerTo<FunctionType>(out func))
             {
                 WriteLine("public {0};",
-                    string.Format(TypeSig.ToDelegateString(func),
+                    string.Format(TypeSig.ToDelegateString(function),
                     SafeIdentifier(typedef.Name)));
+                return true;
             }
             else if (typedef.Type.IsEnumType())
             {
@@ -292,6 +291,8 @@ namespace Cxxi.Generators.CLI
             {
                 Console.WriteLine("Unhandled typedef type: {0}", typedef);
             }
+
+            return false;
         }
 
         public void GenerateFunction(Function function)
