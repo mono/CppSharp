@@ -10,21 +10,21 @@ namespace Cxxi
     /// </summary>
     public abstract class AstVisitor : ITypeVisitor<bool>, IDeclVisitor<bool>
     {
-        private readonly ISet<object> Visited;
+        private readonly ISet<object> visited;
 
         protected AstVisitor()
         {
-            Visited = new HashSet<object>();
+            visited = new HashSet<object>();
         }
 
         public bool AlreadyVisited(Type type)
         {
-            return !Visited.Add(type);
+            return !visited.Add(type);
         }
 
         public bool AlreadyVisited(Declaration decl)
         {
-            return  !Visited.Add(decl);
+            return  !visited.Add(decl);
         }
 
         public virtual bool VisitTagType(TagType tag, TypeQualifiers quals)
