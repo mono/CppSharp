@@ -31,6 +31,14 @@ namespace Cxxi
             return tag.Declaration is Enumeration;
         }
 
+        public bool IsPointer()
+        {
+            var pointer = this as PointerType;
+            if (pointer == null)
+                return false;
+            return pointer.Modifier == PointerType.TypeModifier.Pointer;
+        }
+
         public bool IsPointerToPrimitiveType(PrimitiveType primitive)
         {
             var ptr = this as PointerType;
