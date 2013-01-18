@@ -39,6 +39,14 @@ namespace Cxxi
             return pointer.Modifier == PointerType.TypeModifier.Pointer;
         }
 
+        public bool IsReference()
+        {
+            var pointer = this as PointerType;
+            if (pointer == null)
+                return false;
+            return pointer.IsReference;
+        }
+
         public bool IsPointerToPrimitiveType(PrimitiveType primitive)
         {
             var ptr = this as PointerType;
