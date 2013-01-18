@@ -27,6 +27,8 @@ namespace Cxxi
             return  !visited.Add(decl);
         }
 
+        #region Type Visitors
+
         public virtual bool VisitTagType(TagType tag, TypeQualifiers quals)
         {
             return tag.Declaration.Visit(this);
@@ -75,6 +77,10 @@ namespace Cxxi
         {
             return template.Template.Visit(this);
         }
+
+        #endregion
+
+        #region Decl Visitors
 
         public virtual bool VisitDeclaration(Declaration decl, TypeQualifiers quals)
         {
@@ -146,5 +152,7 @@ namespace Cxxi
         {
             return true;
         }
+
+        #endregion
     }
 }
