@@ -299,17 +299,8 @@ namespace Cxxi.Generators.CLI
 
             GenerateDeclarationCommon(typedef);
 
-            FunctionType func;
-            TagType tag;
-
-            //if (T.Type.IsPointerToPrimitiveType(PrimitiveType.Void)
-            //  || T.Type.IsPointerTo<TagType>(out tag))
-            //{
-            //  WriteLine("public class " + SafeIdentifier(T.Name) + @" { }");
-            //  NewLine();
-            //}
-            //else
-            if (typedef.Type.IsPointerTo<FunctionType>(out func))
+            FunctionType function;
+            if (typedef.Type.IsPointerTo<FunctionType>(out function))
             {
                 WriteLine("public {0};",
                     string.Format(TypeSig.ToDelegateString(function),
