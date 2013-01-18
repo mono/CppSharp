@@ -1,5 +1,14 @@
 namespace Cxxi.Types.Std
 {
+    [TypeMap("va_list")]
+    public class VaList : TypeMap
+    {
+        public override bool IsIgnored
+        {
+            get { return true; }
+        }
+    }
+
     [TypeMap("std::string")]
     [TypeMap("std::wstring")]
     public class String : TypeMap
