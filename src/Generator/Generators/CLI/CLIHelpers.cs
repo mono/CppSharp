@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Cxxi.Types;
 
@@ -243,64 +244,112 @@ namespace Cxxi.Generators.CLI
         }
     }
 
-    public class CLIForwardRefeferencePrinter : IDeclVisitor<string>
+    public class CLIForwardRefeferencePrinter : IDeclVisitor<bool>
     {
-        public string VisitDeclaration(Declaration decl)
+        public readonly IList<string> Includes;
+        public readonly IList<string> Refs;
+
+        public CLIForwardRefeferencePrinter()
+        {
+            Includes = new List<string>();
+            Refs = new List<string>();
+        }
+
+        public bool VisitDeclaration(Declaration decl)
         {
             throw new NotImplementedException();
         }
 
-        public string VisitClassDecl(Class @class)
+        public bool VisitClassDecl(Class @class)
         {
             if (@class.IsValueType)
-                return string.Format("value struct {0};", @class.Name);
-            return string.Format("ref class {0};", @class.Name);
+            {
+                Refs.Add(string.Format("value struct {0};", @class.Name));
+                return true;
+            }
+
+            Refs.Add(string.Format("ref class {0};", @class.Name));
+            return true;
         }
 
-        public string VisitFieldDecl(Field field)
+        public bool VisitFieldDecl(Field field)
+        {
+            Class @class;
+            if (field.Type.IsTagDecl(out @class))
+            {
+                Includes.Add(GetHeaderFromDecl(@class));
+                return true;
+            }
+
+            Includes.Add(GetHeaderFromDecl(field));
+            return true;
+        }
+
+        public bool VisitFunctionDecl(Function function)
         {
             throw new NotImplementedException();
         }
 
-        public string VisitFunctionDecl(Function function)
+        public bool VisitMethodDecl(Method method)
         {
             throw new NotImplementedException();
         }
 
-        public string VisitMethodDecl(Method method)
+        public bool VisitParameterDecl(Parameter parameter)
         {
             throw new NotImplementedException();
         }
 
-        public string VisitParameterDecl(Parameter parameter)
+        public string GetHeaderFromDecl(Declaration decl)
         {
+            var @namespace = decl.Namespace;
+            var unit = @namespace.TranslationUnit;
+
+            if (unit.Ignore)
+                return string.Empty;
+
+            if (unit.IsSystemHeader)
+                return string.Empty;
+
+            return Path.GetFileNameWithoutExtension(unit.FileName);
+        }
+
+        public bool VisitTypedefDecl(TypedefDecl typedef)
+        {
+            FunctionType function;
+            if (typedef.Type.IsPointerTo<FunctionType>(out function))
+            {
+                Includes.Add(GetHeaderFromDecl(typedef));
+                return true;
+            }
+
             throw new NotImplementedException();
         }
 
-        public string VisitTypedefDecl(TypedefDecl typedef)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string VisitEnumDecl(Enumeration @enum)
+        public bool VisitEnumDecl(Enumeration @enum)
         {
             if (@enum.Type.IsPrimitiveType(PrimitiveType.Int32))
-                return string.Format("enum struct {0};", @enum.Name);
-            return string.Format("enum struct {0} : {1};", @enum.Name,
-                @enum.Type);
+            {
+                Refs.Add(string.Format("enum struct {0};", @enum.Name));
+                return true;
+            }
+
+            Refs.Add(string.Format("enum struct {0} : {1};", @enum.Name,
+                @enum.Type));
+            return true;
         }
 
-        public string VisitClassTemplateDecl(ClassTemplate template)
+        public bool VisitClassTemplateDecl(ClassTemplate template)
         {
             throw new NotImplementedException();
         }
 
-        public string VisitFunctionTemplateDecl(FunctionTemplate template)
+        public bool VisitFunctionTemplateDecl(FunctionTemplate template)
         {
             throw new NotImplementedException();
         }
 
-        public string VisitMacroDefinition(MacroDefinition macro)
+        public bool VisitMacroDefinition(MacroDefinition macro)
         {
             throw new NotImplementedException();
         }
