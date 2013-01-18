@@ -37,7 +37,7 @@ namespace Cxxi
 
             foreach (var file in options.Headers)
             {
-                var path = string.Empty;
+                string path;
 
                 try
                 {
