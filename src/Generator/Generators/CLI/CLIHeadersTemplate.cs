@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 
 namespace Cxxi.Generators.CLI
 {
@@ -15,6 +17,8 @@ namespace Cxxi.Generators.CLI
             NewLine();
 
             WriteLine("#include <{0}>", Module.IncludePath);
+            GenerateIncludeForwardRefs();
+
             NewLine();
 
             WriteLine("namespace {0}", SafeIdentifier(Library.Name));
@@ -23,15 +27,40 @@ namespace Cxxi.Generators.CLI
             WriteLine("}");
         }
 
+        private CLIForwardRefeferencePrinter forwardRefsPrinter;
+
+        public void GenerateIncludeForwardRefs()
+        {
+            forwardRefsPrinter = new CLIForwardRefeferencePrinter();
+
+            foreach (var forwardRef in Module.ForwardReferences)
+                forwardRef.Visit(forwardRefsPrinter);
+
+            var includes = new HashSet<string>();
+
+            foreach (var include in forwardRefsPrinter.Includes)
+            {
+                if (string.IsNullOrWhiteSpace(include))
+                    continue;
+
+                if (include == Path.GetFileNameWithoutExtension(Module.FileName))
+                    continue;
+
+                includes.Add(string.Format("#include \"{0}.h\"", include));
+            }
+
+            foreach (var include in includes)
+                WriteLine(include);
+        }
+
         public void GenerateForwardRefs()
         {
             // Use a set to remove duplicate entries.
             var forwardRefs = new HashSet<string>();
 
-            foreach (var forwardRef in Module.ForwardReferences)
+            foreach (var forwardRef in forwardRefsPrinter.Refs)
             {
-                var printer = new CLIForwardRefeferencePrinter();
-                forwardRefs.Add(forwardRef.Visit(printer));
+                forwardRefs.Add(forwardRef);
             }
 
             foreach (var forwardRef in forwardRefs)
