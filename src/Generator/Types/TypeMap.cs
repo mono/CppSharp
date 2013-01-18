@@ -8,6 +8,7 @@ namespace Cxxi.Types
     {
         public string ArgName { get; set; }
         public string ReturnVarName { get; set; }
+        public Type ReturnType { get; set; }
         public Parameter Parameter { get; set; }
     }
 
@@ -97,6 +98,11 @@ namespace Cxxi.Types
                     TypeMaps[attr.Type] = typeMap;
                 }
             }
+        }
+
+        public bool FindTypeMap(Declaration decl, out TypeMap typeMap)
+        {
+            return FindTypeMap(decl.QualifiedOriginalName, out typeMap);
         }
 
         public bool FindTypeMap(string name, out TypeMap typeMap)
