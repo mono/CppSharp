@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using Cxxi.Generators;
 using Cxxi.Passes;
+using Cxxi.Types;
 using Mono.Options;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace Cxxi
         private readonly Options options;
         private Library library;
         private readonly ILibrary transform;
+        public TypeDatabase typeDatabase;
 
         public CodeGenerator(Options options, ILibrary transform)
         {
@@ -62,6 +64,9 @@ namespace Cxxi
 
         public void ProcessCode()
         {
+            typeDatabase = new TypeDatabase();
+            typeDatabase.SetupTypeMaps();
+
             if (transform != null)
                 transform.Preprocess(new LibraryHelpers(library));
 
@@ -72,7 +77,7 @@ namespace Cxxi
             if (transform != null)
                 transform.SetupPasses(passes);
 
-            var preprocess = new Preprocess();
+            var preprocess = new Preprocess(typeDatabase);
             preprocess.ProcessLibrary(library);
 
             var transformer = new Transform() { Options = options, Passes = passes };
@@ -89,7 +94,7 @@ namespace Cxxi
 
             Console.WriteLine("Generating wrapper code...");
 
-            var gen = new Generator(options, library, transform);
+            var gen = new Generator(options, library, transform, typeDatabase);
             gen.Generate();
         }
     }
