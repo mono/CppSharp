@@ -14,13 +14,13 @@ namespace Cxxi.Passes
             typeRefs = new TypeRefsVisitor();
         }
 
-        public void ProcessLibrary(Library Library)
+        public override bool ProcessLibrary(Library library)
         {
-            if (string.IsNullOrEmpty(Library.Name))
-                Library.Name = "";
+            if (string.IsNullOrEmpty(library.Name))
+                library.Name = "";
 
             // Process everything in the global namespace for now.
-            foreach (var unit in Library.TranslationUnits)
+            foreach (var unit in library.TranslationUnits)
             {
                 if (unit.ExplicityIgnored)
                     continue;
@@ -32,6 +32,8 @@ namespace Cxxi.Passes
                 ProcessNamespace(unit);
                 unit.ForwardReferences = typeRefs.ForwardReferences.ToList();
             }
+
+            return true;
         }
 
         private void ProcessNamespace(Namespace @namespace)
@@ -57,7 +59,8 @@ namespace Cxxi.Passes
             return true;
         }
 
-        private void ProcessDeclarations<T>(IEnumerable<T> decls) where T : Declaration
+        private void ProcessDeclarations<T>(IEnumerable<T> decls)
+            where T : Declaration
         {
             foreach (T decl in decls)
                 ProcessDeclaration(decl);
@@ -81,13 +84,14 @@ namespace Cxxi.Passes
             foreach (var field in fields)
             {
                 var type = field.Type;
-                if (type == null || !IsTypeComplete(type) || IsTypeIgnored(type))
-                {
-                    field.ExplicityIgnored = true;
-                    Console.WriteLine(
-                        "Field '{0}' was ignored due to unknown / ignored type",
-                        field.Name);
-                }
+
+                string msg;
+                if (!HasInvalidType(type, out msg))
+                    continue;
+
+                field.ExplicityIgnored = true;
+                Console.WriteLine("Field '{0}' was ignored due to {1} type",
+                    field.Name,  msg);
             }
         }
 
@@ -95,52 +99,27 @@ namespace Cxxi.Passes
         {
             var ret = function.ReturnType;
 
-            if (ret == null || !IsTypeComplete(ret) || IsTypeIgnored(ret))
+            string msg;
+            if (HasInvalidType(ret, out msg))
             {
                 function.ExplicityIgnored = true;
-                Console.WriteLine(
-                    "Function '{0}' was ignored due to unknown / ignored return decl",
-                    function.Name);
+                Console.WriteLine("Function '{0}' was ignored due to {1} return decl",
+                    function.Name, msg);
             }
 
             foreach (var param in function.Parameters)
             {
-                if (param == null || !IsDeclComplete(param) || IsDeclIgnored(param))
+                if (HasInvalidDecl(param, out msg))
                 {
                     function.ExplicityIgnored = true;
-                    Console.WriteLine(
-                        "Function '{0}' was ignored due to unknown / ignored param",
-                        function.Name);
+                    Console.WriteLine("Function '{0}' was ignored due to {1} param",
+                        function.Name, msg);
                 }
 
                 ProcessDeclaration(param);
             }
 
             return true;
-        }
-
-        private static bool IsTypeComplete(Type type)
-        {
-            var checker = new TypeCompletionChecker();
-            return type.Visit(checker);
-        }
-
-        private static bool IsDeclComplete(Declaration decl)
-        {
-            var checker = new TypeCompletionChecker();
-            return decl.Visit(checker);
-        }
-
-        private static bool IsTypeIgnored(Type type)
-        {
-            var checker = new TypeIgnoreChecker();
-            return type.Visit(checker);
-        }
-
-        private static bool IsDeclIgnored(Declaration decl)
-        {
-            var checker = new TypeIgnoreChecker();
-            return decl.Visit(checker);
         }
 
         public override bool ProcessMethod(Method method)
@@ -182,6 +161,87 @@ namespace Cxxi.Passes
             foreach (var function in functions)
                 ProcessFunction(function);
         }
+
+        #region Helpers
+
+        /// <remarks>
+        /// Checks if a given type is invalid, which can happen for a number of
+        /// reasons: incomplete definitions, being explicitly ignored, or also
+        /// by being a type we do not know how to handle.
+        /// </remarks>
+        static bool HasInvalidType(Type type, out string msg)
+        {
+            if (type == null)
+            {
+                msg = "null";
+                return true;
+            }
+
+            if (!IsTypeComplete(type))
+            {
+                msg = "incomplete";
+                return true;
+            }
+
+            if (IsTypeIgnored(type))
+            {
+                msg = "ignored";
+                return true;
+            }
+
+            msg = null;
+            return false;
+        }
+
+        static bool HasInvalidDecl(Declaration decl, out string msg)
+        {
+            if (decl == null)
+            {
+                msg = "null";
+                return true;
+            }
+
+            if (!IsDeclComplete(decl))
+            {
+                msg = "incomplete";
+                return true;
+            }
+
+            if (IsDeclIgnored(decl))
+            {
+                msg = "ignored";
+                return true;
+            }
+
+            msg = null;
+            return false;
+        }
+
+        static bool IsTypeComplete(Type type)
+        {
+            var checker = new TypeCompletionChecker();
+            return type.Visit(checker);
+        }
+
+        static bool IsDeclComplete(Declaration decl)
+        {
+            var checker = new TypeCompletionChecker();
+            return decl.Visit(checker);
+        }
+
+        static bool IsTypeIgnored(Type type)
+        {
+            var checker = new TypeIgnoreChecker();
+            return type.Visit(checker);
+        }
+
+        static bool IsDeclIgnored(Declaration decl)
+        {
+            var checker = new TypeIgnoreChecker();
+            return decl.Visit(checker);
+        }
+
+        #endregion
     }
 }
 
