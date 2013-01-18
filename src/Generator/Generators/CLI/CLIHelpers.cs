@@ -156,10 +156,10 @@ namespace Cxxi.Generators.CLI
             }
 
             FunctionType func;
-            if (typedef.Declaration.Type.IsPointerTo<FunctionType>(out func))
+            if (decl.Type.IsPointerTo<FunctionType>(out func))
             {
                 // TODO: Use SafeIdentifier()
-                return string.Format("{0}^", typedef.Declaration.Name);
+                return string.Format("{0}^", VisitDeclaration(decl));
             }
 
             return decl.Type.Visit(this);
@@ -220,7 +220,7 @@ namespace Cxxi.Generators.CLI
 
         public string VisitTypedefDecl(TypedefDecl typedef)
         {
-            throw new NotImplementedException();
+            return typedef.Name;
         }
 
         public string VisitEnumDecl(Enumeration @enum)
