@@ -254,28 +254,20 @@ Cxxi::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record, bool IsDependen
         return nullptr;
     }
 
-    if (Record->hasDefinition())
-        Record = Record->getDefinition();
-
     auto NS = GetNamespace(Record);
     assert(NS && "Expected a valid namespace");
 
+    bool isCompleteDefinition = Record->isCompleteDefinition();
     auto Name = marshalString<E_UTF8>(GetTagDeclName(Record));
-    auto RC = NS->FindClass(Name, /*Create=*/false);
+    auto RC = NS->FindClass(Name, isCompleteDefinition, /*Create=*/false);
     
-    if (RC && !RC->IsIncomplete)
+    if (RC)
         return RC;
 
-    if (!RC)
-        RC = NS->FindClass(Name, /*Create=*/true);
-    
-    if (!Record->hasDefinition())
-    {
-        RC->IsIncomplete = true;
-        return RC;
-    }
+    RC = NS->FindClass(Name, isCompleteDefinition, /*Create=*/true);
 
-    RC->IsIncomplete = false;
+    if (!isCompleteDefinition)
+        return RC;
 
     RC->IsPOD = Record->isPOD();
     RC->IsUnion = Record->isUnion();

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Cxxi
 {
@@ -99,17 +100,54 @@ namespace Cxxi
             return function;
         }
 
-        public Class FindClass(string name, bool createDecl = false)
+        Class CreateClass(string name, bool isComplete)
+        {
+            var  @class = new Class
+            {
+                Name = name,
+                Namespace = this,
+                IsIncomplete = !isComplete
+            };
+
+            return @class;
+        }
+
+        public Class FindClass(string name)
         {
             var @class = Classes.Find(e => e.Name.Equals(name));
-
-            if (@class == null && createDecl)
-            {
-                @class = new Class {Name = name, Namespace = this};
-                Classes.Add(@class);
-            }
-            
             return @class;
+        }
+
+        public Class FindClass(string name, bool isComplete,
+            bool createDecl = false)
+        {
+            var @class = FindClass(name);
+
+            if (@class == null)
+            {
+                if (createDecl)
+                {
+                    @class = CreateClass(name, isComplete);
+                    Classes.Add(@class);
+                }
+
+                return @class;
+            }
+
+            if (@class.IsIncomplete == !isComplete)
+                return @class;
+
+            var newClass = CreateClass(name, isComplete);
+
+            // Replace the incomplete declaration with the complete one.
+            if (@class.IsIncomplete)
+            {
+                var index = Classes.FindIndex(c => c == @class);
+                @class.CompleteDeclaration = newClass;
+                Classes[index] = newClass;
+            }
+
+            return newClass;
         }
 
         public ClassTemplate FindClassTemplate(string name)
