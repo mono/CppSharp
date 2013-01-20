@@ -57,9 +57,6 @@ namespace Cxxi.Generators.CLI
             if (!pointee.Visit(this, quals))
                 return false;
 
-            if (pointer.IsReference)
-                Return = string.Format("&{0}", Return);
-
             return true;
         }
 
@@ -165,7 +162,8 @@ namespace Cxxi.Generators.CLI
 
         public bool VisitEnumDecl(Enumeration @enum)
         {
-            Return = string.Format("({0}){1}", ToCLITypeName(@enum), Context.ReturnVarName);
+            Return = string.Format("({0}){1}", ToCLITypeName(@enum),
+                Context.ReturnVarName);
             return true;
         }
 
@@ -355,8 +353,20 @@ namespace Cxxi.Generators.CLI
         {
             if (@class.IsValueType)
             {
-                Return = string.Format("(::{0}*)&{1}", @class.OriginalName,
-                    Context.Parameter.Name);
+                if (Context.Parameter.Type.IsReference())
+                {
+                    var argName = string.Format("_{0}", Context.ArgName);
+                    Support = string.Format("auto {0} = (::{1}*)&{2};",
+                                            argName, @class.OriginalName,
+                                            Context.Parameter.Name);
+                    Return = string.Format("*{0}", argName);
+                }
+                else
+                {
+                    Return = string.Format("(::{0}*)&{1}", @class.OriginalName,
+                            Context.Parameter.Name);
+                }
+
             }
             else
             {
