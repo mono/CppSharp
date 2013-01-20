@@ -434,6 +434,13 @@ namespace Cxxi.Generators.CLI
             return false;
         }
 
+        public static bool CheckIgnoreField(Class @class, Field field)
+        {
+            if (field.Ignore) return true;
+
+            return false;
+        }
+
         public abstract override string FileExtension { get; }
 
         protected abstract override void Generate();
