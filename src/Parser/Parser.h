@@ -72,6 +72,7 @@ protected:
     Cxxi::ClassTemplate^ Parser::WalkClassTemplate(clang::ClassTemplateDecl*);
     Cxxi::FunctionTemplate^ Parser::WalkFunctionTemplate(
         clang::FunctionTemplateDecl*);
+    Cxxi::Variable^ WalkVariable(clang::VarDecl*);
     Cxxi::Type^ WalkType(clang::QualType, clang::TypeLoc* = 0,
       bool DesugarType = false);
 

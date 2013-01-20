@@ -1134,6 +1134,19 @@ void Parser::WalkMacros(clang::PreprocessingRecord* PR)
 
 //-----------------------------------//
 
+Cxxi::Variable^ Parser::WalkVariable(clang::VarDecl *VD)
+{
+    using namespace clang;
+    using namespace clix;
+
+    auto Var = gcnew Cxxi::Variable();
+    Var->Name = marshalString<E_UTF8>(VD->getName());
+
+    return Var;
+}
+
+//-----------------------------------//
+
 void Parser::HandleComments(clang::Decl* D, Cxxi::Declaration^ Decl)
 {
     using namespace clang;
@@ -1291,6 +1304,17 @@ Cxxi::Declaration^ Parser::WalkDeclaration(clang::Decl* D,
             Decl = WalkDeclaration(D);
         }
         
+        break;
+    }
+    case Decl::Var:
+    {
+        auto VD = cast<VarDecl>(D);
+
+        auto V = WalkVariable(VD);
+        HandleComments(VD, V);
+
+        Decl = V;
+
         break;
     }
     default:
