@@ -969,8 +969,18 @@ Cxxi::Function^ Parser::WalkFunction(clang::FunctionDecl* FD, bool IsDependent)
     using namespace clang;
     using namespace clix;
 
-    auto F = gcnew Cxxi::Function();
+    auto NS = GetNamespace(FD);
+    assert(NS && "Expected a valid namespace");
+
+    auto Name = marshalString<E_UTF8>(FD->getNameAsString());
+    Cxxi::Function^ F = NS->FindFunction(Name, /*Create=*/ false);
+
+    if (F != nullptr)
+        return F;
+
+    F = gcnew Cxxi::Function();
     WalkFunction(FD, F, IsDependent);
+    NS->Functions->Add(F);
 
     return F;
 }
@@ -1234,10 +1244,6 @@ Cxxi::Declaration^ Parser::WalkDeclaration(clang::Decl* D,
 
         auto F = WalkFunction(FD);
         HandleComments(FD, F);
-
-        auto NS = GetNamespace(FD);
-        F->Namespace = NS;
-        NS->Functions->Add(F);
 
         Decl = F;
         
