@@ -19,6 +19,8 @@
 #include <clang/Driver/Util.h>
 
 #include <string>
+#include <iostream>
+#include <sstream>
 
 //-----------------------------------//
 
@@ -1315,16 +1317,15 @@ bool Parser::Parse(const std::string& File)
 
     C->setASTConsumer(new ParseConsumer());
 
-    // Get the file  from the file system
-    const clang::FileEntry* file = C->getFileManager().getFile(File.c_str());
+    // Create a virtual file that includes the header. This gets rid of some
+    // Clang warnings about parsing an header file as the main file.
 
-    if (!file)
-    {
-        Debug("Filename '%s' was not found.\n", File.c_str());
-        return false;
-    }
+    std::string str;
+    str += "#include \"" + File + "\"" + "\n";
+    str += "\0";
 
-    C->getSourceManager().createMainFileID(file);
+    auto buffer = llvm::MemoryBuffer::getMemBuffer(str);
+    C->getSourceManager().createMainFileIDForMemBuffer(buffer);
 
     clang::DiagnosticConsumer* client = C->getDiagnostics().getClient();
     client->BeginSourceFile(C->getLangOpts(), &C->getPreprocessor());

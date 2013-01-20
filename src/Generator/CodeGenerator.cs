@@ -26,40 +26,35 @@ namespace Cxxi
         {
             library = new Library(options.OutputNamespace, options.LibraryName);
 
+            Console.WriteLine("Parsing code...");
+
+            var headers = new List<string>();
+            transform.SetupHeaders(headers);
+
+            foreach (var header in headers)
+                ParseHeader(header);
+
+            foreach (var header in options.Headers)
+                ParseHeader(header);
+        }
+
+        void ParseHeader(string file)
+        {
             var parserOptions = new ParserOptions
                 {
                     Library = library,
                     Verbose = false,
-                    IncludeDirs = options.IncludeDirs
+                    IncludeDirs = options.IncludeDirs,
+                    FileName = file
                 };
 
-            Console.WriteLine("Parsing code...");
-
-            foreach (var file in options.Headers)
+            if (!ClangParser.Parse(parserOptions))
             {
-                string path;
-
-                try
-                {
-                    path = Path.GetFullPath(file);
-                }
-                catch (ArgumentException)
-                {
-                    Console.WriteLine("Invalid path '" + file + "'.");
-                    continue;
-                }
-
-                var module = new TranslationUnit(path);
-                parserOptions.FileName = path;
-
-                if (!ClangParser.Parse(parserOptions))
-                {
-                    Console.WriteLine("  Could not parse '" + file + "'.");
-                    continue;
-                }
-
-                Console.WriteLine("  Parsed '" + file + "'.");
+                Console.WriteLine("  Could not parse '" + file + "'.");
+                return;
             }
+
+            Console.WriteLine("  Parsed '" + file + "'.");
         }
 
         public void ProcessCode()
