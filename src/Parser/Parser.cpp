@@ -628,21 +628,6 @@ Cxxi::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         auto TT = Type->getAs<clang::TypedefType>();
         TypedefNameDecl* TD = TT->getDecl();
 
-#if 0
-        auto NS = GetNamespace(TD);
-        auto TDD = NS->FindTypedef(marshalString<E_UTF8>(GetDeclName(TD)));
-
-        // If we did not find an existing typedef declaration, this is a type
-        // used by the standard library, so we walk the decl to process it.
-        if (!TDD)
-        {
-            auto TTL = TD->getTypeSourceInfo()->getTypeLoc();
-            TDD = (Cxxi::TypedefDecl^) WalkDeclaration(TD, &TTL,
-                /*IgnoreSystemDecls=*/false);
-            assert(TDD != nullptr);
-        }
-#endif
-
         auto TTL = TD->getTypeSourceInfo()->getTypeLoc();
         auto TDD = safe_cast<Cxxi::TypedefDecl^>(WalkDeclaration(TD, &TTL,
             /*IgnoreSystemDecls=*/false));
@@ -742,9 +727,6 @@ Cxxi::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         
         clang::TypeLoc::TypeLocClass Class = TL->getTypeLocClass();
         int Loc = (int) Class;
-
-        //if (Class != clang::TypeLoc::TemplateSpecialization)
-        //    return TST;
 
         auto TSTL = dyn_cast<TemplateSpecializationTypeLoc>(TL);
 
@@ -1306,7 +1288,6 @@ Cxxi::Declaration^ Parser::WalkDeclaration(clang::Decl* D,
     default:
     {
         Debug("Unhandled declaration kind: %s\n", D->getDeclKindName());
-        //assert(0 && "Unhandled declaration kind");
         break;
     } };
 
