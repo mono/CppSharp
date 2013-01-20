@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using Cxxi.Generators;
@@ -30,6 +31,12 @@ namespace Cxxi
         /// </summary>
         /// <param name="passes"></param>
         void SetupPasses(PassBuilder passes);
+
+        /// <summary>
+        /// Setup your headers here.
+        /// </summary>
+        /// <param name="headers"></param>
+        void SetupHeaders(List<string> headers);
 
         /// <summary>
         /// Called to generate text at the start of the text template.
@@ -203,6 +210,13 @@ namespace Cxxi
             Class @class = FindClass(name);
             if (@class != null)
                 @class.ExplicityIgnored = true;
+        }
+
+        public void SetClassAsOpaque(string name)
+        {
+            var @class = FindClass(name);
+            if (@class != null)
+                @class.IsOpaque = true;
         }
 
         #endregion
