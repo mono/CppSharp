@@ -1,7 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Cxxi
 {
+    public interface IRedeclarableDecl
+    {
+        Declaration PreviousDecl { get; }
+    }
+
     /// <summary>
     /// Represents a C++ declaration.
     /// </summary>
@@ -56,6 +62,9 @@ namespace Cxxi
 
         // True if the declaration is incomplete (no definition).
         public bool IsIncomplete;
+
+        // Keeps a reference to the complete version of this declaration.
+        public Declaration CompleteDeclaration;
 
         protected Declaration()
         {
