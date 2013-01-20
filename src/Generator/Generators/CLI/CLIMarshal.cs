@@ -189,6 +189,11 @@ namespace Cxxi.Generators.CLI
         {
             throw new NotImplementedException();
         }
+
+        public bool VisitDelegate(Delegate @delegate)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class CLIMarshalManagedToNativePrinter : ITypeVisitor<bool>,
@@ -404,6 +409,11 @@ namespace Cxxi.Generators.CLI
         }
 
         public bool VisitMacroDefinition(MacroDefinition macro)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitDelegate(Delegate @delegate)
         {
             throw new NotImplementedException();
         }
