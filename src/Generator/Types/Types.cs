@@ -7,7 +7,7 @@ namespace Cxxi
     /// <summary>
     /// This type checker is used to check if a type is complete.
     /// </summary>
-    public class TypeCompletionChecker : TypeChecker
+    public class TypeCompletionChecker : AstVisitor
     {
         public override bool VisitDeclaration(Declaration decl)
         {
@@ -45,13 +45,13 @@ namespace Cxxi
             }
 
             return true;
-        }        
+        }
     }
 
     /// <summary>
     /// This type checker is used to check if a type is ignored.
     /// </summary>
-    public class TypeIgnoreChecker : TypeChecker
+    public class TypeIgnoreChecker : AstVisitor
     {
         public override bool VisitDeclaration(Declaration decl)
         {
@@ -89,7 +89,7 @@ namespace Cxxi
             }
 
             return true;
-        }        
+        }
     }
 
     /// <summary>
@@ -99,7 +99,7 @@ namespace Cxxi
     /// that a file needs to be reference something that has not been declared
     /// yet. In that case, we need to declare it before referencing it.
     /// </summary>
-    class TypeRefsVisitor : TypeChecker
+    class TypeRefsVisitor : AstVisitor
     {
         public ISet<Declaration> ForwardReferences;
 
