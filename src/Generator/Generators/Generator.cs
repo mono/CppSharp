@@ -15,6 +15,7 @@ namespace Cxxi.Generators
         Options Options { get; set; }
         Library Library { get; set; }
         ILibrary Transform { get; set; }
+        ITypeMapDatabase TypeMapDatabase { get; set; }
         Generator Generator { get; set; }
 
         bool Generate(TranslationUnit unit);
@@ -25,16 +26,15 @@ namespace Cxxi.Generators
         public Options Options;
         public Library Library;
         public ILibrary LibraryTransform;
-        public TypeDatabase TypeDatabase;
+        public ITypeMapDatabase TypeMapDatabase;
 
-        public Generator(Options options, Library library, ILibrary libraryTransform)
+        public Generator(Options options, Library library, ILibrary libraryTransform,
+            ITypeMapDatabase typeMapDatabase)
         {
             this.Options = options;
             this.Library = library;
             this.LibraryTransform = libraryTransform;
-
-            TypeDatabase = new TypeDatabase();
-            TypeDatabase.SetupTypeMaps();
+            this.TypeMapDatabase = typeMapDatabase;
         }
 
         public void Generate()
@@ -75,6 +75,7 @@ namespace Cxxi.Generators
             generator.Options = Options;
             generator.Library = Library;
             generator.Transform = LibraryTransform;
+            generator.TypeMapDatabase = TypeMapDatabase;
 
             return generator;
         }
