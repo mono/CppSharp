@@ -53,6 +53,13 @@ namespace Cxxi
     /// </summary>
     public class TypeIgnoreChecker : AstVisitor
     {
+        ITypeMapDatabase TypeMapDatabase { get; set; }
+
+        public TypeIgnoreChecker(ITypeMapDatabase database)
+        {
+            TypeMapDatabase = database;
+        }
+
         public override bool VisitDeclaration(Declaration decl)
         {
             return decl.Ignore;
