@@ -10,7 +10,6 @@ namespace Cxxi.Types.Std
     }
 
     [TypeMap("std::string")]
-    [TypeMap("std::wstring")]
     public class String : TypeMap
     {
         public override string Signature()
@@ -26,6 +25,25 @@ namespace Cxxi.Types.Std
         public override string MarshalFromNative(MarshalContext ctx)
         {
             return string.Format("marshalString<E_UTF8>({0})", ctx.ReturnVarName);
+        }
+    }
+
+    [TypeMap("std::wstring")]
+    public class WString : TypeMap
+    {
+        public override string Signature()
+        {
+            return "System::String^";
+        }
+
+        public override string MarshalToNative(MarshalContext ctx)
+        {
+            return string.Format("marshalString<E_UTF16>({0})", ctx.Parameter.Name);
+        }
+
+        public override string MarshalFromNative(MarshalContext ctx)
+        {
+            return string.Format("marshalString<E_UTF16>({0})", ctx.ReturnVarName);
         }
     }
 
