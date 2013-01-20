@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Cxxi.Generators;
+using Cxxi.Types;
 
 namespace Cxxi.Passes
 {
@@ -8,9 +10,11 @@ namespace Cxxi.Passes
     {
         private int uniqueName;
         private TypeRefsVisitor typeRefs;
+        private ITypeMapDatabase typeMapDatabase;
 
-        public Preprocess()
+        public Preprocess(ITypeMapDatabase database)
         {
+            typeMapDatabase = database;
             typeRefs = new TypeRefsVisitor();
         }
 
@@ -169,7 +173,7 @@ namespace Cxxi.Passes
         /// reasons: incomplete definitions, being explicitly ignored, or also
         /// by being a type we do not know how to handle.
         /// </remarks>
-        static bool HasInvalidType(Type type, out string msg)
+        bool HasInvalidType(Type type, out string msg)
         {
             if (type == null)
             {
@@ -193,7 +197,7 @@ namespace Cxxi.Passes
             return false;
         }
 
-        static bool HasInvalidDecl(Declaration decl, out string msg)
+        bool HasInvalidDecl(Declaration decl, out string msg)
         {
             if (decl == null)
             {
@@ -229,15 +233,15 @@ namespace Cxxi.Passes
             return decl.Visit(checker);
         }
 
-        static bool IsTypeIgnored(Type type)
+        bool IsTypeIgnored(Type type)
         {
-            var checker = new TypeIgnoreChecker();
+            var checker = new TypeIgnoreChecker(typeMapDatabase);
             return type.Visit(checker);
         }
 
-        static bool IsDeclIgnored(Declaration decl)
+        bool IsDeclIgnored(Declaration decl)
         {
-            var checker = new TypeIgnoreChecker();
+            var checker = new TypeIgnoreChecker(typeMapDatabase);
             return decl.Visit(checker);
         }
 
