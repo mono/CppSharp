@@ -1353,7 +1353,9 @@ bool Parser::Parse(const std::string& File)
 
     clang::DiagnosticConsumer* client = C->getDiagnostics().getClient();
     client->BeginSourceFile(C->getLangOpts(), &C->getPreprocessor());
-    ParseAST(C->getPreprocessor(), &C->getASTConsumer(), C->getASTContext());
+    ParseAST(C->getPreprocessor(), &C->getASTConsumer(), C->getASTContext(),
+        /*PrintStats=*/false, clang::TU_Complete, 0,
+        /*SkipFunctionBodies=*/true);
     client->EndSourceFile();
 
     if(client->getNumErrors() != 0)
