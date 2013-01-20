@@ -78,7 +78,7 @@ namespace Cxxi.Generators.CLI
             // Generate the forward references.
             GenerateForwardRefs();
 
-            bool NeedsNewline = false;
+            bool needsNewline = false;
 
             // Generate all the enum declarations for the module.
             for (int i = 0; i < Module.Enums.Count; ++i)
@@ -87,15 +87,15 @@ namespace Cxxi.Generators.CLI
                 if (@enum.Ignore) continue;
 
                 GenerateEnum(@enum);
-                NeedsNewline = true;
+                needsNewline = true;
                 if (i < Module.Enums.Count - 1)
                     NewLine();
             }
 
-            if (NeedsNewline)
+            if (needsNewline)
                 NewLine();
 
-            NeedsNewline = false;
+            needsNewline = false;
 
             // Generate all the typedef declarations for the module.
             foreach (var typedef in Module.Typedefs)
@@ -109,7 +109,7 @@ namespace Cxxi.Generators.CLI
                 NewLine();
             }
 
-            NeedsNewline = false;
+            needsNewline = false;
 
             // Generate all the struct/class declarations for the module.
             for (var i = 0; i < Module.Classes.Count; ++i)
@@ -123,7 +123,7 @@ namespace Cxxi.Generators.CLI
                     continue;
 
                 GenerateClass(@class);
-                NeedsNewline = true;
+                needsNewline = true;
 
                 if (i < Module.Classes.Count - 1)
                     NewLine();
@@ -131,7 +131,7 @@ namespace Cxxi.Generators.CLI
 
             if (Module.HasFunctions)
             {
-                if (NeedsNewline)
+                if (needsNewline)
                     NewLine();
 
                 WriteLine("public ref class {0}{1}", SafeIdentifier(Library.Name),
