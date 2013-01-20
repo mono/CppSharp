@@ -50,6 +50,8 @@ namespace Cxxi.Types.Std
     [TypeMap("std::vector")]
     public class Vector : TypeMap
     {
+        public override bool IsIgnored { get { return true; } }
+
         public override string Signature()
         {
             var type = Type as TemplateSpecializationType;
@@ -71,6 +73,8 @@ namespace Cxxi.Types.Std
     [TypeMap("std::map")]
     public class Map : TypeMap
     {
+        public override bool IsIgnored { get { return true; } }
+
         public override string Signature()
         {
             var type = Type as TemplateSpecializationType;
@@ -88,6 +92,12 @@ namespace Cxxi.Types.Std
         {
             throw new System.NotImplementedException();
         }
+    }
+
+    [TypeMap("std::list")]
+    public class List : TypeMap
+    {
+        public override bool IsIgnored { get { return true; } }
     }
 
     [TypeMap("std::shared_ptr")]
