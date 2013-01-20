@@ -131,8 +131,16 @@ namespace Cxxi.Generators.CLI
 
         public bool VisitClassDecl(Class @class)
         {
-            Return = string.Format("gcnew {0}({1})", @class.Name, Context.ReturnVarName);
-            return @class.IsValueType;
+            if (@class.IsRefType)
+                Return = "gcnew ";
+
+            Return += string.Format("{0}(", @class.Name);
+
+            if (@class.IsValueType && !this.Context.ReturnType.IsPointer())
+                Return += "&";
+
+            Return += string.Format("{0})", this.Context.ReturnVarName);
+            return true;
         }
 
         public bool VisitFieldDecl(Field field)
