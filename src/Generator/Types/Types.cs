@@ -97,6 +97,36 @@ namespace Cxxi
 
             return true;
         }
+
+        public override bool VisitTypedefType(TypedefType typedef,
+            TypeQualifiers quals)
+        {
+            var decl = typedef.Declaration;
+
+            TypeMap typeMap = null;
+            if (TypeMapDatabase.FindTypeMap(decl, out typeMap))
+            {
+                if (typeMap.IsIgnored)
+                    return true;
+            }
+
+            return base.VisitTypedefType(typedef, quals);
+        }
+
+        public override bool VisitTemplateSpecializationType(
+            TemplateSpecializationType template, TypeQualifiers quals)
+        {
+            var decl = template.Template.TemplatedDecl;
+
+            TypeMap typeMap = null;
+            if (TypeMapDatabase.FindTypeMap(decl, out typeMap))
+            {
+                if (typeMap.IsIgnored)
+                    return true;
+            }
+
+            return base.VisitTemplateSpecializationType(template, quals);
+        }
     }
 
     /// <summary>
@@ -112,8 +142,11 @@ namespace Cxxi
 
         public void Collect(Declaration declaration)
         {
-            if (declaration.Namespace.TranslationUnit.IsSystemHeader)
-                return;
+            var @namespace = declaration.Namespace;
+
+            if (@namespace != null)
+                if (@namespace.TranslationUnit.IsSystemHeader)
+                    return;
 
             ForwardReferences.Add(declaration);
         }
@@ -123,36 +156,65 @@ namespace Cxxi
             ForwardReferences = new HashSet<Declaration>();
         }
 
-        public override bool VisitBuiltinType(BuiltinType builtin, TypeQualifiers quals)
-        {
-            // Built-in types should not need forward references.
-            return true;
-        }
-
         public override bool VisitClassDecl(Class @class)
         {
+            if (AlreadyVisited(@class))
+                return true;
+
             Collect(@class);
+
+            // If the class is incomplete, then we cannot process the record
+            // members, else it will add references to declarations that
+            // should have not been found.
+            if (@class.IsIncomplete)
+                return true;
+
+            foreach (var field in @class.Fields)
+                VisitFieldDecl(field);
+
+            foreach (var method in @class.Methods)
+                VisitMethodDecl(method);
+
             return true;
-        }
-
-        public override bool VisitParameterDecl(Parameter parameter)
-        {
-            if (parameter.Type == null)
-                return false;
-
-            return parameter.Type.Visit(this);
         }
 
         public override bool VisitEnumDecl(Enumeration @enum)
         {
             Collect(@enum);
-            return @enum.Type.Visit(this, new TypeQualifiers());
+            return true;
         }
 
-        public override bool VisitMacroDefinition(MacroDefinition macro)
+        public override bool VisitFieldDecl(Field field)
         {
-            // Macros are not relevant for forward references.
+            Class @class;
+            if (field.Type.IsTagDecl(out @class))
+            {
+                if (@class.IsValueType)
+                    Collect(@field);
+            }
+            else
+            {
+                field.Type.Visit(this);
+            }
+
             return true;
+        }
+
+        public override bool VisitTypedefType(TypedefType typedef,
+            TypeQualifiers quals)
+        {
+            var decl = typedef.Declaration;
+
+            if (decl.Type == null)
+                return false;
+
+            FunctionType function;
+            if (decl.Type.IsPointerTo<FunctionType>(out function))
+            {
+                Collect(decl);
+            }
+
+            return decl.Type.Visit(this);
         }
     }
 }
