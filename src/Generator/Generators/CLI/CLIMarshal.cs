@@ -105,8 +105,7 @@ namespace Cxxi.Generators.CLI
             var decl = typedef.Declaration;
 
             TypeMap typeMap = null;
-            var typeDb = Generator.TypeDatabase;
-            if (typeDb.FindTypeMap(decl.QualifiedOriginalName, out typeMap))
+            if (Generator.TypeMapDatabase.FindTypeMap(decl, out typeMap))
             {
                 Return = typeMap.MarshalFromNative(Context);
                 return typeMap.IsValueType;
@@ -315,7 +314,7 @@ namespace Cxxi.Generators.CLI
             var decl = typedef.Declaration;
 
             TypeMap typeMap = null;
-            if (Generator.TypeDatabase.FindTypeMap(decl.QualifiedOriginalName, out typeMap))
+            if (Generator.TypeMapDatabase.FindTypeMap(decl, out typeMap))
             {
                 Return = typeMap.MarshalToNative(Context);
                 return typeMap.IsValueType;
