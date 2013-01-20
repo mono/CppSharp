@@ -150,7 +150,7 @@ namespace Cxxi.Generators.CLI
                 return null;
 
             TypeMap typeMap = null;
-            if (Generator.TypeDatabase.FindTypeMap(decl.QualifiedOriginalName, out typeMap))
+            if (Generator.TypeMapDatabase.FindTypeMap(decl, out typeMap))
             {
                 return typeMap.Signature();
             }
@@ -171,7 +171,7 @@ namespace Cxxi.Generators.CLI
             var decl = template.Template.TemplatedDecl;
 
             TypeMap typeMap = null;
-            if (Generator.TypeDatabase.FindTypeMap(decl.QualifiedOriginalName, out typeMap))
+            if (Generator.TypeMapDatabase.FindTypeMap(decl, out typeMap))
             {
                 typeMap.Declaration = decl;
                 typeMap.Type = template;
@@ -445,6 +445,7 @@ namespace Cxxi.Generators.CLI
         public Options Options { get; set; }
         public Library Library { get; set; }
         public ILibrary Transform { get; set; }
+        public ITypeMapDatabase TypeMapDatabase { get; set; }
         public Generator Generator { get; set; }
 
         private readonly CLITypePrinter typePrinter;
