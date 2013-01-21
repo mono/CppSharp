@@ -187,10 +187,16 @@ namespace Cxxi
         public override bool VisitFieldDecl(Field field)
         {
             Class @class;
+            Enumeration @enum;
+
             if (field.Type.IsTagDecl(out @class))
             {
                 if (@class.IsValueType)
                     Collect(@field);
+            }
+            else if (field.Type.IsTagDecl(out @enum))
+            {
+                Collect(@field);
             }
             else
             {
