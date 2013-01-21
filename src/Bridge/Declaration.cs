@@ -66,6 +66,9 @@ namespace Cxxi
         // Keeps a reference to the complete version of this declaration.
         public Declaration CompleteDeclaration;
 
+        // Tracks the original declaration definition order.
+        public uint DefinitionOrder;
+
         protected Declaration()
         {
         }

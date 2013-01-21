@@ -62,8 +62,9 @@ protected:
     // AST traversers
     void WalkAST();
     void WalkMacros(clang::PreprocessingRecord* PR);
-    Cxxi::Declaration^ WalkDeclaration(clang::Decl* D,
-        clang::TypeLoc* = 0, bool IgnoreSystemDecls = true);
+    Cxxi::Declaration^ WalkDeclaration(clang::Decl* D, clang::TypeLoc* = 0,
+        bool IgnoreSystemDecls = true, bool CanBeDefinition = false);
+    Cxxi::Declaration^ WalkDeclarationDef(clang::Decl* D);
     Cxxi::Enumeration^ WalkEnum(clang::EnumDecl*);
     Cxxi::Function^ WalkFunction(clang::FunctionDecl*, bool IsDependent = false);
     Cxxi::Class^ WalkRecordCXX(clang::CXXRecordDecl*, bool IsDependent = false);
@@ -88,6 +89,7 @@ protected:
     Cxxi::TranslationUnit^ GetModule(clang::SourceLocation Loc);
     Cxxi::Namespace^ GetNamespace(const clang::NamedDecl*);
 
+    int Index;
     gcroot<Cxxi::Library^> Lib;
     llvm::OwningPtr<clang::CompilerInstance> C;
     clang::ASTContext* AST;

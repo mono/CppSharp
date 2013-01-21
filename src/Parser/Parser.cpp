@@ -24,7 +24,7 @@
 
 //-----------------------------------//
 
-Parser::Parser(ParserOptions^ Opts) : Lib(Opts->Library)
+Parser::Parser(ParserOptions^ Opts) : Lib(Opts->Library), Index(0)
 {
     Setup(Opts);
 }
@@ -1036,7 +1036,7 @@ void Parser::WalkAST()
     for(auto it = TU->decls_begin(); it != TU->decls_end(); ++it)
     {
         Decl* D = (*it);
-        WalkDeclaration(D);
+        WalkDeclarationDef(D);
     }
 }
 
@@ -1174,8 +1174,15 @@ void Parser::HandleComments(clang::Decl* D, Cxxi::Declaration^ Decl)
 
 //-----------------------------------//
 
-Cxxi::Declaration^ Parser::WalkDeclaration(clang::Decl* D,
-                           clang::TypeLoc* TL, bool IgnoreSystemDecls)
+Cxxi::Declaration^ Parser::WalkDeclarationDef(clang::Decl* D)
+{
+    return WalkDeclaration(D, 0, /*IgnoreSystemDecls=*/true,
+        /*CanBeDefinition=*/true);
+}
+
+Cxxi::Declaration^ Parser::WalkDeclaration(clang::Decl* D, clang::TypeLoc* TL,
+                                           bool IgnoreSystemDecls,
+                                           bool CanBeDefinition)
 {
     using namespace clang;
     using namespace clix;
@@ -1209,6 +1216,16 @@ Cxxi::Declaration^ Parser::WalkDeclaration(clang::Decl* D,
 
         auto Class = WalkRecordCXX(RD);
         HandleComments(RD, Class);
+
+        // We store a definition order index into the declarations.
+        // This is needed because declarations are added to their contexts as
+        // soon as they are referenced and we need to know the original order
+        // of the declarations.
+
+        if (CanBeDefinition && Class->DefinitionOrder == 0)
+        {
+            Class->DefinitionOrder = Index++;
+        }
 
         Decl = Class;
 
@@ -1271,7 +1288,7 @@ Cxxi::Declaration^ Parser::WalkDeclaration(clang::Decl* D,
         for (auto it = LS->decls_begin(); it != LS->decls_end(); ++it)
         {
             clang::Decl* D = (*it);
-            Decl = WalkDeclaration(D);
+            Decl = WalkDeclarationDef(D);
         }
         
         break;
@@ -1301,7 +1318,7 @@ Cxxi::Declaration^ Parser::WalkDeclaration(clang::Decl* D,
         for (auto it = ND->decls_begin(); it != ND->decls_end(); ++it)
         {
             clang::Decl* D = (*it);
-            Decl = WalkDeclaration(D);
+            Decl = WalkDeclarationDef(D);
         }
         
         break;

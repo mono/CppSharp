@@ -62,6 +62,10 @@ namespace Cxxi
             typeDatabase = new TypeDatabase();
             typeDatabase.SetupTypeMaps();
 
+            // Sort the declarations to be in original order.
+            foreach (var unit in library.TranslationUnits)
+                SortDeclarations(unit);
+
             if (transform != null)
                 transform.Preprocess(new LibraryHelpers(library));
 
@@ -80,6 +84,15 @@ namespace Cxxi
 
             if (transform != null)
                 transform.Postprocess(new LibraryHelpers(library));
+        }
+
+        private static void SortDeclarations(Namespace @namespace)
+        {
+            @namespace.Classes.Sort((c, c1) =>
+                              (int) (c.DefinitionOrder - c1.DefinitionOrder));
+
+            foreach (var childNamespace in @namespace.Namespaces)
+                SortDeclarations(childNamespace);
         }
 
         public void GenerateCode()
