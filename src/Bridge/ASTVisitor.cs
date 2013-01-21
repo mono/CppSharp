@@ -153,6 +153,29 @@ namespace Cxxi
             return true;
         }
 
+        public bool VisitNamespace(Namespace @namespace)
+        {
+            foreach (var decl in @namespace.Classes)
+                decl.Visit(this);
+
+            foreach (var decl in @namespace.Functions)
+                decl.Visit(this);
+
+            foreach (var decl in @namespace.Enums)
+                decl.Visit(this);
+
+            foreach (var decl in @namespace.Templates)
+                decl.Visit(this);
+
+            foreach (var decl in @namespace.Typedefs)
+                decl.Visit(this);
+
+            foreach (var decl in @namespace.Namespaces)
+                decl.Visit(this);
+
+            return true;
+        }
+
         #endregion
     }
 }

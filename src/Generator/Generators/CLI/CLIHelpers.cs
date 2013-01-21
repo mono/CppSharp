@@ -242,6 +242,11 @@ namespace Cxxi.Generators.CLI
         {
             throw new NotImplementedException();
         }
+
+        public string VisitNamespace(Namespace @namespace)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class CLIForwardRefeferencePrinter : IDeclVisitor<bool>
@@ -350,6 +355,11 @@ namespace Cxxi.Generators.CLI
         }
 
         public bool VisitMacroDefinition(MacroDefinition macro)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitNamespace(Namespace @namespace)
         {
             throw new NotImplementedException();
         }

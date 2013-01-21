@@ -206,8 +206,7 @@ namespace Cxxi
 
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {
-            return default(T);
-            //visitor.VisitNamespace(this);
+            return visitor.VisitNamespace(this);
         }
     }
 }

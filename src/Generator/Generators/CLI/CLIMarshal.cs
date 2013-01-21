@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Text;
 using Cxxi.Types;
@@ -192,6 +193,11 @@ namespace Cxxi.Generators.CLI
         }
 
         public bool VisitMacroDefinition(MacroDefinition macro)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitNamespace(Namespace @namespace)
         {
             throw new NotImplementedException();
         }
@@ -427,6 +433,11 @@ namespace Cxxi.Generators.CLI
         }
 
         public bool VisitMacroDefinition(MacroDefinition macro)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitNamespace(Namespace @namespace)
         {
             throw new NotImplementedException();
         }

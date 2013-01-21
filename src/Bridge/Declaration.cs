@@ -131,5 +131,6 @@ namespace Cxxi
         T VisitClassTemplateDecl(ClassTemplate template);
         T VisitFunctionTemplateDecl(FunctionTemplate template);
         T VisitMacroDefinition(MacroDefinition macro);
+        T VisitNamespace(Namespace @namespace);
     }
 }
