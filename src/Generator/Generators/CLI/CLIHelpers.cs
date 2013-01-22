@@ -29,7 +29,7 @@ namespace Cxxi.Generators.CLI
 
         public string VisitArrayType(ArrayType array, TypeQualifiers quals)
         {
-            return string.Format("array<{0}>", array.Type.Visit(this));
+            return string.Format("cli::array<{0}>^", array.Type.Visit(this));
         }
 
         public string VisitFunctionType(FunctionType function, TypeQualifiers quals)
