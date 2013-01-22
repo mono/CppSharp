@@ -300,6 +300,10 @@ namespace Cxxi.Generators.CLI
                 return true;
             }
 
+            Enumeration @enum;
+            if (field.Type.IsTagDecl(out @enum))
+                return VisitEnumDecl(@enum);
+
             Includes.Add(GetHeaderFromDecl(field));
             return true;
         }
