@@ -292,7 +292,11 @@ namespace Cxxi.Generators.CLI
             Class @class;
             if (field.Type.IsTagDecl(out @class))
             {
-                Includes.Add(GetHeaderFromDecl(@class));
+                if (@class.IsValueType)
+                    Includes.Add(GetHeaderFromDecl(@class));
+                else
+                    VisitClassDecl(@class);
+
                 return true;
             }
 
