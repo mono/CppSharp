@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Cxxi
 {
@@ -109,6 +110,14 @@ namespace Cxxi
         public bool IsRefType
         {
             get { return Type == ClassType.RefType; }
+        }
+
+        public IEnumerable<Method> Constructors
+        {
+            get {
+                return Methods.Where(
+                    method => method.IsConstructor || method.IsCopyConstructor);
+            }
         }
 
         public override T Visit<T>(IDeclVisitor<T> visitor)
