@@ -84,7 +84,9 @@ namespace Cxxi.Generators.CLI
             for (int i = 0; i < Module.Enums.Count; ++i)
             {
                 var @enum = Module.Enums[i];
-                if (@enum.Ignore) continue;
+
+                if (@enum.Ignore || @enum.IsIncomplete)
+                    continue;
 
                 GenerateEnum(@enum);
                 needsNewline = true;
@@ -344,7 +346,9 @@ namespace Cxxi.Generators.CLI
 
         public void GenerateEnum(Enumeration @enum)
         {
-            if (@enum.Ignore) return;
+            if (@enum.Ignore || @enum.IsIncomplete)
+                return;
+
             GenerateDeclarationCommon(@enum);
 
             if (@enum.Modifiers.HasFlag(Enumeration.EnumModifiers.Flags))
