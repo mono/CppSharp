@@ -191,8 +191,7 @@ namespace Cxxi
 
             if (field.Type.IsTagDecl(out @class))
             {
-                if (@class.IsValueType)
-                    Collect(@field);
+                Collect(@field);
             }
             else if (field.Type.IsTagDecl(out @enum))
             {
