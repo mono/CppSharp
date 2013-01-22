@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using Cxxi.Types;
 
@@ -100,11 +101,16 @@ namespace Cxxi.Generators.CLI
                 return string.Format("{0}^", function.Visit(this, quals));
             }
 
-            if (pointee.IsPrimitiveType(PrimitiveType.Void))
+            if (pointee.IsPrimitiveType(PrimitiveType.Void, walkTypedefs: true) ||
+                pointee.IsPrimitiveType(PrimitiveType.UInt8, walkTypedefs: true))
+            {
                 return "System::IntPtr";
+            }
 
             if (pointee.IsPrimitiveType(PrimitiveType.Char))
+            {
                 return "System::String^";
+            }
 
             return pointee.Visit(this, quals);
         }
