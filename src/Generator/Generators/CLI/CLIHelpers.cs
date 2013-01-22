@@ -267,6 +267,10 @@ namespace Cxxi.Generators.CLI
 
         public bool VisitClassDecl(Class @class)
         {
+            var completeDecl = @class.CompleteDeclaration as Class;
+            if (@class.IsIncomplete && completeDecl != null)
+                return VisitClassDecl(completeDecl);
+
             if (@class.IsValueType)
             {
                 Refs.Add(string.Format("value struct {0};", @class.Name));
