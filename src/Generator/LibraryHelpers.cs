@@ -213,6 +213,17 @@ namespace Cxxi
                 @class.IsOpaque = true;
         }
 
+        public void SetNameOfClassMethod(string name, string methodName,
+            string newMethodName)
+        {
+            foreach (var @class in FindClass(name))
+            {
+                var method = @class.Methods.Find(m => m.Name == methodName);
+                if (method != null)
+                    method.Name = newMethodName;
+            }
+        }
+
         #endregion
 
         #region Function Helpers
