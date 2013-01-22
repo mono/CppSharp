@@ -179,43 +179,37 @@ namespace Cxxi
 
         #region Class Helpers
 
-        public Class FindClass(string name)
+        public IEnumerable<Class> FindClass(string name)
         {
             foreach (var module in Library.TranslationUnits)
             {
                 var @class = module.FindClass(name);
                 if (@class != null)
-                    return @class;
+                    yield return @class;
             }
-
-            return null;
         }
 
         public void SetClassBindName(string className, string name)
         {
-            Class @class = FindClass(className);
-            if (@class != null)
+            foreach (var @class in FindClass(className))
                 @class.Name = name;
         }
 
         public void SetClassAsValueType(string className)
         {
-            Class @class = FindClass(className);
-            if (@class != null)
+            foreach (var @class in FindClass(className))
                 @class.Type = ClassType.ValueType;
         }
 
         public void IgnoreClassWithName(string name)
         {
-            Class @class = FindClass(name);
-            if (@class != null)
+            foreach (var @class in FindClass(name))
                 @class.ExplicityIgnored = true;
         }
 
         public void SetClassAsOpaque(string name)
         {
-            var @class = FindClass(name);
-            if (@class != null)
+            foreach (var @class in FindClass(name))
                 @class.IsOpaque = true;
         }
 
@@ -244,17 +238,15 @@ namespace Cxxi
 
         public void IgnoreClassMethodWithName(string className, string name)
         {
-            Class @class = FindClass(className);
+            foreach (var @class in FindClass(name))
+            {
+                var method = @class.Methods.Find(m => m.Name == name);
 
-            if (@class == null)
-                return;
+                if (method == null)
+                    return;
 
-            var method = @class.Methods.Find(m => m.Name == name);
-
-            if (method == null)
-                return;
-
-            method.ExplicityIgnored = true;
+                method.ExplicityIgnored = true;
+            }
         }
 
         #endregion
