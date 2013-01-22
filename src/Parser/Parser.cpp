@@ -114,7 +114,8 @@ void Parser::Setup(ParserOptions^ Opts)
       = clang::driver::GetWindowsSystemIncludeDirs();
     clang::HeaderSearchOptions& HSOpts = C->getHeaderSearchOpts();
 
-    for(size_t i = 0; i < SystemDirs.size(); ++i) {
+    for(size_t i = 0; i < SystemDirs.size(); ++i)
+    {
         HSOpts.AddPath(SystemDirs[i], frontend::System, false, false, true);
     }
 #endif
