@@ -13,12 +13,35 @@ namespace Cxxi
         {
         }
 
-        public bool IsPrimitiveType(PrimitiveType primitive)
+        public bool IsPrimitiveType(out PrimitiveType primitive,
+            bool walkTypedefs = false)
         {
             var builtin = this as BuiltinType;
             if (builtin != null)
-                return builtin.Type == primitive;
+            {
+                primitive = builtin.Type;
+                return true;
+            }
+
+            if (walkTypedefs)
+            {
+                var typedef = this as TypedefType;
+                if (typedef != null)
+                    return typedef.Declaration.Type.IsPrimitiveType(out primitive, true);
+            }
+
+            primitive = PrimitiveType.Null;
             return false;
+        }
+
+        public bool IsPrimitiveType(PrimitiveType primitive,
+            bool walkTypedefs = false)
+        {
+            PrimitiveType type;
+            if (!IsPrimitiveType(out type, walkTypedefs))
+                return false;
+
+            return primitive == type;
         }
 
         public bool IsEnumType()
