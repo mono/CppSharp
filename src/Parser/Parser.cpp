@@ -1226,6 +1226,7 @@ Cxxi::Declaration^ Parser::WalkDeclaration(clang::Decl* D, clang::TypeLoc* TL,
         if (CanBeDefinition && Class->DefinitionOrder == 0)
         {
             Class->DefinitionOrder = Index++;
+            //Debug("%d: %s\n", Index++, GetTagDeclName(RD).c_str());
         }
 
         Decl = Class;
@@ -1243,6 +1244,16 @@ Cxxi::Declaration^ Parser::WalkDeclaration(clang::Decl* D, clang::TypeLoc* TL,
         
         Decl = Template;
         
+        break;
+    }
+    case Decl::ClassTemplateSpecialization:
+    {
+        auto TS = cast<ClassTemplateSpecializationDecl>(D);
+
+        auto CT = gcnew Cxxi::ClassTemplateSpecialization();
+
+        Decl = CT;
+
         break;
     }
     case Decl::FunctionTemplate:
