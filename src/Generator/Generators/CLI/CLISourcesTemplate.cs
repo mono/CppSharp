@@ -180,6 +180,11 @@ namespace Cxxi.Generators.CLI
                     GenerateFunctionCall(method);
                 }
             }
+            else if (@class.IsValueType)
+            {
+                if (method.Kind != CXXMethodKind.Constructor)
+                    GenerateFunctionCall(method, @class);
+            }
 
             PopIndent();
             WriteLine("}");
@@ -213,30 +218,56 @@ namespace Cxxi.Generators.CLI
             WriteLine("}");
         }
 
-        public void GenerateFunctionCall(Function function)
+        public void GenerateFunctionCall(Function function, Class @class = null)
         {
             var retType = function.ReturnType;
             var needsReturn = !retType.IsPrimitiveType(PrimitiveType.Void);
+
+            var isValueType = @class != null && @class.IsValueType;
+            if (isValueType)
+            {
+                WriteLine("auto this0 = (::{0}*) 0;", @class.QualifiedOriginalName);
+            }
 
             var @params = GenerateFunctionParamsMarshal(function);
 
             if (needsReturn)
                 Write("auto ret = ");
 
-            if (function is Method)
-                Write("NativePtr->");
-            else
-                Write("::");
+            if (function.ReturnType.IsReference() && !isValueType)
+            {
+                Write("&");
+            }
 
-            Write("{0}(", function.QualifiedOriginalName);
-            GenerateFunctionParams(function, @params);
-            WriteLine(");");
+            if (isValueType)
+            {
+                Write("this0->");
+                Write("{0}(", function.QualifiedOriginalName);
+                GenerateFunctionParams(function, @params);
+                WriteLine(");");
+            }
+            else
+            {
+                if (function is Method)
+                    Write("NativePtr->");
+                else
+                    Write("::");
+
+                Write("{0}(", function.QualifiedOriginalName);
+                GenerateFunctionParams(function, @params);
+                WriteLine(");");
+            }
 
             if (needsReturn)
             {
                 Write("return ");
 
-                var ctx = new MarshalContext() { ReturnVarName = "ret" };
+                var ctx = new MarshalContext()
+                    {
+                        ReturnVarName = "ret",
+                        ReturnType = retType
+                    };
+
                 var marshal = new CLIMarshalNativeToManagedPrinter(Generator, ctx);
                 function.ReturnType.Visit(marshal);
 
@@ -244,18 +275,24 @@ namespace Cxxi.Generators.CLI
             }
         }
 
-        public List<string> GenerateFunctionParamsMarshal(Function function)
+        public struct ParamMarshal
         {
-            var @params = new List<string>();
+            public string Name;
+            public Parameter Param;
+        }
 
-            // Do marshalling of parameters
+        public List<ParamMarshal> GenerateFunctionParamsMarshal(Function function)
+        {
+            var @params = new List<ParamMarshal>();
+
+            // Do marshaling of parameters
             for (var i = 0; i < function.Parameters.Count; ++i)
             {
                 var param = function.Parameters[i];
                 
                 if (param.Type is BuiltinType)
                 {
-                    @params.Add(param.Name);
+                    @params.Add(new ParamMarshal {Name = param.Name, Param = param});
                 }
                 else
                 {
@@ -270,20 +307,23 @@ namespace Cxxi.Generators.CLI
                     if (!string.IsNullOrWhiteSpace(marshal.Support))
                         WriteLine(marshal.Support);
 
-                    WriteLine("auto {0} = {1};", argName, marshal.Return);
-                    @params.Add(argName);
+                    Write("auto {0} = ", argName);
+                    WriteLine("{0};", marshal.Return);
+
+                    @params.Add(new ParamMarshal { Name = argName, Param = param });
                 }
             }
 
             return @params;
         }
 
-        public void GenerateFunctionParams(Function function, List<string> @params)
+        public void GenerateFunctionParams(Function function, List<ParamMarshal> @params)
         {
             for (var i = 0; i < @params.Count; ++i)
             {
                 var param = @params[i];
-                Write(param);
+
+                Write(param.Name);
 
                 if (i < @params.Count - 1)
                     Write(", ");
