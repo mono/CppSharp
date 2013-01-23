@@ -398,14 +398,19 @@ namespace Cxxi.Generators.CLI
                 }
                 else
                 {
-                    Return = string.Format("(::{0}*)&{1}", @class.OriginalName,
+                    if (!Context.Parameter.Type.IsPointer())
+                        Return = "*";
+
+                    Return += string.Format("(::{0}*)&{1}", @class.QualifiedOriginalName,
                             Context.Parameter.Name);
                 }
-
             }
             else
             {
-                Return = string.Format("{0}->NativePtr", Context.Parameter.Name);
+                if (!Context.Parameter.Type.IsPointer())
+                    Return = "*";
+
+                Return += string.Format("{0}->NativePtr", Context.Parameter.Name);
             }
 
             return true;
