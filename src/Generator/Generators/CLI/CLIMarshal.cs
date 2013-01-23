@@ -220,8 +220,10 @@ namespace Cxxi.Generators.CLI
     public class CLIMarshalManagedToNativePrinter : ITypeVisitor<bool>,
                                                     IDeclVisitor<bool>
     {
-        public TextGenerator Support;
+        public TextGenerator SupportBefore;
+        public TextGenerator SupportAfter;
         public TextGenerator Return;
+        public TextGenerator ArgumentPrefix;
 
         Generator Generator { get; set; }
         MarshalContext Context { get; set; }
@@ -231,7 +233,8 @@ namespace Cxxi.Generators.CLI
             Generator = gen;
             Context = ctx;
 
-            Support = new TextGenerator();
+            SupportBefore = new TextGenerator();
+            SupportAfter = new TextGenerator();
             Return = new TextGenerator();
         }
 
@@ -291,7 +294,7 @@ namespace Cxxi.Generators.CLI
 
             if (pointee.IsPrimitiveType(PrimitiveType.Char))
             {
-                Support.Write(
+                SupportBefore.Write(
                     "auto _{0} = clix::marshalString<clix::E_UTF8>({1});",
                     Context.ArgName, Context.Parameter.Name);
 
@@ -396,7 +399,7 @@ namespace Cxxi.Generators.CLI
                 if (Context.Parameter.Type.IsReference())
                 {
                     var argName = string.Format("_{0}", Context.ArgName);
-                    Support.Write("auto {0} = (::{1}*)&{2};",
+                    SupportBefore.Write("auto {0} = (::{1}*)&{2};",
                                   argName, @class.OriginalName,
                                   Context.Parameter.Name);
                     Return.Write("*{0}", argName);

@@ -304,13 +304,14 @@ namespace Cxxi.Generators.CLI
                     if (string.IsNullOrEmpty(marshal.Return))
                         return null;
 
-                    if (!string.IsNullOrWhiteSpace(marshal.Support))
-                        WriteLine(marshal.Support);
+                    if (!string.IsNullOrWhiteSpace(marshal.SupportBefore))
+                        WriteLine(marshal.SupportBefore);
 
                     Write("auto {0} = ", argName);
                     WriteLine("{0};", marshal.Return);
 
-                    @params.Add(new ParamMarshal { Name = argName, Param = param });
+                    if (!string.IsNullOrWhiteSpace(marshal.SupportAfter))
+                        WriteLine(marshal.SupportAfter);
                 }
             }
 
