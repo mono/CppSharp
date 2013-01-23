@@ -434,6 +434,17 @@ namespace Cxxi.Generators.CLI
             WriteLine("/// <summary> {0} </summary>", comment);
         }
 
+        public void GenerateMethodParameters(Method method)
+        {
+            for (var i = 0; i < method.Parameters.Count; ++i)
+            {
+                var param = method.Parameters[i];
+                Write("{0}", TypeSig.GetArgumentString(param));
+                if (i < method.Parameters.Count - 1)
+                    Write(", ");
+            }
+        }
+
         public static bool CheckIgnoreMethod(Class @class, Method method)
         {
             if (method.Ignore) return true;

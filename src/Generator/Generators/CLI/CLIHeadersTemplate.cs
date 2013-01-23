@@ -283,13 +283,7 @@ namespace Cxxi.Generators.CLI
             else
                 Write("{0} {1}(", method.ReturnType, SafeIdentifier(method.Name));
 
-            for (var i = 0; i < method.Parameters.Count; ++i)
-            {
-                var param = method.Parameters[i];
-                Write("{0}", TypeSig.GetArgumentString(param));
-                if (i < method.Parameters.Count - 1)
-                    Write(", ");
-            }
+            GenerateMethodParameters(method);
 
             WriteLine(");");
         }

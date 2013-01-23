@@ -154,13 +154,7 @@ namespace Cxxi.Generators.CLI
                 Write("{0} {1}::{2}(", method.ReturnType, QualifiedIdentifier(@class),
                       SafeIdentifier(method.Name));
 
-            for (var i = 0; i < method.Parameters.Count; ++i)
-            {
-                var param = method.Parameters[i];
-                Write("{0}", TypeSig.GetArgumentString(param));
-                if (i < method.Parameters.Count - 1)
-                    Write(", ");
-            }
+            GenerateMethodParameters(method);
 
             WriteLine(")");
             WriteLine("{");
