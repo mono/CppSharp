@@ -55,6 +55,10 @@ namespace Cxxi.Generators.CLI
                 return true;
             }
 
+            PrimitiveType primitive;
+            if (pointee.IsPrimitiveType(out primitive, walkTypedefs: true))
+                Return += "*";
+
             if (!pointee.Visit(this, quals))
                 return false;
 
@@ -89,7 +93,7 @@ namespace Cxxi.Generators.CLI
                 case PrimitiveType.UInt64:
                 case PrimitiveType.Float:
                 case PrimitiveType.Double:
-                    Return = Context.ReturnVarName;
+                    Return += Context.ReturnVarName;
                     return true;
                 case PrimitiveType.WideChar:
                     return false;
