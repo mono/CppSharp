@@ -8,6 +8,8 @@ namespace Cxxi.Generators.CLI
     {
         public override string FileExtension { get { return "h"; } }
 
+        private CLIForwardRefeferencePrinter forwardRefsPrinter;
+
         protected override void Generate()
         {
             GenerateStart();
@@ -25,8 +27,6 @@ namespace Cxxi.Generators.CLI
             GenerateDeclarations();
             WriteLine("}");
         }
-
-        private CLIForwardRefeferencePrinter forwardRefsPrinter;
 
         public void GenerateIncludeForwardRefs()
         {
