@@ -312,6 +312,9 @@ namespace Cxxi.Generators.CLI
 
                     if (!string.IsNullOrWhiteSpace(marshal.SupportAfter))
                         WriteLine(marshal.SupportAfter);
+
+                    var argText = marshal.ArgumentPrefix + argName;
+                    @params.Add(new ParamMarshal { Name = argText, Param = param });
                 }
             }
 

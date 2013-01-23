@@ -236,6 +236,7 @@ namespace Cxxi.Generators.CLI
             SupportBefore = new TextGenerator();
             SupportAfter = new TextGenerator();
             Return = new TextGenerator();
+            ArgumentPrefix = new TextGenerator();
         }
 
         public bool VisitTagType(TagType tag, TypeQualifiers quals)
