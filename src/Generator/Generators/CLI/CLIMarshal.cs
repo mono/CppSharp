@@ -407,11 +407,28 @@ namespace Cxxi.Generators.CLI
                 }
                 else
                 {
-                    //if (!Context.Parameter.Type.IsPointer())
-                    //    Return = "*";
+                    SupportAfter.PushIndent();
+
+                    foreach (var field in @class.Fields)
+                    {
+                        SupportAfter.Write("{0}.{1} = ", Context.ArgName,
+                            field.OriginalName);
+
+                        var fieldRef = string.Format("{0}.{1}", Context.Parameter.Name,
+                                                     field.Name);
+
+                        var marshalCtx = new MarshalContext() { ArgName = fieldRef };
+                        var marshal = new CLIMarshalManagedToNativePrinter(Generator,
+                            marshalCtx);
+                        field.Visit(marshal);
+
+                        SupportAfter.WriteLine("{0};", marshal.Return);
+                    }
 
                     Return.Write("::{0}()", @class.QualifiedOriginalName);
 
+                    if (Context.Parameter.Type.IsPointer())
+                        ArgumentPrefix.Write("&");
                 }
             }
             else
@@ -427,7 +444,12 @@ namespace Cxxi.Generators.CLI
 
         public bool VisitFieldDecl(Field field)
         {
-            throw new NotImplementedException();
+            Context.Parameter = new Parameter
+                {
+                    Name = Context.ArgName, Type = field.Type
+                };
+
+            return field.Type.Visit(this);
         }
 
         public bool VisitFunctionDecl(Function function)
