@@ -270,9 +270,17 @@ namespace Cxxi.Generators.CLI
         {
             var pointee = pointer.Pointee;
 
-            if (pointee.IsPrimitiveType(PrimitiveType.Void))
+            var isVoidPtr = pointee.IsPrimitiveType(PrimitiveType.Void,
+                walkTypedefs: true);
+
+            var isUInt8Ptr = pointee.IsPrimitiveType(PrimitiveType.UInt8,
+                walkTypedefs: true);
+
+            if (isVoidPtr || isUInt8Ptr)
             {
-                Return = string.Format("{0}.ToPointer()", Context.Parameter.Name);
+                if (isUInt8Ptr)
+                    Return += string.Format("({0})", "uint8*");
+                Return += string.Format("{0}.ToPointer()", Context.Parameter.Name);
                 return true;
             }
 
@@ -324,7 +332,7 @@ namespace Cxxi.Generators.CLI
                 case PrimitiveType.UInt64:
                 case PrimitiveType.Float:
                 case PrimitiveType.Double:
-                    Return = Context.Parameter.Name;
+                    Return += Context.Parameter.Name;
                     return true;
                 case PrimitiveType.WideChar:
                     return false;
