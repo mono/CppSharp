@@ -9,8 +9,8 @@ namespace Cxxi.Generators.CLI
     public class CLIMarshalNativeToManagedPrinter : ITypeVisitor<bool>,
                                                     IDeclVisitor<bool>
     {
-        public string Support = null;
-        public string Return = null;
+        public TextGenerator Support;
+        public TextGenerator Return;
 
         Generator Generator { get; set; }
         MarshalContext Context { get; set; }
@@ -19,6 +19,8 @@ namespace Cxxi.Generators.CLI
         {
             Generator = gen;
             Context = ctx;
+            Support = new TextGenerator();
+            Return = new TextGenerator();
         }
 
         public bool VisitTagType(TagType tag, TypeQualifiers quals)
@@ -44,20 +46,20 @@ namespace Cxxi.Generators.CLI
 
             if (pointee.IsPrimitiveType(PrimitiveType.Void))
             {
-                Return = "IntPtr()";
+                Return.Write("IntPtr()");
                 return true;
             }
 
             if (pointee.IsPrimitiveType(PrimitiveType.Char))
             {
-                Return = string.Format("clix::marshalString<clix::E_UTF8>({0})",
-                                       Context.ReturnVarName);
+                Return.Write("clix::marshalString<clix::E_UTF8>({0})",
+                             Context.ReturnVarName);
                 return true;
             }
 
             PrimitiveType primitive;
             if (pointee.IsPrimitiveType(out primitive, walkTypedefs: true))
-                Return += "*";
+                Return.Write("*");
 
             if (!pointee.Visit(this, quals))
                 return false;
@@ -93,7 +95,7 @@ namespace Cxxi.Generators.CLI
                 case PrimitiveType.UInt64:
                 case PrimitiveType.Float:
                 case PrimitiveType.Double:
-                    Return += Context.ReturnVarName;
+                    Return.Write(Context.ReturnVarName);
                     return true;
                 case PrimitiveType.WideChar:
                     return false;
@@ -109,7 +111,7 @@ namespace Cxxi.Generators.CLI
             TypeMap typeMap = null;
             if (Generator.TypeMapDatabase.FindTypeMap(decl, out typeMap))
             {
-                Return = typeMap.MarshalFromNative(Context);
+                Return.Write(typeMap.MarshalFromNative(Context));
                 return typeMap.IsValueType;
             }
 
@@ -137,17 +139,17 @@ namespace Cxxi.Generators.CLI
         public bool VisitClassDecl(Class @class)
         {
             if (@class.IsRefType)
-                Return = "gcnew ";
+                Return.Write("gcnew ");
 
-            Return += string.Format("{0}::{1}(", Generator.Library.Name,
+            Return.Write("{0}::{1}(", Generator.Library.Name,
                 @class.Name);
 
-            Return += string.Format("(::{0}*)", @class.QualifiedOriginalName);
+            Return.Write("(::{0}*)", @class.QualifiedOriginalName);
 
             if (@class.IsValueType && !this.Context.ReturnType.IsPointer())
-                Return += "&";
+                Return.Write("&");
 
-            Return += string.Format("{0})", this.Context.ReturnVarName);
+            Return.Write("{0})", this.Context.ReturnVarName);
             return true;
         }
 
@@ -178,7 +180,7 @@ namespace Cxxi.Generators.CLI
 
         public bool VisitEnumDecl(Enumeration @enum)
         {
-            Return = string.Format("({0}){1}", ToCLITypeName(@enum),
+            Return.Write("({0}){1}", ToCLITypeName(@enum),
                 Context.ReturnVarName);
             return true;
         }
@@ -218,8 +220,8 @@ namespace Cxxi.Generators.CLI
     public class CLIMarshalManagedToNativePrinter : ITypeVisitor<bool>,
                                                     IDeclVisitor<bool>
     {
-        public string Support = null;
-        public string Return = null;
+        public TextGenerator Support;
+        public TextGenerator Return;
 
         Generator Generator { get; set; }
         MarshalContext Context { get; set; }
@@ -228,6 +230,9 @@ namespace Cxxi.Generators.CLI
         {
             Generator = gen;
             Context = ctx;
+
+            Support = new TextGenerator();
+            Return = new TextGenerator();
         }
 
         public bool VisitTagType(TagType tag, TypeQualifiers quals)
@@ -261,7 +266,7 @@ namespace Cxxi.Generators.CLI
             sb.Append("System::Runtime::InteropServices::Marshal::");
             sb.Append("GetFunctionPointerForDelegate(");
             sb.AppendFormat("{0}).ToPointer())", Context.Parameter.Name);
-            Return = sb.ToString();
+            Return.Write(sb.ToString());
 
             return true;
         }
@@ -279,18 +284,18 @@ namespace Cxxi.Generators.CLI
             if (isVoidPtr || isUInt8Ptr)
             {
                 if (isUInt8Ptr)
-                    Return += string.Format("({0})", "uint8*");
-                Return += string.Format("{0}.ToPointer()", Context.Parameter.Name);
+                    Return.Write("({0})", "uint8*");
+                Return.Write("{0}.ToPointer()", Context.Parameter.Name);
                 return true;
             }
 
             if (pointee.IsPrimitiveType(PrimitiveType.Char))
             {
-                Support = string.Format(
+                Support.Write(
                     "auto _{0} = clix::marshalString<clix::E_UTF8>({1});",
                     Context.ArgName, Context.Parameter.Name);
 
-                Return = string.Format("_{0}.c_str()", Context.ArgName);
+                Return.Write("_{0}.c_str()", Context.ArgName);
                 return true;
             }
 
@@ -332,7 +337,7 @@ namespace Cxxi.Generators.CLI
                 case PrimitiveType.UInt64:
                 case PrimitiveType.Float:
                 case PrimitiveType.Double:
-                    Return += Context.Parameter.Name;
+                    Return.Write(Context.Parameter.Name);
                     return true;
                 case PrimitiveType.WideChar:
                     return false;
@@ -348,7 +353,7 @@ namespace Cxxi.Generators.CLI
             TypeMap typeMap = null;
             if (Generator.TypeMapDatabase.FindTypeMap(decl, out typeMap))
             {
-                Return = typeMap.MarshalToNative(Context);
+                Return.Write(typeMap.MarshalToNative(Context));
                 return typeMap.IsValueType;
             }
 
@@ -362,7 +367,7 @@ namespace Cxxi.Generators.CLI
             PrimitiveType primitive;
             if (decl.Type.IsPrimitiveType(out primitive, walkTypedefs: true))
             {
-                Return += string.Format("({0})", typedef.Declaration.Name);
+                Return.Write("({0})", typedef.Declaration.Name);
             }
 
             return decl.Type.Visit(this);
@@ -391,26 +396,26 @@ namespace Cxxi.Generators.CLI
                 if (Context.Parameter.Type.IsReference())
                 {
                     var argName = string.Format("_{0}", Context.ArgName);
-                    Support = string.Format("auto {0} = (::{1}*)&{2};",
-                                            argName, @class.OriginalName,
-                                            Context.Parameter.Name);
-                    Return = string.Format("*{0}", argName);
+                    Support.Write("auto {0} = (::{1}*)&{2};",
+                                  argName, @class.OriginalName,
+                                  Context.Parameter.Name);
+                    Return.Write("*{0}", argName);
                 }
                 else
                 {
-                    if (!Context.Parameter.Type.IsPointer())
-                        Return = "*";
+                    //if (!Context.Parameter.Type.IsPointer())
+                    //    Return = "*";
 
-                    Return += string.Format("(::{0}*)&{1}", @class.QualifiedOriginalName,
-                            Context.Parameter.Name);
+                    Return.Write("::{0}()", @class.QualifiedOriginalName);
+
                 }
             }
             else
             {
                 if (!Context.Parameter.Type.IsPointer())
-                    Return = "*";
+                    Return.Write("*");
 
-                Return += string.Format("{0}->NativePtr", Context.Parameter.Name);
+                Return.Write("{0}->NativePtr", Context.Parameter.Name);
             }
 
             return true;
@@ -443,8 +448,8 @@ namespace Cxxi.Generators.CLI
 
         public bool VisitEnumDecl(Enumeration @enum)
         {
-            Return = string.Format("(::{0}){1}", @enum.QualifiedOriginalName,
-                Context.Parameter.Name);
+            Return.Write("(::{0}){1}", @enum.QualifiedOriginalName,
+                         Context.Parameter.Name);
             return true;
         }
 
