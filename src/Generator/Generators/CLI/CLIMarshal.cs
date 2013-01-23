@@ -139,7 +139,10 @@ namespace Cxxi.Generators.CLI
             if (@class.IsRefType)
                 Return = "gcnew ";
 
-            Return += string.Format("{0}(", @class.Name);
+            Return += string.Format("{0}::{1}(", Generator.Library.Name,
+                @class.Name);
+
+            Return += string.Format("(::{0}*)", @class.QualifiedOriginalName);
 
             if (@class.IsValueType && !this.Context.ReturnType.IsPointer())
                 Return += "&";
