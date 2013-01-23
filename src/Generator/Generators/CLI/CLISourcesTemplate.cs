@@ -99,22 +99,9 @@ namespace Cxxi.Generators.CLI
         {
             GenerateDeclarationCommon(@class);
 
-            if (!@class.IsValueType)
-            {
-                // Output a default constructor that takes the native pointer.
-                Write("{0}::{1}(", QualifiedIdentifier(@class), SafeIdentifier(@class.Name));
-                var nativeType = string.Format("::{0}*", @class.OriginalName);
-                WriteLine("{0} native)", nativeType);
-                WriteLine("{");
-
-                PushIndent();
-                WriteLine("NativePtr = native;");
-                PopIndent();
-
-                WriteLine("}");
-
-                NewLine();
-            }
+            // Output a default constructor that takes the native pointer.
+            GenerateClassConstructor(@class, isIntPtr: false);
+            GenerateClassConstructor(@class, isIntPtr: true);
 
             foreach (var method in @class.Methods)
             {
@@ -126,6 +113,35 @@ namespace Cxxi.Generators.CLI
 
                 NewLine();
             }
+        }
+
+        private void GenerateClassConstructor(Class @class, bool isIntPtr)
+        {
+            Write("{0}::{1}(", QualifiedIdentifier(@class), SafeIdentifier(@class.Name));
+
+            var nativeType = string.Format("::{0}*", @class.OriginalName);
+            WriteLine("{0} native)", isIntPtr ? "System::IntPtr" : nativeType);
+            WriteLine("{");
+            PushIndent();
+
+            if (@class.IsRefType)
+            {
+                Write("NativePtr = ");
+                if (isIntPtr)
+                    Write("({0})", nativeType);
+                Write("native");
+                if (isIntPtr)
+                    Write(".ToPointer()");
+                WriteLine(";");
+            }
+            else
+            {
+                WriteLine("// TODO: Struct marshaling");
+            }
+
+            PopIndent();
+            WriteLine("}");
+            NewLine();
         }
 
         public void GenerateMethod(Method method, Class @class)

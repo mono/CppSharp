@@ -199,7 +199,7 @@ namespace Cxxi.Generators.CLI
             WriteLine("{");
             WriteLine("public:");
 
-            var nativeType = string.Format("::{0}*", @class.OriginalName);
+            var nativeType = string.Format("::{0}*", @class.QualifiedOriginalName);
 
             if (@class.IsRefType)
             {
@@ -212,6 +212,7 @@ namespace Cxxi.Generators.CLI
             // Output a default constructor that takes the native pointer.
             PushIndent();
             WriteLine("{0}({1} native);", SafeIdentifier(@class.Name), nativeType);
+            WriteLine("{0}({1} native);", SafeIdentifier(@class.Name), "System::IntPtr");
             PopIndent();
 
             if (@class.IsValueType)
