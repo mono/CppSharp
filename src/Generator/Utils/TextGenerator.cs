@@ -93,5 +93,11 @@ namespace Cxxi
         {
             return sb.ToString();
         }
+
+        public static implicit operator string(TextGenerator tg)
+        {
+            return tg.ToString();
+        }
+
     }
 }
