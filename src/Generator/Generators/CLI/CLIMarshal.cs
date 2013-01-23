@@ -353,10 +353,16 @@ namespace Cxxi.Generators.CLI
             }
 
             FunctionType func;
-            if (typedef.Declaration.Type.IsPointerTo<FunctionType>(out func))
+            if (decl.Type.IsPointerTo<FunctionType>(out func))
             {
                 VisitDelegateType(func, typedef.Declaration.OriginalName);
                 return true;
+            }
+
+            PrimitiveType primitive;
+            if (decl.Type.IsPrimitiveType(out primitive, walkTypedefs: true))
+            {
+                Return += string.Format("({0})", typedef.Declaration.Name);
             }
 
             return decl.Type.Visit(this);
