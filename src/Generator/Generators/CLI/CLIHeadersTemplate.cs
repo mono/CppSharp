@@ -81,7 +81,7 @@ namespace Cxxi.Generators.CLI
             bool needsNewline = false;
 
             // Generate all the enum declarations for the module.
-            for (int i = 0; i < Module.Enums.Count; ++i)
+            for (var i = 0; i < Module.Enums.Count; ++i)
             {
                 var @enum = Module.Enums[i];
 
@@ -100,16 +100,7 @@ namespace Cxxi.Generators.CLI
             needsNewline = false;
 
             // Generate all the typedef declarations for the module.
-            foreach (var typedef in Module.Typedefs)
-            {
-                if (typedef.Ignore)
-                    continue;
-
-                if (!GenerateTypedef(typedef))
-                    continue;
-
-                NewLine();
-            }
+            GenerateTypedefs();
 
             needsNewline = false;
 
@@ -136,23 +127,42 @@ namespace Cxxi.Generators.CLI
                 if (needsNewline)
                     NewLine();
 
-                WriteLine("public ref class {0}{1}", SafeIdentifier(Library.Name),
-                    Module.FileNameWithoutExtension);
-                WriteLine("{");
-                WriteLine("public:");
-                PushIndent();
-
-                // Generate all the function declarations for the module.
-                foreach (var function in Module.Functions)
-                {
-                    GenerateFunction(function);
-                }
-
-                PopIndent();
-                WriteLine("};");
+                GenerateFunctions();
             }
 
             PopIndent();
+        }
+
+        public void GenerateTypedefs()
+        {
+            foreach (var typedef in Module.Typedefs)
+            {
+                if (typedef.Ignore)
+                    continue;
+
+                if (!GenerateTypedef(typedef))
+                    continue;
+
+                NewLine();
+            }
+        }
+
+        public void GenerateFunctions()
+        {
+            WriteLine("public ref class {0}{1}", SafeIdentifier(Library.Name),
+                      Module.FileNameWithoutExtension);
+            WriteLine("{");
+            WriteLine("public:");
+            PushIndent();
+
+            // Generate all the function declarations for the module.
+            foreach (var function in Module.Functions)
+            {
+                GenerateFunction(function);
+            }
+
+            PopIndent();
+            WriteLine("};");
         }
 
         public void GenerateDeclarationCommon(Declaration T)
@@ -177,27 +187,8 @@ namespace Cxxi.Generators.CLI
                 Console.WriteLine("Unions are not yet implemented");
             }
 
-            Write("public ");
-
-            if (@class.IsValueType)
-                Write("value struct ");
-            else
-                Write("ref class ");
-
-            Write("{0}", SafeIdentifier(@class.Name));
-
-            if (@class.IsOpaque)
-            {
-                WriteLine(";");
+            if (GenerateClassProlog(@class))
                 return;
-            }
-
-            if (@class.HasBase)
-                Write(" : {0}", SafeIdentifier(@class.Bases[0].Class.Name));
-
-            WriteLine(string.Empty);
-            WriteLine("{");
-            WriteLine("public:");
 
             var nativeType = string.Format("::{0}*", @class.QualifiedOriginalName);
 
@@ -209,42 +200,48 @@ namespace Cxxi.Generators.CLI
                 NewLine();
             }
 
+            GenerateClassConstructors(@class, nativeType);
+
+            GenerateClassFields(@class);
+
+            // Generate a property for each field if class is not value type
+            if (@class.IsRefType)
+                GenerateClassProperties(@class);
+
+            GenerateClassMethods(@class);
+
+            WriteLine("};");
+        }
+
+        public void GenerateClassConstructors(Class @class, string nativeType)
+        {
             // Output a default constructor that takes the native pointer.
             PushIndent();
             WriteLine("{0}({1} native);", SafeIdentifier(@class.Name), nativeType);
             WriteLine("{0}({1} native);", SafeIdentifier(@class.Name), "System::IntPtr");
             PopIndent();
+        }
 
-            if (@class.IsValueType)
+        public void GenerateClassFields(Class @class)
+        {
+            if (!@class.IsValueType)
+                return;
+
+            PushIndent();
+            foreach (var field in @class.Fields)
             {
-                PushIndent();
-                foreach(var field in @class.Fields)
-                {
-                    if (field.Ignore) continue;
+                if (field.Ignore) continue;
 
-                    GenerateDeclarationCommon(field);
-                    if (@class.IsUnion)
-                        WriteLine("[FieldOffset({0})]", field.Offset);
-                    WriteLine("{0} {1};", field.Type, SafeIdentifier(field.Name));
-                }
-                PopIndent();
+                GenerateDeclarationCommon(field);
+                if (@class.IsUnion)
+                    WriteLine("[FieldOffset({0})]", field.Offset);
+                WriteLine("{0} {1};", field.Type, SafeIdentifier(field.Name));
             }
+            PopIndent();
+        }
 
-            // Generate a property for each field if class is not value type
-            if (@class.IsRefType)
-            {
-                PushIndent();
-                foreach (var field in @class.Fields)
-                {
-                    if (CheckIgnoreField(@class, field))
-                        continue;
-
-                    GenerateDeclarationCommon(field);
-                    GenerateFieldProperty(field);
-                }
-                PopIndent();
-            }
-
+        public void GenerateClassMethods(Class @class)
+        {
             PushIndent();
             foreach (var method in @class.Methods)
             {
@@ -255,8 +252,43 @@ namespace Cxxi.Generators.CLI
                 GenerateMethod(method);
             }
             PopIndent();
+        }
 
-            WriteLine("};");
+        public bool GenerateClassProlog(Class @class)
+        {
+            Write("public ");
+
+            Write(@class.IsValueType ? "value struct " : "ref class ");
+
+            Write("{0}", SafeIdentifier(@class.Name));
+
+            if (@class.IsOpaque)
+            {
+                WriteLine(";");
+                return true;
+            }
+
+            if (@class.HasBase)
+                Write(" : {0}", SafeIdentifier(@class.Bases[0].Class.Name));
+
+            WriteLine(string.Empty);
+            WriteLine("{");
+            WriteLine("public:");
+            return false;
+        }
+
+        public void GenerateClassProperties(Class @class)
+        {
+            PushIndent();
+            foreach (var field in @class.Fields)
+            {
+                if (CheckIgnoreField(@class, field))
+                    continue;
+
+                GenerateDeclarationCommon(field);
+                GenerateFieldProperty(field);
+            }
+            PopIndent();
         }
 
         public void GenerateFieldProperty(Field field)
@@ -266,7 +298,6 @@ namespace Cxxi.Generators.CLI
             var type = field.Type.Visit(Type.TypePrinter);
 
             WriteLine("property {0} {1};", type, field.Name);
-            NewLine();
         }
 
         public void GenerateMethod(Method method)
