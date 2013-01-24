@@ -238,8 +238,7 @@ namespace Cxxi
 
         public void IgnoreFunctionWithName(string name)
         {
-            Function function = FindFunction(name);
-            if (function != null)
+            foreach (var function in FindFunction(name))
                 function.ExplicityIgnored = true;
         }
 
