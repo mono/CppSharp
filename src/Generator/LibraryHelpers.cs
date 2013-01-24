@@ -242,6 +242,12 @@ namespace Cxxi
                 function.ExplicityIgnored = true;
         }
 
+        public void SetNameOfFunction(string name, string newName)
+        {
+            foreach (var function in FindFunction(name))
+                function.Name = newName;
+        }
+
         public void IgnoreClassMethodWithName(string className, string name)
         {
             foreach (var @class in FindClass(name))
