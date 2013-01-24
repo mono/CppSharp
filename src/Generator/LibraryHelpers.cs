@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Cxxi.Generators;
 
@@ -228,16 +229,11 @@ namespace Cxxi
 
         #region Function Helpers
 
-        public Function FindFunction(string name)
+        public IEnumerable<Function> FindFunction(string name)
         {
-            foreach (var module in Library.TranslationUnits)
-            {
-                var function = module.FindFunction(name);
-                if (function != null)
-                    return function;
-            }
-
-            return null;
+            return Library.TranslationUnits
+                .Select(module => module.FindFunction(name))
+                .Where(function => function != null);
         }
 
         public void IgnoreFunctionWithName(string name)
