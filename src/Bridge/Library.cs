@@ -108,6 +108,13 @@ namespace Cxxi
             }
         }
 
+        /// Finds the complete declaration of a class.
+        public Class FindCompleteClass(string name)
+        {
+            foreach (var @class in FindClass(name))
+                if (!@class.IsIncomplete)
+                    return @class;
+
             return null;
         }
     }
