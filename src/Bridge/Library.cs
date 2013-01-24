@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 namespace Cxxi
 {
@@ -88,25 +89,24 @@ namespace Cxxi
         }
 
         /// Finds an existing enum in the library modules.
-        public Enumeration FindEnum(string name)
+        public IEnumerable<Enumeration> FindEnum(string name)
         {
             foreach (var module in TranslationUnits)
             {
                 var type = module.FindEnum(name);
-                if (type != null) return type;
+                if (type != null) yield return type;
             }
-
-            return null;
         }
 
         /// Finds an existing struct/class in the library modules.
-        public Class FindClass(string name, bool create = false)
+        public IEnumerable<Class> FindClass(string name, bool create = false)
         {
             foreach (var module in TranslationUnits)
             {
-                var type = module.FindClass(name, create);
-                if (type != null) return type;
+                var type = module.FindClass(name);
+                if (type != null) yield return type;
             }
+        }
 
             return null;
         }
