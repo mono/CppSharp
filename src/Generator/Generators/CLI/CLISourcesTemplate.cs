@@ -14,7 +14,6 @@ namespace Cxxi.Generators.CLI
 
             WriteLine("#include \"{0}.h\"",
                 Path.GetFileNameWithoutExtension(Module.FileName));
-            NewLine();
 
             GenerateForwardReferenceHeaders();
             NewLine();
