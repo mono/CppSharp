@@ -73,6 +73,9 @@ namespace Cxxi.Passes
 
         void TransformClass(Class @class)
         {
+            foreach (var pass in Passes.Passes)
+                pass.ProcessClass(@class);
+
             TransformDeclaration(@class);
 
             foreach (var method in @class.Methods)
