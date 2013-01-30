@@ -108,10 +108,7 @@ namespace Cxxi
 
             TypeMap typeMap = null;
             if (TypeMapDatabase.FindTypeMap(decl, out typeMap))
-            {
-                if (typeMap.IsIgnored)
-                    return true;
-            }
+                return typeMap.IsIgnored;
 
             return base.VisitTypedefType(typedef, quals);
         }
