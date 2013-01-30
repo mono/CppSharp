@@ -2,29 +2,38 @@
 
 namespace Cxxi
 {
+    public interface IAstVisited
+    {
+        ISet<object> Visited { get; }
+
+        bool AlreadyVisited(Declaration decl);
+        bool AlreadyVisited(Type type);
+    }
+
     /// <summary>
     /// Base class for AST visitors.
     /// You can override the methods to customize the behaviour, by default
     /// this will visit all the nodes in a default way that should be useful
     /// for a lot of applications.
     /// </summary>
-    public abstract class AstVisitor : ITypeVisitor<bool>, IDeclVisitor<bool>
+    public abstract class AstVisitor : ITypeVisitor<bool>, IDeclVisitor<bool>,
+        IAstVisited
     {
-        private readonly ISet<object> visited;
+        public ISet<object> Visited { get; private set; }
 
         protected AstVisitor()
         {
-            visited = new HashSet<object>();
+            Visited = new HashSet<object>();
         }
 
         public bool AlreadyVisited(Type type)
         {
-            return !visited.Add(type);
+            return !Visited.Add(type);
         }
 
         public bool AlreadyVisited(Declaration decl)
         {
-            return  !visited.Add(decl);
+            return  !Visited.Add(decl);
         }
 
         #region Type Visitors
