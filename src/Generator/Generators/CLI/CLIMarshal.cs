@@ -225,12 +225,13 @@ namespace Cxxi.Generators.CLI
         public TextGenerator Return;
         public TextGenerator ArgumentPrefix;
 
-        Generator Generator { get; set; }
+        ITypeMapDatabase TypeMapDatabase { get; set; }
         MarshalContext Context { get; set; }
 
-        public CLIMarshalManagedToNativePrinter(Generator gen, MarshalContext ctx)
+        public CLIMarshalManagedToNativePrinter(ITypeMapDatabase typeMap,
+            MarshalContext ctx)
         {
-            Generator = gen;
+            TypeMapDatabase = typeMap;
             Context = ctx;
 
             SupportBefore = new TextGenerator();
@@ -355,7 +356,7 @@ namespace Cxxi.Generators.CLI
             var decl = typedef.Declaration;
 
             TypeMap typeMap = null;
-            if (Generator.TypeMapDatabase.FindTypeMap(decl, out typeMap))
+            if (TypeMapDatabase.FindTypeMap(decl, out typeMap))
             {
                 Return.Write(typeMap.MarshalToNative(Context));
                 return typeMap.IsValueType;
@@ -418,7 +419,7 @@ namespace Cxxi.Generators.CLI
                                                      field.Name);
 
                         var marshalCtx = new MarshalContext() { ArgName = fieldRef };
-                        var marshal = new CLIMarshalManagedToNativePrinter(Generator,
+                        var marshal = new CLIMarshalManagedToNativePrinter(TypeMapDatabase,
                             marshalCtx);
                         field.Visit(marshal);
 
