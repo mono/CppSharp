@@ -436,6 +436,15 @@ namespace Cxxi.Generators.CLI
                 if (!Context.Parameter.Type.IsPointer())
                     Return.Write("*");
 
+                var method = Context.Function as Method;
+                if (method != null
+                    && method.Conversion == MethodConversionType.FunctionToInstanceMethod
+                    && Context.ParameterIndex == 0)
+                {
+                    Return.Write("NativePtr");
+                    return true;
+                }
+
                 Return.Write("{0}->NativePtr", Context.Parameter.Name);
             }
 

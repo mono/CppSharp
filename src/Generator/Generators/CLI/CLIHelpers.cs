@@ -438,6 +438,10 @@ namespace Cxxi.Generators.CLI
         {
             for (var i = 0; i < method.Parameters.Count; ++i)
             {
+                if (method.Conversion == MethodConversionType.FunctionToInstanceMethod
+                    && i == 0)
+                    continue;
+
                 var param = method.Parameters[i];
                 Write("{0}", TypeSig.GetArgumentString(param));
                 if (i < method.Parameters.Count - 1)
