@@ -6,18 +6,12 @@ namespace Cxxi
     /// <summary>
     /// Represents a C++ property.
     /// </summary>
-    public class Property
+    public class Property : Declaration
     {
         public Property(string name, Declaration type)
         {
             Name = name;
             Type = type;
-        }
-
-        public string Name
-        {
-            get;
-            set;
         }
 
         public Declaration Type
@@ -36,6 +30,11 @@ namespace Cxxi
         {
             get;
             set;
+        }
+
+        public override T Visit<T>(IDeclVisitor<T> visitor)
+        {
+            throw new NotImplementedException();
         }
     }
 }
