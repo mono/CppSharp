@@ -137,6 +137,9 @@ namespace Cxxi
             if (@class.IsIncomplete == !isComplete)
                 return @class;
 
+            if (!createDecl)
+                return null;
+
             var newClass = CreateClass(name, isComplete);
 
             // Replace the incomplete declaration with the complete one.
