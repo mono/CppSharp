@@ -31,7 +31,7 @@ solution "Cxxi"
     defines { "NDEBUG" }
     flags { "Optimize" }
   
-  include "Parser.lua"
+  include "../src/Parser/Parser.lua"
   include "../src/Bridge/Bridge.lua"
   include "../src/Generator/Generator.lua"
 
