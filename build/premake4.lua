@@ -19,10 +19,12 @@ solution "Cxxi"
     "Release"
   }
   
-  objdir (  "../obj/" .. action)
+  platforms { "x32" }
+  
+  objdir (  "obj/" .. action)
+  
   targetdir ("../bin/")
   debugdir ( "../bin/")
-        platforms { "x32" }
   
   configuration "Debug"
     defines { "DEBUG" }
