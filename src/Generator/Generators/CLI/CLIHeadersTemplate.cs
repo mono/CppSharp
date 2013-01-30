@@ -243,14 +243,25 @@ namespace Cxxi.Generators.CLI
         public void GenerateClassMethods(Class @class)
         {
             PushIndent();
+
+            var staticMethods = new List<Method>();
             foreach (var method in @class.Methods)
             {
                 if (CheckIgnoreMethod(@class, method))
                     continue;
 
-                GenerateDeclarationCommon(method);
+                if (method.IsStatic)
+                {
+                    staticMethods.Add(method);
+                    continue;
+                }
+
                 GenerateMethod(method);
             }
+
+            foreach(var method in staticMethods)
+                GenerateMethod(method);
+
             PopIndent();
         }
 
@@ -309,6 +320,9 @@ namespace Cxxi.Generators.CLI
 
             GenerateDeclarationCommon(method);
 
+            if (method.IsStatic)
+                Write("static ");
+
             if (method.Kind == CXXMethodKind.Constructor || method.Kind == CXXMethodKind.Destructor)
                 Write("{0}(", SafeIdentifier(method.Name));
             else
@@ -351,7 +365,8 @@ namespace Cxxi.Generators.CLI
             if (function.Ignore) return;
             GenerateDeclarationCommon(function);
 
-            Write("static {0} {1}(", function.ReturnType, SafeIdentifier(function.Name));
+            var retType = function.ReturnType.ToString();
+            Write("static {0} {1}(", retType, SafeIdentifier(function.Name));
 
             for (int i = 0; i < function.Parameters.Count; ++i)
             {
