@@ -276,7 +276,7 @@ namespace Cxxi.Generators.CLI
 
             var method = function as Method;
             if (method != null)
-                isInstanceFunction = method.Conversion == MethodConversionType.None;
+                isInstanceFunction = method.Conversion == MethodConversionKind.None;
             return isInstanceFunction;
         }
 

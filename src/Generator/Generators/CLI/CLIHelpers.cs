@@ -438,7 +438,7 @@ namespace Cxxi.Generators.CLI
         {
             for (var i = 0; i < method.Parameters.Count; ++i)
             {
-                if (method.Conversion == MethodConversionType.FunctionToInstanceMethod
+                if (method.Conversion == MethodConversionKind.FunctionToInstanceMethod
                     && i == 0)
                     continue;
 

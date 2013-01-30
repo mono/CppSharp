@@ -439,7 +439,7 @@ namespace Cxxi.Generators.CLI
 
                 var method = Context.Function as Method;
                 if (method != null
-                    && method.Conversion == MethodConversionType.FunctionToInstanceMethod
+                    && method.Conversion == MethodConversionKind.FunctionToInstanceMethod
                     && Context.ParameterIndex == 0)
                 {
                     Return.Write("NativePtr");
