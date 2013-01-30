@@ -324,8 +324,7 @@ namespace Cxxi.Generators.CLI
                     if (!string.IsNullOrWhiteSpace(marshal.SupportBefore))
                         WriteLine(marshal.SupportBefore);
 
-                    Write("auto {0} = ", argName);
-                    WriteLine("{0};", marshal.Return);
+                    WriteLine("auto {0} = {1};", argName, marshal.Return);
 
                     if (!string.IsNullOrWhiteSpace(marshal.SupportAfter))
                         WriteLine(marshal.SupportAfter);
