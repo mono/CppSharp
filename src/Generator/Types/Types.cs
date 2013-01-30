@@ -11,6 +11,9 @@ namespace Cxxi
     {
         public override bool VisitDeclaration(Declaration decl)
         {
+            if (decl.CompleteDeclaration != null)
+                return true;
+
             return !decl.IsIncomplete;
         }
 
