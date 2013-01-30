@@ -25,29 +25,5 @@ namespace Cxxi
             pass.Library = Library;
             Passes.Add(pass);
         }
-
-        #region Operation Helpers
-
-        public void RenameWithPattern(string pattern, string replacement, RenameTargets targets)
-        {
-            AddPass(new RegexRenamePass(pattern, replacement, targets));
-        }
-
-        public void RemovePrefix(string prefix)
-        {
-            AddPass(new RegexRenamePass("^" + prefix, String.Empty));
-        }
-
-        public void RemovePrefixEnumItem(string prefix)
-        {
-            AddPass(new RegexRenamePass("^" + prefix, String.Empty, RenameTargets.EnumItem));
-        }
-
-        public void RenameDeclsCase(RenameTargets targets, RenameCasePattern pattern)
-        {
-            AddPass(new CaseRenamePass(targets, pattern));
-        }
-
-        #endregion
     }
 }

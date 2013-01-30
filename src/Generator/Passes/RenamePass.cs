@@ -221,4 +221,30 @@ namespace Cxxi.Passes
             return sb.ToString();
         }
     }
+
+    public static class RenamePassExtensions
+    {
+        public static void RenameWithPattern(this PassBuilder builder,
+            string pattern, string replacement, RenameTargets targets)
+        {
+            builder.AddPass(new RegexRenamePass(pattern, replacement, targets));
+        }
+
+        public static void RemovePrefix(this PassBuilder builder, string prefix)
+        {
+            builder.AddPass(new RegexRenamePass("^" + prefix, String.Empty));
+        }
+
+        public static void RemovePrefixEnumItem(this PassBuilder builder, string prefix)
+        {
+            builder.AddPass(new RegexRenamePass("^" + prefix, String.Empty,
+                RenameTargets.EnumItem));
+        }
+
+        public static void RenameDeclsCase(this PassBuilder builder, 
+            RenameTargets targets, RenameCasePattern pattern)
+        {
+            builder.AddPass(new CaseRenamePass(targets, pattern));
+        }
+    }
 }
