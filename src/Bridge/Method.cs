@@ -90,5 +90,7 @@ namespace Cxxi
         public bool IsDefaultConstructor;
         public bool IsCopyConstructor;
         public bool IsMoveConstructor;
+
+        public MethodConversionKind Conversion { get; set; }
     }
 }
