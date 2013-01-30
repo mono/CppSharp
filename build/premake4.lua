@@ -13,25 +13,25 @@ common_msvc_copts =
 
 solution "Cxxi"
 
-	configurations
-	{ 
-		"Debug",
-		"Release"
-	}
-	
-	objdir (  "../obj/" .. action)
-	targetdir ("../bin/")
-	debugdir ( "../bin/")
+  configurations
+  { 
+    "Debug",
+    "Release"
+  }
+  
+  objdir (  "../obj/" .. action)
+  targetdir ("../bin/")
+  debugdir ( "../bin/")
         platforms { "x32" }
-	
-	configuration "Debug"
-		defines { "DEBUG" }
-	
-	configuration "Release"
-		defines { "NDEBUG" }
-		flags { "Optimize" }
-	
-	include "Parser.lua"
+  
+  configuration "Debug"
+    defines { "DEBUG" }
+  
+  configuration "Release"
+    defines { "NDEBUG" }
+    flags { "Optimize" }
+  
+  include "Parser.lua"
         include "../src/Bridge/Bridge.lua"
         include "../src/Generator/Generator.lua"
 
