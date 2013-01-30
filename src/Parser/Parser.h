@@ -24,7 +24,7 @@
 #include <string>
 #include <cstdarg>
 
-#using <../bin/Bridge.dll>
+#using <Bridge.dll>
 #include <vcclr.h>
 
 #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof(arr[0]))

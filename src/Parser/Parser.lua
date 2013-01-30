@@ -1,37 +1,49 @@
 project "Parser"
   
-  kind     "SharedLib"
+  kind "SharedLib"
   language "C++"
-        location "."
-        platforms { "x32" }
+  location "."
+  platforms { "x32" }
 
   flags { common_flags, "Managed" }
 
   configuration "vs*"
-    buildoptions { common_msvc_copts, "/clr" }
+    buildoptions { common_msvc_copts }
+  
+  -- usingdirs is only supported in per-file configs in our
+  -- premake build. remove this once this support is added
+  -- at the project level.
+  
+  configuration { "Main.cpp" }
+    flags { "Managed" }
+    usingdirs { "../../bin/" }
+    
+  configuration { "Parser.cpp" }
+    flags { "Managed" }
+    usingdirs { "../../bin/" }
 
   configuration "*"
   
   files
   {
-    "../src/Parser/**.h",
-    "../src/Parser/**.cpp",
-    "./*.lua"
+    "**.h",
+    "**.cpp",
+    "**.lua"
   }
   
   includedirs
   {
-    "../../LLVM/include",
-    "../../LLVM/build/include",
-    "../../LLVM/tools/clang/include",
-    "../../LLVM/build/tools/clang/include"
+    "../../deps/LLVM/include",
+    "../../deps/LLVM/build/include",
+    "../../deps/LLVM/tools/clang/include",
+    "../../deps/LLVM/build/tools/clang/include"
   }
   
   configuration "Debug"
-    libdirs { "../../LLVM/build/lib/Debug" }
+    libdirs { "../../deps/LLVM/build/lib/Debug" }
 
   configuration "Release"
-    libdirs { "../../LLVM/build/lib/RelWithDebInfo" }    
+    libdirs { "../../deps/LLVM/build/lib/RelWithDebInfo" }
   
   configuration "*"
   
