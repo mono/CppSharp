@@ -18,6 +18,14 @@ namespace Cxxi.Passes
         }
 
         /// <summary>
+        /// Processes a translation unit.
+        /// </summary>
+        public virtual bool ProcessUnit(TranslationUnit unit)
+        {
+            return false;
+        }
+
+        /// <summary>
         /// Processes a declaration.
         /// </summary>
         public virtual bool ProcessDeclaration(Declaration decl)
