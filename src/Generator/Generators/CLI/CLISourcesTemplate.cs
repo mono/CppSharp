@@ -297,7 +297,7 @@ namespace Cxxi.Generators.CLI
                     param.Visit(marshal);
 
                     if (string.IsNullOrEmpty(marshal.Return))
-                        return null;
+                        throw new Exception("Cannot marshal argument of function");
 
                     if (!string.IsNullOrWhiteSpace(marshal.SupportBefore))
                         WriteLine(marshal.SupportBefore);
