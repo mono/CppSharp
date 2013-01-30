@@ -32,6 +32,6 @@ solution "Cxxi"
     flags { "Optimize" }
   
   include "Parser.lua"
-        include "../src/Bridge/Bridge.lua"
-        include "../src/Generator/Generator.lua"
+  include "../src/Bridge/Bridge.lua"
+  include "../src/Generator/Generator.lua"
 
