@@ -44,13 +44,9 @@ namespace Cxxi
                 {
                     Library = library,
                     Verbose = false,
-<<<<<<< HEAD
-                    IncludeDirs = options.IncludeDirs
-                    FileName = file,
-=======
                     IncludeDirs = options.IncludeDirs,
+                    FileName = file,
                     Defines = options.Defines,
->>>>>>> 7304ce4... Wire -Ddefine support.
                     toolSetToUse = options.toolset2use
                 };
 
