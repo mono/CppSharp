@@ -19,3 +19,9 @@ src/generator/generator
 vs2010
 llvm
 obj
+packages
+*.user
+*.suo
+*.DotSettings
+*.sdf
+*.opensdf
