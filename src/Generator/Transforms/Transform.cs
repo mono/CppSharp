@@ -43,6 +43,9 @@ namespace Cxxi.Passes
 
             unit.IncludePath = GetIncludePath(unit.FilePath);
 
+            foreach (var pass in Passes.Passes)
+                pass.ProcessUnit(unit);
+
             foreach (var @enum in unit.Enums)
                 TransformEnum(@enum);
 
