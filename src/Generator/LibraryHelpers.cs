@@ -242,6 +242,18 @@ namespace Cxxi
                 function.ExplicityIgnored = true;
         }
 
+        public void IgnoreFunctionWithPattern(string pattern)
+        {
+            foreach (var unit in Library.TranslationUnits)
+            {
+                foreach (var function in unit.Functions)
+                {
+                    if (Regex.Match(function.Name, pattern).Success)
+                        function.ExplicityIgnored = true;
+                }
+            }
+        }
+
         public void SetNameOfFunction(string name, string newName)
         {
             foreach (var function in FindFunction(name))
