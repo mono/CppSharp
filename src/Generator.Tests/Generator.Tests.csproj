@@ -47,9 +47,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Bridge\Bridge.csproj">
+    <ProjectReference Include="..\Bridge\CxxBridge.csproj">
       <Project>{6beb8fa2-97aa-40b7-ab92-42f6eddc4490}</Project>
-      <Name>Bridge</Name>
+      <Name>CxxBridge</Name>
     </ProjectReference>
     <ProjectReference Include="..\Generator\Generator.csproj">
       <Project>{73499B8E-A6A4-42FF-AB8A-754CE2780777}</Project>

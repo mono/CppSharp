@@ -40,9 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ASTVisitor.cs" />
     <Compile Include="Class.cs" />
     <Compile Include="Comment.cs" />
+    <Compile Include="Conversions.cs" />
     <Compile Include="Declaration.cs" />
+    <Compile Include="Delegate.cs" />
     <Compile Include="Enumeration.cs" />
     <Compile Include="Field.cs" />
     <Compile Include="Function.cs" />
@@ -53,6 +56,7 @@
     <Compile Include="Property.cs" />
     <Compile Include="Template.cs" />
     <Compile Include="Type.cs" />
+    <Compile Include="Variable.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

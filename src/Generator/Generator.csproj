@@ -117,9 +117,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Bridge\Bridge.csproj">
+    <ProjectReference Include="..\Bridge\CxxBridge.csproj">
       <Project>{6beb8fa2-97aa-40b7-ab92-42f6eddc4490}</Project>
-      <Name>Bridge</Name>
+      <Name>CxxBridge</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
