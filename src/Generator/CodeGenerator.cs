@@ -9,7 +9,7 @@ using System.IO;
 
 namespace Cxxi
 {
-    class CodeGenerator
+    public class CodeGenerator
     {
         private readonly Options options;
         private Library library;
@@ -130,7 +130,7 @@ namespace Cxxi
         public string Assembly;
     }
 
-    class Program
+    public class Program
     {
         static void ShowHelp(OptionSet options)
         {
@@ -217,7 +217,7 @@ namespace Cxxi
             return true;
         }
 
-        static void Main(String[] args)
+        public static void Main(String[] args)
         {
             var options = new Options();
 
