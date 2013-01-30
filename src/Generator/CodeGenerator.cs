@@ -69,15 +69,12 @@ namespace Cxxi
             if (transform != null)
                 transform.Preprocess(new LibraryHelpers(library));
 
-            var passes = new PassBuilder();
-            //passes.AddPass(new Transform());
-            //passes.AddPass(new Preprocess());
+            var passes = new PassBuilder(library);
+            passes.ResolveIncompleteDecls(typeDatabase);
+            passes.CleanInvalidDeclNames();
 
             if (transform != null)
                 transform.SetupPasses(passes);
-
-            var preprocess = new Preprocess(typeDatabase);
-            preprocess.ProcessLibrary(library);
 
             var transformer = new Transform() { Options = options, Passes = passes };
             transformer.TransformLibrary(library);
