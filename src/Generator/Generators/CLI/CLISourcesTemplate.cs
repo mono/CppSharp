@@ -31,8 +31,13 @@ namespace Cxxi.Generators.CLI
             var includes = new HashSet<string>();
 
             // Generate the forward references.
-            foreach (var decl in Module.ForwardReferences)
+            foreach (var forwardRef in Module.ForwardReferences)
             {
+                var decl = forwardRef;
+
+                if (decl.IsIncomplete && decl.CompleteDeclaration != null)
+                     decl = decl.CompleteDeclaration;
+
                 var @namespace = decl.Namespace;
                 var unit = @namespace.TranslationUnit;
 
