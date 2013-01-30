@@ -270,6 +270,16 @@ namespace Cxxi.Generators.CLI
             }
         }
 
+        private static bool IsInstanceFunction(Function function)
+        {
+            var isInstanceFunction = false;
+
+            var method = function as Method;
+            if (method != null)
+                isInstanceFunction = method.Conversion == MethodConversionType.None;
+            return isInstanceFunction;
+        }
+
         public struct ParamMarshal
         {
             public string Name;
@@ -279,6 +289,8 @@ namespace Cxxi.Generators.CLI
         public List<ParamMarshal> GenerateFunctionParamsMarshal(Function function)
         {
             var @params = new List<ParamMarshal>();
+
+            var method = function as Method;
 
             // Do marshaling of parameters
             for (var i = 0; i < function.Parameters.Count; ++i)
@@ -292,8 +304,18 @@ namespace Cxxi.Generators.CLI
                 else
                 {
                     var argName = "arg" + i.ToString(CultureInfo.InvariantCulture);
-                    var ctx = new MarshalContext() { Parameter = param, ArgName = argName };
-                    var marshal = new CLIMarshalManagedToNativePrinter(Generator, ctx);
+
+                    var ctx = new MarshalContext()
+                        {
+                            Parameter = param,
+                            ParameterIndex = i,
+                            ArgName = argName,
+                            Function = function
+                        };
+
+                    var marshal = new CLIMarshalManagedToNativePrinter(Generator.TypeMapDatabase,
+                        ctx);
+
                     param.Visit(marshal);
 
                     if (string.IsNullOrEmpty(marshal.Return))

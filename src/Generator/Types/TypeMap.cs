@@ -10,6 +10,8 @@ namespace Cxxi.Types
         public string ReturnVarName { get; set; }
         public Type ReturnType { get; set; }
         public Parameter Parameter { get; set; }
+        public int ParameterIndex { get; set; }
+        public Function Function { get; set; }
     }
 
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
