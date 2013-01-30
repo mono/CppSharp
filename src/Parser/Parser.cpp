@@ -263,7 +263,7 @@ Cxxi::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record, bool IsDependen
     bool isCompleteDefinition = Record->isCompleteDefinition();
     auto Name = marshalString<E_UTF8>(GetTagDeclName(Record));
     auto RC = NS->FindClass(Name, isCompleteDefinition, /*Create=*/false);
-    
+
     if (RC)
         return RC;
 
