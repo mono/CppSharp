@@ -116,8 +116,6 @@ namespace Cxxi.Passes
                     pass.ProcessEnumItem(item);
             }
 
-            CheckIsFlagsEnum(@enum);
-
             // If we still do not have a valid name, then try to guess one
             // based on the enum value names.
 
@@ -136,36 +134,6 @@ namespace Cxxi.Passes
             {
                 prefix = prefix.Trim().Trim(new char[] { '_' });
                 @enum.Name = prefix;
-            }
-        }
-
-        private static void CheckIsFlagsEnum(Enumeration @enum)
-        {
-            // If the enumeration only has power of two values, assume it's
-            // a flags enum.
-
-            bool isFlags = true;
-            bool hasBigRange = false;
-
-            foreach (var item in @enum.Items)
-            {
-                if (item.Name.Length >= 1 && Char.IsDigit(item.Name[0]))
-                    item.Name = String.Format("_{0}", item.Name);
-
-                long value = item.Value;
-                if (value >= 4)
-                    hasBigRange = true;
-                if (value <= 1 || value.IsPowerOfTwo())
-                    continue;
-                isFlags = false;
-            }
-
-            // Only apply this heuristic if there are enough values to have a
-            // reasonable chance that it really is a bitfield.
-
-            if (isFlags && hasBigRange)
-            {
-                @enum.Modifiers |= Enumeration.EnumModifiers.Flags;
             }
         }
     }
