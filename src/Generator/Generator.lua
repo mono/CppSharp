@@ -1,15 +1,10 @@
 project "Generator"
-  kind     "ConsoleApp"
+
+  kind "ConsoleApp"
   language "C#"
-        location "."
+  location "."
+
   files   { "**.cs", "**.bmp", "**.resx", "**.config" }
-        excludes { "Filter.cs" }
-  links { "Bridge", "System", "System.Core", "Parser" }
-        platforms { "x32" }
-
-  configuration "Debug"
-    targetdir "../../bin"
-    
-  configuration "Release"
-    targetdir "../../bin"
-
+  excludes { "Filter.cs" }
+  
+  links { "System", "System.Core", "Bridge", "Parser" }

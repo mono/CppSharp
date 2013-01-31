@@ -2,38 +2,38 @@
 -- It defines the common build settings that all the projects share
 -- and calls the build scripts of all the sub-projects.
 
-action = _ACTION or ""
-common_flags = { "Unicode", "Symbols" }
-
-common_msvc_copts = 
-{ 
-  "/wd4146", "/wd4244", "/wd4800", "/wd4345",
-  "/wd4355", "/wd4996", "/wd4624", "/wd4291"
-}
+dofile "Helpers.lua"
 
 solution "Cxxi"
 
-  configurations
-  { 
-    "Debug",
-    "Release"
-  }
-  
+  configurations { "Debug", "Release" }
   platforms { "x32" }
+  flags { common_flags }
   
-  objdir (  "obj/" .. action)
-  
-  targetdir ("../bin/")
-  debugdir ( "../bin/")
-  
-  configuration "Debug"
-    defines { "DEBUG" }
+  location (builddir)
+  objdir (builddir .. "/obj/")
+  targetdir (libdir)
+  libdirs { libdir }
+  debugdir (bindir)
+
+  -- startproject "Generator"
   
   configuration "Release"
-    defines { "NDEBUG" }
     flags { "Optimize" }
+
+  configuration "vs2012"
+    framework "4.5"
+
+  configuration {}
+    
+  group "Examples"
+    IncludeExamples()
   
-  include "../src/Parser/Parser.lua"
-  include "../src/Bridge/Bridge.lua"
-  include "../src/Generator/Generator.lua"
+  group "Tests"
+    IncludeTests()
+  
+  group "Cxxi"
+    include (srcdir .. "/Bridge/Bridge.lua")
+    include (srcdir .. "/Generator/Generator.lua")
+    include (srcdir .. "/Parser/Parser.lua")
 

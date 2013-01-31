@@ -1,18 +1,12 @@
 project "Bridge"
 
-  kind     "SharedLib"
+  kind  "SharedLib"
   language "C#"
-        location "."
-  files    { "*.cs" }
-        platforms { "x32" }
+  location "."
 
-  configuration "Debug"
-    targetdir "../../bin"
-    
-  configuration "Release"
-    targetdir "../../bin"
-
-
+  files { "*.cs" }
+  links { "System" }
+  
   if _ACTION == "clean" then
     os.rmdir("lib")
   end
