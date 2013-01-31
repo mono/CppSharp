@@ -10,7 +10,7 @@ project "Parser"
   language "C++"
   SetupNativeProject()
   
-  dependson "Bridge"
+  dependson { "Bridge", "Generator" }
   flags { common_flags, "Managed" }
 
   -- usingdirs is only supported in per-file configs in our
