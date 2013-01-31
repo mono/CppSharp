@@ -6,13 +6,13 @@ namespace Cxxi.Generators.CLI
 {
     public class CLITypePrinter : ITypeVisitor<string>, IDeclVisitor<string>
     {
-        public Cxxi.Generators.Generator Generator { get; set; }
+        private ITypeMapDatabase TypeMapDatabase;
         public Library Library { get; set; }
 
-        public CLITypePrinter(Cxxi.Generators.Generator generator)
+        public CLITypePrinter(ITypeMapDatabase database, Library library)
         {
-            Generator = generator;
-            Library = generator.Library;
+            TypeMapDatabase = database;
+            Library = library;
         }
 
         public string VisitTagType(TagType tag, TypeQualifiers quals)
@@ -153,7 +153,7 @@ namespace Cxxi.Generators.CLI
                 return null;
 
             TypeMap typeMap = null;
-            if (Generator.TypeMapDatabase.FindTypeMap(decl, out typeMap))
+            if (TypeMapDatabase.FindTypeMap(decl, out typeMap))
             {
                 return typeMap.Signature();
             }
@@ -174,7 +174,7 @@ namespace Cxxi.Generators.CLI
             var decl = template.Template.TemplatedDecl;
 
             TypeMap typeMap = null;
-            if (Generator.TypeMapDatabase.FindTypeMap(decl, out typeMap))
+            if (TypeMapDatabase.FindTypeMap(decl, out typeMap))
             {
                 typeMap.Declaration = decl;
                 typeMap.Type = template;

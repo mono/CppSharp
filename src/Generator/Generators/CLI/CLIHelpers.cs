@@ -137,7 +137,7 @@ namespace Cxxi.Generators.CLI
         public CLIGenerator(Generator generator)
         {
             Generator = generator;
-            typePrinter = new CLITypePrinter(generator);
+            typePrinter = new CLITypePrinter(TypeMapDatabase, Library);
             Type.TypePrinter = typePrinter;
         }
 

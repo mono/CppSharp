@@ -187,7 +187,8 @@ namespace Cxxi.Generators.CLI
 
         private string ToCLITypeName(Declaration decl)
         {
-            var typePrinter = new CLITypePrinter(Generator);
+            var typePrinter = new CLITypePrinter(Generator.TypeMapDatabase,
+                Generator.Library);
             return typePrinter.VisitDeclaration(decl);
         }
 
