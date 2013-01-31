@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Cxxi.Types;
 
@@ -119,6 +120,31 @@ namespace Cxxi.Passes
                 if (typedef.Type == null)
                     typedef.ExplicityIgnored = true;
             }
+        }
+
+        private void CheckEnumName(Enumeration @enum)
+        {
+            // If we still do not have a valid name, then try to guess one
+            // based on the enum value names.
+
+            if (!String.IsNullOrWhiteSpace(@enum.Name))
+                return;
+
+            var prefix = @enum.Items.Select(item => item.Name)
+                .ToArray().CommonPrefix();
+
+            // Try a simple heuristic to make sure we end up with a valid name.
+            if (prefix.Length < 3)
+                return;
+
+            prefix = prefix.Trim().Trim(new char[] { '_' });
+            @enum.Name = prefix;
+        }
+
+        public override bool ProcessEnum(Enumeration @enum)
+        {
+            CheckEnumName(@enum);
+            return base.ProcessEnum(@enum);
         }
     }
 

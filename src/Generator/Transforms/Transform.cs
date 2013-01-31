@@ -115,26 +115,6 @@ namespace Cxxi.Passes
                 foreach (var pass in Passes.Passes)
                     pass.ProcessEnumItem(item);
             }
-
-            // If we still do not have a valid name, then try to guess one
-            // based on the enum value names.
-
-            if (!String.IsNullOrWhiteSpace(@enum.Name))
-                return;
-
-            var names = new List<string>();
-
-            foreach (var item in @enum.Items)
-                names.Add(item.Name);
-
-            var prefix = names.ToArray().CommonPrefix();
-
-            // Try a simple heuristic to make sure we end up with a valid name.
-            if (prefix.Length >= 3)
-            {
-                prefix = prefix.Trim().Trim(new char[] { '_' });
-                @enum.Name = prefix;
-            }
         }
     }
 }
