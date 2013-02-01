@@ -168,9 +168,4 @@ namespace Cxxi
             return assembly.GetTypes().Where(baseType.IsAssignableFrom);
         }        
     }
-
-    static class Log
-    {
-        
-    }
 }
