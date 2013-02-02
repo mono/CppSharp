@@ -67,11 +67,11 @@ namespace Cxxi.Types
         bool FindTypeMap(string name, out TypeMap typeMap);
     }
 
-    public class TypeDatabase : ITypeMapDatabase
+    public class TypeMapDatabase : ITypeMapDatabase
     {
         public IDictionary<string, System.Type> TypeMaps { get; set; }
 
-        public TypeDatabase()
+        public TypeMapDatabase()
         {
             TypeMaps = new Dictionary<string, System.Type>();
         }

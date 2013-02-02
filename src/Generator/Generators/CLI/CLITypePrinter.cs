@@ -1,13 +1,12 @@
 ﻿using System;
-using Cxxi;
 using Cxxi.Types;
 
 namespace Cxxi.Generators.CLI
 {
     public class CLITypePrinter : ITypeVisitor<string>, IDeclVisitor<string>
     {
-        private ITypeMapDatabase TypeMapDatabase;
         public Library Library { get; set; }
+        private readonly ITypeMapDatabase TypeMapDatabase;
 
         public CLITypePrinter(ITypeMapDatabase database, Library library)
         {

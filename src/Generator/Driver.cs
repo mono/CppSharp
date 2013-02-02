@@ -14,13 +14,15 @@ namespace Cxxi
         private readonly Options options;
         private readonly Library library;
         private readonly ILibrary transform;
-        public TypeDatabase typeDatabase;
+        private readonly TypeMapDatabase typeDatabase;
 
         public Driver(Options options, ILibrary transform)
         {
             this.options = options;
             this.transform = transform;
             this.library = new Library(options.OutputNamespace, options.LibraryName);
+            typeDatabase = new TypeMapDatabase();
+            typeDatabase.SetupTypeMaps();
         }
 
         public void ParseCode()
@@ -60,9 +62,6 @@ namespace Cxxi
 
         public void ProcessCode()
         {
-            typeDatabase = new TypeDatabase();
-            typeDatabase.SetupTypeMaps();
-
             // Sort the declarations to be in original order.
             foreach (var unit in library.TranslationUnits)
                 SortDeclarations(unit);
