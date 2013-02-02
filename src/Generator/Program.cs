@@ -132,10 +132,10 @@ namespace Cxxi
             if (!ParseLibraryAssembly(options.Assembly, out library))
                 return;
 
-            var codeGenerator = new CodeGenerator(options, library);
-            codeGenerator.ParseCode();
-            codeGenerator.ProcessCode();
-            codeGenerator.GenerateCode();
+            var driver = new Driver(options, library);
+            driver.ParseCode();
+            driver.ProcessCode();
+            driver.GenerateCode();
         }
     }
 }

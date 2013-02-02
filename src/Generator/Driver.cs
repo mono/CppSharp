@@ -47,7 +47,7 @@ namespace Cxxi
                     IncludeDirs = options.IncludeDirs,
                     FileName = file,
                     Defines = options.Defines,
-                    toolSetToUse = options.toolset2use
+                    toolSetToUse = options.ToolsetToUse
                 };
 
             if (!ClangParser.Parse(parserOptions))
@@ -74,6 +74,7 @@ namespace Cxxi
             var passes = new PassBuilder(library);
             passes.ResolveIncompleteDecls(typeDatabase);
             passes.CleanInvalidDeclNames();
+            passes.CheckFlagEnums();
 
             if (transform != null)
                 transform.SetupPasses(passes);
@@ -127,6 +128,6 @@ namespace Cxxi
         public List<string> Headers;
         public string Template;
         public string Assembly;
-        public int toolset2use;
+        public int ToolsetToUse;
     }
 }
