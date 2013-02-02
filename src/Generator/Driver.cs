@@ -9,23 +9,22 @@ using System.IO;
 
 namespace Cxxi
 {
-    public class CodeGenerator
+    public class Driver
     {
         private readonly Options options;
-        private Library library;
+        private readonly Library library;
         private readonly ILibrary transform;
         public TypeDatabase typeDatabase;
 
-        public CodeGenerator(Options options, ILibrary transform)
+        public Driver(Options options, ILibrary transform)
         {
             this.options = options;
             this.transform = transform;
+            this.library = new Library(options.OutputNamespace, options.LibraryName);
         }
 
         public void ParseCode()
         {
-            library = new Library(options.OutputNamespace, options.LibraryName);
-
             Console.WriteLine("Parsing code...");
 
             var headers = new List<string>();
