@@ -21,7 +21,7 @@ namespace Cxxi
         Unknown
     }
 
-    public class Parameter : Declaration
+    public class Parameter : Declaration, ITypedDecl
     {
         public Parameter()
         {

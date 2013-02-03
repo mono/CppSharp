@@ -1,11 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using Cxxi;
 
 namespace Cxxi
 {
     public interface IRedeclarableDecl
     {
         Declaration PreviousDecl { get; }
+    }
+
+    public interface ITypedDecl
+    {
+        Type Type { get; }
     }
 
     /// <summary>

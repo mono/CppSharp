@@ -3,7 +3,7 @@ namespace Cxxi
     /// <summary>
     /// Represents a a C/C++ record field Decl.
     /// </summary>
-    public class Field : Declaration
+    public class Field : Declaration, ITypedDecl
     {
         public Type Type { get; set; }
         public AccessSpecifier Access { get; set; }
