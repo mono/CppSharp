@@ -32,14 +32,12 @@ namespace Cxxi
                 toolSetToUse = options.ToolsetToUse
             };
 
-            if (!ClangParser.Parse(parserOptions))
-            {
-                //Console.WriteLine("  Could not parse '" + file + "'.");
-                return false;
-            }
+            var result = ClangParser.Parse(parserOptions);
+            HeaderParsed(file, result);
 
-            //Console.WriteLine("  Parsed '" + file + "'.");
-            return true;
+            return result;
         }
+
+        public Action<string, bool> HeaderParsed = delegate {};
     }
 }

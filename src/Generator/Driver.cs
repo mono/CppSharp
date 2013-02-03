@@ -32,6 +32,10 @@ namespace Cxxi
             transform.SetupHeaders(headers);
 
             var parser = new Parser(options);
+            parser.HeaderParsed += (file, success) =>
+                Console.WriteLine(success ? "  Parsed '" + file + "'." :
+                                            "  Could not parse '" + file + "'.");
+
             parser.ParseHeaders(headers);
             parser.ParseHeaders(options.Headers);
 
