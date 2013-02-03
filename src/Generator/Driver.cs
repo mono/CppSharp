@@ -12,15 +12,14 @@ namespace Cxxi
     public class Driver
     {
         private readonly Options options;
-        private readonly Library library;
         private readonly ILibrary transform;
         private readonly TypeMapDatabase typeDatabase;
+        private Library library;
 
         public Driver(Options options, ILibrary transform)
         {
             this.options = options;
             this.transform = transform;
-            this.library = new Library(options.OutputNamespace, options.LibraryName);
             typeDatabase = new TypeMapDatabase();
             typeDatabase.SetupTypeMaps();
         }
@@ -32,32 +31,11 @@ namespace Cxxi
             var headers = new List<string>();
             transform.SetupHeaders(headers);
 
-            foreach (var header in headers)
-                ParseHeader(header);
+            var parser = new Parser(options);
+            parser.ParseHeaders(headers);
+            parser.ParseHeaders(options.Headers);
 
-            foreach (var header in options.Headers)
-                ParseHeader(header);
-        }
-
-        void ParseHeader(string file)
-        {
-            var parserOptions = new ParserOptions
-                {
-                    Library = library,
-                    Verbose = false,
-                    IncludeDirs = options.IncludeDirs,
-                    FileName = file,
-                    Defines = options.Defines,
-                    toolSetToUse = options.ToolsetToUse
-                };
-
-            if (!ClangParser.Parse(parserOptions))
-            {
-                Console.WriteLine("  Could not parse '" + file + "'.");
-                return;
-            }
-
-            Console.WriteLine("  Parsed '" + file + "'.");
+            library = parser.Library;
         }
 
         public void ProcessCode()
