@@ -10,14 +10,18 @@ namespace Cxxi
         bool AlreadyVisited(Type type);
     }
 
+    public interface IAstVisitor<out T> : ITypeVisitor<T>, IDeclVisitor<T>
+    {
+        
+    }
+
     /// <summary>
     /// Base class for AST visitors.
     /// You can override the methods to customize the behaviour, by default
     /// this will visit all the nodes in a default way that should be useful
     /// for a lot of applications.
     /// </summary>
-    public abstract class AstVisitor : ITypeVisitor<bool>, IDeclVisitor<bool>,
-        IAstVisited
+    public abstract class AstVisitor : IAstVisitor<bool>, IAstVisited
     {
         public ISet<object> Visited { get; private set; }
 
