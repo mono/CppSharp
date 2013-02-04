@@ -202,7 +202,7 @@ namespace Cxxi.Generators.CLI
             for (var i = 0; i < function.Parameters.Count; ++i)
             {
                 var param = function.Parameters[i];
-                Write("{0}", TypeSig.GetArgumentString(param));
+                Write("{0}", TypePrinter.GetArgumentString(param));
                 if (i < function.Parameters.Count - 1)
                     Write(", ");
             }

@@ -3,7 +3,7 @@ using Cxxi.Types;
 
 namespace Cxxi.Generators.CLI
 {
-    public class CLITypePrinter : ITypeVisitor<string>, IDeclVisitor<string>
+    public class CLITypePrinter : ITypePrinter, IDeclVisitor<string>
     {
         public Library Library { get; set; }
         private readonly ITypeMapDatabase TypeMapDatabase;
@@ -181,6 +181,11 @@ namespace Cxxi.Generators.CLI
             }
 
             return decl.Name;
+        }
+
+        public string VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals)
+        {
+            throw new NotImplementedException();
         }
 
         public string VisitDeclaration(Declaration decl, TypeQualifiers quals)

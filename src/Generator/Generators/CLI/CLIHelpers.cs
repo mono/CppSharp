@@ -12,7 +12,7 @@ namespace Cxxi.Generators.CLI
         public ITypeMapDatabase TypeMapDatabase { get; set; }
         public Generator Generator { get; set; }
 
-        private readonly CLITypePrinter typePrinter;
+        private readonly ITypePrinter typePrinter;
 
         public CLIGenerator(Generator generator)
         {
@@ -30,7 +30,7 @@ namespace Cxxi.Generators.CLI
                 Library = Library,
                 Transform = Transform,
                 Module = unit,
-                TypeSig = typePrinter
+                TypePrinter = typePrinter
             };
 
             return template;
@@ -51,8 +51,6 @@ namespace Cxxi.Generators.CLI
 
         public bool Generate(TranslationUnit unit)
         {
-            typePrinter.Library = Library;
-
             var header = CreateTemplate<CLIHeadersTemplate>(unit);
             WriteTemplate(header);
 

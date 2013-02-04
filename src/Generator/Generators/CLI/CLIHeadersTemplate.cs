@@ -344,7 +344,7 @@ namespace Cxxi.Generators.CLI
             if (typedef.Type.IsPointerTo<FunctionType>(out function))
             {
                 WriteLine("public {0};",
-                    string.Format(TypeSig.ToDelegateString(function),
+                    string.Format(TypePrinter.ToDelegateString(function),
                     SafeIdentifier(typedef.Name)));
                 return true;
             }
@@ -371,7 +371,7 @@ namespace Cxxi.Generators.CLI
             for (int i = 0; i < function.Parameters.Count; ++i)
             {
                 var param = function.Parameters[i];
-                Write("{0}", TypeSig.GetArgumentString(param));
+                Write("{0}", TypePrinter.GetArgumentString(param));
                 if (i < function.Parameters.Count - 1)
                     Write(", ");
             }
@@ -397,8 +397,11 @@ namespace Cxxi.Generators.CLI
 
             Write("public enum struct {0}", SafeIdentifier(@enum.Name));
 
+            var typeName = TypePrinter.VisitPrimitiveType(@enum.BuiltinType.Type,
+                new TypeQualifiers());
+
             if (@enum.BuiltinType.Type != PrimitiveType.Int32)
-                WriteLine(" : {0}", TypeSig.VisitPrimitiveType(@enum.BuiltinType.Type));
+                WriteLine(" : {0}", typeName);
             else
                 NewLine();
 
