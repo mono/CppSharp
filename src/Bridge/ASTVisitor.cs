@@ -91,6 +91,11 @@ namespace Cxxi
             return template.Template.Visit(this);
         }
 
+        public virtual bool VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals)
+        {
+            return true;
+        }
+
         #endregion
 
         #region Decl Visitors
