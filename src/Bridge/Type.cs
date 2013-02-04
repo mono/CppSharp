@@ -227,7 +227,7 @@ namespace Cxxi
             return string.Empty;
         }
 
-        public bool IsReference
+        public new bool IsReference
         {
             get
             {
