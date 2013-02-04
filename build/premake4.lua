@@ -35,5 +35,6 @@ solution "Cxxi"
   group "Cxxi"
     include (srcdir .. "/Bridge/Bridge.lua")
     include (srcdir .. "/Generator/Generator.lua")
+    include (srcdir .. "/Generator.Tests/Generator.Tests.lua")
     include (srcdir .. "/Parser/Parser.lua")
 
