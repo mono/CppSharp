@@ -18,12 +18,12 @@ namespace Cxxi
     public interface ILibrary
     {
         /// <summary>
-        /// Do transformations that should happen before processing here.
+        /// Do transformations that should happen before passes are processed.
         /// </summary>
         void Preprocess(LibraryHelpers g);
 
         /// <summary>
-        /// Do transformations that should happen after processing here.
+        /// Do transformations that should happen after passes are processed.
         /// </summary>
         void Postprocess(LibraryHelpers g);
 

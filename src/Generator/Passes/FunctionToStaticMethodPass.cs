@@ -26,11 +26,11 @@ namespace Cxxi.Passes
             if (@class == null)
                 return false;
 
-            // Clean up the name of the function now that it will be an instance method.
+            // Clean up the name of the function now that it will be a static method.
             function.Name = function.Name.Substring(@class.Name.Length);
             function.ExplicityIgnored = true;
 
-            // Create a new fake method so it acts as an instance method.
+            // Create a new fake method so it acts as a static method.
             var method = new Method()
             {
                 Namespace = @class.Namespace,
