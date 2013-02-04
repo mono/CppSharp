@@ -10,6 +10,7 @@ namespace Cxxi
     {
         private readonly Options options;
         private readonly ILibrary transform;
+        private readonly IDiagnosticConsumer diagnostics;
         private readonly TypeMapDatabase typeDatabase;
         private Library library;
 
@@ -17,6 +18,8 @@ namespace Cxxi
         {
             this.options = options;
             this.transform = transform;
+            this.diagnostics = new TextDiagnosticPrinter();
+
             typeDatabase = new TypeMapDatabase();
             typeDatabase.SetupTypeMaps();
         }
