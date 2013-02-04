@@ -48,6 +48,11 @@ namespace Cxxi
             return this;
         }
 
+        public bool IsFlags
+        {
+            get { return Modifiers.HasFlag(EnumModifiers.Flags); }
+        }
+
         public Type Type { get; set; }
         public BuiltinType BuiltinType { get; set; }
         public EnumModifiers Modifiers { get; set; }
