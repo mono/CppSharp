@@ -429,6 +429,7 @@ namespace Cxxi
         T VisitTypedefType(TypedefType typedef, TypeQualifiers quals);
         T VisitTemplateSpecializationType(TemplateSpecializationType template,
                                           TypeQualifiers quals);
+        T VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals);
         T VisitDeclaration(Declaration decl, TypeQualifiers quals);
     }
 }
