@@ -1389,12 +1389,47 @@ struct ParseConsumer : public clang::ASTConsumer
     virtual bool HandleTopLevelDecl(clang::DeclGroupRef) { return true; }
 };
 
-bool Parser::Parse(const std::string& File)
+struct Diagnostic
 {
+    clang::SourceLocation Location;
+    llvm::SmallString<100> Message;
+};
+
+struct DiagnosticConsumer : public clang::DiagnosticConsumer
+{
+    virtual ~DiagnosticConsumer() { }
+
+    virtual void HandleDiagnostic(clang::DiagnosticsEngine::Level Level,
+                                  const clang::Diagnostic& Info) override {
+        auto Diag = Diagnostic();
+        Diag.Location = Info.getLocation();
+        Info.FormatDiagnostic(Diag.Message);
+        Diagnostics.push_back(Diag);
+    }
+
+    virtual
+    DiagnosticConsumer* clone(clang::DiagnosticsEngine& Diags) const override {
+        return new DiagnosticConsumer();
+    }
+
+    std::vector<Diagnostic> Diagnostics;
+};
+
+ParserResult^ Parser::Parse(const std::string& File)
+{
+    auto res = gcnew ParserResult();
+    res->Library = Lib;
+
     if (File.empty())
-        return false;
+    {
+        res->Success = false;
+        return res;
+    }
 
     C->setASTConsumer(new ParseConsumer());
+
+    auto DiagClient = new DiagnosticConsumer();
+    C->getDiagnostics().setClient(DiagClient);
 
     // Create a virtual file that includes the header. This gets rid of some
     // Clang warnings about parsing an header file as the main file.
@@ -1413,15 +1448,29 @@ bool Parser::Parse(const std::string& File)
         /*SkipFunctionBodies=*/true);
     client->EndSourceFile();
 
-    if(client->getNumErrors() != 0)
+    // Convert the diagnostics to the managed types
+    for(auto& Diag : DiagClient->Diagnostics)
     {
-        // We had some errors while parsing the file.
-        // Report this...
-        return false;
+        using namespace clix;
+
+        auto& Source = C->getSourceManager();
+        auto FileName = Source.getFilename(Diag.Location);
+
+        auto PDiag = ParserDiagnostic();
+        PDiag.FileName = marshalString<E_UTF8>(FileName.str());
+        PDiag.Message = marshalString<E_UTF8>(Diag.Message.str());
+        res->Diagnostics->Add(PDiag);
+    }
+
+    if(DiagClient->getNumErrors() != 0)
+    {
+        res->Success = false;
+        return res;
     }
 
     AST = &C->getASTContext();
     WalkAST();
 
-    return true;
+    res->Success = true;
+    return res;
  }

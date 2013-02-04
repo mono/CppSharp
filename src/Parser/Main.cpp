@@ -12,9 +12,9 @@ public ref class ClangParser
 {
 public:
     
-    static bool Parse(ParserOptions^ Opts)
+    static ParserResult^ Parse(ParserOptions^ Opts)
     {
-        if (!Opts->FileName) return false;
+        if (!Opts->FileName) return nullptr;
 
         using namespace clix;
         std::string File = marshalString<E_UTF8>(Opts->FileName);

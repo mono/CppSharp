@@ -55,12 +55,30 @@ public ref struct ParserOptions
     bool Verbose;
 };
 
+public value struct ParserDiagnostic
+{
+    System::String^ FileName;
+    System::String^ Message;
+};
+
+public ref struct ParserResult
+{
+    ParserResult()
+    {
+        Diagnostics = gcnew List<ParserDiagnostic>(); 
+    }
+
+    bool Success;
+    Cxxi::Library^ Library;
+    List<ParserDiagnostic>^ Diagnostics;
+};
+
 struct Parser
 {
     Parser(ParserOptions^ Opts);
 
     void Setup(ParserOptions^ Opts);
-    bool Parse(const std::string& File);
+    ParserResult^ Parse(const std::string& File);
 
 protected:
 

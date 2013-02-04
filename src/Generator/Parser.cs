@@ -20,7 +20,7 @@ namespace Cxxi
                 ParseHeader(header);
         }
 
-        bool ParseHeader(string file)
+        public ParserResult ParseHeader(string file)
         {
             var parserOptions = new ParserOptions
             {
@@ -38,6 +38,6 @@ namespace Cxxi
             return result;
         }
 
-        public Action<string, bool> HeaderParsed = delegate {};
+        public Action<string, ParserResult> HeaderParsed = delegate {};
     }
 }
