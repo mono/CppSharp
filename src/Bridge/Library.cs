@@ -117,5 +117,42 @@ namespace Cxxi
 
             return null;
         }
+
+        /// Finds an existing function in the library modules.
+        public IEnumerable<Function> FindFunction(string name)
+        {
+            foreach (var module in TranslationUnits)
+            {
+                var type = module.FindFunction(name);
+                if (type != null) yield return type;
+            }
+        }
+
+
+        /// Finds an existing typedef in the library modules.
+        public IEnumerable<TypedefDecl> FindTypedef(string name)
+        {
+            foreach (var module in TranslationUnits)
+            {
+                var type = module.FindTypedef(name);
+                if (type != null) yield return type;
+            }
+        }
+
+        /// Finds an existing declaration by name.
+        public IEnumerable<T> FindDecl<T>(string name) where T : Declaration
+        {
+            foreach (var module in TranslationUnits)
+            {
+                if (module.FindEnum(name) as T != null)
+                    yield return module.FindEnum(name) as T;
+                else if (module.FindClass(name) as T != null)
+                    yield return module.FindClass(name) as T;
+                else if (module.FindFunction(name) as T != null)
+                    yield return module.FindFunction(name) as T;
+            }
+
+            yield return null;
+        }
     }
 }
