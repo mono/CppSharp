@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Cxxi;
 
 namespace Cxxi
@@ -95,10 +94,10 @@ namespace Cxxi
     /// <summary>
     /// Represents a type definition in C++.
     /// </summary>
-    public class TypedefDecl : Declaration
+    public class TypedefDecl : Declaration, ITypedDecl
     {
         /// Type defined.
-        public Type Type;
+        public Type Type { get; set; }
 
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {
