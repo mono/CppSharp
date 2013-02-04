@@ -30,6 +30,11 @@ namespace Generator.Tests
             return @class.Fields.Find(field => field.Name == name);
         }
 
+        public static Method Method(this Class @class, string name)
+        {
+            return @class.Methods.Find(method => method.Name == name);
+        }
+
         public static Parameter Param(this Function function, int index)
         {
             return function.Parameters[index];
