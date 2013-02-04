@@ -1,14 +1,15 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Cxxi.Generators;
+using Cxxi.Types;
 
 namespace Cxxi.Templates.CSharp
 {
-    class CSharpTypePrinter : ITypeVisitor<string>
+    class CSharpTypePrinter : ITypePrinter
     {
+        public Library Library { get; set; }
+
         public CSharpTypePrinter()
         {
         }
@@ -91,7 +92,17 @@ namespace Cxxi.Templates.CSharp
             throw new NotImplementedException();
         }
 
+        public string VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals)
+        {
+            throw new NotImplementedException();
+        }
+
         public string VisitDeclaration(Declaration decl, TypeQualifiers quals)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetArgumentsString(FunctionType function, bool hasNames)
         {
             throw new NotImplementedException();
         }
@@ -104,6 +115,11 @@ namespace Cxxi.Templates.CSharp
             //    return string.Format("{0} {1}", Type.ToCSharp(), Name);
             //else
             //    return Type.ToCSharp();
+        }
+
+        public string ToDelegateString(FunctionType function)
+        {
+            throw new NotImplementedException();
         }
     }
 
