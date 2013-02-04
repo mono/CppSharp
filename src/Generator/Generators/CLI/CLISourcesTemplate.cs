@@ -353,7 +353,7 @@ namespace Cxxi.Generators.CLI
 
         public void GenerateDebug(Declaration decl)
         {
-            if (Options.OutputDebug && !String.IsNullOrWhiteSpace(decl.DebugText))
+            if (DriverOptions.OutputDebug && !String.IsNullOrWhiteSpace(decl.DebugText))
                 WriteLine("// DEBUG: " + decl.DebugText);
         }
 

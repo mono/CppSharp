@@ -6,9 +6,9 @@ namespace Cxxi
     public class Parser
     {
         public Library Library { get; private set; }
-        private readonly Options options;
+        private readonly DriverOptions options;
 
-        public Parser(Options options)
+        public Parser(DriverOptions options)
         {
             this.options = options;
             Library = new Library(options.OutputNamespace, options.LibraryName);

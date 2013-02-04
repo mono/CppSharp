@@ -10,7 +10,7 @@ namespace Cxxi.Generators
         private const uint MaxIndent = 80;
 
         public Generator Generator { get; set; }
-        public Options Options { get; set; }
+        public DriverOptions DriverOptions { get; set; }
         public Library Library { get; set; }
         public ILibrary Transform;
         public TranslationUnit Module { get; set; }

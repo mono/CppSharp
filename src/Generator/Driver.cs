@@ -8,13 +8,13 @@ namespace Cxxi
 {
     public class Driver
     {
-        private readonly Options options;
+        private readonly DriverOptions options;
         private readonly ILibrary transform;
         private readonly IDiagnosticConsumer diagnostics;
         private readonly TypeMapDatabase typeDatabase;
         private Library library;
 
-        public Driver(Options options, ILibrary transform)
+        public Driver(DriverOptions options, ILibrary transform)
         {
             this.options = options;
             this.transform = transform;
@@ -75,9 +75,9 @@ namespace Cxxi
         }
     }
 
-    public class Options
+    public class DriverOptions
     {
-        public Options()
+        public DriverOptions()
         {
             Defines = new List<string>();
             IncludeDirs = new List<string>();

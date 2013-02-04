@@ -41,7 +41,7 @@ namespace Cxxi
 ");
         }
 
-        static bool ParseCommandLineOptions(String[] args, Options options)
+        static bool ParseCommandLineOptions(String[] args, DriverOptions options)
         {
             var set = new OptionSet()
                 {
@@ -117,7 +117,7 @@ namespace Cxxi
 
         public static void Main(String[] args)
         {
-            var options = new Options();
+            var options = new DriverOptions();
 
             if (!ParseCommandLineOptions(args, options))
                 return;

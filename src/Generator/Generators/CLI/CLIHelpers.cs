@@ -6,7 +6,7 @@ namespace Cxxi.Generators.CLI
 {
     public class CLIGenerator : ILanguageGenerator
     {
-        public Options Options { get; set; }
+        public DriverOptions Options { get; set; }
         public Library Library { get; set; }
         public ILibrary Transform { get; set; }
         public ITypeMapDatabase TypeMapDatabase { get; set; }
@@ -26,7 +26,7 @@ namespace Cxxi.Generators.CLI
             var template = new T
             {
                 Generator = Generator,
-                Options = Options,
+                DriverOptions = Options,
                 Library = Library,
                 Transform = Transform,
                 Module = unit,

@@ -12,7 +12,7 @@ namespace Cxxi.Generators
 
     public interface ILanguageGenerator
     {
-        Options Options { get; set; }
+        DriverOptions Options { get; set; }
         Library Library { get; set; }
         ILibrary Transform { get; set; }
         ITypeMapDatabase TypeMapDatabase { get; set; }
@@ -23,12 +23,12 @@ namespace Cxxi.Generators
 
     public partial class Generator
     {
-        public Options Options;
+        public DriverOptions Options;
         public Library Library;
         public ILibrary LibraryTransform;
         public ITypeMapDatabase TypeMapDatabase;
 
-        public Generator(Options options, Library library, ILibrary libraryTransform,
+        public Generator(DriverOptions options, Library library, ILibrary libraryTransform,
             ITypeMapDatabase typeMapDatabase)
         {
             this.Options = options;

@@ -6,7 +6,7 @@ namespace Cxxi.Passes
 {
     public class Transform
     {
-        public Options Options;
+        public DriverOptions Options;
         public PassBuilder Passes;
 
         public void TransformLibrary(Library library)
