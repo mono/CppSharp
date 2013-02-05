@@ -22,7 +22,7 @@ namespace Cxxi.Passes
         string GetIncludePath(string filePath)
         {
             string includePath = filePath;
-            string ShortestIncludePath = filePath;
+            string shortestIncludePath = filePath;
 
             foreach (var path in Options.IncludeDirs)
             {
@@ -31,11 +31,11 @@ namespace Cxxi.Passes
 
                 string inc = filePath.Substring(path.Length);
 
-                if (inc.Length < includePath.Length && inc.Length < ShortestIncludePath.Length)
-                    ShortestIncludePath = inc;
+                if (inc.Length < includePath.Length && inc.Length < shortestIncludePath.Length)
+                    shortestIncludePath = inc;
             }
 
-            return "..\\" + ShortestIncludePath.TrimStart(new char[] { '\\', '/' });
+            return "..\\" + shortestIncludePath.TrimStart(new char[] { '\\', '/' });
         }
 
         void TransformModule(TranslationUnit unit)
