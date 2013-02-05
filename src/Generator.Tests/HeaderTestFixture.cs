@@ -22,7 +22,7 @@ namespace Generator.Tests
             database = new TypeMapDatabase();
             database.SetupTypeMaps();
 
-            var options = new Options();
+            var options = new DriverOptions();
 
             var path = Path.Combine(Directory.GetCurrentDirectory(), dir);
             options.IncludeDirs.Add(path);
