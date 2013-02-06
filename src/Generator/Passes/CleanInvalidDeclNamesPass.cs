@@ -122,7 +122,7 @@ namespace Cxxi.Passes
             }
         }
 
-        private void CheckEnumName(Enumeration @enum)
+        private static void CheckEnumName(Enumeration @enum)
         {
             // If we still do not have a valid name, then try to guess one
             // based on the enum value names.
