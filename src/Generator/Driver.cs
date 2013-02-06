@@ -83,6 +83,7 @@ namespace Cxxi
             IncludeDirs = new List<string>();
             Headers = new List<string>();
             Assembly = string.Empty;
+            GeneratorKind = LanguageGeneratorKind.CSharp;
         }
 
         public bool Verbose = false;
@@ -97,5 +98,7 @@ namespace Cxxi
         public string Template;
         public string Assembly;
         public int ToolsetToUse;
+        public string WrapperSuffix;
+        public LanguageGeneratorKind GeneratorKind;
     }
 }
