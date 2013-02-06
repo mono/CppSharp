@@ -52,12 +52,6 @@ namespace Cxxi
         void GenerateAfterNamespaces(TextTemplate template);
     }
 
-    public enum InlineMethods
-    {
-        Present,
-        Unavailable
-    }
-
     public static class LibraryHelpers
     {
         #region Enum Helpers

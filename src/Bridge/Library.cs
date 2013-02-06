@@ -12,6 +12,12 @@ namespace Cxxi
         ARM
     }
 
+    public enum CppInlineMethods
+    {
+        Present,
+        Unavailable
+    }
+
     /// <summary>
     /// Represents a parsed C++ unit.
     /// </summary>
