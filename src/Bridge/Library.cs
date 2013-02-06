@@ -64,13 +64,13 @@ namespace Cxxi
     public class Library
     {
         public string Name;
-        public string Native;
+        public string SharedLibrary;
         public List<TranslationUnit> TranslationUnits;
 
-        public Library(string name, string native)
+        public Library(string name, string sharedLibrary)
         {
             Name = name;
-            Native = native;
+            SharedLibrary = sharedLibrary;
             TranslationUnits = new List<TranslationUnit>();
         }
 
