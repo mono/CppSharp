@@ -70,8 +70,34 @@ namespace Cxxi
 
             Console.WriteLine("Generating wrapper code...");
 
-            var gen = new Generator(options, library, transform, typeDatabase);
-            gen.Generate();
+            Generator generator = null;
+
+            switch (Options.GeneratorKind)
+            {
+                case LanguageGeneratorKind.CSharp:
+                    generator = new CSharpGenerator(this);
+                    break;
+                case LanguageGeneratorKind.CPlusPlusCLI:
+                default:
+                    generator = new CLIGenerator(this);
+                    break;
+            }
+
+            if (!Directory.Exists(Options.OutputDir))
+                Directory.CreateDirectory(Options.OutputDir);
+
+            // Process everything in the global namespace for now.
+            foreach (var unit in Library.TranslationUnits)
+            {
+                if (unit.ExplicityIgnored || !unit.HasDeclarations)
+                    continue;
+
+                if (unit.IsSystemHeader)
+                    continue;
+
+                // Generate the target code.
+                generator.Generate(unit);
+            }
         }
     }
 
