@@ -44,8 +44,8 @@ namespace Cxxi
 
         public void ProcessCode()
         {
-            if (transform != null)
-                transform.Preprocess(new LibraryHelpers(library));
+            if (Transform != null)
+                Transform.Preprocess(library);
 
             var passes = new PassBuilder(library);
             passes.SortDeclarations();
@@ -59,8 +59,8 @@ namespace Cxxi
             var transformer = new Transform() { Options = options, Passes = passes };
             transformer.TransformLibrary(library);
 
-            if (transform != null)
-                transform.Postprocess(new LibraryHelpers(library));
+            if (Transform != null)
+                Transform.Postprocess(library);
         }
 
         public void GenerateCode()

@@ -20,12 +20,12 @@ namespace Cxxi
         /// <summary>
         /// Do transformations that should happen before passes are processed.
         /// </summary>
-        void Preprocess(LibraryHelpers g);
+        void Preprocess(Library lib);
 
         /// <summary>
         /// Do transformations that should happen after passes are processed.
         /// </summary>
-        void Postprocess(LibraryHelpers g);
+        void Postprocess(Library lib);
 
         /// <summary>
         /// Setup your passes here.
@@ -58,20 +58,13 @@ namespace Cxxi
         Unavailable
     }
 
-    public class LibraryHelpers
+    public static class LibraryHelpers
     {
-        private Library Library { get; set; }
-     
-        public LibraryHelpers(Library library)
-        {
-            Library = library;
-        }
-
         #region Enum Helpers
 
-        public Enumeration FindEnum(string name)
+        public static Enumeration FindEnum(this Library library, string name)
         {
-            foreach (var unit in Library.TranslationUnits)
+            foreach (var unit in library.TranslationUnits)
             {
                 var @enum = unit.FindEnum(name);
                 if (@enum != null)
@@ -81,30 +74,34 @@ namespace Cxxi
             return null;
         }
 
-        public void IgnoreEnumWithMatchingItem(string pattern)
+        public static void IgnoreEnumWithMatchingItem(this Library library, string pattern)
         {
-            Enumeration @enum = GetEnumWithMatchingItem(pattern);
+            Enumeration @enum = library.GetEnumWithMatchingItem(pattern);
             if (@enum != null)
                 @enum.ExplicityIgnored = true;
         }
 
-        public void SetNameOfEnumWithMatchingItem(string pattern, string name)
+        public static void SetNameOfEnumWithMatchingItem(this Library library, string pattern,
+            string name)
         {
-            Enumeration @enum = GetEnumWithMatchingItem(pattern);
+            Enumeration @enum = library.GetEnumWithMatchingItem(pattern);
             if (@enum != null)
                 @enum.Name = name;
         }
 
-        public void SetNameOfEnumWithName(string enumName, string name)
+        public static void SetNameOfEnumWithName(this Library library, string enumName,
+            string name)
         {
-            Enumeration @enum = FindEnum(enumName);
-            if (@enum != null)
-                @enum.Name = name;
+            foreach (var @enum in library.FindEnum(enumName))
+            {
+                if (@enum != null)
+                    @enum.Name = name;
+            }
         }
 
-        public Enumeration GetEnumWithMatchingItem(string pattern)
+        public static Enumeration GetEnumWithMatchingItem(this Library library, string pattern)
         {
-            foreach (var module in Library.TranslationUnits)
+            foreach (var module in library.TranslationUnits)
             {
                 Enumeration @enum = module.FindEnumWithItem(pattern);
                 if (@enum == null) continue;
@@ -114,7 +111,8 @@ namespace Cxxi
             return null;
         }
 
-        public Enumeration.Item GenerateEnumItemFromMacro(MacroDefinition macro)
+        public static Enumeration.Item GenerateEnumItemFromMacro(this Library library,
+            MacroDefinition macro)
         {
             var item = new Enumeration.Item
             {
@@ -141,28 +139,28 @@ namespace Cxxi
 
         static long ParseMacroExpression(string expression)
         {
-            long val;
-            if (ParseToNumber(expression, out val))
-                return val;
             // TODO: Handle string expressions
-            return 0;
+
+            long val;
+            return ParseToNumber(expression, out val) ? val : 0;
         }
 
-        public Enumeration GenerateEnumFromMacros(string name, params string[] macros)
+        public static Enumeration GenerateEnumFromMacros(this Library library, string name,
+            params string[] macros)
         {
             var @enum = new Enumeration { Name = name };
 
             var pattern = string.Join("|", macros);
             var regex = new Regex(pattern);
 
-            foreach (var unit in Library.TranslationUnits)
+            foreach (var unit in library.TranslationUnits)
             {
                 foreach (var macro in unit.Macros)
                 {
                     var match = regex.Match(macro.Name);
                     if (!match.Success) continue;
 
-                    var item = GenerateEnumItemFromMacro(macro);
+                    var item = GenerateEnumItemFromMacro(library, macro);
                     @enum.AddItem(item);
                 }
 
@@ -180,9 +178,9 @@ namespace Cxxi
 
         #region Class Helpers
 
-        public IEnumerable<Class> FindClass(string name)
+        public static IEnumerable<Class> FindClass(this Library library, string name)
         {
-            foreach (var module in Library.TranslationUnits)
+            foreach (var module in library.TranslationUnits)
             {
                 var @class = module.FindClass(name);
                 if (@class != null)
@@ -190,34 +188,34 @@ namespace Cxxi
             }
         }
 
-        public void SetClassBindName(string className, string name)
+        public static void SetClassBindName(this Library library, string className, string name)
         {
-            foreach (var @class in FindClass(className))
+            foreach (var @class in library.FindClass(className))
                 @class.Name = name;
         }
 
-        public void SetClassAsValueType(string className)
+        public static void SetClassAsValueType(this Library library, string className)
         {
-            foreach (var @class in FindClass(className))
+            foreach (var @class in library.FindClass(className))
                 @class.Type = ClassType.ValueType;
         }
 
-        public void IgnoreClassWithName(string name)
+        public static void IgnoreClassWithName(this Library library, string name)
         {
-            foreach (var @class in FindClass(name))
+            foreach (var @class in library.FindClass(name))
                 @class.ExplicityIgnored = true;
         }
 
-        public void SetClassAsOpaque(string name)
+        public static void SetClassAsOpaque(this Library library, string name)
         {
-            foreach (var @class in FindClass(name))
+            foreach (var @class in library.FindClass(name))
                 @class.IsOpaque = true;
         }
 
-        public void SetNameOfClassMethod(string name, string methodName,
-            string newMethodName)
+        public static void SetNameOfClassMethod(this Library library, string name,
+            string methodName, string newMethodName)
         {
-            foreach (var @class in FindClass(name))
+            foreach (var @class in library.FindClass(name))
             {
                 var method = @class.Methods.Find(m => m.Name == methodName);
                 if (method != null)
@@ -229,22 +227,22 @@ namespace Cxxi
 
         #region Function Helpers
 
-        public IEnumerable<Function> FindFunction(string name)
+        public static IEnumerable<Function> FindFunction(this Library library, string name)
         {
-            return Library.TranslationUnits
+            return library.TranslationUnits
                 .Select(module => module.FindFunction(name))
                 .Where(function => function != null);
         }
 
-        public void IgnoreFunctionWithName(string name)
+        public static void IgnoreFunctionWithName(this Library library, string name)
         {
-            foreach (var function in FindFunction(name))
+            foreach (var function in library.FindFunction(name))
                 function.ExplicityIgnored = true;
         }
 
-        public void IgnoreFunctionWithPattern(string pattern)
+        public static void IgnoreFunctionWithPattern(this Library library, string pattern)
         {
-            foreach (var unit in Library.TranslationUnits)
+            foreach (var unit in library.TranslationUnits)
             {
                 foreach (var function in unit.Functions)
                 {
@@ -254,15 +252,16 @@ namespace Cxxi
             }
         }
 
-        public void SetNameOfFunction(string name, string newName)
+        public static void SetNameOfFunction(this Library library, string name, string newName)
         {
-            foreach (var function in FindFunction(name))
+            foreach (var function in library.FindFunction(name))
                 function.Name = newName;
         }
 
-        public void IgnoreClassMethodWithName(string className, string name)
+        public static void IgnoreClassMethodWithName(this Library library, string className,
+            string name)
         {
-            foreach (var @class in FindClass(name))
+            foreach (var @class in library.FindClass(name))
             {
                 var method = @class.Methods.Find(m => m.Name == name);
 
@@ -277,15 +276,13 @@ namespace Cxxi
 
         #region Module Helpers
 
-        public void IgnoreModulessWithName(string pattern)
+        public static void IgnoreModulessWithName(this Library library, string pattern)
         {
-            var modules = Library.TranslationUnits.FindAll(m =>
-                Regex.Match(m.FilePath, pattern).Success);
+            var modules = library.TranslationUnits.FindAll(
+                m => Regex.Match(m.FilePath, pattern).Success);
 
             foreach (var module in modules)
-            {
                 module.ExplicityIgnored = true;
-            }
         }
 
         #endregion
