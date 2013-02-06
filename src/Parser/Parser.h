@@ -50,7 +50,7 @@ public ref struct ParserOptions
     Cxxi::Library^ Library;
 
     // Toolset version - 2005 - 8, 2008 - 9, 2010 - 10, 0 - autoprobe for any.
-    int toolSetToUse;
+    int ToolSetToUse;
 
     bool Verbose;
 };

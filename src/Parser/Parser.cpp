@@ -135,7 +135,7 @@ void Parser::Setup(ParserOptions^ Opts)
 
 #ifdef _MSC_VER
     std::vector<std::string> SystemDirs;
-    if( GetVisualStudioEnv("INCLUDE", SystemDirs, Opts->toolSetToUse, Opts->toolSetToUse ) )
+    if(GetVisualStudioEnv("INCLUDE", SystemDirs, Opts->ToolSetToUse, Opts->ToolSetToUse))
     {
         clang::HeaderSearchOptions& HSOpts = C->getHeaderSearchOpts();
 

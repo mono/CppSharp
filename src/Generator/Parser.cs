@@ -29,7 +29,7 @@ namespace Cxxi
                 Verbose = false,
                 IncludeDirs = options.IncludeDirs,
                 Defines = options.Defines,
-                toolSetToUse = options.ToolsetToUse
+                ToolSetToUse = options.ToolsetToUse
             };
 
             var result = ClangParser.Parse(parserOptions);
