@@ -123,8 +123,7 @@ void Parser::Setup(ParserOptions^ Opts)
 
 
 #if defined(WithClangWindowsSystemIncludeDirsPatch)
-    std::vector<std::string> SystemDirs
-      = clang::driver::GetWindowsSystemIncludeDirs();
+    std::vector<std::string> SystemDirs = clang::driver::GetWindowsSystemIncludeDirs();
     clang::HeaderSearchOptions& HSOpts = C->getHeaderSearchOpts();
 
     for(size_t i = 0; i < SystemDirs.size(); ++i)
