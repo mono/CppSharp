@@ -10,21 +10,22 @@ namespace Cxxi
         private const uint MaxIndent = 80;
 
         private readonly StringBuilder sb;
-        private readonly Stack<uint> currentIndent;
         private bool isStartOfLine;
         private bool needsNewLine;
+
+        protected readonly Stack<uint> CurrentIndent;
 
         public TextGenerator()
         {
             sb = new StringBuilder();
-            currentIndent = new Stack<uint>();
             isStartOfLine = false;
+            CurrentIndent = new Stack<uint>();
         }
 
         public void Write(string msg, params object[] args)
         {
             if (isStartOfLine)
-                sb.Append(new string(' ', (int)currentIndent.Sum(u => u)));
+                sb.Append(new string(' ', (int)CurrentIndent.Sum(u => u)));
 
             if (args.Length > 0)
                 msg = string.Format(msg, args);
@@ -69,12 +70,12 @@ namespace Cxxi
 
         public void PushIndent(uint indent = DefaultIndent)
         {
-            currentIndent.Push(indent);
+            CurrentIndent.Push(indent);
         }
 
         public void PopIndent()
         {
-            currentIndent.Pop();
+            CurrentIndent.Pop();
         }
 
         public void WriteStartBraceIndent()
