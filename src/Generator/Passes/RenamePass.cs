@@ -246,5 +246,19 @@ namespace Cxxi.Passes
         {
             builder.AddPass(new CaseRenamePass(targets, pattern));
         }
+
+        public static void RenameDeclsUpperCase(this PassBuilder builder,
+            RenameTargets targets)
+        {
+            builder.AddPass(new CaseRenamePass(targets,
+                RenameCasePattern.UpperCamelCase));
+        }
+
+        public static void RenameDeclsLowerCase(this PassBuilder builder,
+            RenameTargets targets)
+        {
+            builder.AddPass(new CaseRenamePass(targets,
+                RenameCasePattern.LowerCamelCase));
+        }
     }
 }
