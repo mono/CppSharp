@@ -1,4 +1,6 @@
-﻿using Cxxi.Generators;
+﻿using System.Collections.Generic;
+using Cxxi.Generators;
+using Cxxi.Passes;
 
 namespace Cxxi
 {
@@ -7,49 +9,53 @@ namespace Cxxi
     /// </summary>
     class SDL : ILibrary
     {
-        public void Preprocess(LibraryHelpers g)
+        public void Setup(DriverOptions options)
         {
-            g.IgnoreEnumWithMatchingItem("SDL_FALSE");
-            g.IgnoreEnumWithMatchingItem("DUMMY_ENUM_VALUE");
-
-            g.SetNameOfEnumWithMatchingItem("SDL_SCANCODE_UNKNOWN", "ScanCode");
-            g.SetNameOfEnumWithMatchingItem("SDLK_UNKNOWN", "Key");
-            g.SetNameOfEnumWithMatchingItem("KMOD_NONE", "KeyModifier");
-            g.SetNameOfEnumWithMatchingItem("SDL_LOG_CATEGORY_CUSTOM", "LogCategory");
-
-            g.GenerateEnumFromMacros("InitFlags", "SDL_INIT_(.*)").SetFlags();
-            g.GenerateEnumFromMacros("Endianness", "SDL_(.*)_ENDIAN");
-            g.GenerateEnumFromMacros("InputState", "SDL_RELEASED", "SDL_PRESSED");
-
-            g.GenerateEnumFromMacros("AlphaState", "SDL_ALPHA_(.*)");
-
-            g.GenerateEnumFromMacros("HatState", "SDL_HAT_(.*)");
-
-            g.IgnoreModulessWithName("SDL_atomic*");
-            g.IgnoreModulessWithName("SDL_endian*");
-            g.IgnoreModulessWithName("SDL_main*");
-            g.IgnoreModulessWithName("SDL_mutex*");
-            g.IgnoreModulessWithName("SDL_stdinc*");
-
-            //g.IgnoreModuleWithName("SDL_error");
-
-            g.IgnoreEnumWithMatchingItem("SDL_ENOMEM");
-            g.IgnoreFunctionWithName("SDL_Error");
+            options.LibraryName = "SDL";
+            options.Headers.Add("SDL/SDL.h");
+            options.IncludeDirs.Add(".");
+            options.OutputDir = "SDL";
         }
 
-        public void Postprocess(LibraryHelpers generator)
+        public void Preprocess(Library lib)
         {
-            generator.SetNameOfEnumWithName("PIXELTYPE", "PixelType");
-            generator.SetNameOfEnumWithName("BITMAPORDER", "BitmapOrder");
-            generator.SetNameOfEnumWithName("PACKEDORDER", "PackedOrder");
-            generator.SetNameOfEnumWithName("ARRAYORDER", "ArrayOrder");
-            generator.SetNameOfEnumWithName("PACKEDLAYOUT", "PackedLayout");
-            generator.SetNameOfEnumWithName("PIXELFORMAT", "PixelFormats");
-            generator.SetNameOfEnumWithName("assert_state", "AssertState");
-            generator.SetClassBindName("assert_data", "AssertData");
-            generator.SetNameOfEnumWithName("eventaction", "EventAction");
+            lib.IgnoreEnumWithMatchingItem("SDL_FALSE");
+            lib.IgnoreEnumWithMatchingItem("DUMMY_ENUM_VALUE");
 
-            //gen.SetNameOfEnumWithName("LOG_CATEGORY", "LogCategory");
+            lib.SetNameOfEnumWithMatchingItem("SDL_SCANCODE_UNKNOWN", "ScanCode");
+            lib.SetNameOfEnumWithMatchingItem("SDLK_UNKNOWN", "Key");
+            lib.SetNameOfEnumWithMatchingItem("KMOD_NONE", "KeyModifier");
+            lib.SetNameOfEnumWithMatchingItem("SDL_LOG_CATEGORY_CUSTOM", "LogCategory");
+
+            lib.GenerateEnumFromMacros("InitFlags", "SDL_INIT_(.*)").SetFlags();
+            lib.GenerateEnumFromMacros("Endianness", "SDL_(.*)_ENDIAN");
+            lib.GenerateEnumFromMacros("InputState", "SDL_RELEASED", "SDL_PRESSED");
+            lib.GenerateEnumFromMacros("AlphaState", "SDL_ALPHA_(.*)");
+            lib.GenerateEnumFromMacros("HatState", "SDL_HAT_(.*)");
+
+            lib.IgnoreModulessWithName("SDL_atomic*");
+            lib.IgnoreModulessWithName("SDL_endian*");
+            lib.IgnoreModulessWithName("SDL_main*");
+            lib.IgnoreModulessWithName("SDL_mutex*");
+            lib.IgnoreModulessWithName("SDL_stdinc*");
+            //lib.IgnoreModuleWithName("SDL_error");
+
+            lib.IgnoreEnumWithMatchingItem("SDL_ENOMEM");
+            lib.IgnoreFunctionWithName("SDL_Error");
+        }
+
+        public void Postprocess(Library lib)
+        {
+            lib.SetNameOfEnumWithName("PIXELTYPE", "PixelType");
+            lib.SetNameOfEnumWithName("BITMAPORDER", "BitmapOrder");
+            lib.SetNameOfEnumWithName("PACKEDORDER", "PackedOrder");
+            lib.SetNameOfEnumWithName("ARRAYORDER", "ArrayOrder");
+            lib.SetNameOfEnumWithName("PACKEDLAYOUT", "PackedLayout");
+            lib.SetNameOfEnumWithName("PIXELFORMAT", "PixelFormats");
+            lib.SetNameOfEnumWithName("assert_state", "AssertState");
+            lib.SetClassBindName("assert_data", "AssertData");
+            lib.SetNameOfEnumWithName("eventaction", "EventAction");
+            //lib.SetNameOfEnumWithName("LOG_CATEGORY", "LogCategory");
         }
 
         public void SetupPasses(PassBuilder p)
@@ -63,12 +69,18 @@ namespace Cxxi
 
         public void GenerateStart(TextTemplate template)
         {
-            throw new System.NotImplementedException();
         }
 
         public void GenerateAfterNamespaces(TextTemplate template)
         {
-            throw new System.NotImplementedException();
+        }
+
+        static class Program
+        {
+            public static void Main(string[] args)
+            {
+                Cxxi.Program.Run(new SDL());
+            }
         }
     }
 }
