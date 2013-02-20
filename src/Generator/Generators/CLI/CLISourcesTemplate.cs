@@ -19,8 +19,8 @@ namespace Cxxi.Generators.CLI
             GenerateStart();
 
             WriteLine("#include \"{0}{1}.h\"",
-                Path.GetFileNameWithoutExtension(Module.FileName),
-                CLIGenerator.WrapperSuffix );
+                Path.GetFileNameWithoutExtension(unit.FileName),
+                Options.WrapperSuffix);
 
             GenerateForwardReferenceHeaders();
             NewLine();
@@ -38,7 +38,7 @@ namespace Cxxi.Generators.CLI
             var includes = new HashSet<string>();
 
             // Generate the forward references.
-            foreach (var forwardRef in Module.ForwardReferences)
+            foreach (var forwardRef in unit.ForwardReferences)
             {
                 var decl = forwardRef;
 
@@ -46,17 +46,17 @@ namespace Cxxi.Generators.CLI
                      decl = decl.CompleteDeclaration;
 
                 var @namespace = decl.Namespace;
-                var unit = @namespace.TranslationUnit;
+                var translationUnit = @namespace.TranslationUnit;
 
-                if (unit.Ignore)
+                if (translationUnit.Ignore)
                     continue;
 
-                if (unit.IsSystemHeader)
+                if (translationUnit.IsSystemHeader)
                     continue;
 
-                var includeName = Path.GetFileNameWithoutExtension(unit.FileName);
+                var includeName = Path.GetFileNameWithoutExtension(translationUnit.FileName);
 
-                if (includeName == Path.GetFileNameWithoutExtension(Module.FileName))
+                if (includeName == Path.GetFileNameWithoutExtension(((TextTemplate) this).unit.FileName))
                     continue;
 
                 includes.Add(includeName);
@@ -71,9 +71,9 @@ namespace Cxxi.Generators.CLI
         public void GenerateDeclarations()
         {
             // Generate all the struct/class definitions for the module.
-            for (var i = 0; i < Module.Classes.Count; ++i)
+            for (var i = 0; i < unit.Classes.Count; ++i)
             {
-                var @class = Module.Classes[i];
+                var @class = unit.Classes[i];
 
                 if (@class.Ignore)
                     continue;
@@ -84,14 +84,14 @@ namespace Cxxi.Generators.CLI
                 GenerateClass(@class);
             }
 
-            if (Module.HasFunctions)
+            if (unit.HasFunctions)
             {
-                var staticClassName = Library.Name + Module.FileNameWithoutExtension;
+                var staticClassName = Library.Name + unit.FileNameWithoutExtension;
 
                 // Generate all the function declarations for the module.
-                for (var i = 0; i < Module.Functions.Count; ++i)
+                for (var i = 0; i < unit.Functions.Count; ++i)
                 {
-                    var function = Module.Functions[i];
+                    var function = unit.Functions[i];
 
                     if (function.Ignore)
                         continue;
@@ -104,11 +104,13 @@ namespace Cxxi.Generators.CLI
 
         public void GenerateDeclarationCommon(Declaration decl)
         {
+            if (!string.IsNullOrWhiteSpace(decl.BriefComment))
+                WriteLine("// {0}", decl.BriefComment);
         }
 
         public void GenerateClass(Class @class)
         {
-            GenerateDeclarationCommon(@class);
+            //GenerateDeclarationCommon(@class);
 
             // Output a default constructor that takes the native pointer.
             GenerateClassConstructor(@class, isIntPtr: false);
@@ -270,7 +272,8 @@ namespace Cxxi.Generators.CLI
                         ReturnType = retType
                     };
 
-                var marshal = new CLIMarshalNativeToManagedPrinter(Generator, ctx);
+                var marshal = new CLIMarshalNativeToManagedPrinter(Driver.TypeDatabase,
+                    Library, ctx);
                 function.ReturnType.Visit(marshal);
 
                 WriteLine("{0};", marshal.Return);
@@ -320,7 +323,7 @@ namespace Cxxi.Generators.CLI
                             Function = function
                         };
 
-                    var marshal = new CLIMarshalManagedToNativePrinter(Generator.TypeMapDatabase,
+                    var marshal = new CLIMarshalManagedToNativePrinter(Driver.TypeDatabase,
                         ctx);
 
                     param.Visit(marshal);
@@ -359,7 +362,7 @@ namespace Cxxi.Generators.CLI
 
         public void GenerateDebug(Declaration decl)
         {
-            if (DriverOptions.OutputDebug && !String.IsNullOrWhiteSpace(decl.DebugText))
+            if (Options.OutputDebug && !String.IsNullOrWhiteSpace(decl.DebugText))
                 WriteLine("// DEBUG: " + decl.DebugText);
         }
 

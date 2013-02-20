@@ -23,7 +23,7 @@ namespace Cxxi.Generators.CLI
             WriteLine("#pragma once");
             NewLine();
 
-            WriteLine("#include <{0}>", Module.IncludePath);
+            WriteLine("#include <{0}>", unit.IncludePath);
             GenerateIncludeForwardRefs();
 
             NewLine();
@@ -38,7 +38,7 @@ namespace Cxxi.Generators.CLI
         {
             forwardRefsPrinter = new CLIForwardRefeferencePrinter();
 
-            foreach (var forwardRef in Module.ForwardReferences)
+            foreach (var forwardRef in unit.ForwardReferences)
                 forwardRef.Visit(forwardRefsPrinter);
 
             var includes = new HashSet<string>();
@@ -48,7 +48,7 @@ namespace Cxxi.Generators.CLI
                 if (string.IsNullOrWhiteSpace(include))
                     continue;
 
-                if (include == Path.GetFileNameWithoutExtension(Module.FileName))
+                if (include == Path.GetFileNameWithoutExtension(unit.FileName))
                     continue;
 
                 includes.Add(string.Format("#include \"{0}.h\"", include));
@@ -87,23 +87,20 @@ namespace Cxxi.Generators.CLI
             bool needsNewline = false;
 
             // Generate all the enum declarations for the module.
-            for (var i = 0; i < Module.Enums.Count; ++i)
+            for (var i = 0; i < unit.Enums.Count; ++i)
             {
-                var @enum = Module.Enums[i];
+                var @enum = unit.Enums[i];
 
                 if (@enum.Ignore || @enum.IsIncomplete)
                     continue;
 
                 GenerateEnum(@enum);
-                needsNewline = true;
-                if (i < Module.Enums.Count - 1)
+                NeedNewLine();
+                if (i < unit.Enums.Count - 1)
                     NewLine();
             }
 
-            if (needsNewline)
-                NewLine();
-
-            needsNewline = false;
+            NewLineIfNeeded();
 
             // Generate all the typedef declarations for the module.
             GenerateTypedefs();
@@ -111,9 +108,9 @@ namespace Cxxi.Generators.CLI
             needsNewline = false;
 
             // Generate all the struct/class declarations for the module.
-            for (var i = 0; i < Module.Classes.Count; ++i)
+            for (var i = 0; i < unit.Classes.Count; ++i)
             {
-                var @class = Module.Classes[i];
+                var @class = unit.Classes[i];
 
                 if (@class.Ignore || @class.IsIncomplete)
                     continue;
@@ -124,11 +121,11 @@ namespace Cxxi.Generators.CLI
                 GenerateClass(@class);
                 needsNewline = true;
 
-                if (i < Module.Classes.Count - 1)
+                if (i < unit.Classes.Count - 1)
                     NewLine();
             }
 
-            if (Module.HasFunctions)
+            if (unit.HasFunctions)
             {
                 if (needsNewline)
                     NewLine();
@@ -141,7 +138,7 @@ namespace Cxxi.Generators.CLI
 
         public void GenerateTypedefs()
         {
-            foreach (var typedef in Module.Typedefs)
+            foreach (var typedef in unit.Typedefs)
             {
                 if (typedef.Ignore)
                     continue;
@@ -156,13 +153,13 @@ namespace Cxxi.Generators.CLI
         public void GenerateFunctions()
         {
             WriteLine("public ref class {0}{1}", SafeIdentifier(Library.Name),
-                      Module.FileNameWithoutExtension);
+                      unit.FileNameWithoutExtension);
             WriteLine("{");
             WriteLine("public:");
             PushIndent();
 
             // Generate all the function declarations for the module.
-            foreach (var function in Module.Functions)
+            foreach (var function in unit.Functions)
             {
                 GenerateFunction(function);
             }
@@ -190,7 +187,7 @@ namespace Cxxi.Generators.CLI
                 //const string @namespace = "System::Runtime::InteropServices";
                 //WriteLine("[{0}::StructLayout({0}::LayoutKind::Explicit)]",
                 //    @namespace);
-                Console.WriteLine("Unions are not yet implemented");
+                //throw new NotImplementedException("Unions are not supported yet");
             }
 
             if (GenerateClassProlog(@class))
@@ -387,7 +384,7 @@ namespace Cxxi.Generators.CLI
 
         public void GenerateDebug(Declaration decl)
         {
-            if (DriverOptions.OutputDebug && !String.IsNullOrWhiteSpace(decl.DebugText))
+            if (Options.OutputDebug && !String.IsNullOrWhiteSpace(decl.DebugText))
                 WriteLine("// DEBUG: " + decl.DebugText);
         }
 
