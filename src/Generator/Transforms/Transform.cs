@@ -35,7 +35,7 @@ namespace Cxxi.Passes
                     shortestIncludePath = inc;
             }
 
-            return "..\\" + shortestIncludePath.TrimStart(new char[] { '\\', '/' });
+            return Options.IncludePrefix + shortestIncludePath.TrimStart(new char[] { '\\', '/' });
         }
 
         void TransformModule(TranslationUnit unit)

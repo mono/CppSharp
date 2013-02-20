@@ -122,17 +122,23 @@ namespace Cxxi
             if (!ParseCommandLineOptions(args, options))
                 return;
 
-            // We need to know absolute pathes in order to determine correct include pathes.
-            for (int i = 0; i < options.IncludeDirs.Count; i++)
-            {
-                if (options.IncludeDirs[i] == ".") options.IncludeDirs[i] = Directory.GetCurrentDirectory();
-            }
-
             ILibrary library = null;
             if (!ParseLibraryAssembly(options.Assembly, out library))
                 return;
 
             var driver = new Driver(options, library);
+            driver.Setup();
+            driver.ParseCode();
+            driver.ProcessCode();
+            driver.GenerateCode();
+        }
+
+        public static void Run(ILibrary library)
+        {
+            var options = new DriverOptions();
+
+            var driver = new Driver(options, library);
+            driver.Setup();
             driver.ParseCode();
             driver.ProcessCode();
             driver.GenerateCode();
