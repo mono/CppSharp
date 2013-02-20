@@ -1,4 +1,7 @@
-﻿using Cxxi.Generators;
+﻿using System.IO;
+using Cxxi.Generators;
+using Cxxi.Generators.CLI;
+using Cxxi.Generators.CSharp;
 using Cxxi.Passes;
 using Cxxi.Types;
 using System;
@@ -8,64 +11,84 @@ namespace Cxxi
 {
     public class Driver
     {
-        private readonly DriverOptions options;
-        private readonly ILibrary transform;
-        private readonly IDiagnosticConsumer diagnostics;
-        private readonly TypeMapDatabase typeDatabase;
-        private Library library;
+        public DriverOptions Options { get; private set; }
+        public ILibrary Transform { get; private set; }
+        public IDiagnosticConsumer Diagnostics { get; private set; }
+        public TypeMapDatabase TypeDatabase { get; private set; }
+        public Library Library { get; private set; }
 
         public Driver(DriverOptions options, ILibrary transform)
         {
-            this.options = options;
-            this.transform = transform;
-            this.diagnostics = new TextDiagnosticPrinter();
+            Options = options;
+            Transform = transform;
+            Diagnostics = new TextDiagnosticPrinter();
+            TypeDatabase = new TypeMapDatabase();
+        }
 
-            typeDatabase = new TypeMapDatabase();
-            typeDatabase.SetupTypeMaps();
+        public void Setup()
+        {
+            TypeDatabase.SetupTypeMaps();
+
+            if (Transform != null)
+                Transform.Setup(Options);
+
+            ValidateOptions();
+        }
+
+        private void ValidateOptions()
+        {
+            if (string.IsNullOrWhiteSpace(Options.LibraryName))
+                throw new InvalidDataException();
+
+            if (Options.OutputDir == null)
+                Options.OutputDir = Directory.GetCurrentDirectory();
+
+            for (var i = 0; i < Options.IncludeDirs.Count; i++)
+            {
+                if (Options.IncludeDirs[i] != ".")
+                    continue;
+                Options.IncludeDirs[i] = Directory.GetCurrentDirectory();
+            }
         }
 
         public void ParseCode()
         {
             Console.WriteLine("Parsing code...");
 
-            var headers = new List<string>();
-            transform.SetupHeaders(headers);
-
-            var parser = new Parser(options);
+            var parser = new Parser(Options);
             parser.HeaderParsed += (file, result) =>
                 Console.WriteLine(result.Success ? "  Parsed '" + file + "'." :
                                             "  Could not parse '" + file + "'.");
 
-            parser.ParseHeaders(headers);
-            parser.ParseHeaders(options.Headers);
-
-            library = parser.Library;
+            parser.ParseHeaders(Options.Headers);
+            Library = parser.Library;
         }
 
         public void ProcessCode()
         {
             if (Transform != null)
-                Transform.Preprocess(library);
+                Transform.Preprocess(Library);
 
-            var passes = new PassBuilder(library);
+            var passes = new PassBuilder(Library);
             passes.SortDeclarations();
-            passes.ResolveIncompleteDecls(typeDatabase);
-            passes.CleanInvalidDeclNames();
+            passes.ResolveIncompleteDecls(TypeDatabase);
             passes.CheckFlagEnums();
 
-            if (transform != null)
-                transform.SetupPasses(passes);
+            if (Transform != null)
+                Transform.SetupPasses(passes);
 
-            var transformer = new Transform() { Options = options, Passes = passes };
-            transformer.TransformLibrary(library);
+            passes.CleanInvalidDeclNames();
+
+            var transformer = new Transform() { Options = Options, Passes = passes };
+            transformer.TransformLibrary(Library);
 
             if (Transform != null)
-                Transform.Postprocess(library);
+                Transform.Postprocess(Library);
         }
 
         public void GenerateCode()
         {
-            if (library.TranslationUnits.Count <= 0)
+            if (Library.TranslationUnits.Count <= 0)
                 return;
 
             Console.WriteLine("Generating wrapper code...");
@@ -124,6 +147,7 @@ namespace Cxxi
         public string Template;
         public string Assembly;
         public int ToolsetToUse;
+        public string IncludePrefix;
         public string WrapperSuffix;
         public LanguageGeneratorKind GeneratorKind;
     }
