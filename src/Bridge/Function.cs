@@ -53,25 +53,6 @@ namespace Cxxi
             IsInline = false;
         }
 
-        public string ToCSharpCallConv()
-        {
-            switch (CallingConvention)
-            {
-            case CallingConvention.Default:
-                return "Winapi";
-            case CallingConvention.C:
-                return "Cdecl";
-            case CallingConvention.StdCall:
-                return "StdCall";
-            case CallingConvention.ThisCall:
-                return "ThisCall";
-            case CallingConvention.FastCall:
-                return "FastCall";
-            }
-
-            return "Winapi";
-        }
-
         public Type ReturnType { get; set; }
         public List<Parameter> Parameters { get; set; }
         public CallingConvention CallingConvention { get; set; }
