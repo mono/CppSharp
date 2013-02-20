@@ -64,5 +64,20 @@ namespace Generator.Tests.Passes
             Assert.That(method.Name, Is.EqualTo("LowerCaseMethod"));
             Assert.That(field.Name, Is.EqualTo("LowerCaseField"));
         }
+
+        [Test]
+        public void TestCleanEnumItemNames()
+        {
+            library.GenerateEnumFromMacros("TestEnumItemName", "TEST_ENUM_ITEM_NAME_(.*)");
+
+            var @enum = library.Enum("TestEnumItemName");
+            Assert.IsNotNull(@enum);
+
+            passBuilder.RemovePrefixEnumItem("TEST_ENUM_ITEM_NAME_");
+            passBuilder.CleanInvalidDeclNames();
+            passBuilder.RunPasses();
+
+            Assert.That(@enum.Items[0].Name, Is.EqualTo("_0"));
+        }
     }
 }

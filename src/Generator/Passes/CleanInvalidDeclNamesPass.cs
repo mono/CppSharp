@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Cxxi.Types;
 
@@ -32,7 +33,7 @@ namespace Cxxi.Passes
 
         private void ProcessNamespace(Namespace @namespace)
         {
-            ProcessDeclarations(@namespace.Enums);
+            ProcessEnums(@namespace.Enums);
             ProcessFunctions(@namespace.Functions);
             ProcessClasses(@namespace.Classes);
             ProcessTypedefs(@namespace, @namespace.Typedefs);
@@ -41,13 +42,26 @@ namespace Cxxi.Passes
                 ProcessNamespace(inner);
         }
 
+        string CheckName(string name)
+        {
+            // Generate a new name if the decl still does not have a name
+            if (string.IsNullOrWhiteSpace(name))
+                return string.Format("_{0}", uniqueName++);
+
+            var firstChar = name.FirstOrDefault();
+
+            // Clean up the item name if the first digit is not a valid name.
+            if (char.IsNumber(firstChar))
+                return '_' + name;
+
+            return name;
+        }
+
         public override bool ProcessDeclaration(Declaration decl)
         {
             decl.Visit(typeRefs);
 
-            // Generate a new name if the decl still does not have a name
-            if (string.IsNullOrWhiteSpace(decl.Name))
-                decl.Name = string.Format("_{0}", uniqueName++);
+            decl.Name = CheckName(decl.Name);
 
             StringHelpers.CleanupText(ref decl.DebugText);
             return true;
@@ -122,6 +136,14 @@ namespace Cxxi.Passes
             }
         }
 
+        public void ProcessEnums(List<Enumeration> enumerations)
+        {
+            ProcessDeclarations(enumerations);
+
+            foreach (var @enum in enumerations)
+                ProcessEnum(@enum);
+        }
+
         private static void CheckEnumName(Enumeration @enum)
         {
             // If we still do not have a valid name, then try to guess one
@@ -144,7 +166,18 @@ namespace Cxxi.Passes
         public override bool ProcessEnum(Enumeration @enum)
         {
             CheckEnumName(@enum);
-            return base.ProcessEnum(@enum);
+            var result = base.ProcessEnum(@enum);
+
+            foreach (var item in @enum.Items)
+                ProcessEnumItem(item);
+
+            return result;
+        }
+
+        public override bool ProcessEnumItem(Enumeration.Item item)
+        {
+            item.Name = CheckName(item.Name);
+            return true;
         }
     }
 
