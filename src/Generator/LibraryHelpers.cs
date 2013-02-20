@@ -28,16 +28,15 @@ namespace Cxxi
         void Postprocess(Library lib);
 
         /// <summary>
+        /// Setup the driver options here.
+        /// </summary>
+        void Setup(DriverOptions options);
+
+        /// <summary>
         /// Setup your passes here.
         /// </summary>
         /// <param name="passes"></param>
         void SetupPasses(PassBuilder passes);
-
-        /// <summary>
-        /// Setup your headers here.
-        /// </summary>
-        /// <param name="headers"></param>
-        void SetupHeaders(List<string> headers);
 
         /// <summary>
         /// Called to generate text at the start of the text template.
