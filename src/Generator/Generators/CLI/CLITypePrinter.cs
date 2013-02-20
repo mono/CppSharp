@@ -33,8 +33,7 @@ namespace Cxxi.Generators.CLI
         {
             var arguments = function.Arguments;
             var returnType = function.ReturnType;
-
-            string args = string.Empty;
+            var args = string.Empty;
 
             if (arguments.Count > 0)
                 args = GetArgumentsString(function, hasNames: false);
@@ -103,7 +102,7 @@ namespace Cxxi.Generators.CLI
                 return "System::IntPtr";
             }
 
-            if (pointee.IsPrimitiveType(PrimitiveType.Char))
+            if (pointee.IsPrimitiveType(PrimitiveType.Char)/* && quals.IsConst*/) 
             {
                 return "System::String^";
             }
@@ -135,21 +134,18 @@ namespace Cxxi.Generators.CLI
                 case PrimitiveType.UInt16: return "unsigned short";
                 case PrimitiveType.Int32: return "int";
                 case PrimitiveType.UInt32: return "unsigned int";
-                case PrimitiveType.Int64: return "long";
-                case PrimitiveType.UInt64: return "unsigned long";
+                case PrimitiveType.Int64: return "long long";
+                case PrimitiveType.UInt64: return "unsigned long long";
                 case PrimitiveType.Float: return "float";
                 case PrimitiveType.Double: return "double";
             }
 
-            return string.Empty;
+            throw new NotSupportedException();
         }
 
         public string VisitTypedefType(TypedefType typedef, TypeQualifiers quals)
         {
             var decl = typedef.Declaration;
-
-            if (string.IsNullOrEmpty(decl.Name))
-                return null;
 
             TypeMap typeMap = null;
             if (TypeMapDatabase.FindTypeMap(decl, out typeMap))
@@ -185,7 +181,7 @@ namespace Cxxi.Generators.CLI
 
         public string VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals)
         {
-            throw new NotImplementedException();
+            return VisitPrimitiveType(type);
         }
 
         public string VisitDeclaration(Declaration decl, TypeQualifiers quals)
