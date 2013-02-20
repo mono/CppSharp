@@ -23,3 +23,6 @@ struct TestRename
   int lowerCaseField;
 };
 
+#define TEST_ENUM_ITEM_NAME_0 0
+#define TEST_ENUM_ITEM_NAME_1 1
+#define TEST_ENUM_ITEM_NAME_2 2
