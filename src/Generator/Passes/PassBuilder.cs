@@ -23,5 +23,16 @@ namespace Cxxi
             pass.Library = Library;
             Passes.Add(pass);
         }
+
+        public void RunPasses()
+        {
+            foreach (var pass in Passes)
+            {
+                foreach (var unit in Library.TranslationUnits)
+                {
+                    pass.ProcessUnit(unit);
+                }
+            }
+        }
     }
 }
