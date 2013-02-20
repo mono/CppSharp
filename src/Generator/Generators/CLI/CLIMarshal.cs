@@ -4,19 +4,27 @@ using Cxxi.Types;
 
 namespace Cxxi.Generators.CLI
 {
-    public class CLIMarshalNativeToManagedPrinter : ITypeVisitor<bool>,
-                                                    IDeclVisitor<bool>
+    public interface IMarshalPrinter : ITypeVisitor<bool>, IDeclVisitor<bool>
+    {
+        
+    }
+
+    public class CLIMarshalNativeToManagedPrinter : IMarshalPrinter
     {
         public TextGenerator Support;
         public TextGenerator Return;
 
-        Generator Generator { get; set; }
+        Library Library { get; set; }
+        ITypeMapDatabase TypeMapDatabase { get; set; }
         MarshalContext Context { get; set; }
 
-        public CLIMarshalNativeToManagedPrinter(Generator gen, MarshalContext ctx)
+        public CLIMarshalNativeToManagedPrinter(ITypeMapDatabase database,
+            Library library, MarshalContext marshalContext)
         {
-            Generator = gen;
-            Context = ctx;
+            Library = library;
+            TypeMapDatabase = database;
+            Context = marshalContext;
+
             Support = new TextGenerator();
             Return = new TextGenerator();
         }
@@ -107,7 +115,7 @@ namespace Cxxi.Generators.CLI
             var decl = typedef.Declaration;
 
             TypeMap typeMap = null;
-            if (Generator.TypeMapDatabase.FindTypeMap(decl, out typeMap))
+            if (TypeMapDatabase.FindTypeMap(decl, out typeMap))
             {
                 Return.Write(typeMap.MarshalFromNative(Context));
                 return typeMap.IsValueType;
@@ -144,8 +152,7 @@ namespace Cxxi.Generators.CLI
             if (@class.IsRefType)
                 Return.Write("gcnew ");
 
-            Return.Write("{0}::{1}(", Generator.Library.Name,
-                @class.Name);
+            Return.Write("{0}::{1}(", Library.Name, @class.Name);
 
             Return.Write("(::{0}*)", @class.QualifiedOriginalName);
 
@@ -190,8 +197,7 @@ namespace Cxxi.Generators.CLI
 
         private string ToCLITypeName(Declaration decl)
         {
-            var typePrinter = new CLITypePrinter(Generator.TypeMapDatabase,
-                Generator.Library);
+            var typePrinter = new CLITypePrinter(TypeMapDatabase, Library);
             return typePrinter.VisitDeclaration(decl);
         }
 
