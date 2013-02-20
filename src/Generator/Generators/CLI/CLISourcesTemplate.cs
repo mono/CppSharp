@@ -8,7 +8,13 @@ namespace Cxxi.Generators.CLI
 {
     public class CLISourcesTemplate : CLITextTemplate
     {
-        protected override void Generate()
+        public CLISourcesTemplate(Driver driver, TranslationUnit unit)
+            : base(driver, unit)
+        {
+            
+        }
+
+        public override void Generate()
         {
             GenerateStart();
 

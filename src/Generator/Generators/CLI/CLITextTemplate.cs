@@ -10,6 +10,12 @@ namespace Cxxi.Generators.CLI
 
         public ITypePrinter TypePrinter { get; set; }
 
+        protected CLITextTemplate(Driver driver, TranslationUnit unit)
+            : base(driver, unit)
+        {
+            TypePrinter = new CLITypePrinter(driver.TypeDatabase, driver.Library);
+        }
+
         public static string SafeIdentifier(string proposedName)
         {
             return proposedName;
@@ -46,7 +52,7 @@ namespace Cxxi.Generators.CLI
 
         public void GenerateSummary(string comment)
         {
-            if (String.IsNullOrWhiteSpace(comment))
+            if (string.IsNullOrWhiteSpace(comment))
                 return;
 
             // Wrap the comment to the line width.
@@ -118,6 +124,6 @@ namespace Cxxi.Generators.CLI
 
         public abstract override string FileExtension { get; }
 
-        protected abstract override void Generate();
+        public abstract override void Generate();
     }
 }

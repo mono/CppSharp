@@ -10,7 +10,13 @@ namespace Cxxi.Generators.CLI
 
         private CLIForwardRefeferencePrinter forwardRefsPrinter;
 
-        protected override void Generate()
+        public CLIHeadersTemplate(Driver driver, TranslationUnit unit)
+            : base(driver, unit)
+        {
+            
+        }
+
+        public override void Generate()
         {
             GenerateStart();
 
