@@ -160,12 +160,12 @@ namespace Cxxi
         }
     }
 
-    static class AssemblyHelpers
+    public static class AssemblyHelpers
     {
         public static IEnumerable<System.Type> FindDerivedTypes(this Assembly assembly,
                                                                 System.Type baseType)
         {
             return assembly.GetTypes().Where(baseType.IsAssignableFrom);
-        }        
+        }
     }
 }

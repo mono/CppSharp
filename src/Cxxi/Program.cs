@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Reflection;
 using Mono.Options;
 
 namespace Cxxi
 {
-    public class Program
+    internal class Program
     {
         static void ShowHelp(OptionSet options)
         {
@@ -115,7 +115,7 @@ namespace Cxxi
             return true;
         }
 
-        public static void Main(String[] args)
+        public static void Main(string[] args)
         {
             var options = new DriverOptions();
 
@@ -125,17 +125,6 @@ namespace Cxxi
             ILibrary library = null;
             if (!ParseLibraryAssembly(options.Assembly, out library))
                 return;
-
-            var driver = new Driver(options, library);
-            driver.Setup();
-            driver.ParseCode();
-            driver.ProcessCode();
-            driver.GenerateCode();
-        }
-
-        public static void Run(ILibrary library)
-        {
-            var options = new DriverOptions();
 
             var driver = new Driver(options, library);
             driver.Setup();

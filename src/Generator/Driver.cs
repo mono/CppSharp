@@ -122,6 +122,17 @@ namespace Cxxi
                 generator.Generate(unit);
             }
         }
+
+        public static void Run(ILibrary library)
+        {
+            var options = new DriverOptions();
+
+            var driver = new Driver(options, library);
+            driver.Setup();
+            driver.ParseCode();
+            driver.ProcessCode();
+            driver.GenerateCode();
+        }
     }
 
     public class DriverOptions

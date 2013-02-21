@@ -1,6 +1,6 @@
 project "Generator"
 
-  kind "ConsoleApp"
+  kind "SharedLib"
   language "C#"
   location "."
 

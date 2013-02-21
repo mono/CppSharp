@@ -32,9 +32,9 @@ solution "Cxxi"
   group "Tests"
     IncludeTests()
   
-  group "Cxxi"
+  group "Libraries"
+    include (srcdir .. "/Cxxi/Cxxi.lua")
     include (srcdir .. "/Bridge/Bridge.lua")
     include (srcdir .. "/Generator/Generator.lua")
     include (srcdir .. "/Generator.Tests/Generator.Tests.lua")
     include (srcdir .. "/Parser/Parser.lua")
-
