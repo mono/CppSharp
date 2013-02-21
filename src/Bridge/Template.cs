@@ -42,6 +42,10 @@ namespace Cxxi
         public  ClassTemplate TemplatedDecl;
     }
 
+    public class ClassTemplatePartialSpecialization : ClassTemplateSpecialization
+    {
+    }
+
     public class FunctionTemplate : Template
     {
         public FunctionTemplate(Declaration decl)

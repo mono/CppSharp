@@ -1282,6 +1282,13 @@ Cxxi::Declaration^ Parser::WalkDeclaration(clang::Decl* D, clang::TypeLoc* TL,
 
         break;
     }
+    case Decl::ClassTemplatePartialSpecialization:
+    {
+        auto TS = cast<ClassTemplatePartialSpecializationDecl>(D);
+        auto CT = gcnew Cxxi::ClassTemplatePartialSpecialization();
+        Decl = CT;
+        break;
+    }
     case Decl::FunctionTemplate:
     {
         FunctionTemplateDecl* TD = cast<FunctionTemplateDecl>(D);
