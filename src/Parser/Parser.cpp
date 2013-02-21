@@ -83,7 +83,7 @@ void Parser::Setup(ParserOptions^ Opts)
     };
 
     C.reset(new CompilerInstance());
-    C->createDiagnostics(ARRAY_SIZE(args), args);
+    C->createDiagnostics();
 
     CompilerInvocation* Inv = new CompilerInvocation();
     CompilerInvocation::CreateFromArgs(*Inv, args, args + ARRAY_SIZE(args),
@@ -94,7 +94,7 @@ void Parser::Setup(ParserOptions^ Opts)
     TO.Triple = llvm::sys::getDefaultTargetTriple();
 
     TargetInfo* TI = TargetInfo::CreateTargetInfo(C->getDiagnostics(), &TO);
-    TI->setCXXABI(CXXABI_Microsoft);
+    TI->setCXXABI(TargetCXXABI::Microsoft);
     C->setTarget(TI);
 
     C->createFileManager();
@@ -106,7 +106,7 @@ void Parser::Setup(ParserOptions^ Opts)
     for each(System::String^% include in Opts->IncludeDirs)
     {
         String s = marshalString<E_UTF8>(include);
-        C->getHeaderSearchOpts().AddPath(s, frontend::Angled, true, false, true);
+        C->getHeaderSearchOpts().AddPath(s, frontend::Angled, false, false);
     }
 
     for each(System::String^% def in Opts->Defines)
@@ -119,7 +119,7 @@ void Parser::Setup(ParserOptions^ Opts)
     std::string ResourceDir = GetClangResourceDir(".");
     C->getHeaderSearchOpts().ResourceDir = ResourceDir;
     C->getHeaderSearchOpts().AddPath(GetClangBuiltinIncludeDir(),
-        clang::frontend::System, false, false, true);
+        clang::frontend::System, false, false);
 
 
 #if defined(WithClangWindowsSystemIncludeDirsPatch)
@@ -140,7 +140,7 @@ void Parser::Setup(ParserOptions^ Opts)
 
         for(size_t i = 0; i < SystemDirs.size(); ++i)
         {
-            HSOpts.AddPath(SystemDirs[i], frontend::System, false, false, true);
+            HSOpts.AddPath(SystemDirs[i], frontend::System, false, false);
         }
     }
 #endif
@@ -177,16 +177,16 @@ std::string Parser::GetDeclMangledName(clang::Decl* D, clang::TargetCXXABI ABI,
     NamedDecl* ND = cast<NamedDecl>(D);
     llvm::OwningPtr<MangleContext> MC;
     
-    switch(ABI)
+    switch(ABI.getKind())
     {
     default:
         llvm_unreachable("Unknown mangling ABI");
         break;
-    case CXXABI_Itanium:
+    case TargetCXXABI::GenericItanium:
        MC.reset(createItaniumMangleContext(*AST, AST->getDiagnostics()));
        //AST->setCXXABI(CreateItaniumCXXABI(*AST));
        break;
-    case CXXABI_Microsoft:
+    case TargetCXXABI::Microsoft:
        MC.reset(createMicrosoftMangleContext(*AST, AST->getDiagnostics()));
        //AST->setCXXABI(CreateMicrosoftCXXABI(*AST));
        break;
@@ -703,8 +703,8 @@ Cxxi::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
     {
         auto FP = Type->getAs<clang::FunctionProtoType>();
 
-        auto FTL = dyn_cast<FunctionProtoTypeLoc>(TL);
-        auto RL = FTL->getResultLoc();
+        auto FTL = TL->getAs<FunctionProtoTypeLoc>();
+        auto RL = FTL.getResultLoc();
 
         auto F = gcnew Cxxi::FunctionType();
         F->ReturnType = WalkType(FP->getResultType(), &RL);
@@ -713,7 +713,7 @@ Cxxi::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         {
             auto FA = gcnew Cxxi::Parameter();
 
-            auto PVD = FTL->getArg(i);
+            auto PVD = FTL.getArg(i);
             auto PTL = PVD->getTypeSourceInfo()->getTypeLoc();
 
             FA->Name = marshalString<E_UTF8>(PVD->getNameAsString());
@@ -754,9 +754,8 @@ Cxxi::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
             Name.getAsTemplateDecl(), 0, /*IgnoreSystemDecls=*/false));
         
         clang::TypeLoc::TypeLocClass Class = TL->getTypeLocClass();
-        int Loc = (int) Class;
 
-        auto TSTL = dyn_cast<TemplateSpecializationTypeLoc>(TL);
+        auto TSTL = TL->getAs<TemplateSpecializationTypeLoc>();
 
         for (unsigned I = 0, E = TS->getNumArgs(); I != E; ++I)
         {
@@ -765,7 +764,7 @@ Cxxi::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
 
             TemplateArgumentLoc ArgLoc;
             if (Class == clang::TypeLoc::TemplateSpecialization)
-                ArgLoc = TSTL->getArgLoc(I);
+                ArgLoc = TSTL.getArgLoc(I);
 
             switch(TA.getKind())
             {
@@ -970,7 +969,7 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, Cxxi::Function^ F,
     }
     F->ReturnType = WalkType(FD->getResultType(), &RTL);
 
-    String Mangled = GetDeclMangledName(FD, CXXABI_Microsoft, IsDependent);
+    String Mangled = GetDeclMangledName(FD, TargetCXXABI::Microsoft, IsDependent);
     F->Mangled = marshalString<E_UTF8>(Mangled);
 
     for(auto it = FD->param_begin(); it != FD->param_end(); ++it)
@@ -1028,8 +1027,10 @@ bool Parser::IsValidDeclaration(const clang::SourceLocation& Loc)
     SourceManager& SM = C->getSourceManager();
     PresumedLoc PLoc = SM.getPresumedLoc(Loc);
 
+    const char *FileName = PLoc.getFilename();
+
     // Igore built in declarations.
-    if(PLoc.isInvalid() || !strcmp(PLoc.getFilename(), "<built-in>"))
+    if(PLoc.isInvalid() || !strcmp(FileName, "<built-in>"))
         return false;
 
     // Also ignore declarations that come from system headers.
