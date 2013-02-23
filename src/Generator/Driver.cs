@@ -49,25 +49,31 @@ namespace Cxxi
             }
         }
 
+        private void OnHeaderParsed(string file, ParserResult result)
+        {
+            switch (result.Kind)
+            {
+                case ParserResultKind.Success:
+                    Console.WriteLine("  Parsed '{0}'", file);
+                    break;
+                case ParserResultKind.Error:
+                    Console.WriteLine("  Error parsing '{0}'", file);
+                    break;
+                case ParserResultKind.FileNotFound:
+                    Console.WriteLine("  File '{0}' was not found", file);
+                    break;
+            }
+
+            foreach (var diag in result.Diagnostics)
+                Console.WriteLine("    {0}", diag);
+        }
+
         public void ParseCode()
         {
             Console.WriteLine("Parsing code...");
 
             var parser = new Parser(Options);
-            parser.HeaderParsed += (file, result) =>
-                {
-                    switch (result.Kind)
-                    {
-                        case ParserResultKind.Success:
-                            Console.WriteLine("  Parsed '{0}'", file);
-                            break;
-                        case ParserResultKind.Error:
-                            Console.WriteLine("  Error parsing '{0}'", file);
-                            break;
-                        case ParserResultKind.FileNotFound:
-                            Console.WriteLine("  File '{0}' was not found", file);
-                            break;
-                    }
+            parser.HeaderParsed += OnHeaderParsed;
 
             parser.ParseHeaders(Options.Headers);
             Library = parser.Library;
