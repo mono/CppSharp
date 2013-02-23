@@ -30,7 +30,7 @@ namespace Generator.Tests
             var parser = new Parser(options);
             var result = parser.ParseHeader(file);
 
-            if (!result.Success)
+            if (result.Kind != ParserResultKind.Success)
                 throw new Exception("Could not parse file: " + file);
 
             library = result.Library;
