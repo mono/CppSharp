@@ -45,9 +45,7 @@ namespace Cxxi
 
             for (var i = 0; i < Options.IncludeDirs.Count; i++)
             {
-                if (Options.IncludeDirs[i] != ".")
-                    continue;
-                Options.IncludeDirs[i] = Directory.GetCurrentDirectory();
+                Options.IncludeDirs[i] = Path.GetFullPath(Options.IncludeDirs[i]);
             }
         }
 
