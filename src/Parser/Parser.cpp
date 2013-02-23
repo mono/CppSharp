@@ -152,7 +152,7 @@ void Parser::Setup(ParserOptions^ Opts)
     if (C->hasPreprocessor())
     {
         Preprocessor& P = C->getPreprocessor();
-        //P.createPreprocessingRecord();
+        P.createPreprocessingRecord();
         P.getBuiltinInfo().InitializeBuiltins(P.getIdentifierTable(),
             P.getLangOpts());
     }
