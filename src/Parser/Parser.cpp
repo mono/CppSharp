@@ -13,6 +13,7 @@
 #include <clang/Config/config.h>
 #include <clang/AST/ASTContext.h>
 #include <clang/AST/DeclTemplate.h>
+#include <clang/Lex/DirectoryLookup.h>
 #include <clang/Lex/HeaderSearch.h>
 #include <clang/Lex/PreprocessingRecord.h>
 #include <clang/Frontend/Utils.h>
@@ -1429,7 +1430,7 @@ ParserResult^ Parser::Parse(const std::string& File)
 
     if (File.empty())
     {
-        res->Success = false;
+        res->Kind = ParserResultKind::FileNotFound;
         return res;
     }
 
@@ -1437,6 +1438,15 @@ ParserResult^ Parser::Parse(const std::string& File)
 
     auto DiagClient = new DiagnosticConsumer();
     C->getDiagnostics().setClient(DiagClient);
+
+    // Check that the file is reachable.
+    const clang::DirectoryLookup *Dir;
+    if (!C->getPreprocessor().getHeaderSearchInfo().LookupFile(File, /*isAngled*/true,
+        nullptr, Dir, nullptr, nullptr, nullptr, nullptr))
+    {
+        res->Kind = ParserResultKind::FileNotFound;
+        return res;
+    }
 
     // Create a virtual file that includes the header. This gets rid of some
     // Clang warnings about parsing an header file as the main file.
@@ -1471,13 +1481,13 @@ ParserResult^ Parser::Parse(const std::string& File)
 
     if(DiagClient->getNumErrors() != 0)
     {
-        res->Success = false;
+        res->Kind = ParserResultKind::Error;
         return res;
     }
 
     AST = &C->getASTContext();
     WalkAST();
 
-    res->Success = true;
+    res->Kind = ParserResultKind::Success;
     return res;
  }

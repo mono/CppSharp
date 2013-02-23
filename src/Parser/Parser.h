@@ -61,6 +61,13 @@ public value struct ParserDiagnostic
     System::String^ Message;
 };
 
+public enum struct ParserResultKind
+{
+    Success,
+    Error,
+    FileNotFound
+};
+
 public ref struct ParserResult
 {
     ParserResult()
@@ -68,7 +75,7 @@ public ref struct ParserResult
         Diagnostics = gcnew List<ParserDiagnostic>(); 
     }
 
-    bool Success;
+    ParserResultKind Kind;
     Cxxi::Library^ Library;
     List<ParserDiagnostic>^ Diagnostics;
 };

@@ -55,8 +55,19 @@ namespace Cxxi
 
             var parser = new Parser(Options);
             parser.HeaderParsed += (file, result) =>
-                Console.WriteLine(result.Success ? "  Parsed '" + file + "'." :
-                                            "  Could not parse '" + file + "'.");
+                {
+                    switch (result.Kind)
+                    {
+                        case ParserResultKind.Success:
+                            Console.WriteLine("  Parsed '{0}'", file);
+                            break;
+                        case ParserResultKind.Error:
+                            Console.WriteLine("  Error parsing '{0}'", file);
+                            break;
+                        case ParserResultKind.FileNotFound:
+                            Console.WriteLine("  File '{0}' was not found", file);
+                            break;
+                    }
 
             parser.ParseHeaders(Options.Headers);
             Library = parser.Library;
