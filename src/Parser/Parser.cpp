@@ -784,8 +784,21 @@ Cxxi::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         TST->Template = safe_cast<Cxxi::Template^>(WalkDeclaration(
             Name.getAsTemplateDecl(), 0, /*IgnoreSystemDecls=*/false));
         
-        clang::TypeLoc::TypeLocClass Class = TL->getTypeLocClass();
+        auto TypeLocClass = TL->getTypeLocClass();
 
+        if (TypeLocClass == TypeLoc::Qualified)
+        {
+            auto UTL = TL->getUnqualifiedLoc();
+            TL = &UTL;
+        }
+        else if (TypeLocClass == TypeLoc::Elaborated)
+        {
+            auto ETL = TL->getAs<ElaboratedTypeLoc>();
+            auto ITL = ETL.getNextTypeLoc();
+            TL = &ITL;
+        }
+
+        assert(TL->getTypeLocClass() == TypeLoc::TemplateSpecialization);
         auto TSTL = TL->getAs<TemplateSpecializationTypeLoc>();
 
         for (unsigned I = 0, E = TS->getNumArgs(); I != E; ++I)
@@ -794,8 +807,7 @@ Cxxi::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
             auto Arg = Cxxi::TemplateArgument();
 
             TemplateArgumentLoc ArgLoc;
-            if (Class == clang::TypeLoc::TemplateSpecialization)
-                ArgLoc = TSTL.getArgLoc(I);
+            ArgLoc = TSTL.getArgLoc(I);
 
             switch(TA.getKind())
             {
@@ -803,8 +815,7 @@ Cxxi::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
             {
                 Arg.Kind = Cxxi::TemplateArgument::ArgumentKind::Type;
                 TypeLoc ArgTL;
-                if (Class == clang::TypeLoc::TemplateSpecialization)
-                    ArgTL = ArgLoc.getTypeSourceInfo()->getTypeLoc();
+                ArgTL = ArgLoc.getTypeSourceInfo()->getTypeLoc();
                 Arg.Type = WalkType(TA.getAsType(), &ArgTL);
                 break;
             }
