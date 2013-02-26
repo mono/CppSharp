@@ -65,7 +65,7 @@ namespace Cxxi
             }
 
             foreach (var diag in result.Diagnostics)
-                Console.WriteLine("    {0}", diag);
+                Console.WriteLine("    {0}", diag.Message);
         }
 
         public void ParseCode()
