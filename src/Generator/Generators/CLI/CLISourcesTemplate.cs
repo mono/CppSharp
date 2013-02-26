@@ -348,45 +348,48 @@ namespace Cxxi.Generators.CLI
             for (var i = 0; i < function.Parameters.Count; ++i)
             {
                 var param = function.Parameters[i];
-                
-                if (param.Type is BuiltinType)
-                {
-                    @params.Add(new ParamMarshal {Name = param.Name, Param = param});
-                }
-                else
-                {
-                    var argName = "arg" + i.ToString(CultureInfo.InvariantCulture);
-
-                    var ctx = new MarshalContext()
-                        {
-                            Parameter = param,
-                            ParameterIndex = i,
-                            ArgName = argName,
-                            Function = function
-                        };
-
-                    var marshal = new CLIMarshalManagedToNativePrinter(Driver.TypeDatabase,
-                        ctx);
-
-                    param.Visit(marshal);
-
-                    if (string.IsNullOrEmpty(marshal.Return))
-                        throw new Exception("Cannot marshal argument of function");
-
-                    if (!string.IsNullOrWhiteSpace(marshal.SupportBefore))
-                        WriteLine(marshal.SupportBefore);
-
-                    WriteLine("auto {0} = {1};", argName, marshal.Return);
-
-                    if (!string.IsNullOrWhiteSpace(marshal.SupportAfter))
-                        WriteLine(marshal.SupportAfter);
-
-                    var argText = marshal.ArgumentPrefix + argName;
-                    @params.Add(new ParamMarshal { Name = argText, Param = param });
-                }
+                GenerateFunctionParamMarshal(function, param, @params, i);
             }
 
             return @params;
+        }
+
+        private void GenerateFunctionParamMarshal(Function function, Parameter param, List<ParamMarshal> @params, int i)
+        {
+            if (param.Type is BuiltinType)
+            {
+                @params.Add(new ParamMarshal {Name = param.Name, Param = param});
+                return;
+            }
+
+            var argName = "arg" + i.ToString(CultureInfo.InvariantCulture);
+
+            var ctx = new MarshalContext()
+                {
+                    Parameter = param,
+                    ParameterIndex = i,
+                    ArgName = argName,
+                    Function = function
+                };
+
+            var marshal = new CLIMarshalManagedToNativePrinter(Driver.TypeDatabase,
+                                                                ctx);
+
+            param.Visit(marshal);
+
+            if (string.IsNullOrEmpty(marshal.Return))
+                throw new Exception("Cannot marshal argument of function");
+
+            if (!string.IsNullOrWhiteSpace(marshal.SupportBefore))
+                WriteLine(marshal.SupportBefore);
+
+            WriteLine("auto {0} = {1};", argName, marshal.Return);
+
+            if (!string.IsNullOrWhiteSpace(marshal.SupportAfter))
+                WriteLine(marshal.SupportAfter);
+
+            var argText = marshal.ArgumentPrefix + argName;
+            @params.Add(new ParamMarshal {Name = argText, Param = param});
         }
 
         public void GenerateFunctionParams(Function function, List<ParamMarshal> @params)
