@@ -281,16 +281,30 @@ static Cxxi::AccessSpecifier ConvertToAccess(clang::AccessSpecifier AS)
     return Cxxi::AccessSpecifier::Public;
 }
 
+static bool HasClassDependentFields(clang::CXXRecordDecl* Record)
+{
+    using namespace clang;
+
+    for(auto it = Record->field_begin(); it != Record->field_end(); ++it)
+    {
+        clang::FieldDecl* FD = (*it);
+
+        switch (FD->getType()->getTypeClass()) {
+        #define TYPE(Class, Base)
+        #define ABSTRACT_TYPE(Class, Base)
+        #define NON_CANONICAL_TYPE(Class, Base)
+        #define DEPENDENT_TYPE(Class, Base) case Type::Class:
+        #include "clang/AST/TypeNodes.def"
+            return true;
+        }
+    }
+    return false;
+}
+
 Cxxi::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record, bool IsDependent)
 {
     using namespace clang;
     using namespace clix;
-
-    if (Record->isAnonymousStructOrUnion())
-    {
-        assert(0);
-        return nullptr;
-    }
 
     if (Record->hasFlexibleArrayMember())
     {
@@ -336,6 +350,9 @@ Cxxi::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record, bool IsDependen
         Cxxi::Method^ Method = WalkMethodCXX(M);
         RC->Methods->Add(Method);
     }
+
+    if (!IsDependent)
+        IsDependent = HasClassDependentFields(Record);
 
     // Get the record layout information.
     const ASTRecordLayout* Layout = 0;
