@@ -91,10 +91,9 @@ namespace Cxxi.Generators.CLI
         {
             if (method.Ignore) return true;
 
-            if (@class.IsAbstract && method.IsConstructor)
-                return true;
+            bool isEmptyCtor = method.IsConstructor && method.Parameters.Count == 0;
 
-            if (@class.IsValueType && method.IsDefaultConstructor)
+            if (@class.IsValueType && isEmptyCtor)
                 return true;
 
             if (method.IsCopyConstructor || method.IsMoveConstructor)
