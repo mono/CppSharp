@@ -26,7 +26,8 @@ namespace Cxxi.Passes
 
             typeRefs = new TypeRefsVisitor();
             ProcessNamespace(unit);
-            unit.ForwardReferences = typeRefs.ForwardReferences.ToList();
+
+            unit.TypeReferences = typeRefs;
 
             return true;
         }
