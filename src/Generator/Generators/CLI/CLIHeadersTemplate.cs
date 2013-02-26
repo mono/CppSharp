@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 
 namespace Cxxi.Generators.CLI
@@ -36,10 +37,10 @@ namespace Cxxi.Generators.CLI
 
         public void GenerateIncludeForwardRefs()
         {
-            forwardRefsPrinter = new CLIForwardRefeferencePrinter();
+            var typeRefs = unit.TypeReferences as TypeRefsVisitor;
 
-            foreach (var forwardRef in unit.ForwardReferences)
-                forwardRef.Visit(forwardRefsPrinter);
+            forwardRefsPrinter = new CLIForwardRefeferencePrinter(typeRefs);
+            forwardRefsPrinter.Process();
 
             var includes = new HashSet<string>();
 

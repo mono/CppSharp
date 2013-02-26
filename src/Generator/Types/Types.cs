@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using Cxxi.Generators;
 using Cxxi.Types;
 
@@ -136,9 +137,10 @@ namespace Cxxi
     /// that a file needs to be reference something that has not been declared
     /// yet. In that case, we need to declare it before referencing it.
     /// </summary>
-    class TypeRefsVisitor : AstVisitor
+    public class TypeRefsVisitor : AstVisitor
     {
         public ISet<Declaration> ForwardReferences;
+        public ISet<Class> Bases;
 
         public void Collect(Declaration declaration)
         {
@@ -154,6 +156,7 @@ namespace Cxxi
         public TypeRefsVisitor()
         {
             ForwardReferences = new HashSet<Declaration>();
+            Bases = new HashSet<Class>();
         }
 
         public override bool VisitClassDecl(Class @class)
@@ -174,6 +177,14 @@ namespace Cxxi
 
             foreach (var method in @class.Methods)
                 VisitMethodDecl(method);
+
+            foreach (var @base in @class.Bases)
+            {
+                if (!@base.IsClass)
+                    continue;
+
+                Bases.Add(@base.Class);
+            }
 
             return true;
         }

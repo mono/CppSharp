@@ -8,11 +8,33 @@ namespace Cxxi.Generators.CLI
     {
         public readonly IList<string> Includes;
         public readonly IList<string> Refs;
+        private readonly TypeRefsVisitor TypeRefs;
 
-        public CLIForwardRefeferencePrinter()
+        public CLIForwardRefeferencePrinter(TypeRefsVisitor typeRefs)
         {
             Includes = new List<string>();
             Refs = new List<string>();
+            TypeRefs = typeRefs;
+        }
+
+        public void Process()
+        {
+            foreach (var forwardRef in TypeRefs.ForwardReferences)
+                forwardRef.Visit(this);
+
+            foreach (var baseClass in TypeRefs.Bases)
+                VisitBaseClass(baseClass);
+        }
+
+        public void VisitBaseClass(Class @class)
+        {
+            if (@class.IsIncomplete)
+                @class = @class.CompleteDeclaration as Class;
+
+            if (@class == null)
+                return;
+
+            Includes.Add(GetHeaderFromDecl(@class));
         }
 
         public bool VisitDeclaration(Declaration decl)
