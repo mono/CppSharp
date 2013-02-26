@@ -283,8 +283,9 @@ namespace Cxxi.Generators.CLI
                 return true;
             }
 
-            if (@class.HasBase)
-                Write(" : {0}", SafeIdentifier(@class.Bases[0].Class.Name));
+            if (@class.HasBase && !@class.IsValueType)
+                if (!@class.Bases[0].Class.Ignore)
+                    Write(" : {0}", SafeIdentifier(@class.Bases[0].Class.Name));
 
             WriteLine(string.Empty);
             WriteLine("{");
