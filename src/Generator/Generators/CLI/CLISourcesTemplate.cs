@@ -136,27 +136,62 @@ namespace Cxxi.Generators.CLI
 
             var nativeType = string.Format("::{0}*", @class.OriginalName);
             WriteLine("{0} native)", isIntPtr ? "System::IntPtr" : nativeType);
-            WriteLine("{");
-            PushIndent();
+
+            var hasBase = GenerateClassConstructorBase(@class);
+
+            WriteStartBraceIndent();
 
             if (@class.IsRefType)
             {
-                Write("NativePtr = ");
-                if (isIntPtr)
-                    Write("({0})", nativeType);
-                Write("native");
-                if (isIntPtr)
-                    Write(".ToPointer()");
-                WriteLine(";");
+                if (!hasBase)
+                {
+                    Write("NativePtr = ");
+
+                    if (isIntPtr)
+                        Write("({0})", nativeType);
+                    Write("native");
+                    if (isIntPtr)
+                        Write(".ToPointer()");
+                    WriteLine(";");
+                }
             }
             else
             {
                 WriteLine("// TODO: Struct marshaling");
             }
 
-            PopIndent();
-            WriteLine("}");
+            WriteCloseBraceIndent();
             NewLine();
+        }
+
+        private void GenerateStructMarshaling(Class @class)
+        {
+            foreach (var field in @class.Fields)
+            {
+
+                WriteLine("{0} = {1}");
+            }
+        }
+
+        private bool GenerateClassConstructorBase(Class @class, Method method = null)
+        {
+            var hasBase = @class.HasBase && !@class.Bases[0].Class.Ignore;
+
+            if (hasBase && !@class.IsValueType)
+            {
+                PushIndent();
+                Write(": {0}(", @class.Bases[0].Class.Name);
+
+                if (method != null)
+                    Write("nullptr");
+                else
+                    Write("native");
+
+                WriteLine(")");
+                PopIndent();
+            }
+
+            return hasBase;
         }
 
         public void GenerateMethod(Method method, Class @class)
@@ -172,17 +207,23 @@ namespace Cxxi.Generators.CLI
             GenerateMethodParameters(method);
 
             WriteLine(")");
-            WriteLine("{");
-            PushIndent();
+
+            if (method.Kind == CXXMethodKind.Constructor)
+                GenerateClassConstructorBase(@class, method);
+
+            WriteStartBraceIndent();
 
             if (@class.IsRefType)
             {
                 if (method.Kind == CXXMethodKind.Constructor)
                 {
-                    var @params = GenerateFunctionParamsMarshal(method);
-                    Write("NativePtr = new ::{0}(", method.QualifiedOriginalName);
-                    GenerateFunctionParams(method, @params);
-                    WriteLine(");");
+                    if (!@class.IsAbstract)
+                    {
+                        var @params = GenerateFunctionParamsMarshal(method);
+                        Write("NativePtr = new ::{0}(", method.QualifiedOriginalName);
+                        GenerateFunctionParams(method, @params);
+                        WriteLine(");");
+                    }
                 }
                 else
                 {
@@ -195,8 +236,7 @@ namespace Cxxi.Generators.CLI
                     GenerateFunctionCall(method, @class);
             }
 
-            PopIndent();
-            WriteLine("}");
+            WriteCloseBraceIndent();
         }
 
         public void GenerateFunction(Function function, string className)

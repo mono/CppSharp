@@ -219,10 +219,24 @@ namespace Cxxi.Generators.CLI
 
         public void GenerateClassConstructors(Class @class, string nativeType)
         {
-            // Output a default constructor that takes the native pointer.
             PushIndent();
+
+            // Output a default constructor that takes the native pointer.
             WriteLine("{0}({1} native);", SafeIdentifier(@class.Name), nativeType);
             WriteLine("{0}({1} native);", SafeIdentifier(@class.Name), "System::IntPtr");
+
+            foreach (var ctor in @class.Constructors)
+            {
+                if (ctor.IsCopyConstructor || ctor.IsMoveConstructor)
+                    continue;
+
+                // Default constructors are not supported in .NET value types.
+                if (ctor.Parameters.Count == 0 && @class.IsValueType)
+                    continue;
+
+                GenerateMethod(ctor);
+            }
+
             PopIndent();
         }
 
@@ -242,6 +256,23 @@ namespace Cxxi.Generators.CLI
                 WriteLine("{0} {1};", field.Type, SafeIdentifier(field.Name));
             }
             PopIndent();
+
+            // Handle the case of struct (value-type) inheritance by adding the base
+            // fields to the managed value subtypes.
+            foreach (var @base in @class.Bases)
+            {
+                Class baseClass;
+                if (!@base.Type.IsTagDecl(out baseClass))
+                    continue;
+
+                if (!baseClass.IsValueType || baseClass.Ignore)
+                {
+                    Console.WriteLine("Ignored base class of value type '{0}'", baseClass.Name);
+                    continue;
+                }
+
+                GenerateClassFields(baseClass);
+            }
         }
 
         public void GenerateClassMethods(Class @class)
@@ -252,6 +283,9 @@ namespace Cxxi.Generators.CLI
             foreach (var method in @class.Methods)
             {
                 if (CheckIgnoreMethod(@class, method))
+                    continue;
+
+                if (method.IsConstructor)
                     continue;
 
                 if (method.IsStatic)
@@ -426,6 +460,7 @@ namespace Cxxi.Generators.CLI
                     WriteLine(",");
             }
             PopIndent();
+
             NewLine();
             WriteLine("};");
         }
