@@ -37,8 +37,10 @@ namespace Cxxi.Generators.CLI
         {
             var includes = new HashSet<string>();
 
+            var typeRefs = unit.TypeReferences as TypeRefsVisitor;
+
             // Generate the forward references.
-            foreach (var forwardRef in unit.ForwardReferences)
+            foreach (var forwardRef in typeRefs.ForwardReferences)
             {
                 var decl = forwardRef;
 
