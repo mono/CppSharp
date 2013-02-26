@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,16 +15,34 @@ namespace Cxxi
     // Represents a base class of a C++ class.
     public class BaseClassSpecifier
     {
-        public Class Class { get; set; }
         public AccessSpecifier Access { get; set; }
         public bool IsVirtual { get; set; }
+        public Type Type { get; set; }
 
-        BaseClassSpecifier(Class @class, AccessSpecifier access,
-            bool isVirtual = false)
+        public Class Class
         {
-            Class = @class;
-            Access = access;
-            IsVirtual = isVirtual;
+            get
+            {
+                Class @class;
+                if (!Type.IsTagDecl(out @class))
+                    throw new NotSupportedException();
+
+                return @class;
+            }
+        }
+
+        public bool IsClass
+        {
+            get
+            {
+                Class @class;
+                return Type.IsTagDecl(out @class);
+            }
+        }
+
+        public BaseClassSpecifier()
+        {
+            
         }
     }
 

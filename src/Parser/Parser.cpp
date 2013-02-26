@@ -266,6 +266,21 @@ std::string Parser::GetTypeName(const clang::Type* Type)
 
 //-----------------------------------//
 
+static Cxxi::AccessSpecifier ConvertToAccess(clang::AccessSpecifier AS)
+{
+    switch(AS)
+    {
+    case clang::AS_private:
+        return Cxxi::AccessSpecifier::Private;
+    case clang::AS_protected:
+        return Cxxi::AccessSpecifier::Protected;
+    case clang::AS_public:
+        return Cxxi::AccessSpecifier::Public;
+    }
+
+    return Cxxi::AccessSpecifier::Public;
+}
+
 Cxxi::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record, bool IsDependent)
 {
     using namespace clang;
@@ -338,6 +353,19 @@ Cxxi::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record, bool IsDependen
             Field->Offset = Layout->getFieldOffset(FD->getFieldIndex());
 
         RC->Fields->Add(Field);
+    }
+
+    // Iterate through the record bases.
+    for(auto it = Record->bases_begin(); it != Record->bases_end(); ++it)
+    {
+        clang::CXXBaseSpecifier &BS = *it;
+
+        Cxxi::BaseClassSpecifier^ Base = gcnew Cxxi::BaseClassSpecifier();
+        Base->Access = ConvertToAccess(BS.getAccessSpecifier());
+        Base->IsVirtual = BS.isVirtual();
+        Base->Type = WalkType(BS.getType(), &BS.getTypeSourceInfo()->getTypeLoc());
+
+        RC->Bases->Add(Base);
     }
 
     //Debug("Size: %I64d\n", Layout.getSize().getQuantity());
@@ -418,21 +446,6 @@ static Cxxi::CXXOperatorKind GetOperatorKindFromDecl(clang::DeclarationName Name
     }
 
     return Cxxi::CXXOperatorKind::None;
-}
-
-static Cxxi::AccessSpecifier ConvertToAccess(clang::AccessSpecifier AS)
-{
-    switch(AS)
-    {
-    case clang::AS_private:
-        return Cxxi::AccessSpecifier::Private;
-    case clang::AS_protected:
-        return Cxxi::AccessSpecifier::Protected;
-    case clang::AS_public:
-        return Cxxi::AccessSpecifier::Public;
-    }
-
-    return Cxxi::AccessSpecifier::Public;
 }
 
 Cxxi::Method^ Parser::WalkMethodCXX(clang::CXXMethodDecl* MD)
@@ -812,7 +825,6 @@ Cxxi::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
     case Type::TemplateTypeParm:
     {
         auto TP = Type->getAs<TemplateTypeParmType>();
-
         auto TPT = gcnew Cxxi::TemplateParameterType();
         //TPT->Parameter = WalkDeclaration(TP->getDecl());
 
