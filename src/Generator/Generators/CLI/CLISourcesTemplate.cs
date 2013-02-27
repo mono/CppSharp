@@ -141,18 +141,20 @@ namespace Cxxi.Generators.CLI
 
             WriteStartBraceIndent();
 
+            var nativePtr = "native";
+
+            if (isIntPtr)
+            {
+                WriteLine("auto __native = (::{0}*)native.ToPointer();",
+                    @class.QualifiedOriginalName);
+                nativePtr = "__native";
+            }
+
             if (@class.IsRefType)
             {
                 if (!hasBase)
                 {
-                    Write("NativePtr = ");
-
-                    if (isIntPtr)
-                        Write("({0})", nativeType);
-                    Write("native");
-                    if (isIntPtr)
-                        Write(".ToPointer()");
-                    WriteLine(";");
+                    WriteLine("NativePtr = {0};", nativePtr);
                 }
             }
             else
