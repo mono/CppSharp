@@ -413,58 +413,69 @@ namespace Cxxi.Generators.CLI
         {
             if (@class.IsValueType)
             {
-                if (Context.Parameter.Type.IsReference())
-                {
-                    var argName = string.Format("_{0}", Context.ArgName);
-                    SupportBefore.Write("auto {0} = (::{1}*)&{2};",
-                                  argName, @class.OriginalName,
-                                  Context.Parameter.Name);
-                    Return.Write("*{0}", argName);
-                }
-                else
-                {
-                    SupportAfter.PushIndent();
-
-                    foreach (var field in @class.Fields)
-                    {
-                        SupportAfter.Write("{0}.{1} = ", Context.ArgName,
-                            field.OriginalName);
-
-                        var fieldRef = string.Format("{0}.{1}", Context.Parameter.Name,
-                                                     field.Name);
-
-                        var marshalCtx = new MarshalContext() { ArgName = fieldRef };
-                        var marshal = new CLIMarshalManagedToNativePrinter(TypeMapDatabase,
-                            marshalCtx);
-                        field.Visit(marshal);
-
-                        SupportAfter.WriteLine("{0};", marshal.Return);
-                    }
-
-                    Return.Write("::{0}()", @class.QualifiedOriginalName);
-
-                    if (Context.Parameter.Type.IsPointer())
-                        ArgumentPrefix.Write("&");
-                }
+                MarshalValueClass(@class);
             }
             else
             {
-                if (!Context.Parameter.Type.IsPointer())
-                    Return.Write("*");
-
-                var method = Context.Function as Method;
-                if (method != null
-                    && method.Conversion == MethodConversionKind.FunctionToInstanceMethod
-                    && Context.ParameterIndex == 0)
-                {
-                    Return.Write("NativePtr");
-                    return true;
-                }
-
-                Return.Write("{0}->NativePtr", Context.Parameter.Name);
+                if (MarshalRefClass()) return true;
             }
 
             return true;
+        }
+
+        private bool MarshalRefClass()
+        {
+            if (!Context.Parameter.Type.IsPointer())
+                Return.Write("*");
+
+            var method = Context.Function as Method;
+            if (method != null
+                && method.Conversion == MethodConversionKind.FunctionToInstanceMethod
+                && Context.ParameterIndex == 0)
+            {
+                Return.Write("NativePtr");
+                return true;
+            }
+
+            Return.Write("{0}->NativePtr", Context.Parameter.Name);
+            return false;
+        }
+
+        private void MarshalValueClass(Class @class)
+        {
+            if (Context.Parameter.Type.IsReference())
+            {
+                var argName = string.Format("_{0}", Context.ArgName);
+                SupportBefore.Write("auto {0} = (::{1}*)&{2};",
+                                    argName, @class.OriginalName,
+                                    Context.Parameter.Name);
+                Return.Write("*{0}", argName);
+            }
+            else
+            {
+                SupportAfter.PushIndent();
+
+                foreach (var field in @class.Fields)
+                {
+                    SupportAfter.Write("{0}.{1} = ", Context.ArgName,
+                                       field.OriginalName);
+
+                    var fieldRef = string.Format("{0}.{1}", Context.Parameter.Name,
+                                                 field.Name);
+
+                    var marshalCtx = new MarshalContext() {ArgName = fieldRef};
+                    var marshal = new CLIMarshalManagedToNativePrinter(TypeMapDatabase,
+                                                                       marshalCtx);
+                    field.Visit(marshal);
+
+                    SupportAfter.WriteLine("{0};", marshal.Return);
+                }
+
+                Return.Write("::{0}()", @class.QualifiedOriginalName);
+
+                if (Context.Parameter.Type.IsPointer())
+                    ArgumentPrefix.Write("&");
+            }
         }
 
         public bool VisitFieldDecl(Field field)
