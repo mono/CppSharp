@@ -165,7 +165,7 @@ namespace Cxxi.Generators.CLI
 
         public bool VisitFieldDecl(Field field)
         {
-            throw new NotImplementedException();
+            return field.Type.Visit(this);
         }
 
         public bool VisitFunctionDecl(Function function)
