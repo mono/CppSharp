@@ -50,9 +50,9 @@ namespace Cxxi.Generators.CLI
         {
             var pointee = pointer.Pointee;
 
-            if (pointee.IsPrimitiveType(PrimitiveType.Void))
+            if (pointee.IsPrimitiveType(PrimitiveType.Void, walkTypedefs: true))
             {
-                Return.Write("IntPtr()");
+                Return.Write("IntPtr({0})", Context.ReturnVarName);
                 return true;
             }
 
