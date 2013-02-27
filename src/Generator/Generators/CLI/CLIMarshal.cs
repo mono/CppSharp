@@ -417,13 +417,13 @@ namespace Cxxi.Generators.CLI
             }
             else
             {
-                if (MarshalRefClass()) return true;
+                MarshalRefClass(@class);
             }
 
             return true;
         }
 
-        private bool MarshalRefClass()
+        private void MarshalRefClass(Class @class)
         {
             if (!Context.Parameter.Type.IsPointer())
                 Return.Write("*");
@@ -434,11 +434,10 @@ namespace Cxxi.Generators.CLI
                 && Context.ParameterIndex == 0)
             {
                 Return.Write("NativePtr");
-                return true;
+                return;
             }
 
             Return.Write("{0}->NativePtr", Context.Parameter.Name);
-            return false;
         }
 
         private void MarshalValueClass(Class @class)
@@ -450,32 +449,31 @@ namespace Cxxi.Generators.CLI
                                     argName, @class.OriginalName,
                                     Context.Parameter.Name);
                 Return.Write("*{0}", argName);
+                return;
             }
-            else
+
+            SupportAfter.PushIndent();
+
+            foreach (var field in @class.Fields)
             {
-                SupportAfter.PushIndent();
+                SupportAfter.Write("{0}.{1} = ", Context.ArgName,
+                                    field.OriginalName);
 
-                foreach (var field in @class.Fields)
-                {
-                    SupportAfter.Write("{0}.{1} = ", Context.ArgName,
-                                       field.OriginalName);
+                var fieldRef = string.Format("{0}.{1}", Context.Parameter.Name,
+                                                field.Name);
 
-                    var fieldRef = string.Format("{0}.{1}", Context.Parameter.Name,
-                                                 field.Name);
+                var marshalCtx = new MarshalContext() {ArgName = fieldRef};
+                var marshal = new CLIMarshalManagedToNativePrinter(TypeMapDatabase,
+                                                                    marshalCtx);
+                field.Visit(marshal);
 
-                    var marshalCtx = new MarshalContext() {ArgName = fieldRef};
-                    var marshal = new CLIMarshalManagedToNativePrinter(TypeMapDatabase,
-                                                                       marshalCtx);
-                    field.Visit(marshal);
-
-                    SupportAfter.WriteLine("{0};", marshal.Return);
-                }
-
-                Return.Write("::{0}()", @class.QualifiedOriginalName);
-
-                if (Context.Parameter.Type.IsPointer())
-                    ArgumentPrefix.Write("&");
+                SupportAfter.WriteLine("{0};", marshal.Return);
             }
+
+            Return.Write("::{0}()", @class.QualifiedOriginalName);
+
+            if (Context.Parameter.Type.IsPointer())
+                ArgumentPrefix.Write("&");
         }
 
         public bool VisitFieldDecl(Field field)
