@@ -133,7 +133,8 @@ namespace Cxxi
 
         public IEnumerable<Method> Constructors
         {
-            get {
+            get
+            {
                 return Methods.Where(
                     method => method.IsConstructor || method.IsCopyConstructor);
             }
