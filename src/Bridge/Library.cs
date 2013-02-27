@@ -26,13 +26,9 @@ namespace Cxxi
     {
         public TranslationUnit(string file)
         {
-            ForwardReferences = new List<Declaration>();
             Macros = new List<MacroDefinition>();
             FilePath = file;
         }
-
-        /// Forward reference declarations.
-        public List<Declaration> ForwardReferences;
 
         /// Contains the macros present in the unit.
         public List<MacroDefinition> Macros;
@@ -62,6 +58,9 @@ namespace Cxxi
 
         /// Contains the include path.
         public string IncludePath;
+
+        /// Type references object.
+        public object TypeReferences;
     }
 
     /// <summary>
