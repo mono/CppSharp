@@ -159,19 +159,32 @@ namespace Cxxi.Generators.CLI
             }
             else
             {
-                WriteLine("// TODO: Struct marshaling");
+                GenerateStructMarshaling(@class, nativePtr);
             }
 
             WriteCloseBraceIndent();
             NewLine();
         }
 
-        private void GenerateStructMarshaling(Class @class)
+        private void GenerateStructMarshaling(Class @class, string nativePointer)
         {
             foreach (var field in @class.Fields)
             {
+                var nativeField = string.Format("{0}->{1}",
+                                                nativePointer, field.OriginalName);
 
-                WriteLine("{0} = {1}");
+                var ctx = new MarshalContext()
+                {
+                    ReturnVarName = nativeField,
+                    ReturnType = field.Type
+                };
+
+                var marshal = new CLIMarshalNativeToManagedPrinter(
+                    Driver.TypeDatabase, Library, ctx);
+
+                field.Visit(marshal);
+
+                WriteLine("{0} = {1};", field.Name, marshal.Return);
             }
         }
 
