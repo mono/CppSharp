@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Cxxi.Generators;
+﻿using Cxxi.Generators;
 using Cxxi.Passes;
 
 namespace Cxxi
@@ -12,8 +11,8 @@ namespace Cxxi
         public void Setup(DriverOptions options)
         {
             options.LibraryName = "SDL";
-            options.Headers.Add("SDL/SDL.h");
-            options.IncludeDirs.Add(".");
+            options.Headers.Add("SDL.h");
+            options.IncludeDirs.Add("SDL-2.0/include");
             options.OutputDir = "SDL";
         }
 
@@ -79,7 +78,7 @@ namespace Cxxi
         {
             public static void Main(string[] args)
             {
-                Cxxi.Program.Run(new SDL());
+                Driver.Run(new SDL());
             }
         }
     }
