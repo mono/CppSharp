@@ -273,13 +273,11 @@ namespace Cxxi.Generators.CLI
             }
 
             WriteLine(")");
-            WriteLine("{");
-            PushIndent();
+            WriteStartBraceIndent();
 
             GenerateFunctionCall(function);
 
-            PopIndent();
-            WriteLine("}");
+            WriteCloseBraceIndent();
         }
 
         public void GenerateFunctionCall(Function function, Class @class = null)
