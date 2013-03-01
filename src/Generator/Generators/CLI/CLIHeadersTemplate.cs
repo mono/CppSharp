@@ -198,10 +198,23 @@ namespace Cxxi.Generators.CLI
 
             if (@class.IsRefType)
             {
-                PushIndent();
-                WriteLine("property {0} NativePtr;", nativeType);
-                PopIndent();
-                NewLine();
+                Class baseClass = null;
+
+                if (@class.HasBaseClass)
+                    baseClass = @class.Bases[0].Class;
+
+                var hasRefBase = baseClass != null && baseClass.IsRefType
+                    && !baseClass.Ignore;
+
+                var hasIgnoredBase = baseClass != null && baseClass.Ignore;
+
+                if (!@class.HasBase || !hasRefBase || hasIgnoredBase)
+                {
+                    PushIndent();
+                    WriteLine("property {0} NativePtr;", nativeType);
+                    PopIndent();
+                    NewLine();
+                }
             }
 
             GenerateClassConstructors(@class, nativeType);
