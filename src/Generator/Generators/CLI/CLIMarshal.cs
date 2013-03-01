@@ -433,10 +433,12 @@ namespace Cxxi.Generators.CLI
                 && method.Conversion == MethodConversionKind.FunctionToInstanceMethod
                 && Context.ParameterIndex == 0)
             {
+                Return.Write("(::{0}*)", @class.QualifiedOriginalName);
                 Return.Write("NativePtr");
                 return;
             }
 
+            Return.Write("(::{0}*)", @class.QualifiedOriginalName);
             Return.Write("{0}->NativePtr", Context.Parameter.Name);
         }
 

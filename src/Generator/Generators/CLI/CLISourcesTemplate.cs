@@ -312,7 +312,14 @@ namespace Cxxi.Generators.CLI
             }
             else
             {
-                Write(IsInstanceFunction(function) ? "NativePtr->" : "::");
+                if (IsInstanceFunction(function))
+                {
+                    Write("((::{0}*)NativePtr)->", @class.QualifiedOriginalName);
+                }
+                else
+                {
+                    Write("::");
+                }
 
                 Write("{0}(", function.QualifiedOriginalName);
                 GenerateFunctionParams(function, @params);
