@@ -156,10 +156,10 @@ namespace Cxxi.Generators.CLI
 
             Return.Write("(::{0}*)", @class.QualifiedOriginalName);
 
-            if (@class.IsValueType && !Context.ReturnType.IsPointer())
+            if (!Context.ReturnType.IsPointer())
                 Return.Write("&");
 
-            Return.Write("{0})", this.Context.ReturnVarName);
+            Return.Write("{0})", Context.ReturnVarName);
             return true;
         }
 
