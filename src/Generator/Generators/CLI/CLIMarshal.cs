@@ -233,6 +233,7 @@ namespace Cxxi.Generators.CLI
         public TextGenerator SupportBefore;
         public TextGenerator SupportAfter;
         public TextGenerator Return;
+        public TextGenerator VarPrefix;
         public TextGenerator ArgumentPrefix;
 
         ITypeMapDatabase TypeMapDatabase { get; set; }
@@ -247,6 +248,7 @@ namespace Cxxi.Generators.CLI
             SupportBefore = new TextGenerator();
             SupportAfter = new TextGenerator();
             Return = new TextGenerator();
+            VarPrefix = new TextGenerator();
             ArgumentPrefix = new TextGenerator();
         }
 
@@ -426,7 +428,12 @@ namespace Cxxi.Generators.CLI
         private void MarshalRefClass(Class @class)
         {
             if (!Context.Parameter.Type.IsPointer())
+            {
                 Return.Write("*");
+
+                if (Context.Parameter.Type.IsReference())
+                    VarPrefix.Write("&");
+            }
 
             var method = Context.Function as Method;
             if (method != null
