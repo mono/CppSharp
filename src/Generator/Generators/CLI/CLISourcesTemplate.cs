@@ -242,7 +242,7 @@ namespace Cxxi.Generators.CLI
                 }
                 else
                 {
-                    GenerateFunctionCall(method);
+                    GenerateFunctionCall(method, @class);
                 }
             }
             else if (@class.IsValueType)
