@@ -158,6 +158,12 @@ namespace Cxxi
             debugText = Regex.Replace(debugText, " ( )+", " ");
             debugText = Regex.Replace(debugText, "\n", "");
         }
+
+        public static string[] SplitCamelCase(string input)
+        {
+            var str = Regex.Replace(input, "([A-Z])", " $1", RegexOptions.Compiled);
+            return str.Trim().Split();
+        }
     }
 
     public static class AssemblyHelpers

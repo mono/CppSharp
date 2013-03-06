@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Text.RegularExpressions;
 
 namespace Cxxi.Passes
@@ -18,7 +17,7 @@ namespace Cxxi.Passes
             if (function.Ignore)
                 return false;
 
-            var types = SplitCamelCase(function.Name);
+            var types = StringHelpers.SplitCamelCase(function.Name);
             if (types.Length == 0)
                 return false;
 
@@ -53,12 +52,6 @@ namespace Cxxi.Passes
                 function.Name);
 
             return true;
-        }
-
-        public static string[] SplitCamelCase(string input)
-        {
-            var str = Regex.Replace(input, "([A-Z])", " $1", RegexOptions.Compiled);
-            return str.Trim().Split();
         }
     }
 
