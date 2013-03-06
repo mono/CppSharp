@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
-using Cxxi.Generators;
 using Cxxi.Types;
 
 namespace Cxxi
