@@ -394,7 +394,7 @@ namespace Cxxi.Generators.CLI
             if (typedef.Type.IsPointerTo<FunctionType>(out function))
             {
                 WriteLine("public {0};",
-                    string.Format(TypePrinter.ToDelegateString(function),
+                    string.Format(TypePrinter.VisitDelegate(function),
                     SafeIdentifier(typedef.Name)));
                 return true;
             }
@@ -421,7 +421,7 @@ namespace Cxxi.Generators.CLI
             for (int i = 0; i < function.Parameters.Count; ++i)
             {
                 var param = function.Parameters[i];
-                Write("{0}", TypePrinter.GetArgumentString(param));
+                Write("{0}", TypePrinter.VisitParameter(param));
                 if (i < function.Parameters.Count - 1)
                     Write(", ");
             }

@@ -81,7 +81,7 @@ namespace Cxxi.Generators.CLI
                     continue;
 
                 var param = method.Parameters[i];
-                Write("{0}", TypePrinter.GetArgumentString(param));
+                Write("{0}", TypePrinter.VisitParameter(param));
                 if (i < method.Parameters.Count - 1)
                     Write(", ");
             }

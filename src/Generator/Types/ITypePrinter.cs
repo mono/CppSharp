@@ -1,11 +1,14 @@
-﻿namespace Cxxi.Types
+﻿using System.Collections.Generic;
+
+namespace Cxxi.Types
 {
     public interface ITypePrinter : ITypeVisitor<string>
     {
         Library Library { get; set; }
 
-        string GetArgumentsString(FunctionType function, bool hasNames);
-        string GetArgumentString(Parameter arg, bool hasName = true);
-        string ToDelegateString(FunctionType function);
+        string VisitParameters(IEnumerable<Parameter> @params, bool hasNames);
+        string VisitParameter(Parameter param, bool hasName = true);
+
+        string VisitDelegate(FunctionType function);
     }
 }

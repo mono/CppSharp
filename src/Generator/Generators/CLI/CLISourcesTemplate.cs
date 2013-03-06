@@ -268,7 +268,7 @@ namespace Cxxi.Generators.CLI
             for (var i = 0; i < function.Parameters.Count; ++i)
             {
                 var param = function.Parameters[i];
-                Write("{0}", TypePrinter.GetArgumentString(param));
+                Write("{0}", TypePrinter.VisitParameter(param));
                 if (i < function.Parameters.Count - 1)
                     Write(", ");
             }

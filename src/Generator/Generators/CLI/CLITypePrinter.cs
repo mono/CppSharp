@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Cxxi.Types;
 
 namespace Cxxi.Generators.CLI
@@ -36,7 +37,7 @@ namespace Cxxi.Generators.CLI
             var args = string.Empty;
 
             if (arguments.Count > 0)
-                args = GetArgumentsString(function, hasNames: false);
+                args = VisitParameters(function.Arguments, hasNames: false);
 
             if (returnType.IsPrimitiveType(PrimitiveType.Void))
             {
@@ -51,22 +52,18 @@ namespace Cxxi.Generators.CLI
             return string.Format("System::Func<{0}{1}>", returnType.Visit(this), args);
         }
 
-        public string GetArgumentsString(FunctionType function, bool hasNames)
+        public string VisitParameters(IEnumerable<Parameter> @params,
+            bool hasNames)
         {
-            var arguments = function.Arguments;
-            var s = string.Empty;
+            var args = new List<string>();
 
-            for (var i = 0; i < arguments.Count; ++i)
-            {
-                s += GetArgumentString(arguments[i], hasNames);
-                if (i < arguments.Count - 1)
-                    s += ", ";
-            }
+            foreach (var param in @params)
+                args.Add(VisitParameter(param, hasNames));
 
-            return s;
+            return string.Join(" ,", args);
         }
 
-        public string GetArgumentString(Parameter param, bool hasName = true)
+        public string VisitParameter(Parameter param, bool hasName = true)
         {
             var type = param.Type.Visit(this, param.QualifiedType.Qualifiers);
             var name = param.Name;
@@ -77,11 +74,11 @@ namespace Cxxi.Generators.CLI
             return type;
         }
 
-        public string ToDelegateString(FunctionType function)
+        public string VisitDelegate(FunctionType function)
         {
             return string.Format("delegate {0} {{0}}({1})",
                 function.ReturnType.Visit(this),
-                GetArgumentsString(function, hasNames: true));
+                VisitParameters(function.Arguments, hasNames: true));
         }
 
         public string VisitPointerType(PointerType pointer, TypeQualifiers quals)
