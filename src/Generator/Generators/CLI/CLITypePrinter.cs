@@ -248,5 +248,10 @@ namespace Cxxi.Generators.CLI
         {
             throw new NotImplementedException();
         }
+
+        public string VisitEvent(Event @event)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

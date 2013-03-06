@@ -194,6 +194,11 @@ namespace Cxxi
             return true;
         }
 
+        public virtual bool VisitEvent(Event @event)
+        {
+            return true;
+        }
+
         #endregion
     }
 }

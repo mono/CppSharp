@@ -221,6 +221,11 @@ namespace Cxxi.Generators.CLI
             throw new NotImplementedException();
         }
 
+        public bool VisitEvent(Event @event)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool VisitDelegate(Delegate @delegate)
         {
             throw new NotImplementedException();
@@ -539,6 +544,11 @@ namespace Cxxi.Generators.CLI
         }
 
         public bool VisitNamespace(Namespace @namespace)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool VisitEvent(Event @event)
         {
             throw new NotImplementedException();
         }

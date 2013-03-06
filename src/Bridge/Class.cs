@@ -82,6 +82,7 @@ namespace Cxxi
         public List<Field> Fields;
         public List<Property> Properties;
         public List<Method> Methods;
+        public List<Event> Events;
 
         // True if the record is a POD (Plain Old Data) type.
         public bool IsPOD;
@@ -107,6 +108,7 @@ namespace Cxxi
             Fields = new List<Field>();
             Properties = new List<Property>();
             Methods = new List<Method>();
+            Events = new List<Event>();
             NestedClasses = new List<Class>();
             NestedEnums = new List<Enumeration>();
             IsAbstract = false;

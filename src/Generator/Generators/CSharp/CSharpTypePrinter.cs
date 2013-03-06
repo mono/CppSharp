@@ -200,6 +200,11 @@ namespace Cxxi.Generators.CSharp
             throw new NotImplementedException();
         }
 
+        public string VisitEvent(Event @event)
+        {
+            throw new NotImplementedException();
+        }
+
         public string GetArgumentsString(FunctionType function, bool hasNames)
         {
             var arguments = function.Arguments;

@@ -138,5 +138,6 @@ namespace Cxxi
         T VisitFunctionTemplateDecl(FunctionTemplate template);
         T VisitMacroDefinition(MacroDefinition macro);
         T VisitNamespace(Namespace @namespace);
+        T VisitEvent(Event @event);
     }
 }
