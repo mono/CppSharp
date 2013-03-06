@@ -177,6 +177,11 @@ namespace Cxxi.Generators.CLI
             return decl.Name;
         }
 
+        public string VisitTemplateParameterType(TemplateParameterType param, TypeQualifiers quals)
+        {
+            throw new NotImplementedException();
+        }
+
         public string VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals)
         {
             return VisitPrimitiveType(type);

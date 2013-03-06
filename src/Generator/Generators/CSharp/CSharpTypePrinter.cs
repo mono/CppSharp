@@ -112,6 +112,11 @@ namespace Cxxi.Generators.CSharp
             throw new NotImplementedException();
         }
 
+        public string VisitTemplateParameterType(TemplateParameterType param, TypeQualifiers quals)
+        {
+            throw new NotImplementedException();
+        }
+
         public string VisitPrimitiveType(PrimitiveType primitive, TypeQualifiers quals)
         {
             switch (primitive)

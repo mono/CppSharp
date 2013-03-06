@@ -132,6 +132,11 @@ namespace Cxxi.Generators.CLI
             return template.Template.Visit(this);
         }
 
+        public bool VisitTemplateParameterType(TemplateParameterType param, TypeQualifiers quals)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals)
         {
             throw new NotImplementedException();
@@ -399,6 +404,11 @@ namespace Cxxi.Generators.CLI
                                                     TypeQualifiers quals)
         {
             return template.Template.Visit(this);
+        }
+
+        public bool VisitTemplateParameterType(TemplateParameterType param, TypeQualifiers quals)
+        {
+            throw new NotImplementedException();
         }
 
         public bool VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals)

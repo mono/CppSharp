@@ -91,6 +91,11 @@ namespace Cxxi
             return template.Template.Visit(this);
         }
 
+        public virtual bool VisitTemplateParameterType(TemplateParameterType param, TypeQualifiers quals)
+        {
+            return true;
+        }
+
         public virtual bool VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals)
         {
             return true;

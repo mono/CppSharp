@@ -448,5 +448,7 @@ namespace Cxxi
                                           TypeQualifiers quals);
         T VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals);
         T VisitDeclaration(Declaration decl, TypeQualifiers quals);
+        T VisitTemplateParameterType(TemplateParameterType param,
+            TypeQualifiers quals);
     }
 }
