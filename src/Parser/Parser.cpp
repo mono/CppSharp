@@ -1543,7 +1543,7 @@ ParserResult^ Parser::Parse(const std::string& File)
         res->Diagnostics->Add(PDiag);
     }
 
-    if(DiagClient->getNumErrors() != 0)
+    if(C->getDiagnosticClient().getNumErrors() != 0)
     {
         res->Kind = ParserResultKind::Error;
         return res;
