@@ -35,8 +35,9 @@ namespace Cxxi
         /// <summary>
         /// Setup your passes here.
         /// </summary>
+        /// <param name="driver"></param>
         /// <param name="passes"></param>
-        void SetupPasses(PassBuilder passes);
+        void SetupPasses(Driver driver, PassBuilder passes);
 
         /// <summary>
         /// Called to generate text at the start of the text template.

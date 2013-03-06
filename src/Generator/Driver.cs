@@ -90,7 +90,7 @@ namespace Cxxi
             passes.CheckFlagEnums();
 
             if (Transform != null)
-                Transform.SetupPasses(passes);
+                Transform.SetupPasses(this, passes);
 
             passes.CleanInvalidDeclNames();
 
