@@ -159,5 +159,12 @@ namespace Cxxi
 
             yield return null;
         }
+
+        public void SetEnumAsFlags(string name)
+        {
+            var enums = FindEnum(name);
+            foreach(var @enum in enums)
+                @enum.SetFlags();
+        }
     }
 }
