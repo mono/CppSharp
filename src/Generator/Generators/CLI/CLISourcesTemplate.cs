@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using Cxxi.Types;
 
 namespace Cxxi.Generators.CLI
@@ -234,9 +235,9 @@ namespace Cxxi.Generators.CLI
                 {
                     if (!@class.IsAbstract)
                     {
-                        var @params = GenerateFunctionParamsMarshal(method);
+                        var @params = GenerateFunctionParamsMarshal(method.Parameters, method);
                         Write("NativePtr = new ::{0}(", method.QualifiedOriginalName);
-                        GenerateFunctionParams(method, @params);
+                        GenerateFunctionParams(@params);
                         WriteLine(");");
                     }
                 }
@@ -291,7 +292,7 @@ namespace Cxxi.Generators.CLI
                 WriteLine("auto this0 = (::{0}*) 0;", @class.QualifiedOriginalName);
             }
 
-            var @params = GenerateFunctionParamsMarshal(function);
+            var @params = GenerateFunctionParamsMarshal(function.Parameters, function);
 
             if (needsReturn)
                 Write("auto ret = ");
@@ -304,9 +305,6 @@ namespace Cxxi.Generators.CLI
             if (isValueType)
             {
                 Write("this0->");
-                Write("{0}(", function.QualifiedOriginalName);
-                GenerateFunctionParams(function, @params);
-                WriteLine(");");
             }
             else
             {
@@ -318,11 +316,11 @@ namespace Cxxi.Generators.CLI
                 {
                     Write("::");
                 }
-
-                Write("{0}(", function.QualifiedOriginalName);
-                GenerateFunctionParams(function, @params);
-                WriteLine(");");
             }
+
+            Write("{0}(", function.QualifiedOriginalName);
+            GenerateFunctionParams(@params);
+            WriteLine(");");
 
             if (needsReturn)
             {
@@ -358,36 +356,35 @@ namespace Cxxi.Generators.CLI
             public Parameter Param;
         }
 
-        public List<ParamMarshal> GenerateFunctionParamsMarshal(Function function)
+        public List<ParamMarshal> GenerateFunctionParamsMarshal(IEnumerable<Parameter> @params,
+            Function function = null)
         {
-            var @params = new List<ParamMarshal>();
+            var marshals = new List<ParamMarshal>();
 
-            var method = function as Method;
-
-            // Do marshaling of parameters
-            for (var i = 0; i < function.Parameters.Count; ++i)
+            var paramIndex = 0;
+            foreach (var param in @params)
             {
-                var param = function.Parameters[i];
-                GenerateFunctionParamMarshal(function, param, @params, i);
+                marshals.Add(GenerateFunctionParamMarshal(param, paramIndex, function));
+                paramIndex++;
             }
 
-            return @params;
+            return marshals;
         }
 
-        private void GenerateFunctionParamMarshal(Function function, Parameter param, List<ParamMarshal> @params, int i)
+        private ParamMarshal GenerateFunctionParamMarshal(Parameter param, int paramIndex,
+            Function function = null)
         {
             if (param.Type is BuiltinType)
             {
-                @params.Add(new ParamMarshal {Name = param.Name, Param = param});
-                return;
+                return new ParamMarshal {Name = param.Name, Param = param};
             }
 
-            var argName = "arg" + i.ToString(CultureInfo.InvariantCulture);
+            var argName = "arg" + paramIndex.ToString(CultureInfo.InvariantCulture);
 
             var ctx = new MarshalContext()
                 {
                     Parameter = param,
-                    ParameterIndex = i,
+                    ParameterIndex = paramIndex,
                     ArgName = argName,
                     Function = function
                 };
@@ -409,10 +406,10 @@ namespace Cxxi.Generators.CLI
                 WriteLine(marshal.SupportAfter);
 
             var argText = marshal.ArgumentPrefix + argName;
-            @params.Add(new ParamMarshal {Name = argText, Param = param});
+            return new ParamMarshal {Name = argText, Param = param};
         }
 
-        public void GenerateFunctionParams(Function function, List<ParamMarshal> @params)
+        public void GenerateFunctionParams(List<ParamMarshal> @params)
         {
             for (var i = 0; i < @params.Count; ++i)
             {
