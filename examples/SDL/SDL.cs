@@ -12,7 +12,7 @@ namespace Cxxi
         {
             options.LibraryName = "SDL";
             options.Headers.Add("SDL.h");
-            options.IncludeDirs.Add("SDL-2.0/include");
+            options.IncludeDirs.Add("../../../examples/SDL/SDL-2.0/include");
             options.OutputDir = "SDL";
         }
 
@@ -32,11 +32,11 @@ namespace Cxxi
             lib.GenerateEnumFromMacros("AlphaState", "SDL_ALPHA_(.*)");
             lib.GenerateEnumFromMacros("HatState", "SDL_HAT_(.*)");
 
-            lib.IgnoreModulessWithName("SDL_atomic*");
-            lib.IgnoreModulessWithName("SDL_endian*");
-            lib.IgnoreModulessWithName("SDL_main*");
-            lib.IgnoreModulessWithName("SDL_mutex*");
-            lib.IgnoreModulessWithName("SDL_stdinc*");
+            lib.IgnoreHeadersWithName("SDL_atomic*");
+            lib.IgnoreHeadersWithName("SDL_endian*");
+            lib.IgnoreHeadersWithName("SDL_main*");
+            lib.IgnoreHeadersWithName("SDL_mutex*");
+            lib.IgnoreHeadersWithName("SDL_stdinc*");
             //lib.IgnoreModuleWithName("SDL_error");
 
             lib.IgnoreEnumWithMatchingItem("SDL_ENOMEM");
