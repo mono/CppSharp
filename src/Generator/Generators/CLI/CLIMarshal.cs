@@ -11,7 +11,6 @@ namespace Cxxi.Generators.CLI
 
     public class CLIMarshalNativeToManagedPrinter : IMarshalPrinter
     {
-        public TextGenerator Support;
         public TextGenerator Return;
 
         Library Library { get; set; }
@@ -25,7 +24,6 @@ namespace Cxxi.Generators.CLI
             TypeMapDatabase = database;
             Context = marshalContext;
 
-            Support = new TextGenerator();
             Return = new TextGenerator();
         }
 
