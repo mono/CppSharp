@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Cxxi.Types;
 
 namespace Cxxi.Generators.CLI
@@ -119,6 +120,21 @@ namespace Cxxi.Generators.CLI
             if (field.Ignore) return true;
 
             return false;
+        }
+
+        public static List<Parameter> GetEventParameters(Event @event)
+        {
+            var i = 0;
+            var @params = new List<Parameter>();
+            foreach (var type in @event.Parameters)
+            {
+                @params.Add(new Parameter()
+                {
+                    Name = string.Format("_{0}", i++),
+                    QualifiedType = type
+                });
+            }
+            return @params;
         }
 
         public abstract override string FileExtension { get; }

@@ -129,6 +129,126 @@ namespace Cxxi.Generators.CLI
 
                 NewLine();
             }
+
+            foreach (var @event in @class.Events)
+            {
+                GenerateDeclarationCommon(@event);
+                GenerateEvent(@event, @class);
+            }
+        }
+
+        private void GenerateEvent(Event @event, Class @class)
+        {
+            GenerateEventAdd(@event, @class);
+            NewLine();
+
+            GenerateEventRemove(@event, @class);
+            NewLine();
+
+            GenerateEventRaise(@event, @class);
+            NewLine();
+
+            GenerateEventRaiseWrapper(@event, @class);
+            NewLine();
+        }
+
+        private void GenerateEventAdd(Event @event, Class @class)
+        {
+            WriteLine("void {0}::{1}::add({2} evt)", QualifiedIdentifier(@class),
+                      @event.Name, @event.Type);
+            WriteStartBraceIndent();
+
+            var delegateName = string.Format("_{0}Delegate", @event.Name);
+
+            WriteLine("if (!{0}Instance)", delegateName);
+            WriteStartBraceIndent();
+
+            var typePrinter = new CppTypePrinter(Driver.TypeDatabase, Library);
+
+            var @params = GetEventParameters(@event);
+            var args = typePrinter.VisitParameters(@params, hasNames: false);
+
+            WriteLine("{0}Instance = gcnew {0}(this, &{1}::_{2}Raise);",
+                      delegateName, QualifiedIdentifier(@class), @event.Name);
+
+            WriteLine("auto _fptr = (void (*)({0}))Marshal::GetFunctionPointerForDelegate({1}Instance).ToPointer();",
+                args, delegateName);
+
+            WriteLine("((::{0}*)NativePtr)->{1}.Connect(_fptr);", @class.QualifiedOriginalName,
+                @event.OriginalName);
+
+            WriteCloseBraceIndent();
+
+            WriteLine("_{0} = static_cast<{1}>(System::Delegate::Combine(_{0}, evt));",
+                @event.Name, @event.Type);
+
+            WriteCloseBraceIndent();
+        }
+
+        private void GenerateEventRemove(Event @event, Class @class)
+        {
+            WriteLine("void {0}::{1}::remove({2} evt)", QualifiedIdentifier(@class),
+                      @event.Name, @event.Type);
+            WriteStartBraceIndent();
+
+            WriteLine("_{0} = static_cast<{1}>(System::Delegate::Remove(_{0}, evt));",
+                @event.Name, @event.Type);
+
+            WriteCloseBraceIndent();
+        }
+
+        private void GenerateEventRaise(Event @event, Class @class)
+        {
+            var typePrinter = new CLITypePrinter(Driver.TypeDatabase, Library);
+
+            var @params = GetEventParameters(@event);
+            var args = typePrinter.VisitParameters(@params, hasNames: true);
+
+            WriteLine("void {0}::{1}::raise({2})", QualifiedIdentifier(@class),
+                      @event.Name, args);
+
+            WriteStartBraceIndent();
+
+            var paramNames = @params.Select(param => param.Name).ToList();
+            WriteLine("_{0}({1});", @event.Name, string.Join(" ", paramNames));
+
+            WriteCloseBraceIndent();
+        }
+
+        private void GenerateEventRaiseWrapper(Event @event, Class @class)
+        {
+            var typePrinter = new CppTypePrinter(Driver.TypeDatabase, Library);
+
+            var @params = GetEventParameters(@event);
+            var args = typePrinter.VisitParameters(@params, hasNames: true);
+
+            WriteLine("void {0}::_{1}Raise({2})", QualifiedIdentifier(@class),
+                @event.Name, args);
+
+            WriteStartBraceIndent();
+
+            var returns = new List<string>();
+            foreach (var param in @params)
+            {
+                var ctx = new MarshalContext()
+                    {
+                        ReturnVarName = param.Name,
+                        ReturnType = param.Type
+                    };
+
+                var marshal = new CLIMarshalNativeToManagedPrinter(
+                    Driver.TypeDatabase, Library, ctx);
+
+                param.Visit(marshal);
+
+                returns.Add(marshal.Return);
+            }
+
+            Write("{0}::raise(", @event.Name);
+            Write("{0}", string.Join(", ", returns));
+            WriteLine(");");
+
+            WriteCloseBraceIndent();
         }
 
         private void GenerateClassConstructor(Class @class, bool isIntPtr)

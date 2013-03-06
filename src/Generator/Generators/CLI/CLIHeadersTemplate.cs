@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using Cxxi.Types;
 
 namespace Cxxi.Generators.CLI
 {
@@ -225,6 +226,7 @@ namespace Cxxi.Generators.CLI
             if (@class.IsRefType)
                 GenerateClassProperties(@class);
 
+            GenerateClassEvents(@class);
             GenerateClassMethods(@class);
 
             WriteLine("};");
@@ -280,12 +282,56 @@ namespace Cxxi.Generators.CLI
 
                 if (!baseClass.IsValueType || baseClass.Ignore)
                 {
-                    Console.WriteLine("Ignored base class of value type '{0}'", baseClass.Name);
+                    Console.WriteLine("Ignored base class of value type '{0}'",
+                        baseClass.Name);
                     continue;
                 }
 
                 GenerateClassFields(baseClass);
             }
+        }
+
+        public void GenerateClassEvents(Class @class)
+        {
+            PushIndent();
+            foreach (var @event in @class.Events)
+            {
+                if (@event.Ignore) continue;
+
+                var typePrinter = new CppTypePrinter(Driver.TypeDatabase, Library);
+
+                var @params = GetEventParameters(@event);
+                var args = typePrinter.VisitParameters(@params, hasNames: true);
+
+                PopIndent();
+                WriteLine("private:");
+                PushIndent();
+
+                var delegateName = string.Format("_{0}Delegate", @event.Name);
+                WriteLine("delegate void {0}({1});", delegateName, args);
+                WriteLine("{0}^ {0}Instance;", delegateName);
+
+                WriteLine("void _{0}Raise({1});", @event.Name, args);
+                WriteLine("{0} _{1};", @event.Type, @event.Name);
+
+                PopIndent();
+                WriteLine("public:");
+                PushIndent();
+
+                WriteLine("event {0} {1}", @event.Type, @event.Name);
+                WriteStartBraceIndent();
+
+                WriteLine("void add({0} evt);", @event.Type);
+                WriteLine("void remove({0} evt);", @event.Type);
+
+                var paramNames = @event.Parameters.Select(param => param.ToString()).
+                    ToList();
+                var parameters = string.Join(", ", paramNames);
+
+                WriteLine("void raise({0});", parameters);
+                WriteCloseBraceIndent();
+            }
+            PopIndent();
         }
 
         public void GenerateClassMethods(Class @class)
