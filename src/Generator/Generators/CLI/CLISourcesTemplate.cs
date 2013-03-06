@@ -163,7 +163,7 @@ namespace Cxxi.Generators.CLI
             WriteLine("if (!{0}Instance)", delegateName);
             WriteStartBraceIndent();
 
-            var typePrinter = new CppTypePrinter(Driver.TypeDatabase, Library);
+            var typePrinter = new CppTypePrinter(Driver.TypeDatabase);
 
             var @params = GetEventParameters(@event);
             var args = typePrinter.VisitParameters(@params, hasNames: false);
@@ -217,7 +217,7 @@ namespace Cxxi.Generators.CLI
 
         private void GenerateEventRaiseWrapper(Event @event, Class @class)
         {
-            var typePrinter = new CppTypePrinter(Driver.TypeDatabase, Library);
+            var typePrinter = new CppTypePrinter(Driver.TypeDatabase);
 
             var @params = GetEventParameters(@event);
             var args = typePrinter.VisitParameters(@params, hasNames: true);

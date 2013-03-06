@@ -6,13 +6,11 @@ namespace Cxxi.Types
 {
     public class CppTypePrinter : ITypePrinter, IDeclVisitor<string>
     {
-        public Library Library { get; set; }
         private readonly ITypeMapDatabase TypeMapDatabase;
 
-        public CppTypePrinter(ITypeMapDatabase database, Library library)
+        public CppTypePrinter(ITypeMapDatabase database)
         {
             TypeMapDatabase = database;
-            Library = library;
         }
 
         public string VisitTagType(TagType tag, TypeQualifiers quals)

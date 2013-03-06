@@ -298,7 +298,7 @@ namespace Cxxi.Generators.CLI
             {
                 if (@event.Ignore) continue;
 
-                var typePrinter = new CppTypePrinter(Driver.TypeDatabase, Library);
+                var typePrinter = new CppTypePrinter(Driver.TypeDatabase);
 
                 var @params = GetEventParameters(@event);
                 var args = typePrinter.VisitParameters(@params, hasNames: true);
