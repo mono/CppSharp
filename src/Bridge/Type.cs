@@ -231,25 +231,12 @@ namespace Cxxi
             RVReference
         }
 
-        static string ConvertModifierToString(TypeModifier modifier)
-        {
-            switch (modifier)
-            {
-                case TypeModifier.Value: return string.Empty;
-                case TypeModifier.Pointer:
-                case TypeModifier.LVReference:
-                case TypeModifier.RVReference: return "*";
-            }
-
-            return string.Empty;
-        }
-
         public new bool IsReference
         {
             get
             {
-                return Modifier == TypeModifier.LVReference
-                       || Modifier == TypeModifier.RVReference;
+                return Modifier == TypeModifier.LVReference ||
+                    Modifier == TypeModifier.RVReference;
             }
         }
 
