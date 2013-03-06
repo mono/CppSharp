@@ -356,9 +356,7 @@ namespace Cxxi.Generators.CLI
 
         public void GenerateFieldProperty(Field field)
         {
-            field.Type.Visit<string>(Type.TypePrinter);
-
-            var type = field.Type.Visit(Type.TypePrinter);
+            var type = field.Type.Visit(Type.TypePrinter, field.QualifiedType.Qualifiers);
 
             WriteLine("property {0} {1};", type, field.Name);
         }

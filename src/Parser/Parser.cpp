@@ -264,6 +264,23 @@ std::string Parser::GetTypeName(const clang::Type* Type)
     return TypeName;
 }
 
+Cxxi::TypeQualifiers GetTypeQualifiers(clang::QualType Type)
+{
+    Cxxi::TypeQualifiers quals;
+    quals.IsConst = Type.isLocalConstQualified();
+    quals.IsRestrict = Type.isLocalRestrictQualified();
+    quals.IsVolatile = Type.isVolatileQualified();
+    return quals;
+}
+
+Cxxi::QualifiedType GetQualifiedType(clang::QualType qual, Cxxi::Type^ type)
+{
+    Cxxi::QualifiedType qualType;
+    qualType.Type = type;
+    qualType.Qualifiers = GetTypeQualifiers(qual);
+    return qualType;
+}
+
 //-----------------------------------//
 
 static Cxxi::AccessSpecifier ConvertToAccess(clang::AccessSpecifier AS)
@@ -509,7 +526,7 @@ Cxxi::Field^ Parser::WalkFieldCXX(clang::FieldDecl* FD)
 
     F->Name = marshalString<E_UTF8>(FD->getName());
     auto TL = FD->getTypeSourceInfo()->getTypeLoc();
-    F->Type = WalkType(FD->getType(), &TL);
+    F->QualifiedType = GetQualifiedType(FD->getType(), WalkType(FD->getType(), &TL));
     F->Access = ConvertToAccess(FD->getAccess());
 
     HandleComments(FD, F);
@@ -678,7 +695,9 @@ Cxxi::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         P->Modifier = Cxxi::PointerType::TypeModifier::Pointer;
 
         auto Next = TL->getNextTypeLoc();
-        P->Pointee = WalkType(Pointer->getPointeeType(), &Next);
+
+        auto Pointee = Pointer->getPointeeType();
+        P->QualifiedPointee = GetQualifiedType(Pointee, WalkType(Pointee, &Next));
 
         return P;
     }
@@ -748,7 +767,7 @@ Cxxi::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
             auto PTL = PVD->getTypeSourceInfo()->getTypeLoc();
 
             FA->Name = marshalString<E_UTF8>(PVD->getNameAsString());
-            FA->Type = WalkType(PVD->getType(), &PTL);
+            FA->QualifiedType = GetQualifiedType(PVD->getType(), WalkType(PVD->getType(), &PTL));
 
             F->Arguments->Add(FA);
         }
@@ -816,7 +835,7 @@ Cxxi::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
                 Arg.Kind = Cxxi::TemplateArgument::ArgumentKind::Type;
                 TypeLoc ArgTL;
                 ArgTL = ArgLoc.getTypeSourceInfo()->getTypeLoc();
-                Arg.Type = WalkType(TA.getAsType(), &ArgTL);
+                Arg.Type = GetQualifiedType(TA.getAsType(), WalkType(TA.getAsType(), &ArgTL));
                 break;
             }
             case TemplateArgument::Declaration:
@@ -878,8 +897,10 @@ Cxxi::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         TypeLoc Next;
         if (!TL->isNull())
             Next = TL->getNextTypeLoc();
-        P->Pointee = WalkType(LR->getPointeeType(), &Next);
-        
+
+        auto Pointee = LR->getPointeeType();
+        P->QualifiedPointee = GetQualifiedType(Pointee, WalkType(Pointee, &Next));
+
         return P;
     }
     case Type::RValueReference:
@@ -892,8 +913,10 @@ Cxxi::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         TypeLoc Next;
         if (!TL->isNull())
             Next = TL->getNextTypeLoc();
-        P->Pointee = WalkType(LR->getPointeeType(), &Next);
-        
+
+        auto Pointee = LR->getPointeeType();
+        P->QualifiedPointee = GetQualifiedType(Pointee, WalkType(Pointee, &Next));
+
         return P;
     }
     default:
@@ -1006,7 +1029,7 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, Cxxi::Function^ F,
     if (auto TSI = FD->getTypeSourceInfo())
     {
        TypeLoc TL = TSI->getTypeLoc();
-       RTL = ((FunctionTypeLoc*) &TL)->getResultLoc();
+       RTL = TL.getAs<FunctionTypeLoc>().getResultLoc();
     }
     F->ReturnType = WalkType(FD->getResultType(), &RTL);
 
@@ -1019,12 +1042,11 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, Cxxi::Function^ F,
         
         auto P = gcnew Cxxi::Parameter();
         P->Name = marshalString<E_UTF8>(VD->getNameAsString());
-        P->IsConst = VD->getType().isConstQualified();
 
         TypeLoc PTL;
         if (auto TSI = VD->getTypeSourceInfo())
             PTL = VD->getTypeSourceInfo()->getTypeLoc();
-        P->Type = WalkType(VD->getType(), &PTL);
+        P->QualifiedType = GetQualifiedType(VD->getType(), WalkType(VD->getType(), &PTL));
          
         P->HasDefaultValue = VD->hasDefaultArg();
 
@@ -1391,7 +1413,8 @@ Cxxi::Declaration^ Parser::WalkDeclaration(clang::Decl* D, clang::TypeLoc* TL,
         Typedef = NS->FindTypedef(Name, /*Create=*/true);
         
         auto TTL = TD->getTypeSourceInfo()->getTypeLoc();
-        Typedef->Type = WalkType(TD->getUnderlyingType(), &TTL);
+        Typedef->QualifiedType = GetQualifiedType(TD->getUnderlyingType(),
+            WalkType(TD->getUnderlyingType(), &TTL));
 
         Decl = Typedef;
             

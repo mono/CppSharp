@@ -11,6 +11,7 @@ namespace Cxxi
     public interface ITypedDecl
     {
         Type Type { get; }
+        QualifiedType QualifiedType { get; }
     }
 
     /// <summary>
@@ -96,8 +97,8 @@ namespace Cxxi
     /// </summary>
     public class TypedefDecl : Declaration, ITypedDecl
     {
-        /// Type defined.
-        public Type Type { get; set; }
+        public Type Type { get { return QualifiedType.Type; } }
+        public QualifiedType QualifiedType { get; set; }
 
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {

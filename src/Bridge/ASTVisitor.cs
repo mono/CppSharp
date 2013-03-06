@@ -120,7 +120,7 @@ namespace Cxxi
 
         public virtual bool VisitFieldDecl(Field field)
         {
-            return field.Type.Visit(this);
+            return field.Type.Visit(this, field.QualifiedType.Qualifiers);
         }
 
         public virtual bool VisitFunctionDecl(Function function)
@@ -141,14 +141,14 @@ namespace Cxxi
 
         public virtual bool VisitParameterDecl(Parameter parameter)
         {
-            return parameter.Type.Visit(this);
+            return parameter.Type.Visit(this, parameter.QualifiedType.Qualifiers);
         }
 
         public virtual bool VisitTypedefDecl(TypedefDecl typedef)
         {
             if (typedef.Type == null)
                 return false;
-            return typedef.Type.Visit(this);
+            return typedef.Type.Visit(this, typedef.QualifiedType.Qualifiers);
         }
 
         public virtual bool VisitEnumDecl(Enumeration @enum)

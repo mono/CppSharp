@@ -66,12 +66,10 @@ namespace Cxxi.Generators.CLI
             return s;
         }
 
-        public string GetArgumentString(Parameter arg, bool hasName = true)
+        public string GetArgumentString(Parameter param, bool hasName = true)
         {
-            var quals = new TypeQualifiers { IsConst = arg.IsConst };
-
-            var type = arg.Type.Visit(this, quals);
-            var name = arg.Name;
+            var type = param.Type.Visit(this, param.QualifiedType.Qualifiers);
+            var name = param.Name;
 
             if (hasName && !string.IsNullOrEmpty(name))
                 return string.Format("{0} {1}", type, name);

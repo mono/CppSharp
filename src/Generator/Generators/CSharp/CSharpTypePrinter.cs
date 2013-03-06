@@ -217,9 +217,7 @@ namespace Cxxi.Generators.CSharp
 
         public string GetArgumentString(Parameter arg, bool hasName)
         {
-            var quals = new TypeQualifiers { IsConst = arg.IsConst };
-
-            var type = arg.Type.Visit(this, quals);
+            var type = arg.Type.Visit(this, arg.QualifiedType.Qualifiers);
             var name = arg.Name;
 
             if (hasName && !string.IsNullOrEmpty(name))

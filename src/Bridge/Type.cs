@@ -3,7 +3,7 @@
 namespace Cxxi
 {
     /// <summary>
-    /// Represents a C++ type reference.
+    /// Represents a C++ type.
     /// </summary>
     public abstract class Type
     {
@@ -115,6 +115,9 @@ namespace Cxxi
         }
     }
 
+    /// <summary>
+    /// Represents C++ type qualifiers.
+    /// </summary>
     public struct TypeQualifiers
     {
         public bool IsConst;
@@ -123,7 +126,21 @@ namespace Cxxi
     }
 
     /// <summary>
-    /// Represents a C++ tag type reference.
+    /// Represents a qualified C++ type.
+    /// </summary>
+    public struct QualifiedType
+    {
+        public Type Type { get; set; }
+        public TypeQualifiers Qualifiers { get; set; }
+
+        public override string ToString()
+        {
+            return Type.ToString();
+        }
+    }
+
+    /// <summary>
+    /// Represents a C++ tag type.
     /// </summary>
     public class TagType : Type
     {
@@ -236,13 +253,14 @@ namespace Cxxi
             }
         }
 
-        public Type Pointee;
+        public QualifiedType QualifiedPointee;
+        public Type Pointee { get { return QualifiedPointee.Type;  } }
 
         public TypeModifier Modifier;
 
         public override T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals)
         {
-            return visitor.VisitPointerType(this, quals);
+            return visitor.VisitPointerType(this, QualifiedPointee.Qualifiers);
         }
     }
 
@@ -322,7 +340,7 @@ namespace Cxxi
         }
 
         public ArgumentKind Kind;
-        public Type Type;
+        public QualifiedType Type;
         public Declaration Declaration;
         public long Integral;
     }
@@ -363,8 +381,7 @@ namespace Cxxi
         public override T Visit<T>(ITypeVisitor<T> visitor,
                                    TypeQualifiers quals = new TypeQualifiers())
         {
-            //return visitor.VisitTemplateParameterType(this, quals);
-            return default(T);
+            return visitor.VisitTemplateParameterType(this, quals);
         }
     }
 

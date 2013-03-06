@@ -26,14 +26,13 @@ namespace Cxxi
         {
             Usage = ParameterUsage.Unknown;
             HasDefaultValue = false;
-            IsConst = false;
             Conversion = TypeConversionKind.None;
         }
 
-        public Type Type { get; set; }
+        public Type Type { get { return QualifiedType.Type; } }
+        public QualifiedType QualifiedType { get; set; }
         public ParameterUsage Usage { get; set; }
         public bool HasDefaultValue { get; set; }
-        public bool IsConst { get; set; }
 
         public TypeConversionKind Conversion { get; set; }
 

@@ -180,7 +180,7 @@ namespace Cxxi.Generators.CLI
 
         public bool VisitParameterDecl(Parameter parameter)
         {
-            throw new NotImplementedException();
+            return parameter.Type.Visit(this, parameter.QualifiedType.Qualifiers);
         }
 
         public bool VisitTypedefDecl(TypedefDecl typedef)
@@ -489,7 +489,8 @@ namespace Cxxi.Generators.CLI
         {
             Context.Parameter = new Parameter
                 {
-                    Name = Context.ArgName, Type = field.Type
+                    Name = Context.ArgName,
+                    QualifiedType = field.QualifiedType
                 };
 
             return field.Type.Visit(this);
