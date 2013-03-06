@@ -99,7 +99,7 @@ protected:
     Cxxi::Function^ WalkFunction(clang::FunctionDecl*, bool IsDependent = false);
     Cxxi::Class^ WalkRecordCXX(clang::CXXRecordDecl*, bool IsDependent = false);
     Cxxi::Method^ WalkMethodCXX(clang::CXXMethodDecl*);
-    Cxxi::Field^ WalkFieldCXX(clang::FieldDecl*);
+    Cxxi::Field^ WalkFieldCXX(clang::FieldDecl*, Cxxi::Class^);
     Cxxi::ClassTemplate^ Parser::WalkClassTemplate(clang::ClassTemplateDecl*);
     Cxxi::FunctionTemplate^ Parser::WalkFunctionTemplate(
         clang::FunctionTemplateDecl*);

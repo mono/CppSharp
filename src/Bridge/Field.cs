@@ -10,6 +10,7 @@ namespace Cxxi
 
         public AccessSpecifier Access { get; set; }
         public uint Offset { get; set; }
+        public Class Class { get; set; }
 
         public Field()
         {

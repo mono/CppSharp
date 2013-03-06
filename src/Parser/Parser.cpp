@@ -381,7 +381,7 @@ Cxxi::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record, bool IsDependen
     {
         FieldDecl* FD = (*it);
         
-        Cxxi::Field^ Field = WalkFieldCXX(FD);
+        Cxxi::Field^ Field = WalkFieldCXX(FD, RC);
         
         if (Layout)
             Field->Offset = Layout->getFieldOffset(FD->getFieldIndex());
@@ -513,7 +513,7 @@ Cxxi::Method^ Parser::WalkMethodCXX(clang::CXXMethodDecl* MD)
 
 //-----------------------------------//
 
-Cxxi::Field^ Parser::WalkFieldCXX(clang::FieldDecl* FD)
+Cxxi::Field^ Parser::WalkFieldCXX(clang::FieldDecl* FD, Cxxi::Class^ Class)
 {
     using namespace clang;
     using namespace clix;
@@ -528,6 +528,7 @@ Cxxi::Field^ Parser::WalkFieldCXX(clang::FieldDecl* FD)
     auto TL = FD->getTypeSourceInfo()->getTypeLoc();
     F->QualifiedType = GetQualifiedType(FD->getType(), WalkType(FD->getType(), &TL));
     F->Access = ConvertToAccess(FD->getAccess());
+    F->Class = Class;
 
     HandleComments(FD, F);
 
