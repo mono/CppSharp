@@ -64,6 +64,7 @@ namespace Cxxi.Types
     public interface ITypeMapDatabase
     {
         bool FindTypeMap(Declaration decl, out TypeMap typeMap);
+        bool FindTypeMap(Type type, out TypeMap typeMap);
         bool FindTypeMap(string name, out TypeMap typeMap);
     }
 
@@ -105,6 +106,24 @@ namespace Cxxi.Types
         public bool FindTypeMap(Declaration decl, out TypeMap typeMap)
         {
             return FindTypeMap(decl.QualifiedOriginalName, out typeMap);
+        }
+
+        public bool FindTypeMap(Type type, out TypeMap typeMap)
+        {
+            var typePrinter = new CppTypePrinter(this);
+            var output = type.Visit(typePrinter);
+
+            if (FindTypeMap(output, out typeMap))
+                return true;
+
+            // Try to strip the global scope resolution operator.
+            if (output.StartsWith("::"))
+                output = output.Substring(2);
+
+            if (FindTypeMap(output, out typeMap))
+                return true;
+
+            return false;
         }
 
         public bool FindTypeMap(string name, out TypeMap typeMap)
