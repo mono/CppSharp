@@ -58,20 +58,3 @@ function IncludeDir(dir)
     end
   end
 end
-
--- Examples helpers
-
-function SetupExampleProject()
-  SetupNativeProjects()
-  location (path.join(builddir, "deps"))
-end
-
-function IncludeExamples()
-  print("Searching for examples...")
-  IncludeDir(examplesdir)
-end
-
-function IncludeTests()
-  print("Searching for tests...")
-  IncludeDir(testsdir)
-end

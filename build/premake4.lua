@@ -3,6 +3,7 @@
 -- and calls the build scripts of all the sub-projects.
 
 dofile "Helpers.lua"
+dofile "Tests.lua"
 
 solution "Cxxi"
 
