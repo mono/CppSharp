@@ -176,7 +176,7 @@ namespace Cxxi
             return true;
         }
 
-        public bool VisitNamespace(Namespace @namespace)
+        public virtual bool VisitNamespace(Namespace @namespace)
         {
             foreach (var decl in @namespace.Classes)
                 decl.Visit(this);
