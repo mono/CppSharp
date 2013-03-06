@@ -123,6 +123,11 @@ namespace Cxxi
             get { return Bases.Count > 0; }
         }
 
+        public bool HasBaseClass
+        {
+            get { return Bases.Count > 0 && Bases[0].IsClass; }
+        }
+
         public bool IsValueType
         {
             get { return Type == ClassType.ValueType; }
