@@ -269,7 +269,7 @@ namespace Cxxi
 
         #region Module Helpers
 
-        public static void IgnoreModulessWithName(this Library library, string pattern)
+        public static void IgnoreHeadersWithName(this Library library, string pattern)
         {
             var modules = library.TranslationUnits.FindAll(
                 m => Regex.Match(m.FilePath, pattern).Success);
