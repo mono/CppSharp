@@ -36,7 +36,7 @@ namespace Cxxi.Generators.CLI
 
         public void GenerateForwardReferenceHeaders()
         {
-            var includes = new HashSet<string>();
+            var includes = new SortedSet<string>(StringComparer.InvariantCulture);
 
             var typeRefs = unit.TypeReferences as TypeRefsVisitor;
 

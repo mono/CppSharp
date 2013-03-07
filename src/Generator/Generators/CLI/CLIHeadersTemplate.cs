@@ -43,7 +43,7 @@ namespace Cxxi.Generators.CLI
             forwardRefsPrinter = new CLIForwardRefeferencePrinter(typeRefs);
             forwardRefsPrinter.Process();
 
-            var includes = new HashSet<string>();
+            var includes = new SortedSet<string>(StringComparer.InvariantCulture);
 
             foreach (var include in forwardRefsPrinter.Includes)
             {
