@@ -37,7 +37,17 @@ namespace Cxxi.Generators.CLI
 
         public bool VisitArrayType(ArrayType array, TypeQualifiers quals)
         {
-            return false;
+            switch (array.SizeType)
+            {
+                case ArrayType.ArraySize.Constant:
+                    Return.Write("nullptr");
+                    break;
+                case ArrayType.ArraySize.Variable:
+                    Return.Write("nullptr");
+                    break;
+            }
+
+            return true;
         }
 
         public bool VisitFunctionType(FunctionType function, TypeQualifiers quals)
