@@ -25,6 +25,8 @@ namespace Cxxi.Generators.CLI
             Context = marshalContext;
 
             Return = new TextGenerator();
+            Context.Return = Return;
+            Context.MarshalToManaged = this;
         }
 
         public bool VisitTagType(TagType tag, TypeQualifiers quals)
@@ -115,7 +117,7 @@ namespace Cxxi.Generators.CLI
             TypeMap typeMap = null;
             if (TypeMapDatabase.FindTypeMap(decl, out typeMap))
             {
-                Return.Write(typeMap.MarshalFromNative(Context));
+                typeMap.CLIMarshalToManaged(Context);
                 return typeMap.IsValueType;
             }
 
@@ -258,6 +260,9 @@ namespace Cxxi.Generators.CLI
             Return = new TextGenerator();
             VarPrefix = new TextGenerator();
             ArgumentPrefix = new TextGenerator();
+
+            Context.Return = Return;
+            Context.MarshalToNative = this;
         }
 
         public bool VisitTagType(TagType tag, TypeQualifiers quals)
@@ -378,7 +383,7 @@ namespace Cxxi.Generators.CLI
             TypeMap typeMap = null;
             if (TypeMapDatabase.FindTypeMap(decl, out typeMap))
             {
-                Return.Write(typeMap.MarshalToNative(Context));
+                typeMap.CLIMarshalToNative(Context);
                 return typeMap.IsValueType;
             }
 
@@ -484,9 +489,13 @@ namespace Cxxi.Generators.CLI
                 var fieldRef = string.Format("{0}.{1}", Context.Parameter.Name,
                                                 field.Name);
 
-                var marshalCtx = new MarshalContext() {ArgName = fieldRef};
+                var marshalCtx = new MarshalContext(Context.Driver)
+                    {
+                        ArgName = fieldRef
+                    };
+
                 var marshal = new CLIMarshalManagedToNativePrinter(TypeMapDatabase,
-                                                                    marshalCtx);
+                                                                   marshalCtx);
                 field.Visit(marshal);
 
                 SupportAfter.WriteLine("{0};", marshal.Return);

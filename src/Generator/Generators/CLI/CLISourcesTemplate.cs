@@ -417,11 +417,6 @@ namespace Cxxi.Generators.CLI
             if (needsReturn)
                 Write("auto ret = ");
 
-            if (function.ReturnType.IsReference() && !isValueType)
-            {
-                Write("&");
-            }
-
             if (isValueType)
             {
                 Write("this0->");
