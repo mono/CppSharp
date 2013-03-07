@@ -88,6 +88,20 @@ namespace Cxxi.Passes
             return ProcessFunction(method);
         }
 
+        public override bool ProcessTypedef(TypedefDecl typedef)
+        {
+            string msg;
+            if (HasInvalidType(typedef.Type, out msg))
+            {
+                typedef.ExplicityIgnored = true;
+                Console.WriteLine("Typedef '{0}' was ignored due to {1} type",
+                    typedef.Name, msg);
+                return false;
+            }
+
+            return true;
+        }
+
         #region Helpers
 
         /// <remarks>
