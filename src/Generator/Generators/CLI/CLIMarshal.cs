@@ -139,6 +139,14 @@ namespace Cxxi.Generators.CLI
         public bool VisitTemplateSpecializationType(TemplateSpecializationType template,
                                                     TypeQualifiers quals)
         {
+            TypeMap typeMap;
+            if (TypeMapDatabase.FindTypeMap(template, out typeMap))
+            {
+                typeMap.Type = template;
+                typeMap.CLIMarshalToManaged(Context);
+                return true;
+            }
+
             return template.Template.Visit(this);
         }
 
@@ -416,6 +424,14 @@ namespace Cxxi.Generators.CLI
         public bool VisitTemplateSpecializationType(TemplateSpecializationType template,
                                                     TypeQualifiers quals)
         {
+            TypeMap typeMap = null;
+            if (TypeMapDatabase.FindTypeMap(template, out typeMap))
+            {
+                typeMap.Type = template;
+                typeMap.CLIMarshalToNative(Context);
+                return true;
+            }
+
             return template.Template.Visit(this);
         }
 
