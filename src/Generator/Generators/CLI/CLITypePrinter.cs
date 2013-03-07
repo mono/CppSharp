@@ -145,7 +145,7 @@ namespace Cxxi.Generators.CLI
             TypeMap typeMap = null;
             if (TypeMapDatabase.FindTypeMap(decl, out typeMap))
             {
-                return typeMap.Signature();
+                return typeMap.CLISignature();
             }
 
             FunctionType func;
@@ -168,7 +168,7 @@ namespace Cxxi.Generators.CLI
             {
                 typeMap.Declaration = decl;
                 typeMap.Type = template;
-                return typeMap.Signature();
+                return typeMap.CLISignature();
             }
 
             return decl.Name;

@@ -95,7 +95,7 @@ namespace Cxxi.Generators.CSharp
             TypeMap typeMap = null;
             if (TypeMapDatabase.FindTypeMap(decl, out typeMap))
             {
-                return typeMap.Signature();
+                return typeMap.CSharpSignature();
             }
 
             FunctionType func;

@@ -12,38 +12,38 @@ namespace Cxxi.Types.Std
     [TypeMap("std::string")]
     public class String : TypeMap
     {
-        public override string Signature()
+        public override string CLISignature()
         {
             return "System::String^";
         }
 
-        public override string MarshalToNative(MarshalContext ctx)
+        public override void CLIMarshalToNative(MarshalContext ctx)
         {
-            return string.Format("marshalString<E_UTF8>({0})", ctx.Parameter.Name);
+            ctx.Return.Write("marshalString<E_UTF8>({0})", ctx.Parameter.Name);
         }
 
-        public override string MarshalFromNative(MarshalContext ctx)
+        public override void CLIMarshalToManaged(MarshalContext ctx)
         {
-            return string.Format("marshalString<E_UTF8>({0})", ctx.ReturnVarName);
+            ctx.Return.Write("marshalString<E_UTF8>({0})", ctx.ReturnVarName);
         }
     }
 
     [TypeMap("std::wstring")]
     public class WString : TypeMap
     {
-        public override string Signature()
+        public override string CLISignature()
         {
             return "System::String^";
         }
 
-        public override string MarshalToNative(MarshalContext ctx)
+        public override void CLIMarshalToNative(MarshalContext ctx)
         {
-            return string.Format("marshalString<E_UTF16>({0})", ctx.Parameter.Name);
+            ctx.Return.Write("marshalString<E_UTF16>({0})", ctx.Parameter.Name);
         }
 
-        public override string MarshalFromNative(MarshalContext ctx)
+        public override void CLIMarshalToManaged(MarshalContext ctx)
         {
-            return string.Format("marshalString<E_UTF16>({0})", ctx.ReturnVarName);
+            ctx.Return.Write("marshalString<E_UTF16>({0})", ctx.ReturnVarName);
         }
     }
 
@@ -52,19 +52,19 @@ namespace Cxxi.Types.Std
     {
         public override bool IsIgnored { get { return true; } }
 
-        public override string Signature()
+        public override string CLISignature()
         {
             var type = Type as TemplateSpecializationType;
             var typeName = type.Arguments[0].Type.ToString();
             return string.Format("System::Collections::Generic::List<{0}>^", typeName);
         }
 
-        public override string MarshalToNative(MarshalContext ctx)
+        public override void CLIMarshalToNative(MarshalContext ctx)
         {
             throw new System.NotImplementedException();
         }
 
-        public override string MarshalFromNative(MarshalContext ctx)
+        public override void CLIMarshalToManaged(MarshalContext ctx)
         {
             throw new System.NotImplementedException();
         }
@@ -75,7 +75,7 @@ namespace Cxxi.Types.Std
     {
         public override bool IsIgnored { get { return true; } }
 
-        public override string Signature()
+        public override string CLISignature()
         {
             var type = Type as TemplateSpecializationType;
             return string.Format("System::Collections::Generic::Dictionary<{0}, {1}>^",
@@ -83,12 +83,12 @@ namespace Cxxi.Types.Std
                 type.Arguments[1].Type);
         }
 
-        public override string MarshalToNative(MarshalContext ctx)
+        public override void CLIMarshalToNative(MarshalContext ctx)
         {
             throw new System.NotImplementedException();
         }
 
-        public override string MarshalFromNative(MarshalContext ctx)
+        public override void CLIMarshalToManaged(MarshalContext ctx)
         {
             throw new System.NotImplementedException();
         }
@@ -103,17 +103,17 @@ namespace Cxxi.Types.Std
     [TypeMap("std::shared_ptr")]
     public class SharedPtr : TypeMap
     {
-        public override string Signature()
+        public override string CLISignature()
         {
             throw new System.NotImplementedException();
         }
 
-        public override string MarshalToNative(MarshalContext ctx)
+        public override void CLIMarshalToNative(MarshalContext ctx)
         {
             throw new System.NotImplementedException();
         }
 
-        public override string MarshalFromNative(MarshalContext ctx)
+        public override void CLIMarshalToManaged(MarshalContext ctx)
         {
             throw new System.NotImplementedException();
         }

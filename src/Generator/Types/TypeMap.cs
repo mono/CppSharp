@@ -1,14 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Cxxi.Generators.CLI;
 
 namespace Cxxi.Types
 {
     public class MarshalContext
     {
-        public string ArgName { get; set; }
+        public MarshalContext(Driver driver)
+        {
+            
+        }
+
+        public Driver Driver { get; set; }
+
+        public CLIMarshalNativeToManagedPrinter MarshalToManaged;
+        public CLIMarshalManagedToNativePrinter MarshalToNative;
+
+        public TextGenerator Return;
         public string ReturnVarName { get; set; }
         public Type ReturnType { get; set; }
+
+        public string ArgName { get; set; }
         public Parameter Parameter { get; set; }
         public int ParameterIndex { get; set; }
         public Function Function { get; set; }
@@ -45,26 +58,49 @@ namespace Cxxi.Types
             get { return false; }
         }
 
-        public virtual string Signature()
+        #region C# backend
+
+        public virtual string CSharpSignature()
         {
             throw new NotImplementedException();
         }
 
-        public virtual string MarshalToNative(MarshalContext ctx)
+        public virtual void CSharpMarshalToNative(MarshalContext ctx)
         {
             throw new NotImplementedException();
         }
 
-        public virtual string MarshalFromNative(MarshalContext ctx)
+        public virtual void CSharpMarshalToManaged(MarshalContext ctx)
         {
             throw new NotImplementedException();
         }
+
+        #endregion
+
+        #region C++/CLI backend
+
+        public virtual string CLISignature()
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual void CLIMarshalToNative(MarshalContext ctx)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual void CLIMarshalToManaged(MarshalContext ctx)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 
     public interface ITypeMapDatabase
     {
-        bool FindTypeMap(Declaration decl, out TypeMap typeMap);
         bool FindTypeMap(Type type, out TypeMap typeMap);
+        bool FindTypeMap(Declaration decl, out TypeMap typeMap);
         bool FindTypeMap(string name, out TypeMap typeMap);
     }
 

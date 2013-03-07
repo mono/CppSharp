@@ -230,7 +230,7 @@ namespace Cxxi.Generators.CLI
             var returns = new List<string>();
             foreach (var param in @params)
             {
-                var ctx = new MarshalContext()
+                var ctx = new MarshalContext(Driver)
                     {
                         ReturnVarName = param.Name,
                         ReturnType = param.Type
@@ -294,7 +294,7 @@ namespace Cxxi.Generators.CLI
                 var nativeField = string.Format("{0}->{1}",
                                                 nativePointer, field.OriginalName);
 
-                var ctx = new MarshalContext()
+                var ctx = new MarshalContext(Driver)
                 {
                     ReturnVarName = nativeField,
                     ReturnType = field.Type
@@ -446,7 +446,7 @@ namespace Cxxi.Generators.CLI
             {
                 Write("return ");
 
-                var ctx = new MarshalContext()
+                var ctx = new MarshalContext(Driver)
                     {
                         ReturnVarName = "ret",
                         ReturnType = retType
@@ -501,7 +501,7 @@ namespace Cxxi.Generators.CLI
 
             var argName = "arg" + paramIndex.ToString(CultureInfo.InvariantCulture);
 
-            var ctx = new MarshalContext()
+            var ctx = new MarshalContext(Driver)
                 {
                     Parameter = param,
                     ParameterIndex = paramIndex,
