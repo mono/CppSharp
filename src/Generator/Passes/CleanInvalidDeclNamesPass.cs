@@ -58,8 +58,7 @@ namespace Cxxi.Passes
 
         public override bool ProcessDeclaration(Declaration decl)
         {
-            decl.Visit(typeRefs);
-
+            typeRefs.Process(decl);
             decl.Name = CheckName(decl.Name);
 
             StringHelpers.CleanupText(ref decl.DebugText);

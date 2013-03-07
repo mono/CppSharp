@@ -139,6 +139,13 @@ namespace Cxxi
     {
         public ISet<Declaration> ForwardReferences;
         public ISet<Class> Bases;
+        private Class mainClass;
+
+        public TypeRefsVisitor()
+        {
+            ForwardReferences = new HashSet<Declaration>();
+            Bases = new HashSet<Class>();
+        }
 
         public void Collect(Declaration declaration)
         {
@@ -151,15 +158,23 @@ namespace Cxxi
             ForwardReferences.Add(declaration);
         }
 
-        public TypeRefsVisitor()
+        public void Process(Declaration declaration)
         {
-            ForwardReferences = new HashSet<Declaration>();
-            Bases = new HashSet<Class>();
+            if (declaration is Class)
+            {
+                mainClass = declaration as Class;
+                Visited.Remove(mainClass);
+            }
+
+            declaration.Visit(this);
         }
 
         public override bool VisitClassDecl(Class @class)
         {
             if (AlreadyVisited(@class))
+                return true;
+
+            if (@class.Ignore)
                 return true;
 
             Collect(@class);
@@ -168,6 +183,9 @@ namespace Cxxi
             // members, else it will add references to declarations that
             // should have not been found.
             if (@class.IsIncomplete)
+                return true;
+
+            if (@class != mainClass)
                 return true;
 
             foreach (var field in @class.Fields)
