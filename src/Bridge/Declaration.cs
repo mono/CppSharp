@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Cxxi;
 
 namespace Cxxi
@@ -12,6 +13,15 @@ namespace Cxxi
     {
         Type Type { get; }
         QualifiedType QualifiedType { get; }
+    }
+
+    [Flags]
+    public enum IgnoreFlags
+    {
+        None = 0,
+        Generation = 1 << 0,
+        Processing = 1 << 1,
+        Explicit   = 1 << 2
     }
 
     /// <summary>
@@ -51,17 +61,64 @@ namespace Cxxi
         // Doxygen-style brief comment.
         public string BriefComment;
 
-        // Whether the declaration should be ignored.
-        public virtual bool Ignore
+        // Keeps flags to know the type of ignore.
+        public IgnoreFlags IgnoreFlags { get; set; }
+
+        // Whether the declaration should be generated.
+        public virtual bool IsGenerated
         {
             get
             {
-                return ExplicityIgnored || Namespace.Ignore;
+                return !IgnoreFlags.HasFlag(IgnoreFlags.Generation) ||
+                    Namespace.IsGenerated;
+            }
+
+            set
+            {
+                if (value)
+                    IgnoreFlags |= IgnoreFlags.Generation;
+                else
+                    IgnoreFlags &= ~IgnoreFlags.Generation;
+            }
+        }
+
+        // Whether the declaration should be processed.
+        public virtual bool IsProcessed
+        {
+            get
+            {
+                return !IgnoreFlags.HasFlag(IgnoreFlags.Processing) ||
+                    Namespace.IsProcessed;
+            }
+
+            set
+            {
+                if (value)
+                    IgnoreFlags |= IgnoreFlags.Processing;
+                else
+                    IgnoreFlags &= ~IgnoreFlags.Processing;
             }
         }
 
         // Whether the declaration was explicitly ignored.
-        public bool ExplicityIgnored;
+        public bool ExplicityIgnored
+        {
+            get { return IgnoreFlags.HasFlag(IgnoreFlags.Explicit); }
+
+            set
+            {
+                if (value)
+                    IgnoreFlags |= IgnoreFlags.Explicit;
+                else
+                    IgnoreFlags &= ~IgnoreFlags.Explicit;
+            }
+        }
+
+        // Whether the declaration should be ignored.
+        public bool Ignore
+        {
+            get { return IgnoreFlags != IgnoreFlags.None; }
+        }
 
         // Contains debug text about the declaration.
         public string DebugText;
@@ -77,11 +134,13 @@ namespace Cxxi
 
         protected Declaration()
         {
+            IgnoreFlags = IgnoreFlags.None;
         }
 
         protected Declaration(string name)
         {
             Name = name;
+            IgnoreFlags = IgnoreFlags.None;
         }
 
         public override string ToString()

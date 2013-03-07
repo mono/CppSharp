@@ -19,7 +19,6 @@ namespace Cxxi
         public List<Template> Templates;
         public List<TypedefDecl> Typedefs;
 
-        // Translation unit the declaration is contained in.
         public TranslationUnit TranslationUnit
         {
             get
@@ -31,10 +30,22 @@ namespace Cxxi
             }
         }
 
-        /// If the namespace should be ignored.
-        public override bool Ignore
+        public override bool IsGenerated
         {
-            get { return ExplicityIgnored || Parent.Ignore; }
+            get
+            {
+                return !IgnoreFlags.HasFlag(IgnoreFlags.Generation) ||
+                    Parent.IsGenerated;
+            }
+        }
+
+        public override bool IsProcessed
+        {
+            get
+            {
+                return !IgnoreFlags.HasFlag(IgnoreFlags.Processing) ||
+                    Parent.IsProcessed;
+            }
         }
 
         public Namespace()

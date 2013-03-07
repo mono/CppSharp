@@ -127,7 +127,7 @@ namespace Cxxi
             // Process everything in the global namespace for now.
             foreach (var unit in Library.TranslationUnits)
             {
-                if (unit.ExplicityIgnored || !unit.HasDeclarations)
+                if (unit.Ignore || !unit.HasDeclarations)
                     continue;
 
                 if (unit.IsSystemHeader)

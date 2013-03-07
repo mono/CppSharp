@@ -276,7 +276,11 @@ namespace Cxxi
                 m => Regex.Match(m.FilePath, pattern).Success);
 
             foreach (var module in modules)
+            {
+                module.IsGenerated = false;
+                module.IsProcessed = true;
                 module.ExplicityIgnored = true;
+            }
         }
 
         #endregion

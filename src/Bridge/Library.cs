@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 
 namespace Cxxi
 {
@@ -33,10 +32,16 @@ namespace Cxxi
         /// Contains the macros present in the unit.
         public List<MacroDefinition> Macros;
 
-        /// If the module should be ignored.
-        public override bool Ignore
+        // Whether the unit should be generated.
+        public override bool IsGenerated
         {
-            get { return ExplicityIgnored; }
+            get { return !IgnoreFlags.HasFlag(IgnoreFlags.Generation); }
+        }
+
+        // Whether the unit should be processed.
+        public override bool IsProcessed
+        {
+            get { return !IgnoreFlags.HasFlag(IgnoreFlags.Processing); }
         }
 
         public bool IsSystemHeader { get; set; }

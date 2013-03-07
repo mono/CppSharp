@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using Cxxi.Types;
 
 namespace Cxxi.Passes
 {
@@ -18,7 +16,7 @@ namespace Cxxi.Passes
 
         public override bool ProcessUnit(TranslationUnit unit)
         {
-            if (unit.ExplicityIgnored)
+            if (unit.Ignore)
                 return false;
 
             if (unit.IsSystemHeader)
