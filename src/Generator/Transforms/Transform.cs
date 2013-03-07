@@ -70,7 +70,9 @@ namespace Cxxi.Passes
         void TransformTypedef(TypedefDecl typedef)
         {
             foreach (var pass in Passes.Passes)
-                pass.ProcessDeclaration(typedef);
+                pass.ProcessTypedef(typedef);
+
+            TransformDeclaration(typedef);
         }
 
         void TransformClass(Class @class)

@@ -80,5 +80,13 @@ namespace Cxxi.Passes
         {
             return false;
         }
+
+        /// <summary>
+        /// Processes a typedef.
+        /// </summary>
+        public virtual bool ProcessTypedef(TypedefDecl typedef)
+        {
+            return false;
+        }
     }
 }
