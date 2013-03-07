@@ -378,7 +378,7 @@ namespace Cxxi.Generators.CLI
 
             if (@class.HasBase && !@class.IsValueType)
                 if (!@class.Bases[0].Class.Ignore)
-                    Write(" : {0}", SafeIdentifier(@class.Bases[0].Class.Name));
+                    Write(" : {0}", QualifiedIdentifier(@class.Bases[0].Class));
 
             WriteLine(string.Empty);
             WriteLine("{");
