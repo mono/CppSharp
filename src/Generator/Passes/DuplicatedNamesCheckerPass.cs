@@ -19,7 +19,8 @@ namespace Cxxi.Passes
             names.Clear();
 
             foreach (var baseClass in @class.Bases)
-                ProcessClass(baseClass.Class);
+                if (baseClass.IsClass)
+                    ProcessClass(baseClass.Class);
 
             CheckDuplicates(@class.Fields);
             CheckDuplicates(@class.Methods);
