@@ -172,18 +172,25 @@ namespace Cxxi.Generators.CLI
 
         public bool VisitClassDecl(Class @class)
         {
+            var instance = string.Empty;
+
+            if (!Context.ReturnType.IsPointer())
+                instance += "&";
+
+            instance += Context.ReturnVarName;
+
+            WriteClassInstance(@class, instance);
+            return true;
+        }
+
+        public void WriteClassInstance(Class @class, string instance)
+        {
             if (@class.IsRefType)
                 Return.Write("gcnew ");
 
             Return.Write("{0}::{1}(", Library.Name, @class.Name);
-
             Return.Write("(::{0}*)", @class.QualifiedOriginalName);
-
-            if (!Context.ReturnType.IsPointer())
-                Return.Write("&");
-
-            Return.Write("{0})", Context.ReturnVarName);
-            return true;
+            Return.Write("{0})", instance);
         }
 
         public bool VisitFieldDecl(Field field)
@@ -471,6 +478,13 @@ namespace Cxxi.Generators.CLI
 
         private void MarshalRefClass(Class @class)
         {
+            TypeMap typeMap = null;
+            if (TypeMapDatabase.FindTypeMap(@class, out typeMap))
+            {
+                typeMap.CLIMarshalToNative(Context);
+                return;
+            }
+
             if (!Context.Parameter.Type.IsPointer())
             {
                 Return.Write("*");
