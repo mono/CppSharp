@@ -97,7 +97,7 @@ namespace Cxxi.Generators.CLI
                 return "System::IntPtr";
             }
 
-            if (pointee.IsPrimitiveType(PrimitiveType.Char)/* && quals.IsConst*/) 
+            if (pointee.IsPrimitiveType(PrimitiveType.Char) && quals.IsConst)
             {
                 return "System::String^";
             }
