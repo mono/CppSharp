@@ -506,12 +506,12 @@ namespace Cxxi.Generators.CLI
             PushIndent();
             for (int i = 0; i < @enum.Items.Count; ++i)
             {
-                var I = @enum.Items[i];
-                GenerateInlineSummary(I.Comment);
-                if (I.ExplicitValue)
-                    Write(String.Format("{0} = {1}", SafeIdentifier(I.Name), I.Value));
+                var item = @enum.Items[i];
+                GenerateInlineSummary(item.Comment);
+                if (item.ExplicitValue)
+                    Write(String.Format("{0} = {1}", SafeIdentifier(item.Name), item.Value));
                 else
-                    Write(String.Format("{0}", SafeIdentifier(I.Name)));
+                    Write(String.Format("{0}", SafeIdentifier(item.Name)));
 
                 if (i < @enum.Items.Count - 1)
                     WriteLine(",");
