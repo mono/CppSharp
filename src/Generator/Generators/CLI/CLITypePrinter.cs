@@ -164,7 +164,7 @@ namespace Cxxi.Generators.CLI
             var decl = template.Template.TemplatedDecl;
 
             TypeMap typeMap = null;
-            if (TypeMapDatabase.FindTypeMap(decl, out typeMap))
+            if (TypeMapDatabase.FindTypeMap(template, out typeMap))
             {
                 typeMap.Declaration = decl;
                 typeMap.Type = template;
