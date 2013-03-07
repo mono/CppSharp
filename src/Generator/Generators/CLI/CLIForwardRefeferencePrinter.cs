@@ -122,6 +122,8 @@ namespace Cxxi.Generators.CLI
 
         public bool VisitEnumDecl(Enumeration @enum)
         {
+            Includes.Add(GetHeaderFromDecl(@enum));
+
             if (@enum.Type.IsPrimitiveType(PrimitiveType.Int32))
             {
                 Refs.Add(string.Format("enum struct {0};", @enum.Name));
