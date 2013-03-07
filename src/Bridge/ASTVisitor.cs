@@ -88,6 +88,21 @@ namespace Cxxi
 
         public virtual bool VisitTemplateSpecializationType(TemplateSpecializationType template, TypeQualifiers quals)
         {
+            foreach (var arg in template.Arguments)
+            {
+                switch (arg.Kind)
+                {
+                    case TemplateArgument.ArgumentKind.Type:
+                        var type = arg.Type.Type;
+                        if (type != null)
+                            type.Visit(this, arg.Type.Qualifiers);
+                        break;
+                    case TemplateArgument.ArgumentKind.Declaration:
+                        arg.Declaration.Visit(this);
+                        break;
+                }
+            }
+
             return template.Template.Visit(this);
         }
 
