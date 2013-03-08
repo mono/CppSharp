@@ -64,7 +64,10 @@ namespace Cxxi.Passes
         void TransformDeclaration(Declaration decl)
         {
             foreach (var pass in Passes.Passes)
+            {
+                if (IsPassExcluded(decl, pass)) continue;
                 pass.ProcessDeclaration(decl);
+            }
         }
 
         void TransformTypedef(TypedefDecl typedef)
@@ -78,20 +81,29 @@ namespace Cxxi.Passes
         void TransformClass(Class @class)
         {
             foreach (var pass in Passes.Passes)
+            {
+                if (IsPassExcluded(@class, pass)) continue;
                 pass.ProcessClass(@class);
+            }
 
             TransformDeclaration(@class);
 
             foreach (var method in @class.Methods)
             {
                 foreach (var pass in Passes.Passes)
+                {
+                    if (IsPassExcluded(method, pass)) continue;
                     pass.ProcessMethod(method);
+                }
             }
 
             foreach (var field in @class.Fields)
             {
                 foreach (var pass in Passes.Passes)
+                {
+                    if (IsPassExcluded(field, pass)) continue;
                     pass.ProcessField(field);
+                }
 
                 TransformDeclaration(field);
             }
@@ -100,7 +112,10 @@ namespace Cxxi.Passes
         void TransformFunction(Function function)
         {
             foreach (var pass in Passes.Passes)
+            {
+                if (IsPassExcluded(function, pass)) continue;
                 pass.ProcessFunction(function);
+            }
 
             TransformDeclaration(function);
 
@@ -117,6 +132,12 @@ namespace Cxxi.Passes
                 foreach (var pass in Passes.Passes)
                     pass.ProcessEnumItem(item);
             }
+        }
+
+        static bool IsPassExcluded(Declaration decl, TranslationUnitPass pass)
+        {
+            var type = pass.GetType();
+            return decl.ExcludeFromPasses.Contains(type);
         }
     }
 }

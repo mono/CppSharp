@@ -161,8 +161,6 @@ namespace Cxxi
                 else if (module.FindFunction(name) as T != null)
                     yield return module.FindFunction(name) as T;
             }
-
-            yield return null;
         }
 
         public void SetEnumAsFlags(string name)
@@ -170,6 +168,14 @@ namespace Cxxi
             var enums = FindEnum(name);
             foreach(var @enum in enums)
                 @enum.SetFlags();
+        }
+
+        public void ExcludeFromPass(string name, System.Type type)
+        {
+            var decls = FindDecl<Declaration>(name);
+
+            foreach (var decl in decls)
+                decl.ExcludeFromPasses.Add(type);
         }
     }
 }
