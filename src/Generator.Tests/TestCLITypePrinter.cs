@@ -8,7 +8,7 @@ namespace Generator.Tests
     [TypeMap("FnPtr3")]
     public class CLITypePrinterTypeMap : TypeMap
     {
-        public override string Signature() { return "TypedefFn3"; }
+        public override string CLISignature() { return "TypedefFn3"; }
     }
 
     [TestFixture]
