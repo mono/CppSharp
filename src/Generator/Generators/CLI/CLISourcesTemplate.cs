@@ -527,15 +527,8 @@ namespace Cxxi.Generators.CLI
 
         public void GenerateFunctionParams(List<ParamMarshal> @params)
         {
-            for (var i = 0; i < @params.Count; ++i)
-            {
-                var param = @params[i];
-
-                Write(param.Name);
-
-                if (i < @params.Count - 1)
-                    Write(", ");
-            }
+            var names = @params.Select(param => param.Name).ToList();
+            Write(string.Join(", ", names));
         }
 
         public void GenerateDebug(Declaration decl)
