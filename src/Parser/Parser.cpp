@@ -1278,7 +1278,8 @@ void Parser::WalkMacros(clang::PreprocessingRecord* PR)
             macro->Expression = marshalString<E_UTF8>(Expression)->Trim();
 
             auto M = GetModule(BeginExpr);
-            M->Macros->Add(macro);
+            if( M != nullptr )
+                M->Macros->Add(macro);
 
             break;
         }
@@ -1560,6 +1561,7 @@ struct Diagnostic
 {
     clang::SourceLocation Location;
     llvm::SmallString<100> Message;
+    clang::DiagnosticsEngine::Level Level;
 };
 
 struct DiagnosticConsumer : public clang::DiagnosticConsumer
@@ -1570,6 +1572,7 @@ struct DiagnosticConsumer : public clang::DiagnosticConsumer
                                   const clang::Diagnostic& Info) override {
         auto Diag = Diagnostic();
         Diag.Location = Info.getLocation();
+        Diag.Level = Level;
         Info.FormatDiagnostic(Diag.Message);
         Diagnostics.push_back(Diag);
     }
@@ -1635,6 +1638,28 @@ ParserResult^ Parser::Parse(const std::string& File)
         auto PDiag = ParserDiagnostic();
         PDiag.FileName = marshalString<E_UTF8>(FileName.str());
         PDiag.Message = marshalString<E_UTF8>(Diag.Message.str());
+
+        switch( Diag.Level )
+        {
+            case clang::DiagnosticsEngine::Ignored: 
+                PDiag.Level = ParserDiagnosticLevel::Ignored;
+                break;
+            case clang::DiagnosticsEngine::Note:
+                PDiag.Level = ParserDiagnosticLevel::Note;
+                break;
+            case clang::DiagnosticsEngine::Warning:
+            default:
+                PDiag.Level = ParserDiagnosticLevel::Warning;
+                break;
+            case clang::DiagnosticsEngine::Error:
+                PDiag.Level = ParserDiagnosticLevel::Error;
+                break;
+            case clang::DiagnosticsEngine::Fatal:
+                PDiag.Level = ParserDiagnosticLevel::Fatal;
+                break;
+                break;
+        } // switch
+
         res->Diagnostics->Add(PDiag);
     }
 

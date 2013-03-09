@@ -55,10 +55,22 @@ public ref struct ParserOptions
     bool Verbose;
 };
 
+
+public enum struct ParserDiagnosticLevel
+{
+    Ignored,
+    Note,
+    Warning,
+    Error,
+    Fatal
+};
+
+
 public value struct ParserDiagnostic
 {
     System::String^ FileName;
     System::String^ Message;
+    ParserDiagnosticLevel Level;
 };
 
 public enum struct ParserResultKind
