@@ -133,7 +133,7 @@ namespace Cxxi.Types
         private void SetupTypeMaps(IEnumerable<System.Type> types)
         {
             foreach (var typeMap in types)
-                {
+            {
                 var attrs = typeMap.GetCustomAttributes(typeof(TypeMapAttribute), true);
                 if (attrs == null) continue;
 
