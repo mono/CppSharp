@@ -56,6 +56,9 @@ namespace Cxxi.Generators.CLI
                 includes.Add(string.Format("#include \"{0}.h\"", include));
             }
 
+            foreach (var include in Includes)
+                includes.Add(include.ToString());
+
             foreach (var include in includes)
                 WriteLine(include);
         }

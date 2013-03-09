@@ -4,17 +4,38 @@ using Cxxi.Types;
 
 namespace Cxxi.Generators.CLI
 {
-    public abstract class CLITextTemplate : TextTemplate
+    public struct Include
+    {
+        public enum IncludeKind
+        {
+            Angled,
+            Quoted
+        }
+
+        public string File;
+        public IncludeKind Kind;
+
+        public override string ToString()
+        {
+            return string.Format(Kind == IncludeKind.Angled ?
+                "#include <{0}>" : "#include \"{0}\"", File);
+        }
+    }
+
+public abstract class CLITextTemplate : TextTemplate
     {
         protected const string DefaultIndent = "    ";
         protected const uint MaxIndent = 80;
 
         public ITypePrinter TypePrinter { get; set; }
 
+        public ISet<Include> Includes;
+
         protected CLITextTemplate(Driver driver, TranslationUnit unit)
             : base(driver, unit)
         {
             TypePrinter = new CLITypePrinter(driver.TypeDatabase, driver.Library);
+            Includes = new HashSet<Include>();
         }
 
         public static string SafeIdentifier(string proposedName)

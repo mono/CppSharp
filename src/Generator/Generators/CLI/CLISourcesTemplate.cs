@@ -62,13 +62,14 @@ namespace Cxxi.Generators.CLI
                 if (includeName == Path.GetFileNameWithoutExtension(((TextTemplate) this).unit.FileName))
                     continue;
 
-                includes.Add(includeName);
+                includes.Add(string.Format("#include \"{0}.h\"", includeName));
             }
 
+            foreach (var include in Includes)
+                includes.Add(include.ToString());
+
             foreach (var include in includes)
-            {
-                WriteLine("#include \"{0}.h\"", include);
-            }
+                WriteLine(include);
         }
 
         public void GenerateDeclarations()
