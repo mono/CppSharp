@@ -106,6 +106,14 @@ namespace Cxxi
             return decl != null;
         }
 
+        public Type Desugar()
+        {
+            var type = this as TypedefType;
+            if (type != null)
+                return type.Declaration.QualifiedType.Type.Desugar();
+            return this;
+        }
+
         public abstract T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals
             = new TypeQualifiers());
 
