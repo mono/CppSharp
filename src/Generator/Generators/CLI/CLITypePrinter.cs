@@ -60,7 +60,7 @@ namespace Cxxi.Generators.CLI
             foreach (var param in @params)
                 args.Add(VisitParameter(param, hasNames));
 
-            return string.Join(" ,", args);
+            return string.Join(", ", args);
         }
 
         public string VisitParameter(Parameter param, bool hasName = true)

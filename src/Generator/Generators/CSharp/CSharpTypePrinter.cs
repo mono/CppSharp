@@ -219,7 +219,7 @@ namespace Cxxi.Generators.CSharp
             foreach (var param in @params)
                 args.Add(VisitParameter(param, hasNames));
 
-            return string.Join(" ,", args);
+            return string.Join(", ", args);
         }
 
         public string VisitParameter(Parameter arg, bool hasName)
