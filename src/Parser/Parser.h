@@ -96,7 +96,8 @@ protected:
         bool IgnoreSystemDecls = true, bool CanBeDefinition = false);
     Cxxi::Declaration^ WalkDeclarationDef(clang::Decl* D);
     Cxxi::Enumeration^ WalkEnum(clang::EnumDecl*);
-    Cxxi::Function^ WalkFunction(clang::FunctionDecl*, bool IsDependent = false);
+    Cxxi::Function^ WalkFunction(clang::FunctionDecl*, bool IsDependent = false,
+        bool AddToNamespace = true);
     Cxxi::Class^ WalkRecordCXX(clang::CXXRecordDecl*, bool IsDependent = false);
     Cxxi::Method^ WalkMethodCXX(clang::CXXMethodDecl*);
     Cxxi::Field^ WalkFieldCXX(clang::FieldDecl*, Cxxi::Class^);

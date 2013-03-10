@@ -431,7 +431,8 @@ Cxxi::FunctionTemplate^ Parser::WalkFunctionTemplate(clang::FunctionTemplateDecl
 
     auto NS = GetNamespace(TD);
 
-    auto Function = WalkFunction(TD->getTemplatedDecl(), /*IsDependent=*/true);
+    auto Function = WalkFunction(TD->getTemplatedDecl(), /*IsDependent=*/true,
+        /*AddToNamespace=*/false);
     Cxxi::FunctionTemplate^ FT = gcnew Cxxi::FunctionTemplate(Function);
 
     return FT;
@@ -1055,7 +1056,8 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, Cxxi::Function^ F,
     }
 }
 
-Cxxi::Function^ Parser::WalkFunction(clang::FunctionDecl* FD, bool IsDependent)
+Cxxi::Function^ Parser::WalkFunction(clang::FunctionDecl* FD, bool IsDependent,
+                                     bool AddToNamespace)
 {
     using namespace clang;
     using namespace clix;
@@ -1071,7 +1073,9 @@ Cxxi::Function^ Parser::WalkFunction(clang::FunctionDecl* FD, bool IsDependent)
 
     F = gcnew Cxxi::Function();
     WalkFunction(FD, F, IsDependent);
-    NS->Functions->Add(F);
+
+    if (AddToNamespace)
+        NS->Functions->Add(F);
 
     return F;
 }
