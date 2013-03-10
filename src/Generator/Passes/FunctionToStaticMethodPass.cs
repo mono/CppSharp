@@ -1,17 +1,17 @@
 ﻿using System;
-using System.Text.RegularExpressions;
 
 namespace Cxxi.Passes
 {
     /// <summary>
-    /// This pass will try to hoist functions into classes so they
-    /// work just like static methods.
+    /// This pass will try to hoist functions as class static methods.
     /// </summary>
     public class FunctionToStaticMethodPass : TranslationUnitPass
     {
-        /// <summary>
-        /// Processes a function declaration.
-        /// </summary>
+        public override bool VisitMethodDecl(Method method)
+        {
+            return true;
+        }
+
         public override bool VisitFunctionDecl(Function function)
         {
             if (function.Ignore)

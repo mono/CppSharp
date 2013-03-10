@@ -8,9 +8,11 @@ namespace Cxxi.Passes
     /// </summary>
     public class FunctionToInstanceMethodPass : TranslationUnitPass
     {
-        /// <summary>
-        /// Processes a function declaration.
-        /// </summary>
+        public override bool VisitMethodDecl(Method method)
+        {
+            return true;
+        }
+
         public override bool VisitFunctionDecl(Function function)
         {
             if (function.Ignore)
