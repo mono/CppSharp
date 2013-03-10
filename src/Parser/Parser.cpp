@@ -1638,6 +1638,21 @@ ParserResult^ Parser::Parse(const std::string& File)
         auto PDiag = ParserDiagnostic();
         PDiag.FileName = marshalString<E_UTF8>(FileName.str());
         PDiag.Message = marshalString<E_UTF8>(Diag.Message.str());
+        PDiag.lineNumber = 0;
+        PDiag.columnNumber = 0;
+
+        //
+        // Idea copied from CGDebugInfo::getLineNumber
+        //
+        if( !Diag.Location.isInvalid() )
+        {
+             clang::PresumedLoc PLoc = Source.getPresumedLoc(Diag.Location);
+             if( PLoc.isValid() )
+             {
+                PDiag.lineNumber = PLoc.getLine();
+                PDiag.columnNumber = PLoc.getColumn();
+             }
+        }
 
         switch( Diag.Level )
         {

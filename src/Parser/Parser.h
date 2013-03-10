@@ -69,6 +69,8 @@ public enum struct ParserDiagnosticLevel
 public value struct ParserDiagnostic
 {
     System::String^ FileName;
+    int lineNumber;
+    int columnNumber;
     System::String^ Message;
     ParserDiagnosticLevel Level;
 };

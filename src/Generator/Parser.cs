@@ -14,10 +14,28 @@ namespace Cxxi
             Library = new Library(options.OutputNamespace, options.LibraryName);
         }
 
-        public void ParseHeaders(IEnumerable<string> headers)
+        public bool ParseHeaders(IEnumerable<string> headers)
         {
+            bool bHasErrors = false;
             foreach (var header in headers)
-                ParseHeader(header);
+            {
+                var result = ParseHeader(header);
+
+                // If we have some error, report to end-user.
+                if (!options.IgnoreErrors)
+                {
+                    foreach (var diag in result.Diagnostics)
+                    {
+                        if (diag.Level == ParserDiagnosticLevel.Error || diag.Level == ParserDiagnosticLevel.Fatal)
+                        {
+                            Console.WriteLine(String.Format("{0}({1},{2}): error: {3}", diag.FileName, diag.lineNumber, diag.columnNumber, diag.Message));
+                            bHasErrors = true;
+                        }
+                    }
+                } //if
+            }
+
+            return !bHasErrors;
         }
 
         public ParserResult ParseHeader(string file)
