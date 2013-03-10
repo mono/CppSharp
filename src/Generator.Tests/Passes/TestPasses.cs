@@ -12,12 +12,12 @@ namespace Generator.Tests.Passes
         [TestFixtureSetUp]
         public void Init()
         {
-            ParseLibrary("Passes.h");
         }
 
         [SetUp]
         public void Setup()
         {
+            ParseLibrary("Passes.h");
             passBuilder = new PassBuilder(library);
         }
 
@@ -33,21 +33,36 @@ namespace Generator.Tests.Passes
             passBuilder.CheckFlagEnums();
             passBuilder.RunPasses();
 
-            Assert.IsFalse(@enum.IsFlags);
-            Assert.IsTrue(@enum2.IsFlags);
+            Assert.IsTrue(@enum.IsFlags);
+            Assert.IsFalse(@enum2.IsFlags);
         }
 
         [Test]
         public void TestFunctionToInstancePass()
         {
-            var c = library.Class("C");
+            var c = library.Class("Foo");
 
-            Assert.IsNull(c.Methods.Find(m => m.Name == "DoSomethingC"));
+            Assert.IsNull(c.Method("Start"));
 
             passBuilder.FunctionToInstanceMethod();
             passBuilder.RunPasses();
 
-            Assert.IsNotNull(c.Methods.Find(m => m.Name == "DoSomethingC"));
+            Assert.IsNotNull(c.Method("Start"));
+        }
+
+        [Test]
+        public void TestFunctionToStaticPass()
+        {
+            var c = library.Class("Foo");
+
+            Assert.IsFalse(library.Function("FooStart").ExplicityIgnored);
+            Assert.IsNull(c.Method("Start"));
+
+            passBuilder.FunctionToStaticMethod();
+            passBuilder.RunPasses();
+
+            Assert.IsTrue(library.Function("FooStart").ExplicityIgnored);
+            Assert.IsNotNull(c.Method("Start"));
         }
 
         [Test]
@@ -78,6 +93,12 @@ namespace Generator.Tests.Passes
             passBuilder.RunPasses();
 
             Assert.That(@enum.Items[0].Name, Is.EqualTo("_0"));
+        }
+
+        [Test]
+        public void TestStructInheritance()
+        {
+
         }
     }
 }

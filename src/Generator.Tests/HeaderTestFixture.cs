@@ -12,6 +12,12 @@ namespace Generator.Tests
 
         private const string TestsDirectory = @"..\..\..\tests\Native";
 
+        public HeaderTestFixture()
+        {
+            database = new TypeMapDatabase();
+            database.SetupTypeMaps();
+        }
+
         protected void ParseLibrary(string file)
         {
             ParseLibrary(TestsDirectory, file);
@@ -19,13 +25,10 @@ namespace Generator.Tests
 
         protected void ParseLibrary(string dir, string file)
         {
-            database = new TypeMapDatabase();
-            database.SetupTypeMaps();
-
             var options = new DriverOptions();
 
             var path = Path.Combine(Directory.GetCurrentDirectory(), dir);
-            options.IncludeDirs.Add(path);
+            options.IncludeDirs.Add(Path.GetFullPath(path));
 
             var parser = new Parser(options);
             var result = parser.ParseHeader(file);
