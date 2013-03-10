@@ -85,6 +85,7 @@ namespace Cxxi
                 Transform.Preprocess(Library);
 
             var passes = new PassBuilder(Library);
+            passes.CleanUnit();
             passes.SortDeclarations();
             passes.ResolveIncompleteDecls(TypeDatabase);
             passes.CheckFlagEnums();
