@@ -71,7 +71,8 @@ namespace Cxxi
             return pointer.Pointee.Visit(this, quals);
         }
 
-        public virtual bool VisitMemberPointerType(MemberPointerType member, TypeQualifiers quals)
+        public virtual bool VisitMemberPointerType(MemberPointerType member,
+            TypeQualifiers quals)
         {
             return member.Pointee.Visit(this, quals);
         }
@@ -86,7 +87,8 @@ namespace Cxxi
             return typedef.Declaration.Visit(this);
         }
 
-        public virtual bool VisitTemplateSpecializationType(TemplateSpecializationType template, TypeQualifiers quals)
+        public virtual bool VisitTemplateSpecializationType(TemplateSpecializationType template,
+            TypeQualifiers quals)
         {
             foreach (var arg in template.Arguments)
             {
@@ -106,7 +108,8 @@ namespace Cxxi
             return template.Template.Visit(this);
         }
 
-        public virtual bool VisitTemplateParameterType(TemplateParameterType param, TypeQualifiers quals)
+        public virtual bool VisitTemplateParameterType(TemplateParameterType param,
+            TypeQualifiers quals)
         {
             return true;
         }
@@ -135,16 +138,44 @@ namespace Cxxi
             if (AlreadyVisited(@class))
                 return true;
 
-            return VisitDeclaration(@class);
+            if (!VisitDeclaration(@class))
+                return false;
+
+            foreach (var baseClass in @class.Bases)
+                if (baseClass.IsClass)
+                    baseClass.Class.Visit(this);
+
+            foreach (var field in @class.Fields)
+                VisitFieldDecl(field);
+
+            foreach (var property in @class.Properties)
+                VisitProperty(property);
+
+            foreach (var method in @class.Methods)
+                VisitMethodDecl(method);
+
+            return true;
         }
 
         public virtual bool VisitFieldDecl(Field field)
         {
+            if (!VisitDeclaration(field))
+                return false;
             return field.Type.Visit(this, field.QualifiedType.Qualifiers);
+        }
+
+        public virtual bool VisitProperty(Property property)
+        {
+            if (!VisitDeclaration(property))
+                return false;
+            return property.Type.Visit(this);
         }
 
         public virtual bool VisitFunctionDecl(Function function)
         {
+            if (!VisitDeclaration(function))
+                return false;
+
             if (function.ReturnType != null)
                 function.ReturnType.Visit(this);
 
@@ -161,38 +192,65 @@ namespace Cxxi
 
         public virtual bool VisitParameterDecl(Parameter parameter)
         {
+            if (!VisitDeclaration(parameter))
+                return false; 
+            
             return parameter.Type.Visit(this, parameter.QualifiedType.Qualifiers);
         }
 
         public virtual bool VisitTypedefDecl(TypedefDecl typedef)
         {
+            if (!VisitDeclaration(typedef))
+                return false;
+
             if (typedef.Type == null)
                 return false;
+
             return typedef.Type.Visit(this, typedef.QualifiedType.Qualifiers);
         }
 
         public virtual bool VisitEnumDecl(Enumeration @enum)
         {
-            return VisitDeclaration(@enum);
+            if (!VisitDeclaration(@enum))
+                return false;
+
+            foreach (var item in @enum.Items)
+                VisitEnumItem(item);
+
+            return true;
+        }
+
+        public virtual bool VisitEnumItem(Enumeration.Item item)
+        {
+            return true;
         }
 
         public virtual bool VisitClassTemplateDecl(ClassTemplate template)
         {
+            if (!VisitDeclaration(template))
+                return false;
+
             return template.TemplatedClass.Visit(this);
         }
 
         public virtual bool VisitFunctionTemplateDecl(FunctionTemplate template)
         {
+            if (!VisitDeclaration(template))
+                return false; 
+            
             return template.TemplatedFunction.Visit(this);
         }
 
         public virtual bool VisitMacroDefinition(MacroDefinition macro)
         {
-            return true;
+            return VisitDeclaration(macro);
         }
 
         public virtual bool VisitNamespace(Namespace @namespace)
         {
+            if (!VisitDeclaration(@namespace))
+                return false; 
+
             foreach (var decl in @namespace.Classes)
                 decl.Visit(this);
 
@@ -216,7 +274,7 @@ namespace Cxxi
 
         public virtual bool VisitEvent(Event @event)
         {
-            return true;
+            return VisitDeclaration(@event);
         }
 
         #endregion

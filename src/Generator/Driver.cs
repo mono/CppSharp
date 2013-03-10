@@ -95,8 +95,7 @@ namespace Cxxi
 
             passes.CleanInvalidDeclNames();
 
-            var transformer = new Transform() { Options = Options, Passes = passes };
-            transformer.TransformLibrary(Library);
+            passes.RunPasses();
 
             if (Transform != null)
                 Transform.Postprocess(Library);

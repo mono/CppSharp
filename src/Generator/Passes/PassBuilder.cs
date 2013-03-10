@@ -28,10 +28,7 @@ namespace Cxxi
         {
             foreach (var pass in Passes)
             {
-                foreach (var unit in Library.TranslationUnits)
-                {
-                    pass.ProcessUnit(unit);
-                }
+                pass.VisitLibrary(Library);
             }
         }
     }

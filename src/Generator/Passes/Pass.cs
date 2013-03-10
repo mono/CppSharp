@@ -5,88 +5,43 @@ namespace Cxxi.Passes
     /// Used to provide different types of code transformation on a module
     /// declarations and types before the code generation process is started.
     /// </summary>
-    public abstract class TranslationUnitPass
+    public abstract class TranslationUnitPass : AstVisitor
     {
         public Library Library { get; set; }
 
-        /// <summary>
-        /// Processes a library.
-        /// </summary>
-        public virtual bool ProcessLibrary(Library library)
+        public virtual bool VisitLibrary(Library library)
         {
-            return false;
+            foreach (var unit in library.TranslationUnits)
+                VisitTranslationUnit(unit);
+
+            return true;
         }
 
-        /// <summary>
-        /// Processes a translation unit.
-        /// </summary>
-        public virtual bool ProcessUnit(TranslationUnit unit)
+        public virtual bool VisitTranslationUnit(TranslationUnit unit)
         {
-            return false;
+            if (unit.Ignore)
+                return false;
+
+            if (unit.IsSystemHeader)
+                return false;
+
+            VisitNamespace(unit);
+
+            foreach (var @namespace in unit.Namespaces)
+                VisitNamespace(@namespace);
+
+            return true;
         }
 
-        /// <summary>
-        /// Processes a declaration.
-        /// </summary>
-        public virtual bool ProcessDeclaration(Declaration decl)
+        public override bool VisitDeclaration(Declaration decl)
         {
-            return false;
+            return !IsDeclExcluded(decl);
         }
 
-        /// <summary>
-        /// Processes a class.
-        /// </summary>
-        public virtual bool ProcessClass(Class @class)
+        bool IsDeclExcluded(Declaration decl)
         {
-            return false;
-        }
-
-        /// <summary>
-        /// Processes a field.
-        /// </summary>
-        public virtual bool ProcessField(Field field)
-        {
-            return false;
-        }
-
-        /// <summary>
-        /// Processes a function declaration.
-        /// </summary>
-        public virtual bool ProcessFunction(Function function)
-        {
-            return false;
-        }
-
-        /// <summary>
-        /// Processes a method declaration.
-        /// </summary>
-        public virtual bool ProcessMethod(Method method)
-        {
-            return false;
-        }
-
-        /// <summary>
-        /// Processes an enum declaration.
-        /// </summary>
-        public virtual bool ProcessEnum(Enumeration @enum)
-        {
-            return false;
-        }
-
-        /// <summary>
-        /// Processes an enum item.
-        /// </summary>
-        public virtual bool ProcessEnumItem(Enumeration.Item item)
-        {
-            return false;
-        }
-
-        /// <summary>
-        /// Processes a typedef.
-        /// </summary>
-        public virtual bool ProcessTypedef(TypedefDecl typedef)
-        {
-            return false;
+            var type = this.GetType();
+            return decl.ExcludeFromPasses.Contains(type);
         }
     }
 }
