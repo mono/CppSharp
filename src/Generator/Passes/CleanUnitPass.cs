@@ -5,6 +5,11 @@ namespace Cxxi.Passes
         public DriverOptions Options;
         public PassBuilder Passes;
 
+        public CleanUnitPass(DriverOptions options)
+        {
+            Options = options;
+        }
+
         public override bool VisitTranslationUnit(TranslationUnit unit)
         {
             // Try to get an include path that works from the original include
@@ -36,9 +41,9 @@ namespace Cxxi.Passes
 
     public static class CleanUnitPassExtensions
     {
-        public static void CleanUnit(this PassBuilder builder)
+        public static void CleanUnit(this PassBuilder builder, DriverOptions options)
         {
-            var pass = new CleanUnitPass();
+            var pass = new CleanUnitPass(options);
             builder.AddPass(pass);
         }
     }
