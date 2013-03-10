@@ -93,7 +93,12 @@ namespace Cxxi.Types
 
         public string VisitTypedefType(TypedefType typedef, TypeQualifiers quals)
         {
-            return typedef.Declaration.Type.Visit(this);
+            var decl = typedef.Declaration;
+
+            if (decl.Type == null)
+                return string.Empty;
+
+            return decl.Type.Visit(this);
         }
 
         public string VisitTemplateSpecializationType(TemplateSpecializationType template, TypeQualifiers quals)
