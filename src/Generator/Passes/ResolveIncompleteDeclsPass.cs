@@ -12,35 +12,26 @@ namespace Cxxi.Passes
             typeMapDatabase = database;
         }
 
-        public override bool ProcessClass(Class @class)
+        public override bool VisitClassDecl(Class @class)
         {
             if (@class.Ignore)
-                return true;
+                return false;
 
             if (!@class.IsIncomplete)
-                return true;
+                return false;
 
             if (@class.CompleteDeclaration != null)
-                return true;
+                return false;
 
             @class.CompleteDeclaration = Library.FindCompleteClass(@class.Name);
 
             if (@class.CompleteDeclaration == null)
                 Console.WriteLine("Unresolved declaration: {0}", @class.Name);
 
-            foreach (var field in @class.Fields)
-                ProcessField(field);
-
-            foreach (var method in @class.Methods)
-                ProcessMethod(method);
-
-            //foreach (var prop in @class.Properties)
-            //    ProcessProperty(prop);
-
-            return true;
+            return base.VisitClassDecl(@class);
         }
 
-        public override bool ProcessField(Field field)
+        public override bool VisitFieldDecl(Field field)
         {
             var type = field.Type;
 
@@ -56,7 +47,7 @@ namespace Cxxi.Passes
             return true;
         }
 
-        public override bool ProcessFunction(Function function)
+        public override bool VisitFunctionDecl(Function function)
         {
             var ret = function.ReturnType;
 
@@ -76,19 +67,12 @@ namespace Cxxi.Passes
                     Console.WriteLine("Function '{0}' was ignored due to {1} param",
                         function.Name, msg);
                 }
-
-                ProcessDeclaration(param);
             }
 
             return true;
         }
 
-        public override bool ProcessMethod(Method method)
-        {
-            return ProcessFunction(method);
-        }
-
-        public override bool ProcessTypedef(TypedefDecl typedef)
+        public override bool VisitTypedefDecl(TypedefDecl typedef)
         {
             string msg;
             if (HasInvalidType(typedef.Type, out msg))

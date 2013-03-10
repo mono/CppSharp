@@ -19,6 +19,57 @@ namespace Cxxi.Passes
         {
             Targets = targets;
         }
+
+        public abstract bool Rename(string name, out string newName);
+
+        public override bool VisitDeclaration(Declaration decl)
+        {
+            if (!Targets.HasFlag(RenameTargets.Any))
+                return true;
+
+            string newName;
+            if (Rename(decl.Name, out newName))
+            {
+                decl.Name = newName;
+                return true;
+            }
+
+            return true;
+        }
+
+        public override bool VisitEnumItem(Enumeration.Item item)
+        {
+            if (!Targets.HasFlag(RenameTargets.EnumItem))
+                return false;
+
+            string newName;
+            if (Rename(item.Name, out newName))
+            {
+                item.Name = newName;
+                return true;
+            }
+
+            return true;
+        }
+
+        public override bool VisitFieldDecl(Field field)
+        {
+            if (!Targets.HasFlag(RenameTargets.Field))
+                return false;
+
+            return base.VisitFieldDecl(field);
+        }
+
+        public override bool VisitMethodDecl(Method method)
+        {
+            if (!Targets.HasFlag(RenameTargets.Method))
+                return false;
+
+            if (method.Kind != CXXMethodKind.Normal)
+                return false;
+
+            return base.VisitMethodDecl(method);
+        }
     }
 
     [Flags]
@@ -54,52 +105,7 @@ namespace Cxxi.Passes
             Targets = targets;
         }
 
-        public override bool ProcessDeclaration(Declaration decl)
-        {
-            if (!Targets.HasFlag(RenameTargets.Any))
-                return false;
-
-            string newName;
-            if (Rename(decl.Name, out newName))
-            {
-                decl.Name = newName;
-                return true;
-            }
-
-            return false;
-        }
-
-        public override bool ProcessEnumItem(Enumeration.Item item)
-        {
-            if (!Targets.HasFlag(RenameTargets.EnumItem))
-                return false;
-
-            string newName;
-            if (Rename(item.Name, out newName))
-            {
-                item.Name = newName;
-                return true;
-            }
-
-            return false;
-        }
-
-        public override bool ProcessField(Field field)
-        {
-            if (!Targets.HasFlag(RenameTargets.Field))
-                return false;
-
-            string newName;
-            if (Rename(field.Name, out newName))
-            {
-                field.Name = newName;
-                return true;
-            }
-
-            return false;
-        }
-
-        bool Rename(string name, out string newName)
+        public override bool Rename(string name, out string newName)
         {
             var replace = Regex.Replace(name, Pattern, Replacement);
 
@@ -133,57 +139,21 @@ namespace Cxxi.Passes
             Pattern = pattern;
         }
 
-        private void Rename<T>(ref T decl) where T : Declaration
+        public override bool Rename(string name, out string newName)
         {
+            newName = null;
+
             switch (Pattern)
             {
-                case RenameCasePattern.LowerCamelCase:
-                    decl.Name = ConvertCaseString(decl.Name, RenameCasePattern.LowerCamelCase);
-                    break;
-                case RenameCasePattern.UpperCamelCase:
-                    decl.Name = ConvertCaseString(decl.Name, RenameCasePattern.UpperCamelCase);
-                    break;
+            case RenameCasePattern.LowerCamelCase:
+                newName = ConvertCaseString(name, RenameCasePattern.LowerCamelCase);
+                return true;
+            case RenameCasePattern.UpperCamelCase:
+                newName = ConvertCaseString(name, RenameCasePattern.UpperCamelCase);
+                return true;
             }
-        }
-
-        public override bool ProcessDeclaration(Declaration decl)
-        {
-            if (!Targets.HasFlag(RenameTargets.Any))
-                return false;
-
-            Rename(ref decl);
-            return true;
-        }
-
-        public override bool ProcessFunction(Function function)
-        {
-            if (!Targets.HasFlag(RenameTargets.Function))
-                return false;
-
-            Rename(ref function);
-            return true;
-        }
-
-        public override bool ProcessField(Field field)
-        {
-            if (!Targets.HasFlag(RenameTargets.Field))
-                return false;
-
-            Rename(ref field);
 
             return false;
-        }
-
-        public override bool ProcessMethod(Method method)
-        {
-            if (!Targets.HasFlag(RenameTargets.Method))
-                return false;
-
-            if (method.Kind != CXXMethodKind.Normal)
-                return false;
-
-            Rename(ref method);
-            return true;
         }
 
         /// <summary>

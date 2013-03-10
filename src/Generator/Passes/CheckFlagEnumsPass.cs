@@ -9,19 +9,19 @@ namespace Cxxi.Passes
             // If the enumeration only has power of two values, assume it's
             // a flags enum.
 
-            bool isFlags = true;
-            bool hasBigRange = false;
+            var isFlags = true;
+            var hasBigRange = false;
 
             foreach (var item in @enum.Items)
             {
-                if (item.Name.Length >= 1 && Char.IsDigit(item.Name[0]))
-                    item.Name = String.Format("_{0}", item.Name);
+                var value = item.Value;
 
-                long value = item.Value;
                 if (value >= 4)
                     hasBigRange = true;
+
                 if (value <= 1 || value.IsPowerOfTwo())
                     continue;
+
                 isFlags = false;
             }
 
@@ -31,7 +31,7 @@ namespace Cxxi.Passes
             return isFlags && hasBigRange;
         }
 
-        public override bool ProcessEnum(Enumeration @enum)
+        public override bool VisitEnumDecl(Enumeration @enum)
         {
             if (IsFlagEnum(@enum))
             {
@@ -39,7 +39,7 @@ namespace Cxxi.Passes
                 return true;
             }
 
-            return false;
+            return base.VisitEnumDecl(@enum);
         }
     }
 

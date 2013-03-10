@@ -18,7 +18,7 @@ namespace Cxxi.Passes
                 SortDeclarations(childNamespace);
         }
 
-        public override bool ProcessUnit(TranslationUnit unit)
+        public override bool VisitTranslationUnit(TranslationUnit unit)
         {
             SortDeclarations(unit);
             return true;

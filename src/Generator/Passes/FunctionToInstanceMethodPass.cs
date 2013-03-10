@@ -11,7 +11,7 @@ namespace Cxxi.Passes
         /// <summary>
         /// Processes a function declaration.
         /// </summary>
-        public override bool ProcessFunction(Function function)
+        public override bool VisitFunctionDecl(Function function)
         {
             if (function.Ignore)
                 return false;

@@ -14,31 +14,12 @@ namespace Cxxi.Passes
             typeRefs = new TypeRefsVisitor();
         }
 
-        public override bool ProcessUnit(TranslationUnit unit)
+        public override bool VisitTranslationUnit(TranslationUnit unit)
         {
-            if (unit.Ignore)
-                return false;
-
-            if (unit.IsSystemHeader)
-                return false;
-
             typeRefs = new TypeRefsVisitor();
-            ProcessNamespace(unit);
-
             unit.TypeReferences = typeRefs;
 
-            return true;
-        }
-
-        private void ProcessNamespace(Namespace @namespace)
-        {
-            ProcessEnums(@namespace.Enums);
-            ProcessFunctions(@namespace.Functions);
-            ProcessClasses(@namespace.Classes);
-            ProcessTypedefs(@namespace, @namespace.Typedefs);
-
-            foreach (var inner in @namespace.Namespaces)
-                ProcessNamespace(inner);
+            return base.VisitTranslationUnit(unit);
         }
 
         string CheckName(string name)
@@ -56,90 +37,29 @@ namespace Cxxi.Passes
             return name;
         }
 
-        public override bool ProcessDeclaration(Declaration decl)
+        public override bool VisitDeclaration(Declaration decl)
         {
             typeRefs.Process(decl);
             decl.Name = CheckName(decl.Name);
 
             StringHelpers.CleanupText(ref decl.DebugText);
-            return true;
+            return base.VisitDeclaration(decl);
         }
 
-        private void ProcessDeclarations<T>(IEnumerable<T> decls)
-            where T : Declaration
+        public override bool VisitTypedefDecl(TypedefDecl typedef)
         {
-            foreach (T decl in decls)
-                ProcessDeclaration(decl);
-        }
+            var @class = typedef.Namespace.FindClass(typedef.Name);
 
-        private void ProcessClasses(List<Class> classes)
-        {
-            ProcessDeclarations(classes);
+            // Clang will walk the typedef'd tag decl and the typedef decl,
+            // so we ignore the class and process just the typedef.
 
-            foreach (var @class in classes)
-            {
-                ProcessFields(@class.Fields);
-                ProcessMethods(@class.Methods);
-            }
-        }
+            if (@class != null)
+                typedef.ExplicityIgnored = true;
 
-        private void ProcessFields(List<Field> fields)
-        {
-            ProcessDeclarations(fields);
+            if (typedef.Type == null)
+                typedef.ExplicityIgnored = true;
 
-            foreach (var field in fields)
-                ProcessField(field);
-        }
-
-        private void ProcessMethods(List<Method> methods)
-        {
-            ProcessDeclarations(methods);
-
-            foreach (var method in methods)
-                ProcessFunction(method);
-        }
-
-        private void ProcessFunctions(List<Function> functions)
-        {
-            ProcessDeclarations(functions);
-
-            foreach (var function in functions)
-                ProcessFunction(function);
-        }
-
-        public override bool ProcessFunction(Function function)
-        {
-            foreach (var param in function.Parameters)
-                ProcessDeclaration(param);
-
-            return true;
-        }
-
-        private void ProcessTypedefs(Namespace @namespace, List<TypedefDecl> typedefs)
-        {
-            ProcessDeclarations(typedefs);
-
-            foreach (var typedef in typedefs)
-            {
-                var @class = @namespace.FindClass(typedef.Name);
-
-                // Clang will walk the typedef'd tag decl and the typedef decl,
-                // so we ignore the class and process just the typedef.
-
-                if (@class != null)
-                    typedef.ExplicityIgnored = true;
-
-                if (typedef.Type == null)
-                    typedef.ExplicityIgnored = true;
-            }
-        }
-
-        public void ProcessEnums(List<Enumeration> enumerations)
-        {
-            ProcessDeclarations(enumerations);
-
-            foreach (var @enum in enumerations)
-                ProcessEnum(@enum);
+            return base.VisitTypedefDecl(typedef);
         }
 
         private static void CheckEnumName(Enumeration @enum)
@@ -161,21 +81,16 @@ namespace Cxxi.Passes
             @enum.Name = prefix;
         }
 
-        public override bool ProcessEnum(Enumeration @enum)
+        public override bool VisitEnumDecl(Enumeration @enum)
         {
             CheckEnumName(@enum);
-            var result = base.ProcessEnum(@enum);
-
-            foreach (var item in @enum.Items)
-                ProcessEnumItem(item);
-
-            return result;
+            return base.VisitEnumDecl(@enum);
         }
 
-        public override bool ProcessEnumItem(Enumeration.Item item)
+        public override bool VisitEnumItem(Enumeration.Item item)
         {
             item.Name = CheckName(item.Name);
-            return true;
+            return base.VisitEnumItem(item);
         }
     }
 

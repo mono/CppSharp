@@ -12,30 +12,18 @@ namespace Cxxi.Passes
             names = new Dictionary<string, Declaration>();
         }
 
-        public override bool ProcessClass(Class @class)
+        public override bool VisitClassDecl(Class @class)
         {
             if (@class.Ignore) return false;
 
             names.Clear();
-
-            foreach (var baseClass in @class.Bases)
-                if (baseClass.IsClass)
-                    ProcessClass(baseClass.Class);
-
-            CheckDuplicates(@class.Fields);
-            CheckDuplicates(@class.Methods);
-            CheckDuplicates(@class.Properties);
-
-            return true;
+            return base.VisitClassDecl(@class);
         }
 
-        void CheckDuplicates(IEnumerable<Declaration> decls)
+        public override bool VisitDeclaration(Declaration decl)
         {
-            foreach (var decl in decls)
-            {
-                if (decl.Ignore) continue;
-                CheckDuplicate(decl);
-            }
+            CheckDuplicate(decl);
+            return base.VisitDeclaration(decl);
         }
 
         void CheckDuplicate(Declaration decl)
