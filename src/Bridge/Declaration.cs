@@ -15,6 +15,11 @@ namespace Cxxi
         QualifiedType QualifiedType { get; }
     }
 
+    public interface INamedDecl
+    {
+        string Name { get; set; }
+    }
+
     [Flags]
     public enum IgnoreFlags
     {
@@ -27,7 +32,7 @@ namespace Cxxi
     /// <summary>
     /// Represents a C++ declaration.
     /// </summary>
-    public abstract class Declaration
+    public abstract class Declaration : INamedDecl
     {
         // Namespace the declaration is contained in.
         public Namespace Namespace;

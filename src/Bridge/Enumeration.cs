@@ -19,9 +19,9 @@ namespace Cxxi
         /// <summary>
         /// Represents a C/C++ enumeration item.
         /// </summary>
-        public class Item
+        public class Item : INamedDecl
         {
-            public string Name;
+            public string Name { get; set; }
             public long Value;
             public string Expression;
             public string Comment;
