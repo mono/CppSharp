@@ -32,12 +32,12 @@ namespace Cxxi.Generators.CLI
 
         public string VisitFunctionType(FunctionType function, TypeQualifiers quals)
         {
-            var arguments = function.Arguments;
+            var arguments = function.Parameters;
             var returnType = function.ReturnType;
             var args = string.Empty;
 
             if (arguments.Count > 0)
-                args = VisitParameters(function.Arguments, hasNames: false);
+                args = VisitParameters(function.Parameters, hasNames: false);
 
             if (returnType.IsPrimitiveType(PrimitiveType.Void))
             {
@@ -78,7 +78,7 @@ namespace Cxxi.Generators.CLI
         {
             return string.Format("delegate {0} {{0}}({1})",
                 function.ReturnType.Visit(this),
-                VisitParameters(function.Arguments, hasNames: true));
+                VisitParameters(function.Parameters, hasNames: true));
         }
 
         public string VisitPointerType(PointerType pointer, TypeQualifiers quals)
@@ -174,9 +174,10 @@ namespace Cxxi.Generators.CLI
             return decl.Name;
         }
 
-        public string VisitTemplateParameterType(TemplateParameterType param, TypeQualifiers quals)
+        public string VisitTemplateParameterType(TemplateParameterType param,
+            TypeQualifiers quals)
         {
-            throw new NotImplementedException();
+            return param.Parameter.Name;
         }
 
         public string VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals)

@@ -26,7 +26,7 @@ namespace Cxxi
             if (!function.ReturnType.Visit(this))
                 return false;
 
-            foreach (var arg in function.Arguments)
+            foreach (var arg in function.Parameters)
             {
                 if (!arg.Type.Visit(this))
                     return false;

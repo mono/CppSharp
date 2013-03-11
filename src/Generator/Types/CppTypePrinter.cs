@@ -127,12 +127,12 @@ namespace Cxxi.Types
 
         public string VisitFunctionType(FunctionType function, TypeQualifiers quals)
         {
-            var arguments = function.Arguments;
+            var arguments = function.Parameters;
             var returnType = function.ReturnType;
             var args = string.Empty;
 
             if (arguments.Count > 0)
-                args = VisitParameters(function.Arguments, hasNames: false);
+                args = VisitParameters(function.Parameters, hasNames: false);
 
             return string.Format("{0} ({1})", returnType.Visit(this), args);
         }

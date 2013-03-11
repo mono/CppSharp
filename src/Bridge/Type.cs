@@ -203,11 +203,11 @@ namespace Cxxi
         public Type ReturnType;
 
         // Argument types.
-        public List<Parameter> Arguments;
+        public List<Parameter> Parameters;
 
         public FunctionType()
         {
-            Arguments = new List<Parameter>();
+            Parameters = new List<Parameter>();
         }
 
         public override T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals)

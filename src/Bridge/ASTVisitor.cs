@@ -57,7 +57,7 @@ namespace Cxxi
             if (function.ReturnType != null)
                 function.ReturnType.Visit(this);
 
-            foreach (var param in function.Arguments)
+            foreach (var param in function.Parameters)
                 param.Visit(this);
 
             return true;

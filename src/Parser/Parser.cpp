@@ -771,7 +771,7 @@ Cxxi::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
             FA->Name = marshalString<E_UTF8>(PVD->getNameAsString());
             FA->QualifiedType = GetQualifiedType(PVD->getType(), WalkType(PVD->getType(), &PTL));
 
-            F->Arguments->Add(FA);
+            F->Parameters->Add(FA);
         }
 
         return F;
