@@ -61,9 +61,6 @@ namespace Cxxi
         // Mangled name
         public string Mangled { get; set; }
         
-        // Transformed name
-        public string FormattedName { get; set; }
-
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {
             return visitor.VisitFunctionDecl(this);
