@@ -89,18 +89,35 @@ namespace Cxxi.Passes
 
             return base.VisitMethodDecl(method);
         }
+
+        public override bool VisitFunctionDecl(Function function)
+        {
+            if (!Targets.HasFlag(RenameTargets.Function))
+                return false;
+
+            return base.VisitFunctionDecl(function);
+        }
+
+        public override bool VisitParameterDecl(Parameter parameter)
+        {
+            if (!Targets.HasFlag(RenameTargets.Parameter))
+                return false;
+
+            return base.VisitParameterDecl(parameter);
+        }
     }
 
     [Flags]
     public enum RenameTargets
     {
-        Record,
+        Class,
         Field,
         Method,
         Function,
+        Parameter,
         Enum,
         EnumItem,
-        Any = Function | Method | Record | Field | Enum | EnumItem,
+        Any = Function | Method | Parameter | Class | Field | Enum | EnumItem,
     }
 
     /// <summary>
