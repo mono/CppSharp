@@ -141,7 +141,7 @@ namespace Cxxi
     {
         public ISet<Declaration> ForwardReferences;
         public ISet<Class> Bases;
-        private Class mainClass;
+        private TranslationUnit unit;
 
         public TypeRefsVisitor()
         {
@@ -160,24 +160,29 @@ namespace Cxxi
             ForwardReferences.Add(declaration);
         }
 
-        public void Process(Declaration declaration)
+        public bool VisitTranslationUnit(TranslationUnit unit)
         {
-            if (declaration is Class)
-            {
-                mainClass = declaration as Class;
-                Visited.Remove(mainClass);
-            }
+            this.unit = unit;
+            unit.TypeReferences = this;
 
-            declaration.Visit(this);
+            VisitNamespace(unit);
+
+            foreach (var @namespace in unit.Namespaces)
+                VisitNamespace(@namespace);
+
+            return true;
         }
 
         public override bool VisitClassDecl(Class @class)
         {
-            if (AlreadyVisited(@class))
-                return true;
-
             if (@class.Ignore)
-                return true;
+            {
+                Visited.Add(@class);
+                return false;
+            }
+
+            if (Visited.Contains(@class))
+                return ForwardReferences.Contains(@class);
 
             Collect(@class);
 
@@ -185,16 +190,11 @@ namespace Cxxi
             // members, else it will add references to declarations that
             // should have not been found.
             if (@class.IsIncomplete)
-                return true;
+                goto OutVisited;
 
-            if (@class != mainClass)
-                return true;
-
-            foreach (var field in @class.Fields)
-                VisitFieldDecl(field);
-
-            foreach (var method in @class.Methods)
-                VisitMethodDecl(method);
+            var unitClass = unit.FindClass(@class.Name);
+            if (unitClass == null || unitClass.IsIncomplete)
+                goto OutVisited;
 
             foreach (var @base in @class.Bases)
             {
@@ -204,6 +204,11 @@ namespace Cxxi
                 Bases.Add(@base.Class);
             }
 
+            return base.VisitClassDecl(@class);
+
+        OutVisited:
+
+            Visited.Add(@class);
             return true;
         }
 
@@ -215,21 +220,8 @@ namespace Cxxi
 
         public override bool VisitFieldDecl(Field field)
         {
-            Class @class;
-            Enumeration @enum;
-
-            if (field.Type.IsTagDecl(out @class))
-            {
-                Collect(@field);
-            }
-            else if (field.Type.IsTagDecl(out @enum))
-            {
-                Collect(@field);
-            }
-            else
-            {
-                field.Type.Visit(this);
-            }
+            if (base.VisitFieldDecl(field))
+                Collect(field);
 
             return true;
         }
@@ -246,6 +238,7 @@ namespace Cxxi
             if (decl.Type.IsPointerTo<FunctionType>(out function))
             {
                 Collect(decl);
+                return true;
             }
 
             return decl.Type.Visit(this);
