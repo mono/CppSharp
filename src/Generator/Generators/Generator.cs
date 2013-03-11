@@ -1,6 +1,4 @@
-﻿using Cxxi.Types;
-
-namespace Cxxi.Generators
+﻿namespace Cxxi.Generators
 {
     public enum LanguageGeneratorKind
     {
