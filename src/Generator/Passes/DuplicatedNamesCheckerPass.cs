@@ -22,12 +22,25 @@ namespace Cxxi.Passes
 
         public override bool VisitDeclaration(Declaration decl)
         {
+            if (AlreadyVisited(decl))
+                return true;
+
+            Visited.Add(decl);
+
             CheckDuplicate(decl);
             return base.VisitDeclaration(decl);
         }
 
+        public override bool VisitParameterDecl(Parameter parameter)
+        {
+            return true;
+        }
+
         void CheckDuplicate(Declaration decl)
         {
+            if (string.IsNullOrWhiteSpace(decl.Name))
+                return;
+
             Declaration duplicate;
 
             // If the name is not yet on the map, then add it.
