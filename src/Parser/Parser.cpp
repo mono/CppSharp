@@ -1448,6 +1448,22 @@ Cxxi::Declaration^ Parser::WalkDeclaration(clang::Decl* D, clang::TypeLoc* TL,
 
         break;
     }
+    case Decl::Empty:
+    {
+        auto ED = cast<EmptyDecl>(D);
+        Decl = nullptr;
+        break;
+    }
+    // Ignore these declarations since they must have been declared in
+    // a class already.
+    case Decl::CXXConstructor:
+    case Decl::CXXDestructor:
+    case Decl::CXXConversion:
+    case Decl::CXXMethod:
+    {
+        Decl = nullptr;
+        break;
+    }
     default:
     {
         Debug("Unhandled declaration kind: %s\n", D->getDeclKindName());
