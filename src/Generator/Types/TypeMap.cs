@@ -164,6 +164,12 @@ namespace Cxxi.Types
 
         public bool FindTypeMap(string name, out TypeMap typeMap)
         {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                typeMap = null;
+                return false;
+            }
+
             System.Type type;
             TypeMaps.TryGetValue(name, out type);
 
