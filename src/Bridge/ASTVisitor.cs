@@ -154,6 +154,9 @@ namespace Cxxi
             foreach (var method in @class.Methods)
                 VisitMethodDecl(method);
 
+            foreach (var @event in @class.Events)
+                VisitEvent(@event);
+
             return true;
         }
 
@@ -161,6 +164,7 @@ namespace Cxxi
         {
             if (!VisitDeclaration(field))
                 return false;
+
             return field.Type.Visit(this, field.QualifiedType.Qualifiers);
         }
 
@@ -168,6 +172,7 @@ namespace Cxxi
         {
             if (!VisitDeclaration(property))
                 return false;
+
             return property.Type.Visit(this);
         }
 
