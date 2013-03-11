@@ -168,13 +168,17 @@ namespace Cxxi.Passes
         bool IsTypeIgnored(Type type)
         {
             var checker = new TypeIgnoreChecker(typeMapDatabase);
-            return type.Visit(checker);
+            type.Visit(checker);
+
+            return checker.IsIgnored;
         }
 
         bool IsDeclIgnored(Declaration decl)
         {
             var checker = new TypeIgnoreChecker(typeMapDatabase);
-            return decl.Visit(checker);
+            decl.Visit(checker);
+
+            return checker.IsIgnored;
         }
 
         #endregion

@@ -56,60 +56,61 @@ namespace Cxxi
     public class TypeIgnoreChecker : AstVisitor
     {
         ITypeMapDatabase TypeMapDatabase { get; set; }
+        public bool IsIgnored;
 
         public TypeIgnoreChecker(ITypeMapDatabase database)
         {
             TypeMapDatabase = database;
+            IsIgnored = false;
+        }
+
+        void Ignore()
+        {
+            IsIgnored = true;
         }
 
         public override bool VisitDeclaration(Declaration decl)
         {
-            return decl.Ignore;
-        }
-
-        public override bool VisitBuiltinType(BuiltinType builtin, TypeQualifiers quals)
-        {
-            return false;
-        }
-
-        public override bool VisitFunctionType(FunctionType function, TypeQualifiers quals)
-        {
-            if (!function.ReturnType.Visit(this))
-                return false;
-
-            foreach (var arg in function.Arguments)
-            {
-                if (!arg.Type.Visit(this))
-                    return false;
-            }
+            if (decl.Ignore)
+                Ignore();
 
             return true;
         }
 
-        public override bool VisitFunctionDecl(Function function)
+        public override bool VisitClassDecl(Class @class)
         {
-            if (!function.ReturnType.Visit(this))
+            if (AlreadyVisited(@class))
                 return false;
 
-            foreach (var param in function.Parameters)
-            {
-                if (!param.Visit(this))
-                    return false;
-            }
-
+            VisitDeclaration(@class);
             return true;
         }
 
         public override bool VisitTypedefType(TypedefType typedef,
             TypeQualifiers quals)
         {
-            var decl = typedef.Declaration;
-
             TypeMap typeMap = null;
-            if (TypeMapDatabase.FindTypeMap(decl, out typeMap))
-                return typeMap.IsIgnored;
+            if (TypeMapDatabase.FindTypeMap(typedef, out typeMap)
+                && typeMap.IsIgnored)
+            {
+                Ignore();
+                return false;
+            }
 
             return base.VisitTypedefType(typedef, quals);
+        }
+
+        public override bool VisitTypedefDecl(TypedefDecl typedef)
+        {
+            TypeMap typeMap = null;
+            if (TypeMapDatabase.FindTypeMap(typedef, out typeMap)
+                && typeMap.IsIgnored)
+            {
+                Ignore();
+                return false;
+            }
+
+            return base.VisitTypedefDecl(typedef);
         }
 
         public override bool VisitTemplateSpecializationType(
@@ -118,10 +119,11 @@ namespace Cxxi
             var decl = template.Template.TemplatedDecl;
 
             TypeMap typeMap = null;
-            if (TypeMapDatabase.FindTypeMap(decl, out typeMap))
+            if (TypeMapDatabase.FindTypeMap(decl, out typeMap)
+                && typeMap.IsIgnored)
             {
-                if (typeMap.IsIgnored)
-                    return true;
+                Ignore();
+                return false;
             }
 
             return base.VisitTemplateSpecializationType(template, quals);
