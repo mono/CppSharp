@@ -88,6 +88,7 @@ namespace Cxxi
             passes.CleanUnit(Options);
             passes.SortDeclarations();
             passes.ResolveIncompleteDecls(TypeDatabase);
+            passes.CheckTypeReferences();
             passes.CheckFlagEnums();
 
             if (Transform != null)

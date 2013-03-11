@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Cxxi.Passes
@@ -7,19 +6,9 @@ namespace Cxxi.Passes
     public class CleanInvalidDeclNamesPass : TranslationUnitPass
     {
         private int uniqueName;
-        private TypeRefsVisitor typeRefs;
 
         public CleanInvalidDeclNamesPass()
         {
-            typeRefs = new TypeRefsVisitor();
-        }
-
-        public override bool VisitTranslationUnit(TranslationUnit unit)
-        {
-            typeRefs = new TypeRefsVisitor();
-            unit.TypeReferences = typeRefs;
-
-            return base.VisitTranslationUnit(unit);
         }
 
         string CheckName(string name)
@@ -39,7 +28,6 @@ namespace Cxxi.Passes
 
         public override bool VisitDeclaration(Declaration decl)
         {
-            typeRefs.Process(decl);
             decl.Name = CheckName(decl.Name);
 
             StringHelpers.CleanupText(ref decl.DebugText);
