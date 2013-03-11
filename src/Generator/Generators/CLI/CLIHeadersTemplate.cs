@@ -25,7 +25,7 @@ namespace Cxxi.Generators.CLI
             WriteLine("#pragma once");
             NewLine();
 
-            WriteLine("#include <{0}>", unit.IncludePath);
+            WriteLine("#include <{0}>", TranslationUnit.IncludePath);
             GenerateIncludeForwardRefs();
 
             NewLine();
@@ -38,7 +38,7 @@ namespace Cxxi.Generators.CLI
 
         public void GenerateIncludeForwardRefs()
         {
-            var typeRefs = unit.TypeReferences as TypeRefsVisitor;
+            var typeRefs = TranslationUnit.TypeReferences as TypeRefsVisitor;
 
             forwardRefsPrinter = new CLIForwardReferencePrinter(typeRefs);
             forwardRefsPrinter.Process();
@@ -50,7 +50,7 @@ namespace Cxxi.Generators.CLI
                 if (string.IsNullOrWhiteSpace(include))
                     continue;
 
-                if (include == Path.GetFileNameWithoutExtension(unit.FileName))
+                if (include == Path.GetFileNameWithoutExtension(TranslationUnit.FileName))
                     continue;
 
                 includes.Add(string.Format("#include \"{0}.h\"", include));
@@ -92,16 +92,16 @@ namespace Cxxi.Generators.CLI
             bool needsNewline = false;
 
             // Generate all the enum declarations for the module.
-            for (var i = 0; i < unit.Enums.Count; ++i)
+            for (var i = 0; i < TranslationUnit.Enums.Count; ++i)
             {
-                var @enum = unit.Enums[i];
+                var @enum = TranslationUnit.Enums[i];
 
                 if (@enum.Ignore || @enum.IsIncomplete)
                     continue;
 
                 GenerateEnum(@enum);
                 NeedNewLine();
-                if (i < unit.Enums.Count - 1)
+                if (i < TranslationUnit.Enums.Count - 1)
                     NewLine();
             }
 
@@ -113,9 +113,9 @@ namespace Cxxi.Generators.CLI
             needsNewline = false;
 
             // Generate all the struct/class declarations for the module.
-            for (var i = 0; i < unit.Classes.Count; ++i)
+            for (var i = 0; i < TranslationUnit.Classes.Count; ++i)
             {
-                var @class = unit.Classes[i];
+                var @class = TranslationUnit.Classes[i];
 
                 if (@class.Ignore || @class.IsIncomplete)
                     continue;
@@ -126,11 +126,11 @@ namespace Cxxi.Generators.CLI
                 GenerateClass(@class);
                 needsNewline = true;
 
-                if (i < unit.Classes.Count - 1)
+                if (i < TranslationUnit.Classes.Count - 1)
                     NewLine();
             }
 
-            if (unit.HasFunctions)
+            if (TranslationUnit.HasFunctions)
             {
                 if (needsNewline)
                     NewLine();
@@ -143,7 +143,7 @@ namespace Cxxi.Generators.CLI
 
         public void GenerateTypedefs()
         {
-            foreach (var typedef in unit.Typedefs)
+            foreach (var typedef in TranslationUnit.Typedefs)
             {
                 if (typedef.Ignore)
                     continue;
@@ -158,13 +158,13 @@ namespace Cxxi.Generators.CLI
         public void GenerateFunctions()
         {
             WriteLine("public ref class {0}{1}", SafeIdentifier(Library.Name),
-                      unit.FileNameWithoutExtension);
+                      TranslationUnit.FileNameWithoutExtension);
             WriteLine("{");
             WriteLine("public:");
             PushIndent();
 
             // Generate all the function declarations for the module.
-            foreach (var function in unit.Functions)
+            foreach (var function in TranslationUnit.Functions)
             {
                 GenerateFunction(function);
             }

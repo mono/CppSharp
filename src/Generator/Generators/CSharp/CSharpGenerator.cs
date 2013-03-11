@@ -16,7 +16,7 @@ namespace Cxxi.Generators.CSharp
 
         void WriteTemplate(TextTemplate template)
         {
-            var file = Path.GetFileNameWithoutExtension(template.unit.FileName)
+            var file = Path.GetFileNameWithoutExtension(template.TranslationUnit.FileName)
                 + Driver.Options.WrapperSuffix + "."
                 + template.FileExtension;
 

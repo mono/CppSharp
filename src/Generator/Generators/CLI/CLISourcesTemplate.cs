@@ -20,7 +20,7 @@ namespace Cxxi.Generators.CLI
             GenerateStart();
 
             WriteLine("#include \"{0}{1}.h\"",
-                Path.GetFileNameWithoutExtension(unit.FileName),
+                Path.GetFileNameWithoutExtension(TranslationUnit.FileName),
                 Options.WrapperSuffix);
 
             GenerateForwardReferenceHeaders();
@@ -38,7 +38,7 @@ namespace Cxxi.Generators.CLI
         {
             var includes = new SortedSet<string>(StringComparer.InvariantCulture);
 
-            var typeRefs = unit.TypeReferences as TypeRefsVisitor;
+            var typeRefs = TranslationUnit.TypeReferences as TypeRefsVisitor;
 
             // Generate the forward references.
             foreach (var forwardRef in typeRefs.ForwardReferences)
@@ -59,7 +59,7 @@ namespace Cxxi.Generators.CLI
 
                 var includeName = Path.GetFileNameWithoutExtension(translationUnit.FileName);
 
-                if (includeName == Path.GetFileNameWithoutExtension(((TextTemplate) this).unit.FileName))
+                if (includeName == Path.GetFileNameWithoutExtension(((TextTemplate) this).TranslationUnit.FileName))
                     continue;
 
                 includes.Add(string.Format("#include \"{0}.h\"", includeName));
@@ -75,9 +75,9 @@ namespace Cxxi.Generators.CLI
         public void GenerateDeclarations()
         {
             // Generate all the struct/class definitions for the module.
-            for (var i = 0; i < unit.Classes.Count; ++i)
+            for (var i = 0; i < TranslationUnit.Classes.Count; ++i)
             {
-                var @class = unit.Classes[i];
+                var @class = TranslationUnit.Classes[i];
 
                 if (@class.Ignore)
                     continue;
@@ -88,14 +88,14 @@ namespace Cxxi.Generators.CLI
                 GenerateClass(@class);
             }
 
-            if (unit.HasFunctions)
+            if (TranslationUnit.HasFunctions)
             {
-                var staticClassName = Library.Name + unit.FileNameWithoutExtension;
+                var staticClassName = Library.Name + TranslationUnit.FileNameWithoutExtension;
 
                 // Generate all the function declarations for the module.
-                for (var i = 0; i < unit.Functions.Count; ++i)
+                for (var i = 0; i < TranslationUnit.Functions.Count; ++i)
                 {
-                    var function = unit.Functions[i];
+                    var function = TranslationUnit.Functions[i];
 
                     if (function.Ignore)
                         continue;

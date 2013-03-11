@@ -9,7 +9,7 @@
         public DriverOptions Options { get; set; }
         public Library Library { get; set; }
         public ILibrary Transform;
-        public TranslationUnit unit { get; set; }
+        public TranslationUnit TranslationUnit { get; set; }
         public abstract string FileExtension { get; }
 
         public abstract void Generate();
@@ -20,7 +20,7 @@
             Options = driver.Options;
             Library = driver.Library;
             Transform = driver.Transform;
-            this.unit = unit;
+            TranslationUnit = unit;
         }
     }
 }
