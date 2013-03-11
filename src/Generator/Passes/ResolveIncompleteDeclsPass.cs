@@ -18,15 +18,17 @@ namespace Cxxi.Passes
                 return false;
 
             if (!@class.IsIncomplete)
-                return false;
+                goto Out;
 
             if (@class.CompleteDeclaration != null)
-                return false;
+                goto Out;
 
             @class.CompleteDeclaration = Library.FindCompleteClass(@class.Name);
 
             if (@class.CompleteDeclaration == null)
                 Console.WriteLine("Unresolved declaration: {0}", @class.Name);
+
+        Out:
 
             return base.VisitClassDecl(@class);
         }
@@ -57,6 +59,7 @@ namespace Cxxi.Passes
                 function.ExplicityIgnored = true;
                 Console.WriteLine("Function '{0}' was ignored due to {1} return decl",
                     function.Name, msg);
+                return false;
             }
 
             foreach (var param in function.Parameters)
@@ -66,6 +69,15 @@ namespace Cxxi.Passes
                     function.ExplicityIgnored = true;
                     Console.WriteLine("Function '{0}' was ignored due to {1} param",
                         function.Name, msg);
+                    return false;
+                }
+
+                if (HasInvalidType(param.Type, out msg))
+                {
+                    function.ExplicityIgnored = true;
+                    Console.WriteLine("Function '{0}' was ignored due to {1} param",
+                        function.Name, msg);
+                    return false;
                 }
             }
 
