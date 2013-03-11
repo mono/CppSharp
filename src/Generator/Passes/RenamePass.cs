@@ -22,9 +22,28 @@ namespace Cxxi.Passes
 
         public abstract bool Rename(string name, out string newName);
 
+        public bool IsRenameableDecl(Declaration decl)
+        {
+            if (decl is Class) return true;
+            if (decl is Field) return true;
+            if (decl is Method) return true;
+            if (decl is Function) return true;
+            if (decl is Parameter) return true;
+            if (decl is Enumeration) return true;
+            return false;
+        }
+
         public override bool VisitDeclaration(Declaration decl)
         {
-            if (!Targets.HasFlag(RenameTargets.Any))
+            if (!IsRenameableDecl(decl))
+                return true;
+
+            if (AlreadyVisited(decl))
+                return true;
+
+            Visited.Add(decl);
+
+            if (decl.Name == null)
                 return true;
 
             string newName;
