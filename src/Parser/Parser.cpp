@@ -921,6 +921,16 @@ Cxxi::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
 
         return P;
     }
+    case Type::Vector:
+    {
+        // GCC-specific / __attribute__((vector_size(n))
+        return nullptr;
+    }
+    case Type::DependentSizedArray:
+    {
+        // Ignored.
+        return nullptr;
+    }
     default:
     {   
         Debug("Unhandled type class '%s'\n", Type->getTypeClassName());
