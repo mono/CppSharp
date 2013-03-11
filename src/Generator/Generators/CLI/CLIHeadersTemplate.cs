@@ -10,7 +10,7 @@ namespace Cxxi.Generators.CLI
     {
         public override string FileExtension { get { return "h"; } }
 
-        private CLIForwardRefeferencePrinter forwardRefsPrinter;
+        private CLIForwardReferencePrinter forwardRefsPrinter;
 
         public CLIHeadersTemplate(Driver driver, TranslationUnit unit)
             : base(driver, unit)
@@ -40,7 +40,7 @@ namespace Cxxi.Generators.CLI
         {
             var typeRefs = unit.TypeReferences as TypeRefsVisitor;
 
-            forwardRefsPrinter = new CLIForwardRefeferencePrinter(typeRefs);
+            forwardRefsPrinter = new CLIForwardReferencePrinter(typeRefs);
             forwardRefsPrinter.Process();
 
             var includes = new SortedSet<string>(StringComparer.InvariantCulture);

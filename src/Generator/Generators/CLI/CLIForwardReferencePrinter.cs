@@ -4,13 +4,13 @@ using System.IO;
 
 namespace Cxxi.Generators.CLI
 {
-    public class CLIForwardRefeferencePrinter : IDeclVisitor<bool>
+    public class CLIForwardReferencePrinter : IDeclVisitor<bool>
     {
         public readonly IList<string> Includes;
         public readonly IList<string> Refs;
         private readonly TypeRefsVisitor TypeRefs;
 
-        public CLIForwardRefeferencePrinter(TypeRefsVisitor typeRefs)
+        public CLIForwardReferencePrinter(TypeRefsVisitor typeRefs)
         {
             Includes = new List<string>();
             Refs = new List<string>();
