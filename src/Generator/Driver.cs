@@ -47,6 +47,9 @@ namespace Cxxi
             {
                 Options.IncludeDirs[i] = Path.GetFullPath(Options.IncludeDirs[i]);
             }
+
+            if (string.IsNullOrWhiteSpace(Options.OutputNamespace))
+                Options.OutputNamespace = Options.LibraryName;
         }
 
         private void OnHeaderParsed(string file, ParserResult result)
