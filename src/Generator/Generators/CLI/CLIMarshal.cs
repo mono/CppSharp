@@ -13,15 +13,14 @@ namespace Cxxi.Generators.CLI
     {
         public TextGenerator Return;
 
-        Library Library { get; set; }
+        Driver Driver { get; set; }
         ITypeMapDatabase TypeMapDatabase { get; set; }
         MarshalContext Context { get; set; }
 
-        public CLIMarshalNativeToManagedPrinter(ITypeMapDatabase database,
-            Library library, MarshalContext marshalContext)
+        public CLIMarshalNativeToManagedPrinter(Driver driver, MarshalContext marshalContext)
         {
-            Library = library;
-            TypeMapDatabase = database;
+            Driver = driver;
+            TypeMapDatabase = driver.TypeDatabase;
             Context = marshalContext;
 
             Return = new TextGenerator();
@@ -227,7 +226,7 @@ namespace Cxxi.Generators.CLI
 
         private string ToCLITypeName(Declaration decl)
         {
-            var typePrinter = new CLITypePrinter(TypeMapDatabase, Library);
+            var typePrinter = new CLITypePrinter(Driver.TypeDatabase, Driver.Library);
             return typePrinter.VisitDeclaration(decl);
         }
 

@@ -237,9 +237,7 @@ namespace Cxxi.Generators.CLI
                         ReturnType = param.Type
                     };
 
-                var marshal = new CLIMarshalNativeToManagedPrinter(
-                    Driver.TypeDatabase, Library, ctx);
-
+                var marshal = new CLIMarshalNativeToManagedPrinter(Driver, ctx);
                 param.Visit(marshal);
 
                 returns.Add(marshal.Return);
@@ -301,9 +299,7 @@ namespace Cxxi.Generators.CLI
                     ReturnType = field.Type
                 };
 
-                var marshal = new CLIMarshalNativeToManagedPrinter(
-                    Driver.TypeDatabase, Library, ctx);
-
+                var marshal = new CLIMarshalNativeToManagedPrinter(Driver, ctx);
                 field.Visit(marshal);
 
                 WriteLine("{0} = {1};", field.Name, marshal.Return);
@@ -448,8 +444,7 @@ namespace Cxxi.Generators.CLI
                         ReturnType = retType
                     };
 
-                var marshal = new CLIMarshalNativeToManagedPrinter(Driver.TypeDatabase,
-                    Library, ctx);
+                var marshal = new CLIMarshalNativeToManagedPrinter(Driver, ctx);
                 function.ReturnType.Visit(marshal);
 
                 WriteLine("{0};", marshal.Return);
