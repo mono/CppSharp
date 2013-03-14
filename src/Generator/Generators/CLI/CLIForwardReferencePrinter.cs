@@ -4,16 +4,22 @@ using System.IO;
 
 namespace Cxxi.Generators.CLI
 {
+    public struct CLIForwardReference
+    {
+        public Declaration Declaration;
+        public string Text;
+    }
+
     public class CLIForwardReferencePrinter : IDeclVisitor<bool>
     {
         public readonly IList<string> Includes;
-        public readonly IList<string> Refs;
+        public readonly IList<CLIForwardReference> Refs;
         private readonly TypeRefsVisitor TypeRefs;
 
         public CLIForwardReferencePrinter(TypeRefsVisitor typeRefs)
         {
             Includes = new List<string>();
-            Refs = new List<string>();
+            Refs = new List<CLIForwardReference>();
             TypeRefs = typeRefs;
         }
 
@@ -50,11 +56,21 @@ namespace Cxxi.Generators.CLI
 
             if (@class.IsValueType)
             {
-                Refs.Add(string.Format("value struct {0};", @class.Name));
+                Refs.Add(new CLIForwardReference()
+                    {
+                        Declaration = @class,
+                        Text = string.Format("value struct {0};", @class.Name)
+                    });
+
                 return true;
             }
 
-            Refs.Add(string.Format("ref class {0};", @class.Name));
+            Refs.Add(new CLIForwardReference()
+            {
+                Declaration = @class,
+                Text = string.Format("ref class {0};", @class.Name)
+            });
+
             return true;
         }
 
@@ -126,12 +142,20 @@ namespace Cxxi.Generators.CLI
 
             if (@enum.Type.IsPrimitiveType(PrimitiveType.Int32))
             {
-                Refs.Add(string.Format("enum struct {0};", @enum.Name));
+                Refs.Add(new CLIForwardReference()
+                {
+                    Declaration = @enum,
+                    Text = string.Format("enum struct {0};", @enum.Name)
+                });
+
                 return true;
             }
 
-            Refs.Add(string.Format("enum struct {0} : {1};", @enum.Name,
-                                   @enum.Type));
+            Refs.Add(new CLIForwardReference()
+            {
+                Declaration = @enum,
+                Text = string.Format("enum struct {0} : {1};", @enum.Name, @enum.Type)
+            });
             return true;
         }
 

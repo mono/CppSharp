@@ -10,8 +10,6 @@ namespace Cxxi.Generators.CLI
     {
         public override string FileExtension { get { return "h"; } }
 
-        private CLIForwardReferencePrinter forwardRefsPrinter;
-
         public CLIHeadersTemplate(Driver driver, TranslationUnit unit)
             : base(driver, unit)
         {
@@ -40,7 +38,7 @@ namespace Cxxi.Generators.CLI
         {
             var typeRefs = TranslationUnit.TypeReferences as TypeRefsVisitor;
 
-            forwardRefsPrinter = new CLIForwardReferencePrinter(typeRefs);
+            var forwardRefsPrinter = new CLIForwardReferencePrinter(typeRefs);
             forwardRefsPrinter.Process();
 
             var includes = new SortedSet<string>(StringComparer.InvariantCulture);
@@ -65,12 +63,20 @@ namespace Cxxi.Generators.CLI
 
         public void GenerateForwardRefs()
         {
+            var typeRefs = TranslationUnit.TypeReferences as TypeRefsVisitor;
+
+            var forwardRefsPrinter = new CLIForwardReferencePrinter(typeRefs);
+            forwardRefsPrinter.Process();
+
             // Use a set to remove duplicate entries.
             var forwardRefs = new HashSet<string>();
 
             foreach (var forwardRef in forwardRefsPrinter.Refs)
             {
-                forwardRefs.Add(forwardRef);
+                if (forwardRef.Declaration.Namespace != @namespace)
+                    continue;
+
+                forwardRefs.Add(forwardRef.Text);
             }
 
             foreach (var forwardRef in forwardRefs)
