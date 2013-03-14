@@ -1,2 +1,0 @@
-
- SUBDIRS =  Mono.Cxxi generator
