@@ -314,7 +314,7 @@ namespace Cxxi.Generators.CLI
             if (hasBase && !@class.IsValueType)
             {
                 PushIndent();
-                Write(": {0}(", @class.Bases[0].Class.Name);
+                Write(": {0}(", QualifiedIdentifier(@class.Bases[0].Class));
 
                 if (method != null)
                     Write("nullptr");
