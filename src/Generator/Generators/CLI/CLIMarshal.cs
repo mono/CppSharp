@@ -182,12 +182,20 @@ namespace Cxxi.Generators.CLI
             return true;
         }
 
+        public string QualifiedIdentifier(Declaration decl)
+        {
+            if (Driver.Options.GenerateLibraryNamespace)
+                return string.Format("{0}::{1}", Driver.Options.OutputNamespace,
+                    decl.QualifiedName);
+            return string.Format("{0}", decl.QualifiedName);
+        }
+
         public void WriteClassInstance(Class @class, string instance)
         {
             if (@class.IsRefType)
                 Return.Write("gcnew ");
 
-            Return.Write("{0}::{1}(", Library.Name, @class.Name);
+            Return.Write("{0}(", QualifiedIdentifier(@class));
             Return.Write("(::{0}*)", @class.QualifiedOriginalName);
             Return.Write("{0})", instance);
         }

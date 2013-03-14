@@ -45,7 +45,9 @@ public abstract class CLITextTemplate : TextTemplate
 
         public string QualifiedIdentifier(Declaration decl)
         {
-            return string.Format("{0}::{1}", Library.Name, decl.Name);
+            if (Options.GenerateLibraryNamespace)
+                return string.Format("{0}::{1}", Options.OutputNamespace, decl.QualifiedName);
+            return string.Format("{0}", decl.QualifiedName);
         }
 
         public void GenerateStart()

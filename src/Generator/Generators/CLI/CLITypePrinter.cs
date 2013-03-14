@@ -193,7 +193,7 @@ namespace Cxxi.Generators.CLI
         public string VisitDeclaration(Declaration decl)
         {
             var name = decl.Visit(this);
-            return string.Format("{0}::{1}", Library.Name, name);
+            return string.Format("{0}::{1}", decl.Namespace.QualifiedName, name);
         }
 
         public string VisitClassDecl(Class @class)

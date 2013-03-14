@@ -28,10 +28,7 @@ namespace Cxxi.Generators.CLI
 
             NewLine();
 
-            WriteLine("namespace {0}", SafeIdentifier(Library.Name));
-            WriteLine("{");
-            GenerateDeclarations();
-            WriteLine("}");
+            GenerateNamespace(TranslationUnit);
         }
 
         public void GenerateIncludeForwardRefs()
@@ -61,7 +58,7 @@ namespace Cxxi.Generators.CLI
                 WriteLine(include);
         }
 
-        public void GenerateForwardRefs()
+        public void GenerateForwardRefs(Namespace @namespace)
         {
             var typeRefs = TranslationUnit.TypeReferences as TypeRefsVisitor;
 
@@ -88,40 +85,46 @@ namespace Cxxi.Generators.CLI
                 NewLine();
         }
 
-        public void GenerateDeclarations()
+        public void GenerateNamespace(Namespace @namespace)
         {
-            PushIndent();
+            var isTopLevel = @namespace is TranslationUnit;
+            var generateNamespace = !isTopLevel || Options.GenerateLibraryNamespace;
+
+            if (generateNamespace)
+            {
+                WriteLine("namespace {0}", isTopLevel
+                                               ? Options.OutputNamespace
+                                               : SafeIdentifier(@namespace.Name));
+                WriteStartBraceIndent();
+            }
 
             // Generate the forward references.
-            GenerateForwardRefs();
-
-            bool needsNewline = false;
+            GenerateForwardRefs(@namespace);
 
             // Generate all the enum declarations for the module.
-            for (var i = 0; i < TranslationUnit.Enums.Count; ++i)
+            for (var i = 0; i < @namespace.Enums.Count; ++i)
             {
-                var @enum = TranslationUnit.Enums[i];
+                var @enum = @namespace.Enums[i];
 
                 if (@enum.Ignore || @enum.IsIncomplete)
                     continue;
 
                 GenerateEnum(@enum);
                 NeedNewLine();
-                if (i < TranslationUnit.Enums.Count - 1)
+
+                if (i < @namespace.Enums.Count - 1)
                     NewLine();
             }
 
             NewLineIfNeeded();
 
             // Generate all the typedef declarations for the module.
-            GenerateTypedefs();
-
-            needsNewline = false;
+            GenerateTypedefs(@namespace);
 
             // Generate all the struct/class declarations for the module.
-            for (var i = 0; i < TranslationUnit.Classes.Count; ++i)
+            for (var i = 0; i < @namespace.Classes.Count; ++i)
             {
-                var @class = TranslationUnit.Classes[i];
+                var @class = @namespace.Classes[i];
 
                 if (@class.Ignore || @class.IsIncomplete)
                     continue;
@@ -130,26 +133,30 @@ namespace Cxxi.Generators.CLI
                     continue;
 
                 GenerateClass(@class);
-                needsNewline = true;
+                NeedNewLine();
 
-                if (i < TranslationUnit.Classes.Count - 1)
+                if (i < @namespace.Classes.Count - 1)
                     NewLine();
             }
 
-            if (TranslationUnit.HasFunctions)
+            if (@namespace.HasFunctions)
             {
-                if (needsNewline)
-                    NewLine();
-
-                GenerateFunctions();
+                NewLineIfNeeded();
+                GenerateFunctions(@namespace);
             }
 
-            PopIndent();
+            foreach(var childNamespace in @namespace.Namespaces)
+                GenerateNamespace(childNamespace);
+
+            if (generateNamespace)
+            {
+                WriteCloseBraceIndent();
+            }
         }
 
-        public void GenerateTypedefs()
+        public void GenerateTypedefs(Namespace @namespace)
         {
-            foreach (var typedef in TranslationUnit.Typedefs)
+            foreach (var typedef in @namespace.Typedefs)
             {
                 if (typedef.Ignore)
                     continue;
@@ -161,7 +168,7 @@ namespace Cxxi.Generators.CLI
             }
         }
 
-        public void GenerateFunctions()
+        public void GenerateFunctions(Namespace @namespace)
         {
             WriteLine("public ref class {0}{1}", SafeIdentifier(Library.Name),
                       TranslationUnit.FileNameWithoutExtension);
@@ -170,7 +177,7 @@ namespace Cxxi.Generators.CLI
             PushIndent();
 
             // Generate all the function declarations for the module.
-            foreach (var function in TranslationUnit.Functions)
+            foreach (var function in @namespace.Functions)
             {
                 GenerateFunction(function);
             }

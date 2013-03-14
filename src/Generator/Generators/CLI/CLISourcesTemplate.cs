@@ -74,11 +74,13 @@ namespace Cxxi.Generators.CLI
 
         public void GenerateDeclarations()
         {
-            // Generate all the struct/class definitions for the module.
-            for (var i = 0; i < TranslationUnit.Classes.Count; ++i)
-            {
-                var @class = TranslationUnit.Classes[i];
+            GenerateNamespace(TranslationUnit);
+        }
 
+        private void GenerateNamespace(Namespace @namespace)
+        {
+            foreach (var @class in @namespace.Classes)
+            {
                 if (@class.Ignore)
                     continue;
 
@@ -88,22 +90,21 @@ namespace Cxxi.Generators.CLI
                 GenerateClass(@class);
             }
 
-            if (TranslationUnit.HasFunctions)
+            if (@namespace.HasFunctions)
             {
-                var staticClassName = Library.Name + TranslationUnit.FileNameWithoutExtension;
-
                 // Generate all the function declarations for the module.
-                for (var i = 0; i < TranslationUnit.Functions.Count; ++i)
+                foreach (var function in @namespace.Functions)
                 {
-                    var function = TranslationUnit.Functions[i];
-
                     if (function.Ignore)
                         continue;
 
-                    GenerateFunction(function, staticClassName);
+                    GenerateFunction(function, @namespace);
                     NewLine();
                 }
             }
+
+            foreach(var childNamespace in @namespace.Namespaces)
+                GenerateNamespace(childNamespace);
         }
 
         public void GenerateDeclarationCommon(Declaration decl)
@@ -254,7 +255,7 @@ namespace Cxxi.Generators.CLI
         {
             Write("{0}::{1}(", QualifiedIdentifier(@class), SafeIdentifier(@class.Name));
 
-            var nativeType = string.Format("::{0}*", @class.OriginalName);
+            var nativeType = string.Format("::{0}*", @class.QualifiedOriginalName);
             WriteLine("{0} native)", isIntPtr ? "System::IntPtr" : nativeType);
 
             var hasBase = GenerateClassConstructorBase(@class);
@@ -372,14 +373,17 @@ namespace Cxxi.Generators.CLI
             WriteCloseBraceIndent();
         }
 
-        public void GenerateFunction(Function function, string className)
+        public void GenerateFunction(Function function, Namespace @namespace)
         {
             if (function.Ignore)
                 return;
 
             GenerateDeclarationCommon(function);
 
-            Write("{0} {1}::{2}::{3}(", function.ReturnType, Library.Name, className,
+            var classSig = string.Format("{0}::{1}{2}", QualifiedIdentifier(@namespace),
+                Library.Name, TranslationUnit.FileNameWithoutExtension);
+
+            Write("{0} {1}::{2}(", function.ReturnType, classSig,
                 SafeIdentifier(function.Name));
 
             for (var i = 0; i < function.Parameters.Count; ++i)
