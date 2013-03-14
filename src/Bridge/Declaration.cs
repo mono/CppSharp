@@ -58,8 +58,10 @@ namespace Cxxi
         {
             get
             {
+                if (Namespace == null)
+                    return OriginalName;
                 return Namespace.IsRoot ? OriginalName
-                    : string.Format("{0}::{1}", Namespace.Name, OriginalName);
+                    : string.Format("{0}::{1}", Namespace.QualifiedOriginalName, OriginalName);
             }
         }
 
