@@ -9,7 +9,6 @@ namespace Cxxi
     /// </summary>
     public class Namespace : Declaration
     {
-        public Namespace Parent { get; set; }
         public bool IsAnonymous { get; set; }
 
         public List<Namespace> Namespaces;
@@ -26,7 +25,7 @@ namespace Cxxi
                 if (this is TranslationUnit)
                     return this as TranslationUnit;
                 else
-                    return Parent.TranslationUnit;
+                    return Namespace.TranslationUnit;
             }
         }
 
@@ -35,7 +34,7 @@ namespace Cxxi
             get
             {
                 return !IgnoreFlags.HasFlag(IgnoreFlags.Generation) ||
-                    Parent.IsGenerated;
+                    Namespace.IsGenerated;
             }
         }
 
@@ -44,7 +43,7 @@ namespace Cxxi
             get
             {
                 return !IgnoreFlags.HasFlag(IgnoreFlags.Processing) ||
-                    Parent.IsProcessed;
+                    Namespace.IsProcessed;
             }
         }
 
@@ -56,7 +55,7 @@ namespace Cxxi
         public Namespace(Namespace parent, string name, bool isAnonymous = false)
         {
             Name = name;
-            Parent = parent;
+            Namespace = parent;
             IsAnonymous = isAnonymous;
 
             Namespaces = new List<Namespace>();
@@ -132,6 +131,9 @@ namespace Cxxi
         public Class FindClass(string name, bool isComplete,
             bool createDecl = false)
         {
+            var namespaces = name.Split(new string[] { "::" },
+                StringSplitOptions.RemoveEmptyEntries);
+
             var @class = FindClass(name);
 
             if (@class == null)
@@ -216,7 +218,7 @@ namespace Cxxi
             }
         }
 
-        public bool IsRoot { get { return Parent == null; } }
+        public bool IsRoot { get { return Namespace == null; } }
 
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {
