@@ -20,7 +20,7 @@ namespace Cxxi.Generators.CLI
             GenerateStart();
 
             WriteLine("#include \"{0}{1}.h\"",
-                Path.GetFileNameWithoutExtension(TranslationUnit.FileName),
+                TranslationUnit.FileNameWithoutExtension,
                 Options.WrapperSuffix);
 
             GenerateForwardReferenceHeaders();
