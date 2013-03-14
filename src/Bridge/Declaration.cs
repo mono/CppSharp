@@ -51,6 +51,17 @@ namespace Cxxi
             }
         }
 
+        public string QualifiedName
+        {
+            get
+            {
+                if (Namespace == null)
+                    return Name;
+                return Namespace.IsRoot ? Name
+                    : string.Format("{0}::{1}", Namespace.QualifiedName, Name);
+            }
+        }
+
         // Name of the declaration.
         public string OriginalName;
 
