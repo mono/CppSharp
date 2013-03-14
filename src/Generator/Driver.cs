@@ -163,11 +163,13 @@ namespace Cxxi
             Headers = new List<string>();
             Assembly = string.Empty;
             GeneratorKind = LanguageGeneratorKind.CSharp;
+            GenerateLibraryNamespace = true;
         }
 
         public bool Verbose = false;
         public bool ShowHelpText = false;
         public bool OutputDebug = false;
+        public bool GenerateLibraryNamespace;
         public string OutputNamespace;
         public string OutputDir;
         public string LibraryName;
