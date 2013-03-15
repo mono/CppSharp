@@ -92,7 +92,7 @@ namespace Cxxi.Generators.CSharp
         {
             var decl = typedef.Declaration;
 
-            TypeMap typeMap = null;
+            TypeMap typeMap;
             if (TypeMapDatabase.FindTypeMap(decl, out typeMap))
             {
                 return typeMap.CSharpSignature();
