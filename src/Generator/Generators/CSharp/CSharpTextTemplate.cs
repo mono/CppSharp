@@ -76,8 +76,13 @@ namespace Cxxi.Generators.CSharp
 
         public void GenerateDeclarations()
         {
+            GenerateNamespace(TranslationUnit);
+        }
+
+        private void GenerateNamespace(Namespace @namespace)
+        {
             // Generate all the enum declarations for the module.
-            foreach (var @enum in TranslationUnit.Enums)
+            foreach (var @enum in @namespace.Enums)
             {
                 if (@enum.Ignore || @enum.IsIncomplete)
                     continue;
@@ -87,7 +92,7 @@ namespace Cxxi.Generators.CSharp
             }
 
             // Generate all the typedef declarations for the module.
-            foreach (var typedef in TranslationUnit.Typedefs)
+            foreach (var typedef in @namespace.Typedefs)
             {
                 if (typedef.Ignore) continue;
 
@@ -98,7 +103,7 @@ namespace Cxxi.Generators.CSharp
             }
 
             // Generate all the struct/class declarations for the module.
-            foreach (var @class in TranslationUnit.Classes)
+            foreach (var @class in @namespace.Classes)
             {
                 if (@class.Ignore) continue;
 
@@ -106,17 +111,20 @@ namespace Cxxi.Generators.CSharp
                 NewLine();
             }
 
-            if (TranslationUnit.HasFunctions)
+            if (@namespace.HasFunctions)
             {
                 WriteLine("public partial class " + SafeIdentifier(Options.LibraryName));
                 WriteStartBraceIndent();
 
                 // Generate all the function declarations for the module.
-                foreach (var function in TranslationUnit.Functions)
+                foreach (var function in @namespace.Functions)
                     GenerateFunction(function);
 
                 WriteCloseBraceIndent();
             }
+
+            foreach(var childNamespace in @namespace.Namespaces)
+                GenerateNamespace(childNamespace);
         }
 
         public void GenerateDeclarationCommon(Declaration T)
