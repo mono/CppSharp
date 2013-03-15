@@ -1,3 +1,5 @@
+using System;
+
 namespace Cxxi.Types.Std
 {
     [TypeMap("va_list")]
@@ -25,6 +27,21 @@ namespace Cxxi.Types.Std
         public override void CLIMarshalToManaged(MarshalContext ctx)
         {
             ctx.Return.Write("marshalString<E_UTF8>({0})", ctx.ReturnVarName);
+        }
+
+        public override string CSharpSignature()
+        {
+            return "string";
+        }
+
+        public override void CSharpMarshalToNative(MarshalContext ctx)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void CSharpMarshalToManaged(MarshalContext ctx)
+        {
+            throw new NotImplementedException();
         }
     }
 
