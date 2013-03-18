@@ -21,12 +21,12 @@ namespace Cxxi.Types.Std
 
         public override void CLIMarshalToNative(MarshalContext ctx)
         {
-            ctx.Return.Write("marshalString<E_UTF8>({0})", ctx.Parameter.Name);
+            ctx.Return.Write("clix::marshalString<clix::E_UTF8>({0})", ctx.Parameter.Name);
         }
 
         public override void CLIMarshalToManaged(MarshalContext ctx)
         {
-            ctx.Return.Write("marshalString<E_UTF8>({0})", ctx.ReturnVarName);
+            ctx.Return.Write("clix::marshalString<clix::E_UTF8>({0})", ctx.ReturnVarName);
         }
 
         public override string CSharpSignature()
