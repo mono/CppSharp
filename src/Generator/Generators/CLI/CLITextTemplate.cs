@@ -22,7 +22,7 @@ namespace Cxxi.Generators.CLI
         }
     }
 
-public abstract class CLITextTemplate : TextTemplate
+    public abstract class CLITextTemplate : TextTemplate
     {
         protected const string DefaultIndent = "    ";
         protected const uint MaxIndent = 80;
