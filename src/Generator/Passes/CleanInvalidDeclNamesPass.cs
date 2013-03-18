@@ -50,6 +50,13 @@ namespace Cxxi.Passes
             return base.VisitTypedefDecl(typedef);
         }
 
+        public override bool VisitNamespace(Namespace @namespace)
+        {
+            // Do not clean up namespace names since it can mess up with the
+            // names of anonymous or the global namespace.
+            return true;
+        }
+
         private static void CheckEnumName(Enumeration @enum)
         {
             // If we still do not have a valid name, then try to guess one
