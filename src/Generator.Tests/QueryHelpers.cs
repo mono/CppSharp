@@ -5,6 +5,11 @@ namespace Generator.Tests
 {
     public static class LibraryQueryExtensions
     {
+        public static Namespace Namespace(this TranslationUnit unit, string name)
+        {
+            return unit.FindNamespace(name);
+        }
+
         public static Class Class(this Library library, string name)
         {
             return library.FindClass(name).ToList().First();
