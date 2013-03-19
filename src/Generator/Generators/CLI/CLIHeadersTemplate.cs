@@ -66,7 +66,7 @@ namespace Cxxi.Generators.CLI
             forwardRefsPrinter.Process();
 
             // Use a set to remove duplicate entries.
-            var forwardRefs = new HashSet<string>();
+            var forwardRefs = new SortedSet<string>(StringComparer.InvariantCulture);
 
             foreach (var forwardRef in forwardRefsPrinter.Refs)
             {
