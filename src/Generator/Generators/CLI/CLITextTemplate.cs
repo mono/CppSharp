@@ -34,7 +34,7 @@ namespace Cxxi.Generators.CLI
         protected CLITextTemplate(Driver driver, TranslationUnit unit)
             : base(driver, unit)
         {
-            TypePrinter = new CLITypePrinter(driver.TypeDatabase, driver.Library);
+            TypePrinter = new CLITypePrinter(driver);
             Includes = new HashSet<Include>();
         }
 

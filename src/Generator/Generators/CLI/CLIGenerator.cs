@@ -11,7 +11,7 @@ namespace Cxxi.Generators.CLI
 
         public CLIGenerator(Driver driver) : base(driver)
         {
-            typePrinter = new CLITypePrinter(driver.TypeDatabase, driver.Library);
+            typePrinter = new CLITypePrinter(driver);
             Type.TypePrinter = typePrinter;
         }
 

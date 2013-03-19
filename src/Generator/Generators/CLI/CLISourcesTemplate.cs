@@ -205,7 +205,7 @@ namespace Cxxi.Generators.CLI
 
         private void GenerateEventRaise(Event @event, Class @class)
         {
-            var typePrinter = new CLITypePrinter(Driver.TypeDatabase, Library);
+            var typePrinter = new CLITypePrinter(Driver);
 
             var @params = GetEventParameters(@event);
             var args = typePrinter.VisitParameters(@params, hasNames: true);

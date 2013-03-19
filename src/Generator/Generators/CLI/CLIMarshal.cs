@@ -234,7 +234,7 @@ namespace Cxxi.Generators.CLI
 
         private string ToCLITypeName(Declaration decl)
         {
-            var typePrinter = new CLITypePrinter(Driver.TypeDatabase, Driver.Library);
+            var typePrinter = new CLITypePrinter(Driver);
             return typePrinter.VisitDeclaration(decl);
         }
 

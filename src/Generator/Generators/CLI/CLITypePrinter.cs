@@ -7,12 +7,15 @@ namespace Cxxi.Generators.CLI
     public class CLITypePrinter : ITypePrinter, IDeclVisitor<string>
     {
         public Library Library { get; set; }
-        private readonly ITypeMapDatabase TypeMapDatabase;
 
-        public CLITypePrinter(ITypeMapDatabase database, Library library)
+        readonly ITypeMapDatabase TypeMapDatabase;
+        readonly DriverOptions Options;
+
+        public CLITypePrinter(Driver driver)
         {
-            TypeMapDatabase = database;
-            Library = library;
+            TypeMapDatabase = driver.TypeDatabase;
+            Library = driver.Library;
+            Options = driver.Options;
         }
 
         public string VisitTagType(TagType tag, TypeQualifiers quals)
