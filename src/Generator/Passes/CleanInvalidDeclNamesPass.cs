@@ -28,6 +28,11 @@ namespace Cxxi.Passes
 
         public override bool VisitDeclaration(Declaration decl)
         {
+            // Do not clean up namespace names since it can mess up with the
+            // names of anonymous or the global namespace.
+            if (decl is Namespace)
+                return true;
+
             decl.Name = CheckName(decl.Name);
 
             StringHelpers.CleanupText(ref decl.DebugText);
@@ -48,13 +53,6 @@ namespace Cxxi.Passes
                 typedef.ExplicityIgnored = true;
 
             return base.VisitTypedefDecl(typedef);
-        }
-
-        public override bool VisitNamespace(Namespace @namespace)
-        {
-            // Do not clean up namespace names since it can mess up with the
-            // names of anonymous or the global namespace.
-            return true;
         }
 
         private static void CheckEnumName(Enumeration @enum)
