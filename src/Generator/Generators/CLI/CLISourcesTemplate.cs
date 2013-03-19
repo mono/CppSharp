@@ -427,14 +427,15 @@ namespace Cxxi.Generators.CLI
                 if (IsInstanceFunction(function))
                 {
                     Write("((::{0}*)NativePtr)->", @class.QualifiedOriginalName);
+                    Write("{0}(", function.Name);
                 }
                 else
                 {
                     Write("::");
+                    Write("{0}(", function.QualifiedOriginalName);
                 }
             }
 
-            Write("{0}(", function.QualifiedOriginalName);
             GenerateFunctionParams(@params);
             WriteLine(");");
 
