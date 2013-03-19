@@ -124,5 +124,19 @@ namespace Cxxi
             foreach (var decl in decls)
                 decl.ExcludeFromPasses.Add(type);
         }
+
+        /// <summary>
+        /// Use this to rename namespaces.
+        /// </summary>
+        public void RenameNamespace(string name, string newName)
+        {
+            foreach (var unit in TranslationUnits)
+            {
+                var @namespace = unit.FindNamespace(name);
+
+                if (@namespace != null)
+                    @namespace.Name = newName;
+            }
+        }
     }
 }
