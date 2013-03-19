@@ -45,9 +45,9 @@ namespace Cxxi.Generators.CLI
             var typeRefs = TranslationUnit.TypeReferences as TypeRefsVisitor;
 
             // Generate the forward references.
-            foreach (var forwardRef in typeRefs.ForwardReferences)
+            foreach (var forwardRef in typeRefs.References)
             {
-                var decl = forwardRef;
+                var decl = forwardRef.Declaration;
 
                 if (decl.IsIncomplete && decl.CompleteDeclaration != null)
                      decl = decl.CompleteDeclaration;

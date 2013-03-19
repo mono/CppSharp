@@ -70,7 +70,7 @@ namespace Cxxi.Generators.CLI
 
             foreach (var forwardRef in forwardRefsPrinter.Refs)
             {
-                if (forwardRef.Declaration.Namespace != @namespace)
+                if (forwardRef.Namespace != @namespace)
                     continue;
 
                 forwardRefs.Add(forwardRef.Text);

@@ -7,6 +7,7 @@ namespace Cxxi.Generators.CLI
     public struct CLIForwardReference
     {
         public Declaration Declaration;
+        public Namespace Namespace;
         public string Text;
     }
 
@@ -15,6 +16,7 @@ namespace Cxxi.Generators.CLI
         public readonly IList<string> Includes;
         public readonly IList<CLIForwardReference> Refs;
         private readonly TypeRefsVisitor TypeRefs;
+        private TypeReference currentTypeReference;
 
         public CLIForwardReferencePrinter(TypeRefsVisitor typeRefs)
         {
@@ -25,8 +27,11 @@ namespace Cxxi.Generators.CLI
 
         public void Process()
         {
-            foreach (var forwardRef in TypeRefs.ForwardReferences)
-                forwardRef.Visit(this);
+            foreach (var typeRef in TypeRefs.References)
+            {
+                currentTypeReference = typeRef;
+                typeRef.Declaration.Visit(this);
+            }
 
             foreach (var baseClass in TypeRefs.Bases)
                 VisitBaseClass(baseClass);
@@ -59,6 +64,7 @@ namespace Cxxi.Generators.CLI
                 Refs.Add(new CLIForwardReference()
                     {
                         Declaration = @class,
+                        Namespace = currentTypeReference.Namespace,
                         Text = string.Format("value struct {0};", @class.Name)
                     });
 
@@ -68,6 +74,7 @@ namespace Cxxi.Generators.CLI
             Refs.Add(new CLIForwardReference()
             {
                 Declaration = @class,
+                Namespace = currentTypeReference.Namespace,
                 Text = string.Format("ref class {0};", @class.Name)
             });
 
@@ -145,6 +152,7 @@ namespace Cxxi.Generators.CLI
                 Refs.Add(new CLIForwardReference()
                 {
                     Declaration = @enum,
+                    Namespace = currentTypeReference.Namespace,
                     Text = string.Format("enum struct {0};", @enum.Name)
                 });
 
@@ -154,6 +162,7 @@ namespace Cxxi.Generators.CLI
             Refs.Add(new CLIForwardReference()
             {
                 Declaration = @enum,
+                Namespace = currentTypeReference.Namespace,
                 Text = string.Format("enum struct {0} : {1};", @enum.Name, @enum.Type)
             });
             return true;

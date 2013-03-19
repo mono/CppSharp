@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Cxxi.Types;
 
 namespace Cxxi
@@ -130,6 +131,12 @@ namespace Cxxi
         }
     }
 
+    public struct TypeReference
+    {
+        public Declaration Declaration;
+        public Namespace Namespace;
+    }
+
     /// <summary>
     /// This is used to get the declarations that each file needs to forward
     /// reference or include from other header files. Since in C++ everything
@@ -139,13 +146,14 @@ namespace Cxxi
     /// </summary>
     public class TypeRefsVisitor : AstVisitor
     {
-        public ISet<Declaration> ForwardReferences;
+        public ISet<TypeReference> References;
         public ISet<Class> Bases;
         private TranslationUnit unit;
+        private Namespace currentNamespace;
 
         public TypeRefsVisitor()
         {
-            ForwardReferences = new HashSet<Declaration>();
+            References = new HashSet<TypeReference>();
             Bases = new HashSet<Class>();
         }
 
@@ -157,7 +165,11 @@ namespace Cxxi
                 if (@namespace.TranslationUnit.IsSystemHeader)
                     return;
 
-            ForwardReferences.Add(declaration);
+            References.Add(new TypeReference()
+                {
+                    Declaration = declaration,
+                    Namespace = currentNamespace
+                });
         }
 
         public bool VisitTranslationUnit(TranslationUnit unit)
@@ -173,6 +185,12 @@ namespace Cxxi
             return true;
         }
 
+        public override bool VisitNamespace(Namespace @namespace)
+        {
+            currentNamespace = @namespace;
+            return base.VisitNamespace(@namespace);
+        }
+
         public override bool VisitClassDecl(Class @class)
         {
             if (@class.Ignore)
@@ -182,7 +200,7 @@ namespace Cxxi
             }
 
             if (Visited.Contains(@class))
-                return ForwardReferences.Contains(@class);
+                return References.Any(reference => reference.Declaration == @class);
 
             Collect(@class);
 
