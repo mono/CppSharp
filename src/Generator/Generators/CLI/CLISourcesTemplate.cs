@@ -24,6 +24,10 @@ namespace Cxxi.Generators.CLI
                 Options.WrapperSuffix);
 
             GenerateForwardReferenceHeaders();
+
+            if (Options.OutputInteropIncludes)
+                WriteLine("#include <clix.hpp>");
+
             NewLine();
 
             WriteLine("using namespace System;");

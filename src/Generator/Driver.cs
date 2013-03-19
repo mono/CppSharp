@@ -169,6 +169,7 @@ namespace Cxxi
         public bool Verbose = false;
         public bool ShowHelpText = false;
         public bool OutputDebug = false;
+        public bool OutputInteropIncludes = true;
         public bool GenerateLibraryNamespace;
         public string OutputNamespace;
         public string OutputDir;
