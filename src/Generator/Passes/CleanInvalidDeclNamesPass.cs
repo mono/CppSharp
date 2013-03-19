@@ -39,6 +39,12 @@ namespace Cxxi.Passes
             return base.VisitDeclaration(decl);
         }
 
+        public override bool VisitFunctionDecl(Function function)
+        {
+            uniqueName = 0;
+            return base.VisitFunctionDecl(function);
+        }
+
         public override bool VisitTypedefDecl(TypedefDecl typedef)
         {
             var @class = typedef.Namespace.FindClass(typedef.Name);
