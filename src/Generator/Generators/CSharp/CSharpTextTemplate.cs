@@ -85,6 +85,14 @@ namespace Cxxi.Generators.CSharp
 
         private void GenerateNamespace(Namespace @namespace)
         {
+            bool isGlobalNamespace = @namespace is TranslationUnit;
+
+            if (!isGlobalNamespace)
+            {
+                WriteLine("namespace {0}", @namespace.Name);
+                WriteStartBraceIndent();
+            }
+
             // Generate all the enum declarations for the module.
             foreach (var @enum in @namespace.Enums)
             {
@@ -129,6 +137,9 @@ namespace Cxxi.Generators.CSharp
 
             foreach(var childNamespace in @namespace.Namespaces)
                 GenerateNamespace(childNamespace);
+
+            if (!isGlobalNamespace)
+                WriteCloseBraceIndent();
         }
 
         public void GenerateDeclarationCommon(Declaration T)
