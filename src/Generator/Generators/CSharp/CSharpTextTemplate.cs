@@ -52,12 +52,16 @@ namespace Cxxi.Generators.CSharp
             WriteLine("using System.Runtime.InteropServices;");
             NewLine();
 
-            WriteLine("namespace {0}", SafeIdentifier(Driver.Options.LibraryName));
-            WriteStartBraceIndent();
+            if (Options.GenerateLibraryNamespace)
+            {
+                WriteLine("namespace {0}", SafeIdentifier(Driver.Options.LibraryName));
+                WriteStartBraceIndent();
+            }
 
             GenerateDeclarations();
 
-            WriteCloseBraceIndent();
+            if (Options.GenerateLibraryNamespace)
+                WriteCloseBraceIndent();
         }
 
         public void GenerateStart()
