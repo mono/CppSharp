@@ -161,7 +161,10 @@ namespace Cxxi.Generators.CSharp
             WriteStartBraceIndent();
 
             if (!@class.IsOpaque)
+            {
                 GenerateClassFields(@class);
+                GenerateClassMethods(@class);
+            }
 
             WriteCloseBraceIndent();
         }
@@ -193,6 +196,17 @@ namespace Cxxi.Generators.CSharp
                     WriteLine("[FieldOffset({0})]", field.Offset);
                 WriteLine("public {0} {1};", field.Type, SafeIdentifier(field.Name));
             }
+        }
+
+        public void GenerateClassMethods(Class @class)
+        {
+            foreach (var method in @class.Methods)
+                GenerateClassMethod(method, @class);
+        }
+
+        public void GenerateClassMethod(Method method, Class @class)
+        {
+            GenerateFunction(method);
         }
 
         #endregion
