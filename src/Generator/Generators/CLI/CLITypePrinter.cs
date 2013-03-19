@@ -195,8 +195,17 @@ namespace Cxxi.Generators.CLI
 
         public string VisitDeclaration(Declaration decl)
         {
-            var name = decl.Visit(this);
-            return string.Format("{0}::{1}", decl.Namespace.QualifiedName, name);
+            var names = new List<string>();
+
+            if (Options.GenerateLibraryNamespace)
+                names.Add(Library.Name);
+
+            if (!string.IsNullOrEmpty(decl.Namespace.QualifiedName))
+                names.Add(decl.Namespace.QualifiedName);
+
+            names.Add(decl.Visit(this));
+
+            return string.Join("::", names);
         }
 
         public string VisitClassDecl(Class @class)
