@@ -293,15 +293,14 @@ namespace Cxxi.Generators.CSharp
             Write("public unsafe static extern {0} {1}(", function.ReturnType,
                       SafeIdentifier(function.Name));
 
+            var @params = new List<string>();
             for(var i = 0; i < function.Parameters.Count; ++i)
             {
                 var param = function.Parameters[i];
-                Write("{0} {1}", param.Type, SafeIdentifier(param.Name));
-
-                if (i < function.Parameters.Count - 1)
-                    Write(", ");
+                @params.Add(string.Format("{0} {1}", param.Type, SafeIdentifier(param.Name)));
             }
 
+            Write(string.Join(", ", @params));
             WriteLine(");");
         }
 
