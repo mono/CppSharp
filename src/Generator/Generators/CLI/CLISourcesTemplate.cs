@@ -384,7 +384,7 @@ namespace Cxxi.Generators.CLI
 
             GenerateDeclarationCommon(function);
 
-            var classSig = string.Format("{0}::{1}{2}", QualifiedIdentifier(@namespace),
+            var classSig = string.Format("{0}{1}{2}", QualifiedIdentifier(@namespace),
                 Library.Name, TranslationUnit.FileNameWithoutExtension);
 
             Write("{0} {1}::{2}(", function.ReturnType, classSig,
@@ -426,18 +426,19 @@ namespace Cxxi.Generators.CLI
             {
                 Write("this0->");
             }
+            else if (IsInstanceFunction(function))
+            {
+                Write("((::{0}*)NativePtr)->", @class.QualifiedOriginalName);
+            }
+
+            if (IsInstanceFunction(function))
+            {
+                Write("{0}(", function.OriginalName);
+            }
             else
             {
-                if (IsInstanceFunction(function))
-                {
-                    Write("((::{0}*)NativePtr)->", @class.QualifiedOriginalName);
-                    Write("{0}(", function.Name);
-                }
-                else
-                {
-                    Write("::");
-                    Write("{0}(", function.QualifiedOriginalName);
-                }
+                Write("::");
+                Write("{0}(", function.QualifiedOriginalName);
             }
 
             GenerateFunctionParams(@params);
