@@ -68,8 +68,30 @@ namespace Cxxi
 
         public Namespace FindNamespace(string name)
         {
-            return Namespaces.Find(e => e.Name.Equals(name));
+            var namespaces = name.Split(new string[] { "::" },
+                StringSplitOptions.RemoveEmptyEntries);
+
+            return FindNamespace(namespaces);
         }
+
+        public Namespace FindNamespace(string[] namespaces)
+        {
+            Namespace currentNamespace = this;
+
+            foreach (var @namespace in namespaces)
+            {
+                var childNamespace = currentNamespace.Namespaces.Find(
+                    e => e.Name.Equals(@namespace));
+
+                if (childNamespace == null)
+                    return null;
+
+                currentNamespace = childNamespace;
+            }
+
+            return currentNamespace;
+        }
+
 
         public Namespace FindCreateNamespace(string name, Namespace parent)
         {
