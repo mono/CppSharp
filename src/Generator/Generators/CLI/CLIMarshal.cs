@@ -126,6 +126,7 @@ namespace Cxxi.Generators.CLI
             TypeMap typeMap = null;
             if (TypeMapDatabase.FindTypeMap(decl, out typeMap))
             {
+                typeMap.Type = typedef;
                 typeMap.CLIMarshalToManaged(Context);
                 return typeMap.IsValueType;
             }
