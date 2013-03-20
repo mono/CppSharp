@@ -1025,6 +1025,8 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, Cxxi::Function^ F,
     using namespace clang;
     using namespace clix;
 
+    assert (FD->getBuiltinID() == 0);
+
     auto FT = FD->getType()->getAs<FunctionType>();
     auto CC = FT->getCallConv();
 
@@ -1071,6 +1073,8 @@ Cxxi::Function^ Parser::WalkFunction(clang::FunctionDecl* FD, bool IsDependent,
 {
     using namespace clang;
     using namespace clix;
+
+    assert (FD->getBuiltinID() == 0);
 
     auto NS = GetNamespace(FD);
     assert(NS && "Expected a valid namespace");
@@ -1395,6 +1399,10 @@ Cxxi::Declaration^ Parser::WalkDeclaration(clang::Decl* D, clang::TypeLoc* TL,
     {
         FunctionDecl* FD = cast<FunctionDecl>(D);
         if (!FD->isFirstDeclaration())
+            break;
+
+        // Check for and ignore built-in functions.
+        if (FD->getBuiltinID() != 0)
             break;
 
         auto F = WalkFunction(FD);
