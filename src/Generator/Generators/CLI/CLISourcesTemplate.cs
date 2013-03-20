@@ -295,6 +295,8 @@ namespace Cxxi.Generators.CLI
         {
             foreach (var field in @class.Fields)
             {
+                if (field.Ignore) continue;
+
                 var nativeField = string.Format("{0}->{1}",
                                                 nativePointer, field.OriginalName);
 
