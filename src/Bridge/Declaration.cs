@@ -215,6 +215,7 @@ namespace Cxxi
         T VisitParameterDecl(Parameter parameter);
         T VisitTypedefDecl(TypedefDecl typedef);
         T VisitEnumDecl(Enumeration @enum);
+        T VisitVariableDecl(Variable variable);
         T VisitClassTemplateDecl(ClassTemplate template);
         T VisitFunctionTemplateDecl(FunctionTemplate template);
         T VisitMacroDefinition(MacroDefinition macro);

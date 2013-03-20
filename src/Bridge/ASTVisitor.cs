@@ -225,6 +225,11 @@ namespace Cxxi
             return true;
         }
 
+        public bool VisitVariableDecl(Variable variable)
+        {
+            return variable.Type.Visit(this, variable.QualifiedType.Qualifiers);
+        }
+
         public virtual bool VisitEnumItem(Enumeration.Item item)
         {
             return true;

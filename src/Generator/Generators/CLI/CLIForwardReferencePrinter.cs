@@ -168,6 +168,11 @@ namespace Cxxi.Generators.CLI
             return true;
         }
 
+        public bool VisitVariableDecl(Variable variable)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool VisitClassTemplateDecl(ClassTemplate template)
         {
             throw new NotImplementedException();

@@ -233,6 +233,11 @@ namespace Cxxi.Generators.CLI
             return true;
         }
 
+        public bool VisitVariableDecl(Variable variable)
+        {
+            throw new NotImplementedException();
+        }
+
         private string ToCLITypeName(Declaration decl)
         {
             var typePrinter = new CLITypePrinter(Driver);
@@ -591,6 +596,11 @@ namespace Cxxi.Generators.CLI
             Return.Write("(::{0}){1}", @enum.QualifiedOriginalName,
                          Context.Parameter.Name);
             return true;
+        }
+
+        public bool VisitVariableDecl(Variable variable)
+        {
+            throw new NotImplementedException();
         }
 
         public bool VisitClassTemplateDecl(ClassTemplate template)

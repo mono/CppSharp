@@ -186,6 +186,11 @@ namespace Cxxi.Generators.CSharp
             return @enum.Name;
         }
 
+        public string VisitVariableDecl(Variable variable)
+        {
+            throw new NotImplementedException();
+        }
+
         public string VisitClassTemplateDecl(ClassTemplate template)
         {
             throw new NotImplementedException();

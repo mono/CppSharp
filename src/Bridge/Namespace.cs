@@ -17,6 +17,7 @@ namespace Cxxi
         public List<Class> Classes;
         public List<Template> Templates;
         public List<TypedefDecl> Typedefs;
+        public List<Variable> Variables;
 
         public TranslationUnit TranslationUnit
         {

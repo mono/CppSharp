@@ -389,6 +389,16 @@ Cxxi::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record, bool IsDependen
         RC->Fields->Add(Field);
     }
 
+    // Iterate through the record static fields.
+    for(auto it = Record->decls_begin(); it != Record->decls_end(); ++it)
+    {
+        auto Decl = *it;
+        if (!isa<VarDecl>(Decl)) continue;
+
+        Cxxi::Variable^ Var = WalkVariable(cast<VarDecl>(Decl));
+        RC->Variables->Add(Var);
+    }
+
     // Iterate through the record bases.
     for(auto it = Record->bases_begin(); it != Record->bases_end(); ++it)
     {
@@ -1250,6 +1260,9 @@ Cxxi::Variable^ Parser::WalkVariable(clang::VarDecl *VD)
 
     auto Var = gcnew Cxxi::Variable();
     Var->Name = marshalString<E_UTF8>(VD->getName());
+
+    auto TL = VD->getTypeSourceInfo()->getTypeLoc();
+    Var->QualifiedType = GetQualifiedType(VD->getType(), WalkType(VD->getType(), &TL));
 
     return Var;
 }
