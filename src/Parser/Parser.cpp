@@ -63,9 +63,7 @@ static std::string GetClangBuiltinIncludeDir()
 //-----------------------------------//
 
 #ifdef _MSC_VER
-bool GetVisualStudioEnv(const char* env,
-                        std::vector<std::string>& pathes,
-                        int probeFrom = 0, int probeTo = 0);
+std::vector<std::string> GetWindowsSystemIncludeDirs();
 #endif
 
 void Parser::Setup(ParserOptions^ Opts)
@@ -122,27 +120,13 @@ void Parser::Setup(ParserOptions^ Opts)
     C->getHeaderSearchOpts().AddPath(GetClangBuiltinIncludeDir(),
         clang::frontend::System, false, false);
 
-
-#if defined(WithClangWindowsSystemIncludeDirsPatch)
+#ifdef _MSC_VER
     std::vector<std::string> SystemDirs = clang::driver::GetWindowsSystemIncludeDirs();
     clang::HeaderSearchOptions& HSOpts = C->getHeaderSearchOpts();
 
     for(size_t i = 0; i < SystemDirs.size(); ++i)
     {
-        HSOpts.AddPath(SystemDirs[i], frontend::System, false, false, true);
-    }
-#endif
-
-#ifdef _MSC_VER
-    std::vector<std::string> SystemDirs;
-    if(GetVisualStudioEnv("INCLUDE", SystemDirs, Opts->ToolSetToUse, Opts->ToolSetToUse))
-    {
-        clang::HeaderSearchOptions& HSOpts = C->getHeaderSearchOpts();
-
-        for(size_t i = 0; i < SystemDirs.size(); ++i)
-        {
-            HSOpts.AddPath(SystemDirs[i], frontend::System, false, false);
-        }
+        HSOpts.AddPath(SystemDirs[i], frontend::System, false, false);
     }
 #endif
 
@@ -322,6 +306,12 @@ Cxxi::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record, bool IsDependen
 {
     using namespace clang;
     using namespace clix;
+
+    //if (Record->isAnonymousStructOrUnion())
+    //{
+    //    //assert(0);
+    //    return nullptr;
+    //}
 
     if (Record->hasFlexibleArrayMember())
     {
@@ -600,6 +590,12 @@ Cxxi::Namespace^ Parser::GetNamespace(const clang::NamedDecl* ND)
             // We might be able to translate these to C# nested types.
             continue;
         }
+        case Decl::ClassTemplateSpecialization:
+        {
+            // FIXME: Ignore ClassTemplateSpecialization namespaces...
+            // We might be able to translate these to C# nested types.
+            continue;
+        }
         default:
         {
             StringRef Kind = Ctx->getDeclKindName();
@@ -655,6 +651,37 @@ static Cxxi::PrimitiveType WalkBuiltinType(const clang::BuiltinType* Builtin)
 }
 
 //-----------------------------------//
+
+clang::TypeLoc ResolveTypeLoc(clang::TypeLoc TL, clang::TypeLoc::TypeLocClass Class)
+{
+    using namespace clang;
+
+    auto TypeLocClass = TL.getTypeLocClass();
+
+    if (TypeLocClass == Class)
+    {
+        return TL;
+    }
+    if (TypeLocClass == TypeLoc::Qualified)
+    {
+        auto UTL = TL.getUnqualifiedLoc();
+        TL = UTL;
+    }
+    else if (TypeLocClass == TypeLoc::Elaborated)
+    {
+        auto ETL = TL.getAs<ElaboratedTypeLoc>();
+        auto ITL = ETL.getNextTypeLoc();
+        TL = ITL;
+    }
+    else if (TypeLocClass == TypeLoc::Paren)
+    {
+        auto PTL = TL.getAs<ParenTypeLoc>();
+        TL = PTL.getNextTypeLoc();
+    }
+
+    assert(TL.getTypeLocClass() == Class);
+    return TL;
+}
 
 Cxxi::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
     bool DesugarType)
@@ -884,9 +911,17 @@ Cxxi::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
     case Type::TemplateTypeParm:
     {
         auto TP = Type->getAs<TemplateTypeParmType>();
-        auto TPT = gcnew Cxxi::TemplateParameterType();
-        //TPT->Parameter = WalkDeclaration(TP->getDecl());
 
+        auto TPT = gcnew Cxxi::TemplateParameterType();
+
+        if (auto Ident = TP->getIdentifier())
+            TPT->Parameter.Name = marshalString<E_UTF8>(Ident->getName());
+
+        return TPT;
+    }
+    case Type::SubstTemplateTypeParm:
+    {
+        auto TPT = gcnew Cxxi::TemplateParameterType();
         return TPT;
     }
     case Type::InjectedClassName:
@@ -1053,6 +1088,7 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, Cxxi::Function^ F,
     if (auto TSI = FD->getTypeSourceInfo())
     {
        TypeLoc TL = TSI->getTypeLoc();
+       //RTL = ResolveTypeLoc(TL).getAs<FunctionTypeLoc>.getResultLoc();
        RTL = TL.getAs<FunctionTypeLoc>().getResultLoc();
     }
     F->ReturnType = WalkType(FD->getResultType(), &RTL);
@@ -1498,6 +1534,14 @@ Cxxi::Declaration^ Parser::WalkDeclaration(clang::Decl* D, clang::TypeLoc* TL,
     default:
     {
         Debug("Unhandled declaration kind: %s\n", D->getDeclKindName());
+
+        auto &SM = C->getSourceManager();
+        auto Loc = D->getLocation();
+        auto FileName = SM.getFilename(Loc);
+        auto Offset = SM.getFileOffset(Loc);
+        auto LineNo = SM.getLineNumber(SM.getFileID(Loc), Offset);
+        Debug("  %s (line %u)\n", FileName, LineNo);
+
         break;
     } };
 
