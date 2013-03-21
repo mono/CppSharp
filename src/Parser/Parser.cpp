@@ -121,7 +121,7 @@ void Parser::Setup(ParserOptions^ Opts)
         clang::frontend::System, false, false);
 
 #ifdef _MSC_VER
-    std::vector<std::string> SystemDirs = clang::driver::GetWindowsSystemIncludeDirs();
+    std::vector<std::string> SystemDirs = GetWindowsSystemIncludeDirs();
     clang::HeaderSearchOptions& HSOpts = C->getHeaderSearchOpts();
 
     for(size_t i = 0; i < SystemDirs.size(); ++i)
