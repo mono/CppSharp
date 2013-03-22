@@ -384,9 +384,23 @@ namespace Cxxi.Generators.CLI
 
         private void GenerateStructMarshaling(Class @class, string nativePointer)
         {
+            GenerateStructMarshalingFields(@class, nativePointer);
+        }
+
+        private void GenerateStructMarshalingFields(Class @class, string nativePointer)
+        {
+            foreach (var @base in @class.Bases)
+            {
+                if (!@base.IsClass || @base.Class.Ignore) 
+                    continue;
+
+                var baseClass = @base.Class;
+                GenerateStructMarshalingFields(baseClass, nativePointer);
+            }
+
             foreach (var field in @class.Fields)
             {
-                if (field.Ignore) continue;
+                if (CheckIgnoreField(@class, field)) continue;
 
                 var nativeField = string.Format("{0}->{1}",
                                                 nativePointer, field.OriginalName);
