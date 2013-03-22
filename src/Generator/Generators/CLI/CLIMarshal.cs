@@ -586,8 +586,17 @@ namespace Cxxi.Generators.CLI
             if (!string.IsNullOrWhiteSpace(marshal.SupportBefore))
                 SupportBefore.WriteLine(marshal.SupportBefore);
 
+            if(field.Type.IsPointer())
+            {
+                SupportBefore.WriteLine("if ({0} != nullptr)", fieldRef);
+                SupportBefore.PushIndent();
+            }
+
             SupportBefore.WriteLine("{0}.{1} = {2};", marshalVar, field.OriginalName,
                                     marshal.Return);
+
+            if(field.Type.IsPointer())
+                SupportBefore.PopIndent();
         }
 
         public bool VisitFieldDecl(Field field)
