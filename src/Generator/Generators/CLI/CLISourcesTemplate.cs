@@ -479,9 +479,69 @@ namespace Cxxi.Generators.CLI
             {
                 if (method.Kind != CXXMethodKind.Constructor)
                     GenerateFunctionCall(method, @class);
+                else
+                    GenerateValueTypeConstructorCall(method, @class);
             }
 
             WriteCloseBraceIndent();
+        }
+
+        private void GenerateValueTypeConstructorCall(Method method, Class @class)
+        {
+            var names = new List<string>();
+
+            foreach (var param in method.Parameters)
+            {
+                var ctx = new MarshalContext(Driver)
+                              {
+                                  Parameter = param,
+                                  ArgName = param.Name,
+                              };
+
+                var marshal = new CLIMarshalManagedToNativePrinter(Driver.TypeDatabase,
+                                                                   ctx);
+                param.Visit(marshal);
+
+                if (!string.IsNullOrWhiteSpace(marshal.SupportBefore))
+                    WriteLine(marshal.SupportBefore);
+
+                names.Add(marshal.Return);
+            }
+
+            WriteLine("auto _native = ::{0}({1});", @class.QualifiedOriginalName,
+                      string.Join(", ", names));
+
+            GenerateValueTypeConstructorCallFields(@class);
+        }
+
+        private void GenerateValueTypeConstructorCallFields(Class @class)
+        {
+            foreach (var @base in @class.Bases)
+            {
+                if (!@base.IsClass || @base.Class.Ignore) 
+                    continue;
+
+                var baseClass = @base.Class;
+                GenerateValueTypeConstructorCallFields(baseClass);
+            }
+
+            foreach (var field in @class.Fields)
+            {
+                if (CheckIgnoreField(@class, field)) continue;
+
+                var varName = string.Format("_native.{0}", field.OriginalName);
+
+                var ctx = new MarshalContext(Driver)
+                    {
+                        ReturnVarName = varName,
+                        ReturnType = field.Type
+                    };
+
+                var marshal = new CLIMarshalNativeToManagedPrinter(Driver, ctx);
+                field.Visit(marshal);
+
+                WriteLine("this->{0} = {1};", field.Name, marshal.Return);
+            }
         }
 
         public void GenerateFunction(Function function, Namespace @namespace)
