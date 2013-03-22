@@ -277,18 +277,6 @@ namespace Cxxi.Generators.CLI
             if (!@class.IsValueType)
                 return;
 
-            PushIndent();
-            foreach (var field in @class.Fields)
-            {
-                if (CheckIgnoreField(@class, field)) continue;
-
-                GenerateDeclarationCommon(field);
-                if (@class.IsUnion)
-                    WriteLine("[FieldOffset({0})]", field.Offset);
-                WriteLine("{0} {1};", field.Type, SafeIdentifier(field.Name));
-            }
-            PopIndent();
-
             // Handle the case of struct (value-type) inheritance by adding the base
             // fields to the managed value subtypes.
             foreach (var @base in @class.Bases)
@@ -306,6 +294,18 @@ namespace Cxxi.Generators.CLI
 
                 GenerateClassFields(baseClass);
             }
+
+            PushIndent();
+            foreach (var field in @class.Fields)
+            {
+                if (CheckIgnoreField(@class, field)) continue;
+
+                GenerateDeclarationCommon(field);
+                if (@class.IsUnion)
+                    WriteLine("[FieldOffset({0})]", field.Offset);
+                WriteLine("{0} {1};", field.Type, SafeIdentifier(field.Name));
+            }
+            PopIndent();
         }
 
         public void GenerateClassEvents(Class @class)
