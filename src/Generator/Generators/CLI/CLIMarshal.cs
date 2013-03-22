@@ -134,7 +134,16 @@ namespace Cxxi.Generators.CLI
                 return typeMap.IsValueType;
             }
 
-            // TODO: How should function pointers behave here?
+            FunctionType function;
+            if (decl.Type.IsPointerTo(out function))
+            {
+                Return.Write("safe_cast<{0}>(", typedef);
+                Return.Write("System::Runtime::InteropServices::Marshal::");
+                Return.Write("GetDelegateForFunctionPointer(");
+                Return.Write("IntPtr({0}), {1}::typeid))",Context.ReturnVarName,
+                    typedef.ToString().TrimEnd('^'));
+                return true;
+            }
 
             return decl.Type.Visit(this);
         }
