@@ -534,15 +534,6 @@ namespace Cxxi.Generators.CLI
 
         private void MarshalValueClass(Class @class)
         {
-            if (Context.Parameter.Type.IsReference())
-            {
-                var argName = string.Format("_{0}", Context.ArgName);
-                SupportBefore.Write("auto {0} = (::{1}*)&{2};",
-                                    argName, @class.OriginalName,
-                                    Context.Parameter.Name);
-                Return.Write("*{0}", argName);
-                return;
-            }
 
             SupportAfter.PushIndent();
 
