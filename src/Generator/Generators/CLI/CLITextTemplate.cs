@@ -142,6 +142,9 @@ namespace Cxxi.Generators.CLI
         {
             if (field.Ignore) return true;
 
+            if (field.Access != AccessSpecifier.Public)
+                return true;
+
             return false;
         }
 
