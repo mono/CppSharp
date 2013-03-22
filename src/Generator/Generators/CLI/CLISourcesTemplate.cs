@@ -141,6 +141,12 @@ namespace Cxxi.Generators.CLI
                 GenerateDeclarationCommon(@event);
                 GenerateEvent(@event, @class);
             }
+
+            foreach (var variable in @class.Variables)
+            {
+                GenerateDeclarationCommon(variable);
+                GenerateVariable(variable, @class);
+            }
         }
 
         private void GenerateEvent(Event @event, Class @class)
@@ -253,6 +259,11 @@ namespace Cxxi.Generators.CLI
             WriteLine(");");
 
             WriteCloseBraceIndent();
+        }
+
+        private void GenerateVariable(Variable variable, Class @class)
+        {
+
         }
 
         private void GenerateClassConstructor(Class @class, bool isIntPtr)

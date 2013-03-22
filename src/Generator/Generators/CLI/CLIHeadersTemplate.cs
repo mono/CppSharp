@@ -244,6 +244,7 @@ namespace Cxxi.Generators.CLI
 
             GenerateClassEvents(@class);
             GenerateClassMethods(@class);
+            GenerateClassVariables(@class);
 
             WriteLine("};");
         }
@@ -374,6 +375,21 @@ namespace Cxxi.Generators.CLI
 
             foreach(var method in staticMethods)
                 GenerateMethod(method);
+
+            PopIndent();
+        }
+
+        public void GenerateClassVariables(Class @class)
+        {
+            PushIndent();
+
+            foreach(var variable in @class.Variables)
+            {
+                if (variable.Ignore) continue;
+
+                WriteLine("static property {0} {1};", variable.Type,
+                    variable.Name);
+            }
 
             PopIndent();
         }
