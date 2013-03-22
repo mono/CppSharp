@@ -94,15 +94,15 @@ namespace Cxxi.Generators.CLI
                 return string.Format("{0}^", function.Visit(this, quals));
             }
 
-            if (pointee.IsPrimitiveType(PrimitiveType.Void, walkTypedefs: true) ||
-                pointee.IsPrimitiveType(PrimitiveType.UInt8, walkTypedefs: true))
-            {
-                return "System::IntPtr";
-            }
-
             if (pointee.IsPrimitiveType(PrimitiveType.Char) && quals.IsConst)
             {
                 return "System::String^";
+            }
+
+            PrimitiveType primitive;
+            if (pointee.IsPrimitiveType(out primitive, walkTypedefs: true))
+            {
+                return "System::IntPtr";
             }
 
             return pointee.Visit(this, quals);
