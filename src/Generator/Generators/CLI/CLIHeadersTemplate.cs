@@ -279,7 +279,7 @@ namespace Cxxi.Generators.CLI
             PushIndent();
             foreach (var field in @class.Fields)
             {
-                if (field.Ignore) continue;
+                if (CheckIgnoreField(@class, field)) continue;
 
                 GenerateDeclarationCommon(field);
                 if (@class.IsUnion)
