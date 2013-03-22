@@ -217,6 +217,16 @@ namespace Cxxi
             }
         }
 
+        public static void CopyClassFields(this Library library, string source,
+            string destination)
+        {
+            foreach (var @class in library.FindClass(source))
+            {
+                foreach (var dest in library.FindClass(destination))
+                    dest.Fields.AddRange(@class.Fields);
+            }
+        }
+
         #endregion
 
         #region Function Helpers
