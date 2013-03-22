@@ -535,29 +535,37 @@ namespace Cxxi.Generators.CLI
         private void MarshalValueClass(Class @class)
         {
 
-            SupportAfter.PushIndent();
+            var marshalVar = "_marshal" + Context.ParameterIndex++;
+
+            SupportBefore.WriteLine("auto {0} = ::{1}();", marshalVar,
+                @class.QualifiedOriginalName);
+            SupportBefore.PushIndent();
 
             foreach (var field in @class.Fields)
             {
-                SupportAfter.Write("{0}.{1} = ", Context.ArgName,
-                                    field.OriginalName);
-
                 var fieldRef = string.Format("{0}.{1}", Context.Parameter.Name,
                                                 field.Name);
 
                 var marshalCtx = new MarshalContext(Context.Driver)
                     {
-                        ArgName = fieldRef
+                        ArgName = fieldRef,
+                        ParameterIndex = Context.ParameterIndex++
                     };
 
                 var marshal = new CLIMarshalManagedToNativePrinter(TypeMapDatabase,
                                                                    marshalCtx);
                 field.Visit(marshal);
 
-                SupportAfter.WriteLine("{0};", marshal.Return);
+                Context.ParameterIndex = marshalCtx.ParameterIndex;
+
+                if (!string.IsNullOrWhiteSpace(marshal.SupportBefore))
+                    SupportBefore.WriteLine(marshal.SupportBefore);
+
+                SupportBefore.WriteLine("{0}.{1} = {2};", marshalVar, field.OriginalName,
+                    marshal.Return);
             }
 
-            Return.Write("::{0}()", @class.QualifiedOriginalName);
+            Return.Write(marshalVar);
 
             if (Context.Parameter.Type.IsPointer())
                 ArgumentPrefix.Write("&");
