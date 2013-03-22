@@ -436,7 +436,13 @@ namespace Cxxi.Generators.CLI
         {
             var type = field.Type.Visit(Type.TypePrinter, field.QualifiedType.Qualifiers);
 
-            WriteLine("property {0} {1};", type, field.Name);
+            WriteLine("property {0} {1}", type, field.Name);
+            WriteStartBraceIndent();
+
+            WriteLine("{0} get();", type);
+            WriteLine("void set({0});", type);
+
+            WriteCloseBraceIndent();
         }
 
         public void GenerateMethod(Method method)

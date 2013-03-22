@@ -136,6 +136,17 @@ namespace Cxxi.Generators.CLI
                 NewLine();
             }
 
+            if (@class.IsRefType)
+            {
+                foreach (var field in @class.Fields)
+                {
+                    if (CheckIgnoreField(@class, field))
+                        continue;
+
+                    GenerateFieldProperty(field);
+                }
+            }
+
             foreach (var @event in @class.Events)
             {
                 GenerateDeclarationCommon(@event);
@@ -147,6 +158,75 @@ namespace Cxxi.Generators.CLI
                 GenerateDeclarationCommon(variable);
                 GenerateVariable(variable, @class);
             }
+        }
+
+        private void GenerateFieldProperty(Field field)
+        {
+            var @class = field.Class;
+
+            GenerateFieldPropertyGetter(field, @class);
+            GenerateFieldPropertySetter(field, @class);
+        }
+
+        private void GenerateFieldPropertySetter(Field field, Class @class)
+        {
+            WriteLine("void {0}::{1}::set({2} value)", QualifiedIdentifier(@class),
+                      field.Name, field.Type);
+            WriteStartBraceIndent();
+
+            var param = new Parameter
+                {
+                    Name = "value",
+                    QualifiedType = field.QualifiedType
+                };
+
+            var ctx = new MarshalContext(Driver)
+                {
+                    Parameter = param,
+                    ArgName = param.Name,
+                };
+
+            var marshal = new CLIMarshalManagedToNativePrinter(Driver.TypeDatabase,
+                                                               ctx);
+            param.Visit(marshal);
+
+            var variable = string.Format("((::{0}*)NativePtr)->{1}",
+                                         @class.QualifiedOriginalName, field.OriginalName);
+
+            if (!string.IsNullOrWhiteSpace(marshal.SupportBefore))
+                WriteLine(marshal.SupportBefore);
+
+            WriteLine("{0} = {1};", variable, marshal.Return);
+
+            if (!string.IsNullOrWhiteSpace(marshal.SupportAfter))
+                WriteLine(marshal.SupportAfter);
+
+            WriteCloseBraceIndent();
+            NewLine();
+        }
+
+        private void GenerateFieldPropertyGetter(Field field, Class @class)
+        {
+            WriteLine("{0} {1}::{2}::get()", field.Type, QualifiedIdentifier(@class),
+                      field.Name);
+            WriteStartBraceIndent();
+
+            var variable = string.Format("((::{0}*)NativePtr)->{1}",
+                                         @class.QualifiedOriginalName, field.OriginalName);
+
+            var ctx = new MarshalContext(Driver)
+                {
+                    ReturnVarName = variable,
+                    ReturnType = field.Type
+                };
+
+            var marshal = new CLIMarshalNativeToManagedPrinter(Driver, ctx);
+            field.Visit(marshal);
+
+            WriteLine("return {0};", marshal.Return);
+
+            WriteCloseBraceIndent();
+            NewLine();
         }
 
         private void GenerateEvent(Event @event, Class @class)
