@@ -74,7 +74,10 @@ namespace Cxxi.Generators.CLI
 
             PrimitiveType primitive;
             if (pointee.IsPrimitiveType(out primitive, walkTypedefs: true))
-                Return.Write("*");
+            {
+                Return.Write("IntPtr({0})", Context.ReturnVarName);
+                return true;
+            }
 
             if (!pointee.Visit(this, quals))
                 return false;
