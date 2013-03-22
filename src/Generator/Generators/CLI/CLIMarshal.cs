@@ -541,34 +541,53 @@ namespace Cxxi.Generators.CLI
                 @class.QualifiedOriginalName);
             SupportBefore.PushIndent();
 
-            foreach (var field in @class.Fields)
-            {
-                var fieldRef = string.Format("{0}.{1}", Context.Parameter.Name,
-                                                field.Name);
-
-                var marshalCtx = new MarshalContext(Context.Driver)
-                    {
-                        ArgName = fieldRef,
-                        ParameterIndex = Context.ParameterIndex++
-                    };
-
-                var marshal = new CLIMarshalManagedToNativePrinter(TypeMapDatabase,
-                                                                   marshalCtx);
-                field.Visit(marshal);
-
-                Context.ParameterIndex = marshalCtx.ParameterIndex;
-
-                if (!string.IsNullOrWhiteSpace(marshal.SupportBefore))
-                    SupportBefore.WriteLine(marshal.SupportBefore);
-
-                SupportBefore.WriteLine("{0}.{1} = {2};", marshalVar, field.OriginalName,
-                    marshal.Return);
-            }
+            MarshalValueClassFields(@class, marshalVar);
 
             Return.Write(marshalVar);
 
             if (Context.Parameter.Type.IsPointer())
                 ArgumentPrefix.Write("&");
+        }
+
+        private void MarshalValueClassFields(Class @class, string marshalVar)
+        {
+            foreach (var @base in @class.Bases)
+            {
+                if (!@base.IsClass || @base.Class.Ignore) 
+                    continue;
+
+                var baseClass = @base.Class;
+                MarshalValueClassFields(baseClass, marshalVar);
+            }
+
+            foreach (var field in @class.Fields)
+            {
+                MarshalValueClassField(field, marshalVar);
+            }
+        }
+
+        private void MarshalValueClassField(Field field, string marshalVar)
+        {
+            var fieldRef = string.Format("{0}.{1}", Context.Parameter.Name,
+                                         field.Name);
+
+            var marshalCtx = new MarshalContext(Context.Driver)
+                                 {
+                                     ArgName = fieldRef,
+                                     ParameterIndex = Context.ParameterIndex++
+                                 };
+
+            var marshal = new CLIMarshalManagedToNativePrinter(TypeMapDatabase,
+                                                               marshalCtx);
+            field.Visit(marshal);
+
+            Context.ParameterIndex = marshalCtx.ParameterIndex;
+
+            if (!string.IsNullOrWhiteSpace(marshal.SupportBefore))
+                SupportBefore.WriteLine(marshal.SupportBefore);
+
+            SupportBefore.WriteLine("{0}.{1} = {2};", marshalVar, field.OriginalName,
+                                    marshal.Return);
         }
 
         public bool VisitFieldDecl(Field field)
