@@ -111,6 +111,14 @@ namespace Cxxi.Generators.CLI
             }
         }
 
+        public string GenerateParametersList(List<Parameter> parameters)
+        {
+            var types = new List<string>();
+            foreach (var param in parameters)
+                types.Add(TypePrinter.VisitParameter(param));
+            return string.Join(", ", types);
+        }
+
         public static bool CheckIgnoreMethod(Class @class, Method method)
         {
             if (method.Ignore) return true;

@@ -502,13 +502,7 @@ namespace Cxxi.Generators.CLI
             var retType = function.ReturnType.ToString();
             Write("static {0} {1}(", retType, SafeIdentifier(function.Name));
 
-            for (int i = 0; i < function.Parameters.Count; ++i)
-            {
-                var param = function.Parameters[i];
-                Write("{0}", TypePrinter.VisitParameter(param));
-                if (i < function.Parameters.Count - 1)
-                    Write(", ");
-            }
+            Write(GenerateParametersList(function.Parameters));
 
             WriteLine(");");
         }
