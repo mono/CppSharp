@@ -8,6 +8,7 @@ namespace Cxxi.Generators.CLI
     public enum TypePrinterContextKind
     {
         Normal,
+        Template
     }
 
     public class TypePrinterContext
@@ -15,6 +16,29 @@ namespace Cxxi.Generators.CLI
         public TypePrinterContext()
         {
             Kind = TypePrinterContextKind.Normal;
+        }
+
+        public string GetTemplateParameterList()
+        {
+            var paramsList = new List<string>();
+            if (Kind == TypePrinterContextKind.Template)
+            {
+                var template = Declaration as Template;
+                paramsList = template.Parameters.Select(param => param.Name)
+                    .ToList();
+            }
+            else
+            {
+                var type = Type.Desugar() as TemplateSpecializationType;
+                foreach (var arg in type.Arguments)
+                {
+                    if (arg.Kind != TemplateArgument.ArgumentKind.Type)
+                        continue;
+                    paramsList.Add(arg.Type.ToString());
+                }
+            }
+
+            return string.Join(", ", paramsList);
         }
 
         public TypePrinterContextKind Kind;
