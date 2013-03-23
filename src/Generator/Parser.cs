@@ -28,12 +28,7 @@ namespace Cxxi
                     {
                         if (diag.Level == ParserDiagnosticLevel.Error ||
                             diag.Level == ParserDiagnosticLevel.Fatal)
-                        {
-                            Console.WriteLine(string.Format("{0}({1},{2}): error: {3}",
-                                diag.FileName, diag.LineNumber, diag.ColumnNumber,
-                                diag.Message));
                             hasErrors = true;
-                        }
                     }
                 }
             }

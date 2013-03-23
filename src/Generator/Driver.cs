@@ -68,7 +68,11 @@ namespace Cxxi
             }
 
             foreach (var diag in result.Diagnostics)
-                Console.WriteLine("    {0}", diag.Message);
+            {
+                Console.WriteLine(string.Format("{0}({1},{2}): error: {3}",
+                    diag.FileName, diag.LineNumber, diag.ColumnNumber,
+                    diag.Message));
+            }
         }
 
         public bool ParseCode()
