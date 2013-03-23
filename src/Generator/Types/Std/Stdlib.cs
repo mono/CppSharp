@@ -69,8 +69,6 @@ namespace Cxxi.Types.Std
     [TypeMap("std::vector")]
     public class Vector : TypeMap
     {
-        public override bool IsIgnored { get { return true; } }
-
         public override string CLISignature(TypePrinterContext ctx)
         {
             return string.Format("System::Collections::Generic::List<{0}>^",
@@ -79,12 +77,80 @@ namespace Cxxi.Types.Std
 
         public override void CLIMarshalToNative(MarshalContext ctx)
         {
-            throw new System.NotImplementedException();
+            var templateType = Type as TemplateSpecializationType;
+            var type = templateType.Arguments[0].Type;
+
+            var entryString = (ctx.Parameter != null) ? ctx.Parameter.Name : ctx.ArgName;
+
+            var tmpVarName = "_tmp" + entryString;
+
+            var cppTypePrinter = new CppTypePrinter(ctx.Driver.TypeDatabase);
+            var nativeType = type.Type.Visit(cppTypePrinter);
+
+            ctx.SupportBefore.WriteLine("auto {0} = std::vector<{1}>();",
+                tmpVarName, nativeType);
+            ctx.SupportBefore.WriteLine("for each({0} _element in {1})",
+                type.ToString(), entryString);
+            ctx.SupportBefore.WriteStartBraceIndent();
+            {
+                var param = new Parameter
+                {
+                    Name = "_element",
+                    QualifiedType = type
+                };
+
+                var elementCtx = new MarshalContext(ctx.Driver)
+                                     {
+                                         Parameter = param,
+                                         ArgName = param.Name,
+                                     };
+
+                var marshal = new CLIMarshalManagedToNativePrinter(elementCtx);
+                type.Type.Visit(marshal);
+
+                if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
+                    ctx.SupportBefore.Write(marshal.Context.SupportBefore);
+
+                ctx.SupportBefore.WriteLine("auto _marshalElement = {0};",
+                    marshal.Context.Return);
+
+                ctx.SupportBefore.WriteLine("{0}.push_back(_marshalElement);",tmpVarName);
+            }
+            
+            ctx.SupportBefore.WriteCloseBraceIndent();
+
+            ctx.Return.Write(tmpVarName);
         }
 
         public override void CLIMarshalToManaged(MarshalContext ctx)
         {
-            throw new System.NotImplementedException();
+            var templateType = Type as TemplateSpecializationType;
+            var type = templateType.Arguments[0].Type;
+            var tmpVarName = "_tmp" + ctx.ArgName;
+            
+            ctx.SupportBefore.WriteLine("auto {0} = gcnew System::Collections::Generic::List<{1}>();", tmpVarName, type.ToString());
+            ctx.SupportBefore.WriteLine("for(auto _element : {0})",ctx.ReturnVarName);
+            ctx.SupportBefore.WriteStartBraceIndent();
+            {
+                var elementCtx = new MarshalContext(ctx.Driver)
+                                     {
+                                         ReturnVarName = "_element",
+                                         ReturnType = type.Type
+                                     };
+
+                var marshal = new CLIMarshalNativeToManagedPrinter(elementCtx);
+                type.Type.Visit(marshal);
+
+                if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
+                    ctx.SupportBefore.Write(marshal.Context.SupportBefore);
+
+                ctx.SupportBefore.WriteLine("auto _marshalElement = {0};", marshal.Context.Return);
+
+                ctx.SupportBefore.WriteLine("{0}->Add(_marshalElement);", tmpVarName);
+            }
+            ctx.SupportBefore.WriteCloseBraceIndent();
+
+            ctx.Return.Write(tmpVarName);
         }
     }
 
