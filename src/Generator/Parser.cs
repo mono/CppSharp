@@ -16,7 +16,7 @@ namespace Cxxi
 
         public bool ParseHeaders(IEnumerable<string> headers)
         {
-            bool bHasErrors = false;
+            bool hasErrors = false;
             foreach (var header in headers)
             {
                 var result = ParseHeader(header);
@@ -26,16 +26,19 @@ namespace Cxxi
                 {
                     foreach (var diag in result.Diagnostics)
                     {
-                        if (diag.Level == ParserDiagnosticLevel.Error || diag.Level == ParserDiagnosticLevel.Fatal)
+                        if (diag.Level == ParserDiagnosticLevel.Error ||
+                            diag.Level == ParserDiagnosticLevel.Fatal)
                         {
-                            Console.WriteLine(String.Format("{0}({1},{2}): error: {3}", diag.FileName, diag.lineNumber, diag.columnNumber, diag.Message));
-                            bHasErrors = true;
+                            Console.WriteLine(string.Format("{0}({1},{2}): error: {3}",
+                                diag.FileName, diag.LineNumber, diag.ColumnNumber,
+                                diag.Message));
+                            hasErrors = true;
                         }
                     }
-                } //if
+                }
             }
 
-            return !bHasErrors;
+            return !hasErrors;
         }
 
         public ParserResult ParseHeader(string file)

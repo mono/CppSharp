@@ -55,7 +55,6 @@ public ref struct ParserOptions
     bool Verbose;
 };
 
-
 public enum struct ParserDiagnosticLevel
 {
     Ignored,
@@ -65,14 +64,13 @@ public enum struct ParserDiagnosticLevel
     Fatal
 };
 
-
 public value struct ParserDiagnostic
 {
     System::String^ FileName;
-    int lineNumber;
-    int columnNumber;
     System::String^ Message;
     ParserDiagnosticLevel Level;
+    int LineNumber;
+    int ColumnNumber;
 };
 
 public enum struct ParserResultKind
