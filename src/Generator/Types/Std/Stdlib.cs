@@ -73,9 +73,8 @@ namespace Cxxi.Types.Std
 
         public override string CLISignature(TypePrinterContext ctx)
         {
-            var type = Type as TemplateSpecializationType;
-            var typeName = type.Arguments[0].Type.ToString();
-            return string.Format("System::Collections::Generic::List<{0}>^", typeName);
+            return string.Format("System::Collections::Generic::List<{0}>^",
+                ctx.GetTemplateParameterList());
         }
 
         public override void CLIMarshalToNative(MarshalContext ctx)
