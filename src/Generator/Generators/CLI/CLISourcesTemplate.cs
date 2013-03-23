@@ -158,6 +158,9 @@ namespace Cxxi.Generators.CLI
 
             foreach (var variable in @class.Variables)
             {
+                if (variable.Ignore)
+                    continue;
+
                 GenerateDeclarationCommon(variable);
                 GenerateVariable(variable, @class);
             }
