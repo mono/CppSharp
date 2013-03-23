@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -24,16 +25,19 @@ namespace Cxxi
 
         public void Write(string msg, params object[] args)
         {
-            if (isStartOfLine)
-                sb.Append(new string(' ', (int)CurrentIndent.Sum(u => u)));
-
             if (args.Length > 0)
                 msg = string.Format(msg, args);
 
-            if (msg.Length > 0)
-                isStartOfLine = false;
+            foreach(var line in msg.SplitAndKeep(Environment.NewLine))
+            {
+                if (isStartOfLine && !string.IsNullOrWhiteSpace(line))
+                    sb.Append(new string(' ', (int) CurrentIndent.Sum(u => u)));
 
-            sb.Append(msg);
+                if (line.Length > 0)
+                    isStartOfLine = line.EndsWith(Environment.NewLine);
+
+                sb.Append(line);
+            }
         }
 
         public void WriteLine(string msg, params object[] args)

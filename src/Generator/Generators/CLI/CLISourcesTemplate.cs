@@ -186,20 +186,19 @@ namespace Cxxi.Generators.CLI
                     ArgName = param.Name,
                 };
 
-            var marshal = new CLIMarshalManagedToNativePrinter(Driver.TypeDatabase,
-                                                               ctx);
+            var marshal = new CLIMarshalManagedToNativePrinter(ctx);
             param.Visit(marshal);
 
             var variable = string.Format("((::{0}*)NativePtr)->{1}",
                                          @class.QualifiedOriginalName, field.OriginalName);
 
-            if (!string.IsNullOrWhiteSpace(marshal.SupportBefore))
-                WriteLine(marshal.SupportBefore);
+            if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
+                Write(marshal.Context.SupportBefore);
 
-            WriteLine("{0} = {1};", variable, marshal.Return);
+            WriteLine("{0} = {1};", variable, marshal.Context.Return);
 
-            if (!string.IsNullOrWhiteSpace(marshal.SupportAfter))
-                WriteLine(marshal.SupportAfter);
+            if (!string.IsNullOrWhiteSpace(marshal.Context.SupportAfter))
+                Write(marshal.Context.SupportAfter);
 
             WriteCloseBraceIndent();
             NewLine();
@@ -220,10 +219,10 @@ namespace Cxxi.Generators.CLI
                     ReturnType = field.Type
                 };
 
-            var marshal = new CLIMarshalNativeToManagedPrinter(Driver, ctx);
+            var marshal = new CLIMarshalNativeToManagedPrinter(ctx);
             field.Visit(marshal);
 
-            WriteLine("return {0};", marshal.Return);
+            WriteLine("return {0};", marshal.Context.Return);
 
             WriteCloseBraceIndent();
             NewLine();
@@ -328,10 +327,10 @@ namespace Cxxi.Generators.CLI
                         ReturnType = param.Type
                     };
 
-                var marshal = new CLIMarshalNativeToManagedPrinter(Driver, ctx);
+                var marshal = new CLIMarshalNativeToManagedPrinter(ctx);
                 param.Visit(marshal);
 
-                returns.Add(marshal.Return);
+                returns.Add(marshal.Context.Return);
             }
 
             Write("{0}::raise(", @event.Name);
@@ -411,10 +410,16 @@ namespace Cxxi.Generators.CLI
                     ReturnType = field.Type
                 };
 
-                var marshal = new CLIMarshalNativeToManagedPrinter(Driver, ctx);
+                var marshal = new CLIMarshalNativeToManagedPrinter(ctx);
                 field.Visit(marshal);
 
-                WriteLine("{0} = {1};", field.Name, marshal.Return);
+                if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
+                    Write(marshal.Context.SupportBefore);
+
+                WriteLine("{0} = {1};", field.Name, marshal.Context.Return);
+
+                if (!string.IsNullOrWhiteSpace(marshal.Context.SupportAfter))
+                    Write(marshal.Context.SupportAfter);
             }
         }
 
@@ -498,14 +503,13 @@ namespace Cxxi.Generators.CLI
                                   ArgName = param.Name,
                               };
 
-                var marshal = new CLIMarshalManagedToNativePrinter(Driver.TypeDatabase,
-                                                                   ctx);
+                var marshal = new CLIMarshalManagedToNativePrinter(ctx);
                 param.Visit(marshal);
 
-                if (!string.IsNullOrWhiteSpace(marshal.SupportBefore))
-                    WriteLine(marshal.SupportBefore);
+                if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
+                    Write(marshal.Context.SupportBefore);
 
-                names.Add(marshal.Return);
+                names.Add(marshal.Context.Return);
             }
 
             WriteLine("auto _native = ::{0}({1});", @class.QualifiedOriginalName,
@@ -537,10 +541,10 @@ namespace Cxxi.Generators.CLI
                         ReturnType = field.Type
                     };
 
-                var marshal = new CLIMarshalNativeToManagedPrinter(Driver, ctx);
+                var marshal = new CLIMarshalNativeToManagedPrinter(ctx);
                 field.Visit(marshal);
 
-                WriteLine("this->{0} = {1};", field.Name, marshal.Return);
+                WriteLine("this->{0} = {1};", field.Name, marshal.Context.Return);
             }
         }
 
@@ -621,10 +625,10 @@ namespace Cxxi.Generators.CLI
                         ReturnType = retType
                     };
 
-                var marshal = new CLIMarshalNativeToManagedPrinter(Driver, ctx);
+                var marshal = new CLIMarshalNativeToManagedPrinter(ctx);
                 function.ReturnType.Visit(marshal);
 
-                WriteLine("{0};", marshal.Return);
+                WriteLine("{0};", marshal.Context.Return);
             }
         }
 
@@ -677,21 +681,20 @@ namespace Cxxi.Generators.CLI
                     Function = function
                 };
 
-            var marshal = new CLIMarshalManagedToNativePrinter(Driver.TypeDatabase,
-                                                                ctx);
+            var marshal = new CLIMarshalManagedToNativePrinter(ctx);
 
             param.Visit(marshal);
 
-            if (string.IsNullOrEmpty(marshal.Return))
+            if (string.IsNullOrEmpty(marshal.Context.Return))
                 throw new Exception("Cannot marshal argument of function");
 
-            if (!string.IsNullOrWhiteSpace(marshal.SupportBefore))
-                WriteLine(marshal.SupportBefore);
+            if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
+                Write(marshal.Context.SupportBefore);
 
-            WriteLine("auto {0}{1} = {2};", marshal.VarPrefix, argName, marshal.Return);
+            WriteLine("auto {0}{1} = {2};", marshal.VarPrefix, argName, marshal.Context.Return);
 
-            if (!string.IsNullOrWhiteSpace(marshal.SupportAfter))
-                WriteLine(marshal.SupportAfter);
+            if (!string.IsNullOrWhiteSpace(marshal.Context.SupportAfter))
+                Write(marshal.Context.SupportAfter);
 
             var argText = marshal.ArgumentPrefix + argName;
             return new ParamMarshal {Name = argText, Param = param};
