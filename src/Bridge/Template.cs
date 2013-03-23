@@ -12,6 +12,7 @@ namespace Cxxi
         protected Template(Declaration decl)
         {
             TemplatedDecl = decl;
+            Parameters = new List<TemplateParameter>();
         }
 
         public Declaration TemplatedDecl;

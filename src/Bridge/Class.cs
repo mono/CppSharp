@@ -84,6 +84,7 @@ namespace Cxxi
         public List<Method> Methods;
         public List<Variable> Variables;
         public List<Event> Events;
+        public List<FunctionTemplate> FunctionTemplates;
 
         // True if the record is a POD (Plain Old Data) type.
         public bool IsPOD;
@@ -113,6 +114,7 @@ namespace Cxxi
             Events = new List<Event>();
             NestedClasses = new List<Class>();
             NestedEnums = new List<Enumeration>();
+            FunctionTemplates = new List<FunctionTemplate>();
             IsAbstract = false;
             IsUnion = false;
             IsOpaque = false;

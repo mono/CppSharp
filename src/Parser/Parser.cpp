@@ -389,6 +389,17 @@ Cxxi::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record, bool IsDependen
         RC->Variables->Add(Var);
     }
 
+    // Iterate through the record function template methods.
+    for(auto it = Record->decls_begin(); it != Record->decls_end(); ++it)
+    {
+        auto Decl = *it;
+        if (!isa<FunctionTemplateDecl>(Decl)) continue;
+
+        Cxxi::FunctionTemplate^ FT = WalkFunctionTemplate(
+            cast<FunctionTemplateDecl>(Decl));
+        RC->FunctionTemplates->Add(FT);
+    }
+
     // Iterate through the record bases.
     for(auto it = Record->bases_begin(); it != Record->bases_end(); ++it)
     {
@@ -434,6 +445,17 @@ Cxxi::FunctionTemplate^ Parser::WalkFunctionTemplate(clang::FunctionTemplateDecl
     auto Function = WalkFunction(TD->getTemplatedDecl(), /*IsDependent=*/true,
         /*AddToNamespace=*/false);
     Cxxi::FunctionTemplate^ FT = gcnew Cxxi::FunctionTemplate(Function);
+
+    auto TPL = TD->getTemplateParameters();
+    for(auto it = TPL->begin(); it != TPL->end(); ++it)
+    {
+        auto ND = *it;
+
+        auto TP = Cxxi::TemplateParameter();
+        TP.Name = clix::marshalString<clix::E_UTF8>(ND->getNameAsString());
+
+        FT->Parameters->Add(TP);
+    }
 
     return FT;
 }
