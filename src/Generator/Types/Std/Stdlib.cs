@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using Cxxi.Generators.CLI;
 
 namespace Cxxi.Types.Std
 {
@@ -14,7 +16,7 @@ namespace Cxxi.Types.Std
     [TypeMap("std::string")]
     public class String : TypeMap
     {
-        public override string CLISignature()
+        public override string CLISignature(TypePrinterContext ctx)
         {
             return "System::String^";
         }
@@ -48,7 +50,7 @@ namespace Cxxi.Types.Std
     [TypeMap("std::wstring")]
     public class WString : TypeMap
     {
-        public override string CLISignature()
+        public override string CLISignature(TypePrinterContext ctx)
         {
             return "System::String^";
         }
@@ -69,7 +71,7 @@ namespace Cxxi.Types.Std
     {
         public override bool IsIgnored { get { return true; } }
 
-        public override string CLISignature()
+        public override string CLISignature(TypePrinterContext ctx)
         {
             var type = Type as TemplateSpecializationType;
             var typeName = type.Arguments[0].Type.ToString();
@@ -92,7 +94,7 @@ namespace Cxxi.Types.Std
     {
         public override bool IsIgnored { get { return true; } }
 
-        public override string CLISignature()
+        public override string CLISignature(TypePrinterContext ctx)
         {
             var type = Type as TemplateSpecializationType;
             return string.Format("System::Collections::Generic::Dictionary<{0}, {1}>^",
@@ -120,7 +122,7 @@ namespace Cxxi.Types.Std
     [TypeMap("std::shared_ptr")]
     public class SharedPtr : TypeMap
     {
-        public override string CLISignature()
+        public override string CLISignature(TypePrinterContext ctx)
         {
             throw new System.NotImplementedException();
         }

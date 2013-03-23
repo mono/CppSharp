@@ -85,7 +85,7 @@ namespace Cxxi.Types
 
         #region C++/CLI backend
 
-        public virtual string CLISignature()
+        public virtual string CLISignature(TypePrinterContext ctx)
         {
             throw new NotImplementedException();
         }

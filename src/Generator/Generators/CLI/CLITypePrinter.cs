@@ -1,21 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Cxxi.Types;
 
 namespace Cxxi.Generators.CLI
 {
+    public enum TypePrinterContextKind
+    {
+        Normal,
+    }
+
+    public class TypePrinterContext
+    {
+        public TypePrinterContext()
+        {
+            Kind = TypePrinterContextKind.Normal;
+        }
+
+        public TypePrinterContextKind Kind;
+        public Declaration Declaration;
+        public Type Type;
+    }
+
     public class CLITypePrinter : ITypePrinter, IDeclVisitor<string>
     {
         public Library Library { get; set; }
+        public TypePrinterContext Context { get; set; }
 
         readonly ITypeMapDatabase TypeMapDatabase;
         readonly DriverOptions Options;
 
         public CLITypePrinter(Driver driver)
         {
-            TypeMapDatabase = driver.TypeDatabase;
             Library = driver.Library;
+            TypeMapDatabase = driver.TypeDatabase;
             Options = driver.Options;
+            Context = new TypePrinterContext();
+        }
+
+        public CLITypePrinter(Driver driver, TypePrinterContext context)
+            : this(driver)
+        {
+            Context = context;
         }
 
         public string VisitTagType(TagType tag, TypeQualifiers quals)
@@ -149,7 +175,8 @@ namespace Cxxi.Generators.CLI
             if (TypeMapDatabase.FindTypeMap(decl, out typeMap))
             {
                 typeMap.Type = typedef;
-                return typeMap.CLISignature();
+                Context.Type = typedef;
+                return typeMap.CLISignature(Context);
             }
 
             FunctionType func;
@@ -172,7 +199,8 @@ namespace Cxxi.Generators.CLI
             {
                 typeMap.Declaration = decl;
                 typeMap.Type = template;
-                return typeMap.CLISignature();
+                Context.Type = template;
+                return typeMap.CLISignature(Context);
             }
 
             return decl.Name;
