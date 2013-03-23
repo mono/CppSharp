@@ -31,7 +31,7 @@ namespace Cxxi
                 msg = string.Format(msg, args);
 
             if (msg.Length > 0)
-                isStartOfLine = false;
+                isStartOfLine = msg.EndsWith(System.Environment.NewLine);
 
             sb.Append(msg);
         }
