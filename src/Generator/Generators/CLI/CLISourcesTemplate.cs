@@ -193,12 +193,12 @@ namespace Cxxi.Generators.CLI
                                          @class.QualifiedOriginalName, field.OriginalName);
 
             if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
-                WriteLine(marshal.Context.SupportBefore);
+                Write(marshal.Context.SupportBefore);
 
             WriteLine("{0} = {1};", variable, marshal.Context.Return);
 
             if (!string.IsNullOrWhiteSpace(marshal.Context.SupportAfter))
-                WriteLine(marshal.Context.SupportAfter);
+                Write(marshal.Context.SupportAfter);
 
             WriteCloseBraceIndent();
             NewLine();
@@ -414,12 +414,12 @@ namespace Cxxi.Generators.CLI
                 field.Visit(marshal);
 
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
-                    WriteLine(marshal.Context.SupportBefore);
+                    Write(marshal.Context.SupportBefore);
 
                 WriteLine("{0} = {1};", field.Name, marshal.Context.Return);
 
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportAfter))
-                    WriteLine(marshal.Context.SupportAfter);
+                    Write(marshal.Context.SupportAfter);
             }
         }
 
@@ -507,7 +507,7 @@ namespace Cxxi.Generators.CLI
                 param.Visit(marshal);
 
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
-                    WriteLine(marshal.Context.SupportBefore);
+                    Write(marshal.Context.SupportBefore);
 
                 names.Add(marshal.Context.Return);
             }
@@ -689,12 +689,12 @@ namespace Cxxi.Generators.CLI
                 throw new Exception("Cannot marshal argument of function");
 
             if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
-                WriteLine(marshal.Context.SupportBefore);
+                Write(marshal.Context.SupportBefore);
 
             WriteLine("auto {0}{1} = {2};", marshal.VarPrefix, argName, marshal.Context.Return);
 
             if (!string.IsNullOrWhiteSpace(marshal.Context.SupportAfter))
-                WriteLine(marshal.Context.SupportAfter);
+                Write(marshal.Context.SupportAfter);
 
             var argText = marshal.ArgumentPrefix + argName;
             return new ParamMarshal {Name = argText, Param = param};

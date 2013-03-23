@@ -380,7 +380,7 @@ namespace Cxxi.Generators.CLI
 
             if (pointee.IsPrimitiveType(PrimitiveType.Char))
             {
-                Context.SupportBefore.Write(
+                Context.SupportBefore.WriteLine(
                     "auto _{0} = clix::marshalString<clix::E_UTF8>({1});",
                     Context.ArgName, Context.Parameter.Name);
 
@@ -592,7 +592,7 @@ namespace Cxxi.Generators.CLI
             Context.ParameterIndex = marshalCtx.ParameterIndex;
 
             if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
-                Context.SupportBefore.WriteLine(marshal.Context.SupportBefore);
+                Context.SupportBefore.Write(marshal.Context.SupportBefore);
 
             if(field.Type.IsPointer())
             {
