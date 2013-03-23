@@ -251,9 +251,6 @@ namespace Cxxi.Generators.CLI
 
             WriteLine("{0} = {1};", variable, marshal.Context.Return);
 
-            if (!string.IsNullOrWhiteSpace(marshal.Context.SupportAfter))
-                Write(marshal.Context.SupportAfter);
-
             WriteCloseBraceIndent();
             NewLine();
         }
@@ -460,6 +457,7 @@ namespace Cxxi.Generators.CLI
 
                 var ctx = new MarshalContext(Driver)
                 {
+                    ArgName = field.Name,
                     ReturnVarName = nativeField,
                     ReturnType = field.Type
                 };
@@ -471,9 +469,6 @@ namespace Cxxi.Generators.CLI
                     Write(marshal.Context.SupportBefore);
 
                 WriteLine("{0} = {1};", field.Name, marshal.Context.Return);
-
-                if (!string.IsNullOrWhiteSpace(marshal.Context.SupportAfter))
-                    Write(marshal.Context.SupportAfter);
             }
         }
 
@@ -746,9 +741,6 @@ namespace Cxxi.Generators.CLI
                 Write(marshal.Context.SupportBefore);
 
             WriteLine("auto {0}{1} = {2};", marshal.VarPrefix, argName, marshal.Context.Return);
-
-            if (!string.IsNullOrWhiteSpace(marshal.Context.SupportAfter))
-                Write(marshal.Context.SupportAfter);
 
             var argText = marshal.ArgumentPrefix + argName;
             return new ParamMarshal {Name = argText, Param = param};
