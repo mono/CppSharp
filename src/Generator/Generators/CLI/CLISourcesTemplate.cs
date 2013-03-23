@@ -186,7 +186,7 @@ namespace Cxxi.Generators.CLI
                     ArgName = param.Name,
                 };
 
-            var marshal = new CLIMarshalManagedToNativePrinter(Driver, ctx);
+            var marshal = new CLIMarshalManagedToNativePrinter(ctx);
             param.Visit(marshal);
 
             var variable = string.Format("((::{0}*)NativePtr)->{1}",
@@ -219,7 +219,7 @@ namespace Cxxi.Generators.CLI
                     ReturnType = field.Type
                 };
 
-            var marshal = new CLIMarshalNativeToManagedPrinter(Driver, ctx);
+            var marshal = new CLIMarshalNativeToManagedPrinter(ctx);
             field.Visit(marshal);
 
             WriteLine("return {0};", marshal.Context.Return);
@@ -327,7 +327,7 @@ namespace Cxxi.Generators.CLI
                         ReturnType = param.Type
                     };
 
-                var marshal = new CLIMarshalNativeToManagedPrinter(Driver, ctx);
+                var marshal = new CLIMarshalNativeToManagedPrinter(ctx);
                 param.Visit(marshal);
 
                 returns.Add(marshal.Context.Return);
@@ -410,7 +410,7 @@ namespace Cxxi.Generators.CLI
                     ReturnType = field.Type
                 };
 
-                var marshal = new CLIMarshalNativeToManagedPrinter(Driver, ctx);
+                var marshal = new CLIMarshalNativeToManagedPrinter(ctx);
                 field.Visit(marshal);
 
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
@@ -503,7 +503,7 @@ namespace Cxxi.Generators.CLI
                                   ArgName = param.Name,
                               };
 
-                var marshal = new CLIMarshalManagedToNativePrinter(Driver, ctx);
+                var marshal = new CLIMarshalManagedToNativePrinter(ctx);
                 param.Visit(marshal);
 
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
@@ -541,7 +541,7 @@ namespace Cxxi.Generators.CLI
                         ReturnType = field.Type
                     };
 
-                var marshal = new CLIMarshalNativeToManagedPrinter(Driver, ctx);
+                var marshal = new CLIMarshalNativeToManagedPrinter(ctx);
                 field.Visit(marshal);
 
                 WriteLine("this->{0} = {1};", field.Name, marshal.Context.Return);
@@ -625,7 +625,7 @@ namespace Cxxi.Generators.CLI
                         ReturnType = retType
                     };
 
-                var marshal = new CLIMarshalNativeToManagedPrinter(Driver, ctx);
+                var marshal = new CLIMarshalNativeToManagedPrinter(ctx);
                 function.ReturnType.Visit(marshal);
 
                 WriteLine("{0};", marshal.Context.Return);
@@ -681,7 +681,7 @@ namespace Cxxi.Generators.CLI
                     Function = function
                 };
 
-            var marshal = new CLIMarshalManagedToNativePrinter(Driver, ctx);
+            var marshal = new CLIMarshalManagedToNativePrinter(ctx);
 
             param.Visit(marshal);
 

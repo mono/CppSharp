@@ -7,11 +7,9 @@ namespace Cxxi.Generators.CLI
     public abstract class MarshalPrinter : ITypeVisitor<bool>, IDeclVisitor<bool>
     {
         public MarshalContext Context { get; private set; }
-        public Driver Driver { get; private set; }
 
-        protected MarshalPrinter(Driver driver, MarshalContext ctx)
+        protected MarshalPrinter(MarshalContext ctx)
         {
-            Driver = driver;
             Context = ctx;
         }
 
@@ -45,8 +43,8 @@ namespace Cxxi.Generators.CLI
     public class CLIMarshalNativeToManagedPrinter : MarshalPrinter
     {
 
-        public CLIMarshalNativeToManagedPrinter(Driver driver, MarshalContext marshalContext)
-            : base(driver,marshalContext)
+        public CLIMarshalNativeToManagedPrinter(MarshalContext marshalContext)
+            : base(marshalContext)
         {
             Context.MarshalToManaged = this;
         }
@@ -150,7 +148,7 @@ namespace Cxxi.Generators.CLI
             var decl = typedef.Declaration;
 
             TypeMap typeMap = null;
-            if (Driver.TypeDatabase.FindTypeMap(decl, out typeMap))
+            if (Context.Driver.TypeDatabase.FindTypeMap(decl, out typeMap))
             {
                 typeMap.Type = typedef;
                 typeMap.CLIMarshalToManaged(Context);
@@ -175,7 +173,7 @@ namespace Cxxi.Generators.CLI
                                                     TypeQualifiers quals)
         {
             TypeMap typeMap;
-            if (Driver.TypeDatabase.FindTypeMap(template, out typeMap))
+            if (Context.Driver.TypeDatabase.FindTypeMap(template, out typeMap))
             {
                 typeMap.Type = template;
                 typeMap.CLIMarshalToManaged(Context);
@@ -220,8 +218,8 @@ namespace Cxxi.Generators.CLI
 
         public string QualifiedIdentifier(Declaration decl)
         {
-            if (Driver.Options.GenerateLibraryNamespace)
-                return string.Format("{0}::{1}", Driver.Options.OutputNamespace,
+            if (Context.Driver.Options.GenerateLibraryNamespace)
+                return string.Format("{0}::{1}", Context.Driver.Options.OutputNamespace,
                     decl.QualifiedName);
             return string.Format("{0}", decl.QualifiedName);
         }
@@ -275,7 +273,7 @@ namespace Cxxi.Generators.CLI
 
         private string ToCLITypeName(Declaration decl)
         {
-            var typePrinter = new CLITypePrinter(Driver);
+            var typePrinter = new CLITypePrinter(Context.Driver);
             return typePrinter.VisitDeclaration(decl);
         }
 
@@ -315,8 +313,8 @@ namespace Cxxi.Generators.CLI
         public readonly TextGenerator VarPrefix;
         public readonly TextGenerator ArgumentPrefix;
 
-        public CLIMarshalManagedToNativePrinter(Driver driver, MarshalContext ctx) 
-            : base(driver,ctx)
+        public CLIMarshalManagedToNativePrinter(MarshalContext ctx) 
+            : base(ctx)
         {
             VarPrefix = new TextGenerator();
             ArgumentPrefix = new TextGenerator();
@@ -440,7 +438,7 @@ namespace Cxxi.Generators.CLI
             var decl = typedef.Declaration;
 
             TypeMap typeMap = null;
-            if (Driver.TypeDatabase.FindTypeMap(decl, out typeMap))
+            if (Context.Driver.TypeDatabase.FindTypeMap(decl, out typeMap))
             {
                 typeMap.CLIMarshalToNative(Context);
                 return typeMap.IsValueType;
@@ -466,7 +464,7 @@ namespace Cxxi.Generators.CLI
                                                     TypeQualifiers quals)
         {
             TypeMap typeMap = null;
-            if (Driver.TypeDatabase.FindTypeMap(template, out typeMap))
+            if (Context.Driver.TypeDatabase.FindTypeMap(template, out typeMap))
             {
                 typeMap.Type = template;
                 typeMap.CLIMarshalToNative(Context);
@@ -513,7 +511,7 @@ namespace Cxxi.Generators.CLI
         private void MarshalRefClass(Class @class)
         {
             TypeMap typeMap = null;
-            if (Driver.TypeDatabase.FindTypeMap(@class, out typeMap))
+            if (Context.Driver.TypeDatabase.FindTypeMap(@class, out typeMap))
             {
                 typeMap.CLIMarshalToNative(Context);
                 return;
@@ -548,7 +546,6 @@ namespace Cxxi.Generators.CLI
 
             Context.SupportBefore.WriteLine("auto {0} = ::{1}();", marshalVar,
                 @class.QualifiedOriginalName);
-            Context.SupportBefore.PushIndent();
 
             MarshalValueClassFields(@class, marshalVar);
 
@@ -586,7 +583,7 @@ namespace Cxxi.Generators.CLI
                                      ParameterIndex = Context.ParameterIndex++
                                  };
 
-            var marshal = new CLIMarshalManagedToNativePrinter(Driver, marshalCtx);
+            var marshal = new CLIMarshalManagedToNativePrinter(marshalCtx);
             field.Visit(marshal);
 
             Context.ParameterIndex = marshalCtx.ParameterIndex;
