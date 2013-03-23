@@ -156,6 +156,18 @@ namespace Cxxi.Generators.CLI
                 GenerateEvent(@event, @class);
             }
 
+            if (Options.GenerateFunctionTemplates)
+            {
+                foreach (var template in @class.FunctionTemplates)
+                {
+                    if (template.Ignore)
+                        continue;
+
+                    GenerateDeclarationCommon(template);
+                    GenerateFunctionTemplate(template, @class);
+                }
+            }
+
             foreach (var variable in @class.Variables)
             {
                 if (variable.Ignore)
@@ -164,6 +176,42 @@ namespace Cxxi.Generators.CLI
                 GenerateDeclarationCommon(variable);
                 GenerateVariable(variable, @class);
             }
+        }
+
+        private void GenerateFunctionTemplate(FunctionTemplate template, Class @class)
+        {
+            var printer = TypePrinter as CLITypePrinter;
+            var oldCtx = printer.Context;
+
+            var function = template.TemplatedFunction;
+
+            var typeNames = template.Parameters.Select(
+                param => "typename " + param.Name).ToList();
+
+            var typeCtx = new TypePrinterContext()
+                {
+                    Kind = TypePrinterContextKind.Template,
+                    Declaration = template
+                };
+
+            printer.Context = typeCtx;
+
+            var typePrinter = new CLITypePrinter(Driver, typeCtx);
+            var retType = function.ReturnType.Visit(typePrinter);
+
+            WriteLine("generic<{0}>", string.Join(", ", typeNames));
+            WriteLine("{0} {1}::{2}({3})", retType, QualifiedIdentifier(@class),
+                      SafeIdentifier(function.Name),
+                      GenerateParametersList(function.Parameters));
+
+            WriteStartBraceIndent();
+
+            GenerateFunctionCall(function, @class);
+
+            WriteCloseBraceIndent();
+            NewLine();
+
+            printer.Context = oldCtx;
         }
 
         private void GenerateFieldProperty(Field field)

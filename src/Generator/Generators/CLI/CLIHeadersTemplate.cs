@@ -244,9 +244,48 @@ namespace Cxxi.Generators.CLI
 
             GenerateClassEvents(@class);
             GenerateClassMethods(@class);
+
+            if (Options.GenerateFunctionTemplates)
+                GenerateClassGenericMethods(@class);
+
             GenerateClassVariables(@class);
 
             WriteLine("};");
+        }
+
+        public void GenerateClassGenericMethods(Class @class)
+        {
+            var printer = TypePrinter as CLITypePrinter;
+            var oldCtx = printer.Context;
+
+            PushIndent();
+            foreach (var template in @class.FunctionTemplates)
+            {
+                if (template.Ignore) continue;
+
+                var function = template.TemplatedFunction;
+
+                var typeNames = template.Parameters.Select(
+                    param => "typename " + param.Name).ToList();
+
+                var typeCtx = new TypePrinterContext()
+                    {
+                        Kind = TypePrinterContextKind.Template,
+                        Declaration = template
+                    };
+
+                printer.Context = typeCtx;
+
+                var typePrinter = new CLITypePrinter(Driver, typeCtx);
+                var retType = function.ReturnType.Visit(typePrinter);
+
+                WriteLine("generic<{0}>", string.Join(", ", typeNames));
+                WriteLine("{0} {1}({2});", retType, SafeIdentifier(function.Name),
+                    GenerateParametersList(function.Parameters));
+            }
+            PopIndent();
+
+            printer.Context = oldCtx;
         }
 
         public void GenerateClassConstructors(Class @class, string nativeType)

@@ -176,6 +176,7 @@ namespace Cxxi
             Assembly = string.Empty;
             GeneratorKind = LanguageGeneratorKind.CSharp;
             GenerateLibraryNamespace = true;
+            GenerateFunctionTemplates = false;
         }
 
         public bool Verbose = false;
@@ -186,6 +187,7 @@ namespace Cxxi
         public bool IgnoreErrors = false;
         public bool OutputInteropIncludes = true;
         public bool GenerateLibraryNamespace;
+        public bool GenerateFunctionTemplates;
         public string OutputNamespace;
         public string OutputDir;
         public string LibraryName;
