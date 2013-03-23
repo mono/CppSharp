@@ -9,7 +9,9 @@ namespace Cxxi.Types
     {
         public MarshalContext(Driver driver)
         {
-            
+            SupportBefore = new TextGenerator();
+            SupportAfter = new TextGenerator();
+            Return = new TextGenerator();
         }
 
         public Driver Driver { get; set; }
@@ -17,7 +19,10 @@ namespace Cxxi.Types
         public CLIMarshalNativeToManagedPrinter MarshalToManaged;
         public CLIMarshalManagedToNativePrinter MarshalToNative;
 
-        public TextGenerator Return;
+        public TextGenerator SupportBefore { get; private set; }
+        public TextGenerator SupportAfter { get; private set; }
+        public TextGenerator Return { get; private set; }
+
         public string ReturnVarName { get; set; }
         public Type ReturnType { get; set; }
 

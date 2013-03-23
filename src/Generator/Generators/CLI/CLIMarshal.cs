@@ -4,70 +4,93 @@ using Cxxi.Types;
 
 namespace Cxxi.Generators.CLI
 {
-    public interface IMarshalPrinter : ITypeVisitor<bool>, IDeclVisitor<bool>
+    public abstract class MarshalPrinter : ITypeVisitor<bool>, IDeclVisitor<bool>
     {
-        
-    }
+        public MarshalContext Context { get; private set; }
+        public Driver Driver { get; private set; }
 
-    public class CLIMarshalNativeToManagedPrinter : IMarshalPrinter
-    {
-        public TextGenerator Return;
-
-        Driver Driver { get; set; }
-        ITypeMapDatabase TypeMapDatabase { get; set; }
-        MarshalContext Context { get; set; }
-
-        public CLIMarshalNativeToManagedPrinter(Driver driver, MarshalContext marshalContext)
+        protected MarshalPrinter(Driver driver, MarshalContext ctx)
         {
             Driver = driver;
-            TypeMapDatabase = driver.TypeDatabase;
-            Context = marshalContext;
+            Context = ctx;
+        }
 
-            Return = new TextGenerator();
-            Context.Return = Return;
+        public abstract bool VisitTagType(TagType tag, TypeQualifiers quals);
+        public abstract bool VisitArrayType(ArrayType array, TypeQualifiers quals);
+        public abstract bool VisitFunctionType(FunctionType function, TypeQualifiers quals);
+        public abstract bool VisitPointerType(PointerType pointer, TypeQualifiers quals);
+        public abstract bool VisitMemberPointerType(MemberPointerType member, TypeQualifiers quals);
+        public abstract bool VisitBuiltinType(BuiltinType builtin, TypeQualifiers quals);
+        public abstract bool VisitTypedefType(TypedefType typedef, TypeQualifiers quals);
+        public abstract bool VisitTemplateSpecializationType(TemplateSpecializationType template, TypeQualifiers quals);
+        public abstract bool VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals);
+        public abstract bool VisitDeclaration(Declaration decl, TypeQualifiers quals);
+        public abstract bool VisitTemplateParameterType(TemplateParameterType param, TypeQualifiers quals);
+        public abstract bool VisitDeclaration(Declaration decl);
+        public abstract bool VisitClassDecl(Class @class);
+        public abstract bool VisitFieldDecl(Field field);
+        public abstract bool VisitFunctionDecl(Function function);
+        public abstract bool VisitMethodDecl(Method method);
+        public abstract bool VisitParameterDecl(Parameter parameter);
+        public abstract bool VisitTypedefDecl(TypedefDecl typedef);
+        public abstract bool VisitEnumDecl(Enumeration @enum);
+        public abstract bool VisitVariableDecl(Variable variable);
+        public abstract bool VisitClassTemplateDecl(ClassTemplate template);
+        public abstract bool VisitFunctionTemplateDecl(FunctionTemplate template);
+        public abstract bool VisitMacroDefinition(MacroDefinition macro);
+        public abstract bool VisitNamespace(Namespace @namespace);
+        public abstract bool VisitEvent(Event @event);
+    }
+
+    public class CLIMarshalNativeToManagedPrinter : MarshalPrinter
+    {
+
+        public CLIMarshalNativeToManagedPrinter(Driver driver, MarshalContext marshalContext)
+            : base(driver,marshalContext)
+        {
             Context.MarshalToManaged = this;
         }
 
-        public bool VisitTagType(TagType tag, TypeQualifiers quals)
+        public override bool VisitTagType(TagType tag, TypeQualifiers quals)
         {
             var decl = tag.Declaration;
             return decl.Visit(this);
         }
 
-        public bool VisitArrayType(ArrayType array, TypeQualifiers quals)
+        public override bool VisitArrayType(ArrayType array, TypeQualifiers quals)
         {
             switch (array.SizeType)
             {
                 case ArrayType.ArraySize.Constant:
-                    Return.Write("nullptr");
+                    Context.Return.Write("nullptr");
                     break;
                 case ArrayType.ArraySize.Variable:
-                    Return.Write("nullptr");
+                    Context.Return.Write("nullptr");
                     break;
             }
 
             return true;
         }
 
-        public bool VisitFunctionType(FunctionType function, TypeQualifiers quals)
+        public override bool VisitFunctionType(FunctionType function, TypeQualifiers quals)
         {
             var returnType = function.ReturnType;
             return returnType.Visit(this, quals);
         }
 
-        public bool VisitPointerType(PointerType pointer, TypeQualifiers quals)
+        public override bool VisitPointerType(PointerType pointer, TypeQualifiers quals)
         {
             var pointee = pointer.Pointee;
 
             if (pointee.IsPrimitiveType(PrimitiveType.Void, walkTypedefs: true))
             {
-                Return.Write("IntPtr({0})", Context.ReturnVarName);
+                Context.Return.Write("IntPtr({0})", Context.ReturnVarName);
                 return true;
             }
 
             if (pointee.IsPrimitiveType(PrimitiveType.Char))
             {
-                Return.Write("clix::marshalString<clix::E_UTF8>({0})",
+                Context.Return.Write("clix::marshalString<clix::E_UTF8>({0})",
                              Context.ReturnVarName);
                 return true;
             }
@@ -75,7 +98,7 @@ namespace Cxxi.Generators.CLI
             PrimitiveType primitive;
             if (pointee.IsPrimitiveType(out primitive, walkTypedefs: true))
             {
-                Return.Write("IntPtr({0})", Context.ReturnVarName);
+                Context.Return.Write("IntPtr({0})", Context.ReturnVarName);
                 return true;
             }
 
@@ -85,13 +108,13 @@ namespace Cxxi.Generators.CLI
             return true;
         }
 
-        public bool VisitMemberPointerType(MemberPointerType member,
+        public override bool VisitMemberPointerType(MemberPointerType member,
             TypeQualifiers quals)
         {
             return false;
         }
 
-        public bool VisitBuiltinType(BuiltinType builtin, TypeQualifiers quals)
+        public override bool VisitBuiltinType(BuiltinType builtin, TypeQualifiers quals)
         {
             return VisitPrimitiveType(builtin.Type);
         }
@@ -113,7 +136,7 @@ namespace Cxxi.Generators.CLI
                 case PrimitiveType.UInt64:
                 case PrimitiveType.Float:
                 case PrimitiveType.Double:
-                    Return.Write(Context.ReturnVarName);
+                    Context.Return.Write(Context.ReturnVarName);
                     return true;
                 case PrimitiveType.WideChar:
                     return false;
@@ -122,12 +145,12 @@ namespace Cxxi.Generators.CLI
             return false;
         }
 
-        public bool VisitTypedefType(TypedefType typedef, TypeQualifiers quals)
+        public override bool VisitTypedefType(TypedefType typedef, TypeQualifiers quals)
         {
             var decl = typedef.Declaration;
 
             TypeMap typeMap = null;
-            if (TypeMapDatabase.FindTypeMap(decl, out typeMap))
+            if (Driver.TypeDatabase.FindTypeMap(decl, out typeMap))
             {
                 typeMap.Type = typedef;
                 typeMap.CLIMarshalToManaged(Context);
@@ -137,10 +160,10 @@ namespace Cxxi.Generators.CLI
             FunctionType function;
             if (decl.Type.IsPointerTo(out function))
             {
-                Return.Write("safe_cast<{0}>(", typedef);
-                Return.Write("System::Runtime::InteropServices::Marshal::");
-                Return.Write("GetDelegateForFunctionPointer(");
-                Return.Write("IntPtr({0}), {1}::typeid))",Context.ReturnVarName,
+                Context.Return.Write("safe_cast<{0}>(", typedef);
+                Context.Return.Write("System::Runtime::InteropServices::Marshal::");
+                Context.Return.Write("GetDelegateForFunctionPointer(");
+                Context.Return.Write("IntPtr({0}), {1}::typeid))",Context.ReturnVarName,
                     typedef.ToString().TrimEnd('^'));
                 return true;
             }
@@ -148,11 +171,11 @@ namespace Cxxi.Generators.CLI
             return decl.Type.Visit(this);
         }
 
-        public bool VisitTemplateSpecializationType(TemplateSpecializationType template,
+        public override bool VisitTemplateSpecializationType(TemplateSpecializationType template,
                                                     TypeQualifiers quals)
         {
             TypeMap typeMap;
-            if (TypeMapDatabase.FindTypeMap(template, out typeMap))
+            if (Driver.TypeDatabase.FindTypeMap(template, out typeMap))
             {
                 typeMap.Type = template;
                 typeMap.CLIMarshalToManaged(Context);
@@ -162,27 +185,27 @@ namespace Cxxi.Generators.CLI
             return template.Template.Visit(this);
         }
 
-        public bool VisitTemplateParameterType(TemplateParameterType param, TypeQualifiers quals)
+        public override bool VisitTemplateParameterType(TemplateParameterType param, TypeQualifiers quals)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals)
+        public override bool VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitDeclaration(Declaration decl, TypeQualifiers quals)
+        public override bool VisitDeclaration(Declaration decl, TypeQualifiers quals)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitDeclaration(Declaration decl)
+        public override bool VisitDeclaration(Declaration decl)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitClassDecl(Class @class)
+        public override bool VisitClassDecl(Class @class)
         {
             var instance = string.Empty;
 
@@ -206,46 +229,46 @@ namespace Cxxi.Generators.CLI
         public void WriteClassInstance(Class @class, string instance)
         {
             if (@class.IsRefType)
-                Return.Write("gcnew ");
+                Context.Return.Write("gcnew ");
 
-            Return.Write("{0}(", QualifiedIdentifier(@class));
-            Return.Write("(::{0}*)", @class.QualifiedOriginalName);
-            Return.Write("{0})", instance);
+            Context.Return.Write("{0}(", QualifiedIdentifier(@class));
+            Context.Return.Write("(::{0}*)", @class.QualifiedOriginalName);
+            Context.Return.Write("{0})", instance);
         }
 
-        public bool VisitFieldDecl(Field field)
+        public override bool VisitFieldDecl(Field field)
         {
             return field.Type.Visit(this);
         }
 
-        public bool VisitFunctionDecl(Function function)
+        public override bool VisitFunctionDecl(Function function)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitMethodDecl(Method method)
+        public override bool VisitMethodDecl(Method method)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitParameterDecl(Parameter parameter)
+        public override bool VisitParameterDecl(Parameter parameter)
         {
             return parameter.Type.Visit(this, parameter.QualifiedType.Qualifiers);
         }
 
-        public bool VisitTypedefDecl(TypedefDecl typedef)
+        public override bool VisitTypedefDecl(TypedefDecl typedef)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitEnumDecl(Enumeration @enum)
+        public override bool VisitEnumDecl(Enumeration @enum)
         {
-            Return.Write("({0}){1}", ToCLITypeName(@enum),
+            Context.Return.Write("({0}){1}", ToCLITypeName(@enum),
                 Context.ReturnVarName);
             return true;
         }
 
-        public bool VisitVariableDecl(Variable variable)
+        public override bool VisitVariableDecl(Variable variable)
         {
             throw new NotImplementedException();
         }
@@ -256,27 +279,27 @@ namespace Cxxi.Generators.CLI
             return typePrinter.VisitDeclaration(decl);
         }
 
-        public bool VisitClassTemplateDecl(ClassTemplate template)
+        public override bool VisitClassTemplateDecl(ClassTemplate template)
         {
             return template.TemplatedClass.Visit(this);
         }
 
-        public bool VisitFunctionTemplateDecl(FunctionTemplate template)
+        public override bool VisitFunctionTemplateDecl(FunctionTemplate template)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitMacroDefinition(MacroDefinition macro)
+        public override bool VisitMacroDefinition(MacroDefinition macro)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitNamespace(Namespace @namespace)
+        public override bool VisitNamespace(Namespace @namespace)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitEvent(Event @event)
+        public override bool VisitEvent(Event @event)
         {
             throw new NotImplementedException();
         }
@@ -287,46 +310,32 @@ namespace Cxxi.Generators.CLI
         }
     }
 
-    public class CLIMarshalManagedToNativePrinter : ITypeVisitor<bool>,
-                                                    IDeclVisitor<bool>
+    public class CLIMarshalManagedToNativePrinter : MarshalPrinter
     {
-        public TextGenerator SupportBefore;
-        public TextGenerator SupportAfter;
-        public TextGenerator Return;
-        public TextGenerator VarPrefix;
-        public TextGenerator ArgumentPrefix;
+        public readonly TextGenerator VarPrefix;
+        public readonly TextGenerator ArgumentPrefix;
 
-        ITypeMapDatabase TypeMapDatabase { get; set; }
-        MarshalContext Context { get; set; }
-
-        public CLIMarshalManagedToNativePrinter(ITypeMapDatabase typeMap,
-            MarshalContext ctx)
+        public CLIMarshalManagedToNativePrinter(Driver driver, MarshalContext ctx) 
+            : base(driver,ctx)
         {
-            TypeMapDatabase = typeMap;
-            Context = ctx;
-
-            SupportBefore = new TextGenerator();
-            SupportAfter = new TextGenerator();
-            Return = new TextGenerator();
             VarPrefix = new TextGenerator();
             ArgumentPrefix = new TextGenerator();
 
-            Context.Return = Return;
             Context.MarshalToNative = this;
         }
 
-        public bool VisitTagType(TagType tag, TypeQualifiers quals)
+        public override bool VisitTagType(TagType tag, TypeQualifiers quals)
         {
             var decl = tag.Declaration;
             return decl.Visit(this);
         }
 
-        public bool VisitArrayType(ArrayType array, TypeQualifiers quals)
+        public override bool VisitArrayType(ArrayType array, TypeQualifiers quals)
         {
             return false;
         }
 
-        public bool VisitFunctionType(FunctionType function, TypeQualifiers quals)
+        public override bool VisitFunctionType(FunctionType function, TypeQualifiers quals)
         {
             var returnType = function.ReturnType;
             return returnType.Visit(this, quals);
@@ -346,12 +355,12 @@ namespace Cxxi.Generators.CLI
             sb.Append("System::Runtime::InteropServices::Marshal::");
             sb.Append("GetFunctionPointerForDelegate(");
             sb.AppendFormat("{0}).ToPointer())", Context.Parameter.Name);
-            Return.Write(sb.ToString());
+            Context.Return.Write(sb.ToString());
 
             return true;
         }
 
-        public bool VisitPointerType(PointerType pointer, TypeQualifiers quals)
+        public override bool VisitPointerType(PointerType pointer, TypeQualifiers quals)
         {
             var pointee = pointer.Pointee;
 
@@ -364,18 +373,18 @@ namespace Cxxi.Generators.CLI
             if (isVoidPtr || isUInt8Ptr)
             {
                 if (isUInt8Ptr)
-                    Return.Write("({0})", "uint8*");
-                Return.Write("{0}.ToPointer()", Context.Parameter.Name);
+                    Context.Return.Write("({0})", "uint8*");
+                Context.Return.Write("{0}.ToPointer()", Context.Parameter.Name);
                 return true;
             }
 
             if (pointee.IsPrimitiveType(PrimitiveType.Char))
             {
-                SupportBefore.Write(
+                Context.SupportBefore.Write(
                     "auto _{0} = clix::marshalString<clix::E_UTF8>({1});",
                     Context.ArgName, Context.Parameter.Name);
 
-                Return.Write("_{0}.c_str()", Context.ArgName);
+                Context.Return.Write("_{0}.c_str()", Context.ArgName);
                 return true;
             }
 
@@ -389,13 +398,13 @@ namespace Cxxi.Generators.CLI
             return pointee.Visit(this, quals);
         }
 
-        public bool VisitMemberPointerType(MemberPointerType member,
+        public override bool VisitMemberPointerType(MemberPointerType member,
             TypeQualifiers quals)
         {
             return false;
         }
 
-        public bool VisitBuiltinType(BuiltinType builtin, TypeQualifiers quals)
+        public override bool VisitBuiltinType(BuiltinType builtin, TypeQualifiers quals)
         {
             return VisitPrimitiveType(builtin.Type);
         }
@@ -417,7 +426,7 @@ namespace Cxxi.Generators.CLI
                 case PrimitiveType.UInt64:
                 case PrimitiveType.Float:
                 case PrimitiveType.Double:
-                    Return.Write(Context.Parameter.Name);
+                    Context.Return.Write(Context.Parameter.Name);
                     return true;
                 case PrimitiveType.WideChar:
                     return false;
@@ -426,12 +435,12 @@ namespace Cxxi.Generators.CLI
             return false;
         }
 
-        public bool VisitTypedefType(TypedefType typedef, TypeQualifiers quals)
+        public override bool VisitTypedefType(TypedefType typedef, TypeQualifiers quals)
         {
             var decl = typedef.Declaration;
 
             TypeMap typeMap = null;
-            if (TypeMapDatabase.FindTypeMap(decl, out typeMap))
+            if (Driver.TypeDatabase.FindTypeMap(decl, out typeMap))
             {
                 typeMap.CLIMarshalToNative(Context);
                 return typeMap.IsValueType;
@@ -447,17 +456,17 @@ namespace Cxxi.Generators.CLI
             PrimitiveType primitive;
             if (decl.Type.IsPrimitiveType(out primitive, walkTypedefs: true))
             {
-                Return.Write("({0})", typedef.Declaration.Name);
+                Context.Return.Write("({0})", typedef.Declaration.Name);
             }
 
             return decl.Type.Visit(this);
         }
 
-        public bool VisitTemplateSpecializationType(TemplateSpecializationType template,
+        public override bool VisitTemplateSpecializationType(TemplateSpecializationType template,
                                                     TypeQualifiers quals)
         {
             TypeMap typeMap = null;
-            if (TypeMapDatabase.FindTypeMap(template, out typeMap))
+            if (Driver.TypeDatabase.FindTypeMap(template, out typeMap))
             {
                 typeMap.Type = template;
                 typeMap.CLIMarshalToNative(Context);
@@ -467,27 +476,27 @@ namespace Cxxi.Generators.CLI
             return template.Template.Visit(this);
         }
 
-        public bool VisitTemplateParameterType(TemplateParameterType param, TypeQualifiers quals)
+        public override bool VisitTemplateParameterType(TemplateParameterType param, TypeQualifiers quals)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals)
+        public override bool VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitDeclaration(Declaration decl, TypeQualifiers quals)
+        public override bool VisitDeclaration(Declaration decl, TypeQualifiers quals)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitDeclaration(Declaration decl)
+        public override bool VisitDeclaration(Declaration decl)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitClassDecl(Class @class)
+        public override bool VisitClassDecl(Class @class)
         {
             if (@class.IsValueType)
             {
@@ -504,7 +513,7 @@ namespace Cxxi.Generators.CLI
         private void MarshalRefClass(Class @class)
         {
             TypeMap typeMap = null;
-            if (TypeMapDatabase.FindTypeMap(@class, out typeMap))
+            if (Driver.TypeDatabase.FindTypeMap(@class, out typeMap))
             {
                 typeMap.CLIMarshalToNative(Context);
                 return;
@@ -512,7 +521,7 @@ namespace Cxxi.Generators.CLI
 
             if (!Context.Parameter.Type.IsPointer())
             {
-                Return.Write("*");
+                Context.Return.Write("*");
 
                 if (Context.Parameter.Type.IsReference())
                     VarPrefix.Write("&");
@@ -523,13 +532,13 @@ namespace Cxxi.Generators.CLI
                 && method.Conversion == MethodConversionKind.FunctionToInstanceMethod
                 && Context.ParameterIndex == 0)
             {
-                Return.Write("(::{0}*)", @class.QualifiedOriginalName);
-                Return.Write("NativePtr");
+                Context.Return.Write("(::{0}*)", @class.QualifiedOriginalName);
+                Context.Return.Write("NativePtr");
                 return;
             }
 
-            Return.Write("(::{0}*)", @class.QualifiedOriginalName);
-            Return.Write("{0}->NativePtr", Context.Parameter.Name);
+            Context.Return.Write("(::{0}*)", @class.QualifiedOriginalName);
+            Context.Return.Write("{0}->NativePtr", Context.Parameter.Name);
         }
 
         private void MarshalValueClass(Class @class)
@@ -537,13 +546,13 @@ namespace Cxxi.Generators.CLI
 
             var marshalVar = "_marshal" + Context.ParameterIndex++;
 
-            SupportBefore.WriteLine("auto {0} = ::{1}();", marshalVar,
+            Context.SupportBefore.WriteLine("auto {0} = ::{1}();", marshalVar,
                 @class.QualifiedOriginalName);
-            SupportBefore.PushIndent();
+            Context.SupportBefore.PushIndent();
 
             MarshalValueClassFields(@class, marshalVar);
 
-            Return.Write(marshalVar);
+            Context.Return.Write(marshalVar);
 
             if (Context.Parameter.Type.IsPointer())
                 ArgumentPrefix.Write("&");
@@ -577,29 +586,28 @@ namespace Cxxi.Generators.CLI
                                      ParameterIndex = Context.ParameterIndex++
                                  };
 
-            var marshal = new CLIMarshalManagedToNativePrinter(TypeMapDatabase,
-                                                               marshalCtx);
+            var marshal = new CLIMarshalManagedToNativePrinter(Driver, marshalCtx);
             field.Visit(marshal);
 
             Context.ParameterIndex = marshalCtx.ParameterIndex;
 
-            if (!string.IsNullOrWhiteSpace(marshal.SupportBefore))
-                SupportBefore.WriteLine(marshal.SupportBefore);
+            if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
+                Context.SupportBefore.WriteLine(marshal.Context.SupportBefore);
 
             if(field.Type.IsPointer())
             {
-                SupportBefore.WriteLine("if ({0} != nullptr)", fieldRef);
-                SupportBefore.PushIndent();
+                Context.SupportBefore.WriteLine("if ({0} != nullptr)", fieldRef);
+                Context.SupportBefore.PushIndent();
             }
 
-            SupportBefore.WriteLine("{0}.{1} = {2};", marshalVar, field.OriginalName,
-                                    marshal.Return);
+            Context.SupportBefore.WriteLine("{0}.{1} = {2};", marshalVar, field.OriginalName,
+                                    marshal.Context.Return);
 
             if(field.Type.IsPointer())
-                SupportBefore.PopIndent();
+                Context.SupportBefore.PopIndent();
         }
 
-        public bool VisitFieldDecl(Field field)
+        public override bool VisitFieldDecl(Field field)
         {
             Context.Parameter = new Parameter
                 {
@@ -610,59 +618,59 @@ namespace Cxxi.Generators.CLI
             return field.Type.Visit(this);
         }
 
-        public bool VisitFunctionDecl(Function function)
+        public override bool VisitFunctionDecl(Function function)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitMethodDecl(Method method)
+        public override bool VisitMethodDecl(Method method)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitParameterDecl(Parameter parameter)
+        public override bool VisitParameterDecl(Parameter parameter)
         {
             return parameter.Type.Visit(this);
         }
 
-        public bool VisitTypedefDecl(TypedefDecl typedef)
+        public override bool VisitTypedefDecl(TypedefDecl typedef)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitEnumDecl(Enumeration @enum)
+        public override bool VisitEnumDecl(Enumeration @enum)
         {
-            Return.Write("(::{0}){1}", @enum.QualifiedOriginalName,
+            Context.Return.Write("(::{0}){1}", @enum.QualifiedOriginalName,
                          Context.Parameter.Name);
             return true;
         }
 
-        public bool VisitVariableDecl(Variable variable)
+        public override bool VisitVariableDecl(Variable variable)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitClassTemplateDecl(ClassTemplate template)
+        public override bool VisitClassTemplateDecl(ClassTemplate template)
         {
             return template.TemplatedClass.Visit(this);
         }
 
-        public bool VisitFunctionTemplateDecl(FunctionTemplate template)
+        public override bool VisitFunctionTemplateDecl(FunctionTemplate template)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitMacroDefinition(MacroDefinition macro)
+        public override bool VisitMacroDefinition(MacroDefinition macro)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitNamespace(Namespace @namespace)
+        public override bool VisitNamespace(Namespace @namespace)
         {
             throw new NotImplementedException();
         }
 
-        public bool VisitEvent(Event @event)
+        public override bool VisitEvent(Event @event)
         {
             throw new NotImplementedException();
         }
