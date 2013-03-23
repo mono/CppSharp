@@ -177,6 +177,7 @@ namespace Cxxi
             GeneratorKind = LanguageGeneratorKind.CSharp;
             GenerateLibraryNamespace = true;
             GenerateFunctionTemplates = false;
+            WriteOnlyWhenChanged = false;
         }
 
         public bool Verbose = false;
@@ -200,5 +201,6 @@ namespace Cxxi
         public string IncludePrefix;
         public string WrapperSuffix;
         public LanguageGeneratorKind GeneratorKind;
+        public bool WriteOnlyWhenChanged;
     }
 }

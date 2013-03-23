@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using Cxxi.Passes;
 using Cxxi.Types;
 
 namespace Cxxi.Generators.CLI
@@ -8,11 +7,13 @@ namespace Cxxi.Generators.CLI
     public class CLIGenerator : Generator
     {
         private readonly ITypePrinter typePrinter;
+        private readonly FileHashes fileHashes;
 
         public CLIGenerator(Driver driver) : base(driver)
         {
             typePrinter = new CLITypePrinter(driver);
             Type.TypePrinter = typePrinter;
+            fileHashes = FileHashes.Load("hashes.ser");
         }
 
         void WriteTemplate(TextTemplate template)
@@ -22,11 +23,22 @@ namespace Cxxi.Generators.CLI
                 + template.FileExtension;
 
             var path = Path.Combine(Driver.Options.OutputDir, file);
+            var fullPath = Path.GetFullPath(path);
 
             template.Generate();
 
             Console.WriteLine("  Generated '" + file + "'.");
-            File.WriteAllText(Path.GetFullPath(path), template.ToString());
+
+            var str = template.ToString();
+
+            if(Driver.Options.WriteOnlyWhenChanged)
+            {
+                var updated = fileHashes.UpdateHash(path, str.GetHashCode());
+                if(File.Exists(fullPath) && !updated)
+                    return;
+            } 
+
+            File.WriteAllText(fullPath,str);
         }
 
         public override bool Generate(TranslationUnit unit)

@@ -568,6 +568,9 @@ namespace Cxxi.Generators.CLI
 
             foreach (var field in @class.Fields)
             {
+                if(field.Ignore)
+                    continue;
+
                 MarshalValueClassField(field, marshalVar);
             }
         }
