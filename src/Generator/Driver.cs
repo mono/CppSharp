@@ -128,9 +128,10 @@ namespace Cxxi
                     generator = new CSharpGenerator(this);
                     break;
                 case LanguageGeneratorKind.CPlusPlusCLI:
-                default:
                     generator = new CLIGenerator(this);
                     break;
+                default:
+                    throw new NotImplementedException("Unknown language generator kind");
             }
 
             if (!Directory.Exists(Options.OutputDir))
