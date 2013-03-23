@@ -149,6 +149,9 @@ namespace Cxxi.Generators.CLI
 
             foreach (var @event in @class.Events)
             {
+                if (@event.Ignore)
+                    continue;
+
                 GenerateDeclarationCommon(@event);
                 GenerateEvent(@event, @class);
             }
