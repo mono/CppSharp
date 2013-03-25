@@ -8,9 +8,9 @@ namespace Cxxi
         public void Setup(DriverOptions options)
         {
             options.LibraryName = "OpenCV";
-            options.Headers.Add("opencv.hpp");
+            options.Headers.Add("opencv2/core/core_c.h");
+            options.Headers.Add("opencv2/core/types_c.h");
             options.IncludeDirs.Add("../../../examples/OpenCV/opencv/include/");
-            options.IncludeDirs.Add("../../../examples/OpenCV/opencv/include/opencv2");
             options.IncludeDirs.Add("../../../examples/OpenCV/opencv/modules/core/include");
             options.IncludeDirs.Add("../../../examples/OpenCV/opencv/modules/flann/include");
             options.IncludeDirs.Add("../../../examples/OpenCV/opencv/modules/imgproc/include");
@@ -27,7 +27,6 @@ namespace Cxxi
 
         public void Preprocess(Library lib)
         {
-
         }
 
         public void Postprocess(Library lib)
@@ -37,7 +36,8 @@ namespace Cxxi
 
         public void SetupPasses(Driver driver, PassBuilder p)
         {
-
+            p.FunctionToInstanceMethod();
+            p.FunctionToStaticMethod();
         }
 
         public void GenerateStart(TextTemplate template)
