@@ -644,7 +644,7 @@ namespace Cxxi.Generators.CLI
             var @params = GenerateFunctionParamsMarshal(function.Parameters, function);
 
             if (needsReturn)
-                Write("auto ret = ");
+                Write("auto {0}ret = ",(function.ReturnType.IsReference())? "&": string.Empty);
 
             if (isValueType)
             {
