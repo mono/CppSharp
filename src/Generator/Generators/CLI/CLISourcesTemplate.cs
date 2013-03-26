@@ -668,6 +668,30 @@ namespace Cxxi.Generators.CLI
             GenerateFunctionParams(@params);
             WriteLine(");");
 
+            foreach(var paramInfo in @params)
+            {
+                var param = paramInfo.Param;
+                if(param.Usage != ParameterUsage.Out && param.Usage != ParameterUsage.Ref)
+                    continue;
+
+                var nativeVarName = paramInfo.Name;
+
+                var ctx = new MarshalContext(Driver)
+                    {
+                        ArgName = nativeVarName,
+                        ReturnVarName = nativeVarName,
+                        ReturnType = param.Type
+                    };
+
+                var marshal = new CLIMarshalNativeToManagedPrinter(ctx);
+                param.Visit(marshal);
+                
+                if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
+                    Write(marshal.Context.SupportBefore);
+
+                WriteLine("{0} = {1};",param.Name,marshal.Context.Return);
+            }
+
             if (needsReturn)
             {
                 var ctx = new MarshalContext(Driver)
@@ -728,28 +752,42 @@ namespace Cxxi.Generators.CLI
 
             var argName = "arg" + paramIndex.ToString(CultureInfo.InvariantCulture);
 
-            var ctx = new MarshalContext(Driver)
-                {
-                    Parameter = param,
-                    ParameterIndex = paramIndex,
-                    ArgName = argName,
-                    Function = function
-                };
+            if (param.Usage == ParameterUsage.Out)
+            {
+                var paramType = param.Type;
+                if (paramType.IsReference())
+                    paramType = (paramType as PointerType).Pointee;
 
-            var marshal = new CLIMarshalManagedToNativePrinter(ctx);
+                var typePrinter = new CppTypePrinter(Driver.TypeDatabase);
+                var type = paramType.Visit(typePrinter);
 
-            param.Visit(marshal);
+                WriteLine("{0} {1};", type, argName);
+            }
+            else
+            {
+                var ctx = new MarshalContext(Driver)
+                        {
+                            Parameter = param,
+                            ParameterIndex = paramIndex,
+                            ArgName = argName,
+                            Function = function
+                        };
 
-            if (string.IsNullOrEmpty(marshal.Context.Return))
-                throw new Exception("Cannot marshal argument of function");
+                var marshal = new CLIMarshalManagedToNativePrinter(ctx);
 
-            if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
-                Write(marshal.Context.SupportBefore);
+                param.Visit(marshal);
 
-            WriteLine("auto {0}{1} = {2};", marshal.VarPrefix, argName, marshal.Context.Return);
+                if (string.IsNullOrEmpty(marshal.Context.Return))
+                    throw new Exception("Cannot marshal argument of function");
 
-            var argText = marshal.ArgumentPrefix + argName;
-            return new ParamMarshal {Name = argText, Param = param};
+                if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
+                    Write(marshal.Context.SupportBefore);
+
+                WriteLine("auto {0}{1} = {2};", marshal.VarPrefix, argName, marshal.Context.Return);
+                argName = marshal.ArgumentPrefix + argName;
+            }
+
+            return new ParamMarshal {Name = argName, Param = param};
         }
 
         public void GenerateFunctionParams(List<ParamMarshal> @params)
