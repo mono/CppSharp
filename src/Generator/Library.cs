@@ -217,6 +217,28 @@ namespace Cxxi
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parameterIndex">first parameter has index 1</param>
+        public static void SetMethodParameterUsage(this Library library,
+            string className, string methodName, int parameterIndex, ParameterUsage usage)
+        {
+            if (parameterIndex <= 0 )
+                 throw new ArgumentException("parameterIndex");
+
+            foreach (var @class in library.FindClass(className))
+            {
+                var method = @class.Methods.Find(m => m.Name == methodName);
+                if (method == null)
+                    throw new ArgumentException("methodName");
+                if (method.Parameters.Count < parameterIndex)
+                    throw new ArgumentException("parameterIndex");
+
+                method.Parameters[parameterIndex - 1].Usage = usage;
+            }
+        }
+
         public static void CopyClassFields(this Library library, string source,
             string destination)
         {

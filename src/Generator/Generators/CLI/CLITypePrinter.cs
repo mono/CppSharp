@@ -120,11 +120,21 @@ namespace Cxxi.Generators.CLI
         {
             var type = param.Type.Visit(this, param.QualifiedType.Qualifiers);
             var name = param.Name;
+            var str = "";
 
+            if(param.Usage == ParameterUsage.Out)
+                str += "[System::Runtime::InteropServices::Out] ";
+
+            str += type;
+
+            if(param.Usage == ParameterUsage.Out ||
+               param.Usage == ParameterUsage.Ref)
+                str += "%";
+                   
             if (hasName && !string.IsNullOrEmpty(name))
-                return string.Format("{0} {1}", type, name);
+                str += " " + name;
 
-            return type;
+            return str;
         }
 
         public string VisitDelegate(FunctionType function)
