@@ -128,7 +128,7 @@ namespace Cxxi.Generators.CLI
             str += type;
 
             if(param.Usage == ParameterUsage.Out ||
-               param.Usage == ParameterUsage.Ref)
+               param.Usage == ParameterUsage.InOut)
                 str += "%";
                    
             if (hasName && !string.IsNullOrEmpty(name))
