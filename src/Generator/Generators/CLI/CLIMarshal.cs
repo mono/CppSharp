@@ -268,7 +268,7 @@ namespace Cxxi.Generators.CLI
 
         public override bool VisitVariableDecl(Variable variable)
         {
-            throw new NotImplementedException();
+            return variable.Type.Visit(this, variable.QualifiedType.Qualifiers);
         }
 
         private string ToCLITypeName(Declaration decl)

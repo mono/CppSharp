@@ -173,6 +173,9 @@ namespace Cxxi.Generators.CLI
                 if (variable.Ignore)
                     continue;
 
+                if (variable.Access != AccessSpecifier.Public)
+                    continue;
+
                 GenerateDeclarationCommon(variable);
                 GenerateVariable(variable, @class);
             }
@@ -218,20 +221,20 @@ namespace Cxxi.Generators.CLI
         {
             var @class = field.Class;
 
-            GenerateFieldPropertyGetter(field, @class);
-            GenerateFieldPropertySetter(field, @class);
+            GeneratePropertyGetter(field, @class);
+            GeneratePropertySetter(field, @class);
         }
 
-        private void GenerateFieldPropertySetter(Field field, Class @class)
+        private void GeneratePropertySetter<T>(T decl, Class @class) where T : Declaration, ITypedDecl
         {
             WriteLine("void {0}::{1}::set({2} value)", QualifiedIdentifier(@class),
-                      field.Name, field.Type);
+                      decl.Name, decl.Type);
             WriteStartBraceIndent();
 
             var param = new Parameter
                 {
                     Name = "value",
-                    QualifiedType = field.QualifiedType
+                    QualifiedType = decl.QualifiedType
                 };
 
             var ctx = new MarshalContext(Driver)
@@ -243,8 +246,13 @@ namespace Cxxi.Generators.CLI
             var marshal = new CLIMarshalManagedToNativePrinter(ctx);
             param.Visit(marshal);
 
-            var variable = string.Format("((::{0}*)NativePtr)->{1}",
-                                         @class.QualifiedOriginalName, field.OriginalName);
+            string variable;
+            if (decl is Variable)
+                variable = string.Format("::{0}::{1}",
+                                         @class.QualifiedOriginalName, decl.OriginalName);
+            else
+                variable = string.Format("((::{0}*)NativePtr)->{1}",
+                                         @class.QualifiedOriginalName, decl.OriginalName);
 
             if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                 Write(marshal.Context.SupportBefore);
@@ -255,24 +263,29 @@ namespace Cxxi.Generators.CLI
             NewLine();
         }
 
-        private void GenerateFieldPropertyGetter(Field field, Class @class)
+        private void GeneratePropertyGetter<T>(T decl, Class @class) where T : Declaration, ITypedDecl
         {
-            WriteLine("{0} {1}::{2}::get()", field.Type, QualifiedIdentifier(@class),
-                      field.Name);
+            WriteLine("{0} {1}::{2}::get()", decl.Type, QualifiedIdentifier(@class),
+                      decl.Name);
             WriteStartBraceIndent();
 
-            var variable = string.Format("((::{0}*)NativePtr)->{1}",
-                                         @class.QualifiedOriginalName, field.OriginalName);
+            string variable;
+            if (decl is Variable)
+                variable = string.Format("::{0}::{1}",
+                                         @class.QualifiedOriginalName, decl.OriginalName);
+            else
+                variable = string.Format("((::{0}*)NativePtr)->{1}",
+                                         @class.QualifiedOriginalName, decl.OriginalName);
 
             var ctx = new MarshalContext(Driver)
                 {
-                    ArgName = field.Name,
+                    ArgName = decl.Name,
                     ReturnVarName = variable,
-                    ReturnType = field.Type
+                    ReturnType = decl.Type
                 };
 
             var marshal = new CLIMarshalNativeToManagedPrinter(ctx);
-            field.Visit(marshal);
+            decl.Visit(marshal);
 
             if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                 Write(marshal.Context.SupportBefore);
@@ -397,7 +410,10 @@ namespace Cxxi.Generators.CLI
 
         private void GenerateVariable(Variable variable, Class @class)
         {
+            GeneratePropertyGetter(variable, @class);
 
+            if (!variable.QualifiedType.Qualifiers.IsConst)
+                GeneratePropertySetter(variable, @class);
         }
 
         private void GenerateClassConstructor(Class @class, bool isIntPtr)
@@ -671,7 +687,7 @@ namespace Cxxi.Generators.CLI
             foreach(var paramInfo in @params)
             {
                 var param = paramInfo.Param;
-                if(param.Usage != ParameterUsage.Out && param.Usage != ParameterUsage.Ref)
+                if(param.Usage != ParameterUsage.Out && param.Usage != ParameterUsage.InOut)
                     continue;
 
                 var nativeVarName = paramInfo.Name;

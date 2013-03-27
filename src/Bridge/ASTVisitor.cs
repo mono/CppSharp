@@ -157,6 +157,9 @@ namespace Cxxi
             foreach (var @event in @class.Events)
                 VisitEvent(@event);
 
+            foreach (var variable in @class.Variables)
+                VisitVariableDecl(variable);
+
             return true;
         }
 
