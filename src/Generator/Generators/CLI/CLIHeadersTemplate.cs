@@ -426,8 +426,21 @@ namespace Cxxi.Generators.CLI
             {
                 if (variable.Ignore) continue;
 
-                WriteLine("static property {0} {1};", variable.Type,
-                    variable.Name);
+                if (variable.Access != AccessSpecifier.Public)
+                    continue;
+
+                var type = variable.Type;
+
+                WriteLine("static property {0} {1}", type, variable.Name);
+
+                WriteStartBraceIndent();
+
+                WriteLine("{0} get();", type);
+
+                if (!variable.QualifiedType.Qualifiers.IsConst)
+                    WriteLine("void set({0});", type);
+
+                WriteCloseBraceIndent();
             }
 
             PopIndent();

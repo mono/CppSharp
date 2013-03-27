@@ -1319,6 +1319,7 @@ Cxxi::Variable^ Parser::WalkVariable(clang::VarDecl *VD)
 
     auto Var = gcnew Cxxi::Variable();
     Var->Name = marshalString<E_UTF8>(VD->getName());
+    Var->Access = ConvertToAccess(VD->getAccess());
 
     auto TL = VD->getTypeSourceInfo()->getTypeLoc();
     Var->QualifiedType = GetQualifiedType(VD->getType(), WalkType(VD->getType(), &TL));
