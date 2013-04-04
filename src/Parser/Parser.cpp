@@ -1067,6 +1067,25 @@ Cxxi::Enumeration^ Parser::WalkEnum(clang::EnumDecl* ED)
 
 //-----------------------------------//
 
+clang::CallingConv Parser::GetAbiCallConv(clang::CallingConv CC,
+                                          bool IsInstMethod,
+                                          bool IsVariadic)
+{
+  using namespace clang;
+
+  // TODO: Itanium ABI
+
+  if (CC == CC_Default) {
+    if (IsInstMethod) {
+      CC = AST->getDefaultCXXMethodCallConv(IsVariadic);
+    } else {
+      CC = CC_C;
+    }
+  }
+
+  return CC;
+}
+
 static Cxxi::CallingConvention ConvertCallConv(clang::CallingConv CC)
 {
     using namespace clang;
@@ -1109,7 +1128,9 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, Cxxi::Function^ F,
     F->Namespace = NS;
     F->IsVariadic = FD->isVariadic();
     F->IsInline = FD->isInlined();
-    F->CallingConvention = ConvertCallConv(CC);
+    
+    auto AbiCC = GetAbiCallConv(CC, FD->isCXXInstanceMember(), FD->isVariadic());
+    F->CallingConvention = ConvertCallConv(AbiCC);
 
     TypeLoc RTL;
     if (auto TSI = FD->getTypeSourceInfo())

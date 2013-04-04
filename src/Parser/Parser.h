@@ -132,6 +132,9 @@ protected:
     Cxxi::TranslationUnit^ GetModule(clang::SourceLocation Loc);
     Cxxi::Namespace^ GetNamespace(const clang::NamedDecl*);
 
+    clang::CallingConv GetAbiCallConv(clang::CallingConv CC,
+        bool IsInstMethod, bool IsVariadic);
+
     int Index;
     gcroot<Cxxi::Library^> Lib;
     llvm::OwningPtr<clang::CompilerInstance> C;
