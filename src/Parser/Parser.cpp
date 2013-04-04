@@ -157,8 +157,6 @@ std::string Parser::GetDeclMangledName(clang::Decl* D, clang::TargetCXXABI ABI,
     bool CanMangle = isa<FunctionDecl>(D) || isa<VarDecl>(D)
         || isa<CXXConstructorDecl>(D) || isa<CXXDestructorDecl>(D);
 
-    CanMangle = false;
-
     if (!CanMangle) return "";
 
     NamedDecl* ND = cast<NamedDecl>(D);
