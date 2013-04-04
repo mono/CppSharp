@@ -21,19 +21,31 @@ namespace Cxxi
         Unknown
     }
 
+    public enum ParameterKind
+    {
+        Regular,
+    }
+
     public class Parameter : Declaration, ITypedDecl
     {
         public Parameter()
         {
+            Kind = ParameterKind.Regular;
             Usage = ParameterUsage.Unknown;
             HasDefaultValue = false;
         }
 
         public Type Type { get { return QualifiedType.Type; } }
         public QualifiedType QualifiedType { get; set; }
+
+        public ParameterKind Kind { get; set; }
         public ParameterUsage Usage { get; set; }
         public bool HasDefaultValue { get; set; }
 
+        public bool IsSynthetized
+        {
+            get { return Kind != ParameterKind.Regular; }
+        }
 
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {
