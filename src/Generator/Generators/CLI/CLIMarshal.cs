@@ -6,7 +6,6 @@ namespace Cxxi.Generators.CLI
 {
     public class CLIMarshalNativeToManagedPrinter : MarshalPrinter
     {
-
         public CLIMarshalNativeToManagedPrinter(MarshalContext marshalContext)
             : base(marshalContext)
         {
@@ -340,7 +339,8 @@ namespace Cxxi.Generators.CLI
                 return true;
             }
 
-            if (pointee.IsPrimitiveType(PrimitiveType.Char))
+            if (pointee.IsPrimitiveType(PrimitiveType.Char) ||
+                pointee.IsPrimitiveType(PrimitiveType.WideChar))
             {
                 Context.SupportBefore.WriteLine(
                     "auto _{0} = clix::marshalString<clix::E_UTF8>({1});",
