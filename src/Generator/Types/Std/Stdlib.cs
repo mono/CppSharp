@@ -1,6 +1,7 @@
 using System;
-using System.Linq;
+using Cxxi.Generators;
 using Cxxi.Generators.CLI;
+using Cxxi.Generators.CSharp;
 
 namespace Cxxi.Types.Std
 {
@@ -16,7 +17,7 @@ namespace Cxxi.Types.Std
     [TypeMap("std::string")]
     public class String : TypeMap
     {
-        public override string CLISignature(TypePrinterContext ctx)
+        public override string CLISignature(CLITypePrinterContext ctx)
         {
             return "System::String^";
         }
@@ -31,26 +32,26 @@ namespace Cxxi.Types.Std
             ctx.Return.Write("clix::marshalString<clix::E_UTF8>({0})", ctx.ReturnVarName);
         }
 
-        public override string CSharpSignature()
+        public override string CSharpSignature(CSharpTypePrinterContext ctx)
         {
             return "string";
         }
 
         public override void CSharpMarshalToNative(MarshalContext ctx)
         {
-            throw new NotImplementedException();
+            ctx.Return.Write("StringToPtr");
         }
 
         public override void CSharpMarshalToManaged(MarshalContext ctx)
         {
-            throw new NotImplementedException();
+            ctx.Return.Write("PtrToString");
         }
     }
 
     [TypeMap("std::wstring")]
     public class WString : TypeMap
     {
-        public override string CLISignature(TypePrinterContext ctx)
+        public override string CLISignature(CLITypePrinterContext ctx)
         {
             return "System::String^";
         }
@@ -64,12 +65,27 @@ namespace Cxxi.Types.Std
         {
             ctx.Return.Write("marshalString<E_UTF16>({0})", ctx.ReturnVarName);
         }
+
+        public override string CSharpSignature(CSharpTypePrinterContext ctx)
+        {
+            return "string";
+        }
+
+        public override void CSharpMarshalToNative(MarshalContext ctx)
+        {
+            ctx.Return.Write("StringToPtr");
+        }
+
+        public override void CSharpMarshalToManaged(MarshalContext ctx)
+        {
+            ctx.Return.Write("PtrToString");
+        }
     }
 
     [TypeMap("std::vector")]
     public class Vector : TypeMap
     {
-        public override string CLISignature(TypePrinterContext ctx)
+        public override string CLISignature(CLITypePrinterContext ctx)
         {
             return string.Format("System::Collections::Generic::List<{0}>^",
                 ctx.GetTemplateParameterList());
@@ -152,6 +168,21 @@ namespace Cxxi.Types.Std
 
             ctx.Return.Write(tmpVarName);
         }
+
+        public override string CSharpSignature(CSharpTypePrinterContext ctx)
+        {
+            return string.Format("System.Collections.Generic.List<>");
+        }
+
+        public override void CSharpMarshalToNative(MarshalContext ctx)
+        {
+            ctx.Return.Write("StringToPtr");
+        }
+
+        public override void CSharpMarshalToManaged(MarshalContext ctx)
+        {
+            ctx.Return.Write("PtrToString");
+        }
     }
 
     [TypeMap("std::map")]
@@ -159,12 +190,11 @@ namespace Cxxi.Types.Std
     {
         public override bool IsIgnored { get { return true; } }
 
-        public override string CLISignature(TypePrinterContext ctx)
+        public override string CLISignature(CLITypePrinterContext ctx)
         {
             var type = Type as TemplateSpecializationType;
             return string.Format("System::Collections::Generic::Dictionary<{0}, {1}>^",
-                type.Arguments[0].Type,
-                type.Arguments[1].Type);
+                type.Arguments[0].Type, type.Arguments[1].Type);
         }
 
         public override void CLIMarshalToNative(MarshalContext ctx)
@@ -175,6 +205,13 @@ namespace Cxxi.Types.Std
         public override void CLIMarshalToManaged(MarshalContext ctx)
         {
             throw new System.NotImplementedException();
+        }
+
+        public override string CSharpSignature(CSharpTypePrinterContext ctx)
+        {
+            var type = Type as TemplateSpecializationType;
+            return string.Format("System.Collections.Generic.Dictionary<{0}, {1}>",
+                type.Arguments[0].Type, type.Arguments[1].Type);
         }
     }
 
@@ -187,7 +224,7 @@ namespace Cxxi.Types.Std
     [TypeMap("std::shared_ptr")]
     public class SharedPtr : TypeMap
     {
-        public override string CLISignature(TypePrinterContext ctx)
+        public override string CLISignature(CLITypePrinterContext ctx)
         {
             throw new System.NotImplementedException();
         }
