@@ -54,10 +54,31 @@ namespace Cxxi
 
         public Type ReturnType { get; set; }
         public List<Parameter> Parameters { get; set; }
-        public CallingConvention CallingConvention { get; set; }
         public bool IsVariadic { get; set; }
         public bool IsInline { get; set; }
-        
+
+        public CallingConvention CallingConvention { get; set; }
+
+        public bool IsThisCall
+        {
+            get { return CallingConvention == CallingConvention.ThisCall; }
+        }
+
+        public bool IsStdCall
+        {
+            get { return CallingConvention == CallingConvention.StdCall; }
+        }
+
+        public bool IsFastCall
+        {
+            get { return CallingConvention == CallingConvention.FastCall; }
+        }
+
+        public bool IsCCall
+        {
+            get { return CallingConvention == CallingConvention.C; }
+        }
+
         // Mangled name
         public string Mangled { get; set; }
         
