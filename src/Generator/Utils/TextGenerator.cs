@@ -72,6 +72,11 @@ namespace Cxxi
             needsNewLine = true;
         }
 
+        public void ResetNewLine()
+        {
+            needsNewLine = false;
+        }
+
         public void PushIndent(uint indent = DefaultIndent)
         {
             CurrentIndent.Push(indent);
