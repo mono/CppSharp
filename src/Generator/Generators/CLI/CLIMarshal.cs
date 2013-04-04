@@ -440,7 +440,8 @@ namespace Cxxi.Generators.CLI
 
         public override bool VisitTemplateParameterType(TemplateParameterType param, TypeQualifiers quals)
         {
-            throw new NotImplementedException();
+            Context.Return.Write(param.Parameter.Name);
+            return true;
         }
 
         public override bool VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals)
