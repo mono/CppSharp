@@ -102,6 +102,9 @@ namespace Cxxi
             passes.CheckTypeReferences();
             passes.CheckFlagEnums();
 
+            if (Options.GeneratorKind == LanguageGeneratorKind.CSharp)
+                passes.CheckAbiParameters(Options);
+
             if (Transform != null)
                 Transform.SetupPasses(this, passes);
 
