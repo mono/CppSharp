@@ -1710,7 +1710,6 @@ ParserResult^ Parser::Parse(const std::string& File)
                 PDiag.Level = ParserDiagnosticLevel::Note;
                 break;
             case clang::DiagnosticsEngine::Warning:
-            default:
                 PDiag.Level = ParserDiagnosticLevel::Warning;
                 break;
             case clang::DiagnosticsEngine::Error:
@@ -1719,8 +1718,9 @@ ParserResult^ Parser::Parse(const std::string& File)
             case clang::DiagnosticsEngine::Fatal:
                 PDiag.Level = ParserDiagnosticLevel::Fatal;
                 break;
-                break;
-        } // switch
+            default:
+                assert(0);
+        }
 
         res->Diagnostics->Add(PDiag);
     }
