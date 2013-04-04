@@ -138,6 +138,11 @@ namespace Cxxi
     /// </summary>
     public struct QualifiedType
     {
+        public QualifiedType(Type type) : this()
+        {
+            Type = type;
+        }
+
         public Type Type { get; set; }
         public TypeQualifiers Qualifiers { get; set; }
 
@@ -402,7 +407,8 @@ namespace Cxxi
         Int64,
         UInt64,
         Float,
-        Double
+        Double,
+        IntPtr
     }
 
     /// <summary>

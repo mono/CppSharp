@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Cxxi.Generators;
 using Cxxi.Generators.CLI;
+using Cxxi.Generators.CSharp;
 
 namespace Cxxi.Types
 {
@@ -38,7 +39,7 @@ namespace Cxxi.Types
 
         #region C# backend
 
-        public virtual string CSharpSignature()
+        public virtual string CSharpSignature(CSharpTypePrinterContext ctx)
         {
             throw new NotImplementedException();
         }

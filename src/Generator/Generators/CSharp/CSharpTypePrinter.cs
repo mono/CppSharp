@@ -4,15 +4,55 @@ using Cxxi.Types;
 
 namespace Cxxi.Generators.CSharp
 {
+    public enum CSharpTypePrinterContextKind
+    {
+        Native,
+        Managed
+    }
+
+    public class CSharpTypePrinterContext : TypePrinterContext
+    {
+        public CSharpTypePrinterContext()
+        {
+            
+        }
+
+        public CSharpTypePrinterContext(TypePrinterContextKind kind)
+            : base(kind)
+        {
+            
+        }
+    }
+
     public class CSharpTypePrinter : ITypePrinter, IDeclVisitor<string>
     {
         public Library Library { get; set; }
         private readonly ITypeMapDatabase TypeMapDatabase;
 
+        private readonly Stack<CSharpTypePrinterContextKind> contexts;
+
+        public CSharpTypePrinterContextKind ContextKind
+        {
+            get { return contexts.Peek(); }
+        }
+
         public CSharpTypePrinter(ITypeMapDatabase database, Library library)
         {
             TypeMapDatabase = database;
             Library = library;
+
+            contexts = new Stack<CSharpTypePrinterContextKind>();
+            PushContext(CSharpTypePrinterContextKind.Managed);
+        }
+
+        public void PushContext(CSharpTypePrinterContextKind contextKind)
+        {
+            contexts.Push(contextKind);
+        }
+
+        public CSharpTypePrinterContextKind PopContext()
+        {
+            return contexts.Pop();
         }
 
         public string VisitTagType(TagType tag, TypeQualifiers quals)
@@ -63,15 +103,24 @@ namespace Cxxi.Generators.CSharp
                 return string.Format("{0}", function.Visit(this, quals));
             }
 
+            var isManagedContext = ContextKind == CSharpTypePrinterContextKind.Managed;
+
             if (pointee.IsPrimitiveType(PrimitiveType.Void, walkTypedefs: true) ||
                 pointee.IsPrimitiveType(PrimitiveType.UInt8, walkTypedefs: true))
             {
-                return "IntPtr";
+                return isManagedContext ? "string" : "System.IntPtr";
             }
 
             if (pointee.IsPrimitiveType(PrimitiveType.Char) && quals.IsConst)
             {
-                return "string";
+                return isManagedContext ? "string" : "System.IntPtr";
+            }
+
+            Class @class;
+            if (pointee.IsTagDecl(out @class)
+                && ContextKind == CSharpTypePrinterContextKind.Native)
+            {
+                return "System.IntPtr";
             }
 
             return pointee.Visit(this, quals);
@@ -95,7 +144,9 @@ namespace Cxxi.Generators.CSharp
             TypeMap typeMap;
             if (TypeMapDatabase.FindTypeMap(decl, out typeMap))
             {
-                return typeMap.CSharpSignature();
+                typeMap.Type = typedef;
+                var ctx = new CSharpTypePrinterContext {Type = typedef};
+                return typeMap.CSharpSignature(ctx);
             }
 
             FunctionType func;
@@ -108,12 +159,24 @@ namespace Cxxi.Generators.CSharp
             return decl.Type.Visit(this);
         }
 
-        public string VisitTemplateSpecializationType(TemplateSpecializationType template, TypeQualifiers quals)
+        public string VisitTemplateSpecializationType(TemplateSpecializationType template,
+            TypeQualifiers quals)
         {
-            throw new NotImplementedException();
+            var decl = template.Template.TemplatedDecl;
+
+            TypeMap typeMap = null;
+            if (TypeMapDatabase.FindTypeMap(template, out typeMap))
+            {
+                typeMap.Declaration = decl;
+                typeMap.Type = template;
+                return typeMap.CSharpSignature(new CSharpTypePrinterContext());
+            }
+
+            return decl.Name;
         }
 
-        public string VisitTemplateParameterType(TemplateParameterType param, TypeQualifiers quals)
+        public string VisitTemplateParameterType(TemplateParameterType param,
+            TypeQualifiers quals)
         {
             throw new NotImplementedException();
         }
@@ -135,6 +198,7 @@ namespace Cxxi.Generators.CSharp
                 case PrimitiveType.UInt64: return "ulong";
                 case PrimitiveType.Float: return "float";
                 case PrimitiveType.Double: return "double";
+                case PrimitiveType.IntPtr: return "System.IntPtr";
             }
 
             throw new NotSupportedException();
@@ -173,7 +237,16 @@ namespace Cxxi.Generators.CSharp
 
         public string VisitParameterDecl(Parameter parameter)
         {
-            throw new NotImplementedException();
+            var paramType = parameter.Type;
+
+            Class @class;
+            if (paramType.Desugar().IsTagDecl(out @class)
+                && ContextKind == CSharpTypePrinterContextKind.Native)
+            {
+                return string.Format("{0}.Internal", @class.Name);
+            }
+
+            return paramType.Visit(this);
         }
 
         public string VisitTypedefDecl(TypedefDecl typedef)
