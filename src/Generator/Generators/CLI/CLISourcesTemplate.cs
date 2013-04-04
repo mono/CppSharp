@@ -447,19 +447,14 @@ namespace Cxxi.Generators.CLI
             }
             else
             {
-                GenerateStructMarshaling(@class, nativePtr);
+                GenerateStructMarshaling(@class, nativePtr + "->");
             }
 
             WriteCloseBraceIndent();
             NewLine();
         }
 
-        private void GenerateStructMarshaling(Class @class, string nativePointer)
-        {
-            GenerateStructMarshalingFields(@class, nativePointer);
-        }
-
-        private void GenerateStructMarshalingFields(Class @class, string nativePointer)
+        private void GenerateStructMarshaling(Class @class, string nativeVar)
         {
             foreach (var @base in @class.Bases)
             {
@@ -467,15 +462,15 @@ namespace Cxxi.Generators.CLI
                     continue;
 
                 var baseClass = @base.Class;
-                GenerateStructMarshalingFields(baseClass, nativePointer);
+                GenerateStructMarshaling(baseClass, nativeVar);
             }
 
             foreach (var field in @class.Fields)
             {
                 if (CheckIgnoreField(@class, field)) continue;
 
-                var nativeField = string.Format("{0}->{1}",
-                                                nativePointer, field.OriginalName);
+                var nativeField = string.Format("{0}{1}",
+                                                nativeVar, field.OriginalName);
 
                 var ctx = new MarshalContext(Driver)
                 {
@@ -653,10 +648,20 @@ namespace Cxxi.Generators.CLI
             var retType = function.ReturnType;
             var needsReturn = !retType.IsPrimitiveType(PrimitiveType.Void);
 
+            const string valueMarshalName = "_this0";
             var isValueType = @class != null && @class.IsValueType;
             if (isValueType)
             {
-                WriteLine("auto this0 = (::{0}*) 0;", @class.QualifiedOriginalName);
+                WriteLine("auto {0} = ::{1}();", valueMarshalName, @class.QualifiedOriginalName);
+
+                var param = new Parameter() { Name = "(*this)" };
+                var ctx = new MarshalContext(Driver) { Parameter = param };
+
+                var marshal = new CLIMarshalManagedToNativePrinter(ctx);
+                marshal.MarshalValueClassFields(@class, valueMarshalName);
+
+                if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
+                    Write(marshal.Context.SupportBefore);
             }
 
             var @params = GenerateFunctionParamsMarshal(function.Parameters, function);
@@ -666,7 +671,7 @@ namespace Cxxi.Generators.CLI
 
             if (isValueType)
             {
-                Write("this0->");
+                Write("{0}.", valueMarshalName);
             }
             else if (IsInstanceFunction(function))
             {
@@ -708,6 +713,11 @@ namespace Cxxi.Generators.CLI
                     Write(marshal.Context.SupportBefore);
 
                 WriteLine("{0} = {1};",param.Name,marshal.Context.Return);
+            }
+
+            if (isValueType)
+            {
+                GenerateStructMarshaling(@class, valueMarshalName + ".");
             }
 
             if (needsReturn)

@@ -503,9 +503,8 @@ namespace Cxxi.Generators.CLI
             Context.Return.Write("{0}->NativePtr", Context.Parameter.Name);
         }
 
-        private void MarshalValueClass(Class @class)
+        public void MarshalValueClass(Class @class)
         {
-
             var marshalVar = "_marshal" + Context.ParameterIndex++;
 
             Context.SupportBefore.WriteLine("auto {0} = ::{1}();", marshalVar,
@@ -519,7 +518,7 @@ namespace Cxxi.Generators.CLI
                 ArgumentPrefix.Write("&");
         }
 
-        private void MarshalValueClassFields(Class @class, string marshalVar)
+        public void MarshalValueClassFields(Class @class, string marshalVar)
         {
             foreach (var @base in @class.Bases)
             {
