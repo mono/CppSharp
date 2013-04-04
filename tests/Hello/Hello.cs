@@ -1,45 +1,19 @@
 using Cxxi.Generators;
-using Cxxi.Passes;
+using Cxxi.Utils;
 
 namespace Cxxi.Tests
 {
-    class Hello : ILibrary
+    public class Hello : LibraryTest
     {
-        private readonly LanguageGeneratorKind kind;
-
         public Hello(LanguageGeneratorKind kind)
-        {
-            this.kind = kind;
-        }
-
-        public void Setup(DriverOptions options)
-        {
-            options.LibraryName = "Hello";
-            options.GeneratorKind = kind;
-            options.OutputDir = kind == LanguageGeneratorKind.CPlusPlusCLI ?
-                "cli" : "cs";
-            options.Headers.Add("Hello.h");
-            options.IncludeDirs.Add("../../../examples/Hello");
-        }
-
-        public void Preprocess(Library lib)
+            : base("Hello", kind)
         {
         }
 
-        public void Postprocess(Library lib)
+        public override void Preprocess(Library lib)
         {
-        }
-
-        public void SetupPasses(Driver driver, PassBuilder p)
-        {
-        }
-
-        public void GenerateStart(TextTemplate template)
-        {
-        }
-
-        public void GenerateAfterNamespaces(TextTemplate template)
-        {
+            lib.SetClassAsValueType("Bar");
+            lib.SetClassAsValueType("Bar2");
         }
 
         static class Program
