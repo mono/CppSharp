@@ -4,13 +4,14 @@ action = _ACTION or ""
 
 depsdir = path.getabsolute("../deps");
 srcdir = path.getabsolute("../src");
-incdir = path.getabsolute("../inc");
+incdir = path.getabsolute("../include");
 bindir = path.getabsolute("../bin");
 examplesdir = path.getabsolute("../examples");
 testsdir = path.getabsolute("../tests");
 
 builddir = path.getabsolute("./" .. action);
 libdir = path.join(builddir, "lib");
+gendir = path.join(builddir, "gen");
 
 common_flags = { "Unicode", "Symbols" }
 msvc_buildflags = { } -- "/wd4190", "/wd4996", "/wd4530"
