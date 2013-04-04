@@ -12,6 +12,11 @@ namespace Cxxi
         public uint Offset { get; set; }
         public Class Class { get; set; }
 
+        public uint OffsetInBytes
+        {
+            get { return Offset / (sizeof (byte) * 8); }
+        }
+
         public Field()
         {
             Offset = 0;
