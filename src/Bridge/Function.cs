@@ -24,6 +24,7 @@ namespace Cxxi
     public enum ParameterKind
     {
         Regular,
+        HiddenStructureReturn
     }
 
     public class Parameter : Declaration, ITypedDecl
@@ -88,6 +89,15 @@ namespace Cxxi
         public bool IsCCall
         {
             get { return CallingConvention == CallingConvention.C; }
+        }
+
+        public bool HasHiddenStructParameter
+        {
+            get
+            {
+                return Parameters.Any(param =>
+                    param.Kind == ParameterKind.HiddenStructureReturn);
+            }
         }
 
         // Mangled name
