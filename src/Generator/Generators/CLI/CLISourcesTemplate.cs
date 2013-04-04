@@ -225,7 +225,8 @@ namespace Cxxi.Generators.CLI
             GeneratePropertySetter(field, @class);
         }
 
-        private void GeneratePropertySetter<T>(T decl, Class @class) where T : Declaration, ITypedDecl
+        private void GeneratePropertySetter<T>(T decl, Class @class)
+            where T : Declaration, ITypedDecl
         {
             WriteLine("void {0}::{1}::set({2} value)", QualifiedIdentifier(@class),
                       decl.Name, decl.Type);
@@ -263,7 +264,8 @@ namespace Cxxi.Generators.CLI
             NewLine();
         }
 
-        private void GeneratePropertyGetter<T>(T decl, Class @class) where T : Declaration, ITypedDecl
+        private void GeneratePropertyGetter<T>(T decl, Class @class)
+            where T : Declaration, ITypedDecl
         {
             WriteLine("{0} {1}::{2}::get()", decl.Type, QualifiedIdentifier(@class),
                       decl.Name);
@@ -799,7 +801,8 @@ namespace Cxxi.Generators.CLI
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                     Write(marshal.Context.SupportBefore);
 
-                WriteLine("auto {0}{1} = {2};", marshal.VarPrefix, argName, marshal.Context.Return);
+                WriteLine("auto {0}{1} = {2};", marshal.VarPrefix, argName,
+                    marshal.Context.Return);
                 argName = marshal.ArgumentPrefix + argName;
             }
 
