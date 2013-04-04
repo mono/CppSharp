@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
+using Cxxi.Generators;
 using Cxxi.Generators.CLI;
 
 namespace Cxxi.Types
@@ -57,7 +57,7 @@ namespace Cxxi.Types
 
         #region C++/CLI backend
 
-        public virtual string CLISignature(TypePrinterContext ctx)
+        public virtual string CLISignature(CLITypePrinterContext ctx)
         {
             throw new NotImplementedException();
         }

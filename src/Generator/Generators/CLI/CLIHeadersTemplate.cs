@@ -271,7 +271,7 @@ namespace Cxxi.Generators.CLI
                 var typeNames = template.Parameters.Select(
                     param => "typename " + param.Name).ToList();
 
-                var typeCtx = new TypePrinterContext()
+                var typeCtx = new CLITypePrinterContext()
                     {
                         Kind = TypePrinterContextKind.Template,
                         Declaration = template

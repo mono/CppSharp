@@ -5,51 +5,23 @@ using Cxxi.Types;
 
 namespace Cxxi.Generators.CLI
 {
-    public enum TypePrinterContextKind
+    public class CLITypePrinterContext : TypePrinterContext
     {
-        Normal,
-        Template
-    }
-
-    public class TypePrinterContext
-    {
-        public TypePrinterContext()
+        public CLITypePrinterContext()
         {
-            Kind = TypePrinterContextKind.Normal;
+            
         }
 
-        public string GetTemplateParameterList()
+        public CLITypePrinterContext(TypePrinterContextKind kind)
+            : base(kind)
         {
-            var paramsList = new List<string>();
-            if (Kind == TypePrinterContextKind.Template)
-            {
-                var template = Declaration as Template;
-                paramsList = template.Parameters.Select(param => param.Name)
-                    .ToList();
-            }
-            else
-            {
-                var type = Type.Desugar() as TemplateSpecializationType;
-                foreach (var arg in type.Arguments)
-                {
-                    if (arg.Kind != TemplateArgument.ArgumentKind.Type)
-                        continue;
-                    paramsList.Add(arg.Type.ToString());
-                }
-            }
-
-            return string.Join(", ", paramsList);
         }
-
-        public TypePrinterContextKind Kind;
-        public Declaration Declaration;
-        public Type Type;
     }
 
     public class CLITypePrinter : ITypePrinter, IDeclVisitor<string>
     {
         public Library Library { get; set; }
-        public TypePrinterContext Context { get; set; }
+        public CLITypePrinterContext Context { get; set; }
 
         readonly ITypeMapDatabase TypeMapDatabase;
         readonly DriverOptions Options;
@@ -59,10 +31,10 @@ namespace Cxxi.Generators.CLI
             Library = driver.Library;
             TypeMapDatabase = driver.TypeDatabase;
             Options = driver.Options;
-            Context = new TypePrinterContext();
+            Context = new CLITypePrinterContext();
         }
 
-        public CLITypePrinter(Driver driver, TypePrinterContext context)
+        public CLITypePrinter(Driver driver, CLITypePrinterContext context)
             : this(driver)
         {
             Context = context;
