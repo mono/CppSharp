@@ -364,7 +364,12 @@ Cxxi::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record, bool IsDependen
     // Get the record layout information.
     const ASTRecordLayout* Layout = 0;
     if (!IsDependent)
+    {
         Layout = &C->getASTContext().getASTRecordLayout(Record);
+        RC->Layout->Alignment = (int)Layout-> getAlignment().getQuantity();
+        RC->Layout->Size = (int)Layout->getSize().getQuantity();
+        RC->Layout->DataSize = (int)Layout->getDataSize().getQuantity();
+    }
 
     // Iterate through the record fields.
     for(auto it = Record->field_begin(); it != Record->field_end(); ++it)

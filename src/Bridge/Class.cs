@@ -62,9 +62,15 @@ namespace Cxxi
     public class ClassLayout
     {
         public CppAbi ABI { get; set; }
-        public bool HasOwnVFTable { get; set; }
         public VFTable VirtualFunctions { get; set; }
         public VBTable VirtualBases { get; set; }
+
+        public bool HasOwnVFTable;
+        public bool HasVirtualBases;
+
+        public int Alignment;
+        public int Size;
+        public int DataSize;
     }
 
     public enum ClassType
@@ -93,7 +99,7 @@ namespace Cxxi
         public ClassType Type;
 
         // ABI-specific class layout.
-        public List<ClassLayout> Layouts { get; set; }
+        public ClassLayout Layout;
 
         // True if class provides pure virtual methods.
         public bool IsAbstract;
@@ -120,6 +126,7 @@ namespace Cxxi
             IsOpaque = false;
             IsPOD = false;
             Type = ClassType.RefType;
+            Layout = new ClassLayout();
         }
 
         public bool HasBase
