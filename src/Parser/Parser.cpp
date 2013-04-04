@@ -16,6 +16,8 @@
 #include <clang/Lex/DirectoryLookup.h>
 #include <clang/Lex/HeaderSearch.h>
 #include <clang/Lex/PreprocessingRecord.h>
+#include <clang/Sema/Sema.h>
+#include <clang/Sema/SemaConsumer.h>
 #include <clang/Frontend/Utils.h>
 #include <clang/Driver/Util.h>
 
@@ -1600,12 +1602,6 @@ Cxxi::Declaration^ Parser::WalkDeclaration(clang::Decl* D, clang::TypeLoc* TL,
 
 //-----------------------------------//
 
-struct ParseConsumer : public clang::ASTConsumer
-{
-    virtual ~ParseConsumer() { }
-    virtual bool HandleTopLevelDecl(clang::DeclGroupRef) { return true; }
-};
-
 struct Diagnostic
 {
     clang::SourceLocation Location;
@@ -1645,7 +1641,11 @@ ParserResult^ Parser::Parse(const std::string& File)
         return res;
     }
 
-    C->setASTConsumer(new ParseConsumer());
+    auto SC = new clang::SemaConsumer();
+    C->setASTConsumer(SC);
+
+    C->createSema(clang::TU_Complete, 0);
+    SC->InitializeSema(C->getSema());
 
     auto DiagClient = new DiagnosticConsumer();
     C->getDiagnostics().setClient(DiagClient);
@@ -1671,9 +1671,9 @@ ParserResult^ Parser::Parse(const std::string& File)
 
     clang::DiagnosticConsumer* client = C->getDiagnostics().getClient();
     client->BeginSourceFile(C->getLangOpts(), &C->getPreprocessor());
-    ParseAST(C->getPreprocessor(), &C->getASTConsumer(), C->getASTContext(),
-        /*PrintStats=*/false, clang::TU_Complete, 0,
-        /*SkipFunctionBodies=*/true);
+
+    ParseAST(C->getSema(), /*PrintStats=*/false, /*SkipFunctionBodies=*/true);
+
     client->EndSourceFile();
 
     // Convert the diagnostics to the managed types
