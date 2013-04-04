@@ -228,7 +228,7 @@ namespace Cxxi
             return true;
         }
 
-        public bool VisitVariableDecl(Variable variable)
+        public virtual bool VisitVariableDecl(Variable variable)
         {
             return variable.Type.Visit(this, variable.QualifiedType.Qualifiers);
         }
