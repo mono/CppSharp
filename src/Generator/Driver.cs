@@ -178,6 +178,10 @@ namespace Cxxi
             GenerateLibraryNamespace = true;
             GenerateFunctionTemplates = false;
             WriteOnlyWhenChanged = false;
+
+            var platform = Environment.OSVersion.Platform;
+            Abi = (platform == PlatformID.Unix || platform == PlatformID.MacOSX) ?
+                CppAbi.Itanium : CppAbi.Microsoft;
         }
 
         public bool Verbose = false;
@@ -192,6 +196,7 @@ namespace Cxxi
         public string OutputNamespace;
         public string OutputDir;
         public string LibraryName;
+        public CppAbi Abi;
         public List<string> Defines;
         public List<string> IncludeDirs;
         public List<string> Headers;
@@ -202,5 +207,8 @@ namespace Cxxi
         public string WrapperSuffix;
         public LanguageGeneratorKind GeneratorKind;
         public bool WriteOnlyWhenChanged;
+
+        public bool IsItaniumAbi { get { return Abi == CppAbi.Itanium; } }
+        public bool IsMicrosoftAbi { get { return Abi == CppAbi.Microsoft; } }
     }
 }
