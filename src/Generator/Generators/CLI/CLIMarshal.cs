@@ -4,42 +4,6 @@ using Cxxi.Types;
 
 namespace Cxxi.Generators.CLI
 {
-    public abstract class MarshalPrinter : ITypeVisitor<bool>, IDeclVisitor<bool>
-    {
-        public MarshalContext Context { get; private set; }
-
-        protected MarshalPrinter(MarshalContext ctx)
-        {
-            Context = ctx;
-        }
-
-        public abstract bool VisitTagType(TagType tag, TypeQualifiers quals);
-        public abstract bool VisitArrayType(ArrayType array, TypeQualifiers quals);
-        public abstract bool VisitFunctionType(FunctionType function, TypeQualifiers quals);
-        public abstract bool VisitPointerType(PointerType pointer, TypeQualifiers quals);
-        public abstract bool VisitMemberPointerType(MemberPointerType member, TypeQualifiers quals);
-        public abstract bool VisitBuiltinType(BuiltinType builtin, TypeQualifiers quals);
-        public abstract bool VisitTypedefType(TypedefType typedef, TypeQualifiers quals);
-        public abstract bool VisitTemplateSpecializationType(TemplateSpecializationType template, TypeQualifiers quals);
-        public abstract bool VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals);
-        public abstract bool VisitDeclaration(Declaration decl, TypeQualifiers quals);
-        public abstract bool VisitTemplateParameterType(TemplateParameterType param, TypeQualifiers quals);
-        public abstract bool VisitDeclaration(Declaration decl);
-        public abstract bool VisitClassDecl(Class @class);
-        public abstract bool VisitFieldDecl(Field field);
-        public abstract bool VisitFunctionDecl(Function function);
-        public abstract bool VisitMethodDecl(Method method);
-        public abstract bool VisitParameterDecl(Parameter parameter);
-        public abstract bool VisitTypedefDecl(TypedefDecl typedef);
-        public abstract bool VisitEnumDecl(Enumeration @enum);
-        public abstract bool VisitVariableDecl(Variable variable);
-        public abstract bool VisitClassTemplateDecl(ClassTemplate template);
-        public abstract bool VisitFunctionTemplateDecl(FunctionTemplate template);
-        public abstract bool VisitMacroDefinition(MacroDefinition macro);
-        public abstract bool VisitNamespace(Namespace @namespace);
-        public abstract bool VisitEvent(Event @event);
-    }
-
     public class CLIMarshalNativeToManagedPrinter : MarshalPrinter
     {
 

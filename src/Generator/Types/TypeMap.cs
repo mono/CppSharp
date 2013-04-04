@@ -5,32 +5,6 @@ using Cxxi.Generators.CLI;
 
 namespace Cxxi.Types
 {
-    public class MarshalContext
-    {
-        public MarshalContext(Driver driver)
-        {
-            Driver = driver;
-            SupportBefore = new TextGenerator();
-            Return = new TextGenerator();
-        }
-
-        public Driver Driver { get; private set; }
-
-        public CLIMarshalNativeToManagedPrinter MarshalToManaged;
-        public CLIMarshalManagedToNativePrinter MarshalToNative;
-
-        public TextGenerator SupportBefore { get; private set; }
-        public TextGenerator Return { get; private set; }
-
-        public string ReturnVarName { get; set; }
-        public Type ReturnType { get; set; }
-
-        public string ArgName { get; set; }
-        public Parameter Parameter { get; set; }
-        public int ParameterIndex { get; set; }
-        public Function Function { get; set; }
-    }
-
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     public class TypeMapAttribute : Attribute
     {
