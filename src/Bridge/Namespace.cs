@@ -147,6 +147,9 @@ namespace Cxxi
 
         public Class FindClass(string name)
         {
+            var namespaces = name.Split(new string[] { "::" },
+                StringSplitOptions.RemoveEmptyEntries);
+
             var @class = Classes.Find(e => e.Name.Equals(name));
             return @class;
         }
@@ -154,9 +157,6 @@ namespace Cxxi
         public Class FindClass(string name, bool isComplete,
             bool createDecl = false)
         {
-            var namespaces = name.Split(new string[] { "::" },
-                StringSplitOptions.RemoveEmptyEntries);
-
             var @class = FindClass(name);
 
             if (@class == null)
