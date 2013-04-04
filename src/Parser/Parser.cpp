@@ -340,6 +340,9 @@ Cxxi::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record, bool IsDependen
     RC->IsUnion = Record->isUnion();
     RC->IsAbstract = Record->isAbstract();
 
+    auto &Sema = C->getSema();
+    Sema.ForceDeclarationOfImplicitMembers(Record);
+
     // Iterate through the record ctors.
     for(auto it = Record->ctor_begin(); it != Record->ctor_end(); ++it)
     {
