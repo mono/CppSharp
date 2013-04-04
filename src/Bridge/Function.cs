@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Cxxi
 {
@@ -26,7 +27,6 @@ namespace Cxxi
         {
             Usage = ParameterUsage.Unknown;
             HasDefaultValue = false;
-            Conversion = TypeConversionKind.None;
         }
 
         public Type Type { get { return QualifiedType.Type; } }
@@ -34,7 +34,6 @@ namespace Cxxi
         public ParameterUsage Usage { get; set; }
         public bool HasDefaultValue { get; set; }
 
-        public TypeConversionKind Conversion { get; set; }
 
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {
