@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Cxxi.Types;
 
 namespace Cxxi.Generators.CLI
