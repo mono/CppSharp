@@ -94,7 +94,7 @@ namespace Cxxi.Generators.CSharp
 
         public override void Generate()
         {
-            GenerateStart();
+            GenerateHeader();
 
             WriteLine("using System;");
             WriteLine("using System.Runtime.InteropServices;");
@@ -113,7 +113,7 @@ namespace Cxxi.Generators.CSharp
                 WriteCloseBraceIndent();
         }
 
-        public void GenerateStart()
+        public void GenerateHeader()
         {
             if (Transform != null)
             {
