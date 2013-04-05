@@ -161,7 +161,8 @@ namespace Cxxi.Generators.CSharp
             // Generate all the struct/class declarations for the module.
             foreach (var @class in @namespace.Classes)
             {
-                if (@class.Ignore) continue;
+                if (@class.Ignore || @class.IsIncomplete)
+                    continue;
 
                 GenerateClass(@class);
                 NewLine();
