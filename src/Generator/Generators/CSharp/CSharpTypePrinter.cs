@@ -36,6 +36,8 @@ namespace Cxxi.Generators.CSharp
             get { return contexts.Peek(); }
         }
 
+        public CSharpTypePrinterContext Context;
+
         public CSharpTypePrinter(ITypeMapDatabase database, Library library)
         {
             TypeMapDatabase = database;
@@ -43,6 +45,8 @@ namespace Cxxi.Generators.CSharp
 
             contexts = new Stack<CSharpTypePrinterContextKind>();
             PushContext(CSharpTypePrinterContextKind.Managed);
+
+            Context = new CSharpTypePrinterContext();
         }
 
         public void PushContext(CSharpTypePrinterContextKind contextKind)
@@ -169,7 +173,8 @@ namespace Cxxi.Generators.CSharp
             {
                 typeMap.Declaration = decl;
                 typeMap.Type = template;
-                return typeMap.CSharpSignature(new CSharpTypePrinterContext());
+                Context.Type = template;
+                return typeMap.CSharpSignature(Context);
             }
 
             return decl.Name;
