@@ -181,6 +181,7 @@ namespace Cxxi
             GenerateLibraryNamespace = true;
             GenerateFunctionTemplates = false;
             WriteOnlyWhenChanged = false;
+            GeneratePartialClasses = true;
 
             var platform = Environment.OSVersion.Platform;
             Abi = (platform == PlatformID.Unix || platform == PlatformID.MacOSX) ?
@@ -196,6 +197,7 @@ namespace Cxxi
         public bool OutputInteropIncludes = true;
         public bool GenerateLibraryNamespace;
         public bool GenerateFunctionTemplates;
+        public bool GeneratePartialClasses;
         public string OutputNamespace;
         public string OutputDir;
         public string LibraryName;

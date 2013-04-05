@@ -372,6 +372,9 @@ namespace Cxxi.Generators.CSharp
             if (@class.IsAbstract)
                 Write("abstract ");
 
+            if (Options.GeneratePartialClasses)
+                Write("partial ");
+
             Write(@class.IsValueType ? "struct " : "class ");
             Write("{0}", SafeIdentifier(@class.Name));
 
