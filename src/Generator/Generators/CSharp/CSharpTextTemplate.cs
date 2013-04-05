@@ -103,7 +103,7 @@ namespace Cxxi.Generators.CSharp
 
             if (Options.GenerateLibraryNamespace)
             {
-                WriteLine("namespace {0}", SafeIdentifier(Driver.Options.LibraryName));
+                WriteLine("namespace {0}", SafeIdentifier(Driver.Options.OutputNamespace));
                 WriteStartBraceIndent();
             }
 
