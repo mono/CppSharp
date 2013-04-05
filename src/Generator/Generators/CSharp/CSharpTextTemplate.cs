@@ -6,57 +6,34 @@ using Cxxi.Types;
 
 namespace Cxxi.Generators.CSharp
 {
-    public class CSharpTextTemplate : TextTemplate
+    public static class Helpers
     {
-        public ITypePrinter TypePrinter { get; set; }
-
-        public override string FileExtension
-        {
-            get { return "cs"; }
-        }
-
-        public CSharpTextTemplate(Driver driver, TranslationUnit unit)
-            : base(driver, unit)
-        {
-            TypePrinter = new CSharpTypePrinter(driver.TypeDatabase, driver.Library);
-        }
-
-        #region Identifiers
-
         // from https://github.com/mono/mono/blob/master/mcs/class/System/Microsoft.CSharp/CSharpCodeGenerator.cs
-        private static string[] keywords = new string[]
+        private static readonly string[] Keywords = new string[]
             {
-                "abstract", "event", "new", "struct", "as", "explicit", "null", "switch", "base", "extern",
-                "this", "false", "operator", "throw", "break", "finally", "out", "true",
-                "fixed", "override", "try", "case", "params", "typeof", "catch", "for",
-                "private", "foreach", "protected", "checked", "goto", "public",
-                "unchecked", "class", "if", "readonly", "unsafe", "const", "implicit", "ref",
-                "continue", "in", "return", "using", "virtual", "default",
+                "abstract", "event", "new", "struct", "as", "explicit", "null", "switch",
+                "base", "extern", "this", "false", "operator", "throw", "break", "finally",
+                "out", "true", "fixed", "override", "try", "case", "params", "typeof",
+                "catch", "for", "private", "foreach", "protected", "checked", "goto",
+                "public", "unchecked", "class", "if", "readonly", "unsafe", "const",
+                "implicit", "ref", "continue", "in", "return", "using", "virtual", "default",
                 "interface", "sealed", "volatile", "delegate", "internal", "do", "is",
                 "sizeof", "while", "lock", "stackalloc", "else", "static", "enum",
-                "namespace",
-                "object", "bool", "byte", "float", "uint", "char", "ulong", "ushort",
-                "decimal", "int", "sbyte", "short", "double", "long", "string", "void",
-                "partial", "yield", "where"
+                "namespace", "object", "bool", "byte", "float", "uint", "char", "ulong",
+                "ushort", "decimal", "int", "sbyte", "short", "double", "long", "string",
+                "void", "partial", "yield", "where"
             };
 
-        public string GeneratedIdentifier(string id)
+        public static string GeneratedIdentifier(string id)
         {
             return "__" + id;
         }
 
-        public static string SafeIdentifier(string proposedName)
+        public static string SafeIdentifier(string id)
         {
-            proposedName =
-                new string(((IEnumerable<char>) proposedName).Select(c => char.IsLetterOrDigit(c) ? c : '_').ToArray());
-            return keywords.Contains(proposedName) ? "@" + proposedName : proposedName;
-        }
-
-        public string QualifiedIdentifier(Declaration decl)
-        {
-            if (Options.GenerateLibraryNamespace)
-                return string.Format("{0}::{1}", Options.OutputNamespace, decl.QualifiedName);
-            return string.Format("{0}", decl.QualifiedName);
+            id = new string(((IEnumerable<char>)id)
+                .Select(c => char.IsLetterOrDigit(c) ? c : '_').ToArray());
+            return Keywords.Contains(id) ? "@" + id : id;
         }
 
         public static string ToCSharpCallConv(CallingConvention convention)
@@ -76,6 +53,41 @@ namespace Cxxi.Generators.CSharp
             }
 
             return "Winapi";
+        }
+    }
+
+    public class CSharpTextTemplate : TextTemplate
+    {
+        public ITypePrinter TypePrinter { get; set; }
+
+        public override string FileExtension
+        {
+            get { return "cs"; }
+        }
+
+        public CSharpTextTemplate(Driver driver, TranslationUnit unit)
+            : base(driver, unit)
+        {
+            TypePrinter = new CSharpTypePrinter(driver.TypeDatabase, driver.Library);
+        }
+
+        #region Identifiers
+
+        public string QualifiedIdentifier(Declaration decl)
+        {
+            if (Options.GenerateLibraryNamespace)
+                return string.Format("{0}::{1}", Options.OutputNamespace, decl.QualifiedName);
+            return string.Format("{0}", decl.QualifiedName);
+        }
+
+        public static string GeneratedIdentifier(string id)
+        {
+            return Helpers.GeneratedIdentifier(id);
+        }
+
+        public static string SafeIdentifier(string id)
+        {
+            return Helpers.SafeIdentifier(id);
         }
 
         #endregion
@@ -998,7 +1010,7 @@ namespace Cxxi.Generators.CSharp
 
             Write("[DllImport(\"{0}.dll\", ", Library.SharedLibrary);
             WriteLine("CallingConvention = CallingConvention.{0}, ",
-                ToCSharpCallConv(function.CallingConvention));
+                Helpers.ToCSharpCallConv(function.CallingConvention));
             WriteLineIndent("EntryPoint=\"{0}\")]", function.Mangled);
 
             if (function.ReturnType.Desugar().IsPrimitiveType(PrimitiveType.Bool))
