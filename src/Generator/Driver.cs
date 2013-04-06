@@ -48,11 +48,16 @@ namespace Cxxi
                 Options.IncludeDirs[i] = Path.GetFullPath(Options.IncludeDirs[i]);
             }
 
+            for (var i = 0; i < Options.LibraryDirs.Count; i++)
+            {
+                Options.LibraryDirs[i] = Path.GetFullPath(Options.LibraryDirs[i]);
+            }
+
             if (string.IsNullOrWhiteSpace(Options.OutputNamespace))
                 Options.OutputNamespace = Options.LibraryName;
         }
 
-        private void OnHeaderParsed(string file, ParserResult result)
+        private void OnFileParsed(string file, ParserResult result)
         {
             switch (result.Kind)
             {
@@ -80,11 +85,26 @@ namespace Cxxi
             Console.WriteLine("Parsing code...");
 
             var parser = new Parser(Options);
-            parser.HeaderParsed += OnHeaderParsed;
+            parser.OnHeaderParsed += OnFileParsed;
 
             if( !parser.ParseHeaders(Options.Headers) )
                 return false;
-            
+
+            Library = parser.Library;
+
+            return true;
+        }
+
+        public bool ParseLibraries()
+        {
+            Console.WriteLine("Parsing libraries...");
+
+            var parser = new Parser(Options);
+            parser.OnLibraryParsed += OnFileParsed;
+
+            if (!parser.ParseLibraries(Options.Libraries))
+                return false;
+
             Library = parser.Library;
 
             return true;
@@ -161,7 +181,7 @@ namespace Cxxi
             var driver = new Driver(options, library);
             driver.Setup();
             
-            if (driver.ParseCode())
+            if (driver.ParseLibraries() && driver.ParseCode())
             {
                 driver.ProcessCode();
                 driver.GenerateCode();
@@ -182,6 +202,10 @@ namespace Cxxi
             GenerateFunctionTemplates = false;
             WriteOnlyWhenChanged = false;
             GeneratePartialClasses = true;
+
+            // Library options
+            LibraryDirs = new List<string>();
+            Libraries = new List<string>();
 
             var platform = Environment.OSVersion.Platform;
             Abi = (platform == PlatformID.Unix || platform == PlatformID.MacOSX) ?
@@ -212,6 +236,10 @@ namespace Cxxi
         public string WrapperSuffix;
         public LanguageGeneratorKind GeneratorKind;
         public bool WriteOnlyWhenChanged;
+
+        // Library options
+        public List<string> LibraryDirs;
+        public List<string> Libraries;
 
         public bool IsItaniumAbi { get { return Abi == CppAbi.Itanium; } }
         public bool IsMicrosoftAbi { get { return Abi == CppAbi.Microsoft; } }

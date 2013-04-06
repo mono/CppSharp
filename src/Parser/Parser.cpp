@@ -9,6 +9,7 @@
 #include "Interop.h"
 
 #include <llvm/Support/Path.h>
+#include <llvm/Object/Archive.h>
 #include <clang/Basic/Version.h>
 #include <clang/Config/config.h>
 #include <clang/AST/ASTContext.h>
@@ -27,9 +28,8 @@
 
 //-----------------------------------//
 
-Parser::Parser(ParserOptions^ Opts) : Lib(Opts->Library), Index(0)
+Parser::Parser(ParserOptions^ Opts) : Lib(Opts->Library), Opts(Opts), Index(0)
 {
-    Setup(Opts);
 }
 
 //-----------------------------------//
@@ -68,7 +68,7 @@ static std::string GetClangBuiltinIncludeDir()
 std::vector<std::string> GetWindowsSystemIncludeDirs();
 #endif
 
-void Parser::Setup(ParserOptions^ Opts)
+void Parser::SetupHeader()
 {
     using namespace clang;
     using namespace clix;
@@ -1631,7 +1631,7 @@ struct DiagnosticConsumer : public clang::DiagnosticConsumer
     std::vector<Diagnostic> Diagnostics;
 };
 
-ParserResult^ Parser::Parse(const std::string& File)
+ParserResult^ Parser::ParseHeader(const std::string& File)
 {
     auto res = gcnew ParserResult();
     res->Library = Lib;
@@ -1641,6 +1641,8 @@ ParserResult^ Parser::Parse(const std::string& File)
         res->Kind = ParserResultKind::FileNotFound;
         return res;
     }
+
+    SetupHeader();
 
     auto SC = new clang::SemaConsumer();
     C->setASTConsumer(SC);
@@ -1737,3 +1739,67 @@ ParserResult^ Parser::Parse(const std::string& File)
     res->Kind = ParserResultKind::Success;
     return res;
  }
+
+ ParserResult^ Parser::ParseLibrary(const std::string& File)
+{
+    using namespace clix;
+
+    auto res = gcnew ParserResult();
+    res->Library = Lib;
+
+    if (File.empty())
+    {
+        res->Kind = ParserResultKind::FileNotFound;
+        return res;
+    }
+
+    C.reset(new clang::CompilerInstance());
+    C->createFileManager();
+
+    auto &FM = C->getFileManager();
+    const clang::FileEntry* FileEntry = 0;
+
+    for each(System::String^ LibDir in Opts->LibraryDirs)
+    {
+        auto DirName = marshalString<E_UTF8>(LibDir);
+        llvm::sys::Path Path(DirName);
+        Path.appendComponent(File);
+
+        if (FileEntry = FM.getFile(Path.str()))
+            break;
+    }
+
+    if (!FileEntry)
+    {
+        res->Kind = ParserResultKind::FileNotFound;
+        return res;
+    }
+
+    auto Buffer = FM.getBufferForFile(FileEntry);
+
+    llvm::error_code Code;
+    llvm::object::Archive Archive(Buffer, Code);
+
+    if (Code)
+    {
+        res->Kind = ParserResultKind::Error;
+        return res;
+    }
+
+    auto LibName = marshalString<E_UTF8>(File);
+    auto NativeLib = Lib->FindOrCreateLibrary(LibName);
+
+    for(auto it = Archive.begin_symbols(); it != Archive.end_symbols(); ++it)
+    {
+        llvm::StringRef SymRef;
+
+        if (it->getName(SymRef))
+            continue;
+
+        System::String^ SymName = marshalString<E_UTF8>(SymRef);
+        NativeLib->Symbols->Add(SymName);
+    }
+
+    res->Kind = ParserResultKind::Success;
+    return res;
+}

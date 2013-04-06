@@ -58,6 +58,7 @@ project "Parser"
   links
   {
     "LLVMSupport",
+    "LLVMObject",
     "LLVMAsmParser",
     "LLVMBitReader",
     "LLVMBitWriter",

@@ -15,6 +15,24 @@ namespace Cxxi
         Unavailable
     }
 
+    public class NativeLibrary
+    {
+        public NativeLibrary(string file)
+            : this()
+        {
+            FileName = file;
+        }
+
+        public NativeLibrary()
+        {
+            Symbols = new List<string>();
+        }
+
+        public string FileName;
+
+        public IList<string> Symbols;
+    }
+
     /// <summary>
     /// A library contains all the modules.
     /// </summary>
@@ -23,12 +41,27 @@ namespace Cxxi
         public string Name;
         public string SharedLibrary;
         public List<TranslationUnit> TranslationUnits;
+        public List<NativeLibrary> Libraries;
 
         public Library(string name, string sharedLibrary)
         {
             Name = name;
             SharedLibrary = sharedLibrary;
             TranslationUnits = new List<TranslationUnit>();
+            Libraries = new List<NativeLibrary>();
+        }
+
+        public NativeLibrary FindOrCreateLibrary(string file)
+        {
+            var library = Libraries.Find(m => m.FileName.Equals(file));
+
+            if (library == null)
+            {
+                library = new NativeLibrary(file);
+                Libraries.Add(library);
+            }
+
+            return library;
         }
 
         /// Finds an existing module or creates a new one given a file path.
@@ -84,7 +117,6 @@ namespace Cxxi
                 if (type != null) yield return type;
             }
         }
-
 
         /// Finds an existing typedef in the library modules.
         public IEnumerable<TypedefDecl> FindTypedef(string name)

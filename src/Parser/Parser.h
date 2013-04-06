@@ -38,11 +38,13 @@ public ref struct ParserOptions
     {
         IncludeDirs = gcnew List<System::String^>();
         Defines = gcnew List<System::String^>();
+        LibraryDirs = gcnew List<System::String^>();
     }
 
     // Include directories
     List<System::String^>^ IncludeDirs;
     List<System::String^>^ Defines;
+    List<System::String^>^ LibraryDirs;
 
     // C/C++ header file name.
     System::String^ FileName;
@@ -96,8 +98,9 @@ struct Parser
 {
     Parser(ParserOptions^ Opts);
 
-    void Setup(ParserOptions^ Opts);
-    ParserResult^ Parse(const std::string& File);
+    void SetupHeader();
+    ParserResult^ ParseHeader(const std::string& File);
+    ParserResult^ ParseLibrary(const std::string& File);
 
 protected:
 
@@ -137,6 +140,7 @@ protected:
 
     int Index;
     gcroot<Cxxi::Library^> Lib;
+    gcroot<ParserOptions^> Opts;
     llvm::OwningPtr<clang::CompilerInstance> C;
     clang::ASTContext* AST;
 };
