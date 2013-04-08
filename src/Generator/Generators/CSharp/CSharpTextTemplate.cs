@@ -155,7 +155,7 @@ namespace Cxxi.Generators.CSharp
                 if (!GenerateTypedef(typedef))
                     continue;
 
-                NewLine();
+                NewLineIfNeeded();
             }
 
             // Generate all the struct/class declarations for the module.
@@ -428,8 +428,6 @@ namespace Cxxi.Generators.CSharp
                 }
             }
 
-            ResetNewLine();
-
             foreach (var field in @class.Fields)
             {
                 if (CheckIgnoreField(@class, field)) continue;
@@ -541,7 +539,7 @@ namespace Cxxi.Generators.CSharp
 
         public void GenerateClassMethods(Class @class)
         {
-            ResetNewLine();
+            NewLineIfNeeded();
 
             var staticMethods = new List<Method>();
             foreach (var method in @class.Methods)
@@ -579,8 +577,11 @@ namespace Cxxi.Generators.CSharp
 
         public void GenerateClassConstructors(Class @class)
         {
+            NewLineIfNeeded();
+
             // Output a default constructor that takes the native pointer.
             GenerateNativeConstructor(@class);
+            NeedNewLine();
 
             foreach (var ctor in @class.Constructors)
             {
@@ -591,8 +592,9 @@ namespace Cxxi.Generators.CSharp
                 if (ctor.Parameters.Count == 0 && @class.IsValueType)
                     continue;
 
+                NewLineIfNeeded();
                 GenerateMethod(ctor, @class);
-                NewLine();
+                NeedNewLine();
             }
 
             if (@class.IsRefType)
@@ -614,7 +616,7 @@ namespace Cxxi.Generators.CSharp
                 WriteLine("GC.SuppressFinalize(this);");
 
                 WriteCloseBraceIndent();
-                NewLine();
+                NeedNewLine();
             }
 
             // Generate Dispose(bool) method
