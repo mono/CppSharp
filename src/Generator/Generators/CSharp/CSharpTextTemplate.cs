@@ -580,21 +580,7 @@ namespace Cxxi.Generators.CSharp
         public void GenerateClassConstructors(Class @class)
         {
             // Output a default constructor that takes the native pointer.
-            WriteLine("{0}(System.IntPtr native)", SafeIdentifier(@class.Name));
-            WriteStartBraceIndent();
-
-            if (@class.IsRefType)
-            {
-                if (ShouldGenerateClassNativeField(@class))
-                    WriteLine("Instance = native;");
-            }
-            else
-            {
-                GenerateStructMarshaling(@class);
-            }
-
-            WriteCloseBraceIndent();
-            NewLine();
+            GenerateNativeConstructor(@class);
 
             foreach (var ctor in @class.Constructors)
             {
@@ -620,6 +606,24 @@ namespace Cxxi.Generators.CSharp
                 WriteCloseBraceIndent();
                 NewLine();
             }
+        }
+
+        private void GenerateNativeConstructor(Class @class)
+        {
+            WriteLine("internal {0}(System.IntPtr native)", SafeIdentifier(@class.Name));
+            WriteStartBraceIndent();
+
+            if (@class.IsRefType)
+            {
+                if (ShouldGenerateClassNativeField(@class))
+                    WriteLine("Instance = native;");
+            }
+            else
+            {
+                GenerateStructMarshaling(@class);
+            }
+
+            WriteCloseBraceIndent();
         }
 
         private bool GenerateClassConstructorBase(Class @class, Method method)
