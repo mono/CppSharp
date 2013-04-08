@@ -65,6 +65,7 @@ namespace Cxxi
     {
         public Method()
         {
+            Access = AccessSpecifier.Public;
         }
 
         public AccessSpecifier Access { get; set; }
