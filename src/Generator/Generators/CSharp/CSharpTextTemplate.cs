@@ -1025,7 +1025,7 @@ namespace Cxxi.Generators.CSharp
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                     Write(marshal.Context.SupportBefore);
 
-                WriteLine("var {0} = {1};", argName, marshal.Context.Return);
+                WriteLine("var {0} = {1};", SafeIdentifier(argName), marshal.Context.Return);
             }
 
             return paramMarshal;
