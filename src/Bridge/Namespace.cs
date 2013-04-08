@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Cxxi
 {
@@ -220,6 +221,12 @@ namespace Cxxi
         public Enumeration FindEnumWithItem(string name)
         {
             return Enums.Find(e => e.ItemsByName.ContainsKey(name));
+        }
+
+        public IList<Function> GetFunctionOverloads(Function function)
+        {
+            return Functions.Where(fn => fn.Name == function.Name)
+                .ToList();
         }
 
         public bool HasDeclarations
