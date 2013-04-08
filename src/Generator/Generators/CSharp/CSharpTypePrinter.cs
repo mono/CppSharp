@@ -308,7 +308,7 @@ namespace Cxxi.Generators.CSharp
         public string VisitParameter(Parameter arg, bool hasName)
         {
             var type = arg.Type.Visit(this, arg.QualifiedType.Qualifiers);
-            var name = arg.Name;
+            var name = Helpers.SafeIdentifier(arg.Name);
 
             if (hasName && !string.IsNullOrEmpty(name))
                 return string.Format("{0} {1}", type, name);
