@@ -610,6 +610,9 @@ namespace Cxxi.Generators.CLI
                 var marshal = new CLIMarshalNativeToManagedPrinter(ctx);
                 field.Visit(marshal);
 
+                if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
+                    Write(marshal.Context.SupportBefore);
+
                 WriteLine("this->{0} = {1};", field.Name, marshal.Context.Return);
             }
         }
