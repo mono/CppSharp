@@ -742,13 +742,76 @@ namespace Cxxi.Generators.CSharp
             }
             else if (@class.IsValueType)
             {
-                //if (method.Kind != CXXMethodKind.Constructor)
-                //    GenerateFunctionCall(method, @class);
-                //else
-                //    GenerateValueTypeConstructorCall(method, @class);
+                if (method.Kind != CXXMethodKind.Constructor)
+                    GenerateFunctionCall(method, @class);
+                else
+                    GenerateValueTypeConstructorCall(method, @class);
             }
 
             WriteCloseBraceIndent();
+        }
+
+        private void GenerateValueTypeConstructorCall(Method method, Class @class)
+        {
+            var names = new List<string>();
+
+            foreach (var param in method.Parameters)
+            {
+                var ctx = new CSharpMarshalContext(Driver)
+                {
+                    Parameter = param,
+                    ArgName = param.Name,
+                };
+
+                var marshal = new CSharpMarshalManagedToNativePrinter(ctx);
+                param.Visit(marshal);
+
+                if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
+                    Write(marshal.Context.SupportBefore);
+
+                names.Add(marshal.Context.Return);
+            }
+
+            WriteLine("var {0} = new {1}.Internal();", GeneratedIdentifier("instance"),
+                @class.QualifiedName);
+
+            GenerateFunctionCall(method, @class);
+
+            GenerateValueTypeConstructorCallFields(@class);
+        }
+
+        private void GenerateValueTypeConstructorCallFields(Class @class)
+        {
+            foreach (var @base in @class.Bases)
+            {
+                if (!@base.IsClass || @base.Class.Ignore)
+                    continue;
+
+                var baseClass = @base.Class;
+                GenerateValueTypeConstructorCallFields(baseClass);
+            }
+
+            foreach (var field in @class.Fields)
+            {
+                if (CheckIgnoreField(@class, field)) continue;
+
+                var nativeField = string.Format("*({0}*) (&{1} + {2})",
+                    field.Type, GeneratedIdentifier("instance"), field.OffsetInBytes);
+
+                var ctx = new CSharpMarshalContext(Driver)
+                {
+                    ReturnVarName = nativeField,
+                    ReturnType = field.Type
+                };
+
+                var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
+                field.Visit(marshal);
+
+                if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
+                    Write(marshal.Context.SupportBefore);
+
+                WriteLine("this.{0} = {1};", field.Name, marshal.Context.Return);
+            }
         }
 
         public void GenerateFunctionCall(Function function, Class @class = null)
@@ -840,7 +903,8 @@ namespace Cxxi.Generators.CSharp
                 WriteLine("var ret = new {0}();", retClass.Name);
 
                 if (isValueType)
-                    throw new NotImplementedException();
+                    WriteLine("*({0}.Internal*) ret = {1};", retClass.Name,
+                        GeneratedIdentifier("udt"));
                 else
                     WriteLine("*({0}.Internal*) ret.Instance.ToPointer() = {1};",
                         retClass.Name, GeneratedIdentifier("udt"));
