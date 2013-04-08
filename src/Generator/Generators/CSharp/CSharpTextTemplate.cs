@@ -1061,7 +1061,7 @@ namespace Cxxi.Generators.CSharp
 
             GenerateDeclarationCommon(typedef);
 
-            FunctionType func;
+            FunctionType function;
             TagType tag;
 
             if (typedef.Type.IsPointerToPrimitiveType(PrimitiveType.Void)
@@ -1069,10 +1069,12 @@ namespace Cxxi.Generators.CSharp
             {
                 WriteLine("public class " + SafeIdentifier(typedef.Name) + @" { }");
             }
-            else if (typedef.Type.IsPointerTo<FunctionType>(out func))
+            else if (typedef.Type.IsPointerTo<FunctionType>(out function))
             {
-                //WriteLine("public {0};",
-                //    string.Format(func.ToDelegateString(), SafeIdentifier(T.Name)));
+                WriteLine("public {0};",
+                    string.Format(TypePrinter.VisitDelegate(function),
+                    SafeIdentifier(typedef.Name)));
+                NeedNewLine();
             }
             else if (typedef.Type.IsEnumType())
             {
