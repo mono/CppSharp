@@ -73,6 +73,7 @@ namespace Cxxi
         public bool IsStatic { get; set; }
         public bool IsConst { get; set; }
         public bool IsImplicit { get; set; }
+        public bool IsSynthetized { get; set; }
 
         public CXXMethodKind Kind;
         public CXXOperatorKind OperatorKind;
@@ -85,6 +86,11 @@ namespace Cxxi
         public bool IsDestructor
         {
             get { return Kind == CXXMethodKind.Destructor; }
+        }
+
+        public bool IsOperator
+        {
+            get { return Kind == CXXMethodKind.Operator; }
         }
 
         public bool IsDefaultConstructor;

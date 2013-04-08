@@ -311,6 +311,9 @@ namespace Cxxi.Generators.CSharp
                 if (method.IsConstructor)
                     continue;
 
+                if (method.IsSynthetized)
+                    continue;
+
                 NewLineIfNeeded();
 
                 GeneratePInvokeMethod(method, @class);
@@ -697,6 +700,9 @@ namespace Cxxi.Generators.CSharp
 
             Write("public ");
 
+            if (method.Kind == CXXMethodKind.Operator)
+                Write("static ");
+
             var functionName = GetFunctionIdentifier(method, @class);
 
             if (method.IsConstructor || method.IsDestructor)
@@ -1054,12 +1060,87 @@ namespace Cxxi.Generators.CSharp
             WriteCloseBraceIndent();
         }
 
+        public string GetOperatorIdentifier(CXXOperatorKind kind)
+        {
+            // These follow the order described in MSDN (Overloadable Operators).
+
+            switch (kind)
+            {
+                // These unary operators can be overloaded
+                case CXXOperatorKind.Plus: return "operator +";
+                case CXXOperatorKind.Minus: return "operator -";
+                case CXXOperatorKind.Exclaim: return "operator !";
+                case CXXOperatorKind.Tilde: return "operator ~";
+                case CXXOperatorKind.PlusPlus: return "operator ++";
+                case CXXOperatorKind.MinusMinus: return "operator --";
+
+                // These binary operators can be overloaded
+                case CXXOperatorKind.Star: return "operator *";
+                case CXXOperatorKind.Slash: return "operator /";
+                case CXXOperatorKind.Percent: return "operator +";
+                case CXXOperatorKind.Amp: return "operator &";
+                case CXXOperatorKind.Pipe: return "operator |";
+                case CXXOperatorKind.Caret: return "operator ^";
+                case CXXOperatorKind.LessLess: return "operator <<";
+                case CXXOperatorKind.GreaterGreater: return "operator >>";
+
+                // The comparison operators can be overloaded
+                case CXXOperatorKind.EqualEqual: return "operator ==";
+                case CXXOperatorKind.ExclaimEqual: return "operator !=";
+                case CXXOperatorKind.Less: return "operator <";
+                case CXXOperatorKind.Greater: return "operator >";
+                case CXXOperatorKind.LessEqual: return "operator <=";
+                case CXXOperatorKind.GreaterEqual: return "operator >=";
+
+                // Assignment operators cannot be overloaded
+                case CXXOperatorKind.PlusEqual:
+                case CXXOperatorKind.MinusEqual:
+                case CXXOperatorKind.StarEqual:
+                case CXXOperatorKind.SlashEqual:
+                case CXXOperatorKind.PercentEqual:
+                case CXXOperatorKind.AmpEqual:
+                case CXXOperatorKind.PipeEqual:
+                case CXXOperatorKind.CaretEqual:
+                case CXXOperatorKind.LessLessEqual:
+                case CXXOperatorKind.GreaterGreaterEqual:
+
+                // The array indexing operator cannot be overloaded
+                case CXXOperatorKind.Subscript:
+
+                // The conditional logical operators cannot be overloaded
+                case CXXOperatorKind.AmpAmp:
+                case CXXOperatorKind.PipePipe:
+
+                // These operators cannot be overloaded.
+                case CXXOperatorKind.Equal:
+                case CXXOperatorKind.Comma:
+                case CXXOperatorKind.ArrowStar:
+                case CXXOperatorKind.Arrow:
+                case CXXOperatorKind.Call:
+                case CXXOperatorKind.Conditional:
+                case CXXOperatorKind.New:
+                case CXXOperatorKind.Delete:
+                case CXXOperatorKind.Array_New:
+                case CXXOperatorKind.Array_Delete:
+                default: throw new NotImplementedException();
+            }
+        }
+
         public string GetFunctionIdentifier(Function function, Class @class)
         {
             var identifier = SafeIdentifier(function.Name);
 
             var printer = Type.TypePrinter as CSharpTypePrinter;
             var isNativeContext = printer.ContextKind == CSharpTypePrinterContextKind.Native;
+
+            var method = function as Method;
+            if (method != null && method.Kind == CXXMethodKind.Operator)
+            {
+                if (isNativeContext)
+                    identifier = "Operator" + method.OperatorKind.ToString();
+                else
+                    identifier = GetOperatorIdentifier(method.OperatorKind);
+            }
 
             var overloads = AST.Utils.GetFunctionOverloads(function, @class);
 

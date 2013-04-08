@@ -158,6 +158,26 @@ namespace Cxxi
             }
         }
 
+        public IEnumerable<Method> Operators
+        {
+            get
+            {
+                return Methods.Where(method => method.IsOperator);
+            }
+        }
+
+        public IList<Method> FindOperator(CXXOperatorKind kind)
+        {
+            return Operators.Where(method => method.OperatorKind == kind)
+                .ToList();
+        }
+
+        public IList<Function> GetFunctionOverloads(Function function)
+        {
+            return Methods.Where(method => method.Name == function.Name)
+                .ToList<Function>();
+        }
+
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {
             return visitor.VisitClassDecl(this);
