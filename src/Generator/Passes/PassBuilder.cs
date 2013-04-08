@@ -10,17 +10,18 @@ namespace Cxxi
     public class PassBuilder
     {
         public List<TranslationUnitPass> Passes { get; private set; }
-        public Library Library { get; private set; }
+        public Driver Driver { get; private set; }
 
-        public PassBuilder(Library library)
+        public PassBuilder(Driver driver)
         {
             Passes = new List<TranslationUnitPass>();
-            Library = library;
+            Driver = driver;
         }
 
         public void AddPass(TranslationUnitPass pass)
         {
-            pass.Library = Library;
+            pass.Driver = Driver;
+            pass.Library = Driver.Library;
             Passes.Add(pass);
         }
 
@@ -28,7 +29,7 @@ namespace Cxxi
         {
             foreach (var pass in Passes)
             {
-                pass.VisitLibrary(Library);
+                pass.VisitLibrary(Driver.Library);
             }
         }
     }

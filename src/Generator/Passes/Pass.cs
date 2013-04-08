@@ -7,6 +7,7 @@ namespace Cxxi.Passes
     /// </summary>
     public abstract class TranslationUnitPass : AstVisitor
     {
+        public Driver Driver { get; set; }
         public Library Library { get; set; }
 
         public virtual bool VisitLibrary(Library library)
