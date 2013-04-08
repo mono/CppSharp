@@ -171,7 +171,7 @@ namespace Cxxi.Generators.CLI
         public void GenerateFunctions(Namespace @namespace)
         {
             WriteLine("public ref class {0}{1}", SafeIdentifier(Library.Name),
-                      TranslationUnit.FileNameWithoutExtension);
+                TranslationUnit.FileNameWithoutExtension);
             WriteLine("{");
             WriteLine("public:");
             PushIndent();
