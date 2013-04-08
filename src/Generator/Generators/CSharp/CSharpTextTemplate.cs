@@ -267,7 +267,12 @@ namespace Cxxi.Generators.CSharp
             WriteLine("[StructLayout(LayoutKind.Explicit, Size = {0})]",
                 @class.Layout.Size);
 
-            WriteLine("internal new struct Internal");
+            Write("internal ");
+
+            if (@class.HasBaseClass)
+                Write("new ");
+
+            WriteLine("struct Internal");
             WriteStartBraceIndent();
 
             ResetNewLine();
@@ -276,10 +281,14 @@ namespace Cxxi.Generators.CSharp
             {
                 NewLineIfNeeded();
 
+                if (field.Ignore)
+                    continue;
+
                 WriteLine("[FieldOffset({0})]", field.OffsetInBytes);
 
                 WriteLine("public {0} {1};", field.Type,
-                    SafeIdentifier(field.OriginalName));
+                            SafeIdentifier(field.OriginalName));
+
                 NeedNewLine();
             }
 
