@@ -136,7 +136,21 @@ namespace Cxxi
 
         public bool HasBaseClass
         {
-            get { return Bases.Count > 0 && Bases[0].IsClass; }
+            get { return BaseClass != null; }
+        }
+
+        public Class BaseClass
+        {
+            get
+            {
+                foreach (var @base in Bases)
+                {
+                    if (@base.IsClass && !@base.Class.Ignore)
+                        return @base.Class;
+                }
+
+                return null;
+            }
         }
 
         public bool IsValueType
