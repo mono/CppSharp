@@ -170,7 +170,8 @@ namespace Cxxi.Generators.CSharp
 
             if (@namespace.HasFunctions)
             {
-                WriteLine("public partial class " + SafeIdentifier(Options.LibraryName));
+                WriteLine("public partial class {0}{1}", SafeIdentifier(Options.LibraryName),
+                    TranslationUnit.FileNameWithoutExtension);
                 WriteStartBraceIndent();
 
                 // Generate all the function declarations for the module.
