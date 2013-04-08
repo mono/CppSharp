@@ -596,16 +596,44 @@ namespace Cxxi.Generators.CSharp
             }
 
             if (@class.IsRefType)
+                GenerateDisposeMethods(@class);
+        }
+
+        private void GenerateDisposeMethods(Class @class)
+        {
+            var hasBaseClass = @class.HasBaseClass && @class.BaseClass.IsRefType;
+
+            // Generate the IDispose Dispose() method.
+            if (!hasBaseClass)
             {
+                NewLineIfNeeded();
                 WriteLine("public void Dispose()");
                 WriteStartBraceIndent();
 
-                if (ShouldGenerateClassNativeField(@class))
-                    WriteLine("Marshal.FreeHGlobal(Instance);");
+                WriteLine("Dispose(disposing: true);");
+                WriteLine("GC.SuppressFinalize(this);");
 
                 WriteCloseBraceIndent();
                 NewLine();
             }
+
+            // Generate Dispose(bool) method
+            NewLineIfNeeded();
+            Write("protected ");
+
+            Write(hasBaseClass ? "override " : "virtual ");
+
+            WriteLine("void Dispose(bool disposing)");
+            WriteStartBraceIndent();
+
+            if (ShouldGenerateClassNativeField(@class))
+                WriteLine("Marshal.FreeHGlobal(Instance);");
+
+            if (hasBaseClass)
+                WriteLine("base.Dispose(disposing);");
+
+            WriteCloseBraceIndent();
+            NeedNewLine();
         }
 
         private void GenerateNativeConstructor(Class @class)
