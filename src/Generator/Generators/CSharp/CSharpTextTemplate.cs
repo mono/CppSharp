@@ -697,12 +697,14 @@ namespace Cxxi.Generators.CSharp
 
             Write("public ");
 
-            if (method.Kind == CXXMethodKind.Constructor || method.Kind == CXXMethodKind.Destructor)
-                Write("{0}(", SafeIdentifier(method.Name));
-            else
-                Write("{0} {1}(", method.ReturnType, SafeIdentifier(method.Name));
+            var functionName = GetFunctionIdentifier(method, @class);
 
-            GenerateMethodParameters(method);
+            if (method.IsConstructor || method.IsDestructor)
+                Write("{0}(", functionName);
+            else
+                Write("{0} {1}(", method.ReturnType, functionName);
+
+            GenerateMethodParameters(method, @class);
 
             WriteLine(")");
 
@@ -720,7 +722,9 @@ namespace Cxxi.Generators.CSharp
                         var @params = GenerateFunctionParamsMarshal(method.Parameters, method);
 
                         WriteLine("Instance = Marshal.AllocHGlobal({0});", @class.Layout.Size);
-                        Write("Internal.{0}(Instance", method.Name);
+                        Write("Internal.{0}(Instance", GetFunctionNativeIdentifier(method, @class));
+                        if (@params.Any())
+                            Write(", ");
                         GenerateFunctionParams(@params);
                         WriteLine(");");
                     }
@@ -784,7 +788,7 @@ namespace Cxxi.Generators.CSharp
             if (needsReturn)
                 Write("var ret = ");
 
-            WriteLine("Internal.{0}({1});", SafeIdentifier(function.OriginalName),
+            WriteLine("Internal.{0}({1});", GetFunctionNativeIdentifier(function, @class),
                 string.Join(", ", names));
 
             var cleanups = new List<TextGenerator>();
@@ -957,9 +961,13 @@ namespace Cxxi.Generators.CSharp
             return paramMarshal;
         }
 
-        private void GenerateMethodParameters(Method method)
+        private void GenerateMethodParameters(Method method, Class @class)
         {
             var @params = new List<string>();
+
+            if (method.IsOperator)
+                    @params.Add(string.Format("{0} {1}",
+                        @class.QualifiedName, GeneratedIdentifier("op")));
 
             for (var i = 0; i < method.Parameters.Count; ++i)
             {
@@ -1046,6 +1054,34 @@ namespace Cxxi.Generators.CSharp
             WriteCloseBraceIndent();
         }
 
+        public string GetFunctionIdentifier(Function function, Class @class)
+        {
+            var identifier = SafeIdentifier(function.Name);
+
+            var printer = Type.TypePrinter as CSharpTypePrinter;
+            var isNativeContext = printer.ContextKind == CSharpTypePrinterContextKind.Native;
+
+            var overloads = AST.Utils.GetFunctionOverloads(function, @class);
+
+            var index = overloads.IndexOf(function);
+            if (isNativeContext && index >= 0)
+                identifier += index.ToString();
+
+            return identifier;
+        }
+
+        public string GetFunctionNativeIdentifier(Function function, Class @class = null)
+        {
+            var typePrinter = Type.TypePrinter as CSharpTypePrinter;
+            typePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+
+            var name = GetFunctionIdentifier(function, @class);
+
+            typePrinter.PopContext();
+
+            return name;
+        }
+
         public void GenerateFunction(Function function, Class @class = null)
         {
             if(function.Ignore) return;
@@ -1094,7 +1130,8 @@ namespace Cxxi.Generators.CSharp
                     @params.Add("int " + GeneratedIdentifier("forBases"));
 
             WriteLine("public unsafe static extern {0} {1}({2});", retType,
-                      SafeIdentifier(function.Name), string.Join(", ", @params));
+                      GetFunctionIdentifier(function, @class),
+                      string.Join(", ", @params));
         }
     }
 }
