@@ -27,8 +27,6 @@ namespace Cxxi
 
         public void Setup()
         {
-            TypeDatabase.SetupTypeMaps();
-
             if (Transform != null)
                 Transform.Setup(Options);
 
@@ -112,6 +110,8 @@ namespace Cxxi
 
         public void ProcessCode()
         {
+            TypeDatabase.SetupTypeMaps();
+
             if (Transform != null)
                 Transform.Preprocess(Library);
 
