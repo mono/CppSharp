@@ -13,8 +13,7 @@ namespace Cxxi
         {
         }
 
-        public bool IsPrimitiveType(out PrimitiveType primitive,
-            bool walkTypedefs = false)
+        public bool IsPrimitiveType(out PrimitiveType primitive)
         {
             var builtin = this as BuiltinType;
             if (builtin != null)
@@ -23,22 +22,14 @@ namespace Cxxi
                 return true;
             }
 
-            if (walkTypedefs)
-            {
-                var typedef = this as TypedefType;
-                if (typedef != null)
-                    return typedef.Declaration.Type.IsPrimitiveType(out primitive, true);
-            }
-
             primitive = PrimitiveType.Null;
             return false;
         }
 
-        public bool IsPrimitiveType(PrimitiveType primitive,
-            bool walkTypedefs = false)
+        public bool IsPrimitiveType(PrimitiveType primitive)
         {
             PrimitiveType type;
-            if (!IsPrimitiveType(out type, walkTypedefs))
+            if (!IsPrimitiveType(out type))
                 return false;
 
             return primitive == type;

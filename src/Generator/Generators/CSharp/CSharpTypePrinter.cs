@@ -109,8 +109,8 @@ namespace Cxxi.Generators.CSharp
 
             var isManagedContext = ContextKind == CSharpTypePrinterContextKind.Managed;
 
-            if (pointee.IsPrimitiveType(PrimitiveType.Void, walkTypedefs: true) ||
-                pointee.IsPrimitiveType(PrimitiveType.UInt8, walkTypedefs: true))
+            if (pointee.Desugar().IsPrimitiveType(PrimitiveType.Void) ||
+                pointee.Desugar().IsPrimitiveType(PrimitiveType.UInt8))
             {
                 return isManagedContext ? "string" : "System.IntPtr";
             }

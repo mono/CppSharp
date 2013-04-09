@@ -131,7 +131,7 @@ namespace Cxxi.Generators.CLI
             }
 
             PrimitiveType primitive;
-            if (pointee.IsPrimitiveType(out primitive, walkTypedefs: true))
+            if (pointee.Desugar().IsPrimitiveType(out primitive))
             {
                 return "System::IntPtr";
             }

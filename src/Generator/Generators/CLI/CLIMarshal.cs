@@ -43,7 +43,7 @@ namespace Cxxi.Generators.CLI
         {
             var pointee = pointer.Pointee;
 
-            if (pointee.IsPrimitiveType(PrimitiveType.Void, walkTypedefs: true))
+            if (pointee.Desugar().IsPrimitiveType(PrimitiveType.Void))
             {
                 Context.Return.Write("IntPtr({0})", Context.ReturnVarName);
                 return true;
@@ -57,7 +57,7 @@ namespace Cxxi.Generators.CLI
             }
 
             PrimitiveType primitive;
-            if (pointee.IsPrimitiveType(out primitive, walkTypedefs: true))
+            if (pointee.Desugar().IsPrimitiveType(out primitive))
             {
                 Context.Return.Write("IntPtr({0})", Context.ReturnVarName);
                 return true;
@@ -325,11 +325,9 @@ namespace Cxxi.Generators.CLI
         {
             var pointee = pointer.Pointee;
 
-            var isVoidPtr = pointee.IsPrimitiveType(PrimitiveType.Void,
-                walkTypedefs: true);
+            var isVoidPtr = pointee.Desugar().IsPrimitiveType(PrimitiveType.Void);
 
-            var isUInt8Ptr = pointee.IsPrimitiveType(PrimitiveType.UInt8,
-                walkTypedefs: true);
+            var isUInt8Ptr = pointee.Desugar().IsPrimitiveType(PrimitiveType.UInt8);
 
             if (isVoidPtr || isUInt8Ptr)
             {
@@ -416,7 +414,7 @@ namespace Cxxi.Generators.CLI
             }
 
             PrimitiveType primitive;
-            if (decl.Type.IsPrimitiveType(out primitive, walkTypedefs: true))
+            if (decl.Type.Desugar().IsPrimitiveType(out primitive))
             {
                 Context.Return.Write("({0})", typedef.Declaration.Name);
             }
