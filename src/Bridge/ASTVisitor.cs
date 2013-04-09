@@ -15,6 +15,20 @@ namespace Cxxi
         
     }
 
+    public class AstVisitorOptions
+    {
+        public bool VisitClassBases = true;
+        public bool VisitClassFields = true;
+        public bool VisitClassProperties = true;
+        public bool VisitClassMethods = true;
+        public bool VisitClassEvents = true;
+        public bool VisitClassVariables = true;
+
+        public bool VisitNamespaceEnums = true;
+        public bool VisitNamespaceTemplates = true;
+        public bool VisitNamespaceTypedefs = true;
+    }
+
     /// <summary>
     /// Base class for AST visitors.
     /// You can override the methods to customize the behaviour, by default
@@ -24,10 +38,12 @@ namespace Cxxi
     public abstract class AstVisitor : IAstVisitor<bool>, IAstVisited
     {
         public ISet<object> Visited { get; private set; }
+        public AstVisitorOptions Options { get; private set; }
 
         protected AstVisitor()
         {
             Visited = new HashSet<object>();
+            Options = new AstVisitorOptions();
         }
 
         public bool AlreadyVisited(Type type)
@@ -141,24 +157,30 @@ namespace Cxxi
             if (!VisitDeclaration(@class))
                 return false;
 
-            foreach (var baseClass in @class.Bases)
-                if (baseClass.IsClass)
-                    baseClass.Class.Visit(this);
+            if (Options.VisitClassBases)
+                foreach (var baseClass in @class.Bases)
+                    if (baseClass.IsClass)
+                        VisitClassDecl(baseClass.Class);
 
-            foreach (var field in @class.Fields)
-                VisitFieldDecl(field);
+            if (Options.VisitClassFields)
+                foreach (var field in @class.Fields)
+                    VisitFieldDecl(field);
 
-            foreach (var property in @class.Properties)
-                VisitProperty(property);
+            if (Options.VisitClassProperties)
+                foreach (var property in @class.Properties)
+                    VisitProperty(property);
 
-            foreach (var method in @class.Methods)
-                VisitMethodDecl(method);
+            if (Options.VisitClassMethods)
+                foreach (var method in @class.Methods)
+                    VisitMethodDecl(method);
 
+            if (Options.VisitClassEvents)
             foreach (var @event in @class.Events)
                 VisitEvent(@event);
 
-            foreach (var variable in @class.Variables)
-                VisitVariableDecl(variable);
+            if (Options.VisitClassVariables)
+                foreach (var variable in @class.Variables)
+                    VisitVariableDecl(variable);
 
             return true;
         }
@@ -270,14 +292,17 @@ namespace Cxxi
             foreach (var decl in @namespace.Functions)
                 decl.Visit(this);
 
-            foreach (var decl in @namespace.Enums)
-                decl.Visit(this);
+            if (Options.VisitNamespaceEnums)
+                foreach (var decl in @namespace.Enums)
+                  decl.Visit(this);
 
-            foreach (var decl in @namespace.Templates)
-                decl.Visit(this);
+            if (Options.VisitNamespaceTemplates)
+                foreach (var decl in @namespace.Templates)
+                    decl.Visit(this);
 
-            foreach (var decl in @namespace.Typedefs)
-                decl.Visit(this);
+            if (Options.VisitNamespaceTypedefs)
+                foreach (var decl in @namespace.Typedefs)
+                    decl.Visit(this);
 
             foreach (var decl in @namespace.Namespaces)
                 decl.Visit(this);
