@@ -23,6 +23,16 @@
             TranslationUnit = unit;
         }
 
+        public static bool CheckIgnoreFunction(Class @class, Function function)
+        {
+            if (function.Ignore) return true;
+
+            if (function is Method)
+                return CheckIgnoreMethod(@class, function as Method);
+
+            return false;
+        }
+
         public static bool CheckIgnoreMethod(Class @class, Method method)
         {
             if (method.Ignore) return true;
