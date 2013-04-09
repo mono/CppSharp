@@ -100,8 +100,15 @@ namespace Cxxi
         public Type Desugar()
         {
             var type = this as TypedefType;
+
             if (type != null)
-                return type.Declaration.QualifiedType.Type.Desugar();
+            {
+                var decl = type.Declaration.Type;
+
+                if (decl != null)
+                    return decl.Desugar();
+            }
+
             return this;
         }
 
