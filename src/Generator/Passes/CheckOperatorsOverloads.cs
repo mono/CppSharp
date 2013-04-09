@@ -10,15 +10,7 @@ namespace Cxxi.Passes
         public override bool VisitClassDecl(Class @class)
         {
             // Check for C++ operators that cannot be represented in C#.
-            foreach (var @operator in @class.Operators)
-            {
-                if (!IsValidOperatorOverload(@operator.OperatorKind))
-                {
-                    Driver.Diagnostics.EmitError(DiagnosticId.InvalidOperatorOverload,
-                        "invalid operator overload");
-                    @operator.ExplicityIgnored = true;
-                }
-            }
+            CheckInvalidOperators(@class);
 
             // The comparison operators, if overloaded, must be overloaded in pairs;
             // that is, if == is overloaded, != must also be overloaded. The reverse
@@ -34,6 +26,20 @@ namespace Cxxi.Passes
                                               CXXOperatorKind.GreaterEqual);
 
             return false;
+        }
+
+        private void CheckInvalidOperators(Class @class)
+        {
+            foreach (var @operator in @class.Operators)
+            {
+                if (!IsValidOperatorOverload(@operator.OperatorKind))
+                {
+                    Driver.Diagnostics.EmitError(DiagnosticId.InvalidOperatorOverload,
+                        "Invalid operator overload {0}::{1}",
+                        @class.OriginalName, @operator.OperatorKind);
+                    @operator.ExplicityIgnored = true;
+                }
+            }
         }
 
         static void HandleMissingOperatorOverloadPair(Class @class, CXXOperatorKind op1,
