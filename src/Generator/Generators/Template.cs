@@ -37,7 +37,7 @@
         {
             if (method.Ignore) return true;
 
-            bool isEmptyCtor = method.IsConstructor && method.Parameters.Count == 0;
+            var isEmptyCtor = method.IsConstructor && method.Parameters.Count == 0;
 
             if (@class.IsValueType && isEmptyCtor)
                 return true;
