@@ -16,6 +16,7 @@ namespace Cxxi
         public IDiagnosticConsumer Diagnostics { get; private set; }
         public TypeMapDatabase TypeDatabase { get; private set; }
         public Library Library { get; private set; }
+        public Generator Generator { get; private set; }
 
         public Driver(DriverOptions options, ILibrary transform)
         {
@@ -31,6 +32,8 @@ namespace Cxxi
                 Transform.Setup(Options);
 
             ValidateOptions();
+
+            Generator = CreateGenerator();
         }
 
         private void ValidateOptions()
@@ -53,6 +56,19 @@ namespace Cxxi
 
             if (string.IsNullOrWhiteSpace(Options.OutputNamespace))
                 Options.OutputNamespace = Options.LibraryName;
+        }
+
+        Generator CreateGenerator()
+        {
+            switch (Options.GeneratorKind)
+            {
+                case LanguageGeneratorKind.CSharp:
+                    return new CSharpGenerator(this);
+                case LanguageGeneratorKind.CPlusPlusCLI:
+                    return new CLIGenerator(this);
+                default:
+                    throw new NotImplementedException("Unknown language generator kind");
+            }
         }
 
         private void OnFileParsed(string file, ParserResult result)
@@ -143,20 +159,6 @@ namespace Cxxi
 
             Console.WriteLine("Generating wrapper code...");
 
-            Generator generator = null;
-
-            switch (Options.GeneratorKind)
-            {
-                case LanguageGeneratorKind.CSharp:
-                    generator = new CSharpGenerator(this);
-                    break;
-                case LanguageGeneratorKind.CPlusPlusCLI:
-                    generator = new CLIGenerator(this);
-                    break;
-                default:
-                    throw new NotImplementedException("Unknown language generator kind");
-            }
-
             if (!Directory.Exists(Options.OutputDir))
                 Directory.CreateDirectory(Options.OutputDir);
 
@@ -170,7 +172,7 @@ namespace Cxxi
                     continue;
 
                 // Generate the target code.
-                generator.Generate(unit);
+                Generator.Generate(unit);
             }
         }
 
