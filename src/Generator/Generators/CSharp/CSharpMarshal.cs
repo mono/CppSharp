@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using Cxxi.Generators.CLI;
 using Cxxi.Types;
 
 namespace Cxxi.Generators.CSharp
@@ -139,18 +138,18 @@ namespace Cxxi.Generators.CSharp
             if (Context.Driver.TypeDatabase.FindTypeMap(decl, out typeMap))
             {
                 typeMap.Type = typedef;
-                typeMap.CLIMarshalToManaged(Context);
+                typeMap.CSharpMarshalToManaged(Context);
                 return typeMap.IsValueType;
             }
 
             FunctionType function;
             if (decl.Type.IsPointerTo(out function))
             {
-                Context.Return.Write("safe_cast<{0}>(", typedef);
-                Context.Return.Write("System::Runtime::InteropServices::Marshal::");
-                Context.Return.Write("GetDelegateForFunctionPointer(");
-                Context.Return.Write("IntPtr({0}), {1}::typeid))", Context.ReturnVarName,
-                    typedef.ToString().TrimEnd('^'));
+                Context.SupportBefore.WriteLine("var {0} = new IntPtr({1});",
+                    Helpers.GeneratedIdentifier("ptr"), Context.ReturnVarName);
+
+                Context.Return.Write("({1})Marshal.GetDelegateForFunctionPointer({0}, typeof({1}))",
+                    Helpers.GeneratedIdentifier("ptr"), typedef.ToString());
                 return true;
             }
 
@@ -187,19 +186,15 @@ namespace Cxxi.Generators.CSharp
         public string QualifiedIdentifier(Declaration decl)
         {
             if (Context.Driver.Options.GenerateLibraryNamespace)
-                return string.Format("{0}::{1}", Context.Driver.Options.OutputNamespace,
+                return string.Format("{0}.{1}", Context.Driver.Options.OutputNamespace,
                     decl.QualifiedName);
             return string.Format("{0}", decl.QualifiedName);
         }
 
         public void WriteClassInstance(Class @class, string instance)
         {
-            if (@class.IsRefType)
-                Context.Return.Write("gcnew ");
-
-            Context.Return.Write("{0}(", QualifiedIdentifier(@class));
-            Context.Return.Write("(::{0}*)", @class.QualifiedOriginalName);
-            Context.Return.Write("{0})", instance);
+            Context.Return.Write("new {0}({1})", QualifiedIdentifier(@class),
+                instance);
         }
 
         public override bool VisitFieldDecl(Field field)
@@ -214,20 +209,13 @@ namespace Cxxi.Generators.CSharp
 
         public override bool VisitEnumDecl(Enumeration @enum)
         {
-            Context.Return.Write("({0}){1}", ToCLITypeName(@enum),
-                Context.ReturnVarName);
+            Context.Return.Write("{0}", Context.ReturnVarName);
             return true;
         }
 
         public override bool VisitVariableDecl(Variable variable)
         {
             return variable.Type.Visit(this, variable.QualifiedType.Qualifiers);
-        }
-
-        private string ToCLITypeName(Declaration decl)
-        {
-            var typePrinter = new CLITypePrinter(Context.Driver);
-            return typePrinter.VisitDeclaration(decl);
         }
 
         public override bool VisitClassTemplateDecl(ClassTemplate template)
@@ -260,9 +248,8 @@ namespace Cxxi.Generators.CSharp
             // explicit GCHandle if necessary.
 
             var sb = new StringBuilder();
-            sb.AppendFormat("static_cast<::{0}>(", type);
-            sb.Append("System::Runtime::InteropServices::Marshal::");
-            sb.Append("GetFunctionPointerForDelegate(");
+            sb.AppendFormat("({0})(", type);
+            sb.Append("Marshal.GetFunctionPointerForDelegate(");
             sb.AppendFormat("{0}).ToPointer())", Context.Parameter.Name);
             Context.Return.Write(sb.ToString());
 
@@ -306,7 +293,8 @@ namespace Cxxi.Generators.CSharp
             if (pointee.IsTagDecl(out @class))
             {
                 if (@class.IsRefType)
-                    Context.Return.Write("{0}.Instance", Context.Parameter.Name);
+                    Context.Return.Write("{0}.Instance",
+                        Helpers.SafeIdentifier(Context.Parameter.Name));
                 else
                     Context.Return.Write("new IntPtr(&{0})", Context.Parameter.Name);
                 return true;
@@ -373,7 +361,7 @@ namespace Cxxi.Generators.CSharp
             PrimitiveType primitive;
             if (decl.Type.Desugar().IsPrimitiveType(out primitive))
             {
-                Context.Return.Write("({0})", typedef.Declaration.Name);
+                //Context.Return.Write("({0})", typedef.Declaration.Name);
             }
 
             return decl.Type.Visit(this);
@@ -475,13 +463,13 @@ namespace Cxxi.Generators.CSharp
             var fieldRef = string.Format("{0}.{1}", Context.Parameter.Name,
                                          field.Name);
 
-            var marshalCtx = new MarshalContext(Context.Driver)
+            var marshalCtx = new CSharpMarshalContext(Context.Driver)
             {
                 ArgName = fieldRef,
                 ParameterIndex = Context.ParameterIndex++
             };
 
-            var marshal = new CLIMarshalManagedToNativePrinter(marshalCtx);
+            var marshal = new CSharpMarshalManagedToNativePrinter(marshalCtx);
             field.Visit(marshal);
 
             Context.ParameterIndex = marshalCtx.ParameterIndex;
@@ -495,8 +483,8 @@ namespace Cxxi.Generators.CSharp
                 Context.SupportBefore.PushIndent();
             }
 
-            Context.SupportBefore.WriteLine("{0}.{1} = {2};", marshalVar, field.OriginalName,
-                                    marshal.Context.Return);
+            Context.SupportBefore.WriteLine("{0}.{1} = {2};", marshalVar,
+                field.OriginalName, marshal.Context.Return);
 
             if (field.Type.IsPointer())
                 Context.SupportBefore.PopIndent();
@@ -540,8 +528,7 @@ namespace Cxxi.Generators.CSharp
 
         public override bool VisitEnumDecl(Enumeration @enum)
         {
-            Context.Return.Write("(::{0}){1}", @enum.QualifiedOriginalName,
-                         Context.Parameter.Name);
+            Context.Return.Write(Context.Parameter.Name);
             return true;
         }
 
