@@ -321,7 +321,6 @@ namespace Cxxi.Generators.CSharp
             }
 
             WriteCloseBraceIndent();
-            NewLine();
 
             typePrinter.PopContext();
         }
