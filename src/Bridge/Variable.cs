@@ -12,5 +12,7 @@ namespace Cxxi
 
         public Type Type { get { return QualifiedType.Type; } }
         public QualifiedType QualifiedType { get; set; }
+
+        public string Mangled { get; set; }
     }
 }

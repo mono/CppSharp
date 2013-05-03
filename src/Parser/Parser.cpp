@@ -1353,6 +1353,9 @@ Cxxi::Variable^ Parser::WalkVariable(clang::VarDecl *VD)
     auto TL = VD->getTypeSourceInfo()->getTypeLoc();
     Var->QualifiedType = GetQualifiedType(VD->getType(), WalkType(VD->getType(), &TL));
 
+    auto Mangled = GetDeclMangledName(VD, TargetCXXABI::Microsoft, /*IsDependent=*/false);
+    Var->Mangled = marshalString<E_UTF8>(Mangled);
+
     return Var;
 }
 

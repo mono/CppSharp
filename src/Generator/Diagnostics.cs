@@ -5,6 +5,7 @@ namespace Cxxi
     public enum DiagnosticId
     {
         InvalidOperatorOverload
+        SymbolNotFound
     }
 
     public enum DiagnosticKind

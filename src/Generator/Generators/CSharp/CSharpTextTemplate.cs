@@ -254,6 +254,7 @@ namespace Cxxi.Generators.CSharp
                 GenerateClassConstructors(@class);
                 GenerateClassFields(@class);
                 GenerateClassMethods(@class);
+                GenerateClassVariables(@class);
             }
 
             WriteCloseBraceIndent();
@@ -478,18 +479,74 @@ namespace Cxxi.Generators.CSharp
             WriteCloseBraceIndent();
         }
 
-        private string GetPropertyLocation<T>(T decl, Class @class)
-            where T : Declaration, ITypedDecl
+        enum PropertyMethodKind
         {
+            Getter,
+            Setter
+        }
+
+        private string GetFieldLocation(Field field, string instance,
+            out bool isRefClass)
+        {
+            isRefClass = false;
+
+            var fieldType = field.Type.Desugar();
+            var type = field.Type.ToString() + "*";
+
+            Class fieldClass;
+            if (fieldType.IsTagDecl(out fieldClass) && fieldClass.IsRefType)
+                isRefClass = true;
+
+            TagType tagType;
+            if (fieldType.IsPointerTo(out tagType)
+                && tagType.IsTagDecl(out fieldClass) && fieldClass.IsRefType)
+                isRefClass = true;
+
+            if (CSharpTypePrinter.IsConstCharString(field.QualifiedType))
+                isRefClass = true;
+
+            if (isRefClass)
+                type = "void**";
+
+            var location = string.Format("*({0}) ({1} + {2})",
+                type, instance, field.OffsetInBytes);
+
+            return location;
+        }
+
+        private string GetPropertyLocation<T>(T decl, PropertyMethodKind kind,
+            out bool isRefClass) where T : Declaration, ITypedDecl
+        {
+            isRefClass = false;
+
             if (decl is Variable)
             {
-                return string.Format("::{0}::{1}",
-                    @class.QualifiedOriginalName, decl.OriginalName);
+                var @var = decl as Variable;
+
+                var symbol = @var.Mangled;
+                if (!Driver.LibrarySymbols.FindSymbol(ref symbol))
+                {
+                    Driver.Diagnostics.EmitError(DiagnosticId.SymbolNotFound,
+                        "symbol \"{0}\" was not found", symbol);
+                    throw new SymbolNotFoundException(symbol);
+                }
+
+                NativeLibrary library;
+                Driver.LibrarySymbols.FindLibraryBySymbol(symbol, out library);
+
+                return string.Format("Cxxi.SymbolResolver.ResolveSymbol(\"{0}\", \"{1}\")",
+                    Path.GetFileNameWithoutExtension(library.FileName), symbol);
             }
 
             var field = decl as Field;
-            return string.Format("*({0}*) (Instance + {1})", field.Type,
-                field.OffsetInBytes);
+
+            var location = GetFieldLocation(field, "Instance",
+                out isRefClass);
+
+            if (isRefClass && kind == PropertyMethodKind.Getter)
+                location = string.Format("new System.IntPtr({0})", location);
+
+            return location;
         }
 
         private void GeneratePropertySetter<T>(T decl, Class @class)
@@ -513,12 +570,19 @@ namespace Cxxi.Generators.CSharp
             var marshal = new CSharpMarshalManagedToNativePrinter(ctx);
             param.Visit(marshal);
 
-            var variable = GetPropertyLocation(decl, @class);
+            bool isRefClass;
+            var variable = GetPropertyLocation(decl, PropertyMethodKind.Setter,
+                out isRefClass);
 
             if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                 Write(marshal.Context.SupportBefore);
 
-            WriteLine("{0} = {1};", variable, marshal.Context.Return);
+            Write("{0} = {1}", variable, marshal.Context.Return);
+
+            if (isRefClass)
+                Write(".ToPointer()");
+
+            WriteLine(";");
 
             WriteCloseBraceIndent();
         }
@@ -529,7 +593,9 @@ namespace Cxxi.Generators.CSharp
             WriteLine("get");
             WriteStartBraceIndent();
 
-            var variable = GetPropertyLocation(decl, @class);
+            bool isRefClass;
+            var variable = GetPropertyLocation(decl, PropertyMethodKind.Getter,
+                out isRefClass);
 
             var ctx = new CSharpMarshalContext(Driver)
             {
@@ -581,6 +647,36 @@ namespace Cxxi.Generators.CSharp
                 GenerateMethod(method, @class);
                 NeedNewLine();
             }
+        }
+
+        public void GenerateClassVariables(Class @class)
+        {
+            foreach (var variable in @class.Variables)
+            {
+                if (variable.Ignore) continue;
+
+                if (variable.Access != AccessSpecifier.Public)
+                    continue;
+
+                var type = variable.Type;
+
+                NewLineIfNeeded();
+                GenerateVariable(@class, type, variable);
+                NeedNewLine();
+            }
+        }
+
+        private void GenerateVariable(Class @class, Type type, Variable variable)
+        {
+            WriteLine("public static {0} {1}", type, variable.Name);
+            WriteStartBraceIndent();
+
+            GeneratePropertyGetter(variable, @class);
+
+            if (!variable.QualifiedType.Qualifiers.IsConst)
+                GeneratePropertySetter(variable, @class);
+
+            WriteCloseBraceIndent();
         }
 
         #endregion
@@ -1279,5 +1375,11 @@ namespace Cxxi.Generators.CSharp
                       GetFunctionIdentifier(function, @class),
                       string.Join(", ", @params));
         }
+    }
+
+    internal class SymbolNotFoundException : Exception
+    {
+        public SymbolNotFoundException(string msg) : base(msg)
+        {}
     }
 }
