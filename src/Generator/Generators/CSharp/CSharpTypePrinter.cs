@@ -97,6 +97,32 @@ namespace Cxxi.Generators.CSharp
             return string.Format("Func<{0}{1}>", returnType.Visit(this), args);
         }
 
+        public static bool IsConstCharString(PointerType pointer)
+        {
+            var pointee = pointer.Pointee.Desugar();
+
+            if (pointee.IsPrimitiveType(PrimitiveType.Void) ||
+                pointee.IsPrimitiveType(PrimitiveType.UInt8))
+                return true;
+
+            if (pointee.IsPrimitiveType(PrimitiveType.Char) &&
+                pointer.QualifiedPointee.Qualifiers.IsConst)
+                return true;
+
+            return false;
+        }
+
+        public static bool IsConstCharString(QualifiedType qualType)
+        {
+            var desugared = qualType.Type.Desugar();
+
+            if (!(desugared is PointerType))
+                return false;
+
+            var pointer = desugared as PointerType;
+            return IsConstCharString(pointer);
+        }
+
         public string VisitPointerType(PointerType pointer, TypeQualifiers quals)
         {
             var pointee = pointer.Pointee;
@@ -109,16 +135,8 @@ namespace Cxxi.Generators.CSharp
 
             var isManagedContext = ContextKind == CSharpTypePrinterContextKind.Managed;
 
-            if (pointee.Desugar().IsPrimitiveType(PrimitiveType.Void) ||
-                pointee.Desugar().IsPrimitiveType(PrimitiveType.UInt8))
-            {
+            if (IsConstCharString(pointer))
                 return isManagedContext ? "string" : "System.IntPtr";
-            }
-
-            if (pointee.IsPrimitiveType(PrimitiveType.Char) && quals.IsConst)
-            {
-                return isManagedContext ? "string" : "System.IntPtr";
-            }
 
             Class @class;
             if (pointee.IsTagDecl(out @class)
