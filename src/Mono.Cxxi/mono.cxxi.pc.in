@@ -1,6 +1,0 @@
-Name: Mono.Cxxi
-Description: C++ interoperability for managed code
-Version: 0.1
-
-Requires: 
-Libs: -r:@expanded_libdir@/@PACKAGE@/Mono.Cxxi.dll
