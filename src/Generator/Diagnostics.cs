@@ -4,7 +4,8 @@ namespace Cxxi
 {
     public enum DiagnosticId
     {
-        InvalidOperatorOverload
+        AmbiguousOverload,
+        InvalidOperatorOverload,
         SymbolNotFound
     }
 

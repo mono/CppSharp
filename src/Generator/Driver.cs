@@ -141,6 +141,7 @@ namespace Cxxi
             passes.ResolveIncompleteDecls(TypeDatabase);
             passes.CheckTypeReferences();
             passes.CheckFlagEnums();
+            passes.CheckAmbiguousOverloads();
 
             if (Options.GeneratorKind == LanguageGeneratorKind.CSharp)
                 passes.CheckAbiParameters(Options);
