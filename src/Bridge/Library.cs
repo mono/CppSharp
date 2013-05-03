@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Cxxi
@@ -42,6 +43,7 @@ namespace Cxxi
         public string SharedLibrary;
         public List<TranslationUnit> TranslationUnits;
         public List<NativeLibrary> Libraries;
+        public Dictionary<string, NativeLibrary> Symbols;
 
         public Library(string name, string sharedLibrary)
         {
@@ -49,6 +51,7 @@ namespace Cxxi
             SharedLibrary = sharedLibrary;
             TranslationUnits = new List<TranslationUnit>();
             Libraries = new List<NativeLibrary>();
+            Symbols = new Dictionary<string, NativeLibrary>();
         }
 
         public NativeLibrary FindOrCreateLibrary(string file)
@@ -62,6 +65,42 @@ namespace Cxxi
             }
 
             return library;
+        }
+
+        public void IndexSymbols()
+        {
+            foreach (var library in Libraries)
+            {
+                foreach (var symbol in library.Symbols)
+                    Symbols[symbol] = library;
+            }
+        }
+
+        public bool FindSymbol(ref string symbol)
+        {
+            NativeLibrary lib;
+
+            if (FindLibraryBySymbol(symbol, out lib))
+                return true;
+
+            if (FindLibraryBySymbol("_imp_" + symbol, out lib))
+            {
+                symbol = "_imp_" + symbol;
+                return true;
+            }
+
+            if (FindLibraryBySymbol("__imp_" + symbol, out lib))
+            {
+                symbol = "__imp_" + symbol;
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool FindLibraryBySymbol(string symbol, out NativeLibrary library)
+        {
+            return Symbols.TryGetValue(symbol, out library);
         }
 
         /// Finds an existing module or creates a new one given a file path.

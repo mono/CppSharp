@@ -16,6 +16,7 @@ namespace Cxxi
         public IDiagnosticConsumer Diagnostics { get; private set; }
         public TypeMapDatabase TypeDatabase { get; private set; }
         public Library Library { get; private set; }
+        public Library LibrarySymbols { get; private set; }
         public Generator Generator { get; private set; }
 
         public Driver(DriverOptions options, ILibrary transform)
@@ -119,7 +120,10 @@ namespace Cxxi
             if (!parser.ParseLibraries(Options.Libraries))
                 return false;
 
-            Library = parser.Library;
+            LibrarySymbols = parser.Library;
+
+            Console.WriteLine("Indexing library symbols...");
+            LibrarySymbols.IndexSymbols();
 
             return true;
         }
