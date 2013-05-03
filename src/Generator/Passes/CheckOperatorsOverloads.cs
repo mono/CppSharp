@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Cxxi.Generators.CSharp;
 
 namespace Cxxi.Passes
 {
@@ -38,7 +39,19 @@ namespace Cxxi.Passes
                         "Invalid operator overload {0}::{1}",
                         @class.OriginalName, @operator.OperatorKind);
                     @operator.ExplicityIgnored = true;
+                    continue;
                 }
+
+                // Handle missing operator parameters
+                if (@operator.IsStatic)
+                    @operator.Parameters = @operator.Parameters.Skip(1).ToList();
+
+                @operator.Parameters.Insert(0, new Parameter
+                {
+                    Name = Helpers.GeneratedIdentifier("op"),
+                    QualifiedType = new QualifiedType(new TagType(@class)),
+                    Kind = ParameterKind.OperatorParameter
+                });
             }
         }
 
@@ -55,9 +68,6 @@ namespace Cxxi.Passes
 
             var overload = @class.FindOperator(existingKind).First();
             var @params = overload.Parameters;
-
-            if (overload.IsStatic)
-                @params = @params.Skip(1).ToList();
 
             var method = new Method()
             {
