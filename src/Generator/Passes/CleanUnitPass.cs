@@ -1,4 +1,4 @@
-namespace Cxxi.Passes
+namespace CppSharp.Passes
 {
     public class CleanUnitPass : TranslationUnitPass
     {

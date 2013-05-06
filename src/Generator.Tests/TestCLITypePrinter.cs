@@ -1,6 +1,6 @@
-﻿using Cxxi;
-using Cxxi.Generators.CLI;
-using Cxxi.Types;
+﻿using CppSharp;
+using CppSharp.Generators.CLI;
+using CppSharp.Types;
 using NUnit.Framework;
 
 namespace Generator.Tests

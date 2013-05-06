@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
-namespace Cxxi
+namespace CppSharp
 {
     public static class IntHelpers
     {

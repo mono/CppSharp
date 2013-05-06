@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Cxxi.Passes
+namespace CppSharp.Passes
 {
     class CheckFlagEnumsPass : TranslationUnitPass
     {

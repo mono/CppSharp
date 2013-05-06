@@ -1,7 +1,7 @@
-using Cxxi.Generators;
-using Cxxi.Utils;
+using CppSharp.Generators;
+using CppSharp.Utils;
 
-namespace Cxxi.Tests
+namespace CppSharp.Tests
 {
     public class Hello : LibraryTest
     {

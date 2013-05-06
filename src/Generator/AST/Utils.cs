@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Cxxi.AST
+namespace CppSharp.AST
 {
     public static class Utils
     {

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Text;
-using Cxxi.Types;
+using CppSharp.Types;
 
-namespace Cxxi.Generators.CLI
+namespace CppSharp.Generators.CLI
 {
     public class CLIMarshalNativeToManagedPrinter : MarshalPrinter
     {

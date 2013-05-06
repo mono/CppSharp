@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Cxxi.Passes
+namespace CppSharp.Passes
 {
     public class DuplicatedNamesCheckerPass : TranslationUnitPass
     {

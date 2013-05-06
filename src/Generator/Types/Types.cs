@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Cxxi.Types;
+using CppSharp.Types;
 
-namespace Cxxi
+namespace CppSharp
 {
     /// <summary>
     /// This type checker is used to check if a type is complete.

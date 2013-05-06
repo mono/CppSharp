@@ -1,5 +1,5 @@
-﻿using Cxxi;
-using Cxxi.Passes;
+﻿using CppSharp;
+using CppSharp.Passes;
 using NUnit.Framework;
 
 namespace Generator.Tests.Passes

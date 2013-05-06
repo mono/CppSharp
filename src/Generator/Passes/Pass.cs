@@ -1,5 +1,5 @@
 ﻿
-namespace Cxxi.Passes
+namespace CppSharp.Passes
 {
     /// <summary>
     /// Used to provide different types of code transformation on a module

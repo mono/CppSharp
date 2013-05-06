@@ -1,4 +1,4 @@
-﻿namespace Cxxi.Generators
+﻿namespace CppSharp.Generators
 {
     public enum LanguageGeneratorKind
     {

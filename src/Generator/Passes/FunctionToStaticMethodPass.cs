@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Cxxi.Passes
+namespace CppSharp.Passes
 {
     /// <summary>
     /// This pass will try to hoist functions as class static methods.

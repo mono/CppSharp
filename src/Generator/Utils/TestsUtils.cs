@@ -1,7 +1,7 @@
 ﻿using System.IO;
-using Cxxi.Generators;
+using CppSharp.Generators;
 
-namespace Cxxi.Utils
+namespace CppSharp.Utils
 {
     public abstract class LibraryTest : ILibrary
     {

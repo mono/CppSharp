@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Cxxi.Types
+namespace CppSharp.Types
 {
     public class CppTypePrinter : ITypePrinter<string>, IDeclVisitor<string>
     {

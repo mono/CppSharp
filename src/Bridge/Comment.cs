@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Cxxi
+namespace CppSharp
 {
     /// <summary>
     /// Represents a C++ comment.

@@ -3,7 +3,7 @@ using System.IO;
 using System.Reflection;
 using Mono.Options;
 
-namespace Cxxi
+namespace CppSharp
 {
     internal class Program
     {

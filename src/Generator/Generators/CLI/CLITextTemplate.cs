@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Cxxi.Types;
+using CppSharp.Types;
 
-namespace Cxxi.Generators.CLI
+namespace CppSharp.Generators.CLI
 {
     public struct Include
     {

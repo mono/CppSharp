@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using Cxxi.Types;
+using CppSharp.Types;
 
-namespace Cxxi.Generators.CLI
+namespace CppSharp.Generators.CLI
 {
     public class CLISourcesTemplate : CLITextTemplate
     {

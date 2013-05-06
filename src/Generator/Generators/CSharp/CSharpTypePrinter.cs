@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Cxxi.Types;
+using CppSharp.Types;
 
-namespace Cxxi.Generators.CSharp
+namespace CppSharp.Generators.CSharp
 {
     public enum CSharpTypePrinterContextKind
     {

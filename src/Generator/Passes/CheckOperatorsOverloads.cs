@@ -1,7 +1,7 @@
 ﻿using System.Linq;
-using Cxxi.Generators.CSharp;
+using CppSharp.Generators.CSharp;
 
-namespace Cxxi.Passes
+namespace CppSharp.Passes
 {
     /// <summary>
     /// Checks for missing operator overloads required by C#.

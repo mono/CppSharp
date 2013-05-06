@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace Cxxi.Passes
+namespace CppSharp.Passes
 {
     public class CleanInvalidDeclNamesPass : TranslationUnitPass
     {

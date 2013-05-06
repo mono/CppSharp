@@ -1,6 +1,6 @@
-﻿using Cxxi.Types;
+﻿using CppSharp.Types;
 
-namespace Cxxi.Passes
+namespace CppSharp.Passes
 {
     class SortDeclarationsPass : TranslationUnitPass
     {

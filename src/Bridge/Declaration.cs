@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Cxxi;
+using CppSharp;
 
-namespace Cxxi
+namespace CppSharp
 {
     public interface IRedeclarableDecl
     {

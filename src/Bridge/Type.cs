@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Cxxi
+namespace CppSharp
 {
     /// <summary>
     /// Represents a C++ type.

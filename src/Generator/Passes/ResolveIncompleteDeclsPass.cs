@@ -1,7 +1,7 @@
 ﻿using System;
-using Cxxi.Types;
+using CppSharp.Types;
 
-namespace Cxxi.Passes
+namespace CppSharp.Passes
 {
     public class ResolveIncompleteDeclsPass : TranslationUnitPass
     {

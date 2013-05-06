@@ -1,5 +1,5 @@
 ﻿
-namespace Cxxi
+namespace CppSharp
 {
     public class Variable : Declaration, ITypedDecl
     {

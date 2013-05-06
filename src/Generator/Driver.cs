@@ -1,13 +1,13 @@
 ﻿using System.IO;
-using Cxxi.Generators;
-using Cxxi.Generators.CLI;
-using Cxxi.Generators.CSharp;
-using Cxxi.Passes;
-using Cxxi.Types;
+using CppSharp.Generators;
+using CppSharp.Generators.CLI;
+using CppSharp.Generators.CSharp;
+using CppSharp.Passes;
+using CppSharp.Types;
 using System;
 using System.Collections.Generic;
 
-namespace Cxxi
+namespace CppSharp
 {
     public class Driver
     {

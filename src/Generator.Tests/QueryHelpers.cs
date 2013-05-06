@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using Cxxi;
+using CppSharp;
 
 namespace Generator.Tests
 {

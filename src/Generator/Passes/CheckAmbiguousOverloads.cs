@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Cxxi.Generators;
-using Cxxi.Types;
+using CppSharp.Generators;
+using CppSharp.Types;
 
-namespace Cxxi.Passes
+namespace CppSharp.Passes
 {
     struct OverloadSignature
     {

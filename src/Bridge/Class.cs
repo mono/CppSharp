@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Cxxi
+namespace CppSharp
 {
     // A C++ access specifier.
     public enum AccessSpecifier

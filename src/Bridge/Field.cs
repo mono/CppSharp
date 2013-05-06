@@ -1,4 +1,4 @@
-namespace Cxxi
+namespace CppSharp
 {
     /// <summary>
     /// Represents a a C/C++ record field Decl.

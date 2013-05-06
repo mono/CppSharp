@@ -1,4 +1,4 @@
-﻿namespace Cxxi
+﻿namespace CppSharp
 {
     public enum MethodConversionKind
     {

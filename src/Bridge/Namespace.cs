@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace Cxxi
+namespace CppSharp
 {
     /// <summary>
     /// Represents a C++ namespace.

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Cxxi
+namespace CppSharp
 {
     public struct TemplateParameter
     {

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Cxxi.Generators;
-using Cxxi.Generators.CLI;
-using Cxxi.Generators.CSharp;
+using CppSharp.Generators;
+using CppSharp.Generators.CLI;
+using CppSharp.Generators.CSharp;
 
-namespace Cxxi.Types
+namespace CppSharp.Types
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     public class TypeMapAttribute : Attribute

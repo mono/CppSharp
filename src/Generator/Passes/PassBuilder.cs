@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Cxxi.Passes;
+using CppSharp.Passes;
 
-namespace Cxxi
+namespace CppSharp
 {
     /// <summary>
     /// This class is used to build passes that will be run against the AST

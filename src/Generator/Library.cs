@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Cxxi.Generators;
+using CppSharp.Generators;
 
-namespace Cxxi
+namespace CppSharp
 {
     [AttributeUsage(AttributeTargets.Class)]
     public class LibraryTransformAttribute : Attribute

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Cxxi.Types
+namespace CppSharp.Types
 {
     public enum TypePrinterContextKind
     {

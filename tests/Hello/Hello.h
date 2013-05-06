@@ -1,12 +1,12 @@
 //#include <string>
 
 #if defined(_MSC_VER)
-#define CXXI_API __declspec(dllexport)
+#define CppSharp_API __declspec(dllexport)
 #else
-#define CXXI_API
+#define CppSharp_API
 #endif
 
-class CXXI_API Foo
+class CppSharp_API Foo
 {
 public:
 
@@ -15,21 +15,21 @@ public:
     float B;
 };
 
-class CXXI_API Foo2 : public Foo
+class CppSharp_API Foo2 : public Foo
 {
 public:
 
     int C;
 };
 
-struct CXXI_API Bar
+struct CppSharp_API Bar
 {
     Bar();
     int A;
     float B;
 };
 
-struct CXXI_API Bar2 : public Bar
+struct CppSharp_API Bar2 : public Bar
 {
     int C;
 };
@@ -39,7 +39,7 @@ enum class Enum
     A = 0, B = 2, C = 5
 };
 
-class CXXI_API Hello
+class CppSharp_API Hello
 {
 public:
     Hello ();

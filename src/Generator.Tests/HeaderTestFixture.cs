@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
-using Cxxi;
-using Cxxi.Types;
+using CppSharp;
+using CppSharp.Types;
 
 namespace Generator.Tests
 {

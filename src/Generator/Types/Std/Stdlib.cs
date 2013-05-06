@@ -1,9 +1,9 @@
 using System;
-using Cxxi.Generators;
-using Cxxi.Generators.CLI;
-using Cxxi.Generators.CSharp;
+using CppSharp.Generators;
+using CppSharp.Generators.CLI;
+using CppSharp.Generators.CSharp;
 
-namespace Cxxi.Types.Std
+namespace CppSharp.Types.Std
 {
     [TypeMap("va_list")]
     public class VaList : TypeMap

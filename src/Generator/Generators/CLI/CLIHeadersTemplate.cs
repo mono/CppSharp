@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Cxxi.Types;
+using CppSharp.Types;
 
-namespace Cxxi.Generators.CLI
+namespace CppSharp.Generators.CLI
 {
     public class CLIHeadersTemplate : CLITextTemplate
     {

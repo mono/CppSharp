@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
-using Cxxi.Types;
+using CppSharp.Types;
 
-namespace Cxxi.Generators.CSharp
+namespace CppSharp.Generators.CSharp
 {
     public class CSharpGenerator : Generator
     {

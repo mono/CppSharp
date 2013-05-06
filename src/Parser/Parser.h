@@ -1,6 +1,6 @@
 /************************************************************************
 *
-* Cxxi
+* CppSharp
 * Licensed under the simplified BSD license. All rights reserved.
 *
 ************************************************************************/
@@ -49,7 +49,7 @@ public ref struct ParserOptions
     // C/C++ header file name.
     System::String^ FileName;
 
-    Cxxi::Library^ Library;
+    CppSharp::Library^ Library;
 
     // Toolset version - 2005 - 8, 2008 - 9, 2010 - 10, 0 - autoprobe for any.
     int ToolSetToUse;
@@ -90,7 +90,7 @@ public ref struct ParserResult
     }
 
     ParserResultKind Kind;
-    Cxxi::Library^ Library;
+    CppSharp::Library^ Library;
     List<ParserDiagnostic>^ Diagnostics;
 };
 
@@ -107,20 +107,20 @@ protected:
     // AST traversers
     void WalkAST();
     void WalkMacros(clang::PreprocessingRecord* PR);
-    Cxxi::Declaration^ WalkDeclaration(clang::Decl* D, clang::TypeLoc* = 0,
+    CppSharp::Declaration^ WalkDeclaration(clang::Decl* D, clang::TypeLoc* = 0,
         bool IgnoreSystemDecls = true, bool CanBeDefinition = false);
-    Cxxi::Declaration^ WalkDeclarationDef(clang::Decl* D);
-    Cxxi::Enumeration^ WalkEnum(clang::EnumDecl*);
-    Cxxi::Function^ WalkFunction(clang::FunctionDecl*, bool IsDependent = false,
+    CppSharp::Declaration^ WalkDeclarationDef(clang::Decl* D);
+    CppSharp::Enumeration^ WalkEnum(clang::EnumDecl*);
+    CppSharp::Function^ WalkFunction(clang::FunctionDecl*, bool IsDependent = false,
         bool AddToNamespace = true);
-    Cxxi::Class^ WalkRecordCXX(clang::CXXRecordDecl*, bool IsDependent = false);
-    Cxxi::Method^ WalkMethodCXX(clang::CXXMethodDecl*);
-    Cxxi::Field^ WalkFieldCXX(clang::FieldDecl*, Cxxi::Class^);
-    Cxxi::ClassTemplate^ Parser::WalkClassTemplate(clang::ClassTemplateDecl*);
-    Cxxi::FunctionTemplate^ Parser::WalkFunctionTemplate(
+    CppSharp::Class^ WalkRecordCXX(clang::CXXRecordDecl*, bool IsDependent = false);
+    CppSharp::Method^ WalkMethodCXX(clang::CXXMethodDecl*);
+    CppSharp::Field^ WalkFieldCXX(clang::FieldDecl*, CppSharp::Class^);
+    CppSharp::ClassTemplate^ Parser::WalkClassTemplate(clang::ClassTemplateDecl*);
+    CppSharp::FunctionTemplate^ Parser::WalkFunctionTemplate(
         clang::FunctionTemplateDecl*);
-    Cxxi::Variable^ WalkVariable(clang::VarDecl*);
-    Cxxi::Type^ WalkType(clang::QualType, clang::TypeLoc* = 0,
+    CppSharp::Variable^ WalkVariable(clang::VarDecl*);
+    CppSharp::Type^ WalkType(clang::QualType, clang::TypeLoc* = 0,
       bool DesugarType = false);
 
     // Clang helpers
@@ -128,18 +128,18 @@ protected:
     std::string GetDeclMangledName(clang::Decl*, clang::TargetCXXABI,
         bool IsDependent = false);
     std::string GetTypeName(const clang::Type*);
-    void HandleComments(clang::Decl* D, Cxxi::Declaration^);
-    void WalkFunction(clang::FunctionDecl* FD, Cxxi::Function^ F,
+    void HandleComments(clang::Decl* D, CppSharp::Declaration^);
+    void WalkFunction(clang::FunctionDecl* FD, CppSharp::Function^ F,
         bool IsDependent = false);
 
-    Cxxi::TranslationUnit^ GetModule(clang::SourceLocation Loc);
-    Cxxi::Namespace^ GetNamespace(const clang::NamedDecl*);
+    CppSharp::TranslationUnit^ GetModule(clang::SourceLocation Loc);
+    CppSharp::Namespace^ GetNamespace(const clang::NamedDecl*);
 
     clang::CallingConv GetAbiCallConv(clang::CallingConv CC,
         bool IsInstMethod, bool IsVariadic);
 
     int Index;
-    gcroot<Cxxi::Library^> Lib;
+    gcroot<CppSharp::Library^> Lib;
     gcroot<ParserOptions^> Opts;
     llvm::OwningPtr<clang::CompilerInstance> C;
     clang::ASTContext* AST;

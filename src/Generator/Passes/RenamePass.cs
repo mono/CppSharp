@@ -2,7 +2,7 @@
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Cxxi.Passes
+namespace CppSharp.Passes
 {
     /// <summary>
     /// Base class for transform that perform renames of declarations.

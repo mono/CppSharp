@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Cxxi
+namespace CppSharp
 {
     public enum DiagnosticId
     {

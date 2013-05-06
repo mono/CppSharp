@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Cxxi
+namespace CppSharp
 {
     public interface IAstVisited
     {
@@ -171,8 +171,11 @@ namespace Cxxi
                     VisitProperty(property);
 
             if (Options.VisitClassMethods)
-                foreach (var method in @class.Methods)
+            {
+                var methods = @class.Methods.ToArray();
+                foreach (var method in methods)
                     VisitMethodDecl(method);
+            }
 
             if (Options.VisitClassEvents)
             foreach (var @event in @class.Events)
