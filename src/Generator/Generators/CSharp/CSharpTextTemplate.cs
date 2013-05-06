@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
-using Cxxi.Types;
 
 namespace Cxxi.Generators.CSharp
 {
@@ -243,9 +243,6 @@ namespace Cxxi.Generators.CSharp
             NewLine();
             WriteStartBraceIndent();
 
-            WriteLine("const string DllName = \"{0}.dll\";", Library.Name);
-            NewLine();
-
             if (!@class.IsOpaque)
             {
                 GenerateClassInternals(@class);
@@ -403,9 +400,6 @@ namespace Cxxi.Generators.CSharp
                 WriteLine("[StructLayout(LayoutKind.Explicit)]");
 
             Write("public unsafe ");
-
-            if (@class.IsAbstract)
-                Write("abstract ");
 
             if (Options.GeneratePartialClasses)
                 Write("partial ");
