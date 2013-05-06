@@ -819,19 +819,9 @@ namespace Cxxi.Generators.CSharp
 
             if (@class.IsRefType)
             {
-                if (method.Kind == CXXMethodKind.Constructor)
+                if (method.IsConstructor)
                 {
-                    if (!@class.IsAbstract)
-                    {
-                        var @params = GenerateFunctionParamsMarshal(method.Parameters, method);
-
-                        WriteLine("Instance = Marshal.AllocHGlobal({0});", @class.Layout.Size);
-                        Write("Internal.{0}(Instance", GetFunctionNativeIdentifier(method, @class));
-                        if (@params.Any())
-                            Write(", ");
-                        GenerateFunctionParams(@params);
-                        WriteLine(");");
-                    }
+                    GenerateClassConstructor(method, @class);
                 }
                 else
                 {
@@ -847,6 +837,19 @@ namespace Cxxi.Generators.CSharp
             }
 
             WriteCloseBraceIndent();
+        }
+
+
+        private void GenerateClassConstructor(Method method, Class @class)
+        {
+            var @params = GenerateFunctionParamsMarshal(method.Parameters, method);
+
+            WriteLine("Instance = Marshal.AllocHGlobal({0});", @class.Layout.Size);
+            Write("Internal.{0}(Instance", GetFunctionNativeIdentifier(method, @class));
+            if (@params.Any())
+                Write(", ");
+            GenerateFunctionParams(@params);
+            WriteLine(");");
         }
 
         private void GenerateValueTypeConstructorCall(Method method, Class @class)
