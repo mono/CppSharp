@@ -160,6 +160,11 @@ namespace Cxxi
         {
         }
 
+        public TagType(Declaration decl)
+        {
+            Declaration = decl;
+        }
+
         public Declaration Declaration;
 
         public override T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals)
