@@ -2,12 +2,12 @@ namespace Cxxi.Passes
 {
     public class CleanUnitPass : TranslationUnitPass
     {
-        public DriverOptions Options;
+        public DriverOptions DriverOptions;
         public PassBuilder Passes;
 
         public CleanUnitPass(DriverOptions options)
         {
-            Options = options;
+            DriverOptions = options;
         }
 
         public override bool VisitTranslationUnit(TranslationUnit unit)
@@ -24,7 +24,7 @@ namespace Cxxi.Passes
             var includePath = filePath;
             var shortestIncludePath = filePath;
 
-            foreach (var path in Options.IncludeDirs)
+            foreach (var path in DriverOptions.IncludeDirs)
             {
                 int idx = filePath.IndexOf(path, System.StringComparison.Ordinal);
                 if (idx == -1) continue;
@@ -35,7 +35,8 @@ namespace Cxxi.Passes
                     shortestIncludePath = inc;
             }
 
-            return Options.IncludePrefix + shortestIncludePath.TrimStart(new char[] { '\\', '/' });
+            return DriverOptions.IncludePrefix
+                + shortestIncludePath.TrimStart(new char[] { '\\', '/' });
         }
     }
 
