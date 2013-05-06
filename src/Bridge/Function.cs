@@ -24,7 +24,8 @@ namespace Cxxi
     public enum ParameterKind
     {
         Regular,
-        HiddenStructureReturn
+        HiddenStructureReturn,
+        OperatorParameter
     }
 
     public class Parameter : Declaration, ITypedDecl
