@@ -699,11 +699,7 @@ namespace Cxxi.Generators.CSharp
 
             foreach (var ctor in @class.Constructors)
             {
-                if (ctor.IsCopyConstructor || ctor.IsMoveConstructor)
-                    continue;
-
-                // Default constructors are not supported in .NET value types.
-                if (ctor.Parameters.Count == 0 && @class.IsValueType)
+                if (CheckIgnoreMethod(@class, ctor))
                     continue;
 
                 NewLineIfNeeded();
