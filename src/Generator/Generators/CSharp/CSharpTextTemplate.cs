@@ -827,6 +827,10 @@ namespace Cxxi.Generators.CSharp
                 {
                     GenerateClassConstructor(method, @class);
                 }
+                else if (method.IsOperator)
+                {
+                    GeneratedOperator(method, @class);
+                }
                 else
                 {
                     GenerateFunctionCall(method, @class);
@@ -836,6 +840,10 @@ namespace Cxxi.Generators.CSharp
             {
                 if (method.Kind != CXXMethodKind.Constructor)
                     GenerateFunctionCall(method, @class);
+                else if (method.IsOperator)
+                {
+                    GeneratedOperator(method, @class);
+                }
                 else
                     GenerateValueTypeConstructorCall(method, @class);
             }
@@ -843,6 +851,43 @@ namespace Cxxi.Generators.CSharp
             WriteCloseBraceIndent();
         }
 
+        private static string GetOperatorOverloadPair(CXXOperatorKind kind)
+        {
+            switch (kind)
+            {
+            case CXXOperatorKind.EqualEqual:
+                return "!=";
+            case CXXOperatorKind.ExclaimEqual:
+                return "==";
+
+            case CXXOperatorKind.Less:
+                return ">";
+            case CXXOperatorKind.Greater:
+                return "<";
+
+            case CXXOperatorKind.LessEqual:
+                return ">=";
+            case CXXOperatorKind.GreaterEqual:
+                return "<=";
+
+            default:
+                throw new NotSupportedException();
+            }
+        }
+
+        private void GeneratedOperator(Method method, Class @class)
+        {
+            if (method.IsSynthetized)
+            {
+                var @operator = GetOperatorOverloadPair(method.OperatorKind);
+
+                WriteLine("return !({0} {1} {2});", method.Parameters[0].Name,
+                          @operator, method.Parameters[1].Name);
+                return;
+            }
+
+            GenerateInternalFunctionCall(method, @class);
+        }
 
         private void GenerateClassConstructor(Method method, Class @class)
         {
@@ -1140,10 +1185,6 @@ namespace Cxxi.Generators.CSharp
         {
             var @params = new List<string>();
 
-            if (method.IsOperator)
-                    @params.Add(string.Format("{0} {1}",
-                        @class.QualifiedName, GeneratedIdentifier("op")));
-
             for (var i = 0; i < method.Parameters.Count; ++i)
             {
                 var param = method.Parameters[i];
@@ -1369,6 +1410,10 @@ namespace Cxxi.Generators.CSharp
             for(var i = 0; i < function.Parameters.Count; ++i)
             {
                 var param = function.Parameters[i];
+
+                if (param.Kind == ParameterKind.OperatorParameter)
+                    continue;
+
                 var typeName = param.Visit(typePrinter);
 
                 var paramName = param.IsSynthetized ?
