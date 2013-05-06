@@ -34,17 +34,19 @@ namespace Cxxi.Types.Std
 
         public override string CSharpSignature(CSharpTypePrinterContext ctx)
         {
-            return "string";
+            if (ctx.CSharpKind == CSharpTypePrinterContextKind.ManagedPointer)
+                return "System.IntPtr";
+            return "Std.String";
         }
 
         public override void CSharpMarshalToNative(MarshalContext ctx)
         {
-            ctx.Return.Write("StringToPtr");
+            ctx.Return.Write("new Std.String().Instance");
         }
 
         public override void CSharpMarshalToManaged(MarshalContext ctx)
         {
-            ctx.Return.Write("PtrToString");
+            ctx.Return.Write("new Std.String({0})", ctx.ReturnVarName);
         }
     }
 
@@ -58,12 +60,12 @@ namespace Cxxi.Types.Std
 
         public override void CLIMarshalToNative(MarshalContext ctx)
         {
-            ctx.Return.Write("marshalString<E_UTF16>({0})", ctx.Parameter.Name);
+            ctx.Return.Write("clix::marshalString<clix::E_UTF16>({0})", ctx.Parameter.Name);
         }
 
         public override void CLIMarshalToManaged(MarshalContext ctx)
         {
-            ctx.Return.Write("marshalString<E_UTF16>({0})", ctx.ReturnVarName);
+            ctx.Return.Write("clix::marshalString<clix::E_UTF16>({0})", ctx.ReturnVarName);
         }
 
         public override string CSharpSignature(CSharpTypePrinterContext ctx)
@@ -144,7 +146,8 @@ namespace Cxxi.Types.Std
             var type = templateType.Arguments[0].Type;
             var tmpVarName = "_tmp" + ctx.ArgName;
             
-            ctx.SupportBefore.WriteLine("auto {0} = gcnew System::Collections::Generic::List<{1}>();", tmpVarName, type.ToString());
+            ctx.SupportBefore.WriteLine("auto {0} = gcnew System::Collections::Generic::List<{1}>();",
+                tmpVarName, type.ToString());
             ctx.SupportBefore.WriteLine("for(auto _element : {0})",ctx.ReturnVarName);
             ctx.SupportBefore.WriteStartBraceIndent();
             {
@@ -171,17 +174,18 @@ namespace Cxxi.Types.Std
 
         public override string CSharpSignature(CSharpTypePrinterContext ctx)
         {
-            return string.Format("System.Collections.Generic.List<>");
+            return string.Format("System.Collections.Generic.List<{0}>",
+                ctx.GetTemplateParameterList());
         }
 
         public override void CSharpMarshalToNative(MarshalContext ctx)
         {
-            ctx.Return.Write("StringToPtr");
+            ctx.Return.Write("null");
         }
 
         public override void CSharpMarshalToManaged(MarshalContext ctx)
         {
-            ctx.Return.Write("PtrToString");
+            ctx.Return.Write("null");
         }
     }
 
