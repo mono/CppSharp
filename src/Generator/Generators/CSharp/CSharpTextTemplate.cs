@@ -1418,7 +1418,7 @@ namespace Cxxi.Generators.CSharp
                 });
 
             var method = function as Method;
-            if (method != null)
+            if (method != null && !method.IsStatic)
             {
                 @params.Add("System.IntPtr instance");
 
