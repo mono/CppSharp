@@ -751,6 +751,11 @@ namespace Cxxi.Generators.CSharp
         private void GenerateNativeConstructor(Class @class)
         {
             WriteLine("internal {0}(System.IntPtr native)", SafeIdentifier(@class.Name));
+
+            var hasBaseClass = @class.HasBaseClass && @class.BaseClass.IsRefType;
+            if (hasBaseClass)
+                WriteLineIndent(": base(native)");
+
             WriteStartBraceIndent();
 
             if (@class.IsRefType)
