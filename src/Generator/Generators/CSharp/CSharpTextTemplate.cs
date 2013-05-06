@@ -58,7 +58,7 @@ namespace Cxxi.Generators.CSharp
 
     public class CSharpTextTemplate : TextTemplate
     {
-        public ITypePrinter TypePrinter { get; set; }
+        public CSharpTypePrinter TypePrinter { get; set; }
 
         public override string FileExtension
         {
@@ -262,7 +262,7 @@ namespace Cxxi.Generators.CSharp
 
         public void GenerateClassInternals(Class @class)
         {
-            var typePrinter = Type.TypePrinter as CSharpTypePrinter;
+            var typePrinter = TypePrinter as CSharpTypePrinter;
             typePrinter.PushContext(CSharpTypePrinterContextKind.Native);
 
             WriteLine("[StructLayout(LayoutKind.Explicit, Size = {0})]",
@@ -1167,8 +1167,8 @@ namespace Cxxi.Generators.CSharp
             else if (typedef.Type.IsPointerTo<FunctionType>(out function))
             {
                 WriteLine("public {0};",
-                    string.Format(TypePrinter.VisitDelegate(function),
-                    SafeIdentifier(typedef.Name)));
+                    string.Format(TypePrinter.VisitDelegate(function).Type,
+                        SafeIdentifier(typedef.Name)));
                 NeedNewLine();
             }
             else if (typedef.Type.IsEnumType())
@@ -1291,7 +1291,7 @@ namespace Cxxi.Generators.CSharp
         {
             var identifier = SafeIdentifier(function.Name);
 
-            var printer = Type.TypePrinter as CSharpTypePrinter;
+            var printer = TypePrinter as CSharpTypePrinter;
             var isNativeContext = printer.ContextKind == CSharpTypePrinterContextKind.Native;
 
             var method = function as Method;
@@ -1314,7 +1314,7 @@ namespace Cxxi.Generators.CSharp
 
         public string GetFunctionNativeIdentifier(Function function, Class @class = null)
         {
-            var typePrinter = Type.TypePrinter as CSharpTypePrinter;
+            var typePrinter = TypePrinter as CSharpTypePrinter;
             typePrinter.PushContext(CSharpTypePrinterContextKind.Native);
 
             var name = GetFunctionIdentifier(function, @class);
@@ -1341,7 +1341,7 @@ namespace Cxxi.Generators.CSharp
 
             var @params = new List<string>();
 
-            var typePrinter = Type.TypePrinter as CSharpTypePrinter;
+            var typePrinter = TypePrinter as CSharpTypePrinter;
             var retType = typePrinter.VisitParameterDecl(new Parameter()
                 {
                     QualifiedType = new QualifiedType() { Type = function.ReturnType }

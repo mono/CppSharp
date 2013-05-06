@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Cxxi.Types
 {
-    public class CppTypePrinter : ITypePrinter, IDeclVisitor<string>
+    public class CppTypePrinter : ITypePrinter<string>, IDeclVisitor<string>
     {
         public CppTypePrinter(ITypeMapDatabase database)
         {
@@ -224,6 +224,11 @@ namespace Cxxi.Types
         public string VisitEvent(Event @event)
         {
             throw new NotImplementedException();
+        }
+
+        public string ToString(Type type)
+        {
+            return type.Visit(this);
         }
     }
 }

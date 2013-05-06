@@ -6,13 +6,13 @@ namespace Cxxi.Generators.CLI
 {
     public class CLIGenerator : Generator
     {
-        private readonly ITypePrinter typePrinter;
+        private readonly CLITypePrinter typePrinter;
         private readonly FileHashes fileHashes;
 
         public CLIGenerator(Driver driver) : base(driver)
         {
             typePrinter = new CLITypePrinter(driver);
-            Type.TypePrinter = typePrinter;
+            Type.TypePrinterDelegate += type => type.Visit(typePrinter);
             fileHashes = FileHashes.Load("hashes.ser");
         }
 

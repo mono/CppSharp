@@ -17,7 +17,7 @@ namespace Cxxi.Generators.CLI
         }
     }
 
-    public class CLITypePrinter : ITypePrinter, IDeclVisitor<string>
+    public class CLITypePrinter : ITypePrinter<string>, IDeclVisitor<string>
     {
         public Library Library { get; set; }
         public CLITypePrinterContext Context { get; set; }
@@ -306,6 +306,11 @@ namespace Cxxi.Generators.CLI
         public string VisitEvent(Event @event)
         {
             throw new NotImplementedException();
+        }
+
+        public string ToString(Type type)
+        {
+            return type.Visit(this);
         }
     }
 }

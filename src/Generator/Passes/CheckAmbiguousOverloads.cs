@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Cxxi.Generators;
+using Cxxi.Types;
 
 namespace Cxxi.Passes
 {
@@ -14,14 +15,12 @@ namespace Cxxi.Passes
         {
             Function = function;
 
-            var typePrinter = Type.TypePrinter;
-
-            Return = function.ReturnType.Visit(typePrinter);
+            Return = function.ReturnType.ToString();
             Parameters = new List<string>();
 
             foreach (var param in function.Parameters)
             {
-                var paramType = param.Type.Visit(typePrinter);
+                var paramType = param.Type.ToString();
                 Parameters.Add(paramType);
             }
         }

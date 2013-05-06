@@ -12,19 +12,38 @@ namespace Cxxi.Generators.CSharp
 
     public class CSharpTypePrinterContext : TypePrinterContext
     {
+        public CSharpTypePrinterContextKind CSharpKind;
+
         public CSharpTypePrinterContext()
         {
             
         }
 
-        public CSharpTypePrinterContext(TypePrinterContextKind kind)
-            : base(kind)
+        public CSharpTypePrinterContext(TypePrinterContextKind kind,
+            CSharpTypePrinterContextKind csharpKind) : base(kind)
         {
-            
+            CSharpKind = csharpKind;
         }
     }
 
-    public class CSharpTypePrinter : ITypePrinter, IDeclVisitor<string>
+    public class CSharpTypePrinterResult
+    {
+        public string Type;
+        public TypeMap TypeMap;
+
+        public static implicit operator CSharpTypePrinterResult(string type)
+        {
+            return new CSharpTypePrinterResult() {Type = type};
+        }
+
+        public override string ToString()
+        {
+            return Type;
+        }
+    }
+
+    public class CSharpTypePrinter : ITypePrinter<CSharpTypePrinterResult>,
+        IDeclVisitor<CSharpTypePrinterResult>
     {
         public Library Library { get; set; }
         private readonly ITypeMapDatabase TypeMapDatabase;
@@ -59,7 +78,7 @@ namespace Cxxi.Generators.CSharp
             return contexts.Pop();
         }
 
-        public string VisitTagType(TagType tag, TypeQualifiers quals)
+        public CSharpTypePrinterResult VisitTagType(TagType tag, TypeQualifiers quals)
         {
             if (tag.Declaration == null)
                 return string.Empty;
@@ -67,7 +86,8 @@ namespace Cxxi.Generators.CSharp
             return VisitDeclaration(tag.Declaration, quals);
         }
 
-        public string VisitArrayType(ArrayType array, TypeQualifiers quals)
+        public CSharpTypePrinterResult VisitArrayType(ArrayType array,
+            TypeQualifiers quals)
         {
             return string.Format("{0}[]", array.Type.Visit(this));
 
@@ -75,14 +95,15 @@ namespace Cxxi.Generators.CSharp
             // and they are constrained to a set of built-in types.
         }
 
-        public string VisitFunctionType(FunctionType function, TypeQualifiers quals)
+        public CSharpTypePrinterResult VisitFunctionType(FunctionType function,
+            TypeQualifiers quals)
         {
             var arguments = function.Parameters;
             var returnType = function.ReturnType;
             var args = string.Empty;
 
             if (arguments.Count > 0)
-                args = VisitParameters(function.Parameters, hasNames: false);
+                args = VisitParameters(function.Parameters, hasNames: false).Type;
 
             if (returnType.IsPrimitiveType(PrimitiveType.Void))
             {
@@ -123,7 +144,8 @@ namespace Cxxi.Generators.CSharp
             return IsConstCharString(pointer);
         }
 
-        public string VisitPointerType(PointerType pointer, TypeQualifiers quals)
+        public CSharpTypePrinterResult VisitPointerType(PointerType pointer,
+            TypeQualifiers quals)
         {
             var pointee = pointer.Pointee;
 
@@ -148,18 +170,20 @@ namespace Cxxi.Generators.CSharp
             return pointee.Visit(this, quals);
         }
 
-        public string VisitMemberPointerType(MemberPointerType member,
-                                             TypeQualifiers quals)
+        public CSharpTypePrinterResult VisitMemberPointerType(
+            MemberPointerType member, TypeQualifiers quals)
         {
             throw new NotImplementedException();
         }
 
-        public string VisitBuiltinType(BuiltinType builtin, TypeQualifiers quals)
+        public CSharpTypePrinterResult VisitBuiltinType(BuiltinType builtin,
+            TypeQualifiers quals)
         {
             return VisitPrimitiveType(builtin.Type, quals);
         }
 
-        public string VisitTypedefType(TypedefType typedef, TypeQualifiers quals)
+        public CSharpTypePrinterResult VisitTypedefType(TypedefType typedef,
+            TypeQualifiers quals)
         {
             var decl = typedef.Declaration;
 
@@ -167,8 +191,16 @@ namespace Cxxi.Generators.CSharp
             if (TypeMapDatabase.FindTypeMap(decl, out typeMap))
             {
                 typeMap.Type = typedef;
-                var ctx = new CSharpTypePrinterContext {Type = typedef};
-                return typeMap.CSharpSignature(ctx);
+                var ctx = new CSharpTypePrinterContext
+                    {
+                        CSharpKind = ContextKind,
+                        Type = typedef
+                    };
+                return new CSharpTypePrinterResult()
+                    {
+                        Type = typeMap.CSharpSignature(ctx),
+                        TypeMap = typeMap
+                    };
             }
 
             FunctionType func;
@@ -181,8 +213,8 @@ namespace Cxxi.Generators.CSharp
             return decl.Type.Visit(this);
         }
 
-        public string VisitTemplateSpecializationType(TemplateSpecializationType template,
-            TypeQualifiers quals)
+        public CSharpTypePrinterResult VisitTemplateSpecializationType(
+            TemplateSpecializationType template, TypeQualifiers quals)
         {
             var decl = template.Template.TemplatedDecl;
 
@@ -192,19 +224,24 @@ namespace Cxxi.Generators.CSharp
                 typeMap.Declaration = decl;
                 typeMap.Type = template;
                 Context.Type = template;
-                return typeMap.CSharpSignature(Context);
+                return new CSharpTypePrinterResult()
+                    {
+                        Type = typeMap.CSharpSignature(Context),
+                        TypeMap = typeMap
+                    };
             }
 
             return decl.Name;
         }
 
-        public string VisitTemplateParameterType(TemplateParameterType param,
-            TypeQualifiers quals)
+        public CSharpTypePrinterResult VisitTemplateParameterType(
+            TemplateParameterType param, TypeQualifiers quals)
         {
             throw new NotImplementedException();
         }
 
-        public string VisitPrimitiveType(PrimitiveType primitive, TypeQualifiers quals)
+        public CSharpTypePrinterResult VisitPrimitiveType(PrimitiveType primitive,
+            TypeQualifiers quals)
         {
             switch (primitive)
             {
@@ -227,38 +264,39 @@ namespace Cxxi.Generators.CSharp
             throw new NotSupportedException();
         }
 
-        public string VisitDeclaration(Declaration decl, TypeQualifiers quals)
+        public CSharpTypePrinterResult VisitDeclaration(Declaration decl,
+            TypeQualifiers quals)
         {
             return VisitDeclaration(decl);
         }
 
-        public string VisitDeclaration(Declaration decl)
+        public CSharpTypePrinterResult VisitDeclaration(Declaration decl)
         {
             var name = decl.Visit(this);
             return string.Format("{0}", name);
         }
 
-        public string VisitClassDecl(Class @class)
+        public CSharpTypePrinterResult VisitClassDecl(Class @class)
         {
             return @class.Name;
         }
 
-        public string VisitFieldDecl(Field field)
+        public CSharpTypePrinterResult VisitFieldDecl(Field field)
         {
             throw new NotImplementedException();
         }
 
-        public string VisitFunctionDecl(Function function)
+        public CSharpTypePrinterResult VisitFunctionDecl(Function function)
         {
             throw new NotImplementedException();
         }
 
-        public string VisitMethodDecl(Method method)
+        public CSharpTypePrinterResult VisitMethodDecl(Method method)
         {
             throw new NotImplementedException();
         }
 
-        public string VisitParameterDecl(Parameter parameter)
+        public CSharpTypePrinterResult VisitParameterDecl(Parameter parameter)
         {
             var paramType = parameter.Type;
 
@@ -272,58 +310,58 @@ namespace Cxxi.Generators.CSharp
             return paramType.Visit(this);
         }
 
-        public string VisitTypedefDecl(TypedefDecl typedef)
+        public CSharpTypePrinterResult VisitTypedefDecl(TypedefDecl typedef)
         {
             return typedef.Name;
         }
 
-        public string VisitEnumDecl(Enumeration @enum)
+        public CSharpTypePrinterResult VisitEnumDecl(Enumeration @enum)
         {
             return @enum.Name;
         }
 
-        public string VisitVariableDecl(Variable variable)
+        public CSharpTypePrinterResult VisitVariableDecl(Variable variable)
         {
             throw new NotImplementedException();
         }
 
-        public string VisitClassTemplateDecl(ClassTemplate template)
+        public CSharpTypePrinterResult VisitClassTemplateDecl(ClassTemplate template)
         {
             throw new NotImplementedException();
         }
 
-        public string VisitFunctionTemplateDecl(FunctionTemplate template)
+        public CSharpTypePrinterResult VisitFunctionTemplateDecl(FunctionTemplate template)
         {
             throw new NotImplementedException();
         }
 
-        public string VisitMacroDefinition(MacroDefinition macro)
+        public CSharpTypePrinterResult VisitMacroDefinition(MacroDefinition macro)
         {
             throw new NotImplementedException();
         }
 
-        public string VisitNamespace(Namespace @namespace)
+        public CSharpTypePrinterResult VisitNamespace(Namespace @namespace)
         {
             throw new NotImplementedException();
         }
 
-        public string VisitEvent(Event @event)
+        public CSharpTypePrinterResult VisitEvent(Event @event)
         {
             throw new NotImplementedException();
         }
 
-        public string VisitParameters(IEnumerable<Parameter> @params,
+        public CSharpTypePrinterResult VisitParameters(IEnumerable<Parameter> @params,
             bool hasNames)
         {
             var args = new List<string>();
 
             foreach (var param in @params)
-                args.Add(VisitParameter(param, hasNames));
+                args.Add(VisitParameter(param, hasNames).Type);
 
             return string.Join(", ", args);
         }
 
-        public string VisitParameter(Parameter arg, bool hasName)
+        public CSharpTypePrinterResult VisitParameter(Parameter arg, bool hasName)
         {
             var type = arg.Type.Visit(this, arg.QualifiedType.Qualifiers);
             var name = Helpers.SafeIdentifier(arg.Name);
@@ -334,11 +372,16 @@ namespace Cxxi.Generators.CSharp
             return type;
         }
 
-        public string VisitDelegate(FunctionType function)
+        public CSharpTypePrinterResult VisitDelegate(FunctionType function)
         {
             return string.Format("delegate {0} {{0}}({1})",
                 function.ReturnType.Visit(this),
                 VisitParameters(function.Parameters, hasNames: true));
+        }
+
+        public string ToString(Type type)
+        {
+            return type.Visit(this).Type;
         }
     }
 }

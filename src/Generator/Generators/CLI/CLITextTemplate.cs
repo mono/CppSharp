@@ -27,7 +27,7 @@ namespace Cxxi.Generators.CLI
         protected const string DefaultIndent = "    ";
         protected const uint MaxIndent = 80;
 
-        public ITypePrinter TypePrinter { get; set; }
+        public CLITypePrinter TypePrinter { get; set; }
 
         public ISet<Include> Includes;
 

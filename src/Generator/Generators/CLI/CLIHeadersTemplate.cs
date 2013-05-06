@@ -489,7 +489,7 @@ namespace Cxxi.Generators.CLI
 
         public void GenerateFieldProperty(Field field)
         {
-            var type = field.Type.Visit(Type.TypePrinter, field.QualifiedType.Qualifiers);
+            var type = field.Type.Visit(TypePrinter, field.QualifiedType.Qualifiers);
 
             WriteLine("property {0} {1}", type, field.Name);
             WriteStartBraceIndent();

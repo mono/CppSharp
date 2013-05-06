@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Cxxi
 {
@@ -7,7 +8,7 @@ namespace Cxxi
     /// </summary>
     public abstract class Type
     {
-        public static ITypeVisitor<string> TypePrinter;
+        public static Func<Type, string> TypePrinterDelegate;
 
         protected Type()
         {
@@ -117,7 +118,7 @@ namespace Cxxi
 
         public override string ToString()
         {
-            return Visit(TypePrinter);
+            return TypePrinterDelegate(this);
         }
     }
 

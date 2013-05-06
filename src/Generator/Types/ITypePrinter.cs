@@ -49,11 +49,16 @@ namespace Cxxi.Types
         public Type Type;
     }
 
-    public interface ITypePrinter : ITypeVisitor<string>
+    public interface ITypePrinter
     {
-        string VisitParameters(IEnumerable<Parameter> @params, bool hasNames);
-        string VisitParameter(Parameter param, bool hasName = true);
+        string ToString(Type type);
+    }
 
-        string VisitDelegate(FunctionType function);
+    public interface ITypePrinter<out T> : ITypePrinter, ITypeVisitor<T>
+    {
+        T VisitParameters(IEnumerable<Parameter> @params, bool hasNames);
+        T VisitParameter(Parameter param, bool hasName = true);
+
+        T VisitDelegate(FunctionType function);
     }
 }

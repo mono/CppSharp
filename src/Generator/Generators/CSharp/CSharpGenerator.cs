@@ -6,12 +6,12 @@ namespace Cxxi.Generators.CSharp
 {
     public class CSharpGenerator : Generator
     {
-        private readonly ITypePrinter typePrinter;
+        private readonly CSharpTypePrinter typePrinter;
 
         public CSharpGenerator(Driver driver) : base(driver)
         {
             typePrinter = new CSharpTypePrinter(driver.TypeDatabase, driver.Library);
-            Type.TypePrinter = typePrinter;
+            Type.TypePrinterDelegate += type => type.Visit(typePrinter).Type;
         }
 
         void WriteTemplate(TextTemplate template)
