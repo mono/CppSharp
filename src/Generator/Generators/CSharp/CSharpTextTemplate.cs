@@ -357,11 +357,13 @@ namespace Cxxi.Generators.CSharp
             {
                 if (CheckIgnoreField(@class, field)) continue;
 
-                var nativeField = string.Format("*({0}*) (native + {1})",
-                    field.Type, field.OffsetInBytes);
+                bool isRefClass;
+                var nativeField = GetFieldLocation(field, "native",
+                    CSharpTypePrinterContextKind.ManagedPointer, out isRefClass);
 
                 var ctx = new CSharpMarshalContext(Driver)
                 {
+                    Kind = CSharpMarshalKind.NativeField,
                     ArgName = field.Name,
                     ReturnVarName = nativeField,
                     ReturnType = field.Type
@@ -493,12 +495,16 @@ namespace Cxxi.Generators.CSharp
         }
 
         private string GetFieldLocation(Field field, string instance,
-            out bool isRefClass)
+            CSharpTypePrinterContextKind kind, out bool isRefClass)
         {
             isRefClass = false;
 
+            var typePrinter = TypePrinter as CSharpTypePrinter;
+            typePrinter.PushContext(kind);
+            var type = field.Type.Visit(typePrinter);
+            typePrinter.PopContext();
+
             var fieldType = field.Type.Desugar();
-            var type = field.Type.ToString() + "*";
 
             Class fieldClass;
             if (fieldType.IsTagDecl(out fieldClass) && fieldClass.IsRefType)
@@ -515,8 +521,11 @@ namespace Cxxi.Generators.CSharp
             if (isRefClass)
                 type = "void**";
 
-            var location = string.Format("*({0}) ({1} + {2})",
-                type, instance, field.OffsetInBytes);
+            var location = string.Format("({0} + {1})", instance,
+                field.OffsetInBytes);
+
+            if (type.TypeMap == null)
+                location = string.Format("*({0}*){1}", type, location);
 
             return location;
         }
@@ -548,7 +557,7 @@ namespace Cxxi.Generators.CSharp
             var field = decl as Field;
 
             var location = GetFieldLocation(field, "Instance",
-                out isRefClass);
+                CSharpTypePrinterContextKind.Managed, out isRefClass);
 
             if (isRefClass && kind == PropertyMethodKind.Getter)
                 location = string.Format("new System.IntPtr({0})", location);
