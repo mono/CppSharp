@@ -143,8 +143,9 @@ namespace Cxxi.Generators.CSharp
                 if (@enum.Ignore || @enum.IsIncomplete)
                     continue;
 
+                NewLineIfNeeded();
                 GenerateEnum(@enum);
-                NewLine();
+                NeedNewLine();
             }
 
             // Generate all the typedef declarations for the module.
@@ -152,10 +153,12 @@ namespace Cxxi.Generators.CSharp
             {
                 if (typedef.Ignore) continue;
 
+                NewLineIfNeeded();
+
                 if (!GenerateTypedef(typedef))
                     continue;
 
-                NewLineIfNeeded();
+                NeedNewLine();
             }
 
             // Generate all the struct/class declarations for the module.
@@ -164,12 +167,14 @@ namespace Cxxi.Generators.CSharp
                 if (@class.Ignore || @class.IsIncomplete)
                     continue;
 
+                NewLineIfNeeded();
                 GenerateClass(@class);
-                NewLine();
+                NeedNewLine();
             }
 
             if (@namespace.HasFunctions)
             {
+                NewLineIfNeeded();
                 WriteLine("public partial class {0}{1}", SafeIdentifier(Options.LibraryName),
                     TranslationUnit.FileNameWithoutExtension);
                 WriteStartBraceIndent();
@@ -247,8 +252,9 @@ namespace Cxxi.Generators.CSharp
 
                 if (ShouldGenerateClassNativeField(@class))
                 {
+                    NewLineIfNeeded();
                     WriteLine("public System.IntPtr Instance { get; protected set; }");
-                    NewLine();
+                    NeedNewLine();
                 }
 
                 GenerateClassConstructors(@class);
@@ -322,6 +328,7 @@ namespace Cxxi.Generators.CSharp
             }
 
             WriteCloseBraceIndent();
+            NeedNewLine();
 
             typePrinter.PopContext();
         }
@@ -617,8 +624,6 @@ namespace Cxxi.Generators.CSharp
 
         public void GenerateClassMethods(Class @class)
         {
-            NewLineIfNeeded();
-
             var staticMethods = new List<Method>();
             foreach (var method in @class.Methods)
             {
@@ -638,8 +643,6 @@ namespace Cxxi.Generators.CSharp
                 GenerateMethod(method, @class);
                 NeedNewLine();
             }
-
-            ResetNewLine();
 
             foreach (var method in staticMethods)
             {
