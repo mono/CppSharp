@@ -135,7 +135,7 @@ namespace Cxxi
             if (Transform != null)
                 Transform.Preprocess(Library);
 
-            var passes = new PassBuilder(Library);
+            var passes = new PassBuilder(this);
             passes.CleanUnit(Options);
             passes.SortDeclarations();
             passes.ResolveIncompleteDecls(TypeDatabase);
@@ -144,7 +144,10 @@ namespace Cxxi
             passes.CheckAmbiguousOverloads();
 
             if (Options.GeneratorKind == LanguageGeneratorKind.CSharp)
+            {
                 passes.CheckAbiParameters(Options);
+                passes.CheckOperatorOverloads();
+            }
 
             if (Transform != null)
                 Transform.SetupPasses(this, passes);
