@@ -3,13 +3,22 @@ using Cxxi.Types;
 
 namespace Cxxi.Generators.CSharp
 {
+    public enum CSharpMarshalKind
+    {
+        Unknown,
+        NativeField
+    }
+
     public class CSharpMarshalContext : MarshalContext
     {
         public CSharpMarshalContext(Driver driver)
             : base(driver)
         {
+            Kind = CSharpMarshalKind.Unknown;
             Cleanup = new TextGenerator();
         }
+
+        public CSharpMarshalKind Kind { get; set; }
 
         public TextGenerator Cleanup { get; private set; }
     }
@@ -69,21 +78,21 @@ namespace Cxxi.Generators.CSharp
 
             if (pointee.Desugar().IsPrimitiveType(PrimitiveType.Void))
             {
-                Context.Return.Write("new IntPtr({0})", Context.ReturnVarName);
+                Context.Return.Write("new System.IntPtr({0})", Context.ReturnVarName);
                 return true;
             }
 
-            if (pointee.IsPrimitiveType(PrimitiveType.Char))
+            if (CSharpTypePrinter.IsConstCharString(pointer))
             {
-                Context.Return.Write("Marshal.StringToHGlobalAnsi({0})",
-                             Context.ReturnVarName);
+                Context.Return.Write("Marshal.PtrToStringAnsi(new System.IntPtr({0}))",
+                    Context.ReturnVarName);
                 return true;
             }
 
             PrimitiveType primitive;
             if (pointee.Desugar().IsPrimitiveType(out primitive))
             {
-                Context.Return.Write("new IntPtr({0})", Context.ReturnVarName);
+                Context.Return.Write("new System.IntPtr({0})", Context.ReturnVarName);
                 return true;
             }
 
@@ -145,7 +154,7 @@ namespace Cxxi.Generators.CSharp
             FunctionType function;
             if (decl.Type.IsPointerTo(out function))
             {
-                Context.SupportBefore.WriteLine("var {0} = new IntPtr({1});",
+                Context.SupportBefore.WriteLine("var {0} = new System.IntPtr({1});",
                     Helpers.GeneratedIdentifier("ptr"), Context.ReturnVarName);
 
                 Context.Return.Write("({1})Marshal.GetDelegateForFunctionPointer({0}, typeof({1}))",
@@ -172,14 +181,21 @@ namespace Cxxi.Generators.CSharp
 
         public override bool VisitClassDecl(Class @class)
         {
-            var instance = string.Empty;
+            var ctx = Context as CSharpMarshalContext;
 
-            if (!Context.ReturnType.IsPointer())
-                instance += "&";
+            string instance = Context.ReturnVarName;
+            if (ctx.Kind == CSharpMarshalKind.NativeField)
+            {
+                if (Context.ReturnVarName.StartsWith("*"))
+                    Context.ReturnVarName = Context.ReturnVarName.Substring(1);
 
-            instance += Context.ReturnVarName;
+                instance = string.Format("new System.IntPtr({0})",
+                    Context.ReturnVarName);
+            }
 
-            WriteClassInstance(@class, instance);
+            Context.Return.Write("new {0}({1})", QualifiedIdentifier(@class),
+                instance);
+
             return true;
         }
 
@@ -189,12 +205,6 @@ namespace Cxxi.Generators.CSharp
                 return string.Format("{0}.{1}", Context.Driver.Options.OutputNamespace,
                     decl.QualifiedName);
             return string.Format("{0}", decl.QualifiedName);
-        }
-
-        public void WriteClassInstance(Class @class, string instance)
-        {
-            Context.Return.Write("new {0}({1})", QualifiedIdentifier(@class),
-                instance);
         }
 
         public override bool VisitFieldDecl(Field field)
@@ -247,11 +257,13 @@ namespace Cxxi.Generators.CSharp
             // native side, we need to be careful and protect it with an
             // explicit GCHandle if necessary.
 
-            var sb = new StringBuilder();
-            sb.AppendFormat("({0})(", type);
-            sb.Append("Marshal.GetFunctionPointerForDelegate(");
-            sb.AppendFormat("{0}).ToPointer())", Context.Parameter.Name);
-            Context.Return.Write(sb.ToString());
+            //var sb = new StringBuilder();
+            //sb.AppendFormat("({0})(", type);
+            //sb.Append("Marshal.GetFunctionPointerForDelegate(");
+            //sb.AppendFormat("{0}).ToPointer())", Context.Parameter.Name);
+            //Context.Return.Write(sb.ToString());
+
+            Context.Return.Write(Context.Parameter.Name);
 
             return true;
         }
@@ -296,7 +308,8 @@ namespace Cxxi.Generators.CSharp
                     Context.Return.Write("{0}.Instance",
                         Helpers.SafeIdentifier(Context.Parameter.Name));
                 else
-                    Context.Return.Write("new IntPtr(&{0})", Context.Parameter.Name);
+                    Context.Return.Write("new System.IntPtr(&{0})",
+                        Context.Parameter.Name);
                 return true;
             }
 
@@ -517,6 +530,13 @@ namespace Cxxi.Generators.CSharp
                 }
                 else
                 {
+                    if (parameter.Kind == ParameterKind.OperatorParameter)
+                    {
+                        Context.Return.Write("new System.IntPtr(&{0})",
+                            parameter.Name);
+                        return true;
+                    }
+
                     Context.Return.Write("*({0}.Internal*)&{1}",
                         @class.Name, parameter.Name);
                     return true;

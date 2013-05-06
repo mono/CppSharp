@@ -7,7 +7,8 @@ namespace Cxxi.Generators.CSharp
     public enum CSharpTypePrinterContextKind
     {
         Native,
-        Managed
+        Managed,
+        ManagedPointer
     }
 
     public class CSharpTypePrinterContext : TypePrinterContext
