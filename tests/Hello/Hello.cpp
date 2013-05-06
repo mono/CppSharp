@@ -65,3 +65,8 @@ Foo Hello::RetFoo(int a, float b)
     foo.B = b;
     return foo;
 }
+
+int Hello::RetEnum(Enum e)
+{
+    return (int)e;
+}

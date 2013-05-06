@@ -33,11 +33,17 @@ public class HelloTests
 
         var bar2 = new Bar2 { A = 4, B = 7, C = 3 };
         Assert.That(hello.AddBar2(bar2), Is.EqualTo(14));
+
+        Assert.That(hello.RetEnum(Enum.A), Is.EqualTo(0));
+        Assert.That(hello.RetEnum(Enum.B), Is.EqualTo(2));
+        Assert.That(hello.RetEnum(Enum.C), Is.EqualTo(5));
     }
 
     static void Main(string[] args)
     {
         var hello = new Hello();
+
+        Assert.That(hello.RetEnum(Enum.A), Is.EqualTo(0));
     }
 }
  

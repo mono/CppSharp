@@ -34,6 +34,11 @@ struct CXXI_API Bar2 : public Bar
     int C;
 };
 
+enum class Enum
+{
+    A = 0, B = 2, C = 5
+};
+
 class CXXI_API Hello
 {
 public:
@@ -52,4 +57,6 @@ public:
 
     int AddBar(Bar);
     int AddBar2(Bar2);
+
+    int RetEnum(Enum);
 };
