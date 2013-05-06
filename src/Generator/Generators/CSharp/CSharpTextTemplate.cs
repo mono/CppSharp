@@ -833,19 +833,23 @@ namespace Cxxi.Generators.CSharp
                 }
                 else
                 {
-                    GenerateFunctionCall(method, @class);
+                    GenerateInternalFunctionCall(method, @class);
                 }
             }
             else if (@class.IsValueType)
             {
-                if (method.Kind != CXXMethodKind.Constructor)
-                    GenerateFunctionCall(method, @class);
+                if (method.IsConstructor)
+                {
+                    GenerateInternalFunctionCall(method, @class);
+                }
                 else if (method.IsOperator)
                 {
                     GeneratedOperator(method, @class);
                 }
                 else
-                    GenerateValueTypeConstructorCall(method, @class);
+                {
+                    GenerateInternalFunctionCall(method, @class);
+                }
             }
 
             WriteCloseBraceIndent();
@@ -925,7 +929,7 @@ namespace Cxxi.Generators.CSharp
             WriteLine("var {0} = new {1}.Internal();", GeneratedIdentifier("instance"),
                 @class.QualifiedName);
 
-            GenerateFunctionCall(method, @class);
+            GenerateInternalFunctionCall(method, @class);
 
             GenerateValueTypeConstructorCallFields(@class);
         }
@@ -964,20 +968,28 @@ namespace Cxxi.Generators.CSharp
             }
         }
 
-        public void GenerateFunctionCall(Function function, Class @class = null)
+        public void GenerateInternalFunctionCall(Function function, Class @class)
+        {
+            var functionName = string.Format("Internal.{0}",
+                GetFunctionNativeIdentifier(function, @class));
+            GenerateFunctionCall(functionName, function, @class);
+        }
+
+        public void GenerateFunctionCall(string functionName,
+            Function function, Class @class = null)
         {
             var retType = function.ReturnType;
             var needsReturn = !retType.IsPrimitiveType(PrimitiveType.Void);
 
-            var isValueType = @class != null && @class.IsValueType;
-            //if (isValueType)
-            //{
-            //    WriteLine("auto this0 = (::{0}*) 0;", @class.QualifiedOriginalName);
-            //}
+            var method = function as Method;
+            var needsInstance = method != null && !method.IsStatic && !method.IsOperator;
 
+            var isValueType = @class != null && @class.IsValueType;
+            var needsFixedThis = needsInstance && isValueType;
+
+            Class retClass = null;
             if (function.HasHiddenStructParameter)
             {
-                Class retClass;
                 function.ReturnType.IsTagDecl(out retClass);
 
                 WriteLine("var {0} = new {1}.Internal();", GeneratedIdentifier("udt"),
@@ -999,16 +1011,23 @@ namespace Cxxi.Generators.CSharp
                 names.Insert(0, name);
             }
 
-            var method = function as Method;
+            if (needsInstance)
+            {
+                names.Insert(0, needsFixedThis ? string.Format("new System.IntPtr({0})",
+                    GeneratedIdentifier("instance")) : "Instance");
+            }
 
-            if (method != null && !method.IsStatic)
-                names.Insert(0, "Instance");
+            if (needsFixedThis)
+            {
+                WriteLine("fixed({0}* {1} = &this)", @class.QualifiedName,
+                    GeneratedIdentifier("instance"));
+                WriteStartBraceIndent();
+            }
 
             if (needsReturn)
                 Write("var ret = ");
 
-            WriteLine("Internal.{0}({1});", GetFunctionNativeIdentifier(function, @class),
-                string.Join(", ", names));
+            WriteLine("{0}({1});", functionName, string.Join(", ", names));
 
             var cleanups = new List<TextGenerator>();
             GenerateFunctionCallOutParams(@params, cleanups);
@@ -1047,13 +1066,10 @@ namespace Cxxi.Generators.CSharp
 
             if (function.HasHiddenStructParameter)
             {
-                Class retClass;
-                function.ReturnType.IsTagDecl(out retClass);
-
                 WriteLine("var ret = new {0}();", retClass.Name);
 
-                if (isValueType)
-                    WriteLine("*({0}.Internal*) ret = {1};", retClass.Name,
+                if (retClass.IsValueType)
+                    WriteLine("*({0}.Internal*) &ret = {1};", retClass.Name,
                         GeneratedIdentifier("udt"));
                 else
                     WriteLine("*({0}.Internal*) ret.Instance.ToPointer() = {1};",
@@ -1061,6 +1077,9 @@ namespace Cxxi.Generators.CSharp
 
                 WriteLine("return ret;");
             }
+
+            if (needsFixedThis)
+                WriteCloseBraceIndent();
         }
 
         private void GenerateFunctionCallOutParams(IEnumerable<ParamMarshal> @params,
