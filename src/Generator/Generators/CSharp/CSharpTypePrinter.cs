@@ -238,6 +238,11 @@ namespace CppSharp.Generators.CSharp
         public CSharpTypePrinterResult VisitTemplateParameterType(
             TemplateParameterType param, TypeQualifiers quals)
         {
+        }
+
+        public CSharpTypePrinterResult VisitTemplateParameterSubstitutionType(TemplateParameterSubstitutionType param,
+                                                                              TypeQualifiers quals)
+        {
             throw new NotImplementedException();
         }
 

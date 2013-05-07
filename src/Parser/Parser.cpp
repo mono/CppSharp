@@ -962,7 +962,13 @@ CppSharp::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
     }
     case Type::SubstTemplateTypeParm:
     {
-        auto TPT = gcnew CppSharp::TemplateParameterType();
+        auto TP = Type->getAs<SubstTemplateTypeParmType>();
+        auto Ty = TP->getReplacementType();
+        auto TPT = gcnew CppSharp::TemplateParameterSubstitutionType();
+
+        auto Next = TL->getNextTypeLoc();
+        TPT->Replacement = GetQualifiedType(Ty, WalkType(Ty, &Next));
+
         return TPT;
     }
     case Type::InjectedClassName:

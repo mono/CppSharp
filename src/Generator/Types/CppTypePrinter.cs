@@ -107,6 +107,12 @@ namespace CppSharp.Types
             return param.Parameter.Name;
         }
 
+        public string VisitTemplateParameterSubstitutionType(
+            TemplateParameterSubstitutionType param, TypeQualifiers quals)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public string VisitInjectedClassNameType(InjectedClassNameType injected, TypeQualifiers quals)
         {
             throw new System.NotImplementedException();

@@ -130,6 +130,12 @@ namespace CppSharp
             return true;
         }
 
+        public bool VisitTemplateParameterSubstitutionType(TemplateParameterSubstitutionType param,
+            TypeQualifiers quals)
+        {
+            return param.Replacement.Type.Visit(this, quals);
+        }
+
         public bool VisitInjectedClassNameType(InjectedClassNameType injected, TypeQualifiers quals)
         {
             return true;

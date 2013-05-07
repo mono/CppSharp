@@ -391,6 +391,25 @@ namespace CppSharp
     }
 
     /// <summary>
+    /// Represents the result of substituting a type for a template type parameter.
+    /// </summary>
+    public class TemplateParameterSubstitutionType : Type
+    {
+        public TemplateParameterSubstitutionType()
+        {
+
+        }
+
+        public QualifiedType Replacement;
+
+        public override T Visit<T>(ITypeVisitor<T> visitor,
+                                   TypeQualifiers quals = new TypeQualifiers())
+        {
+            return visitor.VisitTemplateParameterSubstitutionType(this, quals);
+        }
+    }
+
+    /// <summary>
     /// The injected class name of a C++ class template or class template partial
     /// specialization.
     /// </summary>
@@ -494,6 +513,8 @@ namespace CppSharp
         T VisitDeclaration(Declaration decl, TypeQualifiers quals);
         T VisitTemplateParameterType(TemplateParameterType param,
             TypeQualifiers quals);
+        T VisitTemplateParameterSubstitutionType(
+            TemplateParameterSubstitutionType param, TypeQualifiers quals);
         T VisitInjectedClassNameType(InjectedClassNameType injected,
             TypeQualifiers quals);
         T VisitDependentNameType(DependentNameType dependent,
