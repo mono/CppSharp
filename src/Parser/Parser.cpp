@@ -976,7 +976,8 @@ CppSharp::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
     case Type::DependentName:
     {
         auto DN = Type->getAs<DependentNameType>();
-        return nullptr;
+        auto DNT = gcnew CppSharp::DependentNameType();
+        return DNT;
     }
     case Type::LValueReference:
     {

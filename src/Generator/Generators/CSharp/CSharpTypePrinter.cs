@@ -243,6 +243,10 @@ namespace CppSharp.Generators.CSharp
 
         public CSharpTypePrinterResult VisitInjectedClassNameType(InjectedClassNameType injected, TypeQualifiers quals)
         {
+        }
+
+        public CSharpTypePrinterResult VisitDependentNameType(DependentNameType dependent, TypeQualifiers quals)
+        {
             throw new NotImplementedException();
         }
 

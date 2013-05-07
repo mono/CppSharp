@@ -411,6 +411,23 @@ namespace CppSharp
         }
     }
 
+    /// <summary>
+    /// Represents a qualified type name for which the type name is dependent.
+    /// </summary>
+    public class DependentNameType : Type
+    {
+        public DependentNameType()
+        {
+
+        }
+
+        public override T Visit<T>(ITypeVisitor<T> visitor,
+                                   TypeQualifiers quals = new TypeQualifiers())
+        {
+            return visitor.VisitDependentNameType(this, quals);
+        }
+    }
+
     #region Primitives
 
     /// <summary>
@@ -478,6 +495,8 @@ namespace CppSharp
         T VisitTemplateParameterType(TemplateParameterType param,
             TypeQualifiers quals);
         T VisitInjectedClassNameType(InjectedClassNameType injected,
+            TypeQualifiers quals);
+        T VisitDependentNameType(DependentNameType dependent,
             TypeQualifiers quals);
     }
 }

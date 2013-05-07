@@ -135,6 +135,11 @@ namespace CppSharp
             return true;
         }
 
+        public bool VisitDependentNameType(DependentNameType dependent, TypeQualifiers quals)
+        {
+            return true;
+        }
+
         public virtual bool VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals)
         {
             return true;

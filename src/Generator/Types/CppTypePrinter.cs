@@ -112,6 +112,11 @@ namespace CppSharp.Types
             throw new System.NotImplementedException();
         }
 
+        public string VisitDependentNameType(DependentNameType dependent, TypeQualifiers quals)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public string VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals)
         {
             throw new System.NotImplementedException();

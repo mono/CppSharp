@@ -222,6 +222,11 @@ namespace CppSharp.Generators.CLI
             throw new NotImplementedException();
         }
 
+        public string VisitDependentNameType(DependentNameType dependent, TypeQualifiers quals)
+        {
+            throw new NotImplementedException();
+        }
+
         public string VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals)
         {
             return VisitPrimitiveType(type);
