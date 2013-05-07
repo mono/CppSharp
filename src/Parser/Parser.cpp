@@ -956,8 +956,11 @@ CppSharp::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
     }
     case Type::InjectedClassName:
     {
-        auto MYIN = Type->getAs<InjectedClassNameType>();
-        return nullptr;
+        auto ICN = Type->getAs<InjectedClassNameType>();
+        auto ICNT = gcnew CppSharp::InjectedClassNameType();
+        ICNT->Class = safe_cast<CppSharp::Class^>(WalkDeclaration(
+            ICN->getDecl(), 0, /*IgnoreSystemDecls=*/false));
+        return ICNT;
     }
     case Type::DependentName:
     {

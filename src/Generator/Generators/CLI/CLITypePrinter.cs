@@ -217,6 +217,11 @@ namespace CppSharp.Generators.CLI
             return param.Parameter.Name;
         }
 
+        public string VisitInjectedClassNameType(InjectedClassNameType injected, TypeQualifiers quals)
+        {
+            throw new NotImplementedException();
+        }
+
         public string VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals)
         {
             return VisitPrimitiveType(type);

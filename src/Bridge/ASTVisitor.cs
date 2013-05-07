@@ -130,6 +130,11 @@ namespace CppSharp
             return true;
         }
 
+        public bool VisitInjectedClassNameType(InjectedClassNameType injected, TypeQualifiers quals)
+        {
+            return true;
+        }
+
         public virtual bool VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals)
         {
             return true;

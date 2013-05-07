@@ -241,6 +241,11 @@ namespace CppSharp.Generators.CSharp
             throw new NotImplementedException();
         }
 
+        public CSharpTypePrinterResult VisitInjectedClassNameType(InjectedClassNameType injected, TypeQualifiers quals)
+        {
+            throw new NotImplementedException();
+        }
+
         public CSharpTypePrinterResult VisitPrimitiveType(PrimitiveType primitive,
             TypeQualifiers quals)
         {

@@ -389,6 +389,27 @@ namespace CppSharp
         }
     }
 
+    /// <summary>
+    /// The injected class name of a C++ class template or class template partial
+    /// specialization.
+    /// </summary>
+    public class InjectedClassNameType : Type
+    {
+        public InjectedClassNameType()
+        {
+
+        }
+
+        public TemplateSpecializationType TemplateSpecialization;
+        public Class Class;
+
+        public override T Visit<T>(ITypeVisitor<T> visitor,
+                                   TypeQualifiers quals = new TypeQualifiers())
+        {
+            return visitor.VisitInjectedClassNameType(this, quals);
+        }
+    }
+
     #region Primitives
 
     /// <summary>
@@ -454,6 +475,8 @@ namespace CppSharp
         T VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals);
         T VisitDeclaration(Declaration decl, TypeQualifiers quals);
         T VisitTemplateParameterType(TemplateParameterType param,
+            TypeQualifiers quals);
+        T VisitInjectedClassNameType(InjectedClassNameType injected,
             TypeQualifiers quals);
     }
 }
