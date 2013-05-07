@@ -818,6 +818,17 @@ CppSharp::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
 
         return A;
     }
+    case Type::IncompleteArray:
+    {
+        auto AT = AST->getAsIncompleteArrayType(QualType);
+
+        auto A = gcnew CppSharp::ArrayType();
+        auto Next = TL->getNextTypeLoc();
+        A->Type = WalkType(AT->getElementType(), &Next);
+        A->SizeType = CppSharp::ArrayType::ArraySize::Incomplete;
+
+        return A;
+    }
     case Type::FunctionProto:
     {
         auto FP = Type->getAs<clang::FunctionProtoType>();

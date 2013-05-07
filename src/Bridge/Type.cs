@@ -181,7 +181,8 @@ namespace CppSharp
         public enum ArraySize
         {
             Constant,
-            Variable
+            Variable,
+            Incomplete
         }
 
         public ArrayType()
