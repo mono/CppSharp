@@ -365,6 +365,11 @@ namespace CppSharp.Generators.CSharp
             throw new NotImplementedException();
         }
 
+        public CSharpTypePrinterResult VisitProperty(Property property)
+        {
+            throw new NotImplementedException();
+        }
+
         public CSharpTypePrinterResult VisitParameters(IEnumerable<Parameter> @params,
             bool hasNames)
         {

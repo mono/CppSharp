@@ -242,6 +242,11 @@ namespace CppSharp.Types
             throw new NotImplementedException();
         }
 
+        public string VisitProperty(Property property)
+        {
+            throw new NotImplementedException();
+        }
+
         public string ToString(Type type)
         {
             return type.Visit(this);

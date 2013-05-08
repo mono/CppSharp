@@ -8,13 +8,12 @@ namespace CppSharp
     /// </summary>
     public class Property : Declaration
     {
-        public Property(string name, Declaration type)
+        public Property()
         {
-            Name = name;
-            Type = type;
+
         }
 
-        public Declaration Type
+        public Type Type
         {
             get;
             set;
@@ -34,7 +33,7 @@ namespace CppSharp
 
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {
-            throw new NotImplementedException();
+            return visitor.VisitProperty(this);
         }
     }
 }

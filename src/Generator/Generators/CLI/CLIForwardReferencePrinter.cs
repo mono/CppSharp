@@ -197,5 +197,10 @@ namespace CppSharp.Generators.CLI
         {
             throw new NotImplementedException();
         }
+
+        public bool VisitProperty(Property property)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

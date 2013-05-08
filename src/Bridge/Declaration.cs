@@ -207,5 +207,6 @@ namespace CppSharp
         T VisitMacroDefinition(MacroDefinition macro);
         T VisitNamespace(Namespace @namespace);
         T VisitEvent(Event @event);
+        T VisitProperty(Property @property);
     }
 }
