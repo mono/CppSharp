@@ -1,7 +1,7 @@
-﻿using Cxxi.Generators;
-using Cxxi.Passes;
+﻿using CppSharp.Generators;
+using CppSharp.Passes;
 
-namespace Cxxi
+namespace CppSharp
 {
     class OpenCV : ILibrary
     {

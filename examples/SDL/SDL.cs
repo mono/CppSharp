@@ -1,7 +1,7 @@
-﻿using Cxxi.Generators;
-using Cxxi.Passes;
+﻿using CppSharp.Generators;
+using CppSharp.Passes;
 
-namespace Cxxi
+namespace CppSharp
 {
     /// <summary>
     /// Transform the SDL library declarations to something more .NET friendly.
