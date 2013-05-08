@@ -1070,6 +1070,11 @@ CppSharp::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         // Ignored.
         return nullptr;
     }
+    case Type::PackExpansion:
+    {
+        // Ignored.
+        return nullptr;
+    }
     default:
     {   
         Debug("Unhandled type class '%s'\n", Type->getTypeClassName());
@@ -1727,6 +1732,8 @@ CppSharp::Declaration^ Parser::WalkDeclaration(clang::Decl* D, clang::TypeLoc* T
     case Decl::CXXDestructor:
     case Decl::CXXConversion:
     case Decl::CXXMethod:
+    case Decl::Using:
+    case Decl::UsingShadow:
     {
         Decl = nullptr;
         break;
