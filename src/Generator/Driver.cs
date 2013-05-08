@@ -89,9 +89,9 @@ namespace CppSharp
 
             foreach (var diag in result.Diagnostics)
             {
-                Console.WriteLine(string.Format("{0}({1},{2}): error: {3}",
+                Console.WriteLine(string.Format("{0}({1},{2}): {3}: {4}",
                     diag.FileName, diag.LineNumber, diag.ColumnNumber,
-                    diag.Message));
+                    diag.Level.ToString().ToLower(), diag.Message));
             }
         }
 
