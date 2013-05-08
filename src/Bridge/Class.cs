@@ -186,6 +186,12 @@ namespace CppSharp
                 .ToList();
         }
 
+        public IList<Method> FindMethodByOriginalName(string name)
+        {
+            return Methods.Where(method => method.OriginalName == name)
+                .ToList();
+        }
+
         public IList<Function> GetFunctionOverloads(Function function)
         {
             return Methods.Where(method => method.Name == function.Name)
