@@ -153,10 +153,14 @@ namespace CppSharp
         // Passes that should not be run on this declaration.
         public ISet<System.Type> ExcludeFromPasses;
 
+        // List of preprocessed entities attached to this declaration.
+        public IList<PreprocessedEntity> PreprocessedEntities; 
+
         protected Declaration()
         {
             IgnoreFlags = IgnoreFlags.None;
             ExcludeFromPasses = new HashSet<System.Type>();
+            PreprocessedEntities = new List<PreprocessedEntity>();
         }
 
         protected Declaration(string name)
@@ -184,24 +188,6 @@ namespace CppSharp
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {
             return visitor.VisitTypedefDecl(this);
-        }
-    }
-
-    /// <summary>
-    /// Represents a C preprocessor macro definition.
-    /// </summary>
-    public class MacroDefinition : Declaration
-    {
-        // Contains the macro definition text.
-        public string Expression;
-
-        public MacroDefinition()
-        {
-        }
-
-        public override T Visit<T>(IDeclVisitor<T> visitor)
-        {
-            return visitor.VisitMacroDefinition(this);
         }
     }
 

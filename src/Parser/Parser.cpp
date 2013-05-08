@@ -1409,6 +1409,64 @@ void Parser::HandleComments(clang::Decl* D, CppSharp::Declaration^ Decl)
 
 //-----------------------------------//
 
+bool Parser::GetPreprocessedEntityText(clang::PreprocessedEntity* PE, std::string& Text)
+{
+    using namespace clang;
+    SourceManager& SM = C->getSourceManager();
+    const LangOptions &LangOpts = C->getLangOpts();
+
+    auto Range = CharSourceRange::getTokenRange(PE->getSourceRange());
+
+    bool Invalid;
+    Text = Lexer::getSourceText(Range, SM, LangOpts, &Invalid);
+
+    return !Invalid && !Text.empty();
+}
+
+void Parser::HandlePreprocessedEntities(clang::Decl* D, CppSharp::Declaration^ Decl)
+{
+    using namespace clang;
+    auto PPRecord = C->getPreprocessor().getPreprocessingRecord();
+
+    auto SourceRange = D->getSourceRange();
+    auto Range = PPRecord->getPreprocessedEntitiesInRange(SourceRange);
+
+    for (auto it = Range.first; it != Range.second; ++it)
+    {
+        PreprocessedEntity* PPEntity = (*it);
+
+        CppSharp::PreprocessedEntity^ Entity;
+        switch(PPEntity->getKind())
+        {
+        case PreprocessedEntity::MacroExpansionKind:
+        {
+            const MacroExpansion* MD = cast<MacroExpansion>(PPEntity);
+            Entity = gcnew CppSharp::MacroExpansion();
+
+            std::string Text;
+            if (!GetPreprocessedEntityText(PPEntity, Text))
+                continue;
+
+            static_cast<CppSharp::MacroExpansion^>(Entity)->Text = 
+                clix::marshalString<clix::E_UTF8>(Text);
+            break;
+        }
+        case PreprocessedEntity::MacroDefinitionKind:
+        {
+            const MacroDefinition* MD = cast<MacroDefinition>(PPEntity);
+            Entity = gcnew CppSharp::MacroDefinition();
+            break;
+        }
+        default:
+            break;
+        }
+
+        Decl->PreprocessedEntities->Add(Entity);
+    }
+}
+
+//-----------------------------------//
+
 CppSharp::Declaration^ Parser::WalkDeclarationDef(clang::Decl* D)
 {
     return WalkDeclaration(D, 0, /*IgnoreSystemDecls=*/true,
@@ -1621,6 +1679,14 @@ CppSharp::Declaration^ Parser::WalkDeclaration(clang::Decl* D, clang::TypeLoc* T
 
         break;
     } };
+
+    if (Decl)
+    {
+        HandlePreprocessedEntities(D, Decl);
+
+        if (const ValueDecl *VD = dyn_cast_or_null<ValueDecl>(D))
+            Decl->IsDependent = VD->getType()->isDependentType();
+    }
 
     return Decl;
 }

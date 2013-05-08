@@ -17,6 +17,7 @@
 #include <clang/AST/Mangle.h>
 #include <clang/AST/RecordLayout.h>
 #include <clang/Lex/Preprocessor.h>
+#include <clang/Lex/PreprocessingRecord.h>
 #include <clang/Parse/ParseAST.h>
 #include <clang/Sema/Sema.h>
 #include "CXXABI.h"
@@ -131,6 +132,8 @@ protected:
     void HandleComments(clang::Decl* D, CppSharp::Declaration^);
     void WalkFunction(clang::FunctionDecl* FD, CppSharp::Function^ F,
         bool IsDependent = false);
+    void HandlePreprocessedEntities(clang::Decl* D, CppSharp::Declaration^);
+    bool GetPreprocessedEntityText(clang::PreprocessedEntity*, std::string& Text);
 
     CppSharp::TranslationUnit^ GetModule(clang::SourceLocation Loc);
     CppSharp::Namespace^ GetNamespace(const clang::NamedDecl*);
