@@ -302,6 +302,12 @@ namespace CppSharp
 
         #region Module Helpers
 
+        public static void IgnoreHeadersWithName(this Library library, IEnumerable<string> patterns)
+        {
+            foreach(var pattern in patterns)
+                library.IgnoreHeadersWithName(pattern);
+        }
+
         public static void IgnoreHeadersWithName(this Library library, string pattern)
         {
             var modules = library.TranslationUnits.FindAll(
