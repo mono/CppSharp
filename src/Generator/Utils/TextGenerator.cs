@@ -25,6 +25,9 @@ namespace CppSharp
 
         public void Write(string msg, params object[] args)
         {
+            if (string.IsNullOrEmpty(msg))
+                return;
+
             if (args.Length > 0)
                 msg = string.Format(msg, args);
 
