@@ -5,7 +5,7 @@
 dofile "Helpers.lua"
 dofile "Tests.lua"
 
-solution "Cxxi"
+solution "CppSharp"
 
   configurations { "Debug", "Release" }
   platforms { "x32" }
@@ -34,13 +34,13 @@ solution "Cxxi"
     IncludeTests()
   
   group "Libraries"
-    include (srcdir .. "/Cxxi/Cxxi.lua")
+    include (srcdir .. "/CppSharp/CppSharp.lua")
     include (srcdir .. "/Bridge/Bridge.lua")
     include (srcdir .. "/Generator/Generator.lua")
     include (srcdir .. "/Generator.Tests/Generator.Tests.lua")
     include (srcdir .. "/Parser/Parser.lua")
-    include (srcdir .. "/CppParser/CppParser.lua")
-    include (srcdir .. "/ParserBridge/ParserBridge.lua")
-    include (srcdir .. "/ParserGen/ParserGen.lua")
     include (srcdir .. "/Runtime/Runtime.lua")
+    --include (srcdir .. "/CppParser/CppParser.lua")
+    --include (srcdir .. "/ParserBridge/ParserBridge.lua")
+    --include (srcdir .. "/ParserGen/ParserGen.lua")    
 
