@@ -167,6 +167,9 @@ namespace CppSharp.Generators.CSharp
                 if (@class.Ignore || @class.IsIncomplete)
                     continue;
 
+                if (@class.IsDependent)
+                    continue;
+
                 NewLineIfNeeded();
                 GenerateClass(@class);
                 NeedNewLine();

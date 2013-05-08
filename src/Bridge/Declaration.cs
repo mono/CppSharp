@@ -144,6 +144,9 @@ namespace CppSharp
         // True if the declaration is incomplete (no definition).
         public bool IsIncomplete;
 
+        // True if the declaration is dependent.
+        public bool IsDependent;
+
         // Keeps a reference to the complete version of this declaration.
         public Declaration CompleteDeclaration;
 

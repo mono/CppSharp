@@ -373,6 +373,7 @@ CppSharp::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record, bool IsDepe
     RC->IsPOD = Record->isPOD();
     RC->IsUnion = Record->isUnion();
     RC->IsAbstract = Record->isAbstract();
+    RC->IsDependent = Record->isDependentType();
 
     auto &Sema = C->getSema();
     Sema.ForceDeclarationOfImplicitMembers(Record);
@@ -402,7 +403,7 @@ CppSharp::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record, bool IsDepe
 
     // Get the record layout information.
     const ASTRecordLayout* Layout = 0;
-    if (!IsDependent)
+    if (/*!IsDependent && */!Record->isDependentType())
     {
         Layout = &C->getASTContext().getASTRecordLayout(Record);
         RC->Layout->Alignment = (int)Layout-> getAlignment().getQuantity();
