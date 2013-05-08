@@ -1,11 +1,11 @@
-﻿using System.IO;
-using CppSharp.Generators;
+﻿using CppSharp.Generators;
 using CppSharp.Generators.CLI;
 using CppSharp.Generators.CSharp;
 using CppSharp.Passes;
 using CppSharp.Types;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace CppSharp
 {

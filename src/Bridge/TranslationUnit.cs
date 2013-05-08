@@ -32,7 +32,7 @@ namespace CppSharp
         }
 
         public bool IsSystemHeader { get; set; }
-        
+
         /// Contains the path to the file.
         public string FilePath;
 

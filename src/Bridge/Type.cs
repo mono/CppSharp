@@ -519,5 +519,6 @@ namespace CppSharp
             TypeQualifiers quals);
         T VisitDependentNameType(DependentNameType dependent,
             TypeQualifiers quals);
+
     }
 }
