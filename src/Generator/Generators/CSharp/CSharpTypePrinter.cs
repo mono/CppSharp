@@ -238,6 +238,7 @@ namespace CppSharp.Generators.CSharp
         public CSharpTypePrinterResult VisitTemplateParameterType(
             TemplateParameterType param, TypeQualifiers quals)
         {
+            return param.Parameter.Name;
         }
 
         public CSharpTypePrinterResult VisitTemplateParameterSubstitutionType(TemplateParameterSubstitutionType param,
@@ -248,6 +249,7 @@ namespace CppSharp.Generators.CSharp
 
         public CSharpTypePrinterResult VisitInjectedClassNameType(InjectedClassNameType injected, TypeQualifiers quals)
         {
+            return injected.Class.Name;
         }
 
         public CSharpTypePrinterResult VisitDependentNameType(DependentNameType dependent, TypeQualifiers quals)
