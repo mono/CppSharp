@@ -10,6 +10,7 @@
 
 #include <llvm/Support/Path.h>
 #include <llvm/Object/Archive.h>
+#include <llvm/Object/ObjectFile.h>
 #include <clang/Basic/Version.h>
 #include <clang/Config/config.h>
 #include <clang/AST/ASTContext.h>
@@ -1865,10 +1866,72 @@ ParserResult^ Parser::ParseHeader(const std::string& File)
     return res;
  }
 
+ParserResultKind Parser::ParseArchive(llvm::StringRef File,
+                                      llvm::MemoryBuffer *Buffer)
+{
+    llvm::error_code Code;
+    llvm::object::Archive Archive(Buffer, Code);
+
+    if (Code)
+        return ParserResultKind::Error;
+
+    auto LibName = clix::marshalString<clix::E_UTF8>(File);
+    auto NativeLib = Lib->FindOrCreateLibrary(LibName);
+
+    for(auto it = Archive.begin_symbols(); it != Archive.end_symbols(); ++it)
+    {
+        llvm::StringRef SymRef;
+
+        if (it->getName(SymRef))
+            continue;
+
+        System::String^ SymName = clix::marshalString<clix::E_UTF8>(SymRef);
+        NativeLib->Symbols->Add(SymName);
+    }
+
+    return ParserResultKind::Success;
+}
+
+ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
+                                        llvm::MemoryBuffer *Buffer)
+{
+    auto Object = llvm::object::ObjectFile::createObjectFile(Buffer);
+
+    if (!Object)
+        return ParserResultKind::Error;
+
+    auto LibName = clix::marshalString<clix::E_UTF8>(File);
+    auto NativeLib = Lib->FindOrCreateLibrary(LibName);
+
+    llvm::error_code ec;
+    for(auto it = Object->begin_symbols(); it != Object->end_symbols(); it.increment(ec))
+    {
+        llvm::StringRef SymRef;
+
+        if (it->getName(SymRef))
+            continue;
+
+        System::String^ SymName = clix::marshalString<clix::E_UTF8>(SymRef);
+        NativeLib->Symbols->Add(SymName);
+    }
+
+    for(auto it = Object->begin_dynamic_symbols(); it != Object->end_dynamic_symbols();
+        it.increment(ec))
+    {
+        llvm::StringRef SymRef;
+
+        if (it->getName(SymRef))
+            continue;
+
+        System::String^ SymName = clix::marshalString<clix::E_UTF8>(SymRef);
+        NativeLib->Symbols->Add(SymName);
+    }
+
+    return ParserResultKind::Success;
+}
+
  ParserResult^ Parser::ParseLibrary(const std::string& File)
 {
-    using namespace clix;
-
     auto res = gcnew ParserResult();
     res->Library = Lib;
 
@@ -1886,7 +1949,7 @@ ParserResult^ Parser::ParseHeader(const std::string& File)
 
     for each(System::String^ LibDir in Opts->LibraryDirs)
     {
-        auto DirName = marshalString<E_UTF8>(LibDir);
+        auto DirName = clix::marshalString<clix::E_UTF8>(LibDir);
         llvm::sys::Path Path(DirName);
         Path.appendComponent(File);
 
@@ -1900,31 +1963,13 @@ ParserResult^ Parser::ParseHeader(const std::string& File)
         return res;
     }
 
-    auto Buffer = FM.getBufferForFile(FileEntry);
-
-    llvm::error_code Code;
-    llvm::object::Archive Archive(Buffer, Code);
-
-    if (Code)
-    {
-        res->Kind = ParserResultKind::Error;
+    res->Kind = ParseArchive(File, FM.getBufferForFile(FileEntry));
+    if (res->Kind == ParserResultKind::Success)
         return res;
-    }
 
-    auto LibName = marshalString<E_UTF8>(File);
-    auto NativeLib = Lib->FindOrCreateLibrary(LibName);
+    res->Kind = ParseSharedLib(File, FM.getBufferForFile(FileEntry));
+    if (res->Kind == ParserResultKind::Success)
+        return res;
 
-    for(auto it = Archive.begin_symbols(); it != Archive.end_symbols(); ++it)
-    {
-        llvm::StringRef SymRef;
-
-        if (it->getName(SymRef))
-            continue;
-
-        System::String^ SymName = marshalString<E_UTF8>(SymRef);
-        NativeLib->Symbols->Add(SymName);
-    }
-
-    res->Kind = ParserResultKind::Success;
     return res;
 }

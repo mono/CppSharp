@@ -112,6 +112,10 @@ struct Parser
     void SetupHeader();
     ParserResult^ ParseHeader(const std::string& File);
     ParserResult^ ParseLibrary(const std::string& File);
+    ParserResultKind ParseArchive(llvm::StringRef File,
+                                  llvm::MemoryBuffer *Buffer);
+    ParserResultKind ParseSharedLib(llvm::StringRef File,
+                                    llvm::MemoryBuffer *Buffer);
 
 protected:
 
