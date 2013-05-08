@@ -1,4 +1,4 @@
-project "Cxxi"
+project "CppSharp"
 
   kind "ConsoleApp"
   language "C#"
