@@ -515,8 +515,12 @@ namespace CppSharp.Generators.CSharp
             if (CSharpTypePrinter.IsConstCharString(field.QualifiedType))
                 isRefClass = true;
 
+            FunctionType functionType;
+            if (fieldType.IsPointerTo(out functionType))
+                isRefClass = true;
+
             if (isRefClass)
-                type = "void**";
+                type = "void*";
 
             var location = string.Format("({0} + {1})", instance,
                 field.OffsetInBytes);
