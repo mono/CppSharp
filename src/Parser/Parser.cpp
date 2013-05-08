@@ -611,7 +611,13 @@ CppSharp::Namespace^ Parser::GetNamespace(const clang::NamedDecl* ND)
     using namespace clix;
 
     SourceLocation Loc = ND->getLocation();
-    CppSharp::TranslationUnit^ M = GetModule(Loc);
+
+    SourceLocationKind Kind;
+    CppSharp::TranslationUnit^ M = GetModule(Loc, &Kind);
+
+    if (Kind == SourceLocationKind::Builtin ||
+        Kind == SourceLocationKind::CommandLine)
+        return M;
 
     // If the declaration is at global scope, just early exit.
     const DeclContext *Ctx = ND->getDeclContext();
@@ -1251,30 +1257,35 @@ CppSharp::Function^ Parser::WalkFunction(clang::FunctionDecl* FD, bool IsDepende
 
 //-----------------------------------//
 
-static bool IsUserLocation(clang::SourceManager& SM, clang::SourceLocation Loc)
-{
-    auto Kind = SM.getFileCharacteristic(Loc);
-    return Kind == clang::SrcMgr::C_User;
-}
-
-bool Parser::IsValidDeclaration(const clang::SourceLocation& Loc)
+SourceLocationKind Parser::GetLocationKind(const clang::SourceLocation& Loc)
 {
     using namespace clang;
 
     SourceManager& SM = C->getSourceManager();
     PresumedLoc PLoc = SM.getPresumedLoc(Loc);
 
+    if(PLoc.isInvalid())
+        return SourceLocationKind::Invalid;
+
     const char *FileName = PLoc.getFilename();
 
-    // Igore built in declarations.
-    if(PLoc.isInvalid() || !strcmp(FileName, "<built-in>"))
-        return false;
+    if(strcmp(FileName, "<built-in>") == 0)
+        return SourceLocationKind::Builtin;
 
-    // Also ignore declarations that come from system headers.
-    if (!IsUserLocation(SM, Loc))
-        return false;
+    if(strcmp(FileName, "<command line>") == 0)
+        return SourceLocationKind::CommandLine;
 
-    return true;
+    if(SM.getFileCharacteristic(Loc) == clang::SrcMgr::C_User)
+        return SourceLocationKind::User;
+
+    return SourceLocationKind::System;
+}
+
+bool Parser::IsValidDeclaration(const clang::SourceLocation& Loc)
+{
+    auto Kind = GetLocationKind(Loc);
+
+    return Kind == SourceLocationKind::User;
 }
 
 //-----------------------------------//
@@ -1306,7 +1317,8 @@ void Parser::WalkAST()
 
 //-----------------------------------//
 
-CppSharp::TranslationUnit^ Parser::GetModule(clang::SourceLocation Loc)
+CppSharp::TranslationUnit^ Parser::GetModule(clang::SourceLocation Loc,
+                                             SourceLocationKind *Kind)
 {
     using namespace clang;
     using namespace clix;
@@ -1316,16 +1328,32 @@ CppSharp::TranslationUnit^ Parser::GetModule(clang::SourceLocation Loc)
     if (Loc.isMacroID())
         Loc = SM.getExpansionLoc(Loc);
 
-    StringRef File = SM.getFilename(Loc);
+    StringRef File;
 
-    if (!File.data() || File.empty())
+    auto LocKind = GetLocationKind(Loc);
+    switch(LocKind)
     {
-        assert(0 && "Expected to find a valid file");
-        return nullptr;
+    case SourceLocationKind::Invalid:
+        File = "<invalid>";
+        break;
+    case SourceLocationKind::Builtin:
+        File = "<built-in>";
+        break;
+    case SourceLocationKind::CommandLine:
+        File = "<command-line>";
+        break;
+    default:
+        File = SM.getFilename(Loc);
+        assert(!File.empty() && "Expected to find a valid file");
+        break;
     }
 
+    if (Kind)
+        *Kind = LocKind;
+
     auto Unit = Lib->FindOrCreateModule(marshalString<E_UTF8>(File));
-    Unit->IsSystemHeader = SM.isInSystemHeader(Loc);
+    if (LocKind != SourceLocationKind::Invalid)
+        Unit->IsSystemHeader = SM.isInSystemHeader(Loc);
 
     return Unit;
 
@@ -1366,7 +1394,7 @@ void Parser::WalkMacros(clang::PreprocessingRecord* PR)
 
             auto Loc = MI->getDefinitionLoc();
 
-            if (!IsUserLocation(SM, Loc))
+            if (!IsValidDeclaration(Loc))
                 break;
 
             SourceLocation BeginExpr =

@@ -105,6 +105,15 @@ public ref struct ParserResult
     List<ParserDiagnostic>^ Diagnostics;
 };
 
+enum class SourceLocationKind
+{
+    Invalid,
+    Builtin,
+    CommandLine,
+    System,
+    User
+};
+
 struct Parser
 {
     Parser(ParserOptions^ Opts);
@@ -139,6 +148,7 @@ protected:
       bool DesugarType = false);
 
     // Clang helpers
+    SourceLocationKind GetLocationKind(const clang::SourceLocation& Loc);
     bool IsValidDeclaration(const clang::SourceLocation& Loc);
     std::string GetDeclMangledName(clang::Decl*, clang::TargetCXXABI,
         bool IsDependent = false);
@@ -149,7 +159,9 @@ protected:
     void HandlePreprocessedEntities(clang::Decl* D, CppSharp::Declaration^);
     bool GetPreprocessedEntityText(clang::PreprocessedEntity*, std::string& Text);
 
-    CppSharp::TranslationUnit^ GetModule(clang::SourceLocation Loc);
+
+    CppSharp::TranslationUnit^ GetModule(clang::SourceLocation Loc,
+        SourceLocationKind *Kind = 0);
     CppSharp::Namespace^ GetNamespace(const clang::NamedDecl*);
 
     clang::CallingConv GetAbiCallConv(clang::CallingConv CC,
