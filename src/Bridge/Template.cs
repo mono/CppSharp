@@ -18,6 +18,11 @@ namespace CppSharp
         public Declaration TemplatedDecl;
 
         public List<TemplateParameter> Parameters;
+
+        public override string ToString()
+        {
+            return TemplatedDecl.ToString();
+        }
     }
 
     public class ClassTemplate : Template
