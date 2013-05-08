@@ -205,13 +205,18 @@ namespace CppSharp
         {
             Defines = new List<string>();
             IncludeDirs = new List<string>();
+            SystemIncludeDirs = new List<string>();
             Headers = new List<string>();
             Assembly = string.Empty;
+            NoStandardIncludes = false;
+            NoBuiltinIncludes = false;
             GeneratorKind = LanguageGeneratorKind.CSharp;
             GenerateLibraryNamespace = true;
             GenerateFunctionTemplates = false;
             WriteOnlyWhenChanged = false;
             GeneratePartialClasses = true;
+            MicrosoftMode = (Environment.OSVersion.Platform != PlatformID.MacOSX)
+                && (Environment.OSVersion.Platform != PlatformID.Unix);
 
             // Library options
             LibraryDirs = new List<string>();
@@ -232,12 +237,17 @@ namespace CppSharp
         public bool GenerateLibraryNamespace;
         public bool GenerateFunctionTemplates;
         public bool GeneratePartialClasses;
+        public bool NoStandardIncludes;
+        public bool NoBuiltinIncludes;
+        public bool MicrosoftMode;
+        public string TargetTriple;
         public string OutputNamespace;
         public string OutputDir;
         public string LibraryName;
         public CppAbi Abi;
         public List<string> Defines;
         public List<string> IncludeDirs;
+        public List<string> SystemIncludeDirs;
         public List<string> Headers;
         public string Template;
         public string Assembly;

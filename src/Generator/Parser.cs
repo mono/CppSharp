@@ -45,8 +45,13 @@ namespace CppSharp
                 FileName = file,
                 Verbose = false,
                 IncludeDirs = options.IncludeDirs,
+                SystemIncludeDirs = options.SystemIncludeDirs,
                 Defines = options.Defines,
-                ToolSetToUse = options.ToolsetToUse
+                NoStandardIncludes = options.NoStandardIncludes,
+                NoBuiltinIncludes = options.NoBuiltinIncludes,
+                MicrosoftMode = options.MicrosoftMode,
+                ToolSetToUse = options.ToolsetToUse,
+                TargetTriple = options.TargetTriple
             };
 
             var result = ClangParser.ParseHeader(parserOptions);

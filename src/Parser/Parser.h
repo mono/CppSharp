@@ -38,12 +38,17 @@ public ref struct ParserOptions
     ParserOptions()
     {
         IncludeDirs = gcnew List<System::String^>();
+        SystemIncludeDirs = gcnew List<System::String^>();
         Defines = gcnew List<System::String^>();
         LibraryDirs = gcnew List<System::String^>();
+        MicrosoftMode = false;
+        NoStandardIncludes = false;
+        NoBuiltinIncludes = false;
     }
 
     // Include directories
     List<System::String^>^ IncludeDirs;
+    List<System::String^>^ SystemIncludeDirs;
     List<System::String^>^ Defines;
     List<System::String^>^ LibraryDirs;
 
@@ -54,6 +59,11 @@ public ref struct ParserOptions
 
     // Toolset version - 2005 - 8, 2008 - 9, 2010 - 10, 0 - autoprobe for any.
     int ToolSetToUse;
+    System::String^ TargetTriple;
+
+    bool NoStandardIncludes;
+    bool NoBuiltinIncludes;
+    bool MicrosoftMode;
 
     bool Verbose;
 };
@@ -146,6 +156,7 @@ protected:
     gcroot<ParserOptions^> Opts;
     llvm::OwningPtr<clang::CompilerInstance> C;
     clang::ASTContext* AST;
+    clang::TargetCXXABI::Kind TargetABI;
 };
 
 //-----------------------------------//

@@ -73,33 +73,59 @@ void Parser::SetupHeader()
     using namespace clang;
     using namespace clix;
 
-    const char* args[] =
+    std::vector<const char*> args;
+    args.push_back("-cc1");
+
+    // Enable C++ language mode
+    args.push_back("-xc++");
+    args.push_back("-std=gnu++11");
+    //args.push_back("-Wno-undefined-inline");
+    args.push_back("-fno-rtti");
+
+    // Enable the Microsoft parsing extensions
+    if (Opts->MicrosoftMode)
     {
-        // Enable C++ language mode
-        "-xc++", "-std=c++11", "-fno-rtti",
-        // Enable the Microsoft parsing extensions
-        "-fms-extensions", "-fms-compatibility", "-fdelayed-template-parsing",
-        // Enable the Microsoft ABI
-        //"-Xclang", "-cxx-abi", "-Xclang", "microsoft"
-    };
+        args.push_back("-fms-extensions");
+        args.push_back("-fms-compatibility");
+        args.push_back("-fdelayed-template-parsing");
+    }
 
     C.reset(new CompilerInstance());
     C->createDiagnostics();
 
     CompilerInvocation* Inv = new CompilerInvocation();
-    CompilerInvocation::CreateFromArgs(*Inv, args, args + ARRAY_SIZE(args),
+    CompilerInvocation::CreateFromArgs(*Inv, args.data(), args.data() + args.size(),
       C->getDiagnostics());
     C->setInvocation(Inv);
 
     TargetOptions& TO = Inv->getTargetOpts();
-    TO.Triple = llvm::sys::getDefaultTargetTriple();
+    if (!System::String::IsNullOrWhiteSpace(Opts->TargetTriple))
+        TO.Triple = marshalString<E_UTF8>(Opts->TargetTriple);
+    else
+        TO.Triple = llvm::sys::getDefaultTargetTriple();
+
+    TargetABI = Opts->MicrosoftMode ? TargetCXXABI::Microsoft
+        : TargetCXXABI::GenericItanium;
 
     TargetInfo* TI = TargetInfo::CreateTargetInfo(C->getDiagnostics(), &TO);
-    TI->setCXXABI(TargetCXXABI::Microsoft);
+    TI->setCXXABI(TargetABI);
     C->setTarget(TI);
 
     C->createFileManager();
     C->createSourceManager(C->getFileManager());
+
+    if (Opts->NoStandardIncludes)
+    {
+        auto HSOpts = C->getHeaderSearchOpts();
+        HSOpts.UseStandardSystemIncludes = false;
+        HSOpts.UseStandardCXXIncludes = false;
+    }
+
+    if (Opts->NoBuiltinIncludes)
+    {
+        auto HSOpts = C->getHeaderSearchOpts();
+        HSOpts.UseBuiltinIncludes = false;
+    }
 
     if (Opts->Verbose)
         C->getHeaderSearchOpts().Verbose = true;
@@ -108,6 +134,12 @@ void Parser::SetupHeader()
     {
         String s = marshalString<E_UTF8>(include);
         C->getHeaderSearchOpts().AddPath(s, frontend::Angled, false, false);
+    }
+
+    for each(System::String^% include in Opts->SystemIncludeDirs)
+    {
+        String s = marshalString<E_UTF8>(include);
+        C->getHeaderSearchOpts().AddPath(s, frontend::System, false, false);
     }
 
     for each(System::String^% def in Opts->Defines)
@@ -123,12 +155,15 @@ void Parser::SetupHeader()
         clang::frontend::System, false, false);
 
 #ifdef _MSC_VER
-    std::vector<std::string> SystemDirs = GetWindowsSystemIncludeDirs();
-    clang::HeaderSearchOptions& HSOpts = C->getHeaderSearchOpts();
+    if (!Opts->NoBuiltinIncludes)
+        {
+        std::vector<std::string> SystemDirs = GetWindowsSystemIncludeDirs();
+        clang::HeaderSearchOptions& HSOpts = C->getHeaderSearchOpts();
 
-    for(size_t i = 0; i < SystemDirs.size(); ++i)
-    {
-        HSOpts.AddPath(SystemDirs[i], frontend::System, false, false);
+        for(size_t i = 0; i < SystemDirs.size(); ++i)
+        {
+            HSOpts.AddPath(SystemDirs[i], frontend::System, false, false);
+        }
     }
 #endif
 
@@ -1165,7 +1200,7 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, CppSharp::Function^ F,
     }
     F->ReturnType = WalkType(FD->getResultType(), &RTL);
 
-    String Mangled = GetDeclMangledName(FD, TargetCXXABI::Microsoft, IsDependent);
+    String Mangled = GetDeclMangledName(FD, TargetABI, IsDependent);
     F->Mangled = marshalString<E_UTF8>(Mangled);
 
     for(auto it = FD->param_begin(); it != FD->param_end(); ++it)
@@ -1374,7 +1409,7 @@ CppSharp::Variable^ Parser::WalkVariable(clang::VarDecl *VD)
     auto TL = VD->getTypeSourceInfo()->getTypeLoc();
     Var->QualifiedType = GetQualifiedType(VD->getType(), WalkType(VD->getType(), &TL));
 
-    auto Mangled = GetDeclMangledName(VD, TargetCXXABI::Microsoft, /*IsDependent=*/false);
+    auto Mangled = GetDeclMangledName(VD, TargetABI, /*IsDependent=*/false);
     Var->Mangled = marshalString<E_UTF8>(Mangled);
 
     return Var;
