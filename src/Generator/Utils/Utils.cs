@@ -186,6 +186,25 @@ namespace CppSharp
             // Return char and concat substring.
             return char.ToUpper(s[0]) + s.Substring(1);
         }
+
+        public static string ReplaceLineBreaks(this string lines, string replacement)
+        {
+            return lines.Replace("\r\n", replacement)
+                        .Replace("\r", replacement)
+                        .Replace("\n", replacement);
+        }
+
+        /// <summary>
+        /// Get the string slice between the two indexes.
+        /// Inclusive for start index, exclusive for end index.
+        /// </summary>
+        public static string Slice(this string source, int start, int end)
+        {
+            if (end < 0)
+                end = source.Length + end;
+
+            return source.Substring(start, end - start);
+        }
     }
 
     public static class AssemblyHelpers
