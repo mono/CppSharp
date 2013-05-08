@@ -410,7 +410,7 @@ namespace CppSharp.Generators.CSharp
             Write(@class.IsValueType ? "struct " : "class ");
             Write("{0}", SafeIdentifier(@class.Name));
 
-            var needsBase = @class.HasBase && !@class.IsValueType
+            var needsBase = @class.HasBaseClass && !@class.IsValueType
                 && !@class.Bases[0].Class.IsValueType
                 && !@class.Bases[0].Class.Ignore;
 
