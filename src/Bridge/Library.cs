@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace CppSharp
 {
@@ -106,6 +107,16 @@ namespace CppSharp
         /// Finds an existing module or creates a new one given a file path.
         public TranslationUnit FindOrCreateModule(string file)
         {
+            try
+            {
+                file = Path.GetFullPath(file);
+            }
+            catch (ArgumentException)
+            {
+                // Normalization errors are expected when dealing with virtual
+                // compiler files like <built-in>.
+            }
+            
             var module = TranslationUnits.Find(m => m.FilePath.Equals(file));
 
             if (module == null)
