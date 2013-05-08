@@ -123,10 +123,6 @@ namespace CppSharp.Generators.CSharp
         {
             var pointee = pointer.Pointee.Desugar();
 
-            if (pointee.IsPrimitiveType(PrimitiveType.Void) ||
-                pointee.IsPrimitiveType(PrimitiveType.UInt8))
-                return true;
-
             if (pointee.IsPrimitiveType(PrimitiveType.Char) &&
                 pointer.QualifiedPointee.Qualifiers.IsConst)
                 return true;
@@ -157,6 +153,10 @@ namespace CppSharp.Generators.CSharp
             }
 
             var isManagedContext = ContextKind == CSharpTypePrinterContextKind.Managed;
+
+            if (pointee.Desugar().IsPrimitiveType(PrimitiveType.Void) ||
+                pointee.Desugar().IsPrimitiveType(PrimitiveType.UInt8))
+                return "System.IntPtr";
 
             if (IsConstCharString(pointer))
                 return isManagedContext ? "string" : "System.IntPtr";
@@ -207,8 +207,10 @@ namespace CppSharp.Generators.CSharp
             FunctionType func;
             if (decl.Type.IsPointerTo<FunctionType>(out func))
             {
+                if (ContextKind == CSharpTypePrinterContextKind.Native)
+                    return "System.IntPtr";
                 // TODO: Use SafeIdentifier()
-                return string.Format("{0}", VisitDeclaration(decl));
+                return VisitDeclaration(decl);
             }
 
             return decl.Type.Visit(this);
