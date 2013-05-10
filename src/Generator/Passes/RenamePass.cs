@@ -30,6 +30,7 @@ namespace CppSharp.Passes
             if (decl is Function) return true;
             if (decl is Parameter) return true;
             if (decl is Enumeration) return true;
+            if (decl is Property) return true;
             return false;
         }
 
