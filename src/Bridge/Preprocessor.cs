@@ -28,6 +28,11 @@
             //return visitor.VisitMacroExpansion(this);
             return default(T);
         }
+
+        public override string ToString()
+        {
+            return Text;
+        }
     }
 
     /// <summary>
@@ -45,6 +50,11 @@
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {
             return visitor.VisitMacroDefinition(this);
+        }
+
+        public override string ToString()
+        {
+            return Expression;
         }
     }
 }
