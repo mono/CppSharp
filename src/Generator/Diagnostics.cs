@@ -6,7 +6,8 @@ namespace CppSharp
     {
         AmbiguousOverload,
         InvalidOperatorOverload,
-        SymbolNotFound
+        SymbolNotFound,
+        FileGenerated,
     }
 
     public enum DiagnosticKind

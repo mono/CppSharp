@@ -259,6 +259,6 @@ namespace CppSharp
         public string Assembly;
         public string IncludePrefix;
         public bool WriteOnlyWhenChanged;
-
+        public Func<TranslationUnit, string> GenerateName;
     }
 }

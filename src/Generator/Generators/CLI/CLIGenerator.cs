@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using CppSharp.Types;
 
 namespace CppSharp.Generators.CLI
 {
@@ -18,27 +17,22 @@ namespace CppSharp.Generators.CLI
 
         void WriteTemplate(TextTemplate template)
         {
-            var file = Path.GetFileNameWithoutExtension(template.TranslationUnit.FileName)
-                + Driver.Options.WrapperSuffix + "."
-                + template.FileExtension;
-
-            var path = Path.Combine(Driver.Options.OutputDir, file);
-            var fullPath = Path.GetFullPath(path);
+            var path = GetOutputPath(template.TranslationUnit)
+                + "." + template.FileExtension;
 
             template.Generate();
-
-            Console.WriteLine("  Generated '" + file + "'.");
-
-            var str = template.ToString();
+            var text = template.ToString();
 
             if(Driver.Options.WriteOnlyWhenChanged)
             {
-                var updated = fileHashes.UpdateHash(path, str.GetHashCode());
-                if(File.Exists(fullPath) && !updated)
+                var updated = fileHashes.UpdateHash(path, text.GetHashCode());
+                if (File.Exists(path) && !updated)
                     return;
-            } 
+            }
 
-            File.WriteAllText(fullPath,str);
+            Driver.Diagnostics.EmitMessage(DiagnosticId.FileGenerated,
+                "  Generated '{0}'.", Path.GetFileName(path));
+            File.WriteAllText(path, text);
         }
 
         public override bool Generate(TranslationUnit unit)

@@ -19,9 +19,12 @@ namespace CppSharp.Generators.CLI
         {
             GenerateStart();
 
-            WriteLine("#include \"{0}{1}.h\"",
-                TranslationUnit.FileNameWithoutExtension,
-                Options.WrapperSuffix);
+            var file = Path.GetFileNameWithoutExtension(TranslationUnit.FileName);
+
+            if (Driver.Options.GenerateName != null)
+                file = Driver.Options.GenerateName(TranslationUnit);
+
+            WriteLine("#include \"{0}{1}.h\"", file);
 
             GenerateForwardReferenceHeaders();
 
