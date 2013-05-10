@@ -207,61 +207,58 @@ namespace CppSharp
             IncludeDirs = new List<string>();
             SystemIncludeDirs = new List<string>();
             Headers = new List<string>();
-            Assembly = string.Empty;
-            NoStandardIncludes = false;
-            NoBuiltinIncludes = false;
-            GeneratorKind = LanguageGeneratorKind.CSharp;
-            GenerateLibraryNamespace = true;
-            GenerateFunctionTemplates = false;
-            WriteOnlyWhenChanged = false;
-            GeneratePartialClasses = true;
-            MicrosoftMode = (Environment.OSVersion.Platform != PlatformID.MacOSX)
-                && (Environment.OSVersion.Platform != PlatformID.Unix);
 
-            // Library options
+            var platform = Environment.OSVersion.Platform;
+            var isUnix = platform == PlatformID.Unix || platform == PlatformID.MacOSX;
+            MicrosoftMode = !isUnix;
+            Abi = isUnix ? CppAbi.Itanium : CppAbi.Microsoft;
+
             LibraryDirs = new List<string>();
             Libraries = new List<string>();
 
-            var platform = Environment.OSVersion.Platform;
-            Abi = (platform == PlatformID.Unix || platform == PlatformID.MacOSX) ?
-                CppAbi.Itanium : CppAbi.Microsoft;
+            GeneratorKind = LanguageGeneratorKind.CSharp;
+            GenerateLibraryNamespace = true;
+            GeneratePartialClasses = true;
+            OutputInteropIncludes = true;
         }
 
-        public bool Verbose = false;
-        public bool ShowHelpText = false;
-        public bool OutputDebug = false;
-        // When set to true - compiler errors are ignored and intermediate 
-        // parsing results still can be used.
-        public bool IgnoreErrors = false;
-        public bool OutputInteropIncludes = true;
-        public bool GenerateLibraryNamespace;
-        public bool GenerateFunctionTemplates;
-        public bool GeneratePartialClasses;
-        public bool NoStandardIncludes;
-        public bool NoBuiltinIncludes;
-        public bool MicrosoftMode;
-        public string TargetTriple;
-        public string OutputNamespace;
-        public string OutputDir;
-        public string LibraryName;
-        public CppAbi Abi;
+        // General options
+        public bool Verbose;
+        public bool ShowHelpText;
+        public bool OutputDebug;
+
+        // Parser options
         public List<string> Defines;
         public List<string> IncludeDirs;
         public List<string> SystemIncludeDirs;
         public List<string> Headers;
-        public string Template;
-        public string Assembly;
+        public bool NoStandardIncludes;
+        public bool NoBuiltinIncludes;
+        public bool MicrosoftMode;
+        public string TargetTriple;
         public int ToolsetToUse;
-        public string IncludePrefix;
-        public string WrapperSuffix;
-        public LanguageGeneratorKind GeneratorKind;
-        public bool WriteOnlyWhenChanged;
+        public bool IgnoreParseErrors;
+        public CppAbi Abi;
+        public bool IsItaniumAbi { get { return Abi == CppAbi.Itanium; } }
+        public bool IsMicrosoftAbi { get { return Abi == CppAbi.Microsoft; } }
 
         // Library options
         public List<string> LibraryDirs;
         public List<string> Libraries;
 
-        public bool IsItaniumAbi { get { return Abi == CppAbi.Itanium; } }
-        public bool IsMicrosoftAbi { get { return Abi == CppAbi.Microsoft; } }
+        // Generator options
+        public LanguageGeneratorKind GeneratorKind;
+        public string OutputNamespace;
+        public string OutputDir;
+        public string LibraryName;
+        public bool OutputInteropIncludes;
+        public bool GenerateLibraryNamespace;
+        public bool GenerateFunctionTemplates;
+        public bool GeneratePartialClasses;
+        public string Template;
+        public string Assembly;
+        public string IncludePrefix;
+        public bool WriteOnlyWhenChanged;
+
     }
 }

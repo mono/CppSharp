@@ -23,7 +23,7 @@ namespace CppSharp
                 var result = ParseHeader(header);
 
                 // If we have some error, report to end-user.
-                if (!options.IgnoreErrors)
+                if (!options.IgnoreParseErrors)
                 {
                     foreach (var diag in result.Diagnostics)
                     {
@@ -69,7 +69,7 @@ namespace CppSharp
                 var result = ParseLibrary(lib);
 
                 // If we have some error, report to end-user.
-                if (!options.IgnoreErrors)
+                if (!options.IgnoreParseErrors)
                 {
                     foreach (var diag in result.Diagnostics)
                     {
