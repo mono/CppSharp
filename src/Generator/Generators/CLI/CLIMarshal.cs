@@ -170,7 +170,7 @@ namespace CppSharp.Generators.CLI
         {
             var instance = string.Empty;
 
-            if (!Context.ReturnType.IsPointer())
+            if (!Context.ReturnType.Type.IsPointer())
                 instance += "&";
 
             instance += Context.ReturnVarName;

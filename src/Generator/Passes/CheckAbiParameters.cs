@@ -38,7 +38,7 @@
             // http://blog.aaronballman.com/2012/02/describing-the-msvc-abi-for-structure-return-types/
 
             Class retClass;
-            if (!method.ReturnType.IsTagDecl(out retClass))
+            if (!method.ReturnType.Type.IsTagDecl(out retClass))
                 return false;
 
             // TODO: Add the various combinations for that need hidden parameter

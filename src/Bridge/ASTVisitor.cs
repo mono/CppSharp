@@ -225,8 +225,9 @@ namespace CppSharp
             if (!VisitDeclaration(function))
                 return false;
 
-            if (function.ReturnType != null)
-                function.ReturnType.Visit(this);
+            var retType = function.ReturnType;
+            if (retType.Type != null)
+                retType.Type.Visit(this, retType.Qualifiers);
 
             foreach (var param in function.Parameters)
                 param.Visit(this);

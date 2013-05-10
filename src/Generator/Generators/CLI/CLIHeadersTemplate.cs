@@ -280,7 +280,8 @@ namespace CppSharp.Generators.CLI
                 printer.Context = typeCtx;
 
                 var typePrinter = new CLITypePrinter(Driver, typeCtx);
-                var retType = function.ReturnType.Visit(typePrinter);
+                var retType = function.ReturnType.Type.Visit(typePrinter,
+                    function.ReturnType.Qualifiers);
 
                 WriteLine("generic<{0}>", string.Join(", ", typeNames));
                 WriteLine("{0} {1}({2});", retType, SafeIdentifier(function.Name),

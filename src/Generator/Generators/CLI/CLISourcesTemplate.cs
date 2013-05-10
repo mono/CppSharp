@@ -200,7 +200,8 @@ namespace CppSharp.Generators.CLI
             printer.Context = typeCtx;
 
             var typePrinter = new CLITypePrinter(Driver, typeCtx);
-            var retType = function.ReturnType.Visit(typePrinter);
+            var retType = function.ReturnType.Type.Visit(typePrinter,
+                function.ReturnType.Qualifiers);
 
             WriteLine("generic<{0}>", string.Join(", ", typeNames));
             WriteLine("{0} {1}::{2}({3})", retType, QualifiedIdentifier(@class),
@@ -283,7 +284,7 @@ namespace CppSharp.Generators.CLI
                 {
                     ArgName = decl.Name,
                     ReturnVarName = variable,
-                    ReturnType = decl.Type
+                    ReturnType = decl.QualifiedType
                 };
 
             var marshal = new CLIMarshalNativeToManagedPrinter(ctx);
@@ -394,7 +395,7 @@ namespace CppSharp.Generators.CLI
                 var ctx = new MarshalContext(Driver)
                     {
                         ReturnVarName = param.Name,
-                        ReturnType = param.Type
+                        ReturnType = param.QualifiedType
                     };
 
                 var marshal = new CLIMarshalNativeToManagedPrinter(ctx);
@@ -476,7 +477,7 @@ namespace CppSharp.Generators.CLI
                 {
                     ArgName = field.Name,
                     ReturnVarName = nativeField,
-                    ReturnType = field.Type
+                    ReturnType = field.QualifiedType
                 };
 
                 var marshal = new CLIMarshalNativeToManagedPrinter(ctx);
@@ -604,7 +605,7 @@ namespace CppSharp.Generators.CLI
                 var ctx = new MarshalContext(Driver)
                     {
                         ReturnVarName = varName,
-                        ReturnType = field.Type
+                        ReturnType = field.QualifiedType
                     };
 
                 var marshal = new CLIMarshalNativeToManagedPrinter(ctx);
@@ -649,7 +650,7 @@ namespace CppSharp.Generators.CLI
         public void GenerateFunctionCall(Function function, Class @class = null)
         {
             var retType = function.ReturnType;
-            var needsReturn = !retType.IsPrimitiveType(PrimitiveType.Void);
+            var needsReturn = !retType.Type.IsPrimitiveType(PrimitiveType.Void);
 
             const string valueMarshalName = "_this0";
             var isValueType = @class != null && @class.IsValueType;
@@ -670,7 +671,7 @@ namespace CppSharp.Generators.CLI
             var @params = GenerateFunctionParamsMarshal(function.Parameters, function);
 
             if (needsReturn)
-                Write("auto {0}ret = ",(function.ReturnType.IsReference())? "&": string.Empty);
+                Write("auto {0}ret = ",(function.ReturnType.Type.IsReference())? "&": string.Empty);
 
             if (isValueType)
             {
@@ -706,7 +707,7 @@ namespace CppSharp.Generators.CLI
                     {
                         ArgName = nativeVarName,
                         ReturnVarName = nativeVarName,
-                        ReturnType = param.Type
+                        ReturnType = param.QualifiedType
                     };
 
                 var marshal = new CLIMarshalNativeToManagedPrinter(ctx);
@@ -733,7 +734,7 @@ namespace CppSharp.Generators.CLI
                     };
 
                 var marshal = new CLIMarshalNativeToManagedPrinter(ctx);
-                function.ReturnType.Visit(marshal);
+                function.ReturnType.Type.Visit(marshal, function.ReturnType.Qualifiers);
 
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                     Write(marshal.Context.SupportBefore);

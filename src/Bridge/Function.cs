@@ -55,7 +55,7 @@ namespace CppSharp
         }
     }
 
-    public class Function : Declaration
+    public class Function : Declaration, ITypedDecl
     {
         public Function()
         {
@@ -65,7 +65,7 @@ namespace CppSharp
             IsInline = false;
         }
 
-        public Type ReturnType { get; set; }
+        public QualifiedType ReturnType { get; set; }
         public List<Parameter> Parameters { get; set; }
         public bool IsVariadic { get; set; }
         public bool IsInline { get; set; }
@@ -108,5 +108,8 @@ namespace CppSharp
         {
             return visitor.VisitFunctionDecl(this);
         }
+
+        public Type Type { get { return ReturnType.Type; } }
+        public QualifiedType QualifiedType { get { return ReturnType; } }
     }
 }

@@ -38,7 +38,7 @@ namespace CppSharp
 
         public override bool VisitFunctionDecl(Function function)
         {
-            if (!function.ReturnType.Visit(this))
+            if (!function.ReturnType.Type.Visit(this, function.ReturnType.Qualifiers))
                 return false;
 
             foreach (var param in function.Parameters)

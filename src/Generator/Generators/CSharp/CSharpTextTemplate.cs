@@ -366,7 +366,7 @@ namespace CppSharp.Generators.CSharp
                     Kind = CSharpMarshalKind.NativeField,
                     ArgName = field.Name,
                     ReturnVarName = nativeField,
-                    ReturnType = field.Type
+                    ReturnType = field.QualifiedType
                 };
 
                 var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
@@ -962,7 +962,7 @@ namespace CppSharp.Generators.CSharp
                 var ctx = new CSharpMarshalContext(Driver)
                 {
                     ReturnVarName = nativeField,
-                    ReturnType = field.Type
+                    ReturnType = field.QualifiedType
                 };
 
                 var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
@@ -986,7 +986,7 @@ namespace CppSharp.Generators.CSharp
             Function function, Class @class = null)
         {
             var retType = function.ReturnType;
-            var needsReturn = !retType.IsPrimitiveType(PrimitiveType.Void);
+            var needsReturn = !retType.Type.IsPrimitiveType(PrimitiveType.Void);
 
             var method = function as Method;
             var needsInstance = method != null && !method.IsStatic && !method.IsOperator;
@@ -997,12 +997,12 @@ namespace CppSharp.Generators.CSharp
             Class retClass = null;
             if (function.HasHiddenStructParameter)
             {
-                function.ReturnType.IsTagDecl(out retClass);
+                function.ReturnType.Type.IsTagDecl(out retClass);
 
                 WriteLine("var {0} = new {1}.Internal();", GeneratedIdentifier("udt"),
                     retClass.OriginalName);
 
-                retType = new BuiltinType(PrimitiveType.Void);
+                retType.Type = new BuiltinType(PrimitiveType.Void);
                 needsReturn = false;
             }
 
@@ -1063,7 +1063,7 @@ namespace CppSharp.Generators.CSharp
                 };
 
                 var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
-                function.ReturnType.Visit(marshal);
+                function.ReturnType.Type.Visit(marshal, function.ReturnType.Qualifiers);
 
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                     Write(marshal.Context.SupportBefore);
@@ -1104,7 +1104,7 @@ namespace CppSharp.Generators.CSharp
                 {
                     ArgName = nativeVarName,
                     ReturnVarName = nativeVarName,
-                    ReturnType = param.Type
+                    ReturnType = param.QualifiedType
                 };
 
                 var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
@@ -1413,7 +1413,7 @@ namespace CppSharp.Generators.CSharp
                 Helpers.ToCSharpCallConv(function.CallingConvention));
             WriteLineIndent("EntryPoint=\"{0}\")]", function.Mangled);
 
-            if (function.ReturnType.Desugar().IsPrimitiveType(PrimitiveType.Bool))
+            if (function.ReturnType.Type.Desugar().IsPrimitiveType(PrimitiveType.Bool))
                 WriteLine("[return: MarshalAsAttribute(UnmanagedType.I1)]");
 
             var @params = new List<string>();
@@ -1421,7 +1421,7 @@ namespace CppSharp.Generators.CSharp
             var typePrinter = TypePrinter as CSharpTypePrinter;
             var retType = typePrinter.VisitParameterDecl(new Parameter()
                 {
-                    QualifiedType = new QualifiedType() { Type = function.ReturnType }
+                    QualifiedType = function.ReturnType
                 });
 
             var method = function as Method;

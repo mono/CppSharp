@@ -154,7 +154,7 @@ namespace CppSharp.Types.Std
                 var elementCtx = new MarshalContext(ctx.Driver)
                                      {
                                          ReturnVarName = "_element",
-                                         ReturnType = type.Type
+                                         ReturnType = type
                                      };
 
                 var marshal = new CLIMarshalNativeToManagedPrinter(elementCtx);

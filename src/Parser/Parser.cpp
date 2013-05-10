@@ -1211,7 +1211,8 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, CppSharp::Function^ F,
        //RTL = ResolveTypeLoc(TL).getAs<FunctionTypeLoc>.getResultLoc();
        RTL = TL.getAs<FunctionTypeLoc>().getResultLoc();
     }
-    F->ReturnType = WalkType(FD->getResultType(), &RTL);
+    F->ReturnType = GetQualifiedType(FD->getResultType(),
+        WalkType(FD->getResultType(), &RTL));
 
     String Mangled = GetDeclMangledName(FD, TargetABI, IsDependent);
     F->Mangled = marshalString<E_UTF8>(Mangled);

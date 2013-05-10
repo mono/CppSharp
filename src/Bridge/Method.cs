@@ -61,7 +61,7 @@ namespace CppSharp
     /// <summary>
     /// Represents a C++ record method declaration.
     /// </summary>
-    public class Method : Function
+    public class Method : Function, ITypedDecl
     {
         public Method()
         {

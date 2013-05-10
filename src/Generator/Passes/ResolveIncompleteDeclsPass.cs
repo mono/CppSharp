@@ -54,7 +54,7 @@ namespace CppSharp.Passes
             var ret = function.ReturnType;
 
             string msg;
-            if (HasInvalidType(ret, out msg))
+            if (HasInvalidType(ret.Type, out msg))
             {
                 function.ExplicityIgnored = true;
                 Console.WriteLine("Function '{0}' was ignored due to {1} return decl",

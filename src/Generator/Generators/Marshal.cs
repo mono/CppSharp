@@ -18,7 +18,7 @@
         public TextGenerator Return { get; private set; }
 
         public string ReturnVarName { get; set; }
-        public Type ReturnType { get; set; }
+        public QualifiedType ReturnType { get; set; }
 
         public string ArgName { get; set; }
         public Parameter Parameter { get; set; }
