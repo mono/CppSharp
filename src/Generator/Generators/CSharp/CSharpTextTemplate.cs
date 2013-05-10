@@ -261,6 +261,7 @@ namespace CppSharp.Generators.CSharp
                 GenerateClassFields(@class);
                 GenerateClassMethods(@class);
                 GenerateClassVariables(@class);
+                GenerateClassProperties(@class);
             }
 
             WriteCloseBraceIndent();
@@ -554,16 +555,20 @@ namespace CppSharp.Generators.CSharp
                 return string.Format("CppSharp.SymbolResolver.ResolveSymbol(\"{0}\", \"{1}\")",
                     Path.GetFileNameWithoutExtension(library.FileName), symbol);
             }
+            else if (decl is Field)
+            {
+                var field = decl as Field;
 
-            var field = decl as Field;
+                var location = GetFieldLocation(field, "Instance",
+                                                CSharpTypePrinterContextKind.Managed, out isRefClass);
 
-            var location = GetFieldLocation(field, "Instance",
-                CSharpTypePrinterContextKind.Managed, out isRefClass);
+                if (isRefClass && kind == PropertyMethodKind.Getter)
+                    location = string.Format("new System.IntPtr({0})", location);
 
-            if (isRefClass && kind == PropertyMethodKind.Getter)
-                location = string.Format("new System.IntPtr({0})", location);
+                return location;
+            }
 
-            return location;
+            throw new NotSupportedException();
         }
 
         private void GeneratePropertySetter<T>(T decl, Class @class)
@@ -584,22 +589,31 @@ namespace CppSharp.Generators.CSharp
                 ArgName = param.Name,
             };
 
-            var marshal = new CSharpMarshalManagedToNativePrinter(ctx);
-            param.Visit(marshal);
+            if (decl is Function)
+            {
+                var function = decl as Function;
+                var parameters = new List<Parameter> { param };
+                GenerateInternalFunctionCall(function, @class, parameters);
+            }
+            else
+            {
+                bool isRefClass;
+                var variable = GetPropertyLocation(decl, PropertyMethodKind.Setter,
+                    out isRefClass);
 
-            bool isRefClass;
-            var variable = GetPropertyLocation(decl, PropertyMethodKind.Setter,
-                out isRefClass);
+                var marshal = new CSharpMarshalManagedToNativePrinter(ctx);
+                param.Visit(marshal);
 
-            if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
-                Write(marshal.Context.SupportBefore);
+                if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
+                    Write(marshal.Context.SupportBefore);
 
-            Write("{0} = {1}", variable, marshal.Context.Return);
+                Write("{0} = {1}", variable, marshal.Context.Return);
 
-            if (isRefClass)
-                Write(".ToPointer()");
+                if (isRefClass)
+                    Write(".ToPointer()");
 
-            WriteLine(";");
+                WriteLine(";");
+            }
 
             WriteCloseBraceIndent();
         }
@@ -610,24 +624,35 @@ namespace CppSharp.Generators.CSharp
             WriteLine("get");
             WriteStartBraceIndent();
 
-            bool isRefClass;
-            var variable = GetPropertyLocation(decl, PropertyMethodKind.Getter,
-                out isRefClass);
+            var @return = string.Empty;
 
-            var ctx = new CSharpMarshalContext(Driver)
+            if (decl is Function)
             {
-                ArgName = decl.Name,
-                ReturnVarName = variable,
-                ReturnType = decl.Type
-            };
+                var function = decl as Function;
+                GenerateInternalFunctionCall(function, @class);
+                @return = "ret";
+            }
+            else
+            {
+                bool isRefClass;
+                @return = GetPropertyLocation(decl, PropertyMethodKind.Getter,
+                    out isRefClass);
 
-            var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
-            decl.Visit(marshal);
+                var ctx = new CSharpMarshalContext(Driver)
+                {
+                    ArgName = decl.Name,
+                    ReturnVarName = @return,
+                    ReturnType = decl.QualifiedType
+                };
 
-            if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
-                Write(marshal.Context.SupportBefore);
+                var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
+                decl.Visit(marshal);
 
-            WriteLine("return {0};", marshal.Context.Return);
+                if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
+                    Write(marshal.Context.SupportBefore);
+
+                WriteLine("return {0};", marshal.Context.Return);
+            }
 
             WriteCloseBraceIndent();
         }
@@ -675,6 +700,30 @@ namespace CppSharp.Generators.CSharp
 
                 NewLineIfNeeded();
                 GenerateVariable(@class, type, variable);
+                NeedNewLine();
+            }
+        }
+
+        private void GenerateClassProperties(Class @class)
+        {
+            foreach (var prop in @class.Properties)
+            {
+                if (prop.Ignore) continue;
+
+                NewLineIfNeeded();
+                WriteLine("public {0} {1}", prop.Type, prop.Name);
+                WriteStartBraceIndent();
+
+                GeneratePropertyGetter(prop.GetMethod, @class);
+                NeedNewLine();
+
+                if (prop.SetMethod != null)
+                {
+                    NewLineIfNeeded();
+                    GeneratePropertySetter(prop.SetMethod, @class);
+                }
+
+                WriteCloseBraceIndent();
                 NeedNewLine();
             }
         }
@@ -975,14 +1024,18 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
-        public void GenerateInternalFunctionCall(Function function, Class @class)
+        public void GenerateInternalFunctionCall(Function function, Class @class,
+            List<Parameter> parameters = null)
         {
+            if (parameters == null)
+                parameters = function.Parameters;
+
             var functionName = string.Format("Internal.{0}",
                 GetFunctionNativeIdentifier(function, @class));
-            GenerateFunctionCall(functionName, function, @class);
+            GenerateFunctionCall(functionName, parameters, function, @class);
         }
 
-        public void GenerateFunctionCall(string functionName,
+        public void GenerateFunctionCall(string functionName, List<Parameter> parameters,
             Function function, Class @class = null)
         {
             var retType = function.ReturnType;
@@ -1006,7 +1059,7 @@ namespace CppSharp.Generators.CSharp
                 needsReturn = false;
             }
 
-            var @params = GenerateFunctionParamsMarshal(function.Parameters, function);
+            var @params = GenerateFunctionParamsMarshal(parameters, function);
 
             var names = (from param in @params
                          where !param.Param.Ignore

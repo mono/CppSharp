@@ -6,7 +6,7 @@ namespace CppSharp
     /// <summary>
     /// Represents a C++ property.
     /// </summary>
-    public class Property : Declaration
+    public class Property : Declaration, ITypedDecl
     {
         public Property()
         {
@@ -15,9 +15,10 @@ namespace CppSharp
 
         public Type Type
         {
-            get;
-            set;
+            get { return QualifiedType.Type; }
         }
+
+        public QualifiedType QualifiedType { get; set; }
 
         public Method GetMethod
         {
