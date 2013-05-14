@@ -364,6 +364,8 @@ namespace CppSharp
 
         public Template Template;
 
+        public Type Desugared;
+
         public override T Visit<T>(ITypeVisitor<T> visitor,
                                    TypeQualifiers quals = new TypeQualifiers())
         {

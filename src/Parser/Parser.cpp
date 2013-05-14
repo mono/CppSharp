@@ -925,7 +925,9 @@ CppSharp::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         TemplateName Name = TS->getTemplateName();
         TST->Template = safe_cast<CppSharp::Template^>(WalkDeclaration(
             Name.getAsTemplateDecl(), 0, /*IgnoreSystemDecls=*/false));
-        
+        if (TS->isSugared())
+            TST->Desugared = WalkType(TS->desugar());
+
         auto TypeLocClass = TL->getTypeLocClass();
 
         if (TypeLocClass == TypeLoc::Qualified)
