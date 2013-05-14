@@ -201,6 +201,20 @@ namespace CppSharp
                 .Cast<Function>();
         }
 
+        public IEnumerable<T> FindHierarchy<T>(Func<Class, IEnumerable<T>> func)
+            where T : Declaration
+        {
+            foreach (var @base in Bases)
+            {
+                if (!@base.IsClass) continue;
+                foreach(var elem in @base.Class.FindHierarchy<T>(func))
+                    yield return elem;
+            }
+
+            foreach (var elem in func(this))
+                yield return elem;
+        }
+
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {
             return visitor.VisitClassDecl(this);
