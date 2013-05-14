@@ -207,6 +207,24 @@ namespace CppSharp
         }
     }
 
+    public static class LinqHelpers
+    {
+        public static IEnumerable<T> WithoutLast<T>(this IEnumerable<T> xs)
+        {
+            T lastX = default(T);
+
+            var first = true;
+            foreach (var x in xs)
+            {
+                if (first)
+                    first = false;
+                else
+                    yield return lastX;
+                lastX = x;
+            }
+        }
+    }
+
     public static class AssemblyHelpers
     {
         public static IEnumerable<System.Type> FindDerivedTypes(this Assembly assembly,
