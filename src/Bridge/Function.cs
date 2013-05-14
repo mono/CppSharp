@@ -55,7 +55,7 @@ namespace CppSharp
         }
     }
 
-    public class Function : Declaration, ITypedDecl
+    public class Function : Declaration, ITypedDecl, IMangledDecl
     {
         public Function()
         {
@@ -101,7 +101,6 @@ namespace CppSharp
             }
         }
 
-        // Mangled name
         public string Mangled { get; set; }
         
         public override T Visit<T>(IDeclVisitor<T> visitor)

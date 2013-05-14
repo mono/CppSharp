@@ -1,7 +1,7 @@
 ﻿
 namespace CppSharp
 {
-    public class Variable : Declaration, ITypedDecl
+    public class Variable : Declaration, ITypedDecl, IMangledDecl
     {
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {

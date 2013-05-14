@@ -20,6 +20,11 @@ namespace CppSharp
         string Name { get; set; }
     }
 
+    public interface IMangledDecl
+    {
+        string Mangled { get; set; }
+    }
+
     [Flags]
     public enum IgnoreFlags
     {
