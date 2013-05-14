@@ -4,7 +4,7 @@ namespace CppSharp.AST
 {
     public static class Utils
     {
-        public static IList<Function> GetFunctionOverloads(Function function,
+        public static IEnumerable<Function> GetFunctionOverloads(Function function,
             Class @class = null)
         {
             var overloads = new List<Function>();

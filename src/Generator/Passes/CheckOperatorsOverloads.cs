@@ -84,8 +84,8 @@ namespace CppSharp.Passes
         static CXXOperatorKind CheckMissingOperatorOverloadPair(Class @class,
             out int index, CXXOperatorKind op1, CXXOperatorKind op2)
         {
-            var first = @class.FindOperator(op1);
-            var second = @class.FindOperator(op2);
+            var first = @class.FindOperator(op1).ToList();
+            var second = @class.FindOperator(op2).ToList();
 
             var hasFirst = first.Count > 0;
             var hasSecond = second.Count > 0;

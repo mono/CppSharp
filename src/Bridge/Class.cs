@@ -180,22 +180,25 @@ namespace CppSharp
             }
         }
 
-        public IList<Method> FindOperator(CXXOperatorKind kind)
+        public IEnumerable<Method> FindOperator(CXXOperatorKind kind)
         {
-            return Operators.Where(method => method.OperatorKind == kind)
-                .ToList();
+            return Operators.Where(method => method.OperatorKind == kind);
         }
 
-        public IList<Method> FindMethodByOriginalName(string name)
+        public IEnumerable<Method> FindMethodByOriginalName(string name)
         {
-            return Methods.Where(method => method.OriginalName == name)
-                .ToList();
+            return Methods.Where(method => method.OriginalName == name);
         }
 
-        public IList<Function> GetFunctionOverloads(Function function)
+        public IEnumerable<Variable> FindVariableByOriginalName(string originalName)
+        {
+            return Variables.Where(v => v.OriginalName == originalName);
+        }
+
+        public IEnumerable<Function> GetFunctionOverloads(Function function)
         {
             return Methods.Where(method => method.Name == function.Name)
-                .ToList<Function>();
+                .Cast<Function>();
         }
 
         public override T Visit<T>(IDeclVisitor<T> visitor)
