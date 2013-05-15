@@ -1526,6 +1526,7 @@ namespace CppSharp.Generators.CSharp
             WriteLine("public unsafe static extern {0} {1}({2});", retType,
                       GetFunctionIdentifier(function, @class),
                       string.Join(", ", @params));
+            NeedNewLine();
         }
     }
 
