@@ -532,13 +532,9 @@ namespace CppSharp.Generators.CSharp
             {
                 var @var = decl as Variable;
 
-                var symbol = @var.Mangled;
-                if (!Driver.LibrarySymbols.FindSymbol(ref symbol))
-                {
-                    Driver.Diagnostics.EmitError(DiagnosticId.SymbolNotFound,
-                        "symbol \"{0}\" was not found", symbol);
-                    throw new SymbolNotFoundException(symbol);
-                }
+                string symbol;
+                if (!FindMangledDeclSymbol(@var, out symbol))
+                    return string.Empty;
 
                 NativeLibrary library;
                 Driver.LibrarySymbols.FindLibraryBySymbol(symbol, out library);
@@ -1445,15 +1441,46 @@ namespace CppSharp.Generators.CSharp
             return name;
         }
 
+        bool FindMangledDeclLibrary(IMangledDecl decl, out NativeLibrary library)
+        {
+            string symbol;
+            if (!FindMangledDeclSymbol(decl, out symbol))
+            {
+                library = null;
+                return false;
+            }
+
+            Driver.LibrarySymbols.FindLibraryBySymbol(symbol, out library);
+            return true;
+        }
+
+        bool FindMangledDeclSymbol(IMangledDecl decl, out string symbol)
+        {
+            symbol = decl.Mangled;
+            if (!Driver.LibrarySymbols.FindSymbol(ref symbol))
+            {
+                Driver.Diagnostics.EmitError(DiagnosticId.SymbolNotFound,
+                    "Symbol not found: {0}", symbol);
+                symbol = null;
+                return false;
+            }
+
+            return true;
+        }
+
         public void GenerateFunction(Function function, Class @class = null)
         {
             if(function.Ignore) return;
+
+            NativeLibrary library;
+            if (!FindMangledDeclLibrary(function, out library))
+                return;
+
             GenerateDeclarationCommon(function);
 
             WriteLine("[SuppressUnmanagedCodeSecurity]");
-
-            Write("[DllImport(\"{0}.dll\", ", Library.SharedLibrary);
-            WriteLine("CallingConvention = CallingConvention.{0}, ",
+            Write("[DllImport(\"{0}\", ", library.FileName);
+            WriteLine("CallingConvention = CallingConvention.{0},",
                 Helpers.ToCSharpCallConv(function.CallingConvention));
             WriteLineIndent("EntryPoint=\"{0}\")]", function.Mangled);
 
