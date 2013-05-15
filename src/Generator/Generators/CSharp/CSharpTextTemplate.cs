@@ -306,9 +306,7 @@ namespace CppSharp.Generators.CSharp
                     continue;
 
                 NewLineIfNeeded();
-
-                GeneratePInvokeMethod(ctor, @class);
-                NeedNewLine();
+                GenerateFunction(ctor, @class);
             }
 
             foreach (var method in @class.Methods)
@@ -323,20 +321,13 @@ namespace CppSharp.Generators.CSharp
                     continue;
 
                 NewLineIfNeeded();
-
-                GeneratePInvokeMethod(method, @class);
-                NeedNewLine();
+                GenerateFunction(method, @class);
             }
 
             WriteCloseBraceIndent();
             NeedNewLine();
 
             typePrinter.PopContext();
-        }
-
-        private void GeneratePInvokeMethod(Method method, Class @class)
-        {
-            GenerateFunction(method, @class);
         }
 
         private void GenerateStructMarshaling(Class @class)
