@@ -1420,7 +1420,7 @@ namespace CppSharp.Generators.CSharp
                     identifier = GetOperatorIdentifier(method.OperatorKind);
             }
 
-            var overloads = AST.Utils.GetFunctionOverloads(function, @class);
+            var overloads = AST.Utils.GetFunctionOverloads(function, @class).ToList();
 
             var index = overloads.IndexOf(function);
             if (isNativeContext && index >= 0)
