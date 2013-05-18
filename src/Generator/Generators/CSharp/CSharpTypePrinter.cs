@@ -291,13 +291,12 @@ namespace CppSharp.Generators.CSharp
 
         public CSharpTypePrinterResult VisitDeclaration(Declaration decl)
         {
-            var name = decl.Visit(this);
-            return string.Format("{0}", name);
+            return GetNestedQualifiedName(decl);
         }
 
         public CSharpTypePrinterResult VisitClassDecl(Class @class)
         {
-            return @class.Name;
+            return GetNestedQualifiedName(@class);
         }
 
         public CSharpTypePrinterResult VisitFieldDecl(Field field)
@@ -331,12 +330,35 @@ namespace CppSharp.Generators.CSharp
 
         public CSharpTypePrinterResult VisitTypedefDecl(TypedefDecl typedef)
         {
-            return typedef.Name;
+            return GetNestedQualifiedName(typedef);
         }
 
         public CSharpTypePrinterResult VisitEnumDecl(Enumeration @enum)
         {
-            return @enum.Name;
+            return GetNestedQualifiedName(@enum);
+        }
+
+        static private string GetNestedQualifiedName(Declaration decl)
+        {
+            var names = new List<string> { decl.Name };
+
+            var ctx = decl.Namespace;
+            while (ctx != null)
+            {
+                if (ctx is TranslationUnit)
+                    break;
+
+                if (ctx is Namespace)
+                    break;
+
+                if (!string.IsNullOrWhiteSpace(ctx.Name))
+                    names.Add(ctx.Name);
+
+                ctx = ctx.Namespace;
+            }
+
+            names.Reverse();
+            return string.Join(".", names);
         }
 
         public CSharpTypePrinterResult VisitVariableDecl(Variable variable)
