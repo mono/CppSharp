@@ -237,15 +237,11 @@ namespace CppSharp.Passes
             builder.AddPass(new RegexRenamePass(pattern, replacement, targets));
         }
 
-        public static void RemovePrefix(this PassBuilder builder, string prefix)
+        public static void RemovePrefix(this PassBuilder builder, string prefix,
+            RenameTargets targets = RenameTargets.Any)
         {
-            builder.AddPass(new RegexRenamePass("^" + prefix, String.Empty));
-        }
-
-        public static void RemovePrefixEnumItem(this PassBuilder builder, string prefix)
-        {
-            builder.AddPass(new RegexRenamePass("^" + prefix, String.Empty,
-                RenameTargets.EnumItem));
+            builder.AddPass(new RegexRenamePass("^" + prefix, string.Empty,
+                targets));
         }
 
         public static void RenameDeclsCase(this PassBuilder builder, 
