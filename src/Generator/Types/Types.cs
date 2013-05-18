@@ -91,7 +91,7 @@ namespace CppSharp
         public override bool VisitTypedefType(TypedefType typedef,
             TypeQualifiers quals)
         {
-            TypeMap typeMap = null;
+            TypeMap typeMap;
             if (TypeMapDatabase.FindTypeMap(typedef, out typeMap)
                 && typeMap.IsIgnored)
             {
@@ -104,7 +104,7 @@ namespace CppSharp
 
         public override bool VisitTypedefDecl(TypedefDecl typedef)
         {
-            TypeMap typeMap = null;
+            TypeMap typeMap;
             if (TypeMapDatabase.FindTypeMap(typedef, out typeMap)
                 && typeMap.IsIgnored)
             {
@@ -120,7 +120,7 @@ namespace CppSharp
         {
             var decl = template.Template.TemplatedDecl;
 
-            TypeMap typeMap = null;
+            TypeMap typeMap;
             if (TypeMapDatabase.FindTypeMap(decl, out typeMap)
                 && typeMap.IsIgnored)
             {
