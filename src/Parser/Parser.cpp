@@ -409,8 +409,6 @@ CppSharp::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
         RC->Bases->Add(Base);
     }
 
-    //Debug("Size: %I64d\n", Layout.getSize().getQuantity());
-
     return RC;
 }
 
