@@ -1652,24 +1652,19 @@ CppSharp::Declaration^ Parser::WalkDeclaration(clang::Decl* D,
         Decl = WalkVariable(VD);
         break;
     }
-    case Decl::Empty:
-    {
-        auto ED = cast<EmptyDecl>(D);
-        Decl = nullptr;
-        break;
-    }
     // Ignore these declarations since they must have been declared in
     // a class already.
     case Decl::CXXConstructor:
     case Decl::CXXDestructor:
     case Decl::CXXConversion:
     case Decl::CXXMethod:
+        break;
+    case Decl::Empty:
+    case Decl::AccessSpec:
+    case Decl::Friend:
     case Decl::Using:
     case Decl::UsingShadow:
-    {
-        Decl = nullptr;
         break;
-    }
     default:
     {
         Debug("Unhandled declaration kind: %s\n", D->getDeclKindName());
