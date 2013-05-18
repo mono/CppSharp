@@ -54,6 +54,11 @@ namespace CppSharp.Generators.CSharp
 
             return "Winapi";
         }
+
+        public static string InstanceIdentifier
+        {
+            get { return GeneratedIdentifier("Instance"); }
+        }
     }
 
     public class CSharpTextTemplate : TextTemplate
@@ -253,7 +258,8 @@ namespace CppSharp.Generators.CSharp
                 if (ShouldGenerateClassNativeField(@class))
                 {
                     NewLineIfNeeded();
-                    WriteLine("public System.IntPtr Instance { get; protected set; }");
+                    WriteLine("public System.IntPtr {0} {{ get; protected set; }}",
+                        Helpers.InstanceIdentifier);
                     NeedNewLine();
                 }
 
@@ -546,7 +552,7 @@ namespace CppSharp.Generators.CSharp
             {
                 var field = decl as Field;
 
-                var location = GetFieldLocation(field, "Instance",
+                var location = GetFieldLocation(field, Helpers.InstanceIdentifier,
                                                 CSharpTypePrinterContextKind.Managed, out isRefClass);
 
                 if (isRefClass && kind == PropertyMethodKind.Getter)
@@ -782,7 +788,7 @@ namespace CppSharp.Generators.CSharp
             WriteStartBraceIndent();
 
             if (ShouldGenerateClassNativeField(@class))
-                WriteLine("Marshal.FreeHGlobal(Instance);");
+                WriteLine("Marshal.FreeHGlobal({0});", Helpers.InstanceIdentifier);
 
             if (hasBaseClass)
                 WriteLine("base.Dispose(disposing);");
@@ -804,7 +810,7 @@ namespace CppSharp.Generators.CSharp
             if (@class.IsRefType)
             {
                 if (ShouldGenerateClassNativeField(@class))
-                    WriteLine("Instance = native;");
+                    WriteLine("{0} = native;", Helpers.InstanceIdentifier);
             }
             else
             {
@@ -940,8 +946,10 @@ namespace CppSharp.Generators.CSharp
         {
             var @params = GenerateFunctionParamsMarshal(method.Parameters, method);
 
-            WriteLine("Instance = Marshal.AllocHGlobal({0});", @class.Layout.Size);
-            Write("Internal.{0}(Instance", GetFunctionNativeIdentifier(method, @class));
+            WriteLine("{0} = Marshal.AllocHGlobal({1});", Helpers.InstanceIdentifier,
+                @class.Layout.Size);
+            Write("Internal.{0}({1}", GetFunctionNativeIdentifier(method, @class),
+                Helpers.InstanceIdentifier);
             if (@params.Any())
                 Write(", ");
             GenerateFunctionParams(@params);
@@ -1061,7 +1069,7 @@ namespace CppSharp.Generators.CSharp
             if (needsInstance)
             {
                 names.Insert(0, needsFixedThis ? string.Format("new System.IntPtr({0})",
-                    GeneratedIdentifier("instance")) : "Instance");
+                    GeneratedIdentifier("instance")) : Helpers.InstanceIdentifier);
             }
 
             if (needsFixedThis)
@@ -1119,8 +1127,9 @@ namespace CppSharp.Generators.CSharp
                     WriteLine("*({0}.Internal*) &ret = {1};", retClass.Name,
                         GeneratedIdentifier("udt"));
                 else
-                    WriteLine("*({0}.Internal*) ret.Instance.ToPointer() = {1};",
-                        retClass.Name, GeneratedIdentifier("udt"));
+                    WriteLine("*({0}.Internal*) ret.{1}.ToPointer() = {2};",
+                        retClass.Name, Helpers.InstanceIdentifier,
+                        GeneratedIdentifier("udt"));
 
                 WriteLine("return ret;");
             }

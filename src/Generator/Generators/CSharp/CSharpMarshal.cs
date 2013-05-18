@@ -428,12 +428,13 @@ namespace CppSharp.Generators.CSharp
                 && method.Conversion == MethodConversionKind.FunctionToInstanceMethod
                 && Context.ParameterIndex == 0)
             {
-                Context.Return.Write("Instance");
+                Context.Return.Write("{0}", Helpers.InstanceIdentifier);
                 return;
             }
 
             if (Context.Parameter.Type.IsPointer())
-                Context.Return.Write("{0}.Instance", Context.Parameter.Name);
+                Context.Return.Write("{0}.{1}", Context.Parameter.Name,
+                    Helpers.InstanceIdentifier);
             else
                 Context.Return.Write("{0}", Context.Parameter.Name);
         }
