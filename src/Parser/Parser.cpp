@@ -347,26 +347,6 @@ CppSharp::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
     auto &Sema = C->getSema();
     Sema.ForceDeclarationOfImplicitMembers(Record);
 
-    // Iterate through the record ctors.
-    for(auto it = Record->ctor_begin(); it != Record->ctor_end(); ++it)
-    {
-        CXXMethodDecl* Ctor = (*it);
-        CppSharp::Method^ Method = WalkMethodCXX(Ctor);
-        RC->Methods->Add(Method);
-    }
-
-    // Iterate through the record methods.
-    for(auto it = Record->method_begin(); it != Record->method_end(); ++it)
-    {
-        CXXMethodDecl* M = (*it);
-        
-        if( isa<CXXConstructorDecl>(M) || isa<CXXDestructorDecl>(M) )
-            continue;
-        
-        CppSharp::Method^ Method = WalkMethodCXX(M);
-        RC->Methods->Add(Method);
-    }
-
     // Get the record layout information.
     const ASTRecordLayout* Layout = 0;
     if (!Record->isDependentType())
@@ -377,38 +357,41 @@ CppSharp::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
         RC->Layout->DataSize = (int)Layout->getDataSize().getQuantity();
     }
 
-    // Iterate through the record fields.
-    for(auto it = Record->field_begin(); it != Record->field_end(); ++it)
-    {
-        FieldDecl* FD = (*it);
-        
-        CppSharp::Field^ Field = WalkFieldCXX(FD, RC);
-        
-        if (Layout)
-            Field->Offset = Layout->getFieldOffset(FD->getFieldIndex());
-
-        RC->Fields->Add(Field);
-    }
-
-    // Iterate through the record static fields.
     for(auto it = Record->decls_begin(); it != Record->decls_end(); ++it)
     {
-        auto Decl = *it;
-        if (!isa<VarDecl>(Decl)) continue;
+        auto D = *it;
 
-        CppSharp::Variable^ Var = WalkVariable(cast<VarDecl>(Decl));
-        RC->Variables->Add(Var);
-    }
+        switch(D->getKind())
+        {
+        case Decl::CXXConstructor:
+        case Decl::CXXDestructor:
+        case Decl::CXXConversion:
+        case Decl::CXXMethod:
+        {
+            auto MD = cast<CXXMethodDecl>(D);
+            auto Method = WalkMethodCXX(MD);
+            RC->Methods->Add(Method);
+            HandleComments(MD, Method);
+            break;
+        }
+        case Decl::Field:
+        {
+            auto FD = cast<FieldDecl>(D);
+            auto Field = WalkFieldCXX(FD, RC);
 
-    // Iterate through the record function template methods.
-    for(auto it = Record->decls_begin(); it != Record->decls_end(); ++it)
-    {
-        auto Decl = *it;
-        if (!isa<FunctionTemplateDecl>(Decl)) continue;
+            if (Layout)
+                Field->Offset = Layout->getFieldOffset(FD->getFieldIndex());
 
-        CppSharp::FunctionTemplate^ FT = WalkFunctionTemplate(
-            cast<FunctionTemplateDecl>(Decl));
-        RC->FunctionTemplates->Add(FT);
+            RC->Fields->Add(Field);
+            HandleComments(FD, Field);
+            break;
+        }
+        case Decl::IndirectField: // FIXME: Handle indirect fields
+        default:
+        {
+            auto Decl = WalkDeclaration(D);
+            break;
+        } }
     }
 
     // Iterate through the record bases.
