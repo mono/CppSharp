@@ -91,16 +91,20 @@ namespace CppSharp
         {
             get
             {
-                return !IgnoreFlags.HasFlag(IgnoreFlags.Generation) ||
-                    Namespace.IsGenerated;
+                var isGenerated = !IgnoreFlags.HasFlag(IgnoreFlags.Generation);
+
+                if (Namespace == null)
+                    return isGenerated;
+
+                return isGenerated && Namespace.IsGenerated;
             }
 
             set
             {
                 if (value)
-                    IgnoreFlags |= IgnoreFlags.Generation;
-                else
                     IgnoreFlags &= ~IgnoreFlags.Generation;
+                else
+                    IgnoreFlags |= IgnoreFlags.Generation;
             }
         }
 
@@ -109,16 +113,16 @@ namespace CppSharp
         {
             get
             {
-                return !IgnoreFlags.HasFlag(IgnoreFlags.Processing) ||
+                return !IgnoreFlags.HasFlag(IgnoreFlags.Processing) &&
                     Namespace.IsProcessed;
             }
 
             set
             {
                 if (value)
-                    IgnoreFlags |= IgnoreFlags.Processing;
-                else
                     IgnoreFlags &= ~IgnoreFlags.Processing;
+                else
+                    IgnoreFlags |= IgnoreFlags.Processing;
             }
         }
 
