@@ -72,18 +72,19 @@ namespace CppSharp
 
         public override bool VisitDeclaration(Declaration decl)
         {
-            if (decl.Ignore)
+            if (decl.CompleteDeclaration != null)
+                return VisitDeclaration(decl.CompleteDeclaration);
+
+            TypeMap typeMap;
+            if (TypeMapDatabase.FindTypeMap(decl, out typeMap))
+                return typeMap.IsIgnored;
+
+            if (!decl.IsGenerated)
+            {
                 Ignore();
-
-            return true;
-        }
-
-        public override bool VisitClassDecl(Class @class)
-        {
-            if (AlreadyVisited(@class))
                 return false;
+            }
 
-            VisitDeclaration(@class);
             return true;
         }
 
