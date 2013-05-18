@@ -816,7 +816,7 @@ CppSharp::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         TypedefNameDecl* TD = TT->getDecl();
 
         auto TTL = TD->getTypeSourceInfo()->getTypeLoc();
-        auto TDD = safe_cast<CppSharp::TypedefDecl^>(WalkDeclaration(TD, &TTL,
+        auto TDD = safe_cast<CppSharp::TypedefDecl^>(WalkDeclaration(TD,
             /*IgnoreSystemDecls=*/false));
 
         auto Type = gcnew CppSharp::TypedefType();
@@ -836,7 +836,7 @@ CppSharp::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         RecordDecl* RD = RT->getDecl();
 
         auto TT = gcnew CppSharp::TagType();
-        TT->Declaration = WalkDeclaration(RD, 0, /*IgnoreSystemDecls=*/false);
+        TT->Declaration = WalkDeclaration(RD, /*IgnoreSystemDecls=*/false);
 
         return TT;
     }
@@ -1496,11 +1496,11 @@ void Parser::HandlePreprocessedEntities(clang::Decl* D, CppSharp::Declaration^ D
 
 CppSharp::Declaration^ Parser::WalkDeclarationDef(clang::Decl* D)
 {
-    return WalkDeclaration(D, 0, /*IgnoreSystemDecls=*/true,
+    return WalkDeclaration(D, /*IgnoreSystemDecls=*/true,
         /*CanBeDefinition=*/true);
 }
 
-CppSharp::Declaration^ Parser::WalkDeclaration(clang::Decl* D, clang::TypeLoc* TL,
+CppSharp::Declaration^ Parser::WalkDeclaration(clang::Decl* D,
                                            bool IgnoreSystemDecls,
                                            bool CanBeDefinition)
 {

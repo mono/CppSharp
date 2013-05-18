@@ -131,7 +131,7 @@ protected:
     // AST traversers
     void WalkAST();
     void WalkMacros(clang::PreprocessingRecord* PR);
-    CppSharp::Declaration^ WalkDeclaration(clang::Decl* D, clang::TypeLoc* = 0,
+    CppSharp::Declaration^ WalkDeclaration(clang::Decl* D,
         bool IgnoreSystemDecls = true, bool CanBeDefinition = false);
     CppSharp::Declaration^ WalkDeclarationDef(clang::Decl* D);
     CppSharp::Enumeration^ WalkEnum(clang::EnumDecl*);
