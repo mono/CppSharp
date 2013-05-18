@@ -154,12 +154,12 @@ namespace CppSharp.Generators.CSharp
 
             var isManagedContext = ContextKind == CSharpTypePrinterContextKind.Managed;
 
-            if (pointee.Desugar().IsPrimitiveType(PrimitiveType.Void) ||
-                pointee.Desugar().IsPrimitiveType(PrimitiveType.UInt8))
-                return "System.IntPtr";
-
             if (IsConstCharString(pointer))
                 return isManagedContext ? "string" : "System.IntPtr";
+
+            PrimitiveType primitive;
+            if (pointee.IsPrimitiveType(out primitive))
+                return "System.IntPtr";
 
             Class @class;
             if (pointee.IsTagDecl(out @class)
