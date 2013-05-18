@@ -185,7 +185,7 @@ namespace CppSharp
             return Variables.Where(v => v.OriginalName == originalName);
         }
 
-        public IEnumerable<Function> GetFunctionOverloads(Function function)
+        public new IEnumerable<Function> GetFunctionOverloads(Function function)
         {
             return Methods.Where(method => method.Name == function.Name)
                 .Cast<Function>();
