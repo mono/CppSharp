@@ -246,7 +246,8 @@ namespace CppSharp.Generators.CSharp
         public CSharpTypePrinterResult VisitTemplateParameterSubstitutionType(TemplateParameterSubstitutionType param,
                                                                               TypeQualifiers quals)
         {
-            throw new NotImplementedException();
+            var type = param.Replacement.Type;
+            return type.Visit(this, param.Replacement.Qualifiers);
         }
 
         public CSharpTypePrinterResult VisitInjectedClassNameType(InjectedClassNameType injected, TypeQualifiers quals)
