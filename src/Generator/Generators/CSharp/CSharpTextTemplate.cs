@@ -869,7 +869,8 @@ namespace CppSharp.Generators.CSharp
 
             Write("public ");
 
-            if (method.Kind == CXXMethodKind.Operator)
+            if (method.IsStatic ||
+                method.Kind == CXXMethodKind.Operator)
                 Write("static ");
 
             var functionName = GetFunctionIdentifier(method, @class);
