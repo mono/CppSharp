@@ -262,11 +262,14 @@ namespace CppSharp.Generators.CLI
             var oldCtx = printer.Context;
 
             PushIndent();
-            foreach (var template in @class.FunctionTemplates)
+            foreach (var template in @class.Templates)
             {
                 if (template.Ignore) continue;
 
-                var function = template.TemplatedFunction;
+                var functionTemplate = template as FunctionTemplate;
+                if (functionTemplate == null) continue;
+
+                var function = functionTemplate.TemplatedFunction;
 
                 var typeNames = template.Parameters.Select(
                     param => "typename " + param.Name).ToList();

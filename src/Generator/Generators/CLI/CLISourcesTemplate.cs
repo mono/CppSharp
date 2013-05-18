@@ -161,13 +161,15 @@ namespace CppSharp.Generators.CLI
 
             if (Options.GenerateFunctionTemplates)
             {
-                foreach (var template in @class.FunctionTemplates)
+                foreach (var template in @class.Templates)
                 {
-                    if (template.Ignore)
-                        continue;
+                    if (template.Ignore) continue;
+
+                    var functionTemplate = template as FunctionTemplate;
+                    if (functionTemplate == null) continue;
 
                     GenerateDeclarationCommon(template);
-                    GenerateFunctionTemplate(template, @class);
+                    GenerateFunctionTemplate(functionTemplate, @class);
                 }
             }
 
