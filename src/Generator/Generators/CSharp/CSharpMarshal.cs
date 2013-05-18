@@ -1,4 +1,4 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
 using CppSharp.Types;
 
 namespace CppSharp.Generators.CSharp
@@ -33,7 +33,14 @@ namespace CppSharp.Generators.CSharp
         protected CSharpMarshalPrinter(CSharpMarshalContext context)
             : base(context)
         {
-            
+            Options.VisitFunctionParameters = false;
+            Options.VisitTemplateArguments = false;
+        }
+
+        public override bool VisitMemberPointerType(MemberPointerType member,
+            TypeQualifiers quals)
+        {
+            return false;
         }
     }
 
@@ -51,8 +58,37 @@ namespace CppSharp.Generators.CSharp
             return decl.Visit(this);
         }
 
+        public override bool VisitType(Type type, TypeQualifiers quals)
+        {
+            TypeMap typeMap;
+            if (Context.Driver.TypeDatabase.FindTypeMap(type, out typeMap))
+            {
+                typeMap.Type = type;
+                typeMap.CSharpMarshalToManaged(Context);
+                return false;
+            }
+
+            return true;
+        }
+
+        public override bool VisitDeclaration(Declaration decl)
+        {
+            TypeMap typeMap;
+            if (Context.Driver.TypeDatabase.FindTypeMap(decl, out typeMap))
+            {
+                typeMap.Declaration = decl;
+                typeMap.CSharpMarshalToManaged(Context);
+                return false;
+            }
+
+            return true;
+        }
+
         public override bool VisitArrayType(ArrayType array, TypeQualifiers quals)
         {
+            if (!VisitType(array, quals))
+                return false;
+
             switch (array.SizeType)
             {
                 case ArrayType.ArraySize.Constant:
@@ -66,14 +102,11 @@ namespace CppSharp.Generators.CSharp
             return true;
         }
 
-        public override bool VisitFunctionType(FunctionType function, TypeQualifiers quals)
-        {
-            var returnType = function.ReturnType;
-            return returnType.Visit(this, quals);
-        }
-
         public override bool VisitPointerType(PointerType pointer, TypeQualifiers quals)
         {
+            if (!VisitType(pointer, quals))
+                return false;
+
             var pointee = pointer.Pointee;
 
             if (pointee.Desugar().IsPrimitiveType(PrimitiveType.Void))
@@ -102,18 +135,7 @@ namespace CppSharp.Generators.CSharp
             return true;
         }
 
-        public override bool VisitMemberPointerType(MemberPointerType member,
-            TypeQualifiers quals)
-        {
-            return false;
-        }
-
-        public override bool VisitBuiltinType(BuiltinType builtin, TypeQualifiers quals)
-        {
-            return VisitPrimitiveType(builtin.Type);
-        }
-
-        public bool VisitPrimitiveType(PrimitiveType primitive)
+        public override bool VisitPrimitiveType(PrimitiveType primitive, TypeQualifiers quals)
         {
             switch (primitive)
             {
@@ -141,15 +163,10 @@ namespace CppSharp.Generators.CSharp
 
         public override bool VisitTypedefType(TypedefType typedef, TypeQualifiers quals)
         {
-            var decl = typedef.Declaration;
+            if (!VisitType(typedef, quals))
+                return false;
 
-            TypeMap typeMap = null;
-            if (Context.Driver.TypeDatabase.FindTypeMap(decl, out typeMap))
-            {
-                typeMap.Type = typedef;
-                typeMap.CSharpMarshalToManaged(Context);
-                return typeMap.IsValueType;
-            }
+            var decl = typedef.Declaration;
 
             FunctionType function;
             if (decl.Type.IsPointerTo(out function))
@@ -163,20 +180,6 @@ namespace CppSharp.Generators.CSharp
             }
 
             return decl.Type.Visit(this);
-        }
-
-        public override bool VisitTemplateSpecializationType(TemplateSpecializationType template,
-                                                    TypeQualifiers quals)
-        {
-            TypeMap typeMap;
-            if (Context.Driver.TypeDatabase.FindTypeMap(template, out typeMap))
-            {
-                typeMap.Type = template;
-                typeMap.CSharpMarshalToManaged(Context);
-                return true;
-            }
-
-            return template.Template.Visit(this);
         }
 
         public override bool VisitClassDecl(Class @class)
@@ -199,38 +202,10 @@ namespace CppSharp.Generators.CSharp
             return true;
         }
 
-        public string QualifiedIdentifier(Declaration decl)
-        {
-            if (Context.Driver.Options.GenerateLibraryNamespace)
-                return string.Format("{0}.{1}", Context.Driver.Options.OutputNamespace,
-                    decl.QualifiedName);
-            return string.Format("{0}", decl.QualifiedName);
-        }
-
-        public override bool VisitFieldDecl(Field field)
-        {
-            return field.Type.Visit(this);
-        }
-
-        public override bool VisitParameterDecl(Parameter parameter)
-        {
-            return parameter.Type.Visit(this, parameter.QualifiedType.Qualifiers);
-        }
-
         public override bool VisitEnumDecl(Enumeration @enum)
         {
             Context.Return.Write("{0}", Context.ReturnVarName);
             return true;
-        }
-
-        public override bool VisitVariableDecl(Variable variable)
-        {
-            return variable.Type.Visit(this, variable.QualifiedType.Qualifiers);
-        }
-
-        public override bool VisitClassTemplateDecl(ClassTemplate template)
-        {
-            return template.TemplatedClass.Visit(this);
         }
     }
 
@@ -242,10 +217,30 @@ namespace CppSharp.Generators.CSharp
             Context.MarshalToNative = this;
         }
 
-        public override bool VisitFunctionType(FunctionType function, TypeQualifiers quals)
+        public override bool VisitType(Type type, TypeQualifiers quals)
         {
-            var returnType = function.ReturnType;
-            return returnType.Visit(this, quals);
+            TypeMap typeMap;
+            if (Context.Driver.TypeDatabase.FindTypeMap(type, out typeMap))
+            {
+                typeMap.Type = type;
+                typeMap.CSharpMarshalToNative(Context);
+                return false;
+            }
+
+            return true;
+        }
+
+        public override bool VisitDeclaration(Declaration decl)
+        {
+            TypeMap typeMap;
+            if (Context.Driver.TypeDatabase.FindTypeMap(decl, out typeMap))
+            {
+                typeMap.Declaration = decl;
+                typeMap.CSharpMarshalToNative(Context);
+                return false;
+            }
+
+            return true;
         }
 
         public bool VisitDelegateType(FunctionType function, string type)
@@ -270,6 +265,9 @@ namespace CppSharp.Generators.CSharp
 
         public override bool VisitPointerType(PointerType pointer, TypeQualifiers quals)
         {
+            if (!VisitType(pointer, quals))
+                return false;
+
             var pointee = pointer.Pointee;
 
             var isVoidPtr = pointee.Desugar().IsPrimitiveType(PrimitiveType.Void);
@@ -316,18 +314,7 @@ namespace CppSharp.Generators.CSharp
             return pointee.Visit(this, quals);
         }
 
-        public override bool VisitMemberPointerType(MemberPointerType member,
-            TypeQualifiers quals)
-        {
-            return false;
-        }
-
-        public override bool VisitBuiltinType(BuiltinType builtin, TypeQualifiers quals)
-        {
-            return VisitPrimitiveType(builtin.Type);
-        }
-
-        public bool VisitPrimitiveType(PrimitiveType primitive)
+        public override bool VisitPrimitiveType(PrimitiveType primitive, TypeQualifiers quals)
         {
             switch (primitive)
             {
@@ -355,14 +342,10 @@ namespace CppSharp.Generators.CSharp
 
         public override bool VisitTypedefType(TypedefType typedef, TypeQualifiers quals)
         {
-            var decl = typedef.Declaration;
+            if (!VisitType(typedef, quals))
+                return false;
 
-            TypeMap typeMap = null;
-            if (Context.Driver.TypeDatabase.FindTypeMap(decl, out typeMap))
-            {
-                typeMap.CSharpMarshalToNative(Context);
-                return typeMap.IsValueType;
-            }
+            var decl = typedef.Declaration;
 
             FunctionType func;
             if (decl.Type.IsPointerTo<FunctionType>(out func))
@@ -371,27 +354,7 @@ namespace CppSharp.Generators.CSharp
                 return true;
             }
 
-            PrimitiveType primitive;
-            if (decl.Type.Desugar().IsPrimitiveType(out primitive))
-            {
-                //Context.Return.Write("({0})", typedef.Declaration.Name);
-            }
-
             return decl.Type.Visit(this);
-        }
-
-        public override bool VisitTemplateSpecializationType(TemplateSpecializationType template,
-                                                    TypeQualifiers quals)
-        {
-            TypeMap typeMap = null;
-            if (Context.Driver.TypeDatabase.FindTypeMap(template, out typeMap))
-            {
-                typeMap.Type = template;
-                typeMap.CSharpMarshalToNative(Context);
-                return true;
-            }
-
-            return template.Template.Visit(this);
         }
 
         public override bool VisitTemplateParameterType(TemplateParameterType param, TypeQualifiers quals)
@@ -402,6 +365,9 @@ namespace CppSharp.Generators.CSharp
 
         public override bool VisitClassDecl(Class @class)
         {
+            if (!VisitDeclaration(@class))
+                return false;
+
             if (@class.IsValueType)
             {
                 MarshalValueClass(@class);
@@ -416,13 +382,6 @@ namespace CppSharp.Generators.CSharp
 
         private void MarshalRefClass(Class @class)
         {
-            TypeMap typeMap = null;
-            if (Context.Driver.TypeDatabase.FindTypeMap(@class, out typeMap))
-            {
-                typeMap.CLIMarshalToNative(Context);
-                return;
-            }
-
             var method = Context.Function as Method;
             if (method != null
                 && method.Conversion == MethodConversionKind.FunctionToInstanceMethod
@@ -506,13 +465,16 @@ namespace CppSharp.Generators.CSharp
 
         public override bool VisitFieldDecl(Field field)
         {
+            if (!VisitDeclaration(field))
+                return false;
+
             Context.Parameter = new Parameter
             {
                 Name = Context.ArgName,
                 QualifiedType = field.QualifiedType
             };
 
-            return field.Type.Visit(this);
+            return field.Type.Visit(this, field.QualifiedType.Qualifiers);
         }
 
         public override bool VisitParameterDecl(Parameter parameter)
@@ -544,18 +506,13 @@ namespace CppSharp.Generators.CSharp
                 }
             }
 
-            return paramType.Visit(this);
+            return paramType.Visit(this, parameter.QualifiedType.Qualifiers);
         }
 
         public override bool VisitEnumDecl(Enumeration @enum)
         {
             Context.Return.Write(Context.Parameter.Name);
             return true;
-        }
-
-        public override bool VisitClassTemplateDecl(ClassTemplate template)
-        {
-            return template.TemplatedClass.Visit(this);
         }
     }
 }
