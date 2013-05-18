@@ -58,18 +58,32 @@ namespace CppSharp
 
         #region Type Visitors
 
+        public virtual bool VisitType(Type type, TypeQualifiers quals)
+        {
+            return true;
+        }
+
         public virtual bool VisitTagType(TagType tag, TypeQualifiers quals)
         {
+            if (!VisitType(tag, quals))
+                return false;
+
             return tag.Declaration.Visit(this);
         }
 
         public virtual bool VisitArrayType(ArrayType array, TypeQualifiers quals)
         {
+            if (!VisitType(array, quals))
+                return false;
+
             return array.Type.Visit(this, quals);
         }
 
         public virtual bool VisitFunctionType(FunctionType function, TypeQualifiers quals)
         {
+            if (!VisitType(function, quals))
+                return false;
+
             if (function.ReturnType != null)
                 function.ReturnType.Visit(this);
 
@@ -81,6 +95,9 @@ namespace CppSharp
 
         public virtual bool VisitPointerType(PointerType pointer, TypeQualifiers quals)
         {
+            if (!VisitType(pointer, quals))
+                return false;
+
             if (pointer.Pointee == null)
                 return false;
 
@@ -90,16 +107,25 @@ namespace CppSharp
         public virtual bool VisitMemberPointerType(MemberPointerType member,
             TypeQualifiers quals)
         {
+            if (!VisitType(member, quals))
+                return false;
+
             return member.Pointee.Visit(this, quals);
         }
 
         public virtual bool VisitBuiltinType(BuiltinType builtin, TypeQualifiers quals)
         {
-            return true;
+            if (!VisitType(builtin, quals))
+                return false;
+
+            return VisitPrimitiveType(builtin.Type, quals);
         }
 
         public virtual bool VisitTypedefType(TypedefType typedef, TypeQualifiers quals)
         {
+            if (!VisitType(typedef, quals))
+                return false;
+
             return typedef.Declaration.Visit(this);
         }
 
@@ -127,22 +153,34 @@ namespace CppSharp
         public virtual bool VisitTemplateParameterType(TemplateParameterType param,
             TypeQualifiers quals)
         {
+            if (!VisitType(param, quals))
+                return false;
+
             return true;
         }
 
         public bool VisitTemplateParameterSubstitutionType(TemplateParameterSubstitutionType param,
             TypeQualifiers quals)
         {
+            if (!VisitType(param, quals))
+                return false;
+
             return param.Replacement.Type.Visit(this, quals);
         }
 
         public bool VisitInjectedClassNameType(InjectedClassNameType injected, TypeQualifiers quals)
         {
+            if (!VisitType(injected, quals))
+                return false;
+
             return true;
         }
 
         public bool VisitDependentNameType(DependentNameType dependent, TypeQualifiers quals)
         {
+            if (!VisitType(dependent, quals))
+                return false;
+
             return true;
         }
 
