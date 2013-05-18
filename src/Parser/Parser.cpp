@@ -432,8 +432,6 @@ CppSharp::FunctionTemplate^ Parser::WalkFunctionTemplate(clang::FunctionTemplate
     using namespace clang;
     using namespace clix;
 
-    auto NS = GetNamespace(TD);
-
     auto Function = WalkFunction(TD->getTemplatedDecl(), /*IsDependent=*/true,
         /*AddToNamespace=*/false);
     CppSharp::FunctionTemplate^ FT = gcnew CppSharp::FunctionTemplate(Function);
