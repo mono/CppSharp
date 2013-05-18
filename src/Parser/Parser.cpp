@@ -532,11 +532,8 @@ CppSharp::Field^ Parser::WalkFieldCXX(clang::FieldDecl* FD, CppSharp::Class^ Cla
     using namespace clang;
     using namespace clix;
 
-    auto NS = GetNamespace(FD);
-    assert(NS && "Expected a valid namespace");
-
     CppSharp::Field^ F = gcnew CppSharp::Field();
-    F->Namespace = NS;
+    F->Namespace = Class;
 
     F->Name = marshalString<E_UTF8>(FD->getName());
     auto TL = FD->getTypeSourceInfo()->getTypeLoc();
