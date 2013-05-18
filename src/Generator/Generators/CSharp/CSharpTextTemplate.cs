@@ -112,7 +112,7 @@ namespace CppSharp.Generators.CSharp
                 WriteStartBraceIndent();
             }
 
-            GenerateNamespace(TranslationUnit);
+            GenerateDeclContext(TranslationUnit);
 
             if (Options.GenerateLibraryNamespace)
                 WriteCloseBraceIndent();
@@ -132,18 +132,21 @@ namespace CppSharp.Generators.CSharp
             WriteLine("//----------------------------------------------------------------------------");
         }
 
-        private void GenerateNamespace(Namespace @namespace)
+        private void GenerateDeclContext(DeclarationContext context)
         {
-            bool isGlobalNamespace = @namespace is TranslationUnit;
+            var isNamespace = context is Namespace;
+            var isTranslationUnit = context is TranslationUnit;
 
-            if (!isGlobalNamespace)
+            var shouldGenerateNamespace = isNamespace && !isTranslationUnit;
+
+            if (shouldGenerateNamespace)
             {
-                WriteLine("namespace {0}", @namespace.Name);
+                WriteLine("namespace {0}", context.Name);
                 WriteStartBraceIndent();
             }
 
-            // Generate all the enum declarations for the module.
-            foreach (var @enum in @namespace.Enums)
+            // Generate all the enum declarations.
+            foreach (var @enum in context.Enums)
             {
                 if (@enum.Ignore || @enum.IsIncomplete)
                     continue;
@@ -153,8 +156,8 @@ namespace CppSharp.Generators.CSharp
                 NeedNewLine();
             }
 
-            // Generate all the typedef declarations for the module.
-            foreach (var typedef in @namespace.Typedefs)
+            // Generate all the typedef declarations.
+            foreach (var typedef in context.Typedefs)
             {
                 if (typedef.Ignore) continue;
 
@@ -166,8 +169,8 @@ namespace CppSharp.Generators.CSharp
                 NeedNewLine();
             }
 
-            // Generate all the struct/class declarations for the module.
-            foreach (var @class in @namespace.Classes)
+            // Generate all the struct/class declarations.
+            foreach (var @class in context.Classes)
             {
                 if (@class.Ignore || @class.IsIncomplete)
                     continue;
@@ -180,24 +183,24 @@ namespace CppSharp.Generators.CSharp
                 NeedNewLine();
             }
 
-            if (@namespace.HasFunctions)
+            if (context.HasFunctions)
             {
                 NewLineIfNeeded();
                 WriteLine("public partial class {0}{1}", SafeIdentifier(Options.LibraryName),
                     TranslationUnit.FileNameWithoutExtension);
                 WriteStartBraceIndent();
 
-                // Generate all the function declarations for the module.
-                foreach (var function in @namespace.Functions)
+                // Generate all the function declarations.
+                foreach (var function in context.Functions)
                     GenerateFunction(function);
 
                 WriteCloseBraceIndent();
             }
 
-            foreach(var childNamespace in @namespace.Namespaces)
-                GenerateNamespace(childNamespace);
+            foreach(var childNamespace in context.Namespaces)
+                GenerateDeclContext(childNamespace);
 
-            if (!isGlobalNamespace)
+            if (shouldGenerateNamespace)
                 WriteCloseBraceIndent();
         }
 
