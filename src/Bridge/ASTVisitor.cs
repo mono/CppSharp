@@ -27,6 +27,8 @@ namespace CppSharp
         public bool VisitNamespaceTypedefs = true;
         public bool VisitNamespaceEvents = true;
         public bool VisitNamespaceVariables = true;
+
+        public bool VisitFunctionParameters = true;
     }
 
     /// <summary>
@@ -87,8 +89,9 @@ namespace CppSharp
             if (function.ReturnType != null)
                 function.ReturnType.Visit(this);
 
-            foreach (var param in function.Parameters)
-                param.Visit(this);
+            if (Options.VisitFunctionParameters)
+                foreach (var param in function.Parameters)
+                    param.Visit(this);
 
             return true;
         }
