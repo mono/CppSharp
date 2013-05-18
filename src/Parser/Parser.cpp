@@ -872,6 +872,12 @@ CppSharp::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
 
         return A;
     }
+    case Type::DependentSizedArray:
+    {
+        auto A = gcnew CppSharp::ArrayType();
+        A->SizeType = CppSharp::ArrayType::ArraySize::Dependent;
+        return A;
+    }
     case Type::FunctionProto:
     {
         auto FP = Type->getAs<clang::FunctionProtoType>();
@@ -1065,11 +1071,6 @@ CppSharp::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
     case Type::Vector:
     {
         // GCC-specific / __attribute__((vector_size(n))
-        return nullptr;
-    }
-    case Type::DependentSizedArray:
-    {
-        // Ignored.
         return nullptr;
     }
     case Type::PackExpansion:

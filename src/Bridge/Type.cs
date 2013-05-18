@@ -182,6 +182,7 @@ namespace CppSharp
         {
             Constant,
             Variable,
+            Dependent,
             Incomplete
         }
 

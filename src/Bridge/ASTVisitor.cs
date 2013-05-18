@@ -79,6 +79,10 @@ namespace CppSharp
             if (!VisitType(array, quals))
                 return false;
 
+            // FIXME: Remove this once array dependent types are processed.
+            if (array.SizeType == ArrayType.ArraySize.Dependent)
+                return false;
+
             return array.Type.Visit(this, quals);
         }
 
