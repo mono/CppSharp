@@ -323,17 +323,6 @@ CppSharp::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
     using namespace clang;
     using namespace clix;
 
-    //if (Record->isAnonymousStructOrUnion())
-    //{
-    //    //assert(0);
-    //    return nullptr;
-    //}
-
-    if (Record->hasFlexibleArrayMember())
-    {
-        assert(0);
-        return nullptr;
-    }
 
     auto NS = GetNamespace(Record);
     assert(NS && "Expected a valid namespace");
