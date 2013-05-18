@@ -26,10 +26,7 @@ namespace CppSharp.Passes
             if (unit.IsSystemHeader)
                 return false;
 
-            VisitNamespace(unit);
-
-            foreach (var @namespace in unit.Namespaces)
-                VisitNamespace(@namespace);
+            VisitDeclarationContext(unit);
 
             return true;
         }
