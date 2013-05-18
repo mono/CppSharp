@@ -1523,7 +1523,7 @@ CppSharp::Declaration^ Parser::WalkDeclaration(clang::Decl* D,
         StringRef AnnotationText = Annotation->getAnnotation();
     }
 
-    CppSharp::Declaration^ Decl;
+    CppSharp::Declaration^ Decl = nullptr;
 
     auto Kind = D->getKind();
     switch(D->getKind())
@@ -1533,7 +1533,6 @@ CppSharp::Declaration^ Parser::WalkDeclaration(clang::Decl* D,
         CXXRecordDecl* RD = cast<CXXRecordDecl>(D);
 
         auto Class = WalkRecordCXX(RD);
-        HandleComments(RD, Class);
 
         // We store a definition order index into the declarations.
         // This is needed because declarations are added to their contexts as
@@ -1547,7 +1546,6 @@ CppSharp::Declaration^ Parser::WalkDeclaration(clang::Decl* D,
         }
 
         Decl = Class;
-
         break;
     }
     case Decl::ClassTemplate:
@@ -1560,23 +1558,21 @@ CppSharp::Declaration^ Parser::WalkDeclaration(clang::Decl* D,
         NS->Templates->Add(Template);
         
         Decl = Template;
-        
         break;
     }
     case Decl::ClassTemplateSpecialization:
     {
         auto TS = cast<ClassTemplateSpecializationDecl>(D);
-
         auto CT = gcnew CppSharp::ClassTemplateSpecialization();
 
         Decl = CT;
-
         break;
     }
     case Decl::ClassTemplatePartialSpecialization:
     {
         auto TS = cast<ClassTemplatePartialSpecializationDecl>(D);
         auto CT = gcnew CppSharp::ClassTemplatePartialSpecialization();
+
         Decl = CT;
         break;
     }
@@ -1590,18 +1586,12 @@ CppSharp::Declaration^ Parser::WalkDeclaration(clang::Decl* D,
         NS->Templates->Add(Template);
 
         Decl = Template;
-        
         break;
     }
     case Decl::Enum:
     {
         EnumDecl* ED = cast<EnumDecl>(D);
-
-        auto E = WalkEnum(ED);
-        HandleComments(ED, E);
-
-        Decl = E;
-        
+        Decl = WalkEnum(ED);
         break;
     }
     case Decl::Function:
@@ -1614,11 +1604,7 @@ CppSharp::Declaration^ Parser::WalkDeclaration(clang::Decl* D,
         if (FD->getBuiltinID() != 0)
             break;
 
-        auto F = WalkFunction(FD);
-        HandleComments(FD, F);
-
-        Decl = F;
-        
+        Decl = WalkFunction(FD);
         break;
     }
     case Decl::LinkageSpec:
@@ -1649,7 +1635,6 @@ CppSharp::Declaration^ Parser::WalkDeclaration(clang::Decl* D,
             WalkType(TD->getUnderlyingType(), &TTL));
 
         Decl = Typedef;
-            
         break;
     }
     case Decl::Namespace:
@@ -1661,18 +1646,13 @@ CppSharp::Declaration^ Parser::WalkDeclaration(clang::Decl* D,
             clang::Decl* D = (*it);
             Decl = WalkDeclarationDef(D);
         }
-        
+
         break;
     }
     case Decl::Var:
     {
         auto VD = cast<VarDecl>(D);
-
-        auto V = WalkVariable(VD);
-        HandleComments(VD, V);
-
-        Decl = V;
-
+        Decl = WalkVariable(VD);
         break;
     }
     case Decl::Empty:
@@ -1709,7 +1689,7 @@ CppSharp::Declaration^ Parser::WalkDeclaration(clang::Decl* D,
 
     if (Decl)
     {
-        HandlePreprocessedEntities(D, Decl);
+        HandleComments(D, Decl);
 
         if (const ValueDecl *VD = dyn_cast_or_null<ValueDecl>(D))
             Decl->IsDependent = VD->getType()->isDependentType();
