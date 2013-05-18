@@ -258,6 +258,8 @@ namespace CppSharp.Generators.CSharp
             {
                 GenerateClassInternals(@class);
 
+                GenerateDeclContext(@class);
+
                 if (ShouldGenerateClassNativeField(@class))
                 {
                     NewLineIfNeeded();
