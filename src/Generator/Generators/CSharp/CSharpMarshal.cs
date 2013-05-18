@@ -270,18 +270,6 @@ namespace CppSharp.Generators.CSharp
 
             var pointee = pointer.Pointee;
 
-            var isVoidPtr = pointee.Desugar().IsPrimitiveType(PrimitiveType.Void);
-
-            var isUInt8Ptr = pointee.Desugar().IsPrimitiveType(PrimitiveType.UInt8);
-
-            if (isVoidPtr || isUInt8Ptr)
-            {
-                if (isUInt8Ptr)
-                    Context.Return.Write("({0})", "uint8*");
-                Context.Return.Write("{0}.ToPointer()", Context.Parameter.Name);
-                return true;
-            }
-
             if (pointee.IsPrimitiveType(PrimitiveType.Char) ||
                 pointee.IsPrimitiveType(PrimitiveType.WideChar))
             {
@@ -308,6 +296,13 @@ namespace CppSharp.Generators.CSharp
                 else
                     Context.Return.Write("new System.IntPtr(&{0})",
                         Context.Parameter.Name);
+                return true;
+            }
+
+            PrimitiveType primitive;
+            if (pointee.IsPrimitiveType(out primitive))
+            {
+                Context.Return.Write("{0}.ToPointer()", Context.Parameter.Name);
                 return true;
             }
 
