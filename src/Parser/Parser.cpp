@@ -606,28 +606,72 @@ CppSharp::Field^ Parser::WalkFieldCXX(clang::FieldDecl* FD, CppSharp::Class^ Cla
 
 //-----------------------------------//
 
-CppSharp::Namespace^ Parser::GetNamespace(const clang::NamedDecl* ND)
+CppSharp::TranslationUnit^ Parser::GetTranslationUnit(clang::SourceLocation Loc,
+                                                      SourceLocationKind *Kind)
 {
     using namespace clang;
-    using namespace clix;
 
-    SourceLocation Loc = ND->getLocation();
+    SourceManager& SM = C->getSourceManager();
+
+    if (Loc.isMacroID())
+        Loc = SM.getExpansionLoc(Loc);
+
+    StringRef File;
+
+    auto LocKind = GetLocationKind(Loc);
+    switch(LocKind)
+    {
+    case SourceLocationKind::Invalid:
+        File = "<invalid>";
+        break;
+    case SourceLocationKind::Builtin:
+        File = "<built-in>";
+        break;
+    case SourceLocationKind::CommandLine:
+        File = "<command-line>";
+        break;
+    default:
+        File = SM.getFilename(Loc);
+        assert(!File.empty() && "Expected to find a valid file");
+        break;
+    }
+
+    if (Kind)
+        *Kind = LocKind;
+
+    auto Unit = Lib->FindOrCreateModule(clix::marshalString<clix::E_UTF8>(File));
+    if (LocKind != SourceLocationKind::Invalid)
+        Unit->IsSystemHeader = SM.isInSystemHeader(Loc);
+
+    return Unit;
+}
+
+//-----------------------------------//
+
+CppSharp::TranslationUnit^ Parser::GetTranslationUnit(const clang::Decl* D)
+{
+    clang::SourceLocation Loc = D->getLocation();
 
     SourceLocationKind Kind;
-    CppSharp::TranslationUnit^ M = GetModule(Loc, &Kind);
+    CppSharp::TranslationUnit^ Unit = GetTranslationUnit(Loc, &Kind);
 
-    if (Kind == SourceLocationKind::Builtin ||
-        Kind == SourceLocationKind::CommandLine)
-        return M;
+    return Unit;
+}
+
+CppSharp::DeclarationContext^ Parser::GetNamespace(clang::Decl* D,
+                                                   clang::DeclContext *Ctx)
+{
+    using namespace clang;
 
     // If the declaration is at global scope, just early exit.
-    const DeclContext *Ctx = ND->getDeclContext();
     if (Ctx->isTranslationUnit())
-        return M;
+        return GetTranslationUnit(D);
+
+    CppSharp::TranslationUnit^ Unit = GetTranslationUnit(cast<Decl>(Ctx));
 
     // Else we need to do a more expensive check to get all the namespaces,
     // and then perform a reverse iteration to get the namespaces in order.
-    typedef SmallVector<const DeclContext *, 8> ContextsTy;
+    typedef SmallVector<DeclContext *, 8> ContextsTy;
     ContextsTy Contexts;
 
     for(; Ctx != nullptr; Ctx = Ctx->getParent())
@@ -636,12 +680,12 @@ CppSharp::Namespace^ Parser::GetNamespace(const clang::NamedDecl* ND)
     assert(Contexts.back()->isTranslationUnit());
     Contexts.pop_back();
 
-    CppSharp::Namespace^ NS = M;
+    CppSharp::DeclarationContext^ DC = Unit;
 
     for (auto I = Contexts.rbegin(), E = Contexts.rend(); I != E; ++I)
     {
-        const DeclContext* Ctx = *I;
-        
+        DeclContext* Ctx = *I;
+
         switch(Ctx->getDeclKind())
         {
         case Decl::Namespace:
@@ -649,9 +693,9 @@ CppSharp::Namespace^ Parser::GetNamespace(const clang::NamedDecl* ND)
             const NamespaceDecl* ND = cast<NamespaceDecl>(Ctx);
             if (ND->isAnonymousNamespace())
                 continue;
-            auto Name = marshalString<E_UTF8>(ND->getName());
-            NS = NS->FindCreateNamespace(Name, NS);
-            break;
+            auto Name = clix::marshalString<clix::E_UTF8>(ND->getName());
+            DC = DC->FindCreateNamespace(Name);
+            continue;
         }
         case Decl::LinkageSpec:
         {
@@ -660,8 +704,8 @@ CppSharp::Namespace^ Parser::GetNamespace(const clang::NamedDecl* ND)
         }
         case Decl::CXXRecord:
         {
-            // FIXME: Ignore record namespaces...
-            // We might be able to translate these to C# nested types.
+            auto RD = cast<CXXRecordDecl>(Ctx);
+            DC = WalkRecordCXX(RD);
             continue;
         }
         case Decl::ClassTemplateSpecialization:
@@ -678,7 +722,12 @@ CppSharp::Namespace^ Parser::GetNamespace(const clang::NamedDecl* ND)
         } }
     }
 
-    return NS;
+    return DC;
+}
+
+CppSharp::DeclarationContext^ Parser::GetNamespace(clang::Decl *D)
+{
+    return GetNamespace(D, D->getDeclContext());
 }
 
 static CppSharp::PrimitiveType WalkBuiltinType(const clang::BuiltinType* Builtin)
@@ -1327,50 +1376,6 @@ void Parser::WalkAST()
 
 //-----------------------------------//
 
-CppSharp::TranslationUnit^ Parser::GetModule(clang::SourceLocation Loc,
-                                             SourceLocationKind *Kind)
-{
-    using namespace clang;
-    using namespace clix;
-
-    SourceManager& SM = C->getSourceManager();
-
-    if (Loc.isMacroID())
-        Loc = SM.getExpansionLoc(Loc);
-
-    StringRef File;
-
-    auto LocKind = GetLocationKind(Loc);
-    switch(LocKind)
-    {
-    case SourceLocationKind::Invalid:
-        File = "<invalid>";
-        break;
-    case SourceLocationKind::Builtin:
-        File = "<built-in>";
-        break;
-    case SourceLocationKind::CommandLine:
-        File = "<command-line>";
-        break;
-    default:
-        File = SM.getFilename(Loc);
-        assert(!File.empty() && "Expected to find a valid file");
-        break;
-    }
-
-    if (Kind)
-        *Kind = LocKind;
-
-    auto Unit = Lib->FindOrCreateModule(marshalString<E_UTF8>(File));
-    if (LocKind != SourceLocationKind::Invalid)
-        Unit->IsSystemHeader = SM.isInSystemHeader(Loc);
-
-    return Unit;
-
-}
-
-//-----------------------------------//
-
 void Parser::WalkMacros(clang::PreprocessingRecord* PR)
 {
     using namespace clang;
@@ -1424,7 +1429,7 @@ void Parser::WalkMacros(clang::PreprocessingRecord* PR)
             macro->Name = marshalString<E_UTF8>(II->getName())->Trim();
             macro->Expression = marshalString<E_UTF8>(Expression)->Trim();
 
-            auto M = GetModule(BeginExpr);
+            auto M = GetTranslationUnit(BeginExpr);
             if( M != nullptr )
                 M->Macros->Add(macro);
 

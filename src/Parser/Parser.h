@@ -159,10 +159,12 @@ protected:
     void HandlePreprocessedEntities(clang::Decl* D, CppSharp::Declaration^);
     bool GetPreprocessedEntityText(clang::PreprocessedEntity*, std::string& Text);
 
-
-    CppSharp::TranslationUnit^ GetModule(clang::SourceLocation Loc,
+    CppSharp::TranslationUnit^ GetTranslationUnit(clang::SourceLocation Loc,
         SourceLocationKind *Kind = 0);
-    CppSharp::Namespace^ GetNamespace(const clang::NamedDecl*);
+    CppSharp::TranslationUnit^ GetTranslationUnit(const clang::Decl*);
+
+    CppSharp::DeclarationContext^ GetNamespace(clang::Decl*, clang::DeclContext*);
+    CppSharp::DeclarationContext^ GetNamespace(clang::Decl*);
 
     clang::CallingConv GetAbiCallConv(clang::CallingConv CC,
         bool IsInstMethod, bool IsVariadic);
