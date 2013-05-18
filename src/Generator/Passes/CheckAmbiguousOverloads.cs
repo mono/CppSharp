@@ -98,6 +98,9 @@ namespace CppSharp.Passes
             if (visited.Contains(function))
                 return false;
 
+            if (function.Ignore)
+                return false;
+
             var overloads = AST.Utils.GetFunctionOverloads(function, currentClass);
             var signatures = overloads.Select(fn => new OverloadSignature(fn)).ToList();
 
@@ -105,8 +108,14 @@ namespace CppSharp.Passes
             {
                 visited.Add(sig1.Function);
 
+                if (sig1.Function.Ignore)
+                    continue;
+
                 foreach (var sig2 in signatures)
                 {
+                    if (sig2.Function.Ignore)
+                        continue;
+
                     if (!OverloadSignature.IsAmbiguous(sig1, sig2, currentClass))
                         continue;
 
