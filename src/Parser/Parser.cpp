@@ -323,6 +323,8 @@ CppSharp::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
     using namespace clang;
     using namespace clix;
 
+    if (Record->isInjectedClassName())
+        return nullptr;
 
     auto NS = GetNamespace(Record);
     assert(NS && "Expected a valid namespace");
