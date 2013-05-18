@@ -80,17 +80,12 @@ namespace CppSharp
     }
 
     // Represents a C++ record Decl.
-    public class Class : Declaration
+    public class Class : DeclarationContext
     {
         public List<BaseClassSpecifier> Bases;
-        public List<Class> NestedClasses;
-        public List<Enumeration> NestedEnums;
         public List<Field> Fields;
         public List<Property> Properties;
         public List<Method> Methods;
-        public List<Variable> Variables;
-        public List<Event> Events;
-        public List<FunctionTemplate> FunctionTemplates;
 
         // True if the record is a POD (Plain Old Data) type.
         public bool IsPOD;
@@ -116,11 +111,6 @@ namespace CppSharp
             Fields = new List<Field>();
             Properties = new List<Property>();
             Methods = new List<Method>();
-            Variables = new List<Variable>();
-            Events = new List<Event>();
-            NestedClasses = new List<Class>();
-            NestedEnums = new List<Enumeration>();
-            FunctionTemplates = new List<FunctionTemplate>();
             IsAbstract = false;
             IsUnion = false;
             IsOpaque = false;

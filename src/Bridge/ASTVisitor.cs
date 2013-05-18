@@ -21,12 +21,12 @@ namespace CppSharp
         public bool VisitClassFields = true;
         public bool VisitClassProperties = true;
         public bool VisitClassMethods = true;
-        public bool VisitClassEvents = true;
-        public bool VisitClassVariables = true;
 
         public bool VisitNamespaceEnums = true;
         public bool VisitNamespaceTemplates = true;
         public bool VisitNamespaceTypedefs = true;
+        public bool VisitNamespaceEvents = true;
+        public bool VisitNamespaceVariables = true;
     }
 
     /// <summary>
@@ -211,6 +211,9 @@ namespace CppSharp
             if (!VisitDeclaration(@class))
                 return false;
 
+            if (!VisitDeclarationContext(@class))
+                return false;
+
             if (Options.VisitClassBases)
                 foreach (var baseClass in @class.Bases)
                     if (baseClass.IsClass)
@@ -230,14 +233,6 @@ namespace CppSharp
                 foreach (var method in methods)
                     VisitMethodDecl(method);
             }
-
-            if (Options.VisitClassEvents)
-            foreach (var @event in @class.Events)
-                VisitEvent(@event);
-
-            if (Options.VisitClassVariables)
-                foreach (var variable in @class.Variables)
-                    VisitVariableDecl(variable);
 
             return true;
         }
@@ -341,28 +336,41 @@ namespace CppSharp
 
         public virtual bool VisitNamespace(Namespace @namespace)
         {
-            if (!VisitDeclaration(@namespace))
+            return VisitDeclarationContext(@namespace);
+        }
+
+        public virtual bool VisitDeclarationContext(DeclarationContext context)
+        {
+            if (!VisitDeclaration(context))
                 return false; 
 
-            foreach (var decl in @namespace.Classes)
+            foreach (var decl in context.Classes)
                 decl.Visit(this);
 
-            foreach (var decl in @namespace.Functions)
+            foreach (var decl in context.Functions)
                 decl.Visit(this);
 
             if (Options.VisitNamespaceEnums)
-                foreach (var decl in @namespace.Enums)
+                foreach (var decl in context.Enums)
                   decl.Visit(this);
 
             if (Options.VisitNamespaceTemplates)
-                foreach (var decl in @namespace.Templates)
+                foreach (var decl in context.Templates)
                     decl.Visit(this);
 
             if (Options.VisitNamespaceTypedefs)
-                foreach (var decl in @namespace.Typedefs)
+                foreach (var decl in context.Typedefs)
                     decl.Visit(this);
 
-            foreach (var decl in @namespace.Namespaces)
+            if (Options.VisitNamespaceVariables)
+                foreach (var decl in context.Variables)
+                    VisitVariableDecl(decl);
+
+            if (Options.VisitNamespaceEvents)
+                foreach (var decl in context.Events)
+                    decl.Visit(this);
+
+            foreach (var decl in context.Namespaces)
                 decl.Visit(this);
 
             return true;

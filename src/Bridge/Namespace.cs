@@ -1,14 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace CppSharp
 {
     /// <summary>
-    /// Represents a C++ namespace.
+    /// Represents a declaration context.
     /// </summary>
-    public class Namespace : Declaration
+    public abstract class DeclarationContext : Declaration
     {
         public bool IsAnonymous { get; set; }
 
@@ -19,6 +18,7 @@ namespace CppSharp
         public List<Template> Templates;
         public List<TypedefDecl> Typedefs;
         public List<Variable> Variables;
+        public List<Event> Events;
 
         public TranslationUnit TranslationUnit
         {
@@ -31,41 +31,16 @@ namespace CppSharp
             }
         }
 
-        public override bool IsGenerated
+        protected DeclarationContext()
         {
-            get
-            {
-                return !IgnoreFlags.HasFlag(IgnoreFlags.Generation) ||
-                    Namespace.IsGenerated;
-            }
-        }
-
-        public override bool IsProcessed
-        {
-            get
-            {
-                return !IgnoreFlags.HasFlag(IgnoreFlags.Processing) ||
-                    Namespace.IsProcessed;
-            }
-        }
-
-        public Namespace()
-            : this(null, String.Empty)
-        {
-        }
-
-        public Namespace(Namespace parent, string name, bool isAnonymous = false)
-        {
-            Name = name;
-            Namespace = parent;
-            IsAnonymous = isAnonymous;
-
             Namespaces = new List<Namespace>();
             Enums = new List<Enumeration>();
             Functions = new List<Function>();
             Classes = new List<Class>();
             Templates = new List<Template>();
             Typedefs = new List<TypedefDecl>();
+            Variables = new List<Variable>();
+            Events = new List<Event>();
         }
 
         public Namespace FindNamespace(string name)
@@ -78,7 +53,7 @@ namespace CppSharp
 
         public Namespace FindNamespace(string[] namespaces)
         {
-            Namespace currentNamespace = this;
+            DeclarationContext currentNamespace = this;
 
             foreach (var @namespace in namespaces)
             {
@@ -91,17 +66,21 @@ namespace CppSharp
                 currentNamespace = childNamespace;
             }
 
-            return currentNamespace;
+            return currentNamespace as Namespace;
         }
 
-
-        public Namespace FindCreateNamespace(string name, Namespace parent)
+        public Namespace FindCreateNamespace(string name)
         {
             var @namespace = FindNamespace(name);
 
             if (@namespace == null)
             {
-                @namespace = new Namespace(parent, name);
+                @namespace = new Namespace
+                    {
+                        Name = name,
+                        Namespace = this,
+                    };
+
                 Namespaces.Add(@namespace);
             }
 
@@ -249,7 +228,13 @@ namespace CppSharp
         }
 
         public bool IsRoot { get { return Namespace == null; } }
+    }
 
+    /// <summary>
+    /// Represents a C++ namespace.
+    /// </summary>
+    public class Namespace : DeclarationContext
+    {
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {
             return visitor.VisitNamespace(this);

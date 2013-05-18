@@ -65,12 +65,12 @@ namespace CppSharp.Passes
             Options.VisitNamespaceEnums = false;
             Options.VisitNamespaceTemplates = false;
             Options.VisitNamespaceTypedefs = false;
+            Options.VisitNamespaceEvents = false;
+            Options.VisitNamespaceVariables = false;
 
             Options.VisitClassBases = false;
             Options.VisitClassFields = false;
             Options.VisitClassProperties = false;
-            Options.VisitClassEvents = false;
-            Options.VisitClassVariables = false;
         }
 
         public override bool VisitClassDecl(Class @class)

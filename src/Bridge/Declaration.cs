@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using CppSharp;
 
 namespace CppSharp
 {
@@ -40,7 +39,7 @@ namespace CppSharp
     public abstract class Declaration : INamedDecl
     {
         // Namespace the declaration is contained in.
-        public Namespace Namespace;
+        public DeclarationContext Namespace;
 
         private string name;
 
