@@ -1500,16 +1500,18 @@ namespace CppSharp.Generators.CSharp
         {
             if(function.Ignore) return;
 
-            NativeLibrary library;
-            if (!FindMangledDeclLibrary(function, out library))
-                return;
-
             GenerateDeclarationCommon(function);
-
             WriteLine("[SuppressUnmanagedCodeSecurity]");
-            Write("[DllImport(\"{0}\", ", library.FileName);
-            WriteLine("CallingConvention = CallingConvention.{0},",
-                Helpers.ToCSharpCallConv(function.CallingConvention));
+
+            NativeLibrary library;
+            FindMangledDeclLibrary(function, out library);
+
+            var libName = (library != null) ? library.FileName : "SymbolNotFound";
+            Write("[DllImport(\"{0}\", ", libName);
+
+            var callConv = Helpers.ToCSharpCallConv(function.CallingConvention);
+            WriteLine("CallingConvention = CallingConvention.{0},", callConv);
+
             WriteLineIndent("EntryPoint=\"{0}\")]", function.Mangled);
 
             if (function.ReturnType.Type.Desugar().IsPrimitiveType(PrimitiveType.Bool))
