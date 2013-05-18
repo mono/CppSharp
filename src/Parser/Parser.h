@@ -137,7 +137,7 @@ protected:
     CppSharp::Enumeration^ WalkEnum(clang::EnumDecl*);
     CppSharp::Function^ WalkFunction(clang::FunctionDecl*, bool IsDependent = false,
         bool AddToNamespace = true);
-    CppSharp::Class^ WalkRecordCXX(clang::CXXRecordDecl*, bool IsDependent = false);
+    CppSharp::Class^ WalkRecordCXX(clang::CXXRecordDecl*);
     CppSharp::Method^ WalkMethodCXX(clang::CXXMethodDecl*);
     CppSharp::Field^ WalkFieldCXX(clang::FieldDecl*, CppSharp::Class^);
     CppSharp::ClassTemplate^ Parser::WalkClassTemplate(clang::ClassTemplateDecl*);

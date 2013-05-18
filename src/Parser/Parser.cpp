@@ -318,27 +318,7 @@ static CppSharp::AccessSpecifier ConvertToAccess(clang::AccessSpecifier AS)
     return CppSharp::AccessSpecifier::Public;
 }
 
-static bool HasClassDependentFields(clang::CXXRecordDecl* Record)
-{
-    using namespace clang;
-
-    for(auto it = Record->field_begin(); it != Record->field_end(); ++it)
-    {
-        clang::FieldDecl* FD = (*it);
-
-        switch (FD->getType()->getTypeClass()) {
-        #define TYPE(Class, Base)
-        #define ABSTRACT_TYPE(Class, Base)
-        #define NON_CANONICAL_TYPE(Class, Base)
-        #define DEPENDENT_TYPE(Class, Base) case Type::Class:
-        #include "clang/AST/TypeNodes.def"
-            return true;
-        }
-    }
-    return false;
-}
-
-CppSharp::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record, bool IsDependent)
+CppSharp::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
 {
     using namespace clang;
     using namespace clix;
@@ -398,12 +378,9 @@ CppSharp::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record, bool IsDepe
         RC->Methods->Add(Method);
     }
 
-    if (!IsDependent)
-        IsDependent = HasClassDependentFields(Record);
-
     // Get the record layout information.
     const ASTRecordLayout* Layout = 0;
-    if (/*!IsDependent && */!Record->isDependentType())
+    if (!Record->isDependentType())
     {
         Layout = &C->getASTContext().getASTRecordLayout(Record);
         RC->Layout->Alignment = (int)Layout-> getAlignment().getQuantity();
@@ -470,9 +447,7 @@ CppSharp::ClassTemplate^ Parser::WalkClassTemplate(clang::ClassTemplateDecl* TD)
     using namespace clang;
     using namespace clix;
 
-    auto NS = GetNamespace(TD);
-
-    auto Class = WalkRecordCXX(TD->getTemplatedDecl(), /*IsDependent*/true);
+    auto Class = WalkRecordCXX(TD->getTemplatedDecl());
     CppSharp::ClassTemplate^ CT = gcnew CppSharp::ClassTemplate(Class);
 
     return CT;
