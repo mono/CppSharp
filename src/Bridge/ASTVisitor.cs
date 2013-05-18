@@ -29,6 +29,7 @@ namespace CppSharp
         public bool VisitNamespaceVariables = true;
 
         public bool VisitFunctionParameters = true;
+        public bool VisitTemplateArguments = true;
     }
 
     /// <summary>
@@ -135,18 +136,24 @@ namespace CppSharp
         public virtual bool VisitTemplateSpecializationType(TemplateSpecializationType template,
             TypeQualifiers quals)
         {
-            foreach (var arg in template.Arguments)
+            if (!VisitType(template, quals))
+                return false;
+
+            if (Options.VisitTemplateArguments)
             {
-                switch (arg.Kind)
+                foreach (var arg in template.Arguments)
                 {
-                    case TemplateArgument.ArgumentKind.Type:
-                        var type = arg.Type.Type;
-                        if (type != null)
-                            type.Visit(this, arg.Type.Qualifiers);
-                        break;
-                    case TemplateArgument.ArgumentKind.Declaration:
-                        arg.Declaration.Visit(this);
-                        break;
+                    switch (arg.Kind)
+                    {
+                        case TemplateArgument.ArgumentKind.Type:
+                            var type = arg.Type.Type;
+                            if (type != null)
+                                type.Visit(this, arg.Type.Qualifiers);
+                            break;
+                        case TemplateArgument.ArgumentKind.Declaration:
+                            arg.Declaration.Visit(this);
+                            break;
+                    }
                 }
             }
 
