@@ -202,7 +202,7 @@ namespace CppSharp
             return Enums.Find(e => e.ItemsByName.ContainsKey(name));
         }
 
-        public IList<Function> GetFunctionOverloads(Function function)
+        public virtual IEnumerable<Function> GetFunctionOverloads(Function function)
         {
             return Functions.Where(fn => fn.Name == function.Name)
                 .ToList();

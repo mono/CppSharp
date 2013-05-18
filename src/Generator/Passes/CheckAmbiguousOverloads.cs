@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using CppSharp.Generators;
-using CppSharp.Types;
 
 namespace CppSharp.Passes
 {
@@ -56,7 +55,6 @@ namespace CppSharp.Passes
 
     public class CheckAmbiguousOverloads : TranslationUnitPass
     {
-        private Class currentClass;
         private readonly ISet<Function> visited;
 
         public CheckAmbiguousOverloads()
@@ -76,8 +74,6 @@ namespace CppSharp.Passes
         public override bool VisitClassDecl(Class @class)
         {
             visited.Clear();
-
-            currentClass = @class;
             return base.VisitClassDecl(@class);
         }
 
@@ -101,7 +97,7 @@ namespace CppSharp.Passes
             if (function.Ignore)
                 return false;
 
-            var overloads = AST.Utils.GetFunctionOverloads(function, currentClass);
+            var overloads = function.Namespace.GetFunctionOverloads(function);
             var signatures = overloads.Select(fn => new OverloadSignature(fn)).ToList();
 
             foreach (var sig1 in signatures)
@@ -116,12 +112,13 @@ namespace CppSharp.Passes
                     if (sig2.Function.Ignore)
                         continue;
 
-                    if (!OverloadSignature.IsAmbiguous(sig1, sig2, currentClass))
+                    var @class = function.Namespace as Class;
+                    if (!OverloadSignature.IsAmbiguous(sig1, sig2, @class))
                         continue;
 
                     Driver.Diagnostics.EmitWarning(DiagnosticId.AmbiguousOverload,
-                        "Overload {0}::{1} is ambiguous, renaming automatically",
-                        currentClass.OriginalName, sig1.Function.QualifiedOriginalName);
+                        "Overload {0} is ambiguous, renaming automatically",
+                        sig1.Function.QualifiedOriginalName);
 
                     RenameOverload(sig1.Function);
                     return false;

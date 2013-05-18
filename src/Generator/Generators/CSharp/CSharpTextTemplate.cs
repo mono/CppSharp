@@ -134,7 +134,7 @@ namespace CppSharp.Generators.CSharp
         {
             if (Transform != null)
             {
-                Transform.GenerateStart(this);
+                //Transform.GenerateStart(this);
                 return;
             }
 
@@ -1448,7 +1448,7 @@ namespace CppSharp.Generators.CSharp
                     identifier = GetOperatorIdentifier(method.OperatorKind);
             }
 
-            var overloads = AST.Utils.GetFunctionOverloads(function, @class).ToList();
+            var overloads = function.Namespace.GetFunctionOverloads(function).ToList();
 
             var index = overloads.IndexOf(function);
             if (isNativeContext && index >= 0)
