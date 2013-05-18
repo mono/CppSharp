@@ -80,9 +80,21 @@ namespace CppSharp.Generators.CSharp
 
         public string QualifiedIdentifier(Declaration decl)
         {
+            var names = new List<string> { decl.Name };
+
+            var ctx = decl.Namespace;
+            while (ctx != null)
+            {
+                if (!string.IsNullOrWhiteSpace(ctx.Name))
+                    names.Add(ctx.Name);
+                ctx = ctx.Namespace;
+            }
+
             if (Options.GenerateLibraryNamespace)
-                return string.Format("{0}::{1}", Options.OutputNamespace, decl.QualifiedName);
-            return string.Format("{0}", decl.QualifiedName);
+                names.Add(Options.OutputNamespace);
+
+            names.Reverse();
+            return string.Join(".", names);
         }
 
         public static string GeneratedIdentifier(string id)
@@ -422,7 +434,8 @@ namespace CppSharp.Generators.CSharp
 
             if (needsBase)
             {
-                Write("{0}", SafeIdentifier(@class.Bases[0].Class.Name));
+                var qualifiedBase = QualifiedIdentifier(@class.Bases[0].Class);
+                Write("{0}", qualifiedBase);
 
                 if (@class.IsRefType)
                     Write(", ");
