@@ -897,7 +897,7 @@ namespace CppSharp.Generators.CSharp
                 }
                 else if (method.IsOperator)
                 {
-                    GeneratedOperator(method, @class);
+                    GenerateOperator(method, @class);
                 }
                 else
                 {
@@ -912,7 +912,7 @@ namespace CppSharp.Generators.CSharp
                 }
                 else if (method.IsOperator)
                 {
-                    GeneratedOperator(method, @class);
+                    GenerateOperator(method, @class);
                 }
                 else
                 {
@@ -947,7 +947,7 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
-        private void GeneratedOperator(Method method, Class @class)
+        private void GenerateOperator(Method method, Class @class)
         {
             if (method.IsSynthetized)
             {
