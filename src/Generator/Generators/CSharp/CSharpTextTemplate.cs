@@ -309,20 +309,7 @@ namespace CppSharp.Generators.CSharp
 
             ResetNewLine();
 
-            foreach (var field in @class.Fields)
-            {
-                NewLineIfNeeded();
-
-                if (field.Ignore)
-                    continue;
-
-                WriteLine("[FieldOffset({0})]", field.OffsetInBytes);
-
-                WriteLine("public {0} {1};", field.Type,
-                            SafeIdentifier(field.OriginalName));
-
-                NeedNewLine();
-            }
+        GenerateClassFields(@class, isInternal: true);
 
             foreach (var ctor in @class.Constructors)
             {
@@ -446,21 +433,22 @@ namespace CppSharp.Generators.CSharp
                 Write("IDisposable");
         }
 
-        public void GenerateClassFields(Class @class)
+        public void GenerateClassFields(Class @class, bool isInternal = false)
         {
             // Handle value-type inheritance
             if (@class.IsValueType)
             {
                 foreach (var @base in @class.Bases)
                 {
-                    Class baseClass;
-                    if (!@base.Type.IsTagDecl(out baseClass))
+                    if (!@base.IsClass)
                         continue;
+
+                    var baseClass = @base.Class;
 
                     if (!baseClass.IsValueType || baseClass.Ignore)
                         continue;
 
-                    GenerateClassFields(baseClass);
+                    GenerateClassFields(baseClass, isInternal);
                 }
             }
 
@@ -470,7 +458,20 @@ namespace CppSharp.Generators.CSharp
 
                 NewLineIfNeeded();
 
-                if (@class.IsRefType)
+                if (isInternal)
+                {
+                    WriteLine("[FieldOffset({0})]", field.OffsetInBytes);
+
+                    var result = field.Type.Visit(TypePrinter, field.QualifiedType.Qualifiers);
+
+                    Write("public {0} {1}", result.Type, SafeIdentifier(field.OriginalName));
+
+                    if (!string.IsNullOrWhiteSpace(result.NameSuffix))
+                        Write(result.NameSuffix);
+
+                    WriteLine(";");
+                }
+                else if (@class.IsRefType)
                 {
                     GenerateFieldProperty(field);
                 }
