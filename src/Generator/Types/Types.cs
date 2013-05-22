@@ -79,7 +79,7 @@ namespace CppSharp
             if (TypeMapDatabase.FindTypeMap(decl, out typeMap))
                 return typeMap.IsIgnored;
 
-            if (!decl.IsGenerated)
+            if (!decl.IsGenerated || decl.ExplicityIgnored)
             {
                 Ignore();
                 return false;
