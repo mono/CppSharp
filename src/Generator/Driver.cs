@@ -138,7 +138,9 @@ namespace CppSharp
             var passes = new PassBuilder(this);
             passes.CleanUnit(Options);
             passes.SortDeclarations();
-            passes.ResolveIncompleteDecls(TypeDatabase);
+            passes.ResolveIncompleteDecls();
+            passes.CheckIgnoredDecls();
+
             passes.CheckTypeReferences();
             passes.CheckFlagEnums();
             passes.CheckAmbiguousOverloads();
