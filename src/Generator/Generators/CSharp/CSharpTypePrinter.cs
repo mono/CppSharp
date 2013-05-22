@@ -229,12 +229,18 @@ namespace CppSharp.Generators.CSharp
                 Context.Type = template;
                 return new CSharpTypePrinterResult()
                     {
-                        Type = typeMap.CSharpSignature(Context),
+                        Type = GetCSharpSignature(typeMap),
                         TypeMap = typeMap
                     };
             }
 
             return decl.Name;
+        }
+
+        private string GetCSharpSignature(TypeMap typeMap)
+        {
+            Context.CSharpKind = ContextKind;
+            return typeMap.CSharpSignature(Context);
         }
 
         public CSharpTypePrinterResult VisitTemplateParameterType(
