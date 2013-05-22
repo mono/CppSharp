@@ -305,7 +305,12 @@ namespace CppSharp.Generators.CSharp
 
         public CSharpTypePrinterResult VisitClassDecl(Class @class)
         {
-            return GetNestedQualifiedName(@class);
+            var nestedName = GetNestedQualifiedName(@class);
+
+            if (ContextKind == CSharpTypePrinterContextKind.Native)
+                return string.Format("{0}.Internal", nestedName);
+
+            return nestedName;
         }
 
         public CSharpTypePrinterResult VisitFieldDecl(Field field)
