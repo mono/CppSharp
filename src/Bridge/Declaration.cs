@@ -141,9 +141,17 @@ namespace CppSharp
         }
 
         // Whether the declaration should be ignored.
-        public bool Ignore
+        public virtual bool Ignore
         {
-            get { return IgnoreFlags != IgnoreFlags.None; }
+            get
+            {
+                var isIgnored = IgnoreFlags != IgnoreFlags.None;
+
+                if (Namespace != null)
+                    isIgnored |= Namespace.Ignore;
+
+                return isIgnored;
+            }
         }
 
         // Contains debug text about the declaration.

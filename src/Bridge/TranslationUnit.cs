@@ -31,6 +31,12 @@ namespace CppSharp
             get { return !IgnoreFlags.HasFlag(IgnoreFlags.Processing); }
         }
 
+        // Whether the unit should be ignored.
+        public override bool Ignore
+        {
+            get { return IgnoreFlags != IgnoreFlags.None; }
+        }
+
         public bool IsSystemHeader { get; set; }
 
         /// Contains the path to the file.
