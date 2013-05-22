@@ -341,11 +341,6 @@ namespace CppSharp.Generators.CSharp
             typePrinter.PopContext();
         }
 
-        private void GenerateStructMarshaling(Class @class)
-        {
-            GenerateStructMarshalingFields(@class);
-        }
-
         private void GenerateStructMarshalingFields(Class @class)
         {
             foreach (var @base in @class.Bases)
@@ -834,7 +829,10 @@ namespace CppSharp.Generators.CSharp
             }
             else
             {
-                GenerateStructMarshaling(@class);
+                WriteLine("var {0} = (Internal*){1}.ToPointer();",
+                    Helpers.GeneratedIdentifier("ptr"), "native");
+
+                GenerateStructMarshalingFields(@class);
             }
 
             WriteCloseBraceIndent();
