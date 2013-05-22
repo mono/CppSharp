@@ -35,6 +35,7 @@ namespace CppSharp.Passes
                 Namespace = @class.Namespace,
                 Name = name,
                 OriginalName = function.OriginalName,
+                Mangled = function.Mangled,
                 Access = AccessSpecifier.Public,
                 Kind = CXXMethodKind.Normal,
                 ReturnType = function.ReturnType,
