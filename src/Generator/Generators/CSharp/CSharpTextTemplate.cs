@@ -873,7 +873,7 @@ namespace CppSharp.Generators.CSharp
                 method.Kind == CXXMethodKind.Operator)
                 Write("static ");
 
-            var functionName = GetFunctionIdentifier(method, @class);
+            var functionName = GetFunctionIdentifier(method);
 
             if (method.IsConstructor || method.IsDestructor)
                 Write("{0}(", functionName);
@@ -967,7 +967,7 @@ namespace CppSharp.Generators.CSharp
 
             WriteLine("{0} = Marshal.AllocHGlobal({1});", Helpers.InstanceIdentifier,
                 @class.Layout.Size);
-            Write("Internal.{0}({1}", GetFunctionNativeIdentifier(method, @class),
+            Write("Internal.{0}({1}", GetFunctionNativeIdentifier(method),
                 Helpers.InstanceIdentifier);
             if (@params.Any())
                 Write(", ");
@@ -1045,7 +1045,7 @@ namespace CppSharp.Generators.CSharp
                 parameters = function.Parameters;
 
             var functionName = string.Format("Internal.{0}",
-                GetFunctionNativeIdentifier(function, @class));
+                GetFunctionNativeIdentifier(function));
             GenerateFunctionCall(functionName, parameters, function, @class);
         }
 
@@ -1432,37 +1432,41 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
-        public string GetFunctionIdentifier(Function function, Class @class)
+        public string GetFunctionIdentifier(Function function)
         {
-            var identifier = SafeIdentifier(function.Name);
-
             var printer = TypePrinter as CSharpTypePrinter;
             var isNativeContext = printer.ContextKind == CSharpTypePrinterContextKind.Native;
 
+            string identifier;
+
             var method = function as Method;
-            if (method != null && method.Kind == CXXMethodKind.Operator)
+            if (method != null && method.IsOperator)
             {
                 if (isNativeContext)
                     identifier = "Operator" + method.OperatorKind.ToString();
                 else
                     identifier = GetOperatorIdentifier(method.OperatorKind);
             }
+            else
+            {
+                identifier = SafeIdentifier(function.Name);
+            }
 
             var overloads = function.Namespace.GetFunctionOverloads(function).ToList();
-
             var index = overloads.IndexOf(function);
+
             if (isNativeContext && index >= 0)
-                identifier += index.ToString();
+                identifier += index.ToString(CultureInfo.InvariantCulture);
 
             return identifier;
         }
 
-        public string GetFunctionNativeIdentifier(Function function, Class @class = null)
+        public string GetFunctionNativeIdentifier(Function function)
         {
             var typePrinter = TypePrinter as CSharpTypePrinter;
             typePrinter.PushContext(CSharpTypePrinterContextKind.Native);
 
-            var name = GetFunctionIdentifier(function, @class);
+            var name = GetFunctionIdentifier(function);
 
             typePrinter.PopContext();
 
@@ -1554,7 +1558,7 @@ namespace CppSharp.Generators.CSharp
                     @params.Add("int " + GeneratedIdentifier("forBases"));
 
             WriteLine("public unsafe static extern {0} {1}({2});", retType,
-                      GetFunctionIdentifier(function, @class),
+                      GetFunctionIdentifier(function),
                       string.Join(", ", @params));
             NeedNewLine();
         }
