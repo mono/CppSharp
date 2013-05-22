@@ -63,17 +63,18 @@ namespace CppSharp.Generators.CSharp
 
     public class CSharpTextTemplate : TextTemplate
     {
-        public CSharpTypePrinter TypePrinter { get; set; }
+        public CSharpTypePrinter TypePrinter { get; private set; }
 
         public override string FileExtension
         {
             get { return "cs"; }
         }
 
-        public CSharpTextTemplate(Driver driver, TranslationUnit unit)
+        public CSharpTextTemplate(Driver driver, TranslationUnit unit,
+            CSharpTypePrinter typePrinter)
             : base(driver, unit)
         {
-            TypePrinter = new CSharpTypePrinter(driver.TypeDatabase, driver.Library);
+            TypePrinter = typePrinter;
         }
 
         #region Identifiers

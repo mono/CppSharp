@@ -27,7 +27,7 @@ namespace CppSharp.Generators.CSharp
 
         public override bool Generate(TranslationUnit unit)
         {
-            var template = new CSharpTextTemplate(Driver, unit);
+            var template = new CSharpTextTemplate(Driver, unit, typePrinter);
             WriteTemplate(template);
 
             return true;
