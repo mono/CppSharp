@@ -84,7 +84,7 @@ namespace CppSharp.Generators.CSharp
             if (tag.Declaration == null)
                 return string.Empty;
 
-            return VisitDeclaration(tag.Declaration, quals);
+            return tag.Declaration.Visit(this);
         }
 
         public CSharpTypePrinterResult VisitArrayType(ArrayType array,
