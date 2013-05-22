@@ -34,19 +34,17 @@ namespace CppSharp.Types.Std
 
         public override string CSharpSignature(CSharpTypePrinterContext ctx)
         {
-            if (ctx.CSharpKind == CSharpTypePrinterContextKind.ManagedPointer)
-                return "System.IntPtr";
             return "Std.String";
         }
 
         public override void CSharpMarshalToNative(MarshalContext ctx)
         {
-            ctx.Return.Write("new Std.String().Instance");
+            ctx.Return.Write("new Std.String()");
         }
 
         public override void CSharpMarshalToManaged(MarshalContext ctx)
         {
-            ctx.Return.Write("new Std.String({0})", ctx.ReturnVarName);
+            ctx.Return.Write(ctx.ReturnVarName);
         }
     }
 
@@ -174,18 +172,27 @@ namespace CppSharp.Types.Std
 
         public override string CSharpSignature(CSharpTypePrinterContext ctx)
         {
-            return string.Format("System.Collections.Generic.List<{0}>",
-                ctx.GetTemplateParameterList());
+            if (ctx.CSharpKind == CSharpTypePrinterContextKind.Native)
+                return "Std.Vector";
+
+            return string.Format("Std.Vector<{0}>", ctx.GetTemplateParameterList());
         }
 
         public override void CSharpMarshalToNative(MarshalContext ctx)
         {
-            ctx.Return.Write("null");
+            var templateType = Type as TemplateSpecializationType;
+            var type = templateType.Arguments[0].Type;
+
+            ctx.Return.Write("Std.Vector.Create({0})", ctx.Parameter.Name);
         }
 
         public override void CSharpMarshalToManaged(MarshalContext ctx)
         {
-            ctx.Return.Write("null");
+            var templateType = Type as TemplateSpecializationType;
+            var type = templateType.Arguments[0].Type;
+
+            ctx.Return.Write("Std.Vector.Create<{0}>({1})", type,
+                ctx.ReturnVarName);
         }
     }
 
