@@ -171,8 +171,8 @@ namespace CppSharp.Generators.CSharp
             return pointee.Visit(this, quals);
         }
 
-        public CSharpTypePrinterResult VisitMemberPointerType(
-            MemberPointerType member, TypeQualifiers quals)
+        public CSharpTypePrinterResult VisitMemberPointerType(MemberPointerType member,
+            TypeQualifiers quals)
         {
             throw new NotImplementedException();
         }
@@ -243,19 +243,21 @@ namespace CppSharp.Generators.CSharp
             return param.Parameter.Name;
         }
 
-        public CSharpTypePrinterResult VisitTemplateParameterSubstitutionType(TemplateParameterSubstitutionType param,
-                                                                              TypeQualifiers quals)
+        public CSharpTypePrinterResult VisitTemplateParameterSubstitutionType(
+            TemplateParameterSubstitutionType param, TypeQualifiers quals)
         {
             var type = param.Replacement.Type;
             return type.Visit(this, param.Replacement.Qualifiers);
         }
 
-        public CSharpTypePrinterResult VisitInjectedClassNameType(InjectedClassNameType injected, TypeQualifiers quals)
+        public CSharpTypePrinterResult VisitInjectedClassNameType(
+            InjectedClassNameType injected, TypeQualifiers quals)
         {
             return injected.Class.Name;
         }
 
-        public CSharpTypePrinterResult VisitDependentNameType(DependentNameType dependent, TypeQualifiers quals)
+        public CSharpTypePrinterResult VisitDependentNameType(DependentNameType dependent,
+            TypeQualifiers quals)
         {
             throw new NotImplementedException();
         }
