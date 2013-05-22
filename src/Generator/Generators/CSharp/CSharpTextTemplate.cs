@@ -1146,40 +1146,50 @@ namespace CppSharp.Generators.CSharp
 
             if (param.Usage == ParameterUsage.Out)
             {
-                //var paramType = param.Type;
-                //if (paramType.IsReference())
-                //    paramType = (paramType as PointerType).Pointee;
+                var paramType = param.Type;
 
-                //var typePrinter = new CppTypePrinter(Driver.TypeDatabase);
-                //var type = paramType.Visit(typePrinter);
-
-                //WriteLine("{0} {1};", type, argName);
-            }
-            else
-            {
-                var ctx = new CSharpMarshalContext(Driver)
+                Class @class;
+                if (paramType.Desugar().IsTagDecl(out @class) && @class.IsRefType)
                 {
-                    Parameter = param,
-                    ParameterIndex = paramIndex,
-                    ArgName = argName,
-                    Function = function
-                };
-
-                paramMarshal.Context = ctx;
-
-                var marshal = new CSharpMarshalManagedToNativePrinter(ctx);
-                param.Visit(marshal);
-
-                if (string.IsNullOrEmpty(marshal.Context.Return))
-                    throw new Exception("Cannot marshal argument of function");
-
-                if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
-                    Write(marshal.Context.SupportBefore);
-
-                WriteLine("var {0} = {1};", SafeIdentifier(argName), marshal.Context.Return);
+                    WriteLine("{0} = new {1}();", param.Name, paramType);
+                }
             }
+
+            var ctx = new CSharpMarshalContext(Driver)
+            {
+                Parameter = param,
+                ParameterIndex = paramIndex,
+                ArgName = argName,
+                Function = function
+            };
+
+            paramMarshal.Context = ctx;
+
+            var marshal = new CSharpMarshalManagedToNativePrinter(ctx);
+            param.Visit(marshal);
+
+            if (string.IsNullOrEmpty(marshal.Context.Return))
+                throw new Exception("Cannot marshal argument of function");
+
+            if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
+                Write(marshal.Context.SupportBefore);
+
+            WriteLine("var {0} = {1};", SafeIdentifier(argName), marshal.Context.Return);
 
             return paramMarshal;
+        }
+
+        static string GetParameterUsage(ParameterUsage usage)
+        {
+            switch (usage)
+            {
+                case ParameterUsage.Out:
+                    return "out ";
+                case ParameterUsage.InOut:
+                    return "ref";
+                default:
+                    return string.Empty;
+            }
         }
 
         private void GenerateMethodParameters(Method method, Class @class)
@@ -1193,7 +1203,8 @@ namespace CppSharp.Generators.CSharp
                 if (param.Kind == ParameterKind.HiddenStructureReturn)
                     continue;
 
-                @params.Add(string.Format("{0} {1}", param.Type, SafeIdentifier(param.Name)));
+                @params.Add(string.Format("{0}{1} {2}", GetParameterUsage(param.Usage),
+                    param.Type, SafeIdentifier(param.Name)));
             }
 
             Write(string.Join(", ", @params));
