@@ -355,9 +355,8 @@ namespace CppSharp.Generators.CSharp
             {
                 if (CheckIgnoreField(@class, field)) continue;
 
-                bool isRefClass;
-                var nativeField = GetFieldLocation(field, "native",
-                    CSharpTypePrinterContextKind.ManagedPointer, out isRefClass);
+                var nativeField = string.Format("{0}->{1}",
+                    Helpers.GeneratedIdentifier("ptr"), field.OriginalName);
 
                 var ctx = new CSharpMarshalContext(Driver)
                 {
@@ -504,46 +503,6 @@ namespace CppSharp.Generators.CSharp
             Setter
         }
 
-        private string GetFieldLocation(Field field, string instance,
-            CSharpTypePrinterContextKind kind, out bool isRefClass)
-        {
-            isRefClass = false;
-
-            var typePrinter = TypePrinter as CSharpTypePrinter;
-            typePrinter.PushContext(kind);
-            var type = field.Type.Visit(typePrinter);
-            typePrinter.PopContext();
-
-            var fieldType = field.Type.Desugar();
-
-            Class fieldClass;
-            if (fieldType.IsTagDecl(out fieldClass) && fieldClass.IsRefType)
-                isRefClass = true;
-
-            TagType tagType;
-            if (fieldType.IsPointerTo(out tagType)
-                && tagType.IsTagDecl(out fieldClass) && fieldClass.IsRefType)
-                isRefClass = true;
-
-            if (CSharpTypePrinter.IsConstCharString(field.QualifiedType))
-                isRefClass = true;
-
-            FunctionType functionType;
-            if (fieldType.IsPointerTo(out functionType))
-                isRefClass = true;
-
-            if (isRefClass)
-                type = "void*";
-
-            var location = string.Format("({0} + {1})", instance,
-                field.OffsetInBytes);
-
-            if (type.TypeMap == null)
-                location = string.Format("*({0}*){1}", type, location);
-
-            return location;
-        }
-
         private string GetPropertyLocation<T>(T decl, PropertyMethodKind kind,
             out bool isRefClass) where T : Declaration, ITypedDecl
         {
@@ -562,18 +521,6 @@ namespace CppSharp.Generators.CSharp
 
                 return string.Format("CppSharp.SymbolResolver.ResolveSymbol(\"{0}\", \"{1}\")",
                     Path.GetFileNameWithoutExtension(library.FileName), symbol);
-            }
-            else if (decl is Field)
-            {
-                var field = decl as Field;
-
-                var location = GetFieldLocation(field, Helpers.InstanceIdentifier,
-                                                CSharpTypePrinterContextKind.Managed, out isRefClass);
-
-                if (isRefClass && kind == PropertyMethodKind.Getter)
-                    location = string.Format("new System.IntPtr({0})", location);
-
-                return location;
             }
 
             throw new NotSupportedException();
@@ -603,11 +550,12 @@ namespace CppSharp.Generators.CSharp
                 var parameters = new List<Parameter> { param };
                 GenerateInternalFunctionCall(function, @class, parameters);
             }
-            else
+            else if (decl is Field)
             {
-                bool isRefClass;
-                var variable = GetPropertyLocation(decl, PropertyMethodKind.Setter,
-                    out isRefClass);
+                var field = decl as Field;
+
+                WriteLine("var {0} = (Internal*){1}.ToPointer();",
+                    Helpers.GeneratedIdentifier("ptr"), Helpers.InstanceIdentifier);
 
                 var marshal = new CSharpMarshalManagedToNativePrinter(ctx);
                 param.Visit(marshal);
@@ -615,10 +563,8 @@ namespace CppSharp.Generators.CSharp
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                     Write(marshal.Context.SupportBefore);
 
-                Write("{0} = {1}", variable, marshal.Context.Return);
-
-                if (isRefClass)
-                    Write(".ToPointer()");
+                Write("{0}->{1} = {2}", Helpers.GeneratedIdentifier("ptr"),
+                    Helpers.SafeIdentifier(field.OriginalName), marshal.Context.Return);
 
                 WriteLine(";");
             }
@@ -639,6 +585,30 @@ namespace CppSharp.Generators.CSharp
                 var function = decl as Function;
                 GenerateInternalFunctionCall(function, @class);
                 @return = "ret";
+            }
+            else if (decl is Field)
+            {
+                var field = decl as Field;
+
+                WriteLine("var {0} = (Internal*){1}.ToPointer();",
+                    Helpers.GeneratedIdentifier("ptr"), Helpers.InstanceIdentifier);
+
+                var ctx = new CSharpMarshalContext(Driver)
+                {
+                    Kind = CSharpMarshalKind.NativeField,
+                    ArgName = decl.Name,
+                    ReturnVarName = string.Format("{0}->{1}", Helpers.GeneratedIdentifier("ptr"),
+                        Helpers.SafeIdentifier(field.OriginalName)),
+                    ReturnType = decl.QualifiedType
+                };
+
+                var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
+                decl.Visit(marshal);
+
+                if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
+                    Write(marshal.Context.SupportBefore);
+
+                WriteLine("return {0};", marshal.Context.Return);
             }
             else
             {
