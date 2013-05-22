@@ -1284,7 +1284,7 @@ namespace CppSharp.Generators.CSharp
             WriteCloseBraceIndent();
         }
 
-        public string GetOperatorIdentifier(CXXOperatorKind kind)
+        public static string GetOperatorIdentifier(CXXOperatorKind kind)
         {
             // These follow the order described in MSDN (Overloadable Operators).
 
