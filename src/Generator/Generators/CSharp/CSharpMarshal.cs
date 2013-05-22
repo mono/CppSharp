@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text;
 using CppSharp.Types;
 
 namespace CppSharp.Generators.CSharp
@@ -52,10 +53,23 @@ namespace CppSharp.Generators.CSharp
             Context.MarshalToManaged = this;
         }
 
-        public override bool VisitTagType(TagType tag, TypeQualifiers quals)
+        public static string QualifiedIdentifier(Declaration decl)
         {
-            var decl = tag.Declaration;
-            return decl.Visit(this);
+            var names = new List<string> { decl.Name };
+
+            var ctx = decl.Namespace;
+            while (ctx != null)
+            {
+                if (!string.IsNullOrWhiteSpace(ctx.Name))
+                    names.Add(ctx.Name);
+                ctx = ctx.Namespace;
+            }
+
+            //if (Options.GenerateLibraryNamespace)
+            //    names.Add(Options.OutputNamespace);
+
+            names.Reverse();
+            return string.Join(".", names);
         }
 
         public override bool VisitType(Type type, TypeQualifiers quals)
@@ -109,23 +123,17 @@ namespace CppSharp.Generators.CSharp
 
             var pointee = pointer.Pointee;
 
-            if (pointee.Desugar().IsPrimitiveType(PrimitiveType.Void))
-            {
-                Context.Return.Write("new System.IntPtr({0})", Context.ReturnVarName);
-                return true;
-            }
-
             if (CSharpTypePrinter.IsConstCharString(pointer))
             {
-                Context.Return.Write("Marshal.PtrToStringAnsi(new System.IntPtr({0}))",
+                Context.Return.Write("Marshal.PtrToStringAnsi({0})",
                     Context.ReturnVarName);
                 return true;
             }
 
             PrimitiveType primitive;
-            if (pointee.Desugar().IsPrimitiveType(out primitive))
+            if (pointee.IsPrimitiveType(out primitive))
             {
-                Context.Return.Write("new System.IntPtr({0})", Context.ReturnVarName);
+                Context.Return.Write(Context.ReturnVarName);
                 return true;
             }
 
@@ -171,11 +179,14 @@ namespace CppSharp.Generators.CSharp
             FunctionType function;
             if (decl.Type.IsPointerTo(out function))
             {
-                Context.SupportBefore.WriteLine("var {0} = new System.IntPtr({1});",
-                    Helpers.GeneratedIdentifier("ptr"), Context.ReturnVarName);
+                var ptrName = Helpers.GeneratedIdentifier("ptr") +
+                    Context.ParameterIndex;
+
+                Context.SupportBefore.WriteLine("var {0} = {1};", ptrName,
+                    Context.ReturnVarName);
 
                 Context.Return.Write("({1})Marshal.GetDelegateForFunctionPointer({0}, typeof({1}))",
-                    Helpers.GeneratedIdentifier("ptr"), typedef.ToString());
+                    ptrName, typedef.ToString());
                 return true;
             }
 
@@ -189,10 +200,7 @@ namespace CppSharp.Generators.CSharp
             string instance = Context.ReturnVarName;
             if (ctx.Kind == CSharpMarshalKind.NativeField)
             {
-                if (Context.ReturnVarName.StartsWith("*"))
-                    Context.ReturnVarName = Context.ReturnVarName.Substring(1);
-
-                instance = string.Format("new System.IntPtr({0})",
+                instance = string.Format("new System.IntPtr(&{0})",
                     Context.ReturnVarName);
             }
 
@@ -245,20 +253,8 @@ namespace CppSharp.Generators.CSharp
 
         public bool VisitDelegateType(FunctionType function, string type)
         {
-            // We marshal function pointer types by calling
-            // GetFunctionPointerForDelegate to get a native function
-            // pointer ouf of the delegate. Then we can pass it in the
-            // native call. Since references are not tracked in the
-            // native side, we need to be careful and protect it with an
-            // explicit GCHandle if necessary.
-
-            //var sb = new StringBuilder();
-            //sb.AppendFormat("({0})(", type);
-            //sb.Append("Marshal.GetFunctionPointerForDelegate(");
-            //sb.AppendFormat("{0}).ToPointer())", Context.Parameter.Name);
-            //Context.Return.Write(sb.ToString());
-
-            Context.Return.Write(Context.Parameter.Name);
+            Context.Return.Write("Marshal.GetFunctionPointerForDelegate({0})",
+                Context.Parameter.Name);
 
             return true;
         }
@@ -283,26 +279,21 @@ namespace CppSharp.Generators.CSharp
             if (pointee is FunctionType)
             {
                 var function = pointee as FunctionType;
-                // TODO: We have to translate the function type typedef to C/C++
                 return VisitDelegateType(function, function.ToString());
             }
 
             Class @class;
-            if (pointee.IsTagDecl(out @class))
+            if (pointee.Desugar().IsTagDecl(out @class) && @class.IsValueType)
             {
-                if (@class.IsRefType)
-                    Context.Return.Write("{0}.Instance",
-                        Helpers.SafeIdentifier(Context.Parameter.Name));
-                else
-                    Context.Return.Write("new System.IntPtr(&{0})",
-                        Context.Parameter.Name);
+                Context.Return.Write("new System.IntPtr(&{0})",
+                    Context.Parameter.Name);
                 return true;
             }
 
             PrimitiveType primitive;
             if (pointee.IsPrimitiveType(out primitive))
             {
-                Context.Return.Write("{0}.ToPointer()", Context.Parameter.Name);
+                Context.Return.Write(Context.Parameter.Name);
                 return true;
             }
 
@@ -386,20 +377,25 @@ namespace CppSharp.Generators.CSharp
                 return;
             }
 
-            if (Context.Parameter.Type.IsPointer())
-                Context.Return.Write("{0}.{1}", Context.Parameter.Name,
+            if (Context.Parameter.Type.IsPointer() || Context.Parameter.Type.IsReference())
+            {
+                Context.Return.Write("{0}.{1}", Helpers.SafeIdentifier(Context.Parameter.Name),
                     Helpers.InstanceIdentifier);
-            else
-                Context.Return.Write("{0}", Context.Parameter.Name);
+                return;
+            }
+
+            Context.Return.Write("*({0}.Internal*){1}.{2}", @class.Name,
+                Helpers.SafeIdentifier(Context.Parameter.Name), Helpers.InstanceIdentifier);
+
         }
 
         private void MarshalValueClass(Class @class)
         {
+            var marshalVar = Helpers.GeneratedIdentifier("marshal")
+                + Context.ParameterIndex++;
 
-            var marshalVar = "_marshal" + Context.ParameterIndex++;
-
-            Context.SupportBefore.WriteLine("auto {0} = ::{1}();", marshalVar,
-                @class.QualifiedOriginalName);
+            Context.SupportBefore.WriteLine("var {0} = new {1}.Internal();", marshalVar,
+                @class.Name);
 
             MarshalValueClassFields(@class, marshalVar);
 
@@ -470,38 +466,6 @@ namespace CppSharp.Generators.CSharp
             };
 
             return field.Type.Visit(this, field.QualifiedType.Qualifiers);
-        }
-
-        public override bool VisitParameterDecl(Parameter parameter)
-        {
-            var paramType = parameter.Type;
-
-            Class @class;
-            if (paramType.Desugar().IsTagDecl(out @class))
-            {
-                if (@class.IsRefType)
-                {
-                    Context.Return.Write(
-                        "*({0}.Internal*){1}.Instance.ToPointer()",
-                        @class.Name, parameter.Name);
-                    return true;
-                }
-                else
-                {
-                    if (parameter.Kind == ParameterKind.OperatorParameter)
-                    {
-                        Context.Return.Write("new System.IntPtr(&{0})",
-                            parameter.Name);
-                        return true;
-                    }
-
-                    Context.Return.Write("*({0}.Internal*)&{1}",
-                        @class.Name, parameter.Name);
-                    return true;
-                }
-            }
-
-            return paramType.Visit(this, parameter.QualifiedType.Qualifiers);
         }
 
         public override bool VisitEnumDecl(Enumeration @enum)
