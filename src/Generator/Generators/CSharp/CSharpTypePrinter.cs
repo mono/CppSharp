@@ -31,6 +31,7 @@ namespace CppSharp.Generators.CSharp
     {
         public string Type;
         public TypeMap TypeMap;
+        public string NameSuffix;
 
         public static implicit operator CSharpTypePrinterResult(string type)
         {
@@ -90,6 +91,20 @@ namespace CppSharp.Generators.CSharp
         public CSharpTypePrinterResult VisitArrayType(ArrayType array,
             TypeQualifiers quals)
         {
+            if (ContextKind == CSharpTypePrinterContextKind.Native &&
+                array.SizeType == ArrayType.ArraySize.Constant)
+            {
+                PrimitiveType primitive;
+                if (!array.Type.Desugar().IsPrimitiveType(out primitive))
+                    throw new NotSupportedException();
+
+                return new CSharpTypePrinterResult()
+                {
+                    Type = string.Format("fixed {0}", array.Type.Visit(this, quals)),
+                    NameSuffix = string.Format("[{0}]", array.Size)
+                };
+            }
+
             return string.Format("{0}[]", array.Type.Visit(this));
 
             // C# only supports fixed arrays in unsafe sections
