@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
-using CppSharp.Generators;
 
 namespace CppSharp
 {
@@ -310,14 +309,19 @@ namespace CppSharp
 
         public static void IgnoreHeadersWithName(this Library library, string pattern)
         {
-            var modules = library.TranslationUnits.FindAll(
-                m => Regex.Match(m.FilePath, pattern).Success);
-
-            foreach (var module in modules)
+            var units = library.TranslationUnits.FindAll(m =>
             {
-                module.IsGenerated = false;
-                module.IsProcessed = true;
-                module.ExplicityIgnored = true;
+                var hasMatch = Regex.Match(m.FilePath, pattern).Success;
+                if (m.IncludePath != null)
+                    hasMatch |= Regex.Match(m.IncludePath, pattern).Success;
+                return hasMatch;
+            });
+
+            foreach (var unit in units)
+            {
+                unit.IsGenerated = false;
+                unit.IsProcessed = true;
+                unit.ExplicityIgnored = true;
             }
         }
 
