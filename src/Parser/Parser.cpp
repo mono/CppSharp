@@ -341,6 +341,8 @@ CppSharp::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
     if (!isCompleteDefinition)
         return RC;
 
+    HandlePreprocessedEntities(Record, RC);
+
     RC->IsPOD = Record->isPOD();
     RC->IsUnion = Record->isUnion();
     RC->IsAbstract = Record->isAbstract();
