@@ -10,6 +10,15 @@ namespace CppSharp.Passes
     {
         public override bool VisitClassDecl(Class @class)
         {
+            if (@class.CompleteDeclaration != null)
+                return VisitClassDecl(@class.CompleteDeclaration as Class);
+
+            if (!VisitDeclaration(@class))
+                return false;
+
+            if (AlreadyVisited(@class))
+                return false;
+
             // Check for C++ operators that cannot be represented in C#.
             CheckInvalidOperators(@class);
 
@@ -66,19 +75,26 @@ namespace CppSharp.Passes
 
             var existingKind = missingKind == op2 ? op1 : op2;
 
-            var overload = @class.FindOperator(existingKind).First();
-            var @params = overload.Parameters;
-
-            var method = new Method()
+            // FIXME: We have to check for missing overloads per overload instance.
+            foreach (var overload in @class.FindOperator(existingKind))
             {
-                IsSynthetized = true,
-                Kind = CXXMethodKind.Operator,
-                OperatorKind = missingKind,
-                ReturnType = overload.ReturnType,
-                Parameters = @params
-            };
+                if (overload.Ignore) continue;
 
-            @class.Methods.Insert(index, method);
+                var @params = overload.Parameters;
+
+                var method = new Method()
+                {
+                    Name = CSharpTextTemplate.GetOperatorIdentifier(missingKind),
+                    Namespace = @class,
+                    IsSynthetized = true,
+                    Kind = CXXMethodKind.Operator,
+                    OperatorKind = missingKind,
+                    ReturnType = overload.ReturnType,
+                    Parameters = @params
+                };
+
+                @class.Methods.Insert(index, method);
+            }
         }
 
         static CXXOperatorKind CheckMissingOperatorOverloadPair(Class @class,
