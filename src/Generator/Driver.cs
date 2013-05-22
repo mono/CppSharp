@@ -139,6 +139,11 @@ namespace CppSharp
             passes.CleanUnit(Options);
             passes.SortDeclarations();
             passes.ResolveIncompleteDecls();
+
+            if (Transform != null)
+                Transform.SetupPasses(this, passes);
+
+            passes.CleanInvalidDeclNames();
             passes.CheckIgnoredDecls();
 
             passes.CheckTypeReferences();
@@ -150,11 +155,6 @@ namespace CppSharp
                 passes.CheckAbiParameters(Options);
                 passes.CheckOperatorOverloads();
             }
-
-            if (Transform != null)
-                Transform.SetupPasses(this, passes);
-
-            passes.CleanInvalidDeclNames();
 
             passes.RunPasses();
 
