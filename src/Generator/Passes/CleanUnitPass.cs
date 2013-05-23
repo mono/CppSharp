@@ -35,8 +35,10 @@ namespace CppSharp.Passes
                     shortestIncludePath = inc;
             }
 
-            return DriverOptions.IncludePrefix
+            includePath = DriverOptions.IncludePrefix
                 + shortestIncludePath.TrimStart(new char[] { '\\', '/' });
+
+            return includePath.Replace('\\', '/');
         }
     }
 

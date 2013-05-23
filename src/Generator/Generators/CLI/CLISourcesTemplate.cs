@@ -19,12 +19,12 @@ namespace CppSharp.Generators.CLI
         {
             GenerateStart();
 
-            var file = Path.GetFileNameWithoutExtension(TranslationUnit.FileName);
+            var file = Path.GetFileNameWithoutExtension(TranslationUnit.FileName).Replace('\\', '/');
 
             if (Driver.Options.GenerateName != null)
                 file = Driver.Options.GenerateName(TranslationUnit);
 
-            WriteLine("#include \"{0}{1}.h\"", file);
+            WriteLine("#include \"{0}.h\"", file);
 
             GenerateForwardReferenceHeaders();
 
@@ -69,7 +69,7 @@ namespace CppSharp.Generators.CLI
                 if (includeName == Path.GetFileNameWithoutExtension(((TextTemplate) this).TranslationUnit.FileName))
                     continue;
 
-                includes.Add(string.Format("#include \"{0}.h\"", includeName));
+                includes.Add(string.Format("#include \"{0}.h\"", includeName.Replace('\\', '/')));
             }
 
             foreach (var include in Includes)
@@ -377,7 +377,7 @@ namespace CppSharp.Generators.CLI
             WriteStartBraceIndent();
 
             var paramNames = @params.Select(param => param.Name).ToList();
-            WriteLine("_{0}({1});", @event.Name, string.Join(" ", paramNames));
+            WriteLine("_{0}({1});", @event.Name, string.Join(", ", paramNames));
 
             WriteCloseBraceIndent();
         }
