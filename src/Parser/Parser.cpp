@@ -262,6 +262,56 @@ static std::string GetTagDeclName(const clang::TagDecl* D)
     return GetDeclName(D);
 }
 
+static clang::Decl* GetPreviousDeclInContext(const clang::Decl* D)
+{
+    assert(!D->getLexicalDeclContext()->decls_empty());
+
+    clang::Decl* prevDecl = nullptr;
+    for(auto it =  D->getDeclContext()->decls_begin();
+             it != D->getDeclContext()->decls_end(); it++)
+    {
+        if((*it) == D)
+            return prevDecl;
+        prevDecl = (*it);
+    }
+
+    return nullptr;
+}
+
+static clang::SourceLocation GetDeclStartLocation(clang::CompilerInstance* C,
+                                                  const clang::Decl* D)
+{
+    auto &SM = C->getSourceManager();
+    auto startLoc = SM.getExpansionLoc(D->getLocStart());
+    auto startOffset = SM.getFileOffset(startLoc);
+
+    auto lineNo = SM.getExpansionLineNumber(startLoc);
+    auto lineBeginLoc = SM.translateLineCol(SM.getFileID(startLoc), lineNo, 1);
+    auto lineBeginOffset = SM.getFileOffset(lineBeginLoc);
+    assert(lineBeginOffset <= startOffset);
+
+    auto prevDecl = GetPreviousDeclInContext(D);
+    if(!prevDecl)
+        return lineBeginLoc;
+
+    auto prevDeclEndLoc = SM.getExpansionLoc(prevDecl->getLocEnd());
+    auto prevDeclEndOffset = SM.getFileOffset(prevDeclEndLoc);
+
+    if(SM.getFileID(prevDeclEndLoc) != SM.getFileID(startLoc))
+        return lineBeginLoc;
+
+    assert(prevDeclEndOffset <= startOffset);
+
+    if(prevDeclEndOffset < lineBeginOffset)
+        return lineBeginLoc;
+
+    // Declarations don't share same macro expansion
+    if(SM.getExpansionLoc(prevDecl->getLocStart()) != startLoc)
+        return prevDeclEndLoc;
+
+    return GetDeclStartLocation(C, prevDecl);
+}
+
 std::string Parser::GetTypeName(const clang::Type* Type)
 {
     using namespace clang;
@@ -341,7 +391,15 @@ CppSharp::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
     if (!isCompleteDefinition)
         return RC;
 
-    HandlePreprocessedEntities(Record, RC);
+    auto headStartLoc = GetDeclStartLocation(C.get(), Record);
+    auto headEndLoc = Record->getLocation(); // identifier location
+    auto bodyEndLoc = Record->getLocEnd();
+
+    auto headRange = clang::SourceRange(headStartLoc, headEndLoc);
+    auto bodyRange = clang::SourceRange(headEndLoc, bodyEndLoc);
+
+    HandlePreprocessedEntities(RC, headRange, CppSharp::MacroLocation::ClassHead);
+    HandlePreprocessedEntities(RC, bodyRange, CppSharp::MacroLocation::ClassBody);
 
     RC->IsPOD = Record->isPOD();
     RC->IsUnion = Record->isUnion();
@@ -1205,10 +1263,20 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, CppSharp::Function^ F,
     TypeLoc RTL;
     if (auto TSI = FD->getTypeSourceInfo())
     {
-       TypeLoc TL = TSI->getTypeLoc();
-       //RTL = ResolveTypeLoc(TL).getAs<FunctionTypeLoc>.getResultLoc();
-       RTL = TL.getAs<FunctionTypeLoc>().getResultLoc();
+        FunctionTypeLoc FTL = TSI->getTypeLoc().getAs<FunctionTypeLoc>();
+        RTL = FTL.getResultLoc();
+
+        auto &SM = C->getSourceManager();
+        auto headStartLoc = GetDeclStartLocation(C.get(), FD);
+        auto headEndLoc = SM.getExpansionLoc(FTL.getLParenLoc());
+        auto headRange = clang::SourceRange(headStartLoc, headEndLoc);
+
+        HandlePreprocessedEntities(F, headRange, CppSharp::MacroLocation::FunctionHead);
+        HandlePreprocessedEntities(F, FTL.getParensRange(), CppSharp::MacroLocation::FunctionParameters);
+        //auto bodyRange = clang::SourceRange(FTL.getRParenLoc(), FD->getLocEnd());
+        //HandlePreprocessedEntities(F, bodyRange, CppSharp::MacroLocation::FunctionBody);
     }
+
     F->ReturnType = GetQualifiedType(FD->getResultType(),
         WalkType(FD->getResultType(), &RTL));
 
@@ -1448,18 +1516,19 @@ bool Parser::GetPreprocessedEntityText(clang::PreprocessedEntity* PE, std::strin
     return !Invalid && !Text.empty();
 }
 
-void Parser::HandlePreprocessedEntities(clang::Decl* D, CppSharp::Declaration^ Decl)
+void Parser::HandlePreprocessedEntities(CppSharp::Declaration^ Decl,
+                                        clang::SourceRange sourceRange,
+                                        CppSharp::MacroLocation macroLocation)
 {
     using namespace clang;
     auto PPRecord = C->getPreprocessor().getPreprocessingRecord();
 
-    auto SourceRange = D->getSourceRange();
-    auto Range = PPRecord->getPreprocessedEntitiesInRange(SourceRange);
+    auto Range = PPRecord->getPreprocessedEntitiesInRange(sourceRange);
 
     for (auto it = Range.first; it != Range.second; ++it)
     {
         PreprocessedEntity* PPEntity = (*it);
-
+        
         CppSharp::PreprocessedEntity^ Entity;
         switch(PPEntity->getKind())
         {
@@ -1483,8 +1552,10 @@ void Parser::HandlePreprocessedEntities(clang::Decl* D, CppSharp::Declaration^ D
             break;
         }
         default:
-            break;
+            continue;
         }
+
+        Entity->Location = macroLocation;
 
         Decl->PreprocessedEntities->Add(Entity);
     }

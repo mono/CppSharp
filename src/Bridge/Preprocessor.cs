@@ -1,12 +1,22 @@
 ﻿namespace CppSharp
 {
+    public enum MacroLocation
+    {
+        Unknown,
+        ClassHead,
+        ClassBody,
+        FunctionHead,
+        FunctionParameters,
+        FunctionBody,
+    };
+
     /// <summary>
     /// Base class that describes a preprocessed entity, which may
     /// be a preprocessor directive or macro expansion.
     /// </summary>
     public abstract class PreprocessedEntity : Declaration
     {
-
+        public MacroLocation Location = MacroLocation.Unknown;
     }
 
     /// <summary>

@@ -156,7 +156,8 @@ protected:
     void HandleComments(clang::Decl* D, CppSharp::Declaration^);
     void WalkFunction(clang::FunctionDecl* FD, CppSharp::Function^ F,
         bool IsDependent = false);
-    void HandlePreprocessedEntities(clang::Decl* D, CppSharp::Declaration^);
+    void HandlePreprocessedEntities(CppSharp::Declaration^ Decl, clang::SourceRange sourceRange,
+                                    CppSharp::MacroLocation macroLocation = CppSharp::MacroLocation::Unknown);
     bool GetPreprocessedEntityText(clang::PreprocessedEntity*, std::string& Text);
 
     CppSharp::TranslationUnit^ GetTranslationUnit(clang::SourceLocation Loc,
