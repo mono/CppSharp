@@ -19,7 +19,7 @@ namespace CppSharp.Generators.CLI
 
     public class CLITypePrinter : ITypePrinter<string>, IDeclVisitor<string>
     {
-        public Library Library { get; set; }
+        public Driver Driver { get; set; }
         public CLITypePrinterContext Context { get; set; }
 
         readonly ITypeMapDatabase TypeMapDatabase;
@@ -27,7 +27,7 @@ namespace CppSharp.Generators.CLI
 
         public CLITypePrinter(Driver driver)
         {
-            Library = driver.Library;
+            Driver = driver;
             TypeMapDatabase = driver.TypeDatabase;
             Options = driver.Options;
             Context = new CLITypePrinterContext();
@@ -248,7 +248,7 @@ namespace CppSharp.Generators.CLI
             var names = new List<string>();
 
             if (Options.GenerateLibraryNamespace)
-                names.Add(Library.Name);
+                names.Add(Driver.Library.Name);
 
             if (!string.IsNullOrEmpty(decl.Namespace.QualifiedName))
                 names.Add(decl.Namespace.QualifiedName);
