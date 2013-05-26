@@ -251,6 +251,15 @@ namespace CppSharp.Generators.CSharp
             return true;
         }
 
+        public override bool VisitArrayType(ArrayType array, TypeQualifiers quals)
+        {
+            if (!VisitType(array, quals))
+                return false;
+
+            Context.Return.Write("null");
+            return true;
+        }
+
         public bool VisitDelegateType(FunctionType function, string type)
         {
             Context.Return.Write("Marshal.GetFunctionPointerForDelegate({0})",
