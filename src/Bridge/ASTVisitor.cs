@@ -278,8 +278,9 @@ namespace CppSharp
             if (retType.Type != null)
                 retType.Type.Visit(this, retType.Qualifiers);
 
-            foreach (var param in function.Parameters)
-                param.Visit(this);
+            if (Options.VisitFunctionParameters)
+                foreach (var param in function.Parameters)
+                    param.Visit(this);
 
             return true;
         }    
