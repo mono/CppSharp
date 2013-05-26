@@ -26,7 +26,7 @@ namespace CppSharp.Generators.CSharp
 
         public static string GeneratedIdentifier(string id)
         {
-            return "__" + id;
+            return "_" + id;
         }
 
         public static string SafeIdentifier(string id)
@@ -576,6 +576,8 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
+        #endregion
+
         private void GenerateFieldProperty(Field field)
         {
             var @class = field.Class;
@@ -944,7 +946,6 @@ namespace CppSharp.Generators.CSharp
 
             // Output a default constructor that takes the native pointer.
             GenerateNativeConstructor(@class);
-            NeedNewLine();
 
             foreach (var ctor in @class.Constructors)
             {
@@ -1030,7 +1031,6 @@ namespace CppSharp.Generators.CSharp
             {
                 WriteLine("var {0} = (Internal*){1}.ToPointer();",
                     Helpers.GeneratedIdentifier("ptr"), "native");
-
                 GenerateStructMarshalingFields(@class);
             }
 
@@ -1062,7 +1062,7 @@ namespace CppSharp.Generators.CSharp
             if (hasBase && !@class.IsValueType)
             {
                 PushIndent();
-                Write(": this(", QualifiedIdentifier(@class.Bases[0].Class));
+                Write(": this(");
 
                 if (method != null)
                     Write("IntPtr.Zero");
