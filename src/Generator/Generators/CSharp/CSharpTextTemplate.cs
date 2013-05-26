@@ -293,23 +293,18 @@ namespace CppSharp.Generators.CSharp
 
         public void GenerateClassInternals(Class @class)
         {
-            var typePrinter = TypePrinter as CSharpTypePrinter;
-            typePrinter.PushContext(CSharpTypePrinterContextKind.Native);
-
             WriteLine("[StructLayout(LayoutKind.Explicit, Size = {0})]",
                 @class.Layout.Size);
 
-            Write("internal ");
-
-            if (@class.HasBaseClass)
-                Write("new ");
-
-            WriteLine("struct Internal");
+            GenerateClassInternalHead(@class);
             WriteStartBraceIndent();
 
             ResetNewLine();
 
-        GenerateClassFields(@class, isInternal: true);
+            var typePrinter = TypePrinter as CSharpTypePrinter;
+            typePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+
+            GenerateClassFields(@class, isInternal: true);
 
             foreach (var ctor in @class.Constructors)
             {
@@ -317,7 +312,7 @@ namespace CppSharp.Generators.CSharp
                     continue;
 
                 NewLineIfNeeded();
-                GenerateFunction(ctor, @class);
+                GenerateInternalFunction(ctor);
             }
 
             foreach (var method in @class.Methods)
@@ -332,13 +327,23 @@ namespace CppSharp.Generators.CSharp
                     continue;
 
                 NewLineIfNeeded();
-                GenerateFunction(method, @class);
+                GenerateInternalFunction(method);
             }
+
+            typePrinter.PopContext();
 
             WriteCloseBraceIndent();
             NeedNewLine();
+        }
 
-            typePrinter.PopContext();
+        private void GenerateClassInternalHead(Class @class = null)
+        {
+            Write("public ");
+
+            if (@class != null && @class.HasBaseClass)
+                Write("new ");
+
+            WriteLine("struct Internal");
         }
 
         private void GenerateStructMarshalingFields(Class @class)
@@ -603,7 +608,7 @@ namespace CppSharp.Generators.CSharp
             {
                 var function = decl as Function;
                 var parameters = new List<Parameter> { param };
-                GenerateInternalFunctionCall(function, @class, parameters);
+                GenerateInternalFunctionCall(function, parameters);
             }
             else if (decl is Field)
             {
@@ -638,7 +643,7 @@ namespace CppSharp.Generators.CSharp
             if (decl is Function)
             {
                 var function = decl as Function;
-                GenerateInternalFunctionCall(function, @class);
+                GenerateInternalFunctionCall(function);
                 @return = "ret";
             }
             else if (decl is Field)
@@ -923,7 +928,7 @@ namespace CppSharp.Generators.CSharp
             else
                 Write("{0} {1}(", method.ReturnType, functionName);
 
-            GenerateMethodParameters(method, @class);
+            GenerateMethodParameters(method);
 
             WriteLine(")");
 
@@ -944,14 +949,14 @@ namespace CppSharp.Generators.CSharp
                 }
                 else
                 {
-                    GenerateInternalFunctionCall(method, @class);
+                    GenerateInternalFunctionCall(method);
                 }
             }
             else if (@class.IsValueType)
             {
                 if (method.IsConstructor)
                 {
-                    GenerateInternalFunctionCall(method, @class);
+                    GenerateInternalFunctionCall(method);
                 }
                 else if (method.IsOperator)
                 {
@@ -959,7 +964,7 @@ namespace CppSharp.Generators.CSharp
                 }
                 else
                 {
-                    GenerateInternalFunctionCall(method, @class);
+                    GenerateInternalFunctionCall(method);
                 }
             }
 
@@ -1001,7 +1006,7 @@ namespace CppSharp.Generators.CSharp
                 return;
             }
 
-            GenerateInternalFunctionCall(method, @class);
+            GenerateInternalFunctionCall(method);
         }
 
         private void GenerateClassConstructor(Method method, Class @class)
@@ -1018,7 +1023,7 @@ namespace CppSharp.Generators.CSharp
             WriteLine(");");
         }
 
-        public void GenerateInternalFunctionCall(Function function, Class @class,
+        public void GenerateInternalFunctionCall(Function function,
             List<Parameter> parameters = null)
         {
             if (parameters == null)
@@ -1026,7 +1031,7 @@ namespace CppSharp.Generators.CSharp
 
             var functionName = string.Format("Internal.{0}",
                 GetFunctionNativeIdentifier(function));
-            GenerateFunctionCall(functionName, parameters, function, @class);
+            GenerateFunctionCall(functionName, parameters, function);
         }
 
         public void GenerateFunctionCall(string functionName, List<Parameter> parameters,
@@ -1265,13 +1270,13 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
-        private void GenerateMethodParameters(Method method, Class @class)
+        private void GenerateMethodParameters(Function function)
         {
             var @params = new List<string>();
 
-            for (var i = 0; i < method.Parameters.Count; ++i)
+            for (var i = 0; i < function.Parameters.Count; ++i)
             {
-                var param = method.Parameters[i];
+                var param = function.Parameters[i];
 
                 if (param.Kind == ParameterKind.HiddenStructureReturn)
                     continue;
@@ -1491,7 +1496,7 @@ namespace CppSharp.Generators.CSharp
             return true;
         }
 
-        public void GenerateFunction(Function function, Class @class = null)
+        public void GenerateInternalFunction(Function function)
         {
             if(function.Ignore) return;
 
@@ -1515,6 +1520,8 @@ namespace CppSharp.Generators.CSharp
             var @params = new List<string>();
 
             var typePrinter = TypePrinter as CSharpTypePrinter;
+            typePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+
             var retType = typePrinter.VisitParameterDecl(new Parameter()
                 {
                     QualifiedType = function.ReturnType
@@ -1545,13 +1552,18 @@ namespace CppSharp.Generators.CSharp
             }
 
             if (method != null && method.IsConstructor)
+            {
+                var @class = method.Namespace as Class;
                 if (Options.IsMicrosoftAbi && @class.Layout.HasVirtualBases)
                     @params.Add("int " + GeneratedIdentifier("forBases"));
+            }
 
             WriteLine("public unsafe static extern {0} {1}({2});", retType,
                       GetFunctionIdentifier(function),
                       string.Join(", ", @params));
             NeedNewLine();
+
+            typePrinter.PopContext();
         }
     }
 
