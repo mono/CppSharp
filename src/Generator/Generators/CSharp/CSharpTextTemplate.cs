@@ -376,6 +376,61 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
+        private void GenerateStructInternalMarshaling(Class @class)
+        {
+            var marshalVar = Helpers.GeneratedIdentifier("native");
+
+            WriteLine("var {0} = new {1}.Internal();", marshalVar, @class.Name);
+            GenerateStructInternalMarshalingFields(@class, marshalVar);
+
+            WriteLine("return {0};", marshalVar);
+        }
+
+        private void GenerateStructInternalMarshalingFields(Class @class, string marshalVar)
+        {
+            foreach (var @base in @class.Bases)
+            {
+                if (!@base.IsClass || @base.Class.Ignore)
+                    continue;
+
+                var baseClass = @base.Class;
+                GenerateStructInternalMarshalingFields(baseClass, marshalVar);
+            }
+
+            foreach (var field in @class.Fields)
+            {
+                if (field.Ignore)
+                    continue;
+
+                GenerateStructInternalMarshalingField(field, marshalVar);
+            }
+        }
+
+        private void GenerateStructInternalMarshalingField(Field field, string marshalVar)
+        {
+            var marshalCtx = new CSharpMarshalContext(Driver)
+            {
+                ArgName = field.Name,
+            };
+
+            var marshal = new CSharpMarshalManagedToNativePrinter(marshalCtx);
+            field.Visit(marshal);
+
+            if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
+               WriteLine(marshal.Context.SupportBefore);
+
+            if (field.Type.IsPointer())
+            {
+                WriteLine("if ({0} != null)", field.Name);
+                PushIndent();
+            }
+
+           WriteLine("{0}.{1} = {2};", marshalVar, field.OriginalName, marshal.Context.Return);
+
+            if (field.Type.IsPointer())
+                PopIndent();
+        }
+
         public bool ShouldGenerateClassNativeField(Class @class)
         {
             if (!@class.IsRefType)
@@ -806,6 +861,24 @@ namespace CppSharp.Generators.CSharp
             }
 
             WriteCloseBraceIndent();
+            NeedNewLine();
+
+            if (@class.IsValueType)
+            {
+                NewLineIfNeeded();
+                WriteLine("internal Internal ToInternal()");
+                WriteStartBraceIndent();
+                GenerateStructInternalMarshaling(@class);
+                WriteCloseBraceIndent();
+                NewLine();
+
+                WriteLine("internal void FromInternal(Internal* native)");
+                WriteStartBraceIndent();
+                WriteLine("var {0} = {1};", Helpers.GeneratedIdentifier("ptr"), "native");
+                GenerateStructMarshalingFields(@class);
+                WriteCloseBraceIndent();
+                NeedNewLine();
+            }
         }
 
         private bool GenerateClassConstructorBase(Class @class, Method method)

@@ -391,67 +391,7 @@ namespace CppSharp.Generators.CSharp
 
         private void MarshalValueClass(Class @class)
         {
-            var marshalVar = Helpers.GeneratedIdentifier("marshal")
-                + Context.ParameterIndex++;
-
-            Context.SupportBefore.WriteLine("var {0} = new {1}.Internal();", marshalVar,
-                @class.Name);
-
-            MarshalValueClassFields(@class, marshalVar);
-
-            Context.Return.Write(marshalVar);
-        }
-
-        private void MarshalValueClassFields(Class @class, string marshalVar)
-        {
-            foreach (var @base in @class.Bases)
-            {
-                if (!@base.IsClass || @base.Class.Ignore)
-                    continue;
-
-                var baseClass = @base.Class;
-                MarshalValueClassFields(baseClass, marshalVar);
-            }
-
-            foreach (var field in @class.Fields)
-            {
-                if (field.Ignore)
-                    continue;
-
-                MarshalValueClassField(field, marshalVar);
-            }
-        }
-
-        private void MarshalValueClassField(Field field, string marshalVar)
-        {
-            var fieldRef = string.Format("{0}.{1}", Context.Parameter.Name,
-                                         field.Name);
-
-            var marshalCtx = new CSharpMarshalContext(Context.Driver)
-            {
-                ArgName = fieldRef,
-                ParameterIndex = Context.ParameterIndex++
-            };
-
-            var marshal = new CSharpMarshalManagedToNativePrinter(marshalCtx);
-            field.Visit(marshal);
-
-            Context.ParameterIndex = marshalCtx.ParameterIndex;
-
-            if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
-                Context.SupportBefore.Write(marshal.Context.SupportBefore);
-
-            if (field.Type.IsPointer())
-            {
-                Context.SupportBefore.WriteLine("if ({0} != nullptr)", fieldRef);
-                Context.SupportBefore.PushIndent();
-            }
-
-            Context.SupportBefore.WriteLine("{0}.{1} = {2};", marshalVar,
-                field.OriginalName, marshal.Context.Return);
-
-            if (field.Type.IsPointer())
-                Context.SupportBefore.PopIndent();
+            Context.Return.Write("{0}.ToInternal()", Helpers.SafeIdentifier(Context.Parameter.Name));
         }
 
         public override bool VisitFieldDecl(Field field)
