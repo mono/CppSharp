@@ -234,7 +234,7 @@ namespace CppSharp
     {
         public PointerType()
         {
-        
+            Modifier = TypeModifier.Pointer;
         }
 
         /// <summary>
