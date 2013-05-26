@@ -199,13 +199,33 @@ namespace CppSharp.Generators.CSharp
             if (context.HasFunctions)
             {
                 NewLineIfNeeded();
-                WriteLine("public partial class {0}{1}", SafeIdentifier(Options.LibraryName),
+                WriteLine("public partial class {0}{1}", SafeIdentifier(Options.OutputNamespace),
                     TranslationUnit.FileNameWithoutExtension);
                 WriteStartBraceIndent();
 
-                // Generate all the function declarations.
+                GenerateClassInternalHead();
+                WriteStartBraceIndent();
+
+                // Generate all the internal function declarations.
                 foreach (var function in context.Functions)
+                {
+                    if (function.Ignore) continue;
+
+                    NewLineIfNeeded();
+                    GenerateInternalFunction(function);
+                    NeedNewLine();
+                }
+
+                WriteCloseBraceIndent();
+
+                foreach (var function in context.Functions)
+                {
+                    if (function.Ignore) continue;
+
+                    NewLineIfNeeded();
                     GenerateFunction(function);
+                    NeedNewLine();
+                }
 
                 WriteCloseBraceIndent();
             }
@@ -910,6 +930,21 @@ namespace CppSharp.Generators.CSharp
         #endregion
 
         #region Methods / Functions
+
+        public void GenerateFunction(Function function)
+        {
+            GenerateDeclarationCommon(function);
+
+            var functionName = GetFunctionIdentifier(function);
+            Write("public static {0} {1}(", function.ReturnType, functionName);
+            GenerateMethodParameters(function);
+            WriteLine(")");
+            WriteStartBraceIndent();
+
+            GenerateInternalFunctionCall(function);
+
+            WriteCloseBraceIndent();
+        }
 
         public void GenerateMethod(Method method, Class @class)
         {
