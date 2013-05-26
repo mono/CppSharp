@@ -245,7 +245,11 @@ namespace CppSharp
             foreach (var @class in library.FindClass(source))
             {
                 foreach (var dest in library.FindClass(destination))
+                {
                     dest.Fields.AddRange(@class.Fields);
+                    foreach (var field in dest.Fields)
+                        field.Namespace = dest;
+                }
             }
         }
 
