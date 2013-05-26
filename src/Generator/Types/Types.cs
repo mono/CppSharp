@@ -9,45 +9,18 @@ namespace CppSharp
     /// </summary>
     public class TypeCompletionChecker : AstVisitor
     {
+        public TypeCompletionChecker()
+        {
+            Options.VisitClassBases = false;
+            Options.VisitTemplateArguments = false;
+        }
+
         public override bool VisitDeclaration(Declaration decl)
         {
             if (decl.CompleteDeclaration != null)
                 return true;
 
             return !decl.IsIncomplete;
-        }
-
-        public override bool VisitBuiltinType(BuiltinType builtin, TypeQualifiers quals)
-        {
-            return true;
-        }
-
-        public override bool VisitFunctionType(FunctionType function, TypeQualifiers quals)
-        {
-            if (!function.ReturnType.Visit(this))
-                return false;
-
-            foreach (var arg in function.Parameters)
-            {
-                if (!arg.Type.Visit(this))
-                    return false;
-            }
-
-            return true;
-        }
-
-        public override bool VisitFunctionDecl(Function function)
-        {
-            if (!function.ReturnType.Type.Visit(this, function.ReturnType.Qualifiers))
-                return false;
-
-            foreach (var param in function.Parameters)
-            {
-                if (!param.Visit(this))
-                    return false;
-            }
-
-            return true;
         }
     }
 
@@ -62,7 +35,8 @@ namespace CppSharp
         public TypeIgnoreChecker(ITypeMapDatabase database)
         {
             TypeMapDatabase = database;
-            IsIgnored = false;
+            Options.VisitClassBases = false;
+            Options.VisitTemplateArguments = false;
         }
 
         void Ignore()
@@ -86,6 +60,12 @@ namespace CppSharp
             }
 
             return true;
+        }
+
+        public override bool VisitClassDecl(Class @class)
+        {
+            VisitDeclaration(@class);
+            return false;
         }
 
         public override bool VisitTypedefType(TypedefType typedef,
@@ -121,10 +101,10 @@ namespace CppSharp
             var decl = template.Template.TemplatedDecl;
 
             TypeMap typeMap;
-            if (TypeMapDatabase.FindTypeMap(decl, out typeMap)
-                && typeMap.IsIgnored)
+            if (TypeMapDatabase.FindTypeMap(decl, out typeMap))
             {
-                Ignore();
+                if (typeMap.IsIgnored)
+                    Ignore();
                 return false;
             }
 
