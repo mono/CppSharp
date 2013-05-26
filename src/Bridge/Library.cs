@@ -84,6 +84,13 @@ namespace CppSharp
             if (FindLibraryBySymbol(symbol, out lib))
                 return true;
 
+            // Check for C symbols with a leading underscore.
+            if (FindLibraryBySymbol("_" + symbol, out lib))
+            {
+                symbol = "_" + symbol;
+                return true;
+            }
+
             if (FindLibraryBySymbol("_imp_" + symbol, out lib))
             {
                 symbol = "_imp_" + symbol;
