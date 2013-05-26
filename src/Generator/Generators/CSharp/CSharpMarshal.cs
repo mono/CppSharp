@@ -285,8 +285,20 @@ namespace CppSharp.Generators.CSharp
             Class @class;
             if (pointee.Desugar().IsTagDecl(out @class) && @class.IsValueType)
             {
+                if (Context.Parameter.Usage == ParameterUsage.Out)
+                {
+                    Context.SupportBefore.WriteLine("var {0} = new {1}.Internal();",
+                        Helpers.GeneratedIdentifier(Context.ArgName), @class.Name);
+                }
+                else
+                {
+                    Context.SupportBefore.WriteLine("var {0} = {1}.ToInternal();",
+                            Helpers.GeneratedIdentifier(Context.ArgName),
+                            Helpers.SafeIdentifier(Context.Parameter.Name));
+                }
+
                 Context.Return.Write("new System.IntPtr(&{0})",
-                    Context.Parameter.Name);
+                    Helpers.GeneratedIdentifier(Context.ArgName));
                 return true;
             }
 
