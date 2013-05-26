@@ -55,10 +55,16 @@ namespace CppSharp.Passes
                 if (@operator.IsStatic)
                     @operator.Parameters = @operator.Parameters.Skip(1).ToList();
 
+                var type = new PointerType()
+                {
+                    QualifiedPointee = new QualifiedType(new TagType(@class)),
+                    Modifier = PointerType.TypeModifier.Pointer
+                };
+
                 @operator.Parameters.Insert(0, new Parameter
                 {
                     Name = Helpers.GeneratedIdentifier("op"),
-                    QualifiedType = new QualifiedType(new TagType(@class)),
+                    QualifiedType = new QualifiedType(type),
                     Kind = ParameterKind.OperatorParameter
                 });
             }
@@ -76,15 +82,16 @@ namespace CppSharp.Passes
             var existingKind = missingKind == op2 ? op1 : op2;
 
             // FIXME: We have to check for missing overloads per overload instance.
-            foreach (var overload in @class.FindOperator(existingKind))
+            foreach (var overload in @class.FindOperator(existingKind).ToList())
             {
                 if (overload.Ignore) continue;
 
                 var @params = overload.Parameters;
 
+                bool isBuiltin;
                 var method = new Method()
                 {
-                    Name = CSharpTextTemplate.GetOperatorIdentifier(missingKind),
+                    Name = CSharpTextTemplate.GetOperatorIdentifier(missingKind, out isBuiltin),
                     Namespace = @class,
                     IsSynthetized = true,
                     Kind = CXXMethodKind.Operator,
