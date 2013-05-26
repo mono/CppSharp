@@ -1725,6 +1725,10 @@ CppSharp::Declaration^ Parser::WalkDeclaration(clang::Decl* D,
     {
         auto VD = cast<VarDecl>(D);
         Decl = WalkVariable(VD);
+
+        auto NS = GetNamespace(VD);
+        Decl->Namespace = NS;
+        NS->Variables->Add(static_cast<CppSharp::Variable^>(Decl));
         break;
     }
     // Ignore these declarations since they must have been declared in
