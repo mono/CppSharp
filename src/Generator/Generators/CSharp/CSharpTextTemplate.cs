@@ -592,27 +592,17 @@ namespace CppSharp.Generators.CSharp
             Setter
         }
 
-        private string GetPropertyLocation<T>(T decl, PropertyMethodKind kind,
-            out bool isRefClass) where T : Declaration, ITypedDecl
+        private string GetVariableLocation(Variable @var)
         {
-            isRefClass = false;
+            string symbol;
+            if (!FindMangledDeclSymbol(@var, out symbol))
+                return string.Empty;
 
-            if (decl is Variable)
-            {
-                var @var = decl as Variable;
+            NativeLibrary library;
+            Driver.LibrarySymbols.FindLibraryBySymbol(symbol, out library);
 
-                string symbol;
-                if (!FindMangledDeclSymbol(@var, out symbol))
-                    return string.Empty;
-
-                NativeLibrary library;
-                Driver.LibrarySymbols.FindLibraryBySymbol(symbol, out library);
-
-                return string.Format("CppSharp.SymbolResolver.ResolveSymbol(\"{0}\", \"{1}\")",
-                    Path.GetFileNameWithoutExtension(library.FileName), symbol);
-            }
-
-            throw new NotSupportedException();
+            return string.Format("CppSharp.SymbolResolver.ResolveSymbol(\"{0}\", \"{1}\")",
+                Path.GetFileNameWithoutExtension(library.FileName), symbol);
         }
 
         private void GeneratePropertySetter<T>(T decl, Class @class)
@@ -699,17 +689,24 @@ namespace CppSharp.Generators.CSharp
 
                 WriteLine("return {0};", marshal.Context.Return);
             }
-            else
+            else if (decl is Variable)
             {
-                bool isRefClass;
-                @return = GetPropertyLocation(decl, PropertyMethodKind.Getter,
-                    out isRefClass);
+                var @var = decl as Variable;
+                var location = GetVariableLocation(@var);
+
+                var typePrinter = TypePrinter as CSharpTypePrinter;
+                typePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+
+                WriteLine("var {0} = ({1}*){2};", Helpers.GeneratedIdentifier("ptr"),
+                    @var.Type, location);
+
+                typePrinter.PopContext();
 
                 var ctx = new CSharpMarshalContext(Driver)
                 {
                     ArgName = decl.Name,
-                    ReturnVarName = @return,
-                    ReturnType = decl.QualifiedType
+                    ReturnVarName = "*" + Helpers.GeneratedIdentifier("ptr"),
+                    ReturnType = new QualifiedType(var.Type)
                 };
 
                 var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
