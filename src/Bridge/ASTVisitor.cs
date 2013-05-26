@@ -173,8 +173,8 @@ namespace CppSharp
             return true;
         }
 
-        public bool VisitTemplateParameterSubstitutionType(TemplateParameterSubstitutionType param,
-            TypeQualifiers quals)
+        public virtual bool VisitTemplateParameterSubstitutionType(
+            TemplateParameterSubstitutionType param, TypeQualifiers quals)
         {
             if (!VisitType(param, quals))
                 return false;
@@ -182,7 +182,8 @@ namespace CppSharp
             return param.Replacement.Type.Visit(this, quals);
         }
 
-        public bool VisitInjectedClassNameType(InjectedClassNameType injected, TypeQualifiers quals)
+        public virtual bool VisitInjectedClassNameType(InjectedClassNameType injected,
+            TypeQualifiers quals)
         {
             if (!VisitType(injected, quals))
                 return false;
@@ -190,7 +191,8 @@ namespace CppSharp
             return true;
         }
 
-        public bool VisitDependentNameType(DependentNameType dependent, TypeQualifiers quals)
+        public virtual bool VisitDependentNameType(DependentNameType dependent,
+            TypeQualifiers quals)
         {
             if (!VisitType(dependent, quals))
                 return false;
