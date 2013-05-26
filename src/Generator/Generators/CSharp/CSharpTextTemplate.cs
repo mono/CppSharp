@@ -230,6 +230,15 @@ namespace CppSharp.Generators.CSharp
                 WriteCloseBraceIndent();
             }
 
+            foreach (var @event in context.Events)
+            {
+                if (@event.Ignore) continue;
+
+                NewLineIfNeeded();
+                GenerateEvent(@event);
+                NeedNewLine();
+            }
+
             foreach(var childNamespace in context.Namespaces)
                 GenerateDeclContext(childNamespace);
 
@@ -795,6 +804,129 @@ namespace CppSharp.Generators.CSharp
 
             if (!variable.QualifiedType.Qualifiers.IsConst)
                 GeneratePropertySetter(variable, @class);
+
+            WriteCloseBraceIndent();
+        }
+
+        #region Events
+
+        public static List<Parameter> GetEventParameters(Event @event)
+        {
+            var i = 0;
+            var @params = new List<Parameter>();
+            foreach (var type in @event.Parameters)
+            {
+                @params.Add(new Parameter()
+                {
+                    Name = string.Format("{0}", GeneratedIdentifier(i++.ToString())),
+                    QualifiedType = type
+                });
+            }
+            return @params;
+        }
+
+        private string delegateName;
+        private string delegateInstance;
+        private string delegateRaise;
+
+        private void GenerateEvent(Event @event)
+        {
+            TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+            var @params = GetEventParameters(@event);
+            var args = TypePrinter.VisitParameters(@params, hasNames: true);
+            TypePrinter.PopContext();
+
+            delegateInstance = Helpers.GeneratedIdentifier(@event.Name);
+            delegateName = delegateInstance + "Delegate";
+            delegateRaise = delegateInstance + "RaiseInstance";
+
+            WriteLine("[UnmanagedFunctionPointerAttribute(CallingConvention.Cdecl)]");
+            WriteLine("delegate void {0}({1});", delegateName, args);
+            WriteLine("{0} {1};", delegateName, delegateRaise);
+            NewLine();
+
+            WriteLine("{0} {1};", @event.Type, delegateInstance);
+            WriteLine("public event {0} {1}", @event.Type, Helpers.SafeIdentifier(@event.Name));
+            WriteStartBraceIndent();
+
+            GenerateEventAdd(@event);
+            NewLine();
+
+            GenerateEventRemove(@event);
+
+            WriteCloseBraceIndent();
+            NewLine();
+
+            GenerateEventRaiseWrapper(@event);
+            NeedNewLine();
+        }
+
+        private void GenerateEventAdd(Event @event)
+        {
+            WriteLine("add");
+            WriteStartBraceIndent();
+
+            WriteLine("if ({0} == null)", delegateRaise);
+            WriteStartBraceIndent();
+
+            WriteLine("{0} = new {1}(_{2}Raise);", delegateRaise, delegateName, @event.Name);
+
+            WriteLine("var {0} = Marshal.GetFunctionPointerForDelegate({1}).ToPointer();",
+                Helpers.GeneratedIdentifier("ptr"), delegateInstance);
+
+            // Call type map here.
+
+            //WriteLine("((::{0}*)NativePtr)->{1}.Connect(_fptr);", @class.QualifiedOriginalName,
+            //    @event.OriginalName);
+
+            WriteCloseBraceIndent();
+
+            WriteLine("{0} = ({1})System.Delegate.Combine({0}, value);",
+                delegateInstance, @event.Type);
+
+            WriteCloseBraceIndent();
+        }
+
+        private void GenerateEventRemove(Event @event)
+        {
+            WriteLine("remove");
+            WriteStartBraceIndent();
+
+            WriteLine("{0} = ({1})System.Delegate.Remove({0}, value);",
+                delegateInstance, @event.Type);
+
+            WriteCloseBraceIndent();
+        }
+
+        private void GenerateEventRaiseWrapper(Event @event)
+        {
+            TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+            var @params = GetEventParameters(@event);
+            var args = TypePrinter.VisitParameters(@params, hasNames: true);
+            TypePrinter.PopContext();
+
+            WriteLine("void _{0}Raise({1})", @event.Name, args);
+            WriteStartBraceIndent();
+
+            var returns = new List<string>();
+            foreach (var param in @params)
+            {
+                var ctx = new CSharpMarshalContext(Driver)
+                {
+                    ReturnVarName = param.Name,
+                    ReturnType = param.QualifiedType
+                };
+
+                var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
+                param.Visit(marshal);
+
+                returns.Add(marshal.Context.Return);
+            }
+
+            WriteLine("if ({0} != null)", delegateInstance);
+            WriteStartBraceIndent();
+            WriteLine("{0}({1});", delegateInstance, string.Join(", ", returns));
+            WriteCloseBraceIndent();
 
             WriteCloseBraceIndent();
         }
