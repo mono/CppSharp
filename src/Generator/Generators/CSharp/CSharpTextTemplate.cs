@@ -1073,6 +1073,9 @@ namespace CppSharp.Generators.CSharp
                 PopIndent();
             }
 
+            if (@class.IsValueType)
+                WriteLineIndent(": this()");
+
             return hasBase;
         }
 
