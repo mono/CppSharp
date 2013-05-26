@@ -1724,6 +1724,11 @@ namespace CppSharp.Generators.CSharp
             FindMangledDeclLibrary(function, out library);
 
             var libName = (library != null) ? library.FileName : "SymbolNotFound";
+
+            var index = libName.LastIndexOf('.');
+            if (index >= 0)
+                libName = libName.Slice(0, index);
+
             Write("[DllImport(\"{0}\", ", libName);
 
             var callConv = Helpers.ToCSharpCallConv(function.CallingConvention);
