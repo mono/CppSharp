@@ -173,7 +173,7 @@ namespace CppSharp.Generators.CSharp
                 return isManagedContext ? "string" : "System.IntPtr";
 
             PrimitiveType primitive;
-            if (pointee.IsPrimitiveType(out primitive))
+            if (pointee.Desugar().IsPrimitiveType(out primitive))
                 return "System.IntPtr";
 
             Class @class;
@@ -242,6 +242,7 @@ namespace CppSharp.Generators.CSharp
                 typeMap.Declaration = decl;
                 typeMap.Type = template;
                 Context.Type = template;
+                Context.CSharpKind = ContextKind;
                 return new CSharpTypePrinterResult()
                     {
                         Type = GetCSharpSignature(typeMap),
