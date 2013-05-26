@@ -340,6 +340,9 @@ namespace CppSharp.Generators.CSharp
                 if (ctor.IsCopyConstructor || ctor.IsMoveConstructor)
                     continue;
 
+                if (ctor.IsPure)
+                    continue;
+
                 NewLineIfNeeded();
                 GenerateInternalFunction(ctor);
             }
@@ -353,6 +356,9 @@ namespace CppSharp.Generators.CSharp
                     continue;
 
                 if (method.IsSynthetized)
+                    continue;
+
+                if (method.IsPure)
                     continue;
 
                 NewLineIfNeeded();
@@ -1218,6 +1224,12 @@ namespace CppSharp.Generators.CSharp
         public void GenerateFunctionCall(string functionName, List<Parameter> parameters,
             Function function)
         {
+            if (function.IsPure)
+            {
+                WriteLine("throw new System.NotImplementedException();");
+                return;
+            }
+
             var retType = function.ReturnType;
             var needsReturn = !retType.Type.IsPrimitiveType(PrimitiveType.Void);
 

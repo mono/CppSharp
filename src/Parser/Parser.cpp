@@ -1256,6 +1256,7 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, CppSharp::Function^ F,
     F->IsVariadic = FD->isVariadic();
     F->IsInline = FD->isInlined();
     F->IsDependent = FD->isDependentContext();
+    F->IsPure = FD->isPure();
 
     auto AbiCC = GetAbiCallConv(CC, FD->isCXXInstanceMember(), FD->isVariadic());
     F->CallingConvention = ConvertCallConv(AbiCC);

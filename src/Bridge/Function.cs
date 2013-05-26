@@ -69,6 +69,7 @@ namespace CppSharp
         public List<Parameter> Parameters { get; set; }
         public bool IsVariadic { get; set; }
         public bool IsInline { get; set; }
+        public bool IsPure { get; set; }
 
         public CallingConvention CallingConvention { get; set; }
 
