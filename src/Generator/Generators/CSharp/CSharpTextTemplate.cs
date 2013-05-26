@@ -993,6 +993,20 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateNativeConstructor(Class @class)
         {
+            WriteLine("internal {0}({1}.Internal* native)", SafeIdentifier(@class.Name),
+                @class.Name);
+            WriteLineIndent(": this(new System.IntPtr(native))");
+            WriteStartBraceIndent();
+            WriteCloseBraceIndent();
+            NewLine();
+
+            WriteLine("internal {0}({1}.Internal native)", SafeIdentifier(@class.Name),
+                @class.Name);
+            WriteLineIndent(": this(&native)");
+            WriteStartBraceIndent();
+            WriteCloseBraceIndent();
+            NewLine();
+
             WriteLine("internal {0}(System.IntPtr native)", SafeIdentifier(@class.Name));
 
             var hasBaseClass = @class.HasBaseClass && @class.BaseClass.IsRefType;
