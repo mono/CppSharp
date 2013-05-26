@@ -1095,8 +1095,11 @@ namespace CppSharp.Generators.CSharp
 
             Write("public ");
 
-            if (method.IsStatic ||
-                method.Kind == CXXMethodKind.Operator)
+            var isBuiltinOperator = false;
+            if (method.IsOperator)
+                GetOperatorIdentifier(method.OperatorKind, out isBuiltinOperator);
+
+            if (method.IsStatic || (method.IsOperator && isBuiltinOperator))
                 Write("static ");
 
             var functionName = GetFunctionIdentifier(method);
@@ -1213,15 +1216,33 @@ namespace CppSharp.Generators.CSharp
         }
 
         public void GenerateFunctionCall(string functionName, List<Parameter> parameters,
-            Function function, Class @class = null)
+            Function function)
         {
             var retType = function.ReturnType;
             var needsReturn = !retType.Type.IsPrimitiveType(PrimitiveType.Void);
 
             var method = function as Method;
-            var needsInstance = method != null && !method.IsStatic && !method.IsOperator;
 
-            var isValueType = @class != null && @class.IsValueType;
+            bool isValueType = false;
+            bool needsInstance = false;
+
+            if (method != null)
+            {
+                var @class = method.Namespace as Class;
+
+                if (@class != null)
+                    isValueType = @class.IsValueType;
+
+                needsInstance = !method.IsStatic;
+
+                if (method.IsOperator)
+                {
+                    bool isBuiltin;
+                    GetOperatorIdentifier(method.OperatorKind, out isBuiltin);
+                    needsInstance &= !isBuiltin;
+                }
+            }
+
             var needsFixedThis = needsInstance && isValueType;
 
             Class retClass = null;
@@ -1540,10 +1561,12 @@ namespace CppSharp.Generators.CSharp
             WriteCloseBraceIndent();
         }
 
-        public static string GetOperatorIdentifier(CXXOperatorKind kind)
+        public static string GetOperatorIdentifier(CXXOperatorKind kind,
+            out bool isBuiltin)
         {
-            // These follow the order described in MSDN (Overloadable Operators).
+            isBuiltin = true;
 
+            // These follow the order described in MSDN (Overloadable Operators).
             switch (kind)
             {
                 // These unary operators can be overloaded
@@ -1602,8 +1625,11 @@ namespace CppSharp.Generators.CSharp
                 case CXXOperatorKind.Delete:
                 case CXXOperatorKind.Array_New:
                 case CXXOperatorKind.Array_Delete:
-                default: throw new NotImplementedException();
+                    isBuiltin = false;
+                    return "Operator" + kind.ToString();
             }
+
+            throw new NotSupportedException();
         }
 
         public string GetFunctionIdentifier(Function function)
@@ -1612,6 +1638,7 @@ namespace CppSharp.Generators.CSharp
             var isNativeContext = printer.ContextKind == CSharpTypePrinterContextKind.Native;
 
             string identifier;
+            bool isBuiltin;
 
             var method = function as Method;
             if (method != null && method.IsOperator)
@@ -1619,7 +1646,7 @@ namespace CppSharp.Generators.CSharp
                 if (isNativeContext)
                     identifier = "Operator" + method.OperatorKind.ToString();
                 else
-                    identifier = GetOperatorIdentifier(method.OperatorKind);
+                    identifier = GetOperatorIdentifier(method.OperatorKind, out isBuiltin);
             }
             else
             {
