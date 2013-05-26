@@ -1263,7 +1263,7 @@ namespace CppSharp.Generators.CSharp
             Class retClass = null;
             if (function.HasHiddenStructParameter)
             {
-                function.ReturnType.Type.IsTagDecl(out retClass);
+                function.ReturnType.Type.Desugar().IsTagDecl(out retClass);
 
                 WriteLine("var {0} = new {1}.Internal();", GeneratedIdentifier("udt"),
                     retClass.OriginalName);
@@ -1276,7 +1276,7 @@ namespace CppSharp.Generators.CSharp
 
             var names = (from param in @params
                          where !param.Param.Ignore
-                         select param.Name).ToList();
+                         select Helpers.SafeIdentifier(param.Name)).ToList();
 
             if (function.HasHiddenStructParameter)
             {
@@ -1286,15 +1286,16 @@ namespace CppSharp.Generators.CSharp
 
             if (needsInstance)
             {
-                names.Insert(0, needsFixedThis ? string.Format("new System.IntPtr({0})",
+                names.Insert(0, needsFixedThis ? string.Format("new System.IntPtr(&{0})",
                     GeneratedIdentifier("instance")) : Helpers.InstanceIdentifier);
             }
 
             if (needsFixedThis)
             {
-                WriteLine("fixed({0}* {1} = &this)", @class.QualifiedName,
-                    GeneratedIdentifier("instance"));
-                WriteStartBraceIndent();
+                //WriteLine("fixed({0}* {1} = &this)", @class.QualifiedName,
+                //    GeneratedIdentifier("instance"));
+                //WriteStartBraceIndent();
+                WriteLine("var {0} = ToInternal();", Helpers.GeneratedIdentifier("instance"));
             }
 
             if (needsReturn)
@@ -1319,6 +1320,12 @@ namespace CppSharp.Generators.CSharp
                 Write(cleanup);
             }
 
+            if (needsFixedThis)
+            {
+                //    WriteCloseBraceIndent();
+                WriteLine("FromInternal(&{0});", Helpers.GeneratedIdentifier("instance"));
+            }
+
             if (needsReturn)
             {
                 var ctx = new CSharpMarshalContext(Driver)
@@ -1339,21 +1346,11 @@ namespace CppSharp.Generators.CSharp
 
             if (function.HasHiddenStructParameter)
             {
-                WriteLine("var ret = new {0}();", retClass.Name);
-
-                if (retClass.IsValueType)
-                    WriteLine("*({0}.Internal*) &ret = {1};", retClass.Name,
-                        GeneratedIdentifier("udt"));
-                else
-                    WriteLine("*({0}.Internal*) ret.{1}.ToPointer() = {2};",
-                        retClass.Name, Helpers.InstanceIdentifier,
-                        GeneratedIdentifier("udt"));
+                WriteLine("var ret = new {0}({1});", retClass.Name,
+                    GeneratedIdentifier("udt"));
 
                 WriteLine("return ret;");
             }
-
-            if (needsFixedThis)
-                WriteCloseBraceIndent();
         }
 
         private void GenerateFunctionCallOutParams(IEnumerable<ParamMarshal> @params,
