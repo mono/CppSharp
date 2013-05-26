@@ -378,7 +378,7 @@ namespace CppSharp
 
             if (Options.VisitNamespaceVariables)
                 foreach (var decl in context.Variables)
-                    VisitVariableDecl(decl);
+                    decl.Visit(this);
 
             if (Options.VisitNamespaceEvents)
                 foreach (var decl in context.Events)
