@@ -335,6 +335,8 @@ namespace CppSharp.Generators.CSharp
 
             GenerateClassFields(@class, isInternal: true);
 
+            var functions = new HashSet<Function>();
+
             foreach (var ctor in @class.Constructors)
             {
                 if (ctor.IsCopyConstructor || ctor.IsMoveConstructor)
@@ -343,8 +345,7 @@ namespace CppSharp.Generators.CSharp
                 if (ctor.IsPure)
                     continue;
 
-                NewLineIfNeeded();
-                GenerateInternalFunction(ctor);
+                functions.Add(ctor);
             }
 
             foreach (var method in @class.Methods)
@@ -361,8 +362,13 @@ namespace CppSharp.Generators.CSharp
                 if (method.IsPure)
                     continue;
 
+                functions.Add(method);
+            }
+
+            foreach (var function in functions)
+            {
                 NewLineIfNeeded();
-                GenerateInternalFunction(method);
+                GenerateInternalFunction(function);
             }
 
             typePrinter.PopContext();
