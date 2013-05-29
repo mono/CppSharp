@@ -144,6 +144,42 @@ namespace CppSharp.Passes
             return true;
         }
 
+        public override bool VisitEvent(Event @event)
+        {
+            if (!VisitDeclaration(@event))
+                return false;
+
+            string msg;
+            if (HasInvalidDecl(@event, out msg))
+            {
+                @event.ExplicityIgnored = true;
+                Console.WriteLine("Event '{0}' was ignored due to {1} decl",
+                    @event.Name, msg);
+                return false;
+            }
+
+            foreach (var param in @event.Parameters)
+            {
+                if (HasInvalidDecl(param, out msg))
+                {
+                    @event.ExplicityIgnored = true;
+                    Console.WriteLine("Event '{0}' was ignored due to {1} param",
+                        @event.Name, msg);
+                    return false;
+                }
+
+                if (HasInvalidType(param.Type, out msg))
+                {
+                    @event.ExplicityIgnored = true;
+                    Console.WriteLine("Event '{0}' was ignored due to {1} param",
+                        @event.Name, msg);
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         #region Helpers
 
         /// <remarks>
