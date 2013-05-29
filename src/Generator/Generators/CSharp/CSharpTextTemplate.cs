@@ -365,6 +365,15 @@ namespace CppSharp.Generators.CSharp
                 functions.Add(method);
             }
 
+            foreach (var prop in @class.Properties)
+            {
+                if (prop.GetMethod != null)
+                    functions.Add(prop.GetMethod);
+
+                if (prop.SetMethod != null)
+                    functions.Add(prop.SetMethod);
+            }
+
             foreach (var function in functions)
             {
                 NewLineIfNeeded();
