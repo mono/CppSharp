@@ -145,6 +145,11 @@ namespace CppSharp
         public Type Type { get; set; }
         public TypeQualifiers Qualifiers { get; set; }
 
+        public T Visit<T>(ITypeVisitor<T> visitor)
+        {
+            return Type.Visit(visitor, Qualifiers);
+        }
+
         public override string ToString()
         {
             return Type.ToString();
@@ -211,7 +216,7 @@ namespace CppSharp
     public class FunctionType : Type
     {
         // Return type of the function.
-        public Type ReturnType;
+        public QualifiedType ReturnType;
 
         // Argument types.
         public List<Parameter> Parameters;

@@ -63,7 +63,7 @@ namespace CppSharp.Generators.CLI
             if (arguments.Count > 0)
                 args = VisitParameters(function.Parameters, hasNames: false);
 
-            if (returnType.IsPrimitiveType(PrimitiveType.Void))
+            if (returnType.Type.IsPrimitiveType(PrimitiveType.Void))
             {
                 if (!string.IsNullOrEmpty(args))
                     args = string.Format("<{0}>", args);

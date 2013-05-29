@@ -36,7 +36,7 @@ namespace CppSharp.Generators.CLI
         public override bool VisitFunctionType(FunctionType function, TypeQualifiers quals)
         {
             var returnType = function.ReturnType;
-            return returnType.Visit(this, quals);
+            return returnType.Visit(this);
         }
 
         public override bool VisitPointerType(PointerType pointer, TypeQualifiers quals)
@@ -299,7 +299,7 @@ namespace CppSharp.Generators.CLI
         public override bool VisitFunctionType(FunctionType function, TypeQualifiers quals)
         {
             var returnType = function.ReturnType;
-            return returnType.Visit(this, quals);
+            return returnType.Visit(this);
         }
 
         public bool VisitDelegateType(FunctionType function, string type)

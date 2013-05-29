@@ -938,7 +938,8 @@ CppSharp::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         auto RL = FTL.getResultLoc();
 
         auto F = gcnew CppSharp::FunctionType();
-        F->ReturnType = WalkType(FP->getResultType(), &RL);
+        F->ReturnType = GetQualifiedType(FP->getResultType(),
+            WalkType(FP->getResultType(), &RL));
 
         for (unsigned i = 0; i < FP->getNumArgs(); ++i)
         {

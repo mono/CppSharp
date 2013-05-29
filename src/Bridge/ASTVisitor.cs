@@ -91,7 +91,7 @@ namespace CppSharp
             if (!VisitType(function, quals))
                 return false;
 
-            if (function.ReturnType != null)
+            if (function.ReturnType.Type != null)
                 function.ReturnType.Visit(this);
 
             if (Options.VisitFunctionParameters)
