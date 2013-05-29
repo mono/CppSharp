@@ -649,6 +649,12 @@ namespace CppSharp.Generators.CSharp
             if (decl is Function)
             {
                 var function = decl as Function;
+
+                if (function.Parameters.Count == 0)
+                    throw new NotSupportedException("Expected at least one parameter in setter");
+
+                param.QualifiedType = function.Parameters[0].QualifiedType;
+
                 var parameters = new List<Parameter> { param };
                 GenerateInternalFunctionCall(function, parameters);
             }
