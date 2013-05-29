@@ -363,8 +363,7 @@ namespace CppSharp.Generators.CLI
 
                 var typePrinter = new CppTypePrinter(Driver.TypeDatabase);
 
-                var @params = GetEventParameters(@event);
-                var args = typePrinter.VisitParameters(@params, hasNames: true);
+                var args = typePrinter.VisitParameters(@event.Parameters, hasNames: true);
 
                 PopIndent();
                 WriteLine("private:");

@@ -815,21 +815,6 @@ namespace CppSharp.Generators.CSharp
 
         #region Events
 
-        public static List<Parameter> GetEventParameters(Event @event)
-        {
-            var i = 0;
-            var @params = new List<Parameter>();
-            foreach (var type in @event.Parameters)
-            {
-                @params.Add(new Parameter()
-                {
-                    Name = string.Format("{0}", GeneratedIdentifier(i++.ToString())),
-                    QualifiedType = type
-                });
-            }
-            return @params;
-        }
-
         private string delegateName;
         private string delegateInstance;
         private string delegateRaise;
@@ -837,8 +822,7 @@ namespace CppSharp.Generators.CSharp
         private void GenerateEvent(Event @event)
         {
             TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
-            var @params = GetEventParameters(@event);
-            var args = TypePrinter.VisitParameters(@params, hasNames: true);
+            var args = TypePrinter.VisitParameters(@event.Parameters, hasNames: true);
             TypePrinter.PopContext();
 
             delegateInstance = Helpers.GeneratedIdentifier(@event.Name);
@@ -906,15 +890,14 @@ namespace CppSharp.Generators.CSharp
         private void GenerateEventRaiseWrapper(Event @event)
         {
             TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
-            var @params = GetEventParameters(@event);
-            var args = TypePrinter.VisitParameters(@params, hasNames: true);
+            var args = TypePrinter.VisitParameters(@event.Parameters, hasNames: true);
             TypePrinter.PopContext();
 
             WriteLine("void _{0}Raise({1})", @event.Name, args);
             WriteStartBraceIndent();
 
             var returns = new List<string>();
-            foreach (var param in @params)
+            foreach (var param in @event.Parameters)
             {
                 var ctx = new CSharpMarshalContext(Driver)
                 {

@@ -331,9 +331,7 @@ namespace CppSharp.Generators.CLI
             WriteStartBraceIndent();
 
             var typePrinter = new CppTypePrinter(Driver.TypeDatabase);
-
-            var @params = GetEventParameters(@event);
-            var args = typePrinter.VisitParameters(@params, hasNames: false);
+            var args = typePrinter.VisitParameters(@event.Parameters, hasNames: false);
 
             WriteLine("{0}Instance = gcnew {0}(this, &{1}::_{2}Raise);",
                       delegateName, QualifiedIdentifier(@class), @event.Name);
@@ -367,16 +365,14 @@ namespace CppSharp.Generators.CLI
         private void GenerateEventRaise(Event @event, Class @class)
         {
             var typePrinter = new CLITypePrinter(Driver);
-
-            var @params = GetEventParameters(@event);
-            var args = typePrinter.VisitParameters(@params, hasNames: true);
+            var args = typePrinter.VisitParameters(@event.Parameters, hasNames: true);
 
             WriteLine("void {0}::{1}::raise({2})", QualifiedIdentifier(@class),
                       @event.Name, args);
 
             WriteStartBraceIndent();
 
-            var paramNames = @params.Select(param => param.Name).ToList();
+            var paramNames = @event.Parameters.Select(param => param.Name).ToList();
             WriteLine("_{0}({1});", @event.Name, string.Join(", ", paramNames));
 
             WriteCloseBraceIndent();
@@ -385,9 +381,7 @@ namespace CppSharp.Generators.CLI
         private void GenerateEventRaiseWrapper(Event @event, Class @class)
         {
             var typePrinter = new CppTypePrinter(Driver.TypeDatabase);
-
-            var @params = GetEventParameters(@event);
-            var args = typePrinter.VisitParameters(@params, hasNames: true);
+            var args = typePrinter.VisitParameters(@event.Parameters, hasNames: true);
 
             WriteLine("void {0}::_{1}Raise({2})", QualifiedIdentifier(@class),
                 @event.Name, args);
@@ -395,7 +389,7 @@ namespace CppSharp.Generators.CLI
             WriteStartBraceIndent();
 
             var returns = new List<string>();
-            foreach (var param in @params)
+            foreach (var param in @event.Parameters)
             {
                 var ctx = new MarshalContext(Driver)
                     {
