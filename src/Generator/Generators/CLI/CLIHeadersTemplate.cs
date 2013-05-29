@@ -361,19 +361,18 @@ namespace CppSharp.Generators.CLI
             {
                 if (@event.Ignore) continue;
 
-                var typePrinter = new CppTypePrinter(Driver.TypeDatabase);
-
-                var args = typePrinter.VisitParameters(@event.Parameters, hasNames: true);
+                var cppTypePrinter = new CppTypePrinter(Driver.TypeDatabase);
+                var cppArgs = cppTypePrinter.VisitParameters(@event.Parameters, hasNames: true);
 
                 PopIndent();
                 WriteLine("private:");
                 PushIndent();
 
                 var delegateName = string.Format("_{0}Delegate", @event.Name);
-                WriteLine("delegate void {0}({1});", delegateName, args);
+                WriteLine("delegate void {0}({1});", delegateName, cppArgs);
                 WriteLine("{0}^ {0}Instance;", delegateName);
 
-                WriteLine("void _{0}Raise({1});", @event.Name, args);
+                WriteLine("void _{0}Raise({1});", @event.Name, cppArgs);
                 WriteLine("{0} _{1};", @event.Type, @event.Name);
 
                 PopIndent();
@@ -386,11 +385,10 @@ namespace CppSharp.Generators.CLI
                 WriteLine("void add({0} evt);", @event.Type);
                 WriteLine("void remove({0} evt);", @event.Type);
 
-                var paramNames = @event.Parameters.Select(param => param.ToString()).
-                    ToList();
-                var parameters = string.Join(", ", paramNames);
+                var cliTypePrinter = new CLITypePrinter(Driver);
+                var cliArgs = cliTypePrinter.VisitParameters(@event.Parameters, hasNames: true);
 
-                WriteLine("void raise({0});", parameters);
+                WriteLine("void raise({0});", cliArgs);
                 WriteCloseBraceIndent();
             }
             PopIndent();
