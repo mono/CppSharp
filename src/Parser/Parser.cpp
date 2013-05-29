@@ -419,6 +419,8 @@ CppSharp::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
         RC->Layout->DataSize = (int)Layout->getDataSize().getQuantity();
     }
 
+    CppSharp::AccessSpecifierDecl^ AccessDecl = nullptr;
+
     for(auto it = Record->decls_begin(); it != Record->decls_end(); ++it)
     {
         auto D = *it;
@@ -432,6 +434,7 @@ CppSharp::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
         {
             auto MD = cast<CXXMethodDecl>(D);
             auto Method = WalkMethodCXX(MD);
+            Method->AccessDecl = AccessDecl;
             RC->Methods->Add(Method);
             HandleComments(MD, Method);
             break;
@@ -446,6 +449,22 @@ CppSharp::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
 
             RC->Fields->Add(Field);
             HandleComments(FD, Field);
+            break;
+        }
+        case Decl::AccessSpec:
+        {
+            AccessSpecDecl* AS = cast<AccessSpecDecl>(D);
+
+            AccessDecl = gcnew CppSharp::AccessSpecifierDecl();
+            AccessDecl->Access = ConvertToAccess(AS->getAccess());
+            AccessDecl->Namespace = RC;
+
+            auto startLoc = GetDeclStartLocation(C.get(), AS);
+            auto range = SourceRange(startLoc, AS->getColonLoc());
+            HandlePreprocessedEntities(AccessDecl, range,
+                CppSharp::MacroLocation::Unknown);
+
+            RC->Specifiers->Add(AccessDecl);
             break;
         }
         case Decl::IndirectField: // FIXME: Handle indirect fields

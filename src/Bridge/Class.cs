@@ -12,6 +12,17 @@ namespace CppSharp
         Public
     }
 
+    // A C++ access specifier declaration.
+    public class AccessSpecifierDecl : Declaration
+    {
+        public AccessSpecifier Access;
+
+        public override T Visit<T>(IDeclVisitor<T> visitor)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     // Represents a base class of a C++ class.
     public class BaseClassSpecifier
     {
@@ -86,6 +97,7 @@ namespace CppSharp
         public List<Field> Fields;
         public List<Property> Properties;
         public List<Method> Methods;
+        public List<AccessSpecifierDecl> Specifiers;
 
         // True if the record is a POD (Plain Old Data) type.
         public bool IsPOD;
@@ -111,6 +123,7 @@ namespace CppSharp
             Fields = new List<Field>();
             Properties = new List<Property>();
             Methods = new List<Method>();
+            Specifiers = new List<AccessSpecifierDecl>();
             IsAbstract = false;
             IsUnion = false;
             IsOpaque = false;

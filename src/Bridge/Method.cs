@@ -69,6 +69,7 @@ namespace CppSharp
         }
 
         public AccessSpecifier Access { get; set; }
+        public AccessSpecifierDecl AccessDecl { get; set; }
 
         public bool IsVirtual { get; set; }
         public bool IsStatic { get; set; }
