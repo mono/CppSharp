@@ -200,8 +200,7 @@ namespace CppSharp.Generators.CSharp
             string instance = Context.ReturnVarName;
             if (ctx.Kind == CSharpMarshalKind.NativeField)
             {
-                instance = string.Format("new System.IntPtr(&{0})",
-                    Context.ReturnVarName);
+                instance = string.Format("new System.IntPtr(&{0})", instance);
             }
 
             Context.Return.Write("new {0}({1})", QualifiedIdentifier(@class),
