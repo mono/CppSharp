@@ -1811,11 +1811,6 @@ struct DiagnosticConsumer : public clang::DiagnosticConsumer
         Diagnostics.push_back(Diag);
     }
 
-    virtual
-    DiagnosticConsumer* clone(clang::DiagnosticsEngine& Diags) const override {
-        return new DiagnosticConsumer();
-    }
-
     std::vector<Diagnostic> Diagnostics;
 };
 
