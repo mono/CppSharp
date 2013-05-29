@@ -922,7 +922,7 @@ namespace CppSharp.Generators.CSharp
             {
                 var ctx = new CSharpMarshalContext(Driver)
                 {
-                    ReturnVarName = param.Name,
+                    ReturnVarName = Helpers.SafeIdentifier(param.Name),
                     ReturnType = param.QualifiedType
                 };
 
