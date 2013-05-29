@@ -1719,7 +1719,8 @@ namespace CppSharp.Generators.CSharp
 
         public void GenerateInternalFunction(Function function)
         {
-            if(function.Ignore) return;
+            if (!function.IsProcessed || function.ExplicityIgnored)
+                return;
 
             GenerateDeclarationCommon(function);
             WriteLine("[SuppressUnmanagedCodeSecurity]");
