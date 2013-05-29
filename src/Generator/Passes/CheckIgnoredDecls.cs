@@ -119,6 +119,31 @@ namespace CppSharp.Passes
             return true;
         }
 
+        public override bool VisitVariableDecl(Variable variable)
+        {
+            if (!VisitDeclaration(variable))
+                return false;
+
+            string msg;
+            if (HasInvalidDecl(variable, out msg))
+            {
+                variable.ExplicityIgnored = true;
+                Console.WriteLine("Variable '{0}' was ignored due to {1} decl",
+                    variable.Name, msg);
+                return false;
+            }
+
+            if (HasInvalidType(variable.Type, out msg))
+            {
+                variable.ExplicityIgnored = true;
+                Console.WriteLine("Variable '{0}' was ignored due to {1} type",
+                    variable.Name, msg);
+                return false;
+            }
+
+            return true;
+        }
+
         #region Helpers
 
         /// <remarks>
