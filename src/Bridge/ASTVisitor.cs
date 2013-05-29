@@ -359,7 +359,7 @@ namespace CppSharp
         public virtual bool VisitDeclarationContext(DeclarationContext context)
         {
             if (!VisitDeclaration(context))
-                return false; 
+                return false;
 
             foreach (var decl in context.Classes)
                 decl.Visit(this);
@@ -395,7 +395,13 @@ namespace CppSharp
 
         public virtual bool VisitEvent(Event @event)
         {
-            return VisitDeclaration(@event);
+            if (!VisitDeclaration(@event))
+                return false;
+
+            foreach (var param in @event.Parameters)
+                param.Visit(this);
+
+            return true;
         }
 
         #endregion
