@@ -113,8 +113,12 @@ namespace CppSharp
         {
             get
             {
-                return !IgnoreFlags.HasFlag(IgnoreFlags.Processing) &&
-                    Namespace.IsProcessed;
+                var isProcessed = !IgnoreFlags.HasFlag(IgnoreFlags.Processing);
+
+                if (Namespace == null)
+                    return isProcessed;
+                
+                return isProcessed && Namespace.IsProcessed;
             }
 
             set
