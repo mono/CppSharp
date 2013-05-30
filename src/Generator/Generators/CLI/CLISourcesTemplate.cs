@@ -653,7 +653,7 @@ namespace CppSharp.Generators.CLI
 
             const string valueMarshalName = "_this0";
             var isValueType = @class != null && @class.IsValueType;
-            if (isValueType)
+            if (isValueType && !IsNativeFunctionOrStaticMethod(function))
             {
                 WriteLine("auto {0} = ::{1}();", valueMarshalName, @class.QualifiedOriginalName);
 
@@ -672,23 +672,26 @@ namespace CppSharp.Generators.CLI
             if (needsReturn)
                 Write("auto {0}ret = ",(function.ReturnType.Type.IsReference())? "&": string.Empty);
 
-            if (isValueType)
+            if (!IsNativeFunctionOrStaticMethod(function))
             {
-                Write("{0}.", valueMarshalName);
-            }
-            else if (IsInstanceFunction(function))
-            {
-                Write("((::{0}*)NativePtr)->", @class.QualifiedOriginalName);
+                if (isValueType)
+                {
+                    Write("{0}.", valueMarshalName);
+                }
+                else if (IsNativeMethod(function))
+                {
+                    Write("((::{0}*)NativePtr)->", @class.QualifiedOriginalName);
+                }
             }
 
-            if (IsInstanceFunction(function))
-            {
-                Write("{0}(", function.OriginalName);
-            }
-            else
+            if (IsNativeFunctionOrStaticMethod(function))
             {
                 Write("::");
                 Write("{0}(", function.QualifiedOriginalName);
+            }
+            else
+            {
+                Write("{0}(", function.OriginalName);
             }
 
             GenerateFunctionParams(@params);
@@ -718,7 +721,7 @@ namespace CppSharp.Generators.CLI
                 WriteLine("{0} = {1};",param.Name,marshal.Context.Return);
             }
 
-            if (isValueType)
+            if (isValueType && !IsNativeFunctionOrStaticMethod(function))
             {
                 GenerateStructMarshaling(@class, valueMarshalName + ".");
             }
@@ -742,21 +745,29 @@ namespace CppSharp.Generators.CLI
             }
         }
 
-        private static bool IsInstanceFunction(Function function)
+        private static bool IsNativeMethod(Function function)
         {
-            var isInstanceFunction = false;
-
             var method = function as Method;
-            if (method != null)
-                isInstanceFunction = method.Conversion == MethodConversionKind.None;
-            return isInstanceFunction;
+            if (method == null) 
+                return false;
+
+            return method.Conversion == MethodConversionKind.None;
+        }
+
+        private static bool IsNativeFunctionOrStaticMethod(Function function)
+        {
+            var method = function as Method;
+            if (method == null) 
+                return true;
+
+            return method.IsStatic || method.Conversion != MethodConversionKind.None;
         }
 
         public struct ParamMarshal
         {
             public string Name;
             public Parameter Param;
-        }
+        } 
 
         public List<ParamMarshal> GenerateFunctionParamsMarshal(IEnumerable<Parameter> @params,
             Function function = null)
