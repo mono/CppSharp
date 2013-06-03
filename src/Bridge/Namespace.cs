@@ -89,15 +89,30 @@ namespace CppSharp
 
         public Enumeration FindEnum(string name, bool createDecl = false)
         {
-            var @enum = Enums.Find(e => e.Name.Equals(name));
+            var entries = name.Split(new string[] { "::" },
+                StringSplitOptions.RemoveEmptyEntries).ToList();
 
-            if (@enum == null && createDecl)
+            if (entries.Count <= 1)
             {
-                @enum = new Enumeration() { Name = name, Namespace = this };
-                Enums.Add(@enum);
+                var @enum = Enums.Find(e => e.Name.Equals(name));
+
+                if (@enum == null && createDecl)
+                {
+                    @enum = new Enumeration() { Name = name, Namespace = this };
+                    Enums.Add(@enum);
+                }
+
+                return @enum;
             }
 
-            return @enum;
+            var enumName = entries[entries.Count - 1];
+            var namespaces = entries.Take(entries.Count - 1);
+
+            var @namespace = FindNamespace(namespaces);
+            if (@namespace == null)
+                return null;
+
+            return @namespace.FindEnum(enumName, createDecl);
         }
 
         public Function FindFunction(string name, bool createDecl = false)
