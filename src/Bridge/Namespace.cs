@@ -142,11 +142,23 @@ namespace CppSharp
 
         public Class FindClass(string name)
         {
-            var namespaces = name.Split(new string[] { "::" },
-                StringSplitOptions.RemoveEmptyEntries);
+            var entries = name.Split(new string[] { "::" },
+                StringSplitOptions.RemoveEmptyEntries).ToList();
 
-            var @class = Classes.Find(e => e.Name.Equals(name));
-            return @class;
+            if (entries.Count <= 1)
+            {
+                var @class = Classes.Find(e => e.Name.Equals(name));
+                return @class;
+            }
+
+            var className = entries[entries.Count - 1];
+            var namespaces = entries.Take(entries.Count - 1);
+
+            var @namespace = FindNamespace(namespaces);
+            if (@namespace == null)
+                return null;
+
+            return @namespace.FindClass(className);
         }
 
         public Class FindClass(string name, bool isComplete,
