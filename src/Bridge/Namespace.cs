@@ -51,7 +51,7 @@ namespace CppSharp
             return FindNamespace(namespaces);
         }
 
-        public Namespace FindNamespace(string[] namespaces)
+        public Namespace FindNamespace(IEnumerable<string> namespaces)
         {
             DeclarationContext currentNamespace = this;
 
