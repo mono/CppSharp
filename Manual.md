@@ -33,45 +33,40 @@ C/C++ Types
 These are mapped to .NET types as follows:
 
 1. Integral types
-
-  char      -> System::Byte
-  bool      -> System::Boolean
-  short     -> System::Int16
-  int, long -> System::Int32
-  long long -> System::Int64
-  
-  Signedness is also preserved in the conversions.
+```
+char      -> System::Byte
+bool      -> System::Boolean
+short     -> System::Int16
+int, long -> System::Int32
+long long -> System::Int64
+```
+Signedness is also preserved in the conversions.
 
 2. Floating-point types
-
+```
   float     -> System::Single
   double    -> System::Double
+```
 
 3. Other types
-
+```
   wchar_t   -> System::Char
   void      -> System::Void
+```
 
 ### Derived types
 
-1. Arrays
+1. Arrays are mapped to .NET CLR arrays.
 
-These are mapped to .NET CLR arrays.
+2. Function Pointers / Pointers to Members are mapped to .NET CLR delegates.
 
-2. Function Pointers / Pointers to Members
-
-These are mapped to .NET CLR delegates.
-
-3. Pointers
-
-These are mapped to .NET CLR references unless:
-
+3. Pointers are mapped to .NET CLR references unless:
+```
   void*        -> System::IntPtr
   const char*  -> System::String
+```
 
-4. References
-
-References are mapped to .NET CLR references just like pointers.
+4. References are mapped to .NET CLR references just like pointers.
 
 ### Typedefs
 
