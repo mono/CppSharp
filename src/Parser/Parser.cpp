@@ -1804,6 +1804,14 @@ CppSharp::AST::Declaration^ Parser::WalkDeclaration(clang::Decl* D,
 
     if (Decl)
     {
+        if (Decl->PreprocessedEntities->Count == 0)
+        {
+            auto startLoc = GetDeclStartLocation(C.get(), D);
+            auto endLoc = D->getLocEnd();
+            auto range = clang::SourceRange(startLoc, endLoc);
+
+            HandlePreprocessedEntities(Decl, range);
+        }
         HandleComments(D, Decl);
 
         if (const ValueDecl *VD = dyn_cast_or_null<ValueDecl>(D))
