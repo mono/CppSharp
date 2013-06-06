@@ -142,6 +142,8 @@ namespace CppSharp.AST
 
         public Class FindClass(string name)
         {
+            if (string.IsNullOrEmpty(name)) return null;
+
             var entries = name.Split(new string[] { "::" },
                 StringSplitOptions.RemoveEmptyEntries).ToList();
 
