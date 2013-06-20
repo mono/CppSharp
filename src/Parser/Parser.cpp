@@ -945,8 +945,14 @@ CppSharp::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
     }
     case Type::DependentSizedArray:
     {
+        auto AT = AST->getAsDependentSizedArrayType(QualType);
+
         auto A = gcnew CppSharp::ArrayType();
+        auto Next = TL->getNextTypeLoc();
+        A->Type = WalkType(AT->getElementType(), &Next);
         A->SizeType = CppSharp::ArrayType::ArraySize::Dependent;
+        //A->Size = AT->getSizeExpr();
+
         return A;
     }
     case Type::FunctionProto:

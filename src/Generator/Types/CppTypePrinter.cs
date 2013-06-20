@@ -23,6 +23,7 @@ namespace CppSharp.Types
             case ArrayType.ArraySize.Constant:
                 return string.Format("{0}[{1}]", typeName, array.Size);
             case ArrayType.ArraySize.Variable:
+            case ArrayType.ArraySize.Dependent:
                 return string.Format("{0}[]", typeName);
             }
 
