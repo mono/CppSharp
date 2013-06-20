@@ -111,6 +111,5 @@ namespace CppSharp
         {
             return tg.ToString();
         }
-
     }
 }
