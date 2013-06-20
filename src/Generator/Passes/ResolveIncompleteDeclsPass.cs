@@ -20,7 +20,8 @@ namespace CppSharp.Passes
             if (@class.CompleteDeclaration != null)
                 goto Out;
 
-            @class.CompleteDeclaration = Library.FindCompleteClass(@class.Name);
+            @class.CompleteDeclaration = Library.FindCompleteClass(
+                @class.QualifiedName);
 
             if (@class.CompleteDeclaration == null)
                 Console.WriteLine("Unresolved declaration: {0}", @class.Name);
