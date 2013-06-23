@@ -1,47 +1,33 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
+using CppSharp.Types.Std;
 
 namespace CppSharp.Generators.CLI
 {
     public class CLIGenerator : Generator
     {
         private readonly CLITypePrinter typePrinter;
-        private readonly FileHashes fileHashes;
 
         public CLIGenerator(Driver driver) : base(driver)
         {
             typePrinter = new CLITypePrinter(driver);
             Type.TypePrinterDelegate += type => type.Visit(typePrinter);
-            fileHashes = FileHashes.Load("hashes.ser");
         }
 
-        void WriteTemplate(TextTemplate template)
-        {
-            var path = GetOutputPath(template.TranslationUnit)
-                + "." + template.FileExtension;
-
-            template.Generate();
-            var text = template.ToString();
-
-            if(Driver.Options.WriteOnlyWhenChanged)
-            {
-                var updated = fileHashes.UpdateHash(path, text.GetHashCode());
-                if (File.Exists(path) && !updated)
-                    return;
-            }
-
-            Driver.Diagnostics.EmitMessage(DiagnosticId.FileGenerated,
-                "  Generated '{0}'.", Path.GetFileName(path));
-            File.WriteAllText(path, text);
-        }
-
-        public override bool Generate(TranslationUnit unit)
+        public override bool Generate(TranslationUnit unit,
+            List<GeneratorOutput> outputs)
         {
             var header = new CLIHeadersTemplate(Driver, unit);
-            WriteTemplate(header);
+            outputs.Add(GenerateTemplateOutput(header));
 
             var source = new CLISourcesTemplate(Driver, unit);
-            WriteTemplate(source);
+            outputs.Add(GenerateTemplateOutput(source));
 
+            return true;
+        }
+
+        public override bool SetupPasses(PassBuilder builder)
+        {
             return true;
         }
     }

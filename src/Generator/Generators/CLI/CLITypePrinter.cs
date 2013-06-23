@@ -248,7 +248,7 @@ namespace CppSharp.Generators.CLI
             var names = new List<string>();
 
             if (Options.GenerateLibraryNamespace)
-                names.Add(Driver.Library.Name);
+                names.Add(Driver.Options.OutputNamespace);
 
             if (!string.IsNullOrEmpty(decl.Namespace.QualifiedName))
                 names.Add(decl.Namespace.QualifiedName);

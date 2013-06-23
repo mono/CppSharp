@@ -1,5 +1,6 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.IO;
+using CppSharp.Passes;
 
 namespace CppSharp.Generators.CSharp
 {
@@ -13,22 +14,11 @@ namespace CppSharp.Generators.CSharp
             Type.TypePrinterDelegate += type => type.Visit(typePrinter).Type;
         }
 
-        void WriteTemplate(TextTemplate template)
-        {
-            var path = GetOutputPath(template.TranslationUnit)
-                + "." + template.FileExtension;
-
-            template.Generate();
-
-            File.WriteAllText(path, template.ToString());
-            Driver.Diagnostics.EmitMessage(DiagnosticId.FileGenerated,
-                "  Generated '{0}'.", Path.GetFileName(path));
-        }
-
-        public override bool Generate(TranslationUnit unit)
+        public override bool Generate(TranslationUnit unit,
+            List<GeneratorOutput> outputs)
         {
             var template = new CSharpTextTemplate(Driver, unit, typePrinter);
-            WriteTemplate(template);
+            outputs.Add(GenerateTemplateOutput(template));
 
             return true;
         }
