@@ -11,6 +11,20 @@ namespace CppSharp
 {
     public class Driver
     {
+        public delegate Generator CreateGeneratorDelegate(Driver driver);
+        public static Dictionary<LanguageGeneratorKind, CreateGeneratorDelegate>
+            Generators;
+
+        static Driver()
+        {
+            Generators = new Dictionary<LanguageGeneratorKind,
+                CreateGeneratorDelegate>();
+            Generators[LanguageGeneratorKind.CSharp] = driver =>
+                new CSharpGenerator(driver);
+            Generators[LanguageGeneratorKind.CPlusPlusCLI] = driver =>
+                new CLIGenerator(driver);
+        }
+
         public DriverOptions Options { get; private set; }
         public IDiagnosticConsumer Diagnostics { get; private set; }
         public Parser Parser { get; private set; }
