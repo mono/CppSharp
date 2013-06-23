@@ -4,6 +4,10 @@ using CppSharp.Types.Std;
 
 namespace CppSharp.Generators.CLI
 {
+    /// <summary>
+    /// C++/CLI generator responsible for driving the generation of
+    /// source and header files.
+    /// </summary>
     public class CLIGenerator : Generator
     {
         private readonly CLITypePrinter typePrinter;
@@ -14,6 +18,9 @@ namespace CppSharp.Generators.CLI
             Type.TypePrinterDelegate += type => type.Visit(typePrinter);
         }
 
+        /// <summary>
+        /// Generates the code for a given translation unit.
+        /// </summary>
         public override bool Generate(TranslationUnit unit,
             List<GeneratorOutput> outputs)
         {

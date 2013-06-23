@@ -3,6 +3,9 @@ using System.IO;
 
 namespace CppSharp.Generators
 {
+    /// <summary>
+    /// Kinds of language generators.
+    /// </summary>
     public enum LanguageGeneratorKind
     {
         CPlusPlusCLI,
@@ -30,6 +33,9 @@ namespace CppSharp.Generators
         public string OutputPath;
     }
 
+    /// <summary>
+    /// Generators are the base class for each language backend.
+    /// </summary>
     public abstract class Generator
     {
         public Driver Driver { get; private set; }
@@ -39,6 +45,9 @@ namespace CppSharp.Generators
             Driver = driver;
         }
 
+        /// <summary>
+        /// Generates the code for a given translation unit.
+        /// </summary>
         public abstract bool Generate(TranslationUnit unit,
             List<GeneratorOutput> outputs);
 

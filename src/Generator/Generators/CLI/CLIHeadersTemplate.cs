@@ -6,6 +6,9 @@ using CppSharp.Types;
 
 namespace CppSharp.Generators.CLI
 {
+    /// <summary>
+    /// Generates C++/CLI header files.
+    /// </summary>
     public class CLIHeadersTemplate : CLITextTemplate
     {
         public override string FileExtension { get { return "h"; } }

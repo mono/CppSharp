@@ -7,6 +7,9 @@ using CppSharp.Types;
 
 namespace CppSharp.Generators.CLI
 {
+    /// <summary>
+    /// Generates C++/CLI source files.
+    /// </summary>
     public class CLISourcesTemplate : CLITextTemplate
     {
         public CLISourcesTemplate(Driver driver, TranslationUnit unit)

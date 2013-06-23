@@ -22,6 +22,11 @@ namespace CppSharp.Generators.CLI
         }
     }
 
+    /// <summary>
+    /// There are two implementation
+    /// for source (CLISourcesTemplate) and header (CLIHeadersTemplate)
+    /// files.
+    /// </summary>
     public abstract class CLITextTemplate : TextTemplate
     {
         protected const string DefaultIndent = "    ";
