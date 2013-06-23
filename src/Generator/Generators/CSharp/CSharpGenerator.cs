@@ -22,5 +22,13 @@ namespace CppSharp.Generators.CSharp
 
             return true;
         }
+
+        public override bool SetupPasses(PassBuilder builder)
+        {
+            builder.CheckAbiParameters(Driver.Options);
+            builder.CheckOperatorOverloads();
+
+            return true;
+        }
     }
 }

@@ -42,6 +42,10 @@ namespace CppSharp.Generators
         public abstract bool Generate(TranslationUnit unit,
             List<GeneratorOutput> outputs);
 
+        /// <summary>
+        /// Setup any generator-specific passes here.
+        /// </summary>
+        public abstract bool SetupPasses(PassBuilder builder);
 
         protected string GetOutputPath(TranslationUnit unit)
         {
