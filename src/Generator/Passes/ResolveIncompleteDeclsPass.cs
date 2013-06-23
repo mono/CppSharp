@@ -1,5 +1,4 @@
 ﻿using System;
-using CppSharp.Types;
 
 namespace CppSharp.Passes
 {
