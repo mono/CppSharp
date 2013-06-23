@@ -629,7 +629,7 @@ namespace CppSharp.Generators.CLI
             GenerateDeclarationCommon(function);
 
             var classSig = string.Format("{0}{1}{2}", QualifiedIdentifier(@namespace),
-                Library.Name, TranslationUnit.FileNameWithoutExtension);
+                Options.OutputNamespace, TranslationUnit.FileNameWithoutExtension);
 
             Write("{0} {1}::{2}(", function.ReturnType, classSig,
                 SafeIdentifier(function.Name));
