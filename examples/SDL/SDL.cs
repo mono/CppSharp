@@ -8,15 +8,25 @@ namespace CppSharp
     /// </summary>
     class SDL : ILibrary
     {
-        public void Setup(DriverOptions options)
+        public void Setup(Driver driver)
         {
+            var options = driver.Options;
             options.LibraryName = "SDL";
             options.Headers.Add("SDL.h");
             options.IncludeDirs.Add("../../../examples/SDL/SDL-2.0/include");
             options.OutputDir = "SDL";
         }
 
-        public void Preprocess(Library lib)
+        public void SetupPasses(Driver driver, PassBuilder passes)
+        {
+            passes.RemovePrefix("SDL_");
+            passes.RemovePrefix("SCANCODE_");
+            passes.RemovePrefix("SDLK_");
+            passes.RemovePrefix("KMOD_");
+            passes.RemovePrefix("LOG_CATEGORY_");
+        }
+
+        public void Preprocess(Driver driver, Library lib)
         {
             lib.IgnoreEnumWithMatchingItem("SDL_FALSE");
             lib.IgnoreEnumWithMatchingItem("DUMMY_ENUM_VALUE");
@@ -57,28 +67,11 @@ namespace CppSharp
             //lib.SetNameOfEnumWithName("LOG_CATEGORY", "LogCategory");
         }
 
-        public void SetupPasses(PassBuilder p)
-        {
-            p.RemovePrefix("SDL_");
-            p.RemovePrefix("SCANCODE_");
-            p.RemovePrefix("SDLK_");
-            p.RemovePrefix("KMOD_");
-            p.RemovePrefix("LOG_CATEGORY_");
-        }
-
-        public void GenerateStart(TextTemplate template)
-        {
-        }
-
-        public void GenerateAfterNamespaces(TextTemplate template)
-        {
-        }
-
         static class Program
         {
             public static void Main(string[] args)
             {
-                Driver.Run(new SDL());
+                ConsoleDriver.Run(new SDL());
             }
         }
     }

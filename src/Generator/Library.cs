@@ -20,7 +20,7 @@ namespace CppSharp
         /// <summary>
         /// Do transformations that should happen before passes are processed.
         /// </summary>
-        void Preprocess(Library lib);
+        void Preprocess(Driver driver, Library lib);
 
         /// <summary>
         /// Do transformations that should happen after passes are processed.
@@ -30,7 +30,7 @@ namespace CppSharp
         /// <summary>
         /// Setup the driver options here.
         /// </summary>
-        void Setup(DriverOptions options);
+        void Setup(Driver driver);
 
         /// <summary>
         /// Setup your passes here.

@@ -25,7 +25,7 @@ namespace CppSharp
             options.OutputDir = "opencv";
         }
 
-        public void Preprocess(Library lib)
+        public void Preprocess(Driver driver, Library lib)
         {
         }
 

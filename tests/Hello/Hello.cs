@@ -10,7 +10,7 @@ namespace CppSharp.Tests
         {
         }
 
-        public override void Preprocess(Library lib)
+        public override void Preprocess(Driver driver, Library lib)
         {
             lib.SetClassAsValueType("Bar");
             lib.SetClassAsValueType("Bar2");
