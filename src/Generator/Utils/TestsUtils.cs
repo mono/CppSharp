@@ -14,8 +14,9 @@ namespace CppSharp.Utils
             this.kind = kind;
         }
 
-        public virtual void Setup(DriverOptions options)
+        public virtual void Setup(Driver driver)
         {
+            var options = driver.Options;
             options.LibraryName = name + ".Native";
             options.GeneratorKind = kind;
             options.OutputDir = "../gen/" + name;
@@ -29,7 +30,7 @@ namespace CppSharp.Utils
                 options.Headers.Add(Path.GetFileName(file));
         }
 
-        public virtual void Preprocess(Library lib)
+        public virtual void Preprocess(Driver driver, Library lib)
         {
         }
 
