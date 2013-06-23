@@ -38,18 +38,6 @@ namespace CppSharp
         /// <param name="driver"></param>
         /// <param name="passes"></param>
         void SetupPasses(Driver driver, PassBuilder passes);
-
-        /// <summary>
-        /// Called to generate text at the start of the text template.
-        /// </summary>
-        /// <param name="template"></param>
-        void GenerateStart(TextTemplate template);
-
-        /// <summary>
-        /// Called to generate text after the generation of namespaces.
-        /// </summary>
-        /// <param name="template"></param>
-        void GenerateAfterNamespaces(TextTemplate template);
     }
 
     public static class LibraryHelpers

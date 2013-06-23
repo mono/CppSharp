@@ -18,7 +18,7 @@ namespace CppSharp.Generators.CLI
 
         public override void Generate()
         {
-            GenerateStart();
+            OnStart(this);
 
             WriteLine("#pragma once");
             NewLine();
@@ -170,7 +170,7 @@ namespace CppSharp.Generators.CLI
 
         public void GenerateFunctions(Namespace @namespace)
         {
-            WriteLine("public ref class {0}{1}", SafeIdentifier(Library.Name),
+            WriteLine("public ref class {0}{1}", SafeIdentifier(Options.OutputNamespace),
                 TranslationUnit.FileNameWithoutExtension);
             WriteLine("{");
             WriteLine("public:");

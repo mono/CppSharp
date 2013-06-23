@@ -17,7 +17,7 @@ namespace CppSharp.Generators.CLI
 
         public override void Generate()
         {
-            GenerateStart();
+            OnStart(this);
 
             var file = Path.GetFileNameWithoutExtension(TranslationUnit.FileName).Replace('\\', '/');
 
@@ -35,7 +35,8 @@ namespace CppSharp.Generators.CLI
 
             WriteLine("using namespace System;");
             WriteLine("using namespace System::Runtime::InteropServices;");
-            GenerateAfterNamespaces();
+
+            OnNamespaces(this);
             NewLine();
 
             GenerateDeclarations();
