@@ -40,16 +40,12 @@ namespace CppSharp
     /// </summary>
     public class Library
     {
-        public string Name;
-        public string SharedLibrary;
         public List<TranslationUnit> TranslationUnits;
         public List<NativeLibrary> Libraries;
         public Dictionary<string, NativeLibrary> Symbols;
 
-        public Library(string name, string sharedLibrary)
+        public Library()
         {
-            Name = name;
-            SharedLibrary = sharedLibrary;
             TranslationUnits = new List<TranslationUnit>();
             Libraries = new List<NativeLibrary>();
             Symbols = new Dictionary<string, NativeLibrary>();

@@ -11,7 +11,7 @@ namespace CppSharp
         public Parser(DriverOptions options)
         {
             this.options = options;
-            Library = new Library(options.OutputNamespace, options.LibraryName);
+            Library = new Library();
         }
 
         public bool ParseHeaders(IEnumerable<string> headers)
