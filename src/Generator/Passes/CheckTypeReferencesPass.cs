@@ -6,6 +6,12 @@
 
         public override bool VisitTranslationUnit(TranslationUnit unit)
         {
+            if (unit.Ignore)
+                return false;
+
+            if (unit.IsSystemHeader)
+                return false;
+
             typeRefs = new TypeRefsVisitor();
             return typeRefs.VisitTranslationUnit(unit);
         }
