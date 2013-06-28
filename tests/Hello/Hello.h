@@ -34,7 +34,7 @@ struct CppSharp_API Bar2 : public Bar
     int C;
 };
 
-enum class Enum
+enum Enum
 {
     A = 0, B = 2, C = 5
 };

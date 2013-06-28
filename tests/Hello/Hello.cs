@@ -20,8 +20,8 @@ namespace CppSharp.Tests
         {
             public static void Main(string[] args)
             {
-                Driver.Run(new Hello(LanguageGeneratorKind.CPlusPlusCLI));
-                Driver.Run(new Hello(LanguageGeneratorKind.CSharp));
+                ConsoleDriver.Run(new Hello(LanguageGeneratorKind.CPlusPlusCLI));
+                ConsoleDriver.Run(new Hello(LanguageGeneratorKind.CSharp));
             }
         }
     }

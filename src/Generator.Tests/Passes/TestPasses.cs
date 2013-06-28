@@ -88,7 +88,7 @@ namespace Generator.Tests.Passes
             var @enum = library.Enum("TestEnumItemName");
             Assert.IsNotNull(@enum);
 
-            passBuilder.RemovePrefixEnumItem("TEST_ENUM_ITEM_NAME_");
+            passBuilder.RemovePrefix("TEST_ENUM_ITEM_NAME_", RenameTargets.EnumItem);
             passBuilder.CleanInvalidDeclNames();
             passBuilder.RunPasses();
 

@@ -5,8 +5,9 @@ namespace CppSharp
 {
     class OpenCV : ILibrary
     {
-        public void Setup(DriverOptions options)
+        public void Setup(Driver driver)
         {
+            var options = driver.Options;
             options.LibraryName = "OpenCV";
             options.Headers.Add("opencv2/core/core_c.h");
             options.Headers.Add("opencv2/core/types_c.h");
@@ -52,7 +53,7 @@ namespace CppSharp
         {
             public static void Main(string[] args)
             {
-                Driver.Run(new OpenCV());
+                ConsoleDriver.Run(new OpenCV());
             }
         }
     }
