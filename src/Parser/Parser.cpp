@@ -2013,8 +2013,8 @@ ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
     for each(System::String^ LibDir in Opts->LibraryDirs)
     {
         auto DirName = clix::marshalString<clix::E_UTF8>(LibDir);
-        llvm::sys::Path Path(DirName);
-        Path.appendComponent(File);
+        llvm::SmallString<256> Path(DirName);
+        llvm::sys::path::append(Path, File);
 
         if (FileEntry = FM.getFile(Path.str()))
             break;
