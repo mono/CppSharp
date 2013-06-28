@@ -1785,7 +1785,7 @@ namespace CppSharp.Generators.CSharp
                     @params.Add("int " + GeneratedIdentifier("forBases"));
             }
 
-            WriteLine("public unsafe static extern {0} {1}({2});", retType,
+            WriteLine("public static extern {0} {1}({2});", retType,
                       GetFunctionIdentifier(function),
                       string.Join(", ", @params));
             NeedNewLine();
