@@ -15,7 +15,11 @@ Prerequisites:
 - Install Tortoise SVN
     I've installed with command line toolset.
 
-
+- Install Python 2.x
+    http://www.python.org/
+    I have 2.72
+    
+    
 Building:
 ---------
 
@@ -88,4 +92,3 @@ Compiled binaries will be located in
 
 
 Have Fun.
-
