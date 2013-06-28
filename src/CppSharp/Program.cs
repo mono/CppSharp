@@ -126,7 +126,7 @@ namespace CppSharp
             if (!ParseLibraryAssembly(options.Assembly, out library))
                 return;
 
-            var driver = new Driver(options, library);
+            var driver = new Driver(options, new TextDiagnosticPrinter(), library);
             driver.Setup();
             driver.ParseCode();
             driver.ProcessCode();
