@@ -59,6 +59,7 @@ project "Parser"
   {
     "LLVMSupport",
     "LLVMObject",
+    "LLVMOption",
     "LLVMAsmParser",
     "LLVMBitReader",
     "LLVMBitWriter",
