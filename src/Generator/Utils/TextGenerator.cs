@@ -10,7 +10,7 @@ namespace CppSharp
         private const uint DefaultIndent = 4;
         private const uint MaxIndent = 80;
 
-        private readonly StringBuilder sb;
+        public StringBuilder stringBuilder;
         private bool isStartOfLine;
         private bool needsNewLine;
 
@@ -18,7 +18,7 @@ namespace CppSharp
 
         public TextGenerator()
         {
-            sb = new StringBuilder();
+            stringBuilder = new StringBuilder();
             isStartOfLine = false;
             CurrentIndent = new Stack<uint>();
         }
@@ -34,12 +34,12 @@ namespace CppSharp
             foreach(var line in msg.SplitAndKeep(Environment.NewLine))
             {
                 if (isStartOfLine && !string.IsNullOrWhiteSpace(line))
-                    sb.Append(new string(' ', (int) CurrentIndent.Sum(u => u)));
+                    stringBuilder.Append(new string(' ', (int) CurrentIndent.Sum(u => u)));
 
                 if (line.Length > 0)
                     isStartOfLine = line.EndsWith(Environment.NewLine);
 
-                sb.Append(line);
+                stringBuilder.Append(line);
             }
         }
 
@@ -58,7 +58,7 @@ namespace CppSharp
 
         public void NewLine()
         {
-            sb.AppendLine(string.Empty);
+            stringBuilder.AppendLine(string.Empty);
             isStartOfLine = true;
         }
 
@@ -104,7 +104,7 @@ namespace CppSharp
 
         public override string ToString()
         {
-            return sb.ToString();
+            return stringBuilder.ToString();
         }
 
         public static implicit operator string(TextGenerator tg)
