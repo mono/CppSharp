@@ -226,8 +226,6 @@ std::string Parser::GetDeclMangledName(clang::Decl* D, clang::TargetCXXABI ABI,
         MC->mangleCXXCtor(CD, Ctor_Base, Out);
     else if (const CXXDestructorDecl *DD = dyn_cast<CXXDestructorDecl>(ND))
         MC->mangleCXXDtor(DD, Dtor_Base, Out);
-    else if (const BlockDecl *BD = dyn_cast<BlockDecl>(ND))
-        MC->mangleBlock(BD, Out);
     else
         MC->mangleName(ND, Out);
 
@@ -2013,10 +2011,11 @@ ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
     for each(System::String^ LibDir in Opts->LibraryDirs)
     {
         auto DirName = clix::marshalString<clix::E_UTF8>(LibDir);
-        llvm::sys::Path Path(DirName);
-        Path.appendComponent(File);
 
-        if (FileEntry = FM.getFile(Path.str()))
+        llvm::SmallString<128> P(DirName);
+        llvm::sys::path::append(P, File);
+
+        if (FileEntry = FM.getFile(P.str()))
             break;
     }
 
