@@ -226,8 +226,6 @@ std::string Parser::GetDeclMangledName(clang::Decl* D, clang::TargetCXXABI ABI,
         MC->mangleCXXCtor(CD, Ctor_Base, Out);
     else if (const CXXDestructorDecl *DD = dyn_cast<CXXDestructorDecl>(ND))
         MC->mangleCXXDtor(DD, Dtor_Base, Out);
-    else if (const BlockDecl *BD = dyn_cast<BlockDecl>(ND))
-        MC->mangleBlock(BD, Out);
     else
         MC->mangleName(ND, Out);
 
