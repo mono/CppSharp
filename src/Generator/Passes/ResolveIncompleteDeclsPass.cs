@@ -4,10 +4,6 @@ namespace CppSharp.Passes
 {
     public class ResolveIncompleteDeclsPass : TranslationUnitPass
     {
-        public ResolveIncompleteDeclsPass()
-        {
-        }
-
         public override bool VisitClassDecl(Class @class)
         {
             if (@class.Ignore)
@@ -23,7 +19,8 @@ namespace CppSharp.Passes
                 @class.QualifiedName);
 
             if (@class.CompleteDeclaration == null)
-                Console.WriteLine("Unresolved declaration: {0}", @class.Name);
+                Driver.Diagnostics.EmitWarning(DiagnosticId.UnresolvedDeclaration,
+                    "Unresolved declaration: {0}", @class.Name);
 
         Out:
 
