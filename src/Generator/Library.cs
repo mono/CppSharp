@@ -3,15 +3,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
-using CppSharp.Generators;
 
 namespace CppSharp
 {
-    [AttributeUsage(AttributeTargets.Class)]
-    public class LibraryTransformAttribute : Attribute
-    {
-    }
-
     /// <summary>
     /// Used to massage the library types into something more .NET friendly.
     /// </summary>
