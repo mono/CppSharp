@@ -111,13 +111,13 @@ namespace CppSharp.Passes
     [Flags]
     public enum RenameTargets
     {
-        Class,
-        Field,
-        Method,
-        Function,
-        Parameter,
-        Enum,
-        EnumItem,
+        Class     = 1 << 0,
+        Field     = 1 << 1,
+        Method    = 1 << 2,
+        Function  = 1 << 3,
+        Parameter = 1 << 4,
+        Enum      = 1 << 5,
+        EnumItem  = 1 << 6,
         Any = Function | Method | Parameter | Class | Field | Enum | EnumItem,
     }
 
