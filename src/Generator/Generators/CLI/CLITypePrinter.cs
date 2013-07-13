@@ -194,6 +194,11 @@ namespace CppSharp.Generators.CLI
             return decl.Type.Visit(this);
         }
 
+        public string VisitDecayedType(DecayedType decayed, TypeQualifiers quals)
+        {
+            return decayed.Decayed.Visit(this);
+        }
+
         public string VisitTemplateSpecializationType(TemplateSpecializationType template,
                                                       TypeQualifiers quals)
         {

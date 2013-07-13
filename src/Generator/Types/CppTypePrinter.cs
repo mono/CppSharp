@@ -94,6 +94,11 @@ namespace CppSharp.Types
             return "::" + typedef.Declaration.QualifiedOriginalName;
         }
 
+        public string VisitDecayedType(DecayedType decayed, TypeQualifiers quals)
+        {
+            return decayed.Decayed.Visit(this);
+        }
+
         public string VisitTemplateSpecializationType(TemplateSpecializationType template, TypeQualifiers quals)
         {
             var decl = template.Template.TemplatedDecl;

@@ -312,6 +312,26 @@ namespace CppSharp
     }
 
     /// <summary>
+    /// Represents a pointer type decayed from an array or function type.
+    /// </summary>
+    public class DecayedType : Type
+    {
+        public DecayedType()
+        {
+
+        }
+
+        public QualifiedType Decayed;
+        public QualifiedType Original;
+        public QualifiedType Pointee;
+
+        public override T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals)
+        {
+            return visitor.VisitDecayedType(this, quals);
+        }
+    }
+
+    /// <summary>
     /// Represents a template argument within a class template specialization.
     /// </summary>
     public struct TemplateArgument
@@ -515,6 +535,7 @@ namespace CppSharp
         T VisitMemberPointerType(MemberPointerType member, TypeQualifiers quals);
         T VisitBuiltinType(BuiltinType builtin, TypeQualifiers quals);
         T VisitTypedefType(TypedefType typedef, TypeQualifiers quals);
+        T VisitDecayedType(DecayedType decayed, TypeQualifiers quals);
         T VisitTemplateSpecializationType(TemplateSpecializationType template,
                                           TypeQualifiers quals);
         T VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals);

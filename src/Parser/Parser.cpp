@@ -896,6 +896,18 @@ CppSharp::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
 
         return Type;
     }
+    case Type::Decayed:
+    {
+        auto DT = Type->getAs<clang::DecayedType>();
+        auto Next = TL->getNextTypeLoc();
+
+        auto Type = gcnew CppSharp::DecayedType();
+        Type->Decayed = GetQualifiedType(DT->getDecayedType(), WalkType(DT->getDecayedType(), &Next));
+        Type->Original = GetQualifiedType(DT->getOriginalType(), WalkType(DT->getOriginalType(), &Next));
+        Type->Pointee = GetQualifiedType(DT->getPointeeType(), WalkType(DT->getPointeeType(), &Next));
+
+        return Type;
+    }
     case Type::Elaborated:
     {
         auto ET = Type->getAs<clang::ElaboratedType>();
