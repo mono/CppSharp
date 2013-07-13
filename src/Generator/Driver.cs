@@ -29,20 +29,17 @@ namespace CppSharp
         public IDiagnosticConsumer Diagnostics { get; private set; }
         public Parser Parser { get; private set; }
         public TypeMapDatabase TypeDatabase { get; private set; }
-        public ILibrary Transform { get; private set; }
         public Generator Generator { get; private set; }
 
         public Library Library { get; private set; }
         public Library LibrarySymbols { get; private set; }
 
-        public Driver(DriverOptions options, IDiagnosticConsumer diagnostics,
-            ILibrary transform)
+        public Driver(DriverOptions options, IDiagnosticConsumer diagnostics)
         {
             Options = options;
             Diagnostics = diagnostics;
             Parser = new Parser(Options);
             TypeDatabase = new TypeMapDatabase();
-            Transform = transform;
         }
 
         static void ValidateOptions(DriverOptions options)
@@ -100,13 +97,26 @@ namespace CppSharp
             return true;
         }
 
+        public void AddPrePasses()
+        {
+            Passes.CleanUnit(Options);
+            Passes.SortDeclarations();
+            Passes.ResolveIncompleteDecls();
+        }
+
+        public void AddPostPasses()
+        {
+            Passes.CleanInvalidDeclNames();
+            Passes.CheckIgnoredDecls();
+            Passes.CheckTypeReferences();
+            Passes.CheckFlagEnums();
+            Passes.CheckAmbiguousOverloads();
+            Generator.SetupPasses(Passes);
+        }
+
         public void ProcessCode()
         {
             TypeDatabase.SetupTypeMaps();
-
-            if (Transform != null)
-                Transform.Preprocess(this, Library);
-
             var passes = new PassBuilder(this);
             passes.CleanUnit(Options);
             passes.SortDeclarations();
@@ -252,8 +262,7 @@ namespace CppSharp
             Console.BufferHeight = 1999;
 
             var options = new DriverOptions();
-            var driver = new Driver(options, new TextDiagnosticPrinter(),
-                library);
+            var driver = new Driver(options, new TextDiagnosticPrinter());
             library.Setup(driver);
             driver.Setup();
 
@@ -272,7 +281,14 @@ namespace CppSharp
                 return;
 
             Console.WriteLine("Processing code...");
+            library.Preprocess(driver, driver.Library);
+
+            driver.AddPrePasses();
+            library.SetupPasses(driver, driver.Passes);
+            driver.AddPostPasses();
+
             driver.ProcessCode();
+            library.Postprocess(driver.Library);
 
             Console.WriteLine("Generating code...");
             driver.GenerateCode();
