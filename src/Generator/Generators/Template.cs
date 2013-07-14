@@ -1,25 +1,31 @@
-﻿namespace CppSharp.Generators
+﻿using System.Collections.Generic;
+using System.Text;
+
+namespace CppSharp.Generators
 {
     public abstract class TextTemplate : TextGenerator
     {
-        private const uint DefaultIndent = 4;
-        private const uint MaxIndent = 80;
-
-        public Driver Driver { get; set; }
-        public DriverOptions Options { get; set; }
-        public Library Library { get; set; }
-        public ILibrary Transform;
-        public TranslationUnit TranslationUnit { get; set; }
-        public abstract string FileExtension { get; }
-
-        public abstract void Generate();
+        public Driver Driver { get; private set; }
+        public DriverOptions Options { get; private set; }
+        public Library Library { get; private set; }
+        public TranslationUnit TranslationUnit { get; private set; }
 
         protected TextTemplate(Driver driver, TranslationUnit unit)
         {
             Driver = driver;
             Options = driver.Options;
             Library = driver.Library;
-            Transform = driver.Transform;
             TranslationUnit = unit;
         }
+
+        public abstract string FileExtension { get; }
+
+        public abstract void Generate();
+
+        public virtual string GenerateText()
+        {
+            return base.ToString();
+        }
+    }
+
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using CppSharp.Types;
 
 namespace CppSharp.Generators.CLI
 {
@@ -29,21 +28,6 @@ namespace CppSharp.Generators.CLI
     /// </summary>
     public abstract class CLITextTemplate : TextTemplate
     {
-        protected const string DefaultIndent = "    ";
-        protected const uint MaxIndent = 80;
-
-        public delegate void GenerateTextDelegate(CLITextTemplate gen);
-
-        /// <summary>
-        /// Called when the generation is starting.
-        /// </summary>
-        public GenerateTextDelegate OnStart = delegate { };
-
-        /// <summary>
-        /// Called when generating namespaces.
-        /// </summary>
-        public GenerateTextDelegate OnNamespaces = delegate { };
-
         public CLITypePrinter TypePrinter { get; set; }
 
         public ISet<Include> Includes;
@@ -54,6 +38,12 @@ namespace CppSharp.Generators.CLI
             TypePrinter = new CLITypePrinter(driver);
             Includes = new HashSet<Include>();
         }
+
+        public abstract override string FileExtension { get; }
+
+        public abstract override void Generate();
+
+        #region Helpers
 
         public static string SafeIdentifier(string proposedName)
         {
@@ -73,7 +63,7 @@ namespace CppSharp.Generators.CLI
                 return;
 
             // Wrap the comment to the line width.
-            var maxSize = (int)(MaxIndent - CurrentIndent.Count - "/// ".Length);
+            var maxSize = (int)(Options.MaxIndent - CurrentIndent.Count - "/// ".Length);
             var lines = StringHelpers.WordWrapLines(comment, maxSize);
 
             WriteLine("/// <summary>");
@@ -112,8 +102,6 @@ namespace CppSharp.Generators.CLI
             return string.Join(", ", types);
         }
 
-        public abstract override string FileExtension { get; }
-
-        public abstract override void Generate();
+        #endregion
     }
 }
