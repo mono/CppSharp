@@ -21,6 +21,19 @@ namespace CppSharp
             CurrentIndent = new Stack<uint>();
         }
 
+        public TextGenerator(TextGenerator generator)
+        {
+            StringBuilder = new StringBuilder(generator);
+            IsStartOfLine = generator.IsStartOfLine;
+            NeedsNewLine = generator.NeedsNewLine;
+            CurrentIndent = new Stack<uint>(generator.CurrentIndent);
+        }
+
+        public TextGenerator Clone()
+        {
+            return new TextGenerator(this);
+        }
+
         public void Write(string msg, params object[] args)
         {
             if (string.IsNullOrEmpty(msg))
