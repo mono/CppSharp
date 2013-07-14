@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System;
+using System.Collections.Generic;
 using CppSharp.Passes;
 
 namespace CppSharp.Generators.CSharp
@@ -14,13 +14,14 @@ namespace CppSharp.Generators.CSharp
             Type.TypePrinterDelegate += type => type.Visit(typePrinter).Type;
         }
 
-        public override bool Generate(TranslationUnit unit,
-            List<GeneratorOutput> outputs)
+        public override List<TextTemplate> Generate(TranslationUnit unit)
         {
-            var template = new CSharpTextTemplate(Driver, unit, typePrinter);
-            outputs.Add(GenerateTemplateOutput(template));
+            var outputs = new List<TextTemplate>();
 
-            return true;
+            var template = new CSharpTextTemplate(Driver, unit, typePrinter);
+            outputs.Add(template);
+
+            return outputs;
         }
 
         public override bool SetupPasses(PassBuilder builder)

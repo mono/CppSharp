@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System;
+using System.Collections.Generic;
 
 namespace CppSharp.Generators
 {
@@ -23,14 +23,9 @@ namespace CppSharp.Generators
         public TranslationUnit TranslationUnit;
 
         /// <summary>
-        /// Text template with generated output.
+        /// Text templates with generated output.
         /// </summary>
-        public TextTemplate Template;
-
-        /// <summary>
-        /// Output path of the generated output. 
-        /// </summary>
-        public string OutputPath;
+        public List<TextTemplate> Templates;
     }
 
     /// <summary>
@@ -46,42 +41,53 @@ namespace CppSharp.Generators
         }
 
         /// <summary>
-        /// Generates the code for a given translation unit.
+        /// Called when a translation unit is generated.
         /// </summary>
-        public abstract bool Generate(TranslationUnit unit,
-            List<GeneratorOutput> outputs);
+        public Action<GeneratorOutput> OnUnitGenerated = delegate { };
 
         /// <summary>
         /// Setup any generator-specific passes here.
         /// </summary>
         public abstract bool SetupPasses(PassBuilder builder);
 
-        protected string GetOutputPath(TranslationUnit unit)
+
+        /// <summary>
+        /// Generates the outputs.
+        /// </summary>
+        public virtual List<GeneratorOutput> Generate()
         {
-            var file = unit.FileNameWithoutExtension;
+            var outputs = new List<GeneratorOutput>();
 
-            if (Driver.Options.GenerateName != null)
-                file = Driver.Options.GenerateName(unit);
-
-            var path = Path.Combine(Driver.Options.OutputDir, file);
-            return Path.GetFullPath(path);
-        }
-
-        protected GeneratorOutput GenerateTemplateOutput(TextTemplate template)
-        {
-            var path = GetOutputPath(template.TranslationUnit)
-                + "." + template.FileExtension;
-
-            template.Generate();
-
-            var output = new GeneratorOutput()
+            foreach (var unit in Driver.Library.TranslationUnits)
             {
-                OutputPath = path,
-                Template = template,
-                TranslationUnit = template.TranslationUnit
-            };
+                if (unit.Ignore || !unit.HasDeclarations)
+                    continue;
 
-            return output;
+                if (unit.IsSystemHeader)
+                    continue;
+
+                var templates = Generate(unit);
+                if (templates.Count == 0)
+                    continue;
+
+                foreach (var template in templates)
+                    template.GenerateBlocks();
+
+                var output = new GeneratorOutput
+                    {
+                        TranslationUnit = unit,
+                        Templates = templates
+                    };
+
+                OnUnitGenerated(output);
+            }
+
+            return outputs;
         }
+
+        /// <summary>
+        /// Generates the outputs for a given translation unit.
+        /// </summary>
+        public abstract List<TextTemplate> Generate(TranslationUnit unit);
     }
 }
