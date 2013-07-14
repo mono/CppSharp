@@ -26,14 +26,6 @@ namespace CppSharp
             Passes.Add(pass);
         }
 
-        public void RunPasses()
-        {
-            foreach (var pass in Passes)
-            {
-                pass.VisitLibrary(Driver.Library);
-            }
-        }
-
         /// <summary>
         /// Finds a previously-added pass of the given type.
         /// </summary>

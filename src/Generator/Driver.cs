@@ -113,54 +113,39 @@ namespace CppSharp
 
         public void ProcessCode()
         {
-            TypeDatabase.SetupTypeMaps();
-            var passes = new PassBuilder(this);
-            passes.CleanUnit(Options);
-            passes.SortDeclarations();
-            passes.ResolveIncompleteDecls();
-
-            if (Transform != null)
-                Transform.SetupPasses(this, passes);
-
-            passes.CleanInvalidDeclNames();
-            passes.CheckIgnoredDecls();
-
-            passes.CheckTypeReferences();
-            passes.CheckFlagEnums();
-            passes.CheckAmbiguousOverloads();
-
-            Generator.SetupPasses(passes);
-
-            passes.RunPasses();
-
-            if (Transform != null)
-                Transform.Postprocess(Library);
+            foreach (var pass in Passes.Passes)
+                pass.VisitLibrary(Library);
         }
 
-        public void GenerateCode()
+        public List<GeneratorOutput> GenerateCode()
         {
-            if (Library.TranslationUnits.Count <= 0)
-                return;
+            var outputs = Generator.Generate();
+            return outputs;
+        }
 
-            foreach (var unit in Library.TranslationUnits)
+        public void WriteCode(List<GeneratorOutput> outputs)
+        {
+            var outputPath = Options.OutputDir ?? Directory.GetCurrentDirectory();
+
+            if (!Directory.Exists(outputPath))
+                Directory.CreateDirectory(outputPath);
+
+            foreach (var output in outputs)
             {
-                if (unit.Ignore || !unit.HasDeclarations)
-                    continue;
+                var fileBase = output.TranslationUnit.FileNameWithoutExtension;
 
-                if (unit.IsSystemHeader)
-                    continue;
+                if (Options.GenerateName != null)
+                    fileBase = Options.GenerateName(output.TranslationUnit);
 
-                var outputs = new List<GeneratorOutput>();
-                if (!Generator.Generate(unit, outputs))
-                    continue;
-
-                foreach (var output in outputs)
+                foreach (var template in output.Templates)
                 {
-                    Diagnostics.EmitMessage(DiagnosticId.FileGenerated,
-                        "Generated '{0}'", Path.GetFileName(output.OutputPath));
+                    var fileName = string.Format("{0}.{1}", fileBase, template.FileExtension);
+                    Diagnostics.EmitMessage(DiagnosticId.FileGenerated, "Generated '{0}'", fileName);
 
-                    var text = output.Template.ToString();
-                    File.WriteAllText(output.OutputPath, text);
+                    var filePath = Path.Combine(outputPath, fileName);
+
+                    var text = template.GenerateText();
+                    File.WriteAllText(Path.GetFullPath(filePath), text);
                 }
             }
         }
@@ -296,7 +281,8 @@ namespace CppSharp
             library.Postprocess(driver.Library);
 
             Console.WriteLine("Generating code...");
-            driver.GenerateCode();
+            var outputs = driver.GenerateCode();
+            driver.WriteCode(outputs);
         }
     }
 }
