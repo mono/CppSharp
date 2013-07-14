@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using CppSharp.AST;
 
 namespace CppSharp.Generators.CSharp
 {
@@ -350,7 +351,7 @@ namespace CppSharp.Generators.CSharp
 
             foreach (var method in @class.Methods)
             {
-                if (CheckIgnoreMethod(@class, method))
+                if (Utils.CheckIgnoreMethod(@class, method))
                     continue;
 
                 if (method.IsConstructor)
@@ -408,7 +409,7 @@ namespace CppSharp.Generators.CSharp
 
             foreach (var field in @class.Fields)
             {
-                if (CheckIgnoreField(@class, field)) continue;
+                if (Utils.CheckIgnoreField(@class, field)) continue;
 
                 var nativeField = string.Format("{0}->{1}",
                     Helpers.GeneratedIdentifier("ptr"), field.OriginalName);
@@ -558,7 +559,7 @@ namespace CppSharp.Generators.CSharp
 
             foreach (var field in @class.Fields)
             {
-                if (CheckIgnoreField(@class, field)) continue;
+                if (Utils.CheckIgnoreField(@class, field)) continue;
 
                 NewLineIfNeeded();
 
@@ -755,7 +756,7 @@ namespace CppSharp.Generators.CSharp
             var staticMethods = new List<Method>();
             foreach (var method in @class.Methods)
             {
-                if (CheckIgnoreMethod(@class, method))
+                if (Utils.CheckIgnoreMethod(@class, method))
                     continue;
 
                 if (method.IsConstructor)
@@ -953,7 +954,7 @@ namespace CppSharp.Generators.CSharp
 
             foreach (var ctor in @class.Constructors)
             {
-                if (CheckIgnoreMethod(@class, ctor))
+                if (Utils.CheckIgnoreMethod(@class, ctor))
                     continue;
 
                 NewLineIfNeeded();
