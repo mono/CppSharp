@@ -17,22 +17,29 @@ namespace CppSharp.Generators.CLI
         public CLIHeadersTemplate(Driver driver, TranslationUnit unit)
             : base(driver, unit)
         {
-            
         }
 
-        public override void Generate()
+        public override void GenerateBlocks()
         {
-            OnStart(this);
+            PushBlock(CLIBlockKind.Header);
+            PopBlock();
 
+            PushBlock(CLIBlockKind.Includes);
             WriteLine("#pragma once");
             NewLine();
 
+            PushBlock(CLIBlockKind.IncludesForwardReferences);
             WriteLine("#include <{0}>", TranslationUnit.IncludePath);
             GenerateIncludeForwardRefs();
 
             NewLine();
+            PopBlock();
+            PopBlock();
 
             GenerateNamespace(TranslationUnit);
+
+            PushBlock(CLIBlockKind.Footer);
+            PopBlock();
         }
 
         public void GenerateIncludeForwardRefs()
@@ -96,6 +103,7 @@ namespace CppSharp.Generators.CLI
 
             if (generateNamespace)
             {
+                PushBlock(CLIBlockKind.Namespace);
                 WriteLine("namespace {0}", isTopLevel
                                                ? Options.OutputNamespace
                                                : SafeIdentifier(@namespace.Name));
@@ -103,7 +111,9 @@ namespace CppSharp.Generators.CLI
             }
 
             // Generate the forward references.
+            PushBlock(CLIBlockKind.ForwardReferences);
             GenerateForwardRefs(@namespace);
+            PopBlock();
 
             // Generate all the enum declarations for the module.
             for (var i = 0; i < @namespace.Enums.Count; ++i)
@@ -113,11 +123,13 @@ namespace CppSharp.Generators.CLI
                 if (@enum.Ignore || @enum.IsIncomplete)
                     continue;
 
+                PushBlock(CLIBlockKind.Enum);
                 GenerateEnum(@enum);
                 NeedNewLine();
 
                 if (i < @namespace.Enums.Count - 1)
                     NewLine();
+                PopBlock();
             }
 
             NewLineIfNeeded();
@@ -136,11 +148,13 @@ namespace CppSharp.Generators.CLI
                 if (@class.IsOpaque)
                     continue;
 
+                PushBlock(CLIBlockKind.Class);
                 GenerateClass(@class);
                 NeedNewLine();
 
                 if (i < @namespace.Classes.Count - 1)
                     NewLine();
+                PopBlock();
             }
 
             if (@namespace.HasFunctions)
@@ -155,6 +169,7 @@ namespace CppSharp.Generators.CLI
             if (generateNamespace)
             {
                 WriteCloseBraceIndent();
+                PopBlock();
             }
         }
 
@@ -169,6 +184,7 @@ namespace CppSharp.Generators.CLI
                     continue;
 
                 NewLine();
+                PopBlock();
             }
         }
 
@@ -532,11 +548,12 @@ namespace CppSharp.Generators.CLI
             if (typedef.Ignore)
                 return false;
 
-            GenerateDeclarationCommon(typedef);
-
             FunctionType function;
             if (typedef.Type.IsPointerTo<FunctionType>(out function))
             {
+                PushBlock(CLIBlockKind.Typedef);
+                GenerateDeclarationCommon(typedef);
+
                 WriteLine("public {0};",
                     string.Format(TypePrinter.VisitDelegate(function),
                     SafeIdentifier(typedef.Name)));

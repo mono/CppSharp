@@ -21,12 +21,49 @@ namespace CppSharp.Generators.CLI
         }
     }
 
+    public enum CLIBlockKind
+    {
+        Unknown,
+        Header,
+        Includes,
+        IncludesForwardReferences,
+        Namespace,
+        ForwardReferences,
+        Footer,
+        Enum,
+        Typedef,
+        Class,
+        Method,
+        Usings
+    }
+
+    public class CLIBlock : IBlock<CLIBlock, CLIBlockKind>
+    {
+        public CLIBlockKind Kind { get; set; }
+        public List<CLIBlock> Blocks { get; set; }
+        public CLIBlock Parent { get; set; }
+
+        public TextGenerator Text { get; set; }
+        public Declaration Declaration { get; set; }
+
+        public CLIBlock()
+        {
+            Blocks = new List<CLIBlock>();
+            Kind = CLIBlockKind.Unknown;
+        }
+
+        public override string ToString()
+        {
+            return Kind.ToString();
+        }
+    }
+
     /// <summary>
     /// There are two implementation
     /// for source (CLISourcesTemplate) and header (CLIHeadersTemplate)
     /// files.
     /// </summary>
-    public abstract class CLITextTemplate : TextTemplate
+    public abstract class CLITextTemplate : BlockGenerator<CLIBlockKind, CLIBlock>
     {
         public CLITypePrinter TypePrinter { get; set; }
 
@@ -41,7 +78,7 @@ namespace CppSharp.Generators.CLI
 
         public abstract override string FileExtension { get; }
 
-        public abstract override void Generate();
+        public abstract override void GenerateBlocks();
 
         #region Helpers
 
