@@ -44,11 +44,11 @@ namespace CppSharp
 
         static void ValidateOptions(DriverOptions options)
         {
-            if (string.IsNullOrWhiteSpace(options.LibraryName))
-                throw new InvalidDataException();
+            if (!Generators.ContainsKey(options.GeneratorKind))
+                throw new InvalidOptionException();
 
-            if (options.OutputDir == null)
-                options.OutputDir = Directory.GetCurrentDirectory();
+            if (string.IsNullOrWhiteSpace(options.LibraryName))
+                throw new InvalidOptionException();
 
             for (var i = 0; i < options.IncludeDirs.Count; i++)
             {
@@ -67,12 +67,6 @@ namespace CppSharp
         public void Setup()
         {
             ValidateOptions(Options);
-
-            if (!Directory.Exists(Options.OutputDir))
-                Directory.CreateDirectory(Options.OutputDir);
-
-            if (!Generators.ContainsKey(Options.GeneratorKind))
-                throw new NotImplementedException("Unknown generator kind");
 
             Generator = Generators[Options.GeneratorKind](this);
         }
@@ -230,6 +224,14 @@ namespace CppSharp
         public string IncludePrefix;
         public bool WriteOnlyWhenChanged;
         public Func<TranslationUnit, string> GenerateName;
+    }
+
+    public class InvalidOptionException : Exception
+    {
+        public InvalidOptionException()
+        {
+            
+        }
     }
 
     public static class ConsoleDriver
