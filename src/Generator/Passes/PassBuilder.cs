@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using CppSharp.Passes;
 
 namespace CppSharp
@@ -31,6 +32,14 @@ namespace CppSharp
             {
                 pass.VisitLibrary(Driver.Library);
             }
+        }
+
+        /// <summary>
+        /// Finds a previously-added pass of the given type.
+        /// </summary>
+        public T FindPass<T>() where T : TranslationUnitPass
+        {
+            return Passes.OfType<T>().Select(pass => pass as T).FirstOrDefault();
         }
     }
 }
