@@ -195,6 +195,9 @@ namespace CppSharp
             if (@class.IsIncomplete)
                 goto OutVisited;
 
+            if (string.IsNullOrWhiteSpace(@class.Name))
+                goto OutVisited;
+
             var unitClass = unit.FindClass(@class.Name);
             if (unitClass == null || unitClass.IsIncomplete)
                 goto OutVisited;
