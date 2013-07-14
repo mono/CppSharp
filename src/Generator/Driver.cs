@@ -115,6 +115,8 @@ namespace CppSharp
         {
             foreach (var pass in Passes.Passes)
                 pass.VisitLibrary(Library);
+
+            Generator.Process();
         }
 
         public List<GeneratorOutput> GenerateCode()

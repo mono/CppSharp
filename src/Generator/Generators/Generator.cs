@@ -50,6 +50,13 @@ namespace CppSharp.Generators
         /// </summary>
         public abstract bool SetupPasses(PassBuilder builder);
 
+        /// <summary>
+        /// Setup any generator-specific processing here.
+        /// </summary>
+        public virtual void Process()
+        {
+
+        }
 
         /// <summary>
         /// Generates the outputs.
