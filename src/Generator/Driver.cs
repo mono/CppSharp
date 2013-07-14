@@ -29,6 +29,7 @@ namespace CppSharp
         public IDiagnosticConsumer Diagnostics { get; private set; }
         public Parser Parser { get; private set; }
         public TypeMapDatabase TypeDatabase { get; private set; }
+        public PassBuilder Passes { get; private set; }
         public Generator Generator { get; private set; }
 
         public Library Library { get; private set; }
@@ -40,6 +41,7 @@ namespace CppSharp
             Diagnostics = diagnostics;
             Parser = new Parser(Options);
             TypeDatabase = new TypeMapDatabase();
+            Passes = new PassBuilder(this);
         }
 
         static void ValidateOptions(DriverOptions options)
@@ -69,6 +71,7 @@ namespace CppSharp
             ValidateOptions(Options);
 
             Generator = Generators[Options.GeneratorKind](this);
+            TypeDatabase.SetupTypeMaps();
         }
 
         public bool ParseCode()
