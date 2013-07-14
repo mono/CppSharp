@@ -19,6 +19,9 @@ namespace CppSharp
             Driver = driver;
         }
 
+        /// <summary>
+        /// Adds a new pass to the builder.
+        /// </summary>
         public void AddPass(TranslationUnitPass pass)
         {
             pass.Driver = Driver;
