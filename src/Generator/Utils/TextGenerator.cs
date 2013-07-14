@@ -7,19 +7,17 @@ namespace CppSharp
 {
     public class TextGenerator
     {
-        private const uint DefaultIndent = 4;
-        private const uint MaxIndent = 80;
+        const uint DefaultIndent = 4;
 
-        public StringBuilder stringBuilder;
-        private bool isStartOfLine;
-        private bool needsNewLine;
-
+        public StringBuilder StringBuilder;
+        protected bool IsStartOfLine;
+        protected bool NeedsNewLine;
         protected readonly Stack<uint> CurrentIndent;
 
         public TextGenerator()
         {
-            stringBuilder = new StringBuilder();
-            isStartOfLine = false;
+            StringBuilder = new StringBuilder();
+            IsStartOfLine = false;
             CurrentIndent = new Stack<uint>();
         }
 
@@ -33,13 +31,13 @@ namespace CppSharp
 
             foreach(var line in msg.SplitAndKeep(Environment.NewLine))
             {
-                if (isStartOfLine && !string.IsNullOrWhiteSpace(line))
-                    stringBuilder.Append(new string(' ', (int) CurrentIndent.Sum(u => u)));
+                if (IsStartOfLine && !string.IsNullOrWhiteSpace(line))
+                    StringBuilder.Append(new string(' ', (int) CurrentIndent.Sum(u => u)));
 
                 if (line.Length > 0)
-                    isStartOfLine = line.EndsWith(Environment.NewLine);
+                    IsStartOfLine = line.EndsWith(Environment.NewLine);
 
-                stringBuilder.Append(line);
+                StringBuilder.Append(line);
             }
         }
 
@@ -58,26 +56,26 @@ namespace CppSharp
 
         public void NewLine()
         {
-            stringBuilder.AppendLine(string.Empty);
-            isStartOfLine = true;
+            StringBuilder.AppendLine(string.Empty);
+            IsStartOfLine = true;
         }
 
         public void NewLineIfNeeded()
         {
-            if (!needsNewLine) return;
+            if (!NeedsNewLine) return;
 
             NewLine();
-            needsNewLine = false;
+            NeedsNewLine = false;
         }
 
         public void NeedNewLine()
         {
-            needsNewLine = true;
+            NeedsNewLine = true;
         }
 
         public void ResetNewLine()
         {
-            needsNewLine = false;
+            NeedsNewLine = false;
         }
 
         public void PushIndent(uint indent = DefaultIndent)
@@ -104,7 +102,7 @@ namespace CppSharp
 
         public override string ToString()
         {
-            return stringBuilder.ToString();
+            return StringBuilder.ToString();
         }
 
         public static implicit operator string(TextGenerator tg)
