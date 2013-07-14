@@ -1,29 +1,47 @@
-CppSharp is a binding tool that automatically generates either C#
-or C++/CLI wrappers around your C/C++ libraries by parsing headers.
+# CppSharp #
+
+## What does it do?
+
+This tool allows you to generate .NET bindings that wrap C/C++ code allowing interoperability with managed languages. This can be useful if you have an existing native codebase and want to add scripting support, or want to consume an existing native library in your managed code.
+
+## Why reinvent the wheel?
+
+There are not many automated binding tools around, the only real alternative is SWIG. So how is it different from SWIG?
+
+ * No need to generate a C layer to interop with C++.
+ * Based on an actual C++ parser (Clang) so very accurate.
+ * Understands C++ at the ABI (application binary interface) level
+ * Easily extensible semantics via user passes
+ * Strongly-typed customization APIs
+ * Can be used as a library
+
+## Can I use it yet?
+
+It is being used to bind "real-world" complex codebases successfully, so give it a shot.
+
+Since C and C++ provide such a wide array of features I'm sure there's still tonnes of bugs and unsupported edge cases, but give and try and report any bugs you find and I'll try to fix them ASAP.
+
+## Getting started
+
+Since binary releases have not been provided yet, you will have to compile the project and dependencies manually (LLVM and Clang). 
+
+The documentation is still a work-in-progress, please see the following resources for more information:
+
+[User's Manual](docs/UsersManual.md)
+
+[Developer's Manual](docs/DevManual.md)
 
 
-Directory structure
--------------------
+## Similiar Tools
 
-Manual.md
-  Work-in-progress documentation for this tool.
+* Sharppy - .NET bindings generator for unmanaged C++
+[https://code.google.com/p/sharppy/](https://code.google.com/p/sharppy/)
 
-build/
-  Premake build scripts.
+* XInterop
+[http://xinterop.com/](http://xinterop.com/)
 
-src/
-  Runtime
-    Helper runtime library to bridge the C++ standard library.
-  Bridge
-    Contains the needed classes to bridge the Clang parser to .NET.
-  Parser
-    C++/CLI based wrapper around the C++ Clang libraries.
-  Generator
-    The Clang-based binding generator.
+* SWIG
+[http://www.swig.org/](http://www.swig.org/)
 
-tests/
-  Regression tests.
-
-examples/
-  Hello
-    Small, Hello, World! example.
+* Cxxi
+[https://github.com/mono/cxxi/](https://github.com/mono/cxxi/)
