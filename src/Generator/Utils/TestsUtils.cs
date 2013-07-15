@@ -8,7 +8,7 @@ namespace CppSharp.Utils
         readonly string name;
         readonly LanguageGeneratorKind kind;
 
-        public LibraryTest(string name, LanguageGeneratorKind kind)
+        protected LibraryTest(string name, LanguageGeneratorKind kind)
         {
             this.name = name;
             this.kind = kind;
@@ -17,10 +17,13 @@ namespace CppSharp.Utils
         public virtual void Setup(Driver driver)
         {
             var options = driver.Options;
-            options.LibraryName = name + ".Native";
+            options.LibraryName = name;
             options.GeneratorKind = kind;
             options.OutputDir = "../gen/" + name;
             options.GenerateLibraryNamespace = false;
+
+            options.SharedLibraryName = name + ".Native";
+            options.CheckSymbols = false;
 
             var path = "../../../tests/" + name;
             options.IncludeDirs.Add(path);
@@ -39,14 +42,6 @@ namespace CppSharp.Utils
         }
 
         public virtual void SetupPasses(Driver driver, PassBuilder passes)
-        {
-        }
-
-        public virtual void GenerateStart(TextTemplate template)
-        {
-        }
-
-        public virtual void GenerateAfterNamespaces(TextTemplate template)
         {
         }
     }

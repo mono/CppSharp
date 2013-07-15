@@ -20,10 +20,13 @@ function SetupTestGeneratorProject(name)
 
     files { name .. ".cs" }
 
+    dependson { name .. ".Native" }
+
     links
     {
-      path.join(depsdir, "cxxi", "build", action, "lib", "Bridge"),
-      path.join(depsdir, "cxxi", "build", action, "lib", "Generator"),
+      "CppSharp.AST",
+      "CppSharp.Generator",
+      "CppSharp.Parser",
     }
 end
 

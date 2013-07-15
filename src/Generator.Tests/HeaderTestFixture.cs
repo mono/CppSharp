@@ -1,21 +1,20 @@
 ﻿using System;
 using System.IO;
 using CppSharp;
-using CppSharp.Types;
 
 namespace Generator.Tests
 {
     public class HeaderTestFixture
     {
-        protected Library library;
-        protected TypeMapDatabase database;
+        protected Driver Driver;
+        protected DriverOptions Options;
+        protected Library Library;
 
         private const string TestsDirectory = @"..\..\..\tests\Native";
 
         public HeaderTestFixture()
         {
-            database = new TypeMapDatabase();
-            database.SetupTypeMaps();
+
         }
 
         protected void ParseLibrary(string file)
@@ -25,21 +24,17 @@ namespace Generator.Tests
 
         protected void ParseLibrary(string dir, string file)
         {
-            var options = new DriverOptions();
+            Options = new DriverOptions();
 
             var path = Path.Combine(Directory.GetCurrentDirectory(), dir);
-            options.IncludeDirs.Add(Path.GetFullPath(path));
+            Options.IncludeDirs.Add(Path.GetFullPath(path));
+            Options.Headers.Add(file);
 
-            var parser = new Parser(options);
-            var result = parser.ParseHeader(file);
+            Driver = new Driver(Options, new TextDiagnosticPrinter());
+            if (!Driver.ParseCode())
+                throw new Exception("Error parsing the code");
 
-            if (result.Kind != ParserResultKind.Success)
-                throw new Exception("Could not parse file: " + file);
-
-            library = result.Library;
-
-            foreach (var diag in result.Diagnostics)
-                Console.WriteLine(diag.Message);
+            Library = Driver.Library;
         }
     }
 }

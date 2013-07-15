@@ -23,7 +23,7 @@ namespace Generator.Tests
         public void Init()
         {
             ParseLibrary("CLITypes.h");
-            printer = new CLITypePrinter(database, library);
+            printer = new CLITypePrinter(Driver, new CLITypePrinterContext());
         }
 
         public void CheckType<T>(T decl, string check) where T : ITypedDecl
@@ -41,7 +41,7 @@ namespace Generator.Tests
         [Test]
         public void TestPrimitive()
         {
-            var p = library.Class("Primitives");
+            var p = Library.Class("Primitives");
             CheckType(p.Field("B"), "bool");
             CheckType(p.Field("C"), "char");
             CheckType(p.Field("UC"), "unsigned char");
@@ -61,7 +61,7 @@ namespace Generator.Tests
         [Test]
         public void TestArray()
         {
-            var c = library.Class("Arrays");
+            var c = Library.Class("Arrays");
             CheckType(c.Field("Array"), "cli::array<float>^");
             CheckType(c.Field("Prim"), "cli::array<::Primitives^>^");
 
@@ -70,35 +70,35 @@ namespace Generator.Tests
         [Test]
         public void TestPointers()
         {
-            var p = library.Class("Pointers");
+            var p = Library.Class("Pointers");
             CheckType(p.Field("pv"), "System::IntPtr");
-            CheckType(p.Field("pc"), "char");
+            CheckType(p.Field("pc"), "System::IntPtr");
             CheckType(p.Field("puc"), "System::IntPtr");
-            //CheckType(p.Field("cpc"), "System::String^");
-            CheckType(p.Field("pi"), "int");
+            CheckType(p.Field("cpc"), "System::String^");
+            CheckType(p.Field("pi"), "System::IntPtr");
         }
 
         [Test]
         public void TestFunctionPointers()
         {
-            var p = library.Class("FunctionPointers");
+            var p = Library.Class("FunctionPointers");
             CheckType(p.Field("fn"), "::FnPtr^");
             CheckType(p.Field("fn2"), "::FnPtr2^");
-            CheckType(p.Field("fn3"), "TypedefFn3");
+            CheckType(p.Field("fn3"), "::FnPtr3^");
         }
 
         [Test]
         public void TestTypedefs()
         {
-            CheckType(library.Typedef("FnPtr"), "System::Func<int, double>^");
-            CheckType(library.Typedef("FnPtr2"), "System::Action<char, float>^");
-            CheckType(library.Typedef("FnPtr3"), "System::Action^");
+            CheckType(Library.Typedef("FnPtr"), "System::Func<int, double>^");
+            CheckType(Library.Typedef("FnPtr2"), "System::Action<char, float>^");
+            CheckType(Library.Typedef("FnPtr3"), "System::Action^");
         }
 
         [Test]
         public void TestTags()
         {
-            var p = library.Class("Tag");
+            var p = Library.Class("Tag");
             CheckType(p.Field("p"), "::Primitives^");
             CheckType(p.Field("e"), "::E");
         }

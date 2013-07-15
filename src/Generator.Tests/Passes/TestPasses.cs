@@ -18,16 +18,16 @@ namespace Generator.Tests.Passes
         public void Setup()
         {
             ParseLibrary("Passes.h");
-            passBuilder = new PassBuilder(library);
+            passBuilder = new PassBuilder(Driver);
         }
 
         [Test]
         public void TestCheckFlagEnumsPass()
         {
-            var @enum = library.Enum("FlagEnum");
+            var @enum = Library.Enum("FlagEnum");
             Assert.IsFalse(@enum.IsFlags);
 
-            var @enum2 = library.Enum("FlagEnum2");
+            var @enum2 = Library.Enum("FlagEnum2");
             Assert.IsFalse(@enum2.IsFlags);
 
             passBuilder.CheckFlagEnums();
@@ -40,7 +40,7 @@ namespace Generator.Tests.Passes
         [Test]
         public void TestFunctionToInstancePass()
         {
-            var c = library.Class("Foo");
+            var c = Library.Class("Foo");
 
             Assert.IsNull(c.Method("Start"));
 
@@ -53,22 +53,22 @@ namespace Generator.Tests.Passes
         [Test]
         public void TestFunctionToStaticPass()
         {
-            var c = library.Class("Foo");
+            var c = Library.Class("Foo");
 
-            Assert.IsFalse(library.Function("FooStart").ExplicityIgnored);
+            Assert.IsFalse(Library.Function("FooStart").ExplicityIgnored);
             Assert.IsNull(c.Method("Start"));
 
             passBuilder.FunctionToStaticMethod();
             passBuilder.RunPasses();
 
-            Assert.IsTrue(library.Function("FooStart").ExplicityIgnored);
+            Assert.IsTrue(Library.Function("FooStart").ExplicityIgnored);
             Assert.IsNotNull(c.Method("Start"));
         }
 
         [Test]
         public void TestCaseRenamePass()
         {
-            var c = library.Class("TestRename");
+            var c = Library.Class("TestRename");
 
             var method = c.Method("lowerCaseMethod");
             var field = c.Field("lowerCaseField");
@@ -83,9 +83,9 @@ namespace Generator.Tests.Passes
         [Test]
         public void TestCleanEnumItemNames()
         {
-            library.GenerateEnumFromMacros("TestEnumItemName", "TEST_ENUM_ITEM_NAME_(.*)");
+            Library.GenerateEnumFromMacros("TestEnumItemName", "TEST_ENUM_ITEM_NAME_(.*)");
 
-            var @enum = library.Enum("TestEnumItemName");
+            var @enum = Library.Enum("TestEnumItemName");
             Assert.IsNotNull(@enum);
 
             passBuilder.RemovePrefix("TEST_ENUM_ITEM_NAME_", RenameTargets.EnumItem);
