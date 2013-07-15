@@ -66,7 +66,7 @@ project "Parser"
     "clangLex",
     "clangParse",
     "clangSema",
-    "clangSerialization"
+    "clangSerialization",
     "LLVMAsmParser",
     "LLVMBitReader",
     "LLVMBitWriter",
@@ -79,5 +79,5 @@ project "Parser"
     "LLVMX86AsmPrinter",
     "LLVMX86Desc",
     "LLVMX86Info",
-    "LLVMX86Utils",
+    "LLVMX86Utils"
   }
