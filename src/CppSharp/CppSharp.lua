@@ -6,4 +6,4 @@ project "CppSharp"
 
   files   { "**.cs" }
   
-  links { "System", "System.Core", "Bridge", "Generator" }
+  links { "System", "System.Core", "CppSharp.AST", "CppSharp.Generator" }

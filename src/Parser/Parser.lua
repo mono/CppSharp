@@ -4,13 +4,13 @@ clang_msvc_flags =
   "/wd4355", "/wd4996", "/wd4624", "/wd4291"
 }
 
-project "Parser"
+project "CppSharp.Parser"
   
   kind "SharedLib"
   language "C++"
   SetupNativeProject()
   
-  dependson { "Bridge" }
+  dependson { "CppSharp.AST" }
   flags { common_flags, "Managed" }
 
   -- usingdirs is only supported in per-file configs in our

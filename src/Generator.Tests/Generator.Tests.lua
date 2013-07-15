@@ -1,4 +1,4 @@
-project "Generator.Tests"
+project "CppSharp.Generator.Tests"
 
   kind "SharedLib"
   language "C#"
@@ -16,9 +16,9 @@ project "Generator.Tests"
   {
     "System",
     "System.Core",
-    "Bridge",
-    "Generator",
-    "Parser",
+    "CppSharp.AST",
+    "CppSharp.Generator",
+    "CppSharp.Parser",
     "NUnit.Framework",
     "NSubstitute"
   }

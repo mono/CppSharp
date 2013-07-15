@@ -1,4 +1,4 @@
-project "Runtime"
+project "CppSharp.Runtime"
 
   kind "SharedLib"
   language "C#"

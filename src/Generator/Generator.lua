@@ -1,4 +1,4 @@
-project "Generator"
+project "CppSharp.Generator"
 
   kind "SharedLib"
   language "C#"
@@ -7,4 +7,4 @@ project "Generator"
   files   { "**.cs", "**.bmp", "**.resx", "**.config" }
   excludes { "Filter.cs" }
   
-  links { "System", "System.Core", "Bridge", "Parser" }
+  links { "System", "System.Core", "CppSharp.AST", "CppSharp.Parser" }
