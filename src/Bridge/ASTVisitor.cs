@@ -301,8 +301,11 @@ namespace CppSharp
         public virtual bool VisitParameterDecl(Parameter parameter)
         {
             if (!VisitDeclaration(parameter))
-                return false; 
-            
+                return false;
+
+            if (parameter.Type == null)
+                return false;
+
             return parameter.Type.Visit(this, parameter.QualifiedType.Qualifiers);
         }
 
