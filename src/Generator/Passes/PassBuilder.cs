@@ -30,6 +30,15 @@ namespace CppSharp
         }
 
         /// <summary>
+        /// Runs the passes in the builder.
+        /// </summary>
+        public void RunPasses()
+        {
+            foreach (var pass in Passes)
+                pass.VisitLibrary(Driver.Library);
+        }
+
+        /// <summary>
         /// Finds a previously-added pass of the given type.
         /// </summary>
         public T FindPass<T>() where T : TranslationUnitPass
