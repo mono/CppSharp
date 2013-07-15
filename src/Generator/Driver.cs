@@ -174,6 +174,7 @@ namespace CppSharp
             GenerateLibraryNamespace = true;
             GeneratePartialClasses = true;
             OutputInteropIncludes = true;
+            MaxIndent = 80;
         }
 
         // General options
@@ -214,6 +215,7 @@ namespace CppSharp
         public string IncludePrefix;
         public bool WriteOnlyWhenChanged;
         public Func<TranslationUnit, string> GenerateName;
+        public int MaxIndent;
     }
 
     public class InvalidOptionException : Exception
