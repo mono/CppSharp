@@ -29,29 +29,28 @@ namespace CppSharp
         public IDiagnosticConsumer Diagnostics { get; private set; }
         public Parser Parser { get; private set; }
         public TypeMapDatabase TypeDatabase { get; private set; }
-        public ILibrary Transform { get; private set; }
+        public PassBuilder Passes { get; private set; }
         public Generator Generator { get; private set; }
 
         public Library Library { get; private set; }
         public Library LibrarySymbols { get; private set; }
 
-        public Driver(DriverOptions options, IDiagnosticConsumer diagnostics,
-            ILibrary transform)
+        public Driver(DriverOptions options, IDiagnosticConsumer diagnostics)
         {
             Options = options;
             Diagnostics = diagnostics;
             Parser = new Parser(Options);
             TypeDatabase = new TypeMapDatabase();
-            Transform = transform;
+            Passes = new PassBuilder(this);
         }
 
         static void ValidateOptions(DriverOptions options)
         {
-            if (string.IsNullOrWhiteSpace(options.LibraryName))
-                throw new InvalidDataException();
+            if (!Generators.ContainsKey(options.GeneratorKind))
+                throw new InvalidOptionException();
 
-            if (options.OutputDir == null)
-                options.OutputDir = Directory.GetCurrentDirectory();
+            if (string.IsNullOrWhiteSpace(options.LibraryName))
+                throw new InvalidOptionException();
 
             for (var i = 0; i < options.IncludeDirs.Count; i++)
             {
@@ -71,13 +70,8 @@ namespace CppSharp
         {
             ValidateOptions(Options);
 
-            if (!Directory.Exists(Options.OutputDir))
-                Directory.CreateDirectory(Options.OutputDir);
-
-            if (!Generators.ContainsKey(Options.GeneratorKind))
-                throw new NotImplementedException("Unknown generator kind");
-
             Generator = Generators[Options.GeneratorKind](this);
+            TypeDatabase.SetupTypeMaps();
         }
 
         public bool ParseCode()
@@ -100,60 +94,60 @@ namespace CppSharp
             return true;
         }
 
-        public void ProcessCode()
+        public void AddPrePasses()
         {
-            TypeDatabase.SetupTypeMaps();
-
-            if (Transform != null)
-                Transform.Preprocess(this, Library);
-
-            var passes = new PassBuilder(this);
-            passes.CleanUnit(Options);
-            passes.SortDeclarations();
-            passes.ResolveIncompleteDecls();
-
-            if (Transform != null)
-                Transform.SetupPasses(this, passes);
-
-            passes.CleanInvalidDeclNames();
-            passes.CheckIgnoredDecls();
-
-            passes.CheckTypeReferences();
-            passes.CheckFlagEnums();
-            passes.CheckAmbiguousOverloads();
-
-            Generator.SetupPasses(passes);
-
-            passes.RunPasses();
-
-            if (Transform != null)
-                Transform.Postprocess(Library);
+            Passes.CleanUnit(Options);
+            Passes.SortDeclarations();
+            Passes.ResolveIncompleteDecls();
         }
 
-        public void GenerateCode()
+        public void AddPostPasses()
         {
-            if (Library.TranslationUnits.Count <= 0)
-                return;
+            Passes.CleanInvalidDeclNames();
+            Passes.CheckIgnoredDecls();
+            Passes.CheckTypeReferences();
+            Passes.CheckFlagEnums();
+            Passes.CheckAmbiguousOverloads();
+            Generator.SetupPasses(Passes);
+        }
 
-            foreach (var unit in Library.TranslationUnits)
+        public void ProcessCode()
+        {
+            foreach (var pass in Passes.Passes)
+                pass.VisitLibrary(Library);
+
+            Generator.Process();
+        }
+
+        public List<GeneratorOutput> GenerateCode()
+        {
+            var outputs = Generator.Generate();
+            return outputs;
+        }
+
+        public void WriteCode(List<GeneratorOutput> outputs)
+        {
+            var outputPath = Options.OutputDir ?? Directory.GetCurrentDirectory();
+
+            if (!Directory.Exists(outputPath))
+                Directory.CreateDirectory(outputPath);
+
+            foreach (var output in outputs)
             {
-                if (unit.Ignore || !unit.HasDeclarations)
-                    continue;
+                var fileBase = output.TranslationUnit.FileNameWithoutExtension;
 
-                if (unit.IsSystemHeader)
-                    continue;
+                if (Options.GenerateName != null)
+                    fileBase = Options.GenerateName(output.TranslationUnit);
 
-                var outputs = new List<GeneratorOutput>();
-                if (!Generator.Generate(unit, outputs))
-                    continue;
-
-                foreach (var output in outputs)
+                foreach (var template in output.Templates)
                 {
-                    Diagnostics.EmitMessage(DiagnosticId.FileGenerated,
-                        "Generated '{0}'", Path.GetFileName(output.OutputPath));
+                    var fileName = string.Format("{0}.{1}", fileBase, template.FileExtension);
+                    Diagnostics.EmitMessage(DiagnosticId.FileGenerated, "Generated '{0}'", fileName);
 
-                    var text = output.Template.ToString();
-                    File.WriteAllText(output.OutputPath, text);
+                    var filePath = Path.Combine(outputPath, fileName);
+
+                    var text = template.GenerateText();
+                    File.WriteAllText(Path.GetFullPath(filePath), text);
                 }
             }
         }
@@ -222,6 +216,14 @@ namespace CppSharp
         public Func<TranslationUnit, string> GenerateName;
     }
 
+    public class InvalidOptionException : Exception
+    {
+        public InvalidOptionException()
+        {
+            
+        }
+    }
+
     public static class ConsoleDriver
     {
         static void OnFileParsed(string file, ParserResult result)
@@ -252,8 +254,7 @@ namespace CppSharp
             Console.BufferHeight = 1999;
 
             var options = new DriverOptions();
-            var driver = new Driver(options, new TextDiagnosticPrinter(),
-                library);
+            var driver = new Driver(options, new TextDiagnosticPrinter());
             library.Setup(driver);
             driver.Setup();
 
@@ -272,10 +273,18 @@ namespace CppSharp
                 return;
 
             Console.WriteLine("Processing code...");
+            library.Preprocess(driver, driver.Library);
+
+            driver.AddPrePasses();
+            library.SetupPasses(driver, driver.Passes);
+            driver.AddPostPasses();
+
             driver.ProcessCode();
+            library.Postprocess(driver.Library);
 
             Console.WriteLine("Generating code...");
-            driver.GenerateCode();
+            var outputs = driver.GenerateCode();
+            driver.WriteCode(outputs);
         }
     }
 }

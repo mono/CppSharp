@@ -30,10 +30,10 @@ namespace CppSharp.Passes
             if (overload1.Function == overload2.Function)
                 return false;
 
-            if (TextTemplate.CheckIgnoreFunction(@class, overload1.Function))
+            if (AST.Utils.CheckIgnoreFunction(@class, overload1.Function))
                 return false;
 
-            if (TextTemplate.CheckIgnoreFunction(@class, overload2.Function))
+            if (AST.Utils.CheckIgnoreFunction(@class, overload2.Function))
                 return false;
 
             // TODO: Default parameters?

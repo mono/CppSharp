@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
-using CppSharp.Types.Std;
 
 namespace CppSharp.Generators.CLI
 {
@@ -18,19 +16,17 @@ namespace CppSharp.Generators.CLI
             Type.TypePrinterDelegate += type => type.Visit(typePrinter);
         }
 
-        /// <summary>
-        /// Generates the code for a given translation unit.
-        /// </summary>
-        public override bool Generate(TranslationUnit unit,
-            List<GeneratorOutput> outputs)
+        public override List<TextTemplate> Generate(TranslationUnit unit)
         {
+            var outputs = new List<TextTemplate>();
+
             var header = new CLIHeadersTemplate(Driver, unit);
-            outputs.Add(GenerateTemplateOutput(header));
+            outputs.Add(header);
 
             var source = new CLISourcesTemplate(Driver, unit);
-            outputs.Add(GenerateTemplateOutput(source));
+            outputs.Add(source);
 
-            return true;
+            return outputs;
         }
 
         public override bool SetupPasses(PassBuilder builder)

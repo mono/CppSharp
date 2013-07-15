@@ -4,6 +4,7 @@ namespace CppSharp
 {
     public enum DiagnosticId
     {
+        UnresolvedDeclaration,
         AmbiguousOverload,
         InvalidOperatorOverload,
         SymbolNotFound,

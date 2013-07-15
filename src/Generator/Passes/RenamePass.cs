@@ -31,6 +31,7 @@ namespace CppSharp.Passes
             if (decl is Parameter) return true;
             if (decl is Enumeration) return true;
             if (decl is Property) return true;
+            if (decl is Event) return true;
             return false;
         }
 
@@ -106,19 +107,28 @@ namespace CppSharp.Passes
 
             return base.VisitParameterDecl(parameter);
         }
+
+        public override bool VisitEvent(Event @event)
+        {
+            if (!Targets.HasFlag(RenameTargets.Event))
+                return false;
+
+            return base.VisitEvent(@event);
+        }
     }
 
     [Flags]
     public enum RenameTargets
     {
-        Class,
-        Field,
-        Method,
-        Function,
-        Parameter,
-        Enum,
-        EnumItem,
-        Any = Function | Method | Parameter | Class | Field | Enum | EnumItem,
+        Class     = 1 << 0,
+        Field     = 1 << 1,
+        Method    = 1 << 2,
+        Function  = 1 << 3,
+        Parameter = 1 << 4,
+        Enum      = 1 << 5,
+        EnumItem  = 1 << 6,
+        Event     = 1 << 7,
+        Any = Function | Method | Parameter | Class | Field | Enum | EnumItem | Event,
     }
 
     /// <summary>

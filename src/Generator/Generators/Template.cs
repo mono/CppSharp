@@ -1,73 +1,121 @@
-﻿namespace CppSharp.Generators
+﻿using System.Collections.Generic;
+using System.Text;
+
+namespace CppSharp.Generators
 {
     public abstract class TextTemplate : TextGenerator
     {
-        private const uint DefaultIndent = 4;
-        private const uint MaxIndent = 80;
-
-        public Driver Driver { get; set; }
-        public DriverOptions Options { get; set; }
-        public Library Library { get; set; }
-        public ILibrary Transform;
-        public TranslationUnit TranslationUnit { get; set; }
-        public abstract string FileExtension { get; }
-
-        public abstract void Generate();
+        public Driver Driver { get; private set; }
+        public DriverOptions Options { get; private set; }
+        public Library Library { get; private set; }
+        public TranslationUnit TranslationUnit { get; private set; }
 
         protected TextTemplate(Driver driver, TranslationUnit unit)
         {
             Driver = driver;
             Options = driver.Options;
             Library = driver.Library;
-            Transform = driver.Transform;
             TranslationUnit = unit;
         }
 
-        public static bool CheckIgnoreFunction(Class @class, Function function)
+        public abstract string FileExtension { get; }
+
+        public abstract void GenerateBlocks();
+
+        public virtual string GenerateText()
         {
-            if (function.Ignore) return true;
+            return base.ToString();
+        }
+    }
 
-            if (function is Method)
-                return CheckIgnoreMethod(@class, function as Method);
+    /// <summary>
+    /// Represents a (nestable) block of text with a specific kind.
+    /// </summary>
+    public interface IBlock<TBlock, TKind>
+    {
+        TKind Kind { get; set; }
+        List<TBlock> Blocks { get; set; }
+        TBlock Parent { get; set; }
 
-            return false;
+        TextGenerator Text { get; set; }
+        Declaration Declaration { get; set; }
+    }
+
+    /// <summary>
+    /// Block generator used by language-specific generators to generate
+    /// their output.
+    /// </summary>
+    public abstract class BlockGenerator<TKind, TBlock> : TextTemplate
+        where TBlock : IBlock<TBlock, TKind>, new()
+    {
+        public struct BlockData
+        {
+            public TBlock Block;
+            public int StartPosition;
         }
 
-        public static bool CheckIgnoreMethod(Class @class, Method method)
+        public List<TBlock> Blocks { get; private set; }
+        protected readonly Stack<BlockData> CurrentBlocks;
+
+        protected BlockGenerator(Driver driver, TranslationUnit unit)
+            : base(driver, unit)
         {
-            if (method.Ignore) return true;
-
-            var isEmptyCtor = method.IsConstructor && method.Parameters.Count == 0;
-
-            if (@class.IsValueType && isEmptyCtor)
-                return true;
-
-            if (method.IsCopyConstructor || method.IsMoveConstructor)
-                return true;
-
-            if (method.IsDestructor)
-                return true;
-
-            if (method.OperatorKind == CXXOperatorKind.Equal)
-                return true;
-
-            if (method.Kind == CXXMethodKind.Conversion)
-                return true;
-
-            if (method.Access != AccessSpecifier.Public)
-                return true;
-
-            return false;
+            Blocks = new List<TBlock>();
+            CurrentBlocks = new Stack<BlockData>();
         }
 
-        public static bool CheckIgnoreField(Class @class, Field field)
+        public void PushBlock(TKind kind)
         {
-            if (field.Ignore) return true;
+            var data = new BlockData
+            {
+                Block = new TBlock { Kind = kind },
+                StartPosition = StringBuilder.Length
+            };
 
-            if (field.Access != AccessSpecifier.Public)
-                return true;
+            CurrentBlocks.Push(data);
+        }
 
-            return false;
+        public void PopBlock()
+        {
+            var data = CurrentBlocks.Pop();
+            var block = data.Block;
+
+            var text = StringBuilder.ToString().Substring(data.StartPosition);
+            block.Text = Clone();
+            block.Text.StringBuilder = new StringBuilder(text);
+
+            var hasParentBlock = CurrentBlocks.Count > 0;
+            if (hasParentBlock)
+                CurrentBlocks.Peek().Block.Blocks.Add(block);
+            else
+                Blocks.Add(block);
+        }
+
+        public TBlock FindBlock(TKind kind)
+        {
+            //foreach (var block in Blocks)
+            //    if (block.Kind == kind)
+            //        return block;
+            return default(TBlock);
+        }
+
+        public override string GenerateText()
+        {
+            var generator = new TextGenerator();
+
+            foreach (var block in Blocks)
+                GenerateBlock(block, generator);
+
+            return generator.ToString();
+        }
+
+        void GenerateBlock(TBlock block, TextGenerator gen)
+        {
+            if (block.Blocks.Count == 0)
+                gen.Write(block.Text);
+
+            foreach (var childBlock in block.Blocks)
+                GenerateBlock(childBlock, gen);
         }
     }
 }

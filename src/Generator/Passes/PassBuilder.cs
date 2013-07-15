@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using CppSharp.Passes;
 
 namespace CppSharp
@@ -18,6 +19,9 @@ namespace CppSharp
             Driver = driver;
         }
 
+        /// <summary>
+        /// Adds a new pass to the builder.
+        /// </summary>
         public void AddPass(TranslationUnitPass pass)
         {
             pass.Driver = Driver;
@@ -25,12 +29,12 @@ namespace CppSharp
             Passes.Add(pass);
         }
 
-        public void RunPasses()
+        /// <summary>
+        /// Finds a previously-added pass of the given type.
+        /// </summary>
+        public T FindPass<T>() where T : TranslationUnitPass
         {
-            foreach (var pass in Passes)
-            {
-                pass.VisitLibrary(Driver.Library);
-            }
+            return Passes.OfType<T>().Select(pass => pass as T).FirstOrDefault();
         }
     }
 }

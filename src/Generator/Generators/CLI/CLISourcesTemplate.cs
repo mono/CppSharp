@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using CppSharp.AST;
 using CppSharp.Types;
 
 namespace CppSharp.Generators.CLI
@@ -18,35 +19,42 @@ namespace CppSharp.Generators.CLI
             
         }
 
-        public override void Generate()
+        public override void GenerateBlocks()
         {
-            OnStart(this);
+            PushBlock(CLIBlockKind.Header);
+            PopBlock();
 
-            var file = Path.GetFileNameWithoutExtension(TranslationUnit.FileName).Replace('\\', '/');
+            var file = Path.GetFileNameWithoutExtension(TranslationUnit.FileName)
+                .Replace('\\', '/');
 
             if (Driver.Options.GenerateName != null)
                 file = Driver.Options.GenerateName(TranslationUnit);
 
+            PushBlock(CLIBlockKind.Includes);
             WriteLine("#include \"{0}.h\"", file);
-
             GenerateForwardReferenceHeaders();
 
             if (Options.OutputInteropIncludes)
                 WriteLine("#include <clix.hpp>");
 
             NewLine();
+            PopBlock();
 
+            PushBlock(CLIBlockKind.Usings);
             WriteLine("using namespace System;");
             WriteLine("using namespace System::Runtime::InteropServices;");
-
-            OnNamespaces(this);
             NewLine();
+            PopBlock();
 
-            GenerateDeclarations();
+            GenerateNamespace(TranslationUnit);
+
+            PushBlock(CLIBlockKind.Footer);
+            PopBlock();
         }
 
         public void GenerateForwardReferenceHeaders()
         {
+            PushBlock(CLIBlockKind.IncludesForwardReferences);
             var includes = new SortedSet<string>(StringComparer.InvariantCulture);
 
             var typeRefs = TranslationUnit.TypeReferences as TypeRefsVisitor;
@@ -81,15 +89,13 @@ namespace CppSharp.Generators.CLI
 
             foreach (var include in includes)
                 WriteLine(include);
-        }
 
-        public void GenerateDeclarations()
-        {
-            GenerateNamespace(TranslationUnit);
+            PopBlock();
         }
 
         private void GenerateNamespace(Namespace @namespace)
         {
+            PushBlock(CLIBlockKind.Namespace);
             foreach (var @class in @namespace.Classes)
             {
                 if (@class.Ignore)
@@ -116,6 +122,8 @@ namespace CppSharp.Generators.CLI
 
             foreach(var childNamespace in @namespace.Namespaces)
                 GenerateNamespace(childNamespace);
+
+            PopBlock();
         }
 
         public void GenerateDeclarationCommon(Declaration decl)
@@ -126,6 +134,7 @@ namespace CppSharp.Generators.CLI
 
         public void GenerateClass(Class @class)
         {
+            PushBlock(CLIBlockKind.Class);
             //GenerateDeclarationCommon(@class);
 
             // Output a default constructor that takes the native pointer.
@@ -134,7 +143,7 @@ namespace CppSharp.Generators.CLI
 
             foreach (var method in @class.Methods)
             {
-                if (CheckIgnoreMethod(@class, method))
+                if (Utils.CheckIgnoreMethod(@class, method))
                     continue;
 
                 GenerateDeclarationCommon(method);
@@ -147,7 +156,7 @@ namespace CppSharp.Generators.CLI
             {
                 foreach (var field in @class.Fields)
                 {
-                    if (CheckIgnoreField(@class, field))
+                    if (Utils.CheckIgnoreField(@class, field))
                         continue;
 
                     GenerateFieldProperty(field);
@@ -188,6 +197,8 @@ namespace CppSharp.Generators.CLI
                 GenerateDeclarationCommon(variable);
                 GenerateVariable(variable, @class);
             }
+
+            PopBlock();
         }
 
         private void GenerateFunctionTemplate(FunctionTemplate template, Class @class)
@@ -471,7 +482,7 @@ namespace CppSharp.Generators.CLI
 
             foreach (var field in @class.Fields)
             {
-                if (CheckIgnoreField(@class, field)) continue;
+                if (Utils.CheckIgnoreField(@class, field)) continue;
 
                 var nativeField = string.Format("{0}{1}",
                                                 nativeVar, field.OriginalName);
@@ -601,7 +612,7 @@ namespace CppSharp.Generators.CLI
 
             foreach (var field in @class.Fields)
             {
-                if (CheckIgnoreField(@class, field)) continue;
+                if (Utils.CheckIgnoreField(@class, field)) continue;
 
                 var varName = string.Format("_native.{0}", field.OriginalName);
 

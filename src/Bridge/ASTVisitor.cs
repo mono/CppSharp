@@ -137,6 +137,14 @@ namespace CppSharp
             return typedef.Declaration.Visit(this);
         }
 
+        public bool VisitDecayedType(DecayedType decayed, TypeQualifiers quals)
+        {
+            if (!VisitType(decayed, quals))
+                return false;
+
+            return decayed.Decayed.Visit(this);
+        }
+
         public virtual bool VisitTemplateSpecializationType(TemplateSpecializationType template,
             TypeQualifiers quals)
         {
