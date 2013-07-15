@@ -346,7 +346,7 @@ namespace CppSharp.Generators.CSharp
 
             foreach (var method in @class.Methods)
             {
-                if (Utils.CheckIgnoreMethod(@class, method))
+                if (ASTUtils.CheckIgnoreMethod(@class, method))
                     continue;
 
                 if (method.IsConstructor)
@@ -404,7 +404,7 @@ namespace CppSharp.Generators.CSharp
 
             foreach (var field in @class.Fields)
             {
-                if (Utils.CheckIgnoreField(@class, field)) continue;
+                if (ASTUtils.CheckIgnoreField(@class, field)) continue;
 
                 var nativeField = string.Format("{0}->{1}",
                     Helpers.GeneratedIdentifier("ptr"), field.OriginalName);
@@ -554,7 +554,7 @@ namespace CppSharp.Generators.CSharp
 
             foreach (var field in @class.Fields)
             {
-                if (Utils.CheckIgnoreField(@class, field)) continue;
+                if (ASTUtils.CheckIgnoreField(@class, field)) continue;
 
                 NewLineIfNeeded();
 
@@ -751,7 +751,7 @@ namespace CppSharp.Generators.CSharp
             var staticMethods = new List<Method>();
             foreach (var method in @class.Methods)
             {
-                if (Utils.CheckIgnoreMethod(@class, method))
+                if (ASTUtils.CheckIgnoreMethod(@class, method))
                     continue;
 
                 if (method.IsConstructor)
@@ -842,7 +842,7 @@ namespace CppSharp.Generators.CSharp
             var args = TypePrinter.VisitParameters(@event.Parameters, hasNames: true);
             TypePrinter.PopContext();
 
-            delegateInstance = Helpers.GeneratedIdentifier(@event.Name);
+            delegateInstance = Helpers.GeneratedIdentifier(@event.OriginalName);
             delegateName = delegateInstance + "Delegate";
             delegateRaise = delegateInstance + "RaiseInstance";
 
@@ -949,7 +949,7 @@ namespace CppSharp.Generators.CSharp
 
             foreach (var ctor in @class.Constructors)
             {
-                if (Utils.CheckIgnoreMethod(@class, ctor))
+                if (ASTUtils.CheckIgnoreMethod(@class, ctor))
                     continue;
 
                 NewLineIfNeeded();
@@ -1759,7 +1759,7 @@ namespace CppSharp.Generators.CSharp
                     retType = "System.IntPtr";
             }
 
-            for(var i = 0; i < function.Parameters.Count; ++i)
+            for (var i = 0; i < function.Parameters.Count; ++i)
             {
                 var param = function.Parameters[i];
 

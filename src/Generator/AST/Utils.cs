@@ -1,7 +1,7 @@
 ﻿
 namespace CppSharp.AST
 {
-    public static class Utils
+    public static class ASTUtils
     {
         public static bool CheckIgnoreFunction(Class @class, Function function)
         {

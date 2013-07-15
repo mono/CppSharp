@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using CppSharp.AST;
 using CppSharp.Generators;
 
 namespace CppSharp.Passes
@@ -30,10 +31,10 @@ namespace CppSharp.Passes
             if (overload1.Function == overload2.Function)
                 return false;
 
-            if (AST.Utils.CheckIgnoreFunction(@class, overload1.Function))
+            if (ASTUtils.CheckIgnoreFunction(@class, overload1.Function))
                 return false;
 
-            if (AST.Utils.CheckIgnoreFunction(@class, overload2.Function))
+            if (ASTUtils.CheckIgnoreFunction(@class, overload2.Function))
                 return false;
 
             // TODO: Default parameters?
