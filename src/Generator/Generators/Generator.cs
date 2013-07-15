@@ -85,6 +85,7 @@ namespace CppSharp.Generators
                         TranslationUnit = unit,
                         Templates = templates
                     };
+                outputs.Add(output);
 
                 OnUnitGenerated(output);
             }
