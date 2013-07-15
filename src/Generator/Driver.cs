@@ -169,6 +169,7 @@ namespace CppSharp
 
             LibraryDirs = new List<string>();
             Libraries = new List<string>();
+            CheckSymbols = true;
 
             GeneratorKind = LanguageGeneratorKind.CSharp;
             GenerateLibraryNamespace = true;
@@ -200,6 +201,8 @@ namespace CppSharp
         // Library options
         public List<string> LibraryDirs;
         public List<string> Libraries;
+        public bool CheckSymbols;
+        public string SharedLibraryName;
 
         // Generator options
         public LanguageGeneratorKind GeneratorKind;
