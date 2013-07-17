@@ -129,6 +129,11 @@ namespace CppSharp.Types
             throw new System.NotImplementedException();
         }
 
+        public string VisitCILType(CILType type, TypeQualifiers quals)
+        {
+            throw new NotImplementedException();
+        }
+
         public string VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals)
         {
             throw new System.NotImplementedException();

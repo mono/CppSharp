@@ -238,6 +238,11 @@ namespace CppSharp.Generators.CLI
             throw new NotImplementedException();
         }
 
+        public string VisitCILType(CILType type, TypeQualifiers quals)
+        {
+            return type.Type.FullName.Replace(".", "::") + "^";
+        }
+
         public string VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals)
         {
             return VisitPrimitiveType(type);

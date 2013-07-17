@@ -475,6 +475,25 @@ namespace CppSharp
         }
     }
 
+    /// <summary>
+    /// Represents a CIL type.
+    /// </summary>
+    public class CILType : Type
+    {
+        public CILType(System.Type type)
+        {
+            Type = type;
+        }
+
+        public System.Type Type;
+
+        public override T Visit<T>(ITypeVisitor<T> visitor,
+                                   TypeQualifiers quals = new TypeQualifiers())
+        {
+            return visitor.VisitCILType(this, quals);
+        }
+    }
+
     #region Primitives
 
     /// <summary>
@@ -548,6 +567,6 @@ namespace CppSharp
             TypeQualifiers quals);
         T VisitDependentNameType(DependentNameType dependent,
             TypeQualifiers quals);
-
+        T VisitCILType(CILType type, TypeQualifiers quals);
     }
 }

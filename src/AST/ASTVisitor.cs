@@ -213,6 +213,14 @@ namespace CppSharp
             return true;
         }
 
+        public virtual bool VisitCILType(CILType type, TypeQualifiers quals)
+        {
+            if (!VisitType(type, quals))
+                return false;
+
+            return true;
+        }
+
         #endregion
 
         #region Decl Visitors

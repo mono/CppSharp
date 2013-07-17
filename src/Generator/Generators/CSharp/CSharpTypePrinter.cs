@@ -289,6 +289,11 @@ namespace CppSharp.Generators.CSharp
             throw new NotImplementedException();
         }
 
+        public CSharpTypePrinterResult VisitCILType(CILType type, TypeQualifiers quals)
+        {
+            return type.Type.FullName;
+        }
+
         public CSharpTypePrinterResult VisitPrimitiveType(PrimitiveType primitive,
             TypeQualifiers quals)
         {
