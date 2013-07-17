@@ -76,6 +76,8 @@ namespace CppSharp.AST
         public bool IsConst { get; set; }
         public bool IsImplicit { get; set; }
         public bool IsSynthetized { get; set; }
+        public bool IsOverride { get; set; }
+        public bool IsProxy { get; set; }
 
         public CXXMethodKind Kind;
         public CXXOperatorKind OperatorKind;
