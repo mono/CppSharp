@@ -1,11 +1,8 @@
-﻿using CppSharp.Generators;
+﻿using CppSharp.AST;
 using CppSharp.Passes;
 
 namespace CppSharp
 {
-    /// <summary>
-    /// Transform the SDL library declarations to something more .NET friendly.
-    /// </summary>
     class SDL : ILibrary
     {
         public void Setup(Driver driver)
@@ -47,7 +44,7 @@ namespace CppSharp
             lib.IgnoreHeadersWithName("SDL_main*");
             lib.IgnoreHeadersWithName("SDL_mutex*");
             lib.IgnoreHeadersWithName("SDL_stdinc*");
-            //lib.IgnoreModuleWithName("SDL_error");
+            lib.IgnoreHeadersWithName("SDL_error");
 
             lib.IgnoreEnumWithMatchingItem("SDL_ENOMEM");
             lib.IgnoreFunctionWithName("SDL_Error");
@@ -64,7 +61,7 @@ namespace CppSharp
             lib.SetNameOfEnumWithName("assert_state", "AssertState");
             lib.SetClassBindName("assert_data", "AssertData");
             lib.SetNameOfEnumWithName("eventaction", "EventAction");
-            //lib.SetNameOfEnumWithName("LOG_CATEGORY", "LogCategory");
+            lib.SetNameOfEnumWithName("LOG_CATEGORY", "LogCategory");
         }
 
         static class Program

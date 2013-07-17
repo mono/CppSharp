@@ -7,7 +7,7 @@ project "SDL"
   
   files { "**.cs", "./*.lua" }
 
-  links { "Bridge", "Generator" }
+  links { "CppSharp.AST", "CppSharp.Generator" }
 
 
 project "SDL.Tests"
