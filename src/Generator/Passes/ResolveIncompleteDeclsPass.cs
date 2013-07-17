@@ -7,6 +7,9 @@ namespace CppSharp.Passes
     {
         public override bool VisitClassDecl(Class @class)
         {
+            if (AlreadyVisited(@class))
+                return false;
+
             if (@class.Ignore)
                 return false;
 
