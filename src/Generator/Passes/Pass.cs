@@ -35,7 +35,7 @@ namespace CppSharp.Passes
 
         public override bool VisitDeclaration(Declaration decl)
         {
-            return !IsDeclExcluded(decl);
+            return !IsDeclExcluded(decl) && base.VisitDeclaration(decl);
         }
 
         bool IsDeclExcluded(Declaration decl)
