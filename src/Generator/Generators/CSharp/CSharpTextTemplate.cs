@@ -629,10 +629,10 @@ namespace CppSharp.Generators.CSharp
             if (!Driver.LibrarySymbols.FindLibraryBySymbol(symbol, out nativeLib))
                 goto Out;
 
-            library = nativeLib.FileName;
+            library = Path.GetFileNameWithoutExtension(nativeLib.FileName);
 
             Out:
-            return Tuple.Create(Path.GetFileNameWithoutExtension(library), symbol);
+            return Tuple.Create(library, symbol);
         }
 
         private void GeneratePropertySetter<T>(T decl, Class @class)
@@ -734,10 +734,10 @@ namespace CppSharp.Generators.CSharp
                 typePrinter.PushContext(CSharpTypePrinterContextKind.Native);
 
                 var location = string.Format("CppSharp.SymbolResolver.ResolveSymbol(\"{0}\", \"{1}\")",
-                    Path.GetFileNameWithoutExtension(libSymbol.Item1), libSymbol.Item2);
+                    libSymbol.Item1, libSymbol.Item2);
 
                 WriteLine("var {0} = ({1}*){2};", Helpers.GeneratedIdentifier("ptr"),
-                    @var.Type, libSymbol);
+                    @var.Type, location);
 
                 typePrinter.PopContext();
 
@@ -1743,9 +1743,10 @@ namespace CppSharp.Generators.CSharp
                 FindMangledDeclLibrary(function, out library);
 
                 libName = (library != null) ? library.FileName : "SymbolNotFound";
+                libName = Path.GetFileNameWithoutExtension(libName);
             }
 
-            Write("[DllImport(\"{0}\", ", Path.GetFileNameWithoutExtension(libName));
+            Write("[DllImport(\"{0}\", ", libName);
 
             var callConv = Helpers.ToCSharpCallConv(function.CallingConvention);
             WriteLine("CallingConvention = CallingConvention.{0},", callConv);
