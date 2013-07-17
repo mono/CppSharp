@@ -116,6 +116,22 @@ namespace CppSharp.Passes
                 return false;
             }
 
+            if (property.GetMethod != null && !VisitFunctionDecl(property.GetMethod))
+            {
+                property.ExplicityIgnored = true;
+                Console.WriteLine("Property '{0}' was ignored due to ignored getter",
+                                  property.Name, msg);
+                return false;
+            }
+
+            if (property.SetMethod != null && !VisitFunctionDecl(property.SetMethod))
+            {
+                property.ExplicityIgnored = true;
+                Console.WriteLine("Property '{0}' was ignored due to ignored setter",
+                                  property.Name, msg);
+                return false;
+            }
+
             return true;
         }
 
