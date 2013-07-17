@@ -1,4 +1,4 @@
-﻿using CppSharp;
+﻿using CppSharp.AST;
 using CppSharp.Generators.CLI;
 using CppSharp.Types;
 using NUnit.Framework;
