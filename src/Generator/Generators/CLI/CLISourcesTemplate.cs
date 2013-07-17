@@ -19,9 +19,9 @@ namespace CppSharp.Generators.CLI
             
         }
 
-        public override void GenerateBlocks()
+        public override void Process()
         {
-            PushBlock(CLIBlockKind.Header);
+            PushBlock(BlockKind.Header);
             PopBlock();
 
             var file = Path.GetFileNameWithoutExtension(TranslationUnit.FileName)
@@ -48,7 +48,7 @@ namespace CppSharp.Generators.CLI
 
             GenerateNamespace(TranslationUnit);
 
-            PushBlock(CLIBlockKind.Footer);
+            PushBlock(BlockKind.Footer);
             PopBlock();
         }
 
@@ -78,7 +78,7 @@ namespace CppSharp.Generators.CLI
 
                 var includeName = Path.GetFileNameWithoutExtension(translationUnit.FileName);
 
-                if (includeName == Path.GetFileNameWithoutExtension(((TextTemplate) this).TranslationUnit.FileName))
+                if (includeName == Path.GetFileNameWithoutExtension(TranslationUnit.FileName))
                     continue;
 
                 includes.Add(string.Format("#include \"{0}.h\"", includeName.Replace('\\', '/')));
@@ -544,6 +544,11 @@ namespace CppSharp.Generators.CLI
 
             WriteStartBraceIndent();
 
+            PushBlock(CLIBlockKind.MethodBody, method);
+
+            if (method.IsProxy)
+                goto SkipImpl;
+
             if (@class.IsRefType)
             {
                 if (method.Kind == CXXMethodKind.Constructor)
@@ -569,6 +574,9 @@ namespace CppSharp.Generators.CLI
                     GenerateValueTypeConstructorCall(method, @class);
             }
 
+        SkipImpl:
+
+            PopBlock();
             WriteCloseBraceIndent();
         }
 

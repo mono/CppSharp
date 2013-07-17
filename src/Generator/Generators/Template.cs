@@ -1,122 +1,340 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using CppSharp.AST;
 
 namespace CppSharp.Generators
 {
-    public abstract class TextTemplate : TextGenerator
+    public enum NewLineKind
+    {
+        Never,
+        Always,
+        BeforeNextBlock
+    }
+
+    public class BlockKind
+    {
+        public const int Unknown = 0;
+        public const int BlockComment = 1;
+        public const int InlineComment = 2;
+        public const int Header = 3;
+        public const int Footer = 4;
+        public const int LAST = 5;
+    }
+
+    public class Block : ITextGenerator
+    {
+        public TextGenerator Text { get; set; }
+        public int Kind { get; set; }
+        public NewLineKind NewLineKind { get; set; }
+
+        public Block Parent { get; set; }
+        private List<Block> Blocks { get; set; }
+
+        public Declaration Declaration { get; set; }
+
+        private bool hasIndentChanged;
+        private bool isSubBlock;
+
+        public Block() : this(BlockKind.Unknown)
+        {
+
+        }
+
+        public Block(int kind)
+        {
+            Kind = kind;
+            Blocks = new List<Block>();
+            Text = new TextGenerator();
+            hasIndentChanged = false;
+            isSubBlock = false;
+        }
+
+        public void AddBlock(Block block)
+        {
+            if (Text.StringBuilder.Length != 0 || hasIndentChanged)
+            {
+                hasIndentChanged = false;
+                var newBlock = new Block { Text = Text.Clone(), isSubBlock = true };
+                Text.StringBuilder.Clear();
+
+                AddBlock(newBlock);
+            }
+
+            block.Parent = this;
+            Blocks.Add(block);
+        }
+
+        public IEnumerable<Block> FindBlocks(int kind)
+        {
+            foreach (var block in Blocks)
+            {
+                if (block.Kind ==  kind)
+                    yield return block;
+
+                foreach (var childBlock in block.FindBlocks(kind))
+                    yield return childBlock;
+            }
+        }
+
+        public virtual string Generate(DriverOptions options)
+        {
+            if (Blocks.Count == 0)
+                return Text.ToString();
+
+            var builder = new StringBuilder();
+            uint totalIndent = 0;
+            Block previousBlock = null;
+
+            foreach (var childBlock in Blocks)
+            {
+                var childText = childBlock.Generate(options);
+
+                if (string.IsNullOrEmpty(childText))
+                    continue;
+
+                var lines = childText.SplitAndKeep(Environment.NewLine).ToList();
+
+                if (previousBlock != null &&
+                    previousBlock.NewLineKind == NewLineKind.BeforeNextBlock)
+                    builder.AppendLine();
+
+                if (childBlock.isSubBlock)
+                    totalIndent = 0;
+
+                if (childBlock.Kind == BlockKind.BlockComment)
+                {
+                    // Wrap the comment to the max line width.
+                    var maxSize = options.MaxIndent - totalIndent;
+                    maxSize -= options.CommentPrefix.Length + 2;
+
+                    lines = StringHelpers.WordWrapLines(childText, (int)maxSize);
+
+                    for (var i = 0; i < lines.Count; ++i)
+                    {
+                        var line = lines[i];
+                        if (!line.StartsWith(options.CommentPrefix))
+                            lines[i] = options.CommentPrefix + " " + line;
+                    }
+                }
+
+                foreach (var line in lines)
+                {
+                    if (string.IsNullOrEmpty(line))
+                        continue;
+
+                    if (!string.IsNullOrWhiteSpace(line))
+                        builder.Append(new string(' ', (int)totalIndent));
+
+                    builder.Append(line);
+
+                    if (!line.EndsWith(Environment.NewLine))
+                        builder.AppendLine();
+                }
+
+                if (childBlock.NewLineKind == NewLineKind.Always)
+                    builder.AppendLine();
+
+                totalIndent += childBlock.Text.Indent;
+
+                previousBlock = childBlock;
+            }
+
+            if (Text.StringBuilder.Length != 0)
+                builder.Append(Text.StringBuilder);
+
+            return builder.ToString();
+        }
+
+        #region ITextGenerator implementation
+
+        public uint Indent { get { return Text.Indent; } }
+
+        public void Write(string msg, params object[] args)
+        {
+            Text.Write(msg, args);
+        }
+
+        public void WriteLine(string msg, params object[] args)
+        {
+            Text.WriteLine(msg, args);
+        }
+
+        public void WriteLineIndent(string msg, params object[] args)
+        {
+            Text.WriteLineIndent(msg, args);
+        }
+
+        public void NewLine()
+        {
+            Text.NewLine();
+        }
+
+        public void NewLineIfNeeded()
+        {
+            Text.NewLineIfNeeded();
+        }
+
+        public void NeedNewLine()
+        {
+            Text.NeedNewLine();
+        }
+
+        public void ResetNewLine()
+        {
+            Text.ResetNewLine();
+        }
+
+        public void PushIndent(uint indent = 4u)
+        {
+            hasIndentChanged = true;
+            Text.PushIndent(indent);
+        }
+
+        public void PopIndent()
+        {
+            hasIndentChanged = true;
+            Text.PopIndent();
+        }
+
+        public void WriteStartBraceIndent()
+        {
+            Text.WriteStartBraceIndent();
+        }
+
+        public void WriteCloseBraceIndent()
+        {
+            Text.WriteCloseBraceIndent();
+        }
+
+        #endregion
+    }
+
+    public abstract class Template : ITextGenerator
     {
         public Driver Driver { get; private set; }
         public DriverOptions Options { get; private set; }
-        public Library Library { get; private set; }
         public TranslationUnit TranslationUnit { get; private set; }
 
-        protected TextTemplate(Driver driver, TranslationUnit unit)
-        {
-            Driver = driver;
-            Options = driver.Options;
-            Library = driver.Library;
-            TranslationUnit = unit;
-        }
+        public Block RootBlock { get; private set; }
+        public Block ActiveBlock { get; private set; }
 
         public abstract string FileExtension { get; }
 
-        public abstract void GenerateBlocks();
-
-        public virtual string GenerateText()
+        protected Template(Driver driver, TranslationUnit unit)
         {
-            return base.ToString();
-        }
-    }
-
-    /// <summary>
-    /// Represents a (nestable) block of text with a specific kind.
-    /// </summary>
-    public interface IBlock<TBlock, TKind>
-    {
-        TKind Kind { get; set; }
-        List<TBlock> Blocks { get; set; }
-        TBlock Parent { get; set; }
-
-        TextGenerator Text { get; set; }
-        Declaration Declaration { get; set; }
-    }
-
-    /// <summary>
-    /// Block generator used by language-specific generators to generate
-    /// their output.
-    /// </summary>
-    public abstract class BlockGenerator<TKind, TBlock> : TextTemplate
-        where TBlock : IBlock<TBlock, TKind>, new()
-    {
-        public struct BlockData
-        {
-            public TBlock Block;
-            public int StartPosition;
+            Driver = driver;
+            Options = driver.Options;
+            TranslationUnit = unit;
+            RootBlock = new Block();
+            ActiveBlock = RootBlock;
         }
 
-        public List<TBlock> Blocks { get; private set; }
-        protected readonly Stack<BlockData> CurrentBlocks;
+        public abstract void Process();
 
-        protected BlockGenerator(Driver driver, TranslationUnit unit)
-            : base(driver, unit)
+        public string Generate()
         {
-            Blocks = new List<TBlock>();
-            CurrentBlocks = new Stack<BlockData>();
+            return RootBlock.Generate(Options);
         }
 
-        public void PushBlock(TKind kind)
-        {
-            var data = new BlockData
-            {
-                Block = new TBlock { Kind = kind },
-                StartPosition = StringBuilder.Length
-            };
+        #region Block helpers
 
-            CurrentBlocks.Push(data);
+        public void AddBlock(Block block)
+        {
+            ActiveBlock.AddBlock(block);
         }
 
-        public void PopBlock()
+        public void PushBlock(int kind, Declaration decl = null)
         {
-            var data = CurrentBlocks.Pop();
-            var block = data.Block;
-
-            var text = StringBuilder.ToString().Substring(data.StartPosition);
-            block.Text = Clone();
-            block.Text.StringBuilder = new StringBuilder(text);
-
-            var hasParentBlock = CurrentBlocks.Count > 0;
-            if (hasParentBlock)
-                CurrentBlocks.Peek().Block.Blocks.Add(block);
-            else
-                Blocks.Add(block);
+            var block = new Block { Kind = kind, Declaration = decl };
+            PushBlock(block);
         }
 
-        public TBlock FindBlock(TKind kind)
+        public void PushBlock(Block block)
         {
-            //foreach (var block in Blocks)
-            //    if (block.Kind == kind)
-            //        return block;
-            return default(TBlock);
+            block.Parent = ActiveBlock;
+            ActiveBlock.AddBlock(block);
+            ActiveBlock = block;
         }
 
-        public override string GenerateText()
+        public void PopBlock(NewLineKind newLineKind = NewLineKind.Never)
         {
-            var generator = new TextGenerator();
-
-            foreach (var block in Blocks)
-                GenerateBlock(block, generator);
-
-            return generator.ToString();
+            ActiveBlock.NewLineKind = newLineKind;
+            ActiveBlock = ActiveBlock.Parent;
         }
 
-        void GenerateBlock(TBlock block, TextGenerator gen)
+        public IEnumerable<Block> FindBlocks(int kind)
         {
-            if (block.Blocks.Count == 0)
-                gen.Write(block.Text);
-
-            foreach (var childBlock in block.Blocks)
-                GenerateBlock(childBlock, gen);
+            return RootBlock.FindBlocks(kind);
         }
+
+        public Block FindBlock(int kind)
+        {
+            return FindBlocks(kind).Single();
+        }
+
+        #endregion
+
+        #region ITextGenerator implementation
+
+        public uint Indent { get { return ActiveBlock.Indent; } }
+
+        public void Write(string msg, params object[] args)
+        {
+            ActiveBlock.Write(msg, args);
+        }
+
+        public void WriteLine(string msg, params object[] args)
+        {
+            ActiveBlock.WriteLine(msg, args);
+        }
+
+        public void WriteLineIndent(string msg, params object[] args)
+        {
+            ActiveBlock.WriteLineIndent(msg, args);
+        }
+
+        public void NewLine()
+        {
+            ActiveBlock.NewLine();
+        }
+
+        public void NewLineIfNeeded()
+        {
+            ActiveBlock.NewLineIfNeeded();
+        }
+
+        public void NeedNewLine()
+        {
+            ActiveBlock.NeedNewLine();
+        }
+
+        public void ResetNewLine()
+        {
+            ActiveBlock.ResetNewLine();
+        }
+
+        public void PushIndent(uint indent = 4u)
+        {
+            ActiveBlock.PushIndent(indent);
+        }
+
+        public void PopIndent()
+        {
+            ActiveBlock.PopIndent();
+        }
+
+        public void WriteStartBraceIndent()
+        {
+            ActiveBlock.WriteStartBraceIndent();
+        }
+
+        public void WriteCloseBraceIndent()
+        {
+            ActiveBlock.WriteCloseBraceIndent();
+        }
+
+        #endregion
     }
 }

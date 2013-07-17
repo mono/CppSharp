@@ -63,7 +63,12 @@ namespace CppSharp.Generators.CSharp
         }
     }
 
-    public class CSharpTextTemplate : TextTemplate
+    public class CSharpBlockKind
+    {
+
+    }
+
+    public class CSharpTextTemplate : Template
     {
         public CSharpTypePrinter TypePrinter { get; private set; }
 
@@ -112,7 +117,7 @@ namespace CppSharp.Generators.CSharp
 
         #endregion
 
-        public override void GenerateBlocks()
+        public override void Process()
         {
             GenerateHeader();
 
@@ -259,9 +264,11 @@ namespace CppSharp.Generators.CSharp
             if (String.IsNullOrWhiteSpace(comment))
                 return;
 
+            PushBlock(BlockKind.BlockComment);
             WriteLine("/// <summary>");
             WriteLine("/// {0}", comment);
             WriteLine("/// </summary>");
+            PopBlock();
         }
 
         public void GenerateInlineSummary(string comment)
@@ -269,7 +276,9 @@ namespace CppSharp.Generators.CSharp
             if (String.IsNullOrWhiteSpace(comment))
                 return;
 
+            PushBlock(BlockKind.InlineComment);
             WriteLine("/// <summary>{0}</summary>", comment);
+            PopBlock();
         }
 
         #region Classes

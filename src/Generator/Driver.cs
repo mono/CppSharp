@@ -122,8 +122,7 @@ namespace CppSharp
 
         public List<GeneratorOutput> GenerateCode()
         {
-            var outputs = Generator.Generate();
-            return outputs;
+            return Generator.Generate();
         }
 
         public void WriteCode(List<GeneratorOutput> outputs)
@@ -146,9 +145,7 @@ namespace CppSharp
                     Diagnostics.EmitMessage(DiagnosticId.FileGenerated, "Generated '{0}'", fileName);
 
                     var filePath = Path.Combine(outputPath, fileName);
-
-                    var text = template.GenerateText();
-                    File.WriteAllText(Path.GetFullPath(filePath), text);
+                    File.WriteAllText(Path.GetFullPath(filePath), template.Generate());
                 }
             }
         }
@@ -177,6 +174,7 @@ namespace CppSharp
             GeneratePartialClasses = true;
             OutputInteropIncludes = true;
             MaxIndent = 80;
+            CommentPrefix = "///";
         }
 
         // General options
@@ -218,6 +216,7 @@ namespace CppSharp
         public bool WriteOnlyWhenChanged;
         public Func<TranslationUnit, string> GenerateName;
         public int MaxIndent;
+        public string CommentPrefix;
     }
 
     public class InvalidOptionException : Exception

@@ -5,14 +5,35 @@ using System.Text;
 
 namespace CppSharp
 {
-    public class TextGenerator
+    public interface ITextGenerator
     {
-        const uint DefaultIndent = 4;
+        uint Indent { get; }
+        void Write(string msg, params object[] args);
+        void WriteLine(string msg, params object[] args);
+        void WriteLineIndent(string msg, params object[] args);
+        void NewLine();
+        void NewLineIfNeeded();
+        void NeedNewLine();
+        void ResetNewLine();
+        void PushIndent(uint indent = TextGenerator.DefaultIndent);
+        void PopIndent();
+        void WriteStartBraceIndent();
+        void WriteCloseBraceIndent();
+    }
+
+    public class TextGenerator : ITextGenerator
+    {
+        public const uint DefaultIndent = 4;
 
         public StringBuilder StringBuilder;
         protected bool IsStartOfLine;
         protected bool NeedsNewLine;
         protected readonly Stack<uint> CurrentIndent;
+
+        public uint Indent
+        {
+            get { return (uint)CurrentIndent.Sum(u => (int)u); }
+        }
 
         public TextGenerator()
         {

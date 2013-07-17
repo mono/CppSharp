@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using CppSharp.AST;
 
 namespace CppSharp.Generators.CLI
@@ -22,41 +23,20 @@ namespace CppSharp.Generators.CLI
         }
     }
 
-    public enum CLIBlockKind
+    public class CLIBlockKind
     {
-        Unknown,
-        Header,
-        Includes,
-        IncludesForwardReferences,
-        Namespace,
-        ForwardReferences,
-        Footer,
-        Enum,
-        Typedef,
-        Class,
-        Method,
-        Usings
-    }
-
-    public class CLIBlock : IBlock<CLIBlock, CLIBlockKind>
-    {
-        public CLIBlockKind Kind { get; set; }
-        public List<CLIBlock> Blocks { get; set; }
-        public CLIBlock Parent { get; set; }
-
-        public TextGenerator Text { get; set; }
-        public Declaration Declaration { get; set; }
-
-        public CLIBlock()
-        {
-            Blocks = new List<CLIBlock>();
-            Kind = CLIBlockKind.Unknown;
-        }
-
-        public override string ToString()
-        {
-            return Kind.ToString();
-        }
+        public const int Includes = BlockKind.LAST + 1;
+        public const int IncludesForwardReferences = BlockKind.LAST + 2;
+        public const int Namespace = BlockKind.LAST + 3;
+        public const int ForwardReferences = BlockKind.LAST + 4;
+        public const int Enum = BlockKind.LAST + 5;
+        public const int Typedef = BlockKind.LAST + 6;
+        public const int Class = BlockKind.LAST + 7;
+        public const int Method = BlockKind.LAST + 8;
+        public const int MethodBody = BlockKind.LAST + 9;
+        public const int Usings = BlockKind.LAST + 10;
+        public const int FunctionsClass = BlockKind.LAST + 11;
+        public const int Function = BlockKind.LAST + 12;
     }
 
     /// <summary>
@@ -64,7 +44,7 @@ namespace CppSharp.Generators.CLI
     /// for source (CLISourcesTemplate) and header (CLIHeadersTemplate)
     /// files.
     /// </summary>
-    public abstract class CLITextTemplate : BlockGenerator<CLIBlockKind, CLIBlock>
+    public abstract class CLITextTemplate : Template
     {
         public CLITypePrinter TypePrinter { get; set; }
 
@@ -79,7 +59,7 @@ namespace CppSharp.Generators.CLI
 
         public abstract override string FileExtension { get; }
 
-        public abstract override void GenerateBlocks();
+        public abstract override void Process();
 
         #region Helpers
 
@@ -100,21 +80,21 @@ namespace CppSharp.Generators.CLI
             if (string.IsNullOrWhiteSpace(comment))
                 return;
 
-            // Wrap the comment to the line width.
-            var maxSize = (int)(Options.MaxIndent - CurrentIndent.Count - "/// ".Length);
-            var lines = StringHelpers.WordWrapLines(comment, maxSize);
-
+            PushBlock(BlockKind.BlockComment);
             WriteLine("/// <summary>");
-            foreach (string line in lines)
-                WriteLine(string.Format("/// {0}", line.TrimEnd()));
+            WriteLine(comment);
             WriteLine("/// </summary>");
+            PopBlock();
         }
 
         public void GenerateInlineSummary(string comment)
         {
             if (String.IsNullOrWhiteSpace(comment))
                 return;
+
+            PushBlock(BlockKind.InlineComment);
             WriteLine("/// <summary> {0} </summary>", comment);
+            PopBlock();
         }
 
         public void GenerateMethodParameters(Method method)

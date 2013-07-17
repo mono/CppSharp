@@ -26,7 +26,7 @@ namespace CppSharp.Generators
         /// <summary>
         /// Text templates with generated output.
         /// </summary>
-        public List<TextTemplate> Templates;
+        public List<Template> Templates;
     }
 
     /// <summary>
@@ -79,7 +79,7 @@ namespace CppSharp.Generators
                     continue;
 
                 foreach (var template in templates)
-                    template.GenerateBlocks();
+                    template.Process();
 
                 var output = new GeneratorOutput
                     {
@@ -97,6 +97,6 @@ namespace CppSharp.Generators
         /// <summary>
         /// Generates the outputs for a given translation unit.
         /// </summary>
-        public abstract List<TextTemplate> Generate(TranslationUnit unit);
+        public abstract List<Template> Generate(TranslationUnit unit);
     }
 }

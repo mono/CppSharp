@@ -19,9 +19,9 @@ namespace CppSharp.Generators.CLI
         {
         }
 
-        public override void GenerateBlocks()
+        public override void Process()
         {
-            PushBlock(CLIBlockKind.Header);
+            PushBlock(BlockKind.Header);
             PopBlock();
 
             PushBlock(CLIBlockKind.Includes);
@@ -31,14 +31,13 @@ namespace CppSharp.Generators.CLI
             PushBlock(CLIBlockKind.IncludesForwardReferences);
             WriteLine("#include <{0}>", TranslationUnit.IncludePath);
             GenerateIncludeForwardRefs();
+            PopBlock(NewLineKind.BeforeNextBlock);
 
-            NewLine();
-            PopBlock();
-            PopBlock();
+            PopBlock(NewLineKind.Always);
 
             GenerateNamespace(TranslationUnit);
 
-            PushBlock(CLIBlockKind.Footer);
+            PushBlock(BlockKind.Footer);
             PopBlock();
         }
 
@@ -88,12 +87,7 @@ namespace CppSharp.Generators.CLI
             }
 
             foreach (var forwardRef in forwardRefs)
-            {
                 WriteLine(forwardRef);
-            }
-
-            if (forwardRefs.Count > 0)
-                NewLine();
         }
 
         public void GenerateNamespace(Namespace @namespace)
@@ -103,7 +97,7 @@ namespace CppSharp.Generators.CLI
 
             if (generateNamespace)
             {
-                PushBlock(CLIBlockKind.Namespace);
+                PushBlock(CLIBlockKind.Namespace, @namespace);
                 WriteLine("namespace {0}", isTopLevel
                                                ? Options.OutputNamespace
                                                : SafeIdentifier(@namespace.Name));
@@ -113,55 +107,38 @@ namespace CppSharp.Generators.CLI
             // Generate the forward references.
             PushBlock(CLIBlockKind.ForwardReferences);
             GenerateForwardRefs(@namespace);
-            PopBlock();
+            PopBlock(NewLineKind.BeforeNextBlock);
 
             // Generate all the enum declarations for the module.
-            for (var i = 0; i < @namespace.Enums.Count; ++i)
+            foreach (var @enum in @namespace.Enums)
             {
-                var @enum = @namespace.Enums[i];
-
                 if (@enum.Ignore || @enum.IsIncomplete)
                     continue;
 
-                PushBlock(CLIBlockKind.Enum);
+                PushBlock(CLIBlockKind.Enum, @enum);
                 GenerateEnum(@enum);
-                NeedNewLine();
-
-                if (i < @namespace.Enums.Count - 1)
-                    NewLine();
-                PopBlock();
+                PopBlock(NewLineKind.BeforeNextBlock);
             }
-
-            NewLineIfNeeded();
 
             // Generate all the typedef declarations for the module.
             GenerateTypedefs(@namespace);
 
             // Generate all the struct/class declarations for the module.
-            for (var i = 0; i < @namespace.Classes.Count; ++i)
+            foreach (var @class in @namespace.Classes)
             {
-                var @class = @namespace.Classes[i];
-
                 if (@class.Ignore || @class.IsIncomplete)
                     continue;
 
                 if (@class.IsOpaque)
                     continue;
 
-                PushBlock(CLIBlockKind.Class);
+                PushBlock(CLIBlockKind.Class, @class);
                 GenerateClass(@class);
-                NeedNewLine();
-
-                if (i < @namespace.Classes.Count - 1)
-                    NewLine();
-                PopBlock();
+                PopBlock(NewLineKind.BeforeNextBlock);
             }
 
             if (@namespace.HasFunctions)
-            {
-                NewLineIfNeeded();
                 GenerateFunctions(@namespace);
-            }
 
             foreach(var childNamespace in @namespace.Namespaces)
                 GenerateNamespace(childNamespace);
@@ -169,7 +146,7 @@ namespace CppSharp.Generators.CLI
             if (generateNamespace)
             {
                 WriteCloseBraceIndent();
-                PopBlock();
+                PopBlock(NewLineKind.BeforeNextBlock);
             }
         }
 
@@ -180,16 +157,14 @@ namespace CppSharp.Generators.CLI
                 if (typedef.Ignore)
                     continue;
 
-                if (!GenerateTypedef(typedef))
-                    continue;
-
-                NewLine();
-                PopBlock();
+                GenerateTypedef(typedef);
             }
         }
 
         public void GenerateFunctions(Namespace @namespace)
         {
+            PushBlock(CLIBlockKind.FunctionsClass);
+
             WriteLine("public ref class {0}{1}", SafeIdentifier(Options.OutputNamespace),
                 TranslationUnit.FileNameWithoutExtension);
             WriteLine("{");
@@ -204,6 +179,8 @@ namespace CppSharp.Generators.CLI
 
             PopIndent();
             WriteLine("};");
+
+            PopBlock(NewLineKind.BeforeNextBlock);
         }
 
         public void GenerateDeclarationCommon(Declaration T)
@@ -376,7 +353,6 @@ namespace CppSharp.Generators.CLI
 
         public void GenerateClassEvents(Class @class)
         {
-            PushIndent();
             foreach (var @event in @class.Events)
             {
                 if (@event.Ignore) continue;
@@ -384,7 +360,6 @@ namespace CppSharp.Generators.CLI
                 var cppTypePrinter = new CppTypePrinter(Driver.TypeDatabase);
                 var cppArgs = cppTypePrinter.VisitParameters(@event.Parameters, hasNames: true);
 
-                PopIndent();
                 WriteLine("private:");
                 PushIndent();
 
@@ -410,8 +385,8 @@ namespace CppSharp.Generators.CLI
 
                 WriteLine("void raise({0});", cliArgs);
                 WriteCloseBraceIndent();
+                PopIndent();
             }
-            PopIndent();
         }
 
         public void GenerateClassMethods(Class @class)
@@ -528,6 +503,8 @@ namespace CppSharp.Generators.CLI
             if (method.Access != AccessSpecifier.Public)
                 return;
 
+            PushBlock(CLIBlockKind.Method, method);
+
             GenerateDeclarationCommon(method);
 
             if (method.IsStatic)
@@ -541,6 +518,8 @@ namespace CppSharp.Generators.CLI
             GenerateMethodParameters(method);
 
             WriteLine(");");
+
+            PopBlock();
         }
 
         public bool GenerateTypedef(TypedefDecl typedef)
@@ -551,12 +530,14 @@ namespace CppSharp.Generators.CLI
             FunctionType function;
             if (typedef.Type.IsPointerTo<FunctionType>(out function))
             {
-                PushBlock(CLIBlockKind.Typedef);
+                PushBlock(CLIBlockKind.Typedef, typedef);
                 GenerateDeclarationCommon(typedef);
 
                 WriteLine("public {0};",
                     string.Format(TypePrinter.VisitDelegate(function),
                     SafeIdentifier(typedef.Name)));
+                PopBlock(NewLineKind.BeforeNextBlock);
+
                 return true;
             }
             else if (typedef.Type.IsEnumType())
@@ -573,7 +554,11 @@ namespace CppSharp.Generators.CLI
 
         public void GenerateFunction(Function function)
         {
-            if (function.Ignore) return;
+            if (function.Ignore)
+                return;
+
+            PushBlock(CLIBlockKind.Function, function);
+
             GenerateDeclarationCommon(function);
 
             var retType = function.ReturnType.ToString();
@@ -582,6 +567,8 @@ namespace CppSharp.Generators.CLI
             Write(GenerateParametersList(function.Parameters));
 
             WriteLine(");");
+
+            PopBlock();
         }
 
         public void GenerateDebug(Declaration decl)

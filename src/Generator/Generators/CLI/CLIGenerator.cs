@@ -17,9 +17,9 @@ namespace CppSharp.Generators.CLI
             Type.TypePrinterDelegate += type => type.Visit(typePrinter);
         }
 
-        public override List<TextTemplate> Generate(TranslationUnit unit)
+        public override List<Template> Generate(TranslationUnit unit)
         {
-            var outputs = new List<TextTemplate>();
+            var outputs = new List<Template>();
 
             var header = new CLIHeadersTemplate(Driver, unit);
             outputs.Add(header);
