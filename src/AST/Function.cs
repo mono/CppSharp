@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace CppSharp
+namespace CppSharp.AST
 {
     public enum CallingConvention
     {

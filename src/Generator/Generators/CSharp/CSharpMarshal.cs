@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using CppSharp.AST;
 using CppSharp.Types;
 
 namespace CppSharp.Generators.CSharp

@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using CppSharp.AST;
 using CppSharp.Generators;
 
 namespace CppSharp.Utils

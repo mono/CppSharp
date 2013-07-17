@@ -822,7 +822,7 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
-        private void GenerateVariable(Class @class, Type type, Variable variable)
+        private void GenerateVariable(Class @class, AST.Type type, Variable variable)
         {
             WriteLine("public static {0} {1}", type, variable.Name);
             WriteStartBraceIndent();

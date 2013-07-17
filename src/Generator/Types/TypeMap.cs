@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using CppSharp.AST;
 using CppSharp.Generators;
 using CppSharp.Generators.CLI;
 using CppSharp.Generators.CSharp;
+using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Types
 {

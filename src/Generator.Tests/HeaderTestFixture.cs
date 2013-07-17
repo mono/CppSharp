@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using CppSharp;
+using CppSharp.AST;
 
 namespace Generator.Tests
 {

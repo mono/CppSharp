@@ -1,4 +1,4 @@
-﻿namespace CppSharp
+﻿namespace CppSharp.AST
 {
     public enum MethodConversionKind
     {

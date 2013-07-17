@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Text;
+using CppSharp.AST;
 
 namespace CppSharp.Generators
 {

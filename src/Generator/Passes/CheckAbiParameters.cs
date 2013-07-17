@@ -1,4 +1,6 @@
-﻿namespace CppSharp.Passes
+﻿using CppSharp.AST;
+
+namespace CppSharp.Passes
 {
     public class CheckAbiParameters : TranslationUnitPass
     {

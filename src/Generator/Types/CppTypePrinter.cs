@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using CppSharp.AST;
+using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Types
 {

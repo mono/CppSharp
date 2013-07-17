@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Text;
+using CppSharp.AST;
 using CppSharp.Types;
+using Delegate = CppSharp.AST.Delegate;
 
 namespace CppSharp.Generators.CLI
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CppSharp
+namespace CppSharp.AST
 {
     public interface IRedeclarableDecl
     {

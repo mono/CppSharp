@@ -1,4 +1,4 @@
-namespace CppSharp
+namespace CppSharp.AST
 {
     /// <summary>
     /// Represents a a C/C++ record field Decl.

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace CppSharp
+namespace CppSharp.AST
 {
     public enum CppAbi
     {

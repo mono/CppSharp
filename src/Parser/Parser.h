@@ -55,7 +55,7 @@ public ref struct ParserOptions
     // C/C++ header file name.
     System::String^ FileName;
 
-    CppSharp::Library^ Library;
+    CppSharp::AST::Library^ Library;
 
     // Toolset version - 2005 - 8, 2008 - 9, 2010 - 10, 0 - autoprobe for any.
     int ToolSetToUse;
@@ -101,7 +101,7 @@ public ref struct ParserResult
     }
 
     ParserResultKind Kind;
-    CppSharp::Library^ Library;
+    CppSharp::AST::Library^ Library;
     List<ParserDiagnostic>^ Diagnostics;
 };
 
@@ -131,20 +131,20 @@ protected:
     // AST traversers
     void WalkAST();
     void WalkMacros(clang::PreprocessingRecord* PR);
-    CppSharp::Declaration^ WalkDeclaration(clang::Decl* D,
+    CppSharp::AST::Declaration^ WalkDeclaration(clang::Decl* D,
         bool IgnoreSystemDecls = true, bool CanBeDefinition = false);
-    CppSharp::Declaration^ WalkDeclarationDef(clang::Decl* D);
-    CppSharp::Enumeration^ WalkEnum(clang::EnumDecl*);
-    CppSharp::Function^ WalkFunction(clang::FunctionDecl*, bool IsDependent = false,
+    CppSharp::AST::Declaration^ WalkDeclarationDef(clang::Decl* D);
+    CppSharp::AST::Enumeration^ WalkEnum(clang::EnumDecl*);
+    CppSharp::AST::Function^ WalkFunction(clang::FunctionDecl*, bool IsDependent = false,
         bool AddToNamespace = true);
-    CppSharp::Class^ WalkRecordCXX(clang::CXXRecordDecl*);
-    CppSharp::Method^ WalkMethodCXX(clang::CXXMethodDecl*);
-    CppSharp::Field^ WalkFieldCXX(clang::FieldDecl*, CppSharp::Class^);
-    CppSharp::ClassTemplate^ Parser::WalkClassTemplate(clang::ClassTemplateDecl*);
-    CppSharp::FunctionTemplate^ Parser::WalkFunctionTemplate(
+    CppSharp::AST::Class^ WalkRecordCXX(clang::CXXRecordDecl*);
+    CppSharp::AST::Method^ WalkMethodCXX(clang::CXXMethodDecl*);
+    CppSharp::AST::Field^ WalkFieldCXX(clang::FieldDecl*, CppSharp::AST::Class^);
+    CppSharp::AST::ClassTemplate^ Parser::WalkClassTemplate(clang::ClassTemplateDecl*);
+    CppSharp::AST::FunctionTemplate^ Parser::WalkFunctionTemplate(
         clang::FunctionTemplateDecl*);
-    CppSharp::Variable^ WalkVariable(clang::VarDecl*);
-    CppSharp::Type^ WalkType(clang::QualType, clang::TypeLoc* = 0,
+    CppSharp::AST::Variable^ WalkVariable(clang::VarDecl*);
+    CppSharp::AST::Type^ WalkType(clang::QualType, clang::TypeLoc* = 0,
       bool DesugarType = false);
 
     // Clang helpers
@@ -153,25 +153,25 @@ protected:
     std::string GetDeclMangledName(clang::Decl*, clang::TargetCXXABI,
         bool IsDependent = false);
     std::string GetTypeName(const clang::Type*);
-    void HandleComments(clang::Decl* D, CppSharp::Declaration^);
-    void WalkFunction(clang::FunctionDecl* FD, CppSharp::Function^ F,
+    void HandleComments(clang::Decl* D, CppSharp::AST::Declaration^);
+    void WalkFunction(clang::FunctionDecl* FD, CppSharp::AST::Function^ F,
         bool IsDependent = false);
-    void HandlePreprocessedEntities(CppSharp::Declaration^ Decl, clang::SourceRange sourceRange,
-                                    CppSharp::MacroLocation macroLocation = CppSharp::MacroLocation::Unknown);
+    void HandlePreprocessedEntities(CppSharp::AST::Declaration^ Decl, clang::SourceRange sourceRange,
+                                    CppSharp::AST::MacroLocation macroLocation = CppSharp::AST::MacroLocation::Unknown);
     bool GetPreprocessedEntityText(clang::PreprocessedEntity*, std::string& Text);
 
-    CppSharp::TranslationUnit^ GetTranslationUnit(clang::SourceLocation Loc,
+    CppSharp::AST::TranslationUnit^ GetTranslationUnit(clang::SourceLocation Loc,
         SourceLocationKind *Kind = 0);
-    CppSharp::TranslationUnit^ GetTranslationUnit(const clang::Decl*);
+    CppSharp::AST::TranslationUnit^ GetTranslationUnit(const clang::Decl*);
 
-    CppSharp::DeclarationContext^ GetNamespace(clang::Decl*, clang::DeclContext*);
-    CppSharp::DeclarationContext^ GetNamespace(clang::Decl*);
+    CppSharp::AST::DeclarationContext^ GetNamespace(clang::Decl*, clang::DeclContext*);
+    CppSharp::AST::DeclarationContext^ GetNamespace(clang::Decl*);
 
     clang::CallingConv GetAbiCallConv(clang::CallingConv CC,
         bool IsInstMethod, bool IsVariadic);
 
     int Index;
-    gcroot<CppSharp::Library^> Lib;
+    gcroot<CppSharp::AST::Library^> Lib;
     gcroot<ParserOptions^> Opts;
     llvm::OwningPtr<clang::CompilerInstance> C;
     clang::ASTContext* AST;

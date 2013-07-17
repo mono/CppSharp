@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using CppSharp.AST;
 
 namespace CppSharp.Generators.CLI
 {

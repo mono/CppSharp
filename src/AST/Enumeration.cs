@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace CppSharp
+namespace CppSharp.AST
 {
     /// <summary>
     /// Represents a C/C++ enumeration declaration.

@@ -1,3 +1,4 @@
+using CppSharp.AST;
 using CppSharp.Generators;
 using CppSharp.Utils;
 

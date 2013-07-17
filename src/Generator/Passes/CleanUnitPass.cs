@@ -1,3 +1,5 @@
+using CppSharp.AST;
+
 namespace CppSharp.Passes
 {
     public class CleanUnitPass : TranslationUnitPass

@@ -1,5 +1,5 @@
 ﻿
-namespace CppSharp
+namespace CppSharp.AST
 {
     public class Variable : Declaration, ITypedDecl, IMangledDecl
     {

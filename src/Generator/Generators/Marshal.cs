@@ -1,4 +1,6 @@
-﻿namespace CppSharp.Generators
+﻿using CppSharp.AST;
+
+namespace CppSharp.Generators
 {
     public class MarshalContext
     {

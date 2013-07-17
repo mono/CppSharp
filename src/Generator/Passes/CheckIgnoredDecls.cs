@@ -1,4 +1,5 @@
 ﻿using System;
+using CppSharp.AST;
 
 namespace CppSharp.Passes
 {
@@ -203,7 +204,7 @@ namespace CppSharp.Passes
         /// reasons: incomplete definitions, being explicitly ignored, or also
         /// by being a type we do not know how to handle.
         /// </remarks>
-        bool HasInvalidType(Type type, out string msg)
+        bool HasInvalidType(AST.Type type, out string msg)
         {
             if (type == null)
             {
@@ -251,7 +252,7 @@ namespace CppSharp.Passes
             return false;
         }
 
-        static bool IsTypeComplete(Type type)
+        static bool IsTypeComplete(AST.Type type)
         {
             var checker = new TypeCompletionChecker();
             return type.Visit(checker);
@@ -263,7 +264,7 @@ namespace CppSharp.Passes
             return decl.Visit(checker);
         }
 
-        bool IsTypeIgnored(Type type)
+        bool IsTypeIgnored(AST.Type type)
         {
             var checker = new TypeIgnoreChecker(Driver.TypeDatabase);
             type.Visit(checker);

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CppSharp
+﻿namespace CppSharp.AST
 {
     /// <summary>
     /// Represents a C++ comment.

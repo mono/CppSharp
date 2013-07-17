@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CppSharp
+namespace CppSharp.AST
 {
     /// <summary>
     /// Represents a declaration context.

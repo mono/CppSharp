@@ -1,4 +1,6 @@
 ﻿
+using CppSharp.AST;
+
 namespace CppSharp.Passes
 {
     /// <summary>

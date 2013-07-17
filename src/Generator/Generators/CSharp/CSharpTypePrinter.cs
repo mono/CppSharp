@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using CppSharp.AST;
 using CppSharp.Types;
 
 namespace CppSharp.Generators.CSharp
@@ -465,7 +466,7 @@ namespace CppSharp.Generators.CSharp
                 VisitParameters(function.Parameters, hasNames: true));
         }
 
-        public string ToString(Type type)
+        public string ToString(AST.Type type)
         {
             return type.Visit(this).Type;
         }

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CppSharp
+namespace CppSharp.AST
 {
     public class Event : Declaration, ITypedDecl
     {

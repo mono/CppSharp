@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
-namespace CppSharp
+namespace CppSharp.AST
 {
     /// <summary>
     /// Represents a parsed C++ unit.
