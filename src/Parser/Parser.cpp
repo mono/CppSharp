@@ -1779,6 +1779,9 @@ CppSharp::AST::Declaration^ Parser::WalkDeclaration(clang::Decl* D,
     case Decl::Friend:
     case Decl::Using:
     case Decl::UsingShadow:
+    case Decl::UnresolvedUsingTypename:
+    case Decl::UnresolvedUsingValue:
+    case Decl::IndirectField:
         break;
     default:
     {
