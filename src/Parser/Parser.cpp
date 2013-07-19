@@ -499,6 +499,17 @@ CppSharp::AST::ClassTemplate^ Parser::WalkClassTemplate(clang::ClassTemplateDecl
     auto Class = WalkRecordCXX(TD->getTemplatedDecl());
     CppSharp::AST::ClassTemplate^ CT = gcnew CppSharp::AST::ClassTemplate(Class);
 
+    auto TPL = TD->getTemplateParameters();
+    for(auto it = TPL->begin(); it != TPL->end(); ++it)
+    {
+        auto ND = *it;
+
+        auto TP = CppSharp::AST::TemplateParameter();
+        TP.Name = clix::marshalString<clix::E_UTF8>(ND->getNameAsString());
+
+        CT->Parameters->Add(TP);
+    }
+
     return CT;
 }
 
