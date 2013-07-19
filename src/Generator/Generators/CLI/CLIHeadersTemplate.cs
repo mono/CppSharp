@@ -48,7 +48,7 @@ namespace CppSharp.Generators.CLI
         {
             var typeRefs = TranslationUnit.TypeReferences as TypeRefsVisitor;
 
-            var forwardRefsPrinter = new CLIForwardReferencePrinter(typeRefs);
+            var forwardRefsPrinter = new CLIForwardReferencePrinter(typeRefs, Driver.TypeDatabase);
             forwardRefsPrinter.Process();
 
             var includes = new SortedSet<string>(StringComparer.InvariantCulture);
@@ -75,7 +75,7 @@ namespace CppSharp.Generators.CLI
         {
             var typeRefs = TranslationUnit.TypeReferences as TypeRefsVisitor;
 
-            var forwardRefsPrinter = new CLIForwardReferencePrinter(typeRefs);
+            var forwardRefsPrinter = new CLIForwardReferencePrinter(typeRefs, Driver.TypeDatabase);
             forwardRefsPrinter.Process();
 
             // Use a set to remove duplicate entries.

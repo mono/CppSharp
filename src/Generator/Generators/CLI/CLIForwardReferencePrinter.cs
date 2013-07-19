@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using CppSharp.AST;
+using CppSharp.Types;
 
 namespace CppSharp.Generators.CLI
 {
@@ -17,20 +18,22 @@ namespace CppSharp.Generators.CLI
         public readonly IList<string> Includes;
         public readonly IList<CLIForwardReference> Refs;
         private readonly TypeRefsVisitor TypeRefs;
-        private TypeReference currentTypeReference;
+        public TypeReference CurrentTypeReference;
+        private readonly ITypeMapDatabase TypeMapDatabase;
 
-        public CLIForwardReferencePrinter(TypeRefsVisitor typeRefs)
+        public CLIForwardReferencePrinter(TypeRefsVisitor typeRefs, ITypeMapDatabase typeMapDatabase)
         {
             Includes = new List<string>();
             Refs = new List<CLIForwardReference>();
             TypeRefs = typeRefs;
+            TypeMapDatabase = typeMapDatabase;
         }
 
         public void Process()
         {
             foreach (var typeRef in TypeRefs.References)
             {
-                currentTypeReference = typeRef;
+                CurrentTypeReference = typeRef;
                 typeRef.Declaration.Visit(this);
             }
 
@@ -65,7 +68,7 @@ namespace CppSharp.Generators.CLI
                 Refs.Add(new CLIForwardReference()
                     {
                         Declaration = @class,
-                        Namespace = currentTypeReference.Namespace,
+                        Namespace = CurrentTypeReference.Namespace,
                         Text = string.Format("value struct {0};", @class.Name)
                     });
 
@@ -75,7 +78,7 @@ namespace CppSharp.Generators.CLI
             Refs.Add(new CLIForwardReference()
             {
                 Declaration = @class,
-                Namespace = currentTypeReference.Namespace,
+                Namespace = CurrentTypeReference.Namespace,
                 Text = string.Format("ref class {0};", @class.Name)
             });
 
@@ -153,7 +156,7 @@ namespace CppSharp.Generators.CLI
                 Refs.Add(new CLIForwardReference()
                 {
                     Declaration = @enum,
-                    Namespace = currentTypeReference.Namespace,
+                    Namespace = CurrentTypeReference.Namespace,
                     Text = string.Format("enum struct {0};", @enum.Name)
                 });
 
@@ -163,7 +166,7 @@ namespace CppSharp.Generators.CLI
             Refs.Add(new CLIForwardReference()
             {
                 Declaration = @enum,
-                Namespace = currentTypeReference.Namespace,
+                Namespace = CurrentTypeReference.Namespace,
                 Text = string.Format("enum struct {0} : {1};", @enum.Name, @enum.Type)
             });
             return true;
@@ -176,7 +179,32 @@ namespace CppSharp.Generators.CLI
 
         public bool VisitClassTemplateDecl(ClassTemplate template)
         {
-            throw new NotImplementedException();
+            var decl = template.TemplatedDecl;
+
+            TypeMap typeMap = null;
+            if (TypeMapDatabase.FindTypeMap(decl, out typeMap))
+            {
+                typeMap.Declaration = decl;
+                typeMap.CLIForwardReference(this);
+                return true;
+            }
+
+            if(decl.Ignore)
+                return true;
+
+            Includes.Add(GetHeaderFromDecl(template));
+
+            var @params = string.Empty;
+            for(var i = 0; i < template.Parameters.Count; i++)
+                @params = string.Format("{0}{1}typename {2}", @params, (i>0)? ", " : "", template.Parameters[i].Name);
+
+            Refs.Add(new CLIForwardReference()
+            {
+                Declaration = template,
+                Namespace = CurrentTypeReference.Namespace,
+                Text = string.Format("generic<{0}> ref class {1};", @params, template.TemplatedClass.QualifiedName)
+            });
+            return true;
         }
 
         public bool VisitFunctionTemplateDecl(FunctionTemplate template)

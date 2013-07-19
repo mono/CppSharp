@@ -65,6 +65,10 @@ namespace CppSharp.Types
             throw new NotImplementedException();
         }
 
+        public virtual void CLIForwardReference(CLIForwardReferencePrinter ctx)
+        {
+        }
+
         public virtual void CLIMarshalToNative(MarshalContext ctx)
         {
             throw new NotImplementedException();

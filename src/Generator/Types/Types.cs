@@ -250,5 +250,18 @@ namespace CppSharp
 
             return decl.Type.Visit(this);
         }
+
+        public override bool VisitTagType(TagType tag, TypeQualifiers quals)
+        {
+            Collect(tag.Declaration);
+            return true;
+        }
+
+        public override bool VisitTemplateSpecializationType(TemplateSpecializationType template, TypeQualifiers quals)
+        {
+            Collect(template.Template);
+            return base.VisitTemplateSpecializationType(template, quals);
+        }
+
     }
 }
