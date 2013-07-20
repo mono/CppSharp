@@ -56,14 +56,10 @@ namespace CppSharp
                 throw new InvalidOptionException();
 
             for (var i = 0; i < options.IncludeDirs.Count; i++)
-            {
                 options.IncludeDirs[i] = Path.GetFullPath(options.IncludeDirs[i]);
-            }
 
             for (var i = 0; i < options.LibraryDirs.Count; i++)
-            {
                 options.LibraryDirs[i] = Path.GetFullPath(options.LibraryDirs[i]);
-            }
 
             if (string.IsNullOrWhiteSpace(options.OutputNamespace))
                 options.OutputNamespace = options.LibraryName;
@@ -250,10 +246,6 @@ namespace CppSharp
 
     public class InvalidOptionException : Exception
     {
-        public InvalidOptionException()
-        {
-            
-        }
     }
 
     public static class ConsoleDriver
