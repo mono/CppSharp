@@ -34,9 +34,6 @@ namespace CppSharp.Generators.CLI
             WriteLine("#include \"{0}.h\"", file);
             GenerateForwardReferenceHeaders();
 
-            if (Options.OutputInteropIncludes)
-                WriteLine("#include <clix.hpp>");
-
             NewLine();
             PopBlock();
 

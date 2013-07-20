@@ -28,6 +28,9 @@ namespace CppSharp.Generators.CLI
             WriteLine("#pragma once");
             NewLine();
 
+            if (Options.OutputInteropIncludes)
+                WriteLine("#include \"CppSharp.h\"");
+
             PushBlock(CLIBlockKind.IncludesForwardReferences);
             WriteLine("#include <{0}>", TranslationUnit.IncludePath);
             GenerateIncludeForwardRefs();
