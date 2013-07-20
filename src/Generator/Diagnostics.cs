@@ -11,6 +11,7 @@ namespace CppSharp
         FileGenerated,
         ParseResult,
         ParserDiagnostic,
+        PropertySynthetized
     }
 
     public enum DiagnosticKind
