@@ -9,6 +9,8 @@ namespace CppSharp
         InvalidOperatorOverload,
         SymbolNotFound,
         FileGenerated,
+        ParseResult,
+        ParserDiagnostic,
     }
 
     public enum DiagnosticKind

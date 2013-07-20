@@ -41,6 +41,8 @@ namespace CppSharp
             Options = options;
             Diagnostics = diagnostics;
             Parser = new Parser(Options);
+            Parser.OnHeaderParsed += OnFileParsed;
+            Parser.OnLibraryParsed += OnFileParsed;
             TypeDatabase = new TypeMapDatabase();
             Passes = new PassBuilder(this);
         }
@@ -73,6 +75,33 @@ namespace CppSharp
 
             Generator = Generators[Options.GeneratorKind](this);
             TypeDatabase.SetupTypeMaps();
+        }
+
+        void OnFileParsed(string file, ParserResult result)
+        {
+            switch (result.Kind)
+            {
+                case ParserResultKind.Success:
+                    Diagnostics.EmitMessage(DiagnosticId.ParseResult,
+                        "Parsed '{0}'", file);
+                    break;
+                case ParserResultKind.Error:
+                    Diagnostics.EmitError(DiagnosticId.ParseResult,
+                        "Error parsing '{0}'", file);
+                    break;
+                case ParserResultKind.FileNotFound:
+                    Diagnostics.EmitError(DiagnosticId.ParseResult,
+                        "File '{0}' was not found", file);
+                    break;
+            }
+
+            foreach (var diag in result.Diagnostics)
+            {
+                Diagnostics.EmitMessage(DiagnosticId.ParserDiagnostic,
+                    "{0}({1},{2}): {3}: {4}", diag.FileName, diag.LineNumber,
+                    diag.ColumnNumber, diag.Level.ToString().ToLower(),
+                    diag.Message);
+            }
         }
 
         public bool ParseCode()
@@ -229,29 +258,6 @@ namespace CppSharp
 
     public static class ConsoleDriver
     {
-        static void OnFileParsed(string file, ParserResult result)
-        {
-            switch (result.Kind)
-            {
-            case ParserResultKind.Success:
-                Console.WriteLine("  Parsed '{0}'", file);
-                break;
-            case ParserResultKind.Error:
-                Console.WriteLine("  Error parsing '{0}'", file);
-                break;
-            case ParserResultKind.FileNotFound:
-                Console.WriteLine("  File '{0}' was not found", file);
-                break;
-            }
-
-            foreach (var diag in result.Diagnostics)
-            {
-                Console.WriteLine(string.Format("{0}({1},{2}): {3}: {4}",
-                    diag.FileName, diag.LineNumber, diag.ColumnNumber,
-                    diag.Level.ToString().ToLower(), diag.Message));
-            }
-        }
-
         public static void Run(ILibrary library)
         {
             Console.BufferHeight = 1999;
@@ -260,9 +266,6 @@ namespace CppSharp
             var driver = new Driver(options, new TextDiagnosticPrinter());
             library.Setup(driver);
             driver.Setup();
-
-            driver.Parser.OnHeaderParsed += OnFileParsed;
-            driver.Parser.OnLibraryParsed += OnFileParsed;
 
             Console.WriteLine("Parsing libraries...");
             if (!driver.ParseLibraries())
