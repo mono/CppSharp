@@ -1,19 +1,24 @@
 // ------------------------------------------------------------------------------------------- //
-// clix.hpp (from http://blog.nuclex-games.com/mono-dotnet/cxx-cli-string-marshaling)
+// CppSharp C++/CLI helpers
 //
-// Marshals strings between .NET and C++ using C++/CLI (Visual C++ 2005 and later only).
-// Faster and cleaner than the System::Interop method because it uses garbage collected memory.
-// Use at your own leisure. No warranties whatsoever provided.
+// String marshaling code adapted from:
+//    http://blog.nuclex-games.com/mono-dotnet/cxx-cli-string-marshaling
 //
-// Original code by Markus Ewald
-// Updated version including several improvements suggested by Neil Hunt
-//
-// Licensed under the IBM CPL (free of charge, closed source commercial use is okay)
+// Licensed under the MIT license
 // ------------------------------------------------------------------------------------------- //
 #pragma once
 
 #include <string>
 #include <vcclr.h>
+
+public interface class ICppInstance
+{
+  property System::IntPtr^ NativePtr
+  {
+    System::IntPtr^ get();
+    void set(System::IntPtr^);
+  }
+};
 
 // CLI extensions namespace
 namespace clix {
