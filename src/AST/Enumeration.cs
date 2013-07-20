@@ -22,10 +22,18 @@ namespace CppSharp.AST
         public class Item : INamedDecl
         {
             public string Name { get; set; }
-            public long Value;
+            public ulong Value;
             public string Expression;
             public string Comment;
             public bool ExplicitValue = true;
+
+            public bool IsHexadecimal
+            {
+                get
+                { 
+                    return Expression.Contains("0x") || Expression.Contains("0X");
+                }
+            }
         }
 
         public Enumeration()
@@ -40,6 +48,14 @@ namespace CppSharp.AST
             Items.Add(item);
             ItemsByName[item.Name] = item;
             return this;
+        }
+
+        public string GetItemValueAsString(Item item)
+        {
+            var format = item.IsHexadecimal ? "x" : string.Empty;
+            var value = BuiltinType.IsUnsigned ? item.Value.ToString(format) :
+                ((long)item.Value).ToString(format);
+            return item.IsHexadecimal ? "0x" + value : value;
         }
 
         public Enumeration SetFlags()

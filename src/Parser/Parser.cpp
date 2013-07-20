@@ -1218,9 +1218,10 @@ CppSharp::AST::Enumeration^ Parser::WalkEnum(clang::EnumDecl* ED)
 
         auto EnumItem = gcnew CppSharp::AST::Enumeration::Item();
         EnumItem->Name = marshalString<E_UTF8>(ECD->getNameAsString());
-        EnumItem->Value = (int) ECD->getInitVal().getLimitedValue();
+        auto Value = ECD->getInitVal();
+        EnumItem->Value = Value.isSigned() ? Value.getSExtValue()
+            : Value.getZExtValue();
         EnumItem->Comment = marshalString<E_UTF8>(BriefText);
-        //EnumItem->ExplicitValue = ECD->getExplicitValue();
 
         std::string Text;
         if (GetDeclText(ECD->getSourceRange(), Text))

@@ -114,12 +114,12 @@ namespace CppSharp
             return long.TryParse(num, out val);
         }
 
-        static long ParseMacroExpression(string expression)
+        static ulong ParseMacroExpression(string expression)
         {
             // TODO: Handle string expressions
 
             long val;
-            return ParseToNumber(expression, out val) ? val : 0;
+            return ParseToNumber(expression, out val) ? (ulong)val : 0;
         }
 
         public static Enumeration GenerateEnumFromMacros(this Library library, string name,

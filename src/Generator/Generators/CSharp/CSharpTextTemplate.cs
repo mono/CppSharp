@@ -1601,8 +1601,9 @@ namespace CppSharp.Generators.CSharp
                 var item = @enum.Items[i];
                 GenerateInlineSummary(item.Comment);
 
+                var value = @enum.GetItemValueAsString(item);
                 Write(item.ExplicitValue
-                          ? string.Format("{0} = {1}", SafeIdentifier(item.Name), item.Value)
+                          ? string.Format("{0} = {1}", SafeIdentifier(item.Name), value)
                           : string.Format("{0}", SafeIdentifier(item.Name)));
 
                 if (i < @enum.Items.Count - 1)

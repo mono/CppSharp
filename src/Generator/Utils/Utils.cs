@@ -9,7 +9,7 @@ namespace CppSharp
 {
     public static class IntHelpers
     {
-        public static bool IsPowerOfTwo(this long x)
+        public static bool IsPowerOfTwo(this ulong x)
         {
             return (x != 0) && ((x & (x - 1)) == 0);
         }

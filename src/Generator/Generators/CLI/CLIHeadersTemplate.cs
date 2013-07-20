@@ -608,7 +608,8 @@ namespace CppSharp.Generators.CLI
                 var item = @enum.Items[i];
                 GenerateInlineSummary(item.Comment);
                 if (item.ExplicitValue)
-                    Write(String.Format("{0} = {1}", SafeIdentifier(item.Name), item.Value));
+                    Write(String.Format("{0} = {1}", SafeIdentifier(item.Name),
+                        @enum.GetItemValueAsString(item)));
                 else
                     Write(String.Format("{0}", SafeIdentifier(item.Name)));
 

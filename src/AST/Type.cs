@@ -534,6 +534,24 @@ namespace CppSharp.AST
             Type = type;
         }
 
+        public bool IsUnsigned
+        {
+            get
+            {
+                switch (Type)
+                {
+                case PrimitiveType.Bool:
+                case PrimitiveType.UInt8:
+                case PrimitiveType.UInt16:
+                case PrimitiveType.UInt32:
+                case PrimitiveType.UInt64:
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
         // Primitive type of built-in type.
         public PrimitiveType Type;
 
