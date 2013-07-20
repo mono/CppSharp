@@ -11,6 +11,9 @@ namespace CppSharp.Passes
 
         public override bool VisitDeclaration(Declaration decl)
         {
+            if (decl.ExplicityIgnored)
+                return false;
+
             if (decl.IsDependent)
             {
                 decl.ExplicityIgnored = true;
