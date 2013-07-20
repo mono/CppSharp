@@ -1145,6 +1145,9 @@ namespace CppSharp.Generators.CSharp
             if (method.IsStatic || (method.IsOperator && isBuiltinOperator))
                 Write("static ");
 
+            if (method.IsOverride)
+                Write("override ");
+
             var functionName = GetFunctionIdentifier(method);
 
             if (method.IsConstructor || method.IsDestructor)

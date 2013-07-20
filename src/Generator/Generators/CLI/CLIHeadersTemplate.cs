@@ -522,6 +522,9 @@ namespace CppSharp.Generators.CLI
 
             GenerateDeclarationCommon(method);
 
+            if (method.IsOverride)
+                Write("virtual ");
+
             if (method.IsStatic)
                 Write("static ");
 
@@ -532,7 +535,12 @@ namespace CppSharp.Generators.CLI
 
             GenerateMethodParameters(method);
 
-            WriteLine(");");
+            Write(")");
+
+            if (method.IsOverride)
+                Write(" override");
+
+            WriteLine(";");
 
             PopBlock();
         }
