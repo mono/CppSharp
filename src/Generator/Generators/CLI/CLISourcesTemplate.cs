@@ -151,6 +151,26 @@ namespace CppSharp.Generators.CLI
 
             if (@class.IsRefType)
             {
+                if (!CLIHeadersTemplate.HasRefBase(@class))
+                {
+                    PushBlock(CLIBlockKind.Method);
+                    WriteLine("System::IntPtr {0}::Instance::get()",
+                              QualifiedIdentifier(@class));
+                    WriteStartBraceIndent();
+                    WriteLine("return System::IntPtr(NativePtr);");
+                    WriteCloseBraceIndent();
+                    PopBlock(NewLineKind.BeforeNextBlock);
+
+                    PushBlock(CLIBlockKind.Method);
+                    WriteLine("void {0}::Instance::set(System::IntPtr object)",
+                              QualifiedIdentifier(@class));
+                    WriteStartBraceIndent();
+                    var nativeType = string.Format("::{0}*", @class.QualifiedOriginalName);
+                    WriteLine("NativePtr = ({0})object.ToPointer();", nativeType);
+                    WriteCloseBraceIndent();
+                    PopBlock(NewLineKind.BeforeNextBlock);
+                }
+
                 foreach (var field in @class.Fields)
                 {
                     if (ASTUtils.CheckIgnoreField(@class, field))

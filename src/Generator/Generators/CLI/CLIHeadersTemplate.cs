@@ -237,7 +237,7 @@ namespace CppSharp.Generators.CLI
             WriteLine("};");
         }
 
-        public void GenerateClassNativeField(Class @class, string nativeType)
+        internal static bool HasRefBase(Class @class)
         {
             Class baseClass = null;
 
@@ -247,13 +247,24 @@ namespace CppSharp.Generators.CLI
             var hasRefBase = baseClass != null && baseClass.IsRefType
                              && !baseClass.Ignore;
 
-            var hasIgnoredBase = baseClass != null && baseClass.Ignore;
+            return hasRefBase;
+        }
 
-            if (!@class.HasBase || !hasRefBase || hasIgnoredBase)
-            {
-                WriteLineIndent("property {0} NativePtr;", nativeType);
-                NewLine();
-            }
+        public void GenerateClassNativeField(Class @class, string nativeType)
+        {
+            if (HasRefBase(@class)) return;
+
+            WriteLineIndent("property {0} NativePtr;", nativeType);
+
+            PushIndent();
+            WriteLine("property System::IntPtr Instance");
+            WriteStartBraceIndent();
+            WriteLine("virtual System::IntPtr get();");
+            WriteLine("virtual void set(System::IntPtr instance);");
+            WriteCloseBraceIndent();
+            NewLine();
+
+            PopIndent();
         }
 
         public void GenerateClassGenericMethods(Class @class)
@@ -462,11 +473,12 @@ namespace CppSharp.Generators.CLI
                 return true;
             }
 
-            if (@class.HasBase && !@class.IsValueType)
-                if (!@class.Bases[0].Class.Ignore)
-                    Write(" : {0}", QualifiedIdentifier(@class.Bases[0].Class));
+            if (HasRefBase(@class))
+                Write(" : {0}", QualifiedIdentifier(@class.Bases[0].Class));
+            else if (@class.IsRefType)
+                Write(" : ICppInstance");
 
-            WriteLine(string.Empty);
+            NewLine();
             WriteLine("{");
             WriteLine("public:");
             return false;
