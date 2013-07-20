@@ -389,9 +389,6 @@ namespace CppSharp.Generators.CSharp
                 if (ctx is TranslationUnit)
                     break;
 
-                if (ctx is Namespace)
-                    break;
-
                 if (!string.IsNullOrWhiteSpace(ctx.Name))
                     names.Add(ctx.Name);
 
