@@ -1222,6 +1222,10 @@ CppSharp::AST::Enumeration^ Parser::WalkEnum(clang::EnumDecl* ED)
         EnumItem->Comment = marshalString<E_UTF8>(BriefText);
         //EnumItem->ExplicitValue = ECD->getExplicitValue();
 
+        std::string Text;
+        if (GetDeclText(ECD->getSourceRange(), Text))
+            EnumItem->Expression = marshalString<E_UTF8>(Text);
+
         E->AddItem(EnumItem);
     }
 
@@ -1539,13 +1543,13 @@ void Parser::HandleComments(clang::Decl* D, CppSharp::AST::Declaration^ Decl)
 
 //-----------------------------------//
 
-bool Parser::GetPreprocessedEntityText(clang::PreprocessedEntity* PE, std::string& Text)
+bool Parser::GetDeclText(clang::SourceRange SR, std::string& Text)
 {
     using namespace clang;
     SourceManager& SM = C->getSourceManager();
     const LangOptions &LangOpts = C->getLangOpts();
 
-    auto Range = CharSourceRange::getTokenRange(PE->getSourceRange());
+    auto Range = CharSourceRange::getTokenRange(SR);
 
     bool Invalid;
     Text = Lexer::getSourceText(Range, SM, LangOpts, &Invalid);
@@ -1575,7 +1579,7 @@ void Parser::HandlePreprocessedEntities(CppSharp::AST::Declaration^ Decl,
             Entity = gcnew CppSharp::AST::MacroExpansion();
 
             std::string Text;
-            if (!GetPreprocessedEntityText(PPEntity, Text))
+            if (!GetDeclText(PPEntity->getSourceRange(), Text))
                 continue;
 
             static_cast<CppSharp::AST::MacroExpansion^>(Entity)->Text = 

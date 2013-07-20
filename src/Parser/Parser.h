@@ -158,7 +158,7 @@ protected:
         bool IsDependent = false);
     void HandlePreprocessedEntities(CppSharp::AST::Declaration^ Decl, clang::SourceRange sourceRange,
                                     CppSharp::AST::MacroLocation macroLocation = CppSharp::AST::MacroLocation::Unknown);
-    bool GetPreprocessedEntityText(clang::PreprocessedEntity*, std::string& Text);
+    bool GetDeclText(clang::SourceRange, std::string& Text);
 
     CppSharp::AST::TranslationUnit^ GetTranslationUnit(clang::SourceLocation Loc,
         SourceLocationKind *Kind = 0);
