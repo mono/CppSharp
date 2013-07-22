@@ -13,7 +13,7 @@ namespace CppSharp.Generators.CSharp
         public CSharpGenerator(Driver driver) : base(driver)
         {
             typePrinter = new CSharpTypePrinter(driver.TypeDatabase, driver.Library);
-            AST.Type.TypePrinterDelegate += type => type.Visit(typePrinter).Type;
+            CppSharp.AST.Type.TypePrinterDelegate += type => type.Visit(typePrinter).Type;
         }
 
         public override List<Template> Generate(TranslationUnit unit)

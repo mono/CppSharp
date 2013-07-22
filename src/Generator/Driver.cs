@@ -131,7 +131,6 @@ namespace CppSharp
         {
             Passes.CleanInvalidDeclNames();
             Passes.CheckIgnoredDecls();
-            Passes.CheckTypeReferences();
             Passes.CheckFlagEnums();
             Passes.CheckAmbiguousOverloads();
             Generator.SetupPasses(Passes);

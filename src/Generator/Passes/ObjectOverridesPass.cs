@@ -16,12 +16,16 @@ namespace CppSharp
                 foreach (var block in template.FindBlocks(CLIBlockKind.MethodBody))
                 {
                     var method = block.Declaration as Method;
+                    if (!method.IsSynthetized)
+                        continue;
+
                     switch (method.Name)
                     {
                     case "GetHashCode":
                         block.Write("return (int)NativePtr;");
                         break;
                     case "Equals":
+
                         block.WriteLine("if (!object) return false;");
                         block.Write("return Instance == safe_cast<ICppInstance^>({0})->Instance;",
                                     method.Parameters[0].Name);
