@@ -1346,9 +1346,10 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, CppSharp::AST::Function^ F,
         TypeLoc PTL;
         if (auto TSI = VD->getTypeSourceInfo())
             PTL = VD->getTypeSourceInfo()->getTypeLoc();
+
         P->QualifiedType = GetQualifiedType(VD->getType(), WalkType(VD->getType(), &PTL));
-         
         P->HasDefaultValue = VD->hasDefaultArg();
+        P->Namespace = NS;
 
         F->Parameters->Add(P);
     }
