@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using CppSharp.AST;
 using CppSharp.Types;
+using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Generators.CLI
 {
@@ -340,7 +341,7 @@ namespace CppSharp.Generators.CLI
             throw new NotImplementedException();
         }
 
-        public string ToString(AST.Type type)
+        public string ToString(Type type)
         {
             return type.Visit(this);
         }
