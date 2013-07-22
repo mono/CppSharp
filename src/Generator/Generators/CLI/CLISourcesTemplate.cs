@@ -52,37 +52,21 @@ namespace CppSharp.Generators.CLI
         public void GenerateForwardReferenceHeaders()
         {
             PushBlock(CLIBlockKind.IncludesForwardReferences);
+
+            var typeReferenceCollector = new CLITypeReferenceCollector(Driver.TypeDatabase);
+            typeReferenceCollector.Process(TranslationUnit);
+
             var includes = new SortedSet<string>(StringComparer.InvariantCulture);
 
-            var typeRefs = TranslationUnit.TypeReferences as TypeRefsVisitor;
-
-            // Generate the forward references.
-            foreach (var forwardRef in typeRefs.References)
-            {
-                var decl = forwardRef.Declaration;
-
-                if (decl.IsIncomplete && decl.CompleteDeclaration != null)
-                     decl = decl.CompleteDeclaration;
-
-                var @namespace = decl.Namespace;
-                var translationUnit = @namespace.TranslationUnit;
-
-                if (translationUnit.Ignore)
+            foreach (var typeRef in typeReferenceCollector.TypeReferences)
+            { 
+                if (typeRef.Include.File == TranslationUnit.FileName)
                     continue;
 
-                if (translationUnit.IsSystemHeader)
-                    continue;
-
-                var includeName = Path.GetFileNameWithoutExtension(translationUnit.FileName);
-
-                if (includeName == Path.GetFileNameWithoutExtension(TranslationUnit.FileName))
-                    continue;
-
-                includes.Add(string.Format("#include \"{0}.h\"", includeName.Replace('\\', '/')));
+                var include = typeRef.Include;
+                if(!string.IsNullOrEmpty(include.File) && !include.InHeader)
+                    includes.Add(include.ToString());
             }
-
-            foreach (var include in Includes)
-                includes.Add(include.ToString());
 
             foreach (var include in includes)
                 WriteLine(include);
@@ -726,8 +710,7 @@ namespace CppSharp.Generators.CLI
 
             if (IsNativeFunctionOrStaticMethod(function))
             {
-                Write("::");
-                Write("{0}(", function.QualifiedOriginalName);
+                Write("::{0}(", function.QualifiedOriginalName);
             }
             else
             {

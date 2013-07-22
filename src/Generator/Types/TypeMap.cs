@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using CppSharp.AST;
 using CppSharp.Generators;
+using CppSharp.Generators.AST;
 using CppSharp.Generators.CLI;
 using CppSharp.Generators.CSharp;
 using Type = CppSharp.AST.Type;
@@ -65,7 +66,7 @@ namespace CppSharp.Types
             throw new NotImplementedException();
         }
 
-        public virtual void CLIForwardReference(CLIForwardReferencePrinter ctx)
+        public virtual void CLITypeReference(CLITypeReferenceCollector collector, ASTRecord<Declaration> loc)
         {
         }
 

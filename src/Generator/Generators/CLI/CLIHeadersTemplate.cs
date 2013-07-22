@@ -46,26 +46,20 @@ namespace CppSharp.Generators.CLI
 
         public void GenerateIncludeForwardRefs()
         {
-            var typeRefs = TranslationUnit.TypeReferences as TypeRefsVisitor;
-
-            var forwardRefsPrinter = new CLIForwardReferencePrinter(typeRefs, Driver.TypeDatabase);
-            forwardRefsPrinter.Process();
+            var typeReferenceCollector = new CLITypeReferenceCollector(Driver.TypeDatabase);
+            typeReferenceCollector.Process(TranslationUnit);
 
             var includes = new SortedSet<string>(StringComparer.InvariantCulture);
 
-            foreach (var include in forwardRefsPrinter.Includes)
-            {
-                if (string.IsNullOrWhiteSpace(include))
+            foreach (var typeRef in typeReferenceCollector.TypeReferences)
+            { 
+                if (typeRef.Include.File == TranslationUnit.FileName)
                     continue;
 
-                if (include == Path.GetFileNameWithoutExtension(TranslationUnit.FileName))
-                    continue;
-
-                includes.Add(string.Format("#include \"{0}.h\"", include));
+                var include = typeRef.Include;
+                if(!string.IsNullOrEmpty(include.File) && include.InHeader)
+                    includes.Add(include.ToString());
             }
-
-            foreach (var include in Includes)
-                includes.Add(include.ToString());
 
             foreach (var include in includes)
                 WriteLine(include);
@@ -73,20 +67,17 @@ namespace CppSharp.Generators.CLI
 
         public void GenerateForwardRefs(Namespace @namespace)
         {
-            var typeRefs = TranslationUnit.TypeReferences as TypeRefsVisitor;
-
-            var forwardRefsPrinter = new CLIForwardReferencePrinter(typeRefs, Driver.TypeDatabase);
-            forwardRefsPrinter.Process();
+            var typeReferenceCollector = new CLITypeReferenceCollector(Driver.TypeDatabase);
+            typeReferenceCollector.Process(@namespace);
 
             // Use a set to remove duplicate entries.
             var forwardRefs = new SortedSet<string>(StringComparer.InvariantCulture);
 
-            foreach (var forwardRef in forwardRefsPrinter.Refs)
+            foreach (var typeRef in typeReferenceCollector.TypeReferences)
             {
-                if (forwardRef.Namespace != @namespace)
-                    continue;
-
-                forwardRefs.Add(forwardRef.Text);
+                var @ref = typeRef.FowardReference;
+                if(!string.IsNullOrEmpty(@ref) && !typeRef.Include.InHeader)
+                    forwardRefs.Add(@ref);
             }
 
             foreach (var forwardRef in forwardRefs)
@@ -259,8 +250,8 @@ namespace CppSharp.Generators.CLI
             PushIndent();
             WriteLine("property System::IntPtr Instance");
             WriteStartBraceIndent();
-            WriteLine("virtual System::IntPtr get();");
-            WriteLine("virtual void set(System::IntPtr instance);");
+            WriteLine("virtual System::IntPtr get() override;");
+            WriteLine("virtual void set(System::IntPtr instance) override;");
             WriteCloseBraceIndent();
             NewLine();
 

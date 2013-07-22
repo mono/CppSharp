@@ -15,6 +15,7 @@ namespace CppSharp.Generators.CLI
 
         public string File;
         public IncludeKind Kind;
+        public bool InHeader;
 
         public override string ToString()
         {
