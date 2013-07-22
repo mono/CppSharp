@@ -222,7 +222,7 @@ namespace CppSharp.Types
 
         public string VisitEnumDecl(Enumeration @enum)
         {
-            return @enum.Name;
+            return string.Format("::{0}", @enum.QualifiedOriginalName);
         }
 
         public string VisitVariableDecl(Variable variable)
