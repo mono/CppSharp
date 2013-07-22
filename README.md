@@ -27,6 +27,8 @@ Since binary releases have not been provided yet, you will have to compile the p
 
 The documentation is still a work-in-progress, please see the following resources for more information:
 
+[Getting Started](docs/GettingStarted.md)
+
 [User's Manual](docs/UsersManual.md)
 
 [Developer's Manual](docs/DevManual.md)
