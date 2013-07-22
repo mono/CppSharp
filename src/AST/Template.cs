@@ -41,6 +41,40 @@ namespace CppSharp.AST
         {
             return visitor.VisitClassTemplateDecl(this);
         }
+
+        public override string Name
+        {
+            get 
+            { 
+                if(TemplatedDecl != null) 
+                    return TemplatedClass.Name;
+               return base.Name;
+            }
+            set 
+            { 
+                if(TemplatedDecl != null) 
+                    TemplatedClass.Name = value;
+                else
+                    base.Name = value;
+            }
+        }
+
+        public override string OriginalName
+        {
+            get 
+            { 
+                if(TemplatedDecl != null) 
+                    return TemplatedClass.OriginalName;
+               return base.OriginalName;
+            }
+            set 
+            { 
+                if(TemplatedDecl != null) 
+                    TemplatedClass.OriginalName = value;
+                else
+                    base.OriginalName = value;
+            }
+        }
     }
 
     public class ClassTemplateSpecialization : Class

@@ -44,7 +44,7 @@ namespace CppSharp.AST
         private string name;
 
         // Name of the declaration.
-        public string Name
+        public virtual string Name
         {
             get { return name; }
             set
@@ -67,7 +67,7 @@ namespace CppSharp.AST
         }
 
         // Name of the declaration.
-        public string OriginalName;
+        public virtual string OriginalName { get; set;}
 
         public string QualifiedOriginalName
         {

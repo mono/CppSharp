@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using CppSharp.AST;
+using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Generators.CSharp
 {
@@ -845,7 +846,7 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
-        private void GenerateVariable(Class @class, AST.Type type, Variable variable)
+        private void GenerateVariable(Class @class, Type type, Variable variable)
         {
             PushBlock(CSharpBlockKind.Variable);
             WriteLine("public static {0} {1}", type, variable.Name);
