@@ -146,7 +146,7 @@ static CppSharp::AST::Comment^ ConvertCommentBlock(clang::comments::Comment* C)
 		for (auto I = CK->child_begin(), E = CK->child_end(); I != E; ++I)
 		{
 			auto Line = ConvertCommentBlock(*I);
-			VB->Lines->Add(safe_cast<VerbatimBlockLineComment^>(Line));
+			VB->Lines->Add(dynamic_cast<VerbatimBlockLineComment^>(Line));
 		}
 		break;
 	}
@@ -166,7 +166,7 @@ static CppSharp::AST::Comment^ ConvertCommentBlock(clang::comments::Comment* C)
 		for (auto I = CK->child_begin(), E = CK->child_end(); I != E; ++I)
 		{
 			auto Content = ConvertCommentBlock(*I);
-			PC->Content->Add(safe_cast<InlineContentComment^>(Content));
+			PC->Content->Add(dynamic_cast<InlineContentComment^>(Content));
 		}
 		PC->IsWhitespace = CK->isWhitespace();
 		break;
@@ -179,7 +179,7 @@ static CppSharp::AST::Comment^ ConvertCommentBlock(clang::comments::Comment* C)
 		for (auto I = CK->child_begin(), E = CK->child_end(); I != E; ++I)
 		{
 			auto Content = ConvertCommentBlock(*I);
-			FC->Blocks->Add(safe_cast<BlockContentComment^>(Content));
+			FC->Blocks->Add(dynamic_cast<BlockContentComment^>(Content));
 		}
 		break;
 	}
