@@ -379,13 +379,29 @@ CppSharp::AST::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
     assert(NS && "Expected a valid namespace");
 
     bool isCompleteDefinition = Record->isCompleteDefinition();
-    auto Name = marshalString<E_UTF8>(GetTagDeclName(Record));
-    auto RC = NS->FindClass(Name, isCompleteDefinition, /*Create=*/false);
+
+	CppSharp::AST::Class^ RC = nullptr;
+
+	auto Name = marshalString<E_UTF8>(GetTagDeclName(Record));
+	auto HasEmptyName = Record->getDeclName().isEmpty();
+
+	if (HasEmptyName)
+	{
+		if (auto AR = NS->FindAnonymous((uint64_t)Record))
+			RC = safe_cast<CppSharp::AST::Class^>(AR);
+	}
+	else
+	{
+		RC = NS->FindClass(Name, isCompleteDefinition, /*Create=*/false);
+	}
 
     if (RC)
         return RC;
 
     RC = NS->FindClass(Name, isCompleteDefinition, /*Create=*/true);
+
+	if (HasEmptyName)
+		NS->Anonymous[(uint64_t)Record] = RC;
 
     if (!isCompleteDefinition)
         return RC;
@@ -467,6 +483,7 @@ CppSharp::AST::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
             break;
         }
         case Decl::IndirectField: // FIXME: Handle indirect fields
+			break;
         default:
         {
             auto Decl = WalkDeclaration(D);

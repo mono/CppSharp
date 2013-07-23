@@ -20,6 +20,9 @@ namespace CppSharp.AST
         public List<Variable> Variables;
         public List<Event> Events;
 
+        // Used to keep track of anonymous declarations.
+        public Dictionary<ulong, Declaration> Anonymous; 
+
         public TranslationUnit TranslationUnit
         {
             get
@@ -41,6 +44,12 @@ namespace CppSharp.AST
             Typedefs = new List<TypedefDecl>();
             Variables = new List<Variable>();
             Events = new List<Event>();
+            Anonymous = new Dictionary<ulong, Declaration>();
+        }
+
+        public Declaration FindAnonymous(ulong key)
+        {
+            return Anonymous.ContainsKey(key) ? Anonymous[key] : null;
         }
 
         public Namespace FindNamespace(string name)
