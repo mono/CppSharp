@@ -87,7 +87,7 @@ static void HandleBlockCommand(const clang::comments::BlockCommandComment *CK,
 	using namespace clix;
 
 	BC->CommandId = CK->getCommandID();
-	for (unsigned I = 0, E = CK->getNumArgs(); I != E; ++E)
+	for (unsigned I = 0, E = CK->getNumArgs(); I != E; ++I)
 	{
 		auto Arg = CppSharp::AST::BlockCommandComment::Argument();
 		Arg.Text = marshalString<E_UTF8>(CK->getArgText(I));
@@ -221,7 +221,7 @@ static CppSharp::AST::Comment^ ConvertCommentBlock(clang::comments::Comment* C)
 		auto IC = gcnew InlineCommandComment();
 		_Comment = IC;
 		IC->Kind = ConvertRenderKind(CK->getRenderKind());
-		for (unsigned I = 0, E = CK->getNumArgs(); I != E; ++E)
+		for (unsigned I = 0, E = CK->getNumArgs(); I != E; ++I)
 		{
 			auto Arg = CppSharp::AST::InlineCommandComment::Argument();
 			Arg.Text = marshalString<E_UTF8>(CK->getArgText(I));
