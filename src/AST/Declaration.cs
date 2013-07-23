@@ -80,6 +80,9 @@ namespace CppSharp.AST
             }
         }
 
+        // Comment associated with declaration.
+        public RawComment Comment;
+
         // Doxygen-style brief comment.
         public string BriefComment;
 

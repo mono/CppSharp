@@ -17,14 +17,18 @@ project "CppSharp.Parser"
   -- premake build. remove this once this support is added
   -- at the project level.
   
-  configuration { "*Main.cpp" }
-    flags { "Managed" }
-    usingdirs { libdir }
-    
-  configuration { "*Parser.cpp" }
+  configuration { "Main.cpp" }
     flags { "Managed" }
     usingdirs { libdir }
 
+  configuration { "Parser.cpp" }
+    flags { "Managed" }
+    usingdirs { libdir }
+
+  configuration { "Comments.cpp" }
+    flags { "Managed" }
+    usingdirs { libdir }
+    
   configuration "vs*"
     buildoptions { clang_msvc_flags }
     files { "VSLookup.cpp" }
@@ -34,8 +38,7 @@ project "CppSharp.Parser"
   files
   {
     "**.h",
-    "Main.cpp",
-    "Parser.cpp",
+    "*.cpp",
     "**.lua"
   }
   

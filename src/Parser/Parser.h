@@ -15,6 +15,8 @@
 #include <clang/Basic/IdentifierTable.h>
 #include <clang/AST/ASTConsumer.h>
 #include <clang/AST/Mangle.h>
+#include <clang/AST/RawCommentList.h>
+#include <clang/AST/Comment.h>
 #include <clang/AST/RecordLayout.h>
 #include <clang/Lex/Preprocessor.h>
 #include <clang/Lex/PreprocessingRecord.h>
@@ -144,6 +146,7 @@ protected:
     CppSharp::AST::FunctionTemplate^ Parser::WalkFunctionTemplate(
         clang::FunctionTemplateDecl*);
     CppSharp::AST::Variable^ WalkVariable(clang::VarDecl*);
+	CppSharp::AST::RawComment^ WalkRawComment(const clang::RawComment*);
     CppSharp::AST::Type^ WalkType(clang::QualType, clang::TypeLoc* = 0,
       bool DesugarType = false);
 

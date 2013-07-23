@@ -14,6 +14,7 @@
 #include <clang/Basic/Version.h>
 #include <clang/Config/config.h>
 #include <clang/AST/ASTContext.h>
+#include <clang/AST/Comment.h>
 #include <clang/AST/DeclTemplate.h>
 #include <clang/Lex/DirectoryLookup.h>
 #include <clang/Lex/HeaderSearch.h>
@@ -1525,33 +1526,6 @@ CppSharp::AST::Variable^ Parser::WalkVariable(clang::VarDecl *VD)
     Var->Mangled = marshalString<E_UTF8>(Mangled);
 
     return Var;
-}
-
-//-----------------------------------//
-
-void Parser::HandleComments(clang::Decl* D, CppSharp::AST::Declaration^ Decl)
-{
-    using namespace clang;
-    using namespace clix;
-
-    // Get the declaration comment.
-    std::string BriefText;
-    if (const RawComment* Comment = AST->getRawCommentForAnyRedecl(D))
-        BriefText = Comment->getBriefText(*AST);
-
-    Decl->BriefComment = marshalString<E_UTF8>(BriefText);
-
-    SourceManager& SM = C->getSourceManager();
-    const LangOptions& LangOpts = C->getLangOpts();
-
-    auto Range = CharSourceRange::getTokenRange(D->getSourceRange());
-
-    bool Invalid;
-    StringRef DeclText = Lexer::getSourceText(Range, SM, LangOpts, &Invalid);
-    //assert(!Invalid && "Should have a valid location");
-    
-    if (!Invalid)
-        Decl->DebugText = marshalString<E_UTF8>(DeclText);
 }
 
 //-----------------------------------//
