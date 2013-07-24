@@ -189,7 +189,7 @@ static CppSharp::AST::Comment^ ConvertCommentBlock(clang::comments::Comment* C)
 		auto TC = gcnew HTMLStartTagComment();
 		_Comment = TC;
 		TC->TagName = marshalString<E_UTF8>(CK->getTagName());
-		for (unsigned I = 0, E = CK->getNumAttrs(); I != E; ++E)
+		for (unsigned I = 0, E = CK->getNumAttrs(); I != E; ++I)
 		{
 			auto A = CK->getAttr(I);
 			auto Attr = CppSharp::AST::HTMLStartTagComment::Attribute();
