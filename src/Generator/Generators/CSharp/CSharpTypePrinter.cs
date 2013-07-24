@@ -172,17 +172,17 @@ namespace CppSharp.Generators.CSharp
             var isManagedContext = ContextKind == CSharpTypePrinterContextKind.Managed;
 
             if (IsConstCharString(pointer))
-                return isManagedContext ? "string" : "System.IntPtr";
+                return isManagedContext ? "string" : "global::System.IntPtr";
 
             PrimitiveType primitive;
             if (pointee.Desugar().IsPrimitiveType(out primitive))
-                return "System.IntPtr";
+                return "global::System.IntPtr";
 
             Class @class;
             if (pointee.IsTagDecl(out @class)
                 && ContextKind == CSharpTypePrinterContextKind.Native)
             {
-                return "System.IntPtr";
+                return "global::System.IntPtr";
             }
 
             return pointee.Visit(this, quals);
@@ -225,7 +225,7 @@ namespace CppSharp.Generators.CSharp
             if (decl.Type.IsPointerTo<FunctionType>(out func))
             {
                 if (ContextKind == CSharpTypePrinterContextKind.Native)
-                    return "System.IntPtr";
+                    return "global::System.IntPtr";
                 // TODO: Use SafeIdentifier()
                 return VisitDeclaration(decl);
             }
@@ -314,7 +314,7 @@ namespace CppSharp.Generators.CSharp
                 case PrimitiveType.UInt64: return "ulong";
                 case PrimitiveType.Float: return "float";
                 case PrimitiveType.Double: return "double";
-                case PrimitiveType.IntPtr: return "System.IntPtr";
+                case PrimitiveType.IntPtr: return "global::System.IntPtr";
             }
 
             throw new NotSupportedException();
