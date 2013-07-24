@@ -148,7 +148,6 @@ namespace CppSharp.AST
         public struct Argument
         {
             public string Text;
-            public SourceLocation Location;
         }
 
         public uint CommandId;
