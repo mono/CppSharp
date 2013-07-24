@@ -137,7 +137,7 @@ namespace CppSharp.AST
             return typedef.Declaration.Visit(this);
         }
 
-        public bool VisitDecayedType(DecayedType decayed, TypeQualifiers quals)
+        public virtual bool VisitDecayedType(DecayedType decayed, TypeQualifiers quals)
         {
             if (!VisitType(decayed, quals))
                 return false;
