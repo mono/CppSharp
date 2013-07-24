@@ -323,7 +323,7 @@ namespace CppSharp.Generators.CSharp
                 if (ShouldGenerateClassNativeField(@class))
                 {
                     PushBlock(CSharpBlockKind.Field);
-                    WriteLine("public System.IntPtr {0} {{ get; protected set; }}",
+                    WriteLine("public global::System.IntPtr {0} {{ get; protected set; }}",
                         Helpers.InstanceIdentifier);
                     PopBlock(NewLineKind.BeforeNextBlock);
                 }
@@ -1031,7 +1031,7 @@ namespace CppSharp.Generators.CSharp
             PushBlock(CSharpBlockKind.Method);
             WriteLine("internal {0}({1}.Internal* native)", SafeIdentifier(@class.Name),
                 @class.Name);
-            WriteLineIndent(": this(new System.IntPtr(native))");
+            WriteLineIndent(": this(new global::System.IntPtr(native))");
             WriteStartBraceIndent();
             WriteCloseBraceIndent();
             PopBlock(NewLineKind.BeforeNextBlock);
@@ -1045,7 +1045,7 @@ namespace CppSharp.Generators.CSharp
             PopBlock(NewLineKind.BeforeNextBlock);
 
             PushBlock(CSharpBlockKind.Method);
-            WriteLine("internal {0}(System.IntPtr native)", SafeIdentifier(@class.Name));
+            WriteLine("internal {0}(global::System.IntPtr native)", SafeIdentifier(@class.Name));
 
             var hasBaseClass = @class.HasBaseClass && @class.BaseClass.IsRefType;
             if (hasBaseClass)
@@ -1325,7 +1325,7 @@ namespace CppSharp.Generators.CSharp
 
             if (needsInstance)
             {
-                names.Insert(0, needsFixedThis ? string.Format("new System.IntPtr(&{0})",
+                names.Insert(0, needsFixedThis ? string.Format("new global::System.IntPtr(&{0})",
                     GeneratedIdentifier("instance")) : Helpers.InstanceIdentifier);
             }
 
@@ -1803,10 +1803,10 @@ namespace CppSharp.Generators.CSharp
             var method = function as Method;
             if (method != null && !method.IsStatic)
             {
-                @params.Add("System.IntPtr instance");
+                @params.Add("global::System.IntPtr instance");
 
                 if (method.IsConstructor && Options.IsMicrosoftAbi)
-                    retType = "System.IntPtr";
+                    retType = "global::System.IntPtr";
             }
 
             for (var i = 0; i < function.Parameters.Count; ++i)

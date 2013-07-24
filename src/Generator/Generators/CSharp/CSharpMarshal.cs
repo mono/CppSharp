@@ -201,7 +201,7 @@ namespace CppSharp.Generators.CSharp
             string instance = Context.ReturnVarName;
             if (ctx.Kind == CSharpMarshalKind.NativeField)
             {
-                instance = string.Format("new System.IntPtr(&{0})", instance);
+                instance = string.Format("new global::System.IntPtr(&{0})", instance);
             }
 
             Context.Return.Write("new {0}({1})", QualifiedIdentifier(@class),
@@ -306,7 +306,7 @@ namespace CppSharp.Generators.CSharp
                             Helpers.SafeIdentifier(Context.Parameter.Name));
                 }
 
-                Context.Return.Write("new System.IntPtr(&{0})",
+                Context.Return.Write("new global::System.IntPtr(&{0})",
                     Helpers.GeneratedIdentifier(Context.ArgName));
                 return true;
             }
