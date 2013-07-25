@@ -1277,15 +1277,13 @@ namespace CppSharp.Generators.CSharp
 
             var method = function as Method;
 
-            bool isValueType = false;
-            bool needsInstance = false;
+            var isValueType = false;
+            var needsInstance = false;
 
             if (method != null)
             {
-                var @class = method.Namespace as Class;
-
-                if (@class != null)
-                    isValueType = @class.IsValueType;
+                var @class = (Class) method.Namespace;
+                isValueType = @class.IsValueType;
 
                 needsInstance = !method.IsStatic;
 
