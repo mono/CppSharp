@@ -484,22 +484,35 @@ namespace CppSharp.Generators.CLI
                     continue;
 
                 GenerateDeclarationCommon(field);
-                GenerateFieldProperty(field);
+                GenerateProperty(field);
+            }
+            PopIndent();
+
+            PushIndent();
+            foreach (var prop in @class.Properties)
+            {
+                if (prop.Ignore) continue;
+
+                GenerateDeclarationCommon(prop);
+                GenerateProperty(prop);
             }
             PopIndent();
         }
 
-        public void GenerateFieldProperty(Field field)
+        public void GenerateProperty<T>(T decl)
+            where T : Declaration, ITypedDecl
         {
-            var type = field.Type.Visit(TypePrinter, field.QualifiedType.Qualifiers);
+            PushBlock(CLIBlockKind.Property, decl);
+            var type = decl.Type.Visit(TypePrinter, decl.QualifiedType.Qualifiers);
 
-            WriteLine("property {0} {1}", type, field.Name);
+            WriteLine("property {0} {1}", type, decl.Name);
             WriteStartBraceIndent();
 
             WriteLine("{0} get();", type);
             WriteLine("void set({0});", type);
 
             WriteCloseBraceIndent();
+            PopBlock();
         }
 
         public void GenerateMethod(Method method)

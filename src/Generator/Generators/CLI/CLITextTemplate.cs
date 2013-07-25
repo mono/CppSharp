@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using CppSharp.AST;
 
 namespace CppSharp.Generators.CLI
@@ -38,6 +37,7 @@ namespace CppSharp.Generators.CLI
         public const int Usings = BlockKind.LAST + 10;
         public const int FunctionsClass = BlockKind.LAST + 11;
         public const int Function = BlockKind.LAST + 12;
+        public const int Property = BlockKind.LAST + 13;
     }
 
     /// <summary>
