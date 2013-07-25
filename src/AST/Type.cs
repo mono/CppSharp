@@ -137,9 +137,17 @@ namespace CppSharp.AST
     /// </summary>
     public struct QualifiedType
     {
-        public QualifiedType(Type type) : this()
+        public QualifiedType(Type type)
+            : this()
         {
             Type = type;
+        }
+
+        public QualifiedType(Type type, TypeQualifiers qualifiers)
+            : this()
+        {
+            Type = type;
+            Qualifiers = qualifiers;
         }
 
         public Type Type { get; set; }
