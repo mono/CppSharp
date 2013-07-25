@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using CppSharp.AST;
 
 namespace CppSharp.Passes
@@ -42,14 +43,14 @@ namespace CppSharp.Passes
             // Create a new fake method so it acts as an instance method.
             var method = new Method()
                 {
-                    Namespace = @class.Namespace,
+                    Namespace = @class,
                     Name = function.Name,
                     OriginalName = function.OriginalName,
                     Mangled = function.Mangled,
                     Access = AccessSpecifier.Public,
                     Kind = CXXMethodKind.Normal,
                     ReturnType = function.ReturnType,
-                    Parameters = function.Parameters,
+                    Parameters = function.Parameters.Skip(1).ToList(),
                     CallingConvention = function.CallingConvention,
                     IsVariadic = function.IsVariadic,
                     IsInline = function.IsInline,
