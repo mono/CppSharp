@@ -285,6 +285,15 @@ namespace CppSharp
             }
         }
 
+        public static void IgnoreClassField(this Library library, string name, string field)
+        {
+            foreach (var @class in library.FindClass(name))
+            {
+                foreach (var classField in @class.Fields.FindAll(f => f.Name == field))
+                    classField.ExplicityIgnored = true;
+            }
+        }
+
         #endregion
 
         #region Module Helpers
