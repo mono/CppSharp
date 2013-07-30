@@ -125,7 +125,7 @@ namespace CppSharp.Generators.CLI
 
             foreach (var method in @class.Methods)
             {
-                if (ASTUtils.CheckIgnoreMethod(@class, method))
+                if (ASTUtils.CheckIgnoreMethod(method))
                     continue;
 
                 GenerateDeclarationCommon(method);
@@ -522,7 +522,7 @@ namespace CppSharp.Generators.CLI
 
             foreach (var field in @class.Fields)
             {
-                if (ASTUtils.CheckIgnoreField(@class, field)) continue;
+                if (ASTUtils.CheckIgnoreField(field)) continue;
 
                 var nativeField = string.Format("{0}{1}",
                                                 nativeVar, field.OriginalName);
@@ -660,7 +660,7 @@ namespace CppSharp.Generators.CLI
 
             foreach (var field in @class.Fields)
             {
-                if (ASTUtils.CheckIgnoreField(@class, field)) continue;
+                if (ASTUtils.CheckIgnoreField(field)) continue;
 
                 var varName = string.Format("_native.{0}", field.OriginalName);
 
