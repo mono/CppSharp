@@ -248,8 +248,8 @@ namespace CppSharp.Generators.CLI
             PushIndent();
             WriteLine("property System::IntPtr Instance");
             WriteStartBraceIndent();
-            WriteLine("virtual System::IntPtr get() override;");
-            WriteLine("virtual void set(System::IntPtr instance) override;");
+            WriteLine("virtual System::IntPtr get();");
+            WriteLine("virtual void set(System::IntPtr instance);");
             WriteCloseBraceIndent();
             NewLine();
 
