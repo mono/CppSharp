@@ -13,7 +13,7 @@ namespace CppSharp.Passes
             if (@class.IsValueType)
                 return false;
 
-            if (ASTUtils.CheckIgnoreField(@class,field))
+            if (ASTUtils.CheckIgnoreField(field))
                 return false;
 
             var prop = new Property()

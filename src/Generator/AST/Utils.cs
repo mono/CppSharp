@@ -3,23 +3,24 @@ namespace CppSharp.AST
 {
     public static class ASTUtils
     {
-        public static bool CheckIgnoreFunction(Class @class, Function function)
+        public static bool CheckIgnoreFunction(Function function)
         {
             if (function.Ignore) return true;
 
             if (function is Method)
-                return CheckIgnoreMethod(@class, function as Method);
+                return CheckIgnoreMethod(function as Method);
 
             return false;
         }
 
-        public static bool CheckIgnoreMethod(Class @class, Method method)
+        public static bool CheckIgnoreMethod(Method method)
         {
             if (method.Ignore) return true;
 
             var isEmptyCtor = method.IsConstructor && method.Parameters.Count == 0;
 
-            if (@class.IsValueType && isEmptyCtor)
+            var @class = method.Namespace as Class;
+            if (@class != null && @class.IsValueType && isEmptyCtor)
                 return true;
 
             if (method.IsCopyConstructor || method.IsMoveConstructor)
@@ -40,14 +41,12 @@ namespace CppSharp.AST
             return false;
         }
 
-        public static bool CheckIgnoreField(Class @class, Field field)
+        public static bool CheckIgnoreField(Field field)
         {
-            if (field.Ignore) return true;
-
-            if (field.Access != AccessSpecifier.Public)
+            if (field.Access != AccessSpecifier.Public) 
                 return true;
 
-            return false;
+            return field.Ignore;
         }
     }
 }

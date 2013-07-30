@@ -72,7 +72,7 @@ namespace CppSharp.Passes
 
         public override bool VisitFieldDecl(Field decl)
         {
-            if (ASTUtils.CheckIgnoreField(null, decl))
+            if (ASTUtils.CheckIgnoreField(decl))
                 return false;
 
             if(!AlreadyVisited(decl))
@@ -89,7 +89,7 @@ namespace CppSharp.Passes
 
         public override bool VisitMethodDecl(Method decl)
         {
-            if (ASTUtils.CheckIgnoreMethod(null, decl))
+            if (ASTUtils.CheckIgnoreMethod(decl))
                 return false;
 
             if(!AlreadyVisited(decl))

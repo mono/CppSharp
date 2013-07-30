@@ -350,7 +350,7 @@ namespace CppSharp.Generators.CLI
             PushIndent();
             foreach (var field in @class.Fields)
             {
-                if (ASTUtils.CheckIgnoreField(@class, field)) continue;
+                if (ASTUtils.CheckIgnoreField(field)) continue;
 
                 GenerateDeclarationCommon(field);
                 if (@class.IsUnion)
@@ -405,7 +405,7 @@ namespace CppSharp.Generators.CLI
             var staticMethods = new List<Method>();
             foreach (var method in @class.Methods)
             {
-                if (ASTUtils.CheckIgnoreMethod(@class, method))
+                if (ASTUtils.CheckIgnoreMethod(method))
                     continue;
 
                 if (method.IsConstructor)
@@ -515,9 +515,8 @@ namespace CppSharp.Generators.CLI
 
         public void GenerateMethod(Method method)
         {
-            if (method.Ignore) return;
+            if (ASTUtils.CheckIgnoreMethod(method)) return;
 
-            if (method.Access != AccessSpecifier.Public)
             PushBlock(CLIBlockKind.Method, method);
 
             GenerateDeclarationCommon(method);
