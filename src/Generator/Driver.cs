@@ -125,6 +125,7 @@ namespace CppSharp
             Passes.CleanUnit(Options);
             Passes.SortDeclarations();
             Passes.ResolveIncompleteDecls();
+            Passes.CheckIgnoredDecls();
         }
 
         public void AddPostPasses()
