@@ -204,9 +204,6 @@ namespace CppSharp.Generators.CLI
 
             var function = template.TemplatedFunction;
 
-            var typeNames = template.Parameters.Select(
-                param => "typename " + param.Name).ToList();
-
             var typeCtx = new CLITypePrinterContext()
                 {
                     Kind = TypePrinterContextKind.Template,
@@ -217,12 +214,21 @@ namespace CppSharp.Generators.CLI
 
             var typePrinter = new CLITypePrinter(Driver, typeCtx);
             var retType = function.ReturnType.Type.Visit(typePrinter,
-                function.ReturnType.Qualifiers);
+                function.ReturnType.Qualifiers).Split('<')[0];
 
-            WriteLine("generic<{0}>", string.Join(", ", typeNames));
-            WriteLine("{0} {1}::{2}({3})", retType, QualifiedIdentifier(@class),
-                      SafeIdentifier(function.Name),
-                      GenerateParametersList(function.Parameters));
+            var typeNamesStr = "";
+            var paramNamesStr = "";
+            var paramNames = template.Parameters.Select(param => param.Name).ToList();
+            if (paramNames.Any())
+            {
+                typeNamesStr = "typename " + string.Join(", typename ", paramNames);
+                paramNamesStr = string.Join(", ", paramNames);
+            }
+
+            WriteLine("generic<{0}>", typeNamesStr);
+            WriteLine("{0}<{1}> {2}::{3}({4});", retType, paramNamesStr, 
+                QualifiedIdentifier(@class), SafeIdentifier(function.Name),
+                GenerateParametersList(function.Parameters));
 
             WriteStartBraceIndent();
 
