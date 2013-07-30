@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using CppSharp.AST;
 using CppSharp.Types;
+using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Generators.CLI
 {
