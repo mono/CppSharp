@@ -132,7 +132,7 @@ namespace CppSharp
             Passes.CleanInvalidDeclNames();
             Passes.CheckIgnoredDecls();
             Passes.CheckFlagEnums();
-            Passes.CheckAmbiguousOverloads();
+            Passes.CheckDuplicateNames();
             Generator.SetupPasses(Passes);
         }
 
