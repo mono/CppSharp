@@ -215,19 +215,15 @@ namespace CppSharp.Generators.CLI
 
             var typePrinter = new CLITypePrinter(Driver, typeCtx);
             var retType = function.ReturnType.Type.Visit(typePrinter,
-                function.ReturnType.Qualifiers).Split('<')[0];
+                function.ReturnType.Qualifiers);
 
             var typeNamesStr = "";
-            var paramNamesStr = "";
             var paramNames = template.Parameters.Select(param => param.Name).ToList();
             if (paramNames.Any())
-            {
                 typeNamesStr = "typename " + string.Join(", typename ", paramNames);
-                paramNamesStr = string.Join(", ", paramNames);
-            }
 
             WriteLine("generic<{0}>", typeNamesStr);
-            WriteLine("{0}<{1}> {2}::{3}({4});", retType, paramNamesStr, 
+            WriteLine("{0} {1}::{2}({3})", retType, 
                 QualifiedIdentifier(@class), SafeIdentifier(function.Name),
                 GenerateParametersList(function.Parameters));
 
