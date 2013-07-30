@@ -213,9 +213,7 @@ namespace CppSharp.Generators.CLI
 
             GenerateClassFields(@class);
 
-            // Generate a property for each field if class is not value type
-            if (@class.IsRefType)
-                GenerateClassProperties(@class);
+            GenerateClassProperties(@class);
 
             GenerateClassEvents(@class);
             GenerateClassMethods(@class);
