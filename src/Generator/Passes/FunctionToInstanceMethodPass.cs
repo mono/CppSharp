@@ -44,6 +44,7 @@ namespace CppSharp.Passes
             var method = new Method()
                 {
                     Namespace = @class,
+                    OriginalNamespace = function.Namespace,
                     Name = function.Name,
                     OriginalName = function.OriginalName,
                     Mangled = function.Mangled,
