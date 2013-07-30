@@ -476,38 +476,32 @@ namespace CppSharp.Generators.CLI
         public void GenerateClassProperties(Class @class)
         {
             PushIndent();
-            foreach (var field in @class.Fields)
-            {
-                if (ASTUtils.CheckIgnoreField(@class, field))
-                    continue;
-
-                GenerateDeclarationCommon(field);
-                GenerateProperty(field);
-            }
-            PopIndent();
-
-            PushIndent();
             foreach (var prop in @class.Properties)
             {
                 if (prop.Ignore) continue;
 
                 GenerateDeclarationCommon(prop);
-                GenerateProperty(prop);
+                var isGetter = prop.GetMethod != null || prop.Field != null;
+                var isSetter = prop.SetMethod != null || prop.Field != null;
+                GenerateProperty(prop, isGetter, isSetter);
             }
             PopIndent();
         }
 
-        public void GenerateProperty<T>(T decl)
+        public void GenerateProperty<T>(T decl, bool isGetter = true, bool isSetter = true)
             where T : Declaration, ITypedDecl
         {
+            if (!(isGetter || isSetter))
+                return;
+
             PushBlock(CLIBlockKind.Property, decl);
             var type = decl.Type.Visit(TypePrinter, decl.QualifiedType.Qualifiers);
 
             WriteLine("property {0} {1}", type, decl.Name);
             WriteStartBraceIndent();
 
-            WriteLine("{0} get();", type);
-            WriteLine("void set({0});", type);
+            if(isGetter) WriteLine("{0} get();", type);
+            if(isSetter) WriteLine("void set({0});", type);
 
             WriteCloseBraceIndent();
             PopBlock();
@@ -518,8 +512,6 @@ namespace CppSharp.Generators.CLI
             if (method.Ignore) return;
 
             if (method.Access != AccessSpecifier.Public)
-                return;
-
             PushBlock(CLIBlockKind.Method, method);
 
             GenerateDeclarationCommon(method);
