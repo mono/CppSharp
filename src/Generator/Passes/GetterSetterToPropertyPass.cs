@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Linq;
 using CppSharp.AST;
 
 namespace CppSharp.Passes
@@ -44,51 +46,97 @@ namespace CppSharp.Passes
             return !isRetVoid && isGetter && method.Parameters.Count == 0;
         }
 
+        Property GetOrCreateProperty(Class @class, string name, QualifiedType type)
+        {
+            var prop = @class.Properties.FirstOrDefault(property => property.Name == name
+                && property.QualifiedType.Equals(type));
+
+            var prop2 = @class.Properties.FirstOrDefault(property => property.Name == name);
+
+            if (prop == null && prop2 != null)
+                Driver.Diagnostics.EmitWarning(DiagnosticId.PropertySynthetized,
+                    "Property {0}::{1} already exist with type {2}", @class.Name, name, type.Type.ToString());
+
+            if (prop != null)
+                return prop;
+
+            prop = new Property
+            {
+                Name = name,
+                Namespace = @class,
+                QualifiedType = type
+            };
+
+            @class.Properties.Add(prop);
+            return prop;
+        }
+
         public override bool VisitMethodDecl(Method method)
         {
-            //var expansions = method.PreprocessedEntities.OfType<MacroExpansion>();
-            //if (expansions.Any(e => e.Text.Contains("ACCESSOR")))
-            //    System.Diagnostics.Debugger.Break();
+            if (AlreadyVisited(method))
+                return false;
 
-            if (!IsGetter(method))
+            if (ASTUtils.CheckIgnoreMethod(null, method))
                 return false;
 
             var @class = method.Namespace as Class;
-            foreach (var classMethod in @class.Methods)
+
+            if (@class == null || @class.IsIncomplete)
+                return false;
+
+            if (IsGetter(method))
             {
-                if (!IsSetter(classMethod))
-                    continue;
+                var name = method.Name.Substring("get".Length);
+                var prop = GetOrCreateProperty(@class, name, method.ReturnType);
+                prop.GetMethod = method;
 
-                if (classMethod.Parameters[0].Type.Equals(method.ReturnType.Type))
-                    continue;
-
-                var getName = method.Name.Substring("get".Length);
-                var setName = classMethod.Name.Substring("set".Length);
-
-                if (getName != setName)
-                    continue;
-
-                // We found a compatible pair of methods, create a property.
-                var prop = new Property
-                {
-                    Name = getName,
-                    Namespace = @class,
-                    QualifiedType = method.ReturnType
-                };
-
-                // Ignore the original methods now that we have a property.
-                method.ExplicityIgnored = true;
-                classMethod.ExplicityIgnored = true;
-
-                @class.Properties.Add(prop);
+                // Do not generate the original method now that we know it is a getter.
+                method.IsGenerated = false;
 
                 Driver.Diagnostics.EmitMessage(DiagnosticId.PropertySynthetized,
-                    "Getter/setter property created: {0}::{1}", @class.Name,
-                    getName);
-                return true;
+                    "Getter created: {0}::{1}", @class.Name, name);
+
+                return false;
+            }
+
+            if (IsSetter(method) && IsValidSetter(method))
+            {
+                var name = method.Name.Substring("set".Length);
+
+                var type = method.Parameters[0].QualifiedType;
+                var prop = GetOrCreateProperty(@class, name, type);
+                prop.SetMethod = method;
+
+                // Ignore the original method now that we know it is a setter.
+                method.IsGenerated = false;
+
+                Driver.Diagnostics.EmitMessage(DiagnosticId.PropertySynthetized,
+                    "Setter created: {0}::{1}", @class.Name, name);
+
+                return false;
             }
 
             return false;
+        }
+
+        // Check if a matching getter exist or no other setter exists.
+        private bool IsValidSetter(Method method)
+        {
+            var @class = method.Namespace as Class;
+            var name = method.Name.Substring("set".Length);
+
+            if (method.Parameters.Count == 0)
+                return false;
+
+            var type = method.Parameters[0].Type;
+
+            var getter = @class.Methods.FirstOrDefault(m => m.Name == "Get" + name && m.Type.Equals(type));
+
+            var otherSetter = @class.Methods.FirstOrDefault(m => m.Name == method.Name
+                && m.Parameters.Count == 1 
+                && !m.Parameters[0].Type.Equals(type));
+
+            return getter != null || otherSetter == null;
         }
     }
 }
