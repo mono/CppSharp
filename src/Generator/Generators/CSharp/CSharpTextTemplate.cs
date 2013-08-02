@@ -589,7 +589,7 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateClassField(Class @class, bool isInternal, Field field)
         {
-            if (ASTUtils.CheckIgnoreField(@class, field)) return;
+            if (ASTUtils.CheckIgnoreField(field)) return;
 
             PushBlock(CSharpBlockKind.Field);
 
