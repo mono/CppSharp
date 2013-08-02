@@ -18,6 +18,7 @@
 #include <clang/AST/RawCommentList.h>
 #include <clang/AST/Comment.h>
 #include <clang/AST/RecordLayout.h>
+#include <clang/AST/VTableBuilder.h>
 #include <clang/Lex/Preprocessor.h>
 #include <clang/Lex/PreprocessingRecord.h>
 #include <clang/Parse/ParseAST.h>
@@ -149,6 +150,9 @@ protected:
 	CppSharp::AST::RawComment^ WalkRawComment(const clang::RawComment*);
     CppSharp::AST::Type^ WalkType(clang::QualType, clang::TypeLoc* = 0,
       bool DesugarType = false);
+    void WalkVTable(clang::CXXRecordDecl*, CppSharp::AST::Class^);
+    CppSharp::AST::VTableLayout^ WalkVTableLayout(const clang::VTableLayout&);
+    CppSharp::AST::VTableComponent WalkVTableComponent(const clang::VTableComponent&);
 
     // Clang helpers
     SourceLocationKind GetLocationKind(const clang::SourceLocation& Loc);

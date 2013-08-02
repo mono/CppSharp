@@ -367,6 +367,133 @@ static CppSharp::AST::AccessSpecifier ConvertToAccess(clang::AccessSpecifier AS)
     return CppSharp::AST::AccessSpecifier::Public;
 }
 
+CppSharp::AST::VTableComponent
+Parser::WalkVTableComponent(const clang::VTableComponent& Component)
+{
+    using namespace clang;
+    CppSharp::AST::VTableComponent VTC;
+
+    switch(Component.getKind())
+    {
+    case VTableComponent::CK_VCallOffset:
+    {
+        VTC.Kind = CppSharp::AST::VTableComponentKind::VBaseOffset;
+        VTC.Offset = Component.getVCallOffset().getQuantity();
+        break;
+    }
+    case VTableComponent::CK_VBaseOffset:
+    {
+        VTC.Kind = CppSharp::AST::VTableComponentKind::VBaseOffset;
+        VTC.Offset = Component.getVBaseOffset().getQuantity();
+        break;
+    }
+    case VTableComponent::CK_OffsetToTop:
+    {
+        VTC.Kind = CppSharp::AST::VTableComponentKind::OffsetToTop;
+        VTC.Offset = Component.getOffsetToTop().getQuantity();
+        break;
+    }
+    case VTableComponent::CK_RTTI:
+    {
+        VTC.Kind = CppSharp::AST::VTableComponentKind::RTTI;
+        auto RD = const_cast<CXXRecordDecl*>(Component.getRTTIDecl());
+        VTC.Declaration = WalkRecordCXX(RD);
+        break;
+    }
+    case VTableComponent::CK_FunctionPointer:
+    {
+        VTC.Kind = CppSharp::AST::VTableComponentKind::FunctionPointer;
+        auto MD = const_cast<CXXMethodDecl*>(Component.getFunctionDecl());
+        VTC.Declaration = WalkMethodCXX(MD);
+        break;
+    }
+    case VTableComponent::CK_CompleteDtorPointer:
+    {
+        VTC.Kind = CppSharp::AST::VTableComponentKind::CompleteDtorPointer;
+        auto MD = const_cast<CXXDestructorDecl*>(Component.getDestructorDecl());
+        VTC.Declaration = WalkMethodCXX(MD);
+        break;
+    }
+    case VTableComponent::CK_DeletingDtorPointer:
+    {
+        VTC.Kind = CppSharp::AST::VTableComponentKind::DeletingDtorPointer;
+        auto MD = const_cast<CXXDestructorDecl*>(Component.getDestructorDecl());
+        VTC.Declaration = WalkMethodCXX(MD);
+        break;
+    }
+    case VTableComponent::CK_UnusedFunctionPointer:
+    {
+        VTC.Kind = CppSharp::AST::VTableComponentKind::UnusedFunctionPointer;
+        auto MD = const_cast<CXXMethodDecl*>(Component.getUnusedFunctionDecl());
+        VTC.Declaration = WalkMethodCXX(MD);
+        break;
+    }
+    default:
+        llvm_unreachable("Unknown vtable component kind");
+    }
+
+    return VTC;
+}
+
+CppSharp::AST::VTableLayout^
+Parser::WalkVTableLayout(const clang::VTableLayout& VTLayout)
+{
+    auto Layout = gcnew CppSharp::AST::VTableLayout();
+
+    for (auto I = VTLayout.vtable_component_begin(),
+              E = VTLayout.vtable_component_end(); I != E; ++I)
+    {
+        auto VTComponent = WalkVTableComponent(*I);
+        Layout->Components->Add(VTComponent);
+    }
+
+    return Layout;
+}
+
+
+void Parser::WalkVTable(clang::CXXRecordDecl* RD, CppSharp::AST::Class^ C)
+{
+    using namespace clang;
+    using namespace clix;
+
+    assert(RD->isDynamicClass() && "Only dynamic classes have virtual tables");
+
+    switch(TargetABI)
+    {
+    case TargetCXXABI::Microsoft:
+    {
+        MicrosoftVFTableContext VTContext(*AST);
+
+        auto VFPtrs = VTContext.getVFPtrOffsets(RD);
+        for (auto I = VFPtrs.begin(), E = VFPtrs.end(); I != E; ++I)
+        {
+            auto& VFPtrInfo = *I;
+
+            CppSharp::AST::VFTableInfo Info;
+            Info.VBTableIndex = VFPtrInfo.VBTableIndex;
+            Info.VFPtrOffset = VFPtrInfo.VFPtrOffset.getQuantity();
+            Info.VFPtrFullOffset = VFPtrInfo.VFPtrFullOffset.getQuantity();
+
+            auto& VTLayout = VTContext.getVFTableLayout(RD, VFPtrInfo.VFPtrOffset);
+            Info.Layout = WalkVTableLayout(VTLayout);
+
+            C->Layout->VFTables->Add(Info);
+            break;
+        }
+    }
+    case TargetCXXABI::GenericItanium:
+    {
+        VTableContext VTContext(*AST);
+
+        auto& VTLayout = VTContext.getVTableLayout(RD);
+        C->Layout->Layout = WalkVTableLayout(VTLayout);
+        break;
+    }
+    default:
+        llvm_unreachable("Unsupported C++ ABI kind");
+    }
+}
+
 CppSharp::AST::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
 {
     using namespace clang;
@@ -432,6 +559,10 @@ CppSharp::AST::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
         RC->Layout->Alignment = (int)Layout-> getAlignment().getQuantity();
         RC->Layout->Size = (int)Layout->getSize().getQuantity();
         RC->Layout->DataSize = (int)Layout->getDataSize().getQuantity();
+        RC->Layout->HasOwnVFPtr = Layout->hasOwnVFPtr();
+        RC->Layout->VBPtrOffset = Layout->getVBPtrOffset().getQuantity();
+        if (Record->isDynamicClass())
+            WalkVTable(Record, RC);
     }
 
     CppSharp::AST::AccessSpecifierDecl^ AccessDecl = nullptr;

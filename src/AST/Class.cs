@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace CppSharp.AST
@@ -55,33 +56,6 @@ namespace CppSharp.AST
         {
             
         }
-    }
-
-    // Represents a C++ virtual function table.
-    public class VFTable
-    {
-
-    }
-
-    // Represents a C++ virtual base table.
-    public class VBTable
-    {
-
-    }
-
-    // Represents ABI-specific layout details for a class.
-    public class ClassLayout
-    {
-        public CppAbi ABI { get; set; }
-        public VFTable VirtualFunctions { get; set; }
-        public VBTable VirtualBases { get; set; }
-
-        public bool HasOwnVFTable;
-        public bool HasVirtualBases;
-
-        public int Alignment;
-        public int Size;
-        public int DataSize;
     }
 
     public enum ClassType
