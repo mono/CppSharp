@@ -581,37 +581,42 @@ namespace CppSharp.Generators.CSharp
 
             foreach (var field in @class.Fields)
             {
-                if (ASTUtils.CheckIgnoreField(@class, field)) continue;
-
-                PushBlock(CSharpBlockKind.Field);
-
-                if (isInternal)
-                {
-                    WriteLine("[FieldOffset({0})]", field.OffsetInBytes);
-
-                    var result = field.Type.Visit(TypePrinter, field.QualifiedType.Qualifiers);
-
-                    Write("public {0} {1}", result.Type, SafeIdentifier(field.OriginalName));
-
-                    if (!string.IsNullOrWhiteSpace(result.NameSuffix))
-                        Write(result.NameSuffix);
-
-                    WriteLine(";");
-                }
-                else if (@class.IsRefType)
-                {
-                    GenerateFieldProperty(field);
-                }
-                else
-                {
-                    GenerateDeclarationCommon(field);
-                    if (@class.IsUnion)
-                        WriteLine("[FieldOffset({0})]", field.Offset);
-                    WriteLine("public {0} {1};", field.Type, SafeIdentifier(field.Name));
-                }
-
-                PopBlock(NewLineKind.BeforeNextBlock);
+                GenerateClassField(@class, isInternal, field);
             }
+        }
+
+        private void GenerateClassField(Class @class, bool isInternal, Field field)
+        {
+            if (ASTUtils.CheckIgnoreField(@class, field)) return;
+
+            PushBlock(CSharpBlockKind.Field);
+
+            if (isInternal)
+            {
+                WriteLine("[FieldOffset({0})]", field.OffsetInBytes);
+
+                var result = field.Type.Visit(TypePrinter, field.QualifiedType.Qualifiers);
+
+                Write("public {0} {1}", result.Type, SafeIdentifier(field.OriginalName));
+
+                if (!string.IsNullOrWhiteSpace(result.NameSuffix))
+                    Write(result.NameSuffix);
+
+                WriteLine(";");
+            }
+            else if (@class.IsRefType)
+            {
+                GenerateFieldProperty(field);
+            }
+            else
+            {
+                GenerateDeclarationCommon(field);
+                if (@class.IsUnion)
+                    WriteLine("[FieldOffset({0})]", field.Offset);
+                WriteLine("public {0} {1};", field.Type, SafeIdentifier(field.Name));
+            }
+
+            PopBlock(NewLineKind.BeforeNextBlock);
         }
 
         #endregion
