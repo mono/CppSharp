@@ -333,7 +333,7 @@ std::string Parser::GetTypeName(const clang::Type* Type)
     return TypeName;
 }
 
-CppSharp::AST::TypeQualifiers GetTypeQualifiers(clang::QualType Type)
+static CppSharp::AST::TypeQualifiers GetTypeQualifiers(clang::QualType Type)
 {
     CppSharp::AST::TypeQualifiers quals;
     quals.IsConst = Type.isLocalConstQualified();
@@ -342,7 +342,8 @@ CppSharp::AST::TypeQualifiers GetTypeQualifiers(clang::QualType Type)
     return quals;
 }
 
-CppSharp::AST::QualifiedType GetQualifiedType(clang::QualType qual, CppSharp::AST::Type^ type)
+static CppSharp::AST::QualifiedType
+GetQualifiedType(clang::QualType qual, CppSharp::AST::Type^ type)
 {
     CppSharp::AST::QualifiedType qualType;
     qualType.Type = type;
