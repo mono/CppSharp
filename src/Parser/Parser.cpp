@@ -507,28 +507,28 @@ CppSharp::AST::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
 
     bool isCompleteDefinition = Record->isCompleteDefinition();
 
-	CppSharp::AST::Class^ RC = nullptr;
+    CppSharp::AST::Class^ RC = nullptr;
 
-	auto Name = marshalString<E_UTF8>(GetTagDeclName(Record));
-	auto HasEmptyName = Record->getDeclName().isEmpty();
+    auto Name = marshalString<E_UTF8>(GetTagDeclName(Record));
+    auto HasEmptyName = Record->getDeclName().isEmpty();
 
-	if (HasEmptyName)
-	{
-		if (auto AR = NS->FindAnonymous((uint64_t)Record))
-			RC = safe_cast<CppSharp::AST::Class^>(AR);
-	}
-	else
-	{
-		RC = NS->FindClass(Name, isCompleteDefinition, /*Create=*/false);
-	}
+    if (HasEmptyName)
+    {
+        if (auto AR = NS->FindAnonymous((uint64_t)Record))
+            RC = safe_cast<CppSharp::AST::Class^>(AR);
+    }
+    else
+    {
+        RC = NS->FindClass(Name, isCompleteDefinition, /*Create=*/false);
+    }
 
     if (RC)
         return RC;
 
     RC = NS->FindClass(Name, isCompleteDefinition, /*Create=*/true);
 
-	if (HasEmptyName)
-		NS->Anonymous[(uint64_t)Record] = RC;
+    if (HasEmptyName)
+        NS->Anonymous[(uint64_t)Record] = RC;
 
     if (!isCompleteDefinition)
         return RC;
