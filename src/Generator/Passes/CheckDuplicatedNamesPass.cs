@@ -105,7 +105,8 @@ namespace CppSharp.Passes
             if (AlreadyVisited(@class) || @class.IsIncomplete)
                 return false;
 
-            // In order to DeclarationName works, we visit methods first.
+            // DeclarationName should always process methods first, 
+            // so we visit methods first.
             foreach (var method in @class.Methods)
                 VisitMethodDecl(method);
 
