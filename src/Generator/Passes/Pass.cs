@@ -1,5 +1,6 @@
 ﻿
 using CppSharp.AST;
+using CppSharp.Generators;
 
 namespace CppSharp.Passes
 {
@@ -14,6 +15,7 @@ namespace CppSharp.Passes
 
         public virtual bool VisitLibrary(Library library)
         {
+            Library = library;
             foreach (var unit in library.TranslationUnits)
                 VisitTranslationUnit(unit);
 
@@ -42,6 +44,19 @@ namespace CppSharp.Passes
         {
             var type = this.GetType();
             return decl.ExcludeFromPasses.Contains(type);
+        }
+    }
+
+    /// <summary>
+    /// Used to modify generated output.
+    /// </summary>
+    public abstract class GeneratorOutputPass
+    {
+        public Driver Driver { get; set; }
+
+        public virtual void VisitGeneratorOutput(GeneratorOutput output)
+        {
+            
         }
     }
 }

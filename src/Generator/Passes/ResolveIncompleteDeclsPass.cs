@@ -31,13 +31,4 @@ namespace CppSharp.Passes
             return base.VisitClassDecl(@class);
         }
     }
-
-    public static class ResolveIncompleteDeclsExtensions
-    {
-        public static void ResolveIncompleteDecls(this PassBuilder builder)
-        {
-            var pass = new ResolveIncompleteDeclsPass();
-            builder.AddPass(pass);
-        }
-    }
 }

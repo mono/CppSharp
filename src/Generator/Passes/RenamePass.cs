@@ -242,33 +242,33 @@ namespace CppSharp.Passes
 
     public static class RenamePassExtensions
     {
-        public static void RenameWithPattern(this PassBuilder builder,
+        public static void RenameWithPattern(this PassBuilder<TranslationUnitPass> builder,
             string pattern, string replacement, RenameTargets targets)
         {
             builder.AddPass(new RegexRenamePass(pattern, replacement, targets));
         }
 
-        public static void RemovePrefix(this PassBuilder builder, string prefix,
+        public static void RemovePrefix(this PassBuilder<TranslationUnitPass> builder, string prefix,
             RenameTargets targets = RenameTargets.Any)
         {
             builder.AddPass(new RegexRenamePass("^" + prefix, string.Empty,
                 targets));
         }
 
-        public static void RenameDeclsCase(this PassBuilder builder, 
+        public static void RenameDeclsCase(this PassBuilder<TranslationUnitPass> builder, 
             RenameTargets targets, RenameCasePattern pattern)
         {
             builder.AddPass(new CaseRenamePass(targets, pattern));
         }
 
-        public static void RenameDeclsUpperCase(this PassBuilder builder,
+        public static void RenameDeclsUpperCase(this PassBuilder<TranslationUnitPass> builder,
             RenameTargets targets)
         {
             builder.AddPass(new CaseRenamePass(targets,
                 RenameCasePattern.UpperCamelCase));
         }
 
-        public static void RenameDeclsLowerCase(this PassBuilder builder,
+        public static void RenameDeclsLowerCase(this PassBuilder<TranslationUnitPass> builder,
             RenameTargets targets)
         {
             builder.AddPass(new CaseRenamePass(targets,

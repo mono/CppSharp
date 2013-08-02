@@ -19,16 +19,21 @@ namespace CppSharp
                     if (!method.IsSynthetized)
                         continue;
 
+                    var @class = (Class) method.Namespace;
+
                     switch (method.Name)
                     {
                     case "GetHashCode":
                         block.Write("return (int)NativePtr;");
                         break;
                     case "Equals":
-
+                        var cliTypePrinter = new CLITypePrinter(Driver);
+                        var classCliType = @class.Visit(cliTypePrinter);
                         block.WriteLine("if (!object) return false;");
-                        block.Write("return Instance == safe_cast<ICppInstance^>({0})->Instance;",
-                                    method.Parameters[0].Name);
+                        block.WriteLine("auto obj = dynamic_cast<{0}>({1});",
+                            classCliType, method.Parameters[0].Name);
+                        block.WriteLine("if (!obj) return false;");
+                        block.Write("return Instance == obj->Instance;");
                         break;
                     }
                 }

@@ -31,8 +31,7 @@ namespace CppSharp
         /// Setup your passes here.
         /// </summary>
         /// <param name="driver"></param>
-        /// <param name="passes"></param>
-        void SetupPasses(Driver driver, PassBuilder passes);
+        void SetupPasses(Driver driver);
     }
 
     public static class LibraryHelpers

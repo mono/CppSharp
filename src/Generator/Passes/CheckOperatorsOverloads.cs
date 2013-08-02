@@ -198,13 +198,4 @@ namespace CppSharp.Passes
             }
         }
     }
-
-    public static class CheckOperatorsOverloadsExtensions
-    {
-        public static void CheckOperatorOverloads(this PassBuilder builder)
-        {
-            var pass = new CheckOperatorsOverloadsPass();
-            builder.AddPass(pass);
-        }
-    }
 }

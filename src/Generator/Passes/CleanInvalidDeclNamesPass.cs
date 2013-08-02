@@ -93,14 +93,5 @@ namespace CppSharp.Passes
             return base.VisitEnumItem(item);
         }
     }
-
-    public static class CleanInvalidDeclNamesExtensions
-    {
-        public static void CleanInvalidDeclNames(this PassBuilder builder)
-        {
-            var pass = new CleanInvalidDeclNamesPass();
-            builder.AddPass(pass);
-        }
-    }
 }
 

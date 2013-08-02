@@ -30,7 +30,8 @@ namespace CppSharp
         public IDiagnosticConsumer Diagnostics { get; private set; }
         public Parser Parser { get; private set; }
         public TypeMapDatabase TypeDatabase { get; private set; }
-        public PassBuilder Passes { get; private set; }
+        public PassBuilder<TranslationUnitPass> TranslationUnitPasses { get; private set; }
+        public PassBuilder<GeneratorOutputPass> GeneratorOutputPasses { get; private set; }
         public Generator Generator { get; private set; }
 
         public Library Library { get; private set; }
@@ -44,7 +45,8 @@ namespace CppSharp
             Parser.OnHeaderParsed += OnFileParsed;
             Parser.OnLibraryParsed += OnFileParsed;
             TypeDatabase = new TypeMapDatabase();
-            Passes = new PassBuilder(this);
+            TranslationUnitPasses = new PassBuilder<TranslationUnitPass>(this);
+            GeneratorOutputPasses = new PassBuilder<GeneratorOutputPass>(this);
         }
 
         static void ValidateOptions(DriverOptions options)
@@ -120,27 +122,28 @@ namespace CppSharp
             return true;
         }
 
-        public void AddPrePasses()
-        {
-            Passes.CleanUnit(Options);
-            Passes.SortDeclarations();
-            Passes.ResolveIncompleteDecls();
-            Passes.CheckIgnoredDecls();
-        }
+        public void SetupPasses(ILibrary library)
+        { 
+            TranslationUnitPasses.AddPass(new CleanUnitPass(Options));
+            TranslationUnitPasses.AddPass(new SortDeclarationsPass());
+            TranslationUnitPasses.AddPass(new ResolveIncompleteDeclsPass());
+            TranslationUnitPasses.AddPass(new CheckIgnoredDeclsPass());
 
-        public void AddPostPasses()
-        {
-            Passes.CleanInvalidDeclNames();
-            Passes.CheckIgnoredDecls();
-            Passes.CheckFlagEnums();
-            Passes.CheckDuplicateNames();
-            Generator.SetupPasses(Passes);
+            library.SetupPasses(this);
+
+            TranslationUnitPasses.AddPass(new CleanInvalidDeclNamesPass());
+            TranslationUnitPasses.AddPass(new CheckIgnoredDeclsPass());
+            TranslationUnitPasses.AddPass(new CheckFlagEnumsPass());
+            TranslationUnitPasses.AddPass(new CheckDuplicatedNamesPass());
         }
 
         public void ProcessCode()
         {
-            foreach (var pass in Passes.Passes)
+            foreach (var pass in TranslationUnitPasses.Passes)
+            {
+                pass.Driver = this;
                 pass.VisitLibrary(Library);
+            }
 
             Generator.Process();
         }
@@ -173,6 +176,16 @@ namespace CppSharp
                     File.WriteAllText(Path.GetFullPath(filePath), template.Generate());
                 }
             }
+        }
+
+        public void AddTranslationUnitPass(TranslationUnitPass pass)
+        {
+            TranslationUnitPasses.AddPass(pass);
+        }
+
+        public void AddGeneratorOutputPass(GeneratorOutputPass pass)
+        {
+            GeneratorOutputPasses.AddPass(pass);
         }
     }
 
@@ -273,15 +286,23 @@ namespace CppSharp
             Console.WriteLine("Processing code...");
             library.Preprocess(driver, driver.Library);
 
-            driver.AddPrePasses();
-            library.SetupPasses(driver, driver.Passes);
-            driver.AddPostPasses();
+            driver.SetupPasses(library);
 
             driver.ProcessCode();
             library.Postprocess(driver.Library);
 
             Console.WriteLine("Generating code...");
             var outputs = driver.GenerateCode();
+
+            foreach (var output in outputs)
+            {
+                foreach (var pass in driver.GeneratorOutputPasses.Passes)
+                {
+                    pass.Driver = driver;
+                    pass.VisitGeneratorOutput(output);
+                }
+            }
+
             driver.WriteCode(outputs);
         }
     }
