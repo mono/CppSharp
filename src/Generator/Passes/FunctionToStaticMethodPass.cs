@@ -33,7 +33,8 @@ namespace CppSharp.Passes
             // Create a new fake method so it acts as a static method.
             var method = new Method()
             {
-                Namespace = @class.Namespace,
+                Namespace = @class,
+                OriginalNamespace = function.Namespace,
                 Name = name,
                 OriginalName = function.OriginalName,
                 Mangled = function.Mangled,
