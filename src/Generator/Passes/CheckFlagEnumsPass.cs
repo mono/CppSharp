@@ -43,13 +43,4 @@ namespace CppSharp.Passes
             return base.VisitEnumDecl(@enum);
         }
     }
-
-    public static class CheckFlagEnumsExtensions
-    {
-        public static void CheckFlagEnums(this PassBuilder builder)
-        {
-            var pass = new CheckFlagEnumsPass();
-            builder.AddPass(pass);
-        }
-    }
 }

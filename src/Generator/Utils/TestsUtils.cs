@@ -42,7 +42,7 @@ namespace CppSharp.Utils
         {
         }
 
-        public virtual void SetupPasses(Driver driver, PassBuilder passes)
+        public virtual void SetupPasses(Driver driver)
         {
         }
     }

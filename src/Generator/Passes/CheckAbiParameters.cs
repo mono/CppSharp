@@ -49,14 +49,4 @@ namespace CppSharp.Passes
             return needsMSHiddenPtr || options.IsItaniumAbi;
         }
     }
-
-    public static class CheckAbiParametersExtensions
-    {
-        public static void CheckAbiParameters(this PassBuilder builder,
-            DriverOptions options)
-        {
-            var pass = new CheckAbiParameters(options);
-            builder.AddPass(pass);
-        }
-    }
 }

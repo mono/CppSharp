@@ -8,34 +8,23 @@ namespace CppSharp
     /// This class is used to build passes that will be run against the AST
     /// that comes from C++.
     /// </summary>
-    public class PassBuilder
+    public class PassBuilder<T>
     {
-        public List<TranslationUnitPass> Passes { get; private set; }
+        public List<T> Passes { get; private set; }
         public Driver Driver { get; private set; }
 
         public PassBuilder(Driver driver)
         {
-            Passes = new List<TranslationUnitPass>();
+            Passes = new List<T>();
             Driver = driver;
         }
 
         /// <summary>
         /// Adds a new pass to the builder.
         /// </summary>
-        public void AddPass(TranslationUnitPass pass)
+        public void AddPass(T pass)
         {
-            pass.Driver = Driver;
-            pass.Library = Driver.Library;
             Passes.Add(pass);
-        }
-
-        /// <summary>
-        /// Runs the passes in the builder.
-        /// </summary>
-        public void RunPasses()
-        {
-            foreach (var pass in Passes)
-                pass.VisitLibrary(Driver.Library);
         }
 
         /// <summary>

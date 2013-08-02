@@ -137,13 +137,4 @@ namespace CppSharp.Passes
                 Driver.Diagnostics.EmitWarning("Duplicate name {0}, renamed to {1}", fullName, decl.Name);
         }
     }
-
-    public static class CheckDuplicateNamesExtensions
-    {
-        public static void CheckDuplicateNames(this PassBuilder builder)
-        {
-            var pass = new CheckDuplicatedNamesPass();
-            builder.AddPass(pass);
-        }
-    }
 }

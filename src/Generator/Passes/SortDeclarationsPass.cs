@@ -25,13 +25,4 @@ namespace CppSharp.Passes
             return true;
         }
     }
-
-    public static class SortDeclarationsExtensions
-    {
-        public static void SortDeclarations(this PassBuilder builder)
-        {
-            var pass = new SortDeclarationsPass();
-            builder.AddPass(pass);
-        }
-    }
 }

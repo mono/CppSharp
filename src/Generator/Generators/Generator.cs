@@ -49,7 +49,7 @@ namespace CppSharp.Generators
         /// <summary>
         /// Setup any generator-specific passes here.
         /// </summary>
-        public abstract bool SetupPasses(PassBuilder builder);
+        public abstract bool SetupPasses();
 
         /// <summary>
         /// Setup any generator-specific processing here.

@@ -14,13 +14,13 @@ namespace CppSharp
             options.OutputDir = "SDL";
         }
 
-        public void SetupPasses(Driver driver, PassBuilder passes)
+        public void SetupPasses(Driver driver)
         {
-            passes.RemovePrefix("SDL_");
-            passes.RemovePrefix("SCANCODE_");
-            passes.RemovePrefix("SDLK_");
-            passes.RemovePrefix("KMOD_");
-            passes.RemovePrefix("LOG_CATEGORY_");
+            driver.TranslationUnitPasses.RemovePrefix("SDL_");
+            driver.TranslationUnitPasses.RemovePrefix("SCANCODE_");
+            driver.TranslationUnitPasses.RemovePrefix("SDLK_");
+            driver.TranslationUnitPasses.RemovePrefix("KMOD_");
+            driver.TranslationUnitPasses.RemovePrefix("LOG_CATEGORY_");
         }
 
         public void Preprocess(Driver driver, Library lib)

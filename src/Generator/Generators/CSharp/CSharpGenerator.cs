@@ -26,10 +26,10 @@ namespace CppSharp.Generators.CSharp
             return outputs;
         }
 
-        public override bool SetupPasses(PassBuilder builder)
+        public override bool SetupPasses()
         {
-            builder.CheckAbiParameters(Driver.Options);
-            builder.CheckOperatorOverloads();
+            Driver.AddTranslationUnitPass(new CheckAbiParameters(Driver.Options));
+            Driver.AddTranslationUnitPass(new CheckOperatorsOverloadsPass());
 
             return true;
         }
