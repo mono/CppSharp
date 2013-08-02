@@ -77,6 +77,7 @@ namespace CppSharp.Passes
 
             if(!AlreadyVisited(decl))
                 CheckDuplicate(decl);
+
             return false;
         }
 
@@ -84,6 +85,7 @@ namespace CppSharp.Passes
         {
             if(!AlreadyVisited(decl))
                 CheckDuplicate(decl);
+
             return false;
         }
 
@@ -94,6 +96,7 @@ namespace CppSharp.Passes
 
             if(!AlreadyVisited(decl))
                 CheckDuplicate(decl);
+
             return false;
         }
 
