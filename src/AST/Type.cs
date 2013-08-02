@@ -171,6 +171,11 @@ namespace CppSharp.AST
             var type = (QualifiedType) obj;
             return Type.Equals(type.Type) && Qualifiers.Equals(type.Qualifiers);
         }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 
     /// <summary>
@@ -200,6 +205,11 @@ namespace CppSharp.AST
             if (type == null) return false;
 
             return Declaration.Equals(type.Declaration);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 
@@ -245,6 +255,11 @@ namespace CppSharp.AST
 
             return equals;
         }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 
     /// <summary>
@@ -274,6 +289,11 @@ namespace CppSharp.AST
             if (type == null) return false;
 
             return ReturnType.Equals(type.ReturnType) && Parameters.SequenceEqual(type.Parameters);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 
@@ -327,6 +347,11 @@ namespace CppSharp.AST
             return QualifiedPointee.Equals(type.QualifiedPointee)
                 && Modifier == type.Modifier;
         }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 
     /// <summary>
@@ -352,6 +377,11 @@ namespace CppSharp.AST
             if (pointer == null) return false;
 
             return Pointee.Equals(pointer.Pointee);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 
@@ -380,6 +410,11 @@ namespace CppSharp.AST
             var t = Declaration.Equals(typedef.Declaration);
             return t;
         }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 
     /// <summary>
@@ -407,6 +442,11 @@ namespace CppSharp.AST
             if (decay == null) return false;
 
             return Original.Equals(decay.Original);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 
@@ -475,6 +515,11 @@ namespace CppSharp.AST
                 throw new Exception("Unknowed TemplateArgument Kind");
             }
         }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 
     /// <summary>
@@ -507,6 +552,11 @@ namespace CppSharp.AST
             return Arguments.SequenceEqual(type.Arguments)
                 && Template.Equals(type.Template);
         }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 
     /// <summary>
@@ -529,6 +579,11 @@ namespace CppSharp.AST
 
             return Parameter.Equals(type.Parameter);
         }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 
     /// <summary>
@@ -550,6 +605,11 @@ namespace CppSharp.AST
             if (type == null) return false;
 
             return Replacement.Equals(type.Replacement);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 
@@ -575,6 +635,11 @@ namespace CppSharp.AST
 
             return TemplateSpecialization.Equals(type.TemplateSpecialization)
                 && Class.Equals(type.Class);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 
@@ -614,6 +679,11 @@ namespace CppSharp.AST
             if (type == null) return false;
 
             return Type == type.Type;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 
@@ -689,6 +759,11 @@ namespace CppSharp.AST
             if (type == null) return false;
 
             return Type == type.Type;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 
