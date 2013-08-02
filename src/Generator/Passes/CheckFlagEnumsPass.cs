@@ -3,7 +3,7 @@ using CppSharp.AST;
 
 namespace CppSharp.Passes
 {
-    class CheckFlagEnumsPass : TranslationUnitPass
+    public class CheckFlagEnumsPass : TranslationUnitPass
     {
         static bool IsFlagEnum(Enumeration @enum)
         {
