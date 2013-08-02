@@ -367,19 +367,30 @@ namespace CppSharp.Generators.CSharp
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
-        private static HashSet<Function> GatherClassInternalFunctions(Class @class)
+        private static ISet<Function> GatherClassInternalFunctions(Class @class)
         {
             var functions = new HashSet<Function>();
+
+            Action<Method> tryAddOverload = method =>
+            {
+                if (method.IsSynthetized)
+                    return;
+
+                if (method.IsPure)
+                    return;
+
+                if (method.IsProxy)
+                    return;
+
+                functions.Add(method);
+            };
 
             foreach (var ctor in @class.Constructors)
             {
                 if (ctor.IsCopyConstructor || ctor.IsMoveConstructor)
                     continue;
 
-                if (ctor.IsPure)
-                    continue;
-
-                functions.Add(ctor);
+                tryAddOverload(ctor);
             }
 
             foreach (var method in @class.Methods)
@@ -390,23 +401,18 @@ namespace CppSharp.Generators.CSharp
                 if (method.IsConstructor)
                     continue;
 
-                if (method.IsSynthetized)
-                    continue;
-
-                if (method.IsPure)
-                    continue;
-
-                functions.Add(method);
+                tryAddOverload(method);
             }
 
             foreach (var prop in @class.Properties)
             {
                 if (prop.GetMethod != null)
-                    functions.Add(prop.GetMethod);
+                    tryAddOverload(prop.GetMethod);
 
                 if (prop.SetMethod != null)
-                    functions.Add(prop.SetMethod);
+                    tryAddOverload(prop.SetMethod);
             }
+
             return functions;
         }
 
