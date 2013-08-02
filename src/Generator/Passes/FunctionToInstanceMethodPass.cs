@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using CppSharp.AST;
+using CppSharp.Generators;
 
 namespace CppSharp.Passes
 {
@@ -44,18 +45,22 @@ namespace CppSharp.Passes
             var method = new Method()
                 {
                     Namespace = @class,
+                    OriginalNamespace = function.Namespace,
                     Name = function.Name,
                     OriginalName = function.OriginalName,
                     Mangled = function.Mangled,
                     Access = AccessSpecifier.Public,
                     Kind = CXXMethodKind.Normal,
                     ReturnType = function.ReturnType,
-                    Parameters = function.Parameters.Skip(1).ToList(),
+                    Parameters = function.Parameters,
                     CallingConvention = function.CallingConvention,
                     IsVariadic = function.IsVariadic,
                     IsInline = function.IsInline,
                     Conversion = MethodConversionKind.FunctionToInstanceMethod
                 };
+
+            if (Driver.Options.GeneratorKind == LanguageGeneratorKind.CSharp)
+                method.Parameters = method.Parameters.Skip(1).ToList();
 
             @class.Methods.Add(method);
 

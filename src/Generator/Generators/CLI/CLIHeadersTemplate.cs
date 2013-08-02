@@ -213,9 +213,7 @@ namespace CppSharp.Generators.CLI
 
             GenerateClassFields(@class);
 
-            // Generate a property for each field if class is not value type
-            if (@class.IsRefType)
-                GenerateClassProperties(@class);
+            GenerateClassProperties(@class);
 
             GenerateClassEvents(@class);
             GenerateClassMethods(@class);
@@ -250,8 +248,8 @@ namespace CppSharp.Generators.CLI
             PushIndent();
             WriteLine("property System::IntPtr Instance");
             WriteStartBraceIndent();
-            WriteLine("virtual System::IntPtr get() override;");
-            WriteLine("virtual void set(System::IntPtr instance) override;");
+            WriteLine("virtual System::IntPtr get();");
+            WriteLine("virtual void set(System::IntPtr instance);");
             WriteCloseBraceIndent();
             NewLine();
 
@@ -273,9 +271,6 @@ namespace CppSharp.Generators.CLI
 
                 var function = functionTemplate.TemplatedFunction;
 
-                var typeNames = template.Parameters.Select(
-                    param => "typename " + param.Name).ToList();
-
                 var typeCtx = new CLITypePrinterContext()
                     {
                         Kind = TypePrinterContextKind.Template,
@@ -288,7 +283,12 @@ namespace CppSharp.Generators.CLI
                 var retType = function.ReturnType.Type.Visit(typePrinter,
                     function.ReturnType.Qualifiers);
 
-                WriteLine("generic<{0}>", string.Join(", ", typeNames));
+                var typeNamesStr = "";
+                var paramNames = template.Parameters.Select(param => param.Name).ToList();
+                if (paramNames.Any())
+                    typeNamesStr = "typename " + string.Join(", typename ", paramNames);
+
+                WriteLine("generic<{0}>", typeNamesStr);
                 WriteLine("{0} {1}({2});", retType, SafeIdentifier(function.Name),
                     GenerateParametersList(function.Parameters));
             }
@@ -346,7 +346,7 @@ namespace CppSharp.Generators.CLI
             PushIndent();
             foreach (var field in @class.Fields)
             {
-                if (ASTUtils.CheckIgnoreField(@class, field)) continue;
+                if (ASTUtils.CheckIgnoreField(field)) continue;
 
                 GenerateDeclarationCommon(field);
                 if (@class.IsUnion)
@@ -401,7 +401,7 @@ namespace CppSharp.Generators.CLI
             var staticMethods = new List<Method>();
             foreach (var method in @class.Methods)
             {
-                if (ASTUtils.CheckIgnoreMethod(@class, method))
+                if (ASTUtils.CheckIgnoreMethod(method))
                     continue;
 
                 if (method.IsConstructor)
@@ -478,38 +478,32 @@ namespace CppSharp.Generators.CLI
         public void GenerateClassProperties(Class @class)
         {
             PushIndent();
-            foreach (var field in @class.Fields)
-            {
-                if (ASTUtils.CheckIgnoreField(@class, field))
-                    continue;
-
-                GenerateDeclarationCommon(field);
-                GenerateProperty(field);
-            }
-            PopIndent();
-
-            PushIndent();
             foreach (var prop in @class.Properties)
             {
                 if (prop.Ignore) continue;
 
                 GenerateDeclarationCommon(prop);
-                GenerateProperty(prop);
+                var isGetter = prop.GetMethod != null || prop.Field != null;
+                var isSetter = prop.SetMethod != null || prop.Field != null;
+                GenerateProperty(prop, isGetter, isSetter);
             }
             PopIndent();
         }
 
-        public void GenerateProperty<T>(T decl)
+        public void GenerateProperty<T>(T decl, bool isGetter = true, bool isSetter = true)
             where T : Declaration, ITypedDecl
         {
+            if (!(isGetter || isSetter))
+                return;
+
             PushBlock(CLIBlockKind.Property, decl);
             var type = decl.Type.Visit(TypePrinter, decl.QualifiedType.Qualifiers);
 
             WriteLine("property {0} {1}", type, decl.Name);
             WriteStartBraceIndent();
 
-            WriteLine("{0} get();", type);
-            WriteLine("void set({0});", type);
+            if(isGetter) WriteLine("{0} get();", type);
+            if(isSetter) WriteLine("void set({0});", type);
 
             WriteCloseBraceIndent();
             PopBlock();
@@ -517,10 +511,7 @@ namespace CppSharp.Generators.CLI
 
         public void GenerateMethod(Method method)
         {
-            if (method.Ignore) return;
-
-            if (method.Access != AccessSpecifier.Public)
-                return;
+            if (ASTUtils.CheckIgnoreMethod(method)) return;
 
             PushBlock(CLIBlockKind.Method, method);
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CppSharp.AST
 {
@@ -162,6 +163,14 @@ namespace CppSharp.AST
         {
             return Type.ToString();
         }
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is QualifiedType)) return false;
+
+            var type = (QualifiedType) obj;
+            return Type.Equals(type.Type) && Qualifiers.Equals(type.Qualifiers);
+        }
     }
 
     /// <summary>
@@ -183,6 +192,14 @@ namespace CppSharp.AST
         public override T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals)
         {
             return visitor.VisitTagType(this, quals);
+        }
+
+        public override bool Equals(object obj)
+        {
+            var type = obj as TagType;
+            if (type == null) return false;
+
+            return Declaration.Equals(type.Declaration);
         }
     }
 
@@ -216,6 +233,18 @@ namespace CppSharp.AST
         {
             return visitor.VisitArrayType(this, quals);
         }
+
+        public override bool Equals(object obj)
+        {
+            var type = obj as ArrayType;
+            if (type == null) return false;
+            var equals = Type.Equals(type.Type) && SizeType.Equals(type.SizeType);
+
+            if (SizeType == ArraySize.Constant)
+                equals &= Size.Equals(type.Size);
+
+            return equals;
+        }
     }
 
     /// <summary>
@@ -237,6 +266,14 @@ namespace CppSharp.AST
         public override T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals)
         {
             return visitor.VisitFunctionType(this, quals);
+        }
+
+        public override bool Equals(object obj)
+        {
+            var type = obj as FunctionType;
+            if (type == null) return false;
+
+            return ReturnType.Equals(type.ReturnType) && Parameters.SequenceEqual(type.Parameters);
         }
     }
 
@@ -281,6 +318,15 @@ namespace CppSharp.AST
         {
             return visitor.VisitPointerType(this, QualifiedPointee.Qualifiers);
         }
+
+        public override bool Equals(object obj)
+        {
+            var type = obj as PointerType;
+            if (type == null) return false;
+
+            return QualifiedPointee.Equals(type.QualifiedPointee)
+                && Modifier == type.Modifier;
+        }
     }
 
     /// <summary>
@@ -299,6 +345,14 @@ namespace CppSharp.AST
         {
             return visitor.VisitMemberPointerType(this, quals);
         }
+
+        public override bool Equals(object obj)
+        {
+            var pointer = obj as MemberPointerType;
+            if (pointer == null) return false;
+
+            return Pointee.Equals(pointer.Pointee);
+        }
     }
 
     /// <summary>
@@ -316,6 +370,15 @@ namespace CppSharp.AST
         public override T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals)
         {
             return visitor.VisitTypedefType(this, quals);
+        }
+
+        public override bool Equals(object obj)
+        {
+            var typedef = obj as TypedefType;
+            if (typedef == null) return false;
+
+            var t = Declaration.Equals(typedef.Declaration);
+            return t;
         }
     }
 
@@ -336,6 +399,14 @@ namespace CppSharp.AST
         public override T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals)
         {
             return visitor.VisitDecayedType(this, quals);
+        }
+
+        public override bool Equals(object obj)
+        {
+            var decay = obj as DecayedType;
+            if (decay == null) return false;
+
+            return Original.Equals(decay.Original);
         }
     }
 
@@ -382,6 +453,28 @@ namespace CppSharp.AST
         public QualifiedType Type;
         public Declaration Declaration;
         public long Integral;
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is TemplateArgument)) return false;
+            var arg = (TemplateArgument) obj;
+
+            if (Kind != arg.Kind) return false;
+
+            switch (Kind)
+            {
+            case ArgumentKind.Type:
+                return Type.Equals(arg.Type);
+            case ArgumentKind.Declaration:
+                return Declaration.Equals(arg.Declaration);
+            case ArgumentKind.Integral:
+                return Integral.Equals(arg.Integral);
+            case ArgumentKind.Expression:
+                return true;
+            default:
+                throw new Exception("Unknowed TemplateArgument Kind");
+            }
+        }
     }
 
     /// <summary>
@@ -405,6 +498,15 @@ namespace CppSharp.AST
         {
             return visitor.VisitTemplateSpecializationType(this, quals);
         }
+
+        public override bool Equals(object obj)
+        {
+            var type = obj as TemplateSpecializationType;
+            if (type == null) return false;
+
+            return Arguments.SequenceEqual(type.Arguments)
+                && Template.Equals(type.Template);
+        }
     }
 
     /// <summary>
@@ -412,17 +514,20 @@ namespace CppSharp.AST
     /// </summary>
     public class TemplateParameterType : Type
     {
-        public TemplateParameterType()
-        {
-        }
-
         public TemplateParameter Parameter;
-        public Template Template;
 
         public override T Visit<T>(ITypeVisitor<T> visitor,
                                    TypeQualifiers quals = new TypeQualifiers())
         {
             return visitor.VisitTemplateParameterType(this, quals);
+        }
+
+        public override bool Equals(object obj)
+        {
+            var type = obj as TemplateParameterType;
+            if (type == null) return false;
+
+            return Parameter.Equals(type.Parameter);
         }
     }
 
@@ -431,17 +536,20 @@ namespace CppSharp.AST
     /// </summary>
     public class TemplateParameterSubstitutionType : Type
     {
-        public TemplateParameterSubstitutionType()
-        {
-
-        }
-
         public QualifiedType Replacement;
 
         public override T Visit<T>(ITypeVisitor<T> visitor,
                                    TypeQualifiers quals = new TypeQualifiers())
         {
             return visitor.VisitTemplateParameterSubstitutionType(this, quals);
+        }
+
+        public override bool Equals(object obj)
+        {
+            var type = obj as TemplateParameterSubstitutionType;
+            if (type == null) return false;
+
+            return Replacement.Equals(type.Replacement);
         }
     }
 
@@ -451,11 +559,6 @@ namespace CppSharp.AST
     /// </summary>
     public class InjectedClassNameType : Type
     {
-        public InjectedClassNameType()
-        {
-
-        }
-
         public TemplateSpecializationType TemplateSpecialization;
         public Class Class;
 
@@ -464,6 +567,15 @@ namespace CppSharp.AST
         {
             return visitor.VisitInjectedClassNameType(this, quals);
         }
+
+        public override bool Equals(object obj)
+        {
+            var type = obj as InjectedClassNameType;
+            if (type == null) return false;
+
+            return TemplateSpecialization.Equals(type.TemplateSpecialization)
+                && Class.Equals(type.Class);
+        }
     }
 
     /// <summary>
@@ -471,11 +583,6 @@ namespace CppSharp.AST
     /// </summary>
     public class DependentNameType : Type
     {
-        public DependentNameType()
-        {
-
-        }
-
         public override T Visit<T>(ITypeVisitor<T> visitor,
                                    TypeQualifiers quals = new TypeQualifiers())
         {
@@ -499,6 +606,14 @@ namespace CppSharp.AST
                                    TypeQualifiers quals = new TypeQualifiers())
         {
             return visitor.VisitCILType(this, quals);
+        }
+
+        public override bool Equals(object obj)
+        {
+            var type = obj as CILType;
+            if (type == null) return false;
+
+            return Type == type.Type;
         }
     }
 
@@ -566,6 +681,14 @@ namespace CppSharp.AST
         public override T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals)
         {
             return visitor.VisitBuiltinType(this, quals);
+        }
+
+        public override bool Equals(object obj)
+        {
+            var type = obj as BuiltinType;
+            if (type == null) return false;
+
+            return Type == type.Type;
         }
     }
 

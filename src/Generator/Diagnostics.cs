@@ -72,6 +72,42 @@ namespace CppSharp
 
             consumer.Emit(diagInfo);
         }
+
+        public static void EmitMessage(this IDiagnosticConsumer consumer,
+            string msg, params object[] args)
+        {
+            var diagInfo = new DiagnosticInfo
+                {
+                    Kind = DiagnosticKind.Message,
+                    Message = string.Format(msg, args)
+                };
+
+            consumer.Emit(diagInfo);
+        }
+
+        public static void EmitWarning(this IDiagnosticConsumer consumer,
+            string msg, params object[] args)
+        {
+            var diagInfo = new DiagnosticInfo
+            {
+                Kind = DiagnosticKind.Warning,
+                Message = string.Format(msg, args)
+            };
+
+            consumer.Emit(diagInfo);
+        }
+
+        public static void EmitError(this IDiagnosticConsumer consumer,
+            string msg, params object[] args)
+        {
+            var diagInfo = new DiagnosticInfo
+            {
+                Kind = DiagnosticKind.Error,
+                Message = string.Format(msg, args)
+            };
+
+            consumer.Emit(diagInfo);
+        }
     }
 
     public class TextDiagnosticPrinter : IDiagnosticConsumer

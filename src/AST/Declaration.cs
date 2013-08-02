@@ -38,10 +38,24 @@ namespace CppSharp.AST
     /// </summary>
     public abstract class Declaration : INamedDecl
     {
+        
+        private DeclarationContext @namespace;
+        public DeclarationContext OriginalNamespace;
+
         // Namespace the declaration is contained in.
-        public DeclarationContext Namespace;
+        public DeclarationContext Namespace
+        {
+            get { return @namespace; }
+            set
+            {
+                @namespace = value;
+                if (OriginalNamespace == null)
+                    OriginalNamespace = @namespace;
+            }
+        }
 
         private string name;
+        public virtual string OriginalName { get; set;}
 
         // Name of the declaration.
         public virtual string Name
@@ -66,17 +80,14 @@ namespace CppSharp.AST
             }
         }
 
-        // Name of the declaration.
-        public virtual string OriginalName { get; set;}
-
         public string QualifiedOriginalName
         {
             get
             {
-                if (Namespace == null)
+                if (OriginalNamespace == null)
                     return OriginalName;
-                return Namespace.IsRoot ? OriginalName
-                    : string.Format("{0}::{1}", Namespace.QualifiedOriginalName, OriginalName);
+                return OriginalNamespace.IsRoot ? OriginalName
+                    : string.Format("{0}::{1}", OriginalNamespace.QualifiedOriginalName, OriginalName);
             }
         }
 
