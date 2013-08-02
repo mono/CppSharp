@@ -60,7 +60,7 @@ namespace CppSharp.Passes
                 };
 
             if (Driver.Options.GeneratorKind == LanguageGeneratorKind.CSharp)
-                method.Parameters = method.Parameters.Skip(0).ToList();
+                method.Parameters = method.Parameters.Skip(1).ToList();
 
             @class.Methods.Add(method);
 
