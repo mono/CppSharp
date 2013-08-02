@@ -57,13 +57,4 @@ namespace CppSharp.Passes
             return true;
         }
     }
-
-    public static class FunctionToStaticMethodExtensions
-    {
-        public static void FunctionToStaticMethod(this PassBuilder builder)
-        {
-            var pass = new FunctionToStaticMethodPass();
-            builder.AddPass(pass);
-        }
-    }
 }

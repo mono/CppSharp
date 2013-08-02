@@ -30,7 +30,7 @@ namespace CppSharp.Generators.CLI
             return outputs;
         }
 
-        public override bool SetupPasses(PassBuilder builder)
+        public override bool SetupPasses()
         {
             return true;
         }

@@ -285,13 +285,4 @@ namespace CppSharp.Passes
 
         #endregion
     }
-
-    public static class CheckIgnoredDeclsPassExtensions
-    {
-        public static void CheckIgnoredDecls(this PassBuilder builder)
-        {
-            var pass = new CheckIgnoredDeclsPass();
-            builder.AddPass(pass);
-        }
-    }
 }

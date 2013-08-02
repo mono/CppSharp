@@ -212,7 +212,7 @@ namespace CppSharp.Types
 
         public string VisitParameterDecl(Parameter parameter)
         {
-            throw new NotImplementedException();
+            return VisitParameter(parameter, hasName: false);
         }
 
         public string VisitTypedefDecl(TypedefDecl typedef)

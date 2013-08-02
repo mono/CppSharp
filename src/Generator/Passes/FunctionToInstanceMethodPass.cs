@@ -85,13 +85,4 @@ namespace CppSharp.Passes
             return false;
         }
     }
-
-    public static class FunctionToInstanceMethodExtensions
-    {
-        public static void FunctionToInstanceMethod(this PassBuilder builder)
-        {
-            var pass = new FunctionToInstanceMethodPass();
-            builder.AddPass(pass);
-        }
-    }
 }
