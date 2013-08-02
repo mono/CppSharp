@@ -1170,6 +1170,9 @@ namespace CppSharp.Generators.CSharp
 
             WriteStartBraceIndent();
 
+            if (method.IsProxy)
+                goto SkipImpl;
+
             if (@class.IsRefType)
             {
                 if (method.IsConstructor)
@@ -1200,6 +1203,8 @@ namespace CppSharp.Generators.CSharp
                     GenerateInternalFunctionCall(method);
                 }
             }
+
+            SkipImpl:
 
             WriteCloseBraceIndent();
             PopBlock(NewLineKind.BeforeNextBlock);
