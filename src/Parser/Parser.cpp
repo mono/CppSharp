@@ -583,11 +583,6 @@ CppSharp::AST::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
         {
             auto MD = cast<CXXMethodDecl>(D);
             auto Method = WalkMethodCXX(MD);
-            // Some implicit class template methods do not seem to provide type source
-            // information which causes us to not be able to properly walk through the
-            // qualified return type. In this case, do not add them to the AST.
-            if (!Method->ReturnType.Type)
-                continue;
             Method->AccessDecl = AccessDecl;
             RC->Methods->Add(Method);
             HandleComments(MD, Method);
@@ -1473,31 +1468,19 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, CppSharp::AST::Function^ F,
     TypeLoc RTL;
     if (auto TSI = FD->getTypeSourceInfo())
     {
-        auto TL = TSI->getTypeLoc();
-        if (!TL)
-            TL.isNull();
-
         FunctionTypeLoc FTL = TSI->getTypeLoc().getAs<FunctionTypeLoc>();
-        if (FTL)
-            RTL = FTL.getResultLoc();
+        RTL = FTL.getResultLoc();
 
         auto &SM = C->getSourceManager();
         auto headStartLoc = GetDeclStartLocation(C.get(), FD);
-        if (FTL)
-        {
-            auto headEndLoc = SM.getExpansionLoc(FTL.getLParenLoc());
-            auto headRange = clang::SourceRange(headStartLoc, headEndLoc);
+        auto headEndLoc = SM.getExpansionLoc(FTL.getLParenLoc());
+        auto headRange = clang::SourceRange(headStartLoc, headEndLoc);
 
-            HandlePreprocessedEntities(F, headRange, CppSharp::AST::MacroLocation::FunctionHead);
-            HandlePreprocessedEntities(F, FTL.getParensRange(), CppSharp::AST::MacroLocation::FunctionParameters);
-            //auto bodyRange = clang::SourceRange(FTL.getRParenLoc(), FD->getLocEnd());
-            //HandlePreprocessedEntities(F, bodyRange, CppSharp::AST::MacroLocation::FunctionBody);
-        }
+        HandlePreprocessedEntities(F, headRange, CppSharp::AST::MacroLocation::FunctionHead);
+        HandlePreprocessedEntities(F, FTL.getParensRange(), CppSharp::AST::MacroLocation::FunctionParameters);
+        //auto bodyRange = clang::SourceRange(FTL.getRParenLoc(), FD->getLocEnd());
+        //HandlePreprocessedEntities(F, bodyRange, CppSharp::AST::MacroLocation::FunctionBody);
     }
-
-    // See processing of CXXMethod in WalkRecordCXX for why this is needed.
-    if (!RTL)
-        return;
 
     F->ReturnType = GetQualifiedType(FD->getResultType(),
         WalkType(FD->getResultType(), &RTL));
