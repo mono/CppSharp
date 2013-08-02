@@ -65,20 +65,21 @@ namespace CppSharp.Generators.CSharp
 
     public class CSharpBlockKind
     {
-        public const int Usings = BlockKind.LAST + 1;
-        public const int Namespace = BlockKind.LAST + 2;
-        public const int Enum = BlockKind.LAST + 3;
-        public const int Typedef = BlockKind.LAST + 4;
-        public const int Class = BlockKind.LAST + 5;
-        public const int InternalsClass = BlockKind.LAST + 6;
-        public const int InternalsClassMethod = BlockKind.LAST + 7;
-        public const int Functions = BlockKind.LAST + 8;
-        public const int Function = BlockKind.LAST + 9;
-        public const int Method = BlockKind.LAST + 10;
-        public const int Event = BlockKind.LAST + 11;
-        public const int Variable = BlockKind.LAST + 12;
-        public const int Property = BlockKind.LAST + 13;
-        public const int Field = BlockKind.LAST + 14;
+        private const int FIRST = BlockKind.LAST + 1000;
+        public const int Usings = FIRST + 1;
+        public const int Namespace = FIRST + 2;
+        public const int Enum = FIRST + 3;
+        public const int Typedef = FIRST + 4;
+        public const int Class = FIRST + 5;
+        public const int InternalsClass = FIRST + 6;
+        public const int InternalsClassMethod = FIRST + 7;
+        public const int Functions = FIRST + 8;
+        public const int Function = FIRST + 9;
+        public const int Method = FIRST + 10;
+        public const int Event = FIRST + 11;
+        public const int Variable = FIRST + 12;
+        public const int Property = FIRST + 13;
+        public const int Field = FIRST + 14;
     }
 
     public class CSharpTextTemplate : Template
