@@ -193,6 +193,9 @@ namespace CppSharp.AST
         // List of preprocessed entities attached to this declaration.
         public IList<PreprocessedEntity> PreprocessedEntities; 
 
+        // Pointer to the original declaration from Clang.
+        public IntPtr OriginalPtr;
+
         protected Declaration()
         {
             IgnoreFlags = IgnoreFlags.None;

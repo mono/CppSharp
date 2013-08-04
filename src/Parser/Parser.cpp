@@ -744,6 +744,20 @@ CppSharp::AST::Method^ Parser::WalkMethodCXX(clang::CXXMethodDecl* MD)
 {
     using namespace clang;
 
+    // We could be in a redeclaration, so process the primary context.
+    if (MD->getPrimaryContext() != MD)
+        return WalkMethodCXX(cast<CXXMethodDecl>(MD->getPrimaryContext()));
+
+    auto RD = MD->getParent();
+    auto Class = WalkRecordCXX(RD);
+
+    // Check for an already existing method that came from the same declaration.
+    for each (CppSharp::AST::Method^ Method in Class->Methods)
+    {
+        if (Method->OriginalPtr.ToPointer() == MD)
+            return Method;
+    }
+
     DeclarationName Name = MD->getDeclName();
 
     CppSharp::AST::Method^ Method = gcnew CppSharp::AST::Method();
@@ -1466,6 +1480,7 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, CppSharp::AST::Function^ F,
     auto NS = GetNamespace(FD);
     assert(NS && "Expected a valid namespace");
 
+    F->OriginalPtr = System::IntPtr(FD);
     F->Name = marshalString<E_UTF8>(FD->getNameAsString());
     F->Namespace = NS;
     F->IsVariadic = FD->isVariadic();
