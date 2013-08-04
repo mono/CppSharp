@@ -91,6 +91,12 @@ namespace CppSharp.AST
         // True if the type is to be treated as opaque.
         public bool IsOpaque;
 
+        // True if the class is dynamic.
+        public bool IsDynamic;
+
+        // True if the class is polymorphic.
+        public bool IsPolymorphic;
+
         public Class()
         {
             Bases = new List<BaseClassSpecifier>();
