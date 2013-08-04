@@ -1159,6 +1159,9 @@ namespace CppSharp.Generators.CSharp
             if (method.IsOperator)
                 GetOperatorIdentifier(method.OperatorKind, out isBuiltinOperator);
 
+            if (method.IsVirtual && !method.IsOverride)
+                Write("virtual ");
+
             if (method.IsStatic || (method.IsOperator && isBuiltinOperator))
                 Write("static ");
 
