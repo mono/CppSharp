@@ -567,8 +567,6 @@ CppSharp::AST::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
         RC->Layout->DataSize = (int)Layout->getDataSize().getQuantity();
         RC->Layout->HasOwnVFPtr = Layout->hasOwnVFPtr();
         RC->Layout->VBPtrOffset = Layout->getVBPtrOffset().getQuantity();
-        if (Record->isDynamicClass())
-            WalkVTable(Record, RC);
     }
 
     CppSharp::AST::AccessSpecifierDecl^ AccessDecl = nullptr;
@@ -640,6 +638,10 @@ CppSharp::AST::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
 
         RC->Bases->Add(Base);
     }
+
+    // Process the vtables
+    if (Record->isDynamicClass())
+        WalkVTable(Record, RC);
 
     return RC;
 }
