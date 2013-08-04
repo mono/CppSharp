@@ -108,12 +108,6 @@ namespace CppSharp.Generators.CLI
             PopBlock();
         }
 
-        public void GenerateDeclarationCommon(Declaration decl)
-        {
-            if (!string.IsNullOrWhiteSpace(decl.BriefComment))
-                WriteLine("// {0}", decl.BriefComment);
-        }
-
         public void GenerateClass(Class @class)
         {
             PushBlock(CLIBlockKind.Class);
@@ -895,12 +889,6 @@ namespace CppSharp.Generators.CLI
         {
             var names = @params.Select(param => param.Name).ToList();
             Write(string.Join(", ", names));
-        }
-
-        public void GenerateDebug(Declaration decl)
-        {
-            if (Options.OutputDebug && !String.IsNullOrWhiteSpace(decl.DebugText))
-                WriteLine("// DEBUG: " + decl.DebugText);
         }
 
         public override string FileExtension { get { return "cpp"; } }

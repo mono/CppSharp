@@ -76,6 +76,15 @@ namespace CppSharp.Generators.CLI
             return string.Format("{0}", decl.QualifiedName);
         }
 
+        public void GenerateDeclarationCommon(Declaration decl)
+        {
+            if (decl.Comment == null)
+                return;
+
+            GenerateSummary(decl.Comment.BriefText);
+            GenerateDebug(decl);
+        }
+
         public void GenerateSummary(string comment)
         {
             if (string.IsNullOrWhiteSpace(comment))
@@ -96,6 +105,12 @@ namespace CppSharp.Generators.CLI
             PushBlock(BlockKind.InlineComment);
             WriteLine("/// <summary> {0} </summary>", comment);
             PopBlock();
+        }
+
+        public void GenerateDebug(Declaration decl)
+        {
+            if (Options.OutputDebug && !String.IsNullOrWhiteSpace(decl.DebugText))
+                WriteLine("// DEBUG: " + decl.DebugText);
         }
 
         public void GenerateMethodParameters(Method method)

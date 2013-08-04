@@ -177,12 +177,6 @@ namespace CppSharp.Generators.CLI
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
-        public void GenerateDeclarationCommon(Declaration T)
-        {
-            GenerateSummary(T.BriefComment);
-            GenerateDebug(T);
-        }
-
         public void GenerateClass(Class @class)
         {
             if (@class.Ignore || @class.IsIncomplete)
@@ -587,12 +581,6 @@ namespace CppSharp.Generators.CLI
             WriteLine(");");
 
             PopBlock();
-        }
-
-        public void GenerateDebug(Declaration decl)
-        {
-            if (Options.OutputDebug && !String.IsNullOrWhiteSpace(decl.DebugText))
-                WriteLine("// DEBUG: " + decl.DebugText);
         }
 
         public void GenerateEnum(Enumeration @enum)

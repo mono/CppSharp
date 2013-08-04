@@ -262,7 +262,10 @@ namespace CppSharp.Generators.CSharp
 
         public void GenerateDeclarationCommon(Declaration decl)
         {
-            GenerateSummary(decl.BriefComment);
+            if (decl.Comment == null)
+                return;
+
+            GenerateSummary(decl.Comment.BriefText);
             GenerateDebug(decl);
         }
 
