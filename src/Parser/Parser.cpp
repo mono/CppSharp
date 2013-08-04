@@ -749,6 +749,7 @@ CppSharp::AST::Method^ Parser::WalkMethodCXX(clang::CXXMethodDecl* MD)
     Method->Kind = GetMethodKindFromDecl(Name);
     Method->OperatorKind = GetOperatorKindFromDecl(Name);
     Method->IsStatic = MD->isStatic();
+    Method->IsVirtual = MD->isVirtual();
 
     WalkFunction(MD, Method);
 
