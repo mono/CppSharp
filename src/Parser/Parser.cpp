@@ -464,7 +464,6 @@ void Parser::WalkVTable(clang::CXXRecordDecl* RD, CppSharp::AST::Class^ C)
     {
     case TargetCXXABI::Microsoft:
     {
-#if SVN_REVISION >= 187409
         MicrosoftVFTableContext VTContext(*AST);
 
         auto VFPtrs = VTContext.getVFPtrOffsets(RD);
@@ -483,7 +482,6 @@ void Parser::WalkVTable(clang::CXXRecordDecl* RD, CppSharp::AST::Class^ C)
             C->Layout->VFTables->Add(Info);
             break;
         }
-#endif
     }
     case TargetCXXABI::GenericItanium:
     {
