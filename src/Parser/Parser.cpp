@@ -1045,7 +1045,7 @@ CppSharp::AST::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* 
         EnumDecl* ED = ET->getDecl();
 
         auto TT = gcnew CppSharp::AST::TagType();
-        TT->Declaration = WalkDeclaration(ED);
+        TT->Declaration = TT->Declaration = WalkDeclaration(ED, /*IgnoreSystemDecls=*/false);
 
         return TT;
     }
