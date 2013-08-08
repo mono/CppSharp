@@ -44,7 +44,7 @@ namespace CppSharp
             {
                 Library = Library,
                 FileName = file,
-                Verbose = false,
+                Verbose = options.Verbose,
                 IncludeDirs = options.IncludeDirs,
                 SystemIncludeDirs = options.SystemIncludeDirs,
                 Defines = options.Defines,
