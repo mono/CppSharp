@@ -9,6 +9,7 @@ project "SDL"
 
   links { "CppSharp.AST", "CppSharp.Generator" }
 
+if config.ExampleTests then
 
 project "SDL.Tests"
 
@@ -53,3 +54,5 @@ project "SDL.Tests"
       libdir .. "/SDL/SDL_video.cs",
       "*.lua"
   }
+
+end
