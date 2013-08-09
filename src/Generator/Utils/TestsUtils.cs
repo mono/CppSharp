@@ -22,8 +22,13 @@ namespace CppSharp.Utils
             options.GeneratorKind = kind;
             options.OutputDir = "../gen/" + name;
             options.GenerateLibraryNamespace = false;
-
             options.SharedLibraryName = name + ".Native";
+
+            // Workaround for CLR which does not check for .dll if the
+            // name already has a dot.
+            if (System.Type.GetType("Mono.Runtime") == null)
+                options.SharedLibraryName += ".dll";
+
             options.CheckSymbols = false;
 
             var path = "../../../tests/" + name;
