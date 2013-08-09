@@ -95,6 +95,10 @@ namespace CppSharp
 
             foreach (var diag in result.Diagnostics)
             {
+                if (Options.IgnoreParseWarnings
+                    && diag.Level == ParserDiagnosticLevel.Warning)
+                    continue;
+
                 Diagnostics.EmitMessage(DiagnosticId.ParserDiagnostic,
                     "{0}({1},{2}): {3}: {4}", diag.FileName, diag.LineNumber,
                     diag.ColumnNumber, diag.Level.ToString().ToLower(),
@@ -230,6 +234,7 @@ namespace CppSharp
         public bool MicrosoftMode;
         public string TargetTriple;
         public int ToolsetToUse;
+        public bool IgnoreParseWarnings;
         public bool IgnoreParseErrors;
         public CppAbi Abi;
         public bool IsItaniumAbi { get { return Abi == CppAbi.Itanium; } }
