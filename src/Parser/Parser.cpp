@@ -184,6 +184,11 @@ void Parser::SetupHeader()
                 /*IgnoreSysRoot=*/false);
     }
 
+    if (Opts->MicrosoftMode)
+    {
+        LangOpts.MSCVersion = Opts->ToolSetToUse;
+        if (!LangOpts.MSCVersion) LangOpts.MSCVersion = 1700;
+    }
 #endif
 
     // Enable preprocessing record.
