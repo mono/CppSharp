@@ -135,6 +135,8 @@ namespace CppSharp
 
             library.SetupPasses(this);
 
+            Generator.SetupPasses();
+
             TranslationUnitPasses.AddPass(new CleanInvalidDeclNamesPass());
             TranslationUnitPasses.AddPass(new CheckIgnoredDeclsPass());
             TranslationUnitPasses.AddPass(new CheckFlagEnumsPass());
