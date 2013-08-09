@@ -2101,7 +2101,7 @@ ParserResult^ Parser::ParseHeader(const std::string& File)
         using namespace clix;
 
         auto& Source = C->getSourceManager();
-        auto FileName = Source.getFilename(Diag.Location);
+        auto FileName = Source.getFilename(Source.getFileLoc(Diag.Location));
 
         auto PDiag = ParserDiagnostic();
         PDiag.FileName = marshalString<E_UTF8>(FileName.str());
