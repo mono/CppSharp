@@ -1988,6 +1988,7 @@ CppSharp::AST::Declaration^ Parser::WalkDeclaration(clang::Decl* D,
     case Decl::UnresolvedUsingTypename:
     case Decl::UnresolvedUsingValue:
     case Decl::IndirectField:
+    case Decl::StaticAssert:
         break;
     default:
     {
