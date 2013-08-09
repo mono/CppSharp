@@ -60,7 +60,6 @@ public ref struct ParserOptions
 
     CppSharp::AST::Library^ Library;
 
-    // Toolset version - 2005 - 8, 2008 - 9, 2010 - 10, 0 - autoprobe for any.
     int ToolSetToUse;
     System::String^ TargetTriple;
 

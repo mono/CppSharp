@@ -66,6 +66,19 @@ static std::string GetClangBuiltinIncludeDir()
 
 //-----------------------------------//
 
+static std::string GetCXXABIString(clang::TargetCXXABI::Kind Kind)
+{
+    switch(Kind)
+    {
+    case clang::TargetCXXABI::GenericItanium:
+        return "itanium";
+    case clang::TargetCXXABI::Microsoft:
+        return "microsoft";
+    }
+
+    llvm_unreachable("Unknown C++ ABI kind");
+}
+
 #ifdef _MSC_VER
 std::vector<std::string> GetWindowsSystemIncludeDirs();
 #endif
@@ -101,84 +114,88 @@ void Parser::SetupHeader()
     C->setInvocation(Inv);
 
     TargetOptions& TO = Inv->getTargetOpts();
-    if (!System::String::IsNullOrWhiteSpace(Opts->TargetTriple))
-        TO.Triple = marshalString<E_UTF8>(Opts->TargetTriple);
-    else
-        TO.Triple = llvm::sys::getDefaultTargetTriple();
-
     TargetABI = Opts->MicrosoftMode ? TargetCXXABI::Microsoft
         : TargetCXXABI::GenericItanium;
+    TO.CXXABI = GetCXXABIString(TargetABI);
+
+    TO.Triple = llvm::sys::getDefaultTargetTriple();
+    if (!System::String::IsNullOrWhiteSpace(Opts->TargetTriple))
+        TO.Triple = marshalString<E_UTF8>(Opts->TargetTriple);
 
     TargetInfo* TI = TargetInfo::CreateTargetInfo(C->getDiagnostics(), &TO);
+    if (!TI)
+    {
+        // We might have no target info due to an invalid user-provided triple.
+        // Try again with the default triple.
+        TO.Triple = llvm::sys::getDefaultTargetTriple();
+        TI = TargetInfo::CreateTargetInfo(C->getDiagnostics(), &TO);
+    }
+
+    assert(TI && "Expected valid target info");
+
     TI->setCXXABI(TargetABI);
     C->setTarget(TI);
 
     C->createFileManager();
     C->createSourceManager(C->getFileManager());
 
+    auto& HSOpts = C->getHeaderSearchOpts();
+    auto& PPOpts = C->getPreprocessorOpts();
+    auto& LangOpts = C->getLangOpts();
+
     if (Opts->NoStandardIncludes)
     {
-        auto HSOpts = C->getHeaderSearchOpts();
         HSOpts.UseStandardSystemIncludes = false;
         HSOpts.UseStandardCXXIncludes = false;
     }
 
     if (Opts->NoBuiltinIncludes)
-    {
-        auto HSOpts = C->getHeaderSearchOpts();
         HSOpts.UseBuiltinIncludes = false;
-    }
 
     if (Opts->Verbose)
-        C->getHeaderSearchOpts().Verbose = true;
+        HSOpts.Verbose = true;
 
     for each(System::String^% include in Opts->IncludeDirs)
     {
         String s = marshalString<E_UTF8>(include);
-        C->getHeaderSearchOpts().AddPath(s, frontend::Angled, false, false);
+        HSOpts.AddPath(s, frontend::Angled, false, false);
     }
 
     for each(System::String^% include in Opts->SystemIncludeDirs)
     {
         String s = marshalString<E_UTF8>(include);
-        C->getHeaderSearchOpts().AddPath(s, frontend::System, false, false);
+        HSOpts.AddPath(s, frontend::System, false, false);
     }
 
-    for each(System::String^% def in Opts->Defines)
-    {
-        String s = marshalString<E_UTF8>(def);
-        C->getPreprocessorOpts().addMacroDef(s);
-    }
+    for each(System::String^% define in Opts->Defines)
+        PPOpts.addMacroDef(marshalString<E_UTF8>(define));
 
     // Initialize the default platform headers.
-    std::string ResourceDir = GetClangResourceDir(".");
-    C->getHeaderSearchOpts().ResourceDir = ResourceDir;
-    C->getHeaderSearchOpts().AddPath(GetClangBuiltinIncludeDir(),
-        clang::frontend::System, false, false);
+    HSOpts.ResourceDir = GetClangResourceDir(".");
+    HSOpts.AddPath(GetClangBuiltinIncludeDir(), clang::frontend::System,
+        /*IsFramework=*/false, /*IgnoreSysRoot=*/false);
 
 #ifdef _MSC_VER
     if (!Opts->NoBuiltinIncludes)
         {
         std::vector<std::string> SystemDirs = GetWindowsSystemIncludeDirs();
-        clang::HeaderSearchOptions& HSOpts = C->getHeaderSearchOpts();
-
-        for(size_t i = 0; i < SystemDirs.size(); ++i)
-        {
-            HSOpts.AddPath(SystemDirs[i], frontend::System, false, false);
-        }
+        for(auto Path : SystemDirs)
+            HSOpts.AddPath(Path, frontend::System, /*IsFramework=*/false,
+                /*IgnoreSysRoot=*/false);
     }
+
 #endif
 
-    C->createPreprocessor();
-    C->createASTContext();
+    // Enable preprocessing record.
+    PPOpts.DetailedRecord = true;
 
-    if (C->hasPreprocessor())
-    {
-        Preprocessor& P = C->getPreprocessor();
-        P.createPreprocessingRecord();
-        P.getBuiltinInfo().InitializeBuiltins(P.getIdentifierTable(),
-            P.getLangOpts());
-    }
+    C->createPreprocessor();
+
+    Preprocessor& PP = C->getPreprocessor();
+    PP.getBuiltinInfo().InitializeBuiltins(PP.getIdentifierTable(),
+        PP.getLangOpts());
+
+    C->createASTContext();
 }
 
 //-----------------------------------//
