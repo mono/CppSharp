@@ -579,9 +579,11 @@ CppSharp::AST::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
     auto &Sema = C->getSema();
     Sema.ForceDeclarationOfImplicitMembers(Record);
 
+    bool hasLayout = !Record->isDependentType() && !Record->isInvalidDecl();
+
     // Get the record layout information.
     const ASTRecordLayout* Layout = 0;
-    if (!Record->isDependentType())
+    if (hasLayout)
     {
         Layout = &C->getASTContext().getASTRecordLayout(Record);
         RC->Layout->Alignment = (int)Layout-> getAlignment().getQuantity();
@@ -640,7 +642,7 @@ CppSharp::AST::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
             break;
         }
         case Decl::IndirectField: // FIXME: Handle indirect fields
-			break;
+            break;
         default:
         {
             auto Decl = WalkDeclaration(D);
@@ -662,7 +664,7 @@ CppSharp::AST::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
     }
 
     // Process the vtables
-    if (Record->isDynamicClass())
+    if (hasLayout && Record->isDynamicClass())
         WalkVTable(Record, RC);
 
     return RC;
