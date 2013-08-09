@@ -1752,6 +1752,17 @@ void Parser::HandlePreprocessedEntities(CppSharp::AST::Declaration^ Decl,
                                         clang::SourceRange sourceRange,
                                         CppSharp::AST::MacroLocation macroLocation)
 {
+    if (sourceRange.isInvalid()) return;
+
+    auto& SourceMgr = C->getSourceManager();
+    auto isBefore = SourceMgr.isBeforeInTranslationUnit(sourceRange.getEnd(),
+        sourceRange.getBegin());
+
+    if (isBefore) return;
+
+    assert(!SourceMgr.isBeforeInTranslationUnit(sourceRange.getEnd(),
+        sourceRange.getBegin()));
+
     using namespace clang;
     auto PPRecord = C->getPreprocessor().getPreprocessingRecord();
 
