@@ -49,6 +49,9 @@ namespace CppSharp.AST
 
         public bool IsPointer()
         {
+            var functionPointer = this as MemberPointerType;
+            if (functionPointer != null)
+                return true;
             var pointer = this as PointerType;
             if (pointer == null)
                 return false;
@@ -77,6 +80,12 @@ namespace CppSharp.AST
             
             if (ptr == null)
             {
+                var functionPointer = this as MemberPointerType;
+                if (functionPointer != null)
+                {
+                    type = functionPointer.Pointee as T;
+                    return type != null;
+                }
                 type = null;
                 return false;
             }
