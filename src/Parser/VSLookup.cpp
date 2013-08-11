@@ -92,7 +92,19 @@ static bool getSystemRegistryString(const char *keyPath, const char *valueName,
         strncpy(numBuf, sp, sizeof(numBuf) - 1);
         numBuf[sizeof(numBuf) - 1] = '\0';
         double value = strtod(numBuf, NULL);
-        if (value > bestValue) {
+
+        // Check if InstallDir key value exists.
+        bool isViableVersion = false;
+
+        lResult = RegOpenKeyExA(hTopKey, keyName, 0, KEY_READ, &hKey);
+        if (lResult == ERROR_SUCCESS) {
+          lResult = RegQueryValueExA(hKey, valueName, NULL, NULL, NULL, NULL);
+          if (lResult == ERROR_SUCCESS)
+            isViableVersion = true;
+          RegCloseKey(hKey);
+        }
+
+        if (isViableVersion && (value > bestValue)) {
           bestIndex = (int)index;
           bestValue = value;
           strcpy(bestName, keyName);
