@@ -73,6 +73,7 @@ namespace CppSharp.Generators.CSharp
         public const int Class = FIRST + 5;
         public const int InternalsClass = FIRST + 6;
         public const int InternalsClassMethod = FIRST + 7;
+        public const int InternalsClassField = FIRST + 15;
         public const int Functions = FIRST + 8;
         public const int Function = FIRST + 9;
         public const int Method = FIRST + 10;
@@ -335,7 +336,10 @@ namespace CppSharp.Generators.CSharp
                 }
 
                 GenerateClassConstructors(@class);
-                GenerateClassFields(@class);
+
+                if (@class.IsValueType)
+                    GenerateValueClassFields(@class);
+
                 GenerateClassMethods(@class);
                 GenerateClassVariables(@class);
                 GenerateClassProperties(@class);
@@ -346,6 +350,30 @@ namespace CppSharp.Generators.CSharp
 
             WriteCloseBraceIndent();
             PopBlock(NewLineKind.BeforeNextBlock);
+        }
+
+        private void GenerateValueClassFields(Class @class)
+        {
+            GenerateClassFields(@class, field =>
+            {
+                var fieldClass = (Class) field.Namespace;
+                if (!fieldClass.IsValueType)
+                    return;
+                GenerateClassField(field);
+            });
+        }
+
+        public void GenerateClassInternalsFields(Class @class)
+        {
+            GenerateClassFields(@class, GenerateClassInternalsField);
+
+            foreach (var prop in @class.Properties)
+            {
+                if (prop.Ignore || prop.Field == null)
+                    continue;
+
+                GenerateClassInternalsField(prop.Field);
+            }
         }
 
         public void GenerateClassInternals(Class @class)
@@ -360,7 +388,7 @@ namespace CppSharp.Generators.CSharp
             var typePrinter = TypePrinter as CSharpTypePrinter;
             typePrinter.PushContext(CSharpTypePrinterContextKind.Native);
 
-            GenerateClassFields(@class, isInternal: true);
+            GenerateClassInternalsFields(@class);
             GenerateVTablePointers(@class);
 
             var functions = GatherClassInternalFunctions(@class);
@@ -576,84 +604,59 @@ namespace CppSharp.Generators.CSharp
                 Write("IDisposable");
         }
 
-        public void GenerateClassFields(Class @class, bool isInternal = false)
+        public void GenerateClassFields(Class @class, Action<Field> action)
         {
-            // Handle value-type inheritance
-            if (@class.IsValueType)
+            foreach (var @base in @class.Bases)
             {
-                foreach (var @base in @class.Bases)
-                {
-                    if (!@base.IsClass)
-                        continue;
+                if (!@base.IsClass) continue;
+                var baseClass = @base.Class;
 
-                    var baseClass = @base.Class;
+                if (baseClass.Ignore)
+                    continue;
 
-                    if (!baseClass.IsValueType || baseClass.Ignore)
-                        continue;
-
-                    GenerateClassFields(baseClass, isInternal);
-                }
+                GenerateClassFields(baseClass, action);
             }
 
             foreach (var field in @class.Fields)
             {
                 if (ASTUtils.CheckIgnoreField(field)) continue;
-                GenerateClassField(@class, isInternal, field);
+                action(field);
             }
         }
 
-        private void GenerateClassField(Class @class, bool isInternal, Field field)
+        private void GenerateClassInternalsField(Field field)
         {
-            if (ASTUtils.CheckIgnoreField(field)) return;
-
             PushBlock(CSharpBlockKind.Field);
 
-            if (isInternal)
-            {
-                WriteLine("[FieldOffset({0})]", field.OffsetInBytes);
+            WriteLine("[FieldOffset({0})]", field.OffsetInBytes);
 
-                var result = field.Type.Visit(TypePrinter, field.QualifiedType.Qualifiers);
+            var result = field.QualifiedType.CSharpType(TypePrinter);
+            Write("public {0} {1}", result.Type, SafeIdentifier(field.OriginalName));
 
-                Write("public {0} {1}", result.Type, SafeIdentifier(field.OriginalName));
+            if (!string.IsNullOrWhiteSpace(result.NameSuffix))
+                Write(result.NameSuffix);
 
-                if (!string.IsNullOrWhiteSpace(result.NameSuffix))
-                    Write(result.NameSuffix);
+            WriteLine(";");
 
-                WriteLine(";");
-            }
-            else if (@class.IsRefType)
-            {
-                GenerateFieldProperty(field);
-            }
-            else
-            {
-                GenerateDeclarationCommon(field);
-                if (@class.IsUnion)
-                    WriteLine("[FieldOffset({0})]", field.Offset);
-                WriteLine("public {0} {1};", field.Type, SafeIdentifier(field.Name));
-            }
+            PopBlock(NewLineKind.BeforeNextBlock);
+        }
+
+        private void GenerateClassField(Field field)
+        {
+            PushBlock(CSharpBlockKind.Field);
+
+            GenerateDeclarationCommon(field);
+
+            var @class = (Class) field.Namespace;
+            if (@class.IsUnion)
+                WriteLine("[FieldOffset({0})]", field.Offset);
+
+            WriteLine("public {0} {1};", field.Type, SafeIdentifier(field.Name));
 
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
         #endregion
-
-        private void GenerateFieldProperty(Field field)
-        {
-            var @class = field.Class;
-
-            PushBlock(CSharpBlockKind.Property);
-            GenerateDeclarationCommon(field);
-            WriteLine("public {0} {1}", field.Type, SafeIdentifier(field.Name));
-            WriteStartBraceIndent();
-
-            GeneratePropertyGetter(field, @class);
-
-            GeneratePropertySetter(field, @class);
-
-            WriteCloseBraceIndent();
-            PopBlock(NewLineKind.BeforeNextBlock);
-        }
 
         private Tuple<string, string> GetDeclarationLibrarySymbol(IMangledDecl decl)
         {
