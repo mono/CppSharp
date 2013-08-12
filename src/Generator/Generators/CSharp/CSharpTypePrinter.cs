@@ -191,7 +191,12 @@ namespace CppSharp.Generators.CSharp
         public CSharpTypePrinterResult VisitMemberPointerType(MemberPointerType member,
             TypeQualifiers quals)
         {
-            throw new NotImplementedException();
+            FunctionType functionType;
+            if (member.IsPointerTo(out functionType))
+            {
+                return functionType.Visit(this, quals);
+            }
+            throw new InvalidOperationException("A function pointer not pointing to a function type.");
         }
 
         public CSharpTypePrinterResult VisitBuiltinType(BuiltinType builtin,
