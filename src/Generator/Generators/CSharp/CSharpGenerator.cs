@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using CppSharp.AST;
 using CppSharp.Passes;
-using CppSharp.Generators;
 
 namespace CppSharp.Generators.CSharp
 {
@@ -28,8 +26,13 @@ namespace CppSharp.Generators.CSharp
 
         public override bool SetupPasses()
         {
-            Driver.AddTranslationUnitPass(new CheckAbiParameters(Driver.Options));
+            // Both the CheckOperatorsOverloadsPass and CheckAbiParameters can
+            // create and and new parameters to functions and methods. Make sure
+            // CheckAbiParameters runs last because hidden structure parameters
+            // should always occur first.
+
             Driver.AddTranslationUnitPass(new CheckOperatorsOverloadsPass());
+            Driver.AddTranslationUnitPass(new CheckAbiParameters(Driver.Options));
 
             return true;
         }
