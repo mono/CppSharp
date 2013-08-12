@@ -108,9 +108,11 @@ static bool getSystemRegistryString(const char *keyPath, const char *valueName,
           bestIndex = (int)index;
           bestValue = value;
           strcpy(bestName, keyName);
+          goto Out;
         }
         size = sizeof(keyName) - 1;
       }
+      Out:
       // If we found the highest versioned key, open the key and get the value.
       if (bestIndex != -1) {
         // Append rest of key.
