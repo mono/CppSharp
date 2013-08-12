@@ -86,6 +86,7 @@ namespace CppSharp.Types
                 case PrimitiveType.UInt64: return "unsigned long long";
                 case PrimitiveType.Float: return "float";
                 case PrimitiveType.Double: return "double";
+                case PrimitiveType.IntPtr: return "void*";
             }
 
             throw new NotSupportedException();
