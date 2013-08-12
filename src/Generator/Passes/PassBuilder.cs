@@ -30,9 +30,9 @@ namespace CppSharp
         /// <summary>
         /// Finds a previously-added pass of the given type.
         /// </summary>
-        public T FindPass<T>() where T : TranslationUnitPass
+        public U FindPass<U>() where U : TranslationUnitPass
         {
-            return Passes.OfType<T>().Select(pass => pass as T).FirstOrDefault();
+            return Passes.OfType<U>().Select(pass => pass as U).FirstOrDefault();
         }
     }
 }
