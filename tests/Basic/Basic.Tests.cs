@@ -1,7 +1,8 @@
 using NUnit.Framework;
+using Basic;
 
 [TestFixture]
-public class HelloTests
+public class BasicTests
 {
     [Test]
     public void TestHello()
@@ -42,8 +43,7 @@ public class HelloTests
     static void Main(string[] args)
     {
         var hello = new Hello();
-
-        Assert.That(hello.RetEnum(Enum.A), Is.EqualTo(0));
+        hello.RetFoo(7, 2.0f);
     }
 }
  

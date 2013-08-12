@@ -1,5 +1,3 @@
-//#include <string>
-
 #if defined(_MSC_VER)
 #define CppSharp_API __declspec(dllexport)
 #else

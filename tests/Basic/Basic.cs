@@ -4,10 +4,10 @@ using CppSharp.Utils;
 
 namespace CppSharp.Tests
 {
-    public class Hello : LibraryTest
+    public class Basic : LibraryTest
     {
-        public Hello(LanguageGeneratorKind kind)
-            : base("Hello", kind)
+        public Basic(LanguageGeneratorKind kind)
+            : base("Basic", kind)
         {
         }
 
@@ -21,8 +21,8 @@ namespace CppSharp.Tests
         {
             public static void Main(string[] args)
             {
-                ConsoleDriver.Run(new Hello(LanguageGeneratorKind.CPlusPlusCLI));
-                ConsoleDriver.Run(new Hello(LanguageGeneratorKind.CSharp));
+                ConsoleDriver.Run(new Basic(LanguageGeneratorKind.CPlusPlusCLI));
+                ConsoleDriver.Run(new Basic(LanguageGeneratorKind.CSharp));
             }
         }
     }
