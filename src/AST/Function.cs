@@ -102,6 +102,20 @@ namespace CppSharp.AST
             }
         }
 
+        public QualifiedType OriginalReturnType
+        {
+            get
+            {
+                if (!HasHiddenStructParameter)
+                    return ReturnType;
+
+                var hiddenParam = Parameters.Single(param =>
+                    param.Kind == ParameterKind.HiddenStructureReturn);
+                return hiddenParam.QualifiedType;
+            }
+        }
+
+
         public string Mangled { get; set; }
         
         public override T Visit<T>(IDeclVisitor<T> visitor)

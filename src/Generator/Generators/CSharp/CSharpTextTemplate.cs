@@ -1432,7 +1432,7 @@ namespace CppSharp.Generators.CSharp
             if (method.IsConstructor || method.IsDestructor)
                 Write("{0}(", functionName);
             else
-                Write("{0} {1}(", method.ReturnType, functionName);
+                Write("{0} {1}(", method.OriginalReturnType, functionName);
 
             GenerateMethodParameters(method);
 
@@ -1557,14 +1557,13 @@ namespace CppSharp.Generators.CSharp
                 return;
             }
 
-            var retType = function.ReturnType;
+            var retType = function.OriginalReturnType;
             var needsReturn = !retType.Type.IsPrimitiveType(PrimitiveType.Void);
-
-            var method = function as Method;
 
             var isValueType = false;
             var needsInstance = false;
 
+            var method = function as Method;
             if (method != null)
             {
                 var @class = (Class) method.Namespace;
@@ -1585,10 +1584,14 @@ namespace CppSharp.Generators.CSharp
             Class retClass = null;
             if (function.HasHiddenStructParameter)
             {
-                function.ReturnType.Type.Desugar().IsTagDecl(out retClass);
+                var hiddenParam = function.Parameters[0];
+                if (hiddenParam.Kind != ParameterKind.HiddenStructureReturn)
+                    throw new NotSupportedException("Expected hidden structure parameter kind");
 
+                hiddenParam.Type.Desugar().IsTagDecl(out retClass);
                 WriteLine("var {0} = new {1}.Internal();", GeneratedIdentifier("udt"),
                     retClass.OriginalName);
+            }
 
                 retType.Type = new BuiltinType(PrimitiveType.Void);
                 needsReturn = false;
@@ -1620,7 +1623,7 @@ namespace CppSharp.Generators.CSharp
                 WriteLine("var {0} = ToInternal();", Helpers.GeneratedIdentifier("instance"));
             }
 
-            if (needsReturn)
+            if (needsReturn && !function.HasHiddenStructParameter)
                 Write("var ret = ");
 
             WriteLine("{0}({1});", functionName, string.Join(", ", names));
@@ -1650,28 +1653,30 @@ namespace CppSharp.Generators.CSharp
 
             if (needsReturn)
             {
-                var ctx = new CSharpMarshalContext(Driver)
+                if (function.HasHiddenStructParameter)
                 {
-                    ArgName = "ret",
-                    ReturnVarName = "ret",
-                    ReturnType = retType
-                };
+                    WriteLine("var ret = new {0}({1});", retClass.Name,
+                        GeneratedIdentifier("udt"));
 
-                var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
-                function.ReturnType.Type.Visit(marshal, function.ReturnType.Qualifiers);
+                    WriteLine("return ret;");
+                }
+                else
+                {
+                    var ctx = new CSharpMarshalContext(Driver)
+                    {
+                        ArgName = "ret",
+                        ReturnVarName = "ret",
+                        ReturnType = retType
+                    };
 
-                if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
-                    Write(marshal.Context.SupportBefore);
+                    var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
+                    function.ReturnType.Type.Visit(marshal, function.ReturnType.Qualifiers);
 
-                WriteLine("return {0};", marshal.Context.Return);
-            }
+                    if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
+                        Write(marshal.Context.SupportBefore);
 
-            if (function.HasHiddenStructParameter)
-            {
-                WriteLine("var ret = new {0}({1});", retClass.Name,
-                    GeneratedIdentifier("udt"));
-
-                WriteLine("return ret;");
+                    WriteLine("return {0};", marshal.Context.Return);
+                }
             }
         }
 
@@ -1737,6 +1742,9 @@ namespace CppSharp.Generators.CSharp
             var paramIndex = 0;
             foreach (var param in @params)
             {
+                if (param.Kind == ParameterKind.HiddenStructureReturn)
+                    continue;
+
                 marshals.Add(GenerateFunctionParamMarshal(param, paramIndex, function));
                 paramIndex++;
             }

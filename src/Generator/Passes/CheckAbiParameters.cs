@@ -19,13 +19,12 @@ namespace CppSharp.Passes
             var structParameter = new Parameter()
                 {
                     Kind = ParameterKind.HiddenStructureReturn,
-                    QualifiedType = new QualifiedType(
-                        new BuiltinType(PrimitiveType.IntPtr)),
+                    QualifiedType = method.ReturnType,
                     Name = "return",
-                    IgnoreFlags = IgnoreFlags.Generation
                 };
 
             method.Parameters.Insert(0, structParameter);
+            method.ReturnType = new QualifiedType(new BuiltinType(PrimitiveType.Void));
 
             return true;
         }
