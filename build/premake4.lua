@@ -23,7 +23,7 @@ solution "CppSharp"
     flags { "Optimize" }
 
   configuration "vs2012"
-    framework "4.5"
+    framework "4.0"
 
   configuration {}
     
