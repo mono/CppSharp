@@ -74,12 +74,12 @@ namespace CppSharp.Types.Std
 
         public override void CSharpMarshalToNative(MarshalContext ctx)
         {
-            ctx.Return.Write("StringToPtr");
+            ctx.Return.Write("new Std.WString()");
         }
 
         public override void CSharpMarshalToManaged(MarshalContext ctx)
         {
-            ctx.Return.Write("PtrToString");
+            ctx.Return.Write(ctx.ReturnVarName);
         }
     }
 

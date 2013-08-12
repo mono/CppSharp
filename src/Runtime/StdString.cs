@@ -48,4 +48,30 @@ namespace Std
             set { }
         }
     }
+
+    public struct WString
+    {
+        public IntPtr Instance;
+
+        public WString(IntPtr instance)
+        {
+            Instance = instance;
+        }
+
+        public static implicit operator string(Std.WString str)
+        {
+            return string.Empty;
+        }
+
+        public static implicit operator WString(string str)
+        {
+            return new WString(IntPtr.Zero);
+        }
+
+        public char this[ulong index]
+        {
+            get { return '0'; }
+            set { }
+        }
+    }
 }
