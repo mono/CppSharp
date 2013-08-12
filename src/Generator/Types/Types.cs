@@ -69,8 +69,7 @@ namespace CppSharp
 
         public override bool VisitClassDecl(Class @class)
         {
-            VisitDeclaration(@class);
-            return false;
+            return VisitDeclaration(@class);
         }
 
         public override bool VisitTypedefType(TypedefType typedef,
