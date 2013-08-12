@@ -2,6 +2,8 @@
 -- It defines the common build settings that all the projects share
 -- and calls the build scripts of all the sub-projects.
 
+config = {}
+
 dofile "Helpers.lua"
 dofile "Tests.lua"
 
