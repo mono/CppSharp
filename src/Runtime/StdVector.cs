@@ -25,6 +25,14 @@ using System.Collections.Generic;
 
 namespace Std
 {
+    public struct Vector
+    {
+        static public Vector Create<T>(Vector<T> vec)
+        {
+            return default(Vector);
+        }
+    }
+
     public struct Vector<T> : ICollection<T>
     {
         public IEnumerator<T> GetEnumerator()
