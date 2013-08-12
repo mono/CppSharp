@@ -21,7 +21,7 @@ namespace CppSharp.Utils
             options.LibraryName = name;
             options.GeneratorKind = kind;
             options.OutputDir = "../gen/" + name;
-            options.GenerateLibraryNamespace = false;
+            options.GenerateLibraryNamespace = true;
             options.SharedLibraryName = name + ".Native";
 
             // Workaround for CLR which does not check for .dll if the
