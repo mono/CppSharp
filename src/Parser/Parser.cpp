@@ -114,7 +114,7 @@ void Parser::SetupHeader()
     C->setInvocation(Inv);
 
     TargetOptions& TO = Inv->getTargetOpts();
-    TargetABI = Opts->MicrosoftMode ? TargetCXXABI::Microsoft
+    TargetABI = (Opts->Abi == CppSharp::AST::CppAbi::Microsoft) ? TargetCXXABI::Microsoft
         : TargetCXXABI::GenericItanium;
     TO.CXXABI = GetCXXABIString(TargetABI);
 
