@@ -1,8 +1,4 @@
-# CppSharp #
-
-## What does it do?
-
-This tool allows you to generate .NET bindings that wrap C/C++ code allowing interoperability with managed languages. This can be useful if you have an existing native codebase and want to add scripting support, or want to consume an existing native library in your managed code.
+CppSharp is a library that allows you to generate .NET bindings that wrap C/C++ code allowing interoperability with managed languages. This can be useful if you have an existing native codebase and want to add scripting support, or want to consume an existing native library in your managed code.
 
 ## Getting started
 
