@@ -96,9 +96,9 @@ namespace CppSharp.Generators.CSharp
             if (ContextKind == CSharpTypePrinterContextKind.Native &&
                 array.SizeType == ArrayType.ArraySize.Constant)
             {
-                PrimitiveType primitive;
-                if (!array.Type.Desugar().IsPrimitiveType(out primitive))
-                    throw new NotSupportedException();
+                //PrimitiveType primitive;
+                //if (!array.Type.Desugar().IsPrimitiveType(out primitive))
+                //    throw new NotSupportedException();
 
                 return new CSharpTypePrinterResult()
                 {
