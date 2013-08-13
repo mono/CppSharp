@@ -781,13 +781,10 @@ namespace CppSharp.Generators.CSharp
             WriteLine("get");
             WriteStartBraceIndent();
 
-            var @return = string.Empty;
-
             if (decl is Function)
             {
                 var function = decl as Function;
                 GenerateInternalFunctionCall(function);
-                @return = "ret";
             }
             else if (decl is Field)
             {
