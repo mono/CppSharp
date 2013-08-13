@@ -365,12 +365,8 @@ namespace CppSharp.Generators.CSharp
         {
             var paramType = parameter.Type;
 
-            Class @class;
-            if (paramType.Desugar().IsTagDecl(out @class)
-                && ContextKind == CSharpTypePrinterContextKind.Native)
-            {
-                return string.Format("{0}.Internal", @class.Name);
-            }
+            if (parameter.Kind == ParameterKind.HiddenStructureReturn)
+                return "global::System.IntPtr";
 
             return paramType.Visit(this);
         }
