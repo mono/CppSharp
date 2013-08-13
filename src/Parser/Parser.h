@@ -66,6 +66,7 @@ public ref struct ParserOptions
     bool NoStandardIncludes;
     bool NoBuiltinIncludes;
     bool MicrosoftMode;
+	CppSharp::AST::CppAbi Abi;
 
     bool Verbose;
 };

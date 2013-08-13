@@ -52,7 +52,8 @@ namespace CppSharp
                 NoBuiltinIncludes = options.NoBuiltinIncludes,
                 MicrosoftMode = options.MicrosoftMode,
                 ToolSetToUse = options.ToolsetToUse,
-                TargetTriple = options.TargetTriple
+                TargetTriple = options.TargetTriple,
+                Abi = options.Abi
             };
 
             var result = ClangParser.ParseHeader(parserOptions);
