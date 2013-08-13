@@ -30,7 +30,11 @@ namespace CppSharp.AST
             public bool IsHexadecimal
             {
                 get
-                { 
+                {
+                    if (Expression == null)
+                    {
+                        return false;
+                    }
                     return Expression.Contains("0x") || Expression.Contains("0X");
                 }
             }
