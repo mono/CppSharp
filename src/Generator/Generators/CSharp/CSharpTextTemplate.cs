@@ -858,11 +858,18 @@ namespace CppSharp.Generators.CSharp
                 WriteLine("public {0} {1}", prop.Type, prop.Name);
                 WriteStartBraceIndent();
 
-                GeneratePropertyGetter(prop.GetMethod, @class);
-
-                if (prop.SetMethod != null)
+                if (prop.Field != null)
                 {
-                    GeneratePropertySetter(prop.SetMethod, @class);
+                    GeneratePropertyGetter(prop.Field, @class);
+                    GeneratePropertySetter(prop.Field, @class);
+                }
+                else
+                {
+                    if (prop.GetMethod != null)
+                        GeneratePropertyGetter(prop.GetMethod, @class);
+
+                    if (prop.SetMethod != null)
+                        GeneratePropertySetter(prop.SetMethod, @class);
                 }
 
                 WriteCloseBraceIndent();
