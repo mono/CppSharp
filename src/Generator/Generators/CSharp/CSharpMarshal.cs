@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CppSharp.AST;
 using CppSharp.Types;
+using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Generators.CSharp
 {
@@ -16,12 +18,14 @@ namespace CppSharp.Generators.CSharp
             : base(driver)
         {
             Kind = CSharpMarshalKind.Unknown;
+            ArgumentPrefix = new TextGenerator();
             Cleanup = new TextGenerator();
         }
 
         public CSharpMarshalKind Kind { get; set; }
         public QualifiedType FullType;
 
+        public TextGenerator ArgumentPrefix { get; private set; }
         public TextGenerator Cleanup { get; private set; }
     }
 

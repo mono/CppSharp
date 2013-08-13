@@ -1589,6 +1589,7 @@ namespace CppSharp.Generators.CSharp
             }
 
             var needsFixedThis = needsInstance && isValueType;
+            var @params = GenerateFunctionParamsMarshal(parameters, function);
 
             Class retClass = null;
             if (function.HasHiddenStructParameter)
@@ -1602,15 +1603,17 @@ namespace CppSharp.Generators.CSharp
                     retClass.OriginalName);
             }
 
-                retType.Type = new BuiltinType(PrimitiveType.Void);
-                needsReturn = false;
+            var names = new List<string>();
+            foreach (var param in @params)
+            {
+                var name = string.Empty;
+                if (param.Context != null
+                    && !string.IsNullOrWhiteSpace(param.Context.ArgumentPrefix))
+                    name += param.Context.ArgumentPrefix;
+
+                name += Helpers.SafeIdentifier(param.Name);
+                names.Add(name);
             }
-
-            var @params = GenerateFunctionParamsMarshal(parameters, function);
-
-            var names = (from param in @params
-                         where !param.Param.Ignore
-                         select Helpers.SafeIdentifier(param.Name)).ToList();
 
             if (function.HasHiddenStructParameter)
             {
