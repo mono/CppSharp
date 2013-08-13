@@ -275,8 +275,9 @@ namespace CppSharp.Generators.CSharp
 
             var pointee = pointer.Pointee;
 
-            if (pointee.IsPrimitiveType(PrimitiveType.Char) ||
-                pointee.IsPrimitiveType(PrimitiveType.WideChar))
+            Type type = pointee.Desugar();
+            if (type.IsPrimitiveType(PrimitiveType.Char) ||
+                type.IsPrimitiveType(PrimitiveType.WideChar))
             {
                 Context.Return.Write("Marshal.StringToHGlobalAnsi({0})",
                     Context.Parameter.Name);
@@ -292,7 +293,7 @@ namespace CppSharp.Generators.CSharp
             }
 
             Class @class;
-            if (pointee.Desugar().IsTagDecl(out @class) && @class.IsValueType)
+            if (type.IsTagDecl(out @class) && @class.IsValueType)
             {
                 if (Context.Parameter.Usage == ParameterUsage.Out)
                 {
@@ -312,7 +313,7 @@ namespace CppSharp.Generators.CSharp
             }
 
             PrimitiveType primitive;
-            if (pointee.IsPrimitiveType(out primitive))
+            if (type.IsPrimitiveType(out primitive))
             {
                 Context.Return.Write(Context.Parameter.Name);
                 return true;
