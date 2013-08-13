@@ -1673,7 +1673,7 @@ namespace CppSharp.Generators.CSharp
                     };
 
                     var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
-                    function.ReturnType.Type.Visit(marshal, function.ReturnType.Qualifiers);
+                    function.ReturnType.CSharpMarshalToManaged(marshal);
 
                     if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                         Write(marshal.Context.SupportBefore);
@@ -1788,7 +1788,7 @@ namespace CppSharp.Generators.CSharp
             paramMarshal.Context = ctx;
 
             var marshal = new CSharpMarshalManagedToNativePrinter(ctx);
-            param.Visit(marshal);
+            param.CSharpMarshalToNative(marshal);
 
             if (string.IsNullOrEmpty(marshal.Context.Return))
                 throw new Exception("Cannot marshal argument of function");
@@ -2089,10 +2089,8 @@ namespace CppSharp.Generators.CSharp
             var typePrinter = TypePrinter as CSharpTypePrinter;
             typePrinter.PushContext(CSharpTypePrinterContextKind.Native);
 
-            var retType = typePrinter.VisitParameterDecl(new Parameter()
-                {
-                    QualifiedType = function.ReturnType
-                });
+            var retParam = new Parameter { QualifiedType = function.ReturnType };
+            retType = retParam.CSharpType(typePrinter);
 
             var method = function as Method;
             if (method != null && !method.IsStatic)
@@ -2110,7 +2108,7 @@ namespace CppSharp.Generators.CSharp
                 if (param.Kind == ParameterKind.OperatorParameter)
                     continue;
 
-                var typeName = param.Visit(typePrinter);
+                var typeName = param.CSharpType(typePrinter);
 
                 var paramName = param.IsSynthetized ?
                     GeneratedIdentifier(param.Name) : SafeIdentifier(param.Name);

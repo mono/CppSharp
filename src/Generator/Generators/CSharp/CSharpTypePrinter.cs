@@ -16,6 +16,7 @@ namespace CppSharp.Generators.CSharp
     public class CSharpTypePrinterContext : TypePrinterContext
     {
         public CSharpTypePrinterContextKind CSharpKind;
+        public QualifiedType FullType;
 
         public CSharpTypePrinterContext()
         {
@@ -214,14 +215,12 @@ namespace CppSharp.Generators.CSharp
             if (TypeMapDatabase.FindTypeMap(decl, out typeMap))
             {
                 typeMap.Type = typedef;
-                var ctx = new CSharpTypePrinterContext
-                    {
-                        CSharpKind = ContextKind,
-                        Type = typedef
-                    };
+                Context.CSharpKind = ContextKind;
+                Context.Type = typedef;
+
                 return new CSharpTypePrinterResult()
                     {
-                        Type = typeMap.CSharpSignature(ctx),
+                        Type = typeMap.CSharpSignature(Context),
                         TypeMap = typeMap
                     };
             }
@@ -255,6 +254,7 @@ namespace CppSharp.Generators.CSharp
                 typeMap.Type = template;
                 Context.Type = template;
                 Context.CSharpKind = ContextKind;
+
                 return new CSharpTypePrinterResult()
                     {
                         Type = GetCSharpSignature(typeMap),
@@ -472,6 +472,34 @@ namespace CppSharp.Generators.CSharp
         public string ToString(Type type)
         {
             return type.Visit(this).Type;
+        }
+    }
+
+    public static class CSharpTypePrinterExtensions
+    {
+        public static CSharpTypePrinterResult CSharpType(this QualifiedType type,
+            CSharpTypePrinter printer)
+        {
+            printer.Context.FullType = type;
+            return type.Visit(printer);
+        }
+
+        public static CSharpTypePrinterResult CSharpType(this Type type,
+            CSharpTypePrinter printer)
+        {
+            return CSharpType(new QualifiedType(type), printer);
+        }
+
+        public static CSharpTypePrinterResult CSharpType(this Declaration decl,
+            CSharpTypePrinter printer)
+        {
+            if (decl is ITypedDecl)
+            {
+                var type = (decl as ITypedDecl).QualifiedType;
+                printer.Context.FullType = type;
+            }
+
+            return decl.Visit(printer);
         }
     }
 }
