@@ -136,7 +136,7 @@ namespace CppSharp.Generators.CSharp
             }
 
             PrimitiveType primitive;
-            if (pointee.IsPrimitiveType(out primitive))
+            if (pointee.Desugar().IsPrimitiveType(out primitive))
             {
                 Context.Return.Write(Context.ReturnVarName);
                 return true;
