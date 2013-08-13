@@ -219,6 +219,33 @@ namespace CppSharp.Generators.CSharp
             Context.Return.Write("{0}", Context.ReturnVarName);
             return true;
         }
+
+        public override bool VisitParameterDecl(Parameter parameter)
+        {
+            if (parameter.Usage == ParameterUsage.Unknown || parameter.IsIn)
+                return base.VisitParameterDecl(parameter);
+
+            var ctx = new CSharpMarshalContext(base.Context.Driver)
+            {
+                ReturnType = base.Context.ReturnType,
+                ReturnVarName = base.Context.ReturnVarName
+            };
+
+            var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
+            parameter.Type.Visit(marshal);
+
+            if (!string.IsNullOrWhiteSpace(ctx.SupportBefore))
+                Context.SupportBefore.WriteLine(ctx.SupportBefore);
+
+            if (!string.IsNullOrWhiteSpace(ctx.Return))
+            {
+                Context.SupportBefore.WriteLine("var _{0} = {1};", parameter.Name,
+                    ctx.Return);
+            }
+
+            Context.Return.Write("_{0}", parameter.Name);
+            return true;
+        }
     }
 
     public class CSharpMarshalManagedToNativePrinter : CSharpMarshalPrinter
