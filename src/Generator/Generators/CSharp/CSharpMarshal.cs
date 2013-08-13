@@ -171,7 +171,7 @@ namespace CppSharp.Generators.CSharp
                     return false;
             }
 
-            return false;
+            throw new NotImplementedException();
         }
 
         public override bool VisitTypedefType(TypedefType typedef, TypeQualifiers quals)
