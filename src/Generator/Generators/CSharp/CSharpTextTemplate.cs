@@ -453,6 +453,47 @@ namespace CppSharp.Generators.CSharp
             return functions;
         }
 
+        List<string> GatherInternalParams(Function function, out CSharpTypePrinterResult retType)
+        {
+            var @params = new List<string>();
+
+            TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+
+            var retParam = new Parameter { QualifiedType = function.ReturnType };
+            retType = retParam.CSharpType(TypePrinter);
+
+            var method = function as Method;
+            if (method != null && !method.IsStatic)
+            {
+                @params.Add("global::System.IntPtr instance");
+
+                if (method.IsConstructor && base.Options.IsMicrosoftAbi)
+                    retType = "global::System.IntPtr";
+            }
+
+            foreach (var param in function.Parameters)
+            {
+                if (param.Kind == ParameterKind.OperatorParameter)
+                    continue;
+
+                var typeName = param.CSharpType(TypePrinter);
+                string paramName = param.IsSynthetized ?
+                    GeneratedIdentifier(param.Name) : SafeIdentifier(param.Name);
+                @params.Add(string.Format("{0} {1}", typeName, paramName));
+            }
+
+            if (method != null && method.IsConstructor)
+            {
+                var @class = (Class) method.Namespace;
+                if (Options.IsMicrosoftAbi && @class.Layout.HasVirtualBases)
+                    @params.Add("int " + CSharpTextTemplate.GeneratedIdentifier("forBases"));
+            }
+
+            TypePrinter.PopContext();
+
+            return @params;
+        }
+
         private void GenerateClassInternalHead(Class @class = null)
         {
             Write("public ");
