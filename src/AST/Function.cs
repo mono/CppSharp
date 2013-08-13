@@ -44,6 +44,10 @@ namespace CppSharp.AST
         public ParameterUsage Usage { get; set; }
         public bool HasDefaultValue { get; set; }
 
+        public bool IsIn { get { return Usage == ParameterUsage.In; } }
+        public bool IsOut { get { return Usage == ParameterUsage.Out; } }
+        public bool IsInOut { get { return Usage == ParameterUsage.InOut; } }
+
         public bool IsSynthetized
         {
             get { return Kind != ParameterKind.Regular; }
