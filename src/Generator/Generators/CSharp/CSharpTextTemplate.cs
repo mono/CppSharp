@@ -765,7 +765,7 @@ namespace CppSharp.Generators.CSharp
                 };
 
                 var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
-                decl.Visit(marshal);
+                decl.CSharpMarshalToManaged(marshal);
 
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                     Write(marshal.Context.SupportBefore);
@@ -777,8 +777,7 @@ namespace CppSharp.Generators.CSharp
                 var @var = decl as Variable;
                 var libSymbol = GetDeclarationLibrarySymbol(@var);
 
-                var typePrinter = TypePrinter as CSharpTypePrinter;
-                typePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+                TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
 
                 var location = string.Format("CppSharp.SymbolResolver.ResolveSymbol(\"{0}\", \"{1}\")",
                     libSymbol.Item1, libSymbol.Item2);
@@ -786,7 +785,7 @@ namespace CppSharp.Generators.CSharp
                 WriteLine("var {0} = ({1}*){2};", Helpers.GeneratedIdentifier("ptr"),
                     @var.Type, location);
 
-                typePrinter.PopContext();
+                TypePrinter.PopContext();
 
                 var ctx = new CSharpMarshalContext(Driver)
                 {
@@ -796,7 +795,7 @@ namespace CppSharp.Generators.CSharp
                 };
 
                 var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
-                decl.Visit(marshal);
+                decl.CSharpMarshalToManaged(marshal);
 
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                     Write(marshal.Context.SupportBefore);
@@ -1702,7 +1701,7 @@ namespace CppSharp.Generators.CSharp
                 };
 
                 var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
-                param.Visit(marshal);
+                param.CSharpMarshalToManaged(marshal);
 
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                     Write(marshal.Context.SupportBefore);
@@ -2090,7 +2089,7 @@ namespace CppSharp.Generators.CSharp
             typePrinter.PushContext(CSharpTypePrinterContextKind.Native);
 
             var retParam = new Parameter { QualifiedType = function.ReturnType };
-            retType = retParam.CSharpType(typePrinter);
+            var retType = retParam.CSharpType(typePrinter);
 
             var method = function as Method;
             if (method != null && !method.IsStatic)
