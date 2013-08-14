@@ -310,12 +310,6 @@ namespace CppSharp.Generators.CSharp
             PushBlock(CSharpBlockKind.Class);
             GenerateDeclarationCommon(@class);
 
-            if (@class.IsUnion)
-            {
-                // TODO: How to do wrapping of unions?
-                throw new NotImplementedException();
-            }
-
             GenerateClassProlog(@class);
 
             NewLine();
