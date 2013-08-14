@@ -511,7 +511,7 @@ namespace CppSharp.Generators.CLI
 
             GenerateDeclarationCommon(method);
 
-            if (method.IsOverride)
+            if (method.IsVirtual || method.IsOverride)
                 Write("virtual ");
 
             if (method.IsStatic)

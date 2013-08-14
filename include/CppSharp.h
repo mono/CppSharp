@@ -13,10 +13,10 @@
 
 public interface class ICppInstance
 {
-  property System::IntPtr^ NativePtr
+  property System::IntPtr Instance
   {
-    System::IntPtr^ get();
-    void set(System::IntPtr^);
+    System::IntPtr get();
+    void set(System::IntPtr);
   }
 };
 
