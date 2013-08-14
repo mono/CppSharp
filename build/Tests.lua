@@ -95,7 +95,7 @@ function SetupTestProjects(name, file, lib)
 
     files { name .. ".Tests.cs" }
     links { name .. ".CSharp" }
-    dependson { name .. ".Native" }
+    --dependson { name .. ".Native" }
 
     LinkNUnit()
 
@@ -107,7 +107,7 @@ function SetupTestProjects(name, file, lib)
 
     files { name .. ".Tests.cs" }
     links { name .. ".CLI" }
-    dependson { name .. ".Native" }
+    --dependson { name .. ".Native" }
 
     LinkNUnit()
 end

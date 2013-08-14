@@ -32,3 +32,4 @@ src/generator/generator
 *.manifest
 /build/vs2012
 /deps/llvm
+/deps/llvm2
