@@ -1542,6 +1542,21 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, CppSharp::AST::Function^ F,
     String Mangled = GetDeclMangledName(FD, TargetABI, IsDependent);
     F->Mangled = marshalString<E_UTF8>(Mangled);
 
+    SourceLocation ParamStartLoc = FD->getLocStart();
+
+    auto FTSI = FD->getTypeSourceInfo();
+    if (FTSI)
+    {
+        auto FTL = FTSI->getTypeLoc();
+        while (!FTL.getAs<FunctionTypeLoc>())
+            FTL = FTL.getNextTypeLoc();
+
+        auto FTInfo = FTL.castAs<FunctionTypeLoc>();
+        assert (!FTInfo.isNull());
+
+        ParamStartLoc = FTInfo.getRParenLoc();
+    }
+
     for(auto it = FD->param_begin(); it != FD->param_end(); ++it)
     {
         ParmVarDecl* VD = (*it);
@@ -1553,11 +1568,18 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, CppSharp::AST::Function^ F,
         if (auto TSI = VD->getTypeSourceInfo())
             PTL = VD->getTypeSourceInfo()->getTypeLoc();
 
+        auto paramRange = VD->getSourceRange();
+        paramRange.setBegin(ParamStartLoc);
+
+        HandlePreprocessedEntities(P, paramRange, CppSharp::AST::MacroLocation::FunctionParameters);
+
         P->QualifiedType = GetQualifiedType(VD->getType(), WalkType(VD->getType(), &PTL));
         P->HasDefaultValue = VD->hasDefaultArg();
         P->Namespace = NS;
 
         F->Parameters->Add(P);
+
+        ParamStartLoc = VD->getLocEnd();
     }
 }
 
