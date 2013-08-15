@@ -478,7 +478,7 @@ namespace CppSharp.Generators.CLI
             var nativeType = string.Format("::{0}*", @class.QualifiedOriginalName);
             WriteLine("{0} native)", isIntPtr ? "System::IntPtr" : nativeType);
 
-            var hasBase = GenerateClassConstructorBase(@class);
+            var hasBase = GenerateClassConstructorBase(@class, isIntPtr);
 
             WriteStartBraceIndent();
 
@@ -542,25 +542,34 @@ namespace CppSharp.Generators.CLI
             }
         }
 
-        private bool GenerateClassConstructorBase(Class @class, Method method = null)
+        private bool GenerateClassConstructorBase(Class @class, bool isIntPtr, Method method = null)
         {
             var hasBase = @class.HasBase && !@class.Bases[0].Class.Ignore;
+            if (!hasBase)
+                return false;
 
-            if (hasBase && !@class.IsValueType)
+            if (!@class.IsValueType)
             {
                 PushIndent();
-                Write(": {0}(", QualifiedIdentifier(@class.Bases[0].Class));
 
-                if (method != null)
-                    Write("nullptr");
-                else
-                    Write("native");
+                var baseClass = @class.Bases[0].Class;
+                Write(": {0}(", QualifiedIdentifier(baseClass));
 
-                WriteLine(")");
+                // We cast the value to the base clas type since otherwise there
+                // could be ambiguous call to overloaded constructors.
+                if (!isIntPtr)
+                {
+                    var cppTypePrinter = new CppTypePrinter(Driver.TypeDatabase);
+                    var nativeTypeName = baseClass.Visit(cppTypePrinter);
+                    Write("({0}*)", nativeTypeName);
+                }
+
+                WriteLine("{0})", method != null ? "nullptr" : "native");
+
                 PopIndent();
             }
 
-            return hasBase;
+            return true;
         }
 
         public void GenerateMethod(Method method, Class @class)
