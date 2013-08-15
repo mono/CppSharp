@@ -578,12 +578,19 @@ namespace CppSharp.Generators.CLI
             if (@enum.Ignore || @enum.IsIncomplete)
                 return;
 
+            PushBlock(CLIBlockKind.Enum, @enum);
+
             GenerateDeclarationCommon(@enum);
 
             if (@enum.Modifiers.HasFlag(Enumeration.EnumModifiers.Flags))
                 WriteLine("[System::Flags]");
 
-            Write("public enum struct {0}", SafeIdentifier(@enum.Name));
+            // A nested class cannot have an assembly access specifier as part
+            // of its declaration.
+            if (@enum.Namespace is Namespace)
+                Write("public ");
+
+            Write("enum struct {0}", SafeIdentifier(@enum.Name));
 
             var typeName = TypePrinter.VisitPrimitiveType(@enum.BuiltinType.Type,
                 new TypeQualifiers());
@@ -613,6 +620,8 @@ namespace CppSharp.Generators.CLI
 
             NewLine();
             WriteLine("};");
+
+            PopBlock(NewLineKind.BeforeNextBlock);
         }
     }
 }
