@@ -531,7 +531,7 @@ namespace CppSharp.Generators.CLI
 
             WriteLine(";");
 
-            PopBlock();
+            PopBlock(NewLineKind.Always);
         }
 
         public bool GenerateTypedef(TypedefDecl typedef)
