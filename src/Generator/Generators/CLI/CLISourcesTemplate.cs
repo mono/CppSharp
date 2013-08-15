@@ -648,7 +648,7 @@ namespace CppSharp.Generators.CLI
                 names.Add(marshal.Context.Return);
             }
 
-            WriteLine("auto _native = ::{0}({1});", @class.QualifiedOriginalName,
+            WriteLine("::{0} _native({1});", @class.QualifiedOriginalName,
                       string.Join(", ", names));
 
             GenerateValueTypeConstructorCallFields(@class);
