@@ -111,7 +111,6 @@ namespace CppSharp.Generators.CLI
         public void GenerateClass(Class @class)
         {
             PushBlock(CLIBlockKind.Class);
-            //GenerateDeclarationCommon(@class);
 
             // Output a default constructor that takes the native pointer.
             GenerateClassConstructor(@class, isIntPtr: false);
@@ -122,7 +121,6 @@ namespace CppSharp.Generators.CLI
                 if (ASTUtils.CheckIgnoreMethod(method))
                     continue;
 
-                GenerateDeclarationCommon(method);
                 GenerateMethod(method, @class);
 
                 NewLine();
