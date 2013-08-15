@@ -2068,19 +2068,6 @@ namespace CppSharp.Generators.CSharp
             return name;
         }
 
-        bool FindMangledDeclLibrary(IMangledDecl decl, out NativeLibrary library)
-        {
-            string symbol;
-            if (!FindMangledDeclSymbol(decl, out symbol))
-            {
-                library = null;
-                return false;
-            }
-
-            Driver.LibrarySymbols.FindLibraryBySymbol(symbol, out library);
-            return true;
-        }
-
         bool FindMangledDeclSymbol(IMangledDecl decl, out string symbol)
         {
             symbol = decl.Mangled;
@@ -2109,10 +2096,9 @@ namespace CppSharp.Generators.CSharp
             if (Options.CheckSymbols)
             {
                 NativeLibrary library;
-                FindMangledDeclLibrary(function, out library);
+                Driver.LibrarySymbols.FindLibraryBySymbol(function.Mangled, out library);
 
-                libName = (library != null) ? library.FileName : "SymbolNotFound";
-                libName = Path.GetFileNameWithoutExtension(libName);
+                libName = Path.GetFileNameWithoutExtension(library.FileName);
             }
             if (libName != null && libName.Length > 3 && libName.StartsWith("lib"))
             {
