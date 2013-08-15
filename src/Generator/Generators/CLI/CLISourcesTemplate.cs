@@ -885,7 +885,6 @@ namespace CppSharp.Generators.CLI
                         };
 
                 var marshal = new CLIMarshalManagedToNativePrinter(ctx);
-
                 param.Visit(marshal);
 
                 if (string.IsNullOrEmpty(marshal.Context.Return))
