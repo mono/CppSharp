@@ -464,6 +464,8 @@ namespace CppSharp.Generators.CLI
             NewLine();
             WriteLine("{");
             WriteLine("public:");
+            NewLine();
+
             return false;
         }
 
