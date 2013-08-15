@@ -184,9 +184,15 @@ namespace CppSharp.Generators.CLI
 
             GenerateDeclarationCommon(@class);
 
-
             if (GenerateClassProlog(@class))
                 return;
+
+            foreach (var @enum in @class.Enums)
+            {
+                PushIndent();
+                GenerateEnum(@enum);
+                PopIndent();
+            }
 
             var nativeType = string.Format("::{0}*", @class.QualifiedOriginalName);
 
