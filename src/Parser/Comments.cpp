@@ -123,7 +123,8 @@ static CppSharp::AST::Comment^ ConvertCommentBlock(clang::comments::Comment* C)
         _Comment = PC;
         HandleBlockCommand(CK, PC);
         PC->Direction = ConvertParamPassDirection(CK->getDirection());
-        PC->ParamIndex = CK->getParamIndex();
+        if (CK->isParamIndexValid() && !CK->isVarArgParam())
+            PC->ParamIndex = CK->getParamIndex();
         break;
     }
     case Comment::TParamCommandCommentKind:
