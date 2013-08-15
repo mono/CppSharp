@@ -9,35 +9,49 @@ namespace CppSharp
 {
     public class ObjectOverridesPass : TranslationUnitPass
     {
-        void OnUnitGenerated(GeneratorOutput output)
+        private void OnUnitGenerated(GeneratorOutput output)
         {
             foreach (var template in output.Templates)
             {
                 foreach (var block in template.FindBlocks(CLIBlockKind.MethodBody))
                 {
                     var method = block.Declaration as Method;
-                    if (!method.IsSynthetized)
-                        continue;
-
-                    var @class = (Class) method.Namespace;
-
-                    switch (method.Name)
-                    {
-                    case "GetHashCode":
-                        block.Write("return (int)NativePtr;");
-                        break;
-                    case "Equals":
-                        var cliTypePrinter = new CLITypePrinter(Driver);
-                        var classCliType = @class.Visit(cliTypePrinter);
-                        block.WriteLine("if (!object) return false;");
-                        block.WriteLine("auto obj = dynamic_cast<{0}>({1});",
-                            classCliType, method.Parameters[0].Name);
-                        block.WriteLine("if (!obj) return false;");
-                        block.Write("return Instance == obj->Instance;");
-                        break;
-                    }
+                    VisitMethod(method, block);
                 }
             }
+        }
+
+        private void VisitMethod(Method method, Block block)
+        {
+            if (!method.IsSynthetized)
+                return;
+
+            var @class = (Class)method.Namespace;
+
+            if (method.Name == "GetHashCode" && method.Parameters.Count == 0)
+                GenerateGetHashCode(block);
+
+            if (method.Name == "Equals" && method.Parameters.Count == 1)
+                GenerateEquals(@class, block, method);
+        }
+
+        void GenerateGetHashCode(Block block)
+        {
+            block.Write("return (int)NativePtr;");
+        }
+
+        void GenerateEquals(Class @class, Block block, Method method)
+        {
+            var cliTypePrinter = new CLITypePrinter(Driver);
+            var classCliType = @class.Visit(cliTypePrinter);
+
+            block.WriteLine("if (!object) return false;");
+            block.WriteLine("auto obj = dynamic_cast<{0}>({1});",
+                classCliType, method.Parameters[0].Name);
+            block.NewLine();
+
+            block.WriteLine("if (!obj) return false;");
+            block.Write("return Instance == obj->Instance;");
         }
 
         private bool isHooked;
