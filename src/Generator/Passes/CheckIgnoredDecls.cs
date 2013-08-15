@@ -81,6 +81,20 @@ namespace CppSharp.Passes
             return true;
         }
 
+        public override bool VisitMethodDecl(Method method)
+        {
+            if (!VisitDeclaration(method))
+                return false;
+
+            if (method.Access != AccessSpecifier.Public)
+            {
+                method.ExplicityIgnored = true;
+                return false;
+            }
+
+            return base.VisitMethodDecl(method);
+        }
+
         public override bool VisitTypedefDecl(TypedefDecl typedef)
         {
             if (!VisitDeclaration(typedef))
