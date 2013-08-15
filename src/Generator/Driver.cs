@@ -274,7 +274,7 @@ namespace CppSharp
     {
         public static void Run(ILibrary library)
         {
-            Console.BufferHeight = 1999;
+            try { Console.BufferHeight = 1999; } catch (IOException) { }
 
             var options = new DriverOptions();
             var driver = new Driver(options, new TextDiagnosticPrinter());
