@@ -122,8 +122,6 @@ namespace CppSharp.Generators.CLI
                     continue;
 
                 GenerateMethod(method, @class);
-
-                NewLine();
             }
 
             if (@class.IsRefType)
@@ -574,9 +572,9 @@ namespace CppSharp.Generators.CLI
 
         public void GenerateMethod(Method method, Class @class)
         {
-            GenerateDeclarationCommon(method);
+            PushBlock(CLIBlockKind.Method, method);
 
-            if (method.Kind == CXXMethodKind.Constructor || method.Kind == CXXMethodKind.Destructor)
+            if (method.IsConstructor || method.IsDestructor)
                 Write("{0}::{1}(", QualifiedIdentifier(@class), SafeIdentifier(method.Name));
             else
                 Write("{0} {1}::{2}(", method.ReturnType, QualifiedIdentifier(@class),
@@ -586,8 +584,8 @@ namespace CppSharp.Generators.CLI
 
             WriteLine(")");
 
-            if (method.Kind == CXXMethodKind.Constructor)
-                GenerateClassConstructorBase(@class, method);
+            if (method.IsConstructor)
+                GenerateClassConstructorBase(@class, isIntPtr: false, method: method);
 
             WriteStartBraceIndent();
 
@@ -598,7 +596,7 @@ namespace CppSharp.Generators.CLI
 
             if (@class.IsRefType)
             {
-                if (method.Kind == CXXMethodKind.Constructor)
+                if (method.IsConstructor)
                 {
                     if (!@class.IsAbstract)
                     {
@@ -615,7 +613,7 @@ namespace CppSharp.Generators.CLI
             }
             else if (@class.IsValueType)
             {
-                if (method.Kind != CXXMethodKind.Constructor)
+                if (!method.IsConstructor)
                     GenerateFunctionCall(method, @class);
                 else
                     GenerateValueTypeConstructorCall(method, @class);
@@ -624,7 +622,9 @@ namespace CppSharp.Generators.CLI
         SkipImpl:
 
             PopBlock();
+
             WriteCloseBraceIndent();
+            PopBlock(NewLineKind.Always);
         }
 
         private void GenerateValueTypeConstructorCall(Method method, Class @class)
