@@ -2114,6 +2114,10 @@ namespace CppSharp.Generators.CSharp
                 libName = (library != null) ? library.FileName : "SymbolNotFound";
                 libName = Path.GetFileNameWithoutExtension(libName);
             }
+            if (libName != null && libName.Length > 3 && libName.StartsWith("lib"))
+            {
+                libName = libName.Substring(3);
+            }
 
             Write("[DllImport(\"{0}\", ", libName);
 
