@@ -477,9 +477,7 @@ namespace CppSharp.Generators.CLI
                 if (prop.Ignore) continue;
 
                 GenerateDeclarationCommon(prop);
-                var isGetter = prop.GetMethod != null || prop.Field != null;
-                var isSetter = prop.SetMethod != null || prop.Field != null;
-                GenerateProperty(prop, isGetter, isSetter);
+                GenerateProperty(prop, prop.HasGetter, prop.HasSetter);
             }
             PopIndent();
         }

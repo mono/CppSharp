@@ -240,13 +240,23 @@ namespace CppSharp.Generators.CLI
 
             if (property.Field != null)
             {
-                GeneratePropertyGetter(property.Field, @class, property.Name, property.Type);
-                GeneratePropertySetter(property.Field, @class, property.Name, property.Type);
+                if (property.HasGetter)
+                    GeneratePropertyGetter(property.Field, @class, property.Name,
+                        property.Type);
+
+                if (property.HasSetter)
+                    GeneratePropertySetter(property.Field, @class, property.Name,
+                        property.Type);
             }
             else
             {
-                GeneratePropertyGetter(property.GetMethod, @class, property.Name, property.Type);
-                GeneratePropertySetter(property.SetMethod, @class, property.Name, property.Type);
+                if (property.HasGetter)
+                    GeneratePropertyGetter(property.GetMethod, @class, property.Name,
+                        property.Type);
+
+                if (property.HasSetter)
+                    GeneratePropertySetter(property.SetMethod, @class, property.Name,
+                        property.Type);
             }
             PopBlock(); 
         }

@@ -892,15 +892,18 @@ namespace CppSharp.Generators.CSharp
 
                 if (prop.Field != null)
                 {
-                    GeneratePropertyGetter(prop.Field, @class);
-                    GeneratePropertySetter(prop.Field, @class);
+                    if (prop.HasGetter)
+                        GeneratePropertyGetter(prop.Field, @class);
+
+                    if (prop.HasSetter)
+                        GeneratePropertySetter(prop.Field, @class);
                 }
                 else
                 {
-                    if (prop.GetMethod != null)
+                    if (prop.HasGetter)
                         GeneratePropertyGetter(prop.GetMethod, @class);
 
-                    if (prop.SetMethod != null)
+                    if (prop.HasSetter)
                         GeneratePropertySetter(prop.SetMethod, @class);
                 }
 

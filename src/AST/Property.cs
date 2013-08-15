@@ -16,6 +16,23 @@ namespace CppSharp.AST
 
         public Method SetMethod { get; set; }
 
+        public bool HasGetter
+        {
+            get
+            {
+                return (GetMethod != null) || (Field != null);
+            }
+        }
+
+        public bool HasSetter
+        {
+            get
+            {
+                return (SetMethod != null) ||
+                       (Field != null && !Field.QualifiedType.Qualifiers.IsConst);
+            }
+        }
+
         // The field that should be get and set by this property
         public Field Field { get; set; }
 
