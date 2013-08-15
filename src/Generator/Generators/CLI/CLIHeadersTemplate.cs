@@ -184,14 +184,6 @@ namespace CppSharp.Generators.CLI
 
             GenerateDeclarationCommon(@class);
 
-            if (@class.IsUnion)
-            {
-                // TODO: How to do wrapping of unions?
-                //const string @namespace = "System::Runtime::InteropServices";
-                //WriteLine("[{0}::StructLayout({0}::LayoutKind::Explicit)]",
-                //    @namespace);
-                //throw new NotImplementedException("Unions are not supported yet");
-            }
 
             if (GenerateClassProlog(@class))
                 return;
