@@ -1324,9 +1324,15 @@ namespace CppSharp.Generators.CSharp
 
             // Generate Dispose(bool) method
             PushBlock(CSharpBlockKind.Method);
-            Write("protected ");
-
-            Write(hasBaseClass ? "override " : "virtual ");
+            if (@class.IsValueType)
+            {
+                this.Write("private ");
+            }
+            else
+            {
+                this.Write("protected ");
+                this.Write(hasBaseClass ? "override " : "virtual ");
+            }
 
             WriteLine("void Dispose(bool disposing)");
             WriteStartBraceIndent();
