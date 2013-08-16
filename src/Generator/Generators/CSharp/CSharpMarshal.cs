@@ -437,7 +437,7 @@ namespace CppSharp.Generators.CSharp
                 return;
             }
 
-            Context.Return.Write("*({0}.Internal*){1}.{2}", @class.Name,
+            Context.Return.Write("*({0}.Internal*){1}.{2}", CSharpMarshalNativeToManagedPrinter.QualifiedIdentifier(@class),
                 Helpers.SafeIdentifier(Context.Parameter.Name), Helpers.InstanceIdentifier);
 
         }
