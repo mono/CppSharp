@@ -68,7 +68,7 @@ function SetupTestProjects(name, file, lib)
     location "."
     flags { "Unsafe" }
     
-    dependson { name .. ".Gen" }
+    dependson { name .. ".Gen", name .. ".Native" }
     SetupTestGen(name)
 
     files
@@ -83,7 +83,7 @@ function SetupTestProjects(name, file, lib)
     language "C++"
     flags { "Managed" }
 
-    dependson { name .. ".Gen" }
+    dependson { name .. ".Gen", name .. ".Native" }
     SetupTestGen(name)
 
     files
