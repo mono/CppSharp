@@ -55,6 +55,11 @@ function LinkNUnit()
   }
 end
 
+function SetupTestGen(name)
+  local exePath = SafePath("$(TargetDir)" .. name .. ".Gen.exe")
+  prebuildcommands { exePath }
+end
+
 function SetupTestProjects(name, file, lib)
   project(name .. ".CSharp")
 
@@ -64,6 +69,7 @@ function SetupTestProjects(name, file, lib)
     flags { "Unsafe" }
     
     dependson { name .. ".Gen" }
+    SetupTestGen(name)
 
     files
     {
@@ -77,6 +83,7 @@ function SetupTestProjects(name, file, lib)
     flags { "Managed" }
 
     dependson { name .. ".Gen" }
+    SetupTestGen(name)
 
     files
     {

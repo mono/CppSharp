@@ -19,6 +19,10 @@ gcc_buildflags = { "-std=gnu++11" }
 
 msvc_cpp_defines = { }
 
+function SafePath(path)
+  return "\"" .. path .. "\""
+end
+
 function SetupNativeProject()
   location (path.join(builddir, "projects"))
 
