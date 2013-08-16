@@ -1,10 +1,10 @@
 #if defined(_MSC_VER)
-#define CppSharp_API __declspec(dllexport)
+#define DLL_API __declspec(dllexport)
 #else
-#define CppSharp_API
+#define DLL_API
 #endif
 
-class CppSharp_API Foo
+class DLL_API Foo
 {
 public:
 
@@ -13,21 +13,21 @@ public:
     float B;
 };
 
-class CppSharp_API Foo2 : public Foo
+class DLL_API Foo2 : public Foo
 {
 public:
 
     int C;
 };
 
-struct CppSharp_API Bar
+struct DLL_API Bar
 {
     Bar();
     int A;
     float B;
 };
 
-struct CppSharp_API Bar2 : public Bar
+struct DLL_API Bar2 : public Bar
 {
     int C;
 };
@@ -37,7 +37,7 @@ enum Enum
     A = 0, B = 2, C = 5
 };
 
-class CppSharp_API Hello
+class DLL_API Hello
 {
 public:
     Hello ();
