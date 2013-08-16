@@ -35,9 +35,9 @@ struct DLL_API Bar2 : public Bar
 enum Enum
 {
     A = 0, B = 2, C = 5,
-    Signed = 0x80000000,
-    F = 0x1,
-    H = -9
+    D = 0x80000000,
+    E = 0x1,
+    F = -9
 };
 
 class DLL_API Hello
