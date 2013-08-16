@@ -4,18 +4,27 @@ namespace CppSharp.Passes
 {
     public class FindSymbolsPass : TranslationUnitPass
     {
-        public override bool VisitFunctionDecl(Function function)
+        public override bool VisitDeclaration(Declaration decl)
         {
-            string symbol = function.Mangled;
-            if (!Driver.LibrarySymbols.FindSymbol(ref symbol))
+            IMangledDecl mangledDecl = decl as IMangledDecl;
+            if (mangledDecl != null && !VisitMangledDeclaration(mangledDecl))
             {
-                Driver.Diagnostics.EmitWarning(DiagnosticId.SymbolNotFound,
-                    "Symbol not found: {0}", symbol);
-                function.ExplicityIgnored = true;
+                decl.ExplicityIgnored = true;
                 return false;
             }
-            function.Mangled = symbol;
-            return base.VisitFunctionDecl(function);
+            return base.VisitDeclaration(decl);
+        }
+
+        private bool VisitMangledDeclaration(IMangledDecl mangledDecl)
+        {
+            string symbol = mangledDecl.Mangled;
+            if (!Driver.LibrarySymbols.FindSymbol(ref symbol))
+            {
+                Driver.Diagnostics.EmitWarning(DiagnosticId.SymbolNotFound, "Symbol not found: {0}", symbol);
+                return false;
+            }
+            mangledDecl.Mangled = symbol;
+            return true;
         }
     }
 }
