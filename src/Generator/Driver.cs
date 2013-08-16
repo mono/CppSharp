@@ -225,6 +225,7 @@ namespace CppSharp
 
         // General options
         public bool Verbose;
+        public bool Quiet;
         public bool ShowHelpText;
         public bool OutputDebug;
 
@@ -280,18 +281,26 @@ namespace CppSharp
             library.Setup(driver);
             driver.Setup();
 
-            Console.WriteLine("Parsing libraries...");
+            if (!options.Quiet)
+                Console.WriteLine("Parsing libraries...");
+
             if (!driver.ParseLibraries())
                 return;
 
-            Console.WriteLine("Indexing library symbols...");
+            if (!options.Quiet)
+                Console.WriteLine("Indexing library symbols...");
+
             driver.LibrarySymbols.IndexSymbols();
 
-            Console.WriteLine("Parsing code...");
+            if (!options.Quiet) 
+                Console.WriteLine("Parsing code...");
+
             if (!driver.ParseCode())
                 return;
 
-            Console.WriteLine("Processing code...");
+            if (!options.Quiet)
+                Console.WriteLine("Processing code...");
+
             library.Preprocess(driver, driver.Library);
 
             driver.SetupPasses(library);
@@ -299,7 +308,9 @@ namespace CppSharp
             driver.ProcessCode();
             library.Postprocess(driver.Library);
 
-            Console.WriteLine("Generating code...");
+            if (!options.Quiet)
+                Console.WriteLine("Generating code...");
+
             var outputs = driver.GenerateCode();
 
             foreach (var output in outputs)
