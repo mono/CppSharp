@@ -240,6 +240,14 @@ namespace CppSharp.Passes
                 msg = "ignored";
                 return true;
             }
+            ArrayType arrayType = type as ArrayType;
+            PrimitiveType primitive;
+            if (arrayType != null && arrayType.SizeType == ArrayType.ArraySize.Constant &&
+                !arrayType.Type.Desugar().IsPrimitiveType(out primitive))
+            {
+                msg = "unsupported";
+                return true;
+            }
 
             msg = null;
             return false;
