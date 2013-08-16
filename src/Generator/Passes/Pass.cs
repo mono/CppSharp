@@ -1,5 +1,4 @@
-﻿
-using CppSharp.AST;
+﻿using CppSharp.AST;
 using CppSharp.Generators;
 
 namespace CppSharp.Passes
