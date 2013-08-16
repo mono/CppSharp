@@ -887,7 +887,7 @@ namespace CppSharp.Generators.CSharp
                 if (prop.Ignore) continue;
 
                 PushBlock(CSharpBlockKind.Property);
-                WriteLine("public {0} {1}", prop.Type, prop.Name);
+                WriteLine("public {0} {1}", prop.Type, SafeIdentifier(prop.Name));
                 WriteStartBraceIndent();
 
                 if (prop.Field != null)
@@ -915,7 +915,7 @@ namespace CppSharp.Generators.CSharp
         private void GenerateVariable(Class @class, Type type, Variable variable)
         {
             PushBlock(CSharpBlockKind.Variable);
-            WriteLine("public static {0} {1}", type, variable.Name);
+            WriteLine("public static {0} {1}", type, SafeIdentifier(variable.Name));
             WriteStartBraceIndent();
 
             GeneratePropertyGetter(variable, @class);
