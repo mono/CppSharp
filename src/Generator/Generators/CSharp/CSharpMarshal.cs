@@ -311,9 +311,9 @@ namespace CppSharp.Generators.CSharp
                 type.IsPrimitiveType(PrimitiveType.WideChar))
             {
                 Context.Return.Write("Marshal.StringToHGlobalAnsi({0})",
-                    Context.Parameter.Name);
+                    Helpers.SafeIdentifier(Context.Parameter.Name));
                 CSharpContext.Cleanup.WriteLine("Marshal.FreeHGlobal({0});",
-                    Context.ArgName);
+                    Helpers.SafeIdentifier(Context.ArgName));
                 return true;
             }
 
