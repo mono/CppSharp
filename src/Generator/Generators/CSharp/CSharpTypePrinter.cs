@@ -97,10 +97,6 @@ namespace CppSharp.Generators.CSharp
             if (ContextKind == CSharpTypePrinterContextKind.Native &&
                 array.SizeType == ArrayType.ArraySize.Constant)
             {
-                //PrimitiveType primitive;
-                //if (!array.Type.Desugar().IsPrimitiveType(out primitive))
-                //    throw new NotSupportedException();
-
                 return new CSharpTypePrinterResult()
                 {
                     Type = string.Format("fixed {0}", array.Type.Visit(this, quals)),
