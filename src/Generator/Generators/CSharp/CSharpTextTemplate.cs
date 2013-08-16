@@ -696,22 +696,18 @@ namespace CppSharp.Generators.CSharp
         private Tuple<string, string> GetDeclarationLibrarySymbol(IMangledDecl decl)
         {
             var library = Options.SharedLibraryName;
-            var symbol = decl.Mangled;
 
             if (!Options.CheckSymbols)
                 goto Out;
 
-            if (!FindMangledDeclSymbol(decl, out symbol))
-                goto Out;
-
             NativeLibrary nativeLib;
-            if (!Driver.LibrarySymbols.FindLibraryBySymbol(symbol, out nativeLib))
+            if (!Driver.LibrarySymbols.FindLibraryBySymbol(decl.Mangled, out nativeLib))
                 goto Out;
 
             library = Path.GetFileNameWithoutExtension(nativeLib.FileName);
 
             Out:
-            return Tuple.Create(library, symbol);
+            return Tuple.Create(library, decl.Mangled);
         }
 
         private void GeneratePropertySetter<T>(T decl, Class @class)
@@ -2075,20 +2071,6 @@ namespace CppSharp.Generators.CSharp
             typePrinter.PopContext();
 
             return name;
-        }
-
-        bool FindMangledDeclSymbol(IMangledDecl decl, out string symbol)
-        {
-            symbol = decl.Mangled;
-            if (!Driver.LibrarySymbols.FindSymbol(ref symbol))
-            {
-                Driver.Diagnostics.EmitError(DiagnosticId.SymbolNotFound,
-                    "Symbol not found: {0}", symbol);
-                symbol = null;
-                return false;
-            }
-
-            return true;
         }
 
         public void GenerateInternalFunction(Function function)
