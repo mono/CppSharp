@@ -43,7 +43,7 @@ namespace CppSharp.Passes
         {
             foreach (var @operator in @class.Operators)
             {
-                if (!IsValidOperatorOverload(@operator.OperatorKind))
+                if (!IsValidOperatorOverload(@operator))
                 {
                     Driver.Diagnostics.EmitError(DiagnosticId.InvalidOperatorOverload,
                         "Invalid operator overload {0}::{1}",
@@ -130,11 +130,11 @@ namespace CppSharp.Passes
             return CXXOperatorKind.None;
         }
 
-        static bool IsValidOperatorOverload(CXXOperatorKind kind)
+        static bool IsValidOperatorOverload(Method @operator)
         {
             // These follow the order described in MSDN (Overloadable Operators).
 
-            switch (kind)
+            switch (@operator.OperatorKind)
             {
                 // These unary operators can be overloaded
                 case CXXOperatorKind.Plus:
@@ -151,8 +151,6 @@ namespace CppSharp.Passes
                 case CXXOperatorKind.Amp:
                 case CXXOperatorKind.Pipe:
                 case CXXOperatorKind.Caret:
-                case CXXOperatorKind.LessLess:
-                case CXXOperatorKind.GreaterGreater:
 
                 // The comparison operators can be overloaded
                 case CXXOperatorKind.EqualEqual:
@@ -162,6 +160,12 @@ namespace CppSharp.Passes
                 case CXXOperatorKind.LessEqual:
                 case CXXOperatorKind.GreaterEqual:
                     return true;
+
+                case CXXOperatorKind.LessLess:
+                case CXXOperatorKind.GreaterGreater:
+                    PrimitiveType primitiveType;
+                    return @operator.Parameters.Last().Type.IsPrimitiveType(out primitiveType) &&
+                           primitiveType == PrimitiveType.Int32;
 
                 // Assignment operators cannot be overloaded
                 case CXXOperatorKind.PlusEqual:
