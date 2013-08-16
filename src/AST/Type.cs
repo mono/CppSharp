@@ -641,6 +641,8 @@ namespace CppSharp.AST
         {
             var type = obj as InjectedClassNameType;
             if (type == null) return false;
+            if (TemplateSpecialization == null || type.TemplateSpecialization == null)
+                return TemplateSpecialization == type.TemplateSpecialization;
 
             return TemplateSpecialization.Equals(type.TemplateSpecialization)
                 && Class.Equals(type.Class);
