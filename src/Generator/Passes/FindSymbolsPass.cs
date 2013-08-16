@@ -6,7 +6,10 @@ namespace CppSharp.Passes
     {
         public override bool VisitDeclaration(Declaration decl)
         {
-            IMangledDecl mangledDecl = decl as IMangledDecl;
+            if (!Driver.Options.CheckSymbols)
+                return false;
+
+            var mangledDecl = decl as IMangledDecl;
             if (mangledDecl != null && !VisitMangledDeclaration(mangledDecl))
             {
                 decl.ExplicityIgnored = true;
@@ -17,7 +20,7 @@ namespace CppSharp.Passes
 
         private bool VisitMangledDeclaration(IMangledDecl mangledDecl)
         {
-            string symbol = mangledDecl.Mangled;
+            var symbol = mangledDecl.Mangled;
             if (!Driver.LibrarySymbols.FindSymbol(ref symbol))
             {
                 Driver.Diagnostics.EmitWarning(DiagnosticId.SymbolNotFound, "Symbol not found: {0}", symbol);
