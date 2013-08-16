@@ -74,55 +74,54 @@ namespace CppSharp.Passes
         static void HandleMissingOperatorOverloadPair(Class @class, CXXOperatorKind op1,
             CXXOperatorKind op2)
         {
-            int index;
-            var missingKind = CheckMissingOperatorOverloadPair(@class, out index, op1, op2);
-
-            if (missingKind == CXXOperatorKind.None)
-                return;
-
-            var existingKind = missingKind == op2 ? op1 : op2;
-
-            // FIXME: We have to check for missing overloads per overload instance.
-            foreach (var overload in @class.FindOperator(existingKind).ToList())
+            foreach (var op in @class.Operators.Where(
+                o => o.OperatorKind == op1 || o.OperatorKind == op2).ToList())
             {
-                if (overload.Ignore) continue;
+                int index;
+                var missingKind = CheckMissingOperatorOverloadPair(@class, out index, op1, op2,
+                                                                   op.Parameters.Last().Type);
 
-                var @params = overload.Parameters;
+                if (missingKind == CXXOperatorKind.None)
+                    return;
+
+                if (op.Ignore) continue;
 
                 bool isBuiltin;
                 var method = new Method()
-                {
-                    Name = CSharpTextTemplate.GetOperatorIdentifier(missingKind, out isBuiltin),
-                    Namespace = @class,
-                    IsSynthetized = true,
-                    Kind = CXXMethodKind.Operator,
-                    OperatorKind = missingKind,
-                    ReturnType = overload.ReturnType,
-                    Parameters = @params
-                };
+                    {
+                        Name = CSharpTextTemplate.GetOperatorIdentifier(missingKind, out isBuiltin),
+                        Namespace = @class,
+                        IsSynthetized = true,
+                        Kind = CXXMethodKind.Operator,
+                        OperatorKind = missingKind,
+                        ReturnType = op.ReturnType,
+                        Parameters = op.Parameters
+                    };
 
                 @class.Methods.Insert(index, method);
             }
         }
 
         static CXXOperatorKind CheckMissingOperatorOverloadPair(Class @class,
-            out int index, CXXOperatorKind op1, CXXOperatorKind op2)
+            out int index, CXXOperatorKind op1, CXXOperatorKind op2, Type type)
         {
-            var first = @class.FindOperator(op1).ToList();
-            var second = @class.FindOperator(op2).ToList();
+            var first = @class.Operators.FirstOrDefault(o => o.OperatorKind == op1 &&
+                                                             o.Parameters.Last().Type.Equals(type));
+            var second = @class.Operators.FirstOrDefault(o => o.OperatorKind == op2 &&
+                                                              o.Parameters.Last().Type.Equals(type));
 
-            var hasFirst = first.Count > 0;
-            var hasSecond = second.Count > 0;
+            var hasFirst = first != null;
+            var hasSecond = second != null;
 
-            if (hasFirst && !hasSecond)
+            if (hasFirst && (!hasSecond || second.Ignore))
             {
-                index = @class.Methods.IndexOf(first.Last());
+                index = @class.Methods.IndexOf(first);
                 return op2;
             }
 
-            if (hasSecond && !hasFirst)
+            if (hasSecond && (!hasFirst || first.Ignore))
             {
-                index = @class.Methods.IndexOf(second.First());
+                index = @class.Methods.IndexOf(second);
                 return op1;
             }
 
