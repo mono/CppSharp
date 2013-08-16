@@ -1,4 +1,4 @@
--- Examples helpers
+-- Tests/examples helpers
 
 function SetupExampleProject()
   SetupNativeProjects()
@@ -78,6 +78,7 @@ function SetupTestProjects(name, file, lib)
 
   project(name .. ".CLI")
 
+    SetupNativeProject()
     kind "SharedLib"
     language "C++"
     flags { "Managed" }
