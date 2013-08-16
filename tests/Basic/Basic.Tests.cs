@@ -38,6 +38,9 @@ public class BasicTests
         Assert.That(hello.RetEnum(Enum.A), Is.EqualTo(0));
         Assert.That(hello.RetEnum(Enum.B), Is.EqualTo(2));
         Assert.That(hello.RetEnum(Enum.C), Is.EqualTo(5));
+        Assert.That(hello.RetEnum(Enum.D), Is.EqualTo(-2147483648));
+        Assert.That(hello.RetEnum(Enum.E), Is.EqualTo(1));
+        Assert.That(hello.RetEnum(Enum.F), Is.EqualTo(-9));
     }
 
     static void Main(string[] args)

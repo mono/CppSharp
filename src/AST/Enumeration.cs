@@ -56,10 +56,11 @@ namespace CppSharp.AST
 
         public string GetItemValueAsString(Item item)
         {
-            var format = item.IsHexadecimal ? "x" : string.Empty;
+            var printAsHex = item.IsHexadecimal && BuiltinType.IsUnsigned;
+            var format = printAsHex ? "x" : string.Empty;
             var value = BuiltinType.IsUnsigned ? item.Value.ToString(format) :
                 ((long)item.Value).ToString(format);
-            return item.IsHexadecimal ? "0x" + value : value;
+            return printAsHex ? "0x" + value : value;
         }
 
         public Enumeration SetFlags()
