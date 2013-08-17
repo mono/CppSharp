@@ -6,15 +6,12 @@ namespace CppSharp.Passes
     {
         public override bool VisitDeclaration(Declaration decl)
         {
-            var mangledDecl = decl as IMangledDecl;
-            if (mangledDecl == null)
-                return false;
-
             var options = Driver.Options;
             if (!options.CheckSymbols || options.IsCLIGenerator)
                 return false;
 
-            if (!VisitMangledDeclaration(mangledDecl))
+            var mangledDecl = decl as IMangledDecl;
+            if (mangledDecl != null && !VisitMangledDeclaration(mangledDecl))
             {
                 decl.ExplicityIgnored = true;
                 return false;
