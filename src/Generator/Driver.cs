@@ -266,6 +266,16 @@ namespace CppSharp
         public Func<TranslationUnit, string> GenerateName;
         public int MaxIndent;
         public string CommentPrefix;
+
+        public bool IsCSharpGenerator
+        {
+            get { return GeneratorKind == LanguageGeneratorKind.CSharp; }
+        }
+
+        public bool IsCLIGenerator
+        {
+            get { return GeneratorKind == LanguageGeneratorKind.CPlusPlusCLI; }
+        }
     }
 
     public class InvalidOptionException : Exception
