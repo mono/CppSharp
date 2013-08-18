@@ -76,6 +76,8 @@ function SetupTestProjects(name, file, lib)
       path.join(gendir, name, name .. ".cs"),
     }
 
+    links { "CppSharp.Runtime" }
+
   project(name .. ".CLI")
 
     SetupNativeProject()
