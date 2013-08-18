@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using CppSharp.AST;
 using CppSharp.Types;
 using Type = CppSharp.AST.Type;
@@ -206,6 +207,39 @@ namespace CppSharp.Generators.CSharp
             if (ctx.Kind == CSharpMarshalKind.NativeField)
             {
                 instance = string.Format("new global::System.IntPtr(&{0})", instance);
+            }
+
+            if (@class.IsRefType)
+            {
+                var instanceName = Helpers.GeneratedIdentifier("instance");
+
+                // Allocate memory for a new native object and call the ctor.
+                Context.SupportBefore.WriteLine("var {0} = Marshal.AllocHGlobal({1});",
+                    instanceName, @class.Layout.Size);
+
+                if (@class.HasNonTrivialCopyConstructor)
+                {
+                    // Find a valid copy constructor overload.
+                    var copyCtorMethod = @class.Methods.FirstOrDefault(method =>
+                        method.IsCopyConstructor);
+
+                    if (copyCtorMethod == null)
+                        throw new NotSupportedException("Expected a valid copy constructor");
+
+                    // Call the copy constructor.
+                    Context.SupportBefore.WriteLine("{0}.Internal.{1}({2}, new global::System.IntPtr(&{3}));",
+                        @class.QualifiedName,
+                        CSharpTextTemplate.GetFunctionNativeIdentifier(copyCtorMethod),
+                        instanceName, instance);
+                }
+                else
+                {
+                    Context.SupportBefore.WriteLine(
+                        "CppSharp.Runtime.Helpers.memcpy({0}, new IntPtr(&{1}), new UIntPtr({2}));",
+                        instanceName, instance, @class.Layout.Size);
+                }
+
+                instance = instanceName;
             }
 
             Context.Return.Write("new {0}({1})", QualifiedIdentifier(@class),
