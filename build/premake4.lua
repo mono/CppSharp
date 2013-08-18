@@ -27,6 +27,9 @@ solution "CppSharp"
   configuration "vs2012"
     framework "4.0"
 
+  configuration "windows"
+    defines { "WINDOWS" }
+
   configuration {}
     
   group "Examples"
