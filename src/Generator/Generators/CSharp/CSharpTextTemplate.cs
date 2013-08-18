@@ -2020,46 +2020,36 @@ namespace CppSharp.Generators.CSharp
             throw new NotSupportedException();
         }
 
-        public string GetFunctionIdentifier(Function function)
+        public static string GetFunctionIdentifier(Function function)
         {
-            var printer = TypePrinter as CSharpTypePrinter;
-            var isNativeContext = printer.ContextKind == CSharpTypePrinterContextKind.Native;
-
-            string identifier;
-            bool isBuiltin;
+            var identifier = SafeIdentifier(function.Name);
 
             var method = function as Method;
-            if (method != null && method.IsOperator)
-            {
-                if (isNativeContext)
-                    identifier = "Operator" + method.OperatorKind.ToString();
-                else
-                    identifier = GetOperatorIdentifier(method.OperatorKind, out isBuiltin);
-            }
-            else
-            {
-                identifier = SafeIdentifier(function.Name);
-            }
+            if (method == null || !method.IsOperator)
+                return identifier;
 
-            var overloads = function.Namespace.GetFunctionOverloads(function).ToList();
-            var index = overloads.IndexOf(function);
-
-            if (isNativeContext && index >= 0)
-                identifier += index.ToString(CultureInfo.InvariantCulture);
+            bool isBuiltin;
+            identifier = GetOperatorIdentifier(method.OperatorKind, out isBuiltin);
 
             return identifier;
         }
 
-        public string GetFunctionNativeIdentifier(Function function)
+        public static string GetFunctionNativeIdentifier(Function function)
         {
-            var typePrinter = TypePrinter as CSharpTypePrinter;
-            typePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+            var identifier = SafeIdentifier(function.Name);;
 
-            var name = GetFunctionIdentifier(function);
+            var method = function as Method;
+            if (method != null && method.IsOperator)
+                identifier = "Operator" + method.OperatorKind.ToString();
 
-            typePrinter.PopContext();
+            var overloads = function.Namespace.GetFunctionOverloads(function)
+                .ToList();
+            var index = overloads.IndexOf(function);
 
-            return name;
+            if (index >= 0)
+                identifier += index.ToString(CultureInfo.InvariantCulture);
+
+            return identifier;
         }
 
         public void GenerateInternalFunction(Function function)
