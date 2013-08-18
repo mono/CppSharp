@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using CppSharp.AST;
+using CppSharp.Generators.CSharp;
 using CppSharp.Types;
 using Delegate = CppSharp.AST.Delegate;
 
@@ -176,6 +177,14 @@ namespace CppSharp.Generators.CLI
                 instance += "&";
 
             instance += Context.ReturnVarName;
+
+            if (@class.IsRefType)
+            {
+                var name = Helpers.GeneratedIdentifier(Context.ReturnVarName);
+                Context.SupportBefore.WriteLine("auto {0} = new ::{1}({2});", name,
+                    @class.QualifiedOriginalName, Context.ReturnVarName);
+                instance = name;
+            }
 
             WriteClassInstance(@class, instance);
             return true;
