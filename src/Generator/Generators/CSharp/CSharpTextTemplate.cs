@@ -418,7 +418,7 @@ namespace CppSharp.Generators.CSharp
 
             foreach (var ctor in @class.Constructors)
             {
-                if (ctor.IsCopyConstructor || ctor.IsMoveConstructor)
+                if (ctor.IsMoveConstructor)
                     continue;
 
                 tryAddOverload(ctor);
