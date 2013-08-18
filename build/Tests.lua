@@ -5,10 +5,17 @@ function SetupExampleProject()
   location (path.join(builddir, "deps"))
 end
 
-function SetupTestProject(name)
+function SetupTestProject(name, file, lib)
+  SetupTestGeneratorProject(name)
+  SetupTestNativeProject(name)  
+  SetupTestProjectsCSharp(name, file, lib)
+  SetupTestProjectsCLI(name, file, lib)
+end
+
+function SetupTestCSharp(name)
   SetupTestGeneratorProject(name)
   SetupTestNativeProject(name)
-  SetupTestProjects(name)
+  SetupTestProjectsCSharp(name)
 end
 
 function SetupTestGeneratorProject(name)
@@ -28,6 +35,11 @@ function SetupTestGeneratorProject(name)
       "CppSharp.Generator",
       "CppSharp.Parser",
     }
+end
+
+function SetupTestGeneratorBuildEvent(name)
+  local exePath = SafePath("$(TargetDir)" .. name .. ".Gen.exe")
+  prebuildcommands { exePath }
 end
 
 function SetupTestNativeProject(name)
@@ -55,12 +67,7 @@ function LinkNUnit()
   }
 end
 
-function SetupTestGen(name)
-  local exePath = SafePath("$(TargetDir)" .. name .. ".Gen.exe")
-  prebuildcommands { exePath }
-end
-
-function SetupTestProjects(name, file, lib)
+function SetupTestProjectsCSharp(name, file, lib)
   project(name .. ".CSharp")
 
     kind "SharedLib"
@@ -69,7 +76,7 @@ function SetupTestProjects(name, file, lib)
     flags { "Unsafe" }
     
     dependson { name .. ".Gen", name .. ".Native" }
-    SetupTestGen(name)
+    SetupTestGeneratorBuildEvent(name)
 
     files
     {
@@ -77,25 +84,6 @@ function SetupTestProjects(name, file, lib)
     }
 
     links { "CppSharp.Runtime" }
-
-  project(name .. ".CLI")
-
-    SetupNativeProject()
-    kind "SharedLib"
-    language "C++"
-    flags { "Managed" }
-
-    dependson { name .. ".Gen", name .. ".Native" }
-    SetupTestGen(name)
-
-    files
-    {
-      path.join(gendir, name, name .. ".cpp"),
-      path.join(gendir, name, name .. ".h"),
-    }
-
-    includedirs { path.join(testsdir, name), incdir }
-    links { name .. ".Native" }
 
   project(name .. ".Tests.CSharp")
 
@@ -108,6 +96,27 @@ function SetupTestProjects(name, file, lib)
     dependson { name .. ".Native" }
 
     LinkNUnit()
+end
+
+function SetupTestProjectsCLI(name, file, lib)
+  project(name .. ".CLI")
+
+    SetupNativeProject()
+    kind "SharedLib"
+    language "C++"
+    flags { "Managed" }
+
+    dependson { name .. ".Gen", name .. ".Native" }
+    SetupTestGeneratorBuildEvent(name)
+
+    files
+    {
+      path.join(gendir, name, name .. ".cpp"),
+      path.join(gendir, name, name .. ".h"),
+    }
+
+    includedirs { path.join(testsdir, name), incdir }
+    links { name .. ".Native" }    
 
   project(name .. ".Tests.CLI")
 
