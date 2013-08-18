@@ -1628,16 +1628,15 @@ namespace CppSharp.Generators.CSharp
             var needsFixedThis = needsInstance && isValueType;
             var @params = GenerateFunctionParamsMarshal(parameters, function);
 
-            Class retClass = null;
             if (function.HasHiddenStructParameter)
             {
                 var hiddenParam = function.Parameters[0];
                 if (hiddenParam.Kind != ParameterKind.HiddenStructureReturn)
                     throw new NotSupportedException("Expected hidden structure parameter kind");
 
+                Class retClass = null;
                 hiddenParam.Type.Desugar().IsTagDecl(out retClass);
-                WriteLine("var {0} = new {1}.Internal();", GeneratedIdentifier("udt"),
-                    retClass.OriginalName);
+                WriteLine("var ret = new {0}.Internal();", retClass.OriginalName);
             }
 
             var names = new List<string>();
@@ -1654,7 +1653,7 @@ namespace CppSharp.Generators.CSharp
 
             if (function.HasHiddenStructParameter)
             {
-                var name = string.Format("new IntPtr(&{0})", GeneratedIdentifier("udt"));
+                var name = string.Format("new IntPtr(&ret)");
                 names.Insert(0, name);
             }
 
@@ -1702,30 +1701,20 @@ namespace CppSharp.Generators.CSharp
 
             if (needsReturn)
             {
-                if (function.HasHiddenStructParameter)
+                var ctx = new CSharpMarshalContext(Driver)
                 {
-                    WriteLine("var ret = new {0}({1});", retClass.Name,
-                        GeneratedIdentifier("udt"));
+                    ArgName = "ret",
+                    ReturnVarName = "ret",
+                    ReturnType = retType
+                };
 
-                    WriteLine("return ret;");
-                }
-                else
-                {
-                    var ctx = new CSharpMarshalContext(Driver)
-                    {
-                        ArgName = "ret",
-                        ReturnVarName = "ret",
-                        ReturnType = retType
-                    };
+                var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
+                retType.CSharpMarshalToManaged(marshal);
 
-                    var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
-                    function.ReturnType.CSharpMarshalToManaged(marshal);
+                if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
+                    Write(marshal.Context.SupportBefore);
 
-                    if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
-                        Write(marshal.Context.SupportBefore);
-
-                    WriteLine("return {0};", marshal.Context.Return);
-                }
+                WriteLine("return {0};", marshal.Context.Return);
             }
         }
 
@@ -2146,7 +2135,7 @@ namespace CppSharp.Generators.CSharp
             }
 
             WriteLine("public static extern {0} {1}({2});", retType,
-                      GetFunctionIdentifier(function),
+                      GetFunctionNativeIdentifier(function),
                       string.Join(", ", @params));
             PopBlock(NewLineKind.BeforeNextBlock);
 
