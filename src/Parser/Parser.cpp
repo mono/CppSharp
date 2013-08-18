@@ -575,6 +575,7 @@ CppSharp::AST::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
     RC->IsDependent = Record->isDependentType();
     RC->IsDynamic = Record->isDynamicClass();
     RC->IsPolymorphic = Record->isPolymorphic();
+    RC->HasNonTrivialCopyConstructor = Record->hasNonTrivialCopyConstructor();
 
     auto &Sema = C->getSema();
     Sema.ForceDeclarationOfImplicitMembers(Record);
