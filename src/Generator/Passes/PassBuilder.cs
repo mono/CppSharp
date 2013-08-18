@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CppSharp.Passes;
 
@@ -33,6 +34,15 @@ namespace CppSharp
         public U FindPass<U>() where U : TranslationUnitPass
         {
             return Passes.OfType<U>().Select(pass => pass as U).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Adds a new pass to the builder.
+        /// </summary>
+        public void RunPasses(Action<T> action)
+        {
+            foreach (var pass in Passes)
+                action(pass);
         }
     }
 }

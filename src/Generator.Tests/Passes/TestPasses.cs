@@ -31,8 +31,7 @@ namespace Generator.Tests.Passes
             Assert.IsFalse(@enum2.IsFlags);
 
             passBuilder.AddPass(new CheckFlagEnumsPass());
-            foreach (var pass in passBuilder.Passes)
-                 pass.VisitLibrary(Library);
+            passBuilder.RunPasses(pass => pass.VisitLibrary(Library));
 
             Assert.IsTrue(@enum.IsFlags);
             Assert.IsFalse(@enum2.IsFlags);
@@ -46,8 +45,7 @@ namespace Generator.Tests.Passes
             Assert.IsNull(c.Method("Start"));
 
             passBuilder.AddPass( new FunctionToInstanceMethodPass());
-            foreach (var pass in passBuilder.Passes)
-                pass.VisitLibrary(Library);
+            passBuilder.RunPasses(pass => pass.VisitLibrary(Library));
 
             Assert.IsNotNull(c.Method("Start"));
         }
@@ -61,8 +59,7 @@ namespace Generator.Tests.Passes
             Assert.IsNull(c.Method("Start"));
 
             passBuilder.AddPass(new FunctionToStaticMethodPass());
-            foreach (var pass in passBuilder.Passes)
-                pass.VisitLibrary(Library);
+            passBuilder.RunPasses(pass => pass.VisitLibrary(Library));
 
             Assert.IsTrue(Library.Function("FooStart").ExplicityIgnored);
             Assert.IsNotNull(c.Method("Start"));
@@ -77,8 +74,7 @@ namespace Generator.Tests.Passes
             var field = c.Field("lowerCaseField");
 
             passBuilder.RenameDeclsUpperCase(RenameTargets.Any);
-            foreach (var pass in passBuilder.Passes)
-                pass.VisitLibrary(Library);
+            passBuilder.RunPasses(pass => pass.VisitLibrary(Library));
 
             Assert.That(method.Name, Is.EqualTo("LowerCaseMethod"));
             Assert.That(field.Name, Is.EqualTo("LowerCaseField"));
@@ -94,8 +90,7 @@ namespace Generator.Tests.Passes
 
             passBuilder.RemovePrefix("TEST_ENUM_ITEM_NAME_", RenameTargets.EnumItem);
             passBuilder.AddPass(new CleanInvalidDeclNamesPass());
-            foreach (var pass in passBuilder.Passes)
-                pass.VisitLibrary(Library);
+            passBuilder.RunPasses(pass => pass.VisitLibrary(Library));
 
             Assert.That(@enum.Items[0].Name, Is.EqualTo("_0"));
         }

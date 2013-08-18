@@ -147,12 +147,7 @@ namespace CppSharp
 
         public void ProcessCode()
         {
-            foreach (var pass in TranslationUnitPasses.Passes)
-            {
-                pass.Driver = this;
-                pass.VisitLibrary(Library);
-            }
-
+            TranslationUnitPasses.RunPasses(pass => pass.VisitLibrary(Library));
             Generator.Process();
         }
 
