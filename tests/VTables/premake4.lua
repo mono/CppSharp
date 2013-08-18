@@ -1,2 +1,2 @@
 group "Tests/VTables"
-  SetupTestProject("VTables")
+  SetupTestCSharp("VTables")
