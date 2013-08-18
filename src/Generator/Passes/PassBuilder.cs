@@ -25,6 +25,9 @@ namespace CppSharp
         /// </summary>
         public void AddPass(T pass)
         {
+            if (pass is TranslationUnitPass)
+                (pass as TranslationUnitPass).Driver = Driver;
+
             Passes.Add(pass);
         }
 
