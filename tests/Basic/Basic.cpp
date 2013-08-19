@@ -70,3 +70,11 @@ int Hello::RetEnum(Enum e)
 {
     return (int)e;
 }
+
+Bar operator&(const Bar& b1, const Bar& b2)
+{
+    Bar b;
+    b.A = b1.A + b2.A;
+    b.B = b1.B + b2.B;
+    return b;
+}

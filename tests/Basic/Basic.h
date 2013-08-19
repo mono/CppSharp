@@ -61,3 +61,5 @@ public:
 
     int RetEnum(Enum);
 };
+
+DLL_API Bar operator+(const Bar &, const Bar &);

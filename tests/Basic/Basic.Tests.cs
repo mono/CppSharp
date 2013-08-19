@@ -35,6 +35,11 @@ public class BasicTests
         var bar2 = new Bar2 { A = 4, B = 7, C = 3 };
         Assert.That(hello.AddBar2(bar2), Is.EqualTo(14));
 
+        Bar bar1 = new Bar { A = 5, B = 10 };
+        var barSum = bar + bar1;
+        Assert.That(barSum.A, Is.EqualTo(bar.A + bar1.A));
+        Assert.That(barSum.B, Is.EqualTo(bar.B + bar1.B));
+
         Assert.That(hello.RetEnum(Enum.A), Is.EqualTo(0));
         Assert.That(hello.RetEnum(Enum.B), Is.EqualTo(2));
         Assert.That(hello.RetEnum(Enum.C), Is.EqualTo(5));
