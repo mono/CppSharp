@@ -537,7 +537,7 @@ namespace CppSharp.Generators.CSharp
         {
             var marshalVar = Helpers.GeneratedIdentifier("native");
 
-            WriteLine("var {0} = new {1}.Internal();", marshalVar, @class.Name);
+            WriteLine("var {0} = new {1}.Internal();", marshalVar, QualifiedIdentifier(@class));
             GenerateStructInternalMarshalingFields(@class, marshalVar);
 
             WriteLine("return {0};", marshalVar);
@@ -1636,7 +1636,7 @@ namespace CppSharp.Generators.CSharp
 
                 Class retClass = null;
                 hiddenParam.Type.Desugar().IsTagDecl(out retClass);
-                WriteLine("var __ret = new {0}.Internal();", retClass.OriginalName);
+                WriteLine("var __ret = new {0}.Internal();", QualifiedIdentifier(retClass));
             }
 
             var names = new List<string>();
