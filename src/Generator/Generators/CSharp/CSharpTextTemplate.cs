@@ -28,7 +28,7 @@ namespace CppSharp.Generators.CSharp
 
         public static string GeneratedIdentifier(string id)
         {
-            return "_" + id;
+            return "__" + id;
         }
 
         public static string SafeIdentifier(string id)
@@ -1637,7 +1637,7 @@ namespace CppSharp.Generators.CSharp
 
                 Class retClass = null;
                 hiddenParam.Type.Desugar().IsTagDecl(out retClass);
-                WriteLine("var __ret = new {0}.Internal();", QualifiedIdentifier(retClass));
+                WriteLine("var {0} = new {1}.Internal();", GeneratedIdentifier("ret"), QualifiedIdentifier(retClass));
             }
 
             var names = new List<string>();
@@ -1654,7 +1654,7 @@ namespace CppSharp.Generators.CSharp
 
             if (function.HasHiddenStructParameter)
             {
-                var name = string.Format("new IntPtr(&__ret)");
+                var name = string.Format("new IntPtr(&{0})", GeneratedIdentifier("ret"));
                 names.Insert(0, name);
             }
 
@@ -1673,7 +1673,7 @@ namespace CppSharp.Generators.CSharp
             }
 
             if (needsReturn && !function.HasHiddenStructParameter)
-                Write("var __ret = ");
+                Write("var {0} = ", GeneratedIdentifier("ret"));
 
             WriteLine("{0}({1});", functionName, string.Join(", ", names));
 
@@ -1704,8 +1704,8 @@ namespace CppSharp.Generators.CSharp
             {
                 var ctx = new CSharpMarshalContext(Driver)
                 {
-                    ArgName = "__ret",
-                    ReturnVarName = "__ret",
+                    ArgName = GeneratedIdentifier("ret"),
+                    ReturnVarName = GeneratedIdentifier("ret"),
                     ReturnType = retType
                 };
 
