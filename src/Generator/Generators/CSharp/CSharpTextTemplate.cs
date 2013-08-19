@@ -1362,7 +1362,8 @@ namespace CppSharp.Generators.CSharp
             PopBlock(NewLineKind.BeforeNextBlock);
 
             PushBlock(CSharpBlockKind.Method);
-            WriteLine("internal {0}(global::System.IntPtr native)", SafeIdentifier(@class.Name));
+            WriteLine("internal {0}(global::System.IntPtr native){1}", SafeIdentifier(@class.Name),
+                @class.IsValueType ? " : this()" : string.Empty);
 
             var hasBaseClass = @class.HasBaseClass && @class.BaseClass.IsRefType;
             if (hasBaseClass)
