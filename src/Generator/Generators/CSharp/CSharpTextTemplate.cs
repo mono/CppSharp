@@ -324,8 +324,8 @@ namespace CppSharp.Generators.CSharp
                 if (ShouldGenerateClassNativeField(@class))
                 {
                     PushBlock(CSharpBlockKind.Field);
-                    WriteLine("public global::System.IntPtr {0} {{ get; protected set; }}",
-                        Helpers.InstanceIdentifier);
+                    WriteLine("public global::System.IntPtr {0} {{ get; {1} set; }}",
+                        Helpers.InstanceIdentifier, @class.IsValueType ? "private" : "protected");
                     PopBlock(NewLineKind.BeforeNextBlock);
                 }
 
@@ -1636,7 +1636,7 @@ namespace CppSharp.Generators.CSharp
 
                 Class retClass = null;
                 hiddenParam.Type.Desugar().IsTagDecl(out retClass);
-                WriteLine("var ret = new {0}.Internal();", retClass.OriginalName);
+                WriteLine("var __ret = new {0}.Internal();", retClass.OriginalName);
             }
 
             var names = new List<string>();
@@ -1653,7 +1653,7 @@ namespace CppSharp.Generators.CSharp
 
             if (function.HasHiddenStructParameter)
             {
-                var name = string.Format("new IntPtr(&ret)");
+                var name = string.Format("new IntPtr(&__ret)");
                 names.Insert(0, name);
             }
 
@@ -1672,7 +1672,7 @@ namespace CppSharp.Generators.CSharp
             }
 
             if (needsReturn && !function.HasHiddenStructParameter)
-                Write("var ret = ");
+                Write("var __ret = ");
 
             WriteLine("{0}({1});", functionName, string.Join(", ", names));
 
@@ -1703,8 +1703,8 @@ namespace CppSharp.Generators.CSharp
             {
                 var ctx = new CSharpMarshalContext(Driver)
                 {
-                    ArgName = "ret",
-                    ReturnVarName = "ret",
+                    ArgName = "__ret",
+                    ReturnVarName = "__ret",
                     ReturnType = retType
                 };
 
