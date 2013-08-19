@@ -216,7 +216,7 @@ namespace CppSharp.Generators.CSharp
             if (context.HasFunctions)
             {
                 PushBlock(CSharpBlockKind.Functions);
-                WriteLine("public partial class {0}{1}", SafeIdentifier(Options.OutputNamespace),
+                WriteLine("public unsafe partial class {0}{1}", SafeIdentifier(Options.OutputNamespace),
                     TranslationUnit.FileNameWithoutExtension);
                 WriteStartBraceIndent();
 
