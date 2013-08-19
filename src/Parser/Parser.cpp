@@ -788,7 +788,6 @@ CppSharp::AST::Method^ Parser::WalkMethodCXX(clang::CXXMethodDecl* MD)
     CppSharp::AST::Method^ Method = gcnew CppSharp::AST::Method();
     Method->Access = ConvertToAccess(MD->getAccess());
     Method->Kind = GetMethodKindFromDecl(Name);
-    Method->OperatorKind = GetOperatorKindFromDecl(Name);
     Method->IsStatic = MD->isStatic();
     Method->IsVirtual = MD->isVirtual();
     Method->IsOverride = MD->size_overridden_methods() > 0;
@@ -1516,6 +1515,8 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, CppSharp::AST::Function^ F,
 
     auto AbiCC = GetAbiCallConv(CC, FD->isCXXInstanceMember(), FD->isVariadic());
     F->CallingConvention = ConvertCallConv(AbiCC);
+
+    F->OperatorKind = GetOperatorKindFromDecl(FD->getDeclName());
 
     TypeLoc RTL;
     if (auto TSI = FD->getTypeSourceInfo())

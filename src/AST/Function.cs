@@ -75,6 +75,9 @@ namespace CppSharp.AST
         public bool IsInline { get; set; }
         public bool IsPure { get; set; }
 
+        public CXXOperatorKind OperatorKind { get; set; }
+        public bool IsOperator { get { return OperatorKind != CXXOperatorKind.None; } }
+
         public CallingConvention CallingConvention { get; set; }
 
         public bool IsThisCall

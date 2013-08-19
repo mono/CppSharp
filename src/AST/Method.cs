@@ -80,7 +80,6 @@ namespace CppSharp.AST
         public bool IsProxy { get; set; }
 
         public CXXMethodKind Kind;
-        public CXXOperatorKind OperatorKind;
 
         public bool IsConstructor
         {
@@ -90,11 +89,6 @@ namespace CppSharp.AST
         public bool IsDestructor
         {
             get { return Kind == CXXMethodKind.Destructor; }
-        }
-
-        public bool IsOperator
-        {
-            get { return Kind == CXXMethodKind.Operator; }
         }
 
         public bool IsDefaultConstructor;
