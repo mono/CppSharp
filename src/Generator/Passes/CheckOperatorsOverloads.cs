@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using CppSharp.AST;
+using CppSharp.Generators;
 using CppSharp.Generators.CSharp;
 
 namespace CppSharp.Passes
@@ -64,7 +65,7 @@ namespace CppSharp.Passes
 
                 @operator.Parameters.Insert(0, new Parameter
                 {
-                    Name = Helpers.GeneratedIdentifier("op"),
+                    Name = Generator.GeneratedIdentifier("op"),
                     QualifiedType = new QualifiedType(type),
                     Kind = ParameterKind.OperatorParameter
                 });

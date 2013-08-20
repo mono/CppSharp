@@ -26,11 +26,6 @@ namespace CppSharp.Generators.CSharp
                 "void", "partial", "yield", "where"
             };
 
-        public static string GeneratedIdentifier(string id)
-        {
-            return "__" + id;
-        }
-
         public static string SafeIdentifier(string id)
         {
             id = new string(((IEnumerable<char>)id)
@@ -59,7 +54,7 @@ namespace CppSharp.Generators.CSharp
 
         public static string InstanceIdentifier
         {
-            get { return GeneratedIdentifier("Instance"); }
+            get { return Generator.GeneratedIdentifier("Instance"); }
         }
     }
 
@@ -124,7 +119,7 @@ namespace CppSharp.Generators.CSharp
 
         public static string GeneratedIdentifier(string id)
         {
-            return Helpers.GeneratedIdentifier(id);
+            return Generator.GeneratedIdentifier(id);
         }
 
         public static string SafeIdentifier(string id)
@@ -513,7 +508,7 @@ namespace CppSharp.Generators.CSharp
                 if (ASTUtils.CheckIgnoreField(field)) continue;
 
                 var nativeField = string.Format("{0}->{1}",
-                    Helpers.GeneratedIdentifier("ptr"), field.OriginalName);
+                    Generator.GeneratedIdentifier("ptr"), field.OriginalName);
 
                 var ctx = new CSharpMarshalContext(Driver)
                 {
@@ -535,7 +530,7 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateStructInternalMarshaling(Class @class)
         {
-            var marshalVar = Helpers.GeneratedIdentifier("native");
+            var marshalVar = Generator.GeneratedIdentifier("native");
 
             WriteLine("var {0} = new {1}.Internal();", marshalVar, QualifiedIdentifier(@class));
             GenerateStructInternalMarshalingFields(@class, marshalVar);
@@ -746,7 +741,7 @@ namespace CppSharp.Generators.CSharp
                 var field = decl as Field;
 
                 WriteLine("var {0} = (Internal*){1}.ToPointer();",
-                    Helpers.GeneratedIdentifier("ptr"), Helpers.InstanceIdentifier);
+                    Generator.GeneratedIdentifier("ptr"), Helpers.InstanceIdentifier);
 
                 var marshal = new CSharpMarshalManagedToNativePrinter(ctx);
                 param.Visit(marshal);
@@ -754,7 +749,7 @@ namespace CppSharp.Generators.CSharp
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                     Write(marshal.Context.SupportBefore);
 
-                Write("{0}->{1} = {2}", Helpers.GeneratedIdentifier("ptr"),
+                Write("{0}->{1} = {2}", Generator.GeneratedIdentifier("ptr"),
                     Helpers.SafeIdentifier(field.OriginalName), marshal.Context.Return);
 
                 WriteLine(";");
@@ -781,13 +776,13 @@ namespace CppSharp.Generators.CSharp
                 var field = decl as Field;
 
                 WriteLine("var {0} = (Internal*){1}.ToPointer();",
-                    Helpers.GeneratedIdentifier("ptr"), Helpers.InstanceIdentifier);
+                    Generator.GeneratedIdentifier("ptr"), Helpers.InstanceIdentifier);
 
                 var ctx = new CSharpMarshalContext(Driver)
                 {
                     Kind = CSharpMarshalKind.NativeField,
                     ArgName = decl.Name,
-                    ReturnVarName = string.Format("{0}->{1}", Helpers.GeneratedIdentifier("ptr"),
+                    ReturnVarName = string.Format("{0}->{1}", Generator.GeneratedIdentifier("ptr"),
                         Helpers.SafeIdentifier(field.OriginalName)),
                     ReturnType = decl.QualifiedType
                 };
@@ -810,7 +805,7 @@ namespace CppSharp.Generators.CSharp
                 var location = string.Format("CppSharp.SymbolResolver.ResolveSymbol(\"{0}\", \"{1}\")",
                     libSymbol.Item1, libSymbol.Item2);
 
-                WriteLine("var {0} = ({1}*){2};", Helpers.GeneratedIdentifier("ptr"),
+                WriteLine("var {0} = ({1}*){2};", Generator.GeneratedIdentifier("ptr"),
                     @var.Type, location);
 
                 TypePrinter.PopContext();
@@ -818,7 +813,7 @@ namespace CppSharp.Generators.CSharp
                 var ctx = new CSharpMarshalContext(Driver)
                 {
                     ArgName = decl.Name,
-                    ReturnVarName = "*" + Helpers.GeneratedIdentifier("ptr"),
+                    ReturnVarName = "*" + Generator.GeneratedIdentifier("ptr"),
                     ReturnType = new QualifiedType(var.Type)
                 };
 
@@ -1185,7 +1180,7 @@ namespace CppSharp.Generators.CSharp
             var args = TypePrinter.VisitParameters(@event.Parameters, hasNames: true);
             TypePrinter.PopContext();
 
-            delegateInstance = Helpers.GeneratedIdentifier(@event.OriginalName);
+            delegateInstance = Generator.GeneratedIdentifier(@event.OriginalName);
             delegateName = delegateInstance + "Delegate";
             delegateRaise = delegateInstance + "RaiseInstance";
 
@@ -1221,7 +1216,7 @@ namespace CppSharp.Generators.CSharp
             WriteLine("{0} = new {1}(_{2}Raise);", delegateRaise, delegateName, @event.Name);
 
             WriteLine("var {0} = Marshal.GetFunctionPointerForDelegate({1}).ToPointer();",
-                Helpers.GeneratedIdentifier("ptr"), delegateInstance);
+                Generator.GeneratedIdentifier("ptr"), delegateInstance);
 
             // Call type map here.
 
@@ -1377,13 +1372,13 @@ namespace CppSharp.Generators.CSharp
                 {
                     WriteLine("{0} = native;", Helpers.InstanceIdentifier);
                     if (Options.GenerateVirtualTables && @class.IsDynamic)
-                        WriteLine("SetupVTables({0});", Helpers.GeneratedIdentifier("Instance"));
+                        WriteLine("SetupVTables({0});", Generator.GeneratedIdentifier("Instance"));
                 }
             }
             else
             {
                 WriteLine("var {0} = (Internal*){1}.ToPointer();",
-                    Helpers.GeneratedIdentifier("ptr"), "native");
+                    Generator.GeneratedIdentifier("ptr"), "native");
                 GenerateStructMarshalingFields(@class);
             }
 
@@ -1402,7 +1397,7 @@ namespace CppSharp.Generators.CSharp
                 PushBlock(CSharpBlockKind.Method);
                 WriteLine("internal void FromInternal(Internal* native)");
                 WriteStartBraceIndent();
-                WriteLine("var {0} = {1};", Helpers.GeneratedIdentifier("ptr"), "native");
+                WriteLine("var {0} = {1};", Generator.GeneratedIdentifier("ptr"), "native");
                 GenerateStructMarshalingFields(@class);
                 WriteCloseBraceIndent();
                 PopBlock(NewLineKind.BeforeNextBlock);
@@ -1581,7 +1576,7 @@ namespace CppSharp.Generators.CSharp
             GenerateFunctionParams(@params);
             WriteLine(");");
             if (Options.GenerateVirtualTables && @class.IsDynamic)
-                WriteLine("SetupVTables({0});", Helpers.GeneratedIdentifier("Instance"));
+                WriteLine("SetupVTables({0});", Generator.GeneratedIdentifier("Instance"));
         }
 
         public void GenerateInternalFunctionCall(Function function,
@@ -1669,7 +1664,7 @@ namespace CppSharp.Generators.CSharp
                 //WriteLine("fixed({0}* {1} = &this)", @class.QualifiedName,
                 //    GeneratedIdentifier("instance"));
                 //WriteStartBraceIndent();
-                WriteLine("var {0} = ToInternal();", Helpers.GeneratedIdentifier("instance"));
+                WriteLine("var {0} = ToInternal();", Generator.GeneratedIdentifier("instance"));
             }
 
             if (needsReturn && !function.HasHiddenStructParameter)
@@ -1697,7 +1692,7 @@ namespace CppSharp.Generators.CSharp
             if (needsFixedThis)
             {
                 //    WriteCloseBraceIndent();
-                WriteLine("FromInternal(&{0});", Helpers.GeneratedIdentifier("instance"));
+                WriteLine("FromInternal(&{0});", Generator.GeneratedIdentifier("instance"));
             }
 
             if (needsReturn)
