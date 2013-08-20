@@ -15,6 +15,10 @@ public:
 
 class DLL_API Foo2 : public Foo
 {
+    struct Copy {
+        Foo A;
+    }* copy;
+
 public:
 
     int C;
@@ -42,6 +46,11 @@ enum Enum
 
 class DLL_API Hello
 {
+    union {
+        int i;
+        float b;
+    };
+
 public:
     Hello ();
 
@@ -61,3 +70,5 @@ public:
 
     int RetEnum(Enum);
 };
+
+int DLL_API unsafeFunction(const Bar& ret);

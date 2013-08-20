@@ -185,7 +185,7 @@ namespace CppSharp.Generators.CSharp
             FunctionType function;
             if (decl.Type.IsPointerTo(out function))
             {
-                var ptrName = Helpers.GeneratedIdentifier("ptr") +
+                var ptrName = Generator.GeneratedIdentifier("ptr") +
                     Context.ParameterIndex;
 
                 Context.SupportBefore.WriteLine("var {0} = {1};", ptrName,
@@ -206,12 +206,15 @@ namespace CppSharp.Generators.CSharp
             string instance = Context.ReturnVarName;
             if (ctx.Kind == CSharpMarshalKind.NativeField)
             {
-                instance = string.Format("new global::System.IntPtr(&{0})", instance);
+                string copy = Generator.GeneratedIdentifier("copy");
+                Context.SupportBefore.WriteLine(
+                    "var {0} = new global::System.IntPtr(&{1});", copy, instance);
+                instance = copy;
             }
 
             if (@class.IsRefType)
             {
-                var instanceName = Helpers.GeneratedIdentifier("instance");
+                var instanceName = Generator.GeneratedIdentifier("instance");
 
                 // Allocate memory for a new native object and call the ctor.
                 Context.SupportBefore.WriteLine("var {0} = Marshal.AllocHGlobal({1});",
@@ -363,17 +366,17 @@ namespace CppSharp.Generators.CSharp
                 if (Context.Parameter.Usage == ParameterUsage.Out)
                 {
                     Context.SupportBefore.WriteLine("var {0} = new {1}.Internal();",
-                        Helpers.GeneratedIdentifier(Context.ArgName), @class.Name);
+                        Generator.GeneratedIdentifier(Context.ArgName), @class.Name);
                 }
                 else
                 {
                     Context.SupportBefore.WriteLine("var {0} = {1}.ToInternal();",
-                            Helpers.GeneratedIdentifier(Context.ArgName),
+                            Generator.GeneratedIdentifier(Context.ArgName),
                             Helpers.SafeIdentifier(Context.Parameter.Name));
                 }
 
                 Context.Return.Write("new global::System.IntPtr(&{0})",
-                    Helpers.GeneratedIdentifier(Context.ArgName));
+                    Generator.GeneratedIdentifier(Context.ArgName));
                 return true;
             }
 
