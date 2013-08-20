@@ -4,6 +4,7 @@ namespace CppSharp
 {
     public enum DiagnosticId
     {
+        None,
         UnresolvedDeclaration,
         AmbiguousOverload,
         InvalidOperatorOverload,
@@ -16,6 +17,7 @@ namespace CppSharp
 
     public enum DiagnosticKind
     {
+        Debug,
         Message,
         Warning,
         Error
@@ -37,6 +39,24 @@ namespace CppSharp
 
     public static class DiagnosticExtensions
     {
+        public static void Debug(this IDiagnosticConsumer consumer,
+            string msg, params object[] args)
+        {
+            consumer.Debug(DiagnosticId.None, msg, args);
+        }
+
+        public static void Debug(this IDiagnosticConsumer consumer,
+            DiagnosticId id, string msg, params object[] args)
+        {
+            var diagInfo = new DiagnosticInfo
+            {
+                Kind = DiagnosticKind.Debug,
+                Message = string.Format(msg, args)
+            };
+
+            consumer.Emit(diagInfo);
+        }
+
         public static void EmitMessage(this IDiagnosticConsumer consumer,
             DiagnosticId id, string msg, params object[] args)
         {
