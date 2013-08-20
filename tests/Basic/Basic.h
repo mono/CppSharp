@@ -15,6 +15,10 @@ public:
 
 class DLL_API Foo2 : public Foo
 {
+    struct Copy {
+        Foo A;
+    }* copy;
+
 public:
 
     int C;
