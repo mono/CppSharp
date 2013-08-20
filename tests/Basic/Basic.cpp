@@ -71,7 +71,7 @@ int Hello::RetEnum(Enum e)
     return (int)e;
 }
 
-int unsafeFunction(const Bar& ret)
+int unsafeFunction(const Bar& ret, char* testForString)
 {
     return ret.A;
 }
