@@ -120,6 +120,9 @@ namespace CppSharp.Generators.CSharp
             if (arguments.Count > 0)
                 args = VisitParameters(function.Parameters, hasNames: false).Type;
 
+            if (ContextKind != CSharpTypePrinterContextKind.Managed)
+                return "global::System.IntPtr";
+
             if (returnType.Type.IsPrimitiveType(PrimitiveType.Void))
             {
                 if (!string.IsNullOrEmpty(args))
