@@ -344,8 +344,9 @@ namespace CppSharp.Generators.CSharp
             var pointee = pointer.Pointee;
 
             Type type = pointee.Desugar();
-            if (type.IsPrimitiveType(PrimitiveType.Char) ||
-                type.IsPrimitiveType(PrimitiveType.WideChar))
+            if ((type.IsPrimitiveType(PrimitiveType.Char) ||
+                type.IsPrimitiveType(PrimitiveType.WideChar)) &&
+                pointer.QualifiedPointee.Qualifiers.IsConst)
             {
                 Context.Return.Write("Marshal.StringToHGlobalAnsi({0})",
                     Helpers.SafeIdentifier(Context.Parameter.Name));
