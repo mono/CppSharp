@@ -98,5 +98,10 @@ namespace CppSharp.Generators
         /// Generates the outputs for a given translation unit.
         /// </summary>
         public abstract List<Template> Generate(TranslationUnit unit);
+
+        public static string GeneratedIdentifier(string id)
+        {
+            return "__" + id;
+        }
     }
 }

@@ -180,7 +180,7 @@ namespace CppSharp.Generators.CLI
 
             if (@class.IsRefType)
             {
-                var name = Helpers.GeneratedIdentifier(Context.ReturnVarName);
+                var name = Generator.GeneratedIdentifier(Context.ReturnVarName);
                 Context.SupportBefore.WriteLine("auto {0} = new ::{1}({2});", name,
                     @class.QualifiedOriginalName, Context.ReturnVarName);
                 instance = name;

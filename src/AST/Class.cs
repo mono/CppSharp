@@ -145,7 +145,7 @@ namespace CppSharp.AST
 
         public bool IsRefType
         {
-            get { return Type == ClassType.RefType; }
+            get { return Type == ClassType.RefType && !IsUnion; }
         }
 
         public IEnumerable<Method> Constructors
