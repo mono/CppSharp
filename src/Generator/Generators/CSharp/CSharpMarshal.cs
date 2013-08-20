@@ -206,9 +206,10 @@ namespace CppSharp.Generators.CSharp
             string instance = Context.ReturnVarName;
             if (ctx.Kind == CSharpMarshalKind.NativeField)
             {
+                string copy = Helpers.GeneratedIdentifier("copy");
                 Context.SupportBefore.WriteLine(
-                    "var __copy = new global::System.IntPtr(&{0});", instance);
-                instance = "__copy";
+                    "var {0} = new global::System.IntPtr(&{1});", copy, instance);
+                instance = copy;
             }
 
             if (@class.IsRefType)
