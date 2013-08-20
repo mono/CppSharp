@@ -1377,7 +1377,7 @@ namespace CppSharp.Generators.CSharp
                 {
                     WriteLine("{0} = native;", Helpers.InstanceIdentifier);
                     if (Options.GenerateVirtualTables && @class.IsDynamic)
-                        WriteLine("SetupVTables(_Instance);");
+                        WriteLine("SetupVTables({0});", Helpers.GeneratedIdentifier("Instance"));
                 }
             }
             else
@@ -1581,7 +1581,7 @@ namespace CppSharp.Generators.CSharp
             GenerateFunctionParams(@params);
             WriteLine(");");
             if (Options.GenerateVirtualTables && @class.IsDynamic)
-                WriteLine("SetupVTables(_Instance);");
+                WriteLine("SetupVTables({0});", Helpers.GeneratedIdentifier("Instance"));
         }
 
         public void GenerateInternalFunctionCall(Function function,
