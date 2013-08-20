@@ -740,7 +740,7 @@ namespace CppSharp.Generators.CLI
             var @params = GenerateFunctionParamsMarshal(function.Parameters, function);
 
             if (needsReturn)
-                Write("auto {0}ret = ",(function.ReturnType.Type.IsReference())? "&": string.Empty);
+                Write("auto {0}__ret = ",(function.ReturnType.Type.IsReference())? "&": string.Empty);
 
             if (!IsNativeFunctionOrStaticMethod(function))
             {
@@ -799,8 +799,8 @@ namespace CppSharp.Generators.CLI
             {
                 var ctx = new MarshalContext(Driver)
                     {
-                        ArgName = "ret",
-                        ReturnVarName = "ret",
+                        ArgName = "__ret",
+                        ReturnVarName = "__ret",
                         ReturnType = retType
                     };
 
