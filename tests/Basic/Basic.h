@@ -46,6 +46,11 @@ enum Enum
 
 class DLL_API Hello
 {
+    union {
+        int i;
+        float b;
+    };
+
 public:
     Hello ();
 
