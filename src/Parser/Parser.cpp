@@ -2073,6 +2073,59 @@ struct DiagnosticConsumer : public clang::DiagnosticConsumer
     std::vector<Diagnostic> Diagnostics;
 };
 
+void Parser::HandleDiagnostics(ParserResult^ res)
+{
+    auto DiagClient = (DiagnosticConsumer&) C->getDiagnosticClient();
+
+    // Convert the diagnostics to the managed types
+    for each (auto& Diag in DiagClient.Diagnostics)
+    {
+        using namespace clix;
+
+        auto& Source = C->getSourceManager();
+        auto FileName = Source.getFilename(Source.getFileLoc(Diag.Location));
+
+        auto PDiag = ParserDiagnostic();
+        PDiag.FileName = marshalString<E_UTF8>(FileName.str());
+        PDiag.Message = marshalString<E_UTF8>(Diag.Message.str());
+        PDiag.LineNumber = 0;
+        PDiag.ColumnNumber = 0;
+
+        if( !Diag.Location.isInvalid() )
+        {
+             clang::PresumedLoc PLoc = Source.getPresumedLoc(Diag.Location);
+             if( PLoc.isValid() )
+             {
+                PDiag.LineNumber = PLoc.getLine();
+                PDiag.ColumnNumber = PLoc.getColumn();
+             }
+        }
+
+        switch( Diag.Level )
+        {
+        case clang::DiagnosticsEngine::Ignored: 
+            PDiag.Level = ParserDiagnosticLevel::Ignored;
+            break;
+        case clang::DiagnosticsEngine::Note:
+            PDiag.Level = ParserDiagnosticLevel::Note;
+            break;
+        case clang::DiagnosticsEngine::Warning:
+            PDiag.Level = ParserDiagnosticLevel::Warning;
+            break;
+        case clang::DiagnosticsEngine::Error:
+            PDiag.Level = ParserDiagnosticLevel::Error;
+            break;
+        case clang::DiagnosticsEngine::Fatal:
+            PDiag.Level = ParserDiagnosticLevel::Fatal;
+            break;
+        default:
+            assert(0);
+        }
+
+        res->Diagnostics->Add(PDiag);
+    }
+}
+
 ParserResult^ Parser::ParseHeader(const std::string& File)
 {
     auto res = gcnew ParserResult();
@@ -2120,54 +2173,6 @@ ParserResult^ Parser::ParseHeader(const std::string& File)
     ParseAST(C->getSema(), /*PrintStats=*/false, /*SkipFunctionBodies=*/true);
 
     client->EndSourceFile();
-
-    // Convert the diagnostics to the managed types
-    for each (auto& Diag in DiagClient->Diagnostics)
-    {
-        using namespace clix;
-
-        auto& Source = C->getSourceManager();
-        auto FileName = Source.getFilename(Source.getFileLoc(Diag.Location));
-
-        auto PDiag = ParserDiagnostic();
-        PDiag.FileName = marshalString<E_UTF8>(FileName.str());
-        PDiag.Message = marshalString<E_UTF8>(Diag.Message.str());
-        PDiag.LineNumber = 0;
-        PDiag.ColumnNumber = 0;
-
-        if( !Diag.Location.isInvalid() )
-        {
-             clang::PresumedLoc PLoc = Source.getPresumedLoc(Diag.Location);
-             if( PLoc.isValid() )
-             {
-                PDiag.LineNumber = PLoc.getLine();
-                PDiag.ColumnNumber = PLoc.getColumn();
-             }
-        }
-
-        switch( Diag.Level )
-        {
-            case clang::DiagnosticsEngine::Ignored: 
-                PDiag.Level = ParserDiagnosticLevel::Ignored;
-                break;
-            case clang::DiagnosticsEngine::Note:
-                PDiag.Level = ParserDiagnosticLevel::Note;
-                break;
-            case clang::DiagnosticsEngine::Warning:
-                PDiag.Level = ParserDiagnosticLevel::Warning;
-                break;
-            case clang::DiagnosticsEngine::Error:
-                PDiag.Level = ParserDiagnosticLevel::Error;
-                break;
-            case clang::DiagnosticsEngine::Fatal:
-                PDiag.Level = ParserDiagnosticLevel::Fatal;
-                break;
-            default:
-                assert(0);
-        }
-
-        res->Diagnostics->Add(PDiag);
-    }
 
     if(C->getDiagnosticClient().getNumErrors() != 0)
     {
