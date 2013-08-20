@@ -70,3 +70,8 @@ int Hello::RetEnum(Enum e)
 {
     return (int)e;
 }
+
+int unsafeFunction(const Bar& ret)
+{
+    return ret.A;
+}
