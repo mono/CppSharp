@@ -25,6 +25,13 @@
 #include <clang/Sema/Sema.h>
 #include "CXXABI.h"
 
+namespace clang {
+  class TargetCodeGenInfo;
+  namespace CodeGen {
+    class CodeGenTypes;
+  }
+}
+
 #include <string>
 #include <cstdarg>
 
@@ -185,6 +192,8 @@ protected:
     llvm::OwningPtr<clang::CompilerInstance> C;
     clang::ASTContext* AST;
     clang::TargetCXXABI::Kind TargetABI;
+    clang::TargetCodeGenInfo* CodeGenInfo;
+    clang::CodeGen::CodeGenTypes* CodeGenTypes;
 };
 
 //-----------------------------------//

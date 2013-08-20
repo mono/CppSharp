@@ -39,6 +39,7 @@ namespace CppSharp.AST
 
         public Type Type { get { return QualifiedType.Type; } }
         public QualifiedType QualifiedType { get; set; }
+        public bool IsIndirect { get; set; }
 
         public ParameterKind Kind { get; set; }
         public ParameterUsage Usage { get; set; }
@@ -70,6 +71,8 @@ namespace CppSharp.AST
         }
 
         public QualifiedType ReturnType { get; set; }
+        public bool IsReturnIndirect { get; set; }
+
         public List<Parameter> Parameters { get; set; }
         public bool IsVariadic { get; set; }
         public bool IsInline { get; set; }

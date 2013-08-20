@@ -11,6 +11,9 @@
 #include <llvm/Support/Path.h>
 #include <llvm/Object/Archive.h>
 #include <llvm/Object/ObjectFile.h>
+#include <llvm/IR/LLVMContext.h>
+#include <llvm/IR/Module.h>
+#include <llvm/IR/DataLayout.h>
 #include <clang/Basic/Version.h>
 #include <clang/Config/config.h>
 #include <clang/AST/ASTContext.h>
@@ -23,6 +26,10 @@
 #include <clang/Sema/SemaConsumer.h>
 #include <clang/Frontend/Utils.h>
 #include <clang/Driver/Util.h>
+#include <CodeGen/CodeGenModule.h>
+#include <CodeGen/CodeGenTypes.h>
+#include <CodeGen/TargetInfo.h>
+#include <CodeGen/CGCall.h>
 
 #include <string>
 #include <iostream>
@@ -1491,6 +1498,19 @@ static CppSharp::AST::CallingConvention ConvertCallConv(clang::CallingConv CC)
     return CppSharp::AST::CallingConvention::Default;
 }
 
+static const clang::CodeGen::CGFunctionInfo& GetCodeGenFuntionInfo(
+    clang::CodeGen::CodeGenTypes* CodeGenTypes, clang::FunctionDecl* FD)
+{
+    using namespace clang;
+    if (auto CD = dyn_cast<clang::CXXConstructorDecl>(FD)) {
+        return CodeGenTypes->arrangeCXXConstructorDeclaration(CD, Ctor_Base);
+    } else if (auto DD = dyn_cast<clang::CXXDestructorDecl>(FD)) {
+        return CodeGenTypes->arrangeCXXDestructor(DD, Dtor_Base);
+    }
+
+    return CodeGenTypes->arrangeFunctionDeclaration(FD);
+}
+
 void Parser::WalkFunction(clang::FunctionDecl* FD, CppSharp::AST::Function^ F,
                           bool IsDependent)
 {
@@ -1582,6 +1602,21 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, CppSharp::AST::Function^ F,
         F->Parameters->Add(P);
 
         ParamStartLoc = VD->getLocEnd();
+    }
+
+    if (FD->isThisDeclarationADefinition() && !FD->isDependentContext())
+    {
+        auto& CGInfo = GetCodeGenFuntionInfo(CodeGenTypes, FD);
+        F->IsReturnIndirect = CGInfo.getReturnInfo().isIndirect();
+
+        auto Index = 0;
+        for (auto I = CGInfo.arg_begin(), E = CGInfo.arg_end(); I != E; I++)
+        {
+            // Skip the first argument as it's the return type.
+            if (I == CGInfo.arg_begin())
+                continue;
+            F->Parameters[Index++]->IsIndirect = I->info.isIndirect();
+        }
     }
 }
 
@@ -2181,6 +2216,26 @@ ParserResult^ Parser::ParseHeader(const std::string& File)
     }
 
     AST = &C->getASTContext();
+
+    // Initialize enough Clang codegen machinery so we can get at ABI details.
+    llvm::LLVMContext Ctx;
+    llvm::OwningPtr<llvm::Module> M(new llvm::Module("", Ctx));
+
+    M->setTargetTriple(AST->getTargetInfo().getTriple().getTriple());
+    M->setDataLayout(AST->getTargetInfo().getTargetDescription());
+    llvm::OwningPtr<llvm::DataLayout> TD(new llvm::DataLayout(AST->getTargetInfo()
+        .getTargetDescription()));
+
+    llvm::OwningPtr<clang::CodeGen::CodeGenModule> CGM(
+        new clang::CodeGen::CodeGenModule(C->getASTContext(), C->getCodeGenOpts(),
+        *M, *TD, C->getDiagnostics()));
+
+    llvm::OwningPtr<clang::CodeGen::CodeGenTypes> CGT(
+        new clang::CodeGen::CodeGenTypes(*CGM.get()));
+
+    CodeGenInfo = (clang::TargetCodeGenInfo*) &CGM->getTargetCodeGenInfo();
+    CodeGenTypes = CGT.get();
+
     WalkAST();
 
     res->Kind = ParserResultKind::Success;
