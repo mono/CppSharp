@@ -1604,7 +1604,12 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, CppSharp::AST::Function^ F,
         ParamStartLoc = VD->getLocEnd();
     }
 
-    if (FD->isThisDeclarationADefinition() && !FD->isDependentContext())
+    bool CheckCodeGenInfo = !FD->isDependentContext();
+    if (auto RT = FD->getResultType()->getAs<RecordType>())
+        if (auto RD = RT->getAsCXXRecordDecl())
+            CheckCodeGenInfo &= RD->hasDefinition();
+
+    if (CheckCodeGenInfo)
     {
         auto& CGInfo = GetCodeGenFuntionInfo(CodeGenTypes, FD);
         F->IsReturnIndirect = CGInfo.getReturnInfo().isIndirect();
