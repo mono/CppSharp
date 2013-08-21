@@ -75,3 +75,11 @@ int unsafeFunction(const Bar& ret)
 {
     return ret.A;
 }
+
+Bar operator+(const Bar& b1, const Bar& b2)
+{
+    Bar b;
+    b.A = b1.A + b2.A;
+    b.B = b1.B + b2.B;
+    return b;
+}

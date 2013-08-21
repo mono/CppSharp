@@ -524,7 +524,11 @@ namespace CppSharp.Generators.CLI
 
             Context.Return.Write(marshalVar);
 
-            if (Context.Parameter.Type.IsPointer())
+            var param = Context.Parameter;
+            if (param.Kind == ParameterKind.OperatorParameter)
+                return;
+
+            if (param.Type.IsPointer())
                 ArgumentPrefix.Write("&");
         }
 

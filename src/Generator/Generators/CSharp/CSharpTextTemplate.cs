@@ -1595,9 +1595,11 @@ namespace CppSharp.Generators.CSharp
             var needsFixedThis = needsInstance && isValueType;
             var @params = GenerateFunctionParamsMarshal(parameters, function);
 
-            if (function.HasIndirectReturnTypeParameter)
+            var originalFunction = function.OriginalFunction ?? function;
+
+            if (originalFunction.HasIndirectReturnTypeParameter)
             {
-                var hiddenParam = function.Parameters[0];
+                var hiddenParam = originalFunction.Parameters[0];
                 if (hiddenParam.Kind != ParameterKind.IndirectReturnType)
                     throw new NotSupportedException("Expected hidden structure parameter kind");
 
@@ -1618,7 +1620,7 @@ namespace CppSharp.Generators.CSharp
                 names.Add(name);
             }
 
-            if (function.HasIndirectReturnTypeParameter)
+            if (originalFunction.HasIndirectReturnTypeParameter)
             {
                 var name = string.Format("new IntPtr(&{0})", GeneratedIdentifier("ret"));
                 names.Insert(0, name);
@@ -1638,7 +1640,7 @@ namespace CppSharp.Generators.CSharp
                 WriteLine("var {0} = ToInternal();", Generator.GeneratedIdentifier("instance"));
             }
 
-            if (needsReturn && !function.HasIndirectReturnTypeParameter)
+            if (needsReturn && !originalFunction.HasIndirectReturnTypeParameter)
                 Write("var {0} = ", GeneratedIdentifier("ret"));
 
             WriteLine("{0}({1});", functionName, string.Join(", ", names));

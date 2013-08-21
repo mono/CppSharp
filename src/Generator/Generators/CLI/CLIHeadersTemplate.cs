@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using CppSharp.AST;
+using CppSharp.Generators.CSharp;
 using CppSharp.Types;
 
 namespace CppSharp.Generators.CLI
@@ -512,7 +512,10 @@ namespace CppSharp.Generators.CLI
             if (method.IsVirtual || method.IsOverride)
                 Write("virtual ");
 
-            if (method.IsStatic)
+            var isBuiltinOperator = method.IsOperator &&
+                Operators.IsBuiltinOperator(method.OperatorKind);
+
+            if (method.IsStatic || isBuiltinOperator)
                 Write("static ");
 
             if (method.Kind == CXXMethodKind.Constructor || method.Kind == CXXMethodKind.Destructor)

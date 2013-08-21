@@ -28,7 +28,7 @@ public class BasicTests
         Assert.That(retFoo.A, Is.EqualTo(7));
         Assert.That(retFoo.B, Is.EqualTo(2.0));
 
-        var foo2 = new Foo2 {A = 4, B = 2, C = 3};
+        var foo2 = new Foo2 { A = 4, B = 2, C = 3 };
         Assert.That(hello.AddFoo(foo2), Is.EqualTo(6));
         Assert.That(hello.AddFoo2(foo2), Is.EqualTo(9));
 
@@ -43,10 +43,14 @@ public class BasicTests
         Assert.That(hello.RetEnum(Enum.F), Is.EqualTo(-9));
     }
 
-    static void Main(string[] args)
+    [Test]
+    public void TestFunctionOperator()
     {
-        var hello = new Hello();
-        hello.RetFoo(7, 2.0f);
+        var bar = new Bar { A = 4, B = 7 };
+        var bar1 = new Bar { A = 5, B = 10 };
+        var barSum = bar + bar1;
+        Assert.That(barSum.A, Is.EqualTo(bar.A + bar1.A));
+        Assert.That(barSum.B, Is.EqualTo(bar.B + bar1.B));
     }
 }
  

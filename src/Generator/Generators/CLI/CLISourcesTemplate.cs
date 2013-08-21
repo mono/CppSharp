@@ -743,29 +743,36 @@ namespace CppSharp.Generators.CLI
                 Write("auto {0}{1} = ",(function.ReturnType.Type.IsReference())? "&": string.Empty,
                     Generator.GeneratedIdentifier("ret"));
 
-            if (!IsNativeFunctionOrStaticMethod(function))
+            if (function.IsOperator)
             {
-                if (isValueType)
-                {
-                    Write("{0}.", valueMarshalName);
-                }
-                else if (IsNativeMethod(function))
-                {
-                    Write("((::{0}*)NativePtr)->", @class.QualifiedOriginalName);
-                }
-            }
+                var kind = function.OperatorKind;
 
-            if (IsNativeFunctionOrStaticMethod(function))
-            {
-                Write("::{0}(", function.QualifiedOriginalName);
+                var isBinary = function.Parameters.Count > 0;
+                var opName = function.Name.Replace("operator", "").Trim();
+
+                // Binary operator
+                if (isBinary)
+                    WriteLine("{0} {1} {2};", @params[0].Name, opName,
+                        @params[1].Name);
             }
             else
             {
-                Write("{0}(", function.OriginalName);
-            }
+                if (IsNativeFunctionOrStaticMethod(function))
+                {
+                    Write("::{0}(", function.QualifiedOriginalName);
+                }
+                else
+                {
+                    if (isValueType)
+                        Write("{0}.", valueMarshalName);
+                    else if (IsNativeMethod(function))
+                        Write("((::{0}*)NativePtr)->", @class.QualifiedOriginalName);
+                    Write("{0}(", function.OriginalName);
+                }
 
-            GenerateFunctionParams(@params);
-            WriteLine(");");
+                GenerateFunctionParams(@params);
+                WriteLine(");");
+            }
 
             foreach(var paramInfo in @params)
             {
@@ -828,6 +835,9 @@ namespace CppSharp.Generators.CLI
         {
             var method = function as Method;
             if (method == null) 
+                return true;
+
+            if (method.IsOperator && Operators.IsBuiltinOperator(method.OperatorKind))
                 return true;
 
             return method.IsStatic || method.Conversion != MethodConversionKind.None;

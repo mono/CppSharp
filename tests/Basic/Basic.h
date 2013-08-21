@@ -71,4 +71,6 @@ public:
     int RetEnum(Enum);
 };
 
+DLL_API Bar operator+(const Bar &, const Bar &);
+
 int DLL_API unsafeFunction(const Bar& ret);
