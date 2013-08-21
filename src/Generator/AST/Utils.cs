@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 namespace CppSharp.AST
 {
     public static class ASTUtils
@@ -47,6 +49,118 @@ namespace CppSharp.AST
                 return true;
 
             return field.Ignore;
+        }
+    }
+
+    public static class Operators
+    {
+        public static string GetOperatorOverloadPair(CXXOperatorKind kind)
+        {
+            switch (kind)
+            {
+                case CXXOperatorKind.EqualEqual:
+                    return "!=";
+                case CXXOperatorKind.ExclaimEqual:
+                    return "==";
+
+                case CXXOperatorKind.Less:
+                    return ">";
+                case CXXOperatorKind.Greater:
+                    return "<";
+
+                case CXXOperatorKind.LessEqual:
+                    return ">=";
+                case CXXOperatorKind.GreaterEqual:
+                    return "<=";
+
+                default:
+                    throw new NotSupportedException();
+            }
+        }
+
+        public static bool IsBuiltinOperator(CXXOperatorKind kind)
+        {
+            bool isBuiltin;
+            GetOperatorIdentifier(kind, out isBuiltin);
+
+            return isBuiltin;
+        }
+
+        public static string GetOperatorIdentifier(CXXOperatorKind kind)
+        {
+            bool isBuiltin;
+            return GetOperatorIdentifier(kind, out isBuiltin);
+        }
+
+        public static string GetOperatorIdentifier(CXXOperatorKind kind,
+            out bool isBuiltin)
+        {
+            isBuiltin = true;
+
+            // These follow the order described in MSDN (Overloadable Operators).
+            switch (kind)
+            {
+                // These unary operators can be overloaded
+                case CXXOperatorKind.Plus: return "operator +";
+                case CXXOperatorKind.Minus: return "operator -";
+                case CXXOperatorKind.Exclaim: return "operator !";
+                case CXXOperatorKind.Tilde: return "operator ~";
+                case CXXOperatorKind.PlusPlus: return "operator ++";
+                case CXXOperatorKind.MinusMinus: return "operator --";
+
+                // These binary operators can be overloaded
+                case CXXOperatorKind.Star: return "operator *";
+                case CXXOperatorKind.Slash: return "operator /";
+                case CXXOperatorKind.Percent: return "operator +";
+                case CXXOperatorKind.Amp: return "operator &";
+                case CXXOperatorKind.Pipe: return "operator |";
+                case CXXOperatorKind.Caret: return "operator ^";
+                case CXXOperatorKind.LessLess: return "operator <<";
+                case CXXOperatorKind.GreaterGreater: return "operator >>";
+
+                // The comparison operators can be overloaded
+                case CXXOperatorKind.EqualEqual: return "operator ==";
+                case CXXOperatorKind.ExclaimEqual: return "operator !=";
+                case CXXOperatorKind.Less: return "operator <";
+                case CXXOperatorKind.Greater: return "operator >";
+                case CXXOperatorKind.LessEqual: return "operator <=";
+                case CXXOperatorKind.GreaterEqual: return "operator >=";
+
+                // Assignment operators cannot be overloaded
+                case CXXOperatorKind.PlusEqual:
+                case CXXOperatorKind.MinusEqual:
+                case CXXOperatorKind.StarEqual:
+                case CXXOperatorKind.SlashEqual:
+                case CXXOperatorKind.PercentEqual:
+                case CXXOperatorKind.AmpEqual:
+                case CXXOperatorKind.PipeEqual:
+                case CXXOperatorKind.CaretEqual:
+                case CXXOperatorKind.LessLessEqual:
+                case CXXOperatorKind.GreaterGreaterEqual:
+
+                // The array indexing operator cannot be overloaded
+                case CXXOperatorKind.Subscript:
+
+                // The conditional logical operators cannot be overloaded
+                case CXXOperatorKind.AmpAmp:
+                case CXXOperatorKind.PipePipe:
+
+                // These operators cannot be overloaded.
+                case CXXOperatorKind.Equal:
+                case CXXOperatorKind.Comma:
+                case CXXOperatorKind.ArrowStar:
+                case CXXOperatorKind.Arrow:
+                case CXXOperatorKind.Call:
+                case CXXOperatorKind.Conditional:
+                case CXXOperatorKind.New:
+                case CXXOperatorKind.Delete:
+                case CXXOperatorKind.Array_New:
+                case CXXOperatorKind.Array_Delete:
+                    isBuiltin = false;
+                    return "Operator" + kind.ToString();
+            }
+
+            throw new NotSupportedException();
         }
     }
 }

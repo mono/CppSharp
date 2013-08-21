@@ -87,10 +87,9 @@ namespace CppSharp.Passes
 
                 if (op.Ignore) continue;
 
-                bool isBuiltin;
                 var method = new Method()
                     {
-                        Name = CSharpTextTemplate.GetOperatorIdentifier(missingKind, out isBuiltin),
+                        Name = Operators.GetOperatorIdentifier(missingKind),
                         Namespace = @class,
                         IsSynthetized = true,
                         Kind = CXXMethodKind.Operator,
