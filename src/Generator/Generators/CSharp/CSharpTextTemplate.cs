@@ -1057,7 +1057,7 @@ namespace CppSharp.Generators.CSharp
                 if (param.Ignore)
                     continue;
 
-                if (param.Kind == ParameterKind.HiddenStructureReturn)
+                if (param.Kind == ParameterKind.IndirectReturnType)
                     continue;
 
                 var ctx = new CSharpMarshalContext(Driver)
@@ -1076,7 +1076,7 @@ namespace CppSharp.Generators.CSharp
             }
 
             var hasReturn = !method.ReturnType.Type.IsPrimitiveType(PrimitiveType.Void)
-                && !method.HasHiddenStructParameter;
+                && !method.HasIndirectReturnTypeParameter;
 
             if (hasReturn)
                 Write("var _ret = ");
@@ -1624,10 +1624,10 @@ namespace CppSharp.Generators.CSharp
             var needsFixedThis = needsInstance && isValueType;
             var @params = GenerateFunctionParamsMarshal(parameters, function);
 
-            if (function.HasHiddenStructParameter)
+            if (function.HasIndirectReturnTypeParameter)
             {
                 var hiddenParam = function.Parameters[0];
-                if (hiddenParam.Kind != ParameterKind.HiddenStructureReturn)
+                if (hiddenParam.Kind != ParameterKind.IndirectReturnType)
                     throw new NotSupportedException("Expected hidden structure parameter kind");
 
                 Class retClass = null;
@@ -1647,7 +1647,7 @@ namespace CppSharp.Generators.CSharp
                 names.Add(name);
             }
 
-            if (function.HasHiddenStructParameter)
+            if (function.HasIndirectReturnTypeParameter)
             {
                 var name = string.Format("new IntPtr(&{0})", GeneratedIdentifier("ret"));
                 names.Insert(0, name);
@@ -1667,7 +1667,7 @@ namespace CppSharp.Generators.CSharp
                 WriteLine("var {0} = ToInternal();", Generator.GeneratedIdentifier("instance"));
             }
 
-            if (needsReturn && !function.HasHiddenStructParameter)
+            if (needsReturn && !function.HasIndirectReturnTypeParameter)
                 Write("var {0} = ", GeneratedIdentifier("ret"));
 
             WriteLine("{0}({1});", functionName, string.Join(", ", names));
@@ -1776,7 +1776,7 @@ namespace CppSharp.Generators.CSharp
             var paramIndex = 0;
             foreach (var param in @params)
             {
-                if (param.Kind == ParameterKind.HiddenStructureReturn)
+                if (param.Kind == ParameterKind.IndirectReturnType)
                     continue;
 
                 marshals.Add(GenerateFunctionParamMarshal(param, paramIndex, function));
@@ -1853,7 +1853,7 @@ namespace CppSharp.Generators.CSharp
             {
                 var param = function.Parameters[i];
 
-                if (param.Kind == ParameterKind.HiddenStructureReturn)
+                if (param.Kind == ParameterKind.IndirectReturnType)
                     continue;
 
                 @params.Add(string.Format("{0}{1} {2}", GetParameterUsage(param.Usage),

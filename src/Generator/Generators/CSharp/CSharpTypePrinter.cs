@@ -361,7 +361,7 @@ namespace CppSharp.Generators.CSharp
         {
             var paramType = parameter.Type;
 
-            if (parameter.Kind == ParameterKind.HiddenStructureReturn)
+            if (parameter.Kind == ParameterKind.IndirectReturnType)
                 return "global::System.IntPtr";
 
             return paramType.Visit(this);

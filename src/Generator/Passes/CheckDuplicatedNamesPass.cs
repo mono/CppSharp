@@ -39,7 +39,7 @@ namespace CppSharp.Passes
 
         private bool UpdateName(Method method)
         {
-            var @params = method.Parameters.Where(p => p.Kind != ParameterKind.HiddenStructureReturn)
+            var @params = method.Parameters.Where(p => p.Kind != ParameterKind.IndirectReturnType)
                                 .Select(p => p.QualifiedType.ToString());
             var signature = string.Format("{0}({1})", Name,string.Join( ", ", @params));
 

@@ -24,7 +24,7 @@ namespace CppSharp.AST
     public enum ParameterKind
     {
         Regular,
-        HiddenStructureReturn,
+        IndirectReturnType,
         OperatorParameter
     }
 
@@ -103,12 +103,12 @@ namespace CppSharp.AST
             get { return CallingConvention == CallingConvention.C; }
         }
 
-        public bool HasHiddenStructParameter
+        public bool HasIndirectReturnTypeParameter
         {
             get
             {
                 return Parameters.Any(param =>
-                    param.Kind == ParameterKind.HiddenStructureReturn);
+                    param.Kind == ParameterKind.IndirectReturnType);
             }
         }
 
@@ -116,11 +116,11 @@ namespace CppSharp.AST
         {
             get
             {
-                if (!HasHiddenStructParameter)
+                if (!HasIndirectReturnTypeParameter)
                     return ReturnType;
 
                 var hiddenParam = Parameters.Single(param =>
-                    param.Kind == ParameterKind.HiddenStructureReturn);
+                    param.Kind == ParameterKind.IndirectReturnType);
                 return hiddenParam.QualifiedType;
             }
         }
