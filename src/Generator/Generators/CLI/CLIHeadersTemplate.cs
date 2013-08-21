@@ -614,9 +614,10 @@ namespace CppSharp.Generators.CLI
             WriteLine("{");
 
             PushIndent();
-            for (int i = 0; i < @enum.Items.Count; ++i)
+            foreach (var item in @enum.Items)
             {
-                var item = @enum.Items[i];
+                PushBlock(CLIBlockKind.EnumItem);
+
                 GenerateInlineSummary(item.Comment);
                 if (item.ExplicitValue)
                     Write(String.Format("{0} = {1}", SafeIdentifier(item.Name),
@@ -624,8 +625,10 @@ namespace CppSharp.Generators.CLI
                 else
                     Write(String.Format("{0}", SafeIdentifier(item.Name)));
 
-                if (i < @enum.Items.Count - 1)
+                if (item != @enum.Items.Last())
                     WriteLine(",");
+
+                PopBlock(NewLineKind.Never);
             }
             PopIndent();
 

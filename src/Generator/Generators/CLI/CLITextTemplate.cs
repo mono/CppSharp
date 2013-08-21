@@ -30,7 +30,7 @@ namespace CppSharp.Generators.CLI
         public const int Namespace = BlockKind.LAST + 3;
         public const int ForwardReferences = BlockKind.LAST + 4;
         public const int Enum = BlockKind.LAST + 5;
-        public const int Typedef = BlockKind.LAST + 6;
+        public const int EnumItem = BlockKind.LAST + 6;
         public const int Class = BlockKind.LAST + 7;
         public const int Method = BlockKind.LAST + 8;
         public const int MethodBody = BlockKind.LAST + 9;
@@ -38,6 +38,7 @@ namespace CppSharp.Generators.CLI
         public const int FunctionsClass = BlockKind.LAST + 11;
         public const int Function = BlockKind.LAST + 12;
         public const int Property = BlockKind.LAST + 13;
+        public const int Typedef = BlockKind.LAST + 14;
     }
 
     /// <summary>
