@@ -1849,15 +1849,16 @@ namespace CppSharp.Generators.CSharp
             TagType tag;
 
             if (typedef.Type.IsPointerToPrimitiveType(PrimitiveType.Void)
-                || typedef.Type.IsPointerTo<TagType>(out tag))
+                || typedef.Type.IsPointerTo(out tag))
             {
                 PushBlock(CSharpBlockKind.Typedef);
                 WriteLine("public class " + SafeIdentifier(typedef.Name) + @" { }");
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
-            else if (typedef.Type.IsPointerTo<FunctionType>(out function))
+            else if (typedef.Type.IsPointerTo(out function))
             {
                 PushBlock(CSharpBlockKind.Typedef);
+                WriteLine("[UnmanagedFunctionPointerAttribute(CallingConvention.Cdecl)]");
                 WriteLine("public {0};",
                     string.Format(TypePrinter.VisitDelegate(function).Type,
                         SafeIdentifier(typedef.Name)));
