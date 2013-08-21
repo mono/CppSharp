@@ -133,6 +133,7 @@ namespace CppSharp
             TranslationUnitPasses.AddPass(new ResolveIncompleteDeclsPass());
             TranslationUnitPasses.AddPass(new CheckIgnoredDeclsPass());
             TranslationUnitPasses.AddPass(new FindSymbolsPass());
+            TranslationUnitPasses.AddPass(new MoveOperatorToClassPass());
 
             library.SetupPasses(this);
 

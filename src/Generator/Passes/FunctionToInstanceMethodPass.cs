@@ -70,7 +70,7 @@ namespace CppSharp.Passes
             return true;
         }
 
-        private static bool GetClassParameter(Parameter classParam, out Class @class)
+        public static bool GetClassParameter(Parameter classParam, out Class @class)
         {
             TagType tag;
             if (classParam.Type.IsPointerTo(out tag))

@@ -63,6 +63,7 @@ namespace CppSharp.AST
     public enum FunctionSynthKind
     {
         None,
+        NonMemberOperator
     }
 
     public class Function : Declaration, ITypedDecl, IMangledDecl

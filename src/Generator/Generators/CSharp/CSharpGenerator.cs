@@ -31,7 +31,6 @@ namespace CppSharp.Generators.CSharp
             // CheckAbiParameters runs last because hidden structure parameters
             // should always occur first.
 
-            Driver.AddTranslationUnitPass(new MoveOperatorToClassPass());
             Driver.AddTranslationUnitPass(new CheckOperatorsOverloadsPass());
             Driver.AddTranslationUnitPass(new CheckAbiParameters(Driver.Options));
 
