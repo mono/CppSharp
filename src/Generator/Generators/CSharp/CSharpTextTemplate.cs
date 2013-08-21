@@ -503,8 +503,9 @@ namespace CppSharp.Generators.CSharp
                 GenerateStructMarshalingFields(@base.Class);
             }
 
-            foreach (var field in @class.Fields)
+            for (int i = 0; i < @class.Fields.Count; i++)
             {
+                var field = @class.Fields[i];
                 if (ASTUtils.CheckIgnoreField(field)) continue;
 
                 var nativeField = string.Format("{0}->{1}",
@@ -519,6 +520,7 @@ namespace CppSharp.Generators.CSharp
                 };
 
                 var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
+                marshal.VarSuffix = i;
                 field.Visit(marshal);
 
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
