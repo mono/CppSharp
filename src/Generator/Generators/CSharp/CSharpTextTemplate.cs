@@ -1440,7 +1440,7 @@ namespace CppSharp.Generators.CSharp
             GenerateDeclarationCommon(function);
 
             var functionName = GetFunctionIdentifier(function);
-            Write("public static {0} {1}(", function.ReturnType, functionName);
+            Write("public static {0} {1}(", function.OriginalReturnType, functionName);
             GenerateMethodParameters(function);
             WriteLine(")");
             WriteStartBraceIndent();
