@@ -2034,9 +2034,8 @@ namespace CppSharp.Generators.CSharp
         {
             var identifier = SafeIdentifier(function.Name);;
 
-            var method = function as Method;
-            if (method != null && method.IsOperator)
-                identifier = "Operator" + method.OperatorKind.ToString();
+            if (function.IsOperator)
+                identifier = "Operator" + function.OperatorKind.ToString();
 
             var overloads = function.Namespace.GetFunctionOverloads(function)
                 .ToList();
