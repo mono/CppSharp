@@ -2052,6 +2052,9 @@ namespace CppSharp.Generators.CSharp
             if (!function.IsProcessed || function.ExplicityIgnored)
                 return;
 
+            if (function.OriginalFunction != null)
+                function = function.OriginalFunction;
+
             PushBlock(CSharpBlockKind.InternalsClassMethod);
             GenerateDeclarationCommon(function);
             WriteLine("[SuppressUnmanagedCodeSecurity]");
