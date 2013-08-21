@@ -2001,10 +2001,8 @@ namespace CppSharp.Generators.CSharp
                     retType = "global::System.IntPtr";
             }
 
-            for (var i = 0; i < function.Parameters.Count; ++i)
+            foreach (var param in function.Parameters)
             {
-                var param = function.Parameters[i];
-
                 if (param.Kind == ParameterKind.OperatorParameter)
                     continue;
 
