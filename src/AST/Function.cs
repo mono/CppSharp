@@ -60,6 +60,11 @@ namespace CppSharp.AST
         }
     }
 
+    public enum FunctionSynthKind
+    {
+        None,
+    }
+
     public class Function : Declaration, ITypedDecl, IMangledDecl
     {
         public Function()
@@ -125,6 +130,7 @@ namespace CppSharp.AST
             }
         }
 
+        public FunctionSynthKind SynthKind { get; set; }
 
         public string Mangled { get; set; }
         
