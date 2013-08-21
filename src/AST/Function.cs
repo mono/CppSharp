@@ -132,6 +132,8 @@ namespace CppSharp.AST
 
         public FunctionSynthKind SynthKind { get; set; }
 
+        public Function OriginalFunction { get; set; }
+
         public string Mangled { get; set; }
         
         public override T Visit<T>(IDeclVisitor<T> visitor)
