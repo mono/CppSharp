@@ -1847,7 +1847,7 @@ namespace CppSharp.Generators.CSharp
 
             GenerateDeclarationCommon(typedef);
 
-            FunctionType function;
+            FunctionType functionType;
             TagType tag;
 
             if (typedef.Type.IsPointerToPrimitiveType(PrimitiveType.Void)
@@ -1857,12 +1857,13 @@ namespace CppSharp.Generators.CSharp
                 WriteLine("public class " + SafeIdentifier(typedef.Name) + @" { }");
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
-            else if (typedef.Type.IsPointerTo(out function))
+            else if (typedef.Type.IsPointerTo(out functionType))
             {
                 PushBlock(CSharpBlockKind.Typedef);
-                WriteLine("[UnmanagedFunctionPointerAttribute(CallingConvention.Cdecl)]");
+                WriteLine("[UnmanagedFunctionPointerAttribute(CallingConvention.{0})]",
+                    Helpers.ToCSharpCallConv(functionType.CallingConvention));
                 WriteLine("public {0};",
-                    string.Format(TypePrinter.VisitDelegate(function).Type,
+                    string.Format(TypePrinter.VisitDelegate(functionType).Type,
                         SafeIdentifier(typedef.Name)));
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
