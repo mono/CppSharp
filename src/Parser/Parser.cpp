@@ -1040,6 +1040,30 @@ clang::TypeLoc ResolveTypeLoc(clang::TypeLoc TL, clang::TypeLoc::TypeLocClass Cl
     return TL;
 }
 
+static CppSharp::AST::CallingConvention ConvertCallConv(clang::CallingConv CC)
+{
+    using namespace clang;
+
+    switch(CC)
+    {
+    case CC_Default:
+    case CC_C:
+        return CppSharp::AST::CallingConvention::C;
+    case CC_X86StdCall:
+        return CppSharp::AST::CallingConvention::StdCall;
+    case CC_X86FastCall:
+        return CppSharp::AST::CallingConvention::FastCall;
+    case CC_X86ThisCall:
+        return CppSharp::AST::CallingConvention::ThisCall;
+    case CC_X86Pascal:
+    case CC_AAPCS:
+    case CC_AAPCS_VFP:
+        return CppSharp::AST::CallingConvention::Unknown;
+    }
+
+    return CppSharp::AST::CallingConvention::Default;
+}
+
 CppSharp::AST::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
     bool DesugarType)
 {
@@ -1195,6 +1219,7 @@ CppSharp::AST::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* 
         auto F = gcnew CppSharp::AST::FunctionType();
         F->ReturnType = GetQualifiedType(FP->getResultType(),
             WalkType(FP->getResultType(), &RL));
+        F->CallingConvention = ConvertCallConv(FP->getCallConv());
 
         for (unsigned i = 0; i < FP->getNumArgs(); ++i)
         {
@@ -1472,30 +1497,6 @@ clang::CallingConv Parser::GetAbiCallConv(clang::CallingConv CC,
   }
 
   return CC;
-}
-
-static CppSharp::AST::CallingConvention ConvertCallConv(clang::CallingConv CC)
-{
-    using namespace clang;
-
-    switch(CC)
-    {
-    case CC_Default:
-    case CC_C:
-        return CppSharp::AST::CallingConvention::C;
-    case CC_X86StdCall:
-        return CppSharp::AST::CallingConvention::StdCall;
-    case CC_X86FastCall:
-        return CppSharp::AST::CallingConvention::FastCall;
-    case CC_X86ThisCall:
-        return CppSharp::AST::CallingConvention::ThisCall;
-    case CC_X86Pascal:
-    case CC_AAPCS:
-    case CC_AAPCS_VFP:
-        return CppSharp::AST::CallingConvention::Unknown;
-    }
-
-    return CppSharp::AST::CallingConvention::Default;
 }
 
 static const clang::CodeGen::CGFunctionInfo& GetCodeGenFuntionInfo(

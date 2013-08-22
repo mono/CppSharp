@@ -282,6 +282,8 @@ namespace CppSharp.AST
         // Argument types.
         public List<Parameter> Parameters;
 
+        public CallingConvention CallingConvention { get; set; }
+
         public FunctionType()
         {
             Parameters = new List<Parameter>();

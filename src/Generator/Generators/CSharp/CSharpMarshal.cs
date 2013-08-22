@@ -59,6 +59,8 @@ namespace CppSharp.Generators.CSharp
             Context.MarshalToManaged = this;
         }
 
+        public int VarSuffix { get; set; }
+
         public static string QualifiedIdentifier(Declaration decl)
         {
             var names = new List<string> { decl.Name };
@@ -207,6 +209,8 @@ namespace CppSharp.Generators.CSharp
             if (ctx.Kind == CSharpMarshalKind.NativeField)
             {
                 string copy = Generator.GeneratedIdentifier("copy");
+                if (VarSuffix > 0)
+                    copy += VarSuffix;
                 Context.SupportBefore.WriteLine(
                     "var {0} = new global::System.IntPtr(&{1});", copy, instance);
                 instance = copy;
@@ -215,6 +219,8 @@ namespace CppSharp.Generators.CSharp
             if (@class.IsRefType)
             {
                 var instanceName = Generator.GeneratedIdentifier("instance");
+                if (VarSuffix > 0)
+                    instanceName += VarSuffix;
 
                 // Allocate memory for a new native object and call the ctor.
                 Context.SupportBefore.WriteLine("var {0} = Marshal.AllocHGlobal({1});",

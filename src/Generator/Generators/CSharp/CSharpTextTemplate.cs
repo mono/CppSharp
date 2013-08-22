@@ -503,8 +503,9 @@ namespace CppSharp.Generators.CSharp
                 GenerateStructMarshalingFields(@base.Class);
             }
 
-            foreach (var field in @class.Fields)
+            for (int i = 0; i < @class.Fields.Count; i++)
             {
+                var field = @class.Fields[i];
                 if (ASTUtils.CheckIgnoreField(field)) continue;
 
                 var nativeField = string.Format("{0}->{1}",
@@ -519,6 +520,7 @@ namespace CppSharp.Generators.CSharp
                 };
 
                 var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
+                marshal.VarSuffix = i;
                 field.Visit(marshal);
 
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
@@ -1438,7 +1440,7 @@ namespace CppSharp.Generators.CSharp
             GenerateDeclarationCommon(function);
 
             var functionName = GetFunctionIdentifier(function);
-            Write("public static {0} {1}(", function.ReturnType, functionName);
+            Write("public static {0} {1}(", function.OriginalReturnType, functionName);
             GenerateMethodParameters(function);
             WriteLine(")");
             WriteStartBraceIndent();
@@ -1845,21 +1847,23 @@ namespace CppSharp.Generators.CSharp
 
             GenerateDeclarationCommon(typedef);
 
-            FunctionType function;
+            FunctionType functionType;
             TagType tag;
 
             if (typedef.Type.IsPointerToPrimitiveType(PrimitiveType.Void)
-                || typedef.Type.IsPointerTo<TagType>(out tag))
+                || typedef.Type.IsPointerTo(out tag))
             {
                 PushBlock(CSharpBlockKind.Typedef);
                 WriteLine("public class " + SafeIdentifier(typedef.Name) + @" { }");
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
-            else if (typedef.Type.IsPointerTo<FunctionType>(out function))
+            else if (typedef.Type.IsPointerTo(out functionType))
             {
                 PushBlock(CSharpBlockKind.Typedef);
+                WriteLine("[UnmanagedFunctionPointerAttribute(CallingConvention.{0})]",
+                    Helpers.ToCSharpCallConv(functionType.CallingConvention));
                 WriteLine("public {0};",
-                    string.Format(TypePrinter.VisitDelegate(function).Type,
+                    string.Format(TypePrinter.VisitDelegate(functionType).Type,
                         SafeIdentifier(typedef.Name)));
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
