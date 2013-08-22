@@ -47,15 +47,27 @@ namespace CppSharp.Types
 
         public string VisitPointerType(PointerType pointer, TypeQualifiers quals)
         {
-            var s = string.Empty;
+            var pointee = pointer.Pointee;
 
-            if (quals.IsConst)
-                s += "const ";
+            var function = pointee as FunctionType;
+            if (function != null)
+            {
+                var arguments = function.Parameters;
+                var returnType = function.ReturnType;
+                var args = string.Empty;
 
+                if (arguments.Count > 0)
+                    args = VisitParameters(function.Parameters, hasNames: false);
+
+                return string.Format("{0} (*)({1})", returnType.Visit(this), args);
+            }
+
+            var pointeeType = pointer.Pointee.Visit(this, quals);
             var mod = ConvertModifierToString(pointer.Modifier);
-            var pointee = pointer.Pointee.Visit(this, quals);
 
-            s += string.Format("{0}{1}", pointee, mod);
+            var s = quals.IsConst ? "const " : string.Empty;
+            s += string.Format("{0}{1}", pointeeType, mod);
+
             return s;
         }
 
