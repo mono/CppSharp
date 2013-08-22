@@ -88,3 +88,8 @@ Bar operator+(const Bar& b1, const Bar& b2)
     b.B = b1.B + b2.B;
     return b;
 }
+
+Bar indirectReturn()
+{
+    return Bar();
+}
