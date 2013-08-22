@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Text;
 using CppSharp.AST;
-using CppSharp.Generators.CSharp;
 using CppSharp.Types;
 using Delegate = CppSharp.AST.Delegate;
 
@@ -323,7 +322,7 @@ namespace CppSharp.Generators.CLI
             // explicit GCHandle if necessary.
 
             var sb = new StringBuilder();
-            sb.AppendFormat("static_cast<::{0}>(", type);
+            sb.AppendFormat("static_cast<{0}>(", type);
             sb.Append("System::Runtime::InteropServices::Marshal::");
             sb.Append("GetFunctionPointerForDelegate(");
             sb.AppendFormat("{0}).ToPointer())", Context.Parameter.Name);
@@ -336,20 +335,9 @@ namespace CppSharp.Generators.CLI
         {
             var pointee = pointer.Pointee;
 
-            var isVoidPtr = pointee.Desugar().IsPrimitiveType(PrimitiveType.Void);
-
-            var isUInt8Ptr = pointee.Desugar().IsPrimitiveType(PrimitiveType.UInt8);
-
-            if (isVoidPtr || isUInt8Ptr)
-            {
-                if (isUInt8Ptr)
-                    Context.Return.Write("({0})", "uint8*");
-                Context.Return.Write("{0}.ToPointer()", Context.Parameter.Name);
-                return true;
-            }
-
-            if (pointee.IsPrimitiveType(PrimitiveType.Char) ||
-                pointee.IsPrimitiveType(PrimitiveType.WideChar))
+            if ((pointee.IsPrimitiveType(PrimitiveType.Char) ||
+                pointee.IsPrimitiveType(PrimitiveType.WideChar)) &&
+                pointer.QualifiedPointee.Qualifiers.IsConst)
             {
                 Context.SupportBefore.WriteLine(
                     "auto _{0} = clix::marshalString<clix::E_UTF8>({1});",
@@ -362,8 +350,22 @@ namespace CppSharp.Generators.CLI
             if (pointee is FunctionType)
             {
                 var function = pointee as FunctionType;
-                // TODO: We have to translate the function type typedef to C/C++
-                return VisitDelegateType(function, function.ToString());
+
+                var cppTypePrinter = new CppTypePrinter(Context.Driver.TypeDatabase);
+                var cppTypeName = pointer.Visit(cppTypePrinter, quals);
+
+                return VisitDelegateType(function, cppTypeName);
+            }
+
+            PrimitiveType primitive;
+            if (pointee.Desugar().IsPrimitiveType(out primitive))
+            {
+                var cppTypePrinter = new CppTypePrinter(Context.Driver.TypeDatabase);
+                var cppTypeName = pointer.Visit(cppTypePrinter, quals);
+
+                Context.Return.Write("({0})", cppTypeName);
+                Context.Return.Write("{0}.ToPointer()", Context.Parameter.Name);
+                return true;
             }
 
             return pointee.Visit(this, quals);
