@@ -37,7 +37,7 @@ namespace CppSharp.Passes
             return true;
         }
 
-        private bool UpdateName(Method method)
+        private bool UpdateName(Function method)
         {
             var @params = method.Parameters.Where(p => p.Kind != ParameterKind.IndirectReturnType)
                                 .Select(p => p.QualifiedType.ToString());
@@ -57,7 +57,11 @@ namespace CppSharp.Passes
             if (Count < methodCount+1)
                 Count = methodCount+1;
 
-            method.Name += methodCount.ToString(CultureInfo.InvariantCulture);
+            if (method.IsOperator)
+                // TODO: turn into a method; append the original type (say, "signed long") of the last parameter to the type so that the user knows which overload is called
+                method.ExplicityIgnored = true;
+            else
+                method.Name += methodCount.ToString(CultureInfo.InvariantCulture);
             return true;
         }
     }

@@ -4,6 +4,20 @@ Foo::Foo()
 {
 }
 
+Foo2& Foo2::operator <<(signed int i)
+{
+    Foo2 foo;
+    foo.C = C << i;
+    return foo;
+}
+
+Foo2& Foo2::operator <<(signed long l)
+{
+    Foo2 foo;
+    foo.C = C << l;
+    return foo;
+}
+
 Bar::Bar()
 {
 }
