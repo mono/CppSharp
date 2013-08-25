@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using CppSharp.AST;
-using CppSharp.Generators.CSharp;
 using CppSharp.Types;
 
 namespace CppSharp.Generators.CLI
@@ -632,7 +631,6 @@ namespace CppSharp.Generators.CLI
             }
             PopIndent();
 
-            NewLine();
             WriteLine("};");
 
             PopBlock(NewLineKind.BeforeNextBlock);
