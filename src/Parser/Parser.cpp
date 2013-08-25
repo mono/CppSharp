@@ -1621,6 +1621,8 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, CppSharp::AST::Function^ F,
             // Skip the first argument as it's the return type.
             if (I == CGInfo.arg_begin())
                 continue;
+            if (Index >= F->Parameters->Count)
+                continue;
             F->Parameters[Index++]->IsIndirect = I->info.isIndirect();
         }
     }
