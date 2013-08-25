@@ -19,6 +19,8 @@ namespace CppSharp.Generators
         public TextGenerator SupportBefore { get; private set; }
         public TextGenerator Return { get; private set; }
 
+        public Declaration Declaration { get; set; }
+
         public string ReturnVarName { get; set; }
         public QualifiedType ReturnType { get; set; }
 
