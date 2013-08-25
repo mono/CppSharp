@@ -44,7 +44,16 @@ public class BasicTests
     }
 
     [Test]
-    public void TestFunctionOperator()
+    public void TestUnaryOperator()
+    {
+        var bar = new Bar { A = 4, B = 7 };
+        var barMinus = -bar;
+        Assert.That(barMinus.A, Is.EqualTo(-bar.A));
+        Assert.That(barMinus.B, Is.EqualTo(-bar.B));
+    }
+
+    [Test]
+    public void TestBinaryOperator()
     {
         var bar = new Bar { A = 4, B = 7 };
         var bar1 = new Bar { A = 5, B = 10 };

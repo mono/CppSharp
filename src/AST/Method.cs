@@ -10,6 +10,12 @@ namespace CppSharp.AST
         UsingDirective
     }
 
+    public enum CXXOperatorArity
+    {
+        Unary,
+        Binary
+    }
+
     public enum CXXOperatorKind
     {
         None,

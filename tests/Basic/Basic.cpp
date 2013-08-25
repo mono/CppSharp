@@ -95,6 +95,14 @@ const wchar_t* wcharFunction(const wchar_t* constWideChar)
     return constWideChar;
 }
 
+Bar operator-(const Bar& b)
+{
+    Bar nb;
+    nb.A = -b.A;
+    nb.B = -b.B;
+    return nb;
+}
+
 Bar operator+(const Bar& b1, const Bar& b2)
 {
     Bar b;
