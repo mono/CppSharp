@@ -336,6 +336,7 @@ namespace CppSharp.Generators.CLI
 
                 var ctx = new MarshalContext(Driver)
                     {
+                        Declaration = decl,
                         ArgName = decl.Name,
                         ReturnVarName = variable,
                         ReturnType = decl.QualifiedType

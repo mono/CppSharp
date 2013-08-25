@@ -185,8 +185,9 @@ namespace CppSharp.Generators.CLI
                 instance += "&";
 
             instance += Context.ReturnVarName;
+            var needsCopy = !(Context.Declaration is Field);
 
-            if (@class.IsRefType)
+            if (@class.IsRefType && needsCopy)
             {
                 var name = Generator.GeneratedIdentifier(Context.ReturnVarName);
                 Context.SupportBefore.WriteLine("auto {0} = new ::{1}({2});", name,
