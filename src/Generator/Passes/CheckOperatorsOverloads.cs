@@ -63,7 +63,7 @@ namespace CppSharp.Passes
                 var type = new PointerType()
                 {
                     QualifiedPointee = new QualifiedType(new TagType(@class)),
-                    Modifier = PointerType.TypeModifier.Pointer
+                    Modifier = PointerType.TypeModifier.LVReference
                 };
 
                 @operator.Parameters.Insert(0, new Parameter
