@@ -65,6 +65,15 @@ namespace CppSharp.Generators.CLI
                 return true;
             }
 
+            Class @class;
+            if (pointee.Desugar().IsTagDecl(out @class))
+            {
+                var instance = (pointer.IsReference) ? "&" + Context.ReturnVarName
+                    : Context.ReturnVarName;
+                WriteClassInstance(@class, instance);
+                return true;
+            }
+
             if (!pointee.Visit(this, quals))
                 return false;
 
