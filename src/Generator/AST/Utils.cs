@@ -54,6 +54,14 @@ namespace CppSharp.AST
 
     public static class Operators
     {
+        public static CXXOperatorArity ClassifyOperator(Function function)
+        {
+            if (function.Parameters.Count == 1)
+                return CXXOperatorArity.Unary;
+
+            return CXXOperatorArity.Binary;
+        }
+
         public static string GetOperatorOverloadPair(CXXOperatorKind kind)
         {
             switch (kind)

@@ -745,15 +745,18 @@ namespace CppSharp.Generators.CLI
 
             if (function.IsOperator)
             {
-                var kind = function.OperatorKind;
-
-                var isBinary = function.Parameters.Count > 0;
                 var opName = function.Name.Replace("operator", "").Trim();
 
-                // Binary operator
-                if (isBinary)
+                switch (Operators.ClassifyOperator(function))
+                {
+                case CXXOperatorArity.Unary:
+                    WriteLine("{0} {1};", opName, @params[0].Name);
+                    break;
+                case CXXOperatorArity.Binary:
                     WriteLine("{0} {1} {2};", @params[0].Name, opName,
                         @params[1].Name);
+                    break;
+                }
             }
             else
             {
