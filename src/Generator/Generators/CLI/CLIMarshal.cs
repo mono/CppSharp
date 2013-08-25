@@ -429,9 +429,9 @@ namespace CppSharp.Generators.CLI
             }
 
             FunctionType func;
-            if (decl.Type.IsPointerTo<FunctionType>(out func))
+            if (decl.Type.IsPointerTo(out func))
             {
-                VisitDelegateType(func, typedef.Declaration.OriginalName);
+                VisitDelegateType(func, "::" + typedef.Declaration.QualifiedOriginalName);
                 return true;
             }
 
