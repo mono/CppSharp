@@ -24,18 +24,21 @@ namespace CppSharp.Passes
             // Check for C++ operators that cannot be represented in C#.
             CheckInvalidOperators(@class);
 
-            // The comparison operators, if overloaded, must be overloaded in pairs;
-            // that is, if == is overloaded, != must also be overloaded. The reverse
-            // is also true, and similar for < and >, and for <= and >=.
+            if (Driver.Options.IsCSharpGenerator)
+            {
+                // The comparison operators, if overloaded, must be overloaded in pairs;
+                // that is, if == is overloaded, != must also be overloaded. The reverse
+                // is also true, and similar for < and >, and for <= and >=.
 
-            HandleMissingOperatorOverloadPair(@class, CXXOperatorKind.EqualEqual,
-                                              CXXOperatorKind.ExclaimEqual);
+                HandleMissingOperatorOverloadPair(@class, CXXOperatorKind.EqualEqual,
+                                                  CXXOperatorKind.ExclaimEqual);
 
-            HandleMissingOperatorOverloadPair(@class, CXXOperatorKind.Less,
-                                              CXXOperatorKind.Greater);
+                HandleMissingOperatorOverloadPair(@class, CXXOperatorKind.Less,
+                                                  CXXOperatorKind.Greater);
 
-            HandleMissingOperatorOverloadPair(@class, CXXOperatorKind.LessEqual,
-                                              CXXOperatorKind.GreaterEqual);
+                HandleMissingOperatorOverloadPair(@class, CXXOperatorKind.LessEqual,
+                                                  CXXOperatorKind.GreaterEqual);
+            }
 
             return false;
         }
