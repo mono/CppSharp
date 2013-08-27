@@ -23,8 +23,8 @@ public:
 
     int C;
 
-    Foo2& operator<<(signed int i);
-    Foo2& operator<<(signed long l);
+    Foo2 operator<<(signed int i);
+    Foo2 operator<<(signed long l);
 };
 
 struct DLL_API Bar
