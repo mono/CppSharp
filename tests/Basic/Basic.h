@@ -22,6 +22,9 @@ class DLL_API Foo2 : public Foo
 public:
 
     int C;
+
+    Foo2 operator<<(signed int i);
+    Foo2 operator<<(signed long l);
 };
 
 struct DLL_API Bar
