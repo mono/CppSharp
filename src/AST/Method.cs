@@ -74,7 +74,6 @@ namespace CppSharp.AST
             Access = AccessSpecifier.Public;
         }
 
-        public AccessSpecifier Access { get; set; }
         public AccessSpecifierDecl AccessDecl { get; set; }
 
         public bool IsVirtual { get; set; }

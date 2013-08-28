@@ -24,6 +24,16 @@ namespace CppSharp.Passes
             return true;
         }
 
+        public override bool VisitClassDecl(Class @class)
+        {
+            if (@class.Access == AccessSpecifier.Private)
+            {
+                @class.ExplicityIgnored = true;
+                return false;
+            }
+            return base.VisitClassDecl(@class);
+        }
+
         public override bool VisitFieldDecl(Field field)
         {
             if (!VisitDeclaration(field))
@@ -86,7 +96,7 @@ namespace CppSharp.Passes
             if (!VisitDeclaration(method))
                 return false;
 
-            if (method.Access != AccessSpecifier.Public)
+            if (method.Access == AccessSpecifier.Private)
             {
                 method.ExplicityIgnored = true;
                 return false;

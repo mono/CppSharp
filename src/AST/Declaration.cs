@@ -169,6 +169,8 @@ namespace CppSharp.AST
             }
         }
 
+        public AccessSpecifier Access { get; set; }
+
         // Contains debug text about the declaration.
         public string DebugText;
 

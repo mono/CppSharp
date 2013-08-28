@@ -8,7 +8,6 @@ namespace CppSharp.AST
         public Type Type { get { return QualifiedType.Type; } }
         public QualifiedType QualifiedType { get; set; }
 
-        public AccessSpecifier Access { get; set; }
         public uint Offset { get; set; }
         public Class Class { get; set; }
 

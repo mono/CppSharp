@@ -15,8 +15,6 @@ namespace CppSharp.AST
     // A C++ access specifier declaration.
     public class AccessSpecifierDecl : Declaration
     {
-        public AccessSpecifier Access;
-
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {
             throw new NotImplementedException();
