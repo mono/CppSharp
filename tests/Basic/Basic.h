@@ -49,12 +49,17 @@ enum Enum
 
 class DLL_API Hello
 {
-    union {
+    union NestedPrivate {
         int i;
-        float b;
+        float f;
     };
 
 public:
+    union NestedPublic {
+        int j;
+        float g;
+    };
+
     Hello ();
 
     void PrintHello(const char* s);
