@@ -61,5 +61,14 @@ public class BasicTests
         Assert.That(barSum.A, Is.EqualTo(bar.A + bar1.A));
         Assert.That(barSum.B, Is.EqualTo(bar.B + bar1.B));
     }
+
+    [Test, Ignore]
+    public void TestLeftShiftOperator()
+    {
+        Foo2 foo2 = new Foo2();
+        foo2.C = 2;
+        Foo2 result = foo2 << 3;
+        Assert.That(result.C, Is.EqualTo(16));
+    }
 }
  

@@ -8,12 +8,14 @@ namespace CppSharp.Passes
 {
     class DeclarationName
     {
+        public Driver Driver { get; set; }
         private readonly string Name;
         private readonly Dictionary<string, int> methodSignatures;
         private int Count;
 
-        public DeclarationName(string name)
+        public DeclarationName(string name, Driver driver)
         {
+            Driver = driver;
             Name = name;
             methodSignatures = new Dictionary<string, int>();
         }
@@ -37,7 +39,7 @@ namespace CppSharp.Passes
             return true;
         }
 
-        private bool UpdateName(Method method)
+        private bool UpdateName(Function method)
         {
             var @params = method.Parameters.Where(p => p.Kind != ParameterKind.IndirectReturnType)
                                 .Select(p => p.QualifiedType.ToString());
@@ -57,7 +59,14 @@ namespace CppSharp.Passes
             if (Count < methodCount+1)
                 Count = methodCount+1;
 
-            method.Name += methodCount.ToString(CultureInfo.InvariantCulture);
+            if (method.IsOperator)
+            {
+                // TODO: turn into a method; append the original type (say, "signed long") of the last parameter to the type so that the user knows which overload is called
+                Driver.Diagnostics.EmitWarning("Duplicate operator {0} ignored", method.Name);
+                method.ExplicityIgnored = true;
+            }
+            else
+                method.Name += methodCount.ToString(CultureInfo.InvariantCulture);
             return true;
         }
     }
@@ -132,7 +141,7 @@ namespace CppSharp.Passes
 
             // If the name is not yet on the map, then add it.
             if (!names.ContainsKey(fullName))
-                names.Add(fullName, new DeclarationName(decl.Name));
+                names.Add(fullName, new DeclarationName(decl.Name, Driver));
 
             if (names[fullName].UpdateName(decl))
                 Driver.Diagnostics.EmitWarning("Duplicate name {0}, renamed to {1}", fullName, decl.Name);
