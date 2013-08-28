@@ -2086,6 +2086,7 @@ CppSharp::AST::Declaration^ Parser::WalkDeclaration(clang::Decl* D,
 
         if (const ValueDecl *VD = dyn_cast_or_null<ValueDecl>(D))
             Decl->IsDependent = VD->getType()->isDependentType();
+        Decl->Access = ConvertToAccess(D->getAccess());
     }
 
     return Decl;
