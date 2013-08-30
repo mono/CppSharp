@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using CppSharp.AST;
+using CppSharp.Utils;
 using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Generators.CSharp
@@ -402,9 +403,6 @@ namespace CppSharp.Generators.CSharp
                 if (method.IsSynthetized)
                     return;
 
-                if (method.IsPure)
-                    return;
-
                 if (method.IsProxy)
                     return;
 
@@ -611,7 +609,22 @@ namespace CppSharp.Generators.CSharp
             if (@class.IsUnion)
                 WriteLine("[StructLayout(LayoutKind.Explicit)]");
 
-            Write("public unsafe ");
+            switch (@class.Access)
+            {
+                case AccessSpecifier.Private:
+                    Write("internal ");
+                    break;
+                case AccessSpecifier.Protected:
+                    Write("protected ");
+                    break;
+                case AccessSpecifier.Public:
+                    Write("public ");
+                    break;
+            }
+            Write("unsafe ");
+
+            if (@class.IsAbstract)
+                Write("abstract ");
 
             if (Options.GeneratePartialClasses)
                 Write("partial ");
@@ -1459,9 +1472,9 @@ namespace CppSharp.Generators.CSharp
             PushBlock(CSharpBlockKind.Method);
             GenerateDeclarationCommon(method);
 
-            Write("public ");
+            Write(@class.IsAbstract && method.IsConstructor ? "protected " : "public ");
 
-            if (method.IsVirtual && !method.IsOverride)
+            if (method.IsVirtual && !method.IsOverride && !method.IsPure)
                 Write("virtual ");
 
             var isBuiltinOperator = method.IsOperator &&
@@ -1473,6 +1486,9 @@ namespace CppSharp.Generators.CSharp
             if (method.IsOverride)
                 Write("override ");
 
+            if (method.IsPure)
+                Write("abstract ");
+
             var functionName = GetFunctionIdentifier(method);
 
             if (method.IsConstructor || method.IsDestructor)
@@ -1482,7 +1498,15 @@ namespace CppSharp.Generators.CSharp
 
             GenerateMethodParameters(method);
 
-            WriteLine(")");
+            Write(")");
+
+            if (method.IsPure)
+            {
+                Write(";");
+                PopBlock(NewLineKind.BeforeNextBlock);
+                return;
+            }
+            NewLine();
 
             if (method.Kind == CXXMethodKind.Constructor)
                 GenerateClassConstructorBase(@class, method);
@@ -1501,6 +1525,10 @@ namespace CppSharp.Generators.CSharp
                 else if (method.IsOperator)
                 {
                     GenerateOperator(method, @class);
+                }
+                else if (method.IsOverride && method.IsSynthetized)
+                {
+                    GenerateVirtualTableMethodCall(method, @class);
                 }
                 else
                 {
@@ -1527,6 +1555,21 @@ namespace CppSharp.Generators.CSharp
 
             WriteCloseBraceIndent();
             PopBlock(NewLineKind.BeforeNextBlock);
+        }
+
+        private void GenerateVirtualTableMethodCall(ITypedDecl method, Class @class)
+        {
+            WriteLine("void* vtable = *((void**) __Instance.ToPointer());");
+            int i;
+            switch (Driver.Options.Abi)
+            {
+                case CppAbi.Microsoft:
+                    throw new NotImplementedException();
+                default:
+                    i = @class.Layout.Layout.Components.FindIndex(m => m.Method == method);
+                    break;
+            }
+            WriteLine("void* slot = *((void**) vtable + {0} * sizeof(IntPtr));", i);
         }
 
         private void GenerateOperator(Method method, Class @class)
@@ -1974,7 +2017,7 @@ namespace CppSharp.Generators.CSharp
 
         public void GenerateInternalFunction(Function function)
         {
-            if (!function.IsProcessed || function.ExplicityIgnored)
+            if (!function.IsProcessed || function.ExplicityIgnored || function.IsPure)
                 return;
 
             if (function.OriginalFunction != null)

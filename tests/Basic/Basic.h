@@ -80,6 +80,13 @@ public:
     Hello* RetNull();
 };
 
+class DLL_API AbstractFoo
+{
+public:
+
+    virtual void pureFunction() = 0;
+};
+
 DLL_API Bar operator-(const Bar &);
 DLL_API Bar operator+(const Bar &, const Bar &);
 

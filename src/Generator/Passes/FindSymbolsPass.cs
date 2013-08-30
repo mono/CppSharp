@@ -11,7 +11,9 @@ namespace CppSharp.Passes
                 return false;
 
             var mangledDecl = decl as IMangledDecl;
-            if (mangledDecl != null && !VisitMangledDeclaration(mangledDecl))
+            var method = decl as Method;
+            if (mangledDecl != null && !(method != null && method.IsPure) &&
+                !VisitMangledDeclaration(mangledDecl))
             {
                 decl.ExplicityIgnored = true;
                 return false;
