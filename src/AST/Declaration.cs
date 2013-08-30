@@ -55,7 +55,11 @@ namespace CppSharp.AST
         }
 
         private string name;
-        public virtual string OriginalName { get; set;}
+        public virtual string OriginalName
+        {
+            get { return originalName; }
+            set { originalName = value; }
+        }
 
         // Name of the declaration.
         public virtual string Name
@@ -194,6 +198,7 @@ namespace CppSharp.AST
 
         // Pointer to the original declaration from Clang.
         public IntPtr OriginalPtr;
+        private string originalName;
 
         protected Declaration()
         {
@@ -205,7 +210,28 @@ namespace CppSharp.AST
         protected Declaration(string name)
             : this()
         {
-            Name = name;
+            this.name = name;
+        }
+
+        protected Declaration(Declaration declaration)
+            : this()
+        {
+            Namespace = declaration.Namespace;
+            originalName = declaration.OriginalName;
+            name = declaration.Name;
+            Comment = declaration.Comment;
+            IgnoreFlags = declaration.IgnoreFlags;
+            Access = declaration.Access;
+            DebugText = declaration.DebugText;
+            IsIncomplete = declaration.IsIncomplete;
+            IsDependent = declaration.IsDependent;
+            CompleteDeclaration = declaration.CompleteDeclaration;
+            DefinitionOrder = declaration.DefinitionOrder;
+            ExcludeFromPasses = new HashSet<System.Type>(
+                declaration.ExcludeFromPasses);
+            PreprocessedEntities = new List<PreprocessedEntity>(
+                declaration.PreprocessedEntities);
+            OriginalPtr = declaration.OriginalPtr;
         }
 
         public override string ToString()

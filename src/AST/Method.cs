@@ -67,11 +67,29 @@ namespace CppSharp.AST
     /// <summary>
     /// Represents a C++ record method declaration.
     /// </summary>
-    public class Method : Function, ITypedDecl
+    public class Method : Function
     {
         public Method()
         {
             Access = AccessSpecifier.Public;
+        }
+
+        public Method(Method method)
+            : base(method)
+        {
+            Access = method.Access;
+            AccessDecl = method.AccessDecl;
+            IsVirtual = method.IsVirtual;
+            IsConst = method.IsConst;
+            IsImplicit = method.IsImplicit;
+            IsSynthetized = method.IsSynthetized;
+            IsOverride = method.IsOverride;
+            IsProxy = method.IsProxy;
+            Kind = method.Kind;
+            IsDefaultConstructor = method.IsDefaultConstructor;
+            IsCopyConstructor = method.IsCopyConstructor;
+            IsMoveConstructor = method.IsMoveConstructor;
+            Conversion = method.Conversion;
         }
 
         public AccessSpecifierDecl AccessDecl { get; set; }

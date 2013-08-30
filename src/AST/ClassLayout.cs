@@ -87,6 +87,22 @@ namespace CppSharp.AST
             VFTables = new List<VFTableInfo>();
         }
 
+        public ClassLayout(ClassLayout classLayout)
+            : this()
+        {
+            ABI = classLayout.ABI;
+            HasOwnVFPtr = classLayout.HasOwnVFPtr;
+            VBPtrOffset = classLayout.VBPtrOffset;
+            PrimaryBase = classLayout.PrimaryBase;
+            HasVirtualBases = classLayout.HasVirtualBases;
+            Alignment = classLayout.Alignment;
+            Size = classLayout.Size;
+            DataSize = classLayout.DataSize;
+            VFTables.AddRange(classLayout.VFTables);
+            Layout = new VTableLayout();
+            Layout.Components.AddRange(classLayout.Layout.Components);
+        }
+
         /// <summary>
         /// Does this class provide its own virtual-function table
         /// pointer, rather than inheriting one from a primary base

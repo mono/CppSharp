@@ -76,6 +76,23 @@ namespace CppSharp.AST
             IsInline = false;
         }
 
+        public Function(Function function)
+            : base(function)
+        {
+            Parameters = new List<Parameter>();
+            ReturnType = function.ReturnType;
+            IsReturnIndirect = function.IsReturnIndirect;
+            Parameters.AddRange(function.Parameters);
+            IsVariadic = function.IsVariadic;
+            IsInline = function.IsInline;
+            IsPure = function.IsPure;
+            OperatorKind = function.OperatorKind;
+            CallingConvention = function.CallingConvention;
+            SynthKind = function.SynthKind;
+            OriginalFunction = function.OriginalFunction;
+            Mangled = function.Mangled;
+        }
+
         public QualifiedType ReturnType { get; set; }
         public bool IsReturnIndirect { get; set; }
 
