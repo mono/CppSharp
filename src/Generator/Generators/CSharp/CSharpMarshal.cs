@@ -252,7 +252,8 @@ namespace CppSharp.Generators.CSharp
                 instance = instanceName;
             }
 
-            Context.Return.Write("new {0}({1})", QualifiedIdentifier(@class),
+            Context.Return.Write("new {0}({1})",
+                QualifiedIdentifier(@class) + (@class.IsAbstract ? "Internal" : ""),
                 instance);
 
             return true;
