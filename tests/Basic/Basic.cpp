@@ -121,6 +121,11 @@ Bar indirectReturn()
     return Bar();
 }
 
+int ImplementAbstractFoo::pureFunction()
+{
+    return 5;
+}
+
 void DefaultParameters::Foo(int a, int b)
 {
 }

@@ -1564,7 +1564,11 @@ namespace CppSharp.Generators.CSharp
             switch (Driver.Options.Abi)
             {
                 case CppAbi.Microsoft:
-                    throw new NotImplementedException();
+                    i = (from table in @class.Layout.VFTables
+                         let j = table.Layout.Components.FindIndex(m => m.Method == method)
+                         where j > 0
+                         select j).First();
+                    break;
                 default:
                     i = @class.Layout.Layout.Components.FindIndex(m => m.Method == method);
                     break;

@@ -83,8 +83,13 @@ public:
 class DLL_API AbstractFoo
 {
 public:
+    virtual int pureFunction() = 0;
+};
 
-    virtual void pureFunction() = 0;
+class DLL_API ImplementAbstractFoo : public AbstractFoo
+{
+public:
+    virtual int pureFunction();
 };
 
 DLL_API Bar operator-(const Bar &);
