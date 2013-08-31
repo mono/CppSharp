@@ -37,7 +37,7 @@ namespace CppSharp.AST
             if (method.Kind == CXXMethodKind.Conversion)
                 return true;
 
-            if (method.Access != AccessSpecifier.Public)
+            if (method.Access == AccessSpecifier.Private)
                 return true;
 
             return false;
@@ -45,7 +45,7 @@ namespace CppSharp.AST
 
         public static bool CheckIgnoreField(Field field)
         {
-            if (field.Access != AccessSpecifier.Public) 
+            if (field.Access == AccessSpecifier.Private) 
                 return true;
 
             return field.Ignore;

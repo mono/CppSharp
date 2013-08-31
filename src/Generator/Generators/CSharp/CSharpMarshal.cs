@@ -243,6 +243,7 @@ namespace CppSharp.Generators.CSharp
                 }
                 else
                 {
+                    instance = instance.Trim('*');
                     Context.SupportBefore.WriteLine(
                         "CppSharp.Runtime.Helpers.memcpy({0}, new IntPtr(&{1}), new UIntPtr({2}));",
                         instanceName, instance, @class.Layout.Size);
