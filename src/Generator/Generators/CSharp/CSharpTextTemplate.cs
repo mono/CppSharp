@@ -1566,7 +1566,7 @@ namespace CppSharp.Generators.CSharp
                 case CppAbi.Microsoft:
                     i = (from table in @class.Layout.VFTables
                          let j = table.Layout.Components.FindIndex(m => m.Method == method)
-                         where j > 0
+                         where j >= 0
                          select j).First();
                     break;
                 default:

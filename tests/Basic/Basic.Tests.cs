@@ -85,5 +85,13 @@ public class BasicTests
         Foo2 result = foo2 << 3;
         Assert.That(result.C, Is.EqualTo(16));
     }
+
+    [Test]
+    public void TestAbstractReturnType()
+    {
+        var returnsAbstractFoo = new ReturnsAbstractFoo();
+        AbstractFoo abstractFoo = returnsAbstractFoo.getFoo();
+        Assert.AreEqual(abstractFoo.pureFunction(), 5);
+    }
 }
  

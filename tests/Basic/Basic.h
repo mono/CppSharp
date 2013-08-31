@@ -86,10 +86,19 @@ public:
     virtual int pureFunction() = 0;
 };
 
-class DLL_API ImplementAbstractFoo : public AbstractFoo
+class DLL_API ImplementsAbstractFoo : public AbstractFoo
 {
 public:
     virtual int pureFunction();
+};
+
+class DLL_API ReturnsAbstractFoo
+{
+public:
+    const AbstractFoo& getFoo();
+
+private:
+    ImplementsAbstractFoo i;
 };
 
 DLL_API Bar operator-(const Bar &);
