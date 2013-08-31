@@ -52,8 +52,21 @@ namespace CppSharp.Passes
                     abstractMethods.RemoveAt(i);
                 }
             }
-            internalImplementation.Methods.AddRange(from abstractMethod in abstractMethods
-                                                    select new Method(abstractMethod));
+            foreach (Method abstractMethod in abstractMethods)
+            {
+                internalImplementation.Methods.Add(new Method(abstractMethod));
+                var @delegate = new TypedefDecl { Name = abstractMethod.Name + "Delegate" };
+                var pointerType = new PointerType();
+                var functionType = new FunctionType();
+                functionType.CallingConvention = abstractMethod.CallingConvention;
+                functionType.ReturnType = abstractMethod.OriginalReturnType;
+                functionType.Parameters.AddRange(abstractMethod.Parameters.Where(
+                    p => p.Kind != ParameterKind.IndirectReturnType));
+                pointerType.QualifiedPointee = new QualifiedType(functionType);
+                @delegate.QualifiedType = new QualifiedType(pointerType);
+                @delegate.IgnoreFlags = abstractMethod.IgnoreFlags;
+                internalImplementation.Typedefs.Add(@delegate);
+            }
             internalImplementation.Layout = new ClassLayout(@class.Layout);
             var vTableComponents = GetVTableComponents(@class);
             for (int i = 0; i < abstractMethods.Count; i++)
