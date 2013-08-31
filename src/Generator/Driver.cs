@@ -146,6 +146,7 @@ namespace CppSharp
             TranslationUnitPasses.AddPass(new CheckIgnoredDeclsPass());
             TranslationUnitPasses.AddPass(new CheckFlagEnumsPass());
             TranslationUnitPasses.AddPass(new CheckDuplicatedNamesPass());
+            TranslationUnitPasses.AddPass(new AbstractImplementationsPass());
         }
 
         public void ProcessCode()
