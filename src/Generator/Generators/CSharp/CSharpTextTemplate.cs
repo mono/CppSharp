@@ -1554,7 +1554,7 @@ namespace CppSharp.Generators.CSharp
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
-        private void GenerateVirtualTableMethodCall(ITypedDecl method, Class @class)
+        private void GenerateVirtualTableMethodCall(Method method, Class @class)
         {
             WriteLine("void* vtable = *((void**) __Instance.ToPointer());");
             int i;
@@ -1567,6 +1567,14 @@ namespace CppSharp.Generators.CSharp
                     break;
             }
             WriteLine("void* slot = *((void**) vtable + {0} * sizeof(IntPtr));", i);
+            string @delegate = method.Name + "Delegate";
+            string delegateId = GeneratedIdentifier(@delegate);
+            WriteLine("{0} {1} = ({0}) Marshal.GetDelegateForFunctionPointer(new IntPtr(slot), typeof({0}));",
+                @delegate, delegateId);
+            if (!method.OriginalReturnType.Type.IsPrimitiveType(PrimitiveType.Void))
+                Write("return ");
+            WriteLine("{0}({1});", delegateId, string.Join(", ", method.Parameters.Where(
+                p => p.Kind != ParameterKind.IndirectReturnType).Select(p => Helpers.SafeIdentifier(p.Name))));
         }
 
         private void GenerateOperator(Method method, Class @class)
