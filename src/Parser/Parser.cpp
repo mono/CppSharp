@@ -510,8 +510,8 @@ void Parser::WalkVTable(clang::CXXRecordDecl* RD, CppSharp::AST::Class^ C)
             Info.Layout = WalkVTableLayout(VTLayout);
 
             C->Layout->VFTables->Add(Info);
-            break;
         }
+        break;
     }
     case TargetCXXABI::GenericItanium:
     {
