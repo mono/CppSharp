@@ -51,11 +51,19 @@ namespace CppSharp.Generators.CLI
             var includes = new SortedSet<string>(StringComparer.InvariantCulture);
 
             foreach (var typeRef in typeReferenceCollector.TypeReferences)
-            { 
+            {
+                if (typeRef.Include.TranslationUnit == TranslationUnit)
+                    continue;
+
                 if (typeRef.Include.File == TranslationUnit.FileName)
                     continue;
 
                 var include = typeRef.Include;
+                var unit = include.TranslationUnit;
+
+                if (unit != null && unit.Ignore)
+                    continue;
+
                 if(!string.IsNullOrEmpty(include.File) && include.InHeader)
                     includes.Add(include.ToString());
             }

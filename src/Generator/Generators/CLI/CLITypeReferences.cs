@@ -88,6 +88,7 @@ namespace CppSharp.Generators.CLI
             GetTypeReference(decl).Include = new Include()
             {
                 File = declFile,
+                TranslationUnit = decl.Namespace.TranslationUnit,
                 Kind = Include.IncludeKind.Quoted,
                 InHeader = IsIncludeInHeader(record)
             };

@@ -13,6 +13,8 @@ namespace CppSharp.Generators.CLI
         }
 
         public string File;
+        public TranslationUnit TranslationUnit;
+
         public IncludeKind Kind;
         public bool InHeader;
 
