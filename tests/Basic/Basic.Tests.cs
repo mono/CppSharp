@@ -90,7 +90,7 @@ public class BasicTests
     public void TestAbstractReturnType()
     {
         var returnsAbstractFoo = new ReturnsAbstractFoo();
-        AbstractFoo abstractFoo = returnsAbstractFoo.getFoo();
+        var abstractFoo = returnsAbstractFoo.getFoo();
         Assert.AreEqual(abstractFoo.pureFunction(), 5);
     }
 }

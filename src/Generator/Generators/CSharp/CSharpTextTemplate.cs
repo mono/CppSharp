@@ -1528,7 +1528,7 @@ namespace CppSharp.Generators.CSharp
                 }
                 else if (method.IsOverride && method.IsSynthetized)
                 {
-                    GenerateVirtualTableMethodCall(method, @class);
+                    GenerateVirtualTableFunctionCall(method, @class);
                 }
                 else
                 {
@@ -1557,7 +1557,7 @@ namespace CppSharp.Generators.CSharp
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
-        private void GenerateVirtualTableMethodCall(Method method, Class @class)
+        private void GenerateVirtualTableFunctionCall(Method method, Class @class)
         {
             WriteLine("void* vtable = *((void**) __Instance.ToPointer());");
             int i;
@@ -1573,15 +1573,12 @@ namespace CppSharp.Generators.CSharp
                     i = @class.Layout.Layout.Components.FindIndex(m => m.Method == method);
                     break;
             }
-            WriteLine("void* slot = *((void**) vtable + {0} * sizeof(IntPtr));", i);
+            WriteLine("void* slot = *((void**) vtable + {0} * IntPtr.Size);", i);
             string @delegate = method.Name + "Delegate";
             string delegateId = GeneratedIdentifier(@delegate);
-            WriteLine("{0} {1} = ({0}) Marshal.GetDelegateForFunctionPointer(new IntPtr(slot), typeof({0}));",
+            WriteLine("var {1} = ({0}) Marshal.GetDelegateForFunctionPointer(new IntPtr(slot), typeof({0}));",
                 @delegate, delegateId);
-            if (!method.OriginalReturnType.Type.IsPrimitiveType(PrimitiveType.Void))
-                Write("return ");
-            WriteLine("{0}({1});", delegateId, string.Join(", ", method.Parameters.Where(
-                p => p.Kind != ParameterKind.IndirectReturnType).Select(p => Helpers.SafeIdentifier(p.Name))));
+            GenerateFunctionCall(delegateId, method.Parameters, method);
         }
 
         private void GenerateOperator(Method method, Class @class)
@@ -1937,9 +1934,11 @@ namespace CppSharp.Generators.CSharp
                 PushBlock(CSharpBlockKind.Typedef);
                 WriteLine("[UnmanagedFunctionPointerAttribute(CallingConvention.{0})]",
                     Helpers.ToCSharpCallConv(functionType.CallingConvention));
+                TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
                 WriteLine("public {0};",
                     string.Format(TypePrinter.VisitDelegate(functionType).Type,
                         SafeIdentifier(typedef.Name)));
+                TypePrinter.PopContext();
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
             else if (typedef.Type.IsEnumType())

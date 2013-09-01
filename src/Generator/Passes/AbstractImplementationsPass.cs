@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using CppSharp.AST;
 using CppSharp.Utils;
@@ -57,12 +56,29 @@ namespace CppSharp.Passes
             {
                 internalImplementation.Methods.Add(new Method(abstractMethod));
                 var @delegate = new TypedefDecl { Name = abstractMethod.Name + "Delegate" };
-                var pointerType = new PointerType();
                 var functionType = new FunctionType();
                 functionType.CallingConvention = abstractMethod.CallingConvention;
-                functionType.ReturnType = abstractMethod.OriginalReturnType;
-                functionType.Parameters.AddRange(abstractMethod.Parameters.Where(
-                    p => p.Kind != ParameterKind.IndirectReturnType));
+                functionType.ReturnType = abstractMethod.ReturnType;
+                var instance = new Parameter();
+                instance.Name = "instance";
+                instance.QualifiedType = new QualifiedType(new BuiltinType(PrimitiveType.IntPtr));
+                functionType.Parameters.Add(instance);
+                functionType.Parameters.AddRange(abstractMethod.Parameters);
+                for (int i = functionType.Parameters.Count - 1; i >= 0; i--)
+                {
+                    var parameter = functionType.Parameters[i];
+                    if (parameter.Kind == ParameterKind.IndirectReturnType)
+                    {
+                        var retParam = new Parameter();
+                        retParam.Name = parameter.Name;
+                        var ptrType = new PointerType();
+                        ptrType.QualifiedPointee = new QualifiedType(parameter.Type);
+                        retParam.QualifiedType = new QualifiedType(ptrType);
+                        functionType.Parameters.RemoveAt(i);
+                        functionType.Parameters.Insert(i, retParam);
+                    }
+                }
+                var pointerType = new PointerType();
                 pointerType.QualifiedPointee = new QualifiedType(functionType);
                 @delegate.QualifiedType = new QualifiedType(pointerType);
                 @delegate.IgnoreFlags = abstractMethod.IgnoreFlags;
