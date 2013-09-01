@@ -49,7 +49,7 @@ namespace CppSharp.Passes
             {
                 if (!IsValidOperatorOverload(@operator))
                 {
-                    Driver.Diagnostics.EmitError(DiagnosticId.InvalidOperatorOverload,
+                    Driver.Diagnostics.Debug(DiagnosticId.InvalidOperatorOverload,
                         "Invalid operator overload {0}::{1}",
                         @class.OriginalName, @operator.OperatorKind);
                     @operator.ExplicityIgnored = true;
