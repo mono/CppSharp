@@ -133,16 +133,16 @@ namespace CppSharp
             TranslationUnitPasses.AddPass(new ResolveIncompleteDeclsPass());
             TranslationUnitPasses.AddPass(new CleanInvalidDeclNamesPass());
             TranslationUnitPasses.AddPass(new CheckIgnoredDeclsPass());
+
+            library.SetupPasses(this);
+
             TranslationUnitPasses.AddPass(new FindSymbolsPass());
             TranslationUnitPasses.AddPass(new MoveOperatorToClassPass());
             TranslationUnitPasses.AddPass(new CheckOperatorsOverloadsPass());
             TranslationUnitPasses.AddPass(new CheckVirtualOverrideReturnCovariance());
             TranslationUnitPasses.AddPass(new CheckAmbiguousFunctions());
 
-            library.SetupPasses(this);
-
             Generator.SetupPasses();
-
             TranslationUnitPasses.AddPass(new FieldToPropertyPass());
             TranslationUnitPasses.AddPass(new CleanInvalidDeclNamesPass());
             TranslationUnitPasses.AddPass(new CheckIgnoredDeclsPass());
@@ -165,7 +165,7 @@ namespace CppSharp
 
         public void WriteCode(List<GeneratorOutput> outputs)
         {
-            var outputPath = Options.OutputDir ?? Directory.GetCurrentDirectory();
+            var outputPath = Options.OutputDir;
 
             if (!Directory.Exists(outputPath))
                 Directory.CreateDirectory(outputPath);
@@ -207,6 +207,8 @@ namespace CppSharp
             IncludeDirs = new List<string>();
             SystemIncludeDirs = new List<string>();
             Headers = new List<string>();
+
+            OutputDir = Directory.GetCurrentDirectory();
 
             var platform = Environment.OSVersion.Platform;
             var isUnix = platform == PlatformID.Unix || platform == PlatformID.MacOSX;
