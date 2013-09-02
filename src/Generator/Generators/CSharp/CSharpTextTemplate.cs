@@ -1758,8 +1758,10 @@ namespace CppSharp.Generators.CSharp
 
                 if (retType.Type.IsPointer() && isIntPtr)
                 {
-                    WriteLine("if ({0} == global::System.IntPtr.Zero) return null;",
-                        Generator.GeneratedIdentifier("ret"));
+                    string @null = retType.Type.IsPrimitiveType(PrimitiveType.IntPtr) ? 
+                        "IntPtr.Zero" : "null";
+                    WriteLine("if ({0} == global::System.IntPtr.Zero) return {1};",
+                        Generator.GeneratedIdentifier("ret"), @null);
                 }
 
                 var ctx = new CSharpMarshalContext(Driver)
