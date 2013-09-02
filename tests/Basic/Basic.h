@@ -77,6 +77,7 @@ public:
     int AddBar2(Bar2);
 
     int RetEnum(Enum);
+    Hello* RetNull();
 };
 
 DLL_API Bar operator-(const Bar &);

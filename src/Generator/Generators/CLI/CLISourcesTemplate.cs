@@ -809,6 +809,16 @@ namespace CppSharp.Generators.CLI
 
             if (needsReturn)
             {
+                var retTypeName = retType.Visit(TypePrinter);
+                var isIntPtr = retTypeName.Contains("IntPtr");
+
+                if (retType.Type.IsPointer() && (isIntPtr || retTypeName.EndsWith("^")))
+                {
+                    WriteLine("if ({0} == nullptr) return {1};",
+                        Generator.GeneratedIdentifier("ret"),
+                        isIntPtr ? "System::IntPtr()" : "nullptr");
+                }
+
                 var ctx = new MarshalContext(Driver)
                     {
                         ArgName = Generator.GeneratedIdentifier("ret"),

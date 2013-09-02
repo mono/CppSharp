@@ -85,6 +85,11 @@ int Hello::RetEnum(Enum e)
     return (int)e;
 }
 
+Hello* Hello::RetNull()
+{
+    return 0;
+}
+
 int unsafeFunction(const Bar& ret, char* testForString, void (*foo)(int))
 {
     return ret.A;

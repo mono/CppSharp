@@ -1672,6 +1672,18 @@ namespace CppSharp.Generators.CSharp
 
             if (needsReturn)
             {
+                TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+                var retTypeName = retType.CSharpType(TypePrinter).Type;
+                TypePrinter.PopContext();
+
+                var isIntPtr = retTypeName.Contains("IntPtr");
+
+                if (retType.Type.IsPointer() && isIntPtr)
+                {
+                    WriteLine("if ({0} == global::System.IntPtr.Zero) return null;",
+                        Generator.GeneratedIdentifier("ret"));
+                }
+
                 var ctx = new CSharpMarshalContext(Driver)
                 {
                     ArgName = GeneratedIdentifier("ret"),
