@@ -86,3 +86,20 @@ DLL_API Bar operator+(const Bar &, const Bar &);
 int DLL_API unsafeFunction(const Bar& ret, char* testForString, void (*foo)(int));
 
 DLL_API Bar indirectReturn();
+
+// Tests CheckVirtualOverrideReturnCovariance
+struct Exception;
+typedef Exception Ex1;
+
+struct DerivedException;
+typedef DerivedException Ex2;
+
+struct DLL_API Exception
+{
+    virtual Ex1* clone() = 0;
+};
+
+struct DLL_API DerivedException : public Exception
+{
+    virtual Ex2* clone() override { return 0; }
+};

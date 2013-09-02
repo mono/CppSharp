@@ -44,6 +44,13 @@ public class BasicTests
     }
 
     [Test]
+    public void TestNullRef()
+    {
+        var hello = new Hello ();
+        Assert.That(hello.RetNull(), Is.Null);
+    }
+
+    [Test]
     public void TestUnaryOperator()
     {
         var bar = new Bar { A = 4, B = 7 };
