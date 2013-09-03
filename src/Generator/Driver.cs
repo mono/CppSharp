@@ -133,6 +133,7 @@ namespace CppSharp
             TranslationUnitPasses.AddPass(new ResolveIncompleteDeclsPass());
             TranslationUnitPasses.AddPass(new CleanInvalidDeclNamesPass());
             TranslationUnitPasses.AddPass(new CheckIgnoredDeclsPass());
+            TranslationUnitPasses.AddPass(new GenerateInlinesCodePass());
 
             library.SetupPasses(this);
 
@@ -260,6 +261,7 @@ namespace CppSharp
         public string OutputNamespace;
         public string OutputDir;
         public string LibraryName;
+        private string inlinesLibraryName;
         public bool OutputInteropIncludes;
         public bool GenerateLibraryNamespace;
         public bool GenerateFunctionTemplates;
@@ -272,6 +274,19 @@ namespace CppSharp
         public Func<TranslationUnit, string> GenerateName;
         public int MaxIndent;
         public string CommentPrefix;
+
+        public string InlinesLibraryName
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(inlinesLibraryName))
+                {
+                    return string.Format("{0}-inlines", OutputNamespace);
+                }
+                return inlinesLibraryName;
+            }
+            set { inlinesLibraryName = value; }
+        }
 
         public bool IsCSharpGenerator
         {

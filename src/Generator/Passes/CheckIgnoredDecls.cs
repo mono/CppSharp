@@ -86,6 +86,19 @@ namespace CppSharp.Passes
                         function.Name, msg);
                     return false;
                 }
+
+                if (param.Kind == ParameterKind.IndirectReturnType)
+                {
+                    Class retClass;
+                    param.Type.Desugar().IsTagDecl(out retClass);
+                    if (retClass == null)
+                    {
+                        function.ExplicityIgnored = true;
+                        Console.WriteLine("Function '{0}' was ignored due to an indirect return param not of a tag type",
+                            function.Name);
+                        return false;
+                    }
+                }
             }
 
             return true;
