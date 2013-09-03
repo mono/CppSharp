@@ -31,10 +31,6 @@
 #include <CodeGen/TargetInfo.h>
 #include <CodeGen/CGCall.h>
 
-#include <string>
-#include <iostream>
-#include <sstream>
-
 //-----------------------------------//
 
 Parser::Parser(ParserOptions^ Opts) : Lib(Opts->Library), Opts(Opts), Index(0)
