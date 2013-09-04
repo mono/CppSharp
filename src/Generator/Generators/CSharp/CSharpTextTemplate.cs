@@ -899,7 +899,9 @@ namespace CppSharp.Generators.CSharp
                 if (prop.Ignore) continue;
 
                 PushBlock(CSharpBlockKind.Property);
-                WriteLine("public {0} {1}", prop.Type, SafeIdentifier(prop.Name));
+                WriteLine("{0} {1} {2}",
+                    prop.Access == AccessSpecifier.Public ? "public" : "protected",
+                    prop.Type, SafeIdentifier(prop.Name));
                 WriteStartBraceIndent();
 
                 if (prop.Field != null)
@@ -1481,8 +1483,16 @@ namespace CppSharp.Generators.CSharp
             PushBlock(CSharpBlockKind.Method);
             GenerateDeclarationCommon(method);
 
-            Write(Driver.Options.GenerateAbstractImpls &&
-                @class.IsAbstract && method.IsConstructor ? "protected " : "public ");
+            switch (method.Access)
+            {
+                case AccessSpecifier.Public:
+                    Write(Driver.Options.GenerateAbstractImpls && @class.IsAbstract
+                        && method.IsConstructor ? "protected " : "public ");
+                    break;
+                case AccessSpecifier.Protected:
+                    Write("protected ");
+                    break;
+            }
 
             if (method.IsVirtual && !method.IsOverride &&
                 (!Driver.Options.GenerateAbstractImpls || !method.IsPure))
@@ -1955,7 +1965,8 @@ namespace CppSharp.Generators.CSharp
                 WriteLine("[UnmanagedFunctionPointerAttribute(CallingConvention.{0})]",
                     Helpers.ToCSharpCallConv(functionType.CallingConvention));
                 TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
-                WriteLine("public {0};",
+                WriteLine("{0} {1};",
+                    typedef.Access == AccessSpecifier.Public ? "public" : "protected",
                     string.Format(TypePrinter.VisitDelegate(functionType).Type,
                         SafeIdentifier(typedef.Name)));
                 TypePrinter.PopContext();
