@@ -29,7 +29,7 @@ namespace CppSharp.Passes
             var method = new Method()
             {
                 Namespace = @class,
-                OriginalNamespace = function.Namespace,
+                OriginalNamespace = @class,
                 Name = function.Name,
                 OriginalName = function.OriginalName,
                 Mangled = function.Mangled,
@@ -41,8 +41,7 @@ namespace CppSharp.Passes
                 IsVariadic = function.IsVariadic,
                 IsInline = function.IsInline,
                 OperatorKind = function.OperatorKind,
-                SynthKind = FunctionSynthKind.NonMemberOperator,
-                OriginalFunction = function
+                SynthKind = FunctionSynthKind.NonMemberOperator
             };
 
             @class.Methods.Add(method);
