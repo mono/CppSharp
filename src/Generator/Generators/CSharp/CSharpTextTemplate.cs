@@ -1483,7 +1483,7 @@ namespace CppSharp.Generators.CSharp
             PushBlock(CSharpBlockKind.Method);
             GenerateDeclarationCommon(method);
 
-            switch (method.Access)
+            switch (GetValidMethodAccess(method, @class))
             {
                 case AccessSpecifier.Public:
                     Write(Driver.Options.GenerateAbstractImpls && @class.IsAbstract
@@ -1576,6 +1576,20 @@ namespace CppSharp.Generators.CSharp
 
             WriteCloseBraceIndent();
             PopBlock(NewLineKind.BeforeNextBlock);
+        }
+
+        private static AccessSpecifier GetValidMethodAccess(Method method, Class @class)
+        {
+            switch (method.Access)
+            {
+                case AccessSpecifier.Public:
+                    return @class.IsAbstract && method.IsConstructor ?
+                        AccessSpecifier.Protected : AccessSpecifier.Public;
+                case AccessSpecifier.Protected:
+                    return method.IsOverride ?
+                        @class.GetRootBaseMethod(method).Access : AccessSpecifier.Protected;
+            }
+            return AccessSpecifier.Private;
         }
 
         private void GenerateVirtualTableFunctionCall(Function method, Class @class)
