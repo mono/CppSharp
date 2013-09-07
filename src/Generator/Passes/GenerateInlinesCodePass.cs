@@ -65,7 +65,7 @@ namespace CppSharp.Passes
         {
             string symbol = mangled.Mangled;
             var declaration = (Declaration) mangled;
-            if (!declaration.Ignore && declaration.Access != AccessSpecifier.Private &&
+            if (!declaration.Ignore && AccessValid(declaration) &&
                 !Driver.LibrarySymbols.FindSymbol(ref symbol) &&
                 !currentUnit.FilePath.EndsWith("_impl.h") &&
                 !currentUnit.FilePath.EndsWith("_p.h"))
@@ -75,6 +75,16 @@ namespace CppSharp.Passes
                 if (!mangledInlines.Contains(mangled.Mangled))
                     mangledInlines.Add(mangled.Mangled);
             }
+        }
+
+        private static bool AccessValid(Declaration declaration)
+        {
+            if (declaration.Access == AccessSpecifier.Private)
+            {
+                var method = declaration as Method;
+                return method != null && method.IsOverride;
+            }
+            return true;
         }
     }
 }

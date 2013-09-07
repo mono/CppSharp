@@ -109,7 +109,7 @@ namespace CppSharp.Passes
             if (!VisitDeclaration(method))
                 return false;
 
-            if (method.Access == AccessSpecifier.Private)
+            if (method.Access == AccessSpecifier.Private && !method.IsOverride)
             {
                 method.ExplicityIgnored = true;
                 return false;

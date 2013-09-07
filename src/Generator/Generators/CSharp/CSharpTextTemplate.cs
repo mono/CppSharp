@@ -1585,11 +1585,10 @@ namespace CppSharp.Generators.CSharp
                 case AccessSpecifier.Public:
                     return @class.IsAbstract && method.IsConstructor ?
                         AccessSpecifier.Protected : AccessSpecifier.Public;
-                case AccessSpecifier.Protected:
+                default:
                     return method.IsOverride ?
-                        @class.GetRootBaseMethod(method).Access : AccessSpecifier.Protected;
+                        @class.GetRootBaseMethod(method).Access : method.Access;
             }
-            return AccessSpecifier.Private;
         }
 
         private void GenerateVirtualTableFunctionCall(Function method, Class @class)
