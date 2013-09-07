@@ -54,6 +54,8 @@ namespace CppSharp.Passes
                     @operator.ExplicityIgnored = true;
                     continue;
                 }
+                if (@operator.SynthKind == FunctionSynthKind.NonMemberOperator)
+                    continue;
 
                 // Handle missing operator parameters
                 if (@operator.IsStatic)
