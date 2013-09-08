@@ -416,6 +416,9 @@ namespace CppSharp.Generators.CSharp
                 if (ctor.IsMoveConstructor)
                     continue;
 
+                if (ctor.IsDefaultConstructor && !@class.HasNonTrivialDefaultConstructor)
+                    continue;
+
                 tryAddOverload(ctor);
             }
 
@@ -1546,12 +1549,17 @@ namespace CppSharp.Generators.CSharp
 
             WriteLine("{0} = Marshal.AllocHGlobal({1});", Helpers.InstanceIdentifier,
                 @class.Layout.Size);
-            Write("Internal.{0}({1}", GetFunctionNativeIdentifier(method),
-                Helpers.InstanceIdentifier);
-            if (@params.Any())
-                Write(", ");
-            GenerateFunctionParams(@params);
-            WriteLine(");");
+
+            if (!method.IsDefaultConstructor || @class.HasNonTrivialDefaultConstructor)
+            {
+                Write("Internal.{0}({1}", GetFunctionNativeIdentifier(method),
+                      Helpers.InstanceIdentifier);
+                if (@params.Any())
+                    Write(", ");
+                GenerateFunctionParams(@params);
+                WriteLine(");");
+            }
+
             if (Options.GenerateVirtualTables && @class.IsDynamic)
                 WriteLine("SetupVTables({0});", Generator.GeneratedIdentifier("Instance"));
         }
