@@ -103,3 +103,13 @@ struct DLL_API DerivedException : public Exception
 {
     virtual Ex2* clone() override { return 0; }
 };
+
+// Tests for ambiguous call to native functions with default parameters
+struct DLL_API DefaultParameters
+{
+    void Foo(int a, int b = 0);
+    void Foo(int a);
+
+    void Bar() const;
+    void Bar();
+};

@@ -120,3 +120,19 @@ Bar indirectReturn()
 {
     return Bar();
 }
+
+void DefaultParameters::Foo(int a, int b)
+{
+}
+
+void DefaultParameters::Foo(int a)
+{
+}
+
+void DefaultParameters::Bar() const
+{
+}
+
+void DefaultParameters::Bar()
+{
+}

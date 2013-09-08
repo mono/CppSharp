@@ -137,6 +137,7 @@ namespace CppSharp
             TranslationUnitPasses.AddPass(new MoveOperatorToClassPass());
             TranslationUnitPasses.AddPass(new CheckOperatorsOverloadsPass());
             TranslationUnitPasses.AddPass(new CheckVirtualOverrideReturnCovariance());
+            TranslationUnitPasses.AddPass(new CheckAmbiguousFunctions());
 
             library.SetupPasses(this);
 

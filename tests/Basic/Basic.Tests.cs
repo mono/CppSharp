@@ -69,6 +69,14 @@ public class BasicTests
         Assert.That(barSum.B, Is.EqualTo(bar.B + bar1.B));
     }
 
+    [Test]
+    public void TestAmbiguous()
+    {
+        var def = new DefaultParameters();
+        def.Foo(1, 2);
+        def.Bar();
+    }
+
     [Test, Ignore]
     public void TestLeftShiftOperator()
     {
