@@ -1779,9 +1779,13 @@ namespace CppSharp.Generators.CSharp
 
                 var isIntPtr = retTypeName.Contains("IntPtr");
 
-                if (retType.Type.IsPointer() && isIntPtr)
+                Type pointee;
+                if (retType.Type.IsPointerTo(out pointee) && isIntPtr)
                 {
-                    string @null = retType.Type.IsPrimitiveType(PrimitiveType.IntPtr) ? 
+                    PrimitiveType primitive;
+                    string @null = (pointee.Desugar().IsPrimitiveType(out primitive) ||
+                        pointee.Desugar().IsPointer()) &&
+                        !CSharpTypePrinter.IsConstCharString(retType) ? 
                         "IntPtr.Zero" : "null";
                     WriteLine("if ({0} == global::System.IntPtr.Zero) return {1};",
                         Generator.GeneratedIdentifier("ret"), @null);
