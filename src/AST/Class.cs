@@ -94,6 +94,9 @@ namespace CppSharp.AST
         // True if the class is polymorphic.
         public bool IsPolymorphic;
 
+        // True if the class has a non trivial default constructor.
+        public bool HasNonTrivialDefaultConstructor;
+
         // True if the class has a non trivial copy constructor.
         public bool HasNonTrivialCopyConstructor;
 
