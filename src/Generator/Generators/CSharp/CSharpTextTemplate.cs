@@ -1574,7 +1574,7 @@ namespace CppSharp.Generators.CSharp
         private void GenerateVirtualTableFunctionCall(Function method, Class @class)
         {
             string delegateId;
-            Write(VTables.GetVirtualCallDelegate(method, @class, out delegateId));
+            Write(VTables.GetVirtualCallDelegate(method, @class, Driver.Options.Is32Bit, out delegateId));
             GenerateFunctionCall(delegateId, method.Parameters, method);
         }
 

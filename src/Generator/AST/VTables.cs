@@ -83,7 +83,8 @@ namespace CppSharp.AST
             throw new NotSupportedException();
         }
 
-        public static string GetVirtualCallDelegate(INamedDecl method, Class @class, out string delegateId)
+        public static string GetVirtualCallDelegate(INamedDecl method, Class @class,
+            bool is32Bit, out string delegateId)
         {
             var virtualCallBuilder = new StringBuilder();
             virtualCallBuilder.AppendFormat(
@@ -106,7 +107,7 @@ namespace CppSharp.AST
             }
 
             virtualCallBuilder.AppendFormat(
-                "void* slot = *((void**) vtable + {0} * IntPtr.Size);", i);
+                "void* slot = *((void**) vtable + {0} * {1});", i, is32Bit ? 4 : 8);
             virtualCallBuilder.AppendLine();
 
             string @delegate = method.Name + "Delegate";

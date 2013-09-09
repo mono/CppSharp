@@ -280,6 +280,8 @@ namespace CppSharp
         {
             get { return GeneratorKind == LanguageGeneratorKind.CLI; }
         }
+
+        public bool Is32Bit { get { return true; } }
     }
 
     public class InvalidOptionException : Exception
