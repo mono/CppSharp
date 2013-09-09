@@ -165,27 +165,30 @@ namespace CppSharp.AST
 
         public virtual QualifiedType GetFunctionType()
         {
-            var functionType = new FunctionType();
-            functionType.CallingConvention = CallingConvention;
-            functionType.ReturnType = ReturnType;
+            var functionType = new FunctionType
+                                {
+                                    CallingConvention = this.CallingConvention,
+                                    ReturnType = this.ReturnType
+                                };
             functionType.Parameters.AddRange(Parameters);
+            ReplaceIndirectReturnParamWithRegular(functionType);
+            var pointerType = new PointerType { QualifiedPointee = new QualifiedType(functionType) };
+            return new QualifiedType(pointerType);
+        }
+
+        private static void ReplaceIndirectReturnParamWithRegular(FunctionType functionType)
+        {
             for (int i = functionType.Parameters.Count - 1; i >= 0; i--)
             {
                 var parameter = functionType.Parameters[i];
                 if (parameter.Kind == ParameterKind.IndirectReturnType)
                 {
-                    var retParam = new Parameter();
-                    retParam.Name = parameter.Name;
-                    var ptrType = new PointerType();
-                    ptrType.QualifiedPointee = new QualifiedType(parameter.Type);
-                    retParam.QualifiedType = new QualifiedType(ptrType);
+                    var ptrType = new PointerType { QualifiedPointee = new QualifiedType(parameter.Type) };
+                    var retParam = new Parameter { Name = parameter.Name, QualifiedType = new QualifiedType(ptrType) };
                     functionType.Parameters.RemoveAt(i);
                     functionType.Parameters.Insert(i, retParam);
                 }
             }
-            var pointerType = new PointerType();
-            pointerType.QualifiedPointee = new QualifiedType(functionType);
-            return new QualifiedType(pointerType);
         }
     }
 }

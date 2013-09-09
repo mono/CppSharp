@@ -5,6 +5,11 @@ using CppSharp.Utils;
 
 namespace CppSharp.Passes
 {
+    /// <summary>
+    /// This pass generates internal classes that implement abstract classes.
+    /// When the return type of a function is abstract, these internal classes provide - 
+    /// since the real type cannot be resolved while binding - an allocatable class that supports proper polymorphism.
+    /// </summary>
     public class GenerateAbstractImplementationsPass : TranslationUnitPass
     {
         private readonly List<Class> classes = new List<Class>();
@@ -39,9 +44,12 @@ namespace CppSharp.Passes
             foreach (var abstractMethod in abstractMethods)
             {
                 internalImpl.Methods.Add(new Method(abstractMethod));
-                var @delegate = new TypedefDecl { Name = abstractMethod.Name + "Delegate" };
-                @delegate.QualifiedType = abstractMethod.GetFunctionType();
-                @delegate.IgnoreFlags = abstractMethod.IgnoreFlags;
+                var @delegate = new TypedefDecl
+                                {
+                                    Name = abstractMethod.Name + "Delegate",
+                                    QualifiedType = abstractMethod.GetFunctionType(),
+                                    IgnoreFlags = abstractMethod.IgnoreFlags
+                                };
                 internalImpl.Typedefs.Add(@delegate);
             }
 
@@ -59,10 +67,12 @@ namespace CppSharp.Passes
 
         private static Class GetInternalImpl(Declaration @class)
         {
-            var internalImpl = new Class();
-            internalImpl.Name = @class.Name + "Internal";
-            internalImpl.Access = AccessSpecifier.Private;
-            internalImpl.Namespace = @class.Namespace;
+            var internalImpl = new Class
+                                {
+                                    Name = @class.Name + "Internal",
+                                    Access = AccessSpecifier.Private,
+                                    Namespace = @class.Namespace
+                                };
             var @base = new BaseClassSpecifier { Type = new TagType(@class) };
             internalImpl.Bases.Add(@base);
             return internalImpl;

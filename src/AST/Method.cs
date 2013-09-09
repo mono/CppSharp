@@ -127,10 +127,11 @@ namespace CppSharp.AST
             {
                 FunctionType functionType;
                 qualifiedType.Type.IsPointerTo(out functionType);
-                var instance = new Parameter();
-                instance.Name = "instance";
-                instance.QualifiedType = new QualifiedType(
-                    new BuiltinType(PrimitiveType.IntPtr));
+                var instance = new Parameter
+                                {
+                                    Name = "instance",
+                                    QualifiedType = new QualifiedType(new BuiltinType(PrimitiveType.IntPtr))
+                                };
                 functionType.Parameters.Insert(0, instance);
             }
             return qualifiedType;

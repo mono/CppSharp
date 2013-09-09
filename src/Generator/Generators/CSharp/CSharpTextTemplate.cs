@@ -626,8 +626,7 @@ namespace CppSharp.Generators.CSharp
             Write(Helpers.GetAccess(@class));
             Write("unsafe ");
 
-            if (Driver.Options.GenerateAbstractImpls &&
-                @class.IsAbstract)
+            if (Driver.Options.GenerateAbstractImpls && @class.IsAbstract)
                 Write("abstract ");
 
             if (Options.GeneratePartialClasses)
@@ -1365,8 +1364,7 @@ namespace CppSharp.Generators.CSharp
             PushBlock(CSharpBlockKind.Method);
             string className = @class.Name;
             string safeIdentifier = SafeIdentifier(className);
-            if (@class.Access == AccessSpecifier.Private &&
-                className.EndsWith("Internal"))
+            if (@class.Access == AccessSpecifier.Private && className.EndsWith("Internal"))
             {
                 className = className.Substring(0,
                     safeIdentifier.LastIndexOf("Internal", StringComparison.Ordinal));
@@ -1379,8 +1377,7 @@ namespace CppSharp.Generators.CSharp
             PopBlock(NewLineKind.BeforeNextBlock);
 
             PushBlock(CSharpBlockKind.Method);
-            WriteLine("internal {0}({1}.Internal native)", safeIdentifier,
-                className);
+            WriteLine("internal {0}({1}.Internal native)", safeIdentifier, className);
             WriteLineIndent(": this(&native)");
             WriteStartBraceIndent();
             WriteCloseBraceIndent();
@@ -1574,8 +1571,32 @@ namespace CppSharp.Generators.CSharp
         private void GenerateVirtualTableFunctionCall(Function method, Class @class)
         {
             string delegateId;
-            Write(VTables.GetVirtualCallDelegate(method, @class, Driver.Options.Is32Bit, out delegateId));
+            Write(GetVirtualCallDelegate(method, @class, Driver.Options.Is32Bit, out delegateId));
             GenerateFunctionCall(delegateId, method.Parameters, method);
+        }
+
+        public static string GetVirtualCallDelegate(INamedDecl method, Class @class,
+            bool is32Bit, out string delegateId)
+        {
+            var virtualCallBuilder = new StringBuilder();
+            virtualCallBuilder.AppendFormat("void* vtable = *((void**) {0}.ToPointer());",
+                Helpers.InstanceIdentifier);
+            virtualCallBuilder.AppendLine();
+
+            var i = VTables.GetVTableIndex(method, @class);
+
+            virtualCallBuilder.AppendFormat(
+                "void* slot = *((void**) vtable + {0} * {1});", i, is32Bit ? 4 : 8);
+            virtualCallBuilder.AppendLine();
+
+            string @delegate = method.Name + "Delegate";
+            delegateId = Generator.GeneratedIdentifier(@delegate);
+
+            virtualCallBuilder.AppendFormat(
+                "var {1} = ({0}) Marshal.GetDelegateForFunctionPointer(new IntPtr(slot), typeof({0}));",
+                @delegate, delegateId);
+            virtualCallBuilder.AppendLine();
+            return virtualCallBuilder.ToString();
         }
 
         private void GenerateOperator(Method method, Class @class)

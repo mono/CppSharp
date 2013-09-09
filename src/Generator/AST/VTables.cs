@@ -83,41 +83,18 @@ namespace CppSharp.AST
             throw new NotSupportedException();
         }
 
-        public static string GetVirtualCallDelegate(INamedDecl method, Class @class,
-            bool is32Bit, out string delegateId)
+        public static int GetVTableIndex(INamedDecl method, Class @class)
         {
-            var virtualCallBuilder = new StringBuilder();
-            virtualCallBuilder.AppendFormat(
-                "void* vtable = *((void**) {0}.ToPointer());",
-                Helpers.InstanceIdentifier);
-            virtualCallBuilder.AppendLine();
-
-            int i;
             switch (@class.Layout.ABI)
             {
                 case CppAbi.Microsoft:
-                    i = (from table in @class.Layout.VFTables
-                         let j = table.Layout.Components.FindIndex(m => m.Method == method)
-                         where j >= 0
-                         select j).First();
-                    break;
+                    return (from table in @class.Layout.VFTables
+                            let j = table.Layout.Components.FindIndex(m => m.Method == method)
+                            where j >= 0
+                            select j).First();
                 default:
-                    i = @class.Layout.Layout.Components.FindIndex(m => m.Method == method);
-                    break;
+                    return @class.Layout.Layout.Components.FindIndex(m => m.Method == method);
             }
-
-            virtualCallBuilder.AppendFormat(
-                "void* slot = *((void**) vtable + {0} * {1});", i, is32Bit ? 4 : 8);
-            virtualCallBuilder.AppendLine();
-
-            string @delegate = method.Name + "Delegate";
-            delegateId = Generator.GeneratedIdentifier(@delegate);
-
-            virtualCallBuilder.AppendFormat(
-                "var {1} = ({0}) Marshal.GetDelegateForFunctionPointer(new IntPtr(slot), typeof({0}));",
-                @delegate, delegateId);
-            virtualCallBuilder.AppendLine();
-            return virtualCallBuilder.ToString();
         }
     }
 }
