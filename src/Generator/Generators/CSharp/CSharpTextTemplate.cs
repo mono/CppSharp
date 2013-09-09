@@ -1567,9 +1567,10 @@ namespace CppSharp.Generators.CSharp
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
-        private void GenerateVirtualTableFunctionCall(Method method, Class @class)
+        private void GenerateVirtualTableFunctionCall(Function method, Class @class)
         {
-            WriteLine("void* vtable = *((void**) __Instance.ToPointer());");
+            WriteLine("void* vtable = *((void**) {0}.ToPointer());",
+                Helpers.InstanceIdentifier);
             int i;
             switch (Driver.Options.Abi)
             {
