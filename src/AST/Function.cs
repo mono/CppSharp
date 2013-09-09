@@ -162,5 +162,30 @@ namespace CppSharp.AST
 
         public Type Type { get { return ReturnType.Type; } }
         public QualifiedType QualifiedType { get { return ReturnType; } }
+
+        public virtual QualifiedType GetFunctionType()
+        {
+            var functionType = new FunctionType();
+            functionType.CallingConvention = CallingConvention;
+            functionType.ReturnType = ReturnType;
+            functionType.Parameters.AddRange(Parameters);
+            for (int i = functionType.Parameters.Count - 1; i >= 0; i--)
+            {
+                var parameter = functionType.Parameters[i];
+                if (parameter.Kind == ParameterKind.IndirectReturnType)
+                {
+                    var retParam = new Parameter();
+                    retParam.Name = parameter.Name;
+                    var ptrType = new PointerType();
+                    ptrType.QualifiedPointee = new QualifiedType(parameter.Type);
+                    retParam.QualifiedType = new QualifiedType(ptrType);
+                    functionType.Parameters.RemoveAt(i);
+                    functionType.Parameters.Insert(i, retParam);
+                }
+            }
+            var pointerType = new PointerType();
+            pointerType.QualifiedPointee = new QualifiedType(functionType);
+            return new QualifiedType(pointerType);
+        }
     }
 }
