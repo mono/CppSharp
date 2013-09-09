@@ -9,6 +9,11 @@ namespace CppSharp.Generators.CLI
     {
         public Include Include;
         public string FowardReference;
+
+        public override string ToString()
+        {
+            return FowardReference;
+        }
     }
 
     public class CLITypeReferenceCollector : AstVisitor
