@@ -1582,9 +1582,9 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, CppSharp::AST::Function^ F,
         ParamStartLoc = VD->getLocEnd();
     }
 
-    bool CheckCodeGenInfo = !FD->isDependentContext();
-    if (auto RT = FD->getResultType()->getAs<RecordType>())
-        if (auto RD = RT->getAsCXXRecordDecl())
+    bool CheckCodeGenInfo = !FD->isDependentContext() && !FD->isInvalidDecl();
+
+    if (auto RD = FD->getResultType()->getAsCXXRecordDecl())
             CheckCodeGenInfo &= RD->hasDefinition();
 
     if (CheckCodeGenInfo)
