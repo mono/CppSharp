@@ -148,7 +148,8 @@ namespace CppSharp
             TranslationUnitPasses.AddPass(new CheckIgnoredDeclsPass());
             TranslationUnitPasses.AddPass(new CheckFlagEnumsPass());
             TranslationUnitPasses.AddPass(new CheckDuplicatedNamesPass());
-            TranslationUnitPasses.AddPass(new GenerateAbstractImplementationsPass());
+            if (Options.GenerateAbstractImpls)
+                TranslationUnitPasses.AddPass(new GenerateAbstractImplementationsPass());
         }
 
         public void ProcessCode()
@@ -262,6 +263,7 @@ namespace CppSharp
         public bool GenerateFunctionTemplates;
         public bool GeneratePartialClasses;
         public bool GenerateVirtualTables;
+        public bool GenerateAbstractImpls;
         public bool GenerateInternalImports;
         public string IncludePrefix;
         public bool WriteOnlyWhenChanged;

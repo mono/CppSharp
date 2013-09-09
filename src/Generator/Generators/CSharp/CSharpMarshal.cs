@@ -216,7 +216,8 @@ namespace CppSharp.Generators.CSharp
                 instance = copy;
             }
 
-            if (@class.IsRefType && !@class.IsAbstract)
+            if (@class.IsRefType &&
+                (!Context.Driver.Options.GenerateAbstractImpls || !@class.IsAbstract))
             {
                 var instanceName = Generator.GeneratedIdentifier("instance");
                 if (VarSuffix > 0)
@@ -253,7 +254,9 @@ namespace CppSharp.Generators.CSharp
             }
 
             Context.Return.Write("new {0}({1})",
-                QualifiedIdentifier(@class) + (@class.IsAbstract ? "Internal" : ""),
+                QualifiedIdentifier(@class) +
+                (Context.Driver.Options.GenerateAbstractImpls && @class.IsAbstract ?
+                    "Internal" : ""),
                 instance);
 
             return true;

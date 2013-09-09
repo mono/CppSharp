@@ -626,7 +626,8 @@ namespace CppSharp.Generators.CSharp
             Write(Helpers.GetAccess(@class));
             Write("unsafe ");
 
-            if (@class.IsAbstract)
+            if (Driver.Options.GenerateAbstractImpls &&
+                @class.IsAbstract)
                 Write("abstract ");
 
             if (Options.GeneratePartialClasses)
@@ -1483,9 +1484,11 @@ namespace CppSharp.Generators.CSharp
             PushBlock(CSharpBlockKind.Method);
             GenerateDeclarationCommon(method);
 
-            Write(@class.IsAbstract && method.IsConstructor ? "protected " : "public ");
+            Write(Driver.Options.GenerateAbstractImpls &&
+                @class.IsAbstract && method.IsConstructor ? "protected " : "public ");
 
-            if (method.IsVirtual && !method.IsOverride && !method.IsPure)
+            if (method.IsVirtual && !method.IsOverride &&
+                (!Driver.Options.GenerateAbstractImpls || !method.IsPure))
                 Write("virtual ");
 
             var isBuiltinOperator = method.IsOperator &&
@@ -1497,7 +1500,7 @@ namespace CppSharp.Generators.CSharp
             if (method.IsOverride)
                 Write("override ");
 
-            if (method.IsPure)
+            if (Driver.Options.GenerateAbstractImpls && method.IsPure)
                 Write("abstract ");
 
             var functionName = GetFunctionIdentifier(method);
@@ -1511,7 +1514,7 @@ namespace CppSharp.Generators.CSharp
 
             Write(")");
 
-            if (method.IsPure)
+            if (Driver.Options.GenerateAbstractImpls && method.IsPure)
             {
                 Write(";");
                 PopBlock(NewLineKind.BeforeNextBlock);
