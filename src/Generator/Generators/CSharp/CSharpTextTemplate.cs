@@ -57,6 +57,19 @@ namespace CppSharp.Generators.CSharp
         {
             get { return Generator.GeneratedIdentifier("Instance"); }
         }
+
+        public static string GetAccess(Class @class)
+        {
+            switch (@class.Access)
+            {
+                case AccessSpecifier.Private:
+                    return "internal ";
+                case AccessSpecifier.Protected:
+                    return "protected ";
+                default:
+                    return "public ";
+            }
+        }
     }
 
     public class CSharpBlockKind
@@ -609,18 +622,7 @@ namespace CppSharp.Generators.CSharp
             if (@class.IsUnion)
                 WriteLine("[StructLayout(LayoutKind.Explicit)]");
 
-            switch (@class.Access)
-            {
-                case AccessSpecifier.Private:
-                    Write("internal ");
-                    break;
-                case AccessSpecifier.Protected:
-                    Write("protected ");
-                    break;
-                case AccessSpecifier.Public:
-                    Write("public ");
-                    break;
-            }
+            Write(Helpers.GetAccess(@class));
             Write("unsafe ");
 
             if (@class.IsAbstract)
