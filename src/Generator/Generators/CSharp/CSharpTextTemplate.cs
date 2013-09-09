@@ -1998,6 +1998,9 @@ namespace CppSharp.Generators.CSharp
                 libName = libName.Substring(3);
             }
 
+            if (Options.GenerateInternalImports)
+                libName = "__Internal";
+
             Write("[DllImport(\"{0}\", ", libName);
 
             var callConv = Helpers.ToCSharpCallConv(function.CallingConvention);

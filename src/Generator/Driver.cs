@@ -261,6 +261,7 @@ namespace CppSharp
         public bool GenerateFunctionTemplates;
         public bool GeneratePartialClasses;
         public bool GenerateVirtualTables;
+        public bool GenerateInternalImports;
         public string IncludePrefix;
         public bool WriteOnlyWhenChanged;
         public Func<TranslationUnit, string> GenerateName;
