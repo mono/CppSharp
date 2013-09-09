@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using CppSharp.AST;
 using CppSharp.Utils;
 using Type = CppSharp.AST.Type;
@@ -1569,26 +1570,8 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateVirtualTableFunctionCall(Function method, Class @class)
         {
-            WriteLine("void* vtable = *((void**) {0}.ToPointer());",
-                Helpers.InstanceIdentifier);
-            int i;
-            switch (Driver.Options.Abi)
-            {
-                case CppAbi.Microsoft:
-                    i = (from table in @class.Layout.VFTables
-                         let j = table.Layout.Components.FindIndex(m => m.Method == method)
-                         where j >= 0
-                         select j).First();
-                    break;
-                default:
-                    i = @class.Layout.Layout.Components.FindIndex(m => m.Method == method);
-                    break;
-            }
-            WriteLine("void* slot = *((void**) vtable + {0} * IntPtr.Size);", i);
-            string @delegate = method.Name + "Delegate";
-            string delegateId = GeneratedIdentifier(@delegate);
-            WriteLine("var {1} = ({0}) Marshal.GetDelegateForFunctionPointer(new IntPtr(slot), typeof({0}));",
-                @delegate, delegateId);
+            string delegateId;
+            Write(VTables.GetVirtualCallDelegate(method, @class, out delegateId));
             GenerateFunctionCall(delegateId, method.Parameters, method);
         }
 

@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using CppSharp.Generators;
+using CppSharp.Generators.CSharp;
 
 namespace CppSharp.AST
 {
@@ -77,6 +81,42 @@ namespace CppSharp.AST
             }
 
             throw new NotSupportedException();
+        }
+
+        public static string GetVirtualCallDelegate(INamedDecl method, Class @class, out string delegateId)
+        {
+            var virtualCallBuilder = new StringBuilder();
+            virtualCallBuilder.AppendFormat(
+                "void* vtable = *((void**) {0}.ToPointer());",
+                Helpers.InstanceIdentifier);
+            virtualCallBuilder.AppendLine();
+
+            int i;
+            switch (@class.Layout.ABI)
+            {
+                case CppAbi.Microsoft:
+                    i = (from table in @class.Layout.VFTables
+                         let j = table.Layout.Components.FindIndex(m => m.Method == method)
+                         where j >= 0
+                         select j).First();
+                    break;
+                default:
+                    i = @class.Layout.Layout.Components.FindIndex(m => m.Method == method);
+                    break;
+            }
+
+            virtualCallBuilder.AppendFormat(
+                "void* slot = *((void**) vtable + {0} * IntPtr.Size);", i);
+            virtualCallBuilder.AppendLine();
+
+            string @delegate = method.Name + "Delegate";
+            delegateId = Generator.GeneratedIdentifier(@delegate);
+
+            virtualCallBuilder.AppendFormat(
+                "var {1} = ({0}) Marshal.GetDelegateForFunctionPointer(new IntPtr(slot), typeof({0}));",
+                @delegate, delegateId);
+            virtualCallBuilder.AppendLine();
+            return virtualCallBuilder.ToString();
         }
     }
 }
