@@ -1359,23 +1359,31 @@ namespace CppSharp.Generators.CSharp
         private void GenerateNativeConstructor(Class @class)
         {
             PushBlock(CSharpBlockKind.Method);
-            WriteLine("internal {0}({1}.Internal* native)", SafeIdentifier(@class.Name),
-                @class.Name);
+            string className = @class.Name;
+            string safeIdentifier = SafeIdentifier(className);
+            if (@class.Access == AccessSpecifier.Private &&
+                className.EndsWith("Internal"))
+            {
+                className = className.Substring(0,
+                    safeIdentifier.LastIndexOf("Internal", StringComparison.Ordinal));
+            }
+            WriteLine("internal {0}({1}.Internal* native)", safeIdentifier,
+                className);
             WriteLineIndent(": this(new global::System.IntPtr(native))");
             WriteStartBraceIndent();
             WriteCloseBraceIndent();
             PopBlock(NewLineKind.BeforeNextBlock);
 
             PushBlock(CSharpBlockKind.Method);
-            WriteLine("internal {0}({1}.Internal native)", SafeIdentifier(@class.Name),
-                @class.Name);
+            WriteLine("internal {0}({1}.Internal native)", safeIdentifier,
+                className);
             WriteLineIndent(": this(&native)");
             WriteStartBraceIndent();
             WriteCloseBraceIndent();
             PopBlock(NewLineKind.BeforeNextBlock);
 
             PushBlock(CSharpBlockKind.Method);
-            WriteLine("internal {0}(global::System.IntPtr native){1}", SafeIdentifier(@class.Name),
+            WriteLine("internal {0}(global::System.IntPtr native){1}", safeIdentifier,
                 @class.IsValueType ? " : this()" : string.Empty);
 
             var hasBaseClass = @class.HasBaseClass && @class.BaseClass.IsRefType;

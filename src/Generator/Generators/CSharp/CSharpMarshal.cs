@@ -216,7 +216,7 @@ namespace CppSharp.Generators.CSharp
                 instance = copy;
             }
 
-            if (@class.IsRefType)
+            if (@class.IsRefType && !@class.IsAbstract)
             {
                 var instanceName = Generator.GeneratedIdentifier("instance");
                 if (VarSuffix > 0)
