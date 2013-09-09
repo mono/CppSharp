@@ -128,9 +128,6 @@ namespace CppSharp.Generators.AST
 
         public override bool VisitDeclaration(Declaration decl)
         {
-            if(translationUnit.FileName.Contains("Font"))
-                Console.Write("");
-
             if (decl.IsIncomplete && decl.CompleteDeclaration != null)
                 decl = decl.CompleteDeclaration;
 
