@@ -52,6 +52,18 @@ namespace CppSharp.Generators.CLI
 
             foreach (var record in collector.Declarations)
             {
+                if (record.Value is Namespace)
+                    continue;
+
+                var declNamespace = record.Value.Namespace;
+
+                var isSameNamespace = declNamespace == @namespace;
+                if (declNamespace != null)
+                    isSameNamespace |= declNamespace.QualifiedName == @namespace.QualifiedName;
+
+                if (!isSameNamespace)
+                    continue;
+
                 record.Value.Visit(this);
                 GenerateInclude(record);
                 ProcessTypeMap(record);
@@ -90,7 +102,8 @@ namespace CppSharp.Generators.CLI
             if (declFile.Contains("String"))
                 return;
 
-            GetTypeReference(decl).Include = new Include()
+            var typeRef = GetTypeReference(decl);
+            typeRef.Include = new Include()
             {
                 File = declFile,
                 TranslationUnit = decl.Namespace.TranslationUnit,
@@ -114,6 +127,8 @@ namespace CppSharp.Generators.CLI
 
         private bool IsIncludeInHeader(ASTRecord<Declaration> record)
         {
+            if (TranslationUnit == record.Value.Namespace.TranslationUnit)
+                return false;
             return record.IsBaseClass() || record.IsFieldValueType();
         }
 
