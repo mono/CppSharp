@@ -84,12 +84,16 @@ class DLL_API AbstractFoo
 {
 public:
     virtual int pureFunction() = 0;
+    virtual int pureFunction1() = 0;
+    virtual int pureFunction2() = 0;
 };
 
 class DLL_API ImplementsAbstractFoo : public AbstractFoo
 {
 public:
     virtual int pureFunction();
+    virtual int pureFunction1();
+    virtual int pureFunction2();
 };
 
 class DLL_API ReturnsAbstractFoo

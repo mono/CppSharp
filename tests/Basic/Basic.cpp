@@ -126,6 +126,16 @@ int ImplementsAbstractFoo::pureFunction()
     return 5;
 }
 
+int ImplementsAbstractFoo::pureFunction1()
+{
+    return 10;
+}
+
+int ImplementsAbstractFoo::pureFunction2()
+{
+    return 15;
+}
+
 const AbstractFoo& ReturnsAbstractFoo::getFoo()
 {
     return i;
