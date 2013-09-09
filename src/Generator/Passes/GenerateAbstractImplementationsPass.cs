@@ -5,7 +5,7 @@ using CppSharp.Utils;
 
 namespace CppSharp.Passes
 {
-    public class AbstractImplementationsPass : TranslationUnitPass
+    public class GenerateAbstractImplementationsPass : TranslationUnitPass
     {
         private readonly List<Class> classes = new List<Class>();
 

@@ -123,10 +123,10 @@ namespace CppSharp.AST
         public override QualifiedType GetFunctionType()
         {
             var qualifiedType = base.GetFunctionType();
-            FunctionType functionType;
-            qualifiedType.Type.IsPointerTo(out functionType);
             if (!IsStatic)
             {
+                FunctionType functionType;
+                qualifiedType.Type.IsPointerTo(out functionType);
                 var instance = new Parameter();
                 instance.Name = "instance";
                 instance.QualifiedType = new QualifiedType(
