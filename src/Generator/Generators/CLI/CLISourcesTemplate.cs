@@ -602,7 +602,7 @@ namespace CppSharp.Generators.CLI
                     if (!@class.IsAbstract)
                     {
                         var @params = GenerateFunctionParamsMarshal(method.Parameters, method);
-                        Write("NativePtr = new ::{0}(", method.Namespace.QualifiedName);
+                        Write("NativePtr = new ::{0}(", method.Namespace.QualifiedOriginalName);
                         GenerateFunctionParams(@params);
                         WriteLine(");");
                     }
