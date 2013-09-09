@@ -95,9 +95,6 @@ protected:
     CppSharp::AST::DeclarationContext^ GetNamespace(clang::Decl*, clang::DeclContext*);
     CppSharp::AST::DeclarationContext^ GetNamespace(clang::Decl*);
 
-    clang::CallingConv GetAbiCallConv(clang::CallingConv CC,
-        bool IsInstMethod, bool IsVariadic);
-
     void HandleDiagnostics(ParserResult^ res);
 
     int Index;

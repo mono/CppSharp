@@ -1044,7 +1044,6 @@ static CppSharp::AST::CallingConvention ConvertCallConv(clang::CallingConv CC)
 
     switch(CC)
     {
-    case CC_Default:
     case CC_C:
         return CppSharp::AST::CallingConvention::C;
     case CC_X86StdCall:
@@ -1478,25 +1477,6 @@ CppSharp::AST::Enumeration^ Parser::WalkEnum(clang::EnumDecl* ED)
 
 //-----------------------------------//
 
-clang::CallingConv Parser::GetAbiCallConv(clang::CallingConv CC,
-                                          bool IsInstMethod,
-                                          bool IsVariadic)
-{
-  using namespace clang;
-
-  // TODO: Itanium ABI
-
-  if (CC == CC_Default) {
-    if (IsInstMethod) {
-      CC = AST->getDefaultCXXMethodCallConv(IsVariadic);
-    } else {
-      CC = CC_C;
-    }
-  }
-
-  return CC;
-}
-
 static const clang::CodeGen::CGFunctionInfo& GetCodeGenFuntionInfo(
     clang::CodeGen::CodeGenTypes* CodeGenTypes, clang::FunctionDecl* FD)
 {
@@ -1519,7 +1499,6 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, CppSharp::AST::Function^ F,
     assert (FD->getBuiltinID() == 0);
 
     auto FT = FD->getType()->getAs<FunctionType>();
-    auto CC = FT->getCallConv();
 
     auto NS = GetNamespace(FD);
     assert(NS && "Expected a valid namespace");
@@ -1532,8 +1511,8 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, CppSharp::AST::Function^ F,
     F->IsDependent = FD->isDependentContext();
     F->IsPure = FD->isPure();
 
-    auto AbiCC = GetAbiCallConv(CC, FD->isCXXInstanceMember(), FD->isVariadic());
-    F->CallingConvention = ConvertCallConv(AbiCC);
+    auto CC = FT->getCallConv();
+    F->CallingConvention = ConvertCallConv(CC);
 
     F->OperatorKind = GetOperatorKindFromDecl(FD->getDeclName());
 
