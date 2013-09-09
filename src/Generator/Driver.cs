@@ -22,7 +22,7 @@ namespace CppSharp
                 CreateGeneratorDelegate>();
             Generators[LanguageGeneratorKind.CSharp] = driver =>
                 new CSharpGenerator(driver);
-            Generators[LanguageGeneratorKind.CPlusPlusCLI] = driver =>
+            Generators[LanguageGeneratorKind.CLI] = driver =>
                 new CLIGenerator(driver);
         }
 
@@ -275,7 +275,7 @@ namespace CppSharp
 
         public bool IsCLIGenerator
         {
-            get { return GeneratorKind == LanguageGeneratorKind.CPlusPlusCLI; }
+            get { return GeneratorKind == LanguageGeneratorKind.CLI; }
         }
     }
 

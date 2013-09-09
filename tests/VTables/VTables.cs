@@ -28,7 +28,7 @@ namespace CppSharp.Tests
         {
             public static void Main(string[] args)
             {
-                ConsoleDriver.Run(new VTableTests(LanguageGeneratorKind.CPlusPlusCLI));
+                ConsoleDriver.Run(new VTableTests(LanguageGeneratorKind.CLI));
                 ConsoleDriver.Run(new VTableTests(LanguageGeneratorKind.CSharp));
             }
         }

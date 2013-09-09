@@ -21,7 +21,7 @@ namespace CppSharp.Tests
         {
             public static void Main(string[] args)
             {
-                ConsoleDriver.Run(new Basic(LanguageGeneratorKind.CPlusPlusCLI));
+                ConsoleDriver.Run(new Basic(LanguageGeneratorKind.CLI));
                 ConsoleDriver.Run(new Basic(LanguageGeneratorKind.CSharp));
             }
         }

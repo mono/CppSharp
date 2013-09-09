@@ -9,7 +9,7 @@ namespace CppSharp.Generators
     /// </summary>
     public enum LanguageGeneratorKind
     {
-        CPlusPlusCLI,
+        CLI,
         CSharp,
     }
 
