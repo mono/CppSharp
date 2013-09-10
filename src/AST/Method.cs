@@ -119,5 +119,22 @@ namespace CppSharp.AST
         public bool IsMoveConstructor;
 
         public MethodConversionKind Conversion { get; set; }
+
+        public override QualifiedType GetFunctionType()
+        {
+            var qualifiedType = base.GetFunctionType();
+            if (!IsStatic)
+            {
+                FunctionType functionType;
+                qualifiedType.Type.IsPointerTo(out functionType);
+                var instance = new Parameter
+                                {
+                                    Name = "instance",
+                                    QualifiedType = new QualifiedType(new BuiltinType(PrimitiveType.IntPtr))
+                                };
+                functionType.Parameters.Insert(0, instance);
+            }
+            return qualifiedType;
+        }
     }
 }

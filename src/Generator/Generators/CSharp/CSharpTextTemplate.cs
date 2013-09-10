@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using CppSharp.AST;
+using CppSharp.Utils;
 using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Generators.CSharp
@@ -55,6 +57,19 @@ namespace CppSharp.Generators.CSharp
         public static string InstanceIdentifier
         {
             get { return Generator.GeneratedIdentifier("Instance"); }
+        }
+
+        public static string GetAccess(Class @class)
+        {
+            switch (@class.Access)
+            {
+                case AccessSpecifier.Private:
+                    return "internal ";
+                case AccessSpecifier.Protected:
+                    return "protected ";
+                default:
+                    return "public ";
+            }
         }
     }
 
@@ -402,9 +417,6 @@ namespace CppSharp.Generators.CSharp
                 if (method.IsSynthetized)
                     return;
 
-                if (method.IsPure)
-                    return;
-
                 if (method.IsProxy)
                     return;
 
@@ -611,7 +623,11 @@ namespace CppSharp.Generators.CSharp
             if (@class.IsUnion)
                 WriteLine("[StructLayout(LayoutKind.Explicit)]");
 
-            Write("public unsafe ");
+            Write(Helpers.GetAccess(@class));
+            Write("unsafe ");
+
+            if (Driver.Options.GenerateAbstractImpls && @class.IsAbstract)
+                Write("abstract ");
 
             if (Options.GeneratePartialClasses)
                 Write("partial ");
@@ -1346,23 +1362,29 @@ namespace CppSharp.Generators.CSharp
         private void GenerateNativeConstructor(Class @class)
         {
             PushBlock(CSharpBlockKind.Method);
-            WriteLine("internal {0}({1}.Internal* native)", SafeIdentifier(@class.Name),
-                @class.Name);
+            string className = @class.Name;
+            string safeIdentifier = SafeIdentifier(className);
+            if (@class.Access == AccessSpecifier.Private && className.EndsWith("Internal"))
+            {
+                className = className.Substring(0,
+                    safeIdentifier.LastIndexOf("Internal", StringComparison.Ordinal));
+            }
+            WriteLine("internal {0}({1}.Internal* native)", safeIdentifier,
+                className);
             WriteLineIndent(": this(new global::System.IntPtr(native))");
             WriteStartBraceIndent();
             WriteCloseBraceIndent();
             PopBlock(NewLineKind.BeforeNextBlock);
 
             PushBlock(CSharpBlockKind.Method);
-            WriteLine("internal {0}({1}.Internal native)", SafeIdentifier(@class.Name),
-                @class.Name);
+            WriteLine("internal {0}({1}.Internal native)", safeIdentifier, className);
             WriteLineIndent(": this(&native)");
             WriteStartBraceIndent();
             WriteCloseBraceIndent();
             PopBlock(NewLineKind.BeforeNextBlock);
 
             PushBlock(CSharpBlockKind.Method);
-            WriteLine("internal {0}(global::System.IntPtr native){1}", SafeIdentifier(@class.Name),
+            WriteLine("internal {0}(global::System.IntPtr native){1}", safeIdentifier,
                 @class.IsValueType ? " : this()" : string.Empty);
 
             var hasBaseClass = @class.HasBaseClass && @class.BaseClass.IsRefType;
@@ -1459,9 +1481,11 @@ namespace CppSharp.Generators.CSharp
             PushBlock(CSharpBlockKind.Method);
             GenerateDeclarationCommon(method);
 
-            Write("public ");
+            Write(Driver.Options.GenerateAbstractImpls &&
+                @class.IsAbstract && method.IsConstructor ? "protected " : "public ");
 
-            if (method.IsVirtual && !method.IsOverride)
+            if (method.IsVirtual && !method.IsOverride &&
+                (!Driver.Options.GenerateAbstractImpls || !method.IsPure))
                 Write("virtual ");
 
             var isBuiltinOperator = method.IsOperator &&
@@ -1473,6 +1497,9 @@ namespace CppSharp.Generators.CSharp
             if (method.IsOverride)
                 Write("override ");
 
+            if (Driver.Options.GenerateAbstractImpls && method.IsPure)
+                Write("abstract ");
+
             var functionName = GetFunctionIdentifier(method);
 
             if (method.IsConstructor || method.IsDestructor)
@@ -1482,7 +1509,15 @@ namespace CppSharp.Generators.CSharp
 
             GenerateMethodParameters(method);
 
-            WriteLine(")");
+            Write(")");
+
+            if (Driver.Options.GenerateAbstractImpls && method.IsPure)
+            {
+                Write(";");
+                PopBlock(NewLineKind.BeforeNextBlock);
+                return;
+            }
+            NewLine();
 
             if (method.Kind == CXXMethodKind.Constructor)
                 GenerateClassConstructorBase(@class, method);
@@ -1501,6 +1536,10 @@ namespace CppSharp.Generators.CSharp
                 else if (method.IsOperator)
                 {
                     GenerateOperator(method, @class);
+                }
+                else if (method.IsOverride && method.IsSynthetized)
+                {
+                    GenerateVirtualTableFunctionCall(method, @class);
                 }
                 else
                 {
@@ -1527,6 +1566,37 @@ namespace CppSharp.Generators.CSharp
 
             WriteCloseBraceIndent();
             PopBlock(NewLineKind.BeforeNextBlock);
+        }
+
+        private void GenerateVirtualTableFunctionCall(Function method, Class @class)
+        {
+            string delegateId;
+            Write(GetVirtualCallDelegate(method, @class, Driver.Options.Is32Bit, out delegateId));
+            GenerateFunctionCall(delegateId, method.Parameters, method);
+        }
+
+        public static string GetVirtualCallDelegate(INamedDecl method, Class @class,
+            bool is32Bit, out string delegateId)
+        {
+            var virtualCallBuilder = new StringBuilder();
+            virtualCallBuilder.AppendFormat("void* vtable = *((void**) {0}.ToPointer());",
+                Helpers.InstanceIdentifier);
+            virtualCallBuilder.AppendLine();
+
+            var i = VTables.GetVTableIndex(method, @class);
+
+            virtualCallBuilder.AppendFormat(
+                "void* slot = *((void**) vtable + {0} * {1});", i, is32Bit ? 4 : 8);
+            virtualCallBuilder.AppendLine();
+
+            string @delegate = method.Name + "Delegate";
+            delegateId = Generator.GeneratedIdentifier(@delegate);
+
+            virtualCallBuilder.AppendFormat(
+                "var {1} = ({0}) Marshal.GetDelegateForFunctionPointer(new IntPtr(slot), typeof({0}));",
+                @delegate, delegateId);
+            virtualCallBuilder.AppendLine();
+            return virtualCallBuilder.ToString();
         }
 
         private void GenerateOperator(Method method, Class @class)
@@ -1882,9 +1952,11 @@ namespace CppSharp.Generators.CSharp
                 PushBlock(CSharpBlockKind.Typedef);
                 WriteLine("[UnmanagedFunctionPointerAttribute(CallingConvention.{0})]",
                     Helpers.ToCSharpCallConv(functionType.CallingConvention));
+                TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
                 WriteLine("public {0};",
                     string.Format(TypePrinter.VisitDelegate(functionType).Type,
                         SafeIdentifier(typedef.Name)));
+                TypePrinter.PopContext();
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
             else if (typedef.Type.IsEnumType())
@@ -1974,7 +2046,7 @@ namespace CppSharp.Generators.CSharp
 
         public void GenerateInternalFunction(Function function)
         {
-            if (!function.IsProcessed || function.ExplicityIgnored)
+            if (!function.IsProcessed || function.ExplicityIgnored || function.IsPure)
                 return;
 
             if (function.OriginalFunction != null)

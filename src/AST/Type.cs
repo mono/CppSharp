@@ -181,6 +181,16 @@ namespace CppSharp.AST
             return Type.Equals(type.Type) && Qualifiers.Equals(type.Qualifiers);
         }
 
+        public static bool operator ==(QualifiedType left, QualifiedType right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(QualifiedType left, QualifiedType right)
+        {
+            return !(left == right);
+        }
+
         public override int GetHashCode()
         {
             return base.GetHashCode();

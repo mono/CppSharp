@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using CppSharp.Generators;
+using CppSharp.Generators.CSharp;
 
 namespace CppSharp.AST
 {
@@ -77,6 +81,20 @@ namespace CppSharp.AST
             }
 
             throw new NotSupportedException();
+        }
+
+        public static int GetVTableIndex(INamedDecl method, Class @class)
+        {
+            switch (@class.Layout.ABI)
+            {
+                case CppAbi.Microsoft:
+                    return (from table in @class.Layout.VFTables
+                            let j = table.Layout.Components.FindIndex(m => m.Method == method)
+                            where j >= 0
+                            select j).First();
+                default:
+                    return @class.Layout.Layout.Components.FindIndex(m => m.Method == method);
+            }
         }
     }
 }
