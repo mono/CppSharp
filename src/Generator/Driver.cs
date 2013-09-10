@@ -148,6 +148,8 @@ namespace CppSharp
             TranslationUnitPasses.AddPass(new CheckIgnoredDeclsPass());
             TranslationUnitPasses.AddPass(new CheckFlagEnumsPass());
             TranslationUnitPasses.AddPass(new CheckDuplicatedNamesPass());
+            if (Options.GenerateAbstractImpls)
+                TranslationUnitPasses.AddPass(new GenerateAbstractImplementationsPass());
         }
 
         public void ProcessCode()
@@ -261,6 +263,7 @@ namespace CppSharp
         public bool GenerateFunctionTemplates;
         public bool GeneratePartialClasses;
         public bool GenerateVirtualTables;
+        public bool GenerateAbstractImpls;
         public bool GenerateInternalImports;
         public string IncludePrefix;
         public bool WriteOnlyWhenChanged;
@@ -277,6 +280,8 @@ namespace CppSharp
         {
             get { return GeneratorKind == LanguageGeneratorKind.CLI; }
         }
+
+        public bool Is32Bit { get { return true; } }
     }
 
     public class InvalidOptionException : Exception

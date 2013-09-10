@@ -99,8 +99,11 @@ namespace CppSharp.AST
             Size = classLayout.Size;
             DataSize = classLayout.DataSize;
             VFTables.AddRange(classLayout.VFTables);
-            Layout = new VTableLayout();
-            Layout.Components.AddRange(classLayout.Layout.Components);
+            if (classLayout.Layout != null)
+            {
+                Layout = new VTableLayout();
+                Layout.Components.AddRange(classLayout.Layout.Components);
+            }
         }
 
         /// <summary>
