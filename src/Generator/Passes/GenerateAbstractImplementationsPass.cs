@@ -12,13 +12,16 @@ namespace CppSharp.Passes
     /// </summary>
     public class GenerateAbstractImplementationsPass : TranslationUnitPass
     {
-        private readonly List<Class> classes = new List<Class>();
+        /// <summary>
+        /// Collects all internal implementations in a unit to be added at the end because the unit cannot be changed while it's being iterated though.
+        /// </summary>
+        private readonly List<Class> internalImpls = new List<Class>();
 
         public override bool VisitTranslationUnit(TranslationUnit unit)
         {
             bool result = base.VisitTranslationUnit(unit);
-            unit.Classes.AddRange(classes);
-            classes.Clear();
+            unit.Classes.AddRange(internalImpls);
+            internalImpls.Clear();
             return result;
         }
 
@@ -31,7 +34,7 @@ namespace CppSharp.Passes
                 return false;
 
             if (@class.IsAbstract)
-                @classes.Add(AddInternalImplementation(@class));
+                internalImpls.Add(AddInternalImplementation(@class));
             return base.VisitClassDecl(@class);
         }
 
