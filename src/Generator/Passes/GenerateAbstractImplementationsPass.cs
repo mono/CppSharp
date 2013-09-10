@@ -87,7 +87,7 @@ namespace CppSharp.Passes
             {
                 var @abstract = abstractMethods[i];
                 if (overriddenMethods.Find(m => m.Name == @abstract.Name &&
-                    m.ReturnType.Type == @abstract.ReturnType.Type &&
+                    m.ReturnType == @abstract.ReturnType &&
                     m.Parameters.Count == @abstract.Parameters.Count &&
                     m.Parameters.SequenceEqual(@abstract.Parameters, paramTypeCmp)) != null)
                 {

@@ -7,7 +7,7 @@ namespace CppSharp.Utils
     {
         public bool Equals(Parameter x, Parameter y)
         {
-            return x.Type == y.Type;
+            return x.QualifiedType == y.QualifiedType;
         }
 
         public int GetHashCode(Parameter obj)
