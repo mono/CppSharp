@@ -5,14 +5,20 @@ namespace CppSharp.Passes
 {
     public class CheckIgnoredDeclsPass : TranslationUnitPass
     {
-        public CheckIgnoredDeclsPass()
-        {
-        }
-
         public override bool VisitDeclaration(Declaration decl)
         {
             if (decl.ExplicityIgnored)
                 return false;
+
+            if (decl.Access == AccessSpecifier.Private)
+            {
+                Method method = decl as Method;
+                if (method == null || !method.IsOverride)
+                {
+                    decl.ExplicityIgnored = true;
+                    return false;
+                }
+            }
 
             if (decl.IsDependent)
             {
@@ -22,16 +28,6 @@ namespace CppSharp.Passes
             }
 
             return true;
-        }
-
-        public override bool VisitClassDecl(Class @class)
-        {
-            if (@class.Access == AccessSpecifier.Private)
-            {
-                @class.ExplicityIgnored = true;
-                return false;
-            }
-            return base.VisitClassDecl(@class);
         }
 
         public override bool VisitFieldDecl(Field field)
@@ -86,6 +82,20 @@ namespace CppSharp.Passes
                         function.Name, msg);
                     return false;
                 }
+
+                if (param.Kind == ParameterKind.IndirectReturnType)
+                {
+                    Class retClass;
+                    param.Type.Desugar().IsTagDecl(out retClass);
+                    if (retClass == null)
+                    {
+                        function.ExplicityIgnored = true;
+                        Driver.Diagnostics.EmitWarning(
+                            "Function '{0}' was ignored due to an indirect return param not of a tag type",
+                            function.Name);
+                        return false;
+                    }
+                }
             }
 
             return true;
@@ -93,16 +103,7 @@ namespace CppSharp.Passes
 
         public override bool VisitMethodDecl(Method method)
         {
-            if (!VisitDeclaration(method))
-                return false;
-
-            if (method.Access == AccessSpecifier.Private)
-            {
-                method.ExplicityIgnored = true;
-                return false;
-            }
-
-            return base.VisitMethodDecl(method);
+            return VisitDeclaration(method) && base.VisitMethodDecl(method);
         }
 
         public override bool VisitTypedefDecl(TypedefDecl typedef)

@@ -34,7 +34,13 @@ namespace CppSharp.Passes
                 return false;
 
             if (@class.IsAbstract)
+            {
+                foreach (var ctor in from ctor in @class.Constructors
+                                     where ctor.Access == AccessSpecifier.Public
+                                     select ctor)
+                    ctor.Access = AccessSpecifier.Protected;
                 internalImpls.Add(AddInternalImplementation(@class));
+            }
             return base.VisitClassDecl(@class);
         }
 

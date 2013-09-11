@@ -1,3 +1,4 @@
+using System.Reflection;
 using NUnit.Framework;
 using Basic;
 
@@ -94,6 +95,13 @@ public class BasicTests
         Assert.AreEqual(abstractFoo.pureFunction(), 5);
         Assert.AreEqual(abstractFoo.pureFunction1(), 10);
         Assert.AreEqual(abstractFoo.pureFunction2(), 15);
+    }
+
+    [Test, Ignore]
+    public void TestPropertyAccessModifier()
+    {
+        Assert.That(typeof(Foo2).GetProperty("P",
+            BindingFlags.Instance | BindingFlags.NonPublic), Is.Not.Null);
     }
 }
  

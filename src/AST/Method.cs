@@ -92,6 +92,12 @@ namespace CppSharp.AST
             Conversion = method.Conversion;
         }
 
+        public Method(Function function)
+            : base(function)
+        {
+            
+        }
+
         public AccessSpecifierDecl AccessDecl { get; set; }
 
         public bool IsVirtual { get; set; }

@@ -23,27 +23,19 @@ namespace CppSharp.Passes
             if (!FunctionToInstanceMethodPass.GetClassParameter(param, out @class))
                 return false;
 
-            function.ExplicityIgnored = true;
-
             // Create a new fake method so it acts as a static method.
-            var method = new Method()
+
+            var method = new Method(function)
             {
                 Namespace = @class,
-                OriginalNamespace = function.Namespace,
-                Name = function.Name,
-                OriginalName = function.OriginalName,
-                Mangled = function.Mangled,
-                Access = AccessSpecifier.Public,
                 Kind = CXXMethodKind.Operator,
-                ReturnType = function.ReturnType,
-                Parameters = new List<Parameter>(function.Parameters).Skip(1).ToList(),
-                CallingConvention = function.CallingConvention,
-                IsVariadic = function.IsVariadic,
-                IsInline = function.IsInline,
                 OperatorKind = function.OperatorKind,
                 SynthKind = FunctionSynthKind.NonMemberOperator,
-                OriginalFunction = function
+                OriginalFunction = null,
+                IsStatic = true
             };
+
+            function.ExplicityIgnored = true;
 
             @class.Methods.Add(method);
 

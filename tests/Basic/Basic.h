@@ -25,6 +25,10 @@ public:
 
     Foo2 operator<<(signed int i);
     Foo2 operator<<(signed long l);
+
+    // TODO: uncomment when the C++/CLI back-end supports protected members
+//protected:
+//    int P;
 };
 
 struct DLL_API Bar

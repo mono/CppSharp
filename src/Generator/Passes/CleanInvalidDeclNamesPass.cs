@@ -34,6 +34,13 @@ namespace CppSharp.Passes
             if (decl is Namespace)
                 return true;
 
+            // types with empty names are assumed to be private
+            if (decl is Class && string.IsNullOrWhiteSpace(decl.Name))
+            {
+                decl.ExplicityIgnored = true;
+                return false;
+            }
+
             decl.Name = CheckName(decl.Name);
 
             StringHelpers.CleanupText(ref decl.DebugText);

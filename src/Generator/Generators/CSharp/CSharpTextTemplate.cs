@@ -899,7 +899,9 @@ namespace CppSharp.Generators.CSharp
                 if (prop.Ignore) continue;
 
                 PushBlock(CSharpBlockKind.Property);
-                WriteLine("public {0} {1}", prop.Type, SafeIdentifier(prop.Name));
+                WriteLine("{0} {1} {2}",
+                    prop.Access == AccessSpecifier.Public ? "public" : "protected",
+                    prop.Type, SafeIdentifier(prop.Name));
                 WriteStartBraceIndent();
 
                 if (prop.Field != null)
@@ -1481,8 +1483,15 @@ namespace CppSharp.Generators.CSharp
             PushBlock(CSharpBlockKind.Method);
             GenerateDeclarationCommon(method);
 
-            Write(Driver.Options.GenerateAbstractImpls &&
-                @class.IsAbstract && method.IsConstructor ? "protected " : "public ");
+            switch (GetValidMethodAccess(method, @class))
+            {
+                case AccessSpecifier.Public:
+                    Write("public ");
+                    break;
+                case AccessSpecifier.Protected:
+                    Write("protected ");
+                    break;
+            }
 
             if (method.IsVirtual && !method.IsOverride &&
                 (!Driver.Options.GenerateAbstractImpls || !method.IsPure))
@@ -1566,6 +1575,18 @@ namespace CppSharp.Generators.CSharp
 
             WriteCloseBraceIndent();
             PopBlock(NewLineKind.BeforeNextBlock);
+        }
+
+        private static AccessSpecifier GetValidMethodAccess(Method method, Class @class)
+        {
+            switch (method.Access)
+            {
+                case AccessSpecifier.Public:
+                    return AccessSpecifier.Public;
+                default:
+                    return method.IsOverride ?
+                        @class.GetRootBaseMethod(method).Access : method.Access;
+            }
         }
 
         private void GenerateVirtualTableFunctionCall(Function method, Class @class)
@@ -1756,10 +1777,16 @@ namespace CppSharp.Generators.CSharp
 
                 var isIntPtr = retTypeName.Contains("IntPtr");
 
-                if (retType.Type.IsPointer() && isIntPtr)
+                Type pointee;
+                if (retType.Type.IsPointerTo(out pointee) && isIntPtr)
                 {
-                    WriteLine("if ({0} == global::System.IntPtr.Zero) return null;",
-                        Generator.GeneratedIdentifier("ret"));
+                    PrimitiveType primitive;
+                    string @null = (pointee.Desugar().IsPrimitiveType(out primitive) ||
+                        pointee.Desugar().IsPointer()) &&
+                        !CSharpTypePrinter.IsConstCharString(retType) ? 
+                        "IntPtr.Zero" : "null";
+                    WriteLine("if ({0} == global::System.IntPtr.Zero) return {1};",
+                        Generator.GeneratedIdentifier("ret"), @null);
                 }
 
                 var ctx = new CSharpMarshalContext(Driver)
@@ -1953,7 +1980,8 @@ namespace CppSharp.Generators.CSharp
                 WriteLine("[UnmanagedFunctionPointerAttribute(CallingConvention.{0})]",
                     Helpers.ToCSharpCallConv(functionType.CallingConvention));
                 TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
-                WriteLine("public {0};",
+                WriteLine("{0} {1};",
+                    typedef.Access == AccessSpecifier.Public ? "public" : "protected",
                     string.Format(TypePrinter.VisitDelegate(functionType).Type,
                         SafeIdentifier(typedef.Name)));
                 TypePrinter.PopContext();

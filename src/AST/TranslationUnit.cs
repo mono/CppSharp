@@ -14,6 +14,7 @@ namespace CppSharp.AST
         {
             Macros = new List<MacroDefinition>();
             FilePath = file;
+            Access = AccessSpecifier.Public;
         }
 
         /// Contains the macros present in the unit.

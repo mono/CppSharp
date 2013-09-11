@@ -37,7 +37,7 @@ namespace CppSharp.AST
             if (method.Kind == CXXMethodKind.Conversion)
                 return true;
 
-            if (method.Access == AccessSpecifier.Private)
+            if (method.Access == AccessSpecifier.Private && !method.IsOverride)
                 return true;
 
             return false;
