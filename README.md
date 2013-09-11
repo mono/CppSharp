@@ -2,6 +2,7 @@ CppSharp is a library that allows you to generate .NET bindings that wrap C/C++ 
 
 ## News
 
+* September 11st 2013 - Added wrapping of inlined functions (thanks to @ddobrev)
 * September 11st 2013 - New binaries available for Windows (VS2012)
 
 ## Binaries
