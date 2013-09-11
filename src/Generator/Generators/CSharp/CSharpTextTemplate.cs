@@ -534,8 +534,7 @@ namespace CppSharp.Generators.CSharp
                     ReturnType = field.QualifiedType
                 };
 
-                var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
-                marshal.VarSuffix = i;
+                var marshal = new CSharpMarshalNativeToManagedPrinter(ctx) { VarSuffix = i };
                 field.Visit(marshal);
 
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
@@ -1075,8 +1074,9 @@ namespace CppSharp.Generators.CSharp
             }
 
             var marshals = new List<string>();
-            foreach (var param in method.Parameters)
+            for (int i = 0; i < method.Parameters.Count; i++)
             {
+                var param = method.Parameters[i];
                 if (param.Ignore)
                     continue;
 
@@ -1089,7 +1089,7 @@ namespace CppSharp.Generators.CSharp
                     ReturnVarName = SafeIdentifier(param.Name)
                 };
 
-                var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
+                var marshal = new CSharpMarshalNativeToManagedPrinter(ctx) { VarSuffix = i };
                 param.Visit(marshal);
 
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
@@ -1104,7 +1104,7 @@ namespace CppSharp.Generators.CSharp
             if (hasReturn)
                 Write("var _ret = ");
 
-            WriteLine("target.{0}({1});", method.Name, string.Join(", ", marshals));
+            WriteLine("target.{0}({1});", SafeIdentifier(method.Name), string.Join(", ", marshals));
 
             // TODO: Handle hidden structure return types.
 
@@ -1170,7 +1170,8 @@ namespace CppSharp.Generators.CSharp
 
         public string GetVTableMethodDelegateName(Method method)
         {
-            return string.Format("_{0}Delegate", GetFunctionIdentifier(method));
+            // trim '@' (if any) because '@' is valid only as the first symbol
+            return string.Format("_{0}Delegate", GetFunctionIdentifier(method).Trim('@'));
         }
 
         public void GenerateVTablePointers(Class @class)
