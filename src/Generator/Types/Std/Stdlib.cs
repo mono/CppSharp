@@ -1,4 +1,3 @@
-using System;
 using CppSharp.AST;
 using CppSharp.Generators;
 using CppSharp.Generators.CLI;
@@ -86,6 +85,20 @@ namespace CppSharp.Types.Std
     [TypeMap("std::vector")]
     public class Vector : TypeMap
     {
+        public override bool IsIgnored
+        {
+            get
+            {
+                var type = Type as TemplateSpecializationType;
+                var pointeeType = type.Arguments[0].Type;
+
+                var checker = new TypeIgnoreChecker(TypeMapDatabase);
+                pointeeType.Visit(checker);
+
+                return checker.IsIgnored;
+            }
+        }
+
         public override string CLISignature(CLITypePrinterContext ctx)
         {
             return string.Format("System::Collections::Generic::List<{0}>^",
