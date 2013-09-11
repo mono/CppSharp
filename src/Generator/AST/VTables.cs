@@ -25,21 +25,15 @@ namespace CppSharp.AST
         public static List<VTableComponent> GatherVTableMethodEntries(VTableLayout layout)
         {
             var entries = new List<VTableComponent>();
+            if (layout == null)
+                return entries;
 
-            foreach (var component in layout.Components)
-            {
-                if (component.Kind == VTableComponentKind.CompleteDtorPointer)
-                    continue;
-
-                if (component.Kind == VTableComponentKind.RTTI)
-                    continue;
-
-                if (component.Kind == VTableComponentKind.UnusedFunctionPointer)
-                    continue;
-
-                if (component.Method != null)
-                    entries.Add(component);
-            }
+            entries.AddRange(from component in layout.Components
+                             where component.Kind != VTableComponentKind.CompleteDtorPointer &&
+                                   component.Kind != VTableComponentKind.RTTI &&
+                                   component.Kind != VTableComponentKind.UnusedFunctionPointer &&
+                                   component.Method != null
+                             select component);
 
             return entries;
         }
