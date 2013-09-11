@@ -1,8 +1,14 @@
 CppSharp is a library that allows you to generate .NET bindings that wrap C/C++ code allowing interoperability with managed languages. This can be useful if you have an existing native codebase and want to add scripting support, or want to consume an existing native library in your managed code.
 
-## Getting started
+## News
 
-Since binary releases have not been provided yet, you will have to compile the project and dependencies manually (LLVM and Clang). 
+* September 11st 2013 - New binaries available for Windows (VS2012)
+
+## Binaries
+
+VS2012 (32-bit): https://dl.dropboxusercontent.com/u/194502/CppSharp/CppSharp_VS2012_116_artifacts.zip
+
+## Getting started
 
 The documentation is still a work-in-progress, please see the following resources for more information:
 
