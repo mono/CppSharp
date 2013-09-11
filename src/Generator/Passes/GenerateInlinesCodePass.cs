@@ -21,6 +21,7 @@ namespace CppSharp.Passes
                 cppBuilder.AppendFormat("#include \"{0}\"\n", header);
             var cpp = string.Format("{0}.cpp", Driver.Options.InlinesLibraryName);
             var path = Path.Combine(Driver.Options.OutputDir, cpp);
+            Directory.CreateDirectory(Driver.Options.OutputDir);
             File.WriteAllText(path, cppBuilder.ToString());
             switch (Driver.Options.Abi)
             {
