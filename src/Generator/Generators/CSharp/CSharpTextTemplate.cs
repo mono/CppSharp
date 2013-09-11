@@ -1486,8 +1486,7 @@ namespace CppSharp.Generators.CSharp
             switch (GetValidMethodAccess(method, @class))
             {
                 case AccessSpecifier.Public:
-                    Write(Driver.Options.GenerateAbstractImpls && @class.IsAbstract
-                        && method.IsConstructor ? "protected " : "public ");
+                    Write("public ");
                     break;
                 case AccessSpecifier.Protected:
                     Write("protected ");
@@ -1583,8 +1582,7 @@ namespace CppSharp.Generators.CSharp
             switch (method.Access)
             {
                 case AccessSpecifier.Public:
-                    return @class.IsAbstract && method.IsConstructor ?
-                        AccessSpecifier.Protected : AccessSpecifier.Public;
+                    return AccessSpecifier.Public;
                 default:
                     return method.IsOverride ?
                         @class.GetRootBaseMethod(method).Access : method.Access;
