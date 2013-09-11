@@ -19,12 +19,15 @@ namespace CppSharp.Passes
             if (@class.CompleteDeclaration != null)
                 goto Out;
 
-            @class.CompleteDeclaration = Library.FindCompleteClass(
-                @class.QualifiedName);
+            @class.CompleteDeclaration =
+                Library.FindCompleteClass(@class.QualifiedName);
 
             if (@class.CompleteDeclaration == null)
+            {
+                @class.IsGenerated = false;
                 Driver.Diagnostics.EmitWarning(DiagnosticId.UnresolvedDeclaration,
                     "Unresolved declaration: {0}", @class.Name);
+            }
 
         Out:
 
