@@ -90,7 +90,8 @@ namespace CppSharp.Passes
                     if (retClass == null)
                     {
                         function.ExplicityIgnored = true;
-                        Console.WriteLine("Function '{0}' was ignored due to an indirect return param not of a tag type",
+                        Driver.Diagnostics.EmitWarning(
+                            "Function '{0}' was ignored due to an indirect return param not of a tag type",
                             function.Name);
                         return false;
                     }

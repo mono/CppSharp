@@ -261,7 +261,6 @@ namespace CppSharp
         public string OutputNamespace;
         public string OutputDir;
         public string LibraryName;
-        private string inlinesLibraryName;
         public bool OutputInteropIncludes;
         public bool GenerateLibraryNamespace;
         public bool GenerateFunctionTemplates;
@@ -275,6 +274,7 @@ namespace CppSharp
         public int MaxIndent;
         public string CommentPrefix;
 
+        private string inlinesLibraryName;
         public string InlinesLibraryName
         {
             get
