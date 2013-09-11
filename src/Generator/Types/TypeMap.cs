@@ -29,6 +29,7 @@ namespace CppSharp.Types
     {
         public Type Type { get; set; }
         public Declaration Declaration { get; set; }
+        public ITypeMapDatabase TypeMapDatabase { get; set; }
 
         public virtual bool IsIgnored
         {
@@ -85,7 +86,8 @@ namespace CppSharp.Types
 
     public interface ITypeMapDatabase
     {
-        bool FindTypeMap(Type type, out TypeMap typeMap);
+        bool FindTypeMapRecursive(Type type, out TypeMap typeMap);
+        bool FindTypeMap(Type decl, out TypeMap typeMap);
         bool FindTypeMap(Declaration decl, out TypeMap typeMap);
         bool FindTypeMap(string name, out TypeMap typeMap);
     }
@@ -131,21 +133,27 @@ namespace CppSharp.Types
 
         public bool FindTypeMap(Type type, out TypeMap typeMap)
         {
-            typeMap = null;
+            var typePrinter = new CppTypePrinter(this);
+            var output = type.Visit(typePrinter);
 
+            if (FindTypeMap(output, out typeMap))
+            {
+                typeMap.Type = type;
+                return true;
+            }
+
+            // Try to strip the global scope resolution operator.
+            if (output.StartsWith("::"))
+                output = output.Substring(2);
+
+            return FindTypeMap(output, out typeMap);
+        }
+
+        public bool FindTypeMapRecursive(Type type, out TypeMap typeMap)
+        {
             while (true)
             {
-                var typePrinter = new CppTypePrinter(this);
-                var output = type.Visit(typePrinter);
-
-                if (FindTypeMap(output, out typeMap))
-                    return true;
-
-                // Try to strip the global scope resolution operator.
-                if (output.StartsWith("::"))
-                    output = output.Substring(2);
-
-                if (FindTypeMap(output, out typeMap))
+                if (FindTypeMap(type, out typeMap))
                     return true;
 
                 var desugaredType = type.Desugar();
@@ -154,8 +162,6 @@ namespace CppSharp.Types
 
                 type = desugaredType;
             }
-
-            return true;
         }
 
         public bool FindTypeMap(string name, out TypeMap typeMap)
@@ -176,6 +182,8 @@ namespace CppSharp.Types
             }
 
             typeMap = (TypeMap)Activator.CreateInstance(type);
+            typeMap.TypeMapDatabase = this;
+
             return true;
         }
     }
