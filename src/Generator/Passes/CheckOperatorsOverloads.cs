@@ -54,6 +54,8 @@ namespace CppSharp.Passes
                     @operator.ExplicityIgnored = true;
                     continue;
                 }
+                if (@operator.SynthKind == FunctionSynthKind.NonMemberOperator)
+                    continue;
 
                 // Handle missing operator parameters
                 if (@operator.IsStatic)
@@ -84,10 +86,8 @@ namespace CppSharp.Passes
                 var missingKind = CheckMissingOperatorOverloadPair(@class, out index, op1, op2,
                                                                    op.Parameters.Last().Type);
 
-                if (missingKind == CXXOperatorKind.None)
-                    return;
-
-                if (op.Ignore) continue;
+                if (missingKind == CXXOperatorKind.None || op.Ignore)
+                    continue;
 
                 var method = new Method()
                     {

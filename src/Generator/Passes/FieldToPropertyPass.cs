@@ -16,11 +16,12 @@ namespace CppSharp.Passes
             if (ASTUtils.CheckIgnoreField(field))
                 return false;
 
-            var prop = new Property()
+            var prop = new Property
             {
                 Name = field.Name,
                 Namespace = field.Namespace,
                 QualifiedType = field.QualifiedType,
+                Access = field.Access,
                 Field = field
             };
             @class.Properties.Add(prop);
