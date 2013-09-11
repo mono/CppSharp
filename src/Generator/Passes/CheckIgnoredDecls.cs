@@ -103,7 +103,56 @@ namespace CppSharp.Passes
 
         public override bool VisitMethodDecl(Method method)
         {
-            return VisitDeclaration(method) && base.VisitMethodDecl(method);
+            if (!VisitDeclaration(method))
+                return false;
+
+            if (!CheckIgnoredBaseOverridenMethod(method))
+                return false;
+
+            return base.VisitMethodDecl(method);
+        }
+
+        bool CheckIgnoredBaseOverridenMethod(Method method)
+        {
+            var @class = method.Namespace as Class;
+
+            Class ignoredBase;
+            if (method.IsVirtual && HasIgnoredBaseClass(method, @class, out ignoredBase))
+            {
+                Driver.Diagnostics.EmitMessage(
+                    "Virtual method '{0}' was ignored due to ignored base '{1}'",
+                    method.QualifiedOriginalName, ignoredBase.Name);
+
+                method.ExplicityIgnored = true;
+                return false;
+            }
+            return true;
+        }
+
+        static bool HasIgnoredBaseClass(INamedDecl @override, Class @class,
+            out Class ignoredBase)
+        {
+            var isIgnored = false;
+            ignoredBase = null;
+
+            foreach (var baseClassSpec in @class.Bases)
+            {
+                if (!baseClassSpec.IsClass)
+                    continue;
+
+                var @base = baseClassSpec.Class;
+                if (!@base.Methods.Exists(m => m.Name == @override.Name))
+                    continue;
+
+                ignoredBase = @base;
+                isIgnored |= @base.Ignore
+                    || HasIgnoredBaseClass(@override, @base, out ignoredBase);
+
+                if (isIgnored)
+                    break;
+            }
+
+            return isIgnored;
         }
 
         public override bool VisitTypedefDecl(TypedefDecl typedef)
