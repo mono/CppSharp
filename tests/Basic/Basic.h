@@ -25,6 +25,9 @@ public:
 
     Foo2 operator<<(signed int i);
     Foo2 operator<<(signed long l);
+
+protected:
+    int P;
 };
 
 struct DLL_API Bar
