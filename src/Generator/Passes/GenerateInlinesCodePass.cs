@@ -15,33 +15,45 @@ namespace CppSharp.Passes
         public override bool VisitLibrary(Library library)
         {
             bool result = base.VisitLibrary(library);
+            Directory.CreateDirectory(Driver.Options.OutputDir);
+            WriteInlinesIncludes();
+            WriteInlinedSymbols();
+            return result;
+        }
+
+        private void WriteInlinesIncludes()
+        {
             var cppBuilder = new StringBuilder();
             headers.Sort();
             foreach (var header in headers)
                 cppBuilder.AppendFormat("#include \"{0}\"\n", header);
             var cpp = string.Format("{0}.cpp", Driver.Options.InlinesLibraryName);
             var path = Path.Combine(Driver.Options.OutputDir, cpp);
-            Directory.CreateDirectory(Driver.Options.OutputDir);
             File.WriteAllText(path, cppBuilder.ToString());
+        }
+
+        private void WriteInlinedSymbols()
+        {
             switch (Driver.Options.Abi)
             {
                 case CppAbi.Microsoft:
                     var defBuilder = new StringBuilder("EXPORTS\r\n");
                     for (int i = 0; i < mangledInlines.Count; i++)
                         defBuilder.AppendFormat("    {0} @{1}\r\n",
-                            mangledInlines[i], i + 1);
-                    File.WriteAllText(Path.ChangeExtension(path, "def"),
-                        defBuilder.ToString());
+                                                mangledInlines[i], i + 1);
+                    var def = string.Format("{0}.def", Driver.Options.InlinesLibraryName);
+                    File.WriteAllText(Path.Combine(Driver.Options.OutputDir, def),
+                                      defBuilder.ToString());
                     break;
                 default:
                     var symbolsBuilder = new StringBuilder();
                     foreach (var mangledInline in mangledInlines)
                         symbolsBuilder.AppendFormat("{0}\n", mangledInline);
-                    File.WriteAllText(Path.ChangeExtension(path, "txt"),
-                        symbolsBuilder.ToString());
+                    var txt = string.Format("{0}.txt", Driver.Options.InlinesLibraryName);
+                    File.WriteAllText(Path.Combine(Driver.Options.OutputDir, txt),
+                                      symbolsBuilder.ToString());
                     break;
             }
-            return result;
         }
 
         public override bool VisitTranslationUnit(TranslationUnit unit)
