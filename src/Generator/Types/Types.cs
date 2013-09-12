@@ -49,10 +49,10 @@ namespace CppSharp
                 return VisitDeclaration(decl.CompleteDeclaration);
 
             TypeMap typeMap;
-            if (TypeMapDatabase.FindTypeMap(decl, out typeMap))
+            if (TypeMapDatabase.FindTypeMap(decl, out typeMap)
+                && typeMap.IsIgnored)
             {
-                if (typeMap.IsIgnored)
-                    Ignore();
+                Ignore();
                 return false;
             }
 
@@ -100,10 +100,8 @@ namespace CppSharp
         public override bool VisitTemplateSpecializationType(
             TemplateSpecializationType template, TypeQualifiers quals)
         {
-            var decl = template.Template.TemplatedDecl;
-
             TypeMap typeMap;
-            if (TypeMapDatabase.FindTypeMap(decl, out typeMap))
+            if (TypeMapDatabase.FindTypeMap(template, out typeMap))
             {
                 if (typeMap.IsIgnored)
                     Ignore();

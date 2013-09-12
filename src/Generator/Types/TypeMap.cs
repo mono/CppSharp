@@ -146,7 +146,13 @@ namespace CppSharp.Types
             if (output.StartsWith("::"))
                 output = output.Substring(2);
 
-            return FindTypeMap(output, out typeMap);
+            if (FindTypeMap(output, out typeMap))
+            {
+                typeMap.Type = type;
+                return true;
+            }
+
+            return false;
         }
 
         public bool FindTypeMapRecursive(Type type, out TypeMap typeMap)
