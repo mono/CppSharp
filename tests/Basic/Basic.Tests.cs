@@ -108,9 +108,7 @@ public class BasicTests
     public void TestUnicode()
     {
         Foo foo = new Foo();
-        const string georgia = "საქართველო";
-        foo.Unicode = georgia;
-        Assert.That(foo.Unicode, Is.EqualTo(georgia));
+        Assert.That(foo.GetANSI(), Is.EqualTo("ANSI"));
     }
 }
  

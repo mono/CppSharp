@@ -4,6 +4,11 @@ Foo::Foo()
 {
 }
 
+const char* Foo::GetANSI()
+{
+	return "ANSI";
+}
+
 Foo2 Foo2::operator<<(signed int i)
 {
     Foo2 foo;

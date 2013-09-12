@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using CppSharp.AST;
 using CppSharp.Types;
 using Type = CppSharp.AST.Type;
@@ -133,8 +134,7 @@ namespace CppSharp.Generators.CSharp
 
             if (CSharpTypePrinter.IsConstCharString(pointer))
             {
-                Context.Return.Write("Marshal.PtrToStringUni({0})",
-                    Context.ReturnVarName);
+                Context.Return.Write(MarshalStringToManaged(Context.ReturnVarName));
                 return true;
             }
 
@@ -149,6 +149,21 @@ namespace CppSharp.Generators.CSharp
                 return false;
 
             return true;
+        }
+
+        private string MarshalStringToManaged(string varName)
+        {
+            if (Equals(Context.Driver.Options.Encoding, Encoding.ASCII))
+            {
+                return string.Format("Marshal.PtrToStringAnsi({0})", varName);
+            }
+            if (Equals(Context.Driver.Options.Encoding, Encoding.Unicode) ||
+                Equals(Context.Driver.Options.Encoding, Encoding.BigEndianUnicode))
+            {
+                return string.Format("Marshal.PtrToStringUni({0})", varName);
+            }
+            throw new NotSupportedException(string.Format("{0} is not supported yet.",
+                Context.Driver.Options.Encoding.EncodingName));
         }
 
         public override bool VisitPrimitiveType(PrimitiveType primitive, TypeQualifiers quals)
@@ -359,8 +374,8 @@ namespace CppSharp.Generators.CSharp
                 type.IsPrimitiveType(PrimitiveType.WideChar)) &&
                 pointer.QualifiedPointee.Qualifiers.IsConst)
             {
-                Context.Return.Write("Marshal.StringToHGlobalUni({0})",
-                    Helpers.SafeIdentifier(Context.Parameter.Name));
+                Context.Return.Write(this.MarshalStringToUnmanaged(
+                    Helpers.SafeIdentifier(Context.Parameter.Name)));
                 CSharpContext.Cleanup.WriteLine("Marshal.FreeHGlobal({0});",
                     Helpers.SafeIdentifier(Context.ArgName));
                 return true;
@@ -400,6 +415,21 @@ namespace CppSharp.Generators.CSharp
             }
 
             return pointee.Visit(this, quals);
+        }
+
+        private string MarshalStringToUnmanaged(string varName)
+        {
+            if (Equals(Context.Driver.Options.Encoding, Encoding.ASCII))
+            {
+                return string.Format("Marshal.StringToHGlobalAnsi({0})", varName);
+            }
+            if (Equals(Context.Driver.Options.Encoding, Encoding.Unicode) ||
+                Equals(Context.Driver.Options.Encoding, Encoding.BigEndianUnicode))
+            {
+                return string.Format("Marshal.StringToHGlobalUni({0})", varName);
+            }
+            throw new NotSupportedException(string.Format("{0} is not supported yet.",
+                Context.Driver.Options.Encoding.EncodingName));
         }
 
         public override bool VisitPrimitiveType(PrimitiveType primitive, TypeQualifiers quals)

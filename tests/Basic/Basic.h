@@ -13,6 +13,8 @@ public:
     float B;
 
     const char* Unicode;
+
+	const char* GetANSI();
 };
 
 class DLL_API Foo2 : public Foo
