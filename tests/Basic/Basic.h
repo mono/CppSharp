@@ -11,6 +11,8 @@ public:
     Foo();
     int A;
     float B;
+
+	const char* GetANSI();
 };
 
 class DLL_API Foo2 : public Foo

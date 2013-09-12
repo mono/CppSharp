@@ -1,4 +1,4 @@
-using System.Reflection;
+﻿using System.Reflection;
 using NUnit.Framework;
 using Basic;
 
@@ -102,6 +102,13 @@ public class BasicTests
     {
         Assert.That(typeof(Foo2).GetProperty("P",
             BindingFlags.Instance | BindingFlags.NonPublic), Is.Not.Null);
+    }
+
+    [Test]
+    public void TestANSI()
+    {
+        Foo foo = new Foo();
+        Assert.That(foo.GetANSI(), Is.EqualTo("ANSI"));
     }
 }
  
