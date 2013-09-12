@@ -1,4 +1,5 @@
-﻿using CppSharp.AST;
+﻿using System.Text;
+using CppSharp.AST;
 using CppSharp.Generators;
 using CppSharp.Generators.CLI;
 using CppSharp.Generators.CSharp;
@@ -226,6 +227,8 @@ namespace CppSharp
             OutputInteropIncludes = true;
             MaxIndent = 80;
             CommentPrefix = "///";
+
+            Encoding = Encoding.ASCII;
         }
 
         // General options
@@ -273,6 +276,8 @@ namespace CppSharp
         public Func<TranslationUnit, string> GenerateName;
         public int MaxIndent;
         public string CommentPrefix;
+
+        public Encoding Encoding { get; set; }
 
         private string inlinesLibraryName;
         public string InlinesLibraryName
