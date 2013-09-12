@@ -632,12 +632,14 @@ namespace CppSharp.Generators.CLI
         {
             var names = new List<string>();
 
+            var paramIndex = 0;
             foreach (var param in method.Parameters)
             {
                 var ctx = new MarshalContext(Driver)
                               {
                                   Parameter = param,
                                   ArgName = param.Name,
+                                  ParameterIndex = paramIndex++
                               };
 
                 var marshal = new CLIMarshalManagedToNativePrinter(ctx);
@@ -729,7 +731,11 @@ namespace CppSharp.Generators.CLI
                 WriteLine("auto {0} = ::{1}();", valueMarshalName, @class.QualifiedOriginalName);
 
                 var param = new Parameter() { Name = "(*this)" };
-                var ctx = new MarshalContext(Driver) { Parameter = param };
+                var ctx = new MarshalContext(Driver)
+                    {
+                        MarshalVarPrefix = valueMarshalName,
+                        Parameter = param
+                    };
 
                 var marshal = new CLIMarshalManagedToNativePrinter(ctx);
                 marshal.MarshalValueClassFields(@class, valueMarshalName);
@@ -860,6 +866,8 @@ namespace CppSharp.Generators.CLI
         public struct ParamMarshal
         {
             public string Name;
+            public string Prefix;
+
             public Parameter Param;
         } 
 
@@ -881,18 +889,21 @@ namespace CppSharp.Generators.CLI
         private ParamMarshal GenerateFunctionParamMarshal(Parameter param, int paramIndex,
             Function function = null)
         {
+            var paramMarshal = new ParamMarshal { Name = param.Name, Param = param };
+
             if (param.Type is BuiltinType)
-            {
-                return new ParamMarshal {Name = param.Name, Param = param};
-            }
+                return paramMarshal;
 
             var argName = "arg" + paramIndex.ToString(CultureInfo.InvariantCulture);
 
-            if (param.Usage == ParameterUsage.Out)
+            if (param.IsOut || param.IsInOut)
             {
                 var paramType = param.Type;
-                if (paramType.IsReference())
+                if (paramType is PointerType)
+                {
                     paramType = (paramType as PointerType).Pointee;
+                    paramMarshal.Prefix = "&";
+                }
 
                 var typePrinter = new CppTypePrinter(Driver.TypeDatabase);
                 var type = paramType.Visit(typePrinter);
@@ -923,12 +934,18 @@ namespace CppSharp.Generators.CLI
                 argName = marshal.ArgumentPrefix + argName;
             }
 
-            return new ParamMarshal {Name = argName, Param = param};
+            paramMarshal.Name = argName;
+            return paramMarshal;
         }
 
         public void GenerateFunctionParams(List<ParamMarshal> @params)
         {
-            var names = @params.Select(param => param.Name).ToList();
+            var names = @params.Select(param =>
+                {
+                    if (!string.IsNullOrWhiteSpace(param.Prefix))
+                        return param.Prefix + param.Name;
+                    return param.Name;
+                }).ToList();
             Write(string.Join(", ", names));
         }
 

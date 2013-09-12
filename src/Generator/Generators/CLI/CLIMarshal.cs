@@ -45,6 +45,13 @@ namespace CppSharp.Generators.CLI
         {
             var pointee = pointer.Pointee;
 
+            var param = Context.Parameter;
+            if (param != null && (param.IsOut || param.IsInOut))
+            {
+                Context.Return.Write(Context.ReturnVarName);
+                return true;
+            }
+
             if (pointee.Desugar().IsPrimitiveType(PrimitiveType.Void))
             {
                 Context.Return.Write("IntPtr({0})", Context.ReturnVarName);
@@ -234,7 +241,11 @@ namespace CppSharp.Generators.CLI
 
         public override bool VisitParameterDecl(Parameter parameter)
         {
-            return parameter.Type.Visit(this, parameter.QualifiedType.Qualifiers);
+            Context.Parameter = parameter;
+            var ret = parameter.Type.Visit(this, parameter.QualifiedType.Qualifiers);
+            Context.Parameter = null;
+
+            return ret;
         }
 
         public override bool VisitTypedefDecl(TypedefDecl typedef)
@@ -527,7 +538,8 @@ namespace CppSharp.Generators.CLI
 
         public void MarshalValueClass(Class @class)
         {
-            var marshalVar = "_marshal" + Context.ParameterIndex++;
+            var marshalVar = Context.MarshalVarPrefix + "_marshal" +
+                Context.ParameterIndex++;
 
             Context.SupportBefore.WriteLine("auto {0} = ::{1}();", marshalVar,
                 @class.QualifiedOriginalName);
@@ -572,7 +584,8 @@ namespace CppSharp.Generators.CLI
             var marshalCtx = new MarshalContext(Context.Driver)
                                  {
                                      ArgName = fieldRef,
-                                     ParameterIndex = Context.ParameterIndex++
+                                     ParameterIndex = Context.ParameterIndex++,
+                                     MarshalVarPrefix = Context.MarshalVarPrefix
                                  };
 
             var marshal = new CLIMarshalManagedToNativePrinter(marshalCtx);

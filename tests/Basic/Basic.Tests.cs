@@ -45,6 +45,16 @@ public class BasicTests
     }
 
     [Test]
+    public void TestPrimitiveOutParameters()
+    {
+        var hello = new Hello();
+
+        float f;
+        Assert.That(hello.TestPrimitiveOut(out f), Is.True);
+        Assert.That(f, Is.EqualTo(10.0f));
+    }
+
+    [Test]
     public void TestNullRef()
     {
         var hello = new Hello ();

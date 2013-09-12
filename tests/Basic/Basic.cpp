@@ -95,6 +95,12 @@ Hello* Hello::RetNull()
     return 0;
 }
 
+bool Hello::TestPrimitiveOut(CS_OUT float* f)
+{
+    *f = 10;
+    return true;
+}
+
 int unsafeFunction(const Bar& ret, char* testForString, void (*foo)(int))
 {
     return ret.A;

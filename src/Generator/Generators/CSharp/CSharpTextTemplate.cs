@@ -1813,13 +1813,13 @@ namespace CppSharp.Generators.CSharp
             foreach (var paramInfo in @params)
             {
                 var param = paramInfo.Param;
-                if (param.Usage != ParameterUsage.Out && param.Usage != ParameterUsage.InOut)
-                    continue;
+                if (!(param.IsOut || param.IsInOut)) continue;
 
                 var nativeVarName = paramInfo.Name;
 
                 var ctx = new CSharpMarshalContext(Driver)
                 {
+                    Parameter = param,
                     ArgName = nativeVarName,
                     ReturnVarName = nativeVarName,
                     ReturnType = param.QualifiedType
@@ -1890,7 +1890,7 @@ namespace CppSharp.Generators.CSharp
             var argName = "arg" + paramIndex.ToString(CultureInfo.InvariantCulture);
             var paramMarshal = new ParamMarshal { Name = argName, Param = param };
 
-            if (param.Usage == ParameterUsage.Out)
+            if (param.IsOut || param.IsInOut)
             {
                 var paramType = param.Type;
 
@@ -1949,8 +1949,9 @@ namespace CppSharp.Generators.CSharp
                 if (param.Kind == ParameterKind.IndirectReturnType)
                     continue;
 
+                var typeName = param.CSharpType(TypePrinter);
                 @params.Add(string.Format("{0}{1} {2}", GetParameterUsage(param.Usage),
-                    param.Type, SafeIdentifier(param.Name)));
+                    typeName, SafeIdentifier(param.Name)));
             }
 
             Write(string.Join(", ", @params));

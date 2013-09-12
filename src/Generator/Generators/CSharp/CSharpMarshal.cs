@@ -141,6 +141,13 @@ namespace CppSharp.Generators.CSharp
             PrimitiveType primitive;
             if (pointee.Desugar().IsPrimitiveType(out primitive))
             {
+                var param = Context.Parameter;
+                if (param != null && (param.IsOut || param.IsInOut))
+                {
+                    Context.Return.Write("_{0}", param.Name);
+                    return true;
+                }
+
                 Context.Return.Write(Context.ReturnVarName);
                 return true;
             }
@@ -410,7 +417,24 @@ namespace CppSharp.Generators.CSharp
             PrimitiveType primitive;
             if (type.IsPrimitiveType(out primitive))
             {
-                Context.Return.Write(Context.Parameter.Name);
+                var param = Context.Parameter;
+
+                // From MSDN: "note that a ref or out parameter is classified as a moveable
+                // variable". This means we must create a local variable to hold the result
+                // and then assign this value to the parameter.
+
+                if (param.IsOut || param.IsInOut)
+                {
+                    var typeName = Type.TypePrinterDelegate(type);
+
+                    Context.SupportBefore.WriteLine("{0} _{1};", typeName,
+                        Helpers.SafeIdentifier(param.Name));
+                    Context.Return.Write("new global::System.IntPtr(&_{0})", param.Name);
+
+                }
+                else
+                    Context.Return.Write(Context.Parameter.Name);
+
                 return true;
             }
 

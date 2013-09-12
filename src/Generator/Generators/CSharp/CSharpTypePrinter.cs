@@ -174,7 +174,13 @@ namespace CppSharp.Generators.CSharp
 
             PrimitiveType primitive;
             if (pointee.Desugar().IsPrimitiveType(out primitive))
+            {
+                if (isManagedContext && Context.Parameter != null &&
+                    (Context.Parameter.IsOut || Context.Parameter.IsInOut))
+                    return VisitPrimitiveType(primitive, quals);
+
                 return "global::System.IntPtr";
+            }
 
             Class @class;
             if (pointee.IsTagDecl(out @class)
@@ -365,7 +371,11 @@ namespace CppSharp.Generators.CSharp
             if (parameter.Kind == ParameterKind.IndirectReturnType)
                 return "global::System.IntPtr";
 
-            return paramType.Visit(this);
+            Context.Parameter = parameter;
+            var ret = paramType.Visit(this);
+            Context.Parameter = null;
+
+            return ret;
         }
 
         public CSharpTypePrinterResult VisitTypedefDecl(TypedefDecl typedef)
@@ -439,8 +449,12 @@ namespace CppSharp.Generators.CSharp
             var args = new List<string>();
 
             foreach (var param in @params)
+            {
+                Context.Parameter = param;
                 args.Add(VisitParameter(param, hasNames).Type);
+            }
 
+            Context.Parameter = null;
             return string.Join(", ", args);
         }
 

@@ -4,6 +4,8 @@
 #define DLL_API
 #endif
 
+#define CS_OUT
+
 class DLL_API Foo
 {
 public:
@@ -84,6 +86,9 @@ public:
 
     int RetEnum(Enum);
     Hello* RetNull();
+
+    bool TestPrimitiveOut(CS_OUT float* f);
+
 };
 
 class DLL_API AbstractFoo

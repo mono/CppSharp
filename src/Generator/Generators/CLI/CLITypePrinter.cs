@@ -91,10 +91,11 @@ namespace CppSharp.Generators.CLI
 
         public string VisitParameter(Parameter param, bool hasName = true)
         {
+            Context.Parameter = param;
             var type = param.Type.Visit(this, param.QualifiedType.Qualifiers);
-            var name = param.Name;
-            var str = "";
+            Context.Parameter = null;
 
+            var str = string.Empty;
             if(param.Usage == ParameterUsage.Out)
                 str += "[System::Runtime::InteropServices::Out] ";
 
@@ -103,9 +104,9 @@ namespace CppSharp.Generators.CLI
             if(param.Usage == ParameterUsage.Out ||
                param.Usage == ParameterUsage.InOut)
                 str += "%";
-                   
-            if (hasName && !string.IsNullOrEmpty(name))
-                str += " " + name;
+
+            if (hasName && !string.IsNullOrEmpty(param.Name))
+                str += " " + param.Name;
 
             return str;
         }
@@ -135,6 +136,10 @@ namespace CppSharp.Generators.CLI
             PrimitiveType primitive;
             if (pointee.Desugar().IsPrimitiveType(out primitive))
             {
+                var param = Context.Parameter;
+                if (param != null && (param.IsOut || param.IsInOut))
+                    return VisitPrimitiveType(primitive);
+
                 return "System::IntPtr";
             }
 

@@ -47,6 +47,7 @@ namespace CppSharp.Types
 
         public TypePrinterContextKind Kind;
         public Declaration Declaration;
+        public Parameter Parameter;
         public Type Type;
     }
 

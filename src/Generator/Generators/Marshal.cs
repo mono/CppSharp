@@ -9,6 +9,7 @@ namespace CppSharp.Generators
             Driver = driver;
             SupportBefore = new TextGenerator();
             Return = new TextGenerator();
+            MarshalVarPrefix = string.Empty;
         }
 
         public Driver Driver { get; private set; }
@@ -28,6 +29,8 @@ namespace CppSharp.Generators
         public Parameter Parameter { get; set; }
         public int ParameterIndex { get; set; }
         public Function Function { get; set; }
+
+        public string MarshalVarPrefix { get; set; }
     }
 
     public abstract class MarshalPrinter : AstVisitor
