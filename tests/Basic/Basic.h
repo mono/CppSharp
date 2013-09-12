@@ -12,8 +12,6 @@ public:
     int A;
     float B;
 
-    const char* Unicode;
-
 	const char* GetANSI();
 };
 

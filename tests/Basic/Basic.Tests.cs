@@ -105,7 +105,7 @@ public class BasicTests
     }
 
     [Test]
-    public void TestUnicode()
+    public void TestANSI()
     {
         Foo foo = new Foo();
         Assert.That(foo.GetANSI(), Is.EqualTo("ANSI"));
