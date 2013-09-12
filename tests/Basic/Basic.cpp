@@ -101,6 +101,12 @@ bool Hello::TestPrimitiveOut(CS_OUT float* f)
     return true;
 }
 
+bool Hello::TestPrimitiveOutRef(CS_OUT float& f)
+{
+    f = 10;
+    return true;
+}
+
 int unsafeFunction(const Bar& ret, char* testForString, void (*foo)(int))
 {
     return ret.A;

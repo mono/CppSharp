@@ -16,6 +16,7 @@ namespace CppSharp.Tests
             lib.SetClassAsValueType("Bar");
             lib.SetClassAsValueType("Bar2");
             lib.SetMethodParameterUsage("Hello", "TestPrimitiveOut", 1, ParameterUsage.Out);
+            lib.SetMethodParameterUsage("Hello", "TestPrimitiveOutRef", 1, ParameterUsage.Out);
         }
 
         static class Program

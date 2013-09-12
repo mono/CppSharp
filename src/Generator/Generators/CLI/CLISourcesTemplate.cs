@@ -901,8 +901,9 @@ namespace CppSharp.Generators.CLI
                 var paramType = param.Type;
                 if (paramType is PointerType)
                 {
+                    if (!paramType.IsReference())
+                        paramMarshal.Prefix = "&";
                     paramType = (paramType as PointerType).Pointee;
-                    paramMarshal.Prefix = "&";
                 }
 
                 var typePrinter = new CppTypePrinter(Driver.TypeDatabase);

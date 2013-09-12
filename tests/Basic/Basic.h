@@ -88,7 +88,7 @@ public:
     Hello* RetNull();
 
     bool TestPrimitiveOut(CS_OUT float* f);
-
+    bool TestPrimitiveOutRef(CS_OUT float& f);
 };
 
 class DLL_API AbstractFoo
