@@ -133,7 +133,7 @@ namespace CppSharp.Generators.CSharp
 
             if (CSharpTypePrinter.IsConstCharString(pointer))
             {
-                Context.Return.Write("Marshal.PtrToStringAnsi({0})",
+                Context.Return.Write("Marshal.PtrToStringUni({0})",
                     Context.ReturnVarName);
                 return true;
             }
@@ -359,7 +359,7 @@ namespace CppSharp.Generators.CSharp
                 type.IsPrimitiveType(PrimitiveType.WideChar)) &&
                 pointer.QualifiedPointee.Qualifiers.IsConst)
             {
-                Context.Return.Write("Marshal.StringToHGlobalAnsi({0})",
+                Context.Return.Write("Marshal.StringToHGlobalUni({0})",
                     Helpers.SafeIdentifier(Context.Parameter.Name));
                 CSharpContext.Cleanup.WriteLine("Marshal.FreeHGlobal({0});",
                     Helpers.SafeIdentifier(Context.ArgName));

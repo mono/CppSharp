@@ -1,4 +1,4 @@
-using System.Reflection;
+﻿using System.Reflection;
 using NUnit.Framework;
 using Basic;
 
@@ -102,6 +102,15 @@ public class BasicTests
     {
         Assert.That(typeof(Foo2).GetProperty("P",
             BindingFlags.Instance | BindingFlags.NonPublic), Is.Not.Null);
+    }
+
+    [Test]
+    public void TestUnicode()
+    {
+        Foo foo = new Foo();
+        const string georgia = "საქართველო";
+        foo.Unicode = georgia;
+        Assert.That(foo.Unicode, Is.EqualTo(georgia));
     }
 }
  
