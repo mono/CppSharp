@@ -88,6 +88,7 @@ namespace CppSharp.Passes
                 var name = method.Name.Substring("get".Length);
                 var prop = GetOrCreateProperty(@class, name, method.ReturnType);
                 prop.GetMethod = method;
+                prop.Access = method.Access;
 
                 // Do not generate the original method now that we know it is a getter.
                 method.IsGenerated = false;
@@ -105,6 +106,7 @@ namespace CppSharp.Passes
                 var type = method.Parameters[0].QualifiedType;
                 var prop = GetOrCreateProperty(@class, name, type);
                 prop.SetMethod = method;
+                prop.Access = method.Access;
 
                 // Ignore the original method now that we know it is a setter.
                 method.IsGenerated = false;
