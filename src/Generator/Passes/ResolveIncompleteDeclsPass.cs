@@ -5,12 +5,20 @@ namespace CppSharp.Passes
 {
     public class ResolveIncompleteDeclsPass : TranslationUnitPass
     {
-        public override bool VisitClassDecl(Class @class)
+        public override bool VisitDeclaration(Declaration decl)
         {
-            if (AlreadyVisited(@class))
+            if (AlreadyVisited(decl))
                 return false;
 
-            if (@class.Ignore)
+            if (decl.Ignore)
+                return false;
+
+            return true;
+        }
+
+        public override bool VisitClassDecl(Class @class)
+        {
+            if (!VisitDeclaration(@class))
                 return false;
 
             if (!@class.IsIncomplete)
@@ -32,6 +40,32 @@ namespace CppSharp.Passes
         Out:
 
             return base.VisitClassDecl(@class);
+        }
+
+        public override bool VisitEnumDecl(Enumeration @enum)
+        {
+            if (!VisitDeclaration(@enum))
+                return false;
+
+            if (!@enum.IsIncomplete)
+                goto Out;
+
+            if (@enum.CompleteDeclaration != null)
+                goto Out;
+
+            @enum.CompleteDeclaration =
+                Library.FindCompleteEnum(@enum.QualifiedName);
+
+            if (@enum.CompleteDeclaration == null)
+            {
+                @enum.IsGenerated = false;
+                Driver.Diagnostics.EmitWarning(DiagnosticId.UnresolvedDeclaration,
+                    "Unresolved declaration: {0}", @enum.Name);
+            }
+
+        Out:
+
+            return base.VisitEnumDecl(@enum);
         }
     }
 }

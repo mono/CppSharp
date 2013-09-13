@@ -141,6 +141,16 @@ namespace CppSharp.AST
             }
         }
 
+        /// Finds the complete declaration of an enum.
+        public Enumeration FindCompleteEnum(string name)
+        {
+            foreach (var @enum in FindEnum(name))
+                if (!@enum.IsIncomplete)
+                    return @enum;
+
+            return null;
+        }
+
         /// Finds an existing struct/class in the library modules.
         public IEnumerable<Class> FindClass(string name, bool create = false)
         {
