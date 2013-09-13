@@ -116,16 +116,34 @@ namespace CppSharp.Passes
         {
             var @class = method.Namespace as Class;
 
-            Class ignoredBase;
-            if (method.IsVirtual && HasIgnoredBaseClass(method, @class, out ignoredBase))
+            if (method.IsVirtual)
             {
-                Driver.Diagnostics.EmitMessage(
-                    "Virtual method '{0}' was ignored due to ignored base '{1}'",
-                    method.QualifiedOriginalName, ignoredBase.Name);
+                Class ignoredBase;
+                if (HasIgnoredBaseClass(method, @class, out ignoredBase))
+                {
+                    Driver.Diagnostics.EmitMessage(
+                        "Virtual method '{0}' was ignored due to ignored base '{1}'",
+                        method.QualifiedOriginalName, ignoredBase.Name);
 
-                method.ExplicityIgnored = true;
-                return false;
+                    method.ExplicityIgnored = true;
+                    return false;
+                }
+
+                if (method.IsOverride)
+                {
+                    var baseOverride = @class.GetRootBaseMethod(method);
+                    if (baseOverride != null && baseOverride.Ignore)
+                    {
+                        Driver.Diagnostics.EmitMessage(
+                            "Virtual method '{0}' was ignored due to ignored override '{1}'",
+                            method.QualifiedOriginalName, baseOverride.Name);
+
+                        method.ExplicityIgnored = true;
+                        return false;
+                    }
+                }
             }
+
             return true;
         }
 
