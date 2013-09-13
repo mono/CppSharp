@@ -44,7 +44,7 @@ namespace CppSharp.Passes
 
         private void CheckInvalidOperators(Class @class)
         {
-            foreach (var @operator in @class.Operators)
+            foreach (var @operator in @class.Operators.Where(o => !o.Ignore))
             {
                 if (!IsValidOperatorOverload(@operator))
                 {
@@ -85,21 +85,17 @@ namespace CppSharp.Passes
 
         private static void CreateIndexer(Class @class, Method @operator)
         {
-            if (@class.Properties.All(p => p.Parameters.Count == 0 || 
-                p.Parameters[0].QualifiedType != @operator.Parameters[0].QualifiedType))
+            Property property = new Property
             {
-                Property property = new Property
-                    {
-                        Name = "Item",
-                        QualifiedType = @operator.ReturnType,
-                        Access = @operator.Access,
-                        Namespace = @class
-                    };
-                property.GetMethod = @operator;
-                property.Parameters.AddRange(@operator.Parameters);
-                @class.Properties.Add(property);
-                @operator.IsGenerated = false;
-            }
+                Name = "Item",
+                QualifiedType = @operator.ReturnType,
+                Access = @operator.Access,
+                Namespace = @class,
+                GetMethod = @operator
+            };
+            property.Parameters.AddRange(@operator.Parameters);
+            @class.Properties.Add(property);
+            @operator.IsGenerated = false;
         }
 
         static void HandleMissingOperatorOverloadPair(Class @class, CXXOperatorKind op1,
