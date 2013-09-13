@@ -893,14 +893,12 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateClassProperties(Class @class)
         {
-            foreach (var prop in @class.Properties)
+            foreach (var prop in @class.Properties.Where(p => !p.Ignore))
             {
-                if (prop.Ignore) continue;
-
                 PushBlock(CSharpBlockKind.Property);
                 WriteLine("{0} {1} {2}",
                     prop.Access == AccessSpecifier.Public ? "public" : "protected",
-                    prop.Type, SafeIdentifier(prop.Name));
+                    prop.Type, GetPropertyName(prop));
                 WriteStartBraceIndent();
 
                 if (prop.Field != null)
@@ -923,6 +921,12 @@ namespace CppSharp.Generators.CSharp
                 WriteCloseBraceIndent();
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
+        }
+
+        private string GetPropertyName(Property prop)
+        {
+            return prop.Parameters.Count == 0 ? SafeIdentifier(prop.Name)
+                : string.Format("this[{0}]", FormatMethodParameters(prop.Parameters));
         }
 
         private void GenerateVariable(Class @class, Type type, Variable variable)
@@ -1469,7 +1473,7 @@ namespace CppSharp.Generators.CSharp
 
             var functionName = GetFunctionIdentifier(function);
             Write("public static {0} {1}(", function.OriginalReturnType, functionName);
-            GenerateMethodParameters(function);
+            Write(FormatMethodParameters(function.Parameters));
             WriteLine(")");
             WriteStartBraceIndent();
 
@@ -1517,7 +1521,7 @@ namespace CppSharp.Generators.CSharp
             else
                 Write("{0} {1}(", method.OriginalReturnType, functionName);
 
-            GenerateMethodParameters(method);
+            Write(FormatMethodParameters(method.Parameters));
 
             Write(")");
 
@@ -1938,23 +1942,14 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
-        private void GenerateMethodParameters(Function function)
+        private string FormatMethodParameters(IEnumerable<Parameter> @params)
         {
-            var @params = new List<string>();
-
-            for (var i = 0; i < function.Parameters.Count; ++i)
-            {
-                var param = function.Parameters[i];
-
-                if (param.Kind == ParameterKind.IndirectReturnType)
-                    continue;
-
-                var typeName = param.CSharpType(TypePrinter);
-                @params.Add(string.Format("{0}{1} {2}", GetParameterUsage(param.Usage),
+            return string.Join(", ",
+                from param in @params
+                where param.Kind != ParameterKind.IndirectReturnType
+                let typeName = param.CSharpType(this.TypePrinter)
+                select string.Format("{0}{1} {2}", GetParameterUsage(param.Usage),
                     typeName, SafeIdentifier(param.Name)));
-            }
-
-            Write(string.Join(", ", @params));
         }
 
         #endregion

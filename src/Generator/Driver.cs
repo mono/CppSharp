@@ -134,15 +134,16 @@ namespace CppSharp
             TranslationUnitPasses.AddPass(new ResolveIncompleteDeclsPass());
             TranslationUnitPasses.AddPass(new CleanInvalidDeclNamesPass());
             TranslationUnitPasses.AddPass(new CheckIgnoredDeclsPass());
-            TranslationUnitPasses.AddPass(new GenerateInlinesCodePass());
+            if (Options.IsCSharpGenerator)
+                TranslationUnitPasses.AddPass(new GenerateInlinesCodePass());
 
             library.SetupPasses(this);
 
             TranslationUnitPasses.AddPass(new FindSymbolsPass());
             TranslationUnitPasses.AddPass(new MoveOperatorToClassPass());
+            TranslationUnitPasses.AddPass(new CheckAmbiguousFunctions());
             TranslationUnitPasses.AddPass(new CheckOperatorsOverloadsPass());
             TranslationUnitPasses.AddPass(new CheckVirtualOverrideReturnCovariance());
-            TranslationUnitPasses.AddPass(new CheckAmbiguousFunctions());
 
             Generator.SetupPasses();
             TranslationUnitPasses.AddPass(new FieldToPropertyPass());

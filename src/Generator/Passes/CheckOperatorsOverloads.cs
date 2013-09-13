@@ -44,7 +44,7 @@ namespace CppSharp.Passes
 
         private void CheckInvalidOperators(Class @class)
         {
-            foreach (var @operator in @class.Operators)
+            foreach (var @operator in @class.Operators.Where(o => !o.Ignore))
             {
                 if (!IsValidOperatorOverload(@operator))
                 {
@@ -57,23 +57,45 @@ namespace CppSharp.Passes
                 if (@operator.SynthKind == FunctionSynthKind.NonMemberOperator)
                     continue;
 
-                // Handle missing operator parameters
-                if (@operator.IsStatic)
-                    @operator.Parameters = @operator.Parameters.Skip(1).ToList();
-
-                var type = new PointerType()
+                if (@operator.OperatorKind == CXXOperatorKind.Subscript)
                 {
-                    QualifiedPointee = new QualifiedType(new TagType(@class)),
-                    Modifier = PointerType.TypeModifier.LVReference
-                };
-
-                @operator.Parameters.Insert(0, new Parameter
+                    CreateIndexer(@class, @operator);
+                }
+                else
                 {
-                    Name = Generator.GeneratedIdentifier("op"),
-                    QualifiedType = new QualifiedType(type),
-                    Kind = ParameterKind.OperatorParameter
-                });
+                    // Handle missing operator parameters
+                    if (@operator.IsStatic)
+                        @operator.Parameters = @operator.Parameters.Skip(1).ToList();
+
+                    var type = new PointerType()
+                    {
+                        QualifiedPointee = new QualifiedType(new TagType(@class)),
+                        Modifier = PointerType.TypeModifier.LVReference
+                    };
+
+                    @operator.Parameters.Insert(0, new Parameter
+                    {
+                        Name = Generator.GeneratedIdentifier("op"),
+                        QualifiedType = new QualifiedType(type),
+                        Kind = ParameterKind.OperatorParameter
+                    });
+                }
             }
+        }
+
+        private static void CreateIndexer(Class @class, Method @operator)
+        {
+            Property property = new Property
+            {
+                Name = "Item",
+                QualifiedType = @operator.ReturnType,
+                Access = @operator.Access,
+                Namespace = @class,
+                GetMethod = @operator
+            };
+            property.Parameters.AddRange(@operator.Parameters);
+            @class.Properties.Add(property);
+            @operator.IsGenerated = false;
         }
 
         static void HandleMissingOperatorOverloadPair(Class @class, CXXOperatorKind op1,
@@ -153,6 +175,9 @@ namespace CppSharp.Passes
                 case CXXOperatorKind.Pipe:
                 case CXXOperatorKind.Caret:
 
+                // The array indexing operator can be overloaded
+                case CXXOperatorKind.Subscript:
+
                 // The comparison operators can be overloaded
                 case CXXOperatorKind.EqualEqual:
                 case CXXOperatorKind.ExclaimEqual:
@@ -179,9 +204,6 @@ namespace CppSharp.Passes
                 case CXXOperatorKind.CaretEqual:
                 case CXXOperatorKind.LessLessEqual:
                 case CXXOperatorKind.GreaterGreaterEqual:
-
-                // The array indexing operator cannot be overloaded
-                case CXXOperatorKind.Subscript:
 
                 // The conditional logical operators cannot be overloaded
                 case CXXOperatorKind.AmpAmp:
