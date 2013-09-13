@@ -65,6 +65,7 @@ public:
     };
 
     Hello ();
+    Hello(const Hello& hello);
 
     void PrintHello(const char* s);
     bool test1(int i, float f);
