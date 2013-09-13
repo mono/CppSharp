@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace CppSharp.AST
 {
     /// <summary>
@@ -35,6 +37,16 @@ namespace CppSharp.AST
 
         // The field that should be get and set by this property
         public Field Field { get; set; }
+
+        private readonly List<Parameter> parameters = new List<Parameter>();
+        
+        /// <summary>
+        /// Only applicable to index ([]) properties.
+        /// </summary>
+        public List<Parameter> Parameters
+        {
+            get { return parameters; }
+        }
 
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {
