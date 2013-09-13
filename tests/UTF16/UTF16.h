@@ -11,7 +11,7 @@ public:
 
     // TODO: move this, it has nothing to do with Unicode, it's here only not to break the CLI branch
     int operator[](int i) const;
-    char* operator[](int i);
+    int operator[](int i);
 };
 
 DLL_API int FooCallFoo(Foo* foo);

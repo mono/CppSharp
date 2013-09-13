@@ -6,7 +6,7 @@ int Foo::operator[](int i) const
     return 5;
 }
 
-char* Foo::operator[](int i)
+int Foo::operator[](int i)
 {
-    return 0;
+    return 5;
 }

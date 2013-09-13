@@ -15,6 +15,5 @@ public class UTF16Tests
 
         // TODO: move this, it has nothing to do with Unicode, it's here only not to break the CLI branch
         Assert.That(foo[0], Is.EqualTo(5));
-        Assert.That(foo.OperatorSubscript(0), Is.EqualTo(IntPtr.Zero));
     }
 }
