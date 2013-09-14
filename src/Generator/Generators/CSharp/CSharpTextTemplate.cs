@@ -794,8 +794,7 @@ namespace CppSharp.Generators.CSharp
             PrimitiveType primitiveType;
             if (type.IsPrimitiveType(out primitiveType))
             {
-                WriteLine("*({0}*) this[{1}] = *({0}*) value;",
-                    type.ToString(), function.Parameters[0].Name);
+                WriteLine("*this[{0}] = *value;", function.Parameters[0].Name);
             }
             else
             {
@@ -2002,7 +2001,7 @@ namespace CppSharp.Generators.CSharp
                 WriteLine("[UnmanagedFunctionPointerAttribute(CallingConvention.{0})]",
                     Helpers.ToCSharpCallConv(functionType.CallingConvention));
                 TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
-                WriteLine("{0} {1};",
+                WriteLine("{0} unsafe {1};",
                     typedef.Access == AccessSpecifier.Public ? "public" : "protected",
                     string.Format(TypePrinter.VisitDelegate(functionType).Type,
                         SafeIdentifier(typedef.Name)));
