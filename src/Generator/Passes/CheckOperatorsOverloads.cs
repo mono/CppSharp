@@ -86,14 +86,23 @@ namespace CppSharp.Passes
         private static void CreateIndexer(Class @class, Method @operator)
         {
             Property property = new Property
-            {
-                Name = "Item",
-                QualifiedType = @operator.ReturnType,
-                Access = @operator.Access,
-                Namespace = @class,
-                GetMethod = @operator
-            };
+                {
+                    Name = "Item",
+                    QualifiedType = @operator.ReturnType,
+                    Access = @operator.Access,
+                    Namespace = @class,
+                    GetMethod = @operator
+                };
             property.Parameters.AddRange(@operator.Parameters);
+            if (!@operator.ReturnType.Qualifiers.IsConst && @operator.ReturnType.Type.IsAddress())
+            {
+                property.SetMethod = new Method(@operator)
+                                        {
+                                            ReturnType = new QualifiedType(
+                                                new BuiltinType(PrimitiveType.Void)),
+                                            IsSynthetized = true
+                                        };
+            }
             @class.Properties.Add(property);
             @operator.IsGenerated = false;
         }

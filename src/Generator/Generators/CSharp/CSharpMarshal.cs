@@ -239,6 +239,7 @@ namespace CppSharp.Generators.CSharp
             }
 
             if (@class.IsRefType &&
+                (Context.ReturnType.Qualifiers.IsConst || !Context.ReturnType.Type.IsAddress()) &&
                 (!Context.Driver.Options.GenerateAbstractImpls || !@class.IsAbstract))
             {
                 var instanceName = Generator.GeneratedIdentifier("instance");
@@ -533,7 +534,7 @@ namespace CppSharp.Generators.CSharp
                 return;
             }
 
-            if (Context.Parameter.Type.IsPointer() || Context.Parameter.Type.IsReference())
+            if (Context.Parameter.Type.IsAddress())
             {
                 Context.Return.Write("{0}.{1}", Helpers.SafeIdentifier(Context.Parameter.Name),
                     Helpers.InstanceIdentifier);

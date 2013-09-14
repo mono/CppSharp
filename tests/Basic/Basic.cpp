@@ -32,6 +32,11 @@ Hello::Hello ()
     //cout << "Ctor!" << "\n";
 }
 
+Hello::Hello(const Hello& hello)
+{
+
+}
+
 void Hello::PrintHello(const char* s)
 {
     //cout << "PrintHello: " << s << "\n";
