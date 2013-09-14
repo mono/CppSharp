@@ -1,12 +1,32 @@
 #include "CSharpTemp.h"
 
-// TODO: move this, it has nothing to do with Unicode, it's here only not to break the CLI branch
+Foo::Foo()
+{
+    A = 10;
+    P = 50;
+}
+
 int Foo::operator[](int i) const
 {
     return 5;
 }
 
-int Foo::operator[](int i)
+int Foo::operator[](unsigned int i)
 {
-    return 5;
+    return 15;
+}
+
+int& Foo::operator[](int i)
+{
+    return P;
+}
+
+const Foo& Bar::operator[](int i) const
+{
+    return m_foo;
+}
+
+Foo& Bar::operator[](int i)
+{
+    return m_foo;
 }

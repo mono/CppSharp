@@ -47,6 +47,11 @@ namespace CppSharp.AST
             return tag.Declaration is Enumeration;
         }
 
+        public bool IsAddress()
+        {
+            return IsPointer() || IsReference();
+        }
+
         public bool IsPointer()
         {
             var functionPointer = this as MemberPointerType;

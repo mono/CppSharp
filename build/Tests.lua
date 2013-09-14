@@ -90,6 +90,7 @@ function SetupTestProjectsCSharp(name, file, lib)
     kind "SharedLib"
     language "C#"
     location "."
+    flags { "Unsafe" }
 
     files { name .. ".Tests.cs" }
     links { name .. ".CSharp" }
