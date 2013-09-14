@@ -725,7 +725,7 @@ namespace CppSharp.Generators.CSharp
             return Tuple.Create(library, decl.Mangled);
         }
 
-        private void GeneratePropertySetter<T>(T decl, Class @class)
+        private void GeneratePropertySetter<T>(QualifiedType returnType, T decl, Class @class)
             where T : Declaration, ITypedDecl
         {
             PushBlock(CSharpBlockKind.Method);
@@ -753,8 +753,16 @@ namespace CppSharp.Generators.CSharp
 
                 param.QualifiedType = function.Parameters[0].QualifiedType;
 
-                var parameters = new List<Parameter> { param };
-                GenerateInternalFunctionCall(function, parameters);
+                var method = function as Method;
+                if (method != null && method.IsSynthetized)
+                {
+                    GenerateIndexerSetter(returnType, method);
+                }
+                else
+                {
+                    var parameters = new List<Parameter> { param };
+                    GenerateInternalFunctionCall(function, parameters);   
+                }
             }
             else if (decl is Field)
             {
@@ -777,6 +785,23 @@ namespace CppSharp.Generators.CSharp
 
             WriteCloseBraceIndent();
             PopBlock(NewLineKind.BeforeNextBlock);
+        }
+
+        private void GenerateIndexerSetter(QualifiedType returnType, Function function)
+        {
+            Type type;
+            returnType.Type.IsPointerTo(out type);
+            PrimitiveType primitiveType;
+            if (type.IsPrimitiveType(out primitiveType))
+            {
+                WriteLine("*({0}*) this[{1}] = *({0}*) value;",
+                    type.ToString(), function.Parameters[0].Name);
+            }
+            else
+            {
+                WriteLine("*({0}.Internal*) this[{1}].{2} = *({0}.Internal*) value.{2};",
+                    type.ToString(), function.Parameters[0].Name, Helpers.InstanceIdentifier);
+            }
         }
 
         private void GeneratePropertyGetter<T>(T decl, Class @class)
@@ -907,7 +932,7 @@ namespace CppSharp.Generators.CSharp
                         GeneratePropertyGetter(prop.Field, @class);
 
                     if (prop.HasSetter)
-                        GeneratePropertySetter(prop.Field, @class);
+                        GeneratePropertySetter(prop.Field.QualifiedType, prop.Field, @class);
                 }
                 else
                 {
@@ -915,7 +940,7 @@ namespace CppSharp.Generators.CSharp
                         GeneratePropertyGetter(prop.GetMethod, @class);
 
                     if (prop.HasSetter)
-                        GeneratePropertySetter(prop.SetMethod, @class);
+                        GeneratePropertySetter(prop.GetMethod.ReturnType, prop.SetMethod, @class);
                 }
 
                 WriteCloseBraceIndent();
@@ -938,7 +963,7 @@ namespace CppSharp.Generators.CSharp
             GeneratePropertyGetter(variable, @class);
 
             if (!variable.QualifiedType.Qualifiers.IsConst)
-                GeneratePropertySetter(variable, @class);
+                GeneratePropertySetter(variable.QualifiedType, variable, @class);
 
             WriteCloseBraceIndent();
             PopBlock(NewLineKind.BeforeNextBlock);
