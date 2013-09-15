@@ -382,7 +382,7 @@ namespace CppSharp.Generators.CSharp
                 type.IsPrimitiveType(PrimitiveType.WideChar)) &&
                 pointer.QualifiedPointee.Qualifiers.IsConst)
             {
-                Context.Return.Write(this.MarshalStringToUnmanaged(
+                Context.Return.Write(MarshalStringToUnmanaged(
                     Helpers.SafeIdentifier(Context.Parameter.Name)));
                 CSharpContext.Cleanup.WriteLine("Marshal.FreeHGlobal({0});",
                     Helpers.SafeIdentifier(Context.ArgName));
@@ -430,7 +430,7 @@ namespace CppSharp.Generators.CSharp
 
                     Context.SupportBefore.WriteLine("{0} _{1};", typeName,
                         Helpers.SafeIdentifier(param.Name));
-                    Context.Return.Write("new global::System.IntPtr(&_{0})", param.Name);
+                    Context.Return.Write("&_{0}", param.Name);
 
                 }
                 else
