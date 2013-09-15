@@ -10,7 +10,8 @@ namespace CppSharp.Generators.CSharp
     {
         Native,
         Managed,
-        ManagedPointer
+        ManagedPointer,
+        GenericDelegate
     }
 
     public class CSharpTypePrinterContext : TypePrinterContext
@@ -117,8 +118,12 @@ namespace CppSharp.Generators.CSharp
             var returnType = function.ReturnType;
             var args = string.Empty;
 
+            PushContext(CSharpTypePrinterContextKind.GenericDelegate);
+
             if (arguments.Count > 0)
                 args = VisitParameters(function.Parameters, hasNames: false).Type;
+
+            PopContext();
 
             if (ContextKind != CSharpTypePrinterContextKind.Managed)
                 return "global::System.IntPtr";
@@ -179,7 +184,9 @@ namespace CppSharp.Generators.CSharp
                     (Context.Parameter.IsOut || Context.Parameter.IsInOut))
                     return VisitPrimitiveType(primitive, quals);
 
-                return "global::System.IntPtr";
+                if (ContextKind == CSharpTypePrinterContextKind.GenericDelegate)
+                    return "global::System.IntPtr";
+                return VisitPrimitiveType(primitive, quals) + "*";
             }
 
             Class @class;
