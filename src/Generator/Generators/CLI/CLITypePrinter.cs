@@ -278,6 +278,9 @@ namespace CppSharp.Generators.CLI
 
         public string VisitClassDecl(Class @class)
         {
+            if (@class.CompleteDeclaration != null)
+                return VisitClassDecl(@class.CompleteDeclaration as Class);
+
             return string.Format("{0}{1}", @class.Name, @class.IsRefType ? "^"
                 : string.Empty);
         }

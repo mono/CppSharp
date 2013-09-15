@@ -187,6 +187,9 @@ namespace CppSharp.Generators.CLI
 
         public override bool VisitClassDecl(Class @class)
         {
+            if (@class.CompleteDeclaration != null)
+                return VisitClassDecl(@class.CompleteDeclaration as Class);
+
             var instance = string.Empty;
 
             if (!Context.ReturnType.Type.IsPointer())
@@ -494,6 +497,9 @@ namespace CppSharp.Generators.CLI
 
         public override bool VisitClassDecl(Class @class)
         {
+            if (@class.CompleteDeclaration != null)
+                return VisitClassDecl(@class.CompleteDeclaration as Class);
+
             if (@class.IsValueType)
             {
                 MarshalValueClass(@class);
