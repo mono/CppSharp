@@ -45,8 +45,10 @@ namespace CppSharp.Generators.CLI
         {
             var pointee = pointer.Pointee;
 
+            PrimitiveType primitive;
             var param = Context.Parameter;
-            if (param != null && (param.IsOut || param.IsInOut))
+            if (param != null && (param.IsOut || param.IsInOut) &&
+                pointee.IsPrimitiveType(out primitive))
             {
                 Context.Return.Write(Context.ReturnVarName);
                 return true;
@@ -65,7 +67,6 @@ namespace CppSharp.Generators.CLI
                 return true;
             }
 
-            PrimitiveType primitive;
             if (pointee.Desugar().IsPrimitiveType(out primitive))
             {
                 Context.Return.Write("IntPtr({0})", Context.ReturnVarName);
