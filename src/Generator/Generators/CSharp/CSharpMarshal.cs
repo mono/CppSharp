@@ -261,7 +261,7 @@ namespace CppSharp.Generators.CSharp
 
                     // Call the copy constructor.
                     Context.SupportBefore.WriteLine("{0}.Internal.{1}({2}, new global::System.IntPtr(&{3}));",
-                        @class.QualifiedName,
+                        QualifiedIdentifier(@class),
                         CSharpTextTemplate.GetFunctionNativeIdentifier(copyCtorMethod),
                         instanceName, instance);
                 }
