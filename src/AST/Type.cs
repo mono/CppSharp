@@ -71,6 +71,26 @@ namespace CppSharp.AST
             return pointer.IsReference;
         }
 
+        public bool IsPointerToPrimitiveType()
+        {
+            var ptr = this as PointerType;
+            if (ptr == null)
+                return false;
+            PrimitiveType primitiveType;
+            return ptr.Pointee.IsPrimitiveType(out primitiveType);
+        }
+
+        public bool IsPointerToPrimitiveType(out PrimitiveType primitive)
+        {
+            var ptr = this as PointerType;
+            if (ptr == null)
+            {
+                primitive = PrimitiveType.Null;
+                return false;
+            }
+            return ptr.Pointee.IsPrimitiveType(out primitive);
+        }
+
         public bool IsPointerToPrimitiveType(PrimitiveType primitive)
         {
             var ptr = this as PointerType;

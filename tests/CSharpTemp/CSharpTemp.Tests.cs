@@ -12,13 +12,9 @@ public class CSharpTempTests
     {
         var foo = new Foo();
 
-        // TODO: Most of the ugliness below will disappear when pointers to simple types are represented by C#-pointers or ref modifiers instead of the nasty IntPtr
-        var value = *foo[0];
-        Assert.That(value, Is.EqualTo(50));
-        int x = 250;
-        foo[0] = &x;
-        value = *foo[0];
-        Assert.That(value, Is.EqualTo(x));
+        Assert.That(foo[0], Is.EqualTo(50));
+        foo[0] = 250;
+        Assert.That(foo[0], Is.EqualTo(250));
 
         Assert.That(foo[(uint) 0], Is.EqualTo(15));
         
