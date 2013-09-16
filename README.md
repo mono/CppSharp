@@ -34,7 +34,7 @@ There are not many automated binding tools around, the only real alternative is 
 
 It is being used to bind "real-world" complex codebases successfully, so give it a shot.
 
-Since C and C++ provide such a wide array of features I'm sure there's still tonnes of bugs and unsupported edge cases, but give and try and report any bugs you find and I'll try to fix them ASAP.
+Since C and C++ provide such a wide array of features I'm sure there's still tonnes of bugs and unsupported edge cases, but give it a try and report any bugs you find and I'll try to fix them ASAP.
 
 
 ## Similiar Tools
