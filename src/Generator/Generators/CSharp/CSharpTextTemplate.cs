@@ -754,7 +754,7 @@ namespace CppSharp.Generators.CSharp
                 param.QualifiedType = function.Parameters[0].QualifiedType;
 
                 var method = function as Method;
-                if (method != null && method.IsSynthetized)
+                if (method != null && method.OperatorKind == CXXOperatorKind.Subscript)
                 {
                     GenerateIndexerSetter(returnType, method);
                 }
@@ -794,7 +794,9 @@ namespace CppSharp.Generators.CSharp
             PrimitiveType primitiveType;
             if (type.IsPrimitiveType(out primitiveType))
             {
-                WriteLine("*this[{0}] = *value;", function.Parameters[0].Name);
+                string internalFunction = GetFunctionNativeIdentifier(function);
+                WriteLine("*Internal.{0}({1}, {2}) = value;", internalFunction,
+                    Helpers.InstanceIdentifier, function.Parameters[0].Name);
             }
             else
             {
@@ -813,7 +815,13 @@ namespace CppSharp.Generators.CSharp
             if (decl is Function)
             {
                 var function = decl as Function;
+                bool isPrimitiveIndexer = function.OperatorKind == CXXOperatorKind.Subscript &&
+                                          function.ReturnType.Type.IsPointerToPrimitiveType();
+                if (isPrimitiveIndexer)
+                    TypePrinter.PushContext(CSharpTypePrinterContextKind.PrimitiveIndexer);
                 GenerateInternalFunctionCall(function);
+                if (isPrimitiveIndexer)
+                    TypePrinter.PopContext();
             }
             else if (decl is Field)
             {
@@ -920,9 +928,12 @@ namespace CppSharp.Generators.CSharp
             foreach (var prop in @class.Properties.Where(p => !p.Ignore))
             {
                 PushBlock(CSharpBlockKind.Property);
+                var type = prop.Type;
+                if (prop.Parameters.Count > 0 && prop.Type.IsPointerToPrimitiveType())
+                    type = ((PointerType) prop.Type).Pointee;
                 WriteLine("{0} {1} {2}",
                     prop.Access == AccessSpecifier.Public ? "public" : "protected",
-                    prop.Type, GetPropertyName(prop));
+                    type, GetPropertyName(prop));
                 WriteStartBraceIndent();
 
                 if (prop.Field != null)
@@ -1831,7 +1842,10 @@ namespace CppSharp.Generators.CSharp
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                     Write(marshal.Context.SupportBefore);
 
-                WriteLine("return {0};", marshal.Context.Return);
+                WriteLine(
+                    TypePrinter.ContextKind == CSharpTypePrinterContextKind.PrimitiveIndexer
+                        ? "return *{0};"
+                        : "return {0};", marshal.Context.Return);
             }
         }
 
