@@ -1,4 +1,5 @@
-﻿using CppSharp.AST;
+﻿using System.Linq;
+using CppSharp.AST;
 
 namespace CppSharp.Passes
 {
@@ -6,6 +7,9 @@ namespace CppSharp.Passes
     {
         public override bool VisitFieldDecl(Field field)
         {
+            if (AlreadyVisited(field))
+                return false;
+
             var @class = field.Namespace as Class;
             if (@class == null)
                 return false;
@@ -16,6 +20,17 @@ namespace CppSharp.Passes
             if (ASTUtils.CheckIgnoreField(field))
                 return false;
 
+            // Check if we already have a synthetized property.
+            var existingProp = @class.Properties.FirstOrDefault(property =>
+                property.Name == field.Name && 
+                property.QualifiedType == field.QualifiedType);
+
+            if (existingProp != null)
+            {
+                field.ExplicityIgnored = true;
+                return false;
+            }
+
             var prop = new Property
             {
                 Name = field.Name,
@@ -25,6 +40,9 @@ namespace CppSharp.Passes
                 Field = field
             };
             @class.Properties.Add(prop);
+
+            Driver.Diagnostics.EmitMessage(DiagnosticId.PropertySynthetized,
+                "Property created from field: {0}::{1}", @class.Name, field.Name);
 
             field.ExplicityIgnored = true;
 
