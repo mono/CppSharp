@@ -95,14 +95,7 @@ namespace CppSharp.Passes
                 };
             property.Parameters.AddRange(@operator.Parameters);
             if (!@operator.ReturnType.Qualifiers.IsConst && @operator.ReturnType.Type.IsAddress())
-            {
-                property.SetMethod = new Method(@operator)
-                                        {
-                                            ReturnType = new QualifiedType(
-                                                new BuiltinType(PrimitiveType.Void)),
-                                            IsSynthetized = true
-                                        };
-            }
+                property.SetMethod = @operator;
             @class.Properties.Add(property);
             @operator.IsGenerated = false;
         }
