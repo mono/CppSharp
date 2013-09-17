@@ -2084,6 +2084,13 @@ struct DiagnosticConsumer : public clang::DiagnosticConsumer
 
     virtual void HandleDiagnostic(clang::DiagnosticsEngine::Level Level,
                                   const clang::Diagnostic& Info) override {
+        // Update the base type NumWarnings and NumErrors variables.
+        if (Level == clang::DiagnosticsEngine::Warning)
+            NumWarnings++;
+
+        if (Level == clang::DiagnosticsEngine::Error || clang::DiagnosticsEngine::Fatal)
+            NumErrors++;
+
         auto Diag = Diagnostic();
         Diag.Location = Info.getLocation();
         Diag.Level = Level;
@@ -2195,7 +2202,9 @@ ParserResult^ Parser::ParseHeader(const std::string& File)
 
     client->EndSourceFile();
 
-    if(C->getDiagnosticClient().getNumErrors() != 0)
+    HandleDiagnostics(res);
+
+    if(client->getNumErrors() != 0)
     {
         res->Kind = ParserResultKind::Error;
         return res;
