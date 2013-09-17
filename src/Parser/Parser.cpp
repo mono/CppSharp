@@ -2088,7 +2088,8 @@ struct DiagnosticConsumer : public clang::DiagnosticConsumer
         if (Level == clang::DiagnosticsEngine::Warning)
             NumWarnings++;
 
-        if (Level == clang::DiagnosticsEngine::Error || clang::DiagnosticsEngine::Fatal)
+        if (Level == clang::DiagnosticsEngine::Error ||
+            Level == clang::DiagnosticsEngine::Fatal)
             NumErrors++;
 
         auto Diag = Diagnostic();
