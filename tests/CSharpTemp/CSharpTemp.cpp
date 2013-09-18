@@ -6,6 +6,11 @@ Foo::Foo()
     P = 50;
 }
 
+int Foo::method()
+{
+    return 1;
+}
+
 int Foo::operator[](int i) const
 {
     return 5;
@@ -24,6 +29,11 @@ int& Foo::operator[](int i)
 const Foo& Bar::operator[](int i) const
 {
     return m_foo;
+}
+
+int Bar::method()
+{
+    return 2;
 }
 
 Foo& Bar::operator[](int i)

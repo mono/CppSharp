@@ -30,8 +30,7 @@ namespace CppSharp.Generators.CSharp
 
         public static string SafeIdentifier(string id)
         {
-            id = new string(((IEnumerable<char>)id)
-                .Select(c => char.IsLetterOrDigit(c) ? c : '_').ToArray());
+            id = new string(id.Select(c => char.IsLetterOrDigit(c) ? c : '_').ToArray());
             return Keywords.Contains(id) ? "@" + id : id;
         }
 
@@ -220,7 +219,10 @@ namespace CppSharp.Generators.CSharp
                 if (@class.IsDependent)
                     continue;
 
-                GenerateClass(@class);
+                if (@class.IsInterface)
+                    GenerateInterface(@class);
+                else
+                    GenerateClass(@class);
             }
 
             if (context.HasFunctions)
@@ -350,6 +352,80 @@ namespace CppSharp.Generators.CSharp
 
                 if (Options.GenerateVirtualTables && @class.IsDynamic)
                     GenerateVTable(@class);
+            }
+
+            WriteCloseBraceIndent();
+            PopBlock(NewLineKind.BeforeNextBlock);
+        }
+
+        private void GenerateInterface(Class @class)
+        {
+            if (@class.Ignore || @class.IsIncomplete)
+                return;
+
+            PushBlock(CSharpBlockKind.Class);
+            GenerateDeclarationCommon(@class);
+
+            Write(Helpers.GetAccess(@class));
+            Write("unsafe ");
+
+            if (Options.GeneratePartialClasses)
+                Write("partial ");
+
+            Write("interface ");
+            Write("{0}", SafeIdentifier(@class.Name));
+
+            //var needsBase = @class.HasBaseClass && !@class.IsValueType
+            //    && !@class.Bases[0].Class.IsValueType
+            //    && !@class.Bases[0].Class.Ignore;
+
+            //if (needsBase || @class.IsRefType)
+            //    Write(" : ");
+
+            //if (needsBase)
+            //{
+            //    var qualifiedBase = QualifiedIdentifier(@class.Bases[0].Class);
+            //    Write("{0}", qualifiedBase);
+
+            //    if (@class.IsRefType)
+            //        Write(", ");
+            //}
+
+            NewLine();
+            WriteStartBraceIndent();
+
+            GenerateDeclContext(@class);
+
+            foreach (var method in @class.Methods.Where(m => !ASTUtils.CheckIgnoreMethod(m)))
+            {
+                PushBlock(CSharpBlockKind.Method);
+                GenerateDeclarationCommon(method);
+
+                var functionName = GetFunctionIdentifier(method);
+
+                Write("{0} {1}(", method.OriginalReturnType, functionName);
+
+                Write(FormatMethodParameters(method.Parameters));
+
+                Write(");");
+                NewLine();
+
+                PopBlock(NewLineKind.BeforeNextBlock);
+            }
+            foreach (var prop in @class.Properties.Where(p => !p.Ignore))
+            {
+                PushBlock(CSharpBlockKind.Property);
+                var type = prop.Type;
+                if (prop.Parameters.Count > 0 && prop.Type.IsPointerToPrimitiveType())
+                    type = ((PointerType) prop.Type).Pointee;
+                Write("{0} {1} {{ ", type, GetPropertyName(prop));
+                if (prop.HasGetter)
+                    Write("get; ");
+                if (prop.HasSetter)
+                    Write("set; ");
+
+                WriteLine("}");
+                PopBlock(NewLineKind.BeforeNextBlock);
             }
 
             WriteCloseBraceIndent();
@@ -610,7 +686,7 @@ namespace CppSharp.Generators.CSharp
                 baseClass = @class.Bases[0].Class;
 
             var hasRefBase = baseClass != null && baseClass.IsRefType
-                             && !baseClass.Ignore;
+                             && !baseClass.Ignore && !baseClass.IsInterface;
 
             var hasIgnoredBase = baseClass != null && baseClass.Ignore;
 
@@ -643,8 +719,9 @@ namespace CppSharp.Generators.CSharp
 
             if (needsBase)
             {
-                var qualifiedBase = QualifiedIdentifier(@class.Bases[0].Class);
-                Write("{0}", qualifiedBase);
+                Write("{0}", string.Join(", ",
+                    from @base in @class.Bases
+                    select QualifiedIdentifier(@base.Class)));
 
                 if (@class.IsRefType)
                     Write(", ");
@@ -1360,7 +1437,8 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateDisposeMethods(Class @class)
         {
-            var hasBaseClass = @class.HasBaseClass && @class.BaseClass.IsRefType;
+            var hasBaseClass = @class.HasBaseClass && @class.BaseClass.IsRefType &&
+                               !@class.BaseClass.IsInterface;
 
             // Generate the IDispose Dispose() method.
             if (!hasBaseClass)
@@ -1429,7 +1507,8 @@ namespace CppSharp.Generators.CSharp
             WriteLine("internal {0}(global::System.IntPtr native){1}", safeIdentifier,
                 @class.IsValueType ? " : this()" : string.Empty);
 
-            var hasBaseClass = @class.HasBaseClass && @class.BaseClass.IsRefType;
+            var hasBaseClass = @class.HasBaseClass && @class.BaseClass.IsRefType &&
+                               !@class.BaseClass.IsInterface;
             if (hasBaseClass)
                 WriteLineIndent(": base(native)");
 
@@ -1523,14 +1602,18 @@ namespace CppSharp.Generators.CSharp
             PushBlock(CSharpBlockKind.Method);
             GenerateDeclarationCommon(method);
 
-            switch (GetValidMethodAccess(method, @class))
+            // check if this is an explicit interface implementation
+            if (!method.Name.Contains('.'))
             {
-                case AccessSpecifier.Public:
-                    Write("public ");
-                    break;
-                case AccessSpecifier.Protected:
-                    Write("protected ");
-                    break;
+                switch (GetValidMethodAccess(method, @class))
+                {
+                    case AccessSpecifier.Public:
+                        Write("public ");
+                        break;
+                    case AccessSpecifier.Protected:
+                        Write("protected ");
+                        break;
+                }
             }
 
             if (method.IsVirtual && !method.IsOverride &&
@@ -1549,7 +1632,8 @@ namespace CppSharp.Generators.CSharp
             if (Driver.Options.GenerateAbstractImpls && method.IsPure)
                 Write("abstract ");
 
-            var functionName = GetFunctionIdentifier(method);
+            var functionName = method.IsOperator ?
+                Operators.GetOperatorIdentifier(method.OperatorKind) : method.Name;
 
             if (method.IsConstructor || method.IsDestructor)
                 Write("{0}(", functionName);

@@ -82,6 +82,8 @@ namespace CppSharp.AST
         // True if class provides pure virtual methods.
         public bool IsAbstract;
 
+        public bool IsInterface { get; set; }
+
         // True if the type is to be treated as a union.
         public bool IsUnion;
 

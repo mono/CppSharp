@@ -7,6 +7,30 @@ namespace CppSharp.AST
     /// </summary>
     public class Property : Declaration, ITypedDecl
     {
+        public Property()
+        {
+        }
+
+        public Property(Property property)
+            : base(property)
+        {
+            QualifiedType = property.QualifiedType;
+            if (property.GetMethod != null)
+                GetMethod = new Method(property.GetMethod);
+            if (property.GetMethod == property.SetMethod)
+            {
+                SetMethod = GetMethod;
+            }
+            else
+            {
+                if (property.SetMethod != null)
+                    SetMethod = new Method(property.SetMethod);
+            }
+            if (property.Field != null)
+                Field = property.Field;
+            parameters.AddRange(property.Parameters);
+        }
+
         public Type Type
         {
             get { return QualifiedType.Type; }

@@ -30,4 +30,12 @@ public class CSharpTempTests
         Assert.That(typeof(Foo).GetProperty("P",
             BindingFlags.Instance | BindingFlags.NonPublic), Is.Not.Null);
     }
+
+    [Test]
+    public void TestMultipleInheritance()
+    {
+        Baz baz = new Baz();
+        Assert.That(baz.method(), Is.EqualTo(1));
+        Assert.That(((IBar) baz).method(), Is.EqualTo(2));
+    }
 }
