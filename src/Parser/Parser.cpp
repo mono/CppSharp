@@ -1490,6 +1490,19 @@ static const clang::CodeGen::CGFunctionInfo& GetCodeGenFuntionInfo(
     return CodeGenTypes->arrangeFunctionDeclaration(FD);
 }
 
+static bool CanCheckCodeGenInfo(const clang::Type* Ty)
+{
+    bool CheckCodeGenInfo = true;
+
+    if (auto RT = Ty->getAs<clang::RecordType>())
+        CheckCodeGenInfo &= RT->getDecl()->getDefinition() != 0;
+
+    if (auto RD = Ty->getAsCXXRecordDecl())
+        CheckCodeGenInfo &= RD->hasDefinition();
+
+    return CheckCodeGenInfo;
+}
+
 void Parser::WalkFunction(clang::FunctionDecl* FD, CppSharp::AST::Function^ F,
                           bool IsDependent)
 {
@@ -1582,11 +1595,10 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, CppSharp::AST::Function^ F,
         ParamStartLoc = VD->getLocEnd();
     }
 
-    bool CheckCodeGenInfo = !FD->isDependentContext() && !FD->isInvalidDecl()
-        && FD->hasBody();
-
-    if (auto RD = FD->getResultType()->getAsCXXRecordDecl())
-            CheckCodeGenInfo &= RD->hasDefinition();
+    bool CheckCodeGenInfo = !FD->isDependentContext() && !FD->isInvalidDecl();
+    CheckCodeGenInfo &= CanCheckCodeGenInfo(FD->getResultType().getTypePtr());
+    for (auto I = FD->param_begin(), E = FD->param_end(); I != E; ++I)
+        CheckCodeGenInfo &= CanCheckCodeGenInfo((*I)->getType().getTypePtr());
 
     if (CheckCodeGenInfo)
     {
