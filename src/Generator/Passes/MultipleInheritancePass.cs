@@ -64,9 +64,17 @@ namespace CppSharp.Passes
                 @class.Methods.Add(impl);
             }
             @interface.Properties.AddRange(@base.Properties.Where(p => !p.Ignore));
-            @class.Properties.AddRange(
-                from property in @interface.Properties
-                select new Property(property) { Namespace = @class });
+            foreach (var property in @interface.Properties)
+            {
+                var impl = new Property(property)
+                    {
+                        Namespace = @class
+                    };
+                var rootBaseProperty = @class.GetRootBaseProperty(property);
+                if (rootBaseProperty != null && !rootBaseProperty.Ignore)
+                    impl.Name = @interface.Name + "." + impl.Name;
+                @class.Properties.Add(impl);
+            }
             @interface.Events.AddRange(@base.Events);
             if (@base.Bases.All(b => b.Class != @interface))
                 @base.Bases.Add(new BaseClassSpecifier { Type = new TagType(@interface) });

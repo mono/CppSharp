@@ -869,16 +869,17 @@ namespace CppSharp.Generators.CSharp
             Type type;
             returnType.Type.IsPointerTo(out type);
             PrimitiveType primitiveType;
+            string internalFunction = GetFunctionNativeIdentifier(function);
             if (type.IsPrimitiveType(out primitiveType))
             {
-                string internalFunction = GetFunctionNativeIdentifier(function);
                 WriteLine("*Internal.{0}({1}, {2}) = value;", internalFunction,
                     Helpers.InstanceIdentifier, function.Parameters[0].Name);
             }
             else
             {
-                WriteLine("*({0}.Internal*) this[{1}].{2} = *({0}.Internal*) value.{2};",
-                    type.ToString(), function.Parameters[0].Name, Helpers.InstanceIdentifier);
+                WriteLine("*({0}.Internal*) Internal.{1}({2}, {3}) = *({0}.Internal*) value.{2};",
+                    type.ToString(), internalFunction,
+                    Helpers.InstanceIdentifier, function.Parameters[0].Name);
             }
         }
 
@@ -1008,9 +1009,13 @@ namespace CppSharp.Generators.CSharp
                 var type = prop.Type;
                 if (prop.Parameters.Count > 0 && prop.Type.IsPointerToPrimitiveType())
                     type = ((PointerType) prop.Type).Pointee;
-                WriteLine("{0} {1} {2}",
-                    prop.Access == AccessSpecifier.Public ? "public" : "protected",
-                    type, GetPropertyName(prop));
+                // explicit impl
+                if (prop.Name.Contains('.'))
+                    WriteLine("{0} {1}", type, GetPropertyName(prop));
+                else
+                    WriteLine("{0} {1} {2}",
+                        prop.Access == AccessSpecifier.Public ? "public" : "protected",
+                        type, GetPropertyName(prop));
                 WriteStartBraceIndent();
 
                 if (prop.Field != null)
@@ -1037,8 +1042,12 @@ namespace CppSharp.Generators.CSharp
 
         private string GetPropertyName(Property prop)
         {
-            return prop.Parameters.Count == 0 ? SafeIdentifier(prop.Name)
-                : string.Format("this[{0}]", FormatMethodParameters(prop.Parameters));
+            // check for explicit interface implementations
+            var indexOfDot = prop.Name.IndexOf('.');
+            string name = prop.Name.Substring(prop.Name.IndexOf('.') + 1);
+            return prop.Name.Substring(0, indexOfDot + 1) +
+                (prop.Parameters.Count == 0 ? SafeIdentifier(name)
+                : string.Format("this[{0}]", FormatMethodParameters(prop.Parameters)));
         }
 
         private void GenerateVariable(Class @class, Type type, Variable variable)

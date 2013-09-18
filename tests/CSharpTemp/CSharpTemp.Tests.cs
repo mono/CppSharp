@@ -36,6 +36,10 @@ public class CSharpTempTests
     {
         Baz baz = new Baz();
         Assert.That(baz.method(), Is.EqualTo(1));
-        Assert.That(((IBar) baz).method(), Is.EqualTo(2));
+        var bar = (IBar) baz;
+        Assert.That(bar.method(), Is.EqualTo(2));
+        Assert.That(baz[0], Is.EqualTo(50));
+        bar[0] = new Foo { A = 1000 };
+        Assert.That(bar[0].A, Is.EqualTo(1000));
     }
 }

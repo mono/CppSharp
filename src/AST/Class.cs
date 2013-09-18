@@ -219,6 +219,21 @@ namespace CppSharp.AST
                     select rootBaseMethod ?? baseMethod).FirstOrDefault();
         }
 
+        public Property GetRootBaseProperty(Property @override)
+        {
+            return (from @base in Bases
+                    let baseMethod = (
+                        from property in @base.Class.Properties
+                        where
+                            property.Name == @override.Name &&
+                            property.Parameters.Count == @override.Parameters.Count &&
+                            property.Parameters.SequenceEqual(@override.Parameters,
+                                                            new ParameterTypeComparer())
+                        select property).FirstOrDefault()
+                    let rootBaseMethod = @base.Class.GetRootBaseProperty(@override)
+                    select rootBaseMethod ?? baseMethod).FirstOrDefault();
+        }
+
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {
             return visitor.VisitClassDecl(this);
