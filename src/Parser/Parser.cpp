@@ -502,7 +502,7 @@ void Parser::WalkVTable(clang::CXXRecordDecl* RD, CppSharp::AST::Class^ C)
             Info.VFPtrOffset = VFPtrInfo.VFPtrOffset.getQuantity();
             Info.VFPtrFullOffset = VFPtrInfo.VFPtrFullOffset.getQuantity();
 
-            auto& VTLayout = VTContext.getVFTableLayout(RD, VFPtrInfo.VFPtrOffset);
+            auto& VTLayout = VTContext.getVFTableLayout(RD, VFPtrInfo.VFPtrFullOffset);
             Info.Layout = WalkVTableLayout(VTLayout);
 
             C->Layout->VFTables->Add(Info);
