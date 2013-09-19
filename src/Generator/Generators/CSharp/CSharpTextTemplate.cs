@@ -1000,13 +1000,13 @@ namespace CppSharp.Generators.CSharp
                 var type = prop.Type;
                 if (prop.Parameters.Count > 0 && prop.Type.IsPointerToPrimitiveType())
                     type = ((PointerType) prop.Type).Pointee;
-                // explicit impl
-                if (prop.Name.Contains('.'))
-                    WriteLine("{0} {1}", type, GetPropertyName(prop));
-                else
+
+                if (prop.ExplicitInterfaceImpl == null)
                     WriteLine("{0} {1} {2}",
                         prop.Access == AccessSpecifier.Public ? "public" : "protected",
                         type, GetPropertyName(prop));
+                else
+                    WriteLine("{0} {1}.{2}", type, prop.ExplicitInterfaceImpl.Name, GetPropertyName(prop));
                 WriteStartBraceIndent();
 
                 if (prop.Field != null)
@@ -1033,12 +1033,8 @@ namespace CppSharp.Generators.CSharp
 
         private string GetPropertyName(Property prop)
         {
-            // check for explicit interface implementations
-            var indexOfDot = prop.Name.IndexOf('.');
-            string name = prop.Name.Substring(prop.Name.IndexOf('.') + 1);
-            return prop.Name.Substring(0, indexOfDot + 1) +
-                (prop.Parameters.Count == 0 ? SafeIdentifier(name)
-                : string.Format("this[{0}]", FormatMethodParameters(prop.Parameters)));
+            return prop.Parameters.Count == 0 ? SafeIdentifier(prop.Name)
+                : string.Format("this[{0}]", this.FormatMethodParameters(prop.Parameters));
         }
 
         private void GenerateVariable(Class @class, Type type, Variable variable)
@@ -1602,8 +1598,7 @@ namespace CppSharp.Generators.CSharp
             PushBlock(CSharpBlockKind.Method);
             GenerateDeclarationCommon(method);
 
-            // check if this is an explicit interface implementation
-            if (!method.Name.Contains('.'))
+            if (method.ExplicitInterfaceImpl == null)
             {
                 switch (GetValidMethodAccess(method, @class))
                 {
@@ -1637,8 +1632,11 @@ namespace CppSharp.Generators.CSharp
 
             if (method.IsConstructor || method.IsDestructor)
                 Write("{0}(", functionName);
-            else
+            else if (method.ExplicitInterfaceImpl == null)
                 Write("{0} {1}(", method.OriginalReturnType, functionName);
+            else
+                Write("{0} {1}.{2}(", method.OriginalReturnType,
+                    method.ExplicitInterfaceImpl.Name, functionName);
 
             Write(FormatMethodParameters(method.Parameters));
 

@@ -85,7 +85,7 @@ namespace CppSharp.Passes
                     };
                 var rootBaseMethod = @class.GetRootBaseMethod(method, true);
                 if (rootBaseMethod != null && !rootBaseMethod.Ignore)
-                    impl.Name = @interface.Name + "." + impl.Name;
+                    impl.ExplicitInterfaceImpl = @interface;
                 @class.Methods.Add(impl);
             }
             foreach (var @base in @interface.Bases)
@@ -99,7 +99,7 @@ namespace CppSharp.Passes
                 var impl = new Property(property) { Namespace = @class };
                 var rootBaseProperty = @class.GetRootBaseProperty(property, true);
                 if (rootBaseProperty != null && !rootBaseProperty.Ignore)
-                    impl.Name = @interface.Name + "." + impl.Name;
+                    impl.ExplicitInterfaceImpl = @interface;
                 @class.Properties.Add(impl);
             }
             foreach (var @base in @interface.Bases)

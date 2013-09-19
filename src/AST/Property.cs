@@ -62,6 +62,8 @@ namespace CppSharp.AST
         // The field that should be get and set by this property
         public Field Field { get; set; }
 
+        public Class ExplicitInterfaceImpl { get; set; }
+
         private readonly List<Parameter> parameters = new List<Parameter>();
         
         /// <summary>
