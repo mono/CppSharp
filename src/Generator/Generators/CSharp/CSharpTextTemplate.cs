@@ -387,7 +387,8 @@ namespace CppSharp.Generators.CSharp
 
             GenerateDeclContext(@class);
 
-            foreach (var method in @class.Methods.Where(m => !ASTUtils.CheckIgnoreMethod(m)))
+            foreach (var method in @class.Methods.Where(m => !ASTUtils.CheckIgnoreMethod(m) &&
+                                                             m.Access == AccessSpecifier.Public))
             {
                 PushBlock(CSharpBlockKind.Method);
                 GenerateDeclarationCommon(method);
@@ -1034,7 +1035,7 @@ namespace CppSharp.Generators.CSharp
         private string GetPropertyName(Property prop)
         {
             return prop.Parameters.Count == 0 ? SafeIdentifier(prop.Name)
-                : string.Format("this[{0}]", this.FormatMethodParameters(prop.Parameters));
+                : string.Format("this[{0}]", FormatMethodParameters(prop.Parameters));
         }
 
         private void GenerateVariable(Class @class, Type type, Variable variable)
@@ -1627,8 +1628,7 @@ namespace CppSharp.Generators.CSharp
             if (Driver.Options.GenerateAbstractImpls && method.IsPure)
                 Write("abstract ");
 
-            var functionName = method.IsOperator ?
-                Operators.GetOperatorIdentifier(method.OperatorKind) : method.Name;
+            var functionName = GetFunctionIdentifier(method);
 
             if (method.IsConstructor || method.IsDestructor)
                 Write("{0}(", functionName);

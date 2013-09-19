@@ -144,7 +144,6 @@ namespace CppSharp
             TranslationUnitPasses.AddPass(new CheckAmbiguousFunctions());
             TranslationUnitPasses.AddPass(new CheckOperatorsOverloadsPass());
             TranslationUnitPasses.AddPass(new CheckVirtualOverrideReturnCovariance());
-            TranslationUnitPasses.AddPass(new MultipleInheritancePass());
 
             Generator.SetupPasses();
             TranslationUnitPasses.AddPass(new FieldToPropertyPass());
@@ -154,6 +153,7 @@ namespace CppSharp
             TranslationUnitPasses.AddPass(new CheckDuplicatedNamesPass());
             if (Options.GenerateAbstractImpls)
                 TranslationUnitPasses.AddPass(new GenerateAbstractImplementationsPass());
+            TranslationUnitPasses.AddPass(new MultipleInheritancePass());
         }
 
         public void ProcessCode()
