@@ -27,19 +27,25 @@ namespace CppSharp.Passes
                 var @base = @class.Bases[i].Class;
                 if (@base.IsInterface) continue;
 
-                if (@base.CompleteDeclaration != null)
-                    @base = (Class) @base.CompleteDeclaration;
-                var name = "I" + @base.Name;
-                var @interface = (interfaces.ContainsKey(@base)
-                    ? interfaces[@base]
-                    : @base.Namespace.Classes.FirstOrDefault(c => c.Name == name)) ??
-                                 GetNewInterface(@class, name, @base);
+                var @interface = GetInterface(@class, @base, true);
                 @class.Bases[i] = new BaseClassSpecifier { Type = new TagType(@interface) };
             }
             return base.VisitClassDecl(@class);
         }
 
-        private Class GetNewInterface(Class @class, string name, Class @base)
+        private Class GetInterface(Class @class, Class @base, bool addMembers = false)
+        {
+            if (@base.CompleteDeclaration != null)
+                @base = (Class) @base.CompleteDeclaration;
+            var name = "I" + @base.Name;
+            var @interface = (this.interfaces.ContainsKey(@base)
+                ? this.interfaces[@base]
+                : @base.Namespace.Classes.FirstOrDefault(c => c.Name == name)) ??
+                             GetNewInterface(@class, name, @base, addMembers);
+            return @interface;
+        }
+
+        private Class GetNewInterface(Class @class, string name, Class @base, bool addMembers = false)
         {
             var @interface = new Class
                 {
@@ -48,8 +54,27 @@ namespace CppSharp.Passes
                     Access = @base.Access,
                     IsInterface = true
                 };
+            @interface.Bases.AddRange(
+                from b in @base.Bases
+                let i = GetInterface(@base, b.Class)
+                select new BaseClassSpecifier { Type = new TagType(i) });
             @interface.Methods.AddRange(@base.Methods.Where(
                 m => !m.IsConstructor && !m.IsDestructor && !m.IsStatic && !m.Ignore));
+            @interface.Properties.AddRange(@base.Properties.Where(p => !p.Ignore));
+            @interface.Events.AddRange(@base.Events);
+            if (addMembers)
+            {
+                ImplementInterfaceMethods(@class, @interface);
+                ImplementInterfaceProperties(@class, @interface);
+                if (@base.Bases.All(b => b.Class != @interface))
+                    @base.Bases.Add(new BaseClassSpecifier { Type = new TagType(@interface) });
+            }
+            interfaces.Add(@base, @interface);
+            return @interface;
+        }
+
+        private static void ImplementInterfaceMethods(Class @class, Class @interface)
+        {
             foreach (var method in @interface.Methods)
             {
                 var impl = new Method(method)
@@ -58,28 +83,27 @@ namespace CppSharp.Passes
                         IsVirtual = false,
                         IsOverride = false
                     };
-                var rootBaseMethod = @class.GetRootBaseMethod(method);
+                var rootBaseMethod = @class.GetRootBaseMethod(method, true);
                 if (rootBaseMethod != null && !rootBaseMethod.Ignore)
                     impl.Name = @interface.Name + "." + impl.Name;
                 @class.Methods.Add(impl);
             }
-            @interface.Properties.AddRange(@base.Properties.Where(p => !p.Ignore));
+            foreach (var @base in @interface.Bases)
+                ImplementInterfaceMethods(@class, @base.Class);
+        }
+
+        private static void ImplementInterfaceProperties(Class @class, Class @interface)
+        {
             foreach (var property in @interface.Properties)
             {
-                var impl = new Property(property)
-                    {
-                        Namespace = @class
-                    };
-                var rootBaseProperty = @class.GetRootBaseProperty(property);
+                var impl = new Property(property) { Namespace = @class };
+                var rootBaseProperty = @class.GetRootBaseProperty(property, true);
                 if (rootBaseProperty != null && !rootBaseProperty.Ignore)
                     impl.Name = @interface.Name + "." + impl.Name;
                 @class.Properties.Add(impl);
             }
-            @interface.Events.AddRange(@base.Events);
-            if (@base.Bases.All(b => b.Class != @interface))
-                @base.Bases.Add(new BaseClassSpecifier { Type = new TagType(@interface) });
-            interfaces.Add(@base, @interface);
-            return @interface;
+            foreach (var @base in @interface.Bases)
+                ImplementInterfaceProperties(@class, @base.Class);
         }
     }
 }

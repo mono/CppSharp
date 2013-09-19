@@ -203,9 +203,10 @@ namespace CppSharp.AST
             }
         }
 
-        public Method GetRootBaseMethod(Method @override)
+        public Method GetRootBaseMethod(Method @override, bool onlyFirstBase = false)
         {
             return (from @base in Bases
+                    where !@base.Class.IsInterface
                     let baseMethod = (
                         from method in @base.Class.Methods
                         where
@@ -216,13 +217,14 @@ namespace CppSharp.AST
                                                             new ParameterTypeComparer())
                         select method).FirstOrDefault()
                     let rootBaseMethod = @base.Class.GetRootBaseMethod(@override) ?? baseMethod
-                    where rootBaseMethod != null
+                    where rootBaseMethod != null || onlyFirstBase
                     select rootBaseMethod).FirstOrDefault();
         }
 
-        public Property GetRootBaseProperty(Property @override)
+        public Property GetRootBaseProperty(Property @override, bool onlyFirstBase = false)
         {
             return (from @base in Bases
+                    where !@base.Class.IsInterface
                     let baseProperty = (
                         from property in @base.Class.Properties
                         where
@@ -232,7 +234,7 @@ namespace CppSharp.AST
                                                             new ParameterTypeComparer())
                         select property).FirstOrDefault()
                     let rootBaseProperty = @base.Class.GetRootBaseProperty(@override) ?? baseProperty
-                    where rootBaseProperty != null
+                    where rootBaseProperty != null || onlyFirstBase
                     select rootBaseProperty).FirstOrDefault();
         }
 

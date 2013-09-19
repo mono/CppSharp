@@ -18,7 +18,13 @@ protected:
     int P;
 };
 
-class DLL_API Bar
+class DLL_API Qux
+{
+public:
+    int farAwayFunc();
+};
+
+class DLL_API Bar : public Qux
 {
 public:
     int method();

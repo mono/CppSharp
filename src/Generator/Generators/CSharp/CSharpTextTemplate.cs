@@ -375,21 +375,12 @@ namespace CppSharp.Generators.CSharp
             Write("interface ");
             Write("{0}", SafeIdentifier(@class.Name));
 
-            //var needsBase = @class.HasBaseClass && !@class.IsValueType
-            //    && !@class.Bases[0].Class.IsValueType
-            //    && !@class.Bases[0].Class.Ignore;
-
-            //if (needsBase || @class.IsRefType)
-            //    Write(" : ");
-
-            //if (needsBase)
-            //{
-            //    var qualifiedBase = QualifiedIdentifier(@class.Bases[0].Class);
-            //    Write("{0}", qualifiedBase);
-
-            //    if (@class.IsRefType)
-            //        Write(", ");
-            //}
+            if (@class.HasBase)
+            {
+                Write(" : {0}", string.Join(", ",
+                    from @base in @class.Bases
+                    select QualifiedIdentifier(@base.Class)));   
+            }
 
             NewLine();
             WriteStartBraceIndent();
