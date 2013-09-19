@@ -31,6 +31,12 @@ namespace CppSharp.Passes
                 return UpdateName(method);
             }
 
+            var property = decl as Property;
+            if (property != null && property.Parameters.Count > 0)
+            {
+                return false;
+            }
+
             var count = Count++;
             if (count == 0)
                 return false;
@@ -93,7 +99,7 @@ namespace CppSharp.Passes
 
         public override bool VisitProperty(Property decl)
         {
-            if(!AlreadyVisited(decl))
+            if(!AlreadyVisited(decl) && decl.ExplicitInterfaceImpl == null)
                 CheckDuplicate(decl);
 
             return false;
@@ -104,7 +110,7 @@ namespace CppSharp.Passes
             if (ASTUtils.CheckIgnoreMethod(decl))
                 return false;
 
-            if(!AlreadyVisited(decl))
+            if (!AlreadyVisited(decl) && decl.ExplicitInterfaceImpl == null)
                 CheckDuplicate(decl);
 
             return false;
