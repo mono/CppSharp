@@ -202,6 +202,7 @@ namespace CppSharp.AST
 
         protected Declaration()
         {
+            Access = AccessSpecifier.Public;
             IgnoreFlags = IgnoreFlags.None;
             ExcludeFromPasses = new HashSet<System.Type>();
             PreprocessedEntities = new List<PreprocessedEntity>();
