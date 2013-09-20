@@ -15,19 +15,9 @@ namespace CppSharp.AST
             : base(property)
         {
             QualifiedType = property.QualifiedType;
-            if (property.GetMethod != null)
-                GetMethod = new Method(property.GetMethod);
-            if (property.GetMethod == property.SetMethod)
-            {
-                SetMethod = GetMethod;
-            }
-            else
-            {
-                if (property.SetMethod != null)
-                    SetMethod = new Method(property.SetMethod);
-            }
-            if (property.Field != null)
-                Field = property.Field;
+            GetMethod = property.GetMethod;
+            SetMethod = property.SetMethod;
+            Field = property.Field;
             parameters.AddRange(property.Parameters);
         }
 
