@@ -29,7 +29,7 @@ Bar::Bar()
 
 Bar::Item Bar::RetItem1()
 {
-    return Bar::Item::Item1;
+    return Bar::Item1;
 }
 
 Hello::Hello ()

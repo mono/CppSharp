@@ -33,7 +33,7 @@ public:
 
 struct DLL_API Bar
 {
-    enum class Item
+    enum Item
     {
         Item1,
         Item2
