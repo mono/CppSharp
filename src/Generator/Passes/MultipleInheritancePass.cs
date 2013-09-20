@@ -85,9 +85,9 @@ namespace CppSharp.Passes
             {
                 ImplementInterfaceMethods(@class, @interface);
                 ImplementInterfaceProperties(@class, @interface);
-                if (@base.Bases.All(b => b.Class != @interface))
-                    @base.Bases.Add(new BaseClassSpecifier { Type = new TagType(@interface) });
             }
+            if (@base.Bases.All(b => b.Class != @interface))
+                @base.Bases.Add(new BaseClassSpecifier { Type = new TagType(@interface) });
 
             interfaces.Add(@base, @interface);
             return @interface;

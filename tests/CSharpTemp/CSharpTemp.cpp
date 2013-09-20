@@ -50,3 +50,8 @@ int Baz::takesQux(const Qux& qux)
 {
     return qux.farAwayFunc();
 }
+
+Qux Baz::returnQux()
+{
+    return Qux();
+}

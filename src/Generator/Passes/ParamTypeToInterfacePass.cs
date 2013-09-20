@@ -4,12 +4,32 @@ namespace CppSharp.Passes
 {
     public class ParamTypeToInterfacePass : TranslationUnitPass
     {
+        public override bool VisitFunctionDecl(Function function)
+        {
+            if (function.HasIndirectReturnTypeParameter)
+            {
+                var parameter = function.Parameters.Find(p => p.Kind == ParameterKind.IndirectReturnType);
+                parameter.QualifiedType = GetInterfaceType(parameter.QualifiedType);
+            }
+            else
+            {
+                function.ReturnType = GetInterfaceType(function.ReturnType);
+            }
+            return base.VisitFunctionDecl(function);
+        }
+
         public override bool VisitParameterDecl(Parameter parameter)
         {
-            var tagType = parameter.QualifiedType.Type as TagType;
+            parameter.QualifiedType = GetInterfaceType(parameter.QualifiedType);
+            return base.VisitParameterDecl(parameter);
+        }
+
+        private static QualifiedType GetInterfaceType(QualifiedType type)
+        {
+            var tagType = type.Type as TagType;
             if (tagType == null)
             {
-                var pointerType = parameter.QualifiedType.Type as PointerType;
+                var pointerType = type.Type as PointerType;
                 if (pointerType != null)
                     tagType = pointerType.Pointee as TagType;
             }
@@ -20,10 +40,10 @@ namespace CppSharp.Passes
                 {
                     var @interface = @class.Namespace.Classes.Find(c => c.OriginalClass == @class);
                     if (@interface != null)
-                        parameter.QualifiedType = new QualifiedType(new TagType(@interface));
+                        return new QualifiedType(new TagType(@interface));
                 }
             }
-            return base.VisitParameterDecl(parameter);
+            return type;
         }
     }
 }

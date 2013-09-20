@@ -39,4 +39,5 @@ class DLL_API Baz : public Foo, public Bar
 {
 public:
     int takesQux(const Qux& qux);
+    Qux returnQux();
 };

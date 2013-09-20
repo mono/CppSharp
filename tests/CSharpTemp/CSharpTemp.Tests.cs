@@ -43,5 +43,6 @@ public class CSharpTempTests
         Assert.That(bar[0].A, Is.EqualTo(1000));
         Assert.That(baz.farAwayFunc(), Is.EqualTo(20));
         Assert.That(baz.takesQux(baz), Is.EqualTo(20));
+        Assert.That(baz.returnQux().farAwayFunc(), Is.EqualTo(20));
     }
 }

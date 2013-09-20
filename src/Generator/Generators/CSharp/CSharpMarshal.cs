@@ -277,7 +277,7 @@ namespace CppSharp.Generators.CSharp
             }
 
             Context.Return.Write("new {0}({1})",
-                QualifiedIdentifier(@class) +
+                QualifiedIdentifier(@class.OriginalClass ?? @class) +
                 (Context.Driver.Options.GenerateAbstractImpls && @class.IsAbstract ?
                     "Internal" : ""),
                 instance);
