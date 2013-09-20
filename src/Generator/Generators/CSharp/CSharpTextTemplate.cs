@@ -92,6 +92,7 @@ namespace CppSharp.Generators.CSharp
         public const int Field = FIRST + 14;
         public const int VTableDelegate = FIRST + 16;
         public const int Region = FIRST + 17;
+        public const int Interface = FIRST + 18;
     }
 
     public class CSharpTextTemplate : Template
@@ -363,7 +364,7 @@ namespace CppSharp.Generators.CSharp
             if (@class.Ignore || @class.IsIncomplete)
                 return;
 
-            PushBlock(CSharpBlockKind.Class);
+            PushBlock(CSharpBlockKind.Interface);
             GenerateDeclarationCommon(@class);
 
             GenerateClassProlog(@class);
@@ -385,8 +386,7 @@ namespace CppSharp.Generators.CSharp
 
                 Write(FormatMethodParameters(method.Parameters));
 
-                Write(");");
-                NewLine();
+                WriteLine(");");
 
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
@@ -987,6 +987,7 @@ namespace CppSharp.Generators.CSharp
             {
                 PushBlock(CSharpBlockKind.Property);
                 var type = prop.Type;
+                // if it's an indexer that returns an address use the real type because there is a setter anyway
                 if (prop.Parameters.Count > 0 && prop.Type.IsPointerToPrimitiveType())
                     type = ((PointerType) prop.Type).Pointee;
 
