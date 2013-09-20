@@ -43,7 +43,19 @@ namespace CppSharp.Generators.CLI
             return @ref;
         }
 
-        public void Process(Namespace @namespace)
+        static Namespace GetEffectiveNamespace(Declaration decl)
+        {
+            if (decl == null || decl.Namespace == null)
+                return null;
+
+            var @namespace = decl.Namespace as Namespace;
+            if (@namespace != null)
+                return @namespace;
+
+            return GetEffectiveNamespace(@namespace);
+        }
+
+        public void Process(Namespace @namespace, bool filterNamespaces)
         {
             var collector = new RecordCollector(@namespace.TranslationUnit);
             @namespace.Visit(collector);
@@ -55,14 +67,17 @@ namespace CppSharp.Generators.CLI
                 if (record.Value is Namespace)
                     continue;
 
-                var declNamespace = record.Value.Namespace;
+                if (filterNamespaces)
+                {
+                    var declNamespace = GetEffectiveNamespace(record.Value.Namespace);
 
-                var isSameNamespace = declNamespace == @namespace;
-                if (declNamespace != null)
-                    isSameNamespace |= declNamespace.QualifiedName == @namespace.QualifiedName;
+                    var isSameNamespace = declNamespace == @namespace;
+                    if (declNamespace != null)
+                        isSameNamespace |= declNamespace.QualifiedName == @namespace.QualifiedName;
 
-                if (!isSameNamespace)
-                    continue;
+                    if (!isSameNamespace)
+                        continue;
+                }
 
                 record.Value.Visit(this);
                 GenerateInclude(record);

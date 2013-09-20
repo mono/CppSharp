@@ -55,7 +55,7 @@ namespace CppSharp.Generators.CLI
             PushBlock(CLIBlockKind.IncludesForwardReferences);
 
             var typeReferenceCollector = new CLITypeReferenceCollector(Driver.TypeDatabase);
-            typeReferenceCollector.Process(TranslationUnit);
+            typeReferenceCollector.Process(TranslationUnit, filterNamespaces: false);
 
             var includes = new SortedSet<string>(StringComparer.InvariantCulture);
 

@@ -46,7 +46,7 @@ namespace CppSharp.Generators.CLI
         public void GenerateIncludeForwardRefs()
         {
             var typeReferenceCollector = new CLITypeReferenceCollector(Driver.TypeDatabase);
-            typeReferenceCollector.Process(TranslationUnit);
+            typeReferenceCollector.Process(TranslationUnit, filterNamespaces: false);
 
             var includes = new SortedSet<string>(StringComparer.InvariantCulture);
 
@@ -75,7 +75,7 @@ namespace CppSharp.Generators.CLI
         public void GenerateForwardRefs(Namespace @namespace)
         {
             var typeReferenceCollector = new CLITypeReferenceCollector(Driver.TypeDatabase);
-            typeReferenceCollector.Process(@namespace);
+            typeReferenceCollector.Process(@namespace, filterNamespaces: true);
 
             // Use a set to remove duplicate entries.
             var forwardRefs = new SortedSet<string>(StringComparer.InvariantCulture);
