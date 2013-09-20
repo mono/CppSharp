@@ -366,21 +366,7 @@ namespace CppSharp.Generators.CSharp
             PushBlock(CSharpBlockKind.Class);
             GenerateDeclarationCommon(@class);
 
-            Write(Helpers.GetAccess(@class));
-            Write("unsafe ");
-
-            if (Options.GeneratePartialClasses)
-                Write("partial ");
-
-            Write("interface ");
-            Write("{0}", SafeIdentifier(@class.Name));
-
-            if (@class.HasBase)
-            {
-                Write(" : {0}", string.Join(", ",
-                    from @base in @class.Bases
-                    select QualifiedIdentifier(@base.Class)));   
-            }
+            GenerateClassProlog(@class);
 
             NewLine();
             WriteStartBraceIndent();
@@ -699,14 +685,16 @@ namespace CppSharp.Generators.CSharp
             if (Options.GeneratePartialClasses)
                 Write("partial ");
 
-            Write(@class.IsValueType ? "struct " : "class ");
+            Write(@class.IsInterface ? "interface " : (@class.IsValueType ? "struct " : "class "));
             Write("{0}", SafeIdentifier(@class.Name));
 
             var needsBase = @class.HasBaseClass && !@class.IsValueType
                 && !@class.Bases[0].Class.IsValueType
                 && !@class.Bases[0].Class.Ignore;
 
-            if (needsBase || @class.IsRefType)
+            var isRefClass = @class.IsRefType && !@class.IsInterface;
+
+            if (needsBase || isRefClass)
                 Write(" : ");
 
             if (needsBase)
@@ -715,11 +703,11 @@ namespace CppSharp.Generators.CSharp
                     from @base in @class.Bases
                     select QualifiedIdentifier(@base.Class)));
 
-                if (@class.IsRefType)
+                if (isRefClass)
                     Write(", ");
             }
 
-            if (@class.IsRefType)
+            if (isRefClass)
                 Write("IDisposable");
         }
 
