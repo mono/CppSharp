@@ -263,7 +263,18 @@ namespace CppSharp
         public List<string> LibraryDirs;
         public List<string> Libraries;
         public bool CheckSymbols;
-        public string SharedLibraryName;
+
+        private string sharedLibraryName;
+        public string SharedLibraryName
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(sharedLibraryName))
+                    return LibraryName;
+                return sharedLibraryName;
+            }
+            set { sharedLibraryName = value; }
+        }
 
         // Generator options
         public LanguageGeneratorKind GeneratorKind;
