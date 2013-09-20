@@ -2189,6 +2189,8 @@ namespace CppSharp.Generators.CSharp
             {
                 libName = libName.Substring(3);
             }
+            if (libName == null)
+                libName = Options.SharedLibraryName;
 
             if (Options.GenerateInternalImports)
                 libName = "__Internal";
