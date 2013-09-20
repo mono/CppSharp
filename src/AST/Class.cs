@@ -141,6 +141,8 @@ namespace CppSharp.AST
             }
         }
 
+        public Class OriginalClass { get; set; }
+
         public bool IsValueType
         {
             get { return Type == ClassType.ValueType || IsUnion; }

@@ -541,9 +541,8 @@ namespace CppSharp.Generators.CSharp
                 return;
             }
 
-            var qualifiedIdentifier = CSharpMarshalNativeToManagedPrinter.QualifiedIdentifier(@class);
-            if (@class.IsInterface)
-                qualifiedIdentifier = qualifiedIdentifier.Substring(1);
+            var qualifiedIdentifier = CSharpMarshalNativeToManagedPrinter.QualifiedIdentifier(
+                @class.OriginalClass ?? @class);
             Context.Return.Write("*({0}.Internal*){1}.{2}", qualifiedIdentifier,
                 Helpers.SafeIdentifier(Context.Parameter.Name), Helpers.InstanceIdentifier);
         }

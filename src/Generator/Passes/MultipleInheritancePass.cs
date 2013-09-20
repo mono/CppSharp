@@ -39,8 +39,7 @@ namespace CppSharp.Passes
             if (@base.CompleteDeclaration != null)
                 @base = (Class) @base.CompleteDeclaration;
             var name = "I" + @base.Name;
-            var @interface = (this.interfaces.ContainsKey(@base)
-                ? this.interfaces[@base]
+            var @interface = (interfaces.ContainsKey(@base) ? interfaces[@base]
                 : @base.Namespace.Classes.FirstOrDefault(c => c.Name == name)) ??
                              GetNewInterface(@class, name, @base, addMembers);
             return @interface;
@@ -53,7 +52,8 @@ namespace CppSharp.Passes
                     Name = name,
                     Namespace = @base.Namespace,
                     Access = @base.Access,
-                    IsInterface = true
+                    IsInterface = true,
+                    OriginalClass = @base
                 };
             @interface.Bases.AddRange(
                 from b in @base.Bases
