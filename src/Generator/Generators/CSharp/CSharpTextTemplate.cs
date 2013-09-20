@@ -58,9 +58,9 @@ namespace CppSharp.Generators.CSharp
             get { return Generator.GeneratedIdentifier("Instance"); }
         }
 
-        public static string GetAccess(Class @class)
+        public static string GetAccess(AccessSpecifier accessSpecifier)
         {
-            switch (@class.Access)
+            switch (accessSpecifier)
             {
                 case AccessSpecifier.Private:
                     return "internal ";
@@ -676,7 +676,7 @@ namespace CppSharp.Generators.CSharp
             if (@class.IsUnion)
                 WriteLine("[StructLayout(LayoutKind.Explicit)]");
 
-            Write(Helpers.GetAccess(@class));
+            Write(Helpers.GetAccess(@class.Access));
             Write("unsafe ");
 
             if (Driver.Options.GenerateAbstractImpls && @class.IsAbstract)
@@ -992,8 +992,7 @@ namespace CppSharp.Generators.CSharp
                     type = ((PointerType) prop.Type).Pointee;
 
                 if (prop.ExplicitInterfaceImpl == null)
-                    WriteLine("{0} {1} {2}",
-                        prop.Access == AccessSpecifier.Public ? "public" : "protected",
+                    WriteLine("{0}{1} {2}", Helpers.GetAccess(prop.Access),
                         type, GetPropertyName(prop));
                 else
                     WriteLine("{0} {1}.{2}", type, prop.ExplicitInterfaceImpl.Name, GetPropertyName(prop));
@@ -1590,15 +1589,7 @@ namespace CppSharp.Generators.CSharp
 
             if (method.ExplicitInterfaceImpl == null)
             {
-                switch (GetValidMethodAccess(method, @class))
-                {
-                    case AccessSpecifier.Public:
-                        Write("public ");
-                        break;
-                    case AccessSpecifier.Protected:
-                        Write("protected ");
-                        break;
-                }
+                Write(Helpers.GetAccess(GetValidMethodAccess(method)));
             }
 
             if (method.IsVirtual && !method.IsOverride &&
@@ -1688,7 +1679,7 @@ namespace CppSharp.Generators.CSharp
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
-        private static AccessSpecifier GetValidMethodAccess(Method method, Class @class)
+        private static AccessSpecifier GetValidMethodAccess(Method method)
         {
             switch (method.Access)
             {
@@ -1696,7 +1687,7 @@ namespace CppSharp.Generators.CSharp
                     return AccessSpecifier.Public;
                 default:
                     return method.IsOverride ?
-                        @class.GetRootBaseMethod(method).Access : method.Access;
+                        ((Class) method.Namespace).GetRootBaseMethod(method).Access : method.Access;
             }
         }
 
@@ -2086,8 +2077,8 @@ namespace CppSharp.Generators.CSharp
                 WriteLine("[UnmanagedFunctionPointerAttribute(CallingConvention.{0})]",
                     Helpers.ToCSharpCallConv(functionType.CallingConvention));
                 TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
-                WriteLine("{0} unsafe {1};",
-                    typedef.Access == AccessSpecifier.Public ? "public" : "protected",
+                WriteLine("{0}unsafe {1};",
+                    Helpers.GetAccess(typedef.Access),
                     string.Format(TypePrinter.VisitDelegate(functionType).Type,
                         SafeIdentifier(typedef.Name)));
                 TypePrinter.PopContext();

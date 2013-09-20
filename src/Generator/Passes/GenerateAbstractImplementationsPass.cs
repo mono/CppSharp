@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using CppSharp.AST;
-using CppSharp.Utils;
 
 namespace CppSharp.Passes
 {
@@ -52,7 +51,9 @@ namespace CppSharp.Passes
 
             foreach (var abstractMethod in abstractMethods)
             {
-                internalImpl.Methods.Add(new Method(abstractMethod));
+                var method = new Method(abstractMethod);
+                method.Namespace = internalImpl;
+                internalImpl.Methods.Add(method);
                 var @delegate = new TypedefDecl
                                 {
                                     Name = abstractMethod.Name + "Delegate",
