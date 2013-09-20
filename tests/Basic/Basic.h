@@ -33,7 +33,14 @@ public:
 
 struct DLL_API Bar
 {
+    enum class Item
+    {
+        Item1,
+        Item2
+    };
+
     Bar();
+    Item RetItem1();
     int A;
     float B;
 };

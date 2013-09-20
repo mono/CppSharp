@@ -24,6 +24,7 @@ public class BasicTests
 
         var bar = new Bar { A = 4, B = 7 };
         Assert.That(hello.AddBar(bar), Is.EqualTo(11));
+        Assert.That(bar.RetItem1(), Is.EqualTo(Bar.Item.Item1));
 
         var retFoo = hello.RetFoo(7, 2.0f);
         Assert.That(retFoo.A, Is.EqualTo(7));

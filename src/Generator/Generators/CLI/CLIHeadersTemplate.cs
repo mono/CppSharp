@@ -91,6 +91,43 @@ namespace CppSharp.Generators.CLI
                 WriteLine(forwardRef);
         }
 
+        public void GenerateDeclContext(DeclarationContext decl)
+        {
+            // Generate all the enum declarations for the module.
+            foreach (var @enum in decl.Enums)
+            {
+                if (@enum.Ignore || @enum.IsIncomplete)
+                    continue;
+
+                PushBlock(CLIBlockKind.Enum, @enum);
+                GenerateEnum(@enum);
+                PopBlock(NewLineKind.BeforeNextBlock);
+            }
+
+            // Generate all the typedef declarations for the module.
+            GenerateTypedefs(decl);
+
+            // Generate all the struct/class declarations for the module.
+            foreach (var @class in decl.Classes)
+            {
+                if (@class.Ignore || @class.IsIncomplete)
+                    continue;
+
+                if (@class.IsOpaque)
+                    continue;
+
+                PushBlock(CLIBlockKind.Class, @class);
+                GenerateClass(@class);
+                PopBlock(NewLineKind.BeforeNextBlock);
+            }
+
+            if (decl.HasFunctions)
+                GenerateFunctions(decl);
+
+            foreach (var childNamespace in decl.Namespaces)
+                GenerateNamespace(childNamespace);
+        }
+
         public void GenerateNamespace(Namespace @namespace)
         {
             var isTopLevel = @namespace is TranslationUnit;
@@ -110,39 +147,7 @@ namespace CppSharp.Generators.CLI
             GenerateForwardRefs(@namespace);
             PopBlock(NewLineKind.BeforeNextBlock);
 
-            // Generate all the enum declarations for the module.
-            foreach (var @enum in @namespace.Enums)
-            {
-                if (@enum.Ignore || @enum.IsIncomplete)
-                    continue;
-
-                PushBlock(CLIBlockKind.Enum, @enum);
-                GenerateEnum(@enum);
-                PopBlock(NewLineKind.BeforeNextBlock);
-            }
-
-            // Generate all the typedef declarations for the module.
-            GenerateTypedefs(@namespace);
-
-            // Generate all the struct/class declarations for the module.
-            foreach (var @class in @namespace.Classes)
-            {
-                if (@class.Ignore || @class.IsIncomplete)
-                    continue;
-
-                if (@class.IsOpaque)
-                    continue;
-
-                PushBlock(CLIBlockKind.Class, @class);
-                GenerateClass(@class);
-                PopBlock(NewLineKind.BeforeNextBlock);
-            }
-
-            if (@namespace.HasFunctions)
-                GenerateFunctions(@namespace);
-
-            foreach(var childNamespace in @namespace.Namespaces)
-                GenerateNamespace(childNamespace);
+            GenerateDeclContext(@namespace);
 
             if (generateNamespace)
             {
@@ -151,9 +156,9 @@ namespace CppSharp.Generators.CLI
             }
         }
 
-        public void GenerateTypedefs(Namespace @namespace)
+        public void GenerateTypedefs(DeclarationContext decl)
         {
-            foreach (var typedef in @namespace.Typedefs)
+            foreach (var typedef in decl.Typedefs)
             {
                 if (typedef.Ignore)
                     continue;
@@ -162,7 +167,7 @@ namespace CppSharp.Generators.CLI
             }
         }
 
-        public void GenerateFunctions(Namespace @namespace)
+        public void GenerateFunctions(DeclarationContext decl)
         {
             PushBlock(CLIBlockKind.FunctionsClass);
 
@@ -173,7 +178,7 @@ namespace CppSharp.Generators.CLI
             PushIndent();
 
             // Generate all the function declarations for the module.
-            foreach (var function in @namespace.Functions)
+            foreach (var function in decl.Functions)
             {
                 GenerateFunction(function);
             }
@@ -194,12 +199,10 @@ namespace CppSharp.Generators.CLI
             if (GenerateClassProlog(@class))
                 return;
 
-            foreach (var @enum in @class.Enums)
-            {
-                PushIndent();
-                GenerateEnum(@enum);
-                PopIndent();
-            }
+            // Process the nested types.
+            PushIndent();
+            GenerateDeclContext(@class);
+            PopIndent();
 
             var nativeType = string.Format("::{0}*", @class.QualifiedOriginalName);
 
@@ -452,6 +455,12 @@ namespace CppSharp.Generators.CLI
         public bool GenerateClassProlog(Class @class)
         {
             Write("public ");
+
+            // Nested types cannot have visibility modifiers in C++/CLI.
+            var isTopLevel = @class.Namespace is TranslationUnit ||
+                @class.Namespace is Namespace;
+            if (isTopLevel)
+                Write("public ");
 
             Write(@class.IsValueType ? "value struct " : "ref class ");
 

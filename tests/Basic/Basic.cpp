@@ -27,6 +27,11 @@ Bar::Bar()
 {
 }
 
+Bar::Item Bar::RetItem1()
+{
+    return Bar::Item::Item1;
+}
+
 Hello::Hello ()
 {
     //cout << "Ctor!" << "\n";
