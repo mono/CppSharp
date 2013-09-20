@@ -7,6 +7,20 @@ namespace CppSharp.AST
     /// </summary>
     public class Property : Declaration, ITypedDecl
     {
+        public Property()
+        {
+        }
+
+        public Property(Property property)
+            : base(property)
+        {
+            QualifiedType = property.QualifiedType;
+            GetMethod = property.GetMethod;
+            SetMethod = property.SetMethod;
+            Field = property.Field;
+            parameters.AddRange(property.Parameters);
+        }
+
         public Type Type
         {
             get { return QualifiedType.Type; }
@@ -37,6 +51,8 @@ namespace CppSharp.AST
 
         // The field that should be get and set by this property
         public Field Field { get; set; }
+
+        public Class ExplicitInterfaceImpl { get; set; }
 
         private readonly List<Parameter> parameters = new List<Parameter>();
         

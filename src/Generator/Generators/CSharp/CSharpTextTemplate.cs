@@ -30,8 +30,7 @@ namespace CppSharp.Generators.CSharp
 
         public static string SafeIdentifier(string id)
         {
-            id = new string(((IEnumerable<char>)id)
-                .Select(c => char.IsLetterOrDigit(c) ? c : '_').ToArray());
+            id = new string(id.Select(c => char.IsLetterOrDigit(c) ? c : '_').ToArray());
             return Keywords.Contains(id) ? "@" + id : id;
         }
 
@@ -59,9 +58,9 @@ namespace CppSharp.Generators.CSharp
             get { return Generator.GeneratedIdentifier("Instance"); }
         }
 
-        public static string GetAccess(Class @class)
+        public static string GetAccess(AccessSpecifier accessSpecifier)
         {
-            switch (@class.Access)
+            switch (accessSpecifier)
             {
                 case AccessSpecifier.Private:
                     return "internal ";
@@ -93,6 +92,7 @@ namespace CppSharp.Generators.CSharp
         public const int Field = FIRST + 14;
         public const int VTableDelegate = FIRST + 16;
         public const int Region = FIRST + 17;
+        public const int Interface = FIRST + 18;
     }
 
     public class CSharpTextTemplate : Template
@@ -220,7 +220,10 @@ namespace CppSharp.Generators.CSharp
                 if (@class.IsDependent)
                     continue;
 
-                GenerateClass(@class);
+                if (@class.IsInterface)
+                    GenerateInterface(@class);
+                else
+                    GenerateClass(@class);
             }
 
             if (context.HasFunctions)
@@ -350,6 +353,57 @@ namespace CppSharp.Generators.CSharp
 
                 if (Options.GenerateVirtualTables && @class.IsDynamic)
                     GenerateVTable(@class);
+            }
+
+            WriteCloseBraceIndent();
+            PopBlock(NewLineKind.BeforeNextBlock);
+        }
+
+        private void GenerateInterface(Class @class)
+        {
+            if (@class.Ignore || @class.IsIncomplete)
+                return;
+
+            PushBlock(CSharpBlockKind.Interface);
+            GenerateDeclarationCommon(@class);
+
+            GenerateClassProlog(@class);
+
+            NewLine();
+            WriteStartBraceIndent();
+
+            GenerateDeclContext(@class);
+
+            foreach (var method in @class.Methods.Where(m => !ASTUtils.CheckIgnoreMethod(m) &&
+                                                             m.Access == AccessSpecifier.Public))
+            {
+                PushBlock(CSharpBlockKind.Method);
+                GenerateDeclarationCommon(method);
+
+                var functionName = GetFunctionIdentifier(method);
+
+                Write("{0} {1}(", method.OriginalReturnType, functionName);
+
+                Write(FormatMethodParameters(method.Parameters));
+
+                WriteLine(");");
+
+                PopBlock(NewLineKind.BeforeNextBlock);
+            }
+            foreach (var prop in @class.Properties.Where(p => !p.Ignore))
+            {
+                PushBlock(CSharpBlockKind.Property);
+                var type = prop.Type;
+                if (prop.Parameters.Count > 0 && prop.Type.IsPointerToPrimitiveType())
+                    type = ((PointerType) prop.Type).Pointee;
+                Write("{0} {1} {{ ", type, GetPropertyName(prop));
+                if (prop.HasGetter)
+                    Write("get; ");
+                if (prop.HasSetter)
+                    Write("set; ");
+
+                WriteLine("}");
+                PopBlock(NewLineKind.BeforeNextBlock);
             }
 
             WriteCloseBraceIndent();
@@ -609,8 +663,7 @@ namespace CppSharp.Generators.CSharp
             if (@class.HasBaseClass)
                 baseClass = @class.Bases[0].Class;
 
-            var hasRefBase = baseClass != null && baseClass.IsRefType
-                             && !baseClass.Ignore;
+            var hasRefBase = baseClass != null && baseClass.IsRefType && !baseClass.Ignore;
 
             var hasIgnoredBase = baseClass != null && baseClass.Ignore;
 
@@ -622,7 +675,7 @@ namespace CppSharp.Generators.CSharp
             if (@class.IsUnion)
                 WriteLine("[StructLayout(LayoutKind.Explicit)]");
 
-            Write(Helpers.GetAccess(@class));
+            Write(Helpers.GetAccess(@class.Access));
             Write("unsafe ");
 
             if (Driver.Options.GenerateAbstractImpls && @class.IsAbstract)
@@ -631,7 +684,7 @@ namespace CppSharp.Generators.CSharp
             if (Options.GeneratePartialClasses)
                 Write("partial ");
 
-            Write(@class.IsValueType ? "struct " : "class ");
+            Write(@class.IsInterface ? "interface " : (@class.IsValueType ? "struct " : "class "));
             Write("{0}", SafeIdentifier(@class.Name));
 
             var needsBase = @class.HasBaseClass && !@class.IsValueType
@@ -643,8 +696,9 @@ namespace CppSharp.Generators.CSharp
 
             if (needsBase)
             {
-                var qualifiedBase = QualifiedIdentifier(@class.Bases[0].Class);
-                Write("{0}", qualifiedBase);
+                Write("{0}", string.Join(", ",
+                    from @base in @class.Bases
+                    select QualifiedIdentifier(@base.Class)));
 
                 if (@class.IsRefType)
                     Write(", ");
@@ -792,16 +846,17 @@ namespace CppSharp.Generators.CSharp
             Type type;
             returnType.Type.IsPointerTo(out type);
             PrimitiveType primitiveType;
+            string internalFunction = GetFunctionNativeIdentifier(function);
             if (type.IsPrimitiveType(out primitiveType))
             {
-                string internalFunction = GetFunctionNativeIdentifier(function);
                 WriteLine("*Internal.{0}({1}, {2}) = value;", internalFunction,
                     Helpers.InstanceIdentifier, function.Parameters[0].Name);
             }
             else
             {
-                WriteLine("*({0}.Internal*) this[{1}].{2} = *({0}.Internal*) value.{2};",
-                    type.ToString(), function.Parameters[0].Name, Helpers.InstanceIdentifier);
+                WriteLine("*({0}.Internal*) Internal.{1}({2}, {3}) = *({0}.Internal*) value.{2};",
+                    type.ToString(), internalFunction,
+                    Helpers.InstanceIdentifier, function.Parameters[0].Name);
             }
         }
 
@@ -929,11 +984,15 @@ namespace CppSharp.Generators.CSharp
             {
                 PushBlock(CSharpBlockKind.Property);
                 var type = prop.Type;
+                // if it's an indexer that returns an address use the real type because there is a setter anyway
                 if (prop.Parameters.Count > 0 && prop.Type.IsPointerToPrimitiveType())
                     type = ((PointerType) prop.Type).Pointee;
-                WriteLine("{0} {1} {2}",
-                    prop.Access == AccessSpecifier.Public ? "public" : "protected",
-                    type, GetPropertyName(prop));
+
+                if (prop.ExplicitInterfaceImpl == null)
+                    WriteLine("{0}{1} {2}", Helpers.GetAccess(prop.Access),
+                        type, GetPropertyName(prop));
+                else
+                    WriteLine("{0} {1}.{2}", type, prop.ExplicitInterfaceImpl.Name, GetPropertyName(prop));
                 WriteStartBraceIndent();
 
                 if (prop.Field != null)
@@ -1523,14 +1582,9 @@ namespace CppSharp.Generators.CSharp
             PushBlock(CSharpBlockKind.Method);
             GenerateDeclarationCommon(method);
 
-            switch (GetValidMethodAccess(method, @class))
+            if (method.ExplicitInterfaceImpl == null)
             {
-                case AccessSpecifier.Public:
-                    Write("public ");
-                    break;
-                case AccessSpecifier.Protected:
-                    Write("protected ");
-                    break;
+                Write(Helpers.GetAccess(GetValidMethodAccess(method)));
             }
 
             if (method.IsVirtual && !method.IsOverride &&
@@ -1553,8 +1607,11 @@ namespace CppSharp.Generators.CSharp
 
             if (method.IsConstructor || method.IsDestructor)
                 Write("{0}(", functionName);
-            else
+            else if (method.ExplicitInterfaceImpl == null)
                 Write("{0} {1}(", method.OriginalReturnType, functionName);
+            else
+                Write("{0} {1}.{2}(", method.OriginalReturnType,
+                    method.ExplicitInterfaceImpl.Name, functionName);
 
             Write(FormatMethodParameters(method.Parameters));
 
@@ -1617,7 +1674,7 @@ namespace CppSharp.Generators.CSharp
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
-        private static AccessSpecifier GetValidMethodAccess(Method method, Class @class)
+        private static AccessSpecifier GetValidMethodAccess(Method method)
         {
             switch (method.Access)
             {
@@ -1625,7 +1682,7 @@ namespace CppSharp.Generators.CSharp
                     return AccessSpecifier.Public;
                 default:
                     return method.IsOverride ?
-                        @class.GetRootBaseMethod(method).Access : method.Access;
+                        ((Class) method.Namespace).GetRootBaseMethod(method).Access : method.Access;
             }
         }
 
@@ -1985,7 +2042,7 @@ namespace CppSharp.Generators.CSharp
             return string.Join(", ",
                 from param in @params
                 where param.Kind != ParameterKind.IndirectReturnType
-                let typeName = param.CSharpType(this.TypePrinter)
+                let typeName = param.CSharpType(TypePrinter)
                 select string.Format("{0}{1} {2}", GetParameterUsage(param.Usage),
                     typeName, SafeIdentifier(param.Name)));
         }
@@ -2015,8 +2072,8 @@ namespace CppSharp.Generators.CSharp
                 WriteLine("[UnmanagedFunctionPointerAttribute(CallingConvention.{0})]",
                     Helpers.ToCSharpCallConv(functionType.CallingConvention));
                 TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
-                WriteLine("{0} unsafe {1};",
-                    typedef.Access == AccessSpecifier.Public ? "public" : "protected",
+                WriteLine("{0}unsafe {1};",
+                    Helpers.GetAccess(typedef.Access),
                     string.Format(TypePrinter.VisitDelegate(functionType).Type,
                         SafeIdentifier(typedef.Name)));
                 TypePrinter.PopContext();
