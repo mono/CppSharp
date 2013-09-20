@@ -352,7 +352,8 @@ namespace CppSharp.Generators.CLI
 
                 GenerateDeclarationCommon(field);
                 if (@class.IsUnion)
-                    WriteLine("[FieldOffset({0})]", field.Offset);
+                    WriteLine("[System::Runtime::InteropServices::FieldOffset({0})]",
+                        field.Offset);
                 WriteLine("{0} {1};", field.Type, SafeIdentifier(field.Name));
             }
             PopIndent();
@@ -454,7 +455,9 @@ namespace CppSharp.Generators.CLI
 
         public bool GenerateClassProlog(Class @class)
         {
-            Write("public ");
+            if (@class.IsUnion)
+                WriteLine("[System::Runtime::InteropServices::StructLayout({0})]",
+                          "System::Runtime::InteropServices::LayoutKind::Explicit");
 
             // Nested types cannot have visibility modifiers in C++/CLI.
             var isTopLevel = @class.Namespace is TranslationUnit ||
