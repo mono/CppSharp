@@ -277,7 +277,7 @@ namespace CppSharp.Generators.CSharp
             }
 
             Context.Return.Write("new {0}({1})",
-                QualifiedIdentifier(@class) +
+                QualifiedIdentifier(@class.OriginalClass ?? @class) +
                 (Context.Driver.Options.GenerateAbstractImpls && @class.IsAbstract ?
                     "Internal" : ""),
                 instance);
@@ -541,9 +541,10 @@ namespace CppSharp.Generators.CSharp
                 return;
             }
 
-            Context.Return.Write("*({0}.Internal*){1}.{2}", CSharpMarshalNativeToManagedPrinter.QualifiedIdentifier(@class),
+            var qualifiedIdentifier = CSharpMarshalNativeToManagedPrinter.QualifiedIdentifier(
+                @class.OriginalClass ?? @class);
+            Context.Return.Write("*({0}.Internal*){1}.{2}", qualifiedIdentifier,
                 Helpers.SafeIdentifier(Context.Parameter.Name), Helpers.InstanceIdentifier);
-
         }
 
         private void MarshalValueClass(Class @class)

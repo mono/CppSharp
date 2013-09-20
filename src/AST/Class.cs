@@ -59,6 +59,7 @@ namespace CppSharp.AST
     {
         ValueType,
         RefType,
+        Interface
     }
 
     // Represents a C++ record Decl.
@@ -139,6 +140,8 @@ namespace CppSharp.AST
             }
         }
 
+        public Class OriginalClass { get; set; }
+
         public bool IsValueType
         {
             get { return Type == ClassType.ValueType || IsUnion; }
@@ -147,6 +150,11 @@ namespace CppSharp.AST
         public bool IsRefType
         {
             get { return Type == ClassType.RefType && !IsUnion; }
+        }
+
+        public bool IsInterface
+        {
+            get { return Type == ClassType.Interface; }
         }
 
         public IEnumerable<Method> Constructors
@@ -201,9 +209,10 @@ namespace CppSharp.AST
             }
         }
 
-        public Method GetRootBaseMethod(Method @override)
+        public Method GetRootBaseMethod(Method @override, bool onlyFirstBase = false)
         {
             return (from @base in Bases
+                    where !onlyFirstBase || !@base.Class.IsInterface
                     let baseMethod = (
                         from method in @base.Class.Methods
                         where
@@ -213,8 +222,26 @@ namespace CppSharp.AST
                             method.Parameters.SequenceEqual(@override.Parameters,
                                                             new ParameterTypeComparer())
                         select method).FirstOrDefault()
-                    let rootBaseMethod = @base.Class.GetRootBaseMethod(@override)
-                    select rootBaseMethod ?? baseMethod).FirstOrDefault();
+                    let rootBaseMethod = @base.Class.GetRootBaseMethod(@override) ?? baseMethod
+                    where rootBaseMethod != null || onlyFirstBase
+                    select rootBaseMethod).FirstOrDefault();
+        }
+
+        public Property GetRootBaseProperty(Property @override, bool onlyFirstBase = false)
+        {
+            return (from @base in Bases
+                    where !onlyFirstBase || !@base.Class.IsInterface
+                    let baseProperty = (
+                        from property in @base.Class.Properties
+                        where
+                            property.Name == @override.Name &&
+                            property.Parameters.Count == @override.Parameters.Count &&
+                            property.Parameters.SequenceEqual(@override.Parameters,
+                                                            new ParameterTypeComparer())
+                        select property).FirstOrDefault()
+                    let rootBaseProperty = @base.Class.GetRootBaseProperty(@override) ?? baseProperty
+                    where rootBaseProperty != null || onlyFirstBase
+                    select rootBaseProperty).FirstOrDefault();
         }
 
         public override T Visit<T>(IDeclVisitor<T> visitor)

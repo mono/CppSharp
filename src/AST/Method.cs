@@ -126,6 +126,8 @@ namespace CppSharp.AST
 
         public MethodConversionKind Conversion { get; set; }
 
+        public Class ExplicitInterfaceImpl { get; set; }
+
         public override QualifiedType GetFunctionType()
         {
             var qualifiedType = base.GetFunctionType();

@@ -10,6 +10,11 @@ namespace CppSharp.Tests
         {
         }
 
+        public override void SetupPasses(Driver driver)
+        {
+            driver.Options.GenerateInterfacesForMultipleInheritance = true;
+        }
+
         static class Program
         {
             public static void Main(string[] args)
