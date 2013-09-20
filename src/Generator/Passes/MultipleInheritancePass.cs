@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using CppSharp.AST;
+using CppSharp.Generators.CSharp;
 
 namespace CppSharp.Passes
 {
@@ -61,6 +62,14 @@ namespace CppSharp.Passes
             @interface.Methods.AddRange(@base.Methods.Where(
                 m => !m.IsConstructor && !m.IsDestructor && !m.IsStatic && !m.Ignore));
             @interface.Properties.AddRange(@base.Properties.Where(p => !p.Ignore));
+            if (@interface.Bases.Count == 0)
+            {
+                Property instance = new Property();
+                instance.Name = Helpers.InstanceIdentifier;
+                instance.QualifiedType = new QualifiedType(new BuiltinType(PrimitiveType.IntPtr));
+                instance.GetMethod = new Method();
+                @interface.Properties.Add(instance);
+            }
             @interface.Events.AddRange(@base.Events);
             if (addMembers)
             {
@@ -94,7 +103,7 @@ namespace CppSharp.Passes
 
         private static void ImplementInterfaceProperties(Class @class, Class @interface)
         {
-            foreach (var property in @interface.Properties)
+            foreach (var property in @interface.Properties.Where(p => p.Name != Helpers.InstanceIdentifier))
             {
                 var impl = new Property(property) { Namespace = @class };
                 var rootBaseProperty = @class.GetRootBaseProperty(property, true);

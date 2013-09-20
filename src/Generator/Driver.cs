@@ -154,7 +154,10 @@ namespace CppSharp
             if (Options.GenerateAbstractImpls)
                 TranslationUnitPasses.AddPass(new GenerateAbstractImplementationsPass());
             if (Options.GenerateInterfacesForMultipleInheritance)
+            {
                 TranslationUnitPasses.AddPass(new MultipleInheritancePass());
+                TranslationUnitPasses.AddPass(new ParamTypeToInterfacePass());
+            }
         }
 
         public void ProcessCode()

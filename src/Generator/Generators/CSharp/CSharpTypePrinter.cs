@@ -352,7 +352,11 @@ namespace CppSharp.Generators.CSharp
             var nestedName = GetNestedQualifiedName(@class);
 
             if (ContextKind == CSharpTypePrinterContextKind.Native)
+            {
+                if (@class.IsInterface)
+                    nestedName = nestedName.Substring(1);
                 return string.Format("{0}.Internal", nestedName);
+            }
 
             return nestedName;
         }

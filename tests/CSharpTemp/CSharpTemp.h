@@ -21,7 +21,7 @@ protected:
 class DLL_API Qux
 {
 public:
-    int farAwayFunc();
+    int farAwayFunc() const;
 };
 
 class DLL_API Bar : public Qux
@@ -37,5 +37,6 @@ private:
 
 class DLL_API Baz : public Foo, public Bar
 {
-
+public:
+    int takesQux(const Qux& qux);
 };

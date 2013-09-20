@@ -31,7 +31,7 @@ const Foo& Bar::operator[](int i) const
     return m_foo;
 }
 
-int Qux::farAwayFunc()
+int Qux::farAwayFunc() const
 {
     return 20;
 }
@@ -44,4 +44,9 @@ int Bar::method()
 Foo& Bar::operator[](int i)
 {
     return m_foo;
+}
+
+int Baz::takesQux(const Qux& qux)
+{
+    return qux.farAwayFunc();
 }

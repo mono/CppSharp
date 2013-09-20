@@ -2067,7 +2067,7 @@ namespace CppSharp.Generators.CSharp
             return string.Join(", ",
                 from param in @params
                 where param.Kind != ParameterKind.IndirectReturnType
-                let typeName = param.CSharpType(this.TypePrinter)
+                let typeName = param.CSharpType(TypePrinter)
                 select string.Format("{0}{1} {2}", GetParameterUsage(param.Usage),
                     typeName, SafeIdentifier(param.Name)));
         }

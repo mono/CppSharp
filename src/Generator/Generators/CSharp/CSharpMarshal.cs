@@ -541,9 +541,11 @@ namespace CppSharp.Generators.CSharp
                 return;
             }
 
-            Context.Return.Write("*({0}.Internal*){1}.{2}", CSharpMarshalNativeToManagedPrinter.QualifiedIdentifier(@class),
+            var qualifiedIdentifier = CSharpMarshalNativeToManagedPrinter.QualifiedIdentifier(@class);
+            if (@class.IsInterface)
+                qualifiedIdentifier = qualifiedIdentifier.Substring(1);
+            Context.Return.Write("*({0}.Internal*){1}.{2}", qualifiedIdentifier,
                 Helpers.SafeIdentifier(Context.Parameter.Name), Helpers.InstanceIdentifier);
-
         }
 
         private void MarshalValueClass(Class @class)
