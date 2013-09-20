@@ -44,7 +44,7 @@ namespace CppSharp.Generators.CLI
             NewLine();
             PopBlock();
 
-            GenerateNamespace(TranslationUnit);
+            GenerateDeclContext(TranslationUnit);
 
             PushBlock(BlockKind.Footer);
             PopBlock();
@@ -75,7 +75,7 @@ namespace CppSharp.Generators.CLI
             PopBlock();
         }
 
-        private void GenerateNamespace(Namespace @namespace)
+        private void GenerateDeclContext(DeclarationContext @namespace)
         {
             PushBlock(CLIBlockKind.Namespace);
             foreach (var @class in @namespace.Classes)
@@ -103,7 +103,7 @@ namespace CppSharp.Generators.CLI
             }
 
             foreach(var childNamespace in @namespace.Namespaces)
-                GenerateNamespace(childNamespace);
+                GenerateDeclContext(childNamespace);
 
             PopBlock();
         }
@@ -111,6 +111,8 @@ namespace CppSharp.Generators.CLI
         public void GenerateClass(Class @class)
         {
             PushBlock(CLIBlockKind.Class);
+
+            GenerateDeclContext(@class);
 
             // Output a default constructor that takes the native pointer.
             GenerateClassConstructor(@class, isIntPtr: false);
@@ -690,7 +692,7 @@ namespace CppSharp.Generators.CLI
             }
         }
 
-        public void GenerateFunction(Function function, Namespace @namespace)
+        public void GenerateFunction(Function function, DeclarationContext @namespace)
         {
             if (function.Ignore)
                 return;
