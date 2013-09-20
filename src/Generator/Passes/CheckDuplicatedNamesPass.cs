@@ -32,7 +32,8 @@ namespace CppSharp.Passes
             }
 
             var property = decl as Property;
-            if (property != null && property.Parameters.Count > 0)
+            var isIndexer = property != null && property.Parameters.Count > 0;
+            if (isIndexer)
             {
                 return false;
             }

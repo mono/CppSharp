@@ -8,7 +8,10 @@ namespace CppSharp.Passes
     public class MultipleInheritancePass : TranslationUnitPass
     {
         /// <summary>
-        /// Collects all interfaces in a unit to be added at the end because the unit cannot be changed while it's being iterated though.
+        /// Collects all interfaces in a unit to be added at the end 
+        /// because the unit cannot be changed while it's being iterated though.
+        /// We also need it to check if a class already has a complementary interface
+        /// because different classes may have the same secondary bases.
         /// </summary>
         private readonly Dictionary<Class, Class> interfaces = new Dictionary<Class, Class>();
 
@@ -23,6 +26,7 @@ namespace CppSharp.Passes
 
         public override bool VisitClassDecl(Class @class)
         {
+            // skip the first base because we can inherit from one class
             for (int i = 1; i < @class.Bases.Count; i++)
             {
                 var @base = @class.Bases[i].Class;
@@ -39,10 +43,11 @@ namespace CppSharp.Passes
             if (@base.CompleteDeclaration != null)
                 @base = (Class) @base.CompleteDeclaration;
             var name = "I" + @base.Name;
-            var @interface = (interfaces.ContainsKey(@base) ? interfaces[@base]
-                : @base.Namespace.Classes.FirstOrDefault(c => c.Name == name)) ??
-                             GetNewInterface(@class, name, @base, addMembers);
-            return @interface;
+            if (interfaces.ContainsKey(@base))
+                return interfaces[@base];
+
+            return @base.Namespace.Classes.FirstOrDefault(c => c.Name == name) ??
+                GetNewInterface(@class, name, @base, addMembers);
         }
 
         private Class GetNewInterface(Class @class, string name, Class @base, bool addMembers = false)
@@ -52,16 +57,19 @@ namespace CppSharp.Passes
                     Name = name,
                     Namespace = @base.Namespace,
                     Access = @base.Access,
-                    IsInterface = true,
+                    Type = ClassType.Interface,
                     OriginalClass = @base
                 };
+
             @interface.Bases.AddRange(
                 from b in @base.Bases
                 let i = GetInterface(@base, b.Class)
                 select new BaseClassSpecifier { Type = new TagType(i) });
+
             @interface.Methods.AddRange(@base.Methods.Where(
                 m => !m.IsConstructor && !m.IsDestructor && !m.IsStatic && !m.Ignore));
             @interface.Properties.AddRange(@base.Properties.Where(p => !p.Ignore));
+
             if (@interface.Bases.Count == 0)
             {
                 Property instance = new Property();
@@ -70,7 +78,9 @@ namespace CppSharp.Passes
                 instance.GetMethod = new Method();
                 @interface.Properties.Add(instance);
             }
+
             @interface.Events.AddRange(@base.Events);
+
             if (addMembers)
             {
                 ImplementInterfaceMethods(@class, @interface);
@@ -78,6 +88,7 @@ namespace CppSharp.Passes
                 if (@base.Bases.All(b => b.Class != @interface))
                     @base.Bases.Add(new BaseClassSpecifier { Type = new TagType(@interface) });
             }
+
             interfaces.Add(@base, @interface);
             return @interface;
         }

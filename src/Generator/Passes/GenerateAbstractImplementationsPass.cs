@@ -51,8 +51,7 @@ namespace CppSharp.Passes
 
             foreach (var abstractMethod in abstractMethods)
             {
-                var method = new Method(abstractMethod);
-                method.Namespace = internalImpl;
+                var method = new Method(abstractMethod) { Namespace = internalImpl };
                 internalImpl.Methods.Add(method);
                 var @delegate = new TypedefDecl
                                 {

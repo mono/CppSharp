@@ -663,8 +663,7 @@ namespace CppSharp.Generators.CSharp
             if (@class.HasBaseClass)
                 baseClass = @class.Bases[0].Class;
 
-            var hasRefBase = baseClass != null && baseClass.IsRefType
-                             && !baseClass.Ignore && !baseClass.IsInterface;
+            var hasRefBase = baseClass != null && baseClass.IsRefType && !baseClass.Ignore;
 
             var hasIgnoredBase = baseClass != null && baseClass.Ignore;
 
@@ -692,9 +691,7 @@ namespace CppSharp.Generators.CSharp
                 && !@class.Bases[0].Class.IsValueType
                 && !@class.Bases[0].Class.Ignore;
 
-            var isRefClass = @class.IsRefType && !@class.IsInterface;
-
-            if (needsBase || isRefClass)
+            if (needsBase || @class.IsRefType)
                 Write(" : ");
 
             if (needsBase)
@@ -703,11 +700,11 @@ namespace CppSharp.Generators.CSharp
                     from @base in @class.Bases
                     select QualifiedIdentifier(@base.Class)));
 
-                if (isRefClass)
+                if (@class.IsRefType)
                     Write(", ");
             }
 
-            if (isRefClass)
+            if (@class.IsRefType)
                 Write("IDisposable");
         }
 
@@ -1422,8 +1419,7 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateDisposeMethods(Class @class)
         {
-            var hasBaseClass = @class.HasBaseClass && @class.BaseClass.IsRefType &&
-                               !@class.BaseClass.IsInterface;
+            var hasBaseClass = @class.HasBaseClass && @class.BaseClass.IsRefType;
 
             // Generate the IDispose Dispose() method.
             if (!hasBaseClass)
@@ -1492,8 +1488,7 @@ namespace CppSharp.Generators.CSharp
             WriteLine("internal {0}(global::System.IntPtr native){1}", safeIdentifier,
                 @class.IsValueType ? " : this()" : string.Empty);
 
-            var hasBaseClass = @class.HasBaseClass && @class.BaseClass.IsRefType &&
-                               !@class.BaseClass.IsInterface;
+            var hasBaseClass = @class.HasBaseClass && @class.BaseClass.IsRefType;
             if (hasBaseClass)
                 WriteLineIndent(": base(native)");
 

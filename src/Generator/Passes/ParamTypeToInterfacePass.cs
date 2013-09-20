@@ -18,7 +18,7 @@ namespace CppSharp.Passes
                 var @class = tagType.Declaration as Class;
                 if (@class != null)
                 {
-                    var @interface = @class.Namespace.FindClass("I" + @class.Name);
+                    var @interface = @class.Namespace.Classes.Find(c => c.OriginalClass == @class);
                     if (@interface != null)
                         parameter.QualifiedType = new QualifiedType(new TagType(@interface));
                 }
