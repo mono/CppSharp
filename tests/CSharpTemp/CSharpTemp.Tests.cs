@@ -44,5 +44,7 @@ public class CSharpTempTests
         Assert.That(baz.farAwayFunc(), Is.EqualTo(20));
         Assert.That(baz.takesQux(baz), Is.EqualTo(20));
         Assert.That(baz.returnQux().farAwayFunc(), Is.EqualTo(20));
+        int cast = baz;
+        Assert.That(cast, Is.EqualTo(500));
     }
 }

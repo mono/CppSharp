@@ -791,13 +791,14 @@ CppSharp::AST::Method^ Parser::WalkMethodCXX(clang::CXXMethodDecl* MD)
 
     CppSharp::AST::Method^ Method = gcnew CppSharp::AST::Method();
     Method->Access = ConvertToAccess(MD->getAccess());
-    Method->Kind = GetMethodKindFromDecl(Name);
     Method->IsStatic = MD->isStatic();
     Method->IsVirtual = MD->isVirtual();
     Method->IsConst = MD->isConst();
     Method->IsOverride = MD->size_overridden_methods() > 0;
 
     WalkFunction(MD, Method);
+
+    Method->Kind = GetMethodKindFromDecl(Name);
 
     if (const CXXConstructorDecl* CD = dyn_cast<CXXConstructorDecl>(MD))
     {
