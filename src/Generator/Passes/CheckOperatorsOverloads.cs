@@ -187,6 +187,7 @@ namespace CppSharp.Passes
                 case CXXOperatorKind.Greater:
                 case CXXOperatorKind.LessEqual:
                 case CXXOperatorKind.GreaterEqual:
+                case CXXOperatorKind.Conversion:
                     return true;
 
                 case CXXOperatorKind.LessLess:

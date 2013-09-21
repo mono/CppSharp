@@ -34,9 +34,6 @@ namespace CppSharp.AST
             if (method.OperatorKind == CXXOperatorKind.Equal)
                 return true;
 
-            if (method.Kind == CXXMethodKind.Conversion)
-                return true;
-
             if (method.Access == AccessSpecifier.Private && !method.IsOverride)
                 return true;
 
@@ -166,6 +163,9 @@ namespace CppSharp.AST
                 case CXXOperatorKind.Array_Delete:
                     isBuiltin = false;
                     return "Operator" + kind.ToString();
+
+                case CXXOperatorKind.Conversion:
+                    return "implicit operator";
             }
 
             throw new NotSupportedException();

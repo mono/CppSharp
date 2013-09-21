@@ -1607,11 +1607,14 @@ namespace CppSharp.Generators.CSharp
 
             if (method.IsConstructor || method.IsDestructor)
                 Write("{0}(", functionName);
-            else if (method.ExplicitInterfaceImpl == null)
-                Write("{0} {1}(", method.OriginalReturnType, functionName);
-            else
+            else if (method.ExplicitInterfaceImpl != null)
                 Write("{0} {1}.{2}(", method.OriginalReturnType,
                     method.ExplicitInterfaceImpl.Name, functionName);
+            else if (method.OperatorKind == CXXOperatorKind.Conversion)
+                Write("{0} {1}(", functionName, method.OriginalReturnType);
+            else
+                Write("{0} {1}(", method.OriginalReturnType, functionName);
+
 
             Write(FormatMethodParameters(method.Parameters));
 

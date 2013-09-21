@@ -55,3 +55,8 @@ Qux Baz::returnQux()
 {
     return Qux();
 }
+
+Baz::operator int() const
+{
+    return 500;
+}

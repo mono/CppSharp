@@ -61,7 +61,8 @@ namespace CppSharp.AST
         Arrow,
         Call,
         Subscript,
-        Conditional
+        Conditional,
+        Conversion
     }
 
     /// <summary>
@@ -108,7 +109,20 @@ namespace CppSharp.AST
         public bool IsOverride { get; set; }
         public bool IsProxy { get; set; }
 
-        public CXXMethodKind Kind;
+        private CXXMethodKind kind;
+        public CXXMethodKind Kind
+        {
+            get { return kind; }
+            set
+            {
+                if (kind != value)
+                {
+                    kind = value;
+                    if (kind == CXXMethodKind.Conversion)
+                        OperatorKind = CXXOperatorKind.Conversion;
+                }
+            }
+        }
 
         public bool IsConstructor
         {
