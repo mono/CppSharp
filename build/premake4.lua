@@ -44,7 +44,4 @@ solution "CppSharp"
     include (srcdir .. "/Generator.Tests/Generator.Tests.lua")
     include (srcdir .. "/Parser/Parser.lua")
     include (srcdir .. "/Runtime/Runtime.lua")
-    --include (srcdir .. "/CppParser/CppParser.lua")
-    --include (srcdir .. "/ParserBridge/ParserBridge.lua")
-    --include (srcdir .. "/ParserGen/ParserGen.lua")    
-
+    include (srcdir .. "/CppParser")
