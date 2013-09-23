@@ -46,6 +46,11 @@ Foo& Bar::operator[](int i)
     return m_foo;
 }
 
+Baz::Nested::operator int() const
+{
+    return 300;
+}
+
 int Baz::takesQux(const Qux& qux)
 {
     return qux.farAwayFunc();

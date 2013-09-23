@@ -46,5 +46,8 @@ public class CSharpTempTests
         Assert.That(baz.returnQux().farAwayFunc(), Is.EqualTo(20));
         int cast = baz;
         Assert.That(cast, Is.EqualTo(500));
+        var nested = new Baz.Nested();
+        int nestedCast = nested;
+        Assert.That(nestedCast, Is.EqualTo(300));
     }
 }

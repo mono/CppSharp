@@ -242,8 +242,9 @@ namespace CppSharp.AST
 
         public virtual IEnumerable<Function> GetFunctionOverloads(Function function)
         {
-            return Functions.Where(fn => fn.Name == function.Name)
-                .ToList();
+            if (function.OperatorKind == CXXOperatorKind.Conversion)
+                return Functions.Where(fn => fn.OperatorKind == CXXOperatorKind.Conversion);
+            return Functions.Where(fn => fn.Name == function.Name);
         }
 
         public bool HasDeclarations

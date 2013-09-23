@@ -20,6 +20,9 @@ namespace CppSharp.Passes
             if (AlreadyVisited(@class))
                 return false;
 
+            if (!VisitDeclarationContext(@class))
+                return false;
+
             // Check for C++ operators that cannot be represented in C#.
             CheckInvalidOperators(@class);
 
