@@ -41,4 +41,7 @@ public:
     int takesQux(const Qux& qux);
     Qux returnQux();
     operator int() const;
+
+    typedef void *Baz::*FunctionPointerResolvedAsVoidStar;
+    operator FunctionPointerResolvedAsVoidStar() const { return 0; }
 };

@@ -35,6 +35,16 @@ namespace CppSharp.Passes
 
             foreach (var overload in overloads)
             {
+                if (function.OperatorKind == CXXOperatorKind.Conversion)
+                {
+                    if (function != overload &&
+                        function.OriginalReturnType == overload.OriginalReturnType)
+                    {
+                        overload.ExplicityIgnored = true;
+                        function.IsAmbiguous = true;
+                    }
+                    continue;
+                }
                 if (overload == function) continue;
 
                 if (overload.Ignore) continue;
