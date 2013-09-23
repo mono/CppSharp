@@ -191,8 +191,9 @@ namespace CppSharp.AST
 
         public override IEnumerable<Function> GetFunctionOverloads(Function function)
         {
-            return Methods.Where(method => method.Name == function.Name)
-                .Cast<Function>();
+            if (function.OperatorKind == CXXOperatorKind.Conversion)
+                return Methods.Where(fn => fn.OperatorKind == CXXOperatorKind.Conversion);
+            return Methods.Where(method => method.Name == function.Name);
         }
 
         public IEnumerable<T> FindHierarchy<T>(Func<Class, IEnumerable<T>> func)

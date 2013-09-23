@@ -2152,10 +2152,10 @@ namespace CppSharp.Generators.CSharp
 
         public static string GetFunctionNativeIdentifier(Function function)
         {
-            var identifier = SafeIdentifier(function.Name);;
+            var identifier = SafeIdentifier(function.Name);
 
             if (function.IsOperator)
-                identifier = "Operator" + function.OperatorKind.ToString();
+                identifier = "Operator" + function.OperatorKind;
 
             var overloads = function.Namespace.GetFunctionOverloads(function)
                 .ToList();
