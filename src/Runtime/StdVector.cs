@@ -22,19 +22,27 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using CppSharp.Runtime;
 
 namespace Std
 {
     public struct Vector
     {
-        static public Vector Create<T>(Vector<T> vec)
-        {
-            return default(Vector);
-        }
+
     }
 
-    public struct Vector<T> : ICollection<T>
+    public struct Vector<T> : ICollection<T> where T : ICppMarshal
     {
+        public Vector Internal;
+
+        public int Count { get; private set; }
+        public bool IsReadOnly { get; private set; }
+
+        public Vector(Vector vector) : this()
+        {
+            Internal = vector;
+        }
+
         public IEnumerator<T> GetEnumerator()
         {
             throw new NotImplementedException();
@@ -69,8 +77,5 @@ namespace Std
         {
             throw new NotImplementedException();
         }
-
-        public int Count { get; private set; }
-        public bool IsReadOnly { get; private set; }
     }
 }

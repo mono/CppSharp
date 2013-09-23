@@ -20,10 +20,11 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 using System;
+using CppSharp.Runtime;
 
 namespace Std
 {
-    public struct String
+    public struct String : ICppMarshal
     {
         public IntPtr Instance;
 
@@ -46,6 +47,16 @@ namespace Std
         {
             get { return '0'; }
             set { }
+        }
+
+        public void MarshalManagedToNative(IntPtr instance)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void MarshalNativeToManaged(IntPtr instance)
+        {
+            throw new NotImplementedException();
         }
     }
 
