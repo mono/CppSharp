@@ -38,6 +38,12 @@ private:
 class DLL_API Baz : public Foo, public Bar
 {
 public:
+    class DLL_API Nested
+    {
+    public:
+        operator int() const;
+    };
+
     int takesQux(const Qux& qux);
     Qux returnQux();
     operator int() const;
