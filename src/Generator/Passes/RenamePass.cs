@@ -82,6 +82,14 @@ namespace CppSharp.Passes
             return base.VisitFieldDecl(field);
         }
 
+        public override bool VisitProperty(Property property)
+        {
+            if (!Targets.HasFlag(RenameTargets.Property))
+                return false;
+
+            return base.VisitProperty(property);
+        }
+
         public override bool VisitMethodDecl(Method method)
         {
             if (!Targets.HasFlag(RenameTargets.Method))
@@ -129,7 +137,8 @@ namespace CppSharp.Passes
         Enum      = 1 << 5,
         EnumItem  = 1 << 6,
         Event     = 1 << 7,
-        Any = Function | Method | Parameter | Class | Field | Enum | EnumItem | Event,
+        Property  = 1 << 8,
+        Any = Function | Method | Parameter | Class | Field | Enum | EnumItem | Event | Property,
     }
 
     /// <summary>
