@@ -8,8 +8,6 @@
 #include "Parser.h"
 #include "Interop.h"
 
-using namespace CppSharp::Parser;
-
 public ref class ClangParser
 {
 public:
