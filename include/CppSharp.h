@@ -108,7 +108,10 @@ namespace clix {
         typedef typename StringTypeSelector<encoding>::Type SourceStringType;
         size_t byteCount = cxxString.length() * sizeof(SourceStringType::value_type);
 
-		if(byteCount == 0) return System::String::Empty;
+        // Empty strings would cause trouble accessing the array below
+        if(byteCount == 0) {
+          return System::String::Empty;
+        }
 
         // Copy the C++ string contents into a managed array of bytes
         array<unsigned char> ^bytes = gcnew array<unsigned char>(byteCount);
@@ -143,10 +146,13 @@ namespace clix {
       ) {
         typedef typename StringTypeSelector<encoding>::Type StringType;
 
+        // Empty strings would cause a problem when accessing the empty managed array
+        if(!string || string->Length == 0) {
+          return StringType();
+        }
+
         // First, we use .NET's encoding classes to convert the string into a byte array
         array<unsigned char> ^bytes = encode<encoding>(string);
-
-        if(bytes->Length == 0) return StringType();
 
         // Then we construct our native string from that byte array
         pin_ptr<unsigned char> pinnedBytes(&bytes[0]);
