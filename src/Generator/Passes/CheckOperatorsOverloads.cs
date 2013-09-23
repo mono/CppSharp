@@ -83,30 +83,6 @@ namespace CppSharp.Passes
                         Kind = ParameterKind.OperatorParameter
                     });
                 }
-                // HACK: in Qt's qobjectdefs.h we have this line:
-                //     typedef void *Connection::*RestrictedBool;
-                // Our parser resolves this as a function pointer while judging by the next line of:
-                //     operator RestrictedBool() const { return d_ptr ? &Connection::d_ptr : 0; }
-                // it seems not to be. So until the proper fix just use the pointee to avoid crashes
-                if (@operator.OperatorKind == CXXOperatorKind.Conversion)
-                {
-                    var typedef = @operator.ReturnType.Type as TypedefType;
-                    if (typedef != null)
-                    {
-                        var functionPointer = typedef.Desugar() as MemberPointerType;
-                        if (functionPointer != null)
-                        {
-                            FunctionType functionType;
-                            functionPointer.IsPointerTo(out functionType);
-                            if (functionType == null)
-                            {
-                                @operator.ReturnType =
-                                    new QualifiedType(functionPointer.Pointee,
-                                        @operator.ReturnType.Qualifiers);
-                            }
-                        }
-                    }
-                }
             }
         }
 
