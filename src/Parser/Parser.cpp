@@ -31,6 +31,8 @@
 #include <CodeGen/TargetInfo.h>
 #include <CodeGen/CGCall.h>
 
+using namespace CppSharp::Parser;
+
 //-----------------------------------//
 
 Parser::Parser(ParserOptions^ Opts) : Lib(Opts->Library), Opts(Opts), Index(0)

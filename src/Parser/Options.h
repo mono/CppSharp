@@ -9,6 +9,8 @@
 #include <vcclr.h>
 using namespace System::Collections::Generic;
 
+namespace CppSharp { namespace Parser {
+
 public ref struct ParserOptions
 {
     ParserOptions()
@@ -89,3 +91,5 @@ enum class SourceLocationKind
     System,
     User
 };
+
+} }

@@ -38,6 +38,8 @@ namespace clang {
 
 #define Debug printf
 
+namespace CppSharp { namespace Parser {
+
 struct Parser
 {
     Parser(ParserOptions^ Opts);
@@ -106,3 +108,5 @@ protected:
     clang::TargetCodeGenInfo* CodeGenInfo;
     clang::CodeGen::CodeGenTypes* CodeGenTypes;
 };
+
+} }

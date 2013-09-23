@@ -9,6 +9,7 @@
 #include "Interop.h"
 
 #include <clang/AST/ASTContext.h>
+using namespace CppSharp::Parser;
 
 //-----------------------------------//
 
