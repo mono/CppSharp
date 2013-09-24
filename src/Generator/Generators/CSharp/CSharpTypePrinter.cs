@@ -179,7 +179,8 @@ namespace CppSharp.Generators.CSharp
                 return isManagedContext ? "string" : "global::System.IntPtr";
 
             PrimitiveType primitive;
-            if (pointee.Desugar().IsPrimitiveType(out primitive))
+            var desugared = pointee.Desugar();
+            if (desugared.IsPrimitiveType(out primitive))
             {
                 if (isManagedContext && Context.Parameter != null &&
                     (Context.Parameter.IsOut || Context.Parameter.IsInOut))
@@ -191,7 +192,7 @@ namespace CppSharp.Generators.CSharp
             }
 
             Class @class;
-            if (pointee.IsTagDecl(out @class)
+            if (desugared.IsTagDecl(out @class)
                 && ContextKind == CSharpTypePrinterContextKind.Native)
             {
                 return "global::System.IntPtr";
