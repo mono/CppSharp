@@ -51,3 +51,14 @@ public:
     typedef void *Baz::*FunctionPointerResolvedAsVoidStar;
     operator FunctionPointerResolvedAsVoidStar() const { return 0; }
 };
+
+struct QArrayData
+{
+};
+
+typedef QArrayData QByteArrayData;
+
+struct QByteArrayDataPtr
+{
+    QByteArrayData* ptr;
+};
