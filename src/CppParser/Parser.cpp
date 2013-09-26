@@ -1522,6 +1522,7 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, Function* F,
     F->IsInline = FD->isInlined();
     F->IsDependent = FD->isDependentContext();
     F->IsPure = FD->isPure();
+    F->IsPure = FD->isDeleted();
 
     auto CC = FT->getCallConv();
     F->CallingConvention = ConvertCallConv(CC);

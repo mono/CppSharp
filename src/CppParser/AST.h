@@ -432,6 +432,7 @@ struct CS_API Function : public Declaration
     bool IsVariadic;
     bool IsInline;
     bool IsPure;
+    bool IsDeleted;
     CXXOperatorKind OperatorKind;
     std::string Mangled;
     CallingConvention CallingConvention;

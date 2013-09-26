@@ -1524,6 +1524,7 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, CppSharp::AST::Function^ F,
     F->IsInline = FD->isInlined();
     F->IsDependent = FD->isDependentContext();
     F->IsPure = FD->isPure();
+    F->IsDeleted = FD->isDeleted();
 
     auto CC = FT->getCallConv();
     F->CallingConvention = ConvertCallConv(CC);
