@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using CppSharp.AST;
@@ -27,13 +29,34 @@ namespace CppSharp.Passes
         {
             if (decl is Class) return true;
             if (decl is Field) return true;
-            if (decl is Method) return true;
-            if (decl is Function) return true;
+            var function = decl as Function;
+            if (function != null)
+            {
+                // special case the IDisposable.Dispose that could be added later
+                return !function.IsOperator && function.Name != "dispose";
+            }
             if (decl is Parameter) return true;
             if (decl is Enumeration) return true;
             if (decl is Property) return true;
             if (decl is Event) return true;
             return false;
+        }
+
+        public override bool VisitClassDecl(Class @class)
+        {
+            if (@class.IsDynamic)
+            {
+                // HACK: entries in v-tables are not shared (as objects) with the virtual methods they represent;
+                // this is why this pass has to rename entries in the v-table as well;
+                // this should be fixed in the parser: it should reuse method objects
+                foreach (var method in VTables.GatherVTableMethodEntries(@class).Where(
+                    e => e.Method != null && IsRenameableDecl(e.Method)).Select(e => e.Method))
+                {
+                    Rename(method);
+                }
+            }
+
+            return base.VisitClassDecl(@class);
         }
 
         public override bool VisitDeclaration(Declaration decl)
@@ -49,14 +72,26 @@ namespace CppSharp.Passes
             if (decl.Name == null)
                 return true;
 
-            string newName;
-            if (Rename(decl.Name, out newName))
-            {
-                decl.Name = newName;
-                return true;
-            }
+            return Rename(decl);
+        }
 
+        private bool Rename(Declaration decl)
+        {
+            string newName;
+            if (Rename(decl.Name, out newName) && AreThereConflicts(decl, newName))
+                decl.Name = newName;
             return true;
+        }
+
+        private static bool AreThereConflicts(Declaration decl, string newName)
+        {
+            List<Declaration> declarations = new List<Declaration>();
+            declarations.AddRange(decl.Namespace.Classes);
+            declarations.AddRange(decl.Namespace.Enums);
+            declarations.AddRange(decl.Namespace.Events);
+            declarations.AddRange(decl.Namespace.Functions);
+            declarations.AddRange(decl.Namespace.Variables);
+            return declarations.All(d => d == decl || d.Name != newName);
         }
 
         public override bool VisitEnumItem(Enumeration.Item item)
@@ -80,6 +115,14 @@ namespace CppSharp.Passes
                 return false;
 
             return base.VisitFieldDecl(field);
+        }
+
+        public override bool VisitProperty(Property property)
+        {
+            if (!Targets.HasFlag(RenameTargets.Property))
+                return false;
+
+            return base.VisitProperty(property);
         }
 
         public override bool VisitMethodDecl(Method method)
@@ -129,7 +172,8 @@ namespace CppSharp.Passes
         Enum      = 1 << 5,
         EnumItem  = 1 << 6,
         Event     = 1 << 7,
-        Any = Function | Method | Parameter | Class | Field | Enum | EnumItem | Event,
+        Property  = 1 << 8,
+        Any = Function | Method | Parameter | Class | Field | Enum | EnumItem | Event | Property,
     }
 
     /// <summary>
