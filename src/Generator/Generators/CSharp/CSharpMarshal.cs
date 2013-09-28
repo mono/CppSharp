@@ -374,7 +374,26 @@ namespace CppSharp.Generators.CSharp
             if (!VisitType(array, quals))
                 return false;
 
-            Context.Return.Write("null");
+            switch (array.SizeType)
+            {
+                case ArrayType.ArraySize.Constant:
+                    StringBuilder arrayBuilder = new StringBuilder();
+                    arrayBuilder.AppendFormat("if (value.Length != {0})", array.Size);
+                    arrayBuilder.AppendLine();
+                    arrayBuilder.AppendFormat(
+                        "    throw new ArgumentException(\"The value must be an array of size {0}.\");",
+                        array.Size);
+                    arrayBuilder.AppendLine();
+                    arrayBuilder.AppendFormat("fixed ({0}* v = value)", array.Type);
+                    arrayBuilder.AppendLine();
+                    arrayBuilder.Append("    *");
+                    Context.SupportBefore.Write(arrayBuilder.ToString());
+                    Context.Return.Write("*v");
+                    break;
+                default:
+                    Context.Return.Write("null");
+                    break;
+            }
             return true;
         }
 
