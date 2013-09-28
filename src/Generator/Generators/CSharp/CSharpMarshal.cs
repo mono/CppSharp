@@ -115,7 +115,23 @@ namespace CppSharp.Generators.CSharp
             switch (array.SizeType)
             {
                 case ArrayType.ArraySize.Constant:
-                    Context.Return.Write("null");
+                    StringBuilder arrayBuilder = new StringBuilder();
+                    arrayBuilder.AppendFormat("{0}[] value = new {0}[{1}];", array.Type, array.Size);
+                    arrayBuilder.AppendLine();
+                    arrayBuilder.AppendFormat("fixed ({0}* v = value)", array.Type);
+                    arrayBuilder.AppendLine();
+                    arrayBuilder.AppendLine("{");
+                    arrayBuilder.AppendFormat("    {0}* to = v;", array.Type);
+                    arrayBuilder.AppendLine();
+                    arrayBuilder.AppendFormat("    {0}* from = {1}->{2};",
+                        array.Type, Generator.GeneratedIdentifier("ptr"), Context.ArgName);
+                    arrayBuilder.AppendLine();
+                    arrayBuilder.AppendFormat("    for (int i = 0; i < {0}; i++)", array.Size);
+                    arrayBuilder.AppendLine();
+                    arrayBuilder.AppendLine("        *to++ = *from++;");
+                    arrayBuilder.Append("}");
+                    Context.SupportBefore.WriteLine(arrayBuilder.ToString());
+                    Context.Return.Write("value");
                     break;
                 case ArrayType.ArraySize.Variable:
                     Context.Return.Write("null");
