@@ -826,6 +826,7 @@ namespace CppSharp.Generators.CSharp
                     Generator.GeneratedIdentifier("ptr"), Helpers.InstanceIdentifier);
 
                 var marshal = new CSharpMarshalManagedToNativePrinter(ctx);
+                ctx.ReturnVarName = field.OriginalName;
                 param.Visit(marshal);
 
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))

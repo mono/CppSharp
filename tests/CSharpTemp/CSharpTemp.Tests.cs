@@ -32,6 +32,16 @@ public class CSharpTempTests
     }
 
     [Test]
+    public void TestFixedArrays()
+    {
+        Qux qux = new Qux();
+        var array = new[] { 1, 2, 3 };
+        qux.array = array;
+        for (int i = 0; i < qux.array.Length; i++)
+            Assert.That(array[i], Is.EqualTo(qux.array[i]));
+    }
+
+    [Test]
     public void TestMultipleInheritance()
     {
         Baz baz = new Baz();
