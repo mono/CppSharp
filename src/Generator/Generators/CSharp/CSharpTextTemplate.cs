@@ -1806,7 +1806,8 @@ namespace CppSharp.Generators.CSharp
 
                 Class retClass = null;
                 hiddenParam.Type.Desugar().IsTagDecl(out retClass);
-                WriteLine("var {0} = new {1}.Internal();", GeneratedIdentifier("ret"), QualifiedIdentifier(retClass));
+                WriteLine("var {0} = new {1}.Internal();", GeneratedIdentifier("ret"),
+                    QualifiedIdentifier(retClass.OriginalClass ?? retClass));
             }
 
             var names = new List<string>();

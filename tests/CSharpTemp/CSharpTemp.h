@@ -22,6 +22,7 @@ class DLL_API Qux
 {
 public:
     int farAwayFunc() const;
+    int array[3];
 };
 
 class DLL_API Bar : public Qux
