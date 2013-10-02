@@ -231,7 +231,7 @@ namespace CppSharp.AST
         public Property GetRootBaseProperty(Property @override, bool onlyFirstBase = false)
         {
             return (from @base in Bases
-                    where !onlyFirstBase || !@base.Class.IsInterface
+                    where (!onlyFirstBase || !@base.Class.IsInterface) && @base.IsClass
                     let baseProperty = (
                         from property in @base.Class.Properties
                         where

@@ -784,7 +784,6 @@ namespace CppSharp.Generators.CSharp
         {
             PushBlock(CSharpBlockKind.Method);
             WriteLine("set");
-            WriteStartBraceIndent();
 
             var param = new Parameter
             {
@@ -801,7 +800,14 @@ namespace CppSharp.Generators.CSharp
             if (decl is Function)
             {
                 var function = decl as Function;
+                if (function.IsPure && Driver.Options.GenerateAbstractImpls)
+                {
+                    Write("; ");
+                    PopBlock(NewLineKind.BeforeNextBlock);
+                    return;
+                }
 
+                WriteStartBraceIndent();
                 if (function.Parameters.Count == 0)
                     throw new NotSupportedException("Expected at least one parameter in setter");
 
@@ -810,16 +816,32 @@ namespace CppSharp.Generators.CSharp
                 var method = function as Method;
                 if (method != null && method.OperatorKind == CXXOperatorKind.Subscript)
                 {
-                    GenerateIndexerSetter(returnType, method);
+                    if (method.IsOverride && method.IsSynthetized)
+                    {
+                        GenerateVirtualTableFunctionCall(function, @class);
+                    }
+                    else
+                    {
+                        if (method.OperatorKind == CXXOperatorKind.Subscript)
+                        {
+                            GenerateIndexerSetter(returnType, method);                            
+                        }
+                        else
+                        {
+                            var parameters = new List<Parameter> { param };
+                            GenerateInternalFunctionCall(function, parameters);
+                        }
+                    }
                 }
                 else
                 {
                     var parameters = new List<Parameter> { param };
-                    GenerateInternalFunctionCall(function, parameters);   
+                    GenerateInternalFunctionCall(function, parameters); 
                 }
             }
             else if (decl is Field)
             {
+                WriteStartBraceIndent();
                 var field = decl as Field;
 
                 WriteLine("var {0} = (Internal*){1}.ToPointer();",
@@ -865,22 +887,39 @@ namespace CppSharp.Generators.CSharp
             where T : Declaration, ITypedDecl
         {
             PushBlock(CSharpBlockKind.Method);
-            WriteLine("get");
-            WriteStartBraceIndent();
+            Write("get");
 
             if (decl is Function)
             {
                 var function = decl as Function;
-                bool isPrimitiveIndexer = function.OperatorKind == CXXOperatorKind.Subscript &&
-                                          function.ReturnType.Type.IsPointerToPrimitiveType();
-                if (isPrimitiveIndexer)
-                    TypePrinter.PushContext(CSharpTypePrinterContextKind.PrimitiveIndexer);
-                GenerateInternalFunctionCall(function);
-                if (isPrimitiveIndexer)
-                    TypePrinter.PopContext();
+                if (function.IsPure && Driver.Options.GenerateAbstractImpls)
+                {
+                    Write("; ");
+                    PopBlock(NewLineKind.BeforeNextBlock);
+                    return;
+                }
+                WriteLine("");
+                WriteStartBraceIndent();
+                Method method = function as Method;
+                if (method != null && method.IsOverride && method.IsSynthetized)
+                {
+                    GenerateVirtualTableFunctionCall(function, @class);                    
+                }
+                else
+                {
+                    bool isPrimitiveIndexer = function.OperatorKind == CXXOperatorKind.Subscript &&
+                                              function.ReturnType.Type.IsPointerToPrimitiveType();
+                    if (isPrimitiveIndexer)
+                        TypePrinter.PushContext(CSharpTypePrinterContextKind.PrimitiveIndexer);
+                    GenerateInternalFunctionCall(function);
+                    if (isPrimitiveIndexer)
+                        TypePrinter.PopContext();   
+                }
             }
             else if (decl is Field)
             {
+                WriteLine("");
+                WriteStartBraceIndent();
                 var field = decl as Field;
 
                 WriteLine("var {0} = (Internal*){1}.ToPointer();",
@@ -905,6 +944,8 @@ namespace CppSharp.Generators.CSharp
             }
             else if (decl is Variable)
             {
+                WriteLine("");
+                WriteStartBraceIndent();
                 var @var = decl as Variable;
                 var libSymbol = GetDeclarationLibrarySymbol(@var);
 
@@ -990,10 +1031,22 @@ namespace CppSharp.Generators.CSharp
                     type = ((PointerType) prop.Type).Pointee;
 
                 if (prop.ExplicitInterfaceImpl == null)
-                    WriteLine("{0}{1} {2}", Helpers.GetAccess(prop.Access),
-                        type, GetPropertyName(prop));
+                {
+                    Write(Helpers.GetAccess(prop.Access));
+                    if (prop.IsStatic)
+                        Write("static ");
+                    if (prop.IsOverride)
+                        Write("override ");
+                    else if (prop.IsPure && Driver.Options.GenerateAbstractImpls)
+                        Write("abstract ");
+                    else if (prop.IsVirtual)
+                        Write("virtual ");
+                    WriteLine("{0} {1}", type, GetPropertyName(prop));
+                }
                 else
+                {
                     WriteLine("{0} {1}.{2}", type, prop.ExplicitInterfaceImpl.Name, GetPropertyName(prop));
+                }
                 WriteStartBraceIndent();
 
                 if (prop.Field != null)
@@ -1044,7 +1097,9 @@ namespace CppSharp.Generators.CSharp
         public void GenerateVTable(Class @class)
         {
             var entries = VTables.GatherVTableMethodEntries(@class);
-            entries = entries.Where(entry => !entry.Method.Ignore).ToList();
+            entries = entries.Where(e => !e.Method.Ignore ||
+                @class.Properties.Any(p => !p.Ignore &&
+                    (p.GetMethod == e.Method || p.SetMethod == e.Method))).ToList();
 
             if (entries.Count == 0)
                 return;
@@ -1203,7 +1258,16 @@ namespace CppSharp.Generators.CSharp
             if (hasReturn)
                 Write("var _ret = ");
 
-            WriteLine("target.{0}({1});", SafeIdentifier(method.Name), string.Join(", ", marshals));
+            if (method.IsGenerated)
+            {
+                WriteLine("target.{0}({1});", SafeIdentifier(method.Name), string.Join(", ", marshals));              
+            }
+            else
+            {
+                var name = ((Class) method.Namespace).Properties.First(
+                    p => p.GetMethod == method || p.SetMethod == method).Name;
+                WriteLine("target.{0};", name);              
+            }
 
             // TODO: Handle hidden structure return types.
 

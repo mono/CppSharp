@@ -112,17 +112,17 @@ public class BasicTests
     public void TestAbstractReturnType()
     {
         var returnsAbstractFoo = new ReturnsAbstractFoo();
-        var abstractFoo = returnsAbstractFoo.getFoo();
-        Assert.AreEqual(abstractFoo.pureFunction(), 5);
-        Assert.AreEqual(abstractFoo.pureFunction1(), 10);
-        Assert.AreEqual(abstractFoo.pureFunction2(), 15);
+        var abstractFoo = returnsAbstractFoo.Foo;
+        Assert.AreEqual(abstractFoo.pureFunction, 5);
+        Assert.AreEqual(abstractFoo.pureFunction1, 10);
+        Assert.AreEqual(abstractFoo.pureFunction2, 15);
     }
 
     [Test]
     public void TestANSI()
     {
         Foo foo = new Foo();
-        Assert.That(foo.GetANSI(), Is.EqualTo("ANSI"));
+        Assert.That(foo.ANSI, Is.EqualTo("ANSI"));
     }
 }
  

@@ -4,10 +4,13 @@ using VTables;
 
 public class FooDerived : Foo
 {
-    public override int vfoo()
+    public override int vfoo
     {
-        Console.WriteLine("Hello from FooDerived");
-        return 10;
+        get
+        {
+            Console.WriteLine("Hello from FooDerived");
+            return 10;
+        }
     }
 }
 
@@ -18,8 +21,8 @@ public class VTablesTests
     public void TestFoo()
     {
         var foo = new Foo();
-        Assert.That(foo.vfoo(), Is.EqualTo(5));
-        Assert.That(foo.Vbar(), Is.EqualTo(3));
+        Assert.That(foo.vfoo, Is.EqualTo(5));
+        Assert.That(foo.Vbar, Is.EqualTo(3));
         Assert.That(foo.CallFoo(), Is.EqualTo(7));
 
         var foo2 = new FooDerived();

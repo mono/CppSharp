@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using CppSharp.AST;
 
 namespace CppSharp.Passes
@@ -10,6 +13,12 @@ namespace CppSharp.Passes
     /// </summary>
     public class GetterSetterToPropertyPass : TranslationUnitPass
     {
+        private readonly List<Method> setters = new List<Method>();
+        private readonly List<Method> setMethods = new List<Method>();
+        private readonly List<Method> nonSetters = new List<Method>();
+        private readonly HashSet<Method> getters = new HashSet<Method>();
+        private readonly HashSet<string> verbs = new HashSet<string>();
+
         public GetterSetterToPropertyPass()
         {
             Options.VisitClassFields = false;
@@ -21,123 +30,169 @@ namespace CppSharp.Passes
             Options.VisitNamespaceVariables = false;
             Options.VisitFunctionParameters = false;
             Options.VisitTemplateArguments = false;
-        }
-
-        static bool IsSetter(Function method)
-        {
-            var isRetVoid = method.ReturnType.Type.IsPrimitiveType(
-                PrimitiveType.Void);
-
-            var isSetter = method.OriginalName.StartsWith("set",
-                StringComparison.InvariantCultureIgnoreCase);
-
-            return isRetVoid && isSetter && method.Parameters.Count == 1;
-        }
-
-        static bool IsGetter(Function method)
-        {
-            var isRetVoid = method.ReturnType.Type.IsPrimitiveType(
-                PrimitiveType.Void);
-
-            var isGetter = method.OriginalName.StartsWith("get",
-                StringComparison.InvariantCultureIgnoreCase);
-
-            return !isRetVoid && isGetter && method.Parameters.Count == 0;
-        }
-
-        Property GetOrCreateProperty(Class @class, string name, QualifiedType type)
-        {
-            var prop = @class.Properties.FirstOrDefault(property => property.Name == name
-                && property.QualifiedType.Equals(type));
-
-            var prop2 = @class.Properties.FirstOrDefault(property => property.Name == name);
-
-            if (prop == null && prop2 != null)
-                Driver.Diagnostics.EmitWarning(DiagnosticId.PropertySynthetized,
-                    "Property {0}::{1} already exist with type {2}", @class.Name, name, type.Type.ToString());
-
-            if (prop != null)
-                return prop;
-
-            prop = new Property
+            using (var resourceStream = Assembly.GetExecutingAssembly()
+                .GetManifestResourceStream("CppSharp.Generator.Passes.verbs.txt"))
             {
-                Name = name,
-                Namespace = @class,
-                QualifiedType = type
-            };
+                using (StreamReader streamReader = new StreamReader(resourceStream))
+                    while (!streamReader.EndOfStream)
+                        verbs.Add(streamReader.ReadLine());
+            }
+        }
 
-            @class.Properties.Add(prop);
-            return prop;
+        public override bool VisitTranslationUnit(TranslationUnit unit)
+        {
+            bool result = base.VisitTranslationUnit(unit);
+            GenerateProperties();
+            return result;
         }
 
         public override bool VisitMethodDecl(Method method)
         {
-            if (AlreadyVisited(method))
-                return false;
-
-            if (ASTUtils.CheckIgnoreMethod(method))
-                return false;
-
-            var @class = method.Namespace as Class;
-
-            if (@class == null || @class.IsIncomplete)
-                return false;
-
-            if (IsGetter(method))
-            {
-                var name = method.Name.Substring("get".Length);
-                var prop = GetOrCreateProperty(@class, name, method.ReturnType);
-                prop.GetMethod = method;
-                prop.Access = method.Access;
-
-                // Do not generate the original method now that we know it is a getter.
-                method.IsGenerated = false;
-
-                Driver.Diagnostics.EmitMessage(DiagnosticId.PropertySynthetized,
-                    "Getter created: {0}::{1}", @class.Name, name);
-
-                return false;
-            }
-
-            if (IsSetter(method) && IsValidSetter(method))
-            {
-                var name = method.Name.Substring("set".Length);
-
-                var type = method.Parameters[0].QualifiedType;
-                var prop = GetOrCreateProperty(@class, name, type);
-                prop.SetMethod = method;
-                prop.Access = method.Access;
-
-                // Ignore the original method now that we know it is a setter.
-                method.IsGenerated = false;
-
-                Driver.Diagnostics.EmitMessage(DiagnosticId.PropertySynthetized,
-                    "Setter created: {0}::{1}", @class.Name, name);
-
-                return false;
-            }
-
-            return false;
+            if (!method.IsConstructor && !method.IsDestructor && !method.IsOperator &&
+                !method.Ignore)
+                DistributeMethod(method);
+            return base.VisitMethodDecl(method);
         }
 
-        // Check if a matching getter exist or no other setter exists.
-        private bool IsValidSetter(Method method)
+        public void GenerateProperties()
         {
-            var @class = method.Namespace as Class;
-            var name = method.Name.Substring("set".Length);
+            GenerateProperties(setters, false);
+            GenerateProperties(setMethods, true);
 
-            if (method.Parameters.Count == 0)
+            foreach (Method getter in 
+                from getter in getters
+                where getter.IsGenerated &&
+                      ((Class) getter.Namespace).Methods.All(m => m == getter || m.Name != getter.Name)
+                select getter)
+            {
+                // Make it a read-only property
+                GenerateProperty(getter.Namespace, getter);
+            }
+        }
+
+        private void GenerateProperties(IEnumerable<Method> settersToUse, bool readOnly)
+        {
+            foreach (var group in settersToUse.GroupBy(m => m.Namespace))
+            {
+                foreach (var setter in group)
+                {
+                    Class type = (Class) setter.Namespace;
+                    string afterSet = setter.Name.Substring(3);
+                    foreach (var getter in nonSetters.Where(m => m.Namespace == type))
+                    {
+                        if (string.Compare(getter.Name, afterSet, StringComparison.OrdinalIgnoreCase) == 0 &&
+                            getter.ReturnType == setter.Parameters[0].QualifiedType &&
+                            !type.Methods.Any(
+                                m =>
+                                    m != getter &&
+                                    string.Compare(getter.Name, m.Name, StringComparison.OrdinalIgnoreCase) == 0))
+                        {
+                            GenerateProperty(getter.Namespace, getter, readOnly ? null : setter);
+                            goto next;
+                        }
+                    }
+                    Property baseVirtualProperty = type.GetRootBaseProperty(new Property { Name = afterSet });
+                    if (!type.IsInterface && baseVirtualProperty != null)
+                    {
+                        bool isReadOnly = baseVirtualProperty.SetMethod == null;
+                        GenerateProperty(setter.Namespace, baseVirtualProperty.GetMethod,
+                            readOnly || isReadOnly ? null : setter);
+                    }
+                    next:
+                    ;
+                }
+            }
+            foreach (Method nonSetter in nonSetters)
+            {
+                Class type = (Class) nonSetter.Namespace;
+                string name = nonSetter.Name;
+                if (GetFirstWord(name) == "get")
+                    name = name.Substring(3);
+                Property baseVirtualProperty = type.GetRootBaseProperty(new Property { Name = name });
+                if (!type.IsInterface && baseVirtualProperty != null)
+                {
+                    bool isReadOnly = baseVirtualProperty.SetMethod == null;
+                    if (readOnly == isReadOnly)
+                    {
+                        GenerateProperty(nonSetter.Namespace, nonSetter,
+                            readOnly ? null : baseVirtualProperty.SetMethod);
+                    }
+                }
+            }
+        }
+
+        private static void GenerateProperty(DeclarationContext context, Method getter, Method setter = null)
+        {
+            Class type = (Class) context;
+            if (type.Properties.All(
+                p => string.Compare(getter.Name, p.Name, StringComparison.OrdinalIgnoreCase) != 0 ||
+                     p.ExplicitInterfaceImpl != getter.ExplicitInterfaceImpl))
+            {
+                Property property = new Property();
+                property.Name = getter.Name.Substring(GetFirstWord(getter.Name) == "get" ? 3 : 0);
+                property.Namespace = type;
+                property.QualifiedType = getter.ReturnType;
+                if (getter.IsOverride || (setter != null && setter.IsOverride))
+                {
+                    Property baseVirtualProperty = type.GetRootBaseProperty(property);
+                    if (baseVirtualProperty.SetMethod == null)
+                        setter = null;
+                    foreach (Method method in type.Methods.Where(m => m.Name == property.Name && m.Parameters.Count > 0))
+                        method.Name = "Get" + method.Name;
+                }
+                property.GetMethod = getter;
+                property.SetMethod = setter;
+                property.ExplicitInterfaceImpl = getter.ExplicitInterfaceImpl;
+                if (property.ExplicitInterfaceImpl == null && setter != null)
+                {
+                    property.ExplicitInterfaceImpl = setter.ExplicitInterfaceImpl;
+                }
+                // TODO: add comments
+                type.Properties.Add(property);
+                getter.IsGenerated = false;
+                if (setter != null)
+                    setter.IsGenerated = false;
+            }
+        }
+
+
+        private void DistributeMethod(Method method)
+        {
+            if (GetFirstWord(method.Name) == "set" &&
+                method.ReturnType.Type.IsPrimitiveType(PrimitiveType.Void))
+            {
+                if (method.Parameters.Count == 1)
+                    setters.Add(method);
+                else
+                    setMethods.Add(method);
+            }
+            else
+            {
+                if (IsGetter(method))
+                    getters.Add(method);
+                if (method.Parameters.Count == 0)
+                    nonSetters.Add(method);
+            }
+        }
+
+        private bool IsGetter(Method method)
+        {
+            if (method.ReturnType.Type.IsPrimitiveType(PrimitiveType.Void) ||
+                method.Parameters.Count > 0 || method.IsDestructor)
                 return false;
+            var result = GetFirstWord(method.Name);
+            return result == "get" || result == "is" || result == "has" || 
+                   (result != "to" && result != "new" && !verbs.Contains(result));
+        }
 
-            var type = method.Parameters[0].Type;
-
-            var getter = @class.Methods.FirstOrDefault(m => m.Name == "Get" + name && m.Type.Equals(type));
-
-            var otherSetter = @class.Methods.FirstOrDefault(m => m.Name == method.Name
-                && m.Parameters.Count == 1 
-                && !m.Parameters[0].Type.Equals(type));
-
-            return getter != null || otherSetter == null;
+        private static string GetFirstWord(string name)
+        {
+            List<char> firstVerb = new List<char>
+                                    {
+                                        char.ToLowerInvariant(name[0])
+                                    };
+            firstVerb.AddRange(name.Skip(1).TakeWhile(char.IsLower));
+            return new string(firstVerb.ToArray());
         }
     }
 }
