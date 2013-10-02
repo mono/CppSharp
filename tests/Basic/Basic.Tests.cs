@@ -112,7 +112,7 @@ public class BasicTests
     public void TestAbstractReturnType()
     {
         var returnsAbstractFoo = new ReturnsAbstractFoo();
-        var abstractFoo = returnsAbstractFoo.Foo;
+        var abstractFoo = returnsAbstractFoo.foo;
         Assert.AreEqual(abstractFoo.pureFunction, 5);
         Assert.AreEqual(abstractFoo.pureFunction1, 10);
         Assert.AreEqual(abstractFoo.pureFunction2, 15);

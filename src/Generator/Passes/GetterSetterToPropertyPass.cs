@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using CppSharp.AST;
 
 namespace CppSharp.Passes
@@ -77,15 +79,19 @@ namespace CppSharp.Passes
                 foreach (var setter in group)
                 {
                     Class type = (Class) setter.Namespace;
-                    string afterSet = setter.Name.Substring(3);
+                    StringBuilder nameBuilder = new StringBuilder(setter.Name.Substring(3));
+                    if (char.IsLower(setter.Name[0]))
+                        nameBuilder[0] = char.ToLowerInvariant(nameBuilder[0]);
+                    string afterSet = nameBuilder.ToString();
                     foreach (var getter in nonSetters.Where(m => m.Namespace == type))
                     {
-                        if (string.Compare(getter.Name, afterSet, StringComparison.OrdinalIgnoreCase) == 0 &&
+                        string name = GetPropertyName(getter.Name);
+                        if (string.Compare(name, afterSet, StringComparison.OrdinalIgnoreCase) == 0 &&
                             getter.ReturnType == setter.Parameters[0].QualifiedType &&
                             !type.Methods.Any(
                                 m =>
                                     m != getter &&
-                                    string.Compare(getter.Name, m.Name, StringComparison.OrdinalIgnoreCase) == 0))
+                                    string.Compare(name, m.Name, StringComparison.OrdinalIgnoreCase) == 0))
                         {
                             GenerateProperty(getter.Namespace, getter, readOnly ? null : setter);
                             goto next;
@@ -105,9 +111,7 @@ namespace CppSharp.Passes
             foreach (Method nonSetter in nonSetters)
             {
                 Class type = (Class) nonSetter.Namespace;
-                string name = nonSetter.Name;
-                if (GetFirstWord(name) == "get")
-                    name = name.Substring(3);
+                string name = GetPropertyName(nonSetter.Name);
                 Property baseVirtualProperty = type.GetRootBaseProperty(new Property { Name = name });
                 if (!type.IsInterface && baseVirtualProperty != null)
                 {
@@ -129,7 +133,7 @@ namespace CppSharp.Passes
                      p.ExplicitInterfaceImpl != getter.ExplicitInterfaceImpl))
             {
                 Property property = new Property();
-                property.Name = getter.Name.Substring(GetFirstWord(getter.Name) == "get" ? 3 : 0);
+                property.Name = GetPropertyName(getter.Name);
                 property.Namespace = type;
                 property.QualifiedType = getter.ReturnType;
                 if (getter.IsOverride || (setter != null && setter.IsOverride))
@@ -138,7 +142,7 @@ namespace CppSharp.Passes
                     if (baseVirtualProperty.SetMethod == null)
                         setter = null;
                     foreach (Method method in type.Methods.Where(m => m.Name == property.Name && m.Parameters.Count > 0))
-                        method.Name = "Get" + method.Name;
+                        method.Name = "get" + method.Name;
                 }
                 property.GetMethod = getter;
                 property.SetMethod = setter;
@@ -153,6 +157,26 @@ namespace CppSharp.Passes
                 if (setter != null)
                     setter.IsGenerated = false;
             }
+        }
+
+        private static string GetPropertyName(string name)
+        {
+            if (GetFirstWord(name) == "get")
+            {
+                if (char.IsLower(name[0]))
+                {
+                    if (name.Length == 4)
+                    {
+                        return char.ToLowerInvariant(
+                            name[3]).ToString(CultureInfo.InvariantCulture);
+                    }
+                    return char.ToLowerInvariant(
+                        name[3]).ToString(CultureInfo.InvariantCulture) +
+                                    name.Substring(4);
+                }
+                return name.Substring(3);
+            }
+            return name;
         }
 
 
@@ -191,7 +215,8 @@ namespace CppSharp.Passes
                                     {
                                         char.ToLowerInvariant(name[0])
                                     };
-            firstVerb.AddRange(name.Skip(1).TakeWhile(char.IsLower));
+            firstVerb.AddRange(name.Skip(1).TakeWhile(
+                c => char.IsLower(c) || !char.IsLetterOrDigit(c)));
             return new string(firstVerb.ToArray());
         }
     }
