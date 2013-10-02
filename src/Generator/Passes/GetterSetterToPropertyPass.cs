@@ -182,7 +182,7 @@ namespace CppSharp.Passes
 
         private void DistributeMethod(Method method)
         {
-            if (GetFirstWord(method.Name) == "set" &&
+            if (GetFirstWord(method.Name) == "set" && method.Name.Length > 3 &&
                 method.ReturnType.Type.IsPrimitiveType(PrimitiveType.Void))
             {
                 if (method.Parameters.Count == 1)
@@ -205,7 +205,8 @@ namespace CppSharp.Passes
                 method.Parameters.Count > 0 || method.IsDestructor)
                 return false;
             var result = GetFirstWord(method.Name);
-            return result == "get" || result == "is" || result == "has" || 
+            return (result.Length < method.Name.Length &&
+                    (result == "get" || result == "is" || result == "has")) ||
                    (result != "to" && result != "new" && !verbs.Contains(result));
         }
 

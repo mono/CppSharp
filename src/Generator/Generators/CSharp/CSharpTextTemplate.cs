@@ -1264,9 +1264,18 @@ namespace CppSharp.Generators.CSharp
             }
             else
             {
-                var name = ((Class) method.Namespace).Properties.First(
-                    p => p.GetMethod == method || p.SetMethod == method).Name;
-                WriteLine("target.{0};", name);              
+                var property = ((Class) method.Namespace).Properties.FirstOrDefault(
+                    p => p.GetMethod == method);
+                if (property == null)
+                {
+                    property = ((Class) method.Namespace).Properties.First(
+                        p => p.SetMethod == method);
+                    WriteLine("target.{0} = {1};", property.Name, string.Join(", ", marshals));
+                }
+                else
+                {
+                    WriteLine("target.{0};", property.Name);
+                }
             }
 
             // TODO: Handle hidden structure return types.
