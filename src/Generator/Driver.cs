@@ -158,7 +158,8 @@ namespace CppSharp
                 TranslationUnitPasses.AddPass(new MultipleInheritancePass());
                 TranslationUnitPasses.AddPass(new ParamTypeToInterfacePass());
             }
-            TranslationUnitPasses.AddPass(new GetterSetterToPropertyPass());
+            if (Options.GenerateProperties)
+                TranslationUnitPasses.AddPass(new GetterSetterToPropertyPass());
         }
 
         public void ProcessCode()
@@ -289,6 +290,7 @@ namespace CppSharp
         public bool GenerateVirtualTables;
         public bool GenerateAbstractImpls;
         public bool GenerateInterfacesForMultipleInheritance;
+        public bool GenerateProperties;
         public bool GenerateInternalImports;
         public string IncludePrefix;
         public bool WriteOnlyWhenChanged;
