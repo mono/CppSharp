@@ -151,7 +151,22 @@ namespace CppSharp.Passes
                 {
                     property.ExplicitInterfaceImpl = setter.ExplicitInterfaceImpl;
                 }
-                // TODO: add comments
+                if (getter.Comment != null)
+                {
+                    var comment = new RawComment();
+                    comment.Kind = getter.Comment.Kind;
+                    comment.BriefText = getter.Comment.BriefText;
+                    comment.Text = getter.Comment.Text;
+                    comment.FullComment = new FullComment();
+                    comment.FullComment.Blocks.AddRange(getter.Comment.FullComment.Blocks);
+                    if (setter != null && setter.Comment != null)
+                    {
+                        comment.BriefText += Environment.NewLine + setter.Comment.BriefText;
+                        comment.Text += Environment.NewLine + setter.Comment.Text;
+                        comment.FullComment.Blocks.AddRange(setter.Comment.FullComment.Blocks);
+                    }
+                    property.Comment = comment;
+                }
                 type.Properties.Add(property);
                 getter.IsGenerated = false;
                 if (setter != null)
@@ -178,7 +193,6 @@ namespace CppSharp.Passes
             }
             return name;
         }
-
 
         private void DistributeMethod(Method method)
         {
