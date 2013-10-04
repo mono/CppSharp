@@ -898,7 +898,7 @@ namespace CppSharp.Generators.CSharp
                     PopBlock(NewLineKind.BeforeNextBlock);
                     return;
                 }
-                WriteLine("");
+                NewLine();
                 WriteStartBraceIndent();
                 Method method = function as Method;
                 if (method != null && method.IsOverride && method.IsSynthetized)
@@ -918,7 +918,7 @@ namespace CppSharp.Generators.CSharp
             }
             else if (decl is Field)
             {
-                WriteLine("");
+                NewLine();
                 WriteStartBraceIndent();
                 var field = decl as Field;
 
@@ -944,7 +944,7 @@ namespace CppSharp.Generators.CSharp
             }
             else if (decl is Variable)
             {
-                WriteLine("");
+                NewLine();
                 WriteStartBraceIndent();
                 var @var = decl as Variable;
                 var libSymbol = GetDeclarationLibrarySymbol(@var);
@@ -1264,18 +1264,7 @@ namespace CppSharp.Generators.CSharp
             }
             else
             {
-                var property = ((Class) method.Namespace).Properties.FirstOrDefault(
-                    p => p.GetMethod == method);
-                if (property == null)
-                {
-                    property = ((Class) method.Namespace).Properties.First(
-                        p => p.SetMethod == method);
-                    WriteLine("target.{0} = {1};", property.Name, string.Join(", ", marshals));
-                }
-                else
-                {
-                    WriteLine("target.{0};", property.Name);
-                }
+                InvokeProperty(method, marshals);
             }
 
             // TODO: Handle hidden structure return types.
@@ -1303,6 +1292,23 @@ namespace CppSharp.Generators.CSharp
                     Write(marshal.Context.SupportBefore);
 
                 WriteLine("return {0};", marshal.Context.Return);
+            }
+        }
+
+        private void InvokeProperty(Declaration method, IEnumerable<string> marshals)
+        {
+            var property = ((Class) method.Namespace).Properties.FirstOrDefault(
+                p => p.GetMethod == method);
+            if (property == null)
+            {
+                property = ((Class) method.Namespace).Properties.First(
+                    p => p.SetMethod == method);
+                WriteLine("target.{0} = {1};", SafeIdentifier(property.Name),
+                    string.Join(", ", marshals));
+            }
+            else
+            {
+                WriteLine("target.{0};", SafeIdentifier(property.Name));
             }
         }
 

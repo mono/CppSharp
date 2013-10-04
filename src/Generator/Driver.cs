@@ -159,7 +159,7 @@ namespace CppSharp
                 TranslationUnitPasses.AddPass(new ParamTypeToInterfacePass());
             }
             if (Options.GenerateProperties)
-                TranslationUnitPasses.AddPass(new GetterSetterToPropertyPass());
+                TranslationUnitPasses.AddPass(new GetterSetterToPropertyAdvancedPass());
         }
 
         public void ProcessCode()
