@@ -15,7 +15,7 @@ gendir = path.join(builddir, "gen");
 
 common_flags = { "Unicode", "Symbols" }
 msvc_buildflags = { } -- "/wd4190", "/wd4996", "/wd4530"
-gcc_buildflags = { "-std=gnu++11" }
+gcc_buildflags = { "-std=c++11" }
 
 msvc_cpp_defines = { }
 
@@ -39,8 +39,8 @@ function SetupNativeProject()
     buildoptions { msvc_buildflags }
     defines { msvc_cpp_defines }
     
-  configuration "gcc"
-    buildoptions { gcc_buildflags }
+  configuration { "macosx" }
+    buildoptions { gcc_buildflags, "-stdlib=libc++", "-fvisibility-inlines-hidden" }
   
   -- OS-specific options
   

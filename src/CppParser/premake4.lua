@@ -11,7 +11,7 @@ project "CppSharp.CppParser"
   language "C++"
   SetupNativeProject()
   flags { common_flags }
-
+  flags { "NoRTTI" }
 
   configuration "vs*"
     buildoptions { clang_msvc_flags }
@@ -35,11 +35,18 @@ project "CppSharp.CppParser"
     "../../deps/LLVM/build/tools/clang/include"
   }
   
-  configuration "Debug"
+  configuration { "Debug", "vs*" }
     libdirs { "../../deps/LLVM/build/lib/Debug" }
 
-  configuration "Release"
+  configuration { "Release", "vs*" }
     libdirs { "../../deps/LLVM/build/lib/RelWithDebInfo" }
+
+  configuration "not vs*"
+    defines { "__STDC_CONSTANT_MACROS", "__STDC_LIMIT_MACROS" }
+    libdirs { "../../deps/LLVM/build/lib" }
+
+  configuration "macosx"
+    links { "c++", "curses", "pthread", "z" }
   
   configuration "*"
   
