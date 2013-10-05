@@ -1377,7 +1377,7 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateEvent(Event @event)
         {
-            PushBlock(CSharpBlockKind.Event);
+            PushBlock(CSharpBlockKind.Event, @event);
             TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
             var args = TypePrinter.VisitParameters(@event.Parameters, hasNames: true);
             TypePrinter.PopContext();
