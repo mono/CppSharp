@@ -663,7 +663,9 @@ Class* Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
         BaseClassSpecifier* Base = new BaseClassSpecifier();
         Base->Access = ConvertToAccess(BS.getAccessSpecifier());
         Base->IsVirtual = BS.isVirtual();
-        Base->Type = WalkType(BS.getType(), &BS.getTypeSourceInfo()->getTypeLoc());
+
+        auto BSTL = BS.getTypeSourceInfo()->getTypeLoc();
+        Base->Type = WalkType(BS.getType(), &BSTL);
 
         RC->Bases.push_back(Base);
     }
@@ -2331,7 +2333,7 @@ ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
         llvm::SmallString<256> Path(LibDir);
         llvm::sys::path::append(Path, File);
 
-        if (FileEntry = FM.getFile(Path.str()))
+        if ((FileEntry = FM.getFile(Path.str())))
             break;
     }
 

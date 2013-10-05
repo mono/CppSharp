@@ -13,7 +13,7 @@
 template<typename T>
 static std::vector<T> split(const T & str, const T & delimiters) {
     std::vector<T> v;
-    T::size_type start = 0;
+    typename T::size_type start = 0;
     auto pos = str.find_first_of(delimiters, start);
     while(pos != T::npos) {
         if(pos != start) // ignore empty tokens

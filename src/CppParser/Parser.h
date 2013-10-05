@@ -69,8 +69,8 @@ protected:
     Class* WalkRecordCXX(clang::CXXRecordDecl*);
     Method* WalkMethodCXX(clang::CXXMethodDecl*);
     Field* WalkFieldCXX(clang::FieldDecl*, Class*);
-    ClassTemplate* Parser::WalkClassTemplate(clang::ClassTemplateDecl*);
-    FunctionTemplate* Parser::WalkFunctionTemplate(
+    ClassTemplate* WalkClassTemplate(clang::ClassTemplateDecl*);
+    FunctionTemplate* WalkFunctionTemplate(
         clang::FunctionTemplateDecl*);
     Variable* WalkVariable(clang::VarDecl*);
     RawComment* WalkRawComment(const clang::RawComment*);
