@@ -28,6 +28,42 @@ namespace CppSharp.AST
 
         public QualifiedType QualifiedType { get; set; }
 
+        public bool IsStatic
+        {
+            get
+            {
+                return (GetMethod != null && GetMethod.IsStatic) ||
+                       (SetMethod != null && SetMethod.IsStatic);
+            }
+        }
+
+        public bool IsPure
+        {
+            get
+            {
+                return (GetMethod != null && GetMethod.IsPure) ||
+                       (SetMethod != null && SetMethod.IsPure);
+            }
+        }
+
+        public bool IsVirtual
+        {
+            get
+            {
+                return (GetMethod != null && GetMethod.IsVirtual) ||
+                       (SetMethod != null && SetMethod.IsVirtual);
+            }
+        }
+
+        public bool IsOverride
+        {
+            get
+            {
+                return (GetMethod != null && GetMethod.IsOverride) ||
+                       (SetMethod != null && SetMethod.IsOverride);
+            }
+        }
+
         public Method GetMethod { get; set; }
 
         public Method SetMethod { get; set; }

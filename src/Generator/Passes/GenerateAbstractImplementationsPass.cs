@@ -57,7 +57,8 @@ namespace CppSharp.Passes
                                 {
                                     Name = abstractMethod.Name + "Delegate",
                                     QualifiedType = abstractMethod.GetFunctionType(),
-                                    IgnoreFlags = abstractMethod.IgnoreFlags
+                                    IgnoreFlags = abstractMethod.IgnoreFlags,
+                                    Namespace = internalImpl
                                 };
                 internalImpl.Typedefs.Add(@delegate);
             }
@@ -79,7 +80,7 @@ namespace CppSharp.Passes
             var internalImpl = new Class
                                 {
                                     Name = @class.Name + "Internal",
-                                    Access = AccessSpecifier.Private,
+                                    Access = @class.Access,
                                     Namespace = @class.Namespace
                                 };
             var @base = new BaseClassSpecifier { Type = new TagType(@class) };

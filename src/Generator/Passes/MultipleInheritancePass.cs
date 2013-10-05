@@ -66,9 +66,15 @@ namespace CppSharp.Passes
                 let i = GetInterface(@base, b.Class)
                 select new BaseClassSpecifier { Type = new TagType(i) });
 
-            @interface.Methods.AddRange(@base.Methods.Where(
-                m => !m.IsConstructor && !m.IsDestructor && !m.IsStatic && !m.Ignore));
-            @interface.Properties.AddRange(@base.Properties.Where(p => !p.Ignore));
+            @interface.Methods.AddRange(
+                from m in @base.Methods
+                where !m.IsConstructor && !m.IsDestructor && !m.IsStatic && !m.Ignore
+                select new Method(m) { Namespace = @interface });
+
+            @interface.Properties.AddRange(
+                from property in @base.Properties
+                where !property.Ignore
+                select new Property(property) { Namespace = @interface });
 
             if (@interface.Bases.Count == 0)
             {
