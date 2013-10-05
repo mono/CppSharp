@@ -39,6 +39,7 @@ namespace CppSharp.Passes
             if (decl is Enumeration) return true;
             if (decl is Property) return true;
             if (decl is Event) return true;
+            if (decl is TypedefDecl) return true;
             return false;
         }
 
@@ -125,6 +126,14 @@ namespace CppSharp.Passes
             return base.VisitProperty(property);
         }
 
+        public override bool VisitTypedefDecl(TypedefDecl typedef)
+        {
+            if (!Targets.HasFlag(RenameTargets.Delegate))
+                return false;
+
+            return base.VisitTypedefDecl(typedef);
+        }
+
         public override bool VisitMethodDecl(Method method)
         {
             if (!Targets.HasFlag(RenameTargets.Method))
@@ -173,7 +182,8 @@ namespace CppSharp.Passes
         EnumItem  = 1 << 6,
         Event     = 1 << 7,
         Property  = 1 << 8,
-        Any = Function | Method | Parameter | Class | Field | Enum | EnumItem | Event | Property,
+        Delegate  = 1 << 9,
+        Any = Function | Method | Parameter | Class | Field | Enum | EnumItem | Event | Property | Delegate,
     }
 
     /// <summary>

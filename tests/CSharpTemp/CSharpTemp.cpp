@@ -65,3 +65,33 @@ Baz::operator int() const
 {
     return 500;
 }
+
+int AbstractProprietor::getValue()
+{
+    return m_value;
+}
+
+void AbstractProprietor::setProp(long property)
+{
+    m_property = property;
+}
+
+void Proprietor::setValue(int value)
+{
+    m_value = value;
+}
+
+long Proprietor::prop()
+{
+    return m_property;
+}
+
+void P::setValue(int value)
+{
+    m_value = value + 10;
+}
+
+long P::prop()
+{
+    return m_property + 100;
+}

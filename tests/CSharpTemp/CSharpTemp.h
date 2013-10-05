@@ -63,3 +63,32 @@ struct QByteArrayDataPtr
 {
     QByteArrayData* ptr;
 };
+
+class DLL_API AbstractProprietor
+{
+public:
+    virtual int getValue();
+    virtual void setValue(int value) = 0;
+
+    virtual long prop() = 0;
+    virtual void setProp(long prop);
+
+protected:
+    int m_value;
+    long m_property;
+};
+
+class DLL_API Proprietor : public AbstractProprietor
+{
+public:
+    virtual void setValue(int value);
+
+    virtual long prop();
+};
+
+class DLL_API P : Proprietor
+{
+public:
+    virtual void setValue(int value);
+    virtual long prop();
+};
