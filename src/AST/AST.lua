@@ -5,4 +5,4 @@ project "CppSharp.AST"
   location "."
 
   files { "*.cs" }
-  links { "System" }
+  links { "System", "System.Core" }
