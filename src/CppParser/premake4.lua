@@ -5,6 +5,9 @@ clang_msvc_flags =
   "/wd4251"
 }
 
+LLVMRootDir = "../../deps/LLVM/"
+LLVMBuildDir = "../../deps/LLVM/build_mingw/"
+
 project "CppSharp.CppParser"
   
   kind "SharedLib"
@@ -28,22 +31,23 @@ project "CppSharp.CppParser"
   
   includedirs
   {
-    "../../deps/LLVM/include",
-    "../../deps/LLVM/build/include",
-    "../../deps/LLVM/tools/clang/include",
-    "../../deps/LLVM/tools/clang/lib",
-    "../../deps/LLVM/build/tools/clang/include"
+    path.join(LLVMRootDir, "include"),
+    path.join(LLVMRootDir, "tools/clang/include"),    
+    path.join(LLVMRootDir, "tools/clang/lib"),    
+    path.join(LLVMBuildDir, "include"),
+    path.join(LLVMBuildDir, "tools/clang/include"),
   }
   
   configuration { "Debug", "vs*" }
-    libdirs { "../../deps/LLVM/build/lib/Debug" }
+    libdirs { path.join(LLVMBuildDir, "lib/Debug") }
 
   configuration { "Release", "vs*" }
-    libdirs { "../../deps/LLVM/build/lib/RelWithDebInfo" }
+    libdirs { path.join(LLVMBuildDir, "lib/RelWithDebInfo") }
 
   configuration "not vs*"
+    buildoptions { "-fpermissive" }
     defines { "__STDC_CONSTANT_MACROS", "__STDC_LIMIT_MACROS" }
-    libdirs { "../../deps/LLVM/build/lib" }
+    libdirs { path.join(LLVMBuildDir, "lib") }
 
   configuration "macosx"
     links { "c++", "curses", "pthread", "z" }

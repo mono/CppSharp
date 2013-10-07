@@ -38,6 +38,9 @@ function SetupNativeProject()
   configuration "vs*"
     buildoptions { msvc_buildflags }
     defines { msvc_cpp_defines }
+
+  configuration { "gmake" }
+    buildoptions { gcc_buildflags }
     
   configuration { "macosx" }
     buildoptions { gcc_buildflags, "-stdlib=libc++", "-fvisibility-inlines-hidden" }

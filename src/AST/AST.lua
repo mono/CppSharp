@@ -2,7 +2,9 @@ project "CppSharp.AST"
 
   kind  "SharedLib"
   language "C#"
-  location "."
+
+  configuration "vs*"
+  	location "."
 
   files { "*.cs" }
   links { "System", "System.Core" }

@@ -22,7 +22,7 @@ solution "CppSharp"
   -- startproject "Generator"
   
   configuration "Release"
-    flags { "Optimize" }
+    optimize()
 
   configuration "vs2012"
     framework "4.0"
@@ -42,6 +42,8 @@ solution "CppSharp"
     include (srcdir .. "/AST/AST.lua")
     include (srcdir .. "/Generator/Generator.lua")
     include (srcdir .. "/Generator.Tests/Generator.Tests.lua")
-    include (srcdir .. "/Parser/Parser.lua")
     include (srcdir .. "/Runtime/Runtime.lua")
     include (srcdir .. "/CppParser")
+
+    --configuration "vs*"
+        --include (srcdir .. "/Parser/Parser.lua")

@@ -13,6 +13,8 @@ project "CppSharp.Parser"
   dependson { "CppSharp.AST" }
   flags { common_flags, "Managed" }
 
+  usingdirs { libdir }
+  
   -- usingdirs is only supported in per-file configs in our
   -- premake build. remove this once this support is added
   -- at the project level.
@@ -61,17 +63,6 @@ project "CppSharp.Parser"
   
   links
   {
-    "clangAnalysis",
-    "clangAST",
-    "clangBasic",
-    "clangCodeGen",
-    "clangDriver",
-    "clangEdit",
-    "clangFrontend",
-    "clangLex",
-    "clangParse",
-    "clangSema",
-    "clangSerialization",
     "LLVMAnalysis",
     "LLVMAsmParser",
     "LLVMBitReader",
@@ -99,4 +90,15 @@ project "CppSharp.Parser"
     "LLVMX86Desc",
     "LLVMX86Info",
     "LLVMX86Utils",
+    "clangAnalysis",
+    "clangAST",
+    "clangBasic",
+    "clangDriver",
+    "clangEdit",
+    "clangFrontend",
+    "clangLex",
+    "clangParse",
+    "clangSema",
+    "clangSerialization",
+    "clangCodeGen",
   }
