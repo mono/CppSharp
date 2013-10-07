@@ -18,19 +18,19 @@ if "%C%"=="1" goto vs2010
 if "%C%"=="0" goto clean
 
 :clean
-"premake4" --file=premake4.lua clean
+"premake5" --file=premake4.lua clean
 goto quit
 
 :vs2010
-"premake4" --file=premake4.lua vs2010
+"premake5" --file=premake4.lua vs2010
 goto quit
 
 :vs2012
-"premake4" --file=premake4.lua vs2012
+"premake5" --file=premake4.lua vs2012
 goto quit
 
 :gmake
-"premake4" --file=premake4.lua gmake
+"premake5" --file=premake4.lua gmake
 goto quit
 
 :quit
