@@ -1097,7 +1097,7 @@ namespace CppSharp.Generators.CSharp
         public void GenerateVTable(Class @class)
         {
             var entries = VTables.GatherVTableMethodEntries(@class);
-            entries = entries.Where(e => !e.Method.Ignore ||
+            entries = entries.Where(e => !e.Method.ExplicityIgnored ||
                 @class.Properties.Any(p => !p.Ignore &&
                     (p.GetMethod == e.Method || p.SetMethod == e.Method))).ToList();
 
