@@ -182,7 +182,7 @@ void Parser::SetupHeader()
     if (!Opts->NoBuiltinIncludes)
     {
         std::vector<std::string> SystemDirs = GetWindowsSystemIncludeDirs();
-        for(int i = 0; i < SystemDirs.size(); i++)
+        for(unsigned i = 0; i < SystemDirs.size(); i++)
             HSOpts.AddPath(SystemDirs[i], frontend::System, /*IsFramework=*/false,
                 /*IgnoreSysRoot=*/false);
     }
