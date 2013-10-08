@@ -36,6 +36,7 @@ function SetupNativeProject()
     
   configuration "Release"
     defines { "NDEBUG" }
+    optimize "On"
     
   -- Compiler-specific options
   
