@@ -39,9 +39,9 @@ project "CppSharp.Parser"
   
   files
   {
-    "**.h",
+    "*.h",
     "*.cpp",
-    "**.lua"
+    "*.lua"
   }
   
   SetupLLVMLibs()
