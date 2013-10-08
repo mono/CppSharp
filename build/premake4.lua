@@ -23,9 +23,7 @@ solution "CppSharp"
   debugdir (bindir)
 
   -- startproject "Generator"
-  
-  configuration "Release"
-    optimize()
+
 
   configuration "vs2012"
     framework "4.0"
