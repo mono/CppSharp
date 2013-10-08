@@ -44,20 +44,7 @@ project "CppSharp.Parser"
     "**.lua"
   }
   
-  includedirs
-  {
-    "../../deps/LLVM/include",
-    "../../deps/LLVM/build/include",
-    "../../deps/LLVM/tools/clang/include",
-    "../../deps/LLVM/tools/clang/lib",
-    "../../deps/LLVM/build/tools/clang/include"
-  }
-  
-  configuration "Debug"
-    libdirs { "../../deps/LLVM/build/lib/Debug" }
-
-  configuration "Release"
-    libdirs { "../../deps/LLVM/build/lib/RelWithDebInfo" }
+  SetupLLVMLibs()
   
   configuration "*"
   

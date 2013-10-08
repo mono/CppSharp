@@ -7,6 +7,9 @@ config = {}
 dofile "Helpers.lua"
 dofile "Tests.lua"
 
+-- Setup the LLVM dependency
+dofile "LLVM.lua"
+
 solution "CppSharp"
 
   configurations { "Debug", "Release" }
