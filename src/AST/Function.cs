@@ -168,7 +168,9 @@ namespace CppSharp.AST
         public Function OriginalFunction { get; set; }
 
         public string Mangled { get; set; }
-        
+
+        public string Signature { get; set; }
+
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {
             return visitor.VisitFunctionDecl(this);

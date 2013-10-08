@@ -1574,7 +1574,16 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, CppSharp::AST::Function^ F,
         assert (!FTInfo.isNull());
 
         ParamStartLoc = FTInfo.getRParenLoc();
+        ResultLoc = FTInfo.getResultLoc().getLocStart();
     }
+
+    clang::SourceRange Range(FD->getLocStart(), ParamStartLoc);
+    if (ResultLoc.isValid())
+        Range.setBegin(ResultLoc);
+
+    std::string Sig;
+    if (GetDeclText(Range, Sig))
+        F->Signature = clix::marshalString<clix::E_UTF8>(Sig);
 
     for(auto it = FD->param_begin(); it != FD->param_end(); ++it)
     {
