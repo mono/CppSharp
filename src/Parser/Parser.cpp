@@ -575,6 +575,9 @@ CppSharp::AST::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
     HandlePreprocessedEntities(RC, headRange, CppSharp::AST::MacroLocation::ClassHead);
     HandlePreprocessedEntities(RC, bodyRange, CppSharp::AST::MacroLocation::ClassBody);
 
+    auto &Sema = C->getSema();
+    Sema.ForceDeclarationOfImplicitMembers(Record);
+
     RC->IsPOD = Record->isPOD();
     RC->IsUnion = Record->isUnion();
     RC->IsAbstract = Record->isAbstract();
@@ -583,9 +586,6 @@ CppSharp::AST::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
     RC->IsPolymorphic = Record->isPolymorphic();
     RC->HasNonTrivialDefaultConstructor = Record->hasNonTrivialDefaultConstructor();
     RC->HasNonTrivialCopyConstructor = Record->hasNonTrivialCopyConstructor();
-
-    auto &Sema = C->getSema();
-    Sema.ForceDeclarationOfImplicitMembers(Record);
 
     bool hasLayout = !Record->isDependentType() && !Record->isInvalidDecl();
 
