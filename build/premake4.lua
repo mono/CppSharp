@@ -48,5 +48,6 @@ solution "CppSharp"
     include (srcdir .. "/Runtime/Runtime.lua")
     include (srcdir .. "/CppParser")
 
-    --configuration "vs*"
-        --include (srcdir .. "/Parser/Parser.lua")
+    if string.starts(action, "vs") then
+      include (srcdir .. "/Parser/Parser.lua")
+    end

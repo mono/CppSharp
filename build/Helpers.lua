@@ -19,6 +19,10 @@ gcc_buildflags = { "-std=c++11" }
 
 msvc_cpp_defines = { }
 
+function string.starts(str, start)
+   return string.sub(str, 1, string.len(start)) == start
+end
+
 function SafePath(path)
   return "\"" .. path .. "\""
 end
