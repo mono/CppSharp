@@ -29,7 +29,7 @@ struct CS_API ParserOptions
     // C/C++ header file name.
     std::string FileName;
 
-    Library* Library;
+    CppSharp::CppParser::Library* Library;
 
     int ToolSetToUse;
     std::string TargetTriple;
@@ -70,7 +70,7 @@ enum struct ParserResultKind
 struct CS_API ParserResult
 {
     ParserResultKind Kind;
-    Library* Library;
+    CppSharp::CppParser::Library* Library;
     std::vector<ParserDiagnostic> Diagnostics;
 };
 

@@ -38,7 +38,7 @@ struct CS_API TypeQualifiers
 
 struct CS_API QualifiedType
 {
-    Type* Type;
+    CppSharp::CppParser::Type* Type;
     TypeQualifiers Qualifiers;
 };
 
@@ -46,7 +46,7 @@ struct Declaration;
 
 struct CS_API TagType : public Type
 {
-    Declaration* Declaration;
+    CppSharp::CppParser::Declaration* Declaration;
 };
 
 struct CS_API ArrayType : public Type
@@ -59,7 +59,7 @@ struct CS_API ArrayType : public Type
         Incomplete
     };
 
-    QualifiedType QualifiedType;
+    CppSharp::CppParser::QualifiedType QualifiedType;
     ArraySize SizeType;
     long Size;
 };
@@ -80,7 +80,7 @@ struct CS_API FunctionType : public Type
 {
     QualifiedType ReturnType;
     std::vector<Parameter*> Parameters;
-    CallingConvention CallingConvention;
+    CppSharp::CppParser::CallingConvention CallingConvention;
 };
 
 struct CS_API PointerType : public Type
@@ -132,7 +132,7 @@ struct CS_API TemplateArgument
 
     ArgumentKind Kind;
     QualifiedType Type;
-    Declaration* Declaration;
+    CppSharp::CppParser::Declaration* Declaration;
     long Integral;
 };
 
@@ -141,7 +141,7 @@ struct Template;
 struct CS_API TemplateSpecializationType : public Type
 {
     std::vector<TemplateArgument> Arguments;
-    Template* Template;
+    CppSharp::CppParser::Template* Template;
     Type* Desugared;
 };
 
@@ -165,7 +165,7 @@ struct Class;
 struct CS_API InjectedClassNameType : public Type
 {
     TemplateSpecializationType TemplateSpecialization;
-    Class* Class;
+    CppSharp::CppParser::Class* Class;
 };
 
 struct CS_API DependentNameType : public Type
@@ -220,7 +220,7 @@ struct CS_API RawComment
     RawCommentKind Kind;
     std::string Text;
     std::string BriefText;
-    FullComment* FullComment;
+    CppSharp::CppParser::FullComment* FullComment;
 };
 
 // Class layouts
@@ -241,7 +241,7 @@ struct CS_API VTableComponent
 {
     VTableComponentKind Kind;
     unsigned Offset;
-    Declaration* Declaration;
+    CppSharp::CppParser::Declaration* Declaration;
 };
 
 struct CS_API VTableLayout
@@ -352,14 +352,14 @@ struct CS_API DeclarationContext : public Declaration
 
 struct CS_API TypedefDecl : public Declaration
 {
-    QualifiedType QualifiedType;
+    CppSharp::CppParser::QualifiedType QualifiedType;
 };
 
 struct CS_API Parameter : public Declaration
 {
     Parameter() : IsIndirect(false) {}
 
-    QualifiedType QualifiedType;
+    CppSharp::CppParser::QualifiedType QualifiedType;
     bool IsIndirect;
     bool HasDefaultValue;
 };
@@ -436,7 +436,7 @@ struct CS_API Function : public Declaration
     CXXOperatorKind OperatorKind;
     std::string Mangled;
     std::string Signature;
-    CallingConvention CallingConvention;
+    CppSharp::CppParser::CallingConvention CallingConvention;
     std::vector<Parameter*> Parameters;
 };
 
@@ -477,32 +477,32 @@ struct CS_API Enumeration : public Declaration
     };
 
     EnumModifiers Modifiers;
-    Type* Type;
-    BuiltinType* BuiltinType;
+    CppSharp::CppParser::Type* Type;
+    CppSharp::CppParser::BuiltinType* BuiltinType;
     std::vector<Item> Items;
 };
 
 struct CS_API Variable : public Declaration
 {
     std::string Mangled;
-    QualifiedType QualifiedType;
+    CppSharp::CppParser::QualifiedType QualifiedType;
 };
 
 struct CS_API BaseClassSpecifier
 {
     AccessSpecifier Access;
     bool IsVirtual;
-    Type* Type;
+    CppSharp::CppParser::Type* Type;
 };
 
 struct Class;
 
 struct CS_API Field : public Declaration
 {
-    QualifiedType QualifiedType;
+    CppSharp::CppParser::QualifiedType QualifiedType;
     AccessSpecifier Access;
     unsigned Offset;
-    Class* Class;
+    CppSharp::CppParser::Class* Class;
 };
 
 
