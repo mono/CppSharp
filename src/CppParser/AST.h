@@ -435,6 +435,7 @@ struct CS_API Function : public Declaration
     bool IsDeleted;
     CXXOperatorKind OperatorKind;
     std::string Mangled;
+    std::string Signature;
     CallingConvention CallingConvention;
     std::vector<Parameter*> Parameters;
 };

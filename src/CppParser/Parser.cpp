@@ -317,6 +317,9 @@ static clang::SourceLocation GetDeclStartLocation(clang::CompilerInstance* C,
     auto lineBeginOffset = SM.getFileOffset(lineBeginLoc);
     assert(lineBeginOffset <= startOffset);
 
+    if (D->getLexicalDeclContext()->decls_empty())
+        return lineBeginLoc;
+
     auto prevDecl = GetPreviousDeclInContext(D);
     if(!prevDecl)
         return lineBeginLoc;
@@ -613,9 +616,9 @@ Class* Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
         {
             auto MD = cast<CXXMethodDecl>(D);
             auto Method = WalkMethodCXX(MD);
+            HandleDeclaration(MD, Method);
             Method->AccessDecl = AccessDecl;
             RC->Methods.push_back(Method);
-            HandleComments(MD, Method);
             break;
         }
         case Decl::Field:
@@ -626,8 +629,8 @@ Class* Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
             if (Layout)
                 Field->Offset = Layout->getFieldOffset(FD->getFieldIndex());
 
+            HandleDeclaration(FD, Field);
             RC->Fields.push_back(Field);
-            HandleComments(FD, Field);
             break;
         }
         case Decl::AccessSpec:
@@ -642,7 +645,7 @@ Class* Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
             auto range = SourceRange(startLoc, AS->getColonLoc());
             HandlePreprocessedEntities(AccessDecl, range,
                 MacroLocation::Unknown);
-
+            HandleDeclaration(AS, AccessDecl);
             RC->Specifiers.push_back(AccessDecl);
             break;
         }
@@ -1558,6 +1561,7 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, Function* F,
     F->Mangled = Mangled;
 
     SourceLocation ParamStartLoc = FD->getLocStart();
+    SourceLocation ResultLoc;
 
     auto FTSI = FD->getTypeSourceInfo();
     if (FTSI)
@@ -1570,7 +1574,16 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, Function* F,
         assert (!FTInfo.isNull());
 
         ParamStartLoc = FTInfo.getRParenLoc();
+        ResultLoc = FTInfo.getResultLoc().getLocStart();
     }
+
+    clang::SourceRange Range(FD->getLocStart(), ParamStartLoc);
+    if (ResultLoc.isValid())
+        Range.setBegin(ResultLoc);
+
+    std::string Sig;
+    if (GetDeclText(Range, Sig))
+        F->Signature = Sig;
 
     for(auto it = FD->param_begin(); it != FD->param_end(); ++it)
     {
@@ -1591,6 +1604,7 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, Function* F,
         P->QualifiedType = GetQualifiedType(VD->getType(), WalkType(VD->getType(), &PTL));
         P->HasDefaultValue = VD->hasDefaultArg();
         P->_Namespace = NS;
+        HandleDeclaration(VD, P);
 
         F->Parameters.push_back(P);
 
@@ -1860,6 +1874,40 @@ void Parser::HandlePreprocessedEntities(Declaration* Decl,
     }
 }
 
+void Parser::HandleOriginalText(clang::Decl* D, Declaration* Decl)
+{
+    auto &SM = C->getSourceManager();
+    auto &LangOpts = C->getLangOpts();
+
+    auto Range = clang::CharSourceRange::getTokenRange(D->getSourceRange());
+
+    bool Invalid;
+    auto DeclText = clang::Lexer::getSourceText(Range, SM, LangOpts, &Invalid);
+    
+    if (!Invalid)
+        Decl->DebugText = DeclText;
+}
+
+void Parser::HandleDeclaration(clang::Decl* D, Declaration* Decl)
+{
+    if (Decl->PreprocessedEntities.empty())
+    {
+        auto startLoc = GetDeclStartLocation(C.get(), D);
+        auto endLoc = D->getLocEnd();
+        auto range = clang::SourceRange(startLoc, endLoc);
+
+        HandlePreprocessedEntities(Decl, range);
+    }
+
+    HandleOriginalText(D, Decl);
+    HandleComments(D, Decl);
+
+    if (const clang::ValueDecl *VD = clang::dyn_cast_or_null<clang::ValueDecl>(D))
+        Decl->IsDependent = VD->getType()->isDependentType();
+
+    Decl->Access = ConvertToAccess(D->getAccess());
+}
+
 //-----------------------------------//
 
 Declaration* Parser::WalkDeclarationDef(clang::Decl* D)
@@ -2061,21 +2109,7 @@ Declaration* Parser::WalkDeclaration(clang::Decl* D,
     } };
 
     if (Decl)
-    {
-        if (Decl->PreprocessedEntities.size() == 0)
-        {
-            auto startLoc = GetDeclStartLocation(C.get(), D);
-            auto endLoc = D->getLocEnd();
-            auto range = clang::SourceRange(startLoc, endLoc);
-
-            HandlePreprocessedEntities(Decl, range);
-        }
-        HandleComments(D, Decl);
-
-        if (const ValueDecl *VD = dyn_cast_or_null<ValueDecl>(D))
-            Decl->IsDependent = VD->getType()->isDependentType();
-        Decl->Access = ConvertToAccess(D->getAccess());
-    }
+        HandleDeclaration(D, Decl);
 
     return Decl;
 }

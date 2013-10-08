@@ -86,7 +86,6 @@ protected:
     std::string GetDeclMangledName(clang::Decl*, clang::TargetCXXABI,
         bool IsDependent = false);
     std::string GetTypeName(const clang::Type*);
-    void HandleComments(clang::Decl* D, Declaration*);
     void WalkFunction(clang::FunctionDecl* FD, Function* F,
         bool IsDependent = false);
     void HandlePreprocessedEntities(Declaration* Decl, clang::SourceRange sourceRange,
@@ -103,6 +102,9 @@ protected:
     clang::CallingConv GetAbiCallConv(clang::CallingConv CC,
         bool IsInstMethod, bool IsVariadic);
 
+    void HandleDeclaration(clang::Decl* D, Declaration*);
+    void HandleOriginalText(clang::Decl* D, Declaration*);
+    void HandleComments(clang::Decl* D, Declaration*);
     void HandleDiagnostics(ParserResult* res);
 
     int Index;
