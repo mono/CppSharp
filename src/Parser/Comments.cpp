@@ -265,17 +265,4 @@ void Parser::HandleComments(clang::Decl* D, CppSharp::AST::Declaration^ Decl)
         auto CB = safe_cast<CppSharp::AST::FullComment^>(ConvertCommentBlock(FC));
         RawComment->FullComment = CB;
     }
-
-    // Debug Text
-    SourceManager& SM = C->getSourceManager();
-    const LangOptions& LangOpts = C->getLangOpts();
-
-    auto Range = CharSourceRange::getTokenRange(D->getSourceRange());
-
-    bool Invalid;
-    StringRef DeclText = Lexer::getSourceText(Range, SM, LangOpts, &Invalid);
-    //assert(!Invalid && "Should have a valid location");
-    
-    if (!Invalid)
-        Decl->DebugText = marshalString<E_UTF8>(DeclText);
 }

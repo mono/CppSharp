@@ -81,7 +81,6 @@ protected:
     std::string GetDeclMangledName(clang::Decl*, clang::TargetCXXABI,
         bool IsDependent = false);
     std::string GetTypeName(const clang::Type*);
-    void HandleComments(clang::Decl* D, CppSharp::AST::Declaration^);
     void WalkFunction(clang::FunctionDecl* FD, CppSharp::AST::Function^ F,
         bool IsDependent = false);
     void HandlePreprocessedEntities(CppSharp::AST::Declaration^ Decl, clang::SourceRange sourceRange,
@@ -95,6 +94,9 @@ protected:
     CppSharp::AST::DeclarationContext^ GetNamespace(clang::Decl*, clang::DeclContext*);
     CppSharp::AST::DeclarationContext^ GetNamespace(clang::Decl*);
 
+    void HandleDeclaration(clang::Decl* D, CppSharp::AST::Declaration^);
+    void HandleOriginalText(clang::Decl* D, CppSharp::AST::Declaration^);
+    void HandleComments(clang::Decl* D, CppSharp::AST::Declaration^);
     void HandleDiagnostics(ParserResult^ res);
 
     int Index;

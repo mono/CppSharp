@@ -613,9 +613,9 @@ CppSharp::AST::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
         {
             auto MD = cast<CXXMethodDecl>(D);
             auto Method = WalkMethodCXX(MD);
+            HandleDeclaration(MD, Method);
             Method->AccessDecl = AccessDecl;
             RC->Methods->Add(Method);
-            HandleComments(MD, Method);
             break;
         }
         case Decl::Field:
@@ -626,8 +626,8 @@ CppSharp::AST::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
             if (Layout)
                 Field->Offset = Layout->getFieldOffset(FD->getFieldIndex());
 
+            HandleDeclaration(FD, Field);
             RC->Fields->Add(Field);
-            HandleComments(FD, Field);
             break;
         }
         case Decl::AccessSpec:
@@ -642,7 +642,7 @@ CppSharp::AST::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
             auto range = SourceRange(startLoc, AS->getColonLoc());
             HandlePreprocessedEntities(AccessDecl, range,
                 CppSharp::AST::MacroLocation::Unknown);
-
+            HandleDeclaration(AS, AccessDecl);
             RC->Specifiers->Add(AccessDecl);
             break;
         }
@@ -1558,6 +1558,7 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, CppSharp::AST::Function^ F,
     F->Mangled = marshalString<E_UTF8>(Mangled);
 
     SourceLocation ParamStartLoc = FD->getLocStart();
+    SourceLocation ResultLoc;
 
     auto FTSI = FD->getTypeSourceInfo();
     if (FTSI)
@@ -1591,6 +1592,7 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, CppSharp::AST::Function^ F,
         P->QualifiedType = GetQualifiedType(VD->getType(), WalkType(VD->getType(), &PTL));
         P->HasDefaultValue = VD->hasDefaultArg();
         P->Namespace = NS;
+        HandleDeclaration(VD, P);
 
         F->Parameters->Add(P);
 
@@ -1864,6 +1866,40 @@ void Parser::HandlePreprocessedEntities(CppSharp::AST::Declaration^ Decl,
     }
 }
 
+void Parser::HandleOriginalText(clang::Decl* D, CppSharp::AST::Declaration^ Decl)
+{
+    auto &SM = C->getSourceManager();
+    auto &LangOpts = C->getLangOpts();
+
+    auto Range = clang::CharSourceRange::getTokenRange(D->getSourceRange());
+
+    bool Invalid;
+    auto DeclText = clang::Lexer::getSourceText(Range, SM, LangOpts, &Invalid);
+    
+    if (!Invalid)
+        Decl->DebugText = clix::marshalString<clix::E_UTF8>(DeclText);
+}
+
+void Parser::HandleDeclaration(clang::Decl* D, CppSharp::AST::Declaration^ Decl)
+{
+    if (Decl->PreprocessedEntities->Count == 0)
+    {
+        auto startLoc = GetDeclStartLocation(C.get(), D);
+        auto endLoc = D->getLocEnd();
+        auto range = clang::SourceRange(startLoc, endLoc);
+
+        HandlePreprocessedEntities(Decl, range);
+    }
+
+    HandleOriginalText(D, Decl);
+    HandleComments(D, Decl);
+
+    if (const clang::ValueDecl *VD = clang::dyn_cast_or_null<clang::ValueDecl>(D))
+        Decl->IsDependent = VD->getType()->isDependentType();
+
+    Decl->Access = ConvertToAccess(D->getAccess());
+}
+
 //-----------------------------------//
 
 CppSharp::AST::Declaration^ Parser::WalkDeclarationDef(clang::Decl* D)
@@ -2065,21 +2101,7 @@ CppSharp::AST::Declaration^ Parser::WalkDeclaration(clang::Decl* D,
     } };
 
     if (Decl)
-    {
-        if (Decl->PreprocessedEntities->Count == 0)
-        {
-            auto startLoc = GetDeclStartLocation(C.get(), D);
-            auto endLoc = D->getLocEnd();
-            auto range = clang::SourceRange(startLoc, endLoc);
-
-            HandlePreprocessedEntities(Decl, range);
-        }
-        HandleComments(D, Decl);
-
-        if (const ValueDecl *VD = dyn_cast_or_null<ValueDecl>(D))
-            Decl->IsDependent = VD->getType()->isDependentType();
-        Decl->Access = ConvertToAccess(D->getAccess());
-    }
+        HandleDeclaration(D, Decl);
 
     return Decl;
 }
