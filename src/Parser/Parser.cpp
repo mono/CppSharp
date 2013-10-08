@@ -314,6 +314,9 @@ static clang::SourceLocation GetDeclStartLocation(clang::CompilerInstance* C,
     auto lineBeginOffset = SM.getFileOffset(lineBeginLoc);
     assert(lineBeginOffset <= startOffset);
 
+    if (D->getLexicalDeclContext()->decls_empty())
+        return lineBeginLoc;
+
     auto prevDecl = GetPreviousDeclInContext(D);
     if(!prevDecl)
         return lineBeginLoc;
