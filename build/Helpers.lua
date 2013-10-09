@@ -10,7 +10,7 @@ examplesdir = path.getabsolute("../examples");
 testsdir = path.getabsolute("../tests");
 
 builddir = path.getabsolute("./" .. action);
-libdir = path.join(builddir, "lib");
+libdir = path.join(builddir, "lib", "%{cfg.buildcfg}_%{cfg.platform}");
 gendir = path.join(builddir, "gen");
 
 common_flags = { "Unicode", "Symbols" }
@@ -32,7 +32,6 @@ function SetupNativeProject()
 
   c = configuration "Debug"
     defines { "DEBUG" }
-    targetsuffix "_d"
     
   configuration "Release"
     defines { "NDEBUG" }
