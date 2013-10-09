@@ -1332,7 +1332,7 @@ namespace CppSharp.Generators.CSharp
             PushBlock(CSharpBlockKind.VTableDelegate);
 
             WriteLine("[SuppressUnmanagedCodeSecurity]");
-            WriteLine("[UnmanagedFunctionPointerAttribute(CallingConvention.{0})]",
+            WriteLine("[UnmanagedFunctionPointerAttribute(System.Runtime.InteropServices.CallingConvention.{0})]",
                 Helpers.ToCSharpCallConv(method.CallingConvention));
 
             CSharpTypePrinterResult retType;
@@ -1401,7 +1401,7 @@ namespace CppSharp.Generators.CSharp
             delegateName = delegateInstance + "Delegate";
             delegateRaise = delegateInstance + "RaiseInstance";
 
-            WriteLine("[UnmanagedFunctionPointerAttribute(CallingConvention.Cdecl)]");
+            WriteLine("[UnmanagedFunctionPointerAttribute(System.Runtime.InteropServices.CallingConvention.Cdecl)]");
             WriteLine("delegate void {0}({1});", delegateName, args);
             WriteLine("{0} {1};", delegateName, delegateRaise);
             NewLine();
@@ -2168,7 +2168,7 @@ namespace CppSharp.Generators.CSharp
             else if (typedef.Type.IsPointerTo(out functionType))
             {
                 PushBlock(CSharpBlockKind.Typedef);
-                WriteLine("[UnmanagedFunctionPointerAttribute(CallingConvention.{0})]",
+                WriteLine("[UnmanagedFunctionPointerAttribute(System.Runtime.InteropServices.CallingConvention.{0})]",
                     Helpers.ToCSharpCallConv(functionType.CallingConvention));
                 TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
                 WriteLine("{0}unsafe {1};",
@@ -2297,7 +2297,8 @@ namespace CppSharp.Generators.CSharp
             Write("[DllImport(\"{0}\", ", libName);
 
             var callConv = Helpers.ToCSharpCallConv(function.CallingConvention);
-            WriteLine("CallingConvention = CallingConvention.{0},", callConv);
+            WriteLine("CallingConvention = System.Runtime.InteropServices.CallingConvention.{0},",
+                callConv);
 
             WriteLineIndent("EntryPoint=\"{0}\")]", function.Mangled);
 
