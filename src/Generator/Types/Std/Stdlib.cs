@@ -194,10 +194,7 @@ namespace CppSharp.Types.Std
 
         public override void CSharpMarshalToNative(MarshalContext ctx)
         {
-            var templateType = Type as TemplateSpecializationType;
-            var type = templateType.Arguments[0].Type;
-
-            ctx.Return.Write("Std.Vector.Create({0})", ctx.Parameter.Name);
+            ctx.Return.Write("{0}.Internal", ctx.Parameter.Name);
         }
 
         public override void CSharpMarshalToManaged(MarshalContext ctx)
@@ -205,7 +202,7 @@ namespace CppSharp.Types.Std
             var templateType = Type as TemplateSpecializationType;
             var type = templateType.Arguments[0].Type;
 
-            ctx.Return.Write("Std.Vector.Create<{0}>({1})", type,
+            ctx.Return.Write("new Std.Vector<{0}>({1})", type,
                 ctx.ReturnVarName);
         }
     }
