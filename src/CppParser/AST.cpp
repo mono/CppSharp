@@ -27,7 +27,7 @@ static std::vector<T> split(const T & str, const T & delimiters) {
     return v;
 }
 
-namespace CppSharp { namespace CppParser {
+namespace CppSharp { namespace CppParser { namespace AST {
 
 Declaration* DeclarationContext::FindAnonymous(uint64_t key)
 {
@@ -51,7 +51,7 @@ DeclarationContext::FindNamespace(const std::vector<std::string>& Namespaces)
 
         auto childNamespace = std::find_if(currentNamespace->Namespaces.begin(),
             currentNamespace->Namespaces.end(),
-            [&](CppSharp::CppParser::Namespace* ns) {
+            [&](CppSharp::CppParser::AST::Namespace* ns) {
                 return ns->Name == _namespace;
         });
 
@@ -61,7 +61,7 @@ DeclarationContext::FindNamespace(const std::vector<std::string>& Namespaces)
         currentNamespace = *childNamespace;
     }
 
-    return (CppSharp::CppParser::Namespace*) currentNamespace;
+    return (CppSharp::CppParser::AST::Namespace*) currentNamespace;
 }
 
 Namespace* DeclarationContext::FindCreateNamespace(const std::string& Name)
@@ -257,4 +257,4 @@ NativeLibrary* Library::FindOrCreateLibrary(const std::string& File)
     return lib;
 }
 
-} }
+} } }

@@ -11,6 +11,8 @@
 
 namespace CppSharp { namespace CppParser {
 
+using namespace CppSharp::CppParser::AST;
+
 struct CS_API ParserOptions
 {
     ParserOptions()
@@ -29,7 +31,7 @@ struct CS_API ParserOptions
     // C/C++ header file name.
     std::string FileName;
 
-    CppSharp::CppParser::Library* Library;
+    CppSharp::CppParser::AST::Library* Library;
 
     int ToolSetToUse;
     std::string TargetTriple;
@@ -70,7 +72,7 @@ enum struct ParserResultKind
 struct CS_API ParserResult
 {
     ParserResultKind Kind;
-    CppSharp::CppParser::Library* Library;
+    CppSharp::CppParser::AST::Library* Library;
     std::vector<ParserDiagnostic> Diagnostics;
 };
 
