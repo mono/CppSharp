@@ -5,27 +5,27 @@
 
 namespace CppSharp
 {
-    enum struct CppAbi;
-    enum struct ParserDiagnosticLevel;
-    enum struct ParserResultKind;
-    enum struct SourceLocationKind;
-    ref class ClangParser;
-    ref class Library;
-    ref class ParserDiagnostic;
-    ref class ParserOptions;
-    ref class ParserResult;
-
     namespace Parser
     {
-        enum struct CppAbi;
+        ref class ParserOptions;
+        ref class ParserDiagnostic;
         enum struct ParserDiagnosticLevel;
+        ref class ParserResult;
         enum struct ParserResultKind;
         ref class ClangParser;
-        ref class Library;
-        ref class ParserDiagnostic;
-        ref class ParserOptions;
-        ref class ParserResult;
+        enum struct SourceLocationKind;
+        namespace AST
+        {
+            ref class Library;
+            enum struct CppAbi;
+        }
+    }
+}
 
+namespace CppSharp
+{
+    namespace Parser
+    {
         public enum struct ParserDiagnosticLevel
         {
             Ignored = 0,
@@ -91,10 +91,10 @@ namespace CppSharp
                 System::String^ get();
                 void set(System::String^);
             }
-            property CppSharp::Parser::Library^ Library
+            property CppSharp::Parser::AST::Library^ Library
             {
-                CppSharp::Parser::Library^ get();
-                void set(CppSharp::Parser::Library^);
+                CppSharp::Parser::AST::Library^ get();
+                void set(CppSharp::Parser::AST::Library^);
             }
             property int ToolSetToUse
             {
@@ -121,10 +121,10 @@ namespace CppSharp
                 bool get();
                 void set(bool);
             }
-            property CppSharp::Parser::CppAbi Abi
+            property CppSharp::Parser::AST::CppAbi Abi
             {
-                CppSharp::Parser::CppAbi get();
-                void set(CppSharp::Parser::CppAbi);
+                CppSharp::Parser::AST::CppAbi get();
+                void set(CppSharp::Parser::AST::CppAbi);
             }
             property bool Verbose
             {
@@ -195,10 +195,10 @@ namespace CppSharp
                 CppSharp::Parser::ParserResultKind get();
                 void set(CppSharp::Parser::ParserResultKind);
             }
-            property CppSharp::Parser::Library^ Library
+            property CppSharp::Parser::AST::Library^ Library
             {
-                CppSharp::Parser::Library^ get();
-                void set(CppSharp::Parser::Library^);
+                CppSharp::Parser::AST::Library^ get();
+                void set(CppSharp::Parser::AST::Library^);
             }
             property System::Collections::Generic::List<CppSharp::Parser::ParserDiagnostic^>^ Diagnostics
             {

@@ -3,1223 +3,1223 @@
 using namespace System;
 using namespace System::Runtime::InteropServices;
 
-CppSharp::Parser::Type::Type(::CppSharp::CppParser::Type* native)
+CppSharp::Parser::AST::Type::Type(::CppSharp::CppParser::AST::Type* native)
 {
     NativePtr = native;
 }
 
-CppSharp::Parser::Type::Type(System::IntPtr native)
+CppSharp::Parser::AST::Type::Type(System::IntPtr native)
 {
-    auto __native = (::CppSharp::CppParser::Type*)native.ToPointer();
+    auto __native = (::CppSharp::CppParser::AST::Type*)native.ToPointer();
     NativePtr = __native;
 }
 
-CppSharp::Parser::Type::Type()
+CppSharp::Parser::AST::Type::Type()
 {
-    NativePtr = new ::CppSharp::CppParser::Type();
+    NativePtr = new ::CppSharp::CppParser::AST::Type();
 }
 
-System::IntPtr CppSharp::Parser::Type::Instance::get()
+System::IntPtr CppSharp::Parser::AST::Type::Instance::get()
 {
     return System::IntPtr(NativePtr);
 }
 
-void CppSharp::Parser::Type::Instance::set(System::IntPtr object)
+void CppSharp::Parser::AST::Type::Instance::set(System::IntPtr object)
 {
-    NativePtr = (::CppSharp::CppParser::Type*)object.ToPointer();
+    NativePtr = (::CppSharp::CppParser::AST::Type*)object.ToPointer();
 }
-CppSharp::Parser::TypeQualifiers::TypeQualifiers(::CppSharp::CppParser::TypeQualifiers* native)
+CppSharp::Parser::AST::TypeQualifiers::TypeQualifiers(::CppSharp::CppParser::AST::TypeQualifiers* native)
 {
     NativePtr = native;
 }
 
-CppSharp::Parser::TypeQualifiers::TypeQualifiers(System::IntPtr native)
+CppSharp::Parser::AST::TypeQualifiers::TypeQualifiers(System::IntPtr native)
 {
-    auto __native = (::CppSharp::CppParser::TypeQualifiers*)native.ToPointer();
+    auto __native = (::CppSharp::CppParser::AST::TypeQualifiers*)native.ToPointer();
     NativePtr = __native;
 }
 
-CppSharp::Parser::TypeQualifiers::TypeQualifiers()
+CppSharp::Parser::AST::TypeQualifiers::TypeQualifiers()
 {
-    NativePtr = new ::CppSharp::CppParser::TypeQualifiers();
+    NativePtr = new ::CppSharp::CppParser::AST::TypeQualifiers();
 }
 
-System::IntPtr CppSharp::Parser::TypeQualifiers::Instance::get()
+System::IntPtr CppSharp::Parser::AST::TypeQualifiers::Instance::get()
 {
     return System::IntPtr(NativePtr);
 }
 
-void CppSharp::Parser::TypeQualifiers::Instance::set(System::IntPtr object)
+void CppSharp::Parser::AST::TypeQualifiers::Instance::set(System::IntPtr object)
 {
-    NativePtr = (::CppSharp::CppParser::TypeQualifiers*)object.ToPointer();
+    NativePtr = (::CppSharp::CppParser::AST::TypeQualifiers*)object.ToPointer();
 }
 
-bool CppSharp::Parser::TypeQualifiers::IsConst::get()
+bool CppSharp::Parser::AST::TypeQualifiers::IsConst::get()
 {
-    return ((::CppSharp::CppParser::TypeQualifiers*)NativePtr)->IsConst;
+    return ((::CppSharp::CppParser::AST::TypeQualifiers*)NativePtr)->IsConst;
 }
 
-void CppSharp::Parser::TypeQualifiers::IsConst::set(bool value)
+void CppSharp::Parser::AST::TypeQualifiers::IsConst::set(bool value)
 {
-    ((::CppSharp::CppParser::TypeQualifiers*)NativePtr)->IsConst = value;
+    ((::CppSharp::CppParser::AST::TypeQualifiers*)NativePtr)->IsConst = value;
 }
 
-bool CppSharp::Parser::TypeQualifiers::IsVolatile::get()
+bool CppSharp::Parser::AST::TypeQualifiers::IsVolatile::get()
 {
-    return ((::CppSharp::CppParser::TypeQualifiers*)NativePtr)->IsVolatile;
+    return ((::CppSharp::CppParser::AST::TypeQualifiers*)NativePtr)->IsVolatile;
 }
 
-void CppSharp::Parser::TypeQualifiers::IsVolatile::set(bool value)
+void CppSharp::Parser::AST::TypeQualifiers::IsVolatile::set(bool value)
 {
-    ((::CppSharp::CppParser::TypeQualifiers*)NativePtr)->IsVolatile = value;
+    ((::CppSharp::CppParser::AST::TypeQualifiers*)NativePtr)->IsVolatile = value;
 }
 
-bool CppSharp::Parser::TypeQualifiers::IsRestrict::get()
+bool CppSharp::Parser::AST::TypeQualifiers::IsRestrict::get()
 {
-    return ((::CppSharp::CppParser::TypeQualifiers*)NativePtr)->IsRestrict;
+    return ((::CppSharp::CppParser::AST::TypeQualifiers*)NativePtr)->IsRestrict;
 }
 
-void CppSharp::Parser::TypeQualifiers::IsRestrict::set(bool value)
+void CppSharp::Parser::AST::TypeQualifiers::IsRestrict::set(bool value)
 {
-    ((::CppSharp::CppParser::TypeQualifiers*)NativePtr)->IsRestrict = value;
+    ((::CppSharp::CppParser::AST::TypeQualifiers*)NativePtr)->IsRestrict = value;
 }
 
-CppSharp::Parser::QualifiedType::QualifiedType(::CppSharp::CppParser::QualifiedType* native)
+CppSharp::Parser::AST::QualifiedType::QualifiedType(::CppSharp::CppParser::AST::QualifiedType* native)
 {
     NativePtr = native;
 }
 
-CppSharp::Parser::QualifiedType::QualifiedType(System::IntPtr native)
+CppSharp::Parser::AST::QualifiedType::QualifiedType(System::IntPtr native)
 {
-    auto __native = (::CppSharp::CppParser::QualifiedType*)native.ToPointer();
+    auto __native = (::CppSharp::CppParser::AST::QualifiedType*)native.ToPointer();
     NativePtr = __native;
 }
 
-CppSharp::Parser::QualifiedType::QualifiedType()
+CppSharp::Parser::AST::QualifiedType::QualifiedType()
 {
-    NativePtr = new ::CppSharp::CppParser::QualifiedType();
+    NativePtr = new ::CppSharp::CppParser::AST::QualifiedType();
 }
 
-System::IntPtr CppSharp::Parser::QualifiedType::Instance::get()
+System::IntPtr CppSharp::Parser::AST::QualifiedType::Instance::get()
 {
     return System::IntPtr(NativePtr);
 }
 
-void CppSharp::Parser::QualifiedType::Instance::set(System::IntPtr object)
+void CppSharp::Parser::AST::QualifiedType::Instance::set(System::IntPtr object)
 {
-    NativePtr = (::CppSharp::CppParser::QualifiedType*)object.ToPointer();
+    NativePtr = (::CppSharp::CppParser::AST::QualifiedType*)object.ToPointer();
 }
 
-CppSharp::Parser::Type^ CppSharp::Parser::QualifiedType::Type::get()
+CppSharp::Parser::AST::Type^ CppSharp::Parser::AST::QualifiedType::Type::get()
 {
-    return gcnew CppSharp::Parser::Type((::CppSharp::CppParser::Type*)((::CppSharp::CppParser::QualifiedType*)NativePtr)->Type);
+    return gcnew CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)((::CppSharp::CppParser::AST::QualifiedType*)NativePtr)->Type);
 }
 
-void CppSharp::Parser::QualifiedType::Type::set(CppSharp::Parser::Type^ value)
+void CppSharp::Parser::AST::QualifiedType::Type::set(CppSharp::Parser::AST::Type^ value)
 {
-    ((::CppSharp::CppParser::QualifiedType*)NativePtr)->Type = (::CppSharp::CppParser::Type*)value->NativePtr;
+    ((::CppSharp::CppParser::AST::QualifiedType*)NativePtr)->Type = (::CppSharp::CppParser::AST::Type*)value->NativePtr;
 }
 
-CppSharp::Parser::TypeQualifiers^ CppSharp::Parser::QualifiedType::Qualifiers::get()
+CppSharp::Parser::AST::TypeQualifiers^ CppSharp::Parser::AST::QualifiedType::Qualifiers::get()
 {
-    return gcnew CppSharp::Parser::TypeQualifiers((::CppSharp::CppParser::TypeQualifiers*)&((::CppSharp::CppParser::QualifiedType*)NativePtr)->Qualifiers);
+    return gcnew CppSharp::Parser::AST::TypeQualifiers((::CppSharp::CppParser::AST::TypeQualifiers*)&((::CppSharp::CppParser::AST::QualifiedType*)NativePtr)->Qualifiers);
 }
 
-void CppSharp::Parser::QualifiedType::Qualifiers::set(CppSharp::Parser::TypeQualifiers^ value)
+void CppSharp::Parser::AST::QualifiedType::Qualifiers::set(CppSharp::Parser::AST::TypeQualifiers^ value)
 {
-    ((::CppSharp::CppParser::QualifiedType*)NativePtr)->Qualifiers = *(::CppSharp::CppParser::TypeQualifiers*)value->NativePtr;
+    ((::CppSharp::CppParser::AST::QualifiedType*)NativePtr)->Qualifiers = *(::CppSharp::CppParser::AST::TypeQualifiers*)value->NativePtr;
 }
 
-CppSharp::Parser::TagType::TagType(::CppSharp::CppParser::TagType* native)
-    : CppSharp::Parser::Type((::CppSharp::CppParser::Type*)native)
-{
-}
-
-CppSharp::Parser::TagType::TagType(System::IntPtr native)
-    : CppSharp::Parser::Type(native)
-{
-    auto __native = (::CppSharp::CppParser::TagType*)native.ToPointer();
-}
-
-CppSharp::Parser::TagType::TagType()
-    : CppSharp::Parser::Type((::CppSharp::CppParser::Type*)nullptr)
-{
-    NativePtr = new ::CppSharp::CppParser::TagType();
-}
-
-CppSharp::Parser::Declaration^ CppSharp::Parser::TagType::Declaration::get()
-{
-    return gcnew CppSharp::Parser::Declaration((::CppSharp::CppParser::Declaration*)((::CppSharp::CppParser::TagType*)NativePtr)->Declaration);
-}
-
-void CppSharp::Parser::TagType::Declaration::set(CppSharp::Parser::Declaration^ value)
-{
-    ((::CppSharp::CppParser::TagType*)NativePtr)->Declaration = (::CppSharp::CppParser::Declaration*)value->NativePtr;
-}
-
-CppSharp::Parser::ArrayType::ArrayType(::CppSharp::CppParser::ArrayType* native)
-    : CppSharp::Parser::Type((::CppSharp::CppParser::Type*)native)
+CppSharp::Parser::AST::TagType::TagType(::CppSharp::CppParser::AST::TagType* native)
+    : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)native)
 {
 }
 
-CppSharp::Parser::ArrayType::ArrayType(System::IntPtr native)
-    : CppSharp::Parser::Type(native)
+CppSharp::Parser::AST::TagType::TagType(System::IntPtr native)
+    : CppSharp::Parser::AST::Type(native)
 {
-    auto __native = (::CppSharp::CppParser::ArrayType*)native.ToPointer();
+    auto __native = (::CppSharp::CppParser::AST::TagType*)native.ToPointer();
 }
 
-CppSharp::Parser::ArrayType::ArrayType()
-    : CppSharp::Parser::Type((::CppSharp::CppParser::Type*)nullptr)
+CppSharp::Parser::AST::TagType::TagType()
+    : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)nullptr)
 {
-    NativePtr = new ::CppSharp::CppParser::ArrayType();
+    NativePtr = new ::CppSharp::CppParser::AST::TagType();
 }
 
-CppSharp::Parser::QualifiedType^ CppSharp::Parser::ArrayType::QualifiedType::get()
+CppSharp::Parser::AST::Declaration^ CppSharp::Parser::AST::TagType::Declaration::get()
 {
-    return gcnew CppSharp::Parser::QualifiedType((::CppSharp::CppParser::QualifiedType*)&((::CppSharp::CppParser::ArrayType*)NativePtr)->QualifiedType);
+    return gcnew CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)((::CppSharp::CppParser::AST::TagType*)NativePtr)->Declaration);
 }
 
-void CppSharp::Parser::ArrayType::QualifiedType::set(CppSharp::Parser::QualifiedType^ value)
+void CppSharp::Parser::AST::TagType::Declaration::set(CppSharp::Parser::AST::Declaration^ value)
 {
-    ((::CppSharp::CppParser::ArrayType*)NativePtr)->QualifiedType = *(::CppSharp::CppParser::QualifiedType*)value->NativePtr;
+    ((::CppSharp::CppParser::AST::TagType*)NativePtr)->Declaration = (::CppSharp::CppParser::AST::Declaration*)value->NativePtr;
 }
 
-CppSharp::Parser::ArrayType::ArraySize CppSharp::Parser::ArrayType::SizeType::get()
-{
-    return (CppSharp::Parser::ArrayType::ArraySize)((::CppSharp::CppParser::ArrayType*)NativePtr)->SizeType;
-}
-
-void CppSharp::Parser::ArrayType::SizeType::set(CppSharp::Parser::ArrayType::ArraySize value)
-{
-    ((::CppSharp::CppParser::ArrayType*)NativePtr)->SizeType = (::CppSharp::CppParser::ArrayType::ArraySize)value;
-}
-
-int CppSharp::Parser::ArrayType::Size::get()
-{
-    return ((::CppSharp::CppParser::ArrayType*)NativePtr)->Size;
-}
-
-void CppSharp::Parser::ArrayType::Size::set(int value)
-{
-    ((::CppSharp::CppParser::ArrayType*)NativePtr)->Size = value;
-}
-
-CppSharp::Parser::FunctionType::FunctionType(::CppSharp::CppParser::FunctionType* native)
-    : CppSharp::Parser::Type((::CppSharp::CppParser::Type*)native)
+CppSharp::Parser::AST::ArrayType::ArrayType(::CppSharp::CppParser::AST::ArrayType* native)
+    : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)native)
 {
 }
 
-CppSharp::Parser::FunctionType::FunctionType(System::IntPtr native)
-    : CppSharp::Parser::Type(native)
+CppSharp::Parser::AST::ArrayType::ArrayType(System::IntPtr native)
+    : CppSharp::Parser::AST::Type(native)
 {
-    auto __native = (::CppSharp::CppParser::FunctionType*)native.ToPointer();
+    auto __native = (::CppSharp::CppParser::AST::ArrayType*)native.ToPointer();
 }
 
-CppSharp::Parser::FunctionType::FunctionType()
-    : CppSharp::Parser::Type((::CppSharp::CppParser::Type*)nullptr)
+CppSharp::Parser::AST::ArrayType::ArrayType()
+    : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)nullptr)
 {
-    NativePtr = new ::CppSharp::CppParser::FunctionType();
+    NativePtr = new ::CppSharp::CppParser::AST::ArrayType();
 }
 
-CppSharp::Parser::QualifiedType^ CppSharp::Parser::FunctionType::ReturnType::get()
+CppSharp::Parser::AST::QualifiedType^ CppSharp::Parser::AST::ArrayType::QualifiedType::get()
 {
-    return gcnew CppSharp::Parser::QualifiedType((::CppSharp::CppParser::QualifiedType*)&((::CppSharp::CppParser::FunctionType*)NativePtr)->ReturnType);
+    return gcnew CppSharp::Parser::AST::QualifiedType((::CppSharp::CppParser::AST::QualifiedType*)&((::CppSharp::CppParser::AST::ArrayType*)NativePtr)->QualifiedType);
 }
 
-void CppSharp::Parser::FunctionType::ReturnType::set(CppSharp::Parser::QualifiedType^ value)
+void CppSharp::Parser::AST::ArrayType::QualifiedType::set(CppSharp::Parser::AST::QualifiedType^ value)
 {
-    ((::CppSharp::CppParser::FunctionType*)NativePtr)->ReturnType = *(::CppSharp::CppParser::QualifiedType*)value->NativePtr;
+    ((::CppSharp::CppParser::AST::ArrayType*)NativePtr)->QualifiedType = *(::CppSharp::CppParser::AST::QualifiedType*)value->NativePtr;
 }
 
-System::Collections::Generic::List<CppSharp::Parser::Parameter^>^ CppSharp::Parser::FunctionType::Parameters::get()
+CppSharp::Parser::AST::ArrayType::ArraySize CppSharp::Parser::AST::ArrayType::SizeType::get()
 {
-    auto _tmpParameters = gcnew System::Collections::Generic::List<CppSharp::Parser::Parameter^>();
-    for(auto _element : ((::CppSharp::CppParser::FunctionType*)NativePtr)->Parameters)
+    return (CppSharp::Parser::AST::ArrayType::ArraySize)((::CppSharp::CppParser::AST::ArrayType*)NativePtr)->SizeType;
+}
+
+void CppSharp::Parser::AST::ArrayType::SizeType::set(CppSharp::Parser::AST::ArrayType::ArraySize value)
+{
+    ((::CppSharp::CppParser::AST::ArrayType*)NativePtr)->SizeType = (::CppSharp::CppParser::AST::ArrayType::ArraySize)value;
+}
+
+int CppSharp::Parser::AST::ArrayType::Size::get()
+{
+    return ((::CppSharp::CppParser::AST::ArrayType*)NativePtr)->Size;
+}
+
+void CppSharp::Parser::AST::ArrayType::Size::set(int value)
+{
+    ((::CppSharp::CppParser::AST::ArrayType*)NativePtr)->Size = value;
+}
+
+CppSharp::Parser::AST::FunctionType::FunctionType(::CppSharp::CppParser::AST::FunctionType* native)
+    : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)native)
+{
+}
+
+CppSharp::Parser::AST::FunctionType::FunctionType(System::IntPtr native)
+    : CppSharp::Parser::AST::Type(native)
+{
+    auto __native = (::CppSharp::CppParser::AST::FunctionType*)native.ToPointer();
+}
+
+CppSharp::Parser::AST::FunctionType::FunctionType()
+    : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)nullptr)
+{
+    NativePtr = new ::CppSharp::CppParser::AST::FunctionType();
+}
+
+CppSharp::Parser::AST::QualifiedType^ CppSharp::Parser::AST::FunctionType::ReturnType::get()
+{
+    return gcnew CppSharp::Parser::AST::QualifiedType((::CppSharp::CppParser::AST::QualifiedType*)&((::CppSharp::CppParser::AST::FunctionType*)NativePtr)->ReturnType);
+}
+
+void CppSharp::Parser::AST::FunctionType::ReturnType::set(CppSharp::Parser::AST::QualifiedType^ value)
+{
+    ((::CppSharp::CppParser::AST::FunctionType*)NativePtr)->ReturnType = *(::CppSharp::CppParser::AST::QualifiedType*)value->NativePtr;
+}
+
+System::Collections::Generic::List<CppSharp::Parser::AST::Parameter^>^ CppSharp::Parser::AST::FunctionType::Parameters::get()
+{
+    auto _tmpParameters = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::Parameter^>();
+    for(auto _element : ((::CppSharp::CppParser::AST::FunctionType*)NativePtr)->Parameters)
     {
-        auto _marshalElement = gcnew CppSharp::Parser::Parameter((::CppSharp::CppParser::Parameter*)_element);
+        auto _marshalElement = gcnew CppSharp::Parser::AST::Parameter((::CppSharp::CppParser::AST::Parameter*)_element);
         _tmpParameters->Add(_marshalElement);
     }
     return _tmpParameters;
 }
 
-void CppSharp::Parser::FunctionType::Parameters::set(System::Collections::Generic::List<CppSharp::Parser::Parameter^>^ value)
+void CppSharp::Parser::AST::FunctionType::Parameters::set(System::Collections::Generic::List<CppSharp::Parser::AST::Parameter^>^ value)
 {
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::Parameter*>();
-    for each(CppSharp::Parser::Parameter^ _element in value)
+    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::Parameter*>();
+    for each(CppSharp::Parser::AST::Parameter^ _element in value)
     {
-        auto _marshalElement = (::CppSharp::CppParser::Parameter*)_element->NativePtr;
+        auto _marshalElement = (::CppSharp::CppParser::AST::Parameter*)_element->NativePtr;
         _tmpvalue.push_back(_marshalElement);
     }
-    ((::CppSharp::CppParser::FunctionType*)NativePtr)->Parameters = _tmpvalue;
+    ((::CppSharp::CppParser::AST::FunctionType*)NativePtr)->Parameters = _tmpvalue;
 }
 
-CppSharp::Parser::CallingConvention CppSharp::Parser::FunctionType::CallingConvention::get()
+CppSharp::Parser::AST::CallingConvention CppSharp::Parser::AST::FunctionType::CallingConvention::get()
 {
-    return (CppSharp::Parser::CallingConvention)((::CppSharp::CppParser::FunctionType*)NativePtr)->CallingConvention;
+    return (CppSharp::Parser::AST::CallingConvention)((::CppSharp::CppParser::AST::FunctionType*)NativePtr)->CallingConvention;
 }
 
-void CppSharp::Parser::FunctionType::CallingConvention::set(CppSharp::Parser::CallingConvention value)
+void CppSharp::Parser::AST::FunctionType::CallingConvention::set(CppSharp::Parser::AST::CallingConvention value)
 {
-    ((::CppSharp::CppParser::FunctionType*)NativePtr)->CallingConvention = (::CppSharp::CppParser::CallingConvention)value;
+    ((::CppSharp::CppParser::AST::FunctionType*)NativePtr)->CallingConvention = (::CppSharp::CppParser::AST::CallingConvention)value;
 }
 
-CppSharp::Parser::PointerType::PointerType(::CppSharp::CppParser::PointerType* native)
-    : CppSharp::Parser::Type((::CppSharp::CppParser::Type*)native)
-{
-}
-
-CppSharp::Parser::PointerType::PointerType(System::IntPtr native)
-    : CppSharp::Parser::Type(native)
-{
-    auto __native = (::CppSharp::CppParser::PointerType*)native.ToPointer();
-}
-
-CppSharp::Parser::PointerType::PointerType()
-    : CppSharp::Parser::Type((::CppSharp::CppParser::Type*)nullptr)
-{
-    NativePtr = new ::CppSharp::CppParser::PointerType();
-}
-
-CppSharp::Parser::QualifiedType^ CppSharp::Parser::PointerType::QualifiedPointee::get()
-{
-    return gcnew CppSharp::Parser::QualifiedType((::CppSharp::CppParser::QualifiedType*)&((::CppSharp::CppParser::PointerType*)NativePtr)->QualifiedPointee);
-}
-
-void CppSharp::Parser::PointerType::QualifiedPointee::set(CppSharp::Parser::QualifiedType^ value)
-{
-    ((::CppSharp::CppParser::PointerType*)NativePtr)->QualifiedPointee = *(::CppSharp::CppParser::QualifiedType*)value->NativePtr;
-}
-
-CppSharp::Parser::PointerType::TypeModifier CppSharp::Parser::PointerType::Modifier::get()
-{
-    return (CppSharp::Parser::PointerType::TypeModifier)((::CppSharp::CppParser::PointerType*)NativePtr)->Modifier;
-}
-
-void CppSharp::Parser::PointerType::Modifier::set(CppSharp::Parser::PointerType::TypeModifier value)
-{
-    ((::CppSharp::CppParser::PointerType*)NativePtr)->Modifier = (::CppSharp::CppParser::PointerType::TypeModifier)value;
-}
-
-CppSharp::Parser::MemberPointerType::MemberPointerType(::CppSharp::CppParser::MemberPointerType* native)
-    : CppSharp::Parser::Type((::CppSharp::CppParser::Type*)native)
+CppSharp::Parser::AST::PointerType::PointerType(::CppSharp::CppParser::AST::PointerType* native)
+    : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)native)
 {
 }
 
-CppSharp::Parser::MemberPointerType::MemberPointerType(System::IntPtr native)
-    : CppSharp::Parser::Type(native)
+CppSharp::Parser::AST::PointerType::PointerType(System::IntPtr native)
+    : CppSharp::Parser::AST::Type(native)
 {
-    auto __native = (::CppSharp::CppParser::MemberPointerType*)native.ToPointer();
+    auto __native = (::CppSharp::CppParser::AST::PointerType*)native.ToPointer();
 }
 
-CppSharp::Parser::MemberPointerType::MemberPointerType()
-    : CppSharp::Parser::Type((::CppSharp::CppParser::Type*)nullptr)
+CppSharp::Parser::AST::PointerType::PointerType()
+    : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)nullptr)
 {
-    NativePtr = new ::CppSharp::CppParser::MemberPointerType();
+    NativePtr = new ::CppSharp::CppParser::AST::PointerType();
 }
 
-CppSharp::Parser::QualifiedType^ CppSharp::Parser::MemberPointerType::Pointee::get()
+CppSharp::Parser::AST::QualifiedType^ CppSharp::Parser::AST::PointerType::QualifiedPointee::get()
 {
-    return gcnew CppSharp::Parser::QualifiedType((::CppSharp::CppParser::QualifiedType*)&((::CppSharp::CppParser::MemberPointerType*)NativePtr)->Pointee);
+    return gcnew CppSharp::Parser::AST::QualifiedType((::CppSharp::CppParser::AST::QualifiedType*)&((::CppSharp::CppParser::AST::PointerType*)NativePtr)->QualifiedPointee);
 }
 
-void CppSharp::Parser::MemberPointerType::Pointee::set(CppSharp::Parser::QualifiedType^ value)
+void CppSharp::Parser::AST::PointerType::QualifiedPointee::set(CppSharp::Parser::AST::QualifiedType^ value)
 {
-    ((::CppSharp::CppParser::MemberPointerType*)NativePtr)->Pointee = *(::CppSharp::CppParser::QualifiedType*)value->NativePtr;
+    ((::CppSharp::CppParser::AST::PointerType*)NativePtr)->QualifiedPointee = *(::CppSharp::CppParser::AST::QualifiedType*)value->NativePtr;
 }
 
-CppSharp::Parser::TypedefType::TypedefType(::CppSharp::CppParser::TypedefType* native)
-    : CppSharp::Parser::Type((::CppSharp::CppParser::Type*)native)
+CppSharp::Parser::AST::PointerType::TypeModifier CppSharp::Parser::AST::PointerType::Modifier::get()
 {
+    return (CppSharp::Parser::AST::PointerType::TypeModifier)((::CppSharp::CppParser::AST::PointerType*)NativePtr)->Modifier;
 }
 
-CppSharp::Parser::TypedefType::TypedefType(System::IntPtr native)
-    : CppSharp::Parser::Type(native)
+void CppSharp::Parser::AST::PointerType::Modifier::set(CppSharp::Parser::AST::PointerType::TypeModifier value)
 {
-    auto __native = (::CppSharp::CppParser::TypedefType*)native.ToPointer();
+    ((::CppSharp::CppParser::AST::PointerType*)NativePtr)->Modifier = (::CppSharp::CppParser::AST::PointerType::TypeModifier)value;
 }
 
-CppSharp::Parser::TypedefType::TypedefType()
-    : CppSharp::Parser::Type((::CppSharp::CppParser::Type*)nullptr)
-{
-    NativePtr = new ::CppSharp::CppParser::TypedefType();
-}
-
-CppSharp::Parser::TypedefDecl^ CppSharp::Parser::TypedefType::Declaration::get()
-{
-    return gcnew CppSharp::Parser::TypedefDecl((::CppSharp::CppParser::TypedefDecl*)((::CppSharp::CppParser::TypedefType*)NativePtr)->Declaration);
-}
-
-void CppSharp::Parser::TypedefType::Declaration::set(CppSharp::Parser::TypedefDecl^ value)
-{
-    ((::CppSharp::CppParser::TypedefType*)NativePtr)->Declaration = (::CppSharp::CppParser::TypedefDecl*)value->NativePtr;
-}
-
-CppSharp::Parser::DecayedType::DecayedType(::CppSharp::CppParser::DecayedType* native)
-    : CppSharp::Parser::Type((::CppSharp::CppParser::Type*)native)
+CppSharp::Parser::AST::MemberPointerType::MemberPointerType(::CppSharp::CppParser::AST::MemberPointerType* native)
+    : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)native)
 {
 }
 
-CppSharp::Parser::DecayedType::DecayedType(System::IntPtr native)
-    : CppSharp::Parser::Type(native)
+CppSharp::Parser::AST::MemberPointerType::MemberPointerType(System::IntPtr native)
+    : CppSharp::Parser::AST::Type(native)
 {
-    auto __native = (::CppSharp::CppParser::DecayedType*)native.ToPointer();
+    auto __native = (::CppSharp::CppParser::AST::MemberPointerType*)native.ToPointer();
 }
 
-CppSharp::Parser::DecayedType::DecayedType()
-    : CppSharp::Parser::Type((::CppSharp::CppParser::Type*)nullptr)
+CppSharp::Parser::AST::MemberPointerType::MemberPointerType()
+    : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)nullptr)
 {
-    NativePtr = new ::CppSharp::CppParser::DecayedType();
+    NativePtr = new ::CppSharp::CppParser::AST::MemberPointerType();
 }
 
-CppSharp::Parser::QualifiedType^ CppSharp::Parser::DecayedType::Decayed::get()
+CppSharp::Parser::AST::QualifiedType^ CppSharp::Parser::AST::MemberPointerType::Pointee::get()
 {
-    return gcnew CppSharp::Parser::QualifiedType((::CppSharp::CppParser::QualifiedType*)&((::CppSharp::CppParser::DecayedType*)NativePtr)->Decayed);
+    return gcnew CppSharp::Parser::AST::QualifiedType((::CppSharp::CppParser::AST::QualifiedType*)&((::CppSharp::CppParser::AST::MemberPointerType*)NativePtr)->Pointee);
 }
 
-void CppSharp::Parser::DecayedType::Decayed::set(CppSharp::Parser::QualifiedType^ value)
+void CppSharp::Parser::AST::MemberPointerType::Pointee::set(CppSharp::Parser::AST::QualifiedType^ value)
 {
-    ((::CppSharp::CppParser::DecayedType*)NativePtr)->Decayed = *(::CppSharp::CppParser::QualifiedType*)value->NativePtr;
+    ((::CppSharp::CppParser::AST::MemberPointerType*)NativePtr)->Pointee = *(::CppSharp::CppParser::AST::QualifiedType*)value->NativePtr;
 }
 
-CppSharp::Parser::QualifiedType^ CppSharp::Parser::DecayedType::Original::get()
+CppSharp::Parser::AST::TypedefType::TypedefType(::CppSharp::CppParser::AST::TypedefType* native)
+    : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)native)
 {
-    return gcnew CppSharp::Parser::QualifiedType((::CppSharp::CppParser::QualifiedType*)&((::CppSharp::CppParser::DecayedType*)NativePtr)->Original);
 }
 
-void CppSharp::Parser::DecayedType::Original::set(CppSharp::Parser::QualifiedType^ value)
+CppSharp::Parser::AST::TypedefType::TypedefType(System::IntPtr native)
+    : CppSharp::Parser::AST::Type(native)
 {
-    ((::CppSharp::CppParser::DecayedType*)NativePtr)->Original = *(::CppSharp::CppParser::QualifiedType*)value->NativePtr;
+    auto __native = (::CppSharp::CppParser::AST::TypedefType*)native.ToPointer();
 }
 
-CppSharp::Parser::QualifiedType^ CppSharp::Parser::DecayedType::Pointee::get()
+CppSharp::Parser::AST::TypedefType::TypedefType()
+    : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)nullptr)
 {
-    return gcnew CppSharp::Parser::QualifiedType((::CppSharp::CppParser::QualifiedType*)&((::CppSharp::CppParser::DecayedType*)NativePtr)->Pointee);
+    NativePtr = new ::CppSharp::CppParser::AST::TypedefType();
 }
 
-void CppSharp::Parser::DecayedType::Pointee::set(CppSharp::Parser::QualifiedType^ value)
+CppSharp::Parser::AST::TypedefDecl^ CppSharp::Parser::AST::TypedefType::Declaration::get()
 {
-    ((::CppSharp::CppParser::DecayedType*)NativePtr)->Pointee = *(::CppSharp::CppParser::QualifiedType*)value->NativePtr;
+    return gcnew CppSharp::Parser::AST::TypedefDecl((::CppSharp::CppParser::AST::TypedefDecl*)((::CppSharp::CppParser::AST::TypedefType*)NativePtr)->Declaration);
 }
 
-CppSharp::Parser::TemplateArgument::TemplateArgument(::CppSharp::CppParser::TemplateArgument* native)
+void CppSharp::Parser::AST::TypedefType::Declaration::set(CppSharp::Parser::AST::TypedefDecl^ value)
+{
+    ((::CppSharp::CppParser::AST::TypedefType*)NativePtr)->Declaration = (::CppSharp::CppParser::AST::TypedefDecl*)value->NativePtr;
+}
+
+CppSharp::Parser::AST::DecayedType::DecayedType(::CppSharp::CppParser::AST::DecayedType* native)
+    : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)native)
+{
+}
+
+CppSharp::Parser::AST::DecayedType::DecayedType(System::IntPtr native)
+    : CppSharp::Parser::AST::Type(native)
+{
+    auto __native = (::CppSharp::CppParser::AST::DecayedType*)native.ToPointer();
+}
+
+CppSharp::Parser::AST::DecayedType::DecayedType()
+    : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)nullptr)
+{
+    NativePtr = new ::CppSharp::CppParser::AST::DecayedType();
+}
+
+CppSharp::Parser::AST::QualifiedType^ CppSharp::Parser::AST::DecayedType::Decayed::get()
+{
+    return gcnew CppSharp::Parser::AST::QualifiedType((::CppSharp::CppParser::AST::QualifiedType*)&((::CppSharp::CppParser::AST::DecayedType*)NativePtr)->Decayed);
+}
+
+void CppSharp::Parser::AST::DecayedType::Decayed::set(CppSharp::Parser::AST::QualifiedType^ value)
+{
+    ((::CppSharp::CppParser::AST::DecayedType*)NativePtr)->Decayed = *(::CppSharp::CppParser::AST::QualifiedType*)value->NativePtr;
+}
+
+CppSharp::Parser::AST::QualifiedType^ CppSharp::Parser::AST::DecayedType::Original::get()
+{
+    return gcnew CppSharp::Parser::AST::QualifiedType((::CppSharp::CppParser::AST::QualifiedType*)&((::CppSharp::CppParser::AST::DecayedType*)NativePtr)->Original);
+}
+
+void CppSharp::Parser::AST::DecayedType::Original::set(CppSharp::Parser::AST::QualifiedType^ value)
+{
+    ((::CppSharp::CppParser::AST::DecayedType*)NativePtr)->Original = *(::CppSharp::CppParser::AST::QualifiedType*)value->NativePtr;
+}
+
+CppSharp::Parser::AST::QualifiedType^ CppSharp::Parser::AST::DecayedType::Pointee::get()
+{
+    return gcnew CppSharp::Parser::AST::QualifiedType((::CppSharp::CppParser::AST::QualifiedType*)&((::CppSharp::CppParser::AST::DecayedType*)NativePtr)->Pointee);
+}
+
+void CppSharp::Parser::AST::DecayedType::Pointee::set(CppSharp::Parser::AST::QualifiedType^ value)
+{
+    ((::CppSharp::CppParser::AST::DecayedType*)NativePtr)->Pointee = *(::CppSharp::CppParser::AST::QualifiedType*)value->NativePtr;
+}
+
+CppSharp::Parser::AST::TemplateArgument::TemplateArgument(::CppSharp::CppParser::AST::TemplateArgument* native)
 {
     NativePtr = native;
 }
 
-CppSharp::Parser::TemplateArgument::TemplateArgument(System::IntPtr native)
+CppSharp::Parser::AST::TemplateArgument::TemplateArgument(System::IntPtr native)
 {
-    auto __native = (::CppSharp::CppParser::TemplateArgument*)native.ToPointer();
+    auto __native = (::CppSharp::CppParser::AST::TemplateArgument*)native.ToPointer();
     NativePtr = __native;
 }
 
-CppSharp::Parser::TemplateArgument::TemplateArgument()
+CppSharp::Parser::AST::TemplateArgument::TemplateArgument()
 {
-    NativePtr = new ::CppSharp::CppParser::TemplateArgument();
+    NativePtr = new ::CppSharp::CppParser::AST::TemplateArgument();
 }
 
-System::IntPtr CppSharp::Parser::TemplateArgument::Instance::get()
+System::IntPtr CppSharp::Parser::AST::TemplateArgument::Instance::get()
 {
     return System::IntPtr(NativePtr);
 }
 
-void CppSharp::Parser::TemplateArgument::Instance::set(System::IntPtr object)
+void CppSharp::Parser::AST::TemplateArgument::Instance::set(System::IntPtr object)
 {
-    NativePtr = (::CppSharp::CppParser::TemplateArgument*)object.ToPointer();
+    NativePtr = (::CppSharp::CppParser::AST::TemplateArgument*)object.ToPointer();
 }
 
-CppSharp::Parser::TemplateArgument::ArgumentKind CppSharp::Parser::TemplateArgument::Kind::get()
+CppSharp::Parser::AST::TemplateArgument::ArgumentKind CppSharp::Parser::AST::TemplateArgument::Kind::get()
 {
-    return (CppSharp::Parser::TemplateArgument::ArgumentKind)((::CppSharp::CppParser::TemplateArgument*)NativePtr)->Kind;
+    return (CppSharp::Parser::AST::TemplateArgument::ArgumentKind)((::CppSharp::CppParser::AST::TemplateArgument*)NativePtr)->Kind;
 }
 
-void CppSharp::Parser::TemplateArgument::Kind::set(CppSharp::Parser::TemplateArgument::ArgumentKind value)
+void CppSharp::Parser::AST::TemplateArgument::Kind::set(CppSharp::Parser::AST::TemplateArgument::ArgumentKind value)
 {
-    ((::CppSharp::CppParser::TemplateArgument*)NativePtr)->Kind = (::CppSharp::CppParser::TemplateArgument::ArgumentKind)value;
+    ((::CppSharp::CppParser::AST::TemplateArgument*)NativePtr)->Kind = (::CppSharp::CppParser::AST::TemplateArgument::ArgumentKind)value;
 }
 
-CppSharp::Parser::QualifiedType^ CppSharp::Parser::TemplateArgument::Type::get()
+CppSharp::Parser::AST::QualifiedType^ CppSharp::Parser::AST::TemplateArgument::Type::get()
 {
-    return gcnew CppSharp::Parser::QualifiedType((::CppSharp::CppParser::QualifiedType*)&((::CppSharp::CppParser::TemplateArgument*)NativePtr)->Type);
+    return gcnew CppSharp::Parser::AST::QualifiedType((::CppSharp::CppParser::AST::QualifiedType*)&((::CppSharp::CppParser::AST::TemplateArgument*)NativePtr)->Type);
 }
 
-void CppSharp::Parser::TemplateArgument::Type::set(CppSharp::Parser::QualifiedType^ value)
+void CppSharp::Parser::AST::TemplateArgument::Type::set(CppSharp::Parser::AST::QualifiedType^ value)
 {
-    ((::CppSharp::CppParser::TemplateArgument*)NativePtr)->Type = *(::CppSharp::CppParser::QualifiedType*)value->NativePtr;
+    ((::CppSharp::CppParser::AST::TemplateArgument*)NativePtr)->Type = *(::CppSharp::CppParser::AST::QualifiedType*)value->NativePtr;
 }
 
-CppSharp::Parser::Declaration^ CppSharp::Parser::TemplateArgument::Declaration::get()
+CppSharp::Parser::AST::Declaration^ CppSharp::Parser::AST::TemplateArgument::Declaration::get()
 {
-    return gcnew CppSharp::Parser::Declaration((::CppSharp::CppParser::Declaration*)((::CppSharp::CppParser::TemplateArgument*)NativePtr)->Declaration);
+    return gcnew CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)((::CppSharp::CppParser::AST::TemplateArgument*)NativePtr)->Declaration);
 }
 
-void CppSharp::Parser::TemplateArgument::Declaration::set(CppSharp::Parser::Declaration^ value)
+void CppSharp::Parser::AST::TemplateArgument::Declaration::set(CppSharp::Parser::AST::Declaration^ value)
 {
-    ((::CppSharp::CppParser::TemplateArgument*)NativePtr)->Declaration = (::CppSharp::CppParser::Declaration*)value->NativePtr;
+    ((::CppSharp::CppParser::AST::TemplateArgument*)NativePtr)->Declaration = (::CppSharp::CppParser::AST::Declaration*)value->NativePtr;
 }
 
-int CppSharp::Parser::TemplateArgument::Integral::get()
+int CppSharp::Parser::AST::TemplateArgument::Integral::get()
 {
-    return ((::CppSharp::CppParser::TemplateArgument*)NativePtr)->Integral;
+    return ((::CppSharp::CppParser::AST::TemplateArgument*)NativePtr)->Integral;
 }
 
-void CppSharp::Parser::TemplateArgument::Integral::set(int value)
+void CppSharp::Parser::AST::TemplateArgument::Integral::set(int value)
 {
-    ((::CppSharp::CppParser::TemplateArgument*)NativePtr)->Integral = value;
+    ((::CppSharp::CppParser::AST::TemplateArgument*)NativePtr)->Integral = value;
 }
 
-CppSharp::Parser::TemplateSpecializationType::TemplateSpecializationType(::CppSharp::CppParser::TemplateSpecializationType* native)
-    : CppSharp::Parser::Type((::CppSharp::CppParser::Type*)native)
+CppSharp::Parser::AST::TemplateSpecializationType::TemplateSpecializationType(::CppSharp::CppParser::AST::TemplateSpecializationType* native)
+    : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)native)
 {
 }
 
-CppSharp::Parser::TemplateSpecializationType::TemplateSpecializationType(System::IntPtr native)
-    : CppSharp::Parser::Type(native)
+CppSharp::Parser::AST::TemplateSpecializationType::TemplateSpecializationType(System::IntPtr native)
+    : CppSharp::Parser::AST::Type(native)
 {
-    auto __native = (::CppSharp::CppParser::TemplateSpecializationType*)native.ToPointer();
+    auto __native = (::CppSharp::CppParser::AST::TemplateSpecializationType*)native.ToPointer();
 }
 
-CppSharp::Parser::TemplateSpecializationType::TemplateSpecializationType()
-    : CppSharp::Parser::Type((::CppSharp::CppParser::Type*)nullptr)
+CppSharp::Parser::AST::TemplateSpecializationType::TemplateSpecializationType()
+    : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)nullptr)
 {
-    NativePtr = new ::CppSharp::CppParser::TemplateSpecializationType();
+    NativePtr = new ::CppSharp::CppParser::AST::TemplateSpecializationType();
 }
 
-System::Collections::Generic::List<CppSharp::Parser::TemplateArgument^>^ CppSharp::Parser::TemplateSpecializationType::Arguments::get()
+System::Collections::Generic::List<CppSharp::Parser::AST::TemplateArgument^>^ CppSharp::Parser::AST::TemplateSpecializationType::Arguments::get()
 {
-    auto _tmpArguments = gcnew System::Collections::Generic::List<CppSharp::Parser::TemplateArgument^>();
-    for(auto _element : ((::CppSharp::CppParser::TemplateSpecializationType*)NativePtr)->Arguments)
+    auto _tmpArguments = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::TemplateArgument^>();
+    for(auto _element : ((::CppSharp::CppParser::AST::TemplateSpecializationType*)NativePtr)->Arguments)
     {
-        auto ___element = new ::CppSharp::CppParser::TemplateArgument(_element);
-        auto _marshalElement = gcnew CppSharp::Parser::TemplateArgument((::CppSharp::CppParser::TemplateArgument*)___element);
+        auto ___element = new ::CppSharp::CppParser::AST::TemplateArgument(_element);
+        auto _marshalElement = gcnew CppSharp::Parser::AST::TemplateArgument((::CppSharp::CppParser::AST::TemplateArgument*)___element);
         _tmpArguments->Add(_marshalElement);
     }
     return _tmpArguments;
 }
 
-void CppSharp::Parser::TemplateSpecializationType::Arguments::set(System::Collections::Generic::List<CppSharp::Parser::TemplateArgument^>^ value)
+void CppSharp::Parser::AST::TemplateSpecializationType::Arguments::set(System::Collections::Generic::List<CppSharp::Parser::AST::TemplateArgument^>^ value)
 {
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::TemplateArgument>();
-    for each(CppSharp::Parser::TemplateArgument^ _element in value)
+    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::TemplateArgument>();
+    for each(CppSharp::Parser::AST::TemplateArgument^ _element in value)
     {
-        auto _marshalElement = *(::CppSharp::CppParser::TemplateArgument*)_element->NativePtr;
+        auto _marshalElement = *(::CppSharp::CppParser::AST::TemplateArgument*)_element->NativePtr;
         _tmpvalue.push_back(_marshalElement);
     }
-    ((::CppSharp::CppParser::TemplateSpecializationType*)NativePtr)->Arguments = _tmpvalue;
+    ((::CppSharp::CppParser::AST::TemplateSpecializationType*)NativePtr)->Arguments = _tmpvalue;
 }
 
-CppSharp::Parser::Template^ CppSharp::Parser::TemplateSpecializationType::Template::get()
+CppSharp::Parser::AST::Template^ CppSharp::Parser::AST::TemplateSpecializationType::Template::get()
 {
-    return gcnew CppSharp::Parser::Template((::CppSharp::CppParser::Template*)((::CppSharp::CppParser::TemplateSpecializationType*)NativePtr)->Template);
+    return gcnew CppSharp::Parser::AST::Template((::CppSharp::CppParser::AST::Template*)((::CppSharp::CppParser::AST::TemplateSpecializationType*)NativePtr)->Template);
 }
 
-void CppSharp::Parser::TemplateSpecializationType::Template::set(CppSharp::Parser::Template^ value)
+void CppSharp::Parser::AST::TemplateSpecializationType::Template::set(CppSharp::Parser::AST::Template^ value)
 {
-    ((::CppSharp::CppParser::TemplateSpecializationType*)NativePtr)->Template = (::CppSharp::CppParser::Template*)value->NativePtr;
+    ((::CppSharp::CppParser::AST::TemplateSpecializationType*)NativePtr)->Template = (::CppSharp::CppParser::AST::Template*)value->NativePtr;
 }
 
-CppSharp::Parser::Type^ CppSharp::Parser::TemplateSpecializationType::Desugared::get()
+CppSharp::Parser::AST::Type^ CppSharp::Parser::AST::TemplateSpecializationType::Desugared::get()
 {
-    return gcnew CppSharp::Parser::Type((::CppSharp::CppParser::Type*)((::CppSharp::CppParser::TemplateSpecializationType*)NativePtr)->Desugared);
+    return gcnew CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)((::CppSharp::CppParser::AST::TemplateSpecializationType*)NativePtr)->Desugared);
 }
 
-void CppSharp::Parser::TemplateSpecializationType::Desugared::set(CppSharp::Parser::Type^ value)
+void CppSharp::Parser::AST::TemplateSpecializationType::Desugared::set(CppSharp::Parser::AST::Type^ value)
 {
-    ((::CppSharp::CppParser::TemplateSpecializationType*)NativePtr)->Desugared = (::CppSharp::CppParser::Type*)value->NativePtr;
+    ((::CppSharp::CppParser::AST::TemplateSpecializationType*)NativePtr)->Desugared = (::CppSharp::CppParser::AST::Type*)value->NativePtr;
 }
 
-CppSharp::Parser::TemplateParameter::TemplateParameter(::CppSharp::CppParser::TemplateParameter* native)
-{
-    NativePtr = native;
-}
-
-CppSharp::Parser::TemplateParameter::TemplateParameter(System::IntPtr native)
-{
-    auto __native = (::CppSharp::CppParser::TemplateParameter*)native.ToPointer();
-    NativePtr = __native;
-}
-
-CppSharp::Parser::TemplateParameter::TemplateParameter()
-{
-    NativePtr = new ::CppSharp::CppParser::TemplateParameter();
-}
-
-System::IntPtr CppSharp::Parser::TemplateParameter::Instance::get()
-{
-    return System::IntPtr(NativePtr);
-}
-
-void CppSharp::Parser::TemplateParameter::Instance::set(System::IntPtr object)
-{
-    NativePtr = (::CppSharp::CppParser::TemplateParameter*)object.ToPointer();
-}
-
-System::String^ CppSharp::Parser::TemplateParameter::Name::get()
-{
-    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::TemplateParameter*)NativePtr)->Name);
-}
-
-void CppSharp::Parser::TemplateParameter::Name::set(System::String^ value)
-{
-    ((::CppSharp::CppParser::TemplateParameter*)NativePtr)->Name = clix::marshalString<clix::E_UTF8>(value);
-}
-
-CppSharp::Parser::TemplateParameterType::TemplateParameterType(::CppSharp::CppParser::TemplateParameterType* native)
-    : CppSharp::Parser::Type((::CppSharp::CppParser::Type*)native)
-{
-}
-
-CppSharp::Parser::TemplateParameterType::TemplateParameterType(System::IntPtr native)
-    : CppSharp::Parser::Type(native)
-{
-    auto __native = (::CppSharp::CppParser::TemplateParameterType*)native.ToPointer();
-}
-
-CppSharp::Parser::TemplateParameterType::TemplateParameterType()
-    : CppSharp::Parser::Type((::CppSharp::CppParser::Type*)nullptr)
-{
-    NativePtr = new ::CppSharp::CppParser::TemplateParameterType();
-}
-
-CppSharp::Parser::TemplateParameter^ CppSharp::Parser::TemplateParameterType::Parameter::get()
-{
-    return gcnew CppSharp::Parser::TemplateParameter((::CppSharp::CppParser::TemplateParameter*)&((::CppSharp::CppParser::TemplateParameterType*)NativePtr)->Parameter);
-}
-
-void CppSharp::Parser::TemplateParameterType::Parameter::set(CppSharp::Parser::TemplateParameter^ value)
-{
-    ((::CppSharp::CppParser::TemplateParameterType*)NativePtr)->Parameter = *(::CppSharp::CppParser::TemplateParameter*)value->NativePtr;
-}
-
-CppSharp::Parser::TemplateParameterSubstitutionType::TemplateParameterSubstitutionType(::CppSharp::CppParser::TemplateParameterSubstitutionType* native)
-    : CppSharp::Parser::Type((::CppSharp::CppParser::Type*)native)
-{
-}
-
-CppSharp::Parser::TemplateParameterSubstitutionType::TemplateParameterSubstitutionType(System::IntPtr native)
-    : CppSharp::Parser::Type(native)
-{
-    auto __native = (::CppSharp::CppParser::TemplateParameterSubstitutionType*)native.ToPointer();
-}
-
-CppSharp::Parser::TemplateParameterSubstitutionType::TemplateParameterSubstitutionType()
-    : CppSharp::Parser::Type((::CppSharp::CppParser::Type*)nullptr)
-{
-    NativePtr = new ::CppSharp::CppParser::TemplateParameterSubstitutionType();
-}
-
-CppSharp::Parser::QualifiedType^ CppSharp::Parser::TemplateParameterSubstitutionType::Replacement::get()
-{
-    return gcnew CppSharp::Parser::QualifiedType((::CppSharp::CppParser::QualifiedType*)&((::CppSharp::CppParser::TemplateParameterSubstitutionType*)NativePtr)->Replacement);
-}
-
-void CppSharp::Parser::TemplateParameterSubstitutionType::Replacement::set(CppSharp::Parser::QualifiedType^ value)
-{
-    ((::CppSharp::CppParser::TemplateParameterSubstitutionType*)NativePtr)->Replacement = *(::CppSharp::CppParser::QualifiedType*)value->NativePtr;
-}
-
-CppSharp::Parser::InjectedClassNameType::InjectedClassNameType(::CppSharp::CppParser::InjectedClassNameType* native)
-    : CppSharp::Parser::Type((::CppSharp::CppParser::Type*)native)
-{
-}
-
-CppSharp::Parser::InjectedClassNameType::InjectedClassNameType(System::IntPtr native)
-    : CppSharp::Parser::Type(native)
-{
-    auto __native = (::CppSharp::CppParser::InjectedClassNameType*)native.ToPointer();
-}
-
-CppSharp::Parser::InjectedClassNameType::InjectedClassNameType()
-    : CppSharp::Parser::Type((::CppSharp::CppParser::Type*)nullptr)
-{
-    NativePtr = new ::CppSharp::CppParser::InjectedClassNameType();
-}
-
-CppSharp::Parser::TemplateSpecializationType^ CppSharp::Parser::InjectedClassNameType::TemplateSpecialization::get()
-{
-    return gcnew CppSharp::Parser::TemplateSpecializationType((::CppSharp::CppParser::TemplateSpecializationType*)&((::CppSharp::CppParser::InjectedClassNameType*)NativePtr)->TemplateSpecialization);
-}
-
-void CppSharp::Parser::InjectedClassNameType::TemplateSpecialization::set(CppSharp::Parser::TemplateSpecializationType^ value)
-{
-    ((::CppSharp::CppParser::InjectedClassNameType*)NativePtr)->TemplateSpecialization = *(::CppSharp::CppParser::TemplateSpecializationType*)value->NativePtr;
-}
-
-CppSharp::Parser::Class^ CppSharp::Parser::InjectedClassNameType::Class::get()
-{
-    return gcnew CppSharp::Parser::Class((::CppSharp::CppParser::Class*)((::CppSharp::CppParser::InjectedClassNameType*)NativePtr)->Class);
-}
-
-void CppSharp::Parser::InjectedClassNameType::Class::set(CppSharp::Parser::Class^ value)
-{
-    ((::CppSharp::CppParser::InjectedClassNameType*)NativePtr)->Class = (::CppSharp::CppParser::Class*)value->NativePtr;
-}
-
-CppSharp::Parser::DependentNameType::DependentNameType(::CppSharp::CppParser::DependentNameType* native)
-    : CppSharp::Parser::Type((::CppSharp::CppParser::Type*)native)
-{
-}
-
-CppSharp::Parser::DependentNameType::DependentNameType(System::IntPtr native)
-    : CppSharp::Parser::Type(native)
-{
-    auto __native = (::CppSharp::CppParser::DependentNameType*)native.ToPointer();
-}
-
-CppSharp::Parser::DependentNameType::DependentNameType()
-    : CppSharp::Parser::Type((::CppSharp::CppParser::Type*)nullptr)
-{
-    NativePtr = new ::CppSharp::CppParser::DependentNameType();
-}
-
-CppSharp::Parser::BuiltinType::BuiltinType(::CppSharp::CppParser::BuiltinType* native)
-    : CppSharp::Parser::Type((::CppSharp::CppParser::Type*)native)
-{
-}
-
-CppSharp::Parser::BuiltinType::BuiltinType(System::IntPtr native)
-    : CppSharp::Parser::Type(native)
-{
-    auto __native = (::CppSharp::CppParser::BuiltinType*)native.ToPointer();
-}
-
-CppSharp::Parser::BuiltinType::BuiltinType()
-    : CppSharp::Parser::Type((::CppSharp::CppParser::Type*)nullptr)
-{
-    NativePtr = new ::CppSharp::CppParser::BuiltinType();
-}
-
-CppSharp::Parser::PrimitiveType CppSharp::Parser::BuiltinType::Type::get()
-{
-    return (CppSharp::Parser::PrimitiveType)((::CppSharp::CppParser::BuiltinType*)NativePtr)->Type;
-}
-
-void CppSharp::Parser::BuiltinType::Type::set(CppSharp::Parser::PrimitiveType value)
-{
-    ((::CppSharp::CppParser::BuiltinType*)NativePtr)->Type = (::CppSharp::CppParser::PrimitiveType)value;
-}
-
-CppSharp::Parser::RawComment::RawComment(::CppSharp::CppParser::RawComment* native)
+CppSharp::Parser::AST::TemplateParameter::TemplateParameter(::CppSharp::CppParser::AST::TemplateParameter* native)
 {
     NativePtr = native;
 }
 
-CppSharp::Parser::RawComment::RawComment(System::IntPtr native)
+CppSharp::Parser::AST::TemplateParameter::TemplateParameter(System::IntPtr native)
 {
-    auto __native = (::CppSharp::CppParser::RawComment*)native.ToPointer();
+    auto __native = (::CppSharp::CppParser::AST::TemplateParameter*)native.ToPointer();
     NativePtr = __native;
 }
 
-CppSharp::Parser::RawComment::RawComment()
+CppSharp::Parser::AST::TemplateParameter::TemplateParameter()
 {
-    NativePtr = new ::CppSharp::CppParser::RawComment();
+    NativePtr = new ::CppSharp::CppParser::AST::TemplateParameter();
 }
 
-System::IntPtr CppSharp::Parser::RawComment::Instance::get()
+System::IntPtr CppSharp::Parser::AST::TemplateParameter::Instance::get()
 {
     return System::IntPtr(NativePtr);
 }
 
-void CppSharp::Parser::RawComment::Instance::set(System::IntPtr object)
+void CppSharp::Parser::AST::TemplateParameter::Instance::set(System::IntPtr object)
 {
-    NativePtr = (::CppSharp::CppParser::RawComment*)object.ToPointer();
+    NativePtr = (::CppSharp::CppParser::AST::TemplateParameter*)object.ToPointer();
 }
 
-CppSharp::Parser::RawCommentKind CppSharp::Parser::RawComment::Kind::get()
+System::String^ CppSharp::Parser::AST::TemplateParameter::Name::get()
 {
-    return (CppSharp::Parser::RawCommentKind)((::CppSharp::CppParser::RawComment*)NativePtr)->Kind;
+    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::AST::TemplateParameter*)NativePtr)->Name);
 }
 
-void CppSharp::Parser::RawComment::Kind::set(CppSharp::Parser::RawCommentKind value)
+void CppSharp::Parser::AST::TemplateParameter::Name::set(System::String^ value)
 {
-    ((::CppSharp::CppParser::RawComment*)NativePtr)->Kind = (::CppSharp::CppParser::RawCommentKind)value;
+    ((::CppSharp::CppParser::AST::TemplateParameter*)NativePtr)->Name = clix::marshalString<clix::E_UTF8>(value);
 }
 
-System::String^ CppSharp::Parser::RawComment::Text::get()
+CppSharp::Parser::AST::TemplateParameterType::TemplateParameterType(::CppSharp::CppParser::AST::TemplateParameterType* native)
+    : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)native)
 {
-    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::RawComment*)NativePtr)->Text);
 }
 
-void CppSharp::Parser::RawComment::Text::set(System::String^ value)
+CppSharp::Parser::AST::TemplateParameterType::TemplateParameterType(System::IntPtr native)
+    : CppSharp::Parser::AST::Type(native)
 {
-    ((::CppSharp::CppParser::RawComment*)NativePtr)->Text = clix::marshalString<clix::E_UTF8>(value);
+    auto __native = (::CppSharp::CppParser::AST::TemplateParameterType*)native.ToPointer();
 }
 
-System::String^ CppSharp::Parser::RawComment::BriefText::get()
+CppSharp::Parser::AST::TemplateParameterType::TemplateParameterType()
+    : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)nullptr)
 {
-    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::RawComment*)NativePtr)->BriefText);
+    NativePtr = new ::CppSharp::CppParser::AST::TemplateParameterType();
 }
 
-void CppSharp::Parser::RawComment::BriefText::set(System::String^ value)
+CppSharp::Parser::AST::TemplateParameter^ CppSharp::Parser::AST::TemplateParameterType::Parameter::get()
 {
-    ((::CppSharp::CppParser::RawComment*)NativePtr)->BriefText = clix::marshalString<clix::E_UTF8>(value);
+    return gcnew CppSharp::Parser::AST::TemplateParameter((::CppSharp::CppParser::AST::TemplateParameter*)&((::CppSharp::CppParser::AST::TemplateParameterType*)NativePtr)->Parameter);
 }
 
-CppSharp::Parser::VTableComponent::VTableComponent(::CppSharp::CppParser::VTableComponent* native)
+void CppSharp::Parser::AST::TemplateParameterType::Parameter::set(CppSharp::Parser::AST::TemplateParameter^ value)
+{
+    ((::CppSharp::CppParser::AST::TemplateParameterType*)NativePtr)->Parameter = *(::CppSharp::CppParser::AST::TemplateParameter*)value->NativePtr;
+}
+
+CppSharp::Parser::AST::TemplateParameterSubstitutionType::TemplateParameterSubstitutionType(::CppSharp::CppParser::AST::TemplateParameterSubstitutionType* native)
+    : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)native)
+{
+}
+
+CppSharp::Parser::AST::TemplateParameterSubstitutionType::TemplateParameterSubstitutionType(System::IntPtr native)
+    : CppSharp::Parser::AST::Type(native)
+{
+    auto __native = (::CppSharp::CppParser::AST::TemplateParameterSubstitutionType*)native.ToPointer();
+}
+
+CppSharp::Parser::AST::TemplateParameterSubstitutionType::TemplateParameterSubstitutionType()
+    : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)nullptr)
+{
+    NativePtr = new ::CppSharp::CppParser::AST::TemplateParameterSubstitutionType();
+}
+
+CppSharp::Parser::AST::QualifiedType^ CppSharp::Parser::AST::TemplateParameterSubstitutionType::Replacement::get()
+{
+    return gcnew CppSharp::Parser::AST::QualifiedType((::CppSharp::CppParser::AST::QualifiedType*)&((::CppSharp::CppParser::AST::TemplateParameterSubstitutionType*)NativePtr)->Replacement);
+}
+
+void CppSharp::Parser::AST::TemplateParameterSubstitutionType::Replacement::set(CppSharp::Parser::AST::QualifiedType^ value)
+{
+    ((::CppSharp::CppParser::AST::TemplateParameterSubstitutionType*)NativePtr)->Replacement = *(::CppSharp::CppParser::AST::QualifiedType*)value->NativePtr;
+}
+
+CppSharp::Parser::AST::InjectedClassNameType::InjectedClassNameType(::CppSharp::CppParser::AST::InjectedClassNameType* native)
+    : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)native)
+{
+}
+
+CppSharp::Parser::AST::InjectedClassNameType::InjectedClassNameType(System::IntPtr native)
+    : CppSharp::Parser::AST::Type(native)
+{
+    auto __native = (::CppSharp::CppParser::AST::InjectedClassNameType*)native.ToPointer();
+}
+
+CppSharp::Parser::AST::InjectedClassNameType::InjectedClassNameType()
+    : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)nullptr)
+{
+    NativePtr = new ::CppSharp::CppParser::AST::InjectedClassNameType();
+}
+
+CppSharp::Parser::AST::TemplateSpecializationType^ CppSharp::Parser::AST::InjectedClassNameType::TemplateSpecialization::get()
+{
+    return gcnew CppSharp::Parser::AST::TemplateSpecializationType((::CppSharp::CppParser::AST::TemplateSpecializationType*)&((::CppSharp::CppParser::AST::InjectedClassNameType*)NativePtr)->TemplateSpecialization);
+}
+
+void CppSharp::Parser::AST::InjectedClassNameType::TemplateSpecialization::set(CppSharp::Parser::AST::TemplateSpecializationType^ value)
+{
+    ((::CppSharp::CppParser::AST::InjectedClassNameType*)NativePtr)->TemplateSpecialization = *(::CppSharp::CppParser::AST::TemplateSpecializationType*)value->NativePtr;
+}
+
+CppSharp::Parser::AST::Class^ CppSharp::Parser::AST::InjectedClassNameType::Class::get()
+{
+    return gcnew CppSharp::Parser::AST::Class((::CppSharp::CppParser::AST::Class*)((::CppSharp::CppParser::AST::InjectedClassNameType*)NativePtr)->Class);
+}
+
+void CppSharp::Parser::AST::InjectedClassNameType::Class::set(CppSharp::Parser::AST::Class^ value)
+{
+    ((::CppSharp::CppParser::AST::InjectedClassNameType*)NativePtr)->Class = (::CppSharp::CppParser::AST::Class*)value->NativePtr;
+}
+
+CppSharp::Parser::AST::DependentNameType::DependentNameType(::CppSharp::CppParser::AST::DependentNameType* native)
+    : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)native)
+{
+}
+
+CppSharp::Parser::AST::DependentNameType::DependentNameType(System::IntPtr native)
+    : CppSharp::Parser::AST::Type(native)
+{
+    auto __native = (::CppSharp::CppParser::AST::DependentNameType*)native.ToPointer();
+}
+
+CppSharp::Parser::AST::DependentNameType::DependentNameType()
+    : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)nullptr)
+{
+    NativePtr = new ::CppSharp::CppParser::AST::DependentNameType();
+}
+
+CppSharp::Parser::AST::BuiltinType::BuiltinType(::CppSharp::CppParser::AST::BuiltinType* native)
+    : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)native)
+{
+}
+
+CppSharp::Parser::AST::BuiltinType::BuiltinType(System::IntPtr native)
+    : CppSharp::Parser::AST::Type(native)
+{
+    auto __native = (::CppSharp::CppParser::AST::BuiltinType*)native.ToPointer();
+}
+
+CppSharp::Parser::AST::BuiltinType::BuiltinType()
+    : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)nullptr)
+{
+    NativePtr = new ::CppSharp::CppParser::AST::BuiltinType();
+}
+
+CppSharp::Parser::AST::PrimitiveType CppSharp::Parser::AST::BuiltinType::Type::get()
+{
+    return (CppSharp::Parser::AST::PrimitiveType)((::CppSharp::CppParser::AST::BuiltinType*)NativePtr)->Type;
+}
+
+void CppSharp::Parser::AST::BuiltinType::Type::set(CppSharp::Parser::AST::PrimitiveType value)
+{
+    ((::CppSharp::CppParser::AST::BuiltinType*)NativePtr)->Type = (::CppSharp::CppParser::AST::PrimitiveType)value;
+}
+
+CppSharp::Parser::AST::RawComment::RawComment(::CppSharp::CppParser::AST::RawComment* native)
 {
     NativePtr = native;
 }
 
-CppSharp::Parser::VTableComponent::VTableComponent(System::IntPtr native)
+CppSharp::Parser::AST::RawComment::RawComment(System::IntPtr native)
 {
-    auto __native = (::CppSharp::CppParser::VTableComponent*)native.ToPointer();
+    auto __native = (::CppSharp::CppParser::AST::RawComment*)native.ToPointer();
     NativePtr = __native;
 }
 
-CppSharp::Parser::VTableComponent::VTableComponent()
+CppSharp::Parser::AST::RawComment::RawComment()
 {
-    NativePtr = new ::CppSharp::CppParser::VTableComponent();
+    NativePtr = new ::CppSharp::CppParser::AST::RawComment();
 }
 
-System::IntPtr CppSharp::Parser::VTableComponent::Instance::get()
+System::IntPtr CppSharp::Parser::AST::RawComment::Instance::get()
 {
     return System::IntPtr(NativePtr);
 }
 
-void CppSharp::Parser::VTableComponent::Instance::set(System::IntPtr object)
+void CppSharp::Parser::AST::RawComment::Instance::set(System::IntPtr object)
 {
-    NativePtr = (::CppSharp::CppParser::VTableComponent*)object.ToPointer();
+    NativePtr = (::CppSharp::CppParser::AST::RawComment*)object.ToPointer();
 }
 
-CppSharp::Parser::VTableComponentKind CppSharp::Parser::VTableComponent::Kind::get()
+CppSharp::Parser::AST::RawCommentKind CppSharp::Parser::AST::RawComment::Kind::get()
 {
-    return (CppSharp::Parser::VTableComponentKind)((::CppSharp::CppParser::VTableComponent*)NativePtr)->Kind;
+    return (CppSharp::Parser::AST::RawCommentKind)((::CppSharp::CppParser::AST::RawComment*)NativePtr)->Kind;
 }
 
-void CppSharp::Parser::VTableComponent::Kind::set(CppSharp::Parser::VTableComponentKind value)
+void CppSharp::Parser::AST::RawComment::Kind::set(CppSharp::Parser::AST::RawCommentKind value)
 {
-    ((::CppSharp::CppParser::VTableComponent*)NativePtr)->Kind = (::CppSharp::CppParser::VTableComponentKind)value;
+    ((::CppSharp::CppParser::AST::RawComment*)NativePtr)->Kind = (::CppSharp::CppParser::AST::RawCommentKind)value;
 }
 
-unsigned int CppSharp::Parser::VTableComponent::Offset::get()
+System::String^ CppSharp::Parser::AST::RawComment::Text::get()
 {
-    return ((::CppSharp::CppParser::VTableComponent*)NativePtr)->Offset;
+    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::AST::RawComment*)NativePtr)->Text);
 }
 
-void CppSharp::Parser::VTableComponent::Offset::set(unsigned int value)
+void CppSharp::Parser::AST::RawComment::Text::set(System::String^ value)
 {
-    ((::CppSharp::CppParser::VTableComponent*)NativePtr)->Offset = value;
+    ((::CppSharp::CppParser::AST::RawComment*)NativePtr)->Text = clix::marshalString<clix::E_UTF8>(value);
 }
 
-CppSharp::Parser::Declaration^ CppSharp::Parser::VTableComponent::Declaration::get()
+System::String^ CppSharp::Parser::AST::RawComment::BriefText::get()
 {
-    return gcnew CppSharp::Parser::Declaration((::CppSharp::CppParser::Declaration*)((::CppSharp::CppParser::VTableComponent*)NativePtr)->Declaration);
+    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::AST::RawComment*)NativePtr)->BriefText);
 }
 
-void CppSharp::Parser::VTableComponent::Declaration::set(CppSharp::Parser::Declaration^ value)
+void CppSharp::Parser::AST::RawComment::BriefText::set(System::String^ value)
 {
-    ((::CppSharp::CppParser::VTableComponent*)NativePtr)->Declaration = (::CppSharp::CppParser::Declaration*)value->NativePtr;
+    ((::CppSharp::CppParser::AST::RawComment*)NativePtr)->BriefText = clix::marshalString<clix::E_UTF8>(value);
 }
 
-CppSharp::Parser::VTableLayout::VTableLayout(::CppSharp::CppParser::VTableLayout* native)
+CppSharp::Parser::AST::VTableComponent::VTableComponent(::CppSharp::CppParser::AST::VTableComponent* native)
 {
     NativePtr = native;
 }
 
-CppSharp::Parser::VTableLayout::VTableLayout(System::IntPtr native)
+CppSharp::Parser::AST::VTableComponent::VTableComponent(System::IntPtr native)
 {
-    auto __native = (::CppSharp::CppParser::VTableLayout*)native.ToPointer();
+    auto __native = (::CppSharp::CppParser::AST::VTableComponent*)native.ToPointer();
     NativePtr = __native;
 }
 
-CppSharp::Parser::VTableLayout::VTableLayout()
+CppSharp::Parser::AST::VTableComponent::VTableComponent()
 {
-    NativePtr = new ::CppSharp::CppParser::VTableLayout();
+    NativePtr = new ::CppSharp::CppParser::AST::VTableComponent();
 }
 
-System::IntPtr CppSharp::Parser::VTableLayout::Instance::get()
+System::IntPtr CppSharp::Parser::AST::VTableComponent::Instance::get()
 {
     return System::IntPtr(NativePtr);
 }
 
-void CppSharp::Parser::VTableLayout::Instance::set(System::IntPtr object)
+void CppSharp::Parser::AST::VTableComponent::Instance::set(System::IntPtr object)
 {
-    NativePtr = (::CppSharp::CppParser::VTableLayout*)object.ToPointer();
+    NativePtr = (::CppSharp::CppParser::AST::VTableComponent*)object.ToPointer();
 }
 
-System::Collections::Generic::List<CppSharp::Parser::VTableComponent^>^ CppSharp::Parser::VTableLayout::Components::get()
+CppSharp::Parser::AST::VTableComponentKind CppSharp::Parser::AST::VTableComponent::Kind::get()
 {
-    auto _tmpComponents = gcnew System::Collections::Generic::List<CppSharp::Parser::VTableComponent^>();
-    for(auto _element : ((::CppSharp::CppParser::VTableLayout*)NativePtr)->Components)
+    return (CppSharp::Parser::AST::VTableComponentKind)((::CppSharp::CppParser::AST::VTableComponent*)NativePtr)->Kind;
+}
+
+void CppSharp::Parser::AST::VTableComponent::Kind::set(CppSharp::Parser::AST::VTableComponentKind value)
+{
+    ((::CppSharp::CppParser::AST::VTableComponent*)NativePtr)->Kind = (::CppSharp::CppParser::AST::VTableComponentKind)value;
+}
+
+unsigned int CppSharp::Parser::AST::VTableComponent::Offset::get()
+{
+    return ((::CppSharp::CppParser::AST::VTableComponent*)NativePtr)->Offset;
+}
+
+void CppSharp::Parser::AST::VTableComponent::Offset::set(unsigned int value)
+{
+    ((::CppSharp::CppParser::AST::VTableComponent*)NativePtr)->Offset = value;
+}
+
+CppSharp::Parser::AST::Declaration^ CppSharp::Parser::AST::VTableComponent::Declaration::get()
+{
+    return gcnew CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)((::CppSharp::CppParser::AST::VTableComponent*)NativePtr)->Declaration);
+}
+
+void CppSharp::Parser::AST::VTableComponent::Declaration::set(CppSharp::Parser::AST::Declaration^ value)
+{
+    ((::CppSharp::CppParser::AST::VTableComponent*)NativePtr)->Declaration = (::CppSharp::CppParser::AST::Declaration*)value->NativePtr;
+}
+
+CppSharp::Parser::AST::VTableLayout::VTableLayout(::CppSharp::CppParser::AST::VTableLayout* native)
+{
+    NativePtr = native;
+}
+
+CppSharp::Parser::AST::VTableLayout::VTableLayout(System::IntPtr native)
+{
+    auto __native = (::CppSharp::CppParser::AST::VTableLayout*)native.ToPointer();
+    NativePtr = __native;
+}
+
+CppSharp::Parser::AST::VTableLayout::VTableLayout()
+{
+    NativePtr = new ::CppSharp::CppParser::AST::VTableLayout();
+}
+
+System::IntPtr CppSharp::Parser::AST::VTableLayout::Instance::get()
+{
+    return System::IntPtr(NativePtr);
+}
+
+void CppSharp::Parser::AST::VTableLayout::Instance::set(System::IntPtr object)
+{
+    NativePtr = (::CppSharp::CppParser::AST::VTableLayout*)object.ToPointer();
+}
+
+System::Collections::Generic::List<CppSharp::Parser::AST::VTableComponent^>^ CppSharp::Parser::AST::VTableLayout::Components::get()
+{
+    auto _tmpComponents = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::VTableComponent^>();
+    for(auto _element : ((::CppSharp::CppParser::AST::VTableLayout*)NativePtr)->Components)
     {
-        auto ___element = new ::CppSharp::CppParser::VTableComponent(_element);
-        auto _marshalElement = gcnew CppSharp::Parser::VTableComponent((::CppSharp::CppParser::VTableComponent*)___element);
+        auto ___element = new ::CppSharp::CppParser::AST::VTableComponent(_element);
+        auto _marshalElement = gcnew CppSharp::Parser::AST::VTableComponent((::CppSharp::CppParser::AST::VTableComponent*)___element);
         _tmpComponents->Add(_marshalElement);
     }
     return _tmpComponents;
 }
 
-void CppSharp::Parser::VTableLayout::Components::set(System::Collections::Generic::List<CppSharp::Parser::VTableComponent^>^ value)
+void CppSharp::Parser::AST::VTableLayout::Components::set(System::Collections::Generic::List<CppSharp::Parser::AST::VTableComponent^>^ value)
 {
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::VTableComponent>();
-    for each(CppSharp::Parser::VTableComponent^ _element in value)
+    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::VTableComponent>();
+    for each(CppSharp::Parser::AST::VTableComponent^ _element in value)
     {
-        auto _marshalElement = *(::CppSharp::CppParser::VTableComponent*)_element->NativePtr;
+        auto _marshalElement = *(::CppSharp::CppParser::AST::VTableComponent*)_element->NativePtr;
         _tmpvalue.push_back(_marshalElement);
     }
-    ((::CppSharp::CppParser::VTableLayout*)NativePtr)->Components = _tmpvalue;
+    ((::CppSharp::CppParser::AST::VTableLayout*)NativePtr)->Components = _tmpvalue;
 }
 
-CppSharp::Parser::VFTableInfo::VFTableInfo(::CppSharp::CppParser::VFTableInfo* native)
+CppSharp::Parser::AST::VFTableInfo::VFTableInfo(::CppSharp::CppParser::AST::VFTableInfo* native)
 {
     NativePtr = native;
 }
 
-CppSharp::Parser::VFTableInfo::VFTableInfo(System::IntPtr native)
+CppSharp::Parser::AST::VFTableInfo::VFTableInfo(System::IntPtr native)
 {
-    auto __native = (::CppSharp::CppParser::VFTableInfo*)native.ToPointer();
+    auto __native = (::CppSharp::CppParser::AST::VFTableInfo*)native.ToPointer();
     NativePtr = __native;
 }
 
-CppSharp::Parser::VFTableInfo::VFTableInfo()
+CppSharp::Parser::AST::VFTableInfo::VFTableInfo()
 {
-    NativePtr = new ::CppSharp::CppParser::VFTableInfo();
+    NativePtr = new ::CppSharp::CppParser::AST::VFTableInfo();
 }
 
-System::IntPtr CppSharp::Parser::VFTableInfo::Instance::get()
+System::IntPtr CppSharp::Parser::AST::VFTableInfo::Instance::get()
 {
     return System::IntPtr(NativePtr);
 }
 
-void CppSharp::Parser::VFTableInfo::Instance::set(System::IntPtr object)
+void CppSharp::Parser::AST::VFTableInfo::Instance::set(System::IntPtr object)
 {
-    NativePtr = (::CppSharp::CppParser::VFTableInfo*)object.ToPointer();
+    NativePtr = (::CppSharp::CppParser::AST::VFTableInfo*)object.ToPointer();
 }
 
-unsigned long long CppSharp::Parser::VFTableInfo::VBTableIndex::get()
+unsigned long long CppSharp::Parser::AST::VFTableInfo::VBTableIndex::get()
 {
-    return ((::CppSharp::CppParser::VFTableInfo*)NativePtr)->VBTableIndex;
+    return ((::CppSharp::CppParser::AST::VFTableInfo*)NativePtr)->VBTableIndex;
 }
 
-void CppSharp::Parser::VFTableInfo::VBTableIndex::set(unsigned long long value)
+void CppSharp::Parser::AST::VFTableInfo::VBTableIndex::set(unsigned long long value)
 {
-    ((::CppSharp::CppParser::VFTableInfo*)NativePtr)->VBTableIndex = (::uint64_t)value;
+    ((::CppSharp::CppParser::AST::VFTableInfo*)NativePtr)->VBTableIndex = (::uint64_t)value;
 }
 
-unsigned int CppSharp::Parser::VFTableInfo::VFPtrOffset::get()
+unsigned int CppSharp::Parser::AST::VFTableInfo::VFPtrOffset::get()
 {
-    return ((::CppSharp::CppParser::VFTableInfo*)NativePtr)->VFPtrOffset;
+    return ((::CppSharp::CppParser::AST::VFTableInfo*)NativePtr)->VFPtrOffset;
 }
 
-void CppSharp::Parser::VFTableInfo::VFPtrOffset::set(unsigned int value)
+void CppSharp::Parser::AST::VFTableInfo::VFPtrOffset::set(unsigned int value)
 {
-    ((::CppSharp::CppParser::VFTableInfo*)NativePtr)->VFPtrOffset = (::uint32_t)value;
+    ((::CppSharp::CppParser::AST::VFTableInfo*)NativePtr)->VFPtrOffset = (::uint32_t)value;
 }
 
-unsigned int CppSharp::Parser::VFTableInfo::VFPtrFullOffset::get()
+unsigned int CppSharp::Parser::AST::VFTableInfo::VFPtrFullOffset::get()
 {
-    return ((::CppSharp::CppParser::VFTableInfo*)NativePtr)->VFPtrFullOffset;
+    return ((::CppSharp::CppParser::AST::VFTableInfo*)NativePtr)->VFPtrFullOffset;
 }
 
-void CppSharp::Parser::VFTableInfo::VFPtrFullOffset::set(unsigned int value)
+void CppSharp::Parser::AST::VFTableInfo::VFPtrFullOffset::set(unsigned int value)
 {
-    ((::CppSharp::CppParser::VFTableInfo*)NativePtr)->VFPtrFullOffset = (::uint32_t)value;
+    ((::CppSharp::CppParser::AST::VFTableInfo*)NativePtr)->VFPtrFullOffset = (::uint32_t)value;
 }
 
-CppSharp::Parser::VTableLayout^ CppSharp::Parser::VFTableInfo::Layout::get()
+CppSharp::Parser::AST::VTableLayout^ CppSharp::Parser::AST::VFTableInfo::Layout::get()
 {
-    return gcnew CppSharp::Parser::VTableLayout((::CppSharp::CppParser::VTableLayout*)&((::CppSharp::CppParser::VFTableInfo*)NativePtr)->Layout);
+    return gcnew CppSharp::Parser::AST::VTableLayout((::CppSharp::CppParser::AST::VTableLayout*)&((::CppSharp::CppParser::AST::VFTableInfo*)NativePtr)->Layout);
 }
 
-void CppSharp::Parser::VFTableInfo::Layout::set(CppSharp::Parser::VTableLayout^ value)
+void CppSharp::Parser::AST::VFTableInfo::Layout::set(CppSharp::Parser::AST::VTableLayout^ value)
 {
-    ((::CppSharp::CppParser::VFTableInfo*)NativePtr)->Layout = *(::CppSharp::CppParser::VTableLayout*)value->NativePtr;
+    ((::CppSharp::CppParser::AST::VFTableInfo*)NativePtr)->Layout = *(::CppSharp::CppParser::AST::VTableLayout*)value->NativePtr;
 }
 
-CppSharp::Parser::ClassLayout::ClassLayout(::CppSharp::CppParser::ClassLayout* native)
+CppSharp::Parser::AST::ClassLayout::ClassLayout(::CppSharp::CppParser::AST::ClassLayout* native)
 {
     NativePtr = native;
 }
 
-CppSharp::Parser::ClassLayout::ClassLayout(System::IntPtr native)
+CppSharp::Parser::AST::ClassLayout::ClassLayout(System::IntPtr native)
 {
-    auto __native = (::CppSharp::CppParser::ClassLayout*)native.ToPointer();
+    auto __native = (::CppSharp::CppParser::AST::ClassLayout*)native.ToPointer();
     NativePtr = __native;
 }
 
-CppSharp::Parser::ClassLayout::ClassLayout()
+CppSharp::Parser::AST::ClassLayout::ClassLayout()
 {
-    NativePtr = new ::CppSharp::CppParser::ClassLayout();
+    NativePtr = new ::CppSharp::CppParser::AST::ClassLayout();
 }
 
-System::IntPtr CppSharp::Parser::ClassLayout::Instance::get()
+System::IntPtr CppSharp::Parser::AST::ClassLayout::Instance::get()
 {
     return System::IntPtr(NativePtr);
 }
 
-void CppSharp::Parser::ClassLayout::Instance::set(System::IntPtr object)
+void CppSharp::Parser::AST::ClassLayout::Instance::set(System::IntPtr object)
 {
-    NativePtr = (::CppSharp::CppParser::ClassLayout*)object.ToPointer();
+    NativePtr = (::CppSharp::CppParser::AST::ClassLayout*)object.ToPointer();
 }
 
-CppSharp::Parser::CppAbi CppSharp::Parser::ClassLayout::ABI::get()
+CppSharp::Parser::AST::CppAbi CppSharp::Parser::AST::ClassLayout::ABI::get()
 {
-    return (CppSharp::Parser::CppAbi)((::CppSharp::CppParser::ClassLayout*)NativePtr)->ABI;
+    return (CppSharp::Parser::AST::CppAbi)((::CppSharp::CppParser::AST::ClassLayout*)NativePtr)->ABI;
 }
 
-void CppSharp::Parser::ClassLayout::ABI::set(CppSharp::Parser::CppAbi value)
+void CppSharp::Parser::AST::ClassLayout::ABI::set(CppSharp::Parser::AST::CppAbi value)
 {
-    ((::CppSharp::CppParser::ClassLayout*)NativePtr)->ABI = (::CppSharp::CppParser::CppAbi)value;
+    ((::CppSharp::CppParser::AST::ClassLayout*)NativePtr)->ABI = (::CppSharp::CppParser::AST::CppAbi)value;
 }
 
-System::Collections::Generic::List<CppSharp::Parser::VFTableInfo^>^ CppSharp::Parser::ClassLayout::VFTables::get()
+System::Collections::Generic::List<CppSharp::Parser::AST::VFTableInfo^>^ CppSharp::Parser::AST::ClassLayout::VFTables::get()
 {
-    auto _tmpVFTables = gcnew System::Collections::Generic::List<CppSharp::Parser::VFTableInfo^>();
-    for(auto _element : ((::CppSharp::CppParser::ClassLayout*)NativePtr)->VFTables)
+    auto _tmpVFTables = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::VFTableInfo^>();
+    for(auto _element : ((::CppSharp::CppParser::AST::ClassLayout*)NativePtr)->VFTables)
     {
-        auto ___element = new ::CppSharp::CppParser::VFTableInfo(_element);
-        auto _marshalElement = gcnew CppSharp::Parser::VFTableInfo((::CppSharp::CppParser::VFTableInfo*)___element);
+        auto ___element = new ::CppSharp::CppParser::AST::VFTableInfo(_element);
+        auto _marshalElement = gcnew CppSharp::Parser::AST::VFTableInfo((::CppSharp::CppParser::AST::VFTableInfo*)___element);
         _tmpVFTables->Add(_marshalElement);
     }
     return _tmpVFTables;
 }
 
-void CppSharp::Parser::ClassLayout::VFTables::set(System::Collections::Generic::List<CppSharp::Parser::VFTableInfo^>^ value)
+void CppSharp::Parser::AST::ClassLayout::VFTables::set(System::Collections::Generic::List<CppSharp::Parser::AST::VFTableInfo^>^ value)
 {
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::VFTableInfo>();
-    for each(CppSharp::Parser::VFTableInfo^ _element in value)
+    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::VFTableInfo>();
+    for each(CppSharp::Parser::AST::VFTableInfo^ _element in value)
     {
-        auto _marshalElement = *(::CppSharp::CppParser::VFTableInfo*)_element->NativePtr;
+        auto _marshalElement = *(::CppSharp::CppParser::AST::VFTableInfo*)_element->NativePtr;
         _tmpvalue.push_back(_marshalElement);
     }
-    ((::CppSharp::CppParser::ClassLayout*)NativePtr)->VFTables = _tmpvalue;
+    ((::CppSharp::CppParser::AST::ClassLayout*)NativePtr)->VFTables = _tmpvalue;
 }
 
-CppSharp::Parser::VTableLayout^ CppSharp::Parser::ClassLayout::Layout::get()
+CppSharp::Parser::AST::VTableLayout^ CppSharp::Parser::AST::ClassLayout::Layout::get()
 {
-    return gcnew CppSharp::Parser::VTableLayout((::CppSharp::CppParser::VTableLayout*)&((::CppSharp::CppParser::ClassLayout*)NativePtr)->Layout);
+    return gcnew CppSharp::Parser::AST::VTableLayout((::CppSharp::CppParser::AST::VTableLayout*)&((::CppSharp::CppParser::AST::ClassLayout*)NativePtr)->Layout);
 }
 
-void CppSharp::Parser::ClassLayout::Layout::set(CppSharp::Parser::VTableLayout^ value)
+void CppSharp::Parser::AST::ClassLayout::Layout::set(CppSharp::Parser::AST::VTableLayout^ value)
 {
-    ((::CppSharp::CppParser::ClassLayout*)NativePtr)->Layout = *(::CppSharp::CppParser::VTableLayout*)value->NativePtr;
+    ((::CppSharp::CppParser::AST::ClassLayout*)NativePtr)->Layout = *(::CppSharp::CppParser::AST::VTableLayout*)value->NativePtr;
 }
 
-bool CppSharp::Parser::ClassLayout::HasOwnVFPtr::get()
+bool CppSharp::Parser::AST::ClassLayout::HasOwnVFPtr::get()
 {
-    return ((::CppSharp::CppParser::ClassLayout*)NativePtr)->HasOwnVFPtr;
+    return ((::CppSharp::CppParser::AST::ClassLayout*)NativePtr)->HasOwnVFPtr;
 }
 
-void CppSharp::Parser::ClassLayout::HasOwnVFPtr::set(bool value)
+void CppSharp::Parser::AST::ClassLayout::HasOwnVFPtr::set(bool value)
 {
-    ((::CppSharp::CppParser::ClassLayout*)NativePtr)->HasOwnVFPtr = value;
+    ((::CppSharp::CppParser::AST::ClassLayout*)NativePtr)->HasOwnVFPtr = value;
 }
 
-int CppSharp::Parser::ClassLayout::VBPtrOffset::get()
+int CppSharp::Parser::AST::ClassLayout::VBPtrOffset::get()
 {
-    return ((::CppSharp::CppParser::ClassLayout*)NativePtr)->VBPtrOffset;
+    return ((::CppSharp::CppParser::AST::ClassLayout*)NativePtr)->VBPtrOffset;
 }
 
-void CppSharp::Parser::ClassLayout::VBPtrOffset::set(int value)
+void CppSharp::Parser::AST::ClassLayout::VBPtrOffset::set(int value)
 {
-    ((::CppSharp::CppParser::ClassLayout*)NativePtr)->VBPtrOffset = value;
+    ((::CppSharp::CppParser::AST::ClassLayout*)NativePtr)->VBPtrOffset = value;
 }
 
-int CppSharp::Parser::ClassLayout::Alignment::get()
+int CppSharp::Parser::AST::ClassLayout::Alignment::get()
 {
-    return ((::CppSharp::CppParser::ClassLayout*)NativePtr)->Alignment;
+    return ((::CppSharp::CppParser::AST::ClassLayout*)NativePtr)->Alignment;
 }
 
-void CppSharp::Parser::ClassLayout::Alignment::set(int value)
+void CppSharp::Parser::AST::ClassLayout::Alignment::set(int value)
 {
-    ((::CppSharp::CppParser::ClassLayout*)NativePtr)->Alignment = value;
+    ((::CppSharp::CppParser::AST::ClassLayout*)NativePtr)->Alignment = value;
 }
 
-int CppSharp::Parser::ClassLayout::Size::get()
+int CppSharp::Parser::AST::ClassLayout::Size::get()
 {
-    return ((::CppSharp::CppParser::ClassLayout*)NativePtr)->Size;
+    return ((::CppSharp::CppParser::AST::ClassLayout*)NativePtr)->Size;
 }
 
-void CppSharp::Parser::ClassLayout::Size::set(int value)
+void CppSharp::Parser::AST::ClassLayout::Size::set(int value)
 {
-    ((::CppSharp::CppParser::ClassLayout*)NativePtr)->Size = value;
+    ((::CppSharp::CppParser::AST::ClassLayout*)NativePtr)->Size = value;
 }
 
-int CppSharp::Parser::ClassLayout::DataSize::get()
+int CppSharp::Parser::AST::ClassLayout::DataSize::get()
 {
-    return ((::CppSharp::CppParser::ClassLayout*)NativePtr)->DataSize;
+    return ((::CppSharp::CppParser::AST::ClassLayout*)NativePtr)->DataSize;
 }
 
-void CppSharp::Parser::ClassLayout::DataSize::set(int value)
+void CppSharp::Parser::AST::ClassLayout::DataSize::set(int value)
 {
-    ((::CppSharp::CppParser::ClassLayout*)NativePtr)->DataSize = value;
+    ((::CppSharp::CppParser::AST::ClassLayout*)NativePtr)->DataSize = value;
 }
 
-CppSharp::Parser::Declaration::Declaration(::CppSharp::CppParser::Declaration* native)
+CppSharp::Parser::AST::Declaration::Declaration(::CppSharp::CppParser::AST::Declaration* native)
 {
     NativePtr = native;
 }
 
-CppSharp::Parser::Declaration::Declaration(System::IntPtr native)
+CppSharp::Parser::AST::Declaration::Declaration(System::IntPtr native)
 {
-    auto __native = (::CppSharp::CppParser::Declaration*)native.ToPointer();
+    auto __native = (::CppSharp::CppParser::AST::Declaration*)native.ToPointer();
     NativePtr = __native;
 }
 
-CppSharp::Parser::Declaration::Declaration()
+CppSharp::Parser::AST::Declaration::Declaration()
 {
-    NativePtr = new ::CppSharp::CppParser::Declaration();
+    NativePtr = new ::CppSharp::CppParser::AST::Declaration();
 }
 
-System::IntPtr CppSharp::Parser::Declaration::Instance::get()
+System::IntPtr CppSharp::Parser::AST::Declaration::Instance::get()
 {
     return System::IntPtr(NativePtr);
 }
 
-void CppSharp::Parser::Declaration::Instance::set(System::IntPtr object)
+void CppSharp::Parser::AST::Declaration::Instance::set(System::IntPtr object)
 {
-    NativePtr = (::CppSharp::CppParser::Declaration*)object.ToPointer();
+    NativePtr = (::CppSharp::CppParser::AST::Declaration*)object.ToPointer();
 }
 
-CppSharp::Parser::AccessSpecifier CppSharp::Parser::Declaration::Access::get()
+CppSharp::Parser::AST::AccessSpecifier CppSharp::Parser::AST::Declaration::Access::get()
 {
-    return (CppSharp::Parser::AccessSpecifier)((::CppSharp::CppParser::Declaration*)NativePtr)->Access;
+    return (CppSharp::Parser::AST::AccessSpecifier)((::CppSharp::CppParser::AST::Declaration*)NativePtr)->Access;
 }
 
-void CppSharp::Parser::Declaration::Access::set(CppSharp::Parser::AccessSpecifier value)
+void CppSharp::Parser::AST::Declaration::Access::set(CppSharp::Parser::AST::AccessSpecifier value)
 {
-    ((::CppSharp::CppParser::Declaration*)NativePtr)->Access = (::CppSharp::CppParser::AccessSpecifier)value;
+    ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->Access = (::CppSharp::CppParser::AST::AccessSpecifier)value;
 }
 
-CppSharp::Parser::DeclarationContext^ CppSharp::Parser::Declaration::_Namespace::get()
+CppSharp::Parser::AST::DeclarationContext^ CppSharp::Parser::AST::Declaration::_Namespace::get()
 {
-    return gcnew CppSharp::Parser::DeclarationContext((::CppSharp::CppParser::DeclarationContext*)((::CppSharp::CppParser::Declaration*)NativePtr)->_Namespace);
+    return gcnew CppSharp::Parser::AST::DeclarationContext((::CppSharp::CppParser::AST::DeclarationContext*)((::CppSharp::CppParser::AST::Declaration*)NativePtr)->_Namespace);
 }
 
-void CppSharp::Parser::Declaration::_Namespace::set(CppSharp::Parser::DeclarationContext^ value)
+void CppSharp::Parser::AST::Declaration::_Namespace::set(CppSharp::Parser::AST::DeclarationContext^ value)
 {
-    ((::CppSharp::CppParser::Declaration*)NativePtr)->_Namespace = (::CppSharp::CppParser::DeclarationContext*)value->NativePtr;
+    ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->_Namespace = (::CppSharp::CppParser::AST::DeclarationContext*)value->NativePtr;
 }
 
-System::String^ CppSharp::Parser::Declaration::Name::get()
+System::String^ CppSharp::Parser::AST::Declaration::Name::get()
 {
-    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::Declaration*)NativePtr)->Name);
+    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::AST::Declaration*)NativePtr)->Name);
 }
 
-void CppSharp::Parser::Declaration::Name::set(System::String^ value)
+void CppSharp::Parser::AST::Declaration::Name::set(System::String^ value)
 {
-    ((::CppSharp::CppParser::Declaration*)NativePtr)->Name = clix::marshalString<clix::E_UTF8>(value);
+    ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->Name = clix::marshalString<clix::E_UTF8>(value);
 }
 
-CppSharp::Parser::RawComment^ CppSharp::Parser::Declaration::Comment::get()
+CppSharp::Parser::AST::RawComment^ CppSharp::Parser::AST::Declaration::Comment::get()
 {
-    return gcnew CppSharp::Parser::RawComment((::CppSharp::CppParser::RawComment*)((::CppSharp::CppParser::Declaration*)NativePtr)->Comment);
+    return gcnew CppSharp::Parser::AST::RawComment((::CppSharp::CppParser::AST::RawComment*)((::CppSharp::CppParser::AST::Declaration*)NativePtr)->Comment);
 }
 
-void CppSharp::Parser::Declaration::Comment::set(CppSharp::Parser::RawComment^ value)
+void CppSharp::Parser::AST::Declaration::Comment::set(CppSharp::Parser::AST::RawComment^ value)
 {
-    ((::CppSharp::CppParser::Declaration*)NativePtr)->Comment = (::CppSharp::CppParser::RawComment*)value->NativePtr;
+    ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->Comment = (::CppSharp::CppParser::AST::RawComment*)value->NativePtr;
 }
 
-System::String^ CppSharp::Parser::Declaration::DebugText::get()
+System::String^ CppSharp::Parser::AST::Declaration::DebugText::get()
 {
-    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::Declaration*)NativePtr)->DebugText);
+    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::AST::Declaration*)NativePtr)->DebugText);
 }
 
-void CppSharp::Parser::Declaration::DebugText::set(System::String^ value)
+void CppSharp::Parser::AST::Declaration::DebugText::set(System::String^ value)
 {
-    ((::CppSharp::CppParser::Declaration*)NativePtr)->DebugText = clix::marshalString<clix::E_UTF8>(value);
+    ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->DebugText = clix::marshalString<clix::E_UTF8>(value);
 }
 
-bool CppSharp::Parser::Declaration::IsIncomplete::get()
+bool CppSharp::Parser::AST::Declaration::IsIncomplete::get()
 {
-    return ((::CppSharp::CppParser::Declaration*)NativePtr)->IsIncomplete;
+    return ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->IsIncomplete;
 }
 
-void CppSharp::Parser::Declaration::IsIncomplete::set(bool value)
+void CppSharp::Parser::AST::Declaration::IsIncomplete::set(bool value)
 {
-    ((::CppSharp::CppParser::Declaration*)NativePtr)->IsIncomplete = value;
+    ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->IsIncomplete = value;
 }
 
-bool CppSharp::Parser::Declaration::IsDependent::get()
+bool CppSharp::Parser::AST::Declaration::IsDependent::get()
 {
-    return ((::CppSharp::CppParser::Declaration*)NativePtr)->IsDependent;
+    return ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->IsDependent;
 }
 
-void CppSharp::Parser::Declaration::IsDependent::set(bool value)
+void CppSharp::Parser::AST::Declaration::IsDependent::set(bool value)
 {
-    ((::CppSharp::CppParser::Declaration*)NativePtr)->IsDependent = value;
+    ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->IsDependent = value;
 }
 
-CppSharp::Parser::Declaration^ CppSharp::Parser::Declaration::CompleteDeclaration::get()
+CppSharp::Parser::AST::Declaration^ CppSharp::Parser::AST::Declaration::CompleteDeclaration::get()
 {
-    return gcnew CppSharp::Parser::Declaration((::CppSharp::CppParser::Declaration*)((::CppSharp::CppParser::Declaration*)NativePtr)->CompleteDeclaration);
+    return gcnew CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)((::CppSharp::CppParser::AST::Declaration*)NativePtr)->CompleteDeclaration);
 }
 
-void CppSharp::Parser::Declaration::CompleteDeclaration::set(CppSharp::Parser::Declaration^ value)
+void CppSharp::Parser::AST::Declaration::CompleteDeclaration::set(CppSharp::Parser::AST::Declaration^ value)
 {
-    ((::CppSharp::CppParser::Declaration*)NativePtr)->CompleteDeclaration = (::CppSharp::CppParser::Declaration*)value->NativePtr;
+    ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->CompleteDeclaration = (::CppSharp::CppParser::AST::Declaration*)value->NativePtr;
 }
 
-unsigned int CppSharp::Parser::Declaration::DefinitionOrder::get()
+unsigned int CppSharp::Parser::AST::Declaration::DefinitionOrder::get()
 {
-    return ((::CppSharp::CppParser::Declaration*)NativePtr)->DefinitionOrder;
+    return ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->DefinitionOrder;
 }
 
-void CppSharp::Parser::Declaration::DefinitionOrder::set(unsigned int value)
+void CppSharp::Parser::AST::Declaration::DefinitionOrder::set(unsigned int value)
 {
-    ((::CppSharp::CppParser::Declaration*)NativePtr)->DefinitionOrder = value;
+    ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->DefinitionOrder = value;
 }
 
-System::Collections::Generic::List<CppSharp::Parser::PreprocessedEntity^>^ CppSharp::Parser::Declaration::PreprocessedEntities::get()
+System::Collections::Generic::List<CppSharp::Parser::AST::PreprocessedEntity^>^ CppSharp::Parser::AST::Declaration::PreprocessedEntities::get()
 {
-    auto _tmpPreprocessedEntities = gcnew System::Collections::Generic::List<CppSharp::Parser::PreprocessedEntity^>();
-    for(auto _element : ((::CppSharp::CppParser::Declaration*)NativePtr)->PreprocessedEntities)
+    auto _tmpPreprocessedEntities = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::PreprocessedEntity^>();
+    for(auto _element : ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->PreprocessedEntities)
     {
-        auto _marshalElement = gcnew CppSharp::Parser::PreprocessedEntity((::CppSharp::CppParser::PreprocessedEntity*)_element);
+        auto _marshalElement = gcnew CppSharp::Parser::AST::PreprocessedEntity((::CppSharp::CppParser::AST::PreprocessedEntity*)_element);
         _tmpPreprocessedEntities->Add(_marshalElement);
     }
     return _tmpPreprocessedEntities;
 }
 
-void CppSharp::Parser::Declaration::PreprocessedEntities::set(System::Collections::Generic::List<CppSharp::Parser::PreprocessedEntity^>^ value)
+void CppSharp::Parser::AST::Declaration::PreprocessedEntities::set(System::Collections::Generic::List<CppSharp::Parser::AST::PreprocessedEntity^>^ value)
 {
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::PreprocessedEntity*>();
-    for each(CppSharp::Parser::PreprocessedEntity^ _element in value)
+    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::PreprocessedEntity*>();
+    for each(CppSharp::Parser::AST::PreprocessedEntity^ _element in value)
     {
-        auto _marshalElement = (::CppSharp::CppParser::PreprocessedEntity*)_element->NativePtr;
+        auto _marshalElement = (::CppSharp::CppParser::AST::PreprocessedEntity*)_element->NativePtr;
         _tmpvalue.push_back(_marshalElement);
     }
-    ((::CppSharp::CppParser::Declaration*)NativePtr)->PreprocessedEntities = _tmpvalue;
+    ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->PreprocessedEntities = _tmpvalue;
 }
 
-System::IntPtr CppSharp::Parser::Declaration::OriginalPtr::get()
+System::IntPtr CppSharp::Parser::AST::Declaration::OriginalPtr::get()
 {
-    return IntPtr(((::CppSharp::CppParser::Declaration*)NativePtr)->OriginalPtr);
+    return IntPtr(((::CppSharp::CppParser::AST::Declaration*)NativePtr)->OriginalPtr);
 }
 
-void CppSharp::Parser::Declaration::OriginalPtr::set(System::IntPtr value)
+void CppSharp::Parser::AST::Declaration::OriginalPtr::set(System::IntPtr value)
 {
-    ((::CppSharp::CppParser::Declaration*)NativePtr)->OriginalPtr = (void*)value.ToPointer();
+    ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->OriginalPtr = (void*)value.ToPointer();
 }
 
-CppSharp::Parser::DeclarationContext::DeclarationContext(::CppSharp::CppParser::DeclarationContext* native)
-    : CppSharp::Parser::Declaration((::CppSharp::CppParser::Declaration*)native)
+CppSharp::Parser::AST::DeclarationContext::DeclarationContext(::CppSharp::CppParser::AST::DeclarationContext* native)
+    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)native)
 {
 }
 
-CppSharp::Parser::DeclarationContext::DeclarationContext(System::IntPtr native)
-    : CppSharp::Parser::Declaration(native)
+CppSharp::Parser::AST::DeclarationContext::DeclarationContext(System::IntPtr native)
+    : CppSharp::Parser::AST::Declaration(native)
 {
-    auto __native = (::CppSharp::CppParser::DeclarationContext*)native.ToPointer();
+    auto __native = (::CppSharp::CppParser::AST::DeclarationContext*)native.ToPointer();
 }
 
-CppSharp::Parser::Declaration^ CppSharp::Parser::DeclarationContext::FindAnonymous(unsigned long long key)
+CppSharp::Parser::AST::Declaration^ CppSharp::Parser::AST::DeclarationContext::FindAnonymous(unsigned long long key)
 {
     auto arg0 = (::uint64_t)key;
-    auto __ret = ((::CppSharp::CppParser::DeclarationContext*)NativePtr)->FindAnonymous(arg0);
+    auto __ret = ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->FindAnonymous(arg0);
     if (__ret == nullptr) return nullptr;
-    return gcnew CppSharp::Parser::Declaration((::CppSharp::CppParser::Declaration*)__ret);
+    return gcnew CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)__ret);
 }
 
-CppSharp::Parser::Namespace^ CppSharp::Parser::DeclarationContext::FindNamespace(System::String^ Name)
+CppSharp::Parser::AST::Namespace^ CppSharp::Parser::AST::DeclarationContext::FindNamespace(System::String^ Name)
 {
     auto arg0 = clix::marshalString<clix::E_UTF8>(Name);
-    auto __ret = ((::CppSharp::CppParser::DeclarationContext*)NativePtr)->FindNamespace(arg0);
+    auto __ret = ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->FindNamespace(arg0);
     if (__ret == nullptr) return nullptr;
-    return gcnew CppSharp::Parser::Namespace((::CppSharp::CppParser::Namespace*)__ret);
+    return gcnew CppSharp::Parser::AST::Namespace((::CppSharp::CppParser::AST::Namespace*)__ret);
 }
 
-CppSharp::Parser::Namespace^ CppSharp::Parser::DeclarationContext::FindNamespace(System::Collections::Generic::List<System::String^>^ _0)
+CppSharp::Parser::AST::Namespace^ CppSharp::Parser::AST::DeclarationContext::FindNamespace(System::Collections::Generic::List<System::String^>^ _0)
 {
     auto _tmp_0 = std::vector<::std::string>();
     for each(System::String^ _element in _0)
@@ -1228,1363 +1228,1383 @@ CppSharp::Parser::Namespace^ CppSharp::Parser::DeclarationContext::FindNamespace
         _tmp_0.push_back(_marshalElement);
     }
     auto arg0 = _tmp_0;
-    auto __ret = ((::CppSharp::CppParser::DeclarationContext*)NativePtr)->FindNamespace(arg0);
+    auto __ret = ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->FindNamespace(arg0);
     if (__ret == nullptr) return nullptr;
-    return gcnew CppSharp::Parser::Namespace((::CppSharp::CppParser::Namespace*)__ret);
+    return gcnew CppSharp::Parser::AST::Namespace((::CppSharp::CppParser::AST::Namespace*)__ret);
 }
 
-CppSharp::Parser::Namespace^ CppSharp::Parser::DeclarationContext::FindCreateNamespace(System::String^ Name)
+CppSharp::Parser::AST::Namespace^ CppSharp::Parser::AST::DeclarationContext::FindCreateNamespace(System::String^ Name)
 {
     auto arg0 = clix::marshalString<clix::E_UTF8>(Name);
-    auto __ret = ((::CppSharp::CppParser::DeclarationContext*)NativePtr)->FindCreateNamespace(arg0);
+    auto __ret = ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->FindCreateNamespace(arg0);
     if (__ret == nullptr) return nullptr;
-    return gcnew CppSharp::Parser::Namespace((::CppSharp::CppParser::Namespace*)__ret);
+    return gcnew CppSharp::Parser::AST::Namespace((::CppSharp::CppParser::AST::Namespace*)__ret);
 }
 
-CppSharp::Parser::Class^ CppSharp::Parser::DeclarationContext::CreateClass(System::String^ Name, bool IsComplete)
+CppSharp::Parser::AST::Class^ CppSharp::Parser::AST::DeclarationContext::CreateClass(System::String^ Name, bool IsComplete)
 {
     auto arg0 = clix::marshalString<clix::E_UTF8>(Name);
-    auto __ret = ((::CppSharp::CppParser::DeclarationContext*)NativePtr)->CreateClass(arg0, IsComplete);
+    auto __ret = ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->CreateClass(arg0, IsComplete);
     if (__ret == nullptr) return nullptr;
-    return gcnew CppSharp::Parser::Class((::CppSharp::CppParser::Class*)__ret);
+    return gcnew CppSharp::Parser::AST::Class((::CppSharp::CppParser::AST::Class*)__ret);
 }
 
-CppSharp::Parser::Class^ CppSharp::Parser::DeclarationContext::FindClass(System::String^ Name)
+CppSharp::Parser::AST::Class^ CppSharp::Parser::AST::DeclarationContext::FindClass(System::String^ Name)
 {
     auto arg0 = clix::marshalString<clix::E_UTF8>(Name);
-    auto __ret = ((::CppSharp::CppParser::DeclarationContext*)NativePtr)->FindClass(arg0);
+    auto __ret = ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->FindClass(arg0);
     if (__ret == nullptr) return nullptr;
-    return gcnew CppSharp::Parser::Class((::CppSharp::CppParser::Class*)__ret);
+    return gcnew CppSharp::Parser::AST::Class((::CppSharp::CppParser::AST::Class*)__ret);
 }
 
-CppSharp::Parser::Class^ CppSharp::Parser::DeclarationContext::FindClass(System::String^ Name, bool IsComplete, bool Create)
+CppSharp::Parser::AST::Class^ CppSharp::Parser::AST::DeclarationContext::FindClass(System::String^ Name, bool IsComplete, bool Create)
 {
     auto arg0 = clix::marshalString<clix::E_UTF8>(Name);
-    auto __ret = ((::CppSharp::CppParser::DeclarationContext*)NativePtr)->FindClass(arg0, IsComplete, Create);
+    auto __ret = ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->FindClass(arg0, IsComplete, Create);
     if (__ret == nullptr) return nullptr;
-    return gcnew CppSharp::Parser::Class((::CppSharp::CppParser::Class*)__ret);
+    return gcnew CppSharp::Parser::AST::Class((::CppSharp::CppParser::AST::Class*)__ret);
 }
 
-CppSharp::Parser::Enumeration^ CppSharp::Parser::DeclarationContext::FindEnum(System::String^ Name, bool Create)
+CppSharp::Parser::AST::Enumeration^ CppSharp::Parser::AST::DeclarationContext::FindEnum(System::String^ Name, bool Create)
 {
     auto arg0 = clix::marshalString<clix::E_UTF8>(Name);
-    auto __ret = ((::CppSharp::CppParser::DeclarationContext*)NativePtr)->FindEnum(arg0, Create);
+    auto __ret = ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->FindEnum(arg0, Create);
     if (__ret == nullptr) return nullptr;
-    return gcnew CppSharp::Parser::Enumeration((::CppSharp::CppParser::Enumeration*)__ret);
+    return gcnew CppSharp::Parser::AST::Enumeration((::CppSharp::CppParser::AST::Enumeration*)__ret);
 }
 
-CppSharp::Parser::Function^ CppSharp::Parser::DeclarationContext::FindFunction(System::String^ Name, bool Create)
+CppSharp::Parser::AST::Function^ CppSharp::Parser::AST::DeclarationContext::FindFunction(System::String^ Name, bool Create)
 {
     auto arg0 = clix::marshalString<clix::E_UTF8>(Name);
-    auto __ret = ((::CppSharp::CppParser::DeclarationContext*)NativePtr)->FindFunction(arg0, Create);
+    auto __ret = ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->FindFunction(arg0, Create);
     if (__ret == nullptr) return nullptr;
-    return gcnew CppSharp::Parser::Function((::CppSharp::CppParser::Function*)__ret);
+    return gcnew CppSharp::Parser::AST::Function((::CppSharp::CppParser::AST::Function*)__ret);
 }
 
-CppSharp::Parser::TypedefDecl^ CppSharp::Parser::DeclarationContext::FindTypedef(System::String^ Name, bool Create)
+CppSharp::Parser::AST::TypedefDecl^ CppSharp::Parser::AST::DeclarationContext::FindTypedef(System::String^ Name, bool Create)
 {
     auto arg0 = clix::marshalString<clix::E_UTF8>(Name);
-    auto __ret = ((::CppSharp::CppParser::DeclarationContext*)NativePtr)->FindTypedef(arg0, Create);
+    auto __ret = ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->FindTypedef(arg0, Create);
     if (__ret == nullptr) return nullptr;
-    return gcnew CppSharp::Parser::TypedefDecl((::CppSharp::CppParser::TypedefDecl*)__ret);
+    return gcnew CppSharp::Parser::AST::TypedefDecl((::CppSharp::CppParser::AST::TypedefDecl*)__ret);
 }
 
-CppSharp::Parser::DeclarationContext::DeclarationContext()
-    : CppSharp::Parser::Declaration((::CppSharp::CppParser::Declaration*)nullptr)
+CppSharp::Parser::AST::DeclarationContext::DeclarationContext()
+    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)nullptr)
 {
-    NativePtr = new ::CppSharp::CppParser::DeclarationContext();
+    NativePtr = new ::CppSharp::CppParser::AST::DeclarationContext();
 }
 
-System::Collections::Generic::List<CppSharp::Parser::Namespace^>^ CppSharp::Parser::DeclarationContext::Namespaces::get()
+System::Collections::Generic::List<CppSharp::Parser::AST::Namespace^>^ CppSharp::Parser::AST::DeclarationContext::Namespaces::get()
 {
-    auto _tmpNamespaces = gcnew System::Collections::Generic::List<CppSharp::Parser::Namespace^>();
-    for(auto _element : ((::CppSharp::CppParser::DeclarationContext*)NativePtr)->Namespaces)
+    auto _tmpNamespaces = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::Namespace^>();
+    for(auto _element : ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->Namespaces)
     {
-        auto _marshalElement = gcnew CppSharp::Parser::Namespace((::CppSharp::CppParser::Namespace*)_element);
+        auto _marshalElement = gcnew CppSharp::Parser::AST::Namespace((::CppSharp::CppParser::AST::Namespace*)_element);
         _tmpNamespaces->Add(_marshalElement);
     }
     return _tmpNamespaces;
 }
 
-void CppSharp::Parser::DeclarationContext::Namespaces::set(System::Collections::Generic::List<CppSharp::Parser::Namespace^>^ value)
+void CppSharp::Parser::AST::DeclarationContext::Namespaces::set(System::Collections::Generic::List<CppSharp::Parser::AST::Namespace^>^ value)
 {
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::Namespace*>();
-    for each(CppSharp::Parser::Namespace^ _element in value)
+    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::Namespace*>();
+    for each(CppSharp::Parser::AST::Namespace^ _element in value)
     {
-        auto _marshalElement = (::CppSharp::CppParser::Namespace*)_element->NativePtr;
+        auto _marshalElement = (::CppSharp::CppParser::AST::Namespace*)_element->NativePtr;
         _tmpvalue.push_back(_marshalElement);
     }
-    ((::CppSharp::CppParser::DeclarationContext*)NativePtr)->Namespaces = _tmpvalue;
+    ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->Namespaces = _tmpvalue;
 }
 
-System::Collections::Generic::List<CppSharp::Parser::Enumeration^>^ CppSharp::Parser::DeclarationContext::Enums::get()
+System::Collections::Generic::List<CppSharp::Parser::AST::Enumeration^>^ CppSharp::Parser::AST::DeclarationContext::Enums::get()
 {
-    auto _tmpEnums = gcnew System::Collections::Generic::List<CppSharp::Parser::Enumeration^>();
-    for(auto _element : ((::CppSharp::CppParser::DeclarationContext*)NativePtr)->Enums)
+    auto _tmpEnums = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::Enumeration^>();
+    for(auto _element : ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->Enums)
     {
-        auto _marshalElement = gcnew CppSharp::Parser::Enumeration((::CppSharp::CppParser::Enumeration*)_element);
+        auto _marshalElement = gcnew CppSharp::Parser::AST::Enumeration((::CppSharp::CppParser::AST::Enumeration*)_element);
         _tmpEnums->Add(_marshalElement);
     }
     return _tmpEnums;
 }
 
-void CppSharp::Parser::DeclarationContext::Enums::set(System::Collections::Generic::List<CppSharp::Parser::Enumeration^>^ value)
+void CppSharp::Parser::AST::DeclarationContext::Enums::set(System::Collections::Generic::List<CppSharp::Parser::AST::Enumeration^>^ value)
 {
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::Enumeration*>();
-    for each(CppSharp::Parser::Enumeration^ _element in value)
+    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::Enumeration*>();
+    for each(CppSharp::Parser::AST::Enumeration^ _element in value)
     {
-        auto _marshalElement = (::CppSharp::CppParser::Enumeration*)_element->NativePtr;
+        auto _marshalElement = (::CppSharp::CppParser::AST::Enumeration*)_element->NativePtr;
         _tmpvalue.push_back(_marshalElement);
     }
-    ((::CppSharp::CppParser::DeclarationContext*)NativePtr)->Enums = _tmpvalue;
+    ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->Enums = _tmpvalue;
 }
 
-System::Collections::Generic::List<CppSharp::Parser::Function^>^ CppSharp::Parser::DeclarationContext::Functions::get()
+System::Collections::Generic::List<CppSharp::Parser::AST::Function^>^ CppSharp::Parser::AST::DeclarationContext::Functions::get()
 {
-    auto _tmpFunctions = gcnew System::Collections::Generic::List<CppSharp::Parser::Function^>();
-    for(auto _element : ((::CppSharp::CppParser::DeclarationContext*)NativePtr)->Functions)
+    auto _tmpFunctions = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::Function^>();
+    for(auto _element : ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->Functions)
     {
-        auto _marshalElement = gcnew CppSharp::Parser::Function((::CppSharp::CppParser::Function*)_element);
+        auto _marshalElement = gcnew CppSharp::Parser::AST::Function((::CppSharp::CppParser::AST::Function*)_element);
         _tmpFunctions->Add(_marshalElement);
     }
     return _tmpFunctions;
 }
 
-void CppSharp::Parser::DeclarationContext::Functions::set(System::Collections::Generic::List<CppSharp::Parser::Function^>^ value)
+void CppSharp::Parser::AST::DeclarationContext::Functions::set(System::Collections::Generic::List<CppSharp::Parser::AST::Function^>^ value)
 {
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::Function*>();
-    for each(CppSharp::Parser::Function^ _element in value)
+    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::Function*>();
+    for each(CppSharp::Parser::AST::Function^ _element in value)
     {
-        auto _marshalElement = (::CppSharp::CppParser::Function*)_element->NativePtr;
+        auto _marshalElement = (::CppSharp::CppParser::AST::Function*)_element->NativePtr;
         _tmpvalue.push_back(_marshalElement);
     }
-    ((::CppSharp::CppParser::DeclarationContext*)NativePtr)->Functions = _tmpvalue;
+    ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->Functions = _tmpvalue;
 }
 
-System::Collections::Generic::List<CppSharp::Parser::Class^>^ CppSharp::Parser::DeclarationContext::Classes::get()
+System::Collections::Generic::List<CppSharp::Parser::AST::Class^>^ CppSharp::Parser::AST::DeclarationContext::Classes::get()
 {
-    auto _tmpClasses = gcnew System::Collections::Generic::List<CppSharp::Parser::Class^>();
-    for(auto _element : ((::CppSharp::CppParser::DeclarationContext*)NativePtr)->Classes)
+    auto _tmpClasses = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::Class^>();
+    for(auto _element : ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->Classes)
     {
-        auto _marshalElement = gcnew CppSharp::Parser::Class((::CppSharp::CppParser::Class*)_element);
+        auto _marshalElement = gcnew CppSharp::Parser::AST::Class((::CppSharp::CppParser::AST::Class*)_element);
         _tmpClasses->Add(_marshalElement);
     }
     return _tmpClasses;
 }
 
-void CppSharp::Parser::DeclarationContext::Classes::set(System::Collections::Generic::List<CppSharp::Parser::Class^>^ value)
+void CppSharp::Parser::AST::DeclarationContext::Classes::set(System::Collections::Generic::List<CppSharp::Parser::AST::Class^>^ value)
 {
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::Class*>();
-    for each(CppSharp::Parser::Class^ _element in value)
+    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::Class*>();
+    for each(CppSharp::Parser::AST::Class^ _element in value)
     {
-        auto _marshalElement = (::CppSharp::CppParser::Class*)_element->NativePtr;
+        auto _marshalElement = (::CppSharp::CppParser::AST::Class*)_element->NativePtr;
         _tmpvalue.push_back(_marshalElement);
     }
-    ((::CppSharp::CppParser::DeclarationContext*)NativePtr)->Classes = _tmpvalue;
+    ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->Classes = _tmpvalue;
 }
 
-System::Collections::Generic::List<CppSharp::Parser::Template^>^ CppSharp::Parser::DeclarationContext::Templates::get()
+System::Collections::Generic::List<CppSharp::Parser::AST::Template^>^ CppSharp::Parser::AST::DeclarationContext::Templates::get()
 {
-    auto _tmpTemplates = gcnew System::Collections::Generic::List<CppSharp::Parser::Template^>();
-    for(auto _element : ((::CppSharp::CppParser::DeclarationContext*)NativePtr)->Templates)
+    auto _tmpTemplates = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::Template^>();
+    for(auto _element : ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->Templates)
     {
-        auto _marshalElement = gcnew CppSharp::Parser::Template((::CppSharp::CppParser::Template*)_element);
+        auto _marshalElement = gcnew CppSharp::Parser::AST::Template((::CppSharp::CppParser::AST::Template*)_element);
         _tmpTemplates->Add(_marshalElement);
     }
     return _tmpTemplates;
 }
 
-void CppSharp::Parser::DeclarationContext::Templates::set(System::Collections::Generic::List<CppSharp::Parser::Template^>^ value)
+void CppSharp::Parser::AST::DeclarationContext::Templates::set(System::Collections::Generic::List<CppSharp::Parser::AST::Template^>^ value)
 {
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::Template*>();
-    for each(CppSharp::Parser::Template^ _element in value)
+    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::Template*>();
+    for each(CppSharp::Parser::AST::Template^ _element in value)
     {
-        auto _marshalElement = (::CppSharp::CppParser::Template*)_element->NativePtr;
+        auto _marshalElement = (::CppSharp::CppParser::AST::Template*)_element->NativePtr;
         _tmpvalue.push_back(_marshalElement);
     }
-    ((::CppSharp::CppParser::DeclarationContext*)NativePtr)->Templates = _tmpvalue;
+    ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->Templates = _tmpvalue;
 }
 
-System::Collections::Generic::List<CppSharp::Parser::TypedefDecl^>^ CppSharp::Parser::DeclarationContext::Typedefs::get()
+System::Collections::Generic::List<CppSharp::Parser::AST::TypedefDecl^>^ CppSharp::Parser::AST::DeclarationContext::Typedefs::get()
 {
-    auto _tmpTypedefs = gcnew System::Collections::Generic::List<CppSharp::Parser::TypedefDecl^>();
-    for(auto _element : ((::CppSharp::CppParser::DeclarationContext*)NativePtr)->Typedefs)
+    auto _tmpTypedefs = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::TypedefDecl^>();
+    for(auto _element : ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->Typedefs)
     {
-        auto _marshalElement = gcnew CppSharp::Parser::TypedefDecl((::CppSharp::CppParser::TypedefDecl*)_element);
+        auto _marshalElement = gcnew CppSharp::Parser::AST::TypedefDecl((::CppSharp::CppParser::AST::TypedefDecl*)_element);
         _tmpTypedefs->Add(_marshalElement);
     }
     return _tmpTypedefs;
 }
 
-void CppSharp::Parser::DeclarationContext::Typedefs::set(System::Collections::Generic::List<CppSharp::Parser::TypedefDecl^>^ value)
+void CppSharp::Parser::AST::DeclarationContext::Typedefs::set(System::Collections::Generic::List<CppSharp::Parser::AST::TypedefDecl^>^ value)
 {
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::TypedefDecl*>();
-    for each(CppSharp::Parser::TypedefDecl^ _element in value)
+    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::TypedefDecl*>();
+    for each(CppSharp::Parser::AST::TypedefDecl^ _element in value)
     {
-        auto _marshalElement = (::CppSharp::CppParser::TypedefDecl*)_element->NativePtr;
+        auto _marshalElement = (::CppSharp::CppParser::AST::TypedefDecl*)_element->NativePtr;
         _tmpvalue.push_back(_marshalElement);
     }
-    ((::CppSharp::CppParser::DeclarationContext*)NativePtr)->Typedefs = _tmpvalue;
+    ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->Typedefs = _tmpvalue;
 }
 
-System::Collections::Generic::List<CppSharp::Parser::Variable^>^ CppSharp::Parser::DeclarationContext::Variables::get()
+System::Collections::Generic::List<CppSharp::Parser::AST::Variable^>^ CppSharp::Parser::AST::DeclarationContext::Variables::get()
 {
-    auto _tmpVariables = gcnew System::Collections::Generic::List<CppSharp::Parser::Variable^>();
-    for(auto _element : ((::CppSharp::CppParser::DeclarationContext*)NativePtr)->Variables)
+    auto _tmpVariables = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::Variable^>();
+    for(auto _element : ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->Variables)
     {
-        auto _marshalElement = gcnew CppSharp::Parser::Variable((::CppSharp::CppParser::Variable*)_element);
+        auto _marshalElement = gcnew CppSharp::Parser::AST::Variable((::CppSharp::CppParser::AST::Variable*)_element);
         _tmpVariables->Add(_marshalElement);
     }
     return _tmpVariables;
 }
 
-void CppSharp::Parser::DeclarationContext::Variables::set(System::Collections::Generic::List<CppSharp::Parser::Variable^>^ value)
+void CppSharp::Parser::AST::DeclarationContext::Variables::set(System::Collections::Generic::List<CppSharp::Parser::AST::Variable^>^ value)
 {
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::Variable*>();
-    for each(CppSharp::Parser::Variable^ _element in value)
+    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::Variable*>();
+    for each(CppSharp::Parser::AST::Variable^ _element in value)
     {
-        auto _marshalElement = (::CppSharp::CppParser::Variable*)_element->NativePtr;
+        auto _marshalElement = (::CppSharp::CppParser::AST::Variable*)_element->NativePtr;
         _tmpvalue.push_back(_marshalElement);
     }
-    ((::CppSharp::CppParser::DeclarationContext*)NativePtr)->Variables = _tmpvalue;
+    ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->Variables = _tmpvalue;
 }
 
-CppSharp::Parser::TypedefDecl::TypedefDecl(::CppSharp::CppParser::TypedefDecl* native)
-    : CppSharp::Parser::Declaration((::CppSharp::CppParser::Declaration*)native)
+CppSharp::Parser::AST::TypedefDecl::TypedefDecl(::CppSharp::CppParser::AST::TypedefDecl* native)
+    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)native)
 {
 }
 
-CppSharp::Parser::TypedefDecl::TypedefDecl(System::IntPtr native)
-    : CppSharp::Parser::Declaration(native)
+CppSharp::Parser::AST::TypedefDecl::TypedefDecl(System::IntPtr native)
+    : CppSharp::Parser::AST::Declaration(native)
 {
-    auto __native = (::CppSharp::CppParser::TypedefDecl*)native.ToPointer();
+    auto __native = (::CppSharp::CppParser::AST::TypedefDecl*)native.ToPointer();
 }
 
-CppSharp::Parser::TypedefDecl::TypedefDecl()
-    : CppSharp::Parser::Declaration((::CppSharp::CppParser::Declaration*)nullptr)
+CppSharp::Parser::AST::TypedefDecl::TypedefDecl()
+    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)nullptr)
 {
-    NativePtr = new ::CppSharp::CppParser::TypedefDecl();
+    NativePtr = new ::CppSharp::CppParser::AST::TypedefDecl();
 }
 
-CppSharp::Parser::QualifiedType^ CppSharp::Parser::TypedefDecl::QualifiedType::get()
+CppSharp::Parser::AST::QualifiedType^ CppSharp::Parser::AST::TypedefDecl::QualifiedType::get()
 {
-    return gcnew CppSharp::Parser::QualifiedType((::CppSharp::CppParser::QualifiedType*)&((::CppSharp::CppParser::TypedefDecl*)NativePtr)->QualifiedType);
+    return gcnew CppSharp::Parser::AST::QualifiedType((::CppSharp::CppParser::AST::QualifiedType*)&((::CppSharp::CppParser::AST::TypedefDecl*)NativePtr)->QualifiedType);
 }
 
-void CppSharp::Parser::TypedefDecl::QualifiedType::set(CppSharp::Parser::QualifiedType^ value)
+void CppSharp::Parser::AST::TypedefDecl::QualifiedType::set(CppSharp::Parser::AST::QualifiedType^ value)
 {
-    ((::CppSharp::CppParser::TypedefDecl*)NativePtr)->QualifiedType = *(::CppSharp::CppParser::QualifiedType*)value->NativePtr;
+    ((::CppSharp::CppParser::AST::TypedefDecl*)NativePtr)->QualifiedType = *(::CppSharp::CppParser::AST::QualifiedType*)value->NativePtr;
 }
 
-CppSharp::Parser::Parameter::Parameter(::CppSharp::CppParser::Parameter* native)
-    : CppSharp::Parser::Declaration((::CppSharp::CppParser::Declaration*)native)
-{
-}
-
-CppSharp::Parser::Parameter::Parameter(System::IntPtr native)
-    : CppSharp::Parser::Declaration(native)
-{
-    auto __native = (::CppSharp::CppParser::Parameter*)native.ToPointer();
-}
-
-CppSharp::Parser::Parameter::Parameter()
-    : CppSharp::Parser::Declaration((::CppSharp::CppParser::Declaration*)nullptr)
-{
-    NativePtr = new ::CppSharp::CppParser::Parameter();
-}
-
-CppSharp::Parser::QualifiedType^ CppSharp::Parser::Parameter::QualifiedType::get()
-{
-    return gcnew CppSharp::Parser::QualifiedType((::CppSharp::CppParser::QualifiedType*)&((::CppSharp::CppParser::Parameter*)NativePtr)->QualifiedType);
-}
-
-void CppSharp::Parser::Parameter::QualifiedType::set(CppSharp::Parser::QualifiedType^ value)
-{
-    ((::CppSharp::CppParser::Parameter*)NativePtr)->QualifiedType = *(::CppSharp::CppParser::QualifiedType*)value->NativePtr;
-}
-
-bool CppSharp::Parser::Parameter::IsIndirect::get()
-{
-    return ((::CppSharp::CppParser::Parameter*)NativePtr)->IsIndirect;
-}
-
-void CppSharp::Parser::Parameter::IsIndirect::set(bool value)
-{
-    ((::CppSharp::CppParser::Parameter*)NativePtr)->IsIndirect = value;
-}
-
-bool CppSharp::Parser::Parameter::HasDefaultValue::get()
-{
-    return ((::CppSharp::CppParser::Parameter*)NativePtr)->HasDefaultValue;
-}
-
-void CppSharp::Parser::Parameter::HasDefaultValue::set(bool value)
-{
-    ((::CppSharp::CppParser::Parameter*)NativePtr)->HasDefaultValue = value;
-}
-
-CppSharp::Parser::Function::Function(::CppSharp::CppParser::Function* native)
-    : CppSharp::Parser::Declaration((::CppSharp::CppParser::Declaration*)native)
+CppSharp::Parser::AST::Parameter::Parameter(::CppSharp::CppParser::AST::Parameter* native)
+    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)native)
 {
 }
 
-CppSharp::Parser::Function::Function(System::IntPtr native)
-    : CppSharp::Parser::Declaration(native)
+CppSharp::Parser::AST::Parameter::Parameter(System::IntPtr native)
+    : CppSharp::Parser::AST::Declaration(native)
 {
-    auto __native = (::CppSharp::CppParser::Function*)native.ToPointer();
+    auto __native = (::CppSharp::CppParser::AST::Parameter*)native.ToPointer();
 }
 
-CppSharp::Parser::Function::Function()
-    : CppSharp::Parser::Declaration((::CppSharp::CppParser::Declaration*)nullptr)
+CppSharp::Parser::AST::Parameter::Parameter()
+    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)nullptr)
 {
-    NativePtr = new ::CppSharp::CppParser::Function();
+    NativePtr = new ::CppSharp::CppParser::AST::Parameter();
 }
 
-CppSharp::Parser::QualifiedType^ CppSharp::Parser::Function::ReturnType::get()
+CppSharp::Parser::AST::QualifiedType^ CppSharp::Parser::AST::Parameter::QualifiedType::get()
 {
-    return gcnew CppSharp::Parser::QualifiedType((::CppSharp::CppParser::QualifiedType*)&((::CppSharp::CppParser::Function*)NativePtr)->ReturnType);
+    return gcnew CppSharp::Parser::AST::QualifiedType((::CppSharp::CppParser::AST::QualifiedType*)&((::CppSharp::CppParser::AST::Parameter*)NativePtr)->QualifiedType);
 }
 
-void CppSharp::Parser::Function::ReturnType::set(CppSharp::Parser::QualifiedType^ value)
+void CppSharp::Parser::AST::Parameter::QualifiedType::set(CppSharp::Parser::AST::QualifiedType^ value)
 {
-    ((::CppSharp::CppParser::Function*)NativePtr)->ReturnType = *(::CppSharp::CppParser::QualifiedType*)value->NativePtr;
+    ((::CppSharp::CppParser::AST::Parameter*)NativePtr)->QualifiedType = *(::CppSharp::CppParser::AST::QualifiedType*)value->NativePtr;
 }
 
-bool CppSharp::Parser::Function::IsReturnIndirect::get()
+bool CppSharp::Parser::AST::Parameter::IsIndirect::get()
 {
-    return ((::CppSharp::CppParser::Function*)NativePtr)->IsReturnIndirect;
+    return ((::CppSharp::CppParser::AST::Parameter*)NativePtr)->IsIndirect;
 }
 
-void CppSharp::Parser::Function::IsReturnIndirect::set(bool value)
+void CppSharp::Parser::AST::Parameter::IsIndirect::set(bool value)
 {
-    ((::CppSharp::CppParser::Function*)NativePtr)->IsReturnIndirect = value;
+    ((::CppSharp::CppParser::AST::Parameter*)NativePtr)->IsIndirect = value;
 }
 
-bool CppSharp::Parser::Function::IsVariadic::get()
+bool CppSharp::Parser::AST::Parameter::HasDefaultValue::get()
 {
-    return ((::CppSharp::CppParser::Function*)NativePtr)->IsVariadic;
+    return ((::CppSharp::CppParser::AST::Parameter*)NativePtr)->HasDefaultValue;
 }
 
-void CppSharp::Parser::Function::IsVariadic::set(bool value)
+void CppSharp::Parser::AST::Parameter::HasDefaultValue::set(bool value)
 {
-    ((::CppSharp::CppParser::Function*)NativePtr)->IsVariadic = value;
+    ((::CppSharp::CppParser::AST::Parameter*)NativePtr)->HasDefaultValue = value;
 }
 
-bool CppSharp::Parser::Function::IsInline::get()
+CppSharp::Parser::AST::Function::Function(::CppSharp::CppParser::AST::Function* native)
+    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)native)
 {
-    return ((::CppSharp::CppParser::Function*)NativePtr)->IsInline;
 }
 
-void CppSharp::Parser::Function::IsInline::set(bool value)
+CppSharp::Parser::AST::Function::Function(System::IntPtr native)
+    : CppSharp::Parser::AST::Declaration(native)
 {
-    ((::CppSharp::CppParser::Function*)NativePtr)->IsInline = value;
+    auto __native = (::CppSharp::CppParser::AST::Function*)native.ToPointer();
 }
 
-bool CppSharp::Parser::Function::IsPure::get()
+CppSharp::Parser::AST::Function::Function()
+    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)nullptr)
 {
-    return ((::CppSharp::CppParser::Function*)NativePtr)->IsPure;
+    NativePtr = new ::CppSharp::CppParser::AST::Function();
 }
 
-void CppSharp::Parser::Function::IsPure::set(bool value)
+CppSharp::Parser::AST::QualifiedType^ CppSharp::Parser::AST::Function::ReturnType::get()
 {
-    ((::CppSharp::CppParser::Function*)NativePtr)->IsPure = value;
+    return gcnew CppSharp::Parser::AST::QualifiedType((::CppSharp::CppParser::AST::QualifiedType*)&((::CppSharp::CppParser::AST::Function*)NativePtr)->ReturnType);
 }
 
-CppSharp::Parser::CXXOperatorKind CppSharp::Parser::Function::OperatorKind::get()
+void CppSharp::Parser::AST::Function::ReturnType::set(CppSharp::Parser::AST::QualifiedType^ value)
 {
-    return (CppSharp::Parser::CXXOperatorKind)((::CppSharp::CppParser::Function*)NativePtr)->OperatorKind;
+    ((::CppSharp::CppParser::AST::Function*)NativePtr)->ReturnType = *(::CppSharp::CppParser::AST::QualifiedType*)value->NativePtr;
 }
 
-void CppSharp::Parser::Function::OperatorKind::set(CppSharp::Parser::CXXOperatorKind value)
+bool CppSharp::Parser::AST::Function::IsReturnIndirect::get()
 {
-    ((::CppSharp::CppParser::Function*)NativePtr)->OperatorKind = (::CppSharp::CppParser::CXXOperatorKind)value;
+    return ((::CppSharp::CppParser::AST::Function*)NativePtr)->IsReturnIndirect;
 }
 
-System::String^ CppSharp::Parser::Function::Mangled::get()
+void CppSharp::Parser::AST::Function::IsReturnIndirect::set(bool value)
 {
-    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::Function*)NativePtr)->Mangled);
+    ((::CppSharp::CppParser::AST::Function*)NativePtr)->IsReturnIndirect = value;
 }
 
-void CppSharp::Parser::Function::Mangled::set(System::String^ value)
+bool CppSharp::Parser::AST::Function::IsVariadic::get()
 {
-    ((::CppSharp::CppParser::Function*)NativePtr)->Mangled = clix::marshalString<clix::E_UTF8>(value);
+    return ((::CppSharp::CppParser::AST::Function*)NativePtr)->IsVariadic;
 }
 
-CppSharp::Parser::CallingConvention CppSharp::Parser::Function::CallingConvention::get()
+void CppSharp::Parser::AST::Function::IsVariadic::set(bool value)
 {
-    return (CppSharp::Parser::CallingConvention)((::CppSharp::CppParser::Function*)NativePtr)->CallingConvention;
+    ((::CppSharp::CppParser::AST::Function*)NativePtr)->IsVariadic = value;
 }
 
-void CppSharp::Parser::Function::CallingConvention::set(CppSharp::Parser::CallingConvention value)
+bool CppSharp::Parser::AST::Function::IsInline::get()
 {
-    ((::CppSharp::CppParser::Function*)NativePtr)->CallingConvention = (::CppSharp::CppParser::CallingConvention)value;
+    return ((::CppSharp::CppParser::AST::Function*)NativePtr)->IsInline;
 }
 
-System::Collections::Generic::List<CppSharp::Parser::Parameter^>^ CppSharp::Parser::Function::Parameters::get()
+void CppSharp::Parser::AST::Function::IsInline::set(bool value)
 {
-    auto _tmpParameters = gcnew System::Collections::Generic::List<CppSharp::Parser::Parameter^>();
-    for(auto _element : ((::CppSharp::CppParser::Function*)NativePtr)->Parameters)
+    ((::CppSharp::CppParser::AST::Function*)NativePtr)->IsInline = value;
+}
+
+bool CppSharp::Parser::AST::Function::IsPure::get()
+{
+    return ((::CppSharp::CppParser::AST::Function*)NativePtr)->IsPure;
+}
+
+void CppSharp::Parser::AST::Function::IsPure::set(bool value)
+{
+    ((::CppSharp::CppParser::AST::Function*)NativePtr)->IsPure = value;
+}
+
+bool CppSharp::Parser::AST::Function::IsDeleted::get()
+{
+    return ((::CppSharp::CppParser::AST::Function*)NativePtr)->IsDeleted;
+}
+
+void CppSharp::Parser::AST::Function::IsDeleted::set(bool value)
+{
+    ((::CppSharp::CppParser::AST::Function*)NativePtr)->IsDeleted = value;
+}
+
+CppSharp::Parser::AST::CXXOperatorKind CppSharp::Parser::AST::Function::OperatorKind::get()
+{
+    return (CppSharp::Parser::AST::CXXOperatorKind)((::CppSharp::CppParser::AST::Function*)NativePtr)->OperatorKind;
+}
+
+void CppSharp::Parser::AST::Function::OperatorKind::set(CppSharp::Parser::AST::CXXOperatorKind value)
+{
+    ((::CppSharp::CppParser::AST::Function*)NativePtr)->OperatorKind = (::CppSharp::CppParser::AST::CXXOperatorKind)value;
+}
+
+System::String^ CppSharp::Parser::AST::Function::Mangled::get()
+{
+    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::AST::Function*)NativePtr)->Mangled);
+}
+
+void CppSharp::Parser::AST::Function::Mangled::set(System::String^ value)
+{
+    ((::CppSharp::CppParser::AST::Function*)NativePtr)->Mangled = clix::marshalString<clix::E_UTF8>(value);
+}
+
+System::String^ CppSharp::Parser::AST::Function::Signature::get()
+{
+    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::AST::Function*)NativePtr)->Signature);
+}
+
+void CppSharp::Parser::AST::Function::Signature::set(System::String^ value)
+{
+    ((::CppSharp::CppParser::AST::Function*)NativePtr)->Signature = clix::marshalString<clix::E_UTF8>(value);
+}
+
+CppSharp::Parser::AST::CallingConvention CppSharp::Parser::AST::Function::CallingConvention::get()
+{
+    return (CppSharp::Parser::AST::CallingConvention)((::CppSharp::CppParser::AST::Function*)NativePtr)->CallingConvention;
+}
+
+void CppSharp::Parser::AST::Function::CallingConvention::set(CppSharp::Parser::AST::CallingConvention value)
+{
+    ((::CppSharp::CppParser::AST::Function*)NativePtr)->CallingConvention = (::CppSharp::CppParser::AST::CallingConvention)value;
+}
+
+System::Collections::Generic::List<CppSharp::Parser::AST::Parameter^>^ CppSharp::Parser::AST::Function::Parameters::get()
+{
+    auto _tmpParameters = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::Parameter^>();
+    for(auto _element : ((::CppSharp::CppParser::AST::Function*)NativePtr)->Parameters)
     {
-        auto _marshalElement = gcnew CppSharp::Parser::Parameter((::CppSharp::CppParser::Parameter*)_element);
+        auto _marshalElement = gcnew CppSharp::Parser::AST::Parameter((::CppSharp::CppParser::AST::Parameter*)_element);
         _tmpParameters->Add(_marshalElement);
     }
     return _tmpParameters;
 }
 
-void CppSharp::Parser::Function::Parameters::set(System::Collections::Generic::List<CppSharp::Parser::Parameter^>^ value)
+void CppSharp::Parser::AST::Function::Parameters::set(System::Collections::Generic::List<CppSharp::Parser::AST::Parameter^>^ value)
 {
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::Parameter*>();
-    for each(CppSharp::Parser::Parameter^ _element in value)
+    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::Parameter*>();
+    for each(CppSharp::Parser::AST::Parameter^ _element in value)
     {
-        auto _marshalElement = (::CppSharp::CppParser::Parameter*)_element->NativePtr;
+        auto _marshalElement = (::CppSharp::CppParser::AST::Parameter*)_element->NativePtr;
         _tmpvalue.push_back(_marshalElement);
     }
-    ((::CppSharp::CppParser::Function*)NativePtr)->Parameters = _tmpvalue;
+    ((::CppSharp::CppParser::AST::Function*)NativePtr)->Parameters = _tmpvalue;
 }
 
-CppSharp::Parser::Method::Method(::CppSharp::CppParser::Method* native)
-    : CppSharp::Parser::Function((::CppSharp::CppParser::Function*)native)
+CppSharp::Parser::AST::Method::Method(::CppSharp::CppParser::AST::Method* native)
+    : CppSharp::Parser::AST::Function((::CppSharp::CppParser::AST::Function*)native)
 {
 }
 
-CppSharp::Parser::Method::Method(System::IntPtr native)
-    : CppSharp::Parser::Function(native)
+CppSharp::Parser::AST::Method::Method(System::IntPtr native)
+    : CppSharp::Parser::AST::Function(native)
 {
-    auto __native = (::CppSharp::CppParser::Method*)native.ToPointer();
+    auto __native = (::CppSharp::CppParser::AST::Method*)native.ToPointer();
 }
 
-CppSharp::Parser::Method::Method()
-    : CppSharp::Parser::Function((::CppSharp::CppParser::Function*)nullptr)
+CppSharp::Parser::AST::Method::Method()
+    : CppSharp::Parser::AST::Function((::CppSharp::CppParser::AST::Function*)nullptr)
 {
-    NativePtr = new ::CppSharp::CppParser::Method();
+    NativePtr = new ::CppSharp::CppParser::AST::Method();
 }
 
-CppSharp::Parser::AccessSpecifierDecl^ CppSharp::Parser::Method::AccessDecl::get()
+CppSharp::Parser::AST::AccessSpecifierDecl^ CppSharp::Parser::AST::Method::AccessDecl::get()
 {
-    return gcnew CppSharp::Parser::AccessSpecifierDecl((::CppSharp::CppParser::AccessSpecifierDecl*)((::CppSharp::CppParser::Method*)NativePtr)->AccessDecl);
+    return gcnew CppSharp::Parser::AST::AccessSpecifierDecl((::CppSharp::CppParser::AST::AccessSpecifierDecl*)((::CppSharp::CppParser::AST::Method*)NativePtr)->AccessDecl);
 }
 
-void CppSharp::Parser::Method::AccessDecl::set(CppSharp::Parser::AccessSpecifierDecl^ value)
+void CppSharp::Parser::AST::Method::AccessDecl::set(CppSharp::Parser::AST::AccessSpecifierDecl^ value)
 {
-    ((::CppSharp::CppParser::Method*)NativePtr)->AccessDecl = (::CppSharp::CppParser::AccessSpecifierDecl*)value->NativePtr;
+    ((::CppSharp::CppParser::AST::Method*)NativePtr)->AccessDecl = (::CppSharp::CppParser::AST::AccessSpecifierDecl*)value->NativePtr;
 }
 
-bool CppSharp::Parser::Method::IsVirtual::get()
+bool CppSharp::Parser::AST::Method::IsVirtual::get()
 {
-    return ((::CppSharp::CppParser::Method*)NativePtr)->IsVirtual;
+    return ((::CppSharp::CppParser::AST::Method*)NativePtr)->IsVirtual;
 }
 
-void CppSharp::Parser::Method::IsVirtual::set(bool value)
+void CppSharp::Parser::AST::Method::IsVirtual::set(bool value)
 {
-    ((::CppSharp::CppParser::Method*)NativePtr)->IsVirtual = value;
+    ((::CppSharp::CppParser::AST::Method*)NativePtr)->IsVirtual = value;
 }
 
-bool CppSharp::Parser::Method::IsStatic::get()
+bool CppSharp::Parser::AST::Method::IsStatic::get()
 {
-    return ((::CppSharp::CppParser::Method*)NativePtr)->IsStatic;
+    return ((::CppSharp::CppParser::AST::Method*)NativePtr)->IsStatic;
 }
 
-void CppSharp::Parser::Method::IsStatic::set(bool value)
+void CppSharp::Parser::AST::Method::IsStatic::set(bool value)
 {
-    ((::CppSharp::CppParser::Method*)NativePtr)->IsStatic = value;
+    ((::CppSharp::CppParser::AST::Method*)NativePtr)->IsStatic = value;
 }
 
-bool CppSharp::Parser::Method::IsConst::get()
+bool CppSharp::Parser::AST::Method::IsConst::get()
 {
-    return ((::CppSharp::CppParser::Method*)NativePtr)->IsConst;
+    return ((::CppSharp::CppParser::AST::Method*)NativePtr)->IsConst;
 }
 
-void CppSharp::Parser::Method::IsConst::set(bool value)
+void CppSharp::Parser::AST::Method::IsConst::set(bool value)
 {
-    ((::CppSharp::CppParser::Method*)NativePtr)->IsConst = value;
+    ((::CppSharp::CppParser::AST::Method*)NativePtr)->IsConst = value;
 }
 
-bool CppSharp::Parser::Method::IsImplicit::get()
+bool CppSharp::Parser::AST::Method::IsImplicit::get()
 {
-    return ((::CppSharp::CppParser::Method*)NativePtr)->IsImplicit;
+    return ((::CppSharp::CppParser::AST::Method*)NativePtr)->IsImplicit;
 }
 
-void CppSharp::Parser::Method::IsImplicit::set(bool value)
+void CppSharp::Parser::AST::Method::IsImplicit::set(bool value)
 {
-    ((::CppSharp::CppParser::Method*)NativePtr)->IsImplicit = value;
+    ((::CppSharp::CppParser::AST::Method*)NativePtr)->IsImplicit = value;
 }
 
-bool CppSharp::Parser::Method::IsOverride::get()
+bool CppSharp::Parser::AST::Method::IsOverride::get()
 {
-    return ((::CppSharp::CppParser::Method*)NativePtr)->IsOverride;
+    return ((::CppSharp::CppParser::AST::Method*)NativePtr)->IsOverride;
 }
 
-void CppSharp::Parser::Method::IsOverride::set(bool value)
+void CppSharp::Parser::AST::Method::IsOverride::set(bool value)
 {
-    ((::CppSharp::CppParser::Method*)NativePtr)->IsOverride = value;
+    ((::CppSharp::CppParser::AST::Method*)NativePtr)->IsOverride = value;
 }
 
-CppSharp::Parser::CXXMethodKind CppSharp::Parser::Method::Kind::get()
+CppSharp::Parser::AST::CXXMethodKind CppSharp::Parser::AST::Method::Kind::get()
 {
-    return (CppSharp::Parser::CXXMethodKind)((::CppSharp::CppParser::Method*)NativePtr)->Kind;
+    return (CppSharp::Parser::AST::CXXMethodKind)((::CppSharp::CppParser::AST::Method*)NativePtr)->Kind;
 }
 
-void CppSharp::Parser::Method::Kind::set(CppSharp::Parser::CXXMethodKind value)
+void CppSharp::Parser::AST::Method::Kind::set(CppSharp::Parser::AST::CXXMethodKind value)
 {
-    ((::CppSharp::CppParser::Method*)NativePtr)->Kind = (::CppSharp::CppParser::CXXMethodKind)value;
+    ((::CppSharp::CppParser::AST::Method*)NativePtr)->Kind = (::CppSharp::CppParser::AST::CXXMethodKind)value;
 }
 
-bool CppSharp::Parser::Method::IsDefaultConstructor::get()
+bool CppSharp::Parser::AST::Method::IsDefaultConstructor::get()
 {
-    return ((::CppSharp::CppParser::Method*)NativePtr)->IsDefaultConstructor;
+    return ((::CppSharp::CppParser::AST::Method*)NativePtr)->IsDefaultConstructor;
 }
 
-void CppSharp::Parser::Method::IsDefaultConstructor::set(bool value)
+void CppSharp::Parser::AST::Method::IsDefaultConstructor::set(bool value)
 {
-    ((::CppSharp::CppParser::Method*)NativePtr)->IsDefaultConstructor = value;
+    ((::CppSharp::CppParser::AST::Method*)NativePtr)->IsDefaultConstructor = value;
 }
 
-bool CppSharp::Parser::Method::IsCopyConstructor::get()
+bool CppSharp::Parser::AST::Method::IsCopyConstructor::get()
 {
-    return ((::CppSharp::CppParser::Method*)NativePtr)->IsCopyConstructor;
+    return ((::CppSharp::CppParser::AST::Method*)NativePtr)->IsCopyConstructor;
 }
 
-void CppSharp::Parser::Method::IsCopyConstructor::set(bool value)
+void CppSharp::Parser::AST::Method::IsCopyConstructor::set(bool value)
 {
-    ((::CppSharp::CppParser::Method*)NativePtr)->IsCopyConstructor = value;
+    ((::CppSharp::CppParser::AST::Method*)NativePtr)->IsCopyConstructor = value;
 }
 
-bool CppSharp::Parser::Method::IsMoveConstructor::get()
+bool CppSharp::Parser::AST::Method::IsMoveConstructor::get()
 {
-    return ((::CppSharp::CppParser::Method*)NativePtr)->IsMoveConstructor;
+    return ((::CppSharp::CppParser::AST::Method*)NativePtr)->IsMoveConstructor;
 }
 
-void CppSharp::Parser::Method::IsMoveConstructor::set(bool value)
+void CppSharp::Parser::AST::Method::IsMoveConstructor::set(bool value)
 {
-    ((::CppSharp::CppParser::Method*)NativePtr)->IsMoveConstructor = value;
+    ((::CppSharp::CppParser::AST::Method*)NativePtr)->IsMoveConstructor = value;
 }
 
-CppSharp::Parser::Enumeration::Item::Item(::CppSharp::CppParser::Enumeration::Item* native)
-    : CppSharp::Parser::Declaration((::CppSharp::CppParser::Declaration*)native)
-{
-}
-
-CppSharp::Parser::Enumeration::Item::Item(System::IntPtr native)
-    : CppSharp::Parser::Declaration(native)
-{
-    auto __native = (::CppSharp::CppParser::Enumeration::Item*)native.ToPointer();
-}
-
-CppSharp::Parser::Enumeration::Item::Item()
-    : CppSharp::Parser::Declaration((::CppSharp::CppParser::Declaration*)nullptr)
-{
-    NativePtr = new ::CppSharp::CppParser::Enumeration::Item();
-}
-
-System::String^ CppSharp::Parser::Enumeration::Item::Name::get()
-{
-    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::Enumeration::Item*)NativePtr)->Name);
-}
-
-void CppSharp::Parser::Enumeration::Item::Name::set(System::String^ value)
-{
-    ((::CppSharp::CppParser::Enumeration::Item*)NativePtr)->Name = clix::marshalString<clix::E_UTF8>(value);
-}
-
-System::String^ CppSharp::Parser::Enumeration::Item::Expression::get()
-{
-    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::Enumeration::Item*)NativePtr)->Expression);
-}
-
-void CppSharp::Parser::Enumeration::Item::Expression::set(System::String^ value)
-{
-    ((::CppSharp::CppParser::Enumeration::Item*)NativePtr)->Expression = clix::marshalString<clix::E_UTF8>(value);
-}
-
-System::String^ CppSharp::Parser::Enumeration::Item::Comment::get()
-{
-    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::Enumeration::Item*)NativePtr)->Comment);
-}
-
-void CppSharp::Parser::Enumeration::Item::Comment::set(System::String^ value)
-{
-    ((::CppSharp::CppParser::Enumeration::Item*)NativePtr)->Comment = clix::marshalString<clix::E_UTF8>(value);
-}
-
-unsigned long long CppSharp::Parser::Enumeration::Item::Value::get()
-{
-    return ((::CppSharp::CppParser::Enumeration::Item*)NativePtr)->Value;
-}
-
-void CppSharp::Parser::Enumeration::Item::Value::set(unsigned long long value)
-{
-    ((::CppSharp::CppParser::Enumeration::Item*)NativePtr)->Value = (::uint64_t)value;
-}
-
-CppSharp::Parser::Enumeration::Enumeration(::CppSharp::CppParser::Enumeration* native)
-    : CppSharp::Parser::Declaration((::CppSharp::CppParser::Declaration*)native)
+CppSharp::Parser::AST::Enumeration::Item::Item(::CppSharp::CppParser::AST::Enumeration::Item* native)
+    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)native)
 {
 }
 
-CppSharp::Parser::Enumeration::Enumeration(System::IntPtr native)
-    : CppSharp::Parser::Declaration(native)
+CppSharp::Parser::AST::Enumeration::Item::Item(System::IntPtr native)
+    : CppSharp::Parser::AST::Declaration(native)
 {
-    auto __native = (::CppSharp::CppParser::Enumeration*)native.ToPointer();
+    auto __native = (::CppSharp::CppParser::AST::Enumeration::Item*)native.ToPointer();
 }
 
-CppSharp::Parser::Enumeration::Enumeration()
-    : CppSharp::Parser::Declaration((::CppSharp::CppParser::Declaration*)nullptr)
+CppSharp::Parser::AST::Enumeration::Item::Item()
+    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)nullptr)
 {
-    NativePtr = new ::CppSharp::CppParser::Enumeration();
+    NativePtr = new ::CppSharp::CppParser::AST::Enumeration::Item();
 }
 
-CppSharp::Parser::Enumeration::EnumModifiers CppSharp::Parser::Enumeration::Modifiers::get()
+System::String^ CppSharp::Parser::AST::Enumeration::Item::Name::get()
 {
-    return (CppSharp::Parser::Enumeration::EnumModifiers)((::CppSharp::CppParser::Enumeration*)NativePtr)->Modifiers;
+    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::AST::Enumeration::Item*)NativePtr)->Name);
 }
 
-void CppSharp::Parser::Enumeration::Modifiers::set(CppSharp::Parser::Enumeration::EnumModifiers value)
+void CppSharp::Parser::AST::Enumeration::Item::Name::set(System::String^ value)
 {
-    ((::CppSharp::CppParser::Enumeration*)NativePtr)->Modifiers = (::CppSharp::CppParser::Enumeration::EnumModifiers)value;
+    ((::CppSharp::CppParser::AST::Enumeration::Item*)NativePtr)->Name = clix::marshalString<clix::E_UTF8>(value);
 }
 
-CppSharp::Parser::Type^ CppSharp::Parser::Enumeration::Type::get()
+System::String^ CppSharp::Parser::AST::Enumeration::Item::Expression::get()
 {
-    return gcnew CppSharp::Parser::Type((::CppSharp::CppParser::Type*)((::CppSharp::CppParser::Enumeration*)NativePtr)->Type);
+    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::AST::Enumeration::Item*)NativePtr)->Expression);
 }
 
-void CppSharp::Parser::Enumeration::Type::set(CppSharp::Parser::Type^ value)
+void CppSharp::Parser::AST::Enumeration::Item::Expression::set(System::String^ value)
 {
-    ((::CppSharp::CppParser::Enumeration*)NativePtr)->Type = (::CppSharp::CppParser::Type*)value->NativePtr;
+    ((::CppSharp::CppParser::AST::Enumeration::Item*)NativePtr)->Expression = clix::marshalString<clix::E_UTF8>(value);
 }
 
-CppSharp::Parser::BuiltinType^ CppSharp::Parser::Enumeration::BuiltinType::get()
+System::String^ CppSharp::Parser::AST::Enumeration::Item::Comment::get()
 {
-    return gcnew CppSharp::Parser::BuiltinType((::CppSharp::CppParser::BuiltinType*)((::CppSharp::CppParser::Enumeration*)NativePtr)->BuiltinType);
+    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::AST::Enumeration::Item*)NativePtr)->Comment);
 }
 
-void CppSharp::Parser::Enumeration::BuiltinType::set(CppSharp::Parser::BuiltinType^ value)
+void CppSharp::Parser::AST::Enumeration::Item::Comment::set(System::String^ value)
 {
-    ((::CppSharp::CppParser::Enumeration*)NativePtr)->BuiltinType = (::CppSharp::CppParser::BuiltinType*)value->NativePtr;
+    ((::CppSharp::CppParser::AST::Enumeration::Item*)NativePtr)->Comment = clix::marshalString<clix::E_UTF8>(value);
 }
 
-System::Collections::Generic::List<CppSharp::Parser::Enumeration::Item^>^ CppSharp::Parser::Enumeration::Items::get()
+unsigned long long CppSharp::Parser::AST::Enumeration::Item::Value::get()
 {
-    auto _tmpItems = gcnew System::Collections::Generic::List<CppSharp::Parser::Enumeration::Item^>();
-    for(auto _element : ((::CppSharp::CppParser::Enumeration*)NativePtr)->Items)
+    return ((::CppSharp::CppParser::AST::Enumeration::Item*)NativePtr)->Value;
+}
+
+void CppSharp::Parser::AST::Enumeration::Item::Value::set(unsigned long long value)
+{
+    ((::CppSharp::CppParser::AST::Enumeration::Item*)NativePtr)->Value = (::uint64_t)value;
+}
+
+CppSharp::Parser::AST::Enumeration::Enumeration(::CppSharp::CppParser::AST::Enumeration* native)
+    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)native)
+{
+}
+
+CppSharp::Parser::AST::Enumeration::Enumeration(System::IntPtr native)
+    : CppSharp::Parser::AST::Declaration(native)
+{
+    auto __native = (::CppSharp::CppParser::AST::Enumeration*)native.ToPointer();
+}
+
+CppSharp::Parser::AST::Enumeration::Enumeration()
+    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)nullptr)
+{
+    NativePtr = new ::CppSharp::CppParser::AST::Enumeration();
+}
+
+CppSharp::Parser::AST::Enumeration::EnumModifiers CppSharp::Parser::AST::Enumeration::Modifiers::get()
+{
+    return (CppSharp::Parser::AST::Enumeration::EnumModifiers)((::CppSharp::CppParser::AST::Enumeration*)NativePtr)->Modifiers;
+}
+
+void CppSharp::Parser::AST::Enumeration::Modifiers::set(CppSharp::Parser::AST::Enumeration::EnumModifiers value)
+{
+    ((::CppSharp::CppParser::AST::Enumeration*)NativePtr)->Modifiers = (::CppSharp::CppParser::AST::Enumeration::EnumModifiers)value;
+}
+
+CppSharp::Parser::AST::Type^ CppSharp::Parser::AST::Enumeration::Type::get()
+{
+    return gcnew CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)((::CppSharp::CppParser::AST::Enumeration*)NativePtr)->Type);
+}
+
+void CppSharp::Parser::AST::Enumeration::Type::set(CppSharp::Parser::AST::Type^ value)
+{
+    ((::CppSharp::CppParser::AST::Enumeration*)NativePtr)->Type = (::CppSharp::CppParser::AST::Type*)value->NativePtr;
+}
+
+CppSharp::Parser::AST::BuiltinType^ CppSharp::Parser::AST::Enumeration::BuiltinType::get()
+{
+    return gcnew CppSharp::Parser::AST::BuiltinType((::CppSharp::CppParser::AST::BuiltinType*)((::CppSharp::CppParser::AST::Enumeration*)NativePtr)->BuiltinType);
+}
+
+void CppSharp::Parser::AST::Enumeration::BuiltinType::set(CppSharp::Parser::AST::BuiltinType^ value)
+{
+    ((::CppSharp::CppParser::AST::Enumeration*)NativePtr)->BuiltinType = (::CppSharp::CppParser::AST::BuiltinType*)value->NativePtr;
+}
+
+System::Collections::Generic::List<CppSharp::Parser::AST::Enumeration::Item^>^ CppSharp::Parser::AST::Enumeration::Items::get()
+{
+    auto _tmpItems = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::Enumeration::Item^>();
+    for(auto _element : ((::CppSharp::CppParser::AST::Enumeration*)NativePtr)->Items)
     {
-        auto ___element = new ::CppSharp::CppParser::Enumeration::Item(_element);
-        auto _marshalElement = gcnew CppSharp::Parser::Enumeration::Item((::CppSharp::CppParser::Enumeration::Item*)___element);
+        auto ___element = new ::CppSharp::CppParser::AST::Enumeration::Item(_element);
+        auto _marshalElement = gcnew CppSharp::Parser::AST::Enumeration::Item((::CppSharp::CppParser::AST::Enumeration::Item*)___element);
         _tmpItems->Add(_marshalElement);
     }
     return _tmpItems;
 }
 
-void CppSharp::Parser::Enumeration::Items::set(System::Collections::Generic::List<CppSharp::Parser::Enumeration::Item^>^ value)
+void CppSharp::Parser::AST::Enumeration::Items::set(System::Collections::Generic::List<CppSharp::Parser::AST::Enumeration::Item^>^ value)
 {
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::Enumeration::Item>();
-    for each(CppSharp::Parser::Enumeration::Item^ _element in value)
+    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::Enumeration::Item>();
+    for each(CppSharp::Parser::AST::Enumeration::Item^ _element in value)
     {
-        auto _marshalElement = *(::CppSharp::CppParser::Enumeration::Item*)_element->NativePtr;
+        auto _marshalElement = *(::CppSharp::CppParser::AST::Enumeration::Item*)_element->NativePtr;
         _tmpvalue.push_back(_marshalElement);
     }
-    ((::CppSharp::CppParser::Enumeration*)NativePtr)->Items = _tmpvalue;
+    ((::CppSharp::CppParser::AST::Enumeration*)NativePtr)->Items = _tmpvalue;
 }
 
-CppSharp::Parser::Variable::Variable(::CppSharp::CppParser::Variable* native)
-    : CppSharp::Parser::Declaration((::CppSharp::CppParser::Declaration*)native)
+CppSharp::Parser::AST::Variable::Variable(::CppSharp::CppParser::AST::Variable* native)
+    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)native)
 {
 }
 
-CppSharp::Parser::Variable::Variable(System::IntPtr native)
-    : CppSharp::Parser::Declaration(native)
+CppSharp::Parser::AST::Variable::Variable(System::IntPtr native)
+    : CppSharp::Parser::AST::Declaration(native)
 {
-    auto __native = (::CppSharp::CppParser::Variable*)native.ToPointer();
+    auto __native = (::CppSharp::CppParser::AST::Variable*)native.ToPointer();
 }
 
-CppSharp::Parser::Variable::Variable()
-    : CppSharp::Parser::Declaration((::CppSharp::CppParser::Declaration*)nullptr)
+CppSharp::Parser::AST::Variable::Variable()
+    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)nullptr)
 {
-    NativePtr = new ::CppSharp::CppParser::Variable();
+    NativePtr = new ::CppSharp::CppParser::AST::Variable();
 }
 
-System::String^ CppSharp::Parser::Variable::Mangled::get()
+System::String^ CppSharp::Parser::AST::Variable::Mangled::get()
 {
-    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::Variable*)NativePtr)->Mangled);
+    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::AST::Variable*)NativePtr)->Mangled);
 }
 
-void CppSharp::Parser::Variable::Mangled::set(System::String^ value)
+void CppSharp::Parser::AST::Variable::Mangled::set(System::String^ value)
 {
-    ((::CppSharp::CppParser::Variable*)NativePtr)->Mangled = clix::marshalString<clix::E_UTF8>(value);
+    ((::CppSharp::CppParser::AST::Variable*)NativePtr)->Mangled = clix::marshalString<clix::E_UTF8>(value);
 }
 
-CppSharp::Parser::QualifiedType^ CppSharp::Parser::Variable::QualifiedType::get()
+CppSharp::Parser::AST::QualifiedType^ CppSharp::Parser::AST::Variable::QualifiedType::get()
 {
-    return gcnew CppSharp::Parser::QualifiedType((::CppSharp::CppParser::QualifiedType*)&((::CppSharp::CppParser::Variable*)NativePtr)->QualifiedType);
+    return gcnew CppSharp::Parser::AST::QualifiedType((::CppSharp::CppParser::AST::QualifiedType*)&((::CppSharp::CppParser::AST::Variable*)NativePtr)->QualifiedType);
 }
 
-void CppSharp::Parser::Variable::QualifiedType::set(CppSharp::Parser::QualifiedType^ value)
+void CppSharp::Parser::AST::Variable::QualifiedType::set(CppSharp::Parser::AST::QualifiedType^ value)
 {
-    ((::CppSharp::CppParser::Variable*)NativePtr)->QualifiedType = *(::CppSharp::CppParser::QualifiedType*)value->NativePtr;
+    ((::CppSharp::CppParser::AST::Variable*)NativePtr)->QualifiedType = *(::CppSharp::CppParser::AST::QualifiedType*)value->NativePtr;
 }
 
-CppSharp::Parser::BaseClassSpecifier::BaseClassSpecifier(::CppSharp::CppParser::BaseClassSpecifier* native)
+CppSharp::Parser::AST::BaseClassSpecifier::BaseClassSpecifier(::CppSharp::CppParser::AST::BaseClassSpecifier* native)
 {
     NativePtr = native;
 }
 
-CppSharp::Parser::BaseClassSpecifier::BaseClassSpecifier(System::IntPtr native)
+CppSharp::Parser::AST::BaseClassSpecifier::BaseClassSpecifier(System::IntPtr native)
 {
-    auto __native = (::CppSharp::CppParser::BaseClassSpecifier*)native.ToPointer();
+    auto __native = (::CppSharp::CppParser::AST::BaseClassSpecifier*)native.ToPointer();
     NativePtr = __native;
 }
 
-CppSharp::Parser::BaseClassSpecifier::BaseClassSpecifier()
+CppSharp::Parser::AST::BaseClassSpecifier::BaseClassSpecifier()
 {
-    NativePtr = new ::CppSharp::CppParser::BaseClassSpecifier();
+    NativePtr = new ::CppSharp::CppParser::AST::BaseClassSpecifier();
 }
 
-System::IntPtr CppSharp::Parser::BaseClassSpecifier::Instance::get()
+System::IntPtr CppSharp::Parser::AST::BaseClassSpecifier::Instance::get()
 {
     return System::IntPtr(NativePtr);
 }
 
-void CppSharp::Parser::BaseClassSpecifier::Instance::set(System::IntPtr object)
+void CppSharp::Parser::AST::BaseClassSpecifier::Instance::set(System::IntPtr object)
 {
-    NativePtr = (::CppSharp::CppParser::BaseClassSpecifier*)object.ToPointer();
+    NativePtr = (::CppSharp::CppParser::AST::BaseClassSpecifier*)object.ToPointer();
 }
 
-CppSharp::Parser::AccessSpecifier CppSharp::Parser::BaseClassSpecifier::Access::get()
+CppSharp::Parser::AST::AccessSpecifier CppSharp::Parser::AST::BaseClassSpecifier::Access::get()
 {
-    return (CppSharp::Parser::AccessSpecifier)((::CppSharp::CppParser::BaseClassSpecifier*)NativePtr)->Access;
+    return (CppSharp::Parser::AST::AccessSpecifier)((::CppSharp::CppParser::AST::BaseClassSpecifier*)NativePtr)->Access;
 }
 
-void CppSharp::Parser::BaseClassSpecifier::Access::set(CppSharp::Parser::AccessSpecifier value)
+void CppSharp::Parser::AST::BaseClassSpecifier::Access::set(CppSharp::Parser::AST::AccessSpecifier value)
 {
-    ((::CppSharp::CppParser::BaseClassSpecifier*)NativePtr)->Access = (::CppSharp::CppParser::AccessSpecifier)value;
+    ((::CppSharp::CppParser::AST::BaseClassSpecifier*)NativePtr)->Access = (::CppSharp::CppParser::AST::AccessSpecifier)value;
 }
 
-bool CppSharp::Parser::BaseClassSpecifier::IsVirtual::get()
+bool CppSharp::Parser::AST::BaseClassSpecifier::IsVirtual::get()
 {
-    return ((::CppSharp::CppParser::BaseClassSpecifier*)NativePtr)->IsVirtual;
+    return ((::CppSharp::CppParser::AST::BaseClassSpecifier*)NativePtr)->IsVirtual;
 }
 
-void CppSharp::Parser::BaseClassSpecifier::IsVirtual::set(bool value)
+void CppSharp::Parser::AST::BaseClassSpecifier::IsVirtual::set(bool value)
 {
-    ((::CppSharp::CppParser::BaseClassSpecifier*)NativePtr)->IsVirtual = value;
+    ((::CppSharp::CppParser::AST::BaseClassSpecifier*)NativePtr)->IsVirtual = value;
 }
 
-CppSharp::Parser::Type^ CppSharp::Parser::BaseClassSpecifier::Type::get()
+CppSharp::Parser::AST::Type^ CppSharp::Parser::AST::BaseClassSpecifier::Type::get()
 {
-    return gcnew CppSharp::Parser::Type((::CppSharp::CppParser::Type*)((::CppSharp::CppParser::BaseClassSpecifier*)NativePtr)->Type);
+    return gcnew CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)((::CppSharp::CppParser::AST::BaseClassSpecifier*)NativePtr)->Type);
 }
 
-void CppSharp::Parser::BaseClassSpecifier::Type::set(CppSharp::Parser::Type^ value)
+void CppSharp::Parser::AST::BaseClassSpecifier::Type::set(CppSharp::Parser::AST::Type^ value)
 {
-    ((::CppSharp::CppParser::BaseClassSpecifier*)NativePtr)->Type = (::CppSharp::CppParser::Type*)value->NativePtr;
+    ((::CppSharp::CppParser::AST::BaseClassSpecifier*)NativePtr)->Type = (::CppSharp::CppParser::AST::Type*)value->NativePtr;
 }
 
-CppSharp::Parser::Field::Field(::CppSharp::CppParser::Field* native)
-    : CppSharp::Parser::Declaration((::CppSharp::CppParser::Declaration*)native)
-{
-}
-
-CppSharp::Parser::Field::Field(System::IntPtr native)
-    : CppSharp::Parser::Declaration(native)
-{
-    auto __native = (::CppSharp::CppParser::Field*)native.ToPointer();
-}
-
-CppSharp::Parser::Field::Field()
-    : CppSharp::Parser::Declaration((::CppSharp::CppParser::Declaration*)nullptr)
-{
-    NativePtr = new ::CppSharp::CppParser::Field();
-}
-
-CppSharp::Parser::QualifiedType^ CppSharp::Parser::Field::QualifiedType::get()
-{
-    return gcnew CppSharp::Parser::QualifiedType((::CppSharp::CppParser::QualifiedType*)&((::CppSharp::CppParser::Field*)NativePtr)->QualifiedType);
-}
-
-void CppSharp::Parser::Field::QualifiedType::set(CppSharp::Parser::QualifiedType^ value)
-{
-    ((::CppSharp::CppParser::Field*)NativePtr)->QualifiedType = *(::CppSharp::CppParser::QualifiedType*)value->NativePtr;
-}
-
-CppSharp::Parser::AccessSpecifier CppSharp::Parser::Field::Access::get()
-{
-    return (CppSharp::Parser::AccessSpecifier)((::CppSharp::CppParser::Field*)NativePtr)->Access;
-}
-
-void CppSharp::Parser::Field::Access::set(CppSharp::Parser::AccessSpecifier value)
-{
-    ((::CppSharp::CppParser::Field*)NativePtr)->Access = (::CppSharp::CppParser::AccessSpecifier)value;
-}
-
-unsigned int CppSharp::Parser::Field::Offset::get()
-{
-    return ((::CppSharp::CppParser::Field*)NativePtr)->Offset;
-}
-
-void CppSharp::Parser::Field::Offset::set(unsigned int value)
-{
-    ((::CppSharp::CppParser::Field*)NativePtr)->Offset = value;
-}
-
-CppSharp::Parser::Class^ CppSharp::Parser::Field::Class::get()
-{
-    return gcnew CppSharp::Parser::Class((::CppSharp::CppParser::Class*)((::CppSharp::CppParser::Field*)NativePtr)->Class);
-}
-
-void CppSharp::Parser::Field::Class::set(CppSharp::Parser::Class^ value)
-{
-    ((::CppSharp::CppParser::Field*)NativePtr)->Class = (::CppSharp::CppParser::Class*)value->NativePtr;
-}
-
-CppSharp::Parser::AccessSpecifierDecl::AccessSpecifierDecl(::CppSharp::CppParser::AccessSpecifierDecl* native)
-    : CppSharp::Parser::Declaration((::CppSharp::CppParser::Declaration*)native)
+CppSharp::Parser::AST::Field::Field(::CppSharp::CppParser::AST::Field* native)
+    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)native)
 {
 }
 
-CppSharp::Parser::AccessSpecifierDecl::AccessSpecifierDecl(System::IntPtr native)
-    : CppSharp::Parser::Declaration(native)
+CppSharp::Parser::AST::Field::Field(System::IntPtr native)
+    : CppSharp::Parser::AST::Declaration(native)
 {
-    auto __native = (::CppSharp::CppParser::AccessSpecifierDecl*)native.ToPointer();
+    auto __native = (::CppSharp::CppParser::AST::Field*)native.ToPointer();
 }
 
-CppSharp::Parser::AccessSpecifierDecl::AccessSpecifierDecl()
-    : CppSharp::Parser::Declaration((::CppSharp::CppParser::Declaration*)nullptr)
+CppSharp::Parser::AST::Field::Field()
+    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)nullptr)
 {
-    NativePtr = new ::CppSharp::CppParser::AccessSpecifierDecl();
+    NativePtr = new ::CppSharp::CppParser::AST::Field();
 }
 
-CppSharp::Parser::Class::Class(::CppSharp::CppParser::Class* native)
-    : CppSharp::Parser::DeclarationContext((::CppSharp::CppParser::DeclarationContext*)native)
+CppSharp::Parser::AST::QualifiedType^ CppSharp::Parser::AST::Field::QualifiedType::get()
+{
+    return gcnew CppSharp::Parser::AST::QualifiedType((::CppSharp::CppParser::AST::QualifiedType*)&((::CppSharp::CppParser::AST::Field*)NativePtr)->QualifiedType);
+}
+
+void CppSharp::Parser::AST::Field::QualifiedType::set(CppSharp::Parser::AST::QualifiedType^ value)
+{
+    ((::CppSharp::CppParser::AST::Field*)NativePtr)->QualifiedType = *(::CppSharp::CppParser::AST::QualifiedType*)value->NativePtr;
+}
+
+CppSharp::Parser::AST::AccessSpecifier CppSharp::Parser::AST::Field::Access::get()
+{
+    return (CppSharp::Parser::AST::AccessSpecifier)((::CppSharp::CppParser::AST::Field*)NativePtr)->Access;
+}
+
+void CppSharp::Parser::AST::Field::Access::set(CppSharp::Parser::AST::AccessSpecifier value)
+{
+    ((::CppSharp::CppParser::AST::Field*)NativePtr)->Access = (::CppSharp::CppParser::AST::AccessSpecifier)value;
+}
+
+unsigned int CppSharp::Parser::AST::Field::Offset::get()
+{
+    return ((::CppSharp::CppParser::AST::Field*)NativePtr)->Offset;
+}
+
+void CppSharp::Parser::AST::Field::Offset::set(unsigned int value)
+{
+    ((::CppSharp::CppParser::AST::Field*)NativePtr)->Offset = value;
+}
+
+CppSharp::Parser::AST::Class^ CppSharp::Parser::AST::Field::Class::get()
+{
+    return gcnew CppSharp::Parser::AST::Class((::CppSharp::CppParser::AST::Class*)((::CppSharp::CppParser::AST::Field*)NativePtr)->Class);
+}
+
+void CppSharp::Parser::AST::Field::Class::set(CppSharp::Parser::AST::Class^ value)
+{
+    ((::CppSharp::CppParser::AST::Field*)NativePtr)->Class = (::CppSharp::CppParser::AST::Class*)value->NativePtr;
+}
+
+CppSharp::Parser::AST::AccessSpecifierDecl::AccessSpecifierDecl(::CppSharp::CppParser::AST::AccessSpecifierDecl* native)
+    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)native)
 {
 }
 
-CppSharp::Parser::Class::Class(System::IntPtr native)
-    : CppSharp::Parser::DeclarationContext(native)
+CppSharp::Parser::AST::AccessSpecifierDecl::AccessSpecifierDecl(System::IntPtr native)
+    : CppSharp::Parser::AST::Declaration(native)
 {
-    auto __native = (::CppSharp::CppParser::Class*)native.ToPointer();
+    auto __native = (::CppSharp::CppParser::AST::AccessSpecifierDecl*)native.ToPointer();
 }
 
-CppSharp::Parser::Class::Class()
-    : CppSharp::Parser::DeclarationContext((::CppSharp::CppParser::DeclarationContext*)nullptr)
+CppSharp::Parser::AST::AccessSpecifierDecl::AccessSpecifierDecl()
+    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)nullptr)
 {
-    NativePtr = new ::CppSharp::CppParser::Class();
+    NativePtr = new ::CppSharp::CppParser::AST::AccessSpecifierDecl();
 }
 
-System::Collections::Generic::List<CppSharp::Parser::BaseClassSpecifier^>^ CppSharp::Parser::Class::Bases::get()
+CppSharp::Parser::AST::Class::Class(::CppSharp::CppParser::AST::Class* native)
+    : CppSharp::Parser::AST::DeclarationContext((::CppSharp::CppParser::AST::DeclarationContext*)native)
 {
-    auto _tmpBases = gcnew System::Collections::Generic::List<CppSharp::Parser::BaseClassSpecifier^>();
-    for(auto _element : ((::CppSharp::CppParser::Class*)NativePtr)->Bases)
+}
+
+CppSharp::Parser::AST::Class::Class(System::IntPtr native)
+    : CppSharp::Parser::AST::DeclarationContext(native)
+{
+    auto __native = (::CppSharp::CppParser::AST::Class*)native.ToPointer();
+}
+
+CppSharp::Parser::AST::Class::Class()
+    : CppSharp::Parser::AST::DeclarationContext((::CppSharp::CppParser::AST::DeclarationContext*)nullptr)
+{
+    NativePtr = new ::CppSharp::CppParser::AST::Class();
+}
+
+System::Collections::Generic::List<CppSharp::Parser::AST::BaseClassSpecifier^>^ CppSharp::Parser::AST::Class::Bases::get()
+{
+    auto _tmpBases = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::BaseClassSpecifier^>();
+    for(auto _element : ((::CppSharp::CppParser::AST::Class*)NativePtr)->Bases)
     {
-        auto _marshalElement = gcnew CppSharp::Parser::BaseClassSpecifier((::CppSharp::CppParser::BaseClassSpecifier*)_element);
+        auto _marshalElement = gcnew CppSharp::Parser::AST::BaseClassSpecifier((::CppSharp::CppParser::AST::BaseClassSpecifier*)_element);
         _tmpBases->Add(_marshalElement);
     }
     return _tmpBases;
 }
 
-void CppSharp::Parser::Class::Bases::set(System::Collections::Generic::List<CppSharp::Parser::BaseClassSpecifier^>^ value)
+void CppSharp::Parser::AST::Class::Bases::set(System::Collections::Generic::List<CppSharp::Parser::AST::BaseClassSpecifier^>^ value)
 {
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::BaseClassSpecifier*>();
-    for each(CppSharp::Parser::BaseClassSpecifier^ _element in value)
+    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::BaseClassSpecifier*>();
+    for each(CppSharp::Parser::AST::BaseClassSpecifier^ _element in value)
     {
-        auto _marshalElement = (::CppSharp::CppParser::BaseClassSpecifier*)_element->NativePtr;
+        auto _marshalElement = (::CppSharp::CppParser::AST::BaseClassSpecifier*)_element->NativePtr;
         _tmpvalue.push_back(_marshalElement);
     }
-    ((::CppSharp::CppParser::Class*)NativePtr)->Bases = _tmpvalue;
+    ((::CppSharp::CppParser::AST::Class*)NativePtr)->Bases = _tmpvalue;
 }
 
-System::Collections::Generic::List<CppSharp::Parser::Field^>^ CppSharp::Parser::Class::Fields::get()
+System::Collections::Generic::List<CppSharp::Parser::AST::Field^>^ CppSharp::Parser::AST::Class::Fields::get()
 {
-    auto _tmpFields = gcnew System::Collections::Generic::List<CppSharp::Parser::Field^>();
-    for(auto _element : ((::CppSharp::CppParser::Class*)NativePtr)->Fields)
+    auto _tmpFields = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::Field^>();
+    for(auto _element : ((::CppSharp::CppParser::AST::Class*)NativePtr)->Fields)
     {
-        auto _marshalElement = gcnew CppSharp::Parser::Field((::CppSharp::CppParser::Field*)_element);
+        auto _marshalElement = gcnew CppSharp::Parser::AST::Field((::CppSharp::CppParser::AST::Field*)_element);
         _tmpFields->Add(_marshalElement);
     }
     return _tmpFields;
 }
 
-void CppSharp::Parser::Class::Fields::set(System::Collections::Generic::List<CppSharp::Parser::Field^>^ value)
+void CppSharp::Parser::AST::Class::Fields::set(System::Collections::Generic::List<CppSharp::Parser::AST::Field^>^ value)
 {
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::Field*>();
-    for each(CppSharp::Parser::Field^ _element in value)
+    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::Field*>();
+    for each(CppSharp::Parser::AST::Field^ _element in value)
     {
-        auto _marshalElement = (::CppSharp::CppParser::Field*)_element->NativePtr;
+        auto _marshalElement = (::CppSharp::CppParser::AST::Field*)_element->NativePtr;
         _tmpvalue.push_back(_marshalElement);
     }
-    ((::CppSharp::CppParser::Class*)NativePtr)->Fields = _tmpvalue;
+    ((::CppSharp::CppParser::AST::Class*)NativePtr)->Fields = _tmpvalue;
 }
 
-System::Collections::Generic::List<CppSharp::Parser::Method^>^ CppSharp::Parser::Class::Methods::get()
+System::Collections::Generic::List<CppSharp::Parser::AST::Method^>^ CppSharp::Parser::AST::Class::Methods::get()
 {
-    auto _tmpMethods = gcnew System::Collections::Generic::List<CppSharp::Parser::Method^>();
-    for(auto _element : ((::CppSharp::CppParser::Class*)NativePtr)->Methods)
+    auto _tmpMethods = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::Method^>();
+    for(auto _element : ((::CppSharp::CppParser::AST::Class*)NativePtr)->Methods)
     {
-        auto _marshalElement = gcnew CppSharp::Parser::Method((::CppSharp::CppParser::Method*)_element);
+        auto _marshalElement = gcnew CppSharp::Parser::AST::Method((::CppSharp::CppParser::AST::Method*)_element);
         _tmpMethods->Add(_marshalElement);
     }
     return _tmpMethods;
 }
 
-void CppSharp::Parser::Class::Methods::set(System::Collections::Generic::List<CppSharp::Parser::Method^>^ value)
+void CppSharp::Parser::AST::Class::Methods::set(System::Collections::Generic::List<CppSharp::Parser::AST::Method^>^ value)
 {
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::Method*>();
-    for each(CppSharp::Parser::Method^ _element in value)
+    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::Method*>();
+    for each(CppSharp::Parser::AST::Method^ _element in value)
     {
-        auto _marshalElement = (::CppSharp::CppParser::Method*)_element->NativePtr;
+        auto _marshalElement = (::CppSharp::CppParser::AST::Method*)_element->NativePtr;
         _tmpvalue.push_back(_marshalElement);
     }
-    ((::CppSharp::CppParser::Class*)NativePtr)->Methods = _tmpvalue;
+    ((::CppSharp::CppParser::AST::Class*)NativePtr)->Methods = _tmpvalue;
 }
 
-System::Collections::Generic::List<CppSharp::Parser::AccessSpecifierDecl^>^ CppSharp::Parser::Class::Specifiers::get()
+System::Collections::Generic::List<CppSharp::Parser::AST::AccessSpecifierDecl^>^ CppSharp::Parser::AST::Class::Specifiers::get()
 {
-    auto _tmpSpecifiers = gcnew System::Collections::Generic::List<CppSharp::Parser::AccessSpecifierDecl^>();
-    for(auto _element : ((::CppSharp::CppParser::Class*)NativePtr)->Specifiers)
+    auto _tmpSpecifiers = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::AccessSpecifierDecl^>();
+    for(auto _element : ((::CppSharp::CppParser::AST::Class*)NativePtr)->Specifiers)
     {
-        auto _marshalElement = gcnew CppSharp::Parser::AccessSpecifierDecl((::CppSharp::CppParser::AccessSpecifierDecl*)_element);
+        auto _marshalElement = gcnew CppSharp::Parser::AST::AccessSpecifierDecl((::CppSharp::CppParser::AST::AccessSpecifierDecl*)_element);
         _tmpSpecifiers->Add(_marshalElement);
     }
     return _tmpSpecifiers;
 }
 
-void CppSharp::Parser::Class::Specifiers::set(System::Collections::Generic::List<CppSharp::Parser::AccessSpecifierDecl^>^ value)
+void CppSharp::Parser::AST::Class::Specifiers::set(System::Collections::Generic::List<CppSharp::Parser::AST::AccessSpecifierDecl^>^ value)
 {
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::AccessSpecifierDecl*>();
-    for each(CppSharp::Parser::AccessSpecifierDecl^ _element in value)
+    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::AccessSpecifierDecl*>();
+    for each(CppSharp::Parser::AST::AccessSpecifierDecl^ _element in value)
     {
-        auto _marshalElement = (::CppSharp::CppParser::AccessSpecifierDecl*)_element->NativePtr;
+        auto _marshalElement = (::CppSharp::CppParser::AST::AccessSpecifierDecl*)_element->NativePtr;
         _tmpvalue.push_back(_marshalElement);
     }
-    ((::CppSharp::CppParser::Class*)NativePtr)->Specifiers = _tmpvalue;
+    ((::CppSharp::CppParser::AST::Class*)NativePtr)->Specifiers = _tmpvalue;
 }
 
-bool CppSharp::Parser::Class::IsPOD::get()
+bool CppSharp::Parser::AST::Class::IsPOD::get()
 {
-    return ((::CppSharp::CppParser::Class*)NativePtr)->IsPOD;
+    return ((::CppSharp::CppParser::AST::Class*)NativePtr)->IsPOD;
 }
 
-void CppSharp::Parser::Class::IsPOD::set(bool value)
+void CppSharp::Parser::AST::Class::IsPOD::set(bool value)
 {
-    ((::CppSharp::CppParser::Class*)NativePtr)->IsPOD = value;
+    ((::CppSharp::CppParser::AST::Class*)NativePtr)->IsPOD = value;
 }
 
-bool CppSharp::Parser::Class::IsAbstract::get()
+bool CppSharp::Parser::AST::Class::IsAbstract::get()
 {
-    return ((::CppSharp::CppParser::Class*)NativePtr)->IsAbstract;
+    return ((::CppSharp::CppParser::AST::Class*)NativePtr)->IsAbstract;
 }
 
-void CppSharp::Parser::Class::IsAbstract::set(bool value)
+void CppSharp::Parser::AST::Class::IsAbstract::set(bool value)
 {
-    ((::CppSharp::CppParser::Class*)NativePtr)->IsAbstract = value;
+    ((::CppSharp::CppParser::AST::Class*)NativePtr)->IsAbstract = value;
 }
 
-bool CppSharp::Parser::Class::IsUnion::get()
+bool CppSharp::Parser::AST::Class::IsUnion::get()
 {
-    return ((::CppSharp::CppParser::Class*)NativePtr)->IsUnion;
+    return ((::CppSharp::CppParser::AST::Class*)NativePtr)->IsUnion;
 }
 
-void CppSharp::Parser::Class::IsUnion::set(bool value)
+void CppSharp::Parser::AST::Class::IsUnion::set(bool value)
 {
-    ((::CppSharp::CppParser::Class*)NativePtr)->IsUnion = value;
+    ((::CppSharp::CppParser::AST::Class*)NativePtr)->IsUnion = value;
 }
 
-bool CppSharp::Parser::Class::IsDynamic::get()
+bool CppSharp::Parser::AST::Class::IsDynamic::get()
 {
-    return ((::CppSharp::CppParser::Class*)NativePtr)->IsDynamic;
+    return ((::CppSharp::CppParser::AST::Class*)NativePtr)->IsDynamic;
 }
 
-void CppSharp::Parser::Class::IsDynamic::set(bool value)
+void CppSharp::Parser::AST::Class::IsDynamic::set(bool value)
 {
-    ((::CppSharp::CppParser::Class*)NativePtr)->IsDynamic = value;
+    ((::CppSharp::CppParser::AST::Class*)NativePtr)->IsDynamic = value;
 }
 
-bool CppSharp::Parser::Class::IsPolymorphic::get()
+bool CppSharp::Parser::AST::Class::IsPolymorphic::get()
 {
-    return ((::CppSharp::CppParser::Class*)NativePtr)->IsPolymorphic;
+    return ((::CppSharp::CppParser::AST::Class*)NativePtr)->IsPolymorphic;
 }
 
-void CppSharp::Parser::Class::IsPolymorphic::set(bool value)
+void CppSharp::Parser::AST::Class::IsPolymorphic::set(bool value)
 {
-    ((::CppSharp::CppParser::Class*)NativePtr)->IsPolymorphic = value;
+    ((::CppSharp::CppParser::AST::Class*)NativePtr)->IsPolymorphic = value;
 }
 
-bool CppSharp::Parser::Class::HasNonTrivialDefaultConstructor::get()
+bool CppSharp::Parser::AST::Class::HasNonTrivialDefaultConstructor::get()
 {
-    return ((::CppSharp::CppParser::Class*)NativePtr)->HasNonTrivialDefaultConstructor;
+    return ((::CppSharp::CppParser::AST::Class*)NativePtr)->HasNonTrivialDefaultConstructor;
 }
 
-void CppSharp::Parser::Class::HasNonTrivialDefaultConstructor::set(bool value)
+void CppSharp::Parser::AST::Class::HasNonTrivialDefaultConstructor::set(bool value)
 {
-    ((::CppSharp::CppParser::Class*)NativePtr)->HasNonTrivialDefaultConstructor = value;
+    ((::CppSharp::CppParser::AST::Class*)NativePtr)->HasNonTrivialDefaultConstructor = value;
 }
 
-bool CppSharp::Parser::Class::HasNonTrivialCopyConstructor::get()
+bool CppSharp::Parser::AST::Class::HasNonTrivialCopyConstructor::get()
 {
-    return ((::CppSharp::CppParser::Class*)NativePtr)->HasNonTrivialCopyConstructor;
+    return ((::CppSharp::CppParser::AST::Class*)NativePtr)->HasNonTrivialCopyConstructor;
 }
 
-void CppSharp::Parser::Class::HasNonTrivialCopyConstructor::set(bool value)
+void CppSharp::Parser::AST::Class::HasNonTrivialCopyConstructor::set(bool value)
 {
-    ((::CppSharp::CppParser::Class*)NativePtr)->HasNonTrivialCopyConstructor = value;
+    ((::CppSharp::CppParser::AST::Class*)NativePtr)->HasNonTrivialCopyConstructor = value;
 }
 
-CppSharp::Parser::ClassLayout^ CppSharp::Parser::Class::Layout::get()
+CppSharp::Parser::AST::ClassLayout^ CppSharp::Parser::AST::Class::Layout::get()
 {
-    return gcnew CppSharp::Parser::ClassLayout((::CppSharp::CppParser::ClassLayout*)&((::CppSharp::CppParser::Class*)NativePtr)->Layout);
+    return gcnew CppSharp::Parser::AST::ClassLayout((::CppSharp::CppParser::AST::ClassLayout*)&((::CppSharp::CppParser::AST::Class*)NativePtr)->Layout);
 }
 
-void CppSharp::Parser::Class::Layout::set(CppSharp::Parser::ClassLayout^ value)
+void CppSharp::Parser::AST::Class::Layout::set(CppSharp::Parser::AST::ClassLayout^ value)
 {
-    ((::CppSharp::CppParser::Class*)NativePtr)->Layout = *(::CppSharp::CppParser::ClassLayout*)value->NativePtr;
+    ((::CppSharp::CppParser::AST::Class*)NativePtr)->Layout = *(::CppSharp::CppParser::AST::ClassLayout*)value->NativePtr;
 }
 
-CppSharp::Parser::Template::Template(::CppSharp::CppParser::Template* native)
-    : CppSharp::Parser::Declaration((::CppSharp::CppParser::Declaration*)native)
+CppSharp::Parser::AST::Template::Template(::CppSharp::CppParser::AST::Template* native)
+    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)native)
 {
 }
 
-CppSharp::Parser::Template::Template(System::IntPtr native)
-    : CppSharp::Parser::Declaration(native)
+CppSharp::Parser::AST::Template::Template(System::IntPtr native)
+    : CppSharp::Parser::AST::Declaration(native)
 {
-    auto __native = (::CppSharp::CppParser::Template*)native.ToPointer();
+    auto __native = (::CppSharp::CppParser::AST::Template*)native.ToPointer();
 }
 
-CppSharp::Parser::Template::Template()
-    : CppSharp::Parser::Declaration((::CppSharp::CppParser::Declaration*)nullptr)
+CppSharp::Parser::AST::Template::Template()
+    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)nullptr)
 {
-    NativePtr = new ::CppSharp::CppParser::Template();
+    NativePtr = new ::CppSharp::CppParser::AST::Template();
 }
 
-CppSharp::Parser::Declaration^ CppSharp::Parser::Template::TemplatedDecl::get()
+CppSharp::Parser::AST::Declaration^ CppSharp::Parser::AST::Template::TemplatedDecl::get()
 {
-    return gcnew CppSharp::Parser::Declaration((::CppSharp::CppParser::Declaration*)((::CppSharp::CppParser::Template*)NativePtr)->TemplatedDecl);
+    return gcnew CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)((::CppSharp::CppParser::AST::Template*)NativePtr)->TemplatedDecl);
 }
 
-void CppSharp::Parser::Template::TemplatedDecl::set(CppSharp::Parser::Declaration^ value)
+void CppSharp::Parser::AST::Template::TemplatedDecl::set(CppSharp::Parser::AST::Declaration^ value)
 {
-    ((::CppSharp::CppParser::Template*)NativePtr)->TemplatedDecl = (::CppSharp::CppParser::Declaration*)value->NativePtr;
+    ((::CppSharp::CppParser::AST::Template*)NativePtr)->TemplatedDecl = (::CppSharp::CppParser::AST::Declaration*)value->NativePtr;
 }
 
-System::Collections::Generic::List<CppSharp::Parser::TemplateParameter^>^ CppSharp::Parser::Template::Parameters::get()
+System::Collections::Generic::List<CppSharp::Parser::AST::TemplateParameter^>^ CppSharp::Parser::AST::Template::Parameters::get()
 {
-    auto _tmpParameters = gcnew System::Collections::Generic::List<CppSharp::Parser::TemplateParameter^>();
-    for(auto _element : ((::CppSharp::CppParser::Template*)NativePtr)->Parameters)
+    auto _tmpParameters = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::TemplateParameter^>();
+    for(auto _element : ((::CppSharp::CppParser::AST::Template*)NativePtr)->Parameters)
     {
-        auto ___element = new ::CppSharp::CppParser::TemplateParameter(_element);
-        auto _marshalElement = gcnew CppSharp::Parser::TemplateParameter((::CppSharp::CppParser::TemplateParameter*)___element);
+        auto ___element = new ::CppSharp::CppParser::AST::TemplateParameter(_element);
+        auto _marshalElement = gcnew CppSharp::Parser::AST::TemplateParameter((::CppSharp::CppParser::AST::TemplateParameter*)___element);
         _tmpParameters->Add(_marshalElement);
     }
     return _tmpParameters;
 }
 
-void CppSharp::Parser::Template::Parameters::set(System::Collections::Generic::List<CppSharp::Parser::TemplateParameter^>^ value)
+void CppSharp::Parser::AST::Template::Parameters::set(System::Collections::Generic::List<CppSharp::Parser::AST::TemplateParameter^>^ value)
 {
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::TemplateParameter>();
-    for each(CppSharp::Parser::TemplateParameter^ _element in value)
+    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::TemplateParameter>();
+    for each(CppSharp::Parser::AST::TemplateParameter^ _element in value)
     {
-        auto _marshalElement = *(::CppSharp::CppParser::TemplateParameter*)_element->NativePtr;
+        auto _marshalElement = *(::CppSharp::CppParser::AST::TemplateParameter*)_element->NativePtr;
         _tmpvalue.push_back(_marshalElement);
     }
-    ((::CppSharp::CppParser::Template*)NativePtr)->Parameters = _tmpvalue;
+    ((::CppSharp::CppParser::AST::Template*)NativePtr)->Parameters = _tmpvalue;
 }
 
-CppSharp::Parser::ClassTemplate::ClassTemplate(::CppSharp::CppParser::ClassTemplate* native)
-    : CppSharp::Parser::Template((::CppSharp::CppParser::Template*)native)
+CppSharp::Parser::AST::ClassTemplate::ClassTemplate(::CppSharp::CppParser::AST::ClassTemplate* native)
+    : CppSharp::Parser::AST::Template((::CppSharp::CppParser::AST::Template*)native)
 {
 }
 
-CppSharp::Parser::ClassTemplate::ClassTemplate(System::IntPtr native)
-    : CppSharp::Parser::Template(native)
+CppSharp::Parser::AST::ClassTemplate::ClassTemplate(System::IntPtr native)
+    : CppSharp::Parser::AST::Template(native)
 {
-    auto __native = (::CppSharp::CppParser::ClassTemplate*)native.ToPointer();
+    auto __native = (::CppSharp::CppParser::AST::ClassTemplate*)native.ToPointer();
 }
 
-CppSharp::Parser::ClassTemplate::ClassTemplate()
-    : CppSharp::Parser::Template((::CppSharp::CppParser::Template*)nullptr)
+CppSharp::Parser::AST::ClassTemplate::ClassTemplate()
+    : CppSharp::Parser::AST::Template((::CppSharp::CppParser::AST::Template*)nullptr)
 {
-    NativePtr = new ::CppSharp::CppParser::ClassTemplate();
+    NativePtr = new ::CppSharp::CppParser::AST::ClassTemplate();
 }
 
-CppSharp::Parser::ClassTemplateSpecialization::ClassTemplateSpecialization(::CppSharp::CppParser::ClassTemplateSpecialization* native)
-    : CppSharp::Parser::Declaration((::CppSharp::CppParser::Declaration*)native)
-{
-}
-
-CppSharp::Parser::ClassTemplateSpecialization::ClassTemplateSpecialization(System::IntPtr native)
-    : CppSharp::Parser::Declaration(native)
-{
-    auto __native = (::CppSharp::CppParser::ClassTemplateSpecialization*)native.ToPointer();
-}
-
-CppSharp::Parser::ClassTemplateSpecialization::ClassTemplateSpecialization()
-    : CppSharp::Parser::Declaration((::CppSharp::CppParser::Declaration*)nullptr)
-{
-    NativePtr = new ::CppSharp::CppParser::ClassTemplateSpecialization();
-}
-
-CppSharp::Parser::ClassTemplatePartialSpecialization::ClassTemplatePartialSpecialization(::CppSharp::CppParser::ClassTemplatePartialSpecialization* native)
-    : CppSharp::Parser::Declaration((::CppSharp::CppParser::Declaration*)native)
+CppSharp::Parser::AST::ClassTemplateSpecialization::ClassTemplateSpecialization(::CppSharp::CppParser::AST::ClassTemplateSpecialization* native)
+    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)native)
 {
 }
 
-CppSharp::Parser::ClassTemplatePartialSpecialization::ClassTemplatePartialSpecialization(System::IntPtr native)
-    : CppSharp::Parser::Declaration(native)
+CppSharp::Parser::AST::ClassTemplateSpecialization::ClassTemplateSpecialization(System::IntPtr native)
+    : CppSharp::Parser::AST::Declaration(native)
 {
-    auto __native = (::CppSharp::CppParser::ClassTemplatePartialSpecialization*)native.ToPointer();
+    auto __native = (::CppSharp::CppParser::AST::ClassTemplateSpecialization*)native.ToPointer();
 }
 
-CppSharp::Parser::ClassTemplatePartialSpecialization::ClassTemplatePartialSpecialization()
-    : CppSharp::Parser::Declaration((::CppSharp::CppParser::Declaration*)nullptr)
+CppSharp::Parser::AST::ClassTemplateSpecialization::ClassTemplateSpecialization()
+    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)nullptr)
 {
-    NativePtr = new ::CppSharp::CppParser::ClassTemplatePartialSpecialization();
+    NativePtr = new ::CppSharp::CppParser::AST::ClassTemplateSpecialization();
 }
 
-CppSharp::Parser::FunctionTemplate::FunctionTemplate(::CppSharp::CppParser::FunctionTemplate* native)
-    : CppSharp::Parser::Template((::CppSharp::CppParser::Template*)native)
-{
-}
-
-CppSharp::Parser::FunctionTemplate::FunctionTemplate(System::IntPtr native)
-    : CppSharp::Parser::Template(native)
-{
-    auto __native = (::CppSharp::CppParser::FunctionTemplate*)native.ToPointer();
-}
-
-CppSharp::Parser::FunctionTemplate::FunctionTemplate()
-    : CppSharp::Parser::Template((::CppSharp::CppParser::Template*)nullptr)
-{
-    NativePtr = new ::CppSharp::CppParser::FunctionTemplate();
-}
-
-CppSharp::Parser::Namespace::Namespace(::CppSharp::CppParser::Namespace* native)
-    : CppSharp::Parser::DeclarationContext((::CppSharp::CppParser::DeclarationContext*)native)
+CppSharp::Parser::AST::ClassTemplatePartialSpecialization::ClassTemplatePartialSpecialization(::CppSharp::CppParser::AST::ClassTemplatePartialSpecialization* native)
+    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)native)
 {
 }
 
-CppSharp::Parser::Namespace::Namespace(System::IntPtr native)
-    : CppSharp::Parser::DeclarationContext(native)
+CppSharp::Parser::AST::ClassTemplatePartialSpecialization::ClassTemplatePartialSpecialization(System::IntPtr native)
+    : CppSharp::Parser::AST::Declaration(native)
 {
-    auto __native = (::CppSharp::CppParser::Namespace*)native.ToPointer();
+    auto __native = (::CppSharp::CppParser::AST::ClassTemplatePartialSpecialization*)native.ToPointer();
 }
 
-CppSharp::Parser::Namespace::Namespace()
-    : CppSharp::Parser::DeclarationContext((::CppSharp::CppParser::DeclarationContext*)nullptr)
+CppSharp::Parser::AST::ClassTemplatePartialSpecialization::ClassTemplatePartialSpecialization()
+    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)nullptr)
 {
-    NativePtr = new ::CppSharp::CppParser::Namespace();
+    NativePtr = new ::CppSharp::CppParser::AST::ClassTemplatePartialSpecialization();
 }
 
-CppSharp::Parser::PreprocessedEntity::PreprocessedEntity(::CppSharp::CppParser::PreprocessedEntity* native)
-    : CppSharp::Parser::Declaration((::CppSharp::CppParser::Declaration*)native)
-{
-}
-
-CppSharp::Parser::PreprocessedEntity::PreprocessedEntity(System::IntPtr native)
-    : CppSharp::Parser::Declaration(native)
-{
-    auto __native = (::CppSharp::CppParser::PreprocessedEntity*)native.ToPointer();
-}
-
-CppSharp::Parser::PreprocessedEntity::PreprocessedEntity()
-    : CppSharp::Parser::Declaration((::CppSharp::CppParser::Declaration*)nullptr)
-{
-    NativePtr = new ::CppSharp::CppParser::PreprocessedEntity();
-}
-
-CppSharp::Parser::MacroLocation CppSharp::Parser::PreprocessedEntity::Location::get()
-{
-    return (CppSharp::Parser::MacroLocation)((::CppSharp::CppParser::PreprocessedEntity*)NativePtr)->Location;
-}
-
-void CppSharp::Parser::PreprocessedEntity::Location::set(CppSharp::Parser::MacroLocation value)
-{
-    ((::CppSharp::CppParser::PreprocessedEntity*)NativePtr)->Location = (::CppSharp::CppParser::MacroLocation)value;
-}
-
-CppSharp::Parser::MacroDefinition::MacroDefinition(::CppSharp::CppParser::MacroDefinition* native)
-    : CppSharp::Parser::PreprocessedEntity((::CppSharp::CppParser::PreprocessedEntity*)native)
+CppSharp::Parser::AST::FunctionTemplate::FunctionTemplate(::CppSharp::CppParser::AST::FunctionTemplate* native)
+    : CppSharp::Parser::AST::Template((::CppSharp::CppParser::AST::Template*)native)
 {
 }
 
-CppSharp::Parser::MacroDefinition::MacroDefinition(System::IntPtr native)
-    : CppSharp::Parser::PreprocessedEntity(native)
+CppSharp::Parser::AST::FunctionTemplate::FunctionTemplate(System::IntPtr native)
+    : CppSharp::Parser::AST::Template(native)
 {
-    auto __native = (::CppSharp::CppParser::MacroDefinition*)native.ToPointer();
+    auto __native = (::CppSharp::CppParser::AST::FunctionTemplate*)native.ToPointer();
 }
 
-CppSharp::Parser::MacroDefinition::MacroDefinition()
-    : CppSharp::Parser::PreprocessedEntity((::CppSharp::CppParser::PreprocessedEntity*)nullptr)
+CppSharp::Parser::AST::FunctionTemplate::FunctionTemplate()
+    : CppSharp::Parser::AST::Template((::CppSharp::CppParser::AST::Template*)nullptr)
 {
-    NativePtr = new ::CppSharp::CppParser::MacroDefinition();
+    NativePtr = new ::CppSharp::CppParser::AST::FunctionTemplate();
 }
 
-System::String^ CppSharp::Parser::MacroDefinition::Expression::get()
-{
-    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::MacroDefinition*)NativePtr)->Expression);
-}
-
-void CppSharp::Parser::MacroDefinition::Expression::set(System::String^ value)
-{
-    ((::CppSharp::CppParser::MacroDefinition*)NativePtr)->Expression = clix::marshalString<clix::E_UTF8>(value);
-}
-
-CppSharp::Parser::MacroExpansion::MacroExpansion(::CppSharp::CppParser::MacroExpansion* native)
-    : CppSharp::Parser::PreprocessedEntity((::CppSharp::CppParser::PreprocessedEntity*)native)
+CppSharp::Parser::AST::Namespace::Namespace(::CppSharp::CppParser::AST::Namespace* native)
+    : CppSharp::Parser::AST::DeclarationContext((::CppSharp::CppParser::AST::DeclarationContext*)native)
 {
 }
 
-CppSharp::Parser::MacroExpansion::MacroExpansion(System::IntPtr native)
-    : CppSharp::Parser::PreprocessedEntity(native)
+CppSharp::Parser::AST::Namespace::Namespace(System::IntPtr native)
+    : CppSharp::Parser::AST::DeclarationContext(native)
 {
-    auto __native = (::CppSharp::CppParser::MacroExpansion*)native.ToPointer();
+    auto __native = (::CppSharp::CppParser::AST::Namespace*)native.ToPointer();
 }
 
-CppSharp::Parser::MacroExpansion::MacroExpansion()
-    : CppSharp::Parser::PreprocessedEntity((::CppSharp::CppParser::PreprocessedEntity*)nullptr)
+CppSharp::Parser::AST::Namespace::Namespace()
+    : CppSharp::Parser::AST::DeclarationContext((::CppSharp::CppParser::AST::DeclarationContext*)nullptr)
 {
-    NativePtr = new ::CppSharp::CppParser::MacroExpansion();
+    NativePtr = new ::CppSharp::CppParser::AST::Namespace();
 }
 
-System::String^ CppSharp::Parser::MacroExpansion::Text::get()
-{
-    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::MacroExpansion*)NativePtr)->Text);
-}
-
-void CppSharp::Parser::MacroExpansion::Text::set(System::String^ value)
-{
-    ((::CppSharp::CppParser::MacroExpansion*)NativePtr)->Text = clix::marshalString<clix::E_UTF8>(value);
-}
-
-CppSharp::Parser::MacroDefinition^ CppSharp::Parser::MacroExpansion::Definition::get()
-{
-    return gcnew CppSharp::Parser::MacroDefinition((::CppSharp::CppParser::MacroDefinition*)((::CppSharp::CppParser::MacroExpansion*)NativePtr)->Definition);
-}
-
-void CppSharp::Parser::MacroExpansion::Definition::set(CppSharp::Parser::MacroDefinition^ value)
-{
-    ((::CppSharp::CppParser::MacroExpansion*)NativePtr)->Definition = (::CppSharp::CppParser::MacroDefinition*)value->NativePtr;
-}
-
-CppSharp::Parser::TranslationUnit::TranslationUnit(::CppSharp::CppParser::TranslationUnit* native)
-    : CppSharp::Parser::Namespace((::CppSharp::CppParser::Namespace*)native)
+CppSharp::Parser::AST::PreprocessedEntity::PreprocessedEntity(::CppSharp::CppParser::AST::PreprocessedEntity* native)
+    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)native)
 {
 }
 
-CppSharp::Parser::TranslationUnit::TranslationUnit(System::IntPtr native)
-    : CppSharp::Parser::Namespace(native)
+CppSharp::Parser::AST::PreprocessedEntity::PreprocessedEntity(System::IntPtr native)
+    : CppSharp::Parser::AST::Declaration(native)
 {
-    auto __native = (::CppSharp::CppParser::TranslationUnit*)native.ToPointer();
+    auto __native = (::CppSharp::CppParser::AST::PreprocessedEntity*)native.ToPointer();
 }
 
-CppSharp::Parser::TranslationUnit::TranslationUnit()
-    : CppSharp::Parser::Namespace((::CppSharp::CppParser::Namespace*)nullptr)
+CppSharp::Parser::AST::PreprocessedEntity::PreprocessedEntity()
+    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)nullptr)
 {
-    NativePtr = new ::CppSharp::CppParser::TranslationUnit();
+    NativePtr = new ::CppSharp::CppParser::AST::PreprocessedEntity();
 }
 
-System::String^ CppSharp::Parser::TranslationUnit::FileName::get()
+CppSharp::Parser::AST::MacroLocation CppSharp::Parser::AST::PreprocessedEntity::Location::get()
 {
-    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::TranslationUnit*)NativePtr)->FileName);
+    return (CppSharp::Parser::AST::MacroLocation)((::CppSharp::CppParser::AST::PreprocessedEntity*)NativePtr)->Location;
 }
 
-void CppSharp::Parser::TranslationUnit::FileName::set(System::String^ value)
+void CppSharp::Parser::AST::PreprocessedEntity::Location::set(CppSharp::Parser::AST::MacroLocation value)
 {
-    ((::CppSharp::CppParser::TranslationUnit*)NativePtr)->FileName = clix::marshalString<clix::E_UTF8>(value);
+    ((::CppSharp::CppParser::AST::PreprocessedEntity*)NativePtr)->Location = (::CppSharp::CppParser::AST::MacroLocation)value;
 }
 
-bool CppSharp::Parser::TranslationUnit::IsSystemHeader::get()
+CppSharp::Parser::AST::MacroDefinition::MacroDefinition(::CppSharp::CppParser::AST::MacroDefinition* native)
+    : CppSharp::Parser::AST::PreprocessedEntity((::CppSharp::CppParser::AST::PreprocessedEntity*)native)
 {
-    return ((::CppSharp::CppParser::TranslationUnit*)NativePtr)->IsSystemHeader;
 }
 
-void CppSharp::Parser::TranslationUnit::IsSystemHeader::set(bool value)
+CppSharp::Parser::AST::MacroDefinition::MacroDefinition(System::IntPtr native)
+    : CppSharp::Parser::AST::PreprocessedEntity(native)
 {
-    ((::CppSharp::CppParser::TranslationUnit*)NativePtr)->IsSystemHeader = value;
+    auto __native = (::CppSharp::CppParser::AST::MacroDefinition*)native.ToPointer();
 }
 
-System::Collections::Generic::List<CppSharp::Parser::Namespace^>^ CppSharp::Parser::TranslationUnit::Namespaces::get()
+CppSharp::Parser::AST::MacroDefinition::MacroDefinition()
+    : CppSharp::Parser::AST::PreprocessedEntity((::CppSharp::CppParser::AST::PreprocessedEntity*)nullptr)
 {
-    auto _tmpNamespaces = gcnew System::Collections::Generic::List<CppSharp::Parser::Namespace^>();
-    for(auto _element : ((::CppSharp::CppParser::TranslationUnit*)NativePtr)->Namespaces)
+    NativePtr = new ::CppSharp::CppParser::AST::MacroDefinition();
+}
+
+System::String^ CppSharp::Parser::AST::MacroDefinition::Expression::get()
+{
+    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::AST::MacroDefinition*)NativePtr)->Expression);
+}
+
+void CppSharp::Parser::AST::MacroDefinition::Expression::set(System::String^ value)
+{
+    ((::CppSharp::CppParser::AST::MacroDefinition*)NativePtr)->Expression = clix::marshalString<clix::E_UTF8>(value);
+}
+
+CppSharp::Parser::AST::MacroExpansion::MacroExpansion(::CppSharp::CppParser::AST::MacroExpansion* native)
+    : CppSharp::Parser::AST::PreprocessedEntity((::CppSharp::CppParser::AST::PreprocessedEntity*)native)
+{
+}
+
+CppSharp::Parser::AST::MacroExpansion::MacroExpansion(System::IntPtr native)
+    : CppSharp::Parser::AST::PreprocessedEntity(native)
+{
+    auto __native = (::CppSharp::CppParser::AST::MacroExpansion*)native.ToPointer();
+}
+
+CppSharp::Parser::AST::MacroExpansion::MacroExpansion()
+    : CppSharp::Parser::AST::PreprocessedEntity((::CppSharp::CppParser::AST::PreprocessedEntity*)nullptr)
+{
+    NativePtr = new ::CppSharp::CppParser::AST::MacroExpansion();
+}
+
+System::String^ CppSharp::Parser::AST::MacroExpansion::Text::get()
+{
+    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::AST::MacroExpansion*)NativePtr)->Text);
+}
+
+void CppSharp::Parser::AST::MacroExpansion::Text::set(System::String^ value)
+{
+    ((::CppSharp::CppParser::AST::MacroExpansion*)NativePtr)->Text = clix::marshalString<clix::E_UTF8>(value);
+}
+
+CppSharp::Parser::AST::MacroDefinition^ CppSharp::Parser::AST::MacroExpansion::Definition::get()
+{
+    return gcnew CppSharp::Parser::AST::MacroDefinition((::CppSharp::CppParser::AST::MacroDefinition*)((::CppSharp::CppParser::AST::MacroExpansion*)NativePtr)->Definition);
+}
+
+void CppSharp::Parser::AST::MacroExpansion::Definition::set(CppSharp::Parser::AST::MacroDefinition^ value)
+{
+    ((::CppSharp::CppParser::AST::MacroExpansion*)NativePtr)->Definition = (::CppSharp::CppParser::AST::MacroDefinition*)value->NativePtr;
+}
+
+CppSharp::Parser::AST::TranslationUnit::TranslationUnit(::CppSharp::CppParser::AST::TranslationUnit* native)
+    : CppSharp::Parser::AST::Namespace((::CppSharp::CppParser::AST::Namespace*)native)
+{
+}
+
+CppSharp::Parser::AST::TranslationUnit::TranslationUnit(System::IntPtr native)
+    : CppSharp::Parser::AST::Namespace(native)
+{
+    auto __native = (::CppSharp::CppParser::AST::TranslationUnit*)native.ToPointer();
+}
+
+CppSharp::Parser::AST::TranslationUnit::TranslationUnit()
+    : CppSharp::Parser::AST::Namespace((::CppSharp::CppParser::AST::Namespace*)nullptr)
+{
+    NativePtr = new ::CppSharp::CppParser::AST::TranslationUnit();
+}
+
+System::String^ CppSharp::Parser::AST::TranslationUnit::FileName::get()
+{
+    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::AST::TranslationUnit*)NativePtr)->FileName);
+}
+
+void CppSharp::Parser::AST::TranslationUnit::FileName::set(System::String^ value)
+{
+    ((::CppSharp::CppParser::AST::TranslationUnit*)NativePtr)->FileName = clix::marshalString<clix::E_UTF8>(value);
+}
+
+bool CppSharp::Parser::AST::TranslationUnit::IsSystemHeader::get()
+{
+    return ((::CppSharp::CppParser::AST::TranslationUnit*)NativePtr)->IsSystemHeader;
+}
+
+void CppSharp::Parser::AST::TranslationUnit::IsSystemHeader::set(bool value)
+{
+    ((::CppSharp::CppParser::AST::TranslationUnit*)NativePtr)->IsSystemHeader = value;
+}
+
+System::Collections::Generic::List<CppSharp::Parser::AST::Namespace^>^ CppSharp::Parser::AST::TranslationUnit::Namespaces::get()
+{
+    auto _tmpNamespaces = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::Namespace^>();
+    for(auto _element : ((::CppSharp::CppParser::AST::TranslationUnit*)NativePtr)->Namespaces)
     {
-        auto _marshalElement = gcnew CppSharp::Parser::Namespace((::CppSharp::CppParser::Namespace*)_element);
+        auto _marshalElement = gcnew CppSharp::Parser::AST::Namespace((::CppSharp::CppParser::AST::Namespace*)_element);
         _tmpNamespaces->Add(_marshalElement);
     }
     return _tmpNamespaces;
 }
 
-void CppSharp::Parser::TranslationUnit::Namespaces::set(System::Collections::Generic::List<CppSharp::Parser::Namespace^>^ value)
+void CppSharp::Parser::AST::TranslationUnit::Namespaces::set(System::Collections::Generic::List<CppSharp::Parser::AST::Namespace^>^ value)
 {
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::Namespace*>();
-    for each(CppSharp::Parser::Namespace^ _element in value)
+    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::Namespace*>();
+    for each(CppSharp::Parser::AST::Namespace^ _element in value)
     {
-        auto _marshalElement = (::CppSharp::CppParser::Namespace*)_element->NativePtr;
+        auto _marshalElement = (::CppSharp::CppParser::AST::Namespace*)_element->NativePtr;
         _tmpvalue.push_back(_marshalElement);
     }
-    ((::CppSharp::CppParser::TranslationUnit*)NativePtr)->Namespaces = _tmpvalue;
+    ((::CppSharp::CppParser::AST::TranslationUnit*)NativePtr)->Namespaces = _tmpvalue;
 }
 
-System::Collections::Generic::List<CppSharp::Parser::MacroDefinition^>^ CppSharp::Parser::TranslationUnit::Macros::get()
+System::Collections::Generic::List<CppSharp::Parser::AST::MacroDefinition^>^ CppSharp::Parser::AST::TranslationUnit::Macros::get()
 {
-    auto _tmpMacros = gcnew System::Collections::Generic::List<CppSharp::Parser::MacroDefinition^>();
-    for(auto _element : ((::CppSharp::CppParser::TranslationUnit*)NativePtr)->Macros)
+    auto _tmpMacros = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::MacroDefinition^>();
+    for(auto _element : ((::CppSharp::CppParser::AST::TranslationUnit*)NativePtr)->Macros)
     {
-        auto _marshalElement = gcnew CppSharp::Parser::MacroDefinition((::CppSharp::CppParser::MacroDefinition*)_element);
+        auto _marshalElement = gcnew CppSharp::Parser::AST::MacroDefinition((::CppSharp::CppParser::AST::MacroDefinition*)_element);
         _tmpMacros->Add(_marshalElement);
     }
     return _tmpMacros;
 }
 
-void CppSharp::Parser::TranslationUnit::Macros::set(System::Collections::Generic::List<CppSharp::Parser::MacroDefinition^>^ value)
+void CppSharp::Parser::AST::TranslationUnit::Macros::set(System::Collections::Generic::List<CppSharp::Parser::AST::MacroDefinition^>^ value)
 {
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::MacroDefinition*>();
-    for each(CppSharp::Parser::MacroDefinition^ _element in value)
+    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::MacroDefinition*>();
+    for each(CppSharp::Parser::AST::MacroDefinition^ _element in value)
     {
-        auto _marshalElement = (::CppSharp::CppParser::MacroDefinition*)_element->NativePtr;
+        auto _marshalElement = (::CppSharp::CppParser::AST::MacroDefinition*)_element->NativePtr;
         _tmpvalue.push_back(_marshalElement);
     }
-    ((::CppSharp::CppParser::TranslationUnit*)NativePtr)->Macros = _tmpvalue;
+    ((::CppSharp::CppParser::AST::TranslationUnit*)NativePtr)->Macros = _tmpvalue;
 }
 
-CppSharp::Parser::NativeLibrary::NativeLibrary(::CppSharp::CppParser::NativeLibrary* native)
+CppSharp::Parser::AST::NativeLibrary::NativeLibrary(::CppSharp::CppParser::AST::NativeLibrary* native)
 {
     NativePtr = native;
 }
 
-CppSharp::Parser::NativeLibrary::NativeLibrary(System::IntPtr native)
+CppSharp::Parser::AST::NativeLibrary::NativeLibrary(System::IntPtr native)
 {
-    auto __native = (::CppSharp::CppParser::NativeLibrary*)native.ToPointer();
+    auto __native = (::CppSharp::CppParser::AST::NativeLibrary*)native.ToPointer();
     NativePtr = __native;
 }
 
-CppSharp::Parser::NativeLibrary::NativeLibrary()
+CppSharp::Parser::AST::NativeLibrary::NativeLibrary()
 {
-    NativePtr = new ::CppSharp::CppParser::NativeLibrary();
+    NativePtr = new ::CppSharp::CppParser::AST::NativeLibrary();
 }
 
-System::IntPtr CppSharp::Parser::NativeLibrary::Instance::get()
+System::IntPtr CppSharp::Parser::AST::NativeLibrary::Instance::get()
 {
     return System::IntPtr(NativePtr);
 }
 
-void CppSharp::Parser::NativeLibrary::Instance::set(System::IntPtr object)
+void CppSharp::Parser::AST::NativeLibrary::Instance::set(System::IntPtr object)
 {
-    NativePtr = (::CppSharp::CppParser::NativeLibrary*)object.ToPointer();
+    NativePtr = (::CppSharp::CppParser::AST::NativeLibrary*)object.ToPointer();
 }
 
-System::String^ CppSharp::Parser::NativeLibrary::FileName::get()
+System::String^ CppSharp::Parser::AST::NativeLibrary::FileName::get()
 {
-    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::NativeLibrary*)NativePtr)->FileName);
+    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::AST::NativeLibrary*)NativePtr)->FileName);
 }
 
-void CppSharp::Parser::NativeLibrary::FileName::set(System::String^ value)
+void CppSharp::Parser::AST::NativeLibrary::FileName::set(System::String^ value)
 {
-    ((::CppSharp::CppParser::NativeLibrary*)NativePtr)->FileName = clix::marshalString<clix::E_UTF8>(value);
+    ((::CppSharp::CppParser::AST::NativeLibrary*)NativePtr)->FileName = clix::marshalString<clix::E_UTF8>(value);
 }
 
-System::Collections::Generic::List<System::String^>^ CppSharp::Parser::NativeLibrary::Symbols::get()
+System::Collections::Generic::List<System::String^>^ CppSharp::Parser::AST::NativeLibrary::Symbols::get()
 {
     auto _tmpSymbols = gcnew System::Collections::Generic::List<System::String^>();
-    for(auto _element : ((::CppSharp::CppParser::NativeLibrary*)NativePtr)->Symbols)
+    for(auto _element : ((::CppSharp::CppParser::AST::NativeLibrary*)NativePtr)->Symbols)
     {
         auto _marshalElement = clix::marshalString<clix::E_UTF8>(_element);
         _tmpSymbols->Add(_marshalElement);
@@ -2592,7 +2612,7 @@ System::Collections::Generic::List<System::String^>^ CppSharp::Parser::NativeLib
     return _tmpSymbols;
 }
 
-void CppSharp::Parser::NativeLibrary::Symbols::set(System::Collections::Generic::List<System::String^>^ value)
+void CppSharp::Parser::AST::NativeLibrary::Symbols::set(System::Collections::Generic::List<System::String^>^ value)
 {
     auto _tmpvalue = std::vector<::std::string>();
     for each(System::String^ _element in value)
@@ -2600,92 +2620,92 @@ void CppSharp::Parser::NativeLibrary::Symbols::set(System::Collections::Generic:
         auto _marshalElement = clix::marshalString<clix::E_UTF8>(_element);
         _tmpvalue.push_back(_marshalElement);
     }
-    ((::CppSharp::CppParser::NativeLibrary*)NativePtr)->Symbols = _tmpvalue;
+    ((::CppSharp::CppParser::AST::NativeLibrary*)NativePtr)->Symbols = _tmpvalue;
 }
 
-CppSharp::Parser::Library::Library(::CppSharp::CppParser::Library* native)
+CppSharp::Parser::AST::Library::Library(::CppSharp::CppParser::AST::Library* native)
 {
     NativePtr = native;
 }
 
-CppSharp::Parser::Library::Library(System::IntPtr native)
+CppSharp::Parser::AST::Library::Library(System::IntPtr native)
 {
-    auto __native = (::CppSharp::CppParser::Library*)native.ToPointer();
+    auto __native = (::CppSharp::CppParser::AST::Library*)native.ToPointer();
     NativePtr = __native;
 }
 
-CppSharp::Parser::TranslationUnit^ CppSharp::Parser::Library::FindOrCreateModule(System::String^ File)
+CppSharp::Parser::AST::TranslationUnit^ CppSharp::Parser::AST::Library::FindOrCreateModule(System::String^ File)
 {
     auto arg0 = clix::marshalString<clix::E_UTF8>(File);
-    auto __ret = ((::CppSharp::CppParser::Library*)NativePtr)->FindOrCreateModule(arg0);
+    auto __ret = ((::CppSharp::CppParser::AST::Library*)NativePtr)->FindOrCreateModule(arg0);
     if (__ret == nullptr) return nullptr;
-    return gcnew CppSharp::Parser::TranslationUnit((::CppSharp::CppParser::TranslationUnit*)__ret);
+    return gcnew CppSharp::Parser::AST::TranslationUnit((::CppSharp::CppParser::AST::TranslationUnit*)__ret);
 }
 
-CppSharp::Parser::NativeLibrary^ CppSharp::Parser::Library::FindOrCreateLibrary(System::String^ File)
+CppSharp::Parser::AST::NativeLibrary^ CppSharp::Parser::AST::Library::FindOrCreateLibrary(System::String^ File)
 {
     auto arg0 = clix::marshalString<clix::E_UTF8>(File);
-    auto __ret = ((::CppSharp::CppParser::Library*)NativePtr)->FindOrCreateLibrary(arg0);
+    auto __ret = ((::CppSharp::CppParser::AST::Library*)NativePtr)->FindOrCreateLibrary(arg0);
     if (__ret == nullptr) return nullptr;
-    return gcnew CppSharp::Parser::NativeLibrary((::CppSharp::CppParser::NativeLibrary*)__ret);
+    return gcnew CppSharp::Parser::AST::NativeLibrary((::CppSharp::CppParser::AST::NativeLibrary*)__ret);
 }
 
-CppSharp::Parser::Library::Library()
+CppSharp::Parser::AST::Library::Library()
 {
-    NativePtr = new ::CppSharp::CppParser::Library();
+    NativePtr = new ::CppSharp::CppParser::AST::Library();
 }
 
-System::IntPtr CppSharp::Parser::Library::Instance::get()
+System::IntPtr CppSharp::Parser::AST::Library::Instance::get()
 {
     return System::IntPtr(NativePtr);
 }
 
-void CppSharp::Parser::Library::Instance::set(System::IntPtr object)
+void CppSharp::Parser::AST::Library::Instance::set(System::IntPtr object)
 {
-    NativePtr = (::CppSharp::CppParser::Library*)object.ToPointer();
+    NativePtr = (::CppSharp::CppParser::AST::Library*)object.ToPointer();
 }
 
-System::Collections::Generic::List<CppSharp::Parser::TranslationUnit^>^ CppSharp::Parser::Library::TranslationUnits::get()
+System::Collections::Generic::List<CppSharp::Parser::AST::TranslationUnit^>^ CppSharp::Parser::AST::Library::TranslationUnits::get()
 {
-    auto _tmpTranslationUnits = gcnew System::Collections::Generic::List<CppSharp::Parser::TranslationUnit^>();
-    for(auto _element : ((::CppSharp::CppParser::Library*)NativePtr)->TranslationUnits)
+    auto _tmpTranslationUnits = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::TranslationUnit^>();
+    for(auto _element : ((::CppSharp::CppParser::AST::Library*)NativePtr)->TranslationUnits)
     {
-        auto _marshalElement = gcnew CppSharp::Parser::TranslationUnit((::CppSharp::CppParser::TranslationUnit*)_element);
+        auto _marshalElement = gcnew CppSharp::Parser::AST::TranslationUnit((::CppSharp::CppParser::AST::TranslationUnit*)_element);
         _tmpTranslationUnits->Add(_marshalElement);
     }
     return _tmpTranslationUnits;
 }
 
-void CppSharp::Parser::Library::TranslationUnits::set(System::Collections::Generic::List<CppSharp::Parser::TranslationUnit^>^ value)
+void CppSharp::Parser::AST::Library::TranslationUnits::set(System::Collections::Generic::List<CppSharp::Parser::AST::TranslationUnit^>^ value)
 {
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::TranslationUnit*>();
-    for each(CppSharp::Parser::TranslationUnit^ _element in value)
+    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::TranslationUnit*>();
+    for each(CppSharp::Parser::AST::TranslationUnit^ _element in value)
     {
-        auto _marshalElement = (::CppSharp::CppParser::TranslationUnit*)_element->NativePtr;
+        auto _marshalElement = (::CppSharp::CppParser::AST::TranslationUnit*)_element->NativePtr;
         _tmpvalue.push_back(_marshalElement);
     }
-    ((::CppSharp::CppParser::Library*)NativePtr)->TranslationUnits = _tmpvalue;
+    ((::CppSharp::CppParser::AST::Library*)NativePtr)->TranslationUnits = _tmpvalue;
 }
 
-System::Collections::Generic::List<CppSharp::Parser::NativeLibrary^>^ CppSharp::Parser::Library::Libraries::get()
+System::Collections::Generic::List<CppSharp::Parser::AST::NativeLibrary^>^ CppSharp::Parser::AST::Library::Libraries::get()
 {
-    auto _tmpLibraries = gcnew System::Collections::Generic::List<CppSharp::Parser::NativeLibrary^>();
-    for(auto _element : ((::CppSharp::CppParser::Library*)NativePtr)->Libraries)
+    auto _tmpLibraries = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::NativeLibrary^>();
+    for(auto _element : ((::CppSharp::CppParser::AST::Library*)NativePtr)->Libraries)
     {
-        auto _marshalElement = gcnew CppSharp::Parser::NativeLibrary((::CppSharp::CppParser::NativeLibrary*)_element);
+        auto _marshalElement = gcnew CppSharp::Parser::AST::NativeLibrary((::CppSharp::CppParser::AST::NativeLibrary*)_element);
         _tmpLibraries->Add(_marshalElement);
     }
     return _tmpLibraries;
 }
 
-void CppSharp::Parser::Library::Libraries::set(System::Collections::Generic::List<CppSharp::Parser::NativeLibrary^>^ value)
+void CppSharp::Parser::AST::Library::Libraries::set(System::Collections::Generic::List<CppSharp::Parser::AST::NativeLibrary^>^ value)
 {
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::NativeLibrary*>();
-    for each(CppSharp::Parser::NativeLibrary^ _element in value)
+    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::NativeLibrary*>();
+    for each(CppSharp::Parser::AST::NativeLibrary^ _element in value)
     {
-        auto _marshalElement = (::CppSharp::CppParser::NativeLibrary*)_element->NativePtr;
+        auto _marshalElement = (::CppSharp::CppParser::AST::NativeLibrary*)_element->NativePtr;
         _tmpvalue.push_back(_marshalElement);
     }
-    ((::CppSharp::CppParser::Library*)NativePtr)->Libraries = _tmpvalue;
+    ((::CppSharp::CppParser::AST::Library*)NativePtr)->Libraries = _tmpvalue;
 }
 
