@@ -342,6 +342,7 @@ namespace CppSharp.Generators.CSharp
                     PopBlock(NewLineKind.BeforeNextBlock);
                 }
 
+                GenerateClassMarshals(@class);
                 GenerateClassConstructors(@class);
 
                 if (@class.IsValueType)
@@ -357,6 +358,19 @@ namespace CppSharp.Generators.CSharp
 
             WriteCloseBraceIndent();
             PopBlock(NewLineKind.BeforeNextBlock);
+        }
+
+        private void GenerateClassMarshals(Class @class)
+        {
+            WriteLine("void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)");
+            WriteStartBraceIndent();
+            WriteCloseBraceIndent();
+            NewLine();
+
+            WriteLine("void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)");
+            WriteStartBraceIndent();
+            WriteCloseBraceIndent();
+            NewLine();
         }
 
         private void GenerateInterface(Class @class)
@@ -687,25 +701,26 @@ namespace CppSharp.Generators.CSharp
             Write(@class.IsInterface ? "interface " : (@class.IsValueType ? "struct " : "class "));
             Write("{0}", SafeIdentifier(@class.Name));
 
+            var bases = new List<string>();
+
             var needsBase = @class.HasBaseClass && !@class.IsValueType
                 && !@class.Bases[0].Class.IsValueType
                 && !@class.Bases[0].Class.Ignore;
 
-            if (needsBase || @class.IsRefType)
-                Write(" : ");
-
             if (needsBase)
             {
-                Write("{0}", string.Join(", ",
+                bases.AddRange(
                     from @base in @class.Bases
-                    select QualifiedIdentifier(@base.Class)));
-
-                if (@class.IsRefType)
-                    Write(", ");
+                    select QualifiedIdentifier(@base.Class));
             }
 
             if (@class.IsRefType)
-                Write("IDisposable");
+                bases.Add("IDisposable");
+
+            bases.Add("CppSharp.Runtime.ICppMarshal");
+
+            if (bases.Count > 0)
+                Write(" : {0}", string.Join(", ", bases));
         }
 
         public void GenerateClassFields(Class @class, Action<Field> action)
