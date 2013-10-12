@@ -5,23 +5,25 @@ using CppSharp.Types;
 
 namespace CppSharp.Generators.CLI
 {
-    public class CLITypeReference
+    public class CLITypeReference : TypeReference
     {
         public Include Include;
-        public string FowardReference;
 
         public override string ToString()
         {
-            return FowardReference;
+            if (!string.IsNullOrWhiteSpace(FowardReference))
+                return FowardReference;
+
+            return Include.ToString();
         }
     }
 
     public class CLITypeReferenceCollector : AstVisitor
     {
-        private Dictionary<Declaration, CLITypeReference> typeReferences;
         private readonly ITypeMapDatabase TypeMapDatabase;
         private TranslationUnit TranslationUnit;
 
+        private Dictionary<Declaration, CLITypeReference> typeReferences;
         public IEnumerable<CLITypeReference> TypeReferences
         {
             get { return typeReferences.Values; }
@@ -38,8 +40,9 @@ namespace CppSharp.Generators.CLI
             if(typeReferences.ContainsKey(decl))
                 return typeReferences[decl];
 
-            var @ref = new CLITypeReference();
+            var @ref = new CLITypeReference { Declaration = decl };
             typeReferences.Add(decl, @ref);
+
             return @ref;
         }
 
@@ -55,12 +58,12 @@ namespace CppSharp.Generators.CLI
             return GetEffectiveNamespace(@namespace);
         }
 
-        public void Process(Namespace @namespace, bool filterNamespaces)
+        public void Process(Namespace @namespace, bool filterNamespaces = false)
         {
-            var collector = new RecordCollector(@namespace.TranslationUnit);
-            @namespace.Visit(collector);
-
             TranslationUnit = @namespace.TranslationUnit;
+
+            var collector = new RecordCollector(TranslationUnit);
+            @namespace.Visit(collector);
 
             foreach (var record in collector.Declarations)
             {
@@ -69,7 +72,7 @@ namespace CppSharp.Generators.CLI
 
                 if (filterNamespaces)
                 {
-                    var declNamespace = GetEffectiveNamespace(record.Value.Namespace);
+                    var declNamespace = GetEffectiveNamespace(record.Value);
 
                     var isSameNamespace = declNamespace == @namespace;
                     if (declNamespace != null)
@@ -88,10 +91,9 @@ namespace CppSharp.Generators.CLI
         private void ProcessTypeMap(ASTRecord<Declaration> record)
         {
             TypeMap typeMap;
-            if (!TypeMapDatabase.FindTypeMap(record.Value, out typeMap)) return;
+            if (!TypeMapDatabase.FindTypeMap(record.Value, out typeMap))
+                return;
 
-            // Typemap must explicitly set the include file when one is required.
-            GetTypeReference(record.Value).Include.File = "";
 
             typeMap.Declaration = record.Value;
             typeMap.CLITypeReference(this, record);
@@ -112,9 +114,6 @@ namespace CppSharp.Generators.CLI
                 return;
 
             if(IsBuiltinTypedef(decl))
-                return;
-
-            if (declFile.Contains("String"))
                 return;
 
             var typeRef = GetTypeReference(decl);

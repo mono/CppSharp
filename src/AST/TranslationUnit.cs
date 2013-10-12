@@ -57,8 +57,5 @@ namespace CppSharp.AST
 
         /// Contains the include path.
         public string IncludePath;
-
-        /// Type references object.
-        public object TypeReferences;
     }
 }

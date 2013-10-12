@@ -19,6 +19,7 @@ namespace CppSharp.AST
         public List<TypedefDecl> Typedefs;
         public List<Variable> Variables;
         public List<Event> Events;
+        public List<TypeReference> TypeReferences;
 
         // Used to keep track of anonymous declarations.
         public Dictionary<ulong, Declaration> Anonymous; 
@@ -44,7 +45,25 @@ namespace CppSharp.AST
             Typedefs = new List<TypedefDecl>();
             Variables = new List<Variable>();
             Events = new List<Event>();
+            TypeReferences = new List<TypeReference>();
             Anonymous = new Dictionary<ulong, Declaration>();
+        }
+
+        public IEnumerable<DeclarationContext> GatherParentNamespaces()
+        {
+            var children = new List<DeclarationContext>();
+            var currentNamespace = this;
+
+            while (currentNamespace != null)
+            {
+                if (!(currentNamespace is TranslationUnit))
+                    children.Add(currentNamespace);
+
+                currentNamespace = currentNamespace.Namespace;
+            }
+
+            children.Reverse();
+            return children;
         }
 
         public Declaration FindAnonymous(ulong key)

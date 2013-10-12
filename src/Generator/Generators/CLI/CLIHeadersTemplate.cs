@@ -30,12 +30,17 @@ namespace CppSharp.Generators.CLI
             if (Options.OutputInteropIncludes)
                 WriteLine("#include \"CppSharp.h\"");
 
+            // Generate #include forward references.
             PushBlock(CLIBlockKind.IncludesForwardReferences);
             WriteLine("#include <{0}>", TranslationUnit.IncludePath);
             GenerateIncludeForwardRefs();
             PopBlock(NewLineKind.BeforeNextBlock);
-
             PopBlock(NewLineKind.Always);
+
+            // Generate namespace for forward references.
+            PushBlock(CLIBlockKind.ForwardReferences);
+            GenerateForwardRefs();
+            PopBlock(NewLineKind.BeforeNextBlock);
 
             GenerateNamespace(TranslationUnit);
 
@@ -72,27 +77,61 @@ namespace CppSharp.Generators.CLI
                 WriteLine(include);
         }
 
-        public void GenerateForwardRefs(Namespace @namespace)
+        private Namespace FindCreateNamespace(Namespace @namespace, Declaration decl)
         {
-            var typeReferenceCollector = new CLITypeReferenceCollector(Driver.TypeDatabase);
-            typeReferenceCollector.Process(@namespace, filterNamespaces: true);
+            if (decl.Namespace is TranslationUnit)
+                return @namespace;
 
-            // Use a set to remove duplicate entries.
-            var forwardRefs = new SortedSet<string>(StringComparer.InvariantCulture);
+            var childNamespaces = decl.Namespace.GatherParentNamespaces();
+            var currentNamespace = @namespace;
 
-            foreach (var typeRef in typeReferenceCollector.TypeReferences)
+            foreach (var child in childNamespaces)
+                currentNamespace = currentNamespace.FindCreateNamespace(child.Name);
+
+            return currentNamespace;
+        }
+
+        public Namespace ConvertForwardReferencesToNamespaces(
+            IEnumerable<CLITypeReference> typeReferences)
+        {
+            // Create a new tree of namespaces out of the type references found.
+            var rootNamespace = new Namespace();
+
+            foreach (var typeRef in typeReferences)
             {
-                var @ref = typeRef.FowardReference;
-                if(!string.IsNullOrEmpty(@ref) && !typeRef.Include.InHeader)
-                    forwardRefs.Add(@ref);
+                if (string.IsNullOrWhiteSpace(typeRef.FowardReference))
+                    continue;
+
+                var declaration = typeRef.Declaration;
+                if (!(declaration.Namespace is Namespace))
+                    continue;
+
+                var @namespace = FindCreateNamespace(rootNamespace, declaration);
+                @namespace.TypeReferences.Add(typeRef);
             }
 
-            foreach (var forwardRef in forwardRefs)
-                WriteLine(forwardRef);
+            return rootNamespace;
+        }
+
+        public void GenerateForwardRefs()
+        {
+            var typeReferenceCollector = new CLITypeReferenceCollector(Driver.TypeDatabase);
+            typeReferenceCollector.Process(TranslationUnit);
+
+            var typeReferences = typeReferenceCollector.TypeReferences;
+            var @namespace = ConvertForwardReferencesToNamespaces(typeReferences);
+
+            GenerateDeclContext(@namespace);
         }
 
         public void GenerateDeclContext(DeclarationContext decl)
         {
+            // Generate all the type references for the module.
+            foreach (var typeRef in decl.TypeReferences)
+            {
+                WriteLine(typeRef.FowardReference);
+            }
+
             // Generate all the enum declarations for the module.
             foreach (var @enum in decl.Enums)
             {
@@ -141,11 +180,6 @@ namespace CppSharp.Generators.CLI
                                                : SafeIdentifier(@namespace.Name));
                 WriteStartBraceIndent();
             }
-
-            // Generate the forward references.
-            PushBlock(CLIBlockKind.ForwardReferences);
-            GenerateForwardRefs(@namespace);
-            PopBlock(NewLineKind.BeforeNextBlock);
 
             GenerateDeclContext(@namespace);
 
