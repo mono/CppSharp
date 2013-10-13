@@ -11,100 +11,16 @@ namespace CppSharp.AST
         ARM
     }
 
-    public enum CppInlineMethods
-    {
-        Present,
-        Unavailable
-    }
-
-    public class NativeLibrary
-    {
-        public NativeLibrary(string file)
-            : this()
-        {
-            FileName = file;
-        }
-
-        public NativeLibrary()
-        {
-            Symbols = new List<string>();
-        }
-
-        public string FileName;
-
-        public IList<string> Symbols;
-    }
-
     /// <summary>
     /// A library contains all the modules.
     /// </summary>
-    public class Library
+    public class ASTContext
     {
         public List<TranslationUnit> TranslationUnits;
-        public List<NativeLibrary> Libraries;
-        public Dictionary<string, NativeLibrary> Symbols;
 
-        public Library()
+        public ASTContext()
         {
             TranslationUnits = new List<TranslationUnit>();
-            Libraries = new List<NativeLibrary>();
-            Symbols = new Dictionary<string, NativeLibrary>();
-        }
-
-        public NativeLibrary FindOrCreateLibrary(string file)
-        {
-            var library = Libraries.Find(m => m.FileName.Equals(file));
-
-            if (library == null)
-            {
-                library = new NativeLibrary(file);
-                Libraries.Add(library);
-            }
-
-            return library;
-        }
-
-        public void IndexSymbols()
-        {
-            foreach (var library in Libraries)
-            {
-                foreach (var symbol in library.Symbols)
-                    Symbols[symbol] = library;
-            }
-        }
-
-        public bool FindSymbol(ref string symbol)
-        {
-            NativeLibrary lib;
-
-            if (FindLibraryBySymbol(symbol, out lib))
-                return true;
-
-            // Check for C symbols with a leading underscore.
-            if (FindLibraryBySymbol("_" + symbol, out lib))
-            {
-                symbol = "_" + symbol;
-                return true;
-            }
-
-            if (FindLibraryBySymbol("_imp_" + symbol, out lib))
-            {
-                symbol = "_imp_" + symbol;
-                return true;
-            }
-
-            if (FindLibraryBySymbol("__imp_" + symbol, out lib))
-            {
-                symbol = "__imp_" + symbol;
-                return true;
-            }
-
-            return false;
-        }
-
-        public bool FindLibraryBySymbol(string symbol, out NativeLibrary library)
-        {
-            return Symbols.TryGetValue(symbol, out library);
         }
 
         /// Finds an existing module or creates a new one given a file path.
