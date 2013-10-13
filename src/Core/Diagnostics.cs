@@ -15,6 +15,9 @@ namespace CppSharp
         PropertySynthetized
     }
 
+    /// <summary>
+    /// Represents the kind of the diagnostic.
+    /// </summary>
     public enum DiagnosticKind
     {
         Debug,
@@ -23,6 +26,9 @@ namespace CppSharp
         Error
     }
 
+    /// <summary>
+    /// Keeps information related to a single diagnostic.
+    /// </summary>
     public struct DiagnosticInfo
     {
         public DiagnosticKind Kind;

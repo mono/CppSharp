@@ -40,6 +40,7 @@ solution "CppSharp"
     IncludeTests()
   
   group "Libraries"
+    include (srcdir .. "/Core")
     include (srcdir .. "/AST/AST.lua")
     include (srcdir .. "/Generator/Generator.lua")
     include (srcdir .. "/Generator.Tests/Generator.Tests.lua")
