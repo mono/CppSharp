@@ -31,8 +31,6 @@ struct CS_API ParserOptions
     // C/C++ header file name.
     std::string FileName;
 
-    CppSharp::CppParser::AST::Library* Library;
-
     int ToolSetToUse;
     std::string TargetTriple;
 
@@ -72,8 +70,10 @@ enum struct ParserResultKind
 struct CS_API ParserResult
 {
     ParserResultKind Kind;
-    CppSharp::CppParser::AST::Library* Library;
     std::vector<ParserDiagnostic> Diagnostics;
+
+    CppSharp::CppParser::AST::ASTContext* ASTContext;
+    CppSharp::CppParser::AST::NativeLibrary* Library;
 };
 
 enum class SourceLocationKind

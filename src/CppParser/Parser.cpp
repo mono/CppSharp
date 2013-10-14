@@ -34,7 +34,7 @@ using namespace CppSharp::CppParser;
 
 //-----------------------------------//
 
-Parser::Parser(ParserOptions* Opts) : Lib(Opts->Library), Opts(Opts), Index(0)
+Parser::Parser(ParserOptions* Opts) : Lib(Opts->ASTContext), Opts(Opts), Index(0)
 {
 }
 
@@ -2203,7 +2203,7 @@ void Parser::HandleDiagnostics(ParserResult* res)
 ParserResult* Parser::ParseHeader(const std::string& File)
 {
     auto res = new ParserResult();
-    res->Library = Lib;
+    res->ASTContext = Lib;
 
     if (File.empty())
     {
@@ -2293,7 +2293,8 @@ ParserResultKind Parser::ParseArchive(llvm::StringRef File,
         return ParserResultKind::Error;
 
     auto LibName = File;
-    auto NativeLib = Lib->FindOrCreateLibrary(LibName);
+    auto NativeLib = new NativeLibrary();
+    NativeLib->FileName = LibName;
 
     for(auto it = Archive.begin_symbols(); it != Archive.end_symbols(); ++it)
     {
@@ -2317,7 +2318,8 @@ ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
         return ParserResultKind::Error;
 
     auto LibName = File;
-    auto NativeLib = Lib->FindOrCreateLibrary(LibName);
+    auto NativeLib = new NativeLibrary();
+    NativeLib->FileName = LibName;
 
     llvm::error_code ec;
     for(auto it = Object->begin_symbols(); it != Object->end_symbols(); it.increment(ec))
@@ -2347,7 +2349,7 @@ ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
  ParserResult* Parser::ParseLibrary(const std::string& File)
 {
     auto res = new ParserResult();
-    res->Library = Lib;
+    res->ASTContext = Lib;
 
     if (File.empty())
     {

@@ -108,7 +108,7 @@ protected:
     void HandleDiagnostics(ParserResult* res);
 
     int Index;
-    Library* Lib;
+    ASTContext* Lib;
     ParserOptions* Opts;
     llvm::OwningPtr<clang::CompilerInstance> C;
     clang::ASTContext* AST;
