@@ -1,13 +1,17 @@
-﻿using System.Text;
-using CppSharp.AST;
+﻿using CppSharp.AST;
 using CppSharp.Generators;
 using CppSharp.Generators.CLI;
 using CppSharp.Generators.CSharp;
+using CppSharp.Parser;
 using CppSharp.Passes;
 using CppSharp.Types;
 using System;
 using System.Collections.Generic;
 using System.IO;
+
+#if !OLD_PARSER
+using Std;
+#endif
 
 namespace CppSharp
 {
@@ -107,22 +111,73 @@ namespace CppSharp
             }
         }
 
+        ParserOptions BuildParseOptions(SourceFile file)
+        {
+            var options = new ParserOptions
+            {
+                FileName = file.Path,
+#if !OLD_PARSER
+                IncludeDirs = Options.IncludeDirs.ToStd(),
+                SystemIncludeDirs = Options.SystemIncludeDirs.ToStd(),
+                Defines = Options.Defines.ToStd(),
+                LibraryDirs = Options.LibraryDirs.ToStd(),
+#else
+                IncludeDirs = Options.IncludeDirs,
+                SystemIncludeDirs = Options.SystemIncludeDirs,
+                Defines = Options.Defines,
+                LibraryDirs = Options.LibraryDirs,
+#endif
+                Abi = Options.Parser.Abi,
+                ToolSetToUse = Options.Parser.ToolSetToUse,
+                TargetTriple = Options.Parser.TargetTriple,
+                NoStandardIncludes = Options.Parser.NoStandardIncludes,
+                NoBuiltinIncludes = Options.Parser.NoBuiltinIncludes,
+                MicrosoftMode = Options.Parser.MicrosoftMode,
+                Verbose = Options.Parser.Verbose,
+            };
+
+            return options;
+        }
+
         public bool ParseCode()
         {
-            if (!Parser.ParseHeaders(Options.Headers))
-                return false;
+            foreach (var header in Options.Headers)
+            {
+                var source = Project.AddFile(header);
+                source.Options = BuildParseOptions(source);
+            }
 
-            Library = Parser.Library;
+            var parser = new ClangParser();
+            parser.SourceParsed += OnSourceFileParsed;
+            parser.LibraryParsed += OnFileParsed;
+
+            parser.ParseProject(Project, Options.Parser);
+
+#if !OLD_PARSER
+            ASTContext = ClangParser.ConvertASTContext(parser.ASTContext);
+#else
+            ASTContext = parser.ASTContext;
+#endif
 
             return true;
         }
 
         public bool ParseLibraries()
         {
-            if (!Parser.ParseLibraries(Options.Libraries))
-                return false;
+            foreach (var library in Options.Libraries)
+            {
+                var parser = new ClangParser();
+                var res = parser.ParseLibrary(library, Options.Parser);
 
-            LibrarySymbols = Parser.Library;
+                if (res.Kind != ParserResultKind.Success)
+                    continue;
+
+#if !OLD_PARSER
+                Symbols.Libraries.Add(ClangParser.ConvertLibrary(res.Library));
+#else
+                Symbols.Libraries.Add(res.Library);
+#endif
+            }
 
             return true;
         }
