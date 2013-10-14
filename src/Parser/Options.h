@@ -31,7 +31,7 @@ public ref struct ParserOptions
     // C/C++ header file name.
     System::String^ FileName;
 
-    CppSharp::AST::Library^ Library;
+    CppSharp::AST::ASTContext^ ASTContext;
 
     int ToolSetToUse;
     System::String^ TargetTriple;
@@ -77,8 +77,10 @@ public ref struct ParserResult
     }
 
     ParserResultKind Kind;
-    CppSharp::AST::Library^ Library;
     List<ParserDiagnostic>^ Diagnostics;
+
+    CppSharp::AST::ASTContext^ ASTContext;
+    CppSharp::AST::NativeLibrary^ Library;
 };
 
 enum class SourceLocationKind

@@ -5,6 +5,8 @@
 *
 ************************************************************************/
 
+#using <CppSharp.AST.dll>
+
 #include <llvm/Support/Host.h>
 #include <clang/Frontend/CompilerInstance.h>
 #include <clang/Frontend/CompilerInvocation.h>
@@ -26,6 +28,7 @@
 #include "CXXABI.h"
 #include "Options.h"
 
+#include <vcclr.h>
 #include <string>
 typedef std::string String;
 
@@ -100,7 +103,8 @@ protected:
     void HandleDiagnostics(ParserResult^ res);
 
     int Index;
-    gcroot<CppSharp::AST::Library^> Lib;
+    gcroot<CppSharp::AST::ASTContext^> Lib;
+    gcroot<CppSharp::AST::SymbolContext^> Symbols;
     gcroot<ParserOptions^> Opts;
     llvm::OwningPtr<clang::CompilerInstance> C;
     clang::ASTContext* AST;
