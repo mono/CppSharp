@@ -33,22 +33,22 @@ namespace CppSharp
 
         public DriverOptions Options { get; private set; }
         public IDiagnosticConsumer Diagnostics { get; private set; }
-        public Parser Parser { get; private set; }
+        public Project Project { get; private set; }
+
         public TypeMapDatabase TypeDatabase { get; private set; }
         public PassBuilder<TranslationUnitPass> TranslationUnitPasses { get; private set; }
         public PassBuilder<GeneratorOutputPass> GeneratorOutputPasses { get; private set; }
         public Generator Generator { get; private set; }
 
-        public Library Library { get; private set; }
-        public Library LibrarySymbols { get; private set; }
+        public ASTContext ASTContext { get; private set; }
+        public SymbolContext Symbols { get; private set; }
 
         public Driver(DriverOptions options, IDiagnosticConsumer diagnostics)
         {
             Options = options;
             Diagnostics = diagnostics;
-            Parser = new Parser(Options);
-            Parser.OnHeaderParsed += OnFileParsed;
-            Parser.OnLibraryParsed += OnFileParsed;
+            Project = new Project();
+            Symbols = new SymbolContext();
             TypeDatabase = new TypeMapDatabase();
             TranslationUnitPasses = new PassBuilder<TranslationUnitPass>(this);
             GeneratorOutputPasses = new PassBuilder<GeneratorOutputPass>(this);
@@ -78,6 +78,12 @@ namespace CppSharp
 
             Generator = Generators[Options.GeneratorKind](this);
             TypeDatabase.SetupTypeMaps();
+            Generator = CreateGeneratorFromKind(Options.GeneratorKind);
+        }
+
+        void OnSourceFileParsed(SourceFile file, ParserResult result)
+        {
+            OnFileParsed(file.Path, result);
         }
 
         void OnFileParsed(string file, ParserResult result)
@@ -219,7 +225,7 @@ namespace CppSharp
 
         public void ProcessCode()
         {
-            TranslationUnitPasses.RunPasses(pass => pass.VisitLibrary(Library));
+            TranslationUnitPasses.RunPasses(pass => pass.VisitLibrary(ASTContext));
             Generator.Process();
         }
 
@@ -282,7 +288,7 @@ namespace CppSharp
             if (!options.Quiet)
                 Console.WriteLine("Indexing library symbols...");
 
-            driver.LibrarySymbols.IndexSymbols();
+            driver.Symbols.IndexSymbols();
 
             if (!options.Quiet) 
                 Console.WriteLine("Parsing code...");
@@ -293,12 +299,12 @@ namespace CppSharp
             if (!options.Quiet)
                 Console.WriteLine("Processing code...");
 
-            library.Preprocess(driver, driver.Library);
+            library.Preprocess(driver, driver.ASTContext);
 
             driver.SetupPasses(library);
 
             driver.ProcessCode();
-            library.Postprocess(driver.Library);
+            library.Postprocess(driver.ASTContext);
 
             if (!options.Quiet)
                 Console.WriteLine("Generating code...");
