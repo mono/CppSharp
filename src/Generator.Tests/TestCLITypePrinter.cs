@@ -41,7 +41,7 @@ namespace Generator.Tests
         [Test]
         public void TestPrimitive()
         {
-            var p = Library.Class("Primitives");
+            var p = AstContext.Class("Primitives");
             CheckType(p.Field("B"), "bool");
             CheckType(p.Field("C"), "char");
             CheckType(p.Field("UC"), "unsigned char");
@@ -61,7 +61,7 @@ namespace Generator.Tests
         [Test]
         public void TestArray()
         {
-            var c = Library.Class("Arrays");
+            var c = AstContext.Class("Arrays");
             CheckType(c.Field("Array"), "cli::array<float>^");
             CheckType(c.Field("Prim"), "cli::array<::Primitives^>^");
 
@@ -70,7 +70,7 @@ namespace Generator.Tests
         [Test]
         public void TestPointers()
         {
-            var p = Library.Class("Pointers");
+            var p = AstContext.Class("Pointers");
             CheckType(p.Field("pv"), "System::IntPtr");
             CheckType(p.Field("pc"), "System::IntPtr");
             CheckType(p.Field("puc"), "System::IntPtr");
@@ -81,7 +81,7 @@ namespace Generator.Tests
         [Test]
         public void TestFunctionPointers()
         {
-            var p = Library.Class("FunctionPointers");
+            var p = AstContext.Class("FunctionPointers");
             CheckType(p.Field("fn"), "::FnPtr^");
             CheckType(p.Field("fn2"), "::FnPtr2^");
             CheckType(p.Field("fn3"), "::FnPtr3^");
@@ -90,15 +90,15 @@ namespace Generator.Tests
         [Test]
         public void TestTypedefs()
         {
-            CheckType(Library.Typedef("FnPtr"), "System::Func<int, double>^");
-            CheckType(Library.Typedef("FnPtr2"), "System::Action<char, float>^");
-            CheckType(Library.Typedef("FnPtr3"), "System::Action^");
+            CheckType(AstContext.Typedef("FnPtr"), "System::Func<int, double>^");
+            CheckType(AstContext.Typedef("FnPtr2"), "System::Action<char, float>^");
+            CheckType(AstContext.Typedef("FnPtr3"), "System::Action^");
         }
 
         [Test]
         public void TestTags()
         {
-            var p = Library.Class("Tag");
+            var p = AstContext.Class("Tag");
             CheckType(p.Field("p"), "::Primitives^");
             CheckType(p.Field("e"), "::E");
         }

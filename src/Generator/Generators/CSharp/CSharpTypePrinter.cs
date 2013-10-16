@@ -52,7 +52,7 @@ namespace CppSharp.Generators.CSharp
     public class CSharpTypePrinter : ITypePrinter<CSharpTypePrinterResult>,
         IDeclVisitor<CSharpTypePrinterResult>
     {
-        public Library Library { get; set; }
+        public ASTContext AstContext { get; set; }
         private readonly ITypeMapDatabase TypeMapDatabase;
 
         private readonly Stack<CSharpTypePrinterContextKind> contexts;
@@ -64,10 +64,10 @@ namespace CppSharp.Generators.CSharp
 
         public CSharpTypePrinterContext Context;
 
-        public CSharpTypePrinter(ITypeMapDatabase database, Library library)
+        public CSharpTypePrinter(ITypeMapDatabase database, ASTContext context)
         {
             TypeMapDatabase = database;
-            Library = library;
+            AstContext = context;
 
             contexts = new Stack<CSharpTypePrinterContextKind>();
             PushContext(CSharpTypePrinterContextKind.Managed);

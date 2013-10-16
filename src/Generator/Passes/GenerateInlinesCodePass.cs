@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using CppSharp.AST;
@@ -12,9 +11,9 @@ namespace CppSharp.Passes
         private readonly List<string> headers = new List<string>();
         private readonly List<string> mangledInlines = new List<string>(); 
 
-        public override bool VisitLibrary(Library library)
+        public override bool VisitLibrary(ASTContext context)
         {
-            bool result = base.VisitLibrary(library);
+            bool result = base.VisitLibrary(context);
             Directory.CreateDirectory(Driver.Options.OutputDir);
             WriteInlinesIncludes();
             WriteInlinedSymbols();
@@ -79,7 +78,7 @@ namespace CppSharp.Passes
             string symbol = mangled.Mangled;
             var declaration = (Declaration) mangled;
             if (!declaration.Ignore && AccessValid(declaration) &&
-                !Driver.LibrarySymbols.FindSymbol(ref symbol) &&
+                !Driver.Symbols.FindSymbol(ref symbol) &&
                 !currentUnit.FilePath.EndsWith("_impl.h") &&
                 !currentUnit.FilePath.EndsWith("_p.h"))
             {

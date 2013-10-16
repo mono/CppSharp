@@ -26,7 +26,7 @@ namespace CppSharp.Passes
         {
             var symbol = mangledDecl.Mangled;
 
-            if (!Driver.LibrarySymbols.FindSymbol(ref symbol))
+            if (!Driver.Symbols.FindSymbol(ref symbol))
             {
                 Driver.Diagnostics.EmitWarning(DiagnosticId.SymbolNotFound,
                     "Symbol not found: {0}", symbol);

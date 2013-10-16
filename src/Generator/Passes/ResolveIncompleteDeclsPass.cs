@@ -28,7 +28,7 @@ namespace CppSharp.Passes
                 goto Out;
 
             @class.CompleteDeclaration =
-                Library.FindCompleteClass(@class.QualifiedName);
+                AstContext.FindCompleteClass(@class.QualifiedName);
 
             if (@class.CompleteDeclaration == null)
             {
@@ -54,7 +54,7 @@ namespace CppSharp.Passes
                 goto Out;
 
             @enum.CompleteDeclaration =
-                Library.FindCompleteEnum(@enum.QualifiedName);
+                AstContext.FindCompleteEnum(@enum.QualifiedName);
 
             if (@enum.CompleteDeclaration == null)
             {

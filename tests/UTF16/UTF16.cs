@@ -17,7 +17,7 @@ namespace CppSharp.Tests
             driver.Options.Encoding = Encoding.Unicode;
         }
 
-        public override void Preprocess(Driver driver, Library lib)
+        public override void Preprocess(Driver driver, ASTContext lib)
         {
 
         }

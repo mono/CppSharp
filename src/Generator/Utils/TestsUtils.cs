@@ -51,11 +51,11 @@ namespace CppSharp.Utils
                 options.Headers.Add(Path.GetFileName(file));
         }
 
-        public virtual void Preprocess(Driver driver, Library lib)
+        public virtual void Preprocess(Driver driver, ASTContext lib)
         {
         }
 
-        public virtual void Postprocess(Library lib)
+        public virtual void Postprocess(Driver driver, ASTContext lib)
         {
         }
 

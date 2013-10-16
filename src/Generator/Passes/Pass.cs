@@ -10,12 +10,12 @@ namespace CppSharp.Passes
     public abstract class TranslationUnitPass : AstVisitor
     {
         public Driver Driver { get; set; }
-        public Library Library { get; set; }
+        public ASTContext AstContext { get; set; }
 
-        public virtual bool VisitLibrary(Library library)
+        public virtual bool VisitLibrary(ASTContext context)
         {
-            Library = library;
-            foreach (var unit in library.TranslationUnits)
+            AstContext = context;
+            foreach (var unit in context.TranslationUnits)
                 VisitTranslationUnit(unit);
 
             return true;

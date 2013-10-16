@@ -19,7 +19,7 @@ namespace CppSharp.Tests
             driver.TranslationUnitPasses.AddPass(new FunctionToInstanceMethodPass());
         }
 
-        public override void Preprocess(Driver driver, Library lib)
+        public override void Preprocess(Driver driver, ASTContext lib)
         {
 
         }

@@ -9,7 +9,7 @@ namespace Generator.Tests
     {
         protected Driver Driver;
         protected DriverOptions Options;
-        protected Library Library;
+        protected ASTContext AstContext;
 
         private const string TestsDirectory = @"..\..\..\tests\Native";
 
@@ -35,7 +35,7 @@ namespace Generator.Tests
             if (!Driver.ParseCode())
                 throw new Exception("Error parsing the code");
 
-            Library = Driver.Library;
+            AstContext = Driver.ASTContext;
         }
     }
 }

@@ -22,7 +22,7 @@ namespace CppSharp.Passes
             if (types.Length == 0)
                 return false;
 
-            var @class = Library.FindCompleteClass(types[0]);
+            var @class = AstContext.FindCompleteClass(types[0]);
             if (@class == null)
                 return false;
 

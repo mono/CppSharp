@@ -304,7 +304,7 @@ namespace CppSharp
             driver.SetupPasses(library);
 
             driver.ProcessCode();
-            library.Postprocess(driver.ASTContext);
+            library.Postprocess(driver, driver.ASTContext);
 
             if (!options.Quiet)
                 Console.WriteLine("Generating code...");

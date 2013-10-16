@@ -24,14 +24,14 @@ namespace Generator.Tests.Passes
         [Test]
         public void TestCheckFlagEnumsPass()
         {
-            var @enum = Library.Enum("FlagEnum");
+            var @enum = AstContext.Enum("FlagEnum");
             Assert.IsFalse(@enum.IsFlags);
 
-            var @enum2 = Library.Enum("FlagEnum2");
+            var @enum2 = AstContext.Enum("FlagEnum2");
             Assert.IsFalse(@enum2.IsFlags);
 
             passBuilder.AddPass(new CheckFlagEnumsPass());
-            passBuilder.RunPasses(pass => pass.VisitLibrary(Library));
+            passBuilder.RunPasses(pass => pass.VisitLibrary(AstContext));
 
             Assert.IsTrue(@enum.IsFlags);
             Assert.IsFalse(@enum2.IsFlags);
@@ -40,12 +40,12 @@ namespace Generator.Tests.Passes
         [Test]
         public void TestFunctionToInstancePass()
         {
-            var c = Library.Class("Foo");
+            var c = AstContext.Class("Foo");
 
             Assert.IsNull(c.Method("Start"));
 
             passBuilder.AddPass( new FunctionToInstanceMethodPass());
-            passBuilder.RunPasses(pass => pass.VisitLibrary(Library));
+            passBuilder.RunPasses(pass => pass.VisitLibrary(AstContext));
 
             Assert.IsNotNull(c.Method("Start"));
         }
@@ -53,28 +53,28 @@ namespace Generator.Tests.Passes
         [Test]
         public void TestFunctionToStaticPass()
         {
-            var c = Library.Class("Foo");
+            var c = AstContext.Class("Foo");
 
-            Assert.IsFalse(Library.Function("FooStart").ExplicityIgnored);
+            Assert.IsFalse(AstContext.Function("FooStart").ExplicityIgnored);
             Assert.IsNull(c.Method("Start"));
 
             passBuilder.AddPass(new FunctionToStaticMethodPass());
-            passBuilder.RunPasses(pass => pass.VisitLibrary(Library));
+            passBuilder.RunPasses(pass => pass.VisitLibrary(AstContext));
 
-            Assert.IsTrue(Library.Function("FooStart").ExplicityIgnored);
+            Assert.IsTrue(AstContext.Function("FooStart").ExplicityIgnored);
             Assert.IsNotNull(c.Method("Start"));
         }
 
         [Test]
         public void TestCaseRenamePass()
         {
-            var c = Library.Class("TestRename");
+            var c = AstContext.Class("TestRename");
 
             var method = c.Method("lowerCaseMethod");
             var field = c.Field("lowerCaseField");
 
             passBuilder.RenameDeclsUpperCase(RenameTargets.Any);
-            passBuilder.RunPasses(pass => pass.VisitLibrary(Library));
+            passBuilder.RunPasses(pass => pass.VisitLibrary(AstContext));
 
             Assert.That(method.Name, Is.EqualTo("LowerCaseMethod"));
             Assert.That(field.Name, Is.EqualTo("LowerCaseField"));
@@ -83,14 +83,14 @@ namespace Generator.Tests.Passes
         [Test]
         public void TestCleanEnumItemNames()
         {
-            Library.GenerateEnumFromMacros("TestEnumItemName", "TEST_ENUM_ITEM_NAME_(.*)");
+            AstContext.GenerateEnumFromMacros("TestEnumItemName", "TEST_ENUM_ITEM_NAME_(.*)");
 
-            var @enum = Library.Enum("TestEnumItemName");
+            var @enum = AstContext.Enum("TestEnumItemName");
             Assert.IsNotNull(@enum);
 
             passBuilder.RemovePrefix("TEST_ENUM_ITEM_NAME_", RenameTargets.EnumItem);
             passBuilder.AddPass(new CleanInvalidDeclNamesPass());
-            passBuilder.RunPasses(pass => pass.VisitLibrary(Library));
+            passBuilder.RunPasses(pass => pass.VisitLibrary(AstContext));
 
             Assert.That(@enum.Items[0].Name, Is.EqualTo("_0"));
         }

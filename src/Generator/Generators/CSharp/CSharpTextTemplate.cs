@@ -785,7 +785,7 @@ namespace CppSharp.Generators.CSharp
                 goto Out;
 
             NativeLibrary nativeLib;
-            if (!Driver.LibrarySymbols.FindLibraryBySymbol(decl.Mangled, out nativeLib))
+            if (!Driver.Symbols.FindLibraryBySymbol(decl.Mangled, out nativeLib))
                 goto Out;
 
             library = Path.GetFileNameWithoutExtension(nativeLib.FileName);
@@ -2280,7 +2280,7 @@ namespace CppSharp.Generators.CSharp
             if (Options.CheckSymbols)
             {
                 NativeLibrary library;
-                Driver.LibrarySymbols.FindLibraryBySymbol(function.Mangled, out library);
+                Driver.Symbols.FindLibraryBySymbol(function.Mangled, out library);
 
                 libName = Path.GetFileNameWithoutExtension(library.FileName);
             }
