@@ -16,10 +16,14 @@ using namespace CppSharp::CppParser::AST;
 struct CS_API ParserOptions
 {
     ParserOptions()
+        : ASTContext(0)
+        , ToolSetToUse(0)
+        , Abi(CppAbi::Itanium)
+        , NoStandardIncludes(false)
+        , NoBuiltinIncludes(false)
+        , MicrosoftMode(false)
+        , Verbose(false)
     {
-        MicrosoftMode = false;
-        NoStandardIncludes = false;
-        NoBuiltinIncludes = false;
     }
 
     // Include directories
