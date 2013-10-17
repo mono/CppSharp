@@ -35,6 +35,8 @@ struct CS_API ParserOptions
     // C/C++ header file name.
     std::string FileName;
 
+    CppSharp::CppParser::AST::ASTContext* ASTContext;
+
     int ToolSetToUse;
     std::string TargetTriple;
 
