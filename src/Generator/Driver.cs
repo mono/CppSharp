@@ -17,20 +17,6 @@ namespace CppSharp
 {
     public class Driver
     {
-        public delegate Generator CreateGeneratorDelegate(Driver driver);
-        public static Dictionary<LanguageGeneratorKind, CreateGeneratorDelegate>
-            Generators;
-
-        static Driver()
-        {
-            Generators = new Dictionary<LanguageGeneratorKind,
-                CreateGeneratorDelegate>();
-            Generators[LanguageGeneratorKind.CSharp] = driver =>
-                new CSharpGenerator(driver);
-            Generators[LanguageGeneratorKind.CLI] = driver =>
-                new CLIGenerator(driver);
-        }
-
         public DriverOptions Options { get; private set; }
         public IDiagnosticConsumer Diagnostics { get; private set; }
         public Project Project { get; private set; }
@@ -54,11 +40,21 @@ namespace CppSharp
             GeneratorOutputPasses = new PassBuilder<GeneratorOutputPass>(this);
         }
 
+        Generator CreateGeneratorFromKind(GeneratorKind kind)
+        {
+            switch (kind)
+            {
+                case GeneratorKind.CLI:
+                    return new CLIGenerator(this);
+                case GeneratorKind.CSharp:
+                    return new CSharpGenerator(this);
+            }
+
+            return null;
+        }
+
         static void ValidateOptions(DriverOptions options)
         {
-            if (!Generators.ContainsKey(options.GeneratorKind))
-                throw new InvalidOptionException();
-
             if (string.IsNullOrWhiteSpace(options.LibraryName))
                 throw new InvalidOptionException();
 
@@ -75,8 +71,6 @@ namespace CppSharp
         public void Setup()
         {
             ValidateOptions(Options);
-
-            Generator = Generators[Options.GeneratorKind](this);
             TypeDatabase.SetupTypeMaps();
             Generator = CreateGeneratorFromKind(Options.GeneratorKind);
         }
