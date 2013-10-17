@@ -7,7 +7,7 @@ namespace CppSharp.Tests
 {
     public class UTF16Tests : LibraryTest
     {
-        public UTF16Tests(LanguageGeneratorKind kind)
+        public UTF16Tests(GeneratorKind kind)
             : base("UTF16", kind)
         {
         }
@@ -26,7 +26,7 @@ namespace CppSharp.Tests
         {
             public static void Main(string[] args)
             {
-                ConsoleDriver.Run(new UTF16Tests(LanguageGeneratorKind.CSharp));
+                ConsoleDriver.Run(new UTF16Tests(GeneratorKind.CSharp));
             }
         }
     }

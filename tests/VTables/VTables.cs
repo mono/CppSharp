@@ -7,7 +7,7 @@ namespace CppSharp.Tests
 {
     public class VTableTests : LibraryTest
     {
-        public VTableTests(LanguageGeneratorKind kind)
+        public VTableTests(GeneratorKind kind)
             : base("VTables", kind)
         {
         }
@@ -28,8 +28,8 @@ namespace CppSharp.Tests
         {
             public static void Main(string[] args)
             {
-                ConsoleDriver.Run(new VTableTests(LanguageGeneratorKind.CLI));
-                ConsoleDriver.Run(new VTableTests(LanguageGeneratorKind.CSharp));
+                ConsoleDriver.Run(new VTableTests(GeneratorKind.CLI));
+                ConsoleDriver.Run(new VTableTests(GeneratorKind.CSharp));
             }
         }
     }

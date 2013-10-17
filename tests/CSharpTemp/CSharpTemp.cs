@@ -5,7 +5,7 @@ namespace CppSharp.Tests
 {
     public class CSharpTempTests : LibraryTest
     {
-        public CSharpTempTests(LanguageGeneratorKind kind)
+        public CSharpTempTests(GeneratorKind kind)
             : base("CSharpTemp", kind)
         {
         }
@@ -20,7 +20,7 @@ namespace CppSharp.Tests
         {
             public static void Main(string[] args)
             {
-                ConsoleDriver.Run(new CSharpTempTests(LanguageGeneratorKind.CSharp));
+                ConsoleDriver.Run(new CSharpTempTests(GeneratorKind.CSharp));
             }
         }
     }

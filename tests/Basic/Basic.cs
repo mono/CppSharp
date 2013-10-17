@@ -6,7 +6,7 @@ namespace CppSharp.Tests
 {
     public class Basic : LibraryTest
     {
-        public Basic(LanguageGeneratorKind kind)
+        public Basic(GeneratorKind kind)
             : base("Basic", kind)
         {
         }
@@ -23,8 +23,8 @@ namespace CppSharp.Tests
         {
             public static void Main(string[] args)
             {
-                ConsoleDriver.Run(new Basic(LanguageGeneratorKind.CLI));
-                ConsoleDriver.Run(new Basic(LanguageGeneratorKind.CSharp));
+                ConsoleDriver.Run(new Basic(GeneratorKind.CLI));
+                ConsoleDriver.Run(new Basic(GeneratorKind.CSharp));
             }
         }
     }

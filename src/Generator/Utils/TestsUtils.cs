@@ -8,9 +8,9 @@ namespace CppSharp.Utils
     public abstract class LibraryTest : ILibrary
     {
         readonly string name;
-        readonly LanguageGeneratorKind kind;
+        readonly GeneratorKind kind;
 
-        protected LibraryTest(string name, LanguageGeneratorKind kind)
+        protected LibraryTest(string name, GeneratorKind kind)
         {
             this.name = name;
             this.kind = kind;

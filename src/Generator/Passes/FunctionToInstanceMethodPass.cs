@@ -59,7 +59,7 @@ namespace CppSharp.Passes
                     Conversion = MethodConversionKind.FunctionToInstanceMethod
                 };
 
-            if (Driver.Options.GeneratorKind == LanguageGeneratorKind.CSharp)
+            if (Driver.Options.GeneratorKind == GeneratorKind.CSharp)
                 method.Parameters = method.Parameters.Skip(1).ToList();
 
             @class.Methods.Add(method);
