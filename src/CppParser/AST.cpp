@@ -226,7 +226,7 @@ TypedefDecl* DeclarationContext::FindTypedef(const std::string& Name, bool Creat
     return tdef;
 }
 
-TranslationUnit* Library::FindOrCreateModule(const std::string& File)
+TranslationUnit* ASTContext::FindOrCreateModule(const std::string& File)
 {
     auto existingUnit = std::find_if(TranslationUnits.begin(),
         TranslationUnits.end(), [&](TranslationUnit* unit) {
@@ -241,20 +241,6 @@ TranslationUnit* Library::FindOrCreateModule(const std::string& File)
     TranslationUnits.push_back(unit);
 
     return unit;
-}
-
-NativeLibrary* Library::FindOrCreateLibrary(const std::string& File)
-{
-    auto existingLib = std::find_if(Libraries.begin(),
-        Libraries.end(), [&](NativeLibrary* lib) {
-            return lib && lib->FileName == File;
-    });
-
-    auto lib = new NativeLibrary();
-    lib->FileName = File;
-    Libraries.push_back(lib);
-
-    return lib;
 }
 
 } } }

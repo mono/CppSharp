@@ -589,13 +589,10 @@ struct CS_API NativeLibrary
     std::vector<std::string> Symbols;
 };
 
-struct CS_API Library
+struct CS_API ASTContext
 {
     TranslationUnit* FindOrCreateModule(const std::string& File);
-    NativeLibrary* FindOrCreateLibrary(const std::string& File);
-
     std::vector<TranslationUnit*> TranslationUnits;
-    std::vector<NativeLibrary*> Libraries;
 };
 
 } } }
