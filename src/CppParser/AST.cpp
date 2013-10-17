@@ -29,6 +29,18 @@ static std::vector<T> split(const T & str, const T & delimiters) {
 
 namespace CppSharp { namespace CppParser { namespace AST {
 
+Declaration::Declaration()
+    : Access(AccessSpecifier::Public)
+    , _Namespace(0)
+    , Comment(0)
+    , IsIncomplete(false)
+    , IsDependent(false)
+    , CompleteDeclaration(0)
+    , DefinitionOrder(0)
+    , OriginalPtr(0)
+{
+}
+
 Declaration* DeclarationContext::FindAnonymous(uint64_t key)
 {
     auto it = Anonymous.find(key);
