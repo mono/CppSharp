@@ -26,25 +26,24 @@ struct CS_API ParserOptions
     {
     }
 
+    // C/C++ header file name.
+    std::string FileName;
+
     // Include directories
     std::vector<std::string> IncludeDirs;
     std::vector<std::string> SystemIncludeDirs;
     std::vector<std::string> Defines;
     std::vector<std::string> LibraryDirs;
 
-    // C/C++ header file name.
-    std::string FileName;
-
     CppSharp::CppParser::AST::ASTContext* ASTContext;
 
     int ToolSetToUse;
     std::string TargetTriple;
+    CppAbi Abi;
 
     bool NoStandardIncludes;
     bool NoBuiltinIncludes;
     bool MicrosoftMode;
-    CppAbi Abi;
-
     bool Verbose;
 };
 
