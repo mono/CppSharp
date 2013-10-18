@@ -1,13 +1,14 @@
-﻿using CppSharp.AST;
+﻿using System;
+using CppSharp.AST;
 using CppSharp.Generators;
 
 namespace CppSharp
 {
     class ParserGen : ILibrary
     {
-        private readonly LanguageGeneratorKind Kind;
+        private readonly GeneratorKind Kind;
 
-        public ParserGen(LanguageGeneratorKind kind)
+        public ParserGen(GeneratorKind kind)
         {
             Kind = kind;
         }
@@ -15,17 +16,17 @@ namespace CppSharp
         public void Setup(Driver driver)
         {
             var options = driver.Options;
-            options.LibraryName = "CppSharp";
+            options.LibraryName = "CppSharp.CppParser.dll";
             options.GeneratorKind = Kind;
             options.Headers.Add("AST.h");
             options.Headers.Add("CppParser.h");
-            options.IncludeDirs.Add("../../../src/CppParser/");
+            options.IncludeDirs.Add("../../../../src/CppParser/");
             options.Libraries.Add("CppSharp.CppParser.lib");
             options.LibraryDirs.Add(".");
-            options.OutputDir = "../../../src/CppParser/Bindings/";
+            options.OutputDir = "../../../../src/CppParser/Bindings/";
             options.OutputDir += Kind.ToString();
             options.GenerateLibraryNamespace = false;
-            //options.CheckSymbols = false;
+            options.CheckSymbols = false;
         }
 
         public void SetupPasses(Driver driver)
@@ -33,7 +34,7 @@ namespace CppSharp
 
         }
 
-        public void Preprocess(Driver driver, Library lib)
+        public void Preprocess(Driver driver, ASTContext lib)
         {
             lib.SetClassAsValueType("CppSharp::ParserOptions");
             lib.SetClassAsValueType("CppSharp::ParserDiagnostic");
@@ -42,15 +43,16 @@ namespace CppSharp
             lib.RenameNamespace("CppSharp::CppParser", "Parser");
         }
 
-        public void Postprocess(Library lib)
-        {
-
-        }
-
         public static void Main(string[] args)
         {
-            ConsoleDriver.Run(new ParserGen(LanguageGeneratorKind.CLI));
-            ConsoleDriver.Run(new ParserGen(LanguageGeneratorKind.CSharp));
+#if CLI
+            Console.WriteLine("Generating the C++/CLI parser bindings...");
+            ConsoleDriver.Run(new ParserGen(GeneratorKind.CLI));
+            Console.WriteLine();
+#endif
+
+            Console.WriteLine("Generating the C# parser bindings...");
+            ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp));
         }
     }
 }
