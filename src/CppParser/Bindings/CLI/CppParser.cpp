@@ -128,14 +128,14 @@ void CppSharp::Parser::ParserOptions::FileName::set(System::String^ value)
     ((::CppSharp::CppParser::ParserOptions*)NativePtr)->FileName = clix::marshalString<clix::E_UTF8>(value);
 }
 
-CppSharp::Parser::AST::Library^ CppSharp::Parser::ParserOptions::Library::get()
+CppSharp::Parser::AST::ASTContext^ CppSharp::Parser::ParserOptions::ASTContext::get()
 {
-    return gcnew CppSharp::Parser::AST::Library((::CppSharp::CppParser::AST::Library*)((::CppSharp::CppParser::ParserOptions*)NativePtr)->Library);
+    return gcnew CppSharp::Parser::AST::ASTContext((::CppSharp::CppParser::AST::ASTContext*)((::CppSharp::CppParser::ParserOptions*)NativePtr)->ASTContext);
 }
 
-void CppSharp::Parser::ParserOptions::Library::set(CppSharp::Parser::AST::Library^ value)
+void CppSharp::Parser::ParserOptions::ASTContext::set(CppSharp::Parser::AST::ASTContext^ value)
 {
-    ((::CppSharp::CppParser::ParserOptions*)NativePtr)->Library = (::CppSharp::CppParser::AST::Library*)value->NativePtr;
+    ((::CppSharp::CppParser::ParserOptions*)NativePtr)->ASTContext = (::CppSharp::CppParser::AST::ASTContext*)value->NativePtr;
 }
 
 int CppSharp::Parser::ParserOptions::ToolSetToUse::get()
@@ -320,16 +320,6 @@ void CppSharp::Parser::ParserResult::Kind::set(CppSharp::Parser::ParserResultKin
     ((::CppSharp::CppParser::ParserResult*)NativePtr)->Kind = (::CppSharp::CppParser::ParserResultKind)value;
 }
 
-CppSharp::Parser::AST::Library^ CppSharp::Parser::ParserResult::Library::get()
-{
-    return gcnew CppSharp::Parser::AST::Library((::CppSharp::CppParser::AST::Library*)((::CppSharp::CppParser::ParserResult*)NativePtr)->Library);
-}
-
-void CppSharp::Parser::ParserResult::Library::set(CppSharp::Parser::AST::Library^ value)
-{
-    ((::CppSharp::CppParser::ParserResult*)NativePtr)->Library = (::CppSharp::CppParser::AST::Library*)value->NativePtr;
-}
-
 System::Collections::Generic::List<CppSharp::Parser::ParserDiagnostic^>^ CppSharp::Parser::ParserResult::Diagnostics::get()
 {
     auto _tmpDiagnostics = gcnew System::Collections::Generic::List<CppSharp::Parser::ParserDiagnostic^>();
@@ -351,6 +341,26 @@ void CppSharp::Parser::ParserResult::Diagnostics::set(System::Collections::Gener
         _tmpvalue.push_back(_marshalElement);
     }
     ((::CppSharp::CppParser::ParserResult*)NativePtr)->Diagnostics = _tmpvalue;
+}
+
+CppSharp::Parser::AST::ASTContext^ CppSharp::Parser::ParserResult::ASTContext::get()
+{
+    return gcnew CppSharp::Parser::AST::ASTContext((::CppSharp::CppParser::AST::ASTContext*)((::CppSharp::CppParser::ParserResult*)NativePtr)->ASTContext);
+}
+
+void CppSharp::Parser::ParserResult::ASTContext::set(CppSharp::Parser::AST::ASTContext^ value)
+{
+    ((::CppSharp::CppParser::ParserResult*)NativePtr)->ASTContext = (::CppSharp::CppParser::AST::ASTContext*)value->NativePtr;
+}
+
+CppSharp::Parser::AST::NativeLibrary^ CppSharp::Parser::ParserResult::Library::get()
+{
+    return gcnew CppSharp::Parser::AST::NativeLibrary((::CppSharp::CppParser::AST::NativeLibrary*)((::CppSharp::CppParser::ParserResult*)NativePtr)->Library);
+}
+
+void CppSharp::Parser::ParserResult::Library::set(CppSharp::Parser::AST::NativeLibrary^ value)
+{
+    ((::CppSharp::CppParser::ParserResult*)NativePtr)->Library = (::CppSharp::CppParser::AST::NativeLibrary*)value->NativePtr;
 }
 
 CppSharp::Parser::ClangParser::ClangParser(::CppSharp::CppParser::ClangParser* native)

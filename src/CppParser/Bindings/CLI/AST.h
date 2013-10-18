@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CppSharp.h"
-#include <AST.h>
+#include <C:/Development/CppSharp/src/CppParser/AST.h>
 
 namespace CppSharp
 {
@@ -64,7 +64,7 @@ namespace CppSharp
             ref class MacroExpansion;
             ref class TranslationUnit;
             ref class NativeLibrary;
-            ref class Library;
+            ref class ASTContext;
         }
     }
 }
@@ -1504,34 +1504,27 @@ namespace CppSharp
                 }
             };
 
-            public ref class Library : ICppInstance
+            public ref class ASTContext : ICppInstance
             {
             public:
 
-                property ::CppSharp::CppParser::AST::Library* NativePtr;
+                property ::CppSharp::CppParser::AST::ASTContext* NativePtr;
                 property System::IntPtr Instance
                 {
                     virtual System::IntPtr get();
                     virtual void set(System::IntPtr instance);
                 }
 
-                Library(::CppSharp::CppParser::AST::Library* native);
-                Library(System::IntPtr native);
-                Library();
+                ASTContext(::CppSharp::CppParser::AST::ASTContext* native);
+                ASTContext(System::IntPtr native);
+                ASTContext();
 
                 property System::Collections::Generic::List<CppSharp::Parser::AST::TranslationUnit^>^ TranslationUnits
                 {
                     System::Collections::Generic::List<CppSharp::Parser::AST::TranslationUnit^>^ get();
                     void set(System::Collections::Generic::List<CppSharp::Parser::AST::TranslationUnit^>^);
                 }
-                property System::Collections::Generic::List<CppSharp::Parser::AST::NativeLibrary^>^ Libraries
-                {
-                    System::Collections::Generic::List<CppSharp::Parser::AST::NativeLibrary^>^ get();
-                    void set(System::Collections::Generic::List<CppSharp::Parser::AST::NativeLibrary^>^);
-                }
                 CppSharp::Parser::AST::TranslationUnit^ FindOrCreateModule(System::String^ File);
-
-                CppSharp::Parser::AST::NativeLibrary^ FindOrCreateLibrary(System::String^ File);
 
             };
         }

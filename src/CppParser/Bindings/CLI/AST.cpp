@@ -2623,52 +2623,44 @@ void CppSharp::Parser::AST::NativeLibrary::Symbols::set(System::Collections::Gen
     ((::CppSharp::CppParser::AST::NativeLibrary*)NativePtr)->Symbols = _tmpvalue;
 }
 
-CppSharp::Parser::AST::Library::Library(::CppSharp::CppParser::AST::Library* native)
+CppSharp::Parser::AST::ASTContext::ASTContext(::CppSharp::CppParser::AST::ASTContext* native)
 {
     NativePtr = native;
 }
 
-CppSharp::Parser::AST::Library::Library(System::IntPtr native)
+CppSharp::Parser::AST::ASTContext::ASTContext(System::IntPtr native)
 {
-    auto __native = (::CppSharp::CppParser::AST::Library*)native.ToPointer();
+    auto __native = (::CppSharp::CppParser::AST::ASTContext*)native.ToPointer();
     NativePtr = __native;
 }
 
-CppSharp::Parser::AST::TranslationUnit^ CppSharp::Parser::AST::Library::FindOrCreateModule(System::String^ File)
+CppSharp::Parser::AST::TranslationUnit^ CppSharp::Parser::AST::ASTContext::FindOrCreateModule(System::String^ File)
 {
     auto arg0 = clix::marshalString<clix::E_UTF8>(File);
-    auto __ret = ((::CppSharp::CppParser::AST::Library*)NativePtr)->FindOrCreateModule(arg0);
+    auto __ret = ((::CppSharp::CppParser::AST::ASTContext*)NativePtr)->FindOrCreateModule(arg0);
     if (__ret == nullptr) return nullptr;
     return gcnew CppSharp::Parser::AST::TranslationUnit((::CppSharp::CppParser::AST::TranslationUnit*)__ret);
 }
 
-CppSharp::Parser::AST::NativeLibrary^ CppSharp::Parser::AST::Library::FindOrCreateLibrary(System::String^ File)
+CppSharp::Parser::AST::ASTContext::ASTContext()
 {
-    auto arg0 = clix::marshalString<clix::E_UTF8>(File);
-    auto __ret = ((::CppSharp::CppParser::AST::Library*)NativePtr)->FindOrCreateLibrary(arg0);
-    if (__ret == nullptr) return nullptr;
-    return gcnew CppSharp::Parser::AST::NativeLibrary((::CppSharp::CppParser::AST::NativeLibrary*)__ret);
+    NativePtr = new ::CppSharp::CppParser::AST::ASTContext();
 }
 
-CppSharp::Parser::AST::Library::Library()
-{
-    NativePtr = new ::CppSharp::CppParser::AST::Library();
-}
-
-System::IntPtr CppSharp::Parser::AST::Library::Instance::get()
+System::IntPtr CppSharp::Parser::AST::ASTContext::Instance::get()
 {
     return System::IntPtr(NativePtr);
 }
 
-void CppSharp::Parser::AST::Library::Instance::set(System::IntPtr object)
+void CppSharp::Parser::AST::ASTContext::Instance::set(System::IntPtr object)
 {
-    NativePtr = (::CppSharp::CppParser::AST::Library*)object.ToPointer();
+    NativePtr = (::CppSharp::CppParser::AST::ASTContext*)object.ToPointer();
 }
 
-System::Collections::Generic::List<CppSharp::Parser::AST::TranslationUnit^>^ CppSharp::Parser::AST::Library::TranslationUnits::get()
+System::Collections::Generic::List<CppSharp::Parser::AST::TranslationUnit^>^ CppSharp::Parser::AST::ASTContext::TranslationUnits::get()
 {
     auto _tmpTranslationUnits = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::TranslationUnit^>();
-    for(auto _element : ((::CppSharp::CppParser::AST::Library*)NativePtr)->TranslationUnits)
+    for(auto _element : ((::CppSharp::CppParser::AST::ASTContext*)NativePtr)->TranslationUnits)
     {
         auto _marshalElement = gcnew CppSharp::Parser::AST::TranslationUnit((::CppSharp::CppParser::AST::TranslationUnit*)_element);
         _tmpTranslationUnits->Add(_marshalElement);
@@ -2676,7 +2668,7 @@ System::Collections::Generic::List<CppSharp::Parser::AST::TranslationUnit^>^ Cpp
     return _tmpTranslationUnits;
 }
 
-void CppSharp::Parser::AST::Library::TranslationUnits::set(System::Collections::Generic::List<CppSharp::Parser::AST::TranslationUnit^>^ value)
+void CppSharp::Parser::AST::ASTContext::TranslationUnits::set(System::Collections::Generic::List<CppSharp::Parser::AST::TranslationUnit^>^ value)
 {
     auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::TranslationUnit*>();
     for each(CppSharp::Parser::AST::TranslationUnit^ _element in value)
@@ -2684,28 +2676,6 @@ void CppSharp::Parser::AST::Library::TranslationUnits::set(System::Collections::
         auto _marshalElement = (::CppSharp::CppParser::AST::TranslationUnit*)_element->NativePtr;
         _tmpvalue.push_back(_marshalElement);
     }
-    ((::CppSharp::CppParser::AST::Library*)NativePtr)->TranslationUnits = _tmpvalue;
-}
-
-System::Collections::Generic::List<CppSharp::Parser::AST::NativeLibrary^>^ CppSharp::Parser::AST::Library::Libraries::get()
-{
-    auto _tmpLibraries = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::NativeLibrary^>();
-    for(auto _element : ((::CppSharp::CppParser::AST::Library*)NativePtr)->Libraries)
-    {
-        auto _marshalElement = gcnew CppSharp::Parser::AST::NativeLibrary((::CppSharp::CppParser::AST::NativeLibrary*)_element);
-        _tmpLibraries->Add(_marshalElement);
-    }
-    return _tmpLibraries;
-}
-
-void CppSharp::Parser::AST::Library::Libraries::set(System::Collections::Generic::List<CppSharp::Parser::AST::NativeLibrary^>^ value)
-{
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::NativeLibrary*>();
-    for each(CppSharp::Parser::AST::NativeLibrary^ _element in value)
-    {
-        auto _marshalElement = (::CppSharp::CppParser::AST::NativeLibrary*)_element->NativePtr;
-        _tmpvalue.push_back(_marshalElement);
-    }
-    ((::CppSharp::CppParser::AST::Library*)NativePtr)->Libraries = _tmpvalue;
+    ((::CppSharp::CppParser::AST::ASTContext*)NativePtr)->TranslationUnits = _tmpvalue;
 }
 

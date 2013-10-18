@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CppSharp.h"
-#include <CppParser.h>
+#include <C:/Development/CppSharp/src/CppParser/CppParser.h>
 
 namespace CppSharp
 {
@@ -16,8 +16,9 @@ namespace CppSharp
         enum struct SourceLocationKind;
         namespace AST
         {
-            ref class Library;
+            ref class ASTContext;
             enum struct CppAbi;
+            ref class NativeLibrary;
         }
     }
 }
@@ -91,10 +92,10 @@ namespace CppSharp
                 System::String^ get();
                 void set(System::String^);
             }
-            property CppSharp::Parser::AST::Library^ Library
+            property CppSharp::Parser::AST::ASTContext^ ASTContext
             {
-                CppSharp::Parser::AST::Library^ get();
-                void set(CppSharp::Parser::AST::Library^);
+                CppSharp::Parser::AST::ASTContext^ get();
+                void set(CppSharp::Parser::AST::ASTContext^);
             }
             property int ToolSetToUse
             {
@@ -195,15 +196,20 @@ namespace CppSharp
                 CppSharp::Parser::ParserResultKind get();
                 void set(CppSharp::Parser::ParserResultKind);
             }
-            property CppSharp::Parser::AST::Library^ Library
-            {
-                CppSharp::Parser::AST::Library^ get();
-                void set(CppSharp::Parser::AST::Library^);
-            }
             property System::Collections::Generic::List<CppSharp::Parser::ParserDiagnostic^>^ Diagnostics
             {
                 System::Collections::Generic::List<CppSharp::Parser::ParserDiagnostic^>^ get();
                 void set(System::Collections::Generic::List<CppSharp::Parser::ParserDiagnostic^>^);
+            }
+            property CppSharp::Parser::AST::ASTContext^ ASTContext
+            {
+                CppSharp::Parser::AST::ASTContext^ get();
+                void set(CppSharp::Parser::AST::ASTContext^);
+            }
+            property CppSharp::Parser::AST::NativeLibrary^ Library
+            {
+                CppSharp::Parser::AST::NativeLibrary^ get();
+                void set(CppSharp::Parser::AST::NativeLibrary^);
             }
         };
 
