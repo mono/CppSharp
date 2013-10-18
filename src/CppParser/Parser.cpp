@@ -2392,7 +2392,7 @@ ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
 
 ParserResult* ClangParser::ParseHeader(ParserOptions* Opts)
 {
-    if (!Opts || Opts->FileName.empty())
+    if (!Opts)
         return nullptr;
 
     Parser parser(Opts);
@@ -2401,7 +2401,7 @@ ParserResult* ClangParser::ParseHeader(ParserOptions* Opts)
 
 ParserResult* ClangParser::ParseLibrary(ParserOptions* Opts)
 {
-    if (!Opts || Opts->FileName.empty())
+    if (!Opts)
         return nullptr;
 
     Parser parser(Opts);
