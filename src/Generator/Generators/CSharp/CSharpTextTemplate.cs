@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using CppSharp.AST;
-using CppSharp.Utils;
 using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Generators.CSharp
@@ -915,10 +914,10 @@ namespace CppSharp.Generators.CSharp
                 }
                 NewLine();
                 WriteStartBraceIndent();
-                Method method = function as Method;
+                var method = function as Method;
                 if (method != null && method.IsOverride && method.IsSynthetized)
                 {
-                    GenerateVirtualTableFunctionCall(function, @class);                    
+                    GenerateVirtualTableFunctionCall(function, @class);
                 }
                 else
                 {
