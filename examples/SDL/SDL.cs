@@ -23,7 +23,7 @@ namespace CppSharp
             driver.TranslationUnitPasses.RemovePrefix("LOG_CATEGORY_");
         }
 
-        public void Preprocess(Driver driver, Library lib)
+        public void Preprocess(Driver driver, ASTContext lib)
         {
             lib.IgnoreEnumWithMatchingItem("SDL_FALSE");
             lib.IgnoreEnumWithMatchingItem("DUMMY_ENUM_VALUE");
@@ -50,7 +50,7 @@ namespace CppSharp
             lib.IgnoreFunctionWithName("SDL_Error");
         }
 
-        public void Postprocess(Library lib)
+        public void Postprocess(Driver driver, ASTContext lib)
         {
             lib.SetNameOfEnumWithName("PIXELTYPE", "PixelType");
             lib.SetNameOfEnumWithName("BITMAPORDER", "BitmapOrder");
