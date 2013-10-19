@@ -10,6 +10,11 @@ namespace CppSharp.AST
     [DebuggerDisplay("File = {FileName}, Ignored = {Ignore}")]
     public class TranslationUnit : Namespace
     {
+        public TranslationUnit()
+        {
+            
+        }
+
         public TranslationUnit(string file)
         {
             Macros = new List<MacroDefinition>();
