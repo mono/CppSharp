@@ -152,7 +152,8 @@ namespace CppSharp.AST
                 var instance = new Parameter
                                 {
                                     Name = "instance",
-                                    QualifiedType = new QualifiedType(new BuiltinType(PrimitiveType.IntPtr))
+                                    QualifiedType = new QualifiedType(
+                                        new BuiltinType(PrimitiveType.IntPtr))
                                 };
                 functionType.Parameters.Insert(0, instance);
             }
