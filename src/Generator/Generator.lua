@@ -4,17 +4,12 @@ project "CppSharp.Generator"
   language "C#"
   location "."
 
-  files   { "**.cs", "**.bmp", "**.resx", "**.config", "**verbs.txt" }
+  files   { "**.cs", "**verbs.txt" }
   excludes { "Filter.cs" }
 
-  links { "System", "System.Core", "CppSharp.AST" }
+  links { "System", "System.Core", "CppSharp", "CppSharp.AST" }
 
-  configuration "vs*"
-    links { "CppSharp.Parser" }
-
-  configuration "not vs*"
-    dependson { "CppSharp.CppParser" }
-    links { "CppSharp.Parser.CSharp" }
+  SetupParser()
 
   configuration '**verbs.txt'
     buildaction "Embed"

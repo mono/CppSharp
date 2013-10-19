@@ -16,9 +16,10 @@ project "CppSharp.Generator.Tests"
   {
     "System",
     "System.Core",
+    "CppSharp",
     "CppSharp.AST",
     "CppSharp.Generator",
-    "CppSharp.Parser",
+    ParserLib,
     "NUnit.Framework",
     "NSubstitute"
   }
