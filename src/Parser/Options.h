@@ -9,6 +9,13 @@
 #include <vcclr.h>
 using namespace System::Collections::Generic;
 
+public enum struct CppAbi
+{
+    Itanium,
+    Microsoft,
+    ARM
+};
+
 public ref struct ParserOptions
 {
     ParserOptions()
@@ -39,7 +46,7 @@ public ref struct ParserOptions
     bool NoStandardIncludes;
     bool NoBuiltinIncludes;
     bool MicrosoftMode;
-	CppSharp::AST::CppAbi Abi;
+    CppAbi Abi;
 
     bool Verbose;
 };
