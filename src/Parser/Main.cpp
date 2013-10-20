@@ -8,6 +8,8 @@
 #include "Parser.h"
 #include "Interop.h"
 
+namespace CppSharp { namespace Parser {
+
 public ref class ClangParser
 {
 public:
@@ -19,7 +21,7 @@ public:
         using namespace clix;
         std::string File = marshalString<E_UTF8>(Opts->FileName);
 
-        Parser parser(Opts);
+        ::Parser parser(Opts);
         return parser.ParseHeader(File);
     }
 
@@ -30,7 +32,9 @@ public:
         using namespace clix;
         std::string File = marshalString<E_UTF8>(Opts->FileName);
 
-        Parser parser(Opts);
+        ::Parser parser(Opts);
         return parser.ParseLibrary(File);
     }
 };
+
+} }
