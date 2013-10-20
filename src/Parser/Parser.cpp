@@ -480,7 +480,6 @@ Parser::WalkVTableLayout(const clang::VTableLayout& VTLayout)
     return Layout;
 }
 
-
 void Parser::WalkVTable(clang::CXXRecordDecl* RD, CppSharp::AST::Class^ C)
 {
     using namespace clang;

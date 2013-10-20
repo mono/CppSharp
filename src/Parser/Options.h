@@ -6,7 +6,6 @@
 ************************************************************************/
 
 #using <CppSharp.AST.dll>
-#include <vcclr.h>
 using namespace System::Collections::Generic;
 
 public enum struct CppAbi
@@ -80,7 +79,7 @@ public ref struct ParserResult
 {
     ParserResult()
     {
-        Diagnostics = gcnew List<ParserDiagnostic>(); 
+        Diagnostics = gcnew List<ParserDiagnostic>();
     }
 
     ParserResultKind Kind;
