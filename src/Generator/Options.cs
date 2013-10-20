@@ -5,6 +5,11 @@ using System.Text;
 using CppSharp.AST;
 using CppSharp.Generators;
 
+#if !OLD_PARSER
+using CppSharp.Parser;
+using CppAbi = CppSharp.Parser.AST.CppAbi;
+#endif
+
 namespace CppSharp
 {
     public class DriverOptions

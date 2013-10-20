@@ -2,6 +2,10 @@
 using System.Linq;
 using CppSharp.AST;
 
+#if !OLD_PARSER
+using CppAbi = CppSharp.Parser.AST.CppAbi;
+#endif
+
 namespace CppSharp.Passes
 {
     /// <summary>
@@ -125,7 +129,7 @@ namespace CppSharp.Passes
 
         private void FillVTable(Class @class, IList<Method> abstractMethods, Class internalImplementation)
         {
-            switch (Driver.Options.Abi)
+            switch (Driver.Options.Parser.Abi)
             {
                 case CppAbi.Microsoft:
                     CreateVTableMS(@class, abstractMethods, internalImplementation);

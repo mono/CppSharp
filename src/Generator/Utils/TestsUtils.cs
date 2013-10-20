@@ -37,7 +37,7 @@ namespace CppSharp.Utils
                 options.SharedLibraryName += ".dll";
 
             var path = Path.GetFullPath("../../../tests/" + name);
-            options.IncludeDirs.Add(path);
+            options.Parser.IncludeDirs.Add(path);
 
             if (!Directory.Exists(path))
             {
