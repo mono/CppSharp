@@ -26,6 +26,11 @@ namespace CppSharp.Runtime
     public interface ICppMarshal
     {
         /// <summary>
+        /// Gets the native data size for the object.
+        /// </summary>
+        int NativeDataSize { get; }
+
+        /// <summary>
         /// Converts the managed data to unmanaged data.
         /// </summary>/// 
         void MarshalManagedToNative(IntPtr instance);

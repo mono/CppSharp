@@ -361,6 +361,12 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateClassMarshals(Class @class)
         {
+            WriteLine("int CppSharp.Runtime.ICppMarshal.NativeDataSize");
+            WriteStartBraceIndent();
+            WriteLine("get {{ return {0}; }}", @class.Layout.DataSize);
+            WriteCloseBraceIndent();
+            NewLine();
+
             WriteLine("void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)");
             WriteStartBraceIndent();
             WriteCloseBraceIndent();
