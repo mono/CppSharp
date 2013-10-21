@@ -20,17 +20,29 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using CppSharp.Runtime;
 
 namespace Std
 {
+    [StructLayout(LayoutKind.Sequential)]
     public struct String : ICppMarshal
     {
-        public IntPtr Instance;
+#if MSVC || LIBCXX
+        public int _Mysize;
+        public int _Myres;
+#endif
 
-        public String(IntPtr instance)
+        public int Length
         {
-            Instance = instance;
+            get { return (int)_Mysize; }
+        }
+
+        public String(string data)
+        {
+            _Mysize = 0;
+            _Myres = 0;
         }
 
         public static implicit operator string(Std.String str)
@@ -40,7 +52,7 @@ namespace Std
 
         public static implicit operator String(string str)
         {
-            return new String(IntPtr.Zero);
+            return new String(str);
         }
 
         public char this[ulong index]
@@ -49,14 +61,39 @@ namespace Std
             set { }
         }
 
+        public int NativeDataSize { get { return Marshal.SizeOf(this); } }
+
         public void MarshalManagedToNative(IntPtr instance)
         {
-            throw new NotImplementedException();
+            unsafe
+            {
+                var ptr = (String*) instance.ToPointer();
+                ptr->_Mysize = _Mysize;
+                ptr->_Myres = _Myres;
+            }
         }
 
         public void MarshalNativeToManaged(IntPtr instance)
         {
-            throw new NotImplementedException();
+            unsafe
+            {
+                var ptr = (String*) instance.ToPointer();
+                _Mysize = ptr->_Mysize;
+                _Myres = ptr->_Myres;
+            }
+        }
+    }
+
+    public static class ListStringExtensions
+    {
+        public static Std.Vector<Std.String> ToStd(this List<string> list)
+        {
+            var vec = new Std.Vector<Std.String>();
+
+            foreach (var @string in list)
+                vec.Add(new Std.String(@string));
+
+            return vec;
         }
     }
 
