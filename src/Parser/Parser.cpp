@@ -491,6 +491,7 @@ void Parser::WalkVTable(clang::CXXRecordDecl* RD, CppSharp::AST::Class^ C)
     {
     case TargetCXXABI::Microsoft:
     {
+        C->Layout->ABI = CppSharp::AST::CppAbi::Microsoft;
         MicrosoftVFTableContext VTContext(*AST);
 
         auto VFPtrs = VTContext.getVFPtrOffsets(RD);
@@ -512,6 +513,7 @@ void Parser::WalkVTable(clang::CXXRecordDecl* RD, CppSharp::AST::Class^ C)
     }
     case TargetCXXABI::GenericItanium:
     {
+        C->Layout->ABI = CppSharp::AST::CppAbi::Itanium;
         VTableContext VTContext(*AST);
 
         auto& VTLayout = VTContext.getVTableLayout(RD);
