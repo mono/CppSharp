@@ -43,6 +43,10 @@ namespace CppSharp
             lib.RenameNamespace("CppSharp::CppParser", "Parser");
         }
 
+        public void Postprocess(Driver driver, ASTContext lib)
+        {
+        }
+
         public static void Main(string[] args)
         {
 #if CLI
