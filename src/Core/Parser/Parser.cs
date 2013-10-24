@@ -55,7 +55,7 @@ namespace CppSharp
             // TODO: Do multi-threaded parsing of source files
 
             foreach (var source in project.Sources)
-                ParseSourceFile(source, source.Options);
+                ParseSourceFile(source, options);
         }
 
         /// <summary>
