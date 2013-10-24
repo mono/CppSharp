@@ -16,6 +16,24 @@ namespace CppSharp.Utils
             this.kind = kind;
         }
 
+        static string GetTestsDirectory(string name)
+        {
+            var directory = Directory.GetParent(Directory.GetCurrentDirectory());
+
+            while (directory != null)
+            {
+                var path = Path.Combine(directory.FullName, "tests", name);
+
+                if (Directory.Exists(path))
+                    return path;
+
+                directory = directory.Parent;
+            }
+
+            throw new Exception(string.Format(
+                "Tests directory for project '{0}' was not found", name));
+        }
+
         public virtual void Setup(Driver driver)
         {
             var options = driver.Options;
@@ -36,14 +54,9 @@ namespace CppSharp.Utils
             if (System.Type.GetType("Mono.Runtime") == null)
                 options.SharedLibraryName += ".dll";
 
-            var path = Path.GetFullPath("../../../tests/" + name);
-            options.Parser.IncludeDirs.Add(path);
+            var path = Path.GetFullPath(GetTestsDirectory(name));
 
-            if (!Directory.Exists(path))
-            {
-                Console.WriteLine("Path to tests does not exist: {0}", path);
-                return;
-            }
+            options.Parser.IncludeDirs.Add(path);
 
             Console.WriteLine("Looking for tests in: {0}", path);
             var files = Directory.EnumerateFiles(path, "*.h");
