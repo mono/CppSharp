@@ -9,3 +9,7 @@ project "CppSharp.Runtime"
 
   configuration "vs*"
   	location "."
+  	defines { "MSVC" }
+
+  configuration "macosx"
+  	defines { "LIBCXX" }
