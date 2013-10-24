@@ -10,6 +10,13 @@ dofile "Tests.lua"
 -- Setup the LLVM dependency
 dofile "LLVM.lua"
 
+function SetupParser()
+  local c = configuration "vs*"
+    defines { "OLD_PARSER" }
+    links { "CppSharp.Parser" }
+  configuration(c)
+end
+
 solution "CppSharp"
 
   configurations { "Debug", "Release" }
