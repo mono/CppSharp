@@ -95,7 +95,7 @@ namespace CppSharp.Generators.CLI
             IEnumerable<CLITypeReference> typeReferences)
         {
             // Create a new tree of namespaces out of the type references found.
-            var rootNamespace = new Namespace();
+            var rootNamespace = new TranslationUnit();
 
             foreach (var typeRef in typeReferences)
             {
@@ -121,7 +121,7 @@ namespace CppSharp.Generators.CLI
             var typeReferences = typeReferenceCollector.TypeReferences;
             var @namespace = ConvertForwardReferencesToNamespaces(typeReferences);
 
-            GenerateDeclContext(@namespace);
+            GenerateNamespace(@namespace);
         }
 
         public void GenerateDeclContext(DeclarationContext decl)
