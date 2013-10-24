@@ -34,12 +34,29 @@ namespace CppSharp.Utils
                 "Tests directory for project '{0}' was not found", name));
         }
 
+        static string GetOutputDirectory()
+        {
+            var directory = Directory.GetParent(Directory.GetCurrentDirectory());
+
+            while (directory != null)
+            {
+                var path = Path.Combine(directory.FullName, "obj");
+
+                if (Directory.Exists(path))
+                    return directory.FullName;
+
+                directory = directory.Parent;
+            }
+
+            throw new Exception("Could not find tests output directory");
+        }
+
         public virtual void Setup(Driver driver)
         {
             var options = driver.Options;
             options.LibraryName = name;
             options.GeneratorKind = kind;
-            options.OutputDir = "../gen/" + name;
+            options.OutputDir = Path.Combine(GetOutputDirectory(), "gen", name);
             options.SharedLibraryName = name + ".Native";
             options.GenerateLibraryNamespace = true;
             options.CheckSymbols = false;
