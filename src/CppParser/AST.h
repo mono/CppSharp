@@ -300,6 +300,8 @@ struct PreprocessedEntity;
 
 struct CS_API Declaration
 {
+    Declaration();
+
     AccessSpecifier Access;
     DeclarationContext* _Namespace;
     std::string Name;
