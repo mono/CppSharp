@@ -18,13 +18,21 @@ function SetupTestCSharp(name)
   SetupTestProjectsCSharp(name)
 end
 
+function SetupManagedTestProject()
+    kind "SharedLib"
+    language "C#"  
+    flags { "Unsafe" }
+
+    local c = configuration "vs*"
+      location "."
+    configuration(c)
+end
+
 function SetupTestGeneratorProject(name)
   project(name .. ".Gen")
-
+    SetupManagedTestProject()
     kind "ConsoleApp"
-    language "C#"
-    location "."
-
+    
     files { name .. ".cs" }
 
     dependson { name .. ".Native" }
@@ -46,6 +54,7 @@ function SetupTestNativeProject(name)
   project(name .. ".Native")
 
     SetupNativeProject()
+
     kind "SharedLib"
     language "C++"
 
@@ -69,12 +78,8 @@ end
 
 function SetupTestProjectsCSharp(name, file, lib)
   project(name .. ".CSharp")
+    SetupManagedTestProject()
 
-    kind "SharedLib"
-    language "C#"
-    location "."
-    flags { "Unsafe" }
-    
     dependson { name .. ".Gen", name .. ".Native" }
     SetupTestGeneratorBuildEvent(name)
 
@@ -86,23 +91,20 @@ function SetupTestProjectsCSharp(name, file, lib)
     links { "CppSharp.Runtime" }
 
   project(name .. ".Tests.CSharp")
-
-    kind "SharedLib"
-    language "C#"
-    location "."
-    flags { "Unsafe" }
+    SetupManagedTestProject()
 
     files { name .. ".Tests.cs" }
     links { name .. ".CSharp" }
     dependson { name .. ".Native" }
 
     LinkNUnit()
+    links { "CppSharp.Runtime" }
 end
 
 function SetupTestProjectsCLI(name, file, lib)
   project(name .. ".CLI")
-
     SetupNativeProject()
+
     kind "SharedLib"
     language "C++"
     flags { "Managed" }
@@ -120,10 +122,7 @@ function SetupTestProjectsCLI(name, file, lib)
     links { name .. ".Native" }    
 
   project(name .. ".Tests.CLI")
-
-    kind "SharedLib"
-    language "C#"
-    location "."
+    SetupManagedTestProject()
 
     files { name .. ".Tests.cs" }
     links { name .. ".CLI" }
