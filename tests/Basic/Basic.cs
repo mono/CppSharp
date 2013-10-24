@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using CppSharp.AST;
 using CppSharp.Generators;
 using CppSharp.Utils;
@@ -19,13 +21,11 @@ namespace CppSharp.Tests
             lib.SetMethodParameterUsage("Hello", "TestPrimitiveOutRef", 1, ParameterUsage.Out);
         }
 
-        static class Program
+        public static void Main(string[] args)
         {
-            public static void Main(string[] args)
-            {
-                ConsoleDriver.Run(new Basic(GeneratorKind.CLI));
-                ConsoleDriver.Run(new Basic(GeneratorKind.CSharp));
-            }
+            Console.WriteLine(Directory.GetCurrentDirectory());
+            ConsoleDriver.Run(new Basic(GeneratorKind.CLI));
+            ConsoleDriver.Run(new Basic(GeneratorKind.CSharp));
         }
     }
 }

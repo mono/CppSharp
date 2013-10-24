@@ -22,12 +22,9 @@ namespace CppSharp.Tests
 
         }
 
-        static class Program
+        public static void Main(string[] args)
         {
-            public static void Main(string[] args)
-            {
-                ConsoleDriver.Run(new UTF16Tests(GeneratorKind.CSharp));
-            }
+            ConsoleDriver.Run(new UTF16Tests(GeneratorKind.CSharp));
         }
     }
 }

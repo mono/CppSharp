@@ -16,12 +16,9 @@ namespace CppSharp.Tests
             driver.Options.GenerateProperties = true;
         }
 
-        static class Program
+        public static void Main(string[] args)
         {
-            public static void Main(string[] args)
-            {
-                ConsoleDriver.Run(new CSharpTempTests(GeneratorKind.CSharp));
-            }
+            ConsoleDriver.Run(new CSharpTempTests(GeneratorKind.CSharp));
         }
     }
 }
