@@ -16,7 +16,7 @@ namespace CppSharp.Utils
             this.kind = kind;
         }
 
-        static string GetTestsDirectory(string name)
+        public static string GetTestsDirectory(string name)
         {
             var directory = Directory.GetParent(Directory.GetCurrentDirectory());
 
