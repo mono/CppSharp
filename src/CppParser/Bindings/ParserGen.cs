@@ -68,11 +68,9 @@ namespace CppSharp
 
         public static void Main(string[] args)
         {
-#if CLI
             Console.WriteLine("Generating the C++/CLI parser bindings...");
             ConsoleDriver.Run(new ParserGen(GeneratorKind.CLI));
             Console.WriteLine();
-#endif
 
             Console.WriteLine("Generating the C# parser bindings...");
             ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp));
