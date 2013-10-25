@@ -10,9 +10,11 @@ CppSharp is a library that allows you to generate .NET bindings that wrap C/C++ 
 
 ## Binaries
 
-VS2012 32-bit _(updated: September 17th 2013)_:
+VS2012 32-bit:
 
-- [CppSharp_VS2012_183_artifacts.zip](https://dl.dropboxusercontent.com/u/194502/CppSharp/CppSharp_VS2012_183_artifacts.zip)
+- [CppSharp_VS2012_306_artifacts.zip](https://dl.dropboxusercontent.com/u/194502/CppSharp/CppSharp_VS2012_306_artifacts.zip) (_October 25th 2013_) 
+
+- [CppSharp_VS2012_183_artifacts.zip](https://dl.dropboxusercontent.com/u/194502/CppSharp/CppSharp_VS2012_183_artifacts.zip) (_September 17th 2013_)
 
 ## Getting started
 
