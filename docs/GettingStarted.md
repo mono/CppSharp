@@ -20,6 +20,8 @@ source first.
 Building in *Release* is recommended because else the Clang parser will be
 excruciatingly slow.
 
+Last updated to LLVM/Clang revision: `r193383`
+
 ## Generating bindings
 
 Suppose we have the following declarations in a file named `Sample.h` and we

@@ -234,12 +234,10 @@ std::string Parser::GetDeclMangledName(clang::Decl* D, clang::TargetCXXABI ABI,
         llvm_unreachable("Unknown mangling ABI");
         break;
     case TargetCXXABI::GenericItanium:
-       MC.reset(createItaniumMangleContext(*AST, AST->getDiagnostics()));
-       //AST->setCXXABI(CreateItaniumCXXABI(*AST));
+       MC.reset(ItaniumMangleContext::create(*AST, AST->getDiagnostics()));
        break;
     case TargetCXXABI::Microsoft:
-       MC.reset(createMicrosoftMangleContext(*AST, AST->getDiagnostics()));
-       //AST->setCXXABI(CreateMicrosoftCXXABI(*AST));
+       MC.reset(MicrosoftMangleContext::create(*AST, AST->getDiagnostics()));
        break;
     }
 
@@ -518,7 +516,7 @@ void Parser::WalkVTable(clang::CXXRecordDecl* RD, CppSharp::AST::Class^ C)
     case TargetCXXABI::GenericItanium:
     {
         C->Layout->ABI = CppSharp::AST::CppAbi::Itanium;
-        VTableContext VTContext(*AST);
+        ItaniumVTableContext VTContext(*AST);
 
         auto& VTLayout = VTContext.getVTableLayout(RD);
         C->Layout->Layout = WalkVTableLayout(VTLayout);
@@ -2022,7 +2020,7 @@ CppSharp::AST::Declaration^ Parser::WalkDeclaration(clang::Decl* D,
     case Decl::Function:
     {
         FunctionDecl* FD = cast<FunctionDecl>(D);
-        if (!FD->isFirstDeclaration())
+        if (!FD->isFirstDecl())
             break;
 
         // Check for and ignore built-in functions.
