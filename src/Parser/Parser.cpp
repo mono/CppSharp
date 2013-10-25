@@ -33,7 +33,11 @@
 
 //-----------------------------------//
 
-Parser::Parser(ParserOptions^ Opts) : Lib(Opts->ASTContext), Opts(Opts), Index(0)
+Parser::Parser(ParserOptions^ Opts)
+    : Opts(Opts)
+    , Lib(Opts->ASTContext)
+    , Symbols(Opts->SymbolsContext)
+    , Index(0)
 {
 }
 

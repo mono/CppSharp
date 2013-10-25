@@ -72,6 +72,11 @@ namespace CppSharp
         /// Main AST context with translation units for the sources.
         /// </summary>
         public ASTContext ASTContext { get; private set; }
+
+        /// <summary>
+        /// Main symbols context with indexed library symbols.
+        /// </summary>
+        public SymbolContext SymbolsContext { get; private set; }
         
         public Project()
         {

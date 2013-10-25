@@ -17,6 +17,11 @@ namespace CppSharp
         public ASTContext ASTContext { get; private set; }
 
         /// <summary>
+        /// Context with library symbols.
+        /// </summary>
+        public SymbolContext SymbolsContext { get; private set; }
+
+        /// <summary>
         /// Fired when source files are parsed.
         /// </summary>
         public Action<SourceFile, ParserResult> SourceParsed = delegate {};
@@ -29,6 +34,7 @@ namespace CppSharp
         public ClangParser()
         {
             ASTContext = new ASTContext();
+            SymbolsContext = new SymbolContext();
         }
 
         /// <summary>
@@ -36,10 +42,9 @@ namespace CppSharp
         /// </summary>
         public ParserResult ParseSourceFile(SourceFile file, ParserOptions options)
         {
-            //if (options.ASTContext == null)
-                options.ASTContext = ASTContext;
-
+            options.ASTContext = ASTContext;
             options.FileName = file.Path;
+
             var result = Parser.ClangParser.ParseHeader(options);
             SourceParsed(file, result);
 
@@ -63,7 +68,9 @@ namespace CppSharp
         /// </summary>
         public ParserResult ParseLibrary(string file, ParserOptions options)
         {
+            options.SymbolsContext = SymbolsContext;
             options.FileName = file;
+
             var result = Parser.ClangParser.ParseLibrary(options);
             LibraryParsed(file, result);
 
