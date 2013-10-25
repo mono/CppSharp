@@ -12,27 +12,25 @@ using CppAbi = CppSharp.Parser.AST.CppAbi;
 
 namespace CppSharp
 {
-    public class DriverOptions
+    public class DriverOptions : ParserOptions
     {
+        static public bool IsUnixPlatform
+        {
+            get
+            {
+                var platform = Environment.OSVersion.Platform;
+                return platform == PlatformID.Unix || platform == PlatformID.MacOSX;
+            }
+        }
         public DriverOptions()
         {
-            Defines = new List<string>();
-            IncludeDirs = new List<string>();
-            SystemIncludeDirs = new List<string>();
             Headers = new List<string>();
+            Libraries = new List<string>();
 
-            var platform = Environment.OSVersion.Platform;
-            var isUnix = platform == PlatformID.Unix || platform == PlatformID.MacOSX;
-
-            Parser = new ParserOptions
-                {
-                    Abi = isUnix ? CppAbi.Itanium : CppAbi.Microsoft,
-                    MicrosoftMode = !isUnix
-                };
+            Abi = IsUnixPlatform ? CppAbi.Itanium : CppAbi.Microsoft;
+            MicrosoftMode = !IsUnixPlatform;
 
             OutputDir = Directory.GetCurrentDirectory();
-
-            LibraryDirs = new List<string>();
             Libraries = new List<string>();
             CheckSymbols = true;
 
@@ -47,26 +45,19 @@ namespace CppSharp
         }
 
         // General options
-        public bool Verbose;
         public bool Quiet;
         public bool ShowHelpText;
         public bool OutputDebug;
 
         // Parser options
-        public List<string> Defines;
-        public List<string> IncludeDirs;
-        public List<string> SystemIncludeDirs;
         public List<string> Headers;
-
-        public ParserOptions Parser;
         public bool IgnoreParseWarnings;
         public bool IgnoreParseErrors;
 
-        public bool IsItaniumAbi { get { return Parser.Abi == CppAbi.Itanium; } }
-        public bool IsMicrosoftAbi { get { return Parser.Abi == CppAbi.Microsoft; } }
+        public bool IsItaniumAbi { get { return Abi == CppAbi.Itanium; } }
+        public bool IsMicrosoftAbi { get { return Abi == CppAbi.Microsoft; } }
 
         // Library options
-        public List<string> LibraryDirs;
         public List<string> Libraries;
         public bool CheckSymbols;
 

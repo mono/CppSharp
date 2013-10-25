@@ -129,7 +129,7 @@ namespace CppSharp.Passes
 
         private void FillVTable(Class @class, IList<Method> abstractMethods, Class internalImplementation)
         {
-            switch (Driver.Options.Parser.Abi)
+            switch (Driver.Options.Abi)
             {
                 case CppAbi.Microsoft:
                     CreateVTableMS(@class, abstractMethods, internalImplementation);

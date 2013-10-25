@@ -37,7 +37,7 @@ namespace CppSharp.Passes
 
         private void WriteInlinedSymbols()
         {
-            switch (Driver.Options.Parser.Abi)
+            switch (Driver.Options.Abi)
             {
                 case CppAbi.Microsoft:
                     var defBuilder = new StringBuilder("EXPORTS\r\n");

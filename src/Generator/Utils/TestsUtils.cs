@@ -73,7 +73,7 @@ namespace CppSharp.Utils
 
             var path = Path.GetFullPath(GetTestsDirectory(name));
 
-            options.Parser.IncludeDirs.Add(path);
+            options.IncludeDirs.Add(path);
 
             Console.WriteLine("Looking for tests in: {0}", path);
             var files = Directory.EnumerateFiles(path, "*.h");

@@ -127,13 +127,13 @@ namespace CppSharp
                 Defines = Options.Defines,
                 LibraryDirs = Options.LibraryDirs,
 #endif
-                Abi = Options.Parser.Abi,
-                ToolSetToUse = Options.Parser.ToolSetToUse,
-                TargetTriple = Options.Parser.TargetTriple,
-                NoStandardIncludes = Options.Parser.NoStandardIncludes,
-                NoBuiltinIncludes = Options.Parser.NoBuiltinIncludes,
-                MicrosoftMode = Options.Parser.MicrosoftMode,
-                Verbose = Options.Parser.Verbose,
+                Abi = Options.Abi,
+                ToolSetToUse = Options.ToolSetToUse,
+                TargetTriple = Options.TargetTriple,
+                NoStandardIncludes = Options.NoStandardIncludes,
+                NoBuiltinIncludes = Options.NoBuiltinIncludes,
+                MicrosoftMode = Options.MicrosoftMode,
+                Verbose = Options.Verbose,
             };
 
             return options;
@@ -151,7 +151,7 @@ namespace CppSharp
             parser.SourceParsed += OnSourceFileParsed;
             parser.LibraryParsed += OnFileParsed;
 
-            parser.ParseProject(Project, Options.Parser);
+            parser.ParseProject(Project, Options);
 
 #if !OLD_PARSER
             ASTContext = ClangParser.ConvertASTContext(parser.ASTContext);
@@ -167,7 +167,7 @@ namespace CppSharp
             foreach (var library in Options.Libraries)
             {
                 var parser = new ClangParser();
-                var res = parser.ParseLibrary(library, Options.Parser);
+                var res = parser.ParseLibrary(library, Options);
 
                 if (res.Kind != ParserResultKind.Success)
                     continue;
