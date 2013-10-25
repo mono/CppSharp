@@ -30,6 +30,16 @@ void CppSharp::Parser::ParserOptions::Instance::set(System::IntPtr object)
     NativePtr = (::CppSharp::CppParser::ParserOptions*)object.ToPointer();
 }
 
+System::String^ CppSharp::Parser::ParserOptions::FileName::get()
+{
+    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::ParserOptions*)NativePtr)->FileName);
+}
+
+void CppSharp::Parser::ParserOptions::FileName::set(System::String^ value)
+{
+    ((::CppSharp::CppParser::ParserOptions*)NativePtr)->FileName = clix::marshalString<clix::E_UTF8>(value);
+}
+
 System::Collections::Generic::List<System::String^>^ CppSharp::Parser::ParserOptions::IncludeDirs::get()
 {
     auto _tmpIncludeDirs = gcnew System::Collections::Generic::List<System::String^>();
@@ -118,16 +128,6 @@ void CppSharp::Parser::ParserOptions::LibraryDirs::set(System::Collections::Gene
     ((::CppSharp::CppParser::ParserOptions*)NativePtr)->LibraryDirs = _tmpvalue;
 }
 
-System::String^ CppSharp::Parser::ParserOptions::FileName::get()
-{
-    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::ParserOptions*)NativePtr)->FileName);
-}
-
-void CppSharp::Parser::ParserOptions::FileName::set(System::String^ value)
-{
-    ((::CppSharp::CppParser::ParserOptions*)NativePtr)->FileName = clix::marshalString<clix::E_UTF8>(value);
-}
-
 CppSharp::Parser::AST::ASTContext^ CppSharp::Parser::ParserOptions::ASTContext::get()
 {
     return gcnew CppSharp::Parser::AST::ASTContext((::CppSharp::CppParser::AST::ASTContext*)((::CppSharp::CppParser::ParserOptions*)NativePtr)->ASTContext);
@@ -158,6 +158,16 @@ void CppSharp::Parser::ParserOptions::TargetTriple::set(System::String^ value)
     ((::CppSharp::CppParser::ParserOptions*)NativePtr)->TargetTriple = clix::marshalString<clix::E_UTF8>(value);
 }
 
+CppSharp::Parser::AST::CppAbi CppSharp::Parser::ParserOptions::Abi::get()
+{
+    return (CppSharp::Parser::AST::CppAbi)((::CppSharp::CppParser::ParserOptions*)NativePtr)->Abi;
+}
+
+void CppSharp::Parser::ParserOptions::Abi::set(CppSharp::Parser::AST::CppAbi value)
+{
+    ((::CppSharp::CppParser::ParserOptions*)NativePtr)->Abi = (::CppSharp::CppParser::AST::CppAbi)value;
+}
+
 bool CppSharp::Parser::ParserOptions::NoStandardIncludes::get()
 {
     return ((::CppSharp::CppParser::ParserOptions*)NativePtr)->NoStandardIncludes;
@@ -186,16 +196,6 @@ bool CppSharp::Parser::ParserOptions::MicrosoftMode::get()
 void CppSharp::Parser::ParserOptions::MicrosoftMode::set(bool value)
 {
     ((::CppSharp::CppParser::ParserOptions*)NativePtr)->MicrosoftMode = value;
-}
-
-CppSharp::Parser::AST::CppAbi CppSharp::Parser::ParserOptions::Abi::get()
-{
-    return (CppSharp::Parser::AST::CppAbi)((::CppSharp::CppParser::ParserOptions*)NativePtr)->Abi;
-}
-
-void CppSharp::Parser::ParserOptions::Abi::set(CppSharp::Parser::AST::CppAbi value)
-{
-    ((::CppSharp::CppParser::ParserOptions*)NativePtr)->Abi = (::CppSharp::CppParser::AST::CppAbi)value;
 }
 
 bool CppSharp::Parser::ParserOptions::Verbose::get()

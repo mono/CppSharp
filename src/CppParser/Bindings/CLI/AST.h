@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CppSharp.h"
-#include <C:/Development/CppSharp/src/CppParser/AST.h>
+#include <AST.h>
 
 namespace CppSharp
 {

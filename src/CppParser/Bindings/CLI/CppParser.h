@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CppSharp.h"
-#include <C:/Development/CppSharp/src/CppParser/CppParser.h>
+#include <CppParser.h>
 
 namespace CppSharp
 {
@@ -67,6 +67,11 @@ namespace CppSharp
             ParserOptions(System::IntPtr native);
             ParserOptions();
 
+            property System::String^ FileName
+            {
+                System::String^ get();
+                void set(System::String^);
+            }
             property System::Collections::Generic::List<System::String^>^ IncludeDirs
             {
                 System::Collections::Generic::List<System::String^>^ get();
@@ -87,11 +92,6 @@ namespace CppSharp
                 System::Collections::Generic::List<System::String^>^ get();
                 void set(System::Collections::Generic::List<System::String^>^);
             }
-            property System::String^ FileName
-            {
-                System::String^ get();
-                void set(System::String^);
-            }
             property CppSharp::Parser::AST::ASTContext^ ASTContext
             {
                 CppSharp::Parser::AST::ASTContext^ get();
@@ -107,6 +107,11 @@ namespace CppSharp
                 System::String^ get();
                 void set(System::String^);
             }
+            property CppSharp::Parser::AST::CppAbi Abi
+            {
+                CppSharp::Parser::AST::CppAbi get();
+                void set(CppSharp::Parser::AST::CppAbi);
+            }
             property bool NoStandardIncludes
             {
                 bool get();
@@ -121,11 +126,6 @@ namespace CppSharp
             {
                 bool get();
                 void set(bool);
-            }
-            property CppSharp::Parser::AST::CppAbi Abi
-            {
-                CppSharp::Parser::AST::CppAbi get();
-                void set(CppSharp::Parser::AST::CppAbi);
             }
             property bool Verbose
             {
