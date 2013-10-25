@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using CppSharp.AST;
 using CppSharp.Generators;
 
@@ -13,6 +14,23 @@ namespace CppSharp
             Kind = kind;
         }
 
+        static string GetSourceDirectory()
+        {
+            var directory = Directory.GetParent(Directory.GetCurrentDirectory());
+
+            while (directory != null)
+            {
+                var path = Path.Combine(directory.FullName, "src");
+
+                if (Directory.Exists(path))
+                    return path;
+
+                directory = directory.Parent;
+            }
+
+            throw new Exception("Could not find sources directory");
+        }
+
         public void Setup(Driver driver)
         {
             var options = driver.Options;
@@ -20,7 +38,8 @@ namespace CppSharp
             options.GeneratorKind = Kind;
             options.Headers.Add("AST.h");
             options.Headers.Add("CppParser.h");
-            options.IncludeDirs.Add("../../../../src/CppParser/");
+            var basePath = Path.Combine(GetSourceDirectory(), "CppParser");
+            options.IncludeDirs.Add(basePath);
             options.Libraries.Add("CppSharp.CppParser.lib");
             options.LibraryDirs.Add(".");
             options.OutputDir = "../../../../src/CppParser/Bindings/";
