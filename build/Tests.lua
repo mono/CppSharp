@@ -1,8 +1,18 @@
 -- Tests/examples helpers
 
 function SetupExampleProject()
-  SetupNativeProjects()
-  location (path.join(builddir, "deps"))
+  kind "ConsoleApp"
+  language "C#"  
+  debugdir "."
+  
+  files { "**.cs", "./*.lua" }
+  links { "CppSharp.AST", "CppSharp.Generator" }
+  SetupParser()
+
+  location (path.join(builddir, "projects"))
+
+  configuration "vs*"
+    location "."
 end
 
 function SetupTestProject(name, file, lib)
@@ -41,8 +51,9 @@ function SetupTestGeneratorProject(name)
     {
       "CppSharp.AST",
       "CppSharp.Generator",
-      "CppSharp.Parser",
     }
+
+    SetupParser()
 end
 
 function SetupTestGeneratorBuildEvent(name)

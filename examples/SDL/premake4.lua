@@ -1,13 +1,5 @@
 project "SDL"
-
-  kind "ConsoleApp"
-  language "C#"
-  location "."
-  debugdir "."
-  
-  files { "**.cs", "./*.lua" }
-
-  links { "CppSharp.AST", "CppSharp.Generator" }
+  SetupExampleProject()
 
 if config.ExampleTests then
 
