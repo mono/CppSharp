@@ -12,6 +12,8 @@ project "CppSharp.Generator.Tests"
     depsdir .. "/NSubstitute"
   }
   
+  SetupParser()
+
   links
   {
     "System",
@@ -19,7 +21,6 @@ project "CppSharp.Generator.Tests"
     "CppSharp",
     "CppSharp.AST",
     "CppSharp.Generator",
-    ParserLib,
     "NUnit.Framework",
     "NSubstitute"
   }
