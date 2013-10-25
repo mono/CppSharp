@@ -27,7 +27,7 @@ namespace CppSharp
         public Action<SourceFile, ParserResult> SourceParsed = delegate {};
 
         /// <summary>
-        /// Fire when library files are parsed.
+        /// Fired when library files are parsed.
         /// </summary>
         public Action<string, ParserResult> LibraryParsed = delegate {};
 
