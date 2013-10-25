@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
-using CppSharp;
 using CppSharp.AST;
+using CppSharp.Utils;
 
-namespace Generator.Tests
+namespace CppSharp.Generator.Tests
 {
     public class HeaderTestFixture
     {
@@ -11,24 +11,12 @@ namespace Generator.Tests
         protected DriverOptions Options;
         protected ASTContext AstContext;
 
-        private const string TestsDirectory = @"..\..\..\tests\Native";
-
-        public HeaderTestFixture()
-        {
-
-        }
-
         protected void ParseLibrary(string file)
-        {
-            ParseLibrary(TestsDirectory, file);
-        }
-
-        protected void ParseLibrary(string dir, string file)
         {
             Options = new DriverOptions();
 
-            var path = Path.Combine(Directory.GetCurrentDirectory(), dir);
-            Options.IncludeDirs.Add(Path.GetFullPath(path));
+            var testsPath = LibraryTest.GetTestsDirectory("Native");
+            Options.IncludeDirs.Add(testsPath);
             Options.Headers.Add(file);
 
             Driver = new Driver(Options, new TextDiagnosticPrinter());

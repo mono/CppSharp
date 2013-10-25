@@ -1,8 +1,7 @@
 ﻿using System.Linq;
-using CppSharp;
 using CppSharp.AST;
 
-namespace Generator.Tests
+namespace CppSharp.Generator.Tests
 {
     public static class LibraryQueryExtensions
     {

@@ -3,7 +3,7 @@ using CppSharp.Generators.CLI;
 using CppSharp.Types;
 using NUnit.Framework;
 
-namespace Generator.Tests
+namespace CppSharp.Generator.Tests
 {
     [TypeMap("FnPtr3")]
     public class CLITypePrinterTypeMap : TypeMap

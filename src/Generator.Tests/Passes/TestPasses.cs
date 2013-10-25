@@ -1,8 +1,7 @@
-﻿using CppSharp;
-using CppSharp.Passes;
+﻿using CppSharp.Passes;
 using NUnit.Framework;
 
-namespace Generator.Tests.Passes
+namespace CppSharp.Generator.Tests.Passes
 {
     [TestFixture]
     public class TestPasses : HeaderTestFixture
