@@ -946,6 +946,7 @@ CppSharp::AST::DeclarationContext^ Parser::GetNamespace(clang::Decl* D,
             continue;
         }
         case Decl::ClassTemplateSpecialization:
+        case Decl::ClassTemplatePartialSpecialization:
         {
             // FIXME: Ignore ClassTemplateSpecialization namespaces...
             // We might be able to translate these to C# nested types.
