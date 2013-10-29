@@ -858,6 +858,7 @@ namespace CppSharp.Generators.CSharp
                     var parameters = new List<Parameter> { param };
                     GenerateInternalFunctionCall(function, parameters); 
                 }
+                WriteCloseBraceIndent();
             }
             else if (decl is Field)
             {
@@ -878,9 +879,9 @@ namespace CppSharp.Generators.CSharp
                     Helpers.SafeIdentifier(field.OriginalName), marshal.Context.Return);
 
                 WriteLine(";");
+                WriteCloseBraceIndent();
             }
 
-            WriteCloseBraceIndent();
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
