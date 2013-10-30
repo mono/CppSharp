@@ -545,7 +545,7 @@ namespace CppSharp.Generators.CLI
 
         private bool GenerateClassConstructorBase(Class @class, bool isIntPtr, Method method = null)
         {
-            var hasBase = @class.HasBase && !@class.Bases[0].Class.Ignore;
+            var hasBase = @class.HasBase && @class.Bases[0].IsClass && !@class.Bases[0].Class.Ignore;
             if (!hasBase)
                 return false;
 
