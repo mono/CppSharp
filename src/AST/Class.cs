@@ -213,7 +213,7 @@ namespace CppSharp.AST
         public Method GetRootBaseMethod(Method @override, bool onlyFirstBase = false)
         {
             return (from @base in Bases
-                    where !onlyFirstBase || !@base.Class.IsInterface
+                    where @base.IsClass && (!onlyFirstBase || !@base.Class.IsInterface)
                     let baseMethod = (
                         from method in @base.Class.Methods
                         where

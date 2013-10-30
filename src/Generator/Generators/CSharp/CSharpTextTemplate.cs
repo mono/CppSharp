@@ -716,6 +716,7 @@ namespace CppSharp.Generators.CSharp
             {
                 bases.AddRange(
                     from @base in @class.Bases
+                    where @base.IsClass
                     select QualifiedIdentifier(@base.Class));
             }
 
