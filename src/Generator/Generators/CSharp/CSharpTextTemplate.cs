@@ -802,6 +802,11 @@ namespace CppSharp.Generators.CSharp
         private void GeneratePropertySetter<T>(QualifiedType returnType, T decl, Class @class)
             where T : Declaration, ITypedDecl
         {
+            if (!(decl is Function || decl is Field) )
+            {
+                return;
+            }
+
             PushBlock(CSharpBlockKind.Method);
             WriteLine("set");
 
