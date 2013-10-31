@@ -213,6 +213,8 @@ namespace CppSharp
                 TranslationUnitPasses.AddPass(new MultipleInheritancePass());
                 TranslationUnitPasses.AddPass(new ParamTypeToInterfacePass());
             }
+            if (Options.GenerateVirtualTables)
+                TranslationUnitPasses.AddPass(new CheckVTableComponentsPass());
             if (Options.GenerateProperties)
                 TranslationUnitPasses.AddPass(new GetterSetterToPropertyAdvancedPass());
         }
