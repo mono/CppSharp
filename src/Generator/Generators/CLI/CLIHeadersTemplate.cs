@@ -371,7 +371,7 @@ namespace CppSharp.Generators.CLI
 
                 if (!baseClass.IsValueType || baseClass.Ignore)
                 {
-                    Console.WriteLine("Ignored base class of value type '{0}'",
+                    Log.EmitMessage("Ignored base class of value type '{0}'",
                         baseClass.Name);
                     continue;
                 }
@@ -612,7 +612,7 @@ namespace CppSharp.Generators.CLI
             }
             else
             {
-                Console.WriteLine("Unhandled typedef type: {0}", typedef);
+                Log.EmitMessage("Unhandled typedef type: {0}", typedef);
             }
 
             return false;

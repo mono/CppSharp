@@ -23,7 +23,7 @@ namespace CppSharp.Passes
             if (decl.IsDependent)
             {
                 decl.ExplicityIgnored = true;
-                Console.WriteLine("Decl '{0}' was ignored due to dependent context",
+                Log.EmitMessage("Decl '{0}' was ignored due to dependent context",
                     decl.Name);
             }
 
@@ -43,7 +43,7 @@ namespace CppSharp.Passes
 
             field.ExplicityIgnored = true;
 
-            Console.WriteLine("Field '{0}' was ignored due to {1} type",
+            Log.EmitMessage("Field '{0}' was ignored due to {1} type",
                 field.Name, msg);
 
             return true;
@@ -60,7 +60,7 @@ namespace CppSharp.Passes
             if (HasInvalidType(ret.Type, out msg))
             {
                 function.ExplicityIgnored = true;
-                Console.WriteLine("Function '{0}' was ignored due to {1} return decl",
+                Log.EmitMessage("Function '{0}' was ignored due to {1} return decl",
                     function.Name, msg);
                 return false;
             }
@@ -70,7 +70,7 @@ namespace CppSharp.Passes
                 if (HasInvalidDecl(param, out msg))
                 {
                     function.ExplicityIgnored = true;
-                    Console.WriteLine("Function '{0}' was ignored due to {1} param",
+                    Log.EmitMessage("Function '{0}' was ignored due to {1} param",
                         function.Name, msg);
                     return false;
                 }
@@ -78,7 +78,7 @@ namespace CppSharp.Passes
                 if (HasInvalidType(param.Type, out msg))
                 {
                     function.ExplicityIgnored = true;
-                    Console.WriteLine("Function '{0}' was ignored due to {1} param",
+                    Log.EmitMessage("Function '{0}' was ignored due to {1} param",
                         function.Name, msg);
                     return false;
                 }
@@ -182,7 +182,7 @@ namespace CppSharp.Passes
             if (HasInvalidType(typedef.Type, out msg))
             {
                 typedef.ExplicityIgnored = true;
-                Console.WriteLine("Typedef '{0}' was ignored due to {1} type",
+                Log.EmitMessage("Typedef '{0}' was ignored due to {1} type",
                     typedef.Name, msg);
                 return false;
             }
@@ -199,7 +199,7 @@ namespace CppSharp.Passes
             if (HasInvalidDecl(property, out msg))
             {
                 property.ExplicityIgnored = true;
-                Console.WriteLine("Property '{0}' was ignored due to {1} decl",
+                Log.EmitMessage("Property '{0}' was ignored due to {1} decl",
                     property.Name, msg);
                 return false;
             }
@@ -207,7 +207,7 @@ namespace CppSharp.Passes
             if (HasInvalidType(property.Type, out msg))
             {
                 property.ExplicityIgnored = true;
-                Console.WriteLine("Property '{0}' was ignored due to {1} type",
+                Log.EmitMessage("Property '{0}' was ignored due to {1} type",
                     property.Name, msg);
                 return false;
             }
@@ -215,7 +215,7 @@ namespace CppSharp.Passes
             if (property.GetMethod != null && !VisitFunctionDecl(property.GetMethod))
             {
                 property.ExplicityIgnored = true;
-                Console.WriteLine("Property '{0}' was ignored due to ignored getter",
+                Log.EmitMessage("Property '{0}' was ignored due to ignored getter",
                                   property.Name, msg);
                 return false;
             }
@@ -223,7 +223,7 @@ namespace CppSharp.Passes
             if (property.SetMethod != null && !VisitFunctionDecl(property.SetMethod))
             {
                 property.ExplicityIgnored = true;
-                Console.WriteLine("Property '{0}' was ignored due to ignored setter",
+                Log.EmitMessage("Property '{0}' was ignored due to ignored setter",
                                   property.Name, msg);
                 return false;
             }
@@ -240,7 +240,7 @@ namespace CppSharp.Passes
             if (HasInvalidDecl(variable, out msg))
             {
                 variable.ExplicityIgnored = true;
-                Console.WriteLine("Variable '{0}' was ignored due to {1} decl",
+                Log.EmitMessage("Variable '{0}' was ignored due to {1} decl",
                     variable.Name, msg);
                 return false;
             }
@@ -248,7 +248,7 @@ namespace CppSharp.Passes
             if (HasInvalidType(variable.Type, out msg))
             {
                 variable.ExplicityIgnored = true;
-                Console.WriteLine("Variable '{0}' was ignored due to {1} type",
+                Log.EmitMessage("Variable '{0}' was ignored due to {1} type",
                     variable.Name, msg);
                 return false;
             }
@@ -265,7 +265,7 @@ namespace CppSharp.Passes
             if (HasInvalidDecl(@event, out msg))
             {
                 @event.ExplicityIgnored = true;
-                Console.WriteLine("Event '{0}' was ignored due to {1} decl",
+                Log.EmitMessage("Event '{0}' was ignored due to {1} decl",
                     @event.Name, msg);
                 return false;
             }
@@ -275,7 +275,7 @@ namespace CppSharp.Passes
                 if (HasInvalidDecl(param, out msg))
                 {
                     @event.ExplicityIgnored = true;
-                    Console.WriteLine("Event '{0}' was ignored due to {1} param",
+                    Log.EmitMessage("Event '{0}' was ignored due to {1} param",
                         @event.Name, msg);
                     return false;
                 }
@@ -283,7 +283,7 @@ namespace CppSharp.Passes
                 if (HasInvalidType(param.Type, out msg))
                 {
                     @event.ExplicityIgnored = true;
-                    Console.WriteLine("Event '{0}' was ignored due to {1} param",
+                    Log.EmitMessage("Event '{0}' was ignored due to {1} param",
                         @event.Name, msg);
                     return false;
                 }

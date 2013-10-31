@@ -141,6 +141,7 @@ namespace CppSharp
         public void Emit(DiagnosticInfo info)
         {
             Console.WriteLine(info.Message);
+            System.Diagnostics.Debug.WriteLine(info.Message);
         }
     }
 }
