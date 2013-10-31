@@ -32,7 +32,7 @@ namespace CppSharp
 
             OutputDir = Directory.GetCurrentDirectory();
             Libraries = new List<string>();
-            CheckSymbols = true;
+            CheckSymbols = false;
 
             GeneratorKind = GeneratorKind.CSharp;
             GenerateLibraryNamespace = true;
