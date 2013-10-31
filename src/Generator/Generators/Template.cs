@@ -216,6 +216,10 @@ namespace CppSharp.Generators
         public Driver Driver { get; private set; }
         public DriverOptions Options { get; private set; }
         public TranslationUnit TranslationUnit { get; private set; }
+        public IDiagnosticConsumer Log
+        {
+            get { return Driver.Diagnostics; }
+        }
 
         public Block RootBlock { get; private set; }
         public Block ActiveBlock { get; private set; }

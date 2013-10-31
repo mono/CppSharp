@@ -51,7 +51,7 @@ namespace CppSharp.Passes
 
             @class.Methods.Add(method);
 
-            Console.WriteLine("Static method: {0}::{1}", @class.Name,
+            Log.EmitMessage("Static method: {0}::{1}", @class.Name,
                 function.Name);
 
             return true;

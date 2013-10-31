@@ -11,6 +11,11 @@ namespace CppSharp.Passes
     {
         public Driver Driver { get; set; }
         public ASTContext AstContext { get; set; }
+        
+        public IDiagnosticConsumer Log
+        {
+            get { return Driver.Diagnostics; }
+        }
 
         public virtual bool VisitLibrary(ASTContext context)
         {

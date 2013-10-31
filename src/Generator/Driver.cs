@@ -272,26 +272,27 @@ namespace CppSharp
             var driver = new Driver(options, new TextDiagnosticPrinter());
             library.Setup(driver);
             driver.Setup();
+            var Log = driver.Diagnostics;
 
             if (!options.Quiet)
-                Console.WriteLine("Parsing libraries...");
+                Log.EmitMessage("Parsing libraries...");
 
             if (!driver.ParseLibraries())
                 return;
 
             if (!options.Quiet)
-                Console.WriteLine("Indexing library symbols...");
+                Log.EmitMessage("Indexing library symbols...");
 
             driver.Symbols.IndexSymbols();
 
-            if (!options.Quiet) 
-                Console.WriteLine("Parsing code...");
+            if (!options.Quiet)
+                Log.EmitMessage("Parsing code...");
 
             if (!driver.ParseCode())
                 return;
 
             if (!options.Quiet)
-                Console.WriteLine("Processing code...");
+                Log.EmitMessage("Processing code...");
 
             library.Preprocess(driver, driver.ASTContext);
 
@@ -301,7 +302,7 @@ namespace CppSharp
             library.Postprocess(driver, driver.ASTContext);
 
             if (!options.Quiet)
-                Console.WriteLine("Generating code...");
+                Log.EmitMessage("Generating code...");
 
             var outputs = driver.GenerateCode();
 
