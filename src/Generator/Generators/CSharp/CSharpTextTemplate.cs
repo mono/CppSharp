@@ -1370,8 +1370,12 @@ namespace CppSharp.Generators.CSharp
 
         public string GetVTableMethodDelegateName(Method method)
         {
-            // trim '@' (if any) because '@' is valid only as the first symbol
-            return string.Format("_{0}Delegate", GetFunctionIdentifier(method).Trim('@'));
+            var nativeId = GetFunctionNativeIdentifier(method);
+
+            // Trim '@' (if any) because '@' is valid only as the first symbol.
+            nativeId = nativeId.Trim('@');
+
+            return string.Format("_{0}Delegate", nativeId);
         }
 
         public void GenerateVTablePointers(Class @class)

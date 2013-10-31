@@ -15,6 +15,9 @@ public:
     Foo();
     virtual int vfoo();
     virtual int vbar();
+
+    virtual int append();
+    virtual int append(int a);
 };
 
 DLL_API int FooCallFoo(Foo* foo);
