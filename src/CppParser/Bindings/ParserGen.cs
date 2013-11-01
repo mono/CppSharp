@@ -5,6 +5,9 @@ using CppSharp.Generators;
 
 namespace CppSharp
 {
+    /// <summary>
+    /// Generates C# and C++/CLI bindings for the CppSharp.CppParser project.
+    /// </summary>
     class ParserGen : ILibrary
     {
         private readonly GeneratorKind Kind;
