@@ -55,7 +55,7 @@ providing an AST (Abstract Syntax Tree) of the code, ready to be consumed
 by the generator.
 
 This is done in Parser.cpp, we walk the AST provided by Clang and mirror
-it in a .NET-friendly way. Most of this code is pretty straigtforward if
+it in a .NET-friendly way. Most of this code is pretty straightforward if
 you are familiar how Clang represents C++ code in AST nodes.
 
 Recommended Clang documentation: [http://clang.llvm.org/docs/InternalsManual.html](http://clang.llvm.org/docs/InternalsManual.html "Clang Internals")
@@ -69,7 +69,7 @@ Different target languages provide different features, so each generator needs t
 process the declarations in certain ways to provide a good mapping to the target
 language.
 
-Aditionally some of it can be provided directly in the native source
+Additionally some of it can be provided directly in the native source
 code, by annotating the declarations with custom attributes.
  
 ## Runtime
@@ -106,7 +106,7 @@ implemented with an FFI (foreign function interface) in the target language VM
 virtual machine). In .NET this is done via the P/Invoke system.
 
 
-4. Similiar Tools
+4. Similar Tools
 =================
 
 * Sharppy - .NET bindings generator for unmanaged C++

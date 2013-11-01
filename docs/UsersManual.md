@@ -117,7 +117,7 @@ Special cases to be aware of:
 
 ### Variadic arguments (TODO)
 
-C/C++ variadic arguments need careful handling because they are not contrained
+C/C++ variadic arguments need careful handling because they are not constrained
 to be of the same type. .NET provides two types of variadic arguments support:
 
 #### C# params-style
