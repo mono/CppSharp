@@ -536,7 +536,7 @@ namespace CppSharp.Generators.CSharp
 
             TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
 
-            var retParam = new Parameter { QualifiedType = function.ReturnType };
+            var retParam = new Parameter { QualifiedType = function.OriginalReturnType };
             retType = retParam.CSharpType(TypePrinter);
 
             var method = function as Method;
@@ -1285,8 +1285,7 @@ namespace CppSharp.Generators.CSharp
                 marshals.Add(marshal.Context.Return);
             }
 
-            var hasReturn = !method.ReturnType.Type.IsPrimitiveType(PrimitiveType.Void)
-                && !method.HasIndirectReturnTypeParameter;
+            var hasReturn = !method.OriginalReturnType.Type.IsPrimitiveType(PrimitiveType.Void);
 
             if (hasReturn)
                 Write("var _ret = ");
@@ -1299,8 +1298,6 @@ namespace CppSharp.Generators.CSharp
             {
                 InvokeProperty(method, marshals);
             }
-
-            // TODO: Handle hidden structure return types.
 
             if (hasReturn)
             {
@@ -1319,7 +1316,7 @@ namespace CppSharp.Generators.CSharp
                 };
 
                 var marshal = new CSharpMarshalManagedToNativePrinter(ctx);
-                method.ReturnType.Visit(marshal);
+                method.OriginalReturnType.Visit(marshal);
 
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                     Write(marshal.Context.SupportBefore);
