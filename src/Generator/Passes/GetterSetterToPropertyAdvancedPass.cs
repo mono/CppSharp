@@ -139,8 +139,9 @@ namespace CppSharp.Passes
             TagType tagType = type.Type as TagType;
             if (tagType != null)
                 return type.Type;
-            if (!type.Qualifiers.IsConst)
-                return type.Type;
+            // TODO: we should normally check pointer types for const; 
+            // however, there's some bug, probably in the parser, that returns IsConst = false for "const Type& arg"
+            // so skip the check for the time being
             PointerType pointerType = type.Type as PointerType;
             return pointerType != null ? pointerType.Pointee : type.Type;
         }

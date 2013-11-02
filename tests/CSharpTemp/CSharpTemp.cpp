@@ -95,3 +95,13 @@ long P::prop()
 {
     return m_property + 100;
 }
+
+ComplexType P::complexType()
+{
+    return m_complexType;
+}
+
+void P::setComplexType(ComplexType value)
+{
+    m_complexType = value;
+}
