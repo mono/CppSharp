@@ -6583,6 +6583,7 @@ regerminate
 regild
 regionalize
 regird
+register
 registrate
 regive
 regiven
