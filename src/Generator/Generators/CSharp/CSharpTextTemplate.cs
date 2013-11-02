@@ -1702,7 +1702,7 @@ namespace CppSharp.Generators.CSharp
 
         public void GenerateMethod(Method method, Class @class)
         {
-            PushBlock(CSharpBlockKind.Method);
+            PushBlock(CSharpBlockKind.Method, method);
             GenerateDeclarationCommon(method);
 
             if (method.ExplicitInterfaceImpl == null)
