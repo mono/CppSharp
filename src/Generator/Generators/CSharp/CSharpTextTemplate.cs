@@ -1245,11 +1245,21 @@ namespace CppSharp.Generators.CSharp
             NewLine();
         }
 
-        private void GenerateVTableClassSetupCall(Class @class)
+        private void GenerateVTableClassSetupCall(Class @class, bool addPointerGuard = false)
         {
             var entries = GetVTableMethodEntries(@class);
             if (Options.GenerateVirtualTables && @class.IsDynamic && entries.Count != 0)
+            {
+                // called from internal ctors which may have been passed an IntPtr.Zero
+                if (addPointerGuard)
+                {
+                    WriteLine("if ({0} != global::System.IntPtr.Zero)", Helpers.InstanceIdentifier);
+                    PushIndent();
+                }
                 WriteLine("SetupVTables({0});", Generator.GeneratedIdentifier("Instance"));
+                if (addPointerGuard)
+                    PopIndent();
+            }
         }
 
         private void GenerateVTableManagedCall(Method method)
@@ -1613,7 +1623,7 @@ namespace CppSharp.Generators.CSharp
                 if (ShouldGenerateClassNativeField(@class))
                 {
                     WriteLine("{0} = native;", Helpers.InstanceIdentifier);
-                    GenerateVTableClassSetupCall(@class);
+                    GenerateVTableClassSetupCall(@class, true);
                 }
             }
             else
