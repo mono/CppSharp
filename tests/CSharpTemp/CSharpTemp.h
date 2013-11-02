@@ -86,10 +86,10 @@ public:
     virtual long prop();
 };
 
-class ComplexType
+class DLL_API ComplexType
 {
 public:
-    int check;
+    int check();
 };
 
 class DLL_API P : Proprietor
@@ -99,7 +99,7 @@ public:
     virtual long prop();
 
     ComplexType complexType();
-    void setComplexType(ComplexType value);
+    void setComplexType(const ComplexType& value);
 
 private:
     ComplexType m_complexType;

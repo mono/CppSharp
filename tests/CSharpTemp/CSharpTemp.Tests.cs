@@ -76,8 +76,7 @@ public class CSharpTempTests
         Assert.That(p.prop, Is.EqualTo(150));
 
         ComplexType complexType = new ComplexType();
-        complexType.check = 5;
         p.complexType = complexType;
-        Assert.That(p.complexType.check, Is.EqualTo(5));
+        Assert.That(p.complexType.check(), Is.EqualTo(5));
     }
 }
