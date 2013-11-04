@@ -68,7 +68,7 @@ namespace CppSharp.Passes
 
             @interface.Methods.AddRange(
                 from m in @base.Methods
-                where !m.IsConstructor && !m.IsDestructor && !m.IsStatic && !m.Ignore
+                where !m.IsConstructor && !m.IsDestructor && !m.IsStatic && !m.Ignore && !m.IsOperator
                 select new Method(m) { Namespace = @interface });
 
             @interface.Properties.AddRange(

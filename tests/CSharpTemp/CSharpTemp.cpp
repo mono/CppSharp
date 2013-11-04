@@ -46,6 +46,30 @@ Foo& Bar::operator[](int i)
     return m_foo;
 }
 
+Bar Bar::operator *()
+{
+    return *this;
+}
+
+const Bar& Bar::operator *(int m)
+{
+    index *= m;
+    return *this;
+}
+
+const Bar& Bar::operator ++()
+{
+    ++index;
+    return *this;
+}
+
+Bar Bar::operator ++(int i)
+{
+    Bar bar = *this;
+    index++;
+    return bar;
+}
+
 Baz::Nested::operator int() const
 {
     return 300;

@@ -31,8 +31,13 @@ public:
     int method();
     const Foo& operator[](int i) const;
     Foo& operator[](int i);
+    Bar operator*();
+    const Bar& operator*(int m);
+    const Bar& operator++();
+    Bar operator++(int i);
 
 private:
+    int index;
     Foo m_foo;
 };
 

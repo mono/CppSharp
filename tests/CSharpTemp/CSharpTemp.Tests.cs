@@ -1,5 +1,4 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 using CSharpTemp;
 using NUnit.Framework;
 using Foo = CSharpTemp.Foo;
@@ -8,7 +7,7 @@ using Foo = CSharpTemp.Foo;
 public class CSharpTempTests
 {
     [Test]
-    public unsafe void TestIndexer()
+    public void TestIndexer()
     {
         var foo = new Foo();
 
