@@ -1,5 +1,4 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 using CSharpTemp;
 using NUnit.Framework;
 using Foo = CSharpTemp.Foo;
@@ -8,7 +7,7 @@ using Foo = CSharpTemp.Foo;
 public class CSharpTempTests
 {
     [Test]
-    public unsafe void TestIndexer()
+    public void TestIndexer()
     {
         var foo = new Foo();
 
@@ -74,5 +73,9 @@ public class CSharpTempTests
         Assert.That(p.value, Is.EqualTo(30));
         p.prop = 50;
         Assert.That(p.prop, Is.EqualTo(150));
+
+        ComplexType complexType = new ComplexType();
+        p.complexType = complexType;
+        Assert.That(p.complexType.check(), Is.EqualTo(5));
     }
 }

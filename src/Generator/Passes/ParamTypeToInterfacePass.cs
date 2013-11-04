@@ -1,4 +1,5 @@
-﻿using CppSharp.AST;
+﻿using System.Linq;
+using CppSharp.AST;
 
 namespace CppSharp.Passes
 {
@@ -6,22 +7,24 @@ namespace CppSharp.Passes
     {
         public override bool VisitFunctionDecl(Function function)
         {
-            if (function.HasIndirectReturnTypeParameter)
+            if (!function.IsOperator)
             {
-                var parameter = function.Parameters.Find(p => p.Kind == ParameterKind.IndirectReturnType);
-                parameter.QualifiedType = GetInterfaceType(parameter.QualifiedType);
-            }
-            else
-            {
-                function.ReturnType = GetInterfaceType(function.ReturnType);
+                if (function.HasIndirectReturnTypeParameter)
+                {
+                    var parameter = function.Parameters.Find(p => p.Kind == ParameterKind.IndirectReturnType);
+                    parameter.QualifiedType = GetInterfaceType(parameter.QualifiedType);
+                }
+                else
+                {
+                    function.ReturnType = GetInterfaceType(function.ReturnType);
+                }
+                foreach (Parameter parameter in function.Parameters.Where(
+                    p => p.Kind != ParameterKind.IndirectReturnType))
+                {
+                    parameter.QualifiedType = GetInterfaceType(parameter.QualifiedType);
+                }
             }
             return base.VisitFunctionDecl(function);
-        }
-
-        public override bool VisitParameterDecl(Parameter parameter)
-        {
-            parameter.QualifiedType = GetInterfaceType(parameter.QualifiedType);
-            return base.VisitParameterDecl(parameter);
         }
 
         private static QualifiedType GetInterfaceType(QualifiedType type)

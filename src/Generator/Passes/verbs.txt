@@ -6583,6 +6583,7 @@ regerminate
 regild
 regionalize
 regird
+register
 registrate
 regive
 regiven
@@ -7209,6 +7210,7 @@ rettore
 rettorn
 retune
 returf
+return
 retwine
 retwist
 retype

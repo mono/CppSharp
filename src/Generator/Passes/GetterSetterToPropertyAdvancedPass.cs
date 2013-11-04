@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using CppSharp.AST;
+using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Passes
 {
@@ -94,7 +95,8 @@ namespace CppSharp.Passes
                     {
                         string name = GetPropertyName(getter.Name);
                         if (string.Compare(name, afterSet, StringComparison.OrdinalIgnoreCase) == 0 &&
-                            getter.ReturnType == setter.Parameters[0].QualifiedType &&
+                            GetUnderlyingType(getter.OriginalReturnType).Equals(
+                                GetUnderlyingType(setter.Parameters[0].QualifiedType)) &&
                             !type.Methods.Any(
                                 m =>
                                     m != getter &&
@@ -132,6 +134,18 @@ namespace CppSharp.Passes
             }
         }
 
+        private static Type GetUnderlyingType(QualifiedType type)
+        {
+            TagType tagType = type.Type as TagType;
+            if (tagType != null)
+                return type.Type;
+            // TODO: we should normally check pointer types for const; 
+            // however, there's some bug, probably in the parser, that returns IsConst = false for "const Type& arg"
+            // so skip the check for the time being
+            PointerType pointerType = type.Type as PointerType;
+            return pointerType != null ? pointerType.Pointee : type.Type;
+        }
+
         private static void GenerateProperty(DeclarationContext context, Method getter, Method setter = null)
         {
             Class type = (Class) context;
@@ -142,13 +156,14 @@ namespace CppSharp.Passes
                 Property property = new Property();
                 property.Name = GetPropertyName(getter.Name);
                 property.Namespace = type;
-                property.QualifiedType = getter.ReturnType;
+                property.QualifiedType = getter.OriginalReturnType;
                 if (getter.IsOverride || (setter != null && setter.IsOverride))
                 {
                     Property baseVirtualProperty = type.GetRootBaseProperty(property);
                     if (baseVirtualProperty.SetMethod == null)
                         setter = null;
-                    foreach (Method method in type.Methods.Where(m => m.Name == property.Name && m.Parameters.Count > 0))
+                    foreach (Method method in type.Methods.Where(m => m.Name == property.Name &&
+                        m.Parameters.Any(p => p.Kind != ParameterKind.IndirectReturnType)))
                         method.Name = "get" + method.Name;
                 }
                 property.GetMethod = getter;
@@ -204,7 +219,7 @@ namespace CppSharp.Passes
         private void DistributeMethod(Method method)
         {
             if (GetFirstWord(method.Name) == "set" && method.Name.Length > 3 &&
-                method.ReturnType.Type.IsPrimitiveType(PrimitiveType.Void))
+                method.OriginalReturnType.Type.IsPrimitiveType(PrimitiveType.Void))
             {
                 if (method.Parameters.Count == 1)
                     setters.Add(method);
@@ -215,15 +230,16 @@ namespace CppSharp.Passes
             {
                 if (IsGetter(method))
                     getters.Add(method);
-                if (method.Parameters.Count == 0)
+                if (method.Parameters.All(p => p.Kind == ParameterKind.IndirectReturnType))
                     nonSetters.Add(method);
             }
         }
 
         private bool IsGetter(Method method)
         {
-            if (method.ReturnType.Type.IsPrimitiveType(PrimitiveType.Void) ||
-                method.Parameters.Count > 0 || method.IsDestructor)
+            if (method.IsDestructor ||
+                (method.OriginalReturnType.Type.IsPrimitiveType(PrimitiveType.Void)) ||
+                method.Parameters.Any(p => p.Kind != ParameterKind.IndirectReturnType))
                 return false;
             var result = GetFirstWord(method.Name);
             return (result.Length < method.Name.Length &&

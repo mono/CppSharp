@@ -46,6 +46,30 @@ Foo& Bar::operator[](int i)
     return m_foo;
 }
 
+Bar Bar::operator *()
+{
+    return *this;
+}
+
+const Bar& Bar::operator *(int m)
+{
+    index *= m;
+    return *this;
+}
+
+const Bar& Bar::operator ++()
+{
+    ++index;
+    return *this;
+}
+
+Bar Bar::operator ++(int i)
+{
+    Bar bar = *this;
+    index++;
+    return bar;
+}
+
 Baz::Nested::operator int() const
 {
     return 300;
@@ -94,4 +118,19 @@ void P::setValue(int value)
 long P::prop()
 {
     return m_property + 100;
+}
+
+int ComplexType::check()
+{
+    return 5;
+}
+
+ComplexType P::complexType()
+{
+    return m_complexType;
+}
+
+void P::setComplexType(const ComplexType& value)
+{
+    m_complexType = value;
 }
