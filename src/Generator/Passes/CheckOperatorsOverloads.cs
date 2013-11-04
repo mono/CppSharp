@@ -169,11 +169,8 @@ namespace CppSharp.Passes
                 case CXXOperatorKind.Minus:
                 case CXXOperatorKind.Exclaim:
                 case CXXOperatorKind.Tilde:
-                case CXXOperatorKind.PlusPlus:
-                case CXXOperatorKind.MinusMinus:
 
                 // These binary operators can be overloaded
-                case CXXOperatorKind.Star:
                 case CXXOperatorKind.Slash:
                 case CXXOperatorKind.Percent:
                 case CXXOperatorKind.Amp:
@@ -193,11 +190,21 @@ namespace CppSharp.Passes
                 case CXXOperatorKind.Conversion:
                     return true;
 
+                // Only prefix operators can be overloaded
+                case CXXOperatorKind.PlusPlus:
+                case CXXOperatorKind.MinusMinus:
+                    return @operator.Parameters.Count == 0;
+
+                // Bitwise shift operators can only be overloaded if the second parameter is int
                 case CXXOperatorKind.LessLess:
                 case CXXOperatorKind.GreaterGreater:
                     PrimitiveType primitiveType;
                     return @operator.Parameters.Last().Type.IsPrimitiveType(out primitiveType) &&
                            primitiveType == PrimitiveType.Int32;
+
+                // No parameters means the dereference operator - cannot be overloaded
+                case CXXOperatorKind.Star:
+                    return @operator.Parameters.Count > 0;
 
                 // Assignment operators cannot be overloaded
                 case CXXOperatorKind.PlusEqual:
