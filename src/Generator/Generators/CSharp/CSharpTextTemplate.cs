@@ -536,7 +536,7 @@ namespace CppSharp.Generators.CSharp
 
             TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
 
-            var retParam = new Parameter { QualifiedType = function.ReturnType };
+            var retParam = new Parameter { QualifiedType = function.OriginalReturnType };
             retType = retParam.CSharpType(TypePrinter);
 
             var method = function as Method;
@@ -1245,11 +1245,21 @@ namespace CppSharp.Generators.CSharp
             NewLine();
         }
 
-        private void GenerateVTableClassSetupCall(Class @class)
+        private void GenerateVTableClassSetupCall(Class @class, bool addPointerGuard = false)
         {
             var entries = GetVTableMethodEntries(@class);
             if (Options.GenerateVirtualTables && @class.IsDynamic && entries.Count != 0)
+            {
+                // called from internal ctors which may have been passed an IntPtr.Zero
+                if (addPointerGuard)
+                {
+                    WriteLine("if ({0} != global::System.IntPtr.Zero)", Helpers.InstanceIdentifier);
+                    PushIndent();
+                }
                 WriteLine("SetupVTables({0});", Generator.GeneratedIdentifier("Instance"));
+                if (addPointerGuard)
+                    PopIndent();
+            }
         }
 
         private void GenerateVTableManagedCall(Method method)
@@ -1285,8 +1295,7 @@ namespace CppSharp.Generators.CSharp
                 marshals.Add(marshal.Context.Return);
             }
 
-            var hasReturn = !method.ReturnType.Type.IsPrimitiveType(PrimitiveType.Void)
-                && !method.HasIndirectReturnTypeParameter;
+            var hasReturn = !method.OriginalReturnType.Type.IsPrimitiveType(PrimitiveType.Void);
 
             if (hasReturn)
                 Write("var _ret = ");
@@ -1299,8 +1308,6 @@ namespace CppSharp.Generators.CSharp
             {
                 InvokeProperty(method, marshals);
             }
-
-            // TODO: Handle hidden structure return types.
 
             if (hasReturn)
             {
@@ -1319,7 +1326,7 @@ namespace CppSharp.Generators.CSharp
                 };
 
                 var marshal = new CSharpMarshalManagedToNativePrinter(ctx);
-                method.ReturnType.Visit(marshal);
+                method.OriginalReturnType.Visit(marshal);
 
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                     Write(marshal.Context.SupportBefore);
@@ -1616,7 +1623,7 @@ namespace CppSharp.Generators.CSharp
                 if (ShouldGenerateClassNativeField(@class))
                 {
                     WriteLine("{0} = native;", Helpers.InstanceIdentifier);
-                    GenerateVTableClassSetupCall(@class);
+                    GenerateVTableClassSetupCall(@class, true);
                 }
             }
             else

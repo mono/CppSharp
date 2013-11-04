@@ -95,3 +95,18 @@ long P::prop()
 {
     return m_property + 100;
 }
+
+int ComplexType::check()
+{
+    return 5;
+}
+
+ComplexType P::complexType()
+{
+    return m_complexType;
+}
+
+void P::setComplexType(const ComplexType& value)
+{
+    m_complexType = value;
+}
