@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using CppSharp.AST;
+using CppSharp.Utils;
 using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Generators.CSharp
@@ -1124,6 +1125,15 @@ namespace CppSharp.Generators.CSharp
                     (p.GetMethod == e.Method || p.SetMethod == e.Method))).ToList();
         }
 
+        public List<VTableComponent> GetUniqueVTableMethodEntries(Class @class)
+        {
+            var uniqueEntries = new OrderedSet<VTableComponent>();
+            foreach (var entry in GetVTableMethodEntries(@class))
+                uniqueEntries.Add(entry);
+
+            return uniqueEntries.ToList();
+        }
+
         public void GenerateVTable(Class @class)
         {
             var entries = GetVTableMethodEntries(@class);
@@ -1135,7 +1145,7 @@ namespace CppSharp.Generators.CSharp
             NewLine();
 
             // Generate a delegate type for each method.
-            foreach (var entry in entries)
+            foreach (var entry in GetUniqueVTableMethodEntries(@class))
             {
                 var method = entry.Method;
                 GenerateVTableMethodDelegates(@class, method);
@@ -1197,13 +1207,16 @@ namespace CppSharp.Generators.CSharp
 
             WriteLine("_Thunks = new IntPtr[{0}];", entries.Count);
 
+            var uniqueEntries = new HashSet<VTableComponent>();
+
             index = 0;
             foreach (var entry in entries)
             {
                 var method = entry.Method;
                 var delegateName = GetVTableMethodDelegateName(method);
                 var delegateInstance = delegateName + "Instance";
-                WriteLine("{0} += {1}Hook;", delegateInstance, delegateName);
+                if (uniqueEntries.Add(entry))
+                    WriteLine("{0} += {1}Hook;", delegateInstance, delegateName);
                 WriteLine("_Thunks[{0}] = Marshal.GetFunctionPointerForDelegate({1});",
                     index++, delegateInstance);
             }
