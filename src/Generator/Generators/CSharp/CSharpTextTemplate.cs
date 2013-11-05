@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using CppSharp.AST;
 using CppSharp.Utils;
 using Type = CppSharp.AST.Type;
@@ -1374,6 +1375,10 @@ namespace CppSharp.Generators.CSharp
         {
             PushBlock(CSharpBlockKind.VTableDelegate);
 
+            var cleanSig = method.Signature.ReplaceLineBreaks("");
+            cleanSig = Regex.Replace(cleanSig, @"\s+", " ");
+
+            WriteLine("// {0}", cleanSig);
             WriteLine("[SuppressUnmanagedCodeSecurity]");
             WriteLine("[UnmanagedFunctionPointerAttribute(global::System.Runtime.InteropServices.CallingConvention.{0})]",
                 Helpers.ToCSharpCallConv(method.CallingConvention));
