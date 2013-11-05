@@ -54,7 +54,8 @@ namespace CppSharp.Passes
 
             if (prop == null && prop2 != null)
                 Driver.Diagnostics.EmitWarning(DiagnosticId.PropertySynthetized,
-                    "Property {0}::{1} already exist with type {2}", @class.Name, name, type.Type.ToString());
+                    "Property {0}::{1} already exist with type {2}",
+                    @class.Name, name, type.Type.ToString());
 
             if (prop != null)
                 return prop;
@@ -131,7 +132,8 @@ namespace CppSharp.Passes
 
             var type = method.Parameters[0].Type;
 
-            var getter = @class.Methods.FirstOrDefault(m => m.Name == "Get" + name && m.Type.Equals(type));
+            var getter = @class.Methods.FirstOrDefault(m => m.Name == "Get" + name
+                && m.Type.Equals(type));
 
             var otherSetter = @class.Methods.FirstOrDefault(m => m.Name == method.Name
                 && m.Parameters.Count == 1 
