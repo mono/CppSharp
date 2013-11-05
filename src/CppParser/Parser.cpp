@@ -616,7 +616,6 @@ Class* Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
             auto Method = WalkMethodCXX(MD);
             HandleDeclaration(MD, Method);
             Method->AccessDecl = AccessDecl;
-            RC->Methods.push_back(Method);
             break;
         }
         case Decl::Field:
@@ -811,6 +810,8 @@ Method* Parser::WalkMethodCXX(clang::CXXMethodDecl* MD)
     else if (const CXXConversionDecl* CD = dyn_cast<CXXConversionDecl>(MD))
     {
     }
+
+    Class->Methods.push_back(Method);
 
     return Method;
 }

@@ -619,7 +619,6 @@ CppSharp::AST::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
             auto Method = WalkMethodCXX(MD);
             HandleDeclaration(MD, Method);
             Method->AccessDecl = AccessDecl;
-            RC->Methods->Add(Method);
             break;
         }
         case Decl::Field:
@@ -816,6 +815,8 @@ CppSharp::AST::Method^ Parser::WalkMethodCXX(clang::CXXMethodDecl* MD)
     else if (const CXXConversionDecl* CD = dyn_cast<CXXConversionDecl>(MD))
     {
     }
+
+    Class->Methods->Add(Method);
 
     return Method;
 }
