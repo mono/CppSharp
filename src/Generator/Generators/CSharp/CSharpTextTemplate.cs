@@ -1221,15 +1221,20 @@ namespace CppSharp.Generators.CSharp
             foreach (var vfptr in vftables)
             {
                 var size = vfptr.Layout.Components.Count;
-                WriteLine("var vfptr = Marshal.AllocHGlobal({0} * IntPtr.Size);", size);
-                WriteLine("_NewVTables[{0}] = vfptr;", index++);
+                WriteLine("var vfptr{0} = Marshal.AllocHGlobal({1} * IntPtr.Size);",
+                    index, size);
+                WriteLine("_NewVTables[{0}] = vfptr{0};", index);
 
                 var entryIndex = 0;
                 foreach (var entry in vfptr.Layout.Components)
                 {
-                    var offsetInBytes = VTables.GetVTableComponentIndex(@class, entry)*IntPtr.Size;
-                    WriteLine("*(IntPtr*)(vfptr + {0}) = _Thunks[{1}];", offsetInBytes, entryIndex++);
+                    var offsetInBytes = VTables.GetVTableComponentIndex(@class, entry)
+                        * IntPtr.Size;
+                    WriteLine("*(IntPtr*)(vfptr{0} + {1}) = _Thunks[{2}];", index,
+                        offsetInBytes, entryIndex++);
                 }
+
+                index++;
             }
 
             WriteCloseBraceIndent();
@@ -1404,8 +1409,7 @@ namespace CppSharp.Generators.CSharp
                 PushBlock(CSharpBlockKind.InternalsClassField);
 
                 WriteLine("[FieldOffset({0})]", info.VFPtrFullOffset);
-                WriteLine("public global::System.IntPtr vfptr{0};",
-                    info.VFPtrFullOffset, index++);
+                WriteLine("public global::System.IntPtr vfptr{0};", index++);
 
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
