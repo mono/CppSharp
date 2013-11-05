@@ -1319,13 +1319,15 @@ namespace CppSharp.Generators.CSharp
             if (hasReturn)
                 Write("var _ret = ");
 
-            if (method.IsGenerated)
+            // HACK: because of the non-shared v-table entries bug we must look for the real method by name
+            Method m = ((Class) method.Namespace).GetMethodByName(method.Name);
+            if (m.IsGenerated)
             {
                 WriteLine("target.{0}({1});", SafeIdentifier(method.Name), string.Join(", ", marshals));              
             }
             else
             {
-                InvokeProperty(method, marshals);
+                InvokeProperty(m, marshals);
             }
 
             if (hasReturn)
