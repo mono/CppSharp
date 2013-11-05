@@ -2302,7 +2302,7 @@ namespace CppSharp.Generators.CSharp
             var index = overloads.IndexOf(function);
 
             if (index >= 0)
-                identifier += index.ToString(CultureInfo.InvariantCulture);
+                identifier += "_" + index.ToString(CultureInfo.InvariantCulture);
 
             return identifier;
         }
