@@ -1123,7 +1123,8 @@ namespace CppSharp.Generators.CSharp
             var entries = VTables.GatherVTableMethodEntries(@class);
             return entries.Where(e => !e.Method.Ignore ||
                 @class.Properties.Any(p => !p.Ignore &&
-                    (p.GetMethod == e.Method || p.SetMethod == e.Method))).ToList();
+                    (p.GetMethod == e.Method || p.SetMethod == e.Method)) &&
+                    @class.GetMethodByName(e.Method.Name) != null).ToList();
         }
 
         public List<VTableComponent> GetUniqueVTableMethodEntries(Class @class)

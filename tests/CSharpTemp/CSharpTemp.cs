@@ -15,6 +15,7 @@ namespace CppSharp.Tests
             driver.Options.GenerateInterfacesForMultipleInheritance = true;
             driver.Options.GenerateProperties = true;
             driver.Options.GenerateVirtualTables = true;
+            driver.ASTContext.IgnoreClassWithName("Ignored");
         }
 
         public static void Main(string[] args)
