@@ -59,10 +59,11 @@ namespace CppSharp.Passes
                 internalImpl.Methods.Add(method);
                 var @delegate = new TypedefDecl
                                 {
-                                    Name = abstractMethod.Name + "Delegate",
+                                    Name = ASTHelpers.GetDelegateName(abstractMethod),
                                     QualifiedType = abstractMethod.GetFunctionType(),
                                     IgnoreFlags = abstractMethod.IgnoreFlags,
-                                    Namespace = internalImpl
+                                    Namespace = internalImpl,
+                                    Access = AccessSpecifier.Private
                                 };
                 internalImpl.Typedefs.Add(@delegate);
             }

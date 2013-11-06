@@ -79,7 +79,7 @@ namespace CppSharp.Passes
         private bool Rename(Declaration decl)
         {
             string newName;
-            if (Rename(decl.Name, out newName) && AreThereConflicts(decl, newName))
+            if (Rename(decl.Name, out newName) && !AreThereConflicts(decl, newName))
                 decl.Name = newName;
             return true;
         }
@@ -92,7 +92,13 @@ namespace CppSharp.Passes
             declarations.AddRange(decl.Namespace.Events);
             declarations.AddRange(decl.Namespace.Functions);
             declarations.AddRange(decl.Namespace.Variables);
-            return declarations.All(d => d == decl || d.Name != newName);
+            bool result = declarations.Any(d => d != decl && d.Name == newName);
+            if (result)
+                return true;
+            Method method = decl as Method;
+            if (method == null || !method.IsGenerated)
+                return false;
+            return ((Class) method.Namespace).GetPropertyByName(newName) != null;
         }
 
         public override bool VisitEnumItem(Enumeration.Item item)

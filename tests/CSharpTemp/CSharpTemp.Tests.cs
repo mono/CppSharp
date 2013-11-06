@@ -35,24 +35,24 @@ public class CSharpTempTests
     {
         Qux qux = new Qux();
         var array = new[] { 1, 2, 3 };
-        qux.array = array;
-        for (int i = 0; i < qux.array.Length; i++)
-            Assert.That(array[i], Is.EqualTo(qux.array[i]));
+        qux.Array = array;
+        for (int i = 0; i < qux.Array.Length; i++)
+            Assert.That(array[i], Is.EqualTo(qux.Array[i]));
     }
 
     [Test]
     public void TestMultipleInheritance()
     {
         Baz baz = new Baz();
-        Assert.That(baz.method, Is.EqualTo(1));
+        Assert.That(baz.Method, Is.EqualTo(1));
         var bar = (IBar) baz;
-        Assert.That(bar.method, Is.EqualTo(2));
+        Assert.That(bar.Method, Is.EqualTo(2));
         Assert.That(baz[0], Is.EqualTo(50));
         bar[0] = new Foo { A = 1000 };
         Assert.That(bar[0].A, Is.EqualTo(1000));
-        Assert.That(baz.farAwayFunc, Is.EqualTo(20));
-        Assert.That(baz.takesQux(baz), Is.EqualTo(20));
-        Assert.That(baz.returnQux().farAwayFunc, Is.EqualTo(20));
+        Assert.That(baz.FarAwayFunc, Is.EqualTo(20));
+        Assert.That(baz.TakesQux(baz), Is.EqualTo(20));
+        Assert.That(baz.ReturnQux().FarAwayFunc, Is.EqualTo(20));
         int cast = baz;
         Assert.That(cast, Is.EqualTo(500));
         var nested = new Baz.Nested();
@@ -64,18 +64,18 @@ public class CSharpTempTests
     public void TestProperties()
     {
         var proprietor = new Proprietor();
-        proprietor.value = 20;
-        Assert.That(proprietor.value, Is.EqualTo(20));
-        proprietor.prop = 50;
-        Assert.That(proprietor.prop, Is.EqualTo(50));
+        proprietor.Value = 20;
+        Assert.That(proprietor.Value, Is.EqualTo(20));
+        proprietor.Prop = 50;
+        Assert.That(proprietor.Prop, Is.EqualTo(50));
         var p = new P();
-        p.value = 20;
-        Assert.That(p.value, Is.EqualTo(30));
-        p.prop = 50;
-        Assert.That(p.prop, Is.EqualTo(150));
+        p.Value = 20;
+        Assert.That(p.Value, Is.EqualTo(30));
+        p.Prop = 50;
+        Assert.That(p.Prop, Is.EqualTo(150));
 
         ComplexType complexType = new ComplexType();
-        p.complexType = complexType;
-        Assert.That(p.complexType.check(), Is.EqualTo(5));
+        p.ComplexType = complexType;
+        Assert.That(p.ComplexType.Check(), Is.EqualTo(5));
     }
 }

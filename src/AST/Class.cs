@@ -245,6 +245,40 @@ namespace CppSharp.AST
                     select rootBaseProperty).FirstOrDefault();
         }
 
+        public Property GetPropertyByName(string propertyName)
+        {
+            Property property = Properties.FirstOrDefault(m => m.Name == propertyName);
+            if (property != null)
+                return property;
+            Declaration decl;
+            foreach (var baseClassSpecifier in Bases.Where(
+                b => b.Type.IsTagDecl(out decl) && !b.Class.Ignore))
+            {
+                property = baseClassSpecifier.Class.GetPropertyByName(propertyName);
+                if (property != null)
+                    return property;
+            }
+            return null;
+        }
+
+        public Property GetPropertyByConstituentMethod(Method method)
+        {
+            var property = Properties.FirstOrDefault(p => p.GetMethod == method);
+            if (property != null)
+                return property;
+            property = Properties.FirstOrDefault(p => p.SetMethod == method);
+            if (property != null)
+                return property;
+            Declaration decl;
+            foreach (BaseClassSpecifier @base in Bases.Where(b => b.Type.IsTagDecl(out decl)))
+            {
+                property = @base.Class.GetPropertyByConstituentMethod(method);
+                if (property != null)
+                    return property;
+            }
+            return null;
+        }
+
         public Method GetMethodByName(string methodName)
         {
             var method = Methods.FirstOrDefault(m => m.Name == methodName);
