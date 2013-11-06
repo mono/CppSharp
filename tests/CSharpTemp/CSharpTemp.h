@@ -21,6 +21,8 @@ protected:
 class DLL_API Qux
 {
 public:
+    Qux();
+    Qux(Foo foo);
     int farAwayFunc() const;
     int array[3];
 };
