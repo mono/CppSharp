@@ -281,10 +281,9 @@ namespace CppSharp.AST
 
         public Method GetMethodByName(string methodName)
         {
-            var method = Methods.FirstOrDefault(m => m.Name == methodName);
-            if (method != null)
-                return method;
-            method = Methods.FirstOrDefault(m => m.Name == methodName);
+            var method = Methods.FirstOrDefault(
+                // HACK: because of the non-shared v-table entries bug one copy may have been renamed and the other not
+                m => string.Compare(m.Name, methodName, StringComparison.OrdinalIgnoreCase) == 0);
             if (method != null)
                 return method;
             Declaration decl;
