@@ -100,6 +100,11 @@ void AbstractProprietor::setProp(long property)
     m_property = property;
 }
 
+int AbstractProprietor::parent()
+{
+    return 0;
+}
+
 void Proprietor::setValue(int value)
 {
     m_value = value;
@@ -133,4 +138,9 @@ ComplexType P::complexType()
 void P::setComplexType(const ComplexType& value)
 {
     m_complexType = value;
+}
+
+void P::parent(int i)
+{
+
 }

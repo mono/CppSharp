@@ -234,4 +234,12 @@ namespace CppSharp
             return assembly.GetTypes().Where(baseType.IsAssignableFrom);
         }
     }
+
+    public static class ASTHelpers
+    {
+        public static string GetDelegateName(Function method)
+        {
+            return "_" + char.ToLowerInvariant(method.Name[0]) + method.Name.Substring(1) + "Delegate";
+        }
+    }
 }

@@ -198,7 +198,7 @@ namespace CppSharp.Passes
 
         private static string GetPropertyName(string name)
         {
-            if (GetFirstWord(name) == "get")
+            if (GetFirstWord(name) == "get" && name != "get")
             {
                 if (char.IsLower(name[0]))
                 {

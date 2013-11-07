@@ -1127,8 +1127,7 @@ namespace CppSharp.Generators.CSharp
         {
             var entries = VTables.GatherVTableMethodEntries(@class);
             return entries.Where(e => !e.Method.Ignore ||
-                @class.Properties.Any(p => !p.Ignore &&
-                    (p.GetMethod == e.Method || p.SetMethod == e.Method))).ToList();
+                @class.GetPropertyByConstituentMethod(e.Method) != null).ToList();
         }
 
         public List<VTableComponent> GetUniqueVTableMethodEntries(Class @class)
@@ -1848,7 +1847,7 @@ namespace CppSharp.Generators.CSharp
             GenerateFunctionCall(delegateId, method.Parameters, method);
         }
 
-        public static string GetVirtualCallDelegate(INamedDecl method, Class @class,
+        public static string GetVirtualCallDelegate(Function method, Class @class,
             bool is32Bit, out string delegateId)
         {
             var virtualCallBuilder = new StringBuilder();
@@ -1862,7 +1861,7 @@ namespace CppSharp.Generators.CSharp
                 "void* slot = *((void**) vtable + {0} * {1});", i, is32Bit ? 4 : 8);
             virtualCallBuilder.AppendLine();
 
-            string @delegate = method.Name + "Delegate";
+            string @delegate = ASTHelpers.GetDelegateName(method);
             delegateId = Generator.GeneratedIdentifier(@delegate);
 
             virtualCallBuilder.AppendFormat(
