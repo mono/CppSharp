@@ -120,6 +120,11 @@ long P::prop()
     return m_property + 100;
 }
 
+void Ignored::virtualFunction()
+{
+
+}
+
 int ComplexType::check()
 {
     return 5;

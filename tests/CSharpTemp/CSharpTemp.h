@@ -91,7 +91,13 @@ public:
     virtual long prop();
 };
 
-class DLL_API ComplexType
+class Ignored
+{
+public:
+    virtual void virtualFunction();
+};
+
+class DLL_API ComplexType : public Ignored
 {
 public:
     int check();
