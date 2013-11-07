@@ -572,17 +572,24 @@ namespace CppSharp.Generators.CSharp
                 return;
             }
 
-            if (Context.Parameter.Type.IsAddress())
+            string param = Helpers.SafeIdentifier(Context.Parameter.Name);
+            Type type = Context.Parameter.Type.Desugar();
+            if (type.IsAddress())
             {
-                Context.Return.Write("{0}.{1}", Helpers.SafeIdentifier(Context.Parameter.Name),
-                    Helpers.InstanceIdentifier);
+                Class decl;
+                if (type.IsTagDecl(out decl) && decl.IsValueType)
+                    Context.Return.Write("{0}.{1}", param, Helpers.InstanceIdentifier);
+                else
+                    Context.Return.Write("{0} == ({2}) null ? global::System.IntPtr.Zero : {0}.{1}", param,
+                        Helpers.InstanceIdentifier, type);
                 return;
             }
 
             var qualifiedIdentifier = CSharpMarshalNativeToManagedPrinter.QualifiedIdentifier(
                 @class.OriginalClass ?? @class);
-            Context.Return.Write("*({0}.Internal*){1}.{2}", qualifiedIdentifier,
-                Helpers.SafeIdentifier(Context.Parameter.Name), Helpers.InstanceIdentifier);
+            Context.Return.Write(
+                "{1} == ({0}) null ? new {0}.Internal() : *({0}.Internal*) ({1}.{2})", qualifiedIdentifier,
+                param, Helpers.InstanceIdentifier);
         }
 
         private void MarshalValueClass(Class @class)

@@ -33,7 +33,7 @@ public class CSharpTempTests
     [Test]
     public void TestFixedArrays()
     {
-        Qux qux = new Qux();
+        Qux qux = new Qux(null);
         var array = new[] { 1, 2, 3 };
         qux.Array = array;
         for (int i = 0; i < qux.Array.Length; i++)

@@ -31,6 +31,16 @@ const Foo& Bar::operator[](int i) const
     return m_foo;
 }
 
+Qux::Qux()
+{
+
+}
+
+Qux::Qux(Foo foo)
+{
+
+}
+
 int Qux::farAwayFunc() const
 {
     return 20;
