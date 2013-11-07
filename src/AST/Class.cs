@@ -245,6 +245,24 @@ namespace CppSharp.AST
                     select rootBaseProperty).FirstOrDefault();
         }
 
+        public Method GetMethodByName(string methodName)
+        {
+            var method = Methods.FirstOrDefault(m => m.Name == methodName);
+            if (method != null)
+                return method;
+            method = Methods.FirstOrDefault(m => m.Name == methodName);
+            if (method != null)
+                return method;
+            Declaration decl;
+            foreach (BaseClassSpecifier @base in Bases.Where(b => b.Type.IsTagDecl(out decl)))
+            {
+                method = @base.Class.GetMethodByName(methodName);
+                if (method != null)
+                    return method;
+            }
+            return null;
+        }
+
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {
             return visitor.VisitClassDecl(this);

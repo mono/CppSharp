@@ -87,6 +87,7 @@ namespace CppSharp.AST
             CallingConvention = CallingConvention.Default;
             IsVariadic = false;
             IsInline = false;
+            Signature = string.Empty;
         }
 
         public Function(Function function)
