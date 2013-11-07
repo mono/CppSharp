@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Web.Util;
 using CppSharp.AST;
 using CppSharp.Utils;
 using Type = CppSharp.AST.Type;
@@ -282,7 +283,7 @@ namespace CppSharp.Generators.CSharp
             if (decl.Comment == null)
                 return;
 
-            GenerateSummary(decl.Comment.BriefText);
+            GenerateComment(decl.Comment);
             GenerateDebug(decl);
         }
 
@@ -292,21 +293,29 @@ namespace CppSharp.Generators.CSharp
                 WriteLine("// DEBUG: " + decl.DebugText);
         }
 
-        public void GenerateSummary(string comment)
+        public void GenerateComment(RawComment comment)
         {
-            if (String.IsNullOrWhiteSpace(comment))
+            if (string.IsNullOrWhiteSpace(comment.BriefText))
                 return;
 
             PushBlock(BlockKind.BlockComment);
             WriteLine("/// <summary>");
-            WriteLine("/// {0}", comment);
+            WriteLine("/// {0}", comment.BriefText);
             WriteLine("/// </summary>");
+
+            if (!string.IsNullOrWhiteSpace(comment.Text))
+            {
+                WriteLine("/// <remarks>");
+                foreach (string line in HtmlEncoder.HtmlEncode(comment.Text).Split(Environment.NewLine.ToCharArray()))
+                    WriteLine("/// <para>{0}</para>", line);
+                WriteLine("/// </remarks>");
+            }
             PopBlock();
         }
 
         public void GenerateInlineSummary(string comment)
         {
-            if (String.IsNullOrWhiteSpace(comment))
+            if (string.IsNullOrWhiteSpace(comment))
                 return;
 
             PushBlock(BlockKind.InlineComment);
