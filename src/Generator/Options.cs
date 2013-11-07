@@ -42,6 +42,8 @@ namespace CppSharp
             CommentPrefix = "///";
 
             Encoding = Encoding.ASCII;
+
+            CodeFiles = new List<string>();
         }
 
         // General options
@@ -120,6 +122,8 @@ namespace CppSharp
         }
 
         public bool Is32Bit { get { return true; } }
+
+        public List<string> CodeFiles { get; private set; }
     }
 
     public class InvalidOptionException : Exception

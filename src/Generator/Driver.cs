@@ -1,13 +1,16 @@
-﻿using CppSharp.AST;
+﻿using System.CodeDom.Compiler;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using CppSharp.AST;
 using CppSharp.Generators;
 using CppSharp.Generators.CLI;
 using CppSharp.Generators.CSharp;
-using CppSharp.Parser;
 using CppSharp.Passes;
 using CppSharp.Types;
-using System;
 using System.Collections.Generic;
 using System.IO;
+using Microsoft.CSharp;
 
 #if !OLD_PARSER
 using Std;
@@ -250,9 +253,44 @@ namespace CppSharp
                     Diagnostics.EmitMessage(DiagnosticId.FileGenerated, "Generated '{0}'", fileName);
 
                     var filePath = Path.Combine(outputPath, fileName);
-                    File.WriteAllText(Path.GetFullPath(filePath), template.Generate());
+                    string file = Path.GetFullPath(filePath);
+                    File.WriteAllText(file, template.Generate());
+                    Options.CodeFiles.Add(file);
                 }
             }
+        }
+
+        public void CompileCode()
+        {
+            string assemblyFile;
+            if (string.IsNullOrEmpty(Options.LibraryName))
+                assemblyFile = "out.dll";
+            else
+                assemblyFile = Options.LibraryName + ".dll";
+
+            var compilerOptions = new StringBuilder();
+            compilerOptions.Append(" /doc:" + Path.ChangeExtension(Path.GetFileName(assemblyFile), ".xml"));
+            compilerOptions.Append(" /debug:pdbonly");
+            compilerOptions.Append(" /unsafe");
+
+            var compilerParameters = new CompilerParameters();
+            compilerParameters.GenerateExecutable = false;
+            compilerParameters.TreatWarningsAsErrors = false;
+            compilerParameters.OutputAssembly = assemblyFile;
+            compilerParameters.GenerateInMemory = false;
+            compilerParameters.CompilerOptions = compilerOptions.ToString();
+            compilerParameters.ReferencedAssemblies.Add(typeof(object).Assembly.Location);
+            var location = Assembly.GetExecutingAssembly().Location;
+            var locationRuntime = Path.Combine(Path.GetDirectoryName(location), "CppSharp.Runtime.dll");
+            compilerParameters.ReferencedAssemblies.Add(locationRuntime);
+
+            var providerOptions = new Dictionary<string, string>();
+            providerOptions.Add("CompilerVersion", "v4.0");
+            var csharp = new CSharpCodeProvider(providerOptions);
+            var cr = csharp.CompileAssemblyFromFile(compilerParameters, Options.CodeFiles.ToArray());
+
+            foreach (var error in cr.Errors.Cast<CompilerError>().Where(error => !error.IsWarning))
+                Diagnostics.EmitError(error.ToString());
         }
 
         public void AddTranslationUnitPass(TranslationUnitPass pass)
@@ -318,6 +356,8 @@ namespace CppSharp
             }
 
             driver.WriteCode(outputs);
+            if (driver.Options.IsCSharpGenerator)
+                driver.CompileCode();
         }
     }
 }

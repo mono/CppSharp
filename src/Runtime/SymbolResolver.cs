@@ -24,7 +24,7 @@ using System.Runtime.InteropServices;
 
 namespace CppSharp
 {
-    internal static class SymbolResolver
+    public static class SymbolResolver
     {
         static readonly string[] formats;
         static readonly Func<string, IntPtr> loadImage;
