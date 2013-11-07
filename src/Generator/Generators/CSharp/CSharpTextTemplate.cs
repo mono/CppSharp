@@ -300,13 +300,16 @@ namespace CppSharp.Generators.CSharp
 
             PushBlock(BlockKind.BlockComment);
             WriteLine("/// <summary>");
-            WriteLine("/// {0}", comment.BriefText);
+            foreach (string line in HtmlEncoder.HtmlEncode(comment.BriefText).Split(
+                                        Environment.NewLine.ToCharArray()))
+                WriteLine("/// <para>{0}</para>", line);
             WriteLine("/// </summary>");
 
             if (!string.IsNullOrWhiteSpace(comment.Text))
             {
                 WriteLine("/// <remarks>");
-                foreach (string line in HtmlEncoder.HtmlEncode(comment.Text).Split(Environment.NewLine.ToCharArray()))
+                foreach (string line in HtmlEncoder.HtmlEncode(comment.Text).Split(
+                                            Environment.NewLine.ToCharArray()))
                     WriteLine("/// <para>{0}</para>", line);
                 WriteLine("/// </remarks>");
             }
