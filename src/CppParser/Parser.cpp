@@ -2088,6 +2088,7 @@ Declaration* Parser::WalkDeclaration(clang::Decl* D,
     case Decl::AccessSpec:
     case Decl::Friend:
     case Decl::Using:
+    case Decl::UsingDirective:
     case Decl::UsingShadow:
     case Decl::UnresolvedUsingTypename:
     case Decl::UnresolvedUsingValue:
