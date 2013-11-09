@@ -1071,6 +1071,7 @@ namespace CppSharp.Generators.CSharp
                 if (prop.Parameters.Count > 0 && prop.Type.IsPointerToPrimitiveType())
                     type = ((PointerType) prop.Type).Pointee;
 
+                GenerateDeclarationCommon(prop);
                 if (prop.ExplicitInterfaceImpl == null)
                 {
                     Write(Helpers.GetAccess(prop.Access));

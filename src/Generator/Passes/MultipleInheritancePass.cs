@@ -82,7 +82,7 @@ namespace CppSharp.Passes
                 instance.Namespace = @interface;
                 instance.Name = Helpers.InstanceIdentifier;
                 instance.QualifiedType = new QualifiedType(new BuiltinType(PrimitiveType.IntPtr));
-                instance.GetMethod = new Method();
+                instance.GetMethod = new Method { Namespace = @interface };
                 @interface.Properties.Add(instance);
             }
 
