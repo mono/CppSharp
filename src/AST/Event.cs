@@ -18,5 +18,7 @@ namespace CppSharp.AST
         public QualifiedType QualifiedType { get; set; }
 
         public List<Parameter> Parameters;
+
+        public Declaration OriginalDeclaration { get; set; }
     }
 }
