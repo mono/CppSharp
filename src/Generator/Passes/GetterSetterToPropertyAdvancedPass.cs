@@ -93,11 +93,7 @@ namespace CppSharp.Passes
                     string afterSet = nameBuilder.ToString();
                     foreach (var getter in nonSetters.Where(m => m.Namespace == type))
                     {
-                        string name = GetPropertyName(getter.Name);
-                        if (name.StartsWith("is"))
-                        {
-                            name = char.ToLowerInvariant(name[2]) + name.Substring(3);
-                        }
+                        var name = GetReadWritePropertyName(getter, afterSet);
                         if (name == afterSet &&
                             GetUnderlyingType(getter.OriginalReturnType).Equals(
                                 GetUnderlyingType(setter.Parameters[0].QualifiedType)) &&
@@ -134,6 +130,16 @@ namespace CppSharp.Passes
                     }
                 }
             }
+        }
+
+        private static string GetReadWritePropertyName(INamedDecl getter, string afterSet)
+        {
+            string name = GetPropertyName(getter.Name);
+            if (name != afterSet && name.StartsWith("is"))
+            {
+                name = char.ToLowerInvariant(name[2]) + name.Substring(3);
+            }
+            return name;
         }
 
         private static Type GetUnderlyingType(QualifiedType type)
