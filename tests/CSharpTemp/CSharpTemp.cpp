@@ -154,3 +154,13 @@ void P::parent(int i)
 {
 
 }
+
+bool P::isTest()
+{
+    return true;
+}
+
+void P::setTest(bool value)
+{
+
+}

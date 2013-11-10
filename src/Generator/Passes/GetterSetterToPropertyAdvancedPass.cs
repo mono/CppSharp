@@ -94,11 +94,16 @@ namespace CppSharp.Passes
                     foreach (var getter in nonSetters.Where(m => m.Namespace == type))
                     {
                         string name = GetPropertyName(getter.Name);
+                        if (name.StartsWith("is"))
+                        {
+                            name = char.ToLowerInvariant(name[2]) + name.Substring(3);
+                        }
                         if (name == afterSet &&
                             GetUnderlyingType(getter.OriginalReturnType).Equals(
                                 GetUnderlyingType(setter.Parameters[0].QualifiedType)) &&
                             !type.Methods.Any(m => m != getter && name == m.Name))
                         {
+                            getter.Name = name;
                             GenerateProperty(getter.Namespace, getter, readOnly ? null : setter);
                             goto next;
                         }
@@ -158,9 +163,6 @@ namespace CppSharp.Passes
                     Property baseVirtualProperty = type.GetRootBaseProperty(property);
                     if (baseVirtualProperty.SetMethod == null)
                         setter = null;
-                    foreach (Method method in type.Methods.Where(m => m.Name == property.Name &&
-                        m.Parameters.Any(p => p.Kind != ParameterKind.IndirectReturnType)))
-                        method.Name = "get" + method.Name;
                 }
                 property.GetMethod = getter;
                 property.SetMethod = setter;

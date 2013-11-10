@@ -77,5 +77,7 @@ public class CSharpTempTests
         ComplexType complexType = new ComplexType();
         p.ComplexType = complexType;
         Assert.That(p.ComplexType.Check(), Is.EqualTo(5));
+
+        Assert.That(p.Test, Is.True);
     }
 }
