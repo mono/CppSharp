@@ -94,13 +94,10 @@ namespace CppSharp.Passes
                     foreach (var getter in nonSetters.Where(m => m.Namespace == type))
                     {
                         string name = GetPropertyName(getter.Name);
-                        if (string.Compare(name, afterSet, StringComparison.OrdinalIgnoreCase) == 0 &&
+                        if (name == afterSet &&
                             GetUnderlyingType(getter.OriginalReturnType).Equals(
                                 GetUnderlyingType(setter.Parameters[0].QualifiedType)) &&
-                            !type.Methods.Any(
-                                m =>
-                                    m != getter &&
-                                    string.Compare(name, m.Name, StringComparison.OrdinalIgnoreCase) == 0))
+                            !type.Methods.Any(m => m != getter && name == m.Name))
                         {
                             GenerateProperty(getter.Namespace, getter, readOnly ? null : setter);
                             goto next;
@@ -149,9 +146,8 @@ namespace CppSharp.Passes
         private static void GenerateProperty(DeclarationContext context, Method getter, Method setter = null)
         {
             Class type = (Class) context;
-            if (type.Properties.All(
-                p => string.Compare(getter.Name, p.Name, StringComparison.OrdinalIgnoreCase) != 0 ||
-                     p.ExplicitInterfaceImpl != getter.ExplicitInterfaceImpl))
+            if (type.Properties.All(p => getter.Name != p.Name ||
+                    p.ExplicitInterfaceImpl != getter.ExplicitInterfaceImpl))
             {
                 Property property = new Property();
                 property.Name = GetPropertyName(getter.Name);
