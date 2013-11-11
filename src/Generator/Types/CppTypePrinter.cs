@@ -121,8 +121,7 @@ namespace CppSharp.Types
 
         public string VisitTemplateSpecializationType(TemplateSpecializationType template, TypeQualifiers quals)
         {
-            string prefix = PrintLocalName ? string.Empty : "::";
-            return string.Format("{0}{1}<{2}>", prefix, template.Template.TemplatedDecl.Visit(this),
+            return string.Format("{0}<{1}>", template.Template.TemplatedDecl.Visit(this),
                 string.Join(", ",
                 template.Arguments.Where(
                     a => a.Type.Type != null &&

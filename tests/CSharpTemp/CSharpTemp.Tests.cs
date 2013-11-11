@@ -79,5 +79,6 @@ public class CSharpTempTests
         Assert.That(p.ComplexType.Check(), Is.EqualTo(5));
 
         Assert.That(p.Test, Is.True);
+        Assert.That(p.IsBool, Is.False);
     }
 }
