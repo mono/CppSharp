@@ -112,6 +112,9 @@ public:
 
     virtual void parent(int i);
 
+    bool isTest();
+    void setTest(bool value);
+
 private:
     ComplexType m_complexType;
 };
