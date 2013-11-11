@@ -164,3 +164,13 @@ void P::setTest(bool value)
 {
 
 }
+
+bool P::isBool()
+{
+    return false;
+}
+
+void P::setIsBool(bool value)
+{
+
+}
