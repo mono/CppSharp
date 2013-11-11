@@ -13,6 +13,12 @@ namespace CppSharp.Tests
         {
         }
 
+        public override void SetupOptions(DriverOptions options)
+        {
+            options.Libraries.Add("Basic.Native.lib");
+            options.CheckSymbols = true;
+        }
+
         public override void Preprocess(Driver driver, ASTContext lib)
         {
             lib.SetClassAsValueType("Bar");

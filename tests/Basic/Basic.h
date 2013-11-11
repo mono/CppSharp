@@ -164,3 +164,12 @@ class Base
 class Derived : public Base<Derived>
 {
 };
+
+// Const and non-const constructor overloads
+// https://github.com/mono/CppSharp/issues/102
+
+struct Overloaded
+{
+    Overloaded(void* p) {}
+    Overloaded(const void* p) {}
+};

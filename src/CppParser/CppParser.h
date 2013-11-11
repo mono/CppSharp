@@ -36,6 +36,7 @@ struct CS_API ParserOptions
     std::vector<std::string> LibraryDirs;
 
     CppSharp::CppParser::AST::ASTContext* ASTContext;
+    //CppSharp::CppParser::AST::SymbolContext* SymbolsContext;
 
     int ToolSetToUse;
     std::string TargetTriple;
