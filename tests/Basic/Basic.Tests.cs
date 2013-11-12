@@ -123,6 +123,12 @@ public class BasicTests
         Assert.That(foo.GetANSI(), Is.EqualTo("ANSI"));
     }
 
+    [Test]
+    public void TestMoveFunctionToClass()
+    {
+        Assert.That(basic.test(new basic()), Is.EqualTo(5));
+    }
+
     [Test, Ignore]
     public void TestConversionOperator()
     {

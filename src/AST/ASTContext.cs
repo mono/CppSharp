@@ -51,7 +51,8 @@ namespace CppSharp.AST
         /// Finds an existing enum in the library modules.
         public IEnumerable<Enumeration> FindEnum(string name)
         {
-            return TranslationUnits.Select(module => module.FindEnum(name)).Where(type => type != null);
+            return TranslationUnits.Select(
+                module => module.FindEnum(name)).Where(type => type != null);
         }
 
         /// Finds the complete declaration of an enum.
@@ -61,10 +62,13 @@ namespace CppSharp.AST
         }
 
         /// Finds an existing struct/class in the library modules.
-        public IEnumerable<Class> FindClass(string name, bool create = false, bool ignoreCase = false)
+        public IEnumerable<Class> FindClass(string name, bool create = false,
+            bool ignoreCase = false)
         {
             return TranslationUnits.Select(
-                module => module.FindClass(name, ignoreCase)).Where(type => type != null);
+                module => module.FindClass(name,
+                    ignoreCase ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal))
+                .Where(type => type != null);
         }
 
         /// Finds the complete declaration of a class.
@@ -77,15 +81,15 @@ namespace CppSharp.AST
         /// Finds an existing function in the library modules.
         public IEnumerable<Function> FindFunction(string name)
         {
-            return TranslationUnits.Select(module => module.FindFunction(name)).Where(
-                type => type != null);
+            return TranslationUnits.Select(module => module.FindFunction(name))
+                .Where(type => type != null);
         }
 
         /// Finds an existing typedef in the library modules.
         public IEnumerable<TypedefDecl> FindTypedef(string name)
         {
-            return TranslationUnits.Select(module => module.FindTypedef(name)).Where(
-                type => type != null);
+            return TranslationUnits.Select(module => module.FindTypedef(name))
+                .Where(type => type != null);
         }
 
         /// Finds an existing declaration by name.

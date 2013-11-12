@@ -178,3 +178,10 @@ class Base
 class Derived : public Base<Derived>
 {
 };
+
+class DLL_API basic
+{
+
+};
+
+DLL_API int test(basic& s);

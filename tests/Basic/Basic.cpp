@@ -203,3 +203,8 @@ void DefaultParameters::Bar() const
 void DefaultParameters::Bar()
 {
 }
+
+int test(basic& s)
+{
+    return 5;
+}

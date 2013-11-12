@@ -168,7 +168,8 @@ namespace CppSharp.AST
             return @class;
         }
 
-        public Class FindClass(string name, bool ignoreCase = false)
+        public Class FindClass(string name,
+            StringComparison stringComparison = StringComparison.Ordinal)
         {
             if (string.IsNullOrEmpty(name)) return null;
 
@@ -177,12 +178,7 @@ namespace CppSharp.AST
 
             if (entries.Count <= 1)
             {
-                Class @class;
-                if (ignoreCase)
-                    @class = Classes.Find(e => e.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
-                else
-                    @class = Classes.Find(e => e.Name.Equals(name));
-                return @class;
+                return Classes.Find(e => e.Name.Equals(name, stringComparison));
             }
 
             var className = entries[entries.Count - 1];
