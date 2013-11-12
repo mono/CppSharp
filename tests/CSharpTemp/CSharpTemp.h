@@ -95,15 +95,27 @@ public:
     virtual long prop();
 };
 
+template <typename T>
+class QFlags
+{
+public:
+    QFlags() {}
+};
+
 class DLL_API ComplexType
 {
 public:
     int check();
+    QFlags<int> returnsQFlags();
+    void takesQFlags(const QFlags<int> f);
 };
 
 class DLL_API P : Proprietor
 {
 public:
+    P(const Qux& qux);
+    P(Qux* qux);
+
     virtual void setValue(int value);
     virtual long prop();
 

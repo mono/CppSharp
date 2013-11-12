@@ -46,7 +46,7 @@ namespace CppSharp.Passes
             return true;
         }
 
-        private bool UpdateName(Function method)
+        private bool UpdateName(Method method)
         {
             var @params = method.Parameters.Where(p => p.Kind != ParameterKind.IndirectReturnType)
                                 .Select(p => p.QualifiedType.ToString());
@@ -70,6 +70,11 @@ namespace CppSharp.Passes
             {
                 // TODO: turn into a method; append the original type (say, "signed long") of the last parameter to the type so that the user knows which overload is called
                 Driver.Diagnostics.EmitWarning("Duplicate operator {0} ignored", method.Name);
+                method.ExplicityIgnored = true;
+            }
+            else if (method.IsConstructor)
+            {
+                Driver.Diagnostics.EmitWarning("Duplicate constructor {0} ignored", method.Name);
                 method.ExplicityIgnored = true;
             }
             else

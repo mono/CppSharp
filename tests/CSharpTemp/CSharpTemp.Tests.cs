@@ -68,7 +68,7 @@ public class CSharpTempTests
         Assert.That(proprietor.Value, Is.EqualTo(20));
         proprietor.Prop = 50;
         Assert.That(proprietor.Prop, Is.EqualTo(50));
-        var p = new P();
+        var p = new P(null);
         p.Value = 20;
         Assert.That(p.Value, Is.EqualTo(30));
         p.Prop = 50;

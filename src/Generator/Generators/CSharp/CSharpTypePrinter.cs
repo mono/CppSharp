@@ -90,6 +90,20 @@ namespace CppSharp.Generators.CSharp
             if (tag.Declaration == null)
                 return string.Empty;
 
+            TypeMap typeMap;
+            if (TypeMapDatabase.FindTypeMap(tag.Declaration, out typeMap))
+            {
+                typeMap.Type = tag;
+                Context.CSharpKind = ContextKind;
+                Context.Type = tag;
+
+                return new CSharpTypePrinterResult()
+                {
+                    Type = typeMap.CSharpSignature(Context),
+                    TypeMap = typeMap
+                };
+            }
+
             return tag.Declaration.Visit(this);
         }
 
