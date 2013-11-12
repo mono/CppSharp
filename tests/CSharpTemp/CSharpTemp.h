@@ -113,6 +113,9 @@ public:
 class DLL_API P : Proprietor
 {
 public:
+    P(const Qux& qux);
+    P(Qux* qux);
+
     virtual void setValue(int value);
     virtual long prop();
 

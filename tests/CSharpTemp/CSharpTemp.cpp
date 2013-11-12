@@ -150,6 +150,16 @@ void ComplexType::takesQFlags(const QFlags<int> f)
 
 }
 
+P::P(const Qux &qux)
+{
+
+}
+
+P::P(Qux *qux)
+{
+
+}
+
 ComplexType P::complexType()
 {
     return m_complexType;
