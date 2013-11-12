@@ -168,16 +168,20 @@ namespace CppSharp.AST
             return @class;
         }
 
-        public Class FindClass(string name)
+        public Class FindClass(string name, bool ignoreCase = false)
         {
             if (string.IsNullOrEmpty(name)) return null;
 
-            var entries = name.Split(new string[] { "::" },
+            var entries = name.Split(new[] { "::" },
                 StringSplitOptions.RemoveEmptyEntries).ToList();
 
             if (entries.Count <= 1)
             {
-                var @class = Classes.Find(e => e.Name.Equals(name));
+                Class @class;
+                if (ignoreCase)
+                    @class = Classes.Find(e => e.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+                else
+                    @class = Classes.Find(e => e.Name.Equals(name));
                 return @class;
             }
 
