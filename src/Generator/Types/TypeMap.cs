@@ -134,22 +134,34 @@ namespace CppSharp.Types
         public bool FindTypeMap(Type type, out TypeMap typeMap)
         {
             var typePrinter = new CppTypePrinter(this);
-            var output = type.Visit(typePrinter);
 
-            if (FindTypeMap(output, out typeMap))
+            if (FindTypeMap(type.Visit(typePrinter), out typeMap))
             {
                 typeMap.Type = type;
                 return true;
             }
 
-            // Try to strip the global scope resolution operator.
-            if (output.StartsWith("::"))
-                output = output.Substring(2);
-
-            if (FindTypeMap(output, out typeMap))
+            typePrinter.PrintLocalName = true;
+            if (FindTypeMap(type.Visit(typePrinter), out typeMap))
             {
                 typeMap.Type = type;
                 return true;
+            }
+
+            TemplateSpecializationType template = type as TemplateSpecializationType;
+            if (template != null)
+            {
+                if (FindTypeMap(template.Template.TemplatedDecl.Visit(typePrinter), out typeMap))
+                {
+                    typeMap.Type = type;
+                    return true;
+                }
+                typePrinter.PrintLocalName = false;
+                if (FindTypeMap(template.Template.TemplatedDecl.Visit(typePrinter), out typeMap))
+                {
+                    typeMap.Type = type;
+                    return true;
+                }
             }
 
             return false;

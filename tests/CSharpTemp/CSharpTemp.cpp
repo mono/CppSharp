@@ -140,6 +140,16 @@ int ComplexType::check()
     return 5;
 }
 
+QFlags<int> ComplexType::returnsQFlags()
+{
+    return QFlags<int>();
+}
+
+void ComplexType::takesQFlags(const QFlags<int> f)
+{
+
+}
+
 ComplexType P::complexType()
 {
     return m_complexType;
