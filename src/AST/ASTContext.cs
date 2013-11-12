@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace CppSharp.AST
 {
@@ -50,61 +51,37 @@ namespace CppSharp.AST
         /// Finds an existing enum in the library modules.
         public IEnumerable<Enumeration> FindEnum(string name)
         {
-            foreach (var module in TranslationUnits)
-            {
-                var type = module.FindEnum(name);
-                if (type != null) yield return type;
-            }
+            return TranslationUnits.Select(module => module.FindEnum(name)).Where(type => type != null);
         }
 
         /// Finds the complete declaration of an enum.
         public Enumeration FindCompleteEnum(string name)
         {
-            foreach (var @enum in FindEnum(name))
-                if (!@enum.IsIncomplete)
-                    return @enum;
-
-            return null;
+            return FindEnum(name).FirstOrDefault(@enum => !@enum.IsIncomplete);
         }
 
         /// Finds an existing struct/class in the library modules.
         public IEnumerable<Class> FindClass(string name, bool create = false)
         {
-            foreach (var module in TranslationUnits)
-            {
-                var type = module.FindClass(name);
-                if (type != null) yield return type;
-            }
+            return TranslationUnits.Select(module => module.FindClass(name)).Where(type => type != null);
         }
 
         /// Finds the complete declaration of a class.
         public Class FindCompleteClass(string name)
         {
-            foreach (var @class in FindClass(name))
-                if (!@class.IsIncomplete)
-                    return @class;
-
-            return null;
+            return FindClass(name).FirstOrDefault(@class => !@class.IsIncomplete);
         }
 
         /// Finds an existing function in the library modules.
         public IEnumerable<Function> FindFunction(string name)
         {
-            foreach (var module in TranslationUnits)
-            {
-                var type = module.FindFunction(name);
-                if (type != null) yield return type;
-            }
+            return TranslationUnits.Select(module => module.FindFunction(name)).Where(type => type != null);
         }
 
         /// Finds an existing typedef in the library modules.
         public IEnumerable<TypedefDecl> FindTypedef(string name)
         {
-            foreach (var module in TranslationUnits)
-            {
-                var type = module.FindTypedef(name);
-                if (type != null) yield return type;
-            }
+            return TranslationUnits.Select(module => module.FindTypedef(name)).Where(type => type != null);
         }
 
         /// Finds an existing declaration by name.
