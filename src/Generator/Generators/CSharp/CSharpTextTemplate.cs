@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Web.Util;
 using CppSharp.AST;
 using CppSharp.Utils;
+using Attribute = CppSharp.AST.Attribute;
 using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Generators.CSharp
@@ -280,11 +281,13 @@ namespace CppSharp.Generators.CSharp
 
         public void GenerateDeclarationCommon(Declaration decl)
         {
-            if (decl.Comment == null)
-                return;
-
-            GenerateComment(decl.Comment);
-            GenerateDebug(decl);
+            if (decl.Comment != null)
+            {
+                GenerateComment(decl.Comment);
+                GenerateDebug(decl);
+            }
+            foreach (Attribute attribute in decl.Attributes)
+                WriteLine("[{0}({1})]", attribute.Type.FullName, attribute.Value);
         }
 
         public void GenerateDebug(Declaration decl)

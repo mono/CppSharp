@@ -200,12 +200,15 @@ namespace CppSharp.AST
         public IntPtr OriginalPtr;
         private string originalName;
 
+        public List<Attribute> Attributes { get; private set; }
+
         protected Declaration()
         {
             Access = AccessSpecifier.Public;
             IgnoreFlags = IgnoreFlags.None;
             ExcludeFromPasses = new HashSet<System.Type>();
             PreprocessedEntities = new List<PreprocessedEntity>();
+            Attributes = new List<Attribute>();
         }
 
         protected Declaration(string name)
