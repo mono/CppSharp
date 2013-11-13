@@ -49,11 +49,9 @@ struct Parser
     ParserResult^ ParseHeader(const std::string& File);
     ParserResult^ ParseLibrary(const std::string& File);
     ParserResultKind ParseArchive(llvm::StringRef File,
-                                  llvm::MemoryBuffer *Buffer,
-                                  CppSharp::AST::NativeLibrary^ NativeLib);
+                                  llvm::MemoryBuffer *Buffer);
     ParserResultKind ParseSharedLib(llvm::StringRef File,
-                                    llvm::MemoryBuffer *Buffer,
-                                    CppSharp::AST::NativeLibrary^ NativeLib);
+                                    llvm::MemoryBuffer *Buffer);
 
 protected:
 

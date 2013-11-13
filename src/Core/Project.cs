@@ -49,11 +49,6 @@ namespace CppSharp
     public class Project
     {
         /// <summary>
-        /// Path to the cache repository.
-        /// </summary>
-        public string Cache { get; private set; }
-
-        /// <summary>
         /// List of per-project C/C++ preprocessor defines.
         /// </summary>
         public IList<string> Defines { get; private set; }

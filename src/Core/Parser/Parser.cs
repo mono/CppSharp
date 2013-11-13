@@ -31,30 +31,16 @@ namespace CppSharp
         /// </summary>
         public Action<string, ParserResult> LibraryParsed = delegate {};
 
-        public ClangParser(ASTContext astContext, SymbolContext symbolContext)
+        public ClangParser()
         {
-            ASTContext = astContext;
-            SymbolsContext = symbolContext;
+            ASTContext = new ASTContext();
+            SymbolsContext = new SymbolContext();
         }
 
         /// <summary>
         /// Parses a C++ source file to a translation unit.
         /// </summary>
         public ParserResult ParseSourceFile(SourceFile file, ParserOptions options)
-        {
-            options.ASTContext = ASTContext;
-            options.FileName = file.Path;
-
-            var result = Parser.ClangParser.ParseHeader(options);
-            SourceParsed(file, result);
-
-            return result;
-        }
-
-        /// <summary>
-        /// Parses a serialized AST file to a translation unit.
-        /// </summary>
-        public ParserResult ParseASTFile(SourceFile file, ParserOptions options)
         {
             options.ASTContext = ASTContext;
             options.FileName = file.Path;
@@ -74,18 +60,7 @@ namespace CppSharp
             // TODO: Do multi-threaded parsing of source files
 
             foreach (var source in project.Sources)
-            {
-                // Search for a serialized AST of the source file.
-                var path = LookupSerializedAST(project, source);
-
                 ParseSourceFile(source, options);
-            }
-        }
-
-        private string LookupSerializedAST(Project project, SourceFile source)
-        {
-            var cachePath = project.Cache;
-            return string.Empty;
         }
 
         /// <summary>

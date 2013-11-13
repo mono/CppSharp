@@ -23,14 +23,6 @@ namespace CppSharp.Passes
     /// </summary>
     public class CheckAmbiguousFunctions : TranslationUnitPass
     {
-        public override bool VisitMethodDecl(Method method)
-        {
-            //if (method.Kind != CXXMethodKind.Normal)
-            //    return false;
-
-            return base.VisitMethodDecl(method);
-        }
-
         public override bool VisitFunctionDecl(AST.Function function)
         {
             if (AlreadyVisited(function))

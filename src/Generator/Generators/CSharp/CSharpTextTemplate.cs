@@ -333,9 +333,6 @@ namespace CppSharp.Generators.CSharp
             if (@class.Ignore || @class.IsIncomplete)
                 return;
 
-            //if (@class.Name == "ISceneNodeAnimator")
-            //    System.Diagnostics.Debugger.Break();
-
             PushBlock(CSharpBlockKind.Class);
             GenerateDeclarationCommon(@class);
 

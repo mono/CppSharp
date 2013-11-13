@@ -61,7 +61,6 @@ namespace CppSharp.Utils
             options.GenerateLibraryNamespace = true;
             options.Quiet = true;
             options.IgnoreParseWarnings = true;
-            SetupOptions(options);
 
             driver.Diagnostics.EmitMessage("Generating bindings for {0} in {1} mode",
                 options.LibraryName, options.GeneratorKind.ToString());
@@ -79,10 +78,6 @@ namespace CppSharp.Utils
             var files = Directory.EnumerateFiles(path, "*.h");
             foreach (var file in files)
                 options.Headers.Add(Path.GetFileName(file));
-        }
-
-        public virtual void SetupOptions(DriverOptions options)
-        {
         }
 
         public virtual void Preprocess(Driver driver, ASTContext lib)

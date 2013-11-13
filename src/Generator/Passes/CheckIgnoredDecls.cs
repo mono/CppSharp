@@ -7,16 +7,13 @@ namespace CppSharp.Passes
     {
         public override bool VisitDeclaration(Declaration decl)
         {
-            //if (AlreadyVisited(decl))
-            //    return false;
-
             if (decl.ExplicityIgnored)
                 return false;
 
-            if (decl.Access != AccessSpecifier.Public)
+            if (decl.Access == AccessSpecifier.Private)
             {
                 Method method = decl as Method;
-                //if (method == null || !method.IsOverride)
+                if (method == null || !method.IsOverride)
                 {
                     decl.ExplicityIgnored = true;
                     return false;

@@ -200,9 +200,6 @@ namespace CppSharp.AST
         public IntPtr OriginalPtr;
         private string originalName;
 
-        // Reference to a data object associated with this declaration.
-        public object Data;
-
         protected Declaration()
         {
             Access = AccessSpecifier.Public;
@@ -236,7 +233,6 @@ namespace CppSharp.AST
             PreprocessedEntities = new List<PreprocessedEntity>(
                 declaration.PreprocessedEntities);
             OriginalPtr = declaration.OriginalPtr;
-            Data = declaration.Data;
         }
 
         public override string ToString()

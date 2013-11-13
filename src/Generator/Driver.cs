@@ -1,5 +1,4 @@
-﻿using System;
-using System.CodeDom.Compiler;
+﻿using System.CodeDom.Compiler;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -38,7 +37,6 @@ namespace CppSharp
             Options = options;
             Diagnostics = diagnostics;
             Project = new Project();
-            ASTContext = new ASTContext();
             Symbols = new SymbolContext();
             TypeDatabase = new TypeMapDatabase();
             TranslationUnitPasses = new PassBuilder<TranslationUnitPass>(this);
@@ -152,13 +150,16 @@ namespace CppSharp
                 source.Options = BuildParseOptions(source);
             }
 
-            var parser = new ClangParser(ASTContext, Symbols);
+            var parser = new ClangParser();
             parser.SourceParsed += OnSourceFileParsed;
+            parser.LibraryParsed += OnFileParsed;
 
             parser.ParseProject(Project, Options);
 
 #if !OLD_PARSER
             ASTContext = ClangParser.ConvertASTContext(parser.ASTContext);
+#else
+            ASTContext = parser.ASTContext;
 #endif
 
             return true;
@@ -168,9 +169,7 @@ namespace CppSharp
         {
             foreach (var library in Options.Libraries)
             {
-                var parser = new ClangParser(ASTContext, Symbols);
-                parser.LibraryParsed += OnFileParsed;
-
+                var parser = new ClangParser();
                 var res = parser.ParseLibrary(library, Options);
 
                 if (res.Kind != ParserResultKind.Success)
@@ -309,8 +308,6 @@ namespace CppSharp
     {
         public static void Run(ILibrary library)
         {
-            try { Console.BufferHeight = 2000; } catch (Exception ex) { }
-
             var options = new DriverOptions();
             var driver = new Driver(options, new TextDiagnosticPrinter());
             library.Setup(driver);
