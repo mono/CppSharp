@@ -2,6 +2,7 @@ CppSharp is a library that allows you to generate .NET bindings that wrap C/C++ 
 
 ## News
 
+* November 11th 2013 - Released a new version (423) with bug fixes for type maps (when used with template specializations), constructors renaming and better documentation generation.
 * November 5th 2013 - Released a new version (329) with a lot of bug fixes for operators and vtables.
 * September 22nd 2013 - Conversion (type cast) operators wrapped (thanks to <a href="https://github.com/ddobrev">@ddobrev</a>)
 * September 21st 2013 - Multiple inheritance now supported (thanks to <a href="https://github.com/ddobrev">@ddobrev</a>)
@@ -12,6 +13,8 @@ CppSharp is a library that allows you to generate .NET bindings that wrap C/C++ 
 ## Binaries
 
 VS2012 32-bit:
+
+- [CppSharp_VS2012_423_artifacts.zip](https://dl.dropboxusercontent.com/u/194502/CppSharp/CppSharp_VS2012_423_artifacts.zip) (_November 13th 2013_)
 
 - [CppSharp_VS2012_329_artifacts.zip](https://dl.dropboxusercontent.com/u/194502/CppSharp/CppSharp_VS2012_329_artifacts.zip) (_November 5th 2013_) 
 
