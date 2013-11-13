@@ -140,6 +140,8 @@ namespace CppSharp.AST
 
         public MethodConversionKind Conversion { get; set; }
 
+        public QualifiedType ConversionType { get; set; }
+
         public Class ExplicitInterfaceImpl { get; set; }
 
         public override QualifiedType GetFunctionType()

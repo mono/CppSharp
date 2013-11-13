@@ -809,6 +809,10 @@ Method* Parser::WalkMethodCXX(clang::CXXMethodDecl* MD)
     }
     else if (const CXXConversionDecl* CD = dyn_cast<CXXConversionDecl>(MD))
     {
+        auto TL = MD->getTypeSourceInfo()->getTypeLoc().castAs<FunctionTypeLoc>();
+        auto RTL = TL.getResultLoc();
+        auto ConvTy = WalkType(CD->getConversionType(), &RTL);
+        Method->ConversionType = GetQualifiedType(CD->getConversionType(), ConvTy);
     }
 
     Class->Methods.push_back(Method);

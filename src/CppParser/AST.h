@@ -459,6 +459,8 @@ struct CS_API Method : public Function
     bool IsDefaultConstructor;
     bool IsCopyConstructor;
     bool IsMoveConstructor;
+
+    QualifiedType ConversionType;
 };
 
 struct CS_API Enumeration : public Declaration
