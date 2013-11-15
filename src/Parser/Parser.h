@@ -65,6 +65,11 @@ protected:
     CppSharp::AST::Function^ WalkFunction(clang::FunctionDecl*, bool IsDependent = false,
         bool AddToNamespace = true);
     CppSharp::AST::Class^ WalkRecordCXX(clang::CXXRecordDecl*);
+    void WalkRecordCXX(clang::CXXRecordDecl*, CppSharp::AST::Class^);
+    CppSharp::AST::ClassTemplateSpecialization^
+    WalkClassTemplateSpecialization(clang::ClassTemplateSpecializationDecl*);
+    CppSharp::AST::ClassTemplatePartialSpecialization^
+    WalkClassTemplatePartialSpecialization(clang::ClassTemplatePartialSpecializationDecl*);
     CppSharp::AST::Method^ WalkMethodCXX(clang::CXXMethodDecl*);
     CppSharp::AST::Field^ WalkFieldCXX(clang::FieldDecl*, CppSharp::AST::Class^);
     CppSharp::AST::ClassTemplate^ Parser::WalkClassTemplate(clang::ClassTemplateDecl*);
@@ -74,6 +79,7 @@ protected:
     CppSharp::AST::RawComment^ WalkRawComment(const clang::RawComment*);
     CppSharp::AST::Type^ WalkType(clang::QualType, clang::TypeLoc* = 0,
       bool DesugarType = false);
+    CppSharp::AST::QualifiedType^ WalkQualifiedType(clang::TypeSourceInfo* TSI);
     void WalkVTable(clang::CXXRecordDecl*, CppSharp::AST::Class^);
     CppSharp::AST::VTableLayout^ WalkVTableLayout(const clang::VTableLayout&);
     CppSharp::AST::VTableComponent WalkVTableComponent(const clang::VTableComponent&);

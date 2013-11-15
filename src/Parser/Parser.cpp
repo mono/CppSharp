@@ -527,44 +527,11 @@ void Parser::WalkVTable(clang::CXXRecordDecl* RD, CppSharp::AST::Class^ C)
     }
 }
 
-CppSharp::AST::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
+void Parser::WalkRecordCXX(clang::CXXRecordDecl* Record,
+                          CppSharp::AST::Class^ RC)
 {
     using namespace clang;
     using namespace clix;
-
-    if (Record->isInjectedClassName())
-        return nullptr;
-
-    auto NS = GetNamespace(Record);
-    assert(NS && "Expected a valid namespace");
-
-    bool isCompleteDefinition = Record->isCompleteDefinition();
-
-    CppSharp::AST::Class^ RC = nullptr;
-
-    auto Name = marshalString<E_UTF8>(GetTagDeclName(Record));
-    auto HasEmptyName = Record->getDeclName().isEmpty();
-
-    if (HasEmptyName)
-    {
-        if (auto AR = NS->FindAnonymous((uint64_t)Record))
-            RC = safe_cast<CppSharp::AST::Class^>(AR);
-    }
-    else
-    {
-        RC = NS->FindClass(Name, isCompleteDefinition, /*Create=*/false);
-    }
-
-    if (RC)
-        return RC;
-
-    RC = NS->FindClass(Name, isCompleteDefinition, /*Create=*/true);
-
-    if (HasEmptyName)
-        NS->Anonymous[(uint64_t)Record] = RC;
-
-    if (!isCompleteDefinition)
-        return RC;
 
     auto headStartLoc = GetDeclStartLocation(C.get(), Record);
     auto headEndLoc = Record->getLocation(); // identifier location
@@ -674,8 +641,117 @@ CppSharp::AST::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
     // Process the vtables
     if (hasLayout && Record->isDynamicClass())
         WalkVTable(Record, RC);
+}
+
+CppSharp::AST::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
+{
+    using namespace clang;
+    using namespace clix;
+
+    if (Record->isInjectedClassName())
+        return nullptr;
+
+    auto NS = GetNamespace(Record);
+    assert(NS && "Expected a valid namespace");
+
+    bool isCompleteDefinition = Record->isCompleteDefinition();
+
+    CppSharp::AST::Class^ RC = nullptr;
+
+    auto Name = marshalString<E_UTF8>(GetTagDeclName(Record));
+    auto HasEmptyName = Record->getDeclName().isEmpty();
+
+    if (HasEmptyName)
+    {
+        if (auto AR = NS->FindAnonymous((uint64_t)Record))
+            RC = safe_cast<CppSharp::AST::Class^>(AR);
+    }
+    else
+    {
+        RC = NS->FindClass(Name, isCompleteDefinition, /*Create=*/false);
+    }
+
+    if (RC)
+        return RC;
+
+    RC = NS->FindClass(Name, isCompleteDefinition, /*Create=*/true);
+
+    if (HasEmptyName)
+        NS->Anonymous[(uint64_t)Record] = RC;
+
+    if (!isCompleteDefinition)
+        return RC;
+
+    WalkRecordCXX(Record, RC);
 
     return RC;
+}
+
+//-----------------------------------//
+
+static CppSharp::AST::TemplateSpecializationKind
+WalkTemplateSpecializationKind(clang::TemplateSpecializationKind Kind)
+{
+    using namespace clang;
+    switch(Kind)
+    {
+    case TSK_Undeclared:
+        return CppSharp::AST::TemplateSpecializationKind::Undeclared;
+    case TSK_ImplicitInstantiation:
+        return CppSharp::AST::TemplateSpecializationKind::ImplicitInstantiation;
+    case TSK_ExplicitSpecialization:
+        return CppSharp::AST::TemplateSpecializationKind::ExplicitSpecialization;
+    case TSK_ExplicitInstantiationDeclaration:
+        return CppSharp::AST::TemplateSpecializationKind::ExplicitInstantiationDeclaration;
+    case TSK_ExplicitInstantiationDefinition:
+        return CppSharp::AST::TemplateSpecializationKind::ExplicitInstantiationDefinition;
+    }
+}
+
+CppSharp::AST::ClassTemplateSpecialization^
+Parser::WalkClassTemplateSpecialization(clang::ClassTemplateSpecializationDecl* CTS)
+{
+    auto CT = WalkClassTemplate(CTS->getSpecializedTemplate());
+    auto Spec = CT->FindSpecialization(System::IntPtr(CTS));
+    if (Spec != nullptr)
+        return Spec;
+
+    auto TS = gcnew CppSharp::AST::ClassTemplateSpecialization();
+    TS->OriginalPtr = System::IntPtr(CTS);
+    TS->TemplatedDecl = CT;
+    TS->SpecializationKind = WalkTemplateSpecializationKind(CTS->getSpecializationKind());
+    CT->Specializations->Add(TS);
+
+    // TODO: Parse the template argument list
+
+    if (CTS->isCompleteDefinition())
+        WalkRecordCXX(CTS, TS);
+
+    return TS;
+}
+
+//-----------------------------------//
+
+CppSharp::AST::ClassTemplatePartialSpecialization^
+Parser::WalkClassTemplatePartialSpecialization(clang::ClassTemplatePartialSpecializationDecl* CTS)
+{
+    auto CT = WalkClassTemplate(CTS->getSpecializedTemplate());
+    auto Spec = CT->FindPartialSpecialization(System::IntPtr(CTS));
+    if (Spec != nullptr)
+        return Spec;
+
+    auto TS = gcnew CppSharp::AST::ClassTemplatePartialSpecialization();
+    TS->OriginalPtr = System::IntPtr(CTS);
+    TS->TemplatedDecl = CT;
+    TS->SpecializationKind = WalkTemplateSpecializationKind(CTS->getSpecializationKind());
+    CT->Specializations->Add(TS);
+
+    // TODO: Parse the template argument list
+
+    if (CTS->isCompleteDefinition())
+        WalkRecordCXX(CTS, TS);
+
+    return TS;
 }
 
 //-----------------------------------//
@@ -685,8 +761,21 @@ CppSharp::AST::ClassTemplate^ Parser::WalkClassTemplate(clang::ClassTemplateDecl
     using namespace clang;
     using namespace clix;
 
-    auto Class = WalkRecordCXX(TD->getTemplatedDecl());
-    CppSharp::AST::ClassTemplate^ CT = gcnew CppSharp::AST::ClassTemplate(Class);
+    if (TD->getCanonicalDecl() != TD)
+        return WalkClassTemplate(TD->getCanonicalDecl());
+
+    auto NS = GetNamespace(TD);
+    assert(NS && "Expected a valid namespace");
+
+    auto CT = NS->FindClassTemplate(System::IntPtr(TD));
+    if (CT != nullptr)
+        return CT;
+
+    CT = gcnew CppSharp::AST::ClassTemplate();
+    CT->OriginalPtr = System::IntPtr(TD);
+    NS->Templates->Add(CT);
+    
+    CT->TemplatedDecl = WalkRecordCXX(TD->getTemplatedDecl());
 
     auto TPL = TD->getTemplateParameters();
     for(auto it = TPL->begin(); it != TPL->end(); ++it)
@@ -709,9 +798,21 @@ CppSharp::AST::FunctionTemplate^ Parser::WalkFunctionTemplate(clang::FunctionTem
     using namespace clang;
     using namespace clix;
 
+    if (TD->getCanonicalDecl() != TD)
+        return WalkFunctionTemplate(TD->getCanonicalDecl());
+
+    auto NS = GetNamespace(TD);
+    assert(NS && "Expected a valid namespace");
+
+    auto FT = NS->FindFunctionTemplate(System::IntPtr(TD));
+    if (FT != nullptr)
+        return FT;
+
     auto Function = WalkFunction(TD->getTemplatedDecl(), /*IsDependent=*/true,
         /*AddToNamespace=*/false);
-    CppSharp::AST::FunctionTemplate^ FT = gcnew CppSharp::AST::FunctionTemplate(Function);
+    FT = gcnew CppSharp::AST::FunctionTemplate(Function);
+    FT->OriginalPtr = System::IntPtr(TD);
+    NS->Templates->Add(FT);
 
     auto TPL = TD->getTemplateParameters();
     for(auto it = TPL->begin(); it != TPL->end(); ++it)
@@ -951,10 +1052,15 @@ CppSharp::AST::DeclarationContext^ Parser::GetNamespace(clang::Decl* D,
             continue;
         }
         case Decl::ClassTemplateSpecialization:
+        {
+            auto CTSpec = cast<ClassTemplateSpecializationDecl>(Ctx);
+            DC = WalkClassTemplateSpecialization(CTSpec);
+            continue;
+        }
         case Decl::ClassTemplatePartialSpecialization:
         {
-            // FIXME: Ignore ClassTemplateSpecialization namespaces...
-            // We might be able to translate these to C# nested types.
+            auto CTPSpec = cast<ClassTemplatePartialSpecializationDecl>(Ctx);
+            DC = WalkClassTemplatePartialSpecialization(CTPSpec);
             continue;
         }
         default:
@@ -1070,6 +1176,13 @@ static CppSharp::AST::CallingConvention ConvertCallConv(clang::CallingConv CC)
     }
 
     return CppSharp::AST::CallingConvention::Default;
+}
+
+CppSharp::AST::QualifiedType^ Parser::WalkQualifiedType(clang::TypeSourceInfo* TSI)
+{
+    auto TL = TSI->getTypeLoc();
+    auto Ty = WalkType(TSI->getType(), &TL);
+    return GetQualifiedType(TSI->getType(), Ty);
 }
 
 CppSharp::AST::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
@@ -1982,17 +2095,13 @@ CppSharp::AST::Declaration^ Parser::WalkDeclaration(clang::Decl* D,
         ClassTemplateDecl* TD = cast<ClassTemplateDecl>(D);
         auto Template = WalkClassTemplate(TD); 
 
-        auto NS = GetNamespace(TD);
-        Template->Namespace = NS;
-        NS->Templates->Add(Template);
-        
         Decl = Template;
         break;
     }
     case Decl::ClassTemplateSpecialization:
     {
         auto TS = cast<ClassTemplateSpecializationDecl>(D);
-        auto CT = gcnew CppSharp::AST::ClassTemplateSpecialization();
+        auto CT = WalkClassTemplateSpecialization(TS);
 
         Decl = CT;
         break;
@@ -2000,21 +2109,17 @@ CppSharp::AST::Declaration^ Parser::WalkDeclaration(clang::Decl* D,
     case Decl::ClassTemplatePartialSpecialization:
     {
         auto TS = cast<ClassTemplatePartialSpecializationDecl>(D);
-        auto CT = gcnew CppSharp::AST::ClassTemplatePartialSpecialization();
+        auto CT = WalkClassTemplatePartialSpecialization(TS);
 
         Decl = CT;
         break;
     }
     case Decl::FunctionTemplate:
     {
-        FunctionTemplateDecl* TD = cast<FunctionTemplateDecl>(D);
-        auto Template = WalkFunctionTemplate(TD); 
+        auto TD = cast<FunctionTemplateDecl>(D);
+        auto FT = WalkFunctionTemplate(TD); 
 
-        auto NS = GetNamespace(TD);
-        Template->Namespace = NS;
-        NS->Templates->Add(Template);
-
-        Decl = Template;
+        Decl = FT;
         break;
     }
     case Decl::Enum:

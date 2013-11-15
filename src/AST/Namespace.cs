@@ -226,9 +226,16 @@ namespace CppSharp.AST
             return newClass;
         }
 
-        public ClassTemplate FindClassTemplate(string name)
+        public FunctionTemplate FindFunctionTemplate(IntPtr ptr)
         {
-            return null;
+            return Templates.FirstOrDefault(template =>
+                template.OriginalPtr == ptr) as FunctionTemplate;
+        }
+
+        public ClassTemplate FindClassTemplate(IntPtr ptr)
+        {
+            return Templates.FirstOrDefault(template =>
+                template.OriginalPtr == ptr) as ClassTemplate;
         }
 
         public TypedefDecl FindTypedef(string name, bool createDecl = false)
