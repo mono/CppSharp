@@ -718,6 +718,11 @@ Parser::WalkClassTemplateSpecialization(clang::ClassTemplateSpecializationDecl* 
 
     auto TS = gcnew CppSharp::AST::ClassTemplateSpecialization();
     TS->OriginalPtr = System::IntPtr(CTS);
+
+    auto NS = GetNamespace(CTS);
+    assert(NS && "Expected a valid namespace");
+    TS->Namespace = NS;
+
     TS->TemplatedDecl = CT;
     TS->SpecializationKind = WalkTemplateSpecializationKind(CTS->getSpecializationKind());
     CT->Specializations->Add(TS);
@@ -742,6 +747,11 @@ Parser::WalkClassTemplatePartialSpecialization(clang::ClassTemplatePartialSpecia
 
     auto TS = gcnew CppSharp::AST::ClassTemplatePartialSpecialization();
     TS->OriginalPtr = System::IntPtr(CTS);
+
+    auto NS = GetNamespace(CTS);
+    assert(NS && "Expected a valid namespace");
+    TS->Namespace = NS;
+
     TS->TemplatedDecl = CT;
     TS->SpecializationKind = WalkTemplateSpecializationKind(CTS->getSpecializationKind());
     CT->Specializations->Add(TS);
@@ -772,6 +782,7 @@ CppSharp::AST::ClassTemplate^ Parser::WalkClassTemplate(clang::ClassTemplateDecl
         return CT;
 
     CT = gcnew CppSharp::AST::ClassTemplate();
+    CT->Namespace = NS;
     CT->OriginalPtr = System::IntPtr(TD);
     NS->Templates->Add(CT);
     
@@ -811,6 +822,7 @@ CppSharp::AST::FunctionTemplate^ Parser::WalkFunctionTemplate(clang::FunctionTem
     auto Function = WalkFunction(TD->getTemplatedDecl(), /*IsDependent=*/true,
         /*AddToNamespace=*/false);
     FT = gcnew CppSharp::AST::FunctionTemplate(Function);
+    FT->Namespace = NS;
     FT->OriginalPtr = System::IntPtr(TD);
     NS->Templates->Add(FT);
 
