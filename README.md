@@ -1,5 +1,19 @@
 CppSharp is a collection of libraries for working with C++ code from .NET.
 
+### Generator
+
+Generates .NET bindings that wrap C/C++ code allowing interoperability with
+managed languages. This is useful if you want to consume an existing native
+library in your managed code or add scripting support to a native codebase.
+ 
+ * Multiple backends: C++/CLI and C# P/Invoke
+ * Multiple ABIs: Itanium (GCC, Clang), MS and MinGW
+ * Virtual table overriding support
+ * Multiple inheritance support
+ * Easily extensible semantics via user passes 
+ * Work-in-progress support for STL
+ * Strongly-typed customization APIs and type maps
+
 ### AST 
 
 Mirrors the Clang's C++ AST and type system classes in C# APIs.
@@ -21,20 +35,6 @@ Provides APIs for parsing C++ source code.
 * Parsing of shared libraries symbols 
 * Based on the very accurate Clang C++ parser.
  
-### Generator
-
-Generates .NET bindings that wrap C/C++ code allowing interoperability with
-managed languages. This is useful if you want to consume an existing native
-library in your managed code or add scripting support to a native codebase.
- 
- * Multiple backends: C++/CLI and C# P/Invoke
- * Multiple ABIs: Itanium (GCC, Clang), MS and MinGW
- * Virtual table overriding support
- * Multiple inheritance support
- * Easily extensible semantics via user passes 
- * Work-in-progress support for STL
- * Strongly-typed customization APIs and type maps
-
 ## Community
 
 Mailing list: [Google group](https://groups.google.com/forum/#!forum/cppsharp-list)
