@@ -152,7 +152,6 @@ namespace CppSharp
 
             var parser = new ClangParser();
             parser.SourceParsed += OnSourceFileParsed;
-            parser.LibraryParsed += OnFileParsed;
 
             parser.ParseProject(Project, Options);
 
@@ -170,6 +169,8 @@ namespace CppSharp
             foreach (var library in Options.Libraries)
             {
                 var parser = new ClangParser();
+                parser.LibraryParsed += OnFileParsed;
+
                 var res = parser.ParseLibrary(library, Options);
 
                 if (res.Kind != ParserResultKind.Success)
