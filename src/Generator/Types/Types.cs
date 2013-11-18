@@ -70,6 +70,11 @@ namespace CppSharp
             return VisitDeclaration(@class);
         }
 
+        public override bool VisitClassTemplateDecl(ClassTemplate template)
+        {
+            return false;
+        }
+
         public override bool VisitTypedefType(TypedefType typedef,
             TypeQualifiers quals)
         {
