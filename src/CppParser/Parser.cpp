@@ -2207,6 +2207,8 @@ void Parser::HandleDiagnostics(ParserResult* res)
 
 ParserResult* Parser::ParseHeader(const std::string& File)
 {
+    assert(Opts->ASTContext && "Expected a valid ASTContext");
+
     auto res = new ParserResult();
     res->ASTContext = Lib;
 
