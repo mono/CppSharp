@@ -1,4 +1,5 @@
-﻿using System.CodeDom.Compiler;
+﻿using System;
+using System.CodeDom.Compiler;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -263,35 +264,47 @@ namespace CppSharp
 
         public void CompileCode()
         {
-            string assemblyFile;
-            if (string.IsNullOrEmpty(Options.LibraryName))
-                assemblyFile = "out.dll";
-            else
-                assemblyFile = Options.LibraryName + ".dll";
+            try
+            {
+                var assemblyFile = string.IsNullOrEmpty(Options.LibraryName) ?
+                    "out.dll" : Options.LibraryName + ".dll";
 
-            var compilerOptions = new StringBuilder();
-            compilerOptions.Append(" /doc:" + Path.ChangeExtension(Path.GetFileName(assemblyFile), ".xml"));
-            compilerOptions.Append(" /debug:pdbonly");
-            compilerOptions.Append(" /unsafe");
+                var docFile = Path.ChangeExtension(Path.GetFileName(assemblyFile), ".xml");
 
-            var compilerParameters = new CompilerParameters();
-            compilerParameters.GenerateExecutable = false;
-            compilerParameters.TreatWarningsAsErrors = false;
-            compilerParameters.OutputAssembly = assemblyFile;
-            compilerParameters.GenerateInMemory = false;
-            compilerParameters.CompilerOptions = compilerOptions.ToString();
-            compilerParameters.ReferencedAssemblies.Add(typeof(object).Assembly.Location);
-            var location = Assembly.GetExecutingAssembly().Location;
-            var locationRuntime = Path.Combine(Path.GetDirectoryName(location), "CppSharp.Runtime.dll");
-            compilerParameters.ReferencedAssemblies.Add(locationRuntime);
+                var compilerOptions = new StringBuilder();
+                compilerOptions.Append(" /doc:" + docFile);
+                compilerOptions.Append(" /debug:pdbonly");
+                compilerOptions.Append(" /unsafe");
 
-            var providerOptions = new Dictionary<string, string>();
-            providerOptions.Add("CompilerVersion", "v4.0");
-            var csharp = new CSharpCodeProvider(providerOptions);
-            var cr = csharp.CompileAssemblyFromFile(compilerParameters, Options.CodeFiles.ToArray());
+                var compilerParameters = new CompilerParameters
+                    {
+                        GenerateExecutable = false,
+                        TreatWarningsAsErrors = false,
+                        OutputAssembly = assemblyFile,
+                        GenerateInMemory = false,
+                        CompilerOptions = compilerOptions.ToString()
+                    };
 
-            foreach (var error in cr.Errors.Cast<CompilerError>().Where(error => !error.IsWarning))
-                Diagnostics.EmitError(error.ToString());
+                compilerParameters.ReferencedAssemblies.Add(typeof (object).Assembly.Location);
+                var location = Assembly.GetExecutingAssembly().Location;
+                var locationRuntime = Path.Combine(Path.GetDirectoryName(location),
+                    "CppSharp.Runtime.dll");
+                compilerParameters.ReferencedAssemblies.Add(locationRuntime);
+
+                var codeProvider = new CSharpCodeProvider(
+                    new Dictionary<string, string> {{"CompilerVersion", "v4.0"}});
+                var compilerResults = codeProvider.CompileAssemblyFromFile(
+                    compilerParameters, Options.CodeFiles.ToArray());
+
+                var errors = compilerResults.Errors.Cast<CompilerError>();
+                foreach (var error in errors.Where(error => !error.IsWarning))
+                    Diagnostics.EmitError(error.ToString());
+            }
+            catch (Exception exception)
+            {
+                Diagnostics.EmitError("Could not compile the generated source code");
+                Diagnostics.EmitMessage(exception.ToString());
+            }
         }
 
         public void AddTranslationUnitPass(TranslationUnitPass pass)
