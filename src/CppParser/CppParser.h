@@ -9,6 +9,10 @@
 
 #include "AST.h"
 
+#define VECTOR_OPTIONS(type, name) \
+    std::vector<type> name; \
+    void push##name##(const type& elem) { name.push_back(elem); }
+
 namespace CppSharp { namespace CppParser {
 
 using namespace CppSharp::CppParser::AST;
@@ -30,10 +34,10 @@ struct CS_API ParserOptions
     std::string FileName;
 
     // Include directories
-    std::vector<std::string> IncludeDirs;
-    std::vector<std::string> SystemIncludeDirs;
-    std::vector<std::string> Defines;
-    std::vector<std::string> LibraryDirs;
+    VECTOR_OPTIONS(std::string, IncludeDirs)
+    VECTOR_OPTIONS(std::string, SystemIncludeDirs)
+    VECTOR_OPTIONS(std::string, Defines)
+    VECTOR_OPTIONS(std::string, LibraryDirs)
 
     CppSharp::CppParser::AST::ASTContext* ASTContext;
 
