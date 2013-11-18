@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using CppSharp.AST;
 using CppSharp.Generators;
 
@@ -42,7 +41,7 @@ namespace CppSharp.Passes
             function.ExplicityIgnored = true;
 
             // Create a new fake method so it acts as an instance method.
-            var method = new Method()
+            var method = new Method
                 {
                     Namespace = @class,
                     OriginalNamespace = function.Namespace,
@@ -79,10 +78,7 @@ namespace CppSharp.Passes
                 return true;
             }
 
-            if (classParam.Type.IsTagDecl(out @class))
-                return true;
-
-            return false;
+            return classParam.Type.IsTagDecl(out @class);
         }
     }
 }
