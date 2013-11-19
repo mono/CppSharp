@@ -36,7 +36,6 @@
 Parser::Parser(ParserOptions^ Opts)
     : Opts(Opts)
     , Lib(Opts->ASTContext)
-    , Symbols(Opts->SymbolsContext)
     , Index(0)
 {
 }
