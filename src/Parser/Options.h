@@ -38,7 +38,6 @@ public ref struct ParserOptions
     System::String^ FileName;
 
     CppSharp::AST::ASTContext^ ASTContext;
-    CppSharp::AST::SymbolContext^ SymbolsContext;
 
     int ToolSetToUse;
     System::String^ TargetTriple;
