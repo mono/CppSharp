@@ -135,7 +135,7 @@ namespace CppSharp.Types
         {
             var typePrinter = new CppTypePrinter(this);
 
-            TemplateSpecializationType template = type as TemplateSpecializationType;
+            var template = type as TemplateSpecializationType;
             if (template != null)
             {
                 if (FindTypeMap(template.Template.TemplatedDecl.Visit(typePrinter), out typeMap))

@@ -252,7 +252,7 @@ namespace CppSharp
                 foreach (var template in output.Templates)
                 {
                     var fileName = string.Format("{0}.{1}", fileBase, template.FileExtension);
-                    Diagnostics.EmitMessage(DiagnosticId.FileGenerated, "Generated '{0}'", fileName);
+                    Diagnostics.EmitMessage("Generated '{0}'", fileName);
 
                     var filePath = Path.Combine(outputPath, fileName);
                     string file = Path.GetFullPath(filePath);

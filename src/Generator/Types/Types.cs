@@ -102,7 +102,8 @@ namespace CppSharp
             return base.VisitTypedefDecl(typedef);
         }
 
-        public override bool VisitMemberPointerType(MemberPointerType member, TypeQualifiers quals)
+        public override bool VisitMemberPointerType(MemberPointerType member,
+            TypeQualifiers quals)
         {
             FunctionType functionType;
             if (!member.IsPointerTo(out functionType))
