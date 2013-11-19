@@ -31,6 +31,11 @@ namespace CppSharp
             ASTContext = new ASTContext();
         }
 
+        public ClangParser(ASTContext context)
+        {
+            ASTContext = context;
+        }
+
         /// <summary>
         /// Parses a C++ source file to a translation unit.
         /// </summary>

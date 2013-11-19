@@ -14,7 +14,7 @@ using System.IO;
 using Microsoft.CSharp;
 
 #if !OLD_PARSER
-using Std;
+using CppSharp.Parser;
 #endif
 
 namespace CppSharp
@@ -38,6 +38,7 @@ namespace CppSharp
             Options = options;
             Diagnostics = diagnostics;
             Project = new Project();
+            ASTContext = new ASTContext();
             Symbols = new SymbolContext();
             TypeDatabase = new TypeMapDatabase();
             TranslationUnitPasses = new PassBuilder<TranslationUnitPass>(this);
@@ -120,12 +121,7 @@ namespace CppSharp
             var options = new ParserOptions
             {
                 FileName = file.Path,
-#if !OLD_PARSER
-                IncludeDirs = Options.IncludeDirs.ToStd(),
-                SystemIncludeDirs = Options.SystemIncludeDirs.ToStd(),
-                Defines = Options.Defines.ToStd(),
-                LibraryDirs = Options.LibraryDirs.ToStd(),
-#else
+#if OLD_PARSER
                 IncludeDirs = Options.IncludeDirs,
                 SystemIncludeDirs = Options.SystemIncludeDirs,
                 Defines = Options.Defines,
@@ -151,7 +147,11 @@ namespace CppSharp
                 source.Options = BuildParseOptions(source);
             }
 
-            var parser = new ClangParser();
+#if !OLD_PARSER
+            var parser = new ClangParser(new Parser.AST.ASTContext());
+#else
+            var parser = new ClangParser(ASTContext);
+#endif
             parser.SourceParsed += OnSourceFileParsed;
 
             parser.ParseProject(Project, Options);
