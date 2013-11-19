@@ -717,7 +717,10 @@ Parser::WalkClassTemplateSpecialization(clang::ClassTemplateSpecializationDecl* 
         return Spec;
 
     auto TS = gcnew CppSharp::AST::ClassTemplateSpecialization();
+    HandleDeclaration(CTS, TS);
+
     TS->OriginalPtr = System::IntPtr(CTS);
+    TS->Name = clix::marshalString<clix::E_UTF8>(CTS->getName());
 
     auto NS = GetNamespace(CTS);
     assert(NS && "Expected a valid namespace");
@@ -746,7 +749,10 @@ Parser::WalkClassTemplatePartialSpecialization(clang::ClassTemplatePartialSpecia
         return Spec;
 
     auto TS = gcnew CppSharp::AST::ClassTemplatePartialSpecialization();
+    HandleDeclaration(CTS, TS);
+
     TS->OriginalPtr = System::IntPtr(CTS);
+    TS->Name = clix::marshalString<clix::E_UTF8>(CTS->getName());
 
     auto NS = GetNamespace(CTS);
     assert(NS && "Expected a valid namespace");
