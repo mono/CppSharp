@@ -43,7 +43,7 @@ public class CSharpTempTests
     [Test]
     public void TestMultipleInheritance()
     {
-        Baz baz = new Baz();
+        var baz = new Baz();
         Assert.That(baz.Method, Is.EqualTo(1));
         var bar = (IBar) baz;
         Assert.That(bar.Method, Is.EqualTo(2));
@@ -53,11 +53,6 @@ public class CSharpTempTests
         Assert.That(baz.FarAwayFunc, Is.EqualTo(20));
         Assert.That(baz.TakesQux(baz), Is.EqualTo(20));
         Assert.That(baz.ReturnQux().FarAwayFunc, Is.EqualTo(20));
-        int cast = baz;
-        Assert.That(cast, Is.EqualTo(500));
-        var nested = new Baz.Nested();
-        int nestedCast = nested;
-        Assert.That(nestedCast, Is.EqualTo(300));
     }
 
     [Test]

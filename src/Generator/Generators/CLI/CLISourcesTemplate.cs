@@ -577,8 +577,9 @@ namespace CppSharp.Generators.CLI
         {
             PushBlock(CLIBlockKind.Method, method);
 
-            if (method.IsConstructor || method.IsDestructor)
-                Write("{0}::{1}(", QualifiedIdentifier(@class), SafeIdentifier(method.Name));
+            if (method.IsConstructor || method.IsDestructor ||
+                method.OperatorKind == CXXOperatorKind.Conversion)
+                Write("{0}::{1}(", QualifiedIdentifier(@class), GetMethodName(method));
             else
                 Write("{0} {1}::{2}(", method.ReturnType, QualifiedIdentifier(@class),
                       SafeIdentifier(method.Name));
@@ -752,7 +753,14 @@ namespace CppSharp.Generators.CLI
                 Write("auto {0}{1} = ",(function.ReturnType.Type.IsReference())? "&": string.Empty,
                     Generator.GeneratedIdentifier("ret"));
 
-            if (function.IsOperator)
+            if (function.OperatorKind == CXXOperatorKind.Conversion)
+            {
+                var method = function as Method;
+                var typePrinter = new CppTypePrinter(Driver.TypeDatabase);
+                var typeName = method.ConversionType.Visit(typePrinter);
+                WriteLine("({0}) {1};", typeName, @params[0].Name);
+            }
+            else if (function.IsOperator)
             {
                 var opName = function.Name.Replace("operator", "").Trim();
 

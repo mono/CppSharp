@@ -124,5 +124,24 @@ public class BasicTests
         Foo foo = new Foo();
         Assert.That(foo.GetANSI(), Is.EqualTo("ANSI"));
     }
+
+    [Test, Ignore]
+    public void TestConversionOperator()
+    {
+        var bar = new Bar2 {A = 1, B = 2, C = 3};
+        Foo2 foo = bar;
+        Assert.AreEqual(foo.A, 1);
+        Assert.AreEqual(foo.B, 2);
+        Assert.AreEqual(foo.C, 3);
+
+        Assert.AreEqual(300, new Bar2.Nested());
+        Assert.AreEqual(500, new Bar2());
+    }
+
+    static void Main(string[] args)
+    {
+        var bar = new Bar2 { A = 1, B = 2, C = 3 };
+        Foo2 foo = bar;
+    }
 }
  

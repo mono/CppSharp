@@ -47,6 +47,19 @@ struct DLL_API Bar
 
 struct DLL_API Bar2 : public Bar
 {
+    // Conversion operators
+
+    struct DLL_API Nested
+    {
+        operator int() const;
+    };
+
+    operator int() const;
+    operator Foo2();
+
+    typedef void *Bar2::*FunctionPointerResolvedAsVoidStar;
+    operator FunctionPointerResolvedAsVoidStar() const { return 0; }
+
     int C;
 };
 

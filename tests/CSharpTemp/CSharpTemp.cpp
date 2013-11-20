@@ -80,11 +80,6 @@ Bar Bar::operator ++(int i)
     return bar;
 }
 
-Baz::Nested::operator int() const
-{
-    return 300;
-}
-
 int Baz::takesQux(const Qux& qux)
 {
     return qux.farAwayFunc();
@@ -93,11 +88,6 @@ int Baz::takesQux(const Qux& qux)
 Qux Baz::returnQux()
 {
     return Qux();
-}
-
-Baz::operator int() const
-{
-    return 500;
 }
 
 int AbstractProprietor::getValue()

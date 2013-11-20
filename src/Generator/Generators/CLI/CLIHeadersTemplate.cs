@@ -571,8 +571,9 @@ namespace CppSharp.Generators.CLI
             if (method.IsStatic || isBuiltinOperator)
                 Write("static ");
 
-            if (method.Kind == CXXMethodKind.Constructor || method.Kind == CXXMethodKind.Destructor)
-                Write("{0}(", SafeIdentifier(method.Name));
+            if (method.IsConstructor || method.IsDestructor ||
+                method.OperatorKind == CXXOperatorKind.Conversion)
+                Write("{0}(", GetMethodName(method));
             else
                 Write("{0} {1}(", method.ReturnType, SafeIdentifier(method.Name));
 

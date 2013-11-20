@@ -32,6 +32,26 @@ Bar::Item Bar::RetItem1()
     return Bar::Item1;
 }
 
+Bar2::Nested::operator int() const
+{
+    return 300;
+}
+
+Bar2::operator int() const
+{
+    return 500;
+}
+
+Bar2::operator Foo2()
+{
+    Foo2 f;
+    f.A = A;
+    f.B = B;
+    f.C = C;
+
+    return f;
+}
+
 Hello::Hello ()
 {
     //cout << "Ctor!" << "\n";
