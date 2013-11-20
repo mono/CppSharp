@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Basic;
 
 [TestFixture]
@@ -102,8 +101,7 @@ public class BasicTests
     [Test, Ignore]
     public void TestLeftShiftOperator()
     {
-        Foo2 foo2 = new Foo2();
-        foo2.C = 2;
+        var foo2 = new Foo2 {C = 2};
         Foo2 result = foo2 << 3;
         Assert.That(result.C, Is.EqualTo(16));
     }
@@ -121,7 +119,7 @@ public class BasicTests
     [Test]
     public void TestANSI()
     {
-        Foo foo = new Foo();
+        var foo = new Foo();
         Assert.That(foo.GetANSI(), Is.EqualTo("ANSI"));
     }
 
@@ -136,12 +134,6 @@ public class BasicTests
 
         Assert.AreEqual(300, new Bar2.Nested());
         Assert.AreEqual(500, new Bar2());
-    }
-
-    static void Main(string[] args)
-    {
-        var bar = new Bar2 { A = 1, B = 2, C = 3 };
-        Foo2 foo = bar;
     }
 }
  
