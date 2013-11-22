@@ -19,12 +19,10 @@ namespace CppSharp.AST
         /// <summary>
         /// Represents a C/C++ enumeration item.
         /// </summary>
-        public class Item : INamedDecl
+        public class Item : Declaration
         {
-            public string Name { get; set; }
             public ulong Value;
             public string Expression;
-            public string Comment;
             public bool ExplicitValue = true;
 
             public bool IsHexadecimal
@@ -37,6 +35,11 @@ namespace CppSharp.AST
                     }
                     return Expression.Contains("0x") || Expression.Contains("0X");
                 }
+            }
+
+            public override T Visit<T>(IDeclVisitor<T> visitor)
+            {
+                throw new NotImplementedException();
             }
         }
 

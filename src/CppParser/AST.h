@@ -473,7 +473,6 @@ struct CS_API Enumeration : public Declaration
     struct CS_API Item : public Declaration
     {
         std::string Expression;
-        std::string Comment;
         uint64_t Value;
     };
 
