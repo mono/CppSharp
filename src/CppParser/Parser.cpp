@@ -1917,6 +1917,9 @@ void Parser::HandleDeclaration(clang::Decl* D, Declaration* Decl)
     if (const clang::ValueDecl *VD = clang::dyn_cast_or_null<clang::ValueDecl>(D))
         Decl->IsDependent = VD->getType()->isDependentType();
 
+    if (const clang::DeclContext *DC = clang::dyn_cast_or_null<clang::DeclContext>(D))
+        Decl->IsDependent |= DC->isDependentContext();
+
     Decl->Access = ConvertToAccess(D->getAccess());
 }
 
