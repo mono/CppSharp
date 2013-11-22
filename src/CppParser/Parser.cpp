@@ -1466,10 +1466,6 @@ Enumeration* Parser::WalkEnum(clang::EnumDecl* ED)
     {
         clang::EnumConstantDecl* ECD = (*it);
 
-        std::string BriefText;
-        if (const clang::RawComment* Comment = AST->getRawCommentForAnyRedecl(ECD))
-            BriefText = Comment->getBriefText(*AST);
-
         auto EnumItem = Enumeration::Item();
         HandleDeclaration(ECD, &EnumItem);
 
@@ -1477,7 +1473,6 @@ Enumeration* Parser::WalkEnum(clang::EnumDecl* ED)
         auto Value = ECD->getInitVal();
         EnumItem.Value = Value.isSigned() ? Value.getSExtValue()
             : Value.getZExtValue();
-        EnumItem.Comment = BriefText;
 
         std::string Text;
         if (GetDeclText(ECD->getSourceRange(), Text))

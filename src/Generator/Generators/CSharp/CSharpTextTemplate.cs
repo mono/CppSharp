@@ -316,13 +316,15 @@ namespace CppSharp.Generators.CSharp
             PopBlock();
         }
 
-        public void GenerateInlineSummary(string comment)
+        public void GenerateInlineSummary(RawComment comment)
         {
-            if (string.IsNullOrWhiteSpace(comment))
+            if (comment == null) return;
+
+            if (string.IsNullOrWhiteSpace(comment.BriefText))
                 return;
 
             PushBlock(BlockKind.InlineComment);
-            WriteLine("/// <summary>{0}</summary>", comment);
+            WriteLine("/// <summary>{0}</summary>", comment.BriefText);
             PopBlock();
         }
 
