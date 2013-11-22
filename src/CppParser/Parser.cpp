@@ -676,9 +676,18 @@ Class* Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
 
 ClassTemplate* Parser::WalkClassTemplate(clang::ClassTemplateDecl* TD)
 {
-    auto Class = WalkRecordCXX(TD->getTemplatedDecl());
-    ClassTemplate* CT = new ClassTemplate;
-    CT->TemplatedDecl = Class;
+    if (TD->getCanonicalDecl() != TD)
+        return WalkClassTemplate(TD->getCanonicalDecl());
+
+    auto NS = GetNamespace(TD);
+    assert(NS && "Expected a valid namespace");
+
+    ClassTemplate* CT = new ClassTemplate();
+    HandleDeclaration(TD, CT);
+
+    CT->TemplatedDecl = WalkRecordCXX(TD->getTemplatedDecl());
+
+    NS->Templates.push_back(CT);
 
     auto TPL = TD->getTemplateParameters();
     for(auto it = TPL->begin(); it != TPL->end(); ++it)
@@ -698,6 +707,12 @@ ClassTemplate* Parser::WalkClassTemplate(clang::ClassTemplateDecl* TD)
 
 FunctionTemplate* Parser::WalkFunctionTemplate(clang::FunctionTemplateDecl* TD)
 {
+    if (TD->getCanonicalDecl() != TD)
+        return WalkFunctionTemplate(TD->getCanonicalDecl());
+
+    auto NS = GetNamespace(TD);
+    assert(NS && "Expected a valid namespace");
+
     auto Function = WalkFunction(TD->getTemplatedDecl(), /*IsDependent=*/true,
         /*AddToNamespace=*/false);
 
@@ -716,6 +731,8 @@ FunctionTemplate* Parser::WalkFunctionTemplate(clang::FunctionTemplateDecl* TD)
 
         FT->Parameters.push_back(TP);
     }
+
+    NS->Templates.push_back(FT);
 
     return FT;
 }
