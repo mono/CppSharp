@@ -556,6 +556,7 @@ Class* Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
         return RC;
 
     RC = NS->FindClass(Name, isCompleteDefinition, /*Create=*/true);
+    HandleDeclaration(Record, RC);
 
     if (HasEmptyName)
         NS->Anonymous[(uint64_t)Record] = RC;
@@ -614,7 +615,6 @@ Class* Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
         {
             auto MD = cast<CXXMethodDecl>(D);
             auto Method = WalkMethodCXX(MD);
-            HandleDeclaration(MD, Method);
             Method->AccessDecl = AccessDecl;
             break;
         }
@@ -626,8 +626,6 @@ Class* Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
             if (Layout)
                 Field->Offset = Layout->getFieldOffset(FD->getFieldIndex());
 
-            HandleDeclaration(FD, Field);
-            RC->Fields.push_back(Field);
             break;
         }
         case Decl::AccessSpec:
@@ -635,14 +633,11 @@ Class* Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
             AccessSpecDecl* AS = cast<AccessSpecDecl>(D);
 
             AccessDecl = new AccessSpecifierDecl();
+            HandleDeclaration(AS, AccessDecl);
+
             AccessDecl->Access = ConvertToAccess(AS->getAccess());
             AccessDecl->_Namespace = RC;
 
-            auto startLoc = GetDeclStartLocation(C.get(), AS);
-            auto range = SourceRange(startLoc, AS->getColonLoc());
-            HandlePreprocessedEntities(AccessDecl, range,
-                MacroLocation::Unknown);
-            HandleDeclaration(AS, AccessDecl);
             RC->Specifiers.push_back(AccessDecl);
             break;
         }
@@ -705,7 +700,10 @@ FunctionTemplate* Parser::WalkFunctionTemplate(clang::FunctionTemplateDecl* TD)
 {
     auto Function = WalkFunction(TD->getTemplatedDecl(), /*IsDependent=*/true,
         /*AddToNamespace=*/false);
+
     FunctionTemplate* FT = new FunctionTemplate;
+    HandleDeclaration(TD, FT);
+
     FT->TemplatedDecl = Function;
 
     auto TPL = TD->getTemplateParameters();
@@ -789,6 +787,8 @@ Method* Parser::WalkMethodCXX(clang::CXXMethodDecl* MD)
     DeclarationName Name = MD->getDeclName();
 
     Method* Method = new CppSharp::CppParser::Method();
+    HandleDeclaration(MD, Method);
+
     Method->Access = ConvertToAccess(MD->getAccess());
     Method->Kind = GetMethodKindFromDecl(Name);
     Method->IsStatic = MD->isStatic();
@@ -826,17 +826,17 @@ Field* Parser::WalkFieldCXX(clang::FieldDecl* FD, Class* Class)
 {
     using namespace clang;
 
-
     Field* F = new Field();
-    F->_Namespace = Class;
+    HandleDeclaration(FD, F);
 
+    F->_Namespace = Class;
     F->Name = FD->getName();
     auto TL = FD->getTypeSourceInfo()->getTypeLoc();
     F->QualifiedType = GetQualifiedType(FD->getType(), WalkType(FD->getType(), &TL));
     F->Access = ConvertToAccess(FD->getAccess());
     F->Class = Class;
 
-    HandleComments(FD, F);
+    Class->Fields.push_back(F);
 
     return F;
 }
@@ -1229,9 +1229,11 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
 
         for (unsigned i = 0; i < FP->getNumArgs(); ++i)
         {
-            auto FA = new Parameter();
-
             auto PVD = FTL.getArg(i);
+
+            auto FA = new Parameter();
+            HandleDeclaration(PVD, FA);
+
             auto PTL = PVD->getTypeSourceInfo()->getTypeLoc();
 
             FA->Name = PVD->getNameAsString();
@@ -1469,6 +1471,8 @@ Enumeration* Parser::WalkEnum(clang::EnumDecl* ED)
             BriefText = Comment->getBriefText(*AST);
 
         auto EnumItem = Enumeration::Item();
+        HandleDeclaration(ECD, &EnumItem);
+
         EnumItem.Name = ECD->getNameAsString();
         auto Value = ECD->getInitVal();
         EnumItem.Value = Value.isSigned() ? Value.getSExtValue()
@@ -1655,6 +1659,8 @@ Function* Parser::WalkFunction(clang::FunctionDecl* FD, bool IsDependent,
         return F;
 
     F = new Function();
+    HandleDeclaration(FD, F);
+
     WalkFunction(FD, F, IsDependent);
 
     if (AddToNamespace)
@@ -1795,6 +1801,8 @@ Variable* Parser::WalkVariable(clang::VarDecl *VD)
     using namespace clang;
 
     auto Var = new Variable();
+    HandleDeclaration(VD, Var);
+
     Var->Name = VD->getName();
     Var->Access = ConvertToAccess(VD->getAccess());
 
@@ -2051,7 +2059,8 @@ Declaration* Parser::WalkDeclaration(clang::Decl* D,
         if (Typedef) return Typedef;
 
         Typedef = NS->FindTypedef(Name, /*Create=*/true);
-        
+        HandleDeclaration(TD, Typedef);
+
         auto TTL = TD->getTypeSourceInfo()->getTypeLoc();
         Typedef->QualifiedType = GetQualifiedType(TD->getUnderlyingType(),
             WalkType(TD->getUnderlyingType(), &TTL));
@@ -2112,9 +2121,6 @@ Declaration* Parser::WalkDeclaration(clang::Decl* D,
 
         break;
     } };
-
-    if (Decl)
-        HandleDeclaration(D, Decl);
 
     return Decl;
 }
