@@ -199,6 +199,8 @@ static bool getVisualStudioDir(std::string &path) {
   }
 
   // Try the environment.
+  const char *vs120comntools = getenv("VS120COMNTOOLS");
+  const char *vs110comntools = getenv("VS110COMNTOOLS");
   const char *vs100comntools = getenv("VS100COMNTOOLS");
   const char *vs90comntools = getenv("VS90COMNTOOLS");
   const char *vs80comntools = getenv("VS80COMNTOOLS");
@@ -206,7 +208,15 @@ static bool getVisualStudioDir(std::string &path) {
 
   // Try to find the version that we were compiled with
   if(false) {}
-  #if (_MSC_VER >= 1600)  // VC100
+  #if (_MSC_VER >= 1800)  // VC120
+  else if (vs120comntools) {
+	vscomntools = vs120comntools;
+  }
+  #elif (_MSC_VER == 1700)  // VC110
+  else if (vs110comntools) {
+	vscomntools = vs110comntools;
+  }
+  #elif (_MSC_VER == 1600)  // VC100
   else if(vs100comntools) {
     vscomntools = vs100comntools;
   }
