@@ -154,6 +154,9 @@ namespace CppSharp
                 [StructLayout(LayoutKind.Explicit, Size = 1)]
                 public struct Internal
                 {
+                    [FieldOffset(0)]
+                    public bool IsDependent;
+
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="??0Type@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
@@ -164,7 +167,7 @@ namespace CppSharp
 
                 int CppSharp.Runtime.ICppMarshal.NativeDataSize
                 {
-                    get { return 0; }
+                    get { return 1; }
                 }
 
                 void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
@@ -204,6 +207,21 @@ namespace CppSharp
                 protected virtual void Dispose(bool disposing)
                 {
                     Marshal.FreeHGlobal(__Instance);
+                }
+
+                public bool IsDependent
+                {
+                    get
+                    {
+                        var __ptr = (Internal*)__Instance.ToPointer();
+                        return __ptr->IsDependent;
+                    }
+
+                    set
+                    {
+                        var __ptr = (Internal*)__Instance.ToPointer();
+                        __ptr->IsDependent = value;
+                    }
                 }
             }
 
@@ -419,10 +437,10 @@ namespace CppSharp
 
             public unsafe partial class TagType : CppSharp.Parser.AST.Type, IDisposable, CppSharp.Runtime.ICppMarshal
             {
-                [StructLayout(LayoutKind.Explicit, Size = 4)]
+                [StructLayout(LayoutKind.Explicit, Size = 8)]
                 public new struct Internal
                 {
-                    [FieldOffset(0)]
+                    [FieldOffset(4)]
                     public global::System.IntPtr Declaration;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -433,7 +451,7 @@ namespace CppSharp
 
                 int CppSharp.Runtime.ICppMarshal.NativeDataSize
                 {
-                    get { return 4; }
+                    get { return 8; }
                 }
 
                 void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
@@ -462,7 +480,7 @@ namespace CppSharp
                 public TagType()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(4);
+                    __Instance = Marshal.AllocHGlobal(8);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -489,16 +507,16 @@ namespace CppSharp
 
             public unsafe partial class ArrayType : CppSharp.Parser.AST.Type, IDisposable, CppSharp.Runtime.ICppMarshal
             {
-                [StructLayout(LayoutKind.Explicit, Size = 16)]
+                [StructLayout(LayoutKind.Explicit, Size = 20)]
                 public new struct Internal
                 {
-                    [FieldOffset(0)]
+                    [FieldOffset(4)]
                     public CppSharp.Parser.AST.QualifiedType.Internal QualifiedType;
 
-                    [FieldOffset(8)]
+                    [FieldOffset(12)]
                     public CppSharp.Parser.AST.ArrayType.ArraySize SizeType;
 
-                    [FieldOffset(12)]
+                    [FieldOffset(16)]
                     public int Size;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -517,7 +535,7 @@ namespace CppSharp
 
                 int CppSharp.Runtime.ICppMarshal.NativeDataSize
                 {
-                    get { return 16; }
+                    get { return 20; }
                 }
 
                 void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
@@ -546,7 +564,7 @@ namespace CppSharp
                 public ArrayType()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(16);
+                    __Instance = Marshal.AllocHGlobal(20);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -605,16 +623,16 @@ namespace CppSharp
 
             public unsafe partial class FunctionType : CppSharp.Parser.AST.Type, IDisposable, CppSharp.Runtime.ICppMarshal
             {
-                [StructLayout(LayoutKind.Explicit, Size = 24)]
+                [StructLayout(LayoutKind.Explicit, Size = 40)]
                 public new struct Internal
                 {
-                    [FieldOffset(0)]
+                    [FieldOffset(4)]
                     public CppSharp.Parser.AST.QualifiedType.Internal ReturnType;
 
-                    [FieldOffset(8)]
+                    [FieldOffset(12)]
                     public CppSharp.Parser.AST.CallingConvention CallingConvention;
 
-                    [FieldOffset(12)]
+                    [FieldOffset(28)]
                     public Std.Vector Parameters;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -640,7 +658,7 @@ namespace CppSharp
 
                 int CppSharp.Runtime.ICppMarshal.NativeDataSize
                 {
-                    get { return 24; }
+                    get { return 40; }
                 }
 
                 void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
@@ -669,7 +687,7 @@ namespace CppSharp
                 public FunctionType()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(24);
+                    __Instance = Marshal.AllocHGlobal(40);
                     Internal.FunctionType_1(__Instance);
                 }
 
@@ -742,13 +760,13 @@ namespace CppSharp
 
             public unsafe partial class PointerType : CppSharp.Parser.AST.Type, IDisposable, CppSharp.Runtime.ICppMarshal
             {
-                [StructLayout(LayoutKind.Explicit, Size = 12)]
+                [StructLayout(LayoutKind.Explicit, Size = 16)]
                 public new struct Internal
                 {
-                    [FieldOffset(0)]
+                    [FieldOffset(4)]
                     public CppSharp.Parser.AST.QualifiedType.Internal QualifiedPointee;
 
-                    [FieldOffset(8)]
+                    [FieldOffset(12)]
                     public CppSharp.Parser.AST.PointerType.TypeModifier Modifier;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -767,7 +785,7 @@ namespace CppSharp
 
                 int CppSharp.Runtime.ICppMarshal.NativeDataSize
                 {
-                    get { return 12; }
+                    get { return 16; }
                 }
 
                 void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
@@ -796,7 +814,7 @@ namespace CppSharp
                 public PointerType()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(12);
+                    __Instance = Marshal.AllocHGlobal(16);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -840,10 +858,10 @@ namespace CppSharp
 
             public unsafe partial class MemberPointerType : CppSharp.Parser.AST.Type, IDisposable, CppSharp.Runtime.ICppMarshal
             {
-                [StructLayout(LayoutKind.Explicit, Size = 8)]
+                [StructLayout(LayoutKind.Explicit, Size = 12)]
                 public new struct Internal
                 {
-                    [FieldOffset(0)]
+                    [FieldOffset(4)]
                     public CppSharp.Parser.AST.QualifiedType.Internal Pointee;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -854,7 +872,7 @@ namespace CppSharp
 
                 int CppSharp.Runtime.ICppMarshal.NativeDataSize
                 {
-                    get { return 8; }
+                    get { return 12; }
                 }
 
                 void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
@@ -883,7 +901,7 @@ namespace CppSharp
                 public MemberPointerType()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(8);
+                    __Instance = Marshal.AllocHGlobal(12);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -912,10 +930,10 @@ namespace CppSharp
 
             public unsafe partial class TypedefType : CppSharp.Parser.AST.Type, IDisposable, CppSharp.Runtime.ICppMarshal
             {
-                [StructLayout(LayoutKind.Explicit, Size = 4)]
+                [StructLayout(LayoutKind.Explicit, Size = 8)]
                 public new struct Internal
                 {
-                    [FieldOffset(0)]
+                    [FieldOffset(4)]
                     public global::System.IntPtr Declaration;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -926,7 +944,7 @@ namespace CppSharp
 
                 int CppSharp.Runtime.ICppMarshal.NativeDataSize
                 {
-                    get { return 4; }
+                    get { return 8; }
                 }
 
                 void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
@@ -955,7 +973,7 @@ namespace CppSharp
                 public TypedefType()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(4);
+                    __Instance = Marshal.AllocHGlobal(8);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -982,16 +1000,16 @@ namespace CppSharp
 
             public unsafe partial class DecayedType : CppSharp.Parser.AST.Type, IDisposable, CppSharp.Runtime.ICppMarshal
             {
-                [StructLayout(LayoutKind.Explicit, Size = 24)]
+                [StructLayout(LayoutKind.Explicit, Size = 28)]
                 public new struct Internal
                 {
-                    [FieldOffset(0)]
+                    [FieldOffset(4)]
                     public CppSharp.Parser.AST.QualifiedType.Internal Decayed;
 
-                    [FieldOffset(8)]
+                    [FieldOffset(12)]
                     public CppSharp.Parser.AST.QualifiedType.Internal Original;
 
-                    [FieldOffset(16)]
+                    [FieldOffset(20)]
                     public CppSharp.Parser.AST.QualifiedType.Internal Pointee;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -1002,7 +1020,7 @@ namespace CppSharp
 
                 int CppSharp.Runtime.ICppMarshal.NativeDataSize
                 {
-                    get { return 24; }
+                    get { return 28; }
                 }
 
                 void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
@@ -1031,7 +1049,7 @@ namespace CppSharp
                 public DecayedType()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(24);
+                    __Instance = Marshal.AllocHGlobal(28);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -1242,16 +1260,16 @@ namespace CppSharp
 
             public unsafe partial class TemplateSpecializationType : CppSharp.Parser.AST.Type, IDisposable, CppSharp.Runtime.ICppMarshal
             {
-                [StructLayout(LayoutKind.Explicit, Size = 20)]
+                [StructLayout(LayoutKind.Explicit, Size = 24)]
                 public new struct Internal
                 {
-                    [FieldOffset(0)]
+                    [FieldOffset(4)]
                     public Std.Vector Arguments;
 
-                    [FieldOffset(12)]
+                    [FieldOffset(16)]
                     public global::System.IntPtr Template;
 
-                    [FieldOffset(16)]
+                    [FieldOffset(20)]
                     public global::System.IntPtr Desugared;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -1277,7 +1295,7 @@ namespace CppSharp
 
                 int CppSharp.Runtime.ICppMarshal.NativeDataSize
                 {
-                    get { return 20; }
+                    get { return 24; }
                 }
 
                 void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
@@ -1306,7 +1324,7 @@ namespace CppSharp
                 public TemplateSpecializationType()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(20);
+                    __Instance = Marshal.AllocHGlobal(24);
                     Internal.TemplateSpecializationType_1(__Instance);
                 }
 
@@ -1462,10 +1480,10 @@ namespace CppSharp
 
             public unsafe partial class TemplateParameterType : CppSharp.Parser.AST.Type, IDisposable, CppSharp.Runtime.ICppMarshal
             {
-                [StructLayout(LayoutKind.Explicit, Size = 24)]
+                [StructLayout(LayoutKind.Explicit, Size = 28)]
                 public new struct Internal
                 {
-                    [FieldOffset(0)]
+                    [FieldOffset(4)]
                     public CppSharp.Parser.AST.TemplateParameter.Internal Parameter;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -1481,7 +1499,7 @@ namespace CppSharp
 
                 int CppSharp.Runtime.ICppMarshal.NativeDataSize
                 {
-                    get { return 24; }
+                    get { return 28; }
                 }
 
                 void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
@@ -1510,7 +1528,7 @@ namespace CppSharp
                 public TemplateParameterType()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(24);
+                    __Instance = Marshal.AllocHGlobal(28);
                     Internal.TemplateParameterType_0(__Instance);
                 }
 
@@ -1540,10 +1558,10 @@ namespace CppSharp
 
             public unsafe partial class TemplateParameterSubstitutionType : CppSharp.Parser.AST.Type, IDisposable, CppSharp.Runtime.ICppMarshal
             {
-                [StructLayout(LayoutKind.Explicit, Size = 8)]
+                [StructLayout(LayoutKind.Explicit, Size = 12)]
                 public new struct Internal
                 {
-                    [FieldOffset(0)]
+                    [FieldOffset(4)]
                     public CppSharp.Parser.AST.QualifiedType.Internal Replacement;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -1554,7 +1572,7 @@ namespace CppSharp
 
                 int CppSharp.Runtime.ICppMarshal.NativeDataSize
                 {
-                    get { return 8; }
+                    get { return 12; }
                 }
 
                 void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
@@ -1583,7 +1601,7 @@ namespace CppSharp
                 public TemplateParameterSubstitutionType()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(8);
+                    __Instance = Marshal.AllocHGlobal(12);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -1612,13 +1630,13 @@ namespace CppSharp
 
             public unsafe partial class InjectedClassNameType : CppSharp.Parser.AST.Type, IDisposable, CppSharp.Runtime.ICppMarshal
             {
-                [StructLayout(LayoutKind.Explicit, Size = 24)]
+                [StructLayout(LayoutKind.Explicit, Size = 32)]
                 public new struct Internal
                 {
-                    [FieldOffset(0)]
+                    [FieldOffset(4)]
                     public CppSharp.Parser.AST.TemplateSpecializationType.Internal TemplateSpecialization;
 
-                    [FieldOffset(20)]
+                    [FieldOffset(28)]
                     public global::System.IntPtr Class;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -1634,7 +1652,7 @@ namespace CppSharp
 
                 int CppSharp.Runtime.ICppMarshal.NativeDataSize
                 {
-                    get { return 24; }
+                    get { return 32; }
                 }
 
                 void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
@@ -1663,7 +1681,7 @@ namespace CppSharp
                 public InjectedClassNameType()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(24);
+                    __Instance = Marshal.AllocHGlobal(32);
                     Internal.InjectedClassNameType_0(__Instance);
                 }
 
@@ -1678,7 +1696,7 @@ namespace CppSharp
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
                         var __copy = new global::System.IntPtr(&__ptr->TemplateSpecialization);
-                        var __instance = Marshal.AllocHGlobal(20);
+                        var __instance = Marshal.AllocHGlobal(24);
                         CppSharp.Parser.AST.TemplateSpecializationType.Internal.TemplateSpecializationType_2(__instance, new global::System.IntPtr(&__copy));
                         return new CppSharp.Parser.AST.TemplateSpecializationType(__instance);
                     }
@@ -1720,7 +1738,7 @@ namespace CppSharp
 
                 int CppSharp.Runtime.ICppMarshal.NativeDataSize
                 {
-                    get { return 0; }
+                    get { return 1; }
                 }
 
                 void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
@@ -1760,10 +1778,10 @@ namespace CppSharp
 
             public unsafe partial class BuiltinType : CppSharp.Parser.AST.Type, IDisposable, CppSharp.Runtime.ICppMarshal
             {
-                [StructLayout(LayoutKind.Explicit, Size = 4)]
+                [StructLayout(LayoutKind.Explicit, Size = 8)]
                 public new struct Internal
                 {
-                    [FieldOffset(0)]
+                    [FieldOffset(4)]
                     public CppSharp.Parser.AST.PrimitiveType Type;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -1774,7 +1792,7 @@ namespace CppSharp
 
                 int CppSharp.Runtime.ICppMarshal.NativeDataSize
                 {
-                    get { return 4; }
+                    get { return 8; }
                 }
 
                 void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
@@ -1803,7 +1821,7 @@ namespace CppSharp
                 public BuiltinType()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(4);
+                    __Instance = Marshal.AllocHGlobal(8);
                 }
 
                 protected override void Dispose(bool disposing)

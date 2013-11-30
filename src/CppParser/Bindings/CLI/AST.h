@@ -227,6 +227,11 @@ namespace CppSharp
                 Type(System::IntPtr native);
                 Type();
 
+                property bool IsDependent
+                {
+                    bool get();
+                    void set(bool);
+                }
             };
 
             public ref class TypeQualifiers : ICppInstance

@@ -11,6 +11,8 @@ namespace CppSharp.AST
     {
         public static Func<Type, string> TypePrinterDelegate;
 
+        public bool IsDependent { get; set; }
+
         protected Type()
         {
         }

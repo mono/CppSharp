@@ -28,6 +28,17 @@ void CppSharp::Parser::AST::Type::Instance::set(System::IntPtr object)
 {
     NativePtr = (::CppSharp::CppParser::AST::Type*)object.ToPointer();
 }
+
+bool CppSharp::Parser::AST::Type::IsDependent::get()
+{
+    return ((::CppSharp::CppParser::AST::Type*)NativePtr)->IsDependent;
+}
+
+void CppSharp::Parser::AST::Type::IsDependent::set(bool value)
+{
+    ((::CppSharp::CppParser::AST::Type*)NativePtr)->IsDependent = value;
+}
+
 CppSharp::Parser::AST::TypeQualifiers::TypeQualifiers(::CppSharp::CppParser::AST::TypeQualifiers* native)
 {
     NativePtr = native;

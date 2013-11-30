@@ -1221,6 +1221,8 @@ CppSharp::AST::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* 
         Type = Desugared.getTypePtr();
     }
 
+    CppSharp::AST::Type^ Ty = nullptr;
+
     assert(Type && "Expected a valid type");
     switch(Type->getTypeClass())
     {
@@ -1232,7 +1234,8 @@ CppSharp::AST::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* 
         auto BT = gcnew CppSharp::AST::BuiltinType();
         BT->Type = WalkBuiltinType(Builtin);
         
-        return BT;
+        Ty = BT;
+        break;
     }
     case Type::Enum:
     {
@@ -1242,7 +1245,8 @@ CppSharp::AST::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* 
         auto TT = gcnew CppSharp::AST::TagType();
         TT->Declaration = TT->Declaration = WalkDeclaration(ED, /*IgnoreSystemDecls=*/false);
 
-        return TT;
+        Ty = TT;
+        break;
     }
     case Type::Pointer:
     {
@@ -1252,12 +1256,13 @@ CppSharp::AST::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* 
         P->Modifier = CppSharp::AST::PointerType::TypeModifier::Pointer;
 
         TypeLoc Next;
-        if (!TL->isNull()) Next = TL->getNextTypeLoc();
+        if (TL && !TL->isNull()) Next = TL->getNextTypeLoc();
 
         auto Pointee = Pointer->getPointeeType();
         P->QualifiedPointee = GetQualifiedType(Pointee, WalkType(Pointee, &Next));
 
-        return P;
+        Ty = P;
+        break;
     }
     case Type::Typedef:
     {
@@ -1271,27 +1276,33 @@ CppSharp::AST::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* 
         auto Type = gcnew CppSharp::AST::TypedefType();
         Type->Declaration = TDD;
 
-        return Type;
+        Ty = Type;
+        break;
     }
     case Type::Decayed:
     {
         auto DT = Type->getAs<clang::DecayedType>();
+
         TypeLoc Next;
-        if (!TL->isNull()) Next = TL->getNextTypeLoc();
+        if (TL && !TL->isNull()) Next = TL->getNextTypeLoc();
 
         auto Type = gcnew CppSharp::AST::DecayedType();
         Type->Decayed = GetQualifiedType(DT->getDecayedType(), WalkType(DT->getDecayedType(), &Next));
         Type->Original = GetQualifiedType(DT->getOriginalType(), WalkType(DT->getOriginalType(), &Next));
         Type->Pointee = GetQualifiedType(DT->getPointeeType(), WalkType(DT->getPointeeType(), &Next));
 
-        return Type;
+        Ty = Type;
+        break;
     }
     case Type::Elaborated:
     {
         auto ET = Type->getAs<clang::ElaboratedType>();
+
         TypeLoc Next;
-        if (!TL->isNull()) Next = TL->getNextTypeLoc();
-        return WalkType(ET->getNamedType(), &Next);
+        if (TL && !TL->isNull()) Next = TL->getNextTypeLoc();
+
+        Ty = WalkType(ET->getNamedType(), &Next);
+        break;
     }
     case Type::Record:
     {
@@ -1301,59 +1312,74 @@ CppSharp::AST::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* 
         auto TT = gcnew CppSharp::AST::TagType();
         TT->Declaration = WalkDeclaration(RD, /*IgnoreSystemDecls=*/false);
 
-        return TT;
+        Ty = TT;
+        break;
     }
     case Type::Paren:
     {
         auto PT = Type->getAs<clang::ParenType>();
+
         TypeLoc Next;
-        if (!TL->isNull()) Next = TL->getNextTypeLoc();
-        return WalkType(PT->getInnerType(), &Next);
+        if (TL && !TL->isNull()) Next = TL->getNextTypeLoc();
+
+        Ty = WalkType(PT->getInnerType(), &Next);
+        break;
     }
     case Type::ConstantArray:
     {
         auto AT = AST->getAsConstantArrayType(QualType);
 
-        auto A = gcnew CppSharp::AST::ArrayType();
         TypeLoc Next;
-        if (!TL->isNull()) Next = TL->getNextTypeLoc();
+        if (TL && !TL->isNull()) Next = TL->getNextTypeLoc();
+
+        auto A = gcnew CppSharp::AST::ArrayType();
         A->Type = WalkType(AT->getElementType(), &Next);
         A->SizeType = CppSharp::AST::ArrayType::ArraySize::Constant;
         A->Size = AST->getConstantArrayElementCount(AT);
 
-        return A;
+        Ty = A;
+        break;
     }
     case Type::IncompleteArray:
     {
         auto AT = AST->getAsIncompleteArrayType(QualType);
 
-        auto A = gcnew CppSharp::AST::ArrayType();
         TypeLoc Next;
-        if (!TL->isNull()) Next = TL->getNextTypeLoc();
+        if (TL && !TL->isNull()) Next = TL->getNextTypeLoc();
+
+        auto A = gcnew CppSharp::AST::ArrayType();
         A->Type = WalkType(AT->getElementType(), &Next);
         A->SizeType = CppSharp::AST::ArrayType::ArraySize::Incomplete;
 
-        return A;
+        Ty = A;
+        break;
     }
     case Type::DependentSizedArray:
     {
         auto AT = AST->getAsDependentSizedArrayType(QualType);
 
-        auto A = gcnew CppSharp::AST::ArrayType();
         TypeLoc Next;
-        if (!TL->isNull()) Next = TL->getNextTypeLoc();
+        if (TL && !TL->isNull()) Next = TL->getNextTypeLoc();
+
+        auto A = gcnew CppSharp::AST::ArrayType();
         A->Type = WalkType(AT->getElementType(), &Next);
         A->SizeType = CppSharp::AST::ArrayType::ArraySize::Dependent;
         //A->Size = AT->getSizeExpr();
 
-        return A;
+        Ty = A;
+        break;
     }
     case Type::FunctionProto:
     {
         auto FP = Type->getAs<clang::FunctionProtoType>();
 
-        auto FTL = TL->getAs<FunctionProtoTypeLoc>();
-        auto RL = FTL.getResultLoc();
+        FunctionProtoTypeLoc FTL;
+        TypeLoc RL;
+        if (TL && !TL->isNull())
+        {
+            FTL = TL->getAs<FunctionProtoTypeLoc>();
+            RL = FTL.getResultLoc();
+        }
 
         auto F = gcnew CppSharp::AST::FunctionType();
         F->ReturnType = GetQualifiedType(FP->getResultType(),
@@ -1375,28 +1401,34 @@ CppSharp::AST::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* 
             F->Parameters->Add(FA);
         }
 
-        return F;
+        Ty = F;
+        break;
     }
     case Type::TypeOf:
     {
         auto TO = Type->getAs<clang::TypeOfType>();
-        return WalkType(TO->getUnderlyingType());
+
+        Ty = WalkType(TO->getUnderlyingType());
+        break;
     }
     case Type::TypeOfExpr:
     {
         auto TO = Type->getAs<clang::TypeOfExprType>();
-        return WalkType(TO->getUnderlyingExpr()->getType());
+
+        Ty = WalkType(TO->getUnderlyingExpr()->getType());
+        break;
     }
     case Type::MemberPointer:
     {
         auto MP = Type->getAs<clang::MemberPointerType>();
         TypeLoc Next;
-        if (!TL->isNull()) Next = TL->getNextTypeLoc();
+        if (TL && !TL->isNull()) Next = TL->getNextTypeLoc();
 
         auto MPT = gcnew CppSharp::AST::MemberPointerType();
         MPT->Pointee = WalkType(MP->getPointeeType(), &Next);
         
-        return MPT;
+        Ty = MPT;
+        break;
     }
     case Type::TemplateSpecialization:
     {
@@ -1473,7 +1505,8 @@ CppSharp::AST::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* 
             TST->Arguments->Add(Arg);
         }
 
-        return TST;
+        Ty = TST;
+        break;
     }
     case Type::TemplateTypeParm:
     {
@@ -1484,19 +1517,22 @@ CppSharp::AST::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* 
         if (auto Ident = TP->getIdentifier())
             TPT->Parameter.Name = marshalString<E_UTF8>(Ident->getName());
 
-        return TPT;
+        Ty = TPT;
+        break;
     }
     case Type::SubstTemplateTypeParm:
     {
         auto TP = Type->getAs<SubstTemplateTypeParmType>();
-        auto Ty = TP->getReplacementType();
         auto TPT = gcnew CppSharp::AST::TemplateParameterSubstitutionType();
 
         TypeLoc Next;
-        if (!TL->isNull()) Next = TL->getNextTypeLoc();
-        TPT->Replacement = GetQualifiedType(Ty, WalkType(Ty, &Next));
+        if (TL && !TL->isNull()) Next = TL->getNextTypeLoc();
 
-        return TPT;
+        auto RepTy = TP->getReplacementType();
+        TPT->Replacement = GetQualifiedType(RepTy, WalkType(RepTy, &Next));
+
+        Ty = TPT;
+        break;
     }
     case Type::InjectedClassName:
     {
@@ -1504,13 +1540,17 @@ CppSharp::AST::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* 
         auto ICNT = gcnew CppSharp::AST::InjectedClassNameType();
         ICNT->Class = safe_cast<CppSharp::AST::Class^>(WalkDeclaration(
             ICN->getDecl(), 0, /*IgnoreSystemDecls=*/false));
-        return ICNT;
+
+        Ty = ICNT;
+        break;
     }
     case Type::DependentName:
     {
         auto DN = Type->getAs<DependentNameType>();
         auto DNT = gcnew CppSharp::AST::DependentNameType();
-        return DNT;
+
+        Ty = DNT;
+        break;
     }
     case Type::LValueReference:
     {
@@ -1520,12 +1560,13 @@ CppSharp::AST::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* 
         P->Modifier = CppSharp::AST::PointerType::TypeModifier::LVReference;
 
         TypeLoc Next;
-        if (!TL->isNull()) Next = TL->getNextTypeLoc();
+        if (TL && !TL->isNull()) Next = TL->getNextTypeLoc();
 
         auto Pointee = LR->getPointeeType();
         P->QualifiedPointee = GetQualifiedType(Pointee, WalkType(Pointee, &Next));
 
-        return P;
+        Ty = P;
+        break;
     }
     case Type::RValueReference:
     {
@@ -1535,12 +1576,13 @@ CppSharp::AST::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* 
         P->Modifier = CppSharp::AST::PointerType::TypeModifier::RVReference;
 
         TypeLoc Next;
-        if (!TL->isNull()) Next = TL->getNextTypeLoc();
+        if (TL && !TL->isNull()) Next = TL->getNextTypeLoc();
 
         auto Pointee = LR->getPointeeType();
         P->QualifiedPointee = GetQualifiedType(Pointee, WalkType(Pointee, &Next));
 
-        return P;
+        Ty = P;
+        break;
     }
     case Type::Vector:
     {
@@ -1557,6 +1599,9 @@ CppSharp::AST::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* 
         Debug("Unhandled type class '%s'\n", Type->getTypeClassName());
         return nullptr;
     } }
+
+    Ty->IsDependent = Type->isDependentType();
+    return Ty;
 }
 
 //-----------------------------------//

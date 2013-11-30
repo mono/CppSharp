@@ -1099,6 +1099,8 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         Type = Desugared.getTypePtr();
     }
 
+    CppSharp::CppParser::AST::Type* Ty = nullptr;
+
     assert(Type && "Expected a valid type");
     switch(Type->getTypeClass())
     {
@@ -1110,7 +1112,8 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         auto BT = new BuiltinType();
         BT->Type = WalkBuiltinType(Builtin);
         
-        return BT;
+        Ty = BT;
+        break;
     }
     case clang::Type::Enum:
     {
@@ -1120,7 +1123,8 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         auto TT = new TagType();
         TT->Declaration = TT->Declaration = WalkDeclaration(ED, /*IgnoreSystemDecls=*/false);
 
-        return TT;
+        Ty = TT;
+        break;
     }
     case clang::Type::Pointer:
     {
@@ -1130,12 +1134,13 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         P->Modifier = PointerType::TypeModifier::Pointer;
 
         TypeLoc Next;
-        if (!TL->isNull()) Next = TL->getNextTypeLoc();
+        if (TL && !TL->isNull()) Next = TL->getNextTypeLoc();
 
         auto Pointee = Pointer->getPointeeType();
         P->QualifiedPointee = GetQualifiedType(Pointee, WalkType(Pointee, &Next));
 
-        return P;
+        Ty = P;
+        break;
     }
     case clang::Type::Typedef:
     {
@@ -1149,13 +1154,15 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         auto Type = new TypedefType();
         Type->Declaration = TDD;
 
-        return Type;
+        Ty = Type;
+        break;
     }
     case clang::Type::Decayed:
     {
         auto DT = Type->getAs<clang::DecayedType>();
+
         TypeLoc Next;
-        if (!TL->isNull()) Next = TL->getNextTypeLoc();
+        if (TL && !TL->isNull()) Next = TL->getNextTypeLoc();
 
         auto Type = new DecayedType();
         Type->Decayed = GetQualifiedType(DT->getDecayedType(),
@@ -1165,14 +1172,18 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         Type->Pointee = GetQualifiedType(DT->getPointeeType(),
             WalkType(DT->getPointeeType(), &Next));
 
-        return Type;
+        Ty = Type;
+        break;
     }
     case clang::Type::Elaborated:
     {
         auto ET = Type->getAs<clang::ElaboratedType>();
+
         TypeLoc Next;
-        if (!TL->isNull()) Next = TL->getNextTypeLoc();
-        return WalkType(ET->getNamedType(), &Next);
+        if (TL && !TL->isNull()) Next = TL->getNextTypeLoc();
+
+        Ty = WalkType(ET->getNamedType(), &Next);
+        break;
     }
     case clang::Type::Record:
     {
@@ -1182,62 +1193,77 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         auto TT = new TagType();
         TT->Declaration = WalkDeclaration(RD, /*IgnoreSystemDecls=*/false);
 
-        return TT;
+        Ty = TT;
+        break;
     }
     case clang::Type::Paren:
     {
         auto PT = Type->getAs<clang::ParenType>();
+
         TypeLoc Next;
-        if (!TL->isNull()) Next = TL->getNextTypeLoc();
-        return WalkType(PT->getInnerType(), &Next);
+        if (TL && !TL->isNull()) Next = TL->getNextTypeLoc();
+
+        Ty = WalkType(PT->getInnerType(), &Next);
+        break;
     }
     case clang::Type::ConstantArray:
     {
         auto AT = AST->getAsConstantArrayType(QualType);
 
-        auto A = new ArrayType();
         TypeLoc Next;
-        if (!TL->isNull()) Next = TL->getNextTypeLoc();
+        if (TL && !TL->isNull()) Next = TL->getNextTypeLoc();
+
+        auto A = new ArrayType();
         A->QualifiedType = GetQualifiedType(AT->getElementType(),
             WalkType(AT->getElementType(), &Next));
         A->SizeType = ArrayType::ArraySize::Constant;
         A->Size = AST->getConstantArrayElementCount(AT);
 
-        return A;
+        Ty = A;
+        break;
     }
     case clang::Type::IncompleteArray:
     {
         auto AT = AST->getAsIncompleteArrayType(QualType);
 
-        auto A = new ArrayType();
         TypeLoc Next;
-        if (!TL->isNull()) Next = TL->getNextTypeLoc();
+        if (TL && !TL->isNull()) Next = TL->getNextTypeLoc();
+
+        auto A = new ArrayType();
         A->QualifiedType = GetQualifiedType(AT->getElementType(),
             WalkType(AT->getElementType(), &Next));
         A->SizeType = ArrayType::ArraySize::Incomplete;
 
-        return A;
+        Ty = A;
+        break;
     }
     case clang::Type::DependentSizedArray:
     {
         auto AT = AST->getAsDependentSizedArrayType(QualType);
 
-        auto A = new ArrayType();
         TypeLoc Next;
-        if (!TL->isNull()) Next = TL->getNextTypeLoc();
+        if (TL && !TL->isNull()) Next = TL->getNextTypeLoc();
+
+        auto A = new ArrayType();
         A->QualifiedType = GetQualifiedType(AT->getElementType(),
             WalkType(AT->getElementType(), &Next));
         A->SizeType = ArrayType::ArraySize::Dependent;
         //A->Size = AT->getSizeExpr();
 
-        return A;
+        Ty = A;
+        break;
     }
     case clang::Type::FunctionProto:
     {
         auto FP = Type->getAs<clang::FunctionProtoType>();
 
-        auto FTL = TL->getAs<FunctionProtoTypeLoc>();
-        auto RL = FTL.getResultLoc();
+        FunctionProtoTypeLoc FTL;
+        TypeLoc RL;
+        if (TL && !TL->isNull())
+        {
+            FTL = TL->getAs<FunctionProtoTypeLoc>();
+            RL = FTL.getResultLoc();
+        }
 
         auto F = new FunctionType();
         F->ReturnType = GetQualifiedType(FP->getResultType(),
@@ -1261,28 +1287,37 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         }
 
         return F;
+
+        Ty = F;
+        break;
     }
     case clang::Type::TypeOf:
     {
         auto TO = Type->getAs<clang::TypeOfType>();
-        return WalkType(TO->getUnderlyingType());
+
+        Ty = WalkType(TO->getUnderlyingType());
+        break;
     }
     case clang::Type::TypeOfExpr:
     {
         auto TO = Type->getAs<clang::TypeOfExprType>();
-        return WalkType(TO->getUnderlyingExpr()->getType());
+
+        Ty = WalkType(TO->getUnderlyingExpr()->getType());
+        break;
     }
     case clang::Type::MemberPointer:
     {
         auto MP = Type->getAs<clang::MemberPointerType>();
+
         TypeLoc Next;
-        if (!TL->isNull()) Next = TL->getNextTypeLoc();
+        if (TL && !TL->isNull()) Next = TL->getNextTypeLoc();
 
         auto MPT = new MemberPointerType();
         MPT->Pointee = GetQualifiedType(MP->getPointeeType(),
             WalkType(MP->getPointeeType(), &Next));
         
-        return MPT;
+        Ty = MPT;
+        break;
     }
     case clang::Type::TemplateSpecialization:
     {
@@ -1360,7 +1395,8 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
             TST->Arguments.push_back(Arg);
         }
 
-        return TST;
+        Ty = TST;
+        break;
     }
     case clang::Type::TemplateTypeParm:
     {
@@ -1371,19 +1407,22 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         if (auto Ident = TP->getIdentifier())
             TPT->Parameter.Name = Ident->getName();
 
-        return TPT;
+        Ty = TPT;
+        break;
     }
     case clang::Type::SubstTemplateTypeParm:
     {
         auto TP = Type->getAs<SubstTemplateTypeParmType>();
-        auto Ty = TP->getReplacementType();
         auto TPT = new TemplateParameterSubstitutionType();
 
         TypeLoc Next;
-        if (!TL->isNull()) Next = TL->getNextTypeLoc();
-        TPT->Replacement = GetQualifiedType(Ty, WalkType(Ty, &Next));
+        if (TL && !TL->isNull()) Next = TL->getNextTypeLoc();
 
-        return TPT;
+        auto RepTy = TP->getReplacementType();
+        TPT->Replacement = GetQualifiedType(RepTy, WalkType(RepTy, &Next));
+
+        Ty = TPT;
+        break;
     }
     case clang::Type::InjectedClassName:
     {
@@ -1391,13 +1430,17 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         auto ICNT = new InjectedClassNameType();
         ICNT->Class = static_cast<Class*>(WalkDeclaration(
             ICN->getDecl(), 0, /*IgnoreSystemDecls=*/false));
-        return ICNT;
+
+        Ty = ICNT;
+        break;
     }
     case clang::Type::DependentName:
     {
         auto DN = Type->getAs<clang::DependentNameType>();
         auto DNT = new DependentNameType();
-        return DNT;
+
+        Ty = DNT;
+        break;
     }
     case clang::Type::LValueReference:
     {
@@ -1407,12 +1450,13 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         P->Modifier = PointerType::TypeModifier::LVReference;
 
         TypeLoc Next;
-        if (!TL->isNull()) Next = TL->getNextTypeLoc();
+        if (TL && !TL->isNull()) Next = TL->getNextTypeLoc();
 
         auto Pointee = LR->getPointeeType();
         P->QualifiedPointee = GetQualifiedType(Pointee, WalkType(Pointee, &Next));
 
-        return P;
+        Ty = P;
+        break;
     }
     case clang::Type::RValueReference:
     {
@@ -1422,12 +1466,13 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         P->Modifier = PointerType::TypeModifier::RVReference;
 
         TypeLoc Next;
-        if (!TL->isNull()) Next = TL->getNextTypeLoc();
+        if (TL && !TL->isNull()) Next = TL->getNextTypeLoc();
 
         auto Pointee = LR->getPointeeType();
         P->QualifiedPointee = GetQualifiedType(Pointee, WalkType(Pointee, &Next));
 
-        return P;
+        Ty = P;
+        break;
     }
     case clang::Type::Vector:
     {
@@ -1444,6 +1489,9 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         Debug("Unhandled type class '%s'\n", Type->getTypeClassName());
         return nullptr;
     } }
+
+    Ty->IsDependent = Type->isDependentType();
+    return Ty;
 }
 
 //-----------------------------------//

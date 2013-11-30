@@ -31,7 +31,7 @@ namespace CppSharp { namespace CppParser { namespace AST {
 
 struct CS_API Type
 {
-
+    bool IsDependent;
 };
 
 struct CS_API TypeQualifiers
@@ -85,6 +85,7 @@ struct CS_API FunctionType : public Type
 {
     QualifiedType ReturnType;
     CppSharp::CppParser::AST::CallingConvention CallingConvention;
+    VECTOR(QualifiedType, Arguments)
     VECTOR(Parameter*, Parameters)
 };
 
