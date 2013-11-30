@@ -6,13 +6,21 @@ using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Types
 {
+    public enum CppTypePrintKind
+    {
+        Local,
+        Qualified,
+        GlobalQualified
+    }
+
     public class CppTypePrinter : ITypePrinter<string>, IDeclVisitor<string>
     {
+        public CppTypePrintKind PrintKind;
+
         public CppTypePrinter(ITypeMapDatabase database)
         {
+            PrintKind = CppTypePrintKind.GlobalQualified;
         }
-
-        public bool PrintLocalName { get; set; }
 
         public string VisitTagType(TagType tag, TypeQualifiers quals)
         {
@@ -109,9 +117,22 @@ namespace CppSharp.Types
 
         public string VisitTypedefType(TypedefType typedef, TypeQualifiers quals)
         {
-            if (PrintLocalName)
-                return typedef.Declaration.OriginalName;
-            return "::" + typedef.Declaration.QualifiedOriginalName;
+            return GetDeclName(typedef.Declaration);
+        }
+
+        public string GetDeclName(Declaration declaration)
+        {
+            switch (PrintKind)
+            {
+            case CppTypePrintKind.Local:
+                return declaration.OriginalName;
+            case CppTypePrintKind.Qualified:
+                return declaration.QualifiedOriginalName;
+            case CppTypePrintKind.GlobalQualified:
+                return "::" + declaration.QualifiedOriginalName;
+            }
+
+            throw new NotSupportedException();
         }
 
         public string VisitDecayedType(DecayedType decayed, TypeQualifiers quals)
@@ -154,7 +175,7 @@ namespace CppSharp.Types
 
         public string VisitCILType(CILType type, TypeQualifiers quals)
         {
-            throw new NotImplementedException();
+            return string.Empty;
         }
 
         public string VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals)
@@ -208,29 +229,27 @@ namespace CppSharp.Types
 
         public string VisitDeclaration(Declaration decl)
         {
-            throw new NotImplementedException();
+            return GetDeclName(decl);
         }
 
         public string VisitClassDecl(Class @class)
         {
-            if (PrintLocalName)
-                return @class.OriginalName;
-            return string.Format("::{0}", @class.QualifiedOriginalName);
+            return GetDeclName(@class);
         }
 
         public string VisitFieldDecl(Field field)
         {
-            throw new NotImplementedException();
+            return VisitDeclaration(field);
         }
 
         public string VisitFunctionDecl(Function function)
         {
-            throw new NotImplementedException();
+            return VisitDeclaration(function);
         }
 
         public string VisitMethodDecl(Method method)
         {
-            throw new NotImplementedException();
+            return VisitDeclaration(method);
         }
 
         public string VisitParameterDecl(Parameter parameter)
@@ -240,29 +259,27 @@ namespace CppSharp.Types
 
         public string VisitTypedefDecl(TypedefDecl typedef)
         {
-            throw new NotImplementedException();
+            return VisitDeclaration(typedef);
         }
 
         public string VisitEnumDecl(Enumeration @enum)
         {
-            if (PrintLocalName)
-                return @enum.OriginalName;
-            return string.Format("::{0}", @enum.QualifiedOriginalName);
+            return VisitDeclaration(@enum);
         }
 
         public string VisitVariableDecl(Variable variable)
         {
-            throw new NotImplementedException();
+            return VisitDeclaration(variable);
         }
 
         public string VisitClassTemplateDecl(ClassTemplate template)
         {
-            throw new NotImplementedException();
+            return VisitDeclaration(template);
         }
 
         public string VisitFunctionTemplateDecl(FunctionTemplate template)
         {
-            throw new NotImplementedException();
+            return VisitDeclaration(template);
         }
 
         public string VisitMacroDefinition(MacroDefinition macro)
@@ -272,17 +289,17 @@ namespace CppSharp.Types
 
         public string VisitNamespace(Namespace @namespace)
         {
-            throw new NotImplementedException();
+            return VisitDeclaration(@namespace);
         }
 
         public string VisitEvent(Event @event)
         {
-            throw new NotImplementedException();
+            return string.Empty;
         }
 
         public string VisitProperty(Property property)
         {
-            throw new NotImplementedException();
+            return VisitDeclaration(property);
         }
 
         public string ToString(Type type)
