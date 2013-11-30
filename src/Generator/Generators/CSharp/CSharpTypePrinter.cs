@@ -129,7 +129,7 @@ namespace CppSharp.Generators.CSharp
         public CSharpTypePrinterResult VisitFunctionType(FunctionType function,
             TypeQualifiers quals)
         {
-            var arguments = function.Parameters;
+            var arguments = function.Arguments;
             var returnType = function.ReturnType;
             var args = string.Empty;
 

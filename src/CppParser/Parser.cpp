@@ -1270,6 +1270,17 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
             WalkType(FP->getResultType(), &RL));
         F->CallingConvention = ConvertCallConv(FP->getCallConv());
 
+        for (auto I = FP->arg_type_begin(), E = FP->arg_type_end(); I != E;
+             ++I)
+        {
+            auto Arg = *I;
+            auto Ty = GetQualifiedType(Arg, WalkType(Arg));
+            F->Arguments.push_back(Ty);
+        }
+
+        if (!FTL)
+            goto SkipParameters;
+
         for (unsigned i = 0; i < FP->getNumArgs(); ++i)
         {
             auto PVD = FTL.getArg(i);
@@ -1286,7 +1297,7 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
             F->Parameters.push_back(FA);
         }
 
-        return F;
+        SkipParameters:
 
         Ty = F;
         break;

@@ -226,6 +226,19 @@ CppSharp::Parser::AST::FunctionType::FunctionType(System::IntPtr native)
     auto __native = (::CppSharp::CppParser::AST::FunctionType*)native.ToPointer();
 }
 
+CppSharp::Parser::AST::QualifiedType^ CppSharp::Parser::AST::FunctionType::getArguments(unsigned int i)
+{
+    auto __ret = ((::CppSharp::CppParser::AST::FunctionType*)NativePtr)->getArguments(i);
+    auto ____ret = new ::CppSharp::CppParser::AST::QualifiedType(__ret);
+    return gcnew CppSharp::Parser::AST::QualifiedType((::CppSharp::CppParser::AST::QualifiedType*)____ret);
+}
+
+unsigned int CppSharp::Parser::AST::FunctionType::getArgumentsCount()
+{
+    auto __ret = ((::CppSharp::CppParser::AST::FunctionType*)NativePtr)->getArgumentsCount();
+    return __ret;
+}
+
 CppSharp::Parser::AST::Parameter^ CppSharp::Parser::AST::FunctionType::getParameters(unsigned int i)
 {
     auto __ret = ((::CppSharp::CppParser::AST::FunctionType*)NativePtr)->getParameters(i);
@@ -263,6 +276,29 @@ CppSharp::Parser::AST::CallingConvention CppSharp::Parser::AST::FunctionType::Ca
 void CppSharp::Parser::AST::FunctionType::CallingConvention::set(CppSharp::Parser::AST::CallingConvention value)
 {
     ((::CppSharp::CppParser::AST::FunctionType*)NativePtr)->CallingConvention = (::CppSharp::CppParser::AST::CallingConvention)value;
+}
+
+System::Collections::Generic::List<CppSharp::Parser::AST::QualifiedType^>^ CppSharp::Parser::AST::FunctionType::Arguments::get()
+{
+    auto _tmpArguments = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::QualifiedType^>();
+    for(auto _element : ((::CppSharp::CppParser::AST::FunctionType*)NativePtr)->Arguments)
+    {
+        auto ___element = new ::CppSharp::CppParser::AST::QualifiedType(_element);
+        auto _marshalElement = gcnew CppSharp::Parser::AST::QualifiedType((::CppSharp::CppParser::AST::QualifiedType*)___element);
+        _tmpArguments->Add(_marshalElement);
+    }
+    return _tmpArguments;
+}
+
+void CppSharp::Parser::AST::FunctionType::Arguments::set(System::Collections::Generic::List<CppSharp::Parser::AST::QualifiedType^>^ value)
+{
+    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::QualifiedType>();
+    for each(CppSharp::Parser::AST::QualifiedType^ _element in value)
+    {
+        auto _marshalElement = *(::CppSharp::CppParser::AST::QualifiedType*)_element->NativePtr;
+        _tmpvalue.push_back(_marshalElement);
+    }
+    ((::CppSharp::CppParser::AST::FunctionType*)NativePtr)->Arguments = _tmpvalue;
 }
 
 System::Collections::Generic::List<CppSharp::Parser::AST::Parameter^>^ CppSharp::Parser::AST::FunctionType::Parameters::get()

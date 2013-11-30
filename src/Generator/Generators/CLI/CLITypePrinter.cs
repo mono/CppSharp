@@ -58,7 +58,7 @@ namespace CppSharp.Generators.CLI
 
         public string VisitFunctionType(FunctionType function, TypeQualifiers quals)
         {
-            var arguments = function.Parameters;
+            var arguments = function.Arguments;
             var returnType = function.ReturnType;
             var args = string.Empty;
 
