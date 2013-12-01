@@ -48,14 +48,6 @@ namespace CppSharp
             if (decl.CompleteDeclaration != null)
                 return VisitDeclaration(decl.CompleteDeclaration);
 
-            TypeMap typeMap;
-            if (TypeMapDatabase.FindTypeMap(decl, out typeMap)
-                && typeMap.IsIgnored)
-            {
-                Ignore();
-                return false;
-            }
-
             if (decl.Ignore)
             {
                 Ignore();
