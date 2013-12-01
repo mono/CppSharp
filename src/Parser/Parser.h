@@ -63,51 +63,51 @@ protected:
     CppSharp::AST::Declaration^ WalkDeclaration(clang::Decl* D,
         bool IgnoreSystemDecls = true, bool CanBeDefinition = false);
     CppSharp::AST::Declaration^ WalkDeclarationDef(clang::Decl* D);
-    CppSharp::AST::Enumeration^ WalkEnum(clang::EnumDecl*);
-    CppSharp::AST::Function^ WalkFunction(clang::FunctionDecl*, bool IsDependent = false,
+    CppSharp::AST::Enumeration^ WalkEnum(clang::EnumDecl* ED);
+    CppSharp::AST::Function^ WalkFunction(clang::FunctionDecl* FD, bool IsDependent = false,
         bool AddToNamespace = true);
-    CppSharp::AST::Class^ WalkRecordCXX(clang::CXXRecordDecl*);
-    void WalkRecordCXX(clang::CXXRecordDecl*, CppSharp::AST::Class^);
+    CppSharp::AST::Class^ WalkRecordCXX(clang::CXXRecordDecl* Record);
+    void WalkRecordCXX(clang::CXXRecordDecl* Record, CppSharp::AST::Class^ RC);
     CppSharp::AST::ClassTemplateSpecialization^
-    WalkClassTemplateSpecialization(clang::ClassTemplateSpecializationDecl*);
+    WalkClassTemplateSpecialization(clang::ClassTemplateSpecializationDecl* CTS);
     CppSharp::AST::ClassTemplatePartialSpecialization^
-    WalkClassTemplatePartialSpecialization(clang::ClassTemplatePartialSpecializationDecl*);
-    CppSharp::AST::Method^ WalkMethodCXX(clang::CXXMethodDecl*);
-    CppSharp::AST::Field^ WalkFieldCXX(clang::FieldDecl*, CppSharp::AST::Class^);
-    CppSharp::AST::ClassTemplate^ Parser::WalkClassTemplate(clang::ClassTemplateDecl*);
+    WalkClassTemplatePartialSpecialization(clang::ClassTemplatePartialSpecializationDecl* CTS);
+    CppSharp::AST::Method^ WalkMethodCXX(clang::CXXMethodDecl* MD);
+    CppSharp::AST::Field^ WalkFieldCXX(clang::FieldDecl* FD, CppSharp::AST::Class^ Class);
+    CppSharp::AST::ClassTemplate^ Parser::WalkClassTemplate(clang::ClassTemplateDecl* TD);
     CppSharp::AST::FunctionTemplate^ Parser::WalkFunctionTemplate(
-        clang::FunctionTemplateDecl*);
-    CppSharp::AST::Variable^ WalkVariable(clang::VarDecl*);
-    CppSharp::AST::RawComment^ WalkRawComment(const clang::RawComment*);
-    CppSharp::AST::Type^ WalkType(clang::QualType, clang::TypeLoc* = 0,
+        clang::FunctionTemplateDecl* TD);
+    CppSharp::AST::Variable^ WalkVariable(clang::VarDecl* VD);
+    CppSharp::AST::RawComment^ WalkRawComment(const clang::RawComment* RC);
+    CppSharp::AST::Type^ WalkType(clang::QualType QualType, clang::TypeLoc* TL = 0,
       bool DesugarType = false);
     CppSharp::AST::QualifiedType^ WalkQualifiedType(clang::TypeSourceInfo* TSI);
-    void WalkVTable(clang::CXXRecordDecl*, CppSharp::AST::Class^);
-    CppSharp::AST::VTableLayout^ WalkVTableLayout(const clang::VTableLayout&);
-    CppSharp::AST::VTableComponent WalkVTableComponent(const clang::VTableComponent&);
+    void WalkVTable(clang::CXXRecordDecl* RD, CppSharp::AST::Class^ C);
+    CppSharp::AST::VTableLayout^ WalkVTableLayout(const clang::VTableLayout& VTLayout);
+    CppSharp::AST::VTableComponent WalkVTableComponent(const clang::VTableComponent& Component);
 
     // Clang helpers
     SourceLocationKind GetLocationKind(const clang::SourceLocation& Loc);
     bool IsValidDeclaration(const clang::SourceLocation& Loc);
-    std::string GetDeclMangledName(clang::Decl*, clang::TargetCXXABI,
+    std::string GetDeclMangledName(clang::Decl* D, clang::TargetCXXABI ABI,
         bool IsDependent = false);
-    std::string GetTypeName(const clang::Type*);
+    std::string GetTypeName(const clang::Type* Type);
     void WalkFunction(clang::FunctionDecl* FD, CppSharp::AST::Function^ F,
         bool IsDependent = false);
     void HandlePreprocessedEntities(CppSharp::AST::Declaration^ Decl, clang::SourceRange sourceRange,
                                     CppSharp::AST::MacroLocation macroLocation = CppSharp::AST::MacroLocation::Unknown);
-    bool GetDeclText(clang::SourceRange, std::string& Text);
+    bool GetDeclText(clang::SourceRange SR, std::string& Text);
 
     CppSharp::AST::TranslationUnit^ GetTranslationUnit(clang::SourceLocation Loc,
         SourceLocationKind *Kind = 0);
-    CppSharp::AST::TranslationUnit^ GetTranslationUnit(const clang::Decl*);
+    CppSharp::AST::TranslationUnit^ GetTranslationUnit(const clang::Decl* D);
 
-    CppSharp::AST::DeclarationContext^ GetNamespace(clang::Decl*, clang::DeclContext*);
-    CppSharp::AST::DeclarationContext^ GetNamespace(clang::Decl*);
+    CppSharp::AST::DeclarationContext^ GetNamespace(clang::Decl* D, clang::DeclContext* Ctx);
+    CppSharp::AST::DeclarationContext^ GetNamespace(clang::Decl* D);
 
-    void HandleDeclaration(clang::Decl* D, CppSharp::AST::Declaration^);
-    void HandleOriginalText(clang::Decl* D, CppSharp::AST::Declaration^);
-    void HandleComments(clang::Decl* D, CppSharp::AST::Declaration^);
+    void HandleDeclaration(clang::Decl* D, CppSharp::AST::Declaration^ Decl);
+    void HandleOriginalText(clang::Decl* D, CppSharp::AST::Declaration^ Decl);
+    void HandleComments(clang::Decl* D, CppSharp::AST::Declaration^ Decl);
     void HandleDiagnostics(ParserResult^ res);
 
     int Index;
