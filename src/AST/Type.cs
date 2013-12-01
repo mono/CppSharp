@@ -13,10 +13,6 @@ namespace CppSharp.AST
 
         public bool IsDependent { get; set; }
 
-        protected Type()
-        {
-        }
-
         public bool IsPrimitiveType(out PrimitiveType primitive)
         {
             var builtin = this as BuiltinType;
