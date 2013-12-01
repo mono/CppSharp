@@ -63,48 +63,48 @@ protected:
     Declaration* WalkDeclaration(clang::Decl* D,
         bool IgnoreSystemDecls = true, bool CanBeDefinition = false);
     Declaration* WalkDeclarationDef(clang::Decl* D);
-    Enumeration* WalkEnum(clang::EnumDecl*);
-    Function* WalkFunction(clang::FunctionDecl*, bool IsDependent = false,
+    Enumeration* WalkEnum(clang::EnumDecl* ED);
+    Function* WalkFunction(clang::FunctionDecl* FD, bool IsDependent = false,
         bool AddToNamespace = true);
-    Class* WalkRecordCXX(clang::CXXRecordDecl*);
-    Method* WalkMethodCXX(clang::CXXMethodDecl*);
-    Field* WalkFieldCXX(clang::FieldDecl*, Class*);
-    ClassTemplate* WalkClassTemplate(clang::ClassTemplateDecl*);
+    Class* WalkRecordCXX(clang::CXXRecordDecl* Record);
+    Method* WalkMethodCXX(clang::CXXMethodDecl* MD);
+    Field* WalkFieldCXX(clang::FieldDecl* FD, Class* Class);
+    ClassTemplate* WalkClassTemplate(clang::ClassTemplateDecl* TD);
     FunctionTemplate* WalkFunctionTemplate(
-        clang::FunctionTemplateDecl*);
-    Variable* WalkVariable(clang::VarDecl*);
-    RawComment* WalkRawComment(const clang::RawComment*);
-    Type* WalkType(clang::QualType, clang::TypeLoc* = 0,
+        clang::FunctionTemplateDecl* TD);
+    Variable* WalkVariable(clang::VarDecl* VD);
+    RawComment* WalkRawComment(const clang::RawComment* RC);
+    Type* WalkType(clang::QualType QualType, clang::TypeLoc* TL = 0,
       bool DesugarType = false);
-    void WalkVTable(clang::CXXRecordDecl*, Class*);
-    VTableLayout WalkVTableLayout(const clang::VTableLayout&);
-    VTableComponent WalkVTableComponent(const clang::VTableComponent&);
+    void WalkVTable(clang::CXXRecordDecl* RD, Class* C);
+    VTableLayout WalkVTableLayout(const clang::VTableLayout& VTLayout);
+    VTableComponent WalkVTableComponent(const clang::VTableComponent& Component);
 
     // Clang helpers
     SourceLocationKind GetLocationKind(const clang::SourceLocation& Loc);
     bool IsValidDeclaration(const clang::SourceLocation& Loc);
-    std::string GetDeclMangledName(clang::Decl*, clang::TargetCXXABI,
+    std::string GetDeclMangledName(clang::Decl* D, clang::TargetCXXABI ABI,
         bool IsDependent = false);
-    std::string GetTypeName(const clang::Type*);
+    std::string GetTypeName(const clang::Type* Type);
     void WalkFunction(clang::FunctionDecl* FD, Function* F,
         bool IsDependent = false);
     void HandlePreprocessedEntities(Declaration* Decl, clang::SourceRange sourceRange,
                                     MacroLocation macroLocation = MacroLocation::Unknown);
-    bool GetDeclText(clang::SourceRange, std::string& Text);
+    bool GetDeclText(clang::SourceRange SR, std::string& Text);
 
     TranslationUnit* GetTranslationUnit(clang::SourceLocation Loc,
         SourceLocationKind *Kind = 0);
-    TranslationUnit* GetTranslationUnit(const clang::Decl*);
+    TranslationUnit* GetTranslationUnit(const clang::Decl* D);
 
-    DeclarationContext* GetNamespace(clang::Decl*, clang::DeclContext*);
-    DeclarationContext* GetNamespace(clang::Decl*);
+    DeclarationContext* GetNamespace(clang::Decl* D, clang::DeclContext* Ctx);
+    DeclarationContext* GetNamespace(clang::Decl* D);
 
     clang::CallingConv GetAbiCallConv(clang::CallingConv CC,
         bool IsInstMethod, bool IsVariadic);
 
-    void HandleDeclaration(clang::Decl* D, Declaration*);
-    void HandleOriginalText(clang::Decl* D, Declaration*);
-    void HandleComments(clang::Decl* D, Declaration*);
+    void HandleDeclaration(clang::Decl* D, Declaration* Decl);
+    void HandleOriginalText(clang::Decl* D, Declaration* Decl);
+    void HandleComments(clang::Decl* D, Declaration* Decl);
     void HandleDiagnostics(ParserResult* res);
 
     int Index;
