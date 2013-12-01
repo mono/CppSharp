@@ -351,7 +351,7 @@ namespace CppSharp.AST
             if (!VisitDeclaration(template))
                 return false;
 
-            return template.TemplatedClass.Visit(this);
+            return true;
         }
 
         public virtual bool VisitFunctionTemplateDecl(FunctionTemplate template)
