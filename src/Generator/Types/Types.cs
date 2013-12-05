@@ -116,7 +116,7 @@ namespace CppSharp
                     Ignore();
                 return false;
             }
-
+            Ignore();
             return base.VisitTemplateSpecializationType(template, quals);
         }
     }
