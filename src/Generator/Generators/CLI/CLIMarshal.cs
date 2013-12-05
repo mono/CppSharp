@@ -282,7 +282,7 @@ namespace CppSharp.Generators.CLI
 
         public override bool VisitFunctionTemplateDecl(FunctionTemplate template)
         {
-            throw new NotImplementedException();
+            return template.TemplatedFunction.Visit(this);
         }
 
         public override bool VisitMacroDefinition(MacroDefinition macro)
@@ -666,7 +666,7 @@ namespace CppSharp.Generators.CLI
 
         public override bool VisitFunctionTemplateDecl(FunctionTemplate template)
         {
-            throw new NotImplementedException();
+            return template.TemplatedFunction.Visit(this);
         }
 
         public override bool VisitMacroDefinition(MacroDefinition macro)

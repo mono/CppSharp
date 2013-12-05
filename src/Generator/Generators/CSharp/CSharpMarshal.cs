@@ -616,6 +616,16 @@ namespace CppSharp.Generators.CSharp
             Context.Return.Write(Context.Parameter.Name);
             return true;
         }
+
+        public override bool VisitClassTemplateDecl(ClassTemplate template)
+        {
+            return VisitClassDecl(template.TemplatedClass);
+        }
+
+        public override bool VisitFunctionTemplateDecl(FunctionTemplate template)
+        {
+            return template.TemplatedFunction.Visit(this);
+        }
     }
 
     public static class CSharpMarshalExtensions
