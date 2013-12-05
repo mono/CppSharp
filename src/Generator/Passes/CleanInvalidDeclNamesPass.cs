@@ -71,6 +71,14 @@ namespace CppSharp.Passes
             return base.VisitFunctionDecl(function);
         }
 
+        public override bool VisitFunctionType(FunctionType function, TypeQualifiers quals)
+        {
+            foreach (var arg in function.Parameters)
+                arg.Visit(this);
+
+            return base.VisitFunctionType(function, quals);
+        }
+
         public override bool VisitTypedefDecl(TypedefDecl typedef)
         {
             var @class = typedef.Namespace.FindClass(typedef.Name);
