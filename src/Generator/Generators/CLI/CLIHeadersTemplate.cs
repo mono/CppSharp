@@ -600,7 +600,7 @@ namespace CppSharp.Generators.CLI
                 PushBlock(CLIBlockKind.Typedef, typedef);
                 GenerateDeclarationCommon(typedef);
 
-                WriteLine("public {0};",
+                WriteLine("{0};",
                     string.Format(TypePrinter.VisitDelegate(function),
                     SafeIdentifier(typedef.Name)));
                 PopBlock(NewLineKind.BeforeNextBlock);

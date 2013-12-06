@@ -114,6 +114,7 @@ public:
     virtual int pureFunction() = 0;
     virtual int pureFunction1() = 0;
     virtual int pureFunction2() = 0;
+    typedef void (*QTextStreamFunction)(int &);
 };
 
 class DLL_API ImplementsAbstractFoo : public AbstractFoo
