@@ -168,7 +168,7 @@ Bar indirectReturn()
     return Bar();
 }
 
-int ImplementsAbstractFoo::pureFunction()
+int ImplementsAbstractFoo::pureFunction(int i)
 {
     return 5;
 }

@@ -95,8 +95,8 @@ namespace CppSharp.AST
                 function.ReturnType.Visit(this);
 
             if (Options.VisitFunctionParameters)
-                foreach (var arg in function.Arguments)
-                    arg.Visit(this);
+                foreach (var param in function.Parameters)
+                    param.Visit(this);
 
             return true;
         }

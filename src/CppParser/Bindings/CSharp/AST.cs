@@ -632,9 +632,6 @@ namespace CppSharp
                     [FieldOffset(12)]
                     public CppSharp.Parser.AST.CallingConvention CallingConvention;
 
-                    [FieldOffset(16)]
-                    public Std.Vector Arguments;
-
                     [FieldOffset(28)]
                     public Std.Vector Parameters;
 
@@ -647,16 +644,6 @@ namespace CppSharp
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="??0FunctionType@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
                     internal static extern global::System.IntPtr FunctionType_2(global::System.IntPtr instance, global::System.IntPtr _0);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getArguments@FunctionType@AST@CppParser@CppSharp@@QAE?AUQualifiedType@234@I@Z")]
-                    internal static extern void getArguments_0(global::System.IntPtr instance, global::System.IntPtr __return, uint i);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getArgumentsCount@FunctionType@AST@CppParser@CppSharp@@QAEIXZ")]
-                    internal static extern uint getArgumentsCount_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -709,21 +696,6 @@ namespace CppSharp
                     base.Dispose(disposing);
                 }
 
-                public CppSharp.Parser.AST.QualifiedType getArguments(uint i)
-                {
-                    var __ret = new CppSharp.Parser.AST.QualifiedType.Internal();
-                    Internal.getArguments_0(__Instance, new IntPtr(&__ret), i);
-                    var __instance = Marshal.AllocHGlobal(8);
-                    CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ret), new UIntPtr(8));
-                    return new CppSharp.Parser.AST.QualifiedType(__instance);
-                }
-
-                public uint getArgumentsCount()
-                {
-                    var __ret = Internal.getArgumentsCount_0(__Instance);
-                    return __ret;
-                }
-
                 public CppSharp.Parser.AST.Parameter getParameters(uint i)
                 {
                     var __ret = Internal.getParameters_0(__Instance, i);
@@ -767,21 +739,6 @@ namespace CppSharp
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
                         __ptr->CallingConvention = value;
-                    }
-                }
-
-                public Std.Vector<CppSharp.Parser.AST.QualifiedType> Arguments
-                {
-                    get
-                    {
-                        var __ptr = (Internal*)__Instance.ToPointer();
-                        return new Std.Vector<CppSharp.Parser.AST.QualifiedType>(__ptr->Arguments);
-                    }
-
-                    set
-                    {
-                        var __ptr = (Internal*)__Instance.ToPointer();
-                        __ptr->Arguments = value.Internal;
                     }
                 }
 

@@ -1382,33 +1382,28 @@ CppSharp::AST::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* 
             WalkType(FP->getResultType(), &RL));
         F->CallingConvention = ConvertCallConv(FP->getCallConv());
 
-        for (auto I = FP->arg_type_begin(), E = FP->arg_type_end(); I != E;
-             ++I)
-        {
-            auto Arg = *I;
-            auto Ty = GetQualifiedType(Arg, WalkType(Arg));
-            F->Arguments->Add(Ty);
-        }
-
-        if (!FTL)
-            goto SkipParameters;
-
         for (unsigned i = 0; i < FP->getNumArgs(); ++i)
         {
-            auto PVD = FTL.getArg(i);
-
             auto FA = gcnew CppSharp::AST::Parameter();
-            HandleDeclaration(PVD, FA);
+            if (FTL)
+            {
+                auto PVD = FTL.getArg(i);
 
-            auto PTL = PVD->getTypeSourceInfo()->getTypeLoc();
+                HandleDeclaration(PVD, FA);
 
-            FA->Name = marshalString<E_UTF8>(PVD->getNameAsString());
-            FA->QualifiedType = GetQualifiedType(PVD->getType(), WalkType(PVD->getType(), &PTL));
+                auto PTL = PVD->getTypeSourceInfo()->getTypeLoc();
 
+                FA->Name = marshalString<E_UTF8>(PVD->getNameAsString());
+                FA->QualifiedType = GetQualifiedType(PVD->getType(), WalkType(PVD->getType(), &PTL));
+            }
+            else
+            {
+                auto Arg = FP->getArgType(i);
+                FA->Name = "";
+                FA->QualifiedType = GetQualifiedType(Arg, WalkType(Arg));
+            }
             F->Parameters->Add(FA);
         }
-
-        SkipParameters:
 
         Ty = F;
         break;

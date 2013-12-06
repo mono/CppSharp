@@ -11,6 +11,15 @@ namespace CppSharp.Tests
         public Basic(GeneratorKind kind)
             : base("Basic", kind)
         {
+
+        }
+
+        public override void SetupPasses(Driver driver)
+        {
+            if (driver.Options.IsCSharpGenerator)
+            {
+                driver.Options.GenerateAbstractImpls = true;                
+            }
         }
 
         public override void Preprocess(Driver driver, ASTContext lib)

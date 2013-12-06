@@ -313,15 +313,12 @@ namespace CppSharp.AST
         public QualifiedType ReturnType;
 
         // Argument types.
-        public List<QualifiedType> Arguments;
-
         public List<Parameter> Parameters;
 
         public CallingConvention CallingConvention { get; set; }
 
         public FunctionType()
         {
-            Arguments = new List<QualifiedType>();
             Parameters = new List<Parameter>();
         }
 
