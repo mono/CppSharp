@@ -1,4 +1,6 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Linq;
+using System.Reflection;
 using CSharpTemp;
 using NUnit.Framework;
 using Foo = CSharpTemp.Foo;
@@ -75,5 +77,13 @@ public class CSharpTempTests
 
         Assert.That(p.Test, Is.True);
         Assert.That(p.IsBool, Is.False);
+    }
+
+    [Test]
+    public void TestAttributes()
+    {
+        Assert.That(typeof(Qux).GetMethod("Obsolete")
+            .GetCustomAttributes(typeof(ObsoleteAttribute), false).Length,
+            Is.GreaterThan(0));
     }
 }

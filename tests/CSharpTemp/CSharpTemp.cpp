@@ -46,6 +46,11 @@ int Qux::farAwayFunc() const
     return 20;
 }
 
+void Qux::obsolete()
+{
+
+}
+
 int Bar::method()
 {
     return 2;
