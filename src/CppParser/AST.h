@@ -22,8 +22,8 @@
 
 #define VECTOR(type, name) \
     std::vector<type> name; \
-    type get##name (unsigned i) { return name[i]; } \
-    unsigned get##name##Count () { return name.size(); }
+    type get##name(unsigned i) { return name[i]; } \
+    unsigned get##name##Count() { return name.size(); }
 
 namespace CppSharp { namespace CppParser { namespace AST {
 

@@ -187,8 +187,8 @@ namespace CppSharp.AST
                                     CallingConvention = this.CallingConvention,
                                     ReturnType = this.ReturnType
                                 };
-            var argTypes = Parameters.Select(parameter => parameter.QualifiedType);
-            functionType.Arguments.AddRange(argTypes);
+            functionType.Parameters.AddRange(Parameters);
+            ReplaceIndirectReturnParamWithRegular(functionType);
             var pointerType = new PointerType { QualifiedPointee = new QualifiedType(functionType) };
             return new QualifiedType(pointerType);
         }

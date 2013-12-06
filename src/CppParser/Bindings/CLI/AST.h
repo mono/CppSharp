@@ -359,20 +359,11 @@ namespace CppSharp
                     CppSharp::Parser::AST::CallingConvention get();
                     void set(CppSharp::Parser::AST::CallingConvention);
                 }
-                property System::Collections::Generic::List<CppSharp::Parser::AST::QualifiedType^>^ Arguments
-                {
-                    System::Collections::Generic::List<CppSharp::Parser::AST::QualifiedType^>^ get();
-                    void set(System::Collections::Generic::List<CppSharp::Parser::AST::QualifiedType^>^);
-                }
                 property System::Collections::Generic::List<CppSharp::Parser::AST::Parameter^>^ Parameters
                 {
                     System::Collections::Generic::List<CppSharp::Parser::AST::Parameter^>^ get();
                     void set(System::Collections::Generic::List<CppSharp::Parser::AST::Parameter^>^);
                 }
-                CppSharp::Parser::AST::QualifiedType^ getArguments(unsigned int i);
-
-                unsigned int getArgumentsCount();
-
                 CppSharp::Parser::AST::Parameter^ getParameters(unsigned int i);
 
                 unsigned int getParametersCount();
