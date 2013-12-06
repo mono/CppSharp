@@ -1272,18 +1272,24 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
 
         for (unsigned i = 0; i < FP->getNumArgs(); ++i)
         {
-            auto PVD = FTL.getArg(i);
-
             auto FA = new Parameter();
-            HandleDeclaration(PVD, FA);
+            if (FTL)
+            {
+                auto PVD = FTL.getArg(i);
 
-            auto PTL = PVD->getTypeSourceInfo()->getTypeLoc();
+                HandleDeclaration(PVD, FA);
 
-            FA->Name = PVD->getNameAsString();
-            FA->QualifiedType = GetQualifiedType(PVD->getType(),
-                WalkType(PVD->getType(), &PTL));
+                auto PTL = PVD->getTypeSourceInfo()->getTypeLoc();
 
-            F->Parameters.push_back(FA);
+                FA->Name = PVD->getNameAsString();
+                FA->QualifiedType = GetQualifiedType(PVD->getType(), WalkType(PVD->getType(), &PTL));
+            }
+            else
+            {
+                auto Arg = FP->getArgType(i);
+                FA->Name = "";
+                FA->QualifiedType = GetQualifiedType(Arg, WalkType(Arg));
+            }
         }
 
         return F;
