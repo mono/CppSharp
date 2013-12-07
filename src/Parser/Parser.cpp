@@ -1712,6 +1712,7 @@ static bool CanCheckCodeGenInfo(const clang::Type* Ty)
     return CheckCodeGenInfo;
 }
 
+
 void Parser::WalkFunction(clang::FunctionDecl* FD, CppSharp::AST::Function^ F,
                           bool IsDependent)
 {
@@ -1770,14 +1771,17 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, CppSharp::AST::Function^ F,
     if (FTSI)
     {
         auto FTL = FTSI->getTypeLoc();
-        while (!FTL.getAs<FunctionTypeLoc>())
+        while (FTL && !FTL.getAs<FunctionTypeLoc>())
             FTL = FTL.getNextTypeLoc();
 
-        auto FTInfo = FTL.castAs<FunctionTypeLoc>();
-        assert (!FTInfo.isNull());
+        if (FTL)
+        {
+            auto FTInfo = FTL.castAs<FunctionTypeLoc>();
+            assert (!FTInfo.isNull());
 
-        ParamStartLoc = FTInfo.getRParenLoc();
-        ResultLoc = FTInfo.getResultLoc().getLocStart();
+            ParamStartLoc = FTInfo.getRParenLoc();
+            ResultLoc = FTInfo.getResultLoc().getLocStart();
+        }
     }
 
     clang::SourceRange Range(FD->getLocStart(), ParamStartLoc);
