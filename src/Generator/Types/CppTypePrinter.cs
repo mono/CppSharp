@@ -165,7 +165,7 @@ namespace CppSharp.Types
 
         public string VisitInjectedClassNameType(InjectedClassNameType injected, TypeQualifiers quals)
         {
-            throw new System.NotImplementedException();
+            return injected.Class.Visit(this);
         }
 
         public string VisitDependentNameType(DependentNameType dependent, TypeQualifiers quals)
