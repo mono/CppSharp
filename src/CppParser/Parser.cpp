@@ -676,9 +676,6 @@ Class* Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
 
 ClassTemplate* Parser::WalkClassTemplate(clang::ClassTemplateDecl* TD)
 {
-    if (TD->getCanonicalDecl() != TD)
-        return WalkClassTemplate(TD->getCanonicalDecl());
-
     auto NS = GetNamespace(TD);
     assert(NS && "Expected a valid namespace");
 
@@ -707,9 +704,6 @@ ClassTemplate* Parser::WalkClassTemplate(clang::ClassTemplateDecl* TD)
 
 FunctionTemplate* Parser::WalkFunctionTemplate(clang::FunctionTemplateDecl* TD)
 {
-    if (TD->getCanonicalDecl() != TD)
-        return WalkFunctionTemplate(TD->getCanonicalDecl());
-
     auto NS = GetNamespace(TD);
     assert(NS && "Expected a valid namespace");
 
@@ -791,7 +785,9 @@ Method* Parser::WalkMethodCXX(clang::CXXMethodDecl* MD)
         return WalkMethodCXX(cast<CXXMethodDecl>(MD->getPrimaryContext()));
 
     auto RD = MD->getParent();
-    auto Class = WalkRecordCXX(RD);
+    auto Decl = WalkDeclaration(RD, /*IgnoreSystemDecls=*/false);
+
+    auto Class = static_cast<CppSharp::CppParser::AST::Class*>(Decl);
 
     // Check for an already existing method that came from the same declaration.
     for (unsigned I = 0, E = Class->Methods.size(); I != E; ++I)

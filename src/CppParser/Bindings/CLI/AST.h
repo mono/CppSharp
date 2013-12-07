@@ -1433,7 +1433,7 @@ namespace CppSharp
 
             };
 
-            public ref class ClassTemplateSpecialization : CppSharp::Parser::AST::Declaration
+            public ref class ClassTemplateSpecialization : CppSharp::Parser::AST::Class
             {
             public:
 
@@ -1443,7 +1443,7 @@ namespace CppSharp
 
             };
 
-            public ref class ClassTemplatePartialSpecialization : CppSharp::Parser::AST::Declaration
+            public ref class ClassTemplatePartialSpecialization : CppSharp::Parser::AST::ClassTemplateSpecialization
             {
             public:
 

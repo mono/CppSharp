@@ -2574,35 +2574,35 @@ CppSharp::Parser::AST::ClassTemplate::ClassTemplate()
 }
 
 CppSharp::Parser::AST::ClassTemplateSpecialization::ClassTemplateSpecialization(::CppSharp::CppParser::AST::ClassTemplateSpecialization* native)
-    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)native)
+    : CppSharp::Parser::AST::Class((::CppSharp::CppParser::AST::Class*)native)
 {
 }
 
 CppSharp::Parser::AST::ClassTemplateSpecialization::ClassTemplateSpecialization(System::IntPtr native)
-    : CppSharp::Parser::AST::Declaration(native)
+    : CppSharp::Parser::AST::Class(native)
 {
     auto __native = (::CppSharp::CppParser::AST::ClassTemplateSpecialization*)native.ToPointer();
 }
 
 CppSharp::Parser::AST::ClassTemplateSpecialization::ClassTemplateSpecialization()
-    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)nullptr)
+    : CppSharp::Parser::AST::Class((::CppSharp::CppParser::AST::Class*)nullptr)
 {
     NativePtr = new ::CppSharp::CppParser::AST::ClassTemplateSpecialization();
 }
 
 CppSharp::Parser::AST::ClassTemplatePartialSpecialization::ClassTemplatePartialSpecialization(::CppSharp::CppParser::AST::ClassTemplatePartialSpecialization* native)
-    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)native)
+    : CppSharp::Parser::AST::ClassTemplateSpecialization((::CppSharp::CppParser::AST::ClassTemplateSpecialization*)native)
 {
 }
 
 CppSharp::Parser::AST::ClassTemplatePartialSpecialization::ClassTemplatePartialSpecialization(System::IntPtr native)
-    : CppSharp::Parser::AST::Declaration(native)
+    : CppSharp::Parser::AST::ClassTemplateSpecialization(native)
 {
     auto __native = (::CppSharp::CppParser::AST::ClassTemplatePartialSpecialization*)native.ToPointer();
 }
 
 CppSharp::Parser::AST::ClassTemplatePartialSpecialization::ClassTemplatePartialSpecialization()
-    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)nullptr)
+    : CppSharp::Parser::AST::ClassTemplateSpecialization((::CppSharp::CppParser::AST::ClassTemplateSpecialization*)nullptr)
 {
     NativePtr = new ::CppSharp::CppParser::AST::ClassTemplatePartialSpecialization();
 }

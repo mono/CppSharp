@@ -623,7 +623,7 @@ namespace CppSharp
 
             public unsafe partial class FunctionType : CppSharp.Parser.AST.Type, IDisposable, CppSharp.Runtime.ICppMarshal
             {
-                [StructLayout(LayoutKind.Explicit, Size = 40)]
+                [StructLayout(LayoutKind.Explicit, Size = 28)]
                 public new struct Internal
                 {
                     [FieldOffset(4)]
@@ -632,7 +632,7 @@ namespace CppSharp
                     [FieldOffset(12)]
                     public CppSharp.Parser.AST.CallingConvention CallingConvention;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(16)]
                     public Std.Vector Parameters;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -658,7 +658,7 @@ namespace CppSharp
 
                 int CppSharp.Runtime.ICppMarshal.NativeDataSize
                 {
-                    get { return 40; }
+                    get { return 28; }
                 }
 
                 void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
@@ -687,7 +687,7 @@ namespace CppSharp
                 public FunctionType()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(40);
+                    __Instance = Marshal.AllocHGlobal(28);
                     Internal.FunctionType_1(__Instance);
                 }
 
@@ -5252,9 +5252,9 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class ClassTemplateSpecialization : CppSharp.Parser.AST.Declaration, IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class ClassTemplateSpecialization : CppSharp.Parser.AST.Class, IDisposable, CppSharp.Runtime.ICppMarshal
             {
-                [StructLayout(LayoutKind.Explicit, Size = 88)]
+                [StructLayout(LayoutKind.Explicit, Size = 284)]
                 public new struct Internal
                 {
                     [SuppressUnmanagedCodeSecurity]
@@ -5270,7 +5270,7 @@ namespace CppSharp
 
                 int CppSharp.Runtime.ICppMarshal.NativeDataSize
                 {
-                    get { return 88; }
+                    get { return 284; }
                 }
 
                 void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
@@ -5299,7 +5299,7 @@ namespace CppSharp
                 public ClassTemplateSpecialization()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(88);
+                    __Instance = Marshal.AllocHGlobal(284);
                     Internal.ClassTemplateSpecialization_0(__Instance);
                 }
 
@@ -5309,9 +5309,9 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class ClassTemplatePartialSpecialization : CppSharp.Parser.AST.Declaration, IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class ClassTemplatePartialSpecialization : CppSharp.Parser.AST.ClassTemplateSpecialization, IDisposable, CppSharp.Runtime.ICppMarshal
             {
-                [StructLayout(LayoutKind.Explicit, Size = 88)]
+                [StructLayout(LayoutKind.Explicit, Size = 284)]
                 public new struct Internal
                 {
                     [SuppressUnmanagedCodeSecurity]
@@ -5327,7 +5327,7 @@ namespace CppSharp
 
                 int CppSharp.Runtime.ICppMarshal.NativeDataSize
                 {
-                    get { return 88; }
+                    get { return 284; }
                 }
 
                 void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
@@ -5356,7 +5356,7 @@ namespace CppSharp
                 public ClassTemplatePartialSpecialization()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(88);
+                    __Instance = Marshal.AllocHGlobal(284);
                     Internal.ClassTemplatePartialSpecialization_0(__Instance);
                 }
 

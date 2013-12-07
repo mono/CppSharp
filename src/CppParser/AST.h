@@ -547,11 +547,11 @@ struct CS_API ClassTemplate : public Template
 {
 };
 
-struct CS_API ClassTemplateSpecialization : public Declaration
+struct CS_API ClassTemplateSpecialization : public Class
 {
 };
 
-struct CS_API ClassTemplatePartialSpecialization : public Declaration
+struct CS_API ClassTemplatePartialSpecialization : public ClassTemplateSpecialization
 {
 };
 
