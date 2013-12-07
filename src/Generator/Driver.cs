@@ -324,10 +324,14 @@ namespace CppSharp
         public static void Run(ILibrary library)
         {
             var options = new DriverOptions();
-            var driver = new Driver(options, new TextDiagnosticPrinter());
+
+            var Log = new TextDiagnosticPrinter();
+            var driver = new Driver(options, Log);
+
             library.Setup(driver);
             driver.Setup();
-            var Log = driver.Diagnostics;
+
+            Log.Verbose = driver.Options.Verbose;
 
             if (!options.Quiet)
                 Log.EmitMessage("Parsing libraries...");

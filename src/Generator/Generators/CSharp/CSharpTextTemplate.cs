@@ -2258,7 +2258,7 @@ namespace CppSharp.Generators.CSharp
             }
             else
             {
-                Log.EmitWarning("Unhandled typedef type: {0}", typedef);
+                Log.Debug("Unresolved typedef type: {0}", typedef);
                 return false;
             }
 

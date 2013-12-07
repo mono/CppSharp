@@ -62,7 +62,8 @@ namespace CppSharp.Utils
             options.Quiet = true;
             options.IgnoreParseWarnings = true;
 
-            driver.Diagnostics.EmitMessage("Generating bindings for {0} in {1} mode",
+            driver.Diagnostics.EmitMessage("");
+            driver.Diagnostics.EmitMessage("Generating bindings for {0} ({1})",
                 options.LibraryName, options.GeneratorKind.ToString());
 
             // Workaround for CLR which does not check for .dll if the

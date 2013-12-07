@@ -138,8 +138,13 @@ namespace CppSharp
 
     public class TextDiagnosticPrinter : IDiagnosticConsumer
     {
+        public bool Verbose;
+
         public void Emit(DiagnosticInfo info)
         {
+            if (info.Kind == DiagnosticKind.Debug && !Verbose)
+                return;
+
             Console.WriteLine(info.Message);
             System.Diagnostics.Debug.WriteLine(info.Message);
         }

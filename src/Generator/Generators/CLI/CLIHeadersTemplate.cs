@@ -613,7 +613,7 @@ namespace CppSharp.Generators.CLI
             }
             else
             {
-                Log.EmitMessage("Unhandled typedef type: {0}", typedef);
+                Log.Debug("Unresolved typedef type: {0}", typedef);
             }
 
             return false;
