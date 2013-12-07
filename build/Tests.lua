@@ -28,6 +28,12 @@ function SetupTestCSharp(name)
   SetupTestProjectsCSharp(name)
 end
 
+function SetupTestCLI(name)
+  SetupTestGeneratorProject(name)
+  SetupTestNativeProject(name)
+  SetupTestProjectsCLI(name)
+end
+
 function SetupManagedTestProject()
     kind "SharedLib"
     language "C#"  
