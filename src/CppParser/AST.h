@@ -85,7 +85,6 @@ struct CS_API FunctionType : public Type
 {
     QualifiedType ReturnType;
     CppSharp::CppParser::AST::CallingConvention CallingConvention;
-    VECTOR(QualifiedType, Arguments)
     VECTOR(Parameter*, Parameters)
 };
 
