@@ -84,10 +84,10 @@ namespace CppSharp
         public override bool VisitTypedefDecl(TypedefDecl typedef)
         {
             TypeMap typeMap;
-            if (TypeMapDatabase.FindTypeMap(typedef, out typeMap)
-                && typeMap.IsIgnored)
+            if (TypeMapDatabase.FindTypeMap(typedef, out typeMap))
             {
-                Ignore();
+                if (typeMap.IsIgnored)
+                    Ignore();
                 return false;
             }
 
@@ -116,6 +116,7 @@ namespace CppSharp
                     Ignore();
                 return false;
             }
+
             Ignore();
             return base.VisitTemplateSpecializationType(template, quals);
         }
