@@ -462,6 +462,42 @@ namespace CppSharp.AST
     }
 
     /// <summary>
+    /// An attributed type is a type to which a type attribute has been
+    /// applied.
+    ///
+    /// For example, in the following attributed type:
+    ///     int32_t __attribute__((vector_size(16)))
+    ///
+    /// The modified type is the TypedefType for int32_t
+    /// The equivalent type is VectorType(16, int32_t)
+    /// </summary>
+    public class AttributedType : Type
+    {
+        public QualifiedType Modified;
+
+        public QualifiedType Equivalent;
+
+        public override T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals)
+        {
+            return visitor.VisitAttributedType(this, quals);
+        }
+
+        public override bool Equals(object obj)
+        {
+            var attributed = obj as AttributedType;
+            if (attributed == null) return false;
+
+            return Modified.Equals(attributed.Modified)
+                && Equivalent.Equals(attributed.Equivalent);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+    }
+
+    /// <summary>
     /// Represents a pointer type decayed from an array or function type.
     /// </summary>
     public class DecayedType : Type
@@ -824,6 +860,7 @@ namespace CppSharp.AST
         T VisitMemberPointerType(MemberPointerType member, TypeQualifiers quals);
         T VisitBuiltinType(BuiltinType builtin, TypeQualifiers quals);
         T VisitTypedefType(TypedefType typedef, TypeQualifiers quals);
+        T VisitAttributedType(AttributedType attributed, TypeQualifiers quals);
         T VisitDecayedType(DecayedType decayed, TypeQualifiers quals);
         T VisitTemplateSpecializationType(TemplateSpecializationType template,
                                           TypeQualifiers quals);

@@ -49,6 +49,7 @@ namespace CppSharp
             ref class PointerType;
             ref class MemberPointerType;
             ref class TypedefType;
+            ref class AttributedType;
             ref class DecayedType;
             ref class TemplateArgument;
             ref class TemplateSpecializationType;
@@ -425,6 +426,26 @@ namespace CppSharp
                 {
                     CppSharp::Parser::AST::TypedefDecl^ get();
                     void set(CppSharp::Parser::AST::TypedefDecl^);
+                }
+            };
+
+            public ref class AttributedType : CppSharp::Parser::AST::Type
+            {
+            public:
+
+                AttributedType(::CppSharp::CppParser::AST::AttributedType* native);
+                AttributedType(System::IntPtr native);
+                AttributedType();
+
+                property CppSharp::Parser::AST::QualifiedType^ Modified
+                {
+                    CppSharp::Parser::AST::QualifiedType^ get();
+                    void set(CppSharp::Parser::AST::QualifiedType^);
+                }
+                property CppSharp::Parser::AST::QualifiedType^ Equivalent
+                {
+                    CppSharp::Parser::AST::QualifiedType^ get();
+                    void set(CppSharp::Parser::AST::QualifiedType^);
                 }
             };
 

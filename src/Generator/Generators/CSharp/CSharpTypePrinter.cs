@@ -263,6 +263,11 @@ namespace CppSharp.Generators.CSharp
             return decl.Type.Visit(this);
         }
 
+        public CSharpTypePrinterResult VisitAttributedType(AttributedType attributed, TypeQualifiers quals)
+        {
+            return attributed.Modified.Visit(this);
+        }
+
         public CSharpTypePrinterResult VisitDecayedType(DecayedType decayed, TypeQualifiers quals)
         {
             return decayed.Decayed.Visit(this);

@@ -106,6 +106,11 @@ namespace CppSharp.Passes
             return false;
         }
 
+        public bool VisitAttributedType(AttributedType attributed, TypeQualifiers quals)
+        {
+            return false;
+        }
+
         public bool VisitDecayedType(DecayedType decayed, TypeQualifiers quals)
         {
             return false;

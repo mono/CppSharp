@@ -1100,6 +1100,25 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
     assert(Type && "Expected a valid type");
     switch(Type->getTypeClass())
     {
+    case clang::Type::Attributed:
+    {
+        auto Attributed = Type->getAs<clang::AttributedType>();
+        assert(Attributed && "Expected an attributed type");
+
+        TypeLoc Next;
+        if (TL && !TL->isNull()) Next = TL->getNextTypeLoc();
+
+        auto AT = new AttributedType();
+
+        auto Modified = Attributed->getModifiedType();
+        AT->Modified = GetQualifiedType(Modified, WalkType(Modified, &Next));
+
+        auto Equivalent = Attributed->getEquivalentType();
+        AT->Equivalent = GetQualifiedType(Equivalent, WalkType(Equivalent, &Next));
+
+        Ty = AT;
+        break;
+    }
     case clang::Type::Builtin:
     {
         auto Builtin = Type->getAs<clang::BuiltinType>();

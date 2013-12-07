@@ -1222,6 +1222,25 @@ CppSharp::AST::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* 
     assert(Type && "Expected a valid type");
     switch(Type->getTypeClass())
     {
+    case Type::Attributed:
+    {
+        auto Attributed = Type->getAs<clang::AttributedType>();
+        assert(Attributed && "Expected an attributed type");
+
+        TypeLoc Next;
+        if (TL && !TL->isNull()) Next = TL->getNextTypeLoc();
+
+        auto AT = gcnew CppSharp::AST::AttributedType();
+
+        auto Modified = Attributed->getModifiedType();
+        AT->Modified = GetQualifiedType(Modified, WalkType(Modified, &Next));
+
+        auto Equivalent = Attributed->getEquivalentType();
+        AT->Equivalent = GetQualifiedType(Equivalent, WalkType(Equivalent, &Next));
+
+        Ty = AT;
+        break;
+    }
     case Type::Builtin:
     {
         auto Builtin = Type->getAs<clang::BuiltinType>();

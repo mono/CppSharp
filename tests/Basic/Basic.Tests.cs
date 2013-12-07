@@ -141,5 +141,13 @@ public class BasicTests
         Assert.AreEqual(300, new Bar2.Nested());
         Assert.AreEqual(500, new Bar2());
     }
+
+    [Test]
+    public void TestTypes()
+    {
+        // Attributed types
+        var sum = Types.AttributedSum(3, 4);
+        Assert.That(sum, Is.EqualTo(7));
+    }
 }
  

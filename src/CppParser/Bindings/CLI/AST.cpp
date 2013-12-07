@@ -378,6 +378,43 @@ void CppSharp::Parser::AST::TypedefType::Declaration::set(CppSharp::Parser::AST:
     ((::CppSharp::CppParser::AST::TypedefType*)NativePtr)->Declaration = (::CppSharp::CppParser::AST::TypedefDecl*)value->NativePtr;
 }
 
+CppSharp::Parser::AST::AttributedType::AttributedType(::CppSharp::CppParser::AST::AttributedType* native)
+    : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)native)
+{
+}
+
+CppSharp::Parser::AST::AttributedType::AttributedType(System::IntPtr native)
+    : CppSharp::Parser::AST::Type(native)
+{
+    auto __native = (::CppSharp::CppParser::AST::AttributedType*)native.ToPointer();
+}
+
+CppSharp::Parser::AST::AttributedType::AttributedType()
+    : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)nullptr)
+{
+    NativePtr = new ::CppSharp::CppParser::AST::AttributedType();
+}
+
+CppSharp::Parser::AST::QualifiedType^ CppSharp::Parser::AST::AttributedType::Modified::get()
+{
+    return gcnew CppSharp::Parser::AST::QualifiedType((::CppSharp::CppParser::AST::QualifiedType*)&((::CppSharp::CppParser::AST::AttributedType*)NativePtr)->Modified);
+}
+
+void CppSharp::Parser::AST::AttributedType::Modified::set(CppSharp::Parser::AST::QualifiedType^ value)
+{
+    ((::CppSharp::CppParser::AST::AttributedType*)NativePtr)->Modified = *(::CppSharp::CppParser::AST::QualifiedType*)value->NativePtr;
+}
+
+CppSharp::Parser::AST::QualifiedType^ CppSharp::Parser::AST::AttributedType::Equivalent::get()
+{
+    return gcnew CppSharp::Parser::AST::QualifiedType((::CppSharp::CppParser::AST::QualifiedType*)&((::CppSharp::CppParser::AST::AttributedType*)NativePtr)->Equivalent);
+}
+
+void CppSharp::Parser::AST::AttributedType::Equivalent::set(CppSharp::Parser::AST::QualifiedType^ value)
+{
+    ((::CppSharp::CppParser::AST::AttributedType*)NativePtr)->Equivalent = *(::CppSharp::CppParser::AST::QualifiedType*)value->NativePtr;
+}
+
 CppSharp::Parser::AST::DecayedType::DecayedType(::CppSharp::CppParser::AST::DecayedType* native)
     : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)native)
 {

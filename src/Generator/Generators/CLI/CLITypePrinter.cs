@@ -202,6 +202,11 @@ namespace CppSharp.Generators.CLI
             return decl.Type.Visit(this);
         }
 
+        public string VisitAttributedType(AttributedType attributed, TypeQualifiers quals)
+        {
+            return attributed.Modified.Visit(this);
+        }
+
         public string VisitDecayedType(DecayedType decayed, TypeQualifiers quals)
         {
             return decayed.Decayed.Visit(this);

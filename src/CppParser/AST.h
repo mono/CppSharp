@@ -114,6 +114,12 @@ struct CS_API TypedefType : public Type
     TypedefDecl* Declaration;
 };
 
+struct CS_API AttributedType : public Type
+{
+    QualifiedType Modified;
+    QualifiedType Equivalent;
+};
+
 struct CS_API DecayedType : public Type
 {
     QualifiedType Decayed;

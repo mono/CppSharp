@@ -998,6 +998,99 @@ namespace CppSharp
                 }
             }
 
+            public unsafe partial class AttributedType : CppSharp.Parser.AST.Type, IDisposable, CppSharp.Runtime.ICppMarshal
+            {
+                [StructLayout(LayoutKind.Explicit, Size = 20)]
+                public new struct Internal
+                {
+                    [FieldOffset(4)]
+                    public CppSharp.Parser.AST.QualifiedType.Internal Modified;
+
+                    [FieldOffset(12)]
+                    public CppSharp.Parser.AST.QualifiedType.Internal Equivalent;
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                        EntryPoint="??0AttributedType@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
+                    internal static extern global::System.IntPtr AttributedType_1(global::System.IntPtr instance, global::System.IntPtr _0);
+                }
+
+                int CppSharp.Runtime.ICppMarshal.NativeDataSize
+                {
+                    get { return 20; }
+                }
+
+                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
+                {
+                }
+
+                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
+                {
+                }
+
+                internal AttributedType(AttributedType.Internal* native)
+                    : this(new global::System.IntPtr(native))
+                {
+                }
+
+                internal AttributedType(AttributedType.Internal native)
+                    : this(&native)
+                {
+                }
+
+                internal AttributedType(global::System.IntPtr native)
+                    : base(native)
+                {
+                }
+
+                public AttributedType()
+                    : this(IntPtr.Zero)
+                {
+                    __Instance = Marshal.AllocHGlobal(20);
+                }
+
+                protected override void Dispose(bool disposing)
+                {
+                    base.Dispose(disposing);
+                }
+
+                public CppSharp.Parser.AST.QualifiedType Modified
+                {
+                    get
+                    {
+                        var __ptr = (Internal*)__Instance.ToPointer();
+                        var __copy = new global::System.IntPtr(&__ptr->Modified);
+                        var __instance = Marshal.AllocHGlobal(8);
+                        CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__copy), new UIntPtr(8));
+                        return new CppSharp.Parser.AST.QualifiedType(__instance);
+                    }
+
+                    set
+                    {
+                        var __ptr = (Internal*)__Instance.ToPointer();
+                        __ptr->Modified = value == (CppSharp.Parser.AST.QualifiedType) null ? new CppSharp.Parser.AST.QualifiedType.Internal() : *(CppSharp.Parser.AST.QualifiedType.Internal*) (value.__Instance);
+                    }
+                }
+
+                public CppSharp.Parser.AST.QualifiedType Equivalent
+                {
+                    get
+                    {
+                        var __ptr = (Internal*)__Instance.ToPointer();
+                        var __copy = new global::System.IntPtr(&__ptr->Equivalent);
+                        var __instance = Marshal.AllocHGlobal(8);
+                        CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__copy), new UIntPtr(8));
+                        return new CppSharp.Parser.AST.QualifiedType(__instance);
+                    }
+
+                    set
+                    {
+                        var __ptr = (Internal*)__Instance.ToPointer();
+                        __ptr->Equivalent = value == (CppSharp.Parser.AST.QualifiedType) null ? new CppSharp.Parser.AST.QualifiedType.Internal() : *(CppSharp.Parser.AST.QualifiedType.Internal*) (value.__Instance);
+                    }
+                }
+            }
+
             public unsafe partial class DecayedType : CppSharp.Parser.AST.Type, IDisposable, CppSharp.Runtime.ICppMarshal
             {
                 [StructLayout(LayoutKind.Explicit, Size = 28)]

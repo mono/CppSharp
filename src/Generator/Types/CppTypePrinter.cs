@@ -120,6 +120,11 @@ namespace CppSharp.Types
             return GetDeclName(typedef.Declaration);
         }
 
+        public string VisitAttributedType(AttributedType attributed, TypeQualifiers quals)
+        {
+            return attributed.Modified.Visit(this);
+        }
+
         public string GetDeclName(Declaration declaration)
         {
             switch (PrintKind)
