@@ -186,17 +186,3 @@ class DLL_API basic
 
 DLL_API int test(basic& s);
 
-// Tests for C++ types
-struct DLL_API Types
-{
-    // AttributedType
-#ifdef __clang__
-#define ATTR __attribute__((stdcall))
-#else
-#define ATTR
-#endif
-
-    typedef int AttributedFuncType(int, int) ATTR;
-    static AttributedFuncType AttributedSum;
-};
-

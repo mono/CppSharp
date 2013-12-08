@@ -208,9 +208,3 @@ int test(basic& s)
 {
     return 5;
 }
-
-int Types::AttributedSum(int A, int B)
-{
-    return A + B;
-}
-
