@@ -56,6 +56,7 @@ struct DLL_API Bar2 : public Bar
 
     operator int() const;
     operator Foo2();
+    Foo2 needFixedInstance() const;
 
     typedef void *Bar2::*FunctionPointerResolvedAsVoidStar;
     operator FunctionPointerResolvedAsVoidStar() const { return 0; }
