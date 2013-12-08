@@ -98,7 +98,7 @@ public class BasicTests
         def.Bar();
     }
 
-    [Test, Ignore]
+    [Test]
     public void TestLeftShiftOperator()
     {
         var foo2 = new Foo2 {C = 2};
@@ -139,7 +139,7 @@ public class BasicTests
         Assert.AreEqual(foo.C, 3);
     }
 
-    [Test, Ignore]
+    [Test]
     public void TestConversionOperator()
     {
         var bar = new Bar2 {A = 1, B = 2, C = 3};
