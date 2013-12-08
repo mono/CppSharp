@@ -172,13 +172,15 @@ struct DLL_API DefaultParameters
 template<class Derived>
 class Base
 {
-	// methods within Base can use template to access members of Derived
-	Derived* create() { return new Derived(); }
+    // methods within Base can use template to access members of Derived
+    Derived* create() { return new Derived(); }
 };
+
 class Derived : public Base<Derived>
 {
 };
 
+// Tests the MoveFunctionToClassPass
 class DLL_API basic
 {
 
