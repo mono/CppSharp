@@ -52,6 +52,16 @@ Bar2::operator Foo2()
     return f;
 }
 
+Foo2 Bar2::needFixedInstance() const
+{
+    Foo2 f;
+    f.A = A;
+    f.B = B;
+    f.C = C;
+
+    return f;
+}
+
 Hello::Hello ()
 {
     //cout << "Ctor!" << "\n";

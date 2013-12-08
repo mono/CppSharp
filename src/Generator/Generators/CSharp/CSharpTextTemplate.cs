@@ -1999,7 +1999,7 @@ namespace CppSharp.Generators.CSharp
             if (needsInstance)
             {
                 names.Insert(0, needsFixedThis ? string.Format("new global::System.IntPtr(&{0})",
-                    GeneratedIdentifier("instance")) : Helpers.InstanceIdentifier);
+                    GeneratedIdentifier("fixedInstance")) : Helpers.InstanceIdentifier);
             }
 
             if (needsFixedThis)
@@ -2007,7 +2007,7 @@ namespace CppSharp.Generators.CSharp
                 //WriteLine("fixed({0}* {1} = &this)", @class.QualifiedName,
                 //    GeneratedIdentifier("instance"));
                 //WriteStartBraceIndent();
-                WriteLine("var {0} = ToInternal();", Generator.GeneratedIdentifier("instance"));
+                WriteLine("var {0} = ToInternal();", Generator.GeneratedIdentifier("fixedInstance"));
             }
 
             if (needsReturn && !originalFunction.HasIndirectReturnTypeParameter)
@@ -2035,7 +2035,7 @@ namespace CppSharp.Generators.CSharp
             if (needsFixedThis)
             {
                 //    WriteCloseBraceIndent();
-                WriteLine("FromInternal(&{0});", Generator.GeneratedIdentifier("instance"));
+                WriteLine("FromInternal(&{0});", Generator.GeneratedIdentifier("fixedInstance"));
             }
 
             if (needsReturn)
