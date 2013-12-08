@@ -1,5 +1,3 @@
-using System;
-using System.IO;
 using CppSharp.AST;
 using CppSharp.Generators;
 using CppSharp.Utils;
@@ -32,7 +30,6 @@ namespace CppSharp.Tests
 
         public static void Main(string[] args)
         {
-            Console.WriteLine(Directory.GetCurrentDirectory());
             ConsoleDriver.Run(new Basic(GeneratorKind.CLI));
             ConsoleDriver.Run(new Basic(GeneratorKind.CSharp));
         }
