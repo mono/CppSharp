@@ -20,7 +20,7 @@ end
 solution "CppSharp"
 
   configurations { "Debug", "Release" }
-  platforms { "x32" }
+  platforms { "x32", "x64" }
   flags { common_flags }
   
   location (builddir)
@@ -30,7 +30,8 @@ solution "CppSharp"
   debugdir (bindir)
 
   -- startproject "Generator"
-
+  configuration "vs2013"
+    framework "4.0"
 
   configuration "vs2012"
     framework "4.0"
