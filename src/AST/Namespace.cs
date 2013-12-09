@@ -184,11 +184,15 @@ namespace CppSharp.AST
             var className = entries[entries.Count - 1];
             var namespaces = entries.Take(entries.Count - 1);
 
-            var @namespace = FindNamespace(namespaces);
-            if (@namespace == null)
-                return null;
+            DeclarationContext declContext = FindNamespace(namespaces);
+            if (declContext == null)
+            {
+                declContext = FindClass(entries[0]);
+                if (declContext == null)
+                    return null;
+            }
 
-            return @namespace.FindClass(className);
+            return declContext.FindClass(className);
         }
 
         public Class FindClass(string name, bool isComplete,
