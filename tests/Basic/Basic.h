@@ -43,6 +43,8 @@ struct DLL_API Bar
     Item RetItem1();
     int A;
     float B;
+
+    Bar* returnPointerToValueType();
 };
 
 struct DLL_API Bar2 : public Bar
