@@ -1,9 +1,10 @@
+using CppSharp.AST;
+
 namespace CppSharp.Passes
 {
     public class CleanUnitPass : TranslationUnitPass
     {
         public DriverOptions DriverOptions;
-        public PassBuilder Passes;
 
         public CleanUnitPass(DriverOptions options)
         {
@@ -39,15 +40,6 @@ namespace CppSharp.Passes
                 + shortestIncludePath.TrimStart(new char[] { '\\', '/' });
 
             return includePath.Replace('\\', '/');
-        }
-    }
-
-    public static class CleanUnitPassExtensions
-    {
-        public static void CleanUnit(this PassBuilder builder, DriverOptions options)
-        {
-            var pass = new CleanUnitPass(options);
-            builder.AddPass(pass);
         }
     }
 }

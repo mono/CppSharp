@@ -1,5 +1,23 @@
-﻿namespace CppSharp.Passes
+﻿using CppSharp.AST;
+
+namespace CppSharp.Passes
 {
+    /// <summary>
+    /// This pass checks for ABI-specific details that need to be fixed
+    /// in the generated code.
+    /// 
+    /// In both the Microsoft and Itanium ABI, some functions return types
+    /// and parameter can be returned indirectly. In the case of an indirect
+    /// return type we need to add an extra pointer parameter to the function
+    /// and use that to call the function instead. In the case of parameters
+    /// then the type of that parameter is converted to a pointer.
+    /// 
+    /// Itanium ABI reference (3.1.4 Return values):
+    /// http://refspecs.linux-foundation.org/cxxabi-1.83.html#calls
+    ///
+    /// Microsoft ABI reference:
+    /// http://blog.aaronballman.com/2012/02/describing-the-msvc-abi-for-structure-return-types/
+    /// </summary>
     public class CheckAbiParameters : TranslationUnitPass
     {
         private readonly DriverOptions options;
@@ -9,52 +27,28 @@
             this.options = options;
         }
 
-        public override bool VisitMethodDecl(Method method)
+        public override bool VisitFunctionDecl(Function function)
         {
-            if (!NeedsHiddenStructParameterReturn(method, options))
-                return true;
-
-            var structParameter = new Parameter()
-                {
-                    Kind = ParameterKind.HiddenStructureReturn,
-                    QualifiedType = new QualifiedType(
-                        new BuiltinType(PrimitiveType.IntPtr)),
-                    Name = "return",
-                    IgnoreFlags = IgnoreFlags.Generation
-                };
-
-            method.Parameters.Insert(0, structParameter);
-
-            return true;
-        }
-
-        public static bool NeedsHiddenStructParameterReturn(Method method, DriverOptions options)
-        {
-            // In both the Microsoft and Itanium ABI, functions returning
-            // structure types by value have an extra parameter 
-            // Itanium ABI reference (3.1.4 Return values):
-            // http://refspecs.linux-foundation.org/cxxabi-1.83.html#calls
-            // Microsoft ABI reference:
-            // http://blog.aaronballman.com/2012/02/describing-the-msvc-abi-for-structure-return-types/
-
-            Class retClass;
-            if (!method.ReturnType.Type.IsTagDecl(out retClass))
+            if (AlreadyVisited(function))
                 return false;
 
-            // TODO: Add the various combinations for that need hidden parameter
-            var needsMSHiddenPtr = options.IsMicrosoftAbi && method.IsThisCall;
+            if (function.IsReturnIndirect)
+            {
+                var indirectParam = new Parameter()
+                    {
+                        Kind = ParameterKind.IndirectReturnType,
+                        QualifiedType = function.ReturnType,
+                        Name = "return",
+                    };
 
-            return needsMSHiddenPtr || options.IsItaniumAbi;
-        }
-    }
+                function.Parameters.Insert(0, indirectParam);
+                function.ReturnType = new QualifiedType(new BuiltinType(
+                    PrimitiveType.Void));
+            }
 
-    public static class CheckAbiParametersExtensions
-    {
-        public static void CheckAbiParameters(this PassBuilder builder,
-            DriverOptions options)
-        {
-            var pass = new CheckAbiParameters(options);
-            builder.AddPass(pass);
+            // TODO: Handle indirect parameters
+
+            return true;
         }
     }
 }

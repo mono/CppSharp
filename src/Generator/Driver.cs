@@ -1,67 +1,73 @@
-﻿using CppSharp.Generators;
+﻿using System;
+using System.CodeDom.Compiler;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using CppSharp.AST;
+using CppSharp.Generators;
 using CppSharp.Generators.CLI;
 using CppSharp.Generators.CSharp;
 using CppSharp.Passes;
 using CppSharp.Types;
-using System;
 using System.Collections.Generic;
 using System.IO;
+using Microsoft.CSharp;
+
+#if !OLD_PARSER
+using CppSharp.Parser;
+#endif
 
 namespace CppSharp
 {
     public class Driver
     {
-        public delegate Generator CreateGeneratorDelegate(Driver driver);
-        public static Dictionary<LanguageGeneratorKind, CreateGeneratorDelegate>
-            Generators;
-
-        static Driver()
-        {
-            Generators = new Dictionary<LanguageGeneratorKind,
-                CreateGeneratorDelegate>();
-            Generators[LanguageGeneratorKind.CSharp] = driver =>
-                new CSharpGenerator(driver);
-            Generators[LanguageGeneratorKind.CPlusPlusCLI] = driver =>
-                new CLIGenerator(driver);
-        }
-
         public DriverOptions Options { get; private set; }
         public IDiagnosticConsumer Diagnostics { get; private set; }
-        public Parser Parser { get; private set; }
+        public Project Project { get; private set; }
+
         public TypeMapDatabase TypeDatabase { get; private set; }
-        public ILibrary Transform { get; private set; }
+        public PassBuilder<TranslationUnitPass> TranslationUnitPasses { get; private set; }
+        public PassBuilder<GeneratorOutputPass> GeneratorOutputPasses { get; private set; }
         public Generator Generator { get; private set; }
 
-        public Library Library { get; private set; }
-        public Library LibrarySymbols { get; private set; }
+        public ASTContext ASTContext { get; private set; }
+        public SymbolContext Symbols { get; private set; }
 
-        public Driver(DriverOptions options, IDiagnosticConsumer diagnostics,
-            ILibrary transform)
+        public Driver(DriverOptions options, IDiagnosticConsumer diagnostics)
         {
             Options = options;
             Diagnostics = diagnostics;
-            Parser = new Parser(Options);
+            Project = new Project();
+            ASTContext = new ASTContext();
+            Symbols = new SymbolContext();
             TypeDatabase = new TypeMapDatabase();
-            Transform = transform;
+            TranslationUnitPasses = new PassBuilder<TranslationUnitPass>(this);
+            GeneratorOutputPasses = new PassBuilder<GeneratorOutputPass>(this);
+        }
+
+        Generator CreateGeneratorFromKind(GeneratorKind kind)
+        {
+            switch (kind)
+            {
+                case GeneratorKind.CLI:
+                    return new CLIGenerator(this);
+                case GeneratorKind.CSharp:
+                    return new CSharpGenerator(this);
+            }
+
+            return null;
         }
 
         static void ValidateOptions(DriverOptions options)
         {
             if (string.IsNullOrWhiteSpace(options.LibraryName))
-                throw new InvalidDataException();
-
-            if (options.OutputDir == null)
-                options.OutputDir = Directory.GetCurrentDirectory();
+                throw new InvalidOptionException();
 
             for (var i = 0; i < options.IncludeDirs.Count; i++)
-            {
                 options.IncludeDirs[i] = Path.GetFullPath(options.IncludeDirs[i]);
-            }
 
             for (var i = 0; i < options.LibraryDirs.Count; i++)
-            {
                 options.LibraryDirs[i] = Path.GetFullPath(options.LibraryDirs[i]);
-            }
 
             if (string.IsNullOrWhiteSpace(options.OutputNamespace))
                 options.OutputNamespace = options.LibraryName;
@@ -70,212 +76,307 @@ namespace CppSharp
         public void Setup()
         {
             ValidateOptions(Options);
+            TypeDatabase.SetupTypeMaps();
+            Generator = CreateGeneratorFromKind(Options.GeneratorKind);
+        }
 
-            if (!Directory.Exists(Options.OutputDir))
-                Directory.CreateDirectory(Options.OutputDir);
+        void OnSourceFileParsed(SourceFile file, ParserResult result)
+        {
+            OnFileParsed(file.Path, result);
+        }
 
-            if (!Generators.ContainsKey(Options.GeneratorKind))
-                throw new NotImplementedException("Unknown generator kind");
+        void OnFileParsed(string file, ParserResult result)
+        {
+            switch (result.Kind)
+            {
+                case ParserResultKind.Success:
+                    Diagnostics.EmitMessage(DiagnosticId.ParseResult,
+                        "Parsed '{0}'", file);
+                    break;
+                case ParserResultKind.Error:
+                    Diagnostics.EmitError(DiagnosticId.ParseResult,
+                        "Error parsing '{0}'", file);
+                    break;
+                case ParserResultKind.FileNotFound:
+                    Diagnostics.EmitError(DiagnosticId.ParseResult,
+                        "File '{0}' was not found", file);
+                    break;
+            }
 
-            Generator = Generators[Options.GeneratorKind](this);
+            foreach (var diag in result.Diagnostics)
+            {
+                if (Options.IgnoreParseWarnings
+                    && diag.Level == ParserDiagnosticLevel.Warning)
+                    continue;
+
+                Diagnostics.EmitMessage(DiagnosticId.ParserDiagnostic,
+                    "{0}({1},{2}): {3}: {4}", diag.FileName, diag.LineNumber,
+                    diag.ColumnNumber, diag.Level.ToString().ToLower(),
+                    diag.Message);
+            }
+        }
+
+        ParserOptions BuildParseOptions(SourceFile file)
+        {
+            var options = new ParserOptions
+            {
+                FileName = file.Path,
+#if OLD_PARSER
+                IncludeDirs = Options.IncludeDirs,
+                SystemIncludeDirs = Options.SystemIncludeDirs,
+                Defines = Options.Defines,
+                LibraryDirs = Options.LibraryDirs,
+#endif
+                Abi = Options.Abi,
+                ToolSetToUse = Options.ToolSetToUse,
+                TargetTriple = Options.TargetTriple,
+                NoStandardIncludes = Options.NoStandardIncludes,
+                NoBuiltinIncludes = Options.NoBuiltinIncludes,
+                MicrosoftMode = Options.MicrosoftMode,
+                Verbose = Options.Verbose,
+            };
+
+            return options;
         }
 
         public bool ParseCode()
         {
-            if (!Parser.ParseHeaders(Options.Headers))
-                return false;
+            foreach (var header in Options.Headers)
+            {
+                var source = Project.AddFile(header);
+                source.Options = BuildParseOptions(source);
+            }
 
-            Library = Parser.Library;
+#if !OLD_PARSER
+            var parser = new ClangParser(new Parser.AST.ASTContext());
+#else
+            var parser = new ClangParser(ASTContext);
+#endif
+            parser.SourceParsed += OnSourceFileParsed;
+
+            parser.ParseProject(Project, Options);
+
+#if !OLD_PARSER
+            ASTContext = ClangParser.ConvertASTContext(parser.ASTContext);
+#else
+            ASTContext = parser.ASTContext;
+#endif
 
             return true;
         }
 
         public bool ParseLibraries()
         {
-            if (!Parser.ParseLibraries(Options.Libraries))
-                return false;
+            foreach (var library in Options.Libraries)
+            {
+                var parser = new ClangParser();
+                parser.LibraryParsed += OnFileParsed;
 
-            LibrarySymbols = Parser.Library;
+                var res = parser.ParseLibrary(library, Options);
+
+                if (res.Kind != ParserResultKind.Success)
+                    continue;
+
+#if !OLD_PARSER
+                Symbols.Libraries.Add(ClangParser.ConvertLibrary(res.Library));
+#else
+                Symbols.Libraries.Add(res.Library);
+#endif
+            }
 
             return true;
         }
 
-        public void ProcessCode()
-        {
-            TypeDatabase.SetupTypeMaps();
+        public void SetupPasses(ILibrary library)
+        { 
+            TranslationUnitPasses.AddPass(new CleanUnitPass(Options));
+            TranslationUnitPasses.AddPass(new SortDeclarationsPass());
+            TranslationUnitPasses.AddPass(new ResolveIncompleteDeclsPass());
+            TranslationUnitPasses.AddPass(new CleanInvalidDeclNamesPass());
+            TranslationUnitPasses.AddPass(new CheckIgnoredDeclsPass());
+            if (Options.IsCSharpGenerator)
+                TranslationUnitPasses.AddPass(new GenerateInlinesCodePass());
 
-            if (Transform != null)
-                Transform.Preprocess(this, Library);
+            library.SetupPasses(this);
 
-            var passes = new PassBuilder(this);
-            passes.CleanUnit(Options);
-            passes.SortDeclarations();
-            passes.ResolveIncompleteDecls();
+            TranslationUnitPasses.AddPass(new FindSymbolsPass());
+            TranslationUnitPasses.AddPass(new MoveOperatorToClassPass());
+            TranslationUnitPasses.AddPass(new MoveFunctionToClassPass());
+            TranslationUnitPasses.AddPass(new CheckAmbiguousFunctions());
+            TranslationUnitPasses.AddPass(new CheckOperatorsOverloadsPass());
+            TranslationUnitPasses.AddPass(new CheckVirtualOverrideReturnCovariance());
 
-            if (Transform != null)
-                Transform.SetupPasses(this, passes);
-
-            passes.CleanInvalidDeclNames();
-            passes.CheckIgnoredDecls();
-
-            passes.CheckTypeReferences();
-            passes.CheckFlagEnums();
-            passes.CheckAmbiguousOverloads();
-
-            Generator.SetupPasses(passes);
-
-            passes.RunPasses();
-
-            if (Transform != null)
-                Transform.Postprocess(Library);
+            Generator.SetupPasses();
+            TranslationUnitPasses.AddPass(new FieldToPropertyPass());
+            TranslationUnitPasses.AddPass(new CleanInvalidDeclNamesPass());
+            TranslationUnitPasses.AddPass(new CheckIgnoredDeclsPass());
+            TranslationUnitPasses.AddPass(new CheckFlagEnumsPass());
+            TranslationUnitPasses.AddPass(new CheckDuplicatedNamesPass());
+            if (Options.GenerateAbstractImpls)
+                TranslationUnitPasses.AddPass(new GenerateAbstractImplementationsPass());
+            if (Options.GenerateInterfacesForMultipleInheritance)
+            {
+                TranslationUnitPasses.AddPass(new MultipleInheritancePass());
+                TranslationUnitPasses.AddPass(new ParamTypeToInterfacePass());
+            }
+            if (Options.GenerateVirtualTables)
+                TranslationUnitPasses.AddPass(new CheckVTableComponentsPass());
+            if (Options.GenerateProperties)
+                TranslationUnitPasses.AddPass(new GetterSetterToPropertyAdvancedPass());
         }
 
-        public void GenerateCode()
+        public void ProcessCode()
         {
-            if (Library.TranslationUnits.Count <= 0)
-                return;
+            TranslationUnitPasses.RunPasses(pass => pass.VisitLibrary(ASTContext));
+            Generator.Process();
+        }
 
-            foreach (var unit in Library.TranslationUnits)
+        public List<GeneratorOutput> GenerateCode()
+        {
+            return Generator.Generate();
+        }
+
+        public void WriteCode(List<GeneratorOutput> outputs)
+        {
+            var outputPath = Options.OutputDir;
+
+            if (!Directory.Exists(outputPath))
+                Directory.CreateDirectory(outputPath);
+
+            foreach (var output in outputs)
             {
-                if (unit.Ignore || !unit.HasDeclarations)
-                    continue;
+                var fileBase = output.TranslationUnit.FileNameWithoutExtension;
 
-                if (unit.IsSystemHeader)
-                    continue;
+                if (Options.GenerateName != null)
+                    fileBase = Options.GenerateName(output.TranslationUnit);
 
-                var outputs = new List<GeneratorOutput>();
-                if (!Generator.Generate(unit, outputs))
-                    continue;
-
-                foreach (var output in outputs)
+                foreach (var template in output.Templates)
                 {
-                    Diagnostics.EmitMessage(DiagnosticId.FileGenerated,
-                        "Generated '{0}'", Path.GetFileName(output.OutputPath));
+                    var fileName = string.Format("{0}.{1}", fileBase, template.FileExtension);
+                    Diagnostics.EmitMessage("Generated '{0}'", fileName);
 
-                    var text = output.Template.ToString();
-                    File.WriteAllText(output.OutputPath, text);
+                    var filePath = Path.Combine(outputPath, fileName);
+                    string file = Path.GetFullPath(filePath);
+                    File.WriteAllText(file, template.Generate());
+                    Options.CodeFiles.Add(file);
                 }
             }
         }
-    }
 
-    public class DriverOptions
-    {
-        public DriverOptions()
+        public void CompileCode()
         {
-            Defines = new List<string>();
-            IncludeDirs = new List<string>();
-            SystemIncludeDirs = new List<string>();
-            Headers = new List<string>();
+            try
+            {
+                var assemblyFile = string.IsNullOrEmpty(Options.LibraryName) ?
+                    "out.dll" : Options.LibraryName + ".dll";
 
-            var platform = Environment.OSVersion.Platform;
-            var isUnix = platform == PlatformID.Unix || platform == PlatformID.MacOSX;
-            MicrosoftMode = !isUnix;
-            Abi = isUnix ? CppAbi.Itanium : CppAbi.Microsoft;
+                var docFile = Path.ChangeExtension(Path.GetFileName(assemblyFile), ".xml");
 
-            LibraryDirs = new List<string>();
-            Libraries = new List<string>();
+                var compilerOptions = new StringBuilder();
+                compilerOptions.Append(" /doc:" + docFile);
+                compilerOptions.Append(" /debug:pdbonly");
+                compilerOptions.Append(" /unsafe");
 
-            GeneratorKind = LanguageGeneratorKind.CSharp;
-            GenerateLibraryNamespace = true;
-            GeneratePartialClasses = true;
-            OutputInteropIncludes = true;
+                var compilerParameters = new CompilerParameters
+                    {
+                        GenerateExecutable = false,
+                        TreatWarningsAsErrors = false,
+                        OutputAssembly = assemblyFile,
+                        GenerateInMemory = false,
+                        CompilerOptions = compilerOptions.ToString()
+                    };
+
+                compilerParameters.ReferencedAssemblies.Add(typeof (object).Assembly.Location);
+                var location = Assembly.GetExecutingAssembly().Location;
+                var locationRuntime = Path.Combine(Path.GetDirectoryName(location),
+                    "CppSharp.Runtime.dll");
+                compilerParameters.ReferencedAssemblies.Add(locationRuntime);
+
+                var codeProvider = new CSharpCodeProvider(
+                    new Dictionary<string, string> {{"CompilerVersion", "v4.0"}});
+                var compilerResults = codeProvider.CompileAssemblyFromFile(
+                    compilerParameters, Options.CodeFiles.ToArray());
+
+                var errors = compilerResults.Errors.Cast<CompilerError>();
+                foreach (var error in errors.Where(error => !error.IsWarning))
+                    Diagnostics.EmitError(error.ToString());
+            }
+            catch (Exception exception)
+            {
+                Diagnostics.EmitError("Could not compile the generated source code");
+                Diagnostics.EmitMessage(exception.ToString());
+            }
         }
 
-        // General options
-        public bool Verbose;
-        public bool ShowHelpText;
-        public bool OutputDebug;
+        public void AddTranslationUnitPass(TranslationUnitPass pass)
+        {
+            TranslationUnitPasses.AddPass(pass);
+        }
 
-        // Parser options
-        public List<string> Defines;
-        public List<string> IncludeDirs;
-        public List<string> SystemIncludeDirs;
-        public List<string> Headers;
-        public bool NoStandardIncludes;
-        public bool NoBuiltinIncludes;
-        public bool MicrosoftMode;
-        public string TargetTriple;
-        public int ToolsetToUse;
-        public bool IgnoreParseErrors;
-        public CppAbi Abi;
-        public bool IsItaniumAbi { get { return Abi == CppAbi.Itanium; } }
-        public bool IsMicrosoftAbi { get { return Abi == CppAbi.Microsoft; } }
-
-        // Library options
-        public List<string> LibraryDirs;
-        public List<string> Libraries;
-
-        // Generator options
-        public LanguageGeneratorKind GeneratorKind;
-        public string OutputNamespace;
-        public string OutputDir;
-        public string LibraryName;
-        public bool OutputInteropIncludes;
-        public bool GenerateLibraryNamespace;
-        public bool GenerateFunctionTemplates;
-        public bool GeneratePartialClasses;
-        public string Template;
-        public string Assembly;
-        public string IncludePrefix;
-        public bool WriteOnlyWhenChanged;
-        public Func<TranslationUnit, string> GenerateName;
+        public void AddGeneratorOutputPass(GeneratorOutputPass pass)
+        {
+            GeneratorOutputPasses.AddPass(pass);
+        }
     }
 
     public static class ConsoleDriver
     {
-        static void OnFileParsed(string file, ParserResult result)
-        {
-            switch (result.Kind)
-            {
-            case ParserResultKind.Success:
-                Console.WriteLine("  Parsed '{0}'", file);
-                break;
-            case ParserResultKind.Error:
-                Console.WriteLine("  Error parsing '{0}'", file);
-                break;
-            case ParserResultKind.FileNotFound:
-                Console.WriteLine("  File '{0}' was not found", file);
-                break;
-            }
-
-            foreach (var diag in result.Diagnostics)
-            {
-                Console.WriteLine(string.Format("{0}({1},{2}): {3}: {4}",
-                    diag.FileName, diag.LineNumber, diag.ColumnNumber,
-                    diag.Level.ToString().ToLower(), diag.Message));
-            }
-        }
-
         public static void Run(ILibrary library)
         {
-            Console.BufferHeight = 1999;
-
             var options = new DriverOptions();
-            var driver = new Driver(options, new TextDiagnosticPrinter(),
-                library);
+
+            var Log = new TextDiagnosticPrinter();
+            var driver = new Driver(options, Log);
+
             library.Setup(driver);
             driver.Setup();
 
-            driver.Parser.OnHeaderParsed += OnFileParsed;
-            driver.Parser.OnLibraryParsed += OnFileParsed;
+            Log.Verbose = driver.Options.Verbose;
 
-            Console.WriteLine("Parsing libraries...");
+            if (!options.Quiet)
+                Log.EmitMessage("Parsing libraries...");
+
             if (!driver.ParseLibraries())
                 return;
 
-            Console.WriteLine("Indexing library symbols...");
-            driver.LibrarySymbols.IndexSymbols();
+            if (!options.Quiet)
+                Log.EmitMessage("Indexing library symbols...");
 
-            Console.WriteLine("Parsing code...");
+            driver.Symbols.IndexSymbols();
+
+            if (!options.Quiet)
+                Log.EmitMessage("Parsing code...");
+
             if (!driver.ParseCode())
                 return;
 
-            Console.WriteLine("Processing code...");
-            driver.ProcessCode();
+            if (!options.Quiet)
+                Log.EmitMessage("Processing code...");
 
-            Console.WriteLine("Generating code...");
-            driver.GenerateCode();
+            library.Preprocess(driver, driver.ASTContext);
+
+            driver.SetupPasses(library);
+
+            driver.ProcessCode();
+            library.Postprocess(driver, driver.ASTContext);
+
+            if (!options.Quiet)
+                Log.EmitMessage("Generating code...");
+
+            var outputs = driver.GenerateCode();
+
+            foreach (var output in outputs)
+            {
+                foreach (var pass in driver.GeneratorOutputPasses.Passes)
+                {
+                    pass.Driver = driver;
+                    pass.VisitGeneratorOutput(output);
+                }
+            }
+
+            driver.WriteCode(outputs);
+            if (driver.Options.IsCSharpGenerator)
+                driver.CompileCode();
         }
     }
 }

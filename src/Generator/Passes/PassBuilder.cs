@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using CppSharp.Passes;
 
 namespace CppSharp
@@ -7,30 +9,43 @@ namespace CppSharp
     /// This class is used to build passes that will be run against the AST
     /// that comes from C++.
     /// </summary>
-    public class PassBuilder
+    public class PassBuilder<T>
     {
-        public List<TranslationUnitPass> Passes { get; private set; }
+        public List<T> Passes { get; private set; }
         public Driver Driver { get; private set; }
 
         public PassBuilder(Driver driver)
         {
-            Passes = new List<TranslationUnitPass>();
+            Passes = new List<T>();
             Driver = driver;
         }
 
-        public void AddPass(TranslationUnitPass pass)
+        /// <summary>
+        /// Adds a new pass to the builder.
+        /// </summary>
+        public void AddPass(T pass)
         {
-            pass.Driver = Driver;
-            pass.Library = Driver.Library;
+            if (pass is TranslationUnitPass)
+                (pass as TranslationUnitPass).Driver = Driver;
+
             Passes.Add(pass);
         }
 
-        public void RunPasses()
+        /// <summary>
+        /// Finds a previously-added pass of the given type.
+        /// </summary>
+        public U FindPass<U>() where U : TranslationUnitPass
+        {
+            return Passes.OfType<U>().Select(pass => pass as U).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Adds a new pass to the builder.
+        /// </summary>
+        public void RunPasses(Action<T> action)
         {
             foreach (var pass in Passes)
-            {
-                pass.VisitLibrary(Driver.Library);
-            }
+                action(pass);
         }
     }
 }

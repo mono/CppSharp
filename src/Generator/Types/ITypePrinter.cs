@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using CppSharp.AST;
 
 namespace CppSharp.Types
 {
@@ -46,6 +47,7 @@ namespace CppSharp.Types
 
         public TypePrinterContextKind Kind;
         public Declaration Declaration;
+        public Parameter Parameter;
         public Type Type;
     }
 

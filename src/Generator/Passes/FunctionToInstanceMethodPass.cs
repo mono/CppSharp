@@ -1,4 +1,6 @@
-﻿using System;
+﻿using System.Linq;
+using CppSharp.AST;
+using CppSharp.Generators;
 
 namespace CppSharp.Passes
 {
@@ -39,9 +41,10 @@ namespace CppSharp.Passes
             function.ExplicityIgnored = true;
 
             // Create a new fake method so it acts as an instance method.
-            var method = new Method()
+            var method = new Method
                 {
-                    Namespace = @class.Namespace,
+                    Namespace = @class,
+                    OriginalNamespace = function.Namespace,
                     Name = function.Name,
                     OriginalName = function.OriginalName,
                     Mangled = function.Mangled,
@@ -55,15 +58,18 @@ namespace CppSharp.Passes
                     Conversion = MethodConversionKind.FunctionToInstanceMethod
                 };
 
+            if (Driver.Options.GeneratorKind == GeneratorKind.CSharp)
+                method.Parameters = method.Parameters.Skip(1).ToList();
+
             @class.Methods.Add(method);
 
-            Console.WriteLine("Instance method: {0}::{1}", @class.Name,
+            Log.EmitMessage("Instance method: {0}::{1}", @class.Name,
                 function.Name);
 
             return true;
         }
 
-        private static bool GetClassParameter(Parameter classParam, out Class @class)
+        public static bool GetClassParameter(Parameter classParam, out Class @class)
         {
             TagType tag;
             if (classParam.Type.IsPointerTo(out tag))
@@ -72,19 +78,7 @@ namespace CppSharp.Passes
                 return true;
             }
 
-            if (classParam.Type.IsTagDecl(out @class))
-                return true;
-
-            return false;
-        }
-    }
-
-    public static class FunctionToInstanceMethodExtensions
-    {
-        public static void FunctionToInstanceMethod(this PassBuilder builder)
-        {
-            var pass = new FunctionToInstanceMethodPass();
-            builder.AddPass(pass);
+            return classParam.Type.IsTagDecl(out @class);
         }
     }
 }

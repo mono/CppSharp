@@ -3,15 +3,10 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
-using CppSharp.Generators;
+using CppSharp.AST;
 
 namespace CppSharp
 {
-    [AttributeUsage(AttributeTargets.Class)]
-    public class LibraryTransformAttribute : Attribute
-    {
-    }
-
     /// <summary>
     /// Used to massage the library types into something more .NET friendly.
     /// </summary>
@@ -20,12 +15,12 @@ namespace CppSharp
         /// <summary>
         /// Do transformations that should happen before passes are processed.
         /// </summary>
-        void Preprocess(Driver driver, Library lib);
+        void Preprocess(Driver driver, ASTContext lib);
 
         /// <summary>
         /// Do transformations that should happen after passes are processed.
         /// </summary>
-        void Postprocess(Library lib);
+        void Postprocess(Driver driver, ASTContext lib);
 
         /// <summary>
         /// Setup the driver options here.
@@ -36,17 +31,16 @@ namespace CppSharp
         /// Setup your passes here.
         /// </summary>
         /// <param name="driver"></param>
-        /// <param name="passes"></param>
-        void SetupPasses(Driver driver, PassBuilder passes);
+        void SetupPasses(Driver driver);
     }
 
     public static class LibraryHelpers
     {
         #region Enum Helpers
 
-        public static Enumeration FindEnum(this Library library, string name)
+        public static Enumeration FindEnum(this ASTContext context, string name)
         {
-            foreach (var unit in library.TranslationUnits)
+            foreach (var unit in context.TranslationUnits)
             {
                 var @enum = unit.FindEnum(name);
                 if (@enum != null)
@@ -56,34 +50,34 @@ namespace CppSharp
             return null;
         }
 
-        public static void IgnoreEnumWithMatchingItem(this Library library, string pattern)
+        public static void IgnoreEnumWithMatchingItem(this ASTContext context, string pattern)
         {
-            Enumeration @enum = library.GetEnumWithMatchingItem(pattern);
+            Enumeration @enum = context.GetEnumWithMatchingItem(pattern);
             if (@enum != null)
                 @enum.ExplicityIgnored = true;
         }
 
-        public static void SetNameOfEnumWithMatchingItem(this Library library, string pattern,
+        public static void SetNameOfEnumWithMatchingItem(this ASTContext context, string pattern,
             string name)
         {
-            Enumeration @enum = library.GetEnumWithMatchingItem(pattern);
+            Enumeration @enum = context.GetEnumWithMatchingItem(pattern);
             if (@enum != null)
                 @enum.Name = name;
         }
 
-        public static void SetNameOfEnumWithName(this Library library, string enumName,
+        public static void SetNameOfEnumWithName(this ASTContext context, string enumName,
             string name)
         {
-            foreach (var @enum in library.FindEnum(enumName))
+            foreach (var @enum in context.FindEnum(enumName))
             {
                 if (@enum != null)
                     @enum.Name = name;
             }
         }
 
-        public static Enumeration GetEnumWithMatchingItem(this Library library, string pattern)
+        public static Enumeration GetEnumWithMatchingItem(this ASTContext context, string pattern)
         {
-            foreach (var module in library.TranslationUnits)
+            foreach (var module in context.TranslationUnits)
             {
                 Enumeration @enum = module.FindEnumWithItem(pattern);
                 if (@enum == null) continue;
@@ -93,7 +87,7 @@ namespace CppSharp
             return null;
         }
 
-        public static Enumeration.Item GenerateEnumItemFromMacro(this Library library,
+        public static Enumeration.Item GenerateEnumItemFromMacro(this ASTContext context,
             MacroDefinition macro)
         {
             var item = new Enumeration.Item
@@ -119,15 +113,15 @@ namespace CppSharp
             return long.TryParse(num, out val);
         }
 
-        static long ParseMacroExpression(string expression)
+        static ulong ParseMacroExpression(string expression)
         {
             // TODO: Handle string expressions
 
             long val;
-            return ParseToNumber(expression, out val) ? val : 0;
+            return ParseToNumber(expression, out val) ? (ulong)val : 0;
         }
 
-        public static Enumeration GenerateEnumFromMacros(this Library library, string name,
+        public static Enumeration GenerateEnumFromMacros(this ASTContext context, string name,
             params string[] macros)
         {
             var @enum = new Enumeration { Name = name };
@@ -135,14 +129,14 @@ namespace CppSharp
             var pattern = string.Join("|", macros);
             var regex = new Regex(pattern);
 
-            foreach (var unit in library.TranslationUnits)
+            foreach (var unit in context.TranslationUnits)
             {
                 foreach (var macro in unit.Macros)
                 {
                     var match = regex.Match(macro.Name);
                     if (!match.Success) continue;
 
-                    var item = GenerateEnumItemFromMacro(library, macro);
+                    var item = GenerateEnumItemFromMacro(context, macro);
                     @enum.AddItem(item);
                 }
 
@@ -160,9 +154,9 @@ namespace CppSharp
 
         #region Class Helpers
 
-        public static IEnumerable<Class> FindClass(this Library library, string name)
+        public static IEnumerable<Class> FindClass(this ASTContext context, string name)
         {
-            foreach (var module in library.TranslationUnits)
+            foreach (var module in context.TranslationUnits)
             {
                 var @class = module.FindClass(name);
                 if (@class != null)
@@ -170,34 +164,34 @@ namespace CppSharp
             }
         }
 
-        public static void SetClassBindName(this Library library, string className, string name)
+        public static void SetClassBindName(this ASTContext context, string className, string name)
         {
-            foreach (var @class in library.FindClass(className))
+            foreach (var @class in context.FindClass(className))
                 @class.Name = name;
         }
 
-        public static void SetClassAsValueType(this Library library, string className)
+        public static void SetClassAsValueType(this ASTContext context, string className)
         {
-            foreach (var @class in library.FindClass(className))
+            foreach (var @class in context.FindClass(className))
                 @class.Type = ClassType.ValueType;
         }
 
-        public static void IgnoreClassWithName(this Library library, string name)
+        public static void IgnoreClassWithName(this ASTContext context, string name)
         {
-            foreach (var @class in library.FindClass(name))
+            foreach (var @class in context.FindClass(name))
                 @class.ExplicityIgnored = true;
         }
 
-        public static void SetClassAsOpaque(this Library library, string name)
+        public static void SetClassAsOpaque(this ASTContext context, string name)
         {
-            foreach (var @class in library.FindClass(name))
+            foreach (var @class in context.FindClass(name))
                 @class.IsOpaque = true;
         }
 
-        public static void SetNameOfClassMethod(this Library library, string name,
+        public static void SetNameOfClassMethod(this ASTContext context, string name,
             string methodName, string newMethodName)
         {
-            foreach (var @class in library.FindClass(name))
+            foreach (var @class in context.FindClass(name))
             {
                 var method = @class.Methods.Find(m => m.Name == methodName);
                 if (method != null)
@@ -209,13 +203,13 @@ namespace CppSharp
         /// 
         /// </summary>
         /// <param name="parameterIndex">first parameter has index 1</param>
-        public static void SetMethodParameterUsage(this Library library,
+        public static void SetMethodParameterUsage(this ASTContext context,
             string className, string methodName, int parameterIndex, ParameterUsage usage)
         {
             if (parameterIndex <= 0 )
                  throw new ArgumentException("parameterIndex");
 
-            foreach (var @class in library.FindClass(className))
+            foreach (var @class in context.FindClass(className))
             {
                 var method = @class.Methods.Find(m => m.Name == methodName);
                 if (method == null)
@@ -227,12 +221,12 @@ namespace CppSharp
             }
         }
 
-        public static void CopyClassFields(this Library library, string source,
+        public static void CopyClassFields(this ASTContext context, string source,
             string destination)
         {
-            foreach (var @class in library.FindClass(source))
+            foreach (var @class in context.FindClass(source))
             {
-                foreach (var dest in library.FindClass(destination))
+                foreach (var dest in context.FindClass(destination))
                 {
                     dest.Fields.AddRange(@class.Fields);
                     foreach (var field in dest.Fields)
@@ -245,22 +239,22 @@ namespace CppSharp
 
         #region Function Helpers
 
-        public static IEnumerable<Function> FindFunction(this Library library, string name)
+        public static IEnumerable<Function> FindFunction(this ASTContext context, string name)
         {
-            return library.TranslationUnits
+            return context.TranslationUnits
                 .Select(module => module.FindFunction(name))
                 .Where(function => function != null);
         }
 
-        public static void IgnoreFunctionWithName(this Library library, string name)
+        public static void IgnoreFunctionWithName(this ASTContext context, string name)
         {
-            foreach (var function in library.FindFunction(name))
+            foreach (var function in context.FindFunction(name))
                 function.ExplicityIgnored = true;
         }
 
-        public static void IgnoreFunctionWithPattern(this Library library, string pattern)
+        public static void IgnoreFunctionWithPattern(this ASTContext context, string pattern)
         {
-            foreach (var unit in library.TranslationUnits)
+            foreach (var unit in context.TranslationUnits)
             {
                 foreach (var function in unit.Functions)
                 {
@@ -270,16 +264,16 @@ namespace CppSharp
             }
         }
 
-        public static void SetNameOfFunction(this Library library, string name, string newName)
+        public static void SetNameOfFunction(this ASTContext context, string name, string newName)
         {
-            foreach (var function in library.FindFunction(name))
+            foreach (var function in context.FindFunction(name))
                 function.Name = newName;
         }
 
-        public static void IgnoreClassMethodWithName(this Library library, string className,
+        public static void IgnoreClassMethodWithName(this ASTContext context, string className,
             string name)
         {
-            foreach (var @class in library.FindClass(name))
+            foreach (var @class in context.FindClass(name))
             {
                 var method = @class.Methods.Find(m => m.Name == name);
 
@@ -290,19 +284,28 @@ namespace CppSharp
             }
         }
 
+        public static void IgnoreClassField(this ASTContext context, string name, string field)
+        {
+            foreach (var @class in context.FindClass(name))
+            {
+                foreach (var classField in @class.Fields.FindAll(f => f.Name == field))
+                    classField.ExplicityIgnored = true;
+            }
+        }
+
         #endregion
 
         #region Module Helpers
 
-        public static void IgnoreHeadersWithName(this Library library, IEnumerable<string> patterns)
+        public static void IgnoreHeadersWithName(this ASTContext context, IEnumerable<string> patterns)
         {
             foreach(var pattern in patterns)
-                library.IgnoreHeadersWithName(pattern);
+                context.IgnoreHeadersWithName(pattern);
         }
 
-        public static void IgnoreHeadersWithName(this Library library, string pattern)
+        public static void IgnoreHeadersWithName(this ASTContext context, string pattern)
         {
-            var units = library.TranslationUnits.FindAll(m =>
+            var units = context.TranslationUnits.FindAll(m =>
             {
                 var hasMatch = Regex.Match(m.FilePath, pattern).Success;
                 if (m.IncludePath != null)

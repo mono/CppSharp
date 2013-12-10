@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using CppSharp.Types;
+using CppSharp.AST;
 
 namespace CppSharp.Generators.CLI
 {
@@ -13,7 +13,10 @@ namespace CppSharp.Generators.CLI
         }
 
         public string File;
+        public TranslationUnit TranslationUnit;
+
         public IncludeKind Kind;
+        public bool InHeader;
 
         public override string ToString()
         {
@@ -22,28 +25,31 @@ namespace CppSharp.Generators.CLI
         }
     }
 
+    public class CLIBlockKind
+    {
+        public const int Includes = BlockKind.LAST + 1;
+        public const int IncludesForwardReferences = BlockKind.LAST + 2;
+        public const int Namespace = BlockKind.LAST + 3;
+        public const int ForwardReferences = BlockKind.LAST + 4;
+        public const int Enum = BlockKind.LAST + 5;
+        public const int EnumItem = BlockKind.LAST + 6;
+        public const int Class = BlockKind.LAST + 7;
+        public const int Method = BlockKind.LAST + 8;
+        public const int MethodBody = BlockKind.LAST + 9;
+        public const int Usings = BlockKind.LAST + 10;
+        public const int FunctionsClass = BlockKind.LAST + 11;
+        public const int Function = BlockKind.LAST + 12;
+        public const int Property = BlockKind.LAST + 13;
+        public const int Typedef = BlockKind.LAST + 14;
+    }
+
     /// <summary>
     /// There are two implementation
     /// for source (CLISourcesTemplate) and header (CLIHeadersTemplate)
     /// files.
     /// </summary>
-    public abstract class CLITextTemplate : TextTemplate
+    public abstract class CLITextTemplate : Template
     {
-        protected const string DefaultIndent = "    ";
-        protected const uint MaxIndent = 80;
-
-        public delegate void GenerateTextDelegate(CLITextTemplate gen);
-
-        /// <summary>
-        /// Called when the generation is starting.
-        /// </summary>
-        public GenerateTextDelegate OnStart = delegate { };
-
-        /// <summary>
-        /// Called when generating namespaces.
-        /// </summary>
-        public GenerateTextDelegate OnNamespaces = delegate { };
-
         public CLITypePrinter TypePrinter { get; set; }
 
         public ISet<Include> Includes;
@@ -54,6 +60,12 @@ namespace CppSharp.Generators.CLI
             TypePrinter = new CLITypePrinter(driver);
             Includes = new HashSet<Include>();
         }
+
+        public abstract override string FileExtension { get; }
+
+        public abstract override void Process();
+
+        #region Helpers
 
         public static string SafeIdentifier(string proposedName)
         {
@@ -67,26 +79,51 @@ namespace CppSharp.Generators.CLI
             return string.Format("{0}", decl.QualifiedName);
         }
 
+        public string GetMethodName(Method method)
+        {
+            if (method.OperatorKind == CXXOperatorKind.Conversion)
+                return SafeIdentifier("operator " + method.ConversionType);
+
+            return SafeIdentifier(method.Name);
+        }
+
+        public void GenerateDeclarationCommon(Declaration decl)
+        {
+            if (decl.Comment == null)
+                return;
+
+            GenerateSummary(decl.Comment.BriefText);
+            GenerateDebug(decl);
+        }
+
         public void GenerateSummary(string comment)
         {
             if (string.IsNullOrWhiteSpace(comment))
                 return;
 
-            // Wrap the comment to the line width.
-            var maxSize = (int)(MaxIndent - CurrentIndent.Count - "/// ".Length);
-            var lines = StringHelpers.WordWrapLines(comment, maxSize);
-
+            PushBlock(BlockKind.BlockComment);
             WriteLine("/// <summary>");
-            foreach (string line in lines)
-                WriteLine(string.Format("/// {0}", line.TrimEnd()));
+            WriteLine(comment);
             WriteLine("/// </summary>");
+            PopBlock();
         }
 
-        public void GenerateInlineSummary(string comment)
+        public void GenerateInlineSummary(RawComment comment)
         {
-            if (String.IsNullOrWhiteSpace(comment))
+            if (comment == null) return;
+
+            if (String.IsNullOrWhiteSpace(comment.BriefText))
                 return;
-            WriteLine("/// <summary> {0} </summary>", comment);
+
+            PushBlock(BlockKind.InlineComment);
+            WriteLine("/// <summary> {0} </summary>", comment.BriefText);
+            PopBlock();
+        }
+
+        public void GenerateDebug(Declaration decl)
+        {
+            if (Options.OutputDebug && !String.IsNullOrWhiteSpace(decl.DebugText))
+                WriteLine("// DEBUG: " + decl.DebugText);
         }
 
         public void GenerateMethodParameters(Method method)
@@ -112,8 +149,6 @@ namespace CppSharp.Generators.CLI
             return string.Join(", ", types);
         }
 
-        public abstract override string FileExtension { get; }
-
-        public abstract override void Generate();
+        #endregion
     }
 }

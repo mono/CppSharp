@@ -5,6 +5,8 @@
 *
 ************************************************************************/
 
+#using <CppSharp.AST.dll>
+
 #include <llvm/Support/Host.h>
 #include <clang/Frontend/CompilerInstance.h>
 #include <clang/Frontend/CompilerInvocation.h>
@@ -15,104 +17,29 @@
 #include <clang/Basic/IdentifierTable.h>
 #include <clang/AST/ASTConsumer.h>
 #include <clang/AST/Mangle.h>
+#include <clang/AST/RawCommentList.h>
+#include <clang/AST/Comment.h>
 #include <clang/AST/RecordLayout.h>
+#include <clang/AST/VTableBuilder.h>
 #include <clang/Lex/Preprocessor.h>
 #include <clang/Lex/PreprocessingRecord.h>
 #include <clang/Parse/ParseAST.h>
 #include <clang/Sema/Sema.h>
 #include "CXXABI.h"
+#include "Options.h"
 
-#include <string>
-#include <cstdarg>
-
-#using <Bridge.dll>
 #include <vcclr.h>
+#include <string>
+typedef std::string String;
 
-#define ARRAY_SIZE(arr) (sizeof(arr) / sizeof(arr[0]))
+namespace clang {
+  class TargetCodeGenInfo;
+  namespace CodeGen {
+    class CodeGenTypes;
+  }
+}
+
 #define Debug printf
-
-using namespace System::Collections::Generic;
-
-public ref struct ParserOptions
-{
-    ParserOptions()
-    {
-        IncludeDirs = gcnew List<System::String^>();
-        SystemIncludeDirs = gcnew List<System::String^>();
-        Defines = gcnew List<System::String^>();
-        LibraryDirs = gcnew List<System::String^>();
-        MicrosoftMode = false;
-        NoStandardIncludes = false;
-        NoBuiltinIncludes = false;
-    }
-
-    // Include directories
-    List<System::String^>^ IncludeDirs;
-    List<System::String^>^ SystemIncludeDirs;
-    List<System::String^>^ Defines;
-    List<System::String^>^ LibraryDirs;
-
-    // C/C++ header file name.
-    System::String^ FileName;
-
-    CppSharp::Library^ Library;
-
-    // Toolset version - 2005 - 8, 2008 - 9, 2010 - 10, 0 - autoprobe for any.
-    int ToolSetToUse;
-    System::String^ TargetTriple;
-
-    bool NoStandardIncludes;
-    bool NoBuiltinIncludes;
-    bool MicrosoftMode;
-
-    bool Verbose;
-};
-
-public enum struct ParserDiagnosticLevel
-{
-    Ignored,
-    Note,
-    Warning,
-    Error,
-    Fatal
-};
-
-public value struct ParserDiagnostic
-{
-    System::String^ FileName;
-    System::String^ Message;
-    ParserDiagnosticLevel Level;
-    int LineNumber;
-    int ColumnNumber;
-};
-
-public enum struct ParserResultKind
-{
-    Success,
-    Error,
-    FileNotFound
-};
-
-public ref struct ParserResult
-{
-    ParserResult()
-    {
-        Diagnostics = gcnew List<ParserDiagnostic>(); 
-    }
-
-    ParserResultKind Kind;
-    CppSharp::Library^ Library;
-    List<ParserDiagnostic>^ Diagnostics;
-};
-
-enum class SourceLocationKind
-{
-    Invalid,
-    Builtin,
-    CommandLine,
-    System,
-    User
-};
 
 struct Parser
 {
@@ -122,65 +49,74 @@ struct Parser
     ParserResult^ ParseHeader(const std::string& File);
     ParserResult^ ParseLibrary(const std::string& File);
     ParserResultKind ParseArchive(llvm::StringRef File,
-                                  llvm::MemoryBuffer *Buffer);
+                                  llvm::MemoryBuffer *Buffer,
+                                  CppSharp::AST::NativeLibrary^ NativeLib);
     ParserResultKind ParseSharedLib(llvm::StringRef File,
-                                    llvm::MemoryBuffer *Buffer);
+                                    llvm::MemoryBuffer *Buffer,
+                                    CppSharp::AST::NativeLibrary^ NativeLib);
 
 protected:
 
     // AST traversers
     void WalkAST();
     void WalkMacros(clang::PreprocessingRecord* PR);
-    CppSharp::Declaration^ WalkDeclaration(clang::Decl* D,
+    CppSharp::AST::Declaration^ WalkDeclaration(clang::Decl* D,
         bool IgnoreSystemDecls = true, bool CanBeDefinition = false);
-    CppSharp::Declaration^ WalkDeclarationDef(clang::Decl* D);
-    CppSharp::Enumeration^ WalkEnum(clang::EnumDecl*);
-    CppSharp::Function^ WalkFunction(clang::FunctionDecl*, bool IsDependent = false,
+    CppSharp::AST::Declaration^ WalkDeclarationDef(clang::Decl* D);
+    CppSharp::AST::Enumeration^ WalkEnum(clang::EnumDecl* ED);
+    CppSharp::AST::Function^ WalkFunction(clang::FunctionDecl* FD, bool IsDependent = false,
         bool AddToNamespace = true);
-    CppSharp::Class^ WalkRecordCXX(clang::CXXRecordDecl*);
-    CppSharp::Method^ WalkMethodCXX(clang::CXXMethodDecl*);
-    CppSharp::Field^ WalkFieldCXX(clang::FieldDecl*, CppSharp::Class^);
-    CppSharp::ClassTemplate^ Parser::WalkClassTemplate(clang::ClassTemplateDecl*);
-    CppSharp::FunctionTemplate^ Parser::WalkFunctionTemplate(
-        clang::FunctionTemplateDecl*);
-    CppSharp::Variable^ WalkVariable(clang::VarDecl*);
-    CppSharp::Type^ WalkType(clang::QualType, clang::TypeLoc* = 0,
+    CppSharp::AST::Class^ WalkRecordCXX(clang::CXXRecordDecl* Record);
+    void WalkRecordCXX(clang::CXXRecordDecl* Record, CppSharp::AST::Class^ RC);
+    CppSharp::AST::ClassTemplateSpecialization^
+    WalkClassTemplateSpecialization(clang::ClassTemplateSpecializationDecl* CTS);
+    CppSharp::AST::ClassTemplatePartialSpecialization^
+    WalkClassTemplatePartialSpecialization(clang::ClassTemplatePartialSpecializationDecl* CTS);
+    CppSharp::AST::Method^ WalkMethodCXX(clang::CXXMethodDecl* MD);
+    CppSharp::AST::Field^ WalkFieldCXX(clang::FieldDecl* FD, CppSharp::AST::Class^ Class);
+    CppSharp::AST::ClassTemplate^ Parser::WalkClassTemplate(clang::ClassTemplateDecl* TD);
+    CppSharp::AST::FunctionTemplate^ Parser::WalkFunctionTemplate(
+        clang::FunctionTemplateDecl* TD);
+    CppSharp::AST::Variable^ WalkVariable(clang::VarDecl* VD);
+    CppSharp::AST::RawComment^ WalkRawComment(const clang::RawComment* RC);
+    CppSharp::AST::Type^ WalkType(clang::QualType QualType, clang::TypeLoc* TL = 0,
       bool DesugarType = false);
+    CppSharp::AST::QualifiedType^ WalkQualifiedType(clang::TypeSourceInfo* TSI);
+    void WalkVTable(clang::CXXRecordDecl* RD, CppSharp::AST::Class^ C);
+    CppSharp::AST::VTableLayout^ WalkVTableLayout(const clang::VTableLayout& VTLayout);
+    CppSharp::AST::VTableComponent WalkVTableComponent(const clang::VTableComponent& Component);
 
     // Clang helpers
     SourceLocationKind GetLocationKind(const clang::SourceLocation& Loc);
     bool IsValidDeclaration(const clang::SourceLocation& Loc);
-    std::string GetDeclMangledName(clang::Decl*, clang::TargetCXXABI,
+    std::string GetDeclMangledName(clang::Decl* D, clang::TargetCXXABI ABI,
         bool IsDependent = false);
-    std::string GetTypeName(const clang::Type*);
-    void HandleComments(clang::Decl* D, CppSharp::Declaration^);
-    void WalkFunction(clang::FunctionDecl* FD, CppSharp::Function^ F,
+    std::string GetTypeName(const clang::Type* Type);
+    void WalkFunction(clang::FunctionDecl* FD, CppSharp::AST::Function^ F,
         bool IsDependent = false);
-    void HandlePreprocessedEntities(CppSharp::Declaration^ Decl, clang::SourceRange sourceRange,
-                                    CppSharp::MacroLocation macroLocation = CppSharp::MacroLocation::Unknown);
-    bool GetPreprocessedEntityText(clang::PreprocessedEntity*, std::string& Text);
+    void HandlePreprocessedEntities(CppSharp::AST::Declaration^ Decl, clang::SourceRange sourceRange,
+                                    CppSharp::AST::MacroLocation macroLocation = CppSharp::AST::MacroLocation::Unknown);
+    bool GetDeclText(clang::SourceRange SR, std::string& Text);
 
-    CppSharp::TranslationUnit^ GetTranslationUnit(clang::SourceLocation Loc,
+    CppSharp::AST::TranslationUnit^ GetTranslationUnit(clang::SourceLocation Loc,
         SourceLocationKind *Kind = 0);
-    CppSharp::TranslationUnit^ GetTranslationUnit(const clang::Decl*);
+    CppSharp::AST::TranslationUnit^ GetTranslationUnit(const clang::Decl* D);
 
-    CppSharp::DeclarationContext^ GetNamespace(clang::Decl*, clang::DeclContext*);
-    CppSharp::DeclarationContext^ GetNamespace(clang::Decl*);
+    CppSharp::AST::DeclarationContext^ GetNamespace(clang::Decl* D, clang::DeclContext* Ctx);
+    CppSharp::AST::DeclarationContext^ GetNamespace(clang::Decl* D);
 
-    clang::CallingConv GetAbiCallConv(clang::CallingConv CC,
-        bool IsInstMethod, bool IsVariadic);
+    void HandleDeclaration(clang::Decl* D, CppSharp::AST::Declaration^ Decl);
+    void HandleOriginalText(clang::Decl* D, CppSharp::AST::Declaration^ Decl);
+    void HandleComments(clang::Decl* D, CppSharp::AST::Declaration^ Decl);
+    void HandleDiagnostics(ParserResult^ res);
 
     int Index;
-    gcroot<CppSharp::Library^> Lib;
+    gcroot<CppSharp::AST::ASTContext^> Lib;
+    gcroot<CppSharp::AST::SymbolContext^> Symbols;
     gcroot<ParserOptions^> Opts;
     llvm::OwningPtr<clang::CompilerInstance> C;
     clang::ASTContext* AST;
     clang::TargetCXXABI::Kind TargetABI;
+    clang::TargetCodeGenInfo* CodeGenInfo;
+    clang::CodeGen::CodeGenTypes* CodeGenTypes;
 };
-
-//-----------------------------------//
-
-typedef std::string String;
-
-String StringFormatArgs(const char* str, va_list args);
-String StringFormat(const char* str, ...);

@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using CppSharp.AST;
 
 namespace CppSharp.Passes
 {
@@ -26,12 +29,35 @@ namespace CppSharp.Passes
         {
             if (decl is Class) return true;
             if (decl is Field) return true;
-            if (decl is Method) return true;
-            if (decl is Function) return true;
+            var function = decl as Function;
+            if (function != null)
+            {
+                // special case the IDisposable.Dispose that could be added later
+                return !function.IsOperator && function.Name != "dispose";
+            }
             if (decl is Parameter) return true;
             if (decl is Enumeration) return true;
             if (decl is Property) return true;
+            if (decl is Event) return true;
+            if (decl is TypedefDecl) return true;
             return false;
+        }
+
+        public override bool VisitClassDecl(Class @class)
+        {
+            if (@class.IsDynamic)
+            {
+                // HACK: entries in v-tables are not shared (as objects) with the virtual methods they represent;
+                // this is why this pass has to rename entries in the v-table as well;
+                // this should be fixed in the parser: it should reuse method objects
+                foreach (var method in VTables.GatherVTableMethodEntries(@class).Where(
+                    e => e.Method != null && IsRenameableDecl(e.Method)).Select(e => e.Method))
+                {
+                    Rename(method);
+                }
+            }
+
+            return base.VisitClassDecl(@class);
         }
 
         public override bool VisitDeclaration(Declaration decl)
@@ -47,14 +73,32 @@ namespace CppSharp.Passes
             if (decl.Name == null)
                 return true;
 
-            string newName;
-            if (Rename(decl.Name, out newName))
-            {
-                decl.Name = newName;
-                return true;
-            }
+            return Rename(decl);
+        }
 
+        private bool Rename(Declaration decl)
+        {
+            string newName;
+            if (Rename(decl.Name, out newName) && !AreThereConflicts(decl, newName))
+                decl.Name = newName;
             return true;
+        }
+
+        private static bool AreThereConflicts(Declaration decl, string newName)
+        {
+            List<Declaration> declarations = new List<Declaration>();
+            declarations.AddRange(decl.Namespace.Classes);
+            declarations.AddRange(decl.Namespace.Enums);
+            declarations.AddRange(decl.Namespace.Events);
+            declarations.AddRange(decl.Namespace.Functions);
+            declarations.AddRange(decl.Namespace.Variables);
+            bool result = declarations.Any(d => d != decl && d.Name == newName);
+            if (result)
+                return true;
+            Method method = decl as Method;
+            if (method == null || !method.IsGenerated)
+                return false;
+            return ((Class) method.Namespace).GetPropertyByName(newName) != null;
         }
 
         public override bool VisitEnumItem(Enumeration.Item item)
@@ -78,6 +122,22 @@ namespace CppSharp.Passes
                 return false;
 
             return base.VisitFieldDecl(field);
+        }
+
+        public override bool VisitProperty(Property property)
+        {
+            if (!Targets.HasFlag(RenameTargets.Property))
+                return false;
+
+            return base.VisitProperty(property);
+        }
+
+        public override bool VisitTypedefDecl(TypedefDecl typedef)
+        {
+            if (!Targets.HasFlag(RenameTargets.Delegate))
+                return false;
+
+            return base.VisitTypedefDecl(typedef);
         }
 
         public override bool VisitMethodDecl(Method method)
@@ -106,19 +166,30 @@ namespace CppSharp.Passes
 
             return base.VisitParameterDecl(parameter);
         }
+
+        public override bool VisitEvent(Event @event)
+        {
+            if (!Targets.HasFlag(RenameTargets.Event))
+                return false;
+
+            return base.VisitEvent(@event);
+        }
     }
 
     [Flags]
     public enum RenameTargets
     {
-        Class,
-        Field,
-        Method,
-        Function,
-        Parameter,
-        Enum,
-        EnumItem,
-        Any = Function | Method | Parameter | Class | Field | Enum | EnumItem,
+        Class     = 1 << 0,
+        Field     = 1 << 1,
+        Method    = 1 << 2,
+        Function  = 1 << 3,
+        Parameter = 1 << 4,
+        Enum      = 1 << 5,
+        EnumItem  = 1 << 6,
+        Event     = 1 << 7,
+        Property  = 1 << 8,
+        Delegate  = 1 << 9,
+        Any = Function | Method | Parameter | Class | Field | Enum | EnumItem | Event | Property | Delegate,
     }
 
     /// <summary>
@@ -231,33 +302,33 @@ namespace CppSharp.Passes
 
     public static class RenamePassExtensions
     {
-        public static void RenameWithPattern(this PassBuilder builder,
+        public static void RenameWithPattern(this PassBuilder<TranslationUnitPass> builder,
             string pattern, string replacement, RenameTargets targets)
         {
             builder.AddPass(new RegexRenamePass(pattern, replacement, targets));
         }
 
-        public static void RemovePrefix(this PassBuilder builder, string prefix,
+        public static void RemovePrefix(this PassBuilder<TranslationUnitPass> builder, string prefix,
             RenameTargets targets = RenameTargets.Any)
         {
             builder.AddPass(new RegexRenamePass("^" + prefix, string.Empty,
                 targets));
         }
 
-        public static void RenameDeclsCase(this PassBuilder builder, 
+        public static void RenameDeclsCase(this PassBuilder<TranslationUnitPass> builder, 
             RenameTargets targets, RenameCasePattern pattern)
         {
             builder.AddPass(new CaseRenamePass(targets, pattern));
         }
 
-        public static void RenameDeclsUpperCase(this PassBuilder builder,
+        public static void RenameDeclsUpperCase(this PassBuilder<TranslationUnitPass> builder,
             RenameTargets targets)
         {
             builder.AddPass(new CaseRenamePass(targets,
                 RenameCasePattern.UpperCamelCase));
         }
 
-        public static void RenameDeclsLowerCase(this PassBuilder builder,
+        public static void RenameDeclsLowerCase(this PassBuilder<TranslationUnitPass> builder,
             RenameTargets targets)
         {
             builder.AddPass(new CaseRenamePass(targets,

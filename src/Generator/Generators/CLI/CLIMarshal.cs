@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Text;
+using CppSharp.AST;
 using CppSharp.Types;
+using Delegate = CppSharp.AST.Delegate;
 
 namespace CppSharp.Generators.CLI
 {
@@ -43,6 +45,15 @@ namespace CppSharp.Generators.CLI
         {
             var pointee = pointer.Pointee;
 
+            PrimitiveType primitive;
+            var param = Context.Parameter;
+            if (param != null && (param.IsOut || param.IsInOut) &&
+                pointee.IsPrimitiveType(out primitive))
+            {
+                Context.Return.Write(Context.ReturnVarName);
+                return true;
+            }
+
             if (pointee.Desugar().IsPrimitiveType(PrimitiveType.Void))
             {
                 Context.Return.Write("IntPtr({0})", Context.ReturnVarName);
@@ -56,10 +67,18 @@ namespace CppSharp.Generators.CLI
                 return true;
             }
 
-            PrimitiveType primitive;
             if (pointee.Desugar().IsPrimitiveType(out primitive))
             {
                 Context.Return.Write("IntPtr({0})", Context.ReturnVarName);
+                return true;
+            }
+
+            Class @class;
+            if (pointee.Desugar().IsTagDecl(out @class))
+            {
+                var instance = (pointer.IsReference) ? "&" + Context.ReturnVarName
+                    : Context.ReturnVarName;
+                WriteClassInstance(@class, instance);
                 return true;
             }
 
@@ -168,12 +187,24 @@ namespace CppSharp.Generators.CLI
 
         public override bool VisitClassDecl(Class @class)
         {
+            if (@class.CompleteDeclaration != null)
+                return VisitClassDecl(@class.CompleteDeclaration as Class);
+
             var instance = string.Empty;
 
             if (!Context.ReturnType.Type.IsPointer())
                 instance += "&";
 
             instance += Context.ReturnVarName;
+            var needsCopy = !(Context.Declaration is Field);
+
+            if (@class.IsRefType && needsCopy)
+            {
+                var name = Generator.GeneratedIdentifier(Context.ReturnVarName);
+                Context.SupportBefore.WriteLine("auto {0} = new ::{1}({2});", name,
+                    @class.QualifiedOriginalName, Context.ReturnVarName);
+                instance = name;
+            }
 
             WriteClassInstance(@class, instance);
             return true;
@@ -214,7 +245,11 @@ namespace CppSharp.Generators.CLI
 
         public override bool VisitParameterDecl(Parameter parameter)
         {
-            return parameter.Type.Visit(this, parameter.QualifiedType.Qualifiers);
+            Context.Parameter = parameter;
+            var ret = parameter.Type.Visit(this, parameter.QualifiedType.Qualifiers);
+            Context.Parameter = null;
+
+            return ret;
         }
 
         public override bool VisitTypedefDecl(TypedefDecl typedef)
@@ -247,7 +282,7 @@ namespace CppSharp.Generators.CLI
 
         public override bool VisitFunctionTemplateDecl(FunctionTemplate template)
         {
-            throw new NotImplementedException();
+            return template.TemplatedFunction.Visit(this);
         }
 
         public override bool VisitMacroDefinition(MacroDefinition macro)
@@ -312,7 +347,7 @@ namespace CppSharp.Generators.CLI
             // explicit GCHandle if necessary.
 
             var sb = new StringBuilder();
-            sb.AppendFormat("static_cast<::{0}>(", type);
+            sb.AppendFormat("static_cast<{0}>(", type);
             sb.Append("System::Runtime::InteropServices::Marshal::");
             sb.Append("GetFunctionPointerForDelegate(");
             sb.AppendFormat("{0}).ToPointer())", Context.Parameter.Name);
@@ -325,20 +360,9 @@ namespace CppSharp.Generators.CLI
         {
             var pointee = pointer.Pointee;
 
-            var isVoidPtr = pointee.Desugar().IsPrimitiveType(PrimitiveType.Void);
-
-            var isUInt8Ptr = pointee.Desugar().IsPrimitiveType(PrimitiveType.UInt8);
-
-            if (isVoidPtr || isUInt8Ptr)
-            {
-                if (isUInt8Ptr)
-                    Context.Return.Write("({0})", "uint8*");
-                Context.Return.Write("{0}.ToPointer()", Context.Parameter.Name);
-                return true;
-            }
-
-            if (pointee.IsPrimitiveType(PrimitiveType.Char) ||
-                pointee.IsPrimitiveType(PrimitiveType.WideChar))
+            if ((pointee.IsPrimitiveType(PrimitiveType.Char) ||
+                pointee.IsPrimitiveType(PrimitiveType.WideChar)) &&
+                pointer.QualifiedPointee.Qualifiers.IsConst)
             {
                 Context.SupportBefore.WriteLine(
                     "auto _{0} = clix::marshalString<clix::E_UTF8>({1});",
@@ -351,8 +375,22 @@ namespace CppSharp.Generators.CLI
             if (pointee is FunctionType)
             {
                 var function = pointee as FunctionType;
-                // TODO: We have to translate the function type typedef to C/C++
-                return VisitDelegateType(function, function.ToString());
+
+                var cppTypePrinter = new CppTypePrinter(Context.Driver.TypeDatabase);
+                var cppTypeName = pointer.Visit(cppTypePrinter, quals);
+
+                return VisitDelegateType(function, cppTypeName);
+            }
+
+            PrimitiveType primitive;
+            if (pointee.Desugar().IsPrimitiveType(out primitive))
+            {
+                var cppTypePrinter = new CppTypePrinter(Context.Driver.TypeDatabase);
+                var cppTypeName = pointer.Visit(cppTypePrinter, quals);
+
+                Context.Return.Write("({0})", cppTypeName);
+                Context.Return.Write("{0}.ToPointer()", Context.Parameter.Name);
+                return true;
             }
 
             return pointee.Visit(this, quals);
@@ -407,16 +445,16 @@ namespace CppSharp.Generators.CLI
             }
 
             FunctionType func;
-            if (decl.Type.IsPointerTo<FunctionType>(out func))
+            if (decl.Type.IsPointerTo(out func))
             {
-                VisitDelegateType(func, typedef.Declaration.OriginalName);
+                VisitDelegateType(func, "::" + typedef.Declaration.QualifiedOriginalName);
                 return true;
             }
 
             PrimitiveType primitive;
             if (decl.Type.Desugar().IsPrimitiveType(out primitive))
             {
-                Context.Return.Write("({0})", typedef.Declaration.Name);
+                Context.Return.Write("(::{0})", typedef.Declaration.QualifiedOriginalName);
             }
 
             return decl.Type.Visit(this);
@@ -459,6 +497,9 @@ namespace CppSharp.Generators.CLI
 
         public override bool VisitClassDecl(Class @class)
         {
+            if (@class.CompleteDeclaration != null)
+                return VisitClassDecl(@class.CompleteDeclaration as Class);
+
             if (@class.IsValueType)
             {
                 MarshalValueClass(@class);
@@ -504,7 +545,8 @@ namespace CppSharp.Generators.CLI
 
         public void MarshalValueClass(Class @class)
         {
-            var marshalVar = "_marshal" + Context.ParameterIndex++;
+            var marshalVar = Context.MarshalVarPrefix + "_marshal" +
+                Context.ParameterIndex++;
 
             Context.SupportBefore.WriteLine("auto {0} = ::{1}();", marshalVar,
                 @class.QualifiedOriginalName);
@@ -513,7 +555,11 @@ namespace CppSharp.Generators.CLI
 
             Context.Return.Write(marshalVar);
 
-            if (Context.Parameter.Type.IsPointer())
+            var param = Context.Parameter;
+            if (param.Kind == ParameterKind.OperatorParameter)
+                return;
+
+            if (param.Type.IsPointer())
                 ArgumentPrefix.Write("&");
         }
 
@@ -545,7 +591,8 @@ namespace CppSharp.Generators.CLI
             var marshalCtx = new MarshalContext(Context.Driver)
                                  {
                                      ArgName = fieldRef,
-                                     ParameterIndex = Context.ParameterIndex++
+                                     ParameterIndex = Context.ParameterIndex++,
+                                     MarshalVarPrefix = Context.MarshalVarPrefix
                                  };
 
             var marshal = new CLIMarshalManagedToNativePrinter(marshalCtx);
@@ -619,7 +666,7 @@ namespace CppSharp.Generators.CLI
 
         public override bool VisitFunctionTemplateDecl(FunctionTemplate template)
         {
-            throw new NotImplementedException();
+            return template.TemplatedFunction.Visit(this);
         }
 
         public override bool VisitMacroDefinition(MacroDefinition macro)

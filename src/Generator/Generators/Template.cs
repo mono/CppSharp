@@ -1,73 +1,344 @@
-﻿namespace CppSharp.Generators
-{
-    public abstract class TextTemplate : TextGenerator
-    {
-        private const uint DefaultIndent = 4;
-        private const uint MaxIndent = 80;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using CppSharp.AST;
 
-        public Driver Driver { get; set; }
-        public DriverOptions Options { get; set; }
-        public Library Library { get; set; }
-        public ILibrary Transform;
-        public TranslationUnit TranslationUnit { get; set; }
+namespace CppSharp.Generators
+{
+    public enum NewLineKind
+    {
+        Never,
+        Always,
+        BeforeNextBlock
+    }
+
+    public class BlockKind
+    {
+        public const int Unknown = 0;
+        public const int BlockComment = 1;
+        public const int InlineComment = 2;
+        public const int Header = 3;
+        public const int Footer = 4;
+        public const int LAST = 5;
+    }
+
+    public class Block : ITextGenerator
+    {
+        public TextGenerator Text { get; set; }
+        public int Kind { get; set; }
+        public NewLineKind NewLineKind { get; set; }
+
+        public Block Parent { get; set; }
+        private List<Block> Blocks { get; set; }
+
+        public Declaration Declaration { get; set; }
+
+        private bool hasIndentChanged;
+        private bool isSubBlock;
+
+        public Block() : this(BlockKind.Unknown)
+        {
+
+        }
+
+        public Block(int kind)
+        {
+            Kind = kind;
+            Blocks = new List<Block>();
+            Text = new TextGenerator();
+            hasIndentChanged = false;
+            isSubBlock = false;
+        }
+
+        public void AddBlock(Block block)
+        {
+            if (Text.StringBuilder.Length != 0 || hasIndentChanged)
+            {
+                hasIndentChanged = false;
+                var newBlock = new Block { Text = Text.Clone(), isSubBlock = true };
+                Text.StringBuilder.Clear();
+
+                AddBlock(newBlock);
+            }
+
+            block.Parent = this;
+            Blocks.Add(block);
+        }
+
+        public IEnumerable<Block> FindBlocks(int kind)
+        {
+            foreach (var block in Blocks)
+            {
+                if (block.Kind ==  kind)
+                    yield return block;
+
+                foreach (var childBlock in block.FindBlocks(kind))
+                    yield return childBlock;
+            }
+        }
+
+        public virtual string Generate(DriverOptions options)
+        {
+            if (Blocks.Count == 0)
+                return Text.ToString();
+
+            var builder = new StringBuilder();
+            uint totalIndent = 0;
+            Block previousBlock = null;
+
+            foreach (var childBlock in Blocks)
+            {
+                var childText = childBlock.Generate(options);
+
+                if (string.IsNullOrEmpty(childText))
+                    continue;
+
+                var lines = childText.SplitAndKeep(Environment.NewLine).ToList();
+
+                if (previousBlock != null &&
+                    previousBlock.NewLineKind == NewLineKind.BeforeNextBlock)
+                    builder.AppendLine();
+
+                if (childBlock.isSubBlock)
+                    totalIndent = 0;
+
+                if (childBlock.Kind == BlockKind.BlockComment)
+                {
+                    // Wrap the comment to the max line width.
+                    var maxSize = options.MaxIndent - totalIndent;
+                    maxSize -= options.CommentPrefix.Length + 2;
+
+                    lines = StringHelpers.WordWrapLines(childText, (int)maxSize);
+
+                    for (var i = 0; i < lines.Count; ++i)
+                    {
+                        var line = lines[i];
+                        if (!line.StartsWith(options.CommentPrefix))
+                            lines[i] = options.CommentPrefix + " " + line;
+                    }
+                }
+
+                foreach (var line in lines)
+                {
+                    if (string.IsNullOrEmpty(line))
+                        continue;
+
+                    if (!string.IsNullOrWhiteSpace(line))
+                        builder.Append(new string(' ', (int)totalIndent));
+
+                    builder.Append(line);
+
+                    if (!line.EndsWith(Environment.NewLine))
+                        builder.AppendLine();
+                }
+
+                if (childBlock.NewLineKind == NewLineKind.Always)
+                    builder.AppendLine();
+
+                totalIndent += childBlock.Text.Indent;
+
+                previousBlock = childBlock;
+            }
+
+            if (Text.StringBuilder.Length != 0)
+                builder.Append(Text.StringBuilder);
+
+            return builder.ToString();
+        }
+
+        #region ITextGenerator implementation
+
+        public uint Indent { get { return Text.Indent; } }
+
+        public void Write(string msg, params object[] args)
+        {
+            Text.Write(msg, args);
+        }
+
+        public void WriteLine(string msg, params object[] args)
+        {
+            Text.WriteLine(msg, args);
+        }
+
+        public void WriteLineIndent(string msg, params object[] args)
+        {
+            Text.WriteLineIndent(msg, args);
+        }
+
+        public void NewLine()
+        {
+            Text.NewLine();
+        }
+
+        public void NewLineIfNeeded()
+        {
+            Text.NewLineIfNeeded();
+        }
+
+        public void NeedNewLine()
+        {
+            Text.NeedNewLine();
+        }
+
+        public void ResetNewLine()
+        {
+            Text.ResetNewLine();
+        }
+
+        public void PushIndent(uint indent = 4u)
+        {
+            hasIndentChanged = true;
+            Text.PushIndent(indent);
+        }
+
+        public void PopIndent()
+        {
+            hasIndentChanged = true;
+            Text.PopIndent();
+        }
+
+        public void WriteStartBraceIndent()
+        {
+            Text.WriteStartBraceIndent();
+        }
+
+        public void WriteCloseBraceIndent()
+        {
+            Text.WriteCloseBraceIndent();
+        }
+
+        #endregion
+    }
+
+    public abstract class Template : ITextGenerator
+    {
+        public Driver Driver { get; private set; }
+        public DriverOptions Options { get; private set; }
+        public TranslationUnit TranslationUnit { get; private set; }
+        public IDiagnosticConsumer Log
+        {
+            get { return Driver.Diagnostics; }
+        }
+
+        public Block RootBlock { get; private set; }
+        public Block ActiveBlock { get; private set; }
+
         public abstract string FileExtension { get; }
 
-        public abstract void Generate();
-
-        protected TextTemplate(Driver driver, TranslationUnit unit)
+        protected Template(Driver driver, TranslationUnit unit)
         {
             Driver = driver;
             Options = driver.Options;
-            Library = driver.Library;
-            Transform = driver.Transform;
             TranslationUnit = unit;
+            RootBlock = new Block();
+            ActiveBlock = RootBlock;
         }
 
-        public static bool CheckIgnoreFunction(Class @class, Function function)
+        public abstract void Process();
+
+        public string Generate()
         {
-            if (function.Ignore) return true;
-
-            if (function is Method)
-                return CheckIgnoreMethod(@class, function as Method);
-
-            return false;
+            return RootBlock.Generate(Options);
         }
 
-        public static bool CheckIgnoreMethod(Class @class, Method method)
+        #region Block helpers
+
+        public void AddBlock(Block block)
         {
-            if (method.Ignore) return true;
-
-            var isEmptyCtor = method.IsConstructor && method.Parameters.Count == 0;
-
-            if (@class.IsValueType && isEmptyCtor)
-                return true;
-
-            if (method.IsCopyConstructor || method.IsMoveConstructor)
-                return true;
-
-            if (method.IsDestructor)
-                return true;
-
-            if (method.OperatorKind == CXXOperatorKind.Equal)
-                return true;
-
-            if (method.Kind == CXXMethodKind.Conversion)
-                return true;
-
-            if (method.Access != AccessSpecifier.Public)
-                return true;
-
-            return false;
+            ActiveBlock.AddBlock(block);
         }
 
-        public static bool CheckIgnoreField(Class @class, Field field)
+        public void PushBlock(int kind, Declaration decl = null)
         {
-            if (field.Ignore) return true;
-
-            if (field.Access != AccessSpecifier.Public)
-                return true;
-
-            return false;
+            var block = new Block { Kind = kind, Declaration = decl };
+            PushBlock(block);
         }
+
+        public void PushBlock(Block block)
+        {
+            block.Parent = ActiveBlock;
+            ActiveBlock.AddBlock(block);
+            ActiveBlock = block;
+        }
+
+        public void PopBlock(NewLineKind newLineKind = NewLineKind.Never)
+        {
+            ActiveBlock.NewLineKind = newLineKind;
+            ActiveBlock = ActiveBlock.Parent;
+        }
+
+        public IEnumerable<Block> FindBlocks(int kind)
+        {
+            return RootBlock.FindBlocks(kind);
+        }
+
+        public Block FindBlock(int kind)
+        {
+            return FindBlocks(kind).Single();
+        }
+
+        #endregion
+
+        #region ITextGenerator implementation
+
+        public uint Indent { get { return ActiveBlock.Indent; } }
+
+        public void Write(string msg, params object[] args)
+        {
+            ActiveBlock.Write(msg, args);
+        }
+
+        public void WriteLine(string msg, params object[] args)
+        {
+            ActiveBlock.WriteLine(msg, args);
+        }
+
+        public void WriteLineIndent(string msg, params object[] args)
+        {
+            ActiveBlock.WriteLineIndent(msg, args);
+        }
+
+        public void NewLine()
+        {
+            ActiveBlock.NewLine();
+        }
+
+        public void NewLineIfNeeded()
+        {
+            ActiveBlock.NewLineIfNeeded();
+        }
+
+        public void NeedNewLine()
+        {
+            ActiveBlock.NeedNewLine();
+        }
+
+        public void ResetNewLine()
+        {
+            ActiveBlock.ResetNewLine();
+        }
+
+        public void PushIndent(uint indent = 4u)
+        {
+            ActiveBlock.PushIndent(indent);
+        }
+
+        public void PopIndent()
+        {
+            ActiveBlock.PopIndent();
+        }
+
+        public void WriteStartBraceIndent()
+        {
+            ActiveBlock.WriteStartBraceIndent();
+        }
+
+        public void WriteCloseBraceIndent()
+        {
+            ActiveBlock.WriteCloseBraceIndent();
+        }
+
+        #endregion
     }
 }

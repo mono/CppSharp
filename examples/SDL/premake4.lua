@@ -1,14 +1,7 @@
 project "SDL"
+  SetupExampleProject()
 
-  kind "ConsoleApp"
-  language "C#"
-  location "."
-  debugdir "."
-  
-  files { "**.cs", "./*.lua" }
-
-  links { "Bridge", "Generator" }
-
+if config.ExampleTests then
 
 project "SDL.Tests"
 
@@ -53,3 +46,5 @@ project "SDL.Tests"
       libdir .. "/SDL/SDL_video.cs",
       "*.lua"
   }
+
+end

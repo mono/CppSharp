@@ -1,4 +1,6 @@
-﻿
+﻿using CppSharp.AST;
+using CppSharp.Generators;
+
 namespace CppSharp.Passes
 {
     /// <summary>
@@ -8,11 +10,17 @@ namespace CppSharp.Passes
     public abstract class TranslationUnitPass : AstVisitor
     {
         public Driver Driver { get; set; }
-        public Library Library { get; set; }
-
-        public virtual bool VisitLibrary(Library library)
+        public ASTContext AstContext { get; set; }
+        
+        public IDiagnosticConsumer Log
         {
-            foreach (var unit in library.TranslationUnits)
+            get { return Driver.Diagnostics; }
+        }
+
+        public virtual bool VisitLibrary(ASTContext context)
+        {
+            AstContext = context;
+            foreach (var unit in context.TranslationUnits)
                 VisitTranslationUnit(unit);
 
             return true;
@@ -33,13 +41,26 @@ namespace CppSharp.Passes
 
         public override bool VisitDeclaration(Declaration decl)
         {
-            return !IsDeclExcluded(decl);
+            return !IsDeclExcluded(decl) && base.VisitDeclaration(decl);
         }
 
         bool IsDeclExcluded(Declaration decl)
         {
             var type = this.GetType();
             return decl.ExcludeFromPasses.Contains(type);
+        }
+    }
+
+    /// <summary>
+    /// Used to modify generated output.
+    /// </summary>
+    public abstract class GeneratorOutputPass
+    {
+        public Driver Driver { get; set; }
+
+        public virtual void VisitGeneratorOutput(GeneratorOutput output)
+        {
+            
         }
     }
 }

@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using CppSharp.AST;
 
 namespace CppSharp
 {
     public static class IntHelpers
     {
-        public static bool IsPowerOfTwo(this long x)
+        public static bool IsPowerOfTwo(this ulong x)
         {
             return (x != 0) && ((x & (x - 1)) == 0);
         }
@@ -231,6 +232,14 @@ namespace CppSharp
                                                                 System.Type baseType)
         {
             return assembly.GetTypes().Where(baseType.IsAssignableFrom);
+        }
+    }
+
+    public static class ASTHelpers
+    {
+        public static string GetDelegateName(Function method)
+        {
+            return "_" + char.ToLowerInvariant(method.Name[0]) + method.Name.Substring(1) + "Delegate";
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using CppSharp.Types;
+﻿using CppSharp.AST;
+using CppSharp.Types;
 
 namespace CppSharp.Passes
 {
@@ -22,15 +23,6 @@ namespace CppSharp.Passes
         {
             SortDeclarations(unit);
             return true;
-        }
-    }
-
-    public static class SortDeclarationsExtensions
-    {
-        public static void SortDeclarations(this PassBuilder builder)
-        {
-            var pass = new SortDeclarationsPass();
-            builder.AddPass(pass);
         }
     }
 }

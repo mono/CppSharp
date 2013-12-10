@@ -1,4 +1,5 @@
 ﻿using System;
+using CppSharp.AST;
 
 namespace CppSharp.Passes
 {
@@ -21,7 +22,7 @@ namespace CppSharp.Passes
             if (types.Length == 0)
                 return false;
 
-            var @class = Library.FindCompleteClass(types[0]);
+            var @class = AstContext.FindCompleteClass(types[0]);
             if (@class == null)
                 return false;
 
@@ -32,7 +33,8 @@ namespace CppSharp.Passes
             // Create a new fake method so it acts as a static method.
             var method = new Method()
             {
-                Namespace = @class.Namespace,
+                Namespace = @class,
+                OriginalNamespace = function.Namespace,
                 Name = name,
                 OriginalName = function.OriginalName,
                 Mangled = function.Mangled,
@@ -49,19 +51,10 @@ namespace CppSharp.Passes
 
             @class.Methods.Add(method);
 
-            Console.WriteLine("Static method: {0}::{1}", @class.Name,
+            Log.EmitMessage("Static method: {0}::{1}", @class.Name,
                 function.Name);
 
             return true;
-        }
-    }
-
-    public static class FunctionToStaticMethodExtensions
-    {
-        public static void FunctionToStaticMethod(this PassBuilder builder)
-        {
-            var pass = new FunctionToStaticMethodPass();
-            builder.AddPass(pass);
         }
     }
 }

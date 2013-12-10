@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.IO;
+using CppSharp.AST;
 using CppSharp.Passes;
 
 namespace CppSharp.Generators.CSharp
@@ -10,23 +10,28 @@ namespace CppSharp.Generators.CSharp
 
         public CSharpGenerator(Driver driver) : base(driver)
         {
-            typePrinter = new CSharpTypePrinter(driver.TypeDatabase, driver.Library);
-            Type.TypePrinterDelegate += type => type.Visit(typePrinter).Type;
+            typePrinter = new CSharpTypePrinter(driver.TypeDatabase, driver.ASTContext);
+            CppSharp.AST.Type.TypePrinterDelegate += type => type.Visit(typePrinter).Type;
         }
 
-        public override bool Generate(TranslationUnit unit,
-            List<GeneratorOutput> outputs)
+        public override List<Template> Generate(TranslationUnit unit)
         {
+            var outputs = new List<Template>();
+
             var template = new CSharpTextTemplate(Driver, unit, typePrinter);
-            outputs.Add(GenerateTemplateOutput(template));
+            outputs.Add(template);
 
-            return true;
+            return outputs;
         }
 
-        public override bool SetupPasses(PassBuilder builder)
+        public override bool SetupPasses()
         {
-            builder.CheckAbiParameters(Driver.Options);
-            builder.CheckOperatorOverloads();
+            // Both the CheckOperatorsOverloadsPass and CheckAbiParameters can
+            // create and and new parameters to functions and methods. Make sure
+            // CheckAbiParameters runs last because hidden structure parameters
+            // should always occur first.
+
+            Driver.AddTranslationUnitPass(new CheckAbiParameters(Driver.Options));
 
             return true;
         }

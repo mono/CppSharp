@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using CppSharp.AST;
 
 namespace CppSharp.Passes
 {
@@ -33,10 +34,35 @@ namespace CppSharp.Passes
             if (decl is Namespace)
                 return true;
 
+            // types with empty names are assumed to be private
+            if (decl is Class && string.IsNullOrWhiteSpace(decl.Name))
+            {
+                decl.ExplicityIgnored = true;
+                return false;
+            }
+
             decl.Name = CheckName(decl.Name);
 
             StringHelpers.CleanupText(ref decl.DebugText);
             return base.VisitDeclaration(decl);
+        }
+
+        public override bool VisitClassDecl(Class @class)
+        {
+            if (@class.IsDynamic)
+            {
+                // HACK: entries in v-tables are not shared (as objects) with the virtual methods they represent;
+                // this is why this pass fixes only the arg names used with real methods, 
+                // while the v-table entries could remain with empty names;
+                // this should be fixed in the parser: it should reuse method objects
+                foreach (var parameter in VTables.GatherVTableMethodEntries(@class).Where(
+                    entry => entry.Method != null).SelectMany(entry => entry.Method.Parameters))
+                {
+                    parameter.Name = CheckName(parameter.Name);
+                }   
+            }
+
+            return base.VisitClassDecl(@class);
         }
 
         public override bool VisitFunctionDecl(Function function)
@@ -90,15 +116,6 @@ namespace CppSharp.Passes
         {
             item.Name = CheckName(item.Name);
             return base.VisitEnumItem(item);
-        }
-    }
-
-    public static class CleanInvalidDeclNamesExtensions
-    {
-        public static void CleanInvalidDeclNames(this PassBuilder builder)
-        {
-            var pass = new CleanInvalidDeclNamesPass();
-            builder.AddPass(pass);
         }
     }
 }

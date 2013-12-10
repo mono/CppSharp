@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using CppSharp.AST;
 using CppSharp.Generators;
+using CppSharp.Generators.AST;
 using CppSharp.Generators.CLI;
 using CppSharp.Generators.CSharp;
+using Attribute = System.Attribute;
+using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Types
 {
@@ -26,6 +30,7 @@ namespace CppSharp.Types
     {
         public Type Type { get; set; }
         public Declaration Declaration { get; set; }
+        public ITypeMapDatabase TypeMapDatabase { get; set; }
 
         public virtual bool IsIgnored
         {
@@ -63,6 +68,10 @@ namespace CppSharp.Types
             throw new NotImplementedException();
         }
 
+        public virtual void CLITypeReference(CLITypeReferenceCollector collector, ASTRecord<Declaration> loc)
+        {
+        }
+
         public virtual void CLIMarshalToNative(MarshalContext ctx)
         {
             throw new NotImplementedException();
@@ -78,7 +87,8 @@ namespace CppSharp.Types
 
     public interface ITypeMapDatabase
     {
-        bool FindTypeMap(Type type, out TypeMap typeMap);
+        bool FindTypeMapRecursive(Type type, out TypeMap typeMap);
+        bool FindTypeMap(Type decl, out TypeMap typeMap);
         bool FindTypeMap(Declaration decl, out TypeMap typeMap);
         bool FindTypeMap(string name, out TypeMap typeMap);
     }
@@ -112,33 +122,93 @@ namespace CppSharp.Types
 
                 foreach (TypeMapAttribute attr in attrs)
                 {
-                    Console.WriteLine("Found typemap: {0}", attr.Type);
                     TypeMaps[attr.Type] = typeMap;
                 }
             }
         }
 
-        public bool FindTypeMap(Declaration decl, out TypeMap typeMap)
+        public bool FindTypeMap(Declaration decl, Type type, out TypeMap typeMap)
         {
-            return FindTypeMap(decl.QualifiedOriginalName, out typeMap);
+            // We try to find type maps from the most qualified to less qualified
+            // types. Example: '::std::vector', 'std::vector' and 'vector'
+
+            var typePrinter = new CppTypePrinter(this)
+                {
+                    PrintKind = CppTypePrintKind.GlobalQualified
+                };
+
+            if (FindTypeMap(decl.Visit(typePrinter), out typeMap))
+            {
+                typeMap.Type = type;
+                return true;
+            }
+
+            typePrinter.PrintKind = CppTypePrintKind.Qualified;
+            if (FindTypeMap(decl.Visit(typePrinter), out typeMap))
+            {
+                typeMap.Type = type;
+                return true;
+            }
+
+            typePrinter.PrintKind = CppTypePrintKind.Local;
+            if (FindTypeMap(decl.Visit(typePrinter), out typeMap))
+            {
+                typeMap.Type = type;
+                return true;
+            }
+
+            return false;
         }
 
         public bool FindTypeMap(Type type, out TypeMap typeMap)
         {
+            if (type.IsDependent)
+            {
+                typeMap = null;
+                return false;
+            }
+
             var typePrinter = new CppTypePrinter(this);
-            var output = type.Visit(typePrinter);
 
-            if (FindTypeMap(output, out typeMap))
+            var template = type as TemplateSpecializationType;
+            if (template != null)
+                return FindTypeMap(template.Template.TemplatedDecl, type,
+                    out typeMap);
+
+            if (FindTypeMap(type.Visit(typePrinter), out typeMap))
+            {
+                typeMap.Type = type;
                 return true;
+            }
 
-            // Try to strip the global scope resolution operator.
-            if (output.StartsWith("::"))
-                output = output.Substring(2);
-
-            if (FindTypeMap(output, out typeMap))
+            typePrinter.PrintKind = CppTypePrintKind.Qualified;
+            if (FindTypeMap(type.Visit(typePrinter), out typeMap))
+            {
+                typeMap.Type = type;
                 return true;
+            }
 
             return false;
+        }
+
+        public bool FindTypeMap(Declaration decl, out TypeMap typeMap)
+        {
+            return FindTypeMap(decl, null, out typeMap);
+        }
+
+        public bool FindTypeMapRecursive(Type type, out TypeMap typeMap)
+        {
+            while (true)
+            {
+                if (FindTypeMap(type, out typeMap))
+                    return true;
+
+                var desugaredType = type.Desugar();
+                if (desugaredType == type)
+                    return false;
+
+                type = desugaredType;
+            }
         }
 
         public bool FindTypeMap(string name, out TypeMap typeMap)
@@ -159,6 +229,8 @@ namespace CppSharp.Types
             }
 
             typeMap = (TypeMap)Activator.CreateInstance(type);
+            typeMap.TypeMapDatabase = this;
+
             return true;
         }
     }

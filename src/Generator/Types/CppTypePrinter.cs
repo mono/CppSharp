@@ -1,12 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using CppSharp.AST;
+using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Types
 {
+    public enum CppTypePrintKind
+    {
+        Local,
+        Qualified,
+        GlobalQualified
+    }
+
     public class CppTypePrinter : ITypePrinter<string>, IDeclVisitor<string>
     {
+        public CppTypePrintKind PrintKind;
+
         public CppTypePrinter(ITypeMapDatabase database)
         {
+            PrintKind = CppTypePrintKind.GlobalQualified;
         }
 
         public string VisitTagType(TagType tag, TypeQualifiers quals)
@@ -45,15 +58,27 @@ namespace CppSharp.Types
 
         public string VisitPointerType(PointerType pointer, TypeQualifiers quals)
         {
-            var s = string.Empty;
+            var pointee = pointer.Pointee;
 
-            if (quals.IsConst)
-                s += "const ";
+            var function = pointee as FunctionType;
+            if (function != null)
+            {
+                var arguments = function.Parameters;
+                var returnType = function.ReturnType;
+                var args = string.Empty;
 
+                if (arguments.Count > 0)
+                    args = VisitParameters(function.Parameters, hasNames: false);
+
+                return string.Format("{0} (*)({1})", returnType.Visit(this), args);
+            }
+
+            var pointeeType = pointer.Pointee.Visit(this, quals);
             var mod = ConvertModifierToString(pointer.Modifier);
-            var pointee = pointer.Pointee.Visit(this, quals);
 
-            s += string.Format("{0}{1}", pointee, mod);
+            var s = quals.IsConst ? "const " : string.Empty;
+            s += string.Format("{0}{1}", pointeeType, mod);
+
             return s;
         }
 
@@ -84,6 +109,7 @@ namespace CppSharp.Types
                 case PrimitiveType.UInt64: return "unsigned long long";
                 case PrimitiveType.Float: return "float";
                 case PrimitiveType.Double: return "double";
+                case PrimitiveType.IntPtr: return "void*";
             }
 
             throw new NotSupportedException();
@@ -91,13 +117,41 @@ namespace CppSharp.Types
 
         public string VisitTypedefType(TypedefType typedef, TypeQualifiers quals)
         {
-            return "::" + typedef.Declaration.QualifiedOriginalName;
+            return GetDeclName(typedef.Declaration);
+        }
+
+        public string VisitAttributedType(AttributedType attributed, TypeQualifiers quals)
+        {
+            return attributed.Modified.Visit(this);
+        }
+
+        public string GetDeclName(Declaration declaration)
+        {
+            switch (PrintKind)
+            {
+            case CppTypePrintKind.Local:
+                return declaration.OriginalName;
+            case CppTypePrintKind.Qualified:
+                return declaration.QualifiedOriginalName;
+            case CppTypePrintKind.GlobalQualified:
+                return "::" + declaration.QualifiedOriginalName;
+            }
+
+            throw new NotSupportedException();
+        }
+
+        public string VisitDecayedType(DecayedType decayed, TypeQualifiers quals)
+        {
+            return decayed.Decayed.Visit(this);
         }
 
         public string VisitTemplateSpecializationType(TemplateSpecializationType template, TypeQualifiers quals)
         {
-            var decl = template.Template.TemplatedDecl;
-            return decl.Visit(this);
+            return string.Format("{0}<{1}>", template.Template.TemplatedDecl.Visit(this),
+                string.Join(", ",
+                template.Arguments.Where(
+                    a => a.Type.Type != null &&
+                        !(a.Type.Type is DependentNameType)).Select(a => a.Type.Visit(this))));
         }
 
         public string VisitTemplateParameterType(TemplateParameterType param, TypeQualifiers quals)
@@ -111,17 +165,22 @@ namespace CppSharp.Types
         public string VisitTemplateParameterSubstitutionType(
             TemplateParameterSubstitutionType param, TypeQualifiers quals)
         {
-            throw new System.NotImplementedException();
+            return param.Replacement.Visit(this);
         }
 
         public string VisitInjectedClassNameType(InjectedClassNameType injected, TypeQualifiers quals)
         {
-            throw new System.NotImplementedException();
+            return injected.Class.Visit(this);
         }
 
         public string VisitDependentNameType(DependentNameType dependent, TypeQualifiers quals)
         {
             throw new System.NotImplementedException();
+        }
+
+        public string VisitCILType(CILType type, TypeQualifiers quals)
+        {
+            return string.Empty;
         }
 
         public string VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals)
@@ -175,57 +234,57 @@ namespace CppSharp.Types
 
         public string VisitDeclaration(Declaration decl)
         {
-            throw new NotImplementedException();
+            return GetDeclName(decl);
         }
 
         public string VisitClassDecl(Class @class)
         {
-            return string.Format("::{0}", @class.QualifiedOriginalName);
+            return GetDeclName(@class);
         }
 
         public string VisitFieldDecl(Field field)
         {
-            throw new NotImplementedException();
+            return VisitDeclaration(field);
         }
 
         public string VisitFunctionDecl(Function function)
         {
-            throw new NotImplementedException();
+            return VisitDeclaration(function);
         }
 
         public string VisitMethodDecl(Method method)
         {
-            throw new NotImplementedException();
+            return VisitDeclaration(method);
         }
 
         public string VisitParameterDecl(Parameter parameter)
         {
-            throw new NotImplementedException();
+            return VisitParameter(parameter, hasName: false);
         }
 
         public string VisitTypedefDecl(TypedefDecl typedef)
         {
-            throw new NotImplementedException();
+            return VisitDeclaration(typedef);
         }
 
         public string VisitEnumDecl(Enumeration @enum)
         {
-            return @enum.Name;
+            return VisitDeclaration(@enum);
         }
 
         public string VisitVariableDecl(Variable variable)
         {
-            throw new NotImplementedException();
+            return VisitDeclaration(variable);
         }
 
         public string VisitClassTemplateDecl(ClassTemplate template)
         {
-            throw new NotImplementedException();
+            return VisitDeclaration(template);
         }
 
         public string VisitFunctionTemplateDecl(FunctionTemplate template)
         {
-            throw new NotImplementedException();
+            return VisitDeclaration(template);
         }
 
         public string VisitMacroDefinition(MacroDefinition macro)
@@ -235,17 +294,17 @@ namespace CppSharp.Types
 
         public string VisitNamespace(Namespace @namespace)
         {
-            throw new NotImplementedException();
+            return VisitDeclaration(@namespace);
         }
 
         public string VisitEvent(Event @event)
         {
-            throw new NotImplementedException();
+            return string.Empty;
         }
 
         public string VisitProperty(Property property)
         {
-            throw new NotImplementedException();
+            return VisitDeclaration(property);
         }
 
         public string ToString(Type type)

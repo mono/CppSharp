@@ -31,4 +31,5 @@ src/generator/generator
 *.ilk
 *.manifest
 /build/vs2012
+/build/gmake
 /deps/llvm

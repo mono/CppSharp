@@ -1,16 +1,24 @@
 ﻿using System;
+using CppSharp.AST;
 
 namespace CppSharp.Passes
 {
     public class ResolveIncompleteDeclsPass : TranslationUnitPass
     {
-        public ResolveIncompleteDeclsPass()
+        public override bool VisitDeclaration(Declaration decl)
         {
+            if (AlreadyVisited(decl))
+                return false;
+
+            if (decl.Ignore)
+                return false;
+
+            return true;
         }
 
         public override bool VisitClassDecl(Class @class)
         {
-            if (@class.Ignore)
+            if (!VisitDeclaration(@class))
                 return false;
 
             if (!@class.IsIncomplete)
@@ -19,24 +27,45 @@ namespace CppSharp.Passes
             if (@class.CompleteDeclaration != null)
                 goto Out;
 
-            @class.CompleteDeclaration = Library.FindCompleteClass(
-                @class.QualifiedName);
+            @class.CompleteDeclaration =
+                AstContext.FindCompleteClass(@class.QualifiedName);
 
             if (@class.CompleteDeclaration == null)
-                Console.WriteLine("Unresolved declaration: {0}", @class.Name);
+            {
+                @class.IsGenerated = false;
+                Driver.Diagnostics.EmitWarning(DiagnosticId.UnresolvedDeclaration,
+                    "Unresolved declaration: {0}", @class.Name);
+            }
 
         Out:
 
             return base.VisitClassDecl(@class);
         }
-    }
 
-    public static class ResolveIncompleteDeclsExtensions
-    {
-        public static void ResolveIncompleteDecls(this PassBuilder builder)
+        public override bool VisitEnumDecl(Enumeration @enum)
         {
-            var pass = new ResolveIncompleteDeclsPass();
-            builder.AddPass(pass);
+            if (!VisitDeclaration(@enum))
+                return false;
+
+            if (!@enum.IsIncomplete)
+                goto Out;
+
+            if (@enum.CompleteDeclaration != null)
+                goto Out;
+
+            @enum.CompleteDeclaration =
+                AstContext.FindCompleteEnum(@enum.QualifiedName);
+
+            if (@enum.CompleteDeclaration == null)
+            {
+                @enum.IsGenerated = false;
+                Driver.Diagnostics.EmitWarning(DiagnosticId.UnresolvedDeclaration,
+                    "Unresolved declaration: {0}", @enum.Name);
+            }
+
+        Out:
+
+            return base.VisitEnumDecl(@enum);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Linq;
-using CppSharp;
+using CppSharp.AST;
 
-namespace Generator.Tests
+namespace CppSharp.Generator.Tests
 {
     public static class LibraryQueryExtensions
     {
@@ -10,24 +10,24 @@ namespace Generator.Tests
             return unit.FindNamespace(name);
         }
 
-        public static Class Class(this Library library, string name)
+        public static Class Class(this ASTContext context, string name)
         {
-            return library.FindClass(name).ToList().First();
+            return context.FindClass(name).ToList().First();
         }
 
-        public static Function Function(this Library library, string name)
+        public static Function Function(this ASTContext context, string name)
         {
-            return library.FindFunction(name).ToList().First();
+            return context.FindFunction(name).ToList().First();
         }
 
-        public static Enumeration Enum(this Library library, string name)
+        public static Enumeration Enum(this ASTContext context, string name)
         {
-            return library.FindEnum(name).ToList().First();
+            return context.FindEnum(name).ToList().First();
         }
 
-        public static TypedefDecl Typedef(this Library library, string name)
+        public static TypedefDecl Typedef(this ASTContext context, string name)
         {
-            return library.FindTypedef(name).ToList().First();
+            return context.FindTypedef(name).ToList().First();
         }
 
         public static Field Field(this Class @class, string name)

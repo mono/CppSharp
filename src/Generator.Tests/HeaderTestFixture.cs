@@ -1,45 +1,29 @@
 ﻿using System;
 using System.IO;
-using CppSharp;
-using CppSharp.Types;
+using CppSharp.AST;
+using CppSharp.Utils;
 
-namespace Generator.Tests
+namespace CppSharp.Generator.Tests
 {
     public class HeaderTestFixture
     {
-        protected Library library;
-        protected TypeMapDatabase database;
-
-        private const string TestsDirectory = @"..\..\..\tests\Native";
-
-        public HeaderTestFixture()
-        {
-            database = new TypeMapDatabase();
-            database.SetupTypeMaps();
-        }
+        protected Driver Driver;
+        protected DriverOptions Options;
+        protected ASTContext AstContext;
 
         protected void ParseLibrary(string file)
         {
-            ParseLibrary(TestsDirectory, file);
-        }
+            Options = new DriverOptions();
 
-        protected void ParseLibrary(string dir, string file)
-        {
-            var options = new DriverOptions();
+            var testsPath = LibraryTest.GetTestsDirectory("Native");
+            Options.IncludeDirs.Add(testsPath);
+            Options.Headers.Add(file);
 
-            var path = Path.Combine(Directory.GetCurrentDirectory(), dir);
-            options.IncludeDirs.Add(Path.GetFullPath(path));
+            Driver = new Driver(Options, new TextDiagnosticPrinter());
+            if (!Driver.ParseCode())
+                throw new Exception("Error parsing the code");
 
-            var parser = new Parser(options);
-            var result = parser.ParseHeader(file);
-
-            if (result.Kind != ParserResultKind.Success)
-                throw new Exception("Could not parse file: " + file);
-
-            library = result.Library;
-
-            foreach (var diag in result.Diagnostics)
-                Console.WriteLine(diag.Message);
+            AstContext = Driver.ASTContext;
         }
     }
 }

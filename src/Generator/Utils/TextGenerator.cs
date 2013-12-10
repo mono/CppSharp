@@ -5,22 +5,54 @@ using System.Text;
 
 namespace CppSharp
 {
-    public class TextGenerator
+    public interface ITextGenerator
     {
-        private const uint DefaultIndent = 4;
-        private const uint MaxIndent = 80;
+        uint Indent { get; }
+        void Write(string msg, params object[] args);
+        void WriteLine(string msg, params object[] args);
+        void WriteLineIndent(string msg, params object[] args);
+        void NewLine();
+        void NewLineIfNeeded();
+        void NeedNewLine();
+        void ResetNewLine();
+        void PushIndent(uint indent = TextGenerator.DefaultIndent);
+        void PopIndent();
+        void WriteStartBraceIndent();
+        void WriteCloseBraceIndent();
+    }
 
-        private readonly StringBuilder sb;
-        private bool isStartOfLine;
-        private bool needsNewLine;
+    public class TextGenerator : ITextGenerator
+    {
+        public const uint DefaultIndent = 4;
 
+        public StringBuilder StringBuilder;
+        protected bool IsStartOfLine;
+        protected bool NeedsNewLine;
         protected readonly Stack<uint> CurrentIndent;
+
+        public uint Indent
+        {
+            get { return (uint)CurrentIndent.Sum(u => (int)u); }
+        }
 
         public TextGenerator()
         {
-            sb = new StringBuilder();
-            isStartOfLine = false;
+            StringBuilder = new StringBuilder();
+            IsStartOfLine = false;
             CurrentIndent = new Stack<uint>();
+        }
+
+        public TextGenerator(TextGenerator generator)
+        {
+            StringBuilder = new StringBuilder(generator);
+            IsStartOfLine = generator.IsStartOfLine;
+            NeedsNewLine = generator.NeedsNewLine;
+            CurrentIndent = new Stack<uint>(generator.CurrentIndent);
+        }
+
+        public TextGenerator Clone()
+        {
+            return new TextGenerator(this);
         }
 
         public void Write(string msg, params object[] args)
@@ -33,13 +65,13 @@ namespace CppSharp
 
             foreach(var line in msg.SplitAndKeep(Environment.NewLine))
             {
-                if (isStartOfLine && !string.IsNullOrWhiteSpace(line))
-                    sb.Append(new string(' ', (int) CurrentIndent.Sum(u => u)));
+                if (IsStartOfLine && !string.IsNullOrWhiteSpace(line))
+                    StringBuilder.Append(new string(' ', (int) CurrentIndent.Sum(u => u)));
 
                 if (line.Length > 0)
-                    isStartOfLine = line.EndsWith(Environment.NewLine);
+                    IsStartOfLine = line.EndsWith(Environment.NewLine);
 
-                sb.Append(line);
+                StringBuilder.Append(line);
             }
         }
 
@@ -58,26 +90,26 @@ namespace CppSharp
 
         public void NewLine()
         {
-            sb.AppendLine(string.Empty);
-            isStartOfLine = true;
+            StringBuilder.AppendLine(string.Empty);
+            IsStartOfLine = true;
         }
 
         public void NewLineIfNeeded()
         {
-            if (!needsNewLine) return;
+            if (!NeedsNewLine) return;
 
             NewLine();
-            needsNewLine = false;
+            NeedsNewLine = false;
         }
 
         public void NeedNewLine()
         {
-            needsNewLine = true;
+            NeedsNewLine = true;
         }
 
         public void ResetNewLine()
         {
-            needsNewLine = false;
+            NeedsNewLine = false;
         }
 
         public void PushIndent(uint indent = DefaultIndent)
@@ -104,7 +136,7 @@ namespace CppSharp
 
         public override string ToString()
         {
-            return sb.ToString();
+            return StringBuilder.ToString();
         }
 
         public static implicit operator string(TextGenerator tg)

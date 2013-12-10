@@ -1,4 +1,4 @@
-project "Generator.Tests"
+project "CppSharp.Generator.Tests"
 
   kind "SharedLib"
   language "C#"
@@ -12,13 +12,15 @@ project "Generator.Tests"
     depsdir .. "/NSubstitute"
   }
   
+  SetupParser()
+
   links
   {
     "System",
     "System.Core",
-    "Bridge",
-    "Generator",
-    "Parser",
+    "CppSharp",
+    "CppSharp.AST",
+    "CppSharp.Generator",
     "NUnit.Framework",
     "NSubstitute"
   }

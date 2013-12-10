@@ -1,36 +1,77 @@
--- Examples helpers
+-- Tests/examples helpers
 
 function SetupExampleProject()
-  SetupNativeProjects()
-  location (path.join(builddir, "deps"))
+  kind "ConsoleApp"
+  language "C#"  
+  debugdir "."
+  
+  files { "**.cs", "./*.lua" }
+  links { "CppSharp.AST", "CppSharp.Generator" }
+  SetupParser()
+
+  location (path.join(builddir, "projects"))
+
+  configuration "vs*"
+    location "."
 end
 
-function SetupTestProject(name)
+function SetupTestProject(name, file, lib)
+  SetupTestGeneratorProject(name)
+  SetupTestNativeProject(name)  
+  SetupTestProjectsCSharp(name, file, lib)
+  SetupTestProjectsCLI(name, file, lib)
+end
+
+function SetupTestCSharp(name)
   SetupTestGeneratorProject(name)
   SetupTestNativeProject(name)
-  SetupTestProjects(name)
+  SetupTestProjectsCSharp(name)
+end
+
+function SetupTestCLI(name)
+  SetupTestGeneratorProject(name)
+  SetupTestNativeProject(name)
+  SetupTestProjectsCLI(name)
+end
+
+function SetupManagedTestProject()
+    kind "SharedLib"
+    language "C#"  
+    flags { "Unsafe" }
+
+    local c = configuration "vs*"
+      location "."
+    configuration(c)
 end
 
 function SetupTestGeneratorProject(name)
   project(name .. ".Gen")
-
+    SetupManagedTestProject()
     kind "ConsoleApp"
-    language "C#"
-    location "."
-
+    
     files { name .. ".cs" }
+
+    dependson { name .. ".Native" }
 
     links
     {
-      path.join(depsdir, "cxxi", "build", action, "lib", "Bridge"),
-      path.join(depsdir, "cxxi", "build", action, "lib", "Generator"),
+      "CppSharp.AST",
+      "CppSharp.Generator",
     }
+
+    SetupParser()
+end
+
+function SetupTestGeneratorBuildEvent(name)
+  local exePath = SafePath("$(TargetDir)" .. name .. ".Gen.exe")
+  prebuildcommands { exePath }
 end
 
 function SetupTestNativeProject(name)
   project(name .. ".Native")
 
     SetupNativeProject()
+
     kind "SharedLib"
     language "C++"
 
@@ -52,28 +93,41 @@ function LinkNUnit()
   }
 end
 
-function SetupTestProjects(name, file, lib)
+function SetupTestProjectsCSharp(name, file, lib)
   project(name .. ".CSharp")
+    SetupManagedTestProject()
 
-    kind "SharedLib"
-    language "C#"
-    location "."
-    flags { "Unsafe" }
-    
-    dependson { name .. ".Gen" }
+    dependson { name .. ".Gen", name .. ".Native" }
+    SetupTestGeneratorBuildEvent(name)
 
     files
     {
       path.join(gendir, name, name .. ".cs"),
     }
 
+    links { "CppSharp.Runtime" }
+
+  project(name .. ".Tests.CSharp")
+    SetupManagedTestProject()
+
+    files { name .. ".Tests.cs" }
+    links { name .. ".CSharp" }
+    dependson { name .. ".Native" }
+
+    LinkNUnit()
+    links { "CppSharp.Runtime" }
+end
+
+function SetupTestProjectsCLI(name, file, lib)
   project(name .. ".CLI")
+    SetupNativeProject()
 
     kind "SharedLib"
     language "C++"
     flags { "Managed" }
 
-    dependson { name .. ".Gen" }
+    dependson { name .. ".Gen", name .. ".Native" }
+    SetupTestGeneratorBuildEvent(name)
 
     files
     {
@@ -82,25 +136,10 @@ function SetupTestProjects(name, file, lib)
     }
 
     includedirs { path.join(testsdir, name), incdir }
-    links { name .. ".Native" }
-
-  project(name .. ".Tests.CSharp")
-
-    kind "SharedLib"
-    language "C#"
-    location "."
-
-    files { name .. ".Tests.cs" }
-    links { name .. ".CSharp" }
-    dependson { name .. ".Native" }
-
-    LinkNUnit()
+    links { name .. ".Native" }    
 
   project(name .. ".Tests.CLI")
-
-    kind "SharedLib"
-    language "C#"
-    location "."
+    SetupManagedTestProject()
 
     files { name .. ".Tests.cs" }
     links { name .. ".CLI" }

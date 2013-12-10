@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using CppSharp.AST;
 using CppSharp.Types;
+using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Generators.CLI
 {
@@ -89,10 +91,11 @@ namespace CppSharp.Generators.CLI
 
         public string VisitParameter(Parameter param, bool hasName = true)
         {
+            Context.Parameter = param;
             var type = param.Type.Visit(this, param.QualifiedType.Qualifiers);
-            var name = param.Name;
-            var str = "";
+            Context.Parameter = null;
 
+            var str = string.Empty;
             if(param.Usage == ParameterUsage.Out)
                 str += "[System::Runtime::InteropServices::Out] ";
 
@@ -101,9 +104,9 @@ namespace CppSharp.Generators.CLI
             if(param.Usage == ParameterUsage.Out ||
                param.Usage == ParameterUsage.InOut)
                 str += "%";
-                   
-            if (hasName && !string.IsNullOrEmpty(name))
-                str += " " + name;
+
+            if (hasName && !string.IsNullOrEmpty(param.Name))
+                str += " " + param.Name;
 
             return str;
         }
@@ -133,6 +136,10 @@ namespace CppSharp.Generators.CLI
             PrimitiveType primitive;
             if (pointee.Desugar().IsPrimitiveType(out primitive))
             {
+                var param = Context.Parameter;
+                if (param != null && (param.IsOut || param.IsInOut))
+                    return VisitPrimitiveType(primitive);
+
                 return "System::IntPtr";
             }
 
@@ -167,6 +174,7 @@ namespace CppSharp.Generators.CLI
                 case PrimitiveType.UInt64: return "unsigned long long";
                 case PrimitiveType.Float: return "float";
                 case PrimitiveType.Double: return "double";
+                case PrimitiveType.IntPtr: return "IntPtr";
             }
 
             throw new NotSupportedException();
@@ -192,6 +200,16 @@ namespace CppSharp.Generators.CLI
             }
 
             return decl.Type.Visit(this);
+        }
+
+        public string VisitAttributedType(AttributedType attributed, TypeQualifiers quals)
+        {
+            return attributed.Modified.Visit(this);
+        }
+
+        public string VisitDecayedType(DecayedType decayed, TypeQualifiers quals)
+        {
+            return decayed.Decayed.Visit(this);
         }
 
         public string VisitTemplateSpecializationType(TemplateSpecializationType template,
@@ -233,6 +251,11 @@ namespace CppSharp.Generators.CLI
             throw new NotImplementedException();
         }
 
+        public string VisitCILType(CILType type, TypeQualifiers quals)
+        {
+            return type.Type.FullName.Replace(".", "::") + "^";
+        }
+
         public string VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals)
         {
             return VisitPrimitiveType(type);
@@ -260,6 +283,9 @@ namespace CppSharp.Generators.CLI
 
         public string VisitClassDecl(Class @class)
         {
+            if (@class.CompleteDeclaration != null)
+                return VisitClassDecl(@class.CompleteDeclaration as Class);
+
             return string.Format("{0}{1}", @class.Name, @class.IsRefType ? "^"
                 : string.Empty);
         }
