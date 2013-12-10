@@ -64,6 +64,9 @@ struct DLL_API Bar2 : public Bar
     operator FunctionPointerResolvedAsVoidStar() const { return 0; }
 
     int C;
+    Bar* pointerToStruct;
+    int* pointerToPrimitive;
+    Foo2* pointerToClass;
 };
 
 enum Enum

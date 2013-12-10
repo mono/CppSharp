@@ -676,19 +676,23 @@ namespace CppSharp.Generators.CSharp
             var marshal = new CSharpMarshalManagedToNativePrinter(marshalCtx);
             field.Visit(marshal);
 
+            Type type;
+            Class @class;
+            bool isRef = field.Type.IsPointerTo(out type) &&
+                !(type.IsTagDecl(out @class) && @class.IsValueType) && !type.IsPrimitiveType();
+            if (isRef)
+            {
+                WriteLine("if ({0} != null)", field.Name);
+                WriteStartBraceIndent();
+            }
+
             if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                WriteLine(marshal.Context.SupportBefore);
 
-            if (field.Type.IsPointer())
-            {
-                WriteLine("if ({0} != null)", field.Name);
-                PushIndent();
-            }
-
            WriteLine("{0}.{1} = {2};", marshalVar, field.OriginalName, marshal.Context.Return);
 
-            if (field.Type.IsPointer())
-                PopIndent();
+            if (isRef)
+                WriteCloseBraceIndent();
         }
 
         public bool ShouldGenerateClassNativeField(Class @class)
