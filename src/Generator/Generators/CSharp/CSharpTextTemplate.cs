@@ -2068,11 +2068,20 @@ namespace CppSharp.Generators.CSharp
                 Type pointee;
                 if (retType.Type.IsPointerTo(out pointee) && isIntPtr)
                 {
-                    PrimitiveType primitive;
-                    string @null = (pointee.Desugar().IsPrimitiveType(out primitive) ||
-                        pointee.Desugar().IsPointer()) &&
-                        !CSharpTypePrinter.IsConstCharString(retType) ? 
-                        "IntPtr.Zero" : "null";
+                    pointee = pointee.Desugar();
+                    string @null;
+                    Class @class;
+                    if (pointee.IsTagDecl(out @class) && @class.IsValueType)
+                    {
+                        @null = string.Format("new {0}()", pointee);
+                    }
+                    else
+                    {
+                        @null = (pointee.IsPrimitiveType() ||
+                            pointee.IsPointer()) &&
+                            !CSharpTypePrinter.IsConstCharString(retType) ?
+                            "IntPtr.Zero" : "null";
+                    }
                     WriteLine("if ({0} == global::System.IntPtr.Zero) return {1};",
                         Generator.GeneratedIdentifier("ret"), @null);
                 }

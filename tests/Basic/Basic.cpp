@@ -32,6 +32,11 @@ Bar::Item Bar::RetItem1()
     return Bar::Item1;
 }
 
+Bar* Bar::returnPointerToValueType()
+{
+    return this;
+}
+
 Bar2::Nested::operator int() const
 {
     return 300;
