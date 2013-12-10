@@ -3,6 +3,7 @@ using System.Text;
 using CppSharp.AST;
 using CppSharp.Types;
 using Delegate = CppSharp.AST.Delegate;
+using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Generators.CLI
 {
@@ -358,7 +359,7 @@ namespace CppSharp.Generators.CLI
 
         public override bool VisitPointerType(PointerType pointer, TypeQualifiers quals)
         {
-            var pointee = pointer.Pointee;
+            var pointee = pointer.Pointee.Desugar();
 
             if ((pointee.IsPrimitiveType(PrimitiveType.Char) ||
                 pointee.IsPrimitiveType(PrimitiveType.WideChar)) &&
@@ -382,8 +383,16 @@ namespace CppSharp.Generators.CLI
                 return VisitDelegateType(function, cppTypeName);
             }
 
+            Class @class;
+            if (pointee.IsTagDecl(out @class) && @class.IsValueType)
+            {
+                if (Context.Function == null)
+                    Context.Return.Write("&");
+                return pointee.Visit(this, quals);
+            }
+
             PrimitiveType primitive;
-            if (pointee.Desugar().IsPrimitiveType(out primitive))
+            if (pointee.IsPrimitiveType(out primitive))
             {
                 var cppTypePrinter = new CppTypePrinter(Context.Driver.TypeDatabase);
                 var cppTypeName = pointer.Visit(cppTypePrinter, quals);
@@ -603,16 +612,22 @@ namespace CppSharp.Generators.CLI
             if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                 Context.SupportBefore.Write(marshal.Context.SupportBefore);
 
-            if(field.Type.IsPointer())
+            Type type;
+            Class @class;
+            var isRef = field.Type.IsPointerTo(out type) &&
+                !(type.IsTagDecl(out @class) && @class.IsValueType) &&
+                !type.IsPrimitiveType();
+
+            if (isRef)
             {
                 Context.SupportBefore.WriteLine("if ({0} != nullptr)", fieldRef);
                 Context.SupportBefore.PushIndent();
             }
 
-            Context.SupportBefore.WriteLine("{0}.{1} = {2};", marshalVar, field.OriginalName,
-                                    marshal.Context.Return);
+            Context.SupportBefore.WriteLine("{0}.{1} = {2};", marshalVar,
+                field.OriginalName, marshal.Context.Return);
 
-            if(field.Type.IsPointer())
+            if (isRef)
                 Context.SupportBefore.PopIndent();
         }
 
