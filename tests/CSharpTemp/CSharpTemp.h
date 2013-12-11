@@ -38,6 +38,7 @@ public:
     const Bar& operator*(int m);
     const Bar& operator++();
     Bar operator++(int i);
+    void* arrayOfPrimitivePointers[1];
 
 private:
     int index;

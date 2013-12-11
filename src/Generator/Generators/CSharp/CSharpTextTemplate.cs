@@ -639,7 +639,10 @@ namespace CppSharp.Generators.CSharp
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                     Write(marshal.Context.SupportBefore);
 
-                WriteLine("{0} = {1};", property.Name, marshal.Context.Return);
+                if (marshal.Context.Return.StringBuilder.Length > 0)
+                {
+                    WriteLine("{0} = {1};", property.Name, marshal.Context.Return);                    
+                }
             }
         }
 
@@ -648,6 +651,7 @@ namespace CppSharp.Generators.CSharp
             var marshalVar = Generator.GeneratedIdentifier("native");
 
             WriteLine("var {0} = new {1}.Internal();", marshalVar, QualifiedIdentifier(@class));
+            WriteLine("var {0} = &{1};", Generator.GeneratedIdentifier("ptr"), marshalVar);
             GenerateStructInternalMarshalingProperties(@class, marshalVar);
 
             WriteLine("return {0};", marshalVar);
@@ -675,9 +679,12 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateStructInternalMarshalingProperty(Property property, string marshalVar)
         {
+            var nativeField = string.Format("{0}->{1}",
+                Generator.GeneratedIdentifier("ptr"), property.Field.OriginalName);
             var marshalCtx = new CSharpMarshalContext(Driver)
             {
                 ArgName = property.Name,
+                ReturnVarName = nativeField,
             };
 
             var marshal = new CSharpMarshalManagedToNativePrinter(marshalCtx);
@@ -698,7 +705,11 @@ namespace CppSharp.Generators.CSharp
             if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                WriteLine(marshal.Context.SupportBefore);
 
-           WriteLine("{0}.{1} = {2};", marshalVar, property.OriginalName, marshal.Context.Return);
+            if (marshal.Context.Return.StringBuilder.Length > 0)
+            {
+                WriteLine("{0}.{1} = {2};", marshalVar,
+                    property.OriginalName, marshal.Context.Return);
+            }
 
             if (isRef)
                 WriteCloseBraceIndent();
@@ -902,6 +913,9 @@ namespace CppSharp.Generators.CSharp
             }
             else
             {
+                var field = decl as Field;
+                if (WrapSetterArrayOfPointers(decl.Name, field.Type))
+                    return;
                 if (@class.IsValueType)
                 {
                     if (@class.IsUnion)
@@ -918,26 +932,46 @@ namespace CppSharp.Generators.CSharp
                 }
 
                 WriteStartBraceIndent();
-                var field = decl as Field;
 
                 WriteLine("var {0} = (Internal*){1}.ToPointer();",
                     Generator.GeneratedIdentifier("ptr"), Helpers.InstanceIdentifier);
 
                 var marshal = new CSharpMarshalManagedToNativePrinter(ctx);
-                ctx.ReturnVarName = field.OriginalName;
+                ctx.ReturnVarName = string.Format("{0}->{1}",
+                    Generator.GeneratedIdentifier("ptr"), Helpers.SafeIdentifier(field.OriginalName));
                 param.Visit(marshal);
 
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                     Write(marshal.Context.SupportBefore);
 
-                Write("{0}->{1} = {2}", Generator.GeneratedIdentifier("ptr"),
-                    Helpers.SafeIdentifier(field.OriginalName), marshal.Context.Return);
+                if (marshal.Context.Return.StringBuilder.Length > 0)
+                {
+                    WriteLine("{0} = {1};", ctx.ReturnVarName, marshal.Context.Return);                    
+                }
 
-                WriteLine(";");
                 WriteCloseBraceIndent();
             }
 
             PopBlock(NewLineKind.BeforeNextBlock);
+        }
+
+        private bool WrapSetterArrayOfPointers(string name, Type fieldType)
+        {
+            var arrayType = fieldType as ArrayType;
+            if (arrayType != null && arrayType.Type.IsPointerToPrimitiveType())
+            {
+                NewLine();
+                WriteStartBraceIndent();
+                WriteLine("{0} = value;", name);
+                WriteLine("if (!{0}{1})", name, "Initialised");
+                WriteStartBraceIndent();
+                WriteLine("{0}{1} = true;", name, "Initialised");
+                WriteCloseBraceIndent();
+                WriteCloseBraceIndent();
+                PopBlock(NewLineKind.BeforeNextBlock);
+                return true;
+            }
+            return false;
         }
 
         private void GenerateIndexerSetter(QualifiedType returnType, Function function)
@@ -995,6 +1029,9 @@ namespace CppSharp.Generators.CSharp
             }
             else if (decl is Field)
             {
+                var field = decl as Field;
+                if (WrapGetterArrayOfPointers(decl.Name, field.Type))
+                    return;
                 if (@class.IsValueType)
                 {
                     if (@class.IsUnion)
@@ -1013,7 +1050,6 @@ namespace CppSharp.Generators.CSharp
 
                 NewLine();
                 WriteStartBraceIndent();
-                var field = decl as Field;
 
                 WriteLine("var {0} = (Internal*){1}.ToPointer();",
                     Generator.GeneratedIdentifier("ptr"), Helpers.InstanceIdentifier);
@@ -1070,6 +1106,26 @@ namespace CppSharp.Generators.CSharp
 
             WriteCloseBraceIndent();
             PopBlock(NewLineKind.BeforeNextBlock);
+        }
+
+        private bool WrapGetterArrayOfPointers(string name, Type fieldType)
+        {
+            var arrayType = fieldType as ArrayType;
+            if (arrayType != null && arrayType.Type.IsPointerToPrimitiveType())
+            {
+                NewLine();
+                WriteStartBraceIndent();
+                WriteLine("if (!{0}{1})", name, "Initialised");
+                WriteStartBraceIndent();
+                WriteLine("{0} = null;", name);
+                WriteLine("{0}{1} = true;", name, "Initialised");
+                WriteCloseBraceIndent();
+                WriteLine("return {0};", name);
+                WriteCloseBraceIndent();
+                PopBlock(NewLineKind.BeforeNextBlock);
+                return true;
+            }
+            return false;
         }
 
         public void GenerateClassMethods(Class @class)
@@ -1143,6 +1199,14 @@ namespace CppSharp.Generators.CSharp
                 var type = prop.Type;
                 if (prop.Parameters.Count > 0 && prop.Type.IsPointerToPrimitiveType())
                     type = ((PointerType) prop.Type).Pointee;
+
+                ArrayType arrayType = prop.Type as ArrayType;
+                if (arrayType != null && arrayType.Type.IsPointerToPrimitiveType() && prop.Field != null)
+                {
+                    GenerateClassField(prop.Field);
+                    WriteLine("private bool {0};",
+                        GeneratedIdentifier(string.Format("{0}Initialised", prop.Field.OriginalName)));
+                }
 
                 GenerateDeclarationCommon(prop);
                 if (prop.ExplicitInterfaceImpl == null)

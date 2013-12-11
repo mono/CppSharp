@@ -117,17 +117,12 @@ namespace CppSharp.Generators.CSharp
                 case ArrayType.ArraySize.Constant:
                     var supportBefore = Context.SupportBefore;
                     string value = Generator.GeneratedIdentifier("value");
-                    supportBefore.WriteLine("{0}[] {1} = new {0}[{2}];", array.Type, value, array.Size);
-                    string v = Generator.GeneratedIdentifier("v");
-                    supportBefore.WriteLine("fixed ({0}* {1} = {2})", array.Type, v, value);
+                    supportBefore.WriteLine("{0}[] {1} = null;", array.Type, value, array.Size);
+                    supportBefore.WriteLine("if ({0} != null)", Context.ReturnVarName);
                     supportBefore.WriteStartBraceIndent();
-                    string to = Generator.GeneratedIdentifier("to");
-                    supportBefore.WriteLine("{0}* {1} = {2};", array.Type, to, v);
-                    string from = Generator.GeneratedIdentifier("from");
-                    supportBefore.WriteLine("{0}* {1} = {2};",
-                        array.Type, from, Context.ReturnVarName);
+                    supportBefore.WriteLine("{0} = new {1}[{2}];", value, array.Type, array.Size);
                     supportBefore.WriteLine("for (int i = 0; i < {0}; i++)", array.Size);
-                    supportBefore.WriteLineIndent("*{0}++ = *{1}++;", to, from);
+                    supportBefore.WriteLineIndent("{0}[i] = {1}[i];", value, Context.ReturnVarName);
                     supportBefore.WriteCloseBraceIndent();
                     Context.Return.Write(value);
                     break;
@@ -373,22 +368,12 @@ namespace CppSharp.Generators.CSharp
             {
                 case ArrayType.ArraySize.Constant:
                     var supportBefore = Context.SupportBefore;
-                    supportBefore.WriteLine("if ({0}.Length != {1})",
-                        Context.ArgName, array.Size);
-                    supportBefore.WriteLineIndent(
-                        "throw new ArgumentException(\"The value must be an array of size {0}.\");",
-                        array.Size);
-                    string v = Generator.GeneratedIdentifier("v");
-                    supportBefore.WriteLine("fixed ({0}* {1} = {2})", array.Type, v, Context.ArgName);
-                    supportBefore.WriteLineIndent("for (int i = 0; i < {0}; i++)", array.Size);
-                    supportBefore.PushIndent();
-                    supportBefore.WriteLineIndent("*({0}->{1} + i) = *({2} + i);",
-                        Generator.GeneratedIdentifier("ptr"), Context.ReturnVarName, v);
-                    supportBefore.PopIndent();
-                    supportBefore.WriteLine("fixed ({0}* {1} = {2})", array.Type, v, Context.ArgName);
-                    supportBefore.PushIndent();
-                    supportBefore.Write("*");
-                    Context.Return.Write("*{0}", v);
+                    supportBefore.WriteLine("if ({0} != null)", Context.ArgName);
+                    supportBefore.WriteStartBraceIndent();
+                    supportBefore.WriteLine("for (int i = 0; i < {0}; i++)", array.Size);
+                    supportBefore.WriteLineIndent("{0}[i] = {1}[i];",
+                        Context.ReturnVarName, Context.ArgName);
+                    supportBefore.WriteCloseBraceIndent();
                     break;
                 default:
                     Context.Return.Write("null");
