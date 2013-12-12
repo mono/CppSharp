@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using CppSharp.AST;
+using CppSharp.Generators;
 
 namespace CppSharp.Passes
 {
@@ -36,6 +37,10 @@ namespace CppSharp.Passes
                 Access = field.Access,
                 Field = field
             };
+            if (@class.IsUnion)
+            {
+                field.Name = Generator.GeneratedIdentifier(field.Name);
+            }
             @class.Properties.Add(prop);
 
             Log.Debug("Property created from field: {0}::{1}", @class.Name, field.Name);

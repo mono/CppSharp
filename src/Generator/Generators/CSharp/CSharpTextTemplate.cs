@@ -363,8 +363,8 @@ namespace CppSharp.Generators.CSharp
                 GenerateClassMarshals(@class);
                 GenerateClassConstructors(@class);
 
-                if (@class.IsValueType)
-                    GenerateValueClassFields(@class);
+                if (@class.IsUnion)
+                    GenerateUnionFields(@class);
 
                 GenerateClassMethods(@class);
                 GenerateClassVariables(@class);
@@ -448,15 +448,12 @@ namespace CppSharp.Generators.CSharp
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
-        private void GenerateValueClassFields(Class @class)
+        private void GenerateUnionFields(Class @class)
         {
-            GenerateClassFields(@class, field =>
+            foreach (var field in @class.Fields)
             {
-                var fieldClass = (Class) field.Namespace;
-                if (!fieldClass.IsValueType)
-                    return;
-                GenerateClassField(field);
-            });
+                GenerateClassField(field);                
+            }
         }
 
         public void GenerateClassInternalsFields(Class @class)
@@ -806,7 +803,7 @@ namespace CppSharp.Generators.CSharp
             if (@class.IsUnion)
                 WriteLine("[FieldOffset({0})]", field.Offset);
 
-            WriteLine("public {0} {1};", field.Type, SafeIdentifier(field.Name));
+            WriteLine("private {0} {1};", field.Type, SafeIdentifier(field.Name));
 
             PopBlock(NewLineKind.BeforeNextBlock);
         }
@@ -900,6 +897,14 @@ namespace CppSharp.Generators.CSharp
             {
                 if (@class.IsValueType)
                 {
+                    if (@class.IsUnion)
+                    {
+                        WriteStartBraceIndent();
+                        WriteLine("{0} = value;", decl.Name);
+                        WriteCloseBraceIndent();
+                        PopBlock(NewLineKind.BeforeNextBlock);
+                        return;
+                    }
                     WriteLine(";");
                     PopBlock(NewLineKind.BeforeNextBlock);
                     return;
@@ -983,6 +988,15 @@ namespace CppSharp.Generators.CSharp
             {
                 if (@class.IsValueType)
                 {
+                    if (@class.IsUnion)
+                    {
+                        NewLine();
+                        WriteStartBraceIndent();
+                        WriteLine("return {0};", decl.Name);
+                        WriteCloseBraceIndent();
+                        PopBlock(NewLineKind.BeforeNextBlock);
+                        return;
+                    }
                     WriteLine(";");
                     PopBlock(NewLineKind.BeforeNextBlock);
                     return;
