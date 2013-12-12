@@ -151,5 +151,14 @@ public class BasicTests
         Assert.AreEqual(300, new Bar2.Nested());
         Assert.AreEqual(500, new Bar2());
     }
+
+    [Test]
+    public void TestUnion()
+    {
+        Hello.NestedPublic nestedPublic = new Hello.NestedPublic();
+        nestedPublic.j = 5;
+        Assert.That(nestedPublic.l, Is.EqualTo(5));
+        Assert.That(nestedPublic.g, Is.Not.EqualTo(0));
+    }
 }
  
