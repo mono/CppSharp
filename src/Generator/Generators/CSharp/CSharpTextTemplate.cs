@@ -461,13 +461,18 @@ namespace CppSharp.Generators.CSharp
 
         public void GenerateClassInternalsFields(Class @class)
         {
+            if (@class.IsValueType)
+            {
+                foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.Ignore))
+                {
+                    GenerateClassInternalsFields(@base.Class);
+                }
+            }
+
             GenerateClassFields(@class, GenerateClassInternalsField);
 
-            foreach (var prop in @class.Properties)
+            foreach (var prop in @class.Properties.Where(p => !p.Ignore && p.Field != null))
             {
-                if (prop.Ignore || prop.Field == null)
-                    continue;
-
                 GenerateClassInternalsField(prop.Field);
             }
         }
@@ -641,12 +646,12 @@ namespace CppSharp.Generators.CSharp
             var marshalVar = Generator.GeneratedIdentifier("native");
 
             WriteLine("var {0} = new {1}.Internal();", marshalVar, QualifiedIdentifier(@class));
-            GenerateStructInternalMarshalingFields(@class, marshalVar);
+            GenerateStructInternalMarshalingProperties(@class, marshalVar);
 
             WriteLine("return {0};", marshalVar);
         }
 
-        private void GenerateStructInternalMarshalingFields(Class @class, string marshalVar)
+        private void GenerateStructInternalMarshalingProperties(Class @class, string marshalVar)
         {
             foreach (var @base in @class.Bases)
             {
@@ -654,19 +659,19 @@ namespace CppSharp.Generators.CSharp
                     continue;
 
                 var baseClass = @base.Class;
-                GenerateStructInternalMarshalingFields(baseClass, marshalVar);
+                GenerateStructInternalMarshalingProperties(baseClass, marshalVar);
             }
 
-            foreach (var field in @class.Fields)
+            foreach (var property in @class.Properties)
             {
-                if (field.Ignore)
+                if (property.Ignore)
                     continue;
 
-                GenerateStructInternalMarshalingField(field, marshalVar);
+                GenerateStructInternalMarshalingProperty(property, marshalVar);
             }
         }
 
-        private void GenerateStructInternalMarshalingField(Field field, string marshalVar)
+        private void GenerateStructInternalMarshalingProperty(Property field, string marshalVar)
         {
             var marshalCtx = new CSharpMarshalContext(Driver)
             {
@@ -853,7 +858,7 @@ namespace CppSharp.Generators.CSharp
                 var function = decl as Function;
                 if (function.IsPure && Driver.Options.GenerateAbstractImpls)
                 {
-                    Write("; ");
+                    Write(";");
                     PopBlock(NewLineKind.BeforeNextBlock);
                     return;
                 }
@@ -891,8 +896,14 @@ namespace CppSharp.Generators.CSharp
                 }
                 WriteCloseBraceIndent();
             }
-            else if (decl is Field)
+            else
             {
+                if (@class.IsValueType)
+                {
+                    WriteLine(";");
+                    PopBlock(NewLineKind.BeforeNextBlock);
+                    return;
+                }
                 WriteStartBraceIndent();
                 var field = decl as Field;
 
@@ -946,7 +957,7 @@ namespace CppSharp.Generators.CSharp
                 var function = decl as Function;
                 if (function.IsPure && Driver.Options.GenerateAbstractImpls)
                 {
-                    Write("; ");
+                    Write(";");
                     PopBlock(NewLineKind.BeforeNextBlock);
                     return;
                 }
@@ -970,6 +981,12 @@ namespace CppSharp.Generators.CSharp
             }
             else if (decl is Field)
             {
+                if (@class.IsValueType)
+                {
+                    WriteLine(";");
+                    PopBlock(NewLineKind.BeforeNextBlock);
+                    return;
+                }
                 NewLine();
                 WriteStartBraceIndent();
                 var field = decl as Field;
@@ -1073,6 +1090,19 @@ namespace CppSharp.Generators.CSharp
         }
 
         private void GenerateClassProperties(Class @class)
+        {
+            if (@class.IsValueType)
+            {
+                foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.Ignore))
+                {
+                    GenerateProperties(@base.Class);
+                }   
+            }
+
+            GenerateProperties(@class);
+        }
+
+        private void GenerateProperties(Class @class)
         {
             foreach (var prop in @class.Properties.Where(p => !p.Ignore))
             {

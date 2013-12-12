@@ -14,9 +14,6 @@ namespace CppSharp.Passes
             if (@class == null)
                 return false;
 
-            if (@class.IsValueType)
-                return false;
-
             if (ASTUtils.CheckIgnoreField(field))
                 return false;
 
