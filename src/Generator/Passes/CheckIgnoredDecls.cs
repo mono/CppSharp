@@ -1,5 +1,5 @@
-﻿using System;
-using CppSharp.AST;
+﻿using CppSharp.AST;
+using CppSharp.Types;
 
 namespace CppSharp.Passes
 {
@@ -43,8 +43,13 @@ namespace CppSharp.Passes
 
             field.ExplicityIgnored = true;
 
-            Log.Debug("Field '{0}' was ignored due to {1} type",
-                field.Name, msg);
+            var @class = (Class)field.Namespace;
+
+            var cppTypePrinter = new CppTypePrinter(Driver.TypeDatabase);
+            var typeName = type.Visit(cppTypePrinter);
+
+            Log.Debug("Field '{0}::{1}' was ignored due to {2} type '{3}'",
+                @class.Name, field.Name, msg, typeName);
 
             return true;
         }
