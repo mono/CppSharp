@@ -15,6 +15,19 @@ namespace CppSharp.Generators.CLI
             Context.MarshalToManaged = this;
         }
 
+        public override bool VisitType(Type type, TypeQualifiers quals)
+        {
+            TypeMap typeMap;
+            if (Context.Driver.TypeDatabase.FindTypeMap(type, out typeMap))
+            {
+                typeMap.Type = type;
+                typeMap.CLIMarshalToManaged(Context);
+                return false;
+            }
+
+            return true;
+        }
+
         public override bool VisitTagType(TagType tag, TypeQualifiers quals)
         {
             var decl = tag.Declaration;
@@ -44,7 +57,10 @@ namespace CppSharp.Generators.CLI
 
         public override bool VisitPointerType(PointerType pointer, TypeQualifiers quals)
         {
-            var pointee = pointer.Pointee;
+            if (!VisitType(pointer, quals))
+                return false;
+
+            var pointee = pointer.Pointee.Desugar();
 
             PrimitiveType primitive;
             var param = Context.Parameter;
@@ -55,7 +71,7 @@ namespace CppSharp.Generators.CLI
                 return true;
             }
 
-            if (pointee.Desugar().IsPrimitiveType(PrimitiveType.Void))
+            if (pointee.IsPrimitiveType(PrimitiveType.Void))
             {
                 Context.Return.Write("IntPtr({0})", Context.ReturnVarName);
                 return true;
@@ -68,14 +84,14 @@ namespace CppSharp.Generators.CLI
                 return true;
             }
 
-            if (pointee.Desugar().IsPrimitiveType(out primitive))
+            if (pointee.IsPrimitiveType(out primitive))
             {
                 Context.Return.Write("IntPtr({0})", Context.ReturnVarName);
                 return true;
             }
 
             Class @class;
-            if (pointee.Desugar().IsTagDecl(out @class))
+            if (pointee.IsTagDecl(out @class))
             {
                 var instance = (pointer.IsReference) ? "&" + Context.ReturnVarName
                     : Context.ReturnVarName;
@@ -83,10 +99,7 @@ namespace CppSharp.Generators.CLI
                 return true;
             }
 
-            if (!pointee.Visit(this, quals))
-                return false;
-
-            return true;
+            return pointer.Pointee.Visit(this, quals);
         }
 
         public override bool VisitMemberPointerType(MemberPointerType member,
@@ -321,6 +334,19 @@ namespace CppSharp.Generators.CLI
             Context.MarshalToNative = this;
         }
 
+        public override bool VisitType(Type type, TypeQualifiers quals)
+        {
+            TypeMap typeMap;
+            if (Context.Driver.TypeDatabase.FindTypeMap(type, out typeMap))
+            {
+                typeMap.Type = type;
+                typeMap.CLIMarshalToNative(Context);
+                return false;
+            }
+
+            return true;
+        }
+
         public override bool VisitTagType(TagType tag, TypeQualifiers quals)
         {
             var decl = tag.Declaration;
@@ -359,6 +385,9 @@ namespace CppSharp.Generators.CLI
 
         public override bool VisitPointerType(PointerType pointer, TypeQualifiers quals)
         {
+            if (!VisitType(pointer, quals))
+                return false;
+
             var pointee = pointer.Pointee.Desugar();
 
             if ((pointee.IsPrimitiveType(PrimitiveType.Char) ||
@@ -402,7 +431,7 @@ namespace CppSharp.Generators.CLI
                 return true;
             }
 
-            return pointee.Visit(this, quals);
+            return pointer.Pointee.Visit(this, quals);
         }
 
         public override bool VisitMemberPointerType(MemberPointerType member,

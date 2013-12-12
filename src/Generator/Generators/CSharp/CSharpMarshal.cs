@@ -144,7 +144,7 @@ namespace CppSharp.Generators.CSharp
             if (!VisitType(pointer, quals))
                 return false;
 
-            var pointee = pointer.Pointee;
+            var pointee = pointer.Pointee.Desugar();
 
             if (CSharpTypePrinter.IsConstCharString(pointer))
             {
@@ -153,7 +153,7 @@ namespace CppSharp.Generators.CSharp
             }
 
             PrimitiveType primitive;
-            if (pointee.Desugar().IsPrimitiveType(out primitive))
+            if (pointee.IsPrimitiveType(out primitive))
             {
                 var param = Context.Parameter;
                 if (param != null && (param.IsOut || param.IsInOut))
@@ -166,10 +166,7 @@ namespace CppSharp.Generators.CSharp
                 return true;
             }
 
-            if (!pointee.Visit(this, quals))
-                return false;
-
-            return true;
+            return pointer.Pointee.Visit(this, quals);
         }
 
         private string MarshalStringToManaged(string varName)
@@ -413,11 +410,10 @@ namespace CppSharp.Generators.CSharp
             if (!VisitType(pointer, quals))
                 return false;
 
-            var pointee = pointer.Pointee;
+            var pointee = pointer.Pointee.Desugar();
 
-            Type type = pointee.Desugar();
-            if ((type.IsPrimitiveType(PrimitiveType.Char) ||
-                type.IsPrimitiveType(PrimitiveType.WideChar)) &&
+            if ((pointee.IsPrimitiveType(PrimitiveType.Char) ||
+                pointee.IsPrimitiveType(PrimitiveType.WideChar)) &&
                 pointer.QualifiedPointee.Qualifiers.IsConst)
             {
                 Context.Return.Write(MarshalStringToUnmanaged(
@@ -434,7 +430,7 @@ namespace CppSharp.Generators.CSharp
             }
 
             Class @class;
-            if (type.IsTagDecl(out @class) && @class.IsValueType)
+            if (pointee.IsTagDecl(out @class) && @class.IsValueType)
             {
                 if (Context.Parameter.Usage == ParameterUsage.Out)
                 {
@@ -454,7 +450,7 @@ namespace CppSharp.Generators.CSharp
             }
 
             PrimitiveType primitive;
-            if (type.IsPrimitiveType(out primitive))
+            if (pointee.IsPrimitiveType(out primitive))
             {
                 var param = Context.Parameter;
 
@@ -464,7 +460,7 @@ namespace CppSharp.Generators.CSharp
 
                 if (param.IsOut || param.IsInOut)
                 {
-                    var typeName = Type.TypePrinterDelegate(type);
+                    var typeName = Type.TypePrinterDelegate(pointee);
 
                     Context.SupportBefore.WriteLine("{0} _{1};", typeName,
                         Helpers.SafeIdentifier(param.Name));
@@ -477,7 +473,7 @@ namespace CppSharp.Generators.CSharp
                 return true;
             }
 
-            return pointee.Visit(this, quals);
+            return pointer.Pointee.Visit(this, quals);
         }
 
         private string MarshalStringToUnmanaged(string varName)
