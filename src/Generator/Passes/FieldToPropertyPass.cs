@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using CppSharp.AST;
+using CppSharp.Generators;
 
 namespace CppSharp.Passes
 {
@@ -12,9 +13,6 @@ namespace CppSharp.Passes
 
             var @class = field.Namespace as Class;
             if (@class == null)
-                return false;
-
-            if (@class.IsValueType)
                 return false;
 
             if (ASTUtils.CheckIgnoreField(field))
@@ -41,6 +39,11 @@ namespace CppSharp.Passes
                 Access = field.Access,
                 Field = field
             };
+            if (@class.IsUnion)
+            {
+                field.Name = Generator.GeneratedIdentifier(field.Name);
+            }
+            @class.Properties.Add(prop);
 
             @class.Properties.Add(prop);
 
