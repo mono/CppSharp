@@ -602,39 +602,39 @@ namespace CppSharp.Generators.CSharp
             WriteLine("struct Internal");
         }
 
-        private void GenerateStructMarshalingFields(Class @class)
+        private void GenerateStructMarshalingProperties(Class @class)
         {
             foreach (var @base in @class.Bases)
             {
                 if (!@base.IsClass || @base.Class.Ignore)
                     continue;
 
-                GenerateStructMarshalingFields(@base.Class);
+                GenerateStructMarshalingProperties(@base.Class);
             }
 
-            for (int i = 0; i < @class.Fields.Count; i++)
+            for (int i = 0; i < @class.Properties.Count; i++)
             {
-                var field = @class.Fields[i];
-                if (ASTUtils.CheckIgnoreField(field)) continue;
+                var property = @class.Properties[i];
+                if (property.Ignore || property.Field == null) continue;
 
                 var nativeField = string.Format("{0}->{1}",
-                    Generator.GeneratedIdentifier("ptr"), field.OriginalName);
+                    Generator.GeneratedIdentifier("ptr"), property.Field.OriginalName);
 
                 var ctx = new CSharpMarshalContext(Driver)
                 {
                     Kind = CSharpMarshalKind.NativeField,
-                    ArgName = field.Name,
+                    ArgName = property.Name,
                     ReturnVarName = nativeField,
-                    ReturnType = field.QualifiedType
+                    ReturnType = property.QualifiedType
                 };
 
                 var marshal = new CSharpMarshalNativeToManagedPrinter(ctx) { VarSuffix = i };
-                field.Visit(marshal);
+                property.Visit(marshal);
 
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                     Write(marshal.Context.SupportBefore);
 
-                WriteLine("{0} = {1};", field.Name, marshal.Context.Return);
+                WriteLine("{0} = {1};", property.Name, marshal.Context.Return);
             }
         }
 
@@ -661,7 +661,7 @@ namespace CppSharp.Generators.CSharp
 
             foreach (var property in @class.Properties)
             {
-                if (property.Ignore)
+                if (property.Ignore || property.Field == null)
                     continue;
 
                 GenerateStructInternalMarshalingProperty(property, marshalVar);
@@ -1726,7 +1726,7 @@ namespace CppSharp.Generators.CSharp
             {
                 WriteLine("var {0} = (Internal*){1}.ToPointer();",
                     Generator.GeneratedIdentifier("ptr"), "native");
-                GenerateStructMarshalingFields(@class);
+                GenerateStructMarshalingProperties(@class);
             }
 
             WriteCloseBraceIndent();
@@ -1745,7 +1745,7 @@ namespace CppSharp.Generators.CSharp
                 WriteLine("internal void FromInternal(Internal* native)");
                 WriteStartBraceIndent();
                 WriteLine("var {0} = {1};", Generator.GeneratedIdentifier("ptr"), "native");
-                GenerateStructMarshalingFields(@class);
+                GenerateStructMarshalingProperties(@class);
                 WriteCloseBraceIndent();
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
