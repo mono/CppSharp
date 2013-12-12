@@ -2285,16 +2285,6 @@ namespace CppSharp.Generators.CSharp
                 TypePrinter.PopContext();
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
-            else if (typedef.Type.IsEnumType())
-            {
-                // Already handled in the parser.
-                return false;
-            }
-            else
-            {
-                Log.Debug("Unresolved typedef type: {0}", typedef);
-                return false;
-            }
 
             return true;
         }

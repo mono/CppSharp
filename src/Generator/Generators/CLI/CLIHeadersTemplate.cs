@@ -607,14 +607,6 @@ namespace CppSharp.Generators.CLI
 
                 return true;
             }
-            else if (typedef.Type.IsEnumType())
-            {
-                // Already handled in the parser.
-            }
-            else
-            {
-                Log.Debug("Unresolved typedef type: {0}", typedef);
-            }
 
             return false;
         }
