@@ -29,10 +29,6 @@
 
         public MacroDefinition Definition;
 
-        public MacroExpansion()
-        {
-        }
-
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {
             //return visitor.VisitMacroExpansion(this);
@@ -52,10 +48,6 @@
     {
         // Contains the macro definition text.
         public string Expression;
-
-        public MacroDefinition()
-        {
-        }
 
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {
