@@ -607,6 +607,20 @@ namespace CppSharp.Generators.CSharp
             return field.Type.Visit(this, field.QualifiedType.Qualifiers);
         }
 
+        public override bool VisitProperty(Property property)
+        {
+            if (!VisitDeclaration(property))
+                return false;
+
+            Context.Parameter = new Parameter
+            {
+                Name = Context.ArgName,
+                QualifiedType = property.QualifiedType
+            };
+
+            return base.VisitProperty(property);
+        }
+
         public override bool VisitEnumDecl(Enumeration @enum)
         {
             Context.Return.Write(Context.Parameter.Name);
