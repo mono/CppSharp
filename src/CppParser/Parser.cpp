@@ -1915,6 +1915,51 @@ bool Parser::GetDeclText(clang::SourceRange SR, std::string& Text)
     return !Invalid && !Text.empty();
 }
 
+PreprocessedEntity* Parser::WalkPreprocessedEntity(
+    Declaration* Decl, clang::PreprocessedEntity* PPEntity)
+{
+    using namespace clang;
+
+    for (unsigned I = 0, E = Decl->PreprocessedEntities.size();
+        I != E; ++I)
+    {
+        auto Entity = Decl->PreprocessedEntities[I];
+        if (Entity->OriginalPtr == PPEntity)
+            return Entity;
+    }
+
+    PreprocessedEntity* Entity;
+
+    switch(PPEntity->getKind())
+    {
+    case clang::PreprocessedEntity::MacroExpansionKind:
+    {
+        const MacroExpansion* MD = cast<MacroExpansion>(PPEntity);
+        Entity = new MacroExpansion();
+
+        std::string Text;
+        if (!GetDeclText(PPEntity->getSourceRange(), Text))
+            return nullptr;
+
+        static_cast<MacroExpansion*>(Entity)->Text = Text;
+        break;
+    }
+    case clang::PreprocessedEntity::MacroDefinitionKind:
+    {
+        const MacroDefinition* MD = cast<MacroDefinition>(PPEntity);
+        Entity = new MacroDefinition();
+        break;
+    }
+    default:
+        return nullptr;
+    }
+
+    Entity->OriginalPtr = PPEntity;
+    Decl->PreprocessedEntities.push_back(Entity);
+
+    return Entity;
+}
+
 void Parser::HandlePreprocessedEntities(Declaration* Decl,
                                         clang::SourceRange sourceRange,
                                         MacroLocation macroLocation)
@@ -1938,35 +1983,12 @@ void Parser::HandlePreprocessedEntities(Declaration* Decl,
     for (auto it = Range.first; it != Range.second; ++it)
     {
         auto PPEntity = (*it);
-        
-        PreprocessedEntity* Entity;
-        switch(PPEntity->getKind())
-        {
-        case clang::PreprocessedEntity::MacroExpansionKind:
-        {
-            auto MD = cast<clang::MacroExpansion>(PPEntity);
-            Entity = new MacroExpansion();
 
-            std::string Text;
-            if (!GetDeclText(PPEntity->getSourceRange(), Text))
-                continue;
-
-            static_cast<MacroExpansion*>(Entity)->Text = Text;
-            break;
-        }
-        case clang::PreprocessedEntity::MacroDefinitionKind:
-        {
-            auto MD = cast<clang::MacroDefinition>(PPEntity);
-            Entity = new MacroDefinition();
-            break;
-        }
-        default:
-            continue;
-        }
-
-        Entity->Location = macroLocation;
-
-        Decl->PreprocessedEntities.push_back(Entity);
+        auto Entity = WalkPreprocessedEntity(Decl, PPEntity);
+        if (!Entity) continue;
+ 
+        if (Entity->Location == MacroLocation::Unknown)
+            Entity->Location = macroLocation;
     }
 }
 

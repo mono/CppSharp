@@ -79,6 +79,8 @@ protected:
     void WalkVTable(clang::CXXRecordDecl* RD, Class* C);
     VTableLayout WalkVTableLayout(const clang::VTableLayout& VTLayout);
     VTableComponent WalkVTableComponent(const clang::VTableComponent& Component);
+    PreprocessedEntity* WalkPreprocessedEntity(Declaration* Decl,
+        clang::PreprocessedEntity* PPEntity);
 
     // Clang helpers
     SourceLocationKind GetLocationKind(const clang::SourceLocation& Loc);

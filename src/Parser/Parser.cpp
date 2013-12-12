@@ -2033,6 +2033,52 @@ bool Parser::GetDeclText(clang::SourceRange SR, std::string& Text)
     return !Invalid && !Text.empty();
 }
 
+CppSharp::AST::PreprocessedEntity^ Parser::WalkPreprocessedEntity(
+    CppSharp::AST::Declaration^ Decl, clang::PreprocessedEntity* PPEntity)
+{
+    using namespace clang;
+
+    for (unsigned I = 0, E = Decl->PreprocessedEntities->Count;
+        I != E; ++I)
+    {
+        auto Entity = Decl->PreprocessedEntities[I];
+        if (Entity->OriginalPtr == System::IntPtr(PPEntity))
+            return Entity;
+    }
+
+    CppSharp::AST::PreprocessedEntity^ Entity;
+
+    switch(PPEntity->getKind())
+    {
+    case PreprocessedEntity::MacroExpansionKind:
+    {
+        const MacroExpansion* MD = cast<MacroExpansion>(PPEntity);
+        Entity = gcnew CppSharp::AST::MacroExpansion();
+
+        std::string Text;
+        if (!GetDeclText(PPEntity->getSourceRange(), Text))
+            return nullptr;
+
+        static_cast<CppSharp::AST::MacroExpansion^>(Entity)->Text = 
+            clix::marshalString<clix::E_UTF8>(Text);
+        break;
+    }
+    case PreprocessedEntity::MacroDefinitionKind:
+    {
+        const MacroDefinition* MD = cast<MacroDefinition>(PPEntity);
+        Entity = gcnew CppSharp::AST::MacroDefinition();
+        break;
+    }
+    default:
+        return nullptr;
+    }
+
+    Entity->OriginalPtr = System::IntPtr(PPEntity);
+    Decl->PreprocessedEntities->Add(Entity);
+
+    return Entity;
+}
+
 void Parser::HandlePreprocessedEntities(CppSharp::AST::Declaration^ Decl,
                                         clang::SourceRange sourceRange,
                                         CppSharp::AST::MacroLocation macroLocation)
@@ -2056,36 +2102,12 @@ void Parser::HandlePreprocessedEntities(CppSharp::AST::Declaration^ Decl,
     for (auto it = Range.first; it != Range.second; ++it)
     {
         PreprocessedEntity* PPEntity = (*it);
-        
-        CppSharp::AST::PreprocessedEntity^ Entity;
-        switch(PPEntity->getKind())
-        {
-        case PreprocessedEntity::MacroExpansionKind:
-        {
-            const MacroExpansion* MD = cast<MacroExpansion>(PPEntity);
-            Entity = gcnew CppSharp::AST::MacroExpansion();
 
-            std::string Text;
-            if (!GetDeclText(PPEntity->getSourceRange(), Text))
-                continue;
+        auto Entity = WalkPreprocessedEntity(Decl, PPEntity);
+        if (!Entity) continue;
 
-            static_cast<CppSharp::AST::MacroExpansion^>(Entity)->Text = 
-                clix::marshalString<clix::E_UTF8>(Text);
-            break;
-        }
-        case PreprocessedEntity::MacroDefinitionKind:
-        {
-            const MacroDefinition* MD = cast<MacroDefinition>(PPEntity);
-            Entity = gcnew CppSharp::AST::MacroDefinition();
-            break;
-        }
-        default:
-            continue;
-        }
-
-        Entity->Location = macroLocation;
-
-        Decl->PreprocessedEntities->Add(Entity);
+        if (Entity->Location == CppSharp::AST::MacroLocation::Unknown)
+            Entity->Location = macroLocation;
     }
 }
 
