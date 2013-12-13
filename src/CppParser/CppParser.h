@@ -11,7 +11,7 @@
 
 #define VECTOR_OPTIONS(type, name) \
     std::vector<type> name; \
-    void push##name##(const type& elem) { name.push_back(elem); }
+    void push##name(const type& elem) { name.push_back(elem); }
 
 namespace CppSharp { namespace CppParser {
 
