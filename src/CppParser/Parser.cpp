@@ -1934,7 +1934,7 @@ PreprocessedEntity* Parser::WalkPreprocessedEntity(
     {
     case clang::PreprocessedEntity::MacroExpansionKind:
     {
-        const MacroExpansion* MD = cast<MacroExpansion>(PPEntity);
+        auto MD = cast<clang::MacroExpansion>(PPEntity);
         Entity = new MacroExpansion();
 
         std::string Text;
@@ -1946,7 +1946,7 @@ PreprocessedEntity* Parser::WalkPreprocessedEntity(
     }
     case clang::PreprocessedEntity::MacroDefinitionKind:
     {
-        const MacroDefinition* MD = cast<MacroDefinition>(PPEntity);
+        auto MD = cast<clang::MacroDefinition>(PPEntity);
         Entity = new MacroDefinition();
         break;
     }
