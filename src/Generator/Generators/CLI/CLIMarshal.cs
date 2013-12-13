@@ -196,7 +196,15 @@ namespace CppSharp.Generators.CLI
 
         public override bool VisitDeclaration(Declaration decl)
         {
-            throw new NotImplementedException();
+            TypeMap typeMap;
+            if (Context.Driver.TypeDatabase.FindTypeMap(decl, out typeMap))
+            {
+                typeMap.Declaration = decl;
+                typeMap.CLIMarshalToManaged(Context);
+                return false;
+            }
+
+            return true;
         }
 
         public override bool VisitClassDecl(Class @class)
@@ -530,7 +538,15 @@ namespace CppSharp.Generators.CLI
 
         public override bool VisitDeclaration(Declaration decl)
         {
-            throw new NotImplementedException();
+            TypeMap typeMap;
+            if (Context.Driver.TypeDatabase.FindTypeMap(decl, out typeMap))
+            {
+                typeMap.Declaration = decl;
+                typeMap.CLIMarshalToNative(Context);
+                return false;
+            }
+
+            return true;
         }
 
         public override bool VisitClassDecl(Class @class)
@@ -589,7 +605,7 @@ namespace CppSharp.Generators.CLI
             Context.SupportBefore.WriteLine("auto {0} = ::{1}();", marshalVar,
                 @class.QualifiedOriginalName);
 
-            MarshalValueClassFields(@class, marshalVar);
+            MarshalValueClassProperties(@class, marshalVar);
 
             Context.Return.Write(marshalVar);
 
@@ -601,7 +617,7 @@ namespace CppSharp.Generators.CLI
                 ArgumentPrefix.Write("&");
         }
 
-        public void MarshalValueClassFields(Class @class, string marshalVar)
+        public void MarshalValueClassProperties(Class @class, string marshalVar)
         {
             foreach (var @base in @class.Bases)
             {
@@ -609,22 +625,22 @@ namespace CppSharp.Generators.CLI
                     continue;
 
                 var baseClass = @base.Class;
-                MarshalValueClassFields(baseClass, marshalVar);
+                MarshalValueClassProperties(baseClass, marshalVar);
             }
 
-            foreach (var field in @class.Fields)
+            foreach (var property in @class.Properties)
             {
-                if(field.Ignore)
+                if (property.Ignore || property.Field == null)
                     continue;
 
-                MarshalValueClassField(field, marshalVar);
+                MarshalValueClassProperty(property, marshalVar);
             }
         }
 
-        private void MarshalValueClassField(Field field, string marshalVar)
+        private void MarshalValueClassProperty(Property property, string marshalVar)
         {
             var fieldRef = string.Format("{0}.{1}", Context.Parameter.Name,
-                                         field.Name);
+                                         property.Name);
 
             var marshalCtx = new MarshalContext(Context.Driver)
                                  {
@@ -634,7 +650,7 @@ namespace CppSharp.Generators.CLI
                                  };
 
             var marshal = new CLIMarshalManagedToNativePrinter(marshalCtx);
-            field.Visit(marshal);
+            property.Visit(marshal);
 
             Context.ParameterIndex = marshalCtx.ParameterIndex;
 
@@ -643,7 +659,7 @@ namespace CppSharp.Generators.CLI
 
             Type type;
             Class @class;
-            var isRef = field.Type.IsPointerTo(out type) &&
+            var isRef = property.Type.IsPointerTo(out type) &&
                 !(type.IsTagDecl(out @class) && @class.IsValueType) &&
                 !type.IsPrimitiveType();
 
@@ -654,7 +670,7 @@ namespace CppSharp.Generators.CLI
             }
 
             Context.SupportBefore.WriteLine("{0}.{1} = {2};", marshalVar,
-                field.OriginalName, marshal.Context.Return);
+                property.Field.OriginalName, marshal.Context.Return);
 
             if (isRef)
                 Context.SupportBefore.PopIndent();
@@ -669,6 +685,17 @@ namespace CppSharp.Generators.CLI
                 };
 
             return field.Type.Visit(this);
+        }
+
+        public override bool VisitProperty(Property property)
+        {
+            Context.Parameter = new Parameter
+                {
+                    Name = Context.ArgName,
+                    QualifiedType = property.QualifiedType
+                };
+
+            return base.VisitProperty(property);
         }
 
         public override bool VisitFunctionDecl(Function function)
