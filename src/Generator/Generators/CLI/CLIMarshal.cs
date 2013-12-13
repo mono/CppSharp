@@ -196,7 +196,15 @@ namespace CppSharp.Generators.CLI
 
         public override bool VisitDeclaration(Declaration decl)
         {
-            throw new NotImplementedException();
+            TypeMap typeMap;
+            if (Context.Driver.TypeDatabase.FindTypeMap(decl, out typeMap))
+            {
+                typeMap.Declaration = decl;
+                typeMap.CLIMarshalToManaged(Context);
+                return false;
+            }
+
+            return true;
         }
 
         public override bool VisitClassDecl(Class @class)

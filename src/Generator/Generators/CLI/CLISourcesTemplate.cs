@@ -149,8 +149,7 @@ namespace CppSharp.Generators.CLI
                 }
             }
 
-            foreach (var property in @class.Properties)
-                GenerateProperty(property);
+            GenerateClassProperties(@class, @class);
 
             foreach (var @event in @class.Events)
             {
@@ -188,6 +187,20 @@ namespace CppSharp.Generators.CLI
             }
 
             PopBlock();
+        }
+
+        private void GenerateClassProperties(Class @class, Class realOwner)
+        {
+            if (@class.IsValueType)
+            {
+                foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.Ignore))
+                {
+                    GenerateClassProperties(@base.Class, realOwner);
+                }
+            }
+
+            foreach (var property in @class.Properties)
+                GenerateProperty(property, realOwner);
         }
 
         private void GenerateFunctionTemplate(FunctionTemplate template, Class @class)
@@ -229,7 +242,7 @@ namespace CppSharp.Generators.CLI
             printer.Context = oldCtx;
         }
 
-        private void GenerateProperty(Property property)
+        private void GenerateProperty(Property property, Class realOwner)
         {
             if (property.Ignore) return;
 
@@ -239,21 +252,21 @@ namespace CppSharp.Generators.CLI
             if (property.Field != null)
             {
                 if (property.HasGetter)
-                    GeneratePropertyGetter(property.Field, @class, property.Name,
+                    GeneratePropertyGetter(property.Field, realOwner, property.Name,
                         property.Type);
 
                 if (property.HasSetter)
-                    GeneratePropertySetter(property.Field, @class, property.Name,
+                    GeneratePropertySetter(property.Field, realOwner, property.Name,
                         property.Type);
             }
             else
             {
                 if (property.HasGetter)
-                    GeneratePropertyGetter(property.GetMethod, @class, property.Name,
+                    GeneratePropertyGetter(property.GetMethod, realOwner, property.Name,
                         property.Type);
 
                 if (property.HasSetter)
-                    GeneratePropertySetter(property.SetMethod, @class, property.Name,
+                    GeneratePropertySetter(property.SetMethod, realOwner, property.Name,
                         property.Type);
             }
             PopBlock(); 
@@ -278,6 +291,13 @@ namespace CppSharp.Generators.CLI
             }
             else
             {
+                if (@class.IsValueType && decl is Field)
+                {
+                    WriteLine("{0} = value;", decl.Name);
+                    WriteCloseBraceIndent();
+                    NewLine();
+                    return;
+                }
                 var param = new Parameter
                                 {
                                     Name = "value",
@@ -328,6 +348,13 @@ namespace CppSharp.Generators.CLI
             }
             else
             {
+                if (@class.IsValueType && decl is Field)
+                {
+                    WriteLine("return {0};", decl.Name);
+                    WriteCloseBraceIndent();
+                    NewLine();
+                    return;
+                }
                 string variable;
                 if (decl is Variable)
                     variable = string.Format("::{0}::{1}",
@@ -519,27 +546,28 @@ namespace CppSharp.Generators.CLI
                 GenerateStructMarshaling(baseClass, nativeVar);
             }
 
-            foreach (var field in @class.Fields)
+            foreach (var property in @class.Properties)
             {
-                if (ASTUtils.CheckIgnoreField(field)) continue;
+                if (property.Ignore || property.Field == null) continue;
 
                 var nativeField = string.Format("{0}{1}",
-                                                nativeVar, field.OriginalName);
+                                                nativeVar, property.Field.OriginalName);
 
                 var ctx = new MarshalContext(Driver)
                 {
-                    ArgName = field.Name,
+                    ArgName = property.Name,
                     ReturnVarName = nativeField,
-                    ReturnType = field.QualifiedType
+                    ReturnType = property.QualifiedType
                 };
 
                 var marshal = new CLIMarshalNativeToManagedPrinter(ctx);
-                field.Visit(marshal);
+                property.Visit(marshal);
 
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                     Write(marshal.Context.SupportBefore);
 
-                WriteLine("{0} = {1};", field.Name, marshal.Context.Return);
+                WriteLine("{0} = {1};",
+                    Generator.GeneratedIdentifier(property.Field.OriginalName), marshal.Context.Return);
             }
         }
 
@@ -658,10 +686,10 @@ namespace CppSharp.Generators.CLI
             WriteLine("::{0} _native({1});", @class.QualifiedOriginalName,
                       string.Join(", ", names));
 
-            GenerateValueTypeConstructorCallFields(@class);
+            GenerateValueTypeConstructorCallProperties(@class);
         }
 
-        private void GenerateValueTypeConstructorCallFields(Class @class)
+        private void GenerateValueTypeConstructorCallProperties(Class @class)
         {
             foreach (var @base in @class.Bases)
             {
@@ -669,28 +697,28 @@ namespace CppSharp.Generators.CLI
                     continue;
 
                 var baseClass = @base.Class;
-                GenerateValueTypeConstructorCallFields(baseClass);
+                GenerateValueTypeConstructorCallProperties(baseClass);
             }
 
-            foreach (var field in @class.Fields)
+            foreach (var property in @class.Properties)
             {
-                if (ASTUtils.CheckIgnoreField(field)) continue;
+                if (property.Ignore || property.Field == null) continue;
 
-                var varName = string.Format("_native.{0}", field.OriginalName);
+                var varName = string.Format("_native.{0}", property.Field.OriginalName);
 
                 var ctx = new MarshalContext(Driver)
                     {
                         ReturnVarName = varName,
-                        ReturnType = field.QualifiedType
+                        ReturnType = property.QualifiedType
                     };
 
                 var marshal = new CLIMarshalNativeToManagedPrinter(ctx);
-                field.Visit(marshal);
+                property.Visit(marshal);
 
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                     Write(marshal.Context.SupportBefore);
 
-                WriteLine("this->{0} = {1};", field.Name, marshal.Context.Return);
+                WriteLine("this->{0} = {1};", property.Name, marshal.Context.Return);
             }
         }
 

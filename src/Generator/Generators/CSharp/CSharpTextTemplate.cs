@@ -1109,7 +1109,7 @@ namespace CppSharp.Generators.CSharp
             {
                 foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.Ignore))
                 {
-                    GenerateProperties(@base.Class);
+                    GenerateClassProperties(@base.Class);
                 }   
             }
 
