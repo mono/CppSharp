@@ -259,8 +259,6 @@ namespace CppSharp.Generators.CLI
 
             GenerateClassConstructors(@class, nativeType);
 
-            GenerateClassFields(@class);
-
             GenerateClassProperties(@class);
 
             GenerateClassEvents(@class);
@@ -270,6 +268,13 @@ namespace CppSharp.Generators.CLI
                 GenerateClassGenericMethods(@class);
 
             GenerateClassVariables(@class);
+
+            if (@class.Fields.Any())
+            {
+                NewLine();
+                WriteLine("private:");
+                GenerateClassFields(@class);   
+            }
 
             WriteLine("};");
         }
@@ -390,17 +395,14 @@ namespace CppSharp.Generators.CLI
 
         public void GenerateClassFields(Class @class)
         {
-            if (!@class.IsValueType)
-                return;
-
             // Handle the case of struct (value-type) inheritance by adding the base
             // fields to the managed value subtypes.
             foreach (var @base in @class.Bases)
             {
-                Class baseClass;
-                if (!@base.Type.IsTagDecl(out baseClass))
+                if (!@base.IsClass)
                     continue;
 
+                Class baseClass = @base.Class;
                 if (!baseClass.IsValueType || baseClass.Ignore)
                 {
                     Log.EmitMessage("Ignored base class of value type '{0}'",
@@ -414,7 +416,7 @@ namespace CppSharp.Generators.CLI
             PushIndent();
             foreach (var field in @class.Fields)
             {
-                if (ASTUtils.CheckIgnoreField(field)) continue;
+                if (ASTUtils.CheckIgnoreField(field) && !@class.IsValueType) continue;
 
                 GenerateDeclarationCommon(field);
                 if (@class.IsUnion)
@@ -558,12 +560,30 @@ namespace CppSharp.Generators.CLI
             return false;
         }
 
-        public void GenerateClassProperties(Class @class)
+        public void GenerateClassProperties(Class @class, bool onlyFieldProperties = false)
         {
+            // Handle the case of struct (value-type) inheritance by adding the base
+            // fields to the managed value subtypes.
+            foreach (var @base in @class.Bases)
+            {
+                if (!@base.IsClass)
+                    continue;
+
+                Class baseClass = @base.Class;
+                if (!baseClass.IsValueType || baseClass.Ignore)
+                {
+                    Log.EmitMessage("Ignored base class of value type '{0}'",
+                        baseClass.Name);
+                    continue;
+                }
+
+                GenerateClassProperties(baseClass, true);
+            }
+
             PushIndent();
             foreach (var prop in @class.Properties)
             {
-                if (prop.Ignore) continue;
+                if (prop.Ignore || (onlyFieldProperties && prop.Field == null)) continue;
 
                 GenerateDeclarationCommon(prop);
                 GenerateProperty(prop);

@@ -1108,22 +1108,23 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
-        private void GenerateClassProperties(Class @class)
+        private void GenerateClassProperties(Class @class, bool onlyFieldProperties = false)
         {
             if (@class.IsValueType)
             {
                 foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.Ignore))
                 {
-                    GenerateProperties(@base.Class);
+                    GenerateClassProperties(@base.Class, true);
                 }   
             }
 
-            GenerateProperties(@class);
+            GenerateProperties(@class, onlyFieldProperties);
         }
 
-        private void GenerateProperties(Class @class)
+        private void GenerateProperties(Class @class, bool onlyFieldProperties = false)
         {
-            foreach (var prop in @class.Properties.Where(p => !p.Ignore))
+            foreach (var prop in @class.Properties.Where(
+                p => !p.Ignore && (!onlyFieldProperties || p.Field != null)))
             {
                 PushBlock(CSharpBlockKind.Property);
 
