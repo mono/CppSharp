@@ -227,7 +227,11 @@ namespace CppSharp
 
         public void ProcessCode()
         {
-            TranslationUnitPasses.RunPasses(pass => pass.VisitLibrary(ASTContext));
+            TranslationUnitPasses.RunPasses(pass =>
+                {
+                    Diagnostics.Debug("Pass '{0}'", pass);
+                    pass.VisitLibrary(ASTContext);
+                });
             Generator.Process();
         }
 
