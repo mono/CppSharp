@@ -8,10 +8,6 @@ namespace CppSharp.Passes
     {
         private int uniqueName;
 
-        public CleanInvalidDeclNamesPass()
-        {
-        }
-
         string CheckName(string name)
         {
             // Generate a new name if the decl still does not have a name
@@ -59,7 +55,7 @@ namespace CppSharp.Passes
                     entry => entry.Method != null).SelectMany(entry => entry.Method.Parameters))
                 {
                     parameter.Name = CheckName(parameter.Name);
-                }   
+                }
             }
 
             return base.VisitClassDecl(@class);
