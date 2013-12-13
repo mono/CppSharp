@@ -551,7 +551,7 @@ namespace CppSharp.Generators.CLI
             if(isSetter) WriteLine("void set({0});", type);
 
             WriteCloseBraceIndent();
-            PopBlock();
+            PopBlock(NewLineKind.BeforeNextBlock);
         }
 
         public void GenerateMethod(Method method)
@@ -586,7 +586,7 @@ namespace CppSharp.Generators.CLI
 
             WriteLine(";");
 
-            PopBlock(NewLineKind.Always);
+            PopBlock(NewLineKind.BeforeNextBlock);
         }
 
         public bool GenerateTypedef(TypedefDecl typedef)
