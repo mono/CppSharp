@@ -40,7 +40,7 @@ namespace CppSharp
         }
 
         /// <summary>
-        /// Adds a new pass to the builder.
+        /// Runs the passes in the builder.
         /// </summary>
         public void RunPasses(Action<T> action)
         {
