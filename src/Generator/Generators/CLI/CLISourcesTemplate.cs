@@ -640,6 +640,7 @@ namespace CppSharp.Generators.CLI
             {
                 var ctx = new MarshalContext(Driver)
                               {
+                                  Function = method,
                                   Parameter = param,
                                   ArgName = param.Name,
                                   ParameterIndex = paramIndex++

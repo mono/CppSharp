@@ -85,6 +85,8 @@ protected:
     void WalkVTable(clang::CXXRecordDecl* RD, CppSharp::AST::Class^ C);
     CppSharp::AST::VTableLayout^ WalkVTableLayout(const clang::VTableLayout& VTLayout);
     CppSharp::AST::VTableComponent WalkVTableComponent(const clang::VTableComponent& Component);
+    CppSharp::AST::PreprocessedEntity^ WalkPreprocessedEntity(CppSharp::AST::Declaration^ Decl,
+        clang::PreprocessedEntity* PPEntity);
 
     // Clang helpers
     SourceLocationKind GetLocationKind(const clang::SourceLocation& Loc);

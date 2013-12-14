@@ -43,6 +43,8 @@ struct DLL_API Bar
     Item RetItem1();
     int A;
     float B;
+
+    Bar* returnPointerToValueType();
 };
 
 struct DLL_API Bar2 : public Bar
@@ -62,6 +64,9 @@ struct DLL_API Bar2 : public Bar
     operator FunctionPointerResolvedAsVoidStar() const { return 0; }
 
     int C;
+    Bar* pointerToStruct;
+    int* pointerToPrimitive;
+    Foo2* pointerToClass;
 };
 
 enum Enum

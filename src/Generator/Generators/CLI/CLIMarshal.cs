@@ -3,6 +3,7 @@ using System.Text;
 using CppSharp.AST;
 using CppSharp.Types;
 using Delegate = CppSharp.AST.Delegate;
+using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Generators.CLI
 {
@@ -12,6 +13,19 @@ namespace CppSharp.Generators.CLI
             : base(marshalContext)
         {
             Context.MarshalToManaged = this;
+        }
+
+        public override bool VisitType(Type type, TypeQualifiers quals)
+        {
+            TypeMap typeMap;
+            if (Context.Driver.TypeDatabase.FindTypeMap(type, out typeMap))
+            {
+                typeMap.Type = type;
+                typeMap.CLIMarshalToManaged(Context);
+                return false;
+            }
+
+            return true;
         }
 
         public override bool VisitTagType(TagType tag, TypeQualifiers quals)
@@ -43,7 +57,10 @@ namespace CppSharp.Generators.CLI
 
         public override bool VisitPointerType(PointerType pointer, TypeQualifiers quals)
         {
-            var pointee = pointer.Pointee;
+            if (!VisitType(pointer, quals))
+                return false;
+
+            var pointee = pointer.Pointee.Desugar();
 
             PrimitiveType primitive;
             var param = Context.Parameter;
@@ -54,7 +71,7 @@ namespace CppSharp.Generators.CLI
                 return true;
             }
 
-            if (pointee.Desugar().IsPrimitiveType(PrimitiveType.Void))
+            if (pointee.IsPrimitiveType(PrimitiveType.Void))
             {
                 Context.Return.Write("IntPtr({0})", Context.ReturnVarName);
                 return true;
@@ -67,14 +84,14 @@ namespace CppSharp.Generators.CLI
                 return true;
             }
 
-            if (pointee.Desugar().IsPrimitiveType(out primitive))
+            if (pointee.IsPrimitiveType(out primitive))
             {
                 Context.Return.Write("IntPtr({0})", Context.ReturnVarName);
                 return true;
             }
 
             Class @class;
-            if (pointee.Desugar().IsTagDecl(out @class))
+            if (pointee.IsTagDecl(out @class))
             {
                 var instance = (pointer.IsReference) ? "&" + Context.ReturnVarName
                     : Context.ReturnVarName;
@@ -82,10 +99,7 @@ namespace CppSharp.Generators.CLI
                 return true;
             }
 
-            if (!pointee.Visit(this, quals))
-                return false;
-
-            return true;
+            return pointer.Pointee.Visit(this, quals);
         }
 
         public override bool VisitMemberPointerType(MemberPointerType member,
@@ -320,6 +334,19 @@ namespace CppSharp.Generators.CLI
             Context.MarshalToNative = this;
         }
 
+        public override bool VisitType(Type type, TypeQualifiers quals)
+        {
+            TypeMap typeMap;
+            if (Context.Driver.TypeDatabase.FindTypeMap(type, out typeMap))
+            {
+                typeMap.Type = type;
+                typeMap.CLIMarshalToNative(Context);
+                return false;
+            }
+
+            return true;
+        }
+
         public override bool VisitTagType(TagType tag, TypeQualifiers quals)
         {
             var decl = tag.Declaration;
@@ -358,7 +385,10 @@ namespace CppSharp.Generators.CLI
 
         public override bool VisitPointerType(PointerType pointer, TypeQualifiers quals)
         {
-            var pointee = pointer.Pointee;
+            if (!VisitType(pointer, quals))
+                return false;
+
+            var pointee = pointer.Pointee.Desugar();
 
             if ((pointee.IsPrimitiveType(PrimitiveType.Char) ||
                 pointee.IsPrimitiveType(PrimitiveType.WideChar)) &&
@@ -382,8 +412,16 @@ namespace CppSharp.Generators.CLI
                 return VisitDelegateType(function, cppTypeName);
             }
 
+            Class @class;
+            if (pointee.IsTagDecl(out @class) && @class.IsValueType)
+            {
+                if (Context.Function == null)
+                    Context.Return.Write("&");
+                return pointee.Visit(this, quals);
+            }
+
             PrimitiveType primitive;
-            if (pointee.Desugar().IsPrimitiveType(out primitive))
+            if (pointee.IsPrimitiveType(out primitive))
             {
                 var cppTypePrinter = new CppTypePrinter(Context.Driver.TypeDatabase);
                 var cppTypeName = pointer.Visit(cppTypePrinter, quals);
@@ -393,7 +431,7 @@ namespace CppSharp.Generators.CLI
                 return true;
             }
 
-            return pointee.Visit(this, quals);
+            return pointer.Pointee.Visit(this, quals);
         }
 
         public override bool VisitMemberPointerType(MemberPointerType member,
@@ -603,16 +641,22 @@ namespace CppSharp.Generators.CLI
             if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                 Context.SupportBefore.Write(marshal.Context.SupportBefore);
 
-            if(field.Type.IsPointer())
+            Type type;
+            Class @class;
+            var isRef = field.Type.IsPointerTo(out type) &&
+                !(type.IsTagDecl(out @class) && @class.IsValueType) &&
+                !type.IsPrimitiveType();
+
+            if (isRef)
             {
                 Context.SupportBefore.WriteLine("if ({0} != nullptr)", fieldRef);
                 Context.SupportBefore.PushIndent();
             }
 
-            Context.SupportBefore.WriteLine("{0}.{1} = {2};", marshalVar, field.OriginalName,
-                                    marshal.Context.Return);
+            Context.SupportBefore.WriteLine("{0}.{1} = {2};", marshalVar,
+                field.OriginalName, marshal.Context.Return);
 
-            if(field.Type.IsPointer())
+            if (isRef)
                 Context.SupportBefore.PopIndent();
         }
 

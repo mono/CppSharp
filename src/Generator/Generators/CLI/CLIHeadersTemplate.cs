@@ -551,7 +551,7 @@ namespace CppSharp.Generators.CLI
             if(isSetter) WriteLine("void set({0});", type);
 
             WriteCloseBraceIndent();
-            PopBlock();
+            PopBlock(NewLineKind.BeforeNextBlock);
         }
 
         public void GenerateMethod(Method method)
@@ -586,7 +586,7 @@ namespace CppSharp.Generators.CLI
 
             WriteLine(";");
 
-            PopBlock(NewLineKind.Always);
+            PopBlock(NewLineKind.BeforeNextBlock);
         }
 
         public bool GenerateTypedef(TypedefDecl typedef)
@@ -606,14 +606,6 @@ namespace CppSharp.Generators.CLI
                 PopBlock(NewLineKind.BeforeNextBlock);
 
                 return true;
-            }
-            else if (typedef.Type.IsEnumType())
-            {
-                // Already handled in the parser.
-            }
-            else
-            {
-                Log.Debug("Unresolved typedef type: {0}", typedef);
             }
 
             return false;
