@@ -1644,7 +1644,10 @@ CppSharp::AST::Enumeration^ Parser::WalkEnum(clang::EnumDecl* ED)
         return E;
 
     if (!E)
+    {
         E = NS->FindEnum(Name, /*Create=*/true);
+        HandleDeclaration(ED, E);
+    }
 
     if (ED->isScoped())
         E->Modifiers |= CppSharp::AST::Enumeration::EnumModifiers::Scoped;
