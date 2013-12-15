@@ -54,6 +54,16 @@ namespace CppSharp.AST
             }
         }
 
+        public TranslationUnit TranslationUnit
+        {
+            get
+            {
+                if (this is TranslationUnit)
+                    return this as TranslationUnit;
+                return Namespace.TranslationUnit;
+            }
+        }
+
         private string name;
         public virtual string OriginalName
         {

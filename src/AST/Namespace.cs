@@ -24,17 +24,6 @@ namespace CppSharp.AST
         // Used to keep track of anonymous declarations.
         public Dictionary<ulong, Declaration> Anonymous; 
 
-        public TranslationUnit TranslationUnit
-        {
-            get
-            {
-                if (this is TranslationUnit)
-                    return this as TranslationUnit;
-                else
-                    return Namespace.TranslationUnit;
-            }
-        }
-
         protected DeclarationContext()
         {
             Namespaces = new List<Namespace>();
