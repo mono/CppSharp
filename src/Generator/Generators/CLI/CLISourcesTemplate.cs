@@ -191,19 +191,18 @@ namespace CppSharp.Generators.CLI
             PopBlock();
         }
 
-        private void GenerateClassProperties(Class @class, Class realOwner,
-            bool onlyFieldProperties = false)
+        private void GenerateClassProperties(Class @class, Class realOwner)
         {
             if (@class.IsValueType)
             {
                 foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.Ignore))
                 {
-                    GenerateClassProperties(@base.Class, realOwner, true);
+                    GenerateClassProperties(@base.Class, realOwner);
                 }
             }
 
             foreach (var property in @class.Properties.Where(
-                p => !p.Ignore && (!onlyFieldProperties || p.Field != null)))
+                p => !p.Ignore && !p.IsBackedByValueClassField()))
                 GenerateProperty(property, realOwner);
         }
 
@@ -576,7 +575,7 @@ namespace CppSharp.Generators.CLI
                     Write(marshal.Context.SupportBefore);
 
                 WriteLine("{0} = {1};",
-                    Generator.GeneratedIdentifier(property.Field.OriginalName), marshal.Context.Return);
+                    property.Field.Name, marshal.Context.Return);
             }
         }
 

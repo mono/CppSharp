@@ -39,8 +39,9 @@ namespace CppSharp.Passes
                 Access = field.Access,
                 Field = field
             };
-            field.Name = Generator.GeneratedIdentifier(field.Name);
-            @class.Properties.Add(prop);
+
+            if (!prop.IsBackedByValueClassField())
+                field.Name = Generator.GeneratedIdentifier(field.Name);
 
             @class.Properties.Add(prop);
 

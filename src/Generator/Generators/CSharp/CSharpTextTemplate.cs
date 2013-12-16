@@ -668,32 +668,32 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
-        private void GenerateStructInternalMarshalingProperty(Property field, string marshalVar)
+        private void GenerateStructInternalMarshalingProperty(Property property, string marshalVar)
         {
             var marshalCtx = new CSharpMarshalContext(Driver)
             {
-                ArgName = field.Name,
+                ArgName = property.Name,
             };
 
             var marshal = new CSharpMarshalManagedToNativePrinter(marshalCtx);
-            field.Visit(marshal);
+            property.Visit(marshal);
 
             Type type;
             Class @class;
-            var isRef = field.Type.IsPointerTo(out type) &&
+            var isRef = property.Type.IsPointerTo(out type) &&
                 !(type.IsTagDecl(out @class) && @class.IsValueType) &&
                 !type.IsPrimitiveType();
 
             if (isRef)
             {
-                WriteLine("if ({0} != null)", field.Name);
+                WriteLine("if ({0} != null)", property.Name);
                 WriteStartBraceIndent();
             }
 
             if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                WriteLine(marshal.Context.SupportBefore);
 
-           WriteLine("{0}.{1} = {2};", marshalVar, field.OriginalName, marshal.Context.Return);
+           WriteLine("{0}.{1} = {2};", marshalVar, property.OriginalName, marshal.Context.Return);
 
             if (isRef)
                 WriteCloseBraceIndent();
@@ -793,7 +793,7 @@ namespace CppSharp.Generators.CSharp
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
-        private void GenerateClassField(Field field)
+        private void GenerateClassField(Field field, bool @public = false)
         {
             PushBlock(CSharpBlockKind.Field);
 
@@ -803,7 +803,8 @@ namespace CppSharp.Generators.CSharp
             if (@class.IsUnion)
                 WriteLine("[FieldOffset({0})]", field.Offset);
 
-            WriteLine("private {0} {1};", field.Type, SafeIdentifier(field.Name));
+            WriteLine("{0} {1} {2};", @public ? "public" : "private",
+                field.Type, SafeIdentifier(field.Name));
 
             PopBlock(NewLineKind.BeforeNextBlock);
         }
@@ -1104,24 +1105,28 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
-        private void GenerateClassProperties(Class @class, bool onlyFieldProperties = false)
+        private void GenerateClassProperties(Class @class)
         {
             if (@class.IsValueType)
             {
                 foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.Ignore))
                 {
-                    GenerateClassProperties(@base.Class, true);
+                    GenerateClassProperties(@base.Class);
                 }   
             }
 
-            GenerateProperties(@class, onlyFieldProperties);
+            GenerateProperties(@class);
         }
 
-        private void GenerateProperties(Class @class, bool onlyFieldProperties = false)
+        private void GenerateProperties(Class @class)
         {
-            foreach (var prop in @class.Properties.Where(
-                p => !p.Ignore && (!onlyFieldProperties || p.Field != null)))
+            foreach (var prop in @class.Properties.Where(p => !p.Ignore))
             {
+                if (prop.IsBackedByValueClassField())
+                {
+                    GenerateClassField(prop.Field, true);
+                    continue;
+                }
                 PushBlock(CSharpBlockKind.Property);
 
                 // If this is an indexer that returns an address use the real type
