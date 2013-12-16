@@ -396,7 +396,7 @@ namespace CppSharp.Generators.CLI
         public void GenerateClassFields(Class @class)
         {
             // Handle the case of struct (value-type) inheritance by adding the base
-            // fields to the managed value subtypes.
+            // properties to the managed value subtypes.
             foreach (var @base in @class.Bases)
             {
                 if (!@base.IsClass)
@@ -404,27 +404,32 @@ namespace CppSharp.Generators.CLI
 
                 Class baseClass = @base.Class;
                 if (!baseClass.IsValueType || baseClass.Ignore)
-                {
-                    Log.EmitMessage("Ignored base class of value type '{0}'",
-                        baseClass.Name);
                     continue;
-                }
 
                 GenerateClassFields(baseClass);
             }
 
             PushIndent();
-            foreach (var field in @class.Fields)
+            // check for value types because some of the ignored fields may back properties;
+            // not the case for ref types because the NativePtr pattern is used there
+            foreach (var field in @class.Fields.Where(f => !f.Ignore || @class.IsValueType))
             {
-                if (ASTUtils.CheckIgnoreField(field) && !@class.IsValueType) continue;
-
-                GenerateDeclarationCommon(field);
-                if (@class.IsUnion)
-                    WriteLine("[System::Runtime::InteropServices::FieldOffset({0})]",
-                        field.Offset);
-                WriteLine("{0} {1};", field.Type, SafeIdentifier(field.Name));
+                var property = @class.Properties.FirstOrDefault(p => p.Field == field);
+                if (property != null && !property.IsBackedByValueClassField())
+                {
+                    GenerateField(@class, field);
+                }
             }
             PopIndent();
+        }
+
+        private void GenerateField(Class @class, Field field)
+        {
+            GenerateDeclarationCommon(field);
+            if (@class.IsUnion)
+                WriteLine("[System::Runtime::InteropServices::FieldOffset({0})]",
+                    field.Offset);
+            WriteLine("{0} {1};", field.Type, SafeIdentifier(field.Name));
         }
 
         public void GenerateClassEvents(Class @class)
@@ -560,10 +565,10 @@ namespace CppSharp.Generators.CLI
             return false;
         }
 
-        public void GenerateClassProperties(Class @class, bool onlyFieldProperties = false)
+        public void GenerateClassProperties(Class @class)
         {
             // Handle the case of struct (value-type) inheritance by adding the base
-            // fields to the managed value subtypes.
+            // properties to the managed value subtypes.
             foreach (var @base in @class.Bases)
             {
                 if (!@base.IsClass)
@@ -571,19 +576,19 @@ namespace CppSharp.Generators.CLI
 
                 Class baseClass = @base.Class;
                 if (!baseClass.IsValueType || baseClass.Ignore)
-                {
-                    Log.EmitMessage("Ignored base class of value type '{0}'",
-                        baseClass.Name);
                     continue;
-                }
 
-                GenerateClassProperties(baseClass, true);
+                GenerateClassProperties(baseClass);
             }
 
             PushIndent();
-            foreach (var prop in @class.Properties)
+            foreach (var prop in @class.Properties.Where(prop => !prop.Ignore))
             {
-                if (prop.Ignore || (onlyFieldProperties && prop.Field == null)) continue;
+                if (prop.IsBackedByValueClassField())
+                {
+                    GenerateField(@class, prop.Field);
+                    continue;
+                }
 
                 GenerateDeclarationCommon(prop);
                 GenerateProperty(prop);

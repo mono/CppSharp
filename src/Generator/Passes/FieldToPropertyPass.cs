@@ -39,8 +39,13 @@ namespace CppSharp.Passes
                 Access = field.Access,
                 Field = field
             };
-            field.Name = Generator.GeneratedIdentifier(field.Name);
-            @class.Properties.Add(prop);
+
+            // do not rename value-class fields because they would be
+            // generated as fields later on even though they are wrapped by properties;
+            // that is, in turn, because it's cleaner to write
+            // the struct marshalling logic just for properties
+            if (!prop.IsBackedByValueClassField())
+                field.Name = Generator.GeneratedIdentifier(field.Name);
 
             @class.Properties.Add(prop);
 
