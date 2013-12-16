@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using CppSharp.AST;
 using Type = CppSharp.AST.Type;
 
@@ -9,6 +9,7 @@ namespace CppSharp.Generators.AST
     {
         public ASTRecord Parent;
         public object Object;
+        public bool Visited;
 
         public bool GetParent<T>(out T @out)
         {
@@ -25,7 +26,19 @@ namespace CppSharp.Generators.AST
             return true;
         }
 
-        // Pushes ancestors into the stack until it is found one of type T.
+        // Finds the first ancestor of type T.
+        public ASTRecord FindAncestor<T>()
+        {
+            if (Parent == null)
+                return null;
+
+            if (Parent.Object is T)
+                return Parent;
+
+            return Parent.FindAncestor<T>();
+        }
+
+        // Pushes ancestors into the stack until it has found one of type T.
         public bool GetAncestors<T>(ref Stack<object> ancestors)
         {
             ancestors.Push(this);
@@ -76,6 +89,7 @@ namespace CppSharp.Generators.AST
                 Parent = parent,
                 Object = value
             };
+
             recordStack.Push(record);
             return record;
         }
@@ -84,6 +98,25 @@ namespace CppSharp.Generators.AST
         {
             recordStack.Pop();
         }
+
+        public bool Contains(object decl)
+        {
+            return recordStack.Any(rec => decl == rec.Object);
+        }
+
+        public bool IsBeingVisited(Declaration decl)
+        {
+            var record = recordStack.FirstOrDefault(rec => decl == rec.Object);
+
+            if (record != null)
+            {
+                var isBeingVisited = record.Visited;
+                record.Visited = true;
+                return isBeingVisited;
+            }
+
+            return false;
+        }
     }
 
     static class ASTRecordExtensions
@@ -91,7 +124,11 @@ namespace CppSharp.Generators.AST
         public static bool IsBaseClass(this ASTRecord record)
         {
             Class decl;
-            return record.GetParent(out decl) && decl.BaseClass == record.Object;
+            if (!record.GetParent(out decl))
+                return false;
+
+            var recordDecl = record.Object as Class;
+            return recordDecl != null && recordDecl == decl.BaseClass;
         }
 
         public static bool IsFieldValueType(this ASTRecord record)
@@ -103,10 +140,7 @@ namespace CppSharp.Generators.AST
             var field = (Field)ancestors.Pop();
                 
             Class decl;
-            if (!field.Type.Desugar().IsTagDecl(out decl))
-                return false;
-
-            return decl.IsValueType;
+            return field.Type.Desugar().IsTagDecl(out decl) && decl.IsValueType;
         }
     }
 
@@ -115,20 +149,13 @@ namespace CppSharp.Generators.AST
         public readonly ISet<ASTRecord<Declaration>> Declarations;
         private readonly ASTRecordStack recordStack;
 
-        public TranslationUnit translationUnit;
-
-        public ISet<object> Visited2 { get; private set; }
-        public bool AlreadyVisited2(object o)
-        {
-            return !Visited2.Add(o);
-        }
+        private readonly TranslationUnit translationUnit;
 
         public RecordCollector(TranslationUnit translationUnit)
         {
             this.translationUnit = translationUnit;
             Declarations = new HashSet<ASTRecord<Declaration>>();
             recordStack = new ASTRecordStack();
-            Visited2 = new HashSet<object>();
         }
 
         public override bool VisitDeclaration(Declaration decl)
@@ -136,9 +163,8 @@ namespace CppSharp.Generators.AST
             if (decl.IsIncomplete && decl.CompleteDeclaration != null)
                 decl = decl.CompleteDeclaration;
 
-            if(AlreadyVisited2(decl)) 
+            if (recordStack.Contains(decl))
                 return ShouldVisitChilds(decl);
-            Visited.Remove(decl); // So Class can be revisited
 
             Declarations.Add(recordStack.Push(decl));
             decl.Visit(this);
@@ -151,7 +177,7 @@ namespace CppSharp.Generators.AST
         {
             type = type.Desugar();
 
-            if(AlreadyVisited2(type)) 
+            if(recordStack.Contains(type))
                 return true;
 
             recordStack.Push(type);
@@ -163,17 +189,20 @@ namespace CppSharp.Generators.AST
 
         public bool ShouldVisitChilds(Declaration decl)
         {
-            if(decl == translationUnit)
+            if (decl == translationUnit)
                 return true;
 
             if (decl is TranslationUnit)
                 return false;
 
+            if (recordStack.IsBeingVisited(decl))
+                return false;
+
             if (decl.Namespace == null)
                 return true;
 
-            // No need to continue visiting after a declaration of 
-            // another translation unit is encountered.
+            // No need to continue visiting after a declaration of another
+            // translation unit is encountered.
             return decl.Namespace.TranslationUnit == translationUnit;
         }
      }
