@@ -11,6 +11,9 @@ namespace CppSharp.Generators.CLI
 
         public override string ToString()
         {
+            if(Include.InHeader)
+                return Include.ToString();
+
             if (!string.IsNullOrWhiteSpace(FowardReference))
                 return FowardReference;
 
@@ -117,13 +120,17 @@ namespace CppSharp.Generators.CLI
                 return;
 
             var typeRef = GetTypeReference(decl);
-            typeRef.Include = new Include()
+            if (typeRef.Include.TranslationUnit == null)
             {
-                File = declFile,
-                TranslationUnit = decl.Namespace.TranslationUnit,
-                Kind = Include.IncludeKind.Quoted,
-                InHeader = IsIncludeInHeader(record)
-            };
+                typeRef.Include = new Include
+                    {
+                        File = declFile,
+                        TranslationUnit = decl.Namespace.TranslationUnit,
+                        Kind = Include.IncludeKind.Quoted,
+                    };
+            }
+
+            typeRef.Include.InHeader |= IsIncludeInHeader(record);
         }
 
         private bool IsBuiltinTypedef(Declaration decl)
@@ -143,17 +150,21 @@ namespace CppSharp.Generators.CLI
         {
             if (TranslationUnit == record.Value.Namespace.TranslationUnit)
                 return false;
+
             return record.IsBaseClass() || record.IsFieldValueType();
         }
 
         public override bool VisitDeclaration(Declaration decl)
         {
-            return ShouldVisitDecl(decl);
+            if (decl.Namespace != null && decl.Namespace.TranslationUnit.IsSystemHeader)
+                return false;
+
+            return !decl.Ignore;
         }
 
         public override bool VisitClassDecl(Class @class)
         {
-            if(!ShouldVisitDecl(@class))
+            if (!VisitDeclaration(@class))
                 return false;
 
             if (@class.IsIncomplete && @class.CompleteDeclaration != null)
@@ -169,7 +180,7 @@ namespace CppSharp.Generators.CLI
 
         public override bool VisitEnumDecl(Enumeration @enum)
         {
-            if(!ShouldVisitDecl(@enum))
+            if (!VisitDeclaration(@enum))
                 return false;
 
             var @base = "";
@@ -181,17 +192,6 @@ namespace CppSharp.Generators.CLI
             GetTypeReference(@enum).FowardReference = @ref;
 
             return false;
-        }
-
-        private bool ShouldVisitDecl(Declaration decl)
-        {
-            if(decl.Namespace != null && decl.Namespace.TranslationUnit.IsSystemHeader)
-                return false;
-
-            if (decl.Ignore)
-                return false;
-
-            return true;
         }
     }
 }
