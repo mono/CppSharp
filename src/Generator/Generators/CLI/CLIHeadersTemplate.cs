@@ -317,6 +317,8 @@ namespace CppSharp.Generators.CLI
                 var functionTemplate = template as FunctionTemplate;
                 if (functionTemplate == null) continue;
 
+                PushBlock(CLIBlockKind.Template);
+
                 var function = functionTemplate.TemplatedFunction;
 
                 var typeCtx = new CLITypePrinterContext()
@@ -339,6 +341,8 @@ namespace CppSharp.Generators.CLI
                 WriteLine("generic<{0}>", typeNamesStr);
                 WriteLine("{0} {1}({2});", retType, SafeIdentifier(function.Name),
                     GenerateParametersList(function.Parameters));
+
+                PopBlock(NewLineKind.BeforeNextBlock);
             }
             PopIndent();
 
@@ -484,6 +488,8 @@ namespace CppSharp.Generators.CLI
 
                 var type = variable.Type;
 
+                PushBlock(CLIBlockKind.Variable);
+
                 WriteLine("static property {0} {1}", type, variable.Name);
 
                 WriteStartBraceIndent();
@@ -494,6 +500,8 @@ namespace CppSharp.Generators.CLI
                     WriteLine("void set({0});", type);
 
                 WriteCloseBraceIndent();
+
+                PopBlock(NewLineKind.BeforeNextBlock);
             }
 
             PopIndent();
