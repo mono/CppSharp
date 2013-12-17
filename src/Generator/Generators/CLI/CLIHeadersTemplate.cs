@@ -97,13 +97,25 @@ namespace CppSharp.Generators.CLI
             // Create a new tree of namespaces out of the type references found.
             var rootNamespace = new TranslationUnit();
 
-            foreach (var typeRef in typeReferences)
+            var sortedRefs = typeReferences.ToList();
+            sortedRefs.Sort((ref1, ref2) =>
+                string.CompareOrdinal(ref1.FowardReference, ref2.FowardReference));
+
+            var forwardRefs = new SortedSet<string>();
+
+            foreach (var typeRef in sortedRefs)
             {
                 if (string.IsNullOrWhiteSpace(typeRef.FowardReference))
                     continue;
 
                 var declaration = typeRef.Declaration;
                 if (!(declaration.Namespace is Namespace))
+                    continue;
+
+                if (!forwardRefs.Add(typeRef.FowardReference))
+                    continue;
+
+                if (typeRef.Include.InHeader)
                     continue;
 
                 var @namespace = FindCreateNamespace(rootNamespace, declaration);
