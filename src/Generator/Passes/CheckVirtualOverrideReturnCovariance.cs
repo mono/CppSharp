@@ -247,7 +247,7 @@ namespace CppSharp.Passes
     {
         public override bool VisitMethodDecl(AST.Method method)
         {
-            if (AlreadyVisited(method))
+            if (!VisitDeclaration(method))
                 return false;
 
             if (!method.IsOverride)

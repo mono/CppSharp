@@ -16,6 +16,9 @@ namespace CppSharp
 
         public override bool VisitDeclaration(Declaration decl)
         {
+            if (AlreadyVisited(decl))
+                return false;
+
             if (decl.CompleteDeclaration != null)
                 return true;
 
@@ -45,6 +48,9 @@ namespace CppSharp
 
         public override bool VisitDeclaration(Declaration decl)
         {
+            if (AlreadyVisited(decl))
+                return false;
+
             if (decl.CompleteDeclaration != null)
                 return VisitDeclaration(decl.CompleteDeclaration);
 
@@ -103,6 +109,7 @@ namespace CppSharp
                 Ignore();
                 return false;
             }
+
             return base.VisitMemberPointerType(member, quals);
         }
 

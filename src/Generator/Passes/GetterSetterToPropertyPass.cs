@@ -73,7 +73,7 @@ namespace CppSharp.Passes
 
         public override bool VisitMethodDecl(Method method)
         {
-            if (AlreadyVisited(method))
+            if (!VisitDeclaration(method))
                 return false;
 
             if (ASTUtils.CheckIgnoreMethod(method))

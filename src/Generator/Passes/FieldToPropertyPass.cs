@@ -7,7 +7,7 @@ namespace CppSharp.Passes
     {
         public override bool VisitFieldDecl(Field field)
         {
-            if (AlreadyVisited(field))
+            if (!VisitDeclaration(field))
                 return false;
 
             var @class = field.Namespace as Class;

@@ -1,5 +1,4 @@
-﻿using System;
-using CppSharp.AST;
+﻿using CppSharp.AST;
 
 namespace CppSharp.Passes
 {
@@ -18,9 +17,6 @@ namespace CppSharp.Passes
 
         public override bool VisitClassDecl(Class @class)
         {
-            if (!VisitDeclaration(@class))
-                return false;
-
             if (!@class.IsIncomplete)
                 goto Out;
 

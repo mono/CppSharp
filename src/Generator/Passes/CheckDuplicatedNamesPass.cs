@@ -94,18 +94,22 @@ namespace CppSharp.Passes
 
         public override bool VisitFieldDecl(Field decl)
         {
+            if (!VisitDeclaration(decl))
+                return false;
+
             if (ASTUtils.CheckIgnoreField(decl))
                 return false;
 
-            if(!AlreadyVisited(decl))
-                CheckDuplicate(decl);
-
+            CheckDuplicate(decl);
             return false;
         }
 
         public override bool VisitProperty(Property decl)
         {
-            if(!AlreadyVisited(decl) && decl.ExplicitInterfaceImpl == null)
+            if (!VisitDeclaration(decl))
+                return false;
+
+            if (decl.ExplicitInterfaceImpl == null)
                 CheckDuplicate(decl);
 
             return false;
@@ -113,10 +117,13 @@ namespace CppSharp.Passes
 
         public override bool VisitMethodDecl(Method decl)
         {
+            if (!VisitDeclaration(decl))
+                return false;
+
             if (ASTUtils.CheckIgnoreMethod(decl))
                 return false;
 
-            if (!AlreadyVisited(decl) && decl.ExplicitInterfaceImpl == null)
+            if (decl.ExplicitInterfaceImpl == null)
                 CheckDuplicate(decl);
 
             return false;
@@ -124,7 +131,10 @@ namespace CppSharp.Passes
 
         public override bool VisitClassDecl(Class @class)
         {
-            if (AlreadyVisited(@class) || @class.IsIncomplete)
+            if (!VisitDeclaration(@class))
+                return false;
+
+            if (@class.IsIncomplete)
                 return false;
 
             // DeclarationName should always process methods first, 

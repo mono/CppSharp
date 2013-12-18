@@ -33,7 +33,7 @@ namespace CppSharp.Passes
             if (@class.CompleteDeclaration != null)
                 return VisitClassDecl(@class.CompleteDeclaration as Class);
 
-            if (!VisitDeclaration(@class) || AlreadyVisited(@class))
+            if (!VisitDeclaration(@class))
                 return false;
 
             if (@class.IsAbstract)
