@@ -5,19 +5,40 @@ namespace CppSharp.Passes
 {
     public class CheckIgnoredDeclsPass : TranslationUnitPass
     {
+        public bool CheckDeclarationAccess(Declaration decl)
+        {
+            var generateAbstractImpls = Driver.Options.IsCSharpGenerator
+                                     && Driver.Options.GenerateAbstractImpls;
+
+            switch (decl.Access)
+            {
+            case AccessSpecifier.Public:
+                return true;
+            case AccessSpecifier.Protected:
+                return generateAbstractImpls;
+            case AccessSpecifier.Private:
+                var method = decl as Method;
+                var isOverride = method != null && method.IsOverride;
+                return generateAbstractImpls && isOverride;
+            }
+
+            return true;
+        }
+
         public override bool VisitDeclaration(Declaration decl)
         {
-            if (decl.ExplicityIgnored)
+            if (AlreadyVisited(decl))
                 return false;
 
-            if (decl.Access == AccessSpecifier.Private)
+            if (decl.ExplicityIgnored)
+                return true;
+
+            if (!CheckDeclarationAccess(decl))
             {
-                Method method = decl as Method;
-                if (method == null || !method.IsOverride)
-                {
-                    decl.ExplicityIgnored = true;
-                    return false;
-                }
+                Log.Debug("Decl '{0}' was ignored due to invalid access",
+                    decl.Name);
+                decl.ExplicityIgnored = true;
+                return true;
             }
 
             if (decl.IsDependent)
@@ -25,6 +46,7 @@ namespace CppSharp.Passes
                 decl.ExplicityIgnored = true;
                 Log.Debug("Decl '{0}' was ignored due to dependent context",
                     decl.Name);
+                return true;
             }
 
             return true;
