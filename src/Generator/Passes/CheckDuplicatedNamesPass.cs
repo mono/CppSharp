@@ -89,6 +89,7 @@ namespace CppSharp.Passes
 
         public CheckDuplicatedNamesPass()
         {
+            ClearVisitedDeclarations = false;
             names = new Dictionary<string, DeclarationName>();
         }
 
