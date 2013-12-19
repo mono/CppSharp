@@ -120,7 +120,6 @@ public:
     virtual int pureFunction(int i) = 0;
     virtual int pureFunction1() = 0;
     virtual int pureFunction2() = 0;
-    typedef void (*QTextStreamFunction)(int &);
 };
 
 class DLL_API ImplementsAbstractFoo : public AbstractFoo
@@ -194,3 +193,16 @@ class DLL_API basic
 
 DLL_API int test(basic& s);
 
+// Tests delegates
+typedef int (*DelegateInGlobalNamespace)(int);
+
+struct DLL_API TestDelegates
+{
+    typedef int (*DelegateInClass)(int);
+
+    TestDelegates() : A(Double), B(Double) {}
+    static int Double(int N) { return N * 2; }
+
+    DelegateInClass A;
+    DelegateInGlobalNamespace B;
+};

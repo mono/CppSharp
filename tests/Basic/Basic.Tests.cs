@@ -151,5 +151,13 @@ public class BasicTests
         Assert.AreEqual(300, new Bar2.Nested());
         Assert.AreEqual(500, new Bar2());
     }
+
+    [Test]
+    public void TestDelegates()
+    {
+        var delegates = new TestDelegates();
+        var doubleSum = delegates.A(2) + delegates.B(2);
+        Assert.AreEqual(8, doubleSum);
+    }
 }
  

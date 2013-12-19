@@ -615,12 +615,15 @@ namespace CppSharp.Generators.CLI
                 return false;
 
             FunctionType function;
-            if (typedef.Type.IsPointerTo<FunctionType>(out function))
+            if (typedef.Type.IsPointerTo(out function))
             {
                 PushBlock(CLIBlockKind.Typedef, typedef);
                 GenerateDeclarationCommon(typedef);
 
-                WriteLine("{0};",
+                var insideClass = typedef.Namespace is Class;
+
+                WriteLine("{0}{1};",
+                    !insideClass ? "public " : "",
                     string.Format(TypePrinter.VisitDelegate(function),
                     SafeIdentifier(typedef.Name)));
                 PopBlock(NewLineKind.BeforeNextBlock);
