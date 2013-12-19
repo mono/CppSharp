@@ -62,13 +62,11 @@ namespace CppSharp.Passes
 
         public override bool VisitDeclaration(Declaration decl)
         {
+            if (AlreadyVisited(decl))
+                return false;
+
             if (!IsRenameableDecl(decl))
                 return true;
-
-            if (AlreadyVisited(decl))
-                return true;
-
-            Visited.Add(decl);
 
             if (decl.Name == null)
                 return true;
@@ -86,18 +84,21 @@ namespace CppSharp.Passes
 
         private static bool AreThereConflicts(Declaration decl, string newName)
         {
-            List<Declaration> declarations = new List<Declaration>();
+            var declarations = new List<Declaration>();
             declarations.AddRange(decl.Namespace.Classes);
             declarations.AddRange(decl.Namespace.Enums);
             declarations.AddRange(decl.Namespace.Events);
             declarations.AddRange(decl.Namespace.Functions);
             declarations.AddRange(decl.Namespace.Variables);
-            bool result = declarations.Any(d => d != decl && d.Name == newName);
+
+            var result = declarations.Any(d => d != decl && d.Name == newName);
             if (result)
                 return true;
-            Method method = decl as Method;
+
+            var method = decl as Method;
             if (method == null || !method.IsGenerated)
                 return false;
+
             return ((Class) method.Namespace).GetPropertyByName(newName) != null;
         }
 
