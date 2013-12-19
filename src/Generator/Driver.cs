@@ -194,6 +194,7 @@ namespace CppSharp
             TranslationUnitPasses.AddPass(new ResolveIncompleteDeclsPass());
             TranslationUnitPasses.AddPass(new CleanInvalidDeclNamesPass());
             TranslationUnitPasses.AddPass(new CheckIgnoredDeclsPass());
+
             if (Options.IsCSharpGenerator)
                 TranslationUnitPasses.AddPass(new GenerateInlinesCodePass());
 
@@ -207,20 +208,25 @@ namespace CppSharp
             TranslationUnitPasses.AddPass(new CheckVirtualOverrideReturnCovariance());
 
             Generator.SetupPasses();
+
             TranslationUnitPasses.AddPass(new FieldToPropertyPass());
             TranslationUnitPasses.AddPass(new CleanInvalidDeclNamesPass());
             TranslationUnitPasses.AddPass(new CheckIgnoredDeclsPass());
             TranslationUnitPasses.AddPass(new CheckFlagEnumsPass());
             TranslationUnitPasses.AddPass(new CheckDuplicatedNamesPass());
+
             if (Options.GenerateAbstractImpls)
                 TranslationUnitPasses.AddPass(new GenerateAbstractImplementationsPass());
+
             if (Options.GenerateInterfacesForMultipleInheritance)
             {
                 TranslationUnitPasses.AddPass(new MultipleInheritancePass());
                 TranslationUnitPasses.AddPass(new ParamTypeToInterfacePass());
             }
+
             if (Options.GenerateVirtualTables)
                 TranslationUnitPasses.AddPass(new CheckVTableComponentsPass());
+
             if (Options.GenerateProperties)
                 TranslationUnitPasses.AddPass(new GetterSetterToPropertyAdvancedPass());
         }
