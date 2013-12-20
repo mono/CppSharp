@@ -9,10 +9,7 @@ namespace CppSharp.Passes
             if (AlreadyVisited(decl))
                 return false;
 
-            if (decl.Ignore)
-                return false;
-
-            return true;
+            return !decl.Ignore;
         }
 
         public override bool VisitClassDecl(Class @class)
@@ -29,8 +26,8 @@ namespace CppSharp.Passes
             if (@class.CompleteDeclaration == null)
             {
                 @class.IsGenerated = false;
-                Driver.Diagnostics.EmitWarning(DiagnosticId.UnresolvedDeclaration,
-                    "Unresolved declaration: {0}", @class.Name);
+                Driver.Diagnostics.Debug("Unresolved declaration: {0}",
+                    @class.Name);
             }
 
         Out:
