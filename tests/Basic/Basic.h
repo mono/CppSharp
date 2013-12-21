@@ -139,9 +139,6 @@ private:
     ImplementsAbstractFoo i;
 };
 
-DLL_API Bar operator-(const Bar &);
-DLL_API Bar operator+(const Bar &, const Bar &);
-
 int DLL_API unsafeFunction(const Bar& ret, char* testForString, void (*foo)(int));
 
 DLL_API Bar indirectReturn();
@@ -192,6 +189,36 @@ class DLL_API basic
 };
 
 DLL_API int test(basic& s);
+
+// Tests the MoveOperatorToClassPass
+struct DLL_API TestMoveOperatorToClass
+{
+    TestMoveOperatorToClass() {}
+    int A;
+    int B;
+};
+
+DLL_API int operator *(TestMoveOperatorToClass klass, int b)
+{
+    return klass.A * b;
+}
+
+DLL_API TestMoveOperatorToClass operator-(const TestMoveOperatorToClass& b)
+{
+    TestMoveOperatorToClass nb;
+    nb.A = -b.A;
+    nb.B = -b.B;
+    return nb;
+}
+
+DLL_API TestMoveOperatorToClass operator+(const TestMoveOperatorToClass& b1,
+                                          const TestMoveOperatorToClass& b2)
+{
+    TestMoveOperatorToClass b;
+    b.A = b1.A + b2.A;
+    b.B = b1.B + b2.B;
+    return b;
+}
 
 // Tests delegates
 typedef int (*DelegateInGlobalNamespace)(int);

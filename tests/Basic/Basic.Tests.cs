@@ -72,25 +72,6 @@ public class BasicTests
     }
 
     [Test]
-    public void TestUnaryOperator()
-    {
-        var bar = new Bar { A = 4, B = 7 };
-        var barMinus = -bar;
-        Assert.That(barMinus.A, Is.EqualTo(-bar.A));
-        Assert.That(barMinus.B, Is.EqualTo(-bar.B));
-    }
-
-    [Test]
-    public void TestBinaryOperator()
-    {
-        var bar = new Bar { A = 4, B = 7 };
-        var bar1 = new Bar { A = 5, B = 10 };
-        var barSum = bar + bar1;
-        Assert.That(barSum.A, Is.EqualTo(bar.A + bar1.A));
-        Assert.That(barSum.B, Is.EqualTo(bar.B + bar1.B));
-    }
-
-    [Test]
     public void TestAmbiguous()
     {
         var def = new DefaultParameters();
@@ -121,6 +102,30 @@ public class BasicTests
     {
         var foo = new Foo();
         Assert.That(foo.GetANSI(), Is.EqualTo("ANSI"));
+    }
+
+    [Test]
+    public void TestMoveOperatorToClass()
+    {
+        // Unary operator
+        var unary = new TestMoveOperatorToClass() { A = 4, B = 7 };
+        var unaryMinus = -unary;
+
+        Assert.That(unaryMinus.A, Is.EqualTo(-unary.A));
+        Assert.That(unaryMinus.B, Is.EqualTo(-unary.B));
+
+        // Binary operator
+        var bin = new TestMoveOperatorToClass { A = 4, B = 7 };
+        var bin1 = new TestMoveOperatorToClass { A = 5, B = 10 };
+        var binSum = bin + bin1;
+
+        Assert.That(binSum.A, Is.EqualTo(bin.A + bin1.A));
+        Assert.That(binSum.B, Is.EqualTo(bin.B + bin1.B));
+
+        // Multiple argument operator
+        var multiArg = new TestMoveOperatorToClass { A = 4, B = 7 };
+        var multiArgStar = multiArg * 2; 
+        Assert.That(multiArgStar, Is.EqualTo(8));
     }
 
     [Test]
