@@ -35,7 +35,8 @@ namespace CppSharp.Passes
 
             foreach (var overload in overloads)
             {
-                if (function.OperatorKind == CXXOperatorKind.Conversion)
+                if (function.OperatorKind == CXXOperatorKind.Conversion ||
+                    function.OperatorKind == CXXOperatorKind.Subscript)
                     continue;
 
                 if (overload == function) continue;
