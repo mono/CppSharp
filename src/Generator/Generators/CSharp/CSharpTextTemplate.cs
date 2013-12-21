@@ -418,7 +418,7 @@ namespace CppSharp.Generators.CSharp
                 PushBlock(CSharpBlockKind.Method);
                 GenerateDeclarationCommon(method);
 
-                var functionName = GetFunctionIdentifier(method);
+                var functionName = GetMethodIdentifier(method);
 
                 Write("{0} {1}(", method.OriginalReturnType, functionName);
 
@@ -1778,7 +1778,7 @@ namespace CppSharp.Generators.CSharp
             if (Driver.Options.GenerateAbstractImpls && method.IsPure)
                 Write("abstract ");
 
-            var functionName = GetFunctionIdentifier(method);
+            var functionName = GetMethodIdentifier(method);
 
             if (method.IsConstructor || method.IsDestructor)
                 Write("{0}(", functionName);
@@ -2330,17 +2330,20 @@ namespace CppSharp.Generators.CSharp
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
+        public static string GetMethodIdentifier(Method method)
+        {
+            if (method.IsConstructor || method.IsDestructor)
+                return method.Namespace.Name;
+
+            return GetFunctionIdentifier(method);
+        }
+
         public static string GetFunctionIdentifier(Function function)
         {
-            var identifier = SafeIdentifier(function.Name);
+            if (function.IsOperator)
+                return Operators.GetOperatorIdentifier(function.OperatorKind);
 
-            var method = function as Method;
-            if (method == null || !method.IsOperator)
-                return identifier;
-
-            identifier = Operators.GetOperatorIdentifier(method.OperatorKind);
-
-            return identifier;
+            return SafeIdentifier(function.Name);
         }
 
         public static string GetFunctionNativeIdentifier(Function function)

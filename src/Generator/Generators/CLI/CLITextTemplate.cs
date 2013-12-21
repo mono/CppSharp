@@ -86,6 +86,12 @@ namespace CppSharp.Generators.CLI
             if (method.OperatorKind == CXXOperatorKind.Conversion)
                 return SafeIdentifier("operator " + method.ConversionType);
 
+            if (method.IsConstructor || method.IsDestructor)
+            {
+                var @class = (Class) method.Namespace;
+                return SafeIdentifier(@class.Name);
+            }
+
             return SafeIdentifier(method.Name);
         }
 
