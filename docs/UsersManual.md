@@ -21,14 +21,14 @@ SWIG. So how is it different from SWIG?
  * Can be used as a library
  * Based on an actual C++ parser (Clang) so very accurate.
  * Understands C++ at the ABI (application binary interface) level
- * Supports virtual method overriding (coming soon)
+ * Supports virtual method overriding
 
 # 2. Targets
 
 The backend of the generator is abstracted and it can target different .NET
 binding technologies:
 
-- C#
+- C# (P/Invoke)
 - C++/CLI
 
 # 3. C/C++ language features
@@ -84,7 +84,7 @@ These are mapped to .NET CLR delegates.
 
 We do not preserve type definitions since .NET and its main language C# do not
 have the concept of type aliases like C/C++. There is an exception in the case
-of a typedef'd function (pointer) declaration. In this case generate a .NET
+of a typedef'd function (pointer) declaration. In this case we generate a .NET
 delegate with the name of the typedef.
 
 ## Enums
@@ -93,7 +93,7 @@ Regular C/C++ enums are translated to .NET enumerations.
 
 ### Anonymous enums
 
-C and C++ enums do not introduce their own scope (different with C++11 strongly
+C and C++ enums do not introduce their own scope (different from C++11 strongly
 typed enums). This means the enumerated values will leak into an outer context,
 like a class or a namespace. When this is detected, the generator tries to map
 to an outer enclosing context and generate a new name.
@@ -237,9 +237,6 @@ Support for these features is limited or only partial:
 
 - Exceptions
 - RTTI
-- Virtual inheritance
-- Bitfields
-- Unions
 
 ## Standard library support
 
@@ -259,7 +256,8 @@ standard library types:
 - std::map
 - std::set
 
-Support for wrapping these is experimental.
+Support for wrapping these is experimental and only currently works on the
+CLI backend.
 
 # 4. Customization
 

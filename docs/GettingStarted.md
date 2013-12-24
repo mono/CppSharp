@@ -99,7 +99,7 @@ above:
 void Setup(Driver driver)
 {
     var options = driver.Options;
-    options.GeneratorKind = LanguageGeneratorKind.CSharp;
+    options.GeneratorKind = GeneratorKind.CSharp;
     options.LibraryName = "Sample";
     options.Headers.Add("Sample.h");
     options.Libraries.Add("Sample.lib");
