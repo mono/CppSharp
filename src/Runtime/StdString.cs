@@ -29,10 +29,8 @@ namespace Std
     [StructLayout(LayoutKind.Sequential)]
     public struct String : ICppMarshal
     {
-#if MSVC || LIBCXX
         public int _Mysize;
         public int _Myres;
-#endif
 
         public int Length
         {
