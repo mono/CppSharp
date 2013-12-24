@@ -875,7 +875,7 @@ namespace CppSharp.Generators.CSharp
                     {
                         if (method.OperatorKind == CXXOperatorKind.Subscript)
                         {
-                            GenerateIndexerSetter(returnType, method);                            
+                            GenerateIndexerSetter(returnType, method);
                         }
                         else
                         {
@@ -2020,7 +2020,7 @@ namespace CppSharp.Generators.CSharp
                     }
                     else
                     {
-                        names.Insert(0, Helpers.InstanceIdentifier);                        
+                        names.Insert(0, Helpers.InstanceIdentifier);
                     }
                 }
             }
