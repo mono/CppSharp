@@ -236,7 +236,10 @@ namespace CppSharp
             TranslationUnitPasses.RunPasses(pass =>
                 {
                     Diagnostics.Debug("Pass '{0}'", pass);
+
+                    Diagnostics.PushIndent(4);
                     pass.VisitLibrary(ASTContext);
+                    Diagnostics.PopIndent();
                 });
             Generator.Process();
         }
