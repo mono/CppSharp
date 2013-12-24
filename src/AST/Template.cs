@@ -15,6 +15,13 @@ namespace CppSharp.AST
     /// </summary>
     public abstract class Template : Declaration
     {
+        // Name of the declaration.
+        public override string Name
+        {
+            get { return TemplatedDecl.Name; }
+            set { base.Name = value; }
+        }
+
         protected Template()
         {
             Parameters = new List<TemplateParameter>();
