@@ -15,17 +15,15 @@ namespace CppSharp.Tests
         public override void SetupPasses(Driver driver)
         {
             if (driver.Options.IsCSharpGenerator)
-            {
-                driver.Options.GenerateAbstractImpls = true;                
-            }
+                driver.Options.GenerateAbstractImpls = true;
         }
 
-        public override void Preprocess(Driver driver, ASTContext lib)
+        public override void Preprocess(Driver driver, ASTContext ctx)
         {
-            lib.SetClassAsValueType("Bar");
-            lib.SetClassAsValueType("Bar2");
-            lib.SetMethodParameterUsage("Hello", "TestPrimitiveOut", 1, ParameterUsage.Out);
-            lib.SetMethodParameterUsage("Hello", "TestPrimitiveOutRef", 1, ParameterUsage.Out);
+            ctx.SetClassAsValueType("Bar");
+            ctx.SetClassAsValueType("Bar2");
+            ctx.SetMethodParameterUsage("Hello", "TestPrimitiveOut", 1, ParameterUsage.Out);
+            ctx.SetMethodParameterUsage("Hello", "TestPrimitiveOutRef", 1, ParameterUsage.Out);
         }
 
         public static void Main(string[] args)

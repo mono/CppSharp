@@ -56,13 +56,13 @@ namespace CppSharp
 
         }
 
-        public void Preprocess(Driver driver, ASTContext lib)
+        public void Preprocess(Driver driver, ASTContext ctx)
         {
-            lib.SetClassAsValueType("CppSharp::ParserOptions");
-            lib.SetClassAsValueType("CppSharp::ParserDiagnostic");
-            lib.SetClassAsValueType("CppSharp::ParserResult");
+            ctx.SetClassAsValueType("CppSharp::ParserOptions");
+            ctx.SetClassAsValueType("CppSharp::ParserDiagnostic");
+            ctx.SetClassAsValueType("CppSharp::ParserResult");
 
-            lib.RenameNamespace("CppSharp::CppParser", "Parser");
+            ctx.RenameNamespace("CppSharp::CppParser", "Parser");
         }
 
         public void Postprocess(Driver driver, ASTContext lib)

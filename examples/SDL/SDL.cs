@@ -23,31 +23,31 @@ namespace CppSharp
             driver.TranslationUnitPasses.RemovePrefix("LOG_CATEGORY_");
         }
 
-        public void Preprocess(Driver driver, ASTContext lib)
+        public void Preprocess(Driver driver, ASTContext ctx)
         {
-            lib.IgnoreEnumWithMatchingItem("SDL_FALSE");
-            lib.IgnoreEnumWithMatchingItem("DUMMY_ENUM_VALUE");
+            ctx.IgnoreEnumWithMatchingItem("SDL_FALSE");
+            ctx.IgnoreEnumWithMatchingItem("DUMMY_ENUM_VALUE");
 
-            lib.SetNameOfEnumWithMatchingItem("SDL_SCANCODE_UNKNOWN", "ScanCode");
-            lib.SetNameOfEnumWithMatchingItem("SDLK_UNKNOWN", "Key");
-            lib.SetNameOfEnumWithMatchingItem("KMOD_NONE", "KeyModifier");
-            lib.SetNameOfEnumWithMatchingItem("SDL_LOG_CATEGORY_CUSTOM", "LogCategory");
+            ctx.SetNameOfEnumWithMatchingItem("SDL_SCANCODE_UNKNOWN", "ScanCode");
+            ctx.SetNameOfEnumWithMatchingItem("SDLK_UNKNOWN", "Key");
+            ctx.SetNameOfEnumWithMatchingItem("KMOD_NONE", "KeyModifier");
+            ctx.SetNameOfEnumWithMatchingItem("SDL_LOG_CATEGORY_CUSTOM", "LogCategory");
 
-            lib.GenerateEnumFromMacros("InitFlags", "SDL_INIT_(.*)").SetFlags();
-            lib.GenerateEnumFromMacros("Endianness", "SDL_(.*)_ENDIAN");
-            lib.GenerateEnumFromMacros("InputState", "SDL_RELEASED", "SDL_PRESSED");
-            lib.GenerateEnumFromMacros("AlphaState", "SDL_ALPHA_(.*)");
-            lib.GenerateEnumFromMacros("HatState", "SDL_HAT_(.*)");
+            ctx.GenerateEnumFromMacros("InitFlags", "SDL_INIT_(.*)").SetFlags();
+            ctx.GenerateEnumFromMacros("Endianness", "SDL_(.*)_ENDIAN");
+            ctx.GenerateEnumFromMacros("InputState", "SDL_RELEASED", "SDL_PRESSED");
+            ctx.GenerateEnumFromMacros("AlphaState", "SDL_ALPHA_(.*)");
+            ctx.GenerateEnumFromMacros("HatState", "SDL_HAT_(.*)");
 
-            lib.IgnoreHeadersWithName("SDL_atomic*");
-            lib.IgnoreHeadersWithName("SDL_endian*");
-            lib.IgnoreHeadersWithName("SDL_main*");
-            lib.IgnoreHeadersWithName("SDL_mutex*");
-            lib.IgnoreHeadersWithName("SDL_stdinc*");
-            lib.IgnoreHeadersWithName("SDL_error");
+            ctx.IgnoreHeadersWithName("SDL_atomic*");
+            ctx.IgnoreHeadersWithName("SDL_endian*");
+            ctx.IgnoreHeadersWithName("SDL_main*");
+            ctx.IgnoreHeadersWithName("SDL_mutex*");
+            ctx.IgnoreHeadersWithName("SDL_stdinc*");
+            ctx.IgnoreHeadersWithName("SDL_error");
 
-            lib.IgnoreEnumWithMatchingItem("SDL_ENOMEM");
-            lib.IgnoreFunctionWithName("SDL_Error");
+            ctx.IgnoreEnumWithMatchingItem("SDL_ENOMEM");
+            ctx.IgnoreFunctionWithName("SDL_Error");
         }
 
         public void Postprocess(Driver driver, ASTContext lib)

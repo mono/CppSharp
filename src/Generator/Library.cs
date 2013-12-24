@@ -15,7 +15,7 @@ namespace CppSharp
         /// <summary>
         /// Do transformations that should happen before passes are processed.
         /// </summary>
-        void Preprocess(Driver driver, ASTContext lib);
+        void Preprocess(Driver driver, ASTContext ctx);
 
         /// <summary>
         /// Do transformations that should happen after passes are processed.
