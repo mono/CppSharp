@@ -566,25 +566,27 @@ namespace CppSharp.Generators.CLI
                 if (prop.Ignore) continue;
 
                 GenerateDeclarationCommon(prop);
-                GenerateProperty(prop, prop.HasGetter, prop.HasSetter);
+                GenerateProperty(prop);
             }
             PopIndent();
         }
 
-        public void GenerateProperty<T>(T decl, bool isGetter = true, bool isSetter = true)
-            where T : Declaration, ITypedDecl
+        public void GenerateProperty(Property property)
         {
-            if (!(isGetter || isSetter))
+            if (!(property.HasGetter || property.HasSetter))
                 return;
 
-            PushBlock(CLIBlockKind.Property, decl);
-            var type = decl.Type.Visit(TypePrinter, decl.QualifiedType.Qualifiers);
+            PushBlock(CLIBlockKind.Property, property);
+            var type = property.QualifiedType.Visit(TypePrinter);
 
-            WriteLine("property {0} {1}", type, decl.Name);
+            WriteLine("property {0} {1}", type, property.Name);
             WriteStartBraceIndent();
 
-            if(isGetter) WriteLine("{0} get();", type);
-            if(isSetter) WriteLine("void set({0});", type);
+            if(property.HasGetter)
+                WriteLine("{0} get();", type);
+
+            if(property.HasSetter)
+                WriteLine("void set({0});", type);
 
             WriteCloseBraceIndent();
             PopBlock(NewLineKind.BeforeNextBlock);
