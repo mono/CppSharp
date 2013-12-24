@@ -306,7 +306,7 @@ namespace CppSharp.Generators.CLI
 
         public void GenerateClassGenericMethods(Class @class)
         {
-            var printer = TypePrinter as CLITypePrinter;
+            var printer = TypePrinter;
             var oldCtx = printer.Context;
 
             PushIndent();
@@ -333,12 +333,28 @@ namespace CppSharp.Generators.CLI
                 var retType = function.ReturnType.Type.Visit(typePrinter,
                     function.ReturnType.Qualifiers);
 
-                var typeNamesStr = "";
+                var typeNames = "";
                 var paramNames = template.Parameters.Select(param => param.Name).ToList();
                 if (paramNames.Any())
-                    typeNamesStr = "typename " + string.Join(", typename ", paramNames);
+                    typeNames = "typename " + string.Join(", typename ", paramNames);
 
-                WriteLine("generic<{0}>", typeNamesStr);
+                Write("generic<{0}>", typeNames);
+
+                // Process the generic type constraints
+                var constraints = new List<string>();
+                foreach (var param in template.Parameters)
+                {
+                    if (string.IsNullOrWhiteSpace(param.Constraint))
+                        continue;
+                    constraints.Add(string.Format("{0} : {1}", param.Name,
+                        param.Constraint));
+                }
+
+                if (constraints.Any())
+                    Write(" where {0}", string.Join(", ", constraints));
+
+                NewLine();
+
                 WriteLine("{0} {1}({2});", retType, SafeIdentifier(function.Name),
                     GenerateParametersList(function.Parameters));
 

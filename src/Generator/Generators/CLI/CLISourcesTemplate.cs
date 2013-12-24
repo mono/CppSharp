@@ -102,6 +102,22 @@ namespace CppSharp.Generators.CLI
                 }
             }
 
+            if (Options.GenerateFunctionTemplates)
+            {
+                foreach (var template in @namespace.Templates)
+                {
+                    if (template.Ignore) continue;
+
+                    var functionTemplate = template as FunctionTemplate;
+                    if (functionTemplate == null) continue;
+
+                    if (functionTemplate.Ignore)
+                        continue;
+
+                    GenerateFunctionTemplate(functionTemplate);
+                }
+            }
+
             foreach(var childNamespace in @namespace.Namespaces)
                 GenerateDeclContext(childNamespace);
 
@@ -161,20 +177,6 @@ namespace CppSharp.Generators.CLI
                 GenerateEvent(@event, @class);
             }
 
-            if (Options.GenerateFunctionTemplates)
-            {
-                foreach (var template in @class.Templates)
-                {
-                    if (template.Ignore) continue;
-
-                    var functionTemplate = template as FunctionTemplate;
-                    if (functionTemplate == null) continue;
-
-                    GenerateDeclarationCommon(template);
-                    GenerateFunctionTemplate(functionTemplate, @class);
-                }
-            }
-
             foreach (var variable in @class.Variables)
             {
                 if (variable.Ignore)
@@ -190,10 +192,12 @@ namespace CppSharp.Generators.CLI
             PopBlock();
         }
 
-        private void GenerateFunctionTemplate(FunctionTemplate template, Class @class)
+        private void GenerateFunctionTemplate(FunctionTemplate template)
         {
-            var printer = TypePrinter as CLITypePrinter;
+            var printer = TypePrinter;
             var oldCtx = printer.Context;
+
+            PushBlock(CLIBlockKind.Template);
 
             var function = template.TemplatedFunction;
 
@@ -209,22 +213,25 @@ namespace CppSharp.Generators.CLI
             var retType = function.ReturnType.Type.Visit(typePrinter,
                 function.ReturnType.Qualifiers);
 
-            var typeNamesStr = "";
+            var typeNames = "";
             var paramNames = template.Parameters.Select(param => param.Name).ToList();
             if (paramNames.Any())
-                typeNamesStr = "typename " + string.Join(", typename ", paramNames);
+                typeNames = "typename " + string.Join(", typename ", paramNames);
 
-            WriteLine("generic<{0}>", typeNamesStr);
+            WriteLine("generic<{0}>", typeNames);
             WriteLine("{0} {1}::{2}({3})", retType, 
-                QualifiedIdentifier(@class), SafeIdentifier(function.Name),
+                QualifiedIdentifier(function.Namespace), SafeIdentifier(function.Name),
                 GenerateParametersList(function.Parameters));
 
             WriteStartBraceIndent();
 
+            var @class = function.Namespace as Class;
             GenerateFunctionCall(function, @class);
 
             WriteCloseBraceIndent();
             NewLine();
+
+            PopBlock(NewLineKind.BeforeNextBlock);
 
             printer.Context = oldCtx;
         }
@@ -734,7 +741,7 @@ namespace CppSharp.Generators.CLI
             {
                 WriteLine("auto {0} = ::{1}();", valueMarshalName, @class.QualifiedOriginalName);
 
-                var param = new Parameter() { Name = "(*this)" };
+                var param = new Parameter { Name = "(*this)" };
                 var ctx = new MarshalContext(Driver)
                     {
                         MarshalVarPrefix = valueMarshalName,
@@ -844,7 +851,7 @@ namespace CppSharp.Generators.CLI
                     };
 
                 var marshal = new CLIMarshalNativeToManagedPrinter(ctx);
-                function.ReturnType.Type.Visit(marshal, function.ReturnType.Qualifiers);
+                function.ReturnType.Visit(marshal);
 
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                     Write(marshal.Context.SupportBefore);
