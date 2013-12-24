@@ -167,7 +167,10 @@ namespace CppSharp.Passes
                 names.Add(fullName, new DeclarationName(decl.Name, Driver));
 
             if (names[fullName].UpdateName(decl))
-                Driver.Diagnostics.EmitWarning("Duplicate name {0}, renamed to {1}", fullName, decl.Name);
+            {
+                Driver.Diagnostics.Debug("Duplicate name {0}, renamed to {1}",
+                    fullName, decl.Name);
+            }
         }
     }
 }

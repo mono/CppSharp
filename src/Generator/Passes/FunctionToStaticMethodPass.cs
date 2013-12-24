@@ -56,8 +56,8 @@ namespace CppSharp.Passes
 
             @class.Methods.Add(method);
 
-            Log.EmitMessage("Static method: {0}::{1}", @class.Name,
-                function.Name);
+            Log.Debug("Function converted to static method: {0}::{1}",
+                @class.Name, function.Name);
 
             return true;
         }
