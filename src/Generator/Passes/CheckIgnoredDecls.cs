@@ -110,6 +110,15 @@ namespace CppSharp.Passes
                     return false;
                 }
 
+                var decayedType = param.Type.Desugar() as DecayedType;
+                if (decayedType != null)
+                {
+                    function.ExplicityIgnored = true;
+                    Log.Debug("Function '{0}' was ignored due to unsupported decayed type param",
+                        function.Name);
+                    return false;
+                }
+
                 if (param.Kind == ParameterKind.IndirectReturnType)
                 {
                     Class retClass;
