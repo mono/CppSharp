@@ -800,7 +800,26 @@ CppSharp::AST::ClassTemplate^ Parser::WalkClassTemplate(clang::ClassTemplateDecl
 
 //-----------------------------------//
 
-CppSharp::AST::FunctionTemplate^ Parser::WalkFunctionTemplate(clang::FunctionTemplateDecl* TD)
+static List<CppSharp::AST::TemplateParameter>^
+WalkTemplateParameterList(const clang::TemplateParameterList* TPL)
+{
+    auto params = gcnew List<CppSharp::AST::TemplateParameter>();
+
+    for(auto it = TPL->begin(); it != TPL->end(); ++it)
+    {
+        auto ND = *it;
+
+        auto TP = CppSharp::AST::TemplateParameter();
+        TP.Name = clix::marshalString<clix::E_UTF8>(ND->getNameAsString());
+
+        params->Add(TP);
+    }
+
+    return params;
+}
+
+CppSharp::AST::FunctionTemplate^
+Parser::WalkFunctionTemplate(clang::FunctionTemplateDecl* TD)
 {
     using namespace clang;
     using namespace clix;
@@ -812,25 +831,28 @@ CppSharp::AST::FunctionTemplate^ Parser::WalkFunctionTemplate(clang::FunctionTem
     if (FT != nullptr)
         return FT;
 
-    auto Function = WalkFunction(TD->getTemplatedDecl(), /*IsDependent=*/true,
-        /*AddToNamespace=*/false);
+    auto Params = WalkTemplateParameterList(TD->getTemplateParameters());
+
+    CppSharp::AST::Function^ Function = nullptr;
+    auto TemplatedDecl = TD->getTemplatedDecl();
+
+    if (auto MD = dyn_cast<CXXMethodDecl>(TemplatedDecl))
+        Function = WalkMethodCXX(MD);
+    else
+        Function = WalkFunction(TemplatedDecl, /*IsDependent=*/true,
+                                            /*AddToNamespace=*/false);
+
+    auto Name = clix::marshalString<clix::E_UTF8>(TD->getNameAsString());
+    FT = NS->FindFunctionTemplate(Name, Params);
+    if (FT != nullptr && FT->TemplatedDecl == Function)
+        return FT;
 
     FT = gcnew CppSharp::AST::FunctionTemplate(Function);
     HandleDeclaration(TD, FT);
 
     FT->Namespace = NS;
     FT->TemplatedDecl = Function;
-
-    auto TPL = TD->getTemplateParameters();
-    for(auto it = TPL->begin(); it != TPL->end(); ++it)
-    {
-        auto ND = *it;
-
-        auto TP = CppSharp::AST::TemplateParameter();
-        TP.Name = clix::marshalString<clix::E_UTF8>(ND->getNameAsString());
-
-        FT->Parameters->Add(TP);
-    }
+    FT->Parameters = Params;
 
     NS->Templates->Add(FT);
 

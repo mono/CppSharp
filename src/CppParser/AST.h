@@ -158,6 +158,11 @@ struct CS_API TemplateSpecializationType : public Type
 
 struct CS_API TemplateParameter
 {
+    bool operator==(const TemplateParameter& param) const
+    {
+        return Name == param.Name;
+    }
+
     std::string Name;
 };
 
@@ -332,6 +337,7 @@ struct Function;
 struct TypedefDecl;
 struct Namespace;
 struct Template;
+struct FunctionTemplate;
 struct Variable;
 
 struct CS_API DeclarationContext : public Declaration
@@ -346,6 +352,10 @@ struct CS_API DeclarationContext : public Declaration
     Class* FindClass(const std::string& Name);
     Class* FindClass(const std::string& Name, bool IsComplete,
         bool Create = false);
+
+    FunctionTemplate* FindFunctionTemplate(void* OriginalPtr);
+    FunctionTemplate* FindFunctionTemplate(const std::string& Name,
+        const std::vector<TemplateParameter>& Params);
 
     Enumeration* FindEnum(const std::string& Name, bool Create = false);
 

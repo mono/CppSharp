@@ -219,6 +219,13 @@ namespace CppSharp.AST
             return newClass;
         }
 
+        public FunctionTemplate FindFunctionTemplate(string name,
+            List<TemplateParameter> @params)
+        {
+            return Templates.FirstOrDefault(template => template.Name == name
+                && template.Parameters.SequenceEqual(@params)) as FunctionTemplate;
+        }
+
         public FunctionTemplate FindFunctionTemplate(IntPtr ptr)
         {
             return Templates.FirstOrDefault(template =>

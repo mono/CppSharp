@@ -702,29 +702,57 @@ ClassTemplate* Parser::WalkClassTemplate(clang::ClassTemplateDecl* TD)
 
 //-----------------------------------//
 
-FunctionTemplate* Parser::WalkFunctionTemplate(clang::FunctionTemplateDecl* TD)
+static std::vector<CppSharp::CppParser::TemplateParameter>
+WalkTemplateParameterList(const clang::TemplateParameterList* TPL)
 {
-    auto NS = GetNamespace(TD);
-    assert(NS && "Expected a valid namespace");
+    auto params = std::vector<CppSharp::CppParser::TemplateParameter>();
 
-    auto Function = WalkFunction(TD->getTemplatedDecl(), /*IsDependent=*/true,
-        /*AddToNamespace=*/false);
-
-    FunctionTemplate* FT = new FunctionTemplate;
-    HandleDeclaration(TD, FT);
-
-    FT->TemplatedDecl = Function;
-
-    auto TPL = TD->getTemplateParameters();
     for(auto it = TPL->begin(); it != TPL->end(); ++it)
     {
         auto ND = *it;
 
-        auto TP = TemplateParameter();
+        auto TP = CppSharp::CppParser::TemplateParameter();
         TP.Name = ND->getNameAsString();
 
-        FT->Parameters.push_back(TP);
+        params.push_back(TP);
     }
+
+    return params;
+}
+
+FunctionTemplate* Parser::WalkFunctionTemplate(clang::FunctionTemplateDecl* TD)
+{
+    using namespace clang;
+
+    auto NS = GetNamespace(TD);
+    assert(NS && "Expected a valid namespace");
+
+    auto FT = NS->FindFunctionTemplate((void*)TD);
+    if (FT != nullptr)
+        return FT;
+
+    auto Params = WalkTemplateParameterList(TD->getTemplateParameters());
+
+    CppSharp::CppParser::AST::Function* Function = nullptr;
+    auto TemplatedDecl = TD->getTemplatedDecl();
+
+    if (auto MD = dyn_cast<CXXMethodDecl>(TemplatedDecl))
+        Function = WalkMethodCXX(MD);
+    else
+        Function = WalkFunction(TemplatedDecl, /*IsDependent=*/true,
+                                            /*AddToNamespace=*/false);
+
+    auto Name = TD->getNameAsString();
+    FT = NS->FindFunctionTemplate(Name, Params);
+    if (FT != nullptr && FT->TemplatedDecl == Function)
+        return FT;
+
+    FT = new FunctionTemplate();
+    HandleDeclaration(TD, FT);
+
+    FT->_Namespace = NS;
+    FT->TemplatedDecl = Function;
+    FT->Parameters = Params;
 
     NS->Templates.push_back(FT);
 

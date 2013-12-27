@@ -219,6 +219,33 @@ Function* DeclarationContext::FindFunction(const std::string& Name, bool Create)
     return function;
 }
 
+FunctionTemplate*
+DeclarationContext::FindFunctionTemplate(void* OriginalPtr)
+{
+    auto foundFunction = std::find_if(Templates.begin(), Templates.end(),
+        [&](Template* func) { return func->OriginalPtr == OriginalPtr; });
+
+    if (foundFunction != Templates.end())
+        return static_cast<FunctionTemplate*>(*foundFunction);
+
+    return nullptr;
+}
+
+FunctionTemplate*
+DeclarationContext::FindFunctionTemplate(const std::string& Name,
+                                         const std::vector<TemplateParameter>& Params)
+{
+    FunctionTemplate* func = 0;
+    auto foundFunction = std::find_if(Templates.begin(), Templates.end(),
+        [&](Template* func) { return func->Name == Name && func->Parameters == Params; }
+    );
+
+    if (foundFunction != Templates.end())
+        return static_cast<FunctionTemplate*>(*foundFunction);
+
+    return nullptr;
+}
+
 TypedefDecl* DeclarationContext::FindTypedef(const std::string& Name, bool Create)
 {
     auto foundTypedef = std::find_if(Typedefs.begin(), Typedefs.end(),
