@@ -109,6 +109,9 @@ namespace CppSharp
                     && diag.Level == ParserDiagnosticLevel.Warning)
                     continue;
 
+                if (diag.Level == ParserDiagnosticLevel.Note)
+                    continue;
+
                 Diagnostics.EmitMessage(DiagnosticId.ParserDiagnostic,
                     "{0}({1},{2}): {3}: {4}", diag.FileName, diag.LineNumber,
                     diag.ColumnNumber, diag.Level.ToString().ToLower(),
