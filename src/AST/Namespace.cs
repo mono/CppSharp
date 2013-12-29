@@ -270,6 +270,8 @@ namespace CppSharp.AST
         {
             if (function.OperatorKind == CXXOperatorKind.Conversion)
                 return Functions.Where(fn => fn.OperatorKind == CXXOperatorKind.Conversion);
+            if (function.OperatorKind == CXXOperatorKind.Subscript)
+                return Functions.Where(fn => fn.OperatorKind == CXXOperatorKind.Subscript);
             return Functions.Where(fn => fn.Name == function.Name);
         }
 
