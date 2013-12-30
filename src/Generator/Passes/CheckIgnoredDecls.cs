@@ -7,19 +7,18 @@ namespace CppSharp.Passes
     {
         public bool CheckDeclarationAccess(Declaration decl)
         {
-            var generateAbstractImpls = Driver.Options.IsCSharpGenerator
-                                     && Driver.Options.GenerateAbstractImpls;
+            var generateNonPublicDecls = Driver.Options.IsCSharpGenerator;
 
             switch (decl.Access)
             {
             case AccessSpecifier.Public:
                 return true;
             case AccessSpecifier.Protected:
-                return generateAbstractImpls;
+                return generateNonPublicDecls;
             case AccessSpecifier.Private:
                 var method = decl as Method;
                 var isOverride = method != null && method.IsOverride;
-                return generateAbstractImpls && isOverride;
+                return generateNonPublicDecls && isOverride;
             }
 
             return true;
