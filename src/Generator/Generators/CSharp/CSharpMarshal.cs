@@ -124,8 +124,8 @@ namespace CppSharp.Generators.CSharp
                     string to = Generator.GeneratedIdentifier("to");
                     supportBefore.WriteLine("{0}* {1} = {2};", array.Type, to, v);
                     string from = Generator.GeneratedIdentifier("from");
-                    supportBefore.WriteLine("{0}* {1} = {2}->{3};",
-                        array.Type, from, Generator.GeneratedIdentifier("ptr"), Context.ArgName);
+                    supportBefore.WriteLine("{0}* {1} = {2};",
+                        array.Type, from, Context.ReturnVarName);
                     supportBefore.WriteLine("for (int i = 0; i < {0}; i++)", array.Size);
                     supportBefore.WriteLineIndent("*{0}++ = *{1}++;", to, from);
                     supportBefore.WriteCloseBraceIndent();
