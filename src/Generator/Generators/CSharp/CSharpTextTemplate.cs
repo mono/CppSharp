@@ -950,6 +950,7 @@ namespace CppSharp.Generators.CSharp
                     PopBlock(NewLineKind.BeforeNextBlock);
                     return;
                 }
+
                 NewLine();
                 WriteStartBraceIndent();
                 var method = function as Method;
@@ -965,7 +966,7 @@ namespace CppSharp.Generators.CSharp
                         TypePrinter.PushContext(CSharpTypePrinterContextKind.PrimitiveIndexer);
                     GenerateInternalFunctionCall(function);
                     if (isPrimitiveIndexer)
-                        TypePrinter.PopContext();   
+                        TypePrinter.PopContext();
                 }
             }
             else if (decl is Field)
@@ -1077,8 +1078,10 @@ namespace CppSharp.Generators.CSharp
             foreach (var prop in @class.Properties.Where(p => !p.Ignore))
             {
                 PushBlock(CSharpBlockKind.Property);
+
+                // If this is an indexer that returns an address use the real type
+                // because there is a setter anyway.
                 var type = prop.Type;
-                // if it's an indexer that returns an address use the real type because there is a setter anyway
                 if (prop.Parameters.Count > 0 && prop.Type.IsPointerToPrimitiveType())
                     type = ((PointerType) prop.Type).Pointee;
 
@@ -1086,19 +1089,23 @@ namespace CppSharp.Generators.CSharp
                 if (prop.ExplicitInterfaceImpl == null)
                 {
                     Write(Helpers.GetAccess(prop.Access));
+
                     if (prop.IsStatic)
                         Write("static ");
+
                     if (prop.IsOverride)
                         Write("override ");
                     else if (prop.IsPure && Driver.Options.GenerateAbstractImpls)
                         Write("abstract ");
                     else if (prop.IsVirtual)
                         Write("virtual ");
+
                     WriteLine("{0} {1}", type, GetPropertyName(prop));
                 }
                 else
                 {
-                    WriteLine("{0} {1}.{2}", type, prop.ExplicitInterfaceImpl.Name, GetPropertyName(prop));
+                    WriteLine("{0} {1}.{2}", type, prop.ExplicitInterfaceImpl.Name,
+                        GetPropertyName(prop));
                 }
                 WriteStartBraceIndent();
 
@@ -1108,7 +1115,8 @@ namespace CppSharp.Generators.CSharp
                         GeneratePropertyGetter(prop.Field, @class);
 
                     if (prop.HasSetter)
-                        GeneratePropertySetter(prop.Field.QualifiedType, prop.Field, @class);
+                        GeneratePropertySetter(prop.Field.QualifiedType, prop.Field,
+                            @class);
                 }
                 else
                 {
@@ -1116,7 +1124,8 @@ namespace CppSharp.Generators.CSharp
                         GeneratePropertyGetter(prop.GetMethod, @class);
 
                     if (prop.HasSetter)
-                        GeneratePropertySetter(prop.GetMethod.ReturnType, prop.SetMethod, @class);
+                        GeneratePropertySetter(prop.GetMethod.ReturnType, prop.SetMethod,
+                            @class);
                 }
 
                 WriteCloseBraceIndent();

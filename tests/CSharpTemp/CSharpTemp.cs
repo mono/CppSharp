@@ -34,15 +34,17 @@ namespace CppSharp.Tests
     {
         public override bool VisitFunctionDecl(Function function)
         {
-            if (!AlreadyVisited(function) && function.Name == "obsolete")
+            if (AlreadyVisited(function) || function.Name != "obsolete")
+                return false;
+
+            var attribute = new Attribute
             {
-                Attribute attribute = new Attribute
-                {
-                    Type = typeof(ObsoleteAttribute),
-                    Value = string.Format("\"{0} is obsolete.\"", function.Name)
-                };
-                function.Attributes.Add(attribute);
-            }
+                Type = typeof(ObsoleteAttribute),
+                Value = string.Format("\"{0} is obsolete.\"", function.Name)
+            };
+
+            function.Attributes.Add(attribute);
+
             return base.VisitFunctionDecl(function);
         }
     }
