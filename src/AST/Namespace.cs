@@ -266,10 +266,15 @@ namespace CppSharp.AST
             return Enums.Find(e => e.ItemsByName.ContainsKey(name));
         }
 
+        public IEnumerable<Method> FindOperator(CXXOperatorKind kind)
+        {
+            return Functions.Where(fn => fn.OperatorKind == function.OperatorKind);
+        }
+
         public virtual IEnumerable<Function> GetFunctionOverloads(Function function)
         {
             if (function.IsOperator)
-                return Functions.Where(fn => fn.OperatorKind == function.OperatorKind);
+                return FindOperator(function.OperatorKind);
             return Functions.Where(fn => fn.Name == function.Name);
         }
 
