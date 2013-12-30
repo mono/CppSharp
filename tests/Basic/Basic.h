@@ -233,3 +233,5 @@ struct DLL_API TestDelegates
     DelegateInClass A;
     DelegateInGlobalNamespace B;
 };
+
+DLL_API Bar::Item operator |(Bar::Item left, Bar::Item right);

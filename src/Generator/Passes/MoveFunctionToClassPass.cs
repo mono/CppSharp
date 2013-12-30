@@ -20,6 +20,9 @@ namespace CppSharp.Passes
             if (@class != null)
                 MoveFunction(function, @class);
 
+            if (function.IsOperator)
+                function.ExplicityIgnored = true;
+
             return true;
         }
 
@@ -43,6 +46,8 @@ namespace CppSharp.Passes
                 IsStatic = true
             };
 
+            function.ExplicityIgnored = true;
+
             if (method.OperatorKind != CXXOperatorKind.None)
             {
                 var param = function.Parameters[0];
@@ -53,8 +58,6 @@ namespace CppSharp.Passes
                 method.SynthKind = FunctionSynthKind.NonMemberOperator;
                 method.OriginalFunction = null;
             }
-
-            function.ExplicityIgnored = true;
 
             @class.Methods.Add(method);
         }

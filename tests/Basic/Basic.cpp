@@ -207,3 +207,8 @@ int test(basic& s)
 {
     return 5;
 }
+
+Bar::Item operator |(Bar::Item left, Bar::Item right)
+{
+    return left | right;
+}
