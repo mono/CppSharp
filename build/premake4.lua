@@ -20,11 +20,26 @@ newoption {
      }
 }
 
-function SetupParser()
-  local c = configuration "vs*"
+function SetupCLIParser()
+  local parser = _OPTIONS["parser"]
+  if not parser or parser == "cli" then
     defines { "OLD_PARSER" }
     links { "CppSharp.Parser" }
-  configuration(c)
+  else
+    links { "CppSharp.Parser.CLI" }
+  end
+end
+
+function SetupCSharpParser()
+  links { "CppSharp.Parser.CSharp" }
+end
+
+function SetupParser()
+  if string.match(action, "vs*") then
+    SetupCLIParser()
+  else
+    SetupCSharpParser()
+  end
 end
 
 solution "CppSharp"
