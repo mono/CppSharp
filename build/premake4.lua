@@ -10,6 +10,16 @@ dofile "Tests.lua"
 -- Setup the LLVM dependency
 dofile "LLVM.lua"
 
+newoption {
+     trigger = "parser",
+     description = "Controls which version of the parser is enabled.",
+     value = "version",
+     allowed = {
+          { "cpp", "Cross-platform C++ parser."},
+          { "cli", "VS-only C++/CLI parser."},
+     }
+}
+
 function SetupParser()
   local c = configuration "vs*"
     defines { "OLD_PARSER" }
