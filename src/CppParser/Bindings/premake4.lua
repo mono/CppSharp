@@ -8,11 +8,7 @@ project "CppSharp.Parser.Gen"
   files { "ParserGen.cs", "*.lua" }
   links { "CppSharp.AST", "CppSharp.Generator" }
 
-  configuration { "vs*" }
-    links { "CppSharp.Parser" }
-
-  configuration { "not vs*" }
-    links { "CppSharp.Parser.CSharp" }
+  SetupParser()
   
 project "CppSharp.Parser.CSharp"
   
