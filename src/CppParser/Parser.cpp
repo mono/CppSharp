@@ -2440,7 +2440,8 @@ ParserResult* Parser::ParseHeader(const std::string& File)
  }
 
 ParserResultKind Parser::ParseArchive(llvm::StringRef File,
-                                      llvm::MemoryBuffer *Buffer)
+                                      llvm::MemoryBuffer *Buffer,
+                                      CppSharp::CppParser::NativeLibrary*& NativeLib)
 {
     llvm::error_code Code;
     llvm::object::Archive Archive(Buffer, Code);
@@ -2449,7 +2450,7 @@ ParserResultKind Parser::ParseArchive(llvm::StringRef File,
         return ParserResultKind::Error;
 
     auto LibName = File;
-    auto NativeLib = new NativeLibrary();
+    NativeLib = new NativeLibrary();
     NativeLib->FileName = LibName;
 
     for(auto it = Archive.begin_symbols(); it != Archive.end_symbols(); ++it)
@@ -2466,7 +2467,8 @@ ParserResultKind Parser::ParseArchive(llvm::StringRef File,
 }
 
 ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
-                                        llvm::MemoryBuffer *Buffer)
+                                        llvm::MemoryBuffer *Buffer,
+                                        CppSharp::CppParser::NativeLibrary*& NativeLib)
 {
     auto Object = llvm::object::ObjectFile::createObjectFile(Buffer);
 
@@ -2474,7 +2476,7 @@ ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
         return ParserResultKind::Error;
 
     auto LibName = File;
-    auto NativeLib = new NativeLibrary();
+    NativeLib = new NativeLibrary();
     NativeLib->FileName = LibName;
 
     llvm::error_code ec;
@@ -2535,11 +2537,15 @@ ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
         return res;
     }
 
-    res->Kind = ParseArchive(File, FM.getBufferForFile(FileEntry));
+    res->Kind = ParseArchive(File, FM.getBufferForFile(FileEntry),
+        res->Library);
+
     if (res->Kind == ParserResultKind::Success)
         return res;
 
-    res->Kind = ParseSharedLib(File, FM.getBufferForFile(FileEntry));
+    res->Kind = ParseSharedLib(File, FM.getBufferForFile(FileEntry),
+        res->Library);
+
     if (res->Kind == ParserResultKind::Success)
         return res;
 
