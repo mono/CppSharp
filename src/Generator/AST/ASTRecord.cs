@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CppSharp.AST;
 using Type = CppSharp.AST.Type;
@@ -104,6 +105,11 @@ namespace CppSharp.Generators.AST
             return recordStack.Any(rec => decl == rec.Object);
         }
 
+        public bool Contains(Func<ASTRecord, bool> func)
+        {
+            return recordStack.Any(func);
+        }
+
         public bool IsBeingVisited(Declaration decl)
         {
             var record = recordStack.FirstOrDefault(rec => decl == rec.Object);
@@ -193,6 +199,9 @@ namespace CppSharp.Generators.AST
                 return true;
 
             if (decl is TranslationUnit)
+                return false;
+
+            if (recordStack.Contains(record => record.Object is Type))
                 return false;
 
             if (recordStack.IsBeingVisited(decl))
