@@ -2487,8 +2487,11 @@ ParserResult^ Parser::ParseHeader(const std::string& File)
 
     // Check that the file is reachable.
     const clang::DirectoryLookup *Dir;
-    if (!C->getPreprocessor().getHeaderSearchInfo().LookupFile(File, /*isAngled*/true,
-        nullptr, Dir, nullptr, nullptr, nullptr, nullptr))
+    llvm::SmallVector<const clang::FileEntry*, 0> Includers;
+
+    if (!C->getPreprocessor().getHeaderSearchInfo().LookupFile(File,
+        clang::SourceLocation(), /*isAngled*/true,
+        nullptr, Dir, Includers, nullptr, nullptr, nullptr))
     {
         res->Kind = ParserResultKind::FileNotFound;
         return res;
