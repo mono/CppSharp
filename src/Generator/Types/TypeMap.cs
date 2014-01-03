@@ -59,6 +59,11 @@ namespace CppSharp.Types
             throw new NotImplementedException();
         }
 
+        public virtual void CSharpMarshalCopyCtorToManaged(MarshalContext ctx)
+        {
+            
+        }
+
         #endregion
 
         #region C++/CLI backend

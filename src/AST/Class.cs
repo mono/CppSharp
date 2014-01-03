@@ -33,10 +33,26 @@ namespace CppSharp.AST
             get
             {
                 Class @class;
-                if (!Type.IsTagDecl(out @class))
-                    throw new NotSupportedException();
+                if (Type.IsTagDecl(out @class))
+                    return @class;
 
-                return @class;
+                var type = Type.Desugar() as TemplateSpecializationType;
+                if (type == null)
+                {
+                    TypedefType typedef;
+                    if (Type.IsPointerTo(out typedef))
+                    {
+                        type = (TemplateSpecializationType) typedef.Desugar();
+                    }
+                    else
+                    {
+                        Type.IsPointerTo(out type);
+                    }
+                }
+                var templatedClass = ((ClassTemplate) type.Template).TemplatedClass;
+                return templatedClass.IsIncomplete
+                    ? (Class) templatedClass.CompleteDeclaration
+                    : templatedClass;
             }
         }
 
