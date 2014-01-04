@@ -63,11 +63,13 @@ namespace CppSharp
             if (string.IsNullOrWhiteSpace(options.LibraryName))
                 throw new InvalidOptionException();
 
+#if OLD_PARSER
             for (var i = 0; i < options.IncludeDirs.Count; i++)
                 options.IncludeDirs[i] = Path.GetFullPath(options.IncludeDirs[i]);
 
             for (var i = 0; i < options.LibraryDirs.Count; i++)
                 options.LibraryDirs[i] = Path.GetFullPath(options.LibraryDirs[i]);
+#endif
 
             if (string.IsNullOrWhiteSpace(options.OutputNamespace))
                 options.OutputNamespace = options.LibraryName;
@@ -103,6 +105,7 @@ namespace CppSharp
                     break;
             }
 
+#if OLD_PARSER
             foreach (var diag in result.Diagnostics)
             {
                 if (Options.IgnoreParseWarnings
@@ -117,6 +120,25 @@ namespace CppSharp
                     diag.ColumnNumber, diag.Level.ToString().ToLower(),
                     diag.Message);
             }
+#else
+            for (uint i = 0; i < result.DiagnosticsCount; ++i)
+            {
+                var diag = result.getDiagnostics(i);
+
+                if (Options.IgnoreParseWarnings
+                    && diag.Level == ParserDiagnosticLevel.Warning)
+                    continue;
+
+                if (diag.Level == ParserDiagnosticLevel.Note)
+                    continue;
+
+                Diagnostics.EmitMessage(DiagnosticId.ParserDiagnostic,
+                    "{0}({1},{2}): {3}: {4}", diag.FileName, diag.LineNumber,
+                    diag.ColumnNumber, diag.Level.ToString().ToLower(),
+                    diag.Message);
+            }
+
+#endif
         }
 
         ParserOptions BuildParseOptions(SourceFile file)
@@ -139,6 +161,32 @@ namespace CppSharp
                 Verbose = Options.Verbose,
             };
 
+#if !OLD_PARSER
+            for (uint i = 0; i < Options.IncludeDirsCount; ++i)
+            {
+                var include = Options.getIncludeDirs(i);
+                options.addIncludeDirs(include);
+            }
+
+            for (uint i = 0; i < Options.SystemIncludeDirsCount; ++i)
+            {
+                var include = Options.getSystemIncludeDirs(i);
+                options.addSystemIncludeDirs(include);
+            }
+
+            for (uint i = 0; i < Options.DefinesCount; ++i)
+            {
+                var define = Options.getDefines(i);
+                options.addDefines(define);
+            }
+
+            for (uint i = 0; i < Options.LibraryDirsCount; ++i)
+            {
+                var lib = Options.getLibraryDirs(i);
+                options.addLibraryDirs(lib);
+            }
+#endif
+
             return options;
         }
 
@@ -155,14 +203,12 @@ namespace CppSharp
 #else
             var parser = new ClangParser(ASTContext);
 #endif
-            parser.SourceParsed += OnSourceFileParsed;
 
+            parser.SourceParsed += OnSourceFileParsed;
             parser.ParseProject(Project, Options);
 
 #if !OLD_PARSER
             ASTContext = ClangParser.ConvertASTContext(parser.ASTContext);
-#else
-            ASTContext = parser.ASTContext;
 #endif
 
             return true;
