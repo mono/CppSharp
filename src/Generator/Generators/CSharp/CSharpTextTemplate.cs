@@ -1124,8 +1124,8 @@ namespace CppSharp.Generators.CSharp
                         GeneratePropertyGetter(prop.GetMethod, @class);
 
                     if (prop.HasSetter)
-                        GeneratePropertySetter(prop.GetMethod.ReturnType, prop.SetMethod,
-                            @class);
+                        GeneratePropertySetter(prop.SetMethod.Parameters[0].QualifiedType,
+                            prop.SetMethod, @class);
                 }
 
                 WriteCloseBraceIndent();
