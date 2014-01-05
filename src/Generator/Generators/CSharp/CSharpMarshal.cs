@@ -340,6 +340,12 @@ namespace CppSharp.Generators.CSharp
             Context.Return.Write("_{0}", parameter.Name);
             return true;
         }
+
+        public override bool VisitMemberPointerType(MemberPointerType member, TypeQualifiers quals)
+        {
+            Context.Return.Write(Context.ReturnVarName);
+            return true;
+        }
     }
 
     public class CSharpMarshalManagedToNativePrinter : CSharpMarshalPrinter
@@ -578,8 +584,8 @@ namespace CppSharp.Generators.CSharp
                 if (type.IsTagDecl(out decl) && decl.IsValueType)
                     Context.Return.Write("{0}.{1}", param, Helpers.InstanceIdentifier);
                 else
-                    Context.Return.Write("{0} == ({2}) null ? global::System.IntPtr.Zero : {0}.{1}", param,
-                        Helpers.InstanceIdentifier, type);
+                    Context.Return.Write("ReferenceEquals({0}, null) ? global::System.IntPtr.Zero : {0}.{1}", param,
+                        Helpers.InstanceIdentifier);
                 return;
             }
 
