@@ -1124,7 +1124,8 @@ namespace CppSharp.Generators.CSharp
                         GeneratePropertyGetter(prop.GetMethod, @class);
 
                     if (prop.HasSetter)
-                        GeneratePropertySetter(prop.SetMethod.Parameters[0].QualifiedType,
+                        GeneratePropertySetter(prop.GetMethod != null ?
+                            prop.GetMethod.ReturnType : prop.SetMethod.Parameters[0].QualifiedType,
                             prop.SetMethod, @class);
                 }
 
