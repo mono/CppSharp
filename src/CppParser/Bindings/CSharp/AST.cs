@@ -5822,6 +5822,11 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                        EntryPoint="?getSymbols@NativeLibrary@AST@CppParser@CppSharp@@QAEPBDI@Z")]
+                    internal static extern global::System.IntPtr getSymbols_0(global::System.IntPtr instance, uint i);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="?getFileName@NativeLibrary@AST@CppParser@CppSharp@@QAEPBDXZ")]
                     internal static extern global::System.IntPtr getFileName_0(global::System.IntPtr instance);
 
@@ -5881,6 +5886,13 @@ namespace CppSharp
                 protected virtual void Dispose(bool disposing)
                 {
                     Marshal.FreeHGlobal(__Instance);
+                }
+
+                public string getSymbols(uint i)
+                {
+                    var __ret = Internal.getSymbols_0(__Instance, i);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return Marshal.PtrToStringAnsi(__ret);
                 }
 
                 public string FileName

@@ -2501,6 +2501,7 @@ CppSharp::Parser::AST::NativeLibrary::NativeLibrary(System::IntPtr native)
 System::String^ CppSharp::Parser::AST::NativeLibrary::getSymbols(unsigned int i)
 {
     auto __ret = ((::CppSharp::CppParser::AST::NativeLibrary*)NativePtr)->getSymbols(i);
+    if (__ret == nullptr) return nullptr;
     return clix::marshalString<clix::E_UTF8>(__ret);
 }
 

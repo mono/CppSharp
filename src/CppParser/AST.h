@@ -25,6 +25,11 @@
     type get##name (unsigned i) { return name[i]; } \
     unsigned get##name##Count () { return name.size(); }
 
+#define VECTOR_STRING(name) \
+    std::vector<std::string> name; \
+    const char* get##name (unsigned i) { return name[i].c_str(); } \
+    unsigned get##name##Count () { return name.size(); }
+
 #define STRING(name) \
     std::string name; \
     const char* get##name() { return name.c_str(); } \
@@ -614,7 +619,7 @@ struct CS_API TranslationUnit : public Namespace
 struct CS_API NativeLibrary
 {
     STRING(FileName)
-    VECTOR(std::string, Symbols)
+    VECTOR_STRING(Symbols)
 };
 
 struct CS_API ASTContext
