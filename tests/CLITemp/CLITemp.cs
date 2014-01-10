@@ -11,7 +11,7 @@ namespace CppSharp.Tests
         {
         }
 
-        public override void Preprocess(Driver driver, ASTContext lib)
+        public override void Preprocess(Driver driver, ASTContext ctx)
         {
         }
 

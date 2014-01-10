@@ -2,6 +2,8 @@
 using System.IO;
 using CppSharp.AST;
 using CppSharp.Generators;
+using CppSharp.Passes;
+using CppSharp.Types;
 
 namespace CppSharp
 {
@@ -41,28 +43,39 @@ namespace CppSharp
             options.GeneratorKind = Kind;
             options.Headers.Add("AST.h");
             options.Headers.Add("CppParser.h");
-            var basePath = Path.Combine(GetSourceDirectory(), "CppParser");
-            options.IncludeDirs.Add(basePath);
             options.Libraries.Add("CppSharp.CppParser.lib");
+
+            var basePath = Path.Combine(GetSourceDirectory(), "CppParser");
+
+#if OLD_PARSER
+            options.IncludeDirs.Add(basePath);
             options.LibraryDirs.Add(".");
+
+#else
+            options.addIncludeDirs(basePath);
+            options.addLibraryDirs(".");
+#endif
+
             options.OutputDir = "../../../../src/CppParser/Bindings/";
             options.OutputDir += Kind.ToString();
             options.GenerateLibraryNamespace = false;
             options.CheckSymbols = false;
+            options.Verbose = true;
         }
 
         public void SetupPasses(Driver driver)
         {
-
+            driver.AddTranslationUnitPass(new IgnoreStdFieldsPass());
+            driver.AddTranslationUnitPass(new GetterSetterToPropertyPass());
         }
 
-        public void Preprocess(Driver driver, ASTContext lib)
+        public void Preprocess(Driver driver, ASTContext ctx)
         {
-            lib.SetClassAsValueType("CppSharp::ParserOptions");
-            lib.SetClassAsValueType("CppSharp::ParserDiagnostic");
-            lib.SetClassAsValueType("CppSharp::ParserResult");
+            ctx.SetClassAsValueType("CppSharp::ParserOptions");
+            ctx.SetClassAsValueType("CppSharp::ParserDiagnostic");
+            ctx.SetClassAsValueType("CppSharp::ParserResult");
 
-            lib.RenameNamespace("CppSharp::CppParser", "Parser");
+            ctx.RenameNamespace("CppSharp::CppParser", "Parser");
         }
 
         public void Postprocess(Driver driver, ASTContext lib)
@@ -77,6 +90,24 @@ namespace CppSharp
 
             Console.WriteLine("Generating the C# parser bindings...");
             ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp));
+        }
+    }
+
+    public class IgnoreStdFieldsPass : TranslationUnitPass
+    {
+        public override bool VisitFieldDecl(Field field)
+        {
+            if (field.Ignore)
+                return false;
+
+            var typePrinter = new CppTypePrinter(Driver.TypeDatabase);
+            var typeName = field.QualifiedType.Visit(typePrinter);
+
+            if (!typeName.Contains("std::"))
+                return false;
+
+            field.ExplicityIgnored = true;
+            return true;
         }
     }
 }

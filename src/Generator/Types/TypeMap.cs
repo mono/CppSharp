@@ -162,12 +162,6 @@ namespace CppSharp.Types
 
         public bool FindTypeMap(Type type, out TypeMap typeMap)
         {
-            if (type.IsDependent)
-            {
-                typeMap = null;
-                return false;
-            }
-
             var typePrinter = new CppTypePrinter(this);
 
             var template = type as TemplateSpecializationType;

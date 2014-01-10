@@ -5,19 +5,39 @@ namespace CppSharp.Passes
 {
     public class CheckIgnoredDeclsPass : TranslationUnitPass
     {
+        public bool CheckDeclarationAccess(Declaration decl)
+        {
+            var generateNonPublicDecls = Driver.Options.IsCSharpGenerator;
+
+            switch (decl.Access)
+            {
+            case AccessSpecifier.Public:
+                return true;
+            case AccessSpecifier.Protected:
+                return generateNonPublicDecls;
+            case AccessSpecifier.Private:
+                var method = decl as Method;
+                var isOverride = method != null && method.IsOverride;
+                return generateNonPublicDecls && isOverride;
+            }
+
+            return true;
+        }
+
         public override bool VisitDeclaration(Declaration decl)
         {
-            if (decl.ExplicityIgnored)
+            if (AlreadyVisited(decl))
                 return false;
 
-            if (decl.Access == AccessSpecifier.Private)
+            if (decl.ExplicityIgnored)
+                return true;
+
+            if (!CheckDeclarationAccess(decl))
             {
-                Method method = decl as Method;
-                if (method == null || !method.IsOverride)
-                {
-                    decl.ExplicityIgnored = true;
-                    return false;
-                }
+                Log.Debug("Decl '{0}' was ignored due to invalid access",
+                    decl.Name);
+                decl.ExplicityIgnored = true;
+                return true;
             }
 
             if (decl.IsDependent)
@@ -25,6 +45,7 @@ namespace CppSharp.Passes
                 decl.ExplicityIgnored = true;
                 Log.Debug("Decl '{0}' was ignored due to dependent context",
                     decl.Name);
+                return true;
             }
 
             return true;
@@ -88,6 +109,15 @@ namespace CppSharp.Passes
                     return false;
                 }
 
+                var decayedType = param.Type.Desugar() as DecayedType;
+                if (decayedType != null)
+                {
+                    function.ExplicityIgnored = true;
+                    Log.Debug("Function '{0}' was ignored due to unsupported decayed type param",
+                        function.Name);
+                    return false;
+                }
+
                 if (param.Kind == ParameterKind.IndirectReturnType)
                 {
                     Class retClass;
@@ -108,9 +138,6 @@ namespace CppSharp.Passes
 
         public override bool VisitMethodDecl(Method method)
         {
-            if (!VisitDeclaration(method))
-                return false;
-
             if (!CheckIgnoredBaseOverridenMethod(method))
                 return false;
 
@@ -214,22 +241,6 @@ namespace CppSharp.Passes
                 property.ExplicityIgnored = true;
                 Log.Debug("Property '{0}' was ignored due to {1} type",
                     property.Name, msg);
-                return false;
-            }
-
-            if (property.GetMethod != null && !VisitFunctionDecl(property.GetMethod))
-            {
-                property.ExplicityIgnored = true;
-                Log.Debug("Property '{0}' was ignored due to ignored getter",
-                                  property.Name, msg);
-                return false;
-            }
-
-            if (property.SetMethod != null && !VisitFunctionDecl(property.SetMethod))
-            {
-                property.ExplicityIgnored = true;
-                Log.Debug("Property '{0}' was ignored due to ignored setter",
-                                  property.Name, msg);
                 return false;
             }
 

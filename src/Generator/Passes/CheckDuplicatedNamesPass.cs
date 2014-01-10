@@ -89,23 +89,28 @@ namespace CppSharp.Passes
 
         public CheckDuplicatedNamesPass()
         {
+            ClearVisitedDeclarations = false;
             names = new Dictionary<string, DeclarationName>();
         }
 
         public override bool VisitFieldDecl(Field decl)
         {
+            if (!VisitDeclaration(decl))
+                return false;
+
             if (ASTUtils.CheckIgnoreField(decl))
                 return false;
 
-            if(!AlreadyVisited(decl))
-                CheckDuplicate(decl);
-
+            CheckDuplicate(decl);
             return false;
         }
 
         public override bool VisitProperty(Property decl)
         {
-            if(!AlreadyVisited(decl) && decl.ExplicitInterfaceImpl == null)
+            if (!VisitDeclaration(decl))
+                return false;
+
+            if (decl.ExplicitInterfaceImpl == null)
                 CheckDuplicate(decl);
 
             return false;
@@ -113,10 +118,13 @@ namespace CppSharp.Passes
 
         public override bool VisitMethodDecl(Method decl)
         {
+            if (!VisitDeclaration(decl))
+                return false;
+
             if (ASTUtils.CheckIgnoreMethod(decl))
                 return false;
 
-            if (!AlreadyVisited(decl) && decl.ExplicitInterfaceImpl == null)
+            if (decl.ExplicitInterfaceImpl == null)
                 CheckDuplicate(decl);
 
             return false;
@@ -124,7 +132,10 @@ namespace CppSharp.Passes
 
         public override bool VisitClassDecl(Class @class)
         {
-            if (AlreadyVisited(@class) || @class.IsIncomplete)
+            if (!VisitDeclaration(@class))
+                return false;
+
+            if (@class.IsIncomplete)
                 return false;
 
             // DeclarationName should always process methods first, 
@@ -156,7 +167,10 @@ namespace CppSharp.Passes
                 names.Add(fullName, new DeclarationName(decl.Name, Driver));
 
             if (names[fullName].UpdateName(decl))
-                Driver.Diagnostics.EmitWarning("Duplicate name {0}, renamed to {1}", fullName, decl.Name);
+            {
+                Driver.Diagnostics.Debug("Duplicate name {0}, renamed to {1}",
+                    fullName, decl.Name);
+            }
         }
     }
 }

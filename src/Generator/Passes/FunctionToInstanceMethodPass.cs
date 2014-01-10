@@ -63,7 +63,7 @@ namespace CppSharp.Passes
 
             @class.Methods.Add(method);
 
-            Log.EmitMessage("Instance method: {0}::{1}", @class.Name,
+            Log.Debug("Function converted to instance method: {0}::{1}", @class.Name,
                 function.Name);
 
             return true;

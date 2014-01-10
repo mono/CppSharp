@@ -10,11 +10,36 @@ dofile "Tests.lua"
 -- Setup the LLVM dependency
 dofile "LLVM.lua"
 
-function SetupParser()
-  local c = configuration "vs*"
+newoption {
+     trigger = "parser",
+     description = "Controls which version of the parser is enabled.",
+     value = "version",
+     allowed = {
+          { "cpp", "Cross-platform C++ parser."},
+          { "cli", "VS-only C++/CLI parser."},
+     }
+}
+
+function SetupCLIParser()
+  local parser = _OPTIONS["parser"]
+  if not parser or parser == "cli" then
     defines { "OLD_PARSER" }
     links { "CppSharp.Parser" }
-  configuration(c)
+  else
+    links { "CppSharp.Parser.CLI" }
+  end
+end
+
+function SetupCSharpParser()
+  links { "CppSharp.Parser.CSharp" }
+end
+
+function SetupParser()
+  if string.match(action, "vs*") then
+    SetupCLIParser()
+  else
+    SetupCSharpParser()
+  end
 end
 
 solution "CppSharp"

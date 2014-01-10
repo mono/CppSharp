@@ -67,9 +67,6 @@ namespace CppSharp
             if (!VisitDeclaration(@class))
                 return false;
 
-            if (AlreadyVisited(@class))
-                return true;
-
             if (@class.IsValueType)
                 return false;
 

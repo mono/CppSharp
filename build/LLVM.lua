@@ -18,10 +18,10 @@ function SetupLLVMLibs()
   }
   
   configuration { "Debug", "vs*" }
-    libdirs { path.join(LLVMBuildDir, "lib/Debug") }
+    libdirs { path.join(LLVMBuildDir, "Debug/lib") }
 
   configuration { "Release", "vs*" }
-    libdirs { path.join(LLVMBuildDir, "lib/RelWithDebInfo") }
+    libdirs { path.join(LLVMBuildDir, "RelWithDebInfo/lib") }
 
   configuration "not vs*"
     buildoptions { "-fpermissive" }

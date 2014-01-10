@@ -160,6 +160,7 @@ namespace CppSharp.AST
 
                 var hiddenParam = Parameters.Single(param =>
                     param.Kind == ParameterKind.IndirectReturnType);
+
                 return hiddenParam.QualifiedType;
             }
         }
@@ -187,24 +188,39 @@ namespace CppSharp.AST
                                     CallingConvention = this.CallingConvention,
                                     ReturnType = this.ReturnType
                                 };
+
             functionType.Parameters.AddRange(Parameters);
             ReplaceIndirectReturnParamWithRegular(functionType);
-            var pointerType = new PointerType { QualifiedPointee = new QualifiedType(functionType) };
+
+            var pointerType = new PointerType
+                {
+                    QualifiedPointee = new QualifiedType(functionType)
+                };
+
             return new QualifiedType(pointerType);
         }
 
-        private static void ReplaceIndirectReturnParamWithRegular(FunctionType functionType)
+        static void ReplaceIndirectReturnParamWithRegular(FunctionType functionType)
         {
-            for (int i = functionType.Parameters.Count - 1; i >= 0; i--)
+            for (var i = functionType.Parameters.Count - 1; i >= 0; i--)
             {
                 var parameter = functionType.Parameters[i];
-                if (parameter.Kind == ParameterKind.IndirectReturnType)
-                {
-                    var ptrType = new PointerType { QualifiedPointee = new QualifiedType(parameter.Type) };
-                    var retParam = new Parameter { Name = parameter.Name, QualifiedType = new QualifiedType(ptrType) };
-                    functionType.Parameters.RemoveAt(i);
-                    functionType.Parameters.Insert(i, retParam);
-                }
+                if (parameter.Kind != ParameterKind.IndirectReturnType)
+                    continue;
+
+                var ptrType = new PointerType
+                    {
+                        QualifiedPointee = new QualifiedType(parameter.Type)
+                    };
+
+                var retParam = new Parameter
+                    {
+                        Name = parameter.Name,
+                        QualifiedType = new QualifiedType(ptrType)
+                    };
+
+                functionType.Parameters.RemoveAt(i);
+                functionType.Parameters.Insert(i, retParam);
             }
         }
     }

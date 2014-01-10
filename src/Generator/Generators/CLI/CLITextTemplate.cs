@@ -41,6 +41,8 @@ namespace CppSharp.Generators.CLI
         public const int Function = BlockKind.LAST + 12;
         public const int Property = BlockKind.LAST + 13;
         public const int Typedef = BlockKind.LAST + 14;
+        public const int Variable = BlockKind.LAST + 15;
+        public const int Template = BlockKind.LAST + 16;
     }
 
     /// <summary>
@@ -83,6 +85,12 @@ namespace CppSharp.Generators.CLI
         {
             if (method.OperatorKind == CXXOperatorKind.Conversion)
                 return SafeIdentifier("operator " + method.ConversionType);
+
+            if (method.IsConstructor || method.IsDestructor)
+            {
+                var @class = (Class) method.Namespace;
+                return SafeIdentifier(@class.Name);
+            }
 
             return SafeIdentifier(method.Name);
         }

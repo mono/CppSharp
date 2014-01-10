@@ -17,6 +17,7 @@ namespace CppSharp.AST
 
     public class AstVisitorOptions
     {
+        public bool VisitDeclaration = true;
         public bool VisitClassBases = true;
         public bool VisitClassFields = true;
         public bool VisitClassProperties = true;
@@ -240,17 +241,11 @@ namespace CppSharp.AST
 
         public virtual bool VisitDeclaration(Declaration decl)
         {
-            return true;
+            return !AlreadyVisited(decl);
         }
 
         public virtual bool VisitClassDecl(Class @class)
         {
-            if (AlreadyVisited(@class))
-                return true;
-
-            if (!VisitDeclaration(@class))
-                return false;
-
             if (!VisitDeclarationContext(@class))
                 return false;
 

@@ -25,7 +25,7 @@ namespace CppSharp.Passes
     {
         public override bool VisitFunctionDecl(AST.Function function)
         {
-            if (AlreadyVisited(function))
+            if (!VisitDeclaration(function))
                 return false;
 
             if (function.IsAmbiguous)

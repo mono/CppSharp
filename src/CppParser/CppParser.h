@@ -11,7 +11,20 @@
 
 #define VECTOR_OPTIONS(type, name) \
     std::vector<type> name; \
-    void push##name##(const type& elem) { name.push_back(elem); }
+    type get##name (unsigned i) { return name[i]; } \
+    void add##name (const type& s) { return name.push_back(s); } \
+    unsigned get##name##Count () { return name.size(); }
+
+#define VECTOR_STRING_OPTIONS(name) \
+    std::vector<std::string> name; \
+    const char* get##name (unsigned i) { return name[i].c_str(); } \
+    void add##name (const char* s) { return name.push_back(std::string(s)); } \
+    unsigned get##name##Count () { return name.size(); }
+
+#define STRING_OPTIONS(name) \
+    std::string name; \
+    const char* get##name() { return name.c_str(); } \
+    void set##name(const char* s) { name = s; }
 
 namespace CppSharp { namespace CppParser {
 
@@ -31,18 +44,18 @@ struct CS_API ParserOptions
     }
 
     // C/C++ header file name.
-    std::string FileName;
+    STRING_OPTIONS(FileName)
 
     // Include directories
-    VECTOR_OPTIONS(std::string, IncludeDirs)
-    VECTOR_OPTIONS(std::string, SystemIncludeDirs)
-    VECTOR_OPTIONS(std::string, Defines)
-    VECTOR_OPTIONS(std::string, LibraryDirs)
+    VECTOR_STRING_OPTIONS(IncludeDirs)
+    VECTOR_STRING_OPTIONS(SystemIncludeDirs)
+    VECTOR_STRING_OPTIONS(Defines)
+    VECTOR_STRING_OPTIONS(LibraryDirs)
 
     CppSharp::CppParser::AST::ASTContext* ASTContext;
 
     int ToolSetToUse;
-    std::string TargetTriple;
+    STRING(TargetTriple)
     CppAbi Abi;
 
     bool NoStandardIncludes;
@@ -62,8 +75,8 @@ enum struct ParserDiagnosticLevel
 
 struct CS_API ParserDiagnostic
 {
-    std::string FileName;
-    std::string Message;
+    STRING(FileName)
+    STRING(Message)
     ParserDiagnosticLevel Level;
     int LineNumber;
     int ColumnNumber;
@@ -79,7 +92,7 @@ enum struct ParserResultKind
 struct CS_API ParserResult
 {
     ParserResultKind Kind;
-    std::vector<ParserDiagnostic> Diagnostics;
+    VECTOR_OPTIONS(ParserDiagnostic, Diagnostics)
 
     CppSharp::CppParser::AST::ASTContext* ASTContext;
     CppSharp::CppParser::AST::NativeLibrary* Library;

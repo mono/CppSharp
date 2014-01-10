@@ -7,7 +7,7 @@ namespace CppSharp.Passes
     {
         public override bool VisitFieldDecl(Field field)
         {
-            if (AlreadyVisited(field))
+            if (!VisitDeclaration(field))
                 return false;
 
             var @class = field.Namespace as Class;
@@ -31,6 +31,8 @@ namespace CppSharp.Passes
                 return false;
             }
 
+            field.ExplicityIgnored = true;
+
             var prop = new Property
             {
                 Name = field.Name,
@@ -39,11 +41,11 @@ namespace CppSharp.Passes
                 Access = field.Access,
                 Field = field
             };
+
             @class.Properties.Add(prop);
 
-            Log.Debug("Property created from field: {0}::{1}", @class.Name, field.Name);
-
-            field.ExplicityIgnored = true;
+            Log.Debug("Property created from field: {0}::{1}", @class.Name,
+                field.Name);
 
             return false;
         }

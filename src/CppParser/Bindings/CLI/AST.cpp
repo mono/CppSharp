@@ -233,16 +233,16 @@ CppSharp::Parser::AST::Parameter^ CppSharp::Parser::AST::FunctionType::getParame
     return gcnew CppSharp::Parser::AST::Parameter((::CppSharp::CppParser::AST::Parameter*)__ret);
 }
 
-unsigned int CppSharp::Parser::AST::FunctionType::getParametersCount()
-{
-    auto __ret = ((::CppSharp::CppParser::AST::FunctionType*)NativePtr)->getParametersCount();
-    return __ret;
-}
-
 CppSharp::Parser::AST::FunctionType::FunctionType()
     : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)nullptr)
 {
     NativePtr = new ::CppSharp::CppParser::AST::FunctionType();
+}
+
+unsigned int CppSharp::Parser::AST::FunctionType::ParametersCount::get()
+{
+    auto __ret = ((::CppSharp::CppParser::AST::FunctionType*)NativePtr)->getParametersCount();
+    return __ret;
 }
 
 CppSharp::Parser::AST::QualifiedType^ CppSharp::Parser::AST::FunctionType::ReturnType::get()
@@ -263,28 +263,6 @@ CppSharp::Parser::AST::CallingConvention CppSharp::Parser::AST::FunctionType::Ca
 void CppSharp::Parser::AST::FunctionType::CallingConvention::set(CppSharp::Parser::AST::CallingConvention value)
 {
     ((::CppSharp::CppParser::AST::FunctionType*)NativePtr)->CallingConvention = (::CppSharp::CppParser::AST::CallingConvention)value;
-}
-
-System::Collections::Generic::List<CppSharp::Parser::AST::Parameter^>^ CppSharp::Parser::AST::FunctionType::Parameters::get()
-{
-    auto _tmpParameters = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::Parameter^>();
-    for(auto _element : ((::CppSharp::CppParser::AST::FunctionType*)NativePtr)->Parameters)
-    {
-        auto _marshalElement = gcnew CppSharp::Parser::AST::Parameter((::CppSharp::CppParser::AST::Parameter*)_element);
-        _tmpParameters->Add(_marshalElement);
-    }
-    return _tmpParameters;
-}
-
-void CppSharp::Parser::AST::FunctionType::Parameters::set(System::Collections::Generic::List<CppSharp::Parser::AST::Parameter^>^ value)
-{
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::Parameter*>();
-    for each(CppSharp::Parser::AST::Parameter^ _element in value)
-    {
-        auto _marshalElement = (::CppSharp::CppParser::AST::Parameter*)_element->NativePtr;
-        _tmpvalue.push_back(_marshalElement);
-    }
-    ((::CppSharp::CppParser::AST::FunctionType*)NativePtr)->Parameters = _tmpvalue;
 }
 
 CppSharp::Parser::AST::PointerType::PointerType(::CppSharp::CppParser::AST::PointerType* native)
@@ -546,39 +524,16 @@ CppSharp::Parser::AST::TemplateArgument^ CppSharp::Parser::AST::TemplateSpeciali
     return gcnew CppSharp::Parser::AST::TemplateArgument((::CppSharp::CppParser::AST::TemplateArgument*)____ret);
 }
 
-unsigned int CppSharp::Parser::AST::TemplateSpecializationType::getArgumentsCount()
-{
-    auto __ret = ((::CppSharp::CppParser::AST::TemplateSpecializationType*)NativePtr)->getArgumentsCount();
-    return __ret;
-}
-
 CppSharp::Parser::AST::TemplateSpecializationType::TemplateSpecializationType()
     : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)nullptr)
 {
     NativePtr = new ::CppSharp::CppParser::AST::TemplateSpecializationType();
 }
 
-System::Collections::Generic::List<CppSharp::Parser::AST::TemplateArgument^>^ CppSharp::Parser::AST::TemplateSpecializationType::Arguments::get()
+unsigned int CppSharp::Parser::AST::TemplateSpecializationType::ArgumentsCount::get()
 {
-    auto _tmpArguments = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::TemplateArgument^>();
-    for(auto _element : ((::CppSharp::CppParser::AST::TemplateSpecializationType*)NativePtr)->Arguments)
-    {
-        auto ___element = new ::CppSharp::CppParser::AST::TemplateArgument(_element);
-        auto _marshalElement = gcnew CppSharp::Parser::AST::TemplateArgument((::CppSharp::CppParser::AST::TemplateArgument*)___element);
-        _tmpArguments->Add(_marshalElement);
-    }
-    return _tmpArguments;
-}
-
-void CppSharp::Parser::AST::TemplateSpecializationType::Arguments::set(System::Collections::Generic::List<CppSharp::Parser::AST::TemplateArgument^>^ value)
-{
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::TemplateArgument>();
-    for each(CppSharp::Parser::AST::TemplateArgument^ _element in value)
-    {
-        auto _marshalElement = *(::CppSharp::CppParser::AST::TemplateArgument*)_element->NativePtr;
-        _tmpvalue.push_back(_marshalElement);
-    }
-    ((::CppSharp::CppParser::AST::TemplateSpecializationType*)NativePtr)->Arguments = _tmpvalue;
+    auto __ret = ((::CppSharp::CppParser::AST::TemplateSpecializationType*)NativePtr)->getArgumentsCount();
+    return __ret;
 }
 
 CppSharp::Parser::AST::Template^ CppSharp::Parser::AST::TemplateSpecializationType::Template::get()
@@ -612,6 +567,14 @@ CppSharp::Parser::AST::TemplateParameter::TemplateParameter(System::IntPtr nativ
     NativePtr = __native;
 }
 
+bool CppSharp::Parser::AST::TemplateParameter::operator==(CppSharp::Parser::AST::TemplateParameter^ __op, CppSharp::Parser::AST::TemplateParameter^ param)
+{
+    auto &arg0 = *(::CppSharp::CppParser::AST::TemplateParameter*)__op->NativePtr;
+    auto &arg1 = *(::CppSharp::CppParser::AST::TemplateParameter*)param->NativePtr;
+    auto __ret = arg0 == arg1;
+    return __ret;
+}
+
 CppSharp::Parser::AST::TemplateParameter::TemplateParameter()
 {
     NativePtr = new ::CppSharp::CppParser::AST::TemplateParameter();
@@ -629,12 +592,17 @@ void CppSharp::Parser::AST::TemplateParameter::Instance::set(System::IntPtr obje
 
 System::String^ CppSharp::Parser::AST::TemplateParameter::Name::get()
 {
-    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::AST::TemplateParameter*)NativePtr)->Name);
+    auto __ret = ((::CppSharp::CppParser::AST::TemplateParameter*)NativePtr)->getName();
+    if (__ret == nullptr) return nullptr;
+    return clix::marshalString<clix::E_UTF8>(__ret);
 }
 
 void CppSharp::Parser::AST::TemplateParameter::Name::set(System::String^ value)
 {
-    ((::CppSharp::CppParser::AST::TemplateParameter*)NativePtr)->Name = clix::marshalString<clix::E_UTF8>(value);
+    auto s = value;
+    auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
+    auto arg0 = _arg0.c_str();
+    ((::CppSharp::CppParser::AST::TemplateParameter*)NativePtr)->setName(arg0);
 }
 
 CppSharp::Parser::AST::TemplateParameterType::TemplateParameterType(::CppSharp::CppParser::AST::TemplateParameterType* native)
@@ -798,6 +766,36 @@ void CppSharp::Parser::AST::RawComment::Instance::set(System::IntPtr object)
     NativePtr = (::CppSharp::CppParser::AST::RawComment*)object.ToPointer();
 }
 
+System::String^ CppSharp::Parser::AST::RawComment::Text::get()
+{
+    auto __ret = ((::CppSharp::CppParser::AST::RawComment*)NativePtr)->getText();
+    if (__ret == nullptr) return nullptr;
+    return clix::marshalString<clix::E_UTF8>(__ret);
+}
+
+void CppSharp::Parser::AST::RawComment::Text::set(System::String^ value)
+{
+    auto s = value;
+    auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
+    auto arg0 = _arg0.c_str();
+    ((::CppSharp::CppParser::AST::RawComment*)NativePtr)->setText(arg0);
+}
+
+System::String^ CppSharp::Parser::AST::RawComment::BriefText::get()
+{
+    auto __ret = ((::CppSharp::CppParser::AST::RawComment*)NativePtr)->getBriefText();
+    if (__ret == nullptr) return nullptr;
+    return clix::marshalString<clix::E_UTF8>(__ret);
+}
+
+void CppSharp::Parser::AST::RawComment::BriefText::set(System::String^ value)
+{
+    auto s = value;
+    auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
+    auto arg0 = _arg0.c_str();
+    ((::CppSharp::CppParser::AST::RawComment*)NativePtr)->setBriefText(arg0);
+}
+
 CppSharp::Parser::AST::RawCommentKind CppSharp::Parser::AST::RawComment::Kind::get()
 {
     return (CppSharp::Parser::AST::RawCommentKind)((::CppSharp::CppParser::AST::RawComment*)NativePtr)->Kind;
@@ -806,26 +804,6 @@ CppSharp::Parser::AST::RawCommentKind CppSharp::Parser::AST::RawComment::Kind::g
 void CppSharp::Parser::AST::RawComment::Kind::set(CppSharp::Parser::AST::RawCommentKind value)
 {
     ((::CppSharp::CppParser::AST::RawComment*)NativePtr)->Kind = (::CppSharp::CppParser::AST::RawCommentKind)value;
-}
-
-System::String^ CppSharp::Parser::AST::RawComment::Text::get()
-{
-    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::AST::RawComment*)NativePtr)->Text);
-}
-
-void CppSharp::Parser::AST::RawComment::Text::set(System::String^ value)
-{
-    ((::CppSharp::CppParser::AST::RawComment*)NativePtr)->Text = clix::marshalString<clix::E_UTF8>(value);
-}
-
-System::String^ CppSharp::Parser::AST::RawComment::BriefText::get()
-{
-    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::AST::RawComment*)NativePtr)->BriefText);
-}
-
-void CppSharp::Parser::AST::RawComment::BriefText::set(System::String^ value)
-{
-    ((::CppSharp::CppParser::AST::RawComment*)NativePtr)->BriefText = clix::marshalString<clix::E_UTF8>(value);
 }
 
 CppSharp::Parser::AST::VTableComponent::VTableComponent(::CppSharp::CppParser::AST::VTableComponent* native)
@@ -902,12 +880,6 @@ CppSharp::Parser::AST::VTableComponent^ CppSharp::Parser::AST::VTableLayout::get
     return gcnew CppSharp::Parser::AST::VTableComponent((::CppSharp::CppParser::AST::VTableComponent*)____ret);
 }
 
-unsigned int CppSharp::Parser::AST::VTableLayout::getComponentsCount()
-{
-    auto __ret = ((::CppSharp::CppParser::AST::VTableLayout*)NativePtr)->getComponentsCount();
-    return __ret;
-}
-
 CppSharp::Parser::AST::VTableLayout::VTableLayout()
 {
     NativePtr = new ::CppSharp::CppParser::AST::VTableLayout();
@@ -923,27 +895,10 @@ void CppSharp::Parser::AST::VTableLayout::Instance::set(System::IntPtr object)
     NativePtr = (::CppSharp::CppParser::AST::VTableLayout*)object.ToPointer();
 }
 
-System::Collections::Generic::List<CppSharp::Parser::AST::VTableComponent^>^ CppSharp::Parser::AST::VTableLayout::Components::get()
+unsigned int CppSharp::Parser::AST::VTableLayout::ComponentsCount::get()
 {
-    auto _tmpComponents = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::VTableComponent^>();
-    for(auto _element : ((::CppSharp::CppParser::AST::VTableLayout*)NativePtr)->Components)
-    {
-        auto ___element = new ::CppSharp::CppParser::AST::VTableComponent(_element);
-        auto _marshalElement = gcnew CppSharp::Parser::AST::VTableComponent((::CppSharp::CppParser::AST::VTableComponent*)___element);
-        _tmpComponents->Add(_marshalElement);
-    }
-    return _tmpComponents;
-}
-
-void CppSharp::Parser::AST::VTableLayout::Components::set(System::Collections::Generic::List<CppSharp::Parser::AST::VTableComponent^>^ value)
-{
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::VTableComponent>();
-    for each(CppSharp::Parser::AST::VTableComponent^ _element in value)
-    {
-        auto _marshalElement = *(::CppSharp::CppParser::AST::VTableComponent*)_element->NativePtr;
-        _tmpvalue.push_back(_marshalElement);
-    }
-    ((::CppSharp::CppParser::AST::VTableLayout*)NativePtr)->Components = _tmpvalue;
+    auto __ret = ((::CppSharp::CppParser::AST::VTableLayout*)NativePtr)->getComponentsCount();
+    return __ret;
 }
 
 CppSharp::Parser::AST::VFTableInfo::VFTableInfo(::CppSharp::CppParser::AST::VFTableInfo* native)
@@ -1030,12 +985,6 @@ CppSharp::Parser::AST::VFTableInfo^ CppSharp::Parser::AST::ClassLayout::getVFTab
     return gcnew CppSharp::Parser::AST::VFTableInfo((::CppSharp::CppParser::AST::VFTableInfo*)____ret);
 }
 
-unsigned int CppSharp::Parser::AST::ClassLayout::getVFTablesCount()
-{
-    auto __ret = ((::CppSharp::CppParser::AST::ClassLayout*)NativePtr)->getVFTablesCount();
-    return __ret;
-}
-
 CppSharp::Parser::AST::ClassLayout::ClassLayout()
 {
     NativePtr = new ::CppSharp::CppParser::AST::ClassLayout();
@@ -1051,6 +1000,12 @@ void CppSharp::Parser::AST::ClassLayout::Instance::set(System::IntPtr object)
     NativePtr = (::CppSharp::CppParser::AST::ClassLayout*)object.ToPointer();
 }
 
+unsigned int CppSharp::Parser::AST::ClassLayout::VFTablesCount::get()
+{
+    auto __ret = ((::CppSharp::CppParser::AST::ClassLayout*)NativePtr)->getVFTablesCount();
+    return __ret;
+}
+
 CppSharp::Parser::AST::CppAbi CppSharp::Parser::AST::ClassLayout::ABI::get()
 {
     return (CppSharp::Parser::AST::CppAbi)((::CppSharp::CppParser::AST::ClassLayout*)NativePtr)->ABI;
@@ -1059,29 +1014,6 @@ CppSharp::Parser::AST::CppAbi CppSharp::Parser::AST::ClassLayout::ABI::get()
 void CppSharp::Parser::AST::ClassLayout::ABI::set(CppSharp::Parser::AST::CppAbi value)
 {
     ((::CppSharp::CppParser::AST::ClassLayout*)NativePtr)->ABI = (::CppSharp::CppParser::AST::CppAbi)value;
-}
-
-System::Collections::Generic::List<CppSharp::Parser::AST::VFTableInfo^>^ CppSharp::Parser::AST::ClassLayout::VFTables::get()
-{
-    auto _tmpVFTables = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::VFTableInfo^>();
-    for(auto _element : ((::CppSharp::CppParser::AST::ClassLayout*)NativePtr)->VFTables)
-    {
-        auto ___element = new ::CppSharp::CppParser::AST::VFTableInfo(_element);
-        auto _marshalElement = gcnew CppSharp::Parser::AST::VFTableInfo((::CppSharp::CppParser::AST::VFTableInfo*)___element);
-        _tmpVFTables->Add(_marshalElement);
-    }
-    return _tmpVFTables;
-}
-
-void CppSharp::Parser::AST::ClassLayout::VFTables::set(System::Collections::Generic::List<CppSharp::Parser::AST::VFTableInfo^>^ value)
-{
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::VFTableInfo>();
-    for each(CppSharp::Parser::AST::VFTableInfo^ _element in value)
-    {
-        auto _marshalElement = *(::CppSharp::CppParser::AST::VFTableInfo*)_element->NativePtr;
-        _tmpvalue.push_back(_marshalElement);
-    }
-    ((::CppSharp::CppParser::AST::ClassLayout*)NativePtr)->VFTables = _tmpvalue;
 }
 
 CppSharp::Parser::AST::VTableLayout^ CppSharp::Parser::AST::ClassLayout::Layout::get()
@@ -1167,12 +1099,6 @@ CppSharp::Parser::AST::PreprocessedEntity^ CppSharp::Parser::AST::Declaration::g
     return gcnew CppSharp::Parser::AST::PreprocessedEntity((::CppSharp::CppParser::AST::PreprocessedEntity*)__ret);
 }
 
-unsigned int CppSharp::Parser::AST::Declaration::getPreprocessedEntitiesCount()
-{
-    auto __ret = ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->getPreprocessedEntitiesCount();
-    return __ret;
-}
-
 System::IntPtr CppSharp::Parser::AST::Declaration::Instance::get()
 {
     return System::IntPtr(NativePtr);
@@ -1181,6 +1107,42 @@ System::IntPtr CppSharp::Parser::AST::Declaration::Instance::get()
 void CppSharp::Parser::AST::Declaration::Instance::set(System::IntPtr object)
 {
     NativePtr = (::CppSharp::CppParser::AST::Declaration*)object.ToPointer();
+}
+
+System::String^ CppSharp::Parser::AST::Declaration::Name::get()
+{
+    auto __ret = ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->getName();
+    if (__ret == nullptr) return nullptr;
+    return clix::marshalString<clix::E_UTF8>(__ret);
+}
+
+void CppSharp::Parser::AST::Declaration::Name::set(System::String^ value)
+{
+    auto s = value;
+    auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
+    auto arg0 = _arg0.c_str();
+    ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->setName(arg0);
+}
+
+System::String^ CppSharp::Parser::AST::Declaration::DebugText::get()
+{
+    auto __ret = ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->getDebugText();
+    if (__ret == nullptr) return nullptr;
+    return clix::marshalString<clix::E_UTF8>(__ret);
+}
+
+void CppSharp::Parser::AST::Declaration::DebugText::set(System::String^ value)
+{
+    auto s = value;
+    auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
+    auto arg0 = _arg0.c_str();
+    ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->setDebugText(arg0);
+}
+
+unsigned int CppSharp::Parser::AST::Declaration::PreprocessedEntitiesCount::get()
+{
+    auto __ret = ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->getPreprocessedEntitiesCount();
+    return __ret;
 }
 
 CppSharp::Parser::AST::AccessSpecifier CppSharp::Parser::AST::Declaration::Access::get()
@@ -1203,16 +1165,6 @@ void CppSharp::Parser::AST::Declaration::_Namespace::set(CppSharp::Parser::AST::
     ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->_Namespace = (::CppSharp::CppParser::AST::DeclarationContext*)value->NativePtr;
 }
 
-System::String^ CppSharp::Parser::AST::Declaration::Name::get()
-{
-    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::AST::Declaration*)NativePtr)->Name);
-}
-
-void CppSharp::Parser::AST::Declaration::Name::set(System::String^ value)
-{
-    ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->Name = clix::marshalString<clix::E_UTF8>(value);
-}
-
 CppSharp::Parser::AST::RawComment^ CppSharp::Parser::AST::Declaration::Comment::get()
 {
     return gcnew CppSharp::Parser::AST::RawComment((::CppSharp::CppParser::AST::RawComment*)((::CppSharp::CppParser::AST::Declaration*)NativePtr)->Comment);
@@ -1221,16 +1173,6 @@ CppSharp::Parser::AST::RawComment^ CppSharp::Parser::AST::Declaration::Comment::
 void CppSharp::Parser::AST::Declaration::Comment::set(CppSharp::Parser::AST::RawComment^ value)
 {
     ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->Comment = (::CppSharp::CppParser::AST::RawComment*)value->NativePtr;
-}
-
-System::String^ CppSharp::Parser::AST::Declaration::DebugText::get()
-{
-    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::AST::Declaration*)NativePtr)->DebugText);
-}
-
-void CppSharp::Parser::AST::Declaration::DebugText::set(System::String^ value)
-{
-    ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->DebugText = clix::marshalString<clix::E_UTF8>(value);
 }
 
 bool CppSharp::Parser::AST::Declaration::IsIncomplete::get()
@@ -1271,28 +1213,6 @@ unsigned int CppSharp::Parser::AST::Declaration::DefinitionOrder::get()
 void CppSharp::Parser::AST::Declaration::DefinitionOrder::set(unsigned int value)
 {
     ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->DefinitionOrder = value;
-}
-
-System::Collections::Generic::List<CppSharp::Parser::AST::PreprocessedEntity^>^ CppSharp::Parser::AST::Declaration::PreprocessedEntities::get()
-{
-    auto _tmpPreprocessedEntities = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::PreprocessedEntity^>();
-    for(auto _element : ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->PreprocessedEntities)
-    {
-        auto _marshalElement = gcnew CppSharp::Parser::AST::PreprocessedEntity((::CppSharp::CppParser::AST::PreprocessedEntity*)_element);
-        _tmpPreprocessedEntities->Add(_marshalElement);
-    }
-    return _tmpPreprocessedEntities;
-}
-
-void CppSharp::Parser::AST::Declaration::PreprocessedEntities::set(System::Collections::Generic::List<CppSharp::Parser::AST::PreprocessedEntity^>^ value)
-{
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::PreprocessedEntity*>();
-    for each(CppSharp::Parser::AST::PreprocessedEntity^ _element in value)
-    {
-        auto _marshalElement = (::CppSharp::CppParser::AST::PreprocessedEntity*)_element->NativePtr;
-        _tmpvalue.push_back(_marshalElement);
-    }
-    ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->PreprocessedEntities = _tmpvalue;
 }
 
 System::IntPtr CppSharp::Parser::AST::Declaration::OriginalPtr::get()
@@ -1378,6 +1298,29 @@ CppSharp::Parser::AST::Class^ CppSharp::Parser::AST::DeclarationContext::FindCla
     return gcnew CppSharp::Parser::AST::Class((::CppSharp::CppParser::AST::Class*)__ret);
 }
 
+CppSharp::Parser::AST::FunctionTemplate^ CppSharp::Parser::AST::DeclarationContext::FindFunctionTemplate(System::IntPtr OriginalPtr)
+{
+    auto arg0 = (void*)OriginalPtr.ToPointer();
+    auto __ret = ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->FindFunctionTemplate(arg0);
+    if (__ret == nullptr) return nullptr;
+    return gcnew CppSharp::Parser::AST::FunctionTemplate((::CppSharp::CppParser::AST::FunctionTemplate*)__ret);
+}
+
+CppSharp::Parser::AST::FunctionTemplate^ CppSharp::Parser::AST::DeclarationContext::FindFunctionTemplate(System::String^ Name, System::Collections::Generic::List<CppSharp::Parser::AST::TemplateParameter^>^ Params)
+{
+    auto arg0 = clix::marshalString<clix::E_UTF8>(Name);
+    auto _tmpParams = std::vector<::CppSharp::CppParser::AST::TemplateParameter>();
+    for each(CppSharp::Parser::AST::TemplateParameter^ _element in Params)
+    {
+        auto _marshalElement = *(::CppSharp::CppParser::AST::TemplateParameter*)_element->NativePtr;
+        _tmpParams.push_back(_marshalElement);
+    }
+    auto arg1 = _tmpParams;
+    auto __ret = ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->FindFunctionTemplate(arg0, arg1);
+    if (__ret == nullptr) return nullptr;
+    return gcnew CppSharp::Parser::AST::FunctionTemplate((::CppSharp::CppParser::AST::FunctionTemplate*)__ret);
+}
+
 CppSharp::Parser::AST::Enumeration^ CppSharp::Parser::AST::DeclarationContext::FindEnum(System::String^ Name, bool Create)
 {
     auto arg0 = clix::marshalString<clix::E_UTF8>(Name);
@@ -1409,23 +1352,11 @@ CppSharp::Parser::AST::Namespace^ CppSharp::Parser::AST::DeclarationContext::get
     return gcnew CppSharp::Parser::AST::Namespace((::CppSharp::CppParser::AST::Namespace*)__ret);
 }
 
-unsigned int CppSharp::Parser::AST::DeclarationContext::getNamespacesCount()
-{
-    auto __ret = ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->getNamespacesCount();
-    return __ret;
-}
-
 CppSharp::Parser::AST::Enumeration^ CppSharp::Parser::AST::DeclarationContext::getEnums(unsigned int i)
 {
     auto __ret = ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->getEnums(i);
     if (__ret == nullptr) return nullptr;
     return gcnew CppSharp::Parser::AST::Enumeration((::CppSharp::CppParser::AST::Enumeration*)__ret);
-}
-
-unsigned int CppSharp::Parser::AST::DeclarationContext::getEnumsCount()
-{
-    auto __ret = ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->getEnumsCount();
-    return __ret;
 }
 
 CppSharp::Parser::AST::Function^ CppSharp::Parser::AST::DeclarationContext::getFunctions(unsigned int i)
@@ -1435,23 +1366,11 @@ CppSharp::Parser::AST::Function^ CppSharp::Parser::AST::DeclarationContext::getF
     return gcnew CppSharp::Parser::AST::Function((::CppSharp::CppParser::AST::Function*)__ret);
 }
 
-unsigned int CppSharp::Parser::AST::DeclarationContext::getFunctionsCount()
-{
-    auto __ret = ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->getFunctionsCount();
-    return __ret;
-}
-
 CppSharp::Parser::AST::Class^ CppSharp::Parser::AST::DeclarationContext::getClasses(unsigned int i)
 {
     auto __ret = ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->getClasses(i);
     if (__ret == nullptr) return nullptr;
     return gcnew CppSharp::Parser::AST::Class((::CppSharp::CppParser::AST::Class*)__ret);
-}
-
-unsigned int CppSharp::Parser::AST::DeclarationContext::getClassesCount()
-{
-    auto __ret = ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->getClassesCount();
-    return __ret;
 }
 
 CppSharp::Parser::AST::Template^ CppSharp::Parser::AST::DeclarationContext::getTemplates(unsigned int i)
@@ -1461,23 +1380,11 @@ CppSharp::Parser::AST::Template^ CppSharp::Parser::AST::DeclarationContext::getT
     return gcnew CppSharp::Parser::AST::Template((::CppSharp::CppParser::AST::Template*)__ret);
 }
 
-unsigned int CppSharp::Parser::AST::DeclarationContext::getTemplatesCount()
-{
-    auto __ret = ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->getTemplatesCount();
-    return __ret;
-}
-
 CppSharp::Parser::AST::TypedefDecl^ CppSharp::Parser::AST::DeclarationContext::getTypedefs(unsigned int i)
 {
     auto __ret = ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->getTypedefs(i);
     if (__ret == nullptr) return nullptr;
     return gcnew CppSharp::Parser::AST::TypedefDecl((::CppSharp::CppParser::AST::TypedefDecl*)__ret);
-}
-
-unsigned int CppSharp::Parser::AST::DeclarationContext::getTypedefsCount()
-{
-    auto __ret = ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->getTypedefsCount();
-    return __ret;
 }
 
 CppSharp::Parser::AST::Variable^ CppSharp::Parser::AST::DeclarationContext::getVariables(unsigned int i)
@@ -1487,170 +1394,52 @@ CppSharp::Parser::AST::Variable^ CppSharp::Parser::AST::DeclarationContext::getV
     return gcnew CppSharp::Parser::AST::Variable((::CppSharp::CppParser::AST::Variable*)__ret);
 }
 
-unsigned int CppSharp::Parser::AST::DeclarationContext::getVariablesCount()
-{
-    auto __ret = ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->getVariablesCount();
-    return __ret;
-}
-
 CppSharp::Parser::AST::DeclarationContext::DeclarationContext()
     : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)nullptr)
 {
     NativePtr = new ::CppSharp::CppParser::AST::DeclarationContext();
 }
 
-System::Collections::Generic::List<CppSharp::Parser::AST::Namespace^>^ CppSharp::Parser::AST::DeclarationContext::Namespaces::get()
+unsigned int CppSharp::Parser::AST::DeclarationContext::NamespacesCount::get()
 {
-    auto _tmpNamespaces = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::Namespace^>();
-    for(auto _element : ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->Namespaces)
-    {
-        auto _marshalElement = gcnew CppSharp::Parser::AST::Namespace((::CppSharp::CppParser::AST::Namespace*)_element);
-        _tmpNamespaces->Add(_marshalElement);
-    }
-    return _tmpNamespaces;
+    auto __ret = ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->getNamespacesCount();
+    return __ret;
 }
 
-void CppSharp::Parser::AST::DeclarationContext::Namespaces::set(System::Collections::Generic::List<CppSharp::Parser::AST::Namespace^>^ value)
+unsigned int CppSharp::Parser::AST::DeclarationContext::EnumsCount::get()
 {
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::Namespace*>();
-    for each(CppSharp::Parser::AST::Namespace^ _element in value)
-    {
-        auto _marshalElement = (::CppSharp::CppParser::AST::Namespace*)_element->NativePtr;
-        _tmpvalue.push_back(_marshalElement);
-    }
-    ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->Namespaces = _tmpvalue;
+    auto __ret = ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->getEnumsCount();
+    return __ret;
 }
 
-System::Collections::Generic::List<CppSharp::Parser::AST::Enumeration^>^ CppSharp::Parser::AST::DeclarationContext::Enums::get()
+unsigned int CppSharp::Parser::AST::DeclarationContext::FunctionsCount::get()
 {
-    auto _tmpEnums = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::Enumeration^>();
-    for(auto _element : ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->Enums)
-    {
-        auto _marshalElement = gcnew CppSharp::Parser::AST::Enumeration((::CppSharp::CppParser::AST::Enumeration*)_element);
-        _tmpEnums->Add(_marshalElement);
-    }
-    return _tmpEnums;
+    auto __ret = ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->getFunctionsCount();
+    return __ret;
 }
 
-void CppSharp::Parser::AST::DeclarationContext::Enums::set(System::Collections::Generic::List<CppSharp::Parser::AST::Enumeration^>^ value)
+unsigned int CppSharp::Parser::AST::DeclarationContext::ClassesCount::get()
 {
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::Enumeration*>();
-    for each(CppSharp::Parser::AST::Enumeration^ _element in value)
-    {
-        auto _marshalElement = (::CppSharp::CppParser::AST::Enumeration*)_element->NativePtr;
-        _tmpvalue.push_back(_marshalElement);
-    }
-    ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->Enums = _tmpvalue;
+    auto __ret = ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->getClassesCount();
+    return __ret;
 }
 
-System::Collections::Generic::List<CppSharp::Parser::AST::Function^>^ CppSharp::Parser::AST::DeclarationContext::Functions::get()
+unsigned int CppSharp::Parser::AST::DeclarationContext::TemplatesCount::get()
 {
-    auto _tmpFunctions = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::Function^>();
-    for(auto _element : ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->Functions)
-    {
-        auto _marshalElement = gcnew CppSharp::Parser::AST::Function((::CppSharp::CppParser::AST::Function*)_element);
-        _tmpFunctions->Add(_marshalElement);
-    }
-    return _tmpFunctions;
+    auto __ret = ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->getTemplatesCount();
+    return __ret;
 }
 
-void CppSharp::Parser::AST::DeclarationContext::Functions::set(System::Collections::Generic::List<CppSharp::Parser::AST::Function^>^ value)
+unsigned int CppSharp::Parser::AST::DeclarationContext::TypedefsCount::get()
 {
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::Function*>();
-    for each(CppSharp::Parser::AST::Function^ _element in value)
-    {
-        auto _marshalElement = (::CppSharp::CppParser::AST::Function*)_element->NativePtr;
-        _tmpvalue.push_back(_marshalElement);
-    }
-    ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->Functions = _tmpvalue;
+    auto __ret = ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->getTypedefsCount();
+    return __ret;
 }
 
-System::Collections::Generic::List<CppSharp::Parser::AST::Class^>^ CppSharp::Parser::AST::DeclarationContext::Classes::get()
+unsigned int CppSharp::Parser::AST::DeclarationContext::VariablesCount::get()
 {
-    auto _tmpClasses = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::Class^>();
-    for(auto _element : ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->Classes)
-    {
-        auto _marshalElement = gcnew CppSharp::Parser::AST::Class((::CppSharp::CppParser::AST::Class*)_element);
-        _tmpClasses->Add(_marshalElement);
-    }
-    return _tmpClasses;
-}
-
-void CppSharp::Parser::AST::DeclarationContext::Classes::set(System::Collections::Generic::List<CppSharp::Parser::AST::Class^>^ value)
-{
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::Class*>();
-    for each(CppSharp::Parser::AST::Class^ _element in value)
-    {
-        auto _marshalElement = (::CppSharp::CppParser::AST::Class*)_element->NativePtr;
-        _tmpvalue.push_back(_marshalElement);
-    }
-    ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->Classes = _tmpvalue;
-}
-
-System::Collections::Generic::List<CppSharp::Parser::AST::Template^>^ CppSharp::Parser::AST::DeclarationContext::Templates::get()
-{
-    auto _tmpTemplates = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::Template^>();
-    for(auto _element : ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->Templates)
-    {
-        auto _marshalElement = gcnew CppSharp::Parser::AST::Template((::CppSharp::CppParser::AST::Template*)_element);
-        _tmpTemplates->Add(_marshalElement);
-    }
-    return _tmpTemplates;
-}
-
-void CppSharp::Parser::AST::DeclarationContext::Templates::set(System::Collections::Generic::List<CppSharp::Parser::AST::Template^>^ value)
-{
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::Template*>();
-    for each(CppSharp::Parser::AST::Template^ _element in value)
-    {
-        auto _marshalElement = (::CppSharp::CppParser::AST::Template*)_element->NativePtr;
-        _tmpvalue.push_back(_marshalElement);
-    }
-    ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->Templates = _tmpvalue;
-}
-
-System::Collections::Generic::List<CppSharp::Parser::AST::TypedefDecl^>^ CppSharp::Parser::AST::DeclarationContext::Typedefs::get()
-{
-    auto _tmpTypedefs = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::TypedefDecl^>();
-    for(auto _element : ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->Typedefs)
-    {
-        auto _marshalElement = gcnew CppSharp::Parser::AST::TypedefDecl((::CppSharp::CppParser::AST::TypedefDecl*)_element);
-        _tmpTypedefs->Add(_marshalElement);
-    }
-    return _tmpTypedefs;
-}
-
-void CppSharp::Parser::AST::DeclarationContext::Typedefs::set(System::Collections::Generic::List<CppSharp::Parser::AST::TypedefDecl^>^ value)
-{
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::TypedefDecl*>();
-    for each(CppSharp::Parser::AST::TypedefDecl^ _element in value)
-    {
-        auto _marshalElement = (::CppSharp::CppParser::AST::TypedefDecl*)_element->NativePtr;
-        _tmpvalue.push_back(_marshalElement);
-    }
-    ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->Typedefs = _tmpvalue;
-}
-
-System::Collections::Generic::List<CppSharp::Parser::AST::Variable^>^ CppSharp::Parser::AST::DeclarationContext::Variables::get()
-{
-    auto _tmpVariables = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::Variable^>();
-    for(auto _element : ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->Variables)
-    {
-        auto _marshalElement = gcnew CppSharp::Parser::AST::Variable((::CppSharp::CppParser::AST::Variable*)_element);
-        _tmpVariables->Add(_marshalElement);
-    }
-    return _tmpVariables;
-}
-
-void CppSharp::Parser::AST::DeclarationContext::Variables::set(System::Collections::Generic::List<CppSharp::Parser::AST::Variable^>^ value)
-{
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::Variable*>();
-    for each(CppSharp::Parser::AST::Variable^ _element in value)
-    {
-        auto _marshalElement = (::CppSharp::CppParser::AST::Variable*)_element->NativePtr;
-        _tmpvalue.push_back(_marshalElement);
-    }
-    ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->Variables = _tmpvalue;
+    auto __ret = ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->getVariablesCount();
+    return __ret;
 }
 
 CppSharp::Parser::AST::TypedefDecl::TypedefDecl(::CppSharp::CppParser::AST::TypedefDecl* native)
@@ -1751,7 +1540,37 @@ CppSharp::Parser::AST::Parameter^ CppSharp::Parser::AST::Function::getParameters
     return gcnew CppSharp::Parser::AST::Parameter((::CppSharp::CppParser::AST::Parameter*)__ret);
 }
 
-unsigned int CppSharp::Parser::AST::Function::getParametersCount()
+System::String^ CppSharp::Parser::AST::Function::Mangled::get()
+{
+    auto __ret = ((::CppSharp::CppParser::AST::Function*)NativePtr)->getMangled();
+    if (__ret == nullptr) return nullptr;
+    return clix::marshalString<clix::E_UTF8>(__ret);
+}
+
+void CppSharp::Parser::AST::Function::Mangled::set(System::String^ value)
+{
+    auto s = value;
+    auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
+    auto arg0 = _arg0.c_str();
+    ((::CppSharp::CppParser::AST::Function*)NativePtr)->setMangled(arg0);
+}
+
+System::String^ CppSharp::Parser::AST::Function::Signature::get()
+{
+    auto __ret = ((::CppSharp::CppParser::AST::Function*)NativePtr)->getSignature();
+    if (__ret == nullptr) return nullptr;
+    return clix::marshalString<clix::E_UTF8>(__ret);
+}
+
+void CppSharp::Parser::AST::Function::Signature::set(System::String^ value)
+{
+    auto s = value;
+    auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
+    auto arg0 = _arg0.c_str();
+    ((::CppSharp::CppParser::AST::Function*)NativePtr)->setSignature(arg0);
+}
+
+unsigned int CppSharp::Parser::AST::Function::ParametersCount::get()
 {
     auto __ret = ((::CppSharp::CppParser::AST::Function*)NativePtr)->getParametersCount();
     return __ret;
@@ -1827,26 +1646,6 @@ void CppSharp::Parser::AST::Function::OperatorKind::set(CppSharp::Parser::AST::C
     ((::CppSharp::CppParser::AST::Function*)NativePtr)->OperatorKind = (::CppSharp::CppParser::AST::CXXOperatorKind)value;
 }
 
-System::String^ CppSharp::Parser::AST::Function::Mangled::get()
-{
-    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::AST::Function*)NativePtr)->Mangled);
-}
-
-void CppSharp::Parser::AST::Function::Mangled::set(System::String^ value)
-{
-    ((::CppSharp::CppParser::AST::Function*)NativePtr)->Mangled = clix::marshalString<clix::E_UTF8>(value);
-}
-
-System::String^ CppSharp::Parser::AST::Function::Signature::get()
-{
-    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::AST::Function*)NativePtr)->Signature);
-}
-
-void CppSharp::Parser::AST::Function::Signature::set(System::String^ value)
-{
-    ((::CppSharp::CppParser::AST::Function*)NativePtr)->Signature = clix::marshalString<clix::E_UTF8>(value);
-}
-
 CppSharp::Parser::AST::CallingConvention CppSharp::Parser::AST::Function::CallingConvention::get()
 {
     return (CppSharp::Parser::AST::CallingConvention)((::CppSharp::CppParser::AST::Function*)NativePtr)->CallingConvention;
@@ -1855,28 +1654,6 @@ CppSharp::Parser::AST::CallingConvention CppSharp::Parser::AST::Function::Callin
 void CppSharp::Parser::AST::Function::CallingConvention::set(CppSharp::Parser::AST::CallingConvention value)
 {
     ((::CppSharp::CppParser::AST::Function*)NativePtr)->CallingConvention = (::CppSharp::CppParser::AST::CallingConvention)value;
-}
-
-System::Collections::Generic::List<CppSharp::Parser::AST::Parameter^>^ CppSharp::Parser::AST::Function::Parameters::get()
-{
-    auto _tmpParameters = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::Parameter^>();
-    for(auto _element : ((::CppSharp::CppParser::AST::Function*)NativePtr)->Parameters)
-    {
-        auto _marshalElement = gcnew CppSharp::Parser::AST::Parameter((::CppSharp::CppParser::AST::Parameter*)_element);
-        _tmpParameters->Add(_marshalElement);
-    }
-    return _tmpParameters;
-}
-
-void CppSharp::Parser::AST::Function::Parameters::set(System::Collections::Generic::List<CppSharp::Parser::AST::Parameter^>^ value)
-{
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::Parameter*>();
-    for each(CppSharp::Parser::AST::Parameter^ _element in value)
-    {
-        auto _marshalElement = (::CppSharp::CppParser::AST::Parameter*)_element->NativePtr;
-        _tmpvalue.push_back(_marshalElement);
-    }
-    ((::CppSharp::CppParser::AST::Function*)NativePtr)->Parameters = _tmpvalue;
 }
 
 CppSharp::Parser::AST::Method::Method(::CppSharp::CppParser::AST::Method* native)
@@ -2025,12 +1802,17 @@ CppSharp::Parser::AST::Enumeration::Item::Item()
 
 System::String^ CppSharp::Parser::AST::Enumeration::Item::Expression::get()
 {
-    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::AST::Enumeration::Item*)NativePtr)->Expression);
+    auto __ret = ((::CppSharp::CppParser::AST::Enumeration::Item*)NativePtr)->getExpression();
+    if (__ret == nullptr) return nullptr;
+    return clix::marshalString<clix::E_UTF8>(__ret);
 }
 
 void CppSharp::Parser::AST::Enumeration::Item::Expression::set(System::String^ value)
 {
-    ((::CppSharp::CppParser::AST::Enumeration::Item*)NativePtr)->Expression = clix::marshalString<clix::E_UTF8>(value);
+    auto s = value;
+    auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
+    auto arg0 = _arg0.c_str();
+    ((::CppSharp::CppParser::AST::Enumeration::Item*)NativePtr)->setExpression(arg0);
 }
 
 unsigned long long CppSharp::Parser::AST::Enumeration::Item::Value::get()
@@ -2061,16 +1843,16 @@ CppSharp::Parser::AST::Enumeration::Item^ CppSharp::Parser::AST::Enumeration::ge
     return gcnew CppSharp::Parser::AST::Enumeration::Item((::CppSharp::CppParser::AST::Enumeration::Item*)____ret);
 }
 
-unsigned int CppSharp::Parser::AST::Enumeration::getItemsCount()
-{
-    auto __ret = ((::CppSharp::CppParser::AST::Enumeration*)NativePtr)->getItemsCount();
-    return __ret;
-}
-
 CppSharp::Parser::AST::Enumeration::Enumeration()
     : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)nullptr)
 {
     NativePtr = new ::CppSharp::CppParser::AST::Enumeration();
+}
+
+unsigned int CppSharp::Parser::AST::Enumeration::ItemsCount::get()
+{
+    auto __ret = ((::CppSharp::CppParser::AST::Enumeration*)NativePtr)->getItemsCount();
+    return __ret;
 }
 
 CppSharp::Parser::AST::Enumeration::EnumModifiers CppSharp::Parser::AST::Enumeration::Modifiers::get()
@@ -2103,29 +1885,6 @@ void CppSharp::Parser::AST::Enumeration::BuiltinType::set(CppSharp::Parser::AST:
     ((::CppSharp::CppParser::AST::Enumeration*)NativePtr)->BuiltinType = (::CppSharp::CppParser::AST::BuiltinType*)value->NativePtr;
 }
 
-System::Collections::Generic::List<CppSharp::Parser::AST::Enumeration::Item^>^ CppSharp::Parser::AST::Enumeration::Items::get()
-{
-    auto _tmpItems = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::Enumeration::Item^>();
-    for(auto _element : ((::CppSharp::CppParser::AST::Enumeration*)NativePtr)->Items)
-    {
-        auto ___element = new ::CppSharp::CppParser::AST::Enumeration::Item(_element);
-        auto _marshalElement = gcnew CppSharp::Parser::AST::Enumeration::Item((::CppSharp::CppParser::AST::Enumeration::Item*)___element);
-        _tmpItems->Add(_marshalElement);
-    }
-    return _tmpItems;
-}
-
-void CppSharp::Parser::AST::Enumeration::Items::set(System::Collections::Generic::List<CppSharp::Parser::AST::Enumeration::Item^>^ value)
-{
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::Enumeration::Item>();
-    for each(CppSharp::Parser::AST::Enumeration::Item^ _element in value)
-    {
-        auto _marshalElement = *(::CppSharp::CppParser::AST::Enumeration::Item*)_element->NativePtr;
-        _tmpvalue.push_back(_marshalElement);
-    }
-    ((::CppSharp::CppParser::AST::Enumeration*)NativePtr)->Items = _tmpvalue;
-}
-
 CppSharp::Parser::AST::Variable::Variable(::CppSharp::CppParser::AST::Variable* native)
     : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)native)
 {
@@ -2145,12 +1904,17 @@ CppSharp::Parser::AST::Variable::Variable()
 
 System::String^ CppSharp::Parser::AST::Variable::Mangled::get()
 {
-    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::AST::Variable*)NativePtr)->Mangled);
+    auto __ret = ((::CppSharp::CppParser::AST::Variable*)NativePtr)->getMangled();
+    if (__ret == nullptr) return nullptr;
+    return clix::marshalString<clix::E_UTF8>(__ret);
 }
 
 void CppSharp::Parser::AST::Variable::Mangled::set(System::String^ value)
 {
-    ((::CppSharp::CppParser::AST::Variable*)NativePtr)->Mangled = clix::marshalString<clix::E_UTF8>(value);
+    auto s = value;
+    auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
+    auto arg0 = _arg0.c_str();
+    ((::CppSharp::CppParser::AST::Variable*)NativePtr)->setMangled(arg0);
 }
 
 CppSharp::Parser::AST::QualifiedType^ CppSharp::Parser::AST::Variable::QualifiedType::get()
@@ -2311,23 +2075,11 @@ CppSharp::Parser::AST::BaseClassSpecifier^ CppSharp::Parser::AST::Class::getBase
     return gcnew CppSharp::Parser::AST::BaseClassSpecifier((::CppSharp::CppParser::AST::BaseClassSpecifier*)__ret);
 }
 
-unsigned int CppSharp::Parser::AST::Class::getBasesCount()
-{
-    auto __ret = ((::CppSharp::CppParser::AST::Class*)NativePtr)->getBasesCount();
-    return __ret;
-}
-
 CppSharp::Parser::AST::Field^ CppSharp::Parser::AST::Class::getFields(unsigned int i)
 {
     auto __ret = ((::CppSharp::CppParser::AST::Class*)NativePtr)->getFields(i);
     if (__ret == nullptr) return nullptr;
     return gcnew CppSharp::Parser::AST::Field((::CppSharp::CppParser::AST::Field*)__ret);
-}
-
-unsigned int CppSharp::Parser::AST::Class::getFieldsCount()
-{
-    auto __ret = ((::CppSharp::CppParser::AST::Class*)NativePtr)->getFieldsCount();
-    return __ret;
 }
 
 CppSharp::Parser::AST::Method^ CppSharp::Parser::AST::Class::getMethods(unsigned int i)
@@ -2337,23 +2089,11 @@ CppSharp::Parser::AST::Method^ CppSharp::Parser::AST::Class::getMethods(unsigned
     return gcnew CppSharp::Parser::AST::Method((::CppSharp::CppParser::AST::Method*)__ret);
 }
 
-unsigned int CppSharp::Parser::AST::Class::getMethodsCount()
-{
-    auto __ret = ((::CppSharp::CppParser::AST::Class*)NativePtr)->getMethodsCount();
-    return __ret;
-}
-
 CppSharp::Parser::AST::AccessSpecifierDecl^ CppSharp::Parser::AST::Class::getSpecifiers(unsigned int i)
 {
     auto __ret = ((::CppSharp::CppParser::AST::Class*)NativePtr)->getSpecifiers(i);
     if (__ret == nullptr) return nullptr;
     return gcnew CppSharp::Parser::AST::AccessSpecifierDecl((::CppSharp::CppParser::AST::AccessSpecifierDecl*)__ret);
-}
-
-unsigned int CppSharp::Parser::AST::Class::getSpecifiersCount()
-{
-    auto __ret = ((::CppSharp::CppParser::AST::Class*)NativePtr)->getSpecifiersCount();
-    return __ret;
 }
 
 CppSharp::Parser::AST::Class::Class()
@@ -2362,92 +2102,28 @@ CppSharp::Parser::AST::Class::Class()
     NativePtr = new ::CppSharp::CppParser::AST::Class();
 }
 
-System::Collections::Generic::List<CppSharp::Parser::AST::BaseClassSpecifier^>^ CppSharp::Parser::AST::Class::Bases::get()
+unsigned int CppSharp::Parser::AST::Class::BasesCount::get()
 {
-    auto _tmpBases = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::BaseClassSpecifier^>();
-    for(auto _element : ((::CppSharp::CppParser::AST::Class*)NativePtr)->Bases)
-    {
-        auto _marshalElement = gcnew CppSharp::Parser::AST::BaseClassSpecifier((::CppSharp::CppParser::AST::BaseClassSpecifier*)_element);
-        _tmpBases->Add(_marshalElement);
-    }
-    return _tmpBases;
+    auto __ret = ((::CppSharp::CppParser::AST::Class*)NativePtr)->getBasesCount();
+    return __ret;
 }
 
-void CppSharp::Parser::AST::Class::Bases::set(System::Collections::Generic::List<CppSharp::Parser::AST::BaseClassSpecifier^>^ value)
+unsigned int CppSharp::Parser::AST::Class::FieldsCount::get()
 {
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::BaseClassSpecifier*>();
-    for each(CppSharp::Parser::AST::BaseClassSpecifier^ _element in value)
-    {
-        auto _marshalElement = (::CppSharp::CppParser::AST::BaseClassSpecifier*)_element->NativePtr;
-        _tmpvalue.push_back(_marshalElement);
-    }
-    ((::CppSharp::CppParser::AST::Class*)NativePtr)->Bases = _tmpvalue;
+    auto __ret = ((::CppSharp::CppParser::AST::Class*)NativePtr)->getFieldsCount();
+    return __ret;
 }
 
-System::Collections::Generic::List<CppSharp::Parser::AST::Field^>^ CppSharp::Parser::AST::Class::Fields::get()
+unsigned int CppSharp::Parser::AST::Class::MethodsCount::get()
 {
-    auto _tmpFields = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::Field^>();
-    for(auto _element : ((::CppSharp::CppParser::AST::Class*)NativePtr)->Fields)
-    {
-        auto _marshalElement = gcnew CppSharp::Parser::AST::Field((::CppSharp::CppParser::AST::Field*)_element);
-        _tmpFields->Add(_marshalElement);
-    }
-    return _tmpFields;
+    auto __ret = ((::CppSharp::CppParser::AST::Class*)NativePtr)->getMethodsCount();
+    return __ret;
 }
 
-void CppSharp::Parser::AST::Class::Fields::set(System::Collections::Generic::List<CppSharp::Parser::AST::Field^>^ value)
+unsigned int CppSharp::Parser::AST::Class::SpecifiersCount::get()
 {
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::Field*>();
-    for each(CppSharp::Parser::AST::Field^ _element in value)
-    {
-        auto _marshalElement = (::CppSharp::CppParser::AST::Field*)_element->NativePtr;
-        _tmpvalue.push_back(_marshalElement);
-    }
-    ((::CppSharp::CppParser::AST::Class*)NativePtr)->Fields = _tmpvalue;
-}
-
-System::Collections::Generic::List<CppSharp::Parser::AST::Method^>^ CppSharp::Parser::AST::Class::Methods::get()
-{
-    auto _tmpMethods = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::Method^>();
-    for(auto _element : ((::CppSharp::CppParser::AST::Class*)NativePtr)->Methods)
-    {
-        auto _marshalElement = gcnew CppSharp::Parser::AST::Method((::CppSharp::CppParser::AST::Method*)_element);
-        _tmpMethods->Add(_marshalElement);
-    }
-    return _tmpMethods;
-}
-
-void CppSharp::Parser::AST::Class::Methods::set(System::Collections::Generic::List<CppSharp::Parser::AST::Method^>^ value)
-{
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::Method*>();
-    for each(CppSharp::Parser::AST::Method^ _element in value)
-    {
-        auto _marshalElement = (::CppSharp::CppParser::AST::Method*)_element->NativePtr;
-        _tmpvalue.push_back(_marshalElement);
-    }
-    ((::CppSharp::CppParser::AST::Class*)NativePtr)->Methods = _tmpvalue;
-}
-
-System::Collections::Generic::List<CppSharp::Parser::AST::AccessSpecifierDecl^>^ CppSharp::Parser::AST::Class::Specifiers::get()
-{
-    auto _tmpSpecifiers = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::AccessSpecifierDecl^>();
-    for(auto _element : ((::CppSharp::CppParser::AST::Class*)NativePtr)->Specifiers)
-    {
-        auto _marshalElement = gcnew CppSharp::Parser::AST::AccessSpecifierDecl((::CppSharp::CppParser::AST::AccessSpecifierDecl*)_element);
-        _tmpSpecifiers->Add(_marshalElement);
-    }
-    return _tmpSpecifiers;
-}
-
-void CppSharp::Parser::AST::Class::Specifiers::set(System::Collections::Generic::List<CppSharp::Parser::AST::AccessSpecifierDecl^>^ value)
-{
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::AccessSpecifierDecl*>();
-    for each(CppSharp::Parser::AST::AccessSpecifierDecl^ _element in value)
-    {
-        auto _marshalElement = (::CppSharp::CppParser::AST::AccessSpecifierDecl*)_element->NativePtr;
-        _tmpvalue.push_back(_marshalElement);
-    }
-    ((::CppSharp::CppParser::AST::Class*)NativePtr)->Specifiers = _tmpvalue;
+    auto __ret = ((::CppSharp::CppParser::AST::Class*)NativePtr)->getSpecifiersCount();
+    return __ret;
 }
 
 bool CppSharp::Parser::AST::Class::IsPOD::get()
@@ -2548,16 +2224,16 @@ CppSharp::Parser::AST::TemplateParameter^ CppSharp::Parser::AST::Template::getPa
     return gcnew CppSharp::Parser::AST::TemplateParameter((::CppSharp::CppParser::AST::TemplateParameter*)____ret);
 }
 
-unsigned int CppSharp::Parser::AST::Template::getParametersCount()
-{
-    auto __ret = ((::CppSharp::CppParser::AST::Template*)NativePtr)->getParametersCount();
-    return __ret;
-}
-
 CppSharp::Parser::AST::Template::Template()
     : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)nullptr)
 {
     NativePtr = new ::CppSharp::CppParser::AST::Template();
+}
+
+unsigned int CppSharp::Parser::AST::Template::ParametersCount::get()
+{
+    auto __ret = ((::CppSharp::CppParser::AST::Template*)NativePtr)->getParametersCount();
+    return __ret;
 }
 
 CppSharp::Parser::AST::Declaration^ CppSharp::Parser::AST::Template::TemplatedDecl::get()
@@ -2568,29 +2244,6 @@ CppSharp::Parser::AST::Declaration^ CppSharp::Parser::AST::Template::TemplatedDe
 void CppSharp::Parser::AST::Template::TemplatedDecl::set(CppSharp::Parser::AST::Declaration^ value)
 {
     ((::CppSharp::CppParser::AST::Template*)NativePtr)->TemplatedDecl = (::CppSharp::CppParser::AST::Declaration*)value->NativePtr;
-}
-
-System::Collections::Generic::List<CppSharp::Parser::AST::TemplateParameter^>^ CppSharp::Parser::AST::Template::Parameters::get()
-{
-    auto _tmpParameters = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::TemplateParameter^>();
-    for(auto _element : ((::CppSharp::CppParser::AST::Template*)NativePtr)->Parameters)
-    {
-        auto ___element = new ::CppSharp::CppParser::AST::TemplateParameter(_element);
-        auto _marshalElement = gcnew CppSharp::Parser::AST::TemplateParameter((::CppSharp::CppParser::AST::TemplateParameter*)___element);
-        _tmpParameters->Add(_marshalElement);
-    }
-    return _tmpParameters;
-}
-
-void CppSharp::Parser::AST::Template::Parameters::set(System::Collections::Generic::List<CppSharp::Parser::AST::TemplateParameter^>^ value)
-{
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::TemplateParameter>();
-    for each(CppSharp::Parser::AST::TemplateParameter^ _element in value)
-    {
-        auto _marshalElement = *(::CppSharp::CppParser::AST::TemplateParameter*)_element->NativePtr;
-        _tmpvalue.push_back(_marshalElement);
-    }
-    ((::CppSharp::CppParser::AST::Template*)NativePtr)->Parameters = _tmpvalue;
 }
 
 CppSharp::Parser::AST::ClassTemplate::ClassTemplate(::CppSharp::CppParser::AST::ClassTemplate* native)
@@ -2724,12 +2377,17 @@ CppSharp::Parser::AST::MacroDefinition::MacroDefinition()
 
 System::String^ CppSharp::Parser::AST::MacroDefinition::Expression::get()
 {
-    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::AST::MacroDefinition*)NativePtr)->Expression);
+    auto __ret = ((::CppSharp::CppParser::AST::MacroDefinition*)NativePtr)->getExpression();
+    if (__ret == nullptr) return nullptr;
+    return clix::marshalString<clix::E_UTF8>(__ret);
 }
 
 void CppSharp::Parser::AST::MacroDefinition::Expression::set(System::String^ value)
 {
-    ((::CppSharp::CppParser::AST::MacroDefinition*)NativePtr)->Expression = clix::marshalString<clix::E_UTF8>(value);
+    auto s = value;
+    auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
+    auto arg0 = _arg0.c_str();
+    ((::CppSharp::CppParser::AST::MacroDefinition*)NativePtr)->setExpression(arg0);
 }
 
 CppSharp::Parser::AST::MacroExpansion::MacroExpansion(::CppSharp::CppParser::AST::MacroExpansion* native)
@@ -2751,12 +2409,17 @@ CppSharp::Parser::AST::MacroExpansion::MacroExpansion()
 
 System::String^ CppSharp::Parser::AST::MacroExpansion::Text::get()
 {
-    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::AST::MacroExpansion*)NativePtr)->Text);
+    auto __ret = ((::CppSharp::CppParser::AST::MacroExpansion*)NativePtr)->getText();
+    if (__ret == nullptr) return nullptr;
+    return clix::marshalString<clix::E_UTF8>(__ret);
 }
 
 void CppSharp::Parser::AST::MacroExpansion::Text::set(System::String^ value)
 {
-    ((::CppSharp::CppParser::AST::MacroExpansion*)NativePtr)->Text = clix::marshalString<clix::E_UTF8>(value);
+    auto s = value;
+    auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
+    auto arg0 = _arg0.c_str();
+    ((::CppSharp::CppParser::AST::MacroExpansion*)NativePtr)->setText(arg0);
 }
 
 CppSharp::Parser::AST::MacroDefinition^ CppSharp::Parser::AST::MacroExpansion::Definition::get()
@@ -2780,30 +2443,11 @@ CppSharp::Parser::AST::TranslationUnit::TranslationUnit(System::IntPtr native)
     auto __native = (::CppSharp::CppParser::AST::TranslationUnit*)native.ToPointer();
 }
 
-CppSharp::Parser::AST::Namespace^ CppSharp::Parser::AST::TranslationUnit::getNamespaces(unsigned int i)
-{
-    auto __ret = ((::CppSharp::CppParser::AST::TranslationUnit*)NativePtr)->getNamespaces(i);
-    if (__ret == nullptr) return nullptr;
-    return gcnew CppSharp::Parser::AST::Namespace((::CppSharp::CppParser::AST::Namespace*)__ret);
-}
-
-unsigned int CppSharp::Parser::AST::TranslationUnit::getNamespacesCount()
-{
-    auto __ret = ((::CppSharp::CppParser::AST::TranslationUnit*)NativePtr)->getNamespacesCount();
-    return __ret;
-}
-
 CppSharp::Parser::AST::MacroDefinition^ CppSharp::Parser::AST::TranslationUnit::getMacros(unsigned int i)
 {
     auto __ret = ((::CppSharp::CppParser::AST::TranslationUnit*)NativePtr)->getMacros(i);
     if (__ret == nullptr) return nullptr;
     return gcnew CppSharp::Parser::AST::MacroDefinition((::CppSharp::CppParser::AST::MacroDefinition*)__ret);
-}
-
-unsigned int CppSharp::Parser::AST::TranslationUnit::getMacrosCount()
-{
-    auto __ret = ((::CppSharp::CppParser::AST::TranslationUnit*)NativePtr)->getMacrosCount();
-    return __ret;
 }
 
 CppSharp::Parser::AST::TranslationUnit::TranslationUnit()
@@ -2814,12 +2458,23 @@ CppSharp::Parser::AST::TranslationUnit::TranslationUnit()
 
 System::String^ CppSharp::Parser::AST::TranslationUnit::FileName::get()
 {
-    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::AST::TranslationUnit*)NativePtr)->FileName);
+    auto __ret = ((::CppSharp::CppParser::AST::TranslationUnit*)NativePtr)->getFileName();
+    if (__ret == nullptr) return nullptr;
+    return clix::marshalString<clix::E_UTF8>(__ret);
 }
 
 void CppSharp::Parser::AST::TranslationUnit::FileName::set(System::String^ value)
 {
-    ((::CppSharp::CppParser::AST::TranslationUnit*)NativePtr)->FileName = clix::marshalString<clix::E_UTF8>(value);
+    auto s = value;
+    auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
+    auto arg0 = _arg0.c_str();
+    ((::CppSharp::CppParser::AST::TranslationUnit*)NativePtr)->setFileName(arg0);
+}
+
+unsigned int CppSharp::Parser::AST::TranslationUnit::MacrosCount::get()
+{
+    auto __ret = ((::CppSharp::CppParser::AST::TranslationUnit*)NativePtr)->getMacrosCount();
+    return __ret;
 }
 
 bool CppSharp::Parser::AST::TranslationUnit::IsSystemHeader::get()
@@ -2830,50 +2485,6 @@ bool CppSharp::Parser::AST::TranslationUnit::IsSystemHeader::get()
 void CppSharp::Parser::AST::TranslationUnit::IsSystemHeader::set(bool value)
 {
     ((::CppSharp::CppParser::AST::TranslationUnit*)NativePtr)->IsSystemHeader = value;
-}
-
-System::Collections::Generic::List<CppSharp::Parser::AST::Namespace^>^ CppSharp::Parser::AST::TranslationUnit::Namespaces::get()
-{
-    auto _tmpNamespaces = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::Namespace^>();
-    for(auto _element : ((::CppSharp::CppParser::AST::TranslationUnit*)NativePtr)->Namespaces)
-    {
-        auto _marshalElement = gcnew CppSharp::Parser::AST::Namespace((::CppSharp::CppParser::AST::Namespace*)_element);
-        _tmpNamespaces->Add(_marshalElement);
-    }
-    return _tmpNamespaces;
-}
-
-void CppSharp::Parser::AST::TranslationUnit::Namespaces::set(System::Collections::Generic::List<CppSharp::Parser::AST::Namespace^>^ value)
-{
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::Namespace*>();
-    for each(CppSharp::Parser::AST::Namespace^ _element in value)
-    {
-        auto _marshalElement = (::CppSharp::CppParser::AST::Namespace*)_element->NativePtr;
-        _tmpvalue.push_back(_marshalElement);
-    }
-    ((::CppSharp::CppParser::AST::TranslationUnit*)NativePtr)->Namespaces = _tmpvalue;
-}
-
-System::Collections::Generic::List<CppSharp::Parser::AST::MacroDefinition^>^ CppSharp::Parser::AST::TranslationUnit::Macros::get()
-{
-    auto _tmpMacros = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::MacroDefinition^>();
-    for(auto _element : ((::CppSharp::CppParser::AST::TranslationUnit*)NativePtr)->Macros)
-    {
-        auto _marshalElement = gcnew CppSharp::Parser::AST::MacroDefinition((::CppSharp::CppParser::AST::MacroDefinition*)_element);
-        _tmpMacros->Add(_marshalElement);
-    }
-    return _tmpMacros;
-}
-
-void CppSharp::Parser::AST::TranslationUnit::Macros::set(System::Collections::Generic::List<CppSharp::Parser::AST::MacroDefinition^>^ value)
-{
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::MacroDefinition*>();
-    for each(CppSharp::Parser::AST::MacroDefinition^ _element in value)
-    {
-        auto _marshalElement = (::CppSharp::CppParser::AST::MacroDefinition*)_element->NativePtr;
-        _tmpvalue.push_back(_marshalElement);
-    }
-    ((::CppSharp::CppParser::AST::TranslationUnit*)NativePtr)->Macros = _tmpvalue;
 }
 
 CppSharp::Parser::AST::NativeLibrary::NativeLibrary(::CppSharp::CppParser::AST::NativeLibrary* native)
@@ -2893,12 +2504,6 @@ System::String^ CppSharp::Parser::AST::NativeLibrary::getSymbols(unsigned int i)
     return clix::marshalString<clix::E_UTF8>(__ret);
 }
 
-unsigned int CppSharp::Parser::AST::NativeLibrary::getSymbolsCount()
-{
-    auto __ret = ((::CppSharp::CppParser::AST::NativeLibrary*)NativePtr)->getSymbolsCount();
-    return __ret;
-}
-
 CppSharp::Parser::AST::NativeLibrary::NativeLibrary()
 {
     NativePtr = new ::CppSharp::CppParser::AST::NativeLibrary();
@@ -2916,34 +2521,23 @@ void CppSharp::Parser::AST::NativeLibrary::Instance::set(System::IntPtr object)
 
 System::String^ CppSharp::Parser::AST::NativeLibrary::FileName::get()
 {
-    return clix::marshalString<clix::E_UTF8>(((::CppSharp::CppParser::AST::NativeLibrary*)NativePtr)->FileName);
+    auto __ret = ((::CppSharp::CppParser::AST::NativeLibrary*)NativePtr)->getFileName();
+    if (__ret == nullptr) return nullptr;
+    return clix::marshalString<clix::E_UTF8>(__ret);
 }
 
 void CppSharp::Parser::AST::NativeLibrary::FileName::set(System::String^ value)
 {
-    ((::CppSharp::CppParser::AST::NativeLibrary*)NativePtr)->FileName = clix::marshalString<clix::E_UTF8>(value);
+    auto s = value;
+    auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
+    auto arg0 = _arg0.c_str();
+    ((::CppSharp::CppParser::AST::NativeLibrary*)NativePtr)->setFileName(arg0);
 }
 
-System::Collections::Generic::List<System::String^>^ CppSharp::Parser::AST::NativeLibrary::Symbols::get()
+unsigned int CppSharp::Parser::AST::NativeLibrary::SymbolsCount::get()
 {
-    auto _tmpSymbols = gcnew System::Collections::Generic::List<System::String^>();
-    for(auto _element : ((::CppSharp::CppParser::AST::NativeLibrary*)NativePtr)->Symbols)
-    {
-        auto _marshalElement = clix::marshalString<clix::E_UTF8>(_element);
-        _tmpSymbols->Add(_marshalElement);
-    }
-    return _tmpSymbols;
-}
-
-void CppSharp::Parser::AST::NativeLibrary::Symbols::set(System::Collections::Generic::List<System::String^>^ value)
-{
-    auto _tmpvalue = std::vector<::std::string>();
-    for each(System::String^ _element in value)
-    {
-        auto _marshalElement = clix::marshalString<clix::E_UTF8>(_element);
-        _tmpvalue.push_back(_marshalElement);
-    }
-    ((::CppSharp::CppParser::AST::NativeLibrary*)NativePtr)->Symbols = _tmpvalue;
+    auto __ret = ((::CppSharp::CppParser::AST::NativeLibrary*)NativePtr)->getSymbolsCount();
+    return __ret;
 }
 
 CppSharp::Parser::AST::ASTContext::ASTContext(::CppSharp::CppParser::AST::ASTContext* native)
@@ -2972,12 +2566,6 @@ CppSharp::Parser::AST::TranslationUnit^ CppSharp::Parser::AST::ASTContext::getTr
     return gcnew CppSharp::Parser::AST::TranslationUnit((::CppSharp::CppParser::AST::TranslationUnit*)__ret);
 }
 
-unsigned int CppSharp::Parser::AST::ASTContext::getTranslationUnitsCount()
-{
-    auto __ret = ((::CppSharp::CppParser::AST::ASTContext*)NativePtr)->getTranslationUnitsCount();
-    return __ret;
-}
-
 CppSharp::Parser::AST::ASTContext::ASTContext()
 {
     NativePtr = new ::CppSharp::CppParser::AST::ASTContext();
@@ -2993,25 +2581,9 @@ void CppSharp::Parser::AST::ASTContext::Instance::set(System::IntPtr object)
     NativePtr = (::CppSharp::CppParser::AST::ASTContext*)object.ToPointer();
 }
 
-System::Collections::Generic::List<CppSharp::Parser::AST::TranslationUnit^>^ CppSharp::Parser::AST::ASTContext::TranslationUnits::get()
+unsigned int CppSharp::Parser::AST::ASTContext::TranslationUnitsCount::get()
 {
-    auto _tmpTranslationUnits = gcnew System::Collections::Generic::List<CppSharp::Parser::AST::TranslationUnit^>();
-    for(auto _element : ((::CppSharp::CppParser::AST::ASTContext*)NativePtr)->TranslationUnits)
-    {
-        auto _marshalElement = gcnew CppSharp::Parser::AST::TranslationUnit((::CppSharp::CppParser::AST::TranslationUnit*)_element);
-        _tmpTranslationUnits->Add(_marshalElement);
-    }
-    return _tmpTranslationUnits;
-}
-
-void CppSharp::Parser::AST::ASTContext::TranslationUnits::set(System::Collections::Generic::List<CppSharp::Parser::AST::TranslationUnit^>^ value)
-{
-    auto _tmpvalue = std::vector<::CppSharp::CppParser::AST::TranslationUnit*>();
-    for each(CppSharp::Parser::AST::TranslationUnit^ _element in value)
-    {
-        auto _marshalElement = (::CppSharp::CppParser::AST::TranslationUnit*)_element->NativePtr;
-        _tmpvalue.push_back(_marshalElement);
-    }
-    ((::CppSharp::CppParser::AST::ASTContext*)NativePtr)->TranslationUnits = _tmpvalue;
+    auto __ret = ((::CppSharp::CppParser::AST::ASTContext*)NativePtr)->getTranslationUnitsCount();
+    return __ret;
 }
 

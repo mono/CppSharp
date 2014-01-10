@@ -162,22 +162,6 @@ const wchar_t* wcharFunction(const wchar_t* constWideChar)
     return constWideChar;
 }
 
-Bar operator-(const Bar& b)
-{
-    Bar nb;
-    nb.A = -b.A;
-    nb.B = -b.B;
-    return nb;
-}
-
-Bar operator+(const Bar& b1, const Bar& b2)
-{
-    Bar b;
-    b.A = b1.A + b2.A;
-    b.B = b1.B + b2.B;
-    return b;
-}
-
 Bar indirectReturn()
 {
     return Bar();
@@ -222,4 +206,9 @@ void DefaultParameters::Bar()
 int test(basic& s)
 {
     return 5;
+}
+
+Bar::Item operator |(Bar::Item left, Bar::Item right)
+{
+    return left | right;
 }

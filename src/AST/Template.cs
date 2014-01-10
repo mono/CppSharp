@@ -4,9 +4,15 @@ using System.Linq;
 
 namespace CppSharp.AST
 {
+    /// <summary>
+    /// Represents a template parameter
+    /// </summary>
     public struct TemplateParameter
     {
         public string Name;
+
+        // Generic type constraint
+        public string Constraint;
     }
 
     /// <summary>
@@ -15,6 +21,13 @@ namespace CppSharp.AST
     /// </summary>
     public abstract class Template : Declaration
     {
+        // Name of the declaration.
+        public override string Name
+        {
+            get { return TemplatedDecl.Name; }
+            set { base.Name = value; }
+        }
+
         protected Template()
         {
             Parameters = new List<TemplateParameter>();

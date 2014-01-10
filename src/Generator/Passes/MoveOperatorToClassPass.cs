@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using CppSharp.AST;
+﻿using CppSharp.AST;
 
 namespace CppSharp.Passes
 {
@@ -17,14 +15,19 @@ namespace CppSharp.Passes
             if (function.Ignore || !function.IsOperator)
                 return false;
 
-            var param = function.Parameters[0];
+            Class @class = null;
+            foreach (var param in function.Parameters)
+            {
+                FunctionToInstanceMethodPass.GetClassParameter(
+                    param, out @class);
 
-            Class @class;
-            if (!FunctionToInstanceMethodPass.GetClassParameter(param, out @class))
+                if (@class != null) break;
+            }
+
+            if (@class == null)
                 return false;
 
             // Create a new fake method so it acts as a static method.
-
             var method = new Method(function)
             {
                 Namespace = @class,

@@ -73,7 +73,11 @@ namespace CppSharp.Utils
 
             var path = Path.GetFullPath(GetTestsDirectory(name));
 
+#if OLD_PARSER
             options.IncludeDirs.Add(path);
+#else
+            options.addIncludeDirs(path);
+#endif
 
             driver.Diagnostics.EmitMessage("Looking for tests in: {0}", path);
             var files = Directory.EnumerateFiles(path, "*.h");
@@ -81,7 +85,7 @@ namespace CppSharp.Utils
                 options.Headers.Add(Path.GetFileName(file));
         }
 
-        public virtual void Preprocess(Driver driver, ASTContext lib)
+        public virtual void Preprocess(Driver driver, ASTContext ctx)
         {
         }
 

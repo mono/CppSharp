@@ -1,8 +1,10 @@
 ﻿using System;
 
 #if !OLD_PARSER
+using CppSharp.AST;
 using CppSharp.Parser;
-using CppSharp.Parser.AST;
+using ASTContext = CppSharp.Parser.AST.ASTContext;
+using NativeLibrary = CppSharp.Parser.AST.NativeLibrary;
 #else
 using CppSharp.AST;
 #endif
@@ -89,8 +91,16 @@ namespace CppSharp
         {
             var newLibrary = new AST.NativeLibrary { FileName = library.FileName };
 
+#if OLD_PARSER
             foreach (var symbol in library.Symbols)
                 newLibrary.Symbols.Add(symbol);
+#else
+            for (uint i = 0; i < library.SymbolsCount; ++i)
+            {
+                var symbol = library.getSymbols(i);
+                newLibrary.Symbols.Add(symbol);
+            }
+#endif
 
             return newLibrary;
         }

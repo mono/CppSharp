@@ -24,17 +24,6 @@ namespace CppSharp.AST
         // Used to keep track of anonymous declarations.
         public Dictionary<ulong, Declaration> Anonymous; 
 
-        public TranslationUnit TranslationUnit
-        {
-            get
-            {
-                if (this is TranslationUnit)
-                    return this as TranslationUnit;
-                else
-                    return Namespace.TranslationUnit;
-            }
-        }
-
         protected DeclarationContext()
         {
             Namespaces = new List<Namespace>();
@@ -230,6 +219,13 @@ namespace CppSharp.AST
             return newClass;
         }
 
+        public FunctionTemplate FindFunctionTemplate(string name,
+            List<TemplateParameter> @params)
+        {
+            return Templates.FirstOrDefault(template => template.Name == name
+                && template.Parameters.SequenceEqual(@params)) as FunctionTemplate;
+        }
+
         public FunctionTemplate FindFunctionTemplate(IntPtr ptr)
         {
             return Templates.FirstOrDefault(template =>
@@ -270,10 +266,15 @@ namespace CppSharp.AST
             return Enums.Find(e => e.ItemsByName.ContainsKey(name));
         }
 
+        public IEnumerable<Function> FindOperator(CXXOperatorKind kind)
+        {
+            return Functions.Where(fn => fn.OperatorKind == kind);
+        }
+
         public virtual IEnumerable<Function> GetFunctionOverloads(Function function)
         {
-            if (function.OperatorKind == CXXOperatorKind.Conversion)
-                return Functions.Where(fn => fn.OperatorKind == CXXOperatorKind.Conversion);
+            if (function.IsOperator)
+                return FindOperator(function.OperatorKind);
             return Functions.Where(fn => fn.Name == function.Name);
         }
 

@@ -25,6 +25,11 @@
     type get##name (unsigned i) { return name[i]; } \
     unsigned get##name##Count () { return name.size(); }
 
+#define STRING(name) \
+    std::string name; \
+    const char* get##name() { return name.c_str(); } \
+    void set##name(const char* s) { name = s; }
+
 namespace CppSharp { namespace CppParser { namespace AST {
 
 // Types
@@ -158,7 +163,12 @@ struct CS_API TemplateSpecializationType : public Type
 
 struct CS_API TemplateParameter
 {
-    std::string Name;
+    bool operator==(const TemplateParameter& param) const
+    {
+        return Name == param.Name;
+    }
+
+    STRING(Name)
 };
 
 struct CS_API TemplateParameterType : public Type
@@ -210,6 +220,7 @@ struct CS_API BuiltinType : public Type
     PrimitiveType Type;
 };
 
+#if 1
 // Comments
 
 enum struct RawCommentKind
@@ -229,8 +240,8 @@ struct FullComment;
 struct CS_API RawComment
 {
     RawCommentKind Kind;
-    std::string Text;
-    std::string BriefText;
+    STRING(Text)
+    STRING(BriefText)
     CppSharp::CppParser::AST::FullComment* FullComment;
 };
 
@@ -315,9 +326,9 @@ struct CS_API Declaration
 
     AccessSpecifier Access;
     DeclarationContext* _Namespace;
-    std::string Name;
+    STRING(Name)
     RawComment* Comment;
-    std::string DebugText;
+    STRING(DebugText)
     bool IsIncomplete;
     bool IsDependent;
     Declaration* CompleteDeclaration;
@@ -332,6 +343,7 @@ struct Function;
 struct TypedefDecl;
 struct Namespace;
 struct Template;
+struct FunctionTemplate;
 struct Variable;
 
 struct CS_API DeclarationContext : public Declaration
@@ -346,6 +358,10 @@ struct CS_API DeclarationContext : public Declaration
     Class* FindClass(const std::string& Name);
     Class* FindClass(const std::string& Name, bool IsComplete,
         bool Create = false);
+
+    FunctionTemplate* FindFunctionTemplate(void* OriginalPtr);
+    FunctionTemplate* FindFunctionTemplate(const std::string& Name,
+        const std::vector<TemplateParameter>& Params);
 
     Enumeration* FindEnum(const std::string& Name, bool Create = false);
 
@@ -447,8 +463,8 @@ struct CS_API Function : public Declaration
     bool IsPure;
     bool IsDeleted;
     CXXOperatorKind OperatorKind;
-    std::string Mangled;
-    std::string Signature;
+    STRING(Mangled)
+    STRING(Signature)
     CppSharp::CppParser::AST::CallingConvention CallingConvention;
     VECTOR(Parameter*, Parameters)
 };
@@ -478,7 +494,7 @@ struct CS_API Enumeration : public Declaration
 {
     struct CS_API Item : public Declaration
     {
-        std::string Expression;
+        STRING(Expression)
         uint64_t Value;
     };
 
@@ -497,7 +513,7 @@ struct CS_API Enumeration : public Declaration
 
 struct CS_API Variable : public Declaration
 {
-    std::string Mangled;
+    STRING(Mangled)
     CppSharp::CppParser::AST::QualifiedType QualifiedType;
 };
 
@@ -578,27 +594,26 @@ struct CS_API PreprocessedEntity : public Declaration
 
 struct CS_API MacroDefinition : public PreprocessedEntity
 {
-    std::string Expression;
+    STRING(Expression)
 };
 
 struct CS_API MacroExpansion : public PreprocessedEntity
 {
-    std::string Text;
+    STRING(Text)
     MacroDefinition* Definition;
 };
 
 
 struct CS_API TranslationUnit : public Namespace
 {
-    std::string FileName;
+    STRING(FileName)
     bool IsSystemHeader;
-    VECTOR(Namespace*, Namespaces)
     VECTOR(MacroDefinition*, Macros)
 };
 
 struct CS_API NativeLibrary
 {
-    std::string FileName;
+    STRING(FileName)
     VECTOR(std::string, Symbols)
 };
 
@@ -607,5 +622,6 @@ struct CS_API ASTContext
     TranslationUnit* FindOrCreateModule(const std::string& File);
     VECTOR(TranslationUnit*, TranslationUnits)
 };
+#endif
 
 } } }

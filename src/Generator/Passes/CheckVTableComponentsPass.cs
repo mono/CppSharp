@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using CppSharp.AST;
 using CppSharp.Utils;
 
@@ -13,9 +12,6 @@ namespace CppSharp.Passes
     {
         public override bool VisitClassDecl(AST.Class @class)
         {
-            if (AlreadyVisited(@class))
-                return false;
-
             foreach (var vfptr in @class.Layout.VFTables)
             {
                 var uniqueEntries = new OrderedSet<VTableComponent>();

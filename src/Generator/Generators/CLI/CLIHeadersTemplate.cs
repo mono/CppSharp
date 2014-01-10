@@ -97,13 +97,25 @@ namespace CppSharp.Generators.CLI
             // Create a new tree of namespaces out of the type references found.
             var rootNamespace = new TranslationUnit();
 
-            foreach (var typeRef in typeReferences)
+            var sortedRefs = typeReferences.ToList();
+            sortedRefs.Sort((ref1, ref2) =>
+                string.CompareOrdinal(ref1.FowardReference, ref2.FowardReference));
+
+            var forwardRefs = new SortedSet<string>();
+
+            foreach (var typeRef in sortedRefs)
             {
                 if (string.IsNullOrWhiteSpace(typeRef.FowardReference))
                     continue;
 
                 var declaration = typeRef.Declaration;
                 if (!(declaration.Namespace is Namespace))
+                    continue;
+
+                if (!forwardRefs.Add(typeRef.FowardReference))
+                    continue;
+
+                if (typeRef.Include.InHeader)
                     continue;
 
                 var @namespace = FindCreateNamespace(rootNamespace, declaration);
@@ -294,7 +306,7 @@ namespace CppSharp.Generators.CLI
 
         public void GenerateClassGenericMethods(Class @class)
         {
-            var printer = TypePrinter as CLITypePrinter;
+            var printer = TypePrinter;
             var oldCtx = printer.Context;
 
             PushIndent();
@@ -304,6 +316,8 @@ namespace CppSharp.Generators.CLI
 
                 var functionTemplate = template as FunctionTemplate;
                 if (functionTemplate == null) continue;
+
+                PushBlock(CLIBlockKind.Template);
 
                 var function = functionTemplate.TemplatedFunction;
 
@@ -319,14 +333,32 @@ namespace CppSharp.Generators.CLI
                 var retType = function.ReturnType.Type.Visit(typePrinter,
                     function.ReturnType.Qualifiers);
 
-                var typeNamesStr = "";
+                var typeNames = "";
                 var paramNames = template.Parameters.Select(param => param.Name).ToList();
                 if (paramNames.Any())
-                    typeNamesStr = "typename " + string.Join(", typename ", paramNames);
+                    typeNames = "typename " + string.Join(", typename ", paramNames);
 
-                WriteLine("generic<{0}>", typeNamesStr);
+                Write("generic<{0}>", typeNames);
+
+                // Process the generic type constraints
+                var constraints = new List<string>();
+                foreach (var param in template.Parameters)
+                {
+                    if (string.IsNullOrWhiteSpace(param.Constraint))
+                        continue;
+                    constraints.Add(string.Format("{0} : {1}", param.Name,
+                        param.Constraint));
+                }
+
+                if (constraints.Any())
+                    Write(" where {0}", string.Join(", ", constraints));
+
+                NewLine();
+
                 WriteLine("{0} {1}({2});", retType, SafeIdentifier(function.Name),
                     GenerateParametersList(function.Parameters));
+
+                PopBlock(NewLineKind.BeforeNextBlock);
             }
             PopIndent();
 
@@ -472,6 +504,8 @@ namespace CppSharp.Generators.CLI
 
                 var type = variable.Type;
 
+                PushBlock(CLIBlockKind.Variable);
+
                 WriteLine("static property {0} {1}", type, variable.Name);
 
                 WriteStartBraceIndent();
@@ -482,6 +516,8 @@ namespace CppSharp.Generators.CLI
                     WriteLine("void set({0});", type);
 
                 WriteCloseBraceIndent();
+
+                PopBlock(NewLineKind.BeforeNextBlock);
             }
 
             PopIndent();
@@ -530,25 +566,27 @@ namespace CppSharp.Generators.CLI
                 if (prop.Ignore) continue;
 
                 GenerateDeclarationCommon(prop);
-                GenerateProperty(prop, prop.HasGetter, prop.HasSetter);
+                GenerateProperty(prop);
             }
             PopIndent();
         }
 
-        public void GenerateProperty<T>(T decl, bool isGetter = true, bool isSetter = true)
-            where T : Declaration, ITypedDecl
+        public void GenerateProperty(Property property)
         {
-            if (!(isGetter || isSetter))
+            if (!(property.HasGetter || property.HasSetter))
                 return;
 
-            PushBlock(CLIBlockKind.Property, decl);
-            var type = decl.Type.Visit(TypePrinter, decl.QualifiedType.Qualifiers);
+            PushBlock(CLIBlockKind.Property, property);
+            var type = property.QualifiedType.Visit(TypePrinter);
 
-            WriteLine("property {0} {1}", type, decl.Name);
+            WriteLine("property {0} {1}", type, property.Name);
             WriteStartBraceIndent();
 
-            if(isGetter) WriteLine("{0} get();", type);
-            if(isSetter) WriteLine("void set({0});", type);
+            if(property.HasGetter)
+                WriteLine("{0} get();", type);
+
+            if(property.HasSetter)
+                WriteLine("void set({0});", type);
 
             WriteCloseBraceIndent();
             PopBlock(NewLineKind.BeforeNextBlock);
@@ -595,12 +633,15 @@ namespace CppSharp.Generators.CLI
                 return false;
 
             FunctionType function;
-            if (typedef.Type.IsPointerTo<FunctionType>(out function))
+            if (typedef.Type.IsPointerTo(out function))
             {
                 PushBlock(CLIBlockKind.Typedef, typedef);
                 GenerateDeclarationCommon(typedef);
 
-                WriteLine("{0};",
+                var insideClass = typedef.Namespace is Class;
+
+                WriteLine("{0}{1};",
+                    !insideClass ? "public " : "",
                     string.Format(TypePrinter.VisitDelegate(function),
                     SafeIdentifier(typedef.Name)));
                 PopBlock(NewLineKind.BeforeNextBlock);

@@ -702,29 +702,57 @@ ClassTemplate* Parser::WalkClassTemplate(clang::ClassTemplateDecl* TD)
 
 //-----------------------------------//
 
-FunctionTemplate* Parser::WalkFunctionTemplate(clang::FunctionTemplateDecl* TD)
+static std::vector<CppSharp::CppParser::TemplateParameter>
+WalkTemplateParameterList(const clang::TemplateParameterList* TPL)
 {
-    auto NS = GetNamespace(TD);
-    assert(NS && "Expected a valid namespace");
+    auto params = std::vector<CppSharp::CppParser::TemplateParameter>();
 
-    auto Function = WalkFunction(TD->getTemplatedDecl(), /*IsDependent=*/true,
-        /*AddToNamespace=*/false);
-
-    FunctionTemplate* FT = new FunctionTemplate;
-    HandleDeclaration(TD, FT);
-
-    FT->TemplatedDecl = Function;
-
-    auto TPL = TD->getTemplateParameters();
     for(auto it = TPL->begin(); it != TPL->end(); ++it)
     {
         auto ND = *it;
 
-        auto TP = TemplateParameter();
+        auto TP = CppSharp::CppParser::TemplateParameter();
         TP.Name = ND->getNameAsString();
 
-        FT->Parameters.push_back(TP);
+        params.push_back(TP);
     }
+
+    return params;
+}
+
+FunctionTemplate* Parser::WalkFunctionTemplate(clang::FunctionTemplateDecl* TD)
+{
+    using namespace clang;
+
+    auto NS = GetNamespace(TD);
+    assert(NS && "Expected a valid namespace");
+
+    auto FT = NS->FindFunctionTemplate((void*)TD);
+    if (FT != nullptr)
+        return FT;
+
+    auto Params = WalkTemplateParameterList(TD->getTemplateParameters());
+
+    CppSharp::CppParser::AST::Function* Function = nullptr;
+    auto TemplatedDecl = TD->getTemplatedDecl();
+
+    if (auto MD = dyn_cast<CXXMethodDecl>(TemplatedDecl))
+        Function = WalkMethodCXX(MD);
+    else
+        Function = WalkFunction(TemplatedDecl, /*IsDependent=*/true,
+                                            /*AddToNamespace=*/false);
+
+    auto Name = TD->getNameAsString();
+    FT = NS->FindFunctionTemplate(Name, Params);
+    if (FT != nullptr && FT->TemplatedDecl == Function)
+        return FT;
+
+    FT = new FunctionTemplate();
+    HandleDeclaration(TD, FT);
+
+    FT->_Namespace = NS;
+    FT->TemplatedDecl = Function;
+    FT->Parameters = Params;
 
     NS->Templates.push_back(FT);
 
@@ -1529,7 +1557,10 @@ Enumeration* Parser::WalkEnum(clang::EnumDecl* ED)
         return E;
 
     if (!E)
+    {
         E = NS->FindEnum(Name, /*Create=*/true);
+        HandleDeclaration(ED, E);
+    }
 
     if (ED->isScoped())
         E->Modifiers = (Enumeration::EnumModifiers)
@@ -1934,7 +1965,7 @@ PreprocessedEntity* Parser::WalkPreprocessedEntity(
     {
     case clang::PreprocessedEntity::MacroExpansionKind:
     {
-        const MacroExpansion* MD = cast<MacroExpansion>(PPEntity);
+        auto MD = cast<clang::MacroExpansion>(PPEntity);
         Entity = new MacroExpansion();
 
         std::string Text;
@@ -1946,7 +1977,7 @@ PreprocessedEntity* Parser::WalkPreprocessedEntity(
     }
     case clang::PreprocessedEntity::MacroDefinitionKind:
     {
-        const MacroDefinition* MD = cast<MacroDefinition>(PPEntity);
+        auto MD = cast<clang::MacroDefinition>(PPEntity);
         Entity = new MacroDefinition();
         break;
     }
@@ -2346,8 +2377,11 @@ ParserResult* Parser::ParseHeader(const std::string& File)
 
     // Check that the file is reachable.
     const clang::DirectoryLookup *Dir;
-    if (!C->getPreprocessor().getHeaderSearchInfo().LookupFile(File, /*isAngled*/true,
-        nullptr, Dir, nullptr, nullptr, nullptr, nullptr))
+    llvm::SmallVector<const clang::FileEntry*, 0> Includers;
+
+    if (!C->getPreprocessor().getHeaderSearchInfo().LookupFile(File,
+        clang::SourceLocation(), /*isAngled*/true,
+        nullptr, Dir, Includers, nullptr, nullptr, nullptr))
     {
         res->Kind = ParserResultKind::FileNotFound;
         return res;
@@ -2406,7 +2440,8 @@ ParserResult* Parser::ParseHeader(const std::string& File)
  }
 
 ParserResultKind Parser::ParseArchive(llvm::StringRef File,
-                                      llvm::MemoryBuffer *Buffer)
+                                      llvm::MemoryBuffer *Buffer,
+                                      CppSharp::CppParser::NativeLibrary*& NativeLib)
 {
     llvm::error_code Code;
     llvm::object::Archive Archive(Buffer, Code);
@@ -2415,7 +2450,7 @@ ParserResultKind Parser::ParseArchive(llvm::StringRef File,
         return ParserResultKind::Error;
 
     auto LibName = File;
-    auto NativeLib = new NativeLibrary();
+    NativeLib = new NativeLibrary();
     NativeLib->FileName = LibName;
 
     for(auto it = Archive.begin_symbols(); it != Archive.end_symbols(); ++it)
@@ -2432,7 +2467,8 @@ ParserResultKind Parser::ParseArchive(llvm::StringRef File,
 }
 
 ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
-                                        llvm::MemoryBuffer *Buffer)
+                                        llvm::MemoryBuffer *Buffer,
+                                        CppSharp::CppParser::NativeLibrary*& NativeLib)
 {
     auto Object = llvm::object::ObjectFile::createObjectFile(Buffer);
 
@@ -2440,7 +2476,7 @@ ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
         return ParserResultKind::Error;
 
     auto LibName = File;
-    auto NativeLib = new NativeLibrary();
+    NativeLib = new NativeLibrary();
     NativeLib->FileName = LibName;
 
     llvm::error_code ec;
@@ -2501,11 +2537,15 @@ ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
         return res;
     }
 
-    res->Kind = ParseArchive(File, FM.getBufferForFile(FileEntry));
+    res->Kind = ParseArchive(File, FM.getBufferForFile(FileEntry),
+        res->Library);
+
     if (res->Kind == ParserResultKind::Success)
         return res;
 
-    res->Kind = ParseSharedLib(File, FM.getBufferForFile(FileEntry));
+    res->Kind = ParseSharedLib(File, FM.getBufferForFile(FileEntry),
+        res->Library);
+
     if (res->Kind == ParserResultKind::Success)
         return res;
 

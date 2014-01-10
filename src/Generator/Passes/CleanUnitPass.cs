@@ -25,8 +25,16 @@ namespace CppSharp.Passes
             var includePath = filePath;
             var shortestIncludePath = filePath;
 
+#if OLD_PARSER
             foreach (var path in DriverOptions.IncludeDirs)
+#else
+            for (uint i = 0; i < DriverOptions.IncludeDirsCount; ++i)
+#endif
             {
+#if !OLD_PARSER
+                var path = DriverOptions.getIncludeDirs(i);
+#endif
+
                 int idx = filePath.IndexOf(path, System.StringComparison.Ordinal);
                 if (idx == -1) continue;
 

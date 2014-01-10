@@ -14,7 +14,7 @@ libdir = path.join(builddir, "lib", "%{cfg.buildcfg}_%{cfg.platform}");
 gendir = path.join(builddir, "gen");
 
 common_flags = { "Unicode", "Symbols" }
-msvc_buildflags = { } -- "/wd4190", "/wd4996", "/wd4530"
+msvc_buildflags = { "/wd4267" }
 gcc_buildflags = { "-std=c++11" }
 
 msvc_cpp_defines = { }

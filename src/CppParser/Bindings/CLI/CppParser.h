@@ -7,17 +7,17 @@ namespace CppSharp
 {
     namespace Parser
     {
-        ref class ParserOptions;
-        ref class ParserDiagnostic;
         enum struct ParserDiagnosticLevel;
-        ref class ParserResult;
         enum struct ParserResultKind;
-        ref class ClangParser;
         enum struct SourceLocationKind;
+        ref class ClangParser;
+        ref class ParserDiagnostic;
+        ref class ParserOptions;
+        ref class ParserResult;
         namespace AST
         {
-            ref class ASTContext;
             enum struct CppAbi;
+            ref class ASTContext;
             ref class NativeLibrary;
         }
     }
@@ -72,66 +72,90 @@ namespace CppSharp
                 System::String^ get();
                 void set(System::String^);
             }
-            property System::Collections::Generic::List<System::String^>^ IncludeDirs
+
+            property unsigned int IncludeDirsCount
             {
-                System::Collections::Generic::List<System::String^>^ get();
-                void set(System::Collections::Generic::List<System::String^>^);
+                unsigned int get();
             }
-            property System::Collections::Generic::List<System::String^>^ SystemIncludeDirs
+
+            property unsigned int SystemIncludeDirsCount
             {
-                System::Collections::Generic::List<System::String^>^ get();
-                void set(System::Collections::Generic::List<System::String^>^);
+                unsigned int get();
             }
-            property System::Collections::Generic::List<System::String^>^ Defines
+
+            property unsigned int DefinesCount
             {
-                System::Collections::Generic::List<System::String^>^ get();
-                void set(System::Collections::Generic::List<System::String^>^);
+                unsigned int get();
             }
-            property System::Collections::Generic::List<System::String^>^ LibraryDirs
+
+            property unsigned int LibraryDirsCount
             {
-                System::Collections::Generic::List<System::String^>^ get();
-                void set(System::Collections::Generic::List<System::String^>^);
+                unsigned int get();
             }
-            property CppSharp::Parser::AST::ASTContext^ ASTContext
-            {
-                CppSharp::Parser::AST::ASTContext^ get();
-                void set(CppSharp::Parser::AST::ASTContext^);
-            }
-            property int ToolSetToUse
-            {
-                int get();
-                void set(int);
-            }
+
             property System::String^ TargetTriple
             {
                 System::String^ get();
                 void set(System::String^);
             }
+
+            property CppSharp::Parser::AST::ASTContext^ ASTContext
+            {
+                CppSharp::Parser::AST::ASTContext^ get();
+                void set(CppSharp::Parser::AST::ASTContext^);
+            }
+
+            property int ToolSetToUse
+            {
+                int get();
+                void set(int);
+            }
+
             property CppSharp::Parser::AST::CppAbi Abi
             {
                 CppSharp::Parser::AST::CppAbi get();
                 void set(CppSharp::Parser::AST::CppAbi);
             }
+
             property bool NoStandardIncludes
             {
                 bool get();
                 void set(bool);
             }
+
             property bool NoBuiltinIncludes
             {
                 bool get();
                 void set(bool);
             }
+
             property bool MicrosoftMode
             {
                 bool get();
                 void set(bool);
             }
+
             property bool Verbose
             {
                 bool get();
                 void set(bool);
             }
+
+            System::String^ getIncludeDirs(unsigned int i);
+
+            void addIncludeDirs(System::String^ s);
+
+            System::String^ getSystemIncludeDirs(unsigned int i);
+
+            void addSystemIncludeDirs(System::String^ s);
+
+            System::String^ getDefines(unsigned int i);
+
+            void addDefines(System::String^ s);
+
+            System::String^ getLibraryDirs(unsigned int i);
+
+            void addLibraryDirs(System::String^ s);
         };
 
         public ref class ParserDiagnostic : ICppInstance
@@ -154,21 +178,25 @@ namespace CppSharp
                 System::String^ get();
                 void set(System::String^);
             }
+
             property System::String^ Message
             {
                 System::String^ get();
                 void set(System::String^);
             }
+
             property CppSharp::Parser::ParserDiagnosticLevel Level
             {
                 CppSharp::Parser::ParserDiagnosticLevel get();
                 void set(CppSharp::Parser::ParserDiagnosticLevel);
             }
+
             property int LineNumber
             {
                 int get();
                 void set(int);
             }
+
             property int ColumnNumber
             {
                 int get();
@@ -191,26 +219,32 @@ namespace CppSharp
             ParserResult(System::IntPtr native);
             ParserResult();
 
+            property unsigned int DiagnosticsCount
+            {
+                unsigned int get();
+            }
+
             property CppSharp::Parser::ParserResultKind Kind
             {
                 CppSharp::Parser::ParserResultKind get();
                 void set(CppSharp::Parser::ParserResultKind);
             }
-            property System::Collections::Generic::List<CppSharp::Parser::ParserDiagnostic^>^ Diagnostics
-            {
-                System::Collections::Generic::List<CppSharp::Parser::ParserDiagnostic^>^ get();
-                void set(System::Collections::Generic::List<CppSharp::Parser::ParserDiagnostic^>^);
-            }
+
             property CppSharp::Parser::AST::ASTContext^ ASTContext
             {
                 CppSharp::Parser::AST::ASTContext^ get();
                 void set(CppSharp::Parser::AST::ASTContext^);
             }
+
             property CppSharp::Parser::AST::NativeLibrary^ Library
             {
                 CppSharp::Parser::AST::NativeLibrary^ get();
                 void set(CppSharp::Parser::AST::NativeLibrary^);
             }
+
+            CppSharp::Parser::ParserDiagnostic^ getDiagnostics(unsigned int i);
+
+            void addDiagnostics(CppSharp::Parser::ParserDiagnostic^ s);
         };
 
         public ref class ClangParser : ICppInstance
@@ -231,7 +265,6 @@ namespace CppSharp
             static CppSharp::Parser::ParserResult^ ParseHeader(CppSharp::Parser::ParserOptions^ Opts);
 
             static CppSharp::Parser::ParserResult^ ParseLibrary(CppSharp::Parser::ParserOptions^ Opts);
-
         };
     }
 }

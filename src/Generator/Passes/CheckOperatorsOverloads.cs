@@ -9,16 +9,15 @@ namespace CppSharp.Passes
     /// </summary>
     class CheckOperatorsOverloadsPass : TranslationUnitPass
     {
+        public CheckOperatorsOverloadsPass()
+        {
+            ClearVisitedDeclarations = false;
+        }
+
         public override bool VisitClassDecl(Class @class)
         {
             if (@class.CompleteDeclaration != null)
                 return VisitClassDecl(@class.CompleteDeclaration as Class);
-
-            if (!VisitDeclaration(@class))
-                return false;
-
-            if (AlreadyVisited(@class))
-                return false;
 
             if (!VisitDeclarationContext(@class))
                 return false;
