@@ -189,3 +189,5 @@ void P::setIsBool(bool value)
 {
 
 }
+
+int TestDestructors::Marker = 0;

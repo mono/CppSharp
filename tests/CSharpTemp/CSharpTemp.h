@@ -125,3 +125,12 @@ public:
 private:
     ComplexType m_complexType;
 };
+
+// Tests destructors
+struct DLL_API TestDestructors
+{
+    static int Marker;
+
+    TestDestructors() { Marker = 0xf00d; }
+    ~TestDestructors() { Marker = 0xcafe; }
+};

@@ -166,6 +166,14 @@ namespace CppSharp.AST
             }
         }
 
+        public IEnumerable<Method> Destructors
+        {
+            get
+            {
+                return Methods.Where(method => method.IsDestructor);
+            }
+        }
+
         public IEnumerable<Method> Operators
         {
             get

@@ -85,4 +85,15 @@ public class CSharpTempTests
             .GetCustomAttributes(typeof(ObsoleteAttribute), false).Length,
             Is.GreaterThan(0));
     }
+
+    [Test]
+    public void TestDestructors()
+    {
+        Assert.AreEqual(0, CSharpTemp.TestDestructors.Marker);
+
+        var dtors = new TestDestructors();
+        Assert.AreEqual(0xf00d, CSharpTemp.TestDestructors.Marker);
+        dtors.Dispose();
+        Assert.AreEqual(0xcafe, CSharpTemp.TestDestructors.Marker);
+    }
 }

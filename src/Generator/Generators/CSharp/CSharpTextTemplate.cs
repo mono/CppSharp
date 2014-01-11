@@ -526,6 +526,11 @@ namespace CppSharp.Generators.CSharp
                 tryAddOverload(ctor);
             }
 
+            foreach (var dtor in @class.Destructors)
+            {
+                tryAddOverload(dtor);
+            }
+
             foreach (var method in @class.Methods)
             {
                 if (ASTUtils.CheckIgnoreMethod(method))
@@ -1637,7 +1642,14 @@ namespace CppSharp.Generators.CSharp
             WriteStartBraceIndent();
 
             if (ShouldGenerateClassNativeField(@class))
+            {
+                var dtor = @class.Methods.FirstOrDefault(method => method.IsDestructor);
+                if (dtor != null)
+                    WriteLine("Internal.{0}({1});", GetFunctionNativeIdentifier(dtor),
+                        Helpers.InstanceIdentifier);
+
                 WriteLine("Marshal.FreeHGlobal({0});", Helpers.InstanceIdentifier);
+            }
 
             if (hasBaseClass)
                 WriteLine("base.Dispose(disposing);");
@@ -2358,7 +2370,22 @@ namespace CppSharp.Generators.CSharp
 
         public static string GetFunctionNativeIdentifier(Function function)
         {
-            var identifier = SafeIdentifier(function.Name);
+            var functionName = function.Name;
+
+            var method = function as Method;
+            if (method != null)
+            {
+                if (method.IsConstructor)
+                    functionName = "ctor_";
+                else if (method.IsCopyConstructor)
+                    functionName = "cctor_";
+                else if (method.IsDestructor)
+                    functionName = "dtor_";
+
+                functionName += GetMethodIdentifier(method);
+            }
+
+            var identifier = SafeIdentifier(functionName);
 
             if (function.IsOperator)
                 identifier = "Operator" + function.OperatorKind;
