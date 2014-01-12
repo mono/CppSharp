@@ -48,11 +48,6 @@ namespace CppSharp.AST
                 return Type.IsTagDecl(out @class);
             }
         }
-
-        public BaseClassSpecifier()
-        {
-            
-        }
     }
 
     public enum ClassType
