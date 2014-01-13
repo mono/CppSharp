@@ -2376,13 +2376,13 @@ namespace CppSharp.Generators.CSharp
             if (method != null)
             {
                 if (method.IsConstructor)
-                    functionName = "ctor_";
+                    functionName = "ctor";
                 else if (method.IsCopyConstructor)
-                    functionName = "cctor_";
+                    functionName = "cctor";
                 else if (method.IsDestructor)
-                    functionName = "dtor_";
-
-                functionName += GetMethodIdentifier(method);
+                    functionName = "dtor";
+                else
+                    functionName = GetMethodIdentifier(method);
             }
 
             var identifier = SafeIdentifier(functionName);
