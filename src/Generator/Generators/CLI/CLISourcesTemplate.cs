@@ -943,7 +943,8 @@ namespace CppSharp.Generators.CLI
                 param.Visit(marshal);
 
                 if (string.IsNullOrEmpty(marshal.Context.Return))
-                    throw new Exception("Cannot marshal argument of function");
+                    throw new Exception(string.Format("Cannot marshal argument of function '{0}'",
+                        function.QualifiedOriginalName));
 
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                     Write(marshal.Context.SupportBefore);
