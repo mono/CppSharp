@@ -2,6 +2,9 @@ project "CppSharp"
 
   kind "SharedLib"
   language "C#"
+  flags { "Unsafe"}
+
+  SetupManagedProject()
 
   files { "**.cs" }
   links
@@ -9,9 +12,7 @@ project "CppSharp"
     "System",
     "System.Core",
     "CppSharp.AST",
+    "CppSharp.Runtime"
   }
 
   SetupParser()
-
-  configuration "vs*"
-    location "."

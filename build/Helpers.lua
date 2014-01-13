@@ -30,7 +30,7 @@ end
 function SetupNativeProject()
   location (path.join(builddir, "projects"))
 
-  c = configuration "Debug"
+  local c = configuration "Debug"
     defines { "DEBUG" }
     
   configuration "Release"
@@ -54,6 +54,15 @@ function SetupNativeProject()
   configuration "Windows"
     defines { "WIN32", "_WINDOWS" }
   
+  configuration(c)
+end
+
+function SetupManagedProject()
+  location (path.join(builddir, "projects"))
+
+  local c = configuration "vs*"
+    location "."
+
   configuration(c)
 end
 

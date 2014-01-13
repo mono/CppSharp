@@ -4,6 +4,8 @@ project "CppSharp.Runtime"
   language "C#"
   flags { "Unsafe" }
 
+  SetupManagedProject()
+
   files   { "**.cs" }
   links { "System" }
 

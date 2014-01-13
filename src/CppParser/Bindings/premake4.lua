@@ -2,7 +2,7 @@ project "CppSharp.Parser.Gen"
 
   kind "ConsoleApp"
   language "C#"
-  location "."
+  SetupManagedProject()
   debugdir "."
   
   files { "ParserGen.cs", "*.lua" }
@@ -14,7 +14,7 @@ project "CppSharp.Parser.CSharp"
   
   kind "SharedLib"
   language "C#"
-  location "."
+  SetupManagedProject()
   
   dependson { "CppSharp.CppParser" }
   flags { common_flags, "Unsafe" }
@@ -27,7 +27,7 @@ project "CppSharp.Parser.CSharp"
 
   links { "CppSharp.Runtime" }
 
-configuration "vs*"
+if string.starts(action, "vs") then
 
   project "CppSharp.Parser.CLI"
     
@@ -56,3 +56,5 @@ configuration "vs*"
     
     configuration "*"
     links { "CppSharp.CppParser" }
+
+end

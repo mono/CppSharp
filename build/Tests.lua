@@ -7,12 +7,9 @@ function SetupExampleProject()
   
   files { "**.cs", "./*.lua" }
   links { "CppSharp.AST", "CppSharp.Generator" }
+
+  SetupManagedProject()
   SetupParser()
-
-  location (path.join(builddir, "projects"))
-
-  configuration "vs*"
-    location "."
 end
 
 function SetupTestProject(name, file, lib)
@@ -38,10 +35,7 @@ function SetupManagedTestProject()
     kind "SharedLib"
     language "C#"  
     flags { "Unsafe" }
-
-    local c = configuration "vs*"
-      location "."
-    configuration(c)
+    SetupManagedProject()
 end
 
 function SetupTestGeneratorProject(name)
@@ -63,8 +57,12 @@ function SetupTestGeneratorProject(name)
 end
 
 function SetupTestGeneratorBuildEvent(name)
-  local exePath = SafePath("$(TargetDir)" .. name .. ".Gen.exe")
-  prebuildcommands { exePath }
+  local exePath = SafePath("%{cfg.buildtarget.directory}/" .. name .. ".Gen.exe")
+  if string.starts(action, "vs") then
+    prebuildcommands { exePath }
+  else
+    prebuildcommands { "mono " .. exePath }
+  end
 end
 
 function SetupTestNativeProject(name)

@@ -155,8 +155,7 @@ namespace CppSharp
                 _decl.PreprocessedEntities.Add(_entity);
             }
 
-            _decl.OriginalPtr = decl.OriginalPtr;
-
+            //_decl.OriginalPtr = decl.OriginalPtr;
         }
 
         AST.PreprocessedEntity VisitPreprocessedEntity(Parser.AST.PreprocessedEntity entity)

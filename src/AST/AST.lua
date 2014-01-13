@@ -3,8 +3,7 @@ project "CppSharp.AST"
   kind  "SharedLib"
   language "C#"
 
-  configuration "vs*"
-  	location "."
+  SetupManagedProject()
 
   files { "*.cs" }
   links { "System", "System.Core" }

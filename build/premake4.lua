@@ -31,7 +31,11 @@ function SetupCLIParser()
 end
 
 function SetupCSharpParser()
-  links { "CppSharp.Parser.CSharp" }
+  links
+  {
+    "CppSharp.Parser.CSharp",
+    "CppSharp.Runtime"
+  }
 end
 
 function SetupParser()
@@ -66,11 +70,15 @@ solution "CppSharp"
 
   configuration {}
     
+  if string.starts(action, "vs") then
+
   group "Examples"
     IncludeExamples()
   
   group "Tests"
-    IncludeTests()
+      IncludeTests()
+      
+  end
   
   group "Libraries"
     include (srcdir .. "/Core")

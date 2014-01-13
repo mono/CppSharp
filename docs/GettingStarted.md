@@ -20,7 +20,25 @@ source first.
 Building in *Release* is recommended because else the Clang parser will be
 excruciatingly slow.
 
-Last updated to LLVM/Clang revision: `r194603`
+Last updated to LLVM/Clang revision: `r198449`
+
+## Compiling on Mac OS X (experimental)
+
+Requirements: Clang revision >= 198625
+
+1. Clone CppSharp to `<CppSharp>`
+2. Clone LLVM to `<CppSharp>\deps\llvm`
+3. Clone Clang to `<CppSharp>\deps\llvm\tools\clang` (see:
+   [http://clang.llvm.org/get_started.html](http://clang.llvm.org/get_started.html))
+4. Run CMake in `<CppSharp>\deps\llvm` and compile solution in *RelWithDebInfo* mode
+   The following CMake variables should be enabled:
+    - LLVM_ENABLE_CXX11 (enables C++11 support)
+    - LLVM_ENABLE_LIBCXX (enables libc++ standard library support)
+    - LLVM_BUILD_32_BITS for 32-bit builds (defaults to 64-bit)
+5. Run `premake5 gmake` in <CppSharp>\build
+6. Build generated makefiles:
+    - 32-bit builds: `config=release_x32 make`
+    - 64-bit builds: `config=release_x64 make`
 
 ## Generating bindings
 
