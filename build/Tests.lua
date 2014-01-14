@@ -57,10 +57,11 @@ function SetupTestGeneratorProject(name)
 end
 
 function SetupTestGeneratorBuildEvent(name)
-  local exePath = SafePath("%{cfg.buildtarget.directory}/" .. name .. ".Gen.exe")
   if string.starts(action, "vs") then
+    local exePath = SafePath("$(TargetDir)" .. name .. ".Gen.exe")
     prebuildcommands { exePath }
   else
+    local exePath = SafePath("%{cfg.buildtarget.directory}/" .. name .. ".Gen.exe")
     prebuildcommands { "mono " .. exePath }
   end
 end
