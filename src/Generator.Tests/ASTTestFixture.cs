@@ -1,11 +1,10 @@
 ﻿using System;
-using System.IO;
 using CppSharp.AST;
 using CppSharp.Utils;
 
 namespace CppSharp.Generator.Tests
 {
-    public class HeaderTestFixture
+    public class ASTTestFixture
     {
         protected Driver Driver;
         protected DriverOptions Options;
@@ -15,7 +14,7 @@ namespace CppSharp.Generator.Tests
         {
             Options = new DriverOptions();
 
-            var testsPath = LibraryTest.GetTestsDirectory("Native");
+            var testsPath = GeneratorTest.GetTestsDirectory("Native");
 
 #if OLD_PARSER
             Options.IncludeDirs.Add(testsPath);

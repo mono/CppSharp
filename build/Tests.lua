@@ -51,6 +51,7 @@ function SetupTestGeneratorProject(name)
     {
       "CppSharp.AST",
       "CppSharp.Generator",
+      "CppSharp.Generator.Tests"
     }
 
     SetupParser()
@@ -110,7 +111,7 @@ function SetupTestProjectsCSharp(name, file, lib)
     SetupManagedTestProject()
 
     files { name .. ".Tests.cs" }
-    links { name .. ".CSharp" }
+    links { name .. ".CSharp", "CppSharp.Generator.Tests" }
     dependson { name .. ".Native" }
 
     LinkNUnit()
@@ -141,7 +142,7 @@ function SetupTestProjectsCLI(name, file, lib)
     SetupManagedTestProject()
 
     files { name .. ".Tests.cs" }
-    links { name .. ".CLI" }
+    links { name .. ".CLI", "CppSharp.Generator.Tests" }
     dependson { name .. ".Native" }
 
     LinkNUnit()

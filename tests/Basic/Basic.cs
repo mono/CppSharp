@@ -4,7 +4,7 @@ using CppSharp.Utils;
 
 namespace CppSharp.Tests
 {
-    public class Basic : LibraryTest
+    public class Basic : GeneratorTest
     {
         public Basic(GeneratorKind kind)
             : base("Basic", kind)

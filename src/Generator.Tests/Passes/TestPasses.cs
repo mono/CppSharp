@@ -4,7 +4,7 @@ using NUnit.Framework;
 namespace CppSharp.Generator.Tests.Passes
 {
     [TestFixture]
-    public class TestPasses : HeaderTestFixture
+    public class TestPasses : ASTTestFixture
     {
         private PassBuilder<TranslationUnitPass> passBuilder;
 

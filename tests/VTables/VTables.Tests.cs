@@ -1,4 +1,5 @@
 using System;
+using CppSharp.Utils;
 using NUnit.Framework;
 using VTables;
 
@@ -12,7 +13,7 @@ public class FooDerived : Foo
 }
 
 [TestFixture]
-public class VTablesTests
+public class VTablesTests : GeneratorTestFixture
 {
     [Test]
     public void TestFoo()

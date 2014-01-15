@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Reflection;
 using CSharpTemp;
+using CppSharp.Utils;
 using NUnit.Framework;
 using Foo = CSharpTemp.Foo;
 
 [TestFixture]
-public class CSharpTempTests
+public class CSharpTempTests : GeneratorTestFixture
 {
     [Test]
     public void TestIndexer()

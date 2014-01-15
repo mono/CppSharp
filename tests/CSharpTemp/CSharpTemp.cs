@@ -49,7 +49,7 @@ namespace CppSharp.Tests
         }
     }
 
-    public class CSharpTempTests : LibraryTest
+    public class CSharpTempTests : GeneratorTest
     {
         public CSharpTempTests(GeneratorKind kind)
             : base("CSharpTemp", kind)

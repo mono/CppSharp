@@ -1,8 +1,9 @@
-﻿using NUnit.Framework;
+﻿using CppSharp.Utils;
+using NUnit.Framework;
 using Basic;
 
 [TestFixture]
-public class BasicTests
+public class BasicTests : GeneratorTestFixture
 {
     [Test]
     public void TestHello()

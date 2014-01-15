@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using CppSharp.Utils;
 using NUnit.Framework;
 
 [TestFixture]
-public class STLTests
+public class STLTests : GeneratorTestFixture
 {
     [Test]
     public void TestVectors()

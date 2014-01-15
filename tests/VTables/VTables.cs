@@ -5,7 +5,7 @@ using CppSharp.Utils;
 
 namespace CppSharp.Tests
 {
-    public class VTableTests : LibraryTest
+    public class VTableTests : GeneratorTest
     {
         public VTableTests(GeneratorKind kind)
             : base("VTables", kind)

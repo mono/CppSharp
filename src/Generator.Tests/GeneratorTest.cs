@@ -2,53 +2,22 @@
 using System.IO;
 using CppSharp.AST;
 using CppSharp.Generators;
+using NUnit.Framework;
 
 namespace CppSharp.Utils
 {
-    public abstract class LibraryTest : ILibrary
+    /// <summary>
+    /// The main base class for a generator-based tests project.
+    /// </summary>
+    public abstract class GeneratorTest : ILibrary
     {
         readonly string name;
         readonly GeneratorKind kind;
 
-        protected LibraryTest(string name, GeneratorKind kind)
+        protected GeneratorTest(string name, GeneratorKind kind)
         {
             this.name = name;
             this.kind = kind;
-        }
-
-        public static string GetTestsDirectory(string name)
-        {
-            var directory = Directory.GetParent(Directory.GetCurrentDirectory());
-
-            while (directory != null)
-            {
-                var path = Path.Combine(directory.FullName, "tests", name);
-
-                if (Directory.Exists(path))
-                    return path;
-
-                directory = directory.Parent;
-            }
-
-            throw new Exception(string.Format(
-                "Tests directory for project '{0}' was not found", name));
-        }
-
-        static string GetOutputDirectory()
-        {
-            var directory = Directory.GetParent(Directory.GetCurrentDirectory());
-
-            while (directory != null)
-            {
-                var path = Path.Combine(directory.FullName, "obj");
-
-                if (Directory.Exists(path))
-                    return directory.FullName;
-
-                directory = directory.Parent;
-            }
-
-            throw new Exception("Could not find tests output directory");
         }
 
         public virtual void Setup(Driver driver)
@@ -96,5 +65,55 @@ namespace CppSharp.Utils
         public virtual void SetupPasses(Driver driver)
         {
         }
+
+        #region Helpers
+        public static string GetTestsDirectory(string name)
+        {
+            var directory = Directory.GetParent(Directory.GetCurrentDirectory());
+
+            while (directory != null)
+            {
+                var path = Path.Combine(directory.FullName, "tests", name);
+
+                if (Directory.Exists(path))
+                    return path;
+
+                directory = directory.Parent;
+            }
+
+            throw new Exception(string.Format(
+                "Tests directory for project '{0}' was not found", name));
+        }
+
+        static string GetOutputDirectory()
+        {
+            var directory = Directory.GetParent(Directory.GetCurrentDirectory());
+
+            while (directory != null)
+            {
+                var path = Path.Combine(directory.FullName, "obj");
+
+                if (Directory.Exists(path))
+                    return directory.FullName;
+
+                directory = directory.Parent;
+            }
+
+            throw new Exception("Could not find tests output directory");
+        }
+        #endregion
+    }
+
+    /// <summary>
+    /// The main NUnit fixture base class for a generator-based tests project.
+    /// Provides support for a text-based test system that looks for lines
+    /// in the native test declarations that match a certain pattern, which
+    /// are used for certain kinds of tests that cannot be done with just
+    /// C# code and using the generated wrappers.
+    /// </summary>
+    [TestFixture]
+    public class GeneratorTestFixture
+    {
+
     }
 }
