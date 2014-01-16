@@ -5,7 +5,6 @@ using CppSharp.Utils;
 using NUnit.Framework;
 using Foo = CSharpTemp.Foo;
 
-[TestFixture]
 public class CSharpTempTests : GeneratorTestFixture
 {
     [Test]

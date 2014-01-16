@@ -2,7 +2,6 @@
 using NUnit.Framework;
 using Basic;
 
-[TestFixture]
 public class BasicTests : GeneratorTestFixture
 {
     [Test]

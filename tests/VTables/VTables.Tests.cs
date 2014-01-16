@@ -12,7 +12,6 @@ public class FooDerived : Foo
     }
 }
 
-[TestFixture]
 public class VTablesTests : GeneratorTestFixture
 {
     [Test]

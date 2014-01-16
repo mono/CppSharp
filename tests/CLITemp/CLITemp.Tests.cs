@@ -2,7 +2,6 @@ using CppSharp.Utils;
 using NUnit.Framework;
 using CLITemp;
 
-[TestFixture]
 public class CLITests : GeneratorTestFixture
 {
     [Test]

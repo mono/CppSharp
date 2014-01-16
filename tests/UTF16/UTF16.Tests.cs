@@ -2,7 +2,6 @@
 using NUnit.Framework;
 using Foo = UTF16.Foo;
 
-[TestFixture]
 public class UTF16Tests : GeneratorTestFixture
 {
     [Test]
