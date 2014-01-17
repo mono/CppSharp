@@ -47,6 +47,8 @@ struct DLL_API Bar
     Bar* returnPointerToValueType();
 };
 
+DLL_API Bar::Item operator |(Bar::Item left, Bar::Item right);
+
 struct DLL_API Bar2 : public Bar
 {
     // Conversion operators
@@ -234,4 +236,11 @@ struct DLL_API TestDelegates
     DelegateInGlobalNamespace B;
 };
 
-DLL_API Bar::Item operator |(Bar::Item left, Bar::Item right);
+// Tests memory leaks in constructors
+//  C#:  Marshal.FreeHGlobal(arg0);
+struct DLL_API TestMemoryLeaks
+{
+    TestMemoryLeaks(const char* name) {}
+};
+
+

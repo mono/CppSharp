@@ -1933,20 +1933,11 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateClassConstructor(Method method, Class @class)
         {
-            var @params = GenerateFunctionParamsMarshal(method.Parameters, method);
-
             WriteLine("{0} = Marshal.AllocHGlobal({1});", Helpers.InstanceIdentifier,
                 @class.Layout.Size);
 
             if (!method.IsDefaultConstructor || @class.HasNonTrivialDefaultConstructor)
-            {
-                Write("Internal.{0}({1}", GetFunctionNativeIdentifier(method),
-                      Helpers.InstanceIdentifier);
-                if (@params.Any())
-                    Write(", ");
-                GenerateFunctionParams(@params);
-                WriteLine(");");
-            }
+                GenerateInternalFunctionCall(method);
 
             GenerateVTableClassSetupCall(@class);
         }
@@ -2180,12 +2171,6 @@ namespace CppSharp.Generators.CSharp
             public string Name;
             public Parameter Param;
             public CSharpMarshalContext Context;
-        }
-
-        public void GenerateFunctionParams(List<ParamMarshal> @params)
-        {
-            var names = @params.Select(param => param.Name).ToList();
-            Write(string.Join(", ", names));
         }
 
         public List<ParamMarshal> GenerateFunctionParamsMarshal(IEnumerable<Parameter> @params,
