@@ -85,11 +85,15 @@ namespace CppSharp.Passes
         private static bool AreThereConflicts(Declaration decl, string newName)
         {
             var declarations = new List<Declaration>();
-            declarations.AddRange(decl.Namespace.Classes);
+            declarations.AddRange(decl.Namespace.Classes.Where(c => !c.IsIncomplete));
             declarations.AddRange(decl.Namespace.Enums);
             declarations.AddRange(decl.Namespace.Events);
             declarations.AddRange(decl.Namespace.Functions);
             declarations.AddRange(decl.Namespace.Variables);
+            declarations.AddRange(from typedefDecl in decl.Namespace.Typedefs
+                                  let pointerType = typedefDecl.Type.Desugar() as PointerType
+                                  where pointerType != null && pointerType.Pointee is FunctionType
+                                  select typedefDecl);
 
             var result = declarations.Any(d => d != decl && d.Name == newName);
             if (result)
