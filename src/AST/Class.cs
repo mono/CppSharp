@@ -96,6 +96,9 @@ namespace CppSharp.AST
         // True if the class has a non trivial copy constructor.
         public bool HasNonTrivialCopyConstructor;
 
+        // True if the class has a non trivial destructor.
+        public bool HasNonTrivialDestructor;
+
         public Class()
         {
             Bases = new List<BaseClassSpecifier>();

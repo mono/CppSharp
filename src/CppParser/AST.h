@@ -559,6 +559,7 @@ struct CS_API Class : public DeclarationContext
     bool IsPolymorphic;
     bool HasNonTrivialDefaultConstructor;
     bool HasNonTrivialCopyConstructor;
+    bool HasNonTrivialDestructor;
 
     ClassLayout Layout;
 };

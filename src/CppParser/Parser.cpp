@@ -585,6 +585,7 @@ Class* Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
     RC->IsPolymorphic = Record->isPolymorphic();
     RC->HasNonTrivialDefaultConstructor = Record->hasNonTrivialDefaultConstructor();
     RC->HasNonTrivialCopyConstructor = Record->hasNonTrivialCopyConstructor();
+    RC->HasNonTrivialDestructor = Record->hasNonTrivialDestructor();
 
     bool hasLayout = !Record->isDependentType() && !Record->isInvalidDecl();
 

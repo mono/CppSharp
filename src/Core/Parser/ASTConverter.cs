@@ -110,6 +110,7 @@ namespace CppSharp
             _class.IsPolymorphic = @class.IsPolymorphic;
             _class.HasNonTrivialDefaultConstructor = @class.HasNonTrivialDefaultConstructor;
             _class.HasNonTrivialCopyConstructor = @class.HasNonTrivialCopyConstructor;
+            _class.HasNonTrivialDestructor = @class.HasNonTrivialDestructor;
 
             _class.Layout = VisitClassLayout(@class.Layout);
 

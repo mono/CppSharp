@@ -526,10 +526,9 @@ namespace CppSharp.Generators.CSharp
                 tryAddOverload(ctor);
             }
 
-            foreach (var dtor in @class.Destructors)
-            {
-                tryAddOverload(dtor);
-            }
+            if (@class.HasNonTrivialDestructor)
+                foreach (var dtor in @class.Destructors)
+                    tryAddOverload(dtor);
 
             foreach (var method in @class.Methods)
             {
@@ -1644,7 +1643,7 @@ namespace CppSharp.Generators.CSharp
             if (ShouldGenerateClassNativeField(@class))
             {
                 var dtor = @class.Methods.FirstOrDefault(method => method.IsDestructor);
-                if (dtor != null)
+                if (dtor != null && @class.HasNonTrivialDestructor)
                     WriteLine("Internal.{0}({1});", GetFunctionNativeIdentifier(dtor),
                         Helpers.InstanceIdentifier);
 
