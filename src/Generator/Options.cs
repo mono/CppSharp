@@ -44,6 +44,11 @@ namespace CppSharp
             Encoding = Encoding.ASCII;
 
             CodeFiles = new List<string>();
+
+            Is32Bit = true;
+#if IS_64_BIT
+            Is32Bit = false;
+#endif
         }
 
         // General options
@@ -128,7 +133,7 @@ namespace CppSharp
             get { return GeneratorKind == GeneratorKind.CLI; }
         }
 
-        public bool Is32Bit { get { return true; } }
+        public bool Is32Bit { get; set; }
 
         public List<string> CodeFiles { get; private set; }
         public readonly List<string> DependentNameSpaces = new List<string>();
