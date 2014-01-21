@@ -19,8 +19,9 @@ public class VTablesTests : GeneratorTestFixture
     {
         var foo = new Foo();
         Assert.That(foo.vfoo(), Is.EqualTo(5));
-        Assert.That(foo.Vbar(), Is.EqualTo(3));
+        Assert.That(foo.Vbar(), Is.EqualTo(5));
         Assert.That(foo.CallFoo(), Is.EqualTo(7));
+        Assert.That(foo.CallVirtualWithParameter(6514), Is.EqualTo(6514 + 1));
 
         var foo2 = new FooDerived();
         Assert.That(foo2.CallFoo(), Is.EqualTo(12));

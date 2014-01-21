@@ -18,7 +18,7 @@ public:
 
     virtual int append();
     virtual int append(int a);
-    void callVirtualWithParameter(int a);
+    int callVirtualWithParameter(int a);
 };
 
 DLL_API int FooCallFoo(Foo* foo);
