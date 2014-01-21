@@ -42,6 +42,11 @@ namespace CppSharp.Types
             get { return false; }
         }
 
+        /// <summary>
+        /// Determines if the type map performs marshalling or only replaces copy ctors.
+        /// </summary>
+        public virtual bool DoesMarshalling { get { return true; } }
+
         #region C# backend
 
         public virtual string CSharpSignature(CSharpTypePrinterContext ctx)

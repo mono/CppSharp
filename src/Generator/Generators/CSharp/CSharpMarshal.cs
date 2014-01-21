@@ -84,7 +84,7 @@ namespace CppSharp.Generators.CSharp
         public override bool VisitType(Type type, TypeQualifiers quals)
         {
             TypeMap typeMap;
-            if (Context.Driver.TypeDatabase.FindTypeMap(type, out typeMap))
+            if (Context.Driver.TypeDatabase.FindTypeMap(type, out typeMap) && typeMap.DoesMarshalling)
             {
                 typeMap.Type = type;
                 typeMap.CSharpMarshalToManaged(Context);
@@ -97,7 +97,7 @@ namespace CppSharp.Generators.CSharp
         public override bool VisitDeclaration(Declaration decl)
         {
             TypeMap typeMap;
-            if (Context.Driver.TypeDatabase.FindTypeMap(decl, out typeMap))
+            if (Context.Driver.TypeDatabase.FindTypeMap(decl, out typeMap) && typeMap.DoesMarshalling)
             {
                 typeMap.Declaration = decl;
                 typeMap.CSharpMarshalToManaged(Context);
@@ -353,7 +353,7 @@ namespace CppSharp.Generators.CSharp
         public override bool VisitType(Type type, TypeQualifiers quals)
         {
             TypeMap typeMap;
-            if (Context.Driver.TypeDatabase.FindTypeMap(type, out typeMap))
+            if (Context.Driver.TypeDatabase.FindTypeMap(type, out typeMap) && typeMap.DoesMarshalling)
             {
                 typeMap.Type = type;
                 typeMap.CSharpMarshalToNative(Context);
@@ -366,7 +366,7 @@ namespace CppSharp.Generators.CSharp
         public override bool VisitDeclaration(Declaration decl)
         {
             TypeMap typeMap;
-            if (Context.Driver.TypeDatabase.FindTypeMap(decl, out typeMap))
+            if (Context.Driver.TypeDatabase.FindTypeMap(decl, out typeMap) && typeMap.DoesMarshalling)
             {
                 typeMap.Declaration = decl;
                 typeMap.CSharpMarshalToNative(Context);

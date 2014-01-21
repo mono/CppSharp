@@ -97,11 +97,15 @@ namespace CppSharp.Generators.CSharp
                 Context.CSharpKind = ContextKind;
                 Context.Type = tag;
 
-                return new CSharpTypePrinterResult()
+                string type = typeMap.CSharpSignature(Context);
+                if (!string.IsNullOrEmpty(type))
                 {
-                    Type = typeMap.CSharpSignature(Context),
-                    TypeMap = typeMap
-                };
+                    return new CSharpTypePrinterResult
+                    {
+                        Type = type,
+                        TypeMap = typeMap
+                    };
+                }
             }
 
             return tag.Declaration.Visit(this);
@@ -252,11 +256,15 @@ namespace CppSharp.Generators.CSharp
                 Context.CSharpKind = ContextKind;
                 Context.Type = typedef;
 
-                return new CSharpTypePrinterResult()
+                string type = typeMap.CSharpSignature(Context);
+                if (!string.IsNullOrEmpty(type))
+                {
+                    return new CSharpTypePrinterResult
                     {
-                        Type = typeMap.CSharpSignature(Context),
+                        Type = type,
                         TypeMap = typeMap
                     };
+                }
             }
 
             FunctionType func;
@@ -294,11 +302,15 @@ namespace CppSharp.Generators.CSharp
                 Context.Type = template;
                 Context.CSharpKind = ContextKind;
 
-                return new CSharpTypePrinterResult()
+                string type = GetCSharpSignature(typeMap);
+                if (!string.IsNullOrEmpty(type))
+                {
+                    return new CSharpTypePrinterResult
                     {
-                        Type = GetCSharpSignature(typeMap),
+                        Type = type,
                         TypeMap = typeMap
                     };
+                }
             }
 
             return decl.Name;
