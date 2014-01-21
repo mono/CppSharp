@@ -164,5 +164,21 @@ public class BasicTests : GeneratorTestFixture
         var doubleSum = delegates.A(2) + delegates.B(2);
         Assert.AreEqual(8, doubleSum);
     }
+
+    [Test]
+    public void TestUnion()
+    {
+        Hello.NestedPublic nestedPublic = new Hello.NestedPublic();
+        nestedPublic.j = 5;
+        Assert.That(nestedPublic.l, Is.EqualTo(5));
+        Assert.That(nestedPublic.g, Is.Not.EqualTo(0));
+    }
+
+    public void TestPropertyChains()
+    {
+        var bar2 = new Bar2();
+        bar2.pointerToStruct.A = 15;
+        Assert.That(bar2.pointerToStruct.A, Is.EqualTo(15));
+    }
 }
  

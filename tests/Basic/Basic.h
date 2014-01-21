@@ -90,6 +90,7 @@ public:
     union NestedPublic {
         int j;
         float g;
+        long l;
     };
 
     Hello ();
