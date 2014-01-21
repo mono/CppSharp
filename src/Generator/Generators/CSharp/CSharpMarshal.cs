@@ -418,10 +418,8 @@ namespace CppSharp.Generators.CSharp
                 pointee.IsPrimitiveType(PrimitiveType.WideChar)) &&
                 pointer.QualifiedPointee.Qualifiers.IsConst)
             {
-                Context.Return.Write(MarshalStringToUnmanaged(
-                    Helpers.SafeIdentifier(Context.Parameter.Name)));
-                CSharpContext.Cleanup.WriteLine("Marshal.FreeHGlobal({0});",
-                    Helpers.SafeIdentifier(Context.ArgName));
+                Context.Return.Write(MarshalStringToUnmanaged(Context.Parameter.Name));
+                CSharpContext.Cleanup.WriteLine("Marshal.FreeHGlobal({0});", Context.ArgName);
                 return true;
             }
 
@@ -443,7 +441,7 @@ namespace CppSharp.Generators.CSharp
                 {
                     Context.SupportBefore.WriteLine("var {0} = {1}.ToInternal();",
                             Generator.GeneratedIdentifier(Context.ArgName),
-                            Helpers.SafeIdentifier(Context.Parameter.Name));
+                            Context.Parameter.Name);
                 }
 
                 Context.Return.Write("new global::System.IntPtr(&{0})",
@@ -464,8 +462,7 @@ namespace CppSharp.Generators.CSharp
                 {
                     var typeName = Type.TypePrinterDelegate(pointee);
 
-                    Context.SupportBefore.WriteLine("{0} _{1};", typeName,
-                        Helpers.SafeIdentifier(param.Name));
+                    Context.SupportBefore.WriteLine("{0} _{1};", typeName, param.Name);
                     Context.Return.Write("&_{0}", param.Name);
 
                 }
@@ -549,7 +546,7 @@ namespace CppSharp.Generators.CSharp
 
             if (@class.IsValueType)
             {
-                MarshalValueClass(@class);
+                MarshalValueClass();
             }
             else
             {
@@ -570,7 +567,7 @@ namespace CppSharp.Generators.CSharp
                 return;
             }
 
-            string param = Helpers.SafeIdentifier(Context.Parameter.Name);
+            string param = Context.Parameter.Name;
             Type type = Context.Parameter.Type.Desugar();
             if (type.IsAddress())
             {
@@ -590,9 +587,9 @@ namespace CppSharp.Generators.CSharp
                 qualifiedIdentifier, Helpers.InstanceIdentifier);
         }
 
-        private void MarshalValueClass(Class @class)
+        private void MarshalValueClass()
         {
-            Context.Return.Write("{0}.ToInternal()", Helpers.SafeIdentifier(Context.Parameter.Name));
+            Context.Return.Write("{0}.ToInternal()", Context.Parameter.Name);
         }
 
         public override bool VisitFieldDecl(Field field)

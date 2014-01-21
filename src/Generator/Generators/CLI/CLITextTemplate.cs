@@ -89,15 +89,15 @@ namespace CppSharp.Generators.CLI
         public string GetMethodName(Method method)
         {
             if (method.OperatorKind == CXXOperatorKind.Conversion)
-                return SafeIdentifier("operator " + method.ConversionType);
+                return "operator " + method.ConversionType;
 
             if (method.IsConstructor || method.IsDestructor)
             {
                 var @class = (Class) method.Namespace;
-                return SafeIdentifier(@class.Name);
+                return @class.Name;
             }
 
-            return SafeIdentifier(method.Name);
+            return method.Name;
         }
 
         public void GenerateDeclarationCommon(Declaration decl)
