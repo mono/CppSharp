@@ -76,6 +76,8 @@ namespace CppSharp.Passes
                 where !property.Ignore
                 select new Property(property) { Namespace = @interface });
 
+            @interface.Fields.AddRange(@base.Fields);
+
             if (@interface.Bases.Count == 0)
             {
                 Property instance = new Property();

@@ -215,18 +215,13 @@ namespace CppSharp.Generators.CSharp
             // Generate all the typedef declarations.
             foreach (var typedef in context.Typedefs)
             {
-                if (typedef.Ignore) continue;
-
                 GenerateTypedef(typedef);
             }
 
             // Generate all the struct/class declarations.
             foreach (var @class in context.Classes)
             {
-                if (@class.Ignore || @class.IsIncomplete)
-                    continue;
-
-                if (@class.IsDependent)
+                if (@class.IsIncomplete)
                     continue;
 
                 if (@class.IsInterface)
@@ -341,7 +336,9 @@ namespace CppSharp.Generators.CSharp
 
         public void GenerateClass(Class @class)
         {
-            if (@class.Ignore || @class.IsIncomplete)
+            TypeMap typeMap;
+            if (@class.IsIncomplete ||
+                (Driver.TypeDatabase.FindTypeMap(@class, out typeMap) && typeMap.DoesMarshalling))
                 return;
 
             PushBlock(CSharpBlockKind.Class);
@@ -355,8 +352,10 @@ namespace CppSharp.Generators.CSharp
             if (!@class.IsOpaque)
             {
                 GenerateClassInternals(@class);
-
                 GenerateDeclContext(@class);
+
+                if (@class.Ignore || @class.IsDependent)
+                    goto exit;
 
                 if (ShouldGenerateClassNativeField(@class))
                 {
@@ -383,7 +382,7 @@ namespace CppSharp.Generators.CSharp
                 if (Options.GenerateVirtualTables && @class.IsDynamic)
                     GenerateVTable(@class);
             }
-
+        exit:
             WriteCloseBraceIndent();
             PopBlock(NewLineKind.BeforeNextBlock);
         }
@@ -466,24 +465,6 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
-        public void GenerateClassInternalsFields(Class @class)
-        {
-            if (@class.IsValueType)
-            {
-                foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.Ignore))
-                {
-                    GenerateClassInternalsFields(@base.Class);
-                }
-            }
-
-            GenerateClassFields(@class, GenerateClassInternalsField);
-
-            foreach (var prop in @class.Properties.Where(p => !p.Ignore && p.Field != null))
-            {
-                GenerateClassInternalsField(prop.Field);
-            }
-        }
-
         public void GenerateClassInternals(Class @class)
         {
             PushBlock(CSharpBlockKind.InternalsClass);
@@ -496,8 +477,9 @@ namespace CppSharp.Generators.CSharp
             var typePrinter = TypePrinter;
             typePrinter.PushContext(CSharpTypePrinterContextKind.Native);
 
-            GenerateClassInternalsFields(@class);
-            GenerateVTablePointers(@class);
+            GenerateClassFields(@class, GenerateClassInternalsField, true);
+            if (Options.GenerateVirtualTables && @class.IsDynamic)
+                GenerateVTablePointers(@class);
 
             var functions = GatherClassInternalFunctions(@class);
 
@@ -747,7 +729,7 @@ namespace CppSharp.Generators.CSharp
             if (@class.IsUnion)
                 WriteLine("[StructLayout(LayoutKind.Explicit)]");
 
-            Write(Helpers.GetAccess(@class.Access));
+            Write(@class.Ignore ? "internal " : Helpers.GetAccess(@class.Access));
             Write("unsafe ");
 
             if (Driver.Options.GenerateAbstractImpls && @class.IsAbstract)
@@ -761,7 +743,7 @@ namespace CppSharp.Generators.CSharp
 
             var bases = new List<string>();
 
-            var needsBase = @class.HasBaseClass && !@class.IsValueType
+            var needsBase = @class.HasBaseClass && !@class.IsValueType && !@class.Ignore
                 && !@class.Bases[0].Class.IsValueType
                 && !@class.Bases[0].Class.Ignore;
 
@@ -773,38 +755,45 @@ namespace CppSharp.Generators.CSharp
                     select QualifiedIdentifier(@base.Class));
             }
 
-            if (@class.IsRefType)
-                bases.Add("IDisposable");
-
-            if (Options.GenerateClassMarshals)
+            if (!@class.Ignore)
             {
-                bases.Add("CppSharp.Runtime.ICppMarshal");
+                if (@class.IsRefType)
+                    bases.Add("IDisposable");
+
+                if (Options.GenerateClassMarshals)
+                {
+                    bases.Add("CppSharp.Runtime.ICppMarshal");
+                }
             }
 
             if (bases.Count > 0)
                 Write(" : {0}", string.Join(", ", bases));
         }
 
-        public void GenerateClassFields(Class @class, Action<Field> action)
+        public void GenerateClassFields(Class @class, Action<Field> action, bool nativeFields = false)
         {
-            foreach (var @base in @class.Bases)
+            foreach (var @base in @class.Bases.Where(b => !(b.Type is DependentNameType)))
             {
                 TypeMap typeMap;
-                if (!Driver.TypeDatabase.FindTypeMap(@base.Type, out typeMap) && @base.Class.Ignore)
+                if ((!Driver.TypeDatabase.FindTypeMap(@base.Type, out typeMap) && @base.Class.Ignore) ||
+                    @base.Class.OriginalClass == @class)
                     continue;
 
-                GenerateClassFields(@base.Class, action);
+                GenerateClassFields(@base.Class, action, nativeFields);
             }
 
             foreach (var field in @class.Fields)
             {
-                if (ASTUtils.CheckIgnoreField(field)) continue;
+                if (!nativeFields && ASTUtils.CheckIgnoreField(field)) continue;
                 action(field);
             }
         }
 
         private void GenerateClassInternalsField(Field field)
         {
+            if (field.Type.IsDependent && !field.Type.IsPointer())
+                return;
+
             var safeIdentifier = Helpers.SafeIdentifier(field.OriginalName);
 
             PushBlock(CSharpBlockKind.Field);
@@ -819,11 +808,13 @@ namespace CppSharp.Generators.CSharp
             if (field.Expression != null)
             {
                 var fieldValuePrinted = field.Expression.CSharpValue(ExpressionPrinter);
-                Write("public {0} {1} = {2};", fieldTypePrinted.Type, safeIdentifier, fieldValuePrinted);
+                Write("{0} {1} {2} = {3};", field.Ignore ? "internal" : "public",
+                    fieldTypePrinted.Type, safeIdentifier, fieldValuePrinted);
             }
             else
             {
-                Write("public {0} {1};", fieldTypePrinted.Type, safeIdentifier);
+                Write("{0} {1} {2};", field.Ignore ? "internal" : "public",
+                    fieldTypePrinted.Type, safeIdentifier);
             }
 
             PopBlock(NewLineKind.BeforeNextBlock);

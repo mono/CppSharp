@@ -218,7 +218,7 @@ namespace CppSharp.Generators.CSharp
             }
 
             Class @class;
-            if (desugared.IsTagDecl(out @class)
+            if ((desugared.IsDependent || desugared.IsTagDecl(out @class))
                 && ContextKind == CSharpTypePrinterContextKind.Native)
             {
                 return "global::System.IntPtr";
@@ -268,7 +268,7 @@ namespace CppSharp.Generators.CSharp
             }
 
             FunctionType func;
-            if (decl.Type.IsPointerTo<FunctionType>(out func))
+            if (decl.Type.IsPointerTo(out func))
             {
                 if (ContextKind == CSharpTypePrinterContextKind.Native)
                     return "global::System.IntPtr";
@@ -313,7 +313,8 @@ namespace CppSharp.Generators.CSharp
                 }
             }
 
-            return decl.Name;
+            return decl.Name + (ContextKind == CSharpTypePrinterContextKind.Native ?
+                ".Internal" : string.Empty);
         }
 
         private string GetCSharpSignature(TypeMap typeMap)

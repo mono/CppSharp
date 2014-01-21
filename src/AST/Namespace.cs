@@ -291,7 +291,7 @@ namespace CppSharp.AST
             {
                 Predicate<Declaration> pred = (t => !t.Ignore);
                 return Enums.Exists(pred) || HasFunctions || Typedefs.Exists(pred)
-                    || Classes.Exists(pred) || Namespaces.Exists(n => n.HasDeclarations);
+                    || Classes.Any() || Namespaces.Exists(n => n.HasDeclarations);
             }
         }
 

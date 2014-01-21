@@ -261,3 +261,9 @@ struct DLL_API TestStaticClass
 private:
     TestStaticClass();
 };
+
+class HasIgnoredField
+{
+    Base<Derived> fieldOfIgnoredType;
+};
+
