@@ -89,6 +89,13 @@ namespace CppSharp
         public bool GenerateInterfacesForMultipleInheritance;
         public bool GenerateProperties;
         public bool GenerateInternalImports;
+
+        /// <summary>
+        /// Enable this option to enable generation of finalizers.
+        /// Works in both CLI and C# backends.
+        /// </summary>
+        public bool GenerateFinalizers;
+
         public string IncludePrefix;
         public bool WriteOnlyWhenChanged;
         public Func<TranslationUnit, string> GenerateName;

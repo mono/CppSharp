@@ -96,6 +96,7 @@ namespace CppSharp.Generators.CSharp
         public const int VTableDelegate = FIRST + 16;
         public const int Region = FIRST + 17;
         public const int Interface = FIRST + 18;
+        public const int Finalizer = FIRST + 19;
     }
 
     public class CSharpTextTemplate : Template
@@ -703,21 +704,22 @@ namespace CppSharp.Generators.CSharp
                 WriteCloseBraceIndent();
         }
 
-        public bool ShouldGenerateClassNativeField(Class @class)
+        public static bool HasRefBase(Class @class)
         {
-            if (!@class.IsRefType)
-                return false;
-
             Class baseClass = null;
 
             if (@class.HasBaseClass)
                 baseClass = @class.Bases[0].Class;
 
-            var hasRefBase = baseClass != null && baseClass.IsRefType && !baseClass.Ignore;
+            var hasRefBase = baseClass != null && baseClass.IsRefType
+                             && !baseClass.Ignore;
 
-            var hasIgnoredBase = baseClass != null && baseClass.Ignore;
+            return hasRefBase;
+        }
 
-            return !@class.HasBase || !hasRefBase || hasIgnoredBase;
+        public static bool ShouldGenerateClassNativeField(Class @class)
+        {
+            return @class.IsRefType && (!@class.HasBase || !HasRefBase(@class));
         }
 
         public void GenerateClassProlog(Class @class)
@@ -1657,7 +1659,25 @@ namespace CppSharp.Generators.CSharp
             }
 
             if (@class.IsRefType)
+            {
+                GenerateClassFinalizer(@class);
                 GenerateDisposeMethods(@class);
+            }
+        }
+
+        private void GenerateClassFinalizer(Class @class)
+        {
+            if (!Options.GenerateFinalizers)
+                return;
+
+            PushBlock(CSharpBlockKind.Finalizer);
+
+            WriteLine("~{0}()", @class.Name);
+            WriteStartBraceIndent();
+            WriteLine("Dispose(false);");
+            WriteCloseBraceIndent();
+
+            PopBlock(NewLineKind.BeforeNextBlock);
         }
 
         private void GenerateDisposeMethods(Class @class)
@@ -1682,12 +1702,12 @@ namespace CppSharp.Generators.CSharp
             PushBlock(CSharpBlockKind.Method);
             if (@class.IsValueType)
             {
-                this.Write("private ");
+                Write("private ");
             }
             else
             {
-                this.Write("protected ");
-                this.Write(hasBaseClass ? "override " : "virtual ");
+                Write("protected ");
+                Write(hasBaseClass ? "override " : "virtual ");
             }
 
             WriteLine("void Dispose(bool disposing)");

@@ -244,4 +244,9 @@ struct DLL_API TestMemoryLeaks
     TestMemoryLeaks(const char* name) {}
 };
 
+// Tests that finalizers are generated
+/* CLI: ~TestFinalizers() */
+struct DLL_API TestFinalizers
+{
+};
 

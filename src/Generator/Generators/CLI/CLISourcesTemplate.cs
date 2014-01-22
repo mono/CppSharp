@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using CppSharp.AST;
+using CppSharp.Generators.CSharp;
 using CppSharp.Types;
 using Type = CppSharp.AST.Type;
 
@@ -134,6 +135,12 @@ namespace CppSharp.Generators.CLI
             GenerateClassConstructor(@class, isIntPtr: false);
             GenerateClassConstructor(@class, isIntPtr: true);
 
+            if (@class.IsRefType)
+            {
+                GenerateClassDestructor(@class);
+                GenerateClassFinalizer(@class);
+            }
+
             foreach (var method in @class.Methods)
             {
                 if (ASTUtils.CheckIgnoreMethod(method))
@@ -142,27 +149,24 @@ namespace CppSharp.Generators.CLI
                 GenerateMethod(method, @class);
             }
 
-            if (@class.IsRefType)
+            if (CSharpTextTemplate.ShouldGenerateClassNativeField(@class))
             {
-                if (!CLIHeadersTemplate.HasRefBase(@class))
-                {
-                    PushBlock(CLIBlockKind.Method);
-                    WriteLine("System::IntPtr {0}::Instance::get()",
-                              QualifiedIdentifier(@class));
-                    WriteStartBraceIndent();
-                    WriteLine("return System::IntPtr(NativePtr);");
-                    WriteCloseBraceIndent();
-                    PopBlock(NewLineKind.BeforeNextBlock);
+                PushBlock(CLIBlockKind.Method);
+                WriteLine("System::IntPtr {0}::Instance::get()",
+                            QualifiedIdentifier(@class));
+                WriteStartBraceIndent();
+                WriteLine("return System::IntPtr(NativePtr);");
+                WriteCloseBraceIndent();
+                PopBlock(NewLineKind.BeforeNextBlock);
 
-                    PushBlock(CLIBlockKind.Method);
-                    WriteLine("void {0}::Instance::set(System::IntPtr object)",
-                              QualifiedIdentifier(@class));
-                    WriteStartBraceIndent();
-                    var nativeType = string.Format("::{0}*", @class.QualifiedOriginalName);
-                    WriteLine("NativePtr = ({0})object.ToPointer();", nativeType);
-                    WriteCloseBraceIndent();
-                    PopBlock(NewLineKind.BeforeNextBlock);
-                }
+                PushBlock(CLIBlockKind.Method);
+                WriteLine("void {0}::Instance::set(System::IntPtr object)",
+                            QualifiedIdentifier(@class));
+                WriteStartBraceIndent();
+                var nativeType = string.Format("::{0}*", @class.QualifiedOriginalName);
+                WriteLine("NativePtr = ({0})object.ToPointer();", nativeType);
+                WriteCloseBraceIndent();
+                PopBlock(NewLineKind.BeforeNextBlock);
             }
 
             GenerateClassProperties(@class, @class);
@@ -204,6 +208,42 @@ namespace CppSharp.Generators.CLI
             foreach (var property in @class.Properties.Where(
                 p => !p.Ignore && !p.IsBackedByValueClassField()))
                 GenerateProperty(property, realOwner);
+        }
+
+        private void GenerateClassDestructor(Class @class)
+        {
+            if (!Options.GenerateFinalizers)
+                return;
+
+            PushBlock(CLIBlockKind.Destructor);
+
+            WriteLine("{0}::~{1}()", QualifiedIdentifier(@class), @class.Name);
+            WriteStartBraceIndent();
+
+            if (CSharpTextTemplate.ShouldGenerateClassNativeField(@class))
+                WriteLine("delete NativePtr;");
+
+            WriteCloseBraceIndent();
+
+            PopBlock(NewLineKind.BeforeNextBlock);
+        }
+
+        private void GenerateClassFinalizer(Class @class)
+        {
+            if (!Options.GenerateFinalizers)
+                return;
+
+            PushBlock(CLIBlockKind.Finalizer);
+
+            WriteLine("{0}::!{1}()", QualifiedIdentifier(@class), @class.Name);
+            WriteStartBraceIndent();
+
+            if (CSharpTextTemplate.ShouldGenerateClassNativeField(@class))
+                WriteLine("delete NativePtr;");
+
+            WriteCloseBraceIndent();
+
+            PopBlock(NewLineKind.BeforeNextBlock);
         }
 
         private void GenerateFunctionTemplate(FunctionTemplate template)

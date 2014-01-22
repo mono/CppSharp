@@ -43,6 +43,8 @@ namespace CppSharp.Generators.CLI
         public const int Typedef = BlockKind.LAST + 14;
         public const int Variable = BlockKind.LAST + 15;
         public const int Template = BlockKind.LAST + 16;
+        public static int Destructor = BlockKind.LAST + 17;
+        public static int Finalizer = BlockKind.LAST + 18;
     }
 
     /// <summary>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using CppSharp.AST;
+using CppSharp.Generators.CSharp;
 using CppSharp.Types;
 
 namespace CppSharp.Generators.CLI
@@ -252,10 +253,8 @@ namespace CppSharp.Generators.CLI
 
             var nativeType = string.Format("::{0}*", @class.QualifiedOriginalName);
 
-            if (@class.IsRefType)
-            {
+            if (CSharpTextTemplate.ShouldGenerateClassNativeField(@class))
                 GenerateClassNativeField(@class, nativeType);
-            }
 
             GenerateClassConstructors(@class, nativeType);
 
@@ -279,23 +278,8 @@ namespace CppSharp.Generators.CLI
             WriteLine("};");
         }
 
-        internal static bool HasRefBase(Class @class)
-        {
-            Class baseClass = null;
-
-            if (@class.HasBaseClass)
-                baseClass = @class.Bases[0].Class;
-
-            var hasRefBase = baseClass != null && baseClass.IsRefType
-                             && !baseClass.Ignore;
-
-            return hasRefBase;
-        }
-
         public void GenerateClassNativeField(Class @class, string nativeType)
         {
-            if (HasRefBase(@class)) return;
-
             WriteLineIndent("property {0} NativePtr;", nativeType);
 
             PushIndent();
@@ -380,17 +364,39 @@ namespace CppSharp.Generators.CLI
 
             foreach (var ctor in @class.Constructors)
             {
-                if (ctor.IsCopyConstructor || ctor.IsMoveConstructor)
-                    continue;
-
-                // Default constructors are not supported in .NET value types.
-                if (ctor.Parameters.Count == 0 && @class.IsValueType)
+                if (ASTUtils.CheckIgnoreMethod(ctor))
                     continue;
 
                 GenerateMethod(ctor);
             }
 
+            if (@class.IsRefType)
+            {
+                GenerateClassDestructor(@class);
+                GenerateClassFinalizer(@class);
+            }
+
             PopIndent();
+        }
+
+        private void GenerateClassDestructor(Class @class)
+        {
+            if (!Options.GenerateFinalizers)
+                return;
+
+            PushBlock(CLIBlockKind.Destructor);
+            WriteLine("~{0}();", @class.Name);
+            PopBlock(NewLineKind.BeforeNextBlock);
+        }
+
+        private void GenerateClassFinalizer(Class @class)
+        {
+            if (!Options.GenerateFinalizers)
+                return;
+
+            PushBlock(CLIBlockKind.Finalizer);
+            WriteLine("!{0}();", @class.Name);
+            PopBlock(NewLineKind.BeforeNextBlock);
         }
 
         public void GenerateClassFields(Class @class)
@@ -552,7 +558,7 @@ namespace CppSharp.Generators.CLI
                 return true;
             }
 
-            if (HasRefBase(@class))
+            if (CSharpTextTemplate.HasRefBase(@class))
                 Write(" : {0}", QualifiedIdentifier(@class.Bases[0].Class));
             else if (@class.IsRefType)
                 Write(" : ICppInstance");
