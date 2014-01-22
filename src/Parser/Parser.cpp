@@ -122,7 +122,6 @@ void Parser::SetupHeader()
     TargetOptions& TO = Inv->getTargetOpts();
     TargetABI = (Opts->Abi == CppAbi::Microsoft) ? TargetCXXABI::Microsoft
         : TargetCXXABI::GenericItanium;
-    TO.CXXABI = GetCXXABIString(TargetABI);
 
     TO.Triple = llvm::sys::getDefaultTargetTriple();
     if (!System::String::IsNullOrWhiteSpace(Opts->TargetTriple))
@@ -1424,12 +1423,12 @@ CppSharp::AST::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* 
             WalkType(FP->getResultType(), &RL));
         F->CallingConvention = ConvertCallConv(FP->getCallConv());
 
-        for (unsigned i = 0; i < FP->getNumArgs(); ++i)
+		for (unsigned i = 0; i < FP->getNumParams(); ++i)
         {
             auto FA = gcnew CppSharp::AST::Parameter();
             if (FTL)
             {
-                auto PVD = FTL.getArg(i);
+                auto PVD = FTL.getParam(i);
 
                 HandleDeclaration(PVD, FA);
 
@@ -1440,7 +1439,7 @@ CppSharp::AST::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* 
             }
             else
             {
-                auto Arg = FP->getArgType(i);
+                auto Arg = FP->getParamType(i);
                 FA->Name = "";
                 FA->QualifiedType = GetQualifiedType(Arg, WalkType(Arg));
             }
