@@ -7,13 +7,18 @@ regular .NET assembly.
 Since there are no binary releases yet, the project needs to be compiled from
 source first.
 
+## LLVM/Clang source repositories ##
+
+SVN repository urls found here: [http://clang.llvm.org/get_started.html](http://clang.llvm.org/get_started.html)
+
+Git repository urls found here: [http://llvm.org/docs/GettingStarted.html#git-mirror](http://llvm.org/docs/GettingStarted.html#git-mirror)
+
 ## Compiling on Windows/Visual Studio
 
 1. Clone CppSharp to `<CppSharp>`
 2. Clone LLVM to `<CppSharp>\deps\llvm`
-3. Clone Clang to `<CppSharp>\deps\llvm\tools\clang` (see:
-   [http://clang.llvm.org/get_started.html](http://clang.llvm.org/get_started.html))
-4. Run CMake in `<CppSharp>\deps\llvm` and compile solution in *RelWithDebInfo* mode
+3. Clone Clang to `<CppSharp>\deps\llvm\tools\clang`
+4. Run CMake in `<CppSharp>\deps\llvm\build` and compile solution in *RelWithDebInfo* mode
 5. Run `GenerateProjects.bat` in <CppSharp>\build
 6. Build generated solution in *Release*.
 
@@ -28,9 +33,8 @@ Requirements: Clang revision >= 198625
 
 1. Clone CppSharp to `<CppSharp>`
 2. Clone LLVM to `<CppSharp>\deps\llvm`
-3. Clone Clang to `<CppSharp>\deps\llvm\tools\clang` (see:
-   [http://clang.llvm.org/get_started.html](http://clang.llvm.org/get_started.html))
-4. Run CMake in `<CppSharp>\deps\llvm` and compile solution in *RelWithDebInfo* mode
+3. Clone Clang to `<CppSharp>\deps\llvm\tools\clang`
+4. Run CMake in `<CppSharp>\deps\llvm\build` and compile solution in *RelWithDebInfo* mode
    The following CMake variables should be enabled:
     - LLVM_ENABLE_CXX11 (enables C++11 support)
     - LLVM_ENABLE_LIBCXX (enables libc++ standard library support)
