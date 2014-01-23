@@ -10,7 +10,8 @@ namespace CppSharp.Generators
     {
         Never,
         Always,
-        BeforeNextBlock
+        BeforeNextBlock,
+        IfNotEmpty
     }
 
     public class BlockKind
@@ -87,9 +88,26 @@ namespace CppSharp.Generators
             uint totalIndent = 0;
             Block previousBlock = null;
 
+            var blockIndex = 0;
             foreach (var childBlock in Blocks)
             {
                 var childText = childBlock.Generate(options);
+
+                var nextBlock = (++blockIndex < Blocks.Count)
+                    ? Blocks[blockIndex]
+                    : null;
+
+                var skipBlock = false;
+                if (nextBlock != null)
+                {
+                    var nextText = nextBlock.Generate(options);
+                    if (string.IsNullOrEmpty(nextText) &&
+                        childBlock.NewLineKind == NewLineKind.IfNotEmpty)
+                        skipBlock = true;
+                }
+
+                if (skipBlock)
+                    continue;
 
                 if (string.IsNullOrEmpty(childText))
                     continue;
