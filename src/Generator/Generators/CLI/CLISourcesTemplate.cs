@@ -61,7 +61,7 @@ namespace CppSharp.Generators.CLI
             var includes = new SortedSet<string>(StringComparer.InvariantCulture);
 
             foreach (var typeRef in typeReferenceCollector.TypeReferences)
-            { 
+            {
                 if (typeRef.Include.File == TranslationUnit.FileName)
                     continue;
 
