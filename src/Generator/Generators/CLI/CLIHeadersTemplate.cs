@@ -270,9 +270,14 @@ namespace CppSharp.Generators.CLI
 
             if (@class.Fields.Any())
             {
+                PushBlock(CLIBlockKind.AccessSpecifier);
                 NewLine();
                 WriteLine("private:");
-                GenerateClassFields(@class);   
+                PopBlock(NewLineKind.IfNotEmpty);
+
+                PushBlock(CLIBlockKind.Fields);
+                GenerateClassFields(@class);
+                PopBlock();
             }
 
             WriteLine("};");

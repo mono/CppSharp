@@ -45,6 +45,8 @@ namespace CppSharp.Generators.CLI
         public const int Template = BlockKind.LAST + 16;
         public static int Destructor = BlockKind.LAST + 17;
         public static int Finalizer = BlockKind.LAST + 18;
+        public static int AccessSpecifier = BlockKind.LAST + 19;
+        public static int Fields = BlockKind.LAST + 20;
     }
 
     /// <summary>
