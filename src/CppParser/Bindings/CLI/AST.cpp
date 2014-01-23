@@ -2196,6 +2196,16 @@ void CppSharp::Parser::AST::Class::HasNonTrivialCopyConstructor::set(bool value)
     ((::CppSharp::CppParser::AST::Class*)NativePtr)->HasNonTrivialCopyConstructor = value;
 }
 
+bool CppSharp::Parser::AST::Class::HasNonTrivialDestructor::get()
+{
+    return ((::CppSharp::CppParser::AST::Class*)NativePtr)->HasNonTrivialDestructor;
+}
+
+void CppSharp::Parser::AST::Class::HasNonTrivialDestructor::set(bool value)
+{
+    ((::CppSharp::CppParser::AST::Class*)NativePtr)->HasNonTrivialDestructor = value;
+}
+
 CppSharp::Parser::AST::ClassLayout^ CppSharp::Parser::AST::Class::Layout::get()
 {
     return gcnew CppSharp::Parser::AST::ClassLayout((::CppSharp::CppParser::AST::ClassLayout*)&((::CppSharp::CppParser::AST::Class*)NativePtr)->Layout);

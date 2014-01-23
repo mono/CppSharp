@@ -1445,6 +1445,12 @@ namespace CppSharp
                     void set(bool);
                 }
 
+                property bool HasNonTrivialDestructor
+                {
+                    bool get();
+                    void set(bool);
+                }
+
                 property CppSharp::Parser::AST::ClassLayout^ Layout
                 {
                     CppSharp::Parser::AST::ClassLayout^ get();
