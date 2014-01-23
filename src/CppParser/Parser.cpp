@@ -832,7 +832,7 @@ Method* Parser::WalkMethodCXX(clang::CXXMethodDecl* MD)
     HandleDeclaration(MD, Method);
 
     Method->Access = ConvertToAccess(MD->getAccess());
-    Method->Kind = GetMethodKindFromDecl(Name);
+    Method->MethodKind = GetMethodKindFromDecl(Name);
     Method->IsStatic = MD->isStatic();
     Method->IsVirtual = MD->isVirtual();
     Method->IsConst = MD->isConst();

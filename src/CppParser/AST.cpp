@@ -29,8 +29,9 @@ static std::vector<T> split(const T & str, const T & delimiters) {
 
 namespace CppSharp { namespace CppParser { namespace AST {
 
-Declaration::Declaration()
-    : Access(AccessSpecifier::Public)
+Declaration::Declaration(DeclarationKind kind)
+    : Kind(kind)
+    , Access(AccessSpecifier::Public)
     , _Namespace(0)
     , Comment(0)
     , IsIncomplete(false)
