@@ -14,9 +14,11 @@ namespace CppSharp
             enum struct CXXOperatorKind;
             enum struct CallingConvention;
             enum struct CppAbi;
+            enum struct DeclarationKind;
             enum struct MacroLocation;
             enum struct PrimitiveType;
             enum struct RawCommentKind;
+            enum struct TypeKind;
             enum struct VTableComponentKind;
             ref class ASTContext;
             ref class AccessSpecifierDecl;
@@ -76,6 +78,48 @@ namespace CppSharp
     {
         namespace AST
         {
+            public enum struct TypeKind
+            {
+                Tag = 0,
+                Array = 1,
+                Function = 2,
+                Pointer = 3,
+                MemberPointer = 4,
+                Typedef = 5,
+                Attributed = 6,
+                Decayed = 7,
+                TemplateSpecialization = 8,
+                TemplateParameter = 9,
+                TemplateParameterSubstitution = 10,
+                InjectedClassName = 11,
+                DependentName = 12,
+                Builtin = 13
+            };
+
+            public enum struct DeclarationKind
+            {
+                DeclarationContext = 0,
+                Typedef = 1,
+                Parameter = 2,
+                Function = 3,
+                Method = 4,
+                Enumeration = 5,
+                Variable = 6,
+                Field = 7,
+                AccessSpecifier = 8,
+                Class = 9,
+                Template = 10,
+                ClassTemplate = 11,
+                ClassTemplateSpecialization = 12,
+                ClassTemplatePartialSpecialization = 13,
+                FunctionTemplate = 14,
+                Namespace = 15,
+                PreprocessedEntity = 16,
+                MacroDefinition = 17,
+                MacroExpansion = 18,
+                TranslationUnit = 19
+            };
+
             public enum struct AccessSpecifier
             {
                 Private = 0,
@@ -226,7 +270,13 @@ namespace CppSharp
 
                 Type(::CppSharp::CppParser::AST::Type* native);
                 Type(System::IntPtr native);
-                Type();
+                Type(CppSharp::Parser::AST::TypeKind kind);
+
+                property CppSharp::Parser::AST::TypeKind Kind
+                {
+                    CppSharp::Parser::AST::TypeKind get();
+                    void set(CppSharp::Parser::AST::TypeKind);
+                }
 
                 property bool IsDependent
                 {
@@ -870,7 +920,7 @@ namespace CppSharp
 
                 Declaration(::CppSharp::CppParser::AST::Declaration* native);
                 Declaration(System::IntPtr native);
-                Declaration();
+                Declaration(CppSharp::Parser::AST::DeclarationKind kind);
 
                 property System::String^ Name
                 {
@@ -887,6 +937,12 @@ namespace CppSharp
                 property unsigned int PreprocessedEntitiesCount
                 {
                     unsigned int get();
+                }
+
+                property CppSharp::Parser::AST::DeclarationKind Kind
+                {
+                    CppSharp::Parser::AST::DeclarationKind get();
+                    void set(CppSharp::Parser::AST::DeclarationKind);
                 }
 
                 property CppSharp::Parser::AST::AccessSpecifier Access
@@ -1184,7 +1240,7 @@ namespace CppSharp
                     void set(bool);
                 }
 
-                property CppSharp::Parser::AST::CXXMethodKind Kind
+                property CppSharp::Parser::AST::CXXMethodKind MethodKind
                 {
                     CppSharp::Parser::AST::CXXMethodKind get();
                     void set(CppSharp::Parser::AST::CXXMethodKind);
