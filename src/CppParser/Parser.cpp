@@ -919,6 +919,10 @@ TranslationUnit* Parser::GetTranslationUnit(clang::SourceLocation Loc,
         *Kind = LocKind;
 
     auto Unit = Lib->FindOrCreateModule(File);
+
+    if (Unit->OriginalPtr == nullptr)
+        Unit->OriginalPtr = (void*) SM.getFileEntryForID(SM.getFileID(Loc));
+
     if (LocKind != SourceLocationKind::Invalid)
         Unit->IsSystemHeader = SM.isInSystemHeader(Loc);
 
@@ -969,11 +973,12 @@ DeclarationContext* Parser::GetNamespace(clang::Decl* D,
         {
         case Decl::Namespace:
         {
-            const NamespaceDecl* ND = cast<NamespaceDecl>(Ctx);
+            NamespaceDecl* ND = cast<NamespaceDecl>(Ctx);
             if (ND->isAnonymousNamespace())
                 continue;
             auto Name = ND->getName();
             DC = DC->FindCreateNamespace(Name);
+            HandleDeclaration(ND, DC);
             continue;
         }
         case Decl::LinkageSpec:
@@ -1896,6 +1901,8 @@ void Parser::WalkMacros(clang::PreprocessingRecord* PR)
                 break;
 
             auto macro = new MacroDefinition();
+            macro->OriginalPtr = (void*) MD;
+
             macro->Name = II->getName().trim();
             macro->Expression = Expression.trim();
 
@@ -2040,6 +2047,11 @@ void Parser::HandleOriginalText(clang::Decl* D, Declaration* Decl)
 
 void Parser::HandleDeclaration(clang::Decl* D, Declaration* Decl)
 {
+    if (Decl->OriginalPtr != nullptr)
+        return;
+
+    Decl->OriginalPtr = (void*) D;
+
     if (Decl->PreprocessedEntities.empty())
     {
         auto startLoc = GetDeclStartLocation(C.get(), D);
@@ -2135,6 +2147,7 @@ Declaration* Parser::WalkDeclaration(clang::Decl* D,
     {
         auto TS = cast<ClassTemplateSpecializationDecl>(D);
         auto CT = new ClassTemplateSpecialization();
+        HandleDeclaration(TS, CT);
 
         Decl = CT;
         break;
@@ -2143,6 +2156,7 @@ Declaration* Parser::WalkDeclaration(clang::Decl* D,
     {
         auto TS = cast<ClassTemplatePartialSpecializationDecl>(D);
         auto CT = new ClassTemplatePartialSpecialization();
+        HandleDeclaration(TS, CT);
 
         Decl = CT;
         break;

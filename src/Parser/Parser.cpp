@@ -1020,6 +1020,10 @@ CppSharp::AST::TranslationUnit^ Parser::GetTranslationUnit(clang::SourceLocation
         *Kind = LocKind;
 
     auto Unit = Lib->FindOrCreateModule(clix::marshalString<clix::E_UTF8>(File));
+
+    if (Unit->OriginalPtr.ToPointer() == nullptr)
+        Unit->OriginalPtr = System::IntPtr((void*)SM.getFileEntryForID(SM.getFileID(Loc)));
+
     if (LocKind != SourceLocationKind::Invalid)
         Unit->IsSystemHeader = SM.isInSystemHeader(Loc);
 
@@ -1070,11 +1074,12 @@ CppSharp::AST::DeclarationContext^ Parser::GetNamespace(clang::Decl* D,
         {
         case Decl::Namespace:
         {
-            const NamespaceDecl* ND = cast<NamespaceDecl>(Ctx);
+            NamespaceDecl* ND = cast<NamespaceDecl>(Ctx);
             if (ND->isAnonymousNamespace())
                 continue;
             auto Name = clix::marshalString<clix::E_UTF8>(ND->getName());
             DC = DC->FindCreateNamespace(Name);
+            HandleDeclaration(ND, DC);
             continue;
         }
         case Decl::LinkageSpec:
@@ -1972,7 +1977,7 @@ void Parser::WalkMacros(clang::PreprocessingRecord* PR)
         {
         case PreprocessedEntity::MacroDefinitionKind:
         {
-            const MacroDefinition* MD = cast<MacroDefinition>(PE);
+            auto MD = cast<MacroDefinition>(PE);
             
             if (!IsValidDeclaration(MD->getLocation()))
                 break;
@@ -2007,6 +2012,8 @@ void Parser::WalkMacros(clang::PreprocessingRecord* PR)
                 break;
 
             auto macro = gcnew CppSharp::AST::MacroDefinition();
+            macro->OriginalPtr = System::IntPtr((void*)MD);
+
             macro->Name = marshalString<E_UTF8>(II->getName())->Trim();
             macro->Expression = marshalString<E_UTF8>(Expression)->Trim();
 
