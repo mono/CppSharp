@@ -266,6 +266,28 @@ TypedefDecl* DeclarationContext::FindTypedef(const std::string& Name, bool Creat
     return tdef;
 }
 
+ClassTemplateSpecialization* ClassTemplate::FindSpecialization(void* ptr)
+{
+    return 0;
+}
+
+ClassTemplateSpecialization*
+ClassTemplate::FindSpecialization(TemplateSpecializationType type)
+{
+    return 0;
+}
+
+ClassTemplatePartialSpecialization* ClassTemplate::FindPartialSpecialization(void* ptr)
+{
+    return 0;
+}
+
+ClassTemplatePartialSpecialization*
+ClassTemplate::FindPartialSpecialization(TemplateSpecializationType type)
+{
+    return 0;
+}
+
 TranslationUnit* ASTContext::FindOrCreateModule(const std::string& File)
 {
     auto existingUnit = std::find_if(TranslationUnits.begin(),
