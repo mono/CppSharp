@@ -1426,6 +1426,7 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
                 FA->Name = "";
                 FA->QualifiedType = GetQualifiedType(Arg, WalkType(Arg));
             }
+            F->Parameters.push_back(FA);
         }
 
         return F;
