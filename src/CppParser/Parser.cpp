@@ -564,6 +564,15 @@ Class* Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
     if (!isCompleteDefinition)
         return RC;
 
+    WalkRecordCXX(Record, RC);
+
+    return RC;
+}
+
+void Parser::WalkRecordCXX(clang::CXXRecordDecl* Record, Class* RC)
+{
+    using namespace clang;
+
     auto headStartLoc = GetDeclStartLocation(C.get(), Record);
     auto headEndLoc = Record->getLocation(); // identifier location
     auto bodyEndLoc = Record->getLocEnd();
@@ -669,8 +678,86 @@ Class* Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
     // Process the vtables
     if (hasLayout && Record->isDynamicClass())
         WalkVTable(Record, RC);
+}
 
-    return RC;
+//-----------------------------------//
+
+static TemplateSpecializationKind
+WalkTemplateSpecializationKind(clang::TemplateSpecializationKind Kind)
+{
+    switch(Kind)
+    {
+    case clang::TSK_Undeclared:
+        return TemplateSpecializationKind::Undeclared;
+    case clang::TSK_ImplicitInstantiation:
+        return TemplateSpecializationKind::ImplicitInstantiation;
+    case clang::TSK_ExplicitSpecialization:
+        return TemplateSpecializationKind::ExplicitSpecialization;
+    case clang::TSK_ExplicitInstantiationDeclaration:
+        return TemplateSpecializationKind::ExplicitInstantiationDeclaration;
+    case clang::TSK_ExplicitInstantiationDefinition:
+        return TemplateSpecializationKind::ExplicitInstantiationDefinition;
+    }
+}
+
+ClassTemplateSpecialization*
+Parser::WalkClassTemplateSpecialization(clang::ClassTemplateSpecializationDecl* CTS)
+{
+    auto CT = WalkClassTemplate(CTS->getSpecializedTemplate());
+    auto Spec = CT->FindSpecialization(CTS);
+    if (Spec != nullptr)
+        return Spec;
+
+    auto TS = new ClassTemplateSpecialization();
+    HandleDeclaration(CTS, TS);
+
+    TS->Name = CTS->getName();
+
+    auto NS = GetNamespace(CTS);
+    assert(NS && "Expected a valid namespace");
+    TS->_Namespace = NS;
+
+    TS->TemplatedDecl = CT;
+    TS->SpecializationKind = WalkTemplateSpecializationKind(CTS->getSpecializationKind());
+    CT->Specializations.push_back(TS);
+
+    // TODO: Parse the template argument list
+
+    if (CTS->isCompleteDefinition())
+        WalkRecordCXX(CTS, TS);
+
+    return TS;
+}
+
+//-----------------------------------//
+
+ClassTemplatePartialSpecialization*
+Parser::WalkClassTemplatePartialSpecialization(clang::ClassTemplatePartialSpecializationDecl* CTS)
+{
+    auto CT = WalkClassTemplate(CTS->getSpecializedTemplate());
+    auto Spec = CT->FindPartialSpecialization((void*) CTS);
+    if (Spec != nullptr)
+        return Spec;
+
+    auto TS = new ClassTemplatePartialSpecialization();
+    HandleDeclaration(CTS, TS);
+
+    TS->Name = CTS->getName();
+
+    auto NS = GetNamespace(CTS);
+    assert(NS && "Expected a valid namespace");
+    TS->_Namespace = NS;
+
+    TS->TemplatedDecl = CT;
+    TS->SpecializationKind = WalkTemplateSpecializationKind(CTS->getSpecializationKind());
+    CT->Specializations.push_back(TS);
+
+    // TODO: Parse the template argument list
+
+    if (CTS->isCompleteDefinition())
+        WalkRecordCXX(CTS, TS);
+
+    return TS;
 }
 
 //-----------------------------------//

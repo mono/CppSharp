@@ -69,6 +69,11 @@ protected:
     Function* WalkFunction(clang::FunctionDecl* FD, bool IsDependent = false,
         bool AddToNamespace = true);
     Class* WalkRecordCXX(clang::CXXRecordDecl* Record);
+    void WalkRecordCXX(clang::CXXRecordDecl* Record, Class* RC);
+    ClassTemplateSpecialization*
+    WalkClassTemplateSpecialization(clang::ClassTemplateSpecializationDecl* CTS);
+    ClassTemplatePartialSpecialization*
+    WalkClassTemplatePartialSpecialization(clang::ClassTemplatePartialSpecializationDecl* CTS);
     Method* WalkMethodCXX(clang::CXXMethodDecl* MD);
     Field* WalkFieldCXX(clang::FieldDecl* FD, Class* Class);
     ClassTemplate* WalkClassTemplate(clang::ClassTemplateDecl* TD);
