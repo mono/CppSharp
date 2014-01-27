@@ -18,6 +18,7 @@ namespace CppSharp
             enum struct MacroLocation;
             enum struct PrimitiveType;
             enum struct RawCommentKind;
+            enum struct TemplateSpecializationKind;
             enum struct TypeKind;
             enum struct VTableComponentKind;
             ref class ASTContext;
@@ -104,20 +105,21 @@ namespace CppSharp
                 Function = 3,
                 Method = 4,
                 Enumeration = 5,
-                Variable = 6,
-                Field = 7,
-                AccessSpecifier = 8,
-                Class = 9,
-                Template = 10,
-                ClassTemplate = 11,
-                ClassTemplateSpecialization = 12,
-                ClassTemplatePartialSpecialization = 13,
-                FunctionTemplate = 14,
-                Namespace = 15,
-                PreprocessedEntity = 16,
-                MacroDefinition = 17,
-                MacroExpansion = 18,
-                TranslationUnit = 19
+                EnumerationItem = 6,
+                Variable = 7,
+                Field = 8,
+                AccessSpecifier = 9,
+                Class = 10,
+                Template = 11,
+                ClassTemplate = 12,
+                ClassTemplateSpecialization = 13,
+                ClassTemplatePartialSpecialization = 14,
+                FunctionTemplate = 15,
+                Namespace = 16,
+                PreprocessedEntity = 17,
+                MacroDefinition = 18,
+                MacroExpansion = 19,
+                TranslationUnit = 20
             };
 
             public enum struct AccessSpecifier
@@ -255,6 +257,15 @@ namespace CppSharp
                 FunctionHead = 3,
                 FunctionParameters = 4,
                 FunctionBody = 5
+            };
+
+            public enum struct TemplateSpecializationKind
+            {
+                Undeclared = 0,
+                ImplicitInstantiation = 1,
+                ExplicitSpecialization = 2,
+                ExplicitInstantiationDeclaration = 3,
+                ExplicitInstantiationDefinition = 4
             };
 
             public ref class Type : ICppInstance
@@ -1551,6 +1562,21 @@ namespace CppSharp
                 ClassTemplate(::CppSharp::CppParser::AST::ClassTemplate* native);
                 ClassTemplate(System::IntPtr native);
                 ClassTemplate();
+
+                property unsigned int SpecializationsCount
+                {
+                    unsigned int get();
+                }
+
+                CppSharp::Parser::AST::ClassTemplateSpecialization^ getSpecializations(unsigned int i);
+
+                CppSharp::Parser::AST::ClassTemplateSpecialization^ FindSpecialization(System::IntPtr ptr);
+
+                CppSharp::Parser::AST::ClassTemplateSpecialization^ FindSpecialization(CppSharp::Parser::AST::TemplateSpecializationType^ type);
+
+                CppSharp::Parser::AST::ClassTemplatePartialSpecialization^ FindPartialSpecialization(System::IntPtr ptr);
+
+                CppSharp::Parser::AST::ClassTemplatePartialSpecialization^ FindPartialSpecialization(CppSharp::Parser::AST::TemplateSpecializationType^ type);
             };
 
             public ref class ClassTemplateSpecialization : CppSharp::Parser::AST::Class
@@ -1560,6 +1586,25 @@ namespace CppSharp
                 ClassTemplateSpecialization(::CppSharp::CppParser::AST::ClassTemplateSpecialization* native);
                 ClassTemplateSpecialization(System::IntPtr native);
                 ClassTemplateSpecialization();
+
+                property unsigned int ArgumentsCount
+                {
+                    unsigned int get();
+                }
+
+                property CppSharp::Parser::AST::ClassTemplate^ TemplatedDecl
+                {
+                    CppSharp::Parser::AST::ClassTemplate^ get();
+                    void set(CppSharp::Parser::AST::ClassTemplate^);
+                }
+
+                property CppSharp::Parser::AST::TemplateSpecializationKind SpecializationKind
+                {
+                    CppSharp::Parser::AST::TemplateSpecializationKind get();
+                    void set(CppSharp::Parser::AST::TemplateSpecializationKind);
+                }
+
+                CppSharp::Parser::AST::TemplateArgument^ getArguments(unsigned int i);
             };
 
             public ref class ClassTemplatePartialSpecialization : CppSharp::Parser::AST::ClassTemplateSpecialization
