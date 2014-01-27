@@ -12,14 +12,13 @@ namespace CppSharp.AST
     {
         public TranslationUnit()
         {
-            
+            Macros = new List<MacroDefinition>();
+            Access = AccessSpecifier.Public;
         }
 
-        public TranslationUnit(string file)
+        public TranslationUnit(string file) : this()
         {
-            Macros = new List<MacroDefinition>();
             FilePath = file;
-            Access = AccessSpecifier.Public;
         }
 
         /// Contains the macros present in the unit.
