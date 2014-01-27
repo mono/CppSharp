@@ -274,10 +274,6 @@ namespace CppSharp.AST
             Incomplete
         }
 
-        public ArrayType()
-        {
-        }
-
         // Type of the array elements.
         public Type Type;
 
