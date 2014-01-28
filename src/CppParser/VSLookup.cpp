@@ -172,32 +172,6 @@ static bool getVisualStudioDir(std::string &path) {
     return true;
   }
 
-  char vsIDEInstallDir[256];
-  char vsExpressIDEInstallDir[256];
-  // Then try the windows registry.
-  bool hasVCDir = getSystemRegistryString(
-    "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\VisualStudio\\$VERSION",
-    "InstallDir", vsIDEInstallDir, sizeof(vsIDEInstallDir) - 1);
-  bool hasVCExpressDir = getSystemRegistryString(
-    "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\VCExpress\\$VERSION",
-    "InstallDir", vsExpressIDEInstallDir, sizeof(vsExpressIDEInstallDir) - 1);
-    // If we have both vc80 and vc90, pick version we were compiled with.
-  if (hasVCDir && vsIDEInstallDir[0]) {
-    char *p = (char*)strstr(vsIDEInstallDir, "\\Common7\\IDE");
-    if (p)
-      *p = '\0';
-    path = vsIDEInstallDir;
-    return true;
-  }
-
-  if (hasVCExpressDir && vsExpressIDEInstallDir[0]) {
-    char *p = (char*)strstr(vsExpressIDEInstallDir, "\\Common7\\IDE");
-    if (p)
-      *p = '\0';
-    path = vsExpressIDEInstallDir;
-    return true;
-  }
-
   // Try the environment.
   const char *vs100comntools = getenv("VS100COMNTOOLS");
   const char *vs90comntools = getenv("VS90COMNTOOLS");
@@ -232,6 +206,33 @@ static bool getVisualStudioDir(std::string &path) {
     path = p ? std::string(vscomntools, p) : vscomntools;
     return true;
   }
+
+  char vsIDEInstallDir[256];
+  char vsExpressIDEInstallDir[256];
+  // Then try the windows registry.
+  bool hasVCDir = getSystemRegistryString(
+	  "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\VisualStudio\\$VERSION",
+	  "InstallDir", vsIDEInstallDir, sizeof(vsIDEInstallDir) -1);
+  bool hasVCExpressDir = getSystemRegistryString(
+	  "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\VCExpress\\$VERSION",
+	  "InstallDir", vsExpressIDEInstallDir, sizeof(vsExpressIDEInstallDir) -1);
+  // If we have both vc80 and vc90, pick version we were compiled with.
+  if (hasVCDir && vsIDEInstallDir[0]) {
+	  char *p = (char*) strstr(vsIDEInstallDir, "\\Common7\\IDE");
+	  if (p)
+		  *p = '\0';
+	  path = vsIDEInstallDir;
+	  return true;
+  }
+
+  if (hasVCExpressDir && vsExpressIDEInstallDir[0]) {
+	  char *p = (char*) strstr(vsExpressIDEInstallDir, "\\Common7\\IDE");
+	  if (p)
+		  *p = '\0';
+	  path = vsExpressIDEInstallDir;
+	  return true;
+  }
+
   return false;
 }
 
