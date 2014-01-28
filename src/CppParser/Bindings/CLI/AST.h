@@ -273,7 +273,7 @@ namespace CppSharp
             public:
 
                 property ::CppSharp::CppParser::AST::Type* NativePtr;
-                property System::IntPtr Instance
+                property System::IntPtr __Instance
                 {
                     virtual System::IntPtr get();
                     virtual void set(System::IntPtr instance);
@@ -301,7 +301,7 @@ namespace CppSharp
             public:
 
                 property ::CppSharp::CppParser::AST::TypeQualifiers* NativePtr;
-                property System::IntPtr Instance
+                property System::IntPtr __Instance
                 {
                     virtual System::IntPtr get();
                     virtual void set(System::IntPtr instance);
@@ -335,7 +335,7 @@ namespace CppSharp
             public:
 
                 property ::CppSharp::CppParser::AST::QualifiedType* NativePtr;
-                property System::IntPtr Instance
+                property System::IntPtr __Instance
                 {
                     virtual System::IntPtr get();
                     virtual void set(System::IntPtr instance);
@@ -560,7 +560,7 @@ namespace CppSharp
                 };
 
                 property ::CppSharp::CppParser::AST::TemplateArgument* NativePtr;
-                property System::IntPtr Instance
+                property System::IntPtr __Instance
                 {
                     virtual System::IntPtr get();
                     virtual void set(System::IntPtr instance);
@@ -628,7 +628,7 @@ namespace CppSharp
             public:
 
                 property ::CppSharp::CppParser::AST::TemplateParameter* NativePtr;
-                property System::IntPtr Instance
+                property System::IntPtr __Instance
                 {
                     virtual System::IntPtr get();
                     virtual void set(System::IntPtr instance);
@@ -727,7 +727,7 @@ namespace CppSharp
             public:
 
                 property ::CppSharp::CppParser::AST::RawComment* NativePtr;
-                property System::IntPtr Instance
+                property System::IntPtr __Instance
                 {
                     virtual System::IntPtr get();
                     virtual void set(System::IntPtr instance);
@@ -761,7 +761,7 @@ namespace CppSharp
             public:
 
                 property ::CppSharp::CppParser::AST::VTableComponent* NativePtr;
-                property System::IntPtr Instance
+                property System::IntPtr __Instance
                 {
                     virtual System::IntPtr get();
                     virtual void set(System::IntPtr instance);
@@ -795,7 +795,7 @@ namespace CppSharp
             public:
 
                 property ::CppSharp::CppParser::AST::VTableLayout* NativePtr;
-                property System::IntPtr Instance
+                property System::IntPtr __Instance
                 {
                     virtual System::IntPtr get();
                     virtual void set(System::IntPtr instance);
@@ -818,7 +818,7 @@ namespace CppSharp
             public:
 
                 property ::CppSharp::CppParser::AST::VFTableInfo* NativePtr;
-                property System::IntPtr Instance
+                property System::IntPtr __Instance
                 {
                     virtual System::IntPtr get();
                     virtual void set(System::IntPtr instance);
@@ -858,7 +858,7 @@ namespace CppSharp
             public:
 
                 property ::CppSharp::CppParser::AST::ClassLayout* NativePtr;
-                property System::IntPtr Instance
+                property System::IntPtr __Instance
                 {
                     virtual System::IntPtr get();
                     virtual void set(System::IntPtr instance);
@@ -923,7 +923,7 @@ namespace CppSharp
             public:
 
                 property ::CppSharp::CppParser::AST::Declaration* NativePtr;
-                property System::IntPtr Instance
+                property System::IntPtr __Instance
                 {
                     virtual System::IntPtr get();
                     virtual void set(System::IntPtr instance);
@@ -1371,7 +1371,7 @@ namespace CppSharp
             public:
 
                 property ::CppSharp::CppParser::AST::BaseClassSpecifier* NativePtr;
-                property System::IntPtr Instance
+                property System::IntPtr __Instance
                 {
                     virtual System::IntPtr get();
                     virtual void set(System::IntPtr instance);
@@ -1718,7 +1718,7 @@ namespace CppSharp
             public:
 
                 property ::CppSharp::CppParser::AST::NativeLibrary* NativePtr;
-                property System::IntPtr Instance
+                property System::IntPtr __Instance
                 {
                     virtual System::IntPtr get();
                     virtual void set(System::IntPtr instance);
@@ -1747,7 +1747,7 @@ namespace CppSharp
             public:
 
                 property ::CppSharp::CppParser::AST::ASTContext* NativePtr;
-                property System::IntPtr Instance
+                property System::IntPtr __Instance
                 {
                     virtual System::IntPtr get();
                     virtual void set(System::IntPtr instance);

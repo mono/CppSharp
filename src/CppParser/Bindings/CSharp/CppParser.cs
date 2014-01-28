@@ -182,7 +182,7 @@ namespace CppSharp
             {
             }
 
-            internal ParserOptions(global::System.IntPtr native)
+            public ParserOptions(global::System.IntPtr native)
             {
                 __Instance = native;
             }
@@ -513,7 +513,7 @@ namespace CppSharp
             {
             }
 
-            internal ParserDiagnostic(global::System.IntPtr native)
+            public ParserDiagnostic(global::System.IntPtr native)
             {
                 __Instance = native;
             }
@@ -686,7 +686,7 @@ namespace CppSharp
             {
             }
 
-            internal ParserResult(global::System.IntPtr native)
+            public ParserResult(global::System.IntPtr native)
             {
                 __Instance = native;
             }
@@ -827,7 +827,7 @@ namespace CppSharp
             {
             }
 
-            internal ClangParser(global::System.IntPtr native)
+            public ClangParser(global::System.IntPtr native)
             {
                 __Instance = native;
             }

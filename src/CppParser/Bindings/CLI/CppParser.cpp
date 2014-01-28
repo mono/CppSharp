@@ -76,12 +76,12 @@ void CppSharp::Parser::ParserOptions::addLibraryDirs(System::String^ s)
     ((::CppSharp::CppParser::ParserOptions*)NativePtr)->addLibraryDirs(arg0);
 }
 
-System::IntPtr CppSharp::Parser::ParserOptions::Instance::get()
+System::IntPtr CppSharp::Parser::ParserOptions::__Instance::get()
 {
     return System::IntPtr(NativePtr);
 }
 
-void CppSharp::Parser::ParserOptions::Instance::set(System::IntPtr object)
+void CppSharp::Parser::ParserOptions::__Instance::set(System::IntPtr object)
 {
     NativePtr = (::CppSharp::CppParser::ParserOptions*)object.ToPointer();
 }
@@ -226,12 +226,12 @@ CppSharp::Parser::ParserDiagnostic::ParserDiagnostic()
     NativePtr = new ::CppSharp::CppParser::ParserDiagnostic();
 }
 
-System::IntPtr CppSharp::Parser::ParserDiagnostic::Instance::get()
+System::IntPtr CppSharp::Parser::ParserDiagnostic::__Instance::get()
 {
     return System::IntPtr(NativePtr);
 }
 
-void CppSharp::Parser::ParserDiagnostic::Instance::set(System::IntPtr object)
+void CppSharp::Parser::ParserDiagnostic::__Instance::set(System::IntPtr object)
 {
     NativePtr = (::CppSharp::CppParser::ParserDiagnostic*)object.ToPointer();
 }
@@ -325,12 +325,12 @@ CppSharp::Parser::ParserResult::ParserResult()
     NativePtr = new ::CppSharp::CppParser::ParserResult();
 }
 
-System::IntPtr CppSharp::Parser::ParserResult::Instance::get()
+System::IntPtr CppSharp::Parser::ParserResult::__Instance::get()
 {
     return System::IntPtr(NativePtr);
 }
 
-void CppSharp::Parser::ParserResult::Instance::set(System::IntPtr object)
+void CppSharp::Parser::ParserResult::__Instance::set(System::IntPtr object)
 {
     NativePtr = (::CppSharp::CppParser::ParserResult*)object.ToPointer();
 }
@@ -403,12 +403,12 @@ CppSharp::Parser::ClangParser::ClangParser()
     NativePtr = new ::CppSharp::CppParser::ClangParser();
 }
 
-System::IntPtr CppSharp::Parser::ClangParser::Instance::get()
+System::IntPtr CppSharp::Parser::ClangParser::__Instance::get()
 {
     return System::IntPtr(NativePtr);
 }
 
-void CppSharp::Parser::ClangParser::Instance::set(System::IntPtr object)
+void CppSharp::Parser::ClangParser::__Instance::set(System::IntPtr object)
 {
     NativePtr = (::CppSharp::CppParser::ClangParser*)object.ToPointer();
 }

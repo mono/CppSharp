@@ -57,7 +57,7 @@ namespace CppSharp
         public:
 
             property ::CppSharp::CppParser::ParserOptions* NativePtr;
-            property System::IntPtr Instance
+            property System::IntPtr __Instance
             {
                 virtual System::IntPtr get();
                 virtual void set(System::IntPtr instance);
@@ -163,7 +163,7 @@ namespace CppSharp
         public:
 
             property ::CppSharp::CppParser::ParserDiagnostic* NativePtr;
-            property System::IntPtr Instance
+            property System::IntPtr __Instance
             {
                 virtual System::IntPtr get();
                 virtual void set(System::IntPtr instance);
@@ -209,7 +209,7 @@ namespace CppSharp
         public:
 
             property ::CppSharp::CppParser::ParserResult* NativePtr;
-            property System::IntPtr Instance
+            property System::IntPtr __Instance
             {
                 virtual System::IntPtr get();
                 virtual void set(System::IntPtr instance);
@@ -252,7 +252,7 @@ namespace CppSharp
         public:
 
             property ::CppSharp::CppParser::ClangParser* NativePtr;
-            property System::IntPtr Instance
+            property System::IntPtr __Instance
             {
                 virtual System::IntPtr get();
                 virtual void set(System::IntPtr instance);

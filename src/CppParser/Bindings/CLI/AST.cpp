@@ -20,12 +20,12 @@ CppSharp::Parser::AST::Type::Type(CppSharp::Parser::AST::TypeKind kind)
     NativePtr = new ::CppSharp::CppParser::AST::Type(arg0);
 }
 
-System::IntPtr CppSharp::Parser::AST::Type::Instance::get()
+System::IntPtr CppSharp::Parser::AST::Type::__Instance::get()
 {
     return System::IntPtr(NativePtr);
 }
 
-void CppSharp::Parser::AST::Type::Instance::set(System::IntPtr object)
+void CppSharp::Parser::AST::Type::__Instance::set(System::IntPtr object)
 {
     NativePtr = (::CppSharp::CppParser::AST::Type*)object.ToPointer();
 }
@@ -66,12 +66,12 @@ CppSharp::Parser::AST::TypeQualifiers::TypeQualifiers()
     NativePtr = new ::CppSharp::CppParser::AST::TypeQualifiers();
 }
 
-System::IntPtr CppSharp::Parser::AST::TypeQualifiers::Instance::get()
+System::IntPtr CppSharp::Parser::AST::TypeQualifiers::__Instance::get()
 {
     return System::IntPtr(NativePtr);
 }
 
-void CppSharp::Parser::AST::TypeQualifiers::Instance::set(System::IntPtr object)
+void CppSharp::Parser::AST::TypeQualifiers::__Instance::set(System::IntPtr object)
 {
     NativePtr = (::CppSharp::CppParser::AST::TypeQualifiers*)object.ToPointer();
 }
@@ -122,12 +122,12 @@ CppSharp::Parser::AST::QualifiedType::QualifiedType()
     NativePtr = new ::CppSharp::CppParser::AST::QualifiedType();
 }
 
-System::IntPtr CppSharp::Parser::AST::QualifiedType::Instance::get()
+System::IntPtr CppSharp::Parser::AST::QualifiedType::__Instance::get()
 {
     return System::IntPtr(NativePtr);
 }
 
-void CppSharp::Parser::AST::QualifiedType::Instance::set(System::IntPtr object)
+void CppSharp::Parser::AST::QualifiedType::__Instance::set(System::IntPtr object)
 {
     NativePtr = (::CppSharp::CppParser::AST::QualifiedType*)object.ToPointer();
 }
@@ -467,12 +467,12 @@ CppSharp::Parser::AST::TemplateArgument::TemplateArgument()
     NativePtr = new ::CppSharp::CppParser::AST::TemplateArgument();
 }
 
-System::IntPtr CppSharp::Parser::AST::TemplateArgument::Instance::get()
+System::IntPtr CppSharp::Parser::AST::TemplateArgument::__Instance::get()
 {
     return System::IntPtr(NativePtr);
 }
 
-void CppSharp::Parser::AST::TemplateArgument::Instance::set(System::IntPtr object)
+void CppSharp::Parser::AST::TemplateArgument::__Instance::set(System::IntPtr object)
 {
     NativePtr = (::CppSharp::CppParser::AST::TemplateArgument*)object.ToPointer();
 }
@@ -591,12 +591,12 @@ CppSharp::Parser::AST::TemplateParameter::TemplateParameter()
     NativePtr = new ::CppSharp::CppParser::AST::TemplateParameter();
 }
 
-System::IntPtr CppSharp::Parser::AST::TemplateParameter::Instance::get()
+System::IntPtr CppSharp::Parser::AST::TemplateParameter::__Instance::get()
 {
     return System::IntPtr(NativePtr);
 }
 
-void CppSharp::Parser::AST::TemplateParameter::Instance::set(System::IntPtr object)
+void CppSharp::Parser::AST::TemplateParameter::__Instance::set(System::IntPtr object)
 {
     NativePtr = (::CppSharp::CppParser::AST::TemplateParameter*)object.ToPointer();
 }
@@ -767,12 +767,12 @@ CppSharp::Parser::AST::RawComment::RawComment()
     NativePtr = new ::CppSharp::CppParser::AST::RawComment();
 }
 
-System::IntPtr CppSharp::Parser::AST::RawComment::Instance::get()
+System::IntPtr CppSharp::Parser::AST::RawComment::__Instance::get()
 {
     return System::IntPtr(NativePtr);
 }
 
-void CppSharp::Parser::AST::RawComment::Instance::set(System::IntPtr object)
+void CppSharp::Parser::AST::RawComment::__Instance::set(System::IntPtr object)
 {
     NativePtr = (::CppSharp::CppParser::AST::RawComment*)object.ToPointer();
 }
@@ -833,12 +833,12 @@ CppSharp::Parser::AST::VTableComponent::VTableComponent()
     NativePtr = new ::CppSharp::CppParser::AST::VTableComponent();
 }
 
-System::IntPtr CppSharp::Parser::AST::VTableComponent::Instance::get()
+System::IntPtr CppSharp::Parser::AST::VTableComponent::__Instance::get()
 {
     return System::IntPtr(NativePtr);
 }
 
-void CppSharp::Parser::AST::VTableComponent::Instance::set(System::IntPtr object)
+void CppSharp::Parser::AST::VTableComponent::__Instance::set(System::IntPtr object)
 {
     NativePtr = (::CppSharp::CppParser::AST::VTableComponent*)object.ToPointer();
 }
@@ -896,12 +896,12 @@ CppSharp::Parser::AST::VTableLayout::VTableLayout()
     NativePtr = new ::CppSharp::CppParser::AST::VTableLayout();
 }
 
-System::IntPtr CppSharp::Parser::AST::VTableLayout::Instance::get()
+System::IntPtr CppSharp::Parser::AST::VTableLayout::__Instance::get()
 {
     return System::IntPtr(NativePtr);
 }
 
-void CppSharp::Parser::AST::VTableLayout::Instance::set(System::IntPtr object)
+void CppSharp::Parser::AST::VTableLayout::__Instance::set(System::IntPtr object)
 {
     NativePtr = (::CppSharp::CppParser::AST::VTableLayout*)object.ToPointer();
 }
@@ -928,12 +928,12 @@ CppSharp::Parser::AST::VFTableInfo::VFTableInfo()
     NativePtr = new ::CppSharp::CppParser::AST::VFTableInfo();
 }
 
-System::IntPtr CppSharp::Parser::AST::VFTableInfo::Instance::get()
+System::IntPtr CppSharp::Parser::AST::VFTableInfo::__Instance::get()
 {
     return System::IntPtr(NativePtr);
 }
 
-void CppSharp::Parser::AST::VFTableInfo::Instance::set(System::IntPtr object)
+void CppSharp::Parser::AST::VFTableInfo::__Instance::set(System::IntPtr object)
 {
     NativePtr = (::CppSharp::CppParser::AST::VFTableInfo*)object.ToPointer();
 }
@@ -989,6 +989,11 @@ CppSharp::Parser::AST::ClassLayout::ClassLayout(System::IntPtr native)
     NativePtr = __native;
 }
 
+CppSharp::Parser::AST::ClassLayout::ClassLayout()
+{
+    NativePtr = new ::CppSharp::CppParser::AST::ClassLayout();
+}
+
 CppSharp::Parser::AST::VFTableInfo^ CppSharp::Parser::AST::ClassLayout::getVFTables(unsigned int i)
 {
     auto __ret = ((::CppSharp::CppParser::AST::ClassLayout*)NativePtr)->getVFTables(i);
@@ -996,17 +1001,12 @@ CppSharp::Parser::AST::VFTableInfo^ CppSharp::Parser::AST::ClassLayout::getVFTab
     return gcnew CppSharp::Parser::AST::VFTableInfo((::CppSharp::CppParser::AST::VFTableInfo*)____ret);
 }
 
-CppSharp::Parser::AST::ClassLayout::ClassLayout()
-{
-    NativePtr = new ::CppSharp::CppParser::AST::ClassLayout();
-}
-
-System::IntPtr CppSharp::Parser::AST::ClassLayout::Instance::get()
+System::IntPtr CppSharp::Parser::AST::ClassLayout::__Instance::get()
 {
     return System::IntPtr(NativePtr);
 }
 
-void CppSharp::Parser::AST::ClassLayout::Instance::set(System::IntPtr object)
+void CppSharp::Parser::AST::ClassLayout::__Instance::set(System::IntPtr object)
 {
     NativePtr = (::CppSharp::CppParser::AST::ClassLayout*)object.ToPointer();
 }
@@ -1111,12 +1111,12 @@ CppSharp::Parser::AST::PreprocessedEntity^ CppSharp::Parser::AST::Declaration::g
     return gcnew CppSharp::Parser::AST::PreprocessedEntity((::CppSharp::CppParser::AST::PreprocessedEntity*)__ret);
 }
 
-System::IntPtr CppSharp::Parser::AST::Declaration::Instance::get()
+System::IntPtr CppSharp::Parser::AST::Declaration::__Instance::get()
 {
     return System::IntPtr(NativePtr);
 }
 
-void CppSharp::Parser::AST::Declaration::Instance::set(System::IntPtr object)
+void CppSharp::Parser::AST::Declaration::__Instance::set(System::IntPtr object)
 {
     NativePtr = (::CppSharp::CppParser::AST::Declaration*)object.ToPointer();
 }
@@ -1965,12 +1965,12 @@ CppSharp::Parser::AST::BaseClassSpecifier::BaseClassSpecifier()
     NativePtr = new ::CppSharp::CppParser::AST::BaseClassSpecifier();
 }
 
-System::IntPtr CppSharp::Parser::AST::BaseClassSpecifier::Instance::get()
+System::IntPtr CppSharp::Parser::AST::BaseClassSpecifier::__Instance::get()
 {
     return System::IntPtr(NativePtr);
 }
 
-void CppSharp::Parser::AST::BaseClassSpecifier::Instance::set(System::IntPtr object)
+void CppSharp::Parser::AST::BaseClassSpecifier::__Instance::set(System::IntPtr object)
 {
     NativePtr = (::CppSharp::CppParser::AST::BaseClassSpecifier*)object.ToPointer();
 }
@@ -2620,12 +2620,12 @@ CppSharp::Parser::AST::NativeLibrary::NativeLibrary()
     NativePtr = new ::CppSharp::CppParser::AST::NativeLibrary();
 }
 
-System::IntPtr CppSharp::Parser::AST::NativeLibrary::Instance::get()
+System::IntPtr CppSharp::Parser::AST::NativeLibrary::__Instance::get()
 {
     return System::IntPtr(NativePtr);
 }
 
-void CppSharp::Parser::AST::NativeLibrary::Instance::set(System::IntPtr object)
+void CppSharp::Parser::AST::NativeLibrary::__Instance::set(System::IntPtr object)
 {
     NativePtr = (::CppSharp::CppParser::AST::NativeLibrary*)object.ToPointer();
 }
@@ -2682,12 +2682,12 @@ CppSharp::Parser::AST::ASTContext::ASTContext()
     NativePtr = new ::CppSharp::CppParser::AST::ASTContext();
 }
 
-System::IntPtr CppSharp::Parser::AST::ASTContext::Instance::get()
+System::IntPtr CppSharp::Parser::AST::ASTContext::__Instance::get()
 {
     return System::IntPtr(NativePtr);
 }
 
-void CppSharp::Parser::AST::ASTContext::Instance::set(System::IntPtr object)
+void CppSharp::Parser::AST::ASTContext::__Instance::set(System::IntPtr object)
 {
     NativePtr = (::CppSharp::CppParser::AST::ASTContext*)object.ToPointer();
 }
