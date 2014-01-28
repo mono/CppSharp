@@ -230,12 +230,16 @@ static bool getVisualStudioDir(std::string &path) {
   }
   #endif
   // Otherwise find any version we can
+  else if (vs120comntools)
+      vscomntools = vs120comntools;
+  else if (vs110comntools)
+      vscomntools = vs110comntools;
   else if (vs100comntools)
-    vscomntools = vs100comntools;
+      vscomntools = vs100comntools;
   else if (vs90comntools)
-    vscomntools = vs90comntools;
+      vscomntools = vs90comntools;
   else if (vs80comntools)
-    vscomntools = vs80comntools;
+      vscomntools = vs80comntools;
 
   if (vscomntools && *vscomntools) {
     const char *p = strstr(vscomntools, "\\Common7\\Tools");
