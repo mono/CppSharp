@@ -288,7 +288,7 @@ namespace CppSharp.Generators.CLI
             WriteLineIndent("property {0} NativePtr;", nativeType);
 
             PushIndent();
-            WriteLine("property System::IntPtr Instance");
+            WriteLine("property System::IntPtr {0}", Helpers.InstanceIdentifier);
             WriteStartBraceIndent();
             WriteLine("virtual System::IntPtr get();");
             WriteLine("virtual void set(System::IntPtr instance);");

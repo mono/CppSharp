@@ -152,16 +152,16 @@ namespace CppSharp.Generators.CLI
             if (CSharpTextTemplate.ShouldGenerateClassNativeField(@class))
             {
                 PushBlock(CLIBlockKind.Method);
-                WriteLine("System::IntPtr {0}::Instance::get()",
-                            QualifiedIdentifier(@class));
+                WriteLine("System::IntPtr {0}::{1}::get()",
+                    QualifiedIdentifier(@class), Helpers.InstanceIdentifier);
                 WriteStartBraceIndent();
                 WriteLine("return System::IntPtr(NativePtr);");
                 WriteCloseBraceIndent();
                 PopBlock(NewLineKind.BeforeNextBlock);
 
                 PushBlock(CLIBlockKind.Method);
-                WriteLine("void {0}::Instance::set(System::IntPtr object)",
-                            QualifiedIdentifier(@class));
+                WriteLine("void {0}::{1}::set(System::IntPtr object)",
+                    QualifiedIdentifier(@class), Helpers.InstanceIdentifier);
                 WriteStartBraceIndent();
                 var nativeType = string.Format("::{0}*", @class.QualifiedOriginalName);
                 WriteLine("NativePtr = ({0})object.ToPointer();", nativeType);
