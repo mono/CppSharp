@@ -266,7 +266,6 @@ struct CS_API BuiltinType : public Type
     PrimitiveType Type;
 };
 
-#if 1
 // Comments
 
 enum struct RawCommentKind
@@ -726,7 +725,6 @@ struct CS_API MacroExpansion : public PreprocessedEntity
     MacroDefinition* Definition;
 };
 
-
 struct CS_API TranslationUnit : public Namespace
 {
     TranslationUnit() { Kind = DeclarationKind::TranslationUnit; }
@@ -746,6 +744,5 @@ struct CS_API ASTContext
     TranslationUnit* FindOrCreateModule(const std::string& File);
     VECTOR(TranslationUnit*, TranslationUnits)
 };
-#endif
 
 } } }
