@@ -951,7 +951,7 @@ CppSharp::AST::Method^ Parser::WalkMethodCXX(clang::CXXMethodDecl* MD)
     else if (const CXXConversionDecl* CD = dyn_cast<CXXConversionDecl>(MD))
     {
         auto TL = MD->getTypeSourceInfo()->getTypeLoc().castAs<FunctionTypeLoc>();
-        auto RTL = TL.getResultLoc();
+        auto RTL = TL.getReturnLoc();
         auto ConvTy = WalkType(CD->getConversionType(), &RTL);
         Method->ConversionType = GetQualifiedType(CD->getConversionType(), ConvTy);
     }
@@ -1420,15 +1420,15 @@ CppSharp::AST::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* 
         if (TL && !TL->isNull())
         {
             FTL = TL->getAs<FunctionProtoTypeLoc>();
-            RL = FTL.getResultLoc();
+            RL = FTL.getReturnLoc();
         }
 
         auto F = gcnew CppSharp::AST::FunctionType();
-        F->ReturnType = GetQualifiedType(FP->getResultType(),
-            WalkType(FP->getResultType(), &RL));
+        F->ReturnType = GetQualifiedType(FP->getReturnType(),
+            WalkType(FP->getReturnType(), &RL));
         F->CallingConvention = ConvertCallConv(FP->getCallConv());
 
-		for (unsigned i = 0; i < FP->getNumParams(); ++i)
+        for (unsigned i = 0; i < FP->getNumParams(); ++i)
         {
             auto FA = gcnew CppSharp::AST::Parameter();
             if (FTL)
@@ -1774,7 +1774,7 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, CppSharp::AST::Function^ F,
         FunctionTypeLoc FTL = TSI->getTypeLoc().getAs<FunctionTypeLoc>();
         if (FTL)
         {
-            RTL = FTL.getResultLoc();
+            RTL = FTL.getReturnLoc();
 
             auto &SM = C->getSourceManager();
             auto headStartLoc = GetDeclStartLocation(C.get(), FD);
@@ -1788,8 +1788,8 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, CppSharp::AST::Function^ F,
         }
     }
 
-    F->ReturnType = GetQualifiedType(FD->getResultType(),
-        WalkType(FD->getResultType(), &RTL));
+    F->ReturnType = GetQualifiedType(FD->getReturnType(),
+        WalkType(FD->getReturnType(), &RTL));
 
     String Mangled = GetDeclMangledName(FD, TargetABI, IsDependent);
     F->Mangled = marshalString<E_UTF8>(Mangled);
@@ -1810,7 +1810,7 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, CppSharp::AST::Function^ F,
             assert (!FTInfo.isNull());
 
             ParamStartLoc = FTInfo.getRParenLoc();
-            ResultLoc = FTInfo.getResultLoc().getLocStart();
+            ResultLoc = FTInfo.getReturnLoc().getLocStart();
         }
     }
 
@@ -1849,7 +1849,7 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, CppSharp::AST::Function^ F,
     }
 
     bool CheckCodeGenInfo = !FD->isDependentContext() && !FD->isInvalidDecl();
-    CheckCodeGenInfo &= CanCheckCodeGenInfo(FD->getResultType().getTypePtr());
+    CheckCodeGenInfo &= CanCheckCodeGenInfo(FD->getReturnType().getTypePtr());
     for (auto I = FD->param_begin(), E = FD->param_end(); I != E; ++I)
         CheckCodeGenInfo &= CanCheckCodeGenInfo((*I)->getType().getTypePtr());
 
@@ -2569,7 +2569,7 @@ ParserResultKind Parser::ParseArchive(llvm::StringRef File,
     auto LibName = clix::marshalString<clix::E_UTF8>(File);
     NativeLib->FileName = LibName;
 
-    for(auto it = Archive.begin_symbols(); it != Archive.end_symbols(); ++it)
+    for(auto it = Archive.symbol_begin(); it != Archive.symbol_end(); ++it)
     {
         llvm::StringRef SymRef;
 
@@ -2596,7 +2596,7 @@ ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
     NativeLib->FileName = LibName;
 
     llvm::error_code ec;
-    for(auto it = Object->begin_symbols(); it != Object->end_symbols(); it.increment(ec))
+    for(auto it = Object.get()->begin_symbols(); it != Object.get()->end_symbols(); it.increment(ec))
     {
         llvm::StringRef SymRef;
 
@@ -2607,7 +2607,7 @@ ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
         NativeLib->Symbols->Add(SymName);
     }
 
-    for(auto it = Object->begin_dynamic_symbols(); it != Object->end_dynamic_symbols();
+    for(auto it = Object.get()->begin_dynamic_symbols(); it != Object.get()->end_dynamic_symbols();
         it.increment(ec))
     {
         llvm::StringRef SymRef;
