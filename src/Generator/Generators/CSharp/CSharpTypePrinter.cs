@@ -202,6 +202,10 @@ namespace CppSharp.Generators.CSharp
 
                 if (ContextKind == CSharpTypePrinterContextKind.GenericDelegate)
                     return "global::System.IntPtr";
+
+                if (primitive == PrimitiveType.Void)
+                    return "global::System.IntPtr";
+
                 return VisitPrimitiveType(primitive, quals) + "*";
             }
 
