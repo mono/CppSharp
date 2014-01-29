@@ -40,6 +40,7 @@ namespace CppSharp.Passes
             if (decl is Property) return true;
             if (decl is Event) return true;
             if (decl is TypedefDecl) return true;
+            if (decl is Namespace && !(decl is TranslationUnit)) return true;
             return false;
         }
 
