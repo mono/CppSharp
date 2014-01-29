@@ -786,6 +786,18 @@ namespace CppSharp.AST
         }
     }
 
+    public class PackExpansionType : Type
+    {
+        public override T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals = new TypeQualifiers())
+        {
+            return visitor.VisitPointerType(
+                new PointerType
+                {
+                    QualifiedPointee = new QualifiedType(new BuiltinType(PrimitiveType.Void))
+                }, quals);
+        }
+    }
+
     #region Primitives
 
     /// <summary>
