@@ -151,6 +151,11 @@ namespace CppSharp.Passes
             return false;
         }
 
+        public bool VisitPackExpansionType(PackExpansionType packExpansionType, TypeQualifiers quals)
+        {
+            return true;
+        }
+
         public bool VisitCILType(CILType type, TypeQualifiers quals)
         {
             return false;

@@ -259,6 +259,11 @@ namespace CppSharp.Generators.CLI
             throw new NotImplementedException();
         }
 
+        public string VisitPackExpansionType(PackExpansionType packExpansionType, TypeQualifiers quals)
+        {
+            return string.Empty;
+        }
+
         public string VisitCILType(CILType type, TypeQualifiers quals)
         {
             return type.Type.FullName.Replace(".", "::") + "^";

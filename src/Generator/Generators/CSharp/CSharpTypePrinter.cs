@@ -348,6 +348,11 @@ namespace CppSharp.Generators.CSharp
             throw new NotImplementedException();
         }
 
+        public CSharpTypePrinterResult VisitPackExpansionType(PackExpansionType packExpansionType, TypeQualifiers quals)
+        {
+            return string.Empty;
+        }
+
         public CSharpTypePrinterResult VisitCILType(CILType type, TypeQualifiers quals)
         {
             return type.Type.FullName;
