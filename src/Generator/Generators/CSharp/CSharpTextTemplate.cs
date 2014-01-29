@@ -1854,9 +1854,19 @@ namespace CppSharp.Generators.CSharp
             if (ShouldGenerateClassNativeField(@class))
             {
                 var dtor = @class.Methods.FirstOrDefault(method => method.IsDestructor);
-                if (dtor != null && @class.HasNonTrivialDestructor)
-                    WriteLine("Internal.{0}({1});", GetFunctionNativeIdentifier(dtor),
-                        Helpers.InstanceIdentifier);
+                if (dtor != null)
+                {
+                    if (dtor.Access != AccessSpecifier.Private && @class.HasNonTrivialDestructor)
+                    {
+                        NativeLibrary library;
+                        if (!Options.CheckSymbols ||
+                            Driver.Symbols.FindLibraryBySymbol(dtor.Mangled, out library))
+                        {
+                            WriteLine("Internal.{0}({1});", GetFunctionNativeIdentifier(dtor),
+                                Helpers.InstanceIdentifier);
+                        }
+                    }
+                }
 
                 WriteLine("Marshal.FreeHGlobal({0});", Helpers.InstanceIdentifier);
             }
