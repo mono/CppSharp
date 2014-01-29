@@ -138,8 +138,6 @@ namespace CppSharp.Generators.CLI
                 case PrimitiveType.Double:
                     Context.Return.Write(Context.ReturnVarName);
                     return true;
-                case PrimitiveType.WideChar:
-                    return false;
             }
 
             return false;
@@ -468,8 +466,6 @@ namespace CppSharp.Generators.CLI
                 case PrimitiveType.Double:
                     Context.Return.Write(Context.Parameter.Name);
                     return true;
-                case PrimitiveType.WideChar:
-                    return false;
             }
 
             return false;
