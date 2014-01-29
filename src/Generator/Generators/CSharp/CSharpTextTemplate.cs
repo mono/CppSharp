@@ -791,7 +791,10 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateClassInternalsField(Field field)
         {
-            if (field.Type.IsDependent && !field.Type.IsPointer())
+            // we do not support dependent fields yet, see https://github.com/mono/CppSharp/issues/197
+            Class @class;
+            if (field.Type.IsDependent && !field.Type.IsPointer() &&
+                !(field.Type.IsTagDecl(out @class) && @class.IsUnion))
                 return;
 
             var safeIdentifier = Helpers.SafeIdentifier(field.OriginalName);
