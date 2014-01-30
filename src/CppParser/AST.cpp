@@ -29,6 +29,48 @@ static std::vector<T> split(const T & str, const T & delimiters) {
 
 namespace CppSharp { namespace CppParser { namespace AST {
 
+Type::Type(TypeKind kind) : Kind(kind) {}
+QualifiedType::QualifiedType() : Type(0) {}
+
+TagType::TagType() : Type(TypeKind::Tag) {}
+
+ArrayType::ArrayType() : Type(TypeKind::Array) {}
+
+FunctionType::FunctionType() : Type(TypeKind::Function) {}
+
+PointerType::PointerType() : Type(TypeKind::Pointer) {}
+
+MemberPointerType::MemberPointerType() : Type(TypeKind::MemberPointer) {}
+
+TypedefType::TypedefType() : Type(TypeKind::Typedef), Declaration(0) {}
+
+AttributedType::AttributedType() : Type(TypeKind::Attributed) {}
+
+DecayedType::DecayedType() : Type(TypeKind::Decayed) {}
+
+TemplateArgument::TemplateArgument() : Declaration(0) {}
+
+TemplateSpecializationType::TemplateSpecializationType()
+    : Type(TypeKind::TemplateSpecialization), Template(0), Desugared(0) {}
+
+TemplateParameterType::TemplateParameterType() : Type(TypeKind::TemplateParameter) {}
+
+TemplateParameterSubstitutionType::TemplateParameterSubstitutionType()
+    : Type(TypeKind::TemplateParameterSubstitution) {}
+
+InjectedClassNameType::InjectedClassNameType() : Type(TypeKind::InjectedClassName),
+    Class(0) {}
+
+DependentNameType::DependentNameType() : Type(TypeKind::DependentName) {}
+
+BuiltinType::BuiltinType() : CppSharp::CppParser::AST::Type(TypeKind::Builtin) {}
+
+RawComment::RawComment() : FullComment(0) {}
+
+VTableComponent::VTableComponent() : Offset(0), Declaration(0) {}
+
+ClassLayout::ClassLayout() : ABI(CppAbi::Itanium) {}
+
 Declaration::Declaration(DeclarationKind kind)
     : Kind(kind)
     , Access(AccessSpecifier::Public)
@@ -41,6 +83,9 @@ Declaration::Declaration(DeclarationKind kind)
     , OriginalPtr(0)
 {
 }
+
+DeclarationContext::DeclarationContext()
+    : Declaration(DeclarationKind::DeclarationContext) {}
 
 Declaration* DeclarationContext::FindAnonymous(uint64_t key)
 {
@@ -265,6 +310,56 @@ TypedefDecl* DeclarationContext::FindTypedef(const std::string& Name, bool Creat
 
     return tdef;
 }
+
+TypedefDecl::TypedefDecl() : Declaration(DeclarationKind::Typedef) {}
+
+Parameter::Parameter() : Declaration(DeclarationKind::Parameter),
+    IsIndirect(false), HasDefaultValue(false) {}
+
+Function::Function() : Declaration(DeclarationKind::Function),
+    IsReturnIndirect(false) {}
+
+Method::Method() : IsDefaultConstructor(false), IsCopyConstructor(false),
+    IsMoveConstructor(false) { Kind = DeclarationKind::Method; }
+
+Enumeration::Enumeration() : Declaration(DeclarationKind::Enumeration) {}
+
+Enumeration::Item::Item() : Declaration(DeclarationKind::EnumerationItem) {}
+
+Variable::Variable() : Declaration(DeclarationKind::Variable) {}
+
+BaseClassSpecifier::BaseClassSpecifier() : Type(0) {}
+
+Field::Field() : Declaration(DeclarationKind::Field), Class(0) {}
+
+AccessSpecifierDecl::AccessSpecifierDecl()
+    : Declaration(DeclarationKind::AccessSpecifier) {}
+
+Class::Class() { Kind = DeclarationKind::Class; }
+
+Template::Template() : Declaration(DeclarationKind::Template) {}
+
+ClassTemplate::ClassTemplate() { Kind = DeclarationKind::ClassTemplate; }
+
+ClassTemplateSpecialization::ClassTemplateSpecialization()
+    { Kind = DeclarationKind::ClassTemplateSpecialization; }
+
+ClassTemplatePartialSpecialization::ClassTemplatePartialSpecialization()
+    { Kind = DeclarationKind::ClassTemplatePartialSpecialization; }
+
+FunctionTemplate::FunctionTemplate() { Kind = DeclarationKind::FunctionTemplate; }
+
+Namespace::Namespace() { Kind = DeclarationKind::Namespace; }
+
+PreprocessedEntity::PreprocessedEntity()
+    : Declaration(DeclarationKind::PreprocessedEntity),
+      Location(MacroLocation::Unknown) {}
+
+MacroDefinition::MacroDefinition() { Kind = DeclarationKind::MacroDefinition; }
+
+MacroExpansion::MacroExpansion() { Kind = DeclarationKind::MacroExpansion; }
+
+TranslationUnit::TranslationUnit() { Kind = DeclarationKind::TranslationUnit; }
 
 ClassTemplateSpecialization* ClassTemplate::FindSpecialization(void* ptr)
 {

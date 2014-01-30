@@ -32,16 +32,7 @@ using namespace CppSharp::CppParser::AST;
 
 struct CS_API ParserOptions
 {
-    ParserOptions()
-        : ASTContext(0)
-        , ToolSetToUse(0)
-        , Abi(CppAbi::Itanium)
-        , NoStandardIncludes(false)
-        , NoBuiltinIncludes(false)
-        , MicrosoftMode(false)
-        , Verbose(false)
-    {
-    }
+    ParserOptions();
 
     // C/C++ header file name.
     STRING_OPTIONS(FileName)
@@ -91,6 +82,8 @@ enum struct ParserResultKind
 
 struct CS_API ParserResult
 {
+    ParserResult();
+
     ParserResultKind Kind;
     VECTOR_OPTIONS(ParserDiagnostic, Diagnostics)
 
