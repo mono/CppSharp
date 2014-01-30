@@ -59,7 +59,6 @@ protected:
 
     // AST traversers
     void WalkAST();
-    void WalkMacros(clang::PreprocessingRecord* PR);
     CppSharp::AST::Declaration^ WalkDeclaration(clang::Decl* D,
         bool IgnoreSystemDecls = true, bool CanBeDefinition = false);
     CppSharp::AST::Declaration^ WalkDeclarationDef(clang::Decl* D);
@@ -96,6 +95,7 @@ protected:
     std::string GetTypeName(const clang::Type* Type);
     void WalkFunction(clang::FunctionDecl* FD, CppSharp::AST::Function^ F,
         bool IsDependent = false);
+    void HandlePreprocessedEntities(CppSharp::AST::Declaration^ Decl);
     void HandlePreprocessedEntities(CppSharp::AST::Declaration^ Decl, clang::SourceRange sourceRange,
                                     CppSharp::AST::MacroLocation macroLocation = CppSharp::AST::MacroLocation::Unknown);
     bool GetDeclText(clang::SourceRange SR, std::string& Text);

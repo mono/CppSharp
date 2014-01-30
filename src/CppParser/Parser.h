@@ -97,6 +97,7 @@ protected:
     std::string GetTypeName(const clang::Type* Type);
     void WalkFunction(clang::FunctionDecl* FD, Function* F,
         bool IsDependent = false);
+    void HandlePreprocessedEntities(Declaration* Decl);
     void HandlePreprocessedEntities(Declaration* Decl, clang::SourceRange sourceRange,
                                     MacroLocation macroLocation = MacroLocation::Unknown);
     bool GetDeclText(clang::SourceRange SR, std::string& Text);

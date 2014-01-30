@@ -309,6 +309,9 @@ static clang::SourceLocation GetDeclStartLocation(clang::CompilerInstance* C,
     auto startLoc = SM.getExpansionLoc(D->getLocStart());
     auto startOffset = SM.getFileOffset(startLoc);
 
+    if (clang::dyn_cast_or_null<clang::TranslationUnitDecl>(D))
+        return startLoc;
+
     auto lineNo = SM.getExpansionLineNumber(startLoc);
     auto lineBeginLoc = SM.translateLineCol(SM.getFileID(startLoc), lineNo, 1);
     auto lineBeginOffset = SM.getFileOffset(lineBeginLoc);
@@ -1914,93 +1917,11 @@ bool Parser::IsValidDeclaration(const clang::SourceLocation& Loc)
 
 void Parser::WalkAST()
 {
-    using namespace clang;
-
-    if (C->hasPreprocessor())
-    {
-        Preprocessor& P = C->getPreprocessor();
-        PreprocessingRecord* PR = P.getPreprocessingRecord();
-
-        if (PR)
-        {
-          assert(PR && "Expected a valid preprocessing record");
-          WalkMacros(PR);
-        }
-    }
-
-    TranslationUnitDecl* TU = AST->getTranslationUnitDecl();
-
+    auto TU = AST->getTranslationUnitDecl();
     for(auto it = TU->decls_begin(); it != TU->decls_end(); ++it)
     {
-        Decl* D = (*it);
+        clang::Decl* D = (*it);
         WalkDeclarationDef(D);
-    }
-}
-
-//-----------------------------------//
-
-void Parser::WalkMacros(clang::PreprocessingRecord* PR)
-{
-    using namespace clang;
-
-    Preprocessor& P = C->getPreprocessor();
-
-    for(auto it = PR->begin(); it != PR->end(); ++it)
-    {
-        const clang::PreprocessedEntity* PE = (*it);
-
-        switch(PE->getKind())
-        {
-        case clang::PreprocessedEntity::MacroDefinitionKind:
-        {
-            auto MD = cast<clang::MacroDefinition>(PE);
-            
-            if (!IsValidDeclaration(MD->getLocation()))
-                break;
-
-            const IdentifierInfo* II = MD->getName();
-            assert(II && "Expected valid identifier info");
-
-            MacroInfo* MI = P.getMacroInfo((IdentifierInfo*)II);
-
-            if (!MI || MI->isBuiltinMacro() || MI->isFunctionLike())
-                continue;
-
-            SourceManager& SM = C->getSourceManager();
-            const LangOptions &LangOpts = C->getLangOpts();
-
-            auto Loc = MI->getDefinitionLoc();
-
-            if (!IsValidDeclaration(Loc))
-                break;
-
-            SourceLocation BeginExpr =
-                Lexer::getLocForEndOfToken(Loc, 0, SM, LangOpts);
-
-            auto Range = CharSourceRange::getTokenRange(
-                BeginExpr, MI->getDefinitionEndLoc());
-
-            bool Invalid;
-            StringRef Expression = Lexer::getSourceText(Range, SM, LangOpts,
-                &Invalid);
-
-            if (Invalid || Expression.empty())
-                break;
-
-            auto macro = new MacroDefinition();
-            macro->OriginalPtr = (void*) MD;
-
-            macro->Name = II->getName().trim();
-            macro->Expression = Expression.trim();
-
-            auto M = GetTranslationUnit(BeginExpr);
-            if( M != nullptr )
-                M->Macros.push_back(macro);
-
-            break;
-        }
-        default: break;
-        }
     }
 }
 
@@ -2054,6 +1975,8 @@ PreprocessedEntity* Parser::WalkPreprocessedEntity(
             return Entity;
     }
 
+    auto& P = C->getPreprocessor();
+
     PreprocessedEntity* Entity;
 
     switch(PPEntity->getKind())
@@ -2073,17 +1996,66 @@ PreprocessedEntity* Parser::WalkPreprocessedEntity(
     case clang::PreprocessedEntity::MacroDefinitionKind:
     {
         auto MD = cast<clang::MacroDefinition>(PPEntity);
-        Entity = new MacroDefinition();
-        break;
+
+        if (!IsValidDeclaration(MD->getLocation()))
+            break;
+
+        const IdentifierInfo* II = MD->getName();
+        assert(II && "Expected valid identifier info");
+
+        MacroInfo* MI = P.getMacroInfo((IdentifierInfo*)II);
+
+        if (!MI || MI->isBuiltinMacro() || MI->isFunctionLike())
+            break;
+
+        SourceManager& SM = C->getSourceManager();
+        const LangOptions &LangOpts = C->getLangOpts();
+
+        auto Loc = MI->getDefinitionLoc();
+
+        if (!IsValidDeclaration(Loc))
+            break;
+
+        SourceLocation BeginExpr =
+            Lexer::getLocForEndOfToken(Loc, 0, SM, LangOpts);
+
+        auto Range = CharSourceRange::getTokenRange(
+            BeginExpr, MI->getDefinitionEndLoc());
+
+        bool Invalid;
+        StringRef Expression = Lexer::getSourceText(Range, SM, LangOpts,
+            &Invalid);
+
+        if (Invalid || Expression.empty())
+            break;
+
+        auto Definition = new MacroDefinition();
+        Entity = Definition;
+
+        Definition->Name = II->getName().trim();
+        Definition->Expression = Expression.trim();
     }
-    default:
+    }
+
+    if (!Entity)
         return nullptr;
-    }
 
     Entity->OriginalPtr = PPEntity;
     Decl->PreprocessedEntities.push_back(Entity);
 
     return Entity;
+}
+
+void Parser::HandlePreprocessedEntities(Declaration* Decl)
+{
+    using namespace clang;
+    auto PPRecord = C->getPreprocessor().getPreprocessingRecord();
+
+    for (auto it = PPRecord->begin(); it != PPRecord->end(); ++it)
+    {
+        clang::PreprocessedEntity* PPEntity = (*it);
+        auto Entity = WalkPreprocessedEntity(Decl, PPEntity);
+    }
 }
 
 void Parser::HandlePreprocessedEntities(Declaration* Decl,
@@ -2139,13 +2111,20 @@ void Parser::HandleDeclaration(clang::Decl* D, Declaration* Decl)
 
     Decl->OriginalPtr = (void*) D;
 
-    if (Decl->PreprocessedEntities.empty())
+    if (!Decl->PreprocessedEntities.empty())
     {
-        auto startLoc = GetDeclStartLocation(C.get(), D);
-        auto endLoc = D->getLocEnd();
-        auto range = clang::SourceRange(startLoc, endLoc);
+        if (clang::dyn_cast<clang::TranslationUnitDecl>(D))
+        {
+            HandlePreprocessedEntities(Decl);
+        }
+        else
+        {
+            auto startLoc = GetDeclStartLocation(C.get(), D);
+            auto endLoc = D->getLocEnd();
+            auto range = clang::SourceRange(startLoc, endLoc);
 
-        HandlePreprocessedEntities(Decl, range);
+            HandlePreprocessedEntities(Decl, range);
+        }
     }
 
     HandleOriginalText(D, Decl);
@@ -2481,9 +2460,10 @@ ParserResult* Parser::ParseHeader(const std::string& File)
     const clang::DirectoryLookup *Dir;
     llvm::SmallVector<const clang::FileEntry*, 0> Includers;
 
-    if (!C->getPreprocessor().getHeaderSearchInfo().LookupFile(File,
+    auto FileEntry = C->getPreprocessor().getHeaderSearchInfo().LookupFile(File,
         clang::SourceLocation(), /*isAngled*/true,
-        nullptr, Dir, Includers, nullptr, nullptr, nullptr))
+        nullptr, Dir, Includers, nullptr, nullptr, nullptr);
+    if (!FileEntry)
     {
         res->Kind = ParserResultKind::FileNotFound;
         return res;
@@ -2515,6 +2495,11 @@ ParserResult* Parser::ParseHeader(const std::string& File)
     }
 
     AST = &C->getASTContext();
+
+    auto FileName = FileEntry->getName();
+    auto Unit = Lib->FindOrCreateModule(FileName);
+    auto TU = AST->getTranslationUnitDecl();
+    HandleDeclaration(TU, Unit);
 
     // Initialize enough Clang codegen machinery so we can get at ABI details.
     llvm::LLVMContext Ctx;
