@@ -21,11 +21,18 @@ project "CppSharp.Parser.CSharp"
 
   files
   {
-    "CSharp/**.cs",
     "**.lua"
   }
 
   links { "CppSharp.Runtime" }
+
+  configuration "macosx"
+      files { "CSharp/i686-apple-darwin12.4.0/**.cs" }
+
+  configuration "not macosx"
+      files { "CSharp/*.cs" }
+
+  configuration ""
 
 if string.starts(action, "vs") then
 
