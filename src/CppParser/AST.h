@@ -7,33 +7,7 @@
 
 #pragma once
 
-#include <cstdint>
-#include <vector>
-#include <map>
-#include <string>
-
-#define CS_FLAGS
-
-#if defined(_MSC_VER) && !defined(__clang__)
-#define CS_API __declspec(dllexport)
-#else
-#define CS_API 
-#endif
-
-#define VECTOR(type, name) \
-    std::vector<type> name; \
-    type get##name (unsigned i) { return name[i]; } \
-    unsigned get##name##Count () { return name.size(); }
-
-#define VECTOR_STRING(name) \
-    std::vector<std::string> name; \
-    const char* get##name (unsigned i) { return name[i].c_str(); } \
-    unsigned get##name##Count () { return name.size(); }
-
-#define STRING(name) \
-    std::string name; \
-    const char* get##name() { return name.c_str(); } \
-    void set##name(const char* s) { name = s; }
+#include "Helpers.h"
 
 namespace CppSharp { namespace CppParser { namespace AST {
 

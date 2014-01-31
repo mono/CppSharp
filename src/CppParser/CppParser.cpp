@@ -20,10 +20,24 @@ ParserOptions::ParserOptions()
 {
 }
 
+DEF_STRING(ParserOptions, FileName)
+DEF_VECTOR_STRING(ParserOptions, IncludeDirs)
+DEF_VECTOR_STRING(ParserOptions, SystemIncludeDirs)
+DEF_VECTOR_STRING(ParserOptions, Defines)
+DEF_VECTOR_STRING(ParserOptions, LibraryDirs)
+DEF_STRING(ParserOptions, TargetTriple)
+
 ParserResult::ParserResult()
     : ASTContext(0)
     , Library(0)
 {
 }
+
+DEF_STRING(ParserDiagnostic, FileName)
+DEF_STRING(ParserDiagnostic, Message)
+
+DEF_VECTOR(ParserResult, ParserDiagnostic, Diagnostics)
+
+
 
 } }

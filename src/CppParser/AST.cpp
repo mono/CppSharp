@@ -37,6 +37,7 @@ TagType::TagType() : Type(TypeKind::Tag) {}
 ArrayType::ArrayType() : Type(TypeKind::Array) {}
 
 FunctionType::FunctionType() : Type(TypeKind::Function) {}
+DEF_VECTOR(FunctionType, Parameter*, Parameters)
 
 PointerType::PointerType() : Type(TypeKind::Pointer) {}
 
@@ -52,6 +53,10 @@ TemplateArgument::TemplateArgument() : Declaration(0) {}
 
 TemplateSpecializationType::TemplateSpecializationType()
     : Type(TypeKind::TemplateSpecialization), Template(0), Desugared(0) {}
+DEF_VECTOR(TemplateSpecializationType, TemplateArgument, Arguments)
+
+// TemplateParameter
+DEF_STRING(TemplateParameter, Name)
 
 TemplateParameterType::TemplateParameterType() : Type(TypeKind::TemplateParameter) {}
 
@@ -65,11 +70,16 @@ DependentNameType::DependentNameType() : Type(TypeKind::DependentName) {}
 
 BuiltinType::BuiltinType() : CppSharp::CppParser::AST::Type(TypeKind::Builtin) {}
 
+// RawComment
+DEF_STRING(RawComment, Text)
+DEF_STRING(RawComment, BriefText)
+
 RawComment::RawComment() : FullComment(0) {}
 
 VTableComponent::VTableComponent() : Offset(0), Declaration(0) {}
 
 ClassLayout::ClassLayout() : ABI(CppAbi::Itanium) {}
+DEF_VECTOR(ClassLayout, VFTableInfo, VFTables)
 
 Declaration::Declaration(DeclarationKind kind)
     : Kind(kind)
@@ -84,8 +94,20 @@ Declaration::Declaration(DeclarationKind kind)
 {
 }
 
+DEF_STRING(Declaration, Name)
+DEF_STRING(Declaration, DebugText)
+DEF_VECTOR(Declaration, PreprocessedEntity*, PreprocessedEntities)
+
 DeclarationContext::DeclarationContext()
     : Declaration(DeclarationKind::DeclarationContext) {}
+
+DEF_VECTOR(DeclarationContext, Namespace*, Namespaces)
+DEF_VECTOR(DeclarationContext, Enumeration*, Enums)
+DEF_VECTOR(DeclarationContext, Function*, Functions)
+DEF_VECTOR(DeclarationContext, Class*, Classes)
+DEF_VECTOR(DeclarationContext, Template*, Templates)
+DEF_VECTOR(DeclarationContext, TypedefDecl*, Typedefs)
+DEF_VECTOR(DeclarationContext, Variable*, Variables)
 
 Declaration* DeclarationContext::FindAnonymous(uint64_t key)
 {
@@ -319,14 +341,24 @@ Parameter::Parameter() : Declaration(DeclarationKind::Parameter),
 Function::Function() : Declaration(DeclarationKind::Function),
     IsReturnIndirect(false) {}
 
+DEF_STRING(Function, Mangled)
+DEF_STRING(Function, Signature)
+DEF_VECTOR(Function, Parameter*, Parameters)
+
 Method::Method() : IsDefaultConstructor(false), IsCopyConstructor(false),
     IsMoveConstructor(false) { Kind = DeclarationKind::Method; }
 
 Enumeration::Enumeration() : Declaration(DeclarationKind::Enumeration) {}
 
+DEF_VECTOR(Enumeration, Enumeration::Item, Items)
+
 Enumeration::Item::Item() : Declaration(DeclarationKind::EnumerationItem) {}
 
+DEF_STRING(Enumeration::Item, Expression)
+
 Variable::Variable() : Declaration(DeclarationKind::Variable) {}
+
+DEF_STRING(Variable, Mangled)
 
 BaseClassSpecifier::BaseClassSpecifier() : Type(0) {}
 
@@ -337,12 +369,23 @@ AccessSpecifierDecl::AccessSpecifierDecl()
 
 Class::Class() { Kind = DeclarationKind::Class; }
 
+DEF_VECTOR(Class, BaseClassSpecifier*, Bases)
+DEF_VECTOR(Class, Field*, Fields)
+DEF_VECTOR(Class, Method*, Methods)
+DEF_VECTOR(Class, AccessSpecifierDecl*, Specifiers)
+
 Template::Template() : Declaration(DeclarationKind::Template) {}
+
+DEF_VECTOR(Template, TemplateParameter, Parameters)
 
 ClassTemplate::ClassTemplate() { Kind = DeclarationKind::ClassTemplate; }
 
-ClassTemplateSpecialization::ClassTemplateSpecialization()
+DEF_VECTOR(ClassTemplate, ClassTemplateSpecialization*, Specializations)
+
+ClassTemplateSpecialization::ClassTemplateSpecialization() : TemplatedDecl(0)
     { Kind = DeclarationKind::ClassTemplateSpecialization; }
+
+DEF_VECTOR(ClassTemplateSpecialization, TemplateArgument, Arguments)
 
 ClassTemplatePartialSpecialization::ClassTemplatePartialSpecialization()
     { Kind = DeclarationKind::ClassTemplatePartialSpecialization; }
@@ -357,9 +400,20 @@ PreprocessedEntity::PreprocessedEntity()
 
 MacroDefinition::MacroDefinition() { Kind = DeclarationKind::MacroDefinition; }
 
+DEF_STRING(MacroDefinition, Expression)
+
 MacroExpansion::MacroExpansion() { Kind = DeclarationKind::MacroExpansion; }
 
+DEF_STRING(MacroExpansion, Text)
+
 TranslationUnit::TranslationUnit() { Kind = DeclarationKind::TranslationUnit; }
+
+DEF_STRING(TranslationUnit, FileName)
+DEF_VECTOR(TranslationUnit, MacroDefinition*, Macros)
+
+// NativeLibrary
+DEF_STRING(NativeLibrary, FileName)
+DEF_VECTOR_STRING(NativeLibrary, Symbols)
 
 ClassTemplateSpecialization* ClassTemplate::FindSpecialization(void* ptr)
 {
