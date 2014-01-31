@@ -287,6 +287,7 @@ struct CS_API VTableComponent
 
 struct CS_API VTableLayout
 {
+    VTableLayout();
     VECTOR(VTableComponent, Components)
 };
 

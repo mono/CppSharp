@@ -78,6 +78,10 @@ RawComment::RawComment() : FullComment(0) {}
 
 VTableComponent::VTableComponent() : Offset(0), Declaration(0) {}
 
+// VTableLayout
+VTableLayout::VTableLayout() {}
+DEF_VECTOR(VTableLayout, VTableComponent, Components)
+
 ClassLayout::ClassLayout() : ABI(CppAbi::Itanium) {}
 DEF_VECTOR(ClassLayout, VFTableInfo, VFTables)
 
@@ -414,6 +418,9 @@ DEF_VECTOR(TranslationUnit, MacroDefinition*, Macros)
 // NativeLibrary
 DEF_STRING(NativeLibrary, FileName)
 DEF_VECTOR_STRING(NativeLibrary, Symbols)
+
+// ASTContext
+DEF_VECTOR(ASTContext, TranslationUnit*, TranslationUnits)
 
 ClassTemplateSpecialization* ClassTemplate::FindSpecialization(void* ptr)
 {
