@@ -2111,7 +2111,7 @@ void Parser::HandleDeclaration(clang::Decl* D, Declaration* Decl)
 
     Decl->OriginalPtr = (void*) D;
 
-    if (!Decl->PreprocessedEntities.empty())
+    if (Decl->PreprocessedEntities.empty())
     {
         if (clang::dyn_cast<clang::TranslationUnitDecl>(D))
         {

@@ -131,7 +131,7 @@ namespace CppSharp
 
             foreach (var unit in context.TranslationUnits)
             {
-                foreach (var macro in unit.Macros)
+                foreach (var macro in unit.PreprocessedEntities.OfType<MacroDefinition>())
                 {
                     var match = regex.Match(macro.Name);
                     if (!match.Success) continue;
