@@ -716,8 +716,8 @@ namespace CppSharp
         public override AST.Declaration VisitTypedef(TypedefDecl decl)
         {
             var _typedef = new AST.TypedefDecl();
-            _typedef.QualifiedType = typeConverter.VisitQualified(decl.QualifiedType);
             VisitDeclaration(decl, _typedef);
+            _typedef.QualifiedType = typeConverter.VisitQualified(decl.QualifiedType);
 
             return _typedef;
         }
