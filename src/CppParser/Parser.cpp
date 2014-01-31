@@ -1977,7 +1977,7 @@ PreprocessedEntity* Parser::WalkPreprocessedEntity(
 
     auto& P = C->getPreprocessor();
 
-    PreprocessedEntity* Entity;
+    PreprocessedEntity* Entity = 0;
 
     switch(PPEntity->getKind())
     {

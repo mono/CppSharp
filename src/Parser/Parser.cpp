@@ -2000,7 +2000,7 @@ CppSharp::AST::PreprocessedEntity^ Parser::WalkPreprocessedEntity(
 
     auto& P = C->getPreprocessor();
 
-    CppSharp::AST::PreprocessedEntity^ Entity;
+    CppSharp::AST::PreprocessedEntity^ Entity = nullptr;
 
     switch(PPEntity->getKind())
     {
