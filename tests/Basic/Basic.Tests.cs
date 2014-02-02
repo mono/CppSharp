@@ -88,7 +88,7 @@ public class BasicTests : GeneratorTestFixture
         Assert.That(result.C, Is.EqualTo(16));
     }
 
-    [Test, Ignore]
+    [Test]
     public void TestAbstractReturnType()
     {
         var returnsAbstractFoo = new ReturnsAbstractFoo();

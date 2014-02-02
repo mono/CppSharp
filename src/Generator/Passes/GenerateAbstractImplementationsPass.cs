@@ -58,31 +58,19 @@ namespace CppSharp.Passes
 
             var abstractMethods = GetRelevantAbstractMethods(@class);
 
-            foreach (var abstractMethod in abstractMethods)
-            {
-                var method = new Method(abstractMethod) { Namespace = internalImpl };
-                internalImpl.Methods.Add(method);
-
-                var @delegate = new TypedefDecl
-                                {
-                                    Name = ASTHelpers.GetDelegateName(abstractMethod),
-                                    QualifiedType = abstractMethod.GetFunctionType(),
-                                    IgnoreFlags = abstractMethod.IgnoreFlags,
-                                    Namespace = internalImpl,
-                                    Access = AccessSpecifier.Private
-                                };
-                internalImpl.Typedefs.Add(@delegate);
-            }
+            internalImpl.Methods.AddRange(
+                from method in abstractMethods
+                select new Method(method)
+                {
+                    Namespace = internalImpl,
+                    OriginalFunction = method,
+                    IsPure = false,
+                    IsOverride = true,
+                    IsSynthetized = true
+                });
 
             internalImpl.Layout = new ClassLayout(@class.Layout);
             FillVTable(@class, abstractMethods, internalImpl);
-
-            foreach (var method in internalImpl.Methods)
-            {
-                method.IsPure = false;
-                method.IsOverride = true;
-                method.IsSynthetized = true;
-            }
 
             return internalImpl;
         }
@@ -92,7 +80,7 @@ namespace CppSharp.Passes
             var internalImpl = new Class
                                 {
                                     Name = @class.Name + "Internal",
-                                    Access = @class.Access,
+                                    Access = AccessSpecifier.Private,
                                     Namespace = @class.Namespace
                                 };
 
@@ -187,7 +175,7 @@ namespace CppSharp.Passes
                 var j = vtableComponents.FindIndex(v => v.Method == abstractMethods[i]);
                 var vtableComponent = vtableComponents[j];
                 vtableComponent.Declaration = internalImplementation.Methods[i];
-                vtableComponents[j] = vtableComponents[j];
+                vtableComponents[j] = vtableComponent;
             }
 
             internalImplementation.Layout.Layout.Components.Clear();
