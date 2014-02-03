@@ -2580,7 +2580,8 @@ ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
     NativeLib->FileName = LibName;
 
     llvm::error_code ec;
-    for(auto it = Object.get()->begin_symbols(); it != Object.get()->end_symbols(); it.increment(ec))
+    for(auto it = Object.get()->begin_symbols(); it != Object.get()->end_symbols();
+        ++it)
     {
         llvm::StringRef SymRef;
 
@@ -2591,8 +2592,8 @@ ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
         NativeLib->Symbols->Add(SymName);
     }
 
-    for(auto it = Object.get()->begin_dynamic_symbols(); it != Object.get()->end_dynamic_symbols();
-        it.increment(ec))
+    for(auto it = Object.get()->begin_symbols(); it != Object.get()->end_symbols();
+        ++it)
     {
         llvm::StringRef SymRef;
 
