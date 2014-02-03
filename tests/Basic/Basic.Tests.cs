@@ -193,5 +193,19 @@ public class BasicTests : GeneratorTestFixture
     public void TestChar16()
     {
     }
+
+    [Test]
+    public void TestCopyConstructor()
+    {
+        Foo foo = new Foo { A = 5, B = 5.5f };
+        var copyFoo = new Foo(foo);
+        Assert.That(foo.A, Is.EqualTo(copyFoo.A));
+        Assert.That(foo.B, Is.EqualTo(copyFoo.B));
+
+        Bar bar = new Bar { A = 10, B = 5 };
+        var copyBar = new Bar(bar);
+        Assert.That(bar.A, Is.EqualTo(copyBar.A));
+        Assert.That(bar.B, Is.EqualTo(copyBar.B));
+    }
 }
  

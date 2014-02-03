@@ -27,6 +27,12 @@ Bar::Bar()
 {
 }
 
+Bar::Bar(const Bar& bar)
+{
+    A = bar.A;
+    B = bar.B;
+}
+
 Bar::Item Bar::RetItem1()
 {
     return Bar::Item1;

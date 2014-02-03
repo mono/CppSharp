@@ -2159,8 +2159,19 @@ namespace CppSharp.Generators.CSharp
             WriteLine("{0} = Marshal.AllocHGlobal({1});", Helpers.InstanceIdentifier,
                 @class.Layout.Size);
 
-            if (!method.IsDefaultConstructor || @class.HasNonTrivialDefaultConstructor)
-                GenerateInternalFunctionCall(method);
+            if (method.IsCopyConstructor)
+            {
+                if (@class.HasNonTrivialCopyConstructor)
+                    GenerateInternalFunctionCall(method);
+                else
+                    WriteLine("*(({0}.Internal*) __Instance) = *(({0}.Internal*) {1}.__Instance);",
+                        @class.Name, method.Parameters[0].Name);
+            }
+            else
+            {
+                if (!method.IsDefaultConstructor || @class.HasNonTrivialDefaultConstructor)
+                    GenerateInternalFunctionCall(method);
+            }
 
             GenerateVTableClassSetupCall(@class);
         }

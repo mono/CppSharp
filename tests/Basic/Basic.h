@@ -28,6 +28,7 @@ struct DLL_API Bar
     };
 
     Bar();
+    Bar(const Bar& bar);
     Item RetItem1();
     int A;
     float B;
