@@ -88,7 +88,10 @@ namespace CppSharp.AST
     public enum FunctionSynthKind
     {
         None,
-        NonMemberOperator
+        NonMemberOperator,
+        ComplementOperator,
+        AbstractImplCall,
+        DefaultValueOverload
     }
 
     public class Function : Declaration, ITypedDecl, IMangledDecl
@@ -109,7 +112,7 @@ namespace CppSharp.AST
             Parameters = new List<Parameter>();
             ReturnType = function.ReturnType;
             IsReturnIndirect = function.IsReturnIndirect;
-            Parameters.AddRange(function.Parameters);
+            Parameters.AddRange(function.Parameters.Select(p => new Parameter(p)));
             IsVariadic = function.IsVariadic;
             IsInline = function.IsInline;
             IsPure = function.IsPure;

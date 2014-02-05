@@ -63,6 +63,7 @@ protected:
         bool IgnoreSystemDecls = true, bool CanBeDefinition = false);
     Declaration* WalkDeclarationDef(clang::Decl* D);
     Enumeration* WalkEnum(clang::EnumDecl* ED);
+	Enumeration::Item* WalkEnumItem(clang::EnumConstantDecl* ECD);
     Function* WalkFunction(clang::FunctionDecl* FD, bool IsDependent = false,
         bool AddToNamespace = true);
     Class* GetRecord(clang::RecordDecl* Record, bool& IsComplete);

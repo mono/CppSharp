@@ -70,7 +70,7 @@ namespace CppSharp.Passes
                     OriginalFunction = method,
                     IsPure = false,
                     IsOverride = true,
-                    IsSynthetized = true
+                    SynthKind = FunctionSynthKind.AbstractImplCall
                 });
 
             internalImpl.Layout = new ClassLayout(@class.Layout);

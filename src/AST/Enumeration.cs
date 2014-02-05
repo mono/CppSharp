@@ -6,7 +6,7 @@ namespace CppSharp.AST
     /// <summary>
     /// Represents a C/C++ enumeration declaration.
     /// </summary>
-    public class Enumeration : Declaration
+    public class Enumeration : DeclarationContext
     {
         [Flags]
         public enum EnumModifiers

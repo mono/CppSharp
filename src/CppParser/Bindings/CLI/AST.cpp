@@ -1855,18 +1855,18 @@ void CppSharp::Parser::AST::Enumeration::Item::Value::set(unsigned long long val
 }
 
 CppSharp::Parser::AST::Enumeration::Enumeration(::CppSharp::CppParser::AST::Enumeration* native)
-    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)native)
+    : CppSharp::Parser::AST::DeclarationContext((::CppSharp::CppParser::AST::DeclarationContext*)native)
 {
 }
 
 CppSharp::Parser::AST::Enumeration::Enumeration(System::IntPtr native)
-    : CppSharp::Parser::AST::Declaration(native)
+    : CppSharp::Parser::AST::DeclarationContext(native)
 {
     auto __native = (::CppSharp::CppParser::AST::Enumeration*)native.ToPointer();
 }
 
 CppSharp::Parser::AST::Enumeration::Enumeration()
-    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)nullptr)
+    : CppSharp::Parser::AST::DeclarationContext((::CppSharp::CppParser::AST::DeclarationContext*)nullptr)
 {
     NativePtr = new ::CppSharp::CppParser::AST::Enumeration();
 }

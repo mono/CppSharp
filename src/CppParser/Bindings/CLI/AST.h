@@ -1325,7 +1325,7 @@ namespace CppSharp
                 }
             };
 
-            public ref class Enumeration : CppSharp::Parser::AST::Declaration
+            public ref class Enumeration : CppSharp::Parser::AST::DeclarationContext
             {
             public:
 

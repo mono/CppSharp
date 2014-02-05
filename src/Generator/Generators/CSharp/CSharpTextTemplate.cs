@@ -471,13 +471,14 @@ namespace CppSharp.Generators.CSharp
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
-        private ISet<Function> GatherClassInternalFunctions(Class @class)
+        private IEnumerable<Function> GatherClassInternalFunctions(Class @class)
         {
             var functions = new HashSet<Function>();
 
             Action<Method> tryAddOverload = method =>
             {
-                if (method.IsSynthetized)
+                if (method.SynthKind != FunctionSynthKind.NonMemberOperator &&
+                    method.SynthKind != FunctionSynthKind.None)
                     return;
 
                 if (method.IsProxy)
@@ -884,9 +885,9 @@ namespace CppSharp.Generators.CSharp
                 var method = function as Method;
                 if (method != null && method.OperatorKind == CXXOperatorKind.Subscript)
                 {
-                    if (method.IsOverride && method.IsSynthetized)
+                    if (method.SynthKind == FunctionSynthKind.AbstractImplCall)
                     {
-                        GenerateVirtualTableFunctionCall(method, @class);
+                        GenerateAbstractImplCall(method, @class);
                     }
                     else
                     {
@@ -1010,8 +1011,8 @@ namespace CppSharp.Generators.CSharp
                 NewLine();
                 WriteStartBraceIndent();
                 var method = function as Method;
-                if (method != null && method.IsOverride && method.IsSynthetized)
-                    GenerateVirtualTableFunctionCall(method, @class);
+                if (method != null && method.SynthKind == FunctionSynthKind.AbstractImplCall)
+                    GenerateAbstractImplCall(method, @class);
                 else
                     GenerateInternalFunctionCall(function, function.Parameters, returnType.Type);
             }
@@ -1886,7 +1887,7 @@ namespace CppSharp.Generators.CSharp
             var hasBaseClass = @class.HasBaseClass && @class.BaseClass.IsRefType;
             if (hasBaseClass)
                 WriteLineIndent(": base(native{0})",
-                    @class.Methods.Any(m => !m.IsPure && m.IsOverride && m.IsSynthetized) ?
+                    @class.Methods.Any(m => m.SynthKind == FunctionSynthKind.AbstractImplCall) ?
                         ", true" : string.Empty);
 
             WriteStartBraceIndent();
@@ -2043,9 +2044,9 @@ namespace CppSharp.Generators.CSharp
                 {
                     GenerateOperator(method, @class);
                 }
-                else if (method.IsOverride && method.IsSynthetized)
+                else if (method.SynthKind == FunctionSynthKind.AbstractImplCall)
                 {
-                    GenerateVirtualTableFunctionCall(method, @class);
+                    GenerateAbstractImplCall(method, @class);
                 }
                 else
                 {
@@ -2101,14 +2102,14 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
-        private void GenerateVirtualTableFunctionCall(Method method, Class @class)
+        private void GenerateAbstractImplCall(Method method, Class @class)
         {
             string delegateId;
-            Write(GetVirtualCallDelegate(method, @class, out delegateId));
+            Write(GetAbstractCallDelegate(method, @class, out delegateId));
             GenerateFunctionCall(delegateId, method.Parameters, method);
         }
 
-        public string GetVirtualCallDelegate(Method method, Class @class,
+        public string GetAbstractCallDelegate(Method method, Class @class,
             out string delegateId)
         {
             var virtualCallBuilder = new StringBuilder();
@@ -2129,7 +2130,7 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateOperator(Method method, Class @class)
         {
-            if (method.IsSynthetized)
+            if (method.SynthKind == FunctionSynthKind.ComplementOperator)
             {
                 if (method.Kind == CXXMethodKind.Conversion)
                 {
