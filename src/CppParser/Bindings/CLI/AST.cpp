@@ -1465,6 +1465,72 @@ void CppSharp::Parser::AST::TypedefDecl::QualifiedType::set(CppSharp::Parser::AS
     ((::CppSharp::CppParser::AST::TypedefDecl*)NativePtr)->QualifiedType = *(::CppSharp::CppParser::AST::QualifiedType*)value->NativePtr;
 }
 
+CppSharp::Parser::AST::Statement::Statement(::CppSharp::CppParser::AST::Statement* native)
+{
+    NativePtr = native;
+}
+
+CppSharp::Parser::AST::Statement::Statement(System::IntPtr native)
+{
+    auto __native = (::CppSharp::CppParser::AST::Statement*)native.ToPointer();
+    NativePtr = __native;
+}
+
+System::IntPtr CppSharp::Parser::AST::Statement::__Instance::get()
+{
+    return System::IntPtr(NativePtr);
+}
+
+void CppSharp::Parser::AST::Statement::__Instance::set(System::IntPtr object)
+{
+    NativePtr = (::CppSharp::CppParser::AST::Statement*)object.ToPointer();
+}
+
+System::String^ CppSharp::Parser::AST::Statement::String::get()
+{
+    auto __ret = ((::CppSharp::CppParser::AST::Statement*)NativePtr)->getString();
+    if (__ret == nullptr) return nullptr;
+    return clix::marshalString<clix::E_UTF8>(__ret);
+}
+
+void CppSharp::Parser::AST::Statement::String::set(System::String^ s)
+{
+    auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
+    auto arg0 = _arg0.c_str();
+    ((::CppSharp::CppParser::AST::Statement*)NativePtr)->setString(arg0);
+}
+
+CppSharp::Parser::AST::StatementClass CppSharp::Parser::AST::Statement::Class::get()
+{
+    return (CppSharp::Parser::AST::StatementClass)((::CppSharp::CppParser::AST::Statement*)NativePtr)->Class;
+}
+
+void CppSharp::Parser::AST::Statement::Class::set(CppSharp::Parser::AST::StatementClass value)
+{
+    ((::CppSharp::CppParser::AST::Statement*)NativePtr)->Class = (::CppSharp::CppParser::AST::StatementClass)value;
+}
+
+CppSharp::Parser::AST::Declaration^ CppSharp::Parser::AST::Statement::Decl::get()
+{
+    return (((::CppSharp::CppParser::AST::Statement*)NativePtr)->Decl == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)((::CppSharp::CppParser::AST::Statement*)NativePtr)->Decl);
+}
+
+void CppSharp::Parser::AST::Statement::Decl::set(CppSharp::Parser::AST::Declaration^ value)
+{
+    ((::CppSharp::CppParser::AST::Statement*)NativePtr)->Decl = (::CppSharp::CppParser::AST::Declaration*)value->NativePtr;
+}
+
+CppSharp::Parser::AST::Expression::Expression(::CppSharp::CppParser::AST::Expression* native)
+    : CppSharp::Parser::AST::Statement((::CppSharp::CppParser::AST::Statement*)native)
+{
+}
+
+CppSharp::Parser::AST::Expression::Expression(System::IntPtr native)
+    : CppSharp::Parser::AST::Statement(native)
+{
+    auto __native = (::CppSharp::CppParser::AST::Expression*)native.ToPointer();
+}
+
 CppSharp::Parser::AST::Parameter::Parameter(::CppSharp::CppParser::AST::Parameter* native)
     : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)native)
 {
@@ -1520,6 +1586,16 @@ unsigned int CppSharp::Parser::AST::Parameter::Index::get()
 void CppSharp::Parser::AST::Parameter::Index::set(unsigned int value)
 {
     ((::CppSharp::CppParser::AST::Parameter*)NativePtr)->Index = value;
+}
+
+CppSharp::Parser::AST::Expression^ CppSharp::Parser::AST::Parameter::DefaultArgument::get()
+{
+    return (((::CppSharp::CppParser::AST::Parameter*)NativePtr)->DefaultArgument == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::Expression((::CppSharp::CppParser::AST::Expression*)((::CppSharp::CppParser::AST::Parameter*)NativePtr)->DefaultArgument);
+}
+
+void CppSharp::Parser::AST::Parameter::DefaultArgument::set(CppSharp::Parser::AST::Expression^ value)
+{
+    ((::CppSharp::CppParser::AST::Parameter*)NativePtr)->DefaultArgument = (::CppSharp::CppParser::AST::Expression*)value->NativePtr;
 }
 
 CppSharp::Parser::AST::Function::Function(::CppSharp::CppParser::AST::Function* native)

@@ -67,6 +67,8 @@ namespace CppSharp.Tests
             // are not ambiguous with multiple inheritance pass enabled.
             driver.Options.GenerateConversionOperators = true;
             driver.TranslationUnitPasses.AddPass(new TestAttributesPass());
+            driver.Options.MarshalCharAsManagedChar = true;
+            driver.Options.GenerateDefaultValuesForArguments = true;
         }
 
         public override void Preprocess(Driver driver, ASTContext ctx)

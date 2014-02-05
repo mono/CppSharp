@@ -27,6 +27,11 @@ public:
 class DLL_API Bar : public Qux
 {
 public:
+    enum Items
+    {
+        Item1,
+        Item2
+    };
     Bar();
     int method();
     const Foo& operator[](int i) const;
@@ -164,4 +169,20 @@ class DLL_API TestRenaming
 public:
     void name();
     void Name();
+};
+
+struct DLL_API ValueType
+{
+};
+
+class DLL_API MethodsWithDefaultValues
+{
+public:
+    void DefaultPointer(Foo* ptr = 0);
+    void DefaultValueType(ValueType bar = ValueType());
+    void DefaultChar(char c = 'a');
+    void DefaultRefTypeBeforeOthers(Foo foo = Foo(), int i = 5, Bar::Items item = Bar::Item2);
+    void DefaultRefTypeAfterOthers(int i = 5, Bar::Items item = Bar::Item2, Foo foo = Foo());
+    void DefaultRefTypeBeforeAndAfterOthers(int i = 5, Foo foo = Foo(), Bar::Items item = Bar::Item2, Baz baz = Baz());
+    void DefaultIntAssignedAnEnum(int i = Bar::Item1);
 };

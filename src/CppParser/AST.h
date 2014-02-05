@@ -455,6 +455,28 @@ public:
     CppSharp::CppParser::AST::QualifiedType QualifiedType;
 };
 
+enum class StatementClass
+{
+    Any,
+    DeclRefExprClass,
+    CXXConstructExprClass
+};
+
+class CS_API Statement
+{
+public:
+    Statement(const std::string& str, StatementClass Class = StatementClass::Any, Declaration* decl = 0);
+    StatementClass Class;
+    Declaration* Decl;
+    STRING(String)
+};
+
+class CS_API Expression : public Statement
+{
+public:
+    Expression(const std::string& str, StatementClass Class = StatementClass::Any, Declaration* decl = 0);
+};
+
 class CS_API Parameter : public Declaration
 {
 public:
@@ -464,6 +486,7 @@ public:
     bool IsIndirect;
     bool HasDefaultValue;
     unsigned int Index;
+    Expression* DefaultArgument;
 };
 
 enum class CXXMethodKind

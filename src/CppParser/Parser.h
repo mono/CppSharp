@@ -93,6 +93,8 @@ protected:
     VTableComponent WalkVTableComponent(const clang::VTableComponent& Component);
     PreprocessedEntity* WalkPreprocessedEntity(Declaration* Decl,
         clang::PreprocessedEntity* PPEntity);
+    AST::Expression* WalkStatement(clang::Stmt* Statement);
+    std::string GetStringFromStatement(const clang::Stmt* Statement);
 
     // Clang helpers
     SourceLocationKind GetLocationKind(const clang::SourceLocation& Loc);
