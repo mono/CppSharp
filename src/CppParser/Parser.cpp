@@ -1712,7 +1712,7 @@ static const clang::CodeGen::CGFunctionInfo& GetCodeGenFuntionInfo(
     return CodeGenTypes->arrangeFunctionDeclaration(FD);
 }
 
-static bool CanCheckCodeGenInfo(const clang::Type* Ty)
+static bool CanCheckCodeGenInfo(const clang::Type* Ty, bool IsMicrosoftABI)
 {
     bool CheckCodeGenInfo = true;
 
@@ -1721,6 +1721,16 @@ static bool CanCheckCodeGenInfo(const clang::Type* Ty)
 
     if (auto RD = Ty->getAsCXXRecordDecl())
         CheckCodeGenInfo &= RD->hasDefinition();
+
+    // Lock in the MS inheritance model if we have a member pointer to a class,
+    // else we get an assertion error inside Clang's codegen machinery.
+    if (IsMicrosoftABI)
+    {
+        if (auto MPT = Ty->getAs<clang::MemberPointerType>())
+            if (auto RT = MPT->getClass())
+                if (auto RD = RT->getAsCXXRecordDecl())
+                    RD->setMSInheritanceModel();
+    }
 
     return CheckCodeGenInfo;
 }
@@ -1830,10 +1840,13 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, Function* F,
         ParamStartLoc = VD->getLocEnd();
     }
 
+    bool IsMicrosoftABI = C->getASTContext().getTargetInfo().getCXXABI().isMicrosoft();
     bool CheckCodeGenInfo = !FD->isDependentContext() && !FD->isInvalidDecl();
-    CheckCodeGenInfo &= CanCheckCodeGenInfo(FD->getReturnType().getTypePtr());
+    CheckCodeGenInfo &= CanCheckCodeGenInfo(FD->getReturnType().getTypePtr(),
+        IsMicrosoftABI);
     for (auto I = FD->param_begin(), E = FD->param_end(); I != E; ++I)
-        CheckCodeGenInfo &= CanCheckCodeGenInfo((*I)->getType().getTypePtr());
+        CheckCodeGenInfo &= CanCheckCodeGenInfo((*I)->getType().getTypePtr(),
+        IsMicrosoftABI);
 
     if (CheckCodeGenInfo)
     {
