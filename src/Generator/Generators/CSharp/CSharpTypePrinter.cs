@@ -54,6 +54,7 @@ namespace CppSharp.Generators.CSharp
     {
         public ASTContext AstContext { get; set; }
         private readonly ITypeMapDatabase TypeMapDatabase;
+        private readonly DriverOptions driverOptions;
 
         private readonly Stack<CSharpTypePrinterContextKind> contexts;
 
@@ -64,9 +65,10 @@ namespace CppSharp.Generators.CSharp
 
         public CSharpTypePrinterContext Context;
 
-        public CSharpTypePrinter(ITypeMapDatabase database, ASTContext context)
+        public CSharpTypePrinter(ITypeMapDatabase database, DriverOptions driverOptions, ASTContext context)
         {
             TypeMapDatabase = database;
+            this.driverOptions = driverOptions;
             AstContext = context;
 
             contexts = new Stack<CSharpTypePrinterContextKind>();
@@ -367,7 +369,7 @@ namespace CppSharp.Generators.CSharp
                 case PrimitiveType.Void: return "void";
                 case PrimitiveType.Char16:
                 case PrimitiveType.WideChar: return "char";
-                case PrimitiveType.Int8: return "sbyte";
+                case PrimitiveType.Int8: return driverOptions.MarshalCharAsManagedChar ? "char" : "sbyte";
                 case PrimitiveType.UInt8: return "byte";
                 case PrimitiveType.Int16: return "short";
                 case PrimitiveType.UInt16: return "ushort";

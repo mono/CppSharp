@@ -816,6 +816,8 @@ namespace CppSharp.Generators.CLI
 
         public void GenerateFunctionCall(Function function, Class @class = null)
         {
+            CheckArgumentRange(function);
+
             var retType = function.ReturnType;
             var needsReturn = !retType.Type.IsPrimitiveType(PrimitiveType.Void);
 
@@ -941,6 +943,21 @@ namespace CppSharp.Generators.CLI
                     Write(marshal.Context.SupportBefore);
 
                 WriteLine("return {0};", marshal.Context.Return);
+            }
+        }
+
+        private void CheckArgumentRange(Function method)
+        {
+            if (Driver.Options.MarshalCharAsManagedChar)
+            {
+                foreach (var param in method.Parameters.Where(
+                    p => p.Type.Desugar().IsPrimitiveType(PrimitiveType.Int8)))
+                {
+                    WriteLine("if ({0} < System::Char::MinValue || {0} > System::SByte::MaxValue)", param.Name);
+                    WriteLineIndent(
+                        "throw gcnew System::ArgumentException(\"{0} must be in the range {1} - {2}.\");",
+                        param.Name, (int) char.MinValue, sbyte.MaxValue);
+                }
             }
         }
 
