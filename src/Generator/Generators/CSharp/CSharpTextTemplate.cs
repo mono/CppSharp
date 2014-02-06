@@ -61,10 +61,7 @@ namespace CppSharp.Generators.CSharp
             return "Winapi";
         }
 
-        public static string InstanceIdentifier
-        {
-            get { return Generator.GeneratedIdentifier("Instance"); }
-        }
+        public const string InstanceIdentifier = "__Instance";
 
         public static string GetAccess(AccessSpecifier accessSpecifier)
         {
