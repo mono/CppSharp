@@ -307,6 +307,11 @@ CppSharp::Parser::ParserResult::ParserResult(System::IntPtr native)
     NativePtr = __native;
 }
 
+CppSharp::Parser::ParserResult::ParserResult()
+{
+    NativePtr = new ::CppSharp::CppParser::ParserResult();
+}
+
 CppSharp::Parser::ParserDiagnostic^ CppSharp::Parser::ParserResult::getDiagnostics(unsigned int i)
 {
     auto __ret = ((::CppSharp::CppParser::ParserResult*)NativePtr)->getDiagnostics(i);
@@ -318,11 +323,6 @@ void CppSharp::Parser::ParserResult::addDiagnostics(CppSharp::Parser::ParserDiag
 {
     auto &arg0 = *(::CppSharp::CppParser::ParserDiagnostic*)s->NativePtr;
     ((::CppSharp::CppParser::ParserResult*)NativePtr)->addDiagnostics(arg0);
-}
-
-CppSharp::Parser::ParserResult::ParserResult()
-{
-    NativePtr = new ::CppSharp::CppParser::ParserResult();
 }
 
 System::IntPtr CppSharp::Parser::ParserResult::__Instance::get()

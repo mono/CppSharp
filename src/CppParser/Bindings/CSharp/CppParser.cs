@@ -35,7 +35,7 @@ namespace CppSharp
             User = 4
         }
 
-        public unsafe partial class ParserOptions : IDisposable, CppSharp.Runtime.ICppMarshal
+        public unsafe partial class ParserOptions : IDisposable
         {
             [StructLayout(LayoutKind.Explicit, Size = 112)]
             public struct Internal
@@ -158,19 +158,6 @@ namespace CppSharp
             }
 
             public global::System.IntPtr __Instance { get; protected set; }
-
-            int CppSharp.Runtime.ICppMarshal.NativeDataSize
-            {
-                get { return 112; }
-            }
-
-            void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-            {
-            }
-
-            void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-            {
-            }
 
             internal ParserOptions(ParserOptions.Internal* native)
                 : this(new global::System.IntPtr(native))
@@ -438,7 +425,7 @@ namespace CppSharp
             }
         }
 
-        public unsafe partial class ParserDiagnostic : IDisposable, CppSharp.Runtime.ICppMarshal
+        public unsafe partial class ParserDiagnostic : IDisposable
         {
             [StructLayout(LayoutKind.Explicit, Size = 60)]
             public struct Internal
@@ -489,19 +476,6 @@ namespace CppSharp
             }
 
             public global::System.IntPtr __Instance { get; protected set; }
-
-            int CppSharp.Runtime.ICppMarshal.NativeDataSize
-            {
-                get { return 60; }
-            }
-
-            void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-            {
-            }
-
-            void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-            {
-            }
 
             internal ParserDiagnostic(ParserDiagnostic.Internal* native)
                 : this(new global::System.IntPtr(native))
@@ -616,7 +590,7 @@ namespace CppSharp
             }
         }
 
-        public unsafe partial class ParserResult : IDisposable, CppSharp.Runtime.ICppMarshal
+        public unsafe partial class ParserResult : IDisposable
         {
             [StructLayout(LayoutKind.Explicit, Size = 24)]
             public struct Internal
@@ -633,7 +607,7 @@ namespace CppSharp
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                     EntryPoint="??0ParserResult@CppParser@CppSharp@@QAE@XZ")]
-                internal static extern global::System.IntPtr ctor_1(global::System.IntPtr instance);
+                internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -652,7 +626,7 @@ namespace CppSharp
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                    EntryPoint="?addDiagnostics@ParserResult@CppParser@CppSharp@@QAEXABUParserDiagnostic@23@@Z")]
+                    EntryPoint="?addDiagnostics@ParserResult@CppParser@CppSharp@@QAEXAAUParserDiagnostic@23@@Z")]
                 internal static extern void addDiagnostics_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                 [SuppressUnmanagedCodeSecurity]
@@ -662,19 +636,6 @@ namespace CppSharp
             }
 
             public global::System.IntPtr __Instance { get; protected set; }
-
-            int CppSharp.Runtime.ICppMarshal.NativeDataSize
-            {
-                get { return 24; }
-            }
-
-            void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-            {
-            }
-
-            void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-            {
-            }
 
             internal ParserResult(ParserResult.Internal* native)
                 : this(new global::System.IntPtr(native))
@@ -694,7 +655,7 @@ namespace CppSharp
             public ParserResult()
             {
                 __Instance = Marshal.AllocHGlobal(24);
-                Internal.ctor_1(__Instance);
+                Internal.ctor_0(__Instance);
             }
 
             public void Dispose()
@@ -781,7 +742,7 @@ namespace CppSharp
             }
         }
 
-        public unsafe partial class ClangParser : IDisposable, CppSharp.Runtime.ICppMarshal
+        public unsafe partial class ClangParser : IDisposable
         {
             [StructLayout(LayoutKind.Explicit, Size = 1)]
             public struct Internal
@@ -803,19 +764,6 @@ namespace CppSharp
             }
 
             public global::System.IntPtr __Instance { get; protected set; }
-
-            int CppSharp.Runtime.ICppMarshal.NativeDataSize
-            {
-                get { return 0; }
-            }
-
-            void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-            {
-            }
-
-            void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-            {
-            }
 
             internal ClangParser(ClangParser.Internal* native)
                 : this(new global::System.IntPtr(native))

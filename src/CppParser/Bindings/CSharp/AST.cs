@@ -201,7 +201,7 @@ namespace CppSharp
                 ExplicitInstantiationDefinition = 4
             }
 
-            public unsafe partial class Type : IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class Type : IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 8)]
                 public struct Internal
@@ -224,19 +224,6 @@ namespace CppSharp
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
-
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 8; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
-                }
 
                 internal Type(Type.Internal* native)
                     : this(new global::System.IntPtr(native))
@@ -302,7 +289,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class TypeQualifiers : IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class TypeQualifiers : IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 3)]
                 public struct Internal
@@ -319,23 +306,10 @@ namespace CppSharp
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="??0TypeQualifiers@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr ctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
+                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
-
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 3; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
-                }
 
                 internal TypeQualifiers(TypeQualifiers.Internal* native)
                     : this(new global::System.IntPtr(native))
@@ -414,7 +388,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class QualifiedType : IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class QualifiedType : IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 8)]
                 public struct Internal
@@ -437,19 +411,6 @@ namespace CppSharp
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
-
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 8; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
-                }
 
                 internal QualifiedType(QualifiedType.Internal* native)
                     : this(new global::System.IntPtr(native))
@@ -518,7 +479,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class TagType : CppSharp.Parser.AST.Type, IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class TagType : CppSharp.Parser.AST.Type, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 12)]
                 public new struct Internal
@@ -535,19 +496,6 @@ namespace CppSharp
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="??0TagType@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
                     internal static extern global::System.IntPtr ctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
-                }
-
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 12; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
                 }
 
                 internal TagType(TagType.Internal* native)
@@ -594,7 +542,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class ArrayType : CppSharp.Parser.AST.Type, IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class ArrayType : CppSharp.Parser.AST.Type, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 24)]
                 public new struct Internal
@@ -625,19 +573,6 @@ namespace CppSharp
                     Variable = 1,
                     Dependent = 2,
                     Incomplete = 3
-                }
-
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 24; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
                 }
 
                 internal ArrayType(ArrayType.Internal* native)
@@ -716,7 +651,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class FunctionType : CppSharp.Parser.AST.Type, IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class FunctionType : CppSharp.Parser.AST.Type, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 32)]
                 public new struct Internal
@@ -749,21 +684,13 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                        EntryPoint="?addParameters@FunctionType@AST@CppParser@CppSharp@@QAEXAAPAUParameter@234@@Z")]
+                    internal static extern void addParameters_0(global::System.IntPtr instance, global::System.IntPtr s);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="?getParametersCount@FunctionType@AST@CppParser@CppSharp@@QAEIXZ")]
                     internal static extern uint getParametersCount_0(global::System.IntPtr instance);
-                }
-
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 32; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
                 }
 
                 internal FunctionType(FunctionType.Internal* native)
@@ -798,6 +725,12 @@ namespace CppSharp
                     var __ret = Internal.getParameters_0(__Instance, i);
                     if (__ret == global::System.IntPtr.Zero) return null;
                     return new CppSharp.Parser.AST.Parameter(__ret);
+                }
+
+                public void addParameters(CppSharp.Parser.AST.Parameter s)
+                {
+                    var arg0 = s == (CppSharp.Parser.AST.Parameter) null ? global::System.IntPtr.Zero : s.__Instance;
+                    Internal.addParameters_0(__Instance, arg0);
                 }
 
                 public uint ParametersCount
@@ -843,7 +776,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class PointerType : CppSharp.Parser.AST.Type, IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class PointerType : CppSharp.Parser.AST.Type, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 20)]
                 public new struct Internal
@@ -871,19 +804,6 @@ namespace CppSharp
                     Pointer = 1,
                     LVReference = 2,
                     RVReference = 3
-                }
-
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 20; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
                 }
 
                 internal PointerType(PointerType.Internal* native)
@@ -947,7 +867,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class MemberPointerType : CppSharp.Parser.AST.Type, IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class MemberPointerType : CppSharp.Parser.AST.Type, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 16)]
                 public new struct Internal
@@ -964,19 +884,6 @@ namespace CppSharp
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="??0MemberPointerType@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
                     internal static extern global::System.IntPtr ctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
-                }
-
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 16; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
                 }
 
                 internal MemberPointerType(MemberPointerType.Internal* native)
@@ -1025,7 +932,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class TypedefType : CppSharp.Parser.AST.Type, IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class TypedefType : CppSharp.Parser.AST.Type, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 12)]
                 public new struct Internal
@@ -1042,19 +949,6 @@ namespace CppSharp
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="??0TypedefType@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
                     internal static extern global::System.IntPtr ctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
-                }
-
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 12; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
                 }
 
                 internal TypedefType(TypedefType.Internal* native)
@@ -1101,7 +995,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class AttributedType : CppSharp.Parser.AST.Type, IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class AttributedType : CppSharp.Parser.AST.Type, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 24)]
                 public new struct Internal
@@ -1121,19 +1015,6 @@ namespace CppSharp
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="??0AttributedType@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
                     internal static extern global::System.IntPtr ctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
-                }
-
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 24; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
                 }
 
                 internal AttributedType(AttributedType.Internal* native)
@@ -1200,7 +1081,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class DecayedType : CppSharp.Parser.AST.Type, IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class DecayedType : CppSharp.Parser.AST.Type, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 32)]
                 public new struct Internal
@@ -1223,19 +1104,6 @@ namespace CppSharp
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="??0DecayedType@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
                     internal static extern global::System.IntPtr ctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
-                }
-
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 32; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
                 }
 
                 internal DecayedType(DecayedType.Internal* native)
@@ -1320,7 +1188,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class TemplateArgument : IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class TemplateArgument : IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 20)]
                 public struct Internal
@@ -1361,19 +1229,6 @@ namespace CppSharp
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
-
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 20; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
-                }
 
                 internal TemplateArgument(TemplateArgument.Internal* native)
                     : this(new global::System.IntPtr(native))
@@ -1472,7 +1327,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class TemplateSpecializationType : CppSharp.Parser.AST.Type, IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class TemplateSpecializationType : CppSharp.Parser.AST.Type, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 28)]
                 public new struct Internal
@@ -1505,21 +1360,13 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                        EntryPoint="?addArguments@TemplateSpecializationType@AST@CppParser@CppSharp@@QAEXAAUTemplateArgument@234@@Z")]
+                    internal static extern void addArguments_0(global::System.IntPtr instance, global::System.IntPtr s);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="?getArgumentsCount@TemplateSpecializationType@AST@CppParser@CppSharp@@QAEIXZ")]
                     internal static extern uint getArgumentsCount_0(global::System.IntPtr instance);
-                }
-
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 28; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
                 }
 
                 internal TemplateSpecializationType(TemplateSpecializationType.Internal* native)
@@ -1556,6 +1403,12 @@ namespace CppSharp
                     var __instance = Marshal.AllocHGlobal(20);
                     CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ret), new UIntPtr(20));
                     return new CppSharp.Parser.AST.TemplateArgument(__instance);
+                }
+
+                public void addArguments(CppSharp.Parser.AST.TemplateArgument s)
+                {
+                    var arg0 = s == (CppSharp.Parser.AST.TemplateArgument) null ? global::System.IntPtr.Zero : s.__Instance;
+                    Internal.addArguments_0(__Instance, arg0);
                 }
 
                 public uint ArgumentsCount
@@ -1600,7 +1453,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class TemplateParameter : IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class TemplateParameter : IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 24)]
                 public struct Internal
@@ -1638,19 +1491,6 @@ namespace CppSharp
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
-
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 24; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
-                }
 
                 internal TemplateParameter(TemplateParameter.Internal* native)
                     : this(new global::System.IntPtr(native))
@@ -1716,7 +1556,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class TemplateParameterType : CppSharp.Parser.AST.Type, IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class TemplateParameterType : CppSharp.Parser.AST.Type, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 32)]
                 public new struct Internal
@@ -1738,19 +1578,6 @@ namespace CppSharp
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="??1TemplateParameterType@AST@CppParser@CppSharp@@QAE@XZ")]
                     internal static extern void dtor_0(global::System.IntPtr instance);
-                }
-
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 32; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
                 }
 
                 internal TemplateParameterType(TemplateParameterType.Internal* native)
@@ -1799,7 +1626,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class TemplateParameterSubstitutionType : CppSharp.Parser.AST.Type, IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class TemplateParameterSubstitutionType : CppSharp.Parser.AST.Type, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 16)]
                 public new struct Internal
@@ -1816,19 +1643,6 @@ namespace CppSharp
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="??0TemplateParameterSubstitutionType@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
                     internal static extern global::System.IntPtr ctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
-                }
-
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 16; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
                 }
 
                 internal TemplateParameterSubstitutionType(TemplateParameterSubstitutionType.Internal* native)
@@ -1877,7 +1691,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class InjectedClassNameType : CppSharp.Parser.AST.Type, IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class InjectedClassNameType : CppSharp.Parser.AST.Type, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 40)]
                 public new struct Internal
@@ -1902,19 +1716,6 @@ namespace CppSharp
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="??1InjectedClassNameType@AST@CppParser@CppSharp@@QAE@XZ")]
                     internal static extern void dtor_0(global::System.IntPtr instance);
-                }
-
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 40; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
                 }
 
                 internal InjectedClassNameType(InjectedClassNameType.Internal* native)
@@ -1979,7 +1780,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class DependentNameType : CppSharp.Parser.AST.Type, IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class DependentNameType : CppSharp.Parser.AST.Type, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 8)]
                 public new struct Internal
@@ -1993,19 +1794,6 @@ namespace CppSharp
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="??0DependentNameType@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
                     internal static extern global::System.IntPtr ctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
-                }
-
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 8; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
                 }
 
                 internal DependentNameType(DependentNameType.Internal* native)
@@ -2036,7 +1824,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class BuiltinType : CppSharp.Parser.AST.Type, IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class BuiltinType : CppSharp.Parser.AST.Type, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 12)]
                 public new struct Internal
@@ -2053,19 +1841,6 @@ namespace CppSharp
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="??0BuiltinType@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
                     internal static extern global::System.IntPtr ctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
-                }
-
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 12; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
                 }
 
                 internal BuiltinType(BuiltinType.Internal* native)
@@ -2111,7 +1886,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class RawComment : IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class RawComment : IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 56)]
                 public struct Internal
@@ -2122,7 +1897,7 @@ namespace CppSharp
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="??0RawComment@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_1(global::System.IntPtr instance);
+                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -2157,19 +1932,6 @@ namespace CppSharp
 
                 public global::System.IntPtr __Instance { get; protected set; }
 
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 56; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
-                }
-
                 internal RawComment(RawComment.Internal* native)
                     : this(new global::System.IntPtr(native))
                 {
@@ -2188,7 +1950,7 @@ namespace CppSharp
                 public RawComment()
                 {
                     __Instance = Marshal.AllocHGlobal(56);
-                    Internal.ctor_1(__Instance);
+                    Internal.ctor_0(__Instance);
                 }
 
                 public void Dispose()
@@ -2253,7 +2015,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class VTableComponent : IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class VTableComponent : IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 12)]
                 public struct Internal
@@ -2279,19 +2041,6 @@ namespace CppSharp
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
-
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 12; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
-                }
 
                 internal VTableComponent(VTableComponent.Internal* native)
                     : this(new global::System.IntPtr(native))
@@ -2372,20 +2121,20 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class VTableLayout : IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class VTableLayout : IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 12)]
                 public struct Internal
                 {
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0VTableLayout@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr ctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
+                        EntryPoint="??0VTableLayout@AST@CppParser@CppSharp@@QAE@XZ")]
+                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0VTableLayout@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_2(global::System.IntPtr instance);
+                        EntryPoint="??0VTableLayout@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
+                    internal static extern global::System.IntPtr ctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -2399,24 +2148,16 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                        EntryPoint="?addComponents@VTableLayout@AST@CppParser@CppSharp@@QAEXAAUVTableComponent@234@@Z")]
+                    internal static extern void addComponents_0(global::System.IntPtr instance, global::System.IntPtr s);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="?getComponentsCount@VTableLayout@AST@CppParser@CppSharp@@QAEIXZ")]
                     internal static extern uint getComponentsCount_0(global::System.IntPtr instance);
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
-
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 12; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
-                }
 
                 internal VTableLayout(VTableLayout.Internal* native)
                     : this(new global::System.IntPtr(native))
@@ -2436,7 +2177,7 @@ namespace CppSharp
                 public VTableLayout()
                 {
                     __Instance = Marshal.AllocHGlobal(12);
-                    Internal.ctor_2(__Instance);
+                    Internal.ctor_0(__Instance);
                 }
 
                 public void Dispose()
@@ -2460,6 +2201,12 @@ namespace CppSharp
                     return new CppSharp.Parser.AST.VTableComponent(__instance);
                 }
 
+                public void addComponents(CppSharp.Parser.AST.VTableComponent s)
+                {
+                    var arg0 = s == (CppSharp.Parser.AST.VTableComponent) null ? global::System.IntPtr.Zero : s.__Instance;
+                    Internal.addComponents_0(__Instance, arg0);
+                }
+
                 public uint ComponentsCount
                 {
                     get
@@ -2470,7 +2217,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class VFTableInfo : IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class VFTableInfo : IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 32)]
                 public struct Internal
@@ -2504,19 +2251,6 @@ namespace CppSharp
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
-
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 32; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
-                }
 
                 internal VFTableInfo(VFTableInfo.Internal* native)
                     : this(new global::System.IntPtr(native))
@@ -2603,7 +2337,7 @@ namespace CppSharp
                         var __ptr = (Internal*)__Instance.ToPointer();
                         var __copy = new global::System.IntPtr(&__ptr->Layout);
                         var __instance = Marshal.AllocHGlobal(12);
-                        CppSharp.Parser.AST.VTableLayout.Internal.ctor_1(__instance, new global::System.IntPtr(&__copy));
+                        CppSharp.Parser.AST.VTableLayout.Internal.ctor_2(__instance, new global::System.IntPtr(&__copy));
                         return new CppSharp.Parser.AST.VTableLayout(__instance);
                     }
 
@@ -2615,7 +2349,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class ClassLayout : IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class ClassLayout : IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 48)]
                 public struct Internal
@@ -2663,24 +2397,16 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                        EntryPoint="?addVFTables@ClassLayout@AST@CppParser@CppSharp@@QAEXAAUVFTableInfo@234@@Z")]
+                    internal static extern void addVFTables_0(global::System.IntPtr instance, global::System.IntPtr s);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="?getVFTablesCount@ClassLayout@AST@CppParser@CppSharp@@QAEIXZ")]
                     internal static extern uint getVFTablesCount_0(global::System.IntPtr instance);
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
-
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 48; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
-                }
 
                 internal ClassLayout(ClassLayout.Internal* native)
                     : this(new global::System.IntPtr(native))
@@ -2724,6 +2450,12 @@ namespace CppSharp
                     return new CppSharp.Parser.AST.VFTableInfo(__instance);
                 }
 
+                public void addVFTables(CppSharp.Parser.AST.VFTableInfo s)
+                {
+                    var arg0 = s == (CppSharp.Parser.AST.VFTableInfo) null ? global::System.IntPtr.Zero : s.__Instance;
+                    Internal.addVFTables_0(__Instance, arg0);
+                }
+
                 public uint VFTablesCount
                 {
                     get
@@ -2755,7 +2487,7 @@ namespace CppSharp
                         var __ptr = (Internal*)__Instance.ToPointer();
                         var __copy = new global::System.IntPtr(&__ptr->Layout);
                         var __instance = Marshal.AllocHGlobal(12);
-                        CppSharp.Parser.AST.VTableLayout.Internal.ctor_1(__instance, new global::System.IntPtr(&__copy));
+                        CppSharp.Parser.AST.VTableLayout.Internal.ctor_2(__instance, new global::System.IntPtr(&__copy));
                         return new CppSharp.Parser.AST.VTableLayout(__instance);
                     }
 
@@ -2842,7 +2574,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class Declaration : IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class Declaration : IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 92)]
                 public struct Internal
@@ -2896,6 +2628,11 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                        EntryPoint="?addPreprocessedEntities@Declaration@AST@CppParser@CppSharp@@QAEXAAPAUPreprocessedEntity@234@@Z")]
+                    internal static extern void addPreprocessedEntities_0(global::System.IntPtr instance, global::System.IntPtr s);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="?getName@Declaration@AST@CppParser@CppSharp@@QAEPBDXZ")]
                     internal static extern global::System.IntPtr getName_0(global::System.IntPtr instance);
 
@@ -2921,19 +2658,6 @@ namespace CppSharp
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
-
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 92; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
-                }
 
                 internal Declaration(Declaration.Internal* native)
                     : this(new global::System.IntPtr(native))
@@ -2974,6 +2698,12 @@ namespace CppSharp
                     var __ret = Internal.getPreprocessedEntities_0(__Instance, i);
                     if (__ret == global::System.IntPtr.Zero) return null;
                     return new CppSharp.Parser.AST.PreprocessedEntity(__ret);
+                }
+
+                public void addPreprocessedEntities(CppSharp.Parser.AST.PreprocessedEntity s)
+                {
+                    var arg0 = s == (CppSharp.Parser.AST.PreprocessedEntity) null ? global::System.IntPtr.Zero : s.__Instance;
+                    Internal.addPreprocessedEntities_0(__Instance, arg0);
                 }
 
                 public string Name
@@ -3158,7 +2888,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class DeclarationContext : CppSharp.Parser.AST.Declaration, IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class DeclarationContext : CppSharp.Parser.AST.Declaration, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 184)]
                 public new struct Internal
@@ -3245,8 +2975,18 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                        EntryPoint="?addNamespaces@DeclarationContext@AST@CppParser@CppSharp@@QAEXAAPAUNamespace@234@@Z")]
+                    internal static extern void addNamespaces_0(global::System.IntPtr instance, global::System.IntPtr s);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="?getEnums@DeclarationContext@AST@CppParser@CppSharp@@QAEPAUEnumeration@234@I@Z")]
                     internal static extern global::System.IntPtr getEnums_0(global::System.IntPtr instance, uint i);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                        EntryPoint="?addEnums@DeclarationContext@AST@CppParser@CppSharp@@QAEXAAPAUEnumeration@234@@Z")]
+                    internal static extern void addEnums_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -3255,8 +2995,18 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                        EntryPoint="?addFunctions@DeclarationContext@AST@CppParser@CppSharp@@QAEXAAPAUFunction@234@@Z")]
+                    internal static extern void addFunctions_0(global::System.IntPtr instance, global::System.IntPtr s);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="?getClasses@DeclarationContext@AST@CppParser@CppSharp@@QAEPAUClass@234@I@Z")]
                     internal static extern global::System.IntPtr getClasses_0(global::System.IntPtr instance, uint i);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                        EntryPoint="?addClasses@DeclarationContext@AST@CppParser@CppSharp@@QAEXAAPAUClass@234@@Z")]
+                    internal static extern void addClasses_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -3265,13 +3015,28 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                        EntryPoint="?addTemplates@DeclarationContext@AST@CppParser@CppSharp@@QAEXAAPAUTemplate@234@@Z")]
+                    internal static extern void addTemplates_0(global::System.IntPtr instance, global::System.IntPtr s);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="?getTypedefs@DeclarationContext@AST@CppParser@CppSharp@@QAEPAUTypedefDecl@234@I@Z")]
                     internal static extern global::System.IntPtr getTypedefs_0(global::System.IntPtr instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                        EntryPoint="?addTypedefs@DeclarationContext@AST@CppParser@CppSharp@@QAEXAAPAUTypedefDecl@234@@Z")]
+                    internal static extern void addTypedefs_0(global::System.IntPtr instance, global::System.IntPtr s);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="?getVariables@DeclarationContext@AST@CppParser@CppSharp@@QAEPAUVariable@234@I@Z")]
                     internal static extern global::System.IntPtr getVariables_0(global::System.IntPtr instance, uint i);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                        EntryPoint="?addVariables@DeclarationContext@AST@CppParser@CppSharp@@QAEXAAPAUVariable@234@@Z")]
+                    internal static extern void addVariables_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -3307,19 +3072,6 @@ namespace CppSharp
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="?getVariablesCount@DeclarationContext@AST@CppParser@CppSharp@@QAEIXZ")]
                     internal static extern uint getVariablesCount_0(global::System.IntPtr instance);
-                }
-
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 184; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
                 }
 
                 internal DeclarationContext(DeclarationContext.Internal* native)
@@ -3453,11 +3205,23 @@ namespace CppSharp
                     return new CppSharp.Parser.AST.Namespace(__ret);
                 }
 
+                public void addNamespaces(CppSharp.Parser.AST.Namespace s)
+                {
+                    var arg0 = s == (CppSharp.Parser.AST.Namespace) null ? global::System.IntPtr.Zero : s.__Instance;
+                    Internal.addNamespaces_0(__Instance, arg0);
+                }
+
                 public CppSharp.Parser.AST.Enumeration getEnums(uint i)
                 {
                     var __ret = Internal.getEnums_0(__Instance, i);
                     if (__ret == global::System.IntPtr.Zero) return null;
                     return new CppSharp.Parser.AST.Enumeration(__ret);
+                }
+
+                public void addEnums(CppSharp.Parser.AST.Enumeration s)
+                {
+                    var arg0 = s == (CppSharp.Parser.AST.Enumeration) null ? global::System.IntPtr.Zero : s.__Instance;
+                    Internal.addEnums_0(__Instance, arg0);
                 }
 
                 public CppSharp.Parser.AST.Function getFunctions(uint i)
@@ -3467,11 +3231,23 @@ namespace CppSharp
                     return new CppSharp.Parser.AST.Function(__ret);
                 }
 
+                public void addFunctions(CppSharp.Parser.AST.Function s)
+                {
+                    var arg0 = s == (CppSharp.Parser.AST.Function) null ? global::System.IntPtr.Zero : s.__Instance;
+                    Internal.addFunctions_0(__Instance, arg0);
+                }
+
                 public CppSharp.Parser.AST.Class getClasses(uint i)
                 {
                     var __ret = Internal.getClasses_0(__Instance, i);
                     if (__ret == global::System.IntPtr.Zero) return null;
                     return new CppSharp.Parser.AST.Class(__ret);
+                }
+
+                public void addClasses(CppSharp.Parser.AST.Class s)
+                {
+                    var arg0 = s == (CppSharp.Parser.AST.Class) null ? global::System.IntPtr.Zero : s.__Instance;
+                    Internal.addClasses_0(__Instance, arg0);
                 }
 
                 public CppSharp.Parser.AST.Template getTemplates(uint i)
@@ -3481,6 +3257,12 @@ namespace CppSharp
                     return new CppSharp.Parser.AST.Template(__ret);
                 }
 
+                public void addTemplates(CppSharp.Parser.AST.Template s)
+                {
+                    var arg0 = s == (CppSharp.Parser.AST.Template) null ? global::System.IntPtr.Zero : s.__Instance;
+                    Internal.addTemplates_0(__Instance, arg0);
+                }
+
                 public CppSharp.Parser.AST.TypedefDecl getTypedefs(uint i)
                 {
                     var __ret = Internal.getTypedefs_0(__Instance, i);
@@ -3488,11 +3270,23 @@ namespace CppSharp
                     return new CppSharp.Parser.AST.TypedefDecl(__ret);
                 }
 
+                public void addTypedefs(CppSharp.Parser.AST.TypedefDecl s)
+                {
+                    var arg0 = s == (CppSharp.Parser.AST.TypedefDecl) null ? global::System.IntPtr.Zero : s.__Instance;
+                    Internal.addTypedefs_0(__Instance, arg0);
+                }
+
                 public CppSharp.Parser.AST.Variable getVariables(uint i)
                 {
                     var __ret = Internal.getVariables_0(__Instance, i);
                     if (__ret == global::System.IntPtr.Zero) return null;
                     return new CppSharp.Parser.AST.Variable(__ret);
+                }
+
+                public void addVariables(CppSharp.Parser.AST.Variable s)
+                {
+                    var arg0 = s == (CppSharp.Parser.AST.Variable) null ? global::System.IntPtr.Zero : s.__Instance;
+                    Internal.addVariables_0(__Instance, arg0);
                 }
 
                 public uint NamespacesCount
@@ -3559,7 +3353,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class TypedefDecl : CppSharp.Parser.AST.Declaration, IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class TypedefDecl : CppSharp.Parser.AST.Declaration, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 100)]
                 public new struct Internal
@@ -3581,19 +3375,6 @@ namespace CppSharp
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="??1TypedefDecl@AST@CppParser@CppSharp@@QAE@XZ")]
                     internal static extern void dtor_0(global::System.IntPtr instance);
-                }
-
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 100; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
                 }
 
                 internal TypedefDecl(TypedefDecl.Internal* native)
@@ -3642,7 +3423,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class Parameter : CppSharp.Parser.AST.Declaration, IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class Parameter : CppSharp.Parser.AST.Declaration, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 104)]
                 public new struct Internal
@@ -3670,19 +3451,6 @@ namespace CppSharp
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="??1Parameter@AST@CppParser@CppSharp@@QAE@XZ")]
                     internal static extern void dtor_0(global::System.IntPtr instance);
-                }
-
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 104; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
                 }
 
                 internal Parameter(Parameter.Internal* native)
@@ -3761,7 +3529,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class Function : CppSharp.Parser.AST.Declaration, IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class Function : CppSharp.Parser.AST.Declaration, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 176)]
                 public new struct Internal
@@ -3812,6 +3580,11 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                        EntryPoint="?addParameters@Function@AST@CppParser@CppSharp@@QAEXAAPAUParameter@234@@Z")]
+                    internal static extern void addParameters_0(global::System.IntPtr instance, global::System.IntPtr s);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="?getMangled@Function@AST@CppParser@CppSharp@@QAEPBDXZ")]
                     internal static extern global::System.IntPtr getMangled_0(global::System.IntPtr instance);
 
@@ -3834,19 +3607,6 @@ namespace CppSharp
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="?getParametersCount@Function@AST@CppParser@CppSharp@@QAEIXZ")]
                     internal static extern uint getParametersCount_0(global::System.IntPtr instance);
-                }
-
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 176; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
                 }
 
                 internal Function(Function.Internal* native)
@@ -3881,6 +3641,12 @@ namespace CppSharp
                     var __ret = Internal.getParameters_0(__Instance, i);
                     if (__ret == global::System.IntPtr.Zero) return null;
                     return new CppSharp.Parser.AST.Parameter(__ret);
+                }
+
+                public void addParameters(CppSharp.Parser.AST.Parameter s)
+                {
+                    var arg0 = s == (CppSharp.Parser.AST.Parameter) null ? global::System.IntPtr.Zero : s.__Instance;
+                    Internal.addParameters_0(__Instance, arg0);
                 }
 
                 public string Mangled
@@ -4050,7 +3816,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class Method : CppSharp.Parser.AST.Function, IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class Method : CppSharp.Parser.AST.Function, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 204)]
                 public new struct Internal
@@ -4102,19 +3868,6 @@ namespace CppSharp
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="??1Method@AST@CppParser@CppSharp@@QAE@XZ")]
                     internal static extern void dtor_0(global::System.IntPtr instance);
-                }
-
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 204; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
                 }
 
                 internal Method(Method.Internal* native)
@@ -4314,7 +4067,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class Enumeration : CppSharp.Parser.AST.Declaration, IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class Enumeration : CppSharp.Parser.AST.Declaration, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 116)]
                 public new struct Internal
@@ -4350,6 +4103,11 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                        EntryPoint="?addItems@Enumeration@AST@CppParser@CppSharp@@QAEXAAUItem@1234@@Z")]
+                    internal static extern void addItems_0(global::System.IntPtr instance, global::System.IntPtr s);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="?getItemsCount@Enumeration@AST@CppParser@CppSharp@@QAEIXZ")]
                     internal static extern uint getItemsCount_0(global::System.IntPtr instance);
                 }
@@ -4362,7 +4120,7 @@ namespace CppSharp
                     Flags = 4
                 }
 
-                public unsafe partial class Item : CppSharp.Parser.AST.Declaration, IDisposable, CppSharp.Runtime.ICppMarshal
+                public unsafe partial class Item : CppSharp.Parser.AST.Declaration, IDisposable
                 {
                     [StructLayout(LayoutKind.Explicit, Size = 128)]
                     public new struct Internal
@@ -4394,19 +4152,6 @@ namespace CppSharp
                         [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                             EntryPoint="?setExpression@Item@Enumeration@AST@CppParser@CppSharp@@QAEXPBD@Z")]
                         internal static extern void setExpression_0(global::System.IntPtr instance, global::System.IntPtr s);
-                    }
-
-                    int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                    {
-                        get { return 128; }
-                    }
-
-                    void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                    {
-                    }
-
-                    void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                    {
                     }
 
                     internal Item(Item.Internal* native)
@@ -4469,19 +4214,6 @@ namespace CppSharp
                     }
                 }
 
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 116; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
-                }
-
                 internal Enumeration(Enumeration.Internal* native)
                     : this(new global::System.IntPtr(native))
                 {
@@ -4516,6 +4248,12 @@ namespace CppSharp
                     var __instance = Marshal.AllocHGlobal(128);
                     CppSharp.Parser.AST.Enumeration.Item.Internal.ctor_2(__instance, new global::System.IntPtr(&__ret));
                     return new CppSharp.Parser.AST.Enumeration.Item(__instance);
+                }
+
+                public void addItems(CppSharp.Parser.AST.Enumeration.Item s)
+                {
+                    var arg0 = s == (CppSharp.Parser.AST.Enumeration.Item) null ? global::System.IntPtr.Zero : s.__Instance;
+                    Internal.addItems_0(__Instance, arg0);
                 }
 
                 public uint ItemsCount
@@ -4575,7 +4313,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class Variable : CppSharp.Parser.AST.Declaration, IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class Variable : CppSharp.Parser.AST.Declaration, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 124)]
                 public new struct Internal
@@ -4607,19 +4345,6 @@ namespace CppSharp
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="?setMangled@Variable@AST@CppParser@CppSharp@@QAEXPBD@Z")]
                     internal static extern void setMangled_0(global::System.IntPtr instance, global::System.IntPtr s);
-                }
-
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 124; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
                 }
 
                 internal Variable(Variable.Internal* native)
@@ -4685,7 +4410,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class BaseClassSpecifier : IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class BaseClassSpecifier : IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 12)]
                 public struct Internal
@@ -4701,24 +4426,16 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                        EntryPoint="??0BaseClassSpecifier@AST@CppParser@CppSharp@@QAE@XZ")]
+                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="??0BaseClassSpecifier@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
                     internal static extern global::System.IntPtr ctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
-
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 12; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
-                }
 
                 internal BaseClassSpecifier(BaseClassSpecifier.Internal* native)
                     : this(new global::System.IntPtr(native))
@@ -4738,6 +4455,7 @@ namespace CppSharp
                 public BaseClassSpecifier()
                 {
                     __Instance = Marshal.AllocHGlobal(12);
+                    Internal.ctor_0(__Instance);
                 }
 
                 public void Dispose()
@@ -4798,7 +4516,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class Field : CppSharp.Parser.AST.Declaration, IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class Field : CppSharp.Parser.AST.Declaration, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 112)]
                 public new struct Internal
@@ -4829,19 +4547,6 @@ namespace CppSharp
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="??1Field@AST@CppParser@CppSharp@@QAE@XZ")]
                     internal static extern void dtor_0(global::System.IntPtr instance);
-                }
-
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 112; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
                 }
 
                 internal Field(Field.Internal* native)
@@ -4936,7 +4641,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class AccessSpecifierDecl : CppSharp.Parser.AST.Declaration, IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class AccessSpecifierDecl : CppSharp.Parser.AST.Declaration, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 92)]
                 public new struct Internal
@@ -4955,19 +4660,6 @@ namespace CppSharp
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="??1AccessSpecifierDecl@AST@CppParser@CppSharp@@QAE@XZ")]
                     internal static extern void dtor_0(global::System.IntPtr instance);
-                }
-
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 92; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
                 }
 
                 internal AccessSpecifierDecl(AccessSpecifierDecl.Internal* native)
@@ -4998,9 +4690,9 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class Class : CppSharp.Parser.AST.DeclarationContext, IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class Class : CppSharp.Parser.AST.DeclarationContext, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 288)]
+                [StructLayout(LayoutKind.Explicit, Size = 292)]
                 public new struct Internal
                 {
                     [FieldOffset(232)]
@@ -5028,6 +4720,9 @@ namespace CppSharp
                     public bool HasNonTrivialDestructor;
 
                     [FieldOffset(240)]
+                    public bool IsExternCContext;
+
+                    [FieldOffset(244)]
                     public CppSharp.Parser.AST.ClassLayout.Internal Layout;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -5052,8 +4747,18 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                        EntryPoint="?addBases@Class@AST@CppParser@CppSharp@@QAEXAAPAUBaseClassSpecifier@234@@Z")]
+                    internal static extern void addBases_0(global::System.IntPtr instance, global::System.IntPtr s);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="?getFields@Class@AST@CppParser@CppSharp@@QAEPAUField@234@I@Z")]
                     internal static extern global::System.IntPtr getFields_0(global::System.IntPtr instance, uint i);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                        EntryPoint="?addFields@Class@AST@CppParser@CppSharp@@QAEXAAPAUField@234@@Z")]
+                    internal static extern void addFields_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -5062,8 +4767,18 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                        EntryPoint="?addMethods@Class@AST@CppParser@CppSharp@@QAEXAAPAUMethod@234@@Z")]
+                    internal static extern void addMethods_0(global::System.IntPtr instance, global::System.IntPtr s);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="?getSpecifiers@Class@AST@CppParser@CppSharp@@QAEPAUAccessSpecifierDecl@234@I@Z")]
                     internal static extern global::System.IntPtr getSpecifiers_0(global::System.IntPtr instance, uint i);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                        EntryPoint="?addSpecifiers@Class@AST@CppParser@CppSharp@@QAEXAAPAUAccessSpecifierDecl@234@@Z")]
+                    internal static extern void addSpecifiers_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -5086,19 +4801,6 @@ namespace CppSharp
                     internal static extern uint getSpecifiersCount_0(global::System.IntPtr instance);
                 }
 
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 288; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
-                }
-
                 internal Class(Class.Internal* native)
                     : this(new global::System.IntPtr(native))
                 {
@@ -5117,7 +4819,7 @@ namespace CppSharp
                 public Class()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(288);
+                    __Instance = Marshal.AllocHGlobal(292);
                     Internal.ctor_0(__Instance);
                 }
 
@@ -5133,11 +4835,23 @@ namespace CppSharp
                     return new CppSharp.Parser.AST.BaseClassSpecifier(__ret);
                 }
 
+                public void addBases(CppSharp.Parser.AST.BaseClassSpecifier s)
+                {
+                    var arg0 = s == (CppSharp.Parser.AST.BaseClassSpecifier) null ? global::System.IntPtr.Zero : s.__Instance;
+                    Internal.addBases_0(__Instance, arg0);
+                }
+
                 public CppSharp.Parser.AST.Field getFields(uint i)
                 {
                     var __ret = Internal.getFields_0(__Instance, i);
                     if (__ret == global::System.IntPtr.Zero) return null;
                     return new CppSharp.Parser.AST.Field(__ret);
+                }
+
+                public void addFields(CppSharp.Parser.AST.Field s)
+                {
+                    var arg0 = s == (CppSharp.Parser.AST.Field) null ? global::System.IntPtr.Zero : s.__Instance;
+                    Internal.addFields_0(__Instance, arg0);
                 }
 
                 public CppSharp.Parser.AST.Method getMethods(uint i)
@@ -5147,11 +4861,23 @@ namespace CppSharp
                     return new CppSharp.Parser.AST.Method(__ret);
                 }
 
+                public void addMethods(CppSharp.Parser.AST.Method s)
+                {
+                    var arg0 = s == (CppSharp.Parser.AST.Method) null ? global::System.IntPtr.Zero : s.__Instance;
+                    Internal.addMethods_0(__Instance, arg0);
+                }
+
                 public CppSharp.Parser.AST.AccessSpecifierDecl getSpecifiers(uint i)
                 {
                     var __ret = Internal.getSpecifiers_0(__Instance, i);
                     if (__ret == global::System.IntPtr.Zero) return null;
                     return new CppSharp.Parser.AST.AccessSpecifierDecl(__ret);
+                }
+
+                public void addSpecifiers(CppSharp.Parser.AST.AccessSpecifierDecl s)
+                {
+                    var arg0 = s == (CppSharp.Parser.AST.AccessSpecifierDecl) null ? global::System.IntPtr.Zero : s.__Instance;
+                    Internal.addSpecifiers_0(__Instance, arg0);
                 }
 
                 public uint BasesCount
@@ -5310,6 +5036,21 @@ namespace CppSharp
                     }
                 }
 
+                public bool IsExternCContext
+                {
+                    get
+                    {
+                        var __ptr = (Internal*)__Instance.ToPointer();
+                        return __ptr->IsExternCContext;
+                    }
+
+                    set
+                    {
+                        var __ptr = (Internal*)__Instance.ToPointer();
+                        __ptr->IsExternCContext = value;
+                    }
+                }
+
                 public CppSharp.Parser.AST.ClassLayout Layout
                 {
                     get
@@ -5329,7 +5070,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class Template : CppSharp.Parser.AST.Declaration, IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class Template : CppSharp.Parser.AST.Declaration, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 108)]
                 public new struct Internal
@@ -5359,21 +5100,13 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                        EntryPoint="?addParameters@Template@AST@CppParser@CppSharp@@QAEXAAUTemplateParameter@234@@Z")]
+                    internal static extern void addParameters_0(global::System.IntPtr instance, global::System.IntPtr s);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="?getParametersCount@Template@AST@CppParser@CppSharp@@QAEIXZ")]
                     internal static extern uint getParametersCount_0(global::System.IntPtr instance);
-                }
-
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 108; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
                 }
 
                 internal Template(Template.Internal* native)
@@ -5412,6 +5145,12 @@ namespace CppSharp
                     return new CppSharp.Parser.AST.TemplateParameter(__instance);
                 }
 
+                public void addParameters(CppSharp.Parser.AST.TemplateParameter s)
+                {
+                    var arg0 = s == (CppSharp.Parser.AST.TemplateParameter) null ? global::System.IntPtr.Zero : s.__Instance;
+                    Internal.addParameters_0(__Instance, arg0);
+                }
+
                 public uint ParametersCount
                 {
                     get
@@ -5438,7 +5177,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class ClassTemplate : CppSharp.Parser.AST.Template, IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class ClassTemplate : CppSharp.Parser.AST.Template, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 120)]
                 public new struct Internal
@@ -5465,6 +5204,11 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                        EntryPoint="?addSpecializations@ClassTemplate@AST@CppParser@CppSharp@@QAEXAAPAUClassTemplateSpecialization@234@@Z")]
+                    internal static extern void addSpecializations_0(global::System.IntPtr instance, global::System.IntPtr s);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="?FindSpecialization@ClassTemplate@AST@CppParser@CppSharp@@QAEPAUClassTemplateSpecialization@234@PAX@Z")]
                     internal static extern global::System.IntPtr FindSpecialization_0(global::System.IntPtr instance, global::System.IntPtr ptr);
 
@@ -5487,19 +5231,6 @@ namespace CppSharp
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="?getSpecializationsCount@ClassTemplate@AST@CppParser@CppSharp@@QAEIXZ")]
                     internal static extern uint getSpecializationsCount_0(global::System.IntPtr instance);
-                }
-
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 120; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
                 }
 
                 internal ClassTemplate(ClassTemplate.Internal* native)
@@ -5534,6 +5265,12 @@ namespace CppSharp
                     var __ret = Internal.getSpecializations_0(__Instance, i);
                     if (__ret == global::System.IntPtr.Zero) return null;
                     return new CppSharp.Parser.AST.ClassTemplateSpecialization(__ret);
+                }
+
+                public void addSpecializations(CppSharp.Parser.AST.ClassTemplateSpecialization s)
+                {
+                    var arg0 = s == (CppSharp.Parser.AST.ClassTemplateSpecialization) null ? global::System.IntPtr.Zero : s.__Instance;
+                    Internal.addSpecializations_0(__Instance, arg0);
                 }
 
                 public CppSharp.Parser.AST.ClassTemplateSpecialization FindSpecialization(global::System.IntPtr ptr)
@@ -5578,15 +5315,15 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class ClassTemplateSpecialization : CppSharp.Parser.AST.Class, IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class ClassTemplateSpecialization : CppSharp.Parser.AST.Class, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 308)]
+                [StructLayout(LayoutKind.Explicit, Size = 312)]
                 public new struct Internal
                 {
-                    [FieldOffset(288)]
+                    [FieldOffset(292)]
                     public global::System.IntPtr TemplatedDecl;
 
-                    [FieldOffset(304)]
+                    [FieldOffset(308)]
                     public CppSharp.Parser.AST.TemplateSpecializationKind SpecializationKind;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -5611,21 +5348,13 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                        EntryPoint="?addArguments@ClassTemplateSpecialization@AST@CppParser@CppSharp@@QAEXAAUTemplateArgument@234@@Z")]
+                    internal static extern void addArguments_0(global::System.IntPtr instance, global::System.IntPtr s);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="?getArgumentsCount@ClassTemplateSpecialization@AST@CppParser@CppSharp@@QAEIXZ")]
                     internal static extern uint getArgumentsCount_0(global::System.IntPtr instance);
-                }
-
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 308; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
                 }
 
                 internal ClassTemplateSpecialization(ClassTemplateSpecialization.Internal* native)
@@ -5646,7 +5375,7 @@ namespace CppSharp
                 public ClassTemplateSpecialization()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(308);
+                    __Instance = Marshal.AllocHGlobal(312);
                     Internal.ctor_0(__Instance);
                 }
 
@@ -5662,6 +5391,12 @@ namespace CppSharp
                     var __instance = Marshal.AllocHGlobal(20);
                     CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ret), new UIntPtr(20));
                     return new CppSharp.Parser.AST.TemplateArgument(__instance);
+                }
+
+                public void addArguments(CppSharp.Parser.AST.TemplateArgument s)
+                {
+                    var arg0 = s == (CppSharp.Parser.AST.TemplateArgument) null ? global::System.IntPtr.Zero : s.__Instance;
+                    Internal.addArguments_0(__Instance, arg0);
                 }
 
                 public uint ArgumentsCount
@@ -5705,9 +5440,9 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class ClassTemplatePartialSpecialization : CppSharp.Parser.AST.ClassTemplateSpecialization, IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class ClassTemplatePartialSpecialization : CppSharp.Parser.AST.ClassTemplateSpecialization, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 308)]
+                [StructLayout(LayoutKind.Explicit, Size = 312)]
                 public new struct Internal
                 {
                     [SuppressUnmanagedCodeSecurity]
@@ -5724,19 +5459,6 @@ namespace CppSharp
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="??1ClassTemplatePartialSpecialization@AST@CppParser@CppSharp@@QAE@XZ")]
                     internal static extern void dtor_0(global::System.IntPtr instance);
-                }
-
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 308; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
                 }
 
                 internal ClassTemplatePartialSpecialization(ClassTemplatePartialSpecialization.Internal* native)
@@ -5757,7 +5479,7 @@ namespace CppSharp
                 public ClassTemplatePartialSpecialization()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(308);
+                    __Instance = Marshal.AllocHGlobal(312);
                     Internal.ctor_0(__Instance);
                 }
 
@@ -5767,7 +5489,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class FunctionTemplate : CppSharp.Parser.AST.Template, IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class FunctionTemplate : CppSharp.Parser.AST.Template, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 108)]
                 public new struct Internal
@@ -5786,19 +5508,6 @@ namespace CppSharp
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="??1FunctionTemplate@AST@CppParser@CppSharp@@QAE@XZ")]
                     internal static extern void dtor_0(global::System.IntPtr instance);
-                }
-
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 108; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
                 }
 
                 internal FunctionTemplate(FunctionTemplate.Internal* native)
@@ -5829,7 +5538,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class Namespace : CppSharp.Parser.AST.DeclarationContext, IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class Namespace : CppSharp.Parser.AST.DeclarationContext, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 184)]
                 public new struct Internal
@@ -5848,19 +5557,6 @@ namespace CppSharp
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="??1Namespace@AST@CppParser@CppSharp@@QAE@XZ")]
                     internal static extern void dtor_0(global::System.IntPtr instance);
-                }
-
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 184; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
                 }
 
                 internal Namespace(Namespace.Internal* native)
@@ -5891,7 +5587,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class PreprocessedEntity : CppSharp.Parser.AST.Declaration, IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class PreprocessedEntity : CppSharp.Parser.AST.Declaration, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 96)]
                 public new struct Internal
@@ -5913,19 +5609,6 @@ namespace CppSharp
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="??1PreprocessedEntity@AST@CppParser@CppSharp@@QAE@XZ")]
                     internal static extern void dtor_0(global::System.IntPtr instance);
-                }
-
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 96; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
                 }
 
                 internal PreprocessedEntity(PreprocessedEntity.Internal* native)
@@ -5971,7 +5654,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class MacroDefinition : CppSharp.Parser.AST.PreprocessedEntity, IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class MacroDefinition : CppSharp.Parser.AST.PreprocessedEntity, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 120)]
                 public new struct Internal
@@ -6000,19 +5683,6 @@ namespace CppSharp
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="?setExpression@MacroDefinition@AST@CppParser@CppSharp@@QAEXPBD@Z")]
                     internal static extern void setExpression_0(global::System.IntPtr instance, global::System.IntPtr s);
-                }
-
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 120; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
                 }
 
                 internal MacroDefinition(MacroDefinition.Internal* native)
@@ -6060,7 +5730,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class MacroExpansion : CppSharp.Parser.AST.PreprocessedEntity, IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class MacroExpansion : CppSharp.Parser.AST.PreprocessedEntity, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 124)]
                 public new struct Internal
@@ -6092,19 +5762,6 @@ namespace CppSharp
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="?setText@MacroExpansion@AST@CppParser@CppSharp@@QAEXPBD@Z")]
                     internal static extern void setText_0(global::System.IntPtr instance, global::System.IntPtr s);
-                }
-
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 124; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
                 }
 
                 internal MacroExpansion(MacroExpansion.Internal* native)
@@ -6168,7 +5825,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class TranslationUnit : CppSharp.Parser.AST.Namespace, IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class TranslationUnit : CppSharp.Parser.AST.Namespace, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 224)]
                 public new struct Internal
@@ -6198,6 +5855,11 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                        EntryPoint="?addMacros@TranslationUnit@AST@CppParser@CppSharp@@QAEXAAPAUMacroDefinition@234@@Z")]
+                    internal static extern void addMacros_0(global::System.IntPtr instance, global::System.IntPtr s);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="?getFileName@TranslationUnit@AST@CppParser@CppSharp@@QAEPBDXZ")]
                     internal static extern global::System.IntPtr getFileName_0(global::System.IntPtr instance);
 
@@ -6210,19 +5872,6 @@ namespace CppSharp
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="?getMacrosCount@TranslationUnit@AST@CppParser@CppSharp@@QAEIXZ")]
                     internal static extern uint getMacrosCount_0(global::System.IntPtr instance);
-                }
-
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 224; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
                 }
 
                 internal TranslationUnit(TranslationUnit.Internal* native)
@@ -6257,6 +5906,12 @@ namespace CppSharp
                     var __ret = Internal.getMacros_0(__Instance, i);
                     if (__ret == global::System.IntPtr.Zero) return null;
                     return new CppSharp.Parser.AST.MacroDefinition(__ret);
+                }
+
+                public void addMacros(CppSharp.Parser.AST.MacroDefinition s)
+                {
+                    var arg0 = s == (CppSharp.Parser.AST.MacroDefinition) null ? global::System.IntPtr.Zero : s.__Instance;
+                    Internal.addMacros_0(__Instance, arg0);
                 }
 
                 public string FileName
@@ -6301,7 +5956,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class NativeLibrary : IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class NativeLibrary : IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 36)]
                 public struct Internal
@@ -6328,6 +5983,11 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                        EntryPoint="?addSymbols@NativeLibrary@AST@CppParser@CppSharp@@QAEXPBD@Z")]
+                    internal static extern void addSymbols_0(global::System.IntPtr instance, global::System.IntPtr s);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="?getFileName@NativeLibrary@AST@CppParser@CppSharp@@QAEPBDXZ")]
                     internal static extern global::System.IntPtr getFileName_0(global::System.IntPtr instance);
 
@@ -6343,19 +6003,6 @@ namespace CppSharp
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
-
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 36; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
-                }
 
                 internal NativeLibrary(NativeLibrary.Internal* native)
                     : this(new global::System.IntPtr(native))
@@ -6397,6 +6044,13 @@ namespace CppSharp
                     return Marshal.PtrToStringAnsi(__ret);
                 }
 
+                public void addSymbols(string s)
+                {
+                    var arg0 = Marshal.StringToHGlobalAnsi(s);
+                    Internal.addSymbols_0(__Instance, arg0);
+                    Marshal.FreeHGlobal(arg0);
+                }
+
                 public string FileName
                 {
                     get
@@ -6424,7 +6078,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class ASTContext : IDisposable, CppSharp.Runtime.ICppMarshal
+            public unsafe partial class ASTContext : IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 12)]
                 public struct Internal
@@ -6456,24 +6110,16 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                        EntryPoint="?addTranslationUnits@ASTContext@AST@CppParser@CppSharp@@QAEXAAPAUTranslationUnit@234@@Z")]
+                    internal static extern void addTranslationUnits_0(global::System.IntPtr instance, global::System.IntPtr s);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="?getTranslationUnitsCount@ASTContext@AST@CppParser@CppSharp@@QAEIXZ")]
                     internal static extern uint getTranslationUnitsCount_0(global::System.IntPtr instance);
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
-
-                int CppSharp.Runtime.ICppMarshal.NativeDataSize
-                {
-                    get { return 12; }
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalManagedToNative(global::System.IntPtr instance)
-                {
-                }
-
-                void CppSharp.Runtime.ICppMarshal.MarshalNativeToManaged(global::System.IntPtr instance)
-                {
-                }
 
                 internal ASTContext(ASTContext.Internal* native)
                     : this(new global::System.IntPtr(native))
@@ -6521,6 +6167,12 @@ namespace CppSharp
                     var __ret = Internal.getTranslationUnits_0(__Instance, i);
                     if (__ret == global::System.IntPtr.Zero) return null;
                     return new CppSharp.Parser.AST.TranslationUnit(__ret);
+                }
+
+                public void addTranslationUnits(CppSharp.Parser.AST.TranslationUnit s)
+                {
+                    var arg0 = s == (CppSharp.Parser.AST.TranslationUnit) null ? global::System.IntPtr.Zero : s.__Instance;
+                    Internal.addTranslationUnits_0(__Instance, arg0);
                 }
 
                 public uint TranslationUnitsCount
