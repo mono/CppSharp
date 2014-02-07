@@ -1729,7 +1729,7 @@ static bool CanCheckCodeGenInfo(const clang::Type* Ty, bool IsMicrosoftABI)
         if (auto MPT = Ty->getAs<clang::MemberPointerType>())
             if (auto RT = MPT->getClass())
                 if (auto RD = RT->getAsCXXRecordDecl())
-                    RD->setMSInheritanceModel();
+                    RD->getMostRecentDecl()->setMSInheritanceModel();
     }
 
     return CheckCodeGenInfo;
