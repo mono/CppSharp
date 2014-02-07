@@ -400,26 +400,26 @@ struct CS_API DeclarationContext : public Declaration
 {
     DECLARE_DECL_KIND(DeclarationContext, DeclarationContext)
 
-    Declaration* FindAnonymous(uint64_t key);
+    CS_IGNORE Declaration* FindAnonymous(uint64_t key);
 
-    CppSharp::CppParser::AST::Namespace* FindNamespace(const std::string& Name);
-    CppSharp::CppParser::AST::Namespace* FindNamespace(const std::vector<std::string>&);
-    CppSharp::CppParser::AST::Namespace* FindCreateNamespace(const std::string& Name);
+    CS_IGNORE CppSharp::CppParser::AST::Namespace* FindNamespace(const std::string& Name);
+    CS_IGNORE CppSharp::CppParser::AST::Namespace* FindNamespace(const std::vector<std::string>&);
+    CS_IGNORE CppSharp::CppParser::AST::Namespace* FindCreateNamespace(const std::string& Name);
 
-    Class* CreateClass(std::string Name, bool IsComplete);
-    Class* FindClass(const std::string& Name);
-    Class* FindClass(const std::string& Name, bool IsComplete,
+    CS_IGNORE Class* CreateClass(std::string Name, bool IsComplete);
+    CS_IGNORE Class* FindClass(const std::string& Name);
+    CS_IGNORE Class* FindClass(const std::string& Name, bool IsComplete,
         bool Create = false);
 
-    FunctionTemplate* FindFunctionTemplate(void* OriginalPtr);
-    FunctionTemplate* FindFunctionTemplate(const std::string& Name,
+    CS_IGNORE FunctionTemplate* FindFunctionTemplate(void* OriginalPtr);
+    CS_IGNORE FunctionTemplate* FindFunctionTemplate(const std::string& Name,
         const std::vector<TemplateParameter>& Params);
 
-    Enumeration* FindEnum(const std::string& Name, bool Create = false);
+    CS_IGNORE Enumeration* FindEnum(const std::string& Name, bool Create = false);
 
-    Function* FindFunction(const std::string& Name, bool Create = false);
+    CS_IGNORE Function* FindFunction(const std::string& Name, bool Create = false);
 
-    TypedefDecl* FindTypedef(const std::string& Name, bool Create = false);
+    CS_IGNORE TypedefDecl* FindTypedef(const std::string& Name, bool Create = false);
 
     VECTOR(Namespace*, Namespaces)
     VECTOR(Enumeration*, Enums)

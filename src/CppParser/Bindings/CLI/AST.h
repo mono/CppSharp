@@ -1060,30 +1060,6 @@ namespace CppSharp
                     unsigned int get();
                 }
 
-                CppSharp::Parser::AST::Declaration^ FindAnonymous(unsigned long long key);
-
-                CppSharp::Parser::AST::Namespace^ FindNamespace(System::String^ Name);
-
-                CppSharp::Parser::AST::Namespace^ FindNamespace(System::Collections::Generic::List<System::String^>^ _0);
-
-                CppSharp::Parser::AST::Namespace^ FindCreateNamespace(System::String^ Name);
-
-                CppSharp::Parser::AST::Class^ CreateClass(System::String^ Name, bool IsComplete);
-
-                CppSharp::Parser::AST::Class^ FindClass(System::String^ Name);
-
-                CppSharp::Parser::AST::Class^ FindClass(System::String^ Name, bool IsComplete, bool Create);
-
-                CppSharp::Parser::AST::FunctionTemplate^ FindFunctionTemplate(System::IntPtr OriginalPtr);
-
-                CppSharp::Parser::AST::FunctionTemplate^ FindFunctionTemplate(System::String^ Name, System::Collections::Generic::List<CppSharp::Parser::AST::TemplateParameter^>^ Params);
-
-                CppSharp::Parser::AST::Enumeration^ FindEnum(System::String^ Name, bool Create);
-
-                CppSharp::Parser::AST::Function^ FindFunction(System::String^ Name, bool Create);
-
-                CppSharp::Parser::AST::TypedefDecl^ FindTypedef(System::String^ Name, bool Create);
-
                 CppSharp::Parser::AST::Namespace^ getNamespaces(unsigned int i);
 
                 void addNamespaces(CppSharp::Parser::AST::Namespace^ s);

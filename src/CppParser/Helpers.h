@@ -13,6 +13,7 @@
 #include <string>
 
 #define CS_FLAGS
+#define CS_IGNORE
 
 #if defined(_MSC_VER) && !defined(__clang__)
 #define CS_API __declspec(dllexport)
