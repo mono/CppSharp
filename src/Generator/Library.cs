@@ -136,8 +136,13 @@ namespace CppSharp
                     var match = regex.Match(macro.Name);
                     if (!match.Success) continue;
 
+                    if (macro.Enumeration != null)
+                        continue;
+
                     var item = GenerateEnumItemFromMacro(context, macro);
                     @enum.AddItem(item);
+
+                    macro.Enumeration = @enum;
                 }
 
                 if (@enum.Items.Count > 0)
