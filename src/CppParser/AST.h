@@ -618,6 +618,7 @@ struct CS_API Class : public DeclarationContext
     bool HasNonTrivialDefaultConstructor;
     bool HasNonTrivialCopyConstructor;
     bool HasNonTrivialDestructor;
+    bool IsExternCContext;
 
     ClassLayout Layout;
 };

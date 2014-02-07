@@ -24,6 +24,9 @@ namespace CppSharp.AST
         // Used to keep track of anonymous declarations.
         public Dictionary<ulong, Declaration> Anonymous; 
 
+        // True if the context is inside an extern "C" context.
+        public bool IsExternCContext;
+
         protected DeclarationContext()
         {
             Namespaces = new List<Namespace>();

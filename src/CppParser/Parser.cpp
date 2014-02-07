@@ -598,6 +598,8 @@ void Parser::WalkRecordCXX(clang::CXXRecordDecl* Record, Class* RC)
     RC->HasNonTrivialCopyConstructor = Record->hasNonTrivialCopyConstructor();
     RC->HasNonTrivialDestructor = Record->hasNonTrivialDestructor();
 
+    RC->IsExternCContext = Record->isExternCContext();
+
     bool hasLayout = !Record->isDependentType() && !Record->isInvalidDecl();
 
     // Get the record layout information.

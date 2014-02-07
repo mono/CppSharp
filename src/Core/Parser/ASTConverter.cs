@@ -1039,6 +1039,7 @@ namespace CppSharp
             _class.HasNonTrivialDefaultConstructor = @class.HasNonTrivialDefaultConstructor;
             _class.HasNonTrivialCopyConstructor = @class.HasNonTrivialCopyConstructor;
             _class.HasNonTrivialDestructor = @class.HasNonTrivialDestructor;
+            _class.IsExternCContext = @class.IsExternCContext;
 
             _class.Layout = VisitClassLayout(@class.Layout);
         }
