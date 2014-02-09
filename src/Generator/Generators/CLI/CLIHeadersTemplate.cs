@@ -491,6 +491,10 @@ namespace CppSharp.Generators.CLI
         {
             PushIndent();
 
+            if (@class.IsValueType)
+                foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.Ignore))
+                    GenerateClassMethods(@base.Class);
+
             var staticMethods = new List<Method>();
             foreach (var method in @class.Methods)
             {

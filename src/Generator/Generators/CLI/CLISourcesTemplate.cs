@@ -138,17 +138,7 @@ namespace CppSharp.Generators.CLI
 
             GenerateClassConstructors(@class);
 
-            foreach (var method in @class.Methods)
-            {
-                if (ASTUtils.CheckIgnoreMethod(method, Options))
-                    continue;
-
-                // C++/CLI does not allow special member funtions for value types.
-                if (@class.IsValueType && method.IsCopyConstructor)
-                    continue;
-
-                GenerateMethod(method, @class);
-            }
+            GenerateClassMethods(@class, @class);
 
             if (CSharpTextTemplate.ShouldGenerateClassNativeField(@class))
             {
@@ -214,6 +204,25 @@ namespace CppSharp.Generators.CLI
                     GenerateClassDestructor(@class);
                     GenerateClassFinalizer(@class);
                 }
+            }
+        }
+
+        private void GenerateClassMethods(Class @class, Class realOwner)
+        {
+            if (@class.IsValueType)
+                foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.Ignore))
+                    GenerateClassMethods(@base.Class, realOwner);
+
+            foreach (var method in @class.Methods)
+            {
+                if (ASTUtils.CheckIgnoreMethod(method, this.Options))
+                    continue;
+
+                // C++/CLI does not allow special member funtions for value types.
+                if (@class.IsValueType && method.IsCopyConstructor)
+                    continue;
+
+                GenerateMethod(method, realOwner);
             }
         }
 
