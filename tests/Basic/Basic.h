@@ -433,6 +433,14 @@ const foo_t& TestIndexedProperties::operator[](double f) { return p; }
 TestProperties* TestIndexedProperties::operator[](unsigned char b) { return &f; }
 const TestProperties& TestIndexedProperties::operator[](short b) { return f; }
 
+struct DLL_API TestIndexedPropertiesInValueType
+{
+public:
+    int operator[](int i);
+};
+
+int TestIndexedPropertiesInValueType::operator[](int i) { return i; }
+
 enum struct MyEnum { A, B, C };
 
 class DLL_API TestArraysPointers
