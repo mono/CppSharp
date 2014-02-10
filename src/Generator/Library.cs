@@ -229,15 +229,12 @@ namespace CppSharp
         public static void CopyClassFields(this ASTContext context, string source,
             string destination)
         {
-            foreach (var @class in context.FindClass(source))
-            {
-                foreach (var dest in context.FindClass(destination))
-                {
-                    dest.Fields.AddRange(@class.Fields);
-                    foreach (var field in dest.Fields)
-                        field.Namespace = dest;
-                }
-            }
+            var @class = context.FindCompleteClass(source);
+            var dest = context.FindCompleteClass(destination);
+
+            dest.Fields.AddRange(@class.Fields);
+            foreach (var field in dest.Fields)
+                field.Namespace = dest;
         }
 
         #endregion
