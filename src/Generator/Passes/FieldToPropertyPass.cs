@@ -6,6 +6,14 @@ namespace CppSharp.Passes
 {
     public class FieldToPropertyPass : TranslationUnitPass
     {
+        public override bool VisitClassDecl(Class @class)
+        {
+            if (@class.CompleteDeclaration != null)
+                return VisitClassDecl(@class.CompleteDeclaration as Class);
+
+            return base.VisitClassDecl(@class);
+        }
+
         public override bool VisitFieldDecl(Field field)
         {
             if (!VisitDeclaration(field))
