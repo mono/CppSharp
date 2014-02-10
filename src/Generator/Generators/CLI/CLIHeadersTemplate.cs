@@ -20,7 +20,7 @@ namespace CppSharp.Generators.CLI
         {
         }
 
-        public override void Process()
+        public override void Process(Order order)
         {
             PushBlock(BlockKind.Header);
             PopBlock();

@@ -128,33 +128,39 @@ namespace CppSharp.Generators.CSharp
 
         #endregion
 
-        public override void Process()
+        public override void Process(Order order)
         {
             GenerateHeader();
 
-            PushBlock(CSharpBlockKind.Usings);
-            WriteLine("using System;");
-            WriteLine("using System.Runtime.InteropServices;");
-            WriteLine("using System.Security;");
-            foreach (var customUsingStatement in Options.DependentNameSpaces)
+            if (!Options.GenerateSingleCSharpFile || order.HasFlag(Order.First))
             {
-                WriteLine(string.Format("using {0};", customUsingStatement));;
-            }
-            PopBlock(NewLineKind.BeforeNextBlock);
+                PushBlock(CSharpBlockKind.Usings);
+                WriteLine("using System;");
+                WriteLine("using System.Runtime.InteropServices;");
+                WriteLine("using System.Security;");
+                foreach (var customUsingStatement in Options.DependentNameSpaces)
+                {
+                    WriteLine(string.Format("using {0};", customUsingStatement));
+                }
+                PopBlock(NewLineKind.BeforeNextBlock);
 
-            if (Options.GenerateLibraryNamespace)
-            {
-                PushBlock(CSharpBlockKind.Namespace);
-                WriteLine("namespace {0}", Driver.Options.OutputNamespace);
-                WriteStartBraceIndent();
+                if (Options.GenerateLibraryNamespace)
+                {
+                    PushBlock(CSharpBlockKind.Namespace);
+                    WriteLine("namespace {0}", Driver.Options.OutputNamespace);
+                    WriteStartBraceIndent();
+                }
             }
 
             GenerateDeclContext(TranslationUnit);
 
-            if (Options.GenerateLibraryNamespace)
+            if (!Options.GenerateSingleCSharpFile || order.HasFlag(Order.Last))
             {
-                WriteCloseBraceIndent();
-                PopBlock(NewLineKind.BeforeNextBlock);
+                if (Options.GenerateLibraryNamespace)
+                {
+                    WriteCloseBraceIndent();
+                    PopBlock(NewLineKind.BeforeNextBlock);
+                }
             }
         }
 

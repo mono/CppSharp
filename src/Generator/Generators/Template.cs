@@ -31,7 +31,7 @@ namespace CppSharp.Generators
         public NewLineKind NewLineKind { get; set; }
 
         public Block Parent { get; set; }
-        private List<Block> Blocks { get; set; }
+        public List<Block> Blocks { get; set; }
 
         public Declaration Declaration { get; set; }
 
@@ -247,6 +247,14 @@ namespace CppSharp.Generators
 
     public abstract class Template : ITextGenerator
     {
+        [Flags]
+        public enum Order
+        {
+            First = 1,
+            InBetween = 2,
+            Last = 4
+        }
+
         public Driver Driver { get; private set; }
         public DriverOptions Options { get; private set; }
         public TranslationUnit TranslationUnit { get; private set; }
@@ -269,7 +277,7 @@ namespace CppSharp.Generators
             ActiveBlock = RootBlock;
         }
 
-        public abstract void Process();
+        public abstract void Process(Order order);
 
         public string Generate()
         {
@@ -313,7 +321,7 @@ namespace CppSharp.Generators
 
         public Block FindBlock(int kind)
         {
-            return FindBlocks(kind).Single();
+            return FindBlocks(kind).SingleOrDefault();
         }
 
         #endregion
