@@ -800,17 +800,26 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateClassInternalsField(Field field)
         {
+            var safeIdentifier = SafeIdentifier(field.OriginalName);
+
             PushBlock(CSharpBlockKind.Field);
 
             WriteLine("[FieldOffset({0})]", field.OffsetInBytes);
 
-            var result = field.QualifiedType.CSharpType(TypePrinter);
-            Write("public {0} {1}", result.Type, SafeIdentifier(field.OriginalName));
+            var fieldTypePrinted = field.QualifiedType.CSharpType(TypePrinter);
 
-            if (!string.IsNullOrWhiteSpace(result.NameSuffix))
-                Write(result.NameSuffix);
+            if (!string.IsNullOrWhiteSpace(fieldTypePrinted.NameSuffix))
+                safeIdentifier += fieldTypePrinted.NameSuffix;
 
-            WriteLine(";");
+            if (field.Expression != null)
+            {
+                var fieldValuePrinted = field.Expression.CSharpValue(ExpressionPrinter);
+                Write("public {0} {1} = {2};", fieldTypePrinted.Type, safeIdentifier, fieldValuePrinted);
+            }
+            else
+            {
+                Write("public {0} {1};", fieldTypePrinted.Type, safeIdentifier);
+            }
 
             PopBlock(NewLineKind.BeforeNextBlock);
         }
