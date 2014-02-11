@@ -7,10 +7,12 @@ namespace CppSharp.Generators.CSharp
     public class CSharpGenerator : Generator
     {
         private readonly CSharpTypePrinter typePrinter;
+        private readonly CSharpExpressionPrinter expressionPrinter;
 
         public CSharpGenerator(Driver driver) : base(driver)
         {
             typePrinter = new CSharpTypePrinter(driver.TypeDatabase, driver.ASTContext);
+            expressionPrinter = new CSharpExpressionPrinter();
             CppSharp.AST.Type.TypePrinterDelegate += type => type.Visit(typePrinter).Type;
         }
 
@@ -18,7 +20,7 @@ namespace CppSharp.Generators.CSharp
         {
             var outputs = new List<Template>();
 
-            var template = new CSharpTextTemplate(Driver, unit, typePrinter);
+            var template = new CSharpTextTemplate(Driver, unit, typePrinter, expressionPrinter);
             outputs.Add(template);
 
             return outputs;

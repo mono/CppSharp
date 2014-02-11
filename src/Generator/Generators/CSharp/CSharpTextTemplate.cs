@@ -102,17 +102,18 @@ namespace CppSharp.Generators.CSharp
     public class CSharpTextTemplate : Template
     {
         public CSharpTypePrinter TypePrinter { get; private set; }
+        public CSharpExpressionPrinter ExpressionPrinter { get; private set; }
 
         public override string FileExtension
         {
             get { return "cs"; }
         }
 
-        public CSharpTextTemplate(Driver driver, TranslationUnit unit,
-            CSharpTypePrinter typePrinter)
+        public CSharpTextTemplate(Driver driver, TranslationUnit unit, CSharpTypePrinter typePrinter, CSharpExpressionPrinter expressionPrinter)
             : base(driver, unit)
         {
             TypePrinter = typePrinter;
+            ExpressionPrinter = expressionPrinter;
         }
 
         #region Identifiers
