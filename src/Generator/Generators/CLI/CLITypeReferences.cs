@@ -87,19 +87,7 @@ namespace CppSharp.Generators.CLI
 
                 record.Value.Visit(this);
                 GenerateInclude(record);
-                ProcessTypeMap(record);
             }
-        }
-
-        private void ProcessTypeMap(ASTRecord<Declaration> record)
-        {
-            TypeMap typeMap;
-            if (!TypeMapDatabase.FindTypeMap(record.Value, out typeMap))
-                return;
-
-
-            typeMap.Declaration = record.Value;
-            typeMap.CLITypeReference(this, record);
         }
 
         private void GenerateInclude(ASTRecord<Declaration> record)
@@ -107,6 +95,15 @@ namespace CppSharp.Generators.CLI
             var decl = record.Value;
             if(decl.Namespace == null)
                 return;
+
+            // Find a type map for the declaration and use it if it exists.
+            TypeMap typeMap;
+            if (TypeMapDatabase.FindTypeMap(record.Value, out typeMap))
+            {
+                typeMap.Declaration = record.Value;
+                typeMap.CLITypeReference(this, record);
+                return;
+            }
 
             var declFile = decl.Namespace.TranslationUnit.FileName;
 
@@ -118,6 +115,9 @@ namespace CppSharp.Generators.CLI
 
             if(IsBuiltinTypedef(decl))
                 return;
+
+            if (decl.Name.Contains("HashMap"))
+                System.Diagnostics.Debugger.Break();
 
             var typeRef = GetTypeReference(decl);
             if (typeRef.Include.TranslationUnit == null)

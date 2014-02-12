@@ -30,6 +30,9 @@ namespace CppSharp.Generators.CLI
 
         public override bool VisitTagType(TagType tag, TypeQualifiers quals)
         {
+            if (!VisitType(tag, quals))
+                return false;
+
             var decl = tag.Declaration;
             return decl.Visit(this);
         }
@@ -90,8 +93,11 @@ namespace CppSharp.Generators.CLI
                 return true;
             }
 
+            TypeMap typeMap = null;
+            Context.Driver.TypeDatabase.FindTypeMap(pointee, out typeMap);
+
             Class @class;
-            if (pointee.IsTagDecl(out @class))
+            if (pointee.IsTagDecl(out @class) && typeMap == null)
             {
                 var instance = (pointer.IsReference) ? "&" + Context.ReturnVarName
                     : Context.ReturnVarName;
@@ -357,6 +363,9 @@ namespace CppSharp.Generators.CLI
 
         public override bool VisitTagType(TagType tag, TypeQualifiers quals)
         {
+            if (!VisitType(tag, quals))
+                return false;
+
             var decl = tag.Declaration;
             return decl.Visit(this);
         }
