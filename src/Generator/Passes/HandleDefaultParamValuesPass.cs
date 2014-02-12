@@ -151,6 +151,7 @@ namespace CppSharp.Passes
             {
                 var method = function as Method;
                 Function overload = method != null ? new Method(method) : new Function(function);
+                overload.OriginalFunction = function;
                 overload.SynthKind = FunctionSynthKind.DefaultValueOverload;
                 overload.Parameters[overloadIndex].GenerationKind = GenerationKind.None;
 
