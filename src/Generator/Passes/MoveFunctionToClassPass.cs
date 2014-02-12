@@ -58,7 +58,7 @@ namespace CppSharp.Passes
                 if (!FunctionToInstanceMethodPass.GetClassParameter(param, out type))
                     return;
                 method.Kind = CXXMethodKind.Operator;
-                method.SynthKind = FunctionSynthKind.NonMemberOperator;
+                method.IsNonMemberOperator = true;
                 method.OriginalFunction = null;
             }
 

@@ -88,7 +88,6 @@ namespace CppSharp.AST
     public enum FunctionSynthKind
     {
         None,
-        NonMemberOperator,
         ComplementOperator,
         AbstractImplCall,
         DefaultValueOverload
@@ -190,6 +189,8 @@ namespace CppSharp.AST
         }
 
         public FunctionSynthKind SynthKind { get; set; }
+        public bool IsSynthetized { get { return SynthKind != FunctionSynthKind.None; } }
+        public bool IsNonMemberOperator { get; set; }
 
         public Function OriginalFunction { get; set; }
 
