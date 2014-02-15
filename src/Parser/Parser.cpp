@@ -1734,7 +1734,8 @@ static const clang::CodeGen::CGFunctionInfo& GetCodeGenFuntionInfo(
     return CodeGenTypes->arrangeFunctionDeclaration(FD);
 }
 
-static bool CanCheckCodeGenInfo(const clang::Type* Ty, bool IsMicrosoftABI)
+static bool CanCheckCodeGenInfo(clang::Sema& S,
+                                const clang::Type* Ty, bool IsMicrosoftABI)
 {
     bool CheckCodeGenInfo = true;
 
@@ -1749,9 +1750,8 @@ static bool CanCheckCodeGenInfo(const clang::Type* Ty, bool IsMicrosoftABI)
     if (IsMicrosoftABI)
     {
         if (auto MPT = Ty->getAs<clang::MemberPointerType>())
-            if (auto RT = MPT->getClass())
-                if (auto RD = RT->getAsCXXRecordDecl())
-                    RD->getMostRecentDecl()->setMSInheritanceModel();
+            if (!MPT->isDependentType())
+                S.RequireCompleteType(clang::SourceLocation(), clang::QualType(Ty, 0), 0);
     }
 
     return CheckCodeGenInfo;
@@ -1865,10 +1865,10 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, CppSharp::AST::Function^ F,
 
     bool IsMicrosoftABI = C->getASTContext().getTargetInfo().getCXXABI().isMicrosoft();
     bool CheckCodeGenInfo = !FD->isDependentContext() && !FD->isInvalidDecl();
-    CheckCodeGenInfo &= CanCheckCodeGenInfo(FD->getReturnType().getTypePtr(),
+    CheckCodeGenInfo &= CanCheckCodeGenInfo(C->getSema(), FD->getReturnType().getTypePtr(),
         IsMicrosoftABI);
     for (auto I = FD->param_begin(), E = FD->param_end(); I != E; ++I)
-        CheckCodeGenInfo &= CanCheckCodeGenInfo((*I)->getType().getTypePtr(),
+        CheckCodeGenInfo &= CanCheckCodeGenInfo(C->getSema(), (*I)->getType().getTypePtr(),
         IsMicrosoftABI);
 
     if (CheckCodeGenInfo)
@@ -2595,7 +2595,7 @@ ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
     NativeLib->FileName = LibName;
 
     llvm::error_code ec;
-    for(auto it = Object.get()->begin_symbols(); it != Object.get()->end_symbols();
+    for(auto it = Object.get()->symbol_begin(); it != Object.get()->symbol_end();
         ++it)
     {
         llvm::StringRef SymRef;
@@ -2607,7 +2607,7 @@ ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
         NativeLib->Symbols->Add(SymName);
     }
 
-    for(auto it = Object.get()->begin_symbols(); it != Object.get()->end_symbols();
+    for(auto it = Object.get()->symbol_begin(); it != Object.get()->symbol_end();
         ++it)
     {
         llvm::StringRef SymRef;
