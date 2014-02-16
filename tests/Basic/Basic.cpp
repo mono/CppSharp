@@ -107,6 +107,11 @@ int Hello::AddFooPtr(Foo* foo)
     return AddFoo(*foo);
 }
 
+int Hello::AddFooPtrRef(Foo*& foo)
+{
+    return AddFoo(*foo);
+}
+
 int Hello::AddFoo2(Foo2 foo)
 {
     return (int)(foo.A + foo.B + foo.C);

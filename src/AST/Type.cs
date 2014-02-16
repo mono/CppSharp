@@ -152,6 +152,21 @@ namespace CppSharp.AST
             return this;
         }
 
+        public Type SkipPointerRefs()
+        {
+            var type = this as PointerType;
+
+            if (type != null)
+            {
+                var pointee = type.Pointee;
+
+                if (type.IsReference())
+                    return pointee.Desugar().SkipPointerRefs();
+            }
+
+            return this;
+        }
+
         public abstract T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals
             = new TypeQualifiers());
 

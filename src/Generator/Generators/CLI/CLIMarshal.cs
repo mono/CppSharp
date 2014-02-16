@@ -575,7 +575,7 @@ namespace CppSharp.Generators.CLI
                 return;
             }
 
-            if (!Context.Parameter.Type.IsPointer())
+            if (!Context.Parameter.Type.SkipPointerRefs().IsPointer())
             {
                 Context.Return.Write("*");
 

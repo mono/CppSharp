@@ -103,6 +103,7 @@ public:
     int AddFoo(Foo);
     int AddFooRef(Foo&);
     int AddFooPtr(Foo*);
+    int AddFooPtrRef(Foo*&);
     Foo RetFoo(int a, float b);
 
     int AddFoo2(Foo2);

@@ -19,6 +19,7 @@ public class BasicTests : GeneratorTestFixture
         var foo = new Foo { A = 4, B = 7 };
         Assert.That(hello.AddFoo(foo), Is.EqualTo(11));
         Assert.That(hello.AddFooPtr(foo), Is.EqualTo(11));
+        Assert.That(hello.AddFooPtr(foo), Is.EqualTo(11));
         Assert.That(hello.AddFooRef(foo), Is.EqualTo(11));
 
         var bar = new Bar { A = 4, B = 7 };
