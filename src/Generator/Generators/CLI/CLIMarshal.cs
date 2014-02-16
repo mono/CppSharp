@@ -194,19 +194,6 @@ namespace CppSharp.Generators.CLI
             throw new NotImplementedException();
         }
 
-        public override bool VisitDeclaration(Declaration decl)
-        {
-            TypeMap typeMap;
-            if (Context.Driver.TypeDatabase.FindTypeMap(decl, out typeMap))
-            {
-                typeMap.Declaration = decl;
-                typeMap.CLIMarshalToManaged(Context);
-                return false;
-            }
-
-            return true;
-        }
-
         public override bool VisitClassDecl(Class @class)
         {
             if (@class.CompleteDeclaration != null)
@@ -534,19 +521,6 @@ namespace CppSharp.Generators.CLI
         public override bool VisitDeclaration(Declaration decl, TypeQualifiers quals)
         {
             throw new NotImplementedException();
-        }
-
-        public override bool VisitDeclaration(Declaration decl)
-        {
-            TypeMap typeMap;
-            if (Context.Driver.TypeDatabase.FindTypeMap(decl, out typeMap))
-            {
-                typeMap.Declaration = decl;
-                typeMap.CLIMarshalToNative(Context);
-                return false;
-            }
-
-            return true;
         }
 
         public override bool VisitClassDecl(Class @class)
