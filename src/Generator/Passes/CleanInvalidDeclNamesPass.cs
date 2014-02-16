@@ -23,6 +23,11 @@ namespace CppSharp.Passes
             return name;
         }
 
+        public override bool VisitType(AST.Type type, TypeQualifiers quals)
+        {
+            return false;
+        }
+
         public override bool VisitDeclaration(Declaration decl)
         {
             // Do not clean up namespace names since it can mess up with the
