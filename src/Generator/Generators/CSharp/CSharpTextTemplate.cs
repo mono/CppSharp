@@ -2010,7 +2010,11 @@ namespace CppSharp.Generators.CSharp
                 Write("static ");
 
             if (method.IsOverride)
+            {
+                if (method.Access == AccessSpecifier.Private)
+                    Write("sealed ");
                 Write("override ");
+            }
 
             if (Driver.Options.GenerateAbstractImpls && method.IsPure)
                 Write("abstract ");

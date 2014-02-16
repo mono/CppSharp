@@ -702,7 +702,11 @@ namespace CppSharp.Generators.CLI
             Write(")");
 
             if (method.IsOverride)
+            {
+                if (method.Access == AccessSpecifier.Private)
+                    Write(" sealed");
                 Write(" override");
+            }
 
             WriteLine(";");
 
