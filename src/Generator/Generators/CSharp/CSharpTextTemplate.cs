@@ -156,6 +156,10 @@ namespace CppSharp.Generators.CSharp
             WriteLine("using System;");
             WriteLine("using System.Runtime.InteropServices;");
             WriteLine("using System.Security;");
+            foreach (var customUsingStatement in Options.DependentNameSpaces)
+            {
+                WriteLine(string.Format("using {0};", customUsingStatement));;
+            }
             PopBlock(NewLineKind.BeforeNextBlock);
 
             if (Options.GenerateLibraryNamespace)

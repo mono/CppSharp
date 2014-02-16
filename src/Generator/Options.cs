@@ -131,6 +131,7 @@ namespace CppSharp
         public bool Is32Bit { get { return true; } }
 
         public List<string> CodeFiles { get; private set; }
+        public readonly List<string> DependentNameSpaces = new List<string>();
     }
 
     public class InvalidOptionException : Exception

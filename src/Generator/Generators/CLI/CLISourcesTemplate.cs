@@ -42,6 +42,10 @@ namespace CppSharp.Generators.CLI
             PushBlock(CLIBlockKind.Usings);
             WriteLine("using namespace System;");
             WriteLine("using namespace System::Runtime::InteropServices;");
+            foreach (var customUsingStatement in Options.DependentNameSpaces)
+            {
+                WriteLine(string.Format("using namespace {0};", customUsingStatement)); ;
+            }
             NewLine();
             PopBlock();
 
