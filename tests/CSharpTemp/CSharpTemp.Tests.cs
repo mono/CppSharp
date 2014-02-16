@@ -117,4 +117,11 @@ public class CSharpTempTests : GeneratorTestFixture
         Assert.That(testCopyConstructorVal.A, Is.EqualTo(copyBar.A));
         Assert.That(testCopyConstructorVal.B, Is.EqualTo(copyBar.B));
     }
+
+    public void TestPropertiesConflictingWithMethod()
+    {
+        var p = new P((IQux) new Qux()) { Test = true };
+        Assert.That(p.Test, Is.True);
+        p.GetTest();
+    }
 }
