@@ -52,7 +52,7 @@ namespace CppSharp.Passes
             // generated as fields later on even though they are wrapped by properties;
             // that is, in turn, because it's cleaner to write
             // the struct marshalling logic just for properties
-            if (!prop.IsBackedByValueClassField())
+            if (!prop.IsInRefTypeAndBackedByValueClassField())
                 field.Name = Generator.GeneratedIdentifier(field.Name);
 
             @class.Properties.Add(prop);

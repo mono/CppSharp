@@ -105,9 +105,9 @@ namespace CppSharp.AST
             return visitor.VisitProperty(this);
         }
 
-        public bool IsBackedByValueClassField()
+        public bool IsInRefTypeAndBackedByValueClassField()
         {
-            if (Field == null)
+            if (Field == null || ((Class) Namespace).IsRefType)
                 return false;
 
             Type type;

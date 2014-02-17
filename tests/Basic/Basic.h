@@ -17,20 +17,6 @@ public:
 	const char* GetANSI();
 };
 
-class DLL_API Foo2 : public Foo
-{
-    struct Copy {
-        Foo A;
-    }* copy;
-
-public:
-
-    int C;
-
-    Foo2 operator<<(signed int i);
-    Foo2 operator<<(signed long l);
-};
-
 struct DLL_API Bar
 {
     enum Item
@@ -45,6 +31,21 @@ struct DLL_API Bar
     float B;
 
     Bar* returnPointerToValueType();
+};
+
+class DLL_API Foo2 : public Foo
+{
+    struct Copy {
+        Foo A;
+    }* copy;
+
+public:
+
+    int C;
+
+    Foo2 operator<<(signed int i);
+    Foo2 operator<<(signed long l);
+    Bar valueTypeField;
 };
 
 DLL_API Bar::Item operator |(Bar::Item left, Bar::Item right);
@@ -69,6 +70,7 @@ struct DLL_API Bar2 : public Bar
     Bar* pointerToStruct;
     int* pointerToPrimitive;
     Foo2* pointerToClass;
+    Bar valueStruct;
 };
 
 enum Enum

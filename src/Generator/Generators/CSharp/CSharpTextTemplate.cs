@@ -1130,7 +1130,7 @@ namespace CppSharp.Generators.CSharp
         {
             foreach (var prop in @class.Properties.Where(p => !p.Ignore))
             {
-                if (prop.IsBackedByValueClassField())
+                if (prop.IsInRefTypeAndBackedByValueClassField())
                 {
                     GenerateClassField(prop.Field, true);
                     continue;

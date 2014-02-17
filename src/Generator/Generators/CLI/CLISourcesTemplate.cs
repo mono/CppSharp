@@ -206,7 +206,7 @@ namespace CppSharp.Generators.CLI
             }
 
             foreach (var property in @class.Properties.Where(
-                p => !p.Ignore && !p.IsBackedByValueClassField()))
+                p => !p.Ignore && !p.IsInRefTypeAndBackedByValueClassField()))
                 GenerateProperty(property, realOwner);
         }
 
