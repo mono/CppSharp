@@ -186,3 +186,15 @@ public:
     void DefaultRefTypeBeforeAndAfterOthers(int i = 5, Foo foo = Foo(), Bar::Items item = Bar::Item2, Baz baz = Baz());
     void DefaultIntAssignedAnEnum(int i = Bar::Item1);
 };
+
+class DLL_API HasPrivateOverrideBase
+{
+public:
+    virtual void privateOverride(int i = 5);
+};
+
+class DLL_API HasPrivateOverride : public HasPrivateOverrideBase
+{
+private:
+    virtual void privateOverride(int i);
+};
