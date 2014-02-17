@@ -426,7 +426,7 @@ namespace CppSharp.Generators.CLI
             foreach (var field in @class.Fields.Where(f => !f.Ignore || @class.IsValueType))
             {
                 var property = @class.Properties.FirstOrDefault(p => p.Field == field);
-                if (property != null && !property.IsBackedByValueClassField())
+                if (property != null && !property.IsInRefTypeAndBackedByValueClassField())
                 {
                     GenerateField(@class, field);
                 }
@@ -595,7 +595,7 @@ namespace CppSharp.Generators.CLI
             PushIndent();
             foreach (var prop in @class.Properties.Where(prop => !prop.Ignore))
             {
-                if (prop.IsBackedByValueClassField())
+                if (prop.IsInRefTypeAndBackedByValueClassField())
                 {
                     GenerateField(@class, prop.Field);
                     continue;
