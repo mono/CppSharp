@@ -2133,6 +2133,10 @@ void Parser::HandleDeclaration(clang::Decl* D, Declaration* Decl)
         {
             HandlePreprocessedEntities(Decl);
         }
+        else if (clang::dyn_cast<clang::ParmVarDecl>(D))
+        {
+            // Ignore function parameters as we already walk their preprocessed entities.
+        }
         else
         {
             auto startLoc = GetDeclStartLocation(C.get(), D);
