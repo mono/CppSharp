@@ -97,7 +97,6 @@ void Parser::SetupHeader()
     // Enable C++ language mode
     args.push_back("-xc++");
     args.push_back("-std=gnu++11");
-    //args.push_back("-Wno-undefined-inline");
     args.push_back("-fno-rtti");
 
     // Enable the Microsoft parsing extensions
