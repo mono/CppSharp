@@ -710,7 +710,7 @@ struct CS_API NativeLibrary
 
 struct CS_API ASTContext
 {
-    TranslationUnit* FindOrCreateModule(const std::string& File);
+    TranslationUnit* FindOrCreateModule(std::string File);
     VECTOR(TranslationUnit*, TranslationUnits)
 };
 

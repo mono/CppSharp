@@ -444,8 +444,11 @@ ClassTemplate::FindPartialSpecialization(TemplateSpecializationType type)
     return 0;
 }
 
-TranslationUnit* ASTContext::FindOrCreateModule(const std::string& File)
+TranslationUnit* ASTContext::FindOrCreateModule(std::string File)
 {
+    // Clean up the file path.
+    std::replace(File.begin(), File.end(), '/', '\\');
+
     auto existingUnit = std::find_if(TranslationUnits.begin(),
         TranslationUnits.end(), [&](TranslationUnit* unit) {
             return unit && unit->FileName == File;
