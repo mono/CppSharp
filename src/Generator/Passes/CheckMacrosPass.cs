@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using CppSharp.AST;
 
 namespace CppSharp.Passes
@@ -65,6 +66,15 @@ namespace CppSharp.Passes
 
             if (expansions.Any(e => e.Text == Prefix + "_VALUE_TYPE"))
                 @class.Type = ClassType.ValueType;
+
+            // If the class is a forward declaration, then we process the macro expansions
+            // of the complete class as if they were specified on the forward declaration.
+            if (@class.CompleteDeclaration != null)
+            {
+                var completeExpansions = @class.CompleteDeclaration.PreprocessedEntities
+                    .OfType<MacroExpansion>();
+                CheckIgnoreMacros(@class, completeExpansions);
+            }
 
             return base.VisitClassDecl(@class);
         }
