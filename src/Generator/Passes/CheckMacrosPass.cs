@@ -13,6 +13,9 @@ namespace CppSharp.Passes
     ///     CS_IGNORE (declarations)
     ///         Used to ignore declarations from being processed.
     /// 
+    ///     CS_IGNORE_GEN (declarations)
+    ///         Used to ignore declaration from being generated.
+    /// 
     ///     CS_VALUE_TYPE (classes and structs)
     ///         Used to flag that a class or struct is a value type.
     /// 
@@ -51,13 +54,23 @@ namespace CppSharp.Passes
 
             var expansions = decl.PreprocessedEntities.OfType<MacroExpansion>();
 
+            CheckIgnoreMacros(decl, expansions);
+            return true;
+        }
+
+        void CheckIgnoreMacros(Declaration decl, IEnumerable<MacroExpansion> expansions)
+        {
             if (expansions.Any(e => e.Text == Prefix + "_IGNORE" &&
                                     e.Location != MacroLocation.ClassBody &&
                                     e.Location != MacroLocation.FunctionBody &&
                                     e.Location != MacroLocation.FunctionParameters))
                 decl.ExplicityIgnored = true;
 
-            return true;
+            if (expansions.Any(e => e.Text == Prefix + "_IGNORE_GEN" &&
+                                    e.Location != MacroLocation.ClassBody &&
+                                    e.Location != MacroLocation.FunctionBody &&
+                                    e.Location != MacroLocation.FunctionParameters))
+                decl.IsGenerated = false;
         }
 
         public override bool VisitClassDecl(Class @class)
