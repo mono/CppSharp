@@ -2459,7 +2459,7 @@ namespace CppSharp.Generators.CSharp
 
         public void GenerateInternalFunction(Function function)
         {
-            if (!function.IsProcessed || function.ExplicityIgnored || function.IsPure)
+            if (function.ExplicityIgnored || function.IsPure)
                 return;
 
             if (function.OriginalFunction != null)

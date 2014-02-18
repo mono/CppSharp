@@ -133,32 +133,18 @@ namespace CppSharp.AST
             }
         }
 
-        // Whether the declaration should be processed.
-        public virtual bool IsProcessed
-        {
-            get
-            {
-                var isProcessed = !IgnoreFlags.HasFlag(IgnoreFlags.Processing);
-
-                if (Namespace == null)
-                    return isProcessed;
-                
-                return isProcessed && Namespace.IsProcessed;
-            }
-
-            set
-            {
-                if (value)
-                    IgnoreFlags &= ~IgnoreFlags.Processing;
-                else
-                    IgnoreFlags |= IgnoreFlags.Processing;
-            }
-        }
-
         // Whether the declaration was explicitly ignored.
         public bool ExplicityIgnored
         {
-            get { return IgnoreFlags.HasFlag(IgnoreFlags.Explicit); }
+            get
+            {
+                var isExplicitlyIgnored = IgnoreFlags.HasFlag(IgnoreFlags.Explicit);
+
+                if (Namespace == null)
+                    return isExplicitlyIgnored;
+
+                return isExplicitlyIgnored || Namespace.ExplicityIgnored;
+            }
 
             set
             {

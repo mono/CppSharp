@@ -54,7 +54,7 @@ namespace CppSharp
             if (decl.CompleteDeclaration != null)
                 return VisitDeclaration(decl.CompleteDeclaration);
 
-            if (!decl.IsProcessed || decl.ExplicityIgnored)
+            if (decl.ExplicityIgnored)
             {
                 Ignore();
                 return false;

@@ -318,7 +318,6 @@ namespace CppSharp
             foreach (var unit in units)
             {
                 unit.IsGenerated = false;
-                unit.IsProcessed = true;
                 unit.ExplicityIgnored = true;
             }
         }

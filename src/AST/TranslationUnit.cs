@@ -30,12 +30,6 @@ namespace CppSharp.AST
             get { return !IgnoreFlags.HasFlag(IgnoreFlags.Generation); }
         }
 
-        // Whether the unit should be processed.
-        public override bool IsProcessed
-        {
-            get { return !IgnoreFlags.HasFlag(IgnoreFlags.Processing); }
-        }
-
         // Whether the unit should be ignored.
         public override bool Ignore
         {
