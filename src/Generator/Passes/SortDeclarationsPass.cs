@@ -5,11 +5,6 @@ namespace CppSharp.Passes
 {
     class SortDeclarationsPass : TranslationUnitPass
     {
-        public SortDeclarationsPass()
-        {
-            
-        }
-
         private static void SortDeclarations(Namespace @namespace)
         {
             @namespace.Classes.Sort((c, c1) =>
