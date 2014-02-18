@@ -67,6 +67,11 @@ namespace CppSharp
             ParserOptions(System::IntPtr native);
             ParserOptions();
 
+            property unsigned int ArgumentsCount
+            {
+                unsigned int get();
+            }
+
             property System::String^ FileName
             {
                 System::String^ get();
@@ -140,6 +145,10 @@ namespace CppSharp
                 bool get();
                 void set(bool);
             }
+
+            System::String^ getArguments(unsigned int i);
+
+            void addArguments(System::String^ s);
 
             System::String^ getIncludeDirs(unsigned int i);
 

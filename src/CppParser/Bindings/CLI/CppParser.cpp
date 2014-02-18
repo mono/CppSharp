@@ -20,6 +20,20 @@ CppSharp::Parser::ParserOptions::ParserOptions()
     NativePtr = new ::CppSharp::CppParser::ParserOptions();
 }
 
+System::String^ CppSharp::Parser::ParserOptions::getArguments(unsigned int i)
+{
+    auto __ret = ((::CppSharp::CppParser::ParserOptions*)NativePtr)->getArguments(i);
+    if (__ret == nullptr) return nullptr;
+    return clix::marshalString<clix::E_UTF8>(__ret);
+}
+
+void CppSharp::Parser::ParserOptions::addArguments(System::String^ s)
+{
+    auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
+    auto arg0 = _arg0.c_str();
+    ((::CppSharp::CppParser::ParserOptions*)NativePtr)->addArguments(arg0);
+}
+
 System::String^ CppSharp::Parser::ParserOptions::getIncludeDirs(unsigned int i)
 {
     auto __ret = ((::CppSharp::CppParser::ParserOptions*)NativePtr)->getIncludeDirs(i);
@@ -84,6 +98,12 @@ System::IntPtr CppSharp::Parser::ParserOptions::__Instance::get()
 void CppSharp::Parser::ParserOptions::__Instance::set(System::IntPtr object)
 {
     NativePtr = (::CppSharp::CppParser::ParserOptions*)object.ToPointer();
+}
+
+unsigned int CppSharp::Parser::ParserOptions::ArgumentsCount::get()
+{
+    auto __ret = ((::CppSharp::CppParser::ParserOptions*)NativePtr)->getArgumentsCount();
+    return __ret;
 }
 
 System::String^ CppSharp::Parser::ParserOptions::FileName::get()
