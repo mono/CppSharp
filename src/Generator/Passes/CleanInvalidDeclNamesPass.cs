@@ -69,7 +69,29 @@ namespace CppSharp.Passes
         public override bool VisitFunctionDecl(Function function)
         {
             uniqueName = 0;
-            return base.VisitFunctionDecl(function);
+            var ret = base.VisitFunctionDecl(function);
+            uniqueName = 0;
+
+            return ret;
+        }
+
+        public override bool VisitEvent(Event @event)
+        {
+            uniqueName = 0;
+            var ret = base.VisitEvent(@event);
+            uniqueName = 0;
+
+            return ret;
+        }
+
+        public override bool VisitFunctionType(FunctionType type,
+            TypeQualifiers quals)
+        {
+            uniqueName = 0;
+            var ret = base.VisitFunctionType(type, quals);
+            uniqueName = 0;
+
+            return ret;
         }
 
         public override bool VisitTypedefDecl(TypedefDecl typedef)
