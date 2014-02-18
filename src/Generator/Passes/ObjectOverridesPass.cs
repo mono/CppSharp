@@ -51,7 +51,7 @@ namespace CppSharp
             block.NewLine();
 
             block.WriteLine("if (!obj) return false;");
-            block.Write("return Instance == obj->Instance;");
+            block.Write("return __Instance == obj->__Instance;");
         }
 
         private bool isHooked;
