@@ -43,6 +43,14 @@ namespace CppSharp.Generators.CLI
 
         public string VisitTagType(TagType tag, TypeQualifiers quals)
         {
+            TypeMap typeMap = null;
+            if (TypeMapDatabase.FindTypeMap(tag, out typeMap))
+            {
+                typeMap.Type = tag;
+                Context.Type = tag;
+                return typeMap.CLISignature(Context);
+            }
+
             Declaration decl = tag.Declaration;
 
             if (decl == null)
