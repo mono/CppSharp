@@ -2151,7 +2151,7 @@ void Parser::HandleDeclaration(clang::Decl* D, CppSharp::AST::Declaration^ Decl)
 
     Decl->OriginalPtr = System::IntPtr(D);
 
-    if (Decl->PreprocessedEntities->Count == 0)
+    if (Decl->PreprocessedEntities->Count == 0 && !D->isImplicit())
     {
         if (clang::dyn_cast<clang::TranslationUnitDecl>(D))
         {
