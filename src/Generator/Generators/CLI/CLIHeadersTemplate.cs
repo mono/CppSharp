@@ -271,7 +271,6 @@ namespace CppSharp.Generators.CLI
             if (@class.Fields.Any())
             {
                 PushBlock(CLIBlockKind.AccessSpecifier);
-                NewLine();
                 WriteLine("private:");
                 PopBlock(NewLineKind.IfNotEmpty);
 
@@ -436,11 +435,15 @@ namespace CppSharp.Generators.CLI
 
         private void GenerateField(Class @class, Field field)
         {
+            PushBlock(CLIBlockKind.Field, field);
+
             GenerateDeclarationCommon(field);
             if (@class.IsUnion)
                 WriteLine("[System::Runtime::InteropServices::FieldOffset({0})]",
                     field.Offset);
             WriteLine("{0} {1};", field.Type, SafeIdentifier(field.Name));
+
+            PopBlock(NewLineKind.Never);
         }
 
         public void GenerateClassEvents(Class @class)

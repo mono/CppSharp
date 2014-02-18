@@ -47,6 +47,7 @@ namespace CppSharp.Generators.CLI
         public static int Finalizer = BlockKind.LAST + 18;
         public static int AccessSpecifier = BlockKind.LAST + 19;
         public static int Fields = BlockKind.LAST + 20;
+        public static int Field = BlockKind.LAST + 21;
     }
 
     /// <summary>
