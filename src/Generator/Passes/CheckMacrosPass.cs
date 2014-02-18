@@ -46,7 +46,7 @@ namespace CppSharp.Passes
             if (AlreadyVisited(decl))
                 return false;
 
-            if (decl is DeclarationContext)
+            if (decl is DeclarationContext && !(decl is Class))
                 return true;
 
             var expansions = decl.PreprocessedEntities.OfType<MacroExpansion>();
