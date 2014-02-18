@@ -2047,7 +2047,7 @@ PreprocessedEntity* Parser::WalkPreprocessedEntity(
         auto Definition = new MacroDefinition();
         Entity = Definition;
 
-        Definition->Namespace = GetTranslationUnit(MD->getLocation(), NULL);
+        Definition->_Namespace = GetTranslationUnit(MD->getLocation(), NULL);
         Definition->Name = II->getName().trim();
         Definition->Expression = Expression.trim();
     }
