@@ -18,6 +18,8 @@ struct CS_API ParserOptions
 {
     ParserOptions();
 
+    VECTOR_STRING(Arguments)
+
     // C/C++ header file name.
     STRING(FileName)
 

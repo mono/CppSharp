@@ -147,6 +147,7 @@ namespace CppSharp
             {
                 FileName = file.Path,
 #if OLD_PARSER
+                Arguments = Options.Arguments,
                 IncludeDirs = Options.IncludeDirs,
                 SystemIncludeDirs = Options.SystemIncludeDirs,
                 Defines = Options.Defines,
@@ -162,6 +163,12 @@ namespace CppSharp
             };
 
 #if !OLD_PARSER
+            for (uint i = 0; i < Options.ArgumentsCount; ++i)
+            {
+                var arg = Options.getArguments(i);
+                options.addArguments(arg);
+            }
+
             for (uint i = 0; i < Options.IncludeDirsCount; ++i)
             {
                 var include = Options.getIncludeDirs(i);

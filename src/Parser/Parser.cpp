@@ -110,6 +110,12 @@ void Parser::SetupHeader()
         args.push_back("-fdelayed-template-parsing");
     }
 
+    for each (System::String^ arg in Opts->Arguments)
+    {
+        String s = marshalString<E_UTF8>(arg);
+        args.push_back(s.c_str());
+    }
+
     C.reset(new CompilerInstance());
     C->createDiagnostics();
 

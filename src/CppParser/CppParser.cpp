@@ -20,6 +20,7 @@ ParserOptions::ParserOptions()
 {
 }
 
+DEF_VECTOR_STRING(ParserOptions, Arguments)
 DEF_STRING(ParserOptions, FileName)
 DEF_VECTOR_STRING(ParserOptions, IncludeDirs)
 DEF_VECTOR_STRING(ParserOptions, SystemIncludeDirs)

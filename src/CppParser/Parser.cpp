@@ -99,6 +99,12 @@ void Parser::SetupHeader()
     args.push_back("-std=gnu++11");
     args.push_back("-fno-rtti");
 
+    for (unsigned I = 0, E = Opts->Arguments.size(); I != E; ++I)
+    {
+        const String& Arg = Opts->Arguments[I];
+        args.push_back(Arg.c_str());
+    }
+
     // Enable the Microsoft parsing extensions
     if (Opts->MicrosoftMode)
     {
@@ -2517,6 +2523,9 @@ ParserResult* Parser::ParseHeader(const std::string& File)
 
     auto FileName = FileEntry->getName();
     auto Unit = Lib->FindOrCreateModule(FileName);
+    if (Unit->OriginalPtr == nullptr)
+        Unit->OriginalPtr = (void*) FileEntry;
+
     auto TU = AST->getTranslationUnitDecl();
     HandleDeclaration(TU, Unit);
 
