@@ -380,6 +380,7 @@ namespace CppSharp.Generators.CSharp
                 case PrimitiveType.Float: return "float";
                 case PrimitiveType.Double: return "double";
                 case PrimitiveType.IntPtr: return "global::System.IntPtr";
+                case PrimitiveType.UIntPtr: return "global::System.UIntPtr";
             }
 
             throw new NotSupportedException();

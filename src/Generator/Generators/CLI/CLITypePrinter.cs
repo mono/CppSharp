@@ -184,6 +184,7 @@ namespace CppSharp.Generators.CLI
                 case PrimitiveType.Float: return "float";
                 case PrimitiveType.Double: return "double";
                 case PrimitiveType.IntPtr: return "IntPtr";
+                case PrimitiveType.UIntPtr: return "UIntPtr";
             }
 
             throw new NotSupportedException();
