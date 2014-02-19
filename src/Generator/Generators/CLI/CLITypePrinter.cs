@@ -148,7 +148,7 @@ namespace CppSharp.Generators.CLI
                 if (param != null && (param.IsOut || param.IsInOut))
                     return VisitPrimitiveType(primitive);
 
-                return "System::IntPtr";
+                return VisitPrimitiveType(primitive, quals) + "*";
             }
 
             return pointee.Visit(this, quals);

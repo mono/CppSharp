@@ -76,7 +76,7 @@ namespace CppSharp.Generators.CLI
 
             if (pointee.IsPrimitiveType(PrimitiveType.Void))
             {
-                Context.Return.Write("IntPtr({0})", Context.ReturnVarName);
+                Context.Return.Write(Context.ReturnVarName);
                 return true;
             }
 
@@ -89,7 +89,7 @@ namespace CppSharp.Generators.CLI
 
             if (pointee.IsPrimitiveType(out primitive))
             {
-                Context.Return.Write("IntPtr({0})", Context.ReturnVarName);
+                Context.Return.Write(Context.ReturnVarName);
                 return true;
             }
 
@@ -431,7 +431,7 @@ namespace CppSharp.Generators.CLI
                 var cppTypeName = pointer.Visit(cppTypePrinter, quals);
 
                 Context.Return.Write("({0})", cppTypeName);
-                Context.Return.Write("{0}.ToPointer()", Context.Parameter.Name);
+                Context.Return.Write(Context.Parameter.Name);
                 return true;
             }
 
