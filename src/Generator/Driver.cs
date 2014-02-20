@@ -213,6 +213,8 @@ namespace CppSharp
 
             parser.SourceParsed += OnSourceFileParsed;
             parser.ParseProject(Project, Options);
+           
+            TargetInfo = parser.GetTargetInfo(Options);
 
 #if !OLD_PARSER
             ASTContext = ClangParser.ConvertASTContext(parser.ASTContext);
@@ -220,6 +222,8 @@ namespace CppSharp
 
             return true;
         }
+
+        public ParserTargetInfo TargetInfo { get; set; }
 
         public bool ParseLibraries()
         {
