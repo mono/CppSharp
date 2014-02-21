@@ -96,4 +96,15 @@ public class CSharpTempTests : GeneratorTestFixture
         dtors.Dispose();
         Assert.AreEqual(0xcafe, CSharpTemp.TestDestructors.Marker);
     }
+
+    [Test]
+    public unsafe void TestArrayOfPointersToPrimitives()
+    {
+        Bar bar = new Bar();
+        void*[] array = new void*[1];
+        int i = 5;
+        array[0] = &i;
+        bar.ArrayOfPrimitivePointers = array;
+        Assert.That(i, Is.EqualTo(*(int*) bar.ArrayOfPrimitivePointers[0]));
+    }
 }

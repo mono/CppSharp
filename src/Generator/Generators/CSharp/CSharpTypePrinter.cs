@@ -113,6 +113,13 @@ namespace CppSharp.Generators.CSharp
             if (ContextKind == CSharpTypePrinterContextKind.Native &&
                 array.SizeType == ArrayType.ArraySize.Constant)
             {
+                if (array.Type.Desugar().IsPointerToPrimitiveType())
+                {
+                    return new CSharpTypePrinterResult
+                    {
+                        Type = string.Format("{0}*", array.Type.Visit(this, quals))
+                    };
+                }
                 return new CSharpTypePrinterResult()
                 {
                     Type = string.Format("fixed {0}", array.Type.Visit(this, quals)),
