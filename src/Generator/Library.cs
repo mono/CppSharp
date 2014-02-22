@@ -275,13 +275,11 @@ namespace CppSharp
         public static void IgnoreClassMethodWithName(this ASTContext context, string className,
             string name)
         {
-            foreach (var @class in context.FindClass(name))
+            foreach (var method in from @class in context.FindClass(className)
+                                   from method in @class.Methods
+                                   where method.Name == name
+                                   select method)
             {
-                var method = @class.Methods.Find(m => m.Name == name);
-
-                if (method == null)
-                    return;
-
                 method.ExplicityIgnored = true;
             }
         }
