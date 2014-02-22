@@ -252,10 +252,6 @@ namespace CppSharp.Generators.CSharp
                 if (VarSuffix > 0)
                     instanceName += VarSuffix;
 
-                // Allocate memory for a new native object and call the ctor.
-                Context.SupportBefore.WriteLine("var {0} = Marshal.AllocHGlobal({1});",
-                    instanceName, @class.Layout.Size);
-
                 if (@class.HasNonTrivialCopyConstructor)
                 {
                     // Find a valid copy constructor overload.
@@ -266,13 +262,27 @@ namespace CppSharp.Generators.CSharp
                         throw new NotSupportedException("Expected a valid copy constructor");
 
                     // Call the copy constructor.
-                    Context.SupportBefore.WriteLine("{0}.Internal.{1}({2}, new global::System.IntPtr(&{3}));",
-                        QualifiedIdentifier(@class),
-                        CSharpTextTemplate.GetFunctionNativeIdentifier(copyCtorMethod),
-                        instanceName, instance);
+                    TypeMap typeMap;
+                    if (copyCtorMethod.Ignore && FindTypeMap(ctx.Driver.TypeDatabase, @class, out typeMap))
+                    {
+                        typeMap.CSharpMarshalCopyCtorToManaged(Context);
+                    }
+                    else
+                    {
+                        // Allocate memory for a new native object and call the ctor.
+                        Context.SupportBefore.WriteLine("var {0} = Marshal.AllocHGlobal({1});",
+                            instanceName, @class.Layout.Size);
+                        Context.SupportBefore.WriteLine("{0}.Internal.{1}({2}, new global::System.IntPtr(&{3}));",
+                            QualifiedIdentifier(@class),
+                            CSharpTextTemplate.GetFunctionNativeIdentifier(copyCtorMethod),
+                            instanceName, instance);
+                    }
                 }
                 else
                 {
+                    // Allocate memory for a new native object and call the ctor.
+                    Context.SupportBefore.WriteLine("var {0} = Marshal.AllocHGlobal({1});",
+                        instanceName, @class.Layout.Size);
                     instance = instance.Trim('*');
                     Context.SupportBefore.WriteLine(
                         "CppSharp.Runtime.Helpers.memcpy({0}, new IntPtr(&{1}), new UIntPtr({2}));",
@@ -289,6 +299,13 @@ namespace CppSharp.Generators.CSharp
                 instance);
 
             return true;
+        }
+
+        private static bool FindTypeMap(ITypeMapDatabase typeMapDatabase,
+            Class @class, out TypeMap typeMap)
+        {
+            return typeMapDatabase.FindTypeMap(@class, out typeMap) ||
+                   (@class.HasBase && FindTypeMap(typeMapDatabase, @class.Bases[0].Class, out typeMap));
         }
 
         public override bool VisitEnumDecl(Enumeration @enum)

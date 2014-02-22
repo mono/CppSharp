@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.Util;
 using CppSharp.AST;
+using CppSharp.Types;
 using CppSharp.Utils;
 using Attribute = CppSharp.AST.Attribute;
 using Type = CppSharp.AST.Type;
@@ -781,13 +782,11 @@ namespace CppSharp.Generators.CSharp
         {
             foreach (var @base in @class.Bases)
             {
-                if (!@base.IsClass) continue;
-                var baseClass = @base.Class;
-
-                if (baseClass.Ignore)
+                TypeMap typeMap;
+                if (!Driver.TypeDatabase.FindTypeMap(@base.Type, out typeMap) && @base.Class.Ignore)
                     continue;
 
-                GenerateClassFields(baseClass, action);
+                GenerateClassFields(@base.Class, action);
             }
 
             foreach (var field in @class.Fields)
