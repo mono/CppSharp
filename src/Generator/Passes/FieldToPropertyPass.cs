@@ -26,6 +26,13 @@ namespace CppSharp.Passes
             if (ASTUtils.CheckIgnoreField(field))
                 return false;
 
+            // TODO: member pointer functions are not yet supported
+            if (field.Type.Desugar() is MemberPointerType)
+            {
+                field.ExplicityIgnored = true;
+                return false;
+            }
+
             // Check if we already have a synthetized property.
             var existingProp = @class.Properties.FirstOrDefault(property =>
                 property.Name == field.Name &&

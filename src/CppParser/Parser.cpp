@@ -1407,7 +1407,14 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         if (TL && !TL->isNull())
         {
             FTL = TL->getAs<FunctionProtoTypeLoc>();
-            RL = FTL.getReturnLoc();
+            if (FTL)
+            {
+                RL = FTL.getReturnLoc();
+            }
+            else
+            {
+                RL = TL->getAs<ParenTypeLoc>().getInnerLoc();
+            }
         }
 
         auto F = new FunctionType();

@@ -100,19 +100,6 @@ namespace CppSharp
             return base.VisitTypedefDecl(typedef);
         }
 
-        public override bool VisitMemberPointerType(MemberPointerType member,
-            TypeQualifiers quals)
-        {
-            FunctionType functionType;
-            if (!member.IsPointerTo(out functionType))
-            {
-                Ignore();
-                return false;
-            }
-
-            return base.VisitMemberPointerType(member, quals);
-        }
-
         public override bool VisitTemplateSpecializationType(
             TemplateSpecializationType template, TypeQualifiers quals)
         {

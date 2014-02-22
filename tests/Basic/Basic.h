@@ -253,3 +253,7 @@ struct DLL_API TestFinalizers
 {
 };
 
+struct HasFieldOfFunctionPointerType
+{
+    Foo(Bar::* const m_function)() const;
+};
