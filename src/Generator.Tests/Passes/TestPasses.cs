@@ -1,4 +1,5 @@
-﻿using CppSharp.Passes;
+﻿using System.Linq;
+using CppSharp.Passes;
 using NUnit.Framework;
 
 namespace CppSharp.Generator.Tests.Passes
@@ -98,6 +99,14 @@ namespace CppSharp.Generator.Tests.Passes
         public void TestStructInheritance()
         {
 
+        }
+
+        [Test]
+        public void TestIgnoringMethod()
+        {
+            AstContext.IgnoreClassMethodWithName("Foo", "toIgnore");
+            Assert.IsTrue(AstContext.FindClass("Foo").First().Methods.Find(
+                m => m.Name == "toIgnore").ExplicityIgnored);
         }
     }
 }

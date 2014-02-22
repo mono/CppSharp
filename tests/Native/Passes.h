@@ -14,7 +14,10 @@ enum FlagEnum2
   D1 = 1 << 4,
 };
 
-class Foo { };
+class Foo
+{
+    void toIgnore() { }
+};
 void FooStart(Foo*, int);
 
 struct TestRename
