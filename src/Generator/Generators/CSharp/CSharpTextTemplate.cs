@@ -366,7 +366,11 @@ namespace CppSharp.Generators.CSharp
                     PopBlock(NewLineKind.BeforeNextBlock);
                 }
 
-                GenerateClassMarshals(@class);
+                if (Options.GenerateClassMarshals)
+                {
+                    GenerateClassMarshals(@class);
+                }
+
                 GenerateClassConstructors(@class);
 
                 if (@class.IsUnion)
@@ -772,7 +776,10 @@ namespace CppSharp.Generators.CSharp
             if (@class.IsRefType)
                 bases.Add("IDisposable");
 
-            bases.Add("CppSharp.Runtime.ICppMarshal");
+            if (Options.GenerateClassMarshals)
+            {
+                bases.Add("CppSharp.Runtime.ICppMarshal");
+            }
 
             if (bases.Count > 0)
                 Write(" : {0}", string.Join(", ", bases));

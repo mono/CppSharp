@@ -37,6 +37,7 @@ namespace CppSharp
             GeneratorKind = GeneratorKind.CSharp;
             GenerateLibraryNamespace = true;
             GeneratePartialClasses = true;
+            GenerateClassMarshals = false;
             OutputInteropIncludes = true;
             MaxIndent = 80;
             CommentPrefix = "///";
@@ -89,6 +90,7 @@ namespace CppSharp
         public bool GenerateInterfacesForMultipleInheritance;
         public bool GenerateProperties;
         public bool GenerateInternalImports;
+        public bool GenerateClassMarshals;
 
         /// <summary>
         /// Enable this option to enable generation of finalizers.
