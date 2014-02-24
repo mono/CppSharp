@@ -51,6 +51,9 @@ public:
 
     int takesQux(const Qux& qux);
     Qux returnQux();
+
+    typedef bool (*FunctionTypedef)(const void *);
+    FunctionTypedef functionTypedef;
 };
 
 struct QArrayData
