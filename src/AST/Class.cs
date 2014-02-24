@@ -50,9 +50,8 @@ namespace CppSharp.AST
                     }
                 }
                 var templatedClass = ((ClassTemplate) type.Template).TemplatedClass;
-                return templatedClass.IsIncomplete
-                    ? (Class) templatedClass.CompleteDeclaration
-                    : templatedClass;
+                return templatedClass.CompleteDeclaration == null ?
+                    templatedClass : (Class) templatedClass.CompleteDeclaration;
             }
         }
 
