@@ -171,8 +171,10 @@ namespace CppSharp.AST
             if (entries.Count <= 1)
             {
                 var @class = Classes.Find(c => c.Name.Equals(name, stringComparison));
-                return @class.CompleteDeclaration == null ? @class :
-                    (Class) @class.CompleteDeclaration;
+                if (@class != null)
+                    return @class.CompleteDeclaration == null ?
+                        @class : (Class) @class.CompleteDeclaration;
+                return null;
             }
 
             var className = entries[entries.Count - 1];
