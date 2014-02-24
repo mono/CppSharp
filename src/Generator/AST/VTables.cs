@@ -19,7 +19,7 @@ namespace CppSharp.AST
             throw new NotSupportedException();
         }
 
-        public static List<VTableComponent> GatherVTableMethodEntries(VTableLayout layout)
+        private static List<VTableComponent> GatherVTableMethodEntries(VTableLayout layout)
         {
             var entries = new List<VTableComponent>();
             if (layout == null)
@@ -50,11 +50,6 @@ namespace CppSharp.AST
             return GatherVTableMethodEntries(@class.Layout.Layout);
         }
 
-        public static int GetVTableComponentIndex(VTableLayout layout, VTableComponent entry)
-        {
-            return layout.Components.IndexOf(entry);
-        }
-
         public static int GetVTableComponentIndex(Class @class, VTableComponent entry)
         {
             switch (@class.Layout.ABI)
@@ -62,13 +57,14 @@ namespace CppSharp.AST
             case CppAbi.Microsoft:
                 foreach (var vfptr in @class.Layout.VFTables)
                 {
-                    var index = GetVTableComponentIndex(vfptr.Layout, entry);
+                    var index = vfptr.Layout.Components.IndexOf(entry);
                     if (index >= 0)
                         return index;
                 }
                 break;
             case CppAbi.Itanium:
-                return GetVTableComponentIndex(@class.Layout.Layout, entry);
+                // ignore offset to top and RTTI
+                return @class.Layout.Layout.Components.IndexOf(entry) - 2;
             }
 
             throw new NotSupportedException();

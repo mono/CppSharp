@@ -11,7 +11,7 @@ int Foo::vfoo()
 
 int Foo::vbar()
 {
-    return 3;
+    return vfoo();
 }
 
 int Foo::append()
@@ -22,6 +22,11 @@ int Foo::append()
 int Foo::append(int a)
 {
     return ++a;
+}
+
+int Foo::callVirtualWithParameter(int a)
+{
+    return append(a);
 }
 
 int FooCallFoo(Foo* foo)
