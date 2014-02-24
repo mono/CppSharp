@@ -689,6 +689,104 @@ void Parser::WalkRecordCXX(clang::CXXRecordDecl* Record, Class* RC)
         WalkVTable(Record, RC);
 }
 
+Class* Parser::WalkRecord(clang::RecordDecl* Record)
+{
+    using namespace clang;
+
+    auto NS = GetNamespace(Record);
+    assert(NS && "Expected a valid namespace");
+
+    bool isCompleteDefinition = Record->isCompleteDefinition();
+
+    Class* RC = nullptr;
+
+    auto Name = GetTagDeclName(Record);
+    auto HasEmptyName = Record->getDeclName().isEmpty();
+
+    if (HasEmptyName)
+    {
+        if (auto AR = NS->FindAnonymous((uint64_t) Record))
+            RC = static_cast<Class*>(AR);
+    }
+    else
+    {
+        RC = NS->FindClass(Name, isCompleteDefinition, /*Create=*/false);
+    }
+
+    if (RC)
+        return RC;
+
+    RC = NS->FindClass(Name, isCompleteDefinition, /*Create=*/true);
+    HandleDeclaration(Record, RC);
+
+    if (HasEmptyName)
+        NS->Anonymous[(uint64_t) Record] = RC;
+
+    if (!isCompleteDefinition)
+        return RC;
+
+    WalkRecord(Record, RC);
+
+    return RC;
+}
+
+void Parser::WalkRecord(clang::RecordDecl* Record, Class* RC)
+{
+    using namespace clang;
+
+    auto headStartLoc = GetDeclStartLocation(C.get(), Record);
+    auto headEndLoc = Record->getLocation(); // identifier location
+    auto bodyEndLoc = Record->getLocEnd();
+
+    auto headRange = clang::SourceRange(headStartLoc, headEndLoc);
+    auto bodyRange = clang::SourceRange(headEndLoc, bodyEndLoc);
+
+    HandlePreprocessedEntities(RC, headRange, MacroLocation::ClassHead);
+    HandlePreprocessedEntities(RC, bodyRange, MacroLocation::ClassBody);
+
+    auto &Sema = C->getSema();
+
+    RC->IsUnion = Record->isUnion();
+
+    bool hasLayout =  !Record->isInvalidDecl();
+
+    // Get the record layout information.
+    const ASTRecordLayout* Layout = 0;
+    if (hasLayout)
+    {
+        Layout = &C->getASTContext().getASTRecordLayout(Record);
+        RC->Layout->Alignment = (int) Layout->getAlignment().getQuantity();
+        RC->Layout->Size = (int) Layout->getSize().getQuantity();
+        RC->Layout->DataSize = (int) Layout->getDataSize().getQuantity();
+    }
+
+    for (auto it = Record->decls_begin(); it != Record->decls_end(); ++it)
+    {
+        auto D = *it;
+
+        switch (D->getKind())
+        {
+        case Decl::Field:
+        {
+            auto FD = cast<FieldDecl>(D);
+            auto Field = WalkFieldCXX(FD, RC);
+
+            if (Layout)
+                Field->Offset = Layout->getFieldOffset(FD->getFieldIndex());
+
+            break;
+        }
+        case Decl::IndirectField: // FIXME: Handle indirect fields
+            break;
+        default:
+        {
+            auto Decl = WalkDeclaration(D);
+            break;
+        }
+        }
+    }
+}
+
 //-----------------------------------//
 
 static TemplateSpecializationKind
@@ -1080,6 +1178,12 @@ DeclarationContext* Parser::GetNamespace(clang::Decl* D,
         case Decl::LinkageSpec:
         {
             const LinkageSpecDecl* LD = cast<LinkageSpecDecl>(Ctx);
+            continue;
+        }
+        case Decl::Record:
+        {
+            auto RD = cast<RecordDecl>(Ctx);
+            DC = WalkRecord(RD);
             continue;
         }
         case Decl::CXXRecord:
@@ -2202,6 +2306,26 @@ Declaration* Parser::WalkDeclaration(clang::Decl* D,
     auto Kind = D->getKind();
     switch(D->getKind())
     {
+    case Decl::Record:
+    {
+        RecordDecl* RD = cast<RecordDecl>(D);
+
+        auto Class = WalkRecord(RD);
+
+        // We store a definition order index into the declarations.
+        // This is needed because declarations are added to their contexts as
+        // soon as they are referenced and we need to know the original order
+        // of the declarations.
+
+        if (CanBeDefinition && Class->DefinitionOrder == 0)
+        {
+            Class->DefinitionOrder = Index++;
+            //Debug("%d: %s\n", Index++, GetTagDeclName(RD).c_str());
+        }
+
+        Decl = Class;
+        break;
+    }
     case Decl::CXXRecord:
     {
         CXXRecordDecl* RD = cast<CXXRecordDecl>(D);

@@ -70,6 +70,8 @@ protected:
         bool AddToNamespace = true);
     Class* WalkRecordCXX(clang::CXXRecordDecl* Record);
     void WalkRecordCXX(clang::CXXRecordDecl* Record, Class* RC);
+    Class* WalkRecord(clang::RecordDecl* Record);
+    void WalkRecord(clang::RecordDecl* Record, Class* RC);
     ClassTemplateSpecialization*
     WalkClassTemplateSpecialization(clang::ClassTemplateSpecializationDecl* CTS);
     ClassTemplatePartialSpecialization*

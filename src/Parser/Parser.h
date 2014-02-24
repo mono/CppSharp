@@ -67,6 +67,8 @@ protected:
         bool AddToNamespace = true);
     CppSharp::AST::Class^ WalkRecordCXX(clang::CXXRecordDecl* Record);
     void WalkRecordCXX(clang::CXXRecordDecl* Record, CppSharp::AST::Class^ RC);
+    CppSharp::AST::Class^ WalkRecord(clang::RecordDecl* Record);
+    void WalkRecord(clang::RecordDecl* Record, CppSharp::AST::Class^ RC);
     CppSharp::AST::ClassTemplateSpecialization^
     WalkClassTemplateSpecialization(clang::ClassTemplateSpecializationDecl* CTS);
     CppSharp::AST::ClassTemplatePartialSpecialization^
