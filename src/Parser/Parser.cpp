@@ -533,6 +533,51 @@ void Parser::WalkVTable(clang::CXXRecordDecl* RD, CppSharp::AST::Class^ C)
     }
 }
 
+CppSharp::AST::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
+{
+    using namespace clang;
+    using namespace clix;
+
+    if (Record->isInjectedClassName())
+        return nullptr;
+
+    auto NS = GetNamespace(Record);
+    assert(NS && "Expected a valid namespace");
+
+    bool isCompleteDefinition = Record->isCompleteDefinition();
+
+    CppSharp::AST::Class^ RC = nullptr;
+
+    auto Name = marshalString<E_UTF8>(GetTagDeclName(Record));
+    auto HasEmptyName = Record->getDeclName().isEmpty();
+
+    if (HasEmptyName)
+    {
+        if (auto AR = NS->FindAnonymous((uint64_t)Record))
+            RC = safe_cast<CppSharp::AST::Class^>(AR);
+    }
+    else
+    {
+        RC = NS->FindClass(Name, isCompleteDefinition, /*Create=*/false);
+    }
+
+    if (RC)
+        return RC;
+
+    RC = NS->FindClass(Name, isCompleteDefinition, /*Create=*/true);
+    HandleDeclaration(Record, RC);
+
+    if (HasEmptyName)
+        NS->Anonymous[(uint64_t)Record] = RC;
+
+    if (!isCompleteDefinition)
+        return RC;
+
+    WalkRecordCXX(Record, RC);
+
+    return RC;
+}
+
 void Parser::WalkRecordCXX(clang::CXXRecordDecl* Record,
                           CppSharp::AST::Class^ RC)
 {
@@ -644,51 +689,6 @@ void Parser::WalkRecordCXX(clang::CXXRecordDecl* Record,
     // Process the vtables
     if (hasLayout && Record->isDynamicClass())
         WalkVTable(Record, RC);
-}
-
-CppSharp::AST::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
-{
-    using namespace clang;
-    using namespace clix;
-
-    if (Record->isInjectedClassName())
-        return nullptr;
-
-    auto NS = GetNamespace(Record);
-    assert(NS && "Expected a valid namespace");
-
-    bool isCompleteDefinition = Record->isCompleteDefinition();
-
-    CppSharp::AST::Class^ RC = nullptr;
-
-    auto Name = marshalString<E_UTF8>(GetTagDeclName(Record));
-    auto HasEmptyName = Record->getDeclName().isEmpty();
-
-    if (HasEmptyName)
-    {
-        if (auto AR = NS->FindAnonymous((uint64_t)Record))
-            RC = safe_cast<CppSharp::AST::Class^>(AR);
-    }
-    else
-    {
-        RC = NS->FindClass(Name, isCompleteDefinition, /*Create=*/false);
-    }
-
-    if (RC)
-        return RC;
-
-    RC = NS->FindClass(Name, isCompleteDefinition, /*Create=*/true);
-    HandleDeclaration(Record, RC);
-
-    if (HasEmptyName)
-        NS->Anonymous[(uint64_t)Record] = RC;
-
-    if (!isCompleteDefinition)
-        return RC;
-
-    WalkRecordCXX(Record, RC);
-
-    return RC;
 }
 
 //-----------------------------------//
