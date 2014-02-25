@@ -7,9 +7,9 @@ How to compile
 --------------
 
 Requirements:
-  Windows
-  VS 2012
-  Up-to-date versions of Clang and LLVM (development versions).
+* Windows
+* VS 2012
+* Up-to-date versions of Clang and LLVM (development versions).
 
 Since C++/CLI is used to interface with the native Clang libraries,
 for the moment you will need the Windows/VS platform to use this tool.
