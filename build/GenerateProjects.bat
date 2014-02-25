@@ -9,12 +9,14 @@ echo [1] Visual C++ 2010
 echo [2] Visual C++ 2012
 echo [3] Visual C++ 2012 (C++ parser)
 echo [4] Visual C++ 2013
-echo [5] GNU Make
+echo [5] Visual C++ 2013 (C++ parser)
+echo [6] GNU Make
 echo.
 
 :choice
 set /P C="Choice: "
-if "%C%"=="5" goto gmake
+if "%C%"=="6" goto gmake
+if "%C%"=="5" goto vs2013_cpp
 if "%C%"=="4" goto vs2013
 if "%C%"=="3" goto vs2012_cpp
 if "%C%"=="2" goto vs2012
@@ -39,6 +41,10 @@ goto quit
 
 :vs2013
 "premake5" --file=premake4.lua vs2013
+goto quit
+
+:vs2013_cpp
+"premake5" --file=premake4.lua --parser=cpp vs2013
 goto quit
 
 :gmake
