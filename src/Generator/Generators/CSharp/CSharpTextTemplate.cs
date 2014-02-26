@@ -37,8 +37,9 @@ namespace CppSharp.Generators.CSharp
 
         public static string SafeIdentifier(string id)
         {
-            id = new string(id.Select(c => char.IsLetterOrDigit(c) ? c : '_').ToArray());
-            return Keywords.Contains(id) ? "@" + id : id;
+            if (id.All(char.IsLetterOrDigit))
+                return Keywords.Contains(id) ? "@" + id : id;
+            return new string(id.Select(c => char.IsLetterOrDigit(c) ? c : '_').ToArray());
         }
 
         public static string ToCSharpCallConv(CallingConvention convention)
@@ -146,11 +147,6 @@ namespace CppSharp.Generators.CSharp
             return Generator.GeneratedIdentifier(id);
         }
 
-        public static string SafeIdentifier(string id)
-        {
-            return Helpers.SafeIdentifier(id);
-        }
-
         #endregion
 
         public override void Process()
@@ -170,7 +166,7 @@ namespace CppSharp.Generators.CSharp
             if (Options.GenerateLibraryNamespace)
             {
                 PushBlock(CSharpBlockKind.Namespace);
-                WriteLine("namespace {0}", SafeIdentifier(Driver.Options.OutputNamespace));
+                WriteLine("namespace {0}", Driver.Options.OutputNamespace);
                 WriteStartBraceIndent();
             }
 
@@ -242,7 +238,7 @@ namespace CppSharp.Generators.CSharp
             if (context.HasFunctions)
             {
                 PushBlock(CSharpBlockKind.Functions);
-                WriteLine("public unsafe partial class {0}{1}", SafeIdentifier(Options.OutputNamespace),
+                WriteLine("public unsafe partial class {0}{1}", Options.OutputNamespace,
                     TranslationUnit.FileNameWithoutExtension);
                 WriteStartBraceIndent();
 
@@ -497,7 +493,7 @@ namespace CppSharp.Generators.CSharp
             GenerateClassInternalHead(@class);
             WriteStartBraceIndent();
 
-            var typePrinter = TypePrinter as CSharpTypePrinter;
+            var typePrinter = TypePrinter;
             typePrinter.PushContext(CSharpTypePrinterContextKind.Native);
 
             GenerateClassInternalsFields(@class);
@@ -593,9 +589,7 @@ namespace CppSharp.Generators.CSharp
                     continue;
 
                 var typeName = param.CSharpType(TypePrinter);
-                string paramName = param.IsSynthetized ?
-                    GeneratedIdentifier(param.Name) : SafeIdentifier(param.Name);
-                @params.Add(string.Format("{0} {1}", typeName, paramName));
+                @params.Add(string.Format("{0} {1}", typeName, param.Name));
             }
 
             if (method != null && method.IsConstructor)
@@ -636,7 +630,8 @@ namespace CppSharp.Generators.CSharp
                 if (property.Ignore || property.Field == null) continue;
 
                 var nativeField = string.Format("{0}->{1}",
-                    Generator.GeneratedIdentifier("ptr"), property.Field.OriginalName);
+                    Generator.GeneratedIdentifier("ptr"),
+                    Helpers.SafeIdentifier(property.Field.OriginalName));
 
                 var ctx = new CSharpMarshalContext(Driver)
                 {
@@ -693,7 +688,8 @@ namespace CppSharp.Generators.CSharp
         private void GenerateStructInternalMarshalingProperty(Property property, string marshalVar)
         {
             var nativeField = string.Format("{0}->{1}",
-                Generator.GeneratedIdentifier("ptr"), property.Field.OriginalName);
+                Generator.GeneratedIdentifier("ptr"),
+                Helpers.SafeIdentifier(property.Field.OriginalName));
             var marshalCtx = new CSharpMarshalContext(Driver)
             {
                 ArgName = property.Name,
@@ -721,7 +717,7 @@ namespace CppSharp.Generators.CSharp
             if (marshal.Context.Return.StringBuilder.Length > 0)
             {
                 WriteLine("{0}.{1} = {2};", marshalVar,
-                    property.OriginalName, marshal.Context.Return);
+                    Helpers.SafeIdentifier(property.OriginalName), marshal.Context.Return);
             }
 
             if (isRef)
@@ -761,7 +757,7 @@ namespace CppSharp.Generators.CSharp
                 Write("partial ");
 
             Write(@class.IsInterface ? "interface " : (@class.IsValueType ? "struct " : "class "));
-            Write("{0}", SafeIdentifier(@class.Name));
+            Write("{0}", @class.Name);
 
             var bases = new List<string>();
 
@@ -809,7 +805,7 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateClassInternalsField(Field field)
         {
-            var safeIdentifier = SafeIdentifier(field.OriginalName);
+            var safeIdentifier = Helpers.SafeIdentifier(field.OriginalName);
 
             PushBlock(CSharpBlockKind.Field);
 
@@ -844,7 +840,7 @@ namespace CppSharp.Generators.CSharp
                 WriteLine("[FieldOffset({0})]", field.Offset);
 
             WriteLine("{0} {1} {2};", @public ? "public" : "private",
-                field.Type, SafeIdentifier(field.Name));
+                field.Type, field.Name);
 
             PopBlock(NewLineKind.BeforeNextBlock);
         }
@@ -961,7 +957,8 @@ namespace CppSharp.Generators.CSharp
 
                 var marshal = new CSharpMarshalManagedToNativePrinter(ctx);
                 ctx.ReturnVarName = string.Format("{0}->{1}",
-                    Generator.GeneratedIdentifier("ptr"), Helpers.SafeIdentifier(field.OriginalName));
+                    Generator.GeneratedIdentifier("ptr"),
+                    Helpers.SafeIdentifier(field.OriginalName));
                 param.Visit(marshal);
 
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
@@ -1282,14 +1279,14 @@ namespace CppSharp.Generators.CSharp
 
         private string GetPropertyName(Property prop)
         {
-            return prop.Parameters.Count == 0 ? SafeIdentifier(prop.Name)
+            return prop.Parameters.Count == 0 ? prop.Name
                 : string.Format("this[{0}]", FormatMethodParameters(prop.Parameters));
         }
 
         private void GenerateVariable(Class @class, Type type, Variable variable)
         {
             PushBlock(CSharpBlockKind.Variable);
-            WriteLine("public static {0} {1}", type, SafeIdentifier(variable.Name));
+            WriteLine("public static {0} {1}", type, variable.Name);
             WriteStartBraceIndent();
 
             GeneratePropertyGetter(variable, @class);
@@ -1535,7 +1532,7 @@ namespace CppSharp.Generators.CSharp
                 var ctx = new CSharpMarshalContext(Driver)
                 {
                     ReturnType = param.QualifiedType,
-                    ReturnVarName = SafeIdentifier(param.Name)
+                    ReturnVarName = param.Name
                 };
 
                 var marshal = new CSharpMarshalNativeToManagedPrinter(ctx) { VarSuffix = i };
@@ -1556,7 +1553,7 @@ namespace CppSharp.Generators.CSharp
             Method m = ((Class) method.Namespace).GetMethodByName(method.Name);
             if (m.IsGenerated)
             {
-                WriteLine("target.{0}({1});", SafeIdentifier(method.Name), string.Join(", ", marshals));              
+                WriteLine("target.{0}({1});", method.Name, string.Join(", ", marshals));              
             }
             else
             {
@@ -1597,12 +1594,12 @@ namespace CppSharp.Generators.CSharp
             {
                 property = ((Class) method.Namespace).Properties.First(
                     p => p.SetMethod == method);
-                WriteLine("target.{0} = {1};", SafeIdentifier(property.Name),
+                WriteLine("target.{0} = {1};", property.Name,
                     string.Join(", ", marshals));
             }
             else
             {
-                WriteLine("target.{0};", SafeIdentifier(property.Name));
+                WriteLine("target.{0};", property.Name);
             }
         }
 
@@ -1707,7 +1704,7 @@ namespace CppSharp.Generators.CSharp
             NewLine();
 
             WriteLine("{0} {1};", @event.Type, delegateInstance);
-            WriteLine("public event {0} {1}", @event.Type, Helpers.SafeIdentifier(@event.Name));
+            WriteLine("public event {0} {1}", @event.Type, @event.Name);
             WriteStartBraceIndent();
 
             GenerateEventAdd(@event);
@@ -1773,7 +1770,7 @@ namespace CppSharp.Generators.CSharp
             {
                 var ctx = new CSharpMarshalContext(Driver)
                 {
-                    ReturnVarName = Helpers.SafeIdentifier(param.Name),
+                    ReturnVarName = param.Name,
                     ReturnType = param.QualifiedType
                 };
 
@@ -1884,7 +1881,7 @@ namespace CppSharp.Generators.CSharp
         {
             PushBlock(CSharpBlockKind.Method);
             string className = @class.Name;
-            string safeIdentifier = SafeIdentifier(className);
+            string safeIdentifier = className;
             if (@class.Access == AccessSpecifier.Private && className.EndsWith("Internal"))
             {
                 className = className.Substring(0,
@@ -2230,7 +2227,7 @@ namespace CppSharp.Generators.CSharp
                     && !string.IsNullOrWhiteSpace(param.Context.ArgumentPrefix))
                     name += param.Context.ArgumentPrefix;
 
-                name += Helpers.SafeIdentifier(param.Name);
+                name += param.Name;
                 names.Add(name);
             }
 
@@ -2454,7 +2451,7 @@ namespace CppSharp.Generators.CSharp
             if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                 Write(marshal.Context.SupportBefore);
 
-            WriteLine("var {0} = {1};", SafeIdentifier(argName), marshal.Context.Return);
+            WriteLine("var {0} = {1};", argName, marshal.Context.Return);
 
             return paramMarshal;
         }
@@ -2479,7 +2476,7 @@ namespace CppSharp.Generators.CSharp
                 where param.Kind != ParameterKind.IndirectReturnType
                 let typeName = param.CSharpType(TypePrinter)
                 select string.Format("{0}{1} {2}", GetParameterUsage(param.Usage),
-                    typeName, SafeIdentifier(param.Name)));
+                    typeName, param.Name));
         }
 
         #endregion
@@ -2498,7 +2495,7 @@ namespace CppSharp.Generators.CSharp
                 || typedef.Type.IsPointerTo(out tag))
             {
                 PushBlock(CSharpBlockKind.Typedef);
-                WriteLine("public class " + SafeIdentifier(typedef.Name) + @" { }");
+                WriteLine("public class " + typedef.Name + @" { }");
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
             else if (typedef.Type.IsPointerTo(out functionType))
@@ -2510,7 +2507,7 @@ namespace CppSharp.Generators.CSharp
                 WriteLine("{0}unsafe {1};",
                     Helpers.GetAccess(typedef.Access),
                     string.Format(TypePrinter.VisitDelegate(functionType).Type,
-                        SafeIdentifier(typedef.Name)));
+                        typedef.Name));
                 TypePrinter.PopContext();
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
@@ -2528,7 +2525,7 @@ namespace CppSharp.Generators.CSharp
             if (@enum.IsFlags)
                 WriteLine("[Flags]");
 
-            Write("public enum {0}", SafeIdentifier(@enum.Name));
+            Write("public enum {0}", @enum.Name);
 
             var typeName = TypePrinter.VisitPrimitiveType(@enum.BuiltinType.Type,
                                                           new TypeQualifiers());
@@ -2546,8 +2543,8 @@ namespace CppSharp.Generators.CSharp
 
                 var value = @enum.GetItemValueAsString(item);
                 Write(item.ExplicitValue
-                          ? string.Format("{0} = {1}", SafeIdentifier(item.Name), value)
-                          : string.Format("{0}", SafeIdentifier(item.Name)));
+                          ? string.Format("{0} = {1}", item.Name, value)
+                          : string.Format("{0}", item.Name));
 
                 if (i < @enum.Items.Count - 1)
                     Write(",");
@@ -2572,7 +2569,7 @@ namespace CppSharp.Generators.CSharp
             if (function.IsOperator)
                 return Operators.GetOperatorIdentifier(function.OperatorKind);
 
-            return SafeIdentifier(function.Name);
+            return function.Name;
         }
 
         public static string GetFunctionNativeIdentifier(Function function)
@@ -2592,7 +2589,7 @@ namespace CppSharp.Generators.CSharp
                     functionName = GetMethodIdentifier(method);
             }
 
-            var identifier = SafeIdentifier(functionName);
+            var identifier = functionName;
 
             if (function.IsOperator)
                 identifier = "Operator" + function.OperatorKind;
@@ -2672,10 +2669,7 @@ namespace CppSharp.Generators.CSharp
 
                 var typeName = param.CSharpType(typePrinter);
 
-                var paramName = param.IsSynthetized ?
-                    GeneratedIdentifier(param.Name) : SafeIdentifier(param.Name);
-
-                @params.Add(string.Format("{0} {1}", typeName, paramName));
+                @params.Add(string.Format("{0} {1}", typeName, param.Name));
             }
 
             if (method != null && method.IsConstructor)

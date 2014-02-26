@@ -278,7 +278,7 @@ namespace CppSharp.Generators.CLI
 
             WriteLine("generic<{0}>", typeNames);
             WriteLine("{0} {1}::{2}({3})", retType, 
-                QualifiedIdentifier(function.Namespace), SafeIdentifier(function.Name),
+                QualifiedIdentifier(function.Namespace), function.Name,
                 GenerateParametersList(function.Parameters));
 
             WriteStartBraceIndent();
@@ -553,7 +553,7 @@ namespace CppSharp.Generators.CLI
 
         private void GenerateClassConstructor(Class @class, bool isIntPtr)
         {
-            Write("{0}::{1}(", QualifiedIdentifier(@class), SafeIdentifier(@class.Name));
+            Write("{0}::{1}(", QualifiedIdentifier(@class), @class.Name);
 
             var nativeType = string.Format("::{0}*", @class.QualifiedOriginalName);
             WriteLine("{0} native)", isIntPtr ? "System::IntPtr" : nativeType);
@@ -661,7 +661,7 @@ namespace CppSharp.Generators.CLI
                 Write("{0}::{1}(", QualifiedIdentifier(@class), GetMethodName(method));
             else
                 Write("{0} {1}::{2}(", method.ReturnType, QualifiedIdentifier(@class),
-                      SafeIdentifier(method.Name));
+                      method.Name);
 
             GenerateMethodParameters(method);
 
@@ -784,7 +784,7 @@ namespace CppSharp.Generators.CLI
                 Options.OutputNamespace, TranslationUnit.FileNameWithoutExtension);
 
             Write("{0} {1}::{2}(", function.ReturnType, classSig,
-                SafeIdentifier(function.Name));
+                function.Name);
 
             for (var i = 0; i < function.Parameters.Count; ++i)
             {

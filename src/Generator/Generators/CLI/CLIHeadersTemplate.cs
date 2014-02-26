@@ -190,7 +190,7 @@ namespace CppSharp.Generators.CLI
                 PushBlock(CLIBlockKind.Namespace, @namespace);
                 WriteLine("namespace {0}", isTopLevel
                                                ? Options.OutputNamespace
-                                               : SafeIdentifier(@namespace.Name));
+                                               : @namespace.Name);
                 WriteStartBraceIndent();
             }
 
@@ -218,7 +218,7 @@ namespace CppSharp.Generators.CLI
         {
             PushBlock(CLIBlockKind.FunctionsClass);
 
-            WriteLine("public ref class {0}{1}", SafeIdentifier(Options.OutputNamespace),
+            WriteLine("public ref class {0}{1}", Options.OutputNamespace,
                 TranslationUnit.FileNameWithoutExtension);
             WriteLine("{");
             WriteLine("public:");
@@ -348,7 +348,7 @@ namespace CppSharp.Generators.CLI
 
                 NewLine();
 
-                WriteLine("{0} {1}({2});", retType, SafeIdentifier(function.Name),
+                WriteLine("{0} {1}({2});", retType, function.Name,
                     GenerateParametersList(function.Parameters));
 
                 PopBlock(NewLineKind.BeforeNextBlock);
@@ -363,8 +363,8 @@ namespace CppSharp.Generators.CLI
             PushIndent();
 
             // Output a default constructor that takes the native pointer.
-            WriteLine("{0}({1} native);", SafeIdentifier(@class.Name), nativeType);
-            WriteLine("{0}({1} native);", SafeIdentifier(@class.Name), "System::IntPtr");
+            WriteLine("{0}({1} native);", @class.Name, nativeType);
+            WriteLine("{0}({1} native);", @class.Name, "System::IntPtr");
 
             foreach (var ctor in @class.Constructors)
             {
@@ -441,7 +441,7 @@ namespace CppSharp.Generators.CLI
             if (@class.IsUnion)
                 WriteLine("[System::Runtime::InteropServices::FieldOffset({0})]",
                     field.Offset);
-            WriteLine("{0} {1};", field.Type, SafeIdentifier(field.Name));
+            WriteLine("{0} {1};", field.Type, field.Name);
 
             PopBlock(NewLineKind.Never);
         }
@@ -558,7 +558,7 @@ namespace CppSharp.Generators.CLI
 
             Write(@class.IsValueType ? "value struct " : "ref class ");
 
-            Write("{0}", SafeIdentifier(@class.Name));
+            Write("{0}", @class.Name);
 
             if (@class.IsOpaque)
             {
@@ -652,7 +652,7 @@ namespace CppSharp.Generators.CLI
                 method.OperatorKind == CXXOperatorKind.Conversion)
                 Write("{0}(", GetMethodName(method));
             else
-                Write("{0} {1}(", method.ReturnType, SafeIdentifier(method.Name));
+                Write("{0} {1}(", method.ReturnType, method.Name);
 
             GenerateMethodParameters(method);
 
@@ -682,7 +682,7 @@ namespace CppSharp.Generators.CLI
                 WriteLine("{0}{1};",
                     !insideClass ? "public " : "",
                     string.Format(TypePrinter.VisitDelegate(function),
-                    SafeIdentifier(typedef.Name)));
+                    typedef.Name));
                 PopBlock(NewLineKind.BeforeNextBlock);
 
                 return true;
@@ -701,7 +701,7 @@ namespace CppSharp.Generators.CLI
             GenerateDeclarationCommon(function);
 
             var retType = function.ReturnType.ToString();
-            Write("static {0} {1}(", retType, SafeIdentifier(function.Name));
+            Write("static {0} {1}(", retType, function.Name);
 
             Write(GenerateParametersList(function.Parameters));
 
@@ -727,7 +727,7 @@ namespace CppSharp.Generators.CLI
             if (@enum.Namespace is Namespace)
                 Write("public ");
 
-            Write("enum struct {0}", SafeIdentifier(@enum.Name));
+            Write("enum struct {0}", @enum.Name);
 
             var typeName = TypePrinter.VisitPrimitiveType(@enum.BuiltinType.Type,
                 new TypeQualifiers());
@@ -746,10 +746,10 @@ namespace CppSharp.Generators.CLI
 
                 GenerateInlineSummary(item.Comment);
                 if (item.ExplicitValue)
-                    Write(String.Format("{0} = {1}", SafeIdentifier(item.Name),
+                    Write(String.Format("{0} = {1}", item.Name,
                         @enum.GetItemValueAsString(item)));
                 else
-                    Write(String.Format("{0}", SafeIdentifier(item.Name)));
+                    Write(String.Format("{0}", item.Name));
 
                 if (item != @enum.Items.Last())
                     WriteLine(",");
