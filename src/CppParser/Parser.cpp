@@ -2525,11 +2525,12 @@ ParserResult* Parser::ParseHeader(const std::string& File)
 
     auto FileName = FileEntry->getName();
     auto Unit = Lib->FindOrCreateModule(FileName);
-    if (Unit->OriginalPtr == nullptr)
-        Unit->OriginalPtr = (void*) FileEntry;
 
     auto TU = AST->getTranslationUnitDecl();
     HandleDeclaration(TU, Unit);
+
+    if (Unit->OriginalPtr == nullptr)
+        Unit->OriginalPtr = (void*) FileEntry;
 
     // Initialize enough Clang codegen machinery so we can get at ABI details.
     llvm::LLVMContext Ctx;
