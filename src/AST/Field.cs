@@ -16,6 +16,8 @@ namespace CppSharp.AST
             get { return Offset / (sizeof (byte) * 8); }
         }
 
+        public Expression Expression { get; set; }
+
         public Field()
         {
             Offset = 0;
