@@ -181,5 +181,11 @@ public class BasicTests : GeneratorTestFixture
         bar2.pointerToStruct.A = 15;
         Assert.That(bar2.pointerToStruct.A, Is.EqualTo(15));
     }
+
+    [Test]
+    public void TestStaticClasses()
+    {
+        Assert.That(TestStaticClass.Add(1, 2), Is.EqualTo(3));
+    }
 }
  

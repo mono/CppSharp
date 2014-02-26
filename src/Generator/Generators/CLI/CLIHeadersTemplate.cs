@@ -360,6 +360,9 @@ namespace CppSharp.Generators.CLI
 
         public void GenerateClassConstructors(Class @class, string nativeType)
         {
+            if (@class.IsStatic)
+                return;
+
             PushIndent();
 
             // Output a default constructor that takes the native pointer.
@@ -566,10 +569,13 @@ namespace CppSharp.Generators.CLI
                 return true;
             }
 
-            if (CSharpTextTemplate.HasRefBase(@class))
-                Write(" : {0}", QualifiedIdentifier(@class.Bases[0].Class));
-            else if (@class.IsRefType)
-                Write(" : ICppInstance");
+            if (!@class.IsStatic)
+            {
+                if (CSharpTextTemplate.HasRefBase(@class))
+                    Write(" : {0}", QualifiedIdentifier(@class.Bases[0].Class));
+                else if (@class.IsRefType)
+                    Write(" : ICppInstance");
+            }
 
             NewLine();
             WriteLine("{");

@@ -114,6 +114,9 @@ namespace CppSharp.AST
         // True if the class has a non trivial destructor.
         public bool HasNonTrivialDestructor;
 
+        // True if the class represents a static class.
+        public bool IsStatic;
+
         public Class()
         {
             Bases = new List<BaseClassSpecifier>();

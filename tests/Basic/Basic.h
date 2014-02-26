@@ -253,3 +253,11 @@ struct DLL_API TestFinalizers
 {
 };
 
+// Tests static classes
+struct DLL_API TestStaticClass
+{
+    static int Add(int a, int b) { return a + b; }
+
+private:
+    TestStaticClass();
+};

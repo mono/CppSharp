@@ -135,15 +135,7 @@ namespace CppSharp.Generators.CLI
 
             GenerateDeclContext(@class);
 
-            // Output a default constructor that takes the native pointer.
-            GenerateClassConstructor(@class, isIntPtr: false);
-            GenerateClassConstructor(@class, isIntPtr: true);
-
-            if (@class.IsRefType)
-            {
-                GenerateClassDestructor(@class);
-                GenerateClassFinalizer(@class);
-            }
+            GenerateClassConstructors(@class);
 
             foreach (var method in @class.Methods)
             {
@@ -197,6 +189,22 @@ namespace CppSharp.Generators.CLI
             }
 
             PopBlock();
+        }
+
+        private void GenerateClassConstructors(Class @class)
+        {
+            if (@class.IsStatic)
+                return;
+
+            // Output a default constructor that takes the native pointer.
+            GenerateClassConstructor(@class, isIntPtr: false);
+            GenerateClassConstructor(@class, isIntPtr: true);
+
+            if (@class.IsRefType)
+            {
+                GenerateClassDestructor(@class);
+                GenerateClassFinalizer(@class);
+            }
         }
 
         private void GenerateClassProperties(Class @class, Class realOwner)
