@@ -586,8 +586,8 @@ namespace CppSharp.Generators.CSharp
             var qualifiedIdentifier = CSharpMarshalNativeToManagedPrinter.QualifiedIdentifier(
                 @class.OriginalClass ?? @class);
             Context.Return.Write(
-                "{1} == ({0}) null ? new {0}.Internal() : *({0}.Internal*) ({1}.{2})", qualifiedIdentifier,
-                param, Helpers.InstanceIdentifier);
+                "ReferenceEquals({0}, null) ? new {1}.Internal() : *({1}.Internal*) ({0}.{2})", param,
+                qualifiedIdentifier, Helpers.InstanceIdentifier);
         }
 
         private void MarshalValueClass(Class @class)
