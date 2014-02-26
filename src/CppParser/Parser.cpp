@@ -707,6 +707,8 @@ WalkTemplateSpecializationKind(clang::TemplateSpecializationKind Kind)
     case clang::TSK_ExplicitInstantiationDefinition:
         return TemplateSpecializationKind::ExplicitInstantiationDefinition;
     }
+
+    llvm_unreachable("Unknown template specialization kind");
 }
 
 ClassTemplateSpecialization*

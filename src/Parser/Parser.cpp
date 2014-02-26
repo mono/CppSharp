@@ -710,6 +710,8 @@ WalkTemplateSpecializationKind(clang::TemplateSpecializationKind Kind)
     case TSK_ExplicitInstantiationDefinition:
         return CppSharp::AST::TemplateSpecializationKind::ExplicitInstantiationDefinition;
     }
+
+    llvm_unreachable("Unknown template specialization kind");
 }
 
 CppSharp::AST::ClassTemplateSpecialization^
