@@ -175,6 +175,7 @@ public class BasicTests : GeneratorTestFixture
         Assert.That(nestedPublic.g, Is.Not.EqualTo(0));
     }
 
+    [Test]
     public void TestPropertyChains()
     {
         var bar2 = new Bar2();
