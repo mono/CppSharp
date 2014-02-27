@@ -1653,8 +1653,9 @@ CppSharp::AST::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* 
     }
     case Type::PackExpansion:
     {
-        // Ignored.
-        return nullptr;
+        // TODO: stubbed
+        Ty = gcnew CppSharp::AST::PackExpansionType();
+        break;
     }
     default:
     {   
