@@ -786,6 +786,14 @@ namespace CppSharp.AST
         }
     }
 
+    public class PackExpansionType : Type
+    {
+        public override T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals = new TypeQualifiers())
+        {
+            return visitor.VisitPackExpansionType(this, quals);
+        }
+    }
+
     #region Primitives
 
     /// <summary>
@@ -891,6 +899,7 @@ namespace CppSharp.AST
             TypeQualifiers quals);
         T VisitDependentNameType(DependentNameType dependent,
             TypeQualifiers quals);
+        T VisitPackExpansionType(PackExpansionType packExpansionType, TypeQualifiers quals);
         T VisitCILType(CILType type, TypeQualifiers quals);
     }
 }

@@ -178,6 +178,11 @@ namespace CppSharp.Types
             throw new System.NotImplementedException();
         }
 
+        public string VisitPackExpansionType(PackExpansionType packExpansionType, TypeQualifiers quals)
+        {
+            return string.Empty;
+        }
+
         public string VisitCILType(CILType type, TypeQualifiers quals)
         {
             return string.Empty;
