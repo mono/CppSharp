@@ -900,7 +900,7 @@ namespace CppSharp.Generators.CSharp
                 {
                     if (method.IsOverride && method.IsSynthetized)
                     {
-                        GenerateVirtualTableFunctionCall(function, @class);
+                        GenerateVirtualTableFunctionCall(method, @class);
                     }
                     else
                     {
@@ -1026,7 +1026,7 @@ namespace CppSharp.Generators.CSharp
                 var method = function as Method;
                 if (method != null && method.IsOverride && method.IsSynthetized)
                 {
-                    GenerateVirtualTableFunctionCall(function, @class);
+                    GenerateVirtualTableFunctionCall(method, @class);
                 }
                 else
                 {
@@ -1321,9 +1321,9 @@ namespace CppSharp.Generators.CSharp
 
             const string dictionary = "System.Collections.Generic.Dictionary";
 
-            WriteLine("private static IntPtr[] _OldVTables;");
-            WriteLine("private static IntPtr[] _NewVTables;");
-            WriteLine("private static IntPtr[] _Thunks;");
+            WriteLine("private static void*[] _OldVTables;");
+            WriteLine("private static void*[] _NewVTables;");
+            WriteLine("private static void*[] _Thunks;");
             WriteLine("private static {0}<IntPtr, WeakReference> _References;", dictionary);
             NewLine();
 
@@ -1373,7 +1373,7 @@ namespace CppSharp.Generators.CSharp
             // Get the _Thunks
             WriteLine("if (_Thunks == null)");
             WriteStartBraceIndent();
-            WriteLine("_Thunks = new IntPtr[{0}];", wrappedEntries.Count);
+            WriteLine("_Thunks = new void*[{0}];", wrappedEntries.Count);
 
             var uniqueEntries = new HashSet<VTableComponent>();
 
@@ -1385,7 +1385,7 @@ namespace CppSharp.Generators.CSharp
                 var instance = name + "Instance";
                 if (uniqueEntries.Add(entry))
                     WriteLine("{0} += {1}Hook;", instance, name);
-                WriteLine("_Thunks[{0}] = Marshal.GetFunctionPointerForDelegate({1});",
+                WriteLine("_Thunks[{0}] = Marshal.GetFunctionPointerForDelegate({1}).ToPointer();",
                     i, instance);
             }
             WriteCloseBraceIndent();
@@ -1412,24 +1412,24 @@ namespace CppSharp.Generators.CSharp
 
         private void SaveOriginalVTablePointersMS(Class @class)
         {
-            WriteLine("_OldVTables = new IntPtr[{0}];", @class.Layout.VFTables.Count);
+            WriteLine("_OldVTables = new void*[{0}];", @class.Layout.VFTables.Count);
 
             for (int i = 0; i < @class.Layout.VFTables.Count; i++)
             {
-                WriteLine("_OldVTables[{0}] = native->vfptr{0};", i);
+                WriteLine("_OldVTables[{0}] = native->vfptr{0}.ToPointer();", i);
             }
         }
 
         private void SaveOriginalVTablePointersItanium()
         {
-            WriteLine("_OldVTables = new IntPtr[1];");
-            WriteLine("_OldVTables[0] = native->vfptr0;");
+            WriteLine("_OldVTables = new void*[1];");
+            WriteLine("_OldVTables[0] = native->vfptr0.ToPointer();");
 
         }
 
         private void AllocateNewVTablesMS(Class @class)
         {
-            WriteLine("_NewVTables = new IntPtr[{0}];", @class.Layout.VFTables.Count);
+            WriteLine("_NewVTables = new void*[{0}];", @class.Layout.VFTables.Count);
 
             for (int tableIndex = 0; tableIndex < @class.Layout.VFTables.Count; tableIndex++)
             {
@@ -1437,7 +1437,7 @@ namespace CppSharp.Generators.CSharp
                 var size = vfptr.Layout.Components.Count;
                 WriteLine("var vfptr{0} = Marshal.AllocHGlobal({1} * {2});",
                     tableIndex, size, Driver.Options.Is32Bit ? 4 : 8);
-                WriteLine("_NewVTables[{0}] = vfptr{0};", tableIndex);
+                WriteLine("_NewVTables[{0}] = vfptr{0}.ToPointer();", tableIndex);
 
                 for (int entryIndex = 0; entryIndex < vfptr.Layout.Components.Count; entryIndex++)
                 {
@@ -1445,10 +1445,10 @@ namespace CppSharp.Generators.CSharp
                     var offsetInBytes = VTables.GetVTableComponentIndex(@class, entry)
                         * (Driver.Options.Is32Bit ? 4 : 8);
                     if (entry.Ignore)
-                        WriteLine("*(IntPtr*)(vfptr{0} + {1}) = *(IntPtr*)(native->vfptr{0} + {1});",
+                        WriteLine("*(void**)(vfptr{0} + {1}) = *(void**)(native->vfptr{0} + {1});",
                             tableIndex, offsetInBytes);
                     else
-                        WriteLine("*(IntPtr*)(vfptr{0} + {1}) = _Thunks[{2}];", tableIndex,
+                        WriteLine("*(void**)(vfptr{0} + {1}) = _Thunks[{2}];", tableIndex,
                             offsetInBytes, entryIndex);
                 }
             }
@@ -1457,17 +1457,17 @@ namespace CppSharp.Generators.CSharp
             NewLine();
 
             for (var i = 0; i < @class.Layout.VFTables.Count; i++)
-                WriteLine("native->vfptr{0} = _NewVTables[{0}];", i);
+                WriteLine("native->vfptr{0} = new IntPtr(_NewVTables[{0}]);", i);
         }
 
         private void AllocateNewVTablesItanium(Class @class, IList<VTableComponent> entries)
         {
-            WriteLine("_NewVTables = new IntPtr[1];");
+            WriteLine("_NewVTables = new void*[1];");
 
             // reserve space for the offset-to-top and RTTI pointers as well
             var size = entries.Count;
             WriteLine("var vfptr{0} = Marshal.AllocHGlobal({1} * {2});", 0, size, Driver.Options.Is32Bit ? 4 : 8);
-            WriteLine("_NewVTables[{0}] = vfptr{0};", 0);
+            WriteLine("_NewVTables[{0}] = vfptr0.ToPointer();");
 
             for (int i = 0; i < entries.Count; i++)
             {
@@ -1475,15 +1475,15 @@ namespace CppSharp.Generators.CSharp
                 var offsetInBytes = VTables.GetVTableComponentIndex(@class, entry)
                     * (Driver.Options.Is32Bit ? 4 : 8);
                 if (entry.Ignore)
-                    WriteLine("*(IntPtr*)(vfptr0 + {0}) = *(IntPtr*)(native->vfptr0 + {0});", offsetInBytes);
+                    WriteLine("*(void**)(vfptr0 + {0}) = *(void**)(native->vfptr0 + {0});", offsetInBytes);
                 else
-                    WriteLine("*(IntPtr*)(vfptr0 + {0}) = _Thunks[{1}];", offsetInBytes, i);
+                    WriteLine("*(void**)(vfptr0 + {0}) = _Thunks[{1}];", offsetInBytes, i);
             }
 
             WriteCloseBraceIndent();
             NewLine();
 
-            WriteLine("native->vfptr0 = _NewVTables[0];");
+            WriteLine("native->vfptr0 = new IntPtr(_NewVTables[0]);");
         }
 
         private void GenerateVTableClassSetupCall(Class @class, bool addPointerGuard = false)
@@ -1494,7 +1494,8 @@ namespace CppSharp.Generators.CSharp
                 // called from internal ctors which may have been passed an IntPtr.Zero
                 if (addPointerGuard)
                 {
-                    WriteLine("if ({0} != global::System.IntPtr.Zero)", Helpers.InstanceIdentifier);
+                    WriteLine("if ({0} != global::System.IntPtr.Zero && !isInternalImpl)",
+                        Helpers.InstanceIdentifier);
                     PushIndent();
                 }
                 WriteLine("SetupVTables({0});", Generator.GeneratedIdentifier("Instance"));
@@ -1599,10 +1600,14 @@ namespace CppSharp.Generators.CSharp
         {
             PushBlock(CSharpBlockKind.VTableDelegate);
 
-            var cleanSig = method.Signature.ReplaceLineBreaks("");
-            cleanSig = Regex.Replace(cleanSig, @"\s+", " ");
+            // This works around a parser bug, see https://github.com/mono/CppSharp/issues/202
+            if (method.Signature != null)
+            {
+                var cleanSig = method.Signature.ReplaceLineBreaks("");
+                cleanSig = Regex.Replace(cleanSig, @"\s+", " ");
 
-            WriteLine("// {0}", cleanSig);
+                WriteLine("// {0}", cleanSig);
+            }
             WriteLine("[SuppressUnmanagedCodeSecurity]");
             WriteLine("[UnmanagedFunctionPointerAttribute(global::System.Runtime.InteropServices.CallingConvention.{0})]",
                 Helpers.ToCSharpCallConv(method.CallingConvention));
@@ -1610,19 +1615,19 @@ namespace CppSharp.Generators.CSharp
             CSharpTypePrinterResult retType;
             var @params = GatherInternalParams(method, out retType);
 
-            var delegateName = GetVTableMethodDelegateName(method);
-            WriteLine("delegate {0} {1}({2});", retType, delegateName,
+            var vTableMethodDelegateName = GetVTableMethodDelegateName(method);
+            WriteLine("internal delegate {0} {1}({2});", retType, vTableMethodDelegateName,
                 string.Join(", ", @params));
 
-            WriteLine("static {0} {0}Instance;", delegateName);
+            WriteLine("private static {0} {0}Instance;", vTableMethodDelegateName);
             NewLine();
 
-            WriteLine("static {0} {1}Hook({2})", retType, delegateName,
+            WriteLine("private static {0} {1}Hook({2})", retType, vTableMethodDelegateName,
                 string.Join(", ", @params));
             WriteStartBraceIndent();
 
             WriteLine("if (!_References.ContainsKey(instance))");
-            WriteLineIndent("throw new Exception(\"No managed instance was found\");");
+            WriteLineIndent("throw new global::System.Exception(\"No managed instance was found\");");
             NewLine();
 
             WriteLine("var target = ({0}) _References[instance].Target;", @class.Name);
@@ -1904,12 +1909,14 @@ namespace CppSharp.Generators.CSharp
             PopBlock(NewLineKind.BeforeNextBlock);
 
             PushBlock(CSharpBlockKind.Method);
-            WriteLine("public {0}(global::System.IntPtr native){1}", safeIdentifier,
-                @class.IsValueType ? " : this()" : string.Empty);
+            WriteLine("public {0}(global::System.IntPtr native, bool isInternalImpl = false){1}",
+                safeIdentifier, @class.IsValueType ? " : this()" : string.Empty);
 
             var hasBaseClass = @class.HasBaseClass && @class.BaseClass.IsRefType;
             if (hasBaseClass)
-                WriteLineIndent(": base(native)");
+                WriteLineIndent(": base(native{0})",
+                    @class.Methods.Any(m => !m.IsPure && m.IsOverride && m.IsSynthetized) ?
+                        ", true" : string.Empty);
 
             WriteStartBraceIndent();
 
@@ -2107,28 +2114,23 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
-        private void GenerateVirtualTableFunctionCall(Function method, Class @class)
+        private void GenerateVirtualTableFunctionCall(Method method, Class @class)
         {
             string delegateId;
             Write(GetVirtualCallDelegate(method, @class, Driver.Options.Is32Bit, out delegateId));
             GenerateFunctionCall(delegateId, method.Parameters, method);
         }
 
-        public static string GetVirtualCallDelegate(Function method, Class @class,
+        public string GetVirtualCallDelegate(Method method, Class @class,
             bool is32Bit, out string delegateId)
         {
             var virtualCallBuilder = new StringBuilder();
-            virtualCallBuilder.AppendFormat("void* vtable = *((void**) {0}.ToPointer());",
-                Helpers.InstanceIdentifier);
-            virtualCallBuilder.AppendLine();
-
             var i = VTables.GetVTableIndex(method, @class);
-
-            virtualCallBuilder.AppendFormat(
-                "void* slot = *((void**) vtable + {0} * {1});", i, is32Bit ? 4 : 8);
+            virtualCallBuilder.AppendFormat("void* slot = *(void**) ((({0}.Internal*) {1})->vfptr0 + {2} * {3});",
+                @class.BaseClass.Name, Helpers.InstanceIdentifier, i, is32Bit ? 4 : 8);
             virtualCallBuilder.AppendLine();
 
-            string @delegate = ASTHelpers.GetDelegateName(method);
+            string @delegate = GetVTableMethodDelegateName((Method) method.OriginalFunction);
             delegateId = Generator.GeneratedIdentifier(@delegate);
 
             virtualCallBuilder.AppendFormat(

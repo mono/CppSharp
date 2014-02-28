@@ -80,7 +80,8 @@ namespace CppSharp.AST
                             where j >= 0
                             select j).First();
                 default:
-                    return @class.Layout.Layout.Components.FindIndex(m => m.Method == method);
+                    // ignore offset to top and RTTI
+                    return @class.Layout.Layout.Components.FindIndex(m => m.Method == method) - 2;
             }
         }
     }

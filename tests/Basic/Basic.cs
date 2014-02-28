@@ -16,6 +16,7 @@ namespace CppSharp.Tests
         {
             if (driver.Options.IsCSharpGenerator)
                 driver.Options.GenerateAbstractImpls = true;
+            driver.Options.GenerateVirtualTables = true;
         }
 
         public override void Preprocess(Driver driver, ASTContext ctx)
