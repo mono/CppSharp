@@ -269,3 +269,12 @@ class HasIgnoredField
     Base<Derived> fieldOfIgnoredType;
 };
 
+template <typename T>
+class DependentTypeWithNestedIndependent
+{
+    union
+    {
+        int i;
+        long l;
+    };
+};
