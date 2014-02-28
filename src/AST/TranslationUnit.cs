@@ -38,6 +38,8 @@ namespace CppSharp.AST
 
         public bool IsSystemHeader { get; set; }
 
+        public bool IsValid { get { return FilePath != "<invalid>"; } }
+
         /// Contains the path to the file.
         public string FilePath;
 

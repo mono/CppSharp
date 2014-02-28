@@ -312,7 +312,7 @@ namespace CppSharp
             if (!Directory.Exists(outputPath))
                 Directory.CreateDirectory(outputPath);
 
-            foreach (var output in outputs)
+            foreach (var output in outputs.Where(o => o.TranslationUnit.IsValid))
             {
                 var fileBase = output.TranslationUnit.FileNameWithoutExtension;
 
