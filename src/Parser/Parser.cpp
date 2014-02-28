@@ -1152,6 +1152,8 @@ static CppSharp::AST::PrimitiveType WalkBuiltinType(const clang::BuiltinType* Bu
     case clang::BuiltinType::WChar_S:
     case clang::BuiltinType::WChar_U: return PrimitiveType::WideChar;
 
+    case clang::BuiltinType::Char16: return PrimitiveType::Char16;
+
     case clang::BuiltinType::Short: return PrimitiveType::Int16;
     case clang::BuiltinType::UShort: return PrimitiveType::UInt16;
 

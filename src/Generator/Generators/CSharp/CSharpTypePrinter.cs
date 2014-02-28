@@ -365,6 +365,7 @@ namespace CppSharp.Generators.CSharp
             {
                 case PrimitiveType.Bool: return "bool";
                 case PrimitiveType.Void: return "void";
+                case PrimitiveType.Char16:
                 case PrimitiveType.WideChar: return "char";
                 case PrimitiveType.Int8: return "sbyte";
                 case PrimitiveType.UInt8: return "byte";

@@ -23,6 +23,7 @@ namespace CppSharp
             {
                 case PrimitiveType.Bool: return typeof(bool);
                 case PrimitiveType.Void: return typeof(void);
+                case PrimitiveType.Char16:
                 case PrimitiveType.WideChar: return typeof(char);
                 case PrimitiveType.Int8: return typeof(sbyte);
                 case PrimitiveType.UInt8: return typeof(byte);

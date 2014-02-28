@@ -188,5 +188,10 @@ public class BasicTests : GeneratorTestFixture
     {
         Assert.That(TestStaticClass.Add(1, 2), Is.EqualTo(3));
     }
+
+    [Test, Ignore]
+    public void TestChar16()
+    {
+    }
 }
  

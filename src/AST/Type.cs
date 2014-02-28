@@ -817,7 +817,8 @@ namespace CppSharp.AST
         UInt64,
         Float,
         Double,
-        IntPtr
+        IntPtr,
+        Char16
     }
 
     /// <summary>

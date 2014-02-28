@@ -171,6 +171,7 @@ namespace CppSharp.Generators.CLI
             {
                 case PrimitiveType.Bool: return "bool";
                 case PrimitiveType.Void: return "void";
+                case PrimitiveType.Char16:
                 case PrimitiveType.WideChar: return "char";
                 case PrimitiveType.Int8: return "char";
                 case PrimitiveType.UInt8: return "unsigned char";
