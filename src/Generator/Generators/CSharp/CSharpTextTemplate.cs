@@ -336,9 +336,7 @@ namespace CppSharp.Generators.CSharp
 
         public void GenerateClass(Class @class)
         {
-            TypeMap typeMap;
-            if (@class.IsIncomplete ||
-                (Driver.TypeDatabase.FindTypeMap(@class, out typeMap) && typeMap.DoesMarshalling))
+            if (@class.IsIncomplete)
                 return;
 
             PushBlock(CSharpBlockKind.Class);
