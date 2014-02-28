@@ -28,6 +28,7 @@ enum struct TypeKind
     TemplateParameterSubstitution,
     InjectedClassName,
     DependentName,
+    PackExpansion,
     Builtin
 };
 
@@ -209,6 +210,11 @@ struct CS_API InjectedClassNameType : public Type
 struct CS_API DependentNameType : public Type
 {
     DECLARE_TYPE_KIND(DependentName)
+};
+
+struct CS_API PackExpansionType : public Type
+{
+    DECLARE_TYPE_KIND(PackExpansion)
 };
 
 enum struct PrimitiveType

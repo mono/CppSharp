@@ -1635,8 +1635,8 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
     }
     case clang::Type::PackExpansion:
     {
-        // Ignored.
-        return nullptr;
+        // TODO: stubbed
+        Ty = new PackExpansionType();
     }
     default:
     {   

@@ -68,6 +68,8 @@ InjectedClassNameType::InjectedClassNameType() : Type(TypeKind::InjectedClassNam
 
 DependentNameType::DependentNameType() : Type(TypeKind::DependentName) {}
 
+PackExpansionType::PackExpansionType() : Type(TypeKind::PackExpansion) {}
+
 BuiltinType::BuiltinType() : CppSharp::CppParser::AST::Type(TypeKind::Builtin) {}
 
 // RawComment
