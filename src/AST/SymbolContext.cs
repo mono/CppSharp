@@ -41,10 +41,13 @@ namespace CppSharp.AST
         /// </summary>
         public Dictionary<string, NativeLibrary> Symbols;
 
+        private readonly Dictionary<string, NativeLibrary> compiledSymbols;
+
         public SymbolContext()
         {
             Libraries = new List<NativeLibrary>();
             Symbols = new Dictionary<string, NativeLibrary>();
+            compiledSymbols = new Dictionary<string, NativeLibrary>();
         }
 
         public NativeLibrary FindOrCreateLibrary(string file)
@@ -65,42 +68,29 @@ namespace CppSharp.AST
             foreach (var library in Libraries)
             {
                 foreach (var symbol in library.Symbols)
+                {
                     Symbols[symbol] = library;
+                    if (!symbol.StartsWith("_imp_") && !symbol.StartsWith("__imp_") &&
+                        !symbol.StartsWith("_head") && !symbol.StartsWith("__head"))
+                    {
+                        if (symbol.StartsWith("__"))
+                            compiledSymbols[symbol.Substring(1)] = library;
+                        else
+                            compiledSymbols[symbol] = library;
+                    }
+                }
             }
         }
 
         public bool FindSymbol(ref string symbol)
         {
             NativeLibrary lib;
-
-            if (FindLibraryBySymbol(symbol, out lib))
-                return true;
-
-            // Check for C symbols with a leading underscore.
-            if (FindLibraryBySymbol("_" + symbol, out lib))
-            {
-                symbol = "_" + symbol;
-                return true;
-            }
-
-            if (FindLibraryBySymbol("_imp_" + symbol, out lib))
-            {
-                symbol = "_imp_" + symbol;
-                return true;
-            }
-
-            if (FindLibraryBySymbol("__imp_" + symbol, out lib))
-            {
-                symbol = "__imp_" + symbol;
-                return true;
-            }
-
-            return false;
+            return FindLibraryBySymbol(symbol, out lib);
         }
 
         public bool FindLibraryBySymbol(string symbol, out NativeLibrary library)
         {
-            return Symbols.TryGetValue(symbol, out library);
+            return compiledSymbols.TryGetValue(symbol, out library);
         }
     }
 }
