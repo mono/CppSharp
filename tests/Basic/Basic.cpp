@@ -27,12 +27,6 @@ Bar::Bar()
 {
 }
 
-Bar::Bar(const Bar& bar)
-{
-    A = bar.A;
-    B = bar.B;
-}
-
 Bar::Item Bar::RetItem1()
 {
     return Bar::Item1;
@@ -222,4 +216,14 @@ int test(basic& s)
 Bar::Item operator |(Bar::Item left, Bar::Item right)
 {
     return left | right;
+}
+
+TestCopyConstructorRef::TestCopyConstructorRef()
+{
+}
+
+TestCopyConstructorRef::TestCopyConstructorRef(const TestCopyConstructorRef& other)
+{
+    A = other.A;
+    B = other.B;
 }

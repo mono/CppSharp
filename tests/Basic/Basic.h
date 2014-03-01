@@ -28,7 +28,6 @@ struct DLL_API Bar
     };
 
     Bar();
-    Bar(const Bar& bar);
     Item RetItem1();
     int A;
     float B;
@@ -278,4 +277,13 @@ class DependentTypeWithNestedIndependent
         int i;
         long l;
     };
+};
+
+class DLL_API TestCopyConstructorRef
+{
+public:
+    TestCopyConstructorRef();
+    TestCopyConstructorRef(const TestCopyConstructorRef& other);
+    int A;
+    float B;
 };

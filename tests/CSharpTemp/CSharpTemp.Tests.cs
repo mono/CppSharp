@@ -107,4 +107,13 @@ public class CSharpTempTests : GeneratorTestFixture
         bar.ArrayOfPrimitivePointers = array;
         Assert.That(i, Is.EqualTo(*(int*) bar.ArrayOfPrimitivePointers[0]));
     }
+
+    [Test]
+    public void TestCopyConstructorValue()
+    {
+        var testCopyConstructorVal = new TestCopyConstructorVal { A = 10, B = 5 };
+        var copyBar = new TestCopyConstructorVal(testCopyConstructorVal);
+        Assert.That(testCopyConstructorVal.A, Is.EqualTo(copyBar.A));
+        Assert.That(testCopyConstructorVal.B, Is.EqualTo(copyBar.B));
+    }
 }

@@ -138,3 +138,12 @@ struct DLL_API TestDestructors
     TestDestructors() { Marker = 0xf00d; }
     ~TestDestructors() { Marker = 0xcafe; }
 };
+
+class DLL_API TestCopyConstructorVal
+{
+public:
+    TestCopyConstructorVal();
+    TestCopyConstructorVal(const TestCopyConstructorVal& other);
+    int A;
+    float B;
+};

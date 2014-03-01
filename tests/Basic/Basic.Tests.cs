@@ -202,10 +202,10 @@ public class BasicTests : GeneratorTestFixture
         Assert.That(foo.A, Is.EqualTo(copyFoo.A));
         Assert.That(foo.B, Is.EqualTo(copyFoo.B));
 
-        Bar bar = new Bar { A = 10, B = 5 };
-        var copyBar = new Bar(bar);
-        Assert.That(bar.A, Is.EqualTo(copyBar.A));
-        Assert.That(bar.B, Is.EqualTo(copyBar.B));
+        var testCopyConstructorRef = new TestCopyConstructorRef { A = 10, B = 5 };
+        var copyBar = new TestCopyConstructorRef(testCopyConstructorRef);
+        Assert.That(testCopyConstructorRef.A, Is.EqualTo(copyBar.A));
+        Assert.That(testCopyConstructorRef.B, Is.EqualTo(copyBar.B));
     }
 }
  
