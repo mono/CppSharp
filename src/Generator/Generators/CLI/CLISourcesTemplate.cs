@@ -142,6 +142,10 @@ namespace CppSharp.Generators.CLI
                 if (ASTUtils.CheckIgnoreMethod(method))
                     continue;
 
+                // C++/CLI does not allow special member funtions for value types.
+                if (@class.IsValueType && method.IsCopyConstructor)
+                    continue;
+
                 GenerateMethod(method, @class);
             }
 

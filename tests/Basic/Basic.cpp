@@ -217,3 +217,13 @@ Bar::Item operator |(Bar::Item left, Bar::Item right)
 {
     return left | right;
 }
+
+TestCopyConstructorRef::TestCopyConstructorRef()
+{
+}
+
+TestCopyConstructorRef::TestCopyConstructorRef(const TestCopyConstructorRef& other)
+{
+    A = other.A;
+    B = other.B;
+}

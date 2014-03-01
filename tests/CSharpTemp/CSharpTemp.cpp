@@ -191,3 +191,13 @@ void P::setIsBool(bool value)
 }
 
 int TestDestructors::Marker = 0;
+
+TestCopyConstructorVal::TestCopyConstructorVal()
+{
+}
+
+TestCopyConstructorVal::TestCopyConstructorVal(const TestCopyConstructorVal& other)
+{
+    A = other.A;
+    B = other.B;
+}

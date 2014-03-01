@@ -34,7 +34,7 @@ public class CSharpTempTests : GeneratorTestFixture
     [Test]
     public void TestFixedArrays()
     {
-        Qux qux = new Qux(null);
+        Qux qux = new Qux((Foo) null);
         var array = new[] { 1, 2, 3 };
         qux.Array = array;
         for (int i = 0; i < qux.Array.Length; i++)
@@ -64,7 +64,7 @@ public class CSharpTempTests : GeneratorTestFixture
         Assert.That(proprietor.Value, Is.EqualTo(20));
         proprietor.Prop = 50;
         Assert.That(proprietor.Prop, Is.EqualTo(50));
-        var p = new P(null);
+        var p = new P((IQux) null);
         p.Value = 20;
         Assert.That(p.Value, Is.EqualTo(30));
         p.Prop = 50;
@@ -106,5 +106,14 @@ public class CSharpTempTests : GeneratorTestFixture
         array[0] = &i;
         bar.ArrayOfPrimitivePointers = array;
         Assert.That(i, Is.EqualTo(*(int*) bar.ArrayOfPrimitivePointers[0]));
+    }
+
+    [Test]
+    public void TestCopyConstructorValue()
+    {
+        var testCopyConstructorVal = new TestCopyConstructorVal { A = 10, B = 5 };
+        var copyBar = new TestCopyConstructorVal(testCopyConstructorVal);
+        Assert.That(testCopyConstructorVal.A, Is.EqualTo(copyBar.A));
+        Assert.That(testCopyConstructorVal.B, Is.EqualTo(copyBar.B));
     }
 }

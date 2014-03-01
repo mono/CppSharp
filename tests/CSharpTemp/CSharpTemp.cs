@@ -64,6 +64,11 @@ namespace CppSharp.Tests
             driver.TranslationUnitPasses.AddPass(new TestAttributesPass());
         }
 
+        public override void Preprocess(Driver driver, ASTContext ctx)
+        {
+            ctx.SetClassAsValueType("TestCopyConstructorVal");
+        }
+
         public override void Postprocess(Driver driver, ASTContext lib)
         {
             new CaseRenamePass(

@@ -278,3 +278,12 @@ class DependentTypeWithNestedIndependent
         long l;
     };
 };
+
+class DLL_API TestCopyConstructorRef
+{
+public:
+    TestCopyConstructorRef();
+    TestCopyConstructorRef(const TestCopyConstructorRef& other);
+    int A;
+    float B;
+};
