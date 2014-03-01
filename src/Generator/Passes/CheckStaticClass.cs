@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading;
 using CppSharp.AST;
 
 namespace CppSharp.Passes
@@ -59,6 +60,14 @@ namespace CppSharp.Passes
             // If all the above constraints hold, then we assume the class can be
             // static.
             @class.IsStatic = true;
+
+            // Ignore the special methods for static classes.
+            foreach (var ctor in @class.Constructors)
+                ctor.IsGenerated = false;
+
+            foreach (var dtor in @class.Destructors)
+                dtor.IsGenerated = false;
+
             return true;
         }
     }
