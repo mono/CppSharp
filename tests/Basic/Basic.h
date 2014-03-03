@@ -48,6 +48,7 @@ public:
     Foo2 operator<<(signed int i);
     Foo2 operator<<(signed long l);
     Bar valueTypeField;
+    char testCharMarshalling(char c);
 };
 
 DLL_API Bar::Item operator |(Bar::Item left, Bar::Item right);

@@ -23,6 +23,11 @@ Foo2 Foo2::operator<<(signed long l)
     return foo;
 }
 
+char Foo2::testCharMarshalling(char c)
+{
+    return c;
+}
+
 Bar::Bar()
 {
 }

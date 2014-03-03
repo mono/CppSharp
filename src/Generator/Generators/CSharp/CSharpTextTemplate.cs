@@ -2099,6 +2099,21 @@ namespace CppSharp.Generators.CSharp
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
+        private void CheckArgumentRange(Function method)
+        {
+            if (Driver.Options.MarshalCharAsManagedChar)
+            {
+                foreach (var param in method.Parameters.Where(
+                    p => p.Type.Desugar().IsPrimitiveType(PrimitiveType.Int8)))
+                {
+                    WriteLine("if ({0} < char.MinValue || {0} > sbyte.MaxValue)", param.Name);
+                    WriteLineIndent(
+                        "throw new global::System.ArgumentException(\"{0} must be in the range {1} - {2}.\");",
+                        param.Name, (int) char.MinValue, sbyte.MaxValue);
+                }
+            }
+        }
+
         private static AccessSpecifier GetValidMethodAccess(Method method)
         {
             switch (method.Access)
@@ -2179,6 +2194,7 @@ namespace CppSharp.Generators.CSharp
             if (parameters == null)
                 parameters = function.Parameters;
 
+            CheckArgumentRange(function);
             var functionName = string.Format("Internal.{0}",
                 GetFunctionNativeIdentifier(function));
             GenerateFunctionCall(functionName, parameters, function);

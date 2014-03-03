@@ -1,6 +1,8 @@
-﻿using CppSharp.Utils;
+﻿using System;
+using CppSharp.Utils;
 using NUnit.Framework;
 using Basic;
+using Enum = Basic.Enum;
 
 public class BasicTests : GeneratorTestFixture
 {
@@ -206,6 +208,15 @@ public class BasicTests : GeneratorTestFixture
         var copyBar = new TestCopyConstructorRef(testCopyConstructorRef);
         Assert.That(testCopyConstructorRef.A, Is.EqualTo(copyBar.A));
         Assert.That(testCopyConstructorRef.B, Is.EqualTo(copyBar.B));
+    }
+
+    [Test]
+    public void TestCharMarshalling()
+    {
+        Foo2 foo2 = new Foo2();
+        for (char c = char.MinValue; c <= sbyte.MaxValue; c++)
+            Assert.That(foo2.testCharMarshalling(c), Is.EqualTo(c));
+        Assert.Catch<ArgumentException>(() => foo2.testCharMarshalling('ж'));
     }
 }
  

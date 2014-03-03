@@ -139,6 +139,7 @@ namespace CppSharp
 
         public List<string> CodeFiles { get; private set; }
         public readonly List<string> DependentNameSpaces = new List<string>();
+        public bool MarshalCharAsManagedChar { get; set; }
     }
 
     public class InvalidOptionException : Exception
