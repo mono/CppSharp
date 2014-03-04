@@ -1210,6 +1210,37 @@ static CallingConvention ConvertCallConv(clang::CallingConv CC)
     return CallingConvention::Default;
 }
 
+static ParserIntType ConvertIntType(clang::TargetInfo::IntType IT)
+{
+    switch (IT)
+    {
+    case clang::TargetInfo::IntType::NoInt:
+        return ParserIntType::NoInt;
+    case clang::TargetInfo::IntType::SignedChar:
+        return ParserIntType::SignedChar;
+    case clang::TargetInfo::IntType::UnsignedChar:
+        return ParserIntType::UnsignedChar;
+    case clang::TargetInfo::IntType::SignedShort:
+        return ParserIntType::SignedShort;
+    case clang::TargetInfo::IntType::UnsignedShort:
+        return ParserIntType::UnsignedShort;
+    case clang::TargetInfo::IntType::SignedInt:
+        return ParserIntType::SignedInt;
+    case clang::TargetInfo::IntType::UnsignedInt:
+        return ParserIntType::UnsignedInt;
+    case clang::TargetInfo::IntType::SignedLong:
+        return ParserIntType::SignedLong;
+    case clang::TargetInfo::IntType::UnsignedLong:
+        return ParserIntType::UnsignedLong;
+    case clang::TargetInfo::IntType::SignedLongLong:
+        return ParserIntType::SignedLongLong;
+    case clang::TargetInfo::IntType::UnsignedLongLong:
+        return ParserIntType::UnsignedLongLong;
+    }
+
+    llvm_unreachable("Unknown parser integer type");
+}
+
 Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
     bool DesugarType)
 {
@@ -2687,4 +2718,90 @@ ParserResult* ClangParser::ParseLibrary(ParserOptions* Opts)
 
     Parser parser(Opts);
     return parser.ParseLibrary(Opts->FileName);
+}
+
+ParserTargetInfo* Parser::GetTargetInfo()
+{
+    assert(Opts->ASTContext && "Expected a valid ASTContext");
+
+    auto res = new ParserResult();
+    res->ASTContext = Lib;
+
+    SetupHeader();
+
+    auto SC = new clang::SemaConsumer();
+    C->setASTConsumer(SC);
+
+    C->createSema(clang::TU_Complete, 0);
+    SC->InitializeSema(C->getSema());
+
+    auto DiagClient = new DiagnosticConsumer();
+    C->getDiagnostics().setClient(DiagClient);
+
+    AST = &C->getASTContext();
+
+    // Initialize enough Clang codegen machinery so we can get at ABI details.
+    llvm::LLVMContext Ctx;
+    llvm::OwningPtr<llvm::Module> M(new llvm::Module("", Ctx));
+
+    M->setTargetTriple(AST->getTargetInfo().getTriple().getTriple());
+    M->setDataLayout(AST->getTargetInfo().getTargetDescription());
+    llvm::OwningPtr<llvm::DataLayout> TD(new llvm::DataLayout(AST->getTargetInfo()
+        .getTargetDescription()));
+
+    llvm::OwningPtr<clang::CodeGen::CodeGenModule> CGM(
+        new clang::CodeGen::CodeGenModule(C->getASTContext(), C->getCodeGenOpts(),
+        *M, *TD, C->getDiagnostics()));
+
+    llvm::OwningPtr<clang::CodeGen::CodeGenTypes> CGT(
+        new clang::CodeGen::CodeGenTypes(*CGM.get()));
+
+    CodeGenInfo = (clang::TargetCodeGenInfo*) &CGM->getTargetCodeGenInfo();
+    CodeGenTypes = CGT.get();
+
+    auto parserTargetInfo = new ParserTargetInfo();
+
+    parserTargetInfo->ABI = AST->getTargetInfo().getABI();
+
+    parserTargetInfo->Char16Type = ConvertIntType(AST->getTargetInfo().getChar16Type());
+    parserTargetInfo->Char32Type = ConvertIntType(AST->getTargetInfo().getChar32Type());
+    parserTargetInfo->Int64Type = ConvertIntType(AST->getTargetInfo().getInt64Type());
+    parserTargetInfo->IntMaxType = ConvertIntType(AST->getTargetInfo().getIntMaxType());
+    parserTargetInfo->IntPtrType = ConvertIntType(AST->getTargetInfo().getIntPtrType());
+    parserTargetInfo->SizeType = ConvertIntType(AST->getTargetInfo().getSizeType());
+    parserTargetInfo->UIntMaxType = ConvertIntType(AST->getTargetInfo().getUIntMaxType());
+    parserTargetInfo->WCharType = ConvertIntType(AST->getTargetInfo().getWCharType());
+    parserTargetInfo->WIntType = ConvertIntType(AST->getTargetInfo().getWIntType());
+
+    parserTargetInfo->BoolAlign = AST->getTargetInfo().getBoolAlign();
+    parserTargetInfo->BoolWidth = AST->getTargetInfo().getBoolWidth();
+    parserTargetInfo->CharAlign = AST->getTargetInfo().getCharAlign();
+    parserTargetInfo->CharWidth = AST->getTargetInfo().getCharWidth();
+    parserTargetInfo->Char16Align = AST->getTargetInfo().getChar16Align();
+    parserTargetInfo->Char16Width = AST->getTargetInfo().getChar16Width();
+    parserTargetInfo->Char32Align = AST->getTargetInfo().getChar32Align();
+    parserTargetInfo->Char32Width = AST->getTargetInfo().getChar32Width();
+    parserTargetInfo->HalfAlign = AST->getTargetInfo().getHalfAlign();
+    parserTargetInfo->HalfWidth = AST->getTargetInfo().getHalfWidth();
+    parserTargetInfo->FloatAlign = AST->getTargetInfo().getFloatAlign();
+    parserTargetInfo->FloatWidth = AST->getTargetInfo().getFloatWidth();
+    parserTargetInfo->DoubleAlign = AST->getTargetInfo().getDoubleAlign();
+    parserTargetInfo->DoubleWidth = AST->getTargetInfo().getDoubleWidth();
+    parserTargetInfo->ShortAlign = AST->getTargetInfo().getShortAlign();
+    parserTargetInfo->ShortWidth = AST->getTargetInfo().getShortWidth();
+    parserTargetInfo->IntAlign = AST->getTargetInfo().getIntAlign();
+    parserTargetInfo->IntWidth = AST->getTargetInfo().getIntWidth();
+    parserTargetInfo->IntMaxTWidth = AST->getTargetInfo().getIntMaxTWidth();
+    parserTargetInfo->LongAlign = AST->getTargetInfo().getLongAlign();
+    parserTargetInfo->LongWidth = AST->getTargetInfo().getLongWidth();
+    parserTargetInfo->LongDoubleAlign = AST->getTargetInfo().getLongDoubleAlign();
+    parserTargetInfo->LongDoubleWidth = AST->getTargetInfo().getLongDoubleWidth();
+    parserTargetInfo->LongLongAlign = AST->getTargetInfo().getLongLongAlign();
+    parserTargetInfo->LongLongWidth = AST->getTargetInfo().getLongLongWidth();
+    parserTargetInfo->PointerAlign = AST->getTargetInfo().getPointerAlign(0);
+    parserTargetInfo->PointerWidth = AST->getTargetInfo().getPointerWidth(0);
+    parserTargetInfo->WCharAlign = AST->getTargetInfo().getWCharAlign();
+    parserTargetInfo->WCharWidth = AST->getTargetInfo().getWCharWidth();
+
+    return parserTargetInfo;
 }

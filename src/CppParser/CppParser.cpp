@@ -27,6 +27,7 @@ DEF_VECTOR_STRING(ParserOptions, SystemIncludeDirs)
 DEF_VECTOR_STRING(ParserOptions, Defines)
 DEF_VECTOR_STRING(ParserOptions, LibraryDirs)
 DEF_STRING(ParserOptions, TargetTriple)
+DEF_STRING(ParserTargetInfo, ABI)
 
 ParserResult::ParserResult()
     : ASTContext(0)

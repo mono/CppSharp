@@ -14,6 +14,12 @@ public ref class ClangParser
 {
 public:
 
+    static ParserTargetInfo^ GetTargetInfo(ParserOptions^ Opts)
+    {
+        ::Parser parser(Opts);
+        return parser.GetTargetInfo();
+    }
+
     static ParserResult^ ParseHeader(ParserOptions^ Opts)
     {
         if (!Opts->FileName) return nullptr;

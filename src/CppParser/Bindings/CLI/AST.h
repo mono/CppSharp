@@ -48,6 +48,7 @@ namespace CppSharp
             ref class Method;
             ref class Namespace;
             ref class NativeLibrary;
+            ref class PackExpansionType;
             ref class Parameter;
             ref class PointerType;
             ref class PreprocessedEntity;
@@ -94,7 +95,8 @@ namespace CppSharp
                 TemplateParameterSubstitution = 10,
                 InjectedClassName = 11,
                 DependentName = 12,
-                Builtin = 13
+                PackExpansion = 13,
+                Builtin = 14
             };
 
             public enum struct DeclarationKind
@@ -711,6 +713,15 @@ namespace CppSharp
                 DependentNameType();
             };
 
+            public ref class PackExpansionType : CppSharp::Parser::AST::Type
+            {
+            public:
+
+                PackExpansionType(::CppSharp::CppParser::AST::PackExpansionType* native);
+                PackExpansionType(System::IntPtr native);
+                PackExpansionType();
+            };
+
             public ref class BuiltinType : CppSharp::Parser::AST::Type
             {
             public:
@@ -1006,10 +1017,10 @@ namespace CppSharp
                     void set(unsigned int);
                 }
 
-                property System::IntPtr OriginalPtr
+                property void* OriginalPtr
                 {
-                    System::IntPtr get();
-                    void set(System::IntPtr);
+                    void* get();
+                    void set(void*);
                 }
 
                 CppSharp::Parser::AST::PreprocessedEntity^ getPreprocessedEntities(unsigned int i);
@@ -1592,11 +1603,11 @@ namespace CppSharp
 
                 void addSpecializations(CppSharp::Parser::AST::ClassTemplateSpecialization^ s);
 
-                CppSharp::Parser::AST::ClassTemplateSpecialization^ FindSpecialization(System::IntPtr ptr);
+                CppSharp::Parser::AST::ClassTemplateSpecialization^ FindSpecialization(void* ptr);
 
                 CppSharp::Parser::AST::ClassTemplateSpecialization^ FindSpecialization(CppSharp::Parser::AST::TemplateSpecializationType^ type);
 
-                CppSharp::Parser::AST::ClassTemplatePartialSpecialization^ FindPartialSpecialization(System::IntPtr ptr);
+                CppSharp::Parser::AST::ClassTemplatePartialSpecialization^ FindPartialSpecialization(void* ptr);
 
                 CppSharp::Parser::AST::ClassTemplatePartialSpecialization^ FindPartialSpecialization(CppSharp::Parser::AST::TemplateSpecializationType^ type);
             };
