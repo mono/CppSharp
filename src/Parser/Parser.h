@@ -27,6 +27,7 @@
 #include <clang/Sema/Sema.h>
 #include "CXXABI.h"
 #include "Options.h"
+#include "Target.h"
 
 #include <vcclr.h>
 #include <string>
@@ -54,6 +55,7 @@ struct Parser
     ParserResultKind ParseSharedLib(llvm::StringRef File,
                                     llvm::MemoryBuffer *Buffer,
                                     CppSharp::AST::NativeLibrary^ NativeLib);
+    ParserTargetInfo^  GetTargetInfo();
 
 protected:
 

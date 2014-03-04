@@ -56,6 +56,7 @@ struct Parser
     ParserResultKind ParseSharedLib(llvm::StringRef File,
                                     llvm::MemoryBuffer *Buffer,
                                     CppSharp::CppParser::NativeLibrary*& NativeLib);
+    ParserTargetInfo*  GetTargetInfo();
 
 protected:
 

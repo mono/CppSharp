@@ -9,6 +9,7 @@
 
 #include "AST.h"
 #include "Helpers.h"
+#include "Target.h"
 
 namespace CppSharp { namespace CppParser {
 
