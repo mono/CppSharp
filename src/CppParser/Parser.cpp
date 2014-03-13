@@ -8,6 +8,7 @@
 #include "Parser.h"
 
 #include <llvm/Support/Path.h>
+#include <llvm/Support/raw_ostream.h>
 #include <llvm/Object/Archive.h>
 #include <llvm/Object/ObjectFile.h>
 #include <llvm/IR/LLVMContext.h>
@@ -507,11 +508,10 @@ void Parser::WalkVTable(clang::CXXRecordDecl* RD, Class* C)
             auto& VFPtrInfo = *I;
 
             VFTableInfo Info;
-            Info.VBTableIndex = VFPtrInfo.VBTableIndex;
-            Info.VFPtrOffset = VFPtrInfo.VFPtrOffset.getQuantity();
-            Info.VFPtrFullOffset = VFPtrInfo.VFPtrFullOffset.getQuantity();
+            Info.VFPtrOffset = VFPtrInfo->NonVirtualOffset.getQuantity();
+            Info.VFPtrFullOffset = VFPtrInfo->FullOffsetInMDC.getQuantity();
 
-            auto& VTLayout = VTContext.getVFTableLayout(RD, VFPtrInfo.VFPtrFullOffset);
+            auto& VTLayout = VTContext.getVFTableLayout(RD, VFPtrInfo->FullOffsetInMDC);
             Info.Layout = WalkVTableLayout(VTLayout);
 
             C->Layout.VFTables.push_back(Info);
@@ -2632,23 +2632,25 @@ ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
     for(auto it = Object.get()->symbol_begin(); it != Object.get()->symbol_end();
         ++it)
     {
-        llvm::StringRef SymRef;
+        std::string Sym;
+        llvm::raw_string_ostream SymStream(Sym);
+ 
+        if (it->printName(SymStream))
+             continue;
 
-        if (it->getName(SymRef))
-            continue;
-
-        NativeLib->Symbols.push_back(SymRef);
+        NativeLib->Symbols.push_back(Sym);
     }
 
     for (auto it = Object.get()->symbol_begin(); it != Object.get()->symbol_end();
         ++it)
     {
-        llvm::StringRef SymRef;
+        std::string Sym;
+        llvm::raw_string_ostream SymStream(Sym);
+ 
+        if (it->printName(SymStream))
+             continue;
 
-        if (it->getName(SymRef))
-            continue;
-
-        NativeLib->Symbols.push_back(SymRef);
+        NativeLib->Symbols.push_back(Sym);
     }
 
     return ParserResultKind::Success;

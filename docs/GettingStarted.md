@@ -25,11 +25,9 @@ Git repository urls found here: [http://llvm.org/docs/GettingStarted.html#git-mi
 Building in *Release* is recommended because else the Clang parser will be
 excruciatingly slow.
 
-Last updated to LLVM/Clang revision: `r198449`
+Last updated to LLVM/Clang revision: `r202563`
 
 ## Compiling on Mac OS X (experimental)
-
-Requirements: Clang revision >= 198625
 
 1. Clone CppSharp to `<CppSharp>`
 2. Clone LLVM to `<CppSharp>\deps\llvm`
