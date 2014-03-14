@@ -93,6 +93,8 @@ public:
 
     static ParserResult* ParseHeader(ParserOptions* Opts);
     static ParserResult* ParseLibrary(ParserOptions* Opts);
+    static ParserTargetInfo*  GetTargetInfo(ParserOptions* Opts);
+
 };
 
 } }

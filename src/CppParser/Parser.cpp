@@ -2722,6 +2722,15 @@ ParserResult* ClangParser::ParseLibrary(ParserOptions* Opts)
     return parser.ParseLibrary(Opts->FileName);
 }
 
+ParserTargetInfo* ClangParser::GetTargetInfo(ParserOptions* Opts)
+{
+    if (!Opts)
+        return nullptr;
+
+    Parser parser(Opts);
+    return parser.GetTargetInfo();
+}
+
 ParserTargetInfo* Parser::GetTargetInfo()
 {
     assert(Opts->ASTContext && "Expected a valid ASTContext");
