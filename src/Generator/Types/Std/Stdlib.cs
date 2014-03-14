@@ -231,6 +231,9 @@ namespace CppSharp.Types.Std
 
         public override string CSharpSignature(CSharpTypePrinterContext ctx)
         {
+            if (ctx.CSharpKind == CSharpTypePrinterContextKind.Native)
+                return "Std.Map";
+
             var type = Type as TemplateSpecializationType;
             return string.Format("System.Collections.Generic.Dictionary<{0}, {1}>",
                 type.Arguments[0].Type, type.Arguments[1].Type);
