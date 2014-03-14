@@ -549,7 +549,7 @@ namespace CppSharp
         }
     }
 
-    public class DeclConverter : DeclVisitor<AST.Declaration>
+    public unsafe class DeclConverter : DeclVisitor<AST.Declaration>
     {
         TypeConverter typeConverter;
 
@@ -566,13 +566,15 @@ namespace CppSharp
             if (decl.__Instance == IntPtr.Zero)
                 return null;
 
-            if (decl.OriginalPtr == IntPtr.Zero)
+            if (decl.OriginalPtr == null)
                 throw new NotSupportedException("Original pointer must not be null");
+
+            var originalPtr = new IntPtr(decl.OriginalPtr);
 
             // Check if the declaration was already handled and return its
             // existing instance.
-            if (Declarations.ContainsKey(decl.OriginalPtr))
-                return Declarations[decl.OriginalPtr];
+            if (Declarations.ContainsKey(originalPtr))
+                return Declarations[originalPtr];
 
             var newDecl = base.Visit(decl);
             return newDecl;
@@ -607,12 +609,14 @@ namespace CppSharp
 
         void VisitDeclaration(Declaration decl, AST.Declaration _decl)
         {
-            if (Declarations.ContainsKey(decl.OriginalPtr))
+            var originalPtr = new IntPtr(decl.OriginalPtr);
+
+            if (Declarations.ContainsKey(originalPtr))
                 throw new NotSupportedException("Duplicate declaration processed");
 
             // Add the declaration to the map so that we can check if have
             // already handled it and return the declaration.
-            Declarations[decl.OriginalPtr] = _decl;
+            Declarations[originalPtr] = _decl;
 
             _decl.Access = VisitAccessSpecifier(decl.Access);
             _decl.Name = decl.Name;
@@ -629,7 +633,7 @@ namespace CppSharp
                 _decl.PreprocessedEntities.Add(_entity);
             }
 
-            _decl.OriginalPtr = decl.OriginalPtr;
+            _decl.OriginalPtr = originalPtr;
         }
 
         void VisitDeclContext(DeclarationContext ctx, AST.DeclarationContext _ctx)
