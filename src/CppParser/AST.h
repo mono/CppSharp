@@ -597,7 +597,6 @@ struct CS_API Field : public Declaration
 {
     DECLARE_DECL_KIND(Field, Field)
     CppSharp::CppParser::AST::QualifiedType QualifiedType;
-    AccessSpecifier Access;
     unsigned Offset;
     CppSharp::CppParser::AST::Class* Class;
 };
