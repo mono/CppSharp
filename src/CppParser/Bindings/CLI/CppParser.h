@@ -14,6 +14,7 @@ namespace CppSharp
         ref class ParserDiagnostic;
         ref class ParserOptions;
         ref class ParserResult;
+        ref class ParserTargetInfo;
         namespace AST
         {
             enum struct CppAbi;
@@ -66,6 +67,8 @@ namespace CppSharp
             ParserOptions(::CppSharp::CppParser::ParserOptions* native);
             ParserOptions(System::IntPtr native);
             ParserOptions();
+
+            ParserOptions(CppSharp::Parser::ParserOptions^ _0);
 
             property unsigned int ArgumentsCount
             {
@@ -182,6 +185,8 @@ namespace CppSharp
             ParserDiagnostic(System::IntPtr native);
             ParserDiagnostic();
 
+            ParserDiagnostic(CppSharp::Parser::ParserDiagnostic^ _0);
+
             property System::String^ FileName
             {
                 System::String^ get();
@@ -228,6 +233,8 @@ namespace CppSharp
             ParserResult(System::IntPtr native);
             ParserResult();
 
+            ParserResult(CppSharp::Parser::ParserResult^ _0);
+
             property unsigned int DiagnosticsCount
             {
                 unsigned int get();
@@ -271,9 +278,13 @@ namespace CppSharp
             ClangParser(System::IntPtr native);
             ClangParser();
 
+            ClangParser(CppSharp::Parser::ClangParser^ _0);
+
             static CppSharp::Parser::ParserResult^ ParseHeader(CppSharp::Parser::ParserOptions^ Opts);
 
             static CppSharp::Parser::ParserResult^ ParseLibrary(CppSharp::Parser::ParserOptions^ Opts);
+
+            static CppSharp::Parser::ParserTargetInfo^ GetTargetInfo(CppSharp::Parser::ParserOptions^ Opts);
         };
     }
 }
