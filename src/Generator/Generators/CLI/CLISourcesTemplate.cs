@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using CppSharp.AST;
+using CppSharp.AST.Extensions;
 using CppSharp.Generators.CSharp;
 using CppSharp.Types;
 using Type = CppSharp.AST.Type;

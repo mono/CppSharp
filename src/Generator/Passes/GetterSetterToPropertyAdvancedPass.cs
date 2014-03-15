@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using CppSharp.AST;
+using CppSharp.AST.Extensions;
 using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Passes

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using CppSharp.AST;
+using CppSharp.AST.Extensions;
 using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Generators.AST

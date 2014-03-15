@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using CppSharp.AST;
+using CppSharp.AST.Extensions;
 using CppSharp.Generators;
 
 namespace CppSharp.Passes

@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.Util;
 using CppSharp.AST;
+using CppSharp.AST.Extensions;
 using CppSharp.Types;
 using CppSharp.Utils;
 using Attribute = CppSharp.AST.Attribute;

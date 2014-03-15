@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using CppSharp.AST.Extensions;
 
 namespace CppSharp.AST
 {

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using CppSharp.AST;
+using CppSharp.AST.Extensions;
 
 namespace CppSharp.Passes
 {
