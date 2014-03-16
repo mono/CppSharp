@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using CppSharp.AST;
+using CppSharp.AST.Extensions;
 using CppSharp.Types;
 using Delegate = CppSharp.AST.Delegate;
 using Type = CppSharp.AST.Type;
