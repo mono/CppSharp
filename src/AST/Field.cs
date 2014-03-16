@@ -31,6 +31,14 @@ namespace CppSharp.AST
             Offset = 0;
         }
 
+        public Field(Field field): base(field)
+        {
+            QualifiedType = field.QualifiedType;
+            Offset = field.Offset;
+            Class = field.Class;
+            Expression = field.Expression;
+        }
+
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {
             return visitor.VisitFieldDecl(this);
