@@ -291,10 +291,14 @@ namespace CppSharp.Generators
             ActiveBlock = block;
         }
 
-        public void PopBlock(NewLineKind newLineKind = NewLineKind.Never)
+        public Block PopBlock(NewLineKind newLineKind = NewLineKind.Never)
         {
+            var block = ActiveBlock;
+
             ActiveBlock.NewLineKind = newLineKind;
             ActiveBlock = ActiveBlock.Parent;
+
+            return block;
         }
 
         public IEnumerable<Block> FindBlocks(int kind)
