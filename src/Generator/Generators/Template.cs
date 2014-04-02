@@ -165,6 +165,17 @@ namespace CppSharp.Generators
             return builder.ToString();
         }
 
+        public bool IsEmpty
+        {
+            get
+            {
+                if (Blocks.Any(block => !block.IsEmpty))
+                    return false;
+
+                return string.IsNullOrEmpty(Text.ToString());
+            }
+        }
+
         #region ITextGenerator implementation
 
         public uint Indent { get { return Text.Indent; } }
