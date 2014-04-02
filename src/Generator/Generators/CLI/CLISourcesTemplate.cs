@@ -602,13 +602,9 @@ namespace CppSharp.Generators.CLI
 
         private void GenerateStructMarshaling(Class @class, string nativeVar)
         {
-            foreach (var @base in @class.Bases)
+            foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.Ignore))
             {
-                if (!@base.IsClass || @base.Class.Ignore) 
-                    continue;
-
-                var baseClass = @base.Class;
-                GenerateStructMarshaling(baseClass, nativeVar);
+                GenerateStructMarshaling(@base.Class, nativeVar);
             }
 
             foreach (var property in @class.Properties)
@@ -755,18 +751,14 @@ namespace CppSharp.Generators.CLI
 
         private void GenerateValueTypeConstructorCallProperties(Class @class)
         {
-            foreach (var @base in @class.Bases)
+            foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.ExplicityIgnored))
             {
-                if (!@base.IsClass || @base.Class.Ignore) 
-                    continue;
-
-                var baseClass = @base.Class;
-                GenerateValueTypeConstructorCallProperties(baseClass);
+                GenerateValueTypeConstructorCallProperties(@base.Class);
             }
 
             foreach (var property in @class.Properties)
             {
-                if (property.Ignore || property.Field == null) continue;
+                if (property.ExplicityIgnored || property.Field == null) continue;
 
                 var varName = string.Format("_native.{0}", property.Field.OriginalName);
 

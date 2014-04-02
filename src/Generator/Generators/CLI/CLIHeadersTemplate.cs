@@ -414,16 +414,12 @@ namespace CppSharp.Generators.CLI
         {
             // Handle the case of struct (value-type) inheritance by adding the base
             // properties to the managed value subtypes.
-            foreach (var @base in @class.Bases)
+            if (@class.IsValueType)
             {
-                if (!@base.IsClass)
-                    continue;
-
-                Class baseClass = @base.Class;
-                if (!baseClass.IsValueType || baseClass.Ignore)
-                    continue;
-
-                GenerateClassFields(baseClass);
+                foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.Ignore))
+                {
+                    GenerateClassFields(@base.Class);
+                }
             }
 
             PushIndent();
@@ -450,7 +446,7 @@ namespace CppSharp.Generators.CLI
                     field.Offset);
             WriteLine("{0} {1};", field.Type, field.Name);
 
-            PopBlock(NewLineKind.Never);
+            PopBlock();
         }
 
         public void GenerateClassEvents(Class @class)
@@ -593,16 +589,12 @@ namespace CppSharp.Generators.CLI
         {
             // Handle the case of struct (value-type) inheritance by adding the base
             // properties to the managed value subtypes.
-            foreach (var @base in @class.Bases)
+            if (@class.IsValueType)
             {
-                if (!@base.IsClass)
-                    continue;
-
-                Class baseClass = @base.Class;
-                if (!baseClass.IsValueType || baseClass.Ignore)
-                    continue;
-
-                GenerateClassProperties(baseClass);
+                foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.Ignore))
+                {
+                    GenerateClassProperties(@base.Class);
+                }
             }
 
             PushIndent();
