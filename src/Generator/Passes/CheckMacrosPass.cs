@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CppSharp.AST;
 
@@ -71,6 +72,19 @@ namespace CppSharp.Passes
                                     e.Location != MacroLocation.FunctionBody &&
                                     e.Location != MacroLocation.FunctionParameters))
                 decl.IsGenerated = false;
+        }
+
+        public override bool VisitTranslationUnit(TranslationUnit unit)
+        {
+            var expansions = unit.PreprocessedEntities.OfType<MacroExpansion>();
+
+            if (expansions.Any(e => e.Text == Prefix + "_IGNORE_FILE"))
+            {
+                unit.IsGenerated = false;
+                unit.ExplicityIgnored = true;
+            }
+
+            return base.VisitTranslationUnit(unit);
         }
 
         public override bool VisitClassDecl(Class @class)
