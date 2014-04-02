@@ -38,6 +38,8 @@ namespace CppSharp.Generators
         private bool hasIndentChanged;
         private bool isSubBlock;
 
+        public Func<bool> CheckGenerate;
+
         public Block() : this(BlockKind.Unknown)
         {
 
@@ -81,6 +83,9 @@ namespace CppSharp.Generators
 
         public virtual string Generate(DriverOptions options)
         {
+            if (CheckGenerate != null && !CheckGenerate())
+                return "";
+
             if (Blocks.Count == 0)
                 return Text.ToString();
 
