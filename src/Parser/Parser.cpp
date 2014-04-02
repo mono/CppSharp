@@ -2112,7 +2112,6 @@ CppSharp::AST::PreprocessedEntity^ Parser::WalkPreprocessedEntity(
         auto Definition = gcnew CppSharp::AST::MacroDefinition();
         Entity = Definition;
 
-        Definition->Namespace = GetTranslationUnit(MD->getLocation(), NULL);
         Definition->Name = clix::marshalString<clix::E_UTF8>(II->getName())->Trim();
         Definition->Expression = clix::marshalString<clix::E_UTF8>(Expression)->Trim();
     }
@@ -2122,7 +2121,16 @@ CppSharp::AST::PreprocessedEntity^ Parser::WalkPreprocessedEntity(
         return nullptr;
 
     Entity->OriginalPtr = System::IntPtr(PPEntity);
-    Decl->PreprocessedEntities->Add(Entity);
+    Entity->Namespace = GetTranslationUnit(PPEntity->getSourceRange().getBegin(), NULL);
+
+    if (Decl->GetType() == CppSharp::AST::TranslationUnit::typeid)
+    {
+        Entity->Namespace->PreprocessedEntities->Add(Entity);
+    }
+    else
+    {
+        Decl->PreprocessedEntities->Add(Entity);
+    }
 
     return Entity;
 }
