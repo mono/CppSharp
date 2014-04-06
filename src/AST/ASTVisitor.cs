@@ -307,7 +307,7 @@ namespace CppSharp.AST
                     param.Visit(this);
 
             return true;
-        }    
+        }
 
         public virtual bool VisitMethodDecl(Method method)
         {
