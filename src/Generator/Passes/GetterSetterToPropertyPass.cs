@@ -84,6 +84,9 @@ namespace CppSharp.Passes
             if (@class == null || @class.IsIncomplete)
                 return false;
 
+            if (method.IsConstructor)
+                return false;
+
             if (IsGetter(method))
             {
                 var name = method.Name.Substring("get".Length);
