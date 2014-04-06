@@ -4,7 +4,6 @@ using System.IO;
 using System.Text;
 using CppSharp.AST;
 using CppSharp.Generators;
-
 #if !OLD_PARSER
 using CppSharp.Parser;
 using CppAbi = CppSharp.Parser.AST.CppAbi;
@@ -96,6 +95,9 @@ namespace CppSharp
         public bool GenerateProperties;
         public bool GenerateInternalImports;
         public bool GenerateClassMarshals;
+
+        //List of include directories that are used but not generated
+        public List<string> NoGenIncludeDirs;
 
         /// <summary>
         /// Enable this option to enable generation of finalizers.
