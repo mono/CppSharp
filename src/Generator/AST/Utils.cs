@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Linq;
 
 namespace CppSharp.AST
 {
@@ -36,6 +37,21 @@ namespace CppSharp.AST
 
             if (method.Access == AccessSpecifier.Private && !method.IsOverride)
                 return true;
+
+            //Ignore copy constructor if a base class don't has or has a private copy constructor
+            if (method.IsCopyConstructor)
+            {
+                var baseClass = @class;
+                while (baseClass != null && baseClass.HasBaseClass)
+                {
+                    baseClass = baseClass.BaseClass;
+                    var copyConstructor = baseClass.Methods.FirstOrDefault(m => m.IsCopyConstructor);
+                    if (copyConstructor == null
+                        || copyConstructor.Access == AccessSpecifier.Private
+                        || copyConstructor.Ignore)
+                        return true;
+                }
+            }
 
             return false;
         }
