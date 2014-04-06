@@ -118,6 +118,18 @@ namespace CppSharp.Passes
             return false;
         }
 
+        public override bool VisitFunctionDecl(Function decl)
+        {
+            if (!VisitDeclaration(decl))
+                return false;
+
+            if (ASTUtils.CheckIgnoreFunction(decl))
+                return false;
+
+            CheckDuplicate(decl);
+            return false;
+        }
+
         public override bool VisitMethodDecl(Method decl)
         {
             if (!VisitDeclaration(decl))
@@ -144,6 +156,9 @@ namespace CppSharp.Passes
             // so we visit methods first.
             foreach (var method in @class.Methods)
                 VisitMethodDecl(method);
+
+            foreach (var function in @class.Functions)
+                VisitFunctionDecl(function);
 
             foreach (var field in @class.Fields)
                 VisitFieldDecl(field);
