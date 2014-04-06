@@ -149,7 +149,7 @@ namespace CppSharp.AST
             {
                 foreach (var @base in Bases)
                 {
-                    if (@base.IsClass && !@base.Class.Ignore)
+                    if (@base.IsClass && !@base.Class.ExplicityIgnored)
                         return @base.Class;
                 }
 

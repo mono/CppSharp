@@ -710,7 +710,7 @@ namespace CppSharp.Generators.CSharp
                 baseClass = @class.Bases[0].Class;
 
             var hasRefBase = baseClass != null && baseClass.IsRefType
-                             && !baseClass.Ignore;
+                             && !baseClass.ExplicityIgnored;
 
             return hasRefBase;
         }

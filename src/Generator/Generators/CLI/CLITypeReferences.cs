@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Generators.AST;
@@ -111,7 +112,7 @@ namespace CppSharp.Generators.CLI
             if(decl.Namespace.TranslationUnit.IsSystemHeader)
                 return;
 
-            if(decl.Ignore)
+            if(decl.ExplicityIgnored)
                 return;
 
             if(IsBuiltinTypedef(decl))
@@ -157,7 +158,7 @@ namespace CppSharp.Generators.CLI
             if (decl.Namespace != null && decl.Namespace.TranslationUnit.IsSystemHeader)
                 return false;
 
-            return !decl.Ignore;
+            return !decl.ExplicityIgnored;
         }
 
         public override bool VisitClassDecl(Class @class)
