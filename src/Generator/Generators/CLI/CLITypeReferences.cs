@@ -26,6 +26,7 @@ namespace CppSharp.Generators.CLI
     public class CLITypeReferenceCollector : AstVisitor
     {
         private readonly ITypeMapDatabase TypeMapDatabase;
+        private readonly DriverOptions DriverOptions;
         private TranslationUnit TranslationUnit;
 
         private Dictionary<Declaration, CLITypeReference> typeReferences;
@@ -34,9 +35,10 @@ namespace CppSharp.Generators.CLI
             get { return typeReferences.Values; }
         }
 
-        public CLITypeReferenceCollector(ITypeMapDatabase typeMapDatabase)
+        public CLITypeReferenceCollector(ITypeMapDatabase typeMapDatabase, DriverOptions driverOptions)
         {
             TypeMapDatabase = typeMapDatabase;
+            DriverOptions = driverOptions;
             typeReferences = new Dictionary<Declaration,CLITypeReference>();
         }
 
