@@ -68,7 +68,7 @@ namespace CppSharp.Generators.CLI
                 var include = typeRef.Include;
                 var unit = include.TranslationUnit;
 
-                if (unit != null && unit.Ignore)
+                if (unit != null && unit.ExplicityIgnored)
                     continue;
 
                 if(!string.IsNullOrEmpty(include.File) && include.InHeader)
