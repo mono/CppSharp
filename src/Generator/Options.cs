@@ -95,9 +95,11 @@ namespace CppSharp
         public bool GenerateProperties;
         public bool GenerateInternalImports;
         public bool GenerateClassMarshals;
+        public bool UseHeaderDirectories;
 
         //List of include directories that are used but not generated
         public List<string> NoGenIncludeDirs;
+        public string NoGenIncludePrefix = "";
 
         /// <summary>
         /// Enable this option to enable generation of finalizers.
