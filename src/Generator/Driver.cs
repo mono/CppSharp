@@ -320,7 +320,7 @@ namespace CppSharp
 
         public void WriteCode(List<GeneratorOutput> outputs)
         {
-            var outputPath = Options.OutputDir;
+            var outputPath = Path.GetFullPath(Options.OutputDir);
 
             if (!Directory.Exists(outputPath))
                 Directory.CreateDirectory(outputPath);
@@ -329,16 +329,22 @@ namespace CppSharp
             {
                 var fileBase = output.TranslationUnit.FileNameWithoutExtension;
 
+                if (Options.UseHeaderDirectories)
+                {
+                    var dir = Path.Combine(outputPath, output.TranslationUnit.FileRelativeDirectory);
+                    Directory.CreateDirectory(dir);
+                    fileBase = Path.Combine(output.TranslationUnit.FileRelativeDirectory, fileBase);
+                }
+
                 if (Options.GenerateName != null)
                     fileBase = Options.GenerateName(output.TranslationUnit);
 
                 foreach (var template in output.Templates)
                 {
-                    var fileName = string.Format("{0}.{1}", fileBase, template.FileExtension);
-                    Diagnostics.EmitMessage("Generated '{0}'", fileName);
+                    var fileRelativePath = string.Format("{0}.{1}", fileBase, template.FileExtension);
+                    Diagnostics.EmitMessage("Generated '{0}'", fileRelativePath);
 
-                    var filePath = Path.Combine(outputPath, fileName);
-                    string file = Path.GetFullPath(filePath);
+                    var file = Path.Combine(outputPath, fileRelativePath);
                     File.WriteAllText(file, template.Generate());
                     Options.CodeFiles.Add(file);
                 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Generators.AST;
@@ -109,9 +110,9 @@ namespace CppSharp.Generators.CLI
                 return;
             }
 
-            var declFile = decl.Namespace.TranslationUnit.FileName;
+            var translationUnit = decl.Namespace.TranslationUnit;
 
-            if(decl.Namespace.TranslationUnit.IsSystemHeader)
+            if (translationUnit.IsSystemHeader)
                 return;
 
             if(decl.ExplicityIgnored)
@@ -125,13 +126,33 @@ namespace CppSharp.Generators.CLI
             {
                 typeRef.Include = new Include
                     {
-                        File = declFile,
-                        TranslationUnit = decl.Namespace.TranslationUnit,
-                        Kind = Include.IncludeKind.Quoted,
+                        File = GetIncludePath(translationUnit),
+                        TranslationUnit = translationUnit,
+                        Kind = translationUnit.IsGenerated
+                            ? Include.IncludeKind.Quoted
+                            : Include.IncludeKind.Angled,
                     };
             }
 
             typeRef.Include.InHeader |= IsIncludeInHeader(record);
+        }
+
+        private string GetIncludePath(TranslationUnit translationUnit)
+        {
+            if (!translationUnit.IsGenerated)
+                return DriverOptions.NoGenIncludePrefix + translationUnit.FileRelativePath;
+
+            if (!DriverOptions.UseHeaderDirectories)
+                return translationUnit.FileName;
+
+            var rel = PathHelpers.GetRelativePath(
+                TranslationUnit.FileRelativeDirectory,
+                translationUnit.FileRelativeDirectory);
+
+            if (string.IsNullOrEmpty(rel))
+                return translationUnit.FileName;
+
+            return Path.Combine(rel, translationUnit.FileName);
         }
 
         private bool IsBuiltinTypedef(Declaration decl)
