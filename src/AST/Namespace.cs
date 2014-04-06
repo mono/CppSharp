@@ -278,7 +278,7 @@ namespace CppSharp.AST
             return Functions.Where(fn => fn.OperatorKind == kind);
         }
 
-        public virtual IEnumerable<Function> GetFunctionOverloads(Function function)
+        public virtual IEnumerable<Function> GetOverloads(Function function)
         {
             if (function.IsOperator)
                 return FindOperator(function.OperatorKind);

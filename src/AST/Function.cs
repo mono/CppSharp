@@ -88,6 +88,7 @@ namespace CppSharp.AST
             IsVariadic = false;
             IsInline = false;
             Signature = string.Empty;
+            Index = null;
         }
 
         public Function(Function function)
@@ -105,6 +106,7 @@ namespace CppSharp.AST
             SynthKind = function.SynthKind;
             OriginalFunction = function.OriginalFunction;
             Mangled = function.Mangled;
+            Index = function.Index;
         }
 
         public QualifiedType ReturnType { get; set; }
@@ -172,6 +174,11 @@ namespace CppSharp.AST
         public string Mangled { get; set; }
 
         public string Signature { get; set; }
+
+        /// <summary>
+        /// Keeps an index that de-duplicates native names in the C# backend.
+        /// </summary>
+        public uint? Index { get; set; }
 
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {

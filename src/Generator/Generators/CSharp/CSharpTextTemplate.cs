@@ -2608,7 +2608,7 @@ namespace CppSharp.Generators.CSharp
             var method = function as Method;
             if (method != null)
             {
-                if (method.IsConstructor)
+                if (method.IsConstructor && !method.IsCopyConstructor)
                     functionName = "ctor";
                 else if (method.IsCopyConstructor)
                     functionName = "cctor";
@@ -2623,12 +2623,14 @@ namespace CppSharp.Generators.CSharp
             if (function.IsOperator)
                 identifier = "Operator" + function.OperatorKind;
 
-            var overloads = function.Namespace.GetFunctionOverloads(function)
+            var overloads = function.Namespace.GetOverloads(function)
                 .ToList();
             var index = overloads.IndexOf(function);
 
             if (index >= 0)
                 identifier += "_" + index.ToString(CultureInfo.InvariantCulture);
+            else if (function.Index.HasValue)
+                identifier += "_" + function.Index.Value;
 
             return identifier;
         }

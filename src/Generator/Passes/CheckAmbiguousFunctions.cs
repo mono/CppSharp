@@ -31,7 +31,7 @@ namespace CppSharp.Passes
             if (function.IsAmbiguous)
                 return false;
 
-            var overloads = function.Namespace.GetFunctionOverloads(function);
+            var overloads = function.Namespace.GetOverloads(function);
 
             foreach (var overload in overloads)
             {

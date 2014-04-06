@@ -199,6 +199,15 @@ namespace CppSharp.AST
             }
         }
 
+        public override IEnumerable<Function> GetOverloads(Function function)
+        {
+            var methods = Methods.Where(m => m.Name == function.Name);
+            if (methods.ToList().Count != 0)
+                return methods;
+
+            return base.GetOverloads(function);
+        }
+
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {
             return visitor.VisitClassDecl(this);
