@@ -57,5 +57,23 @@ namespace CppSharp.AST
 
         /// Contains the include path.
         public string IncludePath;
+
+        public string FileRelativeDirectory
+        {
+            get
+            {
+                var path = IncludePath.Replace('\\', '/');
+                var index = path.LastIndexOf('/');
+                return path.Substring(0, index);
+            }
+        }
+
+        public string FileRelativePath
+        {
+            get
+            {
+                return Path.Combine(FileRelativeDirectory, FileName);
+            }
+        }
     }
 }
