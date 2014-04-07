@@ -11,7 +11,7 @@
 
 namespace CppSharp { namespace CppParser { namespace AST {
 
-// Types
+#pragma region Types
 
 enum struct TypeKind
 {
@@ -244,32 +244,16 @@ struct CS_API BuiltinType : public Type
     PrimitiveType Type;
 };
 
-// Comments
+#pragma endregion
 
-enum struct RawCommentKind
+#pragma region ABI
+
+enum struct CppAbi
 {
-    Invalid,
-    OrdinaryBCPL,
-    OrdinaryC,
-    BCPLSlash,
-    BCPLExcl,
-    JavaDoc,
-    Qt,
-    Merged
+    Itanium,
+    Microsoft,
+    ARM
 };
-
-struct FullComment;
-
-struct CS_API RawComment
-{
-    RawComment();
-    RawCommentKind Kind;
-    STRING(Text)
-    STRING(BriefText)
-    CppSharp::CppParser::AST::FullComment* FullComment;
-};
-
-// Class layouts
 
 enum struct VTableComponentKind
 {
@@ -305,13 +289,6 @@ struct CS_API VFTableInfo
     VTableLayout Layout;
 };
 
-enum struct CppAbi
-{
-    Itanium,
-    Microsoft,
-    ARM
-};
-
 struct CS_API ClassLayout
 {
     ClassLayout();
@@ -325,27 +302,9 @@ struct CS_API ClassLayout
     int DataSize;
 };
 
-// Declarations
+#pragma endregion
 
-enum struct MacroLocation
-{
-    Unknown,
-    ClassHead,
-    ClassBody,
-    FunctionHead,
-    FunctionParameters,
-    FunctionBody,
-};
-
-enum struct AccessSpecifier
-{
-    Private,
-    Protected,
-    Public
-};
-
-struct DeclarationContext;
-struct PreprocessedEntity;
+#pragma region Declarations
 
 enum struct DeclarationKind
 {
@@ -374,6 +333,17 @@ enum struct DeclarationKind
 
 #define DECLARE_DECL_KIND(klass, kind) \
     klass();
+
+enum struct AccessSpecifier
+{
+    Private,
+    Protected,
+    Public
+};
+
+struct DeclarationContext;
+struct RawComment;
+struct PreprocessedEntity;
 
 struct CS_API Declaration
 {
@@ -583,6 +553,9 @@ struct CS_API Variable : public Declaration
     CppSharp::CppParser::AST::QualifiedType QualifiedType;
 };
 
+struct DeclarationContext;
+struct PreprocessedEntity;
+
 struct CS_API BaseClassSpecifier
 {
     BaseClassSpecifier();
@@ -680,6 +653,16 @@ struct CS_API Namespace : public DeclarationContext
     Namespace();
 };
 
+enum struct MacroLocation
+{
+    Unknown,
+    ClassHead,
+    ClassBody,
+    FunctionHead,
+    FunctionParameters,
+    FunctionBody,
+};
+
 struct CS_API PreprocessedEntity : public Declaration
 {
     PreprocessedEntity();
@@ -718,5 +701,37 @@ struct CS_API ASTContext
     TranslationUnit* FindOrCreateModule(std::string File);
     VECTOR(TranslationUnit*, TranslationUnits)
 };
+
+#pragma endregion
+
+#pragma region Comments
+
+#define DECLARE_COMMENT_KIND(kind) \
+    kind##Type();
+
+enum struct RawCommentKind
+{
+    Invalid,
+    OrdinaryBCPL,
+    OrdinaryC,
+    BCPLSlash,
+    BCPLExcl,
+    JavaDoc,
+    Qt,
+    Merged
+};
+
+struct FullComment;
+
+struct CS_API RawComment
+{
+    RawComment();
+    RawCommentKind Kind;
+    STRING(Text)
+    STRING(BriefText)
+    CppSharp::CppParser::AST::FullComment* FullComment;
+};
+
+#pragma endregion
 
 } } }
