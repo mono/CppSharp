@@ -230,7 +230,7 @@ std::string Parser::GetDeclMangledName(clang::Decl* D, clang::TargetCXXABI ABI,
     if (!CanMangle) return "";
 
     NamedDecl* ND = cast<NamedDecl>(D);
-    llvm::OwningPtr<MangleContext> MC;
+    std::unique_ptr<MangleContext> MC;
     
     switch(ABI.getKind())
     {
@@ -2565,18 +2565,18 @@ ParserResult* Parser::ParseHeader(const std::string& File)
 
     // Initialize enough Clang codegen machinery so we can get at ABI details.
     llvm::LLVMContext Ctx;
-    llvm::OwningPtr<llvm::Module> M(new llvm::Module("", Ctx));
+    std::unique_ptr<llvm::Module> M(new llvm::Module("", Ctx));
 
     M->setTargetTriple(AST->getTargetInfo().getTriple().getTriple());
     M->setDataLayout(AST->getTargetInfo().getTargetDescription());
-    llvm::OwningPtr<llvm::DataLayout> TD(new llvm::DataLayout(AST->getTargetInfo()
+    std::unique_ptr<llvm::DataLayout> TD(new llvm::DataLayout(AST->getTargetInfo()
         .getTargetDescription()));
 
-    llvm::OwningPtr<clang::CodeGen::CodeGenModule> CGM(
+    std::unique_ptr<clang::CodeGen::CodeGenModule> CGM(
         new clang::CodeGen::CodeGenModule(C->getASTContext(), C->getCodeGenOpts(),
         *M, *TD, C->getDiagnostics()));
 
-    llvm::OwningPtr<clang::CodeGen::CodeGenTypes> CGT(
+    std::unique_ptr<clang::CodeGen::CodeGenTypes> CGT(
         new clang::CodeGen::CodeGenTypes(*CGM.get()));
 
     CodeGenInfo = (clang::TargetCodeGenInfo*) &CGM->getTargetCodeGenInfo();
@@ -2753,18 +2753,18 @@ ParserTargetInfo* Parser::GetTargetInfo()
 
     // Initialize enough Clang codegen machinery so we can get at ABI details.
     llvm::LLVMContext Ctx;
-    llvm::OwningPtr<llvm::Module> M(new llvm::Module("", Ctx));
+    std::unique_ptr<llvm::Module> M(new llvm::Module("", Ctx));
 
     M->setTargetTriple(AST->getTargetInfo().getTriple().getTriple());
     M->setDataLayout(AST->getTargetInfo().getTargetDescription());
-    llvm::OwningPtr<llvm::DataLayout> TD(new llvm::DataLayout(AST->getTargetInfo()
+    std::unique_ptr<llvm::DataLayout> TD(new llvm::DataLayout(AST->getTargetInfo()
         .getTargetDescription()));
 
-    llvm::OwningPtr<clang::CodeGen::CodeGenModule> CGM(
+    std::unique_ptr<clang::CodeGen::CodeGenModule> CGM(
         new clang::CodeGen::CodeGenModule(C->getASTContext(), C->getCodeGenOpts(),
         *M, *TD, C->getDiagnostics()));
 
-    llvm::OwningPtr<clang::CodeGen::CodeGenTypes> CGT(
+    std::unique_ptr<clang::CodeGen::CodeGenTypes> CGT(
         new clang::CodeGen::CodeGenTypes(*CGM.get()));
 
     CodeGenInfo = (clang::TargetCodeGenInfo*) &CGM->getTargetCodeGenInfo();

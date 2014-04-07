@@ -121,7 +121,7 @@ protected:
     int Index;
     ASTContext* Lib;
     ParserOptions* Opts;
-    llvm::OwningPtr<clang::CompilerInstance> C;
+    std::unique_ptr<clang::CompilerInstance> C;
     clang::ASTContext* AST;
     clang::TargetCXXABI::Kind TargetABI;
     clang::TargetCodeGenInfo* CodeGenInfo;
