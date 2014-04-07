@@ -499,7 +499,8 @@ void Parser::WalkVTable(clang::CXXRecordDecl* RD, Class* C)
     {
     case TargetCXXABI::Microsoft:
     {
-        C->Layout.ABI = CppAbi::Microsoft;
+        C->Layout = new ClassLayout();
+        C->Layout->ABI = CppAbi::Microsoft;
         MicrosoftVTableContext VTContext(*AST);
 
         auto VFPtrs = VTContext.getVFPtrOffsets(RD);
@@ -514,17 +515,17 @@ void Parser::WalkVTable(clang::CXXRecordDecl* RD, Class* C)
             auto& VTLayout = VTContext.getVFTableLayout(RD, VFPtrInfo->FullOffsetInMDC);
             Info.Layout = WalkVTableLayout(VTLayout);
 
-            C->Layout.VFTables.push_back(Info);
+            C->Layout->VFTables.push_back(Info);
         }
         break;
     }
     case TargetCXXABI::GenericItanium:
     {
-        C->Layout.ABI = CppAbi::Itanium;
+        C->Layout->ABI = CppAbi::Itanium;
         ItaniumVTableContext VTContext(*AST);
 
         auto& VTLayout = VTContext.getVTableLayout(RD);
-        C->Layout.Layout = WalkVTableLayout(VTLayout);
+        C->Layout->Layout = WalkVTableLayout(VTLayout);
         break;
     }
     default:
@@ -612,11 +613,11 @@ void Parser::WalkRecordCXX(clang::CXXRecordDecl* Record, Class* RC)
     if (hasLayout)
     {
         Layout = &C->getASTContext().getASTRecordLayout(Record);
-        RC->Layout.Alignment = (int)Layout-> getAlignment().getQuantity();
-        RC->Layout.Size = (int)Layout->getSize().getQuantity();
-        RC->Layout.DataSize = (int)Layout->getDataSize().getQuantity();
-        RC->Layout.HasOwnVFPtr = Layout->hasOwnVFPtr();
-        RC->Layout.VBPtrOffset = Layout->getVBPtrOffset().getQuantity();
+        RC->Layout->Alignment = (int)Layout-> getAlignment().getQuantity();
+        RC->Layout->Size = (int)Layout->getSize().getQuantity();
+        RC->Layout->DataSize = (int)Layout->getDataSize().getQuantity();
+        RC->Layout->HasOwnVFPtr = Layout->hasOwnVFPtr();
+        RC->Layout->VBPtrOffset = Layout->getVBPtrOffset().getQuantity();
     }
 
     AccessSpecifierDecl* AccessDecl = nullptr;

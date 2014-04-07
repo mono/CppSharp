@@ -283,6 +283,7 @@ struct CS_API VTableLayout
 
 struct CS_API VFTableInfo
 {
+    VFTableInfo();
     uint64_t VBTableIndex;
     uint32_t VFPtrOffset;
     uint32_t VFPtrFullOffset;
@@ -598,7 +599,7 @@ struct CS_API Class : public DeclarationContext
     bool HasNonTrivialDestructor;
     bool IsExternCContext;
 
-    ClassLayout Layout;
+    ClassLayout* Layout;
 };
 
 struct CS_API Template : public Declaration

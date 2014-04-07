@@ -84,7 +84,11 @@ VTableComponent::VTableComponent() : Offset(0), Declaration(0) {}
 VTableLayout::VTableLayout() {}
 DEF_VECTOR(VTableLayout, VTableComponent, Components)
 
-ClassLayout::ClassLayout() : ABI(CppAbi::Itanium) {}
+VFTableInfo::VFTableInfo() : VBTableIndex(0), VFPtrOffset(0), VFPtrFullOffset(0) {}
+
+ClassLayout::ClassLayout() : ABI(CppAbi::Itanium), HasOwnVFPtr(false),
+    VBPtrOffset(0), Alignment(0), Size(0), DataSize(0) {}
+
 DEF_VECTOR(ClassLayout, VFTableInfo, VFTables)
 
 Declaration::Declaration(DeclarationKind kind)
@@ -373,14 +377,15 @@ Field::Field() : Declaration(DeclarationKind::Field), Class(0) {}
 AccessSpecifierDecl::AccessSpecifierDecl()
     : Declaration(DeclarationKind::AccessSpecifier) {}
 
-Class::Class() { Kind = DeclarationKind::Class; }
+Class::Class() : Layout(0) { Kind = DeclarationKind::Class; }
 
 DEF_VECTOR(Class, BaseClassSpecifier*, Bases)
 DEF_VECTOR(Class, Field*, Fields)
 DEF_VECTOR(Class, Method*, Methods)
 DEF_VECTOR(Class, AccessSpecifierDecl*, Specifiers)
 
-Template::Template() : Declaration(DeclarationKind::Template) {}
+Template::Template() : Declaration(DeclarationKind::Template),
+    TemplatedDecl(0) {}
 
 DEF_VECTOR(Template, TemplateParameter, Parameters)
 
