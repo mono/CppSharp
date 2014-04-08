@@ -495,11 +495,13 @@ void Parser::WalkVTable(clang::CXXRecordDecl* RD, Class* C)
 
     assert(RD->isDynamicClass() && "Only dynamic classes have virtual tables");
 
+    if (!C->Layout)
+        C->Layout = new ClassLayout();
+
     switch(TargetABI)
     {
     case TargetCXXABI::Microsoft:
     {
-        C->Layout = new ClassLayout();
         C->Layout->ABI = CppAbi::Microsoft;
         MicrosoftVTableContext VTContext(*AST);
 
@@ -613,6 +615,8 @@ void Parser::WalkRecordCXX(clang::CXXRecordDecl* Record, Class* RC)
     if (hasLayout)
     {
         Layout = &C->getASTContext().getASTRecordLayout(Record);
+        if (!RC->Layout)
+            RC->Layout = new ClassLayout();
         RC->Layout->Alignment = (int)Layout-> getAlignment().getQuantity();
         RC->Layout->Size = (int)Layout->getSize().getQuantity();
         RC->Layout->DataSize = (int)Layout->getDataSize().getQuantity();
