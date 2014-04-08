@@ -235,7 +235,8 @@ namespace CppSharp.Generators.CLI
         public void WriteClassInstance(Class @class, string instance)
         {
             if (@class.IsRefType)
-                Context.Return.Write("gcnew ");
+                Context.Return.Write("({0} == nullptr) ? nullptr : gcnew ",
+                    instance);
 
             Context.Return.Write("{0}(", QualifiedIdentifier(@class));
             Context.Return.Write("(::{0}*)", @class.QualifiedOriginalName);

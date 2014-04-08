@@ -294,6 +294,10 @@ namespace CppSharp.Generators.CSharp
                 instance = instanceName;
             }
 
+            if (@class.IsRefType)
+                Context.Return.Write("({0} == IntPtr.Zero) ? null : ",
+                    instance);
+
             Context.Return.Write("new {0}({1})",
                 QualifiedIdentifier(@class.OriginalClass ?? @class) +
                 (Context.Driver.Options.GenerateAbstractImpls && @class.IsAbstract ?
