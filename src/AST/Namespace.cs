@@ -312,6 +312,8 @@ namespace CppSharp.AST
     /// </summary>
     public class Namespace : DeclarationContext
     {
+        public bool IsInline;
+
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {
             return visitor.VisitNamespace(this);

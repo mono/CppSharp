@@ -1077,6 +1077,8 @@ DeclarationContext* Parser::GetNamespace(clang::Decl* D,
                 continue;
             auto Name = ND->getName();
             DC = DC->FindCreateNamespace(Name);
+            ((Namespace*)DC)->IsAnonymous = ND->isAnonymousNamespace();
+            ((Namespace*)DC)->IsInline = ND->isInline();
             HandleDeclaration(ND, DC);
             continue;
         }

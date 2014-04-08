@@ -406,6 +406,8 @@ struct CS_API DeclarationContext : public Declaration
     VECTOR(TypedefDecl*, Typedefs)
     VECTOR(Variable*, Variables)
     std::map<uint64_t, Declaration*> Anonymous;
+
+    bool IsAnonymous;
 };
 
 struct CS_API TypedefDecl : public Declaration
@@ -652,6 +654,7 @@ struct CS_API FunctionTemplate : public Template
 struct CS_API Namespace : public DeclarationContext
 {
     Namespace();
+    bool IsInline;
 };
 
 enum struct MacroLocation

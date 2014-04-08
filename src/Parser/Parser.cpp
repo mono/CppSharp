@@ -1090,6 +1090,8 @@ CppSharp::AST::DeclarationContext^ Parser::GetNamespace(clang::Decl* D,
                 continue;
             auto Name = clix::marshalString<clix::E_UTF8>(ND->getName());
             DC = DC->FindCreateNamespace(Name);
+            safe_cast<CppSharp::AST::Namespace^>(DC)->IsAnonymous = ND->isAnonymousNamespace();
+            safe_cast<CppSharp::AST::Namespace^>(DC)->IsInline = ND->isInline();
             HandleDeclaration(ND, DC);
             continue;
         }

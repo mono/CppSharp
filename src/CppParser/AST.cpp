@@ -108,8 +108,8 @@ DEF_STRING(Declaration, Name)
 DEF_STRING(Declaration, DebugText)
 DEF_VECTOR(Declaration, PreprocessedEntity*, PreprocessedEntities)
 
-DeclarationContext::DeclarationContext()
-    : Declaration(DeclarationKind::DeclarationContext) {}
+DeclarationContext::DeclarationContext() : IsAnonymous(false),
+    Declaration(DeclarationKind::DeclarationContext) {}
 
 DEF_VECTOR(DeclarationContext, Namespace*, Namespaces)
 DEF_VECTOR(DeclarationContext, Enumeration*, Enums)
@@ -403,7 +403,7 @@ ClassTemplatePartialSpecialization::ClassTemplatePartialSpecialization()
 
 FunctionTemplate::FunctionTemplate() { Kind = DeclarationKind::FunctionTemplate; }
 
-Namespace::Namespace() { Kind = DeclarationKind::Namespace; }
+Namespace::Namespace() : IsInline(false) { Kind = DeclarationKind::Namespace; }
 
 PreprocessedEntity::PreprocessedEntity()
     : Declaration(DeclarationKind::PreprocessedEntity),
