@@ -30,7 +30,7 @@ namespace CppSharp
 
         public TRet Visit(Parser.AST.Type type)
         {
-            if (type.__Instance == IntPtr.Zero)
+            if (type == null)
                 return default(TRet);
 
             switch (type.Kind)
@@ -563,7 +563,7 @@ namespace CppSharp
 
         public override AST.Declaration Visit(Parser.AST.Declaration decl)
         {
-            if (decl.__Instance == IntPtr.Zero)
+            if (decl == null)
                 return null;
 
             if (decl.OriginalPtr == null)
@@ -1045,7 +1045,8 @@ namespace CppSharp
             _class.HasNonTrivialDestructor = @class.HasNonTrivialDestructor;
             _class.IsExternCContext = @class.IsExternCContext;
 
-            _class.Layout = VisitClassLayout(@class.Layout);
+            if (@class.Layout != null)
+                _class.Layout = VisitClassLayout(@class.Layout);
         }
 
         public override AST.Declaration VisitClass(Class @class)
