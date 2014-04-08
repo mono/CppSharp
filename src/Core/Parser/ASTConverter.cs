@@ -237,6 +237,28 @@ namespace CppSharp
         }
     }
 
+    /// <summary>
+    /// Implements the visitor pattern for the generated comment bindings.
+    /// </summary>
+    public abstract class CommentsVisitor<TRet>
+    {
+        public abstract TRet VisitFullComment(FullComment comment);
+
+        public virtual TRet Visit(Parser.AST.Comment comment)
+        {
+            switch (comment.Kind)
+            {
+                case CommentKind.FullComment:
+                    {
+                        var _comment = new FullComment(comment.__Instance);
+                        return VisitFullComment(_comment);
+                    }
+            }
+
+            throw new ArgumentOutOfRangeException();
+        }
+    }
+
     #endregion
 
     #region Parser AST converters
@@ -248,14 +270,16 @@ namespace CppSharp
     public class ASTConverter
     {
         ASTContext Context { get; set; }
-        TypeConverter typeConverter;
-        DeclConverter declConverter;
+        readonly TypeConverter typeConverter;
+        readonly DeclConverter declConverter;
+        readonly CommentConverter commentConverter;
 
         public ASTConverter(ASTContext context)
         {
             Context = context;
             typeConverter = new TypeConverter();
-            declConverter = new DeclConverter(typeConverter);
+            commentConverter = new CommentConverter();
+            declConverter = new DeclConverter(typeConverter, commentConverter);
             typeConverter.declConverter = declConverter;
         }
 
@@ -551,13 +575,15 @@ namespace CppSharp
 
     public unsafe class DeclConverter : DeclVisitor<AST.Declaration>
     {
-        TypeConverter typeConverter;
+        readonly TypeConverter typeConverter;
+        readonly CommentConverter commentConverter;
 
-        Dictionary<IntPtr, AST.Declaration> Declarations;
+        readonly Dictionary<IntPtr, AST.Declaration> Declarations;
 
-        public DeclConverter(TypeConverter converter)
+        public DeclConverter(TypeConverter type, CommentConverter comment)
         {
-            typeConverter = converter;
+            typeConverter = type;
+            commentConverter = comment;
             Declarations = new Dictionary<IntPtr, AST.Declaration>();
         }
 
@@ -607,6 +633,45 @@ namespace CppSharp
             return _base;
         }
 
+        AST.RawComment VisitRawComment(RawComment rawComment)
+        {
+            var _rawComment = new AST.RawComment
+            {
+                Kind = ConvertRawCommentKind(rawComment.RawCommentKind),
+                BriefText = rawComment.BriefText,
+                Text = rawComment.Text,
+                FullComment = commentConverter.Visit(rawComment.FullComment)
+                    as AST.FullComment
+            };
+
+            return _rawComment;
+        }
+
+        private AST.RawCommentKind ConvertRawCommentKind(RawCommentKind kind)
+        {
+            switch (kind)
+            {
+                case RawCommentKind.Invalid:
+                    return AST.RawCommentKind.Invalid;
+                case RawCommentKind.OrdinaryBCPL:
+                    return AST.RawCommentKind.OrdinaryBCPL;
+                case RawCommentKind.OrdinaryC:
+                    return AST.RawCommentKind.OrdinaryC;
+                case RawCommentKind.BCPLSlash:
+                    return AST.RawCommentKind.BCPLSlash;
+                case RawCommentKind.BCPLExcl:
+                    return AST.RawCommentKind.BCPLExcl;
+                case RawCommentKind.JavaDoc:
+                    return AST.RawCommentKind.JavaDoc;
+                case RawCommentKind.Qt:
+                    return AST.RawCommentKind.Qt;
+                case RawCommentKind.Merged:
+                    return AST.RawCommentKind.Merged;
+                default:
+                    throw new ArgumentOutOfRangeException("kind");
+            }
+        }
+
         void VisitDeclaration(Declaration decl, AST.Declaration _decl)
         {
             var originalPtr = new IntPtr(decl.OriginalPtr);
@@ -625,6 +690,8 @@ namespace CppSharp
             _decl.IsIncomplete = decl.IsIncomplete;
             _decl.IsDependent = decl.IsDependent;
             _decl.DefinitionOrder = decl.DefinitionOrder;
+            if (decl.Comment != null)
+                _decl.Comment = VisitRawComment(decl.Comment);
 
             for (uint i = 0; i < decl.PreprocessedEntitiesCount; ++i)
             {
@@ -1255,6 +1322,14 @@ namespace CppSharp
             VisitPreprocessedEntity(decl, _macro);
             _macro.Text = decl.Text;
             return _macro;
+        }
+    }
+
+    public unsafe class CommentConverter : CommentsVisitor<AST.Comment>
+    {
+        public override AST.Comment VisitFullComment(FullComment comment)
+        {
+            throw new NotImplementedException();
         }
     }
 
