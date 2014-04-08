@@ -777,42 +777,6 @@ namespace CppSharp
                 }
             };
 
-            public ref class RawComment : ICppInstance
-            {
-            public:
-
-                property ::CppSharp::CppParser::AST::RawComment* NativePtr;
-                property System::IntPtr __Instance
-                {
-                    virtual System::IntPtr get();
-                    virtual void set(System::IntPtr instance);
-                }
-
-                RawComment(::CppSharp::CppParser::AST::RawComment* native);
-                RawComment(System::IntPtr native);
-                RawComment();
-
-                RawComment(CppSharp::Parser::AST::RawComment^ _0);
-
-                property System::String^ Text
-                {
-                    System::String^ get();
-                    void set(System::String^);
-                }
-
-                property System::String^ BriefText
-                {
-                    System::String^ get();
-                    void set(System::String^);
-                }
-
-                property CppSharp::Parser::AST::RawCommentKind Kind
-                {
-                    CppSharp::Parser::AST::RawCommentKind get();
-                    void set(CppSharp::Parser::AST::RawCommentKind);
-                }
-            };
-
             public ref class VTableComponent : ICppInstance
             {
             public:
@@ -1123,6 +1087,12 @@ namespace CppSharp
                 property unsigned int VariablesCount
                 {
                     unsigned int get();
+                }
+
+                property bool IsAnonymous
+                {
+                    bool get();
+                    void set(bool);
                 }
 
                 CppSharp::Parser::AST::Namespace^ getNamespaces(unsigned int i);
@@ -1749,6 +1719,12 @@ namespace CppSharp
                 Namespace();
 
                 Namespace(CppSharp::Parser::AST::Namespace^ _0);
+
+                property bool IsInline
+                {
+                    bool get();
+                    void set(bool);
+                }
             };
 
             public ref class PreprocessedEntity : CppSharp::Parser::AST::Declaration
@@ -1900,6 +1876,42 @@ namespace CppSharp
                 CppSharp::Parser::AST::TranslationUnit^ getTranslationUnits(unsigned int i);
 
                 void addTranslationUnits(CppSharp::Parser::AST::TranslationUnit^ s);
+            };
+
+            public ref class RawComment : ICppInstance
+            {
+            public:
+
+                property ::CppSharp::CppParser::AST::RawComment* NativePtr;
+                property System::IntPtr __Instance
+                {
+                    virtual System::IntPtr get();
+                    virtual void set(System::IntPtr instance);
+                }
+
+                RawComment(::CppSharp::CppParser::AST::RawComment* native);
+                RawComment(System::IntPtr native);
+                RawComment();
+
+                RawComment(CppSharp::Parser::AST::RawComment^ _0);
+
+                property System::String^ Text
+                {
+                    System::String^ get();
+                    void set(System::String^);
+                }
+
+                property System::String^ BriefText
+                {
+                    System::String^ get();
+                    void set(System::String^);
+                }
+
+                property CppSharp::Parser::AST::RawCommentKind Kind
+                {
+                    CppSharp::Parser::AST::RawCommentKind get();
+                    void set(CppSharp::Parser::AST::RawCommentKind);
+                }
             };
         }
     }

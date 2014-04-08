@@ -915,78 +915,6 @@ void CppSharp::Parser::AST::BuiltinType::Type::set(CppSharp::Parser::AST::Primit
     ((::CppSharp::CppParser::AST::BuiltinType*)NativePtr)->Type = (::CppSharp::CppParser::AST::PrimitiveType)value;
 }
 
-CppSharp::Parser::AST::RawComment::RawComment(::CppSharp::CppParser::AST::RawComment* native)
-{
-    NativePtr = native;
-}
-
-CppSharp::Parser::AST::RawComment::RawComment(System::IntPtr native)
-{
-    auto __native = (::CppSharp::CppParser::AST::RawComment*)native.ToPointer();
-    NativePtr = __native;
-}
-
-CppSharp::Parser::AST::RawComment::RawComment()
-{
-    NativePtr = new ::CppSharp::CppParser::AST::RawComment();
-}
-
-CppSharp::Parser::AST::RawComment::RawComment(CppSharp::Parser::AST::RawComment^ _0)
-{
-    auto &arg0 = *(::CppSharp::CppParser::AST::RawComment*)_0->NativePtr;
-    NativePtr = new ::CppSharp::CppParser::AST::RawComment(arg0);
-}
-
-System::IntPtr CppSharp::Parser::AST::RawComment::__Instance::get()
-{
-    return System::IntPtr(NativePtr);
-}
-
-void CppSharp::Parser::AST::RawComment::__Instance::set(System::IntPtr object)
-{
-    NativePtr = (::CppSharp::CppParser::AST::RawComment*)object.ToPointer();
-}
-
-System::String^ CppSharp::Parser::AST::RawComment::Text::get()
-{
-    auto __ret = ((::CppSharp::CppParser::AST::RawComment*)NativePtr)->getText();
-    if (__ret == nullptr) return nullptr;
-    return clix::marshalString<clix::E_UTF8>(__ret);
-}
-
-void CppSharp::Parser::AST::RawComment::Text::set(System::String^ value)
-{
-    auto s = value;
-    auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
-    auto arg0 = _arg0.c_str();
-    ((::CppSharp::CppParser::AST::RawComment*)NativePtr)->setText(arg0);
-}
-
-System::String^ CppSharp::Parser::AST::RawComment::BriefText::get()
-{
-    auto __ret = ((::CppSharp::CppParser::AST::RawComment*)NativePtr)->getBriefText();
-    if (__ret == nullptr) return nullptr;
-    return clix::marshalString<clix::E_UTF8>(__ret);
-}
-
-void CppSharp::Parser::AST::RawComment::BriefText::set(System::String^ value)
-{
-    auto s = value;
-    auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
-    auto arg0 = _arg0.c_str();
-    ((::CppSharp::CppParser::AST::RawComment*)NativePtr)->setBriefText(arg0);
-}
-
-CppSharp::Parser::AST::RawCommentKind CppSharp::Parser::AST::RawComment::Kind::get()
-{
-    return (CppSharp::Parser::AST::RawCommentKind)((::CppSharp::CppParser::AST::RawComment*)NativePtr)->Kind;
-}
-
-void CppSharp::Parser::AST::RawComment::Kind::set(CppSharp::Parser::AST::RawCommentKind value)
-{
-    ((::CppSharp::CppParser::AST::RawComment*)NativePtr)->Kind = (::CppSharp::CppParser::AST::RawCommentKind)value;
-}
-
 CppSharp::Parser::AST::VTableComponent::VTableComponent(::CppSharp::CppParser::AST::VTableComponent* native)
 {
     NativePtr = native;
@@ -1620,6 +1548,16 @@ unsigned int CppSharp::Parser::AST::DeclarationContext::VariablesCount::get()
 {
     auto __ret = ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->getVariablesCount();
     return __ret;
+}
+
+bool CppSharp::Parser::AST::DeclarationContext::IsAnonymous::get()
+{
+    return ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->IsAnonymous;
+}
+
+void CppSharp::Parser::AST::DeclarationContext::IsAnonymous::set(bool value)
+{
+    ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->IsAnonymous = value;
 }
 
 CppSharp::Parser::AST::TypedefDecl::TypedefDecl(::CppSharp::CppParser::AST::TypedefDecl* native)
@@ -2500,12 +2438,12 @@ void CppSharp::Parser::AST::Class::IsExternCContext::set(bool value)
 
 CppSharp::Parser::AST::ClassLayout^ CppSharp::Parser::AST::Class::Layout::get()
 {
-    return gcnew CppSharp::Parser::AST::ClassLayout((::CppSharp::CppParser::AST::ClassLayout*)&((::CppSharp::CppParser::AST::Class*)NativePtr)->Layout);
+    return gcnew CppSharp::Parser::AST::ClassLayout((::CppSharp::CppParser::AST::ClassLayout*)((::CppSharp::CppParser::AST::Class*)NativePtr)->Layout);
 }
 
 void CppSharp::Parser::AST::Class::Layout::set(CppSharp::Parser::AST::ClassLayout^ value)
 {
-    ((::CppSharp::CppParser::AST::Class*)NativePtr)->Layout = *(::CppSharp::CppParser::AST::ClassLayout*)value->NativePtr;
+    ((::CppSharp::CppParser::AST::Class*)NativePtr)->Layout = (::CppSharp::CppParser::AST::ClassLayout*)value->NativePtr;
 }
 
 CppSharp::Parser::AST::Template::Template(::CppSharp::CppParser::AST::Template* native)
@@ -2769,6 +2707,16 @@ CppSharp::Parser::AST::Namespace::Namespace(CppSharp::Parser::AST::Namespace^ _0
 {
     auto &arg0 = *(::CppSharp::CppParser::AST::Namespace*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::Namespace(arg0);
+}
+
+bool CppSharp::Parser::AST::Namespace::IsInline::get()
+{
+    return ((::CppSharp::CppParser::AST::Namespace*)NativePtr)->IsInline;
+}
+
+void CppSharp::Parser::AST::Namespace::IsInline::set(bool value)
+{
+    ((::CppSharp::CppParser::AST::Namespace*)NativePtr)->IsInline = value;
 }
 
 CppSharp::Parser::AST::PreprocessedEntity::PreprocessedEntity(::CppSharp::CppParser::AST::PreprocessedEntity* native)
@@ -3085,5 +3033,77 @@ unsigned int CppSharp::Parser::AST::ASTContext::TranslationUnitsCount::get()
 {
     auto __ret = ((::CppSharp::CppParser::AST::ASTContext*)NativePtr)->getTranslationUnitsCount();
     return __ret;
+}
+
+CppSharp::Parser::AST::RawComment::RawComment(::CppSharp::CppParser::AST::RawComment* native)
+{
+    NativePtr = native;
+}
+
+CppSharp::Parser::AST::RawComment::RawComment(System::IntPtr native)
+{
+    auto __native = (::CppSharp::CppParser::AST::RawComment*)native.ToPointer();
+    NativePtr = __native;
+}
+
+CppSharp::Parser::AST::RawComment::RawComment()
+{
+    NativePtr = new ::CppSharp::CppParser::AST::RawComment();
+}
+
+CppSharp::Parser::AST::RawComment::RawComment(CppSharp::Parser::AST::RawComment^ _0)
+{
+    auto &arg0 = *(::CppSharp::CppParser::AST::RawComment*)_0->NativePtr;
+    NativePtr = new ::CppSharp::CppParser::AST::RawComment(arg0);
+}
+
+System::IntPtr CppSharp::Parser::AST::RawComment::__Instance::get()
+{
+    return System::IntPtr(NativePtr);
+}
+
+void CppSharp::Parser::AST::RawComment::__Instance::set(System::IntPtr object)
+{
+    NativePtr = (::CppSharp::CppParser::AST::RawComment*)object.ToPointer();
+}
+
+System::String^ CppSharp::Parser::AST::RawComment::Text::get()
+{
+    auto __ret = ((::CppSharp::CppParser::AST::RawComment*)NativePtr)->getText();
+    if (__ret == nullptr) return nullptr;
+    return clix::marshalString<clix::E_UTF8>(__ret);
+}
+
+void CppSharp::Parser::AST::RawComment::Text::set(System::String^ value)
+{
+    auto s = value;
+    auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
+    auto arg0 = _arg0.c_str();
+    ((::CppSharp::CppParser::AST::RawComment*)NativePtr)->setText(arg0);
+}
+
+System::String^ CppSharp::Parser::AST::RawComment::BriefText::get()
+{
+    auto __ret = ((::CppSharp::CppParser::AST::RawComment*)NativePtr)->getBriefText();
+    if (__ret == nullptr) return nullptr;
+    return clix::marshalString<clix::E_UTF8>(__ret);
+}
+
+void CppSharp::Parser::AST::RawComment::BriefText::set(System::String^ value)
+{
+    auto s = value;
+    auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
+    auto arg0 = _arg0.c_str();
+    ((::CppSharp::CppParser::AST::RawComment*)NativePtr)->setBriefText(arg0);
+}
+
+CppSharp::Parser::AST::RawCommentKind CppSharp::Parser::AST::RawComment::Kind::get()
+{
+    return (CppSharp::Parser::AST::RawCommentKind)((::CppSharp::CppParser::AST::RawComment*)NativePtr)->Kind;
+}
+
+void CppSharp::Parser::AST::RawComment::Kind::set(CppSharp::Parser::AST::RawCommentKind value)
+{
+    ((::CppSharp::CppParser::AST::RawComment*)NativePtr)->Kind = (::CppSharp::CppParser::AST::RawCommentKind)value;
 }
 
