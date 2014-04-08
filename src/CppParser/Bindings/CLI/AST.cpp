@@ -3035,6 +3035,73 @@ unsigned int CppSharp::Parser::AST::ASTContext::TranslationUnitsCount::get()
     return __ret;
 }
 
+CppSharp::Parser::AST::Comment::Comment(::CppSharp::CppParser::AST::Comment* native)
+{
+    NativePtr = native;
+}
+
+CppSharp::Parser::AST::Comment::Comment(System::IntPtr native)
+{
+    auto __native = (::CppSharp::CppParser::AST::Comment*)native.ToPointer();
+    NativePtr = __native;
+}
+
+CppSharp::Parser::AST::Comment::Comment(CppSharp::Parser::AST::CommentKind kind)
+{
+    auto arg0 = (::CppSharp::CppParser::AST::CommentKind)kind;
+    NativePtr = new ::CppSharp::CppParser::AST::Comment(arg0);
+}
+
+CppSharp::Parser::AST::Comment::Comment(CppSharp::Parser::AST::Comment^ _0)
+{
+    auto &arg0 = *(::CppSharp::CppParser::AST::Comment*)_0->NativePtr;
+    NativePtr = new ::CppSharp::CppParser::AST::Comment(arg0);
+}
+
+System::IntPtr CppSharp::Parser::AST::Comment::__Instance::get()
+{
+    return System::IntPtr(NativePtr);
+}
+
+void CppSharp::Parser::AST::Comment::__Instance::set(System::IntPtr object)
+{
+    NativePtr = (::CppSharp::CppParser::AST::Comment*)object.ToPointer();
+}
+
+CppSharp::Parser::AST::CommentKind CppSharp::Parser::AST::Comment::Kind::get()
+{
+    return (CppSharp::Parser::AST::CommentKind)((::CppSharp::CppParser::AST::Comment*)NativePtr)->Kind;
+}
+
+void CppSharp::Parser::AST::Comment::Kind::set(CppSharp::Parser::AST::CommentKind value)
+{
+    ((::CppSharp::CppParser::AST::Comment*)NativePtr)->Kind = (::CppSharp::CppParser::AST::CommentKind)value;
+}
+
+CppSharp::Parser::AST::FullComment::FullComment(::CppSharp::CppParser::AST::FullComment* native)
+    : CppSharp::Parser::AST::Comment((::CppSharp::CppParser::AST::Comment*)native)
+{
+}
+
+CppSharp::Parser::AST::FullComment::FullComment(System::IntPtr native)
+    : CppSharp::Parser::AST::Comment(native)
+{
+    auto __native = (::CppSharp::CppParser::AST::FullComment*)native.ToPointer();
+}
+
+CppSharp::Parser::AST::FullComment::FullComment()
+    : CppSharp::Parser::AST::Comment((::CppSharp::CppParser::AST::Comment*)nullptr)
+{
+    NativePtr = new ::CppSharp::CppParser::AST::FullComment();
+}
+
+CppSharp::Parser::AST::FullComment::FullComment(CppSharp::Parser::AST::FullComment^ _0)
+    : CppSharp::Parser::AST::Comment((::CppSharp::CppParser::AST::Comment*)nullptr)
+{
+    auto &arg0 = *(::CppSharp::CppParser::AST::FullComment*)_0->NativePtr;
+    NativePtr = new ::CppSharp::CppParser::AST::FullComment(arg0);
+}
+
 CppSharp::Parser::AST::RawComment::RawComment(::CppSharp::CppParser::AST::RawComment* native)
 {
     NativePtr = native;
@@ -3097,13 +3164,23 @@ void CppSharp::Parser::AST::RawComment::BriefText::set(System::String^ value)
     ((::CppSharp::CppParser::AST::RawComment*)NativePtr)->setBriefText(arg0);
 }
 
-CppSharp::Parser::AST::RawCommentKind CppSharp::Parser::AST::RawComment::Kind::get()
+CppSharp::Parser::AST::RawCommentKind CppSharp::Parser::AST::RawComment::RawCommentKind::get()
 {
-    return (CppSharp::Parser::AST::RawCommentKind)((::CppSharp::CppParser::AST::RawComment*)NativePtr)->Kind;
+    return (CppSharp::Parser::AST::RawCommentKind)((::CppSharp::CppParser::AST::RawComment*)NativePtr)->RawCommentKind;
 }
 
-void CppSharp::Parser::AST::RawComment::Kind::set(CppSharp::Parser::AST::RawCommentKind value)
+void CppSharp::Parser::AST::RawComment::RawCommentKind::set(CppSharp::Parser::AST::RawCommentKind value)
 {
-    ((::CppSharp::CppParser::AST::RawComment*)NativePtr)->Kind = (::CppSharp::CppParser::AST::RawCommentKind)value;
+    ((::CppSharp::CppParser::AST::RawComment*)NativePtr)->RawCommentKind = (::CppSharp::CppParser::AST::RawCommentKind)value;
+}
+
+CppSharp::Parser::AST::FullComment^ CppSharp::Parser::AST::RawComment::FullComment::get()
+{
+    return (((::CppSharp::CppParser::AST::RawComment*)NativePtr)->FullComment == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::FullComment((::CppSharp::CppParser::AST::FullComment*)((::CppSharp::CppParser::AST::RawComment*)NativePtr)->FullComment);
+}
+
+void CppSharp::Parser::AST::RawComment::FullComment::set(CppSharp::Parser::AST::FullComment^ value)
+{
+    ((::CppSharp::CppParser::AST::RawComment*)NativePtr)->FullComment = (::CppSharp::CppParser::AST::FullComment*)value->NativePtr;
 }
 

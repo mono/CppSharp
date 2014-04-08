@@ -183,6 +183,11 @@ namespace CppSharp
                 Merged = 7
             }
 
+            public enum CommentKind
+            {
+                FullComment = 0
+            }
+
             public enum MacroLocation
             {
                 Unknown = 0,
@@ -7516,13 +7521,143 @@ namespace CppSharp
                 }
             }
 
+            public unsafe partial class Comment : IDisposable
+            {
+                [StructLayout(LayoutKind.Explicit, Size = 4)]
+                public struct Internal
+                {
+                    [FieldOffset(0)]
+                    internal CppSharp.Parser.AST.CommentKind Kind;
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST7CommentC2ENS1_11CommentKindE")]
+                    internal static extern void ctor_0(global::System.IntPtr instance, CppSharp.Parser.AST.CommentKind kind);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST7CommentC2ERKS2_")]
+                    internal static extern void cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
+                }
+
+                public global::System.IntPtr __Instance { get; protected set; }
+
+                internal Comment(Comment.Internal* native)
+                    : this(new global::System.IntPtr(native))
+                {
+                }
+
+                internal Comment(Comment.Internal native)
+                    : this(&native)
+                {
+                }
+
+                public Comment(global::System.IntPtr native, bool isInternalImpl = false)
+                {
+                    __Instance = native;
+                }
+
+                public Comment(CppSharp.Parser.AST.CommentKind kind)
+                {
+                    __Instance = Marshal.AllocHGlobal(4);
+                    var arg0 = kind;
+                    Internal.ctor_0(__Instance, arg0);
+                }
+
+                public Comment(CppSharp.Parser.AST.Comment _0)
+                {
+                    __Instance = Marshal.AllocHGlobal(4);
+                    *((Comment.Internal*) __Instance) = *((Comment.Internal*) _0.__Instance);
+                }
+
+                public void Dispose()
+                {
+                    Dispose(disposing: true);
+                    GC.SuppressFinalize(this);
+                }
+
+                protected virtual void Dispose(bool disposing)
+                {
+                    Marshal.FreeHGlobal(__Instance);
+                }
+
+                public CppSharp.Parser.AST.CommentKind Kind
+                {
+                    get
+                    {
+                        var __ptr = (Internal*)__Instance.ToPointer();
+                        return __ptr->Kind;
+                    }
+
+                    set
+                    {
+                        var __ptr = (Internal*)__Instance.ToPointer();
+                        __ptr->Kind = value;
+                    }
+                }
+            }
+
+            public unsafe partial class FullComment : CppSharp.Parser.AST.Comment, IDisposable
+            {
+                [StructLayout(LayoutKind.Explicit, Size = 4)]
+                public new struct Internal
+                {
+                    [FieldOffset(0)]
+                    internal CppSharp.Parser.AST.CommentKind Kind;
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11FullCommentC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11FullCommentC2ERKS2_")]
+                    internal static extern void cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
+                }
+
+                internal FullComment(FullComment.Internal* native)
+                    : this(new global::System.IntPtr(native))
+                {
+                }
+
+                internal FullComment(FullComment.Internal native)
+                    : this(&native)
+                {
+                }
+
+                public FullComment(global::System.IntPtr native, bool isInternalImpl = false)
+                    : base(native)
+                {
+                }
+
+                public FullComment()
+                    : this(IntPtr.Zero)
+                {
+                    __Instance = Marshal.AllocHGlobal(4);
+                    Internal.ctor_0(__Instance);
+                }
+
+                public FullComment(CppSharp.Parser.AST.FullComment _0)
+                    : this(IntPtr.Zero)
+                {
+                    __Instance = Marshal.AllocHGlobal(4);
+                    *((FullComment.Internal*) __Instance) = *((FullComment.Internal*) _0.__Instance);
+                }
+
+                protected override void Dispose(bool disposing)
+                {
+                    base.Dispose(disposing);
+                }
+            }
+
             public unsafe partial class RawComment : IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 32)]
                 public struct Internal
                 {
                     [FieldOffset(0)]
-                    internal CppSharp.Parser.AST.RawCommentKind Kind;
+                    internal CppSharp.Parser.AST.RawCommentKind RawCommentKind;
 
                     [FieldOffset(4)]
                     internal Std.String Text;
@@ -7645,18 +7780,33 @@ namespace CppSharp
                     }
                 }
 
-                public CppSharp.Parser.AST.RawCommentKind Kind
+                public CppSharp.Parser.AST.RawCommentKind RawCommentKind
                 {
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return __ptr->Kind;
+                        return __ptr->RawCommentKind;
                     }
 
                     set
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        __ptr->Kind = value;
+                        __ptr->RawCommentKind = value;
+                    }
+                }
+
+                public CppSharp.Parser.AST.FullComment FullComment
+                {
+                    get
+                    {
+                        var __ptr = (Internal*)__Instance.ToPointer();
+                        return (__ptr->FullComment == IntPtr.Zero) ? null : new CppSharp.Parser.AST.FullComment(__ptr->FullComment);
+                    }
+
+                    set
+                    {
+                        var __ptr = (Internal*)__Instance.ToPointer();
+                        __ptr->FullComment = value == (CppSharp.Parser.AST.FullComment) null ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
             }

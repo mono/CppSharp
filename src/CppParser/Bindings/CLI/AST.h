@@ -13,6 +13,7 @@ namespace CppSharp
             enum struct CXXMethodKind;
             enum struct CXXOperatorKind;
             enum struct CallingConvention;
+            enum struct CommentKind;
             enum struct CppAbi;
             enum struct DeclarationKind;
             enum struct MacroLocation;
@@ -32,12 +33,14 @@ namespace CppSharp
             ref class ClassTemplate;
             ref class ClassTemplatePartialSpecialization;
             ref class ClassTemplateSpecialization;
+            ref class Comment;
             ref class DecayedType;
             ref class Declaration;
             ref class DeclarationContext;
             ref class DependentNameType;
             ref class Enumeration;
             ref class Field;
+            ref class FullComment;
             ref class Function;
             ref class FunctionTemplate;
             ref class FunctionType;
@@ -249,6 +252,11 @@ namespace CppSharp
                 JavaDoc = 5,
                 Qt = 6,
                 Merged = 7
+            };
+
+            public enum struct CommentKind
+            {
+                FullComment = 0
             };
 
             public enum struct MacroLocation
@@ -1878,6 +1886,41 @@ namespace CppSharp
                 void addTranslationUnits(CppSharp::Parser::AST::TranslationUnit^ s);
             };
 
+            public ref class Comment : ICppInstance
+            {
+            public:
+
+                property ::CppSharp::CppParser::AST::Comment* NativePtr;
+                property System::IntPtr __Instance
+                {
+                    virtual System::IntPtr get();
+                    virtual void set(System::IntPtr instance);
+                }
+
+                Comment(::CppSharp::CppParser::AST::Comment* native);
+                Comment(System::IntPtr native);
+                Comment(CppSharp::Parser::AST::CommentKind kind);
+
+                Comment(CppSharp::Parser::AST::Comment^ _0);
+
+                property CppSharp::Parser::AST::CommentKind Kind
+                {
+                    CppSharp::Parser::AST::CommentKind get();
+                    void set(CppSharp::Parser::AST::CommentKind);
+                }
+            };
+
+            public ref class FullComment : CppSharp::Parser::AST::Comment
+            {
+            public:
+
+                FullComment(::CppSharp::CppParser::AST::FullComment* native);
+                FullComment(System::IntPtr native);
+                FullComment();
+
+                FullComment(CppSharp::Parser::AST::FullComment^ _0);
+            };
+
             public ref class RawComment : ICppInstance
             {
             public:
@@ -1907,10 +1950,16 @@ namespace CppSharp
                     void set(System::String^);
                 }
 
-                property CppSharp::Parser::AST::RawCommentKind Kind
+                property CppSharp::Parser::AST::RawCommentKind RawCommentKind
                 {
                     CppSharp::Parser::AST::RawCommentKind get();
                     void set(CppSharp::Parser::AST::RawCommentKind);
+                }
+
+                property CppSharp::Parser::AST::FullComment^ FullComment
+                {
+                    CppSharp::Parser::AST::FullComment^ get();
+                    void set(CppSharp::Parser::AST::FullComment^);
                 }
             };
         }
