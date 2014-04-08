@@ -169,7 +169,7 @@ void CppSharp::Parser::ParserOptions::TargetTriple::set(System::String^ value)
 
 CppSharp::Parser::AST::ASTContext^ CppSharp::Parser::ParserOptions::ASTContext::get()
 {
-    return gcnew CppSharp::Parser::AST::ASTContext((::CppSharp::CppParser::AST::ASTContext*)((::CppSharp::CppParser::ParserOptions*)NativePtr)->ASTContext);
+    return (((::CppSharp::CppParser::ParserOptions*)NativePtr)->ASTContext == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::ASTContext((::CppSharp::CppParser::AST::ASTContext*)((::CppSharp::CppParser::ParserOptions*)NativePtr)->ASTContext);
 }
 
 void CppSharp::Parser::ParserOptions::ASTContext::set(CppSharp::Parser::AST::ASTContext^ value)
@@ -349,7 +349,7 @@ CppSharp::Parser::ParserDiagnostic^ CppSharp::Parser::ParserResult::getDiagnosti
 {
     auto __ret = ((::CppSharp::CppParser::ParserResult*)NativePtr)->getDiagnostics(i);
     auto ____ret = new ::CppSharp::CppParser::ParserDiagnostic(__ret);
-    return gcnew CppSharp::Parser::ParserDiagnostic((::CppSharp::CppParser::ParserDiagnostic*)____ret);
+    return (____ret == nullptr) ? nullptr : gcnew CppSharp::Parser::ParserDiagnostic((::CppSharp::CppParser::ParserDiagnostic*)____ret);
 }
 
 void CppSharp::Parser::ParserResult::addDiagnostics(CppSharp::Parser::ParserDiagnostic^ s)
@@ -392,7 +392,7 @@ void CppSharp::Parser::ParserResult::Kind::set(CppSharp::Parser::ParserResultKin
 
 CppSharp::Parser::AST::ASTContext^ CppSharp::Parser::ParserResult::ASTContext::get()
 {
-    return gcnew CppSharp::Parser::AST::ASTContext((::CppSharp::CppParser::AST::ASTContext*)((::CppSharp::CppParser::ParserResult*)NativePtr)->ASTContext);
+    return (((::CppSharp::CppParser::ParserResult*)NativePtr)->ASTContext == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::ASTContext((::CppSharp::CppParser::AST::ASTContext*)((::CppSharp::CppParser::ParserResult*)NativePtr)->ASTContext);
 }
 
 void CppSharp::Parser::ParserResult::ASTContext::set(CppSharp::Parser::AST::ASTContext^ value)
@@ -402,7 +402,7 @@ void CppSharp::Parser::ParserResult::ASTContext::set(CppSharp::Parser::AST::ASTC
 
 CppSharp::Parser::AST::NativeLibrary^ CppSharp::Parser::ParserResult::Library::get()
 {
-    return gcnew CppSharp::Parser::AST::NativeLibrary((::CppSharp::CppParser::AST::NativeLibrary*)((::CppSharp::CppParser::ParserResult*)NativePtr)->Library);
+    return (((::CppSharp::CppParser::ParserResult*)NativePtr)->Library == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::NativeLibrary((::CppSharp::CppParser::AST::NativeLibrary*)((::CppSharp::CppParser::ParserResult*)NativePtr)->Library);
 }
 
 void CppSharp::Parser::ParserResult::Library::set(CppSharp::Parser::AST::NativeLibrary^ value)
@@ -426,7 +426,7 @@ CppSharp::Parser::ParserResult^ CppSharp::Parser::ClangParser::ParseHeader(CppSh
     auto arg0 = (::CppSharp::CppParser::ParserOptions*)Opts->NativePtr;
     auto __ret = ::CppSharp::CppParser::ClangParser::ParseHeader(arg0);
     if (__ret == nullptr) return nullptr;
-    return gcnew CppSharp::Parser::ParserResult((::CppSharp::CppParser::ParserResult*)__ret);
+    return (__ret == nullptr) ? nullptr : gcnew CppSharp::Parser::ParserResult((::CppSharp::CppParser::ParserResult*)__ret);
 }
 
 CppSharp::Parser::ParserResult^ CppSharp::Parser::ClangParser::ParseLibrary(CppSharp::Parser::ParserOptions^ Opts)
@@ -434,7 +434,7 @@ CppSharp::Parser::ParserResult^ CppSharp::Parser::ClangParser::ParseLibrary(CppS
     auto arg0 = (::CppSharp::CppParser::ParserOptions*)Opts->NativePtr;
     auto __ret = ::CppSharp::CppParser::ClangParser::ParseLibrary(arg0);
     if (__ret == nullptr) return nullptr;
-    return gcnew CppSharp::Parser::ParserResult((::CppSharp::CppParser::ParserResult*)__ret);
+    return (__ret == nullptr) ? nullptr : gcnew CppSharp::Parser::ParserResult((::CppSharp::CppParser::ParserResult*)__ret);
 }
 
 CppSharp::Parser::ParserTargetInfo^ CppSharp::Parser::ClangParser::GetTargetInfo(CppSharp::Parser::ParserOptions^ Opts)
@@ -442,7 +442,7 @@ CppSharp::Parser::ParserTargetInfo^ CppSharp::Parser::ClangParser::GetTargetInfo
     auto arg0 = (::CppSharp::CppParser::ParserOptions*)Opts->NativePtr;
     auto __ret = ::CppSharp::CppParser::ClangParser::GetTargetInfo(arg0);
     if (__ret == nullptr) return nullptr;
-    return gcnew CppSharp::Parser::ParserTargetInfo((::CppSharp::CppParser::ParserTargetInfo*)__ret);
+    return (__ret == nullptr) ? nullptr : gcnew CppSharp::Parser::ParserTargetInfo((::CppSharp::CppParser::ParserTargetInfo*)__ret);
 }
 
 CppSharp::Parser::ClangParser::ClangParser()
