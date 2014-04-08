@@ -236,15 +236,6 @@ namespace CppSharp.Generators.CSharp
             var ctx = Context as CSharpMarshalContext;
 
             string instance = Context.ReturnVarName;
-            if (ctx.Kind == CSharpMarshalKind.NativeField)
-            {
-                string copy = Generator.GeneratedIdentifier("copy");
-                if (VarSuffix > 0)
-                    copy += VarSuffix;
-                Context.SupportBefore.WriteLine(
-                    "var {0} = new global::System.IntPtr(&{1});", copy, instance);
-                instance = copy;
-            }
 
             if (@class.IsRefType &&
                 (Context.ReturnType.Qualifiers.IsConst || !Context.ReturnType.Type.IsAddress()) &&
