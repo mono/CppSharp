@@ -145,7 +145,8 @@ namespace CppSharp.Types
 
             var typePrinter = new CppTypePrinter(this)
                 {
-                    PrintKind = CppTypePrintKind.GlobalQualified
+                    PrintScopeKind = CppTypePrintScopeKind.GlobalQualified,
+                    PrintLogicalNames = true
                 };
 
             if (FindTypeMap(decl.Visit(typePrinter), out typeMap))
@@ -154,14 +155,14 @@ namespace CppSharp.Types
                 return true;
             }
 
-            typePrinter.PrintKind = CppTypePrintKind.Qualified;
+            typePrinter.PrintScopeKind = CppTypePrintScopeKind.Qualified;
             if (FindTypeMap(decl.Visit(typePrinter), out typeMap))
             {
                 typeMap.Type = type;
                 return true;
             }
 
-            typePrinter.PrintKind = CppTypePrintKind.Local;
+            typePrinter.PrintScopeKind = CppTypePrintScopeKind.Local;
             if (FindTypeMap(decl.Visit(typePrinter), out typeMap))
             {
                 typeMap.Type = type;
@@ -186,7 +187,7 @@ namespace CppSharp.Types
                 return true;
             }
 
-            typePrinter.PrintKind = CppTypePrintKind.Qualified;
+            typePrinter.PrintScopeKind = CppTypePrintScopeKind.Qualified;
             if (FindTypeMap(type.Visit(typePrinter), out typeMap))
             {
                 typeMap.Type = type;
