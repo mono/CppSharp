@@ -710,8 +710,21 @@ struct CS_API ASTContext
 
 #pragma region Comments
 
-#define DECLARE_COMMENT_KIND(kind) \
-    kind##Type();
+enum struct CommentKind
+{
+    FullComment,
+};
+
+struct CS_API CS_ABSTRACT Comment
+{
+    Comment(CommentKind kind);
+    CommentKind Kind;
+};
+
+struct CS_API FullComment : public Comment
+{
+    FullComment();
+};
 
 enum struct RawCommentKind
 {
@@ -725,16 +738,18 @@ enum struct RawCommentKind
     Merged
 };
 
-struct FullComment;
-
 struct CS_API RawComment
 {
     RawComment();
-    RawCommentKind Kind;
+    RawCommentKind RawCommentKind;
     STRING(Text)
     STRING(BriefText)
-    CppSharp::CppParser::AST::FullComment* FullComment;
+    FullComment* FullComment;
 };
+
+#pragma region Commands
+
+#pragma endregion
 
 #pragma endregion
 

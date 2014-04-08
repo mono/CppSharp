@@ -72,12 +72,6 @@ PackExpansionType::PackExpansionType() : Type(TypeKind::PackExpansion) {}
 
 BuiltinType::BuiltinType() : CppSharp::CppParser::AST::Type(TypeKind::Builtin) {}
 
-// RawComment
-DEF_STRING(RawComment, Text)
-DEF_STRING(RawComment, BriefText)
-
-RawComment::RawComment() : FullComment(0) {}
-
 VTableComponent::VTableComponent() : Offset(0), Declaration(0) {}
 
 // VTableLayout
@@ -470,5 +464,15 @@ TranslationUnit* ASTContext::FindOrCreateModule(std::string File)
 
     return unit;
 }
+
+// Comments
+Comment::Comment(CommentKind kind) : Kind(kind) {}
+
+DEF_STRING(RawComment, Text)
+DEF_STRING(RawComment, BriefText)
+
+RawComment::RawComment() : FullComment(0) {}
+
+FullComment::FullComment() : Comment(CommentKind::FullComment) {}
 
 } } }

@@ -1,7 +1,7 @@
 /************************************************************************
 *
 * CppSharp
-* Licensed under the simplified BSD license. All rights reserved.
+* Licensed under the simplified BSD license.
 *
 ************************************************************************/
 
@@ -20,6 +20,8 @@
 #else
 #define CS_API 
 #endif
+
+#define CS_ABSTRACT
 
 /** We use these macros to workaround the lack of good standard C++
  * containers/string support in the C# binding backend. */
