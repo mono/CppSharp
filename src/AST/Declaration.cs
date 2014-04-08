@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CppSharp.AST
 {
@@ -64,14 +65,11 @@ namespace CppSharp.AST
             }
         }
 
-        private string name;
-        public virtual string OriginalName
-        {
-            get { return originalName; }
-            set { originalName = value; }
-        }
+        public virtual string OriginalName { get; set; }
 
         // Name of the declaration.
+        private string name;
+
         public virtual string Name
         {
             get { return name; }
@@ -83,14 +81,64 @@ namespace CppSharp.AST
             }
         }
 
+        /// <summary>
+        /// The effective name of a declaration is the logical name
+        /// for the declaration. We need this to make the distiction between
+        /// the real and the "effective" name of the declaration to properly
+        /// support things like inline namespaces when handling type maps.
+        /// </summary>
+        public virtual string LogicalName
+        {
+            get { return Name; }
+        }
+
+        /// <summary>
+        /// The effective original name of a declaration is the logical
+        /// original name for the declaration.
+        /// </summary>
+        public virtual string LogicalOriginalName
+        {
+            get { return OriginalName; }
+        }
+
+        private string GetQualifiedName(Func<Declaration, string> getName,
+            Func<Declaration, DeclarationContext> getNamespace)
+        {
+            if (Namespace == null)
+                return getName(this);
+
+            if (Namespace.IsRoot)
+                return getName(this);
+
+            var namespaces = GatherNamespaces(getNamespace(this));
+            namespaces.Reverse();
+
+            var names = namespaces.Select(getName).ToList();
+            names.Add(getName(this));
+            names = names.Where(s => !string.IsNullOrWhiteSpace(s)).ToList();
+
+            return string.Join("::", names);
+        }
+
+        private List<Declaration> GatherNamespaces(DeclarationContext @namespace)
+        {
+            var namespaces = new List<Declaration>();
+
+            var currentNamespace = @namespace;
+            while (currentNamespace != null)
+            {
+                namespaces.Add(currentNamespace);
+                currentNamespace = currentNamespace.Namespace;
+            }
+
+            return namespaces;
+        }
+
         public string QualifiedName
         {
             get
             {
-                if (Namespace == null)
-                    return Name;
-                return Namespace.IsRoot ? Name
-                    : string.Format("{0}::{1}", Namespace.QualifiedName, Name);
+                return GetQualifiedName(decl => decl.Name, decl => decl.Namespace);
             }
         }
 
@@ -98,10 +146,26 @@ namespace CppSharp.AST
         {
             get
             {
-                if (OriginalNamespace == null)
-                    return OriginalName;
-                return OriginalNamespace.IsRoot ? OriginalName
-                    : string.Format("{0}::{1}", OriginalNamespace.QualifiedOriginalName, OriginalName);
+                return GetQualifiedName(
+                    decl => decl.OriginalName, decl => decl.OriginalNamespace);
+            }
+        }
+
+        public string QualifiedLogicalName
+        {
+            get
+            { 
+                return GetQualifiedName(
+                    decl => decl.LogicalName, decl => decl.Namespace);
+            }
+        }
+
+        public string QualifiedLogicalOriginalName
+        {
+            get
+            {
+                return GetQualifiedName(
+                    decl => decl.LogicalOriginalName, decl => decl.OriginalNamespace);
             }
         }
 
@@ -194,7 +258,6 @@ namespace CppSharp.AST
 
         // Pointer to the original declaration from Clang.
         public IntPtr OriginalPtr;
-        private string originalName;
 
         public List<Attribute> Attributes { get; private set; }
 
@@ -217,7 +280,7 @@ namespace CppSharp.AST
             : this()
         {
             Namespace = declaration.Namespace;
-            originalName = declaration.OriginalName;
+            OriginalName = declaration.OriginalName;
             name = declaration.Name;
             Comment = declaration.Comment;
             IgnoreFlags = declaration.IgnoreFlags;

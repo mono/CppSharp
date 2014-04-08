@@ -27,6 +27,16 @@ namespace CppSharp.AST
         // True if the context is inside an extern "C" context.
         public bool IsExternCContext;
 
+        public override string LogicalName
+        {
+            get { return IsAnonymous ? "<anonymous>" : base.Name; }
+        }
+
+        public override string LogicalOriginalName
+        {
+            get { return IsAnonymous ? "<anonymous>" : base.OriginalName; }
+        }
+
         protected DeclarationContext()
         {
             Namespaces = new List<Namespace>();
@@ -312,6 +322,16 @@ namespace CppSharp.AST
     /// </summary>
     public class Namespace : DeclarationContext
     {
+        public override string LogicalName
+        {
+            get { return IsInline ? string.Empty : base.Name; }
+        }
+
+        public override string LogicalOriginalName
+        {
+            get { return IsInline ? string.Empty : base.OriginalName; }
+        }
+
         public bool IsInline;
 
         public override T Visit<T>(IDeclVisitor<T> visitor)
