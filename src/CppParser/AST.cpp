@@ -13,6 +13,10 @@
 template<typename T>
 static std::vector<T> split(const T & str, const T & delimiters) {
     std::vector<T> v;
+	if (str.length() == 0) {
+		v.push_back(str);
+		return v;
+	}
     typename T::size_type start = 0;
     auto pos = str.find_first_of(delimiters, start);
     while(pos != T::npos) {
@@ -238,8 +242,6 @@ Class* DeclarationContext::FindClass(const std::string& Name, bool IsComplete,
 
 Enumeration* DeclarationContext::FindEnum(const std::string& Name, bool Create)
 {
-    if (Name.empty()) return nullptr;
-
     auto entries = split<std::string>(Name, "::");
 
     if (entries.size() == 1)

@@ -288,3 +288,9 @@ public:
     int A;
     float B;
 };
+
+template <class T>
+struct EmptyNamedNestedEnum
+{
+    enum { Value = 10 };
+};
