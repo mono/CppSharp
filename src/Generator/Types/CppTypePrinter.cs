@@ -38,6 +38,7 @@ namespace CppSharp.Types
                 return string.Format("{0}[{1}]", typeName, array.Size);
             case ArrayType.ArraySize.Variable:
             case ArrayType.ArraySize.Dependent:
+            case ArrayType.ArraySize.Incomplete:
                 return string.Format("{0}[]", typeName);
             }
 
