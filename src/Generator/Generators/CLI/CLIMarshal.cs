@@ -90,7 +90,11 @@ namespace CppSharp.Generators.CLI
 
             if (pointee.IsPrimitiveType(out primitive))
             {
-                Context.Return.Write(Context.ReturnVarName);
+                if (pointer.Pointee is TypedefType)
+                    Context.Return.Write("reinterpret_cast<{0}>({1})", pointer,
+                        Context.ReturnVarName);
+                else
+                    Context.Return.Write(Context.ReturnVarName);
                 return true;
             }
 
