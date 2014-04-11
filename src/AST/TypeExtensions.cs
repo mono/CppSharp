@@ -10,7 +10,7 @@
 
         public static bool IsPrimitiveType(this Type t, out PrimitiveType primitive)
         {
-            var builtin = t as BuiltinType;
+            var builtin = t.Desugar() as BuiltinType;
             if (builtin != null)
             {
                 primitive = builtin.Type;
