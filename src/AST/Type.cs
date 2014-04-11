@@ -266,11 +266,6 @@ namespace CppSharp.AST
     /// </summary>
     public class MemberPointerType : Type
     {
-        public MemberPointerType()
-        {
-
-        }
-
         public Type Pointee;
 
         public override T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals)
@@ -297,11 +292,6 @@ namespace CppSharp.AST
     /// </summary>
     public class TypedefType : Type
     {
-        public TypedefType()
-        {
-
-        }
-
         public TypedefDecl Declaration;
 
         public override T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals)
