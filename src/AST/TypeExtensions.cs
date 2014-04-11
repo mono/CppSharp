@@ -10,7 +10,7 @@
 
         public static bool IsPrimitiveType(this Type t, out PrimitiveType primitive)
         {
-            var builtin = t as BuiltinType;
+            var builtin = t.Desugar() as BuiltinType;
             if (builtin != null)
             {
                 primitive = builtin.Type;
@@ -114,7 +114,7 @@
 
         public static bool IsTagDecl<T>(this Type t, out T decl) where T : Declaration
         {
-            var tag = t as TagType;
+            var tag = t.Desugar() as TagType;
             
             if (tag == null)
             {

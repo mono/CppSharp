@@ -17,6 +17,8 @@ public:
 	const char* GetANSI();
 	// TODO: VC++ does not support char16
 	// char16 chr16;
+
+	float nested_array[2][2];
 };
 
 struct DLL_API Bar
@@ -229,6 +231,12 @@ DLL_API TestMoveOperatorToClass operator+(const TestMoveOperatorToClass& b1,
     return b;
 }
 
+// Not a valid operator overload for Foo2 in managed code - comparison operators need to return bool.
+DLL_API int operator==(const Foo2& a, const Foo2& b)
+{
+	return 0;
+}
+
 // Tests delegates
 typedef int (*DelegateInGlobalNamespace)(int);
 
@@ -293,4 +301,35 @@ template <class T>
 struct EmptyNamedNestedEnum
 {
     enum { Value = 10 };
+};
+
+typedef unsigned long foo_t;
+typedef struct SomeStruct
+{
+	const foo_t& operator[](int i) const { return p[i]; }
+	foo_t& operator[](int i) { return p[i]; }
+	foo_t* p;
+}
+SomeStruct;
+
+class SomeClassExtendingTheStruct : public SomeStruct
+{
+};
+
+namespace SomeNamespace
+{
+	class AbstractClass
+	{
+	public:
+		virtual void AbstractMethod() = 0;
+	};
+}
+
+// Test operator overloads
+class ClassWithOverloadedOperators
+{
+public:
+	operator char();
+	operator int();
+	operator short();
 };
