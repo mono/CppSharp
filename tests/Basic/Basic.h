@@ -229,6 +229,12 @@ DLL_API TestMoveOperatorToClass operator+(const TestMoveOperatorToClass& b1,
     return b;
 }
 
+// Not a valid operator overload for Foo2 in managed code - comparison operators need to return bool.
+DLL_API int operator==(const Foo2& a, const Foo2& b)
+{
+	return 0;
+}
+
 // Tests delegates
 typedef int (*DelegateInGlobalNamespace)(int);
 
