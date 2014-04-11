@@ -315,3 +315,12 @@ SomeStruct;
 class SomeClassExtendingTheStruct : public SomeStruct
 {
 };
+
+namespace SomeNamespace
+{
+	class AbstractClass
+	{
+	public:
+		virtual void AbstractMethod() = 0;
+	};
+}
