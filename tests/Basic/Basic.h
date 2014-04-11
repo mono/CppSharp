@@ -303,9 +303,12 @@ struct EmptyNamedNestedEnum
     enum { Value = 10 };
 };
 
-
+typedef unsigned long foo_t;
 typedef struct SomeStruct
 {
+	const foo_t& operator[](int i) const { return p[i]; }
+	foo_t& operator[](int i) { return p[i]; }
+	foo_t* p;
 }
 SomeStruct;
 
