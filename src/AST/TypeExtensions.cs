@@ -114,7 +114,7 @@
 
         public static bool IsTagDecl<T>(this Type t, out T decl) where T : Declaration
         {
-            var tag = t as TagType;
+            var tag = t.Desugar() as TagType;
             
             if (tag == null)
             {

@@ -302,3 +302,13 @@ struct EmptyNamedNestedEnum
 {
     enum { Value = 10 };
 };
+
+
+typedef struct SomeStruct
+{
+}
+SomeStruct;
+
+class SomeClassExtendingTheStruct : public SomeStruct
+{
+};
