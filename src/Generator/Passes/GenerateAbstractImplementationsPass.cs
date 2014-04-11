@@ -26,7 +26,11 @@ namespace CppSharp.Passes
         public override bool VisitTranslationUnit(TranslationUnit unit)
         {
             var result = base.VisitTranslationUnit(unit);
-            unit.Classes.AddRange(internalImpls);
+            foreach (var internalImpl in internalImpls)
+                if (internalImpl.Namespace != null)
+                    internalImpl.Namespace.Classes.Add(internalImpl);
+                else
+                    unit.Classes.AddRange(internalImpls);
 
             internalImpls.Clear();
             return result;
