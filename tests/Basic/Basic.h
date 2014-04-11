@@ -17,6 +17,8 @@ public:
 	const char* GetANSI();
 	// TODO: VC++ does not support char16
 	// char16 chr16;
+
+	float nested_array[2][2];
 };
 
 struct DLL_API Bar

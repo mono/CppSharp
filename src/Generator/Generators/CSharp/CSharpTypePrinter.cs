@@ -127,9 +127,11 @@ namespace CppSharp.Generators.CSharp
                         Type = string.Format("{0}*", array.Type.Visit(this, quals))
                     };
                 }
+                // Do not write the fixed keyword multiple times for nested array types
+                var fixedKeyword = array.Type is ArrayType ? string.Empty : "fixed ";
                 return new CSharpTypePrinterResult()
                 {
-                    Type = string.Format("fixed {0}", array.Type.Visit(this, quals)),
+                    Type = string.Format("{0}{1}", fixedKeyword, array.Type.Visit(this, quals)),
                     NameSuffix = string.Format("[{0}]", array.Size)
                 };
             }
