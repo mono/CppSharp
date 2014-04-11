@@ -323,4 +323,13 @@ namespace SomeNamespace
 	public:
 		virtual void AbstractMethod() = 0;
 	};
-}
+}
+
+// Test operator overloads
+class ClassWithOverloadedOperators
+{
+public:
+	operator char();
+	operator int();
+	operator short();
+};
