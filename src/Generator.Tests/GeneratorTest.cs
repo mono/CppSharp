@@ -30,8 +30,9 @@ namespace CppSharp.Utils
             options.OutputDir = Path.Combine(GetOutputDirectory(), "gen", name);
             options.SharedLibraryName = name + ".Native";
             options.GenerateLibraryNamespace = true;
-            options.Quiet = true;
+            options.Quiet = false;
             options.IgnoreParseWarnings = true;
+            options.Verbose = true;
 
             driver.Diagnostics.EmitMessage("");
             driver.Diagnostics.EmitMessage("Generating bindings for {0} ({1})",

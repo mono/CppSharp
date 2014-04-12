@@ -218,5 +218,12 @@ public class BasicTests : GeneratorTestFixture
             Assert.That(foo2.testCharMarshalling(c), Is.EqualTo(c));
         Assert.Catch<ArgumentException>(() => foo2.testCharMarshalling('ж'));
     }
+
+    [Test]
+    public unsafe void TestIndexers()
+    {
+        var someStruct = new SomeStruct();
+        Assert.That(someStruct[0], Is.EqualTo(1));
+    }
 }
  

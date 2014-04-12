@@ -621,6 +621,22 @@ namespace CppSharp.Generators.CLI
             PopIndent();
         }
 
+        public void GenerateIndexer(Property property)
+        {
+            var type = property.QualifiedType.Visit(TypePrinter);
+
+            WriteLine("property {0} default[int]", type);
+            WriteStartBraceIndent();
+
+            if (property.HasGetter)
+                WriteLine("{0} get(int index);", type);
+
+            if (property.HasSetter)
+                WriteLine("void set(int index, {0});", type);
+
+            WriteCloseBraceIndent();
+        }
+
         public void GenerateProperty(Property property)
         {
             if (!(property.HasGetter || property.HasSetter))
@@ -629,16 +645,24 @@ namespace CppSharp.Generators.CLI
             PushBlock(CLIBlockKind.Property, property);
             var type = property.QualifiedType.Visit(TypePrinter);
 
-            WriteLine("property {0} {1}", type, property.Name);
-            WriteStartBraceIndent();
+            if (property.IsIndexer)
+            {
+                GenerateIndexer(property);
+            }
+            else
+            {
+                WriteLine("property {0} {1}", type, property.Name);
+                WriteStartBraceIndent();
 
-            if(property.HasGetter)
-                WriteLine("{0} get();", type);
+                if (property.HasGetter)
+                    WriteLine("{0} get();", type);
 
-            if(property.HasSetter)
-                WriteLine("void set({0});", type);
+                if (property.HasSetter)
+                    WriteLine("void set({0});", type);
 
-            WriteCloseBraceIndent();
+                WriteCloseBraceIndent();
+            }
+
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 

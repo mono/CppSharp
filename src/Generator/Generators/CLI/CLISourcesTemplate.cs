@@ -312,7 +312,6 @@ namespace CppSharp.Generators.CLI
             if (property.Ignore) return;
 
             PushBlock(CLIBlockKind.Property);
-            var @class = property.Namespace as Class;
 
             if (property.Field != null)
             {
@@ -343,15 +342,23 @@ namespace CppSharp.Generators.CLI
             if (decl == null)
                 return;
 
-            WriteLine("void {0}::{1}::set({2} value)", QualifiedIdentifier(@class),
-                      name, type);
+            var method = decl as Method;
+            var isIndexer = method != null &&
+                method.OperatorKind == CXXOperatorKind.Subscript;
+
+            var args = new List<string>();
+            if (isIndexer)
+                args.Add("int index");
+            args.Add(string.Format("{0} value",  type));
+
+            WriteLine("void {0}::{1}::set({2})", QualifiedIdentifier(@class),
+                name, string.Join(", ", args));
+
             WriteStartBraceIndent();
 
-            if (decl is Function)
+            if (decl is Function && !isIndexer)
             {
                 var func = decl as Function;
-                if(func.Parameters[0].Name != "value")
-                    WriteLine("auto {0} = value;", func.Parameters[0].Name);
                 GenerateFunctionCall(func, @class);
             }
             else
@@ -386,6 +393,9 @@ namespace CppSharp.Generators.CLI
                     variable = string.Format("((::{0}*)NativePtr)->{1}",
                                              @class.QualifiedOriginalName, decl.OriginalName);
 
+                if (isIndexer)
+                    variable += "(index)";
+
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                     Write(marshal.Context.SupportBefore);
 
@@ -402,8 +412,17 @@ namespace CppSharp.Generators.CLI
             if (decl == null)
                 return;
 
-            WriteLine("{0} {1}::{2}::get()", type, QualifiedIdentifier(@class),
-                      name);
+            var method = decl as Method;
+            var isIndexer = method != null &&
+                method.OperatorKind == CXXOperatorKind.Subscript;
+
+            var args = new List<string>();
+            if (isIndexer)
+                args.Add("int index");
+
+            WriteLine("{0} {1}::{2}::get({3})", type, QualifiedIdentifier(@class),
+                      name, string.Join(", ", args));
+
             WriteStartBraceIndent();
 
             if (decl is Function)
@@ -855,7 +874,8 @@ namespace CppSharp.Generators.CLI
                 var typeName = method.ConversionType.Visit(typePrinter);
                 WriteLine("({0}) {1};", typeName, @params[0].Name);
             }
-            else if (function.IsOperator)
+            else if (function.IsOperator &&
+                     function.OperatorKind != CXXOperatorKind.Subscript)
             {
                 var opName = function.Name.Replace("operator", "").Trim();
 
@@ -865,8 +885,7 @@ namespace CppSharp.Generators.CLI
                     WriteLine("{0} {1};", opName, @params[0].Name);
                     break;
                 case CXXOperatorArity.Binary:
-                    WriteLine("{0} {1} {2};", @params[0].Name, opName,
-                        @params[1].Name);
+                    WriteLine("{0} {1} {2};", @params[0].Name, opName, @params[1].Name);
                     break;
                 }
             }

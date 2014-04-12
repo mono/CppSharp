@@ -86,9 +86,9 @@ namespace CppSharp.Passes
             }
         }
 
-        private static void CreateIndexer(Class @class, Method @operator)
+        void CreateIndexer(Class @class, Method @operator)
         {
-            Property property = new Property
+            var property = new Property
                 {
                     Name = "Item",
                     QualifiedType = @operator.ReturnType,
@@ -96,9 +96,21 @@ namespace CppSharp.Passes
                     Namespace = @class,
                     GetMethod = @operator
                 };
-            property.Parameters.AddRange(@operator.Parameters);
+
             if (!@operator.ReturnType.Qualifiers.IsConst && @operator.ReturnType.Type.IsAddress())
                 property.SetMethod = @operator;
+
+            // C++/CLI uses "default" as the indexer property name.
+            if (Driver.Options.IsCLIGenerator)
+                property.Name = "default";
+
+            property.GetMethod.Parameters[0].Name = "index";
+
+            if (property.SetMethod != null)
+                property.SetMethod.Parameters[0].Name = "index";
+
+            property.Parameters.AddRange(@operator.Parameters);
+
             @class.Properties.Add(property);
             @operator.IsGenerated = false;
         }
