@@ -225,5 +225,14 @@ public class BasicTests : GeneratorTestFixture
         var someStruct = new SomeStruct();
         Assert.That(someStruct[0], Is.EqualTo(1));
     }
+
+    [Test]
+    public unsafe void TestOperators()
+    {
+        var @class = new ClassWithOverloadedOperators();
+        Assert.AreEqual(1, (char) @class);
+        Assert.AreEqual(2, (int)@class);
+        Assert.AreEqual(3, (short)@class);
+    }
 }
  

@@ -304,7 +304,7 @@ struct EmptyNamedNestedEnum
 };
 
 typedef unsigned long foo_t;
-typedef DLL_API struct SomeStruct
+typedef struct DLL_API SomeStruct
 {
 	SomeStruct() : p(1) {}
 	const foo_t& operator[](int i) const { return p; }
@@ -313,13 +313,13 @@ typedef DLL_API struct SomeStruct
 }
 SomeStruct;
 
-class SomeClassExtendingTheStruct : public SomeStruct
+class DLL_API SomeClassExtendingTheStruct : public SomeStruct
 {
 };
 
 namespace SomeNamespace
 {
-	class AbstractClass
+	class DLL_API AbstractClass
 	{
 	public:
 		virtual void AbstractMethod() = 0;
@@ -327,10 +327,10 @@ namespace SomeNamespace
 }
 
 // Test operator overloads
-class ClassWithOverloadedOperators
+class DLL_API ClassWithOverloadedOperators
 {
 public:
-	operator char();
-	operator int();
-	operator short();
+	operator char() { return 1; }
+	operator int() { return 2; }
+	operator short() { return 3; }
 };
