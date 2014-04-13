@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
@@ -604,13 +605,9 @@ namespace CppSharp.Generators.CLI
 
         public void MarshalValueClassProperties(Class @class, string marshalVar)
         {
-            foreach (var @base in @class.Bases)
+            foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.Ignore))
             {
-                if (!@base.IsClass || @base.Class.Ignore) 
-                    continue;
-
-                var baseClass = @base.Class;
-                MarshalValueClassProperties(baseClass, marshalVar);
+                MarshalValueClassProperties(@base.Class, marshalVar);
             }
 
             foreach (var property in @class.Properties)

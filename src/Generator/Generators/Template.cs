@@ -38,6 +38,8 @@ namespace CppSharp.Generators
         private bool hasIndentChanged;
         private bool isSubBlock;
 
+        public Func<bool> CheckGenerate;
+
         public Block() : this(BlockKind.Unknown)
         {
 
@@ -81,6 +83,9 @@ namespace CppSharp.Generators
 
         public virtual string Generate(DriverOptions options)
         {
+            if (CheckGenerate != null && !CheckGenerate())
+                return "";
+
             if (Blocks.Count == 0)
                 return Text.ToString();
 
@@ -163,6 +168,17 @@ namespace CppSharp.Generators
                 builder.Append(Text.StringBuilder);
 
             return builder.ToString();
+        }
+
+        public bool IsEmpty
+        {
+            get
+            {
+                if (Blocks.Any(block => !block.IsEmpty))
+                    return false;
+
+                return string.IsNullOrEmpty(Text.ToString());
+            }
         }
 
         #region ITextGenerator implementation
@@ -280,10 +296,14 @@ namespace CppSharp.Generators
             ActiveBlock = block;
         }
 
-        public void PopBlock(NewLineKind newLineKind = NewLineKind.Never)
+        public Block PopBlock(NewLineKind newLineKind = NewLineKind.Never)
         {
+            var block = ActiveBlock;
+
             ActiveBlock.NewLineKind = newLineKind;
             ActiveBlock = ActiveBlock.Parent;
+
+            return block;
         }
 
         public IEnumerable<Block> FindBlocks(int kind)
