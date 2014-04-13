@@ -2102,6 +2102,17 @@ PreprocessedEntity* Parser::WalkPreprocessedEntity(
         return nullptr;
 
     Entity->OriginalPtr = PPEntity;
+    Entity->_Namespace = GetTranslationUnit(PPEntity->getSourceRange().getBegin());
+
+    if (Decl->Kind == CppSharp::CppParser::AST::DeclarationKind::TranslationUnit)
+    {
+        Entity->_Namespace->PreprocessedEntities.push_back(Entity);
+    }
+    else
+    {
+        Decl->PreprocessedEntities.push_back(Entity);
+    }
+
     Decl->PreprocessedEntities.push_back(Entity);
 
     return Entity;
