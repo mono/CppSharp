@@ -235,4 +235,19 @@ namespace CppSharp
             return assembly.GetTypes().Where(baseType.IsAssignableFrom);
         }
     }
+
+    public static class PathHelpers
+    {
+        public static string GetRelativePath(string fromPath, string toPath)
+        {
+            var path1 = fromPath.Trim('\\', '/');
+            var path2 = toPath.Trim('\\', '/');
+
+            var uri1 = new System.Uri("c:\\" + path1 + "\\");
+            var uri2 = new System.Uri("c:\\" + path2 + "\\");
+
+            return uri1.MakeRelativeUri(uri2).ToString();
+        }
+        
+    }
 }

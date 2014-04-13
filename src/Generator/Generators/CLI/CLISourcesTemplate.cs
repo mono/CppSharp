@@ -60,7 +60,7 @@ namespace CppSharp.Generators.CLI
         {
             PushBlock(CLIBlockKind.IncludesForwardReferences);
 
-            var typeReferenceCollector = new CLITypeReferenceCollector(Driver.TypeDatabase);
+            var typeReferenceCollector = new CLITypeReferenceCollector(Driver.TypeDatabase, Driver.Options);
             typeReferenceCollector.Process(TranslationUnit, filterNamespaces: false);
 
             var includes = new SortedSet<string>(StringComparer.InvariantCulture);
@@ -652,7 +652,7 @@ namespace CppSharp.Generators.CLI
 
         private bool GenerateClassConstructorBase(Class @class, bool isIntPtr, Method method = null)
         {
-            var hasBase = @class.HasBase && @class.Bases[0].IsClass && !@class.Bases[0].Class.Ignore;
+            var hasBase = @class.HasBase && @class.Bases[0].IsClass && !@class.Bases[0].Class.ExplicityIgnored;
             if (!hasBase)
                 return false;
 
@@ -804,8 +804,8 @@ namespace CppSharp.Generators.CLI
 
             GenerateDeclarationCommon(function);
 
-            var classSig = string.Format("{0}{1}{2}", QualifiedIdentifier(@namespace),
-                Options.OutputNamespace, TranslationUnit.FileNameWithoutExtension);
+            var classSig = string.Format("{0}::{1}", QualifiedIdentifier(@namespace),
+                TranslationUnit.FileNameWithoutExtension);
 
             Write("{0} {1}::{2}(", function.ReturnType, classSig,
                 function.Name);

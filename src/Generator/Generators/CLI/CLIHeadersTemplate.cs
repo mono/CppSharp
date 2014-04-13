@@ -52,7 +52,7 @@ namespace CppSharp.Generators.CLI
 
         public void GenerateIncludeForwardRefs()
         {
-            var typeReferenceCollector = new CLITypeReferenceCollector(Driver.TypeDatabase);
+            var typeReferenceCollector = new CLITypeReferenceCollector(Driver.TypeDatabase, Driver.Options);
             typeReferenceCollector.Process(TranslationUnit, filterNamespaces: false);
 
             var includes = new SortedSet<string>(StringComparer.InvariantCulture);
@@ -68,7 +68,7 @@ namespace CppSharp.Generators.CLI
                 var include = typeRef.Include;
                 var unit = include.TranslationUnit;
 
-                if (unit != null && unit.Ignore)
+                if (unit != null && unit.ExplicityIgnored)
                     continue;
 
                 if(!string.IsNullOrEmpty(include.File) && include.InHeader)
@@ -129,7 +129,7 @@ namespace CppSharp.Generators.CLI
 
         public void GenerateForwardRefs()
         {
-            var typeReferenceCollector = new CLITypeReferenceCollector(Driver.TypeDatabase);
+            var typeReferenceCollector = new CLITypeReferenceCollector(Driver.TypeDatabase, Driver.Options);
             typeReferenceCollector.Process(TranslationUnit);
 
             var typeReferences = typeReferenceCollector.TypeReferences;
@@ -219,8 +219,7 @@ namespace CppSharp.Generators.CLI
         {
             PushBlock(CLIBlockKind.FunctionsClass);
 
-            WriteLine("public ref class {0}{1}", Options.OutputNamespace,
-                TranslationUnit.FileNameWithoutExtension);
+            WriteLine("public ref class {0}", TranslationUnit.FileNameWithoutExtension);
             WriteLine("{");
             WriteLine("public:");
             PushIndent();
