@@ -205,7 +205,26 @@ namespace CppSharp
         }
 
         /// <summary>
-        /// 
+        /// Sets the parameter usage for a function parameter.
+        /// </summary>
+        /// <param name="parameterIndex">first parameter has index 1</param>
+        public static void SetFunctionParameterUsage(this ASTContext context,
+            string functionName, int parameterIndex, ParameterUsage usage)
+        {
+            if (parameterIndex <= 0)
+                throw new ArgumentException("parameterIndex");
+
+            foreach (var function in context.FindFunction(functionName))
+            {
+                if (function.Parameters.Count < parameterIndex)
+                    throw new ArgumentException("parameterIndex");
+
+                function.Parameters[parameterIndex - 1].Usage = usage;
+            }
+        }
+
+        /// <summary>
+        /// Sets the parameter usage for a method parameter.
         /// </summary>
         /// <param name="parameterIndex">first parameter has index 1</param>
         public static void SetMethodParameterUsage(this ASTContext context,
