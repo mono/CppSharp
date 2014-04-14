@@ -52,7 +52,8 @@ namespace CppSharp.Generators.CLI
 
         public void GenerateIncludeForwardRefs()
         {
-            var typeReferenceCollector = new CLITypeReferenceCollector(Driver.TypeDatabase, Driver.Options);
+            var typeReferenceCollector = new CLITypeReferenceCollector(Driver.TypeDatabase,
+                Driver.Options);
             typeReferenceCollector.Process(TranslationUnit, filterNamespaces: false);
 
             var includes = new SortedSet<string>(StringComparer.InvariantCulture);
@@ -129,7 +130,8 @@ namespace CppSharp.Generators.CLI
 
         public void GenerateForwardRefs()
         {
-            var typeReferenceCollector = new CLITypeReferenceCollector(Driver.TypeDatabase, Driver.Options);
+            var typeReferenceCollector = new CLITypeReferenceCollector(Driver.TypeDatabase,
+                Driver.Options);
             typeReferenceCollector.Process(TranslationUnit);
 
             var typeReferences = typeReferenceCollector.TypeReferences;
