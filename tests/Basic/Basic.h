@@ -334,3 +334,9 @@ public:
 	operator int() { return 2; }
 	operator short() { return 3; }
 };
+
+// Tests global static function generation
+DLL_API int Function()
+{
+    return 5;
+}

@@ -234,5 +234,12 @@ public class BasicTests : GeneratorTestFixture
         Assert.AreEqual(2, (int)@class);
         Assert.AreEqual(3, (short)@class);
     }
+
+    [Test]
+    public void TestFunctions()
+    {
+        var ret = Basic.basic.Function();
+        Assert.That(ret, Is.EqualTo(5));
+    }
 }
  

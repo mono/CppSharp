@@ -81,9 +81,15 @@ namespace CppSharp.Generators.CLI
 
         public string QualifiedIdentifier(Declaration decl)
         {
+            var ids = new List<string>();
+
             if (Options.GenerateLibraryNamespace)
-                return string.Format("{0}::{1}", Options.OutputNamespace, decl.QualifiedName);
-            return string.Format("{0}", decl.QualifiedName);
+                ids.Add(Options.OutputNamespace);
+
+            if (!string.IsNullOrWhiteSpace(decl.QualifiedName))
+                ids.Add(decl.QualifiedName);
+
+            return string.Join("::", ids);
         }
 
         public string GetMethodName(Method method)
