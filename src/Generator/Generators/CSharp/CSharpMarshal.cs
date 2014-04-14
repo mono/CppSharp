@@ -476,7 +476,7 @@ namespace CppSharp.Generators.CSharp
 
                 }
                 else
-                    Context.Return.Write(Context.Parameter.Name);
+                    Context.Return.Write(Helpers.SafeIdentifier(Context.Parameter.Name));
 
                 return true;
             }
@@ -632,7 +632,7 @@ namespace CppSharp.Generators.CSharp
 
         public override bool VisitEnumDecl(Enumeration @enum)
         {
-            Context.Return.Write(Context.Parameter.Name);
+            Context.Return.Write(Helpers.SafeIdentifier(Context.Parameter.Name));
             return true;
         }
 
