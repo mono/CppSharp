@@ -69,10 +69,19 @@ namespace CppSharp
 
             for (var i = 0; i < options.LibraryDirs.Count; i++)
                 options.LibraryDirs[i] = Path.GetFullPath(options.LibraryDirs[i]);
-#endif
+
             if (options.NoGenIncludeDirs != null)
                 for (var i = 0; i < options.NoGenIncludeDirs.Count; i++)
                     options.NoGenIncludeDirs[i] = Path.GetFullPath(options.NoGenIncludeDirs[i]);
+#endif
+
+            if (options.NoGenIncludeDirs != null)
+                foreach (var incDir in options.NoGenIncludeDirs)
+#if OLD_PARSER
+                    options.IncludeDirs.Add(incDir);
+#else
+                    options.addIncludeDirs(incDir);
+#endif
 
             if (string.IsNullOrWhiteSpace(options.OutputNamespace))
                 options.OutputNamespace = options.LibraryName;
@@ -81,11 +90,6 @@ namespace CppSharp
         public void Setup()
         {
             ValidateOptions(Options);
-
-            if (Options.NoGenIncludeDirs != null)
-                foreach (var incDir in Options.NoGenIncludeDirs)
-                    if (!Options.IncludeDirs.Contains(incDir))
-                        Options.IncludeDirs.Add(incDir);
 
             TypeDatabase.SetupTypeMaps();
             Generator = CreateGeneratorFromKind(Options.GeneratorKind);
