@@ -231,6 +231,18 @@ namespace CppSharp.Generators.CSharp
             return decl.Type.Visit(this);
         }
 
+        public override bool VisitFunctionType(FunctionType function, TypeQualifiers quals)
+        {
+            var ptrName = Generator.GeneratedIdentifier("ptr") + Context.ParameterIndex;
+
+            Context.SupportBefore.WriteLine("var {0} = {1};", ptrName,
+                Context.ReturnVarName);
+
+            Context.Return.Write("({1})Marshal.GetDelegateForFunctionPointer({0}, typeof({1}))",
+                ptrName, function.ToString());
+            return true;
+        }
+
         public override bool VisitClassDecl(Class @class)
         {
             var ctx = Context as CSharpMarshalContext;
