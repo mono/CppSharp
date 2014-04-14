@@ -205,7 +205,11 @@ void Parser::SetupHeader()
     // Enable preprocessing record.
     PPOpts.DetailedRecord = true;
 
+#ifdef _MSC_VER
     C->createPreprocessor();
+#else
+    C->createPreprocessor(TU_Complete);
+#endif
 
     Preprocessor& PP = C->getPreprocessor();
     PP.getBuiltinInfo().InitializeBuiltins(PP.getIdentifierTable(),
