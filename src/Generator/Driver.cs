@@ -263,7 +263,7 @@ namespace CppSharp
             TranslationUnitPasses.AddPass(new ResolveIncompleteDeclsPass());
             TranslationUnitPasses.AddPass(new CheckIgnoredDeclsPass());
 
-            if (Options.IsCSharpGenerator)
+            if (Options.IsCSharpGenerator && Options.GenerateInlines)
                 TranslationUnitPasses.AddPass(new GenerateInlinesCodePass());
 
             library.SetupPasses(this);
