@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using CppSharp.AST;
 using CppSharp.Generators;
 using CppSharp.Passes;
@@ -147,14 +148,32 @@ namespace CppSharp
             if (field.Ignore)
                 return false;
 
-            var typePrinter = new CppTypePrinter(Driver.TypeDatabase);
-            var typeName = field.QualifiedType.Visit(typePrinter);
-
-            if (!typeName.Contains("std::"))
-                return false;
+            if (!IsStdType(field.QualifiedType)) return false;
 
             field.ExplicityIgnored = true;
             return true;
+        }
+
+        public override bool VisitFunctionDecl(Function function)
+        {
+            if (function.Ignore)
+                return false;
+
+            if (function.Parameters.Any(param => IsStdType(param.QualifiedType)))
+            {
+                function.ExplicityIgnored = true;
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool IsStdType(QualifiedType type)
+        {
+            var typePrinter = new CppTypePrinter(Driver.TypeDatabase);
+            var typeName = type.Visit(typePrinter);
+
+            return typeName.Contains("std::");
         }
     }
 }
