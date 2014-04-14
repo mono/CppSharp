@@ -353,6 +353,9 @@ namespace CppSharp
 
         public void CompileCode()
         {
+            if (!Options.CompileCode)
+                return;
+
             var assemblyFile = string.IsNullOrEmpty(Options.LibraryName) ?
                 "out.dll" : Options.LibraryName + ".dll";
 

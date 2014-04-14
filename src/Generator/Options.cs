@@ -102,6 +102,11 @@ namespace CppSharp
         public string NoGenIncludePrefix = "";
 
         /// <summary>
+        /// Wether the generated C# code should be automatically compiled.
+        /// </summary>
+        public bool CompileCode;
+
+        /// <summary>
         /// Enable this option to enable generation of finalizers.
         /// Works in both CLI and C# backends.
         /// </summary>
