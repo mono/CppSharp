@@ -18,7 +18,10 @@ namespace CppSharp.Passes
 
             var @class = FindClassToMoveFunctionTo(function.Namespace);
             if (@class != null)
+            {
                 MoveFunction(function, @class);
+                Log.Debug("Function moved to class: {0}::{1}", @class.Name, function.Name);
+            }
 
             if (function.IsOperator)
                 function.ExplicityIgnored = true;
