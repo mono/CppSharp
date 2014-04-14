@@ -197,10 +197,10 @@ namespace CppSharp.Generators.CSharp
                 case PrimitiveType.UInt64:
                 case PrimitiveType.Float:
                 case PrimitiveType.Double:
+                case PrimitiveType.WideChar:
                     Context.Return.Write(Context.ReturnVarName);
                     return true;
                 case PrimitiveType.Char16:
-                case PrimitiveType.WideChar:
                     return false;
             }
 
@@ -516,10 +516,10 @@ namespace CppSharp.Generators.CSharp
                 case PrimitiveType.UInt64:
                 case PrimitiveType.Float:
                 case PrimitiveType.Double:
-                    Context.Return.Write(Context.Parameter.Name);
+                case PrimitiveType.WideChar:
+                    Context.Return.Write(Helpers.SafeIdentifier(Context.Parameter.Name));
                     return true;
                 case PrimitiveType.Char16:
-                case PrimitiveType.WideChar:
                     return false;
             }
 
