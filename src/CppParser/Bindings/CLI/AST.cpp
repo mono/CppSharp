@@ -715,7 +715,6 @@ System::String^ CppSharp::Parser::AST::TemplateParameter::Name::get()
 
 void CppSharp::Parser::AST::TemplateParameter::Name::set(System::String^ value)
 {
-    auto s = value;
     auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
     auto arg0 = _arg0.c_str();
     ((::CppSharp::CppParser::AST::TemplateParameter*)NativePtr)->setName(arg0);
@@ -1276,7 +1275,6 @@ System::String^ CppSharp::Parser::AST::Declaration::Name::get()
 
 void CppSharp::Parser::AST::Declaration::Name::set(System::String^ value)
 {
-    auto s = value;
     auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
     auto arg0 = _arg0.c_str();
     ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->setName(arg0);
@@ -1291,7 +1289,6 @@ System::String^ CppSharp::Parser::AST::Declaration::DebugText::get()
 
 void CppSharp::Parser::AST::Declaration::DebugText::set(System::String^ value)
 {
-    auto s = value;
     auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
     auto arg0 = _arg0.c_str();
     ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->setDebugText(arg0);
@@ -1694,7 +1691,6 @@ System::String^ CppSharp::Parser::AST::Function::Mangled::get()
 
 void CppSharp::Parser::AST::Function::Mangled::set(System::String^ value)
 {
-    auto s = value;
     auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
     auto arg0 = _arg0.c_str();
     ((::CppSharp::CppParser::AST::Function*)NativePtr)->setMangled(arg0);
@@ -1709,7 +1705,6 @@ System::String^ CppSharp::Parser::AST::Function::Signature::get()
 
 void CppSharp::Parser::AST::Function::Signature::set(System::String^ value)
 {
-    auto s = value;
     auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
     auto arg0 = _arg0.c_str();
     ((::CppSharp::CppParser::AST::Function*)NativePtr)->setSignature(arg0);
@@ -1968,7 +1963,6 @@ System::String^ CppSharp::Parser::AST::Enumeration::Item::Expression::get()
 
 void CppSharp::Parser::AST::Enumeration::Item::Expression::set(System::String^ value)
 {
-    auto s = value;
     auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
     auto arg0 = _arg0.c_str();
     ((::CppSharp::CppParser::AST::Enumeration::Item*)NativePtr)->setExpression(arg0);
@@ -2090,7 +2084,6 @@ System::String^ CppSharp::Parser::AST::Variable::Mangled::get()
 
 void CppSharp::Parser::AST::Variable::Mangled::set(System::String^ value)
 {
-    auto s = value;
     auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
     auto arg0 = _arg0.c_str();
     ((::CppSharp::CppParser::AST::Variable*)NativePtr)->setMangled(arg0);
@@ -2786,7 +2779,6 @@ System::String^ CppSharp::Parser::AST::MacroDefinition::Expression::get()
 
 void CppSharp::Parser::AST::MacroDefinition::Expression::set(System::String^ value)
 {
-    auto s = value;
     auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
     auto arg0 = _arg0.c_str();
     ((::CppSharp::CppParser::AST::MacroDefinition*)NativePtr)->setExpression(arg0);
@@ -2825,7 +2817,6 @@ System::String^ CppSharp::Parser::AST::MacroExpansion::Text::get()
 
 void CppSharp::Parser::AST::MacroExpansion::Text::set(System::String^ value)
 {
-    auto s = value;
     auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
     auto arg0 = _arg0.c_str();
     ((::CppSharp::CppParser::AST::MacroExpansion*)NativePtr)->setText(arg0);
@@ -2887,7 +2878,6 @@ System::String^ CppSharp::Parser::AST::TranslationUnit::FileName::get()
 
 void CppSharp::Parser::AST::TranslationUnit::FileName::set(System::String^ value)
 {
-    auto s = value;
     auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
     auto arg0 = _arg0.c_str();
     ((::CppSharp::CppParser::AST::TranslationUnit*)NativePtr)->setFileName(arg0);
@@ -2964,7 +2954,6 @@ System::String^ CppSharp::Parser::AST::NativeLibrary::FileName::get()
 
 void CppSharp::Parser::AST::NativeLibrary::FileName::set(System::String^ value)
 {
-    auto s = value;
     auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
     auto arg0 = _arg0.c_str();
     ((::CppSharp::CppParser::AST::NativeLibrary*)NativePtr)->setFileName(arg0);
@@ -2985,14 +2974,6 @@ CppSharp::Parser::AST::ASTContext::ASTContext(System::IntPtr native)
 {
     auto __native = (::CppSharp::CppParser::AST::ASTContext*)native.ToPointer();
     NativePtr = __native;
-}
-
-CppSharp::Parser::AST::TranslationUnit^ CppSharp::Parser::AST::ASTContext::FindOrCreateModule(System::String^ File)
-{
-    auto arg0 = clix::marshalString<clix::E_UTF8>(File);
-    auto __ret = ((::CppSharp::CppParser::AST::ASTContext*)NativePtr)->FindOrCreateModule(arg0);
-    if (__ret == nullptr) return nullptr;
-    return (__ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::TranslationUnit((::CppSharp::CppParser::AST::TranslationUnit*)__ret);
 }
 
 CppSharp::Parser::AST::TranslationUnit^ CppSharp::Parser::AST::ASTContext::getTranslationUnits(unsigned int i)
@@ -3143,7 +3124,6 @@ System::String^ CppSharp::Parser::AST::RawComment::Text::get()
 
 void CppSharp::Parser::AST::RawComment::Text::set(System::String^ value)
 {
-    auto s = value;
     auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
     auto arg0 = _arg0.c_str();
     ((::CppSharp::CppParser::AST::RawComment*)NativePtr)->setText(arg0);
@@ -3158,7 +3138,6 @@ System::String^ CppSharp::Parser::AST::RawComment::BriefText::get()
 
 void CppSharp::Parser::AST::RawComment::BriefText::set(System::String^ value)
 {
-    auto s = value;
     auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
     auto arg0 = _arg0.c_str();
     ((::CppSharp::CppParser::AST::RawComment*)NativePtr)->setBriefText(arg0);

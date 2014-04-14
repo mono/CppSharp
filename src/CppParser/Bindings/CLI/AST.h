@@ -1879,8 +1879,6 @@ namespace CppSharp
                     unsigned int get();
                 }
 
-                CppSharp::Parser::AST::TranslationUnit^ FindOrCreateModule(System::String^ File);
-
                 CppSharp::Parser::AST::TranslationUnit^ getTranslationUnits(unsigned int i);
 
                 void addTranslationUnits(CppSharp::Parser::AST::TranslationUnit^ s);

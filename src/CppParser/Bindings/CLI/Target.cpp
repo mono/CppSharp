@@ -44,7 +44,6 @@ System::String^ CppSharp::Parser::ParserTargetInfo::ABI::get()
 
 void CppSharp::Parser::ParserTargetInfo::ABI::set(System::String^ value)
 {
-    auto s = value;
     auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
     auto arg0 = _arg0.c_str();
     ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->setABI(arg0);

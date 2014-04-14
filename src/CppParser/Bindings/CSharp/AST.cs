@@ -7429,11 +7429,6 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?FindOrCreateModule@ASTContext@AST@CppParser@CppSharp@@QAEPAUTranslationUnit@234@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z")]
-                    internal static extern global::System.IntPtr FindOrCreateModule_0(global::System.IntPtr instance, Std.String File);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="?getTranslationUnits@ASTContext@AST@CppParser@CppSharp@@QAEPAUTranslationUnit@234@I@Z")]
                     internal static extern global::System.IntPtr getTranslationUnits_0(global::System.IntPtr instance, uint i);
 
@@ -7488,14 +7483,6 @@ namespace CppSharp
                 {
                     Internal.dtor_0(__Instance);
                     Marshal.FreeHGlobal(__Instance);
-                }
-
-                public CppSharp.Parser.AST.TranslationUnit FindOrCreateModule(Std.String File)
-                {
-                    var arg0 = new Std.String();
-                    var __ret = Internal.FindOrCreateModule_0(__Instance, arg0);
-                    if (__ret == global::System.IntPtr.Zero) return null;
-                    return (__ret == IntPtr.Zero) ? null : new CppSharp.Parser.AST.TranslationUnit(__ret);
                 }
 
                 public CppSharp.Parser.AST.TranslationUnit getTranslationUnits(uint i)
