@@ -1,7 +1,7 @@
 -- Setup the LLVM dependency directories
 
-LLVMRootDir = "../../deps/LLVM/"
-LLVMBuildDir = "../../deps/LLVM/build/"
+LLVMRootDir = "../../deps/llvm/"
+LLVMBuildDir = "../../deps/llvm/build/"
 
 -- TODO: Search for available system dependencies
 
