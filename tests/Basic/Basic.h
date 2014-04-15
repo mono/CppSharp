@@ -243,12 +243,16 @@ typedef int (*DelegateInGlobalNamespace)(int);
 struct DLL_API TestDelegates
 {
     typedef int (*DelegateInClass)(int);
+    typedef int(TestDelegates::*MemberDelegate)(int);
 
-    TestDelegates() : A(Double), B(Double) {}
+    TestDelegates() : A(Double), B(Double) { C = &TestDelegates::Triple; }
     static int Double(int N) { return N * 2; }
+    int Triple(int N) { return N * 3; }
 
     DelegateInClass A;
     DelegateInGlobalNamespace B;
+    // As long as we can't marshal them make sure they're ignored
+    MemberDelegate C;
 };
 
 // Tests memory leaks in constructors
