@@ -104,11 +104,6 @@ namespace CppSharp.Passes
             if (Driver.Options.IsCLIGenerator)
                 property.Name = "default";
 
-            property.GetMethod.Parameters[0].Name = "index";
-
-            if (property.SetMethod != null)
-                property.SetMethod.Parameters[0].Name = "index";
-
             property.Parameters.AddRange(@operator.Parameters);
 
             @class.Properties.Add(property);

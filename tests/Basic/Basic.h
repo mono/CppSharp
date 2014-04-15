@@ -317,6 +317,7 @@ typedef struct DLL_API SomeStruct
 	SomeStruct() : p(1) {}
 	const foo_t& operator[](int i) const { return p; }
 	foo_t operator[](int i) { return p; }
+    foo_t operator[](const char* name) { return p; }
 	foo_t p;
 }
 SomeStruct;
