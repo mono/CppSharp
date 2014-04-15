@@ -640,9 +640,11 @@ namespace CppSharp
                 Kind = ConvertRawCommentKind(rawComment.RawCommentKind),
                 BriefText = rawComment.BriefText,
                 Text = rawComment.Text,
-                FullComment = commentConverter.Visit(rawComment.FullComment)
-                    as AST.FullComment
             };
+
+            if (rawComment.FullComment != null)
+                _rawComment.FullComment = commentConverter.Visit(rawComment.FullComment)
+                    as AST.FullComment;
 
             return _rawComment;
         }
