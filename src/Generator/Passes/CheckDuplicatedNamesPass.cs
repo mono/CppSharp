@@ -123,7 +123,7 @@ namespace CppSharp.Passes
             if (!VisitDeclaration(decl))
                 return false;
 
-            if (ASTUtils.CheckIgnoreFunction(decl))
+            if (ASTUtils.CheckIgnoreFunction(decl, Driver.Options))
                 return false;
 
             CheckDuplicate(decl);
@@ -135,7 +135,7 @@ namespace CppSharp.Passes
             if (!VisitDeclaration(decl))
                 return false;
 
-            if (ASTUtils.CheckIgnoreMethod(decl))
+            if (ASTUtils.CheckIgnoreMethod(decl, Driver.Options))
                 return false;
 
             if (decl.ExplicitInterfaceImpl == null)

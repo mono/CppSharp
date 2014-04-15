@@ -96,6 +96,7 @@ namespace CppSharp
         public bool GenerateInternalImports;
         public bool GenerateClassMarshals;
         public bool GenerateInlines;
+        public bool GenerateCopyConstructors;
         public bool UseHeaderDirectories;
 
         //List of include directories that are used but not generated

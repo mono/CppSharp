@@ -417,8 +417,8 @@ namespace CppSharp.Generators.CSharp
 
             GenerateDeclContext(@class);
 
-            foreach (var method in @class.Methods.Where(m => !ASTUtils.CheckIgnoreMethod(m) &&
-                                                             m.Access == AccessSpecifier.Public))
+            foreach (var method in @class.Methods.Where(m =>
+                !ASTUtils.CheckIgnoreMethod(m, Options) && m.Access == AccessSpecifier.Public))
             {
                 PushBlock(CSharpBlockKind.Method);
                 GenerateDeclarationCommon(method);
@@ -490,7 +490,7 @@ namespace CppSharp.Generators.CSharp
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
-        private static ISet<Function> GatherClassInternalFunctions(Class @class)
+        private ISet<Function> GatherClassInternalFunctions(Class @class)
         {
             var functions = new HashSet<Function>();
 
@@ -522,7 +522,7 @@ namespace CppSharp.Generators.CSharp
 
             foreach (var method in @class.Methods)
             {
-                if (ASTUtils.CheckIgnoreMethod(method))
+                if (ASTUtils.CheckIgnoreMethod(method, Options))
                     continue;
 
                 if (method.IsConstructor)
@@ -1143,7 +1143,7 @@ namespace CppSharp.Generators.CSharp
             var staticMethods = new List<Method>();
             foreach (var method in @class.Methods)
             {
-                if (ASTUtils.CheckIgnoreMethod(method))
+                if (ASTUtils.CheckIgnoreMethod(method, Options))
                     continue;
 
                 if (method.IsConstructor)
@@ -1794,7 +1794,7 @@ namespace CppSharp.Generators.CSharp
 
             foreach (var ctor in @class.Constructors)
             {
-                if (ASTUtils.CheckIgnoreMethod(ctor))
+                if (ASTUtils.CheckIgnoreMethod(ctor, Options))
                     continue;
 
                 GenerateMethod(ctor, @class);

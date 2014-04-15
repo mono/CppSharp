@@ -140,7 +140,7 @@ namespace CppSharp.Generators.CLI
 
             foreach (var method in @class.Methods)
             {
-                if (ASTUtils.CheckIgnoreMethod(method))
+                if (ASTUtils.CheckIgnoreMethod(method, Options))
                     continue;
 
                 // C++/CLI does not allow special member funtions for value types.

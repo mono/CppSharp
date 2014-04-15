@@ -76,7 +76,7 @@ namespace CppSharp.Passes
             if (!VisitDeclaration(method))
                 return false;
 
-            if (ASTUtils.CheckIgnoreMethod(method))
+            if (ASTUtils.CheckIgnoreMethod(method, Driver.Options))
                 return false;
 
             var @class = method.Namespace as Class;
