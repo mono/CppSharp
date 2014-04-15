@@ -253,12 +253,6 @@ namespace CppSharp
                     Internal.ctor_0(__Instance, arg0);
                 }
 
-                public Type(CppSharp.Parser.AST.Type _0)
-                {
-                    __Instance = Marshal.AllocHGlobal(8);
-                    *((Type.Internal*) __Instance) = *((Type.Internal*) _0.__Instance);
-                }
-
                 public void Dispose()
                 {
                     Dispose(disposing: true);
@@ -336,12 +330,6 @@ namespace CppSharp
                 public TypeQualifiers(global::System.IntPtr native, bool isInternalImpl = false)
                 {
                     __Instance = native;
-                }
-
-                public TypeQualifiers(CppSharp.Parser.AST.TypeQualifiers _0)
-                {
-                    __Instance = Marshal.AllocHGlobal(3);
-                    *((TypeQualifiers.Internal*) __Instance) = *((TypeQualifiers.Internal*) _0.__Instance);
                 }
 
                 public TypeQualifiers()
@@ -451,12 +439,6 @@ namespace CppSharp
                     Internal.ctor_0(__Instance);
                 }
 
-                public QualifiedType(CppSharp.Parser.AST.QualifiedType _0)
-                {
-                    __Instance = Marshal.AllocHGlobal(8);
-                    *((QualifiedType.Internal*) __Instance) = *((QualifiedType.Internal*) _0.__Instance);
-                }
-
                 public void Dispose()
                 {
                     Dispose(disposing: true);
@@ -548,13 +530,6 @@ namespace CppSharp
                     Internal.ctor_0(__Instance);
                 }
 
-                public TagType(CppSharp.Parser.AST.TagType _0)
-                    : this(IntPtr.Zero)
-                {
-                    __Instance = Marshal.AllocHGlobal(12);
-                    *((TagType.Internal*) __Instance) = *((TagType.Internal*) _0.__Instance);
-                }
-
                 protected override void Dispose(bool disposing)
                 {
                     base.Dispose(disposing);
@@ -635,13 +610,6 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(24);
                     Internal.ctor_0(__Instance);
-                }
-
-                public ArrayType(CppSharp.Parser.AST.ArrayType _0)
-                    : this(IntPtr.Zero)
-                {
-                    __Instance = Marshal.AllocHGlobal(24);
-                    *((ArrayType.Internal*) __Instance) = *((ArrayType.Internal*) _0.__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -770,14 +738,6 @@ namespace CppSharp
                     Internal.ctor_0(__Instance);
                 }
 
-                public FunctionType(CppSharp.Parser.AST.FunctionType _0)
-                    : this(IntPtr.Zero)
-                {
-                    __Instance = Marshal.AllocHGlobal(32);
-                    var arg0 = _0 == (CppSharp.Parser.AST.FunctionType) null ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
-                }
-
                 protected override void Dispose(bool disposing)
                 {
                     base.Dispose(disposing);
@@ -896,13 +856,6 @@ namespace CppSharp
                     Internal.ctor_0(__Instance);
                 }
 
-                public PointerType(CppSharp.Parser.AST.PointerType _0)
-                    : this(IntPtr.Zero)
-                {
-                    __Instance = Marshal.AllocHGlobal(20);
-                    *((PointerType.Internal*) __Instance) = *((PointerType.Internal*) _0.__Instance);
-                }
-
                 protected override void Dispose(bool disposing)
                 {
                     base.Dispose(disposing);
@@ -988,13 +941,6 @@ namespace CppSharp
                     Internal.ctor_0(__Instance);
                 }
 
-                public MemberPointerType(CppSharp.Parser.AST.MemberPointerType _0)
-                    : this(IntPtr.Zero)
-                {
-                    __Instance = Marshal.AllocHGlobal(16);
-                    *((MemberPointerType.Internal*) __Instance) = *((MemberPointerType.Internal*) _0.__Instance);
-                }
-
                 protected override void Dispose(bool disposing)
                 {
                     base.Dispose(disposing);
@@ -1063,13 +1009,6 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(12);
                     Internal.ctor_0(__Instance);
-                }
-
-                public TypedefType(CppSharp.Parser.AST.TypedefType _0)
-                    : this(IntPtr.Zero)
-                {
-                    __Instance = Marshal.AllocHGlobal(12);
-                    *((TypedefType.Internal*) __Instance) = *((TypedefType.Internal*) _0.__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -1141,13 +1080,6 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(24);
                     Internal.ctor_0(__Instance);
-                }
-
-                public AttributedType(CppSharp.Parser.AST.AttributedType _0)
-                    : this(IntPtr.Zero)
-                {
-                    __Instance = Marshal.AllocHGlobal(24);
-                    *((AttributedType.Internal*) __Instance) = *((AttributedType.Internal*) _0.__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -1241,13 +1173,6 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(32);
                     Internal.ctor_0(__Instance);
-                }
-
-                public DecayedType(CppSharp.Parser.AST.DecayedType _0)
-                    : this(IntPtr.Zero)
-                {
-                    __Instance = Marshal.AllocHGlobal(32);
-                    *((DecayedType.Internal*) __Instance) = *((DecayedType.Internal*) _0.__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -1368,12 +1293,6 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(20);
                     Internal.ctor_0(__Instance);
-                }
-
-                public TemplateArgument(CppSharp.Parser.AST.TemplateArgument _0)
-                {
-                    __Instance = Marshal.AllocHGlobal(20);
-                    *((TemplateArgument.Internal*) __Instance) = *((TemplateArgument.Internal*) _0.__Instance);
                 }
 
                 public void Dispose()
@@ -1523,14 +1442,6 @@ namespace CppSharp
                     Internal.ctor_0(__Instance);
                 }
 
-                public TemplateSpecializationType(CppSharp.Parser.AST.TemplateSpecializationType _0)
-                    : this(IntPtr.Zero)
-                {
-                    __Instance = Marshal.AllocHGlobal(28);
-                    var arg0 = _0 == (CppSharp.Parser.AST.TemplateSpecializationType) null ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
-                }
-
                 protected override void Dispose(bool disposing)
                 {
                     base.Dispose(disposing);
@@ -1654,13 +1565,6 @@ namespace CppSharp
                     Internal.ctor_1(__Instance);
                 }
 
-                public TemplateParameter(CppSharp.Parser.AST.TemplateParameter _0)
-                {
-                    __Instance = Marshal.AllocHGlobal(24);
-                    var arg0 = _0 == (CppSharp.Parser.AST.TemplateParameter) null ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
-                }
-
                 public void Dispose()
                 {
                     Dispose(disposing: true);
@@ -1756,14 +1660,6 @@ namespace CppSharp
                     Internal.ctor_0(__Instance);
                 }
 
-                public TemplateParameterType(CppSharp.Parser.AST.TemplateParameterType _0)
-                    : this(IntPtr.Zero)
-                {
-                    __Instance = Marshal.AllocHGlobal(32);
-                    var arg0 = _0 == (CppSharp.Parser.AST.TemplateParameterType) null ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_1(__Instance, arg0);
-                }
-
                 protected override void Dispose(bool disposing)
                 {
                     base.Dispose(disposing);
@@ -1832,13 +1728,6 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(16);
                     Internal.ctor_0(__Instance);
-                }
-
-                public TemplateParameterSubstitutionType(CppSharp.Parser.AST.TemplateParameterSubstitutionType _0)
-                    : this(IntPtr.Zero)
-                {
-                    __Instance = Marshal.AllocHGlobal(16);
-                    *((TemplateParameterSubstitutionType.Internal*) __Instance) = *((TemplateParameterSubstitutionType.Internal*) _0.__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -1917,14 +1806,6 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(40);
                     Internal.ctor_0(__Instance);
-                }
-
-                public InjectedClassNameType(CppSharp.Parser.AST.InjectedClassNameType _0)
-                    : this(IntPtr.Zero)
-                {
-                    __Instance = Marshal.AllocHGlobal(40);
-                    var arg0 = _0 == (CppSharp.Parser.AST.InjectedClassNameType) null ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_1(__Instance, arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -2009,13 +1890,6 @@ namespace CppSharp
                     Internal.ctor_0(__Instance);
                 }
 
-                public DependentNameType(CppSharp.Parser.AST.DependentNameType _0)
-                    : this(IntPtr.Zero)
-                {
-                    __Instance = Marshal.AllocHGlobal(8);
-                    *((DependentNameType.Internal*) __Instance) = *((DependentNameType.Internal*) _0.__Instance);
-                }
-
                 protected override void Dispose(bool disposing)
                 {
                     base.Dispose(disposing);
@@ -2064,13 +1938,6 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(8);
                     Internal.ctor_0(__Instance);
-                }
-
-                public PackExpansionType(CppSharp.Parser.AST.PackExpansionType _0)
-                    : this(IntPtr.Zero)
-                {
-                    __Instance = Marshal.AllocHGlobal(8);
-                    *((PackExpansionType.Internal*) __Instance) = *((PackExpansionType.Internal*) _0.__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -2124,13 +1991,6 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(12);
                     Internal.ctor_0(__Instance);
-                }
-
-                public BuiltinType(CppSharp.Parser.AST.BuiltinType _0)
-                    : this(IntPtr.Zero)
-                {
-                    __Instance = Marshal.AllocHGlobal(12);
-                    *((BuiltinType.Internal*) __Instance) = *((BuiltinType.Internal*) _0.__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -2200,12 +2060,6 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(12);
                     Internal.ctor_0(__Instance);
-                }
-
-                public VTableComponent(CppSharp.Parser.AST.VTableComponent _0)
-                {
-                    __Instance = Marshal.AllocHGlobal(12);
-                    *((VTableComponent.Internal*) __Instance) = *((VTableComponent.Internal*) _0.__Instance);
                 }
 
                 public void Dispose()
@@ -2327,13 +2181,6 @@ namespace CppSharp
                     Internal.ctor_0(__Instance);
                 }
 
-                public VTableLayout(CppSharp.Parser.AST.VTableLayout _0)
-                {
-                    __Instance = Marshal.AllocHGlobal(12);
-                    var arg0 = _0 == (CppSharp.Parser.AST.VTableLayout) null ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
-                }
-
                 public void Dispose()
                 {
                     Dispose(disposing: true);
@@ -2425,13 +2272,6 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(32);
                     Internal.ctor_0(__Instance);
-                }
-
-                public VFTableInfo(CppSharp.Parser.AST.VFTableInfo _0)
-                {
-                    __Instance = Marshal.AllocHGlobal(32);
-                    var arg0 = _0 == (CppSharp.Parser.AST.VFTableInfo) null ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_1(__Instance, arg0);
                 }
 
                 public void Dispose()
@@ -2590,13 +2430,6 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(48);
                     Internal.ctor_0(__Instance);
-                }
-
-                public ClassLayout(CppSharp.Parser.AST.ClassLayout _0)
-                {
-                    __Instance = Marshal.AllocHGlobal(48);
-                    var arg0 = _0 == (CppSharp.Parser.AST.ClassLayout) null ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
                 }
 
                 public void Dispose()
@@ -2857,13 +2690,6 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(92);
                     var arg0 = kind;
                     Internal.ctor_0(__Instance, arg0);
-                }
-
-                public Declaration(CppSharp.Parser.AST.Declaration _0)
-                {
-                    __Instance = Marshal.AllocHGlobal(92);
-                    var arg0 = _0 == (CppSharp.Parser.AST.Declaration) null ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
                 }
 
                 public void Dispose()
@@ -3281,14 +3107,6 @@ namespace CppSharp
                     Internal.ctor_0(__Instance);
                 }
 
-                public DeclarationContext(CppSharp.Parser.AST.DeclarationContext _0)
-                    : this(IntPtr.Zero)
-                {
-                    __Instance = Marshal.AllocHGlobal(188);
-                    var arg0 = _0 == (CppSharp.Parser.AST.DeclarationContext) null ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
-                }
-
                 protected override void Dispose(bool disposing)
                 {
                     base.Dispose(disposing);
@@ -3546,14 +3364,6 @@ namespace CppSharp
                     Internal.ctor_0(__Instance);
                 }
 
-                public TypedefDecl(CppSharp.Parser.AST.TypedefDecl _0)
-                    : this(IntPtr.Zero)
-                {
-                    __Instance = Marshal.AllocHGlobal(100);
-                    var arg0 = _0 == (CppSharp.Parser.AST.TypedefDecl) null ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_1(__Instance, arg0);
-                }
-
                 protected override void Dispose(bool disposing)
                 {
                     base.Dispose(disposing);
@@ -3663,14 +3473,6 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(104);
                     Internal.ctor_0(__Instance);
-                }
-
-                public Parameter(CppSharp.Parser.AST.Parameter _0)
-                    : this(IntPtr.Zero)
-                {
-                    __Instance = Marshal.AllocHGlobal(104);
-                    var arg0 = _0 == (CppSharp.Parser.AST.Parameter) null ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_1(__Instance, arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -3871,14 +3673,6 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(176);
                     Internal.ctor_0(__Instance);
-                }
-
-                public Function(CppSharp.Parser.AST.Function _0)
-                    : this(IntPtr.Zero)
-                {
-                    __Instance = Marshal.AllocHGlobal(176);
-                    var arg0 = _0 == (CppSharp.Parser.AST.Function) null ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -4208,14 +4002,6 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(204);
                     Internal.ctor_0(__Instance);
-                }
-
-                public Method(CppSharp.Parser.AST.Method _0)
-                    : this(IntPtr.Zero)
-                {
-                    __Instance = Marshal.AllocHGlobal(204);
-                    var arg0 = _0 == (CppSharp.Parser.AST.Method) null ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_1(__Instance, arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -4578,14 +4364,6 @@ namespace CppSharp
                         Internal.ctor_0(__Instance);
                     }
 
-                    public Item(CppSharp.Parser.AST.Enumeration.Item _0)
-                        : this(IntPtr.Zero)
-                    {
-                        __Instance = Marshal.AllocHGlobal(128);
-                        var arg0 = _0 == (CppSharp.Parser.AST.Enumeration.Item) null ? global::System.IntPtr.Zero : _0.__Instance;
-                        Internal.cctor_2(__Instance, arg0);
-                    }
-
                     protected override void Dispose(bool disposing)
                     {
                         base.Dispose(disposing);
@@ -4644,14 +4422,6 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(116);
                     Internal.ctor_0(__Instance);
-                }
-
-                public Enumeration(CppSharp.Parser.AST.Enumeration _0)
-                    : this(IntPtr.Zero)
-                {
-                    __Instance = Marshal.AllocHGlobal(116);
-                    var arg0 = _0 == (CppSharp.Parser.AST.Enumeration) null ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -4824,14 +4594,6 @@ namespace CppSharp
                     Internal.ctor_0(__Instance);
                 }
 
-                public Variable(CppSharp.Parser.AST.Variable _0)
-                    : this(IntPtr.Zero)
-                {
-                    __Instance = Marshal.AllocHGlobal(124);
-                    var arg0 = _0 == (CppSharp.Parser.AST.Variable) null ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
-                }
-
                 protected override void Dispose(bool disposing)
                 {
                     base.Dispose(disposing);
@@ -4918,12 +4680,6 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(12);
                     Internal.ctor_0(__Instance);
-                }
-
-                public BaseClassSpecifier(CppSharp.Parser.AST.BaseClassSpecifier _0)
-                {
-                    __Instance = Marshal.AllocHGlobal(12);
-                    *((BaseClassSpecifier.Internal*) __Instance) = *((BaseClassSpecifier.Internal*) _0.__Instance);
                 }
 
                 public void Dispose()
@@ -5071,14 +4827,6 @@ namespace CppSharp
                     Internal.ctor_0(__Instance);
                 }
 
-                public Field(CppSharp.Parser.AST.Field _0)
-                    : this(IntPtr.Zero)
-                {
-                    __Instance = Marshal.AllocHGlobal(108);
-                    var arg0 = _0 == (CppSharp.Parser.AST.Field) null ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_1(__Instance, arg0);
-                }
-
                 protected override void Dispose(bool disposing)
                 {
                     base.Dispose(disposing);
@@ -5209,14 +4957,6 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(92);
                     Internal.ctor_0(__Instance);
-                }
-
-                public AccessSpecifierDecl(CppSharp.Parser.AST.AccessSpecifierDecl _0)
-                    : this(IntPtr.Zero)
-                {
-                    __Instance = Marshal.AllocHGlobal(92);
-                    var arg0 = _0 == (CppSharp.Parser.AST.AccessSpecifierDecl) null ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_1(__Instance, arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -5431,14 +5171,6 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(252);
                     Internal.ctor_0(__Instance);
-                }
-
-                public Class(CppSharp.Parser.AST.Class _0)
-                    : this(IntPtr.Zero)
-                {
-                    __Instance = Marshal.AllocHGlobal(252);
-                    var arg0 = _0 == (CppSharp.Parser.AST.Class) null ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -5785,14 +5517,6 @@ namespace CppSharp
                     Internal.ctor_0(__Instance);
                 }
 
-                public Template(CppSharp.Parser.AST.Template _0)
-                    : this(IntPtr.Zero)
-                {
-                    __Instance = Marshal.AllocHGlobal(108);
-                    var arg0 = _0 == (CppSharp.Parser.AST.Template) null ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
-                }
-
                 protected override void Dispose(bool disposing)
                 {
                     base.Dispose(disposing);
@@ -5959,14 +5683,6 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(120);
                     Internal.ctor_0(__Instance);
-                }
-
-                public ClassTemplate(CppSharp.Parser.AST.ClassTemplate _0)
-                    : this(IntPtr.Zero)
-                {
-                    __Instance = Marshal.AllocHGlobal(120);
-                    var arg0 = _0 == (CppSharp.Parser.AST.ClassTemplate) null ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -6201,14 +5917,6 @@ namespace CppSharp
                     Internal.ctor_0(__Instance);
                 }
 
-                public ClassTemplateSpecialization(CppSharp.Parser.AST.ClassTemplateSpecialization _0)
-                    : this(IntPtr.Zero)
-                {
-                    __Instance = Marshal.AllocHGlobal(272);
-                    var arg0 = _0 == (CppSharp.Parser.AST.ClassTemplateSpecialization) null ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
-                }
-
                 protected override void Dispose(bool disposing)
                 {
                     base.Dispose(disposing);
@@ -6426,14 +6134,6 @@ namespace CppSharp
                     Internal.ctor_0(__Instance);
                 }
 
-                public ClassTemplatePartialSpecialization(CppSharp.Parser.AST.ClassTemplatePartialSpecialization _0)
-                    : this(IntPtr.Zero)
-                {
-                    __Instance = Marshal.AllocHGlobal(272);
-                    var arg0 = _0 == (CppSharp.Parser.AST.ClassTemplatePartialSpecialization) null ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_1(__Instance, arg0);
-                }
-
                 protected override void Dispose(bool disposing)
                 {
                     base.Dispose(disposing);
@@ -6523,14 +6223,6 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(108);
                     Internal.ctor_0(__Instance);
-                }
-
-                public FunctionTemplate(CppSharp.Parser.AST.FunctionTemplate _0)
-                    : this(IntPtr.Zero)
-                {
-                    __Instance = Marshal.AllocHGlobal(108);
-                    var arg0 = _0 == (CppSharp.Parser.AST.FunctionTemplate) null ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_1(__Instance, arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -6648,14 +6340,6 @@ namespace CppSharp
                     Internal.ctor_0(__Instance);
                 }
 
-                public Namespace(CppSharp.Parser.AST.Namespace _0)
-                    : this(IntPtr.Zero)
-                {
-                    __Instance = Marshal.AllocHGlobal(192);
-                    var arg0 = _0 == (CppSharp.Parser.AST.Namespace) null ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_1(__Instance, arg0);
-                }
-
                 protected override void Dispose(bool disposing)
                 {
                     base.Dispose(disposing);
@@ -6757,14 +6441,6 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(96);
                     Internal.ctor_0(__Instance);
-                }
-
-                public PreprocessedEntity(CppSharp.Parser.AST.PreprocessedEntity _0)
-                    : this(IntPtr.Zero)
-                {
-                    __Instance = Marshal.AllocHGlobal(96);
-                    var arg0 = _0 == (CppSharp.Parser.AST.PreprocessedEntity) null ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_1(__Instance, arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -6881,14 +6557,6 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(120);
                     Internal.ctor_0(__Instance);
-                }
-
-                public MacroDefinition(CppSharp.Parser.AST.MacroDefinition _0)
-                    : this(IntPtr.Zero)
-                {
-                    __Instance = Marshal.AllocHGlobal(120);
-                    var arg0 = _0 == (CppSharp.Parser.AST.MacroDefinition) null ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -7010,14 +6678,6 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(124);
                     Internal.ctor_0(__Instance);
-                }
-
-                public MacroExpansion(CppSharp.Parser.AST.MacroExpansion _0)
-                    : this(IntPtr.Zero)
-                {
-                    __Instance = Marshal.AllocHGlobal(124);
-                    var arg0 = _0 == (CppSharp.Parser.AST.MacroExpansion) null ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -7201,14 +6861,6 @@ namespace CppSharp
                     Internal.ctor_0(__Instance);
                 }
 
-                public TranslationUnit(CppSharp.Parser.AST.TranslationUnit _0)
-                    : this(IntPtr.Zero)
-                {
-                    __Instance = Marshal.AllocHGlobal(232);
-                    var arg0 = _0 == (CppSharp.Parser.AST.TranslationUnit) null ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
-                }
-
                 protected override void Dispose(bool disposing)
                 {
                     base.Dispose(disposing);
@@ -7344,13 +6996,6 @@ namespace CppSharp
                     Internal.ctor_1(__Instance);
                 }
 
-                public NativeLibrary(CppSharp.Parser.AST.NativeLibrary _0)
-                {
-                    __Instance = Marshal.AllocHGlobal(36);
-                    var arg0 = _0 == (CppSharp.Parser.AST.NativeLibrary) null ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
-                }
-
                 public void Dispose()
                 {
                     Dispose(disposing: true);
@@ -7466,13 +7111,6 @@ namespace CppSharp
                     Internal.ctor_0(__Instance);
                 }
 
-                public ASTContext(CppSharp.Parser.AST.ASTContext _0)
-                {
-                    __Instance = Marshal.AllocHGlobal(12);
-                    var arg0 = _0 == (CppSharp.Parser.AST.ASTContext) null ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
-                }
-
                 public void Dispose()
                 {
                     Dispose(disposing: true);
@@ -7551,12 +7189,6 @@ namespace CppSharp
                     Internal.ctor_0(__Instance, arg0);
                 }
 
-                public Comment(CppSharp.Parser.AST.Comment _0)
-                {
-                    __Instance = Marshal.AllocHGlobal(4);
-                    *((Comment.Internal*) __Instance) = *((Comment.Internal*) _0.__Instance);
-                }
-
                 public void Dispose()
                 {
                     Dispose(disposing: true);
@@ -7623,13 +7255,6 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(4);
                     Internal.ctor_0(__Instance);
-                }
-
-                public FullComment(CppSharp.Parser.AST.FullComment _0)
-                    : this(IntPtr.Zero)
-                {
-                    __Instance = Marshal.AllocHGlobal(4);
-                    *((FullComment.Internal*) __Instance) = *((FullComment.Internal*) _0.__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -7712,13 +7337,6 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(56);
                     Internal.ctor_0(__Instance);
-                }
-
-                public RawComment(CppSharp.Parser.AST.RawComment _0)
-                {
-                    __Instance = Marshal.AllocHGlobal(56);
-                    var arg0 = _0 == (CppSharp.Parser.AST.RawComment) null ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
                 }
 
                 public void Dispose()

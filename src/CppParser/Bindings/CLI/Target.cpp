@@ -19,12 +19,6 @@ CppSharp::Parser::ParserTargetInfo::ParserTargetInfo()
     NativePtr = new ::CppSharp::CppParser::ParserTargetInfo();
 }
 
-CppSharp::Parser::ParserTargetInfo::ParserTargetInfo(CppSharp::Parser::ParserTargetInfo^ _0)
-{
-    auto &arg0 = *(::CppSharp::CppParser::ParserTargetInfo*)_0->NativePtr;
-    NativePtr = new ::CppSharp::CppParser::ParserTargetInfo(arg0);
-}
-
 System::IntPtr CppSharp::Parser::ParserTargetInfo::__Instance::get()
 {
     return System::IntPtr(NativePtr);

@@ -46,8 +46,6 @@ namespace CppSharp
             ParserTargetInfo(System::IntPtr native);
             ParserTargetInfo();
 
-            ParserTargetInfo(CppSharp::Parser::ParserTargetInfo^ _0);
-
             property System::String^ ABI
             {
                 System::String^ get();
