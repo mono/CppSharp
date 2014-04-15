@@ -73,6 +73,25 @@ namespace CppSharp.AST
             return Anonymous.ContainsKey(key) ? Anonymous[key] : null;
         }
 
+        public DeclarationContext FindDeclaration(IEnumerable<string> declarations)
+        {
+            DeclarationContext currentDeclaration = this;
+
+            foreach (var declaration in declarations)
+            {
+                var subDeclaration = currentDeclaration.Namespaces
+                    .Concat<DeclarationContext>(currentDeclaration.Classes)
+                    .FirstOrDefault(e => e.Name.Equals(declaration));
+
+                if (subDeclaration == null)
+                    return null;
+
+                currentDeclaration = subDeclaration;
+            }
+
+            return currentDeclaration as DeclarationContext;
+        }
+
         public Namespace FindNamespace(string name)
         {
             var namespaces = name.Split(new string[] { "::" },
@@ -190,7 +209,7 @@ namespace CppSharp.AST
             var className = entries[entries.Count - 1];
             var namespaces = entries.Take(entries.Count - 1);
 
-            DeclarationContext declContext = FindNamespace(namespaces);
+            DeclarationContext declContext = FindDeclaration(namespaces);
             if (declContext == null)
             {
                 declContext = FindClass(entries[0]);
