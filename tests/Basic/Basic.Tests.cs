@@ -235,6 +235,8 @@ public class BasicTests : GeneratorTestFixture
         var someStruct = new SomeStruct();
         Assert.That(someStruct[0], Is.EqualTo(1));
         Assert.That(someStruct["foo"], Is.EqualTo(1));
+        someStruct[0] = 2;
+        Assert.That(someStruct[0], Is.EqualTo(2));
     }
 
     [Test]
