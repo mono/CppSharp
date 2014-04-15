@@ -703,7 +703,7 @@ namespace CppSharp
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                     EntryPoint="_ZN8CppSharp9CppParser12ParserResult14getDiagnosticsEj")]
-                internal static extern void getDiagnostics_0(global::System.IntPtr instance, global::System.IntPtr @return, uint i);
+                internal static extern void getDiagnostics_0(global::System.IntPtr @return, global::System.IntPtr instance, uint i);
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -761,7 +761,7 @@ namespace CppSharp
             public CppSharp.Parser.ParserDiagnostic getDiagnostics(uint i)
             {
                 var __ret = new CppSharp.Parser.ParserDiagnostic.Internal();
-                Internal.getDiagnostics_0(__Instance, new IntPtr(&__ret), i);
+                Internal.getDiagnostics_0(new IntPtr(&__ret), __Instance, i);
                 var __instance = Marshal.AllocHGlobal(36);
                 CppSharp.Parser.ParserDiagnostic.Internal.cctor_2(__instance, new global::System.IntPtr(&__ret));
                 return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.ParserDiagnostic(__instance);

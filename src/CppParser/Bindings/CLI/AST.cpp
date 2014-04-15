@@ -2976,6 +2976,11 @@ CppSharp::Parser::AST::ASTContext::ASTContext(System::IntPtr native)
     NativePtr = __native;
 }
 
+CppSharp::Parser::AST::ASTContext::ASTContext()
+{
+    NativePtr = new ::CppSharp::CppParser::AST::ASTContext();
+}
+
 CppSharp::Parser::AST::TranslationUnit^ CppSharp::Parser::AST::ASTContext::getTranslationUnits(unsigned int i)
 {
     auto __ret = ((::CppSharp::CppParser::AST::ASTContext*)NativePtr)->getTranslationUnits(i);
@@ -2987,11 +2992,6 @@ void CppSharp::Parser::AST::ASTContext::addTranslationUnits(CppSharp::Parser::AS
 {
     auto arg0 = (::CppSharp::CppParser::AST::TranslationUnit*)s->NativePtr;
     ((::CppSharp::CppParser::AST::ASTContext*)NativePtr)->addTranslationUnits(arg0);
-}
-
-CppSharp::Parser::AST::ASTContext::ASTContext()
-{
-    NativePtr = new ::CppSharp::CppParser::AST::ASTContext();
 }
 
 CppSharp::Parser::AST::ASTContext::ASTContext(CppSharp::Parser::AST::ASTContext^ _0)

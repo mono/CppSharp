@@ -7415,7 +7415,7 @@ namespace CppSharp
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="??0ASTContext@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_1(global::System.IntPtr instance);
+                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -7463,7 +7463,7 @@ namespace CppSharp
                 public ASTContext()
                 {
                     __Instance = Marshal.AllocHGlobal(12);
-                    Internal.ctor_1(__Instance);
+                    Internal.ctor_0(__Instance);
                 }
 
                 public ASTContext(CppSharp.Parser.AST.ASTContext _0)
