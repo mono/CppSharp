@@ -24,12 +24,14 @@ namespace CppSharp.Types.Std
 
         public override void CLIMarshalToNative(MarshalContext ctx)
         {
-            ctx.Return.Write("clix::marshalString<clix::E_UTF8>({0})", ctx.Parameter.Name);
+            ctx.Return.Write("clix::marshalString<clix::E_UTF8>({0})",
+                ctx.Parameter.Name);
         }
 
         public override void CLIMarshalToManaged(MarshalContext ctx)
         {
-            ctx.Return.Write("clix::marshalString<clix::E_UTF8>({0})", ctx.ReturnVarName);
+            ctx.Return.Write("clix::marshalString<clix::E_UTF8>({0})",
+                ctx.ReturnVarName);
         }
 
         public override string CSharpSignature(CSharpTypePrinterContext ctx)
@@ -58,12 +60,14 @@ namespace CppSharp.Types.Std
 
         public override void CLIMarshalToNative(MarshalContext ctx)
         {
-            ctx.Return.Write("clix::marshalString<clix::E_UTF16>({0})", ctx.Parameter.Name);
+            ctx.Return.Write("clix::marshalString<clix::E_UTF16>({0})",
+                ctx.Parameter.Name);
         }
 
         public override void CLIMarshalToManaged(MarshalContext ctx)
         {
-            ctx.Return.Write("clix::marshalString<clix::E_UTF16>({0})", ctx.ReturnVarName);
+            ctx.Return.Write("clix::marshalString<clix::E_UTF16>({0})",
+                ctx.ReturnVarName);
         }
 
         public override string CSharpSignature(CSharpTypePrinterContext ctx)
@@ -110,7 +114,8 @@ namespace CppSharp.Types.Std
             var templateType = Type as TemplateSpecializationType;
             var type = templateType.Arguments[0].Type;
 
-            var entryString = (ctx.Parameter != null) ? ctx.Parameter.Name : ctx.ArgName;
+            var entryString = (ctx.Parameter != null) ? ctx.Parameter.Name
+                : ctx.ArgName;
 
             var tmpVarName = "_tmp" + entryString;
 
@@ -144,7 +149,8 @@ namespace CppSharp.Types.Std
                 ctx.SupportBefore.WriteLine("auto _marshalElement = {0};",
                     marshal.Context.Return);
 
-                ctx.SupportBefore.WriteLine("{0}.push_back(_marshalElement);",tmpVarName);
+                ctx.SupportBefore.WriteLine("{0}.push_back(_marshalElement);",
+                    tmpVarName);
             }
             
             ctx.SupportBefore.WriteCloseBraceIndent();
@@ -158,9 +164,11 @@ namespace CppSharp.Types.Std
             var type = templateType.Arguments[0].Type;
             var tmpVarName = "_tmp" + ctx.ArgName;
             
-            ctx.SupportBefore.WriteLine("auto {0} = gcnew System::Collections::Generic::List<{1}>();",
+            ctx.SupportBefore.WriteLine(
+                "auto {0} = gcnew System::Collections::Generic::List<{1}>();",
                 tmpVarName, type.ToString());
-            ctx.SupportBefore.WriteLine("for(auto _element : {0})",ctx.ReturnVarName);
+            ctx.SupportBefore.WriteLine("for(auto _element : {0})",
+                ctx.ReturnVarName);
             ctx.SupportBefore.WriteStartBraceIndent();
             {
                 var elementCtx = new MarshalContext(ctx.Driver)
@@ -175,9 +183,11 @@ namespace CppSharp.Types.Std
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                     ctx.SupportBefore.Write(marshal.Context.SupportBefore);
 
-                ctx.SupportBefore.WriteLine("auto _marshalElement = {0};", marshal.Context.Return);
+                ctx.SupportBefore.WriteLine("auto _marshalElement = {0};",
+                    marshal.Context.Return);
 
-                ctx.SupportBefore.WriteLine("{0}->Add(_marshalElement);", tmpVarName);
+                ctx.SupportBefore.WriteLine("{0}->Add(_marshalElement);",
+                    tmpVarName);
             }
             ctx.SupportBefore.WriteCloseBraceIndent();
 
@@ -215,7 +225,8 @@ namespace CppSharp.Types.Std
         public override string CLISignature(CLITypePrinterContext ctx)
         {
             var type = Type as TemplateSpecializationType;
-            return string.Format("System::Collections::Generic::Dictionary<{0}, {1}>^",
+            return string.Format(
+                "System::Collections::Generic::Dictionary<{0}, {1}>^",
                 type.Arguments[0].Type, type.Arguments[1].Type);
         }
 
@@ -235,7 +246,8 @@ namespace CppSharp.Types.Std
                 return "Std.Map";
 
             var type = Type as TemplateSpecializationType;
-            return string.Format("System.Collections.Generic.Dictionary<{0}, {1}>",
+            return string.Format(
+                "System.Collections.Generic.Dictionary<{0}, {1}>",
                 type.Arguments[0].Type, type.Arguments[1].Type);
         }
     }
