@@ -6,7 +6,7 @@ project "CppSharp.Parser.Gen"
   debugdir "."
   
   files { "ParserGen.cs", "*.lua" }
-  links { "CppSharp.AST", "CppSharp.Generator" }
+  links { "CppSharp.AST", "CppSharp.Generator", "System.Core" }
 
   SetupParser()
   
