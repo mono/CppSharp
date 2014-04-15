@@ -42,7 +42,7 @@ System::String^ CppSharp::Parser::ParserTargetInfo::ABI::get()
     return clix::marshalString<clix::E_UTF8>(__ret);
 }
 
-void CppSharp::Parser::ParserTargetInfo::ABI::set(System::String^ value)
+void CppSharp::Parser::ParserTargetInfo::ABI::set(System::String^ s)
 {
     auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
     auto arg0 = _arg0.c_str();

@@ -713,7 +713,7 @@ System::String^ CppSharp::Parser::AST::TemplateParameter::Name::get()
     return clix::marshalString<clix::E_UTF8>(__ret);
 }
 
-void CppSharp::Parser::AST::TemplateParameter::Name::set(System::String^ value)
+void CppSharp::Parser::AST::TemplateParameter::Name::set(System::String^ s)
 {
     auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
     auto arg0 = _arg0.c_str();
@@ -1273,7 +1273,7 @@ System::String^ CppSharp::Parser::AST::Declaration::Name::get()
     return clix::marshalString<clix::E_UTF8>(__ret);
 }
 
-void CppSharp::Parser::AST::Declaration::Name::set(System::String^ value)
+void CppSharp::Parser::AST::Declaration::Name::set(System::String^ s)
 {
     auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
     auto arg0 = _arg0.c_str();
@@ -1287,7 +1287,7 @@ System::String^ CppSharp::Parser::AST::Declaration::DebugText::get()
     return clix::marshalString<clix::E_UTF8>(__ret);
 }
 
-void CppSharp::Parser::AST::Declaration::DebugText::set(System::String^ value)
+void CppSharp::Parser::AST::Declaration::DebugText::set(System::String^ s)
 {
     auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
     auto arg0 = _arg0.c_str();
@@ -1689,7 +1689,7 @@ System::String^ CppSharp::Parser::AST::Function::Mangled::get()
     return clix::marshalString<clix::E_UTF8>(__ret);
 }
 
-void CppSharp::Parser::AST::Function::Mangled::set(System::String^ value)
+void CppSharp::Parser::AST::Function::Mangled::set(System::String^ s)
 {
     auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
     auto arg0 = _arg0.c_str();
@@ -1703,7 +1703,7 @@ System::String^ CppSharp::Parser::AST::Function::Signature::get()
     return clix::marshalString<clix::E_UTF8>(__ret);
 }
 
-void CppSharp::Parser::AST::Function::Signature::set(System::String^ value)
+void CppSharp::Parser::AST::Function::Signature::set(System::String^ s)
 {
     auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
     auto arg0 = _arg0.c_str();
@@ -1961,7 +1961,7 @@ System::String^ CppSharp::Parser::AST::Enumeration::Item::Expression::get()
     return clix::marshalString<clix::E_UTF8>(__ret);
 }
 
-void CppSharp::Parser::AST::Enumeration::Item::Expression::set(System::String^ value)
+void CppSharp::Parser::AST::Enumeration::Item::Expression::set(System::String^ s)
 {
     auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
     auto arg0 = _arg0.c_str();
@@ -2082,7 +2082,7 @@ System::String^ CppSharp::Parser::AST::Variable::Mangled::get()
     return clix::marshalString<clix::E_UTF8>(__ret);
 }
 
-void CppSharp::Parser::AST::Variable::Mangled::set(System::String^ value)
+void CppSharp::Parser::AST::Variable::Mangled::set(System::String^ s)
 {
     auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
     auto arg0 = _arg0.c_str();
@@ -2777,7 +2777,7 @@ System::String^ CppSharp::Parser::AST::MacroDefinition::Expression::get()
     return clix::marshalString<clix::E_UTF8>(__ret);
 }
 
-void CppSharp::Parser::AST::MacroDefinition::Expression::set(System::String^ value)
+void CppSharp::Parser::AST::MacroDefinition::Expression::set(System::String^ s)
 {
     auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
     auto arg0 = _arg0.c_str();
@@ -2815,7 +2815,7 @@ System::String^ CppSharp::Parser::AST::MacroExpansion::Text::get()
     return clix::marshalString<clix::E_UTF8>(__ret);
 }
 
-void CppSharp::Parser::AST::MacroExpansion::Text::set(System::String^ value)
+void CppSharp::Parser::AST::MacroExpansion::Text::set(System::String^ s)
 {
     auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
     auto arg0 = _arg0.c_str();
@@ -2876,7 +2876,7 @@ System::String^ CppSharp::Parser::AST::TranslationUnit::FileName::get()
     return clix::marshalString<clix::E_UTF8>(__ret);
 }
 
-void CppSharp::Parser::AST::TranslationUnit::FileName::set(System::String^ value)
+void CppSharp::Parser::AST::TranslationUnit::FileName::set(System::String^ s)
 {
     auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
     auto arg0 = _arg0.c_str();
@@ -2952,7 +2952,7 @@ System::String^ CppSharp::Parser::AST::NativeLibrary::FileName::get()
     return clix::marshalString<clix::E_UTF8>(__ret);
 }
 
-void CppSharp::Parser::AST::NativeLibrary::FileName::set(System::String^ value)
+void CppSharp::Parser::AST::NativeLibrary::FileName::set(System::String^ s)
 {
     auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
     auto arg0 = _arg0.c_str();
@@ -3122,7 +3122,7 @@ System::String^ CppSharp::Parser::AST::RawComment::Text::get()
     return clix::marshalString<clix::E_UTF8>(__ret);
 }
 
-void CppSharp::Parser::AST::RawComment::Text::set(System::String^ value)
+void CppSharp::Parser::AST::RawComment::Text::set(System::String^ s)
 {
     auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
     auto arg0 = _arg0.c_str();
@@ -3136,7 +3136,7 @@ System::String^ CppSharp::Parser::AST::RawComment::BriefText::get()
     return clix::marshalString<clix::E_UTF8>(__ret);
 }
 
-void CppSharp::Parser::AST::RawComment::BriefText::set(System::String^ value)
+void CppSharp::Parser::AST::RawComment::BriefText::set(System::String^ s)
 {
     auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
     auto arg0 = _arg0.c_str();

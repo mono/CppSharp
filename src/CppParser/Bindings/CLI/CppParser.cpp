@@ -120,7 +120,7 @@ System::String^ CppSharp::Parser::ParserOptions::FileName::get()
     return clix::marshalString<clix::E_UTF8>(__ret);
 }
 
-void CppSharp::Parser::ParserOptions::FileName::set(System::String^ value)
+void CppSharp::Parser::ParserOptions::FileName::set(System::String^ s)
 {
     auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
     auto arg0 = _arg0.c_str();
@@ -158,7 +158,7 @@ System::String^ CppSharp::Parser::ParserOptions::TargetTriple::get()
     return clix::marshalString<clix::E_UTF8>(__ret);
 }
 
-void CppSharp::Parser::ParserOptions::TargetTriple::set(System::String^ value)
+void CppSharp::Parser::ParserOptions::TargetTriple::set(System::String^ s)
 {
     auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
     auto arg0 = _arg0.c_str();
@@ -274,7 +274,7 @@ System::String^ CppSharp::Parser::ParserDiagnostic::FileName::get()
     return clix::marshalString<clix::E_UTF8>(__ret);
 }
 
-void CppSharp::Parser::ParserDiagnostic::FileName::set(System::String^ value)
+void CppSharp::Parser::ParserDiagnostic::FileName::set(System::String^ s)
 {
     auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
     auto arg0 = _arg0.c_str();
@@ -288,7 +288,7 @@ System::String^ CppSharp::Parser::ParserDiagnostic::Message::get()
     return clix::marshalString<clix::E_UTF8>(__ret);
 }
 
-void CppSharp::Parser::ParserDiagnostic::Message::set(System::String^ value)
+void CppSharp::Parser::ParserDiagnostic::Message::set(System::String^ s)
 {
     auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
     auto arg0 = _arg0.c_str();
