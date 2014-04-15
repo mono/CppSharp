@@ -11,6 +11,9 @@ namespace CppSharp.Passes
     /// stands for CppSharp. Using custom prefixes is also supported by
     /// passing the value to the constructor of the pass.
     /// 
+    ///     CS_IGNORE_FILE (translation units)
+    ///         Used to ignore whole translation units.
+    /// 
     ///     CS_IGNORE (declarations)
     ///         Used to ignore declarations from being processed.
     /// 
