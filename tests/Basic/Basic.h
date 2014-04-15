@@ -21,8 +21,8 @@ public:
     // Not properly handled yet - ignore
     float nested_array[2][2];
     // Primitive pointer types
-    int* SomePointer;               
-    int** SomePointerPointer;
+    const int* SomePointer;
+    const int** SomePointerPointer;
 };
 
 struct DLL_API Bar

@@ -91,11 +91,15 @@ namespace CppSharp.Generators.CLI
 
             if (pointee.IsPrimitiveType(out primitive))
             {
+                var returnVarName = Context.ReturnVarName;
+                if (quals.IsConst != Context.ReturnType.Qualifiers.IsConst)
+                    returnVarName = string.Format("const_cast<{0}>({1})",
+                        Context.ReturnType, Context.ReturnVarName);
                 if (pointer.Pointee is TypedefType)
                     Context.Return.Write("reinterpret_cast<{0}>({1})", pointer,
-                        Context.ReturnVarName);
+                        returnVarName);
                 else
-                    Context.Return.Write(Context.ReturnVarName);
+                    Context.Return.Write(returnVarName);
                 return true;
             }
 
