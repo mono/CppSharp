@@ -2228,19 +2228,18 @@ namespace CppSharp.Generators.CSharp
                 needsInstance = !method.IsStatic || operatorParam != null;
             }
 
-            var needsFixedThis = needsInstance && isValueType;
             var @params = GenerateFunctionParamsMarshal(parameters, function);
 
             var originalFunction = function.OriginalFunction ?? function;
 
             if (originalFunction.HasIndirectReturnTypeParameter)
             {
-                var hiddenParam = originalFunction.Parameters[0];
-                if (hiddenParam.Kind != ParameterKind.IndirectReturnType)
-                    throw new NotSupportedException("Expected hidden structure parameter kind");
+                var indirectRetType = originalFunction.Parameters.First(
+                    parameter => parameter.Kind == ParameterKind.IndirectReturnType);
 
                 Class retClass;
-                hiddenParam.Type.Desugar().IsTagDecl(out retClass);
+                indirectRetType.Type.Desugar().IsTagDecl(out retClass);
+
                 WriteLine("var {0} = new {1}.Internal();", GeneratedIdentifier("ret"),
                     QualifiedIdentifier(retClass.OriginalClass ?? retClass));
             }
@@ -2260,6 +2259,8 @@ namespace CppSharp.Generators.CSharp
                 names.Add(name);
             }
 
+            var needsFixedThis = needsInstance && isValueType;
+
             if (originalFunction.HasIndirectReturnTypeParameter)
             {
                 var name = string.Format("new IntPtr(&{0})", GeneratedIdentifier("ret"));
@@ -2268,20 +2269,22 @@ namespace CppSharp.Generators.CSharp
 
             if (needsInstance)
             {
+                var instanceIndex = GetInstanceParamIndex(function);
+
                 if (needsFixedThis)
                 {
-                    names.Insert(0, string.Format("new global::System.IntPtr(&{0})",
+                    names.Insert(instanceIndex, string.Format("new global::System.IntPtr(&{0})",
                         GeneratedIdentifier("fixedInstance")));
                 }
                 else
                 {
                     if (operatorParam != null)
                     {
-                        names.Insert(0, operatorParam.Name + "." + Helpers.InstanceIdentifier);
+                        names.Insert(instanceIndex, operatorParam.Name + "." + Helpers.InstanceIdentifier);
                     }
                     else
                     {
-                        names.Insert(0, Helpers.InstanceIdentifier);
+                        names.Insert(instanceIndex, Helpers.InstanceIdentifier);
                     }
                 }
             }
@@ -2371,6 +2374,20 @@ namespace CppSharp.Generators.CSharp
                         ? "return *{0};"
                         : "return {0};", marshal.Context.Return);
             }
+        }
+
+        private int GetInstanceParamIndex(Function function)
+        {
+            var method = function as Method;
+
+            if (Options.IsMicrosoftAbi)
+                return 0;
+
+            var indirectReturnType = method.Parameters.FirstOrDefault(
+                parameter => parameter.Kind == ParameterKind.IndirectReturnType);
+            var indirectReturnTypeIndex = method.Parameters.IndexOf(indirectReturnType);
+
+            return indirectReturnTypeIndex >= 0 ? ++indirectReturnTypeIndex : 0;
         }
 
         private void GenerateFunctionCallOutParams(IEnumerable<ParamMarshal> @params,
@@ -2685,13 +2702,19 @@ namespace CppSharp.Generators.CSharp
             var retType = retParam.CSharpType(typePrinter);
 
             var method = function as Method;
-            if (method != null && !method.IsStatic)
+            var isInstanceMethod = method != null && !method.IsStatic;
+
+            if (isInstanceMethod && Options.IsMicrosoftAbi)
             {
                 @params.Add("global::System.IntPtr instance");
 
-                if (method.IsConstructor && Options.IsMicrosoftAbi)
+                if (method.IsConstructor)
                     retType = "global::System.IntPtr";
             }
+
+            if (!function.HasIndirectReturnTypeParameter &&
+                isInstanceMethod && Options.IsItaniumAbi)
+                @params.Add("global::System.IntPtr instance");
 
             foreach (var param in function.Parameters)
             {
@@ -2701,6 +2724,10 @@ namespace CppSharp.Generators.CSharp
                 var typeName = param.CSharpType(typePrinter);
 
                 @params.Add(string.Format("{0} {1}", typeName, param.Name));
+
+                if (param.Kind == ParameterKind.IndirectReturnType &&
+                    isInstanceMethod && Options.IsItaniumAbi)
+                    @params.Add("global::System.IntPtr instance");
             }
 
             if (method != null && method.IsConstructor)
