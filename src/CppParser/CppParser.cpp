@@ -35,6 +35,8 @@ ParserResult::ParserResult()
 {
 }
 
+ParserDiagnostic::ParserDiagnostic() {}
+
 DEF_STRING(ParserDiagnostic, FileName)
 DEF_STRING(ParserDiagnostic, Message)
 

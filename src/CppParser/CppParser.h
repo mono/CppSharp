@@ -53,6 +53,7 @@ enum struct ParserDiagnosticLevel
 
 struct CS_API ParserDiagnostic
 {
+    ParserDiagnostic();
     STRING(FileName)
     STRING(Message)
     ParserDiagnosticLevel Level;
