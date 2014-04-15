@@ -23,6 +23,16 @@ public class BasicTests : GeneratorTestFixture
         Assert.That(hello.AddFooPtr(foo), Is.EqualTo(11));
         Assert.That(hello.AddFooPtr(foo), Is.EqualTo(11));
         Assert.That(hello.AddFooRef(foo), Is.EqualTo(11));
+        unsafe
+        {
+            var pointer = foo.SomePointer;
+            var pointerPointer = foo.SomePointerPointer;
+            for (int i = 0; i < 4; i++)
+            {
+                Assert.AreEqual(i, pointer[i]);
+                Assert.AreEqual(i, (*pointerPointer)[i]);
+            }
+        }
 
         var bar = new Bar { A = 4, B = 7 };
         Assert.That(hello.AddBar(bar), Is.EqualTo(11));

@@ -155,5 +155,33 @@
 
             return t;
         }
+
+        public static Type GetFinalPointee(this PointerType pointer)
+        {
+            var pointee = pointer.Pointee;
+            while (pointee.IsPointer())
+            {
+                var p = pointee as PointerType;
+                if (p != null)
+                    pointee = p.Pointee;
+                else
+                    return GetFinalPointee(pointee as MemberPointerType);
+            }
+            return pointee;
+        }
+
+        public static Type GetFinalPointee(this MemberPointerType pointer)
+        {
+            var pointee = pointer.Pointee;
+            while (pointee.IsPointer())
+            {
+                var p = pointee as MemberPointerType;
+                if (p != null)
+                    pointee = p.Pointee;
+                else
+                    return GetFinalPointee(pointee as PointerType);
+            }
+            return pointee;
+        }
     }
 }

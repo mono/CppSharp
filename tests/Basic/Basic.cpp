@@ -2,6 +2,11 @@
 
 Foo::Foo()
 {
+    auto p = new int[4];
+    for (int i = 0; i < 4; i++)
+        p[i] = i;
+    SomePointer = p;
+    SomePointerPointer = &SomePointer;
 }
 
 const char* Foo::GetANSI()

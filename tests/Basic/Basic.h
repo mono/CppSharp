@@ -18,7 +18,11 @@ public:
 	// TODO: VC++ does not support char16
 	// char16 chr16;
 
-	float nested_array[2][2];
+    // Not properly handled yet - ignore
+    float nested_array[2][2];
+    // Primitive pointer types
+    int* SomePointer;               
+    int** SomePointerPointer;
 };
 
 struct DLL_API Bar

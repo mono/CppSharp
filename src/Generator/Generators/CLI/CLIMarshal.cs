@@ -429,8 +429,8 @@ namespace CppSharp.Generators.CLI
                 return pointee.Visit(this, quals);
             }
 
-            PrimitiveType primitive;
-            if (pointee.IsPrimitiveType(out primitive))
+            var finalPointee = pointer.GetFinalPointee();
+            if (finalPointee.IsPrimitiveType())
             {
                 var cppTypePrinter = new CppTypePrinter(Context.Driver.TypeDatabase);
                 var cppTypeName = pointer.Visit(cppTypePrinter, quals);
