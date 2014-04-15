@@ -1,5 +1,6 @@
 using CppSharp.AST;
 using CppSharp.Generators;
+using CppSharp.Passes;
 using CppSharp.Utils;
 
 namespace CppSharp.Tests
@@ -22,6 +23,7 @@ namespace CppSharp.Tests
 
         public override void Preprocess(Driver driver, ASTContext ctx)
         {
+            driver.AddTranslationUnitPass(new GetterSetterToPropertyPass());
             ctx.SetClassAsValueType("Bar");
             ctx.SetClassAsValueType("Bar2");
             ctx.SetMethodParameterUsage("Hello", "TestPrimitiveOut", 1, ParameterUsage.Out);

@@ -340,3 +340,13 @@ DLL_API int Function()
 {
     return 5;
 }
+
+// Tests properties
+struct DLL_API TestProperties
+{
+    TestProperties() : Field(0) {}
+    int Field;
+
+    int getFieldValue() { return Field; }
+    void setFieldValue(int Value) { Field = Value; }
+};

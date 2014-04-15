@@ -349,7 +349,10 @@ namespace CppSharp.Generators.CLI
             var args = new List<string>();
             if (isIndexer)
                 args.Add("int index");
-            args.Add(string.Format("{0} value",  type));
+
+            var function = decl as Function;
+            var argName = function != null ? function.Parameters[0].Name : "value";
+            args.Add(string.Format("{0} {1}", type, argName));
 
             WriteLine("void {0}::{1}::set({2})", QualifiedIdentifier(@class),
                 name, string.Join(", ", args));

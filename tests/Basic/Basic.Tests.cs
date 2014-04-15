@@ -94,7 +94,7 @@ public class BasicTests : GeneratorTestFixture
     public void TestAbstractReturnType()
     {
         var returnsAbstractFoo = new ReturnsAbstractFoo();
-        var abstractFoo = returnsAbstractFoo.getFoo();
+        var abstractFoo = returnsAbstractFoo.Foo;
         Assert.AreEqual(abstractFoo.pureFunction(1), 5);
         Assert.AreEqual(abstractFoo.pureFunction1(), 10);
         Assert.AreEqual(abstractFoo.pureFunction2(), 15);
@@ -104,7 +104,7 @@ public class BasicTests : GeneratorTestFixture
     public void TestANSI()
     {
         var foo = new Foo();
-        Assert.That(foo.GetANSI(), Is.EqualTo("ANSI"));
+        Assert.That(foo.ANSI, Is.EqualTo("ANSI"));
     }
 
     [Test]
@@ -240,6 +240,22 @@ public class BasicTests : GeneratorTestFixture
     {
         var ret = Basic.basic.Function();
         Assert.That(ret, Is.EqualTo(5));
+    }
+
+    [Test]
+    public void TestProperties()
+    {
+        // Test field property
+        var prop = new TestProperties();
+        Assert.That(prop.Field, Is.EqualTo(0));
+        prop.Field = 10;
+        Assert.That(prop.Field, Is.EqualTo(10));
+
+        // Test getter/setter property
+        prop.Field = 20;
+        Assert.That(prop.FieldValue, Is.EqualTo(20));
+        prop.FieldValue = 10;
+        Assert.That(prop.FieldValue, Is.EqualTo(10));
     }
 }
  
