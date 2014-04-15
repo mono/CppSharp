@@ -447,6 +447,8 @@ ClassTemplate::FindPartialSpecialization(TemplateSpecializationType type)
     return 0;
 }
 
+ASTContext::ASTContext() {}
+
 TranslationUnit* ASTContext::FindOrCreateModule(std::string File)
 {
     // Clean up the file path.
