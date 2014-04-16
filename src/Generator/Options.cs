@@ -114,7 +114,6 @@ namespace CppSharp
 
         //List of include directories that are used but not generated
         public List<string> NoGenIncludeDirs;
-        public string NoGenIncludePrefix = "";
 
         /// <summary>
         /// Wether the generated C# code should be automatically compiled.
