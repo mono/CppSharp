@@ -60,7 +60,7 @@ namespace CppSharp.Tests
         public override void SetupPasses(Driver driver)
         {
             driver.Options.GenerateInterfacesForMultipleInheritance = true;
-            driver.Options.GenerateProperties = true;
+            driver.Options.GeneratePropertiesAdvanced = true;
             driver.Options.GenerateVirtualTables = true;
             driver.Options.GenerateCopyConstructors = true;
             driver.TranslationUnitPasses.AddPass(new TestAttributesPass());

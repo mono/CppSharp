@@ -92,12 +92,25 @@ namespace CppSharp
         public bool GenerateVirtualTables;
         public bool GenerateAbstractImpls;
         public bool GenerateInterfacesForMultipleInheritance;
-        public bool GenerateProperties;
         public bool GenerateInternalImports;
         public bool GenerateClassMarshals;
         public bool GenerateInlines;
         public bool GenerateCopyConstructors;
         public bool UseHeaderDirectories;
+
+        /// <summary>
+        /// If set to true the generator will use GetterSetterToPropertyPass to
+        /// convert matching getter/setter pairs to properties.
+        /// </summary>
+        public bool GenerateProperties;
+
+        /// <summary>
+        /// If set to true the generator will use GetterSetterToPropertyAdvancedPass to
+        /// convert matching getter/setter pairs to properties. This pass has slightly
+        /// different semantics from GetterSetterToPropertyPass, it will more agressively
+        /// try to match for matching properties.
+        /// </summary>
+        public bool GeneratePropertiesAdvanced;
 
         //List of include directories that are used but not generated
         public List<string> NoGenIncludeDirs;
