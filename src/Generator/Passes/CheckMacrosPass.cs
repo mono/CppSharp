@@ -74,7 +74,7 @@ namespace CppSharp.Passes
                                     e.Location != MacroLocation.ClassBody &&
                                     e.Location != MacroLocation.FunctionBody &&
                                     e.Location != MacroLocation.FunctionParameters))
-                decl.ExplicityIgnored = true;
+                decl.ExplicitlyIgnore();
 
             if (expansions.Any(e => e.Text == Prefix + "_IGNORE_GEN" &&
                                     e.Location != MacroLocation.ClassBody &&
@@ -89,7 +89,7 @@ namespace CppSharp.Passes
 
             if (expansions.Any(e => e.Text == Prefix + "_IGNORE_FILE"))
             {
-                unit.ExplicityIgnored = true;
+                unit.ExplicitlyIgnore();
             }
 
             return base.VisitTranslationUnit(unit);
@@ -149,7 +149,7 @@ namespace CppSharp.Passes
 
             if (expansions.Any(e => e.Text == Prefix + "_HASHCODE"
                 || e.Text == Prefix + "_EQUALS"))
-                method.ExplicityIgnored = true;
+                method.ExplicitlyIgnore();
 
             return base.VisitMethodDecl(method);
         }
@@ -184,7 +184,7 @@ namespace CppSharp.Passes
                 var setMethod = property.SetMethod;
 
                 if (setMethod != null)
-                    property.SetMethod.ExplicityIgnored = true;
+                    property.SetMethod.ExplicitlyIgnore();
             }
 
             return base.VisitProperty(property);

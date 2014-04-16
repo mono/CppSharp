@@ -33,7 +33,7 @@ namespace CppSharp.Passes
 
             // Clean up the name of the function now that it will be a static method.
             var name = function.Name.Substring(@class.Name.Length);
-            function.ExplicityIgnored = true;
+            function.ExplicitlyIgnore();
 
             // Create a new fake method so it acts as a static method.
             var method = new Method

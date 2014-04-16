@@ -36,7 +36,7 @@ namespace CppSharp.Passes
             if (decl is Class && string.IsNullOrWhiteSpace(decl.Name))
             {
                 decl.Name = "_";
-                decl.ExplicityIgnored = true;
+                decl.ExplicitlyIgnore();
                 return false;
             }
 
@@ -107,10 +107,10 @@ namespace CppSharp.Passes
             // so we ignore the class and process just the typedef.
 
             if (@class != null)
-                typedef.ExplicityIgnored = true;
+                typedef.ExplicitlyIgnore();
 
             if (typedef.Type == null)
-                typedef.ExplicityIgnored = true;
+                typedef.ExplicitlyIgnore();
 
             return base.VisitTypedefDecl(typedef);
         }
