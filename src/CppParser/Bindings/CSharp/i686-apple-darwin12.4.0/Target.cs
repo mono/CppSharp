@@ -196,13 +196,6 @@ namespace CppSharp
                 Internal.ctor_1(__Instance);
             }
 
-            public ParserTargetInfo(CppSharp.Parser.ParserTargetInfo _0)
-            {
-                __Instance = Marshal.AllocHGlobal(164);
-                var arg0 = _0 == (CppSharp.Parser.ParserTargetInfo) null ? global::System.IntPtr.Zero : _0.__Instance;
-                Internal.cctor_2(__Instance, arg0);
-            }
-
             public void Dispose()
             {
                 Dispose(disposing: true);

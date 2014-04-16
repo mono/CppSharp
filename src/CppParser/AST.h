@@ -38,6 +38,8 @@ enum struct TypeKind
 struct CS_API Type
 {
     Type(TypeKind kind);
+    Type(const Type&);
+
     TypeKind Kind;
     bool IsDependent;
 };
@@ -171,6 +173,8 @@ struct Template;
 struct CS_API TemplateSpecializationType : public Type
 {
     TemplateSpecializationType();
+    TemplateSpecializationType(const TemplateSpecializationType&);
+
     VECTOR(TemplateArgument, Arguments)
     CppSharp::CppParser::AST::Template* Template;
     Type* Desugared;
@@ -178,6 +182,9 @@ struct CS_API TemplateSpecializationType : public Type
 
 struct CS_API TemplateParameter
 {
+    TemplateParameter();
+    TemplateParameter(const TemplateParameter&);
+
     bool operator==(const TemplateParameter& param) const
     {
         return Name == param.Name;
@@ -278,12 +285,14 @@ struct CS_API VTableComponent
 struct CS_API VTableLayout
 {
     VTableLayout();
+    VTableLayout(const VTableLayout&);
     VECTOR(VTableComponent, Components)
 };
 
 struct CS_API VFTableInfo
 {
     VFTableInfo();
+    VFTableInfo(const VFTableInfo&);
     uint64_t VBTableIndex;
     uint32_t VFPtrOffset;
     uint32_t VFPtrFullOffset;
@@ -349,6 +358,7 @@ struct PreprocessedEntity;
 struct CS_API Declaration
 {
     Declaration(DeclarationKind kind);
+    Declaration(const Declaration&);
 
     DeclarationKind Kind;
     AccessSpecifier Access;
@@ -531,6 +541,8 @@ struct CS_API Enumeration : public Declaration
     struct CS_API Item : public Declaration
     {
         DECLARE_DECL_KIND(Item, EnumerationItem)
+        Item(const Item&);
+
         STRING(Expression)
         uint64_t Value;
     };

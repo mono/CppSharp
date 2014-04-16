@@ -216,13 +216,6 @@ namespace CppSharp
                 Internal.ctor_0(__Instance);
             }
 
-            public ParserOptions(CppSharp.Parser.ParserOptions _0)
-            {
-                __Instance = Marshal.AllocHGlobal(100);
-                var arg0 = _0 == (CppSharp.Parser.ParserOptions) null ? global::System.IntPtr.Zero : _0.__Instance;
-                Internal.cctor_2(__Instance, arg0);
-            }
-
             public void Dispose()
             {
                 Dispose(disposing: true);
@@ -513,7 +506,7 @@ namespace CppSharp
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                     EntryPoint="_ZN8CppSharp9CppParser16ParserDiagnosticC2Ev")]
-                internal static extern void ctor_1(global::System.IntPtr instance);
+                internal static extern void ctor_0(global::System.IntPtr instance);
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -566,14 +559,7 @@ namespace CppSharp
             public ParserDiagnostic()
             {
                 __Instance = Marshal.AllocHGlobal(36);
-                Internal.ctor_1(__Instance);
-            }
-
-            public ParserDiagnostic(CppSharp.Parser.ParserDiagnostic _0)
-            {
-                __Instance = Marshal.AllocHGlobal(36);
-                var arg0 = _0 == (CppSharp.Parser.ParserDiagnostic) null ? global::System.IntPtr.Zero : _0.__Instance;
-                Internal.cctor_2(__Instance, arg0);
+                Internal.ctor_0(__Instance);
             }
 
             public void Dispose()
@@ -739,13 +725,6 @@ namespace CppSharp
                 Internal.ctor_0(__Instance);
             }
 
-            public ParserResult(CppSharp.Parser.ParserResult _0)
-            {
-                __Instance = Marshal.AllocHGlobal(24);
-                var arg0 = _0 == (CppSharp.Parser.ParserResult) null ? global::System.IntPtr.Zero : _0.__Instance;
-                Internal.cctor_2(__Instance, arg0);
-            }
-
             public void Dispose()
             {
                 Dispose(disposing: true);
@@ -874,12 +853,6 @@ namespace CppSharp
             public ClangParser()
             {
                 __Instance = Marshal.AllocHGlobal(1);
-            }
-
-            public ClangParser(CppSharp.Parser.ClangParser _0)
-            {
-                __Instance = Marshal.AllocHGlobal(1);
-                *((ClangParser.Internal*) __Instance) = *((ClangParser.Internal*) _0.__Instance);
             }
 
             public void Dispose()

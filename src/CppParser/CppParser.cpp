@@ -35,7 +35,22 @@ ParserResult::ParserResult()
 {
 }
 
+ParserResult::ParserResult(const ParserResult& rhs)
+    : Kind(rhs.Kind)
+    , Diagnostics(rhs.Diagnostics)
+    , ASTContext(rhs.ASTContext)
+    , Library(rhs.Library)
+{}
+
 ParserDiagnostic::ParserDiagnostic() {}
+
+ParserDiagnostic::ParserDiagnostic(const ParserDiagnostic& rhs)
+    : FileName(rhs.FileName)
+    , Message(rhs.Message)
+    , Level(rhs.Level)
+    , LineNumber(rhs.LineNumber)
+    , ColumnNumber(rhs.ColumnNumber)
+{}
 
 DEF_STRING(ParserDiagnostic, FileName)
 DEF_STRING(ParserDiagnostic, Message)

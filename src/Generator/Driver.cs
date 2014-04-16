@@ -301,6 +301,9 @@ namespace CppSharp
                 TranslationUnitPasses.AddPass(new CheckVTableComponentsPass());
 
             if (Options.GenerateProperties)
+                TranslationUnitPasses.AddPass(new GetterSetterToPropertyPass());
+
+            if (Options.GeneratePropertiesAdvanced)
                 TranslationUnitPasses.AddPass(new GetterSetterToPropertyAdvancedPass());
         }
 

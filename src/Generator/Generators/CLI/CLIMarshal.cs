@@ -425,6 +425,15 @@ namespace CppSharp.Generators.CLI
                 return VisitDelegateType(function, cppTypeName);
             }
 
+            Enumeration @enum;
+            if (pointee.IsTagDecl(out @enum))
+            {
+                ArgumentPrefix.Write("&");
+                Context.Return.Write("(::{0})*{1}", @enum.QualifiedOriginalName,
+                             Context.Parameter.Name);
+                return true;
+            }
+
             Class @class;
             if (pointee.IsTagDecl(out @class) && @class.IsValueType)
             {

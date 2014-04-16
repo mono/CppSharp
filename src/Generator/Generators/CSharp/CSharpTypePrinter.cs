@@ -208,6 +208,8 @@ namespace CppSharp.Generators.CSharp
             if (IsConstCharString(pointer))
                 return isManagedContext ? "string" : "global::System.IntPtr";
 
+            var desugared = pointee.Desugar();
+
             // From http://msdn.microsoft.com/en-us/library/y31yhkeb.aspx
             // Any of the following types may be a pointer type:
             // * sbyte, byte, short, ushort, int, uint, long, ulong, char, float, double, decimal, or bool.
@@ -229,8 +231,13 @@ namespace CppSharp.Generators.CSharp
                 return pointee.Visit(this, quals) + "*";
             }
 
+            Enumeration @enum;
+            if (desugared.IsTagDecl(out @enum))
+            {
+                return @enum.Name + "*";
+            }
+
             Class @class;
-            var desugared = pointee.Desugar();
             if ((desugared.IsDependent || desugared.IsTagDecl(out @class))
                 && ContextKind == CSharpTypePrinterContextKind.Native)
             {

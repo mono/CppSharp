@@ -34,6 +34,8 @@ static std::vector<T> split(const T & str, const T & delimiters) {
 namespace CppSharp { namespace CppParser { namespace AST {
 
 Type::Type(TypeKind kind) : Kind(kind) {}
+Type::Type(const Type& rhs) : Kind(rhs.Kind), IsDependent(rhs.IsDependent) {}
+
 QualifiedType::QualifiedType() : Type(0) {}
 
 TagType::TagType() : Type(TypeKind::Tag) {}
@@ -57,9 +59,16 @@ TemplateArgument::TemplateArgument() : Declaration(0) {}
 
 TemplateSpecializationType::TemplateSpecializationType()
     : Type(TypeKind::TemplateSpecialization), Template(0), Desugared(0) {}
+TemplateSpecializationType::TemplateSpecializationType(
+    const TemplateSpecializationType& rhs) : Type(rhs),
+    Arguments(rhs.Arguments), Template(rhs.Template), Desugared(rhs.Desugared) {}
+
 DEF_VECTOR(TemplateSpecializationType, TemplateArgument, Arguments)
 
 // TemplateParameter
+TemplateParameter::TemplateParameter() {}
+TemplateParameter::TemplateParameter(const TemplateParameter& rhs) : Name(rhs.Name) {}
+
 DEF_STRING(TemplateParameter, Name)
 
 TemplateParameterType::TemplateParameterType() : Type(TypeKind::TemplateParameter) {}
@@ -80,9 +89,14 @@ VTableComponent::VTableComponent() : Offset(0), Declaration(0) {}
 
 // VTableLayout
 VTableLayout::VTableLayout() {}
+VTableLayout::VTableLayout(const VTableLayout& rhs) : Components(rhs.Components) {}
+
 DEF_VECTOR(VTableLayout, VTableComponent, Components)
 
 VFTableInfo::VFTableInfo() : VBTableIndex(0), VFPtrOffset(0), VFPtrFullOffset(0) {}
+VFTableInfo::VFTableInfo(const VFTableInfo& rhs) : VBTableIndex(rhs.VBTableIndex),
+    VFPtrOffset(rhs.VFPtrOffset), VFPtrFullOffset(rhs.VFPtrFullOffset),
+    Layout(rhs.Layout) {}
 
 ClassLayout::ClassLayout() : ABI(CppAbi::Itanium), HasOwnVFPtr(false),
     VBPtrOffset(0), Alignment(0), Size(0), DataSize(0) {}
@@ -99,6 +113,22 @@ Declaration::Declaration(DeclarationKind kind)
     , CompleteDeclaration(0)
     , DefinitionOrder(0)
     , OriginalPtr(0)
+{
+}
+
+Declaration::Declaration(const Declaration& rhs)
+    : Kind(rhs.Kind)
+    , Access(rhs.Access)
+    , _Namespace(rhs._Namespace)
+    , Name(rhs.Name)
+    , Comment(rhs.Comment)
+    , DebugText(rhs.DebugText)
+    , IsIncomplete(rhs.IsIncomplete)
+    , IsDependent(rhs.IsDependent)
+    , CompleteDeclaration(rhs.CompleteDeclaration)
+    , DefinitionOrder(rhs.DefinitionOrder)
+    , PreprocessedEntities(rhs.PreprocessedEntities)
+    , OriginalPtr(rhs.OriginalPtr)
 {
 }
 
@@ -360,6 +390,9 @@ DEF_VECTOR(Enumeration, Enumeration::Item, Items)
 
 Enumeration::Item::Item() : Declaration(DeclarationKind::EnumerationItem) {}
 
+Enumeration::Item::Item(const Item& rhs) : Declaration(rhs),
+    Expression(rhs.Expression), Value(rhs.Value) {}
+
 DEF_STRING(Enumeration::Item, Expression)
 
 Variable::Variable() : Declaration(DeclarationKind::Variable) {}
@@ -451,8 +484,10 @@ ASTContext::ASTContext() {}
 
 TranslationUnit* ASTContext::FindOrCreateModule(std::string File)
 {
+#ifdef _WIN32
     // Clean up the file path.
     std::replace(File.begin(), File.end(), '/', '\\');
+#endif
 
     auto existingUnit = std::find_if(TranslationUnits.begin(),
         TranslationUnits.end(), [&](TranslationUnit* unit) {

@@ -129,7 +129,7 @@ namespace CppSharp.Generators.CLI
 
         public string VisitPointerType(PointerType pointer, TypeQualifiers quals)
         {
-            var pointee = pointer.Pointee;
+            var pointee = pointer.Pointee.Desugar();
 
             if (pointee is FunctionType)
             {
@@ -158,6 +158,13 @@ namespace CppSharp.Generators.CLI
                     return pointee.Visit(this, quals);
 
                 return pointee.Visit(this, quals) + "*";
+            }
+
+            Enumeration @enum;
+            if (pointee.IsTagDecl(out @enum))
+            {
+                var typeName = @enum.Visit(this);
+                return string.Format("{0}*", typeName);
             }
 
             return pointee.Visit(this, quals);

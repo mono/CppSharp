@@ -47,7 +47,7 @@ function SetupNativeProject()
     buildoptions { gcc_buildflags }
     
   configuration { "macosx" }
-    buildoptions { gcc_buildflags, "-stdlib=libc++", "-fvisibility-inlines-hidden" }
+    buildoptions { gcc_buildflags, "-stdlib=libc++" }
   
   -- OS-specific options
   
