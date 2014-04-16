@@ -63,7 +63,7 @@ function SetupTestGeneratorBuildEvent(name)
     prebuildcommands { exePath }
   else
     local exePath = SafePath("%{cfg.buildtarget.directory}/" .. name .. ".Gen.exe")
-    prebuildcommands { "mono " .. exePath }
+    prebuildcommands { "mono --debug " .. exePath }
   end
 end
 
