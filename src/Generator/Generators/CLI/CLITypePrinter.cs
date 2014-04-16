@@ -167,7 +167,7 @@ namespace CppSharp.Generators.CLI
                 return string.Format("{0}*", typeName);
             }
 
-            return pointee.Visit(this, quals);
+            return pointer.Pointee.Visit(this, quals);
         }
 
         public string VisitMemberPointerType(MemberPointerType member,
