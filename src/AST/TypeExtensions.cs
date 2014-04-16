@@ -156,32 +156,37 @@
             return t;
         }
 
-        public static Type GetFinalPointee(this PointerType pointer)
+        /// <summary>
+        /// If t is a pointer type the type pointed to by t will be returned.
+        /// Otherwise null.
+        /// </summary>
+        public static Type GetPointee(this Type t)
         {
-            var pointee = pointer.Pointee;
-            while (pointee.IsPointer())
-            {
-                var p = pointee as PointerType;
-                if (p != null)
-                    pointee = p.Pointee;
-                else
-                    return GetFinalPointee(pointee as MemberPointerType);
-            }
-            return pointee;
+            var ptr = t as PointerType;
+            if (ptr != null)
+                return ptr.Pointee;
+            var memberPtr = t as MemberPointerType;
+            if (memberPtr != null)
+                return memberPtr.Pointee;
+            return null;
         }
 
-        public static Type GetFinalPointee(this MemberPointerType pointer)
+        /// <summary>
+        /// If t is a pointer type the type pointed to by t will be returned
+        /// after fully dereferencing it. Otherwise null.
+        /// For example int** -> int.
+        /// </summary>
+        public static Type GetFinalPointee(this Type t)
         {
-            var pointee = pointer.Pointee;
-            while (pointee.IsPointer())
+            var finalPointee = t.GetPointee();
+            var pointee = finalPointee;
+            while (pointee != null)
             {
-                var p = pointee as MemberPointerType;
-                if (p != null)
-                    pointee = p.Pointee;
-                else
-                    return GetFinalPointee(pointee as PointerType);
+                pointee = pointee.GetPointee();
+                if (pointee != null)
+                    finalPointee = pointee;
             }
-            return pointee;
+            return finalPointee;
         }
     }
 }
