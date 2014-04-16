@@ -116,6 +116,22 @@ Declaration::Declaration(DeclarationKind kind)
 {
 }
 
+Declaration::Declaration(const Declaration& rhs)
+    : Kind(rhs.Kind)
+    , Access(rhs.Access)
+    , _Namespace(rhs._Namespace)
+    , Name(rhs.Name)
+    , Comment(rhs.Comment)
+    , DebugText(rhs.DebugText)
+    , IsIncomplete(rhs.IsIncomplete)
+    , IsDependent(rhs.IsDependent)
+    , CompleteDeclaration(rhs.CompleteDeclaration)
+    , DefinitionOrder(rhs.DefinitionOrder)
+    , PreprocessedEntities(rhs.PreprocessedEntities)
+    , OriginalPtr(rhs.OriginalPtr)
+{
+}
+
 DEF_STRING(Declaration, Name)
 DEF_STRING(Declaration, DebugText)
 DEF_VECTOR(Declaration, PreprocessedEntity*, PreprocessedEntities)
@@ -373,6 +389,9 @@ Enumeration::Enumeration() : Declaration(DeclarationKind::Enumeration) {}
 DEF_VECTOR(Enumeration, Enumeration::Item, Items)
 
 Enumeration::Item::Item() : Declaration(DeclarationKind::EnumerationItem) {}
+
+Enumeration::Item::Item(const Item& rhs) : Declaration(rhs),
+    Expression(rhs.Expression), Value(rhs.Value) {}
 
 DEF_STRING(Enumeration::Item, Expression)
 

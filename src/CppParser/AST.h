@@ -358,6 +358,7 @@ struct PreprocessedEntity;
 struct CS_API Declaration
 {
     Declaration(DeclarationKind kind);
+    Declaration(const Declaration&);
 
     DeclarationKind Kind;
     AccessSpecifier Access;
@@ -540,6 +541,8 @@ struct CS_API Enumeration : public Declaration
     struct CS_API Item : public Declaration
     {
         DECLARE_DECL_KIND(Item, EnumerationItem)
+        Item(const Item&);
+
         STRING(Expression)
         uint64_t Value;
     };
