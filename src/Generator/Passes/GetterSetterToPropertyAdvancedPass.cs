@@ -31,7 +31,9 @@ namespace CppSharp.Passes
             using (var resourceStream = Assembly.GetExecutingAssembly()
                 .GetManifestResourceStream("CppSharp.Generator.Passes.verbs.txt"))
             {
-                using (StreamReader streamReader = new StreamReader(resourceStream))
+                if (resourceStream == null) return;
+
+                using (var streamReader = new StreamReader(resourceStream))
                     while (!streamReader.EndOfStream)
                         verbs.Add(streamReader.ReadLine());
             }
