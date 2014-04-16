@@ -24,7 +24,7 @@ namespace CppSharp.Passes
             }
 
             if (function.IsOperator)
-                function.ExplicityIgnored = true;
+                function.ExplicitlyIgnore();
 
             return true;
         }
@@ -49,7 +49,7 @@ namespace CppSharp.Passes
                 IsStatic = true
             };
 
-            function.ExplicityIgnored = true;
+            function.ExplicitlyIgnore();
 
             if (method.OperatorKind != CXXOperatorKind.None)
             {

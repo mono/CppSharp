@@ -38,7 +38,7 @@ namespace CppSharp.Passes
                 IsStatic = true
             };
 
-            function.ExplicityIgnored = true;
+            function.ExplicitlyIgnore();
 
             @class.Methods.Add(method);
 

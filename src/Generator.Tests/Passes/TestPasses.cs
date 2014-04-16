@@ -55,13 +55,13 @@ namespace CppSharp.Generator.Tests.Passes
         {
             var c = AstContext.Class("Foo");
 
-            Assert.IsFalse(AstContext.Function("FooStart").ExplicityIgnored);
+            Assert.IsTrue(AstContext.Function("FooStart").IsGenerated);
             Assert.IsNull(c.Method("Start"));
 
             passBuilder.AddPass(new FunctionToStaticMethodPass());
             passBuilder.RunPasses(pass => pass.VisitLibrary(AstContext));
 
-            Assert.IsTrue(AstContext.Function("FooStart").ExplicityIgnored);
+            Assert.IsFalse(AstContext.Function("FooStart").IsGenerated);
             Assert.IsNotNull(c.Method("Start"));
         }
 
@@ -105,8 +105,8 @@ namespace CppSharp.Generator.Tests.Passes
         public void TestIgnoringMethod()
         {
             AstContext.IgnoreClassMethodWithName("Foo", "toIgnore");
-            Assert.IsTrue(AstContext.FindClass("Foo").First().Methods.Find(
-                m => m.Name == "toIgnore").ExplicityIgnored);
+            Assert.IsFalse(AstContext.FindClass("Foo").First().Methods.Find(
+                m => m.Name == "toIgnore").IsGenerated);
         }
     }
 }

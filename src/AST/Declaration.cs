@@ -192,9 +192,6 @@ namespace CppSharp.AST
         {
             get
             {
-                if(ExplicityIgnored)
-                    return GenerationKind.None;
-
                 if (generationKind.HasValue)
                     return generationKind.Value;
 
@@ -244,13 +241,24 @@ namespace CppSharp.AST
             }
         }
 
-        public bool ExplicityIgnored { get; set; }
+        public void ExplicitlyIgnore()
+        {
+            GenerationKind = GenerationKind.None;
+        }
 
-        [Obsolete("Replace set by ExplicityIgnored. Replace get by IsGenerated, IsInternal or IsDeclared.")]
+
+        [Obsolete("Replace set by ExplicitlyIgnore(). Replace get by GenerationKind == GenerationKind.None.")]
+        public bool ExplicityIgnored 
+        { 
+            get { return GenerationKind == GenerationKind.None; }
+            set { if (value) ExplicitlyIgnore(); }
+        }
+
+        [Obsolete("Replace set by ExplicitlyIgnore(). Replace get by GenerationKind == GenerationKind.None.")]
         public virtual bool Ignore
         {
             get { return GenerationKind == GenerationKind.None; }
-            set { ExplicityIgnored = value; }
+            set { if (value) ExplicitlyIgnore(); }
         }
 
         public AccessSpecifier Access { get; set; }

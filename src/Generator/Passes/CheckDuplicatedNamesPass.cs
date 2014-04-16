@@ -72,12 +72,12 @@ namespace CppSharp.Passes
             {
                 // TODO: turn into a method; append the original type (say, "signed long") of the last parameter to the type so that the user knows which overload is called
                 Driver.Diagnostics.EmitWarning("Duplicate operator {0} ignored", function.Name);
-                function.ExplicityIgnored = true;
+                function.ExplicitlyIgnore();
             }
             else if (method != null && method.IsConstructor)
             {
                 Driver.Diagnostics.EmitWarning("Duplicate constructor {0} ignored", function.Name);
-                function.ExplicityIgnored = true;
+                function.ExplicitlyIgnore();
             }
             else
                 function.Name += methodCount.ToString(CultureInfo.InvariantCulture);

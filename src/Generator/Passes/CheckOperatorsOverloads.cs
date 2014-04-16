@@ -54,7 +54,7 @@ namespace CppSharp.Passes
                     Driver.Diagnostics.Debug(DiagnosticId.InvalidOperatorOverload,
                         "Invalid operator overload {0}::{1}",
                         @class.OriginalName, @operator.OperatorKind);
-                    @operator.ExplicityIgnored = true;
+                    @operator.ExplicitlyIgnore();
                     continue;
                 }
                 if (@operator.SynthKind == FunctionSynthKind.NonMemberOperator)
