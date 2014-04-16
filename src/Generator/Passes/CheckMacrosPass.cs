@@ -74,7 +74,7 @@ namespace CppSharp.Passes
                                     e.Location != MacroLocation.ClassBody &&
                                     e.Location != MacroLocation.FunctionBody &&
                                     e.Location != MacroLocation.FunctionParameters))
-                decl.GenerationKind = GenerationKind.Link;
+                decl.GenerationKind = GenerationKind.Internal;
         }
 
         public override bool VisitTranslationUnit(TranslationUnit unit)
