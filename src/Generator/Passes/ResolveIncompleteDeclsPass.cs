@@ -9,7 +9,7 @@ namespace CppSharp.Passes
             if (AlreadyVisited(decl))
                 return false;
 
-            return !decl.Ignore;
+            return decl.IsGenerated;
         }
 
         public override bool VisitClassDecl(Class @class)
@@ -25,7 +25,7 @@ namespace CppSharp.Passes
 
             if (@class.CompleteDeclaration == null)
             {
-                @class.IsGenerated = false;
+                @class.GenerationKind = GenerationKind.Internal;
                 Driver.Diagnostics.Debug("Unresolved declaration: {0}",
                     @class.Name);
             }
@@ -51,7 +51,7 @@ namespace CppSharp.Passes
 
             if (@enum.CompleteDeclaration == null)
             {
-                @enum.IsGenerated = false;
+                @enum.GenerationKind = GenerationKind.Internal;
                 Driver.Diagnostics.EmitWarning(DiagnosticId.UnresolvedDeclaration,
                     "Unresolved declaration: {0}", @enum.Name);
             }

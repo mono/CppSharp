@@ -86,7 +86,7 @@ namespace CppSharp.Generators.CLI
             PushBlock(CLIBlockKind.Namespace);
             foreach (var @class in @namespace.Classes)
             {
-                if (@class.Ignore)
+                if (!@class.IsGenerated)
                     continue;
 
                 if (@class.IsOpaque || @class.IsIncomplete)
@@ -100,7 +100,7 @@ namespace CppSharp.Generators.CLI
                 // Generate all the function declarations for the module.
                 foreach (var function in @namespace.Functions)
                 {
-                    if (function.Ignore)
+                    if (!function.IsGenerated)
                         continue;
 
                     GenerateFunction(function, @namespace);
@@ -112,12 +112,12 @@ namespace CppSharp.Generators.CLI
             {
                 foreach (var template in @namespace.Templates)
                 {
-                    if (template.Ignore) continue;
+                    if (!template.IsGenerated) continue;
 
                     var functionTemplate = template as FunctionTemplate;
                     if (functionTemplate == null) continue;
 
-                    if (functionTemplate.Ignore)
+                    if (!functionTemplate.IsGenerated)
                         continue;
 
                     GenerateFunctionTemplate(functionTemplate);
@@ -174,7 +174,7 @@ namespace CppSharp.Generators.CLI
 
             foreach (var @event in @class.Events)
             {
-                if (@event.Ignore)
+                if (!@event.IsGenerated)
                     continue;
 
                 GenerateDeclarationCommon(@event);
@@ -183,7 +183,7 @@ namespace CppSharp.Generators.CLI
 
             foreach (var variable in @class.Variables)
             {
-                if (variable.Ignore)
+                if (!variable.IsGenerated)
                     continue;
 
                 if (variable.Access != AccessSpecifier.Public)
@@ -216,14 +216,14 @@ namespace CppSharp.Generators.CLI
         {
             if (@class.IsValueType)
             {
-                foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.Ignore))
+                foreach (var @base in @class.Bases.Where(b => b.IsClass && b.Class.IsGenerated))
                 {
                     GenerateClassProperties(@base.Class, realOwner);
                 }
             }
 
             foreach (var property in @class.Properties.Where(
-                p => !p.Ignore && !p.IsInRefTypeAndBackedByValueClassField()))
+                p => p.IsGenerated && !p.IsInRefTypeAndBackedByValueClassField()))
                 GenerateProperty(property, realOwner);
         }
 
@@ -309,7 +309,7 @@ namespace CppSharp.Generators.CLI
 
         private void GenerateProperty(Property property, Class realOwner)
         {
-            if (property.Ignore) return;
+            if (!property.IsGenerated) return;
 
             PushBlock(CLIBlockKind.Property);
 
@@ -628,14 +628,14 @@ namespace CppSharp.Generators.CLI
 
         private void GenerateStructMarshaling(Class @class, string nativeVar)
         {
-            foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.Ignore))
+            foreach (var @base in @class.Bases.Where(b => b.IsClass && b.Class.IsGenerated))
             {
                 GenerateStructMarshaling(@base.Class, nativeVar);
             }
 
             foreach (var property in @class.Properties)
             {
-                if (property.Ignore || property.Field == null) continue;
+                if (!property.IsGenerated || property.Field == null) continue;
 
                 var nativeField = string.Format("{0}{1}",
                                                 nativeVar, property.Field.OriginalName);
@@ -659,7 +659,7 @@ namespace CppSharp.Generators.CLI
 
         private bool GenerateClassConstructorBase(Class @class, bool isIntPtr, Method method = null)
         {
-            var hasBase = @class.HasBase && @class.Bases[0].IsClass && !@class.Bases[0].Class.ExplicityIgnored;
+            var hasBase = @class.HasBase && @class.Bases[0].IsClass && @class.Bases[0].Class.IsDeclared;
             if (!hasBase)
                 return false;
 
@@ -777,14 +777,14 @@ namespace CppSharp.Generators.CLI
 
         private void GenerateValueTypeConstructorCallProperties(Class @class)
         {
-            foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.ExplicityIgnored))
+            foreach (var @base in @class.Bases.Where(b => b.IsClass && b.Class.IsDeclared))
             {
                 GenerateValueTypeConstructorCallProperties(@base.Class);
             }
 
             foreach (var property in @class.Properties)
             {
-                if (property.ExplicityIgnored || property.Field == null) continue;
+                if (!property.IsDeclared || property.Field == null) continue;
 
                 var varName = string.Format("_native.{0}", property.Field.OriginalName);
 
@@ -806,7 +806,7 @@ namespace CppSharp.Generators.CLI
 
         public void GenerateFunction(Function function, DeclarationContext @namespace)
         {
-            if (function.Ignore)
+            if (!function.IsGenerated)
                 return;
 
             GenerateDeclarationCommon(function);

@@ -168,7 +168,7 @@ namespace CppSharp.Passes
                 if (method.IsOverride)
                 {
                     var baseOverride = @class.GetRootBaseMethod(method);
-                    if (baseOverride != null && baseOverride.Ignore)
+                    if (baseOverride != null && !baseOverride.IsDeclared)
                     {
                         Log.Debug(
                             "Virtual method '{0}' was ignored due to ignored override '{1}'",
@@ -199,7 +199,7 @@ namespace CppSharp.Passes
                     continue;
 
                 ignoredBase = @base;
-                isIgnored |= @base.Ignore
+                isIgnored |= !@base.IsDeclared
                     || HasIgnoredBaseClass(@override, @base, out ignoredBase);
 
                 if (isIgnored)

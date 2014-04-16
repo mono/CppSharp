@@ -85,7 +85,7 @@ namespace CppSharp.AST
                 return property;
             Declaration decl;
             foreach (var baseClassSpecifier in c.Bases.Where(
-                b => b.Type.IsTagDecl(out decl) && !b.Class.Ignore))
+                b => b.Type.IsTagDecl(out decl) && b.Class.IsDeclared))
             {
                 property = baseClassSpecifier.Class.GetPropertyByName(propertyName);
                 if (property != null)

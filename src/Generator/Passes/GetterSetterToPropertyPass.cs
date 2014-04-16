@@ -95,7 +95,7 @@ namespace CppSharp.Passes
                 prop.Access = method.Access;
 
                 // Do not generate the original method now that we know it is a getter.
-                method.IsGenerated = false;
+                method.GenerationKind = GenerationKind.Internal;
 
                 Driver.Diagnostics.Debug("Getter created: {0}::{1}", @class.Name, name);
 
@@ -112,7 +112,7 @@ namespace CppSharp.Passes
                 prop.Access = method.Access;
 
                 // Ignore the original method now that we know it is a setter.
-                method.IsGenerated = false;
+                method.GenerationKind = GenerationKind.Internal;
 
                 Driver.Diagnostics.Debug("Setter created: {0}::{1}", @class.Name, name);
 

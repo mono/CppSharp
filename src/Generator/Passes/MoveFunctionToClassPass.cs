@@ -13,7 +13,7 @@ namespace CppSharp.Passes
             if (!VisitDeclaration(function))
                 return false;
 
-            if (function.Ignore || function.Namespace is Class)
+            if (!function.IsGenerated || function.Namespace is Class)
                 return false;
 
             var @class = FindClassToMoveFunctionTo(function.Namespace);

@@ -145,7 +145,7 @@ namespace CppSharp
     {
         public override bool VisitFieldDecl(Field field)
         {
-            if (field.Ignore)
+            if (!field.IsGenerated)
                 return false;
 
             if (!IsStdType(field.QualifiedType)) return false;

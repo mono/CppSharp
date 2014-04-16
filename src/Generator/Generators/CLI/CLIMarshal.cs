@@ -618,14 +618,14 @@ namespace CppSharp.Generators.CLI
 
         public void MarshalValueClassProperties(Class @class, string marshalVar)
         {
-            foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.Ignore))
+            foreach (var @base in @class.Bases.Where(b => b.IsClass && b.Class.IsGenerated))
             {
                 MarshalValueClassProperties(@base.Class, marshalVar);
             }
 
             foreach (var property in @class.Properties)
             {
-                if (property.Ignore || property.Field == null)
+                if (!property.IsGenerated || property.Field == null)
                     continue;
 
                 MarshalValueClassProperty(property, marshalVar);

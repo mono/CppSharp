@@ -18,7 +18,7 @@ namespace CppSharp.Passes
 
         public override bool VisitFunctionDecl(Function function)
         {
-            if (function.Ignore)
+            if (!function.IsGenerated)
                 return false;
 
             // Check if this function can be converted.

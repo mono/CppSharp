@@ -47,7 +47,7 @@ namespace CppSharp.Passes
 
         private void CheckInvalidOperators(Class @class)
         {
-            foreach (var @operator in @class.Operators.Where(o => !o.Ignore))
+            foreach (var @operator in @class.Operators.Where(o => o.IsGenerated))
             {
                 if (!IsValidOperatorOverload(@operator))
                 {
@@ -116,7 +116,8 @@ namespace CppSharp.Passes
             property.Parameters.AddRange(@operator.Parameters);
 
             @class.Properties.Add(property);
-            @operator.IsGenerated = false;
+
+            @operator.GenerationKind = GenerationKind.Internal;
         }
 
         static void HandleMissingOperatorOverloadPair(Class @class, CXXOperatorKind op1,
@@ -129,7 +130,7 @@ namespace CppSharp.Passes
                 var missingKind = CheckMissingOperatorOverloadPair(@class, out index, op1, op2,
                                                                    op.Parameters.Last().Type);
 
-                if (missingKind == CXXOperatorKind.None || op.Ignore)
+                if (missingKind == CXXOperatorKind.None || !op.IsGenerated)
                     continue;
 
                 var method = new Method()
@@ -158,13 +159,13 @@ namespace CppSharp.Passes
             var hasFirst = first != null;
             var hasSecond = second != null;
 
-            if (hasFirst && (!hasSecond || second.Ignore))
+            if (hasFirst && (!hasSecond || !second.IsGenerated))
             {
                 index = @class.Methods.IndexOf(first);
                 return op2;
             }
 
-            if (hasSecond && (!hasFirst || first.Ignore))
+            if (hasSecond && (!hasFirst || !first.IsGenerated))
             {
                 index = @class.Methods.IndexOf(second);
                 return op1;

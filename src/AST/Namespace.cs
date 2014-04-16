@@ -336,7 +336,7 @@ namespace CppSharp.AST
         {
             get
             {
-                Predicate<Declaration> pred = (t => !t.Ignore);
+                Predicate<Declaration> pred = (t => t.IsGenerated);
                 return Enums.Exists(pred) || HasFunctions || Typedefs.Exists(pred)
                     || Classes.Any() || Namespaces.Exists(n => n.HasDeclarations);
             }
@@ -346,7 +346,7 @@ namespace CppSharp.AST
         {
             get
             {
-                Predicate<Declaration> pred = (t => !t.Ignore);
+                Predicate<Declaration> pred = (t => t.IsGenerated);
                 return Functions.Exists(pred) || Namespaces.Exists(n => n.HasFunctions);
             }
         }
