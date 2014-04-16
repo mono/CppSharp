@@ -1465,7 +1465,7 @@ namespace CppSharp.Generators.CSharp
             // reserve space for the offset-to-top and RTTI pointers as well
             var size = entries.Count;
             WriteLine("var vfptr{0} = Marshal.AllocHGlobal({1} * {2});", 0, size, Driver.Options.Is32Bit ? 4 : 8);
-            WriteLine("_NewVTables[{0}] = vfptr0.ToPointer();");
+            WriteLine("_NewVTables[0] = vfptr0.ToPointer();");
 
             for (int i = 0; i < entries.Count; i++)
             {
