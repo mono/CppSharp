@@ -81,7 +81,7 @@ namespace CppSharp.Passes
         {
             string symbol = mangled.Mangled;
             var declaration = (Declaration) mangled;
-            if (!declaration.Ignore && AccessValid(declaration) &&
+            if (declaration.IsGenerated && AccessValid(declaration) &&
                 !Driver.Symbols.FindSymbol(ref symbol) &&
                 !currentUnit.FilePath.EndsWith("_impl.h") &&
                 !currentUnit.FilePath.EndsWith("_p.h"))

@@ -13,9 +13,9 @@ namespace CppSharp.Passes
 
         public override bool VisitTranslationUnit(TranslationUnit unit)
         {
-            if (IsTranslationGenerated(unit))
-                unit.IsGenerated = false;
-
+            if (IsExternalDeclaration(unit))
+                unit.GenerationKind = GenerationKind.Link;
+                
             // Try to get an include path that works from the original include
             // directories paths.
 
@@ -53,7 +53,8 @@ namespace CppSharp.Passes
             return includePath.Replace('\\', '/');
         }
 
-        bool IsTranslationGenerated(TranslationUnit translationUnit)
+
+        bool IsExternalDeclaration(TranslationUnit translationUnit)
         {
             if (DriverOptions.NoGenIncludeDirs == null)
                 return false;

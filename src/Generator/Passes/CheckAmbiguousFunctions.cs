@@ -40,7 +40,7 @@ namespace CppSharp.Passes
 
                 if (overload == function) continue;
 
-                if (overload.Ignore) continue;
+                if (!overload.IsGenerated) continue;
 
                 if (!CheckDefaultParameters(function, overload))
                     continue;

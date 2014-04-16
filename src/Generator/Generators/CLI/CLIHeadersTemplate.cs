@@ -69,7 +69,7 @@ namespace CppSharp.Generators.CLI
                 var include = typeRef.Include;
                 var unit = include.TranslationUnit;
 
-                if (unit != null && unit.ExplicityIgnored)
+                if (unit != null && !unit.IsDeclared)
                     continue;
 
                 if(!string.IsNullOrEmpty(include.File) && include.InHeader)
@@ -151,7 +151,7 @@ namespace CppSharp.Generators.CLI
             // Generate all the enum declarations for the module.
             foreach (var @enum in decl.Enums)
             {
-                if (@enum.Ignore || @enum.IsIncomplete)
+                if (!@enum.IsGenerated || @enum.IsIncomplete)
                     continue;
 
                 PushBlock(CLIBlockKind.Enum, @enum);
@@ -165,7 +165,7 @@ namespace CppSharp.Generators.CLI
             // Generate all the struct/class declarations for the module.
             foreach (var @class in decl.Classes)
             {
-                if (@class.Ignore || @class.IsIncomplete)
+                if (!@class.IsGenerated || @class.IsIncomplete)
                     continue;
 
                 if (@class.IsOpaque)
@@ -210,7 +210,7 @@ namespace CppSharp.Generators.CLI
         {
             foreach (var typedef in decl.Typedefs)
             {
-                if (typedef.Ignore)
+                if (!typedef.IsGenerated)
                     continue;
 
                 GenerateTypedef(typedef);
@@ -240,7 +240,7 @@ namespace CppSharp.Generators.CLI
 
         public void GenerateClass(Class @class)
         {
-            if (@class.Ignore || @class.IsIncomplete)
+            if (!@class.IsGenerated || @class.IsIncomplete)
                 return;
 
             GenerateDeclarationCommon(@class);
@@ -306,7 +306,7 @@ namespace CppSharp.Generators.CLI
             PushIndent();
             foreach (var template in @class.Templates)
             {
-                if (template.Ignore) continue;
+                if (!template.IsGenerated) continue;
 
                 var functionTemplate = template as FunctionTemplate;
                 if (functionTemplate == null) continue;
@@ -417,7 +417,7 @@ namespace CppSharp.Generators.CLI
             // properties to the managed value subtypes.
             if (@class.IsValueType)
             {
-                foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.Ignore))
+                foreach (var @base in @class.Bases.Where(b => b.IsClass && b.Class.IsGenerated))
                 {
                     GenerateClassFields(@base.Class);
                 }
@@ -426,7 +426,7 @@ namespace CppSharp.Generators.CLI
             PushIndent();
             // check for value types because some of the ignored fields may back properties;
             // not the case for ref types because the NativePtr pattern is used there
-            foreach (var field in @class.Fields.Where(f => !f.Ignore || @class.IsValueType))
+            foreach (var field in @class.Fields.Where(f => f.IsGenerated || @class.IsValueType))
             {
                 var property = @class.Properties.FirstOrDefault(p => p.Field == field);
                 if (property != null && !property.IsInRefTypeAndBackedByValueClassField())
@@ -454,7 +454,7 @@ namespace CppSharp.Generators.CLI
         {
             foreach (var @event in @class.Events)
             {
-                if (@event.Ignore) continue;
+                if (!@event.IsGenerated) continue;
 
                 var cppTypePrinter = new CppTypePrinter(Driver.TypeDatabase);
                 var cppArgs = cppTypePrinter.VisitParameters(@event.Parameters, hasNames: true);
@@ -522,7 +522,7 @@ namespace CppSharp.Generators.CLI
 
             foreach(var variable in @class.Variables)
             {
-                if (variable.Ignore) continue;
+                if (!variable.IsGenerated) continue;
 
                 if (variable.Access != AccessSpecifier.Public)
                     continue;
@@ -592,14 +592,14 @@ namespace CppSharp.Generators.CLI
             // properties to the managed value subtypes.
             if (@class.IsValueType)
             {
-                foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.Ignore))
+                foreach (var @base in @class.Bases.Where(b => b.IsClass && b.Class.IsGenerated))
                 {
                     GenerateClassProperties(@base.Class);
                 }
             }
 
             PushIndent();
-            foreach (var prop in @class.Properties.Where(prop => !prop.Ignore))
+            foreach (var prop in @class.Properties.Where(prop => prop.IsGenerated))
             {
                 if (prop.IsInRefTypeAndBackedByValueClassField())
                 {
@@ -695,7 +695,7 @@ namespace CppSharp.Generators.CLI
 
         public bool GenerateTypedef(TypedefDecl typedef)
         {
-            if (typedef.Ignore)
+            if (!typedef.IsGenerated)
                 return false;
 
             FunctionType function;
@@ -720,7 +720,7 @@ namespace CppSharp.Generators.CLI
 
         public void GenerateFunction(Function function)
         {
-            if (function.Ignore)
+            if (!function.IsGenerated)
                 return;
 
             PushBlock(CLIBlockKind.Function, function);
@@ -739,7 +739,7 @@ namespace CppSharp.Generators.CLI
 
         public void GenerateEnum(Enumeration @enum)
         {
-            if (@enum.Ignore || @enum.IsIncomplete)
+            if (!@enum.IsGenerated || @enum.IsIncomplete)
                 return;
 
             PushBlock(CLIBlockKind.Enum, @enum);

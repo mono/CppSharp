@@ -14,7 +14,7 @@ namespace CppSharp.Passes
 
         public override bool VisitFunctionDecl(Function function)
         {
-            if (function.Ignore)
+            if (!function.IsGenerated)
                 return false;
 
             var types = StringHelpers.SplitCamelCase(function.Name);

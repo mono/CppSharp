@@ -180,7 +180,7 @@ namespace CppSharp.Passes
 
         void CheckDuplicate(Declaration decl)
         {
-            if (decl.IsDependent || decl.Ignore)
+            if (decl.IsDependent || !decl.IsGenerated)
                 return;
 
             if (string.IsNullOrWhiteSpace(decl.Name))

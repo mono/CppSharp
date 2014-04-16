@@ -74,7 +74,7 @@ namespace CppSharp.Passes
                                     e.Location != MacroLocation.ClassBody &&
                                     e.Location != MacroLocation.FunctionBody &&
                                     e.Location != MacroLocation.FunctionParameters))
-                decl.IsGenerated = false;
+                decl.GenerationKind = GenerationKind.Link;
         }
 
         public override bool VisitTranslationUnit(TranslationUnit unit)
@@ -83,7 +83,6 @@ namespace CppSharp.Passes
 
             if (expansions.Any(e => e.Text == Prefix + "_IGNORE_FILE"))
             {
-                unit.IsGenerated = false;
                 unit.ExplicityIgnored = true;
             }
 
