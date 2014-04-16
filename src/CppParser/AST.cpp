@@ -484,8 +484,10 @@ ASTContext::ASTContext() {}
 
 TranslationUnit* ASTContext::FindOrCreateModule(std::string File)
 {
+#ifdef _WIN32
     // Clean up the file path.
     std::replace(File.begin(), File.end(), '/', '\\');
+#endif
 
     auto existingUnit = std::find_if(TranslationUnits.begin(),
         TranslationUnits.end(), [&](TranslationUnit* unit) {
