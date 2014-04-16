@@ -21,8 +21,9 @@ namespace CppSharp
 {
     public class Driver
     {
+        public IDiagnosticConsumer Diagnostics { get; set; }
+
         public DriverOptions Options { get; private set; }
-        public IDiagnosticConsumer Diagnostics { get; private set; }
         public Project Project { get; private set; }
 
         public TypeMapDatabase TypeDatabase { get; private set; }
@@ -421,7 +422,8 @@ namespace CppSharp
             library.Setup(driver);
             driver.Setup();
 
-            Log.Verbose = driver.Options.Verbose;
+            if(driver.Options.Verbose)
+                Log.Level = DiagnosticKind.Debug;
 
             if (!options.Quiet)
                 Log.EmitMessage("Parsing libraries...");

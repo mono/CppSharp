@@ -40,7 +40,7 @@ namespace CppSharp.Passes
 
                 if (overload == function) continue;
 
-                if (overload.Ignore) continue;
+                if (!overload.IsGenerated) continue;
 
                 if (!CheckDefaultParameters(function, overload))
                     continue;
@@ -88,9 +88,9 @@ namespace CppSharp.Passes
             }
 
             if (function.Parameters.Count > overload.Parameters.Count)
-                overload.ExplicityIgnored = true;
+                overload.ExplicitlyIgnore();
             else
-                function.ExplicityIgnored = true;
+                function.ExplicitlyIgnore();
 
             return true;
         }
@@ -104,13 +104,13 @@ namespace CppSharp.Passes
 
                 if (method1.IsConst && !method2.IsConst)
                 {
-                    method1.ExplicityIgnored = true;
+                    method1.ExplicitlyIgnore();
                     return false;
                 }
 
                 if (method2.IsConst && !method1.IsConst)
                 {
-                    method2.ExplicityIgnored = true;
+                    method2.ExplicitlyIgnore();
                     return false;
                 }
             }

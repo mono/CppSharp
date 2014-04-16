@@ -115,7 +115,7 @@ namespace CppSharp.Generators.CLI
             if (translationUnit.IsSystemHeader)
                 return;
 
-            if(decl.ExplicityIgnored)
+            if (!decl.IsGenerated)
                 return;
 
             if(IsBuiltinTypedef(decl))
@@ -139,9 +139,6 @@ namespace CppSharp.Generators.CLI
 
         private string GetIncludePath(TranslationUnit translationUnit)
         {
-            if (!translationUnit.IsGenerated)
-                return DriverOptions.NoGenIncludePrefix + translationUnit.FileRelativePath;
-
             if (!DriverOptions.UseHeaderDirectories)
                 return translationUnit.FileName;
 
@@ -181,7 +178,7 @@ namespace CppSharp.Generators.CLI
             if (decl.Namespace != null && decl.Namespace.TranslationUnit.IsSystemHeader)
                 return false;
 
-            return !decl.ExplicityIgnored;
+            return decl.IsDeclared;
         }
 
         public override bool VisitClassDecl(Class @class)

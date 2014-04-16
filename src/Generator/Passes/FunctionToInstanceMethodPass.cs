@@ -18,7 +18,7 @@ namespace CppSharp.Passes
 
         public override bool VisitFunctionDecl(Function function)
         {
-            if (function.Ignore)
+            if (!function.IsGenerated)
                 return false;
 
             // Check if this function can be converted.
@@ -39,7 +39,7 @@ namespace CppSharp.Passes
                 return false;
 
             function.Name = function.Name.Substring(@class.Name.Length);
-            function.ExplicityIgnored = true;
+            function.ExplicitlyIgnore();
 
             // Create a new fake method so it acts as an instance method.
             var method = new Method

@@ -55,7 +55,7 @@ namespace CppSharp
             if (decl.CompleteDeclaration != null)
                 return VisitDeclaration(decl.CompleteDeclaration);
 
-            if (decl.ExplicityIgnored)
+            if (decl.GenerationKind == GenerationKind.None)
             {
                 Ignore();
                 return false;

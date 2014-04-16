@@ -25,13 +25,27 @@ namespace CppSharp.AST
         string Mangled { get; set; }
     }
 
-    [Flags]
-    public enum IgnoreFlags
+    /// <summary>
+    /// Kind of the generated declaration
+    /// </summary>
+    public enum GenerationKind
     {
-        None = 0,
-        Generation = 1 << 0,
-        Processing = 1 << 1,
-        Explicit   = 1 << 2
+        /// <summary>
+        // Declaration is not generated.
+        /// </summary>
+        None,
+        /// <summary>
+        /// Declaration is generated.
+        /// </summary>
+        Generate,
+        /// <summary>
+        /// Declaration is generated to be used internally.
+        /// </summary>
+        Internal,
+        /// <summary>
+        /// Declaration was already generated in a linked assembly.
+        /// </summary>
+        Link, 
     }
 
     /// <summary>
@@ -172,65 +186,79 @@ namespace CppSharp.AST
         // Comment associated with declaration.
         public RawComment Comment;
 
-        // Keeps flags to know the type of ignore.
-        public IgnoreFlags IgnoreFlags { get; set; }
+        private GenerationKind? generationKind;
 
-        // Whether the declaration should be generated.
+        public GenerationKind GenerationKind
+        {
+            get
+            {
+                if (generationKind.HasValue)
+                    return generationKind.Value;
+
+                if (Namespace != null)
+                    return Namespace.GenerationKind;
+
+                return GenerationKind.Generate;
+            }
+            set { generationKind = value; }
+        }
+
+        /// <summary>
+        /// Whether the declaration should be generated.
+        /// </summary>
         public virtual bool IsGenerated
         {
             get
             {
-                var isGenerated = !IgnoreFlags.HasFlag(IgnoreFlags.Generation);
-
-                if (Namespace == null)
-                    return isGenerated;
-
-                return isGenerated && Namespace.IsGenerated;
-            }
-
-            set
-            {
-                if (value)
-                    IgnoreFlags &= ~IgnoreFlags.Generation;
-                else
-                    IgnoreFlags |= IgnoreFlags.Generation;
+                return GenerationKind == GenerationKind.Generate;
             }
         }
 
-        // Whether the declaration was explicitly ignored.
-        public bool ExplicityIgnored
+        /// <summary>
+        /// Whether the declaration internal bindings should be generated.
+        /// </summary>
+        public bool IsInternal
         {
             get
             {
-                var isExplicitlyIgnored = IgnoreFlags.HasFlag(IgnoreFlags.Explicit);
-
-                if (Namespace == null)
-                    return isExplicitlyIgnored;
-
-                return isExplicitlyIgnored || Namespace.ExplicityIgnored;
-            }
-
-            set
-            {
-                if (value)
-                    IgnoreFlags |= IgnoreFlags.Explicit;
-                else
-                    IgnoreFlags &= ~IgnoreFlags.Explicit;
+                var k = GenerationKind;
+                return k == GenerationKind.Generate
+                    || k == GenerationKind.Internal;
             }
         }
 
-        // Whether the declaration should be ignored.
+        /// <summary>
+        /// Whether a binded version of this declaration is available.
+        /// </summary>
+        public bool IsDeclared
+        {
+            get
+            {
+                var k = GenerationKind;
+                return k == GenerationKind.Generate
+                    || k == GenerationKind.Internal
+                    || k == GenerationKind.Link;
+            }
+        }
+
+        public void ExplicitlyIgnore()
+        {
+            GenerationKind = GenerationKind.None;
+        }
+
+
+        [Obsolete("Replace set by ExplicitlyIgnore(). Replace get by GenerationKind == GenerationKind.None.")]
+        public bool ExplicityIgnored 
+        { 
+            get { return GenerationKind == GenerationKind.None; }
+            set { if (value) ExplicitlyIgnore(); }
+        }
+
+        [Obsolete("Replace set by ExplicitlyIgnore(). Replace get by GenerationKind == GenerationKind.None.")]
         public virtual bool Ignore
         {
-            get
-            {
-                var isIgnored = IgnoreFlags != IgnoreFlags.None;
-
-                if (Namespace != null)
-                    isIgnored |= Namespace.Ignore;
-
-                return isIgnored;
-            }
+            get { return GenerationKind == GenerationKind.None; }
+            set { if (value) ExplicitlyIgnore(); }
         }
 
         public AccessSpecifier Access { get; set; }
@@ -264,7 +292,6 @@ namespace CppSharp.AST
         protected Declaration()
         {
             Access = AccessSpecifier.Public;
-            IgnoreFlags = IgnoreFlags.None;
             ExcludeFromPasses = new HashSet<System.Type>();
             PreprocessedEntities = new List<PreprocessedEntity>();
             Attributes = new List<Attribute>();
@@ -283,7 +310,7 @@ namespace CppSharp.AST
             OriginalName = declaration.OriginalName;
             name = declaration.Name;
             Comment = declaration.Comment;
-            IgnoreFlags = declaration.IgnoreFlags;
+            generationKind = declaration.generationKind;
             Access = declaration.Access;
             DebugText = declaration.DebugText;
             IsIncomplete = declaration.IsIncomplete;

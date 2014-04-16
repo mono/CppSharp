@@ -268,7 +268,7 @@ namespace CppSharp.Generators.CSharp
 
                     // Call the copy constructor.
                     TypeMap typeMap;
-                    if (copyCtorMethod.Ignore && FindTypeMap(ctx.Driver.TypeDatabase, @class, out typeMap))
+                    if (!copyCtorMethod.IsGenerated && FindTypeMap(ctx.Driver.TypeDatabase, @class, out typeMap))
                     {
                         typeMap.CSharpMarshalCopyCtorToManaged(Context);
                     }

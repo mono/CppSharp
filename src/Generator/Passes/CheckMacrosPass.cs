@@ -20,6 +20,9 @@ namespace CppSharp.Passes
     ///     CS_IGNORE_GEN (declarations)
     ///         Used to ignore declaration from being generated.
     /// 
+    ///     CS_IGNORE_FILE (.h)
+    ///         Used to ignore all declarations of one header.
+    /// 
     ///     CS_VALUE_TYPE (classes and structs)
     ///         Used to flag that a class or struct is a value type.
     /// 
@@ -35,6 +38,9 @@ namespace CppSharp.Passes
     ///     CS_EQUALS / CS_HASHCODE (methods)
     ///         Used to flag method as representing the .NET Equals or
     ///         Hashcode methods.
+    /// 
+    ///     CS_CONSTRAINT(TYPE [, TYPE]*) (templates)
+    ///         Used to define constraint of generated generic type or generic method.
     /// 
     /// There isn't a standardized header provided by CppSharp so you will
     /// have to define these on your own.
@@ -68,13 +74,13 @@ namespace CppSharp.Passes
                                     e.Location != MacroLocation.ClassBody &&
                                     e.Location != MacroLocation.FunctionBody &&
                                     e.Location != MacroLocation.FunctionParameters))
-                decl.ExplicityIgnored = true;
+                decl.ExplicitlyIgnore();
 
             if (expansions.Any(e => e.Text == Prefix + "_IGNORE_GEN" &&
                                     e.Location != MacroLocation.ClassBody &&
                                     e.Location != MacroLocation.FunctionBody &&
                                     e.Location != MacroLocation.FunctionParameters))
-                decl.IsGenerated = false;
+                decl.GenerationKind = GenerationKind.Internal;
         }
 
         public override bool VisitTranslationUnit(TranslationUnit unit)
@@ -83,8 +89,7 @@ namespace CppSharp.Passes
 
             if (expansions.Any(e => e.Text == Prefix + "_IGNORE_FILE"))
             {
-                unit.IsGenerated = false;
-                unit.ExplicityIgnored = true;
+                unit.ExplicitlyIgnore();
             }
 
             return base.VisitTranslationUnit(unit);
@@ -144,7 +149,7 @@ namespace CppSharp.Passes
 
             if (expansions.Any(e => e.Text == Prefix + "_HASHCODE"
                 || e.Text == Prefix + "_EQUALS"))
-                method.ExplicityIgnored = true;
+                method.ExplicitlyIgnore();
 
             return base.VisitMethodDecl(method);
         }
@@ -179,10 +184,55 @@ namespace CppSharp.Passes
                 var setMethod = property.SetMethod;
 
                 if (setMethod != null)
-                    property.SetMethod.ExplicityIgnored = true;
+                    property.SetMethod.ExplicitlyIgnore();
             }
 
             return base.VisitProperty(property);
+        }
+
+        public override bool VisitClassTemplateDecl(ClassTemplate template)
+        {
+            var expansions = template.PreprocessedEntities.OfType<MacroExpansion>();
+
+            var expansion = expansions.FirstOrDefault(e => e.Text.StartsWith(Prefix + "_CONSTRAINT"));
+            if (expansion != null)
+            {
+                var args = GetArguments(expansion.Text);
+                for (var i = 0; i < template.Parameters.Count && i < args.Length; ++i)
+                {
+                    var param = template.Parameters[i];
+                    param.Constraint = args[i];
+                    template.Parameters[i] = param;
+                }
+            }
+
+            return base.VisitClassTemplateDecl(template);
+        }
+
+        public override bool VisitFunctionTemplateDecl(FunctionTemplate template)
+        {
+            var expansions = template.PreprocessedEntities.OfType<MacroExpansion>();
+
+            var expansion = expansions.FirstOrDefault(e => e.Text.StartsWith(Prefix + "_CONSTRAINT"));
+            if (expansion != null)
+            {
+                var args = GetArguments(expansion.Text);
+                for (var i = 0; i < template.Parameters.Count && i < args.Length; ++i)
+                {
+                    var param = template.Parameters[i];
+                    param.Constraint = args[i];
+                    template.Parameters[i] = param;
+                }
+            }
+
+            return base.VisitFunctionTemplateDecl(template);
+        }
+
+        private static string[] GetArguments(string str)
+        {
+            str = str.Substring(str.LastIndexOf('('));
+            str = str.Trim('(', ')');
+            return str.Split(',');
         }
     }
 }

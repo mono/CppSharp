@@ -204,7 +204,7 @@ namespace CppSharp.Generators.CSharp
             // Generate all the enum declarations.
             foreach (var @enum in context.Enums)
             {
-                if (@enum.Ignore || @enum.IsIncomplete)
+                if (!@enum.IsGenerated || @enum.IsIncomplete)
                     continue;
 
                 GenerateEnum(@enum);
@@ -242,7 +242,7 @@ namespace CppSharp.Generators.CSharp
                 // Generate all the internal function declarations.
                 foreach (var function in context.Functions)
                 {
-                    if (function.Ignore) continue;
+                    if (!function.IsInternal) continue;
 
                     GenerateInternalFunction(function);
                 }
@@ -252,7 +252,7 @@ namespace CppSharp.Generators.CSharp
 
                 foreach (var function in context.Functions)
                 {
-                    if (function.Ignore) continue;
+                    if (!function.IsGenerated) continue;
 
                     GenerateFunction(function);
                 }
@@ -263,7 +263,7 @@ namespace CppSharp.Generators.CSharp
 
             foreach (var @event in context.Events)
             {
-                if (@event.Ignore) continue;
+                if (!@event.IsGenerated) continue;
 
                 GenerateEvent(@event);
             }
@@ -350,7 +350,7 @@ namespace CppSharp.Generators.CSharp
                 GenerateClassInternals(@class);
                 GenerateDeclContext(@class);
 
-                if (@class.Ignore || @class.IsDependent)
+                if (!@class.IsGenerated || @class.IsDependent)
                     goto exit;
 
                 if (ShouldGenerateClassNativeField(@class))
@@ -404,7 +404,7 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateInterface(Class @class)
         {
-            if (@class.Ignore || @class.IsIncomplete)
+            if (!@class.IsGenerated || @class.IsIncomplete)
                 return;
 
             PushBlock(CSharpBlockKind.Interface);
@@ -433,7 +433,7 @@ namespace CppSharp.Generators.CSharp
 
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
-            foreach (var prop in @class.Properties.Where(p => !p.Ignore))
+            foreach (var prop in @class.Properties.Where(p => p.IsGenerated))
             {
                 PushBlock(CSharpBlockKind.Property);
                 var type = prop.Type;
@@ -596,7 +596,7 @@ namespace CppSharp.Generators.CSharp
         {
             foreach (var @base in @class.Bases)
             {
-                if (!@base.IsClass || @base.Class.Ignore)
+                if (!@base.IsClass || !@base.Class.IsDeclared)
                     continue;
 
                 GenerateStructMarshalingProperties(@base.Class);
@@ -605,7 +605,7 @@ namespace CppSharp.Generators.CSharp
             for (int i = 0; i < @class.Properties.Count; i++)
             {
                 var property = @class.Properties[i];
-                if (property.Ignore || property.Field == null) continue;
+                if (!property.IsGenerated || property.Field == null) continue;
 
                 var nativeField = string.Format("{0}->{1}",
                     Generator.GeneratedIdentifier("ptr"),
@@ -647,7 +647,7 @@ namespace CppSharp.Generators.CSharp
         {
             foreach (var @base in @class.Bases)
             {
-                if (!@base.IsClass || @base.Class.Ignore)
+                if (!@base.IsClass || !@base.Class.IsDeclared)
                     continue;
 
                 var baseClass = @base.Class;
@@ -656,7 +656,7 @@ namespace CppSharp.Generators.CSharp
 
             foreach (var property in @class.Properties)
             {
-                if (property.Ignore || property.Field == null)
+                if (!property.IsGenerated || property.Field == null)
                     continue;
 
                 GenerateStructInternalMarshalingProperty(property, marshalVar);
@@ -710,7 +710,7 @@ namespace CppSharp.Generators.CSharp
                 baseClass = @class.Bases[0].Class;
 
             var hasRefBase = baseClass != null && baseClass.IsRefType
-                             && !baseClass.ExplicityIgnored;
+                             && baseClass.IsDeclared;
 
             return hasRefBase;
         }
@@ -725,7 +725,7 @@ namespace CppSharp.Generators.CSharp
             if (@class.IsUnion)
                 WriteLine("[StructLayout(LayoutKind.Explicit)]");
 
-            Write(@class.Ignore ? "internal " : Helpers.GetAccess(@class.Access));
+            Write(!@class.IsGenerated ? "internal " : Helpers.GetAccess(@class.Access));
             Write("unsafe ");
 
             if (Driver.Options.GenerateAbstractImpls && @class.IsAbstract)
@@ -739,9 +739,9 @@ namespace CppSharp.Generators.CSharp
 
             var bases = new List<string>();
 
-            var needsBase = @class.HasBaseClass && !@class.IsValueType && !@class.Ignore
+            var needsBase = @class.HasBaseClass && !@class.IsValueType && @class.IsGenerated
                 && !@class.Bases[0].Class.IsValueType
-                && !@class.Bases[0].Class.Ignore;
+                && @class.Bases[0].Class.IsGenerated;
 
             if (needsBase)
             {
@@ -751,7 +751,7 @@ namespace CppSharp.Generators.CSharp
                     select QualifiedIdentifier(@base.Class));
             }
 
-            if (!@class.Ignore)
+            if (@class.IsGenerated)
             {
                 if (@class.IsRefType)
                     bases.Add("IDisposable");
@@ -771,7 +771,7 @@ namespace CppSharp.Generators.CSharp
             foreach (var @base in @class.Bases.Where(b => !(b.Type is DependentNameType)))
             {
                 TypeMap typeMap;
-                if ((!Driver.TypeDatabase.FindTypeMap(@base.Type, out typeMap) && @base.Class.Ignore) ||
+                if ((!Driver.TypeDatabase.FindTypeMap(@base.Type, out typeMap) && !@base.Class.IsDeclared) ||
                     @base.Class.OriginalClass == @class)
                     continue;
 
@@ -807,12 +807,12 @@ namespace CppSharp.Generators.CSharp
             if (field.Expression != null)
             {
                 var fieldValuePrinted = field.Expression.CSharpValue(ExpressionPrinter);
-                Write("{0} {1} {2} = {3};", field.Ignore ? "internal" : "public",
+                Write("{0} {1} {2} = {3};", !field.IsGenerated ? "internal" : "public",
                     fieldTypePrinted.Type, safeIdentifier, fieldValuePrinted);
             }
             else
             {
-                Write("{0} {1} {2};", field.Ignore ? "internal" : "public",
+                Write("{0} {1} {2};", !field.IsGenerated ? "internal" : "public",
                     fieldTypePrinted.Type, safeIdentifier);
             }
 
@@ -1168,7 +1168,7 @@ namespace CppSharp.Generators.CSharp
         {
             foreach (var variable in @class.Variables)
             {
-                if (variable.Ignore) continue;
+                if (!variable.IsGenerated) continue;
 
                 if (variable.Access != AccessSpecifier.Public)
                     continue;
@@ -1183,7 +1183,7 @@ namespace CppSharp.Generators.CSharp
         {
             if (@class.IsValueType)
             {
-                foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.Ignore))
+                foreach (var @base in @class.Bases.Where(b => b.IsClass && b.Class.IsDeclared))
                 {
                     GenerateClassProperties(@base.Class);
                 }   
@@ -1194,7 +1194,7 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateProperties(Class @class)
         {
-            foreach (var prop in @class.Properties.Where(p => !p.Ignore))
+            foreach (var prop in @class.Properties.Where(p => p.IsGenerated))
             {
                 if (prop.IsInRefTypeAndBackedByValueClassField())
                 {
@@ -1514,7 +1514,7 @@ namespace CppSharp.Generators.CSharp
             for (int i = 0; i < method.Parameters.Count; i++)
             {
                 var param = method.Parameters[i];
-                if (param.Ignore)
+                if (!param.IsGenerated)
                     continue;
 
                 if (param.Kind == ParameterKind.IndirectReturnType)
@@ -1957,7 +1957,7 @@ namespace CppSharp.Generators.CSharp
 
         private bool GenerateClassConstructorBase(Class @class, Method method)
         {
-            var hasBase = @class.HasBaseClass && !@class.Bases[0].Class.Ignore;
+            var hasBase = @class.HasBaseClass;
 
             if (hasBase && !@class.IsValueType)
             {
@@ -2529,7 +2529,7 @@ namespace CppSharp.Generators.CSharp
 
         public bool GenerateTypedef(TypedefDecl typedef)
         {
-            if (typedef.Ignore)
+            if (!typedef.IsGenerated)
                 return false;
 
             GenerateDeclarationCommon(typedef);
@@ -2563,7 +2563,7 @@ namespace CppSharp.Generators.CSharp
 
         public void GenerateEnum(Enumeration @enum)
         {
-            if (@enum.Ignore) return;
+            if (!@enum.IsGenerated) return;
 
             PushBlock(CSharpBlockKind.Enum);
             GenerateDeclarationCommon(@enum);
@@ -2654,7 +2654,7 @@ namespace CppSharp.Generators.CSharp
 
         public void GenerateInternalFunction(Function function)
         {
-            if (function.ExplicityIgnored || function.IsPure)
+            if (!function.IsInternal || function.IsPure)
                 return;
 
             if (function.OriginalFunction != null)

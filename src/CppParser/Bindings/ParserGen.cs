@@ -145,12 +145,12 @@ namespace CppSharp
     {
         public override bool VisitFieldDecl(Field field)
         {
-            if (field.Ignore)
+            if (!field.IsGenerated)
                 return false;
 
             if (!IsStdType(field.QualifiedType)) return false;
 
-            field.ExplicityIgnored = true;
+            field.ExplicitlyIgnore();
             return true;
         }
 
@@ -161,7 +161,7 @@ namespace CppSharp
 
             if (function.Parameters.Any(param => IsStdType(param.QualifiedType)))
             {
-                function.ExplicityIgnored = true;
+                function.ExplicitlyIgnore();
                 return false;
             }
 

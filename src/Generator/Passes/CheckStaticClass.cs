@@ -63,10 +63,10 @@ namespace CppSharp.Passes
 
             // Ignore the special methods for static classes.
             foreach (var ctor in @class.Constructors)
-                ctor.IsGenerated = false;
+                ctor.GenerationKind = GenerationKind.Internal;
 
             foreach (var dtor in @class.Destructors)
-                dtor.IsGenerated = false;
+                dtor.GenerationKind = GenerationKind.Internal;
 
             return true;
         }

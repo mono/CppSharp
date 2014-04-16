@@ -60,7 +60,7 @@ namespace CppSharp.Passes
         public override bool VisitMethodDecl(Method method)
         {
             if (!method.IsConstructor && !method.IsDestructor && !method.IsOperator &&
-                !method.Ignore)
+                method.IsGenerated)
                 DistributeMethod(method);
             return base.VisitMethodDecl(method);
         }
@@ -195,9 +195,9 @@ namespace CppSharp.Passes
                     property.Comment = comment;
                 }
                 type.Properties.Add(property);
-                getter.IsGenerated = false;
+                getter.GenerationKind = GenerationKind.Internal;
                 if (setter != null)
-                    setter.IsGenerated = false;
+                    setter.GenerationKind = GenerationKind.Internal;
             }
         }
 
