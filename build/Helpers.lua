@@ -10,6 +10,10 @@ examplesdir = path.getabsolute("../examples");
 testsdir = path.getabsolute("../tests");
 
 builddir = path.getabsolute("./" .. action);
+if _ARGS[1] then
+    builddir = path.getabsolute("./" .. _ARGS[1]);
+end
+
 libdir = path.join(builddir, "lib", "%{cfg.buildcfg}_%{cfg.platform}");
 gendir = path.join(builddir, "gen");
 
