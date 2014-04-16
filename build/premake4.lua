@@ -77,12 +77,12 @@ solution "CppSharp"
 
   group "Examples"
     IncludeExamples()
+
+  end
   
   group "Tests"
       IncludeTests()
       
-  end
-  
   group "Libraries"
     include (srcdir .. "/Core")
     include (srcdir .. "/AST/AST.lua")
