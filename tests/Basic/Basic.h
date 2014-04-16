@@ -350,3 +350,16 @@ struct DLL_API TestProperties
     int getFieldValue() { return Field; }
     void setFieldValue(int Value) { Field = Value; }
 };
+
+enum struct MyEnum { A, B, C };
+
+class DLL_API TestArraysPointers
+{
+public:
+    TestArraysPointers(MyEnum *values, int count)
+    {
+        if (values && count) Value = values[0];
+    }
+
+    MyEnum Value;
+};

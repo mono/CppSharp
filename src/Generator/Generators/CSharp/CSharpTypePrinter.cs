@@ -222,6 +222,12 @@ namespace CppSharp.Generators.CSharp
                 return VisitPrimitiveType(primitive, quals) + "*";
             }
 
+            Enumeration @enum;
+            if (desugared.IsTagDecl(out @enum))
+            {
+                return @enum.Name + "*";
+            }
+
             Class @class;
             if ((desugared.IsDependent || desugared.IsTagDecl(out @class))
                 && ContextKind == CSharpTypePrinterContextKind.Native)
