@@ -26,15 +26,15 @@ project "CppSharp.Parser.CSharp"
 
   links { "CppSharp.Runtime" }
 
-  configuration "macosx"
+  if os.is_osx() then
       files { "CSharp/i686-apple-darwin12.4.0/**.cs" }
-
-  configuration "not macosx"
+  else
       files { "CSharp/*.cs" }
+  end
 
   configuration ""
 
-if string.starts(action, "vs") then
+if string.starts(action, "vs") and os.is_windows() then
 
   project "CppSharp.Parser.CLI"
     

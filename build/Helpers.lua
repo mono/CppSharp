@@ -23,6 +23,16 @@ gcc_buildflags = { "-std=c++11" }
 
 msvc_cpp_defines = { }
 
+function os.is_osx()
+  local version = os.getversion()
+  return string.find(version.description, "Mac OS X") ~= nil
+end
+
+function os.is_windows()
+  local version = os.getversion()
+  return string.find(version.description, "Windows") ~= nil
+end
+
 function string.starts(str, start)
    return string.sub(str, 1, string.len(start)) == start
 end
@@ -62,12 +72,14 @@ function SetupNativeProject()
 end
 
 function SetupManagedProject()
+  language "C#"
   location (path.join(builddir, "projects"))
 
-  local c = configuration "vs*"
-    location "."
-
-  configuration(c)
+  if not os.is_osx() then
+    local c = configuration { "vs*" }
+      location "."
+    configuration(c)
+  end
 end
 
 function IncludeDir(dir)

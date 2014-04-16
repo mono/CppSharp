@@ -54,6 +54,6 @@ solution "CppSharp"
     include (srcdir .. "/Runtime/Runtime.lua")
     include (srcdir .. "/CppParser")
 
-    if string.starts(action, "vs") then
+    if string.starts(action, "vs") and os.is_windows() then
       include (srcdir .. "/Parser/Parser.lua")
     end

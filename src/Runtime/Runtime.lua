@@ -1,16 +1,13 @@
 project "CppSharp.Runtime"
 
   kind "SharedLib"
-  language "C#"
-  flags { "Unsafe" }
-
   SetupManagedProject()
+  flags { "Unsafe" }
 
   files   { "**.cs" }
   links { "System" }
 
   configuration "vs*"
-  	location "."
   	defines { "MSVC" }
 
   configuration "macosx"

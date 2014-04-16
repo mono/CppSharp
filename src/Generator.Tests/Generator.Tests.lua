@@ -1,8 +1,7 @@
 project "CppSharp.Generator.Tests"
 
   kind "SharedLib"
-  language "C#"
-  location "."
+  SetupManagedProject()
 
   files { "**.cs" }
   
