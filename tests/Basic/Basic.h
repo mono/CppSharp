@@ -363,3 +363,9 @@ public:
 
     MyEnum Value;
 };
+
+struct DLL_API TestGetterSetterToProperties
+{
+    int getWidth() { return 640; }
+    int getHeight() { return 480; }
+};

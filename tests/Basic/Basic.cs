@@ -20,6 +20,7 @@ namespace CppSharp.Tests
             driver.Options.GenerateVirtualTables = true;
             driver.Options.GenerateCopyConstructors = true;
             driver.Options.MarshalCharAsManagedChar = true;
+            driver.Options.GenerateProperties = true;
         }
 
         public override void Preprocess(Driver driver, ASTContext ctx)

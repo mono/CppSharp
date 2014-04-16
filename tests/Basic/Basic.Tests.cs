@@ -265,5 +265,13 @@ public class BasicTests : GeneratorTestFixture
         var arrays = new TestArraysPointers(&values, 1);
         Assert.That(arrays.Value, Is.EqualTo(MyEnum.A));
     }
+
+    [Test]
+    public unsafe void TestGetterSetterToProperties()
+    {
+        var @class = new TestGetterSetterToProperties();
+        Assert.That(@class.Width, Is.EqualTo(640));
+        Assert.That(@class.Height, Is.EqualTo(480));
+    }
 }
  
