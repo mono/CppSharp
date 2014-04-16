@@ -11,7 +11,7 @@ using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Passes
 {
-    class GetterSetterToPropertyAdvancedPass : TranslationUnitPass
+    public class GetterSetterToPropertyAdvancedPass : TranslationUnitPass
     {
         // collect all types of methods first to be able to match pairs and detect virtuals and overrides;
         // (a property needs to) be virtual or an override if either of its constituent methods are such)
