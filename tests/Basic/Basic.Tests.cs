@@ -181,8 +181,7 @@ public class BasicTests : GeneratorTestFixture
     [Test]
     public void TestAttributedDelegate()
     {
-        var attributedDelegate = basic.GetAttributedDelegate();
-        var result = attributedDelegate(2);
+        var result = basic.AttributedDelegate(2);
         Assert.AreEqual(4, result);
     }
 

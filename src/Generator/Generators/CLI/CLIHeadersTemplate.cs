@@ -640,6 +640,9 @@ namespace CppSharp.Generators.CLI
             PushBlock(CLIBlockKind.Property, property);
             var type = property.QualifiedType.Visit(TypePrinter);
 
+            if (property.IsStatic)
+                Write("static ");
+
             if (property.IsIndexer)
             {
                 GenerateIndexer(property);
