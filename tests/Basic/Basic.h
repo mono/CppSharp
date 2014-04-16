@@ -18,7 +18,11 @@ public:
 	// TODO: VC++ does not support char16
 	// char16 chr16;
 
-	float nested_array[2][2];
+    // Not properly handled yet - ignore
+    float nested_array[2][2];
+    // Primitive pointer types
+    const int* SomePointer;
+    const int** SomePointerPointer;
 };
 
 struct DLL_API Bar
@@ -243,13 +247,25 @@ typedef int (*DelegateInGlobalNamespace)(int);
 struct DLL_API TestDelegates
 {
     typedef int (*DelegateInClass)(int);
+    typedef int(TestDelegates::*MemberDelegate)(int);
 
-    TestDelegates() : A(Double), B(Double) {}
+    TestDelegates() : A(Double), B(Double) { C = &TestDelegates::Triple; }
     static int Double(int N) { return N * 2; }
+    int Triple(int N) { return N * 3; }
 
     DelegateInClass A;
     DelegateInGlobalNamespace B;
+    // As long as we can't marshal them make sure they're ignored
+    MemberDelegate C;
 };
+
+// Tests delegate generation for attributed function types
+typedef int(__cdecl *AttributedDelegate)(int n);
+DLL_API int __cdecl Double(int n) { return n * 2; }
+DLL_API AttributedDelegate GetAttributedDelegate()
+{
+    return Double;
+}
 
 // Tests memory leaks in constructors
 //  C#:  Marshal.FreeHGlobal(arg0);
@@ -307,8 +323,9 @@ typedef unsigned long foo_t;
 typedef struct DLL_API SomeStruct
 {
 	SomeStruct() : p(1) {}
-	const foo_t& operator[](int i) const { return p; }
-	foo_t operator[](int i) { return p; }
+	foo_t& operator[](int i) { return p; }
+    // CSharp backend can't deal with a setter here
+    foo_t operator[](const char* name) { return p; }
 	foo_t p;
 }
 SomeStruct;

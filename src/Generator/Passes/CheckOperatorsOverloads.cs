@@ -100,14 +100,18 @@ namespace CppSharp.Passes
             if (!@operator.ReturnType.Qualifiers.IsConst && @operator.ReturnType.Type.IsAddress())
                 property.SetMethod = @operator;
 
-            // C++/CLI uses "default" as the indexer property name.
             if (Driver.Options.IsCLIGenerator)
+            {
+                // If we've a setter use the pointee as the type of the property.
+                var pointerType = property.Type as PointerType;
+                if (pointerType != null && property.HasSetter)
+                {
+                    property.QualifiedType = new QualifiedType(pointerType.Pointee, property.QualifiedType.Qualifiers);
+                    property.GetMethod.ReturnType = property.QualifiedType;
+                }
+                // C++/CLI uses "default" as the indexer property name.
                 property.Name = "default";
-
-            property.GetMethod.Parameters[0].Name = "index";
-
-            if (property.SetMethod != null)
-                property.SetMethod.Parameters[0].Name = "index";
+            }
 
             property.Parameters.AddRange(@operator.Parameters);
 

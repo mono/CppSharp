@@ -23,6 +23,16 @@ public class BasicTests : GeneratorTestFixture
         Assert.That(hello.AddFooPtr(foo), Is.EqualTo(11));
         Assert.That(hello.AddFooPtr(foo), Is.EqualTo(11));
         Assert.That(hello.AddFooRef(foo), Is.EqualTo(11));
+        unsafe
+        {
+            var pointer = foo.SomePointer;
+            var pointerPointer = foo.SomePointerPointer;
+            for (int i = 0; i < 4; i++)
+            {
+                Assert.AreEqual(i, pointer[i]);
+                Assert.AreEqual(i, (*pointerPointer)[i]);
+            }
+        }
 
         var bar = new Bar { A = 4, B = 7 };
         Assert.That(hello.AddBar(bar), Is.EqualTo(11));
@@ -169,6 +179,13 @@ public class BasicTests : GeneratorTestFixture
     }
 
     [Test]
+    public void TestAttributedDelegate()
+    {
+        var result = basic.AttributedDelegate(2);
+        Assert.AreEqual(4, result);
+    }
+
+    [Test]
     public void TestUnion()
     {
         Hello.NestedPublic nestedPublic = new Hello.NestedPublic();
@@ -224,6 +241,9 @@ public class BasicTests : GeneratorTestFixture
     {
         var someStruct = new SomeStruct();
         Assert.That(someStruct[0], Is.EqualTo(1));
+        Assert.That(someStruct["foo"], Is.EqualTo(1));
+        someStruct[0] = 2;
+        Assert.That(someStruct[0], Is.EqualTo(2));
     }
 
     [Test]

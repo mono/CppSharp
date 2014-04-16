@@ -616,15 +616,18 @@ namespace CppSharp.Generators.CLI
         public void GenerateIndexer(Property property)
         {
             var type = property.QualifiedType.Visit(TypePrinter);
+            var getter = property.GetMethod;
+            var indexParameter = getter.Parameters[0];
+            var indexParameterType = indexParameter.QualifiedType.Visit(TypePrinter);
 
-            WriteLine("property {0} default[int]", type);
+            WriteLine("property {0} default[{1}]", type, indexParameterType);
             WriteStartBraceIndent();
 
             if (property.HasGetter)
-                WriteLine("{0} get(int index);", type);
+                WriteLine("{0} get({1} {2});", type, indexParameterType, indexParameter.Name);
 
             if (property.HasSetter)
-                WriteLine("void set(int index, {0});", type);
+                WriteLine("void set({1} {2}, {0} value);", type, indexParameterType, indexParameter.Name);
 
             WriteCloseBraceIndent();
         }
@@ -636,6 +639,9 @@ namespace CppSharp.Generators.CLI
 
             PushBlock(CLIBlockKind.Property, property);
             var type = property.QualifiedType.Visit(TypePrinter);
+
+            if (property.IsStatic)
+                Write("static ");
 
             if (property.IsIndexer)
             {

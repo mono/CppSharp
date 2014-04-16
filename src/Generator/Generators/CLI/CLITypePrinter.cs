@@ -142,14 +142,22 @@ namespace CppSharp.Generators.CLI
                 return "System::String^";
             }
 
-            PrimitiveType primitive;
-            if (pointee.IsPrimitiveType(out primitive))
+            // From http://msdn.microsoft.com/en-us/library/y31yhkeb.aspx
+            // Any of the following types may be a pointer type:
+            // * sbyte, byte, short, ushort, int, uint, long, ulong, char, float, double, decimal, or bool.
+            // * Any enum type.
+            // * Any pointer type.
+            // * Any user-defined struct type that contains fields of unmanaged types only.
+            var finalPointee = pointer.GetFinalPointee();
+            if (finalPointee.IsPrimitiveType())
             {
+                // Skip one indirection if passed by reference
                 var param = Context.Parameter;
-                if (param != null && (param.IsOut || param.IsInOut))
-                    return VisitPrimitiveType(primitive);
+                if (param != null && (param.IsOut || param.IsInOut)
+                    && pointee == finalPointee)
+                    return pointee.Visit(this, quals);
 
-                return VisitPrimitiveType(primitive, quals) + "*";
+                return pointee.Visit(this, quals) + "*";
             }
 
             Enumeration @enum;

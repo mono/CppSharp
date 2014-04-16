@@ -330,28 +330,29 @@ namespace CppSharp.Generators.CLI
                         property.Type);
 
                 if (property.HasSetter)
-                    GeneratePropertySetter(property.SetMethod, realOwner, property.Name,
-                        property.Type);
+                    if (property.IsIndexer)
+                        GeneratePropertySetter(property.SetMethod, realOwner, property.Name,
+                            property.Type, property.GetMethod.Parameters[0]);
+                    else
+                        GeneratePropertySetter(property.SetMethod, realOwner, property.Name,
+                            property.Type);
             }
             PopBlock(); 
         }
 
-        private void GeneratePropertySetter<T>(T decl, Class @class, string name, Type type)
+        private void GeneratePropertySetter<T>(T decl, Class @class, string name, Type type, Parameter indexParameter = null)
             where T : Declaration, ITypedDecl
         {
             if (decl == null)
                 return;
 
-            var method = decl as Method;
-            var isIndexer = method != null &&
-                method.OperatorKind == CXXOperatorKind.Subscript;
-
             var args = new List<string>();
+            var isIndexer = indexParameter != null;
             if (isIndexer)
-                args.Add("int index");
+                args.Add(string.Format("{0} {1}", indexParameter.Type, indexParameter.Name));
 
             var function = decl as Function;
-            var argName = function != null ? function.Parameters[0].Name : "value";
+            var argName = function != null && !isIndexer ? function.Parameters[0].Name : "value";
             args.Add(string.Format("{0} {1}", type, argName));
 
             WriteLine("void {0}::{1}::set({2})", QualifiedIdentifier(@class),
@@ -397,7 +398,7 @@ namespace CppSharp.Generators.CLI
                                              @class.QualifiedOriginalName, decl.OriginalName);
 
                 if (isIndexer)
-                    variable += "(index)";
+                    variable += string.Format("({0})", indexParameter.Name);
 
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                     Write(marshal.Context.SupportBefore);
@@ -421,7 +422,10 @@ namespace CppSharp.Generators.CLI
 
             var args = new List<string>();
             if (isIndexer)
-                args.Add("int index");
+            {
+                var indexParameter = method.Parameters[0];
+                args.Add(string.Format("{0} {1}", indexParameter.Type, indexParameter.Name));
+            }
 
             WriteLine("{0} {1}::{2}::get({3})", type, QualifiedIdentifier(@class),
                       name, string.Join(", ", args));
@@ -966,7 +970,7 @@ namespace CppSharp.Generators.CLI
             if (Driver.Options.MarshalCharAsManagedChar)
             {
                 foreach (var param in method.Parameters.Where(
-                    p => p.Type.Desugar().IsPrimitiveType(PrimitiveType.Int8)))
+                    p => p.Type.IsPrimitiveType(PrimitiveType.Int8)))
                 {
                     WriteLine("if ({0} < System::Char::MinValue || {0} > System::SByte::MaxValue)", param.Name);
                     WriteLineIndent(

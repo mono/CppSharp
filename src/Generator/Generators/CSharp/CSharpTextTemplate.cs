@@ -2105,7 +2105,7 @@ namespace CppSharp.Generators.CSharp
             if (Driver.Options.MarshalCharAsManagedChar)
             {
                 foreach (var param in method.Parameters.Where(
-                    p => p.Type.Desugar().IsPrimitiveType(PrimitiveType.Int8)))
+                    p => p.Type.IsPrimitiveType(PrimitiveType.Int8)))
                 {
                     WriteLine("if ({0} < char.MinValue || {0} > sbyte.MaxValue)", param.Name);
                     WriteLineIndent(
@@ -2690,7 +2690,7 @@ namespace CppSharp.Generators.CSharp
 
             WriteLineIndent("EntryPoint=\"{0}\")]", function.Mangled);
 
-            if (function.ReturnType.Type.Desugar().IsPrimitiveType(PrimitiveType.Bool))
+            if (function.ReturnType.Type.IsPrimitiveType(PrimitiveType.Bool))
                 WriteLine("[return: MarshalAsAttribute(UnmanagedType.I1)]");
 
             var @params = new List<string>();

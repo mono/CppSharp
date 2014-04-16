@@ -208,18 +208,27 @@ namespace CppSharp.Generators.CSharp
             if (IsConstCharString(pointer))
                 return isManagedContext ? "string" : "global::System.IntPtr";
 
-            PrimitiveType primitive;
             var desugared = pointee.Desugar();
-            if (desugared.IsPrimitiveType(out primitive))
+
+            // From http://msdn.microsoft.com/en-us/library/y31yhkeb.aspx
+            // Any of the following types may be a pointer type:
+            // * sbyte, byte, short, ushort, int, uint, long, ulong, char, float, double, decimal, or bool.
+            // * Any enum type.
+            // * Any pointer type.
+            // * Any user-defined struct type that contains fields of unmanaged types only.
+            var finalPointee = pointer.GetFinalPointee();
+            if (finalPointee.IsPrimitiveType())
             {
-                if (isManagedContext && Context.Parameter != null &&
-                    (Context.Parameter.IsOut || Context.Parameter.IsInOut))
-                    return VisitPrimitiveType(primitive, quals);
+                // Skip one indirection if passed by reference
+                var param = Context.Parameter;
+                if (isManagedContext && param != null && (param.IsOut || param.IsInOut)
+                    && pointee == finalPointee)
+                    return pointee.Visit(this, quals);
 
                 if (ContextKind == CSharpTypePrinterContextKind.GenericDelegate)
                     return "global::System.IntPtr";
 
-                return VisitPrimitiveType(primitive, quals) + "*";
+                return pointee.Visit(this, quals) + "*";
             }
 
             Enumeration @enum;

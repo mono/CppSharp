@@ -94,21 +94,14 @@
 
         public static bool IsPointerTo<T>(this Type t, out T type) where T : Type
         {
-            var ptr = t as PointerType;
-            
-            if (ptr == null)
+            var pointee = t.GetPointee();
+            type = pointee as T;
+            if (type == null)
             {
-                var functionPointer = t as MemberPointerType;
-                if (functionPointer != null)
-                {
-                    type = functionPointer.Pointee as T;
-                    return type != null;
-                }
-                type = null;
-                return false;
+                var attributedType = pointee as AttributedType;
+                if (attributedType != null)
+                    type = attributedType.Modified.Type as T;
             }
-            
-            type = ptr.Pointee as T;
             return type != null;
         }
 
@@ -154,6 +147,39 @@
             }
 
             return t;
+        }
+
+        /// <summary>
+        /// If t is a pointer type the type pointed to by t will be returned.
+        /// Otherwise null.
+        /// </summary>
+        public static Type GetPointee(this Type t)
+        {
+            var ptr = t as PointerType;
+            if (ptr != null)
+                return ptr.Pointee;
+            var memberPtr = t as MemberPointerType;
+            if (memberPtr != null)
+                return memberPtr.Pointee;
+            return null;
+        }
+
+        /// <summary>
+        /// If t is a pointer type the type pointed to by t will be returned
+        /// after fully dereferencing it. Otherwise null.
+        /// For example int** -> int.
+        /// </summary>
+        public static Type GetFinalPointee(this Type t)
+        {
+            var finalPointee = t.GetPointee();
+            var pointee = finalPointee;
+            while (pointee != null)
+            {
+                pointee = pointee.GetPointee();
+                if (pointee != null)
+                    finalPointee = pointee;
+            }
+            return finalPointee;
         }
     }
 }

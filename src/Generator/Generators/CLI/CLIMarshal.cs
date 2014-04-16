@@ -91,11 +91,15 @@ namespace CppSharp.Generators.CLI
 
             if (pointee.IsPrimitiveType(out primitive))
             {
+                var returnVarName = Context.ReturnVarName;
+                if (quals.IsConst != Context.ReturnType.Qualifiers.IsConst)
+                    returnVarName = string.Format("const_cast<{0}>({1})",
+                        Context.ReturnType, Context.ReturnVarName);
                 if (pointer.Pointee is TypedefType)
                     Context.Return.Write("reinterpret_cast<{0}>({1})", pointer,
-                        Context.ReturnVarName);
+                        returnVarName);
                 else
-                    Context.Return.Write(Context.ReturnVarName);
+                    Context.Return.Write(returnVarName);
                 return true;
             }
 
@@ -438,8 +442,8 @@ namespace CppSharp.Generators.CLI
                 return pointee.Visit(this, quals);
             }
 
-            PrimitiveType primitive;
-            if (pointee.IsPrimitiveType(out primitive))
+            var finalPointee = pointer.GetFinalPointee();
+            if (finalPointee.IsPrimitiveType())
             {
                 var cppTypePrinter = new CppTypePrinter(Context.Driver.TypeDatabase);
                 var cppTypeName = pointer.Visit(cppTypePrinter, quals);
@@ -506,7 +510,7 @@ namespace CppSharp.Generators.CLI
             }
 
             PrimitiveType primitive;
-            if (decl.Type.Desugar().IsPrimitiveType(out primitive))
+            if (decl.Type.IsPrimitiveType(out primitive))
             {
                 Context.Return.Write("(::{0})", typedef.Declaration.QualifiedOriginalName);
             }
