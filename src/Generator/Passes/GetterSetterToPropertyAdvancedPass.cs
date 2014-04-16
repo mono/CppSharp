@@ -26,13 +26,21 @@ namespace CppSharp.Passes
             LoadVerbs();
         }
 
+		static Stream GetResourceStream (Assembly assembly)
+		{
+			var stream = assembly.GetManifestResourceStream("CppSharp.Generator.Passes.verbs.txt");
+			if (stream != null)
+				return stream;
+
+			stream = assembly.GetManifestResourceStream("verbs.txt");
+			return stream;
+		}
+
         private static void LoadVerbs()
         {
-            using (var resourceStream = Assembly.GetExecutingAssembly()
-                .GetManifestResourceStream("CppSharp.Generator.Passes.verbs.txt"))
+			var assembly = Assembly.GetExecutingAssembly();
+			using (var resourceStream = GetResourceStream(assembly))
             {
-                if (resourceStream == null) return;
-
                 using (var streamReader = new StreamReader(resourceStream))
                     while (!streamReader.EndOfStream)
                         verbs.Add(streamReader.ReadLine());
