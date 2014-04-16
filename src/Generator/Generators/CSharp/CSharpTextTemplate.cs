@@ -596,7 +596,7 @@ namespace CppSharp.Generators.CSharp
         {
             foreach (var @base in @class.Bases)
             {
-                if (!@base.IsClass || !@base.Class.IsGenerated)
+                if (!@base.IsClass || !@base.Class.IsDeclared)
                     continue;
 
                 GenerateStructMarshalingProperties(@base.Class);
@@ -647,7 +647,7 @@ namespace CppSharp.Generators.CSharp
         {
             foreach (var @base in @class.Bases)
             {
-                if (!@base.IsClass || !@base.Class.IsGenerated)
+                if (!@base.IsClass || !@base.Class.IsDeclared)
                     continue;
 
                 var baseClass = @base.Class;
@@ -771,7 +771,7 @@ namespace CppSharp.Generators.CSharp
             foreach (var @base in @class.Bases.Where(b => !(b.Type is DependentNameType)))
             {
                 TypeMap typeMap;
-                if ((!Driver.TypeDatabase.FindTypeMap(@base.Type, out typeMap) && !@base.Class.IsGenerated) ||
+                if ((!Driver.TypeDatabase.FindTypeMap(@base.Type, out typeMap) && !@base.Class.IsDeclared) ||
                     @base.Class.OriginalClass == @class)
                     continue;
 
@@ -1183,7 +1183,7 @@ namespace CppSharp.Generators.CSharp
         {
             if (@class.IsValueType)
             {
-                foreach (var @base in @class.Bases.Where(b => b.IsClass && b.Class.IsGenerated))
+                foreach (var @base in @class.Bases.Where(b => b.IsClass && b.Class.IsDeclared))
                 {
                     GenerateClassProperties(@base.Class);
                 }   
@@ -1957,7 +1957,7 @@ namespace CppSharp.Generators.CSharp
 
         private bool GenerateClassConstructorBase(Class @class, Method method)
         {
-            var hasBase = @class.HasBaseClass && @class.Bases[0].Class.IsGenerated;
+            var hasBase = @class.HasBaseClass;
 
             if (hasBase && !@class.IsValueType)
             {

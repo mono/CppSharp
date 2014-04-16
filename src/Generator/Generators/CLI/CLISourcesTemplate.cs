@@ -216,14 +216,14 @@ namespace CppSharp.Generators.CLI
         {
             if (@class.IsValueType)
             {
-                foreach (var @base in @class.Bases.Where(b => b.IsClass && b.Class.IsGenerated))
+                foreach (var @base in @class.Bases.Where(b => b.IsClass && b.Class.IsDeclared))
                 {
                     GenerateClassProperties(@base.Class, realOwner);
                 }
             }
 
             foreach (var property in @class.Properties.Where(
-                p => p.IsGenerated && !p.IsInRefTypeAndBackedByValueClassField()))
+                p => !ASTUtils.CheckIgnoreProperty(p) && !p.IsInRefTypeAndBackedByValueClassField()))
                 GenerateProperty(property, realOwner);
         }
 
@@ -309,8 +309,6 @@ namespace CppSharp.Generators.CLI
 
         private void GenerateProperty(Property property, Class realOwner)
         {
-            if (!property.IsGenerated) return;
-
             PushBlock(CLIBlockKind.Property);
 
             if (property.Field != null)
@@ -628,14 +626,15 @@ namespace CppSharp.Generators.CLI
 
         private void GenerateStructMarshaling(Class @class, string nativeVar)
         {
-            foreach (var @base in @class.Bases.Where(b => b.IsClass && b.Class.IsGenerated))
+            foreach (var @base in @class.Bases.Where(b => b.IsClass && b.Class.IsDeclared))
             {
                 GenerateStructMarshaling(@base.Class, nativeVar);
             }
 
-            foreach (var property in @class.Properties)
+            foreach (var property in @class.Properties.Where( p => !ASTUtils.CheckIgnoreProperty(p)))
             {
-                if (!property.IsGenerated || property.Field == null) continue;
+                if (property.Field == null)
+                    continue;
 
                 var nativeField = string.Format("{0}{1}",
                                                 nativeVar, property.Field.OriginalName);

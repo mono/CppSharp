@@ -417,7 +417,7 @@ namespace CppSharp.Generators.CLI
             // properties to the managed value subtypes.
             if (@class.IsValueType)
             {
-                foreach (var @base in @class.Bases.Where(b => b.IsClass && b.Class.IsGenerated))
+                foreach (var @base in @class.Bases.Where(b => b.IsClass && b.Class.IsDeclared))
                 {
                     GenerateClassFields(@base.Class);
                 }
@@ -426,7 +426,7 @@ namespace CppSharp.Generators.CLI
             PushIndent();
             // check for value types because some of the ignored fields may back properties;
             // not the case for ref types because the NativePtr pattern is used there
-            foreach (var field in @class.Fields.Where(f => f.IsGenerated || @class.IsValueType))
+            foreach (var field in @class.Fields.Where(f => !ASTUtils.CheckIgnoreField(f)))
             {
                 var property = @class.Properties.FirstOrDefault(p => p.Field == field);
                 if (property != null && !property.IsInRefTypeAndBackedByValueClassField())
@@ -592,14 +592,14 @@ namespace CppSharp.Generators.CLI
             // properties to the managed value subtypes.
             if (@class.IsValueType)
             {
-                foreach (var @base in @class.Bases.Where(b => b.IsClass && b.Class.IsGenerated))
+                foreach (var @base in @class.Bases.Where(b => b.IsClass && b.Class.IsDeclared))
                 {
                     GenerateClassProperties(@base.Class);
                 }
             }
 
             PushIndent();
-            foreach (var prop in @class.Properties.Where(prop => prop.IsGenerated))
+            foreach (var prop in @class.Properties.Where(prop => !ASTUtils.CheckIgnoreProperty(prop)))
             {
                 if (prop.IsInRefTypeAndBackedByValueClassField())
                 {
