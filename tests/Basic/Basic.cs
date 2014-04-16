@@ -18,6 +18,7 @@ namespace CppSharp.Tests
             if (driver.Options.IsCSharpGenerator)
                 driver.Options.GenerateAbstractImpls = true;
             driver.Options.GenerateVirtualTables = true;
+            driver.Options.GenerateCopyConstructors = true;
             driver.Options.MarshalCharAsManagedChar = true;
         }
 

@@ -62,6 +62,7 @@ namespace CppSharp.Tests
             driver.Options.GenerateInterfacesForMultipleInheritance = true;
             driver.Options.GenerateProperties = true;
             driver.Options.GenerateVirtualTables = true;
+            driver.Options.GenerateCopyConstructors = true;
             driver.TranslationUnitPasses.AddPass(new TestAttributesPass());
         }
 
