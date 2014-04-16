@@ -970,7 +970,7 @@ namespace CppSharp.Generators.CLI
             if (Driver.Options.MarshalCharAsManagedChar)
             {
                 foreach (var param in method.Parameters.Where(
-                    p => p.Type.Desugar().IsPrimitiveType(PrimitiveType.Int8)))
+                    p => p.Type.IsPrimitiveType(PrimitiveType.Int8)))
                 {
                     WriteLine("if ({0} < System::Char::MinValue || {0} > System::SByte::MaxValue)", param.Name);
                     WriteLineIndent(

@@ -501,7 +501,7 @@ namespace CppSharp.Generators.CLI
             }
 
             PrimitiveType primitive;
-            if (decl.Type.Desugar().IsPrimitiveType(out primitive))
+            if (decl.Type.IsPrimitiveType(out primitive))
             {
                 Context.Return.Write("(::{0})", typedef.Declaration.QualifiedOriginalName);
             }
