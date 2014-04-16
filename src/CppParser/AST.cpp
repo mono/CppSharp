@@ -34,6 +34,8 @@ static std::vector<T> split(const T & str, const T & delimiters) {
 namespace CppSharp { namespace CppParser { namespace AST {
 
 Type::Type(TypeKind kind) : Kind(kind) {}
+Type::Type(const Type& rhs) : Kind(rhs.Kind), IsDependent(rhs.IsDependent) {}
+
 QualifiedType::QualifiedType() : Type(0) {}
 
 TagType::TagType() : Type(TypeKind::Tag) {}
@@ -57,9 +59,16 @@ TemplateArgument::TemplateArgument() : Declaration(0) {}
 
 TemplateSpecializationType::TemplateSpecializationType()
     : Type(TypeKind::TemplateSpecialization), Template(0), Desugared(0) {}
+TemplateSpecializationType::TemplateSpecializationType(
+    const TemplateSpecializationType& rhs) : Type(rhs),
+    Arguments(rhs.Arguments), Template(rhs.Template), Desugared(rhs.Desugared) {}
+
 DEF_VECTOR(TemplateSpecializationType, TemplateArgument, Arguments)
 
 // TemplateParameter
+TemplateParameter::TemplateParameter() {}
+TemplateParameter::TemplateParameter(const TemplateParameter& rhs) : Name(rhs.Name) {}
+
 DEF_STRING(TemplateParameter, Name)
 
 TemplateParameterType::TemplateParameterType() : Type(TypeKind::TemplateParameter) {}
@@ -80,9 +89,14 @@ VTableComponent::VTableComponent() : Offset(0), Declaration(0) {}
 
 // VTableLayout
 VTableLayout::VTableLayout() {}
+VTableLayout::VTableLayout(const VTableLayout& rhs) : Components(rhs.Components) {}
+
 DEF_VECTOR(VTableLayout, VTableComponent, Components)
 
 VFTableInfo::VFTableInfo() : VBTableIndex(0), VFPtrOffset(0), VFPtrFullOffset(0) {}
+VFTableInfo::VFTableInfo(const VFTableInfo& rhs) : VBTableIndex(rhs.VBTableIndex),
+    VFPtrOffset(rhs.VFPtrOffset), VFPtrFullOffset(rhs.VFPtrFullOffset),
+    Layout(rhs.Layout) {}
 
 ClassLayout::ClassLayout() : ABI(CppAbi::Itanium), HasOwnVFPtr(false),
     VBPtrOffset(0), Alignment(0), Size(0), DataSize(0) {}

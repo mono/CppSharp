@@ -54,6 +54,8 @@ enum struct ParserDiagnosticLevel
 struct CS_API ParserDiagnostic
 {
     ParserDiagnostic();
+    ParserDiagnostic(const ParserDiagnostic&);
+
     STRING(FileName)
     STRING(Message)
     ParserDiagnosticLevel Level;
@@ -71,6 +73,7 @@ enum struct ParserResultKind
 struct CS_API ParserResult
 {
     ParserResult();
+    ParserResult(const ParserResult&);
 
     ParserResultKind Kind;
     VECTOR(ParserDiagnostic, Diagnostics)
