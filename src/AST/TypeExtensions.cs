@@ -94,21 +94,14 @@
 
         public static bool IsPointerTo<T>(this Type t, out T type) where T : Type
         {
-            var ptr = t as PointerType;
-            
-            if (ptr == null)
+            var pointee = t.GetPointee();
+            type = pointee as T;
+            if (type == null)
             {
-                var functionPointer = t as MemberPointerType;
-                if (functionPointer != null)
-                {
-                    type = functionPointer.Pointee as T;
-                    return type != null;
-                }
-                type = null;
-                return false;
+                var attributedType = pointee as AttributedType;
+                if (attributedType != null)
+                    type = attributedType.Modified.Type as T;
             }
-            
-            type = ptr.Pointee as T;
             return type != null;
         }
 

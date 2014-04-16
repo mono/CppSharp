@@ -179,6 +179,14 @@ public class BasicTests : GeneratorTestFixture
     }
 
     [Test]
+    public void TestAttributedDelegate()
+    {
+        var attributedDelegate = basic.GetAttributedDelegate();
+        var result = attributedDelegate(2);
+        Assert.AreEqual(4, result);
+    }
+
+    [Test]
     public void TestUnion()
     {
         Hello.NestedPublic nestedPublic = new Hello.NestedPublic();

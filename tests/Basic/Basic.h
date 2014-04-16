@@ -259,6 +259,14 @@ struct DLL_API TestDelegates
     MemberDelegate C;
 };
 
+// Tests delegate generation for attributed function types
+typedef int(__cdecl *AttributedDelegate)(int n);
+DLL_API int __cdecl Double(int n) { return n * 2; }
+DLL_API AttributedDelegate GetAttributedDelegate()
+{
+    return Double;
+}
+
 // Tests memory leaks in constructors
 //  C#:  Marshal.FreeHGlobal(arg0);
 struct DLL_API TestMemoryLeaks
