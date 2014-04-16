@@ -13,7 +13,7 @@ namespace CppSharp.Passes
 
         public override bool VisitTranslationUnit(TranslationUnit unit)
         {
-            if (IsExternalDeclaration(unit))
+            if (IsExternalDeclaration(unit) && unit.IsGenerated)
                 unit.GenerationKind = GenerationKind.Link;
                 
             // Try to get an include path that works from the original include
