@@ -65,7 +65,21 @@ namespace CppSharp.AST
             if (field.Access == AccessSpecifier.Private) 
                 return true;
 
+            if (field.Class.IsValueType && field.IsDeclared)
+                return false;
+
             return !field.IsGenerated;
+        }
+
+        public static bool CheckIgnoreProperty(Property prop)
+        {
+            if (prop.Access == AccessSpecifier.Private)
+                return true;
+
+            if (prop.Field != null && prop.Field.Class.IsValueType && prop.IsDeclared)
+                return false;
+
+            return !prop.IsGenerated;
         }
     }
 
