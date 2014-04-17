@@ -386,3 +386,31 @@ struct DLL_API TestGetterSetterToProperties
     int getWidth() { return 640; }
     int getHeight() { return 480; }
 };
+
+// Tests conversion operators of classes
+class DLL_API ClassA 
+{
+public:
+    ClassA(int value) { Value = value; }
+    int Value;
+};
+class DLL_API ClassB
+{
+public:
+    // conversion from ClassA (constructor):
+    ClassB(const ClassA& x) { Value = x.Value; }
+    int Value;
+    // conversion from ClassA (assignment):
+    //ClassB& operator= (const ClassA& x) { return *this; }
+    // conversion to ClassA (type-cast operator)
+    //operator ClassA() { return ClassA(); }
+};
+class DLL_API ClassC
+{
+public:
+    // This should NOT lead to a conversion
+    ClassC(const ClassA* x) { Value = x->Value; }
+    // This should lead to an explicit conversion
+    explicit ClassC(const ClassB& x) { Value = x.Value; }
+    int Value;
+};

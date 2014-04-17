@@ -112,6 +112,13 @@ namespace CppSharp
         /// </summary>
         public bool GeneratePropertiesAdvanced;
 
+        /// <summary>
+        /// If set to true the generator will use ConstructorToConversionOperatorPass to
+        /// create implicit and explicit conversion operators out of single argument
+        /// constructors.
+        /// </summary>
+        public bool GenerateConversionOperators;
+
         //List of include directories that are used but not generated
         public List<string> NoGenIncludeDirs;
         public string NoGenIncludePrefix = "";

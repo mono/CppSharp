@@ -94,7 +94,8 @@ namespace CppSharp.Generators.CLI
 
         public string GetMethodName(Method method)
         {
-            if (method.OperatorKind == CXXOperatorKind.Conversion)
+            if (method.OperatorKind == CXXOperatorKind.Conversion ||
+                method.OperatorKind == CXXOperatorKind.ExplicitConversion)
                 return "operator " + method.ConversionType;
 
             if (method.IsConstructor || method.IsDestructor)
