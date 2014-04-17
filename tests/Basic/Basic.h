@@ -85,7 +85,7 @@ struct DLL_API Bar2 : public Bar
 enum Enum
 {
     A = 0, B = 2, C = 5,
-    D = 0x80000000,
+    //D = 0x80000000,
     E = 0x1,
     F = -9
 };
