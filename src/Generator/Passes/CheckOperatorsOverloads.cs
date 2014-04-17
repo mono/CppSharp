@@ -196,8 +196,9 @@ namespace CppSharp.Passes
                 // The array indexing operator can be overloaded
                 case CXXOperatorKind.Subscript:
 
-                // The conversion operator can be overloaded
+                // The conversion operators can be overloaded
                 case CXXOperatorKind.Conversion:
+                case CXXOperatorKind.ExplicitConversion:
                     return true;
 
                 // The comparison operators can be overloaded if their return type is bool
