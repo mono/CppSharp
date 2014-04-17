@@ -384,7 +384,8 @@ DEF_VECTOR(Function, Parameter*, Parameters)
 Method::Method() : IsDefaultConstructor(false), IsCopyConstructor(false),
     IsMoveConstructor(false) { Kind = DeclarationKind::Method; }
 
-Enumeration::Enumeration() : Declaration(DeclarationKind::Enumeration) {}
+Enumeration::Enumeration() : Declaration(DeclarationKind::Enumeration),
+    Modifiers((EnumModifiers)0), Type(0), BuiltinType(0) {}
 
 DEF_VECTOR(Enumeration, Enumeration::Item, Items)
 
