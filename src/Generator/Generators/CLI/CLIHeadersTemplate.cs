@@ -716,6 +716,30 @@ namespace CppSharp.Generators.CLI
 
                 var insideClass = typedef.Namespace is Class;
 
+                string callingConvention = null;
+                switch (function.CallingConvention)
+                {
+                    case CallingConvention.C:
+                        callingConvention = "Cdecl";
+                        break;
+                    case CallingConvention.StdCall:
+                        callingConvention = "StdCall";
+                        break;
+                    case CallingConvention.ThisCall:
+                        callingConvention = "ThisCall";
+                        break;
+                    case CallingConvention.FastCall:
+                        callingConvention = "FastCall";
+                        break;
+                }
+                if (callingConvention != null)
+                {
+                    WriteLine("[{0}({1}::{2})] ",
+                        "System::Runtime::InteropServices::UnmanagedFunctionPointer",
+                        "System::Runtime::InteropServices::CallingConvention",
+                        callingConvention);
+                }
+
                 WriteLine("{0}{1};",
                     !insideClass ? "public " : "",
                     string.Format(TypePrinter.VisitDelegate(function),
