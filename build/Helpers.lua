@@ -62,6 +62,7 @@ function SetupNativeProject()
     
   configuration { "macosx" }
     buildoptions { gcc_buildflags, "-stdlib=libc++" }
+    links { "c++" }
   
   -- OS-specific options
   
