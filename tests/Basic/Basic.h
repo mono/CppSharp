@@ -205,10 +205,12 @@ DLL_API int test(basic& s);
 // Tests the MoveOperatorToClassPass
 struct DLL_API TestMoveOperatorToClass
 {
-    TestMoveOperatorToClass() {}
+    TestMoveOperatorToClass();
     int A;
     int B;
 };
+
+TestMoveOperatorToClass::TestMoveOperatorToClass() {}
 
 DLL_API int operator *(TestMoveOperatorToClass klass, int b)
 {
@@ -284,11 +286,14 @@ struct DLL_API TestFinalizers
 // Tests static classes
 struct DLL_API TestStaticClass
 {
-    static int Add(int a, int b) { return a + b; }
+    static int Add(int a, int b);
 
 private:
     TestStaticClass();
 };
+
+int TestStaticClass::Add(int a, int b) { return a + b; }
+
 
 class HasIgnoredField
 {
@@ -333,13 +338,14 @@ struct EmptyNamedNestedEnum
 typedef unsigned long foo_t;
 typedef struct DLL_API SomeStruct
 {
-	SomeStruct() : p(1) {}
+	SomeStruct();
 	foo_t& operator[](int i) { return p; }
     // CSharp backend can't deal with a setter here
     foo_t operator[](const char* name) { return p; }
 	foo_t p;
-}
-SomeStruct;
+} SomeStruct;
+
+SomeStruct::SomeStruct() : p(1) {}
 
 class DLL_API SomeClassExtendingTheStruct : public SomeStruct
 {
@@ -358,10 +364,14 @@ namespace SomeNamespace
 class DLL_API ClassWithOverloadedOperators
 {
 public:
+    ClassWithOverloadedOperators();
+
 	operator char() { return 1; }
 	operator int() { return 2; }
 	operator short() { return 3; }
 };
+
+ClassWithOverloadedOperators::ClassWithOverloadedOperators() {}
 
 // Tests global static function generation
 DLL_API int Function()
@@ -372,12 +382,14 @@ DLL_API int Function()
 // Tests properties
 struct DLL_API TestProperties
 {
-    TestProperties() : Field(0) {}
+    TestProperties();
     int Field;
 
     int getFieldValue() { return Field; }
     void setFieldValue(int Value) { Field = Value; }
 };
+
+TestProperties::TestProperties() : Field(0) {}
 
 enum struct MyEnum { A, B, C };
 
