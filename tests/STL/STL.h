@@ -1,9 +1,4 @@
-#if defined(_MSC_VER)
-#define DLL_API __declspec(dllexport)
-#else
-#define DLL_API
-#endif
-
+#include "../Tests.h"
 #include <vector>
 
 struct DLL_API TestVectors
