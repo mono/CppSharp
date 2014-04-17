@@ -231,26 +231,3 @@ Bar::Item operator |(Bar::Item left, Bar::Item right)
 {
     return left | right;
 }
-
-TestDelegates::TestDelegates() : A(Double), B(Double),
-    C(&TestDelegates::Triple)
-{}
-
-
-TestCopyConstructorRef::TestCopyConstructorRef()
-{
-}
-
-TestCopyConstructorRef::TestCopyConstructorRef(const TestCopyConstructorRef& other)
-{
-    A = other.A;
-    B = other.B;
-}
-
-TestArraysPointers::TestArraysPointers(MyEnum *values, int count)
-{
-    if (values && count) Value = values[0];
-}
-
-int TestGetterSetterToProperties::getWidth() { return 640; }
-int TestGetterSetterToProperties::getHeight() { return 480; }

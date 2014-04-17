@@ -256,6 +256,10 @@ struct DLL_API TestDelegates
     MemberDelegate C;
 };
 
+TestDelegates::TestDelegates() : A(Double), B(Double), C(&TestDelegates::Triple)
+{
+}
+
 // Tests delegate generation for attributed function types
 typedef int(__cdecl *AttributedDelegate)(int n);
 DLL_API int __cdecl Double(int n) { return n * 2; }
@@ -309,6 +313,16 @@ public:
     int A;
     float B;
 };
+
+TestCopyConstructorRef::TestCopyConstructorRef()
+{
+}
+
+TestCopyConstructorRef::TestCopyConstructorRef(const TestCopyConstructorRef& other)
+{
+    A = other.A;
+    B = other.B;
+}
 
 template <class T>
 struct EmptyNamedNestedEnum
@@ -375,8 +389,16 @@ public:
     MyEnum Value;
 };
 
+TestArraysPointers::TestArraysPointers(MyEnum *values, int count)
+{
+    if (values && count) Value = values[0];
+}
+
 struct DLL_API TestGetterSetterToProperties
 {
     int getWidth();
     int getHeight();
 };
+
+int TestGetterSetterToProperties::getWidth() { return 640; }
+int TestGetterSetterToProperties::getHeight() { return 480; }
