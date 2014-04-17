@@ -14,6 +14,8 @@ const char* Foo::GetANSI()
 	return "ANSI";
 }
 
+Foo2::Foo2() {}
+
 Foo2 Foo2::operator<<(signed int i)
 {
     Foo2 foo;
@@ -197,6 +199,8 @@ int ImplementsAbstractFoo::pureFunction2()
     return 15;
 }
 
+ReturnsAbstractFoo::ReturnsAbstractFoo() {}
+
 const AbstractFoo& ReturnsAbstractFoo::getFoo()
 {
     return i;
@@ -228,6 +232,11 @@ Bar::Item operator |(Bar::Item left, Bar::Item right)
     return left | right;
 }
 
+TestDelegates::TestDelegates() : A(Double), B(Double),
+    C(&TestDelegates::Triple)
+{}
+
+
 TestCopyConstructorRef::TestCopyConstructorRef()
 {
 }
@@ -237,3 +246,11 @@ TestCopyConstructorRef::TestCopyConstructorRef(const TestCopyConstructorRef& oth
     A = other.A;
     B = other.B;
 }
+
+TestArraysPointers::TestArraysPointers(MyEnum *values, int count)
+{
+    if (values && count) Value = values[0];
+}
+
+int TestGetterSetterToProperties::getWidth() { return 640; }
+int TestGetterSetterToProperties::getHeight() { return 480; }

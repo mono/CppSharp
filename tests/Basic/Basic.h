@@ -43,6 +43,8 @@ class DLL_API Foo2 : public Foo
 
 public:
 
+    Foo2();
+
     int C;
 
     Foo2 operator<<(signed int i);
@@ -142,6 +144,7 @@ public:
 class DLL_API ReturnsAbstractFoo
 {
 public:
+    ReturnsAbstractFoo();
     const AbstractFoo& getFoo();
 
 private:
@@ -243,7 +246,7 @@ struct DLL_API TestDelegates
     typedef int (*DelegateInClass)(int);
     typedef int(TestDelegates::*MemberDelegate)(int);
 
-    TestDelegates() : A(Double), B(Double) { C = &TestDelegates::Triple; }
+    TestDelegates();
     static int Double(int N) { return N * 2; }
     int Triple(int N) { return N * 3; }
 
@@ -367,16 +370,13 @@ enum struct MyEnum { A, B, C };
 class DLL_API TestArraysPointers
 {
 public:
-    TestArraysPointers(MyEnum *values, int count)
-    {
-        if (values && count) Value = values[0];
-    }
+    TestArraysPointers(MyEnum *values, int count);
 
     MyEnum Value;
 };
 
 struct DLL_API TestGetterSetterToProperties
 {
-    int getWidth() { return 640; }
-    int getHeight() { return 480; }
+    int getWidth();
+    int getHeight();
 };
