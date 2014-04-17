@@ -64,7 +64,8 @@ namespace CppSharp.AST
         Call,
         Subscript,
         Conditional,
-        Conversion
+        Conversion,
+        ExplicitConversion
     }
 
     /// <summary>

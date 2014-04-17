@@ -293,5 +293,15 @@ public class BasicTests : GeneratorTestFixture
         Assert.That(@class.Width, Is.EqualTo(640));
         Assert.That(@class.Height, Is.EqualTo(480));
     }
+
+    [Test]
+    public unsafe void TestSingleArgumentCtorToCastOperator()
+    {
+        var classA = new ClassA(10);
+        ClassB classB = classA;
+        Assert.AreEqual(classA.Value, classB.Value);
+        ClassC classC = (ClassC)classB;
+        Assert.AreEqual(classB.Value, classC.Value);
+    }
 }
  

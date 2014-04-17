@@ -2033,7 +2033,8 @@ namespace CppSharp.Generators.CSharp
             else if (method.ExplicitInterfaceImpl != null)
                 Write("{0} {1}.{2}(", method.OriginalReturnType,
                     method.ExplicitInterfaceImpl.Name, functionName);
-            else if (method.OperatorKind == CXXOperatorKind.Conversion)
+            else if (method.OperatorKind == CXXOperatorKind.Conversion || 
+                     method.OperatorKind == CXXOperatorKind.ExplicitConversion)
                 Write("{0} {1}(", functionName, method.OriginalReturnType);
             else
                 Write("{0} {1}(", method.OriginalReturnType, functionName);
@@ -2157,10 +2158,24 @@ namespace CppSharp.Generators.CSharp
         {
             if (method.IsSynthetized)
             {
-                var @operator = Operators.GetOperatorOverloadPair(method.OperatorKind);
+                if (method.Kind == CXXMethodKind.Conversion)
+                {
+                    // To avoid ambiguity when having the multiple inheritance pass enabled
+                    var @interface = @class.Namespace.Classes.Find(c => c.OriginalClass == @class);
+                    if (@interface != null)
+                        WriteLine("return new {0}(({2}){1});", method.ConversionType,
+                                  method.Parameters[0].Name, @interface.Name);
+                    else
+                        WriteLine("return new {0}({1});", method.ConversionType,
+                                  method.Parameters[0].Name);
+                }
+                else
+                {
+                    var @operator = Operators.GetOperatorOverloadPair(method.OperatorKind);
 
-                WriteLine("return !({0} {1} {2});", method.Parameters[0].Name,
-                          @operator, method.Parameters[1].Name);
+                    WriteLine("return !({0} {1} {2});", method.Parameters[0].Name,
+                              @operator, method.Parameters[1].Name);
+                }
                 return;
             }
 

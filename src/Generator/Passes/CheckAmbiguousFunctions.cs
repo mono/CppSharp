@@ -37,6 +37,8 @@ namespace CppSharp.Passes
             {
                 if (function.OperatorKind == CXXOperatorKind.Conversion)
                     continue;
+                if (function.OperatorKind == CXXOperatorKind.ExplicitConversion)
+                    continue;
 
                 if (overload == function) continue;
 
