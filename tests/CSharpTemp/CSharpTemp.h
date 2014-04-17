@@ -27,6 +27,7 @@ public:
 class DLL_API Bar : public Qux
 {
 public:
+    Bar();
     int method();
     const Foo& operator[](int i) const;
     Foo& operator[](int i);
@@ -41,9 +42,12 @@ private:
     Foo m_foo;
 };
 
+Bar::Bar() {}
+
 class DLL_API Baz : public Foo, public Bar
 {
 public:
+    Baz();
 
     int takesQux(const Qux& qux);
     Qux returnQux();
@@ -51,6 +55,8 @@ public:
     typedef bool (*FunctionTypedef)(const void *);
     FunctionTypedef functionTypedef;
 };
+
+Baz::Baz() {}
 
 struct QArrayData
 {
@@ -82,10 +88,13 @@ protected:
 class DLL_API Proprietor : public AbstractProprietor
 {
 public:
+    Proprietor();
     virtual void setValue(int value);
 
     virtual long prop();
 };
+
+Proprietor::Proprietor() {}
 
 template <typename T>
 class QFlags
@@ -131,9 +140,12 @@ struct DLL_API TestDestructors
 {
     static int Marker;
 
-    TestDestructors() { Marker = 0xf00d; }
-    ~TestDestructors() { Marker = 0xcafe; }
+    TestDestructors();
+    ~TestDestructors();
 };
+
+TestDestructors::TestDestructors() { Marker = 0xf00d; }
+TestDestructors::~TestDestructors() { Marker = 0xcafe; }
 
 class DLL_API TestCopyConstructorVal
 {

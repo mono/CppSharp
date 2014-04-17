@@ -339,13 +339,16 @@ typedef unsigned long foo_t;
 typedef struct DLL_API SomeStruct
 {
 	SomeStruct();
-	foo_t& operator[](int i) { return p; }
+	foo_t& operator[](int i);
     // CSharp backend can't deal with a setter here
-    foo_t operator[](const char* name) { return p; }
+    foo_t operator[](const char* name);
 	foo_t p;
 } SomeStruct;
 
 SomeStruct::SomeStruct() : p(1) {}
+
+foo_t& SomeStruct::operator[](int i) { return p; }
+foo_t SomeStruct::operator[](const char* name) { return p; }
 
 class DLL_API SomeClassExtendingTheStruct : public SomeStruct
 {
@@ -366,12 +369,15 @@ class DLL_API ClassWithOverloadedOperators
 public:
     ClassWithOverloadedOperators();
 
-	operator char() { return 1; }
-	operator int() { return 2; }
-	operator short() { return 3; }
+	operator char();
+	operator int();
+	operator short();
 };
 
 ClassWithOverloadedOperators::ClassWithOverloadedOperators() {}
+ClassWithOverloadedOperators::operator char() { return 1; }
+ClassWithOverloadedOperators::operator int() { return 2; }
+ClassWithOverloadedOperators::operator short() { return 3; }
 
 // Tests global static function generation
 DLL_API int Function()
@@ -385,11 +391,13 @@ struct DLL_API TestProperties
     TestProperties();
     int Field;
 
-    int getFieldValue() { return Field; }
-    void setFieldValue(int Value) { Field = Value; }
+    int getFieldValue();
+    void setFieldValue(int Value);
 };
 
 TestProperties::TestProperties() : Field(0) {}
+int TestProperties::getFieldValue() { return Field; }
+void TestProperties::setFieldValue(int Value) { Field = Value; }
 
 enum struct MyEnum { A, B, C };
 
