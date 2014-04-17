@@ -5,6 +5,8 @@ clang_msvc_flags =
   "/wd4251"
 }
 
+if not (string.starts(action, "vs") and not os.is_windows()) then
+
 project "CppSharp.CppParser"
   
   kind "SharedLib"
@@ -71,5 +73,7 @@ project "CppSharp.CppParser"
     "LLVMX86Info",
     "LLVMX86Utils",
   }
+
+end
 
 include ("Bindings")

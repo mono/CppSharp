@@ -1,4 +1,5 @@
 ﻿using CppSharp.AST;
+using CppSharp.AST.Extensions;
 using CppSharp.Types;
 
 namespace CppSharp.Passes
@@ -14,6 +15,9 @@ namespace CppSharp.Passes
             case AccessSpecifier.Public:
                 return true;
             case AccessSpecifier.Protected:
+                var @class = decl.Namespace as Class;
+                if (@class != null && @class.IsValueType)
+                    return false;
                 return generateNonPublicDecls;
             case AccessSpecifier.Private:
                 var method = decl as Method;
@@ -338,7 +342,8 @@ namespace CppSharp.Passes
             var arrayType = type as ArrayType;
             PrimitiveType primitive;
             if (arrayType != null && arrayType.SizeType == ArrayType.ArraySize.Constant &&
-                !arrayType.Type.Desugar().IsPrimitiveType(out primitive))
+                !arrayType.Type.IsPrimitiveType(out primitive) &&
+                !arrayType.Type.Desugar().IsPointerToPrimitiveType())
             {
                 msg = "unsupported";
                 return true;

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CppSharp.AST.Extensions;
 
 namespace CppSharp.AST
 {
@@ -33,10 +34,25 @@ namespace CppSharp.AST
             get
             {
                 Class @class;
-                if (!Type.IsTagDecl(out @class))
-                    throw new NotSupportedException();
+                if (Type.IsTagDecl(out @class))
+                    return @class;
 
-                return @class;
+                var type = Type.Desugar() as TemplateSpecializationType;
+                if (type == null)
+                {
+                    TypedefType typedef;
+                    if (Type.IsPointerTo(out typedef))
+                    {
+                        type = (TemplateSpecializationType) typedef.Desugar();
+                    }
+                    else
+                    {
+                        Type.IsPointerTo(out type);
+                    }
+                }
+                var templatedClass = ((ClassTemplate) type.Template).TemplatedClass;
+                return templatedClass.CompleteDeclaration == null ?
+                    templatedClass : (Class) templatedClass.CompleteDeclaration;
             }
         }
 
@@ -47,11 +63,6 @@ namespace CppSharp.AST
                 Class @class;
                 return Type.IsTagDecl(out @class);
             }
-        }
-
-        public BaseClassSpecifier()
-        {
-            
         }
     }
 
@@ -101,6 +112,12 @@ namespace CppSharp.AST
         // True if the class has a non trivial copy constructor.
         public bool HasNonTrivialCopyConstructor;
 
+        // True if the class has a non trivial destructor.
+        public bool HasNonTrivialDestructor;
+
+        // True if the class represents a static class.
+        public bool IsStatic;
+
         public Class()
         {
             Bases = new List<BaseClassSpecifier>();
@@ -132,7 +149,7 @@ namespace CppSharp.AST
             {
                 foreach (var @base in Bases)
                 {
-                    if (@base.IsClass && !@base.Class.Ignore)
+                    if (@base.IsClass && !@base.Class.ExplicityIgnored)
                         return @base.Class;
                 }
 
@@ -166,6 +183,14 @@ namespace CppSharp.AST
             }
         }
 
+        public IEnumerable<Method> Destructors
+        {
+            get
+            {
+                return Methods.Where(method => method.IsDestructor);
+            }
+        }
+
         public IEnumerable<Method> Operators
         {
             get
@@ -174,126 +199,16 @@ namespace CppSharp.AST
             }
         }
 
-        public IEnumerable<Method> FindOperator(CXXOperatorKind kind)
-        {
-            return Operators.Where(method => method.OperatorKind == kind);
-        }
-
-        public IEnumerable<Method> FindMethodByOriginalName(string name)
-        {
-            return Methods.Where(method => method.OriginalName == name);
-        }
-
-        public IEnumerable<Variable> FindVariableByOriginalName(string originalName)
-        {
-            return Variables.Where(v => v.OriginalName == originalName);
-        }
-
-        public override IEnumerable<Function> GetFunctionOverloads(Function function)
+        public override IEnumerable<Function> GetOverloads(Function function)
         {
             if (function.IsOperator)
-                return FindOperator(function.OperatorKind);
-            return Methods.Where(method => method.Name == function.Name);
-        }
+                return Methods.Where(fn => fn.OperatorKind == function.OperatorKind);
 
-        public IEnumerable<T> FindHierarchy<T>(Func<Class, IEnumerable<T>> func)
-            where T : Declaration
-        {
-            foreach (var elem in func(this))
-                yield return elem;
+            var methods = Methods.Where(m => m.Name == function.Name);
+            if (methods.ToList().Count != 0)
+                return methods;
 
-            foreach (var @base in Bases)
-            {
-                if (!@base.IsClass) continue;
-                foreach(var elem in @base.Class.FindHierarchy<T>(func))
-                    yield return elem;
-            }
-        }
-
-        public Method GetRootBaseMethod(Method @override, bool onlyFirstBase = false)
-        {
-            return (from @base in Bases
-                    where @base.IsClass && (!onlyFirstBase || !@base.Class.IsInterface)
-                    let baseMethod = (
-                        from method in @base.Class.Methods
-                        where
-                            method.Name == @override.Name &&
-                            method.ReturnType == @override.ReturnType &&
-                            method.Parameters.Count == @override.Parameters.Count &&
-                            method.Parameters.SequenceEqual(@override.Parameters,
-                                                            new ParameterTypeComparer())
-                        select method).FirstOrDefault()
-                    let rootBaseMethod = @base.Class.GetRootBaseMethod(@override) ?? baseMethod
-                    where rootBaseMethod != null || onlyFirstBase
-                    select rootBaseMethod).FirstOrDefault();
-        }
-
-        public Property GetRootBaseProperty(Property @override, bool onlyFirstBase = false)
-        {
-            return (from @base in Bases
-                    where (!onlyFirstBase || !@base.Class.IsInterface) && @base.IsClass
-                    let baseProperty = (
-                        from property in @base.Class.Properties
-                        where
-                            property.Name == @override.Name &&
-                            property.Parameters.Count == @override.Parameters.Count &&
-                            property.Parameters.SequenceEqual(@override.Parameters,
-                                                            new ParameterTypeComparer())
-                        select property).FirstOrDefault()
-                    let rootBaseProperty = @base.Class.GetRootBaseProperty(@override) ?? baseProperty
-                    where rootBaseProperty != null || onlyFirstBase
-                    select rootBaseProperty).FirstOrDefault();
-        }
-
-        public Property GetPropertyByName(string propertyName)
-        {
-            Property property = Properties.FirstOrDefault(m => m.Name == propertyName);
-            if (property != null)
-                return property;
-            Declaration decl;
-            foreach (var baseClassSpecifier in Bases.Where(
-                b => b.Type.IsTagDecl(out decl) && !b.Class.Ignore))
-            {
-                property = baseClassSpecifier.Class.GetPropertyByName(propertyName);
-                if (property != null)
-                    return property;
-            }
-            return null;
-        }
-
-        public Property GetPropertyByConstituentMethod(Method method)
-        {
-            var property = Properties.FirstOrDefault(p => p.GetMethod == method);
-            if (property != null)
-                return property;
-            property = Properties.FirstOrDefault(p => p.SetMethod == method);
-            if (property != null)
-                return property;
-            Declaration decl;
-            foreach (BaseClassSpecifier @base in Bases.Where(b => b.Type.IsTagDecl(out decl)))
-            {
-                property = @base.Class.GetPropertyByConstituentMethod(method);
-                if (property != null)
-                    return property;
-            }
-            return null;
-        }
-
-        public Method GetMethodByName(string methodName)
-        {
-            var method = Methods.FirstOrDefault(
-                // HACK: because of the non-shared v-table entries bug one copy may have been renamed and the other not
-                m => string.Compare(m.Name, methodName, StringComparison.OrdinalIgnoreCase) == 0);
-            if (method != null)
-                return method;
-            Declaration decl;
-            foreach (BaseClassSpecifier @base in Bases.Where(b => b.Type.IsTagDecl(out decl)))
-            {
-                method = @base.Class.GetMethodByName(methodName);
-                if (method != null)
-                    return method;
-            }
-            return null;
+            return base.GetOverloads(function);
         }
 
         public override T Visit<T>(IDeclVisitor<T> visitor)

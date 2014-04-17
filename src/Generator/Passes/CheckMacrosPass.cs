@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using CppSharp.AST;
 
 namespace CppSharp.Passes
@@ -9,8 +11,14 @@ namespace CppSharp.Passes
     /// stands for CppSharp. Using custom prefixes is also supported by
     /// passing the value to the constructor of the pass.
     /// 
+    ///     CS_IGNORE_FILE (translation units)
+    ///         Used to ignore whole translation units.
+    /// 
     ///     CS_IGNORE (declarations)
     ///         Used to ignore declarations from being processed.
+    /// 
+    ///     CS_IGNORE_GEN (declarations)
+    ///         Used to ignore declaration from being generated.
     /// 
     ///     CS_VALUE_TYPE (classes and structs)
     ///         Used to flag that a class or struct is a value type.
@@ -45,15 +53,41 @@ namespace CppSharp.Passes
             if (AlreadyVisited(decl))
                 return false;
 
+            if (decl is DeclarationContext && !(decl is Class))
+                return true;
+
             var expansions = decl.PreprocessedEntities.OfType<MacroExpansion>();
 
+            CheckIgnoreMacros(decl, expansions);
+            return true;
+        }
+
+        void CheckIgnoreMacros(Declaration decl, IEnumerable<MacroExpansion> expansions)
+        {
             if (expansions.Any(e => e.Text == Prefix + "_IGNORE" &&
                                     e.Location != MacroLocation.ClassBody &&
                                     e.Location != MacroLocation.FunctionBody &&
                                     e.Location != MacroLocation.FunctionParameters))
                 decl.ExplicityIgnored = true;
 
-            return true;
+            if (expansions.Any(e => e.Text == Prefix + "_IGNORE_GEN" &&
+                                    e.Location != MacroLocation.ClassBody &&
+                                    e.Location != MacroLocation.FunctionBody &&
+                                    e.Location != MacroLocation.FunctionParameters))
+                decl.IsGenerated = false;
+        }
+
+        public override bool VisitTranslationUnit(TranslationUnit unit)
+        {
+            var expansions = unit.PreprocessedEntities.OfType<MacroExpansion>();
+
+            if (expansions.Any(e => e.Text == Prefix + "_IGNORE_FILE"))
+            {
+                unit.IsGenerated = false;
+                unit.ExplicityIgnored = true;
+            }
+
+            return base.VisitTranslationUnit(unit);
         }
 
         public override bool VisitClassDecl(Class @class)
@@ -62,6 +96,15 @@ namespace CppSharp.Passes
 
             if (expansions.Any(e => e.Text == Prefix + "_VALUE_TYPE"))
                 @class.Type = ClassType.ValueType;
+
+            // If the class is a forward declaration, then we process the macro expansions
+            // of the complete class as if they were specified on the forward declaration.
+            if (@class.CompleteDeclaration != null)
+            {
+                var completeExpansions = @class.CompleteDeclaration.PreprocessedEntities
+                    .OfType<MacroExpansion>();
+                CheckIgnoreMacros(@class, completeExpansions);
+            }
 
             return base.VisitClassDecl(@class);
         }

@@ -100,9 +100,19 @@ namespace CppSharp.AST
             get { return parameters; }
         }
 
+        public bool IsIndexer
+        {
+            get
+            {
+                return GetMethod != null &&
+                       GetMethod.OperatorKind == CXXOperatorKind.Subscript;
+            }
+        }
+
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {
             return visitor.VisitProperty(this);
         }
+
     }
 }

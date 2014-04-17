@@ -1,10 +1,4 @@
-#if defined(_MSC_VER)
-#define DLL_API __declspec(dllexport)
-#else
-#define DLL_API
-#endif
-
-#define CS_OUT
+#include "../Tests.h"
 
 class DLL_API Foo
 {
@@ -15,20 +9,14 @@ public:
     float B;
 
 	const char* GetANSI();
-};
+	// TODO: VC++ does not support char16
+	// char16 chr16;
 
-class DLL_API Foo2 : public Foo
-{
-    struct Copy {
-        Foo A;
-    }* copy;
-
-public:
-
-    int C;
-
-    Foo2 operator<<(signed int i);
-    Foo2 operator<<(signed long l);
+    // Not properly handled yet - ignore
+    float nested_array[2][2];
+    // Primitive pointer types
+    const int* SomePointer;
+    const int** SomePointerPointer;
 };
 
 struct DLL_API Bar
@@ -46,6 +34,26 @@ struct DLL_API Bar
 
     Bar* returnPointerToValueType();
 };
+
+class DLL_API Foo2 : public Foo
+{
+    struct Copy {
+        Foo A;
+    }* copy;
+
+public:
+
+    Foo2();
+
+    int C;
+
+    Foo2 operator<<(signed int i);
+    Foo2 operator<<(signed long l);
+    Bar valueTypeField;
+    char testCharMarshalling(char c);
+};
+
+DLL_API Bar::Item operator |(Bar::Item left, Bar::Item right);
 
 struct DLL_API Bar2 : public Bar
 {
@@ -67,12 +75,13 @@ struct DLL_API Bar2 : public Bar
     Bar* pointerToStruct;
     int* pointerToPrimitive;
     Foo2* pointerToClass;
+    Bar valueStruct;
 };
 
 enum Enum
 {
     A = 0, B = 2, C = 5,
-    D = 0x80000000,
+    //D = 0x80000000,
     E = 0x1,
     F = -9
 };
@@ -88,6 +97,7 @@ public:
     union NestedPublic {
         int j;
         float g;
+        long l;
     };
 
     Hello ();
@@ -100,6 +110,7 @@ public:
     int AddFoo(Foo);
     int AddFooRef(Foo&);
     int AddFooPtr(Foo*);
+    int AddFooPtrRef(Foo*&);
     Foo RetFoo(int a, float b);
 
     int AddFoo2(Foo2);
@@ -133,6 +144,7 @@ public:
 class DLL_API ReturnsAbstractFoo
 {
 public:
+    ReturnsAbstractFoo();
     const AbstractFoo& getFoo();
 
 private:
@@ -193,10 +205,12 @@ DLL_API int test(basic& s);
 // Tests the MoveOperatorToClassPass
 struct DLL_API TestMoveOperatorToClass
 {
-    TestMoveOperatorToClass() {}
+    TestMoveOperatorToClass();
     int A;
     int B;
 };
+
+TestMoveOperatorToClass::TestMoveOperatorToClass() {}
 
 DLL_API int operator *(TestMoveOperatorToClass klass, int b)
 {
@@ -220,18 +234,191 @@ DLL_API TestMoveOperatorToClass operator+(const TestMoveOperatorToClass& b1,
     return b;
 }
 
+// Not a valid operator overload for Foo2 in managed code - comparison operators need to return bool.
+DLL_API int operator==(const Foo2& a, const Foo2& b)
+{
+	return 0;
+}
+
 // Tests delegates
 typedef int (*DelegateInGlobalNamespace)(int);
 
 struct DLL_API TestDelegates
 {
     typedef int (*DelegateInClass)(int);
+    typedef int(TestDelegates::*MemberDelegate)(int);
 
-    TestDelegates() : A(Double), B(Double) {}
+    TestDelegates();
     static int Double(int N) { return N * 2; }
+    int Triple(int N) { return N * 3; }
 
     DelegateInClass A;
     DelegateInGlobalNamespace B;
+    // As long as we can't marshal them make sure they're ignored
+    MemberDelegate C;
 };
 
-DLL_API Bar::Item operator |(Bar::Item left, Bar::Item right);
+TestDelegates::TestDelegates() : A(Double), B(Double), C(&TestDelegates::Triple)
+{
+}
+
+// Tests delegate generation for attributed function types
+typedef int(__cdecl *AttributedDelegate)(int n);
+DLL_API int __cdecl Double(int n) { return n * 2; }
+DLL_API AttributedDelegate GetAttributedDelegate()
+{
+    return Double;
+}
+
+// Tests memory leaks in constructors
+//  C#:  Marshal.FreeHGlobal(arg0);
+struct DLL_API TestMemoryLeaks
+{
+    TestMemoryLeaks(const char* name) {}
+};
+
+// Tests that finalizers are generated
+/* CLI: ~TestFinalizers() */
+struct DLL_API TestFinalizers
+{
+};
+
+// Tests static classes
+struct DLL_API TestStaticClass
+{
+    static int Add(int a, int b);
+
+private:
+    TestStaticClass();
+};
+
+int TestStaticClass::Add(int a, int b) { return a + b; }
+
+
+class HasIgnoredField
+{
+    Base<Derived> fieldOfIgnoredType;
+};
+
+template <typename T>
+class DependentTypeWithNestedIndependent
+{
+    union
+    {
+        int i;
+        long l;
+    };
+};
+
+class DLL_API TestCopyConstructorRef
+{
+public:
+    TestCopyConstructorRef();
+    TestCopyConstructorRef(const TestCopyConstructorRef& other);
+    int A;
+    float B;
+};
+
+TestCopyConstructorRef::TestCopyConstructorRef()
+{
+}
+
+TestCopyConstructorRef::TestCopyConstructorRef(const TestCopyConstructorRef& other)
+{
+    A = other.A;
+    B = other.B;
+}
+
+template <class T>
+struct EmptyNamedNestedEnum
+{
+    enum { Value = 10 };
+};
+
+typedef unsigned long foo_t;
+typedef struct DLL_API SomeStruct
+{
+	SomeStruct();
+	foo_t& operator[](int i);
+    // CSharp backend can't deal with a setter here
+    foo_t operator[](const char* name);
+	foo_t p;
+} SomeStruct;
+
+SomeStruct::SomeStruct() : p(1) {}
+
+foo_t& SomeStruct::operator[](int i) { return p; }
+foo_t SomeStruct::operator[](const char* name) { return p; }
+
+class DLL_API SomeClassExtendingTheStruct : public SomeStruct
+{
+};
+
+namespace SomeNamespace
+{
+	class DLL_API AbstractClass
+	{
+	public:
+		virtual void AbstractMethod() = 0;
+	};
+}
+
+// Test operator overloads
+class DLL_API ClassWithOverloadedOperators
+{
+public:
+    ClassWithOverloadedOperators();
+
+	operator char();
+	operator int();
+	operator short();
+};
+
+ClassWithOverloadedOperators::ClassWithOverloadedOperators() {}
+ClassWithOverloadedOperators::operator char() { return 1; }
+ClassWithOverloadedOperators::operator int() { return 2; }
+ClassWithOverloadedOperators::operator short() { return 3; }
+
+// Tests global static function generation
+DLL_API int Function()
+{
+    return 5;
+}
+
+// Tests properties
+struct DLL_API TestProperties
+{
+    TestProperties();
+    int Field;
+
+    int getFieldValue();
+    void setFieldValue(int Value);
+};
+
+TestProperties::TestProperties() : Field(0) {}
+int TestProperties::getFieldValue() { return Field; }
+void TestProperties::setFieldValue(int Value) { Field = Value; }
+
+enum struct MyEnum { A, B, C };
+
+class DLL_API TestArraysPointers
+{
+public:
+    TestArraysPointers(MyEnum *values, int count);
+
+    MyEnum Value;
+};
+
+TestArraysPointers::TestArraysPointers(MyEnum *values, int count)
+{
+    if (values && count) Value = values[0];
+}
+
+struct DLL_API TestGetterSetterToProperties
+{
+    int getWidth();
+    int getHeight();
+};
+
+int TestGetterSetterToProperties::getWidth() { return 640; }
+int TestGetterSetterToProperties::getHeight() { return 480; }

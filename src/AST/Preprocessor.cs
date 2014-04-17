@@ -49,6 +49,9 @@
         // Contains the macro definition text.
         public string Expression;
 
+        // Backing enumeration if one was generated.
+        public Enumeration Enumeration;
+
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {
             return visitor.VisitMacroDefinition(this);

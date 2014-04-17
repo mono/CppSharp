@@ -1,3 +1,5 @@
+using CppSharp.AST.Extensions;
+
 namespace CppSharp.AST
 {
     public enum CXXMethodKind

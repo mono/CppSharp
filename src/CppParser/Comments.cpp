@@ -14,7 +14,7 @@ using namespace CppSharp::CppParser;
 //-----------------------------------//
 
 static RawCommentKind
-ConvertCommentKind(clang::RawComment::CommentKind Kind)
+ConvertRawCommentKind(clang::RawComment::CommentKind Kind)
 {
     using clang::RawComment;
 
@@ -39,7 +39,7 @@ RawComment* Parser::WalkRawComment(const clang::RawComment* RC)
 
     auto &SM = C->getSourceManager();
     auto Comment = new RawComment();
-    Comment->Kind = ConvertCommentKind(RC->getKind());
+    Comment->RawCommentKind = ConvertRawCommentKind(RC->getKind());
     Comment->Text = RC->getRawText(SM);
     Comment->BriefText = RC->getBriefText(*AST);
 
@@ -94,20 +94,33 @@ static void HandleBlockCommand(const clang::comments::BlockCommandComment *CK,
         BC->Arguments->Add(Arg);
     }
 }
+#endif
 
-static Comment^ ConvertCommentBlock(clang::comments::Comment* C)
+static Comment* ConvertCommentBlock(clang::comments::Comment* C)
 {
     using namespace clang;
     using clang::comments::Comment;
 
-    using namespace clix;
-    using namespace CppSharp::AST;
-
     // This needs to have an underscore else we get an ICE under VS2012.
-    Comment^ _Comment;
+    CppSharp::CppParser::AST::Comment* _Comment = 0;
 
     switch(C->getCommentKind())
     {
+    case Comment::FullCommentKind:
+    {
+        auto CK = cast<clang::comments::FullComment>(C);
+        auto FC = new FullComment();
+        _Comment = FC;
+#if 0
+        for (auto I = CK->child_begin(), E = CK->child_end(); I != E; ++I)
+        {
+            auto Content = ConvertCommentBlock(*I);
+            FC->Blocks->Add(dynamic_cast<BlockContentComment^>(Content));
+        }
+        break;
+#endif
+    }
+#if 0
     case Comment::BlockCommandCommentKind:
     {
         auto CK = cast<const clang::comments::BlockCommandComment>(C);
@@ -172,18 +185,6 @@ static Comment^ ConvertCommentBlock(clang::comments::Comment* C)
         PC->IsWhitespace = CK->isWhitespace();
         break;
     }
-    case Comment::FullCommentKind:
-    {
-        auto CK = cast<clang::comments::FullComment>(C);
-        auto FC = new FullComment();
-        _Comment = FC;
-        for (auto I = CK->child_begin(), E = CK->child_end(); I != E; ++I)
-        {
-            auto Content = ConvertCommentBlock(*I);
-            FC->Blocks->Add(dynamic_cast<BlockContentComment^>(Content));
-        }
-        break;
-    }
     case Comment::HTMLStartTagCommentKind:
     {
         auto CK = cast<clang::comments::HTMLStartTagComment>(C);
@@ -238,6 +239,7 @@ static Comment^ ConvertCommentBlock(clang::comments::Comment* C)
         VL->Text = marshalString<E_UTF8>(CK->getText());
         break;
     }
+#endif
     case Comment::NoCommentKind: return nullptr;
     default:
         llvm_unreachable("Unknown comment kind");
@@ -246,12 +248,10 @@ static Comment^ ConvertCommentBlock(clang::comments::Comment* C)
     assert(_Comment && "Invalid comment instance");
     return _Comment;
 }
-#endif
 
 void Parser::HandleComments(clang::Decl* D, Declaration* Decl)
 {
     using namespace clang;
-    using namespace clang::comments;
 
     const clang::RawComment* RC = 0;
     if (!(RC = AST->getRawCommentForAnyRedecl(D)))
@@ -260,24 +260,9 @@ void Parser::HandleComments(clang::Decl* D, Declaration* Decl)
     auto RawComment = WalkRawComment(RC);
     Decl->Comment = RawComment;
 
-#if 0
-    if (FullComment* FC = RC->parse(*AST, &C->getPreprocessor(), D))
+    if (clang::comments::FullComment* FC = RC->parse(*AST, &C->getPreprocessor(), D))
     {
-        auto CB = static_cast<FullComment^>(ConvertCommentBlock(FC));
+        auto CB = static_cast<FullComment*>(ConvertCommentBlock(FC));
         RawComment->FullComment = CB;
     }
-#endif
-
-    // Debug Text
-    SourceManager& SM = C->getSourceManager();
-    const LangOptions& LangOpts = C->getLangOpts();
-
-    auto Range = CharSourceRange::getTokenRange(D->getSourceRange());
-
-    bool Invalid;
-    StringRef DeclText = Lexer::getSourceText(Range, SM, LangOpts, &Invalid);
-    //assert(!Invalid && "Should have a valid location");
-    
-    if (!Invalid)
-        Decl->DebugText = DeclText;
 }

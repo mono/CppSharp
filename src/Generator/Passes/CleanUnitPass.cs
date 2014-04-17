@@ -13,6 +13,9 @@ namespace CppSharp.Passes
 
         public override bool VisitTranslationUnit(TranslationUnit unit)
         {
+            if (IsTranslationGenerated(unit))
+                unit.IsGenerated = false;
+
             // Try to get an include path that works from the original include
             // directories paths.
 
@@ -48,6 +51,20 @@ namespace CppSharp.Passes
                 + shortestIncludePath.TrimStart(new char[] { '\\', '/' });
 
             return includePath.Replace('\\', '/');
+        }
+
+        bool IsTranslationGenerated(TranslationUnit translationUnit)
+        {
+            if (DriverOptions.NoGenIncludeDirs == null)
+                return false;
+
+            foreach (var path in DriverOptions.NoGenIncludeDirs)
+            {
+                if (translationUnit.FilePath.StartsWith(path))
+                    return true;
+            }
+
+            return false;
         }
     }
 }

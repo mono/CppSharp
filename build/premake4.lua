@@ -6,41 +6,8 @@ config = {}
 
 dofile "Helpers.lua"
 dofile "Tests.lua"
-
--- Setup the LLVM dependency
 dofile "LLVM.lua"
-
-newoption {
-     trigger = "parser",
-     description = "Controls which version of the parser is enabled.",
-     value = "version",
-     allowed = {
-          { "cpp", "Cross-platform C++ parser."},
-          { "cli", "VS-only C++/CLI parser."},
-     }
-}
-
-function SetupCLIParser()
-  local parser = _OPTIONS["parser"]
-  if not parser or parser == "cli" then
-    defines { "OLD_PARSER" }
-    links { "CppSharp.Parser" }
-  else
-    links { "CppSharp.Parser.CLI" }
-  end
-end
-
-function SetupCSharpParser()
-  links { "CppSharp.Parser.CSharp" }
-end
-
-function SetupParser()
-  if string.match(action, "vs*") then
-    SetupCLIParser()
-  else
-    SetupCSharpParser()
-  end
-end
+dofile "Parser.lua"
 
 solution "CppSharp"
 
@@ -63,15 +30,22 @@ solution "CppSharp"
 
   configuration "windows"
     defines { "WINDOWS" }
+	
+  configuration "x64"
+    defines { "IS_64_BIT" }
 
   configuration {}
     
+  if string.starts(action, "vs") then
+
   group "Examples"
     IncludeExamples()
   
-  group "Tests"
-    IncludeTests()
+  end
   
+  group "Tests"
+      IncludeTests()
+      
   group "Libraries"
     include (srcdir .. "/Core")
     include (srcdir .. "/AST/AST.lua")
@@ -80,6 +54,6 @@ solution "CppSharp"
     include (srcdir .. "/Runtime/Runtime.lua")
     include (srcdir .. "/CppParser")
 
-    if string.starts(action, "vs") then
+    if string.starts(action, "vs") and os.is_windows() then
       include (srcdir .. "/Parser/Parser.lua")
     end

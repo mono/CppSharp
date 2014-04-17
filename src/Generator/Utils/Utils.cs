@@ -23,6 +23,7 @@ namespace CppSharp
             {
                 case PrimitiveType.Bool: return typeof(bool);
                 case PrimitiveType.Void: return typeof(void);
+                case PrimitiveType.Char16:
                 case PrimitiveType.WideChar: return typeof(char);
                 case PrimitiveType.Int8: return typeof(sbyte);
                 case PrimitiveType.UInt8: return typeof(byte);
@@ -235,11 +236,18 @@ namespace CppSharp
         }
     }
 
-    public static class ASTHelpers
+    public static class PathHelpers
     {
-        public static string GetDelegateName(Function method)
+        public static string GetRelativePath(string fromPath, string toPath)
         {
-            return "_" + char.ToLowerInvariant(method.Name[0]) + method.Name.Substring(1) + "Delegate";
+            var path1 = fromPath.Trim('\\', '/');
+            var path2 = toPath.Trim('\\', '/');
+
+            var uri1 = new System.Uri("c:\\" + path1 + "\\");
+            var uri2 = new System.Uri("c:\\" + path2 + "\\");
+
+            return uri1.MakeRelativeUri(uri2).ToString();
         }
+        
     }
 }

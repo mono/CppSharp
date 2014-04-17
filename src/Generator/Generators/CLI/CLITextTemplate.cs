@@ -43,6 +43,11 @@ namespace CppSharp.Generators.CLI
         public const int Typedef = BlockKind.LAST + 14;
         public const int Variable = BlockKind.LAST + 15;
         public const int Template = BlockKind.LAST + 16;
+        public static int Destructor = BlockKind.LAST + 17;
+        public static int Finalizer = BlockKind.LAST + 18;
+        public static int AccessSpecifier = BlockKind.LAST + 19;
+        public static int Fields = BlockKind.LAST + 20;
+        public static int Field = BlockKind.LAST + 21;
     }
 
     /// <summary>
@@ -76,23 +81,29 @@ namespace CppSharp.Generators.CLI
 
         public string QualifiedIdentifier(Declaration decl)
         {
+            var ids = new List<string>();
+
             if (Options.GenerateLibraryNamespace)
-                return string.Format("{0}::{1}", Options.OutputNamespace, decl.QualifiedName);
-            return string.Format("{0}", decl.QualifiedName);
+                ids.Add(Options.OutputNamespace);
+
+            if (!string.IsNullOrWhiteSpace(decl.QualifiedName))
+                ids.Add(decl.QualifiedName);
+
+            return string.Join("::", ids);
         }
 
         public string GetMethodName(Method method)
         {
             if (method.OperatorKind == CXXOperatorKind.Conversion)
-                return SafeIdentifier("operator " + method.ConversionType);
+                return "operator " + method.ConversionType;
 
             if (method.IsConstructor || method.IsDestructor)
             {
                 var @class = (Class) method.Namespace;
-                return SafeIdentifier(@class.Name);
+                return @class.Name;
             }
 
-            return SafeIdentifier(method.Name);
+            return method.Name;
         }
 
         public void GenerateDeclarationCommon(Declaration decl)

@@ -16,6 +16,8 @@ namespace CppSharp.AST
             get { return Offset / (sizeof (byte) * 8); }
         }
 
+        public Expression Expression { get; set; }
+
         public Field()
         {
             Offset = 0;
@@ -27,6 +29,14 @@ namespace CppSharp.AST
             QualifiedType = type;
             Access = access;
             Offset = 0;
+        }
+
+        public Field(Field field): base(field)
+        {
+            QualifiedType = field.QualifiedType;
+            Offset = field.Offset;
+            Class = field.Class;
+            Expression = field.Expression;
         }
 
         public override T Visit<T>(IDeclVisitor<T> visitor)

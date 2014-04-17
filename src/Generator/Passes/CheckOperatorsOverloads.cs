@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using CppSharp.AST;
+using CppSharp.AST.Extensions;
 using CppSharp.Generators;
 
 namespace CppSharp.Passes
@@ -85,9 +86,9 @@ namespace CppSharp.Passes
             }
         }
 
-        private static void CreateIndexer(Class @class, Method @operator)
+        void CreateIndexer(Class @class, Method @operator)
         {
-            Property property = new Property
+            var property = new Property
                 {
                     Name = "Item",
                     QualifiedType = @operator.ReturnType,
@@ -95,9 +96,25 @@ namespace CppSharp.Passes
                     Namespace = @class,
                     GetMethod = @operator
                 };
-            property.Parameters.AddRange(@operator.Parameters);
+
             if (!@operator.ReturnType.Qualifiers.IsConst && @operator.ReturnType.Type.IsAddress())
                 property.SetMethod = @operator;
+
+            if (Driver.Options.IsCLIGenerator)
+            {
+                // If we've a setter use the pointee as the type of the property.
+                var pointerType = property.Type as PointerType;
+                if (pointerType != null && property.HasSetter)
+                {
+                    property.QualifiedType = new QualifiedType(pointerType.Pointee, property.QualifiedType.Qualifiers);
+                    property.GetMethod.ReturnType = property.QualifiedType;
+                }
+                // C++/CLI uses "default" as the indexer property name.
+                property.Name = "default";
+            }
+
+            property.Parameters.AddRange(@operator.Parameters);
+
             @class.Properties.Add(property);
             @operator.IsGenerated = false;
         }
@@ -179,15 +196,18 @@ namespace CppSharp.Passes
                 // The array indexing operator can be overloaded
                 case CXXOperatorKind.Subscript:
 
-                // The comparison operators can be overloaded
+                // The conversion operator can be overloaded
+                case CXXOperatorKind.Conversion:
+                    return true;
+
+                // The comparison operators can be overloaded if their return type is bool
                 case CXXOperatorKind.EqualEqual:
                 case CXXOperatorKind.ExclaimEqual:
                 case CXXOperatorKind.Less:
                 case CXXOperatorKind.Greater:
                 case CXXOperatorKind.LessEqual:
                 case CXXOperatorKind.GreaterEqual:
-                case CXXOperatorKind.Conversion:
-                    return true;
+                    return @operator.ReturnType.Type.IsPrimitiveType(PrimitiveType.Bool);
 
                 // Only prefix operators can be overloaded
                 case CXXOperatorKind.PlusPlus:

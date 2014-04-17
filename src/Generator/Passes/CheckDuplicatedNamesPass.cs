@@ -25,10 +25,10 @@ namespace CppSharp.Passes
             if (decl.Name != Name)
                 throw new Exception("Invalid name");
 
-            var method = decl as Method;
-            if (method != null)
+            var function = decl as Function;
+            if (function != null)
             {
-                return UpdateName(method);
+                return UpdateName(function);
             }
 
             var property = decl as Property;
@@ -46,9 +46,9 @@ namespace CppSharp.Passes
             return true;
         }
 
-        private bool UpdateName(Method method)
+        private bool UpdateName(Function function)
         {
-            var @params = method.Parameters.Where(p => p.Kind != ParameterKind.IndirectReturnType)
+            var @params = function.Parameters.Where(p => p.Kind != ParameterKind.IndirectReturnType)
                                 .Select(p => p.QualifiedType.ToString());
             var signature = string.Format("{0}({1})", Name,string.Join( ", ", @params));
 
@@ -66,19 +66,21 @@ namespace CppSharp.Passes
             if (Count < methodCount+1)
                 Count = methodCount+1;
 
-            if (method.IsOperator)
+            var method = function as Method;
+
+            if (function.IsOperator)
             {
                 // TODO: turn into a method; append the original type (say, "signed long") of the last parameter to the type so that the user knows which overload is called
-                Driver.Diagnostics.EmitWarning("Duplicate operator {0} ignored", method.Name);
-                method.ExplicityIgnored = true;
+                Driver.Diagnostics.EmitWarning("Duplicate operator {0} ignored", function.Name);
+                function.ExplicityIgnored = true;
             }
-            else if (method.IsConstructor)
+            else if (method != null && method.IsConstructor)
             {
-                Driver.Diagnostics.EmitWarning("Duplicate constructor {0} ignored", method.Name);
-                method.ExplicityIgnored = true;
+                Driver.Diagnostics.EmitWarning("Duplicate constructor {0} ignored", function.Name);
+                function.ExplicityIgnored = true;
             }
             else
-                method.Name += methodCount.ToString(CultureInfo.InvariantCulture);
+                function.Name += methodCount.ToString(CultureInfo.InvariantCulture);
             return true;
         }
     }
@@ -116,12 +118,24 @@ namespace CppSharp.Passes
             return false;
         }
 
+        public override bool VisitFunctionDecl(Function decl)
+        {
+            if (!VisitDeclaration(decl))
+                return false;
+
+            if (ASTUtils.CheckIgnoreFunction(decl, Driver.Options))
+                return false;
+
+            CheckDuplicate(decl);
+            return false;
+        }
+
         public override bool VisitMethodDecl(Method decl)
         {
             if (!VisitDeclaration(decl))
                 return false;
 
-            if (ASTUtils.CheckIgnoreMethod(decl))
+            if (ASTUtils.CheckIgnoreMethod(decl, Driver.Options))
                 return false;
 
             if (decl.ExplicitInterfaceImpl == null)
@@ -143,11 +157,23 @@ namespace CppSharp.Passes
             foreach (var method in @class.Methods)
                 VisitMethodDecl(method);
 
+            foreach (var function in @class.Functions)
+                VisitFunctionDecl(function);
+
             foreach (var field in @class.Fields)
                 VisitFieldDecl(field);
 
             foreach (var property in @class.Properties)
                 VisitProperty(property);
+
+            var total = (uint)0;
+            foreach (var method in @class.Methods.Where(m => m.IsConstructor &&
+                !m.IsCopyConstructor && !m.IsMoveConstructor))
+                method.Index =  total++;
+
+            total = 0;
+            foreach (var method in @class.Methods.Where(m => m.IsCopyConstructor))
+                method.Index = total++;
 
             return false;
         }

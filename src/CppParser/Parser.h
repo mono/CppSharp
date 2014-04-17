@@ -56,6 +56,7 @@ struct Parser
     ParserResultKind ParseSharedLib(llvm::StringRef File,
                                     llvm::MemoryBuffer *Buffer,
                                     CppSharp::CppParser::NativeLibrary*& NativeLib);
+    ParserTargetInfo*  GetTargetInfo();
 
 protected:
 
@@ -69,6 +70,11 @@ protected:
     Function* WalkFunction(clang::FunctionDecl* FD, bool IsDependent = false,
         bool AddToNamespace = true);
     Class* WalkRecordCXX(clang::CXXRecordDecl* Record);
+    void WalkRecordCXX(clang::CXXRecordDecl* Record, Class* RC);
+    ClassTemplateSpecialization*
+    WalkClassTemplateSpecialization(clang::ClassTemplateSpecializationDecl* CTS);
+    ClassTemplatePartialSpecialization*
+    WalkClassTemplatePartialSpecialization(clang::ClassTemplatePartialSpecializationDecl* CTS);
     Method* WalkMethodCXX(clang::CXXMethodDecl* MD);
     Field* WalkFieldCXX(clang::FieldDecl* FD, Class* Class);
     ClassTemplate* WalkClassTemplate(clang::ClassTemplateDecl* TD);
@@ -92,6 +98,7 @@ protected:
     std::string GetTypeName(const clang::Type* Type);
     void WalkFunction(clang::FunctionDecl* FD, Function* F,
         bool IsDependent = false);
+    void HandlePreprocessedEntities(Declaration* Decl);
     void HandlePreprocessedEntities(Declaration* Decl, clang::SourceRange sourceRange,
                                     MacroLocation macroLocation = MacroLocation::Unknown);
     bool GetDeclText(clang::SourceRange SR, std::string& Text);
@@ -114,7 +121,7 @@ protected:
     int Index;
     ASTContext* Lib;
     ParserOptions* Opts;
-    llvm::OwningPtr<clang::CompilerInstance> C;
+    std::unique_ptr<clang::CompilerInstance> C;
     clang::ASTContext* AST;
     clang::TargetCXXABI::Kind TargetABI;
     clang::TargetCodeGenInfo* CodeGenInfo;

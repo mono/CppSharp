@@ -1,21 +1,23 @@
 ﻿
 using System;
+using System.Linq;
+using Mono.Options;
 
 namespace CppSharp.AST
 {
     public static class ASTUtils
     {
-        public static bool CheckIgnoreFunction(Function function)
+        public static bool CheckIgnoreFunction(Function function, DriverOptions options)
         {
             if (function.Ignore) return true;
 
             if (function is Method)
-                return CheckIgnoreMethod(function as Method);
+                return CheckIgnoreMethod(function as Method, options);
 
             return false;
         }
 
-        public static bool CheckIgnoreMethod(Method method)
+        public static bool CheckIgnoreMethod(Method method, DriverOptions options)
         {
             if (method.Ignore) return true;
 
@@ -25,7 +27,7 @@ namespace CppSharp.AST
             if (@class != null && @class.IsValueType && isEmptyCtor)
                 return true;
 
-            if (method.IsCopyConstructor || method.IsMoveConstructor)
+            if (method.IsMoveConstructor)
                 return true;
 
             if (method.IsDestructor)
@@ -36,6 +38,24 @@ namespace CppSharp.AST
 
             if (method.Access == AccessSpecifier.Private && !method.IsOverride)
                 return true;
+
+            //Ignore copy constructor if a base class don't has or has a private copy constructor
+            if (method.IsCopyConstructor)
+            {
+                if (!options.GenerateCopyConstructors)
+                    return true;
+
+                var baseClass = @class;
+                while (baseClass != null && baseClass.HasBaseClass)
+                {
+                    baseClass = baseClass.BaseClass;
+                    var copyConstructor = baseClass.Methods.FirstOrDefault(m => m.IsCopyConstructor);
+                    if (copyConstructor == null
+                        || copyConstructor.Access == AccessSpecifier.Private
+                        || copyConstructor.Ignore)
+                        return true;
+                }
+            }
 
             return false;
         }

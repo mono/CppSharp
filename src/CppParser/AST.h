@@ -7,35 +7,40 @@
 
 #pragma once
 
-#include <cstdint>
-#include <vector>
-#include <map>
-#include <string>
-
-#define CS_FLAGS
-
-#if defined(_MSC_VER) && !defined(__clang__)
-#define CS_API __declspec(dllexport)
-#else
-#define CS_API 
-#endif
-
-#define VECTOR(type, name) \
-    std::vector<type> name; \
-    type get##name (unsigned i) { return name[i]; } \
-    unsigned get##name##Count () { return name.size(); }
-
-#define STRING(name) \
-    std::string name; \
-    const char* get##name() { return name.c_str(); } \
-    void set##name(const char* s) { name = s; }
+#include "Helpers.h"
 
 namespace CppSharp { namespace CppParser { namespace AST {
 
-// Types
+#pragma region Types
+
+enum struct TypeKind
+{
+    Tag,
+    Array,
+    Function,
+    Pointer,
+    MemberPointer,
+    Typedef,
+    Attributed,
+    Decayed,
+    TemplateSpecialization,
+    TemplateParameter,
+    TemplateParameterSubstitution,
+    InjectedClassName,
+    DependentName,
+    PackExpansion,
+    Builtin
+};
+
+#define DECLARE_TYPE_KIND(kind) \
+    kind##Type();
 
 struct CS_API Type
 {
+    Type(TypeKind kind);
+    Type(const Type&);
+
+    TypeKind Kind;
     bool IsDependent;
 };
 
@@ -48,6 +53,7 @@ struct CS_API TypeQualifiers
 
 struct CS_API QualifiedType
 {
+    QualifiedType();
     CppSharp::CppParser::AST::Type* Type;
     TypeQualifiers Qualifiers;
 };
@@ -56,6 +62,7 @@ struct Declaration;
 
 struct CS_API TagType : public Type
 {
+    DECLARE_TYPE_KIND(Tag)
     CppSharp::CppParser::AST::Declaration* Declaration;
 };
 
@@ -69,6 +76,7 @@ struct CS_API ArrayType : public Type
         Incomplete
     };
 
+    DECLARE_TYPE_KIND(Array)
     CppSharp::CppParser::AST::QualifiedType QualifiedType;
     ArraySize SizeType;
     long Size;
@@ -88,6 +96,7 @@ enum class CallingConvention
 
 struct CS_API FunctionType : public Type
 {
+    DECLARE_TYPE_KIND(Function)
     QualifiedType ReturnType;
     CppSharp::CppParser::AST::CallingConvention CallingConvention;
     VECTOR(Parameter*, Parameters)
@@ -103,12 +112,14 @@ struct CS_API PointerType : public Type
         RVReference
     };
 
+    DECLARE_TYPE_KIND(Pointer)
     QualifiedType QualifiedPointee;
     TypeModifier Modifier;
 };
 
 struct CS_API MemberPointerType : public Type
 {
+    DECLARE_TYPE_KIND(MemberPointer)
     QualifiedType Pointee;
 };
 
@@ -116,17 +127,20 @@ struct TypedefDecl;
 
 struct CS_API TypedefType : public Type
 {
+    TypedefType();
     TypedefDecl* Declaration;
 };
 
 struct CS_API AttributedType : public Type
 {
+    DECLARE_TYPE_KIND(Attributed)
     QualifiedType Modified;
     QualifiedType Equivalent;
 };
 
 struct CS_API DecayedType : public Type
 {
+    DECLARE_TYPE_KIND(Decayed)
     QualifiedType Decayed;
     QualifiedType Original;
     QualifiedType Pointee;
@@ -134,6 +148,8 @@ struct CS_API DecayedType : public Type
 
 struct CS_API TemplateArgument
 {
+    TemplateArgument();
+
     enum struct ArgumentKind
     {
         Type,
@@ -156,6 +172,9 @@ struct Template;
 
 struct CS_API TemplateSpecializationType : public Type
 {
+    TemplateSpecializationType();
+    TemplateSpecializationType(const TemplateSpecializationType&);
+
     VECTOR(TemplateArgument, Arguments)
     CppSharp::CppParser::AST::Template* Template;
     Type* Desugared;
@@ -163,6 +182,9 @@ struct CS_API TemplateSpecializationType : public Type
 
 struct CS_API TemplateParameter
 {
+    TemplateParameter();
+    TemplateParameter(const TemplateParameter&);
+
     bool operator==(const TemplateParameter& param) const
     {
         return Name == param.Name;
@@ -173,11 +195,13 @@ struct CS_API TemplateParameter
 
 struct CS_API TemplateParameterType : public Type
 {
+    DECLARE_TYPE_KIND(TemplateParameter)
     TemplateParameter Parameter;
 };
 
 struct CS_API TemplateParameterSubstitutionType : public Type
 {
+    DECLARE_TYPE_KIND(TemplateParameterSubstitution)
     QualifiedType Replacement;
 };
 
@@ -185,13 +209,19 @@ struct Class;
 
 struct CS_API InjectedClassNameType : public Type
 {
+    InjectedClassNameType();
     TemplateSpecializationType TemplateSpecialization;
     CppSharp::CppParser::AST::Class* Class;
 };
 
 struct CS_API DependentNameType : public Type
 {
+    DECLARE_TYPE_KIND(DependentName)
+};
 
+struct CS_API PackExpansionType : public Type
+{
+    DECLARE_TYPE_KIND(PackExpansion)
 };
 
 enum struct PrimitiveType
@@ -217,35 +247,20 @@ enum struct PrimitiveType
 
 struct CS_API BuiltinType : public Type
 {
+    DECLARE_TYPE_KIND(Builtin)
     PrimitiveType Type;
 };
 
-#if 1
-// Comments
+#pragma endregion
 
-enum struct RawCommentKind
+#pragma region ABI
+
+enum struct CppAbi
 {
-    Invalid,
-    OrdinaryBCPL,
-    OrdinaryC,
-    BCPLSlash,
-    BCPLExcl,
-    JavaDoc,
-    Qt,
-    Merged
+    Itanium,
+    Microsoft,
+    ARM
 };
-
-struct FullComment;
-
-struct CS_API RawComment
-{
-    RawCommentKind Kind;
-    STRING(Text)
-    STRING(BriefText)
-    CppSharp::CppParser::AST::FullComment* FullComment;
-};
-
-// Class layouts
 
 enum struct VTableComponentKind
 {
@@ -261,6 +276,7 @@ enum struct VTableComponentKind
 
 struct CS_API VTableComponent
 {
+    VTableComponent();
     VTableComponentKind Kind;
     unsigned Offset;
     CppSharp::CppParser::AST::Declaration* Declaration;
@@ -268,26 +284,24 @@ struct CS_API VTableComponent
 
 struct CS_API VTableLayout
 {
+    VTableLayout();
+    VTableLayout(const VTableLayout&);
     VECTOR(VTableComponent, Components)
 };
 
 struct CS_API VFTableInfo
 {
+    VFTableInfo();
+    VFTableInfo(const VFTableInfo&);
     uint64_t VBTableIndex;
     uint32_t VFPtrOffset;
     uint32_t VFPtrFullOffset;
     VTableLayout Layout;
 };
 
-enum struct CppAbi
-{
-    Itanium,
-    Microsoft,
-    ARM
-};
-
 struct CS_API ClassLayout
 {
+    ClassLayout();
     CppAbi ABI;
     VECTOR(VFTableInfo, VFTables)
     VTableLayout Layout;
@@ -298,17 +312,37 @@ struct CS_API ClassLayout
     int DataSize;
 };
 
-// Declarations
+#pragma endregion
 
-enum struct MacroLocation
+#pragma region Declarations
+
+enum struct DeclarationKind
 {
-    Unknown,
-    ClassHead,
-    ClassBody,
-    FunctionHead,
-    FunctionParameters,
-    FunctionBody,
+    DeclarationContext,
+    Typedef,
+    Parameter,
+    Function,
+    Method,
+    Enumeration,
+    EnumerationItem,
+    Variable,
+    Field,
+    AccessSpecifier,
+    Class,
+    Template,
+    ClassTemplate,
+    ClassTemplateSpecialization,
+    ClassTemplatePartialSpecialization,
+    FunctionTemplate,
+    Namespace,
+    PreprocessedEntity,
+    MacroDefinition,
+    MacroExpansion,
+    TranslationUnit
 };
+
+#define DECLARE_DECL_KIND(klass, kind) \
+    klass();
 
 enum struct AccessSpecifier
 {
@@ -318,12 +352,15 @@ enum struct AccessSpecifier
 };
 
 struct DeclarationContext;
+struct RawComment;
 struct PreprocessedEntity;
 
 struct CS_API Declaration
 {
-    Declaration();
+    Declaration(DeclarationKind kind);
+    Declaration(const Declaration&);
 
+    DeclarationKind Kind;
     AccessSpecifier Access;
     DeclarationContext* _Namespace;
     STRING(Name)
@@ -348,26 +385,28 @@ struct Variable;
 
 struct CS_API DeclarationContext : public Declaration
 {
-    Declaration* FindAnonymous(uint64_t key);
+    DECLARE_DECL_KIND(DeclarationContext, DeclarationContext)
 
-    CppSharp::CppParser::AST::Namespace* FindNamespace(const std::string& Name);
-    CppSharp::CppParser::AST::Namespace* FindNamespace(const std::vector<std::string>&);
-    CppSharp::CppParser::AST::Namespace* FindCreateNamespace(const std::string& Name);
+    CS_IGNORE Declaration* FindAnonymous(uint64_t key);
 
-    Class* CreateClass(std::string Name, bool IsComplete);
-    Class* FindClass(const std::string& Name);
-    Class* FindClass(const std::string& Name, bool IsComplete,
+    CS_IGNORE CppSharp::CppParser::AST::Namespace* FindNamespace(const std::string& Name);
+    CS_IGNORE CppSharp::CppParser::AST::Namespace* FindNamespace(const std::vector<std::string>&);
+    CS_IGNORE CppSharp::CppParser::AST::Namespace* FindCreateNamespace(const std::string& Name);
+
+    CS_IGNORE Class* CreateClass(std::string Name, bool IsComplete);
+    CS_IGNORE Class* FindClass(const std::string& Name);
+    CS_IGNORE Class* FindClass(const std::string& Name, bool IsComplete,
         bool Create = false);
 
-    FunctionTemplate* FindFunctionTemplate(void* OriginalPtr);
-    FunctionTemplate* FindFunctionTemplate(const std::string& Name,
+    CS_IGNORE FunctionTemplate* FindFunctionTemplate(void* OriginalPtr);
+    CS_IGNORE FunctionTemplate* FindFunctionTemplate(const std::string& Name,
         const std::vector<TemplateParameter>& Params);
 
-    Enumeration* FindEnum(const std::string& Name, bool Create = false);
+    CS_IGNORE Enumeration* FindEnum(const std::string& Name, bool Create = false);
 
-    Function* FindFunction(const std::string& Name, bool Create = false);
+    CS_IGNORE Function* FindFunction(const std::string& Name, bool Create = false);
 
-    TypedefDecl* FindTypedef(const std::string& Name, bool Create = false);
+    CS_IGNORE TypedefDecl* FindTypedef(const std::string& Name, bool Create = false);
 
     VECTOR(Namespace*, Namespaces)
     VECTOR(Enumeration*, Enums)
@@ -377,16 +416,19 @@ struct CS_API DeclarationContext : public Declaration
     VECTOR(TypedefDecl*, Typedefs)
     VECTOR(Variable*, Variables)
     std::map<uint64_t, Declaration*> Anonymous;
+
+    bool IsAnonymous;
 };
 
 struct CS_API TypedefDecl : public Declaration
 {
+    DECLARE_DECL_KIND(TypedefDecl, Typedef)
     CppSharp::CppParser::AST::QualifiedType QualifiedType;
 };
 
 struct CS_API Parameter : public Declaration
 {
-    Parameter() : IsIndirect(false) {}
+    Parameter();
 
     CppSharp::CppParser::AST::QualifiedType QualifiedType;
     bool IsIndirect;
@@ -453,7 +495,7 @@ enum struct CXXOperatorKind
 
 struct CS_API Function : public Declaration
 {
-    Function() : IsReturnIndirect(false) {}
+    Function();
 
     QualifiedType ReturnType;
     bool IsReturnIndirect;
@@ -473,6 +515,8 @@ struct AccessSpecifierDecl;
 
 struct CS_API Method : public Function
 {
+    Method();
+
     AccessSpecifierDecl* AccessDecl;
 
     bool IsVirtual;
@@ -481,7 +525,7 @@ struct CS_API Method : public Function
     bool IsImplicit;
     bool IsOverride;
 
-    CXXMethodKind Kind;
+    CXXMethodKind MethodKind;
 
     bool IsDefaultConstructor;
     bool IsCopyConstructor;
@@ -492,8 +536,13 @@ struct CS_API Method : public Function
 
 struct CS_API Enumeration : public Declaration
 {
+    DECLARE_DECL_KIND(Enumeration, Enumeration)
+
     struct CS_API Item : public Declaration
     {
+        DECLARE_DECL_KIND(Item, EnumerationItem)
+        Item(const Item&);
+
         STRING(Expression)
         uint64_t Value;
     };
@@ -513,12 +562,18 @@ struct CS_API Enumeration : public Declaration
 
 struct CS_API Variable : public Declaration
 {
+    DECLARE_DECL_KIND(Variable, Variable)
+
     STRING(Mangled)
     CppSharp::CppParser::AST::QualifiedType QualifiedType;
 };
 
+struct DeclarationContext;
+struct PreprocessedEntity;
+
 struct CS_API BaseClassSpecifier
 {
+    BaseClassSpecifier();
     AccessSpecifier Access;
     bool IsVirtual;
     CppSharp::CppParser::AST::Type* Type;
@@ -528,20 +583,21 @@ struct Class;
 
 struct CS_API Field : public Declaration
 {
+    DECLARE_DECL_KIND(Field, Field)
     CppSharp::CppParser::AST::QualifiedType QualifiedType;
-    AccessSpecifier Access;
     unsigned Offset;
     CppSharp::CppParser::AST::Class* Class;
 };
 
-
 struct CS_API AccessSpecifierDecl : public Declaration
 {
-
+    DECLARE_DECL_KIND(AccessSpecifierDecl, AccessSpecifier)
 };
 
 struct CS_API Class : public DeclarationContext
 {
+    Class();
+
     VECTOR(BaseClassSpecifier*, Bases)
     VECTOR(Field*, Fields)
     VECTOR(Method*, Methods)
@@ -554,58 +610,97 @@ struct CS_API Class : public DeclarationContext
     bool IsPolymorphic;
     bool HasNonTrivialDefaultConstructor;
     bool HasNonTrivialCopyConstructor;
+    bool HasNonTrivialDestructor;
+    bool IsExternCContext;
 
-    ClassLayout Layout;
+    ClassLayout* Layout;
 };
 
 struct CS_API Template : public Declaration
 {
+    DECLARE_DECL_KIND(Template, Template)
     Declaration* TemplatedDecl;
     VECTOR(TemplateParameter, Parameters)
 };
 
+struct ClassTemplateSpecialization;
+struct ClassTemplatePartialSpecialization;
+
 struct CS_API ClassTemplate : public Template
 {
+    ClassTemplate();
+    VECTOR(ClassTemplateSpecialization*, Specializations)
+    ClassTemplateSpecialization* FindSpecialization(void* ptr);
+    ClassTemplateSpecialization* FindSpecialization(TemplateSpecializationType type);
+    ClassTemplatePartialSpecialization* FindPartialSpecialization(void* ptr);
+    ClassTemplatePartialSpecialization* FindPartialSpecialization(TemplateSpecializationType type);
+};
+
+enum struct TemplateSpecializationKind
+{
+    Undeclared,
+    ImplicitInstantiation,
+    ExplicitSpecialization,
+    ExplicitInstantiationDeclaration,
+    ExplicitInstantiationDefinition
 };
 
 struct CS_API ClassTemplateSpecialization : public Class
 {
+    ClassTemplateSpecialization();
+    ClassTemplate* TemplatedDecl;
+    VECTOR(TemplateArgument, Arguments)
+    TemplateSpecializationKind SpecializationKind;
 };
 
 struct CS_API ClassTemplatePartialSpecialization : public ClassTemplateSpecialization
 {
+    ClassTemplatePartialSpecialization();
 };
 
 struct CS_API FunctionTemplate : public Template
 {
+    FunctionTemplate();
 };
 
 struct CS_API Namespace : public DeclarationContext
 {
+    Namespace();
+    bool IsInline;
+};
 
+enum struct MacroLocation
+{
+    Unknown,
+    ClassHead,
+    ClassBody,
+    FunctionHead,
+    FunctionParameters,
+    FunctionBody,
 };
 
 struct CS_API PreprocessedEntity : public Declaration
 {
-    PreprocessedEntity() : Location(MacroLocation::Unknown) {}
-
+    PreprocessedEntity();
     MacroLocation Location;
 };
 
 struct CS_API MacroDefinition : public PreprocessedEntity
 {
+    MacroDefinition();
     STRING(Expression)
 };
 
 struct CS_API MacroExpansion : public PreprocessedEntity
 {
+    MacroExpansion();
     STRING(Text)
     MacroDefinition* Definition;
 };
 
-
 struct CS_API TranslationUnit : public Namespace
 {
+    TranslationUnit();
     STRING(FileName)
     bool IsSystemHeader;
     VECTOR(MacroDefinition*, Macros)
@@ -614,14 +709,61 @@ struct CS_API TranslationUnit : public Namespace
 struct CS_API NativeLibrary
 {
     STRING(FileName)
-    VECTOR(std::string, Symbols)
+    VECTOR_STRING(Symbols)
 };
 
 struct CS_API ASTContext
 {
-    TranslationUnit* FindOrCreateModule(const std::string& File);
+    ASTContext();
+    TranslationUnit* FindOrCreateModule(std::string File);
     VECTOR(TranslationUnit*, TranslationUnits)
 };
-#endif
+
+#pragma endregion
+
+#pragma region Comments
+
+enum struct CommentKind
+{
+    FullComment,
+};
+
+struct CS_API CS_ABSTRACT Comment
+{
+    Comment(CommentKind kind);
+    CommentKind Kind;
+};
+
+struct CS_API FullComment : public Comment
+{
+    FullComment();
+};
+
+enum struct RawCommentKind
+{
+    Invalid,
+    OrdinaryBCPL,
+    OrdinaryC,
+    BCPLSlash,
+    BCPLExcl,
+    JavaDoc,
+    Qt,
+    Merged
+};
+
+struct CS_API RawComment
+{
+    RawComment();
+    RawCommentKind RawCommentKind;
+    STRING(Text)
+    STRING(BriefText)
+    FullComment* FullComment;
+};
+
+#pragma region Commands
+
+#pragma endregion
+
+#pragma endregion
 
 } } }

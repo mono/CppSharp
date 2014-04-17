@@ -13,6 +13,10 @@
 template<typename T>
 static std::vector<T> split(const T & str, const T & delimiters) {
     std::vector<T> v;
+	if (str.length() == 0) {
+		v.push_back(str);
+		return v;
+	}
     typename T::size_type start = 0;
     auto pos = str.find_first_of(delimiters, start);
     while(pos != T::npos) {
@@ -29,8 +33,79 @@ static std::vector<T> split(const T & str, const T & delimiters) {
 
 namespace CppSharp { namespace CppParser { namespace AST {
 
-Declaration::Declaration()
-    : Access(AccessSpecifier::Public)
+Type::Type(TypeKind kind) : Kind(kind) {}
+Type::Type(const Type& rhs) : Kind(rhs.Kind), IsDependent(rhs.IsDependent) {}
+
+QualifiedType::QualifiedType() : Type(0) {}
+
+TagType::TagType() : Type(TypeKind::Tag) {}
+
+ArrayType::ArrayType() : Type(TypeKind::Array) {}
+
+FunctionType::FunctionType() : Type(TypeKind::Function) {}
+DEF_VECTOR(FunctionType, Parameter*, Parameters)
+
+PointerType::PointerType() : Type(TypeKind::Pointer) {}
+
+MemberPointerType::MemberPointerType() : Type(TypeKind::MemberPointer) {}
+
+TypedefType::TypedefType() : Type(TypeKind::Typedef), Declaration(0) {}
+
+AttributedType::AttributedType() : Type(TypeKind::Attributed) {}
+
+DecayedType::DecayedType() : Type(TypeKind::Decayed) {}
+
+TemplateArgument::TemplateArgument() : Declaration(0) {}
+
+TemplateSpecializationType::TemplateSpecializationType()
+    : Type(TypeKind::TemplateSpecialization), Template(0), Desugared(0) {}
+TemplateSpecializationType::TemplateSpecializationType(
+    const TemplateSpecializationType& rhs) : Type(rhs),
+    Arguments(rhs.Arguments), Template(rhs.Template), Desugared(rhs.Desugared) {}
+
+DEF_VECTOR(TemplateSpecializationType, TemplateArgument, Arguments)
+
+// TemplateParameter
+TemplateParameter::TemplateParameter() {}
+TemplateParameter::TemplateParameter(const TemplateParameter& rhs) : Name(rhs.Name) {}
+
+DEF_STRING(TemplateParameter, Name)
+
+TemplateParameterType::TemplateParameterType() : Type(TypeKind::TemplateParameter) {}
+
+TemplateParameterSubstitutionType::TemplateParameterSubstitutionType()
+    : Type(TypeKind::TemplateParameterSubstitution) {}
+
+InjectedClassNameType::InjectedClassNameType() : Type(TypeKind::InjectedClassName),
+    Class(0) {}
+
+DependentNameType::DependentNameType() : Type(TypeKind::DependentName) {}
+
+PackExpansionType::PackExpansionType() : Type(TypeKind::PackExpansion) {}
+
+BuiltinType::BuiltinType() : CppSharp::CppParser::AST::Type(TypeKind::Builtin) {}
+
+VTableComponent::VTableComponent() : Offset(0), Declaration(0) {}
+
+// VTableLayout
+VTableLayout::VTableLayout() {}
+VTableLayout::VTableLayout(const VTableLayout& rhs) : Components(rhs.Components) {}
+
+DEF_VECTOR(VTableLayout, VTableComponent, Components)
+
+VFTableInfo::VFTableInfo() : VBTableIndex(0), VFPtrOffset(0), VFPtrFullOffset(0) {}
+VFTableInfo::VFTableInfo(const VFTableInfo& rhs) : VBTableIndex(rhs.VBTableIndex),
+    VFPtrOffset(rhs.VFPtrOffset), VFPtrFullOffset(rhs.VFPtrFullOffset),
+    Layout(rhs.Layout) {}
+
+ClassLayout::ClassLayout() : ABI(CppAbi::Itanium), HasOwnVFPtr(false),
+    VBPtrOffset(0), Alignment(0), Size(0), DataSize(0) {}
+
+DEF_VECTOR(ClassLayout, VFTableInfo, VFTables)
+
+Declaration::Declaration(DeclarationKind kind)
+    : Kind(kind)
+    , Access(AccessSpecifier::Public)
     , _Namespace(0)
     , Comment(0)
     , IsIncomplete(false)
@@ -40,6 +115,37 @@ Declaration::Declaration()
     , OriginalPtr(0)
 {
 }
+
+Declaration::Declaration(const Declaration& rhs)
+    : Kind(rhs.Kind)
+    , Access(rhs.Access)
+    , _Namespace(rhs._Namespace)
+    , Name(rhs.Name)
+    , Comment(rhs.Comment)
+    , DebugText(rhs.DebugText)
+    , IsIncomplete(rhs.IsIncomplete)
+    , IsDependent(rhs.IsDependent)
+    , CompleteDeclaration(rhs.CompleteDeclaration)
+    , DefinitionOrder(rhs.DefinitionOrder)
+    , PreprocessedEntities(rhs.PreprocessedEntities)
+    , OriginalPtr(rhs.OriginalPtr)
+{
+}
+
+DEF_STRING(Declaration, Name)
+DEF_STRING(Declaration, DebugText)
+DEF_VECTOR(Declaration, PreprocessedEntity*, PreprocessedEntities)
+
+DeclarationContext::DeclarationContext() : IsAnonymous(false),
+    Declaration(DeclarationKind::DeclarationContext) {}
+
+DEF_VECTOR(DeclarationContext, Namespace*, Namespaces)
+DEF_VECTOR(DeclarationContext, Enumeration*, Enums)
+DEF_VECTOR(DeclarationContext, Function*, Functions)
+DEF_VECTOR(DeclarationContext, Class*, Classes)
+DEF_VECTOR(DeclarationContext, Template*, Templates)
+DEF_VECTOR(DeclarationContext, TypedefDecl*, Typedefs)
+DEF_VECTOR(DeclarationContext, Variable*, Variables)
 
 Declaration* DeclarationContext::FindAnonymous(uint64_t key)
 {
@@ -166,8 +272,6 @@ Class* DeclarationContext::FindClass(const std::string& Name, bool IsComplete,
 
 Enumeration* DeclarationContext::FindEnum(const std::string& Name, bool Create)
 {
-    if (Name.empty()) return nullptr;
-
     auto entries = split<std::string>(Name, "::");
 
     if (entries.size() == 1)
@@ -265,8 +369,127 @@ TypedefDecl* DeclarationContext::FindTypedef(const std::string& Name, bool Creat
     return tdef;
 }
 
-TranslationUnit* ASTContext::FindOrCreateModule(const std::string& File)
+TypedefDecl::TypedefDecl() : Declaration(DeclarationKind::Typedef) {}
+
+Parameter::Parameter() : Declaration(DeclarationKind::Parameter),
+    IsIndirect(false), HasDefaultValue(false) {}
+
+Function::Function() : Declaration(DeclarationKind::Function),
+    IsReturnIndirect(false) {}
+
+DEF_STRING(Function, Mangled)
+DEF_STRING(Function, Signature)
+DEF_VECTOR(Function, Parameter*, Parameters)
+
+Method::Method() : IsDefaultConstructor(false), IsCopyConstructor(false),
+    IsMoveConstructor(false) { Kind = DeclarationKind::Method; }
+
+Enumeration::Enumeration() : Declaration(DeclarationKind::Enumeration),
+    Modifiers((EnumModifiers)0), Type(0), BuiltinType(0) {}
+
+DEF_VECTOR(Enumeration, Enumeration::Item, Items)
+
+Enumeration::Item::Item() : Declaration(DeclarationKind::EnumerationItem) {}
+
+Enumeration::Item::Item(const Item& rhs) : Declaration(rhs),
+    Expression(rhs.Expression), Value(rhs.Value) {}
+
+DEF_STRING(Enumeration::Item, Expression)
+
+Variable::Variable() : Declaration(DeclarationKind::Variable) {}
+
+DEF_STRING(Variable, Mangled)
+
+BaseClassSpecifier::BaseClassSpecifier() : Type(0) {}
+
+Field::Field() : Declaration(DeclarationKind::Field), Class(0) {}
+
+AccessSpecifierDecl::AccessSpecifierDecl()
+    : Declaration(DeclarationKind::AccessSpecifier) {}
+
+Class::Class() : Layout(0) { Kind = DeclarationKind::Class; }
+
+DEF_VECTOR(Class, BaseClassSpecifier*, Bases)
+DEF_VECTOR(Class, Field*, Fields)
+DEF_VECTOR(Class, Method*, Methods)
+DEF_VECTOR(Class, AccessSpecifierDecl*, Specifiers)
+
+Template::Template() : Declaration(DeclarationKind::Template),
+    TemplatedDecl(0) {}
+
+DEF_VECTOR(Template, TemplateParameter, Parameters)
+
+ClassTemplate::ClassTemplate() { Kind = DeclarationKind::ClassTemplate; }
+
+DEF_VECTOR(ClassTemplate, ClassTemplateSpecialization*, Specializations)
+
+ClassTemplateSpecialization::ClassTemplateSpecialization() : TemplatedDecl(0)
+    { Kind = DeclarationKind::ClassTemplateSpecialization; }
+
+DEF_VECTOR(ClassTemplateSpecialization, TemplateArgument, Arguments)
+
+ClassTemplatePartialSpecialization::ClassTemplatePartialSpecialization()
+    { Kind = DeclarationKind::ClassTemplatePartialSpecialization; }
+
+FunctionTemplate::FunctionTemplate() { Kind = DeclarationKind::FunctionTemplate; }
+
+Namespace::Namespace() : IsInline(false) { Kind = DeclarationKind::Namespace; }
+
+PreprocessedEntity::PreprocessedEntity()
+    : Declaration(DeclarationKind::PreprocessedEntity),
+      Location(MacroLocation::Unknown) {}
+
+MacroDefinition::MacroDefinition() { Kind = DeclarationKind::MacroDefinition; }
+
+DEF_STRING(MacroDefinition, Expression)
+
+MacroExpansion::MacroExpansion() { Kind = DeclarationKind::MacroExpansion; }
+
+DEF_STRING(MacroExpansion, Text)
+
+TranslationUnit::TranslationUnit() { Kind = DeclarationKind::TranslationUnit; }
+
+DEF_STRING(TranslationUnit, FileName)
+DEF_VECTOR(TranslationUnit, MacroDefinition*, Macros)
+
+// NativeLibrary
+DEF_STRING(NativeLibrary, FileName)
+DEF_VECTOR_STRING(NativeLibrary, Symbols)
+
+// ASTContext
+DEF_VECTOR(ASTContext, TranslationUnit*, TranslationUnits)
+
+ClassTemplateSpecialization* ClassTemplate::FindSpecialization(void* ptr)
 {
+    return 0;
+}
+
+ClassTemplateSpecialization*
+ClassTemplate::FindSpecialization(TemplateSpecializationType type)
+{
+    return 0;
+}
+
+ClassTemplatePartialSpecialization* ClassTemplate::FindPartialSpecialization(void* ptr)
+{
+    return 0;
+}
+
+ClassTemplatePartialSpecialization*
+ClassTemplate::FindPartialSpecialization(TemplateSpecializationType type)
+{
+    return 0;
+}
+
+ASTContext::ASTContext() {}
+
+TranslationUnit* ASTContext::FindOrCreateModule(std::string File)
+{
+#ifdef _WIN32
+    // Clean up the file path.
+    std::replace(File.begin(), File.end(), '/', '\\');
+#endif
+
     auto existingUnit = std::find_if(TranslationUnits.begin(),
         TranslationUnits.end(), [&](TranslationUnit* unit) {
             return unit && unit->FileName == File;
@@ -281,5 +504,15 @@ TranslationUnit* ASTContext::FindOrCreateModule(const std::string& File)
 
     return unit;
 }
+
+// Comments
+Comment::Comment(CommentKind kind) : Kind(kind) {}
+
+DEF_STRING(RawComment, Text)
+DEF_STRING(RawComment, BriefText)
+
+RawComment::RawComment() : FullComment(0) {}
+
+FullComment::FullComment() : Comment(CommentKind::FullComment) {}
 
 } } }

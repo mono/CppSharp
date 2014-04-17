@@ -4,7 +4,6 @@ using System.IO;
 using System.Text;
 using CppSharp.AST;
 using CppSharp.Generators;
-
 #if !OLD_PARSER
 using CppSharp.Parser;
 using CppAbi = CppSharp.Parser.AST.CppAbi;
@@ -37,6 +36,7 @@ namespace CppSharp
             GeneratorKind = GeneratorKind.CSharp;
             GenerateLibraryNamespace = true;
             GeneratePartialClasses = true;
+            GenerateClassMarshals = false;
             OutputInteropIncludes = true;
             MaxIndent = 80;
             CommentPrefix = "///";
@@ -44,6 +44,11 @@ namespace CppSharp
             Encoding = Encoding.ASCII;
 
             CodeFiles = new List<string>();
+
+            Is32Bit = true;
+#if IS_64_BIT
+            Is32Bit = false;
+#endif
         }
 
         // General options
@@ -87,8 +92,41 @@ namespace CppSharp
         public bool GenerateVirtualTables;
         public bool GenerateAbstractImpls;
         public bool GenerateInterfacesForMultipleInheritance;
-        public bool GenerateProperties;
         public bool GenerateInternalImports;
+        public bool GenerateClassMarshals;
+        public bool GenerateInlines;
+        public bool GenerateCopyConstructors;
+        public bool UseHeaderDirectories;
+
+        /// <summary>
+        /// If set to true the generator will use GetterSetterToPropertyPass to
+        /// convert matching getter/setter pairs to properties.
+        /// </summary>
+        public bool GenerateProperties;
+
+        /// <summary>
+        /// If set to true the generator will use GetterSetterToPropertyAdvancedPass to
+        /// convert matching getter/setter pairs to properties. This pass has slightly
+        /// different semantics from GetterSetterToPropertyPass, it will more agressively
+        /// try to match for matching properties.
+        /// </summary>
+        public bool GeneratePropertiesAdvanced;
+
+        //List of include directories that are used but not generated
+        public List<string> NoGenIncludeDirs;
+        public string NoGenIncludePrefix = "";
+
+        /// <summary>
+        /// Wether the generated C# code should be automatically compiled.
+        /// </summary>
+        public bool CompileCode;
+
+        /// <summary>
+        /// Enable this option to enable generation of finalizers.
+        /// Works in both CLI and C# backends.
+        /// </summary>
+        public bool GenerateFinalizers;
+
         public string IncludePrefix;
         public bool WriteOnlyWhenChanged;
         public Func<TranslationUnit, string> GenerateName;
@@ -121,9 +159,11 @@ namespace CppSharp
             get { return GeneratorKind == GeneratorKind.CLI; }
         }
 
-        public bool Is32Bit { get { return true; } }
+        public bool Is32Bit { get; set; }
 
         public List<string> CodeFiles { get; private set; }
+        public readonly List<string> DependentNameSpaces = new List<string>();
+        public bool MarshalCharAsManagedChar { get; set; }
     }
 
     public class InvalidOptionException : Exception

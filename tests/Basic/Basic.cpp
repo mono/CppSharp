@@ -2,12 +2,19 @@
 
 Foo::Foo()
 {
+    auto p = new int[4];
+    for (int i = 0; i < 4; i++)
+        p[i] = i;
+    SomePointer = p;
+    SomePointerPointer = &SomePointer;
 }
 
 const char* Foo::GetANSI()
 {
 	return "ANSI";
 }
+
+Foo2::Foo2() {}
 
 Foo2 Foo2::operator<<(signed int i)
 {
@@ -21,6 +28,11 @@ Foo2 Foo2::operator<<(signed long l)
     Foo2 foo;
     foo.C = C << l;
     return foo;
+}
+
+char Foo2::testCharMarshalling(char c)
+{
+    return c;
 }
 
 Bar::Bar()
@@ -107,6 +119,11 @@ int Hello::AddFooPtr(Foo* foo)
     return AddFoo(*foo);
 }
 
+int Hello::AddFooPtrRef(Foo*& foo)
+{
+    return AddFoo(*foo);
+}
+
 int Hello::AddFoo2(Foo2 foo)
 {
     return (int)(foo.A + foo.B + foo.C);
@@ -181,6 +198,8 @@ int ImplementsAbstractFoo::pureFunction2()
 {
     return 15;
 }
+
+ReturnsAbstractFoo::ReturnsAbstractFoo() {}
 
 const AbstractFoo& ReturnsAbstractFoo::getFoo()
 {

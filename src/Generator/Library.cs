@@ -131,13 +131,18 @@ namespace CppSharp
 
             foreach (var unit in context.TranslationUnits)
             {
-                foreach (var macro in unit.Macros)
+                foreach (var macro in unit.PreprocessedEntities.OfType<MacroDefinition>())
                 {
                     var match = regex.Match(macro.Name);
                     if (!match.Success) continue;
 
+                    if (macro.Enumeration != null)
+                        continue;
+
                     var item = GenerateEnumItemFromMacro(context, macro);
                     @enum.AddItem(item);
+
+                    macro.Enumeration = @enum;
                 }
 
                 if (@enum.Items.Count > 0)
@@ -200,7 +205,26 @@ namespace CppSharp
         }
 
         /// <summary>
-        /// 
+        /// Sets the parameter usage for a function parameter.
+        /// </summary>
+        /// <param name="parameterIndex">first parameter has index 1</param>
+        public static void SetFunctionParameterUsage(this ASTContext context,
+            string functionName, int parameterIndex, ParameterUsage usage)
+        {
+            if (parameterIndex <= 0)
+                throw new ArgumentException("parameterIndex");
+
+            foreach (var function in context.FindFunction(functionName))
+            {
+                if (function.Parameters.Count < parameterIndex)
+                    throw new ArgumentException("parameterIndex");
+
+                function.Parameters[parameterIndex - 1].Usage = usage;
+            }
+        }
+
+        /// <summary>
+        /// Sets the parameter usage for a method parameter.
         /// </summary>
         /// <param name="parameterIndex">first parameter has index 1</param>
         public static void SetMethodParameterUsage(this ASTContext context,
@@ -224,15 +248,12 @@ namespace CppSharp
         public static void CopyClassFields(this ASTContext context, string source,
             string destination)
         {
-            foreach (var @class in context.FindClass(source))
-            {
-                foreach (var dest in context.FindClass(destination))
-                {
-                    dest.Fields.AddRange(@class.Fields);
-                    foreach (var field in dest.Fields)
-                        field.Namespace = dest;
-                }
-            }
+            var @class = context.FindCompleteClass(source);
+            var dest = context.FindCompleteClass(destination);
+
+            dest.Fields.AddRange(@class.Fields);
+            foreach (var field in dest.Fields)
+                field.Namespace = dest;
         }
 
         #endregion
@@ -273,13 +294,11 @@ namespace CppSharp
         public static void IgnoreClassMethodWithName(this ASTContext context, string className,
             string name)
         {
-            foreach (var @class in context.FindClass(name))
+            foreach (var method in from @class in context.FindClass(className)
+                                   from method in @class.Methods
+                                   where method.Name == name
+                                   select method)
             {
-                var method = @class.Methods.Find(m => m.Name == name);
-
-                if (method == null)
-                    return;
-
                 method.ExplicityIgnored = true;
             }
         }
@@ -316,7 +335,6 @@ namespace CppSharp
             foreach (var unit in units)
             {
                 unit.IsGenerated = false;
-                unit.IsProcessed = true;
                 unit.ExplicityIgnored = true;
             }
         }

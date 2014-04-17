@@ -24,6 +24,19 @@ namespace CppSharp.AST
         // Used to keep track of anonymous declarations.
         public Dictionary<ulong, Declaration> Anonymous; 
 
+        // True if the context is inside an extern "C" context.
+        public bool IsExternCContext;
+
+        public override string LogicalName
+        {
+            get { return IsAnonymous ? "<anonymous>" : base.Name; }
+        }
+
+        public override string LogicalOriginalName
+        {
+            get { return IsAnonymous ? "<anonymous>" : base.OriginalName; }
+        }
+
         protected DeclarationContext()
         {
             Namespaces = new List<Namespace>();
@@ -58,6 +71,25 @@ namespace CppSharp.AST
         public Declaration FindAnonymous(ulong key)
         {
             return Anonymous.ContainsKey(key) ? Anonymous[key] : null;
+        }
+
+        public DeclarationContext FindDeclaration(IEnumerable<string> declarations)
+        {
+            DeclarationContext currentDeclaration = this;
+
+            foreach (var declaration in declarations)
+            {
+                var subDeclaration = currentDeclaration.Namespaces
+                    .Concat<DeclarationContext>(currentDeclaration.Classes)
+                    .FirstOrDefault(e => e.Name.Equals(declaration));
+
+                if (subDeclaration == null)
+                    return null;
+
+                currentDeclaration = subDeclaration;
+            }
+
+            return currentDeclaration as DeclarationContext;
         }
 
         public Namespace FindNamespace(string name)
@@ -167,13 +199,17 @@ namespace CppSharp.AST
 
             if (entries.Count <= 1)
             {
-                return Classes.Find(e => e.Name.Equals(name, stringComparison));
+                var @class = Classes.Find(c => c.Name.Equals(name, stringComparison));
+                if (@class != null)
+                    return @class.CompleteDeclaration == null ?
+                        @class : (Class) @class.CompleteDeclaration;
+                return null;
             }
 
             var className = entries[entries.Count - 1];
             var namespaces = entries.Take(entries.Count - 1);
 
-            DeclarationContext declContext = FindNamespace(namespaces);
+            DeclarationContext declContext = FindDeclaration(namespaces);
             if (declContext == null)
             {
                 declContext = FindClass(entries[0]);
@@ -271,7 +307,7 @@ namespace CppSharp.AST
             return Functions.Where(fn => fn.OperatorKind == kind);
         }
 
-        public virtual IEnumerable<Function> GetFunctionOverloads(Function function)
+        public virtual IEnumerable<Function> GetOverloads(Function function)
         {
             if (function.IsOperator)
                 return FindOperator(function.OperatorKind);
@@ -284,7 +320,7 @@ namespace CppSharp.AST
             {
                 Predicate<Declaration> pred = (t => !t.Ignore);
                 return Enums.Exists(pred) || HasFunctions || Typedefs.Exists(pred)
-                    || Classes.Exists(pred) || Namespaces.Exists(n => n.HasDeclarations);
+                    || Classes.Any() || Namespaces.Exists(n => n.HasDeclarations);
             }
         }
 
@@ -305,6 +341,18 @@ namespace CppSharp.AST
     /// </summary>
     public class Namespace : DeclarationContext
     {
+        public override string LogicalName
+        {
+            get { return IsInline ? string.Empty : base.Name; }
+        }
+
+        public override string LogicalOriginalName
+        {
+            get { return IsInline ? string.Empty : base.OriginalName; }
+        }
+
+        public bool IsInline;
+
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {
             return visitor.VisitNamespace(this);

@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using CppSharp.AST;
+using CppSharp.AST.Extensions;
 using CppSharp.Generators.AST;
 using CppSharp.Types;
 
@@ -24,6 +27,7 @@ namespace CppSharp.Generators.CLI
     public class CLITypeReferenceCollector : AstVisitor
     {
         private readonly ITypeMapDatabase TypeMapDatabase;
+        private readonly DriverOptions DriverOptions;
         private TranslationUnit TranslationUnit;
 
         private Dictionary<Declaration, CLITypeReference> typeReferences;
@@ -32,9 +36,10 @@ namespace CppSharp.Generators.CLI
             get { return typeReferences.Values; }
         }
 
-        public CLITypeReferenceCollector(ITypeMapDatabase typeMapDatabase)
+        public CLITypeReferenceCollector(ITypeMapDatabase typeMapDatabase, DriverOptions driverOptions)
         {
             TypeMapDatabase = typeMapDatabase;
+            DriverOptions = driverOptions;
             typeReferences = new Dictionary<Declaration,CLITypeReference>();
         }
 
@@ -87,19 +92,7 @@ namespace CppSharp.Generators.CLI
 
                 record.Value.Visit(this);
                 GenerateInclude(record);
-                ProcessTypeMap(record);
             }
-        }
-
-        private void ProcessTypeMap(ASTRecord<Declaration> record)
-        {
-            TypeMap typeMap;
-            if (!TypeMapDatabase.FindTypeMap(record.Value, out typeMap))
-                return;
-
-
-            typeMap.Declaration = record.Value;
-            typeMap.CLITypeReference(this, record);
         }
 
         private void GenerateInclude(ASTRecord<Declaration> record)
@@ -108,12 +101,21 @@ namespace CppSharp.Generators.CLI
             if(decl.Namespace == null)
                 return;
 
-            var declFile = decl.Namespace.TranslationUnit.FileName;
+            // Find a type map for the declaration and use it if it exists.
+            TypeMap typeMap;
+            if (TypeMapDatabase.FindTypeMap(record.Value, out typeMap))
+            {
+                typeMap.Declaration = record.Value;
+                typeMap.CLITypeReference(this, record);
+                return;
+            }
 
-            if(decl.Namespace.TranslationUnit.IsSystemHeader)
+            var translationUnit = decl.Namespace.TranslationUnit;
+
+            if (translationUnit.IsSystemHeader)
                 return;
 
-            if(decl.Ignore)
+            if(decl.ExplicityIgnored)
                 return;
 
             if(IsBuiltinTypedef(decl))
@@ -124,13 +126,33 @@ namespace CppSharp.Generators.CLI
             {
                 typeRef.Include = new Include
                     {
-                        File = declFile,
-                        TranslationUnit = decl.Namespace.TranslationUnit,
-                        Kind = Include.IncludeKind.Quoted,
+                        File = GetIncludePath(translationUnit),
+                        TranslationUnit = translationUnit,
+                        Kind = translationUnit.IsGenerated
+                            ? Include.IncludeKind.Quoted
+                            : Include.IncludeKind.Angled,
                     };
             }
 
             typeRef.Include.InHeader |= IsIncludeInHeader(record);
+        }
+
+        private string GetIncludePath(TranslationUnit translationUnit)
+        {
+            if (!translationUnit.IsGenerated)
+                return DriverOptions.NoGenIncludePrefix + translationUnit.FileRelativePath;
+
+            if (!DriverOptions.UseHeaderDirectories)
+                return translationUnit.FileName;
+
+            var rel = PathHelpers.GetRelativePath(
+                TranslationUnit.FileRelativeDirectory,
+                translationUnit.FileRelativeDirectory);
+
+            if (string.IsNullOrEmpty(rel))
+                return translationUnit.FileName;
+
+            return Path.Combine(rel, translationUnit.FileName);
         }
 
         private bool IsBuiltinTypedef(Declaration decl)
@@ -159,7 +181,7 @@ namespace CppSharp.Generators.CLI
             if (decl.Namespace != null && decl.Namespace.TranslationUnit.IsSystemHeader)
                 return false;
 
-            return !decl.Ignore;
+            return !decl.ExplicityIgnored;
         }
 
         public override bool VisitClassDecl(Class @class)

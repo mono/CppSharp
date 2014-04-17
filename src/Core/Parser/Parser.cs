@@ -39,6 +39,18 @@ namespace CppSharp
         }
 
         /// <summary>
+        /// Get info about that target
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public ParserTargetInfo GetTargetInfo(ParserOptions options)
+        {
+            options.ASTContext = ASTContext;
+
+            return Parser.ClangParser.GetTargetInfo(options);
+        }
+
+        /// <summary>
         /// Parses a C++ source file to a translation unit.
         /// </summary>
         public ParserResult ParseSourceFile(SourceFile file, ParserOptions options)

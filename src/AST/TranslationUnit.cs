@@ -12,14 +12,13 @@ namespace CppSharp.AST
     {
         public TranslationUnit()
         {
-            
+            Macros = new List<MacroDefinition>();
+            Access = AccessSpecifier.Public;
         }
 
-        public TranslationUnit(string file)
+        public TranslationUnit(string file) : this()
         {
-            Macros = new List<MacroDefinition>();
             FilePath = file;
-            Access = AccessSpecifier.Public;
         }
 
         /// Contains the macros present in the unit.
@@ -31,12 +30,6 @@ namespace CppSharp.AST
             get { return !IgnoreFlags.HasFlag(IgnoreFlags.Generation); }
         }
 
-        // Whether the unit should be processed.
-        public override bool IsProcessed
-        {
-            get { return !IgnoreFlags.HasFlag(IgnoreFlags.Processing); }
-        }
-
         // Whether the unit should be ignored.
         public override bool Ignore
         {
@@ -44,6 +37,8 @@ namespace CppSharp.AST
         }
 
         public bool IsSystemHeader { get; set; }
+
+        public bool IsValid { get { return FilePath != "<invalid>"; } }
 
         /// Contains the path to the file.
         public string FilePath;
@@ -62,5 +57,23 @@ namespace CppSharp.AST
 
         /// Contains the include path.
         public string IncludePath;
+
+        public string FileRelativeDirectory
+        {
+            get
+            {
+                var path = IncludePath.Replace('\\', '/');
+                var index = path.LastIndexOf('/');
+                return path.Substring(0, index);
+            }
+        }
+
+        public string FileRelativePath
+        {
+            get
+            {
+                return Path.Combine(FileRelativeDirectory, FileName);
+            }
+        }
     }
 }

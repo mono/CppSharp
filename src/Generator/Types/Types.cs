@@ -1,4 +1,5 @@
 ﻿using CppSharp.AST;
+using CppSharp.AST.Extensions;
 using CppSharp.Types;
 
 namespace CppSharp
@@ -54,7 +55,7 @@ namespace CppSharp
             if (decl.CompleteDeclaration != null)
                 return VisitDeclaration(decl.CompleteDeclaration);
 
-            if (decl.Ignore)
+            if (decl.ExplicityIgnored)
             {
                 Ignore();
                 return false;
@@ -126,6 +127,17 @@ namespace CppSharp
 
             Ignore();
             return base.VisitTemplateSpecializationType(template, quals);
+        }
+
+        public override bool VisitFunctionType(FunctionType function, TypeQualifiers quals)
+        {
+            // We don't know how to marshal non-static member functions
+            if (function.CallingConvention == CallingConvention.ThisCall)
+            {
+                Ignore();
+                return false;
+            }
+            return base.VisitFunctionType(function, quals);
         }
     }
 

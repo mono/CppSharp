@@ -4,7 +4,7 @@ using CppSharp.Utils;
 
 namespace CppSharp.Tests
 {
-    public class CLITemp : LibraryTest
+    public class CLITemp : GeneratorTest
     {
         public CLITemp(GeneratorKind kind)
             : base("CLITemp", kind)

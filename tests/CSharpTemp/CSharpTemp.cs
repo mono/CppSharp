@@ -1,5 +1,6 @@
 ﻿using System;
 using CppSharp.AST;
+using CppSharp.AST.Extensions;
 using CppSharp.Generators;
 using CppSharp.Generators.CSharp;
 using CppSharp.Passes;
@@ -49,7 +50,7 @@ namespace CppSharp.Tests
         }
     }
 
-    public class CSharpTempTests : LibraryTest
+    public class CSharpTempTests : GeneratorTest
     {
         public CSharpTempTests(GeneratorKind kind)
             : base("CSharpTemp", kind)
@@ -59,9 +60,15 @@ namespace CppSharp.Tests
         public override void SetupPasses(Driver driver)
         {
             driver.Options.GenerateInterfacesForMultipleInheritance = true;
-            driver.Options.GenerateProperties = true;
+            driver.Options.GeneratePropertiesAdvanced = true;
             driver.Options.GenerateVirtualTables = true;
+            driver.Options.GenerateCopyConstructors = true;
             driver.TranslationUnitPasses.AddPass(new TestAttributesPass());
+        }
+
+        public override void Preprocess(Driver driver, ASTContext ctx)
+        {
+            ctx.SetClassAsValueType("TestCopyConstructorVal");
         }
 
         public override void Postprocess(Driver driver, ASTContext lib)

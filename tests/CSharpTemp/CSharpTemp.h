@@ -1,8 +1,4 @@
-#if defined(_MSC_VER)
-#define DLL_API __declspec(dllexport)
-#else
-#define DLL_API
-#endif
+#include "../Tests.h"
 
 class DLL_API Foo
 {
@@ -31,6 +27,7 @@ public:
 class DLL_API Bar : public Qux
 {
 public:
+    Bar();
     int method();
     const Foo& operator[](int i) const;
     Foo& operator[](int i);
@@ -38,19 +35,28 @@ public:
     const Bar& operator*(int m);
     const Bar& operator++();
     Bar operator++(int i);
+    void* arrayOfPrimitivePointers[1];
 
 private:
     int index;
     Foo m_foo;
 };
 
+Bar::Bar() {}
+
 class DLL_API Baz : public Foo, public Bar
 {
 public:
+    Baz();
 
     int takesQux(const Qux& qux);
     Qux returnQux();
+
+    typedef bool (*FunctionTypedef)(const void *);
+    FunctionTypedef functionTypedef;
 };
+
+Baz::Baz() {}
 
 struct QArrayData
 {
@@ -82,10 +88,13 @@ protected:
 class DLL_API Proprietor : public AbstractProprietor
 {
 public:
+    Proprietor();
     virtual void setValue(int value);
 
     virtual long prop();
 };
+
+Proprietor::Proprietor() {}
 
 template <typename T>
 class QFlags
@@ -124,4 +133,25 @@ public:
 
 private:
     ComplexType m_complexType;
+};
+
+// Tests destructors
+struct DLL_API TestDestructors
+{
+    static int Marker;
+
+    TestDestructors();
+    ~TestDestructors();
+};
+
+TestDestructors::TestDestructors() { Marker = 0xf00d; }
+TestDestructors::~TestDestructors() { Marker = 0xcafe; }
+
+class DLL_API TestCopyConstructorVal
+{
+public:
+    TestCopyConstructorVal();
+    TestCopyConstructorVal(const TestCopyConstructorVal& other);
+    int A;
+    float B;
 };

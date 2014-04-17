@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CppSharp.AST;
+using CppSharp.AST.Extensions;
 using CppSharp.Generators;
 using CppSharp.Generators.AST;
 using CppSharp.Generators.CLI;
@@ -42,6 +43,11 @@ namespace CppSharp.Types
             get { return false; }
         }
 
+        /// <summary>
+        /// Determines if the type map performs marshalling or only replaces copy ctors.
+        /// </summary>
+        public virtual bool DoesMarshalling { get { return true; } }
+
         #region C# backend
 
         public virtual string CSharpSignature(CSharpTypePrinterContext ctx)
@@ -57,6 +63,11 @@ namespace CppSharp.Types
         public virtual void CSharpMarshalToManaged(MarshalContext ctx)
         {
             throw new NotImplementedException();
+        }
+
+        public virtual void CSharpMarshalCopyCtorToManaged(MarshalContext ctx)
+        {
+            
         }
 
         #endregion
@@ -134,7 +145,8 @@ namespace CppSharp.Types
 
             var typePrinter = new CppTypePrinter(this)
                 {
-                    PrintKind = CppTypePrintKind.GlobalQualified
+                    PrintScopeKind = CppTypePrintScopeKind.GlobalQualified,
+                    PrintLogicalNames = true
                 };
 
             if (FindTypeMap(decl.Visit(typePrinter), out typeMap))
@@ -143,14 +155,14 @@ namespace CppSharp.Types
                 return true;
             }
 
-            typePrinter.PrintKind = CppTypePrintKind.Qualified;
+            typePrinter.PrintScopeKind = CppTypePrintScopeKind.Qualified;
             if (FindTypeMap(decl.Visit(typePrinter), out typeMap))
             {
                 typeMap.Type = type;
                 return true;
             }
 
-            typePrinter.PrintKind = CppTypePrintKind.Local;
+            typePrinter.PrintScopeKind = CppTypePrintScopeKind.Local;
             if (FindTypeMap(decl.Visit(typePrinter), out typeMap))
             {
                 typeMap.Type = type;
@@ -175,7 +187,7 @@ namespace CppSharp.Types
                 return true;
             }
 
-            typePrinter.PrintKind = CppTypePrintKind.Qualified;
+            typePrinter.PrintScopeKind = CppTypePrintScopeKind.Qualified;
             if (FindTypeMap(type.Visit(typePrinter), out typeMap))
             {
                 typeMap.Type = type;

@@ -2,11 +2,11 @@ project "CppSharp.Parser.Gen"
 
   kind "ConsoleApp"
   language "C#"
-  location "."
+  SetupManagedProject()
   debugdir "."
   
   files { "ParserGen.cs", "*.lua" }
-  links { "CppSharp.AST", "CppSharp.Generator" }
+  links { "CppSharp.AST", "CppSharp.Generator", "System.Core" }
 
   SetupParser()
   
@@ -14,20 +14,27 @@ project "CppSharp.Parser.CSharp"
   
   kind "SharedLib"
   language "C#"
-  location "."
+  SetupManagedProject()
   
   dependson { "CppSharp.CppParser" }
   flags { common_flags, "Unsafe" }
 
   files
   {
-    "CSharp/**.cs",
     "**.lua"
   }
 
   links { "CppSharp.Runtime" }
 
-configuration "vs*"
+  if os.is_osx() then
+      files { "CSharp/i686-apple-darwin12.4.0/**.cs" }
+  else
+      files { "CSharp/*.cs" }
+  end
+
+  configuration ""
+
+if string.starts(action, "vs") and os.is_windows() then
 
   project "CppSharp.Parser.CLI"
     
@@ -56,3 +63,5 @@ configuration "vs*"
     
     configuration "*"
     links { "CppSharp.CppParser" }
+
+end

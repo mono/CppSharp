@@ -108,11 +108,9 @@ static bool getSystemRegistryString(const char *keyPath, const char *valueName,
           bestIndex = (int)index;
           bestValue = value;
           strcpy(bestName, keyName);
-          goto Out;
         }
         size = sizeof(keyName) - 1;
       }
-      Out:
       // If we found the highest versioned key, open the key and get the value.
       if (bestIndex != -1) {
         // Append rest of key.
@@ -230,12 +228,16 @@ static bool getVisualStudioDir(std::string &path) {
   }
   #endif
   // Otherwise find any version we can
+  else if (vs120comntools)
+      vscomntools = vs120comntools;
+  else if (vs110comntools)
+      vscomntools = vs110comntools;
   else if (vs100comntools)
-    vscomntools = vs100comntools;
+      vscomntools = vs100comntools;
   else if (vs90comntools)
-    vscomntools = vs90comntools;
+      vscomntools = vs90comntools;
   else if (vs80comntools)
-    vscomntools = vs80comntools;
+      vscomntools = vs80comntools;
 
   if (vscomntools && *vscomntools) {
     const char *p = strstr(vscomntools, "\\Common7\\Tools");

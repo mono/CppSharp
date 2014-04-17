@@ -6,7 +6,7 @@ using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Types
 {
-    public enum CppTypePrintKind
+    public enum CppTypePrintScopeKind
     {
         Local,
         Qualified,
@@ -15,11 +15,12 @@ namespace CppSharp.Types
 
     public class CppTypePrinter : ITypePrinter<string>, IDeclVisitor<string>
     {
-        public CppTypePrintKind PrintKind;
+        public CppTypePrintScopeKind PrintScopeKind;
+        public bool PrintLogicalNames;
 
         public CppTypePrinter(ITypeMapDatabase database)
         {
-            PrintKind = CppTypePrintKind.GlobalQualified;
+            PrintScopeKind = CppTypePrintScopeKind.GlobalQualified;
         }
 
         public string VisitTagType(TagType tag, TypeQualifiers quals)
@@ -37,6 +38,7 @@ namespace CppSharp.Types
                 return string.Format("{0}[{1}]", typeName, array.Size);
             case ArrayType.ArraySize.Variable:
             case ArrayType.ArraySize.Dependent:
+            case ArrayType.ArraySize.Incomplete:
                 return string.Format("{0}[]", typeName);
             }
 
@@ -98,6 +100,7 @@ namespace CppSharp.Types
             {
                 case PrimitiveType.Bool: return "bool";
                 case PrimitiveType.Void: return "void";
+                case PrimitiveType.Char16:
                 case PrimitiveType.WideChar: return "char";
                 case PrimitiveType.Int8: return "char";
                 case PrimitiveType.UInt8: return "unsigned char";
@@ -110,6 +113,7 @@ namespace CppSharp.Types
                 case PrimitiveType.Float: return "float";
                 case PrimitiveType.Double: return "double";
                 case PrimitiveType.IntPtr: return "void*";
+                case PrimitiveType.UIntPtr: return "uintptr_t";
             }
 
             throw new NotSupportedException();
@@ -123,21 +127,6 @@ namespace CppSharp.Types
         public string VisitAttributedType(AttributedType attributed, TypeQualifiers quals)
         {
             return attributed.Modified.Visit(this);
-        }
-
-        public string GetDeclName(Declaration declaration)
-        {
-            switch (PrintKind)
-            {
-            case CppTypePrintKind.Local:
-                return declaration.OriginalName;
-            case CppTypePrintKind.Qualified:
-                return declaration.QualifiedOriginalName;
-            case CppTypePrintKind.GlobalQualified:
-                return "::" + declaration.QualifiedOriginalName;
-            }
-
-            throw new NotSupportedException();
         }
 
         public string VisitDecayedType(DecayedType decayed, TypeQualifiers quals)
@@ -176,6 +165,11 @@ namespace CppSharp.Types
         public string VisitDependentNameType(DependentNameType dependent, TypeQualifiers quals)
         {
             throw new System.NotImplementedException();
+        }
+
+        public string VisitPackExpansionType(PackExpansionType packExpansionType, TypeQualifiers quals)
+        {
+            return string.Empty;
         }
 
         public string VisitCILType(CILType type, TypeQualifiers quals)
@@ -232,6 +226,24 @@ namespace CppSharp.Types
             throw new System.NotImplementedException();
         }
 
+        public string GetDeclName(Declaration declaration)
+        {
+            switch (PrintScopeKind)
+            {
+            case CppTypePrintScopeKind.Local:
+                return PrintLogicalNames ? declaration.LogicalOriginalName
+                    : declaration.OriginalName;
+            case CppTypePrintScopeKind.Qualified:
+                return PrintLogicalNames ? declaration.QualifiedLogicalOriginalName
+                    : declaration.QualifiedOriginalName;
+            case CppTypePrintScopeKind.GlobalQualified:
+                return "::" + (PrintLogicalNames ? declaration.QualifiedLogicalOriginalName
+                    : declaration.QualifiedOriginalName);
+            }
+
+            throw new NotSupportedException();
+        }
+
         public string VisitDeclaration(Declaration decl)
         {
             return GetDeclName(decl);
@@ -239,7 +251,7 @@ namespace CppSharp.Types
 
         public string VisitClassDecl(Class @class)
         {
-            return GetDeclName(@class);
+            return VisitDeclaration(@class);
         }
 
         public string VisitFieldDecl(Field field)

@@ -19,6 +19,7 @@ public ref struct ParserOptions
 {
     ParserOptions()
     {
+        Arguments = gcnew List<System::String^>();
         IncludeDirs = gcnew List<System::String^>();
         SystemIncludeDirs = gcnew List<System::String^>();
         Defines = gcnew List<System::String^>();
@@ -27,6 +28,8 @@ public ref struct ParserOptions
         NoStandardIncludes = false;
         NoBuiltinIncludes = false;
     }
+
+    List<System::String^>^ Arguments;
 
     // Include directories
     List<System::String^>^ IncludeDirs;

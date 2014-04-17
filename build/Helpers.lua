@@ -10,6 +10,10 @@ examplesdir = path.getabsolute("../examples");
 testsdir = path.getabsolute("../tests");
 
 builddir = path.getabsolute("./" .. action);
+if _ARGS[1] then
+    builddir = path.getabsolute("./" .. _ARGS[1]);
+end
+
 libdir = path.join(builddir, "lib", "%{cfg.buildcfg}_%{cfg.platform}");
 gendir = path.join(builddir, "gen");
 
@@ -18,6 +22,16 @@ msvc_buildflags = { "/wd4267" }
 gcc_buildflags = { "-std=c++11" }
 
 msvc_cpp_defines = { }
+
+function os.is_osx()
+  local version = os.getversion()
+  return string.find(version.description, "Mac OS X") ~= nil
+end
+
+function os.is_windows()
+  local version = os.getversion()
+  return string.find(version.description, "Windows") ~= nil
+end
 
 function string.starts(str, start)
    return string.sub(str, 1, string.len(start)) == start
@@ -30,7 +44,7 @@ end
 function SetupNativeProject()
   location (path.join(builddir, "projects"))
 
-  c = configuration "Debug"
+  local c = configuration "Debug"
     defines { "DEBUG" }
     
   configuration "Release"
@@ -47,7 +61,8 @@ function SetupNativeProject()
     buildoptions { gcc_buildflags }
     
   configuration { "macosx" }
-    buildoptions { gcc_buildflags, "-stdlib=libc++", "-fvisibility-inlines-hidden" }
+    buildoptions { gcc_buildflags, "-stdlib=libc++" }
+    links { "c++" }
   
   -- OS-specific options
   
@@ -55,6 +70,17 @@ function SetupNativeProject()
     defines { "WIN32", "_WINDOWS" }
   
   configuration(c)
+end
+
+function SetupManagedProject()
+  language "C#"
+  location (path.join(builddir, "projects"))
+
+  if not os.is_osx() then
+    local c = configuration { "vs*" }
+      location "."
+    configuration(c)
+  end
 end
 
 function IncludeDir(dir)

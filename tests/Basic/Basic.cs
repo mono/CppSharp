@@ -1,10 +1,11 @@
 using CppSharp.AST;
 using CppSharp.Generators;
+using CppSharp.Passes;
 using CppSharp.Utils;
 
 namespace CppSharp.Tests
 {
-    public class Basic : LibraryTest
+    public class Basic : GeneratorTest
     {
         public Basic(GeneratorKind kind)
             : base("Basic", kind)
@@ -16,10 +17,15 @@ namespace CppSharp.Tests
         {
             if (driver.Options.IsCSharpGenerator)
                 driver.Options.GenerateAbstractImpls = true;
+            driver.Options.GenerateVirtualTables = true;
+            driver.Options.GenerateCopyConstructors = true;
+            driver.Options.MarshalCharAsManagedChar = true;
+            driver.Options.GenerateProperties = true;
         }
 
         public override void Preprocess(Driver driver, ASTContext ctx)
         {
+            driver.AddTranslationUnitPass(new GetterSetterToPropertyPass());
             ctx.SetClassAsValueType("Bar");
             ctx.SetClassAsValueType("Bar2");
             ctx.SetMethodParameterUsage("Hello", "TestPrimitiveOut", 1, ParameterUsage.Out);

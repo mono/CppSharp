@@ -9,6 +9,7 @@
 #include "Interop.h"
 
 #include <llvm/Support/Path.h>
+#include <llvm/Support/raw_ostream.h>
 #include <llvm/Object/Archive.h>
 #include <llvm/Object/ObjectFile.h>
 #include <llvm/IR/LLVMContext.h>
@@ -100,7 +101,6 @@ void Parser::SetupHeader()
     // Enable C++ language mode
     args.push_back("-xc++");
     args.push_back("-std=gnu++11");
-    //args.push_back("-Wno-undefined-inline");
     args.push_back("-fno-rtti");
 
     // Enable the Microsoft parsing extensions
@@ -109,6 +109,12 @@ void Parser::SetupHeader()
         args.push_back("-fms-extensions");
         args.push_back("-fms-compatibility");
         args.push_back("-fdelayed-template-parsing");
+    }
+
+    for each (System::String^ arg in Opts->Arguments)
+    {
+        String s = marshalString<E_UTF8>(arg);
+        args.push_back(s.c_str());
     }
 
     C.reset(new CompilerInstance());
@@ -122,7 +128,6 @@ void Parser::SetupHeader()
     TargetOptions& TO = Inv->getTargetOpts();
     TargetABI = (Opts->Abi == CppAbi::Microsoft) ? TargetCXXABI::Microsoft
         : TargetCXXABI::GenericItanium;
-    TO.CXXABI = GetCXXABIString(TargetABI);
 
     TO.Triple = llvm::sys::getDefaultTargetTriple();
     if (!System::String::IsNullOrWhiteSpace(Opts->TargetTriple))
@@ -309,6 +314,9 @@ static clang::SourceLocation GetDeclStartLocation(clang::CompilerInstance* C,
     auto &SM = C->getSourceManager();
     auto startLoc = SM.getExpansionLoc(D->getLocStart());
     auto startOffset = SM.getFileOffset(startLoc);
+
+    if (clang::dyn_cast_or_null<clang::TranslationUnitDecl>(D))
+        return startLoc;
 
     auto lineNo = SM.getExpansionLineNumber(startLoc);
     auto lineBeginLoc = SM.translateLineCol(SM.getFileID(startLoc), lineNo, 1);
@@ -501,11 +509,10 @@ void Parser::WalkVTable(clang::CXXRecordDecl* RD, CppSharp::AST::Class^ C)
             auto& VFPtrInfo = *I;
 
             CppSharp::AST::VFTableInfo Info;
-            Info.VBTableIndex = VFPtrInfo.VBTableIndex;
-            Info.VFPtrOffset = VFPtrInfo.VFPtrOffset.getQuantity();
-            Info.VFPtrFullOffset = VFPtrInfo.VFPtrFullOffset.getQuantity();
+            Info.VFPtrOffset = VFPtrInfo->NonVirtualOffset.getQuantity();
+            Info.VFPtrFullOffset = VFPtrInfo->FullOffsetInMDC.getQuantity();
 
-            auto& VTLayout = VTContext.getVFTableLayout(RD, VFPtrInfo.VFPtrFullOffset);
+            auto& VTLayout = VTContext.getVFTableLayout(RD, VFPtrInfo->FullOffsetInMDC);
             Info.Layout = WalkVTableLayout(VTLayout);
 
             C->Layout->VFTables->Add(Info);
@@ -524,6 +531,51 @@ void Parser::WalkVTable(clang::CXXRecordDecl* RD, CppSharp::AST::Class^ C)
     default:
         llvm_unreachable("Unsupported C++ ABI kind");
     }
+}
+
+CppSharp::AST::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
+{
+    using namespace clang;
+    using namespace clix;
+
+    if (Record->isInjectedClassName())
+        return nullptr;
+
+    auto NS = GetNamespace(Record);
+    assert(NS && "Expected a valid namespace");
+
+    bool isCompleteDefinition = Record->isCompleteDefinition();
+
+    CppSharp::AST::Class^ RC = nullptr;
+
+    auto Name = marshalString<E_UTF8>(GetTagDeclName(Record));
+    auto HasEmptyName = Record->getDeclName().isEmpty();
+
+    if (HasEmptyName)
+    {
+        if (auto AR = NS->FindAnonymous((uint64_t)Record))
+            RC = safe_cast<CppSharp::AST::Class^>(AR);
+    }
+    else
+    {
+        RC = NS->FindClass(Name, isCompleteDefinition, /*Create=*/false);
+    }
+
+    if (RC)
+        return RC;
+
+    RC = NS->FindClass(Name, isCompleteDefinition, /*Create=*/true);
+    HandleDeclaration(Record, RC);
+
+    if (HasEmptyName)
+        NS->Anonymous[(uint64_t)Record] = RC;
+
+    if (!isCompleteDefinition)
+        return RC;
+
+    WalkRecordCXX(Record, RC);
+
+    return RC;
 }
 
 void Parser::WalkRecordCXX(clang::CXXRecordDecl* Record,
@@ -553,6 +605,9 @@ void Parser::WalkRecordCXX(clang::CXXRecordDecl* Record,
     RC->IsPolymorphic = Record->isPolymorphic();
     RC->HasNonTrivialDefaultConstructor = Record->hasNonTrivialDefaultConstructor();
     RC->HasNonTrivialCopyConstructor = Record->hasNonTrivialCopyConstructor();
+    RC->HasNonTrivialDestructor = Record->hasNonTrivialDestructor();
+
+    RC->IsExternCContext = Record->isExternCContext();
 
     bool hasLayout = !Record->isDependentType() && !Record->isInvalidDecl();
 
@@ -636,51 +691,6 @@ void Parser::WalkRecordCXX(clang::CXXRecordDecl* Record,
         WalkVTable(Record, RC);
 }
 
-CppSharp::AST::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
-{
-    using namespace clang;
-    using namespace clix;
-
-    if (Record->isInjectedClassName())
-        return nullptr;
-
-    auto NS = GetNamespace(Record);
-    assert(NS && "Expected a valid namespace");
-
-    bool isCompleteDefinition = Record->isCompleteDefinition();
-
-    CppSharp::AST::Class^ RC = nullptr;
-
-    auto Name = marshalString<E_UTF8>(GetTagDeclName(Record));
-    auto HasEmptyName = Record->getDeclName().isEmpty();
-
-    if (HasEmptyName)
-    {
-        if (auto AR = NS->FindAnonymous((uint64_t)Record))
-            RC = safe_cast<CppSharp::AST::Class^>(AR);
-    }
-    else
-    {
-        RC = NS->FindClass(Name, isCompleteDefinition, /*Create=*/false);
-    }
-
-    if (RC)
-        return RC;
-
-    RC = NS->FindClass(Name, isCompleteDefinition, /*Create=*/true);
-    HandleDeclaration(Record, RC);
-
-    if (HasEmptyName)
-        NS->Anonymous[(uint64_t)Record] = RC;
-
-    if (!isCompleteDefinition)
-        return RC;
-
-    WalkRecordCXX(Record, RC);
-
-    return RC;
-}
-
 //-----------------------------------//
 
 static CppSharp::AST::TemplateSpecializationKind
@@ -700,6 +710,8 @@ WalkTemplateSpecializationKind(clang::TemplateSpecializationKind Kind)
     case TSK_ExplicitInstantiationDefinition:
         return CppSharp::AST::TemplateSpecializationKind::ExplicitInstantiationDefinition;
     }
+
+    llvm_unreachable("Unknown template specialization kind");
 }
 
 CppSharp::AST::ClassTemplateSpecialization^
@@ -951,7 +963,7 @@ CppSharp::AST::Method^ Parser::WalkMethodCXX(clang::CXXMethodDecl* MD)
     else if (const CXXConversionDecl* CD = dyn_cast<CXXConversionDecl>(MD))
     {
         auto TL = MD->getTypeSourceInfo()->getTypeLoc().castAs<FunctionTypeLoc>();
-        auto RTL = TL.getResultLoc();
+        auto RTL = TL.getReturnLoc();
         auto ConvTy = WalkType(CD->getConversionType(), &RTL);
         Method->ConversionType = GetQualifiedType(CD->getConversionType(), ConvTy);
     }
@@ -1019,6 +1031,10 @@ CppSharp::AST::TranslationUnit^ Parser::GetTranslationUnit(clang::SourceLocation
         *Kind = LocKind;
 
     auto Unit = Lib->FindOrCreateModule(clix::marshalString<clix::E_UTF8>(File));
+
+    if (Unit->OriginalPtr.ToPointer() == nullptr)
+        Unit->OriginalPtr = System::IntPtr((void*)SM.getFileEntryForID(SM.getFileID(Loc)));
+
     if (LocKind != SourceLocationKind::Invalid)
         Unit->IsSystemHeader = SM.isInSystemHeader(Loc);
 
@@ -1069,11 +1085,14 @@ CppSharp::AST::DeclarationContext^ Parser::GetNamespace(clang::Decl* D,
         {
         case Decl::Namespace:
         {
-            const NamespaceDecl* ND = cast<NamespaceDecl>(Ctx);
+            NamespaceDecl* ND = cast<NamespaceDecl>(Ctx);
             if (ND->isAnonymousNamespace())
                 continue;
             auto Name = clix::marshalString<clix::E_UTF8>(ND->getName());
             DC = DC->FindCreateNamespace(Name);
+            safe_cast<CppSharp::AST::Namespace^>(DC)->IsAnonymous = ND->isAnonymousNamespace();
+            safe_cast<CppSharp::AST::Namespace^>(DC)->IsInline = ND->isInline();
+            HandleDeclaration(ND, DC);
             continue;
         }
         case Decl::LinkageSpec:
@@ -1128,12 +1147,14 @@ static CppSharp::AST::PrimitiveType WalkBuiltinType(const clang::BuiltinType* Bu
 
     case clang::BuiltinType::SChar:
     case clang::BuiltinType::Char_S: return PrimitiveType::Int8;
-    
+
     case clang::BuiltinType::UChar:
     case clang::BuiltinType::Char_U: return PrimitiveType::UInt8;
 
     case clang::BuiltinType::WChar_S:
     case clang::BuiltinType::WChar_U: return PrimitiveType::WideChar;
+
+    case clang::BuiltinType::Char16: return PrimitiveType::Char16;
 
     case clang::BuiltinType::Short: return PrimitiveType::Int16;
     case clang::BuiltinType::UShort: return PrimitiveType::UInt16;
@@ -1212,6 +1233,37 @@ static CppSharp::AST::CallingConvention ConvertCallConv(clang::CallingConv CC)
     }
 
     return CppSharp::AST::CallingConvention::Default;
+}
+
+static ParserIntType ConvertIntType(clang::TargetInfo::IntType IT)
+{
+    switch (IT)
+    {
+    case clang::TargetInfo::IntType::NoInt:
+        return ParserIntType::NoInt;
+    case clang::TargetInfo::IntType::SignedChar:
+        return ParserIntType::SignedChar;
+    case clang::TargetInfo::IntType::UnsignedChar:
+        return ParserIntType::UnsignedChar;
+    case clang::TargetInfo::IntType::SignedShort:
+        return ParserIntType::SignedShort;
+    case clang::TargetInfo::IntType::UnsignedShort:
+        return ParserIntType::UnsignedShort;
+    case clang::TargetInfo::IntType::SignedInt:
+        return ParserIntType::SignedInt;
+    case clang::TargetInfo::IntType::UnsignedInt:
+        return ParserIntType::UnsignedInt;
+    case clang::TargetInfo::IntType::SignedLong:
+        return ParserIntType::SignedLong;
+    case clang::TargetInfo::IntType::UnsignedLong:
+        return ParserIntType::UnsignedLong;
+    case clang::TargetInfo::IntType::SignedLongLong:
+        return ParserIntType::SignedLongLong;
+    case clang::TargetInfo::IntType::UnsignedLongLong:
+        return ParserIntType::UnsignedLongLong;
+    }
+
+    llvm_unreachable("Unknown parser integer type");
 }
 
 CppSharp::AST::QualifiedType^ Parser::WalkQualifiedType(clang::TypeSourceInfo* TSI)
@@ -1415,20 +1467,20 @@ CppSharp::AST::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* 
         if (TL && !TL->isNull())
         {
             FTL = TL->getAs<FunctionProtoTypeLoc>();
-            RL = FTL.getResultLoc();
+            RL = FTL.getReturnLoc();
         }
 
         auto F = gcnew CppSharp::AST::FunctionType();
-        F->ReturnType = GetQualifiedType(FP->getResultType(),
-            WalkType(FP->getResultType(), &RL));
+        F->ReturnType = GetQualifiedType(FP->getReturnType(),
+            WalkType(FP->getReturnType(), &RL));
         F->CallingConvention = ConvertCallConv(FP->getCallConv());
 
-        for (unsigned i = 0; i < FP->getNumArgs(); ++i)
+        for (unsigned i = 0; i < FP->getNumParams(); ++i)
         {
             auto FA = gcnew CppSharp::AST::Parameter();
             if (FTL)
             {
-                auto PVD = FTL.getArg(i);
+                auto PVD = FTL.getParam(i);
 
                 HandleDeclaration(PVD, FA);
 
@@ -1439,7 +1491,7 @@ CppSharp::AST::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* 
             }
             else
             {
-                auto Arg = FP->getArgType(i);
+                auto Arg = FP->getParamType(i);
                 FA->Name = "";
                 FA->QualifiedType = GetQualifiedType(Arg, WalkType(Arg));
             }
@@ -1636,8 +1688,9 @@ CppSharp::AST::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* 
     }
     case Type::PackExpansion:
     {
-        // Ignored.
-        return nullptr;
+        // TODO: stubbed
+        Ty = gcnew CppSharp::AST::PackExpansionType();
+        break;
     }
     default:
     {   
@@ -1724,7 +1777,8 @@ static const clang::CodeGen::CGFunctionInfo& GetCodeGenFuntionInfo(
     return CodeGenTypes->arrangeFunctionDeclaration(FD);
 }
 
-static bool CanCheckCodeGenInfo(const clang::Type* Ty)
+static bool CanCheckCodeGenInfo(clang::Sema& S,
+                                const clang::Type* Ty, bool IsMicrosoftABI)
 {
     bool CheckCodeGenInfo = true;
 
@@ -1733,6 +1787,15 @@ static bool CanCheckCodeGenInfo(const clang::Type* Ty)
 
     if (auto RD = Ty->getAsCXXRecordDecl())
         CheckCodeGenInfo &= RD->hasDefinition();
+
+    // Lock in the MS inheritance model if we have a member pointer to a class,
+    // else we get an assertion error inside Clang's codegen machinery.
+    if (IsMicrosoftABI)
+    {
+        if (auto MPT = Ty->getAs<clang::MemberPointerType>())
+            if (!MPT->isDependentType())
+                S.RequireCompleteType(clang::SourceLocation(), clang::QualType(Ty, 0), 0);
+    }
 
     return CheckCodeGenInfo;
 }
@@ -1769,7 +1832,7 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, CppSharp::AST::Function^ F,
         FunctionTypeLoc FTL = TSI->getTypeLoc().getAs<FunctionTypeLoc>();
         if (FTL)
         {
-            RTL = FTL.getResultLoc();
+            RTL = FTL.getReturnLoc();
 
             auto &SM = C->getSourceManager();
             auto headStartLoc = GetDeclStartLocation(C.get(), FD);
@@ -1783,8 +1846,8 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, CppSharp::AST::Function^ F,
         }
     }
 
-    F->ReturnType = GetQualifiedType(FD->getResultType(),
-        WalkType(FD->getResultType(), &RTL));
+    F->ReturnType = GetQualifiedType(FD->getReturnType(),
+        WalkType(FD->getReturnType(), &RTL));
 
     String Mangled = GetDeclMangledName(FD, TargetABI, IsDependent);
     F->Mangled = marshalString<E_UTF8>(Mangled);
@@ -1805,7 +1868,7 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, CppSharp::AST::Function^ F,
             assert (!FTInfo.isNull());
 
             ParamStartLoc = FTInfo.getRParenLoc();
-            ResultLoc = FTInfo.getResultLoc().getLocStart();
+            ResultLoc = FTInfo.getReturnLoc().getLocStart();
         }
     }
 
@@ -1843,10 +1906,13 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, CppSharp::AST::Function^ F,
         ParamStartLoc = VD->getLocEnd();
     }
 
+    bool IsMicrosoftABI = C->getASTContext().getTargetInfo().getCXXABI().isMicrosoft();
     bool CheckCodeGenInfo = !FD->isDependentContext() && !FD->isInvalidDecl();
-    CheckCodeGenInfo &= CanCheckCodeGenInfo(FD->getResultType().getTypePtr());
+    CheckCodeGenInfo &= CanCheckCodeGenInfo(C->getSema(), FD->getReturnType().getTypePtr(),
+        IsMicrosoftABI);
     for (auto I = FD->param_begin(), E = FD->param_end(); I != E; ++I)
-        CheckCodeGenInfo &= CanCheckCodeGenInfo((*I)->getType().getTypePtr());
+        CheckCodeGenInfo &= CanCheckCodeGenInfo(C->getSema(), (*I)->getType().getTypePtr(),
+        IsMicrosoftABI);
 
     if (CheckCodeGenInfo)
     {
@@ -1931,92 +1997,11 @@ bool Parser::IsValidDeclaration(const clang::SourceLocation& Loc)
 
 void Parser::WalkAST()
 {
-    using namespace clang;
-
-    if (C->hasPreprocessor())
-    {
-        Preprocessor& P = C->getPreprocessor();
-        PreprocessingRecord* PR = P.getPreprocessingRecord();
-
-        if (PR)
-        {
-          assert(PR && "Expected a valid preprocessing record");
-          WalkMacros(PR);
-        }
-    }
-
-    TranslationUnitDecl* TU = AST->getTranslationUnitDecl();
-
+    auto TU = AST->getTranslationUnitDecl();
     for(auto it = TU->decls_begin(); it != TU->decls_end(); ++it)
     {
-        Decl* D = (*it);
+        clang::Decl* D = (*it);
         WalkDeclarationDef(D);
-    }
-}
-
-//-----------------------------------//
-
-void Parser::WalkMacros(clang::PreprocessingRecord* PR)
-{
-    using namespace clang;
-    using namespace clix;
-
-    Preprocessor& P = C->getPreprocessor();
-
-    for(auto it = PR->begin(); it != PR->end(); ++it)
-    {
-        const PreprocessedEntity* PE = (*it);
-
-        switch(PE->getKind())
-        {
-        case PreprocessedEntity::MacroDefinitionKind:
-        {
-            const MacroDefinition* MD = cast<MacroDefinition>(PE);
-            
-            if (!IsValidDeclaration(MD->getLocation()))
-                break;
-
-            const IdentifierInfo* II = MD->getName();
-            assert(II && "Expected valid identifier info");
-
-            MacroInfo* MI = P.getMacroInfo((IdentifierInfo*)II);
-
-            if (!MI || MI->isBuiltinMacro() || MI->isFunctionLike())
-                continue;
-
-            SourceManager& SM = C->getSourceManager();
-            const LangOptions &LangOpts = C->getLangOpts();
-
-            auto Loc = MI->getDefinitionLoc();
-
-            if (!IsValidDeclaration(Loc))
-                break;
-
-            SourceLocation BeginExpr =
-                Lexer::getLocForEndOfToken(Loc, 0, SM, LangOpts);
-
-            auto Range = CharSourceRange::getTokenRange(
-                BeginExpr, MI->getDefinitionEndLoc());
-
-            bool Invalid;
-            StringRef Expression = Lexer::getSourceText(Range, SM, LangOpts,
-                &Invalid);
-
-            if (Invalid || Expression.empty())
-                break;
-
-            auto macro = gcnew CppSharp::AST::MacroDefinition();
-            macro->Name = marshalString<E_UTF8>(II->getName())->Trim();
-            macro->Expression = marshalString<E_UTF8>(Expression)->Trim();
-
-            auto M = GetTranslationUnit(BeginExpr);
-            if( M != nullptr )
-                M->Macros->Add(macro);
-
-            break;
-        }
-        default: break;
-        }
     }
 }
 
@@ -2071,13 +2056,15 @@ CppSharp::AST::PreprocessedEntity^ Parser::WalkPreprocessedEntity(
             return Entity;
     }
 
-    CppSharp::AST::PreprocessedEntity^ Entity;
+    auto& P = C->getPreprocessor();
+
+    CppSharp::AST::PreprocessedEntity^ Entity = nullptr;
 
     switch(PPEntity->getKind())
     {
     case PreprocessedEntity::MacroExpansionKind:
     {
-        const MacroExpansion* MD = cast<MacroExpansion>(PPEntity);
+        auto MD = cast<MacroExpansion>(PPEntity);
         Entity = gcnew CppSharp::AST::MacroExpansion();
 
         std::string Text;
@@ -2090,18 +2077,76 @@ CppSharp::AST::PreprocessedEntity^ Parser::WalkPreprocessedEntity(
     }
     case PreprocessedEntity::MacroDefinitionKind:
     {
-        const MacroDefinition* MD = cast<MacroDefinition>(PPEntity);
-        Entity = gcnew CppSharp::AST::MacroDefinition();
-        break;
+        auto MD = cast<MacroDefinition>(PPEntity);
+
+        if (!IsValidDeclaration(MD->getLocation()))
+            break;
+
+        const IdentifierInfo* II = MD->getName();
+        assert(II && "Expected valid identifier info");
+
+        MacroInfo* MI = P.getMacroInfo((IdentifierInfo*)II);
+
+        if (!MI || MI->isBuiltinMacro() || MI->isFunctionLike())
+            break;
+
+        SourceManager& SM = C->getSourceManager();
+        const LangOptions &LangOpts = C->getLangOpts();
+
+        auto Loc = MI->getDefinitionLoc();
+
+        if (!IsValidDeclaration(Loc))
+            break;
+
+        SourceLocation BeginExpr =
+            Lexer::getLocForEndOfToken(Loc, 0, SM, LangOpts);
+
+        auto Range = CharSourceRange::getTokenRange(
+            BeginExpr, MI->getDefinitionEndLoc());
+
+        bool Invalid;
+        StringRef Expression = Lexer::getSourceText(Range, SM, LangOpts,
+            &Invalid);
+
+        if (Invalid || Expression.empty())
+            break;
+
+        auto Definition = gcnew CppSharp::AST::MacroDefinition();
+        Entity = Definition;
+
+        Definition->Name = clix::marshalString<clix::E_UTF8>(II->getName())->Trim();
+        Definition->Expression = clix::marshalString<clix::E_UTF8>(Expression)->Trim();
     }
-    default:
+    }
+
+    if (!Entity)
         return nullptr;
-    }
 
     Entity->OriginalPtr = System::IntPtr(PPEntity);
-    Decl->PreprocessedEntities->Add(Entity);
+    Entity->Namespace = GetTranslationUnit(PPEntity->getSourceRange().getBegin(), NULL);
+
+    if (Decl->GetType() == CppSharp::AST::TranslationUnit::typeid)
+    {
+        Entity->Namespace->PreprocessedEntities->Add(Entity);
+    }
+    else
+    {
+        Decl->PreprocessedEntities->Add(Entity);
+    }
 
     return Entity;
+}
+
+void Parser::HandlePreprocessedEntities(CppSharp::AST::Declaration^ Decl)
+{
+    using namespace clang;
+    auto PPRecord = C->getPreprocessor().getPreprocessingRecord();
+
+    for (auto it = PPRecord->begin(); it != PPRecord->end(); ++it)
+    {
+        PreprocessedEntity* PPEntity = (*it);
+        auto Entity = WalkPreprocessedEntity(Decl, PPEntity);
+    }
 }
 
 void Parser::HandlePreprocessedEntities(CppSharp::AST::Declaration^ Decl,
@@ -2157,13 +2202,24 @@ void Parser::HandleDeclaration(clang::Decl* D, CppSharp::AST::Declaration^ Decl)
 
     Decl->OriginalPtr = System::IntPtr(D);
 
-    if (Decl->PreprocessedEntities->Count == 0)
+    if (Decl->PreprocessedEntities->Count == 0 && !D->isImplicit())
     {
-        auto startLoc = GetDeclStartLocation(C.get(), D);
-        auto endLoc = D->getLocEnd();
-        auto range = clang::SourceRange(startLoc, endLoc);
+        if (clang::dyn_cast<clang::TranslationUnitDecl>(D))
+        {
+            HandlePreprocessedEntities(Decl);
+        }
+        else if (clang::dyn_cast<clang::ParmVarDecl>(D))
+        {
+            // Ignore function parameters as we already walk their preprocessed entities.
+        }
+        else
+        {
+            auto startLoc = GetDeclStartLocation(C.get(), D);
+            auto endLoc = D->getLocEnd();
+            auto range = clang::SourceRange(startLoc, endLoc);
 
-        HandlePreprocessedEntities(Decl, range);
+            HandlePreprocessedEntities(Decl, range);
+        }
     }
 
     HandleOriginalText(D, Decl);
@@ -2489,9 +2545,10 @@ ParserResult^ Parser::ParseHeader(const std::string& File)
     const clang::DirectoryLookup *Dir;
     llvm::SmallVector<const clang::FileEntry*, 0> Includers;
 
-    if (!C->getPreprocessor().getHeaderSearchInfo().LookupFile(File,
+    auto FileEntry = C->getPreprocessor().getHeaderSearchInfo().LookupFile(File,
         clang::SourceLocation(), /*isAngled*/true,
-        nullptr, Dir, Includers, nullptr, nullptr, nullptr))
+        nullptr, Dir, Includers, nullptr, nullptr, nullptr);
+    if (!FileEntry)
     {
         res->Kind = ParserResultKind::FileNotFound;
         return res;
@@ -2523,6 +2580,11 @@ ParserResult^ Parser::ParseHeader(const std::string& File)
     }
 
     AST = &C->getASTContext();
+
+    auto FileName = clix::marshalString<clix::E_UTF8>(FileEntry->getName());
+    auto Unit = Lib->FindOrCreateModule(FileName);
+    auto TU = AST->getTranslationUnitDecl();
+    HandleDeclaration(TU, Unit);
 
     // Initialize enough Clang codegen machinery so we can get at ABI details.
     llvm::LLVMContext Ctx;
@@ -2562,7 +2624,7 @@ ParserResultKind Parser::ParseArchive(llvm::StringRef File,
     auto LibName = clix::marshalString<clix::E_UTF8>(File);
     NativeLib->FileName = LibName;
 
-    for(auto it = Archive.begin_symbols(); it != Archive.end_symbols(); ++it)
+    for(auto it = Archive.symbol_begin(); it != Archive.symbol_end(); ++it)
     {
         llvm::StringRef SymRef;
 
@@ -2589,26 +2651,29 @@ ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
     NativeLib->FileName = LibName;
 
     llvm::error_code ec;
-    for(auto it = Object->begin_symbols(); it != Object->end_symbols(); it.increment(ec))
+    for(auto it = Object.get()->symbol_begin(); it != Object.get()->symbol_end();
+        ++it)
     {
-        llvm::StringRef SymRef;
+        std::string Sym;
+        llvm::raw_string_ostream SymStream(Sym);
 
-        if (it->getName(SymRef))
+        if (it->printName(SymStream))
             continue;
 
-        System::String^ SymName = clix::marshalString<clix::E_UTF8>(SymRef);
+        System::String^ SymName = clix::marshalString<clix::E_UTF8>(Sym);
         NativeLib->Symbols->Add(SymName);
     }
 
-    for(auto it = Object->begin_dynamic_symbols(); it != Object->end_dynamic_symbols();
-        it.increment(ec))
+    for(auto it = Object.get()->symbol_begin(); it != Object.get()->symbol_end();
+        ++it)
     {
-        llvm::StringRef SymRef;
+        std::string Sym;
+        llvm::raw_string_ostream SymStream(Sym);
 
-        if (it->getName(SymRef))
+        if (it->printName(SymStream))
             continue;
 
-        System::String^ SymName = clix::marshalString<clix::E_UTF8>(SymRef);
+        System::String^ SymName = clix::marshalString<clix::E_UTF8>(Sym);
         NativeLib->Symbols->Add(SymName);
     }
 
@@ -2662,4 +2727,90 @@ ParserResult^ Parser::ParseLibrary(const std::string& File)
         return res;
 
     return res;
+}
+
+ParserTargetInfo^ Parser::GetTargetInfo()
+{
+    assert(Opts->ASTContext && "Expected a valid ASTContext");
+
+    auto res = gcnew ParserResult();
+    res->ASTContext = Lib;
+
+    SetupHeader();
+
+    auto SC = new clang::SemaConsumer();
+    C->setASTConsumer(SC);
+
+    C->createSema(clang::TU_Complete, 0);
+    SC->InitializeSema(C->getSema());
+
+    auto DiagClient = new DiagnosticConsumer();
+    C->getDiagnostics().setClient(DiagClient);
+
+    AST = &C->getASTContext();
+
+    // Initialize enough Clang codegen machinery so we can get at ABI details.
+    llvm::LLVMContext Ctx;
+    llvm::OwningPtr<llvm::Module> M(new llvm::Module("", Ctx));
+
+    M->setTargetTriple(AST->getTargetInfo().getTriple().getTriple());
+    M->setDataLayout(AST->getTargetInfo().getTargetDescription());
+    llvm::OwningPtr<llvm::DataLayout> TD(new llvm::DataLayout(AST->getTargetInfo()
+        .getTargetDescription()));
+
+    llvm::OwningPtr<clang::CodeGen::CodeGenModule> CGM(
+        new clang::CodeGen::CodeGenModule(C->getASTContext(), C->getCodeGenOpts(),
+        *M, *TD, C->getDiagnostics()));
+
+    llvm::OwningPtr<clang::CodeGen::CodeGenTypes> CGT(
+        new clang::CodeGen::CodeGenTypes(*CGM.get()));
+
+    CodeGenInfo = (clang::TargetCodeGenInfo*) &CGM->getTargetCodeGenInfo();
+    CodeGenTypes = CGT.get();
+
+    auto parserTargetInfo = gcnew ParserTargetInfo();
+
+    parserTargetInfo->ABI = clix::marshalString<clix::E_UTF8>(AST->getTargetInfo().getABI());
+
+    parserTargetInfo->Char16Type = ConvertIntType(AST->getTargetInfo().getChar16Type());
+    parserTargetInfo->Char32Type = ConvertIntType(AST->getTargetInfo().getChar32Type());
+    parserTargetInfo->Int64Type = ConvertIntType(AST->getTargetInfo().getInt64Type());
+    parserTargetInfo->IntMaxType = ConvertIntType(AST->getTargetInfo().getIntMaxType());
+    parserTargetInfo->IntPtrType = ConvertIntType(AST->getTargetInfo().getIntPtrType());
+    parserTargetInfo->SizeType = ConvertIntType(AST->getTargetInfo().getSizeType());
+    parserTargetInfo->UIntMaxType = ConvertIntType(AST->getTargetInfo().getUIntMaxType());
+    parserTargetInfo->WCharType = ConvertIntType(AST->getTargetInfo().getWCharType());
+    parserTargetInfo->WIntType = ConvertIntType(AST->getTargetInfo().getWIntType());
+
+    parserTargetInfo->BoolAlign = AST->getTargetInfo().getBoolAlign();
+    parserTargetInfo->BoolWidth = AST->getTargetInfo().getBoolWidth();
+    parserTargetInfo->CharAlign = AST->getTargetInfo().getCharAlign();
+    parserTargetInfo->CharWidth = AST->getTargetInfo().getCharWidth();
+    parserTargetInfo->Char16Align = AST->getTargetInfo().getChar16Align();
+    parserTargetInfo->Char16Width = AST->getTargetInfo().getChar16Width();
+    parserTargetInfo->Char32Align = AST->getTargetInfo().getChar32Align();
+    parserTargetInfo->Char32Width = AST->getTargetInfo().getChar32Width();
+    parserTargetInfo->HalfAlign = AST->getTargetInfo().getHalfAlign();
+    parserTargetInfo->HalfWidth = AST->getTargetInfo().getHalfWidth();
+    parserTargetInfo->FloatAlign = AST->getTargetInfo().getFloatAlign();
+    parserTargetInfo->FloatWidth = AST->getTargetInfo().getFloatWidth();
+    parserTargetInfo->DoubleAlign = AST->getTargetInfo().getDoubleAlign();
+    parserTargetInfo->DoubleWidth = AST->getTargetInfo().getDoubleWidth();
+    parserTargetInfo->ShortAlign = AST->getTargetInfo().getShortAlign();
+    parserTargetInfo->ShortWidth = AST->getTargetInfo().getShortWidth();
+    parserTargetInfo->IntAlign = AST->getTargetInfo().getIntAlign();
+    parserTargetInfo->IntWidth = AST->getTargetInfo().getIntWidth();
+    parserTargetInfo->IntMaxTWidth = AST->getTargetInfo().getIntMaxTWidth();
+    parserTargetInfo->LongAlign = AST->getTargetInfo().getLongAlign();
+    parserTargetInfo->LongWidth = AST->getTargetInfo().getLongWidth();
+    parserTargetInfo->LongDoubleAlign = AST->getTargetInfo().getLongDoubleAlign();
+    parserTargetInfo->LongDoubleWidth = AST->getTargetInfo().getLongDoubleWidth();
+    parserTargetInfo->LongLongAlign = AST->getTargetInfo().getLongLongAlign();
+    parserTargetInfo->LongLongWidth = AST->getTargetInfo().getLongLongWidth();
+    parserTargetInfo->PointerAlign = AST->getTargetInfo().getPointerAlign(0);
+    parserTargetInfo->PointerWidth = AST->getTargetInfo().getPointerWidth(0);
+    parserTargetInfo->WCharAlign = AST->getTargetInfo().getWCharAlign();
+    parserTargetInfo->WCharWidth = AST->getTargetInfo().getWCharWidth();
+
+    return parserTargetInfo;
 }

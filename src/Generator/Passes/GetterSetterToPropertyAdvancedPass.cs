@@ -6,11 +6,12 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using CppSharp.AST;
+using CppSharp.AST.Extensions;
 using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Passes
 {
-    class GetterSetterToPropertyAdvancedPass : TranslationUnitPass
+    public class GetterSetterToPropertyAdvancedPass : TranslationUnitPass
     {
         // collect all types of methods first to be able to match pairs and detect virtuals and overrides;
         // (a property needs to) be virtual or an override if either of its constituent methods are such)
@@ -25,12 +26,22 @@ namespace CppSharp.Passes
             LoadVerbs();
         }
 
+		static Stream GetResourceStream (Assembly assembly)
+		{
+			var stream = assembly.GetManifestResourceStream("CppSharp.Generator.Passes.verbs.txt");
+			if (stream != null)
+				return stream;
+
+			stream = assembly.GetManifestResourceStream("verbs.txt");
+			return stream;
+		}
+
         private static void LoadVerbs()
         {
-            using (var resourceStream = Assembly.GetExecutingAssembly()
-                .GetManifestResourceStream("CppSharp.Generator.Passes.verbs.txt"))
+			var assembly = Assembly.GetExecutingAssembly();
+			using (var resourceStream = GetResourceStream(assembly))
             {
-                using (StreamReader streamReader = new StreamReader(resourceStream))
+                using (var streamReader = new StreamReader(resourceStream))
                     while (!streamReader.EndOfStream)
                         verbs.Add(streamReader.ReadLine());
             }

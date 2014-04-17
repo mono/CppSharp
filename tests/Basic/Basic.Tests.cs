@@ -1,8 +1,10 @@
-﻿using NUnit.Framework;
+﻿using System;
+using CppSharp.Utils;
+using NUnit.Framework;
 using Basic;
+using Enum = Basic.Enum;
 
-[TestFixture]
-public class BasicTests
+public class BasicTests : GeneratorTestFixture
 {
     [Test]
     public void TestHello()
@@ -19,7 +21,18 @@ public class BasicTests
         var foo = new Foo { A = 4, B = 7 };
         Assert.That(hello.AddFoo(foo), Is.EqualTo(11));
         Assert.That(hello.AddFooPtr(foo), Is.EqualTo(11));
+        Assert.That(hello.AddFooPtr(foo), Is.EqualTo(11));
         Assert.That(hello.AddFooRef(foo), Is.EqualTo(11));
+        unsafe
+        {
+            var pointer = foo.SomePointer;
+            var pointerPointer = foo.SomePointerPointer;
+            for (int i = 0; i < 4; i++)
+            {
+                Assert.AreEqual(i, pointer[i]);
+                Assert.AreEqual(i, (*pointerPointer)[i]);
+            }
+        }
 
         var bar = new Bar { A = 4, B = 7 };
         Assert.That(hello.AddBar(bar), Is.EqualTo(11));
@@ -39,7 +52,7 @@ public class BasicTests
         Assert.That(hello.RetEnum(Enum.A), Is.EqualTo(0));
         Assert.That(hello.RetEnum(Enum.B), Is.EqualTo(2));
         Assert.That(hello.RetEnum(Enum.C), Is.EqualTo(5));
-        Assert.That(hello.RetEnum(Enum.D), Is.EqualTo(-2147483648));
+        //Assert.That(hello.RetEnum(Enum.D), Is.EqualTo(-2147483648));
         Assert.That(hello.RetEnum(Enum.E), Is.EqualTo(1));
         Assert.That(hello.RetEnum(Enum.F), Is.EqualTo(-9));
     }
@@ -87,11 +100,11 @@ public class BasicTests
         Assert.That(result.C, Is.EqualTo(16));
     }
 
-    [Test, Ignore]
+    [Test]
     public void TestAbstractReturnType()
     {
         var returnsAbstractFoo = new ReturnsAbstractFoo();
-        var abstractFoo = returnsAbstractFoo.getFoo();
+        var abstractFoo = returnsAbstractFoo.Foo;
         Assert.AreEqual(abstractFoo.pureFunction(1), 5);
         Assert.AreEqual(abstractFoo.pureFunction1(), 10);
         Assert.AreEqual(abstractFoo.pureFunction2(), 15);
@@ -101,7 +114,7 @@ public class BasicTests
     public void TestANSI()
     {
         var foo = new Foo();
-        Assert.That(foo.GetANSI(), Is.EqualTo("ANSI"));
+        Assert.That(foo.ANSI, Is.EqualTo("ANSI"));
     }
 
     [Test]
@@ -163,6 +176,122 @@ public class BasicTests
         var delegates = new TestDelegates();
         var doubleSum = delegates.A(2) + delegates.B(2);
         Assert.AreEqual(8, doubleSum);
+    }
+
+    [Test]
+    public void TestAttributedDelegate()
+    {
+        var result = basic.AttributedDelegate(2);
+        Assert.AreEqual(4, result);
+    }
+
+    [Test]
+    public void TestUnion()
+    {
+        Hello.NestedPublic nestedPublic = new Hello.NestedPublic();
+        nestedPublic.j = 5;
+        Assert.That(nestedPublic.l, Is.EqualTo(5));
+        Assert.That(nestedPublic.g, Is.Not.EqualTo(0));
+    }
+
+    [Test]
+    public void TestPropertyChains()
+    {
+        var bar2 = new Bar2();
+        bar2.pointerToStruct.A = 15;
+        Assert.That(bar2.pointerToStruct.A, Is.EqualTo(15));
+    }
+
+    [Test]
+    public void TestStaticClasses()
+    {
+        Assert.That(TestStaticClass.Add(1, 2), Is.EqualTo(3));
+    }
+
+    [Test, Ignore]
+    public void TestChar16()
+    {
+    }
+
+    [Test]
+    public void TestCopyConstructor()
+    {
+        Foo foo = new Foo { A = 5, B = 5.5f };
+        var copyFoo = new Foo(foo);
+        Assert.That(foo.A, Is.EqualTo(copyFoo.A));
+        Assert.That(foo.B, Is.EqualTo(copyFoo.B));
+
+        var testCopyConstructorRef = new TestCopyConstructorRef { A = 10, B = 5 };
+        var copyBar = new TestCopyConstructorRef(testCopyConstructorRef);
+        Assert.That(testCopyConstructorRef.A, Is.EqualTo(copyBar.A));
+        Assert.That(testCopyConstructorRef.B, Is.EqualTo(copyBar.B));
+    }
+
+    [Test]
+    public void TestCharMarshalling()
+    {
+        Foo2 foo2 = new Foo2();
+        for (char c = char.MinValue; c <= sbyte.MaxValue; c++)
+            Assert.That(foo2.testCharMarshalling(c), Is.EqualTo(c));
+        Assert.Catch<ArgumentException>(() => foo2.testCharMarshalling('ж'));
+    }
+
+    [Test]
+    public unsafe void TestIndexers()
+    {
+        var someStruct = new SomeStruct();
+        Assert.That(someStruct[0], Is.EqualTo(1));
+        Assert.That(someStruct["foo"], Is.EqualTo(1));
+        someStruct[0] = 2;
+        Assert.That(someStruct[0], Is.EqualTo(2));
+    }
+
+    [Test]
+    public unsafe void TestOperators()
+    {
+        var @class = new ClassWithOverloadedOperators();
+        Assert.AreEqual(1, (char) @class);
+        Assert.AreEqual(2, (int)@class);
+        Assert.AreEqual(3, (short)@class);
+    }
+
+    [Test]
+    public void TestFunctions()
+    {
+        var ret = Basic.basic.Function();
+        Assert.That(ret, Is.EqualTo(5));
+    }
+
+    [Test]
+    public void TestProperties()
+    {
+        // Test field property
+        var prop = new TestProperties();
+        Assert.That(prop.Field, Is.EqualTo(0));
+        prop.Field = 10;
+        Assert.That(prop.Field, Is.EqualTo(10));
+
+        // Test getter/setter property
+        prop.Field = 20;
+        Assert.That(prop.FieldValue, Is.EqualTo(20));
+        prop.FieldValue = 10;
+        Assert.That(prop.FieldValue, Is.EqualTo(10));
+    }
+
+    [Test]
+    public unsafe void TestArraysPointers()
+    {
+        var values = MyEnum.A;
+        var arrays = new TestArraysPointers(&values, 1);
+        Assert.That(arrays.Value, Is.EqualTo(MyEnum.A));
+    }
+
+    [Test]
+    public unsafe void TestGetterSetterToProperties()
+    {
+        var @class = new TestGetterSetterToProperties();
+        Assert.That(@class.Width, Is.EqualTo(640));
+        Assert.That(@class.Height, Is.EqualTo(480));
     }
 }
  

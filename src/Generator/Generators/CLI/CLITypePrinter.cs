@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CppSharp.AST;
+using CppSharp.AST.Extensions;
 using CppSharp.Types;
 using Type = CppSharp.AST.Type;
 
@@ -43,6 +44,14 @@ namespace CppSharp.Generators.CLI
 
         public string VisitTagType(TagType tag, TypeQualifiers quals)
         {
+            TypeMap typeMap = null;
+            if (TypeMapDatabase.FindTypeMap(tag, out typeMap))
+            {
+                typeMap.Type = tag;
+                Context.Type = tag;
+                return typeMap.CLISignature(Context);
+            }
+
             Declaration decl = tag.Declaration;
 
             if (decl == null)
@@ -120,7 +129,7 @@ namespace CppSharp.Generators.CLI
 
         public string VisitPointerType(PointerType pointer, TypeQualifiers quals)
         {
-            var pointee = pointer.Pointee;
+            var pointee = pointer.Pointee.Desugar();
 
             if (pointee is FunctionType)
             {
@@ -133,17 +142,32 @@ namespace CppSharp.Generators.CLI
                 return "System::String^";
             }
 
-            PrimitiveType primitive;
-            if (pointee.Desugar().IsPrimitiveType(out primitive))
+            // From http://msdn.microsoft.com/en-us/library/y31yhkeb.aspx
+            // Any of the following types may be a pointer type:
+            // * sbyte, byte, short, ushort, int, uint, long, ulong, char, float, double, decimal, or bool.
+            // * Any enum type.
+            // * Any pointer type.
+            // * Any user-defined struct type that contains fields of unmanaged types only.
+            var finalPointee = pointer.GetFinalPointee();
+            if (finalPointee.IsPrimitiveType())
             {
+                // Skip one indirection if passed by reference
                 var param = Context.Parameter;
-                if (param != null && (param.IsOut || param.IsInOut))
-                    return VisitPrimitiveType(primitive);
+                if (param != null && (param.IsOut || param.IsInOut)
+                    && pointee == finalPointee)
+                    return pointee.Visit(this, quals);
 
-                return "System::IntPtr";
+                return pointee.Visit(this, quals) + "*";
             }
 
-            return pointee.Visit(this, quals);
+            Enumeration @enum;
+            if (pointee.IsTagDecl(out @enum))
+            {
+                var typeName = @enum.Visit(this);
+                return string.Format("{0}*", typeName);
+            }
+
+            return pointer.Pointee.Visit(this, quals);
         }
 
         public string VisitMemberPointerType(MemberPointerType member,
@@ -163,8 +187,9 @@ namespace CppSharp.Generators.CLI
             {
                 case PrimitiveType.Bool: return "bool";
                 case PrimitiveType.Void: return "void";
-                case PrimitiveType.WideChar: return "char";
-                case PrimitiveType.Int8: return "char";
+                case PrimitiveType.Char16:
+                case PrimitiveType.WideChar: return "System::Char";
+                case PrimitiveType.Int8: return Options.MarshalCharAsManagedChar ? "System::Char" : "char";
                 case PrimitiveType.UInt8: return "unsigned char";
                 case PrimitiveType.Int16: return "short";
                 case PrimitiveType.UInt16: return "unsigned short";
@@ -175,6 +200,7 @@ namespace CppSharp.Generators.CLI
                 case PrimitiveType.Float: return "float";
                 case PrimitiveType.Double: return "double";
                 case PrimitiveType.IntPtr: return "IntPtr";
+                case PrimitiveType.UIntPtr: return "UIntPtr";
             }
 
             throw new NotSupportedException();
@@ -249,6 +275,11 @@ namespace CppSharp.Generators.CLI
         public string VisitDependentNameType(DependentNameType dependent, TypeQualifiers quals)
         {
             throw new NotImplementedException();
+        }
+
+        public string VisitPackExpansionType(PackExpansionType packExpansionType, TypeQualifiers quals)
+        {
+            return string.Empty;
         }
 
         public string VisitCILType(CILType type, TypeQualifiers quals)

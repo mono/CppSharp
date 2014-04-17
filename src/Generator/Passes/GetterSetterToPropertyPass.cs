@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using CppSharp.AST;
+using CppSharp.AST.Extensions;
 
 namespace CppSharp.Passes
 {
@@ -75,12 +76,15 @@ namespace CppSharp.Passes
             if (!VisitDeclaration(method))
                 return false;
 
-            if (ASTUtils.CheckIgnoreMethod(method))
+            if (ASTUtils.CheckIgnoreMethod(method, Driver.Options))
                 return false;
 
             var @class = method.Namespace as Class;
 
             if (@class == null || @class.IsIncomplete)
+                return false;
+
+            if (method.IsConstructor)
                 return false;
 
             if (IsGetter(method))

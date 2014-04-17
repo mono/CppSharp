@@ -129,12 +129,12 @@ namespace CppSharp
         }
 
         public static void EmitError(this IDiagnosticConsumer consumer,
-            string msg, params object[] args)
+            string msg)
         {
             var diagInfo = new DiagnosticInfo
             {
                 Kind = DiagnosticKind.Error,
-                Message = string.Format(msg, args)
+                Message = msg
             };
 
             consumer.Emit(diagInfo);

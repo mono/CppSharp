@@ -7,12 +7,9 @@ function SetupExampleProject()
   
   files { "**.cs", "./*.lua" }
   links { "CppSharp.AST", "CppSharp.Generator" }
+
+  SetupManagedProject()
   SetupParser()
-
-  location (path.join(builddir, "projects"))
-
-  configuration "vs*"
-    location "."
 end
 
 function SetupTestProject(name, file, lib)
@@ -38,10 +35,7 @@ function SetupManagedTestProject()
     kind "SharedLib"
     language "C#"  
     flags { "Unsafe" }
-
-    local c = configuration "vs*"
-      location "."
-    configuration(c)
+    SetupManagedProject()
 end
 
 function SetupTestGeneratorProject(name)
@@ -57,17 +51,27 @@ function SetupTestGeneratorProject(name)
     {
       "CppSharp.AST",
       "CppSharp.Generator",
+      "CppSharp.Generator.Tests"
     }
 
     SetupParser()
 end
 
 function SetupTestGeneratorBuildEvent(name)
-  local exePath = SafePath("$(TargetDir)" .. name .. ".Gen.exe")
-  prebuildcommands { exePath }
+  if string.starts(action, "vs") then
+    local exePath = SafePath("$(TargetDir)" .. name .. ".Gen.exe")
+    prebuildcommands { exePath }
+  else
+    local exePath = SafePath("%{cfg.buildtarget.directory}/" .. name .. ".Gen.exe")
+    prebuildcommands { "mono --debug " .. exePath }
+  end
 end
 
 function SetupTestNativeProject(name)
+  if string.starts(action, "vs") and not os.is_windows() then
+    return
+  end
+
   project(name .. ".Native")
 
     SetupNativeProject()
@@ -111,7 +115,7 @@ function SetupTestProjectsCSharp(name, file, lib)
     SetupManagedTestProject()
 
     files { name .. ".Tests.cs" }
-    links { name .. ".CSharp" }
+    links { name .. ".CSharp", "CppSharp.Generator.Tests" }
     dependson { name .. ".Native" }
 
     LinkNUnit()
@@ -119,6 +123,10 @@ function SetupTestProjectsCSharp(name, file, lib)
 end
 
 function SetupTestProjectsCLI(name, file, lib)
+  if not os.is_windows() then
+    return
+  end
+
   project(name .. ".CLI")
     SetupNativeProject()
 
@@ -142,7 +150,7 @@ function SetupTestProjectsCLI(name, file, lib)
     SetupManagedTestProject()
 
     files { name .. ".Tests.cs" }
-    links { name .. ".CLI" }
+    links { name .. ".CLI", "CppSharp.Generator.Tests" }
     dependson { name .. ".Native" }
 
     LinkNUnit()

@@ -1,8 +1,4 @@
-#if defined(_MSC_VER)
-#define DLL_API __declspec(dllexport)
-#else
-#define DLL_API
-#endif
+#include "../Tests.h"
 
 class DLL_API Foo
 {
@@ -18,6 +14,7 @@ public:
 
     virtual int append();
     virtual int append(int a);
+    int callVirtualWithParameter(int a);
 };
 
 DLL_API int FooCallFoo(Foo* foo);

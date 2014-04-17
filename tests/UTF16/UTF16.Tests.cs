@@ -1,9 +1,8 @@
-﻿using System;
+﻿using CppSharp.Utils;
 using NUnit.Framework;
 using Foo = UTF16.Foo;
 
-[TestFixture]
-public class UTF16Tests
+public class UTF16Tests : GeneratorTestFixture
 {
     [Test]
     public void TestFoo()
