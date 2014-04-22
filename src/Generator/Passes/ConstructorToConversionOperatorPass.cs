@@ -37,10 +37,9 @@ namespace CppSharp.Passes
             if (castFromClass == castToClass)
                 return false;
 
-            var operatorKind = CXXOperatorKind.Conversion;
-            if (method.Signature.StartsWith("explicit", System.StringComparison.OrdinalIgnoreCase))
-                operatorKind = CXXOperatorKind.ExplicitConversion;
-
+            var operatorKind = method.IsExplicit
+                ? CXXOperatorKind.ExplicitConversion
+                : CXXOperatorKind.Conversion;
             var castToType = new TagType(castToClass);
             var qualifiedCastToType = new QualifiedType(castToType);
             var conversionOperator = new Method()
