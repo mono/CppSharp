@@ -952,6 +952,7 @@ Method* Parser::WalkMethodCXX(clang::CXXMethodDecl* MD)
         Method->IsDefaultConstructor = CD->isDefaultConstructor();
         Method->IsCopyConstructor = CD->isCopyConstructor();
         Method->IsMoveConstructor = CD->isMoveConstructor();
+        Method->IsExplicit = CD->isExplicit();
     }
     else if (const CXXDestructorDecl* DD = dyn_cast<CXXDestructorDecl>(MD))
     {
