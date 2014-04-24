@@ -25,7 +25,11 @@ Git repository urls found here: [http://llvm.org/docs/GettingStarted.html#git-mi
 Building in *Release* is recommended because else the Clang parser will be
 excruciatingly slow.
 
-Last updated to LLVM/Clang revision: `r202563`
+Due to some incompatible changes in recent LLVM versions, Windows builds need to use the following set of revisions that are known to work.
+
+LLVM `r202563` / Git mirror revision `c9bf74fdc543c2da90f334e0bf8e34b128c8a615`.
+
+Clang `r202562` / Git mirror revision `30577e6c4f5ba66b8dc832ed9955b1a7475f788a`.
 
 ## Compiling on Mac OS X (experimental)
 
