@@ -716,23 +716,8 @@ namespace CppSharp.Generators.CLI
 
                 var insideClass = typedef.Namespace is Class;
 
-                string callingConvention = null;
-                switch (function.CallingConvention)
-                {
-                    case CallingConvention.C:
-                        callingConvention = "Cdecl";
-                        break;
-                    case CallingConvention.StdCall:
-                        callingConvention = "StdCall";
-                        break;
-                    case CallingConvention.ThisCall:
-                        callingConvention = "ThisCall";
-                        break;
-                    case CallingConvention.FastCall:
-                        callingConvention = "FastCall";
-                        break;
-                }
-                if (callingConvention != null)
+                var callingConvention = function.CallingConvention.ToInteropCallConv();
+                if (callingConvention != System.Runtime.InteropServices.CallingConvention.Winapi)
                 {
                     WriteLine("[{0}({1}::{2})] ",
                         "System::Runtime::InteropServices::UnmanagedFunctionPointer",
