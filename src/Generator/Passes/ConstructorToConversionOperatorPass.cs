@@ -26,8 +26,6 @@ namespace CppSharp.Passes
             if (!parameterType.IsReference)
                 return false;
             var qualifiedPointee = parameterType.QualifiedPointee;
-            if (!qualifiedPointee.Qualifiers.IsConst)
-                return false;
             Class castFromClass;
             if (!qualifiedPointee.Type.IsTagDecl(out castFromClass))
                 return false;
