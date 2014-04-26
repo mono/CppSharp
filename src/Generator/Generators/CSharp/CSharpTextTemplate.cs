@@ -43,25 +43,6 @@ namespace CppSharp.Generators.CSharp
             return new string(id.Select(c => char.IsLetterOrDigit(c) ? c : '_').ToArray());
         }
 
-        public static string ToCSharpCallConv(CallingConvention convention)
-        {
-            switch (convention)
-            {
-                case CallingConvention.Default:
-                    return "Winapi";
-                case CallingConvention.C:
-                    return "Cdecl";
-                case CallingConvention.StdCall:
-                    return "StdCall";
-                case CallingConvention.ThisCall:
-                    return "ThisCall";
-                case CallingConvention.FastCall:
-                    return "FastCall";
-            }
-
-            return "Winapi";
-        }
-
         public const string InstanceIdentifier = "__Instance";
 
         public static string GetAccess(AccessSpecifier accessSpecifier)
@@ -1608,7 +1589,7 @@ namespace CppSharp.Generators.CSharp
             }
             WriteLine("[SuppressUnmanagedCodeSecurity]");
             WriteLine("[UnmanagedFunctionPointerAttribute(global::System.Runtime.InteropServices.CallingConvention.{0})]",
-                Helpers.ToCSharpCallConv(method.CallingConvention));
+                method.CallingConvention.ToInteropCallConv());
 
             CSharpTypePrinterResult retType;
             var @params = GatherInternalParams(method, out retType);
@@ -2548,7 +2529,7 @@ namespace CppSharp.Generators.CSharp
             {
                 PushBlock(CSharpBlockKind.Typedef);
                 WriteLine("[UnmanagedFunctionPointerAttribute(global::System.Runtime.InteropServices.CallingConvention.{0})]",
-                    Helpers.ToCSharpCallConv(functionType.CallingConvention));
+                    functionType.CallingConvention.ToInteropCallConv());
                 TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
                 WriteLine("{0}unsafe {1};",
                     Helpers.GetAccess(typedef.Access),
@@ -2684,7 +2665,7 @@ namespace CppSharp.Generators.CSharp
 
             Write("[DllImport(\"{0}\", ", libName);
 
-            var callConv = Helpers.ToCSharpCallConv(function.CallingConvention);
+            var callConv = function.CallingConvention.ToInteropCallConv();
             WriteLine("CallingConvention = global::System.Runtime.InteropServices.CallingConvention.{0},",
                 callConv);
 
