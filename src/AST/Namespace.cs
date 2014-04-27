@@ -166,15 +166,30 @@ namespace CppSharp.AST
 
         public Function FindFunction(string name, bool createDecl = false)
         {
-            var function =  Functions.Find(e => e.Name.Equals(name));
+            var entries = name.Split(new string[] { "::" },
+                StringSplitOptions.RemoveEmptyEntries).ToList();
 
-            if (function == null && createDecl)
+            if (entries.Count <= 1)
             {
-                function = new Function() { Name = name, Namespace = this };
-                Functions.Add(function);
+                var function = Functions.Find(e => e.Name.Equals(name));
+
+                if (function == null && createDecl)
+                {
+                    function = new Function() { Name = name, Namespace = this };
+                    Functions.Add(function);
+                }
+            
+                return function;
             }
 
-            return function;
+            var funcName = entries[entries.Count - 1];
+            var namespaces = entries.Take(entries.Count - 1);
+
+            var @namespace = FindNamespace(namespaces);
+            if (@namespace == null)
+                return null;
+
+            return @namespace.FindFunction(funcName, createDecl);
         }
 
         Class CreateClass(string name, bool isComplete)
