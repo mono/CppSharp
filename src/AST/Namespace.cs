@@ -166,6 +166,9 @@ namespace CppSharp.AST
 
         public Function FindFunction(string name, bool createDecl = false)
         {
+            if (string.IsNullOrEmpty(name)) 
+                return null;
+
             var entries = name.Split(new string[] { "::" },
                 StringSplitOptions.RemoveEmptyEntries).ToList();
 
