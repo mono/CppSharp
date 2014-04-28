@@ -293,4 +293,23 @@ namespace CppSharp.Types.Std
             throw new System.NotImplementedException();
         }
     }
+
+    [TypeMap("std::ostream")]
+    public class OStream : TypeMap
+    {
+        public override string CLISignature(CLITypePrinterContext ctx)
+        {
+            return "System::IO::TextWriter^";
+        }
+
+        public override void CLIMarshalToNative(MarshalContext ctx)
+        {
+            var marshal = ctx.MarshalToNative as CLIMarshalManagedToNativePrinter;
+            marshal.ArgumentPrefix.Write("*");
+            var marshalCtxName = string.Format("ctx_{0}", ctx.Parameter.Name);
+            ctx.SupportBefore.WriteLine("msclr::interop::marshal_context {0};", marshalCtxName);
+            ctx.Return.Write("{0}.marshal_as<std::ostream*>({1})",
+                marshalCtxName, ctx.Parameter.Name);
+        }
+    }
 }

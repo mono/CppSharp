@@ -1,5 +1,6 @@
 #include "../Tests.h"
 #include <vector>
+#include <ostream>
 
 struct DLL_API IntWrapper
 {
@@ -27,4 +28,12 @@ struct DLL_API TestVectors
     std::vector<IntWrapper*> IntWrapperPtrVector;
     // Should get mapped to List<IntWrapperValueType>
     std::vector<IntWrapperValueType> IntWrapperValueTypeVector;
+};
+
+struct DLL_API OStreamTest
+{
+    static void WriteToOStream(std::ostream& stream, const char* s)
+    {
+        stream << s;
+    };
 };

@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using CppSharp.Utils;
+﻿using CppSharp.Utils;
 using NUnit.Framework;
-using System.Runtime.InteropServices;
 using STL;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
 
 public class STLTests : GeneratorTestFixture
 {
@@ -46,6 +46,15 @@ public class STLTests : GeneratorTestFixture
         valueTypeWrapperList = vectors.IntWrapperValueTypeVector;
         for (int i = 0; i < 3; i++)
             Assert.AreEqual(i, valueTypeWrapperList[i].Value);
+    }
+
+    [Test]
+    public void TestOStream()
+    {
+        const string testString = "hello wörld";
+        var stringWriter = new StringWriter();
+        OStreamTest.WriteToOStream(stringWriter, testString);
+        Assert.AreEqual(testString, stringWriter.ToString());
     }
 }
  
