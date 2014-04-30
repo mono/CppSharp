@@ -1713,19 +1713,25 @@ CppSharp::AST::Enumeration^ Parser::WalkEnum(clang::EnumDecl* ED)
     auto NS = GetNamespace(ED);
     assert(NS && "Expected a valid namespace");
 
-    auto Name = marshalString<E_UTF8>(GetTagDeclName(ED));
-    CppSharp::AST::Enumeration^ E = nullptr;
-    if (!System::String::IsNullOrEmpty(Name))
-        E = NS->FindEnum(Name, /*Create=*/false);
-    else
+    auto E = NS->FindEnum(System::IntPtr(ED->getCanonicalDecl()));
+    if (E && !E->IsIncomplete)
+        return E;
+
+    if (!E)
     {
-        // Enum with no identifier - try to find existing enum through enum items
-        for (auto it = ED->enumerator_begin(); it != ED->enumerator_end(); ++it)
+        auto Name = marshalString<E_UTF8>(GetTagDeclName(ED));
+        if (!System::String::IsNullOrEmpty(Name))
+            E = NS->FindEnum(Name, /*Create=*/false);
+        else
         {
-            EnumConstantDecl* ECD = (*it);
-            auto EnumItemName = marshalString<E_UTF8>(ECD->getNameAsString());
-            E = NS->FindEnumWithItem(EnumItemName);
-            break;
+            // Enum with no identifier - try to find existing enum through enum items
+            for (auto it = ED->enumerator_begin(); it != ED->enumerator_end(); ++it)
+            {
+                EnumConstantDecl* ECD = (*it);
+                auto EnumItemName = marshalString<E_UTF8>(ECD->getNameAsString());
+                E = NS->FindEnumWithItem(EnumItemName);
+                break;
+            }
         }
     }
 
@@ -1734,11 +1740,13 @@ CppSharp::AST::Enumeration^ Parser::WalkEnum(clang::EnumDecl* ED)
 
     if (!E)
     {
+        auto Name = marshalString<E_UTF8>(GetTagDeclName(ED));
         if (!System::String::IsNullOrEmpty(Name))
             E = NS->FindEnum(Name, /*Create=*/true);
         else
         {
             E = gcnew CppSharp::AST::Enumeration();
+            E->Name = Name;
             E->Namespace = NS;
             NS->Enums->Add(E);
         }

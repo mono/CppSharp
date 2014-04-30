@@ -180,6 +180,11 @@ namespace CppSharp.AST
             return @namespace.FindEnum(enumName, createDecl);
         }
 
+        public Enumeration FindEnum(IntPtr ptr)
+        {
+            return Enums.FirstOrDefault(f => f.OriginalPtr == ptr);
+        }
+
         public Function FindFunction(string name, bool createDecl = false)
         {
             if (string.IsNullOrEmpty(name)) 
