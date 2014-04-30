@@ -31,6 +31,11 @@ LLVM `r202563` / Git mirror revision `c9bf74fdc543c2da90f334e0bf8e34b128c8a615`.
 
 Clang `r202562` / Git mirror revision `30577e6c4f5ba66b8dc832ed9955b1a7475f788a`.
 
+It has been reported that running the solution upgrade process under VS 2013 breaks the build due
+to an incompatibility of .NET versions between projects (4.5 and 4.0). If you experience this
+problem you can change the targetted .NET version of the projects to be the same or just do not
+run the upgrade process after generation. 
+
 ## Compiling on Mac OS X (experimental)
 
 1. Clone CppSharp to `<CppSharp>`
