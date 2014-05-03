@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ $(uname -m) = "x86_64" ]; then
+	./premake5-linux-64 $*
+else
+	./premake5-linux-32 $*
+fi
+
