@@ -58,7 +58,11 @@ namespace CppSharp
             if (Triple.Contains("apple"))
                 SetupMacOptions(options);
 
+            if (Triple.Contains("linux"))
+                SetupLinuxOptions(options);
+
             var basePath = Path.Combine(GetSourceDirectory(), "CppParser");
+            Console.WriteLine("basePath: {0}", basePath);
 
 #if OLD_PARSER
             options.IncludeDirs.Add(basePath);
@@ -77,7 +81,33 @@ namespace CppSharp
 
             options.GenerateLibraryNamespace = false;
             options.CheckSymbols = false;
-            options.Verbose = false;
+            options.Verbose = true;
+        }
+
+        private static void SetupLinuxOptions(DriverOptions options)
+        {
+            options.MicrosoftMode = false;
+            options.NoBuiltinIncludes = true;
+
+            const string LINUX_INCLUDE_BASE_DIR = @"C:\work\linux_c++_headers";
+            const string LINUX_INCLUDE_PATH = LINUX_INCLUDE_BASE_DIR + @"\usr\include";
+            const string LINUX_LIBSTDC_INCLUDE_PATH = LINUX_INCLUDE_BASE_DIR + @"\usr\include\c++\4.7";
+            const string LINUX_LIBSTDC_PLATFORM_SPECIFIC_INCLUDE_PATH = LINUX_INCLUDE_BASE_DIR + @"\usr\include\x86_64-linux-gnu\c++\4.7";
+            const string LINUX_PLATFORM_SPECIFIC_INCLUDE_PATH = LINUX_INCLUDE_BASE_DIR + @"\usr\include\x86_64-linux-gnu";
+            //const string LINUX_LIBC6_INCLUDE_PATH = LINUX_INCLUDE_BASE_DIR + @"\usr\include\libc6";
+#if OLD_PARSER
+            options.SystemIncludeDirs.Add(LINUX_INCLUDE_PATH);
+            options.SystemIncludeDirs.Add(LINUX_LIBSTDC_INCLUDE_PATH);
+            options.SystemIncludeDirs.Add(LINUX_LIBSTDC_PLATFORM_SPECIFIC_INCLUDE_PATH);
+            options.SystemIncludeDirs.Add(LINUX_PLATFORM_SPECIFIC_INCLUDE_PATH);
+            //options.SystemIncludeDirs.Add(LINUX_LIBC6_INCLUDE_PATH);
+#else
+            options.addSystemIncludeDirs(LINUX_INCLUDE_PATH);
+            options.addSystemIncludeDirs(LINUX_LIBSTDC_INCLUDE_PATH);
+            options.addSystemIncludeDirs(LINUX_LIBSTDC_PLATFORM_SPECIFIC_INCLUDE_PATH);
+            options.addSystemIncludeDirs(LINUX_PLATFORM_SPECIFIC_INCLUDE_PATH);
+            //options.addSystemIncludeDirs(LINUX_LIBC6_INCLUDE_PATH);
+#endif
         }
 
         private static void SetupMacOptions(DriverOptions options)
@@ -121,14 +151,23 @@ namespace CppSharp
 
         public static void Main(string[] args)
         {
-            Console.WriteLine("Generating the C++/CLI parser bindings...");
-            ConsoleDriver.Run(new ParserGen(GeneratorKind.CLI, "i686-pc-win32",
-                CppAbi.Microsoft));
-            Console.WriteLine();
+            // ConsoleDriver.Run(new ParserGen(GeneratorKind.CLI, "i686-pc-win32",
+            //     CppAbi.Microsoft));
+            // Console.WriteLine();
+
+            // Console.WriteLine("Generating the C# parser bindings...");
+            // ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "i686-pc-win32",
+            //     CppAbi.Microsoft));
+
+            // Testing Linux bindings
+            //Console.WriteLine("Generating the C++/CLI parser bindings...");
+            //ConsoleDriver.Run(new ParserGen(GeneratorKind.CLI, "i686-pc-linux",
+            //    CppAbi.Microsoft));
+            //Console.WriteLine();
 
             Console.WriteLine("Generating the C# parser bindings...");
-            ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "i686-pc-win32",
-                CppAbi.Microsoft));
+            ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "x86_64-pc-linux-gnu",
+                CppAbi.Itanium));
 
             // Uncoment the following lines to enable generation of Mac parser bindings.
             // This is disabled by default for now since it requires a non-trivial
