@@ -176,9 +176,9 @@ public class BasicTests : GeneratorTestFixture
         var delegates = new TestDelegates();
         var doubleSum = delegates.A(2) + delegates.B(2);
         Assert.AreEqual(8, doubleSum);
-		
-		var stdcall = delegates.StdCall(i => i);
-		Assert.AreEqual(1, stdcall);
+
+        var stdcall = delegates.StdCall(i => i);
+        Assert.AreEqual(1, stdcall);
 
         var cdecl = delegates.CDecl(i => i);
         Assert.AreEqual(1, cdecl);
