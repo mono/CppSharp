@@ -848,6 +848,7 @@ namespace CppSharp
             _method.IsStatic = decl.IsStatic;
             _method.IsConst = decl.IsConst;
             _method.IsImplicit = decl.IsImplicit;
+            _method.IsExplicit = decl.IsExplicit;
             _method.IsOverride = decl.IsOverride;
 
             _method.Kind = VisitCXXMethodKind(decl.MethodKind);
