@@ -712,6 +712,20 @@ namespace CppSharp.Generators.CLI
 
                 var insideClass = typedef.Namespace is Class;
 
+                var attributedType = typedef.Type.GetPointee() as AttributedType;
+                if (attributedType != null)
+                {
+                    var equivalentFunctionType = attributedType.Equivalent.Type as FunctionType;
+                    var callingConvention = equivalentFunctionType.CallingConvention.ToInteropCallConv();
+                    if (callingConvention != System.Runtime.InteropServices.CallingConvention.Winapi)
+                    {
+                        WriteLine("[{0}({1}::{2})] ",
+                            "System::Runtime::InteropServices::UnmanagedFunctionPointer",
+                            "System::Runtime::InteropServices::CallingConvention",
+                            callingConvention);
+                    }
+                }
+
                 WriteLine("{0}{1};",
                     !insideClass ? "public " : "",
                     string.Format(TypePrinter.VisitDelegate(function),
