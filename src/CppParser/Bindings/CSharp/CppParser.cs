@@ -511,7 +511,7 @@ namespace CppSharp
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                     EntryPoint="??0ParserDiagnostic@CppParser@CppSharp@@QAE@ABU012@@Z")]
-                internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                internal static extern global::System.IntPtr cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -679,7 +679,7 @@ namespace CppSharp
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                     EntryPoint="??0ParserResult@CppParser@CppSharp@@QAE@ABU012@@Z")]
-                internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                internal static extern global::System.IntPtr cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -742,7 +742,7 @@ namespace CppSharp
                 var __ret = new CppSharp.Parser.ParserDiagnostic.Internal();
                 Internal.getDiagnostics_0(__Instance, new IntPtr(&__ret), i);
                 var __instance = Marshal.AllocHGlobal(60);
-                CppSharp.Parser.ParserDiagnostic.Internal.cctor_2(__instance, new global::System.IntPtr(&__ret));
+                CppSharp.Parser.ParserDiagnostic.Internal.cctor_1(__instance, new global::System.IntPtr(&__ret));
                 return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.ParserDiagnostic(__instance);
             }
 

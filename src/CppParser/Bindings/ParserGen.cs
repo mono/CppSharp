@@ -136,8 +136,8 @@ namespace CppSharp
             // of libcxx since the one provided by the Mac SDK is not compatible with a recent
             // Clang frontend that we use to parse it.
 
-            //ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "i686-apple-darwin12.4.0",
-            //    CppAbi.Itanium));
+            ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "i686-apple-darwin12.4.0",
+                CppAbi.Itanium));
         }
     }
 

@@ -590,17 +590,17 @@ CppSharp::Parser::AST::TemplateParameter::TemplateParameter(System::IntPtr nativ
     NativePtr = __native;
 }
 
+CppSharp::Parser::AST::TemplateParameter::TemplateParameter()
+{
+    NativePtr = new ::CppSharp::CppParser::AST::TemplateParameter();
+}
+
 bool CppSharp::Parser::AST::TemplateParameter::operator==(CppSharp::Parser::AST::TemplateParameter^ __op, CppSharp::Parser::AST::TemplateParameter^ param)
 {
     auto &arg0 = *(::CppSharp::CppParser::AST::TemplateParameter*)__op->NativePtr;
     auto &arg1 = *(::CppSharp::CppParser::AST::TemplateParameter*)param->NativePtr;
     auto __ret = arg0 == arg1;
     return __ret;
-}
-
-CppSharp::Parser::AST::TemplateParameter::TemplateParameter()
-{
-    NativePtr = new ::CppSharp::CppParser::AST::TemplateParameter();
 }
 
 System::IntPtr CppSharp::Parser::AST::TemplateParameter::__Instance::get()
@@ -1668,6 +1668,16 @@ bool CppSharp::Parser::AST::Method::IsImplicit::get()
 void CppSharp::Parser::AST::Method::IsImplicit::set(bool value)
 {
     ((::CppSharp::CppParser::AST::Method*)NativePtr)->IsImplicit = value;
+}
+
+bool CppSharp::Parser::AST::Method::IsExplicit::get()
+{
+    return ((::CppSharp::CppParser::AST::Method*)NativePtr)->IsExplicit;
+}
+
+void CppSharp::Parser::AST::Method::IsExplicit::set(bool value)
+{
+    ((::CppSharp::CppParser::AST::Method*)NativePtr)->IsExplicit = value;
 }
 
 bool CppSharp::Parser::AST::Method::IsOverride::get()

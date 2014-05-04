@@ -1238,6 +1238,12 @@ namespace CppSharp
                     void set(bool);
                 }
 
+                property bool IsExplicit
+                {
+                    bool get();
+                    void set(bool);
+                }
+
                 property bool IsOverride
                 {
                     bool get();

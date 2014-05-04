@@ -511,7 +511,7 @@ namespace CppSharp
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                     EntryPoint="_ZN8CppSharp9CppParser16ParserDiagnosticC2ERKS1_")]
-                internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                internal static extern void cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -679,7 +679,7 @@ namespace CppSharp
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                     EntryPoint="_ZN8CppSharp9CppParser12ParserResultC2ERKS1_")]
-                internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                internal static extern void cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -742,7 +742,7 @@ namespace CppSharp
                 var __ret = new CppSharp.Parser.ParserDiagnostic.Internal();
                 Internal.getDiagnostics_0(new IntPtr(&__ret), __Instance, i);
                 var __instance = Marshal.AllocHGlobal(36);
-                CppSharp.Parser.ParserDiagnostic.Internal.cctor_2(__instance, new global::System.IntPtr(&__ret));
+                CppSharp.Parser.ParserDiagnostic.Internal.cctor_1(__instance, new global::System.IntPtr(&__ret));
                 return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.ParserDiagnostic(__instance);
             }
 
