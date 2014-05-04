@@ -17,6 +17,8 @@ function SetupLLVMLibs()
     path.join(LLVMBuildDir, "tools/clang/include"),
   }
   
+  libdirs { path.join(LLVMBuildDir, "lib") }
+
   configuration { "Debug", "vs*" }
     libdirs { path.join(LLVMBuildDir, "Debug/lib") }
 
@@ -26,7 +28,6 @@ function SetupLLVMLibs()
   configuration "not vs*"
     buildoptions { "-fpermissive" }
     defines { "__STDC_CONSTANT_MACROS", "__STDC_LIMIT_MACROS" }
-    libdirs { path.join(LLVMBuildDir, "lib") }
 
   configuration "macosx"
     links { "c++", "curses", "pthread", "z" }
