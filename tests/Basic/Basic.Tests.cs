@@ -238,11 +238,11 @@ public class BasicTests : GeneratorTestFixture
     [Test]
     public unsafe void TestIndexers()
     {
-        var someStruct = new SomeStruct();
-        Assert.That(someStruct[0], Is.EqualTo(1));
-        Assert.That(someStruct["foo"], Is.EqualTo(1));
-        someStruct[0] = 2;
-        Assert.That(someStruct[0], Is.EqualTo(2));
+        var properties = new TestIndexedProperties();
+        Assert.AreEqual(1, properties[0]);
+        Assert.AreEqual(1, properties["foo"]);
+        properties[0] = 2;
+        Assert.AreEqual(2, properties[0]);
     }
 
     [Test]
