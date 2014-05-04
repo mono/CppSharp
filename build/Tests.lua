@@ -92,7 +92,7 @@ function LinkNUnit()
 
   links
   {
-    "NUnit.Framework",
+    "nunit.framework",
     "NSubstitute"
   }
 end
