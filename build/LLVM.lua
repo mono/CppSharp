@@ -2,6 +2,7 @@
 
 LLVMInstallDir = "../../deps/llvm/install"
 ClangSrcDir = "../../deps/llvm/tools/clang"
+LLVMConfig = path.join(LLVMInstallDir, "bin/llvm-config")
 
 -- TODO: Search for available system dependencies
 
@@ -33,33 +34,6 @@ function SetupLLVMLibs()
   configuration "*"
     links
     {
-      "LLVMAnalysis",
-      "LLVMAsmParser",
-      "LLVMBitReader",
-      "LLVMBitWriter",
-      "LLVMCodeGen",
-      "LLVMCore",
-      "LLVMipa",
-      "LLVMipo",
-      "LLVMInstCombine",
-      "LLVMInstrumentation",
-      "LLVMIRReader",
-      "LLVMLinker",
-      "LLVMMC",
-      "LLVMMCParser",
-      "LLVMObjCARCOpts",
-      "LLVMObject",
-      "LLVMOption",
-      "LLVMScalarOpts",
-      "LLVMSupport",
-      "LLVMTarget",
-      "LLVMTransformUtils",
-      "LLVMVectorize",
-      "LLVMX86AsmParser",
-      "LLVMX86AsmPrinter",
-      "LLVMX86Desc",
-      "LLVMX86Info",
-      "LLVMX86Utils",
       "clangAnalysis",
       "clangAST",
       "clangBasic",
@@ -73,7 +47,12 @@ function SetupLLVMLibs()
       "clangSerialization",
       "clangIndex",
     }
-    StaticLinksOpt { "LLVMProfileData" }
-    
+
+    local libs = os.outputof(path.getabsolute(LLVMConfig) .. " --libs engine option")
+    libs = string.gsub(libs, "\n", "")
+    libs = string.gsub(libs, "-l", "")
+    libs = string.explode(libs, " ")
+    links (libs)
+
   configuration(c)
 end
