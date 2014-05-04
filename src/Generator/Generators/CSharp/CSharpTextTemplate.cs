@@ -2543,8 +2543,17 @@ namespace CppSharp.Generators.CSharp
             else if (typedef.Type.IsPointerTo(out functionType))
             {
                 PushBlock(CSharpBlockKind.Typedef);
-                WriteLine("[UnmanagedFunctionPointerAttribute(global::System.Runtime.InteropServices.CallingConvention.{0})]",
-                    functionType.CallingConvention.ToInteropCallConv());
+                var attributedType = typedef.Type.GetPointee() as AttributedType;
+                if (attributedType != null)
+                {
+                    var equivalentFunctionType = attributedType.Equivalent.Type as FunctionType;
+                    var callingConvention = equivalentFunctionType.CallingConvention.ToInteropCallConv();
+                    if (callingConvention != System.Runtime.InteropServices.CallingConvention.Winapi)
+                    {
+                        WriteLine("[UnmanagedFunctionPointerAttribute(global::System.Runtime.InteropServices.CallingConvention.{0})]",
+                            callingConvention);
+                    }
+                }
                 TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
                 WriteLine("{0}unsafe {1};",
                     Helpers.GetAccess(typedef.Access),

@@ -242,6 +242,8 @@ DLL_API int operator==(const Foo2& a, const Foo2& b)
 
 // Tests delegates
 typedef int (*DelegateInGlobalNamespace)(int);
+typedef int (STDCALL *DelegateStdCall)(int);
+typedef int (CDECL *DelegateCDecl)(int n);
 
 struct DLL_API TestDelegates
 {
@@ -251,6 +253,9 @@ struct DLL_API TestDelegates
     TestDelegates();
     static int Double(int N) { return N * 2; }
     int Triple(int N) { return N * 3; }
+	
+    int StdCall(DelegateStdCall del) { return del(1); }
+    int CDecl(DelegateCDecl del) { return del(1); }
 
     DelegateInClass A;
     DelegateInGlobalNamespace B;
@@ -260,14 +265,6 @@ struct DLL_API TestDelegates
 
 TestDelegates::TestDelegates() : A(Double), B(Double), C(&TestDelegates::Triple)
 {
-}
-
-// Tests delegate generation for attributed function types
-typedef int(__cdecl *AttributedDelegate)(int n);
-DLL_API int __cdecl Double(int n) { return n * 2; }
-DLL_API AttributedDelegate GetAttributedDelegate()
-{
-    return Double;
 }
 
 // Tests memory leaks in constructors
