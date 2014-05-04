@@ -523,6 +523,7 @@ struct CS_API Method : public Function
     bool IsStatic;
     bool IsConst;
     bool IsImplicit;
+    bool IsExplicit;
     bool IsOverride;
 
     CXXMethodKind MethodKind;

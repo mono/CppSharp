@@ -186,6 +186,8 @@ namespace CppSharp.AST
 
                 case CXXOperatorKind.Conversion:
                     return "implicit operator";
+                case CXXOperatorKind.ExplicitConversion:
+                    return "explicit operator";
             }
 
             throw new NotSupportedException();

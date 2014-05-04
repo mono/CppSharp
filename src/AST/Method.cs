@@ -64,7 +64,8 @@ namespace CppSharp.AST
         Call,
         Subscript,
         Conditional,
-        Conversion
+        Conversion,
+        ExplicitConversion
     }
 
     /// <summary>
@@ -107,6 +108,7 @@ namespace CppSharp.AST
         public bool IsStatic { get; set; }
         public bool IsConst { get; set; }
         public bool IsImplicit { get; set; }
+        public bool IsExplicit { get; set; }
         public bool IsSynthetized { get; set; }
         public bool IsOverride { get; set; }
         public bool IsProxy { get; set; }
