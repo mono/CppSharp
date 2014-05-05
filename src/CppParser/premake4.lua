@@ -31,49 +31,6 @@ project "CppSharp.CppParser"
   SetupLLVMLibs()
   
   configuration "*"
-  
-  links
-  {
-    "clangAnalysis",
-    "clangAST",
-    "clangBasic",
-    "clangCodeGen",
-    "clangDriver",
-    "clangEdit",
-    "clangFrontend",
-    "clangLex",
-    "clangParse",
-    "clangSema",
-    "clangSerialization",
-    "LLVMAnalysis",
-    "LLVMAsmParser",
-    "LLVMBitReader",
-    "LLVMBitWriter",
-    "LLVMCodeGen",
-    "LLVMCore",
-    "LLVMipa",
-    "LLVMipo",
-    "LLVMInstCombine",
-    "LLVMInstrumentation",
-    "LLVMIRReader",
-    "LLVMLinker",
-    "LLVMMC",
-    "LLVMMCParser",
-    "LLVMObjCARCOpts",
-    "LLVMObject",
-    "LLVMOption",
-    "LLVMProfileData",
-    "LLVMScalarOpts",
-    "LLVMSupport",
-    "LLVMTarget",
-    "LLVMTransformUtils",
-    "LLVMVectorize",
-    "LLVMX86AsmParser",
-    "LLVMX86AsmPrinter",
-    "LLVMX86Desc",
-    "LLVMX86Info",
-    "LLVMX86Utils",
-  }
 
 end
 
