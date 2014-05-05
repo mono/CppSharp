@@ -97,21 +97,24 @@ namespace CppSharp.Passes
                     GetMethod = @operator
                 };
 
-            if (!@operator.ReturnType.Qualifiers.IsConst && @operator.ReturnType.Type.IsAddress())
-                property.SetMethod = @operator;
+            var returnType = @operator.Type;
+            if (returnType.IsAddress())
+            {
+                var pointer = returnType as PointerType;
+                var qualifiedPointee = pointer.QualifiedPointee;
+                if (!qualifiedPointee.Qualifiers.IsConst)
+                    property.SetMethod = @operator;
+            }
+            
+            // If we've a setter use the pointee as the type of the property.
+            var pointerType = property.Type as PointerType;
+            if (pointerType != null && property.HasSetter)
+                property.QualifiedType = new QualifiedType(
+                    pointerType.Pointee, property.QualifiedType.Qualifiers);
 
             if (Driver.Options.IsCLIGenerator)
-            {
-                // If we've a setter use the pointee as the type of the property.
-                var pointerType = property.Type as PointerType;
-                if (pointerType != null && property.HasSetter)
-                {
-                    property.QualifiedType = new QualifiedType(pointerType.Pointee, property.QualifiedType.Qualifiers);
-                    property.GetMethod.ReturnType = property.QualifiedType;
-                }
                 // C++/CLI uses "default" as the indexer property name.
                 property.Name = "default";
-            }
 
             property.Parameters.AddRange(@operator.Parameters);
 

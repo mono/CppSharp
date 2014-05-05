@@ -238,11 +238,23 @@ public class BasicTests : GeneratorTestFixture
     [Test]
     public unsafe void TestIndexers()
     {
-        var properties = new TestIndexedProperties();
-        Assert.AreEqual(1, properties[0]);
-        Assert.AreEqual(1, properties["foo"]);
-        properties[0] = 2;
-        Assert.AreEqual(2, properties[0]);
+        var indexedProperties = new TestIndexedProperties();
+        Assert.AreEqual(1, indexedProperties[0]);
+        Assert.AreEqual(1, indexedProperties["foo"]);
+        indexedProperties[0] = 2;
+        Assert.AreEqual(2, indexedProperties[0]);
+        indexedProperties[0f] = 3;
+        Assert.AreEqual(3, indexedProperties[0f]);
+        var properties = indexedProperties[(byte)0];
+        Assert.AreEqual(0, properties.Field);
+        var newProperties = new TestProperties();
+        newProperties.Field = 4;
+        indexedProperties[(byte)0] = newProperties;
+        Assert.AreEqual(4, indexedProperties[(byte)0].Field);
+        newProperties = indexedProperties[(short)0];
+        Assert.AreEqual(4, newProperties.Field);
+        newProperties.Field = 5;
+        Assert.AreEqual(5, indexedProperties[(byte)0].Field);
     }
 
     [Test]

@@ -17,10 +17,12 @@ namespace CppSharp.Types
     {
         public CppTypePrintScopeKind PrintScopeKind;
         public bool PrintLogicalNames;
+        public bool PrintTypeQualifiers;
 
-        public CppTypePrinter(ITypeMapDatabase database)
+        public CppTypePrinter(ITypeMapDatabase database, bool printTypeQualifiers = true)
         {
             PrintScopeKind = CppTypePrintScopeKind.GlobalQualified;
+            PrintTypeQualifiers = printTypeQualifiers;
         }
 
         public string VisitTagType(TagType tag, TypeQualifiers quals)
@@ -78,7 +80,7 @@ namespace CppSharp.Types
             var pointeeType = pointer.Pointee.Visit(this, quals);
             var mod = ConvertModifierToString(pointer.Modifier);
 
-            var s = quals.IsConst ? "const " : string.Empty;
+            var s = PrintTypeQualifiers && quals.IsConst ? "const " : string.Empty;
             s += string.Format("{0}{1}", pointeeType, mod);
 
             return s;

@@ -393,17 +393,30 @@ void TestProperties::setFieldValue(int Value) { Field = Value; }
 class DLL_API TestIndexedProperties
 {
     foo_t p;
+    TestProperties f;
 public:
     TestIndexedProperties();
     // Should lead to a read/write indexer with return type uint
     foo_t& operator[](int i);
+    // Should lead to a read/write indexer with return type uint
+    foo_t* operator[](float f);
     // Should lead to a read-only indexer with return type uint
     foo_t operator[](const char* name);
+    // Should lead to a read-only indexer with return type uint*
+    const foo_t& operator[](double d);
+    // Should lead to a read/write indexer with return type TestProperties
+    TestProperties* operator[](unsigned char b);
+    // Should lead to a read-only indexer with return type TestProperties
+    const TestProperties& operator[](short b);
 };
 
-TestIndexedProperties::TestIndexedProperties() : p(1) {}
+TestIndexedProperties::TestIndexedProperties() : p(1), f() {}
 foo_t& TestIndexedProperties::operator[](int i) { return p; }
 foo_t TestIndexedProperties::operator[](const char* name) { return p; }
+foo_t* TestIndexedProperties::operator[](float f) { return &p; }
+const foo_t& TestIndexedProperties::operator[](double f) { return p; }
+TestProperties* TestIndexedProperties::operator[](unsigned char b) { return &f; }
+const TestProperties& TestIndexedProperties::operator[](short b) { return f; }
 
 enum struct MyEnum { A, B, C };
 
