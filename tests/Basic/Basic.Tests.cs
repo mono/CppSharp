@@ -302,5 +302,14 @@ public class BasicTests : GeneratorTestFixture
         ClassC classC = (ClassC)classB;
         Assert.AreEqual(classB.Value, classC.Value);
     }
+
+    [Test]
+    public unsafe void TestUnnamedEnums()
+    {
+        Assert.AreEqual(1, (int)Unnamed_Enum_1.Unnamed_Enum_1_A);
+        Assert.AreEqual(2, (int)Unnamed_Enum_1.Unnamed_Enum_1_B);
+        Assert.AreEqual(3, (int)Unnamed_Enum_2.Unnamed_Enum_2_A);
+        Assert.AreEqual(4, (int)Unnamed_Enum_2.Unnamed_Enum_2_B);
+    }
 }
  
