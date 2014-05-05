@@ -67,6 +67,7 @@ project "CppSharp.Parser"
     "LLVMObjCARCOpts",
     "LLVMObject",
     "LLVMOption",
+    "LLVMProfileData",
     "LLVMScalarOpts",
     "LLVMSupport",
     "LLVMTarget",
