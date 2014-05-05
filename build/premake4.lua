@@ -18,7 +18,6 @@ solution "CppSharp"
   location (builddir)
   objdir (builddir .. "/obj/")
   targetdir (libdir)
-  libdirs { libdir }
   debugdir (bindir)
 
   -- startproject "Generator"
