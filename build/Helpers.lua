@@ -24,13 +24,11 @@ gcc_buildflags = { "-std=c++11" }
 msvc_cpp_defines = { }
 
 function os.is_osx()
-  local version = os.getversion()
-  return string.find(version.description, "Mac OS X") ~= nil
+  return os.is("macosx")
 end
 
 function os.is_windows()
-  local version = os.getversion()
-  return string.find(version.description, "Windows") ~= nil
+  return os.is("windows")
 end
 
 function string.starts(str, start)
