@@ -78,8 +78,7 @@ protected:
     Method* WalkMethodCXX(clang::CXXMethodDecl* MD);
     Field* WalkFieldCXX(clang::FieldDecl* FD, Class* Class);
     ClassTemplate* WalkClassTemplate(clang::ClassTemplateDecl* TD);
-    FunctionTemplate* WalkFunctionTemplate(
-        clang::FunctionTemplateDecl* TD);
+    FunctionTemplate* WalkFunctionTemplate(clang::FunctionTemplateDecl* TD);
     Variable* WalkVariable(clang::VarDecl* VD);
     RawComment* WalkRawComment(const clang::RawComment* RC);
     Type* WalkType(clang::QualType QualType, clang::TypeLoc* TL = 0,
