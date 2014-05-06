@@ -57,5 +57,14 @@ namespace CppSharp.Generator.Tests.AST
             }
             Assert.IsTrue(func.Parameters[2].HasDefaultValue, "Parameter.HasDefaultValue");
         }
+
+        [Test]
+        public void TestASTHelperMethods()
+        {
+            var @class = AstContext.FindClass("Math::Complex").FirstOrDefault();
+            Assert.IsNotNull(@class, "Couldn't find Math::Complex class.");
+            var plusOperator = @class.FindOperator(CXXOperatorKind.Plus).FirstOrDefault();
+            Assert.IsNotNull(plusOperator, "Couldn't find operator+ in Math::Complex class.");
+        }
     }
 }

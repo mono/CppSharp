@@ -199,6 +199,11 @@ namespace CppSharp.AST
             }
         }
 
+        public override IEnumerable<Function> FindOperator(CXXOperatorKind kind)
+        {
+            return Methods.Where(m => m.OperatorKind == kind);
+        }
+
         public override IEnumerable<Function> GetOverloads(Function function)
         {
             if (function.IsOperator)
