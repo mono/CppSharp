@@ -1,4 +1,5 @@
 using CppSharp.AST;
+using CppSharp.AST.Extensions;
 using CppSharp.Generators;
 using CppSharp.Generators.CLI;
 using CppSharp.Generators.CSharp;
@@ -113,6 +114,10 @@ namespace CppSharp.Types.Std
         {
             var templateType = Type as TemplateSpecializationType;
             var type = templateType.Arguments[0].Type;
+            var isPointerToPrimitive = type.Type.IsPointerToPrimitiveType();
+            var managedType = isPointerToPrimitive
+                ? new CILType(typeof(System.IntPtr))
+                : type.Type;
 
             var entryString = (ctx.Parameter != null) ? ctx.Parameter.Name
                 : ctx.ArgName;
@@ -125,7 +130,7 @@ namespace CppSharp.Types.Std
             ctx.SupportBefore.WriteLine("auto {0} = std::vector<{1}>();",
                 tmpVarName, nativeType);
             ctx.SupportBefore.WriteLine("for each({0} _element in {1})",
-                type.ToString(), entryString);
+                managedType, entryString);
             ctx.SupportBefore.WriteStartBraceIndent();
             {
                 var param = new Parameter
@@ -146,7 +151,11 @@ namespace CppSharp.Types.Std
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                     ctx.SupportBefore.Write(marshal.Context.SupportBefore);
 
-                ctx.SupportBefore.WriteLine("auto _marshalElement = {0};",
+                if (isPointerToPrimitive)
+                    ctx.SupportBefore.WriteLine("auto _marshalElement = {0}.ToPointer();",
+                        marshal.Context.Return);
+                else
+                    ctx.SupportBefore.WriteLine("auto _marshalElement = {0};",
                     marshal.Context.Return);
 
                 ctx.SupportBefore.WriteLine("{0}.push_back(_marshalElement);",
@@ -162,11 +171,15 @@ namespace CppSharp.Types.Std
         {
             var templateType = Type as TemplateSpecializationType;
             var type = templateType.Arguments[0].Type;
+            var isPointerToPrimitive = type.Type.IsPointerToPrimitiveType();
+            var managedType = isPointerToPrimitive
+                ? new CILType(typeof(System.IntPtr))
+                : type.Type;
             var tmpVarName = "_tmp" + ctx.ArgName;
             
             ctx.SupportBefore.WriteLine(
                 "auto {0} = gcnew System::Collections::Generic::List<{1}>();",
-                tmpVarName, type.ToString());
+                tmpVarName, managedType);
             ctx.SupportBefore.WriteLine("for(auto _element : {0})",
                 ctx.ReturnVarName);
             ctx.SupportBefore.WriteStartBraceIndent();
@@ -186,8 +199,12 @@ namespace CppSharp.Types.Std
                 ctx.SupportBefore.WriteLine("auto _marshalElement = {0};",
                     marshal.Context.Return);
 
-                ctx.SupportBefore.WriteLine("{0}->Add(_marshalElement);",
-                    tmpVarName);
+                if (isPointerToPrimitive)
+                    ctx.SupportBefore.WriteLine("{0}->Add({1}(_marshalElement));",
+                        tmpVarName, managedType);
+                else
+                    ctx.SupportBefore.WriteLine("{0}->Add(_marshalElement);",
+                        tmpVarName);
             }
             ctx.SupportBefore.WriteCloseBraceIndent();
 

@@ -284,7 +284,10 @@ namespace CppSharp.Generators.CLI
 
         public string VisitCILType(CILType type, TypeQualifiers quals)
         {
-            return type.Type.FullName.Replace(".", "::") + "^";
+            var result = type.Type.FullName.Replace(".", "::");
+            if (!type.Type.IsValueType)
+                result += "^";
+            return result;
         }
 
         public string VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals)

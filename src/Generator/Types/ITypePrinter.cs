@@ -39,7 +39,10 @@ namespace CppSharp.Types
                 {
                     if (arg.Kind != TemplateArgument.ArgumentKind.Type)
                         continue;
-                    paramsList.Add(arg.Type.ToString());
+                    var argType = arg.Type.Type.IsPointerToPrimitiveType()
+                        ? new CILType(typeof(System.IntPtr))
+                        : arg.Type.Type;
+                    paramsList.Add(argType.ToString());
                 }
             }
 

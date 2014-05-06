@@ -1,10 +1,30 @@
 #include "../Tests.h"
 #include <vector>
 
+struct DLL_API IntWrapper
+{
+    int Value;
+};
+
+struct DLL_API IntWrapperValueType
+{
+    int Value;
+};
+
 struct DLL_API TestVectors
 {
+    TestVectors();
     std::vector<int> GetIntVector();
     int SumIntVector(std::vector<int>& vec);
-
+    
+    // Should get mapped to List<int>
     std::vector<int> IntVector;
+    // Should get mapped to List<IntPtr>
+    std::vector<int*> IntPtrVector;
+    // Should get mapped to List<IntWrapper>
+    std::vector<IntWrapper> IntWrapperVector;
+    // Should get mapped to List<IntWrapper>
+    std::vector<IntWrapper*> IntWrapperPtrVector;
+    // Should get mapped to List<IntWrapperValueType>
+    std::vector<IntWrapperValueType> IntWrapperValueTypeVector;
 };
