@@ -51,6 +51,22 @@ namespace CppSharp.AST
             Anonymous = new Dictionary<ulong, Declaration>();
         }
 
+        protected DeclarationContext(DeclarationContext dc)
+            : base(dc)
+        {
+            Namespaces = new List<Namespace>(dc.Namespaces);
+            Enums = new List<Enumeration>(dc.Enums);
+            Functions = new List<Function>(dc.Functions);
+            Classes = new List<Class>(dc.Classes);
+            Templates = new List<Template>(dc.Templates);
+            Typedefs = new List<TypedefDecl>(dc.Typedefs);
+            Variables = new List<Variable>(dc.Variables);
+            Events = new List<Event>(dc.Events);
+            TypeReferences = new List<TypeReference>(dc.TypeReferences);
+            Anonymous = new Dictionary<ulong, Declaration>(dc.Anonymous);
+            IsAnonymous = dc.IsAnonymous;
+        }
+
         public IEnumerable<DeclarationContext> GatherParentNamespaces()
         {
             var children = new List<DeclarationContext>();
@@ -294,15 +310,30 @@ namespace CppSharp.AST
 
         public TypedefDecl FindTypedef(string name, bool createDecl = false)
         {
-            var typedef = Typedefs.Find(e => e.Name.Equals(name));
-            
-            if (typedef == null && createDecl)
+            var entries = name.Split(new string[] { "::" },
+                StringSplitOptions.RemoveEmptyEntries).ToList();
+
+            if (entries.Count <= 1)
             {
-                typedef = new TypedefDecl { Name = name, Namespace = this };
-                Typedefs.Add(typedef);
+                var typeDef = Typedefs.Find(e => e.Name.Equals(name));
+
+                if (typeDef == null && createDecl)
+                {
+                    typeDef = new TypedefDecl() { Name = name, Namespace = this };
+                    Typedefs.Add(typeDef);
+                }
+
+                return typeDef;
             }
 
-            return typedef;
+            var typeDefName = entries[entries.Count - 1];
+            var namespaces = entries.Take(entries.Count - 1);
+
+            var @namespace = FindNamespace(namespaces);
+            if (@namespace == null)
+                return null;
+
+            return @namespace.FindTypedef(typeDefName, createDecl);
         }
 
         public T FindType<T>(string name) where T : Declaration
@@ -320,7 +351,7 @@ namespace CppSharp.AST
             return Enums.Find(e => e.ItemsByName.ContainsKey(name));
         }
 
-        public IEnumerable<Function> FindOperator(CXXOperatorKind kind)
+        public virtual IEnumerable<Function> FindOperator(CXXOperatorKind kind)
         {
             return Functions.Where(fn => fn.OperatorKind == kind);
         }

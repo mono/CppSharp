@@ -1900,6 +1900,7 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, CppSharp::AST::Function^ F,
         P->QualifiedType = GetQualifiedType(VD->getType(), WalkType(VD->getType(), &PTL));
         P->HasDefaultValue = VD->hasDefaultArg();
         P->Namespace = NS;
+        P->Index = VD->getFunctionScopeIndex();
         HandleDeclaration(VD, P);
 
         F->Parameters->Add(P);

@@ -382,10 +382,15 @@ namespace CppSharp.Generators.CLI
                 GenerateMethod(ctor);
             }
 
-            if (@class.IsRefType)
+            if (Options.GenerateFinalizers && @class.IsRefType)
             {
-                GenerateClassDestructor(@class);
-                GenerateClassFinalizer(@class);
+                var destructor = @class.Destructors
+                    .FirstOrDefault(d => d.Parameters.Count == 0 && d.Access == AccessSpecifier.Public);
+                if (destructor != null)
+                {
+                    GenerateClassDestructor(@class);
+                    GenerateClassFinalizer(@class);
+                }
             }
 
             PopIndent();
@@ -393,9 +398,6 @@ namespace CppSharp.Generators.CLI
 
         private void GenerateClassDestructor(Class @class)
         {
-            if (!Options.GenerateFinalizers)
-                return;
-
             PushBlock(CLIBlockKind.Destructor);
             WriteLine("~{0}();", @class.Name);
             PopBlock(NewLineKind.BeforeNextBlock);
@@ -403,9 +405,6 @@ namespace CppSharp.Generators.CLI
 
         private void GenerateClassFinalizer(Class @class)
         {
-            if (!Options.GenerateFinalizers)
-                return;
-
             PushBlock(CLIBlockKind.Finalizer);
             WriteLine("!{0}();", @class.Name);
             PopBlock(NewLineKind.BeforeNextBlock);

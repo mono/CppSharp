@@ -205,10 +205,15 @@ namespace CppSharp.Generators.CLI
             GenerateClassConstructor(@class, isIntPtr: false);
             GenerateClassConstructor(@class, isIntPtr: true);
 
-            if (@class.IsRefType)
+            if (Options.GenerateFinalizers && @class.IsRefType)
             {
-                GenerateClassDestructor(@class);
-                GenerateClassFinalizer(@class);
+                var destructor = @class.Destructors
+                    .FirstOrDefault(d => d.Parameters.Count == 0 && d.Access == AccessSpecifier.Public);
+                if (destructor != null)
+                {
+                    GenerateClassDestructor(@class);
+                    GenerateClassFinalizer(@class);
+                }
             }
         }
 
@@ -229,9 +234,6 @@ namespace CppSharp.Generators.CLI
 
         private void GenerateClassDestructor(Class @class)
         {
-            if (!Options.GenerateFinalizers)
-                return;
-
             PushBlock(CLIBlockKind.Destructor);
 
             WriteLine("{0}::~{1}()", QualifiedIdentifier(@class), @class.Name);
@@ -247,9 +249,6 @@ namespace CppSharp.Generators.CLI
 
         private void GenerateClassFinalizer(Class @class)
         {
-            if (!Options.GenerateFinalizers)
-                return;
-
             PushBlock(CLIBlockKind.Finalizer);
 
             WriteLine("{0}::!{1}()", QualifiedIdentifier(@class), @class.Name);

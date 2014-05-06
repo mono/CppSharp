@@ -148,6 +148,11 @@ namespace CppSharp.AST
 
         public Class ExplicitInterfaceImpl { get; set; }
 
+        public override T Visit<T>(IDeclVisitor<T> visitor)
+        {
+            return visitor.VisitMethodDecl(this);
+        }
+
         public override QualifiedType GetFunctionType()
         {
             var qualifiedType = base.GetFunctionType();

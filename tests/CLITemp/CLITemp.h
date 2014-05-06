@@ -15,3 +15,12 @@ struct DLL_API Types
     typedef int AttributedFuncType(int, int) ATTR;
     AttributedFuncType AttributedSum;
 };
+
+// Tests code generator to not generate a destructor/finalizer pair
+// if the destructor of the C++ class is not public.
+class DLL_API TestProtectedDestructors
+{
+    ~TestProtectedDestructors();
+};
+
+TestProtectedDestructors::~TestProtectedDestructors() {}

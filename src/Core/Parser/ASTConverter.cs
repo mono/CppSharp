@@ -803,6 +803,7 @@ namespace CppSharp
             _param.QualifiedType = typeConverter.VisitQualified(decl.QualifiedType);
             _param.IsIndirect = decl.IsIndirect;
             _param.HasDefaultValue = decl.HasDefaultValue;
+            _param.Index = decl.Index;
 
             return _param;
         }
