@@ -1885,6 +1885,7 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, Function* F,
         P->QualifiedType = GetQualifiedType(VD->getType(), WalkType(VD->getType(), &PTL));
         P->HasDefaultValue = VD->hasDefaultArg();
         P->_Namespace = NS;
+        P->Index = VD->getFunctionScopeIndex();
         HandleDeclaration(VD, P);
 
         F->Parameters.push_back(P);

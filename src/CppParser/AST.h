@@ -433,6 +433,7 @@ struct CS_API Parameter : public Declaration
     CppSharp::CppParser::AST::QualifiedType QualifiedType;
     bool IsIndirect;
     bool HasDefaultValue;
+    unsigned int Index;
 };
 
 enum struct CXXMethodKind

@@ -1120,6 +1120,12 @@ namespace CppSharp
                     bool get();
                     void set(bool);
                 }
+
+                property unsigned int Index
+                {
+                    unsigned int get();
+                    void set(unsigned int);
+                }
             };
 
             public ref class Function : CppSharp::Parser::AST::Declaration

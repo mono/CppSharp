@@ -40,6 +40,7 @@ namespace CppSharp.AST
         public Type Type { get { return QualifiedType.Type; } }
         public QualifiedType QualifiedType { get; set; }
         public bool IsIndirect { get; set; }
+        public uint Index { get; set; }
 
         public ParameterKind Kind { get; set; }
         public ParameterUsage Usage { get; set; }

@@ -1459,6 +1459,16 @@ void CppSharp::Parser::AST::Parameter::HasDefaultValue::set(bool value)
     ((::CppSharp::CppParser::AST::Parameter*)NativePtr)->HasDefaultValue = value;
 }
 
+unsigned int CppSharp::Parser::AST::Parameter::Index::get()
+{
+    return ((::CppSharp::CppParser::AST::Parameter*)NativePtr)->Index;
+}
+
+void CppSharp::Parser::AST::Parameter::Index::set(unsigned int value)
+{
+    ((::CppSharp::CppParser::AST::Parameter*)NativePtr)->Index = value;
+}
+
 CppSharp::Parser::AST::Function::Function(::CppSharp::CppParser::AST::Function* native)
     : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)native)
 {

@@ -3389,7 +3389,7 @@ namespace CppSharp
 
             public unsafe partial class Parameter : CppSharp.Parser.AST.Declaration, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 104)]
+                [StructLayout(LayoutKind.Explicit, Size = 108)]
                 public new struct Internal
                 {
                     [FieldOffset(0)]
@@ -3437,6 +3437,9 @@ namespace CppSharp
                     [FieldOffset(101)]
                     internal bool HasDefaultValue;
 
+                    [FieldOffset(104)]
+                    internal uint Index;
+
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="??0Parameter@AST@CppParser@CppSharp@@QAE@XZ")]
@@ -3471,7 +3474,7 @@ namespace CppSharp
                 public Parameter()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(104);
+                    __Instance = Marshal.AllocHGlobal(108);
                     Internal.ctor_0(__Instance);
                 }
 
@@ -3524,6 +3527,21 @@ namespace CppSharp
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
                         __ptr->HasDefaultValue = value;
+                    }
+                }
+
+                public uint Index
+                {
+                    get
+                    {
+                        var __ptr = (Internal*)__Instance.ToPointer();
+                        return __ptr->Index;
+                    }
+
+                    set
+                    {
+                        var __ptr = (Internal*)__Instance.ToPointer();
+                        __ptr->Index = value;
                     }
                 }
             }
