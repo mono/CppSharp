@@ -9,7 +9,9 @@
 #pragma once
 
 #include <string>
+#include <ostream>
 #include <vcclr.h>
+#include <msclr/marshal.h>
 
 public interface class ICppInstance
 {
@@ -212,3 +214,80 @@ namespace clix {
   }
 
 } // namespace clix
+
+// std::ostream marshaling using a System::IO::TextWriter
+namespace msclr {
+    namespace interop {
+        namespace details {
+            class text_writer_streambuf : public std::streambuf
+            {
+            public:
+                text_writer_streambuf(const gcroot<System::IO::TextWriter^> & tw)
+                    : std::streambuf()
+                {
+                    m_tw = tw;
+                }
+                ~text_writer_streambuf()
+                {
+                    m_tw->Flush();
+                }
+                int_type overflow(int_type ch)
+                {
+                    if (traits_type::not_eof(ch))
+                    {
+                        auto c = traits_type::to_char_type(ch);
+                        xsputn(&c, 1);
+                    }
+                    return traits_type::not_eof(ch);
+                }
+                std::streamsize xsputn(const char *_Ptr, std::streamsize _Count)
+                {
+                    auto s = gcnew System::String(_Ptr, 0, _Count, System::Text::Encoding::UTF8);
+                    m_tw->Write(s);
+                    return _Count;
+                }
+            private:
+                gcroot<System::IO::TextWriter^> m_tw;
+            };
+
+            class text_writer_ostream : public std::ostream {
+            public:
+                text_writer_ostream(const gcroot<System::IO::TextWriter^> & s) :
+                    std::ios(),
+                    std::ostream(0),
+                    m_sbuf(s)
+                {
+                        init(&m_sbuf);
+                }
+            private:
+                text_writer_streambuf m_sbuf;
+            };
+        }
+
+        template<>
+        ref class context_node<std::ostream*, System::IO::TextWriter^> : public context_node_base
+        {
+        private:
+            std::ostream* toPtr;
+        public:
+            context_node(std::ostream*& toObject, System::IO::TextWriter^ fromObject)
+            {
+                // (Step 4) Initialize toPtr to the appropriate empty value.
+                toPtr = new details::text_writer_ostream(fromObject);
+                // (Step 5) Insert conversion logic here.
+                // (Step 6) Set toObject to the converted parameter.
+                toObject = toPtr;
+            }
+            ~context_node()
+            {
+                this->!context_node();
+            }
+        protected:
+            !context_node()
+            {
+                // (Step 7) Clean up native resources.
+                delete toPtr;
+            }
+        };
+    }
+} // namespace msclr
