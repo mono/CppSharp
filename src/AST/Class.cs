@@ -133,6 +133,28 @@ namespace CppSharp.AST
             Layout = new ClassLayout();
         }
 
+        public Class(Class @class)
+            : base(@class)
+        {
+            Bases = new List<BaseClassSpecifier>(@class.Bases);
+            Fields = new List<Field>(@class.Fields);
+            Properties = new List<Property>(@class.Properties);
+            Methods = new List<Method>(@class.Methods);
+            Specifiers = new List<AccessSpecifierDecl>(@class.Specifiers);
+            IsPOD = @class.IsPOD;
+            Type = @class.Type;
+            Layout = new ClassLayout(@class.Layout);
+            IsAbstract = @class.IsAbstract;
+            IsUnion = @class.IsUnion;
+            IsOpaque = @class.IsOpaque;
+            IsDynamic = @class.IsDynamic;
+            IsPolymorphic = @class.IsPolymorphic;
+            HasNonTrivialDefaultConstructor = @class.HasNonTrivialDefaultConstructor;
+            HasNonTrivialCopyConstructor = @class.HasNonTrivialCopyConstructor;
+            HasNonTrivialDestructor = @class.HasNonTrivialDestructor;
+            IsStatic = @class.IsStatic;
+        }
+
         public bool HasBase
         {
             get { return Bases.Count > 0; }

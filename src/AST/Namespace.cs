@@ -51,6 +51,22 @@ namespace CppSharp.AST
             Anonymous = new Dictionary<ulong, Declaration>();
         }
 
+        protected DeclarationContext(DeclarationContext dc)
+            : base(dc)
+        {
+            Namespaces = new List<Namespace>(dc.Namespaces);
+            Enums = new List<Enumeration>(dc.Enums);
+            Functions = new List<Function>(dc.Functions);
+            Classes = new List<Class>(dc.Classes);
+            Templates = new List<Template>(dc.Templates);
+            Typedefs = new List<TypedefDecl>(dc.Typedefs);
+            Variables = new List<Variable>(dc.Variables);
+            Events = new List<Event>(dc.Events);
+            TypeReferences = new List<TypeReference>(dc.TypeReferences);
+            Anonymous = new Dictionary<ulong, Declaration>(dc.Anonymous);
+            IsAnonymous = dc.IsAnonymous;
+        }
+
         public IEnumerable<DeclarationContext> GatherParentNamespaces()
         {
             var children = new List<DeclarationContext>();
