@@ -156,7 +156,7 @@ namespace CppSharp
 
         public override bool VisitFunctionDecl(Function function)
         {
-            if (function.Ignore)
+            if (function.GenerationKind == GenerationKind.None)
                 return false;
 
             if (function.Parameters.Any(param => IsStdType(param.QualifiedType)))
