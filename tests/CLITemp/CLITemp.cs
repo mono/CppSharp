@@ -11,6 +11,12 @@ namespace CppSharp.Tests
         {
         }
 
+        public override void Setup(Driver driver)
+        {
+            driver.Options.GenerateFinalizers = true;
+            base.Setup(driver);
+        }
+
         public override void Preprocess(Driver driver, ASTContext ctx)
         {
         }
