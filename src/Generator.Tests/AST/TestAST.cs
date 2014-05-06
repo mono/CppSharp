@@ -68,5 +68,97 @@ namespace CppSharp.Generator.Tests.AST
             var typedef = AstContext.FindTypedef("Math::Single").FirstOrDefault();
             Assert.IsNotNull(typedef);
         }
+
+        #region TestVisitor
+        class TestVisitor : IDeclVisitor<bool>
+        {
+            public bool VisitDeclaration(Declaration decl)
+            {
+                throw new System.NotImplementedException();
+            }
+
+            public bool VisitClassDecl(Class @class)
+            {
+                throw new System.NotImplementedException();
+            }
+
+            public bool VisitFieldDecl(Field field)
+            {
+                throw new System.NotImplementedException();
+            }
+
+            public bool VisitFunctionDecl(Function function)
+            {
+                throw new System.NotImplementedException();
+            }
+
+            public bool VisitMethodDecl(Method method)
+            {
+                return true;
+            }
+
+            public bool VisitParameterDecl(Parameter parameter)
+            {
+                throw new System.NotImplementedException();
+            }
+
+            public bool VisitTypedefDecl(TypedefDecl typedef)
+            {
+                throw new System.NotImplementedException();
+            }
+
+            public bool VisitEnumDecl(Enumeration @enum)
+            {
+                throw new System.NotImplementedException();
+            }
+
+            public bool VisitVariableDecl(Variable variable)
+            {
+                throw new System.NotImplementedException();
+            }
+
+            public bool VisitClassTemplateDecl(ClassTemplate template)
+            {
+                throw new System.NotImplementedException();
+            }
+
+            public bool VisitFunctionTemplateDecl(FunctionTemplate template)
+            {
+                throw new System.NotImplementedException();
+            }
+
+            public bool VisitMacroDefinition(MacroDefinition macro)
+            {
+                throw new System.NotImplementedException();
+            }
+
+            public bool VisitNamespace(Namespace @namespace)
+            {
+                throw new System.NotImplementedException();
+            }
+
+            public bool VisitEvent(Event @event)
+            {
+                throw new System.NotImplementedException();
+            }
+
+            public bool VisitProperty(Property property)
+            {
+                throw new System.NotImplementedException();
+            }
+        }
+        #endregion
+
+        [Test]
+        public void TestASTVisitor()
+        {
+            var testVisitor = new TestVisitor();
+            var plusOperator = AstContext.TranslationUnits
+                .SelectMany(u => u.Namespaces.Where(n => n.Name == "Math"))
+                .SelectMany(n => n.Classes.Where(c => c.Name == "Complex"))
+                .SelectMany(c => c.Methods.Where(m => m.OperatorKind == CXXOperatorKind.Plus))
+                .First();
+            Assert.IsTrue(plusOperator.Visit(testVisitor));
+        }
     }
 }
