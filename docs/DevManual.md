@@ -6,34 +6,7 @@ CppSharp Developers Manual
 How to compile
 --------------
 
-Requirements:
-* Windows
-* VS 2012
-* Up-to-date versions of Clang and LLVM (development versions).
-
-Since C++/CLI is used to interface with the native Clang libraries,
-for the moment you will need the Windows/VS platform to use this tool.
-
-How to use
-----------
-
-Since the generator was designed to be easily extensible, you can use it
-either as a library or as a command-line interface.
-
-### Library interface
-
-  With this approach you implement the ILibrary interface and customize
-  the options with C#. This is ideal since you get all the power of the
-  language to do the customizations you want and it is easy to integrate
-  in your IDE build system.
-
-### Command-line interface
-
-  With this one you call the executable with the right [command-line flags]
-  (Manual.md#command-line-flags) to generate the bindings code. You can still
-  integrate it in your IDE by using the pre-build command features. If you need
-  to customize the build you can pass the path to a compiled assembly with an
-  ILibrary implementation.
+Check out the Getting started guide for build instructions.
 
 2. Architecture
 ===============
