@@ -470,7 +470,9 @@ namespace CppSharp
                 }
             }
 
-            driver.WriteCode(outputs);
+            if (!driver.Options.DryRun)
+                driver.WriteCode(outputs);
+
             if (driver.Options.IsCSharpGenerator)
                 driver.CompileCode();
         }

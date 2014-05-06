@@ -56,6 +56,14 @@ namespace CppSharp
         public bool ShowHelpText;
         public bool OutputDebug;
 
+        /// <summary>
+        /// Set to true to simulate generating without actually writing
+        /// any output to disk. This can be useful to activate while
+        /// debugging the parser generator so generator bugs do not get
+        /// in the way while iterating.
+        /// </summary>
+        public bool DryRun;
+
         // Parser options
         public List<string> Headers;
         public bool IgnoreParseWarnings;
