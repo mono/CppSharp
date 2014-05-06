@@ -315,7 +315,7 @@ namespace CppSharp.Generators.CSharp
 
         public void GenerateClass(Class @class)
         {
-            if (@class.IsIncomplete)
+            if (!@class.IsGenerated || @class.IsIncomplete)
                 return;
 
             PushBlock(CSharpBlockKind.Class);
@@ -331,7 +331,7 @@ namespace CppSharp.Generators.CSharp
                 GenerateClassInternals(@class);
                 GenerateDeclContext(@class);
 
-                if (!@class.IsGenerated || @class.IsDependent)
+                if (@class.IsDependent)
                     goto exit;
 
                 if (ShouldGenerateClassNativeField(@class))
@@ -706,7 +706,7 @@ namespace CppSharp.Generators.CSharp
             if (@class.IsUnion)
                 WriteLine("[StructLayout(LayoutKind.Explicit)]");
 
-            Write(!@class.IsGenerated ? "internal " : Helpers.GetAccess(@class.Access));
+            Write(@class.IsInternal ? "internal " : Helpers.GetAccess(@class.Access));
             Write("unsafe ");
 
             if (Driver.Options.GenerateAbstractImpls && @class.IsAbstract)
@@ -788,13 +788,11 @@ namespace CppSharp.Generators.CSharp
             if (field.Expression != null)
             {
                 var fieldValuePrinted = field.Expression.CSharpValue(ExpressionPrinter);
-                Write("{0} {1} {2} = {3};", !field.IsGenerated ? "internal" : "public",
-                    fieldTypePrinted.Type, safeIdentifier, fieldValuePrinted);
+                Write("public {0} {1} = {2};", fieldTypePrinted.Type, safeIdentifier, fieldValuePrinted);
             }
             else
             {
-                Write("{0} {1} {2};", !field.IsGenerated ? "internal" : "public",
-                    fieldTypePrinted.Type, safeIdentifier);
+                Write("public {0} {1};", fieldTypePrinted.Type, safeIdentifier);
             }
 
             PopBlock(NewLineKind.BeforeNextBlock);
