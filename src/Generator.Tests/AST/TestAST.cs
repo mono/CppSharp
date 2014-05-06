@@ -65,6 +65,8 @@ namespace CppSharp.Generator.Tests.AST
             Assert.IsNotNull(@class, "Couldn't find Math::Complex class.");
             var plusOperator = @class.FindOperator(CXXOperatorKind.Plus).FirstOrDefault();
             Assert.IsNotNull(plusOperator, "Couldn't find operator+ in Math::Complex class.");
+            var typedef = AstContext.FindTypedef("Math::Single").FirstOrDefault();
+            Assert.IsNotNull(typedef);
         }
     }
 }

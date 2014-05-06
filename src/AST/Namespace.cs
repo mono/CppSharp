@@ -294,15 +294,30 @@ namespace CppSharp.AST
 
         public TypedefDecl FindTypedef(string name, bool createDecl = false)
         {
-            var typedef = Typedefs.Find(e => e.Name.Equals(name));
-            
-            if (typedef == null && createDecl)
+            var entries = name.Split(new string[] { "::" },
+                StringSplitOptions.RemoveEmptyEntries).ToList();
+
+            if (entries.Count <= 1)
             {
-                typedef = new TypedefDecl { Name = name, Namespace = this };
-                Typedefs.Add(typedef);
+                var typeDef = Typedefs.Find(e => e.Name.Equals(name));
+
+                if (typeDef == null && createDecl)
+                {
+                    typeDef = new TypedefDecl() { Name = name, Namespace = this };
+                    Typedefs.Add(typeDef);
+                }
+
+                return typeDef;
             }
 
-            return typedef;
+            var typeDefName = entries[entries.Count - 1];
+            var namespaces = entries.Take(entries.Count - 1);
+
+            var @namespace = FindNamespace(namespaces);
+            if (@namespace == null)
+                return null;
+
+            return @namespace.FindTypedef(typeDefName, createDecl);
         }
 
         public T FindType<T>(string name) where T : Declaration
