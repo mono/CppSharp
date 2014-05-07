@@ -48,8 +48,8 @@ struct Parser
     Parser(ParserOptions* Opts);
 
     void SetupHeader();
-    ParserResult* ParseHeader(const std::string& File);
-    ParserResult* ParseLibrary(const std::string& File);
+    ParserResult* ParseHeader(const std::string& File, ParserResult* res);
+    ParserResult* ParseLibrary(const std::string& File, ParserResult* res);
     ParserResultKind ParseArchive(llvm::StringRef File,
                                   llvm::MemoryBuffer *Buffer,
                                   CppSharp::CppParser::NativeLibrary*& NativeLib);

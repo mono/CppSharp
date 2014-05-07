@@ -32,6 +32,7 @@ DEF_STRING(ParserTargetInfo, ABI)
 ParserResult::ParserResult()
     : ASTContext(0)
     , Library(0)
+    , Parser(0)
 {
 }
 
@@ -40,7 +41,13 @@ ParserResult::ParserResult(const ParserResult& rhs)
     , Diagnostics(rhs.Diagnostics)
     , ASTContext(rhs.ASTContext)
     , Library(rhs.Library)
+    , Parser(rhs.Parser)
 {}
+
+ParserResult::~ParserResult()
+{
+    delete Parser;
+}
 
 ParserDiagnostic::ParserDiagnostic() {}
 
@@ -56,7 +63,5 @@ DEF_STRING(ParserDiagnostic, FileName)
 DEF_STRING(ParserDiagnostic, Message)
 
 DEF_VECTOR(ParserResult, ParserDiagnostic, Diagnostics)
-
-
 
 } }
