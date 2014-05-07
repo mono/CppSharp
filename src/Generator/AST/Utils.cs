@@ -60,7 +60,7 @@ namespace CppSharp.AST
             return false;
         }
 
-        public static bool CheckIgnoreField(Field field)
+        public static bool CheckIgnoreField(Field field, bool useInternals = false)
         {
             if (field.Access == AccessSpecifier.Private) 
                 return true;
@@ -68,7 +68,7 @@ namespace CppSharp.AST
             if (field.Class.IsValueType && field.IsDeclared)
                 return false;
 
-            return !field.IsGenerated;
+            return !field.IsGenerated && (!useInternals || !field.IsInternal);
         }
 
         public static bool CheckIgnoreProperty(Property prop)
