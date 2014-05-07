@@ -5,7 +5,7 @@ LLVMBuildDir = "../../deps/llvm/build/"
 
 -- TODO: Search for available system dependencies
 
-function SetupLLVMLibs()
+function SetupLLVMIncludes()
   local c = configuration()
 
   includedirs
@@ -16,7 +16,13 @@ function SetupLLVMLibs()
     path.join(LLVMBuildDir, "include"),
     path.join(LLVMBuildDir, "tools/clang/include"),
   }
-  
+
+  configuration(c)
+end
+
+function SetupLLVMLibs()
+  local c = configuration()
+
   libdirs { path.join(LLVMBuildDir, "lib") }
 
   configuration { "Debug", "vs*" }

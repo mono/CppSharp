@@ -41,6 +41,7 @@ if string.starts(action, "vs") and os.is_windows() then
     kind "SharedLib"
     language "C++"
     SetupNativeProject()
+    SetupLLVMIncludes()
     
     dependson { "CppSharp.CppParser" }
     flags { common_flags, "Managed" }
