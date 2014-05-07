@@ -34,17 +34,17 @@ function SetupLLVMLibs()
   configuration "*"
     links
     {
-      "clangAnalysis",
-      "clangAST",
-      "clangBasic",
-      "clangCodeGen",
-      "clangDriver",
-      "clangEdit",
       "clangFrontend",
-      "clangLex",
+      "clangDriver",
+      "clangSerialization",
+      "clangCodeGen",
       "clangParse",
       "clangSema",
-      "clangSerialization",
+      "clangAnalysis",
+      "clangEdit",
+      "clangAST",
+      "clangLex",
+      "clangBasic",
       "clangIndex",
     }
 
