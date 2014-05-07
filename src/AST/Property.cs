@@ -72,7 +72,10 @@ namespace CppSharp.AST
         {
             get
             {
-                return (GetMethod != null) || (Field != null);
+                return (GetMethod != null &&
+                        GetMethod.GenerationKind != GenerationKind.None) ||
+                       (Field != null &&
+                        Field.GenerationKind != GenerationKind.None);
             }
         }
 
@@ -80,8 +83,11 @@ namespace CppSharp.AST
         {
             get
             {
-                return (SetMethod != null) ||
-                       (Field != null && !Field.QualifiedType.Qualifiers.IsConst);
+                return (SetMethod != null && 
+                        SetMethod.GenerationKind != GenerationKind.None) ||
+                       (Field != null && 
+                        !Field.QualifiedType.Qualifiers.IsConst && 
+                        Field.GenerationKind != GenerationKind.None);
             }
         }
 

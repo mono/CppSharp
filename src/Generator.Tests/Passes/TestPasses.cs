@@ -108,5 +108,20 @@ namespace CppSharp.Generator.Tests.Passes
             Assert.IsFalse(AstContext.FindClass("Foo").First().Methods.Find(
                 m => m.Name == "toIgnore").IsGenerated);
         }
+
+        [Test]
+        public void TestSetPropertyAsReadOnly()
+        {
+            const string className = "TestReadOnlyProperties";
+            passBuilder.AddPass(new FieldToPropertyPass());
+            passBuilder.AddPass(new GetterSetterToPropertyPass());
+            passBuilder.RunPasses(pass => pass.VisitLibrary(AstContext));
+            AstContext.SetPropertyAsReadOnly(className, "readOnlyProperty");
+            Assert.IsFalse(AstContext.FindClass(className).First().Properties.Find(
+                m => m.Name == "readOnlyProperty").HasSetter);
+            AstContext.SetPropertyAsReadOnly(className, "ReadOnlyPropertyMethod");
+            Assert.IsFalse(AstContext.FindClass(className).First().Properties.Find(
+                m => m.Name == "ReadOnlyPropertyMethod").HasSetter);
+        }
     }
 }
