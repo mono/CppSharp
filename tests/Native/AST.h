@@ -20,3 +20,6 @@ namespace Math
         return Complex(re + other.re, im + other.im);
     }
 }
+
+// Tests Enum.ItemByName
+enum TestASTEnumItemByName { TestItemByName };

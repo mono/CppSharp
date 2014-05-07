@@ -1023,7 +1023,7 @@ namespace CppSharp
             {
                 var item = decl.getItems(i);
                 var _item = Visit(item) as AST.Enumeration.Item;
-                _enum.Items.Add(_item);
+                _enum.AddItem(_item);
             }
 
             return _enum;

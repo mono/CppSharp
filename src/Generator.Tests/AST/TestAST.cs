@@ -160,5 +160,13 @@ namespace CppSharp.Generator.Tests.AST
                 .First();
             Assert.IsTrue(plusOperator.Visit(testVisitor));
         }
+
+        [Test]
+        public void TestASTEnumItemByName()
+        {
+            var @enum = AstContext.FindEnum("TestASTEnumItemByName").Single();
+            Assert.NotNull(@enum);
+            Assert.IsTrue(@enum.ItemsByName.ContainsKey("TestItemByName"));
+        }
     }
 }
