@@ -33,3 +33,7 @@ struct TestRename
 // TestStructInheritance
 struct S1 { int F1, F2; };
 struct S2 : S1 { int F3; };
+
+// Tests unnamed enums
+enum { Unnamed_Enum_1_A = 1, Unnamed_Enum_1_B = 2 };
+enum { Unnamed_Enum_2_A = 3, Unnamed_Enum_2_B = 4 };

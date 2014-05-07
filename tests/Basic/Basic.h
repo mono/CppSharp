@@ -86,10 +86,6 @@ enum Enum
     F = -9
 };
 
-// Tests unnamed enums
-enum { Unnamed_Enum_1_A = 1, Unnamed_Enum_1_B = 2 };
-enum { Unnamed_Enum_2_A = 3, Unnamed_Enum_2_B = 4 };
-
 class DLL_API Hello
 {
     union NestedPrivate {

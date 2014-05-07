@@ -96,6 +96,26 @@ namespace CppSharp.Generator.Tests.Passes
         }
 
         [Test]
+        public void TestUnnamedEnumSupport()
+        {
+            passBuilder.AddPass(new CleanInvalidDeclNamesPass());
+            passBuilder.RunPasses(pass => pass.VisitLibrary(AstContext));
+
+            var unnamedEnum1 = AstContext.FindEnum("Unnamed_Enum_1").Single();
+            var unnamedEnum2 = AstContext.FindEnum("Unnamed_Enum_2").Single();
+            Assert.IsNotNull(unnamedEnum1);
+            Assert.IsNotNull(unnamedEnum2);
+
+            Assert.AreEqual(2, unnamedEnum1.Items.Count);
+            Assert.AreEqual(2, unnamedEnum2.Items.Count);
+
+            Assert.AreEqual(1, unnamedEnum1.Items[0].Value);
+            Assert.AreEqual(2, unnamedEnum1.Items[1].Value);
+            Assert.AreEqual(3, unnamedEnum2.Items[0].Value);
+            Assert.AreEqual(4, unnamedEnum2.Items[1].Value);
+        }
+
+        [Test]
         public void TestStructInheritance()
         {
 
