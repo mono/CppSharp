@@ -68,23 +68,30 @@ namespace CppSharp.Passes
                 }
             }
 
-            return base.VisitClassDecl(@class);
+            var currentUniqueName = this.uniqueName;
+            this.uniqueName = 0;
+            var ret = base.VisitClassDecl(@class);
+            this.uniqueName = currentUniqueName;
+
+            return ret;
         }
 
         public override bool VisitFunctionDecl(Function function)
         {
-            uniqueName = 0;
+            var currentUniqueName = this.uniqueName;
+            this.uniqueName = 0;
             var ret = base.VisitFunctionDecl(function);
-            uniqueName = 0;
+            this.uniqueName = currentUniqueName;
 
             return ret;
         }
 
         public override bool VisitEvent(Event @event)
         {
-            uniqueName = 0;
+            var currentUniqueName = this.uniqueName;
+            this.uniqueName = 0;
             var ret = base.VisitEvent(@event);
-            uniqueName = 0;
+            this.uniqueName = currentUniqueName;
 
             return ret;
         }
@@ -92,9 +99,10 @@ namespace CppSharp.Passes
         public override bool VisitFunctionType(FunctionType type,
             TypeQualifiers quals)
         {
-            uniqueName = 0;
+            var currentUniqueName = this.uniqueName;
+            this.uniqueName = 0;
             var ret = base.VisitFunctionType(type, quals);
-            uniqueName = 0;
+            this.uniqueName = currentUniqueName;
 
             return ret;
         }

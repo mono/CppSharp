@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using CppSharp;
 using CppSharp.Passes;
 using NUnit.Framework;
 
@@ -113,6 +114,20 @@ namespace CppSharp.Generator.Tests.Passes
             Assert.AreEqual(2, unnamedEnum1.Items[1].Value);
             Assert.AreEqual(3, unnamedEnum2.Items[0].Value);
             Assert.AreEqual(4, unnamedEnum2.Items[1].Value);
+        }
+
+        [Test]
+        public void TestUniqueNamesAcrossTranslationUnits()
+        {
+            passBuilder.AddPass(new CleanInvalidDeclNamesPass());
+            passBuilder.RunPasses(pass => pass.VisitLibrary(AstContext));
+
+            var unnamedEnum1 = AstContext.GetEnumWithMatchingItem("UnnamedEnumA1");
+            var unnamedEnum2 = AstContext.GetEnumWithMatchingItem("UnnamedEnumB1");
+            Assert.IsNotNull(unnamedEnum1);
+            Assert.IsNotNull(unnamedEnum2);
+
+            Assert.AreNotEqual(unnamedEnum1.Name, unnamedEnum2.Name);
         }
 
         [Test]
