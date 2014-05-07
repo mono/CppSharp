@@ -31,6 +31,10 @@ function os.is_windows()
   return os.is("windows")
 end
 
+function os.is_linux()
+  return os.is("linux")
+end
+
 function string.starts(str, start)
    return string.sub(str, 1, string.len(start)) == start
 end
