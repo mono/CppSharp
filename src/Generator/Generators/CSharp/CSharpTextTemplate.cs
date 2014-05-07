@@ -661,7 +661,7 @@ namespace CppSharp.Generators.CSharp
             Type type;
             Class @class;
             var isRef = property.Type.IsPointerTo(out type) &&
-                !(type.IsTagDecl(out @class) && @class.IsValueType) &&
+                !(type.TryGetClass(out @class) && @class.IsValueType) &&
                 !type.IsPrimitiveType();
 
             if (isRef)
@@ -771,7 +771,7 @@ namespace CppSharp.Generators.CSharp
             // we do not support dependent fields yet, see https://github.com/mono/CppSharp/issues/197
             Class @class;
             if (field.Type.IsDependent && !field.Type.IsPointer() &&
-                !(field.Type.IsTagDecl(out @class) && @class.IsUnion))
+                !(field.Type.TryGetClass(out @class) && @class.IsUnion))
                 return;
 
             var safeIdentifier = Helpers.SafeIdentifier(field.OriginalName);
@@ -2234,7 +2234,7 @@ namespace CppSharp.Generators.CSharp
                     parameter => parameter.Kind == ParameterKind.IndirectReturnType);
 
                 Class retClass;
-                indirectRetType.Type.Desugar().IsTagDecl(out retClass);
+                indirectRetType.Type.Desugar().TryGetClass(out retClass);
 
                 WriteLine("var {0} = new {1}.Internal();", GeneratedIdentifier("ret"),
                     QualifiedIdentifier(retClass.OriginalClass ?? retClass));
@@ -2337,7 +2337,7 @@ namespace CppSharp.Generators.CSharp
                     pointee = pointee.Desugar();
                     string @null;
                     Class @class;
-                    if (pointee.IsTagDecl(out @class) && @class.IsValueType)
+                    if (pointee.TryGetClass(out @class) && @class.IsValueType)
                     {
                         @null = string.Format("new {0}()", pointee);
                     }
@@ -2468,7 +2468,7 @@ namespace CppSharp.Generators.CSharp
                 var paramType = param.Type;
 
                 Class @class;
-                if (paramType.Desugar().IsTagDecl(out @class) && @class.IsRefType)
+                if (paramType.Desugar().TryGetClass(out @class) && @class.IsRefType)
                 {
                     WriteLine("{0} = new {1}();", param.Name, paramType);
                 }

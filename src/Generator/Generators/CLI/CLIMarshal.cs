@@ -107,7 +107,7 @@ namespace CppSharp.Generators.CLI
             Context.Driver.TypeDatabase.FindTypeMap(pointee, out typeMap);
 
             Class @class;
-            if (pointee.IsTagDecl(out @class) && typeMap == null)
+            if (pointee.TryGetClass(out @class) && typeMap == null)
             {
                 var instance = (pointer.IsReference) ? "&" + Context.ReturnVarName
                     : Context.ReturnVarName;
@@ -426,7 +426,7 @@ namespace CppSharp.Generators.CLI
             }
 
             Enumeration @enum;
-            if (pointee.IsTagDecl(out @enum))
+            if (pointee.TryGetEnum(out @enum))
             {
                 ArgumentPrefix.Write("&");
                 Context.Return.Write("(::{0})*{1}", @enum.QualifiedOriginalName,
@@ -435,7 +435,7 @@ namespace CppSharp.Generators.CLI
             }
 
             Class @class;
-            if (pointee.IsTagDecl(out @class) && @class.IsValueType)
+            if (pointee.TryGetClass(out @class) && @class.IsValueType)
             {
                 if (Context.Function == null)
                     Context.Return.Write("&");
@@ -655,7 +655,7 @@ namespace CppSharp.Generators.CLI
             Type type;
             Class @class;
             var isRef = property.Type.IsPointerTo(out type) &&
-                !(type.IsTagDecl(out @class) && @class.IsValueType) &&
+                !(type.TryGetClass(out @class) && @class.IsValueType) &&
                 !type.IsPrimitiveType();
 
             if (isRef)
