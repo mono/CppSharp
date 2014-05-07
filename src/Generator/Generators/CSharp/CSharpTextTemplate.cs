@@ -761,7 +761,7 @@ namespace CppSharp.Generators.CSharp
 
             foreach (var field in @class.Fields)
             {
-                if (!nativeFields && ASTUtils.CheckIgnoreField(field)) continue;
+                if (ASTUtils.CheckIgnoreField(field, nativeFields)) continue;
                 action(field);
             }
         }
