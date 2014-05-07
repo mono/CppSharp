@@ -599,8 +599,9 @@ namespace CppSharp
 
             // Check if the declaration was already handled and return its
             // existing instance.
-            if (Declarations.ContainsKey(originalPtr))
-                return Declarations[originalPtr];
+            if (CheckForDuplicates(decl))
+                if (Declarations.ContainsKey(originalPtr))
+                    return Declarations[originalPtr];
 
             var newDecl = base.Visit(decl);
             return newDecl;
@@ -674,12 +675,18 @@ namespace CppSharp
             }
         }
 
+        bool CheckForDuplicates(Declaration decl)
+        {
+            return !(decl is PreprocessedEntity);
+        }
+
         void VisitDeclaration(Declaration decl, AST.Declaration _decl)
         {
             var originalPtr = new IntPtr(decl.OriginalPtr);
 
-            if (Declarations.ContainsKey(originalPtr))
-                throw new NotSupportedException("Duplicate declaration processed");
+            if (CheckForDuplicates(decl))
+                if (Declarations.ContainsKey(originalPtr))
+                    throw new NotSupportedException("Duplicate declaration processed");
 
             // Add the declaration to the map so that we can check if have
             // already handled it and return the declaration.
