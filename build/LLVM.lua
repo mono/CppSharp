@@ -1,7 +1,7 @@
 -- Setup the LLVM dependency directories
 
-LLVMRootDir = "../../deps/llvm/"
-LLVMBuildDir = "../../deps/llvm/build/"
+LLVMInstallDir = "../../deps/llvm/install"
+ClangSrcDir = "../../deps/llvm/tools/clang"
 
 -- TODO: Search for available system dependencies
 
@@ -10,11 +10,9 @@ function SetupLLVMIncludes()
 
   includedirs
   {
-    path.join(LLVMRootDir, "include"),
-    path.join(LLVMRootDir, "tools/clang/include"),    
-    path.join(LLVMRootDir, "tools/clang/lib"),    
-    path.join(LLVMBuildDir, "include"),
-    path.join(LLVMBuildDir, "tools/clang/include"),
+    path.join(LLVMInstallDir, "include"),
+    -- We need this to include the private clang CodeGen stuff
+    path.join(ClangSrcDir, "lib"),
   }
 
   configuration(c)
@@ -23,13 +21,7 @@ end
 function SetupLLVMLibs()
   local c = configuration()
 
-  libdirs { path.join(LLVMBuildDir, "lib") }
-
-  configuration { "Debug", "vs*" }
-    libdirs { path.join(LLVMBuildDir, "Debug/lib") }
-
-  configuration { "Release", "vs*" }
-    libdirs { path.join(LLVMBuildDir, "RelWithDebInfo/lib") }
+  libdirs { path.join(LLVMInstallDir, "lib") }
 
   configuration "not vs*"
     buildoptions { "-fpermissive" }
