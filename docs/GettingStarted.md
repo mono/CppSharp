@@ -19,17 +19,19 @@ Git repository urls found here: [http://llvm.org/docs/GettingStarted.html#git-mi
 2. Clone LLVM to `<CppSharp>\deps\llvm`
 3. Clone Clang to `<CppSharp>\deps\llvm\tools\clang`
 4. Create directory `<CppSharp>\deps\llvm\build`
-4. Create directory `<CppSharp>\deps\llvm\install`
-6. Run cmake or cmake-gui in `<CppSharp>\deps\llvm\build`
-	- CMAKE_INSTALL_PREFIX=`<CppSharp>\deps\llvm\install`
-	- LLVM_TARGETS_TO_BUILD="X86"
+5. Create directory `<CppSharp>\deps\llvm\install`
 
 ## Compiling on Windows/Visual Studio
 
 ### Compiling LLVM on Windows/Visual Studio
 
-1. Compile LLVM solution in *RelWithDebInfo* mode
-2. Run INSTALL project to install LLVM to `<CppSharp>\deps\llvm\install`
+```shell
+cd <CppSharp>\deps\llvm\build
+
+cmake -G "Visual Studio 12" -DCMAKE_INSTALL_PREFIX="<CppSharp>/deps/llvm/install" -DCLANG_BUILD_EXAMPLES=false -DCLANG_INCLUDE_DOCS=false -DCLANG_INCLUDE_TESTS=false -DCLANG_INCLUDE_DOCS=false -DCLANG_BUILD_EXAMPLES=false -DLLVM_TARGETS_TO_BUILD="X86" -DLLVM_INCLUDE_EXAMPLES=false -DLLVM_INCLUDE_DOCS=false -DLLVM_INCLUDE_TESTS=false ..
+
+msbuild INSTALL.vcxproj /p:Configuration=Release;Platform=Win32
+```
 
 Due to some incompatible changes in recent LLVM versions, Windows builds need to use the following set of revisions that are known to work.
 
@@ -39,8 +41,13 @@ Clang `r202562` / Git mirror revision `30577e6c4f5ba66b8dc832ed9955b1a7475f788a`
 
 ### Compiling CppSharp on Windows/Visual Studio
 
-1. Run `GenerateProjects.bat` in <CppSharp>\build
-2. Build generated solution in *Release*.
+```shell
+cd <CppSharp>\build
+
+generateprojects.bat
+
+msbuild /p:Configuration=Release;Platform=x86
+```
 
 Building in *Release* is recommended because else the Clang parser will be
 excruciatingly slow.
@@ -77,17 +84,14 @@ Only 64bit build works at the moment. The build has been verified on Ubuntu 14.0
 If you do not have native build tools you can install them first with:
 
 ```shell
-sudo apt-get install cmake-gui ninja-build build-essential
+sudo apt-get install cmake ninja-build build-essential
 ```
 
-Use CMake to create build scripts for Ninja build-tool, and use ninja to build LLVM. Remember to set the install directory with cmake.
 
 ```shell
 cd deps/llvm/build
 
-cmake-gui ..
-
-ninja
+cmake -G Ninja -DCMAKE_INSTALL_PREFIX="<CppSharp>/deps/llvm/install" -DCLANG_BUILD_EXAMPLES=false -DCLANG_INCLUDE_DOCS=false -DCLANG_INCLUDE_TESTS=false -DCLANG_INCLUDE_DOCS=false -DCLANG_BUILD_EXAMPLES=false -DLLVM_TARGETS_TO_BUILD="X86" -DLLVM_INCLUDE_EXAMPLES=false -DLLVM_INCLUDE_DOCS=false -DLLVM_INCLUDE_TESTS=false ..
 
 ninja install
 ```
@@ -111,7 +115,7 @@ sudo apt-get install mono-devel
 Generate the makefiles, and build CppSharp:
 
 ```shell
-cd build
+cd <CppSharp>/build
 ./premake5-linux gmake
 make -C gmake config=release_x64
 ```
