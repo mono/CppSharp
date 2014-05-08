@@ -221,9 +221,7 @@ namespace CppSharp.AST
         {
             get
             {
-                var k = GenerationKind;
-                return k == GenerationKind.Generate
-                    || k == GenerationKind.Internal;
+                return GenerationKind == GenerationKind.Internal;
             }
         }
 
