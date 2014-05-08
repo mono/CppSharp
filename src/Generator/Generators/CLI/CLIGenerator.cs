@@ -32,6 +32,10 @@ namespace CppSharp.Generators.CLI
 
         public override bool SetupPasses()
         {
+            // Note: The ToString override will only work if this pass runs
+            // after the MoveOperatorToCallPass.
+            if (Driver.Options.GenerateObjectOverrides)
+                Driver.TranslationUnitPasses.AddPass(new ObjectOverridesPass());
             return true;
         }
     }

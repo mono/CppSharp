@@ -127,6 +127,13 @@ namespace CppSharp
         /// </summary>
         public bool GenerateConversionOperators;
 
+        /// <summary>
+        /// If set to true the CLI generator will use ObjectOverridesPass to create
+        /// Equals, GetHashCode and (if the insertion operator << is overloaded) ToString
+        /// methods.
+        /// </summary>
+        public bool GenerateObjectOverrides;
+
         //List of include directories that are used but not generated
         public List<string> NoGenIncludeDirs;
 

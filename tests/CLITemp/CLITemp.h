@@ -1,5 +1,7 @@
 #include "../Tests.h"
 
+#include <ostream>
+
 // Tests for C++ types
 struct DLL_API Types
 {
@@ -24,3 +26,22 @@ class DLL_API TestProtectedDestructors
 };
 
 TestProtectedDestructors::~TestProtectedDestructors() {}
+
+// Tests the insertion operator (<<) to ToString method pass
+class DLL_API Date
+{
+public:
+    Date(int m, int d, int y)
+    {
+        mo = m; da = d; yr = y;
+    }
+    // Not picked up by parser yet
+    //friend std::ostream& operator<<(std::ostream& os, const Date& dt);
+    int mo, da, yr;
+};
+
+std::ostream& operator<<(std::ostream& os, const Date& dt)
+{
+    os << dt.mo << '/' << dt.da << '/' << dt.yr;
+    return os;
+}
