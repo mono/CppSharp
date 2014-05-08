@@ -18,9 +18,12 @@ namespace CppSharp.Passes
                 
             // Try to get an include path that works from the original include
             // directories paths.
-
-            unit.IncludePath = GetIncludePath(unit.FilePath);
-            return true;
+            if (unit.IsValid)
+            {
+                unit.IncludePath = GetIncludePath(unit.FilePath);
+                return true;
+            }
+            return false;
         }
 
         string GetIncludePath(string filePath)
