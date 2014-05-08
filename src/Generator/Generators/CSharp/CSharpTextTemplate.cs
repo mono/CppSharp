@@ -223,7 +223,7 @@ namespace CppSharp.Generators.CSharp
                 // Generate all the internal function declarations.
                 foreach (var function in context.Functions)
                 {
-                    if (!function.IsInternal) continue;
+                    if (!function.IsGenerated) continue;
 
                     GenerateInternalFunction(function);
                 }
@@ -2657,7 +2657,7 @@ namespace CppSharp.Generators.CSharp
 
         public void GenerateInternalFunction(Function function)
         {
-            if (!function.IsInternal || function.IsPure)
+            if (!function.IsGenerated || function.IsPure)
                 return;
 
             if (function.OriginalFunction != null)
