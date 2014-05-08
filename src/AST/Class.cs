@@ -34,25 +34,8 @@ namespace CppSharp.AST
             get
             {
                 Class @class;
-                if (Type.IsTagDecl(out @class))
-                    return @class;
-
-                var type = Type.Desugar() as TemplateSpecializationType;
-                if (type == null)
-                {
-                    TypedefType typedef;
-                    if (Type.IsPointerTo(out typedef))
-                    {
-                        type = (TemplateSpecializationType) typedef.Desugar();
-                    }
-                    else
-                    {
-                        Type.IsPointerTo(out type);
-                    }
-                }
-                var templatedClass = ((ClassTemplate) type.Template).TemplatedClass;
-                return templatedClass.CompleteDeclaration == null ?
-                    templatedClass : (Class) templatedClass.CompleteDeclaration;
+                Type.TryGetClass(out @class);
+                return @class;
             }
         }
 
@@ -60,8 +43,7 @@ namespace CppSharp.AST
         {
             get
             {
-                Class @class;
-                return Type.IsTagDecl(out @class);
+                return Type.IsClass();
             }
         }
     }

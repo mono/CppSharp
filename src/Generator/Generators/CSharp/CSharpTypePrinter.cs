@@ -232,13 +232,13 @@ namespace CppSharp.Generators.CSharp
             }
 
             Enumeration @enum;
-            if (desugared.IsTagDecl(out @enum))
+            if (desugared.TryGetEnum(out @enum))
             {
                 return @enum.Name + "*";
             }
 
             Class @class;
-            if ((desugared.IsDependent || desugared.IsTagDecl(out @class))
+            if ((desugared.IsDependent || desugared.TryGetClass(out @class))
                 && ContextKind == CSharpTypePrinterContextKind.Native)
             {
                 return "global::System.IntPtr";

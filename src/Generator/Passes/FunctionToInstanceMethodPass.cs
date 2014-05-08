@@ -79,7 +79,7 @@ namespace CppSharp.Passes
                 return true;
             }
 
-            return classParam.Type.IsTagDecl(out @class);
+            return classParam.Type.TryGetClass(out @class);
         }
     }
 }

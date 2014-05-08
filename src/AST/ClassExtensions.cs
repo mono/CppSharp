@@ -83,9 +83,9 @@ namespace CppSharp.AST
             Property property = c.Properties.FirstOrDefault(m => m.Name == propertyName);
             if (property != null)
                 return property;
-            Declaration decl;
+
             foreach (var baseClassSpecifier in c.Bases.Where(
-                b => b.Type.IsTagDecl(out decl) && b.Class.IsDeclared))
+                b => b.Type.IsClass() && b.Class.IsDeclared))
             {
                 property = baseClassSpecifier.Class.GetPropertyByName(propertyName);
                 if (property != null)
@@ -102,8 +102,8 @@ namespace CppSharp.AST
             property = c.Properties.FirstOrDefault(p => p.SetMethod == method);
             if (property != null)
                 return property;
-            Declaration decl;
-            foreach (BaseClassSpecifier @base in c.Bases.Where(b => b.Type.IsTagDecl(out decl)))
+
+            foreach (BaseClassSpecifier @base in c.Bases.Where(b => b.Type.IsClass()))
             {
                 property = @base.Class.GetPropertyByConstituentMethod(method);
                 if (property != null)
@@ -119,8 +119,8 @@ namespace CppSharp.AST
                 m => string.Compare(m.Name, methodName, StringComparison.OrdinalIgnoreCase) == 0);
             if (method != null)
                 return method;
-            Declaration decl;
-            foreach (BaseClassSpecifier @base in c.Bases.Where(b => b.Type.IsTagDecl(out decl)))
+
+            foreach (BaseClassSpecifier @base in c.Bases.Where(b => b.Type.IsClass()))
             {
                 method = @base.Class.GetMethodByName(methodName);
                 if (method != null)
