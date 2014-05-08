@@ -97,7 +97,7 @@ namespace CppSharp
                 "/usr/lib/gcc/x86_64-linux-gnu/4.8/include",
                 "/usr/include/x86_64-linux-gnu",
                 "/usr/include",
-			};
+            };
 
 #if OLD_PARSER
             foreach (var dir in sysincdirs)
@@ -110,7 +110,7 @@ namespace CppSharp
                 options.addSystemIncludeDirs(LINUX_INCLUDE_BASE_DIR + dir);
             }
 #endif
-		}
+        }
 
         private static void SetupMacOptions(DriverOptions options)
         {
