@@ -1693,6 +1693,12 @@ CppSharp::AST::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* 
         Ty = gcnew CppSharp::AST::PackExpansionType();
         break;
     }
+    case Type::Decltype:
+    {
+        auto DT = Type->getAs<clang::DecltypeType>();
+        Ty = WalkType(DT->getUnderlyingType());
+        break;
+    }
     default:
     {   
         Debug("Unhandled type class '%s'\n", Type->getTypeClassName());

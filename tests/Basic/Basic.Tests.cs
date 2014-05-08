@@ -302,5 +302,12 @@ public class BasicTests : GeneratorTestFixture
         ClassC classC = (ClassC)classB;
         Assert.AreEqual(classB.Value, classC.Value);
     }
+
+    [Test]
+    public unsafe void TestDecltype()
+    {
+        var ret = basic.TestDecltype();
+        Assert.AreEqual(0, ret);
+    }
 }
  

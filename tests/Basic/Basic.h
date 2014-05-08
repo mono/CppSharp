@@ -447,3 +447,10 @@ public:
     explicit ClassC(const ClassB& x) { Value = x.Value; }
     int Value;
 };
+
+// Test decltype
+int Expr = 0;
+DLL_API decltype(Expr) TestDecltype()
+{
+    return Expr;
+}

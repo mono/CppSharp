@@ -1685,6 +1685,12 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         // TODO: stubbed
         Ty = new PackExpansionType();
     }
+    case clang::Type::Decltype:
+    {
+        auto DT = Type->getAs<clang::DecltypeType>();
+        Ty = WalkType(DT->getUnderlyingType());
+        break;
+    }
     default:
     {   
         Debug("Unhandled type class '%s'\n", Type->getTypeClassName());
