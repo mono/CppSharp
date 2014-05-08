@@ -546,6 +546,10 @@ Class* Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
     if (Record->isInjectedClassName())
         return nullptr;
 
+    // skip va_list_tag as in clang: lib/Sema/SemaLookup.cpp
+    if (Record->getDeclName() == C->getSema().VAListTagName)
+        return nullptr;
+
     auto NS = GetNamespace(Record);
     assert(NS && "Expected a valid namespace");
 
