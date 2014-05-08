@@ -105,18 +105,55 @@
             return type != null;
         }
 
-        public static bool IsTagDecl<T>(this Type t, out T decl) where T : Declaration
+        public static bool IsClass(this Type t)
+        {
+            Class @class;
+            return t.TryGetClass(out @class);
+        }
+
+        public static bool TryGetClass(this Type t, out Class @class)
+        {
+            t = t.Desugar();
+
+            var tag = t as TagType;
+            if (tag != null)
+            {
+                @class = tag.Declaration as Class;
+                return @class != null;
+            }
+
+            var type = t as TemplateSpecializationType;
+            if (type != null)
+            {
+                var templatedClass = ((ClassTemplate)type.Template).TemplatedClass;
+                @class = templatedClass.CompleteDeclaration == null
+                    ? templatedClass
+                    : (Class)templatedClass.CompleteDeclaration;
+                return @class != null;
+            }
+
+            @class = null;
+            return false;
+        }
+
+        public static bool IsEnum(this Type t)
+        {
+            Enumeration @enum;
+            return t.TryGetEnum(out @enum);
+        }
+
+        public static bool TryGetEnum(this Type t, out Enumeration @enum)
         {
             var tag = t.Desugar() as TagType;
-            
+
             if (tag == null)
             {
-                decl = null;
+                @enum = null;
                 return false;
             }
 
-            decl = tag.Declaration as T;
-            return decl != null;
+            @enum = tag.Declaration as Enumeration;
+            return @enum != null;
         }
 
         public static Type Desugar(this Type t)

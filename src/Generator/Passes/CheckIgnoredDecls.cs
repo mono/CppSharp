@@ -1,4 +1,5 @@
-﻿using CppSharp.AST;
+﻿using System;
+using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Types;
 
@@ -125,7 +126,7 @@ namespace CppSharp.Passes
                 if (param.Kind == ParameterKind.IndirectReturnType)
                 {
                     Class retClass;
-                    param.Type.Desugar().IsTagDecl(out retClass);
+                    param.Type.Desugar().TryGetClass(out retClass);
                     if (retClass == null)
                     {
                         function.ExplicitlyIgnore();

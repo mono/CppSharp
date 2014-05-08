@@ -147,7 +147,7 @@ namespace CppSharp.Generators.AST
             var field = (Field)ancestors.Pop();
                 
             Class decl;
-            return field.Type.Desugar().IsTagDecl(out decl) && decl.IsValueType;
+            return field.Type.Desugar().TryGetClass(out decl) && decl.IsValueType;
         }
     }
 

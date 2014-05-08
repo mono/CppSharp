@@ -27,7 +27,7 @@ namespace CppSharp.Passes
                 return false;
             var qualifiedPointee = parameterType.QualifiedPointee;
             Class castFromClass;
-            if (!qualifiedPointee.Type.IsTagDecl(out castFromClass))
+            if (!qualifiedPointee.Type.TryGetClass(out castFromClass))
                 return false;
             var castToClass = method.OriginalNamespace as Class;
             if (castToClass == null)

@@ -161,7 +161,7 @@ namespace CppSharp.Generators.CLI
             }
 
             Enumeration @enum;
-            if (pointee.IsTagDecl(out @enum))
+            if (pointee.TryGetEnum(out @enum))
             {
                 var typeName = @enum.Visit(this);
                 return string.Format("{0}*", typeName);
