@@ -242,7 +242,7 @@ namespace msclr {
                 }
                 std::streamsize xsputn(const char *_Ptr, std::streamsize _Count)
                 {
-                    auto s = gcnew System::String(_Ptr, 0, _Count, System::Text::Encoding::UTF8);
+                    auto s = gcnew System::String(_Ptr, 0, (int)_Count, System::Text::Encoding::UTF8);
                     m_tw->Write(s);
                     return _Count;
                 }
