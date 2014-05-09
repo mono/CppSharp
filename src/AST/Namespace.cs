@@ -180,6 +180,11 @@ namespace CppSharp.AST
             return @namespace.FindEnum(enumName, createDecl);
         }
 
+        public Enumeration FindEnum(IntPtr ptr)
+        {
+            return Enums.FirstOrDefault(f => f.OriginalPtr == ptr);
+        }
+
         public Function FindFunction(string name, bool createDecl = false)
         {
             if (string.IsNullOrEmpty(name)) 
@@ -348,7 +353,12 @@ namespace CppSharp.AST
 
         public Enumeration FindEnumWithItem(string name)
         {
-            return Enums.Find(e => e.ItemsByName.ContainsKey(name));
+            var result = Enums.Find(e => e.ItemsByName.ContainsKey(name));
+            if (result == null)
+                result = Namespaces.Select(ns => ns.FindEnumWithItem(name)).FirstOrDefault();
+            if (result == null)
+                result = Classes.Select(c => c.FindEnumWithItem(name)).FirstOrDefault();
+            return result;
         }
 
         public virtual IEnumerable<Function> FindOperator(CXXOperatorKind kind)

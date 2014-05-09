@@ -1705,18 +1705,48 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
 
 Enumeration* Parser::WalkEnum(clang::EnumDecl* ED)
 {
+    using namespace clang;
+
     auto NS = GetNamespace(ED);
     assert(NS && "Expected a valid namespace");
 
-    auto Name = GetTagDeclName(ED);
-    auto E = NS->FindEnum(Name, /*Create=*/false);
+    auto E = NS->FindEnum(ED->getCanonicalDecl());
+    if (E && !E->IsIncomplete)
+        return E;
+
+    if (!E)
+    {
+        auto Name = GetTagDeclName(ED);
+        if (!Name.empty())
+            E = NS->FindEnum(Name, /*Create=*/false);
+        else
+        {
+            // Enum with no identifier - try to find existing enum through enum items
+            for (auto it = ED->enumerator_begin(); it != ED->enumerator_end(); ++it)
+            {
+                EnumConstantDecl* ECD = (*it);
+                auto EnumItemName = ECD->getNameAsString();
+                E = NS->FindEnumWithItem(EnumItemName);
+                break;
+            }
+        }
+    }
 
     if (E && !E->IsIncomplete)
         return E;
 
     if (!E)
     {
-        E = NS->FindEnum(Name, /*Create=*/true);
+        auto Name = GetTagDeclName(ED);
+        if (!Name.empty())
+            E = NS->FindEnum(Name, /*Create=*/true);
+        else
+        {
+            E = new Enumeration();
+            E->Name = Name;
+            E->_Namespace = NS;
+            NS->Enums.push_back(E);
+        }
         HandleDeclaration(ED, E);
     }
 

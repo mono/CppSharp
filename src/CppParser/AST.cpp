@@ -270,6 +270,17 @@ Class* DeclarationContext::FindClass(const std::string& Name, bool IsComplete,
     return newClass;
 }
 
+Enumeration* DeclarationContext::FindEnum(void* OriginalPtr)
+{
+    auto foundEnum = std::find_if(Enums.begin(), Enums.end(),
+        [&](Enumeration* enumeration) { return enumeration->OriginalPtr == OriginalPtr; });
+
+    if (foundEnum != Enums.end())
+        return *foundEnum;
+
+    return nullptr;
+}
+
 Enumeration* DeclarationContext::FindEnum(const std::string& Name, bool Create)
 {
     auto entries = split<std::string>(Name, "::");
@@ -302,6 +313,27 @@ Enumeration* DeclarationContext::FindEnum(const std::string& Name, bool Create)
         return nullptr;
 
     return _namespace->FindEnum(enumName, Create);
+}
+
+Enumeration* DeclarationContext::FindEnumWithItem(const std::string& Name)
+{
+    auto foundEnumIt = std::find_if(Enums.begin(), Enums.end(), 
+        [&](Enumeration* _enum) { return _enum->FindItemByName(Name) != nullptr; });
+    if (foundEnumIt != Enums.end())
+        return *foundEnumIt;
+    for (auto it = Namespaces.begin(); it != Namespaces.end(); ++it)
+    {
+        auto foundEnum = (*it)->FindEnumWithItem(Name);
+        if (foundEnum != nullptr)
+            return foundEnum;
+    }
+    for (auto it = Classes.begin(); it != Classes.end(); ++it)
+    {
+        auto foundEnum = (*it)->FindEnumWithItem(Name);
+        if (foundEnum != nullptr)
+            return foundEnum;
+    }
+    return nullptr;
 }
 
 Function* DeclarationContext::FindFunction(const std::string& Name, bool Create)
@@ -384,6 +416,8 @@ DEF_VECTOR(Function, Parameter*, Parameters)
 Method::Method() : IsDefaultConstructor(false), IsCopyConstructor(false),
     IsMoveConstructor(false) { Kind = DeclarationKind::Method; }
 
+// Enumeration
+
 Enumeration::Enumeration() : Declaration(DeclarationKind::Enumeration),
     Modifiers((EnumModifiers)0), Type(0), BuiltinType(0) {}
 
@@ -395,6 +429,15 @@ Enumeration::Item::Item(const Item& rhs) : Declaration(rhs),
     Expression(rhs.Expression), Value(rhs.Value) {}
 
 DEF_STRING(Enumeration::Item, Expression)
+
+Enumeration::Item* Enumeration::FindItemByName(const std::string& Name)
+{
+    auto foundEnumItem = std::find_if(Items.begin(), Items.end(),
+        [&](Item _item) { return _item.Name == Name; });
+    if (foundEnumItem != Items.end())
+        return &*foundEnumItem;
+    return nullptr;
+}
 
 Variable::Variable() : Declaration(DeclarationKind::Variable) {}
 

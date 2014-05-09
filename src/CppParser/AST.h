@@ -402,7 +402,9 @@ struct CS_API DeclarationContext : public Declaration
     CS_IGNORE FunctionTemplate* FindFunctionTemplate(const std::string& Name,
         const std::vector<TemplateParameter>& Params);
 
+    CS_IGNORE Enumeration* FindEnum(void* OriginalPtr);
     CS_IGNORE Enumeration* FindEnum(const std::string& Name, bool Create = false);
+    CS_IGNORE Enumeration* FindEnumWithItem(const std::string& Name);
 
     CS_IGNORE Function* FindFunction(const std::string& Name, bool Create = false);
 
@@ -560,6 +562,8 @@ struct CS_API Enumeration : public Declaration
     CppSharp::CppParser::AST::Type* Type;
     CppSharp::CppParser::AST::BuiltinType* BuiltinType;
     VECTOR(Item, Items)
+
+    Item* FindItemByName(const std::string& Name);
 };
 
 struct CS_API Variable : public Declaration

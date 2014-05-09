@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using CppSharp;
 using CppSharp.Passes;
 using NUnit.Framework;
 
@@ -93,6 +94,40 @@ namespace CppSharp.Generator.Tests.Passes
             passBuilder.RunPasses(pass => pass.VisitLibrary(AstContext));
 
             Assert.That(@enum.Items[0].Name, Is.EqualTo("_0"));
+        }
+
+        [Test]
+        public void TestUnnamedEnumSupport()
+        {
+            passBuilder.AddPass(new CleanInvalidDeclNamesPass());
+            passBuilder.RunPasses(pass => pass.VisitLibrary(AstContext));
+
+            var unnamedEnum1 = AstContext.FindEnum("Unnamed_Enum_1").Single();
+            var unnamedEnum2 = AstContext.FindEnum("Unnamed_Enum_2").Single();
+            Assert.IsNotNull(unnamedEnum1);
+            Assert.IsNotNull(unnamedEnum2);
+
+            Assert.AreEqual(2, unnamedEnum1.Items.Count);
+            Assert.AreEqual(2, unnamedEnum2.Items.Count);
+
+            Assert.AreEqual(1, unnamedEnum1.Items[0].Value);
+            Assert.AreEqual(2, unnamedEnum1.Items[1].Value);
+            Assert.AreEqual(3, unnamedEnum2.Items[0].Value);
+            Assert.AreEqual(4, unnamedEnum2.Items[1].Value);
+        }
+
+        [Test]
+        public void TestUniqueNamesAcrossTranslationUnits()
+        {
+            passBuilder.AddPass(new CleanInvalidDeclNamesPass());
+            passBuilder.RunPasses(pass => pass.VisitLibrary(AstContext));
+
+            var unnamedEnum1 = AstContext.GetEnumWithMatchingItem("UnnamedEnumA1");
+            var unnamedEnum2 = AstContext.GetEnumWithMatchingItem("UnnamedEnumB1");
+            Assert.IsNotNull(unnamedEnum1);
+            Assert.IsNotNull(unnamedEnum2);
+
+            Assert.AreNotEqual(unnamedEnum1.Name, unnamedEnum2.Name);
         }
 
         [Test]
