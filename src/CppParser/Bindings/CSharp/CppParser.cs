@@ -40,47 +40,26 @@ namespace CppSharp
             [StructLayout(LayoutKind.Explicit, Size = 124)]
             public struct Internal
             {
-                [FieldOffset(0)]
-                internal Std.Vector Arguments;
-
-                [FieldOffset(12)]
-                internal Std.String FileName;
-
-                [FieldOffset(36)]
-                internal Std.Vector IncludeDirs;
-
-                [FieldOffset(48)]
-                internal Std.Vector SystemIncludeDirs;
-
-                [FieldOffset(60)]
-                internal Std.Vector Defines;
-
-                [FieldOffset(72)]
-                internal Std.Vector LibraryDirs;
-
                 [FieldOffset(84)]
-                internal global::System.IntPtr ASTContext;
+                public global::System.IntPtr ASTContext;
 
                 [FieldOffset(88)]
-                internal int ToolSetToUse;
-
-                [FieldOffset(92)]
-                internal Std.String TargetTriple;
+                public int ToolSetToUse;
 
                 [FieldOffset(116)]
-                internal CppSharp.Parser.AST.CppAbi Abi;
+                public CppSharp.Parser.AST.CppAbi Abi;
 
                 [FieldOffset(120)]
-                internal bool NoStandardIncludes;
+                public bool NoStandardIncludes;
 
                 [FieldOffset(121)]
-                internal bool NoBuiltinIncludes;
+                public bool NoBuiltinIncludes;
 
                 [FieldOffset(122)]
-                internal bool MicrosoftMode;
+                public bool MicrosoftMode;
 
                 [FieldOffset(123)]
-                internal bool Verbose;
+                public bool Verbose;
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -488,20 +467,14 @@ namespace CppSharp
             [StructLayout(LayoutKind.Explicit, Size = 60)]
             public struct Internal
             {
-                [FieldOffset(0)]
-                internal Std.String FileName;
-
-                [FieldOffset(24)]
-                internal Std.String Message;
-
                 [FieldOffset(48)]
-                internal CppSharp.Parser.ParserDiagnosticLevel Level;
+                public CppSharp.Parser.ParserDiagnosticLevel Level;
 
                 [FieldOffset(52)]
-                internal int LineNumber;
+                public int LineNumber;
 
                 [FieldOffset(56)]
-                internal int ColumnNumber;
+                public int ColumnNumber;
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -656,20 +629,17 @@ namespace CppSharp
 
         public unsafe partial class ParserResult : IDisposable
         {
-            [StructLayout(LayoutKind.Explicit, Size = 24)]
+            [StructLayout(LayoutKind.Explicit, Size = 28)]
             public struct Internal
             {
                 [FieldOffset(0)]
-                internal CppSharp.Parser.ParserResultKind Kind;
-
-                [FieldOffset(4)]
-                internal Std.Vector Diagnostics;
+                public CppSharp.Parser.ParserResultKind Kind;
 
                 [FieldOffset(16)]
-                internal global::System.IntPtr ASTContext;
+                public global::System.IntPtr ASTContext;
 
                 [FieldOffset(20)]
-                internal global::System.IntPtr Library;
+                public global::System.IntPtr Library;
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -721,7 +691,7 @@ namespace CppSharp
 
             public ParserResult()
             {
-                __Instance = Marshal.AllocHGlobal(24);
+                __Instance = Marshal.AllocHGlobal(28);
                 Internal.ctor_0(__Instance);
             }
 

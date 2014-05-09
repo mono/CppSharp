@@ -791,12 +791,17 @@ ClassTemplate* Parser::WalkClassTemplate(clang::ClassTemplateDecl* TD)
     auto NS = GetNamespace(TD);
     assert(NS && "Expected a valid namespace");
 
-    ClassTemplate* CT = new ClassTemplate();
+    auto CT = NS->FindClassTemplate((void*) TD);
+    if (CT != nullptr)
+        return CT;
+
+    CT = new ClassTemplate();
     HandleDeclaration(TD, CT);
 
-    CT->TemplatedDecl = WalkRecordCXX(TD->getTemplatedDecl());
-
+    CT->_Namespace = NS;
     NS->Templates.push_back(CT);
+
+    CT->TemplatedDecl = WalkRecordCXX(TD->getTemplatedDecl());
 
     auto TPL = TD->getTemplateParameters();
     for(auto it = TPL->begin(); it != TPL->end(); ++it)
@@ -1107,10 +1112,15 @@ DeclarationContext* Parser::GetNamespace(clang::Decl* D,
             continue;
         }
         case Decl::ClassTemplateSpecialization:
+        {
+            auto CTSpec = cast<ClassTemplateSpecializationDecl>(Ctx);
+            DC = WalkClassTemplateSpecialization(CTSpec);
+            continue;
+        }
         case Decl::ClassTemplatePartialSpecialization:
         {
-            // FIXME: Ignore ClassTemplateSpecialization namespaces...
-            // We might be able to translate these to C# nested types.
+            auto CTPSpec = cast<ClassTemplatePartialSpecializationDecl>(Ctx);
+            DC = WalkClassTemplatePartialSpecialization(CTPSpec);
             continue;
         }
         default:
@@ -1487,8 +1497,6 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
             F->Parameters.push_back(FA);
         }
 
-        return F;
-
         Ty = F;
         break;
     }
@@ -1684,6 +1692,7 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
     {
         // TODO: stubbed
         Ty = new PackExpansionType();
+        break;
     }
     case clang::Type::Decltype:
     {
@@ -1838,7 +1847,6 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, Function* F,
     auto NS = GetNamespace(FD);
     assert(NS && "Expected a valid namespace");
 
-    F->OriginalPtr = (void*) FD;
     F->Name = FD->getNameAsString();
     F->_Namespace = NS;
     F->IsVariadic = FD->isVariadic();
@@ -2320,10 +2328,6 @@ Declaration* Parser::WalkDeclaration(clang::Decl* D,
     {
         ClassTemplateDecl* TD = cast<ClassTemplateDecl>(D);
         auto Template = WalkClassTemplate(TD); 
-
-        auto NS = GetNamespace(TD);
-        Template->_Namespace = NS;
-        NS->Templates.push_back(Template);
         
         Decl = Template;
         break;
@@ -2331,8 +2335,7 @@ Declaration* Parser::WalkDeclaration(clang::Decl* D,
     case Decl::ClassTemplateSpecialization:
     {
         auto TS = cast<ClassTemplateSpecializationDecl>(D);
-        auto CT = new ClassTemplateSpecialization();
-        HandleDeclaration(TS, CT);
+        auto CT = WalkClassTemplateSpecialization(TS);
 
         Decl = CT;
         break;
@@ -2340,8 +2343,7 @@ Declaration* Parser::WalkDeclaration(clang::Decl* D,
     case Decl::ClassTemplatePartialSpecialization:
     {
         auto TS = cast<ClassTemplatePartialSpecializationDecl>(D);
-        auto CT = new ClassTemplatePartialSpecialization();
-        HandleDeclaration(TS, CT);
+        auto CT = WalkClassTemplatePartialSpecialization(TS);
 
         Decl = CT;
         break;
@@ -2349,13 +2351,9 @@ Declaration* Parser::WalkDeclaration(clang::Decl* D,
     case Decl::FunctionTemplate:
     {
         FunctionTemplateDecl* TD = cast<FunctionTemplateDecl>(D);
-        auto Template = WalkFunctionTemplate(TD); 
+        auto FT = WalkFunctionTemplate(TD);
 
-        auto NS = GetNamespace(TD);
-        Template->_Namespace = NS;
-        NS->Templates.push_back(Template);
-
-        Decl = Template;
+        Decl = FT;
         break;
     }
     case Decl::Enum:
@@ -2447,6 +2445,7 @@ Declaration* Parser::WalkDeclaration(clang::Decl* D,
     case Decl::UnresolvedUsingValue:
     case Decl::IndirectField:
     case Decl::StaticAssert:
+    case Decl::TypeAliasTemplate:
         break;
     default:
     {

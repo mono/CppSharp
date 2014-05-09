@@ -354,7 +354,7 @@ namespace CppSharp
             {
                 Size = type.Size,
                 SizeType = VisitArraySizeType(type.SizeType),
-                Type = VisitQualified(type.QualifiedType).Type
+                QualifiedType = VisitQualified(type.QualifiedType)
             };
             VisitType(type, _type);
             return _type;
@@ -408,7 +408,7 @@ namespace CppSharp
         {
             var _type = new CppSharp.AST.MemberPointerType();
             VisitType(type, _type);
-            _type.Pointee = VisitQualified(type.Pointee).Type;
+            _type.QualifiedPointee = VisitQualified(type.Pointee);
             return _type;
         }
 
@@ -502,8 +502,8 @@ namespace CppSharp
 
         public override AST.Type VisitTemplateParameterSubstitution(TemplateParameterSubstitutionType type)
         {
-            throw new NotImplementedException();
             var _type = new CppSharp.AST.TemplateParameterSubstitutionType();
+            _type.Replacement = VisitQualified(type.Replacement);
             VisitType(type, _type);
             return _type;
         }
@@ -1262,7 +1262,12 @@ namespace CppSharp
         {
             var _decl = new AST.ClassTemplate();
             VisitTemplate(decl, _decl);
-
+            for (uint i = 0; i < decl.SpecializationsCount; ++i)
+            {
+                var spec = decl.getSpecializations(i);
+                var _spec = (AST.ClassTemplateSpecialization)Visit(spec);
+                _decl.Specializations.Add(_spec);
+            }
             return _decl;
         }
 
@@ -1270,21 +1275,83 @@ namespace CppSharp
             ClassTemplateSpecialization decl)
         {
             var _decl = new AST.ClassTemplateSpecialization();
-            VisitClass(decl, _decl);
-
-            //for (uint i = 0; i < decl.ArgumentsCount; ++i)
-            //{
-            //    var _arg = decl.getArguments(i);
-            //    _decl.Arguments.Add(_arg);
-            //}
-
+            VisitClassTemplateSpecialization(decl, _decl);
             return _decl;
+        }
+
+        private void VisitClassTemplateSpecialization(ClassTemplateSpecialization decl, AST.ClassTemplateSpecialization _decl)
+        {
+            VisitClass(decl, _decl);
+            _decl.SpecializationKind = VisitSpecializationKind(decl.SpecializationKind);
+            _decl.TemplatedDecl = (AST.ClassTemplate)Visit(decl.TemplatedDecl);
+            for (uint i = 0; i < decl.ArgumentsCount; ++i)
+            {
+                var arg = decl.getArguments(i);
+                var _arg = VisitTemplateArgument(arg);
+                _decl.Arguments.Add(_arg);
+            }
+        }
+
+        private AST.TemplateArgument VisitTemplateArgument(TemplateArgument arg)
+        {
+            var _arg = new AST.TemplateArgument();
+            _arg.Kind = VisitTemplateArgumentKind(arg.Kind);
+            _arg.Type = typeConverter.VisitQualified(arg.Type);
+            _arg.Declaration = Visit(arg.Declaration);
+            _arg.Integral = arg.Integral;
+            return _arg;
+        }
+
+        private AST.TemplateArgument.ArgumentKind VisitTemplateArgumentKind(TemplateArgument.ArgumentKind argumentKind)
+        {
+            switch (argumentKind)
+            {
+                case TemplateArgument.ArgumentKind.Declaration:
+                    return AST.TemplateArgument.ArgumentKind.Declaration;
+                case TemplateArgument.ArgumentKind.Expression:
+                    return AST.TemplateArgument.ArgumentKind.Expression;
+                case TemplateArgument.ArgumentKind.Integral:
+                    return AST.TemplateArgument.ArgumentKind.Integral;
+                case TemplateArgument.ArgumentKind.NullPtr:
+                    return AST.TemplateArgument.ArgumentKind.NullPtr;
+                case TemplateArgument.ArgumentKind.Pack:
+                    return AST.TemplateArgument.ArgumentKind.Pack;
+                case TemplateArgument.ArgumentKind.Template:
+                    return AST.TemplateArgument.ArgumentKind.Template;
+                case TemplateArgument.ArgumentKind.TemplateExpansion:
+                    return AST.TemplateArgument.ArgumentKind.TemplateExpansion;
+                case TemplateArgument.ArgumentKind.Type:
+                    return AST.TemplateArgument.ArgumentKind.Type;
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
+        private AST.TemplateSpecializationKind VisitSpecializationKind(TemplateSpecializationKind templateSpecializationKind)
+        {
+            switch (templateSpecializationKind)
+            {
+                case TemplateSpecializationKind.ExplicitInstantiationDeclaration:
+                    return AST.TemplateSpecializationKind.ExplicitInstantiationDeclaration;
+                case TemplateSpecializationKind.ExplicitInstantiationDefinition:
+                    return AST.TemplateSpecializationKind.ExplicitInstantiationDefinition;
+                case TemplateSpecializationKind.ExplicitSpecialization:
+                    return AST.TemplateSpecializationKind.ExplicitSpecialization;
+                case TemplateSpecializationKind.ImplicitInstantiation:
+                    return AST.TemplateSpecializationKind.ImplicitInstantiation;
+                case TemplateSpecializationKind.Undeclared:
+                    return AST.TemplateSpecializationKind.Undeclared;
+                default:
+                    throw new NotImplementedException();
+            }
         }
 
         public override AST.Declaration VisitClassTemplatePartialSpecialization(
             ClassTemplatePartialSpecialization decl)
         {
-            throw new NotImplementedException();
+            var _decl = new AST.ClassTemplatePartialSpecialization();
+            VisitClassTemplateSpecialization(decl, _decl);
+            return _decl;
         }
 
         public override AST.Declaration VisitFunctionTemplate(FunctionTemplate decl)

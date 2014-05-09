@@ -136,13 +136,18 @@ namespace CppSharp.AST
         }
 
         // Type of the array elements.
-        public Type Type;
+        public QualifiedType QualifiedType;
 
         // Size type of array.
         public ArraySize SizeType;
 
         // In case of a constant size array.
         public long Size;
+
+        public Type Type
+        {
+            get { return QualifiedType.Type; }
+        }
 
         public override T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals)
         {
@@ -153,7 +158,7 @@ namespace CppSharp.AST
         {
             var type = obj as ArrayType;
             if (type == null) return false;
-            var equals = Type.Equals(type.Type) && SizeType.Equals(type.SizeType);
+            var equals = QualifiedType.Equals(type.QualifiedType) && SizeType.Equals(type.SizeType);
 
             if (SizeType == ArraySize.Constant)
                 equals &= Size.Equals(type.Size);
@@ -266,7 +271,12 @@ namespace CppSharp.AST
     /// </summary>
     public class MemberPointerType : Type
     {
-        public Type Pointee;
+        public QualifiedType QualifiedPointee;
+
+        public Type Pointee
+        {
+            get { return QualifiedPointee.Type; }
+        }
 
         public override T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals)
         {
@@ -278,7 +288,7 @@ namespace CppSharp.AST
             var pointer = obj as MemberPointerType;
             if (pointer == null) return false;
 
-            return Pointee.Equals(pointer.Pointee);
+            return QualifiedPointee.Equals(pointer.QualifiedPointee);
         }
 
         public override int GetHashCode()
