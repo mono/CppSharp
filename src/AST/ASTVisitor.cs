@@ -84,7 +84,7 @@ namespace CppSharp.AST
             if (array.SizeType == ArrayType.ArraySize.Dependent)
                 return false;
 
-            return array.Type.Visit(this, quals);
+            return array.QualifiedType.Visit(this);
         }
 
         public virtual bool VisitFunctionType(FunctionType function, TypeQualifiers quals)
@@ -119,7 +119,7 @@ namespace CppSharp.AST
             if (!VisitType(member, quals))
                 return false;
 
-            return member.Pointee.Visit(this, quals);
+            return member.QualifiedPointee.Visit(this);
         }
 
         public virtual bool VisitBuiltinType(BuiltinType builtin, TypeQualifiers quals)

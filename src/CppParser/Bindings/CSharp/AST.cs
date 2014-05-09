@@ -150,6 +150,15 @@ namespace CppSharp
                 UnusedFunctionPointer = 7
             }
 
+            public enum TemplateSpecializationKind
+            {
+                Undeclared = 0,
+                ImplicitInstantiation = 1,
+                ExplicitSpecialization = 2,
+                ExplicitInstantiationDeclaration = 3,
+                ExplicitInstantiationDefinition = 4
+            }
+
             public enum PrimitiveType
             {
                 Null = 0,
@@ -198,25 +207,16 @@ namespace CppSharp
                 FunctionBody = 5
             }
 
-            public enum TemplateSpecializationKind
-            {
-                Undeclared = 0,
-                ImplicitInstantiation = 1,
-                ExplicitSpecialization = 2,
-                ExplicitInstantiationDeclaration = 3,
-                ExplicitInstantiationDefinition = 4
-            }
-
             public unsafe partial class Type : IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 8)]
                 public struct Internal
                 {
                     [FieldOffset(0)]
-                    internal CppSharp.Parser.AST.TypeKind Kind;
+                    public CppSharp.Parser.AST.TypeKind Kind;
 
                     [FieldOffset(4)]
-                    internal bool IsDependent;
+                    public bool IsDependent;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -301,13 +301,13 @@ namespace CppSharp
                 public struct Internal
                 {
                     [FieldOffset(0)]
-                    internal bool IsConst;
+                    public bool IsConst;
 
                     [FieldOffset(1)]
-                    internal bool IsVolatile;
+                    public bool IsVolatile;
 
                     [FieldOffset(2)]
-                    internal bool IsRestrict;
+                    public bool IsRestrict;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -400,10 +400,10 @@ namespace CppSharp
                 public struct Internal
                 {
                     [FieldOffset(0)]
-                    internal global::System.IntPtr Type;
+                    public global::System.IntPtr Type;
 
                     [FieldOffset(4)]
-                    internal CppSharp.Parser.AST.TypeQualifiers.Internal Qualifiers;
+                    public CppSharp.Parser.AST.TypeQualifiers.Internal Qualifiers;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -489,13 +489,13 @@ namespace CppSharp
                 public new struct Internal
                 {
                     [FieldOffset(0)]
-                    internal CppSharp.Parser.AST.TypeKind Kind;
+                    public CppSharp.Parser.AST.TypeKind Kind;
 
                     [FieldOffset(4)]
-                    internal bool IsDependent;
+                    public bool IsDependent;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr Declaration;
+                    public global::System.IntPtr Declaration;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -557,19 +557,19 @@ namespace CppSharp
                 public new struct Internal
                 {
                     [FieldOffset(0)]
-                    internal CppSharp.Parser.AST.TypeKind Kind;
+                    public CppSharp.Parser.AST.TypeKind Kind;
 
                     [FieldOffset(4)]
-                    internal bool IsDependent;
+                    public bool IsDependent;
 
                     [FieldOffset(8)]
-                    internal CppSharp.Parser.AST.QualifiedType.Internal QualifiedType;
+                    public CppSharp.Parser.AST.QualifiedType.Internal QualifiedType;
 
                     [FieldOffset(16)]
-                    internal CppSharp.Parser.AST.ArrayType.ArraySize SizeType;
+                    public CppSharp.Parser.AST.ArrayType.ArraySize SizeType;
 
                     [FieldOffset(20)]
-                    internal int Size;
+                    public int Size;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -671,19 +671,16 @@ namespace CppSharp
                 public new struct Internal
                 {
                     [FieldOffset(0)]
-                    internal CppSharp.Parser.AST.TypeKind Kind;
+                    public CppSharp.Parser.AST.TypeKind Kind;
 
                     [FieldOffset(4)]
-                    internal bool IsDependent;
+                    public bool IsDependent;
 
                     [FieldOffset(8)]
-                    internal CppSharp.Parser.AST.QualifiedType.Internal ReturnType;
+                    public CppSharp.Parser.AST.QualifiedType.Internal ReturnType;
 
                     [FieldOffset(16)]
-                    internal CppSharp.Parser.AST.CallingConvention CallingConvention;
-
-                    [FieldOffset(20)]
-                    internal Std.Vector Parameters;
+                    public CppSharp.Parser.AST.CallingConvention CallingConvention;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -804,16 +801,16 @@ namespace CppSharp
                 public new struct Internal
                 {
                     [FieldOffset(0)]
-                    internal CppSharp.Parser.AST.TypeKind Kind;
+                    public CppSharp.Parser.AST.TypeKind Kind;
 
                     [FieldOffset(4)]
-                    internal bool IsDependent;
+                    public bool IsDependent;
 
                     [FieldOffset(8)]
-                    internal CppSharp.Parser.AST.QualifiedType.Internal QualifiedPointee;
+                    public CppSharp.Parser.AST.QualifiedType.Internal QualifiedPointee;
 
                     [FieldOffset(16)]
-                    internal CppSharp.Parser.AST.PointerType.TypeModifier Modifier;
+                    public CppSharp.Parser.AST.PointerType.TypeModifier Modifier;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -900,13 +897,13 @@ namespace CppSharp
                 public new struct Internal
                 {
                     [FieldOffset(0)]
-                    internal CppSharp.Parser.AST.TypeKind Kind;
+                    public CppSharp.Parser.AST.TypeKind Kind;
 
                     [FieldOffset(4)]
-                    internal bool IsDependent;
+                    public bool IsDependent;
 
                     [FieldOffset(8)]
-                    internal CppSharp.Parser.AST.QualifiedType.Internal Pointee;
+                    public CppSharp.Parser.AST.QualifiedType.Internal Pointee;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -970,13 +967,13 @@ namespace CppSharp
                 public new struct Internal
                 {
                     [FieldOffset(0)]
-                    internal CppSharp.Parser.AST.TypeKind Kind;
+                    public CppSharp.Parser.AST.TypeKind Kind;
 
                     [FieldOffset(4)]
-                    internal bool IsDependent;
+                    public bool IsDependent;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr Declaration;
+                    public global::System.IntPtr Declaration;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -1038,16 +1035,16 @@ namespace CppSharp
                 public new struct Internal
                 {
                     [FieldOffset(0)]
-                    internal CppSharp.Parser.AST.TypeKind Kind;
+                    public CppSharp.Parser.AST.TypeKind Kind;
 
                     [FieldOffset(4)]
-                    internal bool IsDependent;
+                    public bool IsDependent;
 
                     [FieldOffset(8)]
-                    internal CppSharp.Parser.AST.QualifiedType.Internal Modified;
+                    public CppSharp.Parser.AST.QualifiedType.Internal Modified;
 
                     [FieldOffset(16)]
-                    internal CppSharp.Parser.AST.QualifiedType.Internal Equivalent;
+                    public CppSharp.Parser.AST.QualifiedType.Internal Equivalent;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -1128,19 +1125,19 @@ namespace CppSharp
                 public new struct Internal
                 {
                     [FieldOffset(0)]
-                    internal CppSharp.Parser.AST.TypeKind Kind;
+                    public CppSharp.Parser.AST.TypeKind Kind;
 
                     [FieldOffset(4)]
-                    internal bool IsDependent;
+                    public bool IsDependent;
 
                     [FieldOffset(8)]
-                    internal CppSharp.Parser.AST.QualifiedType.Internal Decayed;
+                    public CppSharp.Parser.AST.QualifiedType.Internal Decayed;
 
                     [FieldOffset(16)]
-                    internal CppSharp.Parser.AST.QualifiedType.Internal Original;
+                    public CppSharp.Parser.AST.QualifiedType.Internal Original;
 
                     [FieldOffset(24)]
-                    internal CppSharp.Parser.AST.QualifiedType.Internal Pointee;
+                    public CppSharp.Parser.AST.QualifiedType.Internal Pointee;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -1238,16 +1235,16 @@ namespace CppSharp
                 public struct Internal
                 {
                     [FieldOffset(0)]
-                    internal CppSharp.Parser.AST.TemplateArgument.ArgumentKind Kind;
+                    public CppSharp.Parser.AST.TemplateArgument.ArgumentKind Kind;
 
                     [FieldOffset(4)]
-                    internal CppSharp.Parser.AST.QualifiedType.Internal Type;
+                    public CppSharp.Parser.AST.QualifiedType.Internal Type;
 
                     [FieldOffset(12)]
-                    internal global::System.IntPtr Declaration;
+                    public global::System.IntPtr Declaration;
 
                     [FieldOffset(16)]
-                    internal int Integral;
+                    public int Integral;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -1375,19 +1372,16 @@ namespace CppSharp
                 public new struct Internal
                 {
                     [FieldOffset(0)]
-                    internal CppSharp.Parser.AST.TypeKind Kind;
+                    public CppSharp.Parser.AST.TypeKind Kind;
 
                     [FieldOffset(4)]
-                    internal bool IsDependent;
-
-                    [FieldOffset(8)]
-                    internal Std.Vector Arguments;
+                    public bool IsDependent;
 
                     [FieldOffset(20)]
-                    internal global::System.IntPtr Template;
+                    public global::System.IntPtr Template;
 
                     [FieldOffset(24)]
-                    internal global::System.IntPtr Desugared;
+                    public global::System.IntPtr Desugared;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -1507,9 +1501,6 @@ namespace CppSharp
                 [StructLayout(LayoutKind.Explicit, Size = 24)]
                 public struct Internal
                 {
-                    [FieldOffset(0)]
-                    internal Std.String Name;
-
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="??0TemplateParameter@AST@CppParser@CppSharp@@QAE@XZ")]
@@ -1614,13 +1605,13 @@ namespace CppSharp
                 public new struct Internal
                 {
                     [FieldOffset(0)]
-                    internal CppSharp.Parser.AST.TypeKind Kind;
+                    public CppSharp.Parser.AST.TypeKind Kind;
 
                     [FieldOffset(4)]
-                    internal bool IsDependent;
+                    public bool IsDependent;
 
                     [FieldOffset(8)]
-                    internal CppSharp.Parser.AST.TemplateParameter.Internal Parameter;
+                    public CppSharp.Parser.AST.TemplateParameter.Internal Parameter;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -1689,13 +1680,13 @@ namespace CppSharp
                 public new struct Internal
                 {
                     [FieldOffset(0)]
-                    internal CppSharp.Parser.AST.TypeKind Kind;
+                    public CppSharp.Parser.AST.TypeKind Kind;
 
                     [FieldOffset(4)]
-                    internal bool IsDependent;
+                    public bool IsDependent;
 
                     [FieldOffset(8)]
-                    internal CppSharp.Parser.AST.QualifiedType.Internal Replacement;
+                    public CppSharp.Parser.AST.QualifiedType.Internal Replacement;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -1759,16 +1750,16 @@ namespace CppSharp
                 public new struct Internal
                 {
                     [FieldOffset(0)]
-                    internal CppSharp.Parser.AST.TypeKind Kind;
+                    public CppSharp.Parser.AST.TypeKind Kind;
 
                     [FieldOffset(4)]
-                    internal bool IsDependent;
+                    public bool IsDependent;
 
                     [FieldOffset(8)]
-                    internal CppSharp.Parser.AST.TemplateSpecializationType.Internal TemplateSpecialization;
+                    public CppSharp.Parser.AST.TemplateSpecializationType.Internal TemplateSpecialization;
 
                     [FieldOffset(36)]
-                    internal global::System.IntPtr Class;
+                    public global::System.IntPtr Class;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -1852,10 +1843,10 @@ namespace CppSharp
                 public new struct Internal
                 {
                     [FieldOffset(0)]
-                    internal CppSharp.Parser.AST.TypeKind Kind;
+                    public CppSharp.Parser.AST.TypeKind Kind;
 
                     [FieldOffset(4)]
-                    internal bool IsDependent;
+                    public bool IsDependent;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -1902,10 +1893,10 @@ namespace CppSharp
                 public new struct Internal
                 {
                     [FieldOffset(0)]
-                    internal CppSharp.Parser.AST.TypeKind Kind;
+                    public CppSharp.Parser.AST.TypeKind Kind;
 
                     [FieldOffset(4)]
-                    internal bool IsDependent;
+                    public bool IsDependent;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -1952,13 +1943,13 @@ namespace CppSharp
                 public new struct Internal
                 {
                     [FieldOffset(0)]
-                    internal CppSharp.Parser.AST.TypeKind Kind;
+                    public CppSharp.Parser.AST.TypeKind Kind;
 
                     [FieldOffset(4)]
-                    internal bool IsDependent;
+                    public bool IsDependent;
 
                     [FieldOffset(8)]
-                    internal CppSharp.Parser.AST.PrimitiveType Type;
+                    public CppSharp.Parser.AST.PrimitiveType Type;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -2020,13 +2011,13 @@ namespace CppSharp
                 public struct Internal
                 {
                     [FieldOffset(0)]
-                    internal CppSharp.Parser.AST.VTableComponentKind Kind;
+                    public CppSharp.Parser.AST.VTableComponentKind Kind;
 
                     [FieldOffset(4)]
-                    internal uint Offset;
+                    public uint Offset;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr Declaration;
+                    public global::System.IntPtr Declaration;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -2124,9 +2115,6 @@ namespace CppSharp
                 [StructLayout(LayoutKind.Explicit, Size = 12)]
                 public struct Internal
                 {
-                    [FieldOffset(0)]
-                    internal Std.Vector Components;
-
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="??0VTableLayout@AST@CppParser@CppSharp@@QAE@XZ")]
@@ -2224,16 +2212,16 @@ namespace CppSharp
                 public struct Internal
                 {
                     [FieldOffset(0)]
-                    internal ulong VBTableIndex;
+                    public ulong VBTableIndex;
 
                     [FieldOffset(8)]
-                    internal uint VFPtrOffset;
+                    public uint VFPtrOffset;
 
                     [FieldOffset(12)]
-                    internal uint VFPtrFullOffset;
+                    public uint VFPtrFullOffset;
 
                     [FieldOffset(16)]
-                    internal CppSharp.Parser.AST.VTableLayout.Internal Layout;
+                    public CppSharp.Parser.AST.VTableLayout.Internal Layout;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -2355,28 +2343,25 @@ namespace CppSharp
                 public struct Internal
                 {
                     [FieldOffset(0)]
-                    internal CppSharp.Parser.AST.CppAbi ABI;
-
-                    [FieldOffset(4)]
-                    internal Std.Vector VFTables;
+                    public CppSharp.Parser.AST.CppAbi ABI;
 
                     [FieldOffset(16)]
-                    internal CppSharp.Parser.AST.VTableLayout.Internal Layout;
+                    public CppSharp.Parser.AST.VTableLayout.Internal Layout;
 
                     [FieldOffset(28)]
-                    internal bool HasOwnVFPtr;
+                    public bool HasOwnVFPtr;
 
                     [FieldOffset(32)]
-                    internal int VBPtrOffset;
+                    public int VBPtrOffset;
 
                     [FieldOffset(36)]
-                    internal int Alignment;
+                    public int Alignment;
 
                     [FieldOffset(40)]
-                    internal int Size;
+                    public int Size;
 
                     [FieldOffset(44)]
-                    internal int DataSize;
+                    public int DataSize;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -2582,40 +2567,31 @@ namespace CppSharp
                 public struct Internal
                 {
                     [FieldOffset(0)]
-                    internal CppSharp.Parser.AST.DeclarationKind Kind;
+                    public CppSharp.Parser.AST.DeclarationKind Kind;
 
                     [FieldOffset(4)]
-                    internal CppSharp.Parser.AST.AccessSpecifier Access;
+                    public CppSharp.Parser.AST.AccessSpecifier Access;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _Namespace;
-
-                    [FieldOffset(12)]
-                    internal Std.String Name;
+                    public global::System.IntPtr _Namespace;
 
                     [FieldOffset(36)]
-                    internal global::System.IntPtr Comment;
-
-                    [FieldOffset(40)]
-                    internal Std.String DebugText;
+                    public global::System.IntPtr Comment;
 
                     [FieldOffset(64)]
-                    internal bool IsIncomplete;
+                    public bool IsIncomplete;
 
                     [FieldOffset(65)]
-                    internal bool IsDependent;
+                    public bool IsDependent;
 
                     [FieldOffset(68)]
-                    internal global::System.IntPtr CompleteDeclaration;
+                    public global::System.IntPtr CompleteDeclaration;
 
                     [FieldOffset(72)]
-                    internal uint DefinitionOrder;
-
-                    [FieldOffset(76)]
-                    internal Std.Vector PreprocessedEntities;
+                    public uint DefinitionOrder;
 
                     [FieldOffset(88)]
-                    internal void* OriginalPtr;
+                    public void* OriginalPtr;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -2902,77 +2878,49 @@ namespace CppSharp
                 public new struct Internal
                 {
                     [FieldOffset(0)]
-                    internal CppSharp.Parser.AST.DeclarationKind Kind;
+                    public CppSharp.Parser.AST.DeclarationKind Kind;
 
                     [FieldOffset(4)]
-                    internal CppSharp.Parser.AST.AccessSpecifier Access;
+                    public CppSharp.Parser.AST.AccessSpecifier Access;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _Namespace;
-
-                    [FieldOffset(12)]
-                    internal Std.String Name;
+                    public global::System.IntPtr _Namespace;
 
                     [FieldOffset(36)]
-                    internal global::System.IntPtr Comment;
-
-                    [FieldOffset(40)]
-                    internal Std.String DebugText;
+                    public global::System.IntPtr Comment;
 
                     [FieldOffset(64)]
-                    internal bool IsIncomplete;
+                    public bool IsIncomplete;
 
                     [FieldOffset(65)]
-                    internal bool IsDependent;
+                    public bool IsDependent;
 
                     [FieldOffset(68)]
-                    internal global::System.IntPtr CompleteDeclaration;
+                    public global::System.IntPtr CompleteDeclaration;
 
                     [FieldOffset(72)]
-                    internal uint DefinitionOrder;
-
-                    [FieldOffset(76)]
-                    internal Std.Vector PreprocessedEntities;
+                    public uint DefinitionOrder;
 
                     [FieldOffset(88)]
-                    internal void* OriginalPtr;
-
-                    [FieldOffset(92)]
-                    internal Std.Vector Namespaces;
-
-                    [FieldOffset(104)]
-                    internal Std.Vector Enums;
-
-                    [FieldOffset(116)]
-                    internal Std.Vector Functions;
-
-                    [FieldOffset(128)]
-                    internal Std.Vector Classes;
-
-                    [FieldOffset(140)]
-                    internal Std.Vector Templates;
-
-                    [FieldOffset(152)]
-                    internal Std.Vector Typedefs;
-
-                    [FieldOffset(164)]
-                    internal Std.Vector Variables;
-
-                    [FieldOffset(176)]
-                    internal Std.Map Anonymous;
+                    public void* OriginalPtr;
 
                     [FieldOffset(184)]
-                    internal bool IsAnonymous;
+                    public bool IsAnonymous;
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                        EntryPoint="??0DeclarationContext@AST@CppParser@CppSharp@@QAE@W4DeclarationKind@123@@Z")]
+                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance, CppSharp.Parser.AST.DeclarationKind kind);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="??0DeclarationContext@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    internal static extern global::System.IntPtr ctor_1(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="??0DeclarationContext@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                    internal static extern global::System.IntPtr cctor_3(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -3100,11 +3048,19 @@ namespace CppSharp
                 {
                 }
 
+                public DeclarationContext(CppSharp.Parser.AST.DeclarationKind kind)
+                    : this(IntPtr.Zero)
+                {
+                    __Instance = Marshal.AllocHGlobal(188);
+                    var arg0 = kind;
+                    Internal.ctor_0(__Instance, arg0);
+                }
+
                 public DeclarationContext()
                     : this(IntPtr.Zero)
                 {
                     __Instance = Marshal.AllocHGlobal(188);
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_1(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -3288,43 +3244,34 @@ namespace CppSharp
                 public new struct Internal
                 {
                     [FieldOffset(0)]
-                    internal CppSharp.Parser.AST.DeclarationKind Kind;
+                    public CppSharp.Parser.AST.DeclarationKind Kind;
 
                     [FieldOffset(4)]
-                    internal CppSharp.Parser.AST.AccessSpecifier Access;
+                    public CppSharp.Parser.AST.AccessSpecifier Access;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _Namespace;
-
-                    [FieldOffset(12)]
-                    internal Std.String Name;
+                    public global::System.IntPtr _Namespace;
 
                     [FieldOffset(36)]
-                    internal global::System.IntPtr Comment;
-
-                    [FieldOffset(40)]
-                    internal Std.String DebugText;
+                    public global::System.IntPtr Comment;
 
                     [FieldOffset(64)]
-                    internal bool IsIncomplete;
+                    public bool IsIncomplete;
 
                     [FieldOffset(65)]
-                    internal bool IsDependent;
+                    public bool IsDependent;
 
                     [FieldOffset(68)]
-                    internal global::System.IntPtr CompleteDeclaration;
+                    public global::System.IntPtr CompleteDeclaration;
 
                     [FieldOffset(72)]
-                    internal uint DefinitionOrder;
-
-                    [FieldOffset(76)]
-                    internal Std.Vector PreprocessedEntities;
+                    public uint DefinitionOrder;
 
                     [FieldOffset(88)]
-                    internal void* OriginalPtr;
+                    public void* OriginalPtr;
 
                     [FieldOffset(92)]
-                    internal CppSharp.Parser.AST.QualifiedType.Internal QualifiedType;
+                    public CppSharp.Parser.AST.QualifiedType.Internal QualifiedType;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -3393,52 +3340,43 @@ namespace CppSharp
                 public new struct Internal
                 {
                     [FieldOffset(0)]
-                    internal CppSharp.Parser.AST.DeclarationKind Kind;
+                    public CppSharp.Parser.AST.DeclarationKind Kind;
 
                     [FieldOffset(4)]
-                    internal CppSharp.Parser.AST.AccessSpecifier Access;
+                    public CppSharp.Parser.AST.AccessSpecifier Access;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _Namespace;
-
-                    [FieldOffset(12)]
-                    internal Std.String Name;
+                    public global::System.IntPtr _Namespace;
 
                     [FieldOffset(36)]
-                    internal global::System.IntPtr Comment;
-
-                    [FieldOffset(40)]
-                    internal Std.String DebugText;
+                    public global::System.IntPtr Comment;
 
                     [FieldOffset(64)]
-                    internal bool IsIncomplete;
+                    public bool IsIncomplete;
 
                     [FieldOffset(65)]
-                    internal bool IsDependent;
+                    public bool IsDependent;
 
                     [FieldOffset(68)]
-                    internal global::System.IntPtr CompleteDeclaration;
+                    public global::System.IntPtr CompleteDeclaration;
 
                     [FieldOffset(72)]
-                    internal uint DefinitionOrder;
-
-                    [FieldOffset(76)]
-                    internal Std.Vector PreprocessedEntities;
+                    public uint DefinitionOrder;
 
                     [FieldOffset(88)]
-                    internal void* OriginalPtr;
+                    public void* OriginalPtr;
 
                     [FieldOffset(92)]
-                    internal CppSharp.Parser.AST.QualifiedType.Internal QualifiedType;
+                    public CppSharp.Parser.AST.QualifiedType.Internal QualifiedType;
 
                     [FieldOffset(100)]
-                    internal bool IsIndirect;
+                    public bool IsIndirect;
 
                     [FieldOffset(101)]
-                    internal bool HasDefaultValue;
+                    public bool HasDefaultValue;
 
                     [FieldOffset(104)]
-                    internal uint Index;
+                    public uint Index;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -3552,73 +3490,55 @@ namespace CppSharp
                 public new struct Internal
                 {
                     [FieldOffset(0)]
-                    internal CppSharp.Parser.AST.DeclarationKind Kind;
+                    public CppSharp.Parser.AST.DeclarationKind Kind;
 
                     [FieldOffset(4)]
-                    internal CppSharp.Parser.AST.AccessSpecifier Access;
+                    public CppSharp.Parser.AST.AccessSpecifier Access;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _Namespace;
-
-                    [FieldOffset(12)]
-                    internal Std.String Name;
+                    public global::System.IntPtr _Namespace;
 
                     [FieldOffset(36)]
-                    internal global::System.IntPtr Comment;
-
-                    [FieldOffset(40)]
-                    internal Std.String DebugText;
+                    public global::System.IntPtr Comment;
 
                     [FieldOffset(64)]
-                    internal bool IsIncomplete;
+                    public bool IsIncomplete;
 
                     [FieldOffset(65)]
-                    internal bool IsDependent;
+                    public bool IsDependent;
 
                     [FieldOffset(68)]
-                    internal global::System.IntPtr CompleteDeclaration;
+                    public global::System.IntPtr CompleteDeclaration;
 
                     [FieldOffset(72)]
-                    internal uint DefinitionOrder;
-
-                    [FieldOffset(76)]
-                    internal Std.Vector PreprocessedEntities;
+                    public uint DefinitionOrder;
 
                     [FieldOffset(88)]
-                    internal void* OriginalPtr;
+                    public void* OriginalPtr;
 
                     [FieldOffset(92)]
-                    internal CppSharp.Parser.AST.QualifiedType.Internal ReturnType;
+                    public CppSharp.Parser.AST.QualifiedType.Internal ReturnType;
 
                     [FieldOffset(100)]
-                    internal bool IsReturnIndirect;
+                    public bool IsReturnIndirect;
 
                     [FieldOffset(101)]
-                    internal bool IsVariadic;
+                    public bool IsVariadic;
 
                     [FieldOffset(102)]
-                    internal bool IsInline;
+                    public bool IsInline;
 
                     [FieldOffset(103)]
-                    internal bool IsPure;
+                    public bool IsPure;
 
                     [FieldOffset(104)]
-                    internal bool IsDeleted;
+                    public bool IsDeleted;
 
                     [FieldOffset(108)]
-                    internal CppSharp.Parser.AST.CXXOperatorKind OperatorKind;
-
-                    [FieldOffset(112)]
-                    internal Std.String Mangled;
-
-                    [FieldOffset(136)]
-                    internal Std.String Signature;
+                    public CppSharp.Parser.AST.CXXOperatorKind OperatorKind;
 
                     [FieldOffset(160)]
-                    internal CppSharp.Parser.AST.CallingConvention CallingConvention;
-
-                    [FieldOffset(164)]
-                    internal Std.Vector Parameters;
+                    public CppSharp.Parser.AST.CallingConvention CallingConvention;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -3883,109 +3803,91 @@ namespace CppSharp
                 public new struct Internal
                 {
                     [FieldOffset(0)]
-                    internal CppSharp.Parser.AST.DeclarationKind Kind;
+                    public CppSharp.Parser.AST.DeclarationKind Kind;
 
                     [FieldOffset(4)]
-                    internal CppSharp.Parser.AST.AccessSpecifier Access;
+                    public CppSharp.Parser.AST.AccessSpecifier Access;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _Namespace;
-
-                    [FieldOffset(12)]
-                    internal Std.String Name;
+                    public global::System.IntPtr _Namespace;
 
                     [FieldOffset(36)]
-                    internal global::System.IntPtr Comment;
-
-                    [FieldOffset(40)]
-                    internal Std.String DebugText;
+                    public global::System.IntPtr Comment;
 
                     [FieldOffset(64)]
-                    internal bool IsIncomplete;
+                    public bool IsIncomplete;
 
                     [FieldOffset(65)]
-                    internal bool IsDependent;
+                    public bool IsDependent;
 
                     [FieldOffset(68)]
-                    internal global::System.IntPtr CompleteDeclaration;
+                    public global::System.IntPtr CompleteDeclaration;
 
                     [FieldOffset(72)]
-                    internal uint DefinitionOrder;
-
-                    [FieldOffset(76)]
-                    internal Std.Vector PreprocessedEntities;
+                    public uint DefinitionOrder;
 
                     [FieldOffset(88)]
-                    internal void* OriginalPtr;
+                    public void* OriginalPtr;
 
                     [FieldOffset(92)]
-                    internal CppSharp.Parser.AST.QualifiedType.Internal ReturnType;
+                    public CppSharp.Parser.AST.QualifiedType.Internal ReturnType;
 
                     [FieldOffset(100)]
-                    internal bool IsReturnIndirect;
+                    public bool IsReturnIndirect;
 
                     [FieldOffset(101)]
-                    internal bool IsVariadic;
+                    public bool IsVariadic;
 
                     [FieldOffset(102)]
-                    internal bool IsInline;
+                    public bool IsInline;
 
                     [FieldOffset(103)]
-                    internal bool IsPure;
+                    public bool IsPure;
 
                     [FieldOffset(104)]
-                    internal bool IsDeleted;
+                    public bool IsDeleted;
 
                     [FieldOffset(108)]
-                    internal CppSharp.Parser.AST.CXXOperatorKind OperatorKind;
-
-                    [FieldOffset(112)]
-                    internal Std.String Mangled;
-
-                    [FieldOffset(136)]
-                    internal Std.String Signature;
+                    public CppSharp.Parser.AST.CXXOperatorKind OperatorKind;
 
                     [FieldOffset(160)]
-                    internal CppSharp.Parser.AST.CallingConvention CallingConvention;
-
-                    [FieldOffset(164)]
-                    internal Std.Vector Parameters;
+                    public CppSharp.Parser.AST.CallingConvention CallingConvention;
 
                     [FieldOffset(176)]
-                    internal global::System.IntPtr AccessDecl;
+                    public global::System.IntPtr AccessDecl;
 
                     [FieldOffset(180)]
-                    internal bool IsVirtual;
+                    public bool IsVirtual;
 
                     [FieldOffset(181)]
-                    internal bool IsStatic;
+                    public bool IsStatic;
 
                     [FieldOffset(182)]
-                    internal bool IsConst;
+                    public bool IsConst;
 
                     [FieldOffset(183)]
-                    internal bool IsImplicit;
+                    public bool IsImplicit;
 
                     [FieldOffset(184)]
-                    internal bool IsExplicit;
+                    public bool IsExplicit;
 
                     [FieldOffset(185)]
-                    internal bool IsOverride;
+                    public bool IsOverride;
 
                     [FieldOffset(188)]
-                    internal CppSharp.Parser.AST.CXXMethodKind MethodKind;
+                    public CppSharp.Parser.AST.CXXMethodKind MethodKind;
 
                     [FieldOffset(192)]
-                    internal bool IsDefaultConstructor;
+                    public bool IsDefaultConstructor;
 
                     [FieldOffset(193)]
-                    internal bool IsCopyConstructor;
+                    public bool IsCopyConstructor;
 
                     [FieldOffset(194)]
-                    internal bool IsMoveConstructor;
+                    public bool IsMoveConstructor;
 
                     [FieldOffset(196)]
-                    internal CppSharp.Parser.AST.QualifiedType.Internal ConversionType;
+                    public CppSharp.Parser.AST.QualifiedType.Internal ConversionType;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -4219,52 +4121,40 @@ namespace CppSharp
                 public new struct Internal
                 {
                     [FieldOffset(0)]
-                    internal CppSharp.Parser.AST.DeclarationKind Kind;
+                    public CppSharp.Parser.AST.DeclarationKind Kind;
 
                     [FieldOffset(4)]
-                    internal CppSharp.Parser.AST.AccessSpecifier Access;
+                    public CppSharp.Parser.AST.AccessSpecifier Access;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _Namespace;
-
-                    [FieldOffset(12)]
-                    internal Std.String Name;
+                    public global::System.IntPtr _Namespace;
 
                     [FieldOffset(36)]
-                    internal global::System.IntPtr Comment;
-
-                    [FieldOffset(40)]
-                    internal Std.String DebugText;
+                    public global::System.IntPtr Comment;
 
                     [FieldOffset(64)]
-                    internal bool IsIncomplete;
+                    public bool IsIncomplete;
 
                     [FieldOffset(65)]
-                    internal bool IsDependent;
+                    public bool IsDependent;
 
                     [FieldOffset(68)]
-                    internal global::System.IntPtr CompleteDeclaration;
+                    public global::System.IntPtr CompleteDeclaration;
 
                     [FieldOffset(72)]
-                    internal uint DefinitionOrder;
-
-                    [FieldOffset(76)]
-                    internal Std.Vector PreprocessedEntities;
+                    public uint DefinitionOrder;
 
                     [FieldOffset(88)]
-                    internal void* OriginalPtr;
+                    public void* OriginalPtr;
 
                     [FieldOffset(92)]
-                    internal CppSharp.Parser.AST.Enumeration.EnumModifiers Modifiers;
+                    public CppSharp.Parser.AST.Enumeration.EnumModifiers Modifiers;
 
                     [FieldOffset(96)]
-                    internal global::System.IntPtr Type;
+                    public global::System.IntPtr Type;
 
                     [FieldOffset(100)]
-                    internal global::System.IntPtr BuiltinType;
-
-                    [FieldOffset(104)]
-                    internal Std.Vector Items;
+                    public global::System.IntPtr BuiltinType;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -4311,46 +4201,34 @@ namespace CppSharp
                     public new struct Internal
                     {
                         [FieldOffset(0)]
-                        internal CppSharp.Parser.AST.DeclarationKind Kind;
+                        public CppSharp.Parser.AST.DeclarationKind Kind;
 
                         [FieldOffset(4)]
-                        internal CppSharp.Parser.AST.AccessSpecifier Access;
+                        public CppSharp.Parser.AST.AccessSpecifier Access;
 
                         [FieldOffset(8)]
-                        internal global::System.IntPtr _Namespace;
-
-                        [FieldOffset(12)]
-                        internal Std.String Name;
+                        public global::System.IntPtr _Namespace;
 
                         [FieldOffset(36)]
-                        internal global::System.IntPtr Comment;
-
-                        [FieldOffset(40)]
-                        internal Std.String DebugText;
+                        public global::System.IntPtr Comment;
 
                         [FieldOffset(64)]
-                        internal bool IsIncomplete;
+                        public bool IsIncomplete;
 
                         [FieldOffset(65)]
-                        internal bool IsDependent;
+                        public bool IsDependent;
 
                         [FieldOffset(68)]
-                        internal global::System.IntPtr CompleteDeclaration;
+                        public global::System.IntPtr CompleteDeclaration;
 
                         [FieldOffset(72)]
-                        internal uint DefinitionOrder;
-
-                        [FieldOffset(76)]
-                        internal Std.Vector PreprocessedEntities;
+                        public uint DefinitionOrder;
 
                         [FieldOffset(88)]
-                        internal void* OriginalPtr;
-
-                        [FieldOffset(92)]
-                        internal Std.String Expression;
+                        public void* OriginalPtr;
 
                         [FieldOffset(120)]
-                        internal ulong Value;
+                        public ulong Value;
 
                         [SuppressUnmanagedCodeSecurity]
                         [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -4541,46 +4419,34 @@ namespace CppSharp
                 public new struct Internal
                 {
                     [FieldOffset(0)]
-                    internal CppSharp.Parser.AST.DeclarationKind Kind;
+                    public CppSharp.Parser.AST.DeclarationKind Kind;
 
                     [FieldOffset(4)]
-                    internal CppSharp.Parser.AST.AccessSpecifier Access;
+                    public CppSharp.Parser.AST.AccessSpecifier Access;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _Namespace;
-
-                    [FieldOffset(12)]
-                    internal Std.String Name;
+                    public global::System.IntPtr _Namespace;
 
                     [FieldOffset(36)]
-                    internal global::System.IntPtr Comment;
-
-                    [FieldOffset(40)]
-                    internal Std.String DebugText;
+                    public global::System.IntPtr Comment;
 
                     [FieldOffset(64)]
-                    internal bool IsIncomplete;
+                    public bool IsIncomplete;
 
                     [FieldOffset(65)]
-                    internal bool IsDependent;
+                    public bool IsDependent;
 
                     [FieldOffset(68)]
-                    internal global::System.IntPtr CompleteDeclaration;
+                    public global::System.IntPtr CompleteDeclaration;
 
                     [FieldOffset(72)]
-                    internal uint DefinitionOrder;
-
-                    [FieldOffset(76)]
-                    internal Std.Vector PreprocessedEntities;
+                    public uint DefinitionOrder;
 
                     [FieldOffset(88)]
-                    internal void* OriginalPtr;
-
-                    [FieldOffset(92)]
-                    internal Std.String Mangled;
+                    public void* OriginalPtr;
 
                     [FieldOffset(116)]
-                    internal CppSharp.Parser.AST.QualifiedType.Internal QualifiedType;
+                    public CppSharp.Parser.AST.QualifiedType.Internal QualifiedType;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -4676,13 +4542,13 @@ namespace CppSharp
                 public struct Internal
                 {
                     [FieldOffset(0)]
-                    internal CppSharp.Parser.AST.AccessSpecifier Access;
+                    public CppSharp.Parser.AST.AccessSpecifier Access;
 
                     [FieldOffset(4)]
-                    internal bool IsVirtual;
+                    public bool IsVirtual;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr Type;
+                    public global::System.IntPtr Type;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -4781,49 +4647,40 @@ namespace CppSharp
                 public new struct Internal
                 {
                     [FieldOffset(0)]
-                    internal CppSharp.Parser.AST.DeclarationKind Kind;
+                    public CppSharp.Parser.AST.DeclarationKind Kind;
 
                     [FieldOffset(4)]
-                    internal CppSharp.Parser.AST.AccessSpecifier Access;
+                    public CppSharp.Parser.AST.AccessSpecifier Access;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _Namespace;
-
-                    [FieldOffset(12)]
-                    internal Std.String Name;
+                    public global::System.IntPtr _Namespace;
 
                     [FieldOffset(36)]
-                    internal global::System.IntPtr Comment;
-
-                    [FieldOffset(40)]
-                    internal Std.String DebugText;
+                    public global::System.IntPtr Comment;
 
                     [FieldOffset(64)]
-                    internal bool IsIncomplete;
+                    public bool IsIncomplete;
 
                     [FieldOffset(65)]
-                    internal bool IsDependent;
+                    public bool IsDependent;
 
                     [FieldOffset(68)]
-                    internal global::System.IntPtr CompleteDeclaration;
+                    public global::System.IntPtr CompleteDeclaration;
 
                     [FieldOffset(72)]
-                    internal uint DefinitionOrder;
-
-                    [FieldOffset(76)]
-                    internal Std.Vector PreprocessedEntities;
+                    public uint DefinitionOrder;
 
                     [FieldOffset(88)]
-                    internal void* OriginalPtr;
+                    public void* OriginalPtr;
 
                     [FieldOffset(92)]
-                    internal CppSharp.Parser.AST.QualifiedType.Internal QualifiedType;
+                    public CppSharp.Parser.AST.QualifiedType.Internal QualifiedType;
 
                     [FieldOffset(100)]
-                    internal uint Offset;
+                    public uint Offset;
 
                     [FieldOffset(104)]
-                    internal global::System.IntPtr Class;
+                    public global::System.IntPtr Class;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -4922,40 +4779,31 @@ namespace CppSharp
                 public new struct Internal
                 {
                     [FieldOffset(0)]
-                    internal CppSharp.Parser.AST.DeclarationKind Kind;
+                    public CppSharp.Parser.AST.DeclarationKind Kind;
 
                     [FieldOffset(4)]
-                    internal CppSharp.Parser.AST.AccessSpecifier Access;
+                    public CppSharp.Parser.AST.AccessSpecifier Access;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _Namespace;
-
-                    [FieldOffset(12)]
-                    internal Std.String Name;
+                    public global::System.IntPtr _Namespace;
 
                     [FieldOffset(36)]
-                    internal global::System.IntPtr Comment;
-
-                    [FieldOffset(40)]
-                    internal Std.String DebugText;
+                    public global::System.IntPtr Comment;
 
                     [FieldOffset(64)]
-                    internal bool IsIncomplete;
+                    public bool IsIncomplete;
 
                     [FieldOffset(65)]
-                    internal bool IsDependent;
+                    public bool IsDependent;
 
                     [FieldOffset(68)]
-                    internal global::System.IntPtr CompleteDeclaration;
+                    public global::System.IntPtr CompleteDeclaration;
 
                     [FieldOffset(72)]
-                    internal uint DefinitionOrder;
-
-                    [FieldOffset(76)]
-                    internal Std.Vector PreprocessedEntities;
+                    public uint DefinitionOrder;
 
                     [FieldOffset(88)]
-                    internal void* OriginalPtr;
+                    public void* OriginalPtr;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -5007,109 +4855,64 @@ namespace CppSharp
                 public new struct Internal
                 {
                     [FieldOffset(0)]
-                    internal CppSharp.Parser.AST.DeclarationKind Kind;
+                    public CppSharp.Parser.AST.DeclarationKind Kind;
 
                     [FieldOffset(4)]
-                    internal CppSharp.Parser.AST.AccessSpecifier Access;
+                    public CppSharp.Parser.AST.AccessSpecifier Access;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _Namespace;
-
-                    [FieldOffset(12)]
-                    internal Std.String Name;
+                    public global::System.IntPtr _Namespace;
 
                     [FieldOffset(36)]
-                    internal global::System.IntPtr Comment;
-
-                    [FieldOffset(40)]
-                    internal Std.String DebugText;
+                    public global::System.IntPtr Comment;
 
                     [FieldOffset(64)]
-                    internal bool IsIncomplete;
+                    public bool IsIncomplete;
 
                     [FieldOffset(65)]
-                    internal bool IsDependent;
+                    public bool IsDependent;
 
                     [FieldOffset(68)]
-                    internal global::System.IntPtr CompleteDeclaration;
+                    public global::System.IntPtr CompleteDeclaration;
 
                     [FieldOffset(72)]
-                    internal uint DefinitionOrder;
-
-                    [FieldOffset(76)]
-                    internal Std.Vector PreprocessedEntities;
+                    public uint DefinitionOrder;
 
                     [FieldOffset(88)]
-                    internal void* OriginalPtr;
-
-                    [FieldOffset(92)]
-                    internal Std.Vector Namespaces;
-
-                    [FieldOffset(104)]
-                    internal Std.Vector Enums;
-
-                    [FieldOffset(116)]
-                    internal Std.Vector Functions;
-
-                    [FieldOffset(128)]
-                    internal Std.Vector Classes;
-
-                    [FieldOffset(140)]
-                    internal Std.Vector Templates;
-
-                    [FieldOffset(152)]
-                    internal Std.Vector Typedefs;
-
-                    [FieldOffset(164)]
-                    internal Std.Vector Variables;
-
-                    [FieldOffset(176)]
-                    internal Std.Map Anonymous;
+                    public void* OriginalPtr;
 
                     [FieldOffset(184)]
-                    internal bool IsAnonymous;
-
-                    [FieldOffset(188)]
-                    internal Std.Vector Bases;
-
-                    [FieldOffset(200)]
-                    internal Std.Vector Fields;
-
-                    [FieldOffset(212)]
-                    internal Std.Vector Methods;
-
-                    [FieldOffset(224)]
-                    internal Std.Vector Specifiers;
+                    public bool IsAnonymous;
 
                     [FieldOffset(236)]
-                    internal bool IsPOD;
+                    public bool IsPOD;
 
                     [FieldOffset(237)]
-                    internal bool IsAbstract;
+                    public bool IsAbstract;
 
                     [FieldOffset(238)]
-                    internal bool IsUnion;
+                    public bool IsUnion;
 
                     [FieldOffset(239)]
-                    internal bool IsDynamic;
+                    public bool IsDynamic;
 
                     [FieldOffset(240)]
-                    internal bool IsPolymorphic;
+                    public bool IsPolymorphic;
 
                     [FieldOffset(241)]
-                    internal bool HasNonTrivialDefaultConstructor;
+                    public bool HasNonTrivialDefaultConstructor;
 
                     [FieldOffset(242)]
-                    internal bool HasNonTrivialCopyConstructor;
+                    public bool HasNonTrivialCopyConstructor;
 
                     [FieldOffset(243)]
-                    internal bool HasNonTrivialDestructor;
+                    public bool HasNonTrivialDestructor;
 
                     [FieldOffset(244)]
-                    internal bool IsExternCContext;
+                    public bool IsExternCContext;
 
                     [FieldOffset(248)]
-                    internal global::System.IntPtr Layout;
+                    public global::System.IntPtr Layout;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -5459,56 +5262,49 @@ namespace CppSharp
                 public new struct Internal
                 {
                     [FieldOffset(0)]
-                    internal CppSharp.Parser.AST.DeclarationKind Kind;
+                    public CppSharp.Parser.AST.DeclarationKind Kind;
 
                     [FieldOffset(4)]
-                    internal CppSharp.Parser.AST.AccessSpecifier Access;
+                    public CppSharp.Parser.AST.AccessSpecifier Access;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _Namespace;
-
-                    [FieldOffset(12)]
-                    internal Std.String Name;
+                    public global::System.IntPtr _Namespace;
 
                     [FieldOffset(36)]
-                    internal global::System.IntPtr Comment;
-
-                    [FieldOffset(40)]
-                    internal Std.String DebugText;
+                    public global::System.IntPtr Comment;
 
                     [FieldOffset(64)]
-                    internal bool IsIncomplete;
+                    public bool IsIncomplete;
 
                     [FieldOffset(65)]
-                    internal bool IsDependent;
+                    public bool IsDependent;
 
                     [FieldOffset(68)]
-                    internal global::System.IntPtr CompleteDeclaration;
+                    public global::System.IntPtr CompleteDeclaration;
 
                     [FieldOffset(72)]
-                    internal uint DefinitionOrder;
-
-                    [FieldOffset(76)]
-                    internal Std.Vector PreprocessedEntities;
+                    public uint DefinitionOrder;
 
                     [FieldOffset(88)]
-                    internal void* OriginalPtr;
+                    public void* OriginalPtr;
 
                     [FieldOffset(92)]
-                    internal global::System.IntPtr TemplatedDecl;
+                    public global::System.IntPtr TemplatedDecl;
 
-                    [FieldOffset(96)]
-                    internal Std.Vector Parameters;
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                        EntryPoint="??0Template@AST@CppParser@CppSharp@@QAE@W4DeclarationKind@123@@Z")]
+                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance, CppSharp.Parser.AST.DeclarationKind kind);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="??0Template@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    internal static extern global::System.IntPtr ctor_1(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="??0Template@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                    internal static extern global::System.IntPtr cctor_3(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -5546,11 +5342,19 @@ namespace CppSharp
                 {
                 }
 
+                public Template(CppSharp.Parser.AST.DeclarationKind kind)
+                    : this(IntPtr.Zero)
+                {
+                    __Instance = Marshal.AllocHGlobal(108);
+                    var arg0 = kind;
+                    Internal.ctor_0(__Instance, arg0);
+                }
+
                 public Template()
                     : this(IntPtr.Zero)
                 {
                     __Instance = Marshal.AllocHGlobal(108);
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_1(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -5604,49 +5408,34 @@ namespace CppSharp
                 public new struct Internal
                 {
                     [FieldOffset(0)]
-                    internal CppSharp.Parser.AST.DeclarationKind Kind;
+                    public CppSharp.Parser.AST.DeclarationKind Kind;
 
                     [FieldOffset(4)]
-                    internal CppSharp.Parser.AST.AccessSpecifier Access;
+                    public CppSharp.Parser.AST.AccessSpecifier Access;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _Namespace;
-
-                    [FieldOffset(12)]
-                    internal Std.String Name;
+                    public global::System.IntPtr _Namespace;
 
                     [FieldOffset(36)]
-                    internal global::System.IntPtr Comment;
-
-                    [FieldOffset(40)]
-                    internal Std.String DebugText;
+                    public global::System.IntPtr Comment;
 
                     [FieldOffset(64)]
-                    internal bool IsIncomplete;
+                    public bool IsIncomplete;
 
                     [FieldOffset(65)]
-                    internal bool IsDependent;
+                    public bool IsDependent;
 
                     [FieldOffset(68)]
-                    internal global::System.IntPtr CompleteDeclaration;
+                    public global::System.IntPtr CompleteDeclaration;
 
                     [FieldOffset(72)]
-                    internal uint DefinitionOrder;
-
-                    [FieldOffset(76)]
-                    internal Std.Vector PreprocessedEntities;
+                    public uint DefinitionOrder;
 
                     [FieldOffset(88)]
-                    internal void* OriginalPtr;
+                    public void* OriginalPtr;
 
                     [FieldOffset(92)]
-                    internal global::System.IntPtr TemplatedDecl;
-
-                    [FieldOffset(96)]
-                    internal Std.Vector Parameters;
-
-                    [FieldOffset(108)]
-                    internal Std.Vector Specializations;
+                    public global::System.IntPtr TemplatedDecl;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -5787,118 +5576,70 @@ namespace CppSharp
                 public new struct Internal
                 {
                     [FieldOffset(0)]
-                    internal CppSharp.Parser.AST.DeclarationKind Kind;
+                    public CppSharp.Parser.AST.DeclarationKind Kind;
 
                     [FieldOffset(4)]
-                    internal CppSharp.Parser.AST.AccessSpecifier Access;
+                    public CppSharp.Parser.AST.AccessSpecifier Access;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _Namespace;
-
-                    [FieldOffset(12)]
-                    internal Std.String Name;
+                    public global::System.IntPtr _Namespace;
 
                     [FieldOffset(36)]
-                    internal global::System.IntPtr Comment;
-
-                    [FieldOffset(40)]
-                    internal Std.String DebugText;
+                    public global::System.IntPtr Comment;
 
                     [FieldOffset(64)]
-                    internal bool IsIncomplete;
+                    public bool IsIncomplete;
 
                     [FieldOffset(65)]
-                    internal bool IsDependent;
+                    public bool IsDependent;
 
                     [FieldOffset(68)]
-                    internal global::System.IntPtr CompleteDeclaration;
+                    public global::System.IntPtr CompleteDeclaration;
 
                     [FieldOffset(72)]
-                    internal uint DefinitionOrder;
-
-                    [FieldOffset(76)]
-                    internal Std.Vector PreprocessedEntities;
+                    public uint DefinitionOrder;
 
                     [FieldOffset(88)]
-                    internal void* OriginalPtr;
-
-                    [FieldOffset(92)]
-                    internal Std.Vector Namespaces;
-
-                    [FieldOffset(104)]
-                    internal Std.Vector Enums;
-
-                    [FieldOffset(116)]
-                    internal Std.Vector Functions;
-
-                    [FieldOffset(128)]
-                    internal Std.Vector Classes;
-
-                    [FieldOffset(140)]
-                    internal Std.Vector Templates;
-
-                    [FieldOffset(152)]
-                    internal Std.Vector Typedefs;
-
-                    [FieldOffset(164)]
-                    internal Std.Vector Variables;
-
-                    [FieldOffset(176)]
-                    internal Std.Map Anonymous;
+                    public void* OriginalPtr;
 
                     [FieldOffset(184)]
-                    internal bool IsAnonymous;
-
-                    [FieldOffset(188)]
-                    internal Std.Vector Bases;
-
-                    [FieldOffset(200)]
-                    internal Std.Vector Fields;
-
-                    [FieldOffset(212)]
-                    internal Std.Vector Methods;
-
-                    [FieldOffset(224)]
-                    internal Std.Vector Specifiers;
+                    public bool IsAnonymous;
 
                     [FieldOffset(236)]
-                    internal bool IsPOD;
+                    public bool IsPOD;
 
                     [FieldOffset(237)]
-                    internal bool IsAbstract;
+                    public bool IsAbstract;
 
                     [FieldOffset(238)]
-                    internal bool IsUnion;
+                    public bool IsUnion;
 
                     [FieldOffset(239)]
-                    internal bool IsDynamic;
+                    public bool IsDynamic;
 
                     [FieldOffset(240)]
-                    internal bool IsPolymorphic;
+                    public bool IsPolymorphic;
 
                     [FieldOffset(241)]
-                    internal bool HasNonTrivialDefaultConstructor;
+                    public bool HasNonTrivialDefaultConstructor;
 
                     [FieldOffset(242)]
-                    internal bool HasNonTrivialCopyConstructor;
+                    public bool HasNonTrivialCopyConstructor;
 
                     [FieldOffset(243)]
-                    internal bool HasNonTrivialDestructor;
+                    public bool HasNonTrivialDestructor;
 
                     [FieldOffset(244)]
-                    internal bool IsExternCContext;
+                    public bool IsExternCContext;
 
                     [FieldOffset(248)]
-                    internal global::System.IntPtr Layout;
+                    public global::System.IntPtr Layout;
 
                     [FieldOffset(252)]
-                    internal global::System.IntPtr TemplatedDecl;
-
-                    [FieldOffset(256)]
-                    internal Std.Vector Arguments;
+                    public global::System.IntPtr TemplatedDecl;
 
                     [FieldOffset(268)]
-                    internal CppSharp.Parser.AST.TemplateSpecializationKind SpecializationKind;
+                    public CppSharp.Parser.AST.TemplateSpecializationKind SpecializationKind;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -6019,118 +5760,70 @@ namespace CppSharp
                 public new struct Internal
                 {
                     [FieldOffset(0)]
-                    internal CppSharp.Parser.AST.DeclarationKind Kind;
+                    public CppSharp.Parser.AST.DeclarationKind Kind;
 
                     [FieldOffset(4)]
-                    internal CppSharp.Parser.AST.AccessSpecifier Access;
+                    public CppSharp.Parser.AST.AccessSpecifier Access;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _Namespace;
-
-                    [FieldOffset(12)]
-                    internal Std.String Name;
+                    public global::System.IntPtr _Namespace;
 
                     [FieldOffset(36)]
-                    internal global::System.IntPtr Comment;
-
-                    [FieldOffset(40)]
-                    internal Std.String DebugText;
+                    public global::System.IntPtr Comment;
 
                     [FieldOffset(64)]
-                    internal bool IsIncomplete;
+                    public bool IsIncomplete;
 
                     [FieldOffset(65)]
-                    internal bool IsDependent;
+                    public bool IsDependent;
 
                     [FieldOffset(68)]
-                    internal global::System.IntPtr CompleteDeclaration;
+                    public global::System.IntPtr CompleteDeclaration;
 
                     [FieldOffset(72)]
-                    internal uint DefinitionOrder;
-
-                    [FieldOffset(76)]
-                    internal Std.Vector PreprocessedEntities;
+                    public uint DefinitionOrder;
 
                     [FieldOffset(88)]
-                    internal void* OriginalPtr;
-
-                    [FieldOffset(92)]
-                    internal Std.Vector Namespaces;
-
-                    [FieldOffset(104)]
-                    internal Std.Vector Enums;
-
-                    [FieldOffset(116)]
-                    internal Std.Vector Functions;
-
-                    [FieldOffset(128)]
-                    internal Std.Vector Classes;
-
-                    [FieldOffset(140)]
-                    internal Std.Vector Templates;
-
-                    [FieldOffset(152)]
-                    internal Std.Vector Typedefs;
-
-                    [FieldOffset(164)]
-                    internal Std.Vector Variables;
-
-                    [FieldOffset(176)]
-                    internal Std.Map Anonymous;
+                    public void* OriginalPtr;
 
                     [FieldOffset(184)]
-                    internal bool IsAnonymous;
-
-                    [FieldOffset(188)]
-                    internal Std.Vector Bases;
-
-                    [FieldOffset(200)]
-                    internal Std.Vector Fields;
-
-                    [FieldOffset(212)]
-                    internal Std.Vector Methods;
-
-                    [FieldOffset(224)]
-                    internal Std.Vector Specifiers;
+                    public bool IsAnonymous;
 
                     [FieldOffset(236)]
-                    internal bool IsPOD;
+                    public bool IsPOD;
 
                     [FieldOffset(237)]
-                    internal bool IsAbstract;
+                    public bool IsAbstract;
 
                     [FieldOffset(238)]
-                    internal bool IsUnion;
+                    public bool IsUnion;
 
                     [FieldOffset(239)]
-                    internal bool IsDynamic;
+                    public bool IsDynamic;
 
                     [FieldOffset(240)]
-                    internal bool IsPolymorphic;
+                    public bool IsPolymorphic;
 
                     [FieldOffset(241)]
-                    internal bool HasNonTrivialDefaultConstructor;
+                    public bool HasNonTrivialDefaultConstructor;
 
                     [FieldOffset(242)]
-                    internal bool HasNonTrivialCopyConstructor;
+                    public bool HasNonTrivialCopyConstructor;
 
                     [FieldOffset(243)]
-                    internal bool HasNonTrivialDestructor;
+                    public bool HasNonTrivialDestructor;
 
                     [FieldOffset(244)]
-                    internal bool IsExternCContext;
+                    public bool IsExternCContext;
 
                     [FieldOffset(248)]
-                    internal global::System.IntPtr Layout;
+                    public global::System.IntPtr Layout;
 
                     [FieldOffset(252)]
-                    internal global::System.IntPtr TemplatedDecl;
-
-                    [FieldOffset(256)]
-                    internal Std.Vector Arguments;
+                    public global::System.IntPtr TemplatedDecl;
 
                     [FieldOffset(268)]
-                    internal CppSharp.Parser.AST.TemplateSpecializationKind SpecializationKind;
+                    public CppSharp.Parser.AST.TemplateSpecializationKind SpecializationKind;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -6182,46 +5875,34 @@ namespace CppSharp
                 public new struct Internal
                 {
                     [FieldOffset(0)]
-                    internal CppSharp.Parser.AST.DeclarationKind Kind;
+                    public CppSharp.Parser.AST.DeclarationKind Kind;
 
                     [FieldOffset(4)]
-                    internal CppSharp.Parser.AST.AccessSpecifier Access;
+                    public CppSharp.Parser.AST.AccessSpecifier Access;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _Namespace;
-
-                    [FieldOffset(12)]
-                    internal Std.String Name;
+                    public global::System.IntPtr _Namespace;
 
                     [FieldOffset(36)]
-                    internal global::System.IntPtr Comment;
-
-                    [FieldOffset(40)]
-                    internal Std.String DebugText;
+                    public global::System.IntPtr Comment;
 
                     [FieldOffset(64)]
-                    internal bool IsIncomplete;
+                    public bool IsIncomplete;
 
                     [FieldOffset(65)]
-                    internal bool IsDependent;
+                    public bool IsDependent;
 
                     [FieldOffset(68)]
-                    internal global::System.IntPtr CompleteDeclaration;
+                    public global::System.IntPtr CompleteDeclaration;
 
                     [FieldOffset(72)]
-                    internal uint DefinitionOrder;
-
-                    [FieldOffset(76)]
-                    internal Std.Vector PreprocessedEntities;
+                    public uint DefinitionOrder;
 
                     [FieldOffset(88)]
-                    internal void* OriginalPtr;
+                    public void* OriginalPtr;
 
                     [FieldOffset(92)]
-                    internal global::System.IntPtr TemplatedDecl;
-
-                    [FieldOffset(96)]
-                    internal Std.Vector Parameters;
+                    public global::System.IntPtr TemplatedDecl;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -6273,70 +5954,37 @@ namespace CppSharp
                 public new struct Internal
                 {
                     [FieldOffset(0)]
-                    internal CppSharp.Parser.AST.DeclarationKind Kind;
+                    public CppSharp.Parser.AST.DeclarationKind Kind;
 
                     [FieldOffset(4)]
-                    internal CppSharp.Parser.AST.AccessSpecifier Access;
+                    public CppSharp.Parser.AST.AccessSpecifier Access;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _Namespace;
-
-                    [FieldOffset(12)]
-                    internal Std.String Name;
+                    public global::System.IntPtr _Namespace;
 
                     [FieldOffset(36)]
-                    internal global::System.IntPtr Comment;
-
-                    [FieldOffset(40)]
-                    internal Std.String DebugText;
+                    public global::System.IntPtr Comment;
 
                     [FieldOffset(64)]
-                    internal bool IsIncomplete;
+                    public bool IsIncomplete;
 
                     [FieldOffset(65)]
-                    internal bool IsDependent;
+                    public bool IsDependent;
 
                     [FieldOffset(68)]
-                    internal global::System.IntPtr CompleteDeclaration;
+                    public global::System.IntPtr CompleteDeclaration;
 
                     [FieldOffset(72)]
-                    internal uint DefinitionOrder;
-
-                    [FieldOffset(76)]
-                    internal Std.Vector PreprocessedEntities;
+                    public uint DefinitionOrder;
 
                     [FieldOffset(88)]
-                    internal void* OriginalPtr;
-
-                    [FieldOffset(92)]
-                    internal Std.Vector Namespaces;
-
-                    [FieldOffset(104)]
-                    internal Std.Vector Enums;
-
-                    [FieldOffset(116)]
-                    internal Std.Vector Functions;
-
-                    [FieldOffset(128)]
-                    internal Std.Vector Classes;
-
-                    [FieldOffset(140)]
-                    internal Std.Vector Templates;
-
-                    [FieldOffset(152)]
-                    internal Std.Vector Typedefs;
-
-                    [FieldOffset(164)]
-                    internal Std.Vector Variables;
-
-                    [FieldOffset(176)]
-                    internal Std.Map Anonymous;
+                    public void* OriginalPtr;
 
                     [FieldOffset(184)]
-                    internal bool IsAnonymous;
+                    public bool IsAnonymous;
 
                     [FieldOffset(188)]
-                    internal bool IsInline;
+                    public bool IsInline;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -6403,43 +6051,34 @@ namespace CppSharp
                 public new struct Internal
                 {
                     [FieldOffset(0)]
-                    internal CppSharp.Parser.AST.DeclarationKind Kind;
+                    public CppSharp.Parser.AST.DeclarationKind Kind;
 
                     [FieldOffset(4)]
-                    internal CppSharp.Parser.AST.AccessSpecifier Access;
+                    public CppSharp.Parser.AST.AccessSpecifier Access;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _Namespace;
-
-                    [FieldOffset(12)]
-                    internal Std.String Name;
+                    public global::System.IntPtr _Namespace;
 
                     [FieldOffset(36)]
-                    internal global::System.IntPtr Comment;
-
-                    [FieldOffset(40)]
-                    internal Std.String DebugText;
+                    public global::System.IntPtr Comment;
 
                     [FieldOffset(64)]
-                    internal bool IsIncomplete;
+                    public bool IsIncomplete;
 
                     [FieldOffset(65)]
-                    internal bool IsDependent;
+                    public bool IsDependent;
 
                     [FieldOffset(68)]
-                    internal global::System.IntPtr CompleteDeclaration;
+                    public global::System.IntPtr CompleteDeclaration;
 
                     [FieldOffset(72)]
-                    internal uint DefinitionOrder;
-
-                    [FieldOffset(76)]
-                    internal Std.Vector PreprocessedEntities;
+                    public uint DefinitionOrder;
 
                     [FieldOffset(88)]
-                    internal void* OriginalPtr;
+                    public void* OriginalPtr;
 
                     [FieldOffset(92)]
-                    internal CppSharp.Parser.AST.MacroLocation Location;
+                    public CppSharp.Parser.AST.MacroLocation Location;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -6506,46 +6145,34 @@ namespace CppSharp
                 public new struct Internal
                 {
                     [FieldOffset(0)]
-                    internal CppSharp.Parser.AST.DeclarationKind Kind;
+                    public CppSharp.Parser.AST.DeclarationKind Kind;
 
                     [FieldOffset(4)]
-                    internal CppSharp.Parser.AST.AccessSpecifier Access;
+                    public CppSharp.Parser.AST.AccessSpecifier Access;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _Namespace;
-
-                    [FieldOffset(12)]
-                    internal Std.String Name;
+                    public global::System.IntPtr _Namespace;
 
                     [FieldOffset(36)]
-                    internal global::System.IntPtr Comment;
-
-                    [FieldOffset(40)]
-                    internal Std.String DebugText;
+                    public global::System.IntPtr Comment;
 
                     [FieldOffset(64)]
-                    internal bool IsIncomplete;
+                    public bool IsIncomplete;
 
                     [FieldOffset(65)]
-                    internal bool IsDependent;
+                    public bool IsDependent;
 
                     [FieldOffset(68)]
-                    internal global::System.IntPtr CompleteDeclaration;
+                    public global::System.IntPtr CompleteDeclaration;
 
                     [FieldOffset(72)]
-                    internal uint DefinitionOrder;
-
-                    [FieldOffset(76)]
-                    internal Std.Vector PreprocessedEntities;
+                    public uint DefinitionOrder;
 
                     [FieldOffset(88)]
-                    internal void* OriginalPtr;
+                    public void* OriginalPtr;
 
                     [FieldOffset(92)]
-                    internal CppSharp.Parser.AST.MacroLocation Location;
-
-                    [FieldOffset(96)]
-                    internal Std.String Expression;
+                    public CppSharp.Parser.AST.MacroLocation Location;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -6624,49 +6251,37 @@ namespace CppSharp
                 public new struct Internal
                 {
                     [FieldOffset(0)]
-                    internal CppSharp.Parser.AST.DeclarationKind Kind;
+                    public CppSharp.Parser.AST.DeclarationKind Kind;
 
                     [FieldOffset(4)]
-                    internal CppSharp.Parser.AST.AccessSpecifier Access;
+                    public CppSharp.Parser.AST.AccessSpecifier Access;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _Namespace;
-
-                    [FieldOffset(12)]
-                    internal Std.String Name;
+                    public global::System.IntPtr _Namespace;
 
                     [FieldOffset(36)]
-                    internal global::System.IntPtr Comment;
-
-                    [FieldOffset(40)]
-                    internal Std.String DebugText;
+                    public global::System.IntPtr Comment;
 
                     [FieldOffset(64)]
-                    internal bool IsIncomplete;
+                    public bool IsIncomplete;
 
                     [FieldOffset(65)]
-                    internal bool IsDependent;
+                    public bool IsDependent;
 
                     [FieldOffset(68)]
-                    internal global::System.IntPtr CompleteDeclaration;
+                    public global::System.IntPtr CompleteDeclaration;
 
                     [FieldOffset(72)]
-                    internal uint DefinitionOrder;
-
-                    [FieldOffset(76)]
-                    internal Std.Vector PreprocessedEntities;
+                    public uint DefinitionOrder;
 
                     [FieldOffset(88)]
-                    internal void* OriginalPtr;
+                    public void* OriginalPtr;
 
                     [FieldOffset(92)]
-                    internal CppSharp.Parser.AST.MacroLocation Location;
-
-                    [FieldOffset(96)]
-                    internal Std.String Text;
+                    public CppSharp.Parser.AST.MacroLocation Location;
 
                     [FieldOffset(120)]
-                    internal global::System.IntPtr Definition;
+                    public global::System.IntPtr Definition;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -6760,79 +6375,40 @@ namespace CppSharp
                 public new struct Internal
                 {
                     [FieldOffset(0)]
-                    internal CppSharp.Parser.AST.DeclarationKind Kind;
+                    public CppSharp.Parser.AST.DeclarationKind Kind;
 
                     [FieldOffset(4)]
-                    internal CppSharp.Parser.AST.AccessSpecifier Access;
+                    public CppSharp.Parser.AST.AccessSpecifier Access;
 
                     [FieldOffset(8)]
-                    internal global::System.IntPtr _Namespace;
-
-                    [FieldOffset(12)]
-                    internal Std.String Name;
+                    public global::System.IntPtr _Namespace;
 
                     [FieldOffset(36)]
-                    internal global::System.IntPtr Comment;
-
-                    [FieldOffset(40)]
-                    internal Std.String DebugText;
+                    public global::System.IntPtr Comment;
 
                     [FieldOffset(64)]
-                    internal bool IsIncomplete;
+                    public bool IsIncomplete;
 
                     [FieldOffset(65)]
-                    internal bool IsDependent;
+                    public bool IsDependent;
 
                     [FieldOffset(68)]
-                    internal global::System.IntPtr CompleteDeclaration;
+                    public global::System.IntPtr CompleteDeclaration;
 
                     [FieldOffset(72)]
-                    internal uint DefinitionOrder;
-
-                    [FieldOffset(76)]
-                    internal Std.Vector PreprocessedEntities;
+                    public uint DefinitionOrder;
 
                     [FieldOffset(88)]
-                    internal void* OriginalPtr;
-
-                    [FieldOffset(92)]
-                    internal Std.Vector Namespaces;
-
-                    [FieldOffset(104)]
-                    internal Std.Vector Enums;
-
-                    [FieldOffset(116)]
-                    internal Std.Vector Functions;
-
-                    [FieldOffset(128)]
-                    internal Std.Vector Classes;
-
-                    [FieldOffset(140)]
-                    internal Std.Vector Templates;
-
-                    [FieldOffset(152)]
-                    internal Std.Vector Typedefs;
-
-                    [FieldOffset(164)]
-                    internal Std.Vector Variables;
-
-                    [FieldOffset(176)]
-                    internal Std.Map Anonymous;
+                    public void* OriginalPtr;
 
                     [FieldOffset(184)]
-                    internal bool IsAnonymous;
+                    public bool IsAnonymous;
 
                     [FieldOffset(188)]
-                    internal bool IsInline;
-
-                    [FieldOffset(192)]
-                    internal Std.String FileName;
+                    public bool IsInline;
 
                     [FieldOffset(216)]
-                    internal bool IsSystemHeader;
-
-                    [FieldOffset(220)]
-                    internal Std.Vector Macros;
+                    public bool IsSystemHeader;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -6962,12 +6538,6 @@ namespace CppSharp
                 [StructLayout(LayoutKind.Explicit, Size = 36)]
                 public struct Internal
                 {
-                    [FieldOffset(0)]
-                    internal Std.String FileName;
-
-                    [FieldOffset(24)]
-                    internal Std.Vector Symbols;
-
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="??0NativeLibrary@AST@CppParser@CppSharp@@QAE@XZ")]
@@ -7090,9 +6660,6 @@ namespace CppSharp
                 [StructLayout(LayoutKind.Explicit, Size = 12)]
                 public struct Internal
                 {
-                    [FieldOffset(0)]
-                    internal Std.Vector TranslationUnits;
-
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="??0ASTContext@AST@CppParser@CppSharp@@QAE@XZ")]
@@ -7188,7 +6755,7 @@ namespace CppSharp
                 public struct Internal
                 {
                     [FieldOffset(0)]
-                    internal CppSharp.Parser.AST.CommentKind Kind;
+                    public CppSharp.Parser.AST.CommentKind Kind;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -7258,7 +6825,7 @@ namespace CppSharp
                 public new struct Internal
                 {
                     [FieldOffset(0)]
-                    internal CppSharp.Parser.AST.CommentKind Kind;
+                    public CppSharp.Parser.AST.CommentKind Kind;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -7305,16 +6872,10 @@ namespace CppSharp
                 public struct Internal
                 {
                     [FieldOffset(0)]
-                    internal CppSharp.Parser.AST.RawCommentKind RawCommentKind;
-
-                    [FieldOffset(4)]
-                    internal Std.String Text;
-
-                    [FieldOffset(28)]
-                    internal Std.String BriefText;
+                    public CppSharp.Parser.AST.RawCommentKind RawCommentKind;
 
                     [FieldOffset(52)]
-                    internal global::System.IntPtr FullComment;
+                    public global::System.IntPtr FullComment;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,

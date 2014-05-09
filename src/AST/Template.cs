@@ -168,7 +168,7 @@ namespace CppSharp.AST
     /// </summary>
     public class ClassTemplateSpecialization : Class
     {
-        public  ClassTemplate TemplatedDecl;
+        public ClassTemplate TemplatedDecl;
 
         public List<TemplateArgument> Arguments;
 

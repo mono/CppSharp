@@ -380,12 +380,13 @@ struct Function;
 struct TypedefDecl;
 struct Namespace;
 struct Template;
+struct ClassTemplate;
 struct FunctionTemplate;
 struct Variable;
 
 struct CS_API DeclarationContext : public Declaration
 {
-    DECLARE_DECL_KIND(DeclarationContext, DeclarationContext)
+    DeclarationContext(DeclarationKind kind);
 
     CS_IGNORE Declaration* FindAnonymous(uint64_t key);
 
@@ -398,6 +399,7 @@ struct CS_API DeclarationContext : public Declaration
     CS_IGNORE Class* FindClass(const std::string& Name, bool IsComplete,
         bool Create = false);
 
+    CS_IGNORE ClassTemplate* FindClassTemplate(void* OriginalPtr);
     CS_IGNORE FunctionTemplate* FindFunctionTemplate(void* OriginalPtr);
     CS_IGNORE FunctionTemplate* FindFunctionTemplate(const std::string& Name,
         const std::vector<TemplateParameter>& Params);
@@ -574,7 +576,6 @@ struct CS_API Variable : public Declaration
     CppSharp::CppParser::AST::QualifiedType QualifiedType;
 };
 
-struct DeclarationContext;
 struct PreprocessedEntity;
 
 struct CS_API BaseClassSpecifier
@@ -624,6 +625,7 @@ struct CS_API Class : public DeclarationContext
 
 struct CS_API Template : public Declaration
 {
+    Template(DeclarationKind kind);
     DECLARE_DECL_KIND(Template, Template)
     Declaration* TemplatedDecl;
     VECTOR(TemplateParameter, Parameters)

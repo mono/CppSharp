@@ -1236,10 +1236,11 @@ CppSharp::Parser::AST::DeclarationContext::DeclarationContext(System::IntPtr nat
     auto __native = (::CppSharp::CppParser::AST::DeclarationContext*)native.ToPointer();
 }
 
-CppSharp::Parser::AST::DeclarationContext::DeclarationContext()
+CppSharp::Parser::AST::DeclarationContext::DeclarationContext(CppSharp::Parser::AST::DeclarationKind kind)
     : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)nullptr)
 {
-    NativePtr = new ::CppSharp::CppParser::AST::DeclarationContext();
+    auto arg0 = (::CppSharp::CppParser::AST::DeclarationKind)kind;
+    NativePtr = new ::CppSharp::CppParser::AST::DeclarationContext(arg0);
 }
 
 CppSharp::Parser::AST::Namespace^ CppSharp::Parser::AST::DeclarationContext::getNamespaces(unsigned int i)
@@ -2220,6 +2221,13 @@ CppSharp::Parser::AST::Template::Template(System::IntPtr native)
     : CppSharp::Parser::AST::Declaration(native)
 {
     auto __native = (::CppSharp::CppParser::AST::Template*)native.ToPointer();
+}
+
+CppSharp::Parser::AST::Template::Template(CppSharp::Parser::AST::DeclarationKind kind)
+    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)nullptr)
+{
+    auto arg0 = (::CppSharp::CppParser::AST::DeclarationKind)kind;
+    NativePtr = new ::CppSharp::CppParser::AST::Template(arg0);
 }
 
 CppSharp::Parser::AST::Template::Template()

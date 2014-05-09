@@ -541,6 +541,10 @@ CppSharp::AST::Class^ Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
     if (Record->isInjectedClassName())
         return nullptr;
 
+    // skip va_list_tag as in clang: lib/Sema/SemaLookup.cpp
+    if (Record->getDeclName() == C->getSema().VAListTagName)
+        return nullptr;
+
     auto NS = GetNamespace(Record);
     assert(NS && "Expected a valid namespace");
 
@@ -616,6 +620,8 @@ void Parser::WalkRecordCXX(clang::CXXRecordDecl* Record,
     if (hasLayout)
     {
         Layout = &C->getASTContext().getASTRecordLayout(Record);
+        if (!RC->Layout)
+            RC->Layout = gcnew CppSharp::AST::ClassLayout();
         RC->Layout->Alignment = (int)Layout-> getAlignment().getQuantity();
         RC->Layout->Size = (int)Layout->getSize().getQuantity();
         RC->Layout->DataSize = (int)Layout->getDataSize().getQuantity();
@@ -681,7 +687,9 @@ void Parser::WalkRecordCXX(clang::CXXRecordDecl* Record,
         CppSharp::AST::BaseClassSpecifier^ Base = gcnew CppSharp::AST::BaseClassSpecifier();
         Base->Access = ConvertToAccess(BS.getAccessSpecifier());
         Base->IsVirtual = BS.isVirtual();
-        Base->Type = WalkType(BS.getType(), &BS.getTypeSourceInfo()->getTypeLoc());
+
+        auto BSTL = BS.getTypeSourceInfo()->getTypeLoc();
+        Base->Type = WalkType(BS.getType(), &BSTL);
 
         RC->Bases->Add(Base);
     }
@@ -1377,9 +1385,12 @@ CppSharp::AST::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* 
         if (TL && !TL->isNull()) Next = TL->getNextTypeLoc();
 
         auto Type = gcnew CppSharp::AST::DecayedType();
-        Type->Decayed = GetQualifiedType(DT->getDecayedType(), WalkType(DT->getDecayedType(), &Next));
-        Type->Original = GetQualifiedType(DT->getOriginalType(), WalkType(DT->getOriginalType(), &Next));
-        Type->Pointee = GetQualifiedType(DT->getPointeeType(), WalkType(DT->getPointeeType(), &Next));
+        Type->Decayed = GetQualifiedType(DT->getDecayedType(), 
+            WalkType(DT->getDecayedType(), &Next));
+        Type->Original = GetQualifiedType(DT->getOriginalType(),
+            WalkType(DT->getOriginalType(), &Next));
+        Type->Pointee = GetQualifiedType(DT->getPointeeType(), 
+            WalkType(DT->getPointeeType(), &Next));
 
         Ty = Type;
         break;
@@ -1423,7 +1434,8 @@ CppSharp::AST::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* 
         if (TL && !TL->isNull()) Next = TL->getNextTypeLoc();
 
         auto A = gcnew CppSharp::AST::ArrayType();
-        A->Type = WalkType(AT->getElementType(), &Next);
+        A->QualifiedType = GetQualifiedType(AT->getElementType(), 
+            WalkType(AT->getElementType(), &Next));
         A->SizeType = CppSharp::AST::ArrayType::ArraySize::Constant;
         A->Size = AST->getConstantArrayElementCount(AT);
 
@@ -1438,7 +1450,8 @@ CppSharp::AST::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* 
         if (TL && !TL->isNull()) Next = TL->getNextTypeLoc();
 
         auto A = gcnew CppSharp::AST::ArrayType();
-        A->Type = WalkType(AT->getElementType(), &Next);
+        A->QualifiedType = GetQualifiedType(AT->getElementType(),
+            WalkType(AT->getElementType(), &Next));
         A->SizeType = CppSharp::AST::ArrayType::ArraySize::Incomplete;
 
         Ty = A;
@@ -1452,7 +1465,8 @@ CppSharp::AST::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* 
         if (TL && !TL->isNull()) Next = TL->getNextTypeLoc();
 
         auto A = gcnew CppSharp::AST::ArrayType();
-        A->Type = WalkType(AT->getElementType(), &Next);
+        A->QualifiedType = GetQualifiedType(AT->getElementType(),
+            WalkType(AT->getElementType(), &Next));
         A->SizeType = CppSharp::AST::ArrayType::ArraySize::Dependent;
         //A->Size = AT->getSizeExpr();
 
@@ -1519,11 +1533,13 @@ CppSharp::AST::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* 
     case Type::MemberPointer:
     {
         auto MP = Type->getAs<clang::MemberPointerType>();
+
         TypeLoc Next;
         if (TL && !TL->isNull()) Next = TL->getNextTypeLoc();
 
         auto MPT = gcnew CppSharp::AST::MemberPointerType();
-        MPT->Pointee = WalkType(MP->getPointeeType(), &Next);
+        MPT->QualifiedPointee = GetQualifiedType(MP->getPointeeType(),
+            WalkType(MP->getPointeeType(), &Next));
         
         Ty = MPT;
         break;
@@ -1571,7 +1587,8 @@ CppSharp::AST::Type^ Parser::WalkType(clang::QualType QualType, clang::TypeLoc* 
                 Arg.Kind = CppSharp::AST::TemplateArgument::ArgumentKind::Type;
                 TypeLoc ArgTL;
                 ArgTL = ArgLoc.getTypeSourceInfo()->getTypeLoc();
-                Arg.Type = GetQualifiedType(TA.getAsType(), WalkType(TA.getAsType(), &ArgTL));
+                Arg.Type = GetQualifiedType(TA.getAsType(), 
+                    WalkType(TA.getAsType(), &ArgTL));
                 break;
             }
             case TemplateArgument::Declaration:
@@ -2159,7 +2176,7 @@ CppSharp::AST::PreprocessedEntity^ Parser::WalkPreprocessedEntity(
         return nullptr;
 
     Entity->OriginalPtr = System::IntPtr(PPEntity);
-    Entity->Namespace = GetTranslationUnit(PPEntity->getSourceRange().getBegin(), NULL);
+    Entity->Namespace = GetTranslationUnit(PPEntity->getSourceRange().getBegin());
 
     if (Decl->GetType() == CppSharp::AST::TranslationUnit::typeid)
     {

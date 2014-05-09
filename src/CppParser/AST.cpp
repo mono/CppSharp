@@ -55,6 +55,9 @@ AttributedType::AttributedType() : Type(TypeKind::Attributed) {}
 
 DecayedType::DecayedType() : Type(TypeKind::Decayed) {}
 
+// Template
+Template::Template(DeclarationKind kind) : Declaration(kind) {}
+
 TemplateArgument::TemplateArgument() : Declaration(0) {}
 
 TemplateSpecializationType::TemplateSpecializationType()
@@ -136,8 +139,10 @@ DEF_STRING(Declaration, Name)
 DEF_STRING(Declaration, DebugText)
 DEF_VECTOR(Declaration, PreprocessedEntity*, PreprocessedEntities)
 
-DeclarationContext::DeclarationContext() : IsAnonymous(false),
-    Declaration(DeclarationKind::DeclarationContext) {}
+DeclarationContext::DeclarationContext(DeclarationKind kind)
+    : Declaration(kind)
+    , IsAnonymous(false)
+{}
 
 DEF_VECTOR(DeclarationContext, Namespace*, Namespaces)
 DEF_VECTOR(DeclarationContext, Enumeration*, Enums)
@@ -355,6 +360,18 @@ Function* DeclarationContext::FindFunction(const std::string& Name, bool Create)
     return function;
 }
 
+ClassTemplate*
+DeclarationContext::FindClassTemplate(void* OriginalPtr)
+{
+    auto foundTemplate = std::find_if(Templates.begin(), Templates.end(),
+        [&](Template* t) { return t->OriginalPtr == OriginalPtr; });
+
+    if (foundTemplate != Templates.end())
+        return static_cast<ClassTemplate*>(*foundTemplate);
+
+    return nullptr;
+}
+
 FunctionTemplate*
 DeclarationContext::FindFunctionTemplate(void* OriginalPtr)
 {
@@ -450,7 +467,20 @@ Field::Field() : Declaration(DeclarationKind::Field), Class(0) {}
 AccessSpecifierDecl::AccessSpecifierDecl()
     : Declaration(DeclarationKind::AccessSpecifier) {}
 
-Class::Class() : Layout(0) { Kind = DeclarationKind::Class; }
+Class::Class()
+    : DeclarationContext(DeclarationKind::Class)
+    , IsPOD(false)
+    , IsAbstract(false)
+    , IsUnion(false)
+    , IsDynamic(false)
+    , IsPolymorphic(false)
+    , HasNonTrivialDefaultConstructor(false)
+    , HasNonTrivialCopyConstructor(false)
+    , HasNonTrivialDestructor(false)
+    , IsExternCContext(false)
+    , Layout(0)
+{
+}
 
 DEF_VECTOR(Class, BaseClassSpecifier*, Bases)
 DEF_VECTOR(Class, Field*, Fields)
@@ -462,7 +492,7 @@ Template::Template() : Declaration(DeclarationKind::Template),
 
 DEF_VECTOR(Template, TemplateParameter, Parameters)
 
-ClassTemplate::ClassTemplate() { Kind = DeclarationKind::ClassTemplate; }
+ClassTemplate::ClassTemplate() : Template(DeclarationKind::ClassTemplate) {}
 
 DEF_VECTOR(ClassTemplate, ClassTemplateSpecialization*, Specializations)
 
@@ -474,9 +504,13 @@ DEF_VECTOR(ClassTemplateSpecialization, TemplateArgument, Arguments)
 ClassTemplatePartialSpecialization::ClassTemplatePartialSpecialization()
     { Kind = DeclarationKind::ClassTemplatePartialSpecialization; }
 
-FunctionTemplate::FunctionTemplate() { Kind = DeclarationKind::FunctionTemplate; }
+FunctionTemplate::FunctionTemplate() : Template(DeclarationKind::FunctionTemplate) {}
 
-Namespace::Namespace() : IsInline(false) { Kind = DeclarationKind::Namespace; }
+Namespace::Namespace() 
+    : DeclarationContext(DeclarationKind::Namespace)
+    , IsInline(false) 
+{
+}
 
 PreprocessedEntity::PreprocessedEntity()
     : Declaration(DeclarationKind::PreprocessedEntity),
@@ -504,7 +538,13 @@ DEF_VECTOR(ASTContext, TranslationUnit*, TranslationUnits)
 
 ClassTemplateSpecialization* ClassTemplate::FindSpecialization(void* ptr)
 {
-    return 0;
+    auto foundSpec = std::find_if(Specializations.begin(), Specializations.end(),
+        [&](ClassTemplateSpecialization* cts) { return cts->OriginalPtr == ptr; });
+
+    if (foundSpec != Specializations.end())
+        return static_cast<ClassTemplateSpecialization*>(*foundSpec);
+
+    return nullptr;
 }
 
 ClassTemplateSpecialization*
@@ -515,7 +555,10 @@ ClassTemplate::FindSpecialization(TemplateSpecializationType type)
 
 ClassTemplatePartialSpecialization* ClassTemplate::FindPartialSpecialization(void* ptr)
 {
-    return 0;
+    auto foundSpec = FindSpecialization(ptr);
+    if (foundSpec != nullptr)
+        return static_cast<ClassTemplatePartialSpecialization*>(foundSpec);
+    return nullptr;
 }
 
 ClassTemplatePartialSpecialization*

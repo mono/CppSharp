@@ -221,6 +221,15 @@ namespace CppSharp
                 UnusedFunctionPointer = 7
             };
 
+            public enum struct TemplateSpecializationKind
+            {
+                Undeclared = 0,
+                ImplicitInstantiation = 1,
+                ExplicitSpecialization = 2,
+                ExplicitInstantiationDeclaration = 3,
+                ExplicitInstantiationDefinition = 4
+            };
+
             public enum struct PrimitiveType
             {
                 Null = 0,
@@ -267,15 +276,6 @@ namespace CppSharp
                 FunctionHead = 3,
                 FunctionParameters = 4,
                 FunctionBody = 5
-            };
-
-            public enum struct TemplateSpecializationKind
-            {
-                Undeclared = 0,
-                ImplicitInstantiation = 1,
-                ExplicitSpecialization = 2,
-                ExplicitInstantiationDeclaration = 3,
-                ExplicitInstantiationDefinition = 4
             };
 
             public ref class Type : ICppInstance
@@ -1008,7 +1008,7 @@ namespace CppSharp
 
                 DeclarationContext(::CppSharp::CppParser::AST::DeclarationContext* native);
                 DeclarationContext(System::IntPtr native);
-                DeclarationContext();
+                DeclarationContext(CppSharp::Parser::AST::DeclarationKind kind);
 
                 property unsigned int NamespacesCount
                 {
@@ -1554,6 +1554,8 @@ namespace CppSharp
 
                 Template(::CppSharp::CppParser::AST::Template* native);
                 Template(System::IntPtr native);
+                Template(CppSharp::Parser::AST::DeclarationKind kind);
+
                 Template();
 
                 property unsigned int ParametersCount
