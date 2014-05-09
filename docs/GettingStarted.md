@@ -13,23 +13,44 @@ SVN repository urls found here: [http://clang.llvm.org/get_started.html](http://
 
 Git repository urls found here: [http://llvm.org/docs/GettingStarted.html#git-mirror](http://llvm.org/docs/GettingStarted.html#git-mirror)
 
-## Compiling on Windows/Visual Studio
+## Common setup
 
 1. Clone CppSharp to `<CppSharp>`
 2. Clone LLVM to `<CppSharp>\deps\llvm`
 3. Clone Clang to `<CppSharp>\deps\llvm\tools\clang`
-4. Run CMake in `<CppSharp>\deps\llvm\build` and compile solution in *RelWithDebInfo* mode
-5. Run `GenerateProjects.bat` in <CppSharp>\build
-6. Build generated solution in *Release*.
+4. Create directory `<CppSharp>\deps\llvm\build`
+5. Create directory `<CppSharp>\deps\llvm\install`
 
-Building in *Release* is recommended because else the Clang parser will be
-excruciatingly slow.
+## Compiling on Windows/Visual Studio
+
+### Compiling LLVM on Windows/Visual Studio
+
+```shell
+cd <CppSharp>\deps\llvm\build
+
+cmake -G "Visual Studio 12" -DCMAKE_INSTALL_PREFIX="<CppSharp>/deps/llvm/install" -DCLANG_BUILD_EXAMPLES=false -DCLANG_INCLUDE_DOCS=false -DCLANG_INCLUDE_TESTS=false -DCLANG_INCLUDE_DOCS=false -DCLANG_BUILD_EXAMPLES=false -DLLVM_TARGETS_TO_BUILD="X86" -DLLVM_INCLUDE_EXAMPLES=false -DLLVM_INCLUDE_DOCS=false -DLLVM_INCLUDE_TESTS=false ..
+
+msbuild INSTALL.vcxproj /p:Configuration=Release;Platform=Win32
+```
 
 Due to some incompatible changes in recent LLVM versions, Windows builds need to use the following set of revisions that are known to work.
 
 LLVM `r202563` / Git mirror revision `c9bf74fdc543c2da90f334e0bf8e34b128c8a615`.
 
 Clang `r202562` / Git mirror revision `30577e6c4f5ba66b8dc832ed9955b1a7475f788a`.
+
+### Compiling CppSharp on Windows/Visual Studio
+
+```shell
+cd <CppSharp>\build
+
+generateprojects.bat
+
+msbuild /p:Configuration=Release;Platform=x86
+```
+
+Building in *Release* is recommended because else the Clang parser will be
+excruciatingly slow.
 
 It has been reported that running the solution upgrade process under VS 2013 breaks the build due
 to an incompatibility of .NET versions between projects (4.5 and 4.0). If you experience this
@@ -38,31 +59,52 @@ run the upgrade process after generation.
 
 ## Compiling on Mac OS X (experimental)
 
-1. Clone CppSharp to `<CppSharp>`
-2. Clone LLVM to `<CppSharp>\deps\llvm`
-3. Clone Clang to `<CppSharp>\deps\llvm\tools\clang`
-4. Run CMake in `<CppSharp>\deps\llvm\build` and compile solution in *RelWithDebInfo* mode
+### Compiling LLVM on Mac OS X
+
+1. Compile LLVM solution in *RelWithDebInfo* mode
    The following CMake variables should be enabled:
     - LLVM_ENABLE_CXX11 (enables C++11 support)
     - LLVM_ENABLE_LIBCXX (enables libc++ standard library support)
     - LLVM_BUILD_32_BITS for 32-bit builds (defaults to 64-bit)
-5. Run `premake5 gmake` in <CppSharp>\build
-6. Build generated makefiles:
+2. Install LLVM to `<CppSharp>\deps\llvm\install`
+
+### Compiling CppSharp on Mac OS X
+
+1. Run `premake5-osx gmake` in <CppSharp>\build
+2. Build generated makefiles:
     - 32-bit builds: `config=release_x32 make`
     - 64-bit builds: `config=release_x64 make`
 
 ## Compiling on Linux (experimental)
 
-### Build dependencies:
+Only 64bit build works at the moment. The build has been verified on Ubuntu 14.04.
+
+### Compiling LLVM on Linux
 
 If you do not have native build tools you can install them first with:
 
 ```shell
-sudo apt-get install build-essential gcc-multilib g++-multilib
-sudo apt-get install ninja-build cmake
+sudo apt-get install cmake ninja-build build-essential
 ```
 
-Additionaly we depent on a somewhat recent version of Mono (.NET 4.5). If you're using an Ubuntu-based distribution you can install an up-to-date version from: https://launchpad.net/~directhex/+archive/monoxide
+
+```shell
+cd deps/llvm/build
+
+cmake -G Ninja -DCMAKE_INSTALL_PREFIX="<CppSharp>/deps/llvm/install" -DCLANG_BUILD_EXAMPLES=false -DCLANG_INCLUDE_DOCS=false -DCLANG_INCLUDE_TESTS=false -DCLANG_INCLUDE_DOCS=false -DCLANG_BUILD_EXAMPLES=false -DLLVM_TARGETS_TO_BUILD="X86" -DLLVM_INCLUDE_EXAMPLES=false -DLLVM_INCLUDE_DOCS=false -DLLVM_INCLUDE_TESTS=false ..
+
+ninja install
+```
+
+### Compiling CppSharp on Linux
+
+We depend on a somewhat recent version of Mono (.NET 4.5). Ubuntu 14.04 contains recent enough Mono by default.
+
+```shell
+sudo apt-get install mono-devel
+```
+
+If you're using a pre-14.04 Ubuntu-based distribution you can install an up-to-date version from: https://launchpad.net/~directhex/+archive/monoxide.
 
 ```shell
 sudo add-apt-repository ppa:directhex/monoxide
@@ -70,59 +112,28 @@ sudo apt-get update
 sudo apt-get install mono-devel
 ```
 
-### Getting Premake:
-
-Download a recent Premake version from: http://sourceforge.net/projects/premake/files/Premake/nightlies/premake-dev-linux.zip/download
-
-Extract the binary inside `premake5` to `<CppSharp>/build`.
-
-### Cloning CppSharp:
+Generate the makefiles, and build CppSharp:
 
 ```shell
-git clone https://github.com/mono/CppSharp.git
+cd <CppSharp>/build
+./premake5-linux gmake
+make -C gmake config=release_x64
 ```
 
-### Cloning and building LLVM/Clang:
+If you need more verbosity from the builds invoke `make` as:
 
 ```shell
-pushd && cd CppSharp/deps
-
-git clone https://github.com/llvm-mirror/llvm.git
-git clone https://github.com/llvm-mirror/clang.git llvm/tools
-
-cd llvm && mkdir build && cd build
-
-cmake -G Ninja -DCLANG_BUILD_EXAMPLES=false -DCLANG_ENABLE_ARCMT=false \
-  -DCLANG_ENABLE_REWRITER=false -DCLANG_ENABLE_STATIC_ANALYZER=false \
-  -DCLANG_INCLUDE_DOCS=false -DCLANG_INCLUDE_TESTS=false \
-  -DLLVM_BUILD_32_BITS=false -DCLANG_BUILD_DOCS=false \
-  -DCLANG_BUILD_EXAMPLES=false -DLLVM_TARGETS_TO_BUILD="X86" ..
-
-ninja
-popd
+verbose=true make -C gmake config=release_x64
 ```
 
-### Building CppSharp:
+Note that at the moment the build fails, as the CppSharp tests fail. However, the library itself has been built fine.
+
+Additionally, you may want to run a very simple test to see that it works. The test needs to find CppSharp library, so cppsharp-test needs to be clone in to the same directory where you cloned CppSharp. Also, the CppSharp directory needs to be named "cppsharp".
 
 ```shell
-cd CppSharp/build
-./premake5 gmake
-cd gmake
-make
-```
-
-This will compile the default target for the architecture, for instance, the `debug_x32` target for 32-bits X86.
-
-You can change the target by invoking `make` as:
-
-```shell
-config=release_x32 make
-```
-
-Additionaly if you need more verbosity from the builds invoke `make` as:
-
-```shell
-verbose=true make
+git clone git://github.com/tomba/cppsharp-test.git
+cd cppsharp-test
+make runtest
 ```
 
 ## Generating bindings

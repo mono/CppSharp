@@ -26,10 +26,14 @@ project "CppSharp.Parser.CSharp"
 
   links { "CppSharp.Runtime" }
 
-  if os.is_osx() then
+  if os.is_windows() then
+      files { "CSharp/i686-pc-win32/**.cs" }
+  elseif os.is_osx() then
       files { "CSharp/i686-apple-darwin12.4.0/**.cs" }
+  elseif os.is_linux() then
+      files { "CSharp/x86_64-linux-gnu/**.cs" }
   else
-      files { "CSharp/*.cs" }
+      print "Unknown architecture"
   end
 
   configuration ""

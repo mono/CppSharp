@@ -16,9 +16,8 @@ solution "CppSharp"
   flags { common_flags }
   
   location (builddir)
-  objdir (builddir .. "/obj/")
+  objdir (path.join(builddir, "obj"))
   targetdir (libdir)
-  libdirs { libdir }
   debugdir (bindir)
 
   -- startproject "Generator"

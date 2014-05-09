@@ -227,7 +227,7 @@ namespace CppSharp.AST
             RVReference
         }
 
-        public new bool IsReference
+        public bool IsReference
         {
             get
             {

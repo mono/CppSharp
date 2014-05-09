@@ -31,6 +31,10 @@ function os.is_windows()
   return os.is("windows")
 end
 
+function os.is_linux()
+  return os.is("linux")
+end
+
 function string.starts(str, start)
    return string.sub(str, 1, string.len(start)) == start
 end
@@ -93,29 +97,4 @@ function IncludeDir(dir)
       include(dep)
     end
   end
-end
-
-function StaticLinksOpt(libnames)
-  local cc = configuration()
-  local path = table.concat(cc.configset.libdirs, ";")
-
-  local formats
-  if os.is("windows") then
-    formats = { "%s.lib" }
-  else
-    formats = { "lib%s.a" }
-  end
-  table.insert(formats, "%s");
-
-  local existing_libnames = {}
-  for _, libname in ipairs(libnames) do
-    for _, fmt in ipairs(formats) do
-      local name = string.format(fmt, libname)
-      if os.pathsearch(name, path) then
-        table.insert(existing_libnames, libname)
-      end
-    end
-  end
-
-  links(existing_libnames)
 end
