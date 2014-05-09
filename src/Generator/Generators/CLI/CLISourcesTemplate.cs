@@ -372,16 +372,16 @@ namespace CppSharp.Generators.CLI
                     return;
                 }
                 var param = new Parameter
-                                {
-                                    Name = "value",
-                                    QualifiedType = decl.QualifiedType
-                                };
+                {
+                    Name = "value",
+                    QualifiedType = new QualifiedType(type)
+                };
 
                 var ctx = new MarshalContext(Driver)
-                              {
-                                  Parameter = param,
-                                  ArgName = param.Name,
-                              };
+                {
+                    Parameter = param,
+                    ArgName = param.Name,
+                };
 
                 var marshal = new CLIMarshalManagedToNativePrinter(ctx);
                 param.Visit(marshal);
@@ -400,7 +400,10 @@ namespace CppSharp.Generators.CLI
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                     Write(marshal.Context.SupportBefore);
 
-                WriteLine("{0} = {1};", variable, marshal.Context.Return);
+                if (isIndexer && decl.Type.IsPointer())
+                    WriteLine("*({0}) = {1};", variable, marshal.Context.Return);
+                else
+                    WriteLine("{0} = {1};", variable, marshal.Context.Return);
             }
 
             WriteCloseBraceIndent();
@@ -432,7 +435,10 @@ namespace CppSharp.Generators.CLI
             if (decl is Function)
             {
                 var func = decl as Function;
-                GenerateFunctionCall(func, @class);
+                if (isIndexer && func.Type.IsAddress())
+                    GenerateFunctionCall(func, @class, type);
+                else
+                    GenerateFunctionCall(func, @class);
             }
             else
             {
@@ -832,11 +838,13 @@ namespace CppSharp.Generators.CLI
             WriteCloseBraceIndent();
         }
 
-        public void GenerateFunctionCall(Function function, Class @class = null)
+        public void GenerateFunctionCall(Function function, Class @class = null, Type publicRetType = null)
         {
             CheckArgumentRange(function);
 
             var retType = function.ReturnType;
+            if (publicRetType == null)
+                publicRetType = retType.Type;
             var needsReturn = !retType.Type.IsPrimitiveType(PrimitiveType.Void);
 
             const string valueMarshalName = "_this0";
@@ -861,9 +869,12 @@ namespace CppSharp.Generators.CLI
 
             var @params = GenerateFunctionParamsMarshal(function.Parameters, function);
 
+            var returnIdentifier = Generator.GeneratedIdentifier("ret");
             if (needsReturn)
-                Write("auto {0}{1} = ",(function.ReturnType.Type.IsReference())? "&": string.Empty,
-                    Generator.GeneratedIdentifier("ret"));
+                if (retType.Type.IsReference())
+                    Write("auto &{0} = ", returnIdentifier);
+                else
+                    Write("auto {0} = ", returnIdentifier);
 
             if (function.OperatorKind == CXXOperatorKind.Conversion || 
                 function.OperatorKind == CXXOperatorKind.ExplicitConversion)
@@ -944,24 +955,33 @@ namespace CppSharp.Generators.CLI
                 if (retType.Type.IsPointer() && (isIntPtr || retTypeName.EndsWith("^")))
                 {
                     WriteLine("if ({0} == nullptr) return {1};",
-                        Generator.GeneratedIdentifier("ret"),
+                        returnIdentifier,
                         isIntPtr ? "System::IntPtr()" : "nullptr");
                 }
 
                 var ctx = new MarshalContext(Driver)
-                    {
-                        ArgName = Generator.GeneratedIdentifier("ret"),
-                        ReturnVarName = Generator.GeneratedIdentifier("ret"),
-                        ReturnType = retType
-                    };
+                {
+                    ArgName = returnIdentifier,
+                    ReturnVarName = returnIdentifier,
+                    ReturnType = retType
+                };
 
                 var marshal = new CLIMarshalNativeToManagedPrinter(ctx);
-                function.ReturnType.Visit(marshal);
+                retType.Visit(marshal);
 
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                     Write(marshal.Context.SupportBefore);
 
-                WriteLine("return {0};", marshal.Context.Return);
+                // Special case for indexer - needs to dereference if the internal
+                // function is a pointer type and the property is not.
+                if (retType.Type.IsPointer() && 
+                    retType.Type.GetPointee().Equals(publicRetType) &&
+                    publicRetType.IsPrimitiveType())
+                    WriteLine("return *({0});", marshal.Context.Return);
+                else if (retType.Type.IsReference() && publicRetType.IsReference())
+                    WriteLine("return ({0})({1});", publicRetType, marshal.Context.Return);
+                else
+                    WriteLine("return {0};", marshal.Context.Return);
             }
         }
 

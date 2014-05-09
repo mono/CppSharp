@@ -966,7 +966,7 @@ namespace CppSharp.Generators.CSharp
         private void GenerateIndexerSetter(QualifiedType returnType, Function function)
         {
             Type type;
-            returnType.Type.IsPointerTo(out type);
+            function.Type.IsPointerTo(out type);
             PrimitiveType primitiveType;
             string internalFunction = GetFunctionNativeIdentifier(function);
             if (type.IsPrimitiveType(out primitiveType))
@@ -982,7 +982,7 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
-        private void GeneratePropertyGetter<T>(T decl, Class @class)
+        private void GeneratePropertyGetter<T>(QualifiedType returnType, T decl, Class @class)
             where T : Declaration, ITypedDecl
         {
             PushBlock(CSharpBlockKind.Method);
@@ -1002,19 +1002,9 @@ namespace CppSharp.Generators.CSharp
                 WriteStartBraceIndent();
                 var method = function as Method;
                 if (method != null && method.IsOverride && method.IsSynthetized)
-                {
                     GenerateVirtualTableFunctionCall(method, @class);
-                }
                 else
-                {
-                    bool isPrimitiveIndexer = function.OperatorKind == CXXOperatorKind.Subscript &&
-                                              function.ReturnType.Type.IsPointerToPrimitiveType();
-                    if (isPrimitiveIndexer)
-                        TypePrinter.PushContext(CSharpTypePrinterContextKind.PrimitiveIndexer);
-                    GenerateInternalFunctionCall(function);
-                    if (isPrimitiveIndexer)
-                        TypePrinter.PopContext();
-                }
+                    GenerateInternalFunctionCall(function, function.Parameters, returnType.Type);
             }
             else if (decl is Field)
             {
@@ -1183,12 +1173,6 @@ namespace CppSharp.Generators.CSharp
 
                 PushBlock(CSharpBlockKind.Property);
 
-                // If this is an indexer that returns an address use the real type
-                // because there is a setter anyway.
-                var type = prop.Type;
-                if (prop.Parameters.Count > 0 && prop.Type.IsPointerToPrimitiveType())
-                    type = ((PointerType) prop.Type).Pointee;
-
                 ArrayType arrayType = prop.Type as ArrayType;
                 if (arrayType != null && arrayType.Type.IsPointerToPrimitiveType() && prop.Field != null)
                 {
@@ -1212,11 +1196,11 @@ namespace CppSharp.Generators.CSharp
                     else if (prop.IsVirtual)
                         Write("virtual ");
 
-                    WriteLine("{0} {1}", type, GetPropertyName(prop));
+                    WriteLine("{0} {1}", prop.Type, GetPropertyName(prop));
                 }
                 else
                 {
-                    WriteLine("{0} {1}.{2}", type, prop.ExplicitInterfaceImpl.Name,
+                    WriteLine("{0} {1}.{2}", prop.Type, prop.ExplicitInterfaceImpl.Name,
                         GetPropertyName(prop));
                 }
                 WriteStartBraceIndent();
@@ -1224,7 +1208,7 @@ namespace CppSharp.Generators.CSharp
                 if (prop.Field != null)
                 {
                     if (prop.HasGetter)
-                        GeneratePropertyGetter(prop.Field, @class);
+                        GeneratePropertyGetter(prop.QualifiedType, prop.Field, @class);
 
                     if (prop.HasSetter)
                         GeneratePropertySetter(prop.Field.QualifiedType, prop.Field,
@@ -1233,12 +1217,10 @@ namespace CppSharp.Generators.CSharp
                 else
                 {
                     if (prop.HasGetter)
-                        GeneratePropertyGetter(prop.GetMethod, @class);
+                        GeneratePropertyGetter(prop.QualifiedType, prop.GetMethod, @class);
 
                     if (prop.HasSetter)
-                        GeneratePropertySetter(prop.GetMethod != null ?
-                            prop.GetMethod.ReturnType : prop.SetMethod.Parameters[0].QualifiedType,
-                            prop.SetMethod, @class);
+                        GeneratePropertySetter(prop.QualifiedType, prop.SetMethod, @class);
                 }
 
                 WriteCloseBraceIndent();
@@ -1258,7 +1240,7 @@ namespace CppSharp.Generators.CSharp
             WriteLine("public static {0} {1}", type, variable.Name);
             WriteStartBraceIndent();
 
-            GeneratePropertyGetter(variable, @class);
+            GeneratePropertyGetter(variable.QualifiedType, variable, @class);
 
             if (!variable.QualifiedType.Qualifiers.IsConst)
                 GeneratePropertySetter(variable.QualifiedType, variable, @class);
@@ -2184,7 +2166,7 @@ namespace CppSharp.Generators.CSharp
         }
 
         public void GenerateInternalFunctionCall(Function function,
-            List<Parameter> parameters = null)
+            List<Parameter> parameters = null, Type returnType = null)
         {
             if (parameters == null)
                 parameters = function.Parameters;
@@ -2192,11 +2174,11 @@ namespace CppSharp.Generators.CSharp
             CheckArgumentRange(function);
             var functionName = string.Format("Internal.{0}",
                 GetFunctionNativeIdentifier(function));
-            GenerateFunctionCall(functionName, parameters, function);
+            GenerateFunctionCall(functionName, parameters, function, returnType);
         }
 
         public void GenerateFunctionCall(string functionName, List<Parameter> parameters,
-            Function function)
+            Function function, Type returnType = null)
         {
             if (function.IsPure)
             {
@@ -2205,6 +2187,8 @@ namespace CppSharp.Generators.CSharp
             }
 
             var retType = function.OriginalReturnType;
+            if (returnType == null)
+                returnType = retType.Type;
             var needsReturn = !retType.Type.IsPrimitiveType(PrimitiveType.Void);
 
             var isValueType = false;
@@ -2363,10 +2347,14 @@ namespace CppSharp.Generators.CSharp
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                     Write(marshal.Context.SupportBefore);
 
-                WriteLine(
-                    TypePrinter.ContextKind == CSharpTypePrinterContextKind.PrimitiveIndexer
-                        ? "return *{0};"
-                        : "return {0};", marshal.Context.Return);
+                // Special case for indexer - needs to dereference if the internal
+                // function is a pointer type and the property is not.
+                if (retType.Type.IsAddress() && 
+                    retType.Type.GetPointee().Equals(returnType) &&
+                    returnType.IsPrimitiveType())
+                    WriteLine("return *{0};", marshal.Context.Return);
+                else
+                    WriteLine("return {0};", marshal.Context.Return);
             }
         }
 

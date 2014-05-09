@@ -12,8 +12,7 @@ namespace CppSharp.Generators.CSharp
         Native,
         Managed,
         ManagedPointer,
-        GenericDelegate,
-        PrimitiveIndexer
+        GenericDelegate
     }
 
     public class CSharpTypePrinterContext : TypePrinterContext

@@ -93,11 +93,31 @@ namespace CppSharp.Generators.CLI
             {
                 var returnVarName = Context.ReturnVarName;
                 if (quals.IsConst != Context.ReturnType.Qualifiers.IsConst)
+                {
+                    var nativeTypePrinter = new CppTypePrinter(Context.Driver.TypeDatabase, false);
+                    var constlessPointer = new PointerType()
+                    {
+                        IsDependent = pointer.IsDependent,
+                        Modifier = pointer.Modifier,
+                        QualifiedPointee = new QualifiedType(Context.ReturnType.Type.GetPointee())
+                    };
+                    var nativeConstlessTypeName = constlessPointer.Visit(nativeTypePrinter, new TypeQualifiers());
                     returnVarName = string.Format("const_cast<{0}>({1})",
-                        Context.ReturnType, Context.ReturnVarName);
+                        nativeConstlessTypeName, Context.ReturnVarName);
+                }
                 if (pointer.Pointee is TypedefType)
-                    Context.Return.Write("reinterpret_cast<{0}>({1})", pointer,
+                {
+                    var desugaredPointer = new PointerType()
+                    {
+                        IsDependent = pointer.IsDependent,
+                        Modifier = pointer.Modifier,
+                        QualifiedPointee = new QualifiedType(pointee)
+                    };
+                    var nativeTypePrinter = new CppTypePrinter(Context.Driver.TypeDatabase);
+                    var nativeTypeName = desugaredPointer.Visit(nativeTypePrinter, quals);
+                    Context.Return.Write("reinterpret_cast<{0}>({1})", nativeTypeName,
                         returnVarName);
+                }
                 else
                     Context.Return.Write(returnVarName);
                 return true;

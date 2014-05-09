@@ -70,7 +70,7 @@ namespace CppSharp.Passes
         public override bool VisitMethodDecl(Method method)
         {
             if (!method.IsConstructor && !method.IsDestructor && !method.IsOperator &&
-                method.IsGenerated)
+                method.IsGenerated && !method.IsSynthetized)
                 DistributeMethod(method);
             return base.VisitMethodDecl(method);
         }

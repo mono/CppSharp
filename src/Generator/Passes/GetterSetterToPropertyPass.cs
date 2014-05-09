@@ -87,6 +87,9 @@ namespace CppSharp.Passes
             if (method.IsConstructor)
                 return false;
 
+            if (method.IsSynthetized)
+                return false;
+
             if (IsGetter(method))
             {
                 var name = method.Name.Substring("get".Length);

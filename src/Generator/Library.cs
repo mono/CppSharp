@@ -204,6 +204,26 @@ namespace CppSharp
             }
         }
 
+        public static void SetPropertyAsReadOnly(this ASTContext context, string className, string propertyName)
+        {
+            var properties = context.FindClass(className)
+                .SelectMany(c => c.Properties.Where(p => p.Name == propertyName && p.HasSetter));
+            foreach (var property in properties)
+                if (property.SetMethod != null)
+                    property.SetMethod.GenerationKind = GenerationKind.None;
+                else
+                {
+                    var field = property.Field;
+                    var quals = field.QualifiedType.Qualifiers;
+                    quals.IsConst = true;
+
+                    var qualType = field.QualifiedType;
+                    qualType.Qualifiers = quals;
+
+                    field.QualifiedType = qualType;
+                }
+        }
+
         /// <summary>
         /// Sets the parameter usage for a function parameter.
         /// </summary>
