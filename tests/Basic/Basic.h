@@ -454,3 +454,12 @@ DLL_API decltype(Expr) TestDecltype()
 {
     return Expr;
 }
+
+DLL_API void TestNullPtrType(decltype(nullptr))
+{
+}
+
+DLL_API decltype(nullptr) TestNullPtrTypeRet()
+{
+    return nullptr;
+}

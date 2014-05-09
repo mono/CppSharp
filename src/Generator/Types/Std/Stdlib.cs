@@ -1,6 +1,7 @@
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Generators;
+using CppSharp.Generators.AST;
 using CppSharp.Generators.CLI;
 using CppSharp.Generators.CSharp;
 
@@ -310,6 +311,26 @@ namespace CppSharp.Types.Std
             ctx.SupportBefore.WriteLine("msclr::interop::marshal_context {0};", marshalCtxName);
             ctx.Return.Write("{0}.marshal_as<std::ostream*>({1})",
                 marshalCtxName, ctx.Parameter.Name);
+        }
+    }
+
+    [TypeMap("std::nullptr_t")]
+    public class NullPtr : TypeMap
+    {
+        public override bool DoesMarshalling { get { return false; } }
+
+        public override void CLITypeReference(CLITypeReferenceCollector collector,
+            ASTRecord<Declaration> loc)
+        {
+            var typeRef = collector.GetTypeReference(loc.Value);
+
+            var include = new Include
+            {
+                File = "cstddef",
+                Kind = Include.IncludeKind.Angled,
+            };
+
+            typeRef.Include = include;
         }
     }
 }

@@ -114,6 +114,7 @@ namespace CppSharp.Types
                 case PrimitiveType.Double: return "double";
                 case PrimitiveType.IntPtr: return "void*";
                 case PrimitiveType.UIntPtr: return "uintptr_t";
+                case PrimitiveType.Null: return "std::nullptr_t";
             }
 
             throw new NotSupportedException();

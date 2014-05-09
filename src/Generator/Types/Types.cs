@@ -114,6 +114,17 @@ namespace CppSharp
             return base.VisitMemberPointerType(member, quals);
         }
 
+        public override bool VisitParameterDecl(Parameter parameter)
+        {
+            if (parameter.Type.IsPrimitiveType(PrimitiveType.Null))
+            {
+                Ignore();
+                return false;
+            }
+
+            return base.VisitParameterDecl(parameter);
+        }
+
         public override bool VisitTemplateSpecializationType(
             TemplateSpecializationType template, TypeQualifiers quals)
         {

@@ -146,11 +146,12 @@ namespace CppSharp.Generators.CLI
                 case PrimitiveType.UInt64:
                 case PrimitiveType.Float:
                 case PrimitiveType.Double:
+                case PrimitiveType.Null:
                     Context.Return.Write(Context.ReturnVarName);
                     return true;
             }
 
-            return false;
+            throw new NotSupportedException();
         }
 
         public override bool VisitTypedefType(TypedefType typedef, TypeQualifiers quals)

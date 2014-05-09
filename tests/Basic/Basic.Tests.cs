@@ -309,5 +309,12 @@ public class BasicTests : GeneratorTestFixture
         var ret = basic.TestDecltype();
         Assert.AreEqual(0, ret);
     }
+
+    [Test]
+    public unsafe void TestNullPtrType()
+    {
+        var ret = basic.TestNullPtrTypeRet();
+        Assert.AreEqual(IntPtr.Zero, new IntPtr(ret));
+    }
 }
  
