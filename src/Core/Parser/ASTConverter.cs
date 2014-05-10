@@ -556,10 +556,10 @@ namespace CppSharp
                     return AST.PrimitiveType.Bool;
                 case PrimitiveType.WideChar:
                     return AST.PrimitiveType.WideChar;
-                case PrimitiveType.Int8:
-                    return AST.PrimitiveType.Int8;
-                case PrimitiveType.UInt8:
-                    return AST.PrimitiveType.UInt8;
+                case PrimitiveType.Char:
+                    return AST.PrimitiveType.Char;
+                case PrimitiveType.UChar:
+                    return AST.PrimitiveType.UChar;
                 case PrimitiveType.Int16:
                     return AST.PrimitiveType.Int16;
                 case PrimitiveType.UInt16:

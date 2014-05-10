@@ -386,8 +386,8 @@ namespace CppSharp.Generators.CSharp
                 case PrimitiveType.Void: return "void";
                 case PrimitiveType.Char16:
                 case PrimitiveType.WideChar: return "char";
-                case PrimitiveType.Int8: return driverOptions.MarshalCharAsManagedChar ? "char" : "sbyte";
-                case PrimitiveType.UInt8: return "byte";
+                case PrimitiveType.Char: return driverOptions.MarshalCharAsManagedChar ? "char" : "sbyte";
+                case PrimitiveType.UChar: return "byte";
                 case PrimitiveType.Int16: return "short";
                 case PrimitiveType.UInt16: return "ushort";
                 case PrimitiveType.Int32: return "int";
