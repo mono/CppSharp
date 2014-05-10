@@ -15,32 +15,6 @@ namespace CppSharp
         }
     }
 
-    public static class PrimitiveTypeExtensions
-    {
-        public static System.Type ConvertToType(this PrimitiveType primitive)
-        {
-            switch (primitive)
-            {
-                case PrimitiveType.Bool: return typeof(bool);
-                case PrimitiveType.Void: return typeof(void);
-                case PrimitiveType.Char16:
-                case PrimitiveType.WideChar: return typeof(char);
-                case PrimitiveType.Int8: return typeof(sbyte);
-                case PrimitiveType.UInt8: return typeof(byte);
-                case PrimitiveType.Int16: return typeof(short);
-                case PrimitiveType.UInt16: return typeof(ushort);
-                case PrimitiveType.Int32: return typeof(int);
-                case PrimitiveType.UInt32: return typeof(uint);
-                case PrimitiveType.Int64: return typeof(long);
-                case PrimitiveType.UInt64: return typeof(ulong);
-                case PrimitiveType.Float: return typeof(float);
-                case PrimitiveType.Double: return typeof(double);
-            }
-
-            return typeof(int);
-        }
-    }
-
     public static class StringHelpers
     {
         public static string CommonPrefix(this string[] ss)
