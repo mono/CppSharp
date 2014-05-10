@@ -373,6 +373,64 @@ namespace CppSharp.Generators.CSharp
             return type.Type.FullName;
         }
 
+       static string GetIntString(PrimitiveType primitive, Parser.ParserTargetInfo targetInfo)
+        {
+            bool signed;
+            uint width;
+
+            switch (primitive)
+            {
+                case PrimitiveType.Short:
+                    width = targetInfo.ShortWidth;
+                    signed = true;
+                    break;
+                case PrimitiveType.UShort:
+                    width = targetInfo.ShortWidth;
+                    signed = false;
+                    break;
+                case PrimitiveType.Int:
+                    width = targetInfo.IntWidth;
+                    signed = true;
+                    break;
+                case PrimitiveType.UInt:
+                    width = targetInfo.IntWidth;
+                    signed = false;
+                    break;
+                case PrimitiveType.Long:
+                    width = targetInfo.LongWidth;
+                    signed = true;
+                    break;
+                case PrimitiveType.ULong:
+                    width = targetInfo.LongWidth;
+                    signed = false;
+                    break;
+                case PrimitiveType.LongLong:
+                    width = targetInfo.LongLongWidth;
+                    signed = true;
+                    break;
+                case PrimitiveType.ULongLong:
+                    width = targetInfo.LongLongWidth;
+                    signed = false;
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
+
+            switch (width)
+            {
+                case 8:
+                    return signed ? "sbyte" : "byte";
+                case 16:
+                    return signed ? "short" : "ushort";
+                case 32:
+                    return signed ? "int" : "uint";
+                case 64:
+                    return signed ? "long" : "ulong";
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
         public CSharpTypePrinterResult VisitPrimitiveType(PrimitiveType primitive,
             TypeQualifiers quals)
         {
@@ -384,14 +442,15 @@ namespace CppSharp.Generators.CSharp
                 case PrimitiveType.WideChar: return "char";
                 case PrimitiveType.Char: return this.driver.Options.MarshalCharAsManagedChar ? "char" : "sbyte";
                 case PrimitiveType.UChar: return "byte";
-                case PrimitiveType.Short: return "short";
-                case PrimitiveType.UShort: return "ushort";
-                case PrimitiveType.Int: return "int";
-                case PrimitiveType.UInt: return "uint";
-                case PrimitiveType.Long: return "int";
-                case PrimitiveType.ULong: return "uint";
-                case PrimitiveType.LongLong: return "long";
-                case PrimitiveType.ULongLong: return "ulong";
+                case PrimitiveType.Short:
+                case PrimitiveType.UShort:
+                case PrimitiveType.Int:
+                case PrimitiveType.UInt:
+                case PrimitiveType.Long:
+                case PrimitiveType.ULong:
+                case PrimitiveType.LongLong:
+                case PrimitiveType.ULongLong:
+                    return GetIntString(primitive, this.driver.TargetInfo);
                 case PrimitiveType.Float: return "float";
                 case PrimitiveType.Double: return "double";
                 case PrimitiveType.IntPtr: return "global::System.IntPtr";
