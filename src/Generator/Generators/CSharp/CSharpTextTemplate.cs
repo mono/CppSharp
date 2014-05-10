@@ -2079,7 +2079,7 @@ namespace CppSharp.Generators.CSharp
             if (Driver.Options.MarshalCharAsManagedChar)
             {
                 foreach (var param in method.Parameters.Where(
-                    p => p.Type.IsPrimitiveType(PrimitiveType.Int8)))
+                    p => p.Type.IsPrimitiveType(PrimitiveType.Char)))
                 {
                     WriteLine("if ({0} < char.MinValue || {0} > sbyte.MaxValue)", param.Name);
                     WriteLineIndent(
