@@ -1126,7 +1126,7 @@ DeclarationContext* Parser::GetNamespace(clang::Decl* D,
         default:
         {
             StringRef Kind = Ctx->getDeclKindName();
-            printf("Unhandled declaration context kind: %s\n", Kind);
+            printf("Unhandled declaration context kind: %s\n", Kind.str().c_str());
             assert(0 && "Unhandled declaration context kind");
         } }
     }
@@ -2456,7 +2456,7 @@ Declaration* Parser::WalkDeclaration(clang::Decl* D,
         auto FileName = SM.getFilename(Loc);
         auto Offset = SM.getFileOffset(Loc);
         auto LineNo = SM.getLineNumber(SM.getFileID(Loc), Offset);
-        Debug("  %s (line %u)\n", FileName, LineNo);
+        Debug("  %s (line %u)\n", FileName.str().c_str(), LineNo);
 
         break;
     } };

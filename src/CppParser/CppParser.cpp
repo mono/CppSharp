@@ -6,6 +6,7 @@
 ************************************************************************/
 
 #include "CppParser.h"
+#include "Parser.h"
 
 namespace CppSharp { namespace CppParser {
 
