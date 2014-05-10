@@ -162,6 +162,8 @@ namespace CppSharp.Generators.CLI
                 case PrimitiveType.UInt16:
                 case PrimitiveType.Int32:
                 case PrimitiveType.UInt32:
+                case PrimitiveType.Long:
+                case PrimitiveType.ULong:
                 case PrimitiveType.Int64:
                 case PrimitiveType.UInt64:
                 case PrimitiveType.Float:
@@ -501,6 +503,8 @@ namespace CppSharp.Generators.CLI
                 case PrimitiveType.UInt16:
                 case PrimitiveType.Int32:
                 case PrimitiveType.UInt32:
+                case PrimitiveType.Long:
+                case PrimitiveType.ULong:
                 case PrimitiveType.Int64:
                 case PrimitiveType.UInt64:
                 case PrimitiveType.Float:

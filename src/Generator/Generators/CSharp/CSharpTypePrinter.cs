@@ -392,6 +392,8 @@ namespace CppSharp.Generators.CSharp
                 case PrimitiveType.UInt16: return "ushort";
                 case PrimitiveType.Int32: return "int";
                 case PrimitiveType.UInt32: return "uint";
+                case PrimitiveType.Long: return "int";
+                case PrimitiveType.ULong: return "uint";
                 case PrimitiveType.Int64: return "long";
                 case PrimitiveType.UInt64: return "ulong";
                 case PrimitiveType.Float: return "float";

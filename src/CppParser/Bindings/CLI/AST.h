@@ -245,11 +245,13 @@ namespace CppSharp
                 UInt16 = 7,
                 Int32 = 8,
                 UInt32 = 9,
-                Int64 = 10,
-                UInt64 = 11,
-                Float = 12,
-                Double = 13,
-                IntPtr = 14
+                Long = 10,
+                ULong = 11,
+                Int64 = 12,
+                UInt64 = 13,
+                Float = 14,
+                Double = 15,
+                IntPtr = 16
             };
 
             public enum struct RawCommentKind

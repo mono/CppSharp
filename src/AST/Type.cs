@@ -665,6 +665,8 @@ namespace CppSharp.AST
         UInt16,
         Int32,
         UInt32,
+        Long,
+        ULong,
         Int64,
         UInt64,
         Float,
@@ -698,6 +700,7 @@ namespace CppSharp.AST
                 case PrimitiveType.UInt8:
                 case PrimitiveType.UInt16:
                 case PrimitiveType.UInt32:
+                case PrimitiveType.ULong:
                 case PrimitiveType.UInt64:
                     return true;
                 }
