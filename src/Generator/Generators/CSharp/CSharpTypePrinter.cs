@@ -52,9 +52,7 @@ namespace CppSharp.Generators.CSharp
     public class CSharpTypePrinter : ITypePrinter<CSharpTypePrinterResult>,
         IDeclVisitor<CSharpTypePrinterResult>
     {
-        public ASTContext AstContext { get; set; }
-        private readonly ITypeMapDatabase TypeMapDatabase;
-        private readonly DriverOptions driverOptions;
+        private Driver driver;
 
         private readonly Stack<CSharpTypePrinterContextKind> contexts;
 
@@ -65,11 +63,9 @@ namespace CppSharp.Generators.CSharp
 
         public CSharpTypePrinterContext Context;
 
-        public CSharpTypePrinter(ITypeMapDatabase database, DriverOptions driverOptions, ASTContext context)
+        public CSharpTypePrinter(Driver driver)
         {
-            TypeMapDatabase = database;
-            this.driverOptions = driverOptions;
-            AstContext = context;
+            this.driver = driver;
 
             contexts = new Stack<CSharpTypePrinterContextKind>();
             PushContext(CSharpTypePrinterContextKind.Managed);
@@ -93,7 +89,7 @@ namespace CppSharp.Generators.CSharp
                 return string.Empty;
 
             TypeMap typeMap;
-            if (TypeMapDatabase.FindTypeMap(tag.Declaration, out typeMap))
+            if (this.driver.TypeDatabase.FindTypeMap(tag.Declaration, out typeMap))
             {
                 typeMap.Type = tag;
                 Context.CSharpKind = ContextKind;
@@ -269,7 +265,7 @@ namespace CppSharp.Generators.CSharp
             var decl = typedef.Declaration;
 
             TypeMap typeMap;
-            if (TypeMapDatabase.FindTypeMap(decl, out typeMap))
+            if (this.driver.TypeDatabase.FindTypeMap(decl, out typeMap))
             {
                 typeMap.Type = typedef;
                 Context.CSharpKind = ContextKind;
@@ -314,7 +310,7 @@ namespace CppSharp.Generators.CSharp
             var decl = template.Template.TemplatedDecl;
 
             TypeMap typeMap = null;
-            if (TypeMapDatabase.FindTypeMap(template, out typeMap))
+            if (this.driver.TypeDatabase.FindTypeMap(template, out typeMap))
             {
                 typeMap.Declaration = decl;
                 typeMap.Type = template;
@@ -386,7 +382,7 @@ namespace CppSharp.Generators.CSharp
                 case PrimitiveType.Void: return "void";
                 case PrimitiveType.Char16:
                 case PrimitiveType.WideChar: return "char";
-                case PrimitiveType.Char: return driverOptions.MarshalCharAsManagedChar ? "char" : "sbyte";
+                case PrimitiveType.Char: return this.driver.Options.MarshalCharAsManagedChar ? "char" : "sbyte";
                 case PrimitiveType.UChar: return "byte";
                 case PrimitiveType.Short: return "short";
                 case PrimitiveType.UShort: return "ushort";
