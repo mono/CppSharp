@@ -38,7 +38,7 @@ namespace CppSharp.Generator.Tests.AST
                     {
                         Modifier = PointerType.TypeModifier.LVReference,
                         QualifiedPointee = new QualifiedType(
-                            new BuiltinType(PrimitiveType.Int16), 
+                            new BuiltinType(PrimitiveType.Short), 
                             new TypeQualifiers() { IsConst = true })
                     }),
                 new QualifiedType(

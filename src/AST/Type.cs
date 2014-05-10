@@ -659,8 +659,8 @@ namespace CppSharp.AST
         WideChar,
         Char,
         UChar,
-        Int16,
-        UInt16,
+        Short,
+        UShort,
         Int32,
         UInt32,
         Long,
@@ -696,7 +696,7 @@ namespace CppSharp.AST
                 {
                 case PrimitiveType.Bool:
                 case PrimitiveType.UChar:
-                case PrimitiveType.UInt16:
+                case PrimitiveType.UShort:
                 case PrimitiveType.UInt32:
                 case PrimitiveType.ULong:
                 case PrimitiveType.UInt64:
