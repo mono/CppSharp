@@ -563,6 +563,9 @@ namespace CppSharp.Generators.CLI
 
             Write("{0}", @class.Name);
 
+            if (@class.IsStatic)
+                Write(" abstract sealed");
+
             if (@class.IsOpaque)
             {
                 WriteLine(";");

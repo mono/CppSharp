@@ -291,6 +291,15 @@ private:
 
 int TestStaticClass::Add(int a, int b) { return a + b; }
 
+struct DLL_API TestStaticClassDerived : TestStaticClass
+{
+    static int Foo();
+
+private:
+    TestStaticClassDerived();
+};
+
+int TestStaticClassDerived::Foo() { return 0; }
 
 class HasIgnoredField
 {

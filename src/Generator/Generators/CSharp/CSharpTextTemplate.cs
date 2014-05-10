@@ -488,6 +488,9 @@ namespace CppSharp.Generators.CSharp
 
             foreach (var ctor in @class.Constructors)
             {
+                if (@class.IsStatic)
+                    continue;
+
                 if (ctor.IsMoveConstructor)
                     continue;
 
@@ -497,7 +500,7 @@ namespace CppSharp.Generators.CSharp
                 tryAddOverload(ctor);
             }
 
-            if (@class.HasNonTrivialDestructor)
+            if (@class.HasNonTrivialDestructor && !@class.IsStatic)
                 foreach (var dtor in @class.Destructors)
                     tryAddOverload(dtor);
 
@@ -698,6 +701,8 @@ namespace CppSharp.Generators.CSharp
 
         public static bool ShouldGenerateClassNativeField(Class @class)
         {
+            if (@class.IsStatic)
+                return false;
             return @class.IsRefType && (!@class.HasBase || !HasRefBase(@class));
         }
 
@@ -712,6 +717,10 @@ namespace CppSharp.Generators.CSharp
             if (Driver.Options.GenerateAbstractImpls && @class.IsAbstract)
                 Write("abstract ");
 
+            if (@class.IsStatic)
+                Write("static ");
+
+            // This token needs to directly precede the "class" token.
             if (Options.GeneratePartialClasses)
                 Write("partial ");
 
@@ -743,7 +752,7 @@ namespace CppSharp.Generators.CSharp
                 }
             }
 
-            if (bases.Count > 0)
+            if (bases.Count > 0 && !@class.IsStatic)
                 Write(" : {0}", string.Join(", ", bases));
         }
 
@@ -1750,6 +1759,9 @@ namespace CppSharp.Generators.CSharp
 
         public void GenerateClassConstructors(Class @class)
         {
+            if (@class.IsStatic)
+                return;
+
             // Output a default constructor that takes the native pointer.
             GenerateNativeConstructor(@class);
 
