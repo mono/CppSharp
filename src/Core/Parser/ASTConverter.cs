@@ -1356,7 +1356,9 @@ namespace CppSharp
 
         public override AST.Declaration VisitFunctionTemplate(FunctionTemplate decl)
         {
-            throw new NotImplementedException();
+            var _decl = new AST.FunctionTemplate();
+            VisitTemplate(decl, _decl);
+            return _decl;
         }
 
         void VisitPreprocessedEntity(PreprocessedEntity entity, AST.PreprocessedEntity _entity)

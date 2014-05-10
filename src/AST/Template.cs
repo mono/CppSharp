@@ -193,6 +193,10 @@ namespace CppSharp.AST
     /// </summary>
     public class FunctionTemplate : Template
     {
+        public FunctionTemplate()
+        {
+        }
+
         public FunctionTemplate(Declaration decl)
             : base(decl)
         {
