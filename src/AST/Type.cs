@@ -508,6 +508,9 @@ namespace CppSharp.AST
     public class TemplateParameterType : Type
     {
         public TemplateParameter Parameter;
+        public uint Depth;
+        public uint Index;
+        public bool IsParameterPack;
 
         public override T Visit<T>(ITypeVisitor<T> visitor,
                                    TypeQualifiers quals = new TypeQualifiers())
@@ -520,7 +523,10 @@ namespace CppSharp.AST
             var type = obj as TemplateParameterType;
             if (type == null) return false;
 
-            return Parameter.Equals(type.Parameter);
+            return Parameter.Equals(type.Parameter)
+                && Depth.Equals(type.Depth)
+                && Index.Equals(type.Index)
+                && IsParameterPack.Equals(type.IsParameterPack);
         }
 
         public override int GetHashCode()

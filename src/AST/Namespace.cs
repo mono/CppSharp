@@ -216,6 +216,22 @@ namespace CppSharp.AST
             return @namespace.FindFunction(funcName, createDecl);
         }
 
+        public Function FindFunction(string name)
+        {
+            return Functions
+                .Concat(Templates.OfType<FunctionTemplate>()
+                    .Select(t => t.TemplatedFunction))
+                .FirstOrDefault(f => f.Name == name);
+        }
+
+        public Function FindFunctionByUSR(string usr)
+        {
+            return Functions
+                .Concat(Templates.OfType<FunctionTemplate>()
+                    .Select(t => t.TemplatedFunction))
+                .FirstOrDefault(f => f.USR == usr);
+        }
+
         Class CreateClass(string name, bool isComplete)
         {
             var  @class = new Class
@@ -294,23 +310,28 @@ namespace CppSharp.AST
             return newClass;
         }
 
-        public FunctionTemplate FindFunctionTemplate(string name,
-            List<TemplateParameter> @params)
+        public FunctionTemplate FindFunctionTemplate(string name)
         {
-            return Templates.FirstOrDefault(template => template.Name == name
-                && template.Parameters.SequenceEqual(@params)) as FunctionTemplate;
+            return Templates.OfType<FunctionTemplate>()
+                .FirstOrDefault(t => t.Name == name);
         }
 
-        public FunctionTemplate FindFunctionTemplate(IntPtr ptr)
+        public FunctionTemplate FindFunctionTemplateByUSR(string usr)
         {
-            return Templates.FirstOrDefault(template =>
-                template.OriginalPtr == ptr) as FunctionTemplate;
+            return Templates.OfType<FunctionTemplate>()
+                .FirstOrDefault(t => t.USR == usr);
         }
 
-        public ClassTemplate FindClassTemplate(IntPtr ptr)
+        public ClassTemplate FindClassTemplate(string name)
         {
-            return Templates.FirstOrDefault(template =>
-                template.OriginalPtr == ptr) as ClassTemplate;
+            return Templates.OfType<ClassTemplate>()
+                .FirstOrDefault(t => t.Name == name);
+        }
+
+        public ClassTemplate FindClassTemplateByUSR(string usr)
+        {
+            return Templates.OfType<ClassTemplate>()
+                .FirstOrDefault(t => t.USR == usr);
         }
 
         public TypedefDecl FindTypedef(string name, bool createDecl = false)

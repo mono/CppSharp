@@ -119,6 +119,11 @@ namespace CppSharp.AST
             OriginalFunction = function.OriginalFunction;
             Mangled = function.Mangled;
             Index = function.Index;
+            if (function.SpecializationInfo != null)
+            {
+                SpecializationInfo = new FunctionTemplateSpecialization(function.SpecializationInfo);
+                SpecializationInfo.SpecializedFunction = function;
+            }
         }
 
         public QualifiedType ReturnType { get; set; }
@@ -135,6 +140,8 @@ namespace CppSharp.AST
         public bool IsOperator { get { return OperatorKind != CXXOperatorKind.None; } }
 
         public CallingConvention CallingConvention { get; set; }
+
+        public FunctionTemplateSpecialization SpecializationInfo { get; set; }
 
         public bool IsThisCall
         {

@@ -220,6 +220,24 @@ namespace CppSharp.AST
             return base.GetOverloads(function);
         }
 
+        public Method FindMethod(string name)
+        {
+            return Methods
+                .Concat(Templates.OfType<FunctionTemplate>()
+                    .Select(t => t.TemplatedFunction)
+                    .OfType<Method>())
+                .FirstOrDefault(m => m.Name == name);
+        }
+
+        public Method FindMethodByUSR(string usr)
+        {
+            return Methods
+                .Concat(Templates.OfType<FunctionTemplate>()
+                    .Select(t => t.TemplatedFunction)
+                    .OfType<Method>())
+                .FirstOrDefault(m => m.USR == usr);
+        }
+
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {
             return visitor.VisitClassDecl(this);

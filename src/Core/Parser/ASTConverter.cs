@@ -496,6 +496,9 @@ namespace CppSharp
         {
             var _type = new AST.TemplateParameterType();
             _type.Parameter = DeclConverter.VisitTemplateParameter(type.Parameter);
+            _type.Depth = type.Depth;
+            _type.Index = type.Index;
+            _type.IsParameterPack = type.IsParameterPack;
             VisitType(type, _type);
             return _type;
         }
@@ -1255,6 +1258,7 @@ namespace CppSharp
         {
             var _param = new AST.TemplateParameter();
             _param.Name = param.Name;
+            _param.IsTypeParameter = param.IsTypeParameter;
             return _param;
         }
 
@@ -1356,9 +1360,28 @@ namespace CppSharp
 
         public override AST.Declaration VisitFunctionTemplate(FunctionTemplate decl)
         {
-            var _decl = new AST.FunctionTemplate();
+            var _decl = new AST.FunctionTemplate(Visit(decl.TemplatedDecl));
             VisitTemplate(decl, _decl);
+            for (uint i = 0; i < decl.SpecializationsCount; ++i)
+            {
+                var _spec = VisitFunctionTemplateSpecialization(decl.getSpecializations(i));
+                _decl.Specializations.Add(_spec);
+            }
             return _decl;
+        }
+
+        private AST.FunctionTemplateSpecialization VisitFunctionTemplateSpecialization(FunctionTemplateSpecialization spec)
+        {
+            var _spec = new AST.FunctionTemplateSpecialization();
+            _spec.Template = (AST.FunctionTemplate)Visit(spec.Template);
+            _spec.SpecializedFunction = (AST.Function)Visit(spec.SpecializedFunction);
+            _spec.SpecializationKind = VisitSpecializationKind(spec.SpecializationKind);
+            for (uint i = 0; i < spec.ArgumentsCount; ++i)
+            {
+                var _arg = VisitTemplateArgument(spec.getArguments(i));
+                _spec.Arguments.Add(_arg);
+            }
+            return _spec;
         }
 
         void VisitPreprocessedEntity(PreprocessedEntity entity, AST.PreprocessedEntity _entity)
