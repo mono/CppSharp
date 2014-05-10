@@ -1315,10 +1315,10 @@ static CppSharp::AST::PrimitiveType WalkBuiltinType(const clang::BuiltinType* Bu
     case clang::BuiltinType::Bool: return PrimitiveType::Bool;
 
     case clang::BuiltinType::SChar:
-    case clang::BuiltinType::Char_S: return PrimitiveType::Int8;
+    case clang::BuiltinType::Char_S: return PrimitiveType::Char;
 
     case clang::BuiltinType::UChar:
-    case clang::BuiltinType::Char_U: return PrimitiveType::UInt8;
+    case clang::BuiltinType::Char_U: return PrimitiveType::UChar;
 
     case clang::BuiltinType::WChar_S:
     case clang::BuiltinType::WChar_U: return PrimitiveType::WideChar;

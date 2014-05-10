@@ -104,8 +104,8 @@ namespace CppSharp.Types
                 case PrimitiveType.Void: return "void";
                 case PrimitiveType.Char16:
                 case PrimitiveType.WideChar: return "char";
-                case PrimitiveType.Int8: return "char";
-                case PrimitiveType.UInt8: return "unsigned char";
+                case PrimitiveType.Char: return "char";
+                case PrimitiveType.UChar: return "unsigned char";
                 case PrimitiveType.Int16: return "short";
                 case PrimitiveType.UInt16: return "unsigned short";
                 case PrimitiveType.Int32: return "int";

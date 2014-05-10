@@ -156,8 +156,8 @@ namespace CppSharp.Generators.CLI
                 case PrimitiveType.Void:
                     return true;
                 case PrimitiveType.Bool:
-                case PrimitiveType.Int8:
-                case PrimitiveType.UInt8:
+                case PrimitiveType.Char:
+                case PrimitiveType.UChar:
                 case PrimitiveType.Int16:
                 case PrimitiveType.UInt16:
                 case PrimitiveType.Int32:
@@ -497,8 +497,8 @@ namespace CppSharp.Generators.CLI
                 case PrimitiveType.Void:
                     return true;
                 case PrimitiveType.Bool:
-                case PrimitiveType.Int8:
-                case PrimitiveType.UInt8:
+                case PrimitiveType.Char:
+                case PrimitiveType.UChar:
                 case PrimitiveType.Int16:
                 case PrimitiveType.UInt16:
                 case PrimitiveType.Int32:
