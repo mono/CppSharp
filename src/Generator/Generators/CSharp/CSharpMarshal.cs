@@ -189,8 +189,8 @@ namespace CppSharp.Generators.CSharp
                 case PrimitiveType.Bool:
                 case PrimitiveType.Char:
                 case PrimitiveType.UChar:
-                case PrimitiveType.Int16:
-                case PrimitiveType.UInt16:
+                case PrimitiveType.Short:
+                case PrimitiveType.UShort:
                 case PrimitiveType.Int32:
                 case PrimitiveType.UInt32:
                 case PrimitiveType.Long:
@@ -511,8 +511,8 @@ namespace CppSharp.Generators.CSharp
                 case PrimitiveType.Bool:
                 case PrimitiveType.Char:
                 case PrimitiveType.UChar:
-                case PrimitiveType.Int16:
-                case PrimitiveType.UInt16:
+                case PrimitiveType.Short:
+                case PrimitiveType.UShort:
                 case PrimitiveType.Int32:
                 case PrimitiveType.UInt32:
                 case PrimitiveType.Long:

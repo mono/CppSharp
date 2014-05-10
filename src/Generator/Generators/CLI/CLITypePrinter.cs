@@ -191,8 +191,8 @@ namespace CppSharp.Generators.CLI
                 case PrimitiveType.WideChar: return "System::Char";
                 case PrimitiveType.Char: return Options.MarshalCharAsManagedChar ? "System::Char" : "char";
                 case PrimitiveType.UChar: return "unsigned char";
-                case PrimitiveType.Int16: return "short";
-                case PrimitiveType.UInt16: return "unsigned short";
+                case PrimitiveType.Short: return "short";
+                case PrimitiveType.UShort: return "unsigned short";
                 case PrimitiveType.Int32: return "int";
                 case PrimitiveType.UInt32: return "unsigned int";
                 case PrimitiveType.Long: return "long";

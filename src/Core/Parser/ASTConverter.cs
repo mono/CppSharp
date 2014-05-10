@@ -552,10 +552,10 @@ namespace CppSharp
                     return AST.PrimitiveType.Char;
                 case PrimitiveType.UChar:
                     return AST.PrimitiveType.UChar;
-                case PrimitiveType.Int16:
-                    return AST.PrimitiveType.Int16;
-                case PrimitiveType.UInt16:
-                    return AST.PrimitiveType.UInt16;
+                case PrimitiveType.Short:
+                    return AST.PrimitiveType.Short;
+                case PrimitiveType.UShort:
+                    return AST.PrimitiveType.UShort;
                 case PrimitiveType.Int32:
                     return AST.PrimitiveType.Int32;
                 case PrimitiveType.UInt32:
