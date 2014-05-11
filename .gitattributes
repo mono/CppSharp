@@ -1,0 +1,10 @@
+# Explicitly declare text files you want to always be normalized and converted
+# to native line endings on checkout.
+*.c	text
+*.h	text
+*.cpp	text
+*.cs	text diff=csharp
+*.lua	text
+
+# Declare files that will always have CRLF line endings on checkout.
+*.sln	text eol=crlf
