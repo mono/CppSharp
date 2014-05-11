@@ -879,7 +879,8 @@ ClassTemplate* Parser::WalkClassTemplate(clang::ClassTemplateDecl* TD)
 //-----------------------------------//
 
 std::vector<CppSharp::CppParser::TemplateArgument>
-Parser::WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL, clang::TemplateSpecializationTypeLoc* TSTL)
+Parser::WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL,
+    clang::TemplateSpecializationTypeLoc* TSTL)
 {
     using namespace clang;
 
@@ -888,8 +889,13 @@ Parser::WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL, clang::
     for (size_t i = 0, e = TAL->size(); i < e; i++)
     {
         auto TA = TAL->get(i);
-        auto ArgLoc = TSTL->getArgLoc(i);
-        auto Arg = WalkTemplateArgument(TA, &ArgLoc);
+        TemplateArgumentLoc *ArgLoc = 0;
+        if (TSTL && i < TSTL->getNumArgs())
+        {
+            auto TAL = TSTL->getArgLoc(i);
+            ArgLoc = &TAL;
+        }
+        auto Arg = WalkTemplateArgument(TA, ArgLoc);
         params.push_back(Arg);
     }
 
@@ -1693,7 +1699,7 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         if (TS->isSugared())
             TST->Desugared = WalkType(TS->desugar());
 
-        if (!TL->isNull())
+        if (TL && !TL->isNull())
         {
             auto TypeLocClass = TL->getTypeLocClass();
             if (TypeLocClass == TypeLoc::Qualified)
@@ -1709,11 +1715,18 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
             }
 
             assert(TL->getTypeLocClass() == TypeLoc::TemplateSpecialization);
-            auto TSTL = TL->getAs<TemplateSpecializationTypeLoc>();
-            TST->Arguments = WalkTemplateArgumentList(
-                &TemplateArgumentList(TemplateArgumentList::OnStack, TS->getArgs(), TS->getNumArgs()),
-                &TSTL);
         }
+
+        TemplateSpecializationTypeLoc *TSTL = 0;
+        if (TL && !TL->isNull())
+        {
+          auto TSpecTL = TL->getAs<TemplateSpecializationTypeLoc>();
+          TSTL = &TSpecTL;
+        }
+
+        TemplateArgumentList TArgs(TemplateArgumentList::OnStack, TS->getArgs(),
+            TS->getNumArgs());
+        TST->Arguments = WalkTemplateArgumentList(&TArgs, TSTL);
 
         Ty = TST;
         break;
@@ -1726,7 +1739,7 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
 
         if (auto Ident = TP->getIdentifier())
             TPT->Parameter.Name = Ident->getName();
-        if (!TL->isNull())
+        if (TL && !TL->isNull())
         {
             auto TypeLocClass = TL->getTypeLocClass();
             if (TypeLocClass == TypeLoc::Qualified)
