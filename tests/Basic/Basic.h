@@ -494,3 +494,9 @@ DLL_API decltype(nullptr) TestNullPtrTypeRet()
 {
     return nullptr;
 }
+
+// Tests dependent name types
+template<typename T> struct DependentType
+{
+    DependentType(typename T::Dependent* t) { }
+};

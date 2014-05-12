@@ -78,6 +78,9 @@ namespace CppSharp.Generators.CLI
                 if (record.Value is Namespace)
                     continue;
 
+                if (record.Value.IsDependent)
+                    continue;
+
                 if (filterNamespaces)
                 {
                     var declNamespace = GetEffectiveNamespace(record.Value);
