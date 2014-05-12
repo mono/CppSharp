@@ -158,14 +158,20 @@
 
         public static Type Desugar(this Type t)
         {
-            var type = t as TypedefType;
-
-            if (type != null)
+            var typeDef = t as TypedefType;
+            if (typeDef != null)
             {
-                var decl = type.Declaration.Type;
-
+                var decl = typeDef.Declaration.Type;
                 if (decl != null)
                     return decl.Desugar();
+            }
+
+            var substType = t as TemplateParameterSubstitutionType;
+            if (substType != null)
+            {
+                var replacement = substType.Replacement.Type;
+                if (replacement != null)
+                    return replacement.Desugar();
             }
 
             return t;

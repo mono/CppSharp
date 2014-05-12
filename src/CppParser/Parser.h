@@ -75,14 +75,18 @@ protected:
     WalkClassTemplateSpecialization(clang::ClassTemplateSpecializationDecl* CTS);
     ClassTemplatePartialSpecialization*
     WalkClassTemplatePartialSpecialization(clang::ClassTemplatePartialSpecializationDecl* CTS);
-    Method* WalkMethodCXX(clang::CXXMethodDecl* MD);
+    Method* WalkMethodCXX(clang::CXXMethodDecl* MD, bool AddToClass = true);
     Field* WalkFieldCXX(clang::FieldDecl* FD, Class* Class);
     ClassTemplate* WalkClassTemplate(clang::ClassTemplateDecl* TD);
     FunctionTemplate* WalkFunctionTemplate(clang::FunctionTemplateDecl* TD);
+    FunctionTemplateSpecialization* WalkFunctionTemplateSpec(clang::FunctionTemplateSpecializationInfo* FTS, Function* Function);
     Variable* WalkVariable(clang::VarDecl* VD);
     RawComment* WalkRawComment(const clang::RawComment* RC);
     Type* WalkType(clang::QualType QualType, clang::TypeLoc* TL = 0,
       bool DesugarType = false);
+    TemplateArgument WalkTemplateArgument(const clang::TemplateArgument& TA, clang::TemplateArgumentLoc* ArgLoc);
+    std::vector<TemplateArgument> WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL, clang::TemplateSpecializationTypeLoc* TSTL);
+    std::vector<TemplateArgument> WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL, const clang::ASTTemplateArgumentListInfo* TSTL);
     void WalkVTable(clang::CXXRecordDecl* RD, Class* C);
     VTableLayout WalkVTableLayout(const clang::VTableLayout& VTLayout);
     VTableComponent WalkVTableComponent(const clang::VTableComponent& Component);

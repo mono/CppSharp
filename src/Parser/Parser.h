@@ -73,15 +73,19 @@ protected:
     WalkClassTemplateSpecialization(clang::ClassTemplateSpecializationDecl* CTS);
     CppSharp::AST::ClassTemplatePartialSpecialization^
     WalkClassTemplatePartialSpecialization(clang::ClassTemplatePartialSpecializationDecl* CTS);
-    CppSharp::AST::Method^ WalkMethodCXX(clang::CXXMethodDecl* MD);
+    CppSharp::AST::Method^ WalkMethodCXX(clang::CXXMethodDecl* MD, bool AddToClass = true);
     CppSharp::AST::Field^ WalkFieldCXX(clang::FieldDecl* FD, CppSharp::AST::Class^ Class);
     CppSharp::AST::ClassTemplate^ Parser::WalkClassTemplate(clang::ClassTemplateDecl* TD);
     CppSharp::AST::FunctionTemplate^ Parser::WalkFunctionTemplate(
         clang::FunctionTemplateDecl* TD);
+    CppSharp::AST::FunctionTemplateSpecialization^ WalkFunctionTemplateSpec(clang::FunctionTemplateSpecializationInfo* FTS, CppSharp::AST::Function^ Function);
     CppSharp::AST::Variable^ WalkVariable(clang::VarDecl* VD);
     CppSharp::AST::RawComment^ WalkRawComment(const clang::RawComment* RC);
     CppSharp::AST::Type^ WalkType(clang::QualType QualType, clang::TypeLoc* TL = 0,
       bool DesugarType = false);
+    CppSharp::AST::TemplateArgument WalkTemplateArgument(const clang::TemplateArgument& TA, clang::TemplateArgumentLoc* ArgLoc);
+    List<CppSharp::AST::TemplateArgument>^ WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL, clang::TemplateSpecializationTypeLoc* TSTL);
+    List<CppSharp::AST::TemplateArgument>^ WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL, const clang::ASTTemplateArgumentListInfo* TSTL);
     CppSharp::AST::QualifiedType^ WalkQualifiedType(clang::TypeSourceInfo* TSI);
     void WalkVTable(clang::CXXRecordDecl* RD, CppSharp::AST::Class^ C);
     CppSharp::AST::VTableLayout^ WalkVTableLayout(const clang::VTableLayout& VTLayout);

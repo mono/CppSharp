@@ -26,6 +26,7 @@
 #include <clang/Sema/SemaConsumer.h>
 #include <clang/Frontend/Utils.h>
 #include <clang/Driver/Util.h>
+#include <clang/Index/USRGeneration.h>
 #include <CodeGen/CodeGenModule.h>
 #include <CodeGen/CodeGenTypes.h>
 #include <CodeGen/TargetInfo.h>
@@ -294,6 +295,15 @@ static std::string GetTagDeclName(const clang::TagDecl* D)
     }
 
     return GetDeclName(D);
+}
+
+static std::string GetDeclUSR(const clang::Decl* D)
+{
+    using namespace clang;
+    SmallString<128> usr;
+    if (!index::generateUSRForDecl(D, usr))
+        return usr.str();
+    return "<invalid>";
 }
 
 static clang::Decl* GetPreviousDeclInContext(const clang::Decl* D)
@@ -727,25 +737,31 @@ WalkTemplateSpecializationKind(clang::TemplateSpecializationKind Kind)
 ClassTemplateSpecialization*
 Parser::WalkClassTemplateSpecialization(clang::ClassTemplateSpecializationDecl* CTS)
 {
+    using namespace clang;
+
     auto CT = WalkClassTemplate(CTS->getSpecializedTemplate());
-    auto Spec = CT->FindSpecialization(CTS);
-    if (Spec != nullptr)
-        return Spec;
+    auto USR = GetDeclUSR(CTS);
+    auto TS = CT->FindSpecialization(USR);
+    if (TS != nullptr)
+        return TS;
 
-    auto TS = new ClassTemplateSpecialization();
+    TS = new ClassTemplateSpecialization();
     HandleDeclaration(CTS, TS);
-
-    TS->Name = CTS->getName();
 
     auto NS = GetNamespace(CTS);
     assert(NS && "Expected a valid namespace");
     TS->_Namespace = NS;
-
+    TS->Name = CTS->getName();
     TS->TemplatedDecl = CT;
     TS->SpecializationKind = WalkTemplateSpecializationKind(CTS->getSpecializationKind());
+    auto &TAL = CTS->getTemplateArgs();
+    if (auto TSI = CTS->getTypeAsWritten())
+    {
+        auto TL = TSI->getTypeLoc();
+        auto TSL = TL.getAs<TemplateSpecializationTypeLoc>();
+        TS->Arguments = WalkTemplateArgumentList(&TAL, &TSL);
+    }
     CT->Specializations.push_back(TS);
-
-    // TODO: Parse the template argument list
 
     if (CTS->isCompleteDefinition())
         WalkRecordCXX(CTS, TS);
@@ -758,12 +774,15 @@ Parser::WalkClassTemplateSpecialization(clang::ClassTemplateSpecializationDecl* 
 ClassTemplatePartialSpecialization*
 Parser::WalkClassTemplatePartialSpecialization(clang::ClassTemplatePartialSpecializationDecl* CTS)
 {
-    auto CT = WalkClassTemplate(CTS->getSpecializedTemplate());
-    auto Spec = CT->FindPartialSpecialization((void*) CTS);
-    if (Spec != nullptr)
-        return Spec;
+    using namespace clang;
 
-    auto TS = new ClassTemplatePartialSpecialization();
+    auto CT = WalkClassTemplate(CTS->getSpecializedTemplate());
+    auto USR = GetDeclUSR(CTS);
+    auto TS = CT->FindPartialSpecialization(USR);
+    if (TS != nullptr)
+        return TS;
+
+    TS = new ClassTemplatePartialSpecialization();
     HandleDeclaration(CTS, TS);
 
     TS->Name = CTS->getName();
@@ -774,9 +793,14 @@ Parser::WalkClassTemplatePartialSpecialization(clang::ClassTemplatePartialSpecia
 
     TS->TemplatedDecl = CT;
     TS->SpecializationKind = WalkTemplateSpecializationKind(CTS->getSpecializationKind());
+    auto &TAL = CTS->getTemplateArgs();
+    if (auto TSI = CTS->getTypeAsWritten())
+    {
+        auto TL = TSI->getTypeLoc();
+        auto TSL = TL.getAs<TemplateSpecializationTypeLoc>();
+        TS->Arguments = WalkTemplateArgumentList(&TAL, &TSL);
+    }
     CT->Specializations.push_back(TS);
-
-    // TODO: Parse the template argument list
 
     if (CTS->isCompleteDefinition())
         WalkRecordCXX(CTS, TS);
@@ -786,35 +810,28 @@ Parser::WalkClassTemplatePartialSpecialization(clang::ClassTemplatePartialSpecia
 
 //-----------------------------------//
 
-ClassTemplate* Parser::WalkClassTemplate(clang::ClassTemplateDecl* TD)
+CppSharp::CppParser::TemplateParameter
+WalkTemplateParameter(const clang::NamedDecl* D)
 {
-    auto NS = GetNamespace(TD);
-    assert(NS && "Expected a valid namespace");
+    using namespace clang;
 
-    auto CT = NS->FindClassTemplate((void*) TD);
-    if (CT != nullptr)
-        return CT;
+    auto TP = CppSharp::CppParser::TemplateParameter();
+    if (D == nullptr)
+        return TP;
 
-    CT = new ClassTemplate();
-    HandleDeclaration(TD, CT);
-
-    CT->_Namespace = NS;
-    NS->Templates.push_back(CT);
-
-    CT->TemplatedDecl = WalkRecordCXX(TD->getTemplatedDecl());
-
-    auto TPL = TD->getTemplateParameters();
-    for(auto it = TPL->begin(); it != TPL->end(); ++it)
+    TP.Name = GetDeclName(D);
+    switch (D->getKind())
     {
-        auto ND = *it;
-
-        auto TP = TemplateParameter();
-        TP.Name = ND->getNameAsString();
-
-        CT->Parameters.push_back(TP);
+    case Decl::TemplateTypeParm:
+    {
+        auto TTPD = cast<TemplateTypeParmDecl>(D);
+        TP.IsTypeParameter = true;
+        break;
     }
-
-    return CT;
+    default:
+        break;
+    }
+    return TP;
 }
 
 //-----------------------------------//
@@ -824,18 +841,141 @@ WalkTemplateParameterList(const clang::TemplateParameterList* TPL)
 {
     auto params = std::vector<CppSharp::CppParser::TemplateParameter>();
 
-    for(auto it = TPL->begin(); it != TPL->end(); ++it)
+    for (auto it = TPL->begin(); it != TPL->end(); ++it)
     {
         auto ND = *it;
-
-        auto TP = CppSharp::CppParser::TemplateParameter();
-        TP.Name = ND->getNameAsString();
-
+        auto TP = WalkTemplateParameter(ND);
         params.push_back(TP);
     }
 
     return params;
 }
+
+//-----------------------------------//
+
+ClassTemplate* Parser::WalkClassTemplate(clang::ClassTemplateDecl* TD)
+{
+    auto NS = GetNamespace(TD);
+    assert(NS && "Expected a valid namespace");
+
+    auto USR = GetDeclUSR(TD);
+    auto CT = NS->FindClassTemplate(USR);
+    if (CT != nullptr)
+        return CT;
+
+    CT = new ClassTemplate();
+    HandleDeclaration(TD, CT);
+
+    CT->Name = GetDeclName(TD);
+    CT->_Namespace = NS;
+    NS->Templates.push_back(CT);
+
+    CT->TemplatedDecl = WalkRecordCXX(TD->getTemplatedDecl());
+    CT->Parameters = WalkTemplateParameterList(TD->getTemplateParameters());
+
+    return CT;
+}
+
+//-----------------------------------//
+
+std::vector<CppSharp::CppParser::TemplateArgument>
+Parser::WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL,
+    clang::TemplateSpecializationTypeLoc* TSTL)
+{
+    using namespace clang;
+
+    auto params = std::vector<CppSharp::CppParser::TemplateArgument>();
+
+    for (size_t i = 0, e = TAL->size(); i < e; i++)
+    {
+        auto TA = TAL->get(i);
+        TemplateArgumentLoc *ArgLoc = 0;
+        if (TSTL && i < TSTL->getNumArgs())
+        {
+            auto TAL = TSTL->getArgLoc(i);
+            ArgLoc = &TAL;
+        }
+        auto Arg = WalkTemplateArgument(TA, ArgLoc);
+        params.push_back(Arg);
+    }
+
+    return params;
+}
+
+//-----------------------------------//
+
+std::vector<CppSharp::CppParser::TemplateArgument>
+Parser::WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL, 
+    const clang::ASTTemplateArgumentListInfo* TALI)
+{
+    using namespace clang;
+
+    auto params = std::vector<CppSharp::CppParser::TemplateArgument>();
+
+    for (size_t i = 0, e = TAL->size(); i < e; i++)
+    {
+        auto TA = TAL->get(i);
+        auto ArgLoc = TALI->operator[](i);
+        auto TP = WalkTemplateArgument(TA, &ArgLoc);
+        params.push_back(TP);
+    }
+
+    return params;
+}
+
+//-----------------------------------//
+
+CppSharp::CppParser::TemplateArgument
+Parser::WalkTemplateArgument(const clang::TemplateArgument& TA, clang::TemplateArgumentLoc* ArgLoc)
+{
+    auto Arg = CppSharp::CppParser::TemplateArgument();
+
+    switch (TA.getKind())
+    {
+    case clang::TemplateArgument::Type:
+    {
+        Arg.Kind = CppSharp::CppParser::TemplateArgument::ArgumentKind::Type;
+        if (ArgLoc)
+        {
+            auto ArgTL = ArgLoc->getTypeSourceInfo()->getTypeLoc();
+            Arg.Type = GetQualifiedType(TA.getAsType(), WalkType(TA.getAsType(), &ArgTL));
+        }
+        else
+        {
+            Arg.Type = GetQualifiedType(TA.getAsType(), WalkType(TA.getAsType()));
+        }
+        break;
+    }
+    case clang::TemplateArgument::Declaration:
+        Arg.Kind = CppSharp::CppParser::TemplateArgument::ArgumentKind::Declaration;
+        Arg.Declaration = WalkDeclaration(TA.getAsDecl(), 0);
+        break;
+    case clang::TemplateArgument::NullPtr:
+        Arg.Kind = CppSharp::CppParser::TemplateArgument::ArgumentKind::NullPtr;
+        break;
+    case clang::TemplateArgument::Integral:
+        Arg.Kind = CppSharp::CppParser::TemplateArgument::ArgumentKind::Integral;
+        //Arg.Type = WalkType(TA.getIntegralType(), 0);
+        Arg.Integral = TA.getAsIntegral().getLimitedValue();
+        break;
+    case clang::TemplateArgument::Template:
+        Arg.Kind = CppSharp::CppParser::TemplateArgument::ArgumentKind::Template;
+        break;
+    case clang::TemplateArgument::TemplateExpansion:
+        Arg.Kind = CppSharp::CppParser::TemplateArgument::ArgumentKind::TemplateExpansion;
+        break;
+    case clang::TemplateArgument::Expression:
+        Arg.Kind = CppSharp::CppParser::TemplateArgument::ArgumentKind::Expression;
+        break;
+    case clang::TemplateArgument::Pack:
+        Arg.Kind = CppSharp::CppParser::TemplateArgument::ArgumentKind::Pack;
+        break;
+    }
+
+    return Arg;
+}
+
+//-----------------------------------//
 
 FunctionTemplate* Parser::WalkFunctionTemplate(clang::FunctionTemplateDecl* TD)
 {
@@ -844,38 +984,50 @@ FunctionTemplate* Parser::WalkFunctionTemplate(clang::FunctionTemplateDecl* TD)
     auto NS = GetNamespace(TD);
     assert(NS && "Expected a valid namespace");
 
-    auto FT = NS->FindFunctionTemplate((void*)TD);
+    auto USR = GetDeclUSR(TD);
+    auto FT = NS->FindFunctionTemplate(USR);
     if (FT != nullptr)
         return FT;
-
-    auto Params = WalkTemplateParameterList(TD->getTemplateParameters());
 
     CppSharp::CppParser::AST::Function* Function = nullptr;
     auto TemplatedDecl = TD->getTemplatedDecl();
 
     if (auto MD = dyn_cast<CXXMethodDecl>(TemplatedDecl))
-        Function = WalkMethodCXX(MD);
+        Function = WalkMethodCXX(MD, /*AddToClass=*/false);
     else
         Function = WalkFunction(TemplatedDecl, /*IsDependent=*/true,
                                             /*AddToNamespace=*/false);
 
-    auto Name = TD->getNameAsString();
-    FT = NS->FindFunctionTemplate(Name, Params);
-    if (FT != nullptr && FT->TemplatedDecl == Function)
-        return FT;
-
     FT = new FunctionTemplate();
     HandleDeclaration(TD, FT);
 
+    FT->Name = GetDeclName(TD);
     FT->_Namespace = NS;
     FT->TemplatedDecl = Function;
-    FT->Parameters = Params;
+    FT->Parameters = WalkTemplateParameterList(TD->getTemplateParameters());
 
     NS->Templates.push_back(FT);
 
     return FT;
 }
 
+//-----------------------------------//
+
+CppSharp::CppParser::FunctionTemplateSpecialization*
+Parser::WalkFunctionTemplateSpec(clang::FunctionTemplateSpecializationInfo* FTSI, CppSharp::CppParser::Function* Function)
+{
+    using namespace clang;
+
+    auto FTS = new CppSharp::CppParser::FunctionTemplateSpecialization();
+    FTS->SpecializationKind = WalkTemplateSpecializationKind(FTSI->getTemplateSpecializationKind());
+    FTS->SpecializedFunction = Function;
+    if (auto TALI = FTSI->TemplateArgumentsAsWritten)
+        FTS->Arguments = WalkTemplateArgumentList(FTSI->TemplateArguments, TALI);
+    FTS->Template = WalkFunctionTemplate(FTSI->getTemplate());
+    FTS->Template->Specializations.push_back(FTS);
+
+    return FTS;
+}
 //-----------------------------------//
 
 static CXXMethodKind GetMethodKindFromDecl(clang::DeclarationName Name)
@@ -921,13 +1073,13 @@ static CXXOperatorKind GetOperatorKindFromDecl(clang::DeclarationName Name)
     return CXXOperatorKind::None;
 }
 
-Method* Parser::WalkMethodCXX(clang::CXXMethodDecl* MD)
+Method* Parser::WalkMethodCXX(clang::CXXMethodDecl* MD, bool AddToClass)
 {
     using namespace clang;
 
     // We could be in a redeclaration, so process the primary context.
     if (MD->getPrimaryContext() != MD)
-        return WalkMethodCXX(cast<CXXMethodDecl>(MD->getPrimaryContext()));
+        return WalkMethodCXX(cast<CXXMethodDecl>(MD->getPrimaryContext()), AddToClass);
 
     auto RD = MD->getParent();
     auto Decl = WalkDeclaration(RD, /*IgnoreSystemDecls=*/false);
@@ -935,20 +1087,25 @@ Method* Parser::WalkMethodCXX(clang::CXXMethodDecl* MD)
     auto Class = static_cast<CppSharp::CppParser::AST::Class*>(Decl);
 
     // Check for an already existing method that came from the same declaration.
+    auto USR = GetDeclUSR(MD);
     for (unsigned I = 0, E = Class->Methods.size(); I != E; ++I)
     {
          Method* Method = Class->Methods[I];
-        if (Method->OriginalPtr == MD)
-            return Method;
+         if (Method->USR == USR)
+             return Method;
+    }
+    for (unsigned I = 0, E = Class->Templates.size(); I != E; ++I)
+    {
+        Template* Template = Class->Templates[I];
+        if (Template->TemplatedDecl->USR == USR)
+            return static_cast<Method*>(Template->TemplatedDecl);
     }
 
-    DeclarationName Name = MD->getDeclName();
-
-    Method* Method = new CppSharp::CppParser::Method();
+    auto Method = new CppSharp::CppParser::Method();
     HandleDeclaration(MD, Method);
 
     Method->Access = ConvertToAccess(MD->getAccess());
-    Method->MethodKind = GetMethodKindFromDecl(Name);
+    Method->MethodKind = GetMethodKindFromDecl(MD->getDeclName());
     Method->IsStatic = MD->isStatic();
     Method->IsVirtual = MD->isVirtual();
     Method->IsConst = MD->isConst();
@@ -974,7 +1131,8 @@ Method* Parser::WalkMethodCXX(clang::CXXMethodDecl* MD)
         Method->ConversionType = GetQualifiedType(CD->getConversionType(), ConvTy);
     }
 
-    Class->Methods.push_back(Method);
+    if (AddToClass)
+        Class->Methods.push_back(Method);
 
     return Method;
 }
@@ -1539,70 +1697,34 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         if (TS->isSugared())
             TST->Desugared = WalkType(TS->desugar());
 
-        auto TypeLocClass = TL->getTypeLocClass();
-
-        if (TypeLocClass == TypeLoc::Qualified)
+        if (TL && !TL->isNull())
         {
-            auto UTL = TL->getUnqualifiedLoc();
-            TL = &UTL;
-        }
-        else if (TypeLocClass == TypeLoc::Elaborated)
-        {
-            auto ETL = TL->getAs<ElaboratedTypeLoc>();
-            auto ITL = ETL.getNextTypeLoc();
-            TL = &ITL;
-        }
-
-        assert(TL->getTypeLocClass() == TypeLoc::TemplateSpecialization);
-        auto TSTL = TL->getAs<TemplateSpecializationTypeLoc>();
-
-        for (unsigned I = 0, E = TS->getNumArgs(); I != E; ++I)
-        {
-            const clang::TemplateArgument& TA = TS->getArg(I);
-            auto Arg = TemplateArgument();
-
-            TemplateArgumentLoc ArgLoc;
-            ArgLoc = TSTL.getArgLoc(I);
-
-            switch(TA.getKind())
+            auto TypeLocClass = TL->getTypeLocClass();
+            if (TypeLocClass == TypeLoc::Qualified)
             {
-            case clang::TemplateArgument::Type:
-            {
-                Arg.Kind = TemplateArgument::ArgumentKind::Type;
-                TypeLoc ArgTL;
-                ArgTL = ArgLoc.getTypeSourceInfo()->getTypeLoc();
-                Arg.Type = GetQualifiedType(TA.getAsType(),
-                    WalkType(TA.getAsType(), &ArgTL));
-                break;
+                auto UTL = TL->getUnqualifiedLoc();
+                TL = &UTL;
             }
-            case clang::TemplateArgument::Declaration:
-                Arg.Kind = TemplateArgument::ArgumentKind::Declaration;
-                Arg.Declaration = WalkDeclaration(TA.getAsDecl(), 0);
-                break;
-            case clang::TemplateArgument::NullPtr:
-                Arg.Kind = TemplateArgument::ArgumentKind::NullPtr;
-                break;
-            case clang::TemplateArgument::Integral:
-                Arg.Kind = TemplateArgument::ArgumentKind::Integral;
-                //Arg.Type = WalkType(TA.getIntegralType(), 0);
-                Arg.Integral = TA.getAsIntegral().getLimitedValue();
-                break;
-            case clang::TemplateArgument::Template:
-                Arg.Kind = TemplateArgument::ArgumentKind::Template;
-                break;
-            case clang::TemplateArgument::TemplateExpansion:
-                Arg.Kind = TemplateArgument::ArgumentKind::TemplateExpansion;
-                break;
-            case clang::TemplateArgument::Expression:
-                Arg.Kind = TemplateArgument::ArgumentKind::Expression;
-                break;
-            case clang::TemplateArgument::Pack:
-                Arg.Kind = TemplateArgument::ArgumentKind::Pack;
-                break;
+            else if (TypeLocClass == TypeLoc::Elaborated)
+            {
+                auto ETL = TL->getAs<ElaboratedTypeLoc>();
+                auto ITL = ETL.getNextTypeLoc();
+                TL = &ITL;
             }
 
-            TST->Arguments.push_back(Arg);
+            assert(TL->getTypeLocClass() == TypeLoc::TemplateSpecialization);
         }
+
+        TemplateSpecializationTypeLoc *TSTL = 0;
+        if (TL && !TL->isNull())
+        {
+          auto TSpecTL = TL->getAs<TemplateSpecializationTypeLoc>();
+          TSTL = &TSpecTL;
+        }
+
+        TemplateArgumentList TArgs(TemplateArgumentList::OnStack, TS->getArgs(),
+            TS->getNumArgs());
+        TST->Arguments = WalkTemplateArgumentList(&TArgs, TSTL);
 
         Ty = TST;
         break;
@@ -1611,10 +1733,33 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
     {
         auto TP = Type->getAs<TemplateTypeParmType>();
 
-        auto TPT = new TemplateParameterType();
+        auto TPT = new CppSharp::CppParser::TemplateParameterType();
 
         if (auto Ident = TP->getIdentifier())
             TPT->Parameter.Name = Ident->getName();
+        if (TL && !TL->isNull())
+        {
+            auto TypeLocClass = TL->getTypeLocClass();
+            if (TypeLocClass == TypeLoc::Qualified)
+            {
+                auto UTL = TL->getUnqualifiedLoc();
+                TL = &UTL;
+            }
+            else if (TypeLocClass == TypeLoc::Elaborated)
+            {
+                auto ETL = TL->getAs<ElaboratedTypeLoc>();
+                auto ITL = ETL.getNextTypeLoc();
+                TL = &ITL;
+            }
+
+            assert(TL->getTypeLocClass() == TypeLoc::TemplateTypeParm);
+            auto TTTL = TL->getAs<TemplateTypeParmTypeLoc>();
+
+            TPT->Parameter = WalkTemplateParameter(TTTL.getDecl());
+        }
+        TPT->Depth = TP->getDepth();
+        TPT->Index = TP->getIndex();
+        TPT->IsParameterPack = TP->isParameterPack();
 
         Ty = TPT;
         break;
@@ -1965,6 +2110,9 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, Function* F,
             F->Parameters[Index++]->IsIndirect = I->info.isIndirect();
         }
     }
+
+    if (auto FTSI = FD->getTemplateSpecializationInfo())
+        F->SpecializationInfo = WalkFunctionTemplateSpec(FTSI, F);
 }
 
 Function* Parser::WalkFunction(clang::FunctionDecl* FD, bool IsDependent,
@@ -1977,9 +2125,8 @@ Function* Parser::WalkFunction(clang::FunctionDecl* FD, bool IsDependent,
     auto NS = GetNamespace(FD);
     assert(NS && "Expected a valid namespace");
 
-    auto Name = FD->getNameAsString();
-    Function* F = NS->FindFunction(Name, /*Create=*/ false);
-
+    auto USR = GetDeclUSR(FD);
+    auto F = NS->FindFunction(USR);
     if (F != nullptr)
         return F;
 
@@ -2233,6 +2380,7 @@ void Parser::HandleDeclaration(clang::Decl* D, Declaration* Decl)
         return;
 
     Decl->OriginalPtr = (void*) D;
+    Decl->USR = GetDeclUSR(D);
 
     if (Decl->PreprocessedEntities.empty() && !D->isImplicit())
     {

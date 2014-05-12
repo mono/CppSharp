@@ -71,7 +71,7 @@ namespace CppSharp.Generators
                 if (!unit.IsGenerated || !unit.HasDeclarations)
                     continue;
 
-                if (unit.IsSystemHeader)
+                if (unit.IsSystemHeader || !unit.IsValid)
                     continue;
 
                 var templates = Generate(unit);

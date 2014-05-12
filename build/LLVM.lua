@@ -79,6 +79,7 @@ function SetupLLVMLibs()
       "clangParse",
       "clangSema",
       "clangSerialization",
+      "clangIndex",
     }
     StaticLinksOpt { "LLVMProfileData" }
     

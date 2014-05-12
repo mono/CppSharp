@@ -69,8 +69,16 @@ TemplateSpecializationType::TemplateSpecializationType(
 DEF_VECTOR(TemplateSpecializationType, TemplateArgument, Arguments)
 
 // TemplateParameter
-TemplateParameter::TemplateParameter() {}
-TemplateParameter::TemplateParameter(const TemplateParameter& rhs) : Name(rhs.Name) {}
+TemplateParameter::TemplateParameter() 
+    : IsTypeParameter(false)
+{
+}
+
+TemplateParameter::TemplateParameter(const TemplateParameter& rhs)
+    : Name(rhs.Name)
+    , IsTypeParameter(rhs.IsTypeParameter)
+{
+}
 
 DEF_STRING(TemplateParameter, Name)
 
@@ -341,30 +349,28 @@ Enumeration* DeclarationContext::FindEnumWithItem(const std::string& Name)
     return nullptr;
 }
 
-Function* DeclarationContext::FindFunction(const std::string& Name, bool Create)
+Function* DeclarationContext::FindFunction(const std::string& USR)
 {
     auto foundFunction = std::find_if(Functions.begin(), Functions.end(),
-            [&](Function* func) { return func->Name == Name; });
+        [&](Function* func) { return func->USR == USR; });
 
     if (foundFunction != Functions.end())
         return *foundFunction;
 
-    if (!Create)
-        return nullptr;
-     
-    auto function = new Function();
-    function->Name = Name;
-    function->_Namespace = this;
-    Functions.push_back(function);
+    auto foundTemplate = std::find_if(Templates.begin(), Templates.end(),
+        [&](Template* t) { return t->TemplatedDecl->USR == USR; });
 
-    return function;
+    if (foundTemplate != Templates.end())
+        return static_cast<Function*>((*foundTemplate)->TemplatedDecl);
+
+    return nullptr;
 }
 
 ClassTemplate*
-DeclarationContext::FindClassTemplate(void* OriginalPtr)
+DeclarationContext::FindClassTemplate(const std::string& USR)
 {
     auto foundTemplate = std::find_if(Templates.begin(), Templates.end(),
-        [&](Template* t) { return t->OriginalPtr == OriginalPtr; });
+        [&](Template* t) { return t->USR == USR; });
 
     if (foundTemplate != Templates.end())
         return static_cast<ClassTemplate*>(*foundTemplate);
@@ -373,28 +379,14 @@ DeclarationContext::FindClassTemplate(void* OriginalPtr)
 }
 
 FunctionTemplate*
-DeclarationContext::FindFunctionTemplate(void* OriginalPtr)
+DeclarationContext::FindFunctionTemplate(const std::string& USR)
 {
-    auto foundFunction = std::find_if(Templates.begin(), Templates.end(),
-        [&](Template* func) { return func->OriginalPtr == OriginalPtr; });
-
-    if (foundFunction != Templates.end())
-        return static_cast<FunctionTemplate*>(*foundFunction);
-
-    return nullptr;
-}
-
-FunctionTemplate*
-DeclarationContext::FindFunctionTemplate(const std::string& Name,
-                                         const std::vector<TemplateParameter>& Params)
-{
-    FunctionTemplate* func = 0;
-    auto foundFunction = std::find_if(Templates.begin(), Templates.end(),
-        [&](Template* func) { return func->Name == Name && func->Parameters == Params; }
+    auto foundTemplate = std::find_if(Templates.begin(), Templates.end(),
+        [&](Template* t) { return t->USR == USR; }
     );
 
-    if (foundFunction != Templates.end())
-        return static_cast<FunctionTemplate*>(*foundFunction);
+    if (foundTemplate != Templates.end())
+        return static_cast<FunctionTemplate*>(*foundTemplate);
 
     return nullptr;
 }
@@ -423,15 +415,32 @@ TypedefDecl::TypedefDecl() : Declaration(DeclarationKind::Typedef) {}
 Parameter::Parameter() : Declaration(DeclarationKind::Parameter),
     IsIndirect(false), HasDefaultValue(false) {}
 
-Function::Function() : Declaration(DeclarationKind::Function),
-    IsReturnIndirect(false) {}
+Function::Function() 
+    : Declaration(DeclarationKind::Function)
+    , IsReturnIndirect(false)
+    , SpecializationInfo(0)
+{
+}
 
 DEF_STRING(Function, Mangled)
 DEF_STRING(Function, Signature)
 DEF_VECTOR(Function, Parameter*, Parameters)
 
-Method::Method() : IsDefaultConstructor(false), IsCopyConstructor(false),
-    IsMoveConstructor(false) { Kind = DeclarationKind::Method; }
+Method::Method() 
+    : Function()
+    , AccessDecl(0)
+    , IsVirtual(false)
+    , IsStatic(false)
+    , IsConst(false)
+    , IsImplicit(false)
+    , IsExplicit(false)
+    , IsOverride(false)
+    , IsDefaultConstructor(false)
+    , IsCopyConstructor(false)
+    , IsMoveConstructor(false)
+{ 
+    Kind = DeclarationKind::Method; 
+}
 
 // Enumeration
 
@@ -496,15 +505,43 @@ ClassTemplate::ClassTemplate() : Template(DeclarationKind::ClassTemplate) {}
 
 DEF_VECTOR(ClassTemplate, ClassTemplateSpecialization*, Specializations)
 
-ClassTemplateSpecialization::ClassTemplateSpecialization() : TemplatedDecl(0)
-    { Kind = DeclarationKind::ClassTemplateSpecialization; }
+ClassTemplateSpecialization::ClassTemplateSpecialization() 
+    : Class()
+    , TemplatedDecl(0)
+{ 
+    Kind = DeclarationKind::ClassTemplateSpecialization; 
+}
 
 DEF_VECTOR(ClassTemplateSpecialization, TemplateArgument, Arguments)
 
 ClassTemplatePartialSpecialization::ClassTemplatePartialSpecialization()
-    { Kind = DeclarationKind::ClassTemplatePartialSpecialization; }
+    : ClassTemplateSpecialization()
+{ 
+    Kind = DeclarationKind::ClassTemplatePartialSpecialization; 
+}
 
 FunctionTemplate::FunctionTemplate() : Template(DeclarationKind::FunctionTemplate) {}
+
+DEF_VECTOR(FunctionTemplate, FunctionTemplateSpecialization*, Specializations)
+
+FunctionTemplateSpecialization* FunctionTemplate::FindSpecialization(const std::string& usr)
+{
+    auto foundSpec = std::find_if(Specializations.begin(), Specializations.end(),
+        [&](FunctionTemplateSpecialization* cts) { return cts->SpecializedFunction->USR == usr; });
+
+    if (foundSpec != Specializations.end())
+        return static_cast<FunctionTemplateSpecialization*>(*foundSpec);
+
+    return nullptr;
+}
+
+FunctionTemplateSpecialization::FunctionTemplateSpecialization()
+    : Template(0)
+    , SpecializedFunction(0)
+{
+}
+
+DEF_VECTOR(FunctionTemplateSpecialization, TemplateArgument, Arguments)
 
 Namespace::Namespace() 
     : DeclarationContext(DeclarationKind::Namespace)
@@ -536,10 +573,10 @@ DEF_VECTOR_STRING(NativeLibrary, Symbols)
 // ASTContext
 DEF_VECTOR(ASTContext, TranslationUnit*, TranslationUnits)
 
-ClassTemplateSpecialization* ClassTemplate::FindSpecialization(void* ptr)
+ClassTemplateSpecialization* ClassTemplate::FindSpecialization(const std::string& usr)
 {
     auto foundSpec = std::find_if(Specializations.begin(), Specializations.end(),
-        [&](ClassTemplateSpecialization* cts) { return cts->OriginalPtr == ptr; });
+        [&](ClassTemplateSpecialization* cts) { return cts->USR == usr; });
 
     if (foundSpec != Specializations.end())
         return static_cast<ClassTemplateSpecialization*>(*foundSpec);
@@ -547,24 +584,12 @@ ClassTemplateSpecialization* ClassTemplate::FindSpecialization(void* ptr)
     return nullptr;
 }
 
-ClassTemplateSpecialization*
-ClassTemplate::FindSpecialization(TemplateSpecializationType type)
+ClassTemplatePartialSpecialization* ClassTemplate::FindPartialSpecialization(const std::string& usr)
 {
-    return 0;
-}
-
-ClassTemplatePartialSpecialization* ClassTemplate::FindPartialSpecialization(void* ptr)
-{
-    auto foundSpec = FindSpecialization(ptr);
+    auto foundSpec = FindSpecialization(usr);
     if (foundSpec != nullptr)
         return static_cast<ClassTemplatePartialSpecialization*>(foundSpec);
     return nullptr;
-}
-
-ClassTemplatePartialSpecialization*
-ClassTemplate::FindPartialSpecialization(TemplateSpecializationType type)
-{
-    return 0;
 }
 
 ASTContext::ASTContext() {}

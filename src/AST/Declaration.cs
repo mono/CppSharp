@@ -285,6 +285,14 @@ namespace CppSharp.AST
         // Pointer to the original declaration from Clang.
         public IntPtr OriginalPtr;
 
+        // The Unified Symbol Resolution (USR) for the declaration.
+        // A Unified Symbol Resolution (USR) is a string that identifies a 
+        // particular entity (function, class, variable, etc.) within a program.
+        // USRs can be compared across translation units to determine, e.g., 
+        // when references in one translation refer to an entity defined in 
+        // another translation unit. 
+        public string USR;
+
         public List<Attribute> Attributes { get; private set; }
 
         protected Declaration()
