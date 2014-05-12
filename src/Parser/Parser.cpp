@@ -296,7 +296,7 @@ static std::string GetTagDeclName(const clang::TagDecl* D)
 static std::string GetDeclUSR(const clang::Decl* D)
 {
     using namespace clang;
-    SmallString<8> usr;
+    SmallString<128> usr;
     if (!index::generateUSRForDecl(D, usr))
         return usr.str();
     return "<invalid>";
