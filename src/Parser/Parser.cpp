@@ -1031,10 +1031,7 @@ Parser::WalkFunctionTemplateSpec(clang::FunctionTemplateSpecializationInfo* FTSI
     
     auto FTS = gcnew CppSharp::AST::FunctionTemplateSpecialization();
     FTS->SpecializationKind = WalkTemplateSpecializationKind(FTSI->getTemplateSpecializationKind());
-    if (auto MD = dyn_cast<CXXMethodDecl>(FTSI->Function))
-        FTS->SpecializedFunction = Function;
-    else
-        FTS->SpecializedFunction = Function;
+    FTS->SpecializedFunction = Function;
     if (auto TALI = FTSI->TemplateArgumentsAsWritten)
         FTS->Arguments = WalkTemplateArgumentList(FTSI->TemplateArguments, TALI);
     FTS->Template = WalkFunctionTemplate(FTSI->getTemplate());
