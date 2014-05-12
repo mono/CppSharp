@@ -905,7 +905,8 @@ Parser::WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL,
 //-----------------------------------//
 
 std::vector<CppSharp::CppParser::TemplateArgument>
-Parser::WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL, const clang::ASTTemplateArgumentListInfo* TALI)
+Parser::WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL, 
+    const clang::ASTTemplateArgumentListInfo* TALI)
 {
     using namespace clang;
 
