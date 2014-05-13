@@ -121,12 +121,12 @@ namespace CppSharp
 
         public static void Main(string[] args)
         {
-            Console.WriteLine("Generating the C++/CLI parser bindings...");
+            Console.WriteLine("Generating the C++/CLI parser bindings for Windows...");
             ConsoleDriver.Run(new ParserGen(GeneratorKind.CLI, "i686-pc-win32",
                 CppAbi.Microsoft));
             Console.WriteLine();
 
-            Console.WriteLine("Generating the C# parser bindings...");
+            Console.WriteLine("Generating the C# parser bindings for Windows...");
             ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "i686-pc-win32",
                 CppAbi.Microsoft));
 
@@ -136,6 +136,7 @@ namespace CppSharp
             // of libcxx since the one provided by the Mac SDK is not compatible with a recent
             // Clang frontend that we use to parse it.
 
+            Console.WriteLine("Generating the C# parser bindings for OSX...");
             ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "i686-apple-darwin12.4.0",
                 CppAbi.Itanium));
         }
@@ -156,7 +157,7 @@ namespace CppSharp
 
         public override bool VisitFunctionDecl(Function function)
         {
-            if (function.Ignore)
+            if (function.GenerationKind == GenerationKind.None)
                 return false;
 
             if (function.Parameters.Any(param => IsStdType(param.QualifiedType)))

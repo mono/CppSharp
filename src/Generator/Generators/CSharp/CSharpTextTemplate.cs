@@ -1404,14 +1404,14 @@ namespace CppSharp.Generators.CSharp
                 var vfptr = @class.Layout.VFTables[tableIndex];
                 var size = vfptr.Layout.Components.Count;
                 WriteLine("var vfptr{0} = Marshal.AllocHGlobal({1} * {2});",
-                    tableIndex, size, Driver.Options.Is32Bit ? 4 : 8);
+                    tableIndex, size, Driver.TargetInfo.PointerWidth / 8);
                 WriteLine("_NewVTables[{0}] = vfptr{0}.ToPointer();", tableIndex);
 
                 for (int entryIndex = 0; entryIndex < vfptr.Layout.Components.Count; entryIndex++)
                 {
                     var entry = vfptr.Layout.Components[entryIndex];
                     var offsetInBytes = VTables.GetVTableComponentIndex(@class, entry)
-                        * (Driver.Options.Is32Bit ? 4 : 8);
+                        * (Driver.TargetInfo.PointerWidth / 8);
                     if (entry.Ignore)
                         WriteLine("*(void**)(vfptr{0} + {1}) = *(void**)(native->vfptr{0} + {1});",
                             tableIndex, offsetInBytes);
@@ -1434,14 +1434,14 @@ namespace CppSharp.Generators.CSharp
 
             // reserve space for the offset-to-top and RTTI pointers as well
             var size = entries.Count;
-            WriteLine("var vfptr{0} = Marshal.AllocHGlobal({1} * {2});", 0, size, Driver.Options.Is32Bit ? 4 : 8);
+            WriteLine("var vfptr{0} = Marshal.AllocHGlobal({1} * {2});", 0, size, Driver.TargetInfo.PointerWidth / 8);
             WriteLine("_NewVTables[0] = vfptr0.ToPointer();");
 
             for (int i = 0; i < entries.Count; i++)
             {
                 var entry = entries[i];
                 var offsetInBytes = VTables.GetVTableComponentIndex(@class, entry)
-                    * (Driver.Options.Is32Bit ? 4 : 8);
+                    * (Driver.TargetInfo.PointerWidth / 8);
                 if (entry.Ignore)
                     WriteLine("*(void**)(vfptr0 + {0}) = *(void**)(native->vfptr0 + {0});", offsetInBytes);
                 else
@@ -2104,17 +2104,17 @@ namespace CppSharp.Generators.CSharp
         private void GenerateVirtualTableFunctionCall(Method method, Class @class)
         {
             string delegateId;
-            Write(GetVirtualCallDelegate(method, @class, Driver.Options.Is32Bit, out delegateId));
+            Write(GetVirtualCallDelegate(method, @class, out delegateId));
             GenerateFunctionCall(delegateId, method.Parameters, method);
         }
 
         public string GetVirtualCallDelegate(Method method, Class @class,
-            bool is32Bit, out string delegateId)
+            out string delegateId)
         {
             var virtualCallBuilder = new StringBuilder();
             var i = VTables.GetVTableIndex(method, @class);
             virtualCallBuilder.AppendFormat("void* slot = *(void**) ((({0}.Internal*) {1})->vfptr0 + {2} * {3});",
-                @class.BaseClass.Name, Helpers.InstanceIdentifier, i, is32Bit ? 4 : 8);
+                @class.BaseClass.Name, Helpers.InstanceIdentifier, i, Driver.TargetInfo.PointerWidth / 8);
             virtualCallBuilder.AppendLine();
 
             string @delegate = GetVTableMethodDelegateName((Method) method.OriginalFunction);

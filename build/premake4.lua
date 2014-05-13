@@ -16,9 +16,8 @@ solution "CppSharp"
   flags { common_flags }
   
   location (builddir)
-  objdir (builddir .. "/obj/")
+  objdir (path.join(builddir, "obj"))
   targetdir (libdir)
-  libdirs { libdir }
   debugdir (bindir)
 
   -- startproject "Generator"
@@ -31,9 +30,6 @@ solution "CppSharp"
   configuration "windows"
     defines { "WINDOWS" }
 	
-  configuration "x64"
-    defines { "IS_64_BIT" }
-
   configuration {}
     
   if string.starts(action, "vs") then
