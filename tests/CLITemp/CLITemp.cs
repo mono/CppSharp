@@ -14,6 +14,7 @@ namespace CppSharp.Tests
         public override void Setup(Driver driver)
         {
             driver.Options.GenerateFinalizers = true;
+            driver.Options.GenerateObjectOverrides = true;
             base.Setup(driver);
         }
 
