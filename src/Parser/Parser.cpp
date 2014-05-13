@@ -15,8 +15,8 @@
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/Module.h>
 #include <llvm/IR/DataLayout.h>
+#include <llvm/Config/config.h>
 #include <clang/Basic/Version.h>
-#include <clang/Config/config.h>
 #include <clang/AST/ASTContext.h>
 #include <clang/AST/Comment.h>
 #include <clang/AST/DeclTemplate.h>
