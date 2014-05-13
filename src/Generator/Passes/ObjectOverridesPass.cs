@@ -100,6 +100,11 @@ namespace CppSharp
             if (!VisitDeclaration(@class))
                 return false;
 
+            // We can't handle value types yet
+            // The generated code assumes that a NativePtr is available
+            if (@class.IsValueType)
+                return false;
+
             foreach (var method in @class.Methods)
             {
                 if (!IsInsertionOperator(method))
@@ -126,9 +131,6 @@ namespace CppSharp
 
                 break;
             }
-
-            if (@class.IsValueType)
-                return false;
 
             var methodEqualsParam = new Parameter
             {
