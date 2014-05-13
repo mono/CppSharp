@@ -30,9 +30,6 @@ solution "CppSharp"
   configuration "windows"
     defines { "WINDOWS" }
 	
-  configuration "x64"
-    defines { "IS_64_BIT" }
-
   configuration {}
     
   if string.starts(action, "vs") then
