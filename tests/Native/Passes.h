@@ -52,3 +52,12 @@ enum
     UnnamedEnumB1,
     EnumUnnamedB2
 };
+
+struct TestCheckAmbiguousFunctionsPass
+{
+    // Tests removal of const method overloads
+    int Method();
+    int Method() const;
+    int Method(int x);
+    int Method(int x) const;
+};

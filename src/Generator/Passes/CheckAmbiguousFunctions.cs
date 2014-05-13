@@ -44,10 +44,10 @@ namespace CppSharp.Passes
 
                 if (!overload.IsGenerated) continue;
 
-                if (!CheckDefaultParameters(function, overload))
+                if (!CheckConstness(function, overload))
                     continue;
 
-                if (!CheckConstness(function, overload))
+                if (!CheckDefaultParameters(function, overload))
                     continue;
 
                 function.IsAmbiguous = true;

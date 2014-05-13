@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using CppSharp;
 using CppSharp.Passes;
+using CppSharp.AST;
 using NUnit.Framework;
 
 namespace CppSharp.Generator.Tests.Passes
@@ -157,6 +158,36 @@ namespace CppSharp.Generator.Tests.Passes
             AstContext.SetPropertyAsReadOnly(className, "ReadOnlyPropertyMethod");
             Assert.IsFalse(AstContext.FindClass(className).First().Properties.Find(
                 m => m.Name == "ReadOnlyPropertyMethod").HasSetter);
+        }
+
+        [Test]
+        public void TestCheckAmbiguousFunctionsPass()
+        {
+            passBuilder.AddPass(new CheckAmbiguousFunctions());
+            passBuilder.RunPasses(pass => pass.VisitLibrary(AstContext));
+            var @class = AstContext.FindClass("TestCheckAmbiguousFunctionsPass").FirstOrDefault();
+            Assert.IsNotNull(@class);
+            var overloads = @class.Methods.Where(m => m.Name == "Method");
+            var constMethod = overloads
+                .Where(m => m.IsConst && m.Parameters.Count == 0)
+                .FirstOrDefault();
+            var nonConstMethod = overloads
+                .Where(m => !m.IsConst && m.Parameters.Count == 0)
+                .FirstOrDefault();
+            Assert.IsNotNull(constMethod);
+            Assert.IsNotNull(nonConstMethod);
+            Assert.IsTrue(constMethod.GenerationKind == GenerationKind.None);
+            Assert.IsTrue(nonConstMethod.GenerationKind == GenerationKind.Generate);
+            var constMethodWithParam = overloads
+                .Where(m => m.IsConst && m.Parameters.Count == 1)
+                .FirstOrDefault();
+            var nonConstMethodWithParam = overloads
+                .Where(m => !m.IsConst && m.Parameters.Count == 1)
+                .FirstOrDefault();
+            Assert.IsNotNull(constMethodWithParam);
+            Assert.IsNotNull(nonConstMethodWithParam);
+            Assert.IsTrue(constMethodWithParam.GenerationKind == GenerationKind.None);
+            Assert.IsTrue(nonConstMethodWithParam.GenerationKind == GenerationKind.Generate);
         }
     }
 }
