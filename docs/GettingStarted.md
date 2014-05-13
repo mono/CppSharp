@@ -28,7 +28,7 @@ Git repository urls found here: [http://llvm.org/docs/GettingStarted.html#git-mi
 ```shell
 cd <CppSharp>\deps\llvm\build
 
-cmake -G "Visual Studio 12" -DCMAKE_INSTALL_PREFIX="<CppSharp>/deps/llvm/install" -DCLANG_BUILD_EXAMPLES=false -DCLANG_INCLUDE_DOCS=false -DCLANG_INCLUDE_TESTS=false -DCLANG_INCLUDE_DOCS=false -DCLANG_BUILD_EXAMPLES=false -DLLVM_TARGETS_TO_BUILD="X86" -DLLVM_INCLUDE_EXAMPLES=false -DLLVM_INCLUDE_DOCS=false -DLLVM_INCLUDE_TESTS=false ..
+cmake -G "Visual Studio 12" -DCMAKE_INSTALL_PREFIX="../install" -DCLANG_BUILD_EXAMPLES=false -DCLANG_INCLUDE_DOCS=false -DCLANG_INCLUDE_TESTS=false -DCLANG_INCLUDE_DOCS=false -DCLANG_BUILD_EXAMPLES=false -DLLVM_TARGETS_TO_BUILD="X86" -DLLVM_INCLUDE_EXAMPLES=false -DLLVM_INCLUDE_DOCS=false -DLLVM_INCLUDE_TESTS=false ..
 
 msbuild INSTALL.vcxproj /p:Configuration=Release;Platform=Win32
 ```
@@ -91,7 +91,7 @@ sudo apt-get install cmake ninja-build build-essential
 ```shell
 cd deps/llvm/build
 
-cmake -G Ninja -DCMAKE_INSTALL_PREFIX="<CppSharp>/deps/llvm/install" -DCLANG_BUILD_EXAMPLES=false -DCLANG_INCLUDE_DOCS=false -DCLANG_INCLUDE_TESTS=false -DCLANG_INCLUDE_DOCS=false -DCLANG_BUILD_EXAMPLES=false -DLLVM_TARGETS_TO_BUILD="X86" -DLLVM_INCLUDE_EXAMPLES=false -DLLVM_INCLUDE_DOCS=false -DLLVM_INCLUDE_TESTS=false ..
+cmake -G Ninja -DCMAKE_INSTALL_PREFIX="../install" -DCLANG_BUILD_EXAMPLES=false -DCLANG_INCLUDE_DOCS=false -DCLANG_INCLUDE_TESTS=false -DCLANG_INCLUDE_DOCS=false -DCLANG_BUILD_EXAMPLES=false -DLLVM_TARGETS_TO_BUILD="X86" -DLLVM_INCLUDE_EXAMPLES=false -DLLVM_INCLUDE_DOCS=false -DLLVM_INCLUDE_TESTS=false ..
 
 ninja install
 ```
