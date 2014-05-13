@@ -30,7 +30,7 @@ cd <CppSharp>\deps\llvm\build
 
 cmake -G "Visual Studio 12" -DCMAKE_INSTALL_PREFIX="../install" -DCLANG_BUILD_EXAMPLES=false -DCLANG_INCLUDE_DOCS=false -DCLANG_INCLUDE_TESTS=false -DCLANG_INCLUDE_DOCS=false -DCLANG_BUILD_EXAMPLES=false -DLLVM_TARGETS_TO_BUILD="X86" -DLLVM_INCLUDE_EXAMPLES=false -DLLVM_INCLUDE_DOCS=false -DLLVM_INCLUDE_TESTS=false ..
 
-msbuild INSTALL.vcxproj /p:Configuration=Release;Platform=Win32
+msbuild INSTALL.vcxproj /p:Configuration=Release;Platform=Win32 /m
 ```
 
 Due to some incompatible changes in recent LLVM versions, Windows builds need to use the following set of revisions that are known to work.
