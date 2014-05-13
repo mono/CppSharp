@@ -412,10 +412,10 @@ namespace CppSharp
                     void set(CppSharp::Parser::AST::ArrayType::ArraySize);
                 }
 
-                property int Size
+                property long Size
                 {
-                    int get();
-                    void set(int);
+                    long get();
+                    void set(long);
                 }
             };
 
@@ -601,10 +601,10 @@ namespace CppSharp
                     void set(CppSharp::Parser::AST::Declaration^);
                 }
 
-                property int Integral
+                property long Integral
                 {
-                    int get();
-                    void set(int);
+                    long get();
+                    void set(long);
                 }
             };
 
@@ -907,10 +907,10 @@ namespace CppSharp
                     void set(bool);
                 }
 
-                property int VBPtrOffset
+                property long VBPtrOffset
                 {
-                    int get();
-                    void set(int);
+                    long get();
+                    void set(long);
                 }
 
                 property int Alignment

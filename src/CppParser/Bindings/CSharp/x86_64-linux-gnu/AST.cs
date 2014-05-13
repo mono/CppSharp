@@ -165,19 +165,19 @@ namespace CppSharp
                 Void = 1,
                 Bool = 2,
                 WideChar = 3,
-                Int8 = 4,
                 Char = 4,
-                UInt8 = 5,
                 UChar = 5,
                 Short = 6,
                 UShort = 7,
                 Int32 = 8,
                 UInt32 = 9,
-                Int64 = 10,
-                UInt64 = 11,
-                Float = 12,
-                Double = 13,
-                IntPtr = 14
+                Long = 10,
+                ULong = 11,
+                Int64 = 12,
+                UInt64 = 13,
+                Float = 14,
+                Double = 15,
+                IntPtr = 16
             }
 
             public enum RawCommentKind
@@ -569,7 +569,7 @@ namespace CppSharp
                     public CppSharp.Parser.AST.ArrayType.ArraySize SizeType;
 
                     [FieldOffset(32)]
-                    public int Size;
+                    public long Size;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -649,7 +649,7 @@ namespace CppSharp
                     }
                 }
 
-                public int Size
+                public long Size
                 {
                     get
                     {
@@ -1244,7 +1244,7 @@ namespace CppSharp
                     public global::System.IntPtr Declaration;
 
                     [FieldOffset(32)]
-                    public int Integral;
+                    public long Integral;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -1350,7 +1350,7 @@ namespace CppSharp
                     }
                 }
 
-                public int Integral
+                public long Integral
                 {
                     get
                     {
@@ -2283,7 +2283,7 @@ namespace CppSharp
                 public struct Internal
                 {
                     [FieldOffset(0)]
-                    public uint VBTableIndex;
+                    public ulong VBTableIndex;
 
                     [FieldOffset(8)]
                     public uint VFPtrOffset;
@@ -2345,7 +2345,7 @@ namespace CppSharp
                     Marshal.FreeHGlobal(__Instance);
                 }
 
-                public uint VBTableIndex
+                public ulong VBTableIndex
                 {
                     get
                     {
@@ -2423,7 +2423,7 @@ namespace CppSharp
                     public bool HasOwnVFPtr;
 
                     [FieldOffset(64)]
-                    public int VBPtrOffset;
+                    public long VBPtrOffset;
 
                     [FieldOffset(72)]
                     public int Alignment;
@@ -2571,7 +2571,7 @@ namespace CppSharp
                     }
                 }
 
-                public int VBPtrOffset
+                public long VBPtrOffset
                 {
                     get
                     {
@@ -4308,7 +4308,7 @@ namespace CppSharp
                         public void* OriginalPtr;
 
                         [FieldOffset(112)]
-                        public uint Value;
+                        public ulong Value;
 
                         [SuppressUnmanagedCodeSecurity]
                         [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -4380,7 +4380,7 @@ namespace CppSharp
                         }
                     }
 
-                    public uint Value
+                    public ulong Value
                     {
                         get
                         {
