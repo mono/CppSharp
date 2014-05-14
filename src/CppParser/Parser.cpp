@@ -1623,6 +1623,12 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         TypeLoc RL;
         if (TL && !TL->isNull())
         {
+            while (TL->getTypeLocClass() != TypeLoc::FunctionProto)
+            {
+                auto Next = TL->getNextTypeLoc();
+                TL = &Next;
+            }
+
             FTL = TL->getAs<FunctionProtoTypeLoc>();
             RL = FTL.getReturnLoc();
         }
@@ -1750,6 +1756,12 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
                 auto ETL = TL->getAs<ElaboratedTypeLoc>();
                 auto ITL = ETL.getNextTypeLoc();
                 TL = &ITL;
+            }
+
+            while (TL->getTypeLocClass() != TypeLoc::TemplateTypeParm)
+            {
+                auto Next = TL->getNextTypeLoc();
+                TL = &Next;
             }
 
             assert(TL->getTypeLocClass() == TypeLoc::TemplateTypeParm);
