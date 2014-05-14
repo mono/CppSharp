@@ -2673,7 +2673,8 @@ namespace CppSharp.Generators.CSharp
                 NativeLibrary library;
                 Driver.Symbols.FindLibraryBySymbol(function.Mangled, out library);
 
-                libName = Path.GetFileNameWithoutExtension(library.FileName);
+                if (library != null)
+                    libName = Path.GetFileNameWithoutExtension(library.FileName);
             }
             if (libName != null && libName.Length > 3 && libName.StartsWith("lib"))
             {
