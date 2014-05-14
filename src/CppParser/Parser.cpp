@@ -1195,8 +1195,8 @@ TranslationUnit* Parser::GetTranslationUnit(clang::SourceLocation Loc,
 
     auto Unit = Lib->FindOrCreateModule(File);
 
-    if (Unit->OriginalPtr == nullptr)
-        Unit->OriginalPtr = (void*) SM.getFileEntryForID(SM.getFileID(Loc));
+    Unit->OriginalPtr = (void*) Unit;
+    assert(Unit->OriginalPtr != nullptr);
 
     if (LocKind != SourceLocationKind::Invalid)
         Unit->IsSystemHeader = SM.isInSystemHeader(Loc);
