@@ -27,6 +27,7 @@ namespace CppSharp
         public abstract TRet VisitInjectedClassName(InjectedClassNameType type);
         public abstract TRet VisitDependentName(DependentNameType type);
         public abstract TRet VisitBuiltin(BuiltinType type);
+        public abstract TRet VisitPackExpansion(PackExpansionType type);
 
         public TRet Visit(Parser.AST.Type type)
         {
@@ -104,6 +105,11 @@ namespace CppSharp
                 {
                     var _type = new BuiltinType(type.__Instance);
                     return VisitBuiltin(_type);
+                }
+                case TypeKind.PackExpansion:
+                {
+                    var _type = new PackExpansionType(type.__Instance);
+                    return VisitPackExpansion(_type);
                 }
             }
 
@@ -573,6 +579,14 @@ namespace CppSharp
                 default:
                     throw new ArgumentOutOfRangeException("type");
             }
+        }
+
+        public override AST.Type VisitPackExpansion(PackExpansionType type)
+        {
+            var _type = new CppSharp.AST.PackExpansionType();
+            _type.IsDependent = type.IsDependent;
+            VisitType(type, _type);
+            return _type;
         }
     }
 
