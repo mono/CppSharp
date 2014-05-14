@@ -14,8 +14,8 @@
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/Module.h>
 #include <llvm/IR/DataLayout.h>
+#include <llvm/Config/config.h>
 #include <clang/Basic/Version.h>
-#include <clang/Config/config.h>
 #include <clang/AST/ASTContext.h>
 #include <clang/AST/Comment.h>
 #include <clang/AST/DeclTemplate.h>
@@ -1307,22 +1307,22 @@ static PrimitiveType WalkBuiltinType(const clang::BuiltinType* Builtin)
     case clang::BuiltinType::Bool: return PrimitiveType::Bool;
 
     case clang::BuiltinType::SChar:
-    case clang::BuiltinType::Char_S: return PrimitiveType::Int8;
+    case clang::BuiltinType::Char_S: return PrimitiveType::Char;
     
     case clang::BuiltinType::UChar:
-    case clang::BuiltinType::Char_U: return PrimitiveType::UInt8;
+    case clang::BuiltinType::Char_U: return PrimitiveType::UChar;
 
     case clang::BuiltinType::WChar_S:
     case clang::BuiltinType::WChar_U: return PrimitiveType::WideChar;
 
-    case clang::BuiltinType::Short: return PrimitiveType::Int16;
-    case clang::BuiltinType::UShort: return PrimitiveType::UInt16;
+    case clang::BuiltinType::Short: return PrimitiveType::Short;
+    case clang::BuiltinType::UShort: return PrimitiveType::UShort;
 
     case clang::BuiltinType::Int: return PrimitiveType::Int32;
     case clang::BuiltinType::UInt: return PrimitiveType::UInt32;
 
-    case clang::BuiltinType::Long: return PrimitiveType::Int32;
-    case clang::BuiltinType::ULong: return PrimitiveType::UInt32;
+    case clang::BuiltinType::Long: return PrimitiveType::Long;
+    case clang::BuiltinType::ULong: return PrimitiveType::ULong;
     
     case clang::BuiltinType::LongLong: return PrimitiveType::Int64;
     case clang::BuiltinType::ULongLong: return PrimitiveType::UInt64;

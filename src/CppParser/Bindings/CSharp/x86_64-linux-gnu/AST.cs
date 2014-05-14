@@ -219,14 +219,14 @@ namespace CppSharp
                     public bool IsDependent;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0Type@AST@CppParser@CppSharp@@QAE@W4TypeKind@123@@Z")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance, CppSharp.Parser.AST.TypeKind kind);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST4TypeC2ENS1_8TypeKindE")]
+                    internal static extern void ctor_0(global::System.IntPtr instance, CppSharp.Parser.AST.TypeKind kind);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0Type@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST4TypeC2ERKS2_")]
+                    internal static extern void cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
@@ -310,9 +310,9 @@ namespace CppSharp
                     public bool IsRestrict;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0TypeQualifiers@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_0(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST14TypeQualifiersC2ERKS2_")]
+                    internal static extern void cctor_0(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
@@ -396,24 +396,24 @@ namespace CppSharp
 
             public unsafe partial class QualifiedType : IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 8)]
+                [StructLayout(LayoutKind.Explicit, Size = 16)]
                 public struct Internal
                 {
                     [FieldOffset(0)]
                     public global::System.IntPtr Type;
 
-                    [FieldOffset(4)]
+                    [FieldOffset(8)]
                     public CppSharp.Parser.AST.TypeQualifiers.Internal Qualifiers;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0QualifiedType@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST13QualifiedTypeC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0QualifiedType@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST13QualifiedTypeC2ERKS2_")]
+                    internal static extern void cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
@@ -435,7 +435,7 @@ namespace CppSharp
 
                 public QualifiedType()
                 {
-                    __Instance = Marshal.AllocHGlobal(8);
+                    __Instance = Marshal.AllocHGlobal(16);
                     Internal.ctor_0(__Instance);
                 }
 
@@ -485,7 +485,7 @@ namespace CppSharp
 
             public unsafe partial class TagType : CppSharp.Parser.AST.Type, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 12)]
+                [StructLayout(LayoutKind.Explicit, Size = 16)]
                 public new struct Internal
                 {
                     [FieldOffset(0)]
@@ -498,14 +498,14 @@ namespace CppSharp
                     public global::System.IntPtr Declaration;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0TagType@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST7TagTypeC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0TagType@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST7TagTypeC2ERKS2_")]
+                    internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
                 internal TagType(TagType.Internal* native)
@@ -526,7 +526,7 @@ namespace CppSharp
                 public TagType()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(12);
+                    __Instance = Marshal.AllocHGlobal(16);
                     Internal.ctor_0(__Instance);
                 }
 
@@ -553,7 +553,7 @@ namespace CppSharp
 
             public unsafe partial class ArrayType : CppSharp.Parser.AST.Type, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 24)]
+                [StructLayout(LayoutKind.Explicit, Size = 40)]
                 public new struct Internal
                 {
                     [FieldOffset(0)]
@@ -565,21 +565,21 @@ namespace CppSharp
                     [FieldOffset(8)]
                     public CppSharp.Parser.AST.QualifiedType.Internal QualifiedType;
 
-                    [FieldOffset(16)]
+                    [FieldOffset(24)]
                     public CppSharp.Parser.AST.ArrayType.ArraySize SizeType;
 
-                    [FieldOffset(20)]
-                    public int Size;
+                    [FieldOffset(32)]
+                    public long Size;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0ArrayType@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST9ArrayTypeC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0ArrayType@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST9ArrayTypeC2ERKS2_")]
+                    internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
                 public enum ArraySize
@@ -608,7 +608,7 @@ namespace CppSharp
                 public ArrayType()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(24);
+                    __Instance = Marshal.AllocHGlobal(40);
                     Internal.ctor_0(__Instance);
                 }
 
@@ -622,8 +622,8 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        var __instance = Marshal.AllocHGlobal(8);
-                        CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->QualifiedType), new UIntPtr(8));
+                        var __instance = Marshal.AllocHGlobal(16);
+                        CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->QualifiedType), new UIntPtr(16));
                         return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.QualifiedType(__instance);
                     }
 
@@ -649,7 +649,7 @@ namespace CppSharp
                     }
                 }
 
-                public int Size
+                public long Size
                 {
                     get
                     {
@@ -667,7 +667,7 @@ namespace CppSharp
 
             public unsafe partial class FunctionType : CppSharp.Parser.AST.Type, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 32)]
+                [StructLayout(LayoutKind.Explicit, Size = 56)]
                 public new struct Internal
                 {
                     [FieldOffset(0)]
@@ -679,37 +679,37 @@ namespace CppSharp
                     [FieldOffset(8)]
                     public CppSharp.Parser.AST.QualifiedType.Internal ReturnType;
 
-                    [FieldOffset(16)]
+                    [FieldOffset(24)]
                     public CppSharp.Parser.AST.CallingConvention CallingConvention;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0FunctionType@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST12FunctionTypeC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0FunctionType@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST12FunctionTypeC2ERKS2_")]
+                    internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??1FunctionType@AST@CppParser@CppSharp@@QAE@XZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST12FunctionTypeD2Ev")]
                     internal static extern void dtor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getParameters@FunctionType@AST@CppParser@CppSharp@@QAEPAUParameter@234@I@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST12FunctionType13getParametersEj")]
                     internal static extern global::System.IntPtr getParameters_0(global::System.IntPtr instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?addParameters@FunctionType@AST@CppParser@CppSharp@@QAEXAAPAUParameter@234@@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST12FunctionType13addParametersERPNS1_9ParameterE")]
                     internal static extern void addParameters_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getParametersCount@FunctionType@AST@CppParser@CppSharp@@QAEIXZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST12FunctionType18getParametersCountEv")]
                     internal static extern uint getParametersCount_0(global::System.IntPtr instance);
                 }
 
@@ -731,7 +731,7 @@ namespace CppSharp
                 public FunctionType()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(32);
+                    __Instance = Marshal.AllocHGlobal(56);
                     Internal.ctor_0(__Instance);
                 }
 
@@ -767,8 +767,8 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        var __instance = Marshal.AllocHGlobal(8);
-                        CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->ReturnType), new UIntPtr(8));
+                        var __instance = Marshal.AllocHGlobal(16);
+                        CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->ReturnType), new UIntPtr(16));
                         return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.QualifiedType(__instance);
                     }
 
@@ -797,7 +797,7 @@ namespace CppSharp
 
             public unsafe partial class PointerType : CppSharp.Parser.AST.Type, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 20)]
+                [StructLayout(LayoutKind.Explicit, Size = 32)]
                 public new struct Internal
                 {
                     [FieldOffset(0)]
@@ -809,18 +809,18 @@ namespace CppSharp
                     [FieldOffset(8)]
                     public CppSharp.Parser.AST.QualifiedType.Internal QualifiedPointee;
 
-                    [FieldOffset(16)]
+                    [FieldOffset(24)]
                     public CppSharp.Parser.AST.PointerType.TypeModifier Modifier;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0PointerType@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11PointerTypeC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0PointerType@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11PointerTypeC2ERKS2_")]
+                    internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
                 public enum TypeModifier
@@ -849,7 +849,7 @@ namespace CppSharp
                 public PointerType()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(20);
+                    __Instance = Marshal.AllocHGlobal(32);
                     Internal.ctor_0(__Instance);
                 }
 
@@ -863,8 +863,8 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        var __instance = Marshal.AllocHGlobal(8);
-                        CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->QualifiedPointee), new UIntPtr(8));
+                        var __instance = Marshal.AllocHGlobal(16);
+                        CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->QualifiedPointee), new UIntPtr(16));
                         return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.QualifiedType(__instance);
                     }
 
@@ -893,7 +893,7 @@ namespace CppSharp
 
             public unsafe partial class MemberPointerType : CppSharp.Parser.AST.Type, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 16)]
+                [StructLayout(LayoutKind.Explicit, Size = 24)]
                 public new struct Internal
                 {
                     [FieldOffset(0)]
@@ -906,14 +906,14 @@ namespace CppSharp
                     public CppSharp.Parser.AST.QualifiedType.Internal Pointee;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0MemberPointerType@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST17MemberPointerTypeC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0MemberPointerType@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST17MemberPointerTypeC2ERKS2_")]
+                    internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
                 internal MemberPointerType(MemberPointerType.Internal* native)
@@ -934,7 +934,7 @@ namespace CppSharp
                 public MemberPointerType()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(16);
+                    __Instance = Marshal.AllocHGlobal(24);
                     Internal.ctor_0(__Instance);
                 }
 
@@ -948,8 +948,8 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        var __instance = Marshal.AllocHGlobal(8);
-                        CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->Pointee), new UIntPtr(8));
+                        var __instance = Marshal.AllocHGlobal(16);
+                        CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->Pointee), new UIntPtr(16));
                         return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.QualifiedType(__instance);
                     }
 
@@ -963,7 +963,7 @@ namespace CppSharp
 
             public unsafe partial class TypedefType : CppSharp.Parser.AST.Type, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 12)]
+                [StructLayout(LayoutKind.Explicit, Size = 16)]
                 public new struct Internal
                 {
                     [FieldOffset(0)]
@@ -976,14 +976,14 @@ namespace CppSharp
                     public global::System.IntPtr Declaration;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0TypedefType@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11TypedefTypeC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0TypedefType@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11TypedefTypeC2ERKS2_")]
+                    internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
                 internal TypedefType(TypedefType.Internal* native)
@@ -1004,7 +1004,7 @@ namespace CppSharp
                 public TypedefType()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(12);
+                    __Instance = Marshal.AllocHGlobal(16);
                     Internal.ctor_0(__Instance);
                 }
 
@@ -1031,7 +1031,7 @@ namespace CppSharp
 
             public unsafe partial class AttributedType : CppSharp.Parser.AST.Type, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 24)]
+                [StructLayout(LayoutKind.Explicit, Size = 40)]
                 public new struct Internal
                 {
                     [FieldOffset(0)]
@@ -1043,18 +1043,18 @@ namespace CppSharp
                     [FieldOffset(8)]
                     public CppSharp.Parser.AST.QualifiedType.Internal Modified;
 
-                    [FieldOffset(16)]
+                    [FieldOffset(24)]
                     public CppSharp.Parser.AST.QualifiedType.Internal Equivalent;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0AttributedType@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST14AttributedTypeC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0AttributedType@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST14AttributedTypeC2ERKS2_")]
+                    internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
                 internal AttributedType(AttributedType.Internal* native)
@@ -1075,7 +1075,7 @@ namespace CppSharp
                 public AttributedType()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(24);
+                    __Instance = Marshal.AllocHGlobal(40);
                     Internal.ctor_0(__Instance);
                 }
 
@@ -1089,8 +1089,8 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        var __instance = Marshal.AllocHGlobal(8);
-                        CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->Modified), new UIntPtr(8));
+                        var __instance = Marshal.AllocHGlobal(16);
+                        CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->Modified), new UIntPtr(16));
                         return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.QualifiedType(__instance);
                     }
 
@@ -1106,8 +1106,8 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        var __instance = Marshal.AllocHGlobal(8);
-                        CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->Equivalent), new UIntPtr(8));
+                        var __instance = Marshal.AllocHGlobal(16);
+                        CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->Equivalent), new UIntPtr(16));
                         return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.QualifiedType(__instance);
                     }
 
@@ -1121,7 +1121,7 @@ namespace CppSharp
 
             public unsafe partial class DecayedType : CppSharp.Parser.AST.Type, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 32)]
+                [StructLayout(LayoutKind.Explicit, Size = 56)]
                 public new struct Internal
                 {
                     [FieldOffset(0)]
@@ -1133,21 +1133,21 @@ namespace CppSharp
                     [FieldOffset(8)]
                     public CppSharp.Parser.AST.QualifiedType.Internal Decayed;
 
-                    [FieldOffset(16)]
+                    [FieldOffset(24)]
                     public CppSharp.Parser.AST.QualifiedType.Internal Original;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(40)]
                     public CppSharp.Parser.AST.QualifiedType.Internal Pointee;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0DecayedType@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11DecayedTypeC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0DecayedType@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11DecayedTypeC2ERKS2_")]
+                    internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
                 internal DecayedType(DecayedType.Internal* native)
@@ -1168,7 +1168,7 @@ namespace CppSharp
                 public DecayedType()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(32);
+                    __Instance = Marshal.AllocHGlobal(56);
                     Internal.ctor_0(__Instance);
                 }
 
@@ -1182,8 +1182,8 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        var __instance = Marshal.AllocHGlobal(8);
-                        CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->Decayed), new UIntPtr(8));
+                        var __instance = Marshal.AllocHGlobal(16);
+                        CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->Decayed), new UIntPtr(16));
                         return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.QualifiedType(__instance);
                     }
 
@@ -1199,8 +1199,8 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        var __instance = Marshal.AllocHGlobal(8);
-                        CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->Original), new UIntPtr(8));
+                        var __instance = Marshal.AllocHGlobal(16);
+                        CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->Original), new UIntPtr(16));
                         return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.QualifiedType(__instance);
                     }
 
@@ -1216,8 +1216,8 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        var __instance = Marshal.AllocHGlobal(8);
-                        CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->Pointee), new UIntPtr(8));
+                        var __instance = Marshal.AllocHGlobal(16);
+                        CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->Pointee), new UIntPtr(16));
                         return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.QualifiedType(__instance);
                     }
 
@@ -1231,30 +1231,30 @@ namespace CppSharp
 
             public unsafe partial class TemplateArgument : IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 20)]
+                [StructLayout(LayoutKind.Explicit, Size = 40)]
                 public struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.TemplateArgument.ArgumentKind Kind;
 
-                    [FieldOffset(4)]
+                    [FieldOffset(8)]
                     public CppSharp.Parser.AST.QualifiedType.Internal Type;
 
-                    [FieldOffset(12)]
+                    [FieldOffset(24)]
                     public global::System.IntPtr Declaration;
 
-                    [FieldOffset(16)]
-                    public int Integral;
+                    [FieldOffset(32)]
+                    public long Integral;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0TemplateArgument@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST16TemplateArgumentC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0TemplateArgument@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST16TemplateArgumentC2ERKS2_")]
+                    internal static extern void cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
                 public enum ArgumentKind
@@ -1288,7 +1288,7 @@ namespace CppSharp
 
                 public TemplateArgument()
                 {
-                    __Instance = Marshal.AllocHGlobal(20);
+                    __Instance = Marshal.AllocHGlobal(40);
                     Internal.ctor_0(__Instance);
                 }
 
@@ -1323,8 +1323,8 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        var __instance = Marshal.AllocHGlobal(8);
-                        CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->Type), new UIntPtr(8));
+                        var __instance = Marshal.AllocHGlobal(16);
+                        CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->Type), new UIntPtr(16));
                         return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.QualifiedType(__instance);
                     }
 
@@ -1350,7 +1350,7 @@ namespace CppSharp
                     }
                 }
 
-                public int Integral
+                public long Integral
                 {
                     get
                     {
@@ -1368,7 +1368,7 @@ namespace CppSharp
 
             public unsafe partial class TemplateSpecializationType : CppSharp.Parser.AST.Type, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 28)]
+                [StructLayout(LayoutKind.Explicit, Size = 48)]
                 public new struct Internal
                 {
                     [FieldOffset(0)]
@@ -1377,40 +1377,40 @@ namespace CppSharp
                     [FieldOffset(4)]
                     public bool IsDependent;
 
-                    [FieldOffset(20)]
+                    [FieldOffset(32)]
                     public global::System.IntPtr Template;
 
-                    [FieldOffset(24)]
+                    [FieldOffset(40)]
                     public global::System.IntPtr Desugared;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0TemplateSpecializationType@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST26TemplateSpecializationTypeC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0TemplateSpecializationType@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST26TemplateSpecializationTypeC2ERKS2_")]
+                    internal static extern void cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??1TemplateSpecializationType@AST@CppParser@CppSharp@@QAE@XZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST26TemplateSpecializationTypeD2Ev")]
                     internal static extern void dtor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getArguments@TemplateSpecializationType@AST@CppParser@CppSharp@@QAE?AUTemplateArgument@234@I@Z")]
-                    internal static extern void getArguments_0(global::System.IntPtr instance, global::System.IntPtr @return, uint i);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST26TemplateSpecializationType12getArgumentsEj")]
+                    internal static extern void getArguments_0(global::System.IntPtr @return, global::System.IntPtr instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?addArguments@TemplateSpecializationType@AST@CppParser@CppSharp@@QAEXAAUTemplateArgument@234@@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST26TemplateSpecializationType12addArgumentsERNS1_16TemplateArgumentE")]
                     internal static extern void addArguments_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getArgumentsCount@TemplateSpecializationType@AST@CppParser@CppSharp@@QAEIXZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST26TemplateSpecializationType17getArgumentsCountEv")]
                     internal static extern uint getArgumentsCount_0(global::System.IntPtr instance);
                 }
 
@@ -1432,7 +1432,7 @@ namespace CppSharp
                 public TemplateSpecializationType()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(28);
+                    __Instance = Marshal.AllocHGlobal(48);
                     Internal.ctor_0(__Instance);
                 }
 
@@ -1444,9 +1444,9 @@ namespace CppSharp
                 public CppSharp.Parser.AST.TemplateArgument getArguments(uint i)
                 {
                     var __ret = new CppSharp.Parser.AST.TemplateArgument.Internal();
-                    Internal.getArguments_0(__Instance, new IntPtr(&__ret), i);
-                    var __instance = Marshal.AllocHGlobal(20);
-                    CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ret), new UIntPtr(20));
+                    Internal.getArguments_0(new IntPtr(&__ret), __Instance, i);
+                    var __instance = Marshal.AllocHGlobal(40);
+                    CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ret), new UIntPtr(40));
                     return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.TemplateArgument(__instance);
                 }
 
@@ -1498,41 +1498,41 @@ namespace CppSharp
 
             public unsafe partial class TemplateParameter : IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 28)]
+                [StructLayout(LayoutKind.Explicit, Size = 16)]
                 public struct Internal
                 {
-                    [FieldOffset(24)]
+                    [FieldOffset(8)]
                     public bool IsTypeParameter;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0TemplateParameter@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST17TemplateParameterC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0TemplateParameter@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST17TemplateParameterC2ERKS2_")]
+                    internal static extern void cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??1TemplateParameter@AST@CppParser@CppSharp@@QAE@XZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST17TemplateParameterD2Ev")]
                     internal static extern void dtor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??8TemplateParameter@AST@CppParser@CppSharp@@QBE_NABU0123@@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZNK8CppSharp9CppParser3AST17TemplateParametereqERKS2_")]
                     [return: MarshalAsAttribute(UnmanagedType.I1)]
                     internal static extern bool OperatorEqualEqual_0(global::System.IntPtr instance, global::System.IntPtr param);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getName@TemplateParameter@AST@CppParser@CppSharp@@QAEPBDXZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST17TemplateParameter7getNameEv")]
                     internal static extern global::System.IntPtr getName_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?setName@TemplateParameter@AST@CppParser@CppSharp@@QAEXPBD@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST17TemplateParameter7setNameEPKc")]
                     internal static extern void setName_0(global::System.IntPtr instance, global::System.IntPtr s);
                 }
 
@@ -1555,7 +1555,7 @@ namespace CppSharp
 
                 public TemplateParameter()
                 {
-                    __Instance = Marshal.AllocHGlobal(28);
+                    __Instance = Marshal.AllocHGlobal(16);
                     Internal.ctor_0(__Instance);
                 }
 
@@ -1619,7 +1619,7 @@ namespace CppSharp
 
             public unsafe partial class TemplateParameterType : CppSharp.Parser.AST.Type, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 48)]
+                [StructLayout(LayoutKind.Explicit, Size = 40)]
                 public new struct Internal
                 {
                     [FieldOffset(0)]
@@ -1631,28 +1631,28 @@ namespace CppSharp
                     [FieldOffset(8)]
                     public CppSharp.Parser.AST.TemplateParameter.Internal Parameter;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(24)]
                     public uint Depth;
 
-                    [FieldOffset(40)]
+                    [FieldOffset(28)]
                     public uint Index;
 
-                    [FieldOffset(44)]
+                    [FieldOffset(32)]
                     public bool IsParameterPack;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0TemplateParameterType@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST21TemplateParameterTypeC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0TemplateParameterType@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST21TemplateParameterTypeC2ERKS2_")]
+                    internal static extern void cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??1TemplateParameterType@AST@CppParser@CppSharp@@QAE@XZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST21TemplateParameterTypeD2Ev")]
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
@@ -1674,7 +1674,7 @@ namespace CppSharp
                 public TemplateParameterType()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(48);
+                    __Instance = Marshal.AllocHGlobal(40);
                     Internal.ctor_0(__Instance);
                 }
 
@@ -1688,7 +1688,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        var __instance = Marshal.AllocHGlobal(28);
+                        var __instance = Marshal.AllocHGlobal(16);
                         CppSharp.Parser.AST.TemplateParameter.Internal.cctor_1(__instance, new global::System.IntPtr(&__ptr->Parameter));
                         return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.TemplateParameter(__instance);
                     }
@@ -1748,7 +1748,7 @@ namespace CppSharp
 
             public unsafe partial class TemplateParameterSubstitutionType : CppSharp.Parser.AST.Type, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 16)]
+                [StructLayout(LayoutKind.Explicit, Size = 24)]
                 public new struct Internal
                 {
                     [FieldOffset(0)]
@@ -1761,14 +1761,14 @@ namespace CppSharp
                     public CppSharp.Parser.AST.QualifiedType.Internal Replacement;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0TemplateParameterSubstitutionType@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST33TemplateParameterSubstitutionTypeC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0TemplateParameterSubstitutionType@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST33TemplateParameterSubstitutionTypeC2ERKS2_")]
+                    internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
                 internal TemplateParameterSubstitutionType(TemplateParameterSubstitutionType.Internal* native)
@@ -1789,7 +1789,7 @@ namespace CppSharp
                 public TemplateParameterSubstitutionType()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(16);
+                    __Instance = Marshal.AllocHGlobal(24);
                     Internal.ctor_0(__Instance);
                 }
 
@@ -1803,8 +1803,8 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        var __instance = Marshal.AllocHGlobal(8);
-                        CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->Replacement), new UIntPtr(8));
+                        var __instance = Marshal.AllocHGlobal(16);
+                        CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->Replacement), new UIntPtr(16));
                         return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.QualifiedType(__instance);
                     }
 
@@ -1818,7 +1818,7 @@ namespace CppSharp
 
             public unsafe partial class InjectedClassNameType : CppSharp.Parser.AST.Type, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 16)]
+                [StructLayout(LayoutKind.Explicit, Size = 64)]
                 public new struct Internal
                 {
                     [FieldOffset(0)]
@@ -1828,20 +1828,25 @@ namespace CppSharp
                     public bool IsDependent;
 
                     [FieldOffset(8)]
-                    public global::System.IntPtr TemplateSpecialization;
+                    public CppSharp.Parser.AST.TemplateSpecializationType.Internal TemplateSpecialization;
 
-                    [FieldOffset(12)]
+                    [FieldOffset(56)]
                     public global::System.IntPtr Class;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0InjectedClassNameType@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST21InjectedClassNameTypeC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0InjectedClassNameType@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST21InjectedClassNameTypeC2ERKS2_")]
+                    internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST21InjectedClassNameTypeD2Ev")]
+                    internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
                 internal InjectedClassNameType(InjectedClassNameType.Internal* native)
@@ -1862,7 +1867,7 @@ namespace CppSharp
                 public InjectedClassNameType()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(16);
+                    __Instance = Marshal.AllocHGlobal(64);
                     Internal.ctor_0(__Instance);
                 }
 
@@ -1876,13 +1881,15 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return (__ptr->TemplateSpecialization == IntPtr.Zero) ? null : new CppSharp.Parser.AST.TemplateSpecializationType(__ptr->TemplateSpecialization);
+                        var __instance = Marshal.AllocHGlobal(48);
+                        CppSharp.Parser.AST.TemplateSpecializationType.Internal.cctor_1(__instance, new global::System.IntPtr(&__ptr->TemplateSpecialization));
+                        return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.TemplateSpecializationType(__instance);
                     }
 
                     set
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        __ptr->TemplateSpecialization = value == (CppSharp.Parser.AST.TemplateSpecializationType) null ? global::System.IntPtr.Zero : value.__Instance;
+                        __ptr->TemplateSpecialization = ReferenceEquals(value, null) ? new CppSharp.Parser.AST.TemplateSpecializationType.Internal() : *(CppSharp.Parser.AST.TemplateSpecializationType.Internal*) (value.__Instance);
                     }
                 }
 
@@ -1914,14 +1921,14 @@ namespace CppSharp
                     public bool IsDependent;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0DependentNameType@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST17DependentNameTypeC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0DependentNameType@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST17DependentNameTypeC2ERKS2_")]
+                    internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
                 internal DependentNameType(DependentNameType.Internal* native)
@@ -1964,14 +1971,14 @@ namespace CppSharp
                     public bool IsDependent;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0PackExpansionType@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST17PackExpansionTypeC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0PackExpansionType@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST17PackExpansionTypeC2ERKS2_")]
+                    internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
                 internal PackExpansionType(PackExpansionType.Internal* native)
@@ -2017,14 +2024,14 @@ namespace CppSharp
                     public CppSharp.Parser.AST.PrimitiveType Type;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0BuiltinType@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11BuiltinTypeC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0BuiltinType@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11BuiltinTypeC2ERKS2_")]
+                    internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
                 internal BuiltinType(BuiltinType.Internal* native)
@@ -2072,7 +2079,7 @@ namespace CppSharp
 
             public unsafe partial class VTableComponent : IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 12)]
+                [StructLayout(LayoutKind.Explicit, Size = 16)]
                 public struct Internal
                 {
                     [FieldOffset(0)]
@@ -2085,14 +2092,14 @@ namespace CppSharp
                     public global::System.IntPtr Declaration;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0VTableComponent@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST15VTableComponentC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0VTableComponent@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST15VTableComponentC2ERKS2_")]
+                    internal static extern void cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
@@ -2114,7 +2121,7 @@ namespace CppSharp
 
                 public VTableComponent()
                 {
-                    __Instance = Marshal.AllocHGlobal(12);
+                    __Instance = Marshal.AllocHGlobal(16);
                     Internal.ctor_0(__Instance);
                 }
 
@@ -2177,37 +2184,37 @@ namespace CppSharp
 
             public unsafe partial class VTableLayout : IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 12)]
+                [StructLayout(LayoutKind.Explicit, Size = 24)]
                 public struct Internal
                 {
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0VTableLayout@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST12VTableLayoutC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0VTableLayout@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST12VTableLayoutC2ERKS2_")]
+                    internal static extern void cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??1VTableLayout@AST@CppParser@CppSharp@@QAE@XZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST12VTableLayoutD2Ev")]
                     internal static extern void dtor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getComponents@VTableLayout@AST@CppParser@CppSharp@@QAE?AUVTableComponent@234@I@Z")]
-                    internal static extern void getComponents_0(global::System.IntPtr instance, global::System.IntPtr @return, uint i);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST12VTableLayout13getComponentsEj")]
+                    internal static extern CppSharp.Parser.AST.VTableComponent.Internal getComponents_0(global::System.IntPtr instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?addComponents@VTableLayout@AST@CppParser@CppSharp@@QAEXAAUVTableComponent@234@@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST12VTableLayout13addComponentsERNS1_15VTableComponentE")]
                     internal static extern void addComponents_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getComponentsCount@VTableLayout@AST@CppParser@CppSharp@@QAEIXZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST12VTableLayout18getComponentsCountEv")]
                     internal static extern uint getComponentsCount_0(global::System.IntPtr instance);
                 }
 
@@ -2230,7 +2237,7 @@ namespace CppSharp
 
                 public VTableLayout()
                 {
-                    __Instance = Marshal.AllocHGlobal(12);
+                    __Instance = Marshal.AllocHGlobal(24);
                     Internal.ctor_0(__Instance);
                 }
 
@@ -2248,10 +2255,9 @@ namespace CppSharp
 
                 public CppSharp.Parser.AST.VTableComponent getComponents(uint i)
                 {
-                    var __ret = new CppSharp.Parser.AST.VTableComponent.Internal();
-                    Internal.getComponents_0(__Instance, new IntPtr(&__ret), i);
-                    var __instance = Marshal.AllocHGlobal(12);
-                    CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ret), new UIntPtr(12));
+                    var __ret = Internal.getComponents_0(__Instance, i);
+                    var __instance = Marshal.AllocHGlobal(16);
+                    CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ret), new UIntPtr(16));
                     return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.VTableComponent(__instance);
                 }
 
@@ -2273,7 +2279,7 @@ namespace CppSharp
 
             public unsafe partial class VFTableInfo : IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 32)]
+                [StructLayout(LayoutKind.Explicit, Size = 40)]
                 public struct Internal
                 {
                     [FieldOffset(0)]
@@ -2289,18 +2295,18 @@ namespace CppSharp
                     public CppSharp.Parser.AST.VTableLayout.Internal Layout;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0VFTableInfo@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11VFTableInfoC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0VFTableInfo@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11VFTableInfoC2ERKS2_")]
+                    internal static extern void cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??1VFTableInfo@AST@CppParser@CppSharp@@QAE@XZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11VFTableInfoD2Ev")]
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
@@ -2323,7 +2329,7 @@ namespace CppSharp
 
                 public VFTableInfo()
                 {
-                    __Instance = Marshal.AllocHGlobal(32);
+                    __Instance = Marshal.AllocHGlobal(40);
                     Internal.ctor_0(__Instance);
                 }
 
@@ -2389,7 +2395,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        var __instance = Marshal.AllocHGlobal(12);
+                        var __instance = Marshal.AllocHGlobal(24);
                         CppSharp.Parser.AST.VTableLayout.Internal.cctor_1(__instance, new global::System.IntPtr(&__ptr->Layout));
                         return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.VTableLayout(__instance);
                     }
@@ -2404,58 +2410,58 @@ namespace CppSharp
 
             public unsafe partial class ClassLayout : IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 48)]
+                [StructLayout(LayoutKind.Explicit, Size = 88)]
                 public struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.CppAbi ABI;
 
-                    [FieldOffset(16)]
+                    [FieldOffset(32)]
                     public CppSharp.Parser.AST.VTableLayout.Internal Layout;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(56)]
                     public bool HasOwnVFPtr;
 
-                    [FieldOffset(32)]
-                    public int VBPtrOffset;
+                    [FieldOffset(64)]
+                    public long VBPtrOffset;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(72)]
                     public int Alignment;
 
-                    [FieldOffset(40)]
+                    [FieldOffset(76)]
                     public int Size;
 
-                    [FieldOffset(44)]
+                    [FieldOffset(80)]
                     public int DataSize;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0ClassLayout@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11ClassLayoutC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0ClassLayout@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11ClassLayoutC2ERKS2_")]
+                    internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??1ClassLayout@AST@CppParser@CppSharp@@QAE@XZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11ClassLayoutD2Ev")]
                     internal static extern void dtor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getVFTables@ClassLayout@AST@CppParser@CppSharp@@QAE?AUVFTableInfo@234@I@Z")]
-                    internal static extern void getVFTables_0(global::System.IntPtr instance, global::System.IntPtr @return, uint i);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11ClassLayout11getVFTablesEj")]
+                    internal static extern void getVFTables_0(global::System.IntPtr @return, global::System.IntPtr instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?addVFTables@ClassLayout@AST@CppParser@CppSharp@@QAEXAAUVFTableInfo@234@@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11ClassLayout11addVFTablesERNS1_11VFTableInfoE")]
                     internal static extern void addVFTables_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getVFTablesCount@ClassLayout@AST@CppParser@CppSharp@@QAEIXZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11ClassLayout16getVFTablesCountEv")]
                     internal static extern uint getVFTablesCount_0(global::System.IntPtr instance);
                 }
 
@@ -2478,7 +2484,7 @@ namespace CppSharp
 
                 public ClassLayout()
                 {
-                    __Instance = Marshal.AllocHGlobal(48);
+                    __Instance = Marshal.AllocHGlobal(88);
                     Internal.ctor_0(__Instance);
                 }
 
@@ -2497,8 +2503,8 @@ namespace CppSharp
                 public CppSharp.Parser.AST.VFTableInfo getVFTables(uint i)
                 {
                     var __ret = new CppSharp.Parser.AST.VFTableInfo.Internal();
-                    Internal.getVFTables_0(__Instance, new IntPtr(&__ret), i);
-                    var __instance = Marshal.AllocHGlobal(32);
+                    Internal.getVFTables_0(new IntPtr(&__ret), __Instance, i);
+                    var __instance = Marshal.AllocHGlobal(40);
                     CppSharp.Parser.AST.VFTableInfo.Internal.cctor_1(__instance, new global::System.IntPtr(&__ret));
                     return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.VFTableInfo(__instance);
                 }
@@ -2538,7 +2544,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        var __instance = Marshal.AllocHGlobal(12);
+                        var __instance = Marshal.AllocHGlobal(24);
                         CppSharp.Parser.AST.VTableLayout.Internal.cctor_1(__instance, new global::System.IntPtr(&__ptr->Layout));
                         return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.VTableLayout(__instance);
                     }
@@ -2565,7 +2571,7 @@ namespace CppSharp
                     }
                 }
 
-                public int VBPtrOffset
+                public long VBPtrOffset
                 {
                     get
                     {
@@ -2628,7 +2634,7 @@ namespace CppSharp
 
             public unsafe partial class Declaration : IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 116)]
+                [StructLayout(LayoutKind.Explicit, Size = 104)]
                 public struct Internal
                 {
                     [FieldOffset(0)]
@@ -2640,72 +2646,72 @@ namespace CppSharp
                     [FieldOffset(8)]
                     public global::System.IntPtr _Namespace;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(24)]
                     public global::System.IntPtr Comment;
 
-                    [FieldOffset(64)]
+                    [FieldOffset(40)]
                     public bool IsIncomplete;
 
-                    [FieldOffset(65)]
+                    [FieldOffset(41)]
                     public bool IsDependent;
 
-                    [FieldOffset(68)]
+                    [FieldOffset(48)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(56)]
                     public uint DefinitionOrder;
 
                     [FieldOffset(88)]
                     public void* OriginalPtr;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0Declaration@AST@CppParser@CppSharp@@QAE@W4DeclarationKind@123@@Z")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance, CppSharp.Parser.AST.DeclarationKind kind);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11DeclarationC2ENS1_15DeclarationKindE")]
+                    internal static extern void ctor_0(global::System.IntPtr instance, CppSharp.Parser.AST.DeclarationKind kind);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0Declaration@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11DeclarationC2ERKS2_")]
+                    internal static extern void cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??1Declaration@AST@CppParser@CppSharp@@QAE@XZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11DeclarationD2Ev")]
                     internal static extern void dtor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getPreprocessedEntities@Declaration@AST@CppParser@CppSharp@@QAEPAUPreprocessedEntity@234@I@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11Declaration23getPreprocessedEntitiesEj")]
                     internal static extern global::System.IntPtr getPreprocessedEntities_0(global::System.IntPtr instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?addPreprocessedEntities@Declaration@AST@CppParser@CppSharp@@QAEXAAPAUPreprocessedEntity@234@@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11Declaration23addPreprocessedEntitiesERPNS1_18PreprocessedEntityE")]
                     internal static extern void addPreprocessedEntities_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getName@Declaration@AST@CppParser@CppSharp@@QAEPBDXZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11Declaration7getNameEv")]
                     internal static extern global::System.IntPtr getName_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?setName@Declaration@AST@CppParser@CppSharp@@QAEXPBD@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11Declaration7setNameEPKc")]
                     internal static extern void setName_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getDebugText@Declaration@AST@CppParser@CppSharp@@QAEPBDXZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11Declaration12getDebugTextEv")]
                     internal static extern global::System.IntPtr getDebugText_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?setDebugText@Declaration@AST@CppParser@CppSharp@@QAEXPBD@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11Declaration12setDebugTextEPKc")]
                     internal static extern void setDebugText_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getPreprocessedEntitiesCount@Declaration@AST@CppParser@CppSharp@@QAEIXZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11Declaration28getPreprocessedEntitiesCountEv")]
                     internal static extern uint getPreprocessedEntitiesCount_0(global::System.IntPtr instance);
                 }
 
@@ -2728,7 +2734,7 @@ namespace CppSharp
 
                 public Declaration(CppSharp.Parser.AST.DeclarationKind kind)
                 {
-                    __Instance = Marshal.AllocHGlobal(116);
+                    __Instance = Marshal.AllocHGlobal(104);
                     var arg0 = kind;
                     Internal.ctor_0(__Instance, arg0);
                 }
@@ -2939,7 +2945,7 @@ namespace CppSharp
 
             public unsafe partial class DeclarationContext : CppSharp.Parser.AST.Declaration, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 212)]
+                [StructLayout(LayoutKind.Explicit, Size = 328)]
                 public new struct Internal
                 {
                     [FieldOffset(0)]
@@ -2951,145 +2957,145 @@ namespace CppSharp
                     [FieldOffset(8)]
                     public global::System.IntPtr _Namespace;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(24)]
                     public global::System.IntPtr Comment;
 
-                    [FieldOffset(64)]
+                    [FieldOffset(40)]
                     public bool IsIncomplete;
 
-                    [FieldOffset(65)]
+                    [FieldOffset(41)]
                     public bool IsDependent;
 
-                    [FieldOffset(68)]
+                    [FieldOffset(48)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(56)]
                     public uint DefinitionOrder;
 
                     [FieldOffset(88)]
                     public void* OriginalPtr;
 
-                    [FieldOffset(208)]
+                    [FieldOffset(320)]
                     public bool IsAnonymous;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0DeclarationContext@AST@CppParser@CppSharp@@QAE@W4DeclarationKind@123@@Z")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance, CppSharp.Parser.AST.DeclarationKind kind);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST18DeclarationContextC2ENS1_15DeclarationKindE")]
+                    internal static extern void ctor_0(global::System.IntPtr instance, CppSharp.Parser.AST.DeclarationKind kind);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0DeclarationContext@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST18DeclarationContextC2ERKS2_")]
+                    internal static extern void cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??1DeclarationContext@AST@CppParser@CppSharp@@QAE@XZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST18DeclarationContextD2Ev")]
                     internal static extern void dtor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getNamespaces@DeclarationContext@AST@CppParser@CppSharp@@QAEPAUNamespace@234@I@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST18DeclarationContext13getNamespacesEj")]
                     internal static extern global::System.IntPtr getNamespaces_0(global::System.IntPtr instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?addNamespaces@DeclarationContext@AST@CppParser@CppSharp@@QAEXAAPAUNamespace@234@@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST18DeclarationContext13addNamespacesERPNS1_9NamespaceE")]
                     internal static extern void addNamespaces_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getEnums@DeclarationContext@AST@CppParser@CppSharp@@QAEPAUEnumeration@234@I@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST18DeclarationContext8getEnumsEj")]
                     internal static extern global::System.IntPtr getEnums_0(global::System.IntPtr instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?addEnums@DeclarationContext@AST@CppParser@CppSharp@@QAEXAAPAUEnumeration@234@@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST18DeclarationContext8addEnumsERPNS1_11EnumerationE")]
                     internal static extern void addEnums_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getFunctions@DeclarationContext@AST@CppParser@CppSharp@@QAEPAUFunction@234@I@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST18DeclarationContext12getFunctionsEj")]
                     internal static extern global::System.IntPtr getFunctions_0(global::System.IntPtr instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?addFunctions@DeclarationContext@AST@CppParser@CppSharp@@QAEXAAPAUFunction@234@@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST18DeclarationContext12addFunctionsERPNS1_8FunctionE")]
                     internal static extern void addFunctions_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getClasses@DeclarationContext@AST@CppParser@CppSharp@@QAEPAUClass@234@I@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST18DeclarationContext10getClassesEj")]
                     internal static extern global::System.IntPtr getClasses_0(global::System.IntPtr instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?addClasses@DeclarationContext@AST@CppParser@CppSharp@@QAEXAAPAUClass@234@@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST18DeclarationContext10addClassesERPNS1_5ClassE")]
                     internal static extern void addClasses_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getTemplates@DeclarationContext@AST@CppParser@CppSharp@@QAEPAUTemplate@234@I@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST18DeclarationContext12getTemplatesEj")]
                     internal static extern global::System.IntPtr getTemplates_0(global::System.IntPtr instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?addTemplates@DeclarationContext@AST@CppParser@CppSharp@@QAEXAAPAUTemplate@234@@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST18DeclarationContext12addTemplatesERPNS1_8TemplateE")]
                     internal static extern void addTemplates_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getTypedefs@DeclarationContext@AST@CppParser@CppSharp@@QAEPAUTypedefDecl@234@I@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST18DeclarationContext11getTypedefsEj")]
                     internal static extern global::System.IntPtr getTypedefs_0(global::System.IntPtr instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?addTypedefs@DeclarationContext@AST@CppParser@CppSharp@@QAEXAAPAUTypedefDecl@234@@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST18DeclarationContext11addTypedefsERPNS1_11TypedefDeclE")]
                     internal static extern void addTypedefs_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getVariables@DeclarationContext@AST@CppParser@CppSharp@@QAEPAUVariable@234@I@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST18DeclarationContext12getVariablesEj")]
                     internal static extern global::System.IntPtr getVariables_0(global::System.IntPtr instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?addVariables@DeclarationContext@AST@CppParser@CppSharp@@QAEXAAPAUVariable@234@@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST18DeclarationContext12addVariablesERPNS1_8VariableE")]
                     internal static extern void addVariables_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getNamespacesCount@DeclarationContext@AST@CppParser@CppSharp@@QAEIXZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST18DeclarationContext18getNamespacesCountEv")]
                     internal static extern uint getNamespacesCount_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getEnumsCount@DeclarationContext@AST@CppParser@CppSharp@@QAEIXZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST18DeclarationContext13getEnumsCountEv")]
                     internal static extern uint getEnumsCount_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getFunctionsCount@DeclarationContext@AST@CppParser@CppSharp@@QAEIXZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST18DeclarationContext17getFunctionsCountEv")]
                     internal static extern uint getFunctionsCount_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getClassesCount@DeclarationContext@AST@CppParser@CppSharp@@QAEIXZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST18DeclarationContext15getClassesCountEv")]
                     internal static extern uint getClassesCount_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getTemplatesCount@DeclarationContext@AST@CppParser@CppSharp@@QAEIXZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST18DeclarationContext17getTemplatesCountEv")]
                     internal static extern uint getTemplatesCount_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getTypedefsCount@DeclarationContext@AST@CppParser@CppSharp@@QAEIXZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST18DeclarationContext16getTypedefsCountEv")]
                     internal static extern uint getTypedefsCount_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getVariablesCount@DeclarationContext@AST@CppParser@CppSharp@@QAEIXZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST18DeclarationContext17getVariablesCountEv")]
                     internal static extern uint getVariablesCount_0(global::System.IntPtr instance);
                 }
 
@@ -3111,7 +3117,7 @@ namespace CppSharp
                 public DeclarationContext(CppSharp.Parser.AST.DeclarationKind kind)
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(212);
+                    __Instance = Marshal.AllocHGlobal(328);
                     var arg0 = kind;
                     Internal.ctor_0(__Instance, arg0);
                 }
@@ -3293,7 +3299,7 @@ namespace CppSharp
 
             public unsafe partial class TypedefDecl : CppSharp.Parser.AST.Declaration, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 124)]
+                [StructLayout(LayoutKind.Explicit, Size = 120)]
                 public new struct Internal
                 {
                     [FieldOffset(0)]
@@ -3305,40 +3311,40 @@ namespace CppSharp
                     [FieldOffset(8)]
                     public global::System.IntPtr _Namespace;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(24)]
                     public global::System.IntPtr Comment;
 
-                    [FieldOffset(64)]
+                    [FieldOffset(40)]
                     public bool IsIncomplete;
 
-                    [FieldOffset(65)]
+                    [FieldOffset(41)]
                     public bool IsDependent;
 
-                    [FieldOffset(68)]
+                    [FieldOffset(48)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(56)]
                     public uint DefinitionOrder;
 
                     [FieldOffset(88)]
                     public void* OriginalPtr;
 
-                    [FieldOffset(116)]
+                    [FieldOffset(104)]
                     public CppSharp.Parser.AST.QualifiedType.Internal QualifiedType;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0TypedefDecl@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11TypedefDeclC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0TypedefDecl@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11TypedefDeclC2ERKS2_")]
+                    internal static extern void cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??1TypedefDecl@AST@CppParser@CppSharp@@QAE@XZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11TypedefDeclD2Ev")]
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
@@ -3360,7 +3366,7 @@ namespace CppSharp
                 public TypedefDecl()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(124);
+                    __Instance = Marshal.AllocHGlobal(120);
                     Internal.ctor_0(__Instance);
                 }
 
@@ -3374,8 +3380,8 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        var __instance = Marshal.AllocHGlobal(8);
-                        CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->QualifiedType), new UIntPtr(8));
+                        var __instance = Marshal.AllocHGlobal(16);
+                        CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->QualifiedType), new UIntPtr(16));
                         return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.QualifiedType(__instance);
                     }
 
@@ -3389,7 +3395,7 @@ namespace CppSharp
 
             public unsafe partial class Parameter : CppSharp.Parser.AST.Declaration, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 132)]
+                [StructLayout(LayoutKind.Explicit, Size = 128)]
                 public new struct Internal
                 {
                     [FieldOffset(0)]
@@ -3401,49 +3407,49 @@ namespace CppSharp
                     [FieldOffset(8)]
                     public global::System.IntPtr _Namespace;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(24)]
                     public global::System.IntPtr Comment;
 
-                    [FieldOffset(64)]
+                    [FieldOffset(40)]
                     public bool IsIncomplete;
 
-                    [FieldOffset(65)]
+                    [FieldOffset(41)]
                     public bool IsDependent;
 
-                    [FieldOffset(68)]
+                    [FieldOffset(48)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(56)]
                     public uint DefinitionOrder;
 
                     [FieldOffset(88)]
                     public void* OriginalPtr;
 
-                    [FieldOffset(116)]
+                    [FieldOffset(104)]
                     public CppSharp.Parser.AST.QualifiedType.Internal QualifiedType;
 
-                    [FieldOffset(124)]
+                    [FieldOffset(120)]
                     public bool IsIndirect;
 
-                    [FieldOffset(125)]
+                    [FieldOffset(121)]
                     public bool HasDefaultValue;
 
-                    [FieldOffset(128)]
+                    [FieldOffset(124)]
                     public uint Index;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0Parameter@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST9ParameterC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0Parameter@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST9ParameterC2ERKS2_")]
+                    internal static extern void cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??1Parameter@AST@CppParser@CppSharp@@QAE@XZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST9ParameterD2Ev")]
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
@@ -3465,7 +3471,7 @@ namespace CppSharp
                 public Parameter()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(132);
+                    __Instance = Marshal.AllocHGlobal(128);
                     Internal.ctor_0(__Instance);
                 }
 
@@ -3479,8 +3485,8 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        var __instance = Marshal.AllocHGlobal(8);
-                        CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->QualifiedType), new UIntPtr(8));
+                        var __instance = Marshal.AllocHGlobal(16);
+                        CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->QualifiedType), new UIntPtr(16));
                         return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.QualifiedType(__instance);
                     }
 
@@ -3539,7 +3545,7 @@ namespace CppSharp
 
             public unsafe partial class Function : CppSharp.Parser.AST.Declaration, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 204)]
+                [StructLayout(LayoutKind.Explicit, Size = 192)]
                 public new struct Internal
                 {
                     [FieldOffset(0)]
@@ -3551,99 +3557,99 @@ namespace CppSharp
                     [FieldOffset(8)]
                     public global::System.IntPtr _Namespace;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(24)]
                     public global::System.IntPtr Comment;
 
-                    [FieldOffset(64)]
+                    [FieldOffset(40)]
                     public bool IsIncomplete;
 
-                    [FieldOffset(65)]
+                    [FieldOffset(41)]
                     public bool IsDependent;
 
-                    [FieldOffset(68)]
+                    [FieldOffset(48)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(56)]
                     public uint DefinitionOrder;
 
                     [FieldOffset(88)]
                     public void* OriginalPtr;
 
-                    [FieldOffset(116)]
+                    [FieldOffset(104)]
                     public CppSharp.Parser.AST.QualifiedType.Internal ReturnType;
 
-                    [FieldOffset(124)]
+                    [FieldOffset(120)]
                     public bool IsReturnIndirect;
 
-                    [FieldOffset(125)]
+                    [FieldOffset(121)]
                     public bool IsVariadic;
 
-                    [FieldOffset(126)]
+                    [FieldOffset(122)]
                     public bool IsInline;
 
-                    [FieldOffset(127)]
+                    [FieldOffset(123)]
                     public bool IsPure;
 
-                    [FieldOffset(128)]
+                    [FieldOffset(124)]
                     public bool IsDeleted;
 
-                    [FieldOffset(132)]
+                    [FieldOffset(128)]
                     public CppSharp.Parser.AST.CXXOperatorKind OperatorKind;
 
-                    [FieldOffset(184)]
+                    [FieldOffset(152)]
                     public CppSharp.Parser.AST.CallingConvention CallingConvention;
 
-                    [FieldOffset(200)]
+                    [FieldOffset(184)]
                     public global::System.IntPtr SpecializationInfo;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0Function@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST8FunctionC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0Function@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST8FunctionC2ERKS2_")]
+                    internal static extern void cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??1Function@AST@CppParser@CppSharp@@QAE@XZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST8FunctionD2Ev")]
                     internal static extern void dtor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getParameters@Function@AST@CppParser@CppSharp@@QAEPAUParameter@234@I@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST8Function13getParametersEj")]
                     internal static extern global::System.IntPtr getParameters_0(global::System.IntPtr instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?addParameters@Function@AST@CppParser@CppSharp@@QAEXAAPAUParameter@234@@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST8Function13addParametersERPNS1_9ParameterE")]
                     internal static extern void addParameters_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getMangled@Function@AST@CppParser@CppSharp@@QAEPBDXZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST8Function10getMangledEv")]
                     internal static extern global::System.IntPtr getMangled_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?setMangled@Function@AST@CppParser@CppSharp@@QAEXPBD@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST8Function10setMangledEPKc")]
                     internal static extern void setMangled_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getSignature@Function@AST@CppParser@CppSharp@@QAEPBDXZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST8Function12getSignatureEv")]
                     internal static extern global::System.IntPtr getSignature_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?setSignature@Function@AST@CppParser@CppSharp@@QAEXPBD@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST8Function12setSignatureEPKc")]
                     internal static extern void setSignature_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getParametersCount@Function@AST@CppParser@CppSharp@@QAEIXZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST8Function18getParametersCountEv")]
                     internal static extern uint getParametersCount_0(global::System.IntPtr instance);
                 }
 
@@ -3665,7 +3671,7 @@ namespace CppSharp
                 public Function()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(204);
+                    __Instance = Marshal.AllocHGlobal(192);
                     Internal.ctor_0(__Instance);
                 }
 
@@ -3735,8 +3741,8 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        var __instance = Marshal.AllocHGlobal(8);
-                        CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->ReturnType), new UIntPtr(8));
+                        var __instance = Marshal.AllocHGlobal(16);
+                        CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->ReturnType), new UIntPtr(16));
                         return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.QualifiedType(__instance);
                     }
 
@@ -3882,100 +3888,100 @@ namespace CppSharp
                     [FieldOffset(8)]
                     public global::System.IntPtr _Namespace;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(24)]
                     public global::System.IntPtr Comment;
 
-                    [FieldOffset(64)]
+                    [FieldOffset(40)]
                     public bool IsIncomplete;
 
-                    [FieldOffset(65)]
+                    [FieldOffset(41)]
                     public bool IsDependent;
 
-                    [FieldOffset(68)]
+                    [FieldOffset(48)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(56)]
                     public uint DefinitionOrder;
 
                     [FieldOffset(88)]
                     public void* OriginalPtr;
 
-                    [FieldOffset(116)]
+                    [FieldOffset(104)]
                     public CppSharp.Parser.AST.QualifiedType.Internal ReturnType;
 
-                    [FieldOffset(124)]
+                    [FieldOffset(120)]
                     public bool IsReturnIndirect;
 
-                    [FieldOffset(125)]
+                    [FieldOffset(121)]
                     public bool IsVariadic;
 
-                    [FieldOffset(126)]
+                    [FieldOffset(122)]
                     public bool IsInline;
 
-                    [FieldOffset(127)]
+                    [FieldOffset(123)]
                     public bool IsPure;
 
-                    [FieldOffset(128)]
+                    [FieldOffset(124)]
                     public bool IsDeleted;
 
-                    [FieldOffset(132)]
+                    [FieldOffset(128)]
                     public CppSharp.Parser.AST.CXXOperatorKind OperatorKind;
 
-                    [FieldOffset(184)]
+                    [FieldOffset(152)]
                     public CppSharp.Parser.AST.CallingConvention CallingConvention;
 
-                    [FieldOffset(200)]
+                    [FieldOffset(184)]
                     public global::System.IntPtr SpecializationInfo;
 
-                    [FieldOffset(204)]
+                    [FieldOffset(192)]
                     public global::System.IntPtr AccessDecl;
 
-                    [FieldOffset(208)]
+                    [FieldOffset(200)]
                     public bool IsVirtual;
 
-                    [FieldOffset(209)]
+                    [FieldOffset(201)]
                     public bool IsStatic;
 
-                    [FieldOffset(210)]
+                    [FieldOffset(202)]
                     public bool IsConst;
 
-                    [FieldOffset(211)]
+                    [FieldOffset(203)]
                     public bool IsImplicit;
 
-                    [FieldOffset(212)]
+                    [FieldOffset(204)]
                     public bool IsExplicit;
 
-                    [FieldOffset(213)]
+                    [FieldOffset(205)]
                     public bool IsOverride;
 
-                    [FieldOffset(216)]
+                    [FieldOffset(208)]
                     public CppSharp.Parser.AST.CXXMethodKind MethodKind;
 
-                    [FieldOffset(220)]
+                    [FieldOffset(212)]
                     public bool IsDefaultConstructor;
 
-                    [FieldOffset(221)]
+                    [FieldOffset(213)]
                     public bool IsCopyConstructor;
 
-                    [FieldOffset(222)]
+                    [FieldOffset(214)]
                     public bool IsMoveConstructor;
 
-                    [FieldOffset(224)]
+                    [FieldOffset(216)]
                     public CppSharp.Parser.AST.QualifiedType.Internal ConversionType;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0Method@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST6MethodC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0Method@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST6MethodC2ERKS2_")]
+                    internal static extern void cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??1Method@AST@CppParser@CppSharp@@QAE@XZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST6MethodD2Ev")]
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
@@ -4176,8 +4182,8 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        var __instance = Marshal.AllocHGlobal(8);
-                        CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->ConversionType), new UIntPtr(8));
+                        var __instance = Marshal.AllocHGlobal(16);
+                        CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->ConversionType), new UIntPtr(16));
                         return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.QualifiedType(__instance);
                     }
 
@@ -4191,7 +4197,7 @@ namespace CppSharp
 
             public unsafe partial class Enumeration : CppSharp.Parser.AST.Declaration, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 140)]
+                [StructLayout(LayoutKind.Explicit, Size = 152)]
                 public new struct Internal
                 {
                     [FieldOffset(0)]
@@ -4203,61 +4209,61 @@ namespace CppSharp
                     [FieldOffset(8)]
                     public global::System.IntPtr _Namespace;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(24)]
                     public global::System.IntPtr Comment;
 
-                    [FieldOffset(64)]
+                    [FieldOffset(40)]
                     public bool IsIncomplete;
 
-                    [FieldOffset(65)]
+                    [FieldOffset(41)]
                     public bool IsDependent;
 
-                    [FieldOffset(68)]
+                    [FieldOffset(48)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(56)]
                     public uint DefinitionOrder;
 
                     [FieldOffset(88)]
                     public void* OriginalPtr;
 
-                    [FieldOffset(116)]
+                    [FieldOffset(104)]
                     public CppSharp.Parser.AST.Enumeration.EnumModifiers Modifiers;
 
-                    [FieldOffset(120)]
+                    [FieldOffset(112)]
                     public global::System.IntPtr Type;
 
-                    [FieldOffset(124)]
+                    [FieldOffset(120)]
                     public global::System.IntPtr BuiltinType;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0Enumeration@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11EnumerationC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0Enumeration@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11EnumerationC2ERKS2_")]
+                    internal static extern void cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??1Enumeration@AST@CppParser@CppSharp@@QAE@XZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11EnumerationD2Ev")]
                     internal static extern void dtor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getItems@Enumeration@AST@CppParser@CppSharp@@QAE?AUItem@1234@I@Z")]
-                    internal static extern void getItems_0(global::System.IntPtr instance, global::System.IntPtr @return, uint i);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11Enumeration8getItemsEj")]
+                    internal static extern void getItems_0(global::System.IntPtr @return, global::System.IntPtr instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?addItems@Enumeration@AST@CppParser@CppSharp@@QAEXAAUItem@1234@@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11Enumeration8addItemsERNS2_4ItemE")]
                     internal static extern void addItems_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getItemsCount@Enumeration@AST@CppParser@CppSharp@@QAEIXZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11Enumeration13getItemsCountEv")]
                     internal static extern uint getItemsCount_0(global::System.IntPtr instance);
                 }
 
@@ -4271,7 +4277,7 @@ namespace CppSharp
 
                 public unsafe partial class Item : CppSharp.Parser.AST.Declaration, IDisposable
                 {
-                    [StructLayout(LayoutKind.Explicit, Size = 152)]
+                    [StructLayout(LayoutKind.Explicit, Size = 120)]
                     public new struct Internal
                     {
                         [FieldOffset(0)]
@@ -4283,50 +4289,50 @@ namespace CppSharp
                         [FieldOffset(8)]
                         public global::System.IntPtr _Namespace;
 
-                        [FieldOffset(36)]
+                        [FieldOffset(24)]
                         public global::System.IntPtr Comment;
 
-                        [FieldOffset(64)]
+                        [FieldOffset(40)]
                         public bool IsIncomplete;
 
-                        [FieldOffset(65)]
+                        [FieldOffset(41)]
                         public bool IsDependent;
 
-                        [FieldOffset(68)]
+                        [FieldOffset(48)]
                         public global::System.IntPtr CompleteDeclaration;
 
-                        [FieldOffset(72)]
+                        [FieldOffset(56)]
                         public uint DefinitionOrder;
 
                         [FieldOffset(88)]
                         public void* OriginalPtr;
 
-                        [FieldOffset(144)]
+                        [FieldOffset(112)]
                         public ulong Value;
 
                         [SuppressUnmanagedCodeSecurity]
-                        [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                            EntryPoint="??0Item@Enumeration@AST@CppParser@CppSharp@@QAE@XZ")]
-                        internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                        [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                            EntryPoint="_ZN8CppSharp9CppParser3AST11Enumeration4ItemC2Ev")]
+                        internal static extern void ctor_0(global::System.IntPtr instance);
 
                         [SuppressUnmanagedCodeSecurity]
-                        [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                            EntryPoint="??0Item@Enumeration@AST@CppParser@CppSharp@@QAE@ABU01234@@Z")]
-                        internal static extern global::System.IntPtr cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
+                        [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                            EntryPoint="_ZN8CppSharp9CppParser3AST11Enumeration4ItemC2ERKS3_")]
+                        internal static extern void cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                         [SuppressUnmanagedCodeSecurity]
-                        [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                            EntryPoint="??1Item@Enumeration@AST@CppParser@CppSharp@@QAE@XZ")]
+                        [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                            EntryPoint="_ZN8CppSharp9CppParser3AST11Enumeration4ItemD2Ev")]
                         internal static extern void dtor_0(global::System.IntPtr instance);
 
                         [SuppressUnmanagedCodeSecurity]
-                        [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                            EntryPoint="?getExpression@Item@Enumeration@AST@CppParser@CppSharp@@QAEPBDXZ")]
+                        [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                            EntryPoint="_ZN8CppSharp9CppParser3AST11Enumeration4Item13getExpressionEv")]
                         internal static extern global::System.IntPtr getExpression_0(global::System.IntPtr instance);
 
                         [SuppressUnmanagedCodeSecurity]
-                        [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                            EntryPoint="?setExpression@Item@Enumeration@AST@CppParser@CppSharp@@QAEXPBD@Z")]
+                        [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                            EntryPoint="_ZN8CppSharp9CppParser3AST11Enumeration4Item13setExpressionEPKc")]
                         internal static extern void setExpression_0(global::System.IntPtr instance, global::System.IntPtr s);
                     }
 
@@ -4348,7 +4354,7 @@ namespace CppSharp
                     public Item()
                         : this(IntPtr.Zero)
                     {
-                        __Instance = Marshal.AllocHGlobal(152);
+                        __Instance = Marshal.AllocHGlobal(120);
                         Internal.ctor_0(__Instance);
                     }
 
@@ -4408,7 +4414,7 @@ namespace CppSharp
                 public Enumeration()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(140);
+                    __Instance = Marshal.AllocHGlobal(152);
                     Internal.ctor_0(__Instance);
                 }
 
@@ -4420,8 +4426,8 @@ namespace CppSharp
                 public CppSharp.Parser.AST.Enumeration.Item getItems(uint i)
                 {
                     var __ret = new CppSharp.Parser.AST.Enumeration.Item.Internal();
-                    Internal.getItems_0(__Instance, new IntPtr(&__ret), i);
-                    var __instance = Marshal.AllocHGlobal(152);
+                    Internal.getItems_0(new IntPtr(&__ret), __Instance, i);
+                    var __instance = Marshal.AllocHGlobal(120);
                     CppSharp.Parser.AST.Enumeration.Item.Internal.cctor_1(__instance, new global::System.IntPtr(&__ret));
                     return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.Enumeration.Item(__instance);
                 }
@@ -4489,7 +4495,7 @@ namespace CppSharp
 
             public unsafe partial class Variable : CppSharp.Parser.AST.Declaration, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 148)]
+                [StructLayout(LayoutKind.Explicit, Size = 128)]
                 public new struct Internal
                 {
                     [FieldOffset(0)]
@@ -4501,50 +4507,50 @@ namespace CppSharp
                     [FieldOffset(8)]
                     public global::System.IntPtr _Namespace;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(24)]
                     public global::System.IntPtr Comment;
 
-                    [FieldOffset(64)]
+                    [FieldOffset(40)]
                     public bool IsIncomplete;
 
-                    [FieldOffset(65)]
+                    [FieldOffset(41)]
                     public bool IsDependent;
 
-                    [FieldOffset(68)]
+                    [FieldOffset(48)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(56)]
                     public uint DefinitionOrder;
 
                     [FieldOffset(88)]
                     public void* OriginalPtr;
 
-                    [FieldOffset(140)]
+                    [FieldOffset(112)]
                     public CppSharp.Parser.AST.QualifiedType.Internal QualifiedType;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0Variable@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST8VariableC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0Variable@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST8VariableC2ERKS2_")]
+                    internal static extern void cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??1Variable@AST@CppParser@CppSharp@@QAE@XZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST8VariableD2Ev")]
                     internal static extern void dtor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getMangled@Variable@AST@CppParser@CppSharp@@QAEPBDXZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST8Variable10getMangledEv")]
                     internal static extern global::System.IntPtr getMangled_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?setMangled@Variable@AST@CppParser@CppSharp@@QAEXPBD@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST8Variable10setMangledEPKc")]
                     internal static extern void setMangled_0(global::System.IntPtr instance, global::System.IntPtr s);
                 }
 
@@ -4566,7 +4572,7 @@ namespace CppSharp
                 public Variable()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(148);
+                    __Instance = Marshal.AllocHGlobal(128);
                     Internal.ctor_0(__Instance);
                 }
 
@@ -4597,8 +4603,8 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        var __instance = Marshal.AllocHGlobal(8);
-                        CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->QualifiedType), new UIntPtr(8));
+                        var __instance = Marshal.AllocHGlobal(16);
+                        CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->QualifiedType), new UIntPtr(16));
                         return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.QualifiedType(__instance);
                     }
 
@@ -4612,7 +4618,7 @@ namespace CppSharp
 
             public unsafe partial class BaseClassSpecifier : IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 12)]
+                [StructLayout(LayoutKind.Explicit, Size = 16)]
                 public struct Internal
                 {
                     [FieldOffset(0)]
@@ -4625,14 +4631,14 @@ namespace CppSharp
                     public global::System.IntPtr Type;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0BaseClassSpecifier@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST18BaseClassSpecifierC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0BaseClassSpecifier@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST18BaseClassSpecifierC2ERKS2_")]
+                    internal static extern void cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
@@ -4654,7 +4660,7 @@ namespace CppSharp
 
                 public BaseClassSpecifier()
                 {
-                    __Instance = Marshal.AllocHGlobal(12);
+                    __Instance = Marshal.AllocHGlobal(16);
                     Internal.ctor_0(__Instance);
                 }
 
@@ -4717,7 +4723,7 @@ namespace CppSharp
 
             public unsafe partial class Field : CppSharp.Parser.AST.Declaration, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 132)]
+                [StructLayout(LayoutKind.Explicit, Size = 136)]
                 public new struct Internal
                 {
                     [FieldOffset(0)]
@@ -4729,46 +4735,46 @@ namespace CppSharp
                     [FieldOffset(8)]
                     public global::System.IntPtr _Namespace;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(24)]
                     public global::System.IntPtr Comment;
 
-                    [FieldOffset(64)]
+                    [FieldOffset(40)]
                     public bool IsIncomplete;
 
-                    [FieldOffset(65)]
+                    [FieldOffset(41)]
                     public bool IsDependent;
 
-                    [FieldOffset(68)]
+                    [FieldOffset(48)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(56)]
                     public uint DefinitionOrder;
 
                     [FieldOffset(88)]
                     public void* OriginalPtr;
 
-                    [FieldOffset(116)]
+                    [FieldOffset(104)]
                     public CppSharp.Parser.AST.QualifiedType.Internal QualifiedType;
 
-                    [FieldOffset(124)]
+                    [FieldOffset(120)]
                     public uint Offset;
 
                     [FieldOffset(128)]
                     public global::System.IntPtr Class;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0Field@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST5FieldC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0Field@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST5FieldC2ERKS2_")]
+                    internal static extern void cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??1Field@AST@CppParser@CppSharp@@QAE@XZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST5FieldD2Ev")]
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
@@ -4790,7 +4796,7 @@ namespace CppSharp
                 public Field()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(132);
+                    __Instance = Marshal.AllocHGlobal(136);
                     Internal.ctor_0(__Instance);
                 }
 
@@ -4804,8 +4810,8 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        var __instance = Marshal.AllocHGlobal(8);
-                        CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->QualifiedType), new UIntPtr(8));
+                        var __instance = Marshal.AllocHGlobal(16);
+                        CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->QualifiedType), new UIntPtr(16));
                         return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.QualifiedType(__instance);
                     }
 
@@ -4849,7 +4855,7 @@ namespace CppSharp
 
             public unsafe partial class AccessSpecifierDecl : CppSharp.Parser.AST.Declaration, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 116)]
+                [StructLayout(LayoutKind.Explicit, Size = 104)]
                 public new struct Internal
                 {
                     [FieldOffset(0)]
@@ -4861,37 +4867,37 @@ namespace CppSharp
                     [FieldOffset(8)]
                     public global::System.IntPtr _Namespace;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(24)]
                     public global::System.IntPtr Comment;
 
-                    [FieldOffset(64)]
+                    [FieldOffset(40)]
                     public bool IsIncomplete;
 
-                    [FieldOffset(65)]
+                    [FieldOffset(41)]
                     public bool IsDependent;
 
-                    [FieldOffset(68)]
+                    [FieldOffset(48)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(56)]
                     public uint DefinitionOrder;
 
                     [FieldOffset(88)]
                     public void* OriginalPtr;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0AccessSpecifierDecl@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST19AccessSpecifierDeclC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0AccessSpecifierDecl@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST19AccessSpecifierDeclC2ERKS2_")]
+                    internal static extern void cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??1AccessSpecifierDecl@AST@CppParser@CppSharp@@QAE@XZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST19AccessSpecifierDeclD2Ev")]
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
@@ -4913,7 +4919,7 @@ namespace CppSharp
                 public AccessSpecifierDecl()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(116);
+                    __Instance = Marshal.AllocHGlobal(104);
                     Internal.ctor_0(__Instance);
                 }
 
@@ -4925,7 +4931,7 @@ namespace CppSharp
 
             public unsafe partial class Class : CppSharp.Parser.AST.DeclarationContext, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 276)]
+                [StructLayout(LayoutKind.Explicit, Size = 448)]
                 public new struct Internal
                 {
                     [FieldOffset(0)]
@@ -4937,130 +4943,130 @@ namespace CppSharp
                     [FieldOffset(8)]
                     public global::System.IntPtr _Namespace;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(24)]
                     public global::System.IntPtr Comment;
 
-                    [FieldOffset(64)]
+                    [FieldOffset(40)]
                     public bool IsIncomplete;
 
-                    [FieldOffset(65)]
+                    [FieldOffset(41)]
                     public bool IsDependent;
 
-                    [FieldOffset(68)]
+                    [FieldOffset(48)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(56)]
                     public uint DefinitionOrder;
 
                     [FieldOffset(88)]
                     public void* OriginalPtr;
 
-                    [FieldOffset(208)]
+                    [FieldOffset(320)]
                     public bool IsAnonymous;
 
-                    [FieldOffset(260)]
+                    [FieldOffset(424)]
                     public bool IsPOD;
 
-                    [FieldOffset(261)]
+                    [FieldOffset(425)]
                     public bool IsAbstract;
 
-                    [FieldOffset(262)]
+                    [FieldOffset(426)]
                     public bool IsUnion;
 
-                    [FieldOffset(263)]
+                    [FieldOffset(427)]
                     public bool IsDynamic;
 
-                    [FieldOffset(264)]
+                    [FieldOffset(428)]
                     public bool IsPolymorphic;
 
-                    [FieldOffset(265)]
+                    [FieldOffset(429)]
                     public bool HasNonTrivialDefaultConstructor;
 
-                    [FieldOffset(266)]
+                    [FieldOffset(430)]
                     public bool HasNonTrivialCopyConstructor;
 
-                    [FieldOffset(267)]
+                    [FieldOffset(431)]
                     public bool HasNonTrivialDestructor;
 
-                    [FieldOffset(268)]
+                    [FieldOffset(432)]
                     public bool IsExternCContext;
 
-                    [FieldOffset(272)]
+                    [FieldOffset(440)]
                     public global::System.IntPtr Layout;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0Class@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST5ClassC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0Class@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST5ClassC2ERKS2_")]
+                    internal static extern void cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??1Class@AST@CppParser@CppSharp@@QAE@XZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST5ClassD2Ev")]
                     internal static extern void dtor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getBases@Class@AST@CppParser@CppSharp@@QAEPAUBaseClassSpecifier@234@I@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST5Class8getBasesEj")]
                     internal static extern global::System.IntPtr getBases_0(global::System.IntPtr instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?addBases@Class@AST@CppParser@CppSharp@@QAEXAAPAUBaseClassSpecifier@234@@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST5Class8addBasesERPNS1_18BaseClassSpecifierE")]
                     internal static extern void addBases_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getFields@Class@AST@CppParser@CppSharp@@QAEPAUField@234@I@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST5Class9getFieldsEj")]
                     internal static extern global::System.IntPtr getFields_0(global::System.IntPtr instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?addFields@Class@AST@CppParser@CppSharp@@QAEXAAPAUField@234@@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST5Class9addFieldsERPNS1_5FieldE")]
                     internal static extern void addFields_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getMethods@Class@AST@CppParser@CppSharp@@QAEPAUMethod@234@I@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST5Class10getMethodsEj")]
                     internal static extern global::System.IntPtr getMethods_0(global::System.IntPtr instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?addMethods@Class@AST@CppParser@CppSharp@@QAEXAAPAUMethod@234@@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST5Class10addMethodsERPNS1_6MethodE")]
                     internal static extern void addMethods_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getSpecifiers@Class@AST@CppParser@CppSharp@@QAEPAUAccessSpecifierDecl@234@I@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST5Class13getSpecifiersEj")]
                     internal static extern global::System.IntPtr getSpecifiers_0(global::System.IntPtr instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?addSpecifiers@Class@AST@CppParser@CppSharp@@QAEXAAPAUAccessSpecifierDecl@234@@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST5Class13addSpecifiersERPNS1_19AccessSpecifierDeclE")]
                     internal static extern void addSpecifiers_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getBasesCount@Class@AST@CppParser@CppSharp@@QAEIXZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST5Class13getBasesCountEv")]
                     internal static extern uint getBasesCount_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getFieldsCount@Class@AST@CppParser@CppSharp@@QAEIXZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST5Class14getFieldsCountEv")]
                     internal static extern uint getFieldsCount_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getMethodsCount@Class@AST@CppParser@CppSharp@@QAEIXZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST5Class15getMethodsCountEv")]
                     internal static extern uint getMethodsCount_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getSpecifiersCount@Class@AST@CppParser@CppSharp@@QAEIXZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST5Class18getSpecifiersCountEv")]
                     internal static extern uint getSpecifiersCount_0(global::System.IntPtr instance);
                 }
 
@@ -5082,7 +5088,7 @@ namespace CppSharp
                 public Class()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(276);
+                    __Instance = Marshal.AllocHGlobal(448);
                     Internal.ctor_0(__Instance);
                 }
 
@@ -5332,7 +5338,7 @@ namespace CppSharp
 
             public unsafe partial class Template : CppSharp.Parser.AST.Declaration, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 132)]
+                [StructLayout(LayoutKind.Explicit, Size = 136)]
                 public new struct Internal
                 {
                     [FieldOffset(0)]
@@ -5344,60 +5350,60 @@ namespace CppSharp
                     [FieldOffset(8)]
                     public global::System.IntPtr _Namespace;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(24)]
                     public global::System.IntPtr Comment;
 
-                    [FieldOffset(64)]
+                    [FieldOffset(40)]
                     public bool IsIncomplete;
 
-                    [FieldOffset(65)]
+                    [FieldOffset(41)]
                     public bool IsDependent;
 
-                    [FieldOffset(68)]
+                    [FieldOffset(48)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(56)]
                     public uint DefinitionOrder;
 
                     [FieldOffset(88)]
                     public void* OriginalPtr;
 
-                    [FieldOffset(116)]
+                    [FieldOffset(104)]
                     public global::System.IntPtr TemplatedDecl;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0Template@AST@CppParser@CppSharp@@QAE@W4DeclarationKind@123@@Z")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance, CppSharp.Parser.AST.DeclarationKind kind);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST8TemplateC2ENS1_15DeclarationKindE")]
+                    internal static extern void ctor_0(global::System.IntPtr instance, CppSharp.Parser.AST.DeclarationKind kind);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0Template@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_1(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST8TemplateC2Ev")]
+                    internal static extern void ctor_1(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0Template@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_3(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST8TemplateC2ERKS2_")]
+                    internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??1Template@AST@CppParser@CppSharp@@QAE@XZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST8TemplateD2Ev")]
                     internal static extern void dtor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getParameters@Template@AST@CppParser@CppSharp@@QAE?AUTemplateParameter@234@I@Z")]
-                    internal static extern void getParameters_0(global::System.IntPtr instance, global::System.IntPtr @return, uint i);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST8Template13getParametersEj")]
+                    internal static extern void getParameters_0(global::System.IntPtr @return, global::System.IntPtr instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?addParameters@Template@AST@CppParser@CppSharp@@QAEXAAUTemplateParameter@234@@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST8Template13addParametersERNS1_17TemplateParameterE")]
                     internal static extern void addParameters_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getParametersCount@Template@AST@CppParser@CppSharp@@QAEIXZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST8Template18getParametersCountEv")]
                     internal static extern uint getParametersCount_0(global::System.IntPtr instance);
                 }
 
@@ -5419,7 +5425,7 @@ namespace CppSharp
                 public Template(CppSharp.Parser.AST.DeclarationKind kind)
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(132);
+                    __Instance = Marshal.AllocHGlobal(136);
                     var arg0 = kind;
                     Internal.ctor_0(__Instance, arg0);
                 }
@@ -5427,7 +5433,7 @@ namespace CppSharp
                 public Template()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(132);
+                    __Instance = Marshal.AllocHGlobal(136);
                     Internal.ctor_1(__Instance);
                 }
 
@@ -5439,8 +5445,8 @@ namespace CppSharp
                 public CppSharp.Parser.AST.TemplateParameter getParameters(uint i)
                 {
                     var __ret = new CppSharp.Parser.AST.TemplateParameter.Internal();
-                    Internal.getParameters_0(__Instance, new IntPtr(&__ret), i);
-                    var __instance = Marshal.AllocHGlobal(28);
+                    Internal.getParameters_0(new IntPtr(&__ret), __Instance, i);
+                    var __instance = Marshal.AllocHGlobal(16);
                     CppSharp.Parser.AST.TemplateParameter.Internal.cctor_1(__instance, new global::System.IntPtr(&__ret));
                     return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.TemplateParameter(__instance);
                 }
@@ -5478,7 +5484,7 @@ namespace CppSharp
 
             public unsafe partial class ClassTemplate : CppSharp.Parser.AST.Template, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 144)]
+                [StructLayout(LayoutKind.Explicit, Size = 160)]
                 public new struct Internal
                 {
                     [FieldOffset(0)]
@@ -5490,55 +5496,55 @@ namespace CppSharp
                     [FieldOffset(8)]
                     public global::System.IntPtr _Namespace;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(24)]
                     public global::System.IntPtr Comment;
 
-                    [FieldOffset(64)]
+                    [FieldOffset(40)]
                     public bool IsIncomplete;
 
-                    [FieldOffset(65)]
+                    [FieldOffset(41)]
                     public bool IsDependent;
 
-                    [FieldOffset(68)]
+                    [FieldOffset(48)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(56)]
                     public uint DefinitionOrder;
 
                     [FieldOffset(88)]
                     public void* OriginalPtr;
 
-                    [FieldOffset(116)]
+                    [FieldOffset(104)]
                     public global::System.IntPtr TemplatedDecl;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0ClassTemplate@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST13ClassTemplateC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0ClassTemplate@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST13ClassTemplateC2ERKS2_")]
+                    internal static extern void cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??1ClassTemplate@AST@CppParser@CppSharp@@QAE@XZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST13ClassTemplateD2Ev")]
                     internal static extern void dtor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getSpecializations@ClassTemplate@AST@CppParser@CppSharp@@QAEPAUClassTemplateSpecialization@234@I@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST13ClassTemplate18getSpecializationsEj")]
                     internal static extern global::System.IntPtr getSpecializations_0(global::System.IntPtr instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?addSpecializations@ClassTemplate@AST@CppParser@CppSharp@@QAEXAAPAUClassTemplateSpecialization@234@@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST13ClassTemplate18addSpecializationsERPNS1_27ClassTemplateSpecializationE")]
                     internal static extern void addSpecializations_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getSpecializationsCount@ClassTemplate@AST@CppParser@CppSharp@@QAEIXZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST13ClassTemplate23getSpecializationsCountEv")]
                     internal static extern uint getSpecializationsCount_0(global::System.IntPtr instance);
                 }
 
@@ -5560,7 +5566,7 @@ namespace CppSharp
                 public ClassTemplate()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(144);
+                    __Instance = Marshal.AllocHGlobal(160);
                     Internal.ctor_0(__Instance);
                 }
 
@@ -5594,7 +5600,7 @@ namespace CppSharp
 
             public unsafe partial class ClassTemplateSpecialization : CppSharp.Parser.AST.Class, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 296)]
+                [StructLayout(LayoutKind.Explicit, Size = 488)]
                 public new struct Internal
                 {
                     [FieldOffset(0)]
@@ -5606,91 +5612,91 @@ namespace CppSharp
                     [FieldOffset(8)]
                     public global::System.IntPtr _Namespace;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(24)]
                     public global::System.IntPtr Comment;
 
-                    [FieldOffset(64)]
+                    [FieldOffset(40)]
                     public bool IsIncomplete;
 
-                    [FieldOffset(65)]
+                    [FieldOffset(41)]
                     public bool IsDependent;
 
-                    [FieldOffset(68)]
+                    [FieldOffset(48)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(56)]
                     public uint DefinitionOrder;
 
                     [FieldOffset(88)]
                     public void* OriginalPtr;
 
-                    [FieldOffset(208)]
+                    [FieldOffset(320)]
                     public bool IsAnonymous;
 
-                    [FieldOffset(260)]
+                    [FieldOffset(424)]
                     public bool IsPOD;
 
-                    [FieldOffset(261)]
+                    [FieldOffset(425)]
                     public bool IsAbstract;
 
-                    [FieldOffset(262)]
+                    [FieldOffset(426)]
                     public bool IsUnion;
 
-                    [FieldOffset(263)]
+                    [FieldOffset(427)]
                     public bool IsDynamic;
 
-                    [FieldOffset(264)]
+                    [FieldOffset(428)]
                     public bool IsPolymorphic;
 
-                    [FieldOffset(265)]
+                    [FieldOffset(429)]
                     public bool HasNonTrivialDefaultConstructor;
 
-                    [FieldOffset(266)]
+                    [FieldOffset(430)]
                     public bool HasNonTrivialCopyConstructor;
 
-                    [FieldOffset(267)]
+                    [FieldOffset(431)]
                     public bool HasNonTrivialDestructor;
 
-                    [FieldOffset(268)]
+                    [FieldOffset(432)]
                     public bool IsExternCContext;
 
-                    [FieldOffset(272)]
+                    [FieldOffset(440)]
                     public global::System.IntPtr Layout;
 
-                    [FieldOffset(276)]
+                    [FieldOffset(448)]
                     public global::System.IntPtr TemplatedDecl;
 
-                    [FieldOffset(292)]
+                    [FieldOffset(480)]
                     public CppSharp.Parser.AST.TemplateSpecializationKind SpecializationKind;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0ClassTemplateSpecialization@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST27ClassTemplateSpecializationC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0ClassTemplateSpecialization@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST27ClassTemplateSpecializationC2ERKS2_")]
+                    internal static extern void cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??1ClassTemplateSpecialization@AST@CppParser@CppSharp@@QAE@XZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST27ClassTemplateSpecializationD2Ev")]
                     internal static extern void dtor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getArguments@ClassTemplateSpecialization@AST@CppParser@CppSharp@@QAE?AUTemplateArgument@234@I@Z")]
-                    internal static extern void getArguments_0(global::System.IntPtr instance, global::System.IntPtr @return, uint i);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST27ClassTemplateSpecialization12getArgumentsEj")]
+                    internal static extern void getArguments_0(global::System.IntPtr @return, global::System.IntPtr instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?addArguments@ClassTemplateSpecialization@AST@CppParser@CppSharp@@QAEXAAUTemplateArgument@234@@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST27ClassTemplateSpecialization12addArgumentsERNS1_16TemplateArgumentE")]
                     internal static extern void addArguments_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getArgumentsCount@ClassTemplateSpecialization@AST@CppParser@CppSharp@@QAEIXZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST27ClassTemplateSpecialization17getArgumentsCountEv")]
                     internal static extern uint getArgumentsCount_0(global::System.IntPtr instance);
                 }
 
@@ -5712,7 +5718,7 @@ namespace CppSharp
                 public ClassTemplateSpecialization()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(296);
+                    __Instance = Marshal.AllocHGlobal(488);
                     Internal.ctor_0(__Instance);
                 }
 
@@ -5724,9 +5730,9 @@ namespace CppSharp
                 public CppSharp.Parser.AST.TemplateArgument getArguments(uint i)
                 {
                     var __ret = new CppSharp.Parser.AST.TemplateArgument.Internal();
-                    Internal.getArguments_0(__Instance, new IntPtr(&__ret), i);
-                    var __instance = Marshal.AllocHGlobal(20);
-                    CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ret), new UIntPtr(20));
+                    Internal.getArguments_0(new IntPtr(&__ret), __Instance, i);
+                    var __instance = Marshal.AllocHGlobal(40);
+                    CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ret), new UIntPtr(40));
                     return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.TemplateArgument(__instance);
                 }
 
@@ -5778,7 +5784,7 @@ namespace CppSharp
 
             public unsafe partial class ClassTemplatePartialSpecialization : CppSharp.Parser.AST.ClassTemplateSpecialization, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 296)]
+                [StructLayout(LayoutKind.Explicit, Size = 488)]
                 public new struct Internal
                 {
                     [FieldOffset(0)]
@@ -5790,76 +5796,76 @@ namespace CppSharp
                     [FieldOffset(8)]
                     public global::System.IntPtr _Namespace;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(24)]
                     public global::System.IntPtr Comment;
 
-                    [FieldOffset(64)]
+                    [FieldOffset(40)]
                     public bool IsIncomplete;
 
-                    [FieldOffset(65)]
+                    [FieldOffset(41)]
                     public bool IsDependent;
 
-                    [FieldOffset(68)]
+                    [FieldOffset(48)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(56)]
                     public uint DefinitionOrder;
 
                     [FieldOffset(88)]
                     public void* OriginalPtr;
 
-                    [FieldOffset(208)]
+                    [FieldOffset(320)]
                     public bool IsAnonymous;
 
-                    [FieldOffset(260)]
+                    [FieldOffset(424)]
                     public bool IsPOD;
 
-                    [FieldOffset(261)]
+                    [FieldOffset(425)]
                     public bool IsAbstract;
 
-                    [FieldOffset(262)]
+                    [FieldOffset(426)]
                     public bool IsUnion;
 
-                    [FieldOffset(263)]
+                    [FieldOffset(427)]
                     public bool IsDynamic;
 
-                    [FieldOffset(264)]
+                    [FieldOffset(428)]
                     public bool IsPolymorphic;
 
-                    [FieldOffset(265)]
+                    [FieldOffset(429)]
                     public bool HasNonTrivialDefaultConstructor;
 
-                    [FieldOffset(266)]
+                    [FieldOffset(430)]
                     public bool HasNonTrivialCopyConstructor;
 
-                    [FieldOffset(267)]
+                    [FieldOffset(431)]
                     public bool HasNonTrivialDestructor;
 
-                    [FieldOffset(268)]
+                    [FieldOffset(432)]
                     public bool IsExternCContext;
 
-                    [FieldOffset(272)]
+                    [FieldOffset(440)]
                     public global::System.IntPtr Layout;
 
-                    [FieldOffset(276)]
+                    [FieldOffset(448)]
                     public global::System.IntPtr TemplatedDecl;
 
-                    [FieldOffset(292)]
+                    [FieldOffset(480)]
                     public CppSharp.Parser.AST.TemplateSpecializationKind SpecializationKind;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0ClassTemplatePartialSpecialization@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST34ClassTemplatePartialSpecializationC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0ClassTemplatePartialSpecialization@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST34ClassTemplatePartialSpecializationC2ERKS2_")]
+                    internal static extern void cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??1ClassTemplatePartialSpecialization@AST@CppParser@CppSharp@@QAE@XZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST34ClassTemplatePartialSpecializationD2Ev")]
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
@@ -5881,7 +5887,7 @@ namespace CppSharp
                 public ClassTemplatePartialSpecialization()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(296);
+                    __Instance = Marshal.AllocHGlobal(488);
                     Internal.ctor_0(__Instance);
                 }
 
@@ -5893,7 +5899,7 @@ namespace CppSharp
 
             public unsafe partial class FunctionTemplate : CppSharp.Parser.AST.Template, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 144)]
+                [StructLayout(LayoutKind.Explicit, Size = 160)]
                 public new struct Internal
                 {
                     [FieldOffset(0)]
@@ -5905,55 +5911,55 @@ namespace CppSharp
                     [FieldOffset(8)]
                     public global::System.IntPtr _Namespace;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(24)]
                     public global::System.IntPtr Comment;
 
-                    [FieldOffset(64)]
+                    [FieldOffset(40)]
                     public bool IsIncomplete;
 
-                    [FieldOffset(65)]
+                    [FieldOffset(41)]
                     public bool IsDependent;
 
-                    [FieldOffset(68)]
+                    [FieldOffset(48)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(56)]
                     public uint DefinitionOrder;
 
                     [FieldOffset(88)]
                     public void* OriginalPtr;
 
-                    [FieldOffset(116)]
+                    [FieldOffset(104)]
                     public global::System.IntPtr TemplatedDecl;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0FunctionTemplate@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST16FunctionTemplateC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0FunctionTemplate@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST16FunctionTemplateC2ERKS2_")]
+                    internal static extern void cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??1FunctionTemplate@AST@CppParser@CppSharp@@QAE@XZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST16FunctionTemplateD2Ev")]
                     internal static extern void dtor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getSpecializations@FunctionTemplate@AST@CppParser@CppSharp@@QAEPAUFunctionTemplateSpecialization@234@I@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST16FunctionTemplate18getSpecializationsEj")]
                     internal static extern global::System.IntPtr getSpecializations_0(global::System.IntPtr instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?addSpecializations@FunctionTemplate@AST@CppParser@CppSharp@@QAEXAAPAUFunctionTemplateSpecialization@234@@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST16FunctionTemplate18addSpecializationsERPNS1_30FunctionTemplateSpecializationE")]
                     internal static extern void addSpecializations_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getSpecializationsCount@FunctionTemplate@AST@CppParser@CppSharp@@QAEIXZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST16FunctionTemplate23getSpecializationsCountEv")]
                     internal static extern uint getSpecializationsCount_0(global::System.IntPtr instance);
                 }
 
@@ -5975,7 +5981,7 @@ namespace CppSharp
                 public FunctionTemplate()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(144);
+                    __Instance = Marshal.AllocHGlobal(160);
                     Internal.ctor_0(__Instance);
                 }
 
@@ -6009,46 +6015,46 @@ namespace CppSharp
 
             public unsafe partial class FunctionTemplateSpecialization : IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 24)]
+                [StructLayout(LayoutKind.Explicit, Size = 48)]
                 public struct Internal
                 {
                     [FieldOffset(0)]
                     public global::System.IntPtr Template;
 
-                    [FieldOffset(16)]
+                    [FieldOffset(32)]
                     public global::System.IntPtr SpecializedFunction;
 
-                    [FieldOffset(20)]
+                    [FieldOffset(40)]
                     public CppSharp.Parser.AST.TemplateSpecializationKind SpecializationKind;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0FunctionTemplateSpecialization@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST30FunctionTemplateSpecializationC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0FunctionTemplateSpecialization@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST30FunctionTemplateSpecializationC2ERKS2_")]
+                    internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??1FunctionTemplateSpecialization@AST@CppParser@CppSharp@@QAE@XZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST30FunctionTemplateSpecializationD2Ev")]
                     internal static extern void dtor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getArguments@FunctionTemplateSpecialization@AST@CppParser@CppSharp@@QAE?AUTemplateArgument@234@I@Z")]
-                    internal static extern void getArguments_0(global::System.IntPtr instance, global::System.IntPtr @return, uint i);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST30FunctionTemplateSpecialization12getArgumentsEj")]
+                    internal static extern void getArguments_0(global::System.IntPtr @return, global::System.IntPtr instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?addArguments@FunctionTemplateSpecialization@AST@CppParser@CppSharp@@QAEXAAUTemplateArgument@234@@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST30FunctionTemplateSpecialization12addArgumentsERNS1_16TemplateArgumentE")]
                     internal static extern void addArguments_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getArgumentsCount@FunctionTemplateSpecialization@AST@CppParser@CppSharp@@QAEIXZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST30FunctionTemplateSpecialization17getArgumentsCountEv")]
                     internal static extern uint getArgumentsCount_0(global::System.IntPtr instance);
                 }
 
@@ -6071,7 +6077,7 @@ namespace CppSharp
 
                 public FunctionTemplateSpecialization()
                 {
-                    __Instance = Marshal.AllocHGlobal(24);
+                    __Instance = Marshal.AllocHGlobal(48);
                     Internal.ctor_0(__Instance);
                 }
 
@@ -6090,9 +6096,9 @@ namespace CppSharp
                 public CppSharp.Parser.AST.TemplateArgument getArguments(uint i)
                 {
                     var __ret = new CppSharp.Parser.AST.TemplateArgument.Internal();
-                    Internal.getArguments_0(__Instance, new IntPtr(&__ret), i);
-                    var __instance = Marshal.AllocHGlobal(20);
-                    CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ret), new UIntPtr(20));
+                    Internal.getArguments_0(new IntPtr(&__ret), __Instance, i);
+                    var __instance = Marshal.AllocHGlobal(40);
+                    CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ret), new UIntPtr(40));
                     return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.TemplateArgument(__instance);
                 }
 
@@ -6159,7 +6165,7 @@ namespace CppSharp
 
             public unsafe partial class Namespace : CppSharp.Parser.AST.DeclarationContext, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 216)]
+                [StructLayout(LayoutKind.Explicit, Size = 328)]
                 public new struct Internal
                 {
                     [FieldOffset(0)]
@@ -6171,43 +6177,43 @@ namespace CppSharp
                     [FieldOffset(8)]
                     public global::System.IntPtr _Namespace;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(24)]
                     public global::System.IntPtr Comment;
 
-                    [FieldOffset(64)]
+                    [FieldOffset(40)]
                     public bool IsIncomplete;
 
-                    [FieldOffset(65)]
+                    [FieldOffset(41)]
                     public bool IsDependent;
 
-                    [FieldOffset(68)]
+                    [FieldOffset(48)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(56)]
                     public uint DefinitionOrder;
 
                     [FieldOffset(88)]
                     public void* OriginalPtr;
 
-                    [FieldOffset(208)]
+                    [FieldOffset(320)]
                     public bool IsAnonymous;
 
-                    [FieldOffset(212)]
+                    [FieldOffset(321)]
                     public bool IsInline;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0Namespace@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST9NamespaceC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0Namespace@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST9NamespaceC2ERKS2_")]
+                    internal static extern void cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??1Namespace@AST@CppParser@CppSharp@@QAE@XZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST9NamespaceD2Ev")]
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
@@ -6229,7 +6235,7 @@ namespace CppSharp
                 public Namespace()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(216);
+                    __Instance = Marshal.AllocHGlobal(328);
                     Internal.ctor_0(__Instance);
                 }
 
@@ -6256,7 +6262,7 @@ namespace CppSharp
 
             public unsafe partial class PreprocessedEntity : CppSharp.Parser.AST.Declaration, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 120)]
+                [StructLayout(LayoutKind.Explicit, Size = 112)]
                 public new struct Internal
                 {
                     [FieldOffset(0)]
@@ -6268,40 +6274,40 @@ namespace CppSharp
                     [FieldOffset(8)]
                     public global::System.IntPtr _Namespace;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(24)]
                     public global::System.IntPtr Comment;
 
-                    [FieldOffset(64)]
+                    [FieldOffset(40)]
                     public bool IsIncomplete;
 
-                    [FieldOffset(65)]
+                    [FieldOffset(41)]
                     public bool IsDependent;
 
-                    [FieldOffset(68)]
+                    [FieldOffset(48)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(56)]
                     public uint DefinitionOrder;
 
                     [FieldOffset(88)]
                     public void* OriginalPtr;
 
-                    [FieldOffset(116)]
+                    [FieldOffset(104)]
                     public CppSharp.Parser.AST.MacroLocation Location;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0PreprocessedEntity@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST18PreprocessedEntityC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0PreprocessedEntity@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST18PreprocessedEntityC2ERKS2_")]
+                    internal static extern void cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??1PreprocessedEntity@AST@CppParser@CppSharp@@QAE@XZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST18PreprocessedEntityD2Ev")]
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
@@ -6323,7 +6329,7 @@ namespace CppSharp
                 public PreprocessedEntity()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(120);
+                    __Instance = Marshal.AllocHGlobal(112);
                     Internal.ctor_0(__Instance);
                 }
 
@@ -6350,7 +6356,7 @@ namespace CppSharp
 
             public unsafe partial class MacroDefinition : CppSharp.Parser.AST.PreprocessedEntity, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 144)]
+                [StructLayout(LayoutKind.Explicit, Size = 120)]
                 public new struct Internal
                 {
                     [FieldOffset(0)]
@@ -6362,50 +6368,50 @@ namespace CppSharp
                     [FieldOffset(8)]
                     public global::System.IntPtr _Namespace;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(24)]
                     public global::System.IntPtr Comment;
 
-                    [FieldOffset(64)]
+                    [FieldOffset(40)]
                     public bool IsIncomplete;
 
-                    [FieldOffset(65)]
+                    [FieldOffset(41)]
                     public bool IsDependent;
 
-                    [FieldOffset(68)]
+                    [FieldOffset(48)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(56)]
                     public uint DefinitionOrder;
 
                     [FieldOffset(88)]
                     public void* OriginalPtr;
 
-                    [FieldOffset(116)]
+                    [FieldOffset(104)]
                     public CppSharp.Parser.AST.MacroLocation Location;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0MacroDefinition@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST15MacroDefinitionC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0MacroDefinition@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST15MacroDefinitionC2ERKS2_")]
+                    internal static extern void cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??1MacroDefinition@AST@CppParser@CppSharp@@QAE@XZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST15MacroDefinitionD2Ev")]
                     internal static extern void dtor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getExpression@MacroDefinition@AST@CppParser@CppSharp@@QAEPBDXZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST15MacroDefinition13getExpressionEv")]
                     internal static extern global::System.IntPtr getExpression_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?setExpression@MacroDefinition@AST@CppParser@CppSharp@@QAEXPBD@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST15MacroDefinition13setExpressionEPKc")]
                     internal static extern void setExpression_0(global::System.IntPtr instance, global::System.IntPtr s);
                 }
 
@@ -6427,7 +6433,7 @@ namespace CppSharp
                 public MacroDefinition()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(144);
+                    __Instance = Marshal.AllocHGlobal(120);
                     Internal.ctor_0(__Instance);
                 }
 
@@ -6456,7 +6462,7 @@ namespace CppSharp
 
             public unsafe partial class MacroExpansion : CppSharp.Parser.AST.PreprocessedEntity, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 148)]
+                [StructLayout(LayoutKind.Explicit, Size = 128)]
                 public new struct Internal
                 {
                     [FieldOffset(0)]
@@ -6468,53 +6474,53 @@ namespace CppSharp
                     [FieldOffset(8)]
                     public global::System.IntPtr _Namespace;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(24)]
                     public global::System.IntPtr Comment;
 
-                    [FieldOffset(64)]
+                    [FieldOffset(40)]
                     public bool IsIncomplete;
 
-                    [FieldOffset(65)]
+                    [FieldOffset(41)]
                     public bool IsDependent;
 
-                    [FieldOffset(68)]
+                    [FieldOffset(48)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(56)]
                     public uint DefinitionOrder;
 
                     [FieldOffset(88)]
                     public void* OriginalPtr;
 
-                    [FieldOffset(116)]
+                    [FieldOffset(104)]
                     public CppSharp.Parser.AST.MacroLocation Location;
 
-                    [FieldOffset(144)]
+                    [FieldOffset(120)]
                     public global::System.IntPtr Definition;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0MacroExpansion@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST14MacroExpansionC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0MacroExpansion@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST14MacroExpansionC2ERKS2_")]
+                    internal static extern void cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??1MacroExpansion@AST@CppParser@CppSharp@@QAE@XZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST14MacroExpansionD2Ev")]
                     internal static extern void dtor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getText@MacroExpansion@AST@CppParser@CppSharp@@QAEPBDXZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST14MacroExpansion7getTextEv")]
                     internal static extern global::System.IntPtr getText_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?setText@MacroExpansion@AST@CppParser@CppSharp@@QAEXPBD@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST14MacroExpansion7setTextEPKc")]
                     internal static extern void setText_0(global::System.IntPtr instance, global::System.IntPtr s);
                 }
 
@@ -6536,7 +6542,7 @@ namespace CppSharp
                 public MacroExpansion()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(148);
+                    __Instance = Marshal.AllocHGlobal(128);
                     Internal.ctor_0(__Instance);
                 }
 
@@ -6580,7 +6586,7 @@ namespace CppSharp
 
             public unsafe partial class TranslationUnit : CppSharp.Parser.AST.Namespace, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 256)]
+                [StructLayout(LayoutKind.Explicit, Size = 368)]
                 public new struct Internal
                 {
                     [FieldOffset(0)]
@@ -6592,71 +6598,71 @@ namespace CppSharp
                     [FieldOffset(8)]
                     public global::System.IntPtr _Namespace;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(24)]
                     public global::System.IntPtr Comment;
 
-                    [FieldOffset(64)]
+                    [FieldOffset(40)]
                     public bool IsIncomplete;
 
-                    [FieldOffset(65)]
+                    [FieldOffset(41)]
                     public bool IsDependent;
 
-                    [FieldOffset(68)]
+                    [FieldOffset(48)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(56)]
                     public uint DefinitionOrder;
 
                     [FieldOffset(88)]
                     public void* OriginalPtr;
 
-                    [FieldOffset(208)]
+                    [FieldOffset(320)]
                     public bool IsAnonymous;
 
-                    [FieldOffset(212)]
+                    [FieldOffset(321)]
                     public bool IsInline;
 
-                    [FieldOffset(240)]
+                    [FieldOffset(336)]
                     public bool IsSystemHeader;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0TranslationUnit@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST15TranslationUnitC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0TranslationUnit@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST15TranslationUnitC2ERKS2_")]
+                    internal static extern void cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??1TranslationUnit@AST@CppParser@CppSharp@@QAE@XZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST15TranslationUnitD2Ev")]
                     internal static extern void dtor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getMacros@TranslationUnit@AST@CppParser@CppSharp@@QAEPAUMacroDefinition@234@I@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST15TranslationUnit9getMacrosEj")]
                     internal static extern global::System.IntPtr getMacros_0(global::System.IntPtr instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?addMacros@TranslationUnit@AST@CppParser@CppSharp@@QAEXAAPAUMacroDefinition@234@@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST15TranslationUnit9addMacrosERPNS1_15MacroDefinitionE")]
                     internal static extern void addMacros_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getFileName@TranslationUnit@AST@CppParser@CppSharp@@QAEPBDXZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST15TranslationUnit11getFileNameEv")]
                     internal static extern global::System.IntPtr getFileName_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?setFileName@TranslationUnit@AST@CppParser@CppSharp@@QAEXPBD@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST15TranslationUnit11setFileNameEPKc")]
                     internal static extern void setFileName_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getMacrosCount@TranslationUnit@AST@CppParser@CppSharp@@QAEIXZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST15TranslationUnit14getMacrosCountEv")]
                     internal static extern uint getMacrosCount_0(global::System.IntPtr instance);
                 }
 
@@ -6678,7 +6684,7 @@ namespace CppSharp
                 public TranslationUnit()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(256);
+                    __Instance = Marshal.AllocHGlobal(368);
                     Internal.ctor_0(__Instance);
                 }
 
@@ -6744,47 +6750,47 @@ namespace CppSharp
 
             public unsafe partial class NativeLibrary : IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 36)]
+                [StructLayout(LayoutKind.Explicit, Size = 32)]
                 public struct Internal
                 {
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0NativeLibrary@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_1(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST13NativeLibraryC2ERKS2_")]
+                    internal static extern void cctor_0(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0NativeLibrary@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST13NativeLibraryC2Ev")]
+                    internal static extern void ctor_2(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??1NativeLibrary@AST@CppParser@CppSharp@@QAE@XZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST13NativeLibraryD2Ev")]
                     internal static extern void dtor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getSymbols@NativeLibrary@AST@CppParser@CppSharp@@QAEPBDI@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST13NativeLibrary10getSymbolsEj")]
                     internal static extern global::System.IntPtr getSymbols_0(global::System.IntPtr instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?addSymbols@NativeLibrary@AST@CppParser@CppSharp@@QAEXPBD@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST13NativeLibrary10addSymbolsEPKc")]
                     internal static extern void addSymbols_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getFileName@NativeLibrary@AST@CppParser@CppSharp@@QAEPBDXZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST13NativeLibrary11getFileNameEv")]
                     internal static extern global::System.IntPtr getFileName_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?setFileName@NativeLibrary@AST@CppParser@CppSharp@@QAEXPBD@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST13NativeLibrary11setFileNameEPKc")]
                     internal static extern void setFileName_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getSymbolsCount@NativeLibrary@AST@CppParser@CppSharp@@QAEIXZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST13NativeLibrary15getSymbolsCountEv")]
                     internal static extern uint getSymbolsCount_0(global::System.IntPtr instance);
                 }
 
@@ -6807,8 +6813,8 @@ namespace CppSharp
 
                 public NativeLibrary()
                 {
-                    __Instance = Marshal.AllocHGlobal(36);
-                    Internal.ctor_1(__Instance);
+                    __Instance = Marshal.AllocHGlobal(32);
+                    Internal.ctor_2(__Instance);
                 }
 
                 public void Dispose()
@@ -6866,37 +6872,37 @@ namespace CppSharp
 
             public unsafe partial class ASTContext : IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 12)]
+                [StructLayout(LayoutKind.Explicit, Size = 24)]
                 public struct Internal
                 {
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0ASTContext@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST10ASTContextC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0ASTContext@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST10ASTContextC2ERKS2_")]
+                    internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??1ASTContext@AST@CppParser@CppSharp@@QAE@XZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST10ASTContextD2Ev")]
                     internal static extern void dtor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getTranslationUnits@ASTContext@AST@CppParser@CppSharp@@QAEPAUTranslationUnit@234@I@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST10ASTContext19getTranslationUnitsEj")]
                     internal static extern global::System.IntPtr getTranslationUnits_0(global::System.IntPtr instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?addTranslationUnits@ASTContext@AST@CppParser@CppSharp@@QAEXAAPAUTranslationUnit@234@@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST10ASTContext19addTranslationUnitsERPNS1_15TranslationUnitE")]
                     internal static extern void addTranslationUnits_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getTranslationUnitsCount@ASTContext@AST@CppParser@CppSharp@@QAEIXZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST10ASTContext24getTranslationUnitsCountEv")]
                     internal static extern uint getTranslationUnitsCount_0(global::System.IntPtr instance);
                 }
 
@@ -6919,7 +6925,7 @@ namespace CppSharp
 
                 public ASTContext()
                 {
-                    __Instance = Marshal.AllocHGlobal(12);
+                    __Instance = Marshal.AllocHGlobal(24);
                     Internal.ctor_0(__Instance);
                 }
 
@@ -6967,14 +6973,14 @@ namespace CppSharp
                     public CppSharp.Parser.AST.CommentKind Kind;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0Comment@AST@CppParser@CppSharp@@QAE@W4CommentKind@123@@Z")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance, CppSharp.Parser.AST.CommentKind kind);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST7CommentC2ENS1_11CommentKindE")]
+                    internal static extern void ctor_0(global::System.IntPtr instance, CppSharp.Parser.AST.CommentKind kind);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0Comment@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST7CommentC2ERKS2_")]
+                    internal static extern void cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
@@ -7037,14 +7043,14 @@ namespace CppSharp
                     public CppSharp.Parser.AST.CommentKind Kind;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0FullComment@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11FullCommentC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0FullComment@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11FullCommentC2ERKS2_")]
+                    internal static extern void cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
                 internal FullComment(FullComment.Internal* native)
@@ -7077,48 +7083,48 @@ namespace CppSharp
 
             public unsafe partial class RawComment : IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 56)]
+                [StructLayout(LayoutKind.Explicit, Size = 32)]
                 public struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.RawCommentKind RawCommentKind;
 
-                    [FieldOffset(52)]
+                    [FieldOffset(24)]
                     public global::System.IntPtr FullComment;
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0RawComment@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST10RawCommentC2Ev")]
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0RawComment@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST10RawCommentC2ERKS2_")]
+                    internal static extern void cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??1RawComment@AST@CppParser@CppSharp@@QAE@XZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST10RawCommentD2Ev")]
                     internal static extern void dtor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getText@RawComment@AST@CppParser@CppSharp@@QAEPBDXZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST10RawComment7getTextEv")]
                     internal static extern global::System.IntPtr getText_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?setText@RawComment@AST@CppParser@CppSharp@@QAEXPBD@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST10RawComment7setTextEPKc")]
                     internal static extern void setText_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getBriefText@RawComment@AST@CppParser@CppSharp@@QAEPBDXZ")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST10RawComment12getBriefTextEv")]
                     internal static extern global::System.IntPtr getBriefText_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?setBriefText@RawComment@AST@CppParser@CppSharp@@QAEXPBD@Z")]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST10RawComment12setBriefTextEPKc")]
                     internal static extern void setBriefText_0(global::System.IntPtr instance, global::System.IntPtr s);
                 }
 
@@ -7141,7 +7147,7 @@ namespace CppSharp
 
                 public RawComment()
                 {
-                    __Instance = Marshal.AllocHGlobal(56);
+                    __Instance = Marshal.AllocHGlobal(32);
                     Internal.ctor_0(__Instance);
                 }
 
