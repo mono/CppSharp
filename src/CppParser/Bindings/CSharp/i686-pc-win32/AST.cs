@@ -1818,7 +1818,7 @@ namespace CppSharp
 
             public unsafe partial class InjectedClassNameType : CppSharp.Parser.AST.Type, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 40)]
+                [StructLayout(LayoutKind.Explicit, Size = 16)]
                 public new struct Internal
                 {
                     [FieldOffset(0)]
@@ -1828,9 +1828,9 @@ namespace CppSharp
                     public bool IsDependent;
 
                     [FieldOffset(8)]
-                    public CppSharp.Parser.AST.TemplateSpecializationType.Internal TemplateSpecialization;
+                    public global::System.IntPtr TemplateSpecialization;
 
-                    [FieldOffset(36)]
+                    [FieldOffset(12)]
                     public global::System.IntPtr Class;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -1842,11 +1842,6 @@ namespace CppSharp
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="??0InjectedClassNameType@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??1InjectedClassNameType@AST@CppParser@CppSharp@@QAE@XZ")]
-                    internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
                 internal InjectedClassNameType(InjectedClassNameType.Internal* native)
@@ -1867,7 +1862,7 @@ namespace CppSharp
                 public InjectedClassNameType()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(40);
+                    __Instance = Marshal.AllocHGlobal(16);
                     Internal.ctor_0(__Instance);
                 }
 
@@ -1881,15 +1876,13 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        var __instance = Marshal.AllocHGlobal(28);
-                        CppSharp.Parser.AST.TemplateSpecializationType.Internal.cctor_1(__instance, new global::System.IntPtr(&__ptr->TemplateSpecialization));
-                        return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.TemplateSpecializationType(__instance);
+                        return (__ptr->TemplateSpecialization == IntPtr.Zero) ? null : new CppSharp.Parser.AST.TemplateSpecializationType(__ptr->TemplateSpecialization);
                     }
 
                     set
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        __ptr->TemplateSpecialization = ReferenceEquals(value, null) ? new CppSharp.Parser.AST.TemplateSpecializationType.Internal() : *(CppSharp.Parser.AST.TemplateSpecializationType.Internal*) (value.__Instance);
+                        __ptr->TemplateSpecialization = value == (CppSharp.Parser.AST.TemplateSpecializationType) null ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
 

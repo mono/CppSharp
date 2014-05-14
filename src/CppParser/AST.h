@@ -214,7 +214,7 @@ struct Class;
 struct CS_API InjectedClassNameType : public Type
 {
     InjectedClassNameType();
-    TemplateSpecializationType TemplateSpecialization;
+    TemplateSpecializationType* TemplateSpecialization;
     CppSharp::CppParser::AST::Class* Class;
 };
 

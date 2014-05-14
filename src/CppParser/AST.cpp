@@ -87,8 +87,12 @@ TemplateParameterType::TemplateParameterType() : Type(TypeKind::TemplateParamete
 TemplateParameterSubstitutionType::TemplateParameterSubstitutionType()
     : Type(TypeKind::TemplateParameterSubstitution) {}
 
-InjectedClassNameType::InjectedClassNameType() : Type(TypeKind::InjectedClassName),
-    Class(0) {}
+InjectedClassNameType::InjectedClassNameType()
+    : Type(TypeKind::InjectedClassName)
+    , TemplateSpecialization(0)
+    , Class(0)
+{
+}
 
 DependentNameType::DependentNameType() : Type(TypeKind::DependentName) {}
 
