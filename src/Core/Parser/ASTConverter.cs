@@ -438,8 +438,10 @@ namespace CppSharp
 
         public override AST.Type VisitDecayed(DecayedType type)
         {
-            throw new NotImplementedException();
             var _type = new CppSharp.AST.DecayedType();
+            _type.Decayed = VisitQualified(type.Decayed);
+            _type.Original = VisitQualified(type.Original);
+            _type.Pointee = VisitQualified(type.Pointee);
             VisitType(type, _type);
             return _type;
         }
