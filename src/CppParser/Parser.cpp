@@ -80,9 +80,9 @@ static std::string GetCXXABIString(clang::TargetCXXABI::Kind Kind)
         return "itanium";
     case clang::TargetCXXABI::Microsoft:
         return "microsoft";
+    default:
+        llvm_unreachable("Unknown C++ ABI kind");
     }
-
-    llvm_unreachable("Unknown C++ ABI kind");
 }
 
 #ifdef _MSC_VER
@@ -415,9 +415,11 @@ static AccessSpecifier ConvertToAccess(clang::AccessSpecifier AS)
         return AccessSpecifier::Protected;
     case clang::AS_public:
         return AccessSpecifier::Public;
+    case clang::AS_none:
+        return AccessSpecifier::Public;
     }
 
-    return AccessSpecifier::Public;
+    llvm_unreachable("Unknown AccessSpecifier");
 }
 
 VTableComponent
@@ -970,6 +972,9 @@ Parser::WalkTemplateArgument(const clang::TemplateArgument& TA, clang::TemplateA
     case clang::TemplateArgument::Pack:
         Arg.Kind = CppSharp::CppParser::TemplateArgument::ArgumentKind::Pack;
         break;
+    case clang::TemplateArgument::Null:
+    default:
+        llvm_unreachable("Unknown TemplateArgument");
     }
 
     return Arg;
@@ -1065,12 +1070,17 @@ static CXXOperatorKind GetOperatorKindFromDecl(clang::DeclarationName Name)
 
     switch(Name.getCXXOverloadedOperator())
     {
+    case OO_None:
+        return CXXOperatorKind::None;
+    case NUM_OVERLOADED_OPERATORS:
+        break;
+
     #define OVERLOADED_OPERATOR(Name,Spelling,Token,Unary,Binary,MemberOnly) \
     case OO_##Name: return CXXOperatorKind::Name;
     #include "clang/Basic/OperatorKinds.def"
     }
 
-    return CXXOperatorKind::None;
+    llvm_unreachable("Unknown OverloadedOperator");
 }
 
 Method* Parser::WalkMethodCXX(clang::CXXMethodDecl* MD, bool AddToClass)
@@ -1385,13 +1395,9 @@ static CallingConvention ConvertCallConv(clang::CallingConv CC)
         return CallingConvention::FastCall;
     case CC_X86ThisCall:
         return CallingConvention::ThisCall;
-    case CC_X86Pascal:
-    case CC_AAPCS:
-    case CC_AAPCS_VFP:
+    default:
         return CallingConvention::Unknown;
     }
-
-    return CallingConvention::Default;
 }
 
 static ParserIntType ConvertIntType(clang::TargetInfo::IntType IT)
@@ -2308,6 +2314,11 @@ PreprocessedEntity* Parser::WalkPreprocessedEntity(
         Definition->Name = II->getName().trim();
         Definition->Expression = Expression.trim();
     }
+    case clang::PreprocessedEntity::InclusionDirectiveKind:
+        // nothing to be done for InclusionDirectiveKind
+        break;
+    default:
+        llvm_unreachable("Unknown PreprocessedEntity");
     }
 
     if (!Entity)
