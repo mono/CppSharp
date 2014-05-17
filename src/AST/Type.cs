@@ -665,8 +665,8 @@ namespace CppSharp.AST
         UInt32,
         Long,
         ULong,
-        Int64,
-        UInt64,
+        LongLong,
+        ULongLong,
         Float,
         Double,
         IntPtr,
@@ -699,7 +699,7 @@ namespace CppSharp.AST
                 case PrimitiveType.UShort:
                 case PrimitiveType.UInt32:
                 case PrimitiveType.ULong:
-                case PrimitiveType.UInt64:
+                case PrimitiveType.ULongLong:
                     return true;
                 }
 

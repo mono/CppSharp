@@ -164,8 +164,8 @@ namespace CppSharp.Generators.CLI
                 case PrimitiveType.UInt32:
                 case PrimitiveType.Long:
                 case PrimitiveType.ULong:
-                case PrimitiveType.Int64:
-                case PrimitiveType.UInt64:
+                case PrimitiveType.LongLong:
+                case PrimitiveType.ULongLong:
                 case PrimitiveType.Float:
                 case PrimitiveType.Double:
                 case PrimitiveType.Null:
@@ -505,8 +505,8 @@ namespace CppSharp.Generators.CLI
                 case PrimitiveType.UInt32:
                 case PrimitiveType.Long:
                 case PrimitiveType.ULong:
-                case PrimitiveType.Int64:
-                case PrimitiveType.UInt64:
+                case PrimitiveType.LongLong:
+                case PrimitiveType.ULongLong:
                 case PrimitiveType.Float:
                 case PrimitiveType.Double:
                     Context.Return.Write(Context.Parameter.Name);
