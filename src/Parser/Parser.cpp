@@ -82,9 +82,9 @@ static std::string GetCXXABIString(clang::TargetCXXABI::Kind Kind)
         return "itanium";
     case clang::TargetCXXABI::Microsoft:
         return "microsoft";
+    default:
+        llvm_unreachable("Unknown C++ ABI kind");
     }
-
-    llvm_unreachable("Unknown C++ ABI kind");
 }
 
 #ifdef _MSC_VER
@@ -411,9 +411,11 @@ static CppSharp::AST::AccessSpecifier ConvertToAccess(clang::AccessSpecifier AS)
         return CppSharp::AST::AccessSpecifier::Protected;
     case clang::AS_public:
         return CppSharp::AST::AccessSpecifier::Public;
+    case clang::AS_none:
+        return CppSharp::AST::AccessSpecifier::Public;
     }
 
-    return CppSharp::AST::AccessSpecifier::Public;
+    llvm_unreachable("Unknown AccessSpecifier");
 }
 
 CppSharp::AST::VTableComponent
@@ -979,6 +981,9 @@ Parser::WalkTemplateArgument(const clang::TemplateArgument& TA, clang::TemplateA
     case TemplateArgument::Pack:
         Arg.Kind = CppSharp::AST::TemplateArgument::ArgumentKind::Pack;
         break;
+    case TemplateArgument::Null:
+    default:
+        llvm_unreachable("Unknown TemplateArgument");
     }
 
     return Arg;
@@ -1077,12 +1082,17 @@ static CppSharp::AST::CXXOperatorKind GetOperatorKindFromDecl(clang::Declaration
 
     switch(Name.getCXXOverloadedOperator())
     {
+    case OO_None:
+        return CppSharp::AST::CXXOperatorKind::None;
+    case NUM_OVERLOADED_OPERATORS:
+        break;
+
     #define OVERLOADED_OPERATOR(Name,Spelling,Token,Unary,Binary,MemberOnly) \
     case OO_##Name: return CppSharp::AST::CXXOperatorKind::Name;
     #include "clang/Basic/OperatorKinds.def"
     }
 
-    return CppSharp::AST::CXXOperatorKind::None;
+    llvm_unreachable("Unknown OverloadedOperator");
 }
 
 CppSharp::AST::Method^ Parser::WalkMethodCXX(clang::CXXMethodDecl* MD, bool AddToClass)
@@ -1395,13 +1405,9 @@ static CppSharp::AST::CallingConvention ConvertCallConv(clang::CallingConv CC)
         return CppSharp::AST::CallingConvention::FastCall;
     case CC_X86ThisCall:
         return CppSharp::AST::CallingConvention::ThisCall;
-    case CC_X86Pascal:
-    case CC_AAPCS:
-    case CC_AAPCS_VFP:
+    default:
         return CppSharp::AST::CallingConvention::Unknown;
     }
-
-    return CppSharp::AST::CallingConvention::Default;
 }
 
 static ParserIntType ConvertIntType(clang::TargetInfo::IntType IT)
@@ -2319,6 +2325,11 @@ CppSharp::AST::PreprocessedEntity^ Parser::WalkPreprocessedEntity(
         Definition->Name = clix::marshalString<clix::E_UTF8>(II->getName())->Trim();
         Definition->Expression = clix::marshalString<clix::E_UTF8>(Expression)->Trim();
     }
+    case clang::PreprocessedEntity::InclusionDirectiveKind:
+        // nothing to be done for InclusionDirectiveKind
+        break;
+    default:
+        llvm_unreachable("Unknown PreprocessedEntity");
     }
 
     if (!Entity)
