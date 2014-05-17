@@ -7,12 +7,9 @@
 
 #pragma once
 
-#include "AST.h"
 #include "Helpers.h"
 
 namespace CppSharp { namespace CppParser {
-
-using namespace CppSharp::CppParser::AST;
 
 enum struct ParserIntType
 {

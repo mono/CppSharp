@@ -7,6 +7,7 @@
 
 #include "Parser.h"
 
+#include <llvm/Support/Host.h>
 #include <llvm/Support/Path.h>
 #include <llvm/Support/raw_ostream.h>
 #include <llvm/Object/Archive.h>
@@ -21,7 +22,9 @@
 #include <clang/AST/DeclTemplate.h>
 #include <clang/Lex/DirectoryLookup.h>
 #include <clang/Lex/HeaderSearch.h>
+#include <clang/Lex/Preprocessor.h>
 #include <clang/Lex/PreprocessingRecord.h>
+#include <clang/Parse/ParseAST.h>
 #include <clang/Sema/Sema.h>
 #include <clang/Sema/SemaConsumer.h>
 #include <clang/Frontend/Utils.h>

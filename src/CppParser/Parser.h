@@ -7,26 +7,12 @@
 
 #pragma once
 
-#include <llvm/Support/Host.h>
-#include <clang/Frontend/CompilerInstance.h>
-#include <clang/Frontend/CompilerInvocation.h>
-#include <clang/Frontend/ASTConsumers.h>
-#include <clang/Basic/FileManager.h>
-#include <clang/Basic/TargetOptions.h>
+#include <clang/AST/ASTFwd.h>
+#include <clang/AST/Type.h>
 #include <clang/Basic/TargetInfo.h>
-#include <clang/Basic/IdentifierTable.h>
-#include <clang/AST/ASTConsumer.h>
-#include <clang/AST/Mangle.h>
-#include <clang/AST/RawCommentList.h>
-#include <clang/AST/Comment.h>
-#include <clang/AST/RecordLayout.h>
-#include <clang/AST/VTableBuilder.h>
-#include <clang/Lex/Preprocessor.h>
-#include <clang/Lex/PreprocessingRecord.h>
-#include <clang/Parse/ParseAST.h>
-#include <clang/Sema/Sema.h>
-#include "CXXABI.h"
+#include <clang/Frontend/CompilerInstance.h>
 
+#include "CXXABI.h"
 #include "CppParser.h"
 
 #include <string>
@@ -37,6 +23,16 @@ namespace clang {
   namespace CodeGen {
     class CodeGenTypes;
   }
+  struct ASTTemplateArgumentListInfo;
+  class FunctionTemplateSpecialization;
+  class FunctionTemplateSpecializationInfo;
+  class PreprocessingRecord;
+  class PreprocessedEntity;
+  class RawComment;
+  class TemplateSpecializationTypeLoc;
+  class TemplateArgumentList;
+  class VTableLayout;
+  class VTableComponent;
 }
 
 #define Debug printf
