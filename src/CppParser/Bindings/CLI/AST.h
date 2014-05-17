@@ -239,14 +239,14 @@ namespace CppSharp
                 WideChar = 3,
                 Char = 4,
                 UChar = 5,
-                Int16 = 6,
-                UInt16 = 7,
-                Int32 = 8,
-                UInt32 = 9,
+                Short = 6,
+                UShort = 7,
+                Int = 8,
+                UInt = 9,
                 Long = 10,
                 ULong = 11,
-                Int64 = 12,
-                UInt64 = 13,
+                LongLong = 12,
+                ULongLong = 13,
                 Float = 14,
                 Double = 15,
                 IntPtr = 16
@@ -412,10 +412,10 @@ namespace CppSharp
                     void set(CppSharp::Parser::AST::ArrayType::ArraySize);
                 }
 
-                property int Size
+                property long Size
                 {
-                    int get();
-                    void set(int);
+                    long get();
+                    void set(long);
                 }
             };
 
@@ -601,10 +601,10 @@ namespace CppSharp
                     void set(CppSharp::Parser::AST::Declaration^);
                 }
 
-                property int Integral
+                property long Integral
                 {
-                    int get();
-                    void set(int);
+                    long get();
+                    void set(long);
                 }
             };
 
@@ -907,10 +907,10 @@ namespace CppSharp
                     void set(bool);
                 }
 
-                property int VBPtrOffset
+                property long VBPtrOffset
                 {
-                    int get();
-                    void set(int);
+                    long get();
+                    void set(long);
                 }
 
                 property int Alignment
