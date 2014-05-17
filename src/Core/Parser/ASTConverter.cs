@@ -572,10 +572,10 @@ namespace CppSharp
                     return AST.PrimitiveType.Long;
                 case PrimitiveType.ULong:
                     return AST.PrimitiveType.ULong;
-                case PrimitiveType.Int64:
-                    return AST.PrimitiveType.Int64;
-                case PrimitiveType.UInt64:
-                    return AST.PrimitiveType.UInt64;
+                case PrimitiveType.LongLong:
+                    return AST.PrimitiveType.LongLong;
+                case PrimitiveType.ULongLong:
+                    return AST.PrimitiveType.ULongLong;
                 case PrimitiveType.Float:
                     return AST.PrimitiveType.Float;
                 case PrimitiveType.Double:

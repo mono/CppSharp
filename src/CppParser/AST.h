@@ -242,8 +242,8 @@ enum struct PrimitiveType
     UInt32,
     Long,
     ULong,
-    Int64,
-    UInt64,
+    LongLong,
+    ULongLong,
     Float,
     Double,
     IntPtr
