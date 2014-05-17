@@ -564,10 +564,10 @@ namespace CppSharp
                     return AST.PrimitiveType.Short;
                 case PrimitiveType.UShort:
                     return AST.PrimitiveType.UShort;
-                case PrimitiveType.Int32:
-                    return AST.PrimitiveType.Int32;
-                case PrimitiveType.UInt32:
-                    return AST.PrimitiveType.UInt32;
+                case PrimitiveType.Int:
+                    return AST.PrimitiveType.Int;
+                case PrimitiveType.UInt:
+                    return AST.PrimitiveType.UInt;
                 case PrimitiveType.Long:
                     return AST.PrimitiveType.Long;
                 case PrimitiveType.ULong:

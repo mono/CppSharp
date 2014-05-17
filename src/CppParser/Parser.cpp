@@ -1318,8 +1318,8 @@ static PrimitiveType WalkBuiltinType(const clang::BuiltinType* Builtin)
     case clang::BuiltinType::Short: return PrimitiveType::Short;
     case clang::BuiltinType::UShort: return PrimitiveType::UShort;
 
-    case clang::BuiltinType::Int: return PrimitiveType::Int32;
-    case clang::BuiltinType::UInt: return PrimitiveType::UInt32;
+    case clang::BuiltinType::Int: return PrimitiveType::Int;
+    case clang::BuiltinType::UInt: return PrimitiveType::UInt;
 
     case clang::BuiltinType::Long: return PrimitiveType::Long;
     case clang::BuiltinType::ULong: return PrimitiveType::ULong;
