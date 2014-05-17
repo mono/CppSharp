@@ -154,7 +154,7 @@ namespace CppSharp
             {
                 Name = "GetHashCode",
                 Namespace = @class,
-                ReturnType = new QualifiedType(new BuiltinType(PrimitiveType.Int32)),
+                ReturnType = new QualifiedType(new BuiltinType(PrimitiveType.Int)),
                 IsSynthetized = true,
                 IsOverride = true,
                 IsProxy = true

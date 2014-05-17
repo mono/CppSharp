@@ -193,8 +193,8 @@ namespace CppSharp.Generators.CLI
                 case PrimitiveType.UChar: return "unsigned char";
                 case PrimitiveType.Short: return "short";
                 case PrimitiveType.UShort: return "unsigned short";
-                case PrimitiveType.Int32: return "int";
-                case PrimitiveType.UInt32: return "unsigned int";
+                case PrimitiveType.Int: return "int";
+                case PrimitiveType.UInt: return "unsigned int";
                 case PrimitiveType.Long: return "long";
                 case PrimitiveType.ULong: return "unsigned long";
                 case PrimitiveType.LongLong: return "long long";

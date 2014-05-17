@@ -2579,7 +2579,7 @@ namespace CppSharp.Generators.CSharp
             var typeName = TypePrinter.VisitPrimitiveType(@enum.BuiltinType.Type,
                                                           new TypeQualifiers());
 
-            if (@enum.BuiltinType.Type != PrimitiveType.Int32)
+            if (@enum.BuiltinType.Type != PrimitiveType.Int)
                 Write(" : {0}", typeName);
 
             NewLine();
