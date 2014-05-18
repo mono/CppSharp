@@ -27,17 +27,11 @@ namespace CppSharp.Passes
                 return false;
 
             // Check if we already have a synthetized property.
-            var existingProp = @class.Properties.FirstOrDefault(property =>
-                property.Name == field.Name &&
-                property.QualifiedType == field.QualifiedType);
-
+            var existingProp = @class.Properties.FirstOrDefault(property => property.Field == field);
             if (existingProp != null)
-            {
-                field.ExplicityIgnored = true;
                 return false;
-            }
 
-            field.ExplicityIgnored = true;
+            field.GenerationKind = GenerationKind.Internal;
 
             var prop = new Property
             {

@@ -11,6 +11,7 @@ namespace CppSharp
         enum struct ParserResultKind;
         enum struct SourceLocationKind;
         ref class ClangParser;
+        ref class Parser;
         ref class ParserDiagnostic;
         ref class ParserOptions;
         ref class ParserResult;

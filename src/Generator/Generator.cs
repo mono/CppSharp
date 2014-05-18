@@ -68,10 +68,10 @@ namespace CppSharp.Generators
 
             foreach (var unit in Driver.ASTContext.TranslationUnits)
             {
-                if (unit.Ignore || !unit.HasDeclarations)
+                if (!unit.IsGenerated || !unit.HasDeclarations)
                     continue;
 
-                if (unit.IsSystemHeader)
+                if (unit.IsSystemHeader || !unit.IsValid)
                     continue;
 
                 var templates = Generate(unit);

@@ -15,7 +15,7 @@ namespace CppSharp.Passes
             if (mangledDecl != null && !(method != null && (method.IsPure || method.IsSynthetized)) &&
                 !VisitMangledDeclaration(mangledDecl))
             {
-                decl.ExplicityIgnored = true;
+                decl.ExplicitlyIgnore();
                 return false;
             }
 

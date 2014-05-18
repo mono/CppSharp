@@ -136,13 +136,18 @@ namespace CppSharp.AST
         }
 
         // Type of the array elements.
-        public Type Type;
+        public QualifiedType QualifiedType;
 
         // Size type of array.
         public ArraySize SizeType;
 
         // In case of a constant size array.
         public long Size;
+
+        public Type Type
+        {
+            get { return QualifiedType.Type; }
+        }
 
         public override T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals)
         {
@@ -153,7 +158,7 @@ namespace CppSharp.AST
         {
             var type = obj as ArrayType;
             if (type == null) return false;
-            var equals = Type.Equals(type.Type) && SizeType.Equals(type.SizeType);
+            var equals = QualifiedType.Equals(type.QualifiedType) && SizeType.Equals(type.SizeType);
 
             if (SizeType == ArraySize.Constant)
                 equals &= Size.Equals(type.Size);
@@ -227,7 +232,7 @@ namespace CppSharp.AST
             RVReference
         }
 
-        public new bool IsReference
+        public bool IsReference
         {
             get
             {
@@ -266,7 +271,12 @@ namespace CppSharp.AST
     /// </summary>
     public class MemberPointerType : Type
     {
-        public Type Pointee;
+        public QualifiedType QualifiedPointee;
+
+        public Type Pointee
+        {
+            get { return QualifiedPointee.Type; }
+        }
 
         public override T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals)
         {
@@ -278,7 +288,7 @@ namespace CppSharp.AST
             var pointer = obj as MemberPointerType;
             if (pointer == null) return false;
 
-            return Pointee.Equals(pointer.Pointee);
+            return QualifiedPointee.Equals(pointer.QualifiedPointee);
         }
 
         public override int GetHashCode()
@@ -498,6 +508,9 @@ namespace CppSharp.AST
     public class TemplateParameterType : Type
     {
         public TemplateParameter Parameter;
+        public uint Depth;
+        public uint Index;
+        public bool IsParameterPack;
 
         public override T Visit<T>(ITypeVisitor<T> visitor,
                                    TypeQualifiers quals = new TypeQualifiers())
@@ -510,7 +523,10 @@ namespace CppSharp.AST
             var type = obj as TemplateParameterType;
             if (type == null) return false;
 
-            return Parameter.Equals(type.Parameter);
+            return Parameter.Equals(type.Parameter)
+                && Depth.Equals(type.Depth)
+                && Index.Equals(type.Index)
+                && IsParameterPack.Equals(type.IsParameterPack);
         }
 
         public override int GetHashCode()

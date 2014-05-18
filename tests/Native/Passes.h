@@ -26,6 +26,13 @@ struct TestRename
   int lowerCaseField;
 };
 
+struct TestReadOnlyProperties
+{
+    int readOnlyProperty;
+    int getReadOnlyPropertyMethod() { return 0; }
+    void setReadOnlyPropertyMethod(int value) { }
+};
+
 #define TEST_ENUM_ITEM_NAME_0 0
 #define TEST_ENUM_ITEM_NAME_1 1
 #define TEST_ENUM_ITEM_NAME_2 2
@@ -33,3 +40,24 @@ struct TestRename
 // TestStructInheritance
 struct S1 { int F1, F2; };
 struct S2 : S1 { int F3; };
+
+// Tests unnamed enums
+enum { Unnamed_Enum_1_A = 1, Unnamed_Enum_1_B = 2 };
+enum { Unnamed_Enum_2_A = 3, Unnamed_Enum_2_B = 4 };
+
+// Tests unique name for unnamed enums across translation units
+#include "Enums.h"
+enum
+{
+    UnnamedEnumB1,
+    EnumUnnamedB2
+};
+
+struct TestCheckAmbiguousFunctionsPass
+{
+    // Tests removal of const method overloads
+    int Method();
+    int Method() const;
+    int Method(int x);
+    int Method(int x) const;
+};

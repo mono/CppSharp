@@ -138,6 +138,7 @@ private:
 // Tests destructors
 struct DLL_API TestDestructors
 {
+    static void InitMarker() { Marker = 0; }
     static int Marker;
 
     TestDestructors();

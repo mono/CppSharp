@@ -176,13 +176,12 @@ public class BasicTests : GeneratorTestFixture
         var delegates = new TestDelegates();
         var doubleSum = delegates.A(2) + delegates.B(2);
         Assert.AreEqual(8, doubleSum);
-    }
 
-    [Test]
-    public void TestAttributedDelegate()
-    {
-        var result = basic.AttributedDelegate(2);
-        Assert.AreEqual(4, result);
+        var stdcall = delegates.StdCall(i => i);
+        Assert.AreEqual(1, stdcall);
+
+        var cdecl = delegates.CDecl(i => i);
+        Assert.AreEqual(1, cdecl);
     }
 
     [Test]
@@ -206,6 +205,7 @@ public class BasicTests : GeneratorTestFixture
     public void TestStaticClasses()
     {
         Assert.That(TestStaticClass.Add(1, 2), Is.EqualTo(3));
+        Assert.That(TestStaticClassDerived.Foo(), Is.EqualTo(0));
     }
 
     [Test, Ignore]
@@ -239,11 +239,23 @@ public class BasicTests : GeneratorTestFixture
     [Test]
     public unsafe void TestIndexers()
     {
-        var someStruct = new SomeStruct();
-        Assert.That(someStruct[0], Is.EqualTo(1));
-        Assert.That(someStruct["foo"], Is.EqualTo(1));
-        someStruct[0] = 2;
-        Assert.That(someStruct[0], Is.EqualTo(2));
+        var indexedProperties = new TestIndexedProperties();
+        Assert.AreEqual(1, indexedProperties[0]);
+        Assert.AreEqual(1, indexedProperties["foo"]);
+        indexedProperties[0] = 2;
+        Assert.AreEqual(2, indexedProperties[0]);
+        indexedProperties[0f] = 3;
+        Assert.AreEqual(3, indexedProperties[0f]);
+        var properties = indexedProperties[(byte)0];
+        Assert.AreEqual(0, properties.Field);
+        var newProperties = new TestProperties();
+        newProperties.Field = 4;
+        indexedProperties[(byte)0] = newProperties;
+        Assert.AreEqual(4, indexedProperties[(byte)0].Field);
+        newProperties = indexedProperties[(short)0];
+        Assert.AreEqual(4, newProperties.Field);
+        newProperties.Field = 5;
+        Assert.AreEqual(5, indexedProperties[(byte)0].Field);
     }
 
     [Test]
@@ -292,6 +304,30 @@ public class BasicTests : GeneratorTestFixture
         var @class = new TestGetterSetterToProperties();
         Assert.That(@class.Width, Is.EqualTo(640));
         Assert.That(@class.Height, Is.EqualTo(480));
+    }
+
+    [Test]
+    public unsafe void TestSingleArgumentCtorToCastOperator()
+    {
+        var classA = new ClassA(10);
+        ClassB classB = classA;
+        Assert.AreEqual(classA.Value, classB.Value);
+        ClassC classC = (ClassC)classB;
+        Assert.AreEqual(classB.Value, classC.Value);
+    }
+
+    [Test]
+    public unsafe void TestDecltype()
+    {
+        var ret = basic.TestDecltype();
+        Assert.AreEqual(0, ret);
+    }
+
+    [Test]
+    public unsafe void TestNullPtrType()
+    {
+        var ret = basic.TestNullPtrTypeRet();
+        Assert.AreEqual(IntPtr.Zero, new IntPtr(ret));
     }
 }
  

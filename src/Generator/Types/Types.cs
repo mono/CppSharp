@@ -55,7 +55,7 @@ namespace CppSharp
             if (decl.CompleteDeclaration != null)
                 return VisitDeclaration(decl.CompleteDeclaration);
 
-            if (decl.ExplicityIgnored)
+            if (decl.GenerationKind == GenerationKind.None)
             {
                 Ignore();
                 return false;
@@ -112,6 +112,17 @@ namespace CppSharp
             }
 
             return base.VisitMemberPointerType(member, quals);
+        }
+
+        public override bool VisitParameterDecl(Parameter parameter)
+        {
+            if (parameter.Type.IsPrimitiveType(PrimitiveType.Null))
+            {
+                Ignore();
+                return false;
+            }
+
+            return base.VisitParameterDecl(parameter);
         }
 
         public override bool VisitTemplateSpecializationType(

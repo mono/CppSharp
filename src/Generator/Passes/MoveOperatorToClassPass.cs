@@ -12,7 +12,7 @@ namespace CppSharp.Passes
 
         public override bool VisitFunctionDecl(Function function)
         {
-            if (function.Ignore || !function.IsOperator)
+            if (!function.IsGenerated || !function.IsOperator)
                 return false;
 
             Class @class = null;
@@ -38,7 +38,7 @@ namespace CppSharp.Passes
                 IsStatic = true
             };
 
-            function.ExplicityIgnored = true;
+            function.ExplicitlyIgnore();
 
             @class.Methods.Add(method);
 

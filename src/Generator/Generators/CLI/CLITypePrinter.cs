@@ -161,7 +161,7 @@ namespace CppSharp.Generators.CLI
             }
 
             Enumeration @enum;
-            if (pointee.IsTagDecl(out @enum))
+            if (pointee.TryGetEnum(out @enum))
             {
                 var typeName = @enum.Visit(this);
                 return string.Format("{0}*", typeName);
@@ -201,6 +201,7 @@ namespace CppSharp.Generators.CLI
                 case PrimitiveType.Double: return "double";
                 case PrimitiveType.IntPtr: return "IntPtr";
                 case PrimitiveType.UIntPtr: return "UIntPtr";
+                case PrimitiveType.Null: return "void*";
             }
 
             throw new NotSupportedException();
@@ -284,7 +285,10 @@ namespace CppSharp.Generators.CLI
 
         public string VisitCILType(CILType type, TypeQualifiers quals)
         {
-            return type.Type.FullName.Replace(".", "::") + "^";
+            var result = type.Type.FullName.Replace(".", "::");
+            if (!type.Type.IsValueType)
+                result += "^";
+            return result;
         }
 
         public string VisitPrimitiveType(PrimitiveType type, TypeQualifiers quals)

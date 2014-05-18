@@ -143,17 +143,18 @@ namespace CppSharp
 
     public class TextDiagnosticPrinter : IDiagnosticConsumer
     {
-        public bool Verbose;
         public Stack<int> Indents;
+        public DiagnosticKind Level;
 
         public TextDiagnosticPrinter()
         {
             Indents = new Stack<int>();
+            Level = DiagnosticKind.Message;
         }
 
         public void Emit(DiagnosticInfo info)
         {
-            if (info.Kind == DiagnosticKind.Debug && !Verbose)
+            if (info.Kind < Level)
                 return;
 
             var currentIndent = Indents.Sum();

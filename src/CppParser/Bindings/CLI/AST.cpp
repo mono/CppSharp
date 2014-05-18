@@ -590,17 +590,17 @@ CppSharp::Parser::AST::TemplateParameter::TemplateParameter(System::IntPtr nativ
     NativePtr = __native;
 }
 
+CppSharp::Parser::AST::TemplateParameter::TemplateParameter()
+{
+    NativePtr = new ::CppSharp::CppParser::AST::TemplateParameter();
+}
+
 bool CppSharp::Parser::AST::TemplateParameter::operator==(CppSharp::Parser::AST::TemplateParameter^ __op, CppSharp::Parser::AST::TemplateParameter^ param)
 {
     auto &arg0 = *(::CppSharp::CppParser::AST::TemplateParameter*)__op->NativePtr;
     auto &arg1 = *(::CppSharp::CppParser::AST::TemplateParameter*)param->NativePtr;
     auto __ret = arg0 == arg1;
     return __ret;
-}
-
-CppSharp::Parser::AST::TemplateParameter::TemplateParameter()
-{
-    NativePtr = new ::CppSharp::CppParser::AST::TemplateParameter();
 }
 
 System::IntPtr CppSharp::Parser::AST::TemplateParameter::__Instance::get()
@@ -625,6 +625,16 @@ void CppSharp::Parser::AST::TemplateParameter::Name::set(System::String^ s)
     auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
     auto arg0 = _arg0.c_str();
     ((::CppSharp::CppParser::AST::TemplateParameter*)NativePtr)->setName(arg0);
+}
+
+bool CppSharp::Parser::AST::TemplateParameter::IsTypeParameter::get()
+{
+    return ((::CppSharp::CppParser::AST::TemplateParameter*)NativePtr)->IsTypeParameter;
+}
+
+void CppSharp::Parser::AST::TemplateParameter::IsTypeParameter::set(bool value)
+{
+    ((::CppSharp::CppParser::AST::TemplateParameter*)NativePtr)->IsTypeParameter = value;
 }
 
 CppSharp::Parser::AST::TemplateParameterType::TemplateParameterType(::CppSharp::CppParser::AST::TemplateParameterType* native)
@@ -652,6 +662,36 @@ CppSharp::Parser::AST::TemplateParameter^ CppSharp::Parser::AST::TemplateParamet
 void CppSharp::Parser::AST::TemplateParameterType::Parameter::set(CppSharp::Parser::AST::TemplateParameter^ value)
 {
     ((::CppSharp::CppParser::AST::TemplateParameterType*)NativePtr)->Parameter = *(::CppSharp::CppParser::AST::TemplateParameter*)value->NativePtr;
+}
+
+unsigned int CppSharp::Parser::AST::TemplateParameterType::Depth::get()
+{
+    return ((::CppSharp::CppParser::AST::TemplateParameterType*)NativePtr)->Depth;
+}
+
+void CppSharp::Parser::AST::TemplateParameterType::Depth::set(unsigned int value)
+{
+    ((::CppSharp::CppParser::AST::TemplateParameterType*)NativePtr)->Depth = value;
+}
+
+unsigned int CppSharp::Parser::AST::TemplateParameterType::Index::get()
+{
+    return ((::CppSharp::CppParser::AST::TemplateParameterType*)NativePtr)->Index;
+}
+
+void CppSharp::Parser::AST::TemplateParameterType::Index::set(unsigned int value)
+{
+    ((::CppSharp::CppParser::AST::TemplateParameterType*)NativePtr)->Index = value;
+}
+
+bool CppSharp::Parser::AST::TemplateParameterType::IsParameterPack::get()
+{
+    return ((::CppSharp::CppParser::AST::TemplateParameterType*)NativePtr)->IsParameterPack;
+}
+
+void CppSharp::Parser::AST::TemplateParameterType::IsParameterPack::set(bool value)
+{
+    ((::CppSharp::CppParser::AST::TemplateParameterType*)NativePtr)->IsParameterPack = value;
 }
 
 CppSharp::Parser::AST::TemplateParameterSubstitutionType::TemplateParameterSubstitutionType(::CppSharp::CppParser::AST::TemplateParameterSubstitutionType* native)
@@ -700,12 +740,12 @@ CppSharp::Parser::AST::InjectedClassNameType::InjectedClassNameType()
 
 CppSharp::Parser::AST::TemplateSpecializationType^ CppSharp::Parser::AST::InjectedClassNameType::TemplateSpecialization::get()
 {
-    return (&((::CppSharp::CppParser::AST::InjectedClassNameType*)NativePtr)->TemplateSpecialization == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::TemplateSpecializationType((::CppSharp::CppParser::AST::TemplateSpecializationType*)&((::CppSharp::CppParser::AST::InjectedClassNameType*)NativePtr)->TemplateSpecialization);
+    return (((::CppSharp::CppParser::AST::InjectedClassNameType*)NativePtr)->TemplateSpecialization == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::TemplateSpecializationType((::CppSharp::CppParser::AST::TemplateSpecializationType*)((::CppSharp::CppParser::AST::InjectedClassNameType*)NativePtr)->TemplateSpecialization);
 }
 
 void CppSharp::Parser::AST::InjectedClassNameType::TemplateSpecialization::set(CppSharp::Parser::AST::TemplateSpecializationType^ value)
 {
-    ((::CppSharp::CppParser::AST::InjectedClassNameType*)NativePtr)->TemplateSpecialization = *(::CppSharp::CppParser::AST::TemplateSpecializationType*)value->NativePtr;
+    ((::CppSharp::CppParser::AST::InjectedClassNameType*)NativePtr)->TemplateSpecialization = (::CppSharp::CppParser::AST::TemplateSpecializationType*)value->NativePtr;
 }
 
 CppSharp::Parser::AST::Class^ CppSharp::Parser::AST::InjectedClassNameType::Class::get()
@@ -1236,10 +1276,11 @@ CppSharp::Parser::AST::DeclarationContext::DeclarationContext(System::IntPtr nat
     auto __native = (::CppSharp::CppParser::AST::DeclarationContext*)native.ToPointer();
 }
 
-CppSharp::Parser::AST::DeclarationContext::DeclarationContext()
+CppSharp::Parser::AST::DeclarationContext::DeclarationContext(CppSharp::Parser::AST::DeclarationKind kind)
     : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)nullptr)
 {
-    NativePtr = new ::CppSharp::CppParser::AST::DeclarationContext();
+    auto arg0 = (::CppSharp::CppParser::AST::DeclarationKind)kind;
+    NativePtr = new ::CppSharp::CppParser::AST::DeclarationContext(arg0);
 }
 
 CppSharp::Parser::AST::Namespace^ CppSharp::Parser::AST::DeclarationContext::getNamespaces(unsigned int i)
@@ -1459,6 +1500,16 @@ void CppSharp::Parser::AST::Parameter::HasDefaultValue::set(bool value)
     ((::CppSharp::CppParser::AST::Parameter*)NativePtr)->HasDefaultValue = value;
 }
 
+unsigned int CppSharp::Parser::AST::Parameter::Index::get()
+{
+    return ((::CppSharp::CppParser::AST::Parameter*)NativePtr)->Index;
+}
+
+void CppSharp::Parser::AST::Parameter::Index::set(unsigned int value)
+{
+    ((::CppSharp::CppParser::AST::Parameter*)NativePtr)->Index = value;
+}
+
 CppSharp::Parser::AST::Function::Function(::CppSharp::CppParser::AST::Function* native)
     : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)native)
 {
@@ -1603,6 +1654,16 @@ void CppSharp::Parser::AST::Function::CallingConvention::set(CppSharp::Parser::A
     ((::CppSharp::CppParser::AST::Function*)NativePtr)->CallingConvention = (::CppSharp::CppParser::AST::CallingConvention)value;
 }
 
+CppSharp::Parser::AST::FunctionTemplateSpecialization^ CppSharp::Parser::AST::Function::SpecializationInfo::get()
+{
+    return (((::CppSharp::CppParser::AST::Function*)NativePtr)->SpecializationInfo == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::FunctionTemplateSpecialization((::CppSharp::CppParser::AST::FunctionTemplateSpecialization*)((::CppSharp::CppParser::AST::Function*)NativePtr)->SpecializationInfo);
+}
+
+void CppSharp::Parser::AST::Function::SpecializationInfo::set(CppSharp::Parser::AST::FunctionTemplateSpecialization^ value)
+{
+    ((::CppSharp::CppParser::AST::Function*)NativePtr)->SpecializationInfo = (::CppSharp::CppParser::AST::FunctionTemplateSpecialization*)value->NativePtr;
+}
+
 CppSharp::Parser::AST::Method::Method(::CppSharp::CppParser::AST::Method* native)
     : CppSharp::Parser::AST::Function((::CppSharp::CppParser::AST::Function*)native)
 {
@@ -1668,6 +1729,16 @@ bool CppSharp::Parser::AST::Method::IsImplicit::get()
 void CppSharp::Parser::AST::Method::IsImplicit::set(bool value)
 {
     ((::CppSharp::CppParser::AST::Method*)NativePtr)->IsImplicit = value;
+}
+
+bool CppSharp::Parser::AST::Method::IsExplicit::get()
+{
+    return ((::CppSharp::CppParser::AST::Method*)NativePtr)->IsExplicit;
+}
+
+void CppSharp::Parser::AST::Method::IsExplicit::set(bool value)
+{
+    ((::CppSharp::CppParser::AST::Method*)NativePtr)->IsExplicit = value;
 }
 
 bool CppSharp::Parser::AST::Method::IsOverride::get()
@@ -2202,6 +2273,13 @@ CppSharp::Parser::AST::Template::Template(System::IntPtr native)
     auto __native = (::CppSharp::CppParser::AST::Template*)native.ToPointer();
 }
 
+CppSharp::Parser::AST::Template::Template(CppSharp::Parser::AST::DeclarationKind kind)
+    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)nullptr)
+{
+    auto arg0 = (::CppSharp::CppParser::AST::DeclarationKind)kind;
+    NativePtr = new ::CppSharp::CppParser::AST::Template(arg0);
+}
+
 CppSharp::Parser::AST::Template::Template()
     : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)nullptr)
 {
@@ -2265,38 +2343,6 @@ void CppSharp::Parser::AST::ClassTemplate::addSpecializations(CppSharp::Parser::
 {
     auto arg0 = (::CppSharp::CppParser::AST::ClassTemplateSpecialization*)s->NativePtr;
     ((::CppSharp::CppParser::AST::ClassTemplate*)NativePtr)->addSpecializations(arg0);
-}
-
-CppSharp::Parser::AST::ClassTemplateSpecialization^ CppSharp::Parser::AST::ClassTemplate::FindSpecialization(void* ptr)
-{
-    auto arg0 = (void*)ptr;
-    auto __ret = ((::CppSharp::CppParser::AST::ClassTemplate*)NativePtr)->FindSpecialization(arg0);
-    if (__ret == nullptr) return nullptr;
-    return (__ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::ClassTemplateSpecialization((::CppSharp::CppParser::AST::ClassTemplateSpecialization*)__ret);
-}
-
-CppSharp::Parser::AST::ClassTemplateSpecialization^ CppSharp::Parser::AST::ClassTemplate::FindSpecialization(CppSharp::Parser::AST::TemplateSpecializationType^ type)
-{
-    auto arg0 = *(::CppSharp::CppParser::AST::TemplateSpecializationType*)type->NativePtr;
-    auto __ret = ((::CppSharp::CppParser::AST::ClassTemplate*)NativePtr)->FindSpecialization(arg0);
-    if (__ret == nullptr) return nullptr;
-    return (__ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::ClassTemplateSpecialization((::CppSharp::CppParser::AST::ClassTemplateSpecialization*)__ret);
-}
-
-CppSharp::Parser::AST::ClassTemplatePartialSpecialization^ CppSharp::Parser::AST::ClassTemplate::FindPartialSpecialization(void* ptr)
-{
-    auto arg0 = (void*)ptr;
-    auto __ret = ((::CppSharp::CppParser::AST::ClassTemplate*)NativePtr)->FindPartialSpecialization(arg0);
-    if (__ret == nullptr) return nullptr;
-    return (__ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::ClassTemplatePartialSpecialization((::CppSharp::CppParser::AST::ClassTemplatePartialSpecialization*)__ret);
-}
-
-CppSharp::Parser::AST::ClassTemplatePartialSpecialization^ CppSharp::Parser::AST::ClassTemplate::FindPartialSpecialization(CppSharp::Parser::AST::TemplateSpecializationType^ type)
-{
-    auto arg0 = *(::CppSharp::CppParser::AST::TemplateSpecializationType*)type->NativePtr;
-    auto __ret = ((::CppSharp::CppParser::AST::ClassTemplate*)NativePtr)->FindPartialSpecialization(arg0);
-    if (__ret == nullptr) return nullptr;
-    return (__ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::ClassTemplatePartialSpecialization((::CppSharp::CppParser::AST::ClassTemplatePartialSpecialization*)__ret);
 }
 
 unsigned int CppSharp::Parser::AST::ClassTemplate::SpecializationsCount::get()
@@ -2393,6 +2439,100 @@ CppSharp::Parser::AST::FunctionTemplate::FunctionTemplate()
     : CppSharp::Parser::AST::Template((::CppSharp::CppParser::AST::Template*)nullptr)
 {
     NativePtr = new ::CppSharp::CppParser::AST::FunctionTemplate();
+}
+
+CppSharp::Parser::AST::FunctionTemplateSpecialization^ CppSharp::Parser::AST::FunctionTemplate::getSpecializations(unsigned int i)
+{
+    auto __ret = ((::CppSharp::CppParser::AST::FunctionTemplate*)NativePtr)->getSpecializations(i);
+    if (__ret == nullptr) return nullptr;
+    return (__ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::FunctionTemplateSpecialization((::CppSharp::CppParser::AST::FunctionTemplateSpecialization*)__ret);
+}
+
+void CppSharp::Parser::AST::FunctionTemplate::addSpecializations(CppSharp::Parser::AST::FunctionTemplateSpecialization^ s)
+{
+    auto arg0 = (::CppSharp::CppParser::AST::FunctionTemplateSpecialization*)s->NativePtr;
+    ((::CppSharp::CppParser::AST::FunctionTemplate*)NativePtr)->addSpecializations(arg0);
+}
+
+unsigned int CppSharp::Parser::AST::FunctionTemplate::SpecializationsCount::get()
+{
+    auto __ret = ((::CppSharp::CppParser::AST::FunctionTemplate*)NativePtr)->getSpecializationsCount();
+    return __ret;
+}
+
+CppSharp::Parser::AST::FunctionTemplateSpecialization::FunctionTemplateSpecialization(::CppSharp::CppParser::AST::FunctionTemplateSpecialization* native)
+{
+    NativePtr = native;
+}
+
+CppSharp::Parser::AST::FunctionTemplateSpecialization::FunctionTemplateSpecialization(System::IntPtr native)
+{
+    auto __native = (::CppSharp::CppParser::AST::FunctionTemplateSpecialization*)native.ToPointer();
+    NativePtr = __native;
+}
+
+CppSharp::Parser::AST::FunctionTemplateSpecialization::FunctionTemplateSpecialization()
+{
+    NativePtr = new ::CppSharp::CppParser::AST::FunctionTemplateSpecialization();
+}
+
+CppSharp::Parser::AST::TemplateArgument^ CppSharp::Parser::AST::FunctionTemplateSpecialization::getArguments(unsigned int i)
+{
+    auto __ret = ((::CppSharp::CppParser::AST::FunctionTemplateSpecialization*)NativePtr)->getArguments(i);
+    auto ____ret = new ::CppSharp::CppParser::AST::TemplateArgument(__ret);
+    return (____ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::TemplateArgument((::CppSharp::CppParser::AST::TemplateArgument*)____ret);
+}
+
+void CppSharp::Parser::AST::FunctionTemplateSpecialization::addArguments(CppSharp::Parser::AST::TemplateArgument^ s)
+{
+    auto &arg0 = *(::CppSharp::CppParser::AST::TemplateArgument*)s->NativePtr;
+    ((::CppSharp::CppParser::AST::FunctionTemplateSpecialization*)NativePtr)->addArguments(arg0);
+}
+
+System::IntPtr CppSharp::Parser::AST::FunctionTemplateSpecialization::__Instance::get()
+{
+    return System::IntPtr(NativePtr);
+}
+
+void CppSharp::Parser::AST::FunctionTemplateSpecialization::__Instance::set(System::IntPtr object)
+{
+    NativePtr = (::CppSharp::CppParser::AST::FunctionTemplateSpecialization*)object.ToPointer();
+}
+
+unsigned int CppSharp::Parser::AST::FunctionTemplateSpecialization::ArgumentsCount::get()
+{
+    auto __ret = ((::CppSharp::CppParser::AST::FunctionTemplateSpecialization*)NativePtr)->getArgumentsCount();
+    return __ret;
+}
+
+CppSharp::Parser::AST::FunctionTemplate^ CppSharp::Parser::AST::FunctionTemplateSpecialization::Template::get()
+{
+    return (((::CppSharp::CppParser::AST::FunctionTemplateSpecialization*)NativePtr)->Template == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::FunctionTemplate((::CppSharp::CppParser::AST::FunctionTemplate*)((::CppSharp::CppParser::AST::FunctionTemplateSpecialization*)NativePtr)->Template);
+}
+
+void CppSharp::Parser::AST::FunctionTemplateSpecialization::Template::set(CppSharp::Parser::AST::FunctionTemplate^ value)
+{
+    ((::CppSharp::CppParser::AST::FunctionTemplateSpecialization*)NativePtr)->Template = (::CppSharp::CppParser::AST::FunctionTemplate*)value->NativePtr;
+}
+
+CppSharp::Parser::AST::Function^ CppSharp::Parser::AST::FunctionTemplateSpecialization::SpecializedFunction::get()
+{
+    return (((::CppSharp::CppParser::AST::FunctionTemplateSpecialization*)NativePtr)->SpecializedFunction == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::Function((::CppSharp::CppParser::AST::Function*)((::CppSharp::CppParser::AST::FunctionTemplateSpecialization*)NativePtr)->SpecializedFunction);
+}
+
+void CppSharp::Parser::AST::FunctionTemplateSpecialization::SpecializedFunction::set(CppSharp::Parser::AST::Function^ value)
+{
+    ((::CppSharp::CppParser::AST::FunctionTemplateSpecialization*)NativePtr)->SpecializedFunction = (::CppSharp::CppParser::AST::Function*)value->NativePtr;
+}
+
+CppSharp::Parser::AST::TemplateSpecializationKind CppSharp::Parser::AST::FunctionTemplateSpecialization::SpecializationKind::get()
+{
+    return (CppSharp::Parser::AST::TemplateSpecializationKind)((::CppSharp::CppParser::AST::FunctionTemplateSpecialization*)NativePtr)->SpecializationKind;
+}
+
+void CppSharp::Parser::AST::FunctionTemplateSpecialization::SpecializationKind::set(CppSharp::Parser::AST::TemplateSpecializationKind value)
+{
+    ((::CppSharp::CppParser::AST::FunctionTemplateSpecialization*)NativePtr)->SpecializationKind = (::CppSharp::CppParser::AST::TemplateSpecializationKind)value;
 }
 
 CppSharp::Parser::AST::Namespace::Namespace(::CppSharp::CppParser::AST::Namespace* native)

@@ -86,7 +86,7 @@ namespace CppSharp.Generators.CLI
             PushBlock(CLIBlockKind.Namespace);
             foreach (var @class in @namespace.Classes)
             {
-                if (@class.Ignore)
+                if (!@class.IsGenerated)
                     continue;
 
                 if (@class.IsOpaque || @class.IsIncomplete)
@@ -100,7 +100,7 @@ namespace CppSharp.Generators.CLI
                 // Generate all the function declarations for the module.
                 foreach (var function in @namespace.Functions)
                 {
-                    if (function.Ignore)
+                    if (!function.IsGenerated)
                         continue;
 
                     GenerateFunction(function, @namespace);
@@ -112,12 +112,12 @@ namespace CppSharp.Generators.CLI
             {
                 foreach (var template in @namespace.Templates)
                 {
-                    if (template.Ignore) continue;
+                    if (!template.IsGenerated) continue;
 
                     var functionTemplate = template as FunctionTemplate;
                     if (functionTemplate == null) continue;
 
-                    if (functionTemplate.Ignore)
+                    if (!functionTemplate.IsGenerated)
                         continue;
 
                     GenerateFunctionTemplate(functionTemplate);
@@ -174,7 +174,7 @@ namespace CppSharp.Generators.CLI
 
             foreach (var @event in @class.Events)
             {
-                if (@event.Ignore)
+                if (!@event.IsGenerated)
                     continue;
 
                 GenerateDeclarationCommon(@event);
@@ -183,7 +183,7 @@ namespace CppSharp.Generators.CLI
 
             foreach (var variable in @class.Variables)
             {
-                if (variable.Ignore)
+                if (!variable.IsGenerated)
                     continue;
 
                 if (variable.Access != AccessSpecifier.Public)
@@ -205,10 +205,15 @@ namespace CppSharp.Generators.CLI
             GenerateClassConstructor(@class, isIntPtr: false);
             GenerateClassConstructor(@class, isIntPtr: true);
 
-            if (@class.IsRefType)
+            if (Options.GenerateFinalizers && @class.IsRefType)
             {
-                GenerateClassDestructor(@class);
-                GenerateClassFinalizer(@class);
+                var destructor = @class.Destructors
+                    .FirstOrDefault(d => d.Parameters.Count == 0 && d.Access == AccessSpecifier.Public);
+                if (destructor != null)
+                {
+                    GenerateClassDestructor(@class);
+                    GenerateClassFinalizer(@class);
+                }
             }
         }
 
@@ -216,22 +221,19 @@ namespace CppSharp.Generators.CLI
         {
             if (@class.IsValueType)
             {
-                foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.Ignore))
+                foreach (var @base in @class.Bases.Where(b => b.IsClass && b.Class.IsDeclared))
                 {
                     GenerateClassProperties(@base.Class, realOwner);
                 }
             }
 
             foreach (var property in @class.Properties.Where(
-                p => !p.Ignore && !p.IsInRefTypeAndBackedByValueClassField()))
+                p => !ASTUtils.CheckIgnoreProperty(p) && !p.IsInRefTypeAndBackedByValueClassField()))
                 GenerateProperty(property, realOwner);
         }
 
         private void GenerateClassDestructor(Class @class)
         {
-            if (!Options.GenerateFinalizers)
-                return;
-
             PushBlock(CLIBlockKind.Destructor);
 
             WriteLine("{0}::~{1}()", QualifiedIdentifier(@class), @class.Name);
@@ -247,9 +249,6 @@ namespace CppSharp.Generators.CLI
 
         private void GenerateClassFinalizer(Class @class)
         {
-            if (!Options.GenerateFinalizers)
-                return;
-
             PushBlock(CLIBlockKind.Finalizer);
 
             WriteLine("{0}::!{1}()", QualifiedIdentifier(@class), @class.Name);
@@ -309,8 +308,6 @@ namespace CppSharp.Generators.CLI
 
         private void GenerateProperty(Property property, Class realOwner)
         {
-            if (property.Ignore) return;
-
             PushBlock(CLIBlockKind.Property);
 
             if (property.Field != null)
@@ -375,16 +372,16 @@ namespace CppSharp.Generators.CLI
                     return;
                 }
                 var param = new Parameter
-                                {
-                                    Name = "value",
-                                    QualifiedType = decl.QualifiedType
-                                };
+                {
+                    Name = "value",
+                    QualifiedType = new QualifiedType(type)
+                };
 
                 var ctx = new MarshalContext(Driver)
-                              {
-                                  Parameter = param,
-                                  ArgName = param.Name,
-                              };
+                {
+                    Parameter = param,
+                    ArgName = param.Name,
+                };
 
                 var marshal = new CLIMarshalManagedToNativePrinter(ctx);
                 param.Visit(marshal);
@@ -403,7 +400,10 @@ namespace CppSharp.Generators.CLI
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                     Write(marshal.Context.SupportBefore);
 
-                WriteLine("{0} = {1};", variable, marshal.Context.Return);
+                if (isIndexer && decl.Type.IsPointer())
+                    WriteLine("*({0}) = {1};", variable, marshal.Context.Return);
+                else
+                    WriteLine("{0} = {1};", variable, marshal.Context.Return);
             }
 
             WriteCloseBraceIndent();
@@ -435,7 +435,10 @@ namespace CppSharp.Generators.CLI
             if (decl is Function)
             {
                 var func = decl as Function;
-                GenerateFunctionCall(func, @class);
+                if (isIndexer && func.Type.IsAddress())
+                    GenerateFunctionCall(func, @class, type);
+                else
+                    GenerateFunctionCall(func, @class);
             }
             else
             {
@@ -628,14 +631,15 @@ namespace CppSharp.Generators.CLI
 
         private void GenerateStructMarshaling(Class @class, string nativeVar)
         {
-            foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.Ignore))
+            foreach (var @base in @class.Bases.Where(b => b.IsClass && b.Class.IsDeclared))
             {
                 GenerateStructMarshaling(@base.Class, nativeVar);
             }
 
-            foreach (var property in @class.Properties)
+            foreach (var property in @class.Properties.Where( p => !ASTUtils.CheckIgnoreProperty(p)))
             {
-                if (property.Ignore || property.Field == null) continue;
+                if (property.Field == null)
+                    continue;
 
                 var nativeField = string.Format("{0}{1}",
                                                 nativeVar, property.Field.OriginalName);
@@ -659,7 +663,7 @@ namespace CppSharp.Generators.CLI
 
         private bool GenerateClassConstructorBase(Class @class, bool isIntPtr, Method method = null)
         {
-            var hasBase = @class.HasBase && @class.Bases[0].IsClass && !@class.Bases[0].Class.ExplicityIgnored;
+            var hasBase = @class.HasBase && @class.Bases[0].IsClass && @class.Bases[0].Class.IsDeclared;
             if (!hasBase)
                 return false;
 
@@ -692,7 +696,8 @@ namespace CppSharp.Generators.CLI
             PushBlock(CLIBlockKind.Method, method);
 
             if (method.IsConstructor || method.IsDestructor ||
-                method.OperatorKind == CXXOperatorKind.Conversion)
+                method.OperatorKind == CXXOperatorKind.Conversion ||
+                method.OperatorKind == CXXOperatorKind.ExplicitConversion)
                 Write("{0}::{1}(", QualifiedIdentifier(@class), GetMethodName(method));
             else
                 Write("{0} {1}::{2}(", method.ReturnType, QualifiedIdentifier(@class),
@@ -777,14 +782,14 @@ namespace CppSharp.Generators.CLI
 
         private void GenerateValueTypeConstructorCallProperties(Class @class)
         {
-            foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.ExplicityIgnored))
+            foreach (var @base in @class.Bases.Where(b => b.IsClass && b.Class.IsDeclared))
             {
                 GenerateValueTypeConstructorCallProperties(@base.Class);
             }
 
             foreach (var property in @class.Properties)
             {
-                if (property.ExplicityIgnored || property.Field == null) continue;
+                if (!property.IsDeclared || property.Field == null) continue;
 
                 var varName = string.Format("_native.{0}", property.Field.OriginalName);
 
@@ -806,7 +811,7 @@ namespace CppSharp.Generators.CLI
 
         public void GenerateFunction(Function function, DeclarationContext @namespace)
         {
-            if (function.Ignore)
+            if (!function.IsGenerated)
                 return;
 
             GenerateDeclarationCommon(function);
@@ -833,11 +838,13 @@ namespace CppSharp.Generators.CLI
             WriteCloseBraceIndent();
         }
 
-        public void GenerateFunctionCall(Function function, Class @class = null)
+        public void GenerateFunctionCall(Function function, Class @class = null, Type publicRetType = null)
         {
             CheckArgumentRange(function);
 
             var retType = function.ReturnType;
+            if (publicRetType == null)
+                publicRetType = retType.Type;
             var needsReturn = !retType.Type.IsPrimitiveType(PrimitiveType.Void);
 
             const string valueMarshalName = "_this0";
@@ -862,11 +869,15 @@ namespace CppSharp.Generators.CLI
 
             var @params = GenerateFunctionParamsMarshal(function.Parameters, function);
 
+            var returnIdentifier = Generator.GeneratedIdentifier("ret");
             if (needsReturn)
-                Write("auto {0}{1} = ",(function.ReturnType.Type.IsReference())? "&": string.Empty,
-                    Generator.GeneratedIdentifier("ret"));
+                if (retType.Type.IsReference())
+                    Write("auto &{0} = ", returnIdentifier);
+                else
+                    Write("auto {0} = ", returnIdentifier);
 
-            if (function.OperatorKind == CXXOperatorKind.Conversion)
+            if (function.OperatorKind == CXXOperatorKind.Conversion || 
+                function.OperatorKind == CXXOperatorKind.ExplicitConversion)
             {
                 var method = function as Method;
                 var typePrinter = new CppTypePrinter(Driver.TypeDatabase);
@@ -944,24 +955,33 @@ namespace CppSharp.Generators.CLI
                 if (retType.Type.IsPointer() && (isIntPtr || retTypeName.EndsWith("^")))
                 {
                     WriteLine("if ({0} == nullptr) return {1};",
-                        Generator.GeneratedIdentifier("ret"),
+                        returnIdentifier,
                         isIntPtr ? "System::IntPtr()" : "nullptr");
                 }
 
                 var ctx = new MarshalContext(Driver)
-                    {
-                        ArgName = Generator.GeneratedIdentifier("ret"),
-                        ReturnVarName = Generator.GeneratedIdentifier("ret"),
-                        ReturnType = retType
-                    };
+                {
+                    ArgName = returnIdentifier,
+                    ReturnVarName = returnIdentifier,
+                    ReturnType = retType
+                };
 
                 var marshal = new CLIMarshalNativeToManagedPrinter(ctx);
-                function.ReturnType.Visit(marshal);
+                retType.Visit(marshal);
 
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                     Write(marshal.Context.SupportBefore);
 
-                WriteLine("return {0};", marshal.Context.Return);
+                // Special case for indexer - needs to dereference if the internal
+                // function is a pointer type and the property is not.
+                if (retType.Type.IsPointer() && 
+                    retType.Type.GetPointee().Equals(publicRetType) &&
+                    publicRetType.IsPrimitiveType())
+                    WriteLine("return *({0});", marshal.Context.Return);
+                else if (retType.Type.IsReference() && publicRetType.IsReference())
+                    WriteLine("return ({0})({1});", publicRetType, marshal.Context.Return);
+                else
+                    WriteLine("return {0};", marshal.Context.Return);
             }
         }
 

@@ -198,6 +198,7 @@ namespace CppSharp.Generators.CSharp
                 case PrimitiveType.Float:
                 case PrimitiveType.Double:
                 case PrimitiveType.WideChar:
+                case PrimitiveType.Null:
                     Context.Return.Write(Context.ReturnVarName);
                     return true;
                 case PrimitiveType.Char16:
@@ -268,7 +269,7 @@ namespace CppSharp.Generators.CSharp
 
                     // Call the copy constructor.
                     TypeMap typeMap;
-                    if (copyCtorMethod.Ignore && FindTypeMap(ctx.Driver.TypeDatabase, @class, out typeMap))
+                    if (!copyCtorMethod.IsGenerated && FindTypeMap(ctx.Driver.TypeDatabase, @class, out typeMap))
                     {
                         typeMap.CSharpMarshalCopyCtorToManaged(Context);
                     }
@@ -439,7 +440,7 @@ namespace CppSharp.Generators.CSharp
             }
 
             Class @class;
-            if (pointee.IsTagDecl(out @class) && @class.IsValueType)
+            if (pointee.TryGetClass(out @class) && @class.IsValueType)
             {
                 if (Context.Parameter.Usage == ParameterUsage.Out)
                 {
@@ -582,7 +583,7 @@ namespace CppSharp.Generators.CSharp
             if (type.IsAddress())
             {
                 Class decl;
-                if (type.IsTagDecl(out decl) && decl.IsValueType)
+                if (type.TryGetClass(out decl) && decl.IsValueType)
                     Context.Return.Write("{0}.{1}", param, Helpers.InstanceIdentifier);
                 else
                     Context.Return.Write("{0} == ({2}) null ? global::System.IntPtr.Zero : {0}.{1}", param,

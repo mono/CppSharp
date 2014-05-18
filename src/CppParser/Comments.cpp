@@ -7,6 +7,7 @@
 
 #include "Parser.h"
 
+#include <clang/AST/Comment.h>
 #include <clang/AST/ASTContext.h>
 
 using namespace CppSharp::CppParser;

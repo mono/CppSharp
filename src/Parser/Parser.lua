@@ -44,48 +44,8 @@ project "CppSharp.Parser"
     "*.lua"
   }
   
+  SetupLLVMIncludes()
   SetupLLVMLibs()
   
   configuration "*"
   
-  links
-  {
-    "LLVMAnalysis",
-    "LLVMAsmParser",
-    "LLVMBitReader",
-    "LLVMBitWriter",
-    "LLVMCodeGen",
-    "LLVMCore",
-    "LLVMipa",
-    "LLVMipo",
-    "LLVMInstCombine",
-    "LLVMInstrumentation",
-    "LLVMIRReader",
-    "LLVMLinker",
-    "LLVMMC",
-    "LLVMMCParser",
-    "LLVMObjCARCOpts",
-    "LLVMObject",
-    "LLVMOption",
-    "LLVMScalarOpts",
-    "LLVMSupport",
-    "LLVMTarget",
-    "LLVMTransformUtils",
-    "LLVMVectorize",
-    "LLVMX86AsmParser",
-    "LLVMX86AsmPrinter",
-    "LLVMX86Desc",
-    "LLVMX86Info",
-    "LLVMX86Utils",
-    "clangAnalysis",
-    "clangAST",
-    "clangBasic",
-    "clangDriver",
-    "clangEdit",
-    "clangFrontend",
-    "clangLex",
-    "clangParse",
-    "clangSema",
-    "clangSerialization",
-    "clangCodeGen",
-  }

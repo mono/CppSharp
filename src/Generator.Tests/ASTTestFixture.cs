@@ -10,7 +10,7 @@ namespace CppSharp.Generator.Tests
         protected DriverOptions Options;
         protected ASTContext AstContext;
 
-        protected void ParseLibrary(string file)
+        protected void ParseLibrary(params string[] files)
         {
             Options = new DriverOptions();
 
@@ -22,7 +22,7 @@ namespace CppSharp.Generator.Tests
             Options.addIncludeDirs(testsPath);
 #endif
 
-            Options.Headers.Add(file);
+            Options.Headers.AddRange(files);
 
             Driver = new Driver(Options, new TextDiagnosticPrinter());
             if (!Driver.ParseCode())

@@ -51,6 +51,22 @@ namespace CppSharp.AST
             Anonymous = new Dictionary<ulong, Declaration>();
         }
 
+        protected DeclarationContext(DeclarationContext dc)
+            : base(dc)
+        {
+            Namespaces = new List<Namespace>(dc.Namespaces);
+            Enums = new List<Enumeration>(dc.Enums);
+            Functions = new List<Function>(dc.Functions);
+            Classes = new List<Class>(dc.Classes);
+            Templates = new List<Template>(dc.Templates);
+            Typedefs = new List<TypedefDecl>(dc.Typedefs);
+            Variables = new List<Variable>(dc.Variables);
+            Events = new List<Event>(dc.Events);
+            TypeReferences = new List<TypeReference>(dc.TypeReferences);
+            Anonymous = new Dictionary<ulong, Declaration>(dc.Anonymous);
+            IsAnonymous = dc.IsAnonymous;
+        }
+
         public IEnumerable<DeclarationContext> GatherParentNamespaces()
         {
             var children = new List<DeclarationContext>();
@@ -164,17 +180,56 @@ namespace CppSharp.AST
             return @namespace.FindEnum(enumName, createDecl);
         }
 
+        public Enumeration FindEnum(IntPtr ptr)
+        {
+            return Enums.FirstOrDefault(f => f.OriginalPtr == ptr);
+        }
+
         public Function FindFunction(string name, bool createDecl = false)
         {
-            var function =  Functions.Find(e => e.Name.Equals(name));
+            if (string.IsNullOrEmpty(name)) 
+                return null;
 
-            if (function == null && createDecl)
+            var entries = name.Split(new string[] { "::" },
+                StringSplitOptions.RemoveEmptyEntries).ToList();
+
+            if (entries.Count <= 1)
             {
-                function = new Function() { Name = name, Namespace = this };
-                Functions.Add(function);
+                var function = Functions.Find(e => e.Name.Equals(name));
+
+                if (function == null && createDecl)
+                {
+                    function = new Function() { Name = name, Namespace = this };
+                    Functions.Add(function);
+                }
+            
+                return function;
             }
 
-            return function;
+            var funcName = entries[entries.Count - 1];
+            var namespaces = entries.Take(entries.Count - 1);
+
+            var @namespace = FindNamespace(namespaces);
+            if (@namespace == null)
+                return null;
+
+            return @namespace.FindFunction(funcName, createDecl);
+        }
+
+        public Function FindFunction(string name)
+        {
+            return Functions
+                .Concat(Templates.OfType<FunctionTemplate>()
+                    .Select(t => t.TemplatedFunction))
+                .FirstOrDefault(f => f.Name == name);
+        }
+
+        public Function FindFunctionByUSR(string usr)
+        {
+            return Functions
+                .Concat(Templates.OfType<FunctionTemplate>()
+                    .Select(t => t.TemplatedFunction))
+                .FirstOrDefault(f => f.USR == usr);
         }
 
         Class CreateClass(string name, bool isComplete)
@@ -255,36 +310,56 @@ namespace CppSharp.AST
             return newClass;
         }
 
-        public FunctionTemplate FindFunctionTemplate(string name,
-            List<TemplateParameter> @params)
+        public FunctionTemplate FindFunctionTemplate(string name)
         {
-            return Templates.FirstOrDefault(template => template.Name == name
-                && template.Parameters.SequenceEqual(@params)) as FunctionTemplate;
+            return Templates.OfType<FunctionTemplate>()
+                .FirstOrDefault(t => t.Name == name);
         }
 
-        public FunctionTemplate FindFunctionTemplate(IntPtr ptr)
+        public FunctionTemplate FindFunctionTemplateByUSR(string usr)
         {
-            return Templates.FirstOrDefault(template =>
-                template.OriginalPtr == ptr) as FunctionTemplate;
+            return Templates.OfType<FunctionTemplate>()
+                .FirstOrDefault(t => t.USR == usr);
         }
 
-        public ClassTemplate FindClassTemplate(IntPtr ptr)
+        public ClassTemplate FindClassTemplate(string name)
         {
-            return Templates.FirstOrDefault(template =>
-                template.OriginalPtr == ptr) as ClassTemplate;
+            return Templates.OfType<ClassTemplate>()
+                .FirstOrDefault(t => t.Name == name);
+        }
+
+        public ClassTemplate FindClassTemplateByUSR(string usr)
+        {
+            return Templates.OfType<ClassTemplate>()
+                .FirstOrDefault(t => t.USR == usr);
         }
 
         public TypedefDecl FindTypedef(string name, bool createDecl = false)
         {
-            var typedef = Typedefs.Find(e => e.Name.Equals(name));
-            
-            if (typedef == null && createDecl)
+            var entries = name.Split(new string[] { "::" },
+                StringSplitOptions.RemoveEmptyEntries).ToList();
+
+            if (entries.Count <= 1)
             {
-                typedef = new TypedefDecl { Name = name, Namespace = this };
-                Typedefs.Add(typedef);
+                var typeDef = Typedefs.Find(e => e.Name.Equals(name));
+
+                if (typeDef == null && createDecl)
+                {
+                    typeDef = new TypedefDecl() { Name = name, Namespace = this };
+                    Typedefs.Add(typeDef);
+                }
+
+                return typeDef;
             }
 
-            return typedef;
+            var typeDefName = entries[entries.Count - 1];
+            var namespaces = entries.Take(entries.Count - 1);
+
+            var @namespace = FindNamespace(namespaces);
+            if (@namespace == null)
+                return null;
+
+            return @namespace.FindTypedef(typeDefName, createDecl);
         }
 
         public T FindType<T>(string name) where T : Declaration
@@ -299,10 +374,15 @@ namespace CppSharp.AST
 
         public Enumeration FindEnumWithItem(string name)
         {
-            return Enums.Find(e => e.ItemsByName.ContainsKey(name));
+            var result = Enums.Find(e => e.ItemsByName.ContainsKey(name));
+            if (result == null)
+                result = Namespaces.Select(ns => ns.FindEnumWithItem(name)).FirstOrDefault();
+            if (result == null)
+                result = Classes.Select(c => c.FindEnumWithItem(name)).FirstOrDefault();
+            return result;
         }
 
-        public IEnumerable<Function> FindOperator(CXXOperatorKind kind)
+        public virtual IEnumerable<Function> FindOperator(CXXOperatorKind kind)
         {
             return Functions.Where(fn => fn.OperatorKind == kind);
         }
@@ -318,7 +398,7 @@ namespace CppSharp.AST
         {
             get
             {
-                Predicate<Declaration> pred = (t => !t.Ignore);
+                Predicate<Declaration> pred = (t => t.IsGenerated);
                 return Enums.Exists(pred) || HasFunctions || Typedefs.Exists(pred)
                     || Classes.Any() || Namespaces.Exists(n => n.HasDeclarations);
             }
@@ -328,7 +408,7 @@ namespace CppSharp.AST
         {
             get
             {
-                Predicate<Declaration> pred = (t => !t.Ignore);
+                Predicate<Declaration> pred = (t => t.IsGenerated);
                 return Functions.Exists(pred) || Namespaces.Exists(n => n.HasFunctions);
             }
         }

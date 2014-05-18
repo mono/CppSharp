@@ -9,7 +9,7 @@ namespace CppSharp.AST
     {
         public static bool CheckIgnoreFunction(Function function, DriverOptions options)
         {
-            if (function.Ignore) return true;
+            if (!function.IsGenerated) return true;
 
             if (function is Method)
                 return CheckIgnoreMethod(function as Method, options);
@@ -19,7 +19,7 @@ namespace CppSharp.AST
 
         public static bool CheckIgnoreMethod(Method method, DriverOptions options)
         {
-            if (method.Ignore) return true;
+            if (!method.IsGenerated) return true;
 
             var isEmptyCtor = method.IsConstructor && method.Parameters.Count == 0;
 
@@ -52,7 +52,7 @@ namespace CppSharp.AST
                     var copyConstructor = baseClass.Methods.FirstOrDefault(m => m.IsCopyConstructor);
                     if (copyConstructor == null
                         || copyConstructor.Access == AccessSpecifier.Private
-                        || copyConstructor.Ignore)
+                        || !copyConstructor.IsDeclared)
                         return true;
                 }
             }
@@ -60,12 +60,26 @@ namespace CppSharp.AST
             return false;
         }
 
-        public static bool CheckIgnoreField(Field field)
+        public static bool CheckIgnoreField(Field field, bool useInternals = false)
         {
             if (field.Access == AccessSpecifier.Private) 
                 return true;
 
-            return field.Ignore;
+            if (field.Class.IsValueType && field.IsDeclared)
+                return false;
+
+            return !field.IsGenerated && (!useInternals || !field.IsInternal);
+        }
+
+        public static bool CheckIgnoreProperty(Property prop)
+        {
+            if (prop.Access == AccessSpecifier.Private)
+                return true;
+
+            if (prop.Field != null && prop.Field.Class.IsValueType && prop.IsDeclared)
+                return false;
+
+            return !prop.IsGenerated;
         }
     }
 
@@ -186,6 +200,8 @@ namespace CppSharp.AST
 
                 case CXXOperatorKind.Conversion:
                     return "implicit operator";
+                case CXXOperatorKind.ExplicitConversion:
+                    return "explicit operator";
             }
 
             throw new NotSupportedException();

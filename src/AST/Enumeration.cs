@@ -11,9 +11,9 @@ namespace CppSharp.AST
         [Flags]
         public enum EnumModifiers
         {
-            Anonymous,
-            Scoped,
-            Flags
+            Anonymous = 1 << 0,
+            Scoped = 1 << 1,
+            Flags = 1 << 2,
         }
 
         /// <summary>

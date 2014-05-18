@@ -24,18 +24,6 @@ namespace CppSharp.AST
         /// Contains the macros present in the unit.
         public List<MacroDefinition> Macros;
 
-        // Whether the unit should be generated.
-        public override bool IsGenerated
-        {
-            get { return !IgnoreFlags.HasFlag(IgnoreFlags.Generation); }
-        }
-
-        // Whether the unit should be ignored.
-        public override bool Ignore
-        {
-            get { return IgnoreFlags != IgnoreFlags.None; }
-        }
-
         public bool IsSystemHeader { get; set; }
 
         public bool IsValid { get { return FilePath != "<invalid>"; } }
