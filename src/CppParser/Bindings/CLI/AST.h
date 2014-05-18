@@ -43,6 +43,7 @@ namespace CppSharp
             ref class FullComment;
             ref class Function;
             ref class FunctionTemplate;
+            ref class FunctionTemplateSpecialization;
             ref class FunctionType;
             ref class InjectedClassNameType;
             ref class MacroDefinition;
@@ -202,6 +203,15 @@ namespace CppSharp
                 Unknown = 5
             };
 
+            public enum struct TemplateSpecializationKind
+            {
+                Undeclared = 0,
+                ImplicitInstantiation = 1,
+                ExplicitSpecialization = 2,
+                ExplicitInstantiationDeclaration = 3,
+                ExplicitInstantiationDefinition = 4
+            };
+
             public enum struct CppAbi
             {
                 Itanium = 0,
@@ -267,15 +277,6 @@ namespace CppSharp
                 FunctionHead = 3,
                 FunctionParameters = 4,
                 FunctionBody = 5
-            };
-
-            public enum struct TemplateSpecializationKind
-            {
-                Undeclared = 0,
-                ImplicitInstantiation = 1,
-                ExplicitSpecialization = 2,
-                ExplicitInstantiationDeclaration = 3,
-                ExplicitInstantiationDefinition = 4
             };
 
             public ref class Type : ICppInstance
@@ -658,6 +659,12 @@ namespace CppSharp
                     void set(System::String^);
                 }
 
+                property bool IsTypeParameter
+                {
+                    bool get();
+                    void set(bool);
+                }
+
                 static bool operator==(CppSharp::Parser::AST::TemplateParameter^ __op, CppSharp::Parser::AST::TemplateParameter^ param);
             };
 
@@ -673,6 +680,24 @@ namespace CppSharp
                 {
                     CppSharp::Parser::AST::TemplateParameter^ get();
                     void set(CppSharp::Parser::AST::TemplateParameter^);
+                }
+
+                property unsigned int Depth
+                {
+                    unsigned int get();
+                    void set(unsigned int);
+                }
+
+                property unsigned int Index
+                {
+                    unsigned int get();
+                    void set(unsigned int);
+                }
+
+                property bool IsParameterPack
+                {
+                    bool get();
+                    void set(bool);
                 }
             };
 
@@ -1008,7 +1033,7 @@ namespace CppSharp
 
                 DeclarationContext(::CppSharp::CppParser::AST::DeclarationContext* native);
                 DeclarationContext(System::IntPtr native);
-                DeclarationContext();
+                DeclarationContext(CppSharp::Parser::AST::DeclarationKind kind);
 
                 property unsigned int NamespacesCount
                 {
@@ -1120,6 +1145,12 @@ namespace CppSharp
                     bool get();
                     void set(bool);
                 }
+
+                property unsigned int Index
+                {
+                    unsigned int get();
+                    void set(unsigned int);
+                }
             };
 
             public ref class Function : CppSharp::Parser::AST::Declaration
@@ -1195,6 +1226,12 @@ namespace CppSharp
                     void set(CppSharp::Parser::AST::CallingConvention);
                 }
 
+                property CppSharp::Parser::AST::FunctionTemplateSpecialization^ SpecializationInfo
+                {
+                    CppSharp::Parser::AST::FunctionTemplateSpecialization^ get();
+                    void set(CppSharp::Parser::AST::FunctionTemplateSpecialization^);
+                }
+
                 CppSharp::Parser::AST::Parameter^ getParameters(unsigned int i);
 
                 void addParameters(CppSharp::Parser::AST::Parameter^ s);
@@ -1233,6 +1270,12 @@ namespace CppSharp
                 }
 
                 property bool IsImplicit
+                {
+                    bool get();
+                    void set(bool);
+                }
+
+                property bool IsExplicit
                 {
                     bool get();
                     void set(bool);
@@ -1542,6 +1585,8 @@ namespace CppSharp
 
                 Template(::CppSharp::CppParser::AST::Template* native);
                 Template(System::IntPtr native);
+                Template(CppSharp::Parser::AST::DeclarationKind kind);
+
                 Template();
 
                 property unsigned int ParametersCount
@@ -1576,14 +1621,6 @@ namespace CppSharp
                 CppSharp::Parser::AST::ClassTemplateSpecialization^ getSpecializations(unsigned int i);
 
                 void addSpecializations(CppSharp::Parser::AST::ClassTemplateSpecialization^ s);
-
-                CppSharp::Parser::AST::ClassTemplateSpecialization^ FindSpecialization(void* ptr);
-
-                CppSharp::Parser::AST::ClassTemplateSpecialization^ FindSpecialization(CppSharp::Parser::AST::TemplateSpecializationType^ type);
-
-                CppSharp::Parser::AST::ClassTemplatePartialSpecialization^ FindPartialSpecialization(void* ptr);
-
-                CppSharp::Parser::AST::ClassTemplatePartialSpecialization^ FindPartialSpecialization(CppSharp::Parser::AST::TemplateSpecializationType^ type);
             };
 
             public ref class ClassTemplateSpecialization : CppSharp::Parser::AST::Class
@@ -1632,6 +1669,58 @@ namespace CppSharp
                 FunctionTemplate(::CppSharp::CppParser::AST::FunctionTemplate* native);
                 FunctionTemplate(System::IntPtr native);
                 FunctionTemplate();
+
+                property unsigned int SpecializationsCount
+                {
+                    unsigned int get();
+                }
+
+                CppSharp::Parser::AST::FunctionTemplateSpecialization^ getSpecializations(unsigned int i);
+
+                void addSpecializations(CppSharp::Parser::AST::FunctionTemplateSpecialization^ s);
+            };
+
+            public ref class FunctionTemplateSpecialization : ICppInstance
+            {
+            public:
+
+                property ::CppSharp::CppParser::AST::FunctionTemplateSpecialization* NativePtr;
+                property System::IntPtr __Instance
+                {
+                    virtual System::IntPtr get();
+                    virtual void set(System::IntPtr instance);
+                }
+
+                FunctionTemplateSpecialization(::CppSharp::CppParser::AST::FunctionTemplateSpecialization* native);
+                FunctionTemplateSpecialization(System::IntPtr native);
+                FunctionTemplateSpecialization();
+
+                property unsigned int ArgumentsCount
+                {
+                    unsigned int get();
+                }
+
+                property CppSharp::Parser::AST::FunctionTemplate^ Template
+                {
+                    CppSharp::Parser::AST::FunctionTemplate^ get();
+                    void set(CppSharp::Parser::AST::FunctionTemplate^);
+                }
+
+                property CppSharp::Parser::AST::Function^ SpecializedFunction
+                {
+                    CppSharp::Parser::AST::Function^ get();
+                    void set(CppSharp::Parser::AST::Function^);
+                }
+
+                property CppSharp::Parser::AST::TemplateSpecializationKind SpecializationKind
+                {
+                    CppSharp::Parser::AST::TemplateSpecializationKind get();
+                    void set(CppSharp::Parser::AST::TemplateSpecializationKind);
+                }
+
+                CppSharp::Parser::AST::TemplateArgument^ getArguments(unsigned int i);
+
+                void addArguments(CppSharp::Parser::AST::TemplateArgument^ s);
             };
 
             public ref class Namespace : CppSharp::Parser::AST::DeclarationContext

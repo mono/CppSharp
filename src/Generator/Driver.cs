@@ -21,8 +21,9 @@ namespace CppSharp
 {
     public class Driver
     {
+        public IDiagnosticConsumer Diagnostics { get; set; }
+
         public DriverOptions Options { get; private set; }
-        public IDiagnosticConsumer Diagnostics { get; private set; }
         public Project Project { get; private set; }
 
         public TypeMapDatabase TypeDatabase { get; private set; }
@@ -276,6 +277,10 @@ namespace CppSharp
             TranslationUnitPasses.AddPass(new CheckStaticClass());
             TranslationUnitPasses.AddPass(new MoveOperatorToClassPass());
             TranslationUnitPasses.AddPass(new MoveFunctionToClassPass());
+
+            if (Options.GenerateConversionOperators)
+                TranslationUnitPasses.AddPass(new ConstructorToConversionOperatorPass());
+
             TranslationUnitPasses.AddPass(new CheckAmbiguousFunctions());
             TranslationUnitPasses.AddPass(new CheckOperatorsOverloadsPass());
             TranslationUnitPasses.AddPass(new CheckVirtualOverrideReturnCovariance());
@@ -421,7 +426,8 @@ namespace CppSharp
             library.Setup(driver);
             driver.Setup();
 
-            Log.Verbose = driver.Options.Verbose;
+            if(driver.Options.Verbose)
+                Log.Level = DiagnosticKind.Debug;
 
             if (!options.Quiet)
                 Log.EmitMessage("Parsing libraries...");
@@ -464,7 +470,9 @@ namespace CppSharp
                 }
             }
 
-            driver.WriteCode(outputs);
+            if (!driver.Options.DryRun)
+                driver.WriteCode(outputs);
+
             if (driver.Options.IsCSharpGenerator)
                 driver.CompileCode();
         }

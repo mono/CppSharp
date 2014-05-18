@@ -70,16 +70,20 @@ enum struct ParserResultKind
     FileNotFound
 };
 
+struct Parser;
+
 struct CS_API ParserResult
 {
     ParserResult();
     ParserResult(const ParserResult&);
+    ~ParserResult();
 
     ParserResultKind Kind;
     VECTOR(ParserDiagnostic, Diagnostics)
 
     CppSharp::CppParser::AST::ASTContext* ASTContext;
     CppSharp::CppParser::AST::NativeLibrary* Library;
+    Parser* Parser;
 };
 
 enum class SourceLocationKind
@@ -97,8 +101,7 @@ public:
 
     static ParserResult* ParseHeader(ParserOptions* Opts);
     static ParserResult* ParseLibrary(ParserOptions* Opts);
-    static ParserTargetInfo*  GetTargetInfo(ParserOptions* Opts);
-
+    static ParserTargetInfo* GetTargetInfo(ParserOptions* Opts);
 };
 
 } }

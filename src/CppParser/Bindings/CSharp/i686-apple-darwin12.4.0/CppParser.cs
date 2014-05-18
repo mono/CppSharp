@@ -40,47 +40,26 @@ namespace CppSharp
             [StructLayout(LayoutKind.Explicit, Size = 100)]
             public struct Internal
             {
-                [FieldOffset(0)]
-                internal Std.Vector Arguments;
-
-                [FieldOffset(12)]
-                internal Std.String FileName;
-
-                [FieldOffset(24)]
-                internal Std.Vector IncludeDirs;
-
-                [FieldOffset(36)]
-                internal Std.Vector SystemIncludeDirs;
-
-                [FieldOffset(48)]
-                internal Std.Vector Defines;
-
-                [FieldOffset(60)]
-                internal Std.Vector LibraryDirs;
-
                 [FieldOffset(72)]
-                internal global::System.IntPtr ASTContext;
+                public global::System.IntPtr ASTContext;
 
                 [FieldOffset(76)]
-                internal int ToolSetToUse;
-
-                [FieldOffset(80)]
-                internal Std.String TargetTriple;
+                public int ToolSetToUse;
 
                 [FieldOffset(92)]
-                internal CppSharp.Parser.AST.CppAbi Abi;
+                public CppSharp.Parser.AST.CppAbi Abi;
 
                 [FieldOffset(96)]
-                internal bool NoStandardIncludes;
+                public bool NoStandardIncludes;
 
                 [FieldOffset(97)]
-                internal bool NoBuiltinIncludes;
+                public bool NoBuiltinIncludes;
 
                 [FieldOffset(98)]
-                internal bool MicrosoftMode;
+                public bool MicrosoftMode;
 
                 [FieldOffset(99)]
-                internal bool Verbose;
+                public bool Verbose;
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -488,20 +467,14 @@ namespace CppSharp
             [StructLayout(LayoutKind.Explicit, Size = 36)]
             public struct Internal
             {
-                [FieldOffset(0)]
-                internal Std.String FileName;
-
-                [FieldOffset(12)]
-                internal Std.String Message;
-
                 [FieldOffset(24)]
-                internal CppSharp.Parser.ParserDiagnosticLevel Level;
+                public CppSharp.Parser.ParserDiagnosticLevel Level;
 
                 [FieldOffset(28)]
-                internal int LineNumber;
+                public int LineNumber;
 
                 [FieldOffset(32)]
-                internal int ColumnNumber;
+                public int ColumnNumber;
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -511,7 +484,7 @@ namespace CppSharp
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                     EntryPoint="_ZN8CppSharp9CppParser16ParserDiagnosticC2ERKS1_")]
-                internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                internal static extern void cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -656,20 +629,17 @@ namespace CppSharp
 
         public unsafe partial class ParserResult : IDisposable
         {
-            [StructLayout(LayoutKind.Explicit, Size = 24)]
+            [StructLayout(LayoutKind.Explicit, Size = 28)]
             public struct Internal
             {
                 [FieldOffset(0)]
-                internal CppSharp.Parser.ParserResultKind Kind;
-
-                [FieldOffset(4)]
-                internal Std.Vector Diagnostics;
+                public CppSharp.Parser.ParserResultKind Kind;
 
                 [FieldOffset(16)]
-                internal global::System.IntPtr ASTContext;
+                public global::System.IntPtr ASTContext;
 
                 [FieldOffset(20)]
-                internal global::System.IntPtr Library;
+                public global::System.IntPtr Library;
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -679,7 +649,7 @@ namespace CppSharp
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                     EntryPoint="_ZN8CppSharp9CppParser12ParserResultC2ERKS1_")]
-                internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                internal static extern void cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -721,7 +691,7 @@ namespace CppSharp
 
             public ParserResult()
             {
-                __Instance = Marshal.AllocHGlobal(24);
+                __Instance = Marshal.AllocHGlobal(28);
                 Internal.ctor_0(__Instance);
             }
 
@@ -742,7 +712,7 @@ namespace CppSharp
                 var __ret = new CppSharp.Parser.ParserDiagnostic.Internal();
                 Internal.getDiagnostics_0(new IntPtr(&__ret), __Instance, i);
                 var __instance = Marshal.AllocHGlobal(36);
-                CppSharp.Parser.ParserDiagnostic.Internal.cctor_2(__instance, new global::System.IntPtr(&__ret));
+                CppSharp.Parser.ParserDiagnostic.Internal.cctor_1(__instance, new global::System.IntPtr(&__ret));
                 return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.ParserDiagnostic(__instance);
             }
 

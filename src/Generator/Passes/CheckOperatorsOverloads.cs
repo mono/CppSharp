@@ -47,14 +47,14 @@ namespace CppSharp.Passes
 
         private void CheckInvalidOperators(Class @class)
         {
-            foreach (var @operator in @class.Operators.Where(o => !o.Ignore))
+            foreach (var @operator in @class.Operators.Where(o => o.IsGenerated))
             {
                 if (!IsValidOperatorOverload(@operator))
                 {
                     Driver.Diagnostics.Debug(DiagnosticId.InvalidOperatorOverload,
                         "Invalid operator overload {0}::{1}",
                         @class.OriginalName, @operator.OperatorKind);
-                    @operator.ExplicityIgnored = true;
+                    @operator.ExplicitlyIgnore();
                     continue;
                 }
                 if (@operator.SynthKind == FunctionSynthKind.NonMemberOperator)
@@ -97,26 +97,30 @@ namespace CppSharp.Passes
                     GetMethod = @operator
                 };
 
-            if (!@operator.ReturnType.Qualifiers.IsConst && @operator.ReturnType.Type.IsAddress())
-                property.SetMethod = @operator;
+            var returnType = @operator.Type;
+            if (returnType.IsAddress())
+            {
+                var pointer = returnType as PointerType;
+                var qualifiedPointee = pointer.QualifiedPointee;
+                if (!qualifiedPointee.Qualifiers.IsConst)
+                    property.SetMethod = @operator;
+            }
+            
+            // If we've a setter use the pointee as the type of the property.
+            var pointerType = property.Type as PointerType;
+            if (pointerType != null && property.HasSetter)
+                property.QualifiedType = new QualifiedType(
+                    pointerType.Pointee, property.QualifiedType.Qualifiers);
 
             if (Driver.Options.IsCLIGenerator)
-            {
-                // If we've a setter use the pointee as the type of the property.
-                var pointerType = property.Type as PointerType;
-                if (pointerType != null && property.HasSetter)
-                {
-                    property.QualifiedType = new QualifiedType(pointerType.Pointee, property.QualifiedType.Qualifiers);
-                    property.GetMethod.ReturnType = property.QualifiedType;
-                }
                 // C++/CLI uses "default" as the indexer property name.
                 property.Name = "default";
-            }
 
             property.Parameters.AddRange(@operator.Parameters);
 
             @class.Properties.Add(property);
-            @operator.IsGenerated = false;
+
+            @operator.GenerationKind = GenerationKind.Internal;
         }
 
         static void HandleMissingOperatorOverloadPair(Class @class, CXXOperatorKind op1,
@@ -129,7 +133,7 @@ namespace CppSharp.Passes
                 var missingKind = CheckMissingOperatorOverloadPair(@class, out index, op1, op2,
                                                                    op.Parameters.Last().Type);
 
-                if (missingKind == CXXOperatorKind.None || op.Ignore)
+                if (missingKind == CXXOperatorKind.None || !op.IsGenerated)
                     continue;
 
                 var method = new Method()
@@ -158,13 +162,13 @@ namespace CppSharp.Passes
             var hasFirst = first != null;
             var hasSecond = second != null;
 
-            if (hasFirst && (!hasSecond || second.Ignore))
+            if (hasFirst && (!hasSecond || !second.IsGenerated))
             {
                 index = @class.Methods.IndexOf(first);
                 return op2;
             }
 
-            if (hasSecond && (!hasFirst || first.Ignore))
+            if (hasSecond && (!hasFirst || !first.IsGenerated))
             {
                 index = @class.Methods.IndexOf(second);
                 return op1;
@@ -196,8 +200,9 @@ namespace CppSharp.Passes
                 // The array indexing operator can be overloaded
                 case CXXOperatorKind.Subscript:
 
-                // The conversion operator can be overloaded
+                // The conversion operators can be overloaded
                 case CXXOperatorKind.Conversion:
+                case CXXOperatorKind.ExplicitConversion:
                     return true;
 
                 // The comparison operators can be overloaded if their return type is bool

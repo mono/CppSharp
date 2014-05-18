@@ -12,8 +12,7 @@ namespace CppSharp.Generators.CSharp
         Native,
         Managed,
         ManagedPointer,
-        GenericDelegate,
-        PrimitiveIndexer
+        GenericDelegate
     }
 
     public class CSharpTypePrinterContext : TypePrinterContext
@@ -232,13 +231,13 @@ namespace CppSharp.Generators.CSharp
             }
 
             Enumeration @enum;
-            if (desugared.IsTagDecl(out @enum))
+            if (desugared.TryGetEnum(out @enum))
             {
                 return @enum.Name + "*";
             }
 
             Class @class;
-            if ((desugared.IsDependent || desugared.IsTagDecl(out @class))
+            if ((desugared.IsDependent || desugared.TryGetClass(out @class))
                 && ContextKind == CSharpTypePrinterContextKind.Native)
             {
                 return "global::System.IntPtr";
@@ -399,6 +398,7 @@ namespace CppSharp.Generators.CSharp
                 case PrimitiveType.Double: return "double";
                 case PrimitiveType.IntPtr: return "global::System.IntPtr";
                 case PrimitiveType.UIntPtr: return "global::System.UIntPtr";
+                case PrimitiveType.Null: return "void*";
             }
 
             throw new NotSupportedException();

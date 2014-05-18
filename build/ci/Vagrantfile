@@ -1,0 +1,52 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.box = "http://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box"
+
+  # Disable automatic box update checking. If you disable this, then
+  # boxes will only be checked for updates when the user runs
+  # `vagrant box outdated`. This is not recommended.
+  # config.vm.box_check_update = false
+
+  # Create a public network, which generally matched to bridged network.
+  # Bridged networks make the machine appear as another physical device on
+  # your network.
+  config.vm.network "public_network", ip: "192.168.1.20"
+
+  # If true, then any SSH connections made will enable agent forwarding.
+  # Default value: false
+  # config.ssh.forward_agent = true
+
+  # Share an additional folder to the guest VM. The first argument is
+  # the path on the host to the actual folder. The second argument is
+  # the path on the guest to mount the folder. And the optional third
+  # argument is a set of non-required options.
+  # config.vm.synced_folder "../data", "/vagrant_data"
+
+  config.vm.provider :virtualbox do |vb|
+    vb.customize ["modifyvm", :id, "--memory", 4096]
+    vb.customize ["modifyvm", :id, "--cpus", 4]
+  end
+
+config.vm.provision "shell", inline: <<SCRIPT
+  # Build tools
+  apt-get install -y git build-essential clang cmake ninja-build
+  apt-get install -y mono-runtime mono-gmcs
+
+  # Java runtime to run TeamCity build agent
+  apt-get install -y openjdk-7-jre-headless unzip
+
+  # Get build agent from TC server and unpack in /var/TeamCity
+  (cd ~/; wget http://192.168.1.110/update/buildAgent.zip)
+  (cd /var; mkdir TeamCity; cd TeamCity)
+  unzip ~/buildAgent.zip
+  (cd bin; chmod +x agent.sh)
+  (cd ../conf; cp buildAgent.dist.properties buildAgent.properties)
+  sed -i 's/localhost/192\.168\.1\.110/' buildAgent.properties
+  sed -i 's/name=/name=Linux agent/' buildAgent.properties
+SCRIPT
+end

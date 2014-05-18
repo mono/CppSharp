@@ -191,12 +191,16 @@ struct CS_API TemplateParameter
     }
 
     STRING(Name)
+    bool IsTypeParameter;
 };
 
 struct CS_API TemplateParameterType : public Type
 {
     DECLARE_TYPE_KIND(TemplateParameter)
     TemplateParameter Parameter;
+    unsigned int Depth;
+    unsigned int Index;
+    bool IsParameterPack;
 };
 
 struct CS_API TemplateParameterSubstitutionType : public Type
@@ -210,7 +214,7 @@ struct Class;
 struct CS_API InjectedClassNameType : public Type
 {
     InjectedClassNameType();
-    TemplateSpecializationType TemplateSpecialization;
+    TemplateSpecializationType* TemplateSpecialization;
     CppSharp::CppParser::AST::Class* Class;
 };
 
@@ -372,6 +376,7 @@ struct CS_API Declaration
     unsigned DefinitionOrder;
     VECTOR(PreprocessedEntity*, PreprocessedEntities)
     void* OriginalPtr;
+    std::string USR;
 };
 
 struct Class;
@@ -380,12 +385,13 @@ struct Function;
 struct TypedefDecl;
 struct Namespace;
 struct Template;
+struct ClassTemplate;
 struct FunctionTemplate;
 struct Variable;
 
 struct CS_API DeclarationContext : public Declaration
 {
-    DECLARE_DECL_KIND(DeclarationContext, DeclarationContext)
+    DeclarationContext(DeclarationKind kind);
 
     CS_IGNORE Declaration* FindAnonymous(uint64_t key);
 
@@ -398,13 +404,14 @@ struct CS_API DeclarationContext : public Declaration
     CS_IGNORE Class* FindClass(const std::string& Name, bool IsComplete,
         bool Create = false);
 
-    CS_IGNORE FunctionTemplate* FindFunctionTemplate(void* OriginalPtr);
-    CS_IGNORE FunctionTemplate* FindFunctionTemplate(const std::string& Name,
-        const std::vector<TemplateParameter>& Params);
+    CS_IGNORE ClassTemplate* FindClassTemplate(const std::string& USR);
+    CS_IGNORE FunctionTemplate* FindFunctionTemplate(const std::string& USR);
 
+    CS_IGNORE Enumeration* FindEnum(void* OriginalPtr);
     CS_IGNORE Enumeration* FindEnum(const std::string& Name, bool Create = false);
+    CS_IGNORE Enumeration* FindEnumWithItem(const std::string& Name);
 
-    CS_IGNORE Function* FindFunction(const std::string& Name, bool Create = false);
+    CS_IGNORE Function* FindFunction(const std::string& USR);
 
     CS_IGNORE TypedefDecl* FindTypedef(const std::string& Name, bool Create = false);
 
@@ -433,6 +440,7 @@ struct CS_API Parameter : public Declaration
     CppSharp::CppParser::AST::QualifiedType QualifiedType;
     bool IsIndirect;
     bool HasDefaultValue;
+    unsigned int Index;
 };
 
 enum struct CXXMethodKind
@@ -493,6 +501,8 @@ enum struct CXXOperatorKind
     Conditional
 };
 
+struct FunctionTemplateSpecialization;
+
 struct CS_API Function : public Declaration
 {
     Function();
@@ -509,6 +519,7 @@ struct CS_API Function : public Declaration
     STRING(Signature)
     CppSharp::CppParser::AST::CallingConvention CallingConvention;
     VECTOR(Parameter*, Parameters)
+    FunctionTemplateSpecialization* SpecializationInfo;
 };
 
 struct AccessSpecifierDecl;
@@ -523,6 +534,7 @@ struct CS_API Method : public Function
     bool IsStatic;
     bool IsConst;
     bool IsImplicit;
+    bool IsExplicit;
     bool IsOverride;
 
     CXXMethodKind MethodKind;
@@ -558,6 +570,8 @@ struct CS_API Enumeration : public Declaration
     CppSharp::CppParser::AST::Type* Type;
     CppSharp::CppParser::AST::BuiltinType* BuiltinType;
     VECTOR(Item, Items)
+
+    Item* FindItemByName(const std::string& Name);
 };
 
 struct CS_API Variable : public Declaration
@@ -568,7 +582,6 @@ struct CS_API Variable : public Declaration
     CppSharp::CppParser::AST::QualifiedType QualifiedType;
 };
 
-struct DeclarationContext;
 struct PreprocessedEntity;
 
 struct CS_API BaseClassSpecifier
@@ -618,6 +631,7 @@ struct CS_API Class : public DeclarationContext
 
 struct CS_API Template : public Declaration
 {
+    Template(DeclarationKind kind);
     DECLARE_DECL_KIND(Template, Template)
     Declaration* TemplatedDecl;
     VECTOR(TemplateParameter, Parameters)
@@ -630,10 +644,8 @@ struct CS_API ClassTemplate : public Template
 {
     ClassTemplate();
     VECTOR(ClassTemplateSpecialization*, Specializations)
-    ClassTemplateSpecialization* FindSpecialization(void* ptr);
-    ClassTemplateSpecialization* FindSpecialization(TemplateSpecializationType type);
-    ClassTemplatePartialSpecialization* FindPartialSpecialization(void* ptr);
-    ClassTemplatePartialSpecialization* FindPartialSpecialization(TemplateSpecializationType type);
+    ClassTemplateSpecialization* FindSpecialization(const std::string& usr);
+    ClassTemplatePartialSpecialization* FindPartialSpecialization(const std::string& usr);
 };
 
 enum struct TemplateSpecializationKind
@@ -661,6 +673,17 @@ struct CS_API ClassTemplatePartialSpecialization : public ClassTemplateSpecializ
 struct CS_API FunctionTemplate : public Template
 {
     FunctionTemplate();
+    VECTOR(FunctionTemplateSpecialization*, Specializations)
+    FunctionTemplateSpecialization* FindSpecialization(const std::string& usr);
+};
+
+struct CS_API FunctionTemplateSpecialization
+{
+    FunctionTemplateSpecialization();
+    FunctionTemplate* Template;
+    VECTOR(TemplateArgument, Arguments)
+    Function* SpecializedFunction;
+    TemplateSpecializationKind SpecializationKind;
 };
 
 struct CS_API Namespace : public DeclarationContext

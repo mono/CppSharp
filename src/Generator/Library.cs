@@ -54,7 +54,7 @@ namespace CppSharp
         {
             Enumeration @enum = context.GetEnumWithMatchingItem(pattern);
             if (@enum != null)
-                @enum.ExplicityIgnored = true;
+                @enum.ExplicitlyIgnore();
         }
 
         public static void SetNameOfEnumWithMatchingItem(this ASTContext context, string pattern,
@@ -184,7 +184,7 @@ namespace CppSharp
         public static void IgnoreClassWithName(this ASTContext context, string name)
         {
             foreach (var @class in context.FindClass(name))
-                @class.ExplicityIgnored = true;
+                @class.ExplicitlyIgnore();
         }
 
         public static void SetClassAsOpaque(this ASTContext context, string name)
@@ -202,6 +202,26 @@ namespace CppSharp
                 if (method != null)
                     method.Name = newMethodName;
             }
+        }
+
+        public static void SetPropertyAsReadOnly(this ASTContext context, string className, string propertyName)
+        {
+            var properties = context.FindClass(className)
+                .SelectMany(c => c.Properties.Where(p => p.Name == propertyName && p.HasSetter));
+            foreach (var property in properties)
+                if (property.SetMethod != null)
+                    property.SetMethod.GenerationKind = GenerationKind.None;
+                else
+                {
+                    var field = property.Field;
+                    var quals = field.QualifiedType.Qualifiers;
+                    quals.IsConst = true;
+
+                    var qualType = field.QualifiedType;
+                    qualType.Qualifiers = quals;
+
+                    field.QualifiedType = qualType;
+                }
         }
 
         /// <summary>
@@ -270,7 +290,7 @@ namespace CppSharp
         public static void IgnoreFunctionWithName(this ASTContext context, string name)
         {
             foreach (var function in context.FindFunction(name))
-                function.ExplicityIgnored = true;
+                function.ExplicitlyIgnore();
         }
 
         public static void IgnoreFunctionWithPattern(this ASTContext context, string pattern)
@@ -280,7 +300,7 @@ namespace CppSharp
                 foreach (var function in unit.Functions)
                 {
                     if (Regex.Match(function.Name, pattern).Success)
-                        function.ExplicityIgnored = true;
+                        function.ExplicitlyIgnore();
                 }
             }
         }
@@ -299,7 +319,7 @@ namespace CppSharp
                                    where method.Name == name
                                    select method)
             {
-                method.ExplicityIgnored = true;
+                method.ExplicitlyIgnore();
             }
         }
 
@@ -308,7 +328,7 @@ namespace CppSharp
             foreach (var @class in context.FindClass(name))
             {
                 foreach (var classField in @class.Fields.FindAll(f => f.Name == field))
-                    classField.ExplicityIgnored = true;
+                    classField.ExplicitlyIgnore();
             }
         }
 
@@ -334,8 +354,7 @@ namespace CppSharp
 
             foreach (var unit in units)
             {
-                unit.IsGenerated = false;
-                unit.ExplicityIgnored = true;
+                unit.ExplicitlyIgnore();
             }
         }
 

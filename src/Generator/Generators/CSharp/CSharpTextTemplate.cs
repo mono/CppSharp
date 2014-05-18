@@ -43,25 +43,6 @@ namespace CppSharp.Generators.CSharp
             return new string(id.Select(c => char.IsLetterOrDigit(c) ? c : '_').ToArray());
         }
 
-        public static string ToCSharpCallConv(CallingConvention convention)
-        {
-            switch (convention)
-            {
-                case CallingConvention.Default:
-                    return "Winapi";
-                case CallingConvention.C:
-                    return "Cdecl";
-                case CallingConvention.StdCall:
-                    return "StdCall";
-                case CallingConvention.ThisCall:
-                    return "ThisCall";
-                case CallingConvention.FastCall:
-                    return "FastCall";
-            }
-
-            return "Winapi";
-        }
-
         public const string InstanceIdentifier = "__Instance";
 
         public static string GetAccess(AccessSpecifier accessSpecifier)
@@ -204,7 +185,7 @@ namespace CppSharp.Generators.CSharp
             // Generate all the enum declarations.
             foreach (var @enum in context.Enums)
             {
-                if (@enum.Ignore || @enum.IsIncomplete)
+                if (!@enum.IsGenerated || @enum.IsIncomplete)
                     continue;
 
                 GenerateEnum(@enum);
@@ -242,7 +223,7 @@ namespace CppSharp.Generators.CSharp
                 // Generate all the internal function declarations.
                 foreach (var function in context.Functions)
                 {
-                    if (function.Ignore) continue;
+                    if (!function.IsGenerated && !function.IsInternal ) continue;
 
                     GenerateInternalFunction(function);
                 }
@@ -252,7 +233,7 @@ namespace CppSharp.Generators.CSharp
 
                 foreach (var function in context.Functions)
                 {
-                    if (function.Ignore) continue;
+                    if (!function.IsGenerated) continue;
 
                     GenerateFunction(function);
                 }
@@ -263,7 +244,7 @@ namespace CppSharp.Generators.CSharp
 
             foreach (var @event in context.Events)
             {
-                if (@event.Ignore) continue;
+                if (!@event.IsGenerated) continue;
 
                 GenerateEvent(@event);
             }
@@ -334,7 +315,7 @@ namespace CppSharp.Generators.CSharp
 
         public void GenerateClass(Class @class)
         {
-            if (@class.IsIncomplete)
+            if (!@class.IsGenerated || @class.IsIncomplete)
                 return;
 
             PushBlock(CSharpBlockKind.Class);
@@ -350,7 +331,7 @@ namespace CppSharp.Generators.CSharp
                 GenerateClassInternals(@class);
                 GenerateDeclContext(@class);
 
-                if (@class.Ignore || @class.IsDependent)
+                if (@class.IsDependent)
                     goto exit;
 
                 if (ShouldGenerateClassNativeField(@class))
@@ -404,7 +385,7 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateInterface(Class @class)
         {
-            if (@class.Ignore || @class.IsIncomplete)
+            if (!@class.IsGenerated || @class.IsIncomplete)
                 return;
 
             PushBlock(CSharpBlockKind.Interface);
@@ -433,7 +414,7 @@ namespace CppSharp.Generators.CSharp
 
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
-            foreach (var prop in @class.Properties.Where(p => !p.Ignore))
+            foreach (var prop in @class.Properties.Where(p => p.IsGenerated))
             {
                 PushBlock(CSharpBlockKind.Property);
                 var type = prop.Type;
@@ -507,6 +488,9 @@ namespace CppSharp.Generators.CSharp
 
             foreach (var ctor in @class.Constructors)
             {
+                if (@class.IsStatic)
+                    continue;
+
                 if (ctor.IsMoveConstructor)
                     continue;
 
@@ -516,7 +500,7 @@ namespace CppSharp.Generators.CSharp
                 tryAddOverload(ctor);
             }
 
-            if (@class.HasNonTrivialDestructor)
+            if (@class.HasNonTrivialDestructor && !@class.IsStatic)
                 foreach (var dtor in @class.Destructors)
                     tryAddOverload(dtor);
 
@@ -596,7 +580,7 @@ namespace CppSharp.Generators.CSharp
         {
             foreach (var @base in @class.Bases)
             {
-                if (!@base.IsClass || @base.Class.Ignore)
+                if (!@base.IsClass || !@base.Class.IsDeclared)
                     continue;
 
                 GenerateStructMarshalingProperties(@base.Class);
@@ -605,7 +589,7 @@ namespace CppSharp.Generators.CSharp
             for (int i = 0; i < @class.Properties.Count; i++)
             {
                 var property = @class.Properties[i];
-                if (property.Ignore || property.Field == null) continue;
+                if (!property.IsGenerated || property.Field == null) continue;
 
                 var nativeField = string.Format("{0}->{1}",
                     Generator.GeneratedIdentifier("ptr"),
@@ -647,7 +631,7 @@ namespace CppSharp.Generators.CSharp
         {
             foreach (var @base in @class.Bases)
             {
-                if (!@base.IsClass || @base.Class.Ignore)
+                if (!@base.IsClass || !@base.Class.IsDeclared)
                     continue;
 
                 var baseClass = @base.Class;
@@ -656,7 +640,7 @@ namespace CppSharp.Generators.CSharp
 
             foreach (var property in @class.Properties)
             {
-                if (property.Ignore || property.Field == null)
+                if (!property.IsGenerated || property.Field == null)
                     continue;
 
                 GenerateStructInternalMarshalingProperty(property, marshalVar);
@@ -680,7 +664,7 @@ namespace CppSharp.Generators.CSharp
             Type type;
             Class @class;
             var isRef = property.Type.IsPointerTo(out type) &&
-                !(type.IsTagDecl(out @class) && @class.IsValueType) &&
+                !(type.TryGetClass(out @class) && @class.IsValueType) &&
                 !type.IsPrimitiveType();
 
             if (isRef)
@@ -710,13 +694,15 @@ namespace CppSharp.Generators.CSharp
                 baseClass = @class.Bases[0].Class;
 
             var hasRefBase = baseClass != null && baseClass.IsRefType
-                             && !baseClass.ExplicityIgnored;
+                             && baseClass.IsDeclared;
 
             return hasRefBase;
         }
 
         public static bool ShouldGenerateClassNativeField(Class @class)
         {
+            if (@class.IsStatic)
+                return false;
             return @class.IsRefType && (!@class.HasBase || !HasRefBase(@class));
         }
 
@@ -725,12 +711,16 @@ namespace CppSharp.Generators.CSharp
             if (@class.IsUnion)
                 WriteLine("[StructLayout(LayoutKind.Explicit)]");
 
-            Write(@class.Ignore ? "internal " : Helpers.GetAccess(@class.Access));
+            Write(@class.IsInternal ? "internal " : Helpers.GetAccess(@class.Access));
             Write("unsafe ");
 
             if (Driver.Options.GenerateAbstractImpls && @class.IsAbstract)
                 Write("abstract ");
 
+            if (@class.IsStatic)
+                Write("static ");
+
+            // This token needs to directly precede the "class" token.
             if (Options.GeneratePartialClasses)
                 Write("partial ");
 
@@ -739,9 +729,9 @@ namespace CppSharp.Generators.CSharp
 
             var bases = new List<string>();
 
-            var needsBase = @class.HasBaseClass && !@class.IsValueType && !@class.Ignore
+            var needsBase = @class.HasBaseClass && !@class.IsValueType && @class.IsGenerated
                 && !@class.Bases[0].Class.IsValueType
-                && !@class.Bases[0].Class.Ignore;
+                && @class.Bases[0].Class.IsGenerated;
 
             if (needsBase)
             {
@@ -751,7 +741,7 @@ namespace CppSharp.Generators.CSharp
                     select QualifiedIdentifier(@base.Class));
             }
 
-            if (!@class.Ignore)
+            if (@class.IsGenerated)
             {
                 if (@class.IsRefType)
                     bases.Add("IDisposable");
@@ -762,7 +752,7 @@ namespace CppSharp.Generators.CSharp
                 }
             }
 
-            if (bases.Count > 0)
+            if (bases.Count > 0 && !@class.IsStatic)
                 Write(" : {0}", string.Join(", ", bases));
         }
 
@@ -771,7 +761,7 @@ namespace CppSharp.Generators.CSharp
             foreach (var @base in @class.Bases.Where(b => !(b.Type is DependentNameType)))
             {
                 TypeMap typeMap;
-                if ((!Driver.TypeDatabase.FindTypeMap(@base.Type, out typeMap) && @base.Class.Ignore) ||
+                if ((!Driver.TypeDatabase.FindTypeMap(@base.Type, out typeMap) && !@base.Class.IsDeclared) ||
                     @base.Class.OriginalClass == @class)
                     continue;
 
@@ -780,7 +770,7 @@ namespace CppSharp.Generators.CSharp
 
             foreach (var field in @class.Fields)
             {
-                if (!nativeFields && ASTUtils.CheckIgnoreField(field)) continue;
+                if (ASTUtils.CheckIgnoreField(field, nativeFields)) continue;
                 action(field);
             }
         }
@@ -790,7 +780,7 @@ namespace CppSharp.Generators.CSharp
             // we do not support dependent fields yet, see https://github.com/mono/CppSharp/issues/197
             Class @class;
             if (field.Type.IsDependent && !field.Type.IsPointer() &&
-                !(field.Type.IsTagDecl(out @class) && @class.IsUnion))
+                !(field.Type.TryGetClass(out @class) && @class.IsUnion))
                 return;
 
             var safeIdentifier = Helpers.SafeIdentifier(field.OriginalName);
@@ -807,13 +797,11 @@ namespace CppSharp.Generators.CSharp
             if (field.Expression != null)
             {
                 var fieldValuePrinted = field.Expression.CSharpValue(ExpressionPrinter);
-                Write("{0} {1} {2} = {3};", field.Ignore ? "internal" : "public",
-                    fieldTypePrinted.Type, safeIdentifier, fieldValuePrinted);
+                Write("public {0} {1} = {2};", fieldTypePrinted.Type, safeIdentifier, fieldValuePrinted);
             }
             else
             {
-                Write("{0} {1} {2};", field.Ignore ? "internal" : "public",
-                    fieldTypePrinted.Type, safeIdentifier);
+                Write("public {0} {1};", fieldTypePrinted.Type, safeIdentifier);
             }
 
             PopBlock(NewLineKind.BeforeNextBlock);
@@ -987,7 +975,7 @@ namespace CppSharp.Generators.CSharp
         private void GenerateIndexerSetter(QualifiedType returnType, Function function)
         {
             Type type;
-            returnType.Type.IsPointerTo(out type);
+            function.Type.IsPointerTo(out type);
             PrimitiveType primitiveType;
             string internalFunction = GetFunctionNativeIdentifier(function);
             if (type.IsPrimitiveType(out primitiveType))
@@ -1003,7 +991,7 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
-        private void GeneratePropertyGetter<T>(T decl, Class @class)
+        private void GeneratePropertyGetter<T>(QualifiedType returnType, T decl, Class @class)
             where T : Declaration, ITypedDecl
         {
             PushBlock(CSharpBlockKind.Method);
@@ -1023,19 +1011,9 @@ namespace CppSharp.Generators.CSharp
                 WriteStartBraceIndent();
                 var method = function as Method;
                 if (method != null && method.IsOverride && method.IsSynthetized)
-                {
                     GenerateVirtualTableFunctionCall(method, @class);
-                }
                 else
-                {
-                    bool isPrimitiveIndexer = function.OperatorKind == CXXOperatorKind.Subscript &&
-                                              function.ReturnType.Type.IsPointerToPrimitiveType();
-                    if (isPrimitiveIndexer)
-                        TypePrinter.PushContext(CSharpTypePrinterContextKind.PrimitiveIndexer);
-                    GenerateInternalFunctionCall(function);
-                    if (isPrimitiveIndexer)
-                        TypePrinter.PopContext();
-                }
+                    GenerateInternalFunctionCall(function, function.Parameters, returnType.Type);
             }
             else if (decl is Field)
             {
@@ -1168,7 +1146,7 @@ namespace CppSharp.Generators.CSharp
         {
             foreach (var variable in @class.Variables)
             {
-                if (variable.Ignore) continue;
+                if (!variable.IsGenerated) continue;
 
                 if (variable.Access != AccessSpecifier.Public)
                     continue;
@@ -1183,7 +1161,7 @@ namespace CppSharp.Generators.CSharp
         {
             if (@class.IsValueType)
             {
-                foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.Ignore))
+                foreach (var @base in @class.Bases.Where(b => b.IsClass && b.Class.IsDeclared))
                 {
                     GenerateClassProperties(@base.Class);
                 }   
@@ -1194,7 +1172,7 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateProperties(Class @class)
         {
-            foreach (var prop in @class.Properties.Where(p => !p.Ignore))
+            foreach (var prop in @class.Properties.Where(p => p.IsGenerated))
             {
                 if (prop.IsInRefTypeAndBackedByValueClassField())
                 {
@@ -1203,12 +1181,6 @@ namespace CppSharp.Generators.CSharp
                 }
 
                 PushBlock(CSharpBlockKind.Property);
-
-                // If this is an indexer that returns an address use the real type
-                // because there is a setter anyway.
-                var type = prop.Type;
-                if (prop.Parameters.Count > 0 && prop.Type.IsPointerToPrimitiveType())
-                    type = ((PointerType) prop.Type).Pointee;
 
                 ArrayType arrayType = prop.Type as ArrayType;
                 if (arrayType != null && arrayType.Type.IsPointerToPrimitiveType() && prop.Field != null)
@@ -1233,11 +1205,11 @@ namespace CppSharp.Generators.CSharp
                     else if (prop.IsVirtual)
                         Write("virtual ");
 
-                    WriteLine("{0} {1}", type, GetPropertyName(prop));
+                    WriteLine("{0} {1}", prop.Type, GetPropertyName(prop));
                 }
                 else
                 {
-                    WriteLine("{0} {1}.{2}", type, prop.ExplicitInterfaceImpl.Name,
+                    WriteLine("{0} {1}.{2}", prop.Type, prop.ExplicitInterfaceImpl.Name,
                         GetPropertyName(prop));
                 }
                 WriteStartBraceIndent();
@@ -1245,7 +1217,7 @@ namespace CppSharp.Generators.CSharp
                 if (prop.Field != null)
                 {
                     if (prop.HasGetter)
-                        GeneratePropertyGetter(prop.Field, @class);
+                        GeneratePropertyGetter(prop.QualifiedType, prop.Field, @class);
 
                     if (prop.HasSetter)
                         GeneratePropertySetter(prop.Field.QualifiedType, prop.Field,
@@ -1254,12 +1226,10 @@ namespace CppSharp.Generators.CSharp
                 else
                 {
                     if (prop.HasGetter)
-                        GeneratePropertyGetter(prop.GetMethod, @class);
+                        GeneratePropertyGetter(prop.QualifiedType, prop.GetMethod, @class);
 
                     if (prop.HasSetter)
-                        GeneratePropertySetter(prop.GetMethod != null ?
-                            prop.GetMethod.ReturnType : prop.SetMethod.Parameters[0].QualifiedType,
-                            prop.SetMethod, @class);
+                        GeneratePropertySetter(prop.QualifiedType, prop.SetMethod, @class);
                 }
 
                 WriteCloseBraceIndent();
@@ -1279,7 +1249,7 @@ namespace CppSharp.Generators.CSharp
             WriteLine("public static {0} {1}", type, variable.Name);
             WriteStartBraceIndent();
 
-            GeneratePropertyGetter(variable, @class);
+            GeneratePropertyGetter(variable.QualifiedType, variable, @class);
 
             if (!variable.QualifiedType.Qualifiers.IsConst)
                 GeneratePropertySetter(variable.QualifiedType, variable, @class);
@@ -1434,14 +1404,14 @@ namespace CppSharp.Generators.CSharp
                 var vfptr = @class.Layout.VFTables[tableIndex];
                 var size = vfptr.Layout.Components.Count;
                 WriteLine("var vfptr{0} = Marshal.AllocHGlobal({1} * {2});",
-                    tableIndex, size, Driver.Options.Is32Bit ? 4 : 8);
+                    tableIndex, size, Driver.TargetInfo.PointerWidth / 8);
                 WriteLine("_NewVTables[{0}] = vfptr{0}.ToPointer();", tableIndex);
 
                 for (int entryIndex = 0; entryIndex < vfptr.Layout.Components.Count; entryIndex++)
                 {
                     var entry = vfptr.Layout.Components[entryIndex];
                     var offsetInBytes = VTables.GetVTableComponentIndex(@class, entry)
-                        * (Driver.Options.Is32Bit ? 4 : 8);
+                        * (Driver.TargetInfo.PointerWidth / 8);
                     if (entry.Ignore)
                         WriteLine("*(void**)(vfptr{0} + {1}) = *(void**)(native->vfptr{0} + {1});",
                             tableIndex, offsetInBytes);
@@ -1464,14 +1434,14 @@ namespace CppSharp.Generators.CSharp
 
             // reserve space for the offset-to-top and RTTI pointers as well
             var size = entries.Count;
-            WriteLine("var vfptr{0} = Marshal.AllocHGlobal({1} * {2});", 0, size, Driver.Options.Is32Bit ? 4 : 8);
+            WriteLine("var vfptr{0} = Marshal.AllocHGlobal({1} * {2});", 0, size, Driver.TargetInfo.PointerWidth / 8);
             WriteLine("_NewVTables[0] = vfptr0.ToPointer();");
 
             for (int i = 0; i < entries.Count; i++)
             {
                 var entry = entries[i];
                 var offsetInBytes = VTables.GetVTableComponentIndex(@class, entry)
-                    * (Driver.Options.Is32Bit ? 4 : 8);
+                    * (Driver.TargetInfo.PointerWidth / 8);
                 if (entry.Ignore)
                     WriteLine("*(void**)(vfptr0 + {0}) = *(void**)(native->vfptr0 + {0});", offsetInBytes);
                 else
@@ -1514,7 +1484,7 @@ namespace CppSharp.Generators.CSharp
             for (int i = 0; i < method.Parameters.Count; i++)
             {
                 var param = method.Parameters[i];
-                if (param.Ignore)
+                if (!param.IsGenerated)
                     continue;
 
                 if (param.Kind == ParameterKind.IndirectReturnType)
@@ -1608,7 +1578,7 @@ namespace CppSharp.Generators.CSharp
             }
             WriteLine("[SuppressUnmanagedCodeSecurity]");
             WriteLine("[UnmanagedFunctionPointerAttribute(global::System.Runtime.InteropServices.CallingConvention.{0})]",
-                Helpers.ToCSharpCallConv(method.CallingConvention));
+                method.CallingConvention.ToInteropCallConv());
 
             CSharpTypePrinterResult retType;
             var @params = GatherInternalParams(method, out retType);
@@ -1789,6 +1759,9 @@ namespace CppSharp.Generators.CSharp
 
         public void GenerateClassConstructors(Class @class)
         {
+            if (@class.IsStatic)
+                return;
+
             // Output a default constructor that takes the native pointer.
             GenerateNativeConstructor(@class);
 
@@ -1957,7 +1930,7 @@ namespace CppSharp.Generators.CSharp
 
         private bool GenerateClassConstructorBase(Class @class, Method method)
         {
-            var hasBase = @class.HasBaseClass && !@class.Bases[0].Class.Ignore;
+            var hasBase = @class.HasBaseClass;
 
             if (hasBase && !@class.IsValueType)
             {
@@ -2033,7 +2006,8 @@ namespace CppSharp.Generators.CSharp
             else if (method.ExplicitInterfaceImpl != null)
                 Write("{0} {1}.{2}(", method.OriginalReturnType,
                     method.ExplicitInterfaceImpl.Name, functionName);
-            else if (method.OperatorKind == CXXOperatorKind.Conversion)
+            else if (method.OperatorKind == CXXOperatorKind.Conversion || 
+                     method.OperatorKind == CXXOperatorKind.ExplicitConversion)
                 Write("{0} {1}(", functionName, method.OriginalReturnType);
             else
                 Write("{0} {1}(", method.OriginalReturnType, functionName);
@@ -2130,17 +2104,17 @@ namespace CppSharp.Generators.CSharp
         private void GenerateVirtualTableFunctionCall(Method method, Class @class)
         {
             string delegateId;
-            Write(GetVirtualCallDelegate(method, @class, Driver.Options.Is32Bit, out delegateId));
+            Write(GetVirtualCallDelegate(method, @class, out delegateId));
             GenerateFunctionCall(delegateId, method.Parameters, method);
         }
 
         public string GetVirtualCallDelegate(Method method, Class @class,
-            bool is32Bit, out string delegateId)
+            out string delegateId)
         {
             var virtualCallBuilder = new StringBuilder();
             var i = VTables.GetVTableIndex(method, @class);
             virtualCallBuilder.AppendFormat("void* slot = *(void**) ((({0}.Internal*) {1})->vfptr0 + {2} * {3});",
-                @class.BaseClass.Name, Helpers.InstanceIdentifier, i, is32Bit ? 4 : 8);
+                @class.BaseClass.Name, Helpers.InstanceIdentifier, i, Driver.TargetInfo.PointerWidth / 8);
             virtualCallBuilder.AppendLine();
 
             string @delegate = GetVTableMethodDelegateName((Method) method.OriginalFunction);
@@ -2157,10 +2131,24 @@ namespace CppSharp.Generators.CSharp
         {
             if (method.IsSynthetized)
             {
-                var @operator = Operators.GetOperatorOverloadPair(method.OperatorKind);
+                if (method.Kind == CXXMethodKind.Conversion)
+                {
+                    // To avoid ambiguity when having the multiple inheritance pass enabled
+                    var @interface = @class.Namespace.Classes.Find(c => c.OriginalClass == @class);
+                    if (@interface != null)
+                        WriteLine("return new {0}(({2}){1});", method.ConversionType,
+                                  method.Parameters[0].Name, @interface.Name);
+                    else
+                        WriteLine("return new {0}({1});", method.ConversionType,
+                                  method.Parameters[0].Name);
+                }
+                else
+                {
+                    var @operator = Operators.GetOperatorOverloadPair(method.OperatorKind);
 
-                WriteLine("return !({0} {1} {2});", method.Parameters[0].Name,
-                          @operator, method.Parameters[1].Name);
+                    WriteLine("return !({0} {1} {2});", method.Parameters[0].Name,
+                              @operator, method.Parameters[1].Name);
+                }
                 return;
             }
 
@@ -2190,7 +2178,7 @@ namespace CppSharp.Generators.CSharp
         }
 
         public void GenerateInternalFunctionCall(Function function,
-            List<Parameter> parameters = null)
+            List<Parameter> parameters = null, Type returnType = null)
         {
             if (parameters == null)
                 parameters = function.Parameters;
@@ -2198,11 +2186,11 @@ namespace CppSharp.Generators.CSharp
             CheckArgumentRange(function);
             var functionName = string.Format("Internal.{0}",
                 GetFunctionNativeIdentifier(function));
-            GenerateFunctionCall(functionName, parameters, function);
+            GenerateFunctionCall(functionName, parameters, function, returnType);
         }
 
         public void GenerateFunctionCall(string functionName, List<Parameter> parameters,
-            Function function)
+            Function function, Type returnType = null)
         {
             if (function.IsPure)
             {
@@ -2211,6 +2199,8 @@ namespace CppSharp.Generators.CSharp
             }
 
             var retType = function.OriginalReturnType;
+            if (returnType == null)
+                returnType = retType.Type;
             var needsReturn = !retType.Type.IsPrimitiveType(PrimitiveType.Void);
 
             var isValueType = false;
@@ -2238,7 +2228,7 @@ namespace CppSharp.Generators.CSharp
                     parameter => parameter.Kind == ParameterKind.IndirectReturnType);
 
                 Class retClass;
-                indirectRetType.Type.Desugar().IsTagDecl(out retClass);
+                indirectRetType.Type.Desugar().TryGetClass(out retClass);
 
                 WriteLine("var {0} = new {1}.Internal();", GeneratedIdentifier("ret"),
                     QualifiedIdentifier(retClass.OriginalClass ?? retClass));
@@ -2341,7 +2331,7 @@ namespace CppSharp.Generators.CSharp
                     pointee = pointee.Desugar();
                     string @null;
                     Class @class;
-                    if (pointee.IsTagDecl(out @class) && @class.IsValueType)
+                    if (pointee.TryGetClass(out @class) && @class.IsValueType)
                     {
                         @null = string.Format("new {0}()", pointee);
                     }
@@ -2369,10 +2359,14 @@ namespace CppSharp.Generators.CSharp
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                     Write(marshal.Context.SupportBefore);
 
-                WriteLine(
-                    TypePrinter.ContextKind == CSharpTypePrinterContextKind.PrimitiveIndexer
-                        ? "return *{0};"
-                        : "return {0};", marshal.Context.Return);
+                // Special case for indexer - needs to dereference if the internal
+                // function is a pointer type and the property is not.
+                if (retType.Type.IsAddress() && 
+                    retType.Type.GetPointee().Equals(returnType) &&
+                    returnType.IsPrimitiveType())
+                    WriteLine("return *{0};", marshal.Context.Return);
+                else
+                    WriteLine("return {0};", marshal.Context.Return);
             }
         }
 
@@ -2472,7 +2466,7 @@ namespace CppSharp.Generators.CSharp
                 var paramType = param.Type;
 
                 Class @class;
-                if (paramType.Desugar().IsTagDecl(out @class) && @class.IsRefType)
+                if (paramType.Desugar().TryGetClass(out @class) && @class.IsRefType)
                 {
                     WriteLine("{0} = new {1}();", param.Name, paramType);
                 }
@@ -2529,7 +2523,7 @@ namespace CppSharp.Generators.CSharp
 
         public bool GenerateTypedef(TypedefDecl typedef)
         {
-            if (typedef.Ignore)
+            if (!typedef.IsGenerated)
                 return false;
 
             GenerateDeclarationCommon(typedef);
@@ -2547,8 +2541,17 @@ namespace CppSharp.Generators.CSharp
             else if (typedef.Type.IsPointerTo(out functionType))
             {
                 PushBlock(CSharpBlockKind.Typedef);
-                WriteLine("[UnmanagedFunctionPointerAttribute(global::System.Runtime.InteropServices.CallingConvention.{0})]",
-                    Helpers.ToCSharpCallConv(functionType.CallingConvention));
+                var attributedType = typedef.Type.GetPointee() as AttributedType;
+                if (attributedType != null)
+                {
+                    var equivalentFunctionType = attributedType.Equivalent.Type as FunctionType;
+                    var callingConvention = equivalentFunctionType.CallingConvention.ToInteropCallConv();
+                    if (callingConvention != System.Runtime.InteropServices.CallingConvention.Winapi)
+                    {
+                        WriteLine("[UnmanagedFunctionPointerAttribute(global::System.Runtime.InteropServices.CallingConvention.{0})]",
+                            callingConvention);
+                    }
+                }
                 TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
                 WriteLine("{0}unsafe {1};",
                     Helpers.GetAccess(typedef.Access),
@@ -2563,7 +2566,7 @@ namespace CppSharp.Generators.CSharp
 
         public void GenerateEnum(Enumeration @enum)
         {
-            if (@enum.Ignore) return;
+            if (!@enum.IsGenerated) return;
 
             PushBlock(CSharpBlockKind.Enum);
             GenerateDeclarationCommon(@enum);
@@ -2654,7 +2657,7 @@ namespace CppSharp.Generators.CSharp
 
         public void GenerateInternalFunction(Function function)
         {
-            if (function.ExplicityIgnored || function.IsPure)
+            if (function.IsPure)
                 return;
 
             if (function.OriginalFunction != null)
@@ -2670,7 +2673,8 @@ namespace CppSharp.Generators.CSharp
                 NativeLibrary library;
                 Driver.Symbols.FindLibraryBySymbol(function.Mangled, out library);
 
-                libName = Path.GetFileNameWithoutExtension(library.FileName);
+                if (library != null)
+                    libName = Path.GetFileNameWithoutExtension(library.FileName);
             }
             if (libName != null && libName.Length > 3 && libName.StartsWith("lib"))
             {
@@ -2684,7 +2688,7 @@ namespace CppSharp.Generators.CSharp
 
             Write("[DllImport(\"{0}\", ", libName);
 
-            var callConv = Helpers.ToCSharpCallConv(function.CallingConvention);
+            var callConv = function.CallingConvention.ToInteropCallConv();
             WriteLine("CallingConvention = global::System.Runtime.InteropServices.CallingConvention.{0},",
                 callConv);
 

@@ -56,3 +56,4 @@
 #define DEF_STRING(klass, name) \
     const char* klass::get##name() { return name.c_str(); } \
     void klass::set##name(const char* s) { name = s; }
+

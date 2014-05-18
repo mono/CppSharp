@@ -13,6 +13,10 @@ namespace CppSharp.AST
 
         // Generic type constraint
         public string Constraint;
+
+        // Whether the template parameter represents a type parameter,
+        // like "T" in template<typename T>.
+        public bool IsTypeParameter;
     }
 
     /// <summary>
@@ -24,8 +28,18 @@ namespace CppSharp.AST
         // Name of the declaration.
         public override string Name
         {
-            get { return TemplatedDecl.Name; }
-            set { base.Name = value; }
+            get 
+            {
+                if (TemplatedDecl != null)
+                    return TemplatedDecl.Name;
+                return base.Name;
+            }
+            set 
+            { 
+                base.Name = value;
+                if (TemplatedDecl != null)
+                    TemplatedDecl.Name = value;
+            }
         }
 
         protected Template()
@@ -111,27 +125,14 @@ namespace CppSharp.AST
             }
         }
 
-        public ClassTemplateSpecialization FindSpecialization(
-            TemplateSpecializationType type)
+        public ClassTemplateSpecialization FindSpecializationByUSR(string usr)
         {
-            return Specializations.FirstOrDefault(
-                spec => spec.Arguments.SequenceEqual(type.Arguments));
+            return Specializations.FirstOrDefault(spec => spec.USR == usr);
         }
 
-        public ClassTemplateSpecialization FindSpecialization(IntPtr ptr)
+        public ClassTemplatePartialSpecialization FindPartialSpecializationByUSR(string usr)
         {
-            return Specializations.FirstOrDefault(spec => spec.OriginalPtr == ptr);
-        }
-
-        public ClassTemplatePartialSpecialization FindPartialSpecialization(
-            TemplateSpecializationType type)
-        {
-            return FindSpecialization(type) as ClassTemplatePartialSpecialization;
-        }
-
-        public ClassTemplatePartialSpecialization FindPartialSpecialization(IntPtr ptr)
-        {
-            return FindSpecialization(ptr) as ClassTemplatePartialSpecialization;
+            return FindSpecializationByUSR(usr) as ClassTemplatePartialSpecialization;
         }
     }
 
@@ -168,7 +169,7 @@ namespace CppSharp.AST
     /// </summary>
     public class ClassTemplateSpecialization : Class
     {
-        public  ClassTemplate TemplatedDecl;
+        public ClassTemplate TemplatedDecl;
 
         public List<TemplateArgument> Arguments;
 
@@ -193,9 +194,17 @@ namespace CppSharp.AST
     /// </summary>
     public class FunctionTemplate : Template
     {
+        public List<FunctionTemplateSpecialization> Specializations;
+
+        public FunctionTemplate()
+        {
+            Specializations = new List<FunctionTemplateSpecialization>();
+        }
+
         public FunctionTemplate(Declaration decl)
             : base(decl)
         {
+            Specializations = new List<FunctionTemplateSpecialization>();
         }
 
         public Function TemplatedFunction
@@ -206,6 +215,35 @@ namespace CppSharp.AST
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {
             return visitor.VisitFunctionTemplateDecl(this);
+        }
+    }
+
+    /// <summary>
+    /// Represents a function template specialization, which refers to a function
+    /// template with a given set of template arguments.
+    /// </summary>
+    public class FunctionTemplateSpecialization
+    {
+        public FunctionTemplate Template;
+
+        public List<TemplateArgument> Arguments;
+
+        public Function SpecializedFunction;
+
+        public TemplateSpecializationKind SpecializationKind;
+
+        public FunctionTemplateSpecialization()
+        {
+            Arguments = new List<TemplateArgument>();
+        }
+
+        public FunctionTemplateSpecialization(FunctionTemplateSpecialization fts)
+        {
+            Template = fts.Template;
+            Arguments = new List<TemplateArgument>();
+            Arguments.AddRange(fts.Arguments);
+            SpecializedFunction = fts.SpecializedFunction;
+            SpecializationKind = fts.SpecializationKind;
         }
     }
 }

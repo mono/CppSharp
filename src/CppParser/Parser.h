@@ -7,26 +7,12 @@
 
 #pragma once
 
-#include <llvm/Support/Host.h>
-#include <clang/Frontend/CompilerInstance.h>
-#include <clang/Frontend/CompilerInvocation.h>
-#include <clang/Frontend/ASTConsumers.h>
-#include <clang/Basic/FileManager.h>
-#include <clang/Basic/TargetOptions.h>
+#include <clang/AST/ASTFwd.h>
+#include <clang/AST/Type.h>
 #include <clang/Basic/TargetInfo.h>
-#include <clang/Basic/IdentifierTable.h>
-#include <clang/AST/ASTConsumer.h>
-#include <clang/AST/Mangle.h>
-#include <clang/AST/RawCommentList.h>
-#include <clang/AST/Comment.h>
-#include <clang/AST/RecordLayout.h>
-#include <clang/AST/VTableBuilder.h>
-#include <clang/Lex/Preprocessor.h>
-#include <clang/Lex/PreprocessingRecord.h>
-#include <clang/Parse/ParseAST.h>
-#include <clang/Sema/Sema.h>
-#include "CXXABI.h"
+#include <clang/Frontend/CompilerInstance.h>
 
+#include "CXXABI.h"
 #include "CppParser.h"
 
 #include <string>
@@ -37,6 +23,16 @@ namespace clang {
   namespace CodeGen {
     class CodeGenTypes;
   }
+  struct ASTTemplateArgumentListInfo;
+  class FunctionTemplateSpecialization;
+  class FunctionTemplateSpecializationInfo;
+  class PreprocessingRecord;
+  class PreprocessedEntity;
+  class RawComment;
+  class TemplateSpecializationTypeLoc;
+  class TemplateArgumentList;
+  class VTableLayout;
+  class VTableComponent;
 }
 
 #define Debug printf
@@ -48,8 +44,8 @@ struct Parser
     Parser(ParserOptions* Opts);
 
     void SetupHeader();
-    ParserResult* ParseHeader(const std::string& File);
-    ParserResult* ParseLibrary(const std::string& File);
+    ParserResult* ParseHeader(const std::string& File, ParserResult* res);
+    ParserResult* ParseLibrary(const std::string& File, ParserResult* res);
     ParserResultKind ParseArchive(llvm::StringRef File,
                                   llvm::MemoryBuffer *Buffer,
                                   CppSharp::CppParser::NativeLibrary*& NativeLib);
@@ -75,15 +71,18 @@ protected:
     WalkClassTemplateSpecialization(clang::ClassTemplateSpecializationDecl* CTS);
     ClassTemplatePartialSpecialization*
     WalkClassTemplatePartialSpecialization(clang::ClassTemplatePartialSpecializationDecl* CTS);
-    Method* WalkMethodCXX(clang::CXXMethodDecl* MD);
+    Method* WalkMethodCXX(clang::CXXMethodDecl* MD, bool AddToClass = true);
     Field* WalkFieldCXX(clang::FieldDecl* FD, Class* Class);
     ClassTemplate* WalkClassTemplate(clang::ClassTemplateDecl* TD);
-    FunctionTemplate* WalkFunctionTemplate(
-        clang::FunctionTemplateDecl* TD);
+    FunctionTemplate* WalkFunctionTemplate(clang::FunctionTemplateDecl* TD);
+    FunctionTemplateSpecialization* WalkFunctionTemplateSpec(clang::FunctionTemplateSpecializationInfo* FTS, Function* Function);
     Variable* WalkVariable(clang::VarDecl* VD);
     RawComment* WalkRawComment(const clang::RawComment* RC);
     Type* WalkType(clang::QualType QualType, clang::TypeLoc* TL = 0,
       bool DesugarType = false);
+    TemplateArgument WalkTemplateArgument(const clang::TemplateArgument& TA, clang::TemplateArgumentLoc* ArgLoc);
+    std::vector<TemplateArgument> WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL, clang::TemplateSpecializationTypeLoc* TSTL);
+    std::vector<TemplateArgument> WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL, const clang::ASTTemplateArgumentListInfo* TSTL);
     void WalkVTable(clang::CXXRecordDecl* RD, Class* C);
     VTableLayout WalkVTableLayout(const clang::VTableLayout& VTLayout);
     VTableComponent WalkVTableComponent(const clang::VTableComponent& Component);

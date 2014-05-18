@@ -89,6 +89,7 @@ public class CSharpTempTests : GeneratorTestFixture
     [Test]
     public void TestDestructors()
     {
+        CSharpTemp.TestDestructors.InitMarker();
         Assert.AreEqual(0, CSharpTemp.TestDestructors.Marker);
 
         var dtors = new TestDestructors();

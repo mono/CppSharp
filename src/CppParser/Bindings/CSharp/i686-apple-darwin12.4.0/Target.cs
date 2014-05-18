@@ -30,122 +30,119 @@ namespace CppSharp
             [StructLayout(LayoutKind.Explicit, Size = 164)]
             public struct Internal
             {
-                [FieldOffset(0)]
-                internal Std.String ABI;
-
                 [FieldOffset(12)]
-                internal CppSharp.Parser.ParserIntType Char16Type;
+                public CppSharp.Parser.ParserIntType Char16Type;
 
                 [FieldOffset(16)]
-                internal CppSharp.Parser.ParserIntType Char32Type;
+                public CppSharp.Parser.ParserIntType Char32Type;
 
                 [FieldOffset(20)]
-                internal CppSharp.Parser.ParserIntType Int64Type;
+                public CppSharp.Parser.ParserIntType Int64Type;
 
                 [FieldOffset(24)]
-                internal CppSharp.Parser.ParserIntType IntMaxType;
+                public CppSharp.Parser.ParserIntType IntMaxType;
 
                 [FieldOffset(28)]
-                internal CppSharp.Parser.ParserIntType IntPtrType;
+                public CppSharp.Parser.ParserIntType IntPtrType;
 
                 [FieldOffset(32)]
-                internal CppSharp.Parser.ParserIntType SizeType;
+                public CppSharp.Parser.ParserIntType SizeType;
 
                 [FieldOffset(36)]
-                internal CppSharp.Parser.ParserIntType UIntMaxType;
+                public CppSharp.Parser.ParserIntType UIntMaxType;
 
                 [FieldOffset(40)]
-                internal CppSharp.Parser.ParserIntType WCharType;
+                public CppSharp.Parser.ParserIntType WCharType;
 
                 [FieldOffset(44)]
-                internal CppSharp.Parser.ParserIntType WIntType;
+                public CppSharp.Parser.ParserIntType WIntType;
 
                 [FieldOffset(48)]
-                internal uint BoolAlign;
+                public uint BoolAlign;
 
                 [FieldOffset(52)]
-                internal uint BoolWidth;
+                public uint BoolWidth;
 
                 [FieldOffset(56)]
-                internal uint CharAlign;
+                public uint CharAlign;
 
                 [FieldOffset(60)]
-                internal uint CharWidth;
+                public uint CharWidth;
 
                 [FieldOffset(64)]
-                internal uint Char16Align;
+                public uint Char16Align;
 
                 [FieldOffset(68)]
-                internal uint Char16Width;
+                public uint Char16Width;
 
                 [FieldOffset(72)]
-                internal uint Char32Align;
+                public uint Char32Align;
 
                 [FieldOffset(76)]
-                internal uint Char32Width;
+                public uint Char32Width;
 
                 [FieldOffset(80)]
-                internal uint HalfAlign;
+                public uint HalfAlign;
 
                 [FieldOffset(84)]
-                internal uint HalfWidth;
+                public uint HalfWidth;
 
                 [FieldOffset(88)]
-                internal uint FloatAlign;
+                public uint FloatAlign;
 
                 [FieldOffset(92)]
-                internal uint FloatWidth;
+                public uint FloatWidth;
 
                 [FieldOffset(96)]
-                internal uint DoubleAlign;
+                public uint DoubleAlign;
 
                 [FieldOffset(100)]
-                internal uint DoubleWidth;
+                public uint DoubleWidth;
 
                 [FieldOffset(104)]
-                internal uint ShortAlign;
+                public uint ShortAlign;
 
                 [FieldOffset(108)]
-                internal uint ShortWidth;
+                public uint ShortWidth;
 
                 [FieldOffset(112)]
-                internal uint IntAlign;
+                public uint IntAlign;
 
                 [FieldOffset(116)]
-                internal uint IntWidth;
+                public uint IntWidth;
 
                 [FieldOffset(120)]
-                internal uint IntMaxTWidth;
+                public uint IntMaxTWidth;
 
                 [FieldOffset(124)]
-                internal uint LongAlign;
+                public uint LongAlign;
 
                 [FieldOffset(128)]
-                internal uint LongWidth;
+                public uint LongWidth;
 
                 [FieldOffset(132)]
-                internal uint LongDoubleAlign;
+                public uint LongDoubleAlign;
 
                 [FieldOffset(136)]
-                internal uint LongDoubleWidth;
+                public uint LongDoubleWidth;
 
                 [FieldOffset(140)]
-                internal uint LongLongAlign;
+                public uint LongLongAlign;
 
                 [FieldOffset(144)]
-                internal uint LongLongWidth;
+                public uint LongLongWidth;
 
                 [FieldOffset(148)]
-                internal uint PointerAlign;
+                public uint PointerAlign;
 
                 [FieldOffset(152)]
-                internal uint PointerWidth;
+                public uint PointerWidth;
 
                 [FieldOffset(156)]
-                internal uint WCharAlign;
+                public uint WCharAlign;
 
                 [FieldOffset(160)]
-                internal uint WCharWidth;
+                public uint WCharWidth;
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,

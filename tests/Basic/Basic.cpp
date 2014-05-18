@@ -229,5 +229,5 @@ int test(basic& s)
 
 Bar::Item operator |(Bar::Item left, Bar::Item right)
 {
-    return left | right;
+    return left;
 }

@@ -43,7 +43,7 @@ namespace CppSharp.AST
             get
             {
                 return Method != null &&
-                       Method.Ignore &&
+                       !Method.IsDeclared &&
                        ((Class) Method.Namespace).GetPropertyByConstituentMethod(Method) == null;
             }
         }

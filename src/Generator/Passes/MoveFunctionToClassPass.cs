@@ -13,7 +13,7 @@ namespace CppSharp.Passes
             if (!VisitDeclaration(function))
                 return false;
 
-            if (function.Ignore || function.Namespace is Class)
+            if (!function.IsGenerated || function.Namespace is Class)
                 return false;
 
             var @class = FindClassToMoveFunctionTo(function.Namespace);
@@ -24,7 +24,7 @@ namespace CppSharp.Passes
             }
 
             if (function.IsOperator)
-                function.ExplicityIgnored = true;
+                function.ExplicitlyIgnore();
 
             return true;
         }
@@ -49,7 +49,7 @@ namespace CppSharp.Passes
                 IsStatic = true
             };
 
-            function.ExplicityIgnored = true;
+            function.ExplicitlyIgnore();
 
             if (method.OperatorKind != CXXOperatorKind.None)
             {

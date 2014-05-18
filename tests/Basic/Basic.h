@@ -242,6 +242,8 @@ DLL_API int operator==(const Foo2& a, const Foo2& b)
 
 // Tests delegates
 typedef int (*DelegateInGlobalNamespace)(int);
+typedef int (STDCALL *DelegateStdCall)(int);
+typedef int (CDECL *DelegateCDecl)(int n);
 
 struct DLL_API TestDelegates
 {
@@ -251,6 +253,9 @@ struct DLL_API TestDelegates
     TestDelegates();
     static int Double(int N) { return N * 2; }
     int Triple(int N) { return N * 3; }
+	
+    int StdCall(DelegateStdCall del) { return del(1); }
+    int CDecl(DelegateCDecl del) { return del(1); }
 
     DelegateInClass A;
     DelegateInGlobalNamespace B;
@@ -260,14 +265,6 @@ struct DLL_API TestDelegates
 
 TestDelegates::TestDelegates() : A(Double), B(Double), C(&TestDelegates::Triple)
 {
-}
-
-// Tests delegate generation for attributed function types
-typedef int(__cdecl *AttributedDelegate)(int n);
-DLL_API int __cdecl Double(int n) { return n * 2; }
-DLL_API AttributedDelegate GetAttributedDelegate()
-{
-    return Double;
 }
 
 // Tests memory leaks in constructors
@@ -294,6 +291,15 @@ private:
 
 int TestStaticClass::Add(int a, int b) { return a + b; }
 
+struct DLL_API TestStaticClassDerived : TestStaticClass
+{
+    static int Foo();
+
+private:
+    TestStaticClassDerived();
+};
+
+int TestStaticClassDerived::Foo() { return 0; }
 
 class HasIgnoredField
 {
@@ -339,16 +345,10 @@ typedef unsigned long foo_t;
 typedef struct DLL_API SomeStruct
 {
 	SomeStruct();
-	foo_t& operator[](int i);
-    // CSharp backend can't deal with a setter here
-    foo_t operator[](const char* name);
 	foo_t p;
 } SomeStruct;
 
 SomeStruct::SomeStruct() : p(1) {}
-
-foo_t& SomeStruct::operator[](int i) { return p; }
-foo_t SomeStruct::operator[](const char* name) { return p; }
 
 class DLL_API SomeClassExtendingTheStruct : public SomeStruct
 {
@@ -399,6 +399,34 @@ TestProperties::TestProperties() : Field(0) {}
 int TestProperties::getFieldValue() { return Field; }
 void TestProperties::setFieldValue(int Value) { Field = Value; }
 
+class DLL_API TestIndexedProperties
+{
+    foo_t p;
+    TestProperties f;
+public:
+    TestIndexedProperties();
+    // Should lead to a read/write indexer with return type uint
+    foo_t& operator[](int i);
+    // Should lead to a read/write indexer with return type uint
+    foo_t* operator[](float f);
+    // Should lead to a read-only indexer with return type uint
+    foo_t operator[](const char* name);
+    // Should lead to a read-only indexer with return type uint*
+    const foo_t& operator[](double d);
+    // Should lead to a read/write indexer with return type TestProperties
+    TestProperties* operator[](unsigned char b);
+    // Should lead to a read-only indexer with return type TestProperties
+    const TestProperties& operator[](short b);
+};
+
+TestIndexedProperties::TestIndexedProperties() : p(1), f() {}
+foo_t& TestIndexedProperties::operator[](int i) { return p; }
+foo_t TestIndexedProperties::operator[](const char* name) { return p; }
+foo_t* TestIndexedProperties::operator[](float f) { return &p; }
+const foo_t& TestIndexedProperties::operator[](double f) { return p; }
+TestProperties* TestIndexedProperties::operator[](unsigned char b) { return &f; }
+const TestProperties& TestIndexedProperties::operator[](short b) { return f; }
+
 enum struct MyEnum { A, B, C };
 
 class DLL_API TestArraysPointers
@@ -422,3 +450,53 @@ struct DLL_API TestGetterSetterToProperties
 
 int TestGetterSetterToProperties::getWidth() { return 640; }
 int TestGetterSetterToProperties::getHeight() { return 480; }
+
+// Tests conversion operators of classes
+class DLL_API ClassA 
+{
+public:
+    ClassA(int value) { Value = value; }
+    int Value;
+};
+class DLL_API ClassB
+{
+public:
+    // conversion from ClassA (constructor):
+    ClassB(const ClassA& x) { Value = x.Value; }
+    int Value;
+    // conversion from ClassA (assignment):
+    //ClassB& operator= (const ClassA& x) { return *this; }
+    // conversion to ClassA (type-cast operator)
+    //operator ClassA() { return ClassA(); }
+};
+class DLL_API ClassC
+{
+public:
+    // This should NOT lead to a conversion
+    ClassC(const ClassA* x) { Value = x->Value; }
+    // This should lead to an explicit conversion
+    explicit ClassC(const ClassB& x) { Value = x.Value; }
+    int Value;
+};
+
+// Test decltype
+int Expr = 0;
+DLL_API decltype(Expr) TestDecltype()
+{
+    return Expr;
+}
+
+DLL_API void TestNullPtrType(decltype(nullptr))
+{
+}
+
+DLL_API decltype(nullptr) TestNullPtrTypeRet()
+{
+    return nullptr;
+}
+
+// Tests dependent name types
+template<typename T> struct DependentType
+{
+    DependentType(typename T::Dependent* t) { }
+};

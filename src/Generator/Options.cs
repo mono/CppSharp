@@ -44,17 +44,20 @@ namespace CppSharp
             Encoding = Encoding.ASCII;
 
             CodeFiles = new List<string>();
-
-            Is32Bit = true;
-#if IS_64_BIT
-            Is32Bit = false;
-#endif
         }
 
         // General options
         public bool Quiet;
         public bool ShowHelpText;
         public bool OutputDebug;
+
+        /// <summary>
+        /// Set to true to simulate generating without actually writing
+        /// any output to disk. This can be useful to activate while
+        /// debugging the parser generator so generator bugs do not get
+        /// in the way while iterating.
+        /// </summary>
+        public bool DryRun;
 
         // Parser options
         public List<string> Headers;
@@ -112,9 +115,22 @@ namespace CppSharp
         /// </summary>
         public bool GeneratePropertiesAdvanced;
 
+        /// <summary>
+        /// If set to true the generator will use ConstructorToConversionOperatorPass to
+        /// create implicit and explicit conversion operators out of single argument
+        /// constructors.
+        /// </summary>
+        public bool GenerateConversionOperators;
+
+        /// <summary>
+        /// If set to true the CLI generator will use ObjectOverridesPass to create
+        /// Equals, GetHashCode and (if the insertion operator << is overloaded) ToString
+        /// methods.
+        /// </summary>
+        public bool GenerateObjectOverrides;
+
         //List of include directories that are used but not generated
         public List<string> NoGenIncludeDirs;
-        public string NoGenIncludePrefix = "";
 
         /// <summary>
         /// Wether the generated C# code should be automatically compiled.
@@ -158,8 +174,6 @@ namespace CppSharp
         {
             get { return GeneratorKind == GeneratorKind.CLI; }
         }
-
-        public bool Is32Bit { get; set; }
 
         public List<string> CodeFiles { get; private set; }
         public readonly List<string> DependentNameSpaces = new List<string>();

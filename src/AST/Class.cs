@@ -34,25 +34,8 @@ namespace CppSharp.AST
             get
             {
                 Class @class;
-                if (Type.IsTagDecl(out @class))
-                    return @class;
-
-                var type = Type.Desugar() as TemplateSpecializationType;
-                if (type == null)
-                {
-                    TypedefType typedef;
-                    if (Type.IsPointerTo(out typedef))
-                    {
-                        type = (TemplateSpecializationType) typedef.Desugar();
-                    }
-                    else
-                    {
-                        Type.IsPointerTo(out type);
-                    }
-                }
-                var templatedClass = ((ClassTemplate) type.Template).TemplatedClass;
-                return templatedClass.CompleteDeclaration == null ?
-                    templatedClass : (Class) templatedClass.CompleteDeclaration;
+                Type.TryGetClass(out @class);
+                return @class;
             }
         }
 
@@ -60,8 +43,7 @@ namespace CppSharp.AST
         {
             get
             {
-                Class @class;
-                return Type.IsTagDecl(out @class);
+                return Type.IsClass();
             }
         }
     }
@@ -133,6 +115,28 @@ namespace CppSharp.AST
             Layout = new ClassLayout();
         }
 
+        public Class(Class @class)
+            : base(@class)
+        {
+            Bases = new List<BaseClassSpecifier>(@class.Bases);
+            Fields = new List<Field>(@class.Fields);
+            Properties = new List<Property>(@class.Properties);
+            Methods = new List<Method>(@class.Methods);
+            Specifiers = new List<AccessSpecifierDecl>(@class.Specifiers);
+            IsPOD = @class.IsPOD;
+            Type = @class.Type;
+            Layout = new ClassLayout(@class.Layout);
+            IsAbstract = @class.IsAbstract;
+            IsUnion = @class.IsUnion;
+            IsOpaque = @class.IsOpaque;
+            IsDynamic = @class.IsDynamic;
+            IsPolymorphic = @class.IsPolymorphic;
+            HasNonTrivialDefaultConstructor = @class.HasNonTrivialDefaultConstructor;
+            HasNonTrivialCopyConstructor = @class.HasNonTrivialCopyConstructor;
+            HasNonTrivialDestructor = @class.HasNonTrivialDestructor;
+            IsStatic = @class.IsStatic;
+        }
+
         public bool HasBase
         {
             get { return Bases.Count > 0; }
@@ -149,7 +153,7 @@ namespace CppSharp.AST
             {
                 foreach (var @base in Bases)
                 {
-                    if (@base.IsClass && !@base.Class.ExplicityIgnored)
+                    if (@base.IsClass && @base.Class.IsDeclared)
                         return @base.Class;
                 }
 
@@ -199,6 +203,11 @@ namespace CppSharp.AST
             }
         }
 
+        public override IEnumerable<Function> FindOperator(CXXOperatorKind kind)
+        {
+            return Methods.Where(m => m.OperatorKind == kind);
+        }
+
         public override IEnumerable<Function> GetOverloads(Function function)
         {
             if (function.IsOperator)
@@ -209,6 +218,24 @@ namespace CppSharp.AST
                 return methods;
 
             return base.GetOverloads(function);
+        }
+
+        public Method FindMethod(string name)
+        {
+            return Methods
+                .Concat(Templates.OfType<FunctionTemplate>()
+                    .Select(t => t.TemplatedFunction)
+                    .OfType<Method>())
+                .FirstOrDefault(m => m.Name == name);
+        }
+
+        public Method FindMethodByUSR(string usr)
+        {
+            return Methods
+                .Concat(Templates.OfType<FunctionTemplate>()
+                    .Select(t => t.TemplatedFunction)
+                    .OfType<Method>())
+                .FirstOrDefault(m => m.USR == usr);
         }
 
         public override T Visit<T>(IDeclVisitor<T> visitor)

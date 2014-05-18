@@ -26,10 +26,12 @@ project "CppSharp.Parser.CSharp"
 
   links { "CppSharp.Runtime" }
 
-  if os.is_osx() then
+  if os.is_windows() then
+      files { "CSharp/i686-pc-win32/**.cs" }
+  elseif os.is_osx() then
       files { "CSharp/i686-apple-darwin12.4.0/**.cs" }
   else
-      files { "CSharp/*.cs" }
+      print "Unknown architecture"
   end
 
   configuration ""
@@ -41,6 +43,7 @@ if string.starts(action, "vs") and os.is_windows() then
     kind "SharedLib"
     language "C++"
     SetupNativeProject()
+    SetupLLVMIncludes()
     
     dependson { "CppSharp.CppParser" }
     flags { common_flags, "Managed" }

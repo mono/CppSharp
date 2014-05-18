@@ -13,6 +13,7 @@ namespace CppSharp.Tests
 
         public override void Preprocess(Driver driver, ASTContext ctx)
         {
+            ctx.SetClassAsValueType("IntWrapperValueType");
         }
 
         public static void Main(string[] args)

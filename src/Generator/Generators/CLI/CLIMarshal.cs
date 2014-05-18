@@ -93,11 +93,31 @@ namespace CppSharp.Generators.CLI
             {
                 var returnVarName = Context.ReturnVarName;
                 if (quals.IsConst != Context.ReturnType.Qualifiers.IsConst)
+                {
+                    var nativeTypePrinter = new CppTypePrinter(Context.Driver.TypeDatabase, false);
+                    var constlessPointer = new PointerType()
+                    {
+                        IsDependent = pointer.IsDependent,
+                        Modifier = pointer.Modifier,
+                        QualifiedPointee = new QualifiedType(Context.ReturnType.Type.GetPointee())
+                    };
+                    var nativeConstlessTypeName = constlessPointer.Visit(nativeTypePrinter, new TypeQualifiers());
                     returnVarName = string.Format("const_cast<{0}>({1})",
-                        Context.ReturnType, Context.ReturnVarName);
+                        nativeConstlessTypeName, Context.ReturnVarName);
+                }
                 if (pointer.Pointee is TypedefType)
-                    Context.Return.Write("reinterpret_cast<{0}>({1})", pointer,
+                {
+                    var desugaredPointer = new PointerType()
+                    {
+                        IsDependent = pointer.IsDependent,
+                        Modifier = pointer.Modifier,
+                        QualifiedPointee = new QualifiedType(pointee)
+                    };
+                    var nativeTypePrinter = new CppTypePrinter(Context.Driver.TypeDatabase);
+                    var nativeTypeName = desugaredPointer.Visit(nativeTypePrinter, quals);
+                    Context.Return.Write("reinterpret_cast<{0}>({1})", nativeTypeName,
                         returnVarName);
+                }
                 else
                     Context.Return.Write(returnVarName);
                 return true;
@@ -107,7 +127,7 @@ namespace CppSharp.Generators.CLI
             Context.Driver.TypeDatabase.FindTypeMap(pointee, out typeMap);
 
             Class @class;
-            if (pointee.IsTagDecl(out @class) && typeMap == null)
+            if (pointee.TryGetClass(out @class) && typeMap == null)
             {
                 var instance = (pointer.IsReference) ? "&" + Context.ReturnVarName
                     : Context.ReturnVarName;
@@ -146,11 +166,12 @@ namespace CppSharp.Generators.CLI
                 case PrimitiveType.UInt64:
                 case PrimitiveType.Float:
                 case PrimitiveType.Double:
+                case PrimitiveType.Null:
                     Context.Return.Write(Context.ReturnVarName);
                     return true;
             }
 
-            return false;
+            throw new NotSupportedException();
         }
 
         public override bool VisitTypedefType(TypedefType typedef, TypeQualifiers quals)
@@ -426,7 +447,7 @@ namespace CppSharp.Generators.CLI
             }
 
             Enumeration @enum;
-            if (pointee.IsTagDecl(out @enum))
+            if (pointee.TryGetEnum(out @enum))
             {
                 ArgumentPrefix.Write("&");
                 Context.Return.Write("(::{0})*{1}", @enum.QualifiedOriginalName,
@@ -435,7 +456,7 @@ namespace CppSharp.Generators.CLI
             }
 
             Class @class;
-            if (pointee.IsTagDecl(out @class) && @class.IsValueType)
+            if (pointee.TryGetClass(out @class) && @class.IsValueType)
             {
                 if (Context.Function == null)
                     Context.Return.Write("&");
@@ -618,14 +639,14 @@ namespace CppSharp.Generators.CLI
 
         public void MarshalValueClassProperties(Class @class, string marshalVar)
         {
-            foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.Ignore))
+            foreach (var @base in @class.Bases.Where(b => b.IsClass && b.Class.IsDeclared))
             {
                 MarshalValueClassProperties(@base.Class, marshalVar);
             }
 
-            foreach (var property in @class.Properties)
+            foreach (var property in @class.Properties.Where( p => !ASTUtils.CheckIgnoreProperty(p)))
             {
-                if (property.Ignore || property.Field == null)
+                if (property.Field == null)
                     continue;
 
                 MarshalValueClassProperty(property, marshalVar);
@@ -655,7 +676,7 @@ namespace CppSharp.Generators.CLI
             Type type;
             Class @class;
             var isRef = property.Type.IsPointerTo(out type) &&
-                !(type.IsTagDecl(out @class) && @class.IsValueType) &&
+                !(type.TryGetClass(out @class) && @class.IsValueType) &&
                 !type.IsPrimitiveType();
 
             if (isRef)

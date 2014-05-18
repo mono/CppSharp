@@ -55,6 +55,9 @@ AttributedType::AttributedType() : Type(TypeKind::Attributed) {}
 
 DecayedType::DecayedType() : Type(TypeKind::Decayed) {}
 
+// Template
+Template::Template(DeclarationKind kind) : Declaration(kind) {}
+
 TemplateArgument::TemplateArgument() : Declaration(0) {}
 
 TemplateSpecializationType::TemplateSpecializationType()
@@ -66,8 +69,16 @@ TemplateSpecializationType::TemplateSpecializationType(
 DEF_VECTOR(TemplateSpecializationType, TemplateArgument, Arguments)
 
 // TemplateParameter
-TemplateParameter::TemplateParameter() {}
-TemplateParameter::TemplateParameter(const TemplateParameter& rhs) : Name(rhs.Name) {}
+TemplateParameter::TemplateParameter() 
+    : IsTypeParameter(false)
+{
+}
+
+TemplateParameter::TemplateParameter(const TemplateParameter& rhs)
+    : Name(rhs.Name)
+    , IsTypeParameter(rhs.IsTypeParameter)
+{
+}
 
 DEF_STRING(TemplateParameter, Name)
 
@@ -76,8 +87,12 @@ TemplateParameterType::TemplateParameterType() : Type(TypeKind::TemplateParamete
 TemplateParameterSubstitutionType::TemplateParameterSubstitutionType()
     : Type(TypeKind::TemplateParameterSubstitution) {}
 
-InjectedClassNameType::InjectedClassNameType() : Type(TypeKind::InjectedClassName),
-    Class(0) {}
+InjectedClassNameType::InjectedClassNameType()
+    : Type(TypeKind::InjectedClassName)
+    , TemplateSpecialization(0)
+    , Class(0)
+{
+}
 
 DependentNameType::DependentNameType() : Type(TypeKind::DependentName) {}
 
@@ -136,8 +151,10 @@ DEF_STRING(Declaration, Name)
 DEF_STRING(Declaration, DebugText)
 DEF_VECTOR(Declaration, PreprocessedEntity*, PreprocessedEntities)
 
-DeclarationContext::DeclarationContext() : IsAnonymous(false),
-    Declaration(DeclarationKind::DeclarationContext) {}
+DeclarationContext::DeclarationContext(DeclarationKind kind)
+    : Declaration(kind)
+    , IsAnonymous(false)
+{}
 
 DEF_VECTOR(DeclarationContext, Namespace*, Namespaces)
 DEF_VECTOR(DeclarationContext, Enumeration*, Enums)
@@ -270,6 +287,17 @@ Class* DeclarationContext::FindClass(const std::string& Name, bool IsComplete,
     return newClass;
 }
 
+Enumeration* DeclarationContext::FindEnum(void* OriginalPtr)
+{
+    auto foundEnum = std::find_if(Enums.begin(), Enums.end(),
+        [&](Enumeration* enumeration) { return enumeration->OriginalPtr == OriginalPtr; });
+
+    if (foundEnum != Enums.end())
+        return *foundEnum;
+
+    return nullptr;
+}
+
 Enumeration* DeclarationContext::FindEnum(const std::string& Name, bool Create)
 {
     auto entries = split<std::string>(Name, "::");
@@ -304,48 +332,65 @@ Enumeration* DeclarationContext::FindEnum(const std::string& Name, bool Create)
     return _namespace->FindEnum(enumName, Create);
 }
 
-Function* DeclarationContext::FindFunction(const std::string& Name, bool Create)
+Enumeration* DeclarationContext::FindEnumWithItem(const std::string& Name)
+{
+    auto foundEnumIt = std::find_if(Enums.begin(), Enums.end(), 
+        [&](Enumeration* _enum) { return _enum->FindItemByName(Name) != nullptr; });
+    if (foundEnumIt != Enums.end())
+        return *foundEnumIt;
+    for (auto it = Namespaces.begin(); it != Namespaces.end(); ++it)
+    {
+        auto foundEnum = (*it)->FindEnumWithItem(Name);
+        if (foundEnum != nullptr)
+            return foundEnum;
+    }
+    for (auto it = Classes.begin(); it != Classes.end(); ++it)
+    {
+        auto foundEnum = (*it)->FindEnumWithItem(Name);
+        if (foundEnum != nullptr)
+            return foundEnum;
+    }
+    return nullptr;
+}
+
+Function* DeclarationContext::FindFunction(const std::string& USR)
 {
     auto foundFunction = std::find_if(Functions.begin(), Functions.end(),
-            [&](Function* func) { return func->Name == Name; });
+        [&](Function* func) { return func->USR == USR; });
 
     if (foundFunction != Functions.end())
         return *foundFunction;
 
-    if (!Create)
-        return nullptr;
-     
-    auto function = new Function();
-    function->Name = Name;
-    function->_Namespace = this;
-    Functions.push_back(function);
+    auto foundTemplate = std::find_if(Templates.begin(), Templates.end(),
+        [&](Template* t) { return t->TemplatedDecl->USR == USR; });
 
-    return function;
+    if (foundTemplate != Templates.end())
+        return static_cast<Function*>((*foundTemplate)->TemplatedDecl);
+
+    return nullptr;
 }
 
-FunctionTemplate*
-DeclarationContext::FindFunctionTemplate(void* OriginalPtr)
+ClassTemplate*
+DeclarationContext::FindClassTemplate(const std::string& USR)
 {
-    auto foundFunction = std::find_if(Templates.begin(), Templates.end(),
-        [&](Template* func) { return func->OriginalPtr == OriginalPtr; });
+    auto foundTemplate = std::find_if(Templates.begin(), Templates.end(),
+        [&](Template* t) { return t->USR == USR; });
 
-    if (foundFunction != Templates.end())
-        return static_cast<FunctionTemplate*>(*foundFunction);
+    if (foundTemplate != Templates.end())
+        return static_cast<ClassTemplate*>(*foundTemplate);
 
     return nullptr;
 }
 
 FunctionTemplate*
-DeclarationContext::FindFunctionTemplate(const std::string& Name,
-                                         const std::vector<TemplateParameter>& Params)
+DeclarationContext::FindFunctionTemplate(const std::string& USR)
 {
-    FunctionTemplate* func = 0;
-    auto foundFunction = std::find_if(Templates.begin(), Templates.end(),
-        [&](Template* func) { return func->Name == Name && func->Parameters == Params; }
+    auto foundTemplate = std::find_if(Templates.begin(), Templates.end(),
+        [&](Template* t) { return t->USR == USR; }
     );
 
-    if (foundFunction != Templates.end())
-        return static_cast<FunctionTemplate*>(*foundFunction);
+    if (foundTemplate != Templates.end())
+        return static_cast<FunctionTemplate*>(*foundTemplate);
 
     return nullptr;
 }
@@ -374,15 +419,34 @@ TypedefDecl::TypedefDecl() : Declaration(DeclarationKind::Typedef) {}
 Parameter::Parameter() : Declaration(DeclarationKind::Parameter),
     IsIndirect(false), HasDefaultValue(false) {}
 
-Function::Function() : Declaration(DeclarationKind::Function),
-    IsReturnIndirect(false) {}
+Function::Function() 
+    : Declaration(DeclarationKind::Function)
+    , IsReturnIndirect(false)
+    , SpecializationInfo(0)
+{
+}
 
 DEF_STRING(Function, Mangled)
 DEF_STRING(Function, Signature)
 DEF_VECTOR(Function, Parameter*, Parameters)
 
-Method::Method() : IsDefaultConstructor(false), IsCopyConstructor(false),
-    IsMoveConstructor(false) { Kind = DeclarationKind::Method; }
+Method::Method() 
+    : Function()
+    , AccessDecl(0)
+    , IsVirtual(false)
+    , IsStatic(false)
+    , IsConst(false)
+    , IsImplicit(false)
+    , IsExplicit(false)
+    , IsOverride(false)
+    , IsDefaultConstructor(false)
+    , IsCopyConstructor(false)
+    , IsMoveConstructor(false)
+{ 
+    Kind = DeclarationKind::Method; 
+}
+
+// Enumeration
 
 Enumeration::Enumeration() : Declaration(DeclarationKind::Enumeration),
     Modifiers((EnumModifiers)0), Type(0), BuiltinType(0) {}
@@ -396,6 +460,15 @@ Enumeration::Item::Item(const Item& rhs) : Declaration(rhs),
 
 DEF_STRING(Enumeration::Item, Expression)
 
+Enumeration::Item* Enumeration::FindItemByName(const std::string& Name)
+{
+    auto foundEnumItem = std::find_if(Items.begin(), Items.end(),
+        [&](Item _item) { return _item.Name == Name; });
+    if (foundEnumItem != Items.end())
+        return &*foundEnumItem;
+    return nullptr;
+}
+
 Variable::Variable() : Declaration(DeclarationKind::Variable) {}
 
 DEF_STRING(Variable, Mangled)
@@ -407,7 +480,20 @@ Field::Field() : Declaration(DeclarationKind::Field), Class(0) {}
 AccessSpecifierDecl::AccessSpecifierDecl()
     : Declaration(DeclarationKind::AccessSpecifier) {}
 
-Class::Class() : Layout(0) { Kind = DeclarationKind::Class; }
+Class::Class()
+    : DeclarationContext(DeclarationKind::Class)
+    , IsPOD(false)
+    , IsAbstract(false)
+    , IsUnion(false)
+    , IsDynamic(false)
+    , IsPolymorphic(false)
+    , HasNonTrivialDefaultConstructor(false)
+    , HasNonTrivialCopyConstructor(false)
+    , HasNonTrivialDestructor(false)
+    , IsExternCContext(false)
+    , Layout(0)
+{
+}
 
 DEF_VECTOR(Class, BaseClassSpecifier*, Bases)
 DEF_VECTOR(Class, Field*, Fields)
@@ -419,21 +505,53 @@ Template::Template() : Declaration(DeclarationKind::Template),
 
 DEF_VECTOR(Template, TemplateParameter, Parameters)
 
-ClassTemplate::ClassTemplate() { Kind = DeclarationKind::ClassTemplate; }
+ClassTemplate::ClassTemplate() : Template(DeclarationKind::ClassTemplate) {}
 
 DEF_VECTOR(ClassTemplate, ClassTemplateSpecialization*, Specializations)
 
-ClassTemplateSpecialization::ClassTemplateSpecialization() : TemplatedDecl(0)
-    { Kind = DeclarationKind::ClassTemplateSpecialization; }
+ClassTemplateSpecialization::ClassTemplateSpecialization() 
+    : Class()
+    , TemplatedDecl(0)
+{ 
+    Kind = DeclarationKind::ClassTemplateSpecialization; 
+}
 
 DEF_VECTOR(ClassTemplateSpecialization, TemplateArgument, Arguments)
 
 ClassTemplatePartialSpecialization::ClassTemplatePartialSpecialization()
-    { Kind = DeclarationKind::ClassTemplatePartialSpecialization; }
+    : ClassTemplateSpecialization()
+{ 
+    Kind = DeclarationKind::ClassTemplatePartialSpecialization; 
+}
 
-FunctionTemplate::FunctionTemplate() { Kind = DeclarationKind::FunctionTemplate; }
+FunctionTemplate::FunctionTemplate() : Template(DeclarationKind::FunctionTemplate) {}
 
-Namespace::Namespace() : IsInline(false) { Kind = DeclarationKind::Namespace; }
+DEF_VECTOR(FunctionTemplate, FunctionTemplateSpecialization*, Specializations)
+
+FunctionTemplateSpecialization* FunctionTemplate::FindSpecialization(const std::string& usr)
+{
+    auto foundSpec = std::find_if(Specializations.begin(), Specializations.end(),
+        [&](FunctionTemplateSpecialization* cts) { return cts->SpecializedFunction->USR == usr; });
+
+    if (foundSpec != Specializations.end())
+        return static_cast<FunctionTemplateSpecialization*>(*foundSpec);
+
+    return nullptr;
+}
+
+FunctionTemplateSpecialization::FunctionTemplateSpecialization()
+    : Template(0)
+    , SpecializedFunction(0)
+{
+}
+
+DEF_VECTOR(FunctionTemplateSpecialization, TemplateArgument, Arguments)
+
+Namespace::Namespace() 
+    : DeclarationContext(DeclarationKind::Namespace)
+    , IsInline(false) 
+{
+}
 
 PreprocessedEntity::PreprocessedEntity()
     : Declaration(DeclarationKind::PreprocessedEntity),
@@ -459,26 +577,23 @@ DEF_VECTOR_STRING(NativeLibrary, Symbols)
 // ASTContext
 DEF_VECTOR(ASTContext, TranslationUnit*, TranslationUnits)
 
-ClassTemplateSpecialization* ClassTemplate::FindSpecialization(void* ptr)
+ClassTemplateSpecialization* ClassTemplate::FindSpecialization(const std::string& usr)
 {
-    return 0;
+    auto foundSpec = std::find_if(Specializations.begin(), Specializations.end(),
+        [&](ClassTemplateSpecialization* cts) { return cts->USR == usr; });
+
+    if (foundSpec != Specializations.end())
+        return static_cast<ClassTemplateSpecialization*>(*foundSpec);
+
+    return nullptr;
 }
 
-ClassTemplateSpecialization*
-ClassTemplate::FindSpecialization(TemplateSpecializationType type)
+ClassTemplatePartialSpecialization* ClassTemplate::FindPartialSpecialization(const std::string& usr)
 {
-    return 0;
-}
-
-ClassTemplatePartialSpecialization* ClassTemplate::FindPartialSpecialization(void* ptr)
-{
-    return 0;
-}
-
-ClassTemplatePartialSpecialization*
-ClassTemplate::FindPartialSpecialization(TemplateSpecializationType type)
-{
-    return 0;
+    auto foundSpec = FindSpecialization(usr);
+    if (foundSpec != nullptr)
+        return static_cast<ClassTemplatePartialSpecialization*>(foundSpec);
+    return nullptr;
 }
 
 ASTContext::ASTContext() {}

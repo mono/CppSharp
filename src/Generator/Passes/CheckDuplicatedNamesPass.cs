@@ -50,7 +50,14 @@ namespace CppSharp.Passes
         {
             var @params = function.Parameters.Where(p => p.Kind != ParameterKind.IndirectReturnType)
                                 .Select(p => p.QualifiedType.ToString());
-            var signature = string.Format("{0}({1})", Name,string.Join( ", ", @params));
+            // Include the conversion type in case of conversion operators
+            var method = function as Method;
+            if (method != null &&
+                method.IsOperator &&
+                (method.OperatorKind == CXXOperatorKind.Conversion ||
+                 method.OperatorKind == CXXOperatorKind.ExplicitConversion))
+                @params = @params.Concat(new[] { method.ConversionType.ToString() });
+            var signature = string.Format("{0}({1})", Name, string.Join( ", ", @params));
 
             if (Count == 0)
                 Count++;
@@ -66,18 +73,16 @@ namespace CppSharp.Passes
             if (Count < methodCount+1)
                 Count = methodCount+1;
 
-            var method = function as Method;
-
             if (function.IsOperator)
             {
                 // TODO: turn into a method; append the original type (say, "signed long") of the last parameter to the type so that the user knows which overload is called
                 Driver.Diagnostics.EmitWarning("Duplicate operator {0} ignored", function.Name);
-                function.ExplicityIgnored = true;
+                function.ExplicitlyIgnore();
             }
             else if (method != null && method.IsConstructor)
             {
                 Driver.Diagnostics.EmitWarning("Duplicate constructor {0} ignored", function.Name);
-                function.ExplicityIgnored = true;
+                function.ExplicitlyIgnore();
             }
             else
                 function.Name += methodCount.ToString(CultureInfo.InvariantCulture);
@@ -180,7 +185,7 @@ namespace CppSharp.Passes
 
         void CheckDuplicate(Declaration decl)
         {
-            if (decl.IsDependent || decl.Ignore)
+            if (decl.IsDependent || !decl.IsGenerated)
                 return;
 
             if (string.IsNullOrWhiteSpace(decl.Name))
