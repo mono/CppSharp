@@ -83,7 +83,7 @@ struct CS_API ParserResult
 
     CppSharp::CppParser::AST::ASTContext* ASTContext;
     CppSharp::CppParser::AST::NativeLibrary* Library;
-    Parser* Parser;
+    Parser* CodeParser;
 };
 
 enum class SourceLocationKind
