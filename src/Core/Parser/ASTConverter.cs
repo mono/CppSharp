@@ -657,13 +657,13 @@ namespace CppSharp
         {
             var _rawComment = new AST.RawComment
             {
-                Kind = ConvertRawCommentKind(rawComment.RawCommentKind),
+                Kind = ConvertRawCommentKind(rawComment.Kind),
                 BriefText = rawComment.BriefText,
                 Text = rawComment.Text,
             };
 
-            if (rawComment.FullComment != null)
-                _rawComment.FullComment = commentConverter.Visit(rawComment.FullComment)
+            if (rawComment.FullCommentBlock != null)
+                _rawComment.FullComment = commentConverter.Visit(rawComment.FullCommentBlock)
                     as AST.FullComment;
 
             return _rawComment;

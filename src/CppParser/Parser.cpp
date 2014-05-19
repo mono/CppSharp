@@ -2948,8 +2948,8 @@ ParserResult* ClangParser::ParseHeader(ParserOptions* Opts)
         return nullptr;
 
     auto res = new ParserResult();
-    res->Parser = new Parser(Opts);
-    return res->Parser->ParseHeader(Opts->FileName, res);
+    res->CodeParser = new Parser(Opts);
+    return res->CodeParser->ParseHeader(Opts->FileName, res);
 }
 
 ParserResult* ClangParser::ParseLibrary(ParserOptions* Opts)
@@ -2958,8 +2958,8 @@ ParserResult* ClangParser::ParseLibrary(ParserOptions* Opts)
         return nullptr;
 
     auto res = new ParserResult();
-    res->Parser = new Parser(Opts);
-    return res->Parser->ParseLibrary(Opts->FileName, res);
+    res->CodeParser = new Parser(Opts);
+    return res->CodeParser->ParseLibrary(Opts->FileName, res);
 }
 
 ParserTargetInfo* ClangParser::GetTargetInfo(ParserOptions* Opts)

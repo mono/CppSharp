@@ -777,10 +777,10 @@ enum struct RawCommentKind
 struct CS_API RawComment
 {
     RawComment();
-    RawCommentKind RawCommentKind;
+    RawCommentKind Kind;
     STRING(Text)
     STRING(BriefText)
-    FullComment* FullComment;
+    FullComment* FullCommentBlock;
 };
 
 #pragma region Commands

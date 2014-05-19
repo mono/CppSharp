@@ -33,7 +33,7 @@ DEF_STRING(ParserTargetInfo, ABI)
 ParserResult::ParserResult()
     : ASTContext(0)
     , Library(0)
-    , Parser(0)
+    , CodeParser(0)
 {
 }
 
@@ -42,12 +42,12 @@ ParserResult::ParserResult(const ParserResult& rhs)
     , Diagnostics(rhs.Diagnostics)
     , ASTContext(rhs.ASTContext)
     , Library(rhs.Library)
-    , Parser(rhs.Parser)
+    , CodeParser(rhs.CodeParser)
 {}
 
 ParserResult::~ParserResult()
 {
-    delete Parser;
+    delete CodeParser;
 }
 
 ParserDiagnostic::ParserDiagnostic() {}
