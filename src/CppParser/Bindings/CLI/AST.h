@@ -1933,13 +1933,13 @@ namespace CppSharp
                     void set(System::String^);
                 }
 
-                property CppSharp::Parser::AST::RawCommentKind RawCommentKind
+                property CppSharp::Parser::AST::RawCommentKind Kind
                 {
                     CppSharp::Parser::AST::RawCommentKind get();
                     void set(CppSharp::Parser::AST::RawCommentKind);
                 }
 
-                property CppSharp::Parser::AST::FullComment^ FullComment
+                property CppSharp::Parser::AST::FullComment^ FullCommentBlock
                 {
                     CppSharp::Parser::AST::FullComment^ get();
                     void set(CppSharp::Parser::AST::FullComment^);
