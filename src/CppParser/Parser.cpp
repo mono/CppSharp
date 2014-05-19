@@ -894,10 +894,11 @@ Parser::WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL,
     for (size_t i = 0, e = TAL->size(); i < e; i++)
     {
         auto TA = TAL->get(i);
+        TemplateArgumentLoc TAL;
         TemplateArgumentLoc *ArgLoc = 0;
         if (TSTL && i < TSTL->getNumArgs())
         {
-            auto TAL = TSTL->getArgLoc(i);
+            TAL = TSTL->getArgLoc(i);
             ArgLoc = &TAL;
         }
         auto Arg = WalkTemplateArgument(TA, ArgLoc);
@@ -1630,11 +1631,12 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
 
         FunctionProtoTypeLoc FTL;
         TypeLoc RL;
+        TypeLoc Next;
         if (TL && !TL->isNull())
         {
             while (TL->getTypeLocClass() != TypeLoc::FunctionProto)
             {
-                auto Next = TL->getNextTypeLoc();
+                Next = TL->getNextTypeLoc();
                 TL = &Next;
             }
 
@@ -1712,29 +1714,32 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         if (TS->isSugared())
             TST->Desugared = WalkType(TS->desugar());
 
+        TypeLoc UTL, ETL, ITL;
+
         if (TL && !TL->isNull())
         {
             auto TypeLocClass = TL->getTypeLocClass();
             if (TypeLocClass == TypeLoc::Qualified)
             {
-                auto UTL = TL->getUnqualifiedLoc();
+                UTL = TL->getUnqualifiedLoc();
                 TL = &UTL;
             }
             else if (TypeLocClass == TypeLoc::Elaborated)
             {
-                auto ETL = TL->getAs<ElaboratedTypeLoc>();
-                auto ITL = ETL.getNextTypeLoc();
+                ETL = TL->getAs<ElaboratedTypeLoc>();
+                ITL = ETL.getNextTypeLoc();
                 TL = &ITL;
             }
 
             assert(TL->getTypeLocClass() == TypeLoc::TemplateSpecialization);
         }
 
+        TemplateSpecializationTypeLoc TSpecTL;
         TemplateSpecializationTypeLoc *TSTL = 0;
         if (TL && !TL->isNull())
         {
-          auto TSpecTL = TL->getAs<TemplateSpecializationTypeLoc>();
-          TSTL = &TSpecTL;
+            TSpecTL = TL->getAs<TemplateSpecializationTypeLoc>();
+            TSTL = &TSpecTL;
         }
 
         TemplateArgumentList TArgs(TemplateArgumentList::OnStack, TS->getArgs(),
@@ -1752,24 +1757,27 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
 
         if (auto Ident = TP->getIdentifier())
             TPT->Parameter.Name = Ident->getName();
+
+        TypeLoc UTL, ETL, ITL, Next;
+
         if (TL && !TL->isNull())
         {
             auto TypeLocClass = TL->getTypeLocClass();
             if (TypeLocClass == TypeLoc::Qualified)
             {
-                auto UTL = TL->getUnqualifiedLoc();
+                UTL = TL->getUnqualifiedLoc();
                 TL = &UTL;
             }
             else if (TypeLocClass == TypeLoc::Elaborated)
             {
-                auto ETL = TL->getAs<ElaboratedTypeLoc>();
-                auto ITL = ETL.getNextTypeLoc();
+                ETL = TL->getAs<ElaboratedTypeLoc>();
+                ITL = ETL.getNextTypeLoc();
                 TL = &ITL;
             }
 
             while (TL->getTypeLocClass() != TypeLoc::TemplateTypeParm)
             {
-                auto Next = TL->getNextTypeLoc();
+                Next = TL->getNextTypeLoc();
                 TL = &Next;
             }
 
