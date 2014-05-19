@@ -4,6 +4,9 @@ using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Types;
 using Type = CppSharp.AST.Type;
+#if !OLD_PARSER
+using ParserTargetInfo = CppSharp.Parser.ParserTargetInfo;
+#endif
 
 namespace CppSharp.Generators.CSharp
 {
@@ -373,7 +376,7 @@ namespace CppSharp.Generators.CSharp
             return type.Type.FullName;
         }
 
-       static string GetIntString(PrimitiveType primitive, Parser.ParserTargetInfo targetInfo)
+       static string GetIntString(PrimitiveType primitive, ParserTargetInfo targetInfo)
         {
             bool signed;
             uint width;
