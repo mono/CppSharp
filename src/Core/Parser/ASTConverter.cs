@@ -657,7 +657,7 @@ namespace CppSharp
         {
             var _rawComment = new AST.RawComment
             {
-                Kind = ConvertRawCommentKind(rawComment.RawCommentKind),
+                Kind = ConvertRawCommentKind(rawComment.Kind),
                 BriefText = rawComment.BriefText,
                 Text = rawComment.Text,
             };

@@ -40,7 +40,7 @@ RawComment* Parser::WalkRawComment(const clang::RawComment* RC)
 
     auto &SM = C->getSourceManager();
     auto Comment = new RawComment();
-    Comment->RawCommentKind = ConvertRawCommentKind(RC->getKind());
+    Comment->Kind = ConvertRawCommentKind(RC->getKind());
     Comment->Text = RC->getRawText(SM);
     Comment->BriefText = RC->getBriefText(*AST);
 
