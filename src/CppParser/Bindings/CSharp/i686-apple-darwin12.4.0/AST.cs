@@ -165,19 +165,19 @@ namespace CppSharp
                 Void = 1,
                 Bool = 2,
                 WideChar = 3,
-                Int8 = 4,
                 Char = 4,
-                UInt8 = 5,
                 UChar = 5,
-                Int16 = 6,
-                UInt16 = 7,
-                Int32 = 8,
-                UInt32 = 9,
-                Int64 = 10,
-                UInt64 = 11,
-                Float = 12,
-                Double = 13,
-                IntPtr = 14
+                Short = 6,
+                UShort = 7,
+                Int = 8,
+                UInt = 9,
+                Long = 10,
+                ULong = 11,
+                LongLong = 12,
+                ULongLong = 13,
+                Float = 14,
+                Double = 15,
+                IntPtr = 16
             }
 
             public enum RawCommentKind
