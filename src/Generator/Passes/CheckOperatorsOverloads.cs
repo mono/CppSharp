@@ -224,7 +224,7 @@ namespace CppSharp.Passes
                 case CXXOperatorKind.GreaterGreater:
                     PrimitiveType primitiveType;
                     return @operator.Parameters.Last().Type.IsPrimitiveType(out primitiveType) &&
-                           primitiveType == PrimitiveType.Int32;
+                           primitiveType == PrimitiveType.Int;
 
                 // No parameters means the dereference operator - cannot be overloaded
                 case CXXOperatorKind.Star:

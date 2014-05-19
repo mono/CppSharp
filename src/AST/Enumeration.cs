@@ -47,7 +47,7 @@ namespace CppSharp.AST
         {
             Items = new List<Item>();
             ItemsByName = new Dictionary<string, Item>();
-            BuiltinType = new BuiltinType(PrimitiveType.Int32);
+            BuiltinType = new BuiltinType(PrimitiveType.Int);
         }
 
         public Enumeration AddItem(Item item)

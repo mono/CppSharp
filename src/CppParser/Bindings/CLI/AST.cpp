@@ -216,12 +216,12 @@ void CppSharp::Parser::AST::ArrayType::SizeType::set(CppSharp::Parser::AST::Arra
     ((::CppSharp::CppParser::AST::ArrayType*)NativePtr)->SizeType = (::CppSharp::CppParser::AST::ArrayType::ArraySize)value;
 }
 
-int CppSharp::Parser::AST::ArrayType::Size::get()
+long CppSharp::Parser::AST::ArrayType::Size::get()
 {
     return ((::CppSharp::CppParser::AST::ArrayType*)NativePtr)->Size;
 }
 
-void CppSharp::Parser::AST::ArrayType::Size::set(int value)
+void CppSharp::Parser::AST::ArrayType::Size::set(long value)
 {
     ((::CppSharp::CppParser::AST::ArrayType*)NativePtr)->Size = value;
 }
@@ -513,12 +513,12 @@ void CppSharp::Parser::AST::TemplateArgument::Declaration::set(CppSharp::Parser:
     ((::CppSharp::CppParser::AST::TemplateArgument*)NativePtr)->Declaration = (::CppSharp::CppParser::AST::Declaration*)value->NativePtr;
 }
 
-int CppSharp::Parser::AST::TemplateArgument::Integral::get()
+long CppSharp::Parser::AST::TemplateArgument::Integral::get()
 {
     return ((::CppSharp::CppParser::AST::TemplateArgument*)NativePtr)->Integral;
 }
 
-void CppSharp::Parser::AST::TemplateArgument::Integral::set(int value)
+void CppSharp::Parser::AST::TemplateArgument::Integral::set(long value)
 {
     ((::CppSharp::CppParser::AST::TemplateArgument*)NativePtr)->Integral = value;
 }
@@ -1061,12 +1061,12 @@ void CppSharp::Parser::AST::ClassLayout::HasOwnVFPtr::set(bool value)
     ((::CppSharp::CppParser::AST::ClassLayout*)NativePtr)->HasOwnVFPtr = value;
 }
 
-int CppSharp::Parser::AST::ClassLayout::VBPtrOffset::get()
+long CppSharp::Parser::AST::ClassLayout::VBPtrOffset::get()
 {
     return ((::CppSharp::CppParser::AST::ClassLayout*)NativePtr)->VBPtrOffset;
 }
 
-void CppSharp::Parser::AST::ClassLayout::VBPtrOffset::set(int value)
+void CppSharp::Parser::AST::ClassLayout::VBPtrOffset::set(long value)
 {
     ((::CppSharp::CppParser::AST::ClassLayout*)NativePtr)->VBPtrOffset = value;
 }

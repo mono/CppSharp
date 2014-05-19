@@ -38,14 +38,14 @@ namespace CppSharp.Generator.Tests.AST
                     {
                         Modifier = PointerType.TypeModifier.LVReference,
                         QualifiedPointee = new QualifiedType(
-                            new BuiltinType(PrimitiveType.Int16), 
+                            new BuiltinType(PrimitiveType.Short), 
                             new TypeQualifiers() { IsConst = true })
                     }),
                 new QualifiedType(
                     new PointerType()
                     {
                         Modifier = PointerType.TypeModifier.Pointer,
-                        QualifiedPointee = new QualifiedType(new BuiltinType(PrimitiveType.Int32))
+                        QualifiedPointee = new QualifiedType(new BuiltinType(PrimitiveType.Int))
                     })
             };
             for (int i = 0; i < func.Parameters.Count; i++)
@@ -220,7 +220,7 @@ namespace CppSharp.Generator.Tests.AST
             var integerInst = typeDef.Type as TemplateSpecializationType;
             Assert.AreEqual(1, integerInst.Arguments.Count);
             var intArgument = integerInst.Arguments[0];
-            Assert.AreEqual(new BuiltinType(PrimitiveType.Int32), intArgument.Type.Type);
+            Assert.AreEqual(new BuiltinType(PrimitiveType.Int), intArgument.Type.Type);
             Class classTemplate;
             Assert.IsTrue(typeDef.Type.TryGetClass(out classTemplate));
             Assert.AreEqual(classTemplate, template.TemplatedClass);

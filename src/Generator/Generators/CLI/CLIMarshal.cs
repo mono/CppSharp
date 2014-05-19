@@ -156,14 +156,16 @@ namespace CppSharp.Generators.CLI
                 case PrimitiveType.Void:
                     return true;
                 case PrimitiveType.Bool:
-                case PrimitiveType.Int8:
-                case PrimitiveType.UInt8:
-                case PrimitiveType.Int16:
-                case PrimitiveType.UInt16:
-                case PrimitiveType.Int32:
-                case PrimitiveType.UInt32:
-                case PrimitiveType.Int64:
-                case PrimitiveType.UInt64:
+                case PrimitiveType.Char:
+                case PrimitiveType.UChar:
+                case PrimitiveType.Short:
+                case PrimitiveType.UShort:
+                case PrimitiveType.Int:
+                case PrimitiveType.UInt:
+                case PrimitiveType.Long:
+                case PrimitiveType.ULong:
+                case PrimitiveType.LongLong:
+                case PrimitiveType.ULongLong:
                 case PrimitiveType.Float:
                 case PrimitiveType.Double:
                 case PrimitiveType.Null:
@@ -495,14 +497,16 @@ namespace CppSharp.Generators.CLI
                 case PrimitiveType.Void:
                     return true;
                 case PrimitiveType.Bool:
-                case PrimitiveType.Int8:
-                case PrimitiveType.UInt8:
-                case PrimitiveType.Int16:
-                case PrimitiveType.UInt16:
-                case PrimitiveType.Int32:
-                case PrimitiveType.UInt32:
-                case PrimitiveType.Int64:
-                case PrimitiveType.UInt64:
+                case PrimitiveType.Char:
+                case PrimitiveType.UChar:
+                case PrimitiveType.Short:
+                case PrimitiveType.UShort:
+                case PrimitiveType.Int:
+                case PrimitiveType.UInt:
+                case PrimitiveType.Long:
+                case PrimitiveType.ULong:
+                case PrimitiveType.LongLong:
+                case PrimitiveType.ULongLong:
                 case PrimitiveType.Float:
                 case PrimitiveType.Double:
                     Context.Return.Write(Context.Parameter.Name);
