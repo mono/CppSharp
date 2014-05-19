@@ -264,6 +264,6 @@ void Parser::HandleComments(clang::Decl* D, Declaration* Decl)
     if (clang::comments::FullComment* FC = RC->parse(*AST, &C->getPreprocessor(), D))
     {
         auto CB = static_cast<FullComment*>(ConvertCommentBlock(FC));
-        RawComment->FullComment = CB;
+        RawComment->FullCommentBlock = CB;
     }
 }

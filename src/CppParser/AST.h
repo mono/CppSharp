@@ -780,7 +780,7 @@ struct CS_API RawComment
     RawCommentKind Kind;
     STRING(Text)
     STRING(BriefText)
-    FullComment* FullComment;
+    FullComment* FullCommentBlock;
 };
 
 #pragma region Commands

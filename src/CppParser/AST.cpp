@@ -626,7 +626,7 @@ Comment::Comment(CommentKind kind) : Kind(kind) {}
 DEF_STRING(RawComment, Text)
 DEF_STRING(RawComment, BriefText)
 
-RawComment::RawComment() : FullComment(0) {}
+RawComment::RawComment() : FullCommentBlock(0) {}
 
 FullComment::FullComment() : Comment(CommentKind::FullComment) {}
 

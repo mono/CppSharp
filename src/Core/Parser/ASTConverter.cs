@@ -662,8 +662,8 @@ namespace CppSharp
                 Text = rawComment.Text,
             };
 
-            if (rawComment.FullComment != null)
-                _rawComment.FullComment = commentConverter.Visit(rawComment.FullComment)
+            if (rawComment.FullCommentBlock != null)
+                _rawComment.FullComment = commentConverter.Visit(rawComment.FullCommentBlock)
                     as AST.FullComment;
 
             return _rawComment;
