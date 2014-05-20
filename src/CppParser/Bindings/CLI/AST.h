@@ -2,6 +2,7 @@
 
 #include "CppSharp.h"
 #include <AST.h>
+#include "Sources.h"
 
 namespace CppSharp
 {
@@ -984,6 +985,12 @@ namespace CppSharp
                 {
                     CppSharp::Parser::AST::DeclarationContext^ get();
                     void set(CppSharp::Parser::AST::DeclarationContext^);
+                }
+
+                property CppSharp::Parser::SourceLocation Location
+                {
+                    CppSharp::Parser::SourceLocation get();
+                    void set(CppSharp::Parser::SourceLocation);
                 }
 
                 property CppSharp::Parser::AST::RawComment^ Comment

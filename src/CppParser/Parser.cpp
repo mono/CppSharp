@@ -2415,6 +2415,7 @@ void Parser::HandleDeclaration(clang::Decl* D, Declaration* Decl)
 
     Decl->OriginalPtr = (void*) D;
     Decl->USR = GetDeclUSR(D);
+    Decl->Location = SourceLocation(D->getLocation().getRawEncoding());
 
     if (Decl->PreprocessedEntities.empty() && !D->isImplicit())
     {

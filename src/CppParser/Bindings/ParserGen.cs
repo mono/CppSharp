@@ -51,8 +51,12 @@ namespace CppSharp
             options.Abi = Abi;
             options.LibraryName = "CppSharp.CppParser.dll";
             options.GeneratorKind = Kind;
-            options.Headers.Add("AST.h");
-            options.Headers.Add("CppParser.h");
+            options.Headers.AddRange(new string[]
+            {
+                "AST.h",
+                "Sources.h",
+                "CppParser.h"
+            });
             options.Libraries.Add("CppSharp.CppParser.lib");
 
             if (Triple.Contains("apple"))

@@ -1205,6 +1205,18 @@ void CppSharp::Parser::AST::Declaration::_Namespace::set(CppSharp::Parser::AST::
     ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->_Namespace = (::CppSharp::CppParser::AST::DeclarationContext*)value->NativePtr;
 }
 
+CppSharp::Parser::SourceLocation CppSharp::Parser::AST::Declaration::Location::get()
+{
+    return CppSharp::Parser::SourceLocation((::CppSharp::CppParser::SourceLocation*)&((::CppSharp::CppParser::AST::Declaration*)NativePtr)->Location);
+}
+
+void CppSharp::Parser::AST::Declaration::Location::set(CppSharp::Parser::SourceLocation value)
+{
+    auto _marshal0 = ::CppSharp::CppParser::SourceLocation();
+    _marshal0.ID = value.ID;
+    ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->Location = _marshal0;
+}
+
 CppSharp::Parser::AST::RawComment^ CppSharp::Parser::AST::Declaration::Comment::get()
 {
     return (((::CppSharp::CppParser::AST::Declaration*)NativePtr)->Comment == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::RawComment((::CppSharp::CppParser::AST::RawComment*)((::CppSharp::CppParser::AST::Declaration*)NativePtr)->Comment);

@@ -8,6 +8,7 @@
 #pragma once
 
 #include "Helpers.h"
+#include "Sources.h"
 
 namespace CppSharp { namespace CppParser { namespace AST {
 
@@ -367,6 +368,7 @@ struct CS_API Declaration
     DeclarationKind Kind;
     AccessSpecifier Access;
     DeclarationContext* _Namespace;
+    SourceLocation Location;
     STRING(Name)
     RawComment* Comment;
     STRING(DebugText)
