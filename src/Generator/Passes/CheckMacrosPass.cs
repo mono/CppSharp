@@ -71,9 +71,9 @@ namespace CppSharp.Passes
         void CheckIgnoreMacros(Declaration decl, IEnumerable<MacroExpansion> expansions)
         {
             if (expansions.Any(e => e.Text == Prefix + "_IGNORE" &&
-                                    e.Location != MacroLocation.ClassBody &&
-                                    e.Location != MacroLocation.FunctionBody &&
-                                    e.Location != MacroLocation.FunctionParameters))
+                                    e.MacroLocation != MacroLocation.ClassBody &&
+                                    e.MacroLocation != MacroLocation.FunctionBody &&
+                                    e.MacroLocation != MacroLocation.FunctionParameters))
             {
                 Log.Debug("Decl '{0}' was ignored due to ignore macro",
                     decl.Name);
@@ -81,9 +81,9 @@ namespace CppSharp.Passes
             }
 
             if (expansions.Any(e => e.Text == Prefix + "_IGNORE_GEN" &&
-                                    e.Location != MacroLocation.ClassBody &&
-                                    e.Location != MacroLocation.FunctionBody &&
-                                    e.Location != MacroLocation.FunctionParameters))
+                                    e.MacroLocation != MacroLocation.ClassBody &&
+                                    e.MacroLocation != MacroLocation.FunctionBody &&
+                                    e.MacroLocation != MacroLocation.FunctionParameters))
                 decl.GenerationKind = GenerationKind.Internal;
         }
 
