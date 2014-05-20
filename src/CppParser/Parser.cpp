@@ -1179,7 +1179,7 @@ TranslationUnit* Parser::GetTranslationUnit(clang::SourceLocation Loc,
 {
     using namespace clang;
 
-    SourceManager& SM = C->getSourceManager();
+    clang::SourceManager& SM = C->getSourceManager();
 
     if (Loc.isMacroID())
         Loc = SM.getExpansionLoc(Loc);
@@ -2060,8 +2060,8 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, Function* F,
     String Mangled = GetDeclMangledName(FD, TargetABI, IsDependent);
     F->Mangled = Mangled;
 
-    SourceLocation ParamStartLoc = FD->getLocStart();
-    SourceLocation ResultLoc;
+    clang::SourceLocation ParamStartLoc = FD->getLocStart();
+    clang::SourceLocation ResultLoc;
 
     auto FTSI = FD->getTypeSourceInfo();
     if (FTSI)
@@ -2176,8 +2176,8 @@ SourceLocationKind Parser::GetLocationKind(const clang::SourceLocation& Loc)
 {
     using namespace clang;
 
-    SourceManager& SM = C->getSourceManager();
-    PresumedLoc PLoc = SM.getPresumedLoc(Loc);
+    clang::SourceManager& SM = C->getSourceManager();
+    clang::PresumedLoc PLoc = SM.getPresumedLoc(Loc);
 
     if(PLoc.isInvalid())
         return SourceLocationKind::Invalid;
@@ -2241,7 +2241,7 @@ Variable* Parser::WalkVariable(clang::VarDecl *VD)
 bool Parser::GetDeclText(clang::SourceRange SR, std::string& Text)
 {
     using namespace clang;
-    SourceManager& SM = C->getSourceManager();
+    clang::SourceManager& SM = C->getSourceManager();
     const LangOptions &LangOpts = C->getLangOpts();
 
     auto Range = CharSourceRange::getTokenRange(SR);
@@ -2298,7 +2298,7 @@ PreprocessedEntity* Parser::WalkPreprocessedEntity(
         if (!MI || MI->isBuiltinMacro() || MI->isFunctionLike())
             break;
 
-        SourceManager& SM = C->getSourceManager();
+        clang::SourceManager& SM = C->getSourceManager();
         const LangOptions &LangOpts = C->getLangOpts();
 
         auto Loc = MI->getDefinitionLoc();
@@ -2306,10 +2306,10 @@ PreprocessedEntity* Parser::WalkPreprocessedEntity(
         if (!IsValidDeclaration(Loc))
             break;
 
-        SourceLocation BeginExpr =
+        clang::SourceLocation BeginExpr =
             Lexer::getLocForEndOfToken(Loc, 0, SM, LangOpts);
 
-        auto Range = CharSourceRange::getTokenRange(
+        auto Range = clang::CharSourceRange::getTokenRange(
             BeginExpr, MI->getDefinitionEndLoc());
 
         bool Invalid;
