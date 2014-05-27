@@ -8,6 +8,7 @@
 #pragma once
 
 #include "Helpers.h"
+#include "Sources.h"
 
 namespace CppSharp { namespace CppParser { namespace AST {
 
@@ -234,16 +235,16 @@ enum struct PrimitiveType
     Void,
     Bool,
     WideChar,
-    Int8,
-    Char = Int8,
-    UInt8,
-    UChar = UInt8,
-    Int16,
-    UInt16,
-    Int32,
-    UInt32,
-    Int64,
-    UInt64,
+    Char,
+    UChar,
+    Short,
+    UShort,
+    Int,
+    UInt,
+    Long,
+    ULong,
+    LongLong,
+    ULongLong,
     Float,
     Double,
     IntPtr
@@ -367,6 +368,7 @@ struct CS_API Declaration
     DeclarationKind Kind;
     AccessSpecifier Access;
     DeclarationContext* _Namespace;
+    SourceLocation Location;
     STRING(Name)
     RawComment* Comment;
     STRING(DebugText)
@@ -777,10 +779,10 @@ enum struct RawCommentKind
 struct CS_API RawComment
 {
     RawComment();
-    RawCommentKind RawCommentKind;
+    RawCommentKind Kind;
     STRING(Text)
     STRING(BriefText)
-    FullComment* FullComment;
+    FullComment* FullCommentBlock;
 };
 
 #pragma region Commands

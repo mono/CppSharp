@@ -216,12 +216,12 @@ void CppSharp::Parser::AST::ArrayType::SizeType::set(CppSharp::Parser::AST::Arra
     ((::CppSharp::CppParser::AST::ArrayType*)NativePtr)->SizeType = (::CppSharp::CppParser::AST::ArrayType::ArraySize)value;
 }
 
-int CppSharp::Parser::AST::ArrayType::Size::get()
+long CppSharp::Parser::AST::ArrayType::Size::get()
 {
     return ((::CppSharp::CppParser::AST::ArrayType*)NativePtr)->Size;
 }
 
-void CppSharp::Parser::AST::ArrayType::Size::set(int value)
+void CppSharp::Parser::AST::ArrayType::Size::set(long value)
 {
     ((::CppSharp::CppParser::AST::ArrayType*)NativePtr)->Size = value;
 }
@@ -513,12 +513,12 @@ void CppSharp::Parser::AST::TemplateArgument::Declaration::set(CppSharp::Parser:
     ((::CppSharp::CppParser::AST::TemplateArgument*)NativePtr)->Declaration = (::CppSharp::CppParser::AST::Declaration*)value->NativePtr;
 }
 
-int CppSharp::Parser::AST::TemplateArgument::Integral::get()
+long CppSharp::Parser::AST::TemplateArgument::Integral::get()
 {
     return ((::CppSharp::CppParser::AST::TemplateArgument*)NativePtr)->Integral;
 }
 
-void CppSharp::Parser::AST::TemplateArgument::Integral::set(int value)
+void CppSharp::Parser::AST::TemplateArgument::Integral::set(long value)
 {
     ((::CppSharp::CppParser::AST::TemplateArgument*)NativePtr)->Integral = value;
 }
@@ -1061,12 +1061,12 @@ void CppSharp::Parser::AST::ClassLayout::HasOwnVFPtr::set(bool value)
     ((::CppSharp::CppParser::AST::ClassLayout*)NativePtr)->HasOwnVFPtr = value;
 }
 
-int CppSharp::Parser::AST::ClassLayout::VBPtrOffset::get()
+long CppSharp::Parser::AST::ClassLayout::VBPtrOffset::get()
 {
     return ((::CppSharp::CppParser::AST::ClassLayout*)NativePtr)->VBPtrOffset;
 }
 
-void CppSharp::Parser::AST::ClassLayout::VBPtrOffset::set(int value)
+void CppSharp::Parser::AST::ClassLayout::VBPtrOffset::set(long value)
 {
     ((::CppSharp::CppParser::AST::ClassLayout*)NativePtr)->VBPtrOffset = value;
 }
@@ -1203,6 +1203,18 @@ CppSharp::Parser::AST::DeclarationContext^ CppSharp::Parser::AST::Declaration::_
 void CppSharp::Parser::AST::Declaration::_Namespace::set(CppSharp::Parser::AST::DeclarationContext^ value)
 {
     ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->_Namespace = (::CppSharp::CppParser::AST::DeclarationContext*)value->NativePtr;
+}
+
+CppSharp::Parser::SourceLocation CppSharp::Parser::AST::Declaration::Location::get()
+{
+    return CppSharp::Parser::SourceLocation((::CppSharp::CppParser::SourceLocation*)&((::CppSharp::CppParser::AST::Declaration*)NativePtr)->Location);
+}
+
+void CppSharp::Parser::AST::Declaration::Location::set(CppSharp::Parser::SourceLocation value)
+{
+    auto _marshal0 = ::CppSharp::CppParser::SourceLocation();
+    _marshal0.ID = value.ID;
+    ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->Location = _marshal0;
 }
 
 CppSharp::Parser::AST::RawComment^ CppSharp::Parser::AST::Declaration::Comment::get()
@@ -2934,23 +2946,23 @@ void CppSharp::Parser::AST::RawComment::BriefText::set(System::String^ s)
     ((::CppSharp::CppParser::AST::RawComment*)NativePtr)->setBriefText(arg0);
 }
 
-CppSharp::Parser::AST::RawCommentKind CppSharp::Parser::AST::RawComment::RawCommentKind::get()
+CppSharp::Parser::AST::RawCommentKind CppSharp::Parser::AST::RawComment::Kind::get()
 {
-    return (CppSharp::Parser::AST::RawCommentKind)((::CppSharp::CppParser::AST::RawComment*)NativePtr)->RawCommentKind;
+    return (CppSharp::Parser::AST::RawCommentKind)((::CppSharp::CppParser::AST::RawComment*)NativePtr)->Kind;
 }
 
-void CppSharp::Parser::AST::RawComment::RawCommentKind::set(CppSharp::Parser::AST::RawCommentKind value)
+void CppSharp::Parser::AST::RawComment::Kind::set(CppSharp::Parser::AST::RawCommentKind value)
 {
-    ((::CppSharp::CppParser::AST::RawComment*)NativePtr)->RawCommentKind = (::CppSharp::CppParser::AST::RawCommentKind)value;
+    ((::CppSharp::CppParser::AST::RawComment*)NativePtr)->Kind = (::CppSharp::CppParser::AST::RawCommentKind)value;
 }
 
-CppSharp::Parser::AST::FullComment^ CppSharp::Parser::AST::RawComment::FullComment::get()
+CppSharp::Parser::AST::FullComment^ CppSharp::Parser::AST::RawComment::FullCommentBlock::get()
 {
-    return (((::CppSharp::CppParser::AST::RawComment*)NativePtr)->FullComment == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::FullComment((::CppSharp::CppParser::AST::FullComment*)((::CppSharp::CppParser::AST::RawComment*)NativePtr)->FullComment);
+    return (((::CppSharp::CppParser::AST::RawComment*)NativePtr)->FullCommentBlock == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::FullComment((::CppSharp::CppParser::AST::FullComment*)((::CppSharp::CppParser::AST::RawComment*)NativePtr)->FullCommentBlock);
 }
 
-void CppSharp::Parser::AST::RawComment::FullComment::set(CppSharp::Parser::AST::FullComment^ value)
+void CppSharp::Parser::AST::RawComment::FullCommentBlock::set(CppSharp::Parser::AST::FullComment^ value)
 {
-    ((::CppSharp::CppParser::AST::RawComment*)NativePtr)->FullComment = (::CppSharp::CppParser::AST::FullComment*)value->NativePtr;
+    ((::CppSharp::CppParser::AST::RawComment*)NativePtr)->FullCommentBlock = (::CppSharp::CppParser::AST::FullComment*)value->NativePtr;
 }
 

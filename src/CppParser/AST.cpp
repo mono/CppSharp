@@ -122,6 +122,7 @@ Declaration::Declaration(DeclarationKind kind)
     : Kind(kind)
     , Access(AccessSpecifier::Public)
     , _Namespace(0)
+    , Location(0)
     , Comment(0)
     , IsIncomplete(false)
     , IsDependent(false)
@@ -135,6 +136,7 @@ Declaration::Declaration(const Declaration& rhs)
     : Kind(rhs.Kind)
     , Access(rhs.Access)
     , _Namespace(rhs._Namespace)
+    , Location(rhs.Location.ID)
     , Name(rhs.Name)
     , Comment(rhs.Comment)
     , DebugText(rhs.DebugText)
@@ -626,7 +628,7 @@ Comment::Comment(CommentKind kind) : Kind(kind) {}
 DEF_STRING(RawComment, Text)
 DEF_STRING(RawComment, BriefText)
 
-RawComment::RawComment() : FullComment(0) {}
+RawComment::RawComment() : FullCommentBlock(0) {}
 
 FullComment::FullComment() : Comment(CommentKind::FullComment) {}
 

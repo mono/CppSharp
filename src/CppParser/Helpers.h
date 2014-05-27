@@ -22,6 +22,8 @@
 #endif
 
 #define CS_ABSTRACT
+#define CS_VALUE_TYPE
+
 
 /** We use these macros to workaround the lack of good standard C++
  * containers/string support in the C# binding backend. */

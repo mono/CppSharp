@@ -16,7 +16,7 @@
     /// </summary>
     public abstract class PreprocessedEntity : Declaration
     {
-        public MacroLocation Location = MacroLocation.Unknown;
+        public MacroLocation MacroLocation = MacroLocation.Unknown;
     }
 
     /// <summary>

@@ -2,6 +2,7 @@
 
 #include "CppSharp.h"
 #include <AST.h>
+#include "Sources.h"
 
 namespace CppSharp
 {
@@ -237,19 +238,19 @@ namespace CppSharp
                 Void = 1,
                 Bool = 2,
                 WideChar = 3,
-                Int8 = 4,
                 Char = 4,
-                UInt8 = 5,
                 UChar = 5,
-                Int16 = 6,
-                UInt16 = 7,
-                Int32 = 8,
-                UInt32 = 9,
-                Int64 = 10,
-                UInt64 = 11,
-                Float = 12,
-                Double = 13,
-                IntPtr = 14
+                Short = 6,
+                UShort = 7,
+                Int = 8,
+                UInt = 9,
+                Long = 10,
+                ULong = 11,
+                LongLong = 12,
+                ULongLong = 13,
+                Float = 14,
+                Double = 15,
+                IntPtr = 16
             };
 
             public enum struct RawCommentKind
@@ -412,10 +413,10 @@ namespace CppSharp
                     void set(CppSharp::Parser::AST::ArrayType::ArraySize);
                 }
 
-                property int Size
+                property long Size
                 {
-                    int get();
-                    void set(int);
+                    long get();
+                    void set(long);
                 }
             };
 
@@ -601,10 +602,10 @@ namespace CppSharp
                     void set(CppSharp::Parser::AST::Declaration^);
                 }
 
-                property int Integral
+                property long Integral
                 {
-                    int get();
-                    void set(int);
+                    long get();
+                    void set(long);
                 }
             };
 
@@ -907,10 +908,10 @@ namespace CppSharp
                     void set(bool);
                 }
 
-                property int VBPtrOffset
+                property long VBPtrOffset
                 {
-                    int get();
-                    void set(int);
+                    long get();
+                    void set(long);
                 }
 
                 property int Alignment
@@ -984,6 +985,12 @@ namespace CppSharp
                 {
                     CppSharp::Parser::AST::DeclarationContext^ get();
                     void set(CppSharp::Parser::AST::DeclarationContext^);
+                }
+
+                property CppSharp::Parser::SourceLocation Location
+                {
+                    CppSharp::Parser::SourceLocation get();
+                    void set(CppSharp::Parser::SourceLocation);
                 }
 
                 property CppSharp::Parser::AST::RawComment^ Comment
@@ -1933,13 +1940,13 @@ namespace CppSharp
                     void set(System::String^);
                 }
 
-                property CppSharp::Parser::AST::RawCommentKind RawCommentKind
+                property CppSharp::Parser::AST::RawCommentKind Kind
                 {
                     CppSharp::Parser::AST::RawCommentKind get();
                     void set(CppSharp::Parser::AST::RawCommentKind);
                 }
 
-                property CppSharp::Parser::AST::FullComment^ FullComment
+                property CppSharp::Parser::AST::FullComment^ FullCommentBlock
                 {
                     CppSharp::Parser::AST::FullComment^ get();
                     void set(CppSharp::Parser::AST::FullComment^);
