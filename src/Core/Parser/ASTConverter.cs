@@ -556,22 +556,26 @@ namespace CppSharp
                     return AST.PrimitiveType.Bool;
                 case PrimitiveType.WideChar:
                     return AST.PrimitiveType.WideChar;
-                case PrimitiveType.Int8:
-                    return AST.PrimitiveType.Int8;
-                case PrimitiveType.UInt8:
-                    return AST.PrimitiveType.UInt8;
-                case PrimitiveType.Int16:
-                    return AST.PrimitiveType.Int16;
-                case PrimitiveType.UInt16:
-                    return AST.PrimitiveType.UInt16;
-                case PrimitiveType.Int32:
-                    return AST.PrimitiveType.Int32;
-                case PrimitiveType.UInt32:
-                    return AST.PrimitiveType.UInt32;
-                case PrimitiveType.Int64:
-                    return AST.PrimitiveType.Int64;
-                case PrimitiveType.UInt64:
-                    return AST.PrimitiveType.UInt64;
+                case PrimitiveType.Char:
+                    return AST.PrimitiveType.Char;
+                case PrimitiveType.UChar:
+                    return AST.PrimitiveType.UChar;
+                case PrimitiveType.Short:
+                    return AST.PrimitiveType.Short;
+                case PrimitiveType.UShort:
+                    return AST.PrimitiveType.UShort;
+                case PrimitiveType.Int:
+                    return AST.PrimitiveType.Int;
+                case PrimitiveType.UInt:
+                    return AST.PrimitiveType.UInt;
+                case PrimitiveType.Long:
+                    return AST.PrimitiveType.Long;
+                case PrimitiveType.ULong:
+                    return AST.PrimitiveType.ULong;
+                case PrimitiveType.LongLong:
+                    return AST.PrimitiveType.LongLong;
+                case PrimitiveType.ULongLong:
+                    return AST.PrimitiveType.ULongLong;
                 case PrimitiveType.Float:
                     return AST.PrimitiveType.Float;
                 case PrimitiveType.Double:
@@ -657,13 +661,13 @@ namespace CppSharp
         {
             var _rawComment = new AST.RawComment
             {
-                Kind = ConvertRawCommentKind(rawComment.RawCommentKind),
+                Kind = ConvertRawCommentKind(rawComment.Kind),
                 BriefText = rawComment.BriefText,
                 Text = rawComment.Text,
             };
 
-            if (rawComment.FullComment != null)
-                _rawComment.FullComment = commentConverter.Visit(rawComment.FullComment)
+            if (rawComment.FullCommentBlock != null)
+                _rawComment.FullComment = commentConverter.Visit(rawComment.FullCommentBlock)
                     as AST.FullComment;
 
             return _rawComment;
@@ -714,6 +718,7 @@ namespace CppSharp
             _decl.Access = VisitAccessSpecifier(decl.Access);
             _decl.Name = decl.Name;
             _decl.Namespace = Visit(decl._Namespace) as AST.DeclarationContext;
+            _decl.Location = new SourceLocation(decl.Location.ID);
             _decl.DebugText = decl.DebugText;
             _decl.IsIncomplete = decl.IsIncomplete;
             _decl.IsDependent = decl.IsDependent;
@@ -1403,7 +1408,7 @@ namespace CppSharp
         void VisitPreprocessedEntity(PreprocessedEntity entity, AST.PreprocessedEntity _entity)
         {
             VisitDeclaration(entity, _entity);
-            _entity.Location = VisitMacroLocation(entity.Location);
+            _entity.MacroLocation = VisitMacroLocation(entity.Location);
         }
 
         private AST.MacroLocation VisitMacroLocation(MacroLocation location)

@@ -657,16 +657,16 @@ namespace CppSharp.AST
         Void,
         Bool,
         WideChar,
-        Int8,
-        Char = Int8,
-        UInt8,
-        UChar = UInt8,
-        Int16,
-        UInt16,
-        Int32,
-        UInt32,
-        Int64,
-        UInt64,
+        Char,
+        UChar,
+        Short,
+        UShort,
+        Int,
+        UInt,
+        Long,
+        ULong,
+        LongLong,
+        ULongLong,
         Float,
         Double,
         IntPtr,
@@ -695,10 +695,11 @@ namespace CppSharp.AST
                 switch (Type)
                 {
                 case PrimitiveType.Bool:
-                case PrimitiveType.UInt8:
-                case PrimitiveType.UInt16:
-                case PrimitiveType.UInt32:
-                case PrimitiveType.UInt64:
+                case PrimitiveType.UChar:
+                case PrimitiveType.UShort:
+                case PrimitiveType.UInt:
+                case PrimitiveType.ULong:
+                case PrimitiveType.ULongLong:
                     return true;
                 }
 

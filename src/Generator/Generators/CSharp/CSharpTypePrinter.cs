@@ -4,6 +4,9 @@ using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Types;
 using Type = CppSharp.AST.Type;
+#if !OLD_PARSER
+using ParserTargetInfo = CppSharp.Parser.ParserTargetInfo;
+#endif
 
 namespace CppSharp.Generators.CSharp
 {
@@ -52,9 +55,7 @@ namespace CppSharp.Generators.CSharp
     public class CSharpTypePrinter : ITypePrinter<CSharpTypePrinterResult>,
         IDeclVisitor<CSharpTypePrinterResult>
     {
-        public ASTContext AstContext { get; set; }
-        private readonly ITypeMapDatabase TypeMapDatabase;
-        private readonly DriverOptions driverOptions;
+        private Driver driver;
 
         private readonly Stack<CSharpTypePrinterContextKind> contexts;
 
@@ -65,11 +66,9 @@ namespace CppSharp.Generators.CSharp
 
         public CSharpTypePrinterContext Context;
 
-        public CSharpTypePrinter(ITypeMapDatabase database, DriverOptions driverOptions, ASTContext context)
+        public CSharpTypePrinter(Driver driver)
         {
-            TypeMapDatabase = database;
-            this.driverOptions = driverOptions;
-            AstContext = context;
+            this.driver = driver;
 
             contexts = new Stack<CSharpTypePrinterContextKind>();
             PushContext(CSharpTypePrinterContextKind.Managed);
@@ -93,7 +92,7 @@ namespace CppSharp.Generators.CSharp
                 return string.Empty;
 
             TypeMap typeMap;
-            if (TypeMapDatabase.FindTypeMap(tag.Declaration, out typeMap))
+            if (this.driver.TypeDatabase.FindTypeMap(tag.Declaration, out typeMap))
             {
                 typeMap.Type = tag;
                 Context.CSharpKind = ContextKind;
@@ -269,7 +268,7 @@ namespace CppSharp.Generators.CSharp
             var decl = typedef.Declaration;
 
             TypeMap typeMap;
-            if (TypeMapDatabase.FindTypeMap(decl, out typeMap))
+            if (this.driver.TypeDatabase.FindTypeMap(decl, out typeMap))
             {
                 typeMap.Type = typedef;
                 Context.CSharpKind = ContextKind;
@@ -314,7 +313,7 @@ namespace CppSharp.Generators.CSharp
             var decl = template.Template.TemplatedDecl;
 
             TypeMap typeMap = null;
-            if (TypeMapDatabase.FindTypeMap(template, out typeMap))
+            if (this.driver.TypeDatabase.FindTypeMap(template, out typeMap))
             {
                 typeMap.Declaration = decl;
                 typeMap.Type = template;
@@ -377,6 +376,64 @@ namespace CppSharp.Generators.CSharp
             return type.Type.FullName;
         }
 
+       static string GetIntString(PrimitiveType primitive, ParserTargetInfo targetInfo)
+        {
+            bool signed;
+            uint width;
+
+            switch (primitive)
+            {
+                case PrimitiveType.Short:
+                    width = targetInfo.ShortWidth;
+                    signed = true;
+                    break;
+                case PrimitiveType.UShort:
+                    width = targetInfo.ShortWidth;
+                    signed = false;
+                    break;
+                case PrimitiveType.Int:
+                    width = targetInfo.IntWidth;
+                    signed = true;
+                    break;
+                case PrimitiveType.UInt:
+                    width = targetInfo.IntWidth;
+                    signed = false;
+                    break;
+                case PrimitiveType.Long:
+                    width = targetInfo.LongWidth;
+                    signed = true;
+                    break;
+                case PrimitiveType.ULong:
+                    width = targetInfo.LongWidth;
+                    signed = false;
+                    break;
+                case PrimitiveType.LongLong:
+                    width = targetInfo.LongLongWidth;
+                    signed = true;
+                    break;
+                case PrimitiveType.ULongLong:
+                    width = targetInfo.LongLongWidth;
+                    signed = false;
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
+
+            switch (width)
+            {
+                case 8:
+                    return signed ? "sbyte" : "byte";
+                case 16:
+                    return signed ? "short" : "ushort";
+                case 32:
+                    return signed ? "int" : "uint";
+                case 64:
+                    return signed ? "long" : "ulong";
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
         public CSharpTypePrinterResult VisitPrimitiveType(PrimitiveType primitive,
             TypeQualifiers quals)
         {
@@ -386,14 +443,17 @@ namespace CppSharp.Generators.CSharp
                 case PrimitiveType.Void: return "void";
                 case PrimitiveType.Char16:
                 case PrimitiveType.WideChar: return "char";
-                case PrimitiveType.Int8: return driverOptions.MarshalCharAsManagedChar ? "char" : "sbyte";
-                case PrimitiveType.UInt8: return "byte";
-                case PrimitiveType.Int16: return "short";
-                case PrimitiveType.UInt16: return "ushort";
-                case PrimitiveType.Int32: return "int";
-                case PrimitiveType.UInt32: return "uint";
-                case PrimitiveType.Int64: return "long";
-                case PrimitiveType.UInt64: return "ulong";
+                case PrimitiveType.Char: return this.driver.Options.MarshalCharAsManagedChar ? "char" : "sbyte";
+                case PrimitiveType.UChar: return "byte";
+                case PrimitiveType.Short:
+                case PrimitiveType.UShort:
+                case PrimitiveType.Int:
+                case PrimitiveType.UInt:
+                case PrimitiveType.Long:
+                case PrimitiveType.ULong:
+                case PrimitiveType.LongLong:
+                case PrimitiveType.ULongLong:
+                    return GetIntString(primitive, this.driver.TargetInfo);
                 case PrimitiveType.Float: return "float";
                 case PrimitiveType.Double: return "double";
                 case PrimitiveType.IntPtr: return "global::System.IntPtr";

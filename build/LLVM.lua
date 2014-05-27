@@ -32,7 +32,6 @@ function SetupLLVMLibs()
     libdirs { path.join(LLVMBuildDir, "RelWithDebInfo/lib") }
 
   configuration "not vs*"
-    buildoptions { "-fpermissive" }
     defines { "__STDC_CONSTANT_MACROS", "__STDC_LIMIT_MACROS" }
 
   configuration "macosx"

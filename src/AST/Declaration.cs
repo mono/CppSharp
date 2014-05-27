@@ -53,7 +53,8 @@ namespace CppSharp.AST
     /// </summary>
     public abstract class Declaration : INamedDecl
     {
-        
+        public SourceLocation Location;
+
         private DeclarationContext @namespace;
         public DeclarationContext OriginalNamespace;
 

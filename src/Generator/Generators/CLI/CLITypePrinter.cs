@@ -189,14 +189,16 @@ namespace CppSharp.Generators.CLI
                 case PrimitiveType.Void: return "void";
                 case PrimitiveType.Char16:
                 case PrimitiveType.WideChar: return "System::Char";
-                case PrimitiveType.Int8: return Options.MarshalCharAsManagedChar ? "System::Char" : "char";
-                case PrimitiveType.UInt8: return "unsigned char";
-                case PrimitiveType.Int16: return "short";
-                case PrimitiveType.UInt16: return "unsigned short";
-                case PrimitiveType.Int32: return "int";
-                case PrimitiveType.UInt32: return "unsigned int";
-                case PrimitiveType.Int64: return "long long";
-                case PrimitiveType.UInt64: return "unsigned long long";
+                case PrimitiveType.Char: return Options.MarshalCharAsManagedChar ? "System::Char" : "char";
+                case PrimitiveType.UChar: return "unsigned char";
+                case PrimitiveType.Short: return "short";
+                case PrimitiveType.UShort: return "unsigned short";
+                case PrimitiveType.Int: return "int";
+                case PrimitiveType.UInt: return "unsigned int";
+                case PrimitiveType.Long: return "long";
+                case PrimitiveType.ULong: return "unsigned long";
+                case PrimitiveType.LongLong: return "long long";
+                case PrimitiveType.ULongLong: return "unsigned long long";
                 case PrimitiveType.Float: return "float";
                 case PrimitiveType.Double: return "double";
                 case PrimitiveType.IntPtr: return "IntPtr";

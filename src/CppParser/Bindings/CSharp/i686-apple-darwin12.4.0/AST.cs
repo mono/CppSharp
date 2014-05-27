@@ -165,19 +165,19 @@ namespace CppSharp
                 Void = 1,
                 Bool = 2,
                 WideChar = 3,
-                Int8 = 4,
                 Char = 4,
-                UInt8 = 5,
                 UChar = 5,
-                Int16 = 6,
-                UInt16 = 7,
-                Int32 = 8,
-                UInt32 = 9,
-                Int64 = 10,
-                UInt64 = 11,
-                Float = 12,
-                Double = 13,
-                IntPtr = 14
+                Short = 6,
+                UShort = 7,
+                Int = 8,
+                UInt = 9,
+                Long = 10,
+                ULong = 11,
+                LongLong = 12,
+                ULongLong = 13,
+                Float = 14,
+                Double = 15,
+                IntPtr = 16
             }
 
             public enum RawCommentKind
@@ -7081,10 +7081,10 @@ namespace CppSharp
                 public struct Internal
                 {
                     [FieldOffset(0)]
-                    public CppSharp.Parser.AST.RawCommentKind RawCommentKind;
+                    public CppSharp.Parser.AST.RawCommentKind Kind;
 
                     [FieldOffset(28)]
-                    public global::System.IntPtr FullComment;
+                    public global::System.IntPtr FullCommentBlock;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -7191,33 +7191,33 @@ namespace CppSharp
                     }
                 }
 
-                public CppSharp.Parser.AST.RawCommentKind RawCommentKind
+                public CppSharp.Parser.AST.RawCommentKind Kind
                 {
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return __ptr->RawCommentKind;
+                        return __ptr->Kind;
                     }
 
                     set
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        __ptr->RawCommentKind = value;
+                        __ptr->Kind = value;
                     }
                 }
 
-                public CppSharp.Parser.AST.FullComment FullComment
+                public CppSharp.Parser.AST.FullComment FullCommentBlock
                 {
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return (__ptr->FullComment == IntPtr.Zero) ? null : new CppSharp.Parser.AST.FullComment(__ptr->FullComment);
+                        return (__ptr->FullCommentBlock == IntPtr.Zero) ? null : new CppSharp.Parser.AST.FullComment(__ptr->FullCommentBlock);
                     }
 
                     set
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        __ptr->FullComment = value == (CppSharp.Parser.AST.FullComment) null ? global::System.IntPtr.Zero : value.__Instance;
+                        __ptr->FullCommentBlock = value == (CppSharp.Parser.AST.FullComment) null ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
             }

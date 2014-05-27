@@ -894,10 +894,11 @@ Parser::WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL,
     for (size_t i = 0, e = TAL->size(); i < e; i++)
     {
         auto TA = TAL->get(i);
+        TemplateArgumentLoc TAL;
         TemplateArgumentLoc *ArgLoc = 0;
         if (TSTL && i < TSTL->getNumArgs())
         {
-            auto TAL = TSTL->getArgLoc(i);
+            TAL = TSTL->getArgLoc(i);
             ArgLoc = &TAL;
         }
         auto Arg = WalkTemplateArgument(TA, ArgLoc);
@@ -1178,7 +1179,7 @@ TranslationUnit* Parser::GetTranslationUnit(clang::SourceLocation Loc,
 {
     using namespace clang;
 
-    SourceManager& SM = C->getSourceManager();
+    clang::SourceManager& SM = C->getSourceManager();
 
     if (Loc.isMacroID())
         Loc = SM.getExpansionLoc(Loc);
@@ -1320,25 +1321,25 @@ static PrimitiveType WalkBuiltinType(const clang::BuiltinType* Builtin)
     case clang::BuiltinType::Bool: return PrimitiveType::Bool;
 
     case clang::BuiltinType::SChar:
-    case clang::BuiltinType::Char_S: return PrimitiveType::Int8;
+    case clang::BuiltinType::Char_S: return PrimitiveType::Char;
     
     case clang::BuiltinType::UChar:
-    case clang::BuiltinType::Char_U: return PrimitiveType::UInt8;
+    case clang::BuiltinType::Char_U: return PrimitiveType::UChar;
 
     case clang::BuiltinType::WChar_S:
     case clang::BuiltinType::WChar_U: return PrimitiveType::WideChar;
 
-    case clang::BuiltinType::Short: return PrimitiveType::Int16;
-    case clang::BuiltinType::UShort: return PrimitiveType::UInt16;
+    case clang::BuiltinType::Short: return PrimitiveType::Short;
+    case clang::BuiltinType::UShort: return PrimitiveType::UShort;
 
-    case clang::BuiltinType::Int: return PrimitiveType::Int32;
-    case clang::BuiltinType::UInt: return PrimitiveType::UInt32;
+    case clang::BuiltinType::Int: return PrimitiveType::Int;
+    case clang::BuiltinType::UInt: return PrimitiveType::UInt;
 
-    case clang::BuiltinType::Long: return PrimitiveType::Int32;
-    case clang::BuiltinType::ULong: return PrimitiveType::UInt32;
+    case clang::BuiltinType::Long: return PrimitiveType::Long;
+    case clang::BuiltinType::ULong: return PrimitiveType::ULong;
     
-    case clang::BuiltinType::LongLong: return PrimitiveType::Int64;
-    case clang::BuiltinType::ULongLong: return PrimitiveType::UInt64;
+    case clang::BuiltinType::LongLong: return PrimitiveType::LongLong;
+    case clang::BuiltinType::ULongLong: return PrimitiveType::ULongLong;
 
     case clang::BuiltinType::Float: return PrimitiveType::Float;
     case clang::BuiltinType::Double: return PrimitiveType::Double;
@@ -1630,11 +1631,12 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
 
         FunctionProtoTypeLoc FTL;
         TypeLoc RL;
+        TypeLoc Next;
         if (TL && !TL->isNull())
         {
             while (TL->getTypeLocClass() != TypeLoc::FunctionProto)
             {
-                auto Next = TL->getNextTypeLoc();
+                Next = TL->getNextTypeLoc();
                 TL = &Next;
             }
 
@@ -1712,29 +1714,32 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         if (TS->isSugared())
             TST->Desugared = WalkType(TS->desugar());
 
+        TypeLoc UTL, ETL, ITL;
+
         if (TL && !TL->isNull())
         {
             auto TypeLocClass = TL->getTypeLocClass();
             if (TypeLocClass == TypeLoc::Qualified)
             {
-                auto UTL = TL->getUnqualifiedLoc();
+                UTL = TL->getUnqualifiedLoc();
                 TL = &UTL;
             }
             else if (TypeLocClass == TypeLoc::Elaborated)
             {
-                auto ETL = TL->getAs<ElaboratedTypeLoc>();
-                auto ITL = ETL.getNextTypeLoc();
+                ETL = TL->getAs<ElaboratedTypeLoc>();
+                ITL = ETL.getNextTypeLoc();
                 TL = &ITL;
             }
 
             assert(TL->getTypeLocClass() == TypeLoc::TemplateSpecialization);
         }
 
+        TemplateSpecializationTypeLoc TSpecTL;
         TemplateSpecializationTypeLoc *TSTL = 0;
         if (TL && !TL->isNull())
         {
-          auto TSpecTL = TL->getAs<TemplateSpecializationTypeLoc>();
-          TSTL = &TSpecTL;
+            TSpecTL = TL->getAs<TemplateSpecializationTypeLoc>();
+            TSTL = &TSpecTL;
         }
 
         TemplateArgumentList TArgs(TemplateArgumentList::OnStack, TS->getArgs(),
@@ -1752,24 +1757,27 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
 
         if (auto Ident = TP->getIdentifier())
             TPT->Parameter.Name = Ident->getName();
+
+        TypeLoc UTL, ETL, ITL, Next;
+
         if (TL && !TL->isNull())
         {
             auto TypeLocClass = TL->getTypeLocClass();
             if (TypeLocClass == TypeLoc::Qualified)
             {
-                auto UTL = TL->getUnqualifiedLoc();
+                UTL = TL->getUnqualifiedLoc();
                 TL = &UTL;
             }
             else if (TypeLocClass == TypeLoc::Elaborated)
             {
-                auto ETL = TL->getAs<ElaboratedTypeLoc>();
-                auto ITL = ETL.getNextTypeLoc();
+                ETL = TL->getAs<ElaboratedTypeLoc>();
+                ITL = ETL.getNextTypeLoc();
                 TL = &ITL;
             }
 
             while (TL->getTypeLocClass() != TypeLoc::TemplateTypeParm)
             {
-                auto Next = TL->getNextTypeLoc();
+                Next = TL->getNextTypeLoc();
                 TL = &Next;
             }
 
@@ -2052,8 +2060,8 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, Function* F,
     String Mangled = GetDeclMangledName(FD, TargetABI, IsDependent);
     F->Mangled = Mangled;
 
-    SourceLocation ParamStartLoc = FD->getLocStart();
-    SourceLocation ResultLoc;
+    clang::SourceLocation ParamStartLoc = FD->getLocStart();
+    clang::SourceLocation ResultLoc;
 
     auto FTSI = FD->getTypeSourceInfo();
     if (FTSI)
@@ -2168,8 +2176,8 @@ SourceLocationKind Parser::GetLocationKind(const clang::SourceLocation& Loc)
 {
     using namespace clang;
 
-    SourceManager& SM = C->getSourceManager();
-    PresumedLoc PLoc = SM.getPresumedLoc(Loc);
+    clang::SourceManager& SM = C->getSourceManager();
+    clang::PresumedLoc PLoc = SM.getPresumedLoc(Loc);
 
     if(PLoc.isInvalid())
         return SourceLocationKind::Invalid;
@@ -2233,7 +2241,7 @@ Variable* Parser::WalkVariable(clang::VarDecl *VD)
 bool Parser::GetDeclText(clang::SourceRange SR, std::string& Text)
 {
     using namespace clang;
-    SourceManager& SM = C->getSourceManager();
+    clang::SourceManager& SM = C->getSourceManager();
     const LangOptions &LangOpts = C->getLangOpts();
 
     auto Range = CharSourceRange::getTokenRange(SR);
@@ -2290,7 +2298,7 @@ PreprocessedEntity* Parser::WalkPreprocessedEntity(
         if (!MI || MI->isBuiltinMacro() || MI->isFunctionLike())
             break;
 
-        SourceManager& SM = C->getSourceManager();
+        clang::SourceManager& SM = C->getSourceManager();
         const LangOptions &LangOpts = C->getLangOpts();
 
         auto Loc = MI->getDefinitionLoc();
@@ -2298,10 +2306,10 @@ PreprocessedEntity* Parser::WalkPreprocessedEntity(
         if (!IsValidDeclaration(Loc))
             break;
 
-        SourceLocation BeginExpr =
+        clang::SourceLocation BeginExpr =
             Lexer::getLocForEndOfToken(Loc, 0, SM, LangOpts);
 
-        auto Range = CharSourceRange::getTokenRange(
+        auto Range = clang::CharSourceRange::getTokenRange(
             BeginExpr, MI->getDefinitionEndLoc());
 
         bool Invalid;
@@ -2407,6 +2415,7 @@ void Parser::HandleDeclaration(clang::Decl* D, Declaration* Decl)
 
     Decl->OriginalPtr = (void*) D;
     Decl->USR = GetDeclUSR(D);
+    Decl->Location = SourceLocation(D->getLocation().getRawEncoding());
 
     if (Decl->PreprocessedEntities.empty() && !D->isImplicit())
     {
@@ -2940,8 +2949,8 @@ ParserResult* ClangParser::ParseHeader(ParserOptions* Opts)
         return nullptr;
 
     auto res = new ParserResult();
-    res->Parser = new Parser(Opts);
-    return res->Parser->ParseHeader(Opts->FileName, res);
+    res->CodeParser = new Parser(Opts);
+    return res->CodeParser->ParseHeader(Opts->FileName, res);
 }
 
 ParserResult* ClangParser::ParseLibrary(ParserOptions* Opts)
@@ -2950,8 +2959,8 @@ ParserResult* ClangParser::ParseLibrary(ParserOptions* Opts)
         return nullptr;
 
     auto res = new ParserResult();
-    res->Parser = new Parser(Opts);
-    return res->Parser->ParseLibrary(Opts->FileName, res);
+    res->CodeParser = new Parser(Opts);
+    return res->CodeParser->ParseLibrary(Opts->FileName, res);
 }
 
 ParserTargetInfo* ClangParser::GetTargetInfo(ParserOptions* Opts)

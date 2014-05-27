@@ -206,7 +206,7 @@ namespace CppSharp.Generators.CLI
                 return false;
 
             var @base = "";
-            if(!@enum.Type.IsPrimitiveType(PrimitiveType.Int32)) 
+            if(!@enum.Type.IsPrimitiveType(PrimitiveType.Int))
                 @base = string.Format(" : {0}", @enum.Type);
 
             var @ref = string.Format("enum struct {0}{1};", @enum.Name, @base);
