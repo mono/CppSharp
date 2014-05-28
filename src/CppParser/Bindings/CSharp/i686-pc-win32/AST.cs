@@ -6359,7 +6359,7 @@ namespace CppSharp
                     public void* OriginalPtr;
 
                     [FieldOffset(120)]
-                    public CppSharp.Parser.AST.MacroLocation Location;
+                    public CppSharp.Parser.AST.MacroLocation MacroLocation;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -6404,18 +6404,18 @@ namespace CppSharp
                     base.Dispose(disposing);
                 }
 
-                public CppSharp.Parser.AST.MacroLocation Location
+                public CppSharp.Parser.AST.MacroLocation MacroLocation
                 {
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return __ptr->Location;
+                        return __ptr->MacroLocation;
                     }
 
                     set
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        __ptr->Location = value;
+                        __ptr->MacroLocation = value;
                     }
                 }
             }
@@ -6456,7 +6456,7 @@ namespace CppSharp
                     public void* OriginalPtr;
 
                     [FieldOffset(120)]
-                    public CppSharp.Parser.AST.MacroLocation Location;
+                    public CppSharp.Parser.AST.MacroLocation MacroLocation;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -6565,7 +6565,7 @@ namespace CppSharp
                     public void* OriginalPtr;
 
                     [FieldOffset(120)]
-                    public CppSharp.Parser.AST.MacroLocation Location;
+                    public CppSharp.Parser.AST.MacroLocation MacroLocation;
 
                     [FieldOffset(148)]
                     public global::System.IntPtr Definition;

@@ -2389,8 +2389,8 @@ void Parser::HandlePreprocessedEntities(CppSharp::AST::Declaration^ Decl,
         auto Entity = WalkPreprocessedEntity(Decl, PPEntity);
         if (!Entity) continue;
 
-        if (Entity->Location == CppSharp::AST::MacroLocation::Unknown)
-            Entity->Location = macroLocation;
+        if (Entity->MacroLocation == CppSharp::AST::MacroLocation::Unknown)
+            Entity->MacroLocation = macroLocation;
     }
 }
 
