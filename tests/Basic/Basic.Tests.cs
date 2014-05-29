@@ -101,10 +101,9 @@ public class BasicTests : GeneratorTestFixture
     {
         var hello = new Hello();
 
-        int value = (int)Enum.C;
         Enum e;
-        hello.EnumOut(value, out e);
-        Assert.That(e, Is.EqualTo(value));
+        hello.EnumOut((int)Enum.C, out e);
+        Assert.That(e, Is.EqualTo(Enum.C));
     }
 
     [Test]
@@ -112,10 +111,9 @@ public class BasicTests : GeneratorTestFixture
     {
         var hello = new Hello();
 
-        int value = (int)Enum.C;
         Enum e;
-        hello.EnumOutRef(value, out e);
-        Assert.That(e, Is.EqualTo(value));
+        hello.EnumOutRef((int)Enum.C, out e);
+        Assert.That(e, Is.EqualTo(Enum.C));
     }
 
     [Test]
