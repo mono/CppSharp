@@ -123,6 +123,9 @@ public:
 
     bool TestPrimitiveOut(CS_OUT float* f);
     bool TestPrimitiveOutRef(CS_OUT float& f);
+
+    bool TestPrimitiveInOut(CS_IN_OUT int* i);
+    bool TestPrimitiveInOutRef(CS_IN_OUT int& i);
 };
 
 class DLL_API AbstractFoo

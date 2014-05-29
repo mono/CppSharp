@@ -23,3 +23,4 @@
 #endif
 
 #define CS_OUT
+#define CS_IN_OUT

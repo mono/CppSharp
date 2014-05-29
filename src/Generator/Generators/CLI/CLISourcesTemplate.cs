@@ -1067,7 +1067,10 @@ namespace CppSharp.Generators.CLI
                 var typePrinter = new CppTypePrinter(Driver.TypeDatabase);
                 var type = paramType.Visit(typePrinter);
 
-                WriteLine("{0} {1};", type, argName);
+                if (param.IsInOut)
+                    WriteLine("{0} {1} = {2};", type, argName, param.Name);
+                else
+                    WriteLine("{0} {1};", type, argName);
             }
             else
             {

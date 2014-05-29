@@ -474,9 +474,12 @@ namespace CppSharp.Generators.CSharp
                 {
                     var typeName = Type.TypePrinterDelegate(pointee);
 
-                    Context.SupportBefore.WriteLine("{0} _{1};", typeName, param.Name);
-                    Context.Return.Write("&_{0}", param.Name);
+                    if (param.IsInOut)
+                        Context.SupportBefore.WriteLine("{0} _{1} = {1};", typeName, param.Name);
+                    else
+                        Context.SupportBefore.WriteLine("{0} _{1};", typeName, param.Name);
 
+                    Context.Return.Write("&_{0}", param.Name);
                 }
                 else
                     Context.Return.Write(Helpers.SafeIdentifier(Context.Parameter.Name));
