@@ -169,6 +169,18 @@ bool Hello::TestPrimitiveOutRef(CS_OUT float& f)
     return true;
 }
 
+bool Hello::TestPrimitiveInOut(CS_IN_OUT int* i)
+{
+    *i += 10;
+    return true;
+}
+
+bool Hello::TestPrimitiveInOutRef(CS_IN_OUT int& i)
+{
+    i += 10;
+    return true;
+}
+
 void Hello::EnumOut(int value, CS_OUT Enum* e)
 {
     *e = (Enum)value;
