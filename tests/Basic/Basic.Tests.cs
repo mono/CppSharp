@@ -78,6 +78,26 @@ public class BasicTests : GeneratorTestFixture
     }
 
     [Test]
+    public void TestPrimitiveInOutParameters()
+    {
+        var hello = new Hello();
+
+        int i = 10;
+        Assert.That(hello.TestPrimitiveInOut(ref i), Is.True);
+        Assert.That(i, Is.EqualTo(20));
+    }
+
+    [Test]
+    public void TestPrimitiveInOutRefParameters()
+    {
+        var hello = new Hello();
+
+        int i = 10;
+        Assert.That(hello.TestPrimitiveInOutRef(ref i), Is.True);
+        Assert.That(i, Is.EqualTo(20));
+    }
+
+    [Test]
     public void TestNullRef()
     {
         var hello = new Hello ();
