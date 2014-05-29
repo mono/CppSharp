@@ -123,6 +123,9 @@ public:
 
     bool TestPrimitiveOut(CS_OUT float* f);
     bool TestPrimitiveOutRef(CS_OUT float& f);
+
+    void EnumOut(int value, CS_OUT Enum* e);
+    void EnumOutRef(int value, CS_OUT Enum& e);
 };
 
 class DLL_API AbstractFoo

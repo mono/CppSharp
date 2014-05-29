@@ -169,6 +169,16 @@ bool Hello::TestPrimitiveOutRef(CS_OUT float& f)
     return true;
 }
 
+void Hello::EnumOut(int value, CS_OUT Enum* e)
+{
+    *e = (Enum)value;
+}
+
+void Hello::EnumOutRef(int value, CS_OUT Enum& e)
+{
+    e = (Enum)value;
+}
+
 int unsafeFunction(const Bar& ret, char* testForString, void (*foo)(int))
 {
     return ret.A;
