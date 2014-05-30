@@ -33,6 +33,8 @@ namespace CppSharp.Tests
             ctx.SetMethodParameterUsage("Hello", "TestPrimitiveOutRef", 1, ParameterUsage.Out);
             ctx.SetMethodParameterUsage("Hello", "TestPrimitiveInOut", 1, ParameterUsage.InOut);
             ctx.SetMethodParameterUsage("Hello", "TestPrimitiveInOutRef", 1, ParameterUsage.InOut);
+            ctx.SetMethodParameterUsage("Hello", "EnumOut", 2, ParameterUsage.Out);
+            ctx.SetMethodParameterUsage("Hello", "EnumOutRef", 2, ParameterUsage.Out);
         }
 
         public static void Main(string[] args)

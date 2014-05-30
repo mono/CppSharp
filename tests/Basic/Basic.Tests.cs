@@ -77,7 +77,6 @@ public class BasicTests : GeneratorTestFixture
         Assert.That(f, Is.EqualTo(10.0f));
     }
 
-    [Test]
     public void TestPrimitiveInOutParameters()
     {
         var hello = new Hello();
@@ -95,6 +94,26 @@ public class BasicTests : GeneratorTestFixture
         int i = 10;
         Assert.That(hello.TestPrimitiveInOutRef(ref i), Is.True);
         Assert.That(i, Is.EqualTo(20));
+    }
+
+    [Test]
+    public void TestEnumOut()
+    {
+        var hello = new Hello();
+
+        Enum e;
+        hello.EnumOut((int)Enum.C, out e);
+        Assert.That(e, Is.EqualTo(Enum.C));
+    }
+
+    [Test]
+    public void TestEnumOutRef()
+    {
+        var hello = new Hello();
+
+        Enum e;
+        hello.EnumOutRef((int)Enum.C, out e);
+        Assert.That(e, Is.EqualTo(Enum.C));
     }
 
     [Test]

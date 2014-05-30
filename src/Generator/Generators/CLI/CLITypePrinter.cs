@@ -107,6 +107,8 @@ namespace CppSharp.Generators.CLI
             var str = string.Empty;
             if(param.Usage == ParameterUsage.Out)
                 str += "[System::Runtime::InteropServices::Out] ";
+            else if (param.Usage == ParameterUsage.InOut)
+                str += "[System::Runtime::InteropServices::In, System::Runtime::InteropServices::Out] ";
 
             str += type;
 
@@ -164,6 +166,13 @@ namespace CppSharp.Generators.CLI
             if (pointee.TryGetEnum(out @enum))
             {
                 var typeName = @enum.Visit(this);
+
+                // Skip one indirection if passed by reference
+                var param = Context.Parameter;
+                if (param != null && (param.IsOut || param.IsInOut)
+                    && pointee == finalPointee)
+                    return string.Format("{0}", typeName);
+
                 return string.Format("{0}*", typeName);
             }
 

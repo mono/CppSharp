@@ -149,7 +149,7 @@ namespace CppSharp.Generators.CSharp
             }
 
             PrimitiveType primitive;
-            if (pointee.IsPrimitiveType(out primitive))
+            if (pointee.IsPrimitiveType(out primitive) || pointee.IsEnumType())
             {
                 var param = Context.Parameter;
                 if (param != null && (param.IsOut || param.IsInOut))
@@ -462,7 +462,7 @@ namespace CppSharp.Generators.CSharp
             }
 
             PrimitiveType primitive;
-            if (pointee.IsPrimitiveType(out primitive))
+            if (pointee.IsPrimitiveType(out primitive) || pointee.IsEnumType())
             {
                 var param = Context.Parameter;
 
