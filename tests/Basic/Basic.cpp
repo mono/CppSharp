@@ -191,6 +191,18 @@ void Hello::EnumOutRef(int value, CS_OUT Enum& e)
     e = (Enum)value;
 }
 
+void Hello::EnumInOut(CS_IN_OUT Enum* e)
+{
+	if (*e == Enum::E)
+		*e = Enum::F;
+}
+
+void Hello::EnumInOutRef(CS_IN_OUT Enum& e)
+{
+	if (e == Enum::E)
+		e = Enum::F;
+}
+
 int unsafeFunction(const Bar& ret, char* testForString, void (*foo)(int))
 {
     return ret.A;

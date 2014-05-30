@@ -117,6 +117,26 @@ public class BasicTests : GeneratorTestFixture
     }
 
     [Test]
+    public void TestEnumInOut()
+    {
+        var hello = new Hello();
+
+        var e = Enum.E;
+        hello.EnumInOut(ref e);
+        Assert.That(e, Is.EqualTo(Enum.F));
+    }
+
+    [Test]
+    public void TestEnumInOutRef()
+    {
+        var hello = new Hello();
+
+        var e = Enum.E;
+        hello.EnumInOut(ref e);
+        Assert.That(e, Is.EqualTo(Enum.F));
+    }
+
+    [Test]
     public void TestNullRef()
     {
         var hello = new Hello ();
