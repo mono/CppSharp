@@ -129,6 +129,9 @@ public:
 
     void EnumOut(int value, CS_OUT Enum* e);
     void EnumOutRef(int value, CS_OUT Enum& e);
+
+    void EnumInOut(CS_IN_OUT Enum* e);
+    void EnumInOutRef(CS_IN_OUT Enum& e);
 };
 
 class DLL_API AbstractFoo
@@ -433,17 +436,13 @@ const foo_t& TestIndexedProperties::operator[](double f) { return p; }
 TestProperties* TestIndexedProperties::operator[](unsigned char b) { return &f; }
 const TestProperties& TestIndexedProperties::operator[](short b) { return f; }
 
-struct DLL_API CS_VALUETYPE TestIndexedPropertiesInValueType
+struct DLL_API TestIndexedPropertiesInValueType
 {
 public:
     int operator[](int i);
 };
 
 int TestIndexedPropertiesInValueType::operator[](int i) { return i; }
-
-struct DLL_API CS_VALUETYPE InheritTestIndexedPropertiesInValueType : public TestIndexedPropertiesInValueType
-{
-};
 
 enum struct MyEnum { A, B, C };
 
