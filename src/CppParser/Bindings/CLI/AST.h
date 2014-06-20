@@ -1753,7 +1753,7 @@ namespace CppSharp
                 PreprocessedEntity(System::IntPtr native);
                 PreprocessedEntity();
 
-                property CppSharp::Parser::AST::MacroLocation Location
+                property CppSharp::Parser::AST::MacroLocation MacroLocation
                 {
                     CppSharp::Parser::AST::MacroLocation get();
                     void set(CppSharp::Parser::AST::MacroLocation);

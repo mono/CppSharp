@@ -8,7 +8,6 @@ namespace CppSharp
     namespace Parser
     {
         value struct SourceLocation;
-        value struct SourceManager;
     }
 }
 

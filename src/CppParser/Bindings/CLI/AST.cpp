@@ -2591,14 +2591,14 @@ CppSharp::Parser::AST::PreprocessedEntity::PreprocessedEntity()
     NativePtr = new ::CppSharp::CppParser::AST::PreprocessedEntity();
 }
 
-CppSharp::Parser::AST::MacroLocation CppSharp::Parser::AST::PreprocessedEntity::Location::get()
+CppSharp::Parser::AST::MacroLocation CppSharp::Parser::AST::PreprocessedEntity::MacroLocation::get()
 {
-    return (CppSharp::Parser::AST::MacroLocation)((::CppSharp::CppParser::AST::PreprocessedEntity*)NativePtr)->Location;
+    return (CppSharp::Parser::AST::MacroLocation)((::CppSharp::CppParser::AST::PreprocessedEntity*)NativePtr)->MacroLocation;
 }
 
-void CppSharp::Parser::AST::PreprocessedEntity::Location::set(CppSharp::Parser::AST::MacroLocation value)
+void CppSharp::Parser::AST::PreprocessedEntity::MacroLocation::set(CppSharp::Parser::AST::MacroLocation value)
 {
-    ((::CppSharp::CppParser::AST::PreprocessedEntity*)NativePtr)->Location = (::CppSharp::CppParser::AST::MacroLocation)value;
+    ((::CppSharp::CppParser::AST::PreprocessedEntity*)NativePtr)->MacroLocation = (::CppSharp::CppParser::AST::MacroLocation)value;
 }
 
 CppSharp::Parser::AST::MacroDefinition::MacroDefinition(::CppSharp::CppParser::AST::MacroDefinition* native)

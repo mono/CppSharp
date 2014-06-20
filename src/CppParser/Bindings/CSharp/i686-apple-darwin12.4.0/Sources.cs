@@ -19,19 +19,19 @@ namespace CppSharp
                 public uint ID;
 
                 [SuppressUnmanagedCodeSecurity]
-                [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                    EntryPoint="??0SourceLocation@CppParser@CppSharp@@QAE@XZ")]
-                internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
+                [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                    EntryPoint="_ZN8CppSharp9CppParser14SourceLocationC2Ev")]
+                internal static extern void ctor_0(global::System.IntPtr instance);
 
                 [SuppressUnmanagedCodeSecurity]
-                [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                    EntryPoint="??0SourceLocation@CppParser@CppSharp@@QAE@I@Z")]
-                internal static extern global::System.IntPtr ctor_1(global::System.IntPtr instance, uint ID);
+                [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                    EntryPoint="_ZN8CppSharp9CppParser14SourceLocationC2Ej")]
+                internal static extern void ctor_1(global::System.IntPtr instance, uint ID);
 
                 [SuppressUnmanagedCodeSecurity]
-                [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                    EntryPoint="??0SourceLocation@CppParser@CppSharp@@QAE@ABU012@@Z")]
-                internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                    EntryPoint="_ZN8CppSharp9CppParser14SourceLocationC2ERKS1_")]
+                internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
             }
 
             internal SourceLocation(SourceLocation.Internal* native)
