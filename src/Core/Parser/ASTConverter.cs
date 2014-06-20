@@ -1408,7 +1408,7 @@ namespace CppSharp
         void VisitPreprocessedEntity(PreprocessedEntity entity, AST.PreprocessedEntity _entity)
         {
             VisitDeclaration(entity, _entity);
-            _entity.MacroLocation = VisitMacroLocation(entity.Location);
+            _entity.MacroLocation = VisitMacroLocation(entity.MacroLocation);
         }
 
         private AST.MacroLocation VisitMacroLocation(MacroLocation location)
