@@ -2389,8 +2389,8 @@ void Parser::HandlePreprocessedEntities(Declaration* Decl,
         auto Entity = WalkPreprocessedEntity(Decl, PPEntity);
         if (!Entity) continue;
  
-        if (Entity->Location == MacroLocation::Unknown)
-            Entity->Location = macroLocation;
+        if (Entity->MacroLocation == MacroLocation::Unknown)
+            Entity->MacroLocation = macroLocation;
     }
 }
 

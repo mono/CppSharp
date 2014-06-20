@@ -557,7 +557,7 @@ Namespace::Namespace()
 
 PreprocessedEntity::PreprocessedEntity()
     : Declaration(DeclarationKind::PreprocessedEntity),
-      Location(MacroLocation::Unknown) {}
+      MacroLocation(MacroLocation::Unknown) {}
 
 MacroDefinition::MacroDefinition() { Kind = DeclarationKind::MacroDefinition; }
 

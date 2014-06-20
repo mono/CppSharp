@@ -707,7 +707,7 @@ enum struct MacroLocation
 struct CS_API PreprocessedEntity : public Declaration
 {
     PreprocessedEntity();
-    MacroLocation Location;
+    MacroLocation MacroLocation;
 };
 
 struct CS_API MacroDefinition : public PreprocessedEntity
