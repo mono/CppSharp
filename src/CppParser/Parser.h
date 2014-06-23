@@ -65,6 +65,9 @@ protected:
     Enumeration* WalkEnum(clang::EnumDecl* ED);
     Function* WalkFunction(clang::FunctionDecl* FD, bool IsDependent = false,
         bool AddToNamespace = true);
+    Class* GetRecord(clang::RecordDecl* Record, bool& IsComplete);
+    Class* WalkRecord(clang::RecordDecl* Record);
+    void WalkRecord(clang::RecordDecl* Record, Class* RC);
     Class* WalkRecordCXX(clang::CXXRecordDecl* Record);
     void WalkRecordCXX(clang::CXXRecordDecl* Record, Class* RC);
     ClassTemplateSpecialization*

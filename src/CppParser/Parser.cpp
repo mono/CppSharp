@@ -554,9 +554,10 @@ void Parser::WalkVTable(clang::CXXRecordDecl* RD, Class* C)
     }
 }
 
-Class* Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
+Class* Parser::GetRecord(clang::RecordDecl* Record, bool& Process)
 {
     using namespace clang;
+    Process = false;
 
     if (Record->isInjectedClassName())
         return nullptr;
@@ -597,12 +598,39 @@ Class* Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
     if (!isCompleteDefinition)
         return RC;
 
+    Process = true;
+    return RC;
+ }
+
+Class* Parser::WalkRecord(clang::RecordDecl* Record)
+{
+    bool Process;
+    auto RC = GetRecord(Record, Process);
+
+    if (!RC || !Process)
+        return RC;
+
+    WalkRecord(Record, RC);
+
+    return RC;
+}
+
+Class* Parser::WalkRecordCXX(clang::CXXRecordDecl* Record)
+{
+    bool Process;
+    auto RC = GetRecord(Record, Process);
+
+    if (!RC || !Process)
+        return RC;
+
     WalkRecordCXX(Record, RC);
 
     return RC;
 }
 
-void Parser::WalkRecordCXX(clang::CXXRecordDecl* Record, Class* RC)
+static int I = 0;
+
+void Parser::WalkRecord(clang::RecordDecl* Record, Class* RC)
 {
     using namespace clang;
 
@@ -617,18 +645,9 @@ void Parser::WalkRecordCXX(clang::CXXRecordDecl* Record, Class* RC)
     HandlePreprocessedEntities(RC, bodyRange, MacroLocation::ClassBody);
 
     auto &Sema = C->getSema();
-    Sema.ForceDeclarationOfImplicitMembers(Record);
 
-    RC->IsPOD = Record->isPOD();
     RC->IsUnion = Record->isUnion();
-    RC->IsAbstract = Record->isAbstract();
     RC->IsDependent = Record->isDependentType();
-    RC->IsDynamic = Record->isDynamicClass();
-    RC->IsPolymorphic = Record->isPolymorphic();
-    RC->HasNonTrivialDefaultConstructor = Record->hasNonTrivialDefaultConstructor();
-    RC->HasNonTrivialCopyConstructor = Record->hasNonTrivialCopyConstructor();
-    RC->HasNonTrivialDestructor = Record->hasNonTrivialDestructor();
-
     RC->IsExternCContext = Record->isExternCContext();
 
     bool hasLayout = !Record->isDependentType() && !Record->isInvalidDecl();
@@ -643,8 +662,6 @@ void Parser::WalkRecordCXX(clang::CXXRecordDecl* Record, Class* RC)
         RC->Layout->Alignment = (int)Layout-> getAlignment().getQuantity();
         RC->Layout->Size = (int)Layout->getSize().getQuantity();
         RC->Layout->DataSize = (int)Layout->getDataSize().getQuantity();
-        RC->Layout->HasOwnVFPtr = Layout->hasOwnVFPtr();
-        RC->Layout->VBPtrOffset = Layout->getVBPtrOffset().getQuantity();
     }
 
     AccessSpecifierDecl* AccessDecl = nullptr;
@@ -695,6 +712,37 @@ void Parser::WalkRecordCXX(clang::CXXRecordDecl* Record, Class* RC)
             auto Decl = WalkDeclaration(D);
             break;
         } }
+    }
+}
+
+void Parser::WalkRecordCXX(clang::CXXRecordDecl* Record, Class* RC)
+{
+    using namespace clang;
+
+    auto &Sema = C->getSema();
+    Sema.ForceDeclarationOfImplicitMembers(Record);
+
+    WalkRecord(Record, RC);
+
+    RC->IsPOD = Record->isPOD();
+    RC->IsAbstract = Record->isAbstract();
+    RC->IsDynamic = Record->isDynamicClass();
+    RC->IsPolymorphic = Record->isPolymorphic();
+    RC->HasNonTrivialDefaultConstructor = Record->hasNonTrivialDefaultConstructor();
+    RC->HasNonTrivialCopyConstructor = Record->hasNonTrivialCopyConstructor();
+    RC->HasNonTrivialDestructor = Record->hasNonTrivialDestructor();
+
+    bool hasLayout = !Record->isDependentType() && !Record->isInvalidDecl();
+
+    // Get the record layout information.
+    const ASTRecordLayout* Layout = 0;
+    if (hasLayout)
+    {
+        Layout = &C->getASTContext().getASTRecordLayout(Record);
+
+        assert (RC->Layout && "Expected a valid AST layout");
+        RC->Layout->HasOwnVFPtr = Layout->hasOwnVFPtr();
+        RC->Layout->VBPtrOffset = Layout->getVBPtrOffset().getQuantity();
     }
 
     // Iterate through the record bases.
@@ -1275,6 +1323,12 @@ DeclarationContext* Parser::GetNamespace(clang::Decl* D,
         case Decl::LinkageSpec:
         {
             const LinkageSpecDecl* LD = cast<LinkageSpecDecl>(Ctx);
+            continue;
+        }
+        case Decl::Record:
+        {
+            auto RD = cast<RecordDecl>(Ctx);
+            DC = WalkRecord(RD);
             continue;
         }
         case Decl::CXXRecord:
@@ -2487,6 +2541,26 @@ Declaration* Parser::WalkDeclaration(clang::Decl* D,
     auto Kind = D->getKind();
     switch(D->getKind())
     {
+    case Decl::Record:
+    {
+        RecordDecl* RD = cast<RecordDecl>(D);
+
+        auto Record = WalkRecord(RD);
+
+        // We store a definition order index into the declarations.
+        // This is needed because declarations are added to their contexts as
+        // soon as they are referenced and we need to know the original order
+        // of the declarations.
+
+        if (CanBeDefinition && Record->DefinitionOrder == 0)
+        {
+            Record->DefinitionOrder = Index++;
+            //Debug("%d: %s\n", Index++, GetTagDeclName(RD).c_str());
+        }
+
+        Decl = Record;
+        break;
+    }
     case Decl::CXXRecord:
     {
         CXXRecordDecl* RD = cast<CXXRecordDecl>(D);
