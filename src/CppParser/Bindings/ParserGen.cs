@@ -119,7 +119,7 @@ namespace CppSharp
             ctx.RenameNamespace("CppSharp::CppParser", "Parser");
         }
 
-        public void Postprocess(Driver driver, ASTContext lib)
+        public void Postprocess(Driver driver, ASTContext ctx)
         {
         }
 

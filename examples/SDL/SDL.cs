@@ -54,18 +54,18 @@ namespace CppSharp
             ctx.IgnoreFunctionWithName("SDL_Error");
         }
 
-        public void Postprocess(Driver driver, ASTContext lib)
+        public void Postprocess(Driver driver, ASTContext ctx)
         {
-            lib.SetNameOfEnumWithName("PIXELTYPE", "PixelType");
-            lib.SetNameOfEnumWithName("BITMAPORDER", "BitmapOrder");
-            lib.SetNameOfEnumWithName("PACKEDORDER", "PackedOrder");
-            lib.SetNameOfEnumWithName("ARRAYORDER", "ArrayOrder");
-            lib.SetNameOfEnumWithName("PACKEDLAYOUT", "PackedLayout");
-            lib.SetNameOfEnumWithName("PIXELFORMAT", "PixelFormats");
-            lib.SetNameOfEnumWithName("assert_state", "AssertState");
-            lib.SetClassBindName("assert_data", "AssertData");
-            lib.SetNameOfEnumWithName("eventaction", "EventAction");
-            lib.SetNameOfEnumWithName("LOG_CATEGORY", "LogCategory");
+            ctx.SetNameOfEnumWithName("PIXELTYPE", "PixelType");
+            ctx.SetNameOfEnumWithName("BITMAPORDER", "BitmapOrder");
+            ctx.SetNameOfEnumWithName("PACKEDORDER", "PackedOrder");
+            ctx.SetNameOfEnumWithName("ARRAYORDER", "ArrayOrder");
+            ctx.SetNameOfEnumWithName("PACKEDLAYOUT", "PackedLayout");
+            ctx.SetNameOfEnumWithName("PIXELFORMAT", "PixelFormats");
+            ctx.SetNameOfEnumWithName("assert_state", "AssertState");
+            ctx.SetClassBindName("assert_data", "AssertData");
+            ctx.SetNameOfEnumWithName("eventaction", "EventAction");
+            ctx.SetNameOfEnumWithName("LOG_CATEGORY", "LogCategory");
         }
 
         static class Program

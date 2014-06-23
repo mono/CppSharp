@@ -20,7 +20,7 @@ namespace CppSharp
         /// <summary>
         /// Do transformations that should happen after passes are processed.
         /// </summary>
-        void Postprocess(Driver driver, ASTContext lib);
+        void Postprocess(Driver driver, ASTContext ctx);
 
         /// <summary>
         /// Setup the driver options here.
