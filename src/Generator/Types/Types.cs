@@ -101,17 +101,10 @@ namespace CppSharp
             return base.VisitTypedefDecl(typedef);
         }
 
-        public override bool VisitMemberPointerType(MemberPointerType member,
-            TypeQualifiers quals)
+        public override bool VisitMemberPointerType(MemberPointerType member, TypeQualifiers quals)
         {
-            FunctionType functionType;
-            if (!member.IsPointerTo(out functionType))
-            {
-                Ignore();
-                return false;
-            }
-
-            return base.VisitMemberPointerType(member, quals);
+            Ignore();
+            return false;
         }
 
         public override bool VisitParameterDecl(Parameter parameter)
@@ -138,17 +131,6 @@ namespace CppSharp
 
             Ignore();
             return base.VisitTemplateSpecializationType(template, quals);
-        }
-
-        public override bool VisitFunctionType(FunctionType function, TypeQualifiers quals)
-        {
-            // We don't know how to marshal non-static member functions
-            if (function.CallingConvention == CallingConvention.ThisCall)
-            {
-                Ignore();
-                return false;
-            }
-            return base.VisitFunctionType(function, quals);
         }
     }
 
