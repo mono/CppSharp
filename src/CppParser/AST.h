@@ -395,7 +395,7 @@ struct CS_API DeclarationContext : public Declaration
 {
     DeclarationContext(DeclarationKind kind);
 
-    CS_IGNORE Declaration* FindAnonymous(uint64_t key);
+    CS_IGNORE Declaration* FindAnonymous(const std::string& USR);
 
     CS_IGNORE CppSharp::CppParser::AST::Namespace* FindNamespace(const std::string& Name);
     CS_IGNORE CppSharp::CppParser::AST::Namespace* FindNamespace(const std::vector<std::string>&);
@@ -424,7 +424,7 @@ struct CS_API DeclarationContext : public Declaration
     VECTOR(Template*, Templates)
     VECTOR(TypedefDecl*, Typedefs)
     VECTOR(Variable*, Variables)
-    std::map<uint64_t, Declaration*> Anonymous;
+    std::map<std::string, Declaration*> Anonymous;
 
     bool IsAnonymous;
 };

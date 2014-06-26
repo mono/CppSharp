@@ -578,7 +578,8 @@ Class* Parser::GetRecord(clang::RecordDecl* Record, bool& Process)
 
     if (HasEmptyName)
     {
-        if (auto AR = NS->FindAnonymous((uint64_t)Record))
+        auto USR = GetDeclUSR(Record);
+        if (auto AR = NS->FindAnonymous(USR))
             RC = static_cast<Class*>(AR);
     }
     else
@@ -593,7 +594,10 @@ Class* Parser::GetRecord(clang::RecordDecl* Record, bool& Process)
     HandleDeclaration(Record, RC);
 
     if (HasEmptyName)
-        NS->Anonymous[(uint64_t)Record] = RC;
+    {
+        auto USR = GetDeclUSR(Record);
+        NS->Anonymous[USR] = RC;
+    }
 
     if (!isCompleteDefinition)
         return RC;

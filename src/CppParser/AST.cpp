@@ -166,7 +166,7 @@ DEF_VECTOR(DeclarationContext, Template*, Templates)
 DEF_VECTOR(DeclarationContext, TypedefDecl*, Typedefs)
 DEF_VECTOR(DeclarationContext, Variable*, Variables)
 
-Declaration* DeclarationContext::FindAnonymous(uint64_t key)
+Declaration* DeclarationContext::FindAnonymous(const std::string& key)
 {
     auto it = Anonymous.find(key);
     return (it != Anonymous.end()) ? it->second : 0;
