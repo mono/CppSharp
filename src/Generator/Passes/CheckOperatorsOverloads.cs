@@ -140,7 +140,7 @@ namespace CppSharp.Passes
                     {
                         Name = Operators.GetOperatorIdentifier(missingKind),
                         Namespace = @class,
-                        IsSynthetized = true,
+                        SynthKind = FunctionSynthKind.ComplementOperator,
                         Kind = CXXMethodKind.Operator,
                         OperatorKind = missingKind,
                         ReturnType = op.ReturnType,

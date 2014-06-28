@@ -450,7 +450,7 @@ Method::Method()
 
 // Enumeration
 
-Enumeration::Enumeration() : Declaration(DeclarationKind::Enumeration),
+Enumeration::Enumeration() : DeclarationContext(DeclarationKind::Enumeration),
     Modifiers((EnumModifiers)0), Type(0), BuiltinType(0) {}
 
 DEF_VECTOR(Enumeration, Enumeration::Item, Items)

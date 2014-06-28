@@ -548,7 +548,7 @@ struct CS_API Method : public Function
     QualifiedType ConversionType;
 };
 
-struct CS_API Enumeration : public Declaration
+struct CS_API Enumeration : public DeclarationContext
 {
     DECLARE_DECL_KIND(Enumeration, Enumeration)
 

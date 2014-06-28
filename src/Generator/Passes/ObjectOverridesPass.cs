@@ -119,7 +119,7 @@ namespace CppSharp
                     Name = "ToString",
                     Namespace = @class,
                     ReturnType = new QualifiedType(stringType),
-                    IsSynthetized = true,
+                    SynthKind = FunctionSynthKind.NonMemberOperator,
                     IsOverride = true,
                     IsProxy = true
                 };
@@ -144,7 +144,7 @@ namespace CppSharp
                 Namespace = @class,
                 ReturnType = new QualifiedType(new BuiltinType(PrimitiveType.Bool)),
                 Parameters = new List<Parameter> { methodEqualsParam },
-                IsSynthetized = true,
+                SynthKind = FunctionSynthKind.ComplementOperator,
                 IsOverride = true,
                 IsProxy = true
             };
@@ -155,7 +155,7 @@ namespace CppSharp
                 Name = "GetHashCode",
                 Namespace = @class,
                 ReturnType = new QualifiedType(new BuiltinType(PrimitiveType.Int)),
-                IsSynthetized = true,
+                SynthKind = FunctionSynthKind.ComplementOperator,
                 IsOverride = true,
                 IsProxy = true
             };

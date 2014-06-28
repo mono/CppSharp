@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
-using CppSharp.Generators;
 
 namespace CppSharp.Passes
 {
@@ -45,7 +44,7 @@ namespace CppSharp.Passes
                 Name = Operators.GetOperatorIdentifier(operatorKind),
                 Namespace = castFromClass,
                 Kind = CXXMethodKind.Conversion,
-                IsSynthetized = true,
+                SynthKind = FunctionSynthKind.ComplementOperator,
                 ConversionType = qualifiedCastToType,
                 ReturnType = qualifiedCastToType
             };

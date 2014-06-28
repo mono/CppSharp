@@ -1349,6 +1349,12 @@ DeclarationContext* Parser::GetNamespace(clang::Decl* D,
             DC = WalkClassTemplatePartialSpecialization(CTPSpec);
             continue;
         }
+        case Decl::Enum:
+        {
+            auto CTPSpec = cast<EnumDecl>(Ctx);
+            DC = WalkEnum(CTPSpec);
+            continue;
+        }
         default:
         {
             StringRef Kind = Ctx->getDeclKindName();
@@ -2006,24 +2012,28 @@ Enumeration* Parser::WalkEnum(clang::EnumDecl* ED)
     E->IsIncomplete = false;
     for(auto it = ED->enumerator_begin(); it != ED->enumerator_end(); ++it)
     {
-        clang::EnumConstantDecl* ECD = (*it);
-
-        auto EnumItem = Enumeration::Item();
-        HandleDeclaration(ECD, &EnumItem);
-
-        EnumItem.Name = ECD->getNameAsString();
-        auto Value = ECD->getInitVal();
-        EnumItem.Value = Value.isSigned() ? Value.getSExtValue()
-            : Value.getZExtValue();
-
-        std::string Text;
-        if (GetDeclText(ECD->getSourceRange(), Text))
-            EnumItem.Expression = Text;
-
-        E->Items.push_back(EnumItem);
+        E->Items.push_back(*WalkEnumItem(*it));
     }
 
     return E;
+}
+
+Enumeration::Item* Parser::WalkEnumItem(clang::EnumConstantDecl* ECD)
+{
+    auto EnumItem = new Enumeration::Item();
+    HandleDeclaration(ECD, EnumItem);
+
+    EnumItem->Name = ECD->getNameAsString();
+    auto Value = ECD->getInitVal();
+    EnumItem->Value = Value.isSigned() ? Value.getSExtValue()
+        : Value.getZExtValue();
+    EnumItem->_Namespace = GetNamespace(ECD);
+
+    std::string Text;
+    if (GetDeclText(ECD->getSourceRange(), Text))
+        EnumItem->Expression = Text;
+
+    return EnumItem;
 }
 
 //-----------------------------------//
@@ -2615,8 +2625,14 @@ Declaration* Parser::WalkDeclaration(clang::Decl* D,
     }
     case Decl::Enum:
     {
-        EnumDecl* ED = cast<EnumDecl>(D);
+        auto ED = cast<EnumDecl>(D);
         Decl = WalkEnum(ED);
+        break;
+    }
+    case Decl::EnumConstant:
+    {
+        auto ED = cast<EnumConstantDecl>(D);
+        Decl = WalkEnumItem(ED);
         break;
     }
     case Decl::Function:
@@ -2685,9 +2701,17 @@ Declaration* Parser::WalkDeclaration(clang::Decl* D,
         NS->Variables.push_back(static_cast<Variable*>(Decl));
         break;
     }
+    case Decl::CXXConstructor:
+    {
+        auto MD = cast<CXXMethodDecl>(D);
+        Decl = WalkMethodCXX(MD);
+
+        auto NS = GetNamespace(MD);
+        Decl->_Namespace = NS;
+        break;
+    }
     // Ignore these declarations since they must have been declared in
     // a class already.
-    case Decl::CXXConstructor:
     case Decl::CXXDestructor:
     case Decl::CXXConversion:
     case Decl::CXXMethod:

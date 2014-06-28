@@ -86,7 +86,6 @@ namespace CppSharp.AST
             IsVirtual = method.IsVirtual;
             IsConst = method.IsConst;
             IsImplicit = method.IsImplicit;
-            IsSynthetized = method.IsSynthetized;
             IsOverride = method.IsOverride;
             IsProxy = method.IsProxy;
             Kind = method.Kind;
@@ -94,6 +93,7 @@ namespace CppSharp.AST
             IsCopyConstructor = method.IsCopyConstructor;
             IsMoveConstructor = method.IsMoveConstructor;
             Conversion = method.Conversion;
+            SynthKind = method.SynthKind;
         }
 
         public Method(Function function)
@@ -109,7 +109,7 @@ namespace CppSharp.AST
         public bool IsConst { get; set; }
         public bool IsImplicit { get; set; }
         public bool IsExplicit { get; set; }
-        public bool IsSynthetized { get; set; }
+        public bool IsSynthetized { get { return SynthKind != FunctionSynthKind.None; } }
         public bool IsOverride { get; set; }
         public bool IsProxy { get; set; }
 
