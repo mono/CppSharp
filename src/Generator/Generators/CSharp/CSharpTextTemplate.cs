@@ -2283,7 +2283,10 @@ namespace CppSharp.Generators.CSharp
             if (needsFixedThis)
             {
                 WriteLine("var {0} = {1};", Generator.GeneratedIdentifier("fixedInstance"),
-                    method.IsOperator ? "__arg0" : "ToInternal()");
+                    (method.IsOperator && method.OperatorKind != CXXOperatorKind.Subscript ?
+                        method.Parameters.First(
+                            p => p.Kind == ParameterKind.OperatorParameter).Name + "." :
+                        string.Empty) + "ToInternal()");
             }
 
             if (needsReturn && !originalFunction.HasIndirectReturnTypeParameter)
