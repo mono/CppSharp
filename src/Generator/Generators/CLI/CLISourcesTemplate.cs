@@ -1063,47 +1063,56 @@ namespace CppSharp.Generators.CLI
 
             var argName = "arg" + paramIndex.ToString(CultureInfo.InvariantCulture);
 
-            if (param.IsOut || param.IsInOut)
+            var isRef = param.IsOut || param.IsInOut;
+            // Since both pointers and references to types are wrapped as CLI
+            // tracking references when using in/out, we normalize them here to be able
+            // to use the same code for marshaling.
+            var paramType = param.Type;
+            if (paramType is PointerType && isRef)
             {
-                var paramType = param.Type;
-                if (paramType is PointerType)
-                {
-                    if (!paramType.IsReference())
-                        paramMarshal.Prefix = "&";
-                    paramType = (paramType as PointerType).Pointee;
-                }
+                if (!paramType.IsReference())
+                    paramMarshal.Prefix = "&";
+                paramType = (paramType as PointerType).Pointee;
+            }
 
+            var effectiveParam = new Parameter(param)
+            {
+                QualifiedType = new QualifiedType(paramType)
+            };
+
+            var ctx = new MarshalContext(Driver)
+            {
+                Parameter = effectiveParam,
+                ParameterIndex = paramIndex,
+                ArgName = argName,
+                Function = function
+            };
+
+            var marshal = new CLIMarshalManagedToNativePrinter(ctx);
+            effectiveParam.Visit(marshal);
+
+            if (string.IsNullOrEmpty(marshal.Context.Return))
+                throw new Exception(string.Format("Cannot marshal argument of function '{0}'",
+                    function.QualifiedOriginalName));
+
+            if (isRef)
+            {
                 var typePrinter = new CppTypePrinter(Driver.TypeDatabase);
                 var type = paramType.Visit(typePrinter);
 
                 if (param.IsInOut)
-                    WriteLine("{0} {1} = {2};", type, argName, param.Name);
+                    WriteLine("{0} {1} = {2};", type, argName, marshal.Context.Return);
                 else
                     WriteLine("{0} {1};", type, argName);
             }
             else
             {
-                var ctx = new MarshalContext(Driver)
-                        {
-                            Parameter = param,
-                            ParameterIndex = paramIndex,
-                            ArgName = argName,
-                            Function = function
-                        };
-
-                var marshal = new CLIMarshalManagedToNativePrinter(ctx);
-                param.Visit(marshal);
-
-                if (string.IsNullOrEmpty(marshal.Context.Return))
-                    throw new Exception(string.Format("Cannot marshal argument of function '{0}'",
-                        function.QualifiedOriginalName));
-
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                     Write(marshal.Context.SupportBefore);
 
                 WriteLine("auto {0}{1} = {2};", marshal.VarPrefix, argName,
                     marshal.Context.Return);
-                argName = marshal.ArgumentPrefix + argName;
+                paramMarshal.Prefix = marshal.ArgumentPrefix;
             }
 
             paramMarshal.Name = argName;

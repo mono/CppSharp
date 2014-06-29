@@ -451,9 +451,12 @@ namespace CppSharp.Generators.CLI
             Enumeration @enum;
             if (pointee.TryGetEnum(out @enum))
             {
+                var isRef = Context.Parameter.Usage == ParameterUsage.Out ||
+                    Context.Parameter.Usage == ParameterUsage.InOut;
+
                 ArgumentPrefix.Write("&");
-                Context.Return.Write("(::{0})*{1}", @enum.QualifiedOriginalName,
-                             Context.Parameter.Name);
+                Context.Return.Write("(::{0}){1}{2}", @enum.QualifiedOriginalName,
+                    isRef ? string.Empty : "*", Context.Parameter.Name);
                 return true;
             }
 
