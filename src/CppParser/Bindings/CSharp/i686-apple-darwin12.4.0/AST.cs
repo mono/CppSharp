@@ -4222,9 +4222,9 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class Enumeration : CppSharp.Parser.AST.Declaration, IDisposable
+            public unsafe partial class Enumeration : CppSharp.Parser.AST.DeclarationContext, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 108)]
+                [StructLayout(LayoutKind.Explicit, Size = 208)]
                 public new struct Internal
                 {
                     [FieldOffset(0)]
@@ -4257,13 +4257,16 @@ namespace CppSharp
                     [FieldOffset(68)]
                     public void* OriginalPtr;
 
-                    [FieldOffset(84)]
+                    [FieldOffset(180)]
+                    public bool IsAnonymous;
+
+                    [FieldOffset(184)]
                     public CppSharp.Parser.AST.Enumeration.EnumModifiers Modifiers;
 
-                    [FieldOffset(88)]
+                    [FieldOffset(188)]
                     public global::System.IntPtr Type;
 
-                    [FieldOffset(92)]
+                    [FieldOffset(192)]
                     public global::System.IntPtr BuiltinType;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -4447,7 +4450,7 @@ namespace CppSharp
                 public Enumeration()
                     : this(IntPtr.Zero)
                 {
-                    __Instance = Marshal.AllocHGlobal(108);
+                    __Instance = Marshal.AllocHGlobal(208);
                     Internal.ctor_0(__Instance);
                 }
 
