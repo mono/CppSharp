@@ -433,13 +433,17 @@ const foo_t& TestIndexedProperties::operator[](double f) { return p; }
 TestProperties* TestIndexedProperties::operator[](unsigned char b) { return &f; }
 const TestProperties& TestIndexedProperties::operator[](short b) { return f; }
 
-struct DLL_API TestIndexedPropertiesInValueType
+struct DLL_API CS_VALUETYPE TestIndexedPropertiesInValueType
 {
 public:
     int operator[](int i);
 };
 
 int TestIndexedPropertiesInValueType::operator[](int i) { return i; }
+
+struct DLL_API CS_VALUETYPE InheritTestIndexedPropertiesInValueType : public TestIndexedPropertiesInValueType
+{
+};
 
 enum struct MyEnum { A, B, C };
 

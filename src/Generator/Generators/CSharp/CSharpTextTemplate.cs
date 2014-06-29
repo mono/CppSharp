@@ -471,9 +471,12 @@ namespace CppSharp.Generators.CSharp
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
-        private IEnumerable<Function> GatherClassInternalFunctions(Class @class)
+        private IEnumerable<Function> GatherClassInternalFunctions(Class @class, bool includeCtors = true)
         {
-            var functions = new HashSet<Function>();
+            var functions = new List<Function>();
+            if (@class.IsValueType)
+                foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.Ignore))
+                    functions.AddRange(GatherClassInternalFunctions(@base.Class, false));
 
             Action<Method> tryAddOverload = method =>
             {
@@ -487,18 +490,21 @@ namespace CppSharp.Generators.CSharp
                 functions.Add(method);
             };
 
-            foreach (var ctor in @class.Constructors)
+            if (includeCtors)
             {
-                if (@class.IsStatic)
-                    continue;
+                foreach (var ctor in @class.Constructors)
+                {
+                    if (@class.IsStatic)
+                        continue;
 
-                if (ctor.IsMoveConstructor)
-                    continue;
+                    if (ctor.IsMoveConstructor)
+                        continue;
 
-                if (ctor.IsDefaultConstructor && !@class.HasNonTrivialDefaultConstructor)
-                    continue;
+                    if (ctor.IsDefaultConstructor && !@class.HasNonTrivialDefaultConstructor)
+                        continue;
 
-                tryAddOverload(ctor);
+                    tryAddOverload(ctor);
+                }
             }
 
             if (@class.HasNonTrivialDestructor && !@class.IsStatic)
@@ -521,7 +527,7 @@ namespace CppSharp.Generators.CSharp
                 if (prop.GetMethod != null)
                     tryAddOverload(prop.GetMethod);
 
-                if (prop.SetMethod != null)
+                if (prop.SetMethod != null && prop.SetMethod != prop.GetMethod)
                     tryAddOverload(prop.SetMethod);
             }
 
@@ -1119,6 +1125,10 @@ namespace CppSharp.Generators.CSharp
 
         public void GenerateClassMethods(Class @class)
         {
+            if (@class.IsValueType)
+                foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.Ignore))
+                    GenerateClassMethods(@base.Class);
+
             var staticMethods = new List<Method>();
             foreach (var method in @class.Methods)
             {
@@ -1145,6 +1155,10 @@ namespace CppSharp.Generators.CSharp
 
         public void GenerateClassVariables(Class @class)
         {
+            if (@class.IsValueType)
+                foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.Ignore))
+                    GenerateClassVariables(@base.Class);
+
             foreach (var variable in @class.Variables)
             {
                 if (!variable.IsGenerated) continue;
@@ -1161,12 +1175,8 @@ namespace CppSharp.Generators.CSharp
         private void GenerateClassProperties(Class @class)
         {
             if (@class.IsValueType)
-            {
-                foreach (var @base in @class.Bases.Where(b => b.IsClass && b.Class.IsDeclared))
-                {
+                foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.Ignore && b.Class.IsDeclared))
                     GenerateClassProperties(@base.Class);
-                }   
-            }
 
             GenerateProperties(@class);
         }

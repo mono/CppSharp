@@ -368,5 +368,15 @@ public class BasicTests : GeneratorTestFixture
         var ret = basic.TestNullPtrTypeRet();
         Assert.AreEqual(IntPtr.Zero, new IntPtr(ret));
     }
+
+    [Test]
+    public void TestValueTypeInheritance()
+    {
+        var bar2 = new Bar2 { A = 24 };
+        Assert.That(bar2.RetItem1(), Is.EqualTo(Bar.Item.Item1));
+        Assert.That(bar2.returnPointerToValueType().A, Is.EqualTo(24));
+        var inheritTestIndexedPropertiesInValueType = new InheritTestIndexedPropertiesInValueType();
+        Assert.That(inheritTestIndexedPropertiesInValueType[2], Is.EqualTo(2));
+    }
 }
  
