@@ -27,13 +27,13 @@ namespace CppSharp
             Abi = abi;
         }
 
-        static string GetSourceDirectory()
+        static string GetSourceDirectory(string dir)
         {
             var directory = Directory.GetParent(Directory.GetCurrentDirectory());
 
             while (directory != null)
             {
-                var path = Path.Combine(directory.FullName, "src");
+                var path = Path.Combine(directory.FullName, dir);
 
                 if (Directory.Exists(path))
                     return path;
@@ -41,7 +41,7 @@ namespace CppSharp
                 directory = directory.Parent;
             }
 
-            throw new Exception("Could not find sources directory");
+            throw new Exception("Could not find build directory: " + dir);
         }
 
         public void Setup(Driver driver)
@@ -62,7 +62,7 @@ namespace CppSharp
             if (Triple.Contains("apple"))
                 SetupMacOptions(options);
 
-            var basePath = Path.Combine(GetSourceDirectory(), "CppParser");
+            var basePath = Path.Combine(GetSourceDirectory("src"), "CppParser");
 
 #if OLD_PARSER
             options.IncludeDirs.Add(basePath);
@@ -73,15 +73,14 @@ namespace CppSharp
             options.addLibraryDirs(".");
 #endif
 
-            options.OutputDir = "../../../../src/CppParser/Bindings/";
-            options.OutputDir += Kind.ToString();
+            options.OutputDir = Path.Combine(GetSourceDirectory("src"), @"CppParser\Bindings",
+                Kind.ToString());
 
             if (Kind == GeneratorKind.CSharp)
-                options.OutputDir += "/" + options.TargetTriple;
+                options.OutputDir = Path.Combine(options.OutputDir, options.TargetTriple);
 
             options.GenerateLibraryNamespace = false;
             options.CheckSymbols = false;
-            options.Verbose = false;
         }
 
         private static void SetupMacOptions(DriverOptions options)
@@ -89,16 +88,18 @@ namespace CppSharp
             options.MicrosoftMode = false;
             options.NoBuiltinIncludes = true;
 
-            const string MAC_INCLUDE_PATH = @"C:\Development\CppSharp\build\vs2012\lib\Release_x32\";
+            var headersPath = Path.Combine(GetSourceDirectory("build"), "headers",
+                "osx");
+
 #if OLD_PARSER
-            options.SystemIncludeDirs.Add(MAC_INCLUDE_PATH + @"include");
-            options.SystemIncludeDirs.Add(MAC_INCLUDE_PATH + @"lib\libcxx\include");
-            options.SystemIncludeDirs.Add(MAC_INCLUDE_PATH + @"lib\clang\4.2\include");
+            options.SystemIncludeDirs.Add(headersPath + @"include\osx");
+            options.SystemIncludeDirs.Add(headersPath + @"lib\libcxx\include");
+            options.SystemIncludeDirs.Add(headersPath + @"lib\clang\4.2\include");
             options.Arguments.Add("-stdlib=libc++");
 #else
-            options.addSystemIncludeDirs(MAC_INCLUDE_PATH + @"include");
-            options.addSystemIncludeDirs(MAC_INCLUDE_PATH + @"lib\libcxx\include");
-            options.addSystemIncludeDirs(MAC_INCLUDE_PATH + @"lib\clang\4.2\include");
+            options.addSystemIncludeDirs(Path.Combine(headersPath, "include"));
+            options.addSystemIncludeDirs(Path.Combine(headersPath, "clang", "4.2", "include"));
+            options.addSystemIncludeDirs(Path.Combine(headersPath, "libcxx", "include"));
             options.addArguments("-stdlib=libc++");
 #endif
         }
@@ -133,16 +134,16 @@ namespace CppSharp
             Console.WriteLine("Generating the C# parser bindings for Windows...");
             ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "i686-pc-win32",
                 CppAbi.Microsoft));
+            Console.WriteLine();
 
-            // Uncoment the following lines to enable generation of Mac parser bindings.
-            // This is disabled by default for now since it requires a non-trivial
-            // environment setup: a copy of the Mac SDK native headers and a recent checkout
-            // of libcxx since the one provided by the Mac SDK is not compatible with a recent
-            // Clang frontend that we use to parse it.
-
-            Console.WriteLine("Generating the C# parser bindings for OSX...");
-            ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "i686-apple-darwin12.4.0",
-                CppAbi.Itanium));
+            var osxHeadersPath = Path.Combine(GetSourceDirectory("build"), @"headers\osx");
+            if (Directory.Exists(osxHeadersPath))
+            {
+                Console.WriteLine("Generating the C# parser bindings for OSX...");
+                ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "i686-apple-darwin12.4.0",
+                    CppAbi.Itanium));
+                Console.WriteLine();
+            }
         }
     }
 
