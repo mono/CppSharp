@@ -259,7 +259,7 @@ struct DLL_API TestDelegates
     TestDelegates();
     static int Double(int N) { return N * 2; }
     int Triple(int N) { return N * 3; }
-	
+
     int StdCall(DelegateStdCall del) { return del(1); }
     int CDecl(DelegateCDecl del) { return del(1); }
 
