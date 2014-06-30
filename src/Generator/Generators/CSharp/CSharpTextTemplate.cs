@@ -486,8 +486,7 @@ namespace CppSharp.Generators.CSharp
 
             Action<Method> tryAddOverload = method =>
             {
-                if (method.SynthKind != FunctionSynthKind.NonMemberOperator &&
-                    method.SynthKind != FunctionSynthKind.None)
+                if (method.IsSynthetized)
                     return;
 
                 if (method.IsProxy)

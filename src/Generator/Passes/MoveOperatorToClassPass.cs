@@ -33,7 +33,7 @@ namespace CppSharp.Passes
                 Namespace = @class,
                 Kind = CXXMethodKind.Operator,
                 OperatorKind = function.OperatorKind,
-                SynthKind = FunctionSynthKind.NonMemberOperator,
+                IsNonMemberOperator = true,
                 OriginalFunction = null,
                 IsStatic = true
             };

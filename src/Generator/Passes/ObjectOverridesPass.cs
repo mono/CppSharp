@@ -119,7 +119,7 @@ namespace CppSharp
                     Name = "ToString",
                     Namespace = @class,
                     ReturnType = new QualifiedType(stringType),
-                    SynthKind = FunctionSynthKind.NonMemberOperator,
+                    SynthKind = FunctionSynthKind.ComplementOperator,
                     IsOverride = true,
                     IsProxy = true
                 };

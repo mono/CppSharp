@@ -109,7 +109,6 @@ namespace CppSharp.AST
         public bool IsConst { get; set; }
         public bool IsImplicit { get; set; }
         public bool IsExplicit { get; set; }
-        public bool IsSynthetized { get { return SynthKind != FunctionSynthKind.None; } }
         public bool IsOverride { get; set; }
         public bool IsProxy { get; set; }
 

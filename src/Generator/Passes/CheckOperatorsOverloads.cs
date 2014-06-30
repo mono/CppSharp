@@ -57,7 +57,7 @@ namespace CppSharp.Passes
                     @operator.ExplicitlyIgnore();
                     continue;
                 }
-                if (@operator.SynthKind == FunctionSynthKind.NonMemberOperator)
+                if (@operator.IsNonMemberOperator)
                     continue;
 
                 if (@operator.OperatorKind == CXXOperatorKind.Subscript)
