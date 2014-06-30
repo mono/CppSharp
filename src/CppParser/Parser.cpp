@@ -2223,11 +2223,14 @@ Function* Parser::WalkFunction(clang::FunctionDecl* FD, bool IsDependent,
     assert(NS && "Expected a valid namespace");
 
     auto USR = GetDeclUSR(FD);
-    auto F = NS->FindFunction(USR);
-    if (F != nullptr)
-        return F;
+    // Check for an already existing function that came from the same declaration.
+    for (Function* FN : NS->Functions)
+    {
+        if (FN->USR == USR)
+            return FN;
+    }
 
-    F = new Function();
+    Function* F = new Function();
     HandleDeclaration(FD, F);
 
     WalkFunction(FD, F, IsDependent);
