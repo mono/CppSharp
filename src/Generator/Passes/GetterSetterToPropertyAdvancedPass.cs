@@ -23,7 +23,7 @@ namespace CppSharp.Passes
             public PropertyGenerator(Class @class)
             {
                 foreach (var method in @class.Methods.Where(
-                    m => !m.IsConstructor && !m.IsDestructor && !m.IsOperator && !m.Ignore))
+                    m => !m.IsConstructor && !m.IsDestructor && !m.IsOperator && !m.IsSynthetized))
                     DistributeMethod(method);
             }
 
@@ -154,9 +154,9 @@ namespace CppSharp.Passes
                         property.Comment = comment;
                     }
                     type.Properties.Add(property);
-                    getter.GenerationKind = GenerationKind.None;
+                    getter.GenerationKind = GenerationKind.Internal;
                     if (setter != null)
-                        setter.GenerationKind = GenerationKind.None;
+                        setter.GenerationKind = GenerationKind.Internal;
                 }
             }
 
@@ -232,14 +232,22 @@ namespace CppSharp.Passes
 
         private static void LoadVerbs()
         {
-            using (var resourceStream = Assembly.GetExecutingAssembly()
-                .GetManifestResourceStream("CppSharp.Generator.Passes.verbs.txt"))
+            var assembly = Assembly.GetExecutingAssembly();
+            using (var resourceStream = GetResourceStream(assembly))
             {
-                using (StreamReader streamReader = new StreamReader(resourceStream))
+                using (var streamReader = new StreamReader(resourceStream))
                     while (!streamReader.EndOfStream)
                         verbs.Add(streamReader.ReadLine());
             }
         }
+
+        private static Stream GetResourceStream(Assembly assembly)
+        {
+            var stream = assembly.GetManifestResourceStream("CppSharp.Generator.Passes.verbs.txt");
+            // HACK: a bug in premake for OS X causes resources to be embedded with an incorrect location
+            return stream ?? assembly.GetManifestResourceStream("verbs.txt");
+        }
+
 
         public GetterSetterToPropertyAdvancedPass()
         {
