@@ -180,6 +180,11 @@ void P::setTest(bool value)
 
 }
 
+void P::test()
+{
+
+}
+
 bool P::isBool()
 {
     return false;

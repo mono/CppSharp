@@ -128,6 +128,8 @@ public:
     bool isTest();
     void setTest(bool value);
 
+    void test();
+
     bool isBool();
     void setIsBool(bool value);
 

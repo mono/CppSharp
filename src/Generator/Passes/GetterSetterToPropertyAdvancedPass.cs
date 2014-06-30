@@ -15,13 +15,15 @@ namespace CppSharp.Passes
     {
         private class PropertyGenerator
         {
+            private readonly IDiagnosticConsumer log;
             private readonly List<Method> getters = new List<Method>();
             private readonly List<Method> setters = new List<Method>();
             private readonly List<Method> setMethods = new List<Method>();
             private readonly List<Method> nonSetters = new List<Method>();
 
-            public PropertyGenerator(Class @class)
+            public PropertyGenerator(Class @class, IDiagnosticConsumer log)
             {
+                this.log = log;
                 foreach (var method in @class.Methods.Where(
                     m => !m.IsConstructor && !m.IsDestructor && !m.IsOperator && !m.IsSynthetized))
                     DistributeMethod(method);
@@ -57,9 +59,23 @@ namespace CppSharp.Passes
                         var name = GetReadWritePropertyName(getter, afterSet);
                         if (name == afterSet &&
                             GetUnderlyingType(getter.OriginalReturnType).Equals(
-                                GetUnderlyingType(setter.Parameters[0].QualifiedType)) &&
-                            !type.Methods.Any(m => m != getter && name == m.Name))
+                                GetUnderlyingType(setter.Parameters[0].QualifiedType)))
                         {
+                            Method g = getter;
+                            foreach (var method in type.Methods.Where(m => m != g && m.Name == name))
+                            {
+                                var oldName = method.Name;
+                                method.Name = string.Format("get{0}{1}",
+                                    char.ToUpperInvariant(method.Name[0]), method.Name.Substring(1));
+                                log.Debug("Method {0}::{1} renamed to {2}", method.Namespace.Name, oldName, method.Name);
+                            }
+                            foreach (var @event in type.Events.Where(e => e.Name == name))
+                            {
+                                var oldName = @event.Name;
+                                @event.Name = string.Format("on{0}{1}",
+                                    char.ToUpperInvariant(@event.Name[0]), @event.Name.Substring(1));
+                                log.Debug("Event {0}::{1} renamed to {2}", @event.Namespace.Name, oldName, @event.Name);
+                            }
                             getter.Name = name;
                             GenerateProperty(getter.Namespace, getter, readOnly ? null : setter);
                             goto next;
@@ -258,7 +274,7 @@ namespace CppSharp.Passes
         {
             bool result = base.VisitClassDecl(@class);
 
-            new PropertyGenerator(@class).GenerateProperties();
+            new PropertyGenerator(@class, Log).GenerateProperties();
 
             return result;
         }
