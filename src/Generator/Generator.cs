@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using CppSharp.AST;
 
 namespace CppSharp.Generators
@@ -78,8 +79,19 @@ namespace CppSharp.Generators
                 if (templates.Count == 0)
                     continue;
 
-                foreach (var template in templates)
-                    template.Process();
+                if (templates.Count == 1)
+                {
+                    templates[0].Process(Template.Order.First | Template.Order.Last);
+                }
+                else
+                {
+                    templates.First().Process(Template.Order.First);
+                    for (var i = 1; i < templates.Count - 1; i++)
+                    {
+                        templates[i].Process(Template.Order.InBetween);
+                    }
+                    templates.Last().Process(Template.Order.Last);
+                }
 
                 var output = new GeneratorOutput
                     {

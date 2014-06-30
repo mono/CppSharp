@@ -70,7 +70,7 @@ namespace CppSharp.Generators.CLI
 
         public abstract override string FileExtension { get; }
 
-        public abstract override void Process();
+        public abstract override void Process(Order order);
 
         #region Helpers
 
