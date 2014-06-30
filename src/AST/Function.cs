@@ -211,7 +211,7 @@ namespace CppSharp.AST
         public Type Type { get { return ReturnType.Type; } }
         public QualifiedType QualifiedType { get { return ReturnType; } }
 
-        public virtual QualifiedType GetFunctionType()
+        public FunctionType GetFunctionType()
         {
             var functionType = new FunctionType
                                 {
@@ -222,12 +222,7 @@ namespace CppSharp.AST
             functionType.Parameters.AddRange(Parameters);
             ReplaceIndirectReturnParamWithRegular(functionType);
 
-            var pointerType = new PointerType
-                {
-                    QualifiedPointee = new QualifiedType(functionType)
-                };
-
-            return new QualifiedType(pointerType);
+            return functionType;
         }
 
         static void ReplaceIndirectReturnParamWithRegular(FunctionType functionType)
