@@ -225,7 +225,7 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0Type@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
+                        EntryPoint="??0Type@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
                     internal static extern global::System.IntPtr cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
@@ -504,7 +504,7 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0TagType@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
+                        EntryPoint="??0TagType@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
@@ -578,7 +578,7 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0ArrayType@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
+                        EntryPoint="??0ArrayType@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
@@ -689,7 +689,7 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0FunctionType@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
+                        EntryPoint="??0FunctionType@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
@@ -699,12 +699,12 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getParameters@FunctionType@AST@CppParser@CppSharp@@QAEPAUParameter@234@I@Z")]
+                        EntryPoint="?getParameters@FunctionType@AST@CppParser@CppSharp@@QAEPAVParameter@234@I@Z")]
                     internal static extern global::System.IntPtr getParameters_0(global::System.IntPtr instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?addParameters@FunctionType@AST@CppParser@CppSharp@@QAEXAAPAUParameter@234@@Z")]
+                        EntryPoint="?addParameters@FunctionType@AST@CppParser@CppSharp@@QAEXAAPAVParameter@234@@Z")]
                     internal static extern void addParameters_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
@@ -819,7 +819,7 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0PointerType@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
+                        EntryPoint="??0PointerType@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
@@ -912,7 +912,7 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0MemberPointerType@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
+                        EntryPoint="??0MemberPointerType@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
@@ -982,7 +982,7 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0TypedefType@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
+                        EntryPoint="??0TypedefType@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
@@ -1053,7 +1053,7 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0AttributedType@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
+                        EntryPoint="??0AttributedType@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
@@ -1146,7 +1146,7 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0DecayedType@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
+                        EntryPoint="??0DecayedType@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
@@ -1390,7 +1390,7 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0TemplateSpecializationType@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
+                        EntryPoint="??0TemplateSpecializationType@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
                     internal static extern global::System.IntPtr cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
@@ -1511,7 +1511,7 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0TemplateParameter@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
+                        EntryPoint="??0TemplateParameter@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
                     internal static extern global::System.IntPtr cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
@@ -1521,7 +1521,7 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??8TemplateParameter@AST@CppParser@CppSharp@@QBE_NABU0123@@Z")]
+                        EntryPoint="??8TemplateParameter@AST@CppParser@CppSharp@@QBE_NABV0123@@Z")]
                     [return: MarshalAsAttribute(UnmanagedType.I1)]
                     internal static extern bool OperatorEqualEqual_0(global::System.IntPtr instance, global::System.IntPtr param);
 
@@ -1647,7 +1647,7 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0TemplateParameterType@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
+                        EntryPoint="??0TemplateParameterType@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
@@ -1767,7 +1767,7 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0TemplateParameterSubstitutionType@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
+                        EntryPoint="??0TemplateParameterSubstitutionType@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
@@ -1840,7 +1840,7 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0InjectedClassNameType@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
+                        EntryPoint="??0InjectedClassNameType@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
@@ -1920,7 +1920,7 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0DependentNameType@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
+                        EntryPoint="??0DependentNameType@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
@@ -1970,7 +1970,7 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0PackExpansionType@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
+                        EntryPoint="??0PackExpansionType@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
@@ -2023,7 +2023,7 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0BuiltinType@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
+                        EntryPoint="??0BuiltinType@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
@@ -2668,7 +2668,7 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0Declaration@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
+                        EntryPoint="??0Declaration@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
                     internal static extern global::System.IntPtr cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
@@ -2678,12 +2678,12 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getPreprocessedEntities@Declaration@AST@CppParser@CppSharp@@QAEPAUPreprocessedEntity@234@I@Z")]
+                        EntryPoint="?getPreprocessedEntities@Declaration@AST@CppParser@CppSharp@@QAEPAVPreprocessedEntity@234@I@Z")]
                     internal static extern global::System.IntPtr getPreprocessedEntities_0(global::System.IntPtr instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?addPreprocessedEntities@Declaration@AST@CppParser@CppSharp@@QAEXAAPAUPreprocessedEntity@234@@Z")]
+                        EntryPoint="?addPreprocessedEntities@Declaration@AST@CppParser@CppSharp@@QAEXAAPAVPreprocessedEntity@234@@Z")]
                     internal static extern void addPreprocessedEntities_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
@@ -3000,7 +3000,7 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0DeclarationContext@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
+                        EntryPoint="??0DeclarationContext@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
@@ -3010,72 +3010,72 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getNamespaces@DeclarationContext@AST@CppParser@CppSharp@@QAEPAUNamespace@234@I@Z")]
+                        EntryPoint="?getNamespaces@DeclarationContext@AST@CppParser@CppSharp@@QAEPAVNamespace@234@I@Z")]
                     internal static extern global::System.IntPtr getNamespaces_0(global::System.IntPtr instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?addNamespaces@DeclarationContext@AST@CppParser@CppSharp@@QAEXAAPAUNamespace@234@@Z")]
+                        EntryPoint="?addNamespaces@DeclarationContext@AST@CppParser@CppSharp@@QAEXAAPAVNamespace@234@@Z")]
                     internal static extern void addNamespaces_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getEnums@DeclarationContext@AST@CppParser@CppSharp@@QAEPAUEnumeration@234@I@Z")]
+                        EntryPoint="?getEnums@DeclarationContext@AST@CppParser@CppSharp@@QAEPAVEnumeration@234@I@Z")]
                     internal static extern global::System.IntPtr getEnums_0(global::System.IntPtr instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?addEnums@DeclarationContext@AST@CppParser@CppSharp@@QAEXAAPAUEnumeration@234@@Z")]
+                        EntryPoint="?addEnums@DeclarationContext@AST@CppParser@CppSharp@@QAEXAAPAVEnumeration@234@@Z")]
                     internal static extern void addEnums_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getFunctions@DeclarationContext@AST@CppParser@CppSharp@@QAEPAUFunction@234@I@Z")]
+                        EntryPoint="?getFunctions@DeclarationContext@AST@CppParser@CppSharp@@QAEPAVFunction@234@I@Z")]
                     internal static extern global::System.IntPtr getFunctions_0(global::System.IntPtr instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?addFunctions@DeclarationContext@AST@CppParser@CppSharp@@QAEXAAPAUFunction@234@@Z")]
+                        EntryPoint="?addFunctions@DeclarationContext@AST@CppParser@CppSharp@@QAEXAAPAVFunction@234@@Z")]
                     internal static extern void addFunctions_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getClasses@DeclarationContext@AST@CppParser@CppSharp@@QAEPAUClass@234@I@Z")]
+                        EntryPoint="?getClasses@DeclarationContext@AST@CppParser@CppSharp@@QAEPAVClass@234@I@Z")]
                     internal static extern global::System.IntPtr getClasses_0(global::System.IntPtr instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?addClasses@DeclarationContext@AST@CppParser@CppSharp@@QAEXAAPAUClass@234@@Z")]
+                        EntryPoint="?addClasses@DeclarationContext@AST@CppParser@CppSharp@@QAEXAAPAVClass@234@@Z")]
                     internal static extern void addClasses_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getTemplates@DeclarationContext@AST@CppParser@CppSharp@@QAEPAUTemplate@234@I@Z")]
+                        EntryPoint="?getTemplates@DeclarationContext@AST@CppParser@CppSharp@@QAEPAVTemplate@234@I@Z")]
                     internal static extern global::System.IntPtr getTemplates_0(global::System.IntPtr instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?addTemplates@DeclarationContext@AST@CppParser@CppSharp@@QAEXAAPAUTemplate@234@@Z")]
+                        EntryPoint="?addTemplates@DeclarationContext@AST@CppParser@CppSharp@@QAEXAAPAVTemplate@234@@Z")]
                     internal static extern void addTemplates_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getTypedefs@DeclarationContext@AST@CppParser@CppSharp@@QAEPAUTypedefDecl@234@I@Z")]
+                        EntryPoint="?getTypedefs@DeclarationContext@AST@CppParser@CppSharp@@QAEPAVTypedefDecl@234@I@Z")]
                     internal static extern global::System.IntPtr getTypedefs_0(global::System.IntPtr instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?addTypedefs@DeclarationContext@AST@CppParser@CppSharp@@QAEXAAPAUTypedefDecl@234@@Z")]
+                        EntryPoint="?addTypedefs@DeclarationContext@AST@CppParser@CppSharp@@QAEXAAPAVTypedefDecl@234@@Z")]
                     internal static extern void addTypedefs_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getVariables@DeclarationContext@AST@CppParser@CppSharp@@QAEPAUVariable@234@I@Z")]
+                        EntryPoint="?getVariables@DeclarationContext@AST@CppParser@CppSharp@@QAEPAVVariable@234@I@Z")]
                     internal static extern global::System.IntPtr getVariables_0(global::System.IntPtr instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?addVariables@DeclarationContext@AST@CppParser@CppSharp@@QAEXAAPAUVariable@234@@Z")]
+                        EntryPoint="?addVariables@DeclarationContext@AST@CppParser@CppSharp@@QAEXAAPAVVariable@234@@Z")]
                     internal static extern void addVariables_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
@@ -3357,7 +3357,7 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0TypedefDecl@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
+                        EntryPoint="??0TypedefDecl@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
@@ -3465,7 +3465,7 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0Parameter@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
+                        EntryPoint="??0Parameter@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
@@ -3633,7 +3633,7 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0Function@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
+                        EntryPoint="??0Function@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
@@ -3643,12 +3643,12 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getParameters@Function@AST@CppParser@CppSharp@@QAEPAUParameter@234@I@Z")]
+                        EntryPoint="?getParameters@Function@AST@CppParser@CppSharp@@QAEPAVParameter@234@I@Z")]
                     internal static extern global::System.IntPtr getParameters_0(global::System.IntPtr instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?addParameters@Function@AST@CppParser@CppSharp@@QAEXAAPAUParameter@234@@Z")]
+                        EntryPoint="?addParameters@Function@AST@CppParser@CppSharp@@QAEXAAPAVParameter@234@@Z")]
                     internal static extern void addParameters_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
@@ -4003,7 +4003,7 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0Method@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
+                        EntryPoint="??0Method@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
                     internal static extern global::System.IntPtr cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
@@ -4276,7 +4276,7 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0Enumeration@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
+                        EntryPoint="??0Enumeration@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
@@ -4286,12 +4286,12 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getItems@Enumeration@AST@CppParser@CppSharp@@QAE?AUItem@1234@I@Z")]
+                        EntryPoint="?getItems@Enumeration@AST@CppParser@CppSharp@@QAE?AVItem@1234@I@Z")]
                     internal static extern void getItems_0(global::System.IntPtr instance, global::System.IntPtr @return, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?addItems@Enumeration@AST@CppParser@CppSharp@@QAEXAAUItem@1234@@Z")]
+                        EntryPoint="?addItems@Enumeration@AST@CppParser@CppSharp@@QAEXAAVItem@1234@@Z")]
                     internal static extern void addItems_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
@@ -4353,7 +4353,7 @@ namespace CppSharp
 
                         [SuppressUnmanagedCodeSecurity]
                         [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                            EntryPoint="??0Item@Enumeration@AST@CppParser@CppSharp@@QAE@ABU01234@@Z")]
+                            EntryPoint="??0Item@Enumeration@AST@CppParser@CppSharp@@QAE@ABV01234@@Z")]
                         internal static extern global::System.IntPtr cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                         [SuppressUnmanagedCodeSecurity]
@@ -4574,7 +4574,7 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0Variable@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
+                        EntryPoint="??0Variable@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
@@ -4811,7 +4811,7 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0Field@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
+                        EntryPoint="??0Field@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
@@ -4937,7 +4937,7 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0AccessSpecifierDecl@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
+                        EntryPoint="??0AccessSpecifierDecl@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
@@ -5049,7 +5049,7 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0Class@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
+                        EntryPoint="??0Class@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
@@ -5069,32 +5069,32 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getFields@Class@AST@CppParser@CppSharp@@QAEPAUField@234@I@Z")]
+                        EntryPoint="?getFields@Class@AST@CppParser@CppSharp@@QAEPAVField@234@I@Z")]
                     internal static extern global::System.IntPtr getFields_0(global::System.IntPtr instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?addFields@Class@AST@CppParser@CppSharp@@QAEXAAPAUField@234@@Z")]
+                        EntryPoint="?addFields@Class@AST@CppParser@CppSharp@@QAEXAAPAVField@234@@Z")]
                     internal static extern void addFields_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getMethods@Class@AST@CppParser@CppSharp@@QAEPAUMethod@234@I@Z")]
+                        EntryPoint="?getMethods@Class@AST@CppParser@CppSharp@@QAEPAVMethod@234@I@Z")]
                     internal static extern global::System.IntPtr getMethods_0(global::System.IntPtr instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?addMethods@Class@AST@CppParser@CppSharp@@QAEXAAPAUMethod@234@@Z")]
+                        EntryPoint="?addMethods@Class@AST@CppParser@CppSharp@@QAEXAAPAVMethod@234@@Z")]
                     internal static extern void addMethods_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getSpecifiers@Class@AST@CppParser@CppSharp@@QAEPAUAccessSpecifierDecl@234@I@Z")]
+                        EntryPoint="?getSpecifiers@Class@AST@CppParser@CppSharp@@QAEPAVAccessSpecifierDecl@234@I@Z")]
                     internal static extern global::System.IntPtr getSpecifiers_0(global::System.IntPtr instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?addSpecifiers@Class@AST@CppParser@CppSharp@@QAEXAAPAUAccessSpecifierDecl@234@@Z")]
+                        EntryPoint="?addSpecifiers@Class@AST@CppParser@CppSharp@@QAEXAAPAVAccessSpecifierDecl@234@@Z")]
                     internal static extern void addSpecifiers_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
@@ -5434,7 +5434,7 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0Template@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
+                        EntryPoint="??0Template@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
                     internal static extern global::System.IntPtr cctor_3(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
@@ -5444,12 +5444,12 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getParameters@Template@AST@CppParser@CppSharp@@QAE?AUTemplateParameter@234@I@Z")]
+                        EntryPoint="?getParameters@Template@AST@CppParser@CppSharp@@QAE?AVTemplateParameter@234@I@Z")]
                     internal static extern void getParameters_0(global::System.IntPtr instance, global::System.IntPtr @return, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?addParameters@Template@AST@CppParser@CppSharp@@QAEXAAUTemplateParameter@234@@Z")]
+                        EntryPoint="?addParameters@Template@AST@CppParser@CppSharp@@QAEXAAVTemplateParameter@234@@Z")]
                     internal static extern void addParameters_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
@@ -5578,7 +5578,7 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0ClassTemplate@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
+                        EntryPoint="??0ClassTemplate@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
@@ -5588,12 +5588,12 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getSpecializations@ClassTemplate@AST@CppParser@CppSharp@@QAEPAUClassTemplateSpecialization@234@I@Z")]
+                        EntryPoint="?getSpecializations@ClassTemplate@AST@CppParser@CppSharp@@QAEPAVClassTemplateSpecialization@234@I@Z")]
                     internal static extern global::System.IntPtr getSpecializations_0(global::System.IntPtr instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?addSpecializations@ClassTemplate@AST@CppParser@CppSharp@@QAEXAAPAUClassTemplateSpecialization@234@@Z")]
+                        EntryPoint="?addSpecializations@ClassTemplate@AST@CppParser@CppSharp@@QAEXAAPAVClassTemplateSpecialization@234@@Z")]
                     internal static extern void addSpecializations_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
@@ -5733,7 +5733,7 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0ClassTemplateSpecialization@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
+                        EntryPoint="??0ClassTemplateSpecialization@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
@@ -5920,7 +5920,7 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0ClassTemplatePartialSpecialization@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
+                        EntryPoint="??0ClassTemplatePartialSpecialization@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
                     internal static extern global::System.IntPtr cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
@@ -6002,7 +6002,7 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0FunctionTemplate@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
+                        EntryPoint="??0FunctionTemplate@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
@@ -6012,12 +6012,12 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getSpecializations@FunctionTemplate@AST@CppParser@CppSharp@@QAEPAUFunctionTemplateSpecialization@234@I@Z")]
+                        EntryPoint="?getSpecializations@FunctionTemplate@AST@CppParser@CppSharp@@QAEPAVFunctionTemplateSpecialization@234@I@Z")]
                     internal static extern global::System.IntPtr getSpecializations_0(global::System.IntPtr instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?addSpecializations@FunctionTemplate@AST@CppParser@CppSharp@@QAEXAAPAUFunctionTemplateSpecialization@234@@Z")]
+                        EntryPoint="?addSpecializations@FunctionTemplate@AST@CppParser@CppSharp@@QAEXAAPAVFunctionTemplateSpecialization@234@@Z")]
                     internal static extern void addSpecializations_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
@@ -6097,7 +6097,7 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0FunctionTemplateSpecialization@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
+                        EntryPoint="??0FunctionTemplateSpecialization@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
@@ -6274,7 +6274,7 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0Namespace@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
+                        EntryPoint="??0Namespace@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
                     internal static extern global::System.IntPtr cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
@@ -6371,7 +6371,7 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0PreprocessedEntity@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
+                        EntryPoint="??0PreprocessedEntity@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
@@ -6468,7 +6468,7 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0MacroDefinition@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
+                        EntryPoint="??0MacroDefinition@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
@@ -6580,7 +6580,7 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0MacroExpansion@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
+                        EntryPoint="??0MacroExpansion@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
@@ -6710,7 +6710,7 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0TranslationUnit@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
+                        EntryPoint="??0TranslationUnit@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
@@ -6720,12 +6720,12 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getMacros@TranslationUnit@AST@CppParser@CppSharp@@QAEPAUMacroDefinition@234@I@Z")]
+                        EntryPoint="?getMacros@TranslationUnit@AST@CppParser@CppSharp@@QAEPAVMacroDefinition@234@I@Z")]
                     internal static extern global::System.IntPtr getMacros_0(global::System.IntPtr instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?addMacros@TranslationUnit@AST@CppParser@CppSharp@@QAEXAAPAUMacroDefinition@234@@Z")]
+                        EntryPoint="?addMacros@TranslationUnit@AST@CppParser@CppSharp@@QAEXAAPAVMacroDefinition@234@@Z")]
                     internal static extern void addMacros_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
@@ -6960,7 +6960,7 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0ASTContext@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
+                        EntryPoint="??0ASTContext@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
@@ -6970,12 +6970,12 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?getTranslationUnits@ASTContext@AST@CppParser@CppSharp@@QAEPAUTranslationUnit@234@I@Z")]
+                        EntryPoint="?getTranslationUnits@ASTContext@AST@CppParser@CppSharp@@QAEPAVTranslationUnit@234@I@Z")]
                     internal static extern global::System.IntPtr getTranslationUnits_0(global::System.IntPtr instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="?addTranslationUnits@ASTContext@AST@CppParser@CppSharp@@QAEXAAPAUTranslationUnit@234@@Z")]
+                        EntryPoint="?addTranslationUnits@ASTContext@AST@CppParser@CppSharp@@QAEXAAPAVTranslationUnit@234@@Z")]
                     internal static extern void addTranslationUnits_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
@@ -7057,7 +7057,7 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0Comment@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
+                        EntryPoint="??0Comment@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
                     internal static extern global::System.IntPtr cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
@@ -7127,7 +7127,7 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0FullComment@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
+                        EntryPoint="??0FullComment@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
                     internal static extern global::System.IntPtr cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
@@ -7177,7 +7177,7 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
-                        EntryPoint="??0RawComment@AST@CppParser@CppSharp@@QAE@ABU0123@@Z")]
+                        EntryPoint="??0RawComment@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]

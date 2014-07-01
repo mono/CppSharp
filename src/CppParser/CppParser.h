@@ -42,7 +42,7 @@ struct CS_API ParserOptions
     bool Verbose;
 };
 
-enum struct ParserDiagnosticLevel
+enum class ParserDiagnosticLevel
 {
     Ignored,
     Note,
@@ -63,7 +63,7 @@ struct CS_API ParserDiagnostic
     int ColumnNumber;
 };
 
-enum struct ParserResultKind
+enum class ParserResultKind
 {
     Success,
     Error,
