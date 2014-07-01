@@ -1,7 +1,7 @@
-﻿using System.Linq;
-using CppSharp;
+﻿using CppSharp.AST;
+using CppSharp.Generators.CSharp;
+using System.Linq;
 using CppSharp.Passes;
-using CppSharp.AST;
 using NUnit.Framework;
 
 namespace CppSharp.Generator.Tests.Passes
@@ -70,6 +70,8 @@ namespace CppSharp.Generator.Tests.Passes
         [Test]
         public void TestCaseRenamePass()
         {
+            Type.TypePrinterDelegate += type => type.Visit(new CSharpTypePrinter(Driver)).Type;
+
             var c = AstContext.Class("TestRename");
 
             var method = c.Method("lowerCaseMethod");

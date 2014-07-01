@@ -13,6 +13,19 @@ namespace CppSharp.Passes
     /// </summary>
     public abstract class RenamePass : TranslationUnitPass
     {
+        public class ParameterMappedTypeComparer : IEqualityComparer<Parameter>
+        {
+            public bool Equals(Parameter x, Parameter y)
+            {
+                return x.QualifiedType.ToString() == y.QualifiedType.ToString();
+            }
+
+            public int GetHashCode(Parameter obj)
+            {
+                return obj.Type.GetHashCode();
+            }
+        }
+
         public RenameTargets Targets = RenameTargets.Any;
 
         protected RenamePass()
@@ -90,7 +103,14 @@ namespace CppSharp.Passes
             declarations.AddRange(decl.Namespace.Classes.Where(c => !c.IsIncomplete));
             declarations.AddRange(decl.Namespace.Enums);
             declarations.AddRange(decl.Namespace.Events);
-            declarations.AddRange(decl.Namespace.Functions);
+            var function = decl as Function;
+            if (function != null)
+            {
+                // account for overloads
+                declarations.AddRange(GetFunctionsWithTheSameParams(function));
+            }
+            else
+                declarations.AddRange(decl.Namespace.Functions);
             declarations.AddRange(decl.Namespace.Variables);
             declarations.AddRange(from typedefDecl in decl.Namespace.Typedefs
                                   let pointerType = typedefDecl.Type.Desugar() as PointerType
@@ -106,6 +126,18 @@ namespace CppSharp.Passes
                 return false;
 
             return ((Class) method.Namespace).GetPropertyByName(newName) != null;
+        }
+
+        private static IEnumerable<Function> GetFunctionsWithTheSameParams(Function function)
+        {
+            var method = function as Method;
+            if (method != null)
+            {
+                return ((Class) method.Namespace).Methods.Where(
+                    m => m.Parameters.SequenceEqual(function.Parameters, new ParameterMappedTypeComparer()));
+            }
+            return function.Namespace.Functions.Where(
+                f => f.Parameters.SequenceEqual(function.Parameters, new ParameterMappedTypeComparer()));
         }
 
         public override bool VisitEnumItem(Enumeration.Item item)

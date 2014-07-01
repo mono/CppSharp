@@ -52,7 +52,6 @@ namespace CppSharp.AST
                     where
                         method.Name == @override.Name &&
                         method.ReturnType == @override.ReturnType &&
-                        method.Parameters.Count == @override.Parameters.Count &&
                         method.Parameters.SequenceEqual(@override.Parameters,
                             new ParameterTypeComparer())
                     select method).FirstOrDefault()
@@ -69,7 +68,6 @@ namespace CppSharp.AST
                     from property in @base.Class.Properties
                     where
                         property.Name == @override.Name &&
-                        property.Parameters.Count == @override.Parameters.Count &&
                         property.Parameters.SequenceEqual(@override.Parameters,
                             new ParameterTypeComparer())
                     select property).FirstOrDefault()

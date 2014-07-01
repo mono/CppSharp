@@ -158,3 +158,10 @@ public:
     int A;
     float B;
 };
+
+class DLL_API TestRenaming
+{
+public:
+    void name();
+    void Name();
+};
