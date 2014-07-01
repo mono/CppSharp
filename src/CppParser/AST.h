@@ -14,7 +14,7 @@ namespace CppSharp { namespace CppParser { namespace AST {
 
 #pragma region Types
 
-enum struct TypeKind
+enum class TypeKind
 {
     Tag,
     Array,
@@ -36,8 +36,9 @@ enum struct TypeKind
 #define DECLARE_TYPE_KIND(kind) \
     kind##Type();
 
-struct CS_API Type
+class CS_API Type
 {
+public:
     Type(TypeKind kind);
     Type(const Type&);
 
@@ -59,16 +60,18 @@ struct CS_API QualifiedType
     TypeQualifiers Qualifiers;
 };
 
-struct Declaration;
+class Declaration;
 
-struct CS_API TagType : public Type
+class CS_API TagType : public Type
 {
+public:
     DECLARE_TYPE_KIND(Tag)
     CppSharp::CppParser::AST::Declaration* Declaration;
 };
 
-struct CS_API ArrayType : public Type
+class CS_API ArrayType : public Type
 {
+public:
     enum class ArraySize
     {
         Constant,
@@ -83,7 +86,7 @@ struct CS_API ArrayType : public Type
     long Size;
 };
 
-struct Parameter;
+class Parameter;
 
 enum class CallingConvention
 {
@@ -95,16 +98,18 @@ enum class CallingConvention
     Unknown
 };
 
-struct CS_API FunctionType : public Type
+class CS_API FunctionType : public Type
 {
+public:
     DECLARE_TYPE_KIND(Function)
     QualifiedType ReturnType;
     CppSharp::CppParser::AST::CallingConvention CallingConvention;
     VECTOR(Parameter*, Parameters)
 };
 
-struct CS_API PointerType : public Type
+class CS_API PointerType : public Type
 {
+public:
     enum struct TypeModifier
     {
         Value,
@@ -118,29 +123,33 @@ struct CS_API PointerType : public Type
     TypeModifier Modifier;
 };
 
-struct CS_API MemberPointerType : public Type
+class CS_API MemberPointerType : public Type
 {
+public:
     DECLARE_TYPE_KIND(MemberPointer)
     QualifiedType Pointee;
 };
 
-struct TypedefDecl;
+class TypedefDecl;
 
-struct CS_API TypedefType : public Type
+class CS_API TypedefType : public Type
 {
+public:
     TypedefType();
     TypedefDecl* Declaration;
 };
 
-struct CS_API AttributedType : public Type
+class CS_API AttributedType : public Type
 {
+public:
     DECLARE_TYPE_KIND(Attributed)
     QualifiedType Modified;
     QualifiedType Equivalent;
 };
 
-struct CS_API DecayedType : public Type
+class CS_API DecayedType : public Type
 {
+public:
     DECLARE_TYPE_KIND(Decayed)
     QualifiedType Decayed;
     QualifiedType Original;
@@ -169,10 +178,11 @@ struct CS_API TemplateArgument
     long Integral;
 };
 
-struct Template;
+class Template;
 
-struct CS_API TemplateSpecializationType : public Type
+class CS_API TemplateSpecializationType : public Type
 {
+public:
     TemplateSpecializationType();
     TemplateSpecializationType(const TemplateSpecializationType&);
 
@@ -181,8 +191,9 @@ struct CS_API TemplateSpecializationType : public Type
     Type* Desugared;
 };
 
-struct CS_API TemplateParameter
+class CS_API TemplateParameter
 {
+public:
     TemplateParameter();
     TemplateParameter(const TemplateParameter&);
 
@@ -195,8 +206,9 @@ struct CS_API TemplateParameter
     bool IsTypeParameter;
 };
 
-struct CS_API TemplateParameterType : public Type
+class CS_API TemplateParameterType : public Type
 {
+public:
     DECLARE_TYPE_KIND(TemplateParameter)
     TemplateParameter Parameter;
     unsigned int Depth;
@@ -204,32 +216,36 @@ struct CS_API TemplateParameterType : public Type
     bool IsParameterPack;
 };
 
-struct CS_API TemplateParameterSubstitutionType : public Type
+class CS_API TemplateParameterSubstitutionType : public Type
 {
+public:
     DECLARE_TYPE_KIND(TemplateParameterSubstitution)
     QualifiedType Replacement;
 };
 
-struct Class;
+class Class;
 
-struct CS_API InjectedClassNameType : public Type
+class CS_API InjectedClassNameType : public Type
 {
+public:
     InjectedClassNameType();
     TemplateSpecializationType* TemplateSpecialization;
     CppSharp::CppParser::AST::Class* Class;
 };
 
-struct CS_API DependentNameType : public Type
+class CS_API DependentNameType : public Type
 {
+public:
     DECLARE_TYPE_KIND(DependentName)
 };
 
-struct CS_API PackExpansionType : public Type
+class CS_API PackExpansionType : public Type
 {
+public:
     DECLARE_TYPE_KIND(PackExpansion)
 };
 
-enum struct PrimitiveType
+enum class PrimitiveType
 {
     Null,
     Void,
@@ -250,8 +266,9 @@ enum struct PrimitiveType
     IntPtr
 };
 
-struct CS_API BuiltinType : public Type
+class CS_API BuiltinType : public Type
 {
+public:
     DECLARE_TYPE_KIND(Builtin)
     PrimitiveType Type;
 };
@@ -260,14 +277,14 @@ struct CS_API BuiltinType : public Type
 
 #pragma region ABI
 
-enum struct CppAbi
+enum class CppAbi
 {
     Itanium,
     Microsoft,
     ARM
 };
 
-enum struct VTableComponentKind
+enum class VTableComponentKind
 {
     VCallOffset,
     VBaseOffset,
@@ -321,7 +338,7 @@ struct CS_API ClassLayout
 
 #pragma region Declarations
 
-enum struct DeclarationKind
+enum class DeclarationKind
 {
     DeclarationContext,
     Typedef,
@@ -349,19 +366,20 @@ enum struct DeclarationKind
 #define DECLARE_DECL_KIND(klass, kind) \
     klass();
 
-enum struct AccessSpecifier
+enum class AccessSpecifier
 {
     Private,
     Protected,
     Public
 };
 
-struct DeclarationContext;
-struct RawComment;
-struct PreprocessedEntity;
+class DeclarationContext;
+class RawComment;
+class PreprocessedEntity;
 
-struct CS_API Declaration
+class CS_API Declaration
 {
+public:
     Declaration(DeclarationKind kind);
     Declaration(const Declaration&);
 
@@ -391,8 +409,9 @@ struct ClassTemplate;
 struct FunctionTemplate;
 struct Variable;
 
-struct CS_API DeclarationContext : public Declaration
+class CS_API DeclarationContext : public Declaration
 {
+public:
     DeclarationContext(DeclarationKind kind);
 
     CS_IGNORE Declaration* FindAnonymous(const std::string& USR);
@@ -429,14 +448,16 @@ struct CS_API DeclarationContext : public Declaration
     bool IsAnonymous;
 };
 
-struct CS_API TypedefDecl : public Declaration
+class CS_API TypedefDecl : public Declaration
 {
+public:
     DECLARE_DECL_KIND(TypedefDecl, Typedef)
     CppSharp::CppParser::AST::QualifiedType QualifiedType;
 };
 
-struct CS_API Parameter : public Declaration
+class CS_API Parameter : public Declaration
 {
+public:
     Parameter();
 
     CppSharp::CppParser::AST::QualifiedType QualifiedType;
@@ -445,7 +466,7 @@ struct CS_API Parameter : public Declaration
     unsigned int Index;
 };
 
-enum struct CXXMethodKind
+enum class CXXMethodKind
 {
     Normal,
     Constructor,
@@ -455,7 +476,7 @@ enum struct CXXMethodKind
     UsingDirective
 };
 
-enum struct CXXOperatorKind
+enum class CXXOperatorKind
 {
     None,
     New,
@@ -503,10 +524,11 @@ enum struct CXXOperatorKind
     Conditional
 };
 
-struct FunctionTemplateSpecialization;
+class FunctionTemplateSpecialization;
 
-struct CS_API Function : public Declaration
+class CS_API Function : public Declaration
 {
+public:
     Function();
 
     QualifiedType ReturnType;
@@ -524,10 +546,11 @@ struct CS_API Function : public Declaration
     FunctionTemplateSpecialization* SpecializationInfo;
 };
 
-struct AccessSpecifierDecl;
+class AccessSpecifierDecl;
 
-struct CS_API Method : public Function
+class CS_API Method : public Function
 {
+public:
     Method();
 
     AccessSpecifierDecl* AccessDecl;
@@ -548,12 +571,14 @@ struct CS_API Method : public Function
     QualifiedType ConversionType;
 };
 
-struct CS_API Enumeration : public DeclarationContext
+class CS_API Enumeration : public DeclarationContext
 {
+public:
     DECLARE_DECL_KIND(Enumeration, Enumeration)
 
-    struct CS_API Item : public Declaration
+    class CS_API Item : public Declaration
     {
+    public:
         DECLARE_DECL_KIND(Item, EnumerationItem)
         Item(const Item&);
 
@@ -561,7 +586,7 @@ struct CS_API Enumeration : public DeclarationContext
         uint64_t Value;
     };
 
-    enum struct CS_FLAGS EnumModifiers
+    enum class CS_FLAGS EnumModifiers
     {
         Anonymous = 1 << 0,
         Scoped = 1 << 1,
@@ -576,15 +601,16 @@ struct CS_API Enumeration : public DeclarationContext
     Item* FindItemByName(const std::string& Name);
 };
 
-struct CS_API Variable : public Declaration
+class CS_API Variable : public Declaration
 {
+public:
     DECLARE_DECL_KIND(Variable, Variable)
 
     STRING(Mangled)
     CppSharp::CppParser::AST::QualifiedType QualifiedType;
 };
 
-struct PreprocessedEntity;
+class PreprocessedEntity;
 
 struct CS_API BaseClassSpecifier
 {
@@ -594,23 +620,26 @@ struct CS_API BaseClassSpecifier
     CppSharp::CppParser::AST::Type* Type;
 };
 
-struct Class;
+class Class;
 
-struct CS_API Field : public Declaration
+class CS_API Field : public Declaration
 {
+public:
     DECLARE_DECL_KIND(Field, Field)
     CppSharp::CppParser::AST::QualifiedType QualifiedType;
     unsigned Offset;
     CppSharp::CppParser::AST::Class* Class;
 };
 
-struct CS_API AccessSpecifierDecl : public Declaration
+class CS_API AccessSpecifierDecl : public Declaration
 {
+public:
     DECLARE_DECL_KIND(AccessSpecifierDecl, AccessSpecifier)
 };
 
-struct CS_API Class : public DeclarationContext
+class CS_API Class : public DeclarationContext
 {
+public:
     Class();
 
     VECTOR(BaseClassSpecifier*, Bases)
@@ -631,26 +660,28 @@ struct CS_API Class : public DeclarationContext
     ClassLayout* Layout;
 };
 
-struct CS_API Template : public Declaration
+class CS_API Template : public Declaration
 {
+public:
     Template(DeclarationKind kind);
     DECLARE_DECL_KIND(Template, Template)
     Declaration* TemplatedDecl;
     VECTOR(TemplateParameter, Parameters)
 };
 
-struct ClassTemplateSpecialization;
-struct ClassTemplatePartialSpecialization;
+class ClassTemplateSpecialization;
+class ClassTemplatePartialSpecialization;
 
-struct CS_API ClassTemplate : public Template
+class CS_API ClassTemplate : public Template
 {
+public:
     ClassTemplate();
     VECTOR(ClassTemplateSpecialization*, Specializations)
     ClassTemplateSpecialization* FindSpecialization(const std::string& usr);
     ClassTemplatePartialSpecialization* FindPartialSpecialization(const std::string& usr);
 };
 
-enum struct TemplateSpecializationKind
+enum class TemplateSpecializationKind
 {
     Undeclared,
     ImplicitInstantiation,
@@ -659,28 +690,32 @@ enum struct TemplateSpecializationKind
     ExplicitInstantiationDefinition
 };
 
-struct CS_API ClassTemplateSpecialization : public Class
+class CS_API ClassTemplateSpecialization : public Class
 {
+public:
     ClassTemplateSpecialization();
     ClassTemplate* TemplatedDecl;
     VECTOR(TemplateArgument, Arguments)
     TemplateSpecializationKind SpecializationKind;
 };
 
-struct CS_API ClassTemplatePartialSpecialization : public ClassTemplateSpecialization
+class CS_API ClassTemplatePartialSpecialization : public ClassTemplateSpecialization
 {
+public:
     ClassTemplatePartialSpecialization();
 };
 
-struct CS_API FunctionTemplate : public Template
+class CS_API FunctionTemplate : public Template
 {
+public:
     FunctionTemplate();
     VECTOR(FunctionTemplateSpecialization*, Specializations)
     FunctionTemplateSpecialization* FindSpecialization(const std::string& usr);
 };
 
-struct CS_API FunctionTemplateSpecialization
+class CS_API FunctionTemplateSpecialization
 {
+public:
     FunctionTemplateSpecialization();
     FunctionTemplate* Template;
     VECTOR(TemplateArgument, Arguments)
@@ -688,13 +723,14 @@ struct CS_API FunctionTemplateSpecialization
     TemplateSpecializationKind SpecializationKind;
 };
 
-struct CS_API Namespace : public DeclarationContext
+class CS_API Namespace : public DeclarationContext
 {
+public:
     Namespace();
     bool IsInline;
 };
 
-enum struct MacroLocation
+enum class MacroLocation
 {
     Unknown,
     ClassHead,
@@ -704,27 +740,31 @@ enum struct MacroLocation
     FunctionBody,
 };
 
-struct CS_API PreprocessedEntity : public Declaration
+class CS_API PreprocessedEntity : public Declaration
 {
+public:
     PreprocessedEntity();
     MacroLocation MacroLocation;
 };
 
-struct CS_API MacroDefinition : public PreprocessedEntity
+class CS_API MacroDefinition : public PreprocessedEntity
 {
+public:
     MacroDefinition();
     STRING(Expression)
 };
 
-struct CS_API MacroExpansion : public PreprocessedEntity
+class CS_API MacroExpansion : public PreprocessedEntity
 {
+public:
     MacroExpansion();
     STRING(Text)
     MacroDefinition* Definition;
 };
 
-struct CS_API TranslationUnit : public Namespace
+class CS_API TranslationUnit : public Namespace
 {
+public:
     TranslationUnit();
     STRING(FileName)
     bool IsSystemHeader;
@@ -737,8 +777,9 @@ struct CS_API NativeLibrary
     VECTOR_STRING(Symbols)
 };
 
-struct CS_API ASTContext
+class CS_API ASTContext
 {
+public:
     ASTContext();
     TranslationUnit* FindOrCreateModule(std::string File);
     VECTOR(TranslationUnit*, TranslationUnits)
@@ -753,18 +794,20 @@ enum struct CommentKind
     FullComment,
 };
 
-struct CS_API CS_ABSTRACT Comment
+class CS_API CS_ABSTRACT Comment
 {
+public:
     Comment(CommentKind kind);
     CommentKind Kind;
 };
 
-struct CS_API FullComment : public Comment
+class CS_API FullComment : public Comment
 {
+public:
     FullComment();
 };
 
-enum struct RawCommentKind
+enum class RawCommentKind
 {
     Invalid,
     OrdinaryBCPL,
@@ -776,8 +819,9 @@ enum struct RawCommentKind
     Merged
 };
 
-struct CS_API RawComment
+class CS_API RawComment
 {
+public:
     RawComment();
     RawCommentKind Kind;
     STRING(Text)

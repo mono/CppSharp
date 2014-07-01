@@ -39,8 +39,9 @@ namespace clang {
 
 namespace CppSharp { namespace CppParser {
 
-struct Parser
+class Parser
 {
+public:
     Parser(ParserOptions* Opts);
 
     void SetupHeader();
