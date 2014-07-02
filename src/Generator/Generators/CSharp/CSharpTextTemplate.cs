@@ -12,9 +12,7 @@ using CppSharp.Types;
 using CppSharp.Utils;
 using Attribute = CppSharp.AST.Attribute;
 using Type = CppSharp.AST.Type;
-#if !OLD_PARSER
 using CppAbi = CppSharp.Parser.AST.CppAbi;
-#endif
 
 namespace CppSharp.Generators.CSharp
 {

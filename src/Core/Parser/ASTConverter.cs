@@ -1,6 +1,4 @@
-﻿#if !OLD_PARSER
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using CppSharp.Parser.AST;
 
@@ -1459,5 +1457,3 @@ namespace CppSharp
 
     #endregion
 }
-
-#endif

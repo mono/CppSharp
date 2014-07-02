@@ -1,10 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using CppSharp.AST;
-
-#if !OLD_PARSER
 using CppAbi = CppSharp.Parser.AST.CppAbi;
-#endif
 
 namespace CppSharp.Passes
 {

@@ -1,9 +1,6 @@
 ﻿using System.Collections.Generic;
 using CppSharp.AST;
-
-#if !OLD_PARSER
 using CppSharp.Parser;
-#endif
 
 namespace CppSharp
 {

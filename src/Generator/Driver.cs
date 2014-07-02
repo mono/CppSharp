@@ -12,10 +12,7 @@ using CppSharp.Generators.CSharp;
 using CppSharp.Passes;
 using CppSharp.Types;
 using Microsoft.CSharp;
-
-#if !OLD_PARSER
 using CppSharp.Parser;
-#endif
 
 namespace CppSharp
 {
@@ -64,25 +61,9 @@ namespace CppSharp
             if (string.IsNullOrWhiteSpace(options.LibraryName))
                 throw new InvalidOptionException();
 
-#if OLD_PARSER
-            for (var i = 0; i < options.IncludeDirs.Count; i++)
-                options.IncludeDirs[i] = Path.GetFullPath(options.IncludeDirs[i]);
-
-            for (var i = 0; i < options.LibraryDirs.Count; i++)
-                options.LibraryDirs[i] = Path.GetFullPath(options.LibraryDirs[i]);
-
-            if (options.NoGenIncludeDirs != null)
-                for (var i = 0; i < options.NoGenIncludeDirs.Count; i++)
-                    options.NoGenIncludeDirs[i] = Path.GetFullPath(options.NoGenIncludeDirs[i]);
-#endif
-
             if (options.NoGenIncludeDirs != null)
                 foreach (var incDir in options.NoGenIncludeDirs)
-#if OLD_PARSER
-                    options.IncludeDirs.Add(incDir);
-#else
                     options.addIncludeDirs(incDir);
-#endif
 
             if (string.IsNullOrWhiteSpace(options.OutputNamespace))
                 options.OutputNamespace = options.LibraryName;
@@ -119,22 +100,6 @@ namespace CppSharp
                     break;
             }
 
-#if OLD_PARSER
-            foreach (var diag in result.Diagnostics)
-            {
-                if (Options.IgnoreParseWarnings
-                    && diag.Level == ParserDiagnosticLevel.Warning)
-                    continue;
-
-                if (diag.Level == ParserDiagnosticLevel.Note)
-                    continue;
-
-                Diagnostics.EmitMessage(DiagnosticId.ParserDiagnostic,
-                    "{0}({1},{2}): {3}: {4}", diag.FileName, diag.LineNumber,
-                    diag.ColumnNumber, diag.Level.ToString().ToLower(),
-                    diag.Message);
-            }
-#else
             for (uint i = 0; i < result.DiagnosticsCount; ++i)
             {
                 var diag = result.getDiagnostics(i);
@@ -151,8 +116,6 @@ namespace CppSharp
                     diag.ColumnNumber, diag.Level.ToString().ToLower(),
                     diag.Message);
             }
-
-#endif
         }
 
         ParserOptions BuildParseOptions(SourceFile file)
@@ -160,13 +123,6 @@ namespace CppSharp
             var options = new ParserOptions
             {
                 FileName = file.Path,
-#if OLD_PARSER
-                Arguments = Options.Arguments,
-                IncludeDirs = Options.IncludeDirs,
-                SystemIncludeDirs = Options.SystemIncludeDirs,
-                Defines = Options.Defines,
-                LibraryDirs = Options.LibraryDirs,
-#endif
                 Abi = Options.Abi,
                 ToolSetToUse = Options.ToolSetToUse,
                 TargetTriple = Options.TargetTriple,
@@ -176,7 +132,6 @@ namespace CppSharp
                 Verbose = Options.Verbose,
             };
 
-#if !OLD_PARSER
             for (uint i = 0; i < Options.ArgumentsCount; ++i)
             {
                 var arg = Options.getArguments(i);
@@ -206,7 +161,6 @@ namespace CppSharp
                 var lib = Options.getLibraryDirs(i);
                 options.addLibraryDirs(lib);
             }
-#endif
 
             return options;
         }
@@ -219,20 +173,14 @@ namespace CppSharp
                 source.Options = BuildParseOptions(source);
             }
 
-#if !OLD_PARSER
             var parser = new ClangParser(new Parser.AST.ASTContext());
-#else
-            var parser = new ClangParser(ASTContext);
-#endif
 
             parser.SourceParsed += OnSourceFileParsed;
             parser.ParseProject(Project, Options);
            
             TargetInfo = parser.GetTargetInfo(Options);
 
-#if !OLD_PARSER
             ASTContext = ClangParser.ConvertASTContext(parser.ASTContext);
-#endif
 
             return true;
         }
@@ -251,11 +199,7 @@ namespace CppSharp
                 if (res.Kind != ParserResultKind.Success)
                     continue;
 
-#if !OLD_PARSER
                 Symbols.Libraries.Add(ClangParser.ConvertLibrary(res.Library));
-#else
-                Symbols.Libraries.Add(res.Library);
-#endif
             }
 
             return true;

@@ -2,10 +2,7 @@
 using System.IO;
 using System.Text;
 using CppSharp.AST;
-
-#if !OLD_PARSER
 using CppAbi = CppSharp.Parser.AST.CppAbi;
-#endif
 
 namespace CppSharp.Passes
 {

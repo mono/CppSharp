@@ -5,9 +5,7 @@ using CppSharp.AST;
 using CppSharp.Generators;
 using CppSharp.Passes;
 using CppSharp.Types;
-#if !OLD_PARSER
 using CppAbi = CppSharp.Parser.AST.CppAbi;
-#endif
 
 namespace CppSharp
 {
@@ -63,15 +61,8 @@ namespace CppSharp
                 SetupMacOptions(options);
 
             var basePath = Path.Combine(GetSourceDirectory("src"), "CppParser");
-
-#if OLD_PARSER
-            options.IncludeDirs.Add(basePath);
-            options.LibraryDirs.Add(".");
-
-#else
             options.addIncludeDirs(basePath);
             options.addLibraryDirs(".");
-#endif
 
             options.OutputDir = Path.Combine(GetSourceDirectory("src"), @"CppParser\Bindings",
                 Kind.ToString());
@@ -91,17 +82,10 @@ namespace CppSharp
             var headersPath = Path.Combine(GetSourceDirectory("build"), "headers",
                 "osx");
 
-#if OLD_PARSER
-            options.SystemIncludeDirs.Add(headersPath + @"include\osx");
-            options.SystemIncludeDirs.Add(headersPath + @"lib\libcxx\include");
-            options.SystemIncludeDirs.Add(headersPath + @"lib\clang\4.2\include");
-            options.Arguments.Add("-stdlib=libc++");
-#else
             options.addSystemIncludeDirs(Path.Combine(headersPath, "include"));
             options.addSystemIncludeDirs(Path.Combine(headersPath, "clang", "4.2", "include"));
             options.addSystemIncludeDirs(Path.Combine(headersPath, "libcxx", "include"));
             options.addArguments("-stdlib=libc++");
-#endif
         }
 
         public void SetupPasses(Driver driver)

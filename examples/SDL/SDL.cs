@@ -10,11 +10,7 @@ namespace CppSharp
             var options = driver.Options;
             options.LibraryName = "SDL";
             options.Headers.Add("SDL.h");
-#if OLD_PARSER
-            options.IncludeDirs.Add("../../../examples/SDL/SDL-2.0/include");
-#else
             options.addIncludeDirs("../../../examples/SDL/SDL-2.0/include");
-#endif
             options.OutputDir = "SDL";
         }
 

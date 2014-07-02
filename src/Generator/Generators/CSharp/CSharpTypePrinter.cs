@@ -4,9 +4,7 @@ using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Types;
 using Type = CppSharp.AST.Type;
-#if !OLD_PARSER
 using ParserTargetInfo = CppSharp.Parser.ParserTargetInfo;
-#endif
 
 namespace CppSharp.Generators.CSharp
 {
