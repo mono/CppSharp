@@ -70,7 +70,7 @@ enum class ParserResultKind
     FileNotFound
 };
 
-struct Parser;
+class Parser;
 
 struct CS_API ParserResult
 {

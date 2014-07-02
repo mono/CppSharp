@@ -11,7 +11,7 @@
 
 namespace CppSharp { namespace CppParser {
 
-enum struct ParserIntType
+enum class ParserIntType
 {
     NoInt = 0,
     SignedChar,

@@ -399,15 +399,15 @@ public:
     std::string USR;
 };
 
-struct Class;
-struct Enumeration;
-struct Function;
-struct TypedefDecl;
-struct Namespace;
-struct Template;
-struct ClassTemplate;
-struct FunctionTemplate;
-struct Variable;
+class Class;
+class Enumeration;
+class Function;
+class TypedefDecl;
+class Namespace;
+class Template;
+class ClassTemplate;
+class FunctionTemplate;
+class Variable;
 
 class CS_API DeclarationContext : public Declaration
 {
