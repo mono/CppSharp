@@ -2176,6 +2176,10 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, Function* F,
         P->HasDefaultValue = VD->hasDefaultArg();
         P->_Namespace = NS;
         P->Index = VD->getFunctionScopeIndex();
+        if (VD->hasDefaultArg() && !VD->hasUnparsedDefaultArg() && !VD->hasUninstantiatedDefaultArg())
+        {
+            P->DefaultArgument = WalkStatement(VD->getDefaultArg());
+        }
         HandleDeclaration(VD, P);
 
         F->Parameters.push_back(P);
@@ -2428,6 +2432,52 @@ void Parser::HandlePreprocessedEntities(Declaration* Decl)
         clang::PreprocessedEntity* PPEntity = (*it);
         auto Entity = WalkPreprocessedEntity(Decl, PPEntity);
     }
+}
+
+AST::Expression* Parser::WalkStatement(clang::Stmt* Statement)
+{
+    using namespace clang;
+
+    switch (Statement->getStmtClass())
+    {
+    case Stmt::DeclRefExprClass:
+        return new AST::Expression(GetStringFromStatement(Statement), StatementClass::DeclRefExprClass,
+            WalkDeclaration(cast<DeclRefExpr>(Statement)->getDecl()));
+    case Stmt::CStyleCastExprClass:
+    case Stmt::CXXConstCastExprClass:
+    case Stmt::CXXDynamicCastExprClass:
+    case Stmt::CXXFunctionalCastExprClass:
+    case Stmt::CXXReinterpretCastExprClass:
+    case Stmt::CXXStaticCastExprClass:
+    case Stmt::ImplicitCastExprClass:
+        return WalkStatement(cast<CastExpr>(Statement)->getSubExprAsWritten());
+    case Stmt::CXXConstructExprClass:
+    {
+        auto ConstructorExpr = cast<CXXConstructExpr>(Statement);
+        auto Arg = ConstructorExpr->getArg(0);
+        auto TemporaryExpr = dyn_cast<MaterializeTemporaryExpr>(Arg);
+        if (TemporaryExpr && isa<CastExpr>(TemporaryExpr->GetTemporaryExpr()))
+            return WalkStatement(TemporaryExpr->GetTemporaryExpr());
+        return new AST::Expression(GetStringFromStatement(Statement), StatementClass::CXXConstructExprClass,
+            WalkDeclaration(ConstructorExpr->getConstructor()));
+    }
+    case Stmt::MaterializeTemporaryExprClass:
+        return WalkStatement(cast<MaterializeTemporaryExpr>(Statement)->GetTemporaryExpr());
+    default:
+        break;
+    }
+    return new AST::Expression(GetStringFromStatement(Statement));
+}
+
+std::string Parser::GetStringFromStatement(const clang::Stmt* Statement)
+{
+    using namespace clang;
+
+    PrintingPolicy Policy(C->getLangOpts());
+    std::string s;
+    llvm::raw_string_ostream as(s);
+    Statement->printPretty(as, 0, Policy);
+    return as.str();
 }
 
 void Parser::HandlePreprocessedEntities(Declaration* Decl,

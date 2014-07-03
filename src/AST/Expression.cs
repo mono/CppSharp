@@ -1,8 +1,6 @@
-using System;
-
 namespace CppSharp.AST
 {
-    public abstract class Expression
+    public abstract class Expression : Statement
     {
         public string DebugText;
 

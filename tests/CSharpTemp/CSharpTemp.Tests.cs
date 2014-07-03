@@ -118,10 +118,24 @@ public class CSharpTempTests : GeneratorTestFixture
         Assert.That(testCopyConstructorVal.B, Is.EqualTo(copyBar.B));
     }
 
+    [Test]
     public void TestPropertiesConflictingWithMethod()
     {
         var p = new P((IQux) new Qux()) { Test = true };
         Assert.That(p.Test, Is.True);
         p.GetTest();
+    }
+
+    [Test]
+    public void TestDefaultArguments()
+    {
+        var methodsWithDefaultValues = new MethodsWithDefaultValues();
+        methodsWithDefaultValues.DefaultChar();
+        methodsWithDefaultValues.DefaultPointer();
+        methodsWithDefaultValues.DefaultRefTypeAfterOthers();
+        methodsWithDefaultValues.DefaultRefTypeBeforeAndAfterOthers(5, new Foo());
+        methodsWithDefaultValues.DefaultRefTypeBeforeOthers();
+        methodsWithDefaultValues.DefaultValueType();
+        methodsWithDefaultValues.DefaultIntAssignedAnEnum();
     }
 }

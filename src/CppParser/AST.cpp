@@ -418,8 +418,14 @@ TypedefDecl* DeclarationContext::FindTypedef(const std::string& Name, bool Creat
 
 TypedefDecl::TypedefDecl() : Declaration(DeclarationKind::Typedef) {}
 
+DEF_STRING(Statement, String)
+
+Statement::Statement(const std::string& str, StatementClass stmtClass, Declaration* decl) : String(str), Class(stmtClass), Decl(decl) {}
+
+Expression::Expression(const std::string& str, StatementClass stmtClass, Declaration* decl) : Statement(str, stmtClass, decl) {}
+
 Parameter::Parameter() : Declaration(DeclarationKind::Parameter),
-    IsIndirect(false), HasDefaultValue(false) {}
+    IsIndirect(false), HasDefaultValue(false), DefaultArgument(0) {}
 
 Function::Function() 
     : Declaration(DeclarationKind::Function)

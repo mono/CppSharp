@@ -2051,6 +2051,19 @@ namespace CppSharp.Generators.CSharp
             if (method.IsProxy)
                 goto SkipImpl;
 
+            if (method.SynthKind == FunctionSynthKind.DefaultValueOverload)
+            {
+                Type type = method.OriginalReturnType.Type;
+                WriteLine("{0}{1}({2});",
+                    type.IsPrimitiveType(PrimitiveType.Void) ? string.Empty : "return ",
+                    method.Name,
+                    string.Join(", ",
+                        method.Parameters.Where(
+                        p => p.Kind == ParameterKind.Regular).Select(
+                            p => p.GenerationKind == GenerationKind.None ? p.DefaultArgument.String : p.Name)));
+                goto SkipImpl;
+            }
+
             if (@class.IsRefType)
             {
                 if (method.IsConstructor)
@@ -2534,10 +2547,12 @@ namespace CppSharp.Generators.CSharp
         {
             return string.Join(", ",
                 from param in @params
-                where param.Kind != ParameterKind.IndirectReturnType
-                let typeName = param.CSharpType(TypePrinter)
+                where param.Kind != ParameterKind.IndirectReturnType && !param.Ignore
+                let typeName = param.CSharpType(this.TypePrinter)
                 select string.Format("{0}{1} {2}", GetParameterUsage(param.Usage),
-                    typeName, param.Name));
+                    typeName, param.Name +
+                        (param.DefaultArgument == null || !Options.GenerateDefaultValuesForArguments ?
+                            string.Empty : " = " + param.DefaultArgument.String)));
         }
 
         #endregion

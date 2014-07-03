@@ -206,3 +206,31 @@ TestCopyConstructorVal::TestCopyConstructorVal(const TestCopyConstructorVal& oth
     A = other.A;
     B = other.B;
 }
+
+void MethodsWithDefaultValues::DefaultPointer(Foo *ptr)
+{
+}
+
+void MethodsWithDefaultValues::DefaultValueType(ValueType bar)
+{
+}
+
+void MethodsWithDefaultValues::DefaultChar(char c)
+{
+}
+
+void MethodsWithDefaultValues::DefaultRefTypeBeforeOthers(Foo foo, int i, Bar::Items item)
+{
+}
+
+void MethodsWithDefaultValues::DefaultRefTypeAfterOthers(int i, Bar::Items item, Foo foo)
+{
+}
+
+void MethodsWithDefaultValues::DefaultRefTypeBeforeAndAfterOthers(int i, Foo foo, Bar::Items item, Baz baz)
+{
+}
+
+void MethodsWithDefaultValues::DefaultIntAssignedAnEnum(int i)
+{
+}

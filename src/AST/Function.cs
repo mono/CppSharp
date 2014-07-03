@@ -46,6 +46,7 @@ namespace CppSharp.AST
             Kind = p.Kind;
             QualifiedType = p.QualifiedType;
             Usage = p.Usage;
+            DefaultArgument = p.DefaultArgument;
         }
 
         public Type Type { get { return QualifiedType.Type; } }
@@ -56,6 +57,8 @@ namespace CppSharp.AST
         public ParameterKind Kind { get; set; }
         public ParameterUsage Usage { get; set; }
         public bool HasDefaultValue { get; set; }
+
+        public Expression DefaultArgument { get; set; }
 
         public bool IsIn { get { return Usage == ParameterUsage.In; } }
         public bool IsOut { get { return Usage == ParameterUsage.Out; } }

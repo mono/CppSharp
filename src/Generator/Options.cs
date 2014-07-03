@@ -180,6 +180,11 @@ namespace CppSharp
         /// Generates a single C# file.
         /// </summary>
         public bool GenerateSingleCSharpFile { get; set; }
+
+        /// <summary>
+        /// Generates default values of arguments in the C# code.
+        /// </summary>
+        public bool GenerateDefaultValuesForArguments { get; set; }
     }
 
     public class InvalidOptionException : Exception

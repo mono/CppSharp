@@ -833,8 +833,29 @@ namespace CppSharp
             _param.IsIndirect = decl.IsIndirect;
             _param.HasDefaultValue = decl.HasDefaultValue;
             _param.Index = decl.Index;
+            _param.DefaultArgument = VisitStatement(decl.DefaultArgument);
 
             return _param;
+        }
+
+        private AST.Expression VisitStatement(Statement statement)
+        {
+            if (statement == null)
+                return null;
+
+            var expression = new AST.BuiltinTypeExpression();
+            expression.Declaration = this.typeConverter.declConverter.Visit(statement.Decl);
+            expression.String = statement.String;
+            switch (statement.Class)
+            {
+                case StatementClass.DeclRefExprClass:
+                    expression.Class = AST.StatementClass.DeclarationReference;
+                    break;
+                case StatementClass.CXXConstructExprClass:
+                    expression.Class = AST.StatementClass.ConstructorReference;
+                    break;
+            }
+            return expression;
         }
 
         public void VisitFunction(Function function, AST.Function _function)
