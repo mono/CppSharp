@@ -159,13 +159,16 @@ namespace CppSharp.Passes
                         comment.Kind = getter.Comment.Kind;
                         comment.BriefText = getter.Comment.BriefText;
                         comment.Text = getter.Comment.Text;
-                        comment.FullComment = new FullComment();
-                        comment.FullComment.Blocks.AddRange(getter.Comment.FullComment.Blocks);
-                        if (setter != null && setter.Comment != null)
+                        if (getter.Comment.FullComment != null)
                         {
-                            comment.BriefText += Environment.NewLine + setter.Comment.BriefText;
-                            comment.Text += Environment.NewLine + setter.Comment.Text;
-                            comment.FullComment.Blocks.AddRange(setter.Comment.FullComment.Blocks);
+                            comment.FullComment = new FullComment();
+                            comment.FullComment.Blocks.AddRange(getter.Comment.FullComment.Blocks);
+                            if (setter != null && setter.Comment != null)
+                            {
+                                comment.BriefText += Environment.NewLine + setter.Comment.BriefText;
+                                comment.Text += Environment.NewLine + setter.Comment.Text;
+                                comment.FullComment.Blocks.AddRange(setter.Comment.FullComment.Blocks);
+                            }
                         }
                         property.Comment = comment;
                     }
