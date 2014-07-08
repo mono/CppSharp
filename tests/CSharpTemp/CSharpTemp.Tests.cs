@@ -138,4 +138,10 @@ public class CSharpTempTests : GeneratorTestFixture
         methodsWithDefaultValues.DefaultValueType();
         methodsWithDefaultValues.DefaultIntAssignedAnEnum();
     }
+
+    [Test]
+    public void TestGenerationOfAnotherUnitInSameFile()
+    {
+        AnotherUnit.FunctionInAnotherUnit();
+    }
 }

@@ -61,8 +61,8 @@ namespace CppSharp.Generators.CLI
 
         public ISet<Include> Includes;
 
-        protected CLITextTemplate(Driver driver, TranslationUnit unit)
-            : base(driver, unit)
+        protected CLITextTemplate(Driver driver, IEnumerable<TranslationUnit> units)
+            : base(driver, units)
         {
             TypePrinter = new CLITypePrinter(driver);
             Includes = new HashSet<Include>();
@@ -70,7 +70,7 @@ namespace CppSharp.Generators.CLI
 
         public abstract override string FileExtension { get; }
 
-        public abstract override void Process(Order order);
+        public abstract override void Process();
 
         #region Helpers
 

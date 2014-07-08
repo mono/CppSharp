@@ -16,11 +16,11 @@ namespace CppSharp.Generators.CSharp
             CppSharp.AST.Type.TypePrinterDelegate += type => type.Visit(typePrinter).Type;
         }
 
-        public override List<Template> Generate(TranslationUnit unit)
+        public override List<Template> Generate(IEnumerable<TranslationUnit> units)
         {
             var outputs = new List<Template>();
 
-            var template = new CSharpTextTemplate(Driver, unit, typePrinter, expressionPrinter);
+            var template = new CSharpTextTemplate(Driver, units, typePrinter, expressionPrinter);
             outputs.Add(template);
 
             return outputs;

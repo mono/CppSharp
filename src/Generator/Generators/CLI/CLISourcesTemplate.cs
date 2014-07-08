@@ -16,13 +16,13 @@ namespace CppSharp.Generators.CLI
     /// </summary>
     public class CLISourcesTemplate : CLITextTemplate
     {
-        public CLISourcesTemplate(Driver driver, TranslationUnit unit)
-            : base(driver, unit)
+        public CLISourcesTemplate(Driver driver, IEnumerable<TranslationUnit> units)
+            : base(driver, units)
         {
             
         }
 
-        public override void Process(Order order)
+        public override void Process()
         {
             PushBlock(BlockKind.Header);
             PopBlock();
