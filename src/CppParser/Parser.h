@@ -48,10 +48,10 @@ public:
     ParserResult* ParseHeader(const std::string& File, ParserResult* res);
     ParserResult* ParseLibrary(const std::string& File, ParserResult* res);
     ParserResultKind ParseArchive(llvm::StringRef File,
-                                  llvm::MemoryBuffer *Buffer,
+                                  std::unique_ptr<llvm::MemoryBuffer>& Buffer,
                                   CppSharp::CppParser::NativeLibrary*& NativeLib);
     ParserResultKind ParseSharedLib(llvm::StringRef File,
-                                    llvm::MemoryBuffer *Buffer,
+                                    std::unique_ptr<llvm::MemoryBuffer>& Buffer,
                                     CppSharp::CppParser::NativeLibrary*& NativeLib);
     ParserTargetInfo*  GetTargetInfo();
 

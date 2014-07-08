@@ -126,21 +126,21 @@ void Parser::SetupHeader()
       C->getDiagnostics());
     C->setInvocation(Inv);
 
-    TargetOptions& TO = Inv->getTargetOpts();
+    auto& TO = Inv->TargetOpts;
     TargetABI = (Opts->Abi == CppAbi::Microsoft) ? TargetCXXABI::Microsoft
         : TargetCXXABI::GenericItanium;
 
-    TO.Triple = llvm::sys::getDefaultTargetTriple();
+    TO->Triple = llvm::sys::getDefaultTargetTriple();
     if (!Opts->TargetTriple.empty())
-        TO.Triple = Opts->TargetTriple;
+        TO->Triple = Opts->TargetTriple;
 
-    TargetInfo* TI = TargetInfo::CreateTargetInfo(C->getDiagnostics(), &TO);
+    TargetInfo* TI = TargetInfo::CreateTargetInfo(C->getDiagnostics(), TO);
     if (!TI)
     {
         // We might have no target info due to an invalid user-provided triple.
         // Try again with the default triple.
-        TO.Triple = llvm::sys::getDefaultTargetTriple();
-        TI = TargetInfo::CreateTargetInfo(C->getDiagnostics(), &TO);
+        TO->Triple = llvm::sys::getDefaultTargetTriple();
+        TI = TargetInfo::CreateTargetInfo(C->getDiagnostics(), TO);
     }
 
     assert(TI && "Expected valid target info");
@@ -209,11 +209,7 @@ void Parser::SetupHeader()
     // Enable preprocessing record.
     PPOpts.DetailedRecord = true;
 
-#ifdef _MSC_VER
-    C->createPreprocessor();
-#else
     C->createPreprocessor(TU_Complete);
-#endif
 
     Preprocessor& PP = C->getPreprocessor();
     PP.getBuiltinInfo().InitializeBuiltins(PP.getIdentifierTable(),
@@ -2929,7 +2925,8 @@ ParserResult* Parser::ParseHeader(const std::string& File, ParserResult* res)
     str += "\0";
 
     auto buffer = llvm::MemoryBuffer::getMemBuffer(str);
-    C->getSourceManager().createMainFileIDForMemBuffer(buffer);
+    auto &SM = C->getSourceManager();
+    SM.setMainFileID(SM.createFileID(buffer));
 
     clang::DiagnosticConsumer* client = C->getDiagnostics().getClient();
     client->BeginSourceFile(C->getLangOpts(), &C->getPreprocessor());
@@ -2983,11 +2980,11 @@ ParserResult* Parser::ParseHeader(const std::string& File, ParserResult* res)
  }
 
 ParserResultKind Parser::ParseArchive(llvm::StringRef File,
-                                      llvm::MemoryBuffer *Buffer,
+                                      std::unique_ptr<llvm::MemoryBuffer>& Buffer,
                                       CppSharp::CppParser::NativeLibrary*& NativeLib)
 {
-    llvm::error_code Code;
-    llvm::object::Archive Archive(Buffer, Code);
+    std::error_code Code;
+    llvm::object::Archive Archive(std::move(Buffer), Code);
 
     if (Code)
         return ParserResultKind::Error;
@@ -2998,11 +2995,7 @@ ParserResultKind Parser::ParseArchive(llvm::StringRef File,
 
     for(auto it = Archive.symbol_begin(); it != Archive.symbol_end(); ++it)
     {
-        llvm::StringRef SymRef;
-
-        if (it->getName(SymRef))
-            continue;
-
+        llvm::StringRef SymRef = it->getName();
         NativeLib->Symbols.push_back(SymRef);
     }
 
@@ -3010,7 +3003,7 @@ ParserResultKind Parser::ParseArchive(llvm::StringRef File,
 }
 
 ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
-                                        llvm::MemoryBuffer *Buffer,
+                                        std::unique_ptr<llvm::MemoryBuffer>& Buffer,
                                         CppSharp::CppParser::NativeLibrary*& NativeLib)
 {
     auto Object = llvm::object::ObjectFile::createObjectFile(Buffer);
@@ -3022,7 +3015,7 @@ ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
     NativeLib = new NativeLibrary();
     NativeLib->FileName = LibName;
 
-    llvm::error_code ec;
+    std::error_code ec;
     for(auto it = Object.get()->symbol_begin(); it != Object.get()->symbol_end();
         ++it)
     {
@@ -3080,14 +3073,13 @@ ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
         return res;
     }
 
-    res->Kind = ParseArchive(File, FM.getBufferForFile(FileEntry),
-        res->Library);
+    std::unique_ptr<llvm::MemoryBuffer> FileBuf(FM.getBufferForFile(FileEntry));
+    res->Kind = ParseArchive(File, FileBuf, res->Library);
 
     if (res->Kind == ParserResultKind::Success)
         return res;
 
-    res->Kind = ParseSharedLib(File, FM.getBufferForFile(FileEntry),
-        res->Library);
+    res->Kind = ParseSharedLib(File, FileBuf, res->Library);
 
     if (res->Kind == ParserResultKind::Success)
         return res;

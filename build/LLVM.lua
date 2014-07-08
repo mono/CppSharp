@@ -57,6 +57,7 @@ function SetupLLVMLibs()
       "LLVMObjCARCOpts",
       "LLVMObject",
       "LLVMOption",
+      "LLVMProfileData",
       "LLVMScalarOpts",
       "LLVMSupport",
       "LLVMTarget",
@@ -80,7 +81,6 @@ function SetupLLVMLibs()
       "clangSerialization",
       "clangIndex",
     }
-    StaticLinksOpt { "LLVMProfileData" }
     
   configuration(c)
 end
