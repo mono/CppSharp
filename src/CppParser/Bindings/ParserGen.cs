@@ -57,6 +57,9 @@ namespace CppSharp
             });
             options.Libraries.Add("CppSharp.CppParser.lib");
 
+            if (Abi == CppAbi.Microsoft)
+                options.MicrosoftMode = true;
+
             if (Triple.Contains("apple"))
                 SetupMacOptions(options);
 
@@ -111,12 +114,12 @@ namespace CppSharp
         public static void Main(string[] args)
         {
             Console.WriteLine("Generating the C++/CLI parser bindings for Windows...");
-            ConsoleDriver.Run(new ParserGen(GeneratorKind.CLI, "i686-pc-win32",
+            ConsoleDriver.Run(new ParserGen(GeneratorKind.CLI, "i686-pc-win32-msvc",
                 CppAbi.Microsoft));
             Console.WriteLine();
 
             Console.WriteLine("Generating the C# parser bindings for Windows...");
-            ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "i686-pc-win32",
+            ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "i686-pc-win32-msvc",
                 CppAbi.Microsoft));
             Console.WriteLine();
 
