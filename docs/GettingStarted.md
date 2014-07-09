@@ -25,11 +25,11 @@ Git repository urls found here: [http://llvm.org/docs/GettingStarted.html#git-mi
 Building in *Release* is recommended because else the Clang parser will be
 excruciatingly slow.
 
-Due to some incompatible changes in recent LLVM versions, Windows builds need to use the following set of revisions that are known to work.
+Last revisions known to work:
 
-LLVM `r202563` / Git mirror revision `c9bf74fdc543c2da90f334e0bf8e34b128c8a615`.
+LLVM `r212459` / Git mirror revision `c9bf74fdc543c2da90f334e0bf8e34b128c8a615`.
 
-Clang `r202562` / Git mirror revision `30577e6c4f5ba66b8dc832ed9955b1a7475f788a`.
+Clang `r212458` / Git mirror revision `30577e6c4f5ba66b8dc832ed9955b1a7475f788a`.
 
 It has been reported that running the solution upgrade process under VS 2013 breaks the build due
 to an incompatibility of .NET versions between projects (4.5 and 4.0). If you experience this
