@@ -247,17 +247,12 @@ namespace CppSharp.Generators
 
     public abstract class Template : ITextGenerator
     {
-        [Flags]
-        public enum Order
-        {
-            First = 1,
-            InBetween = 2,
-            Last = 4
-        }
-
         public Driver Driver { get; private set; }
         public DriverOptions Options { get; private set; }
-        public TranslationUnit TranslationUnit { get; private set; }
+        public List<TranslationUnit> TranslationUnits { get; private set; }
+
+        public TranslationUnit TranslationUnit { get { return TranslationUnits[0]; } }
+
         public IDiagnosticConsumer Log
         {
             get { return Driver.Diagnostics; }
@@ -268,16 +263,16 @@ namespace CppSharp.Generators
 
         public abstract string FileExtension { get; }
 
-        protected Template(Driver driver, TranslationUnit unit)
+        protected Template(Driver driver, IEnumerable<TranslationUnit> units)
         {
             Driver = driver;
             Options = driver.Options;
-            TranslationUnit = unit;
+            TranslationUnits = new List<TranslationUnit>(units);
             RootBlock = new Block();
             ActiveBlock = RootBlock;
         }
 
-        public abstract void Process(Order order);
+        public abstract void Process();
 
         public string Generate()
         {

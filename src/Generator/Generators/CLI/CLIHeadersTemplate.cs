@@ -15,12 +15,12 @@ namespace CppSharp.Generators.CLI
     {
         public override string FileExtension { get { return "h"; } }
 
-        public CLIHeadersTemplate(Driver driver, TranslationUnit unit)
-            : base(driver, unit)
+        public CLIHeadersTemplate(Driver driver, IEnumerable<TranslationUnit> units)
+            : base(driver, units)
         {
         }
 
-        public override void Process(Order order)
+        public override void Process()
         {
             PushBlock(BlockKind.Header);
             PopBlock();

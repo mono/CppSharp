@@ -91,8 +91,8 @@ namespace CppSharp.Generators.CSharp
             get { return "cs"; }
         }
 
-        public CSharpTextTemplate(Driver driver, TranslationUnit unit, CSharpTypePrinter typePrinter, CSharpExpressionPrinter expressionPrinter)
-            : base(driver, unit)
+        public CSharpTextTemplate(Driver driver, IEnumerable<TranslationUnit> units, CSharpTypePrinter typePrinter, CSharpExpressionPrinter expressionPrinter)
+            : base(driver, units)
         {
             TypePrinter = typePrinter;
             ExpressionPrinter = expressionPrinter;
@@ -126,39 +126,36 @@ namespace CppSharp.Generators.CSharp
 
         #endregion
 
-        public override void Process(Order order)
+        public override void Process()
         {
             GenerateHeader();
 
-            if (!Options.GenerateSingleCSharpFile || order.HasFlag(Order.First))
+            PushBlock(CSharpBlockKind.Usings);
+            WriteLine("using System;");
+            WriteLine("using System.Runtime.InteropServices;");
+            WriteLine("using System.Security;");
+            foreach (var customUsingStatement in Options.DependentNameSpaces)
             {
-                PushBlock(CSharpBlockKind.Usings);
-                WriteLine("using System;");
-                WriteLine("using System.Runtime.InteropServices;");
-                WriteLine("using System.Security;");
-                foreach (var customUsingStatement in Options.DependentNameSpaces)
-                {
-                    WriteLine(string.Format("using {0};", customUsingStatement));
-                }
-                PopBlock(NewLineKind.BeforeNextBlock);
+                WriteLine(string.Format("using {0};", customUsingStatement));
+            }
+            PopBlock(NewLineKind.BeforeNextBlock);
 
-                if (Options.GenerateLibraryNamespace)
-                {
-                    PushBlock(CSharpBlockKind.Namespace);
-                    WriteLine("namespace {0}", Driver.Options.OutputNamespace);
-                    WriteStartBraceIndent();
-                }
+            if (Options.GenerateLibraryNamespace)
+            {
+                PushBlock(CSharpBlockKind.Namespace);
+                WriteLine("namespace {0}", Driver.Options.OutputNamespace);
+                WriteStartBraceIndent();
             }
 
-            GenerateDeclContext(TranslationUnit);
-
-            if (!Options.GenerateSingleCSharpFile || order.HasFlag(Order.Last))
+            foreach (var unit in TranslationUnits)
             {
-                if (Options.GenerateLibraryNamespace)
-                {
-                    WriteCloseBraceIndent();
-                    PopBlock(NewLineKind.BeforeNextBlock);
-                }
+                GenerateDeclContext(unit);
+            }
+
+            if (Options.GenerateLibraryNamespace)
+            {
+                WriteCloseBraceIndent();
+                PopBlock(NewLineKind.BeforeNextBlock);
             }
         }
 
@@ -217,7 +214,7 @@ namespace CppSharp.Generators.CSharp
             {
                 PushBlock(CSharpBlockKind.Functions);
                 WriteLine("public unsafe partial class {0}",
-                    TranslationUnit.FileNameWithoutExtension);
+                    TranslationUnits[0].FileNameWithoutExtension);
                 WriteStartBraceIndent();
 
                 PushBlock(CSharpBlockKind.InternalsClass);
@@ -459,14 +456,17 @@ namespace CppSharp.Generators.CSharp
             typePrinter.PushContext(CSharpTypePrinterContextKind.Native);
 
             GenerateClassFields(@class, GenerateClassInternalsField, true);
-            if (Options.GenerateVirtualTables && @class.IsDynamic)
-                GenerateVTablePointers(@class);
-
-            var functions = GatherClassInternalFunctions(@class);
-
-            foreach (var function in functions)
+            if (@class.IsGenerated)
             {
-                GenerateInternalFunction(function);
+                if (Options.GenerateVirtualTables && @class.IsDynamic)
+                    GenerateVTablePointers(@class);
+
+                var functions = GatherClassInternalFunctions(@class);
+
+                foreach (var function in functions)
+                {
+                    GenerateInternalFunction(function);
+                }
             }
 
             typePrinter.PopContext();
@@ -583,7 +583,7 @@ namespace CppSharp.Generators.CSharp
             if (@class != null && @class.HasBaseClass)
                 Write("new ");
 
-            WriteLine("struct Internal");
+            WriteLine("partial struct Internal");
         }
 
         private void GenerateStructMarshalingProperties(Class @class)
