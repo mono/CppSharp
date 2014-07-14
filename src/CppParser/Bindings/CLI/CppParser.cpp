@@ -35,6 +35,11 @@ void CppSharp::Parser::ParserOptions::addArguments(System::String^ s)
     ((::CppSharp::CppParser::ParserOptions*)NativePtr)->addArguments(arg0);
 }
 
+void CppSharp::Parser::ParserOptions::clearArguments()
+{
+    ((::CppSharp::CppParser::ParserOptions*)NativePtr)->clearArguments();
+}
+
 System::String^ CppSharp::Parser::ParserOptions::getIncludeDirs(unsigned int i)
 {
     auto __ret = ((::CppSharp::CppParser::ParserOptions*)NativePtr)->getIncludeDirs(i);
@@ -47,6 +52,11 @@ void CppSharp::Parser::ParserOptions::addIncludeDirs(System::String^ s)
     auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
     auto arg0 = _arg0.c_str();
     ((::CppSharp::CppParser::ParserOptions*)NativePtr)->addIncludeDirs(arg0);
+}
+
+void CppSharp::Parser::ParserOptions::clearIncludeDirs()
+{
+    ((::CppSharp::CppParser::ParserOptions*)NativePtr)->clearIncludeDirs();
 }
 
 System::String^ CppSharp::Parser::ParserOptions::getSystemIncludeDirs(unsigned int i)
@@ -63,6 +73,11 @@ void CppSharp::Parser::ParserOptions::addSystemIncludeDirs(System::String^ s)
     ((::CppSharp::CppParser::ParserOptions*)NativePtr)->addSystemIncludeDirs(arg0);
 }
 
+void CppSharp::Parser::ParserOptions::clearSystemIncludeDirs()
+{
+    ((::CppSharp::CppParser::ParserOptions*)NativePtr)->clearSystemIncludeDirs();
+}
+
 System::String^ CppSharp::Parser::ParserOptions::getDefines(unsigned int i)
 {
     auto __ret = ((::CppSharp::CppParser::ParserOptions*)NativePtr)->getDefines(i);
@@ -77,6 +92,11 @@ void CppSharp::Parser::ParserOptions::addDefines(System::String^ s)
     ((::CppSharp::CppParser::ParserOptions*)NativePtr)->addDefines(arg0);
 }
 
+void CppSharp::Parser::ParserOptions::clearDefines()
+{
+    ((::CppSharp::CppParser::ParserOptions*)NativePtr)->clearDefines();
+}
+
 System::String^ CppSharp::Parser::ParserOptions::getLibraryDirs(unsigned int i)
 {
     auto __ret = ((::CppSharp::CppParser::ParserOptions*)NativePtr)->getLibraryDirs(i);
@@ -89,6 +109,11 @@ void CppSharp::Parser::ParserOptions::addLibraryDirs(System::String^ s)
     auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
     auto arg0 = _arg0.c_str();
     ((::CppSharp::CppParser::ParserOptions*)NativePtr)->addLibraryDirs(arg0);
+}
+
+void CppSharp::Parser::ParserOptions::clearLibraryDirs()
+{
+    ((::CppSharp::CppParser::ParserOptions*)NativePtr)->clearLibraryDirs();
 }
 
 System::IntPtr CppSharp::Parser::ParserOptions::__Instance::get()
@@ -340,6 +365,11 @@ void CppSharp::Parser::ParserResult::addDiagnostics(CppSharp::Parser::ParserDiag
 {
     auto &arg0 = *(::CppSharp::CppParser::ParserDiagnostic*)s->NativePtr;
     ((::CppSharp::CppParser::ParserResult*)NativePtr)->addDiagnostics(arg0);
+}
+
+void CppSharp::Parser::ParserResult::clearDiagnostics()
+{
+    ((::CppSharp::CppParser::ParserResult*)NativePtr)->clearDiagnostics();
 }
 
 System::IntPtr CppSharp::Parser::ParserResult::__Instance::get()

@@ -152,21 +152,31 @@ namespace CppSharp
 
             void addArguments(System::String^ s);
 
+            void clearArguments();
+
             System::String^ getIncludeDirs(unsigned int i);
 
             void addIncludeDirs(System::String^ s);
+
+            void clearIncludeDirs();
 
             System::String^ getSystemIncludeDirs(unsigned int i);
 
             void addSystemIncludeDirs(System::String^ s);
 
+            void clearSystemIncludeDirs();
+
             System::String^ getDefines(unsigned int i);
 
             void addDefines(System::String^ s);
 
+            void clearDefines();
+
             System::String^ getLibraryDirs(unsigned int i);
 
             void addLibraryDirs(System::String^ s);
+
+            void clearLibraryDirs();
         };
 
         public ref class ParserDiagnostic : ICppInstance
@@ -256,6 +266,8 @@ namespace CppSharp
             CppSharp::Parser::ParserDiagnostic^ getDiagnostics(unsigned int i);
 
             void addDiagnostics(CppSharp::Parser::ParserDiagnostic^ s);
+
+            void clearDiagnostics();
         };
 
         public ref class ClangParser : ICppInstance

@@ -458,6 +458,8 @@ namespace CppSharp
                 CppSharp::Parser::AST::Parameter^ getParameters(unsigned int i);
 
                 void addParameters(CppSharp::Parser::AST::Parameter^ s);
+
+                void clearParameters();
             };
 
             public ref class PointerType : CppSharp::Parser::AST::Type
@@ -647,6 +649,8 @@ namespace CppSharp
                 CppSharp::Parser::AST::TemplateArgument^ getArguments(unsigned int i);
 
                 void addArguments(CppSharp::Parser::AST::TemplateArgument^ s);
+
+                void clearArguments();
             };
 
             public ref class TemplateParameter : ICppInstance
@@ -838,6 +842,8 @@ namespace CppSharp
                 CppSharp::Parser::AST::VTableComponent^ getComponents(unsigned int i);
 
                 void addComponents(CppSharp::Parser::AST::VTableComponent^ s);
+
+                void clearComponents();
             };
 
             public ref class VFTableInfo : ICppInstance
@@ -945,6 +951,8 @@ namespace CppSharp
                 CppSharp::Parser::AST::VFTableInfo^ getVFTables(unsigned int i);
 
                 void addVFTables(CppSharp::Parser::AST::VFTableInfo^ s);
+
+                void clearVFTables();
             };
 
             public ref class Declaration : ICppInstance
@@ -1042,6 +1050,8 @@ namespace CppSharp
                 CppSharp::Parser::AST::PreprocessedEntity^ getPreprocessedEntities(unsigned int i);
 
                 void addPreprocessedEntities(CppSharp::Parser::AST::PreprocessedEntity^ s);
+
+                void clearPreprocessedEntities();
             };
 
             public ref class DeclarationContext : CppSharp::Parser::AST::Declaration
@@ -1097,29 +1107,43 @@ namespace CppSharp
 
                 void addNamespaces(CppSharp::Parser::AST::Namespace^ s);
 
+                void clearNamespaces();
+
                 CppSharp::Parser::AST::Enumeration^ getEnums(unsigned int i);
 
                 void addEnums(CppSharp::Parser::AST::Enumeration^ s);
+
+                void clearEnums();
 
                 CppSharp::Parser::AST::Function^ getFunctions(unsigned int i);
 
                 void addFunctions(CppSharp::Parser::AST::Function^ s);
 
+                void clearFunctions();
+
                 CppSharp::Parser::AST::Class^ getClasses(unsigned int i);
 
                 void addClasses(CppSharp::Parser::AST::Class^ s);
+
+                void clearClasses();
 
                 CppSharp::Parser::AST::Template^ getTemplates(unsigned int i);
 
                 void addTemplates(CppSharp::Parser::AST::Template^ s);
 
+                void clearTemplates();
+
                 CppSharp::Parser::AST::TypedefDecl^ getTypedefs(unsigned int i);
 
                 void addTypedefs(CppSharp::Parser::AST::TypedefDecl^ s);
 
+                void clearTypedefs();
+
                 CppSharp::Parser::AST::Variable^ getVariables(unsigned int i);
 
                 void addVariables(CppSharp::Parser::AST::Variable^ s);
+
+                void clearVariables();
             };
 
             public ref class TypedefDecl : CppSharp::Parser::AST::Declaration
@@ -1298,6 +1322,8 @@ namespace CppSharp
                 CppSharp::Parser::AST::Parameter^ getParameters(unsigned int i);
 
                 void addParameters(CppSharp::Parser::AST::Parameter^ s);
+
+                void clearParameters();
             };
 
             public ref class Method : CppSharp::Parser::AST::Function
@@ -1444,6 +1470,8 @@ namespace CppSharp
                 CppSharp::Parser::AST::Enumeration::Item^ getItems(unsigned int i);
 
                 void addItems(CppSharp::Parser::AST::Enumeration::Item^ s);
+
+                void clearItems();
             };
 
             public ref class Variable : CppSharp::Parser::AST::Declaration
@@ -1629,17 +1657,25 @@ namespace CppSharp
 
                 void addBases(CppSharp::Parser::AST::BaseClassSpecifier^ s);
 
+                void clearBases();
+
                 CppSharp::Parser::AST::Field^ getFields(unsigned int i);
 
                 void addFields(CppSharp::Parser::AST::Field^ s);
+
+                void clearFields();
 
                 CppSharp::Parser::AST::Method^ getMethods(unsigned int i);
 
                 void addMethods(CppSharp::Parser::AST::Method^ s);
 
+                void clearMethods();
+
                 CppSharp::Parser::AST::AccessSpecifierDecl^ getSpecifiers(unsigned int i);
 
                 void addSpecifiers(CppSharp::Parser::AST::AccessSpecifierDecl^ s);
+
+                void clearSpecifiers();
             };
 
             public ref class Template : CppSharp::Parser::AST::Declaration
@@ -1666,6 +1702,8 @@ namespace CppSharp
                 CppSharp::Parser::AST::TemplateParameter^ getParameters(unsigned int i);
 
                 void addParameters(CppSharp::Parser::AST::TemplateParameter^ s);
+
+                void clearParameters();
             };
 
             public ref class ClassTemplate : CppSharp::Parser::AST::Template
@@ -1684,6 +1722,8 @@ namespace CppSharp
                 CppSharp::Parser::AST::ClassTemplateSpecialization^ getSpecializations(unsigned int i);
 
                 void addSpecializations(CppSharp::Parser::AST::ClassTemplateSpecialization^ s);
+
+                void clearSpecializations();
             };
 
             public ref class ClassTemplateSpecialization : CppSharp::Parser::AST::Class
@@ -1714,6 +1754,8 @@ namespace CppSharp
                 CppSharp::Parser::AST::TemplateArgument^ getArguments(unsigned int i);
 
                 void addArguments(CppSharp::Parser::AST::TemplateArgument^ s);
+
+                void clearArguments();
             };
 
             public ref class ClassTemplatePartialSpecialization : CppSharp::Parser::AST::ClassTemplateSpecialization
@@ -1741,6 +1783,8 @@ namespace CppSharp
                 CppSharp::Parser::AST::FunctionTemplateSpecialization^ getSpecializations(unsigned int i);
 
                 void addSpecializations(CppSharp::Parser::AST::FunctionTemplateSpecialization^ s);
+
+                void clearSpecializations();
             };
 
             public ref class FunctionTemplateSpecialization : ICppInstance
@@ -1784,6 +1828,8 @@ namespace CppSharp
                 CppSharp::Parser::AST::TemplateArgument^ getArguments(unsigned int i);
 
                 void addArguments(CppSharp::Parser::AST::TemplateArgument^ s);
+
+                void clearArguments();
             };
 
             public ref class Namespace : CppSharp::Parser::AST::DeclarationContext
@@ -1880,6 +1926,8 @@ namespace CppSharp
                 CppSharp::Parser::AST::MacroDefinition^ getMacros(unsigned int i);
 
                 void addMacros(CppSharp::Parser::AST::MacroDefinition^ s);
+
+                void clearMacros();
             };
 
             public ref class NativeLibrary : ICppInstance
@@ -1911,6 +1959,8 @@ namespace CppSharp
                 System::String^ getSymbols(unsigned int i);
 
                 void addSymbols(System::String^ s);
+
+                void clearSymbols();
             };
 
             public ref class ASTContext : ICppInstance
@@ -1936,6 +1986,8 @@ namespace CppSharp
                 CppSharp::Parser::AST::TranslationUnit^ getTranslationUnits(unsigned int i);
 
                 void addTranslationUnits(CppSharp::Parser::AST::TranslationUnit^ s);
+
+                void clearTranslationUnits();
             };
 
             public ref class Comment : ICppInstance
