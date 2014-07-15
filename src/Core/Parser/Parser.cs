@@ -48,8 +48,9 @@ namespace CppSharp
         /// <summary>
         /// Parses a C++ source file to a translation unit.
         /// </summary>
-        public ParserResult ParseSourceFile(SourceFile file, ParserOptions options)
+        public ParserResult ParseSourceFile(SourceFile file)
         {
+            var options = file.Options;
             options.ASTContext = ASTContext;
             options.FileName = file.Path;
 
@@ -62,13 +63,13 @@ namespace CppSharp
         /// <summary>
         /// Parses the project source files.
         /// </summary>
-        public void ParseProject(Project project, ParserOptions options)
+        public void ParseProject(Project project)
         {
             // TODO: Search for cached AST trees on disk
             // TODO: Do multi-threaded parsing of source files
 
             foreach (var source in project.Sources)
-                ParseSourceFile(source, options);
+                ParseSourceFile(source);
         }
 
         /// <summary>

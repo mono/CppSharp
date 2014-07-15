@@ -170,7 +170,7 @@ namespace CppSharp
             var parser = new ClangParser(new Parser.AST.ASTContext());
 
             parser.SourceParsed += OnSourceFileParsed;
-            parser.ParseProject(Project, Options);
+            parser.ParseProject(Project);
            
             TargetInfo = parser.GetTargetInfo(Options);
 
