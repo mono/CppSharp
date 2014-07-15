@@ -635,6 +635,9 @@ void Parser::WalkRecord(clang::RecordDecl* Record, Class* RC)
 {
     using namespace clang;
 
+    if (Record->isImplicit())
+        return;
+
     auto headStartLoc = GetDeclStartLocation(C.get(), Record);
     auto headEndLoc = Record->getLocation(); // identifier location
     auto bodyEndLoc = Record->getLocEnd();
