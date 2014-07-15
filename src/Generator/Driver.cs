@@ -118,7 +118,7 @@ namespace CppSharp
             }
         }
 
-        ParserOptions BuildParseOptions(SourceFile file)
+        public ParserOptions BuildParseOptions(SourceFile file)
         {
             var options = new ParserOptions
             {
