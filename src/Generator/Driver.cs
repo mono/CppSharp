@@ -167,12 +167,6 @@ namespace CppSharp
 
         public bool ParseCode()
         {
-            foreach (var header in Options.Headers)
-            {
-                var source = Project.AddFile(header);
-                source.Options = BuildParseOptions(source);
-            }
-
             var parser = new ClangParser(new Parser.AST.ASTContext());
 
             parser.SourceParsed += OnSourceFileParsed;
@@ -183,6 +177,15 @@ namespace CppSharp
             ASTContext = ClangParser.ConvertASTContext(parser.ASTContext);
 
             return true;
+        }
+
+        public void BuildParseOptions()
+        {
+            foreach (var header in Options.Headers)
+            {
+                var source = Project.AddFile(header);
+                source.Options = BuildParseOptions(source);
+            }
         }
 
         public ParserTargetInfo TargetInfo { get; set; }
@@ -388,6 +391,8 @@ namespace CppSharp
 
             if (!options.Quiet)
                 Log.EmitMessage("Parsing code...");
+
+            driver.BuildParseOptions();
 
             if (!driver.ParseCode())
                 return;

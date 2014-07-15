@@ -20,6 +20,7 @@ namespace CppSharp.Generator.Tests
             Options.Headers.AddRange(files);
 
             Driver = new Driver(Options, new TextDiagnosticPrinter());
+            Driver.BuildParseOptions();
             if (!Driver.ParseCode())
                 throw new Exception("Error parsing the code");
 
