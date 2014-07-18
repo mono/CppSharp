@@ -48,7 +48,10 @@ int Qux::farAwayFunc() const
 
 void Qux::obsolete()
 {
+}
 
+void Qux::makeOverridePrivate(int i)
+{
 }
 
 int Bar::method()

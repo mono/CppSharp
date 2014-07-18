@@ -42,6 +42,8 @@ namespace CppSharp.Generators.CSharp
         }
 
         public const string InstanceIdentifier = "__Instance";
+        public const string PtrAdjustmentIdentifier = "__PtrAdjustment";
+        public const string AdjustedInstanceIdentifier = InstanceIdentifier + " + " + PtrAdjustmentIdentifier;
 
         public static string GetAccess(AccessSpecifier accessSpecifier)
         {
@@ -343,6 +345,13 @@ namespace CppSharp.Generators.CSharp
                     PopBlock(NewLineKind.BeforeNextBlock);
                 }
 
+                if (!@class.IsStatic && !@class.IsUnion)
+                {
+                    PushBlock(CSharpBlockKind.Field);
+                    WriteLine("private readonly int {0};", Helpers.PtrAdjustmentIdentifier);
+                    PopBlock(NewLineKind.BeforeNextBlock);   
+                }
+
                 if (Options.GenerateClassMarshals)
                 {
                     GenerateClassMarshals(@class);
@@ -455,7 +464,8 @@ namespace CppSharp.Generators.CSharp
             var typePrinter = TypePrinter;
             typePrinter.PushContext(CSharpTypePrinterContextKind.Native);
 
-            GenerateClassFields(@class, GenerateClassInternalsField, true);
+            int basesOffset = 0;
+            GenerateClassFields(ref basesOffset, @class, GenerateClassInternalsField, true);
             if (@class.IsGenerated)
             {
                 if (Options.GenerateVirtualTables && @class.IsDynamic)
@@ -766,26 +776,29 @@ namespace CppSharp.Generators.CSharp
                 Write(" : {0}", string.Join(", ", bases));
         }
 
-        public void GenerateClassFields(Class @class, Action<Field> action, bool nativeFields = false)
+        public void GenerateClassFields(ref int basesOffset, Class @class, Action<int, Field> action, bool nativeFields = false, bool isOwner = true)
         {
-            foreach (var @base in @class.Bases.Where(b => !(b.Type is DependentNameType)))
+            foreach (var @base in @class.Bases.Where(b => !(b.Type is DependentNameType)).OrderByDescending(b => b.IsClass && b.Class.IsDynamic))
             {
                 TypeMap typeMap;
+                // TODO: why check for type maps here? Don't we need the fields anyway? It also messes up the calculation of offsets
                 if ((!Driver.TypeDatabase.FindTypeMap(@base.Type, out typeMap) && !@base.Class.IsDeclared) ||
                     @base.Class.OriginalClass == @class)
                     continue;
 
-                GenerateClassFields(@base.Class, action, nativeFields);
+                GenerateClassFields(ref basesOffset, @base.Class, action, nativeFields, false);
+                if (isOwner)
+                    basesOffset += @base.Class.Layout.Size;
             }
 
             foreach (var field in @class.Fields)
             {
                 if (ASTUtils.CheckIgnoreField(field, nativeFields)) continue;
-                action(field);
+                action(isOwner ? 0 : basesOffset, field);
             }
         }
 
-        private void GenerateClassInternalsField(Field field)
+        private void GenerateClassInternalsField(int basesOffset, Field field)
         {
             // we do not support dependent fields yet, see https://github.com/mono/CppSharp/issues/197
             Class @class;
@@ -797,7 +810,7 @@ namespace CppSharp.Generators.CSharp
 
             PushBlock(CSharpBlockKind.Field);
 
-            WriteLine("[FieldOffset({0})]", field.OffsetInBytes);
+            WriteLine("[FieldOffset({0})]", basesOffset + field.OffsetInBytes);
 
             var fieldTypePrinted = field.QualifiedType.CSharpType(TypePrinter);
 
@@ -902,7 +915,7 @@ namespace CppSharp.Generators.CSharp
                     {
                         if (method.OperatorKind == CXXOperatorKind.Subscript)
                         {
-                            GenerateIndexerSetter(returnType, method);
+                            this.GenerateIndexerSetter(method);
                         }
                         else
                         {
@@ -940,8 +953,8 @@ namespace CppSharp.Generators.CSharp
 
                 WriteStartBraceIndent();
 
-                WriteLine("var {0} = (Internal*){1}.ToPointer();",
-                    Generator.GeneratedIdentifier("ptr"), Helpers.InstanceIdentifier);
+                WriteLine("var {0} = (Internal*)({1}).ToPointer();",
+                    Generator.GeneratedIdentifier("ptr"), Helpers.AdjustedInstanceIdentifier);
 
                 var marshal = new CSharpMarshalManagedToNativePrinter(ctx);
                 ctx.ReturnVarName = string.Format("{0}->{1}",
@@ -982,7 +995,7 @@ namespace CppSharp.Generators.CSharp
             return false;
         }
 
-        private void GenerateIndexerSetter(QualifiedType returnType, Function function)
+        private void GenerateIndexerSetter(Function function)
         {
             Type type;
             function.Type.IsPointerTo(out type);
@@ -991,13 +1004,13 @@ namespace CppSharp.Generators.CSharp
             if (type.IsPrimitiveType(out primitiveType))
             {
                 WriteLine("*Internal.{0}({1}, {2}) = value;", internalFunction,
-                    Helpers.InstanceIdentifier, function.Parameters[0].Name);
+                    Helpers.AdjustedInstanceIdentifier, function.Parameters[0].Name);
             }
             else
             {
-                WriteLine("*({0}.Internal*) Internal.{1}({2}, {3}) = *({0}.Internal*) value.{2};",
-                    type.ToString(), internalFunction,
-                    Helpers.InstanceIdentifier, function.Parameters[0].Name);
+                WriteLine("*({0}.Internal*) Internal.{1}({2}, {3}) = *({0}.Internal*) value.{4};",
+                    type.ToString(), internalFunction, Helpers.AdjustedInstanceIdentifier,
+                    function.Parameters[0].Name, Helpers.InstanceIdentifier);
             }
         }
 
@@ -1049,8 +1062,8 @@ namespace CppSharp.Generators.CSharp
                 NewLine();
                 WriteStartBraceIndent();
 
-                WriteLine("var {0} = (Internal*){1}.ToPointer();",
-                    Generator.GeneratedIdentifier("ptr"), Helpers.InstanceIdentifier);
+                WriteLine("var {0} = (Internal*)({1}).ToPointer();",
+                    Generator.GeneratedIdentifier("ptr"), Helpers.AdjustedInstanceIdentifier);
 
                 var ctx = new CSharpMarshalContext(Driver)
                 {
@@ -1854,7 +1867,7 @@ namespace CppSharp.Generators.CSharp
                             Driver.Symbols.FindLibraryBySymbol(dtor.Mangled, out library))
                         {
                             WriteLine("Internal.{0}({1});", GetFunctionNativeIdentifier(dtor),
-                                Helpers.InstanceIdentifier);
+                                Helpers.AdjustedInstanceIdentifier);
                         }
                     }
                 }
@@ -1894,14 +1907,14 @@ namespace CppSharp.Generators.CSharp
             PopBlock(NewLineKind.BeforeNextBlock);
 
             PushBlock(CSharpBlockKind.Method);
-            WriteLine("public {0}(global::System.IntPtr native, bool isInternalImpl = false){1}",
+            WriteLine("public {0}(global::System.IntPtr native, int ptrAdjustment = 0, bool isInternalImpl = false){1}",
                 safeIdentifier, @class.IsValueType ? " : this()" : string.Empty);
 
             var hasBaseClass = @class.HasBaseClass && @class.BaseClass.IsRefType;
             if (hasBaseClass)
-                WriteLineIndent(": base(native{0})",
+                WriteLineIndent(": base(native, {0})",
                     @class.Methods.Any(m => m.SynthKind == FunctionSynthKind.AbstractImplCall) ?
-                        ", true" : string.Empty);
+                        "0, true" : GetBaseOffset(@class, @class.Bases[0]).ToString(CultureInfo.InvariantCulture));
 
             WriteStartBraceIndent();
 
@@ -1918,6 +1931,10 @@ namespace CppSharp.Generators.CSharp
                 WriteLine("var {0} = (Internal*){1}.ToPointer();",
                     Generator.GeneratedIdentifier("ptr"), "native");
                 GenerateStructMarshalingProperties(@class);
+            }
+            if (!@class.IsStatic && !@class.IsUnion)
+            {
+                WriteLine("{0} = ptrAdjustment;", Helpers.PtrAdjustmentIdentifier);                
             }
 
             WriteCloseBraceIndent();
@@ -1940,6 +1957,19 @@ namespace CppSharp.Generators.CSharp
                 WriteCloseBraceIndent();
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
+        }
+
+        private int GetBaseOffset(Class @class, BaseClassSpecifier @base)
+        {
+            return @class.Bases.Where(b => b.IsClass && b.Class.IsDynamic && b != @base)
+                .Select(b => b.Class.Layout.Size)
+                .DefaultIfEmpty()
+                .Sum() +
+                   @class.Bases.Where(b => b.IsClass && !b.Class.IsDynamic)
+                       .TakeWhile(b => b != @base)
+                       .Select(b => b.Class.Layout.Size)
+                       .DefaultIfEmpty()
+                       .Sum();
         }
 
         private bool GenerateClassConstructorBase(Class @class, Method method)
@@ -2301,11 +2331,23 @@ namespace CppSharp.Generators.CSharp
                 {
                     if (operatorParam != null)
                     {
-                        names.Insert(instanceIndex, operatorParam.Name + "." + Helpers.InstanceIdentifier);
+                        names.Insert(instanceIndex, string.Format("{0}.{1} + {0}.{2}", operatorParam.Name,
+                                     Helpers.InstanceIdentifier, Helpers.PtrAdjustmentIdentifier));
                     }
                     else
                     {
-                        names.Insert(instanceIndex, Helpers.InstanceIdentifier);
+                        // TODO: if the method comes from a secondary base (mirrored as an interface), we need the offset for that base rather that the adjustment which only applies to the primary base
+                        //if (method.Namespace == method.OriginalNamespace)
+                        //{
+                            names.Insert(instanceIndex, Helpers.AdjustedInstanceIdentifier);
+                        //}
+                        //else
+                        //{
+                        //    var @class = (Class) method.Namespace;
+                        //    var originalClass = (Class) method.OriginalNamespace;
+                        //    names.Insert(instanceIndex, Helpers.InstanceIdentifier + " + " +
+                        //                 this.GetBaseOffset(@class, @class.Bases.First(b => b.IsClass && b.Class == originalClass)));
+                        //}
                     }
                 }
             }
