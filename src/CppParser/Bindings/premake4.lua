@@ -30,6 +30,8 @@ project "CppSharp.Parser.CSharp"
       files { "CSharp/i686-pc-win32-msvc/**.cs" }
   elseif os.is_osx() then
       files { "CSharp/i686-apple-darwin12.4.0/**.cs" }
+  elseif os.is_linux() then
+      files { "CSharp/x86_64-linux-gnu/**.cs" }
   else
       print "Unknown architecture"
   end
