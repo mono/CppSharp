@@ -38,7 +38,7 @@ namespace CppSharp
         public unsafe partial class ParserOptions : IDisposable
         {
             [StructLayout(LayoutKind.Explicit, Size = 124)]
-            public struct Internal
+            public partial struct Internal
             {
                 [FieldOffset(84)]
                 public global::System.IntPtr ASTContext;
@@ -88,6 +88,11 @@ namespace CppSharp
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                    EntryPoint="?clearArguments@ParserOptions@CppParser@CppSharp@@QAEXXZ")]
+                internal static extern void clearArguments_0(global::System.IntPtr instance);
+
+                [SuppressUnmanagedCodeSecurity]
+                [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                     EntryPoint="?getIncludeDirs@ParserOptions@CppParser@CppSharp@@QAEPBDI@Z")]
                 internal static extern global::System.IntPtr getIncludeDirs_0(global::System.IntPtr instance, uint i);
 
@@ -95,6 +100,11 @@ namespace CppSharp
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                     EntryPoint="?addIncludeDirs@ParserOptions@CppParser@CppSharp@@QAEXPBD@Z")]
                 internal static extern void addIncludeDirs_0(global::System.IntPtr instance, global::System.IntPtr s);
+
+                [SuppressUnmanagedCodeSecurity]
+                [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                    EntryPoint="?clearIncludeDirs@ParserOptions@CppParser@CppSharp@@QAEXXZ")]
+                internal static extern void clearIncludeDirs_0(global::System.IntPtr instance);
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -108,6 +118,11 @@ namespace CppSharp
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                    EntryPoint="?clearSystemIncludeDirs@ParserOptions@CppParser@CppSharp@@QAEXXZ")]
+                internal static extern void clearSystemIncludeDirs_0(global::System.IntPtr instance);
+
+                [SuppressUnmanagedCodeSecurity]
+                [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                     EntryPoint="?getDefines@ParserOptions@CppParser@CppSharp@@QAEPBDI@Z")]
                 internal static extern global::System.IntPtr getDefines_0(global::System.IntPtr instance, uint i);
 
@@ -118,6 +133,11 @@ namespace CppSharp
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                    EntryPoint="?clearDefines@ParserOptions@CppParser@CppSharp@@QAEXXZ")]
+                internal static extern void clearDefines_0(global::System.IntPtr instance);
+
+                [SuppressUnmanagedCodeSecurity]
+                [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                     EntryPoint="?getLibraryDirs@ParserOptions@CppParser@CppSharp@@QAEPBDI@Z")]
                 internal static extern global::System.IntPtr getLibraryDirs_0(global::System.IntPtr instance, uint i);
 
@@ -125,6 +145,11 @@ namespace CppSharp
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                     EntryPoint="?addLibraryDirs@ParserOptions@CppParser@CppSharp@@QAEXPBD@Z")]
                 internal static extern void addLibraryDirs_0(global::System.IntPtr instance, global::System.IntPtr s);
+
+                [SuppressUnmanagedCodeSecurity]
+                [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                    EntryPoint="?clearLibraryDirs@ParserOptions@CppParser@CppSharp@@QAEXXZ")]
+                internal static extern void clearLibraryDirs_0(global::System.IntPtr instance);
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -221,6 +246,11 @@ namespace CppSharp
                 Marshal.FreeHGlobal(arg0);
             }
 
+            public void clearArguments()
+            {
+                Internal.clearArguments_0(__Instance);
+            }
+
             public string getIncludeDirs(uint i)
             {
                 var __ret = Internal.getIncludeDirs_0(__Instance, i);
@@ -233,6 +263,11 @@ namespace CppSharp
                 var arg0 = Marshal.StringToHGlobalAnsi(s);
                 Internal.addIncludeDirs_0(__Instance, arg0);
                 Marshal.FreeHGlobal(arg0);
+            }
+
+            public void clearIncludeDirs()
+            {
+                Internal.clearIncludeDirs_0(__Instance);
             }
 
             public string getSystemIncludeDirs(uint i)
@@ -249,6 +284,11 @@ namespace CppSharp
                 Marshal.FreeHGlobal(arg0);
             }
 
+            public void clearSystemIncludeDirs()
+            {
+                Internal.clearSystemIncludeDirs_0(__Instance);
+            }
+
             public string getDefines(uint i)
             {
                 var __ret = Internal.getDefines_0(__Instance, i);
@@ -263,6 +303,11 @@ namespace CppSharp
                 Marshal.FreeHGlobal(arg0);
             }
 
+            public void clearDefines()
+            {
+                Internal.clearDefines_0(__Instance);
+            }
+
             public string getLibraryDirs(uint i)
             {
                 var __ret = Internal.getLibraryDirs_0(__Instance, i);
@@ -275,6 +320,11 @@ namespace CppSharp
                 var arg0 = Marshal.StringToHGlobalAnsi(s);
                 Internal.addLibraryDirs_0(__Instance, arg0);
                 Marshal.FreeHGlobal(arg0);
+            }
+
+            public void clearLibraryDirs()
+            {
+                Internal.clearLibraryDirs_0(__Instance);
             }
 
             public uint ArgumentsCount
@@ -465,7 +515,7 @@ namespace CppSharp
         public unsafe partial class ParserDiagnostic : IDisposable
         {
             [StructLayout(LayoutKind.Explicit, Size = 60)]
-            public struct Internal
+            public partial struct Internal
             {
                 [FieldOffset(48)]
                 public CppSharp.Parser.ParserDiagnosticLevel Level;
@@ -630,7 +680,7 @@ namespace CppSharp
         public unsafe partial class ParserResult : IDisposable
         {
             [StructLayout(LayoutKind.Explicit, Size = 28)]
-            public struct Internal
+            public partial struct Internal
             {
                 [FieldOffset(0)]
                 public CppSharp.Parser.ParserResultKind Kind;
@@ -665,6 +715,11 @@ namespace CppSharp
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                     EntryPoint="?addDiagnostics@ParserResult@CppParser@CppSharp@@QAEXAAUParserDiagnostic@23@@Z")]
                 internal static extern void addDiagnostics_0(global::System.IntPtr instance, global::System.IntPtr s);
+
+                [SuppressUnmanagedCodeSecurity]
+                [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                    EntryPoint="?clearDiagnostics@ParserResult@CppParser@CppSharp@@QAEXXZ")]
+                internal static extern void clearDiagnostics_0(global::System.IntPtr instance);
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -720,6 +775,11 @@ namespace CppSharp
             {
                 var arg0 = s == (CppSharp.Parser.ParserDiagnostic) null ? global::System.IntPtr.Zero : s.__Instance;
                 Internal.addDiagnostics_0(__Instance, arg0);
+            }
+
+            public void clearDiagnostics()
+            {
+                Internal.clearDiagnostics_0(__Instance);
             }
 
             public uint DiagnosticsCount
@@ -780,7 +840,7 @@ namespace CppSharp
         public unsafe partial class ClangParser : IDisposable
         {
             [StructLayout(LayoutKind.Explicit, Size = 1)]
-            public struct Internal
+            public partial struct Internal
             {
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,

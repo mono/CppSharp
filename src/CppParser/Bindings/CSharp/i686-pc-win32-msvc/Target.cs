@@ -28,7 +28,7 @@ namespace CppSharp
         public unsafe partial class ParserTargetInfo : IDisposable
         {
             [StructLayout(LayoutKind.Explicit, Size = 176)]
-            public struct Internal
+            public partial struct Internal
             {
                 [FieldOffset(24)]
                 public CppSharp.Parser.ParserIntType Char16Type;
