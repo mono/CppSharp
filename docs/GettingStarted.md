@@ -27,9 +27,9 @@ excruciatingly slow.
 
 Last revisions known to work:
 
-LLVM `r212459` / Git mirror revision `c9bf74fdc543c2da90f334e0bf8e34b128c8a615`.
+LLVM `r212459` / Git mirror revision `a15d70370edd030198cb42960b62e660b9288f25`.
 
-Clang `r212458` / Git mirror revision `30577e6c4f5ba66b8dc832ed9955b1a7475f788a`.
+Clang `r212458` / Git mirror revision `c785591d768074e1666bc306086588b1242d156c`.
 
 It has been reported that running the solution upgrade process under VS 2013 breaks the build due
 to an incompatibility of .NET versions between projects (4.5 and 4.0). If you experience this
