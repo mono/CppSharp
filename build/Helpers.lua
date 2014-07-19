@@ -19,7 +19,7 @@ gendir = path.join(builddir, "gen");
 
 common_flags = { "Unicode", "Symbols" }
 msvc_buildflags = { "/wd4267" }
-gcc_buildflags = { "-std=c++11" }
+gcc_buildflags = { "-std=c++11 -fpermissive" }
 
 msvc_cpp_defines = { }
 

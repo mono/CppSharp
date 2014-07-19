@@ -13,7 +13,7 @@ namespace CppSharp
         public unsafe partial struct SourceLocation
         {
             [StructLayout(LayoutKind.Explicit, Size = 4)]
-            public struct Internal
+            public partial struct Internal
             {
                 [FieldOffset(0)]
                 public uint ID;
