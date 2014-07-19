@@ -40,6 +40,18 @@ function SetupLLVMLibs()
   configuration "*"
     links
     {
+      "clangFrontend",
+      "clangDriver",
+      "clangSerialization",
+      "clangCodeGen",
+      "clangParse",
+      "clangSema",
+      "clangAnalysis",
+      "clangEdit",
+      "clangAST",
+      "clangLex",
+      "clangBasic",
+      "clangIndex",
       "LLVMObjCARCOpts",
       "LLVMLinker",
       "LLVMipo",
@@ -68,18 +80,6 @@ function SetupLLVMLibs()
       "LLVMMC",
       "LLVMCore",
       "LLVMSupport",
-      "clangFrontend",
-      "clangDriver",
-      "clangSerialization",
-      "clangCodeGen",
-      "clangParse",
-      "clangSema",
-      "clangAnalysis",
-      "clangEdit",
-      "clangAST",
-      "clangLex",
-      "clangBasic",
-      "clangIndex",
     }
     
   configuration(c)
