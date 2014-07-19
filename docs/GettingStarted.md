@@ -56,7 +56,7 @@ to an incompatibility of .NET versions between projects (4.5 and 4.0). If you ex
 problem you can change the targetted .NET version of the projects to be the same or just do not
 run the upgrade process after generation. 
 
-## Compiling on Mac OS X (experimental)
+## Compiling on Mac OS X
 
 ### Compiling LLVM on Mac OS X
 
