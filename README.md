@@ -52,18 +52,6 @@ for more information:
 
 [Developer's Manual](docs/DevManual.md)
 
-## Releases
-
-VS2012 32-bit:
-
-- [CppSharp_VS2012_423_artifacts.zip](https://dl.dropboxusercontent.com/u/194502/CppSharp/CppSharp_VS2012_423_artifacts.zip) (_November 13th 2013_)
-
-- [CppSharp_VS2012_329_artifacts.zip](https://dl.dropboxusercontent.com/u/194502/CppSharp/CppSharp_VS2012_329_artifacts.zip) (_November 5th 2013_) 
-
-- [CppSharp_VS2012_306_artifacts.zip](https://dl.dropboxusercontent.com/u/194502/CppSharp/CppSharp_VS2012_306_artifacts.zip) (_October 25th 2013_) 
-
-- [CppSharp_VS2012_183_artifacts.zip](https://dl.dropboxusercontent.com/u/194502/CppSharp/CppSharp_VS2012_183_artifacts.zip) (_September 17th 2013_)
-
 ## News
 
 * November 11th 2013 - Released a new version (423) with bug fixes for type maps (when used with template specializations), constructors renaming and better documentation generation.
