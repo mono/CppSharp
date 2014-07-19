@@ -27,7 +27,7 @@ project "CppSharp.Parser.CSharp"
   links { "CppSharp.Runtime" }
 
   if os.is_windows() then
-      files { "CSharp/i686-pc-win32/**.cs" }
+      files { "CSharp/i686-pc-win32-msvc/**.cs" }
   elseif os.is_osx() then
       files { "CSharp/i686-apple-darwin12.4.0/**.cs" }
   else
