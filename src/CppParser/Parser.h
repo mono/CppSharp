@@ -7,6 +7,10 @@
 
 #pragma once
 
+#include <llvm/Object/Archive.h>
+#include <llvm/Object/ObjectFile.h>
+#include <llvm/Object/SymbolicFile.h>
+
 #include <clang/AST/ASTFwd.h>
 #include <clang/AST/Type.h>
 #include <clang/Basic/TargetInfo.h>
@@ -48,11 +52,14 @@ public:
     ParserResult* ParseHeader(const std::string& File, ParserResult* res);
     ParserResult* ParseLibrary(const std::string& File, ParserResult* res);
     ParserResultKind ParseArchive(llvm::StringRef File,
-                                  std::unique_ptr<llvm::MemoryBuffer>& Buffer,
+                                  llvm::object::Archive* Archive,
                                   CppSharp::CppParser::NativeLibrary*& NativeLib);
     ParserResultKind ParseSharedLib(llvm::StringRef File,
-                                    std::unique_ptr<llvm::MemoryBuffer>& Buffer,
+                                    llvm::object::SymbolicFile* SymbolicFile,
                                     CppSharp::CppParser::NativeLibrary*& NativeLib);
+    ParserResultKind ParseObjectFile(llvm::StringRef File,
+                                     llvm::object::ObjectFile* ObjectFile,
+                                     CppSharp::CppParser::NativeLibrary*& NativeLib);
     ParserTargetInfo*  GetTargetInfo();
 
 protected:
@@ -132,6 +139,12 @@ protected:
     clang::TargetCXXABI::Kind TargetABI;
     clang::TargetCodeGenInfo* CodeGenInfo;
     clang::CodeGen::CodeGenTypes* CodeGenTypes;
+
+private:
+    ParserResultKind ReadSymbols(llvm::StringRef File,
+                                 llvm::object::basic_symbol_iterator Begin,
+                                 llvm::object::basic_symbol_iterator End,
+                                 CppSharp::CppParser::NativeLibrary*& NativeLib);
 };
 
 } }

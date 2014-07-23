@@ -12,6 +12,7 @@
 #include <llvm/Support/raw_ostream.h>
 #include <llvm/Object/Archive.h>
 #include <llvm/Object/ObjectFile.h>
+#include <llvm/Object/ELFObjectFile.h>
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/Module.h>
 #include <llvm/IR/DataLayout.h>
@@ -2984,20 +2985,14 @@ ParserResult* Parser::ParseHeader(const std::string& File, ParserResult* res)
  }
 
 ParserResultKind Parser::ParseArchive(llvm::StringRef File,
-                                      std::unique_ptr<llvm::MemoryBuffer>& Buffer,
+                                      llvm::object::Archive* Archive,
                                       CppSharp::CppParser::NativeLibrary*& NativeLib)
 {
-    std::error_code Code;
-    llvm::object::Archive Archive(std::move(Buffer), Code);
-
-    if (Code)
-        return ParserResultKind::Error;
-
     auto LibName = File;
     NativeLib = new NativeLibrary();
     NativeLib->FileName = LibName;
 
-    for(auto it = Archive.symbol_begin(); it != Archive.symbol_end(); ++it)
+    for(auto it = Archive->symbol_begin(); it != Archive->symbol_end(); ++it)
     {
         llvm::StringRef SymRef = it->getName();
         NativeLib->Symbols.push_back(SymRef);
@@ -3007,41 +3002,44 @@ ParserResultKind Parser::ParseArchive(llvm::StringRef File,
 }
 
 ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
-                                        std::unique_ptr<llvm::MemoryBuffer>& Buffer,
+                                        llvm::object::SymbolicFile* SymbolicFile,
                                         CppSharp::CppParser::NativeLibrary*& NativeLib)
 {
-    auto Object = llvm::object::ObjectFile::createObjectFile(Buffer);
-
-    if (!Object)
+    if (!SymbolicFile->isELF())
         return ParserResultKind::Error;
 
+    auto IDyn = llvm::object::getELFDynamicSymbolIterators(SymbolicFile);
+
+    return ReadSymbols(File, IDyn.first, IDyn.second, NativeLib);
+}
+
+ParserResultKind Parser::ParseObjectFile(llvm::StringRef File,
+                                         llvm::object::ObjectFile* ObjectFile,
+                                         CppSharp::CppParser::NativeLibrary*& NativeLib)
+{
+    return ReadSymbols(File, ObjectFile->symbol_begin(), ObjectFile->symbol_end(), NativeLib);
+}
+
+ParserResultKind Parser::ReadSymbols(llvm::StringRef File,
+                                     llvm::object::basic_symbol_iterator Begin,
+                                     llvm::object::basic_symbol_iterator End,
+                                     CppSharp::CppParser::NativeLibrary*& NativeLib)
+{
     auto LibName = File;
     NativeLib = new NativeLibrary();
     NativeLib->FileName = LibName;
 
-    std::error_code ec;
-    for(auto it = Object.get()->symbol_begin(); it != Object.get()->symbol_end();
-        ++it)
+    for (auto it = Begin; it != End; ++it)
     {
         std::string Sym;
         llvm::raw_string_ostream SymStream(Sym);
- 
+
         if (it->printName(SymStream))
              continue;
 
-        NativeLib->Symbols.push_back(Sym);
-    }
-
-    for (auto it = Object.get()->symbol_begin(); it != Object.get()->symbol_end();
-        ++it)
-    {
-        std::string Sym;
-        llvm::raw_string_ostream SymStream(Sym);
- 
-        if (it->printName(SymStream))
-             continue;
-
-        NativeLib->Symbols.push_back(Sym);
+        SymStream.flush();
+        if (!Sym.empty())
+            NativeLib->Symbols.push_back(Sym);
     }
 
     return ParserResultKind::Success;
@@ -3078,16 +3076,31 @@ ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
     }
 
     std::unique_ptr<llvm::MemoryBuffer> FileBuf(FM.getBufferForFile(FileEntry));
-    res->Kind = ParseArchive(File, FileBuf, res->Library);
-
-    if (res->Kind == ParserResultKind::Success)
+    auto BinaryOrErr = llvm::object::createBinary(std::move(FileBuf), &llvm::getGlobalContext());
+    if (BinaryOrErr.getError())
+    {
+        res->Kind = ParserResultKind::Error;
         return res;
-
-    res->Kind = ParseSharedLib(File, FileBuf, res->Library);
-
-    if (res->Kind == ParserResultKind::Success)
-        return res;
-
+    }
+    std::unique_ptr<llvm::object::Binary> Bin(BinaryOrErr.get());
+    if (auto Archive = llvm::dyn_cast<llvm::object::Archive>(Bin.get())) {
+        res->Kind = ParseArchive(File, Archive, res->Library);
+        if (res->Kind == ParserResultKind::Success)
+            return res;
+    }
+    if (auto SymbolicFile = llvm::dyn_cast<llvm::object::SymbolicFile>(Bin.get()))
+    {
+        res->Kind = ParseSharedLib(File, SymbolicFile, res->Library);
+        if (res->Kind == ParserResultKind::Success)
+            return res;
+    }
+    if (auto ObjectFile = llvm::dyn_cast<llvm::object::ObjectFile>(Bin.get()))
+    {
+        res->Kind = ParseObjectFile(File, ObjectFile, res->Library);
+        if (res->Kind == ParserResultKind::Success)
+            return res;
+    }
+    res->Kind = ParserResultKind::Error;
     return res;
 }
 
