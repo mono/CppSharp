@@ -47,31 +47,31 @@ namespace CppSharp
 
         public unsafe partial class ParserOptions : IDisposable
         {
-            [StructLayout(LayoutKind.Explicit, Size = 168)]
+            [StructLayout(LayoutKind.Explicit, Size = 192)]
             public partial struct Internal
             {
-                [FieldOffset(128)]
+                [FieldOffset(152)]
                 public global::System.IntPtr ASTContext;
 
-                [FieldOffset(136)]
+                [FieldOffset(160)]
                 public int ToolSetToUse;
 
-                [FieldOffset(152)]
+                [FieldOffset(176)]
                 public CppSharp.Parser.AST.CppAbi Abi;
 
-                [FieldOffset(156)]
+                [FieldOffset(180)]
                 public bool NoStandardIncludes;
 
-                [FieldOffset(157)]
+                [FieldOffset(181)]
                 public bool NoBuiltinIncludes;
 
-                [FieldOffset(158)]
+                [FieldOffset(182)]
                 public bool MicrosoftMode;
 
-                [FieldOffset(159)]
+                [FieldOffset(183)]
                 public bool Verbose;
 
-                [FieldOffset(160)]
+                [FieldOffset(184)]
                 public CppSharp.Parser.LanguageVersion LanguageVersion;
 
                 [SuppressUnmanagedCodeSecurity]
@@ -151,6 +151,21 @@ namespace CppSharp
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                    EntryPoint="_ZN8CppSharp9CppParser13ParserOptions12getUndefinesEj")]
+                internal static extern global::System.IntPtr getUndefines_0(global::System.IntPtr instance, uint i);
+
+                [SuppressUnmanagedCodeSecurity]
+                [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                    EntryPoint="_ZN8CppSharp9CppParser13ParserOptions12addUndefinesEPKc")]
+                internal static extern void addUndefines_0(global::System.IntPtr instance, global::System.IntPtr s);
+
+                [SuppressUnmanagedCodeSecurity]
+                [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                    EntryPoint="_ZN8CppSharp9CppParser13ParserOptions14clearUndefinesEv")]
+                internal static extern void clearUndefines_0(global::System.IntPtr instance);
+
+                [SuppressUnmanagedCodeSecurity]
+                [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                     EntryPoint="_ZN8CppSharp9CppParser13ParserOptions14getLibraryDirsEj")]
                 internal static extern global::System.IntPtr getLibraryDirs_0(global::System.IntPtr instance, uint i);
 
@@ -196,6 +211,11 @@ namespace CppSharp
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                    EntryPoint="_ZN8CppSharp9CppParser13ParserOptions17getUndefinesCountEv")]
+                internal static extern uint getUndefinesCount_0(global::System.IntPtr instance);
+
+                [SuppressUnmanagedCodeSecurity]
+                [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                     EntryPoint="_ZN8CppSharp9CppParser13ParserOptions19getLibraryDirsCountEv")]
                 internal static extern uint getLibraryDirsCount_0(global::System.IntPtr instance);
 
@@ -219,7 +239,7 @@ namespace CppSharp
 
             private static global::System.IntPtr __CopyValue(ParserOptions.Internal native)
             {
-                var ret = Marshal.AllocHGlobal(168);
+                var ret = Marshal.AllocHGlobal(192);
                 CppSharp.Parser.ParserOptions.Internal.cctor_1(ret, new global::System.IntPtr(&native));
                 return ret;
             }
@@ -236,7 +256,7 @@ namespace CppSharp
 
             public ParserOptions()
             {
-                __Instance = Marshal.AllocHGlobal(168);
+                __Instance = Marshal.AllocHGlobal(192);
                 Internal.ctor_0(__Instance);
             }
 
@@ -328,6 +348,25 @@ namespace CppSharp
                 Internal.clearDefines_0(__Instance);
             }
 
+            public string getUndefines(uint i)
+            {
+                var __ret = Internal.getUndefines_0(__Instance, i);
+                if (__ret == global::System.IntPtr.Zero) return null;
+                return Marshal.PtrToStringAnsi(__ret);
+            }
+
+            public void addUndefines(string s)
+            {
+                var arg0 = Marshal.StringToHGlobalAnsi(s);
+                Internal.addUndefines_0(__Instance, arg0);
+                Marshal.FreeHGlobal(arg0);
+            }
+
+            public void clearUndefines()
+            {
+                Internal.clearUndefines_0(__Instance);
+            }
+
             public string getLibraryDirs(uint i)
             {
                 var __ret = Internal.getLibraryDirs_0(__Instance, i);
@@ -396,6 +435,15 @@ namespace CppSharp
                 get
                 {
                     var __ret = Internal.getDefinesCount_0(__Instance);
+                    return __ret;
+                }
+            }
+
+            public uint UndefinesCount
+            {
+                get
+                {
+                    var __ret = Internal.getUndefinesCount_0(__Instance);
                     return __ret;
                 }
             }

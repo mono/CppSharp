@@ -97,6 +97,25 @@ void CppSharp::Parser::ParserOptions::clearDefines()
     ((::CppSharp::CppParser::ParserOptions*)NativePtr)->clearDefines();
 }
 
+System::String^ CppSharp::Parser::ParserOptions::getUndefines(unsigned int i)
+{
+    auto __ret = ((::CppSharp::CppParser::ParserOptions*)NativePtr)->getUndefines(i);
+    if (__ret == nullptr) return nullptr;
+    return clix::marshalString<clix::E_UTF8>(__ret);
+}
+
+void CppSharp::Parser::ParserOptions::addUndefines(System::String^ s)
+{
+    auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
+    auto arg0 = _arg0.c_str();
+    ((::CppSharp::CppParser::ParserOptions*)NativePtr)->addUndefines(arg0);
+}
+
+void CppSharp::Parser::ParserOptions::clearUndefines()
+{
+    ((::CppSharp::CppParser::ParserOptions*)NativePtr)->clearUndefines();
+}
+
 System::String^ CppSharp::Parser::ParserOptions::getLibraryDirs(unsigned int i)
 {
     auto __ret = ((::CppSharp::CppParser::ParserOptions*)NativePtr)->getLibraryDirs(i);
@@ -161,6 +180,12 @@ unsigned int CppSharp::Parser::ParserOptions::SystemIncludeDirsCount::get()
 unsigned int CppSharp::Parser::ParserOptions::DefinesCount::get()
 {
     auto __ret = ((::CppSharp::CppParser::ParserOptions*)NativePtr)->getDefinesCount();
+    return __ret;
+}
+
+unsigned int CppSharp::Parser::ParserOptions::UndefinesCount::get()
+{
+    auto __ret = ((::CppSharp::CppParser::ParserOptions*)NativePtr)->getUndefinesCount();
     return __ret;
 }
 

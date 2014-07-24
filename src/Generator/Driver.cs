@@ -157,6 +157,12 @@ namespace CppSharp
                 options.addDefines(define);
             }
 
+            for (uint i = 0; i < Options.UndefinesCount; ++i)
+            {
+                var define = Options.getUndefines(i);
+                options.addUndefines(define);
+            }
+
             for (uint i = 0; i < Options.LibraryDirsCount; ++i)
             {
                 var lib = Options.getLibraryDirs(i);

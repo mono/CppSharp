@@ -44,6 +44,7 @@ struct CS_API ParserOptions
     VECTOR_STRING(IncludeDirs)
     VECTOR_STRING(SystemIncludeDirs)
     VECTOR_STRING(Defines)
+    VECTOR_STRING(Undefines)
     VECTOR_STRING(LibraryDirs)
 
     CppSharp::CppParser::AST::ASTContext* ASTContext;
