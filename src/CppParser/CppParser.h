@@ -15,6 +15,22 @@ namespace CppSharp { namespace CppParser {
 
 using namespace CppSharp::CppParser::AST;
 
+enum class LanguageVersion
+{
+    /**
+    * The C programming language.
+    */
+    C,
+    /**
+    * The C++ programming language year 1998; supports deprecated constructs.
+    */
+    CPlusPlus98,
+    /**
+    * The C++ programming language year 2011.
+    */
+    CPlusPlus11
+};
+
 struct CS_API ParserOptions
 {
     ParserOptions();
@@ -40,6 +56,7 @@ struct CS_API ParserOptions
     bool NoBuiltinIncludes;
     bool MicrosoftMode;
     bool Verbose;
+    LanguageVersion LanguageVersion;
 };
 
 enum class ParserDiagnosticLevel

@@ -10,6 +10,16 @@ namespace CppSharp
 {
     namespace Parser
     {
+        public enum LanguageVersion
+        {
+            /// <summary>The C programming language.</summary>
+            C = 0,
+            /// <summary>The C++ programming language year 1998; supports deprecated constructs.</summary>
+            CPlusPlus98 = 1,
+            /// <summary>The C++ programming language year 2011.</summary>
+            CPlusPlus11 = 2
+        }
+
         public enum ParserDiagnosticLevel
         {
             Ignored = 0,
@@ -37,8 +47,8 @@ namespace CppSharp
 
         public unsafe partial class ParserOptions : IDisposable
         {
-            [StructLayout(LayoutKind.Explicit, Size = 100)]
-            public struct Internal
+            [StructLayout(LayoutKind.Explicit, Size = 104)]
+            public partial struct Internal
             {
                 [FieldOffset(72)]
                 public global::System.IntPtr ASTContext;
@@ -60,6 +70,9 @@ namespace CppSharp
 
                 [FieldOffset(99)]
                 public bool Verbose;
+
+                [FieldOffset(100)]
+                public CppSharp.Parser.LanguageVersion LanguageVersion;
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -216,7 +229,7 @@ namespace CppSharp
 
             public ParserOptions()
             {
-                __Instance = Marshal.AllocHGlobal(100);
+                __Instance = Marshal.AllocHGlobal(104);
                 Internal.ctor_0(__Instance);
             }
 
@@ -510,12 +523,27 @@ namespace CppSharp
                     __ptr->Verbose = value;
                 }
             }
+
+            public CppSharp.Parser.LanguageVersion LanguageVersion
+            {
+                get
+                {
+                    var __ptr = (Internal*)__Instance.ToPointer();
+                    return __ptr->LanguageVersion;
+                }
+
+                set
+                {
+                    var __ptr = (Internal*)__Instance.ToPointer();
+                    __ptr->LanguageVersion = value;
+                }
+            }
         }
 
         public unsafe partial class ParserDiagnostic : IDisposable
         {
             [StructLayout(LayoutKind.Explicit, Size = 36)]
-            public struct Internal
+            public partial struct Internal
             {
                 [FieldOffset(24)]
                 public CppSharp.Parser.ParserDiagnosticLevel Level;
@@ -680,7 +708,7 @@ namespace CppSharp
         public unsafe partial class ParserResult : IDisposable
         {
             [StructLayout(LayoutKind.Explicit, Size = 28)]
-            public struct Internal
+            public partial struct Internal
             {
                 [FieldOffset(0)]
                 public CppSharp.Parser.ParserResultKind Kind;
@@ -840,7 +868,7 @@ namespace CppSharp
         public unsafe partial class ClangParser : IDisposable
         {
             [StructLayout(LayoutKind.Explicit, Size = 1)]
-            public struct Internal
+            public partial struct Internal
             {
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,

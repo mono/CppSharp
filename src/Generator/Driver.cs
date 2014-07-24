@@ -130,6 +130,7 @@ namespace CppSharp
                 NoBuiltinIncludes = Options.NoBuiltinIncludes,
                 MicrosoftMode = Options.MicrosoftMode,
                 Verbose = Options.Verbose,
+                LanguageVersion = Options.LanguageVersion
             };
 
             for (uint i = 0; i < Options.ArgumentsCount; ++i)

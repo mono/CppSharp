@@ -254,6 +254,16 @@ void CppSharp::Parser::ParserOptions::Verbose::set(bool value)
     ((::CppSharp::CppParser::ParserOptions*)NativePtr)->Verbose = value;
 }
 
+CppSharp::Parser::LanguageVersion CppSharp::Parser::ParserOptions::LanguageVersion::get()
+{
+    return (CppSharp::Parser::LanguageVersion)((::CppSharp::CppParser::ParserOptions*)NativePtr)->LanguageVersion;
+}
+
+void CppSharp::Parser::ParserOptions::LanguageVersion::set(CppSharp::Parser::LanguageVersion value)
+{
+    ((::CppSharp::CppParser::ParserOptions*)NativePtr)->LanguageVersion = (::CppSharp::CppParser::LanguageVersion)value;
+}
+
 CppSharp::Parser::ParserDiagnostic::ParserDiagnostic(::CppSharp::CppParser::ParserDiagnostic* native)
 {
     NativePtr = native;

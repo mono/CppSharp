@@ -7,6 +7,7 @@ namespace CppSharp
 {
     namespace Parser
     {
+        enum struct LanguageVersion;
         enum struct ParserDiagnosticLevel;
         enum struct ParserResultKind;
         enum struct SourceLocationKind;
@@ -29,6 +30,16 @@ namespace CppSharp
 {
     namespace Parser
     {
+        public enum struct LanguageVersion
+        {
+            /// <summary> The C programming language. </summary>
+            C = 0,
+            /// <summary> The C++ programming language year 1998; supports deprecated constructs. </summary>
+            CPlusPlus98 = 1,
+            /// <summary> The C++ programming language year 2011. </summary>
+            CPlusPlus11 = 2
+        };
+
         public enum struct ParserDiagnosticLevel
         {
             Ignored = 0,
@@ -146,6 +157,12 @@ namespace CppSharp
             {
                 bool get();
                 void set(bool);
+            }
+
+            property CppSharp::Parser::LanguageVersion LanguageVersion
+            {
+                CppSharp::Parser::LanguageVersion get();
+                void set(CppSharp::Parser::LanguageVersion);
             }
 
             System::String^ getArguments(unsigned int i);
