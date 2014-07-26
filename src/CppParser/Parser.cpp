@@ -103,7 +103,18 @@ void Parser::SetupHeader()
 
     // Enable C++ language mode
     args.push_back("-xc++");
-    args.push_back("-std=gnu++11");
+    switch (Opts->LanguageVersion)
+    {
+    case CppParser::LanguageVersion::C:
+        args.push_back("-std=c");
+        break;
+    case CppParser::LanguageVersion::CPlusPlus98:
+        args.push_back("-std=gnu++98");
+        break;
+    default:
+        args.push_back("-std=gnu++11");
+        break;
+    }
     args.push_back("-fno-rtti");
 
     for (unsigned I = 0, E = Opts->Arguments.size(); I != E; ++I)

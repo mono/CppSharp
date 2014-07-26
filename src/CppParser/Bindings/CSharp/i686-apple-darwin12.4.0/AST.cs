@@ -217,7 +217,7 @@ namespace CppSharp
             public unsafe partial class Type : IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 8)]
-                public struct Internal
+                public partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.TypeKind Kind;
@@ -305,7 +305,7 @@ namespace CppSharp
             public unsafe partial class TypeQualifiers : IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 3)]
-                public struct Internal
+                public partial struct Internal
                 {
                     [FieldOffset(0)]
                     public bool IsConst;
@@ -404,7 +404,7 @@ namespace CppSharp
             public unsafe partial class QualifiedType : IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 8)]
-                public struct Internal
+                public partial struct Internal
                 {
                     [FieldOffset(0)]
                     public global::System.IntPtr Type;
@@ -493,7 +493,7 @@ namespace CppSharp
             public unsafe partial class TagType : CppSharp.Parser.AST.Type, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 12)]
-                public new struct Internal
+                public new partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.TypeKind Kind;
@@ -561,7 +561,7 @@ namespace CppSharp
             public unsafe partial class ArrayType : CppSharp.Parser.AST.Type, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 24)]
-                public new struct Internal
+                public new partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.TypeKind Kind;
@@ -675,7 +675,7 @@ namespace CppSharp
             public unsafe partial class FunctionType : CppSharp.Parser.AST.Type, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 32)]
-                public new struct Internal
+                public new partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.TypeKind Kind;
@@ -815,7 +815,7 @@ namespace CppSharp
             public unsafe partial class PointerType : CppSharp.Parser.AST.Type, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 20)]
-                public new struct Internal
+                public new partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.TypeKind Kind;
@@ -911,7 +911,7 @@ namespace CppSharp
             public unsafe partial class MemberPointerType : CppSharp.Parser.AST.Type, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 16)]
-                public new struct Internal
+                public new partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.TypeKind Kind;
@@ -981,7 +981,7 @@ namespace CppSharp
             public unsafe partial class TypedefType : CppSharp.Parser.AST.Type, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 12)]
-                public new struct Internal
+                public new partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.TypeKind Kind;
@@ -1049,7 +1049,7 @@ namespace CppSharp
             public unsafe partial class AttributedType : CppSharp.Parser.AST.Type, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 24)]
-                public new struct Internal
+                public new partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.TypeKind Kind;
@@ -1139,7 +1139,7 @@ namespace CppSharp
             public unsafe partial class DecayedType : CppSharp.Parser.AST.Type, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 32)]
-                public new struct Internal
+                public new partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.TypeKind Kind;
@@ -1249,7 +1249,7 @@ namespace CppSharp
             public unsafe partial class TemplateArgument : IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 20)]
-                public struct Internal
+                public partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.TemplateArgument.ArgumentKind Kind;
@@ -1386,7 +1386,7 @@ namespace CppSharp
             public unsafe partial class TemplateSpecializationType : CppSharp.Parser.AST.Type, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 28)]
-                public new struct Internal
+                public new partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.TypeKind Kind;
@@ -1526,7 +1526,7 @@ namespace CppSharp
             public unsafe partial class TemplateParameter : IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 16)]
-                public struct Internal
+                public partial struct Internal
                 {
                     [FieldOffset(12)]
                     public bool IsTypeParameter;
@@ -1647,7 +1647,7 @@ namespace CppSharp
             public unsafe partial class TemplateParameterType : CppSharp.Parser.AST.Type, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 36)]
-                public new struct Internal
+                public new partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.TypeKind Kind;
@@ -1776,7 +1776,7 @@ namespace CppSharp
             public unsafe partial class TemplateParameterSubstitutionType : CppSharp.Parser.AST.Type, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 16)]
-                public new struct Internal
+                public new partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.TypeKind Kind;
@@ -1846,7 +1846,7 @@ namespace CppSharp
             public unsafe partial class InjectedClassNameType : CppSharp.Parser.AST.Type, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 16)]
-                public new struct Internal
+                public new partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.TypeKind Kind;
@@ -1932,7 +1932,7 @@ namespace CppSharp
             public unsafe partial class DependentNameType : CppSharp.Parser.AST.Type, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 8)]
-                public new struct Internal
+                public new partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.TypeKind Kind;
@@ -1982,7 +1982,7 @@ namespace CppSharp
             public unsafe partial class PackExpansionType : CppSharp.Parser.AST.Type, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 8)]
-                public new struct Internal
+                public new partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.TypeKind Kind;
@@ -2032,7 +2032,7 @@ namespace CppSharp
             public unsafe partial class BuiltinType : CppSharp.Parser.AST.Type, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 12)]
-                public new struct Internal
+                public new partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.TypeKind Kind;
@@ -2100,7 +2100,7 @@ namespace CppSharp
             public unsafe partial class VTableComponent : IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 12)]
-                public struct Internal
+                public partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.VTableComponentKind Kind;
@@ -2205,7 +2205,7 @@ namespace CppSharp
             public unsafe partial class VTableLayout : IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 12)]
-                public struct Internal
+                public partial struct Internal
                 {
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -2311,7 +2311,7 @@ namespace CppSharp
             public unsafe partial class VFTableInfo : IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 28)]
-                public struct Internal
+                public partial struct Internal
                 {
                     [FieldOffset(0)]
                     public ulong VBTableIndex;
@@ -2442,7 +2442,7 @@ namespace CppSharp
             public unsafe partial class ClassLayout : IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 48)]
-                public struct Internal
+                public partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.CppAbi ABI;
@@ -2676,7 +2676,7 @@ namespace CppSharp
             public unsafe partial class Declaration : IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 84)]
-                public struct Internal
+                public partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.DeclarationKind Kind;
@@ -3015,7 +3015,7 @@ namespace CppSharp
             public unsafe partial class DeclarationContext : CppSharp.Parser.AST.Declaration, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 184)]
-                public new struct Internal
+                public new partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.DeclarationKind Kind;
@@ -3442,7 +3442,7 @@ namespace CppSharp
             public unsafe partial class TypedefDecl : CppSharp.Parser.AST.Declaration, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 92)]
-                public new struct Internal
+                public new partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.DeclarationKind Kind;
@@ -3541,7 +3541,7 @@ namespace CppSharp
             public unsafe partial class Statement : IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 20)]
-                public struct Internal
+                public partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.StatementClass Class;
@@ -3655,7 +3655,7 @@ namespace CppSharp
             public unsafe partial class Expression : CppSharp.Parser.AST.Statement, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 20)]
-                public new struct Internal
+                public new partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.StatementClass Class;
@@ -3703,7 +3703,7 @@ namespace CppSharp
             public unsafe partial class Parameter : CppSharp.Parser.AST.Declaration, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 104)]
-                public new struct Internal
+                public new partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.DeclarationKind Kind;
@@ -3874,7 +3874,7 @@ namespace CppSharp
             public unsafe partial class Function : CppSharp.Parser.AST.Declaration, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 148)]
-                public new struct Internal
+                public new partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.DeclarationKind Kind;
@@ -4218,7 +4218,7 @@ namespace CppSharp
             public unsafe partial class Method : CppSharp.Parser.AST.Function, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 176)]
-                public new struct Internal
+                public new partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.DeclarationKind Kind;
@@ -4542,7 +4542,7 @@ namespace CppSharp
             public unsafe partial class Enumeration : CppSharp.Parser.AST.DeclarationContext, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 208)]
-                public new struct Internal
+                public new partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.DeclarationKind Kind;
@@ -4633,7 +4633,7 @@ namespace CppSharp
                 public unsafe partial class Item : CppSharp.Parser.AST.Declaration, IDisposable
                 {
                     [StructLayout(LayoutKind.Explicit, Size = 104)]
-                    public new struct Internal
+                    public new partial struct Internal
                     {
                         [FieldOffset(0)]
                         public CppSharp.Parser.AST.DeclarationKind Kind;
@@ -4859,7 +4859,7 @@ namespace CppSharp
             public unsafe partial class Variable : CppSharp.Parser.AST.Declaration, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 104)]
-                public new struct Internal
+                public new partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.DeclarationKind Kind;
@@ -4985,7 +4985,7 @@ namespace CppSharp
             public unsafe partial class BaseClassSpecifier : IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 12)]
-                public struct Internal
+                public partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.AccessSpecifier Access;
@@ -5090,7 +5090,7 @@ namespace CppSharp
             public unsafe partial class Field : CppSharp.Parser.AST.Declaration, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 100)]
-                public new struct Internal
+                public new partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.DeclarationKind Kind;
@@ -5225,7 +5225,7 @@ namespace CppSharp
             public unsafe partial class AccessSpecifierDecl : CppSharp.Parser.AST.Declaration, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 84)]
-                public new struct Internal
+                public new partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.DeclarationKind Kind;
@@ -5304,7 +5304,7 @@ namespace CppSharp
             public unsafe partial class Class : CppSharp.Parser.AST.DeclarationContext, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 248)]
-                public new struct Internal
+                public new partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.DeclarationKind Kind;
@@ -5754,7 +5754,7 @@ namespace CppSharp
             public unsafe partial class Template : CppSharp.Parser.AST.Declaration, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 100)]
-                public new struct Internal
+                public new partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.DeclarationKind Kind;
@@ -5913,7 +5913,7 @@ namespace CppSharp
             public unsafe partial class ClassTemplate : CppSharp.Parser.AST.Template, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 112)]
-                public new struct Internal
+                public new partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.DeclarationKind Kind;
@@ -6042,7 +6042,7 @@ namespace CppSharp
             public unsafe partial class ClassTemplateSpecialization : CppSharp.Parser.AST.Class, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 268)]
-                public new struct Internal
+                public new partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.DeclarationKind Kind;
@@ -6239,7 +6239,7 @@ namespace CppSharp
             public unsafe partial class ClassTemplatePartialSpecialization : CppSharp.Parser.AST.ClassTemplateSpecialization, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 268)]
-                public new struct Internal
+                public new partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.DeclarationKind Kind;
@@ -6357,7 +6357,7 @@ namespace CppSharp
             public unsafe partial class FunctionTemplate : CppSharp.Parser.AST.Template, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 112)]
-                public new struct Internal
+                public new partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.DeclarationKind Kind;
@@ -6486,7 +6486,7 @@ namespace CppSharp
             public unsafe partial class FunctionTemplateSpecialization : IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 24)]
-                public struct Internal
+                public partial struct Internal
                 {
                     [FieldOffset(0)]
                     public global::System.IntPtr Template;
@@ -6646,7 +6646,7 @@ namespace CppSharp
             public unsafe partial class Namespace : CppSharp.Parser.AST.DeclarationContext, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 184)]
-                public new struct Internal
+                public new partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.DeclarationKind Kind;
@@ -6746,7 +6746,7 @@ namespace CppSharp
             public unsafe partial class PreprocessedEntity : CppSharp.Parser.AST.Declaration, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 88)]
-                public new struct Internal
+                public new partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.DeclarationKind Kind;
@@ -6843,7 +6843,7 @@ namespace CppSharp
             public unsafe partial class MacroDefinition : CppSharp.Parser.AST.PreprocessedEntity, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 100)]
-                public new struct Internal
+                public new partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.DeclarationKind Kind;
@@ -6952,7 +6952,7 @@ namespace CppSharp
             public unsafe partial class MacroExpansion : CppSharp.Parser.AST.PreprocessedEntity, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 104)]
-                public new struct Internal
+                public new partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.DeclarationKind Kind;
@@ -7079,7 +7079,7 @@ namespace CppSharp
             public unsafe partial class TranslationUnit : CppSharp.Parser.AST.Namespace, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 212)]
-                public new struct Internal
+                public new partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.DeclarationKind Kind;
@@ -7256,7 +7256,7 @@ namespace CppSharp
             public unsafe partial class NativeLibrary : IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 24)]
-                public struct Internal
+                public partial struct Internal
                 {
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -7388,7 +7388,7 @@ namespace CppSharp
             public unsafe partial class ASTContext : IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 12)]
-                public struct Internal
+                public partial struct Internal
                 {
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -7492,7 +7492,7 @@ namespace CppSharp
             public unsafe partial class Comment : IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 4)]
-                public struct Internal
+                public partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.CommentKind Kind;
@@ -7562,7 +7562,7 @@ namespace CppSharp
             public unsafe partial class FullComment : CppSharp.Parser.AST.Comment, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 4)]
-                public new struct Internal
+                public new partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.CommentKind Kind;
@@ -7609,7 +7609,7 @@ namespace CppSharp
             public unsafe partial class RawComment : IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 32)]
-                public struct Internal
+                public partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.RawCommentKind Kind;

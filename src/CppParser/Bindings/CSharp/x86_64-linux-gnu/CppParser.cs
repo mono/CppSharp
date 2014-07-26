@@ -10,6 +10,16 @@ namespace CppSharp
 {
     namespace Parser
     {
+        public enum LanguageVersion
+        {
+            /// <summary>The C programming language.</summary>
+            C = 0,
+            /// <summary>The C++ programming language year 1998; supports deprecated constructs.</summary>
+            CPlusPlus98 = 1,
+            /// <summary>The C++ programming language year 2011.</summary>
+            CPlusPlus11 = 2
+        }
+
         public enum ParserDiagnosticLevel
         {
             Ignored = 0,
@@ -37,7 +47,7 @@ namespace CppSharp
 
         public unsafe partial class ParserOptions : IDisposable
         {
-            [StructLayout(LayoutKind.Explicit, Size = 160)]
+            [StructLayout(LayoutKind.Explicit, Size = 168)]
             public partial struct Internal
             {
                 [FieldOffset(128)]
@@ -60,6 +70,9 @@ namespace CppSharp
 
                 [FieldOffset(159)]
                 public bool Verbose;
+
+                [FieldOffset(160)]
+                public CppSharp.Parser.LanguageVersion LanguageVersion;
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -216,7 +229,7 @@ namespace CppSharp
 
             public ParserOptions()
             {
-                __Instance = Marshal.AllocHGlobal(160);
+                __Instance = Marshal.AllocHGlobal(168);
                 Internal.ctor_0(__Instance);
             }
 
@@ -508,6 +521,21 @@ namespace CppSharp
                 {
                     var __ptr = (Internal*)__Instance.ToPointer();
                     __ptr->Verbose = value;
+                }
+            }
+
+            public CppSharp.Parser.LanguageVersion LanguageVersion
+            {
+                get
+                {
+                    var __ptr = (Internal*)__Instance.ToPointer();
+                    return __ptr->LanguageVersion;
+                }
+
+                set
+                {
+                    var __ptr = (Internal*)__Instance.ToPointer();
+                    __ptr->LanguageVersion = value;
                 }
             }
         }
