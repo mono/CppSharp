@@ -11,6 +11,7 @@
 #include <llvm/Support/Path.h>
 #include <llvm/Support/raw_ostream.h>
 #include <llvm/Object/Archive.h>
+#include <llvm/Object/COFF.h>
 #include <llvm/Object/ObjectFile.h>
 #include <llvm/Object/ELFObjectFile.h>
 #include <llvm/IR/LLVMContext.h>
@@ -3013,22 +3014,59 @@ ParserResultKind Parser::ParseArchive(llvm::StringRef File,
 }
 
 ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
-                                        llvm::object::SymbolicFile* SymbolicFile,
+                                        llvm::object::ObjectFile* ObjectFile,
                                         CppSharp::CppParser::NativeLibrary*& NativeLib)
 {
-    if (!SymbolicFile->isELF())
-        return ParserResultKind::Error;
+    auto LibName = File;
+    NativeLib = new NativeLibrary();
+    NativeLib->FileName = LibName;
 
-    auto IDyn = llvm::object::getELFDynamicSymbolIterators(SymbolicFile);
+    if (ObjectFile->isELF())
+    {
+        auto IDyn = llvm::object::getELFDynamicSymbolIterators(ObjectFile);
+        for (auto it = IDyn.first; it != IDyn.second; ++it)
+        {
+            std::string Sym;
+            llvm::raw_string_ostream SymStream(Sym);
 
-    return ReadSymbols(File, IDyn.first, IDyn.second, NativeLib);
-}
+            if (it->printName(SymStream))
+                continue;
 
-ParserResultKind Parser::ParseObjectFile(llvm::StringRef File,
-                                         llvm::object::ObjectFile* ObjectFile,
-                                         CppSharp::CppParser::NativeLibrary*& NativeLib)
-{
-    return ReadSymbols(File, ObjectFile->symbol_begin(), ObjectFile->symbol_end(), NativeLib);
+            SymStream.flush();
+            if (!Sym.empty())
+                NativeLib->Symbols.push_back(Sym);
+        }
+    }
+    else
+    {
+        if (auto COFFObjectFile = llvm::dyn_cast<llvm::object::COFFObjectFile>(ObjectFile))
+        {
+            for (auto it = COFFObjectFile->export_directory_begin(); it != COFFObjectFile->export_directory_end(); ++it)
+            {
+                llvm::StringRef Symbol;
+                if (!it->getSymbolName(Symbol))
+                    NativeLib->Symbols.push_back(Symbol);
+            }
+            for (auto dep = COFFObjectFile->import_directory_begin(); dep != COFFObjectFile->import_directory_end(); ++dep)
+            {
+                llvm::StringRef Name;
+                if (!dep->getName(Name))
+                    NativeLib->Dependencies.push_back(Name);
+            }
+        }
+        else
+        {
+            return ParserResultKind::Error;
+        }
+    }
+    /*for (auto dep = ObjectFile->needed_library_begin(); dep != ObjectFile->needed_library_end(); ++dep)
+    {
+        llvm::StringRef path;
+        if (!dep->getPath(path))
+            NativeLib->Dependencies.push_back(path);
+    }*/
+
+    return ParserResultKind::Success;
 }
 
 ParserResultKind Parser::ReadSymbols(llvm::StringRef File,
@@ -3096,12 +3134,6 @@ ParserResultKind Parser::ReadSymbols(llvm::StringRef File,
     std::unique_ptr<llvm::object::Binary> Bin(BinaryOrErr.get());
     if (auto Archive = llvm::dyn_cast<llvm::object::Archive>(Bin.get())) {
         res->Kind = ParseArchive(File, Archive, res->Library);
-        if (res->Kind == ParserResultKind::Success)
-            return res;
-    }
-    if (auto SymbolicFile = llvm::dyn_cast<llvm::object::SymbolicFile>(Bin.get()))
-    {
-        res->Kind = ParseSharedLib(File, SymbolicFile, res->Library);
         if (res->Kind == ParserResultKind::Success)
             return res;
     }

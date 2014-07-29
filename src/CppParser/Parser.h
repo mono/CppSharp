@@ -55,11 +55,8 @@ public:
                                   llvm::object::Archive* Archive,
                                   CppSharp::CppParser::NativeLibrary*& NativeLib);
     ParserResultKind ParseSharedLib(llvm::StringRef File,
-                                    llvm::object::SymbolicFile* SymbolicFile,
+                                    llvm::object::ObjectFile* ObjectFile,
                                     CppSharp::CppParser::NativeLibrary*& NativeLib);
-    ParserResultKind ParseObjectFile(llvm::StringRef File,
-                                     llvm::object::ObjectFile* ObjectFile,
-                                     CppSharp::CppParser::NativeLibrary*& NativeLib);
     ParserTargetInfo*  GetTargetInfo();
 
 protected:
