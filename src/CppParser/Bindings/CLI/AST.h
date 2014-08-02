@@ -1956,11 +1956,22 @@ namespace CppSharp
                     unsigned int get();
                 }
 
+                property unsigned int DependenciesCount
+                {
+                    unsigned int get();
+                }
+
                 System::String^ getSymbols(unsigned int i);
 
                 void addSymbols(System::String^ s);
 
                 void clearSymbols();
+
+                System::String^ getDependencies(unsigned int i);
+
+                void addDependencies(System::String^ s);
+
+                void clearDependencies();
             };
 
             public ref class ASTContext : ICppInstance

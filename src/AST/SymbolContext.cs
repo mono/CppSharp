@@ -16,6 +16,7 @@ namespace CppSharp.AST
         public NativeLibrary()
         {
             Symbols = new List<string>();
+            Dependencies = new List<string>();
         }
 
         /// <summary>
@@ -27,6 +28,8 @@ namespace CppSharp.AST
         /// Symbols gathered from the library.
         /// </summary>
         public IList<string> Symbols;
+
+        public IList<string> Dependencies { get; private set; }
     }
 
     public class SymbolContext

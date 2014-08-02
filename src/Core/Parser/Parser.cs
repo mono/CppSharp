@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using CppSharp.AST;
 using CppSharp.Parser;
 using ASTContext = CppSharp.Parser.AST.ASTContext;
@@ -102,6 +103,10 @@ namespace CppSharp
             {
                 var symbol = library.getSymbols(i);
                 newLibrary.Symbols.Add(symbol);
+            }
+            for (uint i = 0; i < library.DependenciesCount; i++)
+            {
+                newLibrary.Dependencies.Add(library.getDependencies(i));
             }
 
             return newLibrary;

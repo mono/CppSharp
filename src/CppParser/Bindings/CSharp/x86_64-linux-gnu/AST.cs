@@ -7254,7 +7254,7 @@ namespace CppSharp
 
             public unsafe partial class NativeLibrary : IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 32)]
+                [StructLayout(LayoutKind.Explicit, Size = 56)]
                 public partial struct Internal
                 {
                     [SuppressUnmanagedCodeSecurity]
@@ -7289,6 +7289,21 @@ namespace CppSharp
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST13NativeLibrary15getDependenciesEj")]
+                    internal static extern global::System.IntPtr getDependencies_0(global::System.IntPtr instance, uint i);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST13NativeLibrary15addDependenciesEPKc")]
+                    internal static extern void addDependencies_0(global::System.IntPtr instance, global::System.IntPtr s);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST13NativeLibrary17clearDependenciesEv")]
+                    internal static extern void clearDependencies_0(global::System.IntPtr instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                         EntryPoint="_ZN8CppSharp9CppParser3AST13NativeLibrary11getFileNameEv")]
                     internal static extern global::System.IntPtr getFileName_0(global::System.IntPtr instance);
 
@@ -7301,6 +7316,11 @@ namespace CppSharp
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                         EntryPoint="_ZN8CppSharp9CppParser3AST13NativeLibrary15getSymbolsCountEv")]
                     internal static extern uint getSymbolsCount_0(global::System.IntPtr instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST13NativeLibrary20getDependenciesCountEv")]
+                    internal static extern uint getDependenciesCount_0(global::System.IntPtr instance);
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
@@ -7322,7 +7342,7 @@ namespace CppSharp
 
                 public NativeLibrary()
                 {
-                    __Instance = Marshal.AllocHGlobal(32);
+                    __Instance = Marshal.AllocHGlobal(56);
                     Internal.ctor_2(__Instance);
                 }
 
@@ -7357,6 +7377,25 @@ namespace CppSharp
                     Internal.clearSymbols_0(__Instance);
                 }
 
+                public string getDependencies(uint i)
+                {
+                    var __ret = Internal.getDependencies_0(__Instance, i);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return Marshal.PtrToStringAnsi(__ret);
+                }
+
+                public void addDependencies(string s)
+                {
+                    var arg0 = Marshal.StringToHGlobalAnsi(s);
+                    Internal.addDependencies_0(__Instance, arg0);
+                    Marshal.FreeHGlobal(arg0);
+                }
+
+                public void clearDependencies()
+                {
+                    Internal.clearDependencies_0(__Instance);
+                }
+
                 public string FileName
                 {
                     get
@@ -7379,6 +7418,15 @@ namespace CppSharp
                     get
                     {
                         var __ret = Internal.getSymbolsCount_0(__Instance);
+                        return __ret;
+                    }
+                }
+
+                public uint DependenciesCount
+                {
+                    get
+                    {
+                        var __ret = Internal.getDependenciesCount_0(__Instance);
                         return __ret;
                     }
                 }

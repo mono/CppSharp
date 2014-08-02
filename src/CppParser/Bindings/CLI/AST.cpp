@@ -2959,6 +2959,25 @@ void CppSharp::Parser::AST::NativeLibrary::clearSymbols()
     ((::CppSharp::CppParser::AST::NativeLibrary*)NativePtr)->clearSymbols();
 }
 
+System::String^ CppSharp::Parser::AST::NativeLibrary::getDependencies(unsigned int i)
+{
+    auto __ret = ((::CppSharp::CppParser::AST::NativeLibrary*)NativePtr)->getDependencies(i);
+    if (__ret == nullptr) return nullptr;
+    return clix::marshalString<clix::E_UTF8>(__ret);
+}
+
+void CppSharp::Parser::AST::NativeLibrary::addDependencies(System::String^ s)
+{
+    auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
+    auto arg0 = _arg0.c_str();
+    ((::CppSharp::CppParser::AST::NativeLibrary*)NativePtr)->addDependencies(arg0);
+}
+
+void CppSharp::Parser::AST::NativeLibrary::clearDependencies()
+{
+    ((::CppSharp::CppParser::AST::NativeLibrary*)NativePtr)->clearDependencies();
+}
+
 CppSharp::Parser::AST::NativeLibrary::NativeLibrary()
 {
     NativePtr = new ::CppSharp::CppParser::AST::NativeLibrary();
@@ -2991,6 +3010,12 @@ void CppSharp::Parser::AST::NativeLibrary::FileName::set(System::String^ s)
 unsigned int CppSharp::Parser::AST::NativeLibrary::SymbolsCount::get()
 {
     auto __ret = ((::CppSharp::CppParser::AST::NativeLibrary*)NativePtr)->getSymbolsCount();
+    return __ret;
+}
+
+unsigned int CppSharp::Parser::AST::NativeLibrary::DependenciesCount::get()
+{
+    auto __ret = ((::CppSharp::CppParser::AST::NativeLibrary*)NativePtr)->getDependenciesCount();
     return __ret;
 }
 

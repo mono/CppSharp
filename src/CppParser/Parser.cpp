@@ -3050,7 +3050,7 @@ ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
             for (auto dep = COFFObjectFile->import_directory_begin(); dep != COFFObjectFile->import_directory_end(); ++dep)
             {
                 llvm::StringRef Name;
-                if (!dep->getName(Name))
+                if (!dep->getName(Name) && (Name.endswith(".dll") || Name.endswith(".DLL")))
                     NativeLib->Dependencies.push_back(Name);
             }
         }
@@ -3059,12 +3059,6 @@ ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
             return ParserResultKind::Error;
         }
     }
-    /*for (auto dep = ObjectFile->needed_library_begin(); dep != ObjectFile->needed_library_end(); ++dep)
-    {
-        llvm::StringRef path;
-        if (!dep->getPath(path))
-            NativeLib->Dependencies.push_back(path);
-    }*/
 
     return ParserResultKind::Success;
 }
@@ -3139,7 +3133,7 @@ ParserResultKind Parser::ReadSymbols(llvm::StringRef File,
     }
     if (auto ObjectFile = llvm::dyn_cast<llvm::object::ObjectFile>(Bin.get()))
     {
-        res->Kind = ParseObjectFile(File, ObjectFile, res->Library);
+        res->Kind = ParseSharedLib(File, ObjectFile, res->Library);
         if (res->Kind == ParserResultKind::Success)
             return res;
     }
