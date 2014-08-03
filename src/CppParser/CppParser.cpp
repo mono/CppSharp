@@ -18,7 +18,7 @@ ParserOptions::ParserOptions()
     , NoBuiltinIncludes(false)
     , MicrosoftMode(false)
     , Verbose(false)
-    , LanguageVersion(LanguageVersion::CPlusPlus11)
+    , LanguageVersion(CppParser::LanguageVersion::CPlusPlus11)
 {
 }
 
