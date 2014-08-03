@@ -1,0 +1,36 @@
+From 03423a19f71a0d7d30ca26b1d3b0bfbf7d58c6e1 Mon Sep 17 00:00:00 2001
+From: Dimitar Dobrev <dpldobrev@yahoo.com>
+Date: Wed, 30 Jul 2014 21:22:39 +0300
+Subject: [PATCH] Fixed the getting of names and look-up entries of DLL
+ imports.
+
+Signed-off-by: Dimitar Dobrev <dpldobrev@yahoo.com>
+---
+ lib/Object/COFFObjectFile.cpp | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/lib/Object/COFFObjectFile.cpp b/lib/Object/COFFObjectFile.cpp
+index 46ef87d..9b5e954 100644
+--- a/lib/Object/COFFObjectFile.cpp
++++ b/lib/Object/COFFObjectFile.cpp
+@@ -1022,7 +1022,7 @@ std::error_code ImportDirectoryEntryRef::getImportTableEntry(
+ std::error_code ImportDirectoryEntryRef::getName(StringRef &Result) const {
+   uintptr_t IntPtr = 0;
+   if (std::error_code EC =
+-          OwningObject->getRvaPtr(ImportTable->NameRVA, IntPtr))
++          OwningObject->getRvaPtr((ImportTable + Index)->NameRVA, IntPtr))
+     return EC;
+   Result = StringRef(reinterpret_cast<const char *>(IntPtr));
+   return object_error::success;
+@@ -1032,7 +1032,7 @@ std::error_code ImportDirectoryEntryRef::getImportLookupEntry(
+     const import_lookup_table_entry32 *&Result) const {
+   uintptr_t IntPtr = 0;
+   if (std::error_code EC =
+-          OwningObject->getRvaPtr(ImportTable->ImportLookupTableRVA, IntPtr))
++          OwningObject->getRvaPtr((ImportTable + Index)->ImportLookupTableRVA, IntPtr))
+     return EC;
+   Result = reinterpret_cast<const import_lookup_table_entry32 *>(IntPtr);
+   return object_error::success;
+-- 
+1.9.0.msysgit.0
+

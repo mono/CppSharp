@@ -581,6 +581,7 @@ DEF_VECTOR(TranslationUnit, MacroDefinition*, Macros)
 // NativeLibrary
 DEF_STRING(NativeLibrary, FileName)
 DEF_VECTOR_STRING(NativeLibrary, Symbols)
+DEF_VECTOR_STRING(NativeLibrary, Dependencies)
 
 // ASTContext
 DEF_VECTOR(ASTContext, TranslationUnit*, TranslationUnits)

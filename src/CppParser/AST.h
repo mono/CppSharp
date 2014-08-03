@@ -798,6 +798,7 @@ struct CS_API NativeLibrary
 {
     STRING(FileName)
     VECTOR_STRING(Symbols)
+    VECTOR_STRING(Dependencies)
 };
 
 class CS_API ASTContext
