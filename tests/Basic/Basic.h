@@ -294,11 +294,16 @@ struct DLL_API TestStaticClass
 {
     static int Add(int a, int b);
 
+protected:
+	static int _Mult(int a, int b);
+
 private:
     TestStaticClass();
 };
 
 int TestStaticClass::Add(int a, int b) { return a + b; }
+
+int TestStaticClass::_Mult(int a, int b) { return a * b; }
 
 struct DLL_API TestStaticClassDerived : TestStaticClass
 {
