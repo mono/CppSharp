@@ -5,6 +5,10 @@
 *
 ************************************************************************/
 
+#ifdef DEBUG
+#undef DEBUG // workaround DEBUG define messing with LLVM COFF headers
+#endif
+
 #include "Parser.h"
 
 #include <llvm/Support/Host.h>
