@@ -9,6 +9,38 @@ namespace CppSharp.Passes
     /// </summary>
     public class CheckStaticClass : TranslationUnitPass
     {
+        public CheckStaticClass()
+        {
+            Options.VisitClassBases = false;
+        }
+
+        public override bool VisitDeclaration(Declaration decl)
+        {
+            if (!base.VisitDeclaration(decl))
+                return false;
+
+            if (Driver.Options.IsCSharpGenerator)
+            {
+                // C# cannot have protected members in static classes.
+                var @class = decl.Namespace as Class;
+                if (    decl.Access == AccessSpecifier.Protected && 
+                        decl.GenerationKind == GenerationKind.Generate &&
+                        @class != null && 
+                        @class.IsStatic)
+                {
+                    // By setting it to private it will appear
+                    // as an internal in the final C# wrapper.
+                    decl.Access = AccessSpecifier.Private;
+
+                    // We need to explicity set the generation else the
+                    // now private declaration will get filtered out later.
+                    decl.GenerationKind = GenerationKind.Generate;
+                }
+            }
+
+            return true;
+        }
+
         static bool ReturnsClassInstance(Function function)
         {
             var returnType = function.ReturnType.Type.Desugar();
@@ -28,9 +60,6 @@ namespace CppSharp.Passes
 
         public override bool VisitClassDecl(Class @class)
         {
-            if (!VisitDeclaration(@class))
-                return false;
-
             // If the class has any non-private constructors then it cannot
             // be bound as a static class and we bail out early.
             if (@class.Constructors.Any(m =>
@@ -68,7 +97,7 @@ namespace CppSharp.Passes
             foreach (var dtor in @class.Destructors)
                 dtor.GenerationKind = GenerationKind.Internal;
 
-            return true;
+            return base.VisitClassDecl(@class);
         }
     }
 }
