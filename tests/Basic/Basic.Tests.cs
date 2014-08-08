@@ -264,6 +264,7 @@ public class BasicTests : GeneratorTestFixture
     public void TestStaticClasses()
     {
         Assert.That(TestStaticClass.Add(1, 2), Is.EqualTo(3));
+        Assert.That(TestStaticClass.OneTwoThree, Is.EqualTo(123));
         Assert.That(TestStaticClassDerived.Foo(), Is.EqualTo(0));
     }
 

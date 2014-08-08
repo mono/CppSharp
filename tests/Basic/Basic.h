@@ -294,6 +294,14 @@ struct DLL_API TestStaticClass
 {
     static int Add(int a, int b);
 
+	static int GetOneTwoThree() { return 123; }
+
+protected:
+
+	static int _Mult(int a, int b) { return a * b; }
+
+	static int GetFourFiveSix() { return 456; }
+
 private:
     TestStaticClass();
 };
