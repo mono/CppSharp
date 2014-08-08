@@ -23,7 +23,7 @@ namespace CppSharp.Passes
             case AccessSpecifier.Private:
                 var method = decl as Method;
                 var isOverride = method != null && method.IsOverride;
-                return generateNonPublicDecls && isOverride;
+                return generateNonPublicDecls && (isOverride || decl.IsExplicitlyGenerated);
             }
 
             return true;
