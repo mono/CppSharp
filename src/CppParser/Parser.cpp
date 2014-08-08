@@ -2142,6 +2142,7 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, Function* F,
     F->Mangled = Mangled;
 
     clang::SourceLocation ParamStartLoc = FD->getLocStart();
+    clang::SourceLocation ParamEndLoc = FD->getLocEnd();
     clang::SourceLocation ResultLoc;
 
     auto FTSI = FD->getTypeSourceInfo();
@@ -2156,12 +2157,13 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, Function* F,
             auto FTInfo = FTL.castAs<FunctionTypeLoc>();
             assert (!FTInfo.isNull());
 
-            ParamStartLoc = FTInfo.getRParenLoc();
+            ParamStartLoc = FTInfo.getLParenLoc();
+            ParamEndLoc = FTInfo.getRParenLoc();
             ResultLoc = FTInfo.getReturnLoc().getLocStart();
         }
     }
 
-    clang::SourceRange Range(FD->getLocStart(), ParamStartLoc);
+    clang::SourceRange Range(FD->getLocStart(), ParamEndLoc);
     if (ResultLoc.isValid())
         Range.setBegin(ResultLoc);
 
