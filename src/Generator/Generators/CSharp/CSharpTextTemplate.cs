@@ -1207,7 +1207,12 @@ namespace CppSharp.Generators.CSharp
                 GenerateDeclarationCommon(prop);
                 if (prop.ExplicitInterfaceImpl == null)
                 {
-                    Write(Helpers.GetAccess(prop.Access));
+                    // Static classes cannot have protected methods, so
+                    // instead make them private/internal.
+                    if (@class.IsStatic && prop.Access == AccessSpecifier.Protected)
+                        Write(Helpers.GetAccess(AccessSpecifier.Private));
+                    else
+                        Write(Helpers.GetAccess(prop.Access));
 
                     if (prop.IsStatic)
                         Write("static ");
@@ -2122,14 +2127,22 @@ namespace CppSharp.Generators.CSharp
 
         private static AccessSpecifier GetValidMethodAccess(Method method)
         {
-            switch (method.Access)
-            {
-                case AccessSpecifier.Public:
-                    return AccessSpecifier.Public;
-                default:
-                    return method.IsOverride ?
-                        ((Class) method.Namespace).GetRootBaseMethod(method).Access : method.Access;
-            }
+            // Public methods are always public.
+            if (method.Access == AccessSpecifier.Public)
+                return AccessSpecifier.Public;
+
+            // Static classes don't allow protected members, 
+            // instead make the access private.
+            var @class = (Class)method.Namespace;
+            if (@class.IsStatic)
+                return AccessSpecifier.Private;
+
+            // On an overloaded method make the access the
+            // same as the root base method.
+            if (method.IsOverride)
+                return @class.GetRootBaseMethod(method).Access;
+
+            return method.Access;
         }
 
         private void GenerateAbstractImplCall(Method method, Class @class)

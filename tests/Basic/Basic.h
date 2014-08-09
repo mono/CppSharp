@@ -293,6 +293,13 @@ struct DLL_API TestFinalizers
 struct DLL_API TestStaticClass
 {
     static int Add(int a, int b);
+	
+	static int GetOneTwoThree() { return 123; }
+
+protected:
+	static int _Mult(int a, int b);
+
+	static int GetFourFiveSix() { return 456; }
 
 	static int GetOneTwoThree() { return 123; }
 
@@ -307,6 +314,8 @@ private:
 };
 
 int TestStaticClass::Add(int a, int b) { return a + b; }
+
+int TestStaticClass::_Mult(int a, int b) { return a * b; }
 
 struct DLL_API TestStaticClassDerived : TestStaticClass
 {
