@@ -36,7 +36,7 @@ namespace CppSharp.AST
             if (method.OperatorKind == CXXOperatorKind.Equal)
                 return true;
 
-            if (method.Access == AccessSpecifier.Private && !method.IsOverride)
+            if (method.Access == AccessSpecifier.Private && !method.IsOverride && !method.IsExplicitlyGenerated)
                 return true;
 
             //Ignore copy constructor if a base class don't has or has a private copy constructor

@@ -216,6 +216,18 @@ namespace CppSharp.AST
         }
 
         /// <summary>
+        /// Whether the declaration was explicitly set to be generated via
+        /// the GenerationKind propery as opposed to the default generated state.
+        /// </summary>
+        public virtual bool IsExplicitlyGenerated
+        {
+            get
+            {
+                return generationKind.HasValue && generationKind.Value == GenerationKind.Generate;
+            }
+        }
+
+        /// <summary>
         /// Whether the declaration internal bindings should be generated.
         /// </summary>
         public bool IsInternal
@@ -244,7 +256,6 @@ namespace CppSharp.AST
         {
             GenerationKind = GenerationKind.None;
         }
-
 
         [Obsolete("Replace set by ExplicitlyIgnore(). Replace get by GenerationKind == GenerationKind.None.")]
         public bool ExplicityIgnored 
