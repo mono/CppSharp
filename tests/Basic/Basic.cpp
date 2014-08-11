@@ -208,6 +208,11 @@ void Hello::StringOut(CS_OUT const char** str)
 	*str = "HelloStringOut";
 }
 
+void Hello::StringOutRef(CS_OUT const char*& str)
+{
+	str = "HelloStringOutRef";
+}
+
 int unsafeFunction(const Bar& ret, char* testForString, void (*foo)(int))
 {
     return ret.A;
