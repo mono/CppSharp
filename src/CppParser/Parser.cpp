@@ -3015,6 +3015,14 @@ ParserResultKind Parser::ParseArchive(llvm::StringRef File,
     return ParserResultKind::Success;
 }
 
+template<class ELFT>
+void ReadELFDependencies(const llvm::object::ELFFile<ELFT>* ELFFile, CppSharp::CppParser::NativeLibrary*& NativeLib)
+{
+    for (const auto &Entry : ELFFile->dynamic_table())
+        if (Entry.d_tag == llvm::ELF::DT_NEEDED)
+            NativeLib->Dependencies.push_back(ELFFile->getDynamicString(Entry.d_un.d_val));
+}
+
 ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
                                         llvm::object::ObjectFile* ObjectFile,
                                         CppSharp::CppParser::NativeLibrary*& NativeLib)
@@ -3037,6 +3045,22 @@ ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
             SymStream.flush();
             if (!Sym.empty())
                 NativeLib->Symbols.push_back(Sym);
+        }
+        if (auto ELFObjectFile = llvm::dyn_cast<llvm::object::ELF32LEObjectFile>(ObjectFile))
+        {
+            ReadELFDependencies(ELFObjectFile->getELFFile(), NativeLib);
+        }
+        else if (auto ELFObjectFile = llvm::dyn_cast<llvm::object::ELF32BEObjectFile>(ObjectFile))
+        {
+            ReadELFDependencies(ELFObjectFile->getELFFile(), NativeLib);
+        }
+        else if (auto ELFObjectFile = llvm::dyn_cast<llvm::object::ELF64LEObjectFile>(ObjectFile))
+        {
+            ReadELFDependencies(ELFObjectFile->getELFFile(), NativeLib);
+        }
+        else if (auto ELFObjectFile = llvm::dyn_cast<llvm::object::ELF64BEObjectFile>(ObjectFile))
+        {
+            ReadELFDependencies(ELFObjectFile->getELFFile(), NativeLib);
         }
     }
     else
