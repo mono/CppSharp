@@ -203,6 +203,11 @@ void Hello::EnumInOutRef(CS_IN_OUT Enum& e)
 		e = Enum::F;
 }
 
+void Hello::StringOut(CS_OUT const char** str)
+{
+	*str = "HelloStringOut";
+}
+
 int unsafeFunction(const Bar& ret, char* testForString, void (*foo)(int))
 {
     return ret.A;

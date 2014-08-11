@@ -55,6 +55,10 @@ public class BasicTests : GeneratorTestFixture
         //Assert.That(hello.RetEnum(Enum.D), Is.EqualTo(-2147483648));
         Assert.That(hello.RetEnum(Enum.E), Is.EqualTo(1));
         Assert.That(hello.RetEnum(Enum.F), Is.EqualTo(-9));
+
+        string str;
+        hello.StringOut(out str);
+        Assert.That(str, Is.EqualTo("HelloStringOut"));
     }
 
     [Test]
