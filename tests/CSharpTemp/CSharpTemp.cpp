@@ -234,3 +234,11 @@ void MethodsWithDefaultValues::DefaultRefTypeBeforeAndAfterOthers(int i, Foo foo
 void MethodsWithDefaultValues::DefaultIntAssignedAnEnum(int i)
 {
 }
+
+void HasPrivateOverrideBase::privateOverride(int i)
+{
+}
+
+void HasPrivateOverride::privateOverride(int i)
+{
+}

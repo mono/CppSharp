@@ -144,4 +144,10 @@ public class CSharpTempTests : GeneratorTestFixture
     {
         AnotherUnit.FunctionInAnotherUnit();
     }
+
+    [Test]
+    public void TestPrivateOverride()
+    {
+        new HasPrivateOverride().PrivateOverride();
+    }
 }
