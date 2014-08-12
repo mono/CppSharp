@@ -67,6 +67,9 @@ public class BasicTests : GeneratorTestFixture
         Assert.That(str, Is.EqualTo("HelloStringOut"));
         hello.StringOutRef(out str);
         Assert.That(str, Is.EqualTo("HelloStringOutRef"));
+        str = "Hello";
+        hello.StringInOut(ref str);
+        Assert.That(str, Is.EqualTo("StringInOut"));
     }
     
     [Test]

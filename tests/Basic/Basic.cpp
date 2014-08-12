@@ -1,4 +1,5 @@
 #include "Basic.h"
+#include <string.h>
 
 Foo::Foo()
 {
@@ -211,6 +212,14 @@ void Hello::StringOut(CS_OUT const char** str)
 void Hello::StringOutRef(CS_OUT const char*& str)
 {
 	str = "HelloStringOutRef";
+}
+
+void Hello::StringInOut(CS_IN_OUT const char** str)
+{
+	if (strcmp(*str, "Hello") == 0)
+		*str = "StringInOut";
+	else
+		*str = "Failed";
 }
 
 int unsafeFunction(const Bar& ret, char* testForString, void (*foo)(int))

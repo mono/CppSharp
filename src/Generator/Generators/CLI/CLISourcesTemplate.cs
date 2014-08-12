@@ -1101,7 +1101,12 @@ namespace CppSharp.Generators.CLI
                 var type = paramType.Visit(typePrinter);
 
                 if (param.IsInOut)
+                {
+                    if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
+                        Write(marshal.Context.SupportBefore);
+
                     WriteLine("{0} {1} = {2};", type, argName, marshal.Context.Return);
+                }
                 else
                     WriteLine("{0} {1};", type, argName);
             }
