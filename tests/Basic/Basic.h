@@ -132,6 +132,11 @@ public:
 
     void EnumInOut(CS_IN_OUT Enum* e);
     void EnumInOutRef(CS_IN_OUT Enum& e);
+
+    void StringOut(CS_OUT const char** str);
+    void StringOutRef(CS_OUT const char*& str);
+    void StringInOut(CS_IN_OUT const char** str);
+    void StringInOutRef(CS_IN_OUT const char*& str);
 };
 
 class DLL_API AbstractFoo

@@ -217,8 +217,7 @@ namespace CppSharp.Generators.CSharp
             {
                 // Skip one indirection if passed by reference
                 var param = Context.Parameter;
-                if (isManagedContext && param != null && (param.IsOut || param.IsInOut)
-                    && pointee == finalPointee)
+                if (isManagedContext && param != null && (param.IsOut || param.IsInOut))
                     return pointee.Visit(this, quals);
 
                 if (ContextKind == CSharpTypePrinterContextKind.GenericDelegate)

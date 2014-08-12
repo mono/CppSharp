@@ -1,4 +1,5 @@
 #include "Basic.h"
+#include <string.h>
 
 Foo::Foo()
 {
@@ -201,6 +202,32 @@ void Hello::EnumInOutRef(CS_IN_OUT Enum& e)
 {
 	if (e == Enum::E)
 		e = Enum::F;
+}
+
+void Hello::StringOut(CS_OUT const char** str)
+{
+	*str = "HelloStringOut";
+}
+
+void Hello::StringOutRef(CS_OUT const char*& str)
+{
+	str = "HelloStringOutRef";
+}
+
+void Hello::StringInOut(CS_IN_OUT const char** str)
+{
+	if (strcmp(*str, "Hello") == 0)
+		*str = "StringInOut";
+	else
+		*str = "Failed";
+}
+
+void Hello::StringInOutRef(CS_IN_OUT const char*& str)
+{
+	if (strcmp(str, "Hello") == 0)
+		str = "StringInOutRef";
+	else
+		str = "Failed";
 }
 
 int unsafeFunction(const Bar& ret, char* testForString, void (*foo)(int))

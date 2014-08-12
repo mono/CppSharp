@@ -67,15 +67,6 @@ namespace CppSharp.Generators.CLI
 
             var pointee = pointer.Pointee.Desugar();
 
-            PrimitiveType primitive;
-            var param = Context.Parameter;
-            if (param != null && (param.IsOut || param.IsInOut) &&
-                pointee.IsPrimitiveType(out primitive))
-            {
-                Context.Return.Write(Context.ReturnVarName);
-                return true;
-            }
-
             if (pointee.IsPrimitiveType(PrimitiveType.Void))
             {
                 Context.Return.Write(Context.ReturnVarName);
@@ -86,6 +77,15 @@ namespace CppSharp.Generators.CLI
             {
                 Context.Return.Write("clix::marshalString<clix::E_UTF8>({0})",
                              Context.ReturnVarName);
+                return true;
+            }
+
+            PrimitiveType primitive;
+            var param = Context.Parameter;
+            if (param != null && (param.IsOut || param.IsInOut) &&
+                pointee.IsPrimitiveType(out primitive))
+            {
+                Context.Return.Write(Context.ReturnVarName);
                 return true;
             }
 

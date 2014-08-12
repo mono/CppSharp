@@ -58,6 +58,24 @@ public class BasicTests : GeneratorTestFixture
     }
 
     [Test]
+    public void TestPrimitiveConstCharStringInOut()
+    {
+        var hello = new Hello();
+
+        string str;
+        hello.StringOut(out str);
+        Assert.That(str, Is.EqualTo("HelloStringOut"));
+        hello.StringOutRef(out str);
+        Assert.That(str, Is.EqualTo("HelloStringOutRef"));
+        str = "Hello";
+        hello.StringInOut(ref str);
+        Assert.That(str, Is.EqualTo("StringInOut"));
+        str = "Hello";
+        hello.StringInOutRef(ref str);
+        Assert.That(str, Is.EqualTo("StringInOutRef"));
+    }
+    
+    [Test]
     public void TestPrimitiveOutParameters()
     {
         var hello = new Hello();

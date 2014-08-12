@@ -155,8 +155,7 @@ namespace CppSharp.Generators.CLI
             {
                 // Skip one indirection if passed by reference
                 var param = Context.Parameter;
-                if (param != null && (param.IsOut || param.IsInOut)
-                    && pointee == finalPointee)
+                if (param != null && (param.IsOut || param.IsInOut))
                     return pointee.Visit(this, quals);
 
                 return pointee.Visit(this, quals) + "*";

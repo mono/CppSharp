@@ -430,8 +430,21 @@ namespace CppSharp.Generators.CSharp
                 pointee.IsPrimitiveType(PrimitiveType.WideChar)) &&
                 pointer.QualifiedPointee.Qualifiers.IsConst)
             {
-                Context.Return.Write(MarshalStringToUnmanaged(Context.Parameter.Name));
-                CSharpContext.Cleanup.WriteLine("Marshal.FreeHGlobal({0});", Context.ArgName);
+                if (Context.Parameter.IsOut)
+                {
+                    Context.Return.Write("IntPtr.Zero");
+                    CSharpContext.ArgumentPrefix.Write("&");
+                }
+                else if (Context.Parameter.IsInOut)
+                {
+                    Context.Return.Write(MarshalStringToUnmanaged(Context.Parameter.Name));
+                    CSharpContext.ArgumentPrefix.Write("&");
+                }
+                else
+                {
+                    Context.Return.Write(MarshalStringToUnmanaged(Context.Parameter.Name));
+                    CSharpContext.Cleanup.WriteLine("Marshal.FreeHGlobal({0});", Context.ArgName);
+                }
                 return true;
             }
 
