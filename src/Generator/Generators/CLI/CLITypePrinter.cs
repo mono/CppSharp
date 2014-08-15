@@ -280,12 +280,12 @@ namespace CppSharp.Generators.CLI
 
         public string VisitInjectedClassNameType(InjectedClassNameType injected, TypeQualifiers quals)
         {
-            throw new NotImplementedException();
+            return string.Empty;
         }
 
         public string VisitDependentNameType(DependentNameType dependent, TypeQualifiers quals)
         {
-            throw new NotImplementedException();
+            return string.Empty;
         }
 
         public string VisitPackExpansionType(PackExpansionType packExpansionType, TypeQualifiers quals)

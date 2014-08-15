@@ -169,7 +169,7 @@ namespace CppSharp.Types
 
         public string VisitDependentNameType(DependentNameType dependent, TypeQualifiers quals)
         {
-            throw new System.NotImplementedException();
+            return string.Empty;
         }
 
         public string VisitPackExpansionType(PackExpansionType packExpansionType, TypeQualifiers quals)
