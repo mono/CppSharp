@@ -10,6 +10,16 @@ namespace CppSharp.Types.Std
     [TypeMap("va_list")]
     public class VaList : TypeMap
     {
+        public override string CLISignature(CLITypePrinterContext ctx)
+        {
+            return "va_list";
+        }
+
+        public override string CSharpSignature(CSharpTypePrinterContext ctx)
+        {
+            return "va_list";
+        }
+
         public override bool IsIgnored
         {
             get { return true; }
