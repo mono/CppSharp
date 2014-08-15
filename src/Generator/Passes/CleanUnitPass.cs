@@ -36,6 +36,12 @@ namespace CppSharp.Passes
                 var path = DriverOptions.getIncludeDirs(i);
 
                 int idx = filePath.IndexOf(path, System.StringComparison.Ordinal);
+                if (idx == -1)
+                {
+                    path = path.Replace('/', '\\');
+                    idx = filePath.IndexOf(path, System.StringComparison.Ordinal);
+                }
+
                 if (idx == -1) continue;
 
                 string inc = filePath.Substring(path.Length);
