@@ -44,6 +44,9 @@
 
 using namespace CppSharp::CppParser;
 
+// We use this as a placeholder for pointer values that should be ignored.
+void* IgnorePtr = (void*) 0x1;
+
 //-----------------------------------//
 
 Parser::Parser(ParserOptions* Opts) : Lib(Opts->ASTContext), Opts(Opts), Index(0)
@@ -1746,6 +1749,11 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
                 auto Arg = FP->getParamType(i);
                 FA->Name = "";
                 FA->QualifiedType = GetQualifiedType(Arg, WalkType(Arg));
+
+                // In this case we have no valid value to use as a pointer so
+                // use a special value known to the managed side to make sure
+                // it gets ignored.
+                FA->OriginalPtr = IgnorePtr;
             }
             F->Parameters.push_back(FA);
         }

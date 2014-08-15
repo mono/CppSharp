@@ -698,6 +698,9 @@ namespace CppSharp
 
         bool CheckForDuplicates(Declaration decl)
         {
+            if (decl.OriginalPtr == (void*) (0x1))
+                return false;
+
             return !(decl is PreprocessedEntity);
         }
 
