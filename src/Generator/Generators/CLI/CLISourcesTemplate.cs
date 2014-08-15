@@ -222,6 +222,11 @@ namespace CppSharp.Generators.CLI
                 if (@class.IsValueType && method.IsCopyConstructor)
                     continue;
 
+                // Do not generate constructors or destructors from base classes.
+                var declaringClass = method.Namespace as Class;
+                if (declaringClass != realOwner && (method.IsConstructor || method.IsDestructor))
+                    continue;
+
                 GenerateMethod(method, realOwner);
             }
         }
