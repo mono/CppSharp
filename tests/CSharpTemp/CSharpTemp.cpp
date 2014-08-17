@@ -130,14 +130,29 @@ long P::prop()
     return m_property + 100;
 }
 
+template <typename T>
+QFlags<T>::QFlags(T t) : flag(t)
+{
+}
+
+template <typename T>
+QFlags<T>::operator T()
+{
+    return flag;
+}
+
+ComplexType::ComplexType() : qFlags(QFlags<TestFlag>(TestFlag::Flag2))
+{
+}
+
 int ComplexType::check()
 {
     return 5;
 }
 
-QFlags<int> ComplexType::returnsQFlags()
+QFlags<TestFlag> ComplexType::returnsQFlags()
 {
-    return QFlags<int>();
+    return qFlags;
 }
 
 void ComplexType::takesQFlags(const QFlags<int> f)

@@ -102,18 +102,30 @@ public:
 Proprietor::Proprietor() {}
 
 template <typename T>
-class QFlags
+class DLL_API QFlags
 {
 public:
-    QFlags() {}
+    QFlags(T t);
+    operator T();
+private:
+    T flag;
+};
+
+enum class TestFlag
+{
+    Flag1,
+    Flag2
 };
 
 class DLL_API ComplexType
 {
 public:
+    ComplexType();
     int check();
-    QFlags<int> returnsQFlags();
+    QFlags<TestFlag> returnsQFlags();
     void takesQFlags(const QFlags<int> f);
+private:
+    QFlags<TestFlag> qFlags;
 };
 
 class DLL_API P : Proprietor

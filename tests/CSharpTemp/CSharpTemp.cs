@@ -13,6 +13,11 @@ namespace CppSharp.Tests
     [TypeMap("QFlags")]
     public class QFlags : TypeMap
     {
+        public override string CSharpConstruct()
+        {
+            return string.Empty;
+        }
+
         public override string CSharpSignature(CSharpTypePrinterContext ctx)
         {
             TemplateArgument templateArgument =

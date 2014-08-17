@@ -2262,8 +2262,28 @@ namespace CppSharp.Generators.CSharp
                 Class retClass;
                 indirectRetType.Type.Desugar().TryGetClass(out retClass);
 
-                WriteLine("var {0} = new {1}.Internal();", GeneratedIdentifier("ret"),
-                    QualifiedIdentifier(retClass.OriginalClass ?? retClass));
+                TypeMap typeMap;
+                string construct = null;
+                if (Driver.TypeDatabase.FindTypeMap(retClass, out typeMap))
+                    construct = typeMap.CSharpConstruct();
+
+                if (construct == null)
+                {
+                    WriteLine("var {0} = new {1}.Internal();", GeneratedIdentifier("ret"),
+                        QualifiedIdentifier(retClass.OriginalClass ?? retClass));
+                }
+                else
+                {
+                    if (string.IsNullOrWhiteSpace(construct))
+                        WriteLine("{0} {1};",
+                            typeMap.CSharpSignature(new CSharpTypePrinterContext
+                            {
+                                Type = indirectRetType.Type.Desugar()
+                            }),
+                            GeneratedIdentifier("ret"));
+                    else
+                        WriteLine("var {0} = {1};", construct);
+                }
             }
 
             var names = new List<string>();
