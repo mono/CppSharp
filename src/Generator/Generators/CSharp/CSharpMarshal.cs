@@ -495,7 +495,7 @@ namespace CppSharp.Generators.CSharp
                     Context.Return.Write("&_{0}", param.Name);
                 }
                 else
-                    Context.Return.Write(Helpers.SafeIdentifier(Context.Parameter.Name));
+                    Context.Return.Write(Context.Parameter.Name);
 
                 return true;
             }
