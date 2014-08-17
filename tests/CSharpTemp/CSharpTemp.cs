@@ -59,6 +59,7 @@ namespace CppSharp.Tests
 
         public override void SetupPasses(Driver driver)
         {
+            driver.Options.GenerateAbstractImpls = true;
             driver.Options.GenerateInterfacesForMultipleInheritance = true;
             driver.Options.GeneratePropertiesAdvanced = true;
             driver.Options.GenerateVirtualTables = true;

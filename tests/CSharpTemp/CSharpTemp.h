@@ -198,3 +198,9 @@ class DLL_API HasPrivateOverride : public HasPrivateOverrideBase
 private:
     virtual void privateOverride(int i);
 };
+
+class DLL_API AbstractWithProperty
+{
+public:
+    virtual int property() = 0;
+};

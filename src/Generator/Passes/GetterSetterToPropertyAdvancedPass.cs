@@ -25,7 +25,7 @@ namespace CppSharp.Passes
             {
                 this.log = log;
                 foreach (var method in @class.Methods.Where(
-                    m => !m.IsConstructor && !m.IsDestructor && !m.IsOperator && !m.IsSynthetized))
+                    m => !m.IsConstructor && !m.IsDestructor && !m.IsOperator))
                     DistributeMethod(method);
             }
 
@@ -275,11 +275,15 @@ namespace CppSharp.Passes
 
         public override bool VisitClassDecl(Class @class)
         {
-            bool result = base.VisitClassDecl(@class);
+            if (!AlreadyVisited(@class))
+            {
+                bool result = base.VisitClassDecl(@class);
 
-            new PropertyGenerator(@class, Log).GenerateProperties();
+                new PropertyGenerator(@class, Log).GenerateProperties();
 
-            return result;
+                return result;
+            }
+            return false;
         }
     }
 }
