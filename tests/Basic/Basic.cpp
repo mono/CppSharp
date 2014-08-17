@@ -36,6 +36,10 @@ char Foo2::testCharMarshalling(char c)
     return c;
 }
 
+void Foo2::testKeywordParam(void* where)
+{
+}
+
 Bar::Bar()
 {
 }
