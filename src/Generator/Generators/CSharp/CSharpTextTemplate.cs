@@ -852,7 +852,7 @@ namespace CppSharp.Generators.CSharp
             return Tuple.Create(library, decl.Mangled);
         }
 
-        private void GeneratePropertySetter<T>(QualifiedType returnType, T decl, Class @class)
+        private void GeneratePropertySetter<T>(QualifiedType returnType, T decl, Class @class, bool isAbstract = false)
             where T : Declaration, ITypedDecl
         {
             if (!(decl is Function || decl is Field) )
@@ -861,7 +861,7 @@ namespace CppSharp.Generators.CSharp
             }
 
             PushBlock(CSharpBlockKind.Method);
-            WriteLine("set");
+            Write("set");
 
             var param = new Parameter
             {
@@ -878,27 +878,28 @@ namespace CppSharp.Generators.CSharp
             if (decl is Function)
             {
                 var function = decl as Function;
-                if (function.IsPure && Driver.Options.GenerateAbstractImpls)
+                if (isAbstract && Driver.Options.GenerateAbstractImpls)
                 {
                     Write(";");
                     PopBlock(NewLineKind.BeforeNextBlock);
                     return;
                 }
 
+                NewLine();
                 WriteStartBraceIndent();
                 if (function.Parameters.Count == 0)
                     throw new NotSupportedException("Expected at least one parameter in setter");
 
                 param.QualifiedType = function.Parameters[0].QualifiedType;
 
-                var method = function as Method;
-                if (method != null && method.OperatorKind == CXXOperatorKind.Subscript)
+                if (function.SynthKind == FunctionSynthKind.AbstractImplCall)
                 {
-                    if (method.SynthKind == FunctionSynthKind.AbstractImplCall)
-                    {
-                        GenerateAbstractImplCall(method, @class);
-                    }
-                    else
+                    GenerateAbstractImplCall(function, @class);
+                }
+                else
+                {
+                    var method = function as Method;
+                    if (method != null && method.OperatorKind == CXXOperatorKind.Subscript)
                     {
                         if (method.OperatorKind == CXXOperatorKind.Subscript)
                         {
@@ -910,11 +911,10 @@ namespace CppSharp.Generators.CSharp
                             GenerateInternalFunctionCall(function, parameters);
                         }
                     }
-                }
-                else
-                {
-                    var parameters = new List<Parameter> { param };
-                    GenerateInternalFunctionCall(function, parameters); 
+                    else
+                    {
+                        GenerateInternalFunctionCall(function, new List<Parameter> { param });
+                    }
                 }
                 WriteCloseBraceIndent();
             }
@@ -927,6 +927,7 @@ namespace CppSharp.Generators.CSharp
                 {
                     if (@class.IsUnion)
                     {
+                        NewLine();
                         WriteStartBraceIndent();
                         WriteLine("{0} = value;", decl.Name);
                         WriteCloseBraceIndent();
@@ -938,6 +939,7 @@ namespace CppSharp.Generators.CSharp
                     return;
                 }
 
+                NewLine();
                 WriteStartBraceIndent();
 
                 WriteLine("var {0} = (Internal*){1}.ToPointer();",
@@ -1001,7 +1003,7 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
-        private void GeneratePropertyGetter<T>(QualifiedType returnType, T decl, Class @class)
+        private void GeneratePropertyGetter<T>(QualifiedType returnType, T decl, Class @class, bool isAbstract = false)
             where T : Declaration, ITypedDecl
         {
             PushBlock(CSharpBlockKind.Method);
@@ -1010,7 +1012,7 @@ namespace CppSharp.Generators.CSharp
             if (decl is Function)
             {
                 var function = decl as Function;
-                if (function.IsPure && Driver.Options.GenerateAbstractImpls)
+                if (isAbstract && Driver.Options.GenerateAbstractImpls)
                 {
                     Write(";");
                     PopBlock(NewLineKind.BeforeNextBlock);
@@ -1234,16 +1236,15 @@ namespace CppSharp.Generators.CSharp
                         GeneratePropertyGetter(prop.QualifiedType, prop.Field, @class);
 
                     if (prop.HasSetter)
-                        GeneratePropertySetter(prop.Field.QualifiedType, prop.Field,
-                            @class);
+                        GeneratePropertySetter(prop.Field.QualifiedType, prop.Field, @class);
                 }
                 else
                 {
                     if (prop.HasGetter)
-                        GeneratePropertyGetter(prop.QualifiedType, prop.GetMethod, @class);
+                        GeneratePropertyGetter(prop.QualifiedType, prop.GetMethod, @class, prop.IsPure);
 
                     if (prop.HasSetter)
-                        GeneratePropertySetter(prop.QualifiedType, prop.SetMethod, @class);
+                        GeneratePropertySetter(prop.QualifiedType, prop.SetMethod, @class, prop.IsPure);
                 }
 
                 WriteCloseBraceIndent();
@@ -1620,9 +1621,9 @@ namespace CppSharp.Generators.CSharp
             PopBlock(NewLineKind.Always);
         }
 
-        public string GetVTableMethodDelegateName(Method method)
+        public string GetVTableMethodDelegateName(Function function)
         {
-            var nativeId = GetFunctionNativeIdentifier(method);
+            var nativeId = GetFunctionNativeIdentifier(function);
 
             // Trim '@' (if any) because '@' is valid only as the first symbol.
             nativeId = nativeId.Trim('@');
@@ -2132,23 +2133,23 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
-        private void GenerateAbstractImplCall(Method method, Class @class)
+        private void GenerateAbstractImplCall(Function function, Class @class)
         {
             string delegateId;
-            Write(GetAbstractCallDelegate(method, @class, out delegateId));
-            GenerateFunctionCall(delegateId, method.Parameters, method);
+            Write(GetAbstractCallDelegate(function, @class, out delegateId));
+            GenerateFunctionCall(delegateId, function.Parameters, function);
         }
 
-        public string GetAbstractCallDelegate(Method method, Class @class,
+        public string GetAbstractCallDelegate(Function function, Class @class,
             out string delegateId)
         {
             var virtualCallBuilder = new StringBuilder();
-            var i = VTables.GetVTableIndex(method, @class);
+            var i = VTables.GetVTableIndex(function, @class);
             virtualCallBuilder.AppendFormat("void* slot = *(void**) ((({0}.Internal*) {1})->vfptr0 + {2} * {3});",
                 @class.BaseClass.Name, Helpers.InstanceIdentifier, i, Driver.TargetInfo.PointerWidth / 8);
             virtualCallBuilder.AppendLine();
 
-            string @delegate = GetVTableMethodDelegateName((Method) method.OriginalFunction);
+            string @delegate = GetVTableMethodDelegateName(function.OriginalFunction);
             delegateId = Generator.GeneratedIdentifier(@delegate);
 
             virtualCallBuilder.AppendFormat(
