@@ -531,3 +531,9 @@ template<typename T> struct DependentType
 {
     DependentType(typename T::Dependent* t) { }
 };
+
+class PureDtor
+{
+public:
+    virtual ~PureDtor() = 0;
+};

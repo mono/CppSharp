@@ -1848,7 +1848,7 @@ namespace CppSharp.Generators.CSharp
                 var dtor = @class.Methods.FirstOrDefault(method => method.IsDestructor);
                 if (dtor != null)
                 {
-                    if (dtor.Access != AccessSpecifier.Private && @class.HasNonTrivialDestructor)
+                    if (dtor.Access != AccessSpecifier.Private && @class.HasNonTrivialDestructor && !dtor.IsPure)
                     {
                         NativeLibrary library;
                         if (!Options.CheckSymbols ||
