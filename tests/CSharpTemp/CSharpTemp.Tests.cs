@@ -150,4 +150,10 @@ public class CSharpTempTests : GeneratorTestFixture
     {
         new HasPrivateOverride().PrivateOverride();
     }
+
+    [Test]
+    public void TestQFlags()
+    {
+        Assert.AreEqual(TestFlag.Flag2, new ComplexType().ReturnsQFlags);
+    }
 }

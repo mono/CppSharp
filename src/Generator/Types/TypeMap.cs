@@ -70,6 +70,15 @@ namespace CppSharp.Types
             
         }
 
+        /// <summary>
+        /// Used to construct a new instance of the mapped type.
+        /// </summary>
+        /// <returns></returns>
+        public virtual string CSharpConstruct()
+        {
+            return null;
+        }
+
         #endregion
 
         #region C++/CLI backend
