@@ -497,10 +497,10 @@ namespace CppSharp.Generators.CSharp
             {
                 foreach (var ctor in @class.Constructors)
                 {
-                    if (@class.IsStatic)
+                    if (@class.IsStatic || ctor.IsMoveConstructor)
                         continue;
 
-                    if (ctor.IsMoveConstructor)
+                    if (!ctor.IsGenerated && !(Options.GenerateCopyConstructors && ctor.IsCopyConstructor))
                         continue;
 
                     if (ctor.IsDefaultConstructor && !@class.HasNonTrivialDefaultConstructor)
