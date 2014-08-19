@@ -17,7 +17,7 @@ namespace CppSharp.Passes
         {
             public bool Equals(Parameter x, Parameter y)
             {
-                return x.QualifiedType.ToString() == y.QualifiedType.ToString();
+                return x.QualifiedType == y.QualifiedType;
             }
 
             public int GetHashCode(Parameter obj)
