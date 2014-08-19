@@ -113,26 +113,31 @@
 
         public static bool TryGetClass(this Type t, out Class @class)
         {
+            return TryGetDeclaration(t, out @class);
+        }
+
+        public static bool TryGetDeclaration<T>(this Type t, out T decl) where T : Declaration
+        {
             t = t.Desugar();
 
             var tag = t as TagType;
             if (tag != null)
             {
-                @class = tag.Declaration as Class;
-                return @class != null;
+                decl = tag.Declaration as T;
+                return decl != null;
             }
 
             var type = t as TemplateSpecializationType;
             if (type != null)
             {
                 var templatedClass = ((ClassTemplate)type.Template).TemplatedClass;
-                @class = templatedClass.CompleteDeclaration == null
-                    ? templatedClass
-                    : (Class)templatedClass.CompleteDeclaration;
-                return @class != null;
+                decl = templatedClass.CompleteDeclaration == null
+                    ? templatedClass as T
+                    : (T) templatedClass.CompleteDeclaration;
+                return decl != null;
             }
 
-            @class = null;
+            decl = null;
             return false;
         }
 

@@ -316,7 +316,7 @@ namespace CppSharp.Generators.CSharp
 
         public void GenerateClass(Class @class)
         {
-            if (!@class.IsGenerated || @class.IsIncomplete)
+            if (@class.IsIncomplete)
                 return;
 
             PushBlock(CSharpBlockKind.Class);
@@ -332,7 +332,7 @@ namespace CppSharp.Generators.CSharp
                 GenerateClassInternals(@class);
                 GenerateDeclContext(@class);
 
-                if (@class.IsDependent)
+                if (@class.IsDependent || !@class.IsGenerated)
                     goto exit;
 
                 if (ShouldGenerateClassNativeField(@class))
@@ -789,8 +789,9 @@ namespace CppSharp.Generators.CSharp
         {
             // we do not support dependent fields yet, see https://github.com/mono/CppSharp/issues/197
             Class @class;
+            field.Type.TryGetClass(out @class);
             if (field.Type.IsDependent && !field.Type.IsPointer() &&
-                !(field.Type.TryGetClass(out @class) && @class.IsUnion))
+                !(@class != null && @class.IsUnion))
                 return;
 
             var safeIdentifier = Helpers.SafeIdentifier(field.OriginalName);
@@ -804,14 +805,15 @@ namespace CppSharp.Generators.CSharp
             if (!string.IsNullOrWhiteSpace(fieldTypePrinted.NameSuffix))
                 safeIdentifier += fieldTypePrinted.NameSuffix;
 
+            var access = @class != null && !@class.IsGenerated ? "internal" : "public";
             if (field.Expression != null)
             {
                 var fieldValuePrinted = field.Expression.CSharpValue(ExpressionPrinter);
-                Write("public {0} {1} = {2};", fieldTypePrinted.Type, safeIdentifier, fieldValuePrinted);
+                Write("{0} {1} {2} = {3};", access, fieldTypePrinted.Type, safeIdentifier, fieldValuePrinted);
             }
             else
             {
-                Write("public {0} {1};", fieldTypePrinted.Type, safeIdentifier);
+                Write("{0} {1} {2};", access, fieldTypePrinted.Type, safeIdentifier);
             }
 
             PopBlock(NewLineKind.BeforeNextBlock);

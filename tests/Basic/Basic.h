@@ -1,5 +1,16 @@
 #include "../Tests.h"
 
+class DLL_API IgnoredType
+{
+    class IgnoredNested
+    {
+    private:
+        int i;
+    };
+private:
+    int i;
+};
+
 class DLL_API Foo
 {
 public:
@@ -7,6 +18,7 @@ public:
     Foo();
     int A;
     float B;
+    IgnoredType ignoredType;
 
 	const char* GetANSI();
 	// TODO: VC++ does not support char16
