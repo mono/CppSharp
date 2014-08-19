@@ -13,9 +13,16 @@ private:
 
 class DLL_API Foo
 {
+private:
+    enum Private
+    {
+        Value1,
+        Value2
+    };
 public:
 
     Foo();
+    Foo(Private p);
     int A;
     float B;
     IgnoredType ignoredType;

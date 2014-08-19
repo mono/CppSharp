@@ -10,6 +10,10 @@ Foo::Foo()
     SomePointerPointer = &SomePointer;
 }
 
+Foo::Foo(Private p)
+{
+}
+
 const char* Foo::GetANSI()
 {
 	return "ANSI";
