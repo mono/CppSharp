@@ -216,3 +216,17 @@ class DLL_API AbstractWithProperty
 public:
     virtual int property() = 0;
 };
+
+template <typename T>
+class DLL_API IgnoredType
+{
+};
+
+class DLL_API PropertyWithIgnoredType
+{
+public:
+    IgnoredType<int> ignoredType();
+    void setIgnoredType(const IgnoredType<int>& value);
+private:
+    IgnoredType<int> _ignoredType;
+};

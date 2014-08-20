@@ -25,7 +25,7 @@ namespace CppSharp.Passes
             {
                 this.log = log;
                 foreach (var method in @class.Methods.Where(
-                    m => !m.IsConstructor && !m.IsDestructor && !m.IsOperator))
+                    m => !m.IsConstructor && !m.IsDestructor && !m.IsOperator && m.IsGenerated))
                     DistributeMethod(method);
             }
 
