@@ -250,10 +250,12 @@ namespace CppSharp.Generators.CSharp
         {
             var ctx = Context as CSharpMarshalContext;
 
-            string instance = Context.ReturnVarName;
+            var instance = Context.ReturnVarName;
 
+            @class = @class.OriginalClass ?? @class;
+            Type returnType = Context.ReturnType.Type.Desugar();
             if (@class.IsRefType &&
-                (Context.ReturnType.Qualifiers.IsConst || !Context.ReturnType.Type.IsAddress()) &&
+                (Context.ReturnType.Qualifiers.IsConst || !returnType.IsAddress()) &&
                 (!Context.Driver.Options.GenerateAbstractImpls || !@class.IsAbstract))
             {
                 var instanceName = Generator.GeneratedIdentifier("instance");
@@ -299,16 +301,16 @@ namespace CppSharp.Generators.CSharp
 
                 instance = instanceName;
             }
-
-            if (@class.IsRefType)
-                Context.Return.Write("({0} == IntPtr.Zero) ? null : ",
-                    instance);
-
-            Context.Return.Write("new {0}({1})",
-                QualifiedIdentifier(@class.OriginalClass ?? @class) +
+            
+            var type = QualifiedIdentifier(@class) +
                 (Context.Driver.Options.GenerateAbstractImpls && @class.IsAbstract ?
-                    "Internal" : ""),
-                instance);
+                    "Internal" : "");
+
+            if (returnType.IsAddress())
+                Context.Return.Write("({0} == IntPtr.Zero) ? {1} : ", instance,
+                    @class.IsRefType ? "null" : string.Format("new {0}()", type));
+
+            Context.Return.Write("new {0}({1})", type, instance);
 
             return true;
         }
