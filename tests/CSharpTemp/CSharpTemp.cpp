@@ -257,3 +257,13 @@ void HasPrivateOverrideBase::privateOverride(int i)
 void HasPrivateOverride::privateOverride(int i)
 {
 }
+
+IgnoredType<int> PropertyWithIgnoredType::ignoredType()
+{
+    return _ignoredType;
+}
+
+void PropertyWithIgnoredType::setIgnoredType(const IgnoredType<int> &value)
+{
+    _ignoredType = value;
+}
