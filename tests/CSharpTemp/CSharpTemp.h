@@ -197,6 +197,7 @@ public:
     void DefaultRefTypeAfterOthers(int i = 5, Bar::Items item = Bar::Item2, Foo foo = Foo());
     void DefaultRefTypeBeforeAndAfterOthers(int i = 5, Foo foo = Foo(), Bar::Items item = Bar::Item2, Baz baz = Baz());
     void DefaultIntAssignedAnEnum(int i = Bar::Item1);
+    void DefaultRefAssignedValue(const Foo& fooRef = Foo());
 };
 
 class DLL_API HasPrivateOverrideBase

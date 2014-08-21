@@ -250,6 +250,10 @@ void MethodsWithDefaultValues::DefaultIntAssignedAnEnum(int i)
 {
 }
 
+void MethodsWithDefaultValues::DefaultRefAssignedValue(const Foo &fooRef)
+{
+}
+
 void HasPrivateOverrideBase::privateOverride(int i)
 {
 }
