@@ -2467,12 +2467,16 @@ AST::Expression* Parser::WalkStatement(clang::Stmt* Statement)
     case Stmt::ImplicitCastExprClass:
         return WalkStatement(cast<CastExpr>(Statement)->getSubExprAsWritten());
     case Stmt::CXXConstructExprClass:
+    case Stmt::CXXTemporaryObjectExprClass:
     {
         auto ConstructorExpr = cast<CXXConstructExpr>(Statement);
-        auto Arg = ConstructorExpr->getArg(0);
-        auto TemporaryExpr = dyn_cast<MaterializeTemporaryExpr>(Arg);
-        if (TemporaryExpr && isa<CastExpr>(TemporaryExpr->GetTemporaryExpr()))
-            return WalkStatement(TemporaryExpr->GetTemporaryExpr());
+        if (ConstructorExpr->getNumArgs() > 0)
+        {
+            auto Arg = ConstructorExpr->getArg(0);
+            auto TemporaryExpr = dyn_cast<MaterializeTemporaryExpr>(Arg);
+            if (TemporaryExpr && isa<CastExpr>(TemporaryExpr->GetTemporaryExpr()))
+                return WalkStatement(TemporaryExpr->GetTemporaryExpr());
+        }
         return new AST::Expression(GetStringFromStatement(Statement), StatementClass::CXXConstructExprClass,
             WalkDeclaration(ConstructorExpr->getConstructor()));
     }
