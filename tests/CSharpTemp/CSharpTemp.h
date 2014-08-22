@@ -187,6 +187,24 @@ struct DLL_API ValueType
 {
 };
 
+enum class Flags
+{
+    Flag1 = 1,
+    Flag2 = 2,
+    Flag3 = 4
+};
+
+DLL_API Flags operator|(Flags lhs, Flags rhs);
+
+enum UntypedFlags
+{
+    Flag1 = 1,
+    Flag2 = 2,
+    Flag3 = 4
+};
+
+UntypedFlags operator|(UntypedFlags lhs, UntypedFlags rhs);
+
 class DLL_API MethodsWithDefaultValues
 {
 public:
@@ -198,6 +216,8 @@ public:
     void DefaultRefTypeBeforeAndAfterOthers(int i = 5, Foo foo = Foo(), Bar::Items item = Bar::Item2, Baz baz = Baz());
     void DefaultIntAssignedAnEnum(int i = Bar::Item1);
     void DefaultRefAssignedValue(const Foo& fooRef = Foo());
+    void DefaultEnumAssignedBitwiseOr(Flags flags = Flags::Flag1 | Flags::Flag2);
+    void DefaultEnumAssignedBitwiseOrShort(UntypedFlags flags = Flag1 | Flag2);
 };
 
 class DLL_API HasPrivateOverrideBase

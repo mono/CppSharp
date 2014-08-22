@@ -855,6 +855,9 @@ namespace CppSharp
                 case StatementClass.CXXConstructExprClass:
                     expression.Class = AST.StatementClass.ConstructorReference;
                     break;
+                case StatementClass.CXXOperatorCallExpr:
+                    expression.Class = AST.StatementClass.CXXOperatorCall;
+                    break;
             }
             return expression;
         }

@@ -222,6 +222,16 @@ TestCopyConstructorVal::TestCopyConstructorVal(const TestCopyConstructorVal& oth
     B = other.B;
 }
 
+Flags operator|(Flags lhs, Flags rhs)
+{
+    return static_cast<Flags>(static_cast<int>(lhs) | static_cast<int>(rhs));
+}
+
+UntypedFlags operator|(UntypedFlags lhs, UntypedFlags rhs)
+{
+    return static_cast<UntypedFlags>(static_cast<int>(lhs) | static_cast<int>(rhs));
+}
+
 void MethodsWithDefaultValues::DefaultPointer(Foo *ptr)
 {
 }

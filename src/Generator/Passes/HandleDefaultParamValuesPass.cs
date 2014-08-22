@@ -13,7 +13,7 @@ namespace CppSharp.Passes
 {
     public class HandleDefaultParamValuesPass : TranslationUnitPass
     {
-        private static readonly Regex regexFunctionParams = new Regex(@"\((.+)\)", RegexOptions.Compiled);
+        private static readonly Regex regexFunctionParams = new Regex(@"\(?(.+)\)?", RegexOptions.Compiled);
         private static readonly Regex regexDoubleColon = new Regex(@"\w+::", RegexOptions.Compiled);
         private static readonly Regex regexName = new Regex(@"(\w+)", RegexOptions.Compiled);
 
@@ -120,8 +120,8 @@ namespace CppSharp.Passes
                 return true;
             }
 
-            var call = parameter.DefaultArgument.Declaration as Method;
-            if (call != null && call.IsConstructor)
+            var call = parameter.DefaultArgument.Declaration as Function;
+            if (call != null)
             {
                 string @params =
                     regexFunctionParams.Match(parameter.DefaultArgument.String).Groups[1].Value;

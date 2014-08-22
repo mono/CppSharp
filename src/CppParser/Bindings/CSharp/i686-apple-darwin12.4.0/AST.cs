@@ -135,7 +135,8 @@ namespace CppSharp
             {
                 Any = 0,
                 DeclRefExprClass = 1,
-                CXXConstructExprClass = 2
+                CXXConstructExprClass = 2,
+                CXXOperatorCallExpr = 3
             }
 
             public enum TemplateSpecializationKind

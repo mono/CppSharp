@@ -4,7 +4,8 @@
     {
         Any,
         DeclarationReference,
-        ConstructorReference
+        ConstructorReference,
+        CXXOperatorCall
     }
 
     public abstract class Statement
