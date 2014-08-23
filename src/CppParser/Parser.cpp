@@ -2455,6 +2455,8 @@ AST::Expression* Parser::WalkStatement(clang::Stmt* Statement)
 
     switch (Statement->getStmtClass())
     {
+    case Stmt::BinaryOperatorClass:
+        return new AST::Expression(GetStringFromStatement(Statement), StatementClass::BinaryOperator);
     case Stmt::DeclRefExprClass:
         return new AST::Expression(GetStringFromStatement(Statement), StatementClass::DeclRefExprClass,
             WalkDeclaration(cast<DeclRefExpr>(Statement)->getDecl()));
@@ -2473,7 +2475,7 @@ AST::Expression* Parser::WalkStatement(clang::Stmt* Statement)
     case Stmt::CXXTemporaryObjectExprClass:
     {
         auto ConstructorExpr = cast<CXXConstructExpr>(Statement);
-        if (ConstructorExpr->getNumArgs() > 0)
+        if (ConstructorExpr->getNumArgs() == 1)
         {
             auto Arg = ConstructorExpr->getArg(0);
             auto TemporaryExpr = dyn_cast<MaterializeTemporaryExpr>(Arg);

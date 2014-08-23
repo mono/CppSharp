@@ -134,9 +134,10 @@ namespace CppSharp
             public enum StatementClass
             {
                 Any = 0,
-                DeclRefExprClass = 1,
-                CXXConstructExprClass = 2,
-                CXXOperatorCallExpr = 3
+                BinaryOperator = 1,
+                DeclRefExprClass = 2,
+                CXXConstructExprClass = 3,
+                CXXOperatorCallExpr = 4
             }
 
             public enum TemplateSpecializationKind

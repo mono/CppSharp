@@ -3,6 +3,7 @@
     public enum StatementClass
     {
         Any,
+        BinaryOperator,
         DeclarationReference,
         ConstructorReference,
         CXXOperatorCall

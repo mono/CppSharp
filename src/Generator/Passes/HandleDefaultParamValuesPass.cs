@@ -121,10 +121,9 @@ namespace CppSharp.Passes
             }
 
             var call = parameter.DefaultArgument.Declaration as Function;
-            if (call != null)
+            if (call != null || parameter.DefaultArgument.Class == StatementClass.BinaryOperator)
             {
-                string @params =
-                    regexFunctionParams.Match(parameter.DefaultArgument.String).Groups[1].Value;
+                string @params = regexFunctionParams.Match(parameter.DefaultArgument.String).Groups[1].Value;
                 if (@params.Contains("::"))
                     parameter.DefaultArgument.String = regexDoubleColon.Replace(@params, desugared + ".");
                 else
