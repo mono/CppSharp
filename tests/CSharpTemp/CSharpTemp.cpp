@@ -232,35 +232,35 @@ UntypedFlags operator|(UntypedFlags lhs, UntypedFlags rhs)
     return static_cast<UntypedFlags>(static_cast<int>(lhs) | static_cast<int>(rhs));
 }
 
-void MethodsWithDefaultValues::DefaultPointer(Foo *ptr)
+void MethodsWithDefaultValues::defaultPointer(Foo *ptr)
 {
 }
 
-void MethodsWithDefaultValues::DefaultValueType(ValueType bar)
+void MethodsWithDefaultValues::defaultValueType(ValueType bar)
 {
 }
 
-void MethodsWithDefaultValues::DefaultChar(char c)
+void MethodsWithDefaultValues::defaultChar(char c)
 {
 }
 
-void MethodsWithDefaultValues::DefaultRefTypeBeforeOthers(Foo foo, int i, Bar::Items item)
+void MethodsWithDefaultValues::defaultRefTypeBeforeOthers(Foo foo, int i, Bar::Items item)
 {
 }
 
-void MethodsWithDefaultValues::DefaultRefTypeAfterOthers(int i, Bar::Items item, Foo foo)
+void MethodsWithDefaultValues::defaultRefTypeAfterOthers(int i, Bar::Items item, Foo foo)
 {
 }
 
-void MethodsWithDefaultValues::DefaultRefTypeBeforeAndAfterOthers(int i, Foo foo, Bar::Items item, Baz baz)
+void MethodsWithDefaultValues::defaultRefTypeBeforeAndAfterOthers(int i, Foo foo, Bar::Items item, Baz baz)
 {
 }
 
-void MethodsWithDefaultValues::DefaultIntAssignedAnEnum(int i)
+void MethodsWithDefaultValues::defaultIntAssignedAnEnum(int i)
 {
 }
 
-void MethodsWithDefaultValues::DefaultRefAssignedValue(const Foo &fooRef)
+void MethodsWithDefaultValues::defaultRefAssignedValue(const Foo &fooRef)
 {
 }
 

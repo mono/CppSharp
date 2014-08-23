@@ -208,16 +208,17 @@ UntypedFlags operator|(UntypedFlags lhs, UntypedFlags rhs);
 class DLL_API MethodsWithDefaultValues
 {
 public:
-    void DefaultPointer(Foo* ptr = 0);
-    void DefaultValueType(ValueType bar = ValueType());
-    void DefaultChar(char c = 'a');
-    void DefaultRefTypeBeforeOthers(Foo foo = Foo(), int i = 5, Bar::Items item = Bar::Item2);
-    void DefaultRefTypeAfterOthers(int i = 5, Bar::Items item = Bar::Item2, Foo foo = Foo());
-    void DefaultRefTypeBeforeAndAfterOthers(int i = 5, Foo foo = Foo(), Bar::Items item = Bar::Item2, Baz baz = Baz());
-    void DefaultIntAssignedAnEnum(int i = Bar::Item1);
+    void defaultPointer(Foo* ptr = 0);
+    void defaultValueType(ValueType bar = ValueType());
+    void defaultChar(char c = 'a');
+    void defaultRefTypeBeforeOthers(Foo foo = Foo(), int i = 5, Bar::Items item = Bar::Item2);
+    void defaultRefTypeAfterOthers(int i = 5, Bar::Items item = Bar::Item2, Foo foo = Foo());
+    void defaultRefTypeBeforeAndAfterOthers(int i = 5, Foo foo = Foo(), Bar::Items item = Bar::Item2, Baz baz = Baz());
+    void defaultIntAssignedAnEnum(int i = Bar::Item1);
+    void defaultRefAssignedValue(const Foo& fooRef = Foo());
     void DefaultRefAssignedValue(const Foo& fooRef = Foo());
-    void DefaultEnumAssignedBitwiseOr(Flags flags = Flags::Flag1 | Flags::Flag2);
-    void DefaultEnumAssignedBitwiseOrShort(UntypedFlags flags = Flag1 | Flag2);
+    void defaultEnumAssignedBitwiseOr(Flags flags = Flags::Flag1 | Flags::Flag2);
+    void defaultEnumAssignedBitwiseOrShort(UntypedFlags flags = Flag1 | Flag2);
 };
 
 class DLL_API HasPrivateOverrideBase

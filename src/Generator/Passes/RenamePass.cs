@@ -13,11 +13,11 @@ namespace CppSharp.Passes
     /// </summary>
     public abstract class RenamePass : TranslationUnitPass
     {
-        public class ParameterMappedTypeComparer : IEqualityComparer<Parameter>
+        public class ParameterComparer : IEqualityComparer<Parameter>
         {
             public bool Equals(Parameter x, Parameter y)
             {
-                return x.QualifiedType == y.QualifiedType;
+                return x.QualifiedType == y.QualifiedType && x.GenerationKind == y.GenerationKind;
             }
 
             public int GetHashCode(Parameter obj)
@@ -134,10 +134,10 @@ namespace CppSharp.Passes
             if (method != null)
             {
                 return ((Class) method.Namespace).Methods.Where(
-                    m => m.Parameters.SequenceEqual(function.Parameters, new ParameterMappedTypeComparer()));
+                    m => m.Parameters.SequenceEqual(function.Parameters, new ParameterComparer()));
             }
             return function.Namespace.Functions.Where(
-                f => f.Parameters.SequenceEqual(function.Parameters, new ParameterMappedTypeComparer()));
+                f => f.Parameters.SequenceEqual(function.Parameters, new ParameterComparer()));
         }
 
         public override bool VisitEnumItem(Enumeration.Item item)
