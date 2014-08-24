@@ -205,6 +205,14 @@ enum UntypedFlags
 
 UntypedFlags operator|(UntypedFlags lhs, UntypedFlags rhs);
 
+struct QGenericArgument
+{
+public:
+    QGenericArgument(const char* name = 0);
+private:
+    const char* _name;
+};
+
 class DLL_API MethodsWithDefaultValues
 {
 public:
@@ -219,6 +227,7 @@ public:
     void DefaultRefAssignedValue(const Foo& fooRef = Foo());
     void defaultEnumAssignedBitwiseOr(Flags flags = Flags::Flag1 | Flags::Flag2);
     void defaultEnumAssignedBitwiseOrShort(UntypedFlags flags = Flag1 | Flag2);
+    void defaultNonEmptyCtor(QGenericArgument arg = QGenericArgument(0));
     void defaultMappedToEnum(QFlags<Flags> qFlags = Flags::Flag1);
 };
 

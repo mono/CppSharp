@@ -81,6 +81,7 @@ namespace CppSharp.Tests
         public override void Preprocess(Driver driver, ASTContext ctx)
         {
             ctx.SetClassAsValueType("TestCopyConstructorVal");
+            ctx.SetClassAsValueType("QGenericArgument");
         }
 
         public override void Postprocess(Driver driver, ASTContext ctx)

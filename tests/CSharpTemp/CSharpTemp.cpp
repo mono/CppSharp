@@ -232,6 +232,11 @@ UntypedFlags operator|(UntypedFlags lhs, UntypedFlags rhs)
     return static_cast<UntypedFlags>(static_cast<int>(lhs) | static_cast<int>(rhs));
 }
 
+QGenericArgument::QGenericArgument(const char *name)
+{
+    _name = name;
+}
+
 void MethodsWithDefaultValues::defaultPointer(Foo *ptr)
 {
 }

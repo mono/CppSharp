@@ -2479,8 +2479,12 @@ AST::Expression* Parser::WalkStatement(clang::Stmt* Statement)
         {
             auto Arg = ConstructorExpr->getArg(0);
             auto TemporaryExpr = dyn_cast<MaterializeTemporaryExpr>(Arg);
-            if (TemporaryExpr && isa<CastExpr>(TemporaryExpr->GetTemporaryExpr()))
-                return WalkStatement(TemporaryExpr->GetTemporaryExpr());
+            if (TemporaryExpr)
+            {
+                auto Cast = dyn_cast<CastExpr>(TemporaryExpr->GetTemporaryExpr());
+                if (Cast && Cast->getSubExprAsWritten()->getStmtClass() != Stmt::IntegerLiteralClass)
+                    return WalkStatement(Cast->getSubExprAsWritten());
+            }
         }
         return new AST::Expression(GetStringFromStatement(Statement), StatementClass::CXXConstructExprClass,
             WalkDeclaration(ConstructorExpr->getConstructor()));
