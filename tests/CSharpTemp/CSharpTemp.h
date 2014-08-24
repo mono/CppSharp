@@ -219,6 +219,7 @@ public:
     void DefaultRefAssignedValue(const Foo& fooRef = Foo());
     void defaultEnumAssignedBitwiseOr(Flags flags = Flags::Flag1 | Flags::Flag2);
     void defaultEnumAssignedBitwiseOrShort(UntypedFlags flags = Flag1 | Flag2);
+    void defaultMappedToEnum(QFlags<Flags> qFlags = Flags::Flag1);
 };
 
 class DLL_API HasPrivateOverrideBase

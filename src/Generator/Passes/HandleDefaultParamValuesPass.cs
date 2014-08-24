@@ -114,9 +114,11 @@ namespace CppSharp.Passes
             var enumItem = parameter.DefaultArgument.Declaration as Enumeration.Item;
             if (enumItem != null)
             {
-                parameter.DefaultArgument.String = string.Format("{0}{1}.{2}.{3}",
+                parameter.DefaultArgument.String = string.Format("{0}{1}{2}.{3}",
                     desugared.IsPrimitiveType() ? "(int) " : string.Empty,
-                    enumItem.Namespace.Namespace.Name, enumItem.Namespace.Name, enumItem.Name);
+                    string.IsNullOrEmpty(enumItem.Namespace.Namespace.Name)
+                        ? string.Empty
+                        : enumItem.Namespace.Namespace.Name + ".", enumItem.Namespace.Name, enumItem.Name);
                 return true;
             }
 

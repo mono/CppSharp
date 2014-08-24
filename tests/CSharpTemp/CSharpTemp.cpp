@@ -264,6 +264,10 @@ void MethodsWithDefaultValues::defaultRefAssignedValue(const Foo &fooRef)
 {
 }
 
+void MethodsWithDefaultValues::defaultMappedToEnum(QFlags<Flags> qFlags)
+{
+}
+
 void HasPrivateOverrideBase::privateOverride(int i)
 {
 }
