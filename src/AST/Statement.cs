@@ -3,8 +3,10 @@
     public enum StatementClass
     {
         Any,
+        BinaryOperator,
         DeclarationReference,
-        ConstructorReference
+        ConstructorReference,
+        CXXOperatorCall
     }
 
     public abstract class Statement

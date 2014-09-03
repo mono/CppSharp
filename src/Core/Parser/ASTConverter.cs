@@ -849,11 +849,17 @@ namespace CppSharp
             expression.String = statement.String;
             switch (statement.Class)
             {
+                case StatementClass.BinaryOperator:
+                    expression.Class = AST.StatementClass.BinaryOperator;
+                    break;
                 case StatementClass.DeclRefExprClass:
                     expression.Class = AST.StatementClass.DeclarationReference;
                     break;
                 case StatementClass.CXXConstructExprClass:
                     expression.Class = AST.StatementClass.ConstructorReference;
+                    break;
+                case StatementClass.CXXOperatorCallExpr:
+                    expression.Class = AST.StatementClass.CXXOperatorCall;
                     break;
             }
             return expression;

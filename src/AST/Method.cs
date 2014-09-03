@@ -88,6 +88,7 @@ namespace CppSharp.AST
             IsImplicit = method.IsImplicit;
             IsOverride = method.IsOverride;
             IsProxy = method.IsProxy;
+            IsStatic = method.IsStatic;
             Kind = method.Kind;
             IsDefaultConstructor = method.IsDefaultConstructor;
             IsCopyConstructor = method.IsCopyConstructor;

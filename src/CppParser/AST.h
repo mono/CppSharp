@@ -458,8 +458,10 @@ public:
 enum class StatementClass
 {
     Any,
+    BinaryOperator,
     DeclRefExprClass,
-    CXXConstructExprClass
+    CXXConstructExprClass,
+    CXXOperatorCallExpr
 };
 
 class CS_API Statement

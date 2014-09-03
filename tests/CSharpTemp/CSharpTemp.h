@@ -187,17 +187,48 @@ struct DLL_API ValueType
 {
 };
 
+enum class Flags
+{
+    Flag1 = 1,
+    Flag2 = 2,
+    Flag3 = 4
+};
+
+DLL_API Flags operator|(Flags lhs, Flags rhs);
+
+enum UntypedFlags
+{
+    Flag1 = 1,
+    Flag2 = 2,
+    Flag3 = 4
+};
+
+UntypedFlags operator|(UntypedFlags lhs, UntypedFlags rhs);
+
+struct QGenericArgument
+{
+public:
+    QGenericArgument(const char* name = 0);
+private:
+    const char* _name;
+};
+
 class DLL_API MethodsWithDefaultValues
 {
 public:
-    void DefaultPointer(Foo* ptr = 0);
-    void DefaultValueType(ValueType bar = ValueType());
-    void DefaultChar(char c = 'a');
-    void DefaultRefTypeBeforeOthers(Foo foo = Foo(), int i = 5, Bar::Items item = Bar::Item2);
-    void DefaultRefTypeAfterOthers(int i = 5, Bar::Items item = Bar::Item2, Foo foo = Foo());
-    void DefaultRefTypeBeforeAndAfterOthers(int i = 5, Foo foo = Foo(), Bar::Items item = Bar::Item2, Baz baz = Baz());
-    void DefaultIntAssignedAnEnum(int i = Bar::Item1);
+    void defaultPointer(Foo* ptr = 0);
+    void defaultValueType(ValueType bar = ValueType());
+    void defaultChar(char c = 'a');
+    void defaultRefTypeBeforeOthers(Foo foo = Foo(), int i = 5, Bar::Items item = Bar::Item2);
+    void defaultRefTypeAfterOthers(int i = 5, Bar::Items item = Bar::Item2, Foo foo = Foo());
+    void defaultRefTypeBeforeAndAfterOthers(int i = 5, Foo foo = Foo(), Bar::Items item = Bar::Item2, Baz baz = Baz());
+    void defaultIntAssignedAnEnum(int i = Bar::Item1);
+    void defaultRefAssignedValue(const Foo& fooRef = Foo());
     void DefaultRefAssignedValue(const Foo& fooRef = Foo());
+    void defaultEnumAssignedBitwiseOr(Flags flags = Flags::Flag1 | Flags::Flag2);
+    void defaultEnumAssignedBitwiseOrShort(UntypedFlags flags = Flag1 | Flag2);
+    void defaultNonEmptyCtor(QGenericArgument arg = QGenericArgument(0));
+    void defaultMappedToEnum(QFlags<Flags> qFlags = Flags::Flag1);
 };
 
 class DLL_API HasPrivateOverrideBase
