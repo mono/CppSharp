@@ -479,7 +479,7 @@ namespace CppSharp
                         var __ptr = (Internal*)__Instance.ToPointer();
                         var __instance = Marshal.AllocHGlobal(3);
                         CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->Qualifiers), new UIntPtr(3));
-                        return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.TypeQualifiers(__instance);
+                        return new CppSharp.Parser.AST.TypeQualifiers(__instance);
                     }
 
                     set
@@ -631,7 +631,7 @@ namespace CppSharp
                         var __ptr = (Internal*)__Instance.ToPointer();
                         var __instance = Marshal.AllocHGlobal(8);
                         CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->QualifiedType), new UIntPtr(8));
-                        return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.QualifiedType(__instance);
+                        return new CppSharp.Parser.AST.QualifiedType(__instance);
                     }
 
                     set
@@ -786,7 +786,7 @@ namespace CppSharp
                         var __ptr = (Internal*)__Instance.ToPointer();
                         var __instance = Marshal.AllocHGlobal(8);
                         CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->ReturnType), new UIntPtr(8));
-                        return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.QualifiedType(__instance);
+                        return new CppSharp.Parser.AST.QualifiedType(__instance);
                     }
 
                     set
@@ -882,7 +882,7 @@ namespace CppSharp
                         var __ptr = (Internal*)__Instance.ToPointer();
                         var __instance = Marshal.AllocHGlobal(8);
                         CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->QualifiedPointee), new UIntPtr(8));
-                        return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.QualifiedType(__instance);
+                        return new CppSharp.Parser.AST.QualifiedType(__instance);
                     }
 
                     set
@@ -967,7 +967,7 @@ namespace CppSharp
                         var __ptr = (Internal*)__Instance.ToPointer();
                         var __instance = Marshal.AllocHGlobal(8);
                         CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->Pointee), new UIntPtr(8));
-                        return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.QualifiedType(__instance);
+                        return new CppSharp.Parser.AST.QualifiedType(__instance);
                     }
 
                     set
@@ -1108,7 +1108,7 @@ namespace CppSharp
                         var __ptr = (Internal*)__Instance.ToPointer();
                         var __instance = Marshal.AllocHGlobal(8);
                         CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->Modified), new UIntPtr(8));
-                        return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.QualifiedType(__instance);
+                        return new CppSharp.Parser.AST.QualifiedType(__instance);
                     }
 
                     set
@@ -1125,7 +1125,7 @@ namespace CppSharp
                         var __ptr = (Internal*)__Instance.ToPointer();
                         var __instance = Marshal.AllocHGlobal(8);
                         CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->Equivalent), new UIntPtr(8));
-                        return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.QualifiedType(__instance);
+                        return new CppSharp.Parser.AST.QualifiedType(__instance);
                     }
 
                     set
@@ -1201,7 +1201,7 @@ namespace CppSharp
                         var __ptr = (Internal*)__Instance.ToPointer();
                         var __instance = Marshal.AllocHGlobal(8);
                         CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->Decayed), new UIntPtr(8));
-                        return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.QualifiedType(__instance);
+                        return new CppSharp.Parser.AST.QualifiedType(__instance);
                     }
 
                     set
@@ -1218,7 +1218,7 @@ namespace CppSharp
                         var __ptr = (Internal*)__Instance.ToPointer();
                         var __instance = Marshal.AllocHGlobal(8);
                         CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->Original), new UIntPtr(8));
-                        return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.QualifiedType(__instance);
+                        return new CppSharp.Parser.AST.QualifiedType(__instance);
                     }
 
                     set
@@ -1235,7 +1235,7 @@ namespace CppSharp
                         var __ptr = (Internal*)__Instance.ToPointer();
                         var __instance = Marshal.AllocHGlobal(8);
                         CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->Pointee), new UIntPtr(8));
-                        return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.QualifiedType(__instance);
+                        return new CppSharp.Parser.AST.QualifiedType(__instance);
                     }
 
                     set
@@ -1342,7 +1342,7 @@ namespace CppSharp
                         var __ptr = (Internal*)__Instance.ToPointer();
                         var __instance = Marshal.AllocHGlobal(8);
                         CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->Type), new UIntPtr(8));
-                        return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.QualifiedType(__instance);
+                        return new CppSharp.Parser.AST.QualifiedType(__instance);
                     }
 
                     set
@@ -1469,7 +1469,7 @@ namespace CppSharp
                     Internal.getArguments_0(new IntPtr(&__ret), __Instance, i);
                     var __instance = Marshal.AllocHGlobal(20);
                     CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ret), new UIntPtr(20));
-                    return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.TemplateArgument(__instance);
+                    return new CppSharp.Parser.AST.TemplateArgument(__instance);
                 }
 
                 public void addArguments(CppSharp.Parser.AST.TemplateArgument s)
@@ -1717,7 +1717,7 @@ namespace CppSharp
                         var __ptr = (Internal*)__Instance.ToPointer();
                         var __instance = Marshal.AllocHGlobal(16);
                         CppSharp.Parser.AST.TemplateParameter.Internal.cctor_1(__instance, new global::System.IntPtr(&__ptr->Parameter));
-                        return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.TemplateParameter(__instance);
+                        return new CppSharp.Parser.AST.TemplateParameter(__instance);
                     }
 
                     set
@@ -1832,7 +1832,7 @@ namespace CppSharp
                         var __ptr = (Internal*)__Instance.ToPointer();
                         var __instance = Marshal.AllocHGlobal(8);
                         CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->Replacement), new UIntPtr(8));
-                        return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.QualifiedType(__instance);
+                        return new CppSharp.Parser.AST.QualifiedType(__instance);
                     }
 
                     set
@@ -2284,7 +2284,7 @@ namespace CppSharp
                     Internal.getComponents_0(new IntPtr(&__ret), __Instance, i);
                     var __instance = Marshal.AllocHGlobal(12);
                     CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ret), new UIntPtr(12));
-                    return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.VTableComponent(__instance);
+                    return new CppSharp.Parser.AST.VTableComponent(__instance);
                 }
 
                 public void addComponents(CppSharp.Parser.AST.VTableComponent s)
@@ -2428,7 +2428,7 @@ namespace CppSharp
                         var __ptr = (Internal*)__Instance.ToPointer();
                         var __instance = Marshal.AllocHGlobal(12);
                         CppSharp.Parser.AST.VTableLayout.Internal.cctor_1(__instance, new global::System.IntPtr(&__ptr->Layout));
-                        return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.VTableLayout(__instance);
+                        return new CppSharp.Parser.AST.VTableLayout(__instance);
                     }
 
                     set
@@ -2542,7 +2542,7 @@ namespace CppSharp
                     Internal.getVFTables_0(new IntPtr(&__ret), __Instance, i);
                     var __instance = Marshal.AllocHGlobal(28);
                     CppSharp.Parser.AST.VFTableInfo.Internal.cctor_1(__instance, new global::System.IntPtr(&__ret));
-                    return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.VFTableInfo(__instance);
+                    return new CppSharp.Parser.AST.VFTableInfo(__instance);
                 }
 
                 public void addVFTables(CppSharp.Parser.AST.VFTableInfo s)
@@ -2587,7 +2587,7 @@ namespace CppSharp
                         var __ptr = (Internal*)__Instance.ToPointer();
                         var __instance = Marshal.AllocHGlobal(12);
                         CppSharp.Parser.AST.VTableLayout.Internal.cctor_1(__instance, new global::System.IntPtr(&__ptr->Layout));
-                        return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.VTableLayout(__instance);
+                        return new CppSharp.Parser.AST.VTableLayout(__instance);
                     }
 
                     set
@@ -3046,6 +3046,9 @@ namespace CppSharp
 
                     [FieldOffset(68)]
                     public void* OriginalPtr;
+
+                    [FieldOffset(168)]
+                    public Std.Map Anonymous;
 
                     [FieldOffset(180)]
                     public bool IsAnonymous;
@@ -3527,7 +3530,7 @@ namespace CppSharp
                         var __ptr = (Internal*)__Instance.ToPointer();
                         var __instance = Marshal.AllocHGlobal(8);
                         CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->QualifiedType), new UIntPtr(8));
-                        return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.QualifiedType(__instance);
+                        return new CppSharp.Parser.AST.QualifiedType(__instance);
                     }
 
                     set
@@ -3548,11 +3551,6 @@ namespace CppSharp
 
                     [FieldOffset(4)]
                     public global::System.IntPtr Decl;
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST9StatementC2ERKNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEENS1_14StatementClassEPNS1_11DeclarationE")]
-                    internal static extern void ctor_0(global::System.IntPtr instance, global::System.IntPtr str, CppSharp.Parser.AST.StatementClass Class, global::System.IntPtr decl);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -3662,11 +3660,6 @@ namespace CppSharp
 
                     [FieldOffset(4)]
                     public global::System.IntPtr Decl;
-
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST10ExpressionC2ERKNSt3__112basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEENS1_14StatementClassEPNS1_11DeclarationE")]
-                    internal static extern void ctor_0(global::System.IntPtr instance, global::System.IntPtr str, CppSharp.Parser.AST.StatementClass Class, global::System.IntPtr decl);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -3800,7 +3793,7 @@ namespace CppSharp
                         var __ptr = (Internal*)__Instance.ToPointer();
                         var __instance = Marshal.AllocHGlobal(8);
                         CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->QualifiedType), new UIntPtr(8));
-                        return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.QualifiedType(__instance);
+                        return new CppSharp.Parser.AST.QualifiedType(__instance);
                     }
 
                     set
@@ -4084,7 +4077,7 @@ namespace CppSharp
                         var __ptr = (Internal*)__Instance.ToPointer();
                         var __instance = Marshal.AllocHGlobal(8);
                         CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->ReturnType), new UIntPtr(8));
-                        return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.QualifiedType(__instance);
+                        return new CppSharp.Parser.AST.QualifiedType(__instance);
                     }
 
                     set
@@ -4528,7 +4521,7 @@ namespace CppSharp
                         var __ptr = (Internal*)__Instance.ToPointer();
                         var __instance = Marshal.AllocHGlobal(8);
                         CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->ConversionType), new UIntPtr(8));
-                        return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.QualifiedType(__instance);
+                        return new CppSharp.Parser.AST.QualifiedType(__instance);
                     }
 
                     set
@@ -4573,6 +4566,9 @@ namespace CppSharp
 
                     [FieldOffset(68)]
                     public void* OriginalPtr;
+
+                    [FieldOffset(168)]
+                    public Std.Map Anonymous;
 
                     [FieldOffset(180)]
                     public bool IsAnonymous;
@@ -4787,7 +4783,7 @@ namespace CppSharp
                     Internal.getItems_0(new IntPtr(&__ret), __Instance, i);
                     var __instance = Marshal.AllocHGlobal(104);
                     CppSharp.Parser.AST.Enumeration.Item.Internal.cctor_1(__instance, new global::System.IntPtr(&__ret));
-                    return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.Enumeration.Item(__instance);
+                    return new CppSharp.Parser.AST.Enumeration.Item(__instance);
                 }
 
                 public void addItems(CppSharp.Parser.AST.Enumeration.Item s)
@@ -4971,7 +4967,7 @@ namespace CppSharp
                         var __ptr = (Internal*)__Instance.ToPointer();
                         var __instance = Marshal.AllocHGlobal(8);
                         CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->QualifiedType), new UIntPtr(8));
-                        return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.QualifiedType(__instance);
+                        return new CppSharp.Parser.AST.QualifiedType(__instance);
                     }
 
                     set
@@ -5181,7 +5177,7 @@ namespace CppSharp
                         var __ptr = (Internal*)__Instance.ToPointer();
                         var __instance = Marshal.AllocHGlobal(8);
                         CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ptr->QualifiedType), new UIntPtr(8));
-                        return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.QualifiedType(__instance);
+                        return new CppSharp.Parser.AST.QualifiedType(__instance);
                     }
 
                     set
@@ -5335,6 +5331,9 @@ namespace CppSharp
 
                     [FieldOffset(68)]
                     public void* OriginalPtr;
+
+                    [FieldOffset(168)]
+                    public Std.Map Anonymous;
 
                     [FieldOffset(180)]
                     public bool IsAnonymous;
@@ -5871,7 +5870,7 @@ namespace CppSharp
                     Internal.getParameters_0(new IntPtr(&__ret), __Instance, i);
                     var __instance = Marshal.AllocHGlobal(16);
                     CppSharp.Parser.AST.TemplateParameter.Internal.cctor_1(__instance, new global::System.IntPtr(&__ret));
-                    return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.TemplateParameter(__instance);
+                    return new CppSharp.Parser.AST.TemplateParameter(__instance);
                 }
 
                 public void addParameters(CppSharp.Parser.AST.TemplateParameter s)
@@ -6074,6 +6073,9 @@ namespace CppSharp
                     [FieldOffset(68)]
                     public void* OriginalPtr;
 
+                    [FieldOffset(168)]
+                    public Std.Map Anonymous;
+
                     [FieldOffset(180)]
                     public bool IsAnonymous;
 
@@ -6182,7 +6184,7 @@ namespace CppSharp
                     Internal.getArguments_0(new IntPtr(&__ret), __Instance, i);
                     var __instance = Marshal.AllocHGlobal(20);
                     CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ret), new UIntPtr(20));
-                    return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.TemplateArgument(__instance);
+                    return new CppSharp.Parser.AST.TemplateArgument(__instance);
                 }
 
                 public void addArguments(CppSharp.Parser.AST.TemplateArgument s)
@@ -6270,6 +6272,9 @@ namespace CppSharp
 
                     [FieldOffset(68)]
                     public void* OriginalPtr;
+
+                    [FieldOffset(168)]
+                    public Std.Map Anonymous;
 
                     [FieldOffset(180)]
                     public bool IsAnonymous;
@@ -6574,7 +6579,7 @@ namespace CppSharp
                     Internal.getArguments_0(new IntPtr(&__ret), __Instance, i);
                     var __instance = Marshal.AllocHGlobal(20);
                     CppSharp.Runtime.Helpers.memcpy(__instance, new IntPtr(&__ret), new UIntPtr(20));
-                    return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.AST.TemplateArgument(__instance);
+                    return new CppSharp.Parser.AST.TemplateArgument(__instance);
                 }
 
                 public void addArguments(CppSharp.Parser.AST.TemplateArgument s)
@@ -6677,6 +6682,9 @@ namespace CppSharp
 
                     [FieldOffset(68)]
                     public void* OriginalPtr;
+
+                    [FieldOffset(168)]
+                    public Std.Map Anonymous;
 
                     [FieldOffset(180)]
                     public bool IsAnonymous;
@@ -7110,6 +7118,9 @@ namespace CppSharp
 
                     [FieldOffset(68)]
                     public void* OriginalPtr;
+
+                    [FieldOffset(168)]
+                    public Std.Map Anonymous;
 
                     [FieldOffset(180)]
                     public bool IsAnonymous;

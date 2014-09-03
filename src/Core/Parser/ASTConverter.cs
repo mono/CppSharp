@@ -811,6 +811,7 @@ namespace CppSharp
             var _namespace = new AST.Namespace();
             VisitDeclaration(decl, _namespace);
             VisitDeclContext(decl, _namespace);
+            _namespace.IsInline = decl.IsInline;
 
             return _namespace;
         }
