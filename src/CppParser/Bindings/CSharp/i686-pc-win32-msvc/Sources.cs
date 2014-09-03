@@ -76,8 +76,7 @@ namespace CppSharp
             {
                 get;
 
-                set
-                ;
+                set;
             }
         }
     }

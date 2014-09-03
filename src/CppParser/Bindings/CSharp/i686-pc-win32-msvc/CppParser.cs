@@ -719,6 +719,9 @@ namespace CppSharp
                 [FieldOffset(20)]
                 public global::System.IntPtr Library;
 
+                [FieldOffset(24)]
+                public global::System.IntPtr CodeParser;
+
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                     EntryPoint="??0ParserResult@CppParser@CppSharp@@QAE@XZ")]
@@ -796,7 +799,7 @@ namespace CppSharp
                 Internal.getDiagnostics_0(__Instance, new IntPtr(&__ret), i);
                 var __instance = Marshal.AllocHGlobal(60);
                 CppSharp.Parser.ParserDiagnostic.Internal.cctor_1(__instance, new global::System.IntPtr(&__ret));
-                return (__instance == IntPtr.Zero) ? null : new CppSharp.Parser.ParserDiagnostic(__instance);
+                return new CppSharp.Parser.ParserDiagnostic(__instance);
             }
 
             public void addDiagnostics(CppSharp.Parser.ParserDiagnostic s)
