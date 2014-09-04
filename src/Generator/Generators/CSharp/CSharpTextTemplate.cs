@@ -1981,8 +1981,7 @@ namespace CppSharp.Generators.CSharp
                 else
                 {
                     WriteLine("global::System.IntPtr ret = Marshal.AllocHGlobal({0});", @class.Layout.Size);
-                    WriteLine("CppSharp.Runtime.Helpers.memcpy(ret, new IntPtr(&native), new UIntPtr({0}));",
-                        @class.Layout.Size);
+                    WriteLine("*({0}.Internal*) ret = native;", className);
                     WriteLine("return ret;");
                 }
                 WriteCloseBraceIndent();

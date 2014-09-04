@@ -25,14 +25,14 @@ Foo2 Foo2::operator<<(signed int i)
 {
     Foo2 foo;
     foo.C = C << i;
+    foo.valueTypeField = valueTypeField;
+    foo.valueTypeField.A <<= i;
     return foo;
 }
 
 Foo2 Foo2::operator<<(signed long l)
 {
-    Foo2 foo;
-    foo.C = C << l;
-    return foo;
+    return *this << (signed int) l;
 }
 
 char Foo2::testCharMarshalling(char c)
