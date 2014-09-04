@@ -61,8 +61,6 @@ namespace CppSharp.Generators.CSharp
             Context.MarshalToManaged = this;
         }
 
-        public int VarSuffix { get; set; }
-
         public static string QualifiedIdentifier(Declaration decl)
         {
             var names = new List<string> { decl.Name };
@@ -248,60 +246,11 @@ namespace CppSharp.Generators.CSharp
 
         public override bool VisitClassDecl(Class @class)
         {
-            var ctx = Context as CSharpMarshalContext;
-
             var instance = Context.ReturnVarName;
 
             @class = @class.OriginalClass ?? @class;
             Type returnType = Context.ReturnType.Type.Desugar();
-            if (@class.IsRefType &&
-                (Context.ReturnType.Qualifiers.IsConst || !returnType.IsAddress()) &&
-                (!Context.Driver.Options.GenerateAbstractImpls || !@class.IsAbstract))
-            {
-                var instanceName = Generator.GeneratedIdentifier("instance");
-                if (VarSuffix > 0)
-                    instanceName += VarSuffix;
 
-                if (@class.HasNonTrivialCopyConstructor)
-                {
-                    // Find a valid copy constructor overload.
-                    var copyCtorMethod = @class.Methods.FirstOrDefault(method =>
-                        method.IsCopyConstructor);
-
-                    if (copyCtorMethod == null)
-                        throw new NotSupportedException("Expected a valid copy constructor");
-
-                    // Call the copy constructor.
-                    TypeMap typeMap;
-                    if (!copyCtorMethod.IsGenerated && FindTypeMap(ctx.Driver.TypeDatabase, @class, out typeMap))
-                    {
-                        typeMap.CSharpMarshalCopyCtorToManaged(Context);
-                    }
-                    else
-                    {
-                        // Allocate memory for a new native object and call the ctor.
-                        Context.SupportBefore.WriteLine("var {0} = Marshal.AllocHGlobal({1});",
-                            instanceName, @class.Layout.Size);
-                        Context.SupportBefore.WriteLine("{0}.Internal.{1}({2}, new global::System.IntPtr(&{3}));",
-                            QualifiedIdentifier(@class),
-                            CSharpTextTemplate.GetFunctionNativeIdentifier(copyCtorMethod),
-                            instanceName, instance);
-                    }
-                }
-                else
-                {
-                    // Allocate memory for a new native object and call the ctor.
-                    Context.SupportBefore.WriteLine("var {0} = Marshal.AllocHGlobal({1});",
-                        instanceName, @class.Layout.Size);
-                    instance = instance.Trim('*');
-                    Context.SupportBefore.WriteLine(
-                        "CppSharp.Runtime.Helpers.memcpy({0}, new IntPtr(&{1}), new UIntPtr({2}));",
-                        instanceName, instance, @class.Layout.Size);
-                }
-
-                instance = instanceName;
-            }
-            
             var type = QualifiedIdentifier(@class) +
                 (Context.Driver.Options.GenerateAbstractImpls && @class.IsAbstract ?
                     "Internal" : "");

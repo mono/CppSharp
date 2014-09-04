@@ -613,7 +613,7 @@ namespace CppSharp.Generators.CSharp
                     ReturnType = property.QualifiedType
                 };
 
-                var marshal = new CSharpMarshalNativeToManagedPrinter(ctx) { VarSuffix = i };
+                var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
                 property.Visit(marshal);
 
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
@@ -1513,7 +1513,7 @@ namespace CppSharp.Generators.CSharp
                     ReturnVarName = param.Name
                 };
 
-                var marshal = new CSharpMarshalNativeToManagedPrinter(ctx) { VarSuffix = i };
+                var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
                 param.Visit(marshal);
 
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
@@ -1889,12 +1889,7 @@ namespace CppSharp.Generators.CSharp
             WriteCloseBraceIndent();
             PopBlock(NewLineKind.BeforeNextBlock);
 
-            PushBlock(CSharpBlockKind.Method);
-            WriteLine("internal {0}({1}.Internal native)", safeIdentifier, className);
-            WriteLineIndent(": this(&native)");
-            WriteStartBraceIndent();
-            WriteCloseBraceIndent();
-            PopBlock(NewLineKind.BeforeNextBlock);
+            GenerateNativeConstructorByValue(@class, className, safeIdentifier);
 
             PushBlock(CSharpBlockKind.Method);
             WriteLine("public {0}(global::System.IntPtr native, bool isInternalImpl = false){1}",
@@ -1943,6 +1938,62 @@ namespace CppSharp.Generators.CSharp
                 WriteCloseBraceIndent();
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
+        }
+
+        private void GenerateNativeConstructorByValue(Class @class, string className, string safeIdentifier)
+        {
+            if (@class.IsRefType)
+            {
+                PushBlock(CSharpBlockKind.Method);
+                WriteLine("private static global::System.IntPtr __CopyValue({0}.Internal native)", className);
+                WriteStartBraceIndent();
+                if (@class.HasNonTrivialCopyConstructor)
+                {
+                    // Find a valid copy constructor overload.
+                    var copyCtorMethod = @class.Methods.FirstOrDefault(method =>
+                        method.IsCopyConstructor);
+
+                    if (copyCtorMethod == null)
+                        throw new NotSupportedException("Expected a valid copy constructor");
+
+                    // Call the copy constructor.
+                    TypeMap typeMap;
+                    if (!copyCtorMethod.IsGenerated && Driver.TypeDatabase.FindTypeMap(@class, out typeMap))
+                    {
+                        var context = new CSharpMarshalContext(Driver)
+                        {
+                            ArgName = "native",
+                            ReturnVarName = "ret",
+                            ReturnType = new QualifiedType(new TagType(@class))
+                        };
+                        typeMap.CSharpMarshalCopyCtorToManaged(context);
+                        WriteLine(context.SupportBefore);
+                    }
+                    else
+                    {
+                        // Allocate memory for a new native object and call the ctor.
+                        WriteLine("var ret = Marshal.AllocHGlobal({0});", @class.Layout.Size);
+                        WriteLine("{0}.Internal.{1}(ret, new global::System.IntPtr(&native));",
+                            QualifiedIdentifier(@class), GetFunctionNativeIdentifier(copyCtorMethod));
+                        WriteLine("return ret;");
+                    }
+                }
+                else
+                {
+                    WriteLine("global::System.IntPtr ret = Marshal.AllocHGlobal({0});", @class.Layout.Size);
+                    WriteLine("CppSharp.Runtime.Helpers.memcpy(ret, new IntPtr(&native), new UIntPtr({0}));",
+                        @class.Layout.Size);
+                    WriteLine("return ret;");
+                }
+                WriteCloseBraceIndent();
+                PopBlock(NewLineKind.BeforeNextBlock);
+            }
+            PushBlock(CSharpBlockKind.Method);
+            WriteLine("internal {0}({1}.Internal native)", safeIdentifier, className);
+            WriteLineIndent(@class.IsRefType ? ": this(__CopyValue(native))" : ": this(&native)", className);
+            WriteStartBraceIndent();
+            WriteCloseBraceIndent();
+            PopBlock(NewLineKind.BeforeNextBlock);
         }
 
         private bool GenerateClassConstructorBase(Class @class, Method method)
