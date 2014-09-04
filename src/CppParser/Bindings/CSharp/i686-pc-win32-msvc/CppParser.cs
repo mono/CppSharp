@@ -217,8 +217,15 @@ namespace CppSharp
             {
             }
 
+            private static global::System.IntPtr __CopyValue(ParserOptions.Internal native)
+            {
+                var ret = Marshal.AllocHGlobal(128);
+                CppSharp.Parser.ParserOptions.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                return ret;
+            }
+
             internal ParserOptions(ParserOptions.Internal native)
-                : this(&native)
+                : this(__CopyValue(native))
             {
             }
 
@@ -597,8 +604,15 @@ namespace CppSharp
             {
             }
 
+            private static global::System.IntPtr __CopyValue(ParserDiagnostic.Internal native)
+            {
+                var ret = Marshal.AllocHGlobal(60);
+                CppSharp.Parser.ParserDiagnostic.Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                return ret;
+            }
+
             internal ParserDiagnostic(ParserDiagnostic.Internal native)
-                : this(&native)
+                : this(__CopyValue(native))
             {
             }
 
@@ -765,8 +779,15 @@ namespace CppSharp
             {
             }
 
+            private static global::System.IntPtr __CopyValue(ParserResult.Internal native)
+            {
+                var ret = Marshal.AllocHGlobal(28);
+                CppSharp.Parser.ParserResult.Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                return ret;
+            }
+
             internal ParserResult(ParserResult.Internal native)
-                : this(&native)
+                : this(__CopyValue(native))
             {
             }
 
@@ -797,9 +818,7 @@ namespace CppSharp
             {
                 var __ret = new CppSharp.Parser.ParserDiagnostic.Internal();
                 Internal.getDiagnostics_0(__Instance, new IntPtr(&__ret), i);
-                var __instance = Marshal.AllocHGlobal(60);
-                CppSharp.Parser.ParserDiagnostic.Internal.cctor_1(__instance, new global::System.IntPtr(&__ret));
-                return new CppSharp.Parser.ParserDiagnostic(__instance);
+                return new CppSharp.Parser.ParserDiagnostic(__ret);
             }
 
             public void addDiagnostics(CppSharp.Parser.ParserDiagnostic s)
@@ -901,8 +920,15 @@ namespace CppSharp
             {
             }
 
+            private static global::System.IntPtr __CopyValue(ClangParser.Internal native)
+            {
+                global::System.IntPtr ret = Marshal.AllocHGlobal(1);
+                CppSharp.Runtime.Helpers.memcpy(ret, new IntPtr(&native), new UIntPtr(1));
+                return ret;
+            }
+
             internal ClangParser(ClangParser.Internal native)
-                : this(&native)
+                : this(__CopyValue(native))
             {
             }
 
