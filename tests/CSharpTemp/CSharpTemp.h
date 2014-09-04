@@ -22,6 +22,8 @@ public:
     int farAwayFunc() const;
     int array[3];
     void obsolete();
+
+    virtual void makeOverridePrivate(int i = 5);
 };
 
 class DLL_API Bar : public Qux

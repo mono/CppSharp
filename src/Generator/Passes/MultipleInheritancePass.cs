@@ -58,7 +58,9 @@ namespace CppSharp.Passes
                     Namespace = @base.Namespace,
                     Access = @base.Access,
                     Type = ClassType.Interface,
-                    OriginalClass = @base
+                    OriginalClass = @base,
+                    IsDynamic = @base.IsDynamic,
+                    Layout = @base.Layout
                 };
 
             @interface.Bases.AddRange(
