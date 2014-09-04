@@ -407,5 +407,16 @@ public class BasicTests : GeneratorTestFixture
         var ret = basic.TestNullPtrTypeRet();
         Assert.AreEqual(IntPtr.Zero, new IntPtr(ret));
     }
+
+    [Test]
+    public void TestCtorByValue()
+    {
+        var bar = new Bar { A = 4, B = 5.5f };
+        var foo2 = new Foo2 { C = 4, valueTypeField = bar };
+        var result = foo2 << 2;
+        Assert.AreEqual(foo2.C << 2, result.C);
+        Assert.AreEqual(bar.A << 2, result.valueTypeField.A);
+        Assert.AreEqual(bar.B, result.valueTypeField.B);
+    }
 }
  
