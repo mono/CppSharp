@@ -2785,7 +2785,7 @@ namespace CppSharp.Generators.CSharp
                 if (library != null)
                     libName = Path.GetFileNameWithoutExtension(library.FileName);
             }
-            if (libName != null && libName.Length > 3 && libName.StartsWith("lib"))
+            if (Options.StripLibPrefix && libName != null && libName.Length > 3 && libName.StartsWith("lib"))
             {
                 libName = libName.Substring(3);
             }
