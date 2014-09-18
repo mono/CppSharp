@@ -42,6 +42,8 @@ namespace CppSharp
             Encoding = Encoding.ASCII;
 
             CodeFiles = new List<string>();
+
+            StripLibPrefix = true;
         }
 
         // General options
@@ -185,6 +187,8 @@ namespace CppSharp
         /// Generates default values of arguments in the C# code.
         /// </summary>
         public bool GenerateDefaultValuesForArguments { get; set; }
+
+        public bool StripLibPrefix { get; set; }
     }
 
     public class InvalidOptionException : Exception
