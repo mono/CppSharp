@@ -214,7 +214,7 @@ namespace CppSharp.Generators.CSharp
             {
                 PushBlock(CSharpBlockKind.Functions);
                 WriteLine("public unsafe partial class {0}",
-                    TranslationUnits[0].FileNameWithoutExtension);
+                    context.TranslationUnit.FileNameWithoutExtension);
                 WriteStartBraceIndent();
 
                 PushBlock(CSharpBlockKind.InternalsClass);
