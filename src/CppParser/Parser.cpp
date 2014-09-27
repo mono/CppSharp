@@ -572,10 +572,6 @@ Class* Parser::GetRecord(clang::RecordDecl* Record, bool& Process)
     if (Record->isInjectedClassName())
         return nullptr;
 
-    // skip va_list_tag as in clang: lib/Sema/SemaLookup.cpp
-    if (Record->getDeclName() == C->getSema().VAListTagName)
-        return nullptr;
-
     auto NS = GetNamespace(Record);
     assert(NS && "Expected a valid namespace");
 
@@ -749,7 +745,8 @@ void Parser::WalkRecordCXX(clang::CXXRecordDecl* Record, Class* RC)
     RC->HasNonTrivialCopyConstructor = Record->hasNonTrivialCopyConstructor();
     RC->HasNonTrivialDestructor = Record->hasNonTrivialDestructor();
 
-    bool hasLayout = !Record->isDependentType() && !Record->isInvalidDecl();
+    bool hasLayout = !Record->isDependentType() && !Record->isInvalidDecl() &&
+        Record->getDeclName() != C->getSema().VAListTagName;
 
     // Get the record layout information.
     const ASTRecordLayout* Layout = 0;

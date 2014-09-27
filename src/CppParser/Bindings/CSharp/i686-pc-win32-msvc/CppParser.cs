@@ -923,7 +923,7 @@ namespace CppSharp
             private static global::System.IntPtr __CopyValue(ClangParser.Internal native)
             {
                 global::System.IntPtr ret = Marshal.AllocHGlobal(1);
-                CppSharp.Runtime.Helpers.memcpy(ret, new IntPtr(&native), new UIntPtr(1));
+                *(ClangParser.Internal*) ret = native;
                 return ret;
             }
 

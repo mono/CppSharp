@@ -1,5 +1,7 @@
 #include "../Tests.h"
 
+#include <vadefs.h>
+
 class DLL_API IgnoredType
 {
     class IgnoredNested
@@ -556,3 +558,5 @@ class PureDtor
 public:
     virtual ~PureDtor() = 0;
 };
+
+DLL_API void va_listFunction(va_list v);
