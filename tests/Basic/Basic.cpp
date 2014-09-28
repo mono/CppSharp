@@ -300,3 +300,7 @@ Bar::Item operator |(Bar::Item left, Bar::Item right)
 {
     return left | right;
 }
+
+void va_listFunction(va_list v)
+{
+}

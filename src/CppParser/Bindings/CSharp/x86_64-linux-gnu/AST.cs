@@ -341,7 +341,7 @@ namespace CppSharp
                 private static global::System.IntPtr __CopyValue(TypeQualifiers.Internal native)
                 {
                     global::System.IntPtr ret = Marshal.AllocHGlobal(3);
-                    CppSharp.Runtime.Helpers.memcpy(ret, new IntPtr(&native), new UIntPtr(3));
+                    *(TypeQualifiers.Internal*) ret = native;
                     return ret;
                 }
 
@@ -449,7 +449,7 @@ namespace CppSharp
                 private static global::System.IntPtr __CopyValue(QualifiedType.Internal native)
                 {
                     global::System.IntPtr ret = Marshal.AllocHGlobal(16);
-                    CppSharp.Runtime.Helpers.memcpy(ret, new IntPtr(&native), new UIntPtr(16));
+                    *(QualifiedType.Internal*) ret = native;
                     return ret;
                 }
 
@@ -1355,7 +1355,7 @@ namespace CppSharp
                 private static global::System.IntPtr __CopyValue(TemplateArgument.Internal native)
                 {
                     global::System.IntPtr ret = Marshal.AllocHGlobal(40);
-                    CppSharp.Runtime.Helpers.memcpy(ret, new IntPtr(&native), new UIntPtr(40));
+                    *(TemplateArgument.Internal*) ret = native;
                     return ret;
                 }
 
@@ -2246,7 +2246,7 @@ namespace CppSharp
                 private static global::System.IntPtr __CopyValue(VTableComponent.Internal native)
                 {
                     global::System.IntPtr ret = Marshal.AllocHGlobal(16);
-                    CppSharp.Runtime.Helpers.memcpy(ret, new IntPtr(&native), new UIntPtr(16));
+                    *(VTableComponent.Internal*) ret = native;
                     return ret;
                 }
 
@@ -5211,7 +5211,7 @@ namespace CppSharp
                 private static global::System.IntPtr __CopyValue(BaseClassSpecifier.Internal native)
                 {
                     global::System.IntPtr ret = Marshal.AllocHGlobal(16);
-                    CppSharp.Runtime.Helpers.memcpy(ret, new IntPtr(&native), new UIntPtr(16));
+                    *(BaseClassSpecifier.Internal*) ret = native;
                     return ret;
                 }
 
@@ -7886,7 +7886,7 @@ namespace CppSharp
                 private static global::System.IntPtr __CopyValue(Comment.Internal native)
                 {
                     global::System.IntPtr ret = Marshal.AllocHGlobal(4);
-                    CppSharp.Runtime.Helpers.memcpy(ret, new IntPtr(&native), new UIntPtr(4));
+                    *(Comment.Internal*) ret = native;
                     return ret;
                 }
 
@@ -7961,7 +7961,7 @@ namespace CppSharp
                 private static global::System.IntPtr __CopyValue(FullComment.Internal native)
                 {
                     global::System.IntPtr ret = Marshal.AllocHGlobal(4);
-                    CppSharp.Runtime.Helpers.memcpy(ret, new IntPtr(&native), new UIntPtr(4));
+                    *(FullComment.Internal*) ret = native;
                     return ret;
                 }
 
