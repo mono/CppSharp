@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using CppSharp.AST;
 using CppSharp.Parser;
 using ASTContext = CppSharp.Parser.AST.ASTContext;
 using NativeLibrary = CppSharp.Parser.AST.NativeLibrary;

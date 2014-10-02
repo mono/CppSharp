@@ -103,10 +103,6 @@ namespace CppSharp.AST
     /// </summary>
     public abstract class Comment
     {
-        protected Comment()
-        {
-        }
-
         public abstract void Visit<T>(ICommentVisitor<T> visitor);
     }
 

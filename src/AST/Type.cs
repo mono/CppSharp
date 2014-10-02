@@ -365,11 +365,6 @@ namespace CppSharp.AST
     /// </summary>
     public class DecayedType : Type
     {
-        public DecayedType()
-        {
-
-        }
-
         public QualifiedType Decayed;
         public QualifiedType Original;
         public QualifiedType Pointee;

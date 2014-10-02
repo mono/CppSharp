@@ -1736,7 +1736,6 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
             if (FTL)
             {
                 auto PVD = FTL.getParam(i);
-
                 HandleDeclaration(PVD, FA);
 
                 auto PTL = PVD->getTypeSourceInfo()->getTypeLoc();
