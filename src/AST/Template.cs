@@ -66,7 +66,7 @@ namespace CppSharp.AST
         {
             var temp = obj as Template;
             if (temp == null) return false;
-            return this.QualifiedName == temp.QualifiedName;
+            return this.QualifiedName == temp.QualifiedName && this.Namespace.QualifiedName == temp.Namespace.QualifiedName;
         }
     }
 
