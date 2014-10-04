@@ -222,8 +222,8 @@ void Parser::SetupHeader()
 
     if (Opts->MicrosoftMode)
     {
-        LangOpts.MSCVersion = Opts->ToolSetToUse;
-        if (!LangOpts.MSCVersion) LangOpts.MSCVersion = 1700;
+		LangOpts.MSCompatibilityVersion = Opts->ToolSetToUse;
+		if (!LangOpts.MSCompatibilityVersion) LangOpts.MSCompatibilityVersion = 1700;
     }
 #endif
 
@@ -2068,9 +2068,9 @@ static const clang::CodeGen::CGFunctionInfo& GetCodeGenFuntionInfo(
 {
     using namespace clang;
     if (auto CD = dyn_cast<clang::CXXConstructorDecl>(FD)) {
-        return CodeGenTypes->arrangeCXXConstructorDeclaration(CD, Ctor_Base);
+        return CodeGenTypes->arrangeCXXStructorDeclaration(CD, clang::CodeGen::StructorType::Base);
     } else if (auto DD = dyn_cast<clang::CXXDestructorDecl>(FD)) {
-        return CodeGenTypes->arrangeCXXDestructor(DD, Dtor_Base);
+		return CodeGenTypes->arrangeCXXStructorDeclaration(DD, clang::CodeGen::StructorType::Base);
     }
 
     return CodeGenTypes->arrangeFunctionDeclaration(FD);
@@ -2935,8 +2935,8 @@ ParserResult* Parser::ParseHeader(const std::string& File, ParserResult* res)
 
     SetupHeader();
 
-    auto SC = new clang::SemaConsumer();
-    C->setASTConsumer(SC);
+	std::unique_ptr<clang::SemaConsumer> SC(new clang::SemaConsumer());
+    C->setASTConsumer(std::move(SC));
 
     C->createSema(clang::TU_Complete, 0);
     SC->InitializeSema(C->getSema());
@@ -2946,7 +2946,9 @@ ParserResult* Parser::ParseHeader(const std::string& File, ParserResult* res)
 
     // Check that the file is reachable.
     const clang::DirectoryLookup *Dir;
-    llvm::SmallVector<const clang::FileEntry*, 0> Includers;
+	llvm::SmallVector<
+		std::pair<const clang::FileEntry *, const clang::DirectoryEntry *>,
+		0> Includers;
 
     auto FileEntry = C->getPreprocessor().getHeaderSearchInfo().LookupFile(File,
         clang::SourceLocation(), /*isAngled*/true,
@@ -2966,7 +2968,7 @@ ParserResult* Parser::ParseHeader(const std::string& File, ParserResult* res)
 
     auto buffer = llvm::MemoryBuffer::getMemBuffer(str);
     auto &SM = C->getSourceManager();
-    SM.setMainFileID(SM.createFileID(buffer));
+    SM.setMainFileID(SM.createFileID(std::move(buffer)));
 
     clang::DiagnosticConsumer* client = C->getDiagnostics().getClient();
     client->BeginSourceFile(C->getLangOpts(), &C->getPreprocessor());
@@ -3166,13 +3168,14 @@ ParserResultKind Parser::ReadSymbols(llvm::StringRef File,
     }
 
     std::unique_ptr<llvm::MemoryBuffer> FileBuf(FM.getBufferForFile(FileEntry));
-    auto BinaryOrErr = llvm::object::createBinary(std::move(FileBuf), &llvm::getGlobalContext());
+    auto BinaryOrErr = llvm::object::createBinary(FileBuf->getMemBufferRef(),
+		&llvm::getGlobalContext());
     if (BinaryOrErr.getError())
     {
         res->Kind = ParserResultKind::Error;
         return res;
     }
-    std::unique_ptr<llvm::object::Binary> Bin(BinaryOrErr.get());
+    std::unique_ptr<llvm::object::Binary> Bin(std::move(BinaryOrErr.get()));
     if (auto Archive = llvm::dyn_cast<llvm::object::Archive>(Bin.get())) {
         res->Kind = ParseArchive(File, Archive, res->Library);
         if (res->Kind == ParserResultKind::Success)
@@ -3226,8 +3229,8 @@ ParserTargetInfo* Parser::GetTargetInfo()
 
     SetupHeader();
 
-    auto SC = new clang::SemaConsumer();
-    C->setASTConsumer(SC);
+    std::unique_ptr<clang::SemaConsumer> SC(new clang::SemaConsumer());
+    C->setASTConsumer(std::move(SC));
 
     C->createSema(clang::TU_Complete, 0);
     SC->InitializeSema(C->getSema());
