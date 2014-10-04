@@ -2939,7 +2939,6 @@ ParserResult* Parser::ParseHeader(const std::string& File, ParserResult* res)
     C->setASTConsumer(std::move(SC));
 
     C->createSema(clang::TU_Complete, 0);
-    SC->InitializeSema(C->getSema());
 
     auto DiagClient = new DiagnosticConsumer();
     C->getDiagnostics().setClient(DiagClient);
@@ -3233,7 +3232,6 @@ ParserTargetInfo* Parser::GetTargetInfo()
     C->setASTConsumer(std::move(SC));
 
     C->createSema(clang::TU_Complete, 0);
-    SC->InitializeSema(C->getSema());
 
     auto DiagClient = new DiagnosticConsumer();
     C->getDiagnostics().setClient(DiagClient);
