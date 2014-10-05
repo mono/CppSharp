@@ -153,7 +153,7 @@ void Parser::SetupHeader()
 
     TO->Triple = llvm::sys::getDefaultTargetTriple();
     if (!Opts->TargetTriple.empty())
-        TO->Triple = Opts->TargetTriple;
+        TO->Triple = llvm::Triple::normalize(Opts->TargetTriple);
 
     TargetInfo* TI = TargetInfo::CreateTargetInfo(C->getDiagnostics(), TO);
     if (!TI)
