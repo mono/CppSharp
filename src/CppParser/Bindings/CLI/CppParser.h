@@ -106,6 +106,11 @@ namespace CppSharp
                 unsigned int get();
             }
 
+            property unsigned int UndefinesCount
+            {
+                unsigned int get();
+            }
+
             property unsigned int LibraryDirsCount
             {
                 unsigned int get();
@@ -188,6 +193,12 @@ namespace CppSharp
             void addDefines(System::String^ s);
 
             void clearDefines();
+
+            System::String^ getUndefines(unsigned int i);
+
+            void addUndefines(System::String^ s);
+
+            void clearUndefines();
 
             System::String^ getLibraryDirs(unsigned int i);
 

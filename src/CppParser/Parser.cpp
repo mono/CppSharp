@@ -206,6 +206,12 @@ void Parser::SetupHeader()
         PPOpts.addMacroDef(define);
     }
 
+    for (unsigned I = 0, E = Opts->Undefines.size(); I != E; ++I)
+    {
+        const String& undefine = Opts->Undefines[I];
+        PPOpts.addMacroUndef(undefine);
+    }
+
     // Initialize the default platform headers.
     HSOpts.ResourceDir = GetClangResourceDir(".");
     HSOpts.AddPath(GetClangBuiltinIncludeDir(), clang::frontend::System,
