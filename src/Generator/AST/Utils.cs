@@ -49,11 +49,14 @@ namespace CppSharp.AST
                 while (baseClass != null && baseClass.HasBaseClass)
                 {
                     baseClass = baseClass.BaseClass;
-                    var copyConstructor = baseClass.Methods.FirstOrDefault(m => m.IsCopyConstructor);
-                    if (copyConstructor == null
-                        || copyConstructor.Access == AccessSpecifier.Private
-                        || !copyConstructor.IsDeclared)
-                        return true;
+                    if (!baseClass.IsInterface)
+                    {
+                        var copyConstructor = baseClass.Methods.FirstOrDefault(m => m.IsCopyConstructor);
+                        if (copyConstructor == null
+                            || copyConstructor.Access == AccessSpecifier.Private
+                            || !copyConstructor.IsDeclared)
+                            return true;   
+                    }
                 }
             }
 

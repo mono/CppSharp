@@ -156,4 +156,19 @@ public class CSharpTempTests : GeneratorTestFixture
     {
         Assert.AreEqual(TestFlag.Flag2, new ComplexType().ReturnsQFlags);
     }
+
+    [Test]
+    public void TestCopyCtor()
+    {
+        Qux q1 = new Qux();
+        for (int i = 0; i < q1.Array.Length; i++)
+        {
+            q1.Array[i] = i;
+        }
+        Qux q2 = new Qux(q1);
+        for (int i = 0; i < q2.Array.Length; i++)
+        {
+            Assert.AreEqual(q1.Array[i], q2.Array[i]);
+        }
+    }
 }
