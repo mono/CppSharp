@@ -292,6 +292,7 @@ struct DLL_API TestDelegates
 
     int StdCall(DelegateStdCall del) { return del(1); }
     int CDecl(DelegateCDecl del) { return del(1); }
+    void MarshalUnattributedDelegate(DelegateInGlobalNamespace del);
 
     DelegateInClass A;
     DelegateInGlobalNamespace B;

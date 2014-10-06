@@ -418,5 +418,11 @@ public class BasicTests : GeneratorTestFixture
         Assert.AreEqual(bar.A << 2, result.valueTypeField.A);
         Assert.AreEqual(bar.B, result.valueTypeField.B);
     }
+
+    [Test]
+    public void TestMarshalUnattributedDelegate()
+    {
+        new TestDelegates().MarshalUnattributedDelegate(i => i);
+    }
 }
  
