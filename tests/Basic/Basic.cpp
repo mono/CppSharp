@@ -304,3 +304,7 @@ Bar::Item operator |(Bar::Item left, Bar::Item right)
 void va_listFunction(va_list v)
 {
 }
+
+void TestDelegates::MarshalUnattributedDelegate(DelegateInGlobalNamespace del)
+{
+}
