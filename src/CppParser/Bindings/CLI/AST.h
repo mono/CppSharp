@@ -11,6 +11,7 @@ namespace CppSharp
         namespace AST
         {
             enum struct AccessSpecifier;
+            enum struct ArchType;
             enum struct CXXMethodKind;
             enum struct CXXOperatorKind;
             enum struct CallingConvention;
@@ -290,6 +291,13 @@ namespace CppSharp
                 FunctionHead = 3,
                 FunctionParameters = 4,
                 FunctionBody = 5
+            };
+
+            public enum struct ArchType
+            {
+                UnknownArch = 0,
+                x86 = 1,
+                x86_64 = 2
             };
 
             public ref class Type : ICppInstance
@@ -1961,6 +1969,12 @@ namespace CppSharp
                 property unsigned int DependenciesCount
                 {
                     unsigned int get();
+                }
+
+                property CppSharp::Parser::AST::ArchType ArchType
+                {
+                    CppSharp::Parser::AST::ArchType get();
+                    void set(CppSharp::Parser::AST::ArchType);
                 }
 
                 System::String^ getSymbols(unsigned int i);

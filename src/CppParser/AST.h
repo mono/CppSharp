@@ -796,9 +796,19 @@ public:
     VECTOR(MacroDefinition*, Macros)
 };
 
-struct CS_API NativeLibrary
+enum class ArchType
 {
+    UnknownArch,
+    x86,
+    x86_64
+};
+
+class CS_API NativeLibrary
+{
+public:
+    NativeLibrary();
     STRING(FileName)
+    ArchType ArchType;
     VECTOR_STRING(Symbols)
     VECTOR_STRING(Dependencies)
 };

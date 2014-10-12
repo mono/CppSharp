@@ -216,6 +216,13 @@ namespace CppSharp
                 FunctionBody = 5
             }
 
+            public enum ArchType
+            {
+                UnknownArch = 0,
+                x86 = 1,
+                x86_64 = 2
+            }
+
             public unsafe partial class Type : IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 8)]
@@ -7561,18 +7568,21 @@ namespace CppSharp
 
             public unsafe partial class NativeLibrary : IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 56)]
+                [StructLayout(LayoutKind.Explicit, Size = 64)]
                 public partial struct Internal
                 {
-                    [SuppressUnmanagedCodeSecurity]
-                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST13NativeLibraryC2ERKS2_")]
-                    internal static extern void cctor_0(global::System.IntPtr instance, global::System.IntPtr _0);
+                    [FieldOffset(8)]
+                    public CppSharp.Parser.AST.ArchType ArchType;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                         EntryPoint="_ZN8CppSharp9CppParser3AST13NativeLibraryC2Ev")]
-                    internal static extern void ctor_2(global::System.IntPtr instance);
+                    internal static extern void ctor_0(global::System.IntPtr instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST13NativeLibraryC2ERKS2_")]
+                    internal static extern void cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -7639,8 +7649,8 @@ namespace CppSharp
 
                 private static global::System.IntPtr __CopyValue(NativeLibrary.Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(56);
-                    CppSharp.Parser.AST.NativeLibrary.Internal.cctor_0(ret, new global::System.IntPtr(&native));
+                    var ret = Marshal.AllocHGlobal(64);
+                    CppSharp.Parser.AST.NativeLibrary.Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return ret;
                 }
 
@@ -7656,8 +7666,8 @@ namespace CppSharp
 
                 public NativeLibrary()
                 {
-                    __Instance = Marshal.AllocHGlobal(56);
-                    Internal.ctor_2(__Instance);
+                    __Instance = Marshal.AllocHGlobal(64);
+                    Internal.ctor_0(__Instance);
                 }
 
                 public void Dispose()
@@ -7742,6 +7752,21 @@ namespace CppSharp
                     {
                         var __ret = Internal.getDependenciesCount_0(__Instance);
                         return __ret;
+                    }
+                }
+
+                public CppSharp.Parser.AST.ArchType ArchType
+                {
+                    get
+                    {
+                        var __ptr = (Internal*)__Instance.ToPointer();
+                        return __ptr->ArchType;
+                    }
+
+                    set
+                    {
+                        var __ptr = (Internal*)__Instance.ToPointer();
+                        __ptr->ArchType = value;
                     }
                 }
             }
