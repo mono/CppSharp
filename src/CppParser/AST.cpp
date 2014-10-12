@@ -578,6 +578,11 @@ TranslationUnit::TranslationUnit() { Kind = DeclarationKind::TranslationUnit; }
 DEF_STRING(TranslationUnit, FileName)
 DEF_VECTOR(TranslationUnit, MacroDefinition*, Macros)
 
+NativeLibrary::NativeLibrary()
+    : ArchType(ArchType::UnknownArch)
+{
+}
+
 // NativeLibrary
 DEF_STRING(NativeLibrary, FileName)
 DEF_VECTOR_STRING(NativeLibrary, Symbols)

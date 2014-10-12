@@ -1,4 +1,5 @@
 ﻿using System;
+using CppSharp.AST;
 using CppSharp.Parser;
 using ASTContext = CppSharp.Parser.AST.ASTContext;
 using NativeLibrary = CppSharp.Parser.AST.NativeLibrary;
@@ -95,7 +96,11 @@ namespace CppSharp
 
         public static AST.NativeLibrary ConvertLibrary(NativeLibrary library)
         {
-            var newLibrary = new AST.NativeLibrary { FileName = library.FileName };
+            var newLibrary = new AST.NativeLibrary
+            {
+                FileName = library.FileName,
+                ArchType = (ArchType) library.ArchType
+            };
 
             for (uint i = 0; i < library.SymbolsCount; ++i)
             {

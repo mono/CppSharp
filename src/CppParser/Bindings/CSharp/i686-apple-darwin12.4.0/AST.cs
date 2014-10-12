@@ -216,6 +216,13 @@ namespace CppSharp
                 FunctionBody = 5
             }
 
+            public enum ArchType
+            {
+                UnknownArch = 0,
+                x86 = 1,
+                x86_64 = 2
+            }
+
             public unsafe partial class Type : IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 8)]
@@ -7562,13 +7569,16 @@ namespace CppSharp
 
             public unsafe partial class NativeLibrary : IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 36)]
+                [StructLayout(LayoutKind.Explicit, Size = 40)]
                 public partial struct Internal
                 {
+                    [FieldOffset(12)]
+                    public CppSharp.Parser.AST.ArchType ArchType;
+
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                         EntryPoint="_ZN8CppSharp9CppParser3AST13NativeLibraryC2Ev")]
-                    internal static extern void ctor_1(global::System.IntPtr instance);
+                    internal static extern void ctor_0(global::System.IntPtr instance);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -7640,7 +7650,7 @@ namespace CppSharp
 
                 private static global::System.IntPtr __CopyValue(NativeLibrary.Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(36);
+                    var ret = Marshal.AllocHGlobal(40);
                     CppSharp.Parser.AST.NativeLibrary.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return ret;
                 }
@@ -7657,8 +7667,8 @@ namespace CppSharp
 
                 public NativeLibrary()
                 {
-                    __Instance = Marshal.AllocHGlobal(36);
-                    Internal.ctor_1(__Instance);
+                    __Instance = Marshal.AllocHGlobal(40);
+                    Internal.ctor_0(__Instance);
                 }
 
                 public void Dispose()
@@ -7743,6 +7753,21 @@ namespace CppSharp
                     {
                         var __ret = Internal.getDependenciesCount_0(__Instance);
                         return __ret;
+                    }
+                }
+
+                public CppSharp.Parser.AST.ArchType ArchType
+                {
+                    get
+                    {
+                        var __ptr = (Internal*)__Instance.ToPointer();
+                        return __ptr->ArchType;
+                    }
+
+                    set
+                    {
+                        var __ptr = (Internal*)__Instance.ToPointer();
+                        __ptr->ArchType = value;
                     }
                 }
             }

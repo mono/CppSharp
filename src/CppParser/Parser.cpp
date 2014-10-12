@@ -3043,8 +3043,20 @@ ParserResultKind Parser::ParseArchive(llvm::StringRef File,
     return ParserResultKind::Success;
 }
 
+static ArchType ConvertArchType(unsigned int archType)
+{
+    switch (archType)
+    {
+    case llvm::Triple::ArchType::x86:
+        return ArchType::x86;
+    case llvm::Triple::ArchType::x86_64:
+        return ArchType::x86_64;
+    }
+    return ArchType::UnknownArch;
+}
+
 template<class ELFT>
-void ReadELFDependencies(const llvm::object::ELFFile<ELFT>* ELFFile, CppSharp::CppParser::NativeLibrary*& NativeLib)
+static void ReadELFDependencies(const llvm::object::ELFFile<ELFT>* ELFFile, CppSharp::CppParser::NativeLibrary*& NativeLib)
 {
     for (const auto &Entry : ELFFile->dynamic_table())
         if (Entry.d_tag == llvm::ELF::DT_NEEDED)
@@ -3058,6 +3070,7 @@ ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
     auto LibName = File;
     NativeLib = new NativeLibrary();
     NativeLib->FileName = LibName;
+    NativeLib->ArchType = ConvertArchType(ObjectFile->getArch());
 
     if (ObjectFile->isELF())
     {
@@ -3142,7 +3155,7 @@ ParserResultKind Parser::ReadSymbols(llvm::StringRef File,
     return ParserResultKind::Success;
 }
 
- ParserResult* Parser::ParseLibrary(const std::string& File, ParserResult* res)
+ParserResult* Parser::ParseLibrary(const std::string& File, ParserResult* res)
 {
     if (File.empty())
     {

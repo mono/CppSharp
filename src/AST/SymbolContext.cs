@@ -2,6 +2,14 @@
 
 namespace CppSharp.AST
 {
+    public enum ArchType
+    {
+        UnknownArch,
+
+        x86, // X86: i[3-9]86
+        x86_64 // X86-64: amd64, x86_64
+    }
+
     /// <summary>
     /// Represents a shared library or a static library archive.
     /// </summary>
@@ -23,6 +31,8 @@ namespace CppSharp.AST
         /// File name of the library.
         /// </summary>
         public string FileName;
+
+        public ArchType ArchType { get; set; }
 
         /// <summary>
         /// Symbols gathered from the library.

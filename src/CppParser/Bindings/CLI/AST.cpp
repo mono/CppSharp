@@ -2940,6 +2940,11 @@ CppSharp::Parser::AST::NativeLibrary::NativeLibrary(System::IntPtr native)
     NativePtr = __native;
 }
 
+CppSharp::Parser::AST::NativeLibrary::NativeLibrary()
+{
+    NativePtr = new ::CppSharp::CppParser::AST::NativeLibrary();
+}
+
 System::String^ CppSharp::Parser::AST::NativeLibrary::getSymbols(unsigned int i)
 {
     auto __ret = ((::CppSharp::CppParser::AST::NativeLibrary*)NativePtr)->getSymbols(i);
@@ -2978,11 +2983,6 @@ void CppSharp::Parser::AST::NativeLibrary::clearDependencies()
     ((::CppSharp::CppParser::AST::NativeLibrary*)NativePtr)->clearDependencies();
 }
 
-CppSharp::Parser::AST::NativeLibrary::NativeLibrary()
-{
-    NativePtr = new ::CppSharp::CppParser::AST::NativeLibrary();
-}
-
 System::IntPtr CppSharp::Parser::AST::NativeLibrary::__Instance::get()
 {
     return System::IntPtr(NativePtr);
@@ -3017,6 +3017,16 @@ unsigned int CppSharp::Parser::AST::NativeLibrary::DependenciesCount::get()
 {
     auto __ret = ((::CppSharp::CppParser::AST::NativeLibrary*)NativePtr)->getDependenciesCount();
     return __ret;
+}
+
+CppSharp::Parser::AST::ArchType CppSharp::Parser::AST::NativeLibrary::ArchType::get()
+{
+    return (CppSharp::Parser::AST::ArchType)((::CppSharp::CppParser::AST::NativeLibrary*)NativePtr)->ArchType;
+}
+
+void CppSharp::Parser::AST::NativeLibrary::ArchType::set(CppSharp::Parser::AST::ArchType value)
+{
+    ((::CppSharp::CppParser::AST::NativeLibrary*)NativePtr)->ArchType = (::CppSharp::CppParser::AST::ArchType)value;
 }
 
 CppSharp::Parser::AST::ASTContext::ASTContext(::CppSharp::CppParser::AST::ASTContext* native)
