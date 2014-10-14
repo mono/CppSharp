@@ -561,3 +561,13 @@ public:
 };
 
 DLL_API void va_listFunction(va_list v);
+
+struct DLL_API TestEmptyName
+{
+    struct
+    {
+        struct
+        {
+        };
+    };
+};
