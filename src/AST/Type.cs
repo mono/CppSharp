@@ -488,7 +488,7 @@ namespace CppSharp.AST
             if (type == null) return false;
 
             return Arguments.SequenceEqual(type.Arguments)
-                && Template.Equals(type.Template);
+                && Template.Name == type.Template.Name;
         }
 
         public override int GetHashCode()
