@@ -93,7 +93,8 @@ namespace CppSharp.AST
         None,
         ComplementOperator,
         AbstractImplCall,
-        DefaultValueOverload
+        DefaultValueOverload,
+        InterfaceInstance
     }
 
     public class Function : Declaration, ITypedDecl, IMangledDecl

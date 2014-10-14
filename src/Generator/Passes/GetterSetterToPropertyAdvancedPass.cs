@@ -271,17 +271,14 @@ namespace CppSharp.Passes
         public GetterSetterToPropertyAdvancedPass()
         {
             Options.VisitClassProperties = false;
+            Options.VisitFunctionParameters = false;
         }
 
         public override bool VisitClassDecl(Class @class)
         {
-            if (!AlreadyVisited(@class))
+            if (base.VisitClassDecl(@class))
             {
-                bool result = base.VisitClassDecl(@class);
-
                 new PropertyGenerator(@class, Log).GenerateProperties();
-
-                return result;
             }
             return false;
         }
