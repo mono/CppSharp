@@ -44,7 +44,7 @@ namespace CppSharp.Types
         }
 
         /// <summary>
-        /// Determines if the type map performs marshalling or only replaces copy ctors.
+        /// Determines if the type map performs marshalling or only injects custom code.
         /// </summary>
         public virtual bool DoesMarshalling { get { return true; } }
 
@@ -63,11 +63,6 @@ namespace CppSharp.Types
         public virtual void CSharpMarshalToManaged(MarshalContext ctx)
         {
             throw new NotImplementedException();
-        }
-
-        public virtual void CSharpMarshalCopyCtorToManaged(MarshalContext ctx)
-        {
-            
         }
 
         /// <summary>
