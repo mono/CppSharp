@@ -1956,27 +1956,11 @@ namespace CppSharp.Generators.CSharp
                     if (copyCtorMethod == null)
                         throw new NotSupportedException("Expected a valid copy constructor");
 
-                    // Call the copy constructor.
-                    TypeMap typeMap;
-                    if (!copyCtorMethod.IsGenerated && Driver.TypeDatabase.FindTypeMap(@class, out typeMap))
-                    {
-                        var context = new CSharpMarshalContext(Driver)
-                        {
-                            ArgName = "native",
-                            ReturnVarName = "ret",
-                            ReturnType = new QualifiedType(new TagType(@class))
-                        };
-                        typeMap.CSharpMarshalCopyCtorToManaged(context);
-                        WriteLine(context.SupportBefore);
-                    }
-                    else
-                    {
-                        // Allocate memory for a new native object and call the ctor.
-                        WriteLine("var ret = Marshal.AllocHGlobal({0});", @class.Layout.Size);
-                        WriteLine("{0}.Internal.{1}(ret, new global::System.IntPtr(&native));",
-                            QualifiedIdentifier(@class), GetFunctionNativeIdentifier(copyCtorMethod));
-                        WriteLine("return ret;");
-                    }
+                    // Allocate memory for a new native object and call the ctor.
+                    WriteLine("var ret = Marshal.AllocHGlobal({0});", @class.Layout.Size);
+                    WriteLine("{0}.Internal.{1}(ret, new global::System.IntPtr(&native));",
+                        QualifiedIdentifier(@class), GetFunctionNativeIdentifier(copyCtorMethod));
+                    WriteLine("return ret;");
                 }
                 else
                 {
