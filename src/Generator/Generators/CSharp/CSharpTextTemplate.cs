@@ -790,8 +790,8 @@ namespace CppSharp.Generators.CSharp
             // we do not support dependent fields yet, see https://github.com/mono/CppSharp/issues/197
             Class @class;
             field.Type.TryGetClass(out @class);
-            if (field.Type.IsDependent && !field.Type.IsPointer() &&
-                !(@class != null && @class.IsUnion))
+            if ((field.Type.IsDependent && !field.Type.IsPointer() &&
+                !(@class != null && @class.IsUnion)) || (@class != null && @class.TranslationUnit.IsSystemHeader))
                 return;
 
             var safeIdentifier = Helpers.SafeIdentifier(field.OriginalName);

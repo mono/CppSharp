@@ -308,3 +308,8 @@ void va_listFunction(va_list v)
 void TestDelegates::MarshalUnattributedDelegate(DelegateInGlobalNamespace del)
 {
 }
+
+std::string HasStdString::testStdString(std::string s)
+{
+    return s + "_test";
+}

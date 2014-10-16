@@ -15,10 +15,17 @@ namespace CppSharp.Types
     public class TypeMapAttribute : Attribute
     {
         public string Type { get; private set; }
+        public GeneratorKind? GeneratorKind { get; set; }
         
         public TypeMapAttribute(string type)
         {
             Type = type;
+        }
+
+        public TypeMapAttribute(string type, GeneratorKind generatorKind)
+        {
+            Type = type;
+            GeneratorKind = generatorKind;
         }
     }
 
@@ -117,27 +124,28 @@ namespace CppSharp.Types
             TypeMaps = new Dictionary<string, System.Type>();
         }
 
-        public void SetupTypeMaps()
+        public void SetupTypeMaps(GeneratorKind generatorKind)
         {
             var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
 
             foreach (var assembly in loadedAssemblies)
             {
                 var types = assembly.FindDerivedTypes(typeof(TypeMap));
-                SetupTypeMaps(types);
+                SetupTypeMaps(types, generatorKind);
             }
         }
 
-        private void SetupTypeMaps(IEnumerable<System.Type> types)
+        private void SetupTypeMaps(IEnumerable<System.Type> types, GeneratorKind generatorKind)
         {
             foreach (var typeMap in types)
             {
                 var attrs = typeMap.GetCustomAttributes(typeof(TypeMapAttribute), true);
-                if (attrs == null) continue;
-
                 foreach (TypeMapAttribute attr in attrs)
                 {
-                    TypeMaps[attr.Type] = typeMap;
+                    if (attr.GeneratorKind == null || attr.GeneratorKind == generatorKind)
+                    {
+                        TypeMaps[attr.Type] = typeMap;                        
+                    }
                 }
             }
         }

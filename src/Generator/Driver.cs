@@ -73,7 +73,7 @@ namespace CppSharp
         {
             ValidateOptions(Options);
 
-            TypeDatabase.SetupTypeMaps();
+            TypeDatabase.SetupTypeMaps(Options.GeneratorKind);
             Generator = CreateGeneratorFromKind(Options.GeneratorKind);
         }
 
