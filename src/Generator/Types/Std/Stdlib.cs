@@ -26,7 +26,7 @@ namespace CppSharp.Types.Std
         }
     }
 
-    [TypeMap("std::string")]
+    [TypeMap("std::string", GeneratorKind.CLI)]
     public class String : TypeMap
     {
         public override string CLISignature(CLITypePrinterContext ctx)
@@ -305,7 +305,7 @@ namespace CppSharp.Types.Std
         }
     }
 
-    [TypeMap("std::ostream")]
+    [TypeMap("std::ostream", GeneratorKind.CLI)]
     public class OStream : TypeMap
     {
         public override string CLISignature(CLITypePrinterContext ctx)

@@ -1,6 +1,7 @@
 #include "../Tests.h"
 
 #include <vadefs.h>
+#include <string>
 
 class DLL_API IgnoredType
 {
@@ -570,4 +571,12 @@ struct DLL_API TestEmptyName
         {
         };
     };
+};
+
+class DLL_API HasStdString
+{
+    // test if these are ignored with the C# back-end
+public:
+    std::string testStdString(std::string s);
+    std::string s;
 };

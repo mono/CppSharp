@@ -1,7 +1,6 @@
 using CppSharp.Utils;
 using NUnit.Framework;
 using CLITemp;
-using System;
 
 public class CLITests : GeneratorTestFixture
 {
@@ -19,5 +18,11 @@ public class CLITests : GeneratorTestFixture
         var date = new Date(24, 12, 1924);
         var s = date.ToString();
         Assert.AreEqual("24/12/1924", s);
+    }
+
+    [Test]
+    public void TestStdString()
+    {
+        Assert.AreEqual("test_test", CLITemp.CLITemp.testStdString("test"));
     }
 }
