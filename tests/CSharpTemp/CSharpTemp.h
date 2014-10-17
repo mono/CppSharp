@@ -216,9 +216,11 @@ private:
 class DLL_API MethodsWithDefaultValues
 {
 public:
+    MethodsWithDefaultValues(Foo foo = Foo());
     void defaultPointer(Foo* ptr = 0);
     void defaultValueType(ValueType bar = ValueType());
     void defaultChar(char c = 'a');
+    void defaultEmptyChar(char c = 0);
     void defaultRefTypeBeforeOthers(Foo foo = Foo(), int i = 5, Bar::Items item = Bar::Item2);
     void defaultRefTypeAfterOthers(int i = 5, Bar::Items item = Bar::Item2, Foo foo = Foo());
     void defaultRefTypeBeforeAndAfterOthers(int i = 5, Foo foo = Foo(), Bar::Items item = Bar::Item2, Baz baz = Baz());

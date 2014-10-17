@@ -237,6 +237,10 @@ QGenericArgument::QGenericArgument(const char *name)
     _name = name;
 }
 
+MethodsWithDefaultValues::MethodsWithDefaultValues(Foo foo)
+{
+}
+
 void MethodsWithDefaultValues::defaultPointer(Foo *ptr)
 {
 }
@@ -246,6 +250,10 @@ void MethodsWithDefaultValues::defaultValueType(ValueType bar)
 }
 
 void MethodsWithDefaultValues::defaultChar(char c)
+{
+}
+
+void MethodsWithDefaultValues::defaultEmptyChar(char c)
 {
 }
 

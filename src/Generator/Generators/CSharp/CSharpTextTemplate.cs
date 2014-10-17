@@ -2072,6 +2072,16 @@ namespace CppSharp.Generators.CSharp
 
             Write(")");
 
+            if (method.SynthKind == FunctionSynthKind.DefaultValueOverload && method.IsConstructor &&
+                !(Driver.Options.GenerateAbstractImpls && method.IsPure))
+            {
+                Write(" : this({0})",
+                    string.Join(", ",
+                        method.Parameters.Where(
+                            p => p.Kind == ParameterKind.Regular).Select(
+                                p => p.GenerationKind == GenerationKind.None ? p.DefaultArgument.String : p.Name)));
+            }
+
             if (Driver.Options.GenerateAbstractImpls && method.IsPure)
             {
                 Write(";");
@@ -2090,14 +2100,17 @@ namespace CppSharp.Generators.CSharp
 
             if (method.SynthKind == FunctionSynthKind.DefaultValueOverload)
             {
-                Type type = method.OriginalReturnType.Type;
-                WriteLine("{0}{1}({2});",
-                    type.IsPrimitiveType(PrimitiveType.Void) ? string.Empty : "return ",
-                    method.Name,
-                    string.Join(", ",
-                        method.Parameters.Where(
-                        p => p.Kind == ParameterKind.Regular).Select(
-                            p => p.GenerationKind == GenerationKind.None ? p.DefaultArgument.String : p.Name)));
+                if (!method.IsConstructor)
+                {
+                    Type type = method.OriginalReturnType.Type;
+                    this.WriteLine("{0}{1}({2});",
+                        type.IsPrimitiveType(PrimitiveType.Void) ? string.Empty : "return ",
+                        method.Name,
+                        string.Join(", ",
+                            method.Parameters.Where(
+                                p => p.Kind == ParameterKind.Regular).Select(
+                                    p => p.GenerationKind == GenerationKind.None ? p.DefaultArgument.String : p.Name)));
+                }
                 goto SkipImpl;
             }
 
