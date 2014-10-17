@@ -216,6 +216,7 @@ private:
 class DLL_API MethodsWithDefaultValues
 {
 public:
+    MethodsWithDefaultValues(Foo foo = Foo());
     void defaultPointer(Foo* ptr = 0);
     void defaultValueType(ValueType bar = ValueType());
     void defaultChar(char c = 'a');
