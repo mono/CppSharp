@@ -249,6 +249,10 @@ void MethodsWithDefaultValues::defaultChar(char c)
 {
 }
 
+void MethodsWithDefaultValues::defaultEmptyChar(char c)
+{
+}
+
 void MethodsWithDefaultValues::defaultRefTypeBeforeOthers(Foo foo, int i, Bar::Items item)
 {
 }

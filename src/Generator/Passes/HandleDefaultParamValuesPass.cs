@@ -44,6 +44,8 @@ namespace CppSharp.Passes
                     continue;
 
                 CheckForULongValue(parameter, desugared);
+
+                CheckForDefaultEmptyChar(parameter, desugared);
             }
 
             GenerateOverloads(function, overloadIndices);
@@ -144,6 +146,15 @@ namespace CppSharp.Passes
                 @default = @default.Substring(0, @default.Length - 2);
             if (ulong.TryParse(@default, out value))
                 parameter.DefaultArgument.String = value.ToString(CultureInfo.InvariantCulture);
+        }
+
+        private void CheckForDefaultEmptyChar(Parameter parameter, Type desugared)
+        {
+            if (parameter.DefaultArgument.String == "0" && Driver.Options.MarshalCharAsManagedChar &&
+                desugared.IsPrimitiveType(PrimitiveType.Char))
+            {
+                parameter.DefaultArgument.String = "'\\0'";
+            }
         }
 
         private static void GenerateOverloads(Function function, List<int> overloadIndices)
