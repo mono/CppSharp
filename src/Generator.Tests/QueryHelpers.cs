@@ -12,22 +12,22 @@ namespace CppSharp.Generator.Tests
 
         public static Class Class(this ASTContext context, string name)
         {
-            return context.FindClass(name).ToList().First();
+            return context.FindClass(name).First();
         }
 
         public static Function Function(this ASTContext context, string name)
         {
-            return context.FindFunction(name).ToList().First();
+            return context.FindFunction(name).First();
         }
 
         public static Enumeration Enum(this ASTContext context, string name)
         {
-            return context.FindEnum(name).ToList().First();
+            return context.FindEnum(name).First();
         }
 
         public static TypedefDecl Typedef(this ASTContext context, string name)
         {
-            return context.FindTypedef(name).ToList().First();
+            return context.FindTypedef(name).First();
         }
 
         public static Field Field(this Class @class, string name)

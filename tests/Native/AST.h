@@ -57,3 +57,10 @@ class TestTemplateClass2
 public:
     TestTemplateClassInt* CreateIntTemplate();
 };
+
+namespace HidesClass
+{
+    class HiddenInNamespace
+    {
+    };
+}
