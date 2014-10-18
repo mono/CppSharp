@@ -225,5 +225,11 @@ namespace CppSharp.Generator.Tests.AST
             Assert.IsTrue(typeDef.Type.TryGetClass(out classTemplate));
             Assert.AreEqual(classTemplate, template.TemplatedClass);
         }
+
+        [Test]
+        public void TestFindClassInNamespace()
+        {
+            Assert.IsNotNull(AstContext.FindClass("HiddenInNamespace").FirstOrDefault());
+        }
     }
 }

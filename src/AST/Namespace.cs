@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 
 namespace CppSharp.AST
@@ -254,7 +255,8 @@ namespace CppSharp.AST
 
             if (entries.Count <= 1)
             {
-                var @class = Classes.Find(c => c.Name.Equals(name, stringComparison));
+                var @class = Classes.Find(c => c.Name.Equals(name, stringComparison)) ??
+                             Namespaces.Select(n => n.FindClass(name, stringComparison)).FirstOrDefault(c => c != null);
                 if (@class != null)
                     return @class.CompleteDeclaration == null ?
                         @class : (Class) @class.CompleteDeclaration;
