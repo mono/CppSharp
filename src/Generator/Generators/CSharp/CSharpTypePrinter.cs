@@ -220,7 +220,8 @@ namespace CppSharp.Generators.CSharp
                 if (isManagedContext && param != null && (param.IsOut || param.IsInOut))
                     return pointee.Visit(this, quals);
 
-                if (ContextKind == CSharpTypePrinterContextKind.GenericDelegate)
+                if (ContextKind == CSharpTypePrinterContextKind.GenericDelegate ||
+                    pointee.IsPrimitiveType(PrimitiveType.Void))
                     return "global::System.IntPtr";
 
                 return pointee.Visit(this, quals) + "*";
