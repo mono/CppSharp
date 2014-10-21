@@ -43,6 +43,8 @@ namespace CppSharp.Generators.CSharp
 
         public const string InstanceIdentifier = "__Instance";
 
+        public const string AllocatedWithHGlobalIdentifier = "__allocatedWithHGlobal";
+
         public static string GetAccess(AccessSpecifier accessSpecifier)
         {
             switch (accessSpecifier)
@@ -1861,8 +1863,14 @@ namespace CppSharp.Generators.CSharp
                         }
                     }
                 }
+            }
 
+            if (@class.IsRefType)
+            {
+                WriteLine("if ({0})", Helpers.AllocatedWithHGlobalIdentifier);
+                WriteStartBraceIndent();
                 WriteLine("Marshal.FreeHGlobal({0});", Helpers.InstanceIdentifier);
+                WriteCloseBraceIndent();
             }
 
             if (hasBaseClass)
@@ -1874,6 +1882,13 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateNativeConstructor(Class @class)
         {
+            if (@class.IsRefType)
+            {
+                PushBlock(CSharpBlockKind.Field);
+                WriteLine("private readonly bool {0};", Helpers.AllocatedWithHGlobalIdentifier);
+                PopBlock(NewLineKind.BeforeNextBlock);   
+            }
+
             PushBlock(CSharpBlockKind.Method);
             string className = @class.Name;
             string safeIdentifier = className;
@@ -1975,6 +1990,10 @@ namespace CppSharp.Generators.CSharp
             WriteLine("internal {0}({1}.Internal native)", safeIdentifier, className);
             WriteLineIndent(@class.IsRefType ? ": this(__CopyValue(native))" : ": this(&native)", className);
             WriteStartBraceIndent();
+            if (@class.IsRefType)
+            {
+                WriteLine("{0} = true;", Helpers.AllocatedWithHGlobalIdentifier);                
+            }
             WriteCloseBraceIndent();
             PopBlock(NewLineKind.BeforeNextBlock);
         }
@@ -2240,6 +2259,7 @@ namespace CppSharp.Generators.CSharp
         {
             WriteLine("{0} = Marshal.AllocHGlobal({1});", Helpers.InstanceIdentifier,
                 @class.Layout.Size);
+            WriteLine("{0} = true;", Helpers.AllocatedWithHGlobalIdentifier);
 
             if (method.IsCopyConstructor)
             {
