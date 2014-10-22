@@ -172,4 +172,12 @@ public class CSharpTempTests : GeneratorTestFixture
             Assert.AreEqual(q1.Array[i], q2.Array[i]);
         }
     }
+
+    [Test]
+    public void TestInternalCtorAmbiguity()
+    {
+        using (new InternalCtorAmbiguity().InvokeInternalCtor())
+        {
+        }
+    }
 }
