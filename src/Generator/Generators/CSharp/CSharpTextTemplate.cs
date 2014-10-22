@@ -45,6 +45,8 @@ namespace CppSharp.Generators.CSharp
 
         public const string AllocatedWithHGlobalIdentifier = "__allocatedWithHGlobal";
 
+        public const string CreateInstanceIdentifier = "__CreateInstance";
+
         public static string GetAccess(AccessSpecifier accessSpecifier)
         {
             switch (accessSpecifier)
@@ -331,7 +333,8 @@ namespace CppSharp.Generators.CSharp
 
             if (!@class.IsOpaque)
             {
-                GenerateClassInternals(@class);
+                if (!@class.IsAbstractImpl)
+                    GenerateClassInternals(@class);
                 GenerateDeclContext(@class);
 
                 if (@class.IsDependent || !@class.IsGenerated)
@@ -1889,32 +1892,35 @@ namespace CppSharp.Generators.CSharp
                 PopBlock(NewLineKind.BeforeNextBlock);   
             }
 
-            PushBlock(CSharpBlockKind.Method);
             string className = @class.Name;
             string safeIdentifier = className;
-            if (@class.Access == AccessSpecifier.Private && className.EndsWith("Internal"))
+            if (@class.IsAbstractImpl)
             {
                 className = className.Substring(0,
                     safeIdentifier.LastIndexOf("Internal", StringComparison.Ordinal));
             }
-            WriteLine("internal {0}({1}.Internal* native)", safeIdentifier,
-                className);
-            WriteLineIndent(": this(new global::System.IntPtr(native))");
-            WriteStartBraceIndent();
-            WriteCloseBraceIndent();
-            PopBlock(NewLineKind.BeforeNextBlock);
+
+            if (!@class.IsAbstract)
+            {
+                PushBlock(CSharpBlockKind.Method);
+                WriteLine("public static {0} {1}(global::System.IntPtr native)", safeIdentifier, Helpers.CreateInstanceIdentifier);
+                WriteStartBraceIndent();
+                WriteLine("return new {0}(({1}.Internal*) native);", safeIdentifier, className);
+                WriteCloseBraceIndent();
+                PopBlock(NewLineKind.BeforeNextBlock);   
+            }
 
             GenerateNativeConstructorByValue(@class, className, safeIdentifier);
 
             PushBlock(CSharpBlockKind.Method);
-            WriteLine("public {0}(global::System.IntPtr native, bool isInternalImpl = false){1}",
-                safeIdentifier, @class.IsValueType ? " : this()" : string.Empty);
+            WriteLine("{0} {1}({2}.Internal* native, bool isInternalImpl = false){3}",
+                @class.IsRefType ? "protected" : "private",
+                safeIdentifier, className, @class.IsValueType ? " : this()" : string.Empty);
 
             var hasBaseClass = @class.HasBaseClass && @class.BaseClass.IsRefType;
             if (hasBaseClass)
-                WriteLineIndent(": base(native{0})",
-                    @class.Methods.Any(m => m.SynthKind == FunctionSynthKind.AbstractImplCall) ?
-                        ", true" : string.Empty);
+                WriteLineIndent(": base(({0}.Internal*) native{1})",
+                    @class.BaseClass.Name, @class.IsAbstractImpl ? ", true" : string.Empty);
 
             WriteStartBraceIndent();
 
@@ -1922,13 +1928,13 @@ namespace CppSharp.Generators.CSharp
             {
                 if (ShouldGenerateClassNativeField(@class))
                 {
-                    WriteLine("{0} = native;", Helpers.InstanceIdentifier);
+                    WriteLine("{0} = new global::System.IntPtr(native);", Helpers.InstanceIdentifier);
                     GenerateVTableClassSetupCall(@class, true);
                 }
             }
             else
             {
-                WriteLine("var {0} = (Internal*){1}.ToPointer();",
+                WriteLine("var {0} = {1};",
                     Generator.GeneratedIdentifier("ptr"), "native");
                 GenerateStructMarshalingProperties(@class);
             }
@@ -1960,7 +1966,7 @@ namespace CppSharp.Generators.CSharp
             if (@class.IsRefType)
             {
                 PushBlock(CSharpBlockKind.Method);
-                WriteLine("private static global::System.IntPtr __CopyValue({0}.Internal native)", className);
+                WriteLine("private static {0}.Internal* __CopyValue({0}.Internal native)", className);
                 WriteStartBraceIndent();
                 if (@class.HasNonTrivialCopyConstructor)
                 {
@@ -1975,12 +1981,13 @@ namespace CppSharp.Generators.CSharp
                     WriteLine("var ret = Marshal.AllocHGlobal({0});", @class.Layout.Size);
                     WriteLine("{0}.Internal.{1}(ret, new global::System.IntPtr(&native));",
                         QualifiedIdentifier(@class), GetFunctionNativeIdentifier(copyCtorMethod));
-                    WriteLine("return ret;");
+                    WriteLine("return ({0}.Internal*) ret;", className);
                 }
                 else
                 {
-                    WriteLine("global::System.IntPtr ret = Marshal.AllocHGlobal({0});", @class.Layout.Size);
-                    WriteLine("*({0}.Internal*) ret = native;", className);
+                    WriteLine("{0}.Internal* ret = ({0}.Internal*) Marshal.AllocHGlobal({1});",
+                        className, @class.Layout.Size);
+                    WriteLine("*ret = native;", className);
                     WriteLine("return ret;");
                 }
                 WriteCloseBraceIndent();
@@ -1988,7 +1995,7 @@ namespace CppSharp.Generators.CSharp
             }
             PushBlock(CSharpBlockKind.Method);
             WriteLine("internal {0}({1}.Internal native)", safeIdentifier, className);
-            WriteLineIndent(@class.IsRefType ? ": this(__CopyValue(native))" : ": this(&native)", className);
+            WriteLineIndent(@class.IsRefType ? ": this(__CopyValue(native))" : ": this(&native)");
             WriteStartBraceIndent();
             if (@class.IsRefType)
             {
@@ -2008,7 +2015,7 @@ namespace CppSharp.Generators.CSharp
                 Write(": this(");
 
                 if (method != null)
-                    Write("IntPtr.Zero");
+                    Write("(Internal*) null");
                 else
                     Write("native");
 

@@ -256,10 +256,11 @@ namespace CppSharp.Generators.CSharp
                     "Internal" : "");
 
             if (returnType.IsAddress())
-                Context.Return.Write("({0} == IntPtr.Zero) ? {1} : ", instance,
-                    @class.IsRefType ? "null" : string.Format("new {0}()", type));
-
-            Context.Return.Write("new {0}({1})", type, instance);
+                Context.Return.Write("({0} == IntPtr.Zero) ? {1} : {2}.{3}({0})", instance,
+                    @class.IsRefType ? "null" : string.Format("new {0}()", type),
+                    type, Helpers.CreateInstanceIdentifier);
+            else
+                Context.Return.Write("new {0}({1})", type, instance);
 
             return true;
         }

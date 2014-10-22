@@ -101,10 +101,10 @@ public class CSharpTempTests : GeneratorTestFixture
     [Test]
     public unsafe void TestArrayOfPointersToPrimitives()
     {
-        Bar bar = new Bar();
-        void*[] array = new void*[1];
+        var bar = new Bar();
+        var array = new IntPtr[1];
         int i = 5;
-        array[0] = &i;
+        array[0] = new IntPtr(&i);
         bar.ArrayOfPrimitivePointers = array;
         Assert.That(i, Is.EqualTo(*(int*) bar.ArrayOfPrimitivePointers[0]));
     }
@@ -170,6 +170,14 @@ public class CSharpTempTests : GeneratorTestFixture
         for (int i = 0; i < q2.Array.Length; i++)
         {
             Assert.AreEqual(q1.Array[i], q2.Array[i]);
+        }
+    }
+
+    [Test]
+    public void TestInternalCtorAmbiguity()
+    {
+        using (new InternalCtorAmbiguity().InvokeInternalCtor())
+        {
         }
     }
 }

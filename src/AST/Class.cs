@@ -178,6 +178,11 @@ namespace CppSharp.AST
             get { return Type == ClassType.Interface; }
         }
 
+        public bool IsAbstractImpl
+        {
+            get { return Methods.Any(m => m.SynthKind == FunctionSynthKind.AbstractImplCall); }
+        }
+
         public IEnumerable<Method> Constructors
         {
             get
