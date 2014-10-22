@@ -333,7 +333,8 @@ namespace CppSharp.Generators.CSharp
 
             if (!@class.IsOpaque)
             {
-                GenerateClassInternals(@class);
+                if (!@class.IsAbstractImpl)
+                    GenerateClassInternals(@class);
                 GenerateDeclContext(@class);
 
                 if (@class.IsDependent || !@class.IsGenerated)
@@ -1893,8 +1894,7 @@ namespace CppSharp.Generators.CSharp
 
             string className = @class.Name;
             string safeIdentifier = className;
-            bool isAbstractImpl = @class.Methods.Any(m => m.SynthKind == FunctionSynthKind.AbstractImplCall);
-            if (isAbstractImpl)
+            if (@class.IsAbstractImpl)
             {
                 className = className.Substring(0,
                     safeIdentifier.LastIndexOf("Internal", StringComparison.Ordinal));
@@ -1920,7 +1920,7 @@ namespace CppSharp.Generators.CSharp
             var hasBaseClass = @class.HasBaseClass && @class.BaseClass.IsRefType;
             if (hasBaseClass)
                 WriteLineIndent(": base(({0}.Internal*) native{1})",
-                    @class.BaseClass.Name, isAbstractImpl ? ", true" : string.Empty);
+                    @class.BaseClass.Name, @class.IsAbstractImpl ? ", true" : string.Empty);
 
             WriteStartBraceIndent();
 
