@@ -245,7 +245,11 @@ void MethodsWithDefaultValues::defaultPointer(Foo *ptr)
 {
 }
 
-void MethodsWithDefaultValues::defaultValueType(ValueType bar)
+void MethodsWithDefaultValues::defaultVoidStar(void* ptr)
+{
+}
+
+void MethodsWithDefaultValues::defaultValueType(QGenericArgument valueType)
 {
 }
 

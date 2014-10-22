@@ -183,10 +183,6 @@ public:
     void Name();
 };
 
-struct DLL_API ValueType
-{
-};
-
 enum class Flags
 {
     Flag1 = 1,
@@ -209,6 +205,7 @@ struct QGenericArgument
 {
 public:
     QGenericArgument(const char* name = 0);
+    void* fixedArrayInValueType[1];
 private:
     const char* _name;
 };
@@ -218,7 +215,8 @@ class DLL_API MethodsWithDefaultValues
 public:
     MethodsWithDefaultValues(Foo foo = Foo());
     void defaultPointer(Foo* ptr = 0);
-    void defaultValueType(ValueType bar = ValueType());
+    void defaultVoidStar(void* ptr = 0);
+    void defaultValueType(QGenericArgument valueType = QGenericArgument());
     void defaultChar(char c = 'a');
     void defaultEmptyChar(char c = 0);
     void defaultRefTypeBeforeOthers(Foo foo = Foo(), int i = 5, Bar::Items item = Bar::Item2);

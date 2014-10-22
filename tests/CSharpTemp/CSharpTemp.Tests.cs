@@ -133,6 +133,8 @@ public class CSharpTempTests : GeneratorTestFixture
         methodsWithDefaultValues.DefaultChar();
         methodsWithDefaultValues.DefaultEmptyChar();
         methodsWithDefaultValues.DefaultPointer();
+        methodsWithDefaultValues.DefaultVoidStar();
+        methodsWithDefaultValues.DefaultValueType();
         methodsWithDefaultValues.DefaultRefTypeAfterOthers();
         methodsWithDefaultValues.DefaultRefTypeBeforeAndAfterOthers(5, new Foo());
         methodsWithDefaultValues.DefaultRefTypeBeforeOthers();

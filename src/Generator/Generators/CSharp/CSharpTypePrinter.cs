@@ -116,12 +116,15 @@ namespace CppSharp.Generators.CSharp
             if (ContextKind == CSharpTypePrinterContextKind.Native &&
                 array.SizeType == ArrayType.ArraySize.Constant)
             {
-                if (array.Type.Desugar().IsPointerToPrimitiveType())
+                Type arrayType = array.Type.Desugar();
+                PrimitiveType primitiveType;
+                if (arrayType.IsPointerToPrimitiveType(out primitiveType))
                 {
-                    return new CSharpTypePrinterResult
+                    if (primitiveType == PrimitiveType.Void)
                     {
-                        Type = string.Format("{0}*", array.Type.Visit(this, quals))
-                    };
+                        return "void**";
+                    }
+                    return string.Format("{0}*", array.Type.Visit(this, quals));
                 }
                 // Do not write the fixed keyword multiple times for nested array types
                 var fixedKeyword = array.Type is ArrayType ? string.Empty : "fixed ";
@@ -217,14 +220,16 @@ namespace CppSharp.Generators.CSharp
             {
                 // Skip one indirection if passed by reference
                 var param = Context.Parameter;
-                if (isManagedContext && param != null && (param.IsOut || param.IsInOut))
+                bool isRefParam = param != null && (param.IsOut || param.IsInOut);
+                if (isManagedContext && isRefParam)
                     return pointee.Visit(this, quals);
 
                 if (ContextKind == CSharpTypePrinterContextKind.GenericDelegate ||
                     pointee.IsPrimitiveType(PrimitiveType.Void))
                     return "global::System.IntPtr";
 
-                return pointee.Visit(this, quals) + "*";
+                var result = pointee.Visit(this, quals);
+                return !isRefParam && result.Type == "global::System.IntPtr" ? "void**" : result + "*";
             }
 
             Enumeration @enum;

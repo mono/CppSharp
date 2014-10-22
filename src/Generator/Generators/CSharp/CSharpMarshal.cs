@@ -121,7 +121,11 @@ namespace CppSharp.Generators.CSharp
                     supportBefore.WriteStartBraceIndent();
                     supportBefore.WriteLine("{0} = new {1}[{2}];", value, array.Type, array.Size);
                     supportBefore.WriteLine("for (int i = 0; i < {0}; i++)", array.Size);
-                    supportBefore.WriteLineIndent("{0}[i] = {1}[i];", value, Context.ReturnVarName);
+                    if (array.Type.IsPointerToPrimitiveType(PrimitiveType.Void))
+                        supportBefore.WriteLineIndent("{0}[i] = new global::System.IntPtr({1}[i]);",
+                            value, Context.ReturnVarName);
+                    else
+                        supportBefore.WriteLineIndent("{0}[i] = {1}[i];", value, Context.ReturnVarName);
                     supportBefore.WriteCloseBraceIndent();
                     Context.Return.Write(value);
                     break;
@@ -352,8 +356,9 @@ namespace CppSharp.Generators.CSharp
                     supportBefore.WriteLine("if ({0} != null)", Context.ArgName);
                     supportBefore.WriteStartBraceIndent();
                     supportBefore.WriteLine("for (int i = 0; i < {0}; i++)", array.Size);
-                    supportBefore.WriteLineIndent("{0}[i] = {1}[i];",
-                        Context.ReturnVarName, Context.ArgName);
+                    supportBefore.WriteLineIndent("{0}[i] = {1}[i]{2};",
+                        Context.ReturnVarName, Context.ArgName,
+                        array.Type.IsPointerToPrimitiveType(PrimitiveType.Void) ? ".ToPointer()" : string.Empty);
                     supportBefore.WriteCloseBraceIndent();
                     break;
                 default:

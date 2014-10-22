@@ -57,7 +57,9 @@ namespace CppSharp.Passes
         {
             if (desugared.IsPointer())
             {
-                parameter.DefaultArgument.String = "null";
+                // IntPtr.Zero is not a constant
+                parameter.DefaultArgument.String = desugared.IsPointerToPrimitiveType(PrimitiveType.Void) ?
+                    "new global::System.IntPtr()" : "null";
                 return true;
             }
             return false;
