@@ -2848,7 +2848,7 @@ namespace CppSharp.Generators.CSharp
             }
 
             if (!function.HasIndirectReturnTypeParameter &&
-                isInstanceMethod && Options.IsItaniumAbi)
+                isInstanceMethod && Options.IsItaniumLikeAbi)
                 @params.Add("global::System.IntPtr instance");
 
             foreach (var param in function.Parameters)
@@ -2861,7 +2861,7 @@ namespace CppSharp.Generators.CSharp
                 @params.Add(string.Format("{0} {1}", typeName, param.Name));
 
                 if (param.Kind == ParameterKind.IndirectReturnType &&
-                    isInstanceMethod && Options.IsItaniumAbi)
+                    isInstanceMethod && Options.IsItaniumLikeAbi)
                     @params.Add("global::System.IntPtr instance");
             }
 
