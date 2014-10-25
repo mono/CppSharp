@@ -64,7 +64,7 @@ namespace CppSharp
         public bool IgnoreParseWarnings;
         public bool IgnoreParseErrors;
 
-        public bool IsItaniumLikeAbi { get { return Abi == CppAbi.Itanium || Abi == CppAbi.ARM; } }
+        public bool IsItaniumLikeAbi { get { return Abi != CppAbi.Microsoft; } }
         public bool IsMicrosoftAbi { get { return Abi == CppAbi.Microsoft; } }
 
         // Library options
