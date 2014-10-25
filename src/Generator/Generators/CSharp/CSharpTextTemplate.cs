@@ -1903,7 +1903,7 @@ namespace CppSharp.Generators.CSharp
             if (!@class.IsAbstract)
             {
                 PushBlock(CSharpBlockKind.Method);
-                WriteLine("public static {0} {1}(global::System.IntPtr native)", safeIdentifier, Helpers.CreateInstanceIdentifier);
+                WriteLine("public static new {0} {1}(global::System.IntPtr native)", safeIdentifier, Helpers.CreateInstanceIdentifier);
                 WriteStartBraceIndent();
                 WriteLine("return new {0}(({1}.Internal*) native);", safeIdentifier, className);
                 WriteCloseBraceIndent();
