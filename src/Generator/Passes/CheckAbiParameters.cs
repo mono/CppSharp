@@ -49,7 +49,7 @@ namespace CppSharp.Passes
             if (function.HasThisReturn)
             {
                 // This flag should only be true on methods.
-                var method = function as Method;
+                var method = (Method)function;
                 var classType = new QualifiedType(new TagType(method.Namespace),
                     new TypeQualifiers {IsConst = true});
                 function.ReturnType = new QualifiedType(new PointerType(classType));
