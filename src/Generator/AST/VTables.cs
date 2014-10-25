@@ -12,7 +12,7 @@ namespace CppSharp.AST
             {
             case CppAbi.Microsoft:
                 return GatherVTableMethodsMS(@class);
-            case CppAbi.Itanium:
+            default:
                 return GatherVTableMethodsItanium(@class);
             }
 
@@ -62,7 +62,7 @@ namespace CppSharp.AST
                         return index;
                 }
                 break;
-            case CppAbi.Itanium:
+            default:
                 // ignore offset to top and RTTI
                 return @class.Layout.Layout.Components.IndexOf(entry) - 2;
             }
