@@ -43,7 +43,7 @@ namespace CppSharp.Generators.CSharp
 
         public const string InstanceIdentifier = "__Instance";
 
-        public const string AllocatedWithHGlobalIdentifier = "__allocatedWithHGlobal";
+        public const string OwnsNativeInstanceIdentifier = "__ownsNativeInstance";
 
         public const string CreateInstanceIdentifier = "__CreateInstance";
 
@@ -1870,7 +1870,7 @@ namespace CppSharp.Generators.CSharp
 
             if (@class.IsRefType)
             {
-                WriteLine("if ({0})", Helpers.AllocatedWithHGlobalIdentifier);
+                WriteLine("if ({0})", Helpers.OwnsNativeInstanceIdentifier);
                 WriteStartBraceIndent();
                 WriteLine("Marshal.FreeHGlobal({0});", Helpers.InstanceIdentifier);
                 WriteCloseBraceIndent();
@@ -1888,7 +1888,7 @@ namespace CppSharp.Generators.CSharp
             if (@class.IsRefType)
             {
                 PushBlock(CSharpBlockKind.Field);
-                WriteLine("private readonly bool {0};", Helpers.AllocatedWithHGlobalIdentifier);
+                WriteLine("private readonly bool {0};", Helpers.OwnsNativeInstanceIdentifier);
                 PopBlock(NewLineKind.BeforeNextBlock);   
             }
 
@@ -1999,7 +1999,7 @@ namespace CppSharp.Generators.CSharp
             WriteStartBraceIndent();
             if (@class.IsRefType)
             {
-                WriteLine("{0} = true;", Helpers.AllocatedWithHGlobalIdentifier);                
+                WriteLine("{0} = true;", Helpers.OwnsNativeInstanceIdentifier);                
             }
             WriteCloseBraceIndent();
             PopBlock(NewLineKind.BeforeNextBlock);
@@ -2266,7 +2266,7 @@ namespace CppSharp.Generators.CSharp
         {
             WriteLine("{0} = Marshal.AllocHGlobal({1});", Helpers.InstanceIdentifier,
                 @class.Layout.Size);
-            WriteLine("{0} = true;", Helpers.AllocatedWithHGlobalIdentifier);
+            WriteLine("{0} = true;", Helpers.OwnsNativeInstanceIdentifier);
 
             if (method.IsCopyConstructor)
             {
