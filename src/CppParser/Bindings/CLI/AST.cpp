@@ -1747,6 +1747,16 @@ void CppSharp::Parser::AST::Function::IsReturnIndirect::set(bool value)
     ((::CppSharp::CppParser::AST::Function*)NativePtr)->IsReturnIndirect = value;
 }
 
+bool CppSharp::Parser::AST::Function::HasThisReturn::get()
+{
+    return ((::CppSharp::CppParser::AST::Function*)NativePtr)->HasThisReturn;
+}
+
+void CppSharp::Parser::AST::Function::HasThisReturn::set(bool value)
+{
+    ((::CppSharp::CppParser::AST::Function*)NativePtr)->HasThisReturn = value;
+}
+
 bool CppSharp::Parser::AST::Function::IsVariadic::get()
 {
     return ((::CppSharp::CppParser::AST::Function*)NativePtr)->IsVariadic;

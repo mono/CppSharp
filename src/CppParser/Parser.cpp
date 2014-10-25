@@ -41,6 +41,7 @@
 #include <CodeGen/CodeGenTypes.h>
 #include <CodeGen/TargetInfo.h>
 #include <CodeGen/CGCall.h>
+#include <CodeGen/CGCXXABI.h>
 
 using namespace CppSharp::CppParser;
 
@@ -2215,6 +2216,17 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, Function* F,
 
         ParamStartLoc = VD->getLocEnd();
     }
+
+    auto& CXXABI = CodeGenTypes->getCXXABI();
+    bool HasThisReturn = false;
+    if (auto CD = dyn_cast<CXXConstructorDecl>(FD))
+        HasThisReturn = CXXABI.HasThisReturn(GlobalDecl(CD, Ctor_Complete));
+    else if (auto DD = dyn_cast<CXXDestructorDecl>(FD))
+        HasThisReturn = CXXABI.HasThisReturn(GlobalDecl(DD, Dtor_Complete));
+    else
+        HasThisReturn = CXXABI.HasThisReturn(FD);
+
+    F->HasThisReturn = HasThisReturn;
 
     bool IsMicrosoftABI = C->getASTContext().getTargetInfo().getCXXABI().isMicrosoft();
     bool CheckCodeGenInfo = !FD->isDependentContext() && !FD->isInvalidDecl();

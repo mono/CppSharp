@@ -4309,15 +4309,18 @@ namespace CppSharp
                     public bool IsReturnIndirect;
 
                     [FieldOffset(93)]
-                    public bool IsVariadic;
+                    public bool HasThisReturn;
 
                     [FieldOffset(94)]
-                    public bool IsInline;
+                    public bool IsVariadic;
 
                     [FieldOffset(95)]
-                    public bool IsPure;
+                    public bool IsInline;
 
                     [FieldOffset(96)]
+                    public bool IsPure;
+
+                    [FieldOffset(97)]
                     public bool IsDeleted;
 
                     [FieldOffset(100)]
@@ -4518,6 +4521,21 @@ namespace CppSharp
                     }
                 }
 
+                public bool HasThisReturn
+                {
+                    get
+                    {
+                        var __ptr = (Internal*)__Instance.ToPointer();
+                        return __ptr->HasThisReturn;
+                    }
+
+                    set
+                    {
+                        var __ptr = (Internal*)__Instance.ToPointer();
+                        __ptr->HasThisReturn = value;
+                    }
+                }
+
                 public bool IsVariadic
                 {
                     get
@@ -4666,15 +4684,18 @@ namespace CppSharp
                     public bool IsReturnIndirect;
 
                     [FieldOffset(93)]
-                    public bool IsVariadic;
+                    public bool HasThisReturn;
 
                     [FieldOffset(94)]
-                    public bool IsInline;
+                    public bool IsVariadic;
 
                     [FieldOffset(95)]
-                    public bool IsPure;
+                    public bool IsInline;
 
                     [FieldOffset(96)]
+                    public bool IsPure;
+
+                    [FieldOffset(97)]
                     public bool IsDeleted;
 
                     [FieldOffset(100)]

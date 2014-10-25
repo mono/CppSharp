@@ -115,6 +115,7 @@ namespace CppSharp.AST
             Parameters = new List<Parameter>();
             ReturnType = function.ReturnType;
             IsReturnIndirect = function.IsReturnIndirect;
+            HasThisReturn = function.HasThisReturn;
             Parameters.AddRange(function.Parameters.Select(p => new Parameter(p)));
             IsVariadic = function.IsVariadic;
             IsInline = function.IsInline;
@@ -134,6 +135,7 @@ namespace CppSharp.AST
 
         public QualifiedType ReturnType { get; set; }
         public bool IsReturnIndirect { get; set; }
+        public bool HasThisReturn { get; set; }
 
         public List<Parameter> Parameters { get; set; }
         public bool IsVariadic { get; set; }

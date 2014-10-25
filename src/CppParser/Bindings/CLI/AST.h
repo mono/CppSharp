@@ -1287,6 +1287,12 @@ namespace CppSharp
                     void set(bool);
                 }
 
+                property bool HasThisReturn
+                {
+                    bool get();
+                    void set(bool);
+                }
+
                 property bool IsVariadic
                 {
                     bool get();

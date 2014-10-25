@@ -874,6 +874,7 @@ namespace CppSharp
 
             _function.ReturnType = typeConverter.VisitQualified(function.ReturnType);
             _function.IsReturnIndirect = function.IsReturnIndirect;
+            _function.HasThisReturn = function.HasThisReturn;
             _function.IsVariadic = function.IsVariadic;
             _function.IsInline = function.IsInline;
             _function.IsPure = function.IsPure;

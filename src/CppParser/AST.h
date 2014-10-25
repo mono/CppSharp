@@ -558,6 +558,7 @@ public:
 
     QualifiedType ReturnType;
     bool IsReturnIndirect;
+	bool HasThisReturn;
 
     bool IsVariadic;
     bool IsInline;
