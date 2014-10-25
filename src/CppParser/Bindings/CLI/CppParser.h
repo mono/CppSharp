@@ -13,10 +13,10 @@ namespace CppSharp
         enum struct SourceLocationKind;
         ref class ClangParser;
         ref class Parser;
-        ref class ParserDiagnostic;
         ref class ParserOptions;
-        ref class ParserResult;
         ref class ParserTargetInfo;
+        value struct ParserDiagnostic;
+        value struct ParserResult;
         namespace AST
         {
             enum struct CppAbi;
@@ -207,21 +207,12 @@ namespace CppSharp
             void clearLibraryDirs();
         };
 
-        public ref class ParserDiagnostic : ICppInstance
+        public value struct ParserDiagnostic
         {
         public:
 
-            property ::CppSharp::CppParser::ParserDiagnostic* NativePtr;
-            property System::IntPtr __Instance
-            {
-                virtual System::IntPtr get();
-                virtual void set(System::IntPtr instance);
-            }
-
             ParserDiagnostic(::CppSharp::CppParser::ParserDiagnostic* native);
             ParserDiagnostic(System::IntPtr native);
-            ParserDiagnostic();
-
             property System::String^ FileName
             {
                 System::String^ get();
@@ -251,23 +242,19 @@ namespace CppSharp
                 int get();
                 void set(int);
             }
+
+            private:
+            CppSharp::Parser::ParserDiagnosticLevel __Level;
+            int __LineNumber;
+            int __ColumnNumber;
         };
 
-        public ref class ParserResult : ICppInstance
+        public value struct ParserResult
         {
         public:
 
-            property ::CppSharp::CppParser::ParserResult* NativePtr;
-            property System::IntPtr __Instance
-            {
-                virtual System::IntPtr get();
-                virtual void set(System::IntPtr instance);
-            }
-
             ParserResult(::CppSharp::CppParser::ParserResult* native);
             ParserResult(System::IntPtr native);
-            ParserResult();
-
             property unsigned int DiagnosticsCount
             {
                 unsigned int get();
@@ -291,11 +278,17 @@ namespace CppSharp
                 void set(CppSharp::Parser::AST::NativeLibrary^);
             }
 
-            CppSharp::Parser::ParserDiagnostic^ getDiagnostics(unsigned int i);
+            CppSharp::Parser::ParserDiagnostic getDiagnostics(unsigned int i);
 
-            void addDiagnostics(CppSharp::Parser::ParserDiagnostic^ s);
+            void addDiagnostics(CppSharp::Parser::ParserDiagnostic s);
 
             void clearDiagnostics();
+
+            private:
+            CppSharp::Parser::ParserResultKind __Kind;
+            CppSharp::Parser::AST::ASTContext^ __ASTContext;
+            CppSharp::Parser::AST::NativeLibrary^ __Library;
+            CppSharp::Parser::Parser^ __CodeParser;
         };
 
         public ref class ClangParser : ICppInstance
@@ -313,9 +306,9 @@ namespace CppSharp
             ClangParser(System::IntPtr native);
             ClangParser();
 
-            static CppSharp::Parser::ParserResult^ ParseHeader(CppSharp::Parser::ParserOptions^ Opts);
+            static CppSharp::Parser::ParserResult ParseHeader(CppSharp::Parser::ParserOptions^ Opts);
 
-            static CppSharp::Parser::ParserResult^ ParseLibrary(CppSharp::Parser::ParserOptions^ Opts);
+            static CppSharp::Parser::ParserResult ParseLibrary(CppSharp::Parser::ParserOptions^ Opts);
 
             static CppSharp::Parser::ParserTargetInfo^ GetTargetInfo(CppSharp::Parser::ParserOptions^ Opts);
         };
