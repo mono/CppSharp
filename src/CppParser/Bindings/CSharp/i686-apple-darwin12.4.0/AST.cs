@@ -247,31 +247,35 @@ namespace CppSharp
 
                 public global::System.IntPtr __Instance { get; protected set; }
 
-                internal Type(Type.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new Type __CreateInstance(global::System.IntPtr native)
                 {
+                    return new Type((Type.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(Type.Internal native)
+                private static Type.Internal* __CopyValue(Type.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(8);
                     CppSharp.Parser.AST.Type.Internal.cctor_1(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (Type.Internal*) ret;
                 }
 
                 internal Type(Type.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public Type(global::System.IntPtr native, bool isInternalImpl = false)
+                protected Type(Type.Internal* native, bool isInternalImpl = false)
                 {
-                    __Instance = native;
+                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public Type(CppSharp.Parser.AST.TypeKind kind)
                 {
                     __Instance = Marshal.AllocHGlobal(8);
+                    __ownsNativeInstance = true;
                     var arg0 = kind;
                     Internal.ctor_0(__Instance, arg0);
                 }
@@ -284,7 +288,10 @@ namespace CppSharp
 
                 protected virtual void Dispose(bool disposing)
                 {
-                    Marshal.FreeHGlobal(__Instance);
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                 }
 
                 public CppSharp.Parser.AST.TypeKind Kind
@@ -340,31 +347,35 @@ namespace CppSharp
 
                 public global::System.IntPtr __Instance { get; protected set; }
 
-                internal TypeQualifiers(TypeQualifiers.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new TypeQualifiers __CreateInstance(global::System.IntPtr native)
                 {
+                    return new TypeQualifiers((TypeQualifiers.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(TypeQualifiers.Internal native)
+                private static TypeQualifiers.Internal* __CopyValue(TypeQualifiers.Internal native)
                 {
-                    global::System.IntPtr ret = Marshal.AllocHGlobal(3);
-                    *(TypeQualifiers.Internal*) ret = native;
+                    TypeQualifiers.Internal* ret = (TypeQualifiers.Internal*) Marshal.AllocHGlobal(3);
+                    *ret = native;
                     return ret;
                 }
 
                 internal TypeQualifiers(TypeQualifiers.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public TypeQualifiers(global::System.IntPtr native, bool isInternalImpl = false)
+                protected TypeQualifiers(TypeQualifiers.Internal* native, bool isInternalImpl = false)
                 {
-                    __Instance = native;
+                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public TypeQualifiers()
                 {
                     __Instance = Marshal.AllocHGlobal(3);
+                    __ownsNativeInstance = true;
                 }
 
                 public void Dispose()
@@ -375,7 +386,10 @@ namespace CppSharp
 
                 protected virtual void Dispose(bool disposing)
                 {
-                    Marshal.FreeHGlobal(__Instance);
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                 }
 
                 public bool IsConst
@@ -448,31 +462,35 @@ namespace CppSharp
 
                 public global::System.IntPtr __Instance { get; protected set; }
 
-                internal QualifiedType(QualifiedType.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new QualifiedType __CreateInstance(global::System.IntPtr native)
                 {
+                    return new QualifiedType((QualifiedType.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(QualifiedType.Internal native)
+                private static QualifiedType.Internal* __CopyValue(QualifiedType.Internal native)
                 {
-                    global::System.IntPtr ret = Marshal.AllocHGlobal(8);
-                    *(QualifiedType.Internal*) ret = native;
+                    QualifiedType.Internal* ret = (QualifiedType.Internal*) Marshal.AllocHGlobal(8);
+                    *ret = native;
                     return ret;
                 }
 
                 internal QualifiedType(QualifiedType.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public QualifiedType(global::System.IntPtr native, bool isInternalImpl = false)
+                protected QualifiedType(QualifiedType.Internal* native, bool isInternalImpl = false)
                 {
-                    __Instance = native;
+                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public QualifiedType()
                 {
                     __Instance = Marshal.AllocHGlobal(8);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
@@ -484,7 +502,10 @@ namespace CppSharp
 
                 protected virtual void Dispose(bool disposing)
                 {
-                    Marshal.FreeHGlobal(__Instance);
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                 }
 
                 public CppSharp.Parser.AST.Type Type
@@ -492,7 +513,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return (__ptr->Type == IntPtr.Zero) ? null : new CppSharp.Parser.AST.Type(__ptr->Type);
+                        return (__ptr->Type == IntPtr.Zero) ? null : CppSharp.Parser.AST.Type.__CreateInstance(__ptr->Type);
                     }
 
                     set
@@ -543,37 +564,45 @@ namespace CppSharp
                     internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                internal TagType(TagType.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new TagType __CreateInstance(global::System.IntPtr native)
                 {
+                    return new TagType((TagType.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(TagType.Internal native)
+                private static TagType.Internal* __CopyValue(TagType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(12);
                     CppSharp.Parser.AST.TagType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (TagType.Internal*) ret;
                 }
 
                 internal TagType(TagType.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public TagType(global::System.IntPtr native, bool isInternalImpl = false)
-                    : base(native)
+                protected TagType(TagType.Internal* native, bool isInternalImpl = false)
+                    : base((Type.Internal*) native)
                 {
                 }
 
                 public TagType()
-                    : this(IntPtr.Zero)
+                    : this((Internal*) null)
                 {
                     __Instance = Marshal.AllocHGlobal(12);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                     base.Dispose(disposing);
                 }
 
@@ -582,7 +611,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return (__ptr->Declaration == IntPtr.Zero) ? null : new CppSharp.Parser.AST.Declaration(__ptr->Declaration);
+                        return (__ptr->Declaration == IntPtr.Zero) ? null : CppSharp.Parser.AST.Declaration.__CreateInstance(__ptr->Declaration);
                     }
 
                     set
@@ -632,37 +661,45 @@ namespace CppSharp
                     Incomplete = 3
                 }
 
-                internal ArrayType(ArrayType.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new ArrayType __CreateInstance(global::System.IntPtr native)
                 {
+                    return new ArrayType((ArrayType.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(ArrayType.Internal native)
+                private static ArrayType.Internal* __CopyValue(ArrayType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(24);
                     CppSharp.Parser.AST.ArrayType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (ArrayType.Internal*) ret;
                 }
 
                 internal ArrayType(ArrayType.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public ArrayType(global::System.IntPtr native, bool isInternalImpl = false)
-                    : base(native)
+                protected ArrayType(ArrayType.Internal* native, bool isInternalImpl = false)
+                    : base((Type.Internal*) native)
                 {
                 }
 
                 public ArrayType()
-                    : this(IntPtr.Zero)
+                    : this((Internal*) null)
                 {
                     __Instance = Marshal.AllocHGlobal(24);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                     base.Dispose(disposing);
                 }
 
@@ -765,37 +802,45 @@ namespace CppSharp
                     internal static extern uint getParametersCount_0(global::System.IntPtr instance);
                 }
 
-                internal FunctionType(FunctionType.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new FunctionType __CreateInstance(global::System.IntPtr native)
                 {
+                    return new FunctionType((FunctionType.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(FunctionType.Internal native)
+                private static FunctionType.Internal* __CopyValue(FunctionType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(32);
                     CppSharp.Parser.AST.FunctionType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (FunctionType.Internal*) ret;
                 }
 
                 internal FunctionType(FunctionType.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public FunctionType(global::System.IntPtr native, bool isInternalImpl = false)
-                    : base(native)
+                protected FunctionType(FunctionType.Internal* native, bool isInternalImpl = false)
+                    : base((Type.Internal*) native)
                 {
                 }
 
                 public FunctionType()
-                    : this(IntPtr.Zero)
+                    : this((Internal*) null)
                 {
                     __Instance = Marshal.AllocHGlobal(32);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                     base.Dispose(disposing);
                 }
 
@@ -803,7 +848,7 @@ namespace CppSharp
                 {
                     var __ret = Internal.getParameters_0(__Instance, i);
                     if (__ret == global::System.IntPtr.Zero) return null;
-                    return (__ret == IntPtr.Zero) ? null : new CppSharp.Parser.AST.Parameter(__ret);
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.Parameter.__CreateInstance(__ret);
                 }
 
                 public void addParameters(CppSharp.Parser.AST.Parameter s)
@@ -893,37 +938,45 @@ namespace CppSharp
                     RVReference = 3
                 }
 
-                internal PointerType(PointerType.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new PointerType __CreateInstance(global::System.IntPtr native)
                 {
+                    return new PointerType((PointerType.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(PointerType.Internal native)
+                private static PointerType.Internal* __CopyValue(PointerType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(20);
                     CppSharp.Parser.AST.PointerType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (PointerType.Internal*) ret;
                 }
 
                 internal PointerType(PointerType.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public PointerType(global::System.IntPtr native, bool isInternalImpl = false)
-                    : base(native)
+                protected PointerType(PointerType.Internal* native, bool isInternalImpl = false)
+                    : base((Type.Internal*) native)
                 {
                 }
 
                 public PointerType()
-                    : this(IntPtr.Zero)
+                    : this((Internal*) null)
                 {
                     __Instance = Marshal.AllocHGlobal(20);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                     base.Dispose(disposing);
                 }
 
@@ -983,37 +1036,45 @@ namespace CppSharp
                     internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                internal MemberPointerType(MemberPointerType.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new MemberPointerType __CreateInstance(global::System.IntPtr native)
                 {
+                    return new MemberPointerType((MemberPointerType.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(MemberPointerType.Internal native)
+                private static MemberPointerType.Internal* __CopyValue(MemberPointerType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(16);
                     CppSharp.Parser.AST.MemberPointerType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (MemberPointerType.Internal*) ret;
                 }
 
                 internal MemberPointerType(MemberPointerType.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public MemberPointerType(global::System.IntPtr native, bool isInternalImpl = false)
-                    : base(native)
+                protected MemberPointerType(MemberPointerType.Internal* native, bool isInternalImpl = false)
+                    : base((Type.Internal*) native)
                 {
                 }
 
                 public MemberPointerType()
-                    : this(IntPtr.Zero)
+                    : this((Internal*) null)
                 {
                     __Instance = Marshal.AllocHGlobal(16);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                     base.Dispose(disposing);
                 }
 
@@ -1058,37 +1119,45 @@ namespace CppSharp
                     internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                internal TypedefType(TypedefType.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new TypedefType __CreateInstance(global::System.IntPtr native)
                 {
+                    return new TypedefType((TypedefType.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(TypedefType.Internal native)
+                private static TypedefType.Internal* __CopyValue(TypedefType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(12);
                     CppSharp.Parser.AST.TypedefType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (TypedefType.Internal*) ret;
                 }
 
                 internal TypedefType(TypedefType.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public TypedefType(global::System.IntPtr native, bool isInternalImpl = false)
-                    : base(native)
+                protected TypedefType(TypedefType.Internal* native, bool isInternalImpl = false)
+                    : base((Type.Internal*) native)
                 {
                 }
 
                 public TypedefType()
-                    : this(IntPtr.Zero)
+                    : this((Internal*) null)
                 {
                     __Instance = Marshal.AllocHGlobal(12);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                     base.Dispose(disposing);
                 }
 
@@ -1097,7 +1166,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return (__ptr->Declaration == IntPtr.Zero) ? null : new CppSharp.Parser.AST.TypedefDecl(__ptr->Declaration);
+                        return (__ptr->Declaration == IntPtr.Zero) ? null : CppSharp.Parser.AST.TypedefDecl.__CreateInstance(__ptr->Declaration);
                     }
 
                     set
@@ -1136,37 +1205,45 @@ namespace CppSharp
                     internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                internal AttributedType(AttributedType.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new AttributedType __CreateInstance(global::System.IntPtr native)
                 {
+                    return new AttributedType((AttributedType.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(AttributedType.Internal native)
+                private static AttributedType.Internal* __CopyValue(AttributedType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(24);
                     CppSharp.Parser.AST.AttributedType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (AttributedType.Internal*) ret;
                 }
 
                 internal AttributedType(AttributedType.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public AttributedType(global::System.IntPtr native, bool isInternalImpl = false)
-                    : base(native)
+                protected AttributedType(AttributedType.Internal* native, bool isInternalImpl = false)
+                    : base((Type.Internal*) native)
                 {
                 }
 
                 public AttributedType()
-                    : this(IntPtr.Zero)
+                    : this((Internal*) null)
                 {
                     __Instance = Marshal.AllocHGlobal(24);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                     base.Dispose(disposing);
                 }
 
@@ -1232,37 +1309,45 @@ namespace CppSharp
                     internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                internal DecayedType(DecayedType.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new DecayedType __CreateInstance(global::System.IntPtr native)
                 {
+                    return new DecayedType((DecayedType.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(DecayedType.Internal native)
+                private static DecayedType.Internal* __CopyValue(DecayedType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(32);
                     CppSharp.Parser.AST.DecayedType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (DecayedType.Internal*) ret;
                 }
 
                 internal DecayedType(DecayedType.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public DecayedType(global::System.IntPtr native, bool isInternalImpl = false)
-                    : base(native)
+                protected DecayedType(DecayedType.Internal* native, bool isInternalImpl = false)
+                    : base((Type.Internal*) native)
                 {
                 }
 
                 public DecayedType()
-                    : this(IntPtr.Zero)
+                    : this((Internal*) null)
                 {
                     __Instance = Marshal.AllocHGlobal(32);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                     base.Dispose(disposing);
                 }
 
@@ -1354,31 +1439,35 @@ namespace CppSharp
 
                 public global::System.IntPtr __Instance { get; protected set; }
 
-                internal TemplateArgument(TemplateArgument.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new TemplateArgument __CreateInstance(global::System.IntPtr native)
                 {
+                    return new TemplateArgument((TemplateArgument.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(TemplateArgument.Internal native)
+                private static TemplateArgument.Internal* __CopyValue(TemplateArgument.Internal native)
                 {
-                    global::System.IntPtr ret = Marshal.AllocHGlobal(20);
-                    *(TemplateArgument.Internal*) ret = native;
+                    TemplateArgument.Internal* ret = (TemplateArgument.Internal*) Marshal.AllocHGlobal(20);
+                    *ret = native;
                     return ret;
                 }
 
                 internal TemplateArgument(TemplateArgument.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public TemplateArgument(global::System.IntPtr native, bool isInternalImpl = false)
+                protected TemplateArgument(TemplateArgument.Internal* native, bool isInternalImpl = false)
                 {
-                    __Instance = native;
+                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public TemplateArgument()
                 {
                     __Instance = Marshal.AllocHGlobal(20);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
@@ -1390,7 +1479,10 @@ namespace CppSharp
 
                 protected virtual void Dispose(bool disposing)
                 {
-                    Marshal.FreeHGlobal(__Instance);
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                 }
 
                 public CppSharp.Parser.AST.TemplateArgument.ArgumentKind Kind
@@ -1428,7 +1520,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return (__ptr->Declaration == IntPtr.Zero) ? null : new CppSharp.Parser.AST.Declaration(__ptr->Declaration);
+                        return (__ptr->Declaration == IntPtr.Zero) ? null : CppSharp.Parser.AST.Declaration.__CreateInstance(__ptr->Declaration);
                     }
 
                     set
@@ -1507,37 +1599,45 @@ namespace CppSharp
                     internal static extern uint getArgumentsCount_0(global::System.IntPtr instance);
                 }
 
-                internal TemplateSpecializationType(TemplateSpecializationType.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new TemplateSpecializationType __CreateInstance(global::System.IntPtr native)
                 {
+                    return new TemplateSpecializationType((TemplateSpecializationType.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(TemplateSpecializationType.Internal native)
+                private static TemplateSpecializationType.Internal* __CopyValue(TemplateSpecializationType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(28);
                     CppSharp.Parser.AST.TemplateSpecializationType.Internal.cctor_1(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (TemplateSpecializationType.Internal*) ret;
                 }
 
                 internal TemplateSpecializationType(TemplateSpecializationType.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public TemplateSpecializationType(global::System.IntPtr native, bool isInternalImpl = false)
-                    : base(native)
+                protected TemplateSpecializationType(TemplateSpecializationType.Internal* native, bool isInternalImpl = false)
+                    : base((Type.Internal*) native)
                 {
                 }
 
                 public TemplateSpecializationType()
-                    : this(IntPtr.Zero)
+                    : this((Internal*) null)
                 {
                     __Instance = Marshal.AllocHGlobal(28);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                     base.Dispose(disposing);
                 }
 
@@ -1573,7 +1673,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return (__ptr->Template == IntPtr.Zero) ? null : new CppSharp.Parser.AST.Template(__ptr->Template);
+                        return (__ptr->Template == IntPtr.Zero) ? null : CppSharp.Parser.AST.Template.__CreateInstance(__ptr->Template);
                     }
 
                     set
@@ -1588,7 +1688,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return (__ptr->Desugared == IntPtr.Zero) ? null : new CppSharp.Parser.AST.Type(__ptr->Desugared);
+                        return (__ptr->Desugared == IntPtr.Zero) ? null : CppSharp.Parser.AST.Type.__CreateInstance(__ptr->Desugared);
                     }
 
                     set
@@ -1641,31 +1741,35 @@ namespace CppSharp
 
                 public global::System.IntPtr __Instance { get; protected set; }
 
-                internal TemplateParameter(TemplateParameter.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new TemplateParameter __CreateInstance(global::System.IntPtr native)
                 {
+                    return new TemplateParameter((TemplateParameter.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(TemplateParameter.Internal native)
+                private static TemplateParameter.Internal* __CopyValue(TemplateParameter.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(16);
                     CppSharp.Parser.AST.TemplateParameter.Internal.cctor_1(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (TemplateParameter.Internal*) ret;
                 }
 
                 internal TemplateParameter(TemplateParameter.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public TemplateParameter(global::System.IntPtr native, bool isInternalImpl = false)
+                protected TemplateParameter(TemplateParameter.Internal* native, bool isInternalImpl = false)
                 {
-                    __Instance = native;
+                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public TemplateParameter()
                 {
                     __Instance = Marshal.AllocHGlobal(16);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
@@ -1678,7 +1782,10 @@ namespace CppSharp
                 protected virtual void Dispose(bool disposing)
                 {
                     Internal.dtor_0(__Instance);
-                    Marshal.FreeHGlobal(__Instance);
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                 }
 
                 public static bool operator !=(CppSharp.Parser.AST.TemplateParameter __op, CppSharp.Parser.AST.TemplateParameter param)
@@ -1766,37 +1873,45 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
-                internal TemplateParameterType(TemplateParameterType.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new TemplateParameterType __CreateInstance(global::System.IntPtr native)
                 {
+                    return new TemplateParameterType((TemplateParameterType.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(TemplateParameterType.Internal native)
+                private static TemplateParameterType.Internal* __CopyValue(TemplateParameterType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(36);
                     CppSharp.Parser.AST.TemplateParameterType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (TemplateParameterType.Internal*) ret;
                 }
 
                 internal TemplateParameterType(TemplateParameterType.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public TemplateParameterType(global::System.IntPtr native, bool isInternalImpl = false)
-                    : base(native)
+                protected TemplateParameterType(TemplateParameterType.Internal* native, bool isInternalImpl = false)
+                    : base((Type.Internal*) native)
                 {
                 }
 
                 public TemplateParameterType()
-                    : this(IntPtr.Zero)
+                    : this((Internal*) null)
                 {
                     __Instance = Marshal.AllocHGlobal(36);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                     base.Dispose(disposing);
                 }
 
@@ -1886,37 +2001,45 @@ namespace CppSharp
                     internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                internal TemplateParameterSubstitutionType(TemplateParameterSubstitutionType.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new TemplateParameterSubstitutionType __CreateInstance(global::System.IntPtr native)
                 {
+                    return new TemplateParameterSubstitutionType((TemplateParameterSubstitutionType.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(TemplateParameterSubstitutionType.Internal native)
+                private static TemplateParameterSubstitutionType.Internal* __CopyValue(TemplateParameterSubstitutionType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(16);
                     CppSharp.Parser.AST.TemplateParameterSubstitutionType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (TemplateParameterSubstitutionType.Internal*) ret;
                 }
 
                 internal TemplateParameterSubstitutionType(TemplateParameterSubstitutionType.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public TemplateParameterSubstitutionType(global::System.IntPtr native, bool isInternalImpl = false)
-                    : base(native)
+                protected TemplateParameterSubstitutionType(TemplateParameterSubstitutionType.Internal* native, bool isInternalImpl = false)
+                    : base((Type.Internal*) native)
                 {
                 }
 
                 public TemplateParameterSubstitutionType()
-                    : this(IntPtr.Zero)
+                    : this((Internal*) null)
                 {
                     __Instance = Marshal.AllocHGlobal(16);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                     base.Dispose(disposing);
                 }
 
@@ -1964,37 +2087,45 @@ namespace CppSharp
                     internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                internal InjectedClassNameType(InjectedClassNameType.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new InjectedClassNameType __CreateInstance(global::System.IntPtr native)
                 {
+                    return new InjectedClassNameType((InjectedClassNameType.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(InjectedClassNameType.Internal native)
+                private static InjectedClassNameType.Internal* __CopyValue(InjectedClassNameType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(16);
                     CppSharp.Parser.AST.InjectedClassNameType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (InjectedClassNameType.Internal*) ret;
                 }
 
                 internal InjectedClassNameType(InjectedClassNameType.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public InjectedClassNameType(global::System.IntPtr native, bool isInternalImpl = false)
-                    : base(native)
+                protected InjectedClassNameType(InjectedClassNameType.Internal* native, bool isInternalImpl = false)
+                    : base((Type.Internal*) native)
                 {
                 }
 
                 public InjectedClassNameType()
-                    : this(IntPtr.Zero)
+                    : this((Internal*) null)
                 {
                     __Instance = Marshal.AllocHGlobal(16);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                     base.Dispose(disposing);
                 }
 
@@ -2003,7 +2134,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return (__ptr->TemplateSpecialization == IntPtr.Zero) ? null : new CppSharp.Parser.AST.TemplateSpecializationType(__ptr->TemplateSpecialization);
+                        return (__ptr->TemplateSpecialization == IntPtr.Zero) ? null : CppSharp.Parser.AST.TemplateSpecializationType.__CreateInstance(__ptr->TemplateSpecialization);
                     }
 
                     set
@@ -2018,7 +2149,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return (__ptr->Class == IntPtr.Zero) ? null : new CppSharp.Parser.AST.Class(__ptr->Class);
+                        return (__ptr->Class == IntPtr.Zero) ? null : CppSharp.Parser.AST.Class.__CreateInstance(__ptr->Class);
                     }
 
                     set
@@ -2051,37 +2182,45 @@ namespace CppSharp
                     internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                internal DependentNameType(DependentNameType.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new DependentNameType __CreateInstance(global::System.IntPtr native)
                 {
+                    return new DependentNameType((DependentNameType.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(DependentNameType.Internal native)
+                private static DependentNameType.Internal* __CopyValue(DependentNameType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(8);
                     CppSharp.Parser.AST.DependentNameType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (DependentNameType.Internal*) ret;
                 }
 
                 internal DependentNameType(DependentNameType.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public DependentNameType(global::System.IntPtr native, bool isInternalImpl = false)
-                    : base(native)
+                protected DependentNameType(DependentNameType.Internal* native, bool isInternalImpl = false)
+                    : base((Type.Internal*) native)
                 {
                 }
 
                 public DependentNameType()
-                    : this(IntPtr.Zero)
+                    : this((Internal*) null)
                 {
                     __Instance = Marshal.AllocHGlobal(8);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                     base.Dispose(disposing);
                 }
             }
@@ -2108,37 +2247,45 @@ namespace CppSharp
                     internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                internal PackExpansionType(PackExpansionType.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new PackExpansionType __CreateInstance(global::System.IntPtr native)
                 {
+                    return new PackExpansionType((PackExpansionType.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(PackExpansionType.Internal native)
+                private static PackExpansionType.Internal* __CopyValue(PackExpansionType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(8);
                     CppSharp.Parser.AST.PackExpansionType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (PackExpansionType.Internal*) ret;
                 }
 
                 internal PackExpansionType(PackExpansionType.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public PackExpansionType(global::System.IntPtr native, bool isInternalImpl = false)
-                    : base(native)
+                protected PackExpansionType(PackExpansionType.Internal* native, bool isInternalImpl = false)
+                    : base((Type.Internal*) native)
                 {
                 }
 
                 public PackExpansionType()
-                    : this(IntPtr.Zero)
+                    : this((Internal*) null)
                 {
                     __Instance = Marshal.AllocHGlobal(8);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                     base.Dispose(disposing);
                 }
             }
@@ -2168,37 +2315,45 @@ namespace CppSharp
                     internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                internal BuiltinType(BuiltinType.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new BuiltinType __CreateInstance(global::System.IntPtr native)
                 {
+                    return new BuiltinType((BuiltinType.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(BuiltinType.Internal native)
+                private static BuiltinType.Internal* __CopyValue(BuiltinType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(12);
                     CppSharp.Parser.AST.BuiltinType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (BuiltinType.Internal*) ret;
                 }
 
                 internal BuiltinType(BuiltinType.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public BuiltinType(global::System.IntPtr native, bool isInternalImpl = false)
-                    : base(native)
+                protected BuiltinType(BuiltinType.Internal* native, bool isInternalImpl = false)
+                    : base((Type.Internal*) native)
                 {
                 }
 
                 public BuiltinType()
-                    : this(IntPtr.Zero)
+                    : this((Internal*) null)
                 {
                     __Instance = Marshal.AllocHGlobal(12);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                     base.Dispose(disposing);
                 }
 
@@ -2245,31 +2400,35 @@ namespace CppSharp
 
                 public global::System.IntPtr __Instance { get; protected set; }
 
-                internal VTableComponent(VTableComponent.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new VTableComponent __CreateInstance(global::System.IntPtr native)
                 {
+                    return new VTableComponent((VTableComponent.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(VTableComponent.Internal native)
+                private static VTableComponent.Internal* __CopyValue(VTableComponent.Internal native)
                 {
-                    global::System.IntPtr ret = Marshal.AllocHGlobal(12);
-                    *(VTableComponent.Internal*) ret = native;
+                    VTableComponent.Internal* ret = (VTableComponent.Internal*) Marshal.AllocHGlobal(12);
+                    *ret = native;
                     return ret;
                 }
 
                 internal VTableComponent(VTableComponent.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public VTableComponent(global::System.IntPtr native, bool isInternalImpl = false)
+                protected VTableComponent(VTableComponent.Internal* native, bool isInternalImpl = false)
                 {
-                    __Instance = native;
+                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public VTableComponent()
                 {
                     __Instance = Marshal.AllocHGlobal(12);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
@@ -2281,7 +2440,10 @@ namespace CppSharp
 
                 protected virtual void Dispose(bool disposing)
                 {
-                    Marshal.FreeHGlobal(__Instance);
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                 }
 
                 public CppSharp.Parser.AST.VTableComponentKind Kind
@@ -2319,7 +2481,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return (__ptr->Declaration == IntPtr.Zero) ? null : new CppSharp.Parser.AST.Declaration(__ptr->Declaration);
+                        return (__ptr->Declaration == IntPtr.Zero) ? null : CppSharp.Parser.AST.Declaration.__CreateInstance(__ptr->Declaration);
                     }
 
                     set
@@ -2373,31 +2535,35 @@ namespace CppSharp
 
                 public global::System.IntPtr __Instance { get; protected set; }
 
-                internal VTableLayout(VTableLayout.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new VTableLayout __CreateInstance(global::System.IntPtr native)
                 {
+                    return new VTableLayout((VTableLayout.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(VTableLayout.Internal native)
+                private static VTableLayout.Internal* __CopyValue(VTableLayout.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(12);
                     CppSharp.Parser.AST.VTableLayout.Internal.cctor_1(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (VTableLayout.Internal*) ret;
                 }
 
                 internal VTableLayout(VTableLayout.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public VTableLayout(global::System.IntPtr native, bool isInternalImpl = false)
+                protected VTableLayout(VTableLayout.Internal* native, bool isInternalImpl = false)
                 {
-                    __Instance = native;
+                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public VTableLayout()
                 {
                     __Instance = Marshal.AllocHGlobal(12);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
@@ -2410,7 +2576,10 @@ namespace CppSharp
                 protected virtual void Dispose(bool disposing)
                 {
                     Internal.dtor_0(__Instance);
-                    Marshal.FreeHGlobal(__Instance);
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                 }
 
                 public CppSharp.Parser.AST.VTableComponent getComponents(uint i)
@@ -2476,31 +2645,35 @@ namespace CppSharp
 
                 public global::System.IntPtr __Instance { get; protected set; }
 
-                internal VFTableInfo(VFTableInfo.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new VFTableInfo __CreateInstance(global::System.IntPtr native)
                 {
+                    return new VFTableInfo((VFTableInfo.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(VFTableInfo.Internal native)
+                private static VFTableInfo.Internal* __CopyValue(VFTableInfo.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(28);
                     CppSharp.Parser.AST.VFTableInfo.Internal.cctor_1(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (VFTableInfo.Internal*) ret;
                 }
 
                 internal VFTableInfo(VFTableInfo.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public VFTableInfo(global::System.IntPtr native, bool isInternalImpl = false)
+                protected VFTableInfo(VFTableInfo.Internal* native, bool isInternalImpl = false)
                 {
-                    __Instance = native;
+                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public VFTableInfo()
                 {
                     __Instance = Marshal.AllocHGlobal(28);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
@@ -2513,7 +2686,10 @@ namespace CppSharp
                 protected virtual void Dispose(bool disposing)
                 {
                     Internal.dtor_0(__Instance);
-                    Marshal.FreeHGlobal(__Instance);
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                 }
 
                 public ulong VBTableIndex
@@ -2641,31 +2817,35 @@ namespace CppSharp
 
                 public global::System.IntPtr __Instance { get; protected set; }
 
-                internal ClassLayout(ClassLayout.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new ClassLayout __CreateInstance(global::System.IntPtr native)
                 {
+                    return new ClassLayout((ClassLayout.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(ClassLayout.Internal native)
+                private static ClassLayout.Internal* __CopyValue(ClassLayout.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(48);
                     CppSharp.Parser.AST.ClassLayout.Internal.cctor_2(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (ClassLayout.Internal*) ret;
                 }
 
                 internal ClassLayout(ClassLayout.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public ClassLayout(global::System.IntPtr native, bool isInternalImpl = false)
+                protected ClassLayout(ClassLayout.Internal* native, bool isInternalImpl = false)
                 {
-                    __Instance = native;
+                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public ClassLayout()
                 {
                     __Instance = Marshal.AllocHGlobal(48);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
@@ -2678,7 +2858,10 @@ namespace CppSharp
                 protected virtual void Dispose(bool disposing)
                 {
                     Internal.dtor_0(__Instance);
-                    Marshal.FreeHGlobal(__Instance);
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                 }
 
                 public CppSharp.Parser.AST.VFTableInfo getVFTables(uint i)
@@ -2847,7 +3030,7 @@ namespace CppSharp
                     public uint DefinitionOrder;
 
                     [FieldOffset(68)]
-                    public void* OriginalPtr;
+                    public global::System.IntPtr OriginalPtr;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -2907,31 +3090,35 @@ namespace CppSharp
 
                 public global::System.IntPtr __Instance { get; protected set; }
 
-                internal Declaration(Declaration.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new Declaration __CreateInstance(global::System.IntPtr native)
                 {
+                    return new Declaration((Declaration.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(Declaration.Internal native)
+                private static Declaration.Internal* __CopyValue(Declaration.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(84);
                     CppSharp.Parser.AST.Declaration.Internal.cctor_1(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (Declaration.Internal*) ret;
                 }
 
                 internal Declaration(Declaration.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public Declaration(global::System.IntPtr native, bool isInternalImpl = false)
+                protected Declaration(Declaration.Internal* native, bool isInternalImpl = false)
                 {
-                    __Instance = native;
+                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public Declaration(CppSharp.Parser.AST.DeclarationKind kind)
                 {
                     __Instance = Marshal.AllocHGlobal(84);
+                    __ownsNativeInstance = true;
                     var arg0 = kind;
                     Internal.ctor_0(__Instance, arg0);
                 }
@@ -2945,14 +3132,17 @@ namespace CppSharp
                 protected virtual void Dispose(bool disposing)
                 {
                     Internal.dtor_0(__Instance);
-                    Marshal.FreeHGlobal(__Instance);
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                 }
 
                 public CppSharp.Parser.AST.PreprocessedEntity getPreprocessedEntities(uint i)
                 {
                     var __ret = Internal.getPreprocessedEntities_0(__Instance, i);
                     if (__ret == global::System.IntPtr.Zero) return null;
-                    return (__ret == IntPtr.Zero) ? null : new CppSharp.Parser.AST.PreprocessedEntity(__ret);
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.PreprocessedEntity.__CreateInstance(__ret);
                 }
 
                 public void addPreprocessedEntities(CppSharp.Parser.AST.PreprocessedEntity s)
@@ -3044,7 +3234,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return (__ptr->_Namespace == IntPtr.Zero) ? null : new CppSharp.Parser.AST.DeclarationContext(__ptr->_Namespace);
+                        return (__ptr->_Namespace == IntPtr.Zero) ? null : CppSharp.Parser.AST.DeclarationContext.__CreateInstance(__ptr->_Namespace);
                     }
 
                     set
@@ -3074,7 +3264,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return (__ptr->Comment == IntPtr.Zero) ? null : new CppSharp.Parser.AST.RawComment(__ptr->Comment);
+                        return (__ptr->Comment == IntPtr.Zero) ? null : CppSharp.Parser.AST.RawComment.__CreateInstance(__ptr->Comment);
                     }
 
                     set
@@ -3119,7 +3309,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return (__ptr->CompleteDeclaration == IntPtr.Zero) ? null : new CppSharp.Parser.AST.Declaration(__ptr->CompleteDeclaration);
+                        return (__ptr->CompleteDeclaration == IntPtr.Zero) ? null : CppSharp.Parser.AST.Declaration.__CreateInstance(__ptr->CompleteDeclaration);
                     }
 
                     set
@@ -3144,7 +3334,7 @@ namespace CppSharp
                     }
                 }
 
-                public void* OriginalPtr
+                public global::System.IntPtr OriginalPtr
                 {
                     get
                     {
@@ -3193,10 +3383,7 @@ namespace CppSharp
                     public uint DefinitionOrder;
 
                     [FieldOffset(68)]
-                    public void* OriginalPtr;
-
-                    [FieldOffset(168)]
-                    public Std.Map Anonymous;
+                    public global::System.IntPtr OriginalPtr;
 
                     [FieldOffset(180)]
                     public bool IsAnonymous;
@@ -3357,38 +3544,46 @@ namespace CppSharp
                     internal static extern uint getVariablesCount_0(global::System.IntPtr instance);
                 }
 
-                internal DeclarationContext(DeclarationContext.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new DeclarationContext __CreateInstance(global::System.IntPtr native)
                 {
+                    return new DeclarationContext((DeclarationContext.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(DeclarationContext.Internal native)
+                private static DeclarationContext.Internal* __CopyValue(DeclarationContext.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(184);
                     CppSharp.Parser.AST.DeclarationContext.Internal.cctor_2(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (DeclarationContext.Internal*) ret;
                 }
 
                 internal DeclarationContext(DeclarationContext.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public DeclarationContext(global::System.IntPtr native, bool isInternalImpl = false)
-                    : base(native)
+                protected DeclarationContext(DeclarationContext.Internal* native, bool isInternalImpl = false)
+                    : base((Declaration.Internal*) native)
                 {
                 }
 
                 public DeclarationContext(CppSharp.Parser.AST.DeclarationKind kind)
-                    : this(IntPtr.Zero)
+                    : this((Internal*) null)
                 {
                     __Instance = Marshal.AllocHGlobal(184);
+                    __ownsNativeInstance = true;
                     var arg0 = kind;
                     Internal.ctor_0(__Instance, arg0);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                     base.Dispose(disposing);
                 }
 
@@ -3396,7 +3591,7 @@ namespace CppSharp
                 {
                     var __ret = Internal.getNamespaces_0(__Instance, i);
                     if (__ret == global::System.IntPtr.Zero) return null;
-                    return (__ret == IntPtr.Zero) ? null : new CppSharp.Parser.AST.Namespace(__ret);
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.Namespace.__CreateInstance(__ret);
                 }
 
                 public void addNamespaces(CppSharp.Parser.AST.Namespace s)
@@ -3414,7 +3609,7 @@ namespace CppSharp
                 {
                     var __ret = Internal.getEnums_0(__Instance, i);
                     if (__ret == global::System.IntPtr.Zero) return null;
-                    return (__ret == IntPtr.Zero) ? null : new CppSharp.Parser.AST.Enumeration(__ret);
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.Enumeration.__CreateInstance(__ret);
                 }
 
                 public void addEnums(CppSharp.Parser.AST.Enumeration s)
@@ -3432,7 +3627,7 @@ namespace CppSharp
                 {
                     var __ret = Internal.getFunctions_0(__Instance, i);
                     if (__ret == global::System.IntPtr.Zero) return null;
-                    return (__ret == IntPtr.Zero) ? null : new CppSharp.Parser.AST.Function(__ret);
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.Function.__CreateInstance(__ret);
                 }
 
                 public void addFunctions(CppSharp.Parser.AST.Function s)
@@ -3450,7 +3645,7 @@ namespace CppSharp
                 {
                     var __ret = Internal.getClasses_0(__Instance, i);
                     if (__ret == global::System.IntPtr.Zero) return null;
-                    return (__ret == IntPtr.Zero) ? null : new CppSharp.Parser.AST.Class(__ret);
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.Class.__CreateInstance(__ret);
                 }
 
                 public void addClasses(CppSharp.Parser.AST.Class s)
@@ -3468,7 +3663,7 @@ namespace CppSharp
                 {
                     var __ret = Internal.getTemplates_0(__Instance, i);
                     if (__ret == global::System.IntPtr.Zero) return null;
-                    return (__ret == IntPtr.Zero) ? null : new CppSharp.Parser.AST.Template(__ret);
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.Template.__CreateInstance(__ret);
                 }
 
                 public void addTemplates(CppSharp.Parser.AST.Template s)
@@ -3486,7 +3681,7 @@ namespace CppSharp
                 {
                     var __ret = Internal.getTypedefs_0(__Instance, i);
                     if (__ret == global::System.IntPtr.Zero) return null;
-                    return (__ret == IntPtr.Zero) ? null : new CppSharp.Parser.AST.TypedefDecl(__ret);
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.TypedefDecl.__CreateInstance(__ret);
                 }
 
                 public void addTypedefs(CppSharp.Parser.AST.TypedefDecl s)
@@ -3504,7 +3699,7 @@ namespace CppSharp
                 {
                     var __ret = Internal.getVariables_0(__Instance, i);
                     if (__ret == global::System.IntPtr.Zero) return null;
-                    return (__ret == IntPtr.Zero) ? null : new CppSharp.Parser.AST.Variable(__ret);
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.Variable.__CreateInstance(__ret);
                 }
 
                 public void addVariables(CppSharp.Parser.AST.Variable s)
@@ -3630,7 +3825,7 @@ namespace CppSharp
                     public uint DefinitionOrder;
 
                     [FieldOffset(68)]
-                    public void* OriginalPtr;
+                    public global::System.IntPtr OriginalPtr;
 
                     [FieldOffset(84)]
                     public CppSharp.Parser.AST.QualifiedType.Internal QualifiedType;
@@ -3651,37 +3846,45 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
-                internal TypedefDecl(TypedefDecl.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new TypedefDecl __CreateInstance(global::System.IntPtr native)
                 {
+                    return new TypedefDecl((TypedefDecl.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(TypedefDecl.Internal native)
+                private static TypedefDecl.Internal* __CopyValue(TypedefDecl.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(92);
                     CppSharp.Parser.AST.TypedefDecl.Internal.cctor_2(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (TypedefDecl.Internal*) ret;
                 }
 
                 internal TypedefDecl(TypedefDecl.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public TypedefDecl(global::System.IntPtr native, bool isInternalImpl = false)
-                    : base(native)
+                protected TypedefDecl(TypedefDecl.Internal* native, bool isInternalImpl = false)
+                    : base((Declaration.Internal*) native)
                 {
                 }
 
                 public TypedefDecl()
-                    : this(IntPtr.Zero)
+                    : this((Internal*) null)
                 {
                     __Instance = Marshal.AllocHGlobal(92);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                     base.Dispose(disposing);
                 }
 
@@ -3735,26 +3938,29 @@ namespace CppSharp
 
                 public global::System.IntPtr __Instance { get; protected set; }
 
-                internal Statement(Statement.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new Statement __CreateInstance(global::System.IntPtr native)
                 {
+                    return new Statement((Statement.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(Statement.Internal native)
+                private static Statement.Internal* __CopyValue(Statement.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(20);
                     CppSharp.Parser.AST.Statement.Internal.cctor_2(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (Statement.Internal*) ret;
                 }
 
                 internal Statement(Statement.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public Statement(global::System.IntPtr native, bool isInternalImpl = false)
+                protected Statement(Statement.Internal* native, bool isInternalImpl = false)
                 {
-                    __Instance = native;
+                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public void Dispose()
@@ -3766,7 +3972,10 @@ namespace CppSharp
                 protected virtual void Dispose(bool disposing)
                 {
                     Internal.dtor_0(__Instance);
-                    Marshal.FreeHGlobal(__Instance);
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                 }
 
                 public string String
@@ -3806,7 +4015,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return (__ptr->Decl == IntPtr.Zero) ? null : new CppSharp.Parser.AST.Declaration(__ptr->Decl);
+                        return (__ptr->Decl == IntPtr.Zero) ? null : CppSharp.Parser.AST.Declaration.__CreateInstance(__ptr->Decl);
                     }
 
                     set
@@ -3839,30 +4048,37 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
-                internal Expression(Expression.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new Expression __CreateInstance(global::System.IntPtr native)
                 {
+                    return new Expression((Expression.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(Expression.Internal native)
+                private static Expression.Internal* __CopyValue(Expression.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(20);
                     CppSharp.Parser.AST.Expression.Internal.cctor_1(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (Expression.Internal*) ret;
                 }
 
                 internal Expression(Expression.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public Expression(global::System.IntPtr native, bool isInternalImpl = false)
-                    : base(native)
+                protected Expression(Expression.Internal* native, bool isInternalImpl = false)
+                    : base((Statement.Internal*) native)
                 {
                 }
 
                 protected override void Dispose(bool disposing)
                 {
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                     base.Dispose(disposing);
                 }
             }
@@ -3900,7 +4116,7 @@ namespace CppSharp
                     public uint DefinitionOrder;
 
                     [FieldOffset(68)]
-                    public void* OriginalPtr;
+                    public global::System.IntPtr OriginalPtr;
 
                     [FieldOffset(84)]
                     public CppSharp.Parser.AST.QualifiedType.Internal QualifiedType;
@@ -3933,37 +4149,45 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
-                internal Parameter(Parameter.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new Parameter __CreateInstance(global::System.IntPtr native)
                 {
+                    return new Parameter((Parameter.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(Parameter.Internal native)
+                private static Parameter.Internal* __CopyValue(Parameter.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(104);
                     CppSharp.Parser.AST.Parameter.Internal.cctor_2(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (Parameter.Internal*) ret;
                 }
 
                 internal Parameter(Parameter.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public Parameter(global::System.IntPtr native, bool isInternalImpl = false)
-                    : base(native)
+                protected Parameter(Parameter.Internal* native, bool isInternalImpl = false)
+                    : base((Declaration.Internal*) native)
                 {
                 }
 
                 public Parameter()
-                    : this(IntPtr.Zero)
+                    : this((Internal*) null)
                 {
                     __Instance = Marshal.AllocHGlobal(104);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                     base.Dispose(disposing);
                 }
 
@@ -4032,7 +4256,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return (__ptr->DefaultArgument == IntPtr.Zero) ? null : new CppSharp.Parser.AST.Expression(__ptr->DefaultArgument);
+                        return (__ptr->DefaultArgument == IntPtr.Zero) ? null : CppSharp.Parser.AST.Expression.__CreateInstance(__ptr->DefaultArgument);
                     }
 
                     set
@@ -4076,7 +4300,7 @@ namespace CppSharp
                     public uint DefinitionOrder;
 
                     [FieldOffset(68)]
-                    public void* OriginalPtr;
+                    public global::System.IntPtr OriginalPtr;
 
                     [FieldOffset(84)]
                     public CppSharp.Parser.AST.QualifiedType.Internal ReturnType;
@@ -4161,37 +4385,45 @@ namespace CppSharp
                     internal static extern uint getParametersCount_0(global::System.IntPtr instance);
                 }
 
-                internal Function(Function.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new Function __CreateInstance(global::System.IntPtr native)
                 {
+                    return new Function((Function.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(Function.Internal native)
+                private static Function.Internal* __CopyValue(Function.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(148);
                     CppSharp.Parser.AST.Function.Internal.cctor_2(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (Function.Internal*) ret;
                 }
 
                 internal Function(Function.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public Function(global::System.IntPtr native, bool isInternalImpl = false)
-                    : base(native)
+                protected Function(Function.Internal* native, bool isInternalImpl = false)
+                    : base((Declaration.Internal*) native)
                 {
                 }
 
                 public Function()
-                    : this(IntPtr.Zero)
+                    : this((Internal*) null)
                 {
                     __Instance = Marshal.AllocHGlobal(148);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                     base.Dispose(disposing);
                 }
 
@@ -4199,7 +4431,7 @@ namespace CppSharp
                 {
                     var __ret = Internal.getParameters_0(__Instance, i);
                     if (__ret == global::System.IntPtr.Zero) return null;
-                    return (__ret == IntPtr.Zero) ? null : new CppSharp.Parser.AST.Parameter(__ret);
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.Parameter.__CreateInstance(__ret);
                 }
 
                 public void addParameters(CppSharp.Parser.AST.Parameter s)
@@ -4381,7 +4613,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return (__ptr->SpecializationInfo == IntPtr.Zero) ? null : new CppSharp.Parser.AST.FunctionTemplateSpecialization(__ptr->SpecializationInfo);
+                        return (__ptr->SpecializationInfo == IntPtr.Zero) ? null : CppSharp.Parser.AST.FunctionTemplateSpecialization.__CreateInstance(__ptr->SpecializationInfo);
                     }
 
                     set
@@ -4425,7 +4657,7 @@ namespace CppSharp
                     public uint DefinitionOrder;
 
                     [FieldOffset(68)]
-                    public void* OriginalPtr;
+                    public global::System.IntPtr OriginalPtr;
 
                     [FieldOffset(84)]
                     public CppSharp.Parser.AST.QualifiedType.Internal ReturnType;
@@ -4506,37 +4738,45 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
-                internal Method(Method.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new Method __CreateInstance(global::System.IntPtr native)
                 {
+                    return new Method((Method.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(Method.Internal native)
+                private static Method.Internal* __CopyValue(Method.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(176);
                     CppSharp.Parser.AST.Method.Internal.cctor_1(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (Method.Internal*) ret;
                 }
 
                 internal Method(Method.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public Method(global::System.IntPtr native, bool isInternalImpl = false)
-                    : base(native)
+                protected Method(Method.Internal* native, bool isInternalImpl = false)
+                    : base((Function.Internal*) native)
                 {
                 }
 
                 public Method()
-                    : this(IntPtr.Zero)
+                    : this((Internal*) null)
                 {
                     __Instance = Marshal.AllocHGlobal(176);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                     base.Dispose(disposing);
                 }
 
@@ -4545,7 +4785,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return (__ptr->AccessDecl == IntPtr.Zero) ? null : new CppSharp.Parser.AST.AccessSpecifierDecl(__ptr->AccessDecl);
+                        return (__ptr->AccessDecl == IntPtr.Zero) ? null : CppSharp.Parser.AST.AccessSpecifierDecl.__CreateInstance(__ptr->AccessDecl);
                     }
 
                     set
@@ -4754,10 +4994,7 @@ namespace CppSharp
                     public uint DefinitionOrder;
 
                     [FieldOffset(68)]
-                    public void* OriginalPtr;
-
-                    [FieldOffset(168)]
-                    public Std.Map Anonymous;
+                    public global::System.IntPtr OriginalPtr;
 
                     [FieldOffset(180)]
                     public bool IsAnonymous;
@@ -4848,7 +5085,7 @@ namespace CppSharp
                         public uint DefinitionOrder;
 
                         [FieldOffset(68)]
-                        public void* OriginalPtr;
+                        public global::System.IntPtr OriginalPtr;
 
                         [FieldOffset(96)]
                         public ulong Value;
@@ -4879,37 +5116,45 @@ namespace CppSharp
                         internal static extern void setExpression_0(global::System.IntPtr instance, global::System.IntPtr s);
                     }
 
-                    internal Item(Item.Internal* native)
-                        : this(new global::System.IntPtr(native))
+                    private readonly bool __ownsNativeInstance;
+
+                    public static new Item __CreateInstance(global::System.IntPtr native)
                     {
+                        return new Item((Item.Internal*) native);
                     }
 
-                    private static global::System.IntPtr __CopyValue(Item.Internal native)
+                    private static Item.Internal* __CopyValue(Item.Internal native)
                     {
                         var ret = Marshal.AllocHGlobal(104);
                         CppSharp.Parser.AST.Enumeration.Item.Internal.cctor_1(ret, new global::System.IntPtr(&native));
-                        return ret;
+                        return (Item.Internal*) ret;
                     }
 
                     internal Item(Item.Internal native)
                         : this(__CopyValue(native))
                     {
+                        __ownsNativeInstance = true;
                     }
 
-                    public Item(global::System.IntPtr native, bool isInternalImpl = false)
-                        : base(native)
+                    protected Item(Item.Internal* native, bool isInternalImpl = false)
+                        : base((Declaration.Internal*) native)
                     {
                     }
 
                     public Item()
-                        : this(IntPtr.Zero)
+                        : this((Internal*) null)
                     {
                         __Instance = Marshal.AllocHGlobal(104);
+                        __ownsNativeInstance = true;
                         Internal.ctor_0(__Instance);
                     }
 
                     protected override void Dispose(bool disposing)
                     {
+                        if (__ownsNativeInstance)
+                        {
+                            Marshal.FreeHGlobal(__Instance);
+                        }
                         base.Dispose(disposing);
                     }
 
@@ -4946,37 +5191,45 @@ namespace CppSharp
                     }
                 }
 
-                internal Enumeration(Enumeration.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new Enumeration __CreateInstance(global::System.IntPtr native)
                 {
+                    return new Enumeration((Enumeration.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(Enumeration.Internal native)
+                private static Enumeration.Internal* __CopyValue(Enumeration.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(208);
                     CppSharp.Parser.AST.Enumeration.Internal.cctor_2(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (Enumeration.Internal*) ret;
                 }
 
                 internal Enumeration(Enumeration.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public Enumeration(global::System.IntPtr native, bool isInternalImpl = false)
-                    : base(native)
+                protected Enumeration(Enumeration.Internal* native, bool isInternalImpl = false)
+                    : base((DeclarationContext.Internal*) native)
                 {
                 }
 
                 public Enumeration()
-                    : this(IntPtr.Zero)
+                    : this((Internal*) null)
                 {
                     __Instance = Marshal.AllocHGlobal(208);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                     base.Dispose(disposing);
                 }
 
@@ -5027,7 +5280,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return (__ptr->Type == IntPtr.Zero) ? null : new CppSharp.Parser.AST.Type(__ptr->Type);
+                        return (__ptr->Type == IntPtr.Zero) ? null : CppSharp.Parser.AST.Type.__CreateInstance(__ptr->Type);
                     }
 
                     set
@@ -5042,7 +5295,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return (__ptr->BuiltinType == IntPtr.Zero) ? null : new CppSharp.Parser.AST.BuiltinType(__ptr->BuiltinType);
+                        return (__ptr->BuiltinType == IntPtr.Zero) ? null : CppSharp.Parser.AST.BuiltinType.__CreateInstance(__ptr->BuiltinType);
                     }
 
                     set
@@ -5086,7 +5339,7 @@ namespace CppSharp
                     public uint DefinitionOrder;
 
                     [FieldOffset(68)]
-                    public void* OriginalPtr;
+                    public global::System.IntPtr OriginalPtr;
 
                     [FieldOffset(96)]
                     public CppSharp.Parser.AST.QualifiedType.Internal QualifiedType;
@@ -5117,37 +5370,45 @@ namespace CppSharp
                     internal static extern void setMangled_0(global::System.IntPtr instance, global::System.IntPtr s);
                 }
 
-                internal Variable(Variable.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new Variable __CreateInstance(global::System.IntPtr native)
                 {
+                    return new Variable((Variable.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(Variable.Internal native)
+                private static Variable.Internal* __CopyValue(Variable.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(104);
                     CppSharp.Parser.AST.Variable.Internal.cctor_2(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (Variable.Internal*) ret;
                 }
 
                 internal Variable(Variable.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public Variable(global::System.IntPtr native, bool isInternalImpl = false)
-                    : base(native)
+                protected Variable(Variable.Internal* native, bool isInternalImpl = false)
+                    : base((Declaration.Internal*) native)
                 {
                 }
 
                 public Variable()
-                    : this(IntPtr.Zero)
+                    : this((Internal*) null)
                 {
                     __Instance = Marshal.AllocHGlobal(104);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                     base.Dispose(disposing);
                 }
 
@@ -5211,31 +5472,35 @@ namespace CppSharp
 
                 public global::System.IntPtr __Instance { get; protected set; }
 
-                internal BaseClassSpecifier(BaseClassSpecifier.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new BaseClassSpecifier __CreateInstance(global::System.IntPtr native)
                 {
+                    return new BaseClassSpecifier((BaseClassSpecifier.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(BaseClassSpecifier.Internal native)
+                private static BaseClassSpecifier.Internal* __CopyValue(BaseClassSpecifier.Internal native)
                 {
-                    global::System.IntPtr ret = Marshal.AllocHGlobal(12);
-                    *(BaseClassSpecifier.Internal*) ret = native;
+                    BaseClassSpecifier.Internal* ret = (BaseClassSpecifier.Internal*) Marshal.AllocHGlobal(12);
+                    *ret = native;
                     return ret;
                 }
 
                 internal BaseClassSpecifier(BaseClassSpecifier.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public BaseClassSpecifier(global::System.IntPtr native, bool isInternalImpl = false)
+                protected BaseClassSpecifier(BaseClassSpecifier.Internal* native, bool isInternalImpl = false)
                 {
-                    __Instance = native;
+                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public BaseClassSpecifier()
                 {
                     __Instance = Marshal.AllocHGlobal(12);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
@@ -5247,7 +5512,10 @@ namespace CppSharp
 
                 protected virtual void Dispose(bool disposing)
                 {
-                    Marshal.FreeHGlobal(__Instance);
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                 }
 
                 public CppSharp.Parser.AST.AccessSpecifier Access
@@ -5285,7 +5553,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return (__ptr->Type == IntPtr.Zero) ? null : new CppSharp.Parser.AST.Type(__ptr->Type);
+                        return (__ptr->Type == IntPtr.Zero) ? null : CppSharp.Parser.AST.Type.__CreateInstance(__ptr->Type);
                     }
 
                     set
@@ -5329,7 +5597,7 @@ namespace CppSharp
                     public uint DefinitionOrder;
 
                     [FieldOffset(68)]
-                    public void* OriginalPtr;
+                    public global::System.IntPtr OriginalPtr;
 
                     [FieldOffset(84)]
                     public CppSharp.Parser.AST.QualifiedType.Internal QualifiedType;
@@ -5356,37 +5624,45 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
-                internal Field(Field.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new Field __CreateInstance(global::System.IntPtr native)
                 {
+                    return new Field((Field.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(Field.Internal native)
+                private static Field.Internal* __CopyValue(Field.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(100);
                     CppSharp.Parser.AST.Field.Internal.cctor_2(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (Field.Internal*) ret;
                 }
 
                 internal Field(Field.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public Field(global::System.IntPtr native, bool isInternalImpl = false)
-                    : base(native)
+                protected Field(Field.Internal* native, bool isInternalImpl = false)
+                    : base((Declaration.Internal*) native)
                 {
                 }
 
                 public Field()
-                    : this(IntPtr.Zero)
+                    : this((Internal*) null)
                 {
                     __Instance = Marshal.AllocHGlobal(100);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                     base.Dispose(disposing);
                 }
 
@@ -5425,7 +5701,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return (__ptr->Class == IntPtr.Zero) ? null : new CppSharp.Parser.AST.Class(__ptr->Class);
+                        return (__ptr->Class == IntPtr.Zero) ? null : CppSharp.Parser.AST.Class.__CreateInstance(__ptr->Class);
                     }
 
                     set
@@ -5469,7 +5745,7 @@ namespace CppSharp
                     public uint DefinitionOrder;
 
                     [FieldOffset(68)]
-                    public void* OriginalPtr;
+                    public global::System.IntPtr OriginalPtr;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -5487,37 +5763,45 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
-                internal AccessSpecifierDecl(AccessSpecifierDecl.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new AccessSpecifierDecl __CreateInstance(global::System.IntPtr native)
                 {
+                    return new AccessSpecifierDecl((AccessSpecifierDecl.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(AccessSpecifierDecl.Internal native)
+                private static AccessSpecifierDecl.Internal* __CopyValue(AccessSpecifierDecl.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(84);
                     CppSharp.Parser.AST.AccessSpecifierDecl.Internal.cctor_2(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (AccessSpecifierDecl.Internal*) ret;
                 }
 
                 internal AccessSpecifierDecl(AccessSpecifierDecl.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public AccessSpecifierDecl(global::System.IntPtr native, bool isInternalImpl = false)
-                    : base(native)
+                protected AccessSpecifierDecl(AccessSpecifierDecl.Internal* native, bool isInternalImpl = false)
+                    : base((Declaration.Internal*) native)
                 {
                 }
 
                 public AccessSpecifierDecl()
-                    : this(IntPtr.Zero)
+                    : this((Internal*) null)
                 {
                     __Instance = Marshal.AllocHGlobal(84);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                     base.Dispose(disposing);
                 }
             }
@@ -5555,10 +5839,7 @@ namespace CppSharp
                     public uint DefinitionOrder;
 
                     [FieldOffset(68)]
-                    public void* OriginalPtr;
-
-                    [FieldOffset(168)]
-                    public Std.Map Anonymous;
+                    public global::System.IntPtr OriginalPtr;
 
                     [FieldOffset(180)]
                     public bool IsAnonymous;
@@ -5689,37 +5970,45 @@ namespace CppSharp
                     internal static extern uint getSpecifiersCount_0(global::System.IntPtr instance);
                 }
 
-                internal Class(Class.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new Class __CreateInstance(global::System.IntPtr native)
                 {
+                    return new Class((Class.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(Class.Internal native)
+                private static Class.Internal* __CopyValue(Class.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(248);
                     CppSharp.Parser.AST.Class.Internal.cctor_2(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (Class.Internal*) ret;
                 }
 
                 internal Class(Class.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public Class(global::System.IntPtr native, bool isInternalImpl = false)
-                    : base(native)
+                protected Class(Class.Internal* native, bool isInternalImpl = false)
+                    : base((DeclarationContext.Internal*) native)
                 {
                 }
 
                 public Class()
-                    : this(IntPtr.Zero)
+                    : this((Internal*) null)
                 {
                     __Instance = Marshal.AllocHGlobal(248);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                     base.Dispose(disposing);
                 }
 
@@ -5727,7 +6016,7 @@ namespace CppSharp
                 {
                     var __ret = Internal.getBases_0(__Instance, i);
                     if (__ret == global::System.IntPtr.Zero) return null;
-                    return (__ret == IntPtr.Zero) ? null : new CppSharp.Parser.AST.BaseClassSpecifier(__ret);
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.BaseClassSpecifier.__CreateInstance(__ret);
                 }
 
                 public void addBases(CppSharp.Parser.AST.BaseClassSpecifier s)
@@ -5745,7 +6034,7 @@ namespace CppSharp
                 {
                     var __ret = Internal.getFields_0(__Instance, i);
                     if (__ret == global::System.IntPtr.Zero) return null;
-                    return (__ret == IntPtr.Zero) ? null : new CppSharp.Parser.AST.Field(__ret);
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.Field.__CreateInstance(__ret);
                 }
 
                 public void addFields(CppSharp.Parser.AST.Field s)
@@ -5763,7 +6052,7 @@ namespace CppSharp
                 {
                     var __ret = Internal.getMethods_0(__Instance, i);
                     if (__ret == global::System.IntPtr.Zero) return null;
-                    return (__ret == IntPtr.Zero) ? null : new CppSharp.Parser.AST.Method(__ret);
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.Method.__CreateInstance(__ret);
                 }
 
                 public void addMethods(CppSharp.Parser.AST.Method s)
@@ -5781,7 +6070,7 @@ namespace CppSharp
                 {
                     var __ret = Internal.getSpecifiers_0(__Instance, i);
                     if (__ret == global::System.IntPtr.Zero) return null;
-                    return (__ret == IntPtr.Zero) ? null : new CppSharp.Parser.AST.AccessSpecifierDecl(__ret);
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.AccessSpecifierDecl.__CreateInstance(__ret);
                 }
 
                 public void addSpecifiers(CppSharp.Parser.AST.AccessSpecifierDecl s)
@@ -5971,7 +6260,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return (__ptr->Layout == IntPtr.Zero) ? null : new CppSharp.Parser.AST.ClassLayout(__ptr->Layout);
+                        return (__ptr->Layout == IntPtr.Zero) ? null : CppSharp.Parser.AST.ClassLayout.__CreateInstance(__ptr->Layout);
                     }
 
                     set
@@ -6015,7 +6304,7 @@ namespace CppSharp
                     public uint DefinitionOrder;
 
                     [FieldOffset(68)]
-                    public void* OriginalPtr;
+                    public global::System.IntPtr OriginalPtr;
 
                     [FieldOffset(84)]
                     public global::System.IntPtr TemplatedDecl;
@@ -6061,45 +6350,54 @@ namespace CppSharp
                     internal static extern uint getParametersCount_0(global::System.IntPtr instance);
                 }
 
-                internal Template(Template.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new Template __CreateInstance(global::System.IntPtr native)
                 {
+                    return new Template((Template.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(Template.Internal native)
+                private static Template.Internal* __CopyValue(Template.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(100);
                     CppSharp.Parser.AST.Template.Internal.cctor_3(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (Template.Internal*) ret;
                 }
 
                 internal Template(Template.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public Template(global::System.IntPtr native, bool isInternalImpl = false)
-                    : base(native)
+                protected Template(Template.Internal* native, bool isInternalImpl = false)
+                    : base((Declaration.Internal*) native)
                 {
                 }
 
                 public Template(CppSharp.Parser.AST.DeclarationKind kind)
-                    : this(IntPtr.Zero)
+                    : this((Internal*) null)
                 {
                     __Instance = Marshal.AllocHGlobal(100);
+                    __ownsNativeInstance = true;
                     var arg0 = kind;
                     Internal.ctor_0(__Instance, arg0);
                 }
 
                 public Template()
-                    : this(IntPtr.Zero)
+                    : this((Internal*) null)
                 {
                     __Instance = Marshal.AllocHGlobal(100);
+                    __ownsNativeInstance = true;
                     Internal.ctor_1(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                     base.Dispose(disposing);
                 }
 
@@ -6135,7 +6433,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return (__ptr->TemplatedDecl == IntPtr.Zero) ? null : new CppSharp.Parser.AST.Declaration(__ptr->TemplatedDecl);
+                        return (__ptr->TemplatedDecl == IntPtr.Zero) ? null : CppSharp.Parser.AST.Declaration.__CreateInstance(__ptr->TemplatedDecl);
                     }
 
                     set
@@ -6179,7 +6477,7 @@ namespace CppSharp
                     public uint DefinitionOrder;
 
                     [FieldOffset(68)]
-                    public void* OriginalPtr;
+                    public global::System.IntPtr OriginalPtr;
 
                     [FieldOffset(84)]
                     public global::System.IntPtr TemplatedDecl;
@@ -6220,37 +6518,45 @@ namespace CppSharp
                     internal static extern uint getSpecializationsCount_0(global::System.IntPtr instance);
                 }
 
-                internal ClassTemplate(ClassTemplate.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new ClassTemplate __CreateInstance(global::System.IntPtr native)
                 {
+                    return new ClassTemplate((ClassTemplate.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(ClassTemplate.Internal native)
+                private static ClassTemplate.Internal* __CopyValue(ClassTemplate.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(112);
                     CppSharp.Parser.AST.ClassTemplate.Internal.cctor_2(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (ClassTemplate.Internal*) ret;
                 }
 
                 internal ClassTemplate(ClassTemplate.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public ClassTemplate(global::System.IntPtr native, bool isInternalImpl = false)
-                    : base(native)
+                protected ClassTemplate(ClassTemplate.Internal* native, bool isInternalImpl = false)
+                    : base((Template.Internal*) native)
                 {
                 }
 
                 public ClassTemplate()
-                    : this(IntPtr.Zero)
+                    : this((Internal*) null)
                 {
                     __Instance = Marshal.AllocHGlobal(112);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                     base.Dispose(disposing);
                 }
 
@@ -6258,7 +6564,7 @@ namespace CppSharp
                 {
                     var __ret = Internal.getSpecializations_0(__Instance, i);
                     if (__ret == global::System.IntPtr.Zero) return null;
-                    return (__ret == IntPtr.Zero) ? null : new CppSharp.Parser.AST.ClassTemplateSpecialization(__ret);
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.ClassTemplateSpecialization.__CreateInstance(__ret);
                 }
 
                 public void addSpecializations(CppSharp.Parser.AST.ClassTemplateSpecialization s)
@@ -6315,10 +6621,7 @@ namespace CppSharp
                     public uint DefinitionOrder;
 
                     [FieldOffset(68)]
-                    public void* OriginalPtr;
-
-                    [FieldOffset(168)]
-                    public Std.Map Anonymous;
+                    public global::System.IntPtr OriginalPtr;
 
                     [FieldOffset(180)]
                     public bool IsAnonymous;
@@ -6395,37 +6698,45 @@ namespace CppSharp
                     internal static extern uint getArgumentsCount_0(global::System.IntPtr instance);
                 }
 
-                internal ClassTemplateSpecialization(ClassTemplateSpecialization.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new ClassTemplateSpecialization __CreateInstance(global::System.IntPtr native)
                 {
+                    return new ClassTemplateSpecialization((ClassTemplateSpecialization.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(ClassTemplateSpecialization.Internal native)
+                private static ClassTemplateSpecialization.Internal* __CopyValue(ClassTemplateSpecialization.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(268);
                     CppSharp.Parser.AST.ClassTemplateSpecialization.Internal.cctor_2(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (ClassTemplateSpecialization.Internal*) ret;
                 }
 
                 internal ClassTemplateSpecialization(ClassTemplateSpecialization.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public ClassTemplateSpecialization(global::System.IntPtr native, bool isInternalImpl = false)
-                    : base(native)
+                protected ClassTemplateSpecialization(ClassTemplateSpecialization.Internal* native, bool isInternalImpl = false)
+                    : base((Class.Internal*) native)
                 {
                 }
 
                 public ClassTemplateSpecialization()
-                    : this(IntPtr.Zero)
+                    : this((Internal*) null)
                 {
                     __Instance = Marshal.AllocHGlobal(268);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                     base.Dispose(disposing);
                 }
 
@@ -6461,7 +6772,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return (__ptr->TemplatedDecl == IntPtr.Zero) ? null : new CppSharp.Parser.AST.ClassTemplate(__ptr->TemplatedDecl);
+                        return (__ptr->TemplatedDecl == IntPtr.Zero) ? null : CppSharp.Parser.AST.ClassTemplate.__CreateInstance(__ptr->TemplatedDecl);
                     }
 
                     set
@@ -6520,10 +6831,7 @@ namespace CppSharp
                     public uint DefinitionOrder;
 
                     [FieldOffset(68)]
-                    public void* OriginalPtr;
-
-                    [FieldOffset(168)]
-                    public Std.Map Anonymous;
+                    public global::System.IntPtr OriginalPtr;
 
                     [FieldOffset(180)]
                     public bool IsAnonymous;
@@ -6580,37 +6888,45 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
-                internal ClassTemplatePartialSpecialization(ClassTemplatePartialSpecialization.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new ClassTemplatePartialSpecialization __CreateInstance(global::System.IntPtr native)
                 {
+                    return new ClassTemplatePartialSpecialization((ClassTemplatePartialSpecialization.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(ClassTemplatePartialSpecialization.Internal native)
+                private static ClassTemplatePartialSpecialization.Internal* __CopyValue(ClassTemplatePartialSpecialization.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(268);
                     CppSharp.Parser.AST.ClassTemplatePartialSpecialization.Internal.cctor_1(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (ClassTemplatePartialSpecialization.Internal*) ret;
                 }
 
                 internal ClassTemplatePartialSpecialization(ClassTemplatePartialSpecialization.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public ClassTemplatePartialSpecialization(global::System.IntPtr native, bool isInternalImpl = false)
-                    : base(native)
+                protected ClassTemplatePartialSpecialization(ClassTemplatePartialSpecialization.Internal* native, bool isInternalImpl = false)
+                    : base((ClassTemplateSpecialization.Internal*) native)
                 {
                 }
 
                 public ClassTemplatePartialSpecialization()
-                    : this(IntPtr.Zero)
+                    : this((Internal*) null)
                 {
                     __Instance = Marshal.AllocHGlobal(268);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                     base.Dispose(disposing);
                 }
             }
@@ -6648,7 +6964,7 @@ namespace CppSharp
                     public uint DefinitionOrder;
 
                     [FieldOffset(68)]
-                    public void* OriginalPtr;
+                    public global::System.IntPtr OriginalPtr;
 
                     [FieldOffset(84)]
                     public global::System.IntPtr TemplatedDecl;
@@ -6689,37 +7005,45 @@ namespace CppSharp
                     internal static extern uint getSpecializationsCount_0(global::System.IntPtr instance);
                 }
 
-                internal FunctionTemplate(FunctionTemplate.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new FunctionTemplate __CreateInstance(global::System.IntPtr native)
                 {
+                    return new FunctionTemplate((FunctionTemplate.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(FunctionTemplate.Internal native)
+                private static FunctionTemplate.Internal* __CopyValue(FunctionTemplate.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(112);
                     CppSharp.Parser.AST.FunctionTemplate.Internal.cctor_2(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (FunctionTemplate.Internal*) ret;
                 }
 
                 internal FunctionTemplate(FunctionTemplate.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public FunctionTemplate(global::System.IntPtr native, bool isInternalImpl = false)
-                    : base(native)
+                protected FunctionTemplate(FunctionTemplate.Internal* native, bool isInternalImpl = false)
+                    : base((Template.Internal*) native)
                 {
                 }
 
                 public FunctionTemplate()
-                    : this(IntPtr.Zero)
+                    : this((Internal*) null)
                 {
                     __Instance = Marshal.AllocHGlobal(112);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                     base.Dispose(disposing);
                 }
 
@@ -6727,7 +7051,7 @@ namespace CppSharp
                 {
                     var __ret = Internal.getSpecializations_0(__Instance, i);
                     if (__ret == global::System.IntPtr.Zero) return null;
-                    return (__ret == IntPtr.Zero) ? null : new CppSharp.Parser.AST.FunctionTemplateSpecialization(__ret);
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.FunctionTemplateSpecialization.__CreateInstance(__ret);
                 }
 
                 public void addSpecializations(CppSharp.Parser.AST.FunctionTemplateSpecialization s)
@@ -6803,31 +7127,35 @@ namespace CppSharp
 
                 public global::System.IntPtr __Instance { get; protected set; }
 
-                internal FunctionTemplateSpecialization(FunctionTemplateSpecialization.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new FunctionTemplateSpecialization __CreateInstance(global::System.IntPtr native)
                 {
+                    return new FunctionTemplateSpecialization((FunctionTemplateSpecialization.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(FunctionTemplateSpecialization.Internal native)
+                private static FunctionTemplateSpecialization.Internal* __CopyValue(FunctionTemplateSpecialization.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(24);
                     CppSharp.Parser.AST.FunctionTemplateSpecialization.Internal.cctor_2(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (FunctionTemplateSpecialization.Internal*) ret;
                 }
 
                 internal FunctionTemplateSpecialization(FunctionTemplateSpecialization.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public FunctionTemplateSpecialization(global::System.IntPtr native, bool isInternalImpl = false)
+                protected FunctionTemplateSpecialization(FunctionTemplateSpecialization.Internal* native, bool isInternalImpl = false)
                 {
-                    __Instance = native;
+                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public FunctionTemplateSpecialization()
                 {
                     __Instance = Marshal.AllocHGlobal(24);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
@@ -6840,7 +7168,10 @@ namespace CppSharp
                 protected virtual void Dispose(bool disposing)
                 {
                     Internal.dtor_0(__Instance);
-                    Marshal.FreeHGlobal(__Instance);
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                 }
 
                 public CppSharp.Parser.AST.TemplateArgument getArguments(uint i)
@@ -6875,7 +7206,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return (__ptr->Template == IntPtr.Zero) ? null : new CppSharp.Parser.AST.FunctionTemplate(__ptr->Template);
+                        return (__ptr->Template == IntPtr.Zero) ? null : CppSharp.Parser.AST.FunctionTemplate.__CreateInstance(__ptr->Template);
                     }
 
                     set
@@ -6890,7 +7221,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return (__ptr->SpecializedFunction == IntPtr.Zero) ? null : new CppSharp.Parser.AST.Function(__ptr->SpecializedFunction);
+                        return (__ptr->SpecializedFunction == IntPtr.Zero) ? null : CppSharp.Parser.AST.Function.__CreateInstance(__ptr->SpecializedFunction);
                     }
 
                     set
@@ -6949,10 +7280,7 @@ namespace CppSharp
                     public uint DefinitionOrder;
 
                     [FieldOffset(68)]
-                    public void* OriginalPtr;
-
-                    [FieldOffset(168)]
-                    public Std.Map Anonymous;
+                    public global::System.IntPtr OriginalPtr;
 
                     [FieldOffset(180)]
                     public bool IsAnonymous;
@@ -6976,37 +7304,45 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
-                internal Namespace(Namespace.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new Namespace __CreateInstance(global::System.IntPtr native)
                 {
+                    return new Namespace((Namespace.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(Namespace.Internal native)
+                private static Namespace.Internal* __CopyValue(Namespace.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(184);
                     CppSharp.Parser.AST.Namespace.Internal.cctor_1(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (Namespace.Internal*) ret;
                 }
 
                 internal Namespace(Namespace.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public Namespace(global::System.IntPtr native, bool isInternalImpl = false)
-                    : base(native)
+                protected Namespace(Namespace.Internal* native, bool isInternalImpl = false)
+                    : base((DeclarationContext.Internal*) native)
                 {
                 }
 
                 public Namespace()
-                    : this(IntPtr.Zero)
+                    : this((Internal*) null)
                 {
                     __Instance = Marshal.AllocHGlobal(184);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                     base.Dispose(disposing);
                 }
 
@@ -7059,7 +7395,7 @@ namespace CppSharp
                     public uint DefinitionOrder;
 
                     [FieldOffset(68)]
-                    public void* OriginalPtr;
+                    public global::System.IntPtr OriginalPtr;
 
                     [FieldOffset(84)]
                     public CppSharp.Parser.AST.MacroLocation MacroLocation;
@@ -7080,37 +7416,45 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
-                internal PreprocessedEntity(PreprocessedEntity.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new PreprocessedEntity __CreateInstance(global::System.IntPtr native)
                 {
+                    return new PreprocessedEntity((PreprocessedEntity.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(PreprocessedEntity.Internal native)
+                private static PreprocessedEntity.Internal* __CopyValue(PreprocessedEntity.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(88);
                     CppSharp.Parser.AST.PreprocessedEntity.Internal.cctor_2(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (PreprocessedEntity.Internal*) ret;
                 }
 
                 internal PreprocessedEntity(PreprocessedEntity.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public PreprocessedEntity(global::System.IntPtr native, bool isInternalImpl = false)
-                    : base(native)
+                protected PreprocessedEntity(PreprocessedEntity.Internal* native, bool isInternalImpl = false)
+                    : base((Declaration.Internal*) native)
                 {
                 }
 
                 public PreprocessedEntity()
-                    : this(IntPtr.Zero)
+                    : this((Internal*) null)
                 {
                     __Instance = Marshal.AllocHGlobal(88);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                     base.Dispose(disposing);
                 }
 
@@ -7163,7 +7507,7 @@ namespace CppSharp
                     public uint DefinitionOrder;
 
                     [FieldOffset(68)]
-                    public void* OriginalPtr;
+                    public global::System.IntPtr OriginalPtr;
 
                     [FieldOffset(84)]
                     public CppSharp.Parser.AST.MacroLocation MacroLocation;
@@ -7194,37 +7538,45 @@ namespace CppSharp
                     internal static extern void setExpression_0(global::System.IntPtr instance, global::System.IntPtr s);
                 }
 
-                internal MacroDefinition(MacroDefinition.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new MacroDefinition __CreateInstance(global::System.IntPtr native)
                 {
+                    return new MacroDefinition((MacroDefinition.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(MacroDefinition.Internal native)
+                private static MacroDefinition.Internal* __CopyValue(MacroDefinition.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(100);
                     CppSharp.Parser.AST.MacroDefinition.Internal.cctor_2(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (MacroDefinition.Internal*) ret;
                 }
 
                 internal MacroDefinition(MacroDefinition.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public MacroDefinition(global::System.IntPtr native, bool isInternalImpl = false)
-                    : base(native)
+                protected MacroDefinition(MacroDefinition.Internal* native, bool isInternalImpl = false)
+                    : base((PreprocessedEntity.Internal*) native)
                 {
                 }
 
                 public MacroDefinition()
-                    : this(IntPtr.Zero)
+                    : this((Internal*) null)
                 {
                     __Instance = Marshal.AllocHGlobal(100);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                     base.Dispose(disposing);
                 }
 
@@ -7279,7 +7631,7 @@ namespace CppSharp
                     public uint DefinitionOrder;
 
                     [FieldOffset(68)]
-                    public void* OriginalPtr;
+                    public global::System.IntPtr OriginalPtr;
 
                     [FieldOffset(84)]
                     public CppSharp.Parser.AST.MacroLocation MacroLocation;
@@ -7313,37 +7665,45 @@ namespace CppSharp
                     internal static extern void setText_0(global::System.IntPtr instance, global::System.IntPtr s);
                 }
 
-                internal MacroExpansion(MacroExpansion.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new MacroExpansion __CreateInstance(global::System.IntPtr native)
                 {
+                    return new MacroExpansion((MacroExpansion.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(MacroExpansion.Internal native)
+                private static MacroExpansion.Internal* __CopyValue(MacroExpansion.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(104);
                     CppSharp.Parser.AST.MacroExpansion.Internal.cctor_2(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (MacroExpansion.Internal*) ret;
                 }
 
                 internal MacroExpansion(MacroExpansion.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public MacroExpansion(global::System.IntPtr native, bool isInternalImpl = false)
-                    : base(native)
+                protected MacroExpansion(MacroExpansion.Internal* native, bool isInternalImpl = false)
+                    : base((PreprocessedEntity.Internal*) native)
                 {
                 }
 
                 public MacroExpansion()
-                    : this(IntPtr.Zero)
+                    : this((Internal*) null)
                 {
                     __Instance = Marshal.AllocHGlobal(104);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                     base.Dispose(disposing);
                 }
 
@@ -7369,7 +7729,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return (__ptr->Definition == IntPtr.Zero) ? null : new CppSharp.Parser.AST.MacroDefinition(__ptr->Definition);
+                        return (__ptr->Definition == IntPtr.Zero) ? null : CppSharp.Parser.AST.MacroDefinition.__CreateInstance(__ptr->Definition);
                     }
 
                     set
@@ -7413,10 +7773,7 @@ namespace CppSharp
                     public uint DefinitionOrder;
 
                     [FieldOffset(68)]
-                    public void* OriginalPtr;
-
-                    [FieldOffset(168)]
-                    public Std.Map Anonymous;
+                    public global::System.IntPtr OriginalPtr;
 
                     [FieldOffset(180)]
                     public bool IsAnonymous;
@@ -7473,37 +7830,45 @@ namespace CppSharp
                     internal static extern uint getMacrosCount_0(global::System.IntPtr instance);
                 }
 
-                internal TranslationUnit(TranslationUnit.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new TranslationUnit __CreateInstance(global::System.IntPtr native)
                 {
+                    return new TranslationUnit((TranslationUnit.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(TranslationUnit.Internal native)
+                private static TranslationUnit.Internal* __CopyValue(TranslationUnit.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(212);
                     CppSharp.Parser.AST.TranslationUnit.Internal.cctor_2(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (TranslationUnit.Internal*) ret;
                 }
 
                 internal TranslationUnit(TranslationUnit.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public TranslationUnit(global::System.IntPtr native, bool isInternalImpl = false)
-                    : base(native)
+                protected TranslationUnit(TranslationUnit.Internal* native, bool isInternalImpl = false)
+                    : base((Namespace.Internal*) native)
                 {
                 }
 
                 public TranslationUnit()
-                    : this(IntPtr.Zero)
+                    : this((Internal*) null)
                 {
                     __Instance = Marshal.AllocHGlobal(212);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                     base.Dispose(disposing);
                 }
 
@@ -7511,7 +7876,7 @@ namespace CppSharp
                 {
                     var __ret = Internal.getMacros_0(__Instance, i);
                     if (__ret == global::System.IntPtr.Zero) return null;
-                    return (__ret == IntPtr.Zero) ? null : new CppSharp.Parser.AST.MacroDefinition(__ret);
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.MacroDefinition.__CreateInstance(__ret);
                 }
 
                 public void addMacros(CppSharp.Parser.AST.MacroDefinition s)
@@ -7643,31 +8008,35 @@ namespace CppSharp
 
                 public global::System.IntPtr __Instance { get; protected set; }
 
-                internal NativeLibrary(NativeLibrary.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new NativeLibrary __CreateInstance(global::System.IntPtr native)
                 {
+                    return new NativeLibrary((NativeLibrary.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(NativeLibrary.Internal native)
+                private static NativeLibrary.Internal* __CopyValue(NativeLibrary.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(40);
                     CppSharp.Parser.AST.NativeLibrary.Internal.cctor_2(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (NativeLibrary.Internal*) ret;
                 }
 
                 internal NativeLibrary(NativeLibrary.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public NativeLibrary(global::System.IntPtr native, bool isInternalImpl = false)
+                protected NativeLibrary(NativeLibrary.Internal* native, bool isInternalImpl = false)
                 {
-                    __Instance = native;
+                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public NativeLibrary()
                 {
                     __Instance = Marshal.AllocHGlobal(40);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
@@ -7680,7 +8049,10 @@ namespace CppSharp
                 protected virtual void Dispose(bool disposing)
                 {
                     Internal.dtor_0(__Instance);
-                    Marshal.FreeHGlobal(__Instance);
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                 }
 
                 public string getSymbols(uint i)
@@ -7815,31 +8187,35 @@ namespace CppSharp
 
                 public global::System.IntPtr __Instance { get; protected set; }
 
-                internal ASTContext(ASTContext.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new ASTContext __CreateInstance(global::System.IntPtr native)
                 {
+                    return new ASTContext((ASTContext.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(ASTContext.Internal native)
+                private static ASTContext.Internal* __CopyValue(ASTContext.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(12);
                     CppSharp.Parser.AST.ASTContext.Internal.cctor_2(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (ASTContext.Internal*) ret;
                 }
 
                 internal ASTContext(ASTContext.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public ASTContext(global::System.IntPtr native, bool isInternalImpl = false)
+                protected ASTContext(ASTContext.Internal* native, bool isInternalImpl = false)
                 {
-                    __Instance = native;
+                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public ASTContext()
                 {
                     __Instance = Marshal.AllocHGlobal(12);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
@@ -7852,14 +8228,17 @@ namespace CppSharp
                 protected virtual void Dispose(bool disposing)
                 {
                     Internal.dtor_0(__Instance);
-                    Marshal.FreeHGlobal(__Instance);
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                 }
 
                 public CppSharp.Parser.AST.TranslationUnit getTranslationUnits(uint i)
                 {
                     var __ret = Internal.getTranslationUnits_0(__Instance, i);
                     if (__ret == global::System.IntPtr.Zero) return null;
-                    return (__ret == IntPtr.Zero) ? null : new CppSharp.Parser.AST.TranslationUnit(__ret);
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.TranslationUnit.__CreateInstance(__ret);
                 }
 
                 public void addTranslationUnits(CppSharp.Parser.AST.TranslationUnit s)
@@ -7904,31 +8283,35 @@ namespace CppSharp
 
                 public global::System.IntPtr __Instance { get; protected set; }
 
-                internal Comment(Comment.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new Comment __CreateInstance(global::System.IntPtr native)
                 {
+                    return new Comment((Comment.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(Comment.Internal native)
+                private static Comment.Internal* __CopyValue(Comment.Internal native)
                 {
-                    global::System.IntPtr ret = Marshal.AllocHGlobal(4);
-                    *(Comment.Internal*) ret = native;
+                    Comment.Internal* ret = (Comment.Internal*) Marshal.AllocHGlobal(4);
+                    *ret = native;
                     return ret;
                 }
 
                 internal Comment(Comment.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public Comment(global::System.IntPtr native, bool isInternalImpl = false)
+                protected Comment(Comment.Internal* native, bool isInternalImpl = false)
                 {
-                    __Instance = native;
+                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public Comment(CppSharp.Parser.AST.CommentKind kind)
                 {
                     __Instance = Marshal.AllocHGlobal(4);
+                    __ownsNativeInstance = true;
                     var arg0 = kind;
                     Internal.ctor_0(__Instance, arg0);
                 }
@@ -7941,7 +8324,10 @@ namespace CppSharp
 
                 protected virtual void Dispose(bool disposing)
                 {
-                    Marshal.FreeHGlobal(__Instance);
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                 }
 
                 public CppSharp.Parser.AST.CommentKind Kind
@@ -7979,37 +8365,45 @@ namespace CppSharp
                     internal static extern void cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                internal FullComment(FullComment.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new FullComment __CreateInstance(global::System.IntPtr native)
                 {
+                    return new FullComment((FullComment.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(FullComment.Internal native)
+                private static FullComment.Internal* __CopyValue(FullComment.Internal native)
                 {
-                    global::System.IntPtr ret = Marshal.AllocHGlobal(4);
-                    *(FullComment.Internal*) ret = native;
+                    FullComment.Internal* ret = (FullComment.Internal*) Marshal.AllocHGlobal(4);
+                    *ret = native;
                     return ret;
                 }
 
                 internal FullComment(FullComment.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public FullComment(global::System.IntPtr native, bool isInternalImpl = false)
-                    : base(native)
+                protected FullComment(FullComment.Internal* native, bool isInternalImpl = false)
+                    : base((Comment.Internal*) native)
                 {
                 }
 
                 public FullComment()
-                    : this(IntPtr.Zero)
+                    : this((Internal*) null)
                 {
                     __Instance = Marshal.AllocHGlobal(4);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                     base.Dispose(disposing);
                 }
             }
@@ -8063,31 +8457,35 @@ namespace CppSharp
 
                 public global::System.IntPtr __Instance { get; protected set; }
 
-                internal RawComment(RawComment.Internal* native)
-                    : this(new global::System.IntPtr(native))
+                private readonly bool __ownsNativeInstance;
+
+                public static new RawComment __CreateInstance(global::System.IntPtr native)
                 {
+                    return new RawComment((RawComment.Internal*) native);
                 }
 
-                private static global::System.IntPtr __CopyValue(RawComment.Internal native)
+                private static RawComment.Internal* __CopyValue(RawComment.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(32);
                     CppSharp.Parser.AST.RawComment.Internal.cctor_2(ret, new global::System.IntPtr(&native));
-                    return ret;
+                    return (RawComment.Internal*) ret;
                 }
 
                 internal RawComment(RawComment.Internal native)
                     : this(__CopyValue(native))
                 {
+                    __ownsNativeInstance = true;
                 }
 
-                public RawComment(global::System.IntPtr native, bool isInternalImpl = false)
+                protected RawComment(RawComment.Internal* native, bool isInternalImpl = false)
                 {
-                    __Instance = native;
+                    __Instance = new global::System.IntPtr(native);
                 }
 
                 public RawComment()
                 {
                     __Instance = Marshal.AllocHGlobal(32);
+                    __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
 
@@ -8100,7 +8498,10 @@ namespace CppSharp
                 protected virtual void Dispose(bool disposing)
                 {
                     Internal.dtor_0(__Instance);
-                    Marshal.FreeHGlobal(__Instance);
+                    if (__ownsNativeInstance)
+                    {
+                        Marshal.FreeHGlobal(__Instance);
+                    }
                 }
 
                 public string Text
@@ -8157,7 +8558,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return (__ptr->FullCommentBlock == IntPtr.Zero) ? null : new CppSharp.Parser.AST.FullComment(__ptr->FullCommentBlock);
+                        return (__ptr->FullCommentBlock == IntPtr.Zero) ? null : CppSharp.Parser.AST.FullComment.__CreateInstance(__ptr->FullCommentBlock);
                     }
 
                     set

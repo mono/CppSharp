@@ -172,31 +172,35 @@ namespace CppSharp
 
             public global::System.IntPtr __Instance { get; protected set; }
 
-            internal ParserTargetInfo(ParserTargetInfo.Internal* native)
-                : this(new global::System.IntPtr(native))
+            private readonly bool __ownsNativeInstance;
+
+            public static new ParserTargetInfo __CreateInstance(global::System.IntPtr native)
             {
+                return new ParserTargetInfo((ParserTargetInfo.Internal*) native);
             }
 
-            private static global::System.IntPtr __CopyValue(ParserTargetInfo.Internal native)
+            private static ParserTargetInfo.Internal* __CopyValue(ParserTargetInfo.Internal native)
             {
                 var ret = Marshal.AllocHGlobal(176);
                 CppSharp.Parser.ParserTargetInfo.Internal.cctor_2(ret, new global::System.IntPtr(&native));
-                return ret;
+                return (ParserTargetInfo.Internal*) ret;
             }
 
             internal ParserTargetInfo(ParserTargetInfo.Internal native)
                 : this(__CopyValue(native))
             {
+                __ownsNativeInstance = true;
             }
 
-            public ParserTargetInfo(global::System.IntPtr native, bool isInternalImpl = false)
+            protected ParserTargetInfo(ParserTargetInfo.Internal* native, bool isInternalImpl = false)
             {
-                __Instance = native;
+                __Instance = new global::System.IntPtr(native);
             }
 
             public ParserTargetInfo()
             {
                 __Instance = Marshal.AllocHGlobal(176);
+                __ownsNativeInstance = true;
                 Internal.ctor_1(__Instance);
             }
 
@@ -209,7 +213,10 @@ namespace CppSharp
             protected virtual void Dispose(bool disposing)
             {
                 Internal.dtor_0(__Instance);
-                Marshal.FreeHGlobal(__Instance);
+                if (__ownsNativeInstance)
+                {
+                    Marshal.FreeHGlobal(__Instance);
+                }
             }
 
             public string ABI

@@ -34,9 +34,9 @@ namespace CppSharp
                 internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
             }
 
-            internal SourceLocation(SourceLocation.Internal* native)
-                : this(new global::System.IntPtr(native))
+            public static new SourceLocation __CreateInstance(global::System.IntPtr native)
             {
+                return new SourceLocation((SourceLocation.Internal*) native);
             }
 
             internal SourceLocation(SourceLocation.Internal native)
@@ -44,9 +44,9 @@ namespace CppSharp
             {
             }
 
-            public SourceLocation(global::System.IntPtr native, bool isInternalImpl = false) : this()
+            private SourceLocation(SourceLocation.Internal* native, bool isInternalImpl = false) : this()
             {
-                var __ptr = (Internal*)native.ToPointer();
+                var __ptr = native;
                 ID = __ptr->ID;
             }
 
