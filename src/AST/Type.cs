@@ -214,9 +214,10 @@ namespace CppSharp.AST
     /// </summary>
     public class PointerType : Type
     {
-        public PointerType()
+        public PointerType(QualifiedType pointee = new QualifiedType())
         {
             Modifier = TypeModifier.Pointer;
+            QualifiedPointee = pointee;
         }
 
         /// <summary>

@@ -46,6 +46,15 @@ namespace CppSharp.Passes
                     PrimitiveType.Void));
             }
 
+            if (function.HasThisReturn)
+            {
+                // This flag should only be true on methods.
+                var method = function as Method;
+                var classType = new QualifiedType(new TagType(method.Namespace),
+                    new TypeQualifiers {IsConst = true});
+                function.ReturnType = new QualifiedType(new PointerType(classType));
+            }
+
             // TODO: Handle indirect parameters
 
             return true;
