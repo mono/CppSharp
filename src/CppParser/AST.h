@@ -281,7 +281,9 @@ enum class CppAbi
 {
     Itanium,
     Microsoft,
-    ARM
+    ARM,
+    iOS,
+    iOS64
 };
 
 enum class VTableComponentKind

@@ -9,7 +9,9 @@ namespace CppSharp.AST
     {
         Itanium,
         Microsoft,
-        ARM
+        ARM,
+        iOS,
+        iOS64
     }
 
     /// <summary>

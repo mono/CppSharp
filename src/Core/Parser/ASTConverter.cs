@@ -1222,6 +1222,10 @@ namespace CppSharp
                     return AST.CppAbi.Microsoft;
                 case CppAbi.ARM:
                     return AST.CppAbi.ARM;
+                case CppAbi.iOS:
+                    return AST.CppAbi.iOS;
+                case CppAbi.iOS64:
+                    return AST.CppAbi.iOS64;
                 default:
                     throw new ArgumentOutOfRangeException("abi");
             }

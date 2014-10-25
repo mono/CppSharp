@@ -230,7 +230,9 @@ namespace CppSharp
             {
                 Itanium = 0,
                 Microsoft = 1,
-                ARM = 2
+                ARM = 2,
+                iOS = 3,
+                iOS64 = 4
             };
 
             public enum struct VTableComponentKind

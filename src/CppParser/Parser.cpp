@@ -86,19 +86,6 @@ static std::string GetClangBuiltinIncludeDir()
 
 //-----------------------------------//
 
-static std::string GetCXXABIString(clang::TargetCXXABI::Kind Kind)
-{
-    switch(Kind)
-    {
-    case clang::TargetCXXABI::GenericItanium:
-        return "itanium";
-    case clang::TargetCXXABI::Microsoft:
-        return "microsoft";
-    default:
-        llvm_unreachable("Unknown C++ ABI kind");
-    }
-}
-
 #ifdef _MSC_VER
 std::vector<std::string> GetWindowsSystemIncludeDirs();
 #endif
@@ -116,6 +103,10 @@ ConvertToClangTargetCXXABI(CppSharp::CppParser::AST::CppAbi abi)
         return TargetCXXABI::Microsoft;
     case CppSharp::CppParser::AST::CppAbi::ARM:
         return TargetCXXABI::GenericARM;
+    case CppSharp::CppParser::AST::CppAbi::iOS:
+        return TargetCXXABI::iOS;
+    case CppSharp::CppParser::AST::CppAbi::iOS64:
+        return TargetCXXABI::iOS64;
     }
 
     llvm_unreachable("Unsupported C++ ABI.");
