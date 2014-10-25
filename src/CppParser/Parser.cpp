@@ -103,6 +103,24 @@ static std::string GetCXXABIString(clang::TargetCXXABI::Kind Kind)
 std::vector<std::string> GetWindowsSystemIncludeDirs();
 #endif
 
+static clang::TargetCXXABI::Kind
+ConvertToClangTargetCXXABI(CppSharp::CppParser::AST::CppAbi abi)
+{
+    using namespace clang;
+
+    switch (abi)
+    {
+    case CppSharp::CppParser::AST::CppAbi::Itanium:
+        return TargetCXXABI::GenericItanium;
+    case CppSharp::CppParser::AST::CppAbi::Microsoft:
+        return TargetCXXABI::Microsoft;
+    case CppSharp::CppParser::AST::CppAbi::ARM:
+        return TargetCXXABI::GenericARM;
+    }
+
+    llvm_unreachable("Unsupported C++ ABI.");
+}
+
 void Parser::SetupHeader()
 {
     using namespace clang;
@@ -149,8 +167,7 @@ void Parser::SetupHeader()
     C->setInvocation(Inv);
 
     auto& TO = Inv->TargetOpts;
-    TargetABI = (Opts->Abi == CppAbi::Microsoft) ? TargetCXXABI::Microsoft
-        : TargetCXXABI::GenericItanium;
+    TargetABI = ConvertToClangTargetCXXABI(Opts->Abi);
 
     TO->Triple = llvm::sys::getDefaultTargetTriple();
     if (!Opts->TargetTriple.empty())
@@ -267,15 +284,15 @@ std::string Parser::GetDeclMangledName(clang::Decl* D, clang::TargetCXXABI ABI,
     switch(ABI.getKind())
     {
     default:
-        llvm_unreachable("Unknown mangling ABI");
-        break;
-    case TargetCXXABI::GenericItanium:
        MC.reset(ItaniumMangleContext::create(*AST, AST->getDiagnostics()));
        break;
     case TargetCXXABI::Microsoft:
        MC.reset(MicrosoftMangleContext::create(*AST, AST->getDiagnostics()));
        break;
     }
+
+    if (!MC)
+        llvm_unreachable("Unknown mangling ABI");
 
     std::string Mangled;
     llvm::raw_string_ostream Out(Mangled);
