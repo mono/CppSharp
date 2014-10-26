@@ -251,7 +251,7 @@ namespace CppSharp
 
                 private readonly bool __ownsNativeInstance;
 
-                public static new Type __CreateInstance(global::System.IntPtr native)
+                public static Type __CreateInstance(global::System.IntPtr native)
                 {
                     return new Type((Type.Internal*) native);
                 }
@@ -351,7 +351,7 @@ namespace CppSharp
 
                 private readonly bool __ownsNativeInstance;
 
-                public static new TypeQualifiers __CreateInstance(global::System.IntPtr native)
+                public static TypeQualifiers __CreateInstance(global::System.IntPtr native)
                 {
                     return new TypeQualifiers((TypeQualifiers.Internal*) native);
                 }
@@ -466,7 +466,7 @@ namespace CppSharp
 
                 private readonly bool __ownsNativeInstance;
 
-                public static new QualifiedType __CreateInstance(global::System.IntPtr native)
+                public static QualifiedType __CreateInstance(global::System.IntPtr native)
                 {
                     return new QualifiedType((QualifiedType.Internal*) native);
                 }
@@ -1443,7 +1443,7 @@ namespace CppSharp
 
                 private readonly bool __ownsNativeInstance;
 
-                public static new TemplateArgument __CreateInstance(global::System.IntPtr native)
+                public static TemplateArgument __CreateInstance(global::System.IntPtr native)
                 {
                     return new TemplateArgument((TemplateArgument.Internal*) native);
                 }
@@ -1745,7 +1745,7 @@ namespace CppSharp
 
                 private readonly bool __ownsNativeInstance;
 
-                public static new TemplateParameter __CreateInstance(global::System.IntPtr native)
+                public static TemplateParameter __CreateInstance(global::System.IntPtr native)
                 {
                     return new TemplateParameter((TemplateParameter.Internal*) native);
                 }
@@ -2404,7 +2404,7 @@ namespace CppSharp
 
                 private readonly bool __ownsNativeInstance;
 
-                public static new VTableComponent __CreateInstance(global::System.IntPtr native)
+                public static VTableComponent __CreateInstance(global::System.IntPtr native)
                 {
                     return new VTableComponent((VTableComponent.Internal*) native);
                 }
@@ -2539,7 +2539,7 @@ namespace CppSharp
 
                 private readonly bool __ownsNativeInstance;
 
-                public static new VTableLayout __CreateInstance(global::System.IntPtr native)
+                public static VTableLayout __CreateInstance(global::System.IntPtr native)
                 {
                     return new VTableLayout((VTableLayout.Internal*) native);
                 }
@@ -2649,7 +2649,7 @@ namespace CppSharp
 
                 private readonly bool __ownsNativeInstance;
 
-                public static new VFTableInfo __CreateInstance(global::System.IntPtr native)
+                public static VFTableInfo __CreateInstance(global::System.IntPtr native)
                 {
                     return new VFTableInfo((VFTableInfo.Internal*) native);
                 }
@@ -2821,7 +2821,7 @@ namespace CppSharp
 
                 private readonly bool __ownsNativeInstance;
 
-                public static new ClassLayout __CreateInstance(global::System.IntPtr native)
+                public static ClassLayout __CreateInstance(global::System.IntPtr native)
                 {
                     return new ClassLayout((ClassLayout.Internal*) native);
                 }
@@ -3094,7 +3094,7 @@ namespace CppSharp
 
                 private readonly bool __ownsNativeInstance;
 
-                public static new Declaration __CreateInstance(global::System.IntPtr native)
+                public static Declaration __CreateInstance(global::System.IntPtr native)
                 {
                     return new Declaration((Declaration.Internal*) native);
                 }
@@ -3942,7 +3942,7 @@ namespace CppSharp
 
                 private readonly bool __ownsNativeInstance;
 
-                public static new Statement __CreateInstance(global::System.IntPtr native)
+                public static Statement __CreateInstance(global::System.IntPtr native)
                 {
                     return new Statement((Statement.Internal*) native);
                 }
@@ -5497,7 +5497,7 @@ namespace CppSharp
 
                 private readonly bool __ownsNativeInstance;
 
-                public static new BaseClassSpecifier __CreateInstance(global::System.IntPtr native)
+                public static BaseClassSpecifier __CreateInstance(global::System.IntPtr native)
                 {
                     return new BaseClassSpecifier((BaseClassSpecifier.Internal*) native);
                 }
@@ -7152,7 +7152,7 @@ namespace CppSharp
 
                 private readonly bool __ownsNativeInstance;
 
-                public static new FunctionTemplateSpecialization __CreateInstance(global::System.IntPtr native)
+                public static FunctionTemplateSpecialization __CreateInstance(global::System.IntPtr native)
                 {
                     return new FunctionTemplateSpecialization((FunctionTemplateSpecialization.Internal*) native);
                 }
@@ -8033,7 +8033,7 @@ namespace CppSharp
 
                 private readonly bool __ownsNativeInstance;
 
-                public static new NativeLibrary __CreateInstance(global::System.IntPtr native)
+                public static NativeLibrary __CreateInstance(global::System.IntPtr native)
                 {
                     return new NativeLibrary((NativeLibrary.Internal*) native);
                 }
@@ -8212,7 +8212,7 @@ namespace CppSharp
 
                 private readonly bool __ownsNativeInstance;
 
-                public static new ASTContext __CreateInstance(global::System.IntPtr native)
+                public static ASTContext __CreateInstance(global::System.IntPtr native)
                 {
                     return new ASTContext((ASTContext.Internal*) native);
                 }
@@ -8308,7 +8308,7 @@ namespace CppSharp
 
                 private readonly bool __ownsNativeInstance;
 
-                public static new Comment __CreateInstance(global::System.IntPtr native)
+                public static Comment __CreateInstance(global::System.IntPtr native)
                 {
                     return new Comment((Comment.Internal*) native);
                 }
@@ -8482,7 +8482,7 @@ namespace CppSharp
 
                 private readonly bool __ownsNativeInstance;
 
-                public static new RawComment __CreateInstance(global::System.IntPtr native)
+                public static RawComment __CreateInstance(global::System.IntPtr native)
                 {
                     return new RawComment((RawComment.Internal*) native);
                 }

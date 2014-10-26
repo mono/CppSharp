@@ -161,6 +161,16 @@ namespace CppSharp.AST
             }
         }
 
+        public bool HasGeneratedBase
+        {
+            get
+            {
+                return HasBaseClass && !IsValueType
+                       && !Bases[0].Class.IsValueType
+                       && Bases[0].Class.IsGenerated;
+            }
+        }
+
         public Class OriginalClass { get; set; }
 
         public bool IsValueType

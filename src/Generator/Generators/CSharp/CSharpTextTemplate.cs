@@ -744,9 +744,7 @@ namespace CppSharp.Generators.CSharp
 
             var bases = new List<string>();
 
-            var needsBase = @class.HasBaseClass && !@class.IsValueType && @class.IsGenerated
-                && !@class.Bases[0].Class.IsValueType
-                && @class.Bases[0].Class.IsGenerated;
+            var needsBase = @class.HasGeneratedBase;
 
             if (needsBase)
             {
@@ -1903,11 +1901,13 @@ namespace CppSharp.Generators.CSharp
             if (!@class.IsAbstract)
             {
                 PushBlock(CSharpBlockKind.Method);
-                WriteLine("public static new {0} {1}(global::System.IntPtr native)", safeIdentifier, Helpers.CreateInstanceIdentifier);
+                WriteLine("public static {0}{1} {2}(global::System.IntPtr native)",
+                    @class.HasGeneratedBase && !@class.BaseClass.IsAbstract ? "new " : string.Empty,
+                    safeIdentifier, Helpers.CreateInstanceIdentifier);
                 WriteStartBraceIndent();
                 WriteLine("return new {0}(({1}.Internal*) native);", safeIdentifier, className);
                 WriteCloseBraceIndent();
-                PopBlock(NewLineKind.BeforeNextBlock);   
+                PopBlock(NewLineKind.BeforeNextBlock);
             }
 
             GenerateNativeConstructorByValue(@class, className, safeIdentifier);
