@@ -45,14 +45,17 @@ namespace CppSharp.Passes
         {
             var returnType = function.ReturnType.Type.Desugar();
 
-            TagType tag;
-            if (!returnType.IsPointerTo(out tag))
+            var tag = returnType as TagType;
+            if (tag == null)
+                returnType.IsPointerTo(out tag);
+
+            if (tag == null)
                 return false;
 
             var @class = (Class) function.Namespace;
             var decl = tag.Declaration;
 
-            if (decl is Class)
+            if (!(decl is Class))
                 return false;
 
             return @class.QualifiedOriginalName == decl.QualifiedOriginalName;
@@ -79,7 +82,8 @@ namespace CppSharp.Passes
             // If one exists, we assume it's a factory function and the class is
             // not meant to be static. It's a simple heuristic but it should be
             // good enough for the time being.
-            if (@class.Functions.Any(ReturnsClassInstance))
+            if (@class.Functions.Any(ReturnsClassInstance) ||
+                @class.Methods.Any(ReturnsClassInstance))
                 return false;
 
             // TODO: We should take C++ friends into account here, they might allow

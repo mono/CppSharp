@@ -347,6 +347,23 @@ private:
 
 int TestStaticClassDerived::Foo() { return 0; }
 
+class DLL_API TestNotStaticClass
+{
+public:
+	static TestNotStaticClass StaticFunction();
+private:
+	TestNotStaticClass();
+};
+
+TestNotStaticClass::TestNotStaticClass()
+{
+}
+
+TestNotStaticClass TestNotStaticClass::StaticFunction()
+{
+	return TestNotStaticClass();
+}
+
 class HasIgnoredField
 {
     Base<Derived> fieldOfIgnoredType;
