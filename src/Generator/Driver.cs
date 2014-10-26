@@ -1,6 +1,7 @@
 ﻿using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -132,6 +133,15 @@ namespace CppSharp
                 Verbose = Options.Verbose,
                 LanguageVersion = Options.LanguageVersion
             };
+
+            // This eventually gets passed to Clang's MSCompatibilityVersion, which
+            // is in turn used to derive the value of the built-in define _MSC_VER.
+            // It used to receive a 4-digit based identifier but now expects a full
+            // version MSVC digit, so check if we still have the old version and 
+            // convert to the right format.
+
+            if (Options.ToolSetToUse.ToString(CultureInfo.InvariantCulture).Length == 4)
+                Options.ToolSetToUse *= 100000;
 
             for (uint i = 0; i < Options.ArgumentsCount; ++i)
             {
