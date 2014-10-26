@@ -279,7 +279,9 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(8);
                     __ownsNativeInstance = true;
                     var arg0 = kind;
-                    Internal.ctor_0(__Instance, arg0);
+                    var __ret = Internal.ctor_0(__Instance, arg0);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.Type.__CreateInstance(__ret);
                 }
 
                 public void Dispose()
@@ -493,7 +495,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(8);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.QualifiedType.__CreateInstance(__ret);
                 }
 
                 public void Dispose()
@@ -596,7 +600,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(12);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.TagType.__CreateInstance(__ret);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -693,7 +699,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(24);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.ArrayType.__CreateInstance(__ret);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -834,7 +842,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(32);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.FunctionType.__CreateInstance(__ret);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -970,7 +980,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(20);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.PointerType.__CreateInstance(__ret);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -1068,7 +1080,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(16);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.MemberPointerType.__CreateInstance(__ret);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -1151,7 +1165,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(12);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.TypedefType.__CreateInstance(__ret);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -1237,7 +1253,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(24);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.AttributedType.__CreateInstance(__ret);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -1341,7 +1359,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(32);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.DecayedType.__CreateInstance(__ret);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -1470,7 +1490,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(20);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.TemplateArgument.__CreateInstance(__ret);
                 }
 
                 public void Dispose()
@@ -1631,7 +1653,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(28);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.TemplateSpecializationType.__CreateInstance(__ret);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -1772,7 +1796,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(28);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.TemplateParameter.__CreateInstance(__ret);
                 }
 
                 public void Dispose()
@@ -1905,7 +1931,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(48);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.TemplateParameterType.__CreateInstance(__ret);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -2033,7 +2061,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(16);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.TemplateParameterSubstitutionType.__CreateInstance(__ret);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -2119,7 +2149,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(16);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.InjectedClassNameType.__CreateInstance(__ret);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -2214,7 +2246,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(8);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.DependentNameType.__CreateInstance(__ret);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -2279,7 +2313,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(8);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.PackExpansionType.__CreateInstance(__ret);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -2347,7 +2383,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(12);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.BuiltinType.__CreateInstance(__ret);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -2431,7 +2469,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(12);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.VTableComponent.__CreateInstance(__ret);
                 }
 
                 public void Dispose()
@@ -2566,7 +2606,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(12);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.VTableLayout.__CreateInstance(__ret);
                 }
 
                 public void Dispose()
@@ -2676,7 +2718,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(32);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.VFTableInfo.__CreateInstance(__ret);
                 }
 
                 public void Dispose()
@@ -2848,7 +2892,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(48);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.ClassLayout.__CreateInstance(__ret);
                 }
 
                 public void Dispose()
@@ -3122,7 +3168,9 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(120);
                     __ownsNativeInstance = true;
                     var arg0 = kind;
-                    Internal.ctor_0(__Instance, arg0);
+                    var __ret = Internal.ctor_0(__Instance, arg0);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.Declaration.__CreateInstance(__ret);
                 }
 
                 public void Dispose()
@@ -3577,7 +3625,9 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(216);
                     __ownsNativeInstance = true;
                     var arg0 = kind;
-                    Internal.ctor_0(__Instance, arg0);
+                    var __ret = Internal.ctor_0(__Instance, arg0);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.DeclarationContext.__CreateInstance(__ret);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -3878,7 +3928,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(128);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.TypedefDecl.__CreateInstance(__ret);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -4181,7 +4233,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(140);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.Parameter.__CreateInstance(__ret);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -4420,7 +4474,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(208);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.Function.__CreateInstance(__ret);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -4791,7 +4847,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(236);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.Method.__CreateInstance(__ret);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -5169,7 +5227,9 @@ namespace CppSharp
                     {
                         __Instance = Marshal.AllocHGlobal(152);
                         __ownsNativeInstance = true;
-                        Internal.ctor_0(__Instance);
+                        var __ret = Internal.ctor_0(__Instance);
+                        if (__ret == global::System.IntPtr.Zero) return null;
+                        return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.Enumeration.Item.__CreateInstance(__ret);
                     }
 
                     protected override void Dispose(bool disposing)
@@ -5244,7 +5304,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(240);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.Enumeration.__CreateInstance(__ret);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -5423,7 +5485,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(152);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.Variable.__CreateInstance(__ret);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -5524,7 +5588,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(12);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.BaseClassSpecifier.__CreateInstance(__ret);
                 }
 
                 public void Dispose()
@@ -5677,7 +5743,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(136);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.Field.__CreateInstance(__ret);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -5816,7 +5884,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(120);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.AccessSpecifierDecl.__CreateInstance(__ret);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -6023,7 +6093,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(280);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.Class.__CreateInstance(__ret);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -6404,7 +6476,9 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(136);
                     __ownsNativeInstance = true;
                     var arg0 = kind;
-                    Internal.ctor_0(__Instance, arg0);
+                    var __ret = Internal.ctor_0(__Instance, arg0);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.Template.__CreateInstance(__ret);
                 }
 
                 public Template()
@@ -6412,7 +6486,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(136);
                     __ownsNativeInstance = true;
-                    Internal.ctor_1(__Instance);
+                    var __ret = Internal.ctor_1(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.Template.__CreateInstance(__ret);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -6571,7 +6647,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(148);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.ClassTemplate.__CreateInstance(__ret);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -6751,7 +6829,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(300);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.ClassTemplateSpecialization.__CreateInstance(__ret);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -6941,7 +7021,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(300);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.ClassTemplatePartialSpecialization.__CreateInstance(__ret);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -7058,7 +7140,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(148);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.FunctionTemplate.__CreateInstance(__ret);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -7179,7 +7263,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(24);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.FunctionTemplateSpecialization.__CreateInstance(__ret);
                 }
 
                 public void Dispose()
@@ -7357,7 +7443,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(220);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.Namespace.__CreateInstance(__ret);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -7469,7 +7557,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(124);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.PreprocessedEntity.__CreateInstance(__ret);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -7591,7 +7681,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(148);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.MacroDefinition.__CreateInstance(__ret);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -7718,7 +7810,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(152);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.MacroExpansion.__CreateInstance(__ret);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -7883,7 +7977,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(260);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.TranslationUnit.__CreateInstance(__ret);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -8060,7 +8156,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(52);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.NativeLibrary.__CreateInstance(__ret);
                 }
 
                 public void Dispose()
@@ -8239,7 +8337,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(12);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.ASTContext.__CreateInstance(__ret);
                 }
 
                 public void Dispose()
@@ -8336,7 +8436,9 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(4);
                     __ownsNativeInstance = true;
                     var arg0 = kind;
-                    Internal.ctor_0(__Instance, arg0);
+                    var __ret = Internal.ctor_0(__Instance, arg0);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.Comment.__CreateInstance(__ret);
                 }
 
                 public void Dispose()
@@ -8418,7 +8520,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(4);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.FullComment.__CreateInstance(__ret);
                 }
 
                 protected override void Dispose(bool disposing)
@@ -8509,7 +8613,9 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(56);
                     __ownsNativeInstance = true;
-                    Internal.ctor_0(__Instance);
+                    var __ret = Internal.ctor_0(__Instance);
+                    if (__ret == global::System.IntPtr.Zero) return null;
+                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.RawComment.__CreateInstance(__ret);
                 }
 
                 public void Dispose()

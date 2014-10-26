@@ -126,9 +126,6 @@ namespace CppSharp
 
         public void Preprocess(Driver driver, ASTContext ctx)
         {
-            ctx.SetClassAsValueType("CppSharp::ParserDiagnostic");
-            ctx.SetClassAsValueType("CppSharp::ParserResult");
-
             ctx.RenameNamespace("CppSharp::CppParser", "Parser");
         }
 

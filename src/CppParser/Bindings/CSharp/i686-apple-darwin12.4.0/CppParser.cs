@@ -602,7 +602,7 @@ namespace CppSharp
             }
         }
 
-        public unsafe partial struct ParserDiagnostic
+        public unsafe partial class ParserDiagnostic : IDisposable
         {
             [StructLayout(LayoutKind.Explicit, Size = 36)]
             public partial struct Internal
@@ -652,49 +652,60 @@ namespace CppSharp
                 internal static extern void setMessage_0(global::System.IntPtr instance, global::System.IntPtr s);
             }
 
+            public global::System.IntPtr __Instance { get; protected set; }
+
+            private readonly bool __ownsNativeInstance;
+
             public static new ParserDiagnostic __CreateInstance(global::System.IntPtr native)
             {
                 return new ParserDiagnostic((ParserDiagnostic.Internal*) native);
             }
 
+            private static ParserDiagnostic.Internal* __CopyValue(ParserDiagnostic.Internal native)
+            {
+                var ret = Marshal.AllocHGlobal(36);
+                CppSharp.Parser.ParserDiagnostic.Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                return (ParserDiagnostic.Internal*) ret;
+            }
+
             internal ParserDiagnostic(ParserDiagnostic.Internal native)
-                : this(&native)
+                : this(__CopyValue(native))
             {
+                __ownsNativeInstance = true;
             }
 
-            private ParserDiagnostic(ParserDiagnostic.Internal* native, bool isInternalImpl = false) : this()
+            protected ParserDiagnostic(ParserDiagnostic.Internal* native, bool isInternalImpl = false)
             {
-                var __ptr = native;
-                Level = __ptr->Level;
-                LineNumber = __ptr->LineNumber;
-                ColumnNumber = __ptr->ColumnNumber;
+                __Instance = new global::System.IntPtr(native);
             }
 
-            internal Internal ToInternal()
+            public ParserDiagnostic()
             {
-                var __native = new CppSharp.Parser.ParserDiagnostic.Internal();
-                var __ptr = &__native;
-                __native.Level = Level;
-                __native.LineNumber = LineNumber;
-                __native.ColumnNumber = ColumnNumber;
-                return __native;
+                __Instance = Marshal.AllocHGlobal(36);
+                __ownsNativeInstance = true;
+                Internal.ctor_0(__Instance);
             }
 
-            internal void FromInternal(Internal* native)
+            public void Dispose()
             {
-                var __ptr = native;
-                Level = __ptr->Level;
-                LineNumber = __ptr->LineNumber;
-                ColumnNumber = __ptr->ColumnNumber;
+                Dispose(disposing: true);
+                GC.SuppressFinalize(this);
+            }
+
+            protected virtual void Dispose(bool disposing)
+            {
+                Internal.dtor_0(__Instance);
+                if (__ownsNativeInstance)
+                {
+                    Marshal.FreeHGlobal(__Instance);
+                }
             }
 
             public string FileName
             {
                 get
                 {
-                    var __fixedInstance = ToInternal();
-                    var __ret = Internal.getFileName_0(new global::System.IntPtr(&__fixedInstance));
-                    FromInternal(&__fixedInstance);
+                    var __ret = Internal.getFileName_0(__Instance);
                     if (__ret == global::System.IntPtr.Zero) return null;
                     return Marshal.PtrToStringAnsi(__ret);
                 }
@@ -702,10 +713,8 @@ namespace CppSharp
                 set
                 {
                     var arg0 = Marshal.StringToHGlobalAnsi(value);
-                    var __fixedInstance = ToInternal();
-                    Internal.setFileName_0(new global::System.IntPtr(&__fixedInstance), arg0);
+                    Internal.setFileName_0(__Instance, arg0);
                     Marshal.FreeHGlobal(arg0);
-                    FromInternal(&__fixedInstance);
                 }
             }
 
@@ -713,9 +722,7 @@ namespace CppSharp
             {
                 get
                 {
-                    var __fixedInstance = ToInternal();
-                    var __ret = Internal.getMessage_0(new global::System.IntPtr(&__fixedInstance));
-                    FromInternal(&__fixedInstance);
+                    var __ret = Internal.getMessage_0(__Instance);
                     if (__ret == global::System.IntPtr.Zero) return null;
                     return Marshal.PtrToStringAnsi(__ret);
                 }
@@ -723,36 +730,58 @@ namespace CppSharp
                 set
                 {
                     var arg0 = Marshal.StringToHGlobalAnsi(value);
-                    var __fixedInstance = ToInternal();
-                    Internal.setMessage_0(new global::System.IntPtr(&__fixedInstance), arg0);
+                    Internal.setMessage_0(__Instance, arg0);
                     Marshal.FreeHGlobal(arg0);
-                    FromInternal(&__fixedInstance);
                 }
             }
 
             public CppSharp.Parser.ParserDiagnosticLevel Level
             {
-                get;
+                get
+                {
+                    var __ptr = (Internal*)__Instance.ToPointer();
+                    return __ptr->Level;
+                }
 
-                set;
+                set
+                {
+                    var __ptr = (Internal*)__Instance.ToPointer();
+                    __ptr->Level = value;
+                }
             }
 
             public int LineNumber
             {
-                get;
+                get
+                {
+                    var __ptr = (Internal*)__Instance.ToPointer();
+                    return __ptr->LineNumber;
+                }
 
-                set;
+                set
+                {
+                    var __ptr = (Internal*)__Instance.ToPointer();
+                    __ptr->LineNumber = value;
+                }
             }
 
             public int ColumnNumber
             {
-                get;
+                get
+                {
+                    var __ptr = (Internal*)__Instance.ToPointer();
+                    return __ptr->ColumnNumber;
+                }
 
-                set;
+                set
+                {
+                    var __ptr = (Internal*)__Instance.ToPointer();
+                    __ptr->ColumnNumber = value;
+                }
             }
         }
 
-        public unsafe partial struct ParserResult
+        public unsafe partial class ParserResult : IDisposable
         {
             [StructLayout(LayoutKind.Explicit, Size = 28)]
             public partial struct Internal
@@ -805,103 +834,125 @@ namespace CppSharp
                 internal static extern uint getDiagnosticsCount_0(global::System.IntPtr instance);
             }
 
+            public global::System.IntPtr __Instance { get; protected set; }
+
+            private readonly bool __ownsNativeInstance;
+
             public static new ParserResult __CreateInstance(global::System.IntPtr native)
             {
                 return new ParserResult((ParserResult.Internal*) native);
             }
 
+            private static ParserResult.Internal* __CopyValue(ParserResult.Internal native)
+            {
+                var ret = Marshal.AllocHGlobal(28);
+                CppSharp.Parser.ParserResult.Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                return (ParserResult.Internal*) ret;
+            }
+
             internal ParserResult(ParserResult.Internal native)
-                : this(&native)
+                : this(__CopyValue(native))
             {
+                __ownsNativeInstance = true;
             }
 
-            private ParserResult(ParserResult.Internal* native, bool isInternalImpl = false) : this()
+            protected ParserResult(ParserResult.Internal* native, bool isInternalImpl = false)
             {
-                var __ptr = native;
-                Kind = __ptr->Kind;
-                ASTContext = (__ptr->ASTContext == IntPtr.Zero) ? null : CppSharp.Parser.AST.ASTContext.__CreateInstance(__ptr->ASTContext);
-                Library = (__ptr->Library == IntPtr.Zero) ? null : CppSharp.Parser.AST.NativeLibrary.__CreateInstance(__ptr->Library);
+                __Instance = new global::System.IntPtr(native);
             }
 
-            internal Internal ToInternal()
+            public ParserResult()
             {
-                var __native = new CppSharp.Parser.ParserResult.Internal();
-                var __ptr = &__native;
-                __native.Kind = Kind;
-                if (ASTContext != null)
+                __Instance = Marshal.AllocHGlobal(28);
+                __ownsNativeInstance = true;
+                Internal.ctor_0(__Instance);
+            }
+
+            public void Dispose()
+            {
+                Dispose(disposing: true);
+                GC.SuppressFinalize(this);
+            }
+
+            protected virtual void Dispose(bool disposing)
+            {
+                Internal.dtor_0(__Instance);
+                if (__ownsNativeInstance)
                 {
-                    __native.ASTContext = ASTContext == (CppSharp.Parser.AST.ASTContext) null ? global::System.IntPtr.Zero : ASTContext.__Instance;
+                    Marshal.FreeHGlobal(__Instance);
                 }
-                if (Library != null)
-                {
-                    __native.Library = Library == (CppSharp.Parser.AST.NativeLibrary) null ? global::System.IntPtr.Zero : Library.__Instance;
-                }
-                return __native;
-            }
-
-            internal void FromInternal(Internal* native)
-            {
-                var __ptr = native;
-                Kind = __ptr->Kind;
-                ASTContext = (__ptr->ASTContext == IntPtr.Zero) ? null : CppSharp.Parser.AST.ASTContext.__CreateInstance(__ptr->ASTContext);
-                Library = (__ptr->Library == IntPtr.Zero) ? null : CppSharp.Parser.AST.NativeLibrary.__CreateInstance(__ptr->Library);
             }
 
             public CppSharp.Parser.ParserDiagnostic getDiagnostics(uint i)
             {
                 var __ret = new CppSharp.Parser.ParserDiagnostic.Internal();
-                var __fixedInstance = ToInternal();
-                Internal.getDiagnostics_0(new IntPtr(&__ret), new global::System.IntPtr(&__fixedInstance), i);
-                FromInternal(&__fixedInstance);
+                Internal.getDiagnostics_0(new IntPtr(&__ret), __Instance, i);
                 return new CppSharp.Parser.ParserDiagnostic(__ret);
             }
 
             public void addDiagnostics(CppSharp.Parser.ParserDiagnostic s)
             {
-                var __arg0 = s.ToInternal();
-                var arg0 = new global::System.IntPtr(&__arg0);
-                var __fixedInstance = ToInternal();
-                Internal.addDiagnostics_0(new global::System.IntPtr(&__fixedInstance), arg0);
-                FromInternal(&__fixedInstance);
+                var arg0 = s == (CppSharp.Parser.ParserDiagnostic) null ? global::System.IntPtr.Zero : s.__Instance;
+                Internal.addDiagnostics_0(__Instance, arg0);
             }
 
             public void clearDiagnostics()
             {
-                var __fixedInstance = ToInternal();
-                Internal.clearDiagnostics_0(new global::System.IntPtr(&__fixedInstance));
-                FromInternal(&__fixedInstance);
+                Internal.clearDiagnostics_0(__Instance);
             }
 
             public uint DiagnosticsCount
             {
                 get
                 {
-                    var __fixedInstance = ToInternal();
-                    var __ret = Internal.getDiagnosticsCount_0(new global::System.IntPtr(&__fixedInstance));
-                    FromInternal(&__fixedInstance);
+                    var __ret = Internal.getDiagnosticsCount_0(__Instance);
                     return __ret;
                 }
             }
 
             public CppSharp.Parser.ParserResultKind Kind
             {
-                get;
+                get
+                {
+                    var __ptr = (Internal*)__Instance.ToPointer();
+                    return __ptr->Kind;
+                }
 
-                set;
+                set
+                {
+                    var __ptr = (Internal*)__Instance.ToPointer();
+                    __ptr->Kind = value;
+                }
             }
 
             public CppSharp.Parser.AST.ASTContext ASTContext
             {
-                get;
+                get
+                {
+                    var __ptr = (Internal*)__Instance.ToPointer();
+                    return (__ptr->ASTContext == IntPtr.Zero) ? null : CppSharp.Parser.AST.ASTContext.__CreateInstance(__ptr->ASTContext);
+                }
 
-                set;
+                set
+                {
+                    var __ptr = (Internal*)__Instance.ToPointer();
+                    __ptr->ASTContext = value == (CppSharp.Parser.AST.ASTContext) null ? global::System.IntPtr.Zero : value.__Instance;
+                }
             }
 
             public CppSharp.Parser.AST.NativeLibrary Library
             {
-                get;
+                get
+                {
+                    var __ptr = (Internal*)__Instance.ToPointer();
+                    return (__ptr->Library == IntPtr.Zero) ? null : CppSharp.Parser.AST.NativeLibrary.__CreateInstance(__ptr->Library);
+                }
 
-                set;
+                set
+                {
+                    var __ptr = (Internal*)__Instance.ToPointer();
+                    __ptr->Library = value == (CppSharp.Parser.AST.NativeLibrary) null ? global::System.IntPtr.Zero : value.__Instance;
+                }
             }
         }
 
@@ -982,16 +1033,16 @@ namespace CppSharp
             {
                 var arg0 = Opts == (CppSharp.Parser.ParserOptions) null ? global::System.IntPtr.Zero : Opts.__Instance;
                 var __ret = Internal.ParseHeader_0(arg0);
-                if (__ret == global::System.IntPtr.Zero) return new CppSharp.Parser.ParserResult();
-                return (__ret == IntPtr.Zero) ? new CppSharp.Parser.ParserResult() : CppSharp.Parser.ParserResult.__CreateInstance(__ret);
+                if (__ret == global::System.IntPtr.Zero) return null;
+                return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.ParserResult.__CreateInstance(__ret);
             }
 
             public static CppSharp.Parser.ParserResult ParseLibrary(CppSharp.Parser.ParserOptions Opts)
             {
                 var arg0 = Opts == (CppSharp.Parser.ParserOptions) null ? global::System.IntPtr.Zero : Opts.__Instance;
                 var __ret = Internal.ParseLibrary_0(arg0);
-                if (__ret == global::System.IntPtr.Zero) return new CppSharp.Parser.ParserResult();
-                return (__ret == IntPtr.Zero) ? new CppSharp.Parser.ParserResult() : CppSharp.Parser.ParserResult.__CreateInstance(__ret);
+                if (__ret == global::System.IntPtr.Zero) return null;
+                return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.ParserResult.__CreateInstance(__ret);
             }
 
             public static CppSharp.Parser.ParserTargetInfo GetTargetInfo(CppSharp.Parser.ParserOptions Opts)

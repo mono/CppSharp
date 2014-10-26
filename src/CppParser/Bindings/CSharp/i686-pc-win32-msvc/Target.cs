@@ -201,7 +201,9 @@ namespace CppSharp
             {
                 __Instance = Marshal.AllocHGlobal(176);
                 __ownsNativeInstance = true;
-                Internal.ctor_1(__Instance);
+                var __ret = Internal.ctor_1(__Instance);
+                if (__ret == global::System.IntPtr.Zero) return null;
+                return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.ParserTargetInfo.__CreateInstance(__ret);
             }
 
             public void Dispose()
