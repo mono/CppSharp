@@ -68,10 +68,8 @@ namespace CppSharp
                 : this()
             {
                 var __fixedInstance = ToInternal();
-                var __ret = Internal.ctor_1(new global::System.IntPtr(&__fixedInstance), ID);
+                Internal.ctor_1(new global::System.IntPtr(&__fixedInstance), ID);
                 FromInternal(&__fixedInstance);
-                if (__ret == global::System.IntPtr.Zero) return new CppSharp.Parser.SourceLocation();
-                return (__ret == IntPtr.Zero) ? new CppSharp.Parser.SourceLocation() : CppSharp.Parser.SourceLocation.__CreateInstance(__ret);
             }
 
             public uint ID

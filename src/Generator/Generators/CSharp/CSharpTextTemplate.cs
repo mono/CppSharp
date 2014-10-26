@@ -2309,12 +2309,14 @@ namespace CppSharp.Generators.CSharp
             var retType = function.OriginalReturnType;
             if (returnType == null)
                 returnType = retType.Type;
-            var needsReturn = !retType.Type.IsPrimitiveType(PrimitiveType.Void);
+
+            var method = function as Method;
+            var hasThisReturnStructor = method != null && (method.IsConstructor || method.IsDestructor);
+            var needsReturn = !retType.Type.IsPrimitiveType(PrimitiveType.Void) && !hasThisReturnStructor;
 
             var isValueType = false;
             var needsInstance = false;
 
-            var method = function as Method;
             Parameter operatorParam = null;
             if (method != null)
             {

@@ -261,9 +261,7 @@ namespace CppSharp
             {
                 __Instance = Marshal.AllocHGlobal(140);
                 __ownsNativeInstance = true;
-                var __ret = Internal.ctor_0(__Instance);
-                if (__ret == global::System.IntPtr.Zero) return null;
-                return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.ParserOptions.__CreateInstance(__ret);
+                Internal.ctor_0(__Instance);
             }
 
             public void Dispose()
@@ -685,9 +683,7 @@ namespace CppSharp
             {
                 __Instance = Marshal.AllocHGlobal(60);
                 __ownsNativeInstance = true;
-                var __ret = Internal.ctor_0(__Instance);
-                if (__ret == global::System.IntPtr.Zero) return null;
-                return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.ParserDiagnostic.__CreateInstance(__ret);
+                Internal.ctor_0(__Instance);
             }
 
             public void Dispose()
@@ -869,9 +865,7 @@ namespace CppSharp
             {
                 __Instance = Marshal.AllocHGlobal(28);
                 __ownsNativeInstance = true;
-                var __ret = Internal.ctor_0(__Instance);
-                if (__ret == global::System.IntPtr.Zero) return null;
-                return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.ParserResult.__CreateInstance(__ret);
+                Internal.ctor_0(__Instance);
             }
 
             public void Dispose()
