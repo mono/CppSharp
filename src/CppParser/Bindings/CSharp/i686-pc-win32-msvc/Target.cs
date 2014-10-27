@@ -174,7 +174,7 @@ namespace CppSharp
 
             private readonly bool __ownsNativeInstance;
 
-            public static new ParserTargetInfo __CreateInstance(global::System.IntPtr native)
+            public static ParserTargetInfo __CreateInstance(global::System.IntPtr native)
             {
                 return new ParserTargetInfo((ParserTargetInfo.Internal*) native);
             }

@@ -234,7 +234,7 @@ namespace CppSharp
 
             private readonly bool __ownsNativeInstance;
 
-            public static new ParserOptions __CreateInstance(global::System.IntPtr native)
+            public static ParserOptions __CreateInstance(global::System.IntPtr native)
             {
                 return new ParserOptions((ParserOptions.Internal*) native);
             }
@@ -656,7 +656,7 @@ namespace CppSharp
 
             private readonly bool __ownsNativeInstance;
 
-            public static new ParserDiagnostic __CreateInstance(global::System.IntPtr native)
+            public static ParserDiagnostic __CreateInstance(global::System.IntPtr native)
             {
                 return new ParserDiagnostic((ParserDiagnostic.Internal*) native);
             }
@@ -838,7 +838,7 @@ namespace CppSharp
 
             private readonly bool __ownsNativeInstance;
 
-            public static new ParserResult __CreateInstance(global::System.IntPtr native)
+            public static ParserResult __CreateInstance(global::System.IntPtr native)
             {
                 return new ParserResult((ParserResult.Internal*) native);
             }
@@ -986,7 +986,7 @@ namespace CppSharp
 
             private readonly bool __ownsNativeInstance;
 
-            public static new ClangParser __CreateInstance(global::System.IntPtr native)
+            public static ClangParser __CreateInstance(global::System.IntPtr native)
             {
                 return new ClangParser((ClangParser.Internal*) native);
             }
