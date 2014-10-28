@@ -7,11 +7,12 @@ managed languages. This is useful if you want to consume an existing native
 library in your managed code or add scripting support to a native codebase.
  
  * Multiple backends: C++/CLI and C# P/Invoke
- * Multiple ABIs: Itanium (GCC, Clang), MS and MinGW
+ * Multiple ABIs: Itanium, MS, ARM, iOS and iOS64
+ * Multiple platforms: Windows, OS X and Linux
  * Virtual table overriding support
  * Multiple inheritance support
  * Easily extensible semantics via user passes 
- * Work-in-progress support for STL
+ * Work-in-progress support for STL (C++/CLI only)
  * Strongly-typed customization APIs and type maps
 
 ### AST 
@@ -52,12 +53,3 @@ for more information:
 
 [Developer's Manual](docs/DevManual.md)
 
-## News
-
-* November 11th 2013 - Released a new version (423) with bug fixes for type maps (when used with template specializations), constructors renaming and better documentation generation.
-* November 5th 2013 - Released a new version (329) with a lot of bug fixes for operators and vtables.
-* September 22nd 2013 - Conversion (type cast) operators wrapped (thanks to <a href="https://github.com/ddobrev">@ddobrev</a>)
-* September 21st 2013 - Multiple inheritance now supported (thanks to <a href="https://github.com/ddobrev">@ddobrev</a>)
-
-* September 11th 2013 - Added wrapping of inlined functions (thanks to <a href="https://github.com/ddobrev">@ddobrev</a>)
-* September 11th 2013 - New binaries available for Windows (VS2012)
