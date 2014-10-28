@@ -508,6 +508,14 @@ struct DLL_API TestVariables
 int TestVariables::VALUE;
 void TestVariables::SetValue(int value) { VALUE = value; }
 
+typedef const wchar_t * LPCWSTR;
+struct DLL_API TestWideStrings
+{
+	LPCWSTR GetWidePointer();
+};
+
+LPCWSTR TestWideStrings::GetWidePointer() { return L"Hello"; }
+
 enum struct MyEnum { A, B, C };
 
 class DLL_API TestArraysPointers

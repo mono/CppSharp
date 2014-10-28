@@ -103,7 +103,7 @@ namespace CppSharp.Types
                 case PrimitiveType.Bool: return "bool";
                 case PrimitiveType.Void: return "void";
                 case PrimitiveType.Char16:
-                case PrimitiveType.WideChar: return "char";
+                case PrimitiveType.WideChar: return "wchar_t";
                 case PrimitiveType.Char: return "char";
                 case PrimitiveType.UChar: return "unsigned char";
                 case PrimitiveType.Short: return "short";

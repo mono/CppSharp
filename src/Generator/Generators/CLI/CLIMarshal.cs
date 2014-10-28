@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
+using CppSharp.Generators.CSharp;
 using CppSharp.Types;
 using Delegate = CppSharp.AST.Delegate;
 using Type = CppSharp.AST.Type;
@@ -73,10 +74,10 @@ namespace CppSharp.Generators.CLI
                 return true;
             }
 
-            if (pointee.IsPrimitiveType(PrimitiveType.Char))
+            if (CSharpTypePrinter.IsConstCharString(pointer))
             {
-                Context.Return.Write("clix::marshalString<clix::E_UTF8>({0})",
-                             Context.ReturnVarName);
+                Context.Return.Write(MarshalStringToManaged(Context.ReturnVarName,
+                    pointer.Pointee.Desugar() as BuiltinType));
                 return true;
             }
 
@@ -95,11 +96,12 @@ namespace CppSharp.Generators.CLI
                 if (quals.IsConst != Context.ReturnType.Qualifiers.IsConst)
                 {
                     var nativeTypePrinter = new CppTypePrinter(Context.Driver.TypeDatabase, false);
+                    var returnType = Context.ReturnType.Type.Desugar();
                     var constlessPointer = new PointerType()
                     {
                         IsDependent = pointer.IsDependent,
                         Modifier = pointer.Modifier,
-                        QualifiedPointee = new QualifiedType(Context.ReturnType.Type.GetPointee())
+                        QualifiedPointee = new QualifiedType(returnType.GetPointee())
                     };
                     var nativeConstlessTypeName = constlessPointer.Visit(nativeTypePrinter, new TypeQualifiers());
                     returnVarName = string.Format("const_cast<{0}>({1})",
@@ -136,6 +138,25 @@ namespace CppSharp.Generators.CLI
             }
 
             return pointer.Pointee.Visit(this, quals);
+        }
+
+        private string MarshalStringToManaged(string varName, BuiltinType type)
+        {
+            var encoding = type.Type == PrimitiveType.Char ?
+                Encoding.ASCII : Encoding.Unicode;
+
+            if (Equals(encoding, Encoding.ASCII))
+                encoding = Context.Driver.Options.Encoding;
+
+            if (Equals(encoding, Encoding.ASCII))
+                return string.Format("clix::marshalString<clix::E_UTF8>({0})", varName);
+
+            if (Equals(encoding, Encoding.Unicode) ||
+                Equals(encoding, Encoding.BigEndianUnicode))
+                return string.Format("clix::marshalString<clix::E_UTF16>({0})", varName);
+
+            throw new NotSupportedException(string.Format("{0} is not supported yet.",
+                Context.Driver.Options.Encoding.EncodingName));
         }
 
         public override bool VisitMemberPointerType(MemberPointerType member,

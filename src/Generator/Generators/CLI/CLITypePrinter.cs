@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
+using CppSharp.Generators.CSharp;
 using CppSharp.Types;
 using Type = CppSharp.AST.Type;
 
@@ -139,10 +140,8 @@ namespace CppSharp.Generators.CLI
                 return string.Format("{0}^", function.Visit(this, quals));
             }
 
-            if (pointee.IsPrimitiveType(PrimitiveType.Char) && quals.IsConst)
-            {
+            if (CSharpTypePrinter.IsConstCharString(pointer))
                 return "System::String^";
-            }
 
             // From http://msdn.microsoft.com/en-us/library/y31yhkeb.aspx
             // Any of the following types may be a pointer type:

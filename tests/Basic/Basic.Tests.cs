@@ -369,12 +369,21 @@ public class BasicTests : GeneratorTestFixture
         Assert.That(prop.FieldValue, Is.EqualTo(10));
     }
 
+    [Test]
     public void TestVariable()
     {
         // Test field property
         var @var = new TestVariables();
         @var.Value = 10;
         Assert.That(TestVariables.VALUE, Is.EqualTo(10));
+    }
+
+    [Test]
+    public void TestWideStrings()
+    {
+        var ws = new TestWideStrings();
+        var s = ws.WidePointer;
+        Assert.That(ws.WidePointer, Is.EqualTo("Hello"));
     }
 
     [Test]

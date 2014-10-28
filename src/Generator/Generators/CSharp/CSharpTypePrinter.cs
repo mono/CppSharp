@@ -176,8 +176,9 @@ namespace CppSharp.Generators.CSharp
             var pointee = pointer.Pointee.Desugar();
 
             return (pointee.IsPrimitiveType(PrimitiveType.Char) ||
+                    pointee.IsPrimitiveType(PrimitiveType.Char16) ||
                     pointee.IsPrimitiveType(PrimitiveType.WideChar)) &&
-                   pointer.QualifiedPointee.Qualifiers.IsConst;
+                    pointer.QualifiedPointee.Qualifiers.IsConst;
         }
 
         public static bool IsConstCharString(QualifiedType qualType)

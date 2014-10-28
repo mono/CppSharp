@@ -146,7 +146,8 @@ namespace CppSharp.Generators.CSharp
 
             if (CSharpTypePrinter.IsConstCharString(pointer))
             {
-                Context.Return.Write(MarshalStringToManaged(Context.ReturnVarName));
+                Context.Return.Write(MarshalStringToManaged(Context.ReturnVarName,
+                    pointer.Pointee.Desugar() as BuiltinType));
                 return true;
             }
 
@@ -167,17 +168,21 @@ namespace CppSharp.Generators.CSharp
             return pointer.Pointee.Visit(this, quals);
         }
 
-        private string MarshalStringToManaged(string varName)
+        private string MarshalStringToManaged(string varName, BuiltinType type)
         {
-            if (Equals(Context.Driver.Options.Encoding, Encoding.ASCII))
-            {
+            var encoding = type.Type == PrimitiveType.Char ?
+                Encoding.ASCII : Encoding.Unicode;
+
+            if (Equals(encoding, Encoding.ASCII))
+                encoding = Context.Driver.Options.Encoding;
+
+            if (Equals(encoding, Encoding.ASCII))
                 return string.Format("Marshal.PtrToStringAnsi({0})", varName);
-            }
-            if (Equals(Context.Driver.Options.Encoding, Encoding.Unicode) ||
-                Equals(Context.Driver.Options.Encoding, Encoding.BigEndianUnicode))
-            {
+
+            if (Equals(encoding, Encoding.Unicode) ||
+                Equals(encoding, Encoding.BigEndianUnicode))
                 return string.Format("Marshal.PtrToStringUni({0})", varName);
-            }
+
             throw new NotSupportedException(string.Format("{0} is not supported yet.",
                 Context.Driver.Options.Encoding.EncodingName));
         }
