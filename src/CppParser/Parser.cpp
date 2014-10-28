@@ -2342,10 +2342,18 @@ Variable* Parser::WalkVariable(clang::VarDecl *VD)
 {
     using namespace clang;
 
+    auto NS = GetNamespace(VD);
+    assert(NS && "Expected a valid namespace");
+
+    auto USR = GetDeclUSR(VD);
+    if (auto Var = NS->FindVariable(USR))
+       return Var;
+
     auto Var = new Variable();
     HandleDeclaration(VD, Var);
 
     Var->Name = VD->getName();
+    Var->_Namespace = NS;
     Var->Access = ConvertToAccess(VD->getAccess());
 
     auto TL = VD->getTypeSourceInfo()->getTypeLoc();
@@ -2353,6 +2361,8 @@ Variable* Parser::WalkVariable(clang::VarDecl *VD)
 
     auto Mangled = GetDeclMangledName(VD, TargetABI, /*IsDependent=*/false);
     Var->Mangled = Mangled;
+
+    NS->Variables.push_back(Var);
 
     return Var;
 }
@@ -2811,10 +2821,6 @@ Declaration* Parser::WalkDeclaration(clang::Decl* D,
     {
         auto VD = cast<VarDecl>(D);
         Decl = WalkVariable(VD);
-
-        auto NS = GetNamespace(VD);
-        Decl->_Namespace = NS;
-        NS->Variables.push_back(static_cast<Variable*>(Decl));
         break;
     }
     case Decl::CXXConstructor:

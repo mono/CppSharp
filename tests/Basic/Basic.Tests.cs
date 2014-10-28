@@ -369,6 +369,14 @@ public class BasicTests : GeneratorTestFixture
         Assert.That(prop.FieldValue, Is.EqualTo(10));
     }
 
+    public void TestVariable()
+    {
+        // Test field property
+        var @var = new TestVariables();
+        @var.Value = 10;
+        Assert.That(TestVariables.VALUE, Is.EqualTo(10));
+    }
+
     [Test]
     public unsafe void TestArraysPointers()
     {

@@ -416,6 +416,17 @@ TypedefDecl* DeclarationContext::FindTypedef(const std::string& Name, bool Creat
     return tdef;
 }
 
+Variable* DeclarationContext::FindVariable(const std::string& USR)
+{
+    auto found = std::find_if(Variables.begin(), Variables.end(),
+        [&](Variable* var) { return var->USR == USR; });
+
+    if (found != Variables.end())
+        return *found;
+
+    return nullptr;
+}
+
 TypedefDecl::TypedefDecl() : Declaration(DeclarationKind::Typedef) {}
 
 DEF_STRING(Statement, String)

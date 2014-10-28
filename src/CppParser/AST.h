@@ -438,6 +438,8 @@ public:
 
     CS_IGNORE TypedefDecl* FindTypedef(const std::string& Name, bool Create = false);
 
+    CS_IGNORE Variable* FindVariable(const std::string& USR);
+
     VECTOR(Namespace*, Namespaces)
     VECTOR(Enumeration*, Enums)
     VECTOR(Function*, Functions)
