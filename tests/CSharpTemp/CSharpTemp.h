@@ -261,14 +261,3 @@ public:
 private:
     IgnoredType<int> _ignoredType;
 };
-
-class DLL_API InternalCtorAmbiguity
-{
-public:
-    InternalCtorAmbiguity();
-    InternalCtorAmbiguity(void* param);
-    InternalCtorAmbiguity* InvokeInternalCtor();
-    ~InternalCtorAmbiguity();
-private:
-    InternalCtorAmbiguity* copy;
-};

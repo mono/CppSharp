@@ -192,8 +192,7 @@ namespace CppSharp.Generators.CLI
                 return;
 
             // Output a default constructor that takes the native pointer.
-            GenerateClassConstructor(@class, isIntPtr: false);
-            GenerateClassConstructor(@class, isIntPtr: true);
+            GenerateClassConstructor(@class);
 
             if (Options.GenerateFinalizers && @class.IsRefType)
             {
@@ -215,7 +214,7 @@ namespace CppSharp.Generators.CLI
 
             foreach (var method in @class.Methods)
             {
-                if (ASTUtils.CheckIgnoreMethod(method, this.Options))
+                if (ASTUtils.CheckIgnoreMethod(method, Options))
                     continue;
 
                 // C++/CLI does not allow special member funtions for value types.
@@ -611,25 +610,18 @@ namespace CppSharp.Generators.CLI
                 GeneratePropertySetter(variable, @class, variable.Name, variable.Type);
         }
 
-        private void GenerateClassConstructor(Class @class, bool isIntPtr)
+        private void GenerateClassConstructor(Class @class)
         {
             Write("{0}::{1}(", QualifiedIdentifier(@class), @class.Name);
 
             var nativeType = string.Format("::{0}*", @class.QualifiedOriginalName);
-            WriteLine("{0} native)", isIntPtr ? "System::IntPtr" : nativeType);
+            WriteLine("{0} native)", nativeType);
 
-            var hasBase = GenerateClassConstructorBase(@class, isIntPtr);
+            var hasBase = GenerateClassConstructorBase(@class);
 
             WriteStartBraceIndent();
 
-            var nativePtr = "native";
-
-            if (isIntPtr)
-            {
-                WriteLine("auto __native = (::{0}*)native.ToPointer();",
-                    @class.QualifiedOriginalName);
-                nativePtr = "__native";
-            }
+            const string nativePtr = "native";
 
             if (@class.IsRefType)
             {
@@ -680,7 +672,7 @@ namespace CppSharp.Generators.CLI
             }
         }
 
-        private bool GenerateClassConstructorBase(Class @class, bool isIntPtr, Method method = null)
+        private bool GenerateClassConstructorBase(Class @class, Method method = null)
         {
             var hasBase = @class.HasBase && @class.Bases[0].IsClass && @class.Bases[0].Class.IsDeclared;
             if (!hasBase)
@@ -695,12 +687,9 @@ namespace CppSharp.Generators.CLI
 
                 // We cast the value to the base clas type since otherwise there
                 // could be ambiguous call to overloaded constructors.
-                if (!isIntPtr)
-                {
-                    var cppTypePrinter = new CppTypePrinter(Driver.TypeDatabase);
-                    var nativeTypeName = baseClass.Visit(cppTypePrinter);
-                    Write("({0}*)", nativeTypeName);
-                }
+                var cppTypePrinter = new CppTypePrinter(Driver.TypeDatabase);
+                var nativeTypeName = baseClass.Visit(cppTypePrinter);
+                Write("({0}*)", nativeTypeName);
 
                 WriteLine("{0})", method != null ? "nullptr" : "native");
 
@@ -727,7 +716,7 @@ namespace CppSharp.Generators.CLI
             WriteLine(")");
 
             if (method.IsConstructor)
-                GenerateClassConstructorBase(@class, isIntPtr: false, method: method);
+                GenerateClassConstructorBase(@class, method: method);
 
             WriteStartBraceIndent();
 

@@ -83,7 +83,7 @@ namespace CppSharp.Generators.CLI
 
             if (pointee.IsPrimitiveType(PrimitiveType.Void))
             {
-                Context.Return.Write(Context.ReturnVarName);
+                Context.Return.Write("::System::IntPtr({0})", Context.ReturnVarName);
                 return true;
             }
 

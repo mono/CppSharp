@@ -154,10 +154,15 @@ namespace CppSharp.Generators.CLI
             {
                 // Skip one indirection if passed by reference
                 var param = Context.Parameter;
-                if (param != null && (param.IsOut || param.IsInOut))
+                bool isRefParam = param != null && (param.IsOut || param.IsInOut);
+                if (isRefParam)
                     return pointee.Visit(this, quals);
 
-                return pointee.Visit(this, quals) + "*";
+                if (pointee.IsPrimitiveType(PrimitiveType.Void))
+                    return "::System::IntPtr";
+
+                var result = pointee.Visit(this, quals);
+                return !isRefParam && result == "::System::IntPtr" ? "void**" : result + "*";
             }
 
             Enumeration @enum;

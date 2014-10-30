@@ -302,24 +302,3 @@ void PropertyWithIgnoredType::setIgnoredType(const IgnoredType<int> &value)
 {
     _ignoredType = value;
 }
-
-InternalCtorAmbiguity::InternalCtorAmbiguity() : copy(0)
-{
-}
-
-InternalCtorAmbiguity::InternalCtorAmbiguity(void* param) : copy(0)
-{
-    // cause a crash to indicate this is the incorrect ctor to invoke
-    throw;
-}
-
-InternalCtorAmbiguity* InternalCtorAmbiguity::InvokeInternalCtor()
-{
-    return copy = new InternalCtorAmbiguity();
-}
-
-InternalCtorAmbiguity::~InternalCtorAmbiguity()
-{
-    if (copy)
-        delete copy;
-}

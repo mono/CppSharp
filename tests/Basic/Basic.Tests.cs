@@ -452,5 +452,11 @@ public class BasicTests : GeneratorTestFixture
         for (int i = 0; i < foo.fixedArray.Length; i++)
             Assert.That(array[i], Is.EqualTo(foo.fixedArray[i]));
     }
+
+    [Test]
+    public void TestInternalCtorAmbiguity()
+    {
+        new InvokesInternalCtorAmbiguity().InvokeInternalCtor();
+    }
 }
  
