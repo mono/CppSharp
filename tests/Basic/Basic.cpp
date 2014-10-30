@@ -317,3 +317,18 @@ std::string HasStdString::testStdString(std::string s)
 {
     return s + "_test";
 }
+
+InternalCtorAmbiguity::InternalCtorAmbiguity(void* param)
+{
+    // cause a crash to indicate this is the incorrect ctor to invoke
+    throw;
+}
+
+InvokesInternalCtorAmbiguity::InvokesInternalCtorAmbiguity() : ptr(0)
+{
+}
+
+InternalCtorAmbiguity* InvokesInternalCtorAmbiguity::InvokeInternalCtor()
+{
+    return ptr;
+}

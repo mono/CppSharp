@@ -30,6 +30,7 @@ public:
     float B;
     IgnoredType ignoredType;
     int fixedArray[3];
+    void* ptr;
 
 	const char* GetANSI();
 	// TODO: VC++ does not support char16
@@ -629,4 +630,19 @@ class DLL_API HasStdString
 public:
     std::string testStdString(std::string s);
     std::string s;
+};
+
+class DLL_API InternalCtorAmbiguity
+{
+public:
+    InternalCtorAmbiguity(void* param);
+};
+
+class DLL_API InvokesInternalCtorAmbiguity
+{
+public:
+    InvokesInternalCtorAmbiguity();
+    InternalCtorAmbiguity* InvokeInternalCtor();
+private:
+    InternalCtorAmbiguity* ptr;
 };
