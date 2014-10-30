@@ -20,7 +20,6 @@ public:
     Qux();
     Qux(Foo foo);
     int farAwayFunc() const;
-    int array[3];
     void obsolete();
 };
 

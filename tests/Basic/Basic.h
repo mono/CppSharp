@@ -29,6 +29,7 @@ public:
     int A;
     float B;
     IgnoredType ignoredType;
+    int fixedArray[3];
 
 	const char* GetANSI();
 	// TODO: VC++ does not support char16

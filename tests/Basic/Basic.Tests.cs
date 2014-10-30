@@ -442,5 +442,15 @@ public class BasicTests : GeneratorTestFixture
     {
         new TestDelegates().MarshalUnattributedDelegate(i => i);
     }
+
+    [Test]
+    public void TestFixedArrays()
+    {
+        var foo = new Foo();
+        var array = new[] { 1, 2, 3 };
+        foo.fixedArray = array;
+        for (int i = 0; i < foo.fixedArray.Length; i++)
+            Assert.That(array[i], Is.EqualTo(foo.fixedArray[i]));
+    }
 }
  

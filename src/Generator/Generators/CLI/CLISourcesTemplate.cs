@@ -391,15 +391,6 @@ namespace CppSharp.Generators.CLI
                     QualifiedType = new QualifiedType(type)
                 };
 
-                var ctx = new MarshalContext(Driver)
-                {
-                    Parameter = param,
-                    ArgName = param.Name,
-                };
-
-                var marshal = new CLIMarshalManagedToNativePrinter(ctx);
-                param.Visit(marshal);
-
                 string variable;
                 if (decl is Variable)
                     variable = string.Format("::{0}::{1}",
@@ -408,16 +399,29 @@ namespace CppSharp.Generators.CLI
                     variable = string.Format("((::{0}*)NativePtr)->{1}",
                                              @class.QualifiedOriginalName, decl.OriginalName);
 
+                var ctx = new MarshalContext(Driver)
+                {
+                    Parameter = param,
+                    ArgName = param.Name,
+                    ReturnVarName = variable
+                };
+
+                var marshal = new CLIMarshalManagedToNativePrinter(ctx);
+                param.Visit(marshal);
+
                 if (isIndexer)
                     variable += string.Format("({0})", indexParameter.Name);
 
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                     Write(marshal.Context.SupportBefore);
 
-                if (isIndexer && decl.Type.IsPointer())
-                    WriteLine("*({0}) = {1};", variable, marshal.Context.Return);
-                else
-                    WriteLine("{0} = {1};", variable, marshal.Context.Return);
+                if (marshal.Context.Return.StringBuilder.Length > 0)
+                {
+                    if (isIndexer && decl.Type.IsPointer())
+                        WriteLine("*({0}) = {1};", variable, marshal.Context.Return);
+                    else
+                        WriteLine("{0} = {1};", variable, marshal.Context.Return);
+                }
             }
 
             WriteCloseBraceIndent();
