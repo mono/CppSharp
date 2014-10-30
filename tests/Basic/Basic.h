@@ -602,13 +602,23 @@ public:
 
 DLL_API void va_listFunction(va_list v);
 
-struct DLL_API TestEmptyName
+struct DLL_API TestNestedTypes
 {
+public:
     struct
     {
         struct
         {
         };
+    };
+
+    union as_types
+    {
+        int as_int;
+        struct uchars
+        {
+            unsigned char blue, green, red, alpha;
+        } as_uchar;
     };
 };
 
