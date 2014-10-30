@@ -19,6 +19,10 @@ const char* Foo::GetANSI()
 	return "ANSI";
 }
 
+void Foo::TakesTypedefedPtr(FooPtr date)
+{
+}
+
 Foo2::Foo2() {}
 
 Foo2 Foo2::operator<<(signed int i)

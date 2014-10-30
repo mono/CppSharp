@@ -39,6 +39,10 @@ public:
     // Primitive pointer types
     const int* SomePointer;
     const int** SomePointerPointer;
+
+    typedef Foo* FooPtr;
+
+    void TakesTypedefedPtr(FooPtr date);
 };
 
 struct DLL_API Bar
