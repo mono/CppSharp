@@ -662,7 +662,8 @@ namespace CppSharp.Generators.CLI
                 {
                     ArgName = property.Name,
                     ReturnVarName = nativeField,
-                    ReturnType = property.QualifiedType
+                    ReturnType = property.QualifiedType,
+                    Declaration = property.Field
                 };
 
                 var marshal = new CLIMarshalNativeToManagedPrinter(ctx);
