@@ -36,4 +36,9 @@ struct DLL_API OStreamTest
     {
         stream << s;
     };
+
+    static void WriteToOStreamPtr(std::ostream* stream, const char* s)
+    {
+        *stream << s;
+    };
 };

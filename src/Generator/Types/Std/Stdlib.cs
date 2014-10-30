@@ -315,8 +315,9 @@ namespace CppSharp.Types.Std
 
         public override void CLIMarshalToNative(MarshalContext ctx)
         {
-            var marshal = ctx.MarshalToNative as CLIMarshalManagedToNativePrinter;
-            marshal.ArgumentPrefix.Write("*");
+            var marshal = (CLIMarshalManagedToNativePrinter) ctx.MarshalToNative;
+            if (!ctx.Parameter.Type.Desugar().IsPointer())
+                marshal.ArgumentPrefix.Write("*");
             var marshalCtxName = string.Format("ctx_{0}", ctx.Parameter.Name);
             ctx.SupportBefore.WriteLine("msclr::interop::marshal_context {0};", marshalCtxName);
             ctx.Return.Write("{0}.marshal_as<std::ostream*>({1})",
