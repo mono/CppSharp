@@ -45,7 +45,20 @@ namespace CppSharp.Generators.CLI
             switch (array.SizeType)
             {
                 case ArrayType.ArraySize.Constant:
-                    Context.Return.Write("nullptr");
+                    var supportBefore = Context.SupportBefore;
+                    string value = Generator.GeneratedIdentifier("array");
+                    supportBefore.WriteLine("cli::array<{0}>^ {1} = nullptr;", array.Type, value, array.Size);
+                    supportBefore.WriteLine("if ({0} != 0)", Context.ReturnVarName);
+                    supportBefore.WriteStartBraceIndent();
+                    supportBefore.WriteLine("{0} = gcnew cli::array<{1}>({2});", value, array.Type, array.Size);
+                    supportBefore.WriteLine("for (int i = 0; i < {0}; i++)", array.Size);
+                    if (array.Type.IsPointerToPrimitiveType(PrimitiveType.Void))
+                        supportBefore.WriteLineIndent("{0}[i] = new ::System::IntPtr({1}[i]);",
+                            value, Context.ReturnVarName);
+                    else
+                        supportBefore.WriteLineIndent("{0}[i] = {1}[i];", value, Context.ReturnVarName);
+                    supportBefore.WriteCloseBraceIndent();
+                    Context.Return.Write(value);
                     break;
                 case ArrayType.ArraySize.Variable:
                     Context.Return.Write("nullptr");
@@ -412,7 +425,26 @@ namespace CppSharp.Generators.CLI
 
         public override bool VisitArrayType(ArrayType array, TypeQualifiers quals)
         {
-            return false;
+            if (!VisitType(array, quals))
+                return false;
+
+            switch (array.SizeType)
+            {
+                case ArrayType.ArraySize.Constant:
+                    var supportBefore = Context.SupportBefore;
+                    supportBefore.WriteLine("if ({0} != nullptr)", Context.ArgName);
+                    supportBefore.WriteStartBraceIndent();
+                    supportBefore.WriteLine("for (int i = 0; i < {0}; i++)", array.Size);
+                    supportBefore.WriteLineIndent("{0}[i] = {1}[i]{2};",
+                        Context.ReturnVarName, Context.ArgName,
+                        array.Type.IsPointerToPrimitiveType(PrimitiveType.Void) ? ".ToPointer()" : string.Empty);
+                    supportBefore.WriteCloseBraceIndent();
+                    break;
+                default:
+                    Context.Return.Write("null");
+                    break;
+            }
+            return true;
         }
 
         public override bool VisitFunctionType(FunctionType function, TypeQualifiers quals)

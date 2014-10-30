@@ -32,16 +32,6 @@ public class CSharpTempTests : GeneratorTestFixture
     }
 
     [Test]
-    public void TestFixedArrays()
-    {
-        Qux qux = new Qux((Foo) null);
-        var array = new[] { 1, 2, 3 };
-        qux.Array = array;
-        for (int i = 0; i < qux.Array.Length; i++)
-            Assert.That(array[i], Is.EqualTo(qux.Array[i]));
-    }
-
-    [Test]
     public void TestMultipleInheritance()
     {
         var baz = new Baz();
