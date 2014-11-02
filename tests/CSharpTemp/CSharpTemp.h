@@ -10,6 +10,8 @@ public:
     int& operator[](int i);
     int A;
 
+    static int null;
+
 protected:
     int P;
 };
