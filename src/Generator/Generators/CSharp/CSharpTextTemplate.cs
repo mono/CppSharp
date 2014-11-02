@@ -744,7 +744,7 @@ namespace CppSharp.Generators.CSharp
 
             var bases = new List<string>();
 
-            var needsBase = @class.HasGeneratedBase;
+            var needsBase = @class.HasGeneratedBase && @class.IsGenerated;
 
             if (needsBase)
             {

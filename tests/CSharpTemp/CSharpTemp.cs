@@ -82,6 +82,8 @@ namespace CppSharp.Tests
         {
             ctx.SetClassAsValueType("TestCopyConstructorVal");
             ctx.SetClassAsValueType("QGenericArgument");
+
+            ctx.IgnoreClassWithName("IgnoredTypeInheritingNonIgnoredWithNoEmptyCtor");
         }
 
         public override void Postprocess(Driver driver, ASTContext ctx)

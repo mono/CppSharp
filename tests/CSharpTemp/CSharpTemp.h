@@ -20,6 +20,7 @@ public:
     Qux();
     Qux(Foo foo);
     int farAwayFunc() const;
+    int array[3];
     void obsolete();
 };
 
@@ -250,6 +251,10 @@ public:
 
 template <typename T>
 class DLL_API IgnoredType
+{
+};
+
+class DLL_API IgnoredTypeInheritingNonIgnoredWithNoEmptyCtor : public P
 {
 };
 
