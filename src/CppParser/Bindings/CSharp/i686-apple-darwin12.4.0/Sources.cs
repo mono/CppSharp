@@ -39,7 +39,12 @@ namespace CppSharp
                 return new SourceLocation((SourceLocation.Internal*) native);
             }
 
-            internal SourceLocation(SourceLocation.Internal native)
+            public static SourceLocation __CreateInstance(SourceLocation.Internal native)
+            {
+                return new SourceLocation(native);
+            }
+
+            private SourceLocation(SourceLocation.Internal native)
                 : this(&native)
             {
             }

@@ -179,6 +179,11 @@ namespace CppSharp
                 return new ParserTargetInfo((ParserTargetInfo.Internal*) native);
             }
 
+            public static ParserTargetInfo __CreateInstance(ParserTargetInfo.Internal native)
+            {
+                return new ParserTargetInfo(native);
+            }
+
             private static ParserTargetInfo.Internal* __CopyValue(ParserTargetInfo.Internal native)
             {
                 var ret = Marshal.AllocHGlobal(164);
@@ -186,7 +191,7 @@ namespace CppSharp
                 return (ParserTargetInfo.Internal*) ret;
             }
 
-            internal ParserTargetInfo(ParserTargetInfo.Internal native)
+            private ParserTargetInfo(ParserTargetInfo.Internal native)
                 : this(__CopyValue(native))
             {
                 __ownsNativeInstance = true;

@@ -256,6 +256,11 @@ namespace CppSharp
                     return new Type((Type.Internal*) native);
                 }
 
+                public static Type __CreateInstance(Type.Internal native)
+                {
+                    return new Type(native);
+                }
+
                 private static Type.Internal* __CopyValue(Type.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(8);
@@ -263,7 +268,7 @@ namespace CppSharp
                     return (Type.Internal*) ret;
                 }
 
-                internal Type(Type.Internal native)
+                private Type(Type.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -356,14 +361,19 @@ namespace CppSharp
                     return new TypeQualifiers((TypeQualifiers.Internal*) native);
                 }
 
+                public static TypeQualifiers __CreateInstance(TypeQualifiers.Internal native)
+                {
+                    return new TypeQualifiers(native);
+                }
+
                 private static TypeQualifiers.Internal* __CopyValue(TypeQualifiers.Internal native)
                 {
-                    TypeQualifiers.Internal* ret = (TypeQualifiers.Internal*) Marshal.AllocHGlobal(3);
+                    var ret = (TypeQualifiers.Internal*) Marshal.AllocHGlobal(3);
                     *ret = native;
                     return ret;
                 }
 
-                internal TypeQualifiers(TypeQualifiers.Internal native)
+                private TypeQualifiers(TypeQualifiers.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -471,14 +481,19 @@ namespace CppSharp
                     return new QualifiedType((QualifiedType.Internal*) native);
                 }
 
+                public static QualifiedType __CreateInstance(QualifiedType.Internal native)
+                {
+                    return new QualifiedType(native);
+                }
+
                 private static QualifiedType.Internal* __CopyValue(QualifiedType.Internal native)
                 {
-                    QualifiedType.Internal* ret = (QualifiedType.Internal*) Marshal.AllocHGlobal(8);
+                    var ret = (QualifiedType.Internal*) Marshal.AllocHGlobal(8);
                     *ret = native;
                     return ret;
                 }
 
-                internal QualifiedType(QualifiedType.Internal native)
+                private QualifiedType(QualifiedType.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -530,7 +545,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return new CppSharp.Parser.AST.TypeQualifiers(__ptr->Qualifiers);
+                        return CppSharp.Parser.AST.TypeQualifiers.__CreateInstance(__ptr->Qualifiers);
                     }
 
                     set
@@ -573,6 +588,11 @@ namespace CppSharp
                     return new TagType((TagType.Internal*) native);
                 }
 
+                public static TagType __CreateInstance(TagType.Internal native)
+                {
+                    return new TagType(native);
+                }
+
                 private static TagType.Internal* __CopyValue(TagType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(12);
@@ -580,7 +600,7 @@ namespace CppSharp
                     return (TagType.Internal*) ret;
                 }
 
-                internal TagType(TagType.Internal native)
+                private TagType(TagType.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -670,6 +690,11 @@ namespace CppSharp
                     return new ArrayType((ArrayType.Internal*) native);
                 }
 
+                public static ArrayType __CreateInstance(ArrayType.Internal native)
+                {
+                    return new ArrayType(native);
+                }
+
                 private static ArrayType.Internal* __CopyValue(ArrayType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(24);
@@ -677,7 +702,7 @@ namespace CppSharp
                     return (ArrayType.Internal*) ret;
                 }
 
-                internal ArrayType(ArrayType.Internal native)
+                private ArrayType(ArrayType.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -710,7 +735,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return new CppSharp.Parser.AST.QualifiedType(__ptr->QualifiedType);
+                        return CppSharp.Parser.AST.QualifiedType.__CreateInstance(__ptr->QualifiedType);
                     }
 
                     set
@@ -811,6 +836,11 @@ namespace CppSharp
                     return new FunctionType((FunctionType.Internal*) native);
                 }
 
+                public static FunctionType __CreateInstance(FunctionType.Internal native)
+                {
+                    return new FunctionType(native);
+                }
+
                 private static FunctionType.Internal* __CopyValue(FunctionType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(32);
@@ -818,7 +848,7 @@ namespace CppSharp
                     return (FunctionType.Internal*) ret;
                 }
 
-                internal FunctionType(FunctionType.Internal native)
+                private FunctionType(FunctionType.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -878,7 +908,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return new CppSharp.Parser.AST.QualifiedType(__ptr->ReturnType);
+                        return CppSharp.Parser.AST.QualifiedType.__CreateInstance(__ptr->ReturnType);
                     }
 
                     set
@@ -947,6 +977,11 @@ namespace CppSharp
                     return new PointerType((PointerType.Internal*) native);
                 }
 
+                public static PointerType __CreateInstance(PointerType.Internal native)
+                {
+                    return new PointerType(native);
+                }
+
                 private static PointerType.Internal* __CopyValue(PointerType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(20);
@@ -954,7 +989,7 @@ namespace CppSharp
                     return (PointerType.Internal*) ret;
                 }
 
-                internal PointerType(PointerType.Internal native)
+                private PointerType(PointerType.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -987,7 +1022,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return new CppSharp.Parser.AST.QualifiedType(__ptr->QualifiedPointee);
+                        return CppSharp.Parser.AST.QualifiedType.__CreateInstance(__ptr->QualifiedPointee);
                     }
 
                     set
@@ -1045,6 +1080,11 @@ namespace CppSharp
                     return new MemberPointerType((MemberPointerType.Internal*) native);
                 }
 
+                public static MemberPointerType __CreateInstance(MemberPointerType.Internal native)
+                {
+                    return new MemberPointerType(native);
+                }
+
                 private static MemberPointerType.Internal* __CopyValue(MemberPointerType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(16);
@@ -1052,7 +1092,7 @@ namespace CppSharp
                     return (MemberPointerType.Internal*) ret;
                 }
 
-                internal MemberPointerType(MemberPointerType.Internal native)
+                private MemberPointerType(MemberPointerType.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -1085,7 +1125,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return new CppSharp.Parser.AST.QualifiedType(__ptr->Pointee);
+                        return CppSharp.Parser.AST.QualifiedType.__CreateInstance(__ptr->Pointee);
                     }
 
                     set
@@ -1128,6 +1168,11 @@ namespace CppSharp
                     return new TypedefType((TypedefType.Internal*) native);
                 }
 
+                public static TypedefType __CreateInstance(TypedefType.Internal native)
+                {
+                    return new TypedefType(native);
+                }
+
                 private static TypedefType.Internal* __CopyValue(TypedefType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(12);
@@ -1135,7 +1180,7 @@ namespace CppSharp
                     return (TypedefType.Internal*) ret;
                 }
 
-                internal TypedefType(TypedefType.Internal native)
+                private TypedefType(TypedefType.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -1214,6 +1259,11 @@ namespace CppSharp
                     return new AttributedType((AttributedType.Internal*) native);
                 }
 
+                public static AttributedType __CreateInstance(AttributedType.Internal native)
+                {
+                    return new AttributedType(native);
+                }
+
                 private static AttributedType.Internal* __CopyValue(AttributedType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(24);
@@ -1221,7 +1271,7 @@ namespace CppSharp
                     return (AttributedType.Internal*) ret;
                 }
 
-                internal AttributedType(AttributedType.Internal native)
+                private AttributedType(AttributedType.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -1254,7 +1304,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return new CppSharp.Parser.AST.QualifiedType(__ptr->Modified);
+                        return CppSharp.Parser.AST.QualifiedType.__CreateInstance(__ptr->Modified);
                     }
 
                     set
@@ -1269,7 +1319,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return new CppSharp.Parser.AST.QualifiedType(__ptr->Equivalent);
+                        return CppSharp.Parser.AST.QualifiedType.__CreateInstance(__ptr->Equivalent);
                     }
 
                     set
@@ -1318,6 +1368,11 @@ namespace CppSharp
                     return new DecayedType((DecayedType.Internal*) native);
                 }
 
+                public static DecayedType __CreateInstance(DecayedType.Internal native)
+                {
+                    return new DecayedType(native);
+                }
+
                 private static DecayedType.Internal* __CopyValue(DecayedType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(32);
@@ -1325,7 +1380,7 @@ namespace CppSharp
                     return (DecayedType.Internal*) ret;
                 }
 
-                internal DecayedType(DecayedType.Internal native)
+                private DecayedType(DecayedType.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -1358,7 +1413,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return new CppSharp.Parser.AST.QualifiedType(__ptr->Decayed);
+                        return CppSharp.Parser.AST.QualifiedType.__CreateInstance(__ptr->Decayed);
                     }
 
                     set
@@ -1373,7 +1428,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return new CppSharp.Parser.AST.QualifiedType(__ptr->Original);
+                        return CppSharp.Parser.AST.QualifiedType.__CreateInstance(__ptr->Original);
                     }
 
                     set
@@ -1388,7 +1443,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return new CppSharp.Parser.AST.QualifiedType(__ptr->Pointee);
+                        return CppSharp.Parser.AST.QualifiedType.__CreateInstance(__ptr->Pointee);
                     }
 
                     set
@@ -1448,14 +1503,19 @@ namespace CppSharp
                     return new TemplateArgument((TemplateArgument.Internal*) native);
                 }
 
+                public static TemplateArgument __CreateInstance(TemplateArgument.Internal native)
+                {
+                    return new TemplateArgument(native);
+                }
+
                 private static TemplateArgument.Internal* __CopyValue(TemplateArgument.Internal native)
                 {
-                    TemplateArgument.Internal* ret = (TemplateArgument.Internal*) Marshal.AllocHGlobal(20);
+                    var ret = (TemplateArgument.Internal*) Marshal.AllocHGlobal(20);
                     *ret = native;
                     return ret;
                 }
 
-                internal TemplateArgument(TemplateArgument.Internal native)
+                private TemplateArgument(TemplateArgument.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -1507,7 +1567,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return new CppSharp.Parser.AST.QualifiedType(__ptr->Type);
+                        return CppSharp.Parser.AST.QualifiedType.__CreateInstance(__ptr->Type);
                     }
 
                     set
@@ -1608,6 +1668,11 @@ namespace CppSharp
                     return new TemplateSpecializationType((TemplateSpecializationType.Internal*) native);
                 }
 
+                public static TemplateSpecializationType __CreateInstance(TemplateSpecializationType.Internal native)
+                {
+                    return new TemplateSpecializationType(native);
+                }
+
                 private static TemplateSpecializationType.Internal* __CopyValue(TemplateSpecializationType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(28);
@@ -1615,7 +1680,7 @@ namespace CppSharp
                     return (TemplateSpecializationType.Internal*) ret;
                 }
 
-                internal TemplateSpecializationType(TemplateSpecializationType.Internal native)
+                private TemplateSpecializationType(TemplateSpecializationType.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -1647,7 +1712,7 @@ namespace CppSharp
                 {
                     var __ret = new CppSharp.Parser.AST.TemplateArgument.Internal();
                     Internal.getArguments_0(__Instance, new IntPtr(&__ret), i);
-                    return new CppSharp.Parser.AST.TemplateArgument(__ret);
+                    return CppSharp.Parser.AST.TemplateArgument.__CreateInstance(__ret);
                 }
 
                 public void addArguments(CppSharp.Parser.AST.TemplateArgument s)
@@ -1750,6 +1815,11 @@ namespace CppSharp
                     return new TemplateParameter((TemplateParameter.Internal*) native);
                 }
 
+                public static TemplateParameter __CreateInstance(TemplateParameter.Internal native)
+                {
+                    return new TemplateParameter(native);
+                }
+
                 private static TemplateParameter.Internal* __CopyValue(TemplateParameter.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(28);
@@ -1757,7 +1827,7 @@ namespace CppSharp
                     return (TemplateParameter.Internal*) ret;
                 }
 
-                internal TemplateParameter(TemplateParameter.Internal native)
+                private TemplateParameter(TemplateParameter.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -1882,6 +1952,11 @@ namespace CppSharp
                     return new TemplateParameterType((TemplateParameterType.Internal*) native);
                 }
 
+                public static TemplateParameterType __CreateInstance(TemplateParameterType.Internal native)
+                {
+                    return new TemplateParameterType(native);
+                }
+
                 private static TemplateParameterType.Internal* __CopyValue(TemplateParameterType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(48);
@@ -1889,7 +1964,7 @@ namespace CppSharp
                     return (TemplateParameterType.Internal*) ret;
                 }
 
-                internal TemplateParameterType(TemplateParameterType.Internal native)
+                private TemplateParameterType(TemplateParameterType.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -1922,7 +1997,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return new CppSharp.Parser.AST.TemplateParameter(__ptr->Parameter);
+                        return CppSharp.Parser.AST.TemplateParameter.__CreateInstance(__ptr->Parameter);
                     }
 
                     set
@@ -2010,6 +2085,11 @@ namespace CppSharp
                     return new TemplateParameterSubstitutionType((TemplateParameterSubstitutionType.Internal*) native);
                 }
 
+                public static TemplateParameterSubstitutionType __CreateInstance(TemplateParameterSubstitutionType.Internal native)
+                {
+                    return new TemplateParameterSubstitutionType(native);
+                }
+
                 private static TemplateParameterSubstitutionType.Internal* __CopyValue(TemplateParameterSubstitutionType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(16);
@@ -2017,7 +2097,7 @@ namespace CppSharp
                     return (TemplateParameterSubstitutionType.Internal*) ret;
                 }
 
-                internal TemplateParameterSubstitutionType(TemplateParameterSubstitutionType.Internal native)
+                private TemplateParameterSubstitutionType(TemplateParameterSubstitutionType.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -2050,7 +2130,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return new CppSharp.Parser.AST.QualifiedType(__ptr->Replacement);
+                        return CppSharp.Parser.AST.QualifiedType.__CreateInstance(__ptr->Replacement);
                     }
 
                     set
@@ -2096,6 +2176,11 @@ namespace CppSharp
                     return new InjectedClassNameType((InjectedClassNameType.Internal*) native);
                 }
 
+                public static InjectedClassNameType __CreateInstance(InjectedClassNameType.Internal native)
+                {
+                    return new InjectedClassNameType(native);
+                }
+
                 private static InjectedClassNameType.Internal* __CopyValue(InjectedClassNameType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(16);
@@ -2103,7 +2188,7 @@ namespace CppSharp
                     return (InjectedClassNameType.Internal*) ret;
                 }
 
-                internal InjectedClassNameType(InjectedClassNameType.Internal native)
+                private InjectedClassNameType(InjectedClassNameType.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -2191,6 +2276,11 @@ namespace CppSharp
                     return new DependentNameType((DependentNameType.Internal*) native);
                 }
 
+                public static DependentNameType __CreateInstance(DependentNameType.Internal native)
+                {
+                    return new DependentNameType(native);
+                }
+
                 private static DependentNameType.Internal* __CopyValue(DependentNameType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(8);
@@ -2198,7 +2288,7 @@ namespace CppSharp
                     return (DependentNameType.Internal*) ret;
                 }
 
-                internal DependentNameType(DependentNameType.Internal native)
+                private DependentNameType(DependentNameType.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -2256,6 +2346,11 @@ namespace CppSharp
                     return new PackExpansionType((PackExpansionType.Internal*) native);
                 }
 
+                public static PackExpansionType __CreateInstance(PackExpansionType.Internal native)
+                {
+                    return new PackExpansionType(native);
+                }
+
                 private static PackExpansionType.Internal* __CopyValue(PackExpansionType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(8);
@@ -2263,7 +2358,7 @@ namespace CppSharp
                     return (PackExpansionType.Internal*) ret;
                 }
 
-                internal PackExpansionType(PackExpansionType.Internal native)
+                private PackExpansionType(PackExpansionType.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -2324,6 +2419,11 @@ namespace CppSharp
                     return new BuiltinType((BuiltinType.Internal*) native);
                 }
 
+                public static BuiltinType __CreateInstance(BuiltinType.Internal native)
+                {
+                    return new BuiltinType(native);
+                }
+
                 private static BuiltinType.Internal* __CopyValue(BuiltinType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(12);
@@ -2331,7 +2431,7 @@ namespace CppSharp
                     return (BuiltinType.Internal*) ret;
                 }
 
-                internal BuiltinType(BuiltinType.Internal native)
+                private BuiltinType(BuiltinType.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -2409,14 +2509,19 @@ namespace CppSharp
                     return new VTableComponent((VTableComponent.Internal*) native);
                 }
 
+                public static VTableComponent __CreateInstance(VTableComponent.Internal native)
+                {
+                    return new VTableComponent(native);
+                }
+
                 private static VTableComponent.Internal* __CopyValue(VTableComponent.Internal native)
                 {
-                    VTableComponent.Internal* ret = (VTableComponent.Internal*) Marshal.AllocHGlobal(12);
+                    var ret = (VTableComponent.Internal*) Marshal.AllocHGlobal(12);
                     *ret = native;
                     return ret;
                 }
 
-                internal VTableComponent(VTableComponent.Internal native)
+                private VTableComponent(VTableComponent.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -2544,6 +2649,11 @@ namespace CppSharp
                     return new VTableLayout((VTableLayout.Internal*) native);
                 }
 
+                public static VTableLayout __CreateInstance(VTableLayout.Internal native)
+                {
+                    return new VTableLayout(native);
+                }
+
                 private static VTableLayout.Internal* __CopyValue(VTableLayout.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(12);
@@ -2551,7 +2661,7 @@ namespace CppSharp
                     return (VTableLayout.Internal*) ret;
                 }
 
-                internal VTableLayout(VTableLayout.Internal native)
+                private VTableLayout(VTableLayout.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -2588,7 +2698,7 @@ namespace CppSharp
                 {
                     var __ret = new CppSharp.Parser.AST.VTableComponent.Internal();
                     Internal.getComponents_0(__Instance, new IntPtr(&__ret), i);
-                    return new CppSharp.Parser.AST.VTableComponent(__ret);
+                    return CppSharp.Parser.AST.VTableComponent.__CreateInstance(__ret);
                 }
 
                 public void addComponents(CppSharp.Parser.AST.VTableComponent s)
@@ -2654,6 +2764,11 @@ namespace CppSharp
                     return new VFTableInfo((VFTableInfo.Internal*) native);
                 }
 
+                public static VFTableInfo __CreateInstance(VFTableInfo.Internal native)
+                {
+                    return new VFTableInfo(native);
+                }
+
                 private static VFTableInfo.Internal* __CopyValue(VFTableInfo.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(32);
@@ -2661,7 +2776,7 @@ namespace CppSharp
                     return (VFTableInfo.Internal*) ret;
                 }
 
-                internal VFTableInfo(VFTableInfo.Internal native)
+                private VFTableInfo(VFTableInfo.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -2744,7 +2859,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return new CppSharp.Parser.AST.VTableLayout(__ptr->Layout);
+                        return CppSharp.Parser.AST.VTableLayout.__CreateInstance(__ptr->Layout);
                     }
 
                     set
@@ -2826,6 +2941,11 @@ namespace CppSharp
                     return new ClassLayout((ClassLayout.Internal*) native);
                 }
 
+                public static ClassLayout __CreateInstance(ClassLayout.Internal native)
+                {
+                    return new ClassLayout(native);
+                }
+
                 private static ClassLayout.Internal* __CopyValue(ClassLayout.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(48);
@@ -2833,7 +2953,7 @@ namespace CppSharp
                     return (ClassLayout.Internal*) ret;
                 }
 
-                internal ClassLayout(ClassLayout.Internal native)
+                private ClassLayout(ClassLayout.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -2870,7 +2990,7 @@ namespace CppSharp
                 {
                     var __ret = new CppSharp.Parser.AST.VFTableInfo.Internal();
                     Internal.getVFTables_0(__Instance, new IntPtr(&__ret), i);
-                    return new CppSharp.Parser.AST.VFTableInfo(__ret);
+                    return CppSharp.Parser.AST.VFTableInfo.__CreateInstance(__ret);
                 }
 
                 public void addVFTables(CppSharp.Parser.AST.VFTableInfo s)
@@ -2913,7 +3033,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return new CppSharp.Parser.AST.VTableLayout(__ptr->Layout);
+                        return CppSharp.Parser.AST.VTableLayout.__CreateInstance(__ptr->Layout);
                     }
 
                     set
@@ -3099,6 +3219,11 @@ namespace CppSharp
                     return new Declaration((Declaration.Internal*) native);
                 }
 
+                public static Declaration __CreateInstance(Declaration.Internal native)
+                {
+                    return new Declaration(native);
+                }
+
                 private static Declaration.Internal* __CopyValue(Declaration.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(120);
@@ -3106,7 +3231,7 @@ namespace CppSharp
                     return (Declaration.Internal*) ret;
                 }
 
-                internal Declaration(Declaration.Internal native)
+                private Declaration(Declaration.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -3251,7 +3376,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return new CppSharp.Parser.SourceLocation(__ptr->Location);
+                        return CppSharp.Parser.SourceLocation.__CreateInstance(__ptr->Location);
                     }
 
                     set
@@ -3553,6 +3678,11 @@ namespace CppSharp
                     return new DeclarationContext((DeclarationContext.Internal*) native);
                 }
 
+                public static DeclarationContext __CreateInstance(DeclarationContext.Internal native)
+                {
+                    return new DeclarationContext(native);
+                }
+
                 private static DeclarationContext.Internal* __CopyValue(DeclarationContext.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(216);
@@ -3560,7 +3690,7 @@ namespace CppSharp
                     return (DeclarationContext.Internal*) ret;
                 }
 
-                internal DeclarationContext(DeclarationContext.Internal native)
+                private DeclarationContext(DeclarationContext.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -3855,6 +3985,11 @@ namespace CppSharp
                     return new TypedefDecl((TypedefDecl.Internal*) native);
                 }
 
+                public static TypedefDecl __CreateInstance(TypedefDecl.Internal native)
+                {
+                    return new TypedefDecl(native);
+                }
+
                 private static TypedefDecl.Internal* __CopyValue(TypedefDecl.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(128);
@@ -3862,7 +3997,7 @@ namespace CppSharp
                     return (TypedefDecl.Internal*) ret;
                 }
 
-                internal TypedefDecl(TypedefDecl.Internal native)
+                private TypedefDecl(TypedefDecl.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -3895,7 +4030,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return new CppSharp.Parser.AST.QualifiedType(__ptr->QualifiedType);
+                        return CppSharp.Parser.AST.QualifiedType.__CreateInstance(__ptr->QualifiedType);
                     }
 
                     set
@@ -3947,6 +4082,11 @@ namespace CppSharp
                     return new Statement((Statement.Internal*) native);
                 }
 
+                public static Statement __CreateInstance(Statement.Internal native)
+                {
+                    return new Statement(native);
+                }
+
                 private static Statement.Internal* __CopyValue(Statement.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(32);
@@ -3954,7 +4094,7 @@ namespace CppSharp
                     return (Statement.Internal*) ret;
                 }
 
-                internal Statement(Statement.Internal native)
+                private Statement(Statement.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -4057,6 +4197,11 @@ namespace CppSharp
                     return new Expression((Expression.Internal*) native);
                 }
 
+                public static Expression __CreateInstance(Expression.Internal native)
+                {
+                    return new Expression(native);
+                }
+
                 private static Expression.Internal* __CopyValue(Expression.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(32);
@@ -4064,7 +4209,7 @@ namespace CppSharp
                     return (Expression.Internal*) ret;
                 }
 
-                internal Expression(Expression.Internal native)
+                private Expression(Expression.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -4158,6 +4303,11 @@ namespace CppSharp
                     return new Parameter((Parameter.Internal*) native);
                 }
 
+                public static Parameter __CreateInstance(Parameter.Internal native)
+                {
+                    return new Parameter(native);
+                }
+
                 private static Parameter.Internal* __CopyValue(Parameter.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(140);
@@ -4165,7 +4315,7 @@ namespace CppSharp
                     return (Parameter.Internal*) ret;
                 }
 
-                internal Parameter(Parameter.Internal native)
+                private Parameter(Parameter.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -4198,7 +4348,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return new CppSharp.Parser.AST.QualifiedType(__ptr->QualifiedType);
+                        return CppSharp.Parser.AST.QualifiedType.__CreateInstance(__ptr->QualifiedType);
                     }
 
                     set
@@ -4397,6 +4547,11 @@ namespace CppSharp
                     return new Function((Function.Internal*) native);
                 }
 
+                public static Function __CreateInstance(Function.Internal native)
+                {
+                    return new Function(native);
+                }
+
                 private static Function.Internal* __CopyValue(Function.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(208);
@@ -4404,7 +4559,7 @@ namespace CppSharp
                     return (Function.Internal*) ret;
                 }
 
-                internal Function(Function.Internal native)
+                private Function(Function.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -4498,7 +4653,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return new CppSharp.Parser.AST.QualifiedType(__ptr->ReturnType);
+                        return CppSharp.Parser.AST.QualifiedType.__CreateInstance(__ptr->ReturnType);
                     }
 
                     set
@@ -4768,6 +4923,11 @@ namespace CppSharp
                     return new Method((Method.Internal*) native);
                 }
 
+                public static Method __CreateInstance(Method.Internal native)
+                {
+                    return new Method(native);
+                }
+
                 private static Method.Internal* __CopyValue(Method.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(236);
@@ -4775,7 +4935,7 @@ namespace CppSharp
                     return (Method.Internal*) ret;
                 }
 
-                internal Method(Method.Internal native)
+                private Method(Method.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -4973,7 +5133,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return new CppSharp.Parser.AST.QualifiedType(__ptr->ConversionType);
+                        return CppSharp.Parser.AST.QualifiedType.__CreateInstance(__ptr->ConversionType);
                     }
 
                     set
@@ -5146,6 +5306,11 @@ namespace CppSharp
                         return new Item((Item.Internal*) native);
                     }
 
+                    public static Item __CreateInstance(Item.Internal native)
+                    {
+                        return new Item(native);
+                    }
+
                     private static Item.Internal* __CopyValue(Item.Internal native)
                     {
                         var ret = Marshal.AllocHGlobal(152);
@@ -5153,7 +5318,7 @@ namespace CppSharp
                         return (Item.Internal*) ret;
                     }
 
-                    internal Item(Item.Internal native)
+                    private Item(Item.Internal native)
                         : this(__CopyValue(native))
                     {
                         __ownsNativeInstance = true;
@@ -5221,6 +5386,11 @@ namespace CppSharp
                     return new Enumeration((Enumeration.Internal*) native);
                 }
 
+                public static Enumeration __CreateInstance(Enumeration.Internal native)
+                {
+                    return new Enumeration(native);
+                }
+
                 private static Enumeration.Internal* __CopyValue(Enumeration.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(240);
@@ -5228,7 +5398,7 @@ namespace CppSharp
                     return (Enumeration.Internal*) ret;
                 }
 
-                internal Enumeration(Enumeration.Internal native)
+                private Enumeration(Enumeration.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -5260,7 +5430,7 @@ namespace CppSharp
                 {
                     var __ret = new CppSharp.Parser.AST.Enumeration.Item.Internal();
                     Internal.getItems_0(__Instance, new IntPtr(&__ret), i);
-                    return new CppSharp.Parser.AST.Enumeration.Item(__ret);
+                    return CppSharp.Parser.AST.Enumeration.Item.__CreateInstance(__ret);
                 }
 
                 public void addItems(CppSharp.Parser.AST.Enumeration.Item s)
@@ -5400,6 +5570,11 @@ namespace CppSharp
                     return new Variable((Variable.Internal*) native);
                 }
 
+                public static Variable __CreateInstance(Variable.Internal native)
+                {
+                    return new Variable(native);
+                }
+
                 private static Variable.Internal* __CopyValue(Variable.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(152);
@@ -5407,7 +5582,7 @@ namespace CppSharp
                     return (Variable.Internal*) ret;
                 }
 
-                internal Variable(Variable.Internal native)
+                private Variable(Variable.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -5457,7 +5632,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return new CppSharp.Parser.AST.QualifiedType(__ptr->QualifiedType);
+                        return CppSharp.Parser.AST.QualifiedType.__CreateInstance(__ptr->QualifiedType);
                     }
 
                     set
@@ -5502,14 +5677,19 @@ namespace CppSharp
                     return new BaseClassSpecifier((BaseClassSpecifier.Internal*) native);
                 }
 
+                public static BaseClassSpecifier __CreateInstance(BaseClassSpecifier.Internal native)
+                {
+                    return new BaseClassSpecifier(native);
+                }
+
                 private static BaseClassSpecifier.Internal* __CopyValue(BaseClassSpecifier.Internal native)
                 {
-                    BaseClassSpecifier.Internal* ret = (BaseClassSpecifier.Internal*) Marshal.AllocHGlobal(12);
+                    var ret = (BaseClassSpecifier.Internal*) Marshal.AllocHGlobal(12);
                     *ret = native;
                     return ret;
                 }
 
-                internal BaseClassSpecifier(BaseClassSpecifier.Internal native)
+                private BaseClassSpecifier(BaseClassSpecifier.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -5654,6 +5834,11 @@ namespace CppSharp
                     return new Field((Field.Internal*) native);
                 }
 
+                public static Field __CreateInstance(Field.Internal native)
+                {
+                    return new Field(native);
+                }
+
                 private static Field.Internal* __CopyValue(Field.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(136);
@@ -5661,7 +5846,7 @@ namespace CppSharp
                     return (Field.Internal*) ret;
                 }
 
-                internal Field(Field.Internal native)
+                private Field(Field.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -5694,7 +5879,7 @@ namespace CppSharp
                     get
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        return new CppSharp.Parser.AST.QualifiedType(__ptr->QualifiedType);
+                        return CppSharp.Parser.AST.QualifiedType.__CreateInstance(__ptr->QualifiedType);
                     }
 
                     set
@@ -5793,6 +5978,11 @@ namespace CppSharp
                     return new AccessSpecifierDecl((AccessSpecifierDecl.Internal*) native);
                 }
 
+                public static AccessSpecifierDecl __CreateInstance(AccessSpecifierDecl.Internal native)
+                {
+                    return new AccessSpecifierDecl(native);
+                }
+
                 private static AccessSpecifierDecl.Internal* __CopyValue(AccessSpecifierDecl.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(120);
@@ -5800,7 +5990,7 @@ namespace CppSharp
                     return (AccessSpecifierDecl.Internal*) ret;
                 }
 
-                internal AccessSpecifierDecl(AccessSpecifierDecl.Internal native)
+                private AccessSpecifierDecl(AccessSpecifierDecl.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -6000,6 +6190,11 @@ namespace CppSharp
                     return new Class((Class.Internal*) native);
                 }
 
+                public static Class __CreateInstance(Class.Internal native)
+                {
+                    return new Class(native);
+                }
+
                 private static Class.Internal* __CopyValue(Class.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(280);
@@ -6007,7 +6202,7 @@ namespace CppSharp
                     return (Class.Internal*) ret;
                 }
 
-                internal Class(Class.Internal native)
+                private Class(Class.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -6380,6 +6575,11 @@ namespace CppSharp
                     return new Template((Template.Internal*) native);
                 }
 
+                public static Template __CreateInstance(Template.Internal native)
+                {
+                    return new Template(native);
+                }
+
                 private static Template.Internal* __CopyValue(Template.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(136);
@@ -6387,7 +6587,7 @@ namespace CppSharp
                     return (Template.Internal*) ret;
                 }
 
-                internal Template(Template.Internal native)
+                private Template(Template.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -6428,7 +6628,7 @@ namespace CppSharp
                 {
                     var __ret = new CppSharp.Parser.AST.TemplateParameter.Internal();
                     Internal.getParameters_0(__Instance, new IntPtr(&__ret), i);
-                    return new CppSharp.Parser.AST.TemplateParameter(__ret);
+                    return CppSharp.Parser.AST.TemplateParameter.__CreateInstance(__ret);
                 }
 
                 public void addParameters(CppSharp.Parser.AST.TemplateParameter s)
@@ -6548,6 +6748,11 @@ namespace CppSharp
                     return new ClassTemplate((ClassTemplate.Internal*) native);
                 }
 
+                public static ClassTemplate __CreateInstance(ClassTemplate.Internal native)
+                {
+                    return new ClassTemplate(native);
+                }
+
                 private static ClassTemplate.Internal* __CopyValue(ClassTemplate.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(148);
@@ -6555,7 +6760,7 @@ namespace CppSharp
                     return (ClassTemplate.Internal*) ret;
                 }
 
-                internal ClassTemplate(ClassTemplate.Internal native)
+                private ClassTemplate(ClassTemplate.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -6728,6 +6933,11 @@ namespace CppSharp
                     return new ClassTemplateSpecialization((ClassTemplateSpecialization.Internal*) native);
                 }
 
+                public static ClassTemplateSpecialization __CreateInstance(ClassTemplateSpecialization.Internal native)
+                {
+                    return new ClassTemplateSpecialization(native);
+                }
+
                 private static ClassTemplateSpecialization.Internal* __CopyValue(ClassTemplateSpecialization.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(300);
@@ -6735,7 +6945,7 @@ namespace CppSharp
                     return (ClassTemplateSpecialization.Internal*) ret;
                 }
 
-                internal ClassTemplateSpecialization(ClassTemplateSpecialization.Internal native)
+                private ClassTemplateSpecialization(ClassTemplateSpecialization.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -6767,7 +6977,7 @@ namespace CppSharp
                 {
                     var __ret = new CppSharp.Parser.AST.TemplateArgument.Internal();
                     Internal.getArguments_0(__Instance, new IntPtr(&__ret), i);
-                    return new CppSharp.Parser.AST.TemplateArgument(__ret);
+                    return CppSharp.Parser.AST.TemplateArgument.__CreateInstance(__ret);
                 }
 
                 public void addArguments(CppSharp.Parser.AST.TemplateArgument s)
@@ -6918,6 +7128,11 @@ namespace CppSharp
                     return new ClassTemplatePartialSpecialization((ClassTemplatePartialSpecialization.Internal*) native);
                 }
 
+                public static ClassTemplatePartialSpecialization __CreateInstance(ClassTemplatePartialSpecialization.Internal native)
+                {
+                    return new ClassTemplatePartialSpecialization(native);
+                }
+
                 private static ClassTemplatePartialSpecialization.Internal* __CopyValue(ClassTemplatePartialSpecialization.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(300);
@@ -6925,7 +7140,7 @@ namespace CppSharp
                     return (ClassTemplatePartialSpecialization.Internal*) ret;
                 }
 
-                internal ClassTemplatePartialSpecialization(ClassTemplatePartialSpecialization.Internal native)
+                private ClassTemplatePartialSpecialization(ClassTemplatePartialSpecialization.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -7035,6 +7250,11 @@ namespace CppSharp
                     return new FunctionTemplate((FunctionTemplate.Internal*) native);
                 }
 
+                public static FunctionTemplate __CreateInstance(FunctionTemplate.Internal native)
+                {
+                    return new FunctionTemplate(native);
+                }
+
                 private static FunctionTemplate.Internal* __CopyValue(FunctionTemplate.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(148);
@@ -7042,7 +7262,7 @@ namespace CppSharp
                     return (FunctionTemplate.Internal*) ret;
                 }
 
-                internal FunctionTemplate(FunctionTemplate.Internal native)
+                private FunctionTemplate(FunctionTemplate.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -7157,6 +7377,11 @@ namespace CppSharp
                     return new FunctionTemplateSpecialization((FunctionTemplateSpecialization.Internal*) native);
                 }
 
+                public static FunctionTemplateSpecialization __CreateInstance(FunctionTemplateSpecialization.Internal native)
+                {
+                    return new FunctionTemplateSpecialization(native);
+                }
+
                 private static FunctionTemplateSpecialization.Internal* __CopyValue(FunctionTemplateSpecialization.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(24);
@@ -7164,7 +7389,7 @@ namespace CppSharp
                     return (FunctionTemplateSpecialization.Internal*) ret;
                 }
 
-                internal FunctionTemplateSpecialization(FunctionTemplateSpecialization.Internal native)
+                private FunctionTemplateSpecialization(FunctionTemplateSpecialization.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -7201,7 +7426,7 @@ namespace CppSharp
                 {
                     var __ret = new CppSharp.Parser.AST.TemplateArgument.Internal();
                     Internal.getArguments_0(__Instance, new IntPtr(&__ret), i);
-                    return new CppSharp.Parser.AST.TemplateArgument(__ret);
+                    return CppSharp.Parser.AST.TemplateArgument.__CreateInstance(__ret);
                 }
 
                 public void addArguments(CppSharp.Parser.AST.TemplateArgument s)
@@ -7334,6 +7559,11 @@ namespace CppSharp
                     return new Namespace((Namespace.Internal*) native);
                 }
 
+                public static Namespace __CreateInstance(Namespace.Internal native)
+                {
+                    return new Namespace(native);
+                }
+
                 private static Namespace.Internal* __CopyValue(Namespace.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(220);
@@ -7341,7 +7571,7 @@ namespace CppSharp
                     return (Namespace.Internal*) ret;
                 }
 
-                internal Namespace(Namespace.Internal native)
+                private Namespace(Namespace.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -7446,6 +7676,11 @@ namespace CppSharp
                     return new PreprocessedEntity((PreprocessedEntity.Internal*) native);
                 }
 
+                public static PreprocessedEntity __CreateInstance(PreprocessedEntity.Internal native)
+                {
+                    return new PreprocessedEntity(native);
+                }
+
                 private static PreprocessedEntity.Internal* __CopyValue(PreprocessedEntity.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(124);
@@ -7453,7 +7688,7 @@ namespace CppSharp
                     return (PreprocessedEntity.Internal*) ret;
                 }
 
-                internal PreprocessedEntity(PreprocessedEntity.Internal native)
+                private PreprocessedEntity(PreprocessedEntity.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -7568,6 +7803,11 @@ namespace CppSharp
                     return new MacroDefinition((MacroDefinition.Internal*) native);
                 }
 
+                public static MacroDefinition __CreateInstance(MacroDefinition.Internal native)
+                {
+                    return new MacroDefinition(native);
+                }
+
                 private static MacroDefinition.Internal* __CopyValue(MacroDefinition.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(148);
@@ -7575,7 +7815,7 @@ namespace CppSharp
                     return (MacroDefinition.Internal*) ret;
                 }
 
-                internal MacroDefinition(MacroDefinition.Internal native)
+                private MacroDefinition(MacroDefinition.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -7695,6 +7935,11 @@ namespace CppSharp
                     return new MacroExpansion((MacroExpansion.Internal*) native);
                 }
 
+                public static MacroExpansion __CreateInstance(MacroExpansion.Internal native)
+                {
+                    return new MacroExpansion(native);
+                }
+
                 private static MacroExpansion.Internal* __CopyValue(MacroExpansion.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(152);
@@ -7702,7 +7947,7 @@ namespace CppSharp
                     return (MacroExpansion.Internal*) ret;
                 }
 
-                internal MacroExpansion(MacroExpansion.Internal native)
+                private MacroExpansion(MacroExpansion.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -7860,6 +8105,11 @@ namespace CppSharp
                     return new TranslationUnit((TranslationUnit.Internal*) native);
                 }
 
+                public static TranslationUnit __CreateInstance(TranslationUnit.Internal native)
+                {
+                    return new TranslationUnit(native);
+                }
+
                 private static TranslationUnit.Internal* __CopyValue(TranslationUnit.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(260);
@@ -7867,7 +8117,7 @@ namespace CppSharp
                     return (TranslationUnit.Internal*) ret;
                 }
 
-                internal TranslationUnit(TranslationUnit.Internal native)
+                private TranslationUnit(TranslationUnit.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -8038,6 +8288,11 @@ namespace CppSharp
                     return new NativeLibrary((NativeLibrary.Internal*) native);
                 }
 
+                public static NativeLibrary __CreateInstance(NativeLibrary.Internal native)
+                {
+                    return new NativeLibrary(native);
+                }
+
                 private static NativeLibrary.Internal* __CopyValue(NativeLibrary.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(52);
@@ -8045,7 +8300,7 @@ namespace CppSharp
                     return (NativeLibrary.Internal*) ret;
                 }
 
-                internal NativeLibrary(NativeLibrary.Internal native)
+                private NativeLibrary(NativeLibrary.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -8217,6 +8472,11 @@ namespace CppSharp
                     return new ASTContext((ASTContext.Internal*) native);
                 }
 
+                public static ASTContext __CreateInstance(ASTContext.Internal native)
+                {
+                    return new ASTContext(native);
+                }
+
                 private static ASTContext.Internal* __CopyValue(ASTContext.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(12);
@@ -8224,7 +8484,7 @@ namespace CppSharp
                     return (ASTContext.Internal*) ret;
                 }
 
-                internal ASTContext(ASTContext.Internal native)
+                private ASTContext(ASTContext.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -8313,14 +8573,19 @@ namespace CppSharp
                     return new Comment((Comment.Internal*) native);
                 }
 
+                public static Comment __CreateInstance(Comment.Internal native)
+                {
+                    return new Comment(native);
+                }
+
                 private static Comment.Internal* __CopyValue(Comment.Internal native)
                 {
-                    Comment.Internal* ret = (Comment.Internal*) Marshal.AllocHGlobal(4);
+                    var ret = (Comment.Internal*) Marshal.AllocHGlobal(4);
                     *ret = native;
                     return ret;
                 }
 
-                internal Comment(Comment.Internal native)
+                private Comment(Comment.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -8395,14 +8660,19 @@ namespace CppSharp
                     return new FullComment((FullComment.Internal*) native);
                 }
 
+                public static FullComment __CreateInstance(FullComment.Internal native)
+                {
+                    return new FullComment(native);
+                }
+
                 private static FullComment.Internal* __CopyValue(FullComment.Internal native)
                 {
-                    FullComment.Internal* ret = (FullComment.Internal*) Marshal.AllocHGlobal(4);
+                    var ret = (FullComment.Internal*) Marshal.AllocHGlobal(4);
                     *ret = native;
                     return ret;
                 }
 
-                internal FullComment(FullComment.Internal native)
+                private FullComment(FullComment.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
@@ -8487,6 +8757,11 @@ namespace CppSharp
                     return new RawComment((RawComment.Internal*) native);
                 }
 
+                public static RawComment __CreateInstance(RawComment.Internal native)
+                {
+                    return new RawComment(native);
+                }
+
                 private static RawComment.Internal* __CopyValue(RawComment.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(56);
@@ -8494,7 +8769,7 @@ namespace CppSharp
                     return (RawComment.Internal*) ret;
                 }
 
-                internal RawComment(RawComment.Internal native)
+                private RawComment(RawComment.Internal native)
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
