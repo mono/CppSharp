@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using CppSharp.AST;
@@ -42,8 +41,6 @@ namespace CppSharp.Passes
 
                 if (CheckForEnumValue(parameter, desugared))
                     continue;
-
-                CheckForULongValue(parameter, desugared);
 
                 CheckForDefaultEmptyChar(parameter, desugared);
             }
@@ -137,17 +134,6 @@ namespace CppSharp.Passes
                 return true;
             }
             return false;
-        }
-
-        private static void CheckForULongValue(Parameter parameter, Type desugared)
-        {
-            ulong value;
-            string @default = parameter.DefaultArgument.String;
-            // HACK: .NET's Parse/TryParse have a bug preventing them from parsing UL-suffixed ulongs
-            if (desugared.IsPrimitiveType() && @default.EndsWith("UL"))
-                @default = @default.Substring(0, @default.Length - 2);
-            if (ulong.TryParse(@default, out value))
-                parameter.DefaultArgument.String = value.ToString(CultureInfo.InvariantCulture);
         }
 
         private void CheckForDefaultEmptyChar(Parameter parameter, Type desugared)

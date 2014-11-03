@@ -2216,7 +2216,7 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, Function* F,
         P->Index = VD->getFunctionScopeIndex();
         if (VD->hasDefaultArg() && !VD->hasUnparsedDefaultArg() && !VD->hasUninstantiatedDefaultArg())
         {
-            P->DefaultArgument = WalkStatement(VD->getDefaultArg());
+            P->DefaultArgument = WalkExpression(VD->getDefaultArg());
         }
         HandleDeclaration(VD, P);
 
@@ -2493,17 +2493,17 @@ void Parser::HandlePreprocessedEntities(Declaration* Decl)
     }
 }
 
-AST::Expression* Parser::WalkStatement(clang::Stmt* Statement)
+AST::Expression* Parser::WalkExpression(clang::Expr* Expr)
 {
     using namespace clang;
 
-    switch (Statement->getStmtClass())
+    switch (Expr->getStmtClass())
     {
     case Stmt::BinaryOperatorClass:
-        return new AST::Expression(GetStringFromStatement(Statement), StatementClass::BinaryOperator);
+        return new AST::Expression(GetStringFromStatement(Expr), StatementClass::BinaryOperator);
     case Stmt::DeclRefExprClass:
-        return new AST::Expression(GetStringFromStatement(Statement), StatementClass::DeclRefExprClass,
-            WalkDeclaration(cast<DeclRefExpr>(Statement)->getDecl()));
+        return new AST::Expression(GetStringFromStatement(Expr), StatementClass::DeclRefExprClass,
+            WalkDeclaration(cast<DeclRefExpr>(Expr)->getDecl()));
     case Stmt::CStyleCastExprClass:
     case Stmt::CXXConstCastExprClass:
     case Stmt::CXXDynamicCastExprClass:
@@ -2511,14 +2511,14 @@ AST::Expression* Parser::WalkStatement(clang::Stmt* Statement)
     case Stmt::CXXReinterpretCastExprClass:
     case Stmt::CXXStaticCastExprClass:
     case Stmt::ImplicitCastExprClass:
-        return WalkStatement(cast<CastExpr>(Statement)->getSubExprAsWritten());
+        return WalkExpression(cast<CastExpr>(Expr)->getSubExprAsWritten());
     case Stmt::CXXOperatorCallExprClass:
-        return new AST::Expression(GetStringFromStatement(Statement), StatementClass::CXXOperatorCallExpr,
-            WalkDeclaration(cast<CXXOperatorCallExpr>(Statement)->getCalleeDecl()));
+        return new AST::Expression(GetStringFromStatement(Expr), StatementClass::CXXOperatorCallExpr,
+            WalkDeclaration(cast<CXXOperatorCallExpr>(Expr)->getCalleeDecl()));
     case Stmt::CXXConstructExprClass:
     case Stmt::CXXTemporaryObjectExprClass:
     {
-        auto ConstructorExpr = cast<CXXConstructExpr>(Statement);
+        auto ConstructorExpr = cast<CXXConstructExpr>(Expr);
         if (ConstructorExpr->getNumArgs() == 1)
         {
             auto Arg = ConstructorExpr->getArg(0);
@@ -2527,18 +2527,23 @@ AST::Expression* Parser::WalkStatement(clang::Stmt* Statement)
             {
                 auto Cast = dyn_cast<CastExpr>(TemporaryExpr->GetTemporaryExpr());
                 if (Cast && Cast->getSubExprAsWritten()->getStmtClass() != Stmt::IntegerLiteralClass)
-                    return WalkStatement(Cast->getSubExprAsWritten());
+                    return WalkExpression(Cast->getSubExprAsWritten());
             }
         }
-        return new AST::Expression(GetStringFromStatement(Statement), StatementClass::CXXConstructExprClass,
+        return new AST::Expression(GetStringFromStatement(Expr), StatementClass::CXXConstructExprClass,
             WalkDeclaration(ConstructorExpr->getConstructor()));
     }
     case Stmt::MaterializeTemporaryExprClass:
-        return WalkStatement(cast<MaterializeTemporaryExpr>(Statement)->GetTemporaryExpr());
+        return WalkExpression(cast<MaterializeTemporaryExpr>(Expr)->GetTemporaryExpr());
     default:
         break;
     }
-    return new AST::Expression(GetStringFromStatement(Statement));
+    llvm::APSInt integer;
+    if (Expr->getStmtClass() != Stmt::CharacterLiteralClass &&
+        Expr->getStmtClass() != Stmt::CXXBoolLiteralExprClass &&
+        Expr->EvaluateAsInt(integer, C->getASTContext()))
+        return new AST::Expression(integer.toString(10));
+    return new AST::Expression(GetStringFromStatement(Expr));
 }
 
 std::string Parser::GetStringFromStatement(const clang::Stmt* Statement)
