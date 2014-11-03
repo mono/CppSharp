@@ -212,6 +212,8 @@ private:
     const char* _name;
 };
 
+#define DEFAULT_INT (2 * 1000UL + 500UL)
+
 class DLL_API MethodsWithDefaultValues
 {
 public:
@@ -231,6 +233,7 @@ public:
     void defaultEnumAssignedBitwiseOrShort(UntypedFlags flags = Flag1 | Flag2);
     void defaultNonEmptyCtor(QGenericArgument arg = QGenericArgument(0));
     void defaultMappedToEnum(QFlags<Flags> qFlags = Flags::Flag1);
+    void defaultIntWithLongExpression(unsigned int i = DEFAULT_INT);
 };
 
 class DLL_API HasPrivateOverrideBase
