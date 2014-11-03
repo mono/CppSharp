@@ -38,6 +38,8 @@ public:
     // Not picked up by parser yet
     //friend std::ostream& operator<<(std::ostream& os, const Date& dt);
     int mo, da, yr;
+
+    std::string testStdString(std::string s);
 };
 
 std::ostream& operator<<(std::ostream& os, const Date& dt)
@@ -45,5 +47,3 @@ std::ostream& operator<<(std::ostream& os, const Date& dt)
     os << dt.mo << '/' << dt.da << '/' << dt.yr;
     return os;
 }
-
-DLL_API std::string testStdString(std::string s);

@@ -612,7 +612,9 @@ namespace CppSharp.Generators.CLI
 
         private void GenerateClassConstructor(Class @class)
         {
-            Write("{0}::{1}(", QualifiedIdentifier(@class), @class.Name);
+            string qualifiedIdentifier = QualifiedIdentifier(@class);
+
+            Write("{0}::{1}(", qualifiedIdentifier, @class.Name);
 
             var nativeType = string.Format("::{0}*", @class.QualifiedOriginalName);
             WriteLine("{0} native)", nativeType);
@@ -635,6 +637,13 @@ namespace CppSharp.Generators.CLI
                 GenerateStructMarshaling(@class, nativePtr + "->");
             }
 
+            WriteCloseBraceIndent();
+            NewLine();
+
+            WriteLine("{0}^ {0}::{1}(::System::IntPtr native)", qualifiedIdentifier, Helpers.CreateInstanceIdentifier);
+
+            WriteStartBraceIndent();
+            WriteLine("return gcnew {0}(({1}) native.ToPointer());", qualifiedIdentifier, nativeType);
             WriteCloseBraceIndent();
             NewLine();
         }

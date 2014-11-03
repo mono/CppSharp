@@ -368,6 +368,7 @@ namespace CppSharp.Generators.CLI
 
             // Output a default constructor that takes the native pointer.
             WriteLine("{0}({1} native);", @class.Name, nativeType);
+            WriteLine("static {0}^ {1}(::System::IntPtr native);", @class.Name, Helpers.CreateInstanceIdentifier);
 
             foreach (var ctor in @class.Constructors)
             {

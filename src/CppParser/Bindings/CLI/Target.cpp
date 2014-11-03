@@ -8,10 +8,9 @@ CppSharp::Parser::ParserTargetInfo::ParserTargetInfo(::CppSharp::CppParser::Pars
     NativePtr = native;
 }
 
-CppSharp::Parser::ParserTargetInfo::ParserTargetInfo(System::IntPtr native)
+CppSharp::Parser::ParserTargetInfo^ CppSharp::Parser::ParserTargetInfo::__CreateInstance(::System::IntPtr native)
 {
-    auto __native = (::CppSharp::CppParser::ParserTargetInfo*)native.ToPointer();
-    NativePtr = __native;
+    return gcnew CppSharp::Parser::ParserTargetInfo((::CppSharp::CppParser::ParserTargetInfo*) native.ToPointer());
 }
 
 CppSharp::Parser::ParserTargetInfo::ParserTargetInfo()

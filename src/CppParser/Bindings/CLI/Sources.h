@@ -20,7 +20,7 @@ namespace CppSharp
         public:
 
             SourceLocation(::CppSharp::CppParser::SourceLocation* native);
-            SourceLocation(System::IntPtr native);
+            static SourceLocation^ __CreateInstance(::System::IntPtr native);
             SourceLocation(unsigned int ID);
 
             property unsigned int ID
