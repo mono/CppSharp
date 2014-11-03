@@ -239,6 +239,11 @@ namespace CppSharp
                 return new ParserOptions((ParserOptions.Internal*) native);
             }
 
+            public static ParserOptions __CreateInstance(ParserOptions.Internal native)
+            {
+                return new ParserOptions(native);
+            }
+
             private static ParserOptions.Internal* __CopyValue(ParserOptions.Internal native)
             {
                 var ret = Marshal.AllocHGlobal(140);
@@ -246,7 +251,7 @@ namespace CppSharp
                 return (ParserOptions.Internal*) ret;
             }
 
-            internal ParserOptions(ParserOptions.Internal native)
+            private ParserOptions(ParserOptions.Internal native)
                 : this(__CopyValue(native))
             {
                 __ownsNativeInstance = true;
@@ -661,6 +666,11 @@ namespace CppSharp
                 return new ParserDiagnostic((ParserDiagnostic.Internal*) native);
             }
 
+            public static ParserDiagnostic __CreateInstance(ParserDiagnostic.Internal native)
+            {
+                return new ParserDiagnostic(native);
+            }
+
             private static ParserDiagnostic.Internal* __CopyValue(ParserDiagnostic.Internal native)
             {
                 var ret = Marshal.AllocHGlobal(60);
@@ -668,7 +678,7 @@ namespace CppSharp
                 return (ParserDiagnostic.Internal*) ret;
             }
 
-            internal ParserDiagnostic(ParserDiagnostic.Internal native)
+            private ParserDiagnostic(ParserDiagnostic.Internal native)
                 : this(__CopyValue(native))
             {
                 __ownsNativeInstance = true;
@@ -843,6 +853,11 @@ namespace CppSharp
                 return new ParserResult((ParserResult.Internal*) native);
             }
 
+            public static ParserResult __CreateInstance(ParserResult.Internal native)
+            {
+                return new ParserResult(native);
+            }
+
             private static ParserResult.Internal* __CopyValue(ParserResult.Internal native)
             {
                 var ret = Marshal.AllocHGlobal(28);
@@ -850,7 +865,7 @@ namespace CppSharp
                 return (ParserResult.Internal*) ret;
             }
 
-            internal ParserResult(ParserResult.Internal native)
+            private ParserResult(ParserResult.Internal native)
                 : this(__CopyValue(native))
             {
                 __ownsNativeInstance = true;
@@ -887,7 +902,7 @@ namespace CppSharp
             {
                 var __ret = new CppSharp.Parser.ParserDiagnostic.Internal();
                 Internal.getDiagnostics_0(__Instance, new IntPtr(&__ret), i);
-                return new CppSharp.Parser.ParserDiagnostic(__ret);
+                return CppSharp.Parser.ParserDiagnostic.__CreateInstance(__ret);
             }
 
             public void addDiagnostics(CppSharp.Parser.ParserDiagnostic s)
@@ -991,14 +1006,19 @@ namespace CppSharp
                 return new ClangParser((ClangParser.Internal*) native);
             }
 
+            public static ClangParser __CreateInstance(ClangParser.Internal native)
+            {
+                return new ClangParser(native);
+            }
+
             private static ClangParser.Internal* __CopyValue(ClangParser.Internal native)
             {
-                ClangParser.Internal* ret = (ClangParser.Internal*) Marshal.AllocHGlobal(1);
+                var ret = (ClangParser.Internal*) Marshal.AllocHGlobal(1);
                 *ret = native;
                 return ret;
             }
 
-            internal ClangParser(ClangParser.Internal native)
+            private ClangParser(ClangParser.Internal native)
                 : this(__CopyValue(native))
             {
                 __ownsNativeInstance = true;

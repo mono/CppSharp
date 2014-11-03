@@ -1908,9 +1908,9 @@ namespace CppSharp.Generators.CSharp
                 WriteLine("return new {0}(({1}.Internal*) native);", safeIdentifier, className);
                 WriteCloseBraceIndent();
                 PopBlock(NewLineKind.BeforeNextBlock);
-            }
 
-            GenerateNativeConstructorByValue(@class, className, safeIdentifier);
+                GenerateNativeConstructorByValue(@class, className, safeIdentifier);
+            }
 
             PushBlock(CSharpBlockKind.Method);
             WriteLine("{0} {1}({2}.Internal* native, bool isInternalImpl = false){3}",
@@ -1963,6 +1963,13 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateNativeConstructorByValue(Class @class, string className, string safeIdentifier)
         {
+            PushBlock(CSharpBlockKind.Method);
+            WriteLine("public static {0} {1}({0}.Internal native)", className, Helpers.CreateInstanceIdentifier);
+            WriteStartBraceIndent();
+            WriteLine("return new {0}(native);", safeIdentifier);
+            WriteCloseBraceIndent();
+            PopBlock(NewLineKind.BeforeNextBlock);
+
             if (@class.IsRefType)
             {
                 PushBlock(CSharpBlockKind.Method);
@@ -1985,7 +1992,7 @@ namespace CppSharp.Generators.CSharp
                 }
                 else
                 {
-                    WriteLine("{0}.Internal* ret = ({0}.Internal*) Marshal.AllocHGlobal({1});",
+                    WriteLine("var ret = ({0}.Internal*) Marshal.AllocHGlobal({1});",
                         className, @class.Layout.Size);
                     WriteLine("*ret = native;", className);
                     WriteLine("return ret;");
@@ -1994,7 +2001,7 @@ namespace CppSharp.Generators.CSharp
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
             PushBlock(CSharpBlockKind.Method);
-            WriteLine("internal {0}({1}.Internal native)", safeIdentifier, className);
+            WriteLine("private {0}({1}.Internal native)", safeIdentifier, className);
             WriteLineIndent(@class.IsRefType ? ": this(__CopyValue(native))" : ": this(&native)");
             WriteStartBraceIndent();
             if (@class.IsRefType)

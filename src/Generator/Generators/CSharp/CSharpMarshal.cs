@@ -269,7 +269,7 @@ namespace CppSharp.Generators.CSharp
                     @class.IsRefType ? "null" : string.Format("new {0}()", type),
                     type, Helpers.CreateInstanceIdentifier);
             else
-                Context.Return.Write("new {0}({1})", type, instance);
+                Context.Return.Write("{0}.{1}({2})", type, Helpers.CreateInstanceIdentifier, instance);
 
             return true;
         }
