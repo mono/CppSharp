@@ -8,10 +8,9 @@ CppSharp::Parser::SourceLocation::SourceLocation(::CppSharp::CppParser::SourceLo
     __ID = native->ID;
 }
 
-CppSharp::Parser::SourceLocation::SourceLocation(System::IntPtr native)
+CppSharp::Parser::SourceLocation^ CppSharp::Parser::SourceLocation::__CreateInstance(::System::IntPtr native)
 {
-    auto __native = (::CppSharp::CppParser::SourceLocation*)native.ToPointer();
-    __ID = __native->ID;
+    return gcnew CppSharp::Parser::SourceLocation((::CppSharp::CppParser::SourceLocation*) native.ToPointer());
 }
 
 CppSharp::Parser::SourceLocation::SourceLocation(unsigned int ID)

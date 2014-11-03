@@ -36,77 +36,77 @@ namespace CppSharp
             {
                 case TypeKind.Tag:
                 {
-                    var _type = new TagType(type.__Instance);
+                    var _type = TagType.__CreateInstance(type.__Instance);
                     return VisitTag(_type);
                 }
                 case TypeKind.Array:
                 {
-                    var _type = new ArrayType(type.__Instance);
+                    var _type = ArrayType.__CreateInstance(type.__Instance);
                     return VisitArray(_type);
                 }
                 case TypeKind.Function:
                 {
-                    var _type = new FunctionType(type.__Instance);
+                    var _type = FunctionType.__CreateInstance(type.__Instance);
                     return VisitFunction(_type);
                 }
                 case TypeKind.Pointer:
                 {
-                    var _type = new PointerType(type.__Instance);
+                    var _type = PointerType.__CreateInstance(type.__Instance);
                     return VisitPointer(_type);
                 }
                 case TypeKind.MemberPointer:
                 {
-                    var _type = new MemberPointerType(type.__Instance);
+                    var _type = MemberPointerType.__CreateInstance(type.__Instance);
                     return VisitMemberPointer(_type);
                 }
                 case TypeKind.Typedef:
                 {
-                    var _type = new TypedefType(type.__Instance);
+                    var _type = TypedefType.__CreateInstance(type.__Instance);
                     return VisitTypedef(_type);
                 }
                 case TypeKind.Attributed:
                 {
-                    var _type = new AttributedType(type.__Instance);
+                    var _type = AttributedType.__CreateInstance(type.__Instance);
                     return VisitAttributed(_type);
                 }
                 case TypeKind.Decayed:
                 {
-                    var _type = new DecayedType(type.__Instance);
+                    var _type = DecayedType.__CreateInstance(type.__Instance);
                     return VisitDecayed(_type);
                 }
                 case TypeKind.TemplateSpecialization:
                 {
-                    var _type = new TemplateSpecializationType(type.__Instance);
+                    var _type = TemplateSpecializationType.__CreateInstance(type.__Instance);
                     return VisitTemplateSpecialization(_type);
                 }
                 case TypeKind.TemplateParameter:
                 {
-                    var _type = new TemplateParameterType(type.__Instance);
+                    var _type = TemplateParameterType.__CreateInstance(type.__Instance);
                     return VisitTemplateParameter(_type);
                 }
                 case TypeKind.TemplateParameterSubstitution:
                 {
-                    var _type = new TemplateParameterSubstitutionType(type.__Instance);
+                    var _type = TemplateParameterSubstitutionType.__CreateInstance(type.__Instance);
                     return VisitTemplateParameterSubstitution(_type);
                 }
                 case TypeKind.InjectedClassName:
                 {
-                    var _type = new InjectedClassNameType(type.__Instance);
+                    var _type = InjectedClassNameType.__CreateInstance(type.__Instance);
                     return VisitInjectedClassName(_type);
                 }
                 case TypeKind.DependentName:
                 {
-                    var _type = new DependentNameType(type.__Instance);
+                    var _type = DependentNameType.__CreateInstance(type.__Instance);
                     return VisitDependentName(_type);
                 }
                 case TypeKind.Builtin:
                 {
-                    var _type = new BuiltinType(type.__Instance);
+                    var _type = BuiltinType.__CreateInstance(type.__Instance);
                     return VisitBuiltin(_type);
                 }
                 case TypeKind.PackExpansion:
                 {
-                    var _type = new PackExpansionType(type.__Instance);
+                    var _type = PackExpansionType.__CreateInstance(type.__Instance);
                     return VisitPackExpansion(_type);
                 }
             }
@@ -147,92 +147,92 @@ namespace CppSharp
             {
                 case DeclarationKind.TranslationUnit:
                     {
-                        var _decl = new TranslationUnit(decl.__Instance);
+                        var _decl = TranslationUnit.__CreateInstance(decl.__Instance);
                         return VisitTranslationUnit(_decl);
                     }
                 case DeclarationKind.Namespace:
                     {
-                        var _decl = new Namespace(decl.__Instance);
+                        var _decl = Namespace.__CreateInstance(decl.__Instance);
                         return VisitNamespace(_decl);
                     }
                 case DeclarationKind.Typedef:
                     {
-                        var _decl = new TypedefDecl(decl.__Instance);
+                        var _decl = TypedefDecl.__CreateInstance(decl.__Instance);
                         return VisitTypedef(_decl);
                     }
                 case DeclarationKind.Parameter:
                     {
-                        var _decl = new Parameter(decl.__Instance);
+                        var _decl = Parameter.__CreateInstance(decl.__Instance);
                         return VisitParameter(_decl);
                     }
                 case DeclarationKind.Function:
                     {
-                        var _decl = new Function(decl.__Instance);
+                        var _decl = Function.__CreateInstance(decl.__Instance);
                         return VisitFunction(_decl);
                     }
                 case DeclarationKind.Method:
                     {
-                        var _decl = new Method(decl.__Instance);
+                        var _decl = Method.__CreateInstance(decl.__Instance);
                         return VisitMethod(_decl);
                     }
                 case DeclarationKind.Enumeration:
                     {
-                        var _decl = new Enumeration(decl.__Instance);
+                        var _decl = Enumeration.__CreateInstance(decl.__Instance);
                         return VisitEnumeration(_decl);
                     }
                 case DeclarationKind.EnumerationItem:
                     {
-                        var _decl = new Enumeration.Item(decl.__Instance);
+                        var _decl = Enumeration.Item.__CreateInstance(decl.__Instance);
                         return VisitEnumerationItem(_decl);
                     }
                 case DeclarationKind.Variable:
                     {
-                        var _decl = new Variable(decl.__Instance);
+                        var _decl = Variable.__CreateInstance(decl.__Instance);
                         return VisitVariable(_decl);
                     }
                 case DeclarationKind.Field:
                     {
-                        var _decl = new Field(decl.__Instance);
+                        var _decl = Field.__CreateInstance(decl.__Instance);
                         return VisitField(_decl);
                     }
                 case DeclarationKind.AccessSpecifier:
                     {
-                        var _decl = new AccessSpecifierDecl(decl.__Instance);
+                        var _decl = AccessSpecifierDecl.__CreateInstance(decl.__Instance);
                         return VisitAccessSpecifier(_decl);
                     }
                 case DeclarationKind.Class:
                     {
-                        var _decl = new Class(decl.__Instance);
+                        var _decl = Class.__CreateInstance(decl.__Instance);
                         return VisitClass(_decl);
                     }
                 case DeclarationKind.ClassTemplate:
                     {
-                        var _decl = new ClassTemplate(decl.__Instance);
+                        var _decl = ClassTemplate.__CreateInstance(decl.__Instance);
                         return VisitClassTemplate(_decl);
                     }
                 case DeclarationKind.ClassTemplateSpecialization:
                     {
-                        var _decl = new ClassTemplateSpecialization(decl.__Instance);
+                        var _decl = ClassTemplateSpecialization.__CreateInstance(decl.__Instance);
                         return VisitClassTemplateSpecialization(_decl);
                     }
                 case DeclarationKind.ClassTemplatePartialSpecialization:
                     {
-                        var _decl = new ClassTemplatePartialSpecialization(decl.__Instance);
+                        var _decl = ClassTemplatePartialSpecialization.__CreateInstance(decl.__Instance);
                         return VisitClassTemplatePartialSpecialization(_decl);
                     }
                 case DeclarationKind.FunctionTemplate:
                     {
-                        var _decl = new FunctionTemplate(decl.__Instance);
+                        var _decl = FunctionTemplate.__CreateInstance(decl.__Instance);
                         return VisitFunctionTemplate(_decl);
                     }
                 case DeclarationKind.MacroDefinition:
                     {
-                        var _decl = new MacroDefinition(decl.__Instance);
+                        var _decl = MacroDefinition.__CreateInstance(decl.__Instance);
                         return VisitMacroDefinition(_decl);
                     }
                 case DeclarationKind.MacroExpansion:
                     {
-                        var _decl = new MacroExpansion(decl.__Instance);
+                        var _decl = MacroExpansion.__CreateInstance(decl.__Instance);
                         return VisitMacroExpansion(_decl);
                     }
             }
@@ -254,7 +254,7 @@ namespace CppSharp
             {
                 case CommentKind.FullComment:
                     {
-                        var _comment = new FullComment(comment.__Instance);
+                        var _comment = FullComment.__CreateInstance(comment.__Instance);
                         return VisitFullComment(_comment);
                     }
             }
@@ -616,7 +616,7 @@ namespace CppSharp
             if (decl.OriginalPtr == null)
                 throw new NotSupportedException("Original pointer must not be null");
 
-            var originalPtr = new IntPtr(decl.OriginalPtr);
+            var originalPtr = decl.OriginalPtr;
 
             // Check if the declaration was already handled and return its
             // existing instance.
@@ -698,7 +698,7 @@ namespace CppSharp
 
         bool CheckForDuplicates(Declaration decl)
         {
-            if (decl.OriginalPtr == (void*) (0x1))
+            if (decl.OriginalPtr.ToPointer() == (void*) (0x1))
                 return false;
 
             return !(decl is PreprocessedEntity);
@@ -706,7 +706,7 @@ namespace CppSharp
 
         void VisitDeclaration(Declaration decl, AST.Declaration _decl)
         {
-            var originalPtr = new IntPtr(decl.OriginalPtr);
+            var originalPtr = decl.OriginalPtr;
 
             if (CheckForDuplicates(decl))
                 if (Declarations.ContainsKey(originalPtr))

@@ -77,7 +77,7 @@ namespace CppSharp
             }
 
             ParserOptions(::CppSharp::CppParser::ParserOptions* native);
-            ParserOptions(System::IntPtr native);
+            static ParserOptions^ __CreateInstance(::System::IntPtr native);
             ParserOptions();
 
             property unsigned int ArgumentsCount
@@ -219,7 +219,7 @@ namespace CppSharp
             }
 
             ParserDiagnostic(::CppSharp::CppParser::ParserDiagnostic* native);
-            ParserDiagnostic(System::IntPtr native);
+            static ParserDiagnostic^ __CreateInstance(::System::IntPtr native);
             ParserDiagnostic();
 
             property System::String^ FileName
@@ -265,7 +265,7 @@ namespace CppSharp
             }
 
             ParserResult(::CppSharp::CppParser::ParserResult* native);
-            ParserResult(System::IntPtr native);
+            static ParserResult^ __CreateInstance(::System::IntPtr native);
             ParserResult();
 
             property unsigned int DiagnosticsCount
@@ -310,7 +310,7 @@ namespace CppSharp
             }
 
             ClangParser(::CppSharp::CppParser::ClangParser* native);
-            ClangParser(System::IntPtr native);
+            static ClangParser^ __CreateInstance(::System::IntPtr native);
             ClangParser();
 
             static CppSharp::Parser::ParserResult^ ParseHeader(CppSharp::Parser::ParserOptions^ Opts);

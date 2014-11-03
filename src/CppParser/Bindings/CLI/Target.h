@@ -43,7 +43,7 @@ namespace CppSharp
             }
 
             ParserTargetInfo(::CppSharp::CppParser::ParserTargetInfo* native);
-            ParserTargetInfo(System::IntPtr native);
+            static ParserTargetInfo^ __CreateInstance(::System::IntPtr native);
             ParserTargetInfo();
 
             property System::String^ ABI
