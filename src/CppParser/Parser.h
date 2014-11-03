@@ -97,7 +97,7 @@ protected:
     VTableComponent WalkVTableComponent(const clang::VTableComponent& Component);
     PreprocessedEntity* WalkPreprocessedEntity(Declaration* Decl,
         clang::PreprocessedEntity* PPEntity);
-    AST::Expression* WalkStatement(clang::Stmt* Statement);
+    AST::Expression* WalkExpression(clang::Expr* Expression);
     std::string GetStringFromStatement(const clang::Stmt* Statement);
 
     // Clang helpers

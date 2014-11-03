@@ -285,6 +285,10 @@ void MethodsWithDefaultValues::defaultMappedToEnum(QFlags<Flags> qFlags)
 {
 }
 
+void MethodsWithDefaultValues::defaultIntWithLongExpression(unsigned int i)
+{
+}
+
 void HasPrivateOverrideBase::privateOverride(int i)
 {
 }
