@@ -3223,7 +3223,7 @@ ParserResult* Parser::ParseLibrary(const std::string& File, ParserResult* res)
         return res;
     }
     std::unique_ptr<llvm::MemoryBuffer> FileBuf(std::move(Buffer.get()));
-    auto BinaryOrErr = llvm::object::createBinary(FileBuf->getMemBufferRef(),
+    auto BinaryOrErr = llvm::object::createBinary( (*FileBuf)->getMemBufferRef(),
 		&llvm::getGlobalContext());
     if (BinaryOrErr.getError())
     {
