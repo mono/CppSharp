@@ -53,3 +53,6 @@ for more information:
 
 [Developer's Manual](docs/DevManual.md)
 
+## Building custom wrappers and consulting
+
+Please contact @ddobrev.
