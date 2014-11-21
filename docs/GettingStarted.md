@@ -34,9 +34,9 @@ msbuild LLVM.sln /p:Configuration=RelWithDebInfo;Platform=Win32 /m
 
 Last revisions known to work:
 
-LLVM `r219061` / Git mirror revision `dbc6d9b9d7f71b25c6ea4264659460f81908e7e2`.
+LLVM `r222533` / Git mirror revision `bd357588a106dc7c828c57ad8048e82003d638de`.
 
-Clang `r219062` / Git mirror revision `cec1839edae2ca8a0321dde1ccd47009076d8557`.
+Clang `r222534` / Git mirror revision `b643cf9daa35f3540a4420d93d7cc6f48cffb735`.
 
 ### Compiling CppSharp on Windows/Visual Studio
 
