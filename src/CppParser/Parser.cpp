@@ -3198,7 +3198,7 @@ ParserResult* Parser::ParseLibrary(const std::string& File, ParserResult* res)
     C->createFileManager();
 
     auto &FM = C->getFileManager();
-    const clang::FileEntry* FileEntry = 0;
+    llvm::StringRef FileEntry;
 
     for (unsigned I = 0, E = Opts->LibraryDirs.size(); I != E; ++I)
     {
@@ -3206,17 +3206,23 @@ ParserResult* Parser::ParseLibrary(const std::string& File, ParserResult* res)
         llvm::SmallString<256> Path(LibDir);
         llvm::sys::path::append(Path, File);
 
-        if ((FileEntry = FM.getFile(Path.str())))
+        if (!(FileEntry = Path.str()).empty())
             break;
     }
 
-    if (!FileEntry)
+    if (FileEntry.empty())
     {
         res->Kind = ParserResultKind::FileNotFound;
         return res;
     }
 
-    std::unique_ptr<llvm::MemoryBuffer> FileBuf(FM.getBufferForFile(FileEntry));
+    auto Buffer = FM.getBufferForFile(FileEntry);
+    if (Buffer.getError())
+    {
+        res->Kind = ParserResultKind::Error;
+        return res;
+    }
+    std::unique_ptr<llvm::MemoryBuffer> FileBuf(std::move(Buffer.get()));
     auto BinaryOrErr = llvm::object::createBinary(FileBuf->getMemBufferRef(),
 		&llvm::getGlobalContext());
     if (BinaryOrErr.getError())
