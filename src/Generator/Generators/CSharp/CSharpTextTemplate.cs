@@ -1781,7 +1781,7 @@ namespace CppSharp.Generators.CSharp
             var hasBaseClass = @class.HasBaseClass && @class.BaseClass.IsRefType;
             if (hasBaseClass)
                 WriteLineIndent(": base(({0}.Internal*) native{1})",
-                    @class.BaseClass.Name, @class.IsAbstractImpl ? ", true" : string.Empty);
+                    QualifiedIdentifier(@class.BaseClass), @class.IsAbstractImpl ? ", true" : string.Empty);
 
             WriteStartBraceIndent();
 
