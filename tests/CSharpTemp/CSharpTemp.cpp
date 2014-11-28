@@ -31,6 +31,27 @@ const Foo& Bar::operator[](int i) const
     return m_foo;
 }
 
+
+Quux::Quux()
+{
+
+}
+
+Quux::Quux(int i)
+{
+
+}
+
+Quux::Quux(char c)
+{
+
+}
+
+Quux::Quux(Foo f)
+{
+
+}
+
 Qux::Qux()
 {
 
@@ -291,6 +312,14 @@ void MethodsWithDefaultValues::defaultMappedToEnum(QFlags<Flags> qFlags)
 }
 
 void MethodsWithDefaultValues::defaultMappedToZeroEnum(QFlags<Flags> qFlags)
+{
+}
+
+void MethodsWithDefaultValues::defaultImplicitCtorInt(Quux arg)
+{
+}
+
+void MethodsWithDefaultValues::defaultImplicitCtorChar(Quux arg)
 {
 }
 
