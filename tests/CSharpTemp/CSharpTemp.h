@@ -16,6 +16,18 @@ protected:
     int P;
 };
 
+class DLL_API Quux
+{
+public:
+    Quux();
+    Quux(int i);
+    Quux(char c);
+    Quux(Foo f);
+private:
+    int priv;
+};
+
+
 class DLL_API Qux
 {
 public:
@@ -216,6 +228,21 @@ private:
 
 #define DEFAULT_INT (2 * 1000UL + 500UL)
 
+namespace Qt
+{
+    enum GlobalColor {
+        black,
+        white,
+    };
+}
+
+class QColor
+{
+public:
+    QColor();
+    QColor(Qt::GlobalColor color);
+};
+
 class DLL_API MethodsWithDefaultValues
 {
 public:
@@ -236,7 +263,11 @@ public:
     void defaultNonEmptyCtor(QGenericArgument arg = QGenericArgument(0));
     void defaultMappedToEnum(QFlags<Flags> qFlags = Flags::Flag1);
     void defaultMappedToZeroEnum(QFlags<Flags> qFlags = 0);
+    void defaultImplicitCtorInt(Quux arg = 0);
+    void defaultImplicitCtorChar(Quux arg = 'a');
+    void defaultImplicitCtorFoo(Quux arg = Foo());
     void defaultIntWithLongExpression(unsigned int i = DEFAULT_INT);
+    void defaultRefTypeEnumImplicitCtor(const QColor &fillColor = Qt::white);
 };
 
 class DLL_API HasPrivateOverrideBase
