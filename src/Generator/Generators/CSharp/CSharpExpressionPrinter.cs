@@ -15,8 +15,7 @@ namespace CppSharp.Generators.CSharp
 
     public static class CSharpExpressionPrinterExtensions
     {
-        public static CSharpExpressionPrinterResult CSharpValue(this Expression value,
-            CSharpExpressionPrinter printer)
+        public static CSharpExpressionPrinterResult CSharpValue(this Expression value, CSharpExpressionPrinter printer)
         {
             return value.Visit(printer);
         }
@@ -25,11 +24,11 @@ namespace CppSharp.Generators.CSharp
     public class CSharpExpressionPrinter : IExpressionPrinter<CSharpExpressionPrinterResult>,
         IExpressionVisitor<CSharpExpressionPrinterResult>
     {
-        public CSharpExpressionPrinterResult VisitBuiltinExpression(BuiltinTypeExpression builtinType)
+        public CSharpExpressionPrinterResult VisitExpression(Expression expr)
         {
             return new CSharpExpressionPrinterResult()
             {
-                Value = builtinType.ToString(),
+                Value = expr.ToString(),
             };
         }
 
