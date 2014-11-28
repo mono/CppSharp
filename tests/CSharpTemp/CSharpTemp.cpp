@@ -31,6 +31,39 @@ const Foo& Bar::operator[](int i) const
     return m_foo;
 }
 
+
+Quux::Quux()
+{
+
+}
+
+Quux::Quux(int i)
+{
+
+}
+
+Quux::Quux(char c)
+{
+
+}
+
+Quux::Quux(Foo f)
+{
+
+}
+
+
+
+QColor::QColor()
+{
+
+}
+
+QColor::QColor(Qt::GlobalColor color)
+{
+
+}
+
 Qux::Qux()
 {
 
@@ -294,7 +327,19 @@ void MethodsWithDefaultValues::defaultMappedToZeroEnum(QFlags<Flags> qFlags)
 {
 }
 
+void MethodsWithDefaultValues::defaultImplicitCtorInt(Quux arg)
+{
+}
+
+void MethodsWithDefaultValues::defaultImplicitCtorChar(Quux arg)
+{
+}
+
 void MethodsWithDefaultValues::defaultIntWithLongExpression(unsigned int i)
+{
+}
+
+void MethodsWithDefaultValues::defaultRefTypeEnumImplicitCtor(const QColor &fillColor)
 {
 }
 

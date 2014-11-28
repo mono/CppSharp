@@ -1562,6 +1562,16 @@ CppSharp::Parser::AST::Expression^ CppSharp::Parser::AST::Expression::__CreateIn
     return gcnew CppSharp::Parser::AST::Expression((::CppSharp::CppParser::AST::Expression*) native.ToPointer());
 }
 
+CppSharp::Parser::AST::Expression^ CppSharp::Parser::AST::Expression::Subexpression::get()
+{
+    return (((::CppSharp::CppParser::AST::Expression*)NativePtr)->Subexpression == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::Expression((::CppSharp::CppParser::AST::Expression*)((::CppSharp::CppParser::AST::Expression*)NativePtr)->Subexpression);
+}
+
+void CppSharp::Parser::AST::Expression::Subexpression::set(CppSharp::Parser::AST::Expression^ value)
+{
+    ((::CppSharp::CppParser::AST::Expression*)NativePtr)->Subexpression = (::CppSharp::CppParser::AST::Expression*)value->NativePtr;
+}
+
 CppSharp::Parser::AST::Parameter::Parameter(::CppSharp::CppParser::AST::Parameter* native)
     : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)native)
 {

@@ -847,24 +847,51 @@ namespace CppSharp
             if (statement == null)
                 return null;
 
-            var expression = new AST.BuiltinTypeExpression();
-            expression.Declaration = this.typeConverter.declConverter.Visit(statement.Decl);
-            expression.String = statement.String;
+            AST.Expression expression;
             switch (statement.Class)
             {
                 case StatementClass.BinaryOperator:
+                    expression = new AST.BuiltinTypeExpression();
                     expression.Class = AST.StatementClass.BinaryOperator;
                     break;
                 case StatementClass.DeclRefExprClass:
+                    expression = new AST.BuiltinTypeExpression();
                     expression.Class = AST.StatementClass.DeclarationReference;
                     break;
-                case StatementClass.CXXConstructExprClass:
-                    expression.Class = AST.StatementClass.ConstructorReference;
-                    break;
                 case StatementClass.CXXOperatorCallExpr:
+                    expression = new AST.BuiltinTypeExpression();
                     expression.Class = AST.StatementClass.CXXOperatorCall;
                     break;
+                case StatementClass.CXXConstructExprClass:
+                    {
+                        var ctorExp = new AST.CtorExpr();
+                        ctorExp.SubExpression = VisitStatement(((Expression)statement).Subexpression);
+                        expression = ctorExp;
+                        expression.Class = AST.StatementClass.ConstructorReference;
+                        break;
+                    }
+                case StatementClass.ImplicitCastExpr:
+                    {
+                        var castExp = new AST.CastExpr();
+                        castExp.SubExpression = VisitStatement(((Expression)statement).Subexpression);
+                        expression = castExp;
+                        expression.Class = AST.StatementClass.ImplicitCast;
+                        break;
+                    }
+                case StatementClass.ExplicitCastExpr:
+                    {
+                        var castExp = new AST.CastExpr();
+                        castExp.SubExpression = VisitStatement(((Expression)statement).Subexpression);
+                        expression = castExp;
+                        expression.Class = AST.StatementClass.ExplicitCast;
+                        break;
+                    }
+                default:
+                    expression = new AST.BuiltinTypeExpression();
+                    break;
             }
+            expression.Declaration = this.typeConverter.declConverter.Visit(statement.Decl);
+            expression.String = statement.String;
             return expression;
         }
 
