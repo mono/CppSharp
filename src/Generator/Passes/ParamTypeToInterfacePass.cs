@@ -1,4 +1,5 @@
 ﻿using CppSharp.AST;
+using CppSharp.AST.Extensions;
 
 namespace CppSharp.Passes
 {
@@ -19,13 +20,7 @@ namespace CppSharp.Passes
 
         private static void ChangeToInterfaceType(QualifiedType type)
         {
-            var tagType = type.Type as TagType;
-            if (tagType == null)
-            {
-                var pointerType = type.Type as PointerType;
-                if (pointerType != null)
-                    tagType = pointerType.Pointee as TagType;
-            }
+            var tagType = type.Type.SkipPointerRefs() as TagType;
             if (tagType != null)
             {
                 var @class = tagType.Declaration as Class;

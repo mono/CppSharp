@@ -78,6 +78,7 @@ namespace CppSharp.Passes
 
             if (Driver.TypeDatabase.FindTypeMap(decl, type, out typeMap))
             {
+                Type typeInSignature;
                 string mappedTo;
                 if (Driver.Options.IsCSharpGenerator)
                 {
@@ -86,6 +87,7 @@ namespace CppSharp.Passes
                         CSharpKind = CSharpTypePrinterContextKind.Managed,
                         Type = type
                     };
+                    typeInSignature = typeMap.CSharpSignatureType(typePrinterContext).SkipPointerRefs();
                     mappedTo = typeMap.CSharpSignature(typePrinterContext);
                 }
                 else
@@ -94,7 +96,13 @@ namespace CppSharp.Passes
                     {
                         Type = type
                     };
+                    typeInSignature = typeMap.CLISignatureType(typePrinterContext).SkipPointerRefs();
                     mappedTo = typeMap.CLISignature(typePrinterContext);
+                }
+                Enumeration @enum;
+                if (typeInSignature.TryGetEnum(out @enum))
+                {
+                    return true;
                 }
                 if (mappedTo == "string" && ctor.Parameters.Count == 0)
                 {

@@ -7,6 +7,7 @@ using CppSharp.Passes;
 using CppSharp.Types;
 using CppSharp.Utils;
 using Attribute = CppSharp.AST.Attribute;
+using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Tests
 {
@@ -18,11 +19,15 @@ namespace CppSharp.Tests
             return string.Empty;
         }
 
+        public override Type CSharpSignatureType(CSharpTypePrinterContext ctx)
+        {
+            var templateArgument = ((TemplateSpecializationType) ctx.Type.Desugar()).Arguments[0];
+            return templateArgument.Type.Type;
+        }
+
         public override string CSharpSignature(CSharpTypePrinterContext ctx)
         {
-            TemplateArgument templateArgument =
-                ((TemplateSpecializationType) ctx.Type.Desugar()).Arguments[0];
-            return templateArgument.Type.Type.ToString();
+            return this.CSharpSignatureType(ctx).ToString();
         }
 
         public override void CSharpMarshalToNative(MarshalContext ctx)
