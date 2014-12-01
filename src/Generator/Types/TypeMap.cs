@@ -57,6 +57,11 @@ namespace CppSharp.Types
 
         #region C# backend
 
+        public virtual Type CSharpSignatureType(CSharpTypePrinterContext ctx)
+        {
+            return new CILType(typeof(object));
+        }
+
         public virtual string CSharpSignature(CSharpTypePrinterContext ctx)
         {
             throw new NotImplementedException();
@@ -84,6 +89,11 @@ namespace CppSharp.Types
         #endregion
 
         #region C++/CLI backend
+
+        public virtual Type CLISignatureType(CLITypePrinterContext ctx)
+        {
+            return new CILType(typeof(object));
+        }
 
         public virtual string CLISignature(CLITypePrinterContext ctx)
         {

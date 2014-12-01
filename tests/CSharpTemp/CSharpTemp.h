@@ -106,8 +106,10 @@ Proprietor::Proprietor() {}
 template <typename T>
 class DLL_API QFlags
 {
+    typedef int (*Zero);
 public:
     QFlags(T t);
+    QFlags(Zero);
     operator T();
 private:
     T flag;
@@ -233,6 +235,7 @@ public:
     void defaultEnumAssignedBitwiseOrShort(UntypedFlags flags = Flag1 | Flag2);
     void defaultNonEmptyCtor(QGenericArgument arg = QGenericArgument(0));
     void defaultMappedToEnum(QFlags<Flags> qFlags = Flags::Flag1);
+    void defaultMappedToZeroEnum(QFlags<Flags> qFlags = 0);
     void defaultIntWithLongExpression(unsigned int i = DEFAULT_INT);
 };
 
