@@ -111,9 +111,17 @@ namespace CppSharp.Passes
                 }
             }
 
-            parameter.DefaultArgument.String = string.Format("new {0}", parameter.DefaultArgument.String);
-            if (ctor.Parameters.Count > 0 && ctor.Parameters[0].OriginalName == "_0")
-                parameter.DefaultArgument.String = parameter.DefaultArgument.String.Replace("(0)", "()");
+            if (parameter.DefaultArgument.Class == StatementClass.ImplicitCast)
+            {
+                // Make the implicit cast explicit
+                parameter.DefaultArgument.String = string.Format("new {0}({1})", ctor.Name, parameter.DefaultArgument.String);
+            }
+            else
+            {
+                parameter.DefaultArgument.String = string.Format("new {0}", parameter.DefaultArgument.String);
+                if (ctor.Parameters.Count > 0 && ctor.Parameters[0].OriginalName == "_0")
+                    parameter.DefaultArgument.String = parameter.DefaultArgument.String.Replace("(0)", "()");
+            }
 
             return decl.IsValueType ? true : (bool?) null;
         }
