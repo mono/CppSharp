@@ -6,7 +6,9 @@
         BinaryOperator,
         DeclarationReference,
         ConstructorReference,
-        CXXOperatorCall
+        CXXOperatorCall,
+        ImplicitCast,
+        ExplicitCast,
     }
 
     public abstract class Statement

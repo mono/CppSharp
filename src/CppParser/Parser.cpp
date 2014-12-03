@@ -2526,8 +2526,27 @@ AST::Expression* Parser::WalkExpression(clang::Expr* Expr)
             if (TemporaryExpr)
             {
                 auto Cast = dyn_cast<CastExpr>(TemporaryExpr->GetTemporaryExpr());
-                if (Cast && Cast->getSubExprAsWritten()->getStmtClass() != Stmt::IntegerLiteralClass)
-                    return WalkExpression(Cast->getSubExprAsWritten());
+                if (Cast)
+				{
+					switch (Cast->getStmtClass())
+					{
+					case Stmt::ImplicitCastExprClass:
+						return  new AST::Expression(GetStringFromStatement(Expr), StatementClass::ImplicitCastExpr,
+							WalkDeclaration(ConstructorExpr->getConstructor()),
+							WalkExpression(Cast->getSubExpr()));
+					case Stmt::CStyleCastExprClass:
+					case Stmt::CXXConstCastExprClass:
+					case Stmt::CXXDynamicCastExprClass:
+					case Stmt::CXXFunctionalCastExprClass:
+					case Stmt::CXXReinterpretCastExprClass:
+					case Stmt::CXXStaticCastExprClass:
+						return  new AST::Expression(GetStringFromStatement(Expr), StatementClass::ExplicitCastExpr,
+							WalkDeclaration(ConstructorExpr->getConstructor()),
+							WalkExpression(Cast->getSubExpr()));
+					default:
+						break;
+					}
+				}
             }
         }
         return new AST::Expression(GetStringFromStatement(Expr), StatementClass::CXXConstructExprClass,

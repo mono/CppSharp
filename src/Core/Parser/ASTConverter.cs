@@ -847,7 +847,20 @@ namespace CppSharp
             if (statement == null)
                 return null;
 
-            var expression = new AST.BuiltinTypeExpression();
+            AST.Expression expression;
+            
+            if (statement.Class == StatementClass.ImplicitCastExpr || statement.Class == StatementClass.ExplicitCastExpr)
+            {
+                var castExp = new AST.CastExpr();
+                var subExpr = VisitStatement(((Expression)statement).Subexpression);
+                castExp.SubExpression = subExpr as AST.BuiltinTypeExpression; // may be null!
+                expression = castExp;
+            }
+            else
+            {
+                expression = new AST.BuiltinTypeExpression();
+            }
+
             expression.Declaration = this.typeConverter.declConverter.Visit(statement.Decl);
             expression.String = statement.String;
             switch (statement.Class)
@@ -863,6 +876,12 @@ namespace CppSharp
                     break;
                 case StatementClass.CXXOperatorCallExpr:
                     expression.Class = AST.StatementClass.CXXOperatorCall;
+                    break;
+                case StatementClass.ImplicitCastExpr:
+                    expression.Class = AST.StatementClass.ImplicitCast;
+                    break;
+                case StatementClass.ExplicitCastExpr:
+                    expression.Class = AST.StatementClass.ExplicitCast;
                     break;
             }
             return expression;
