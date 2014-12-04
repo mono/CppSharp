@@ -590,7 +590,7 @@ DEF_STRING(TranslationUnit, FileName)
 DEF_VECTOR(TranslationUnit, MacroDefinition*, Macros)
 
 NativeLibrary::NativeLibrary()
-    : ArchType(ArchType::UnknownArch)
+    : ArchType(AST::ArchType::UnknownArch)
 {
 }
 
