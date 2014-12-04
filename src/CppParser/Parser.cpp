@@ -2548,6 +2548,9 @@ AST::Expression* Parser::WalkExpression(clang::Expr* Expr)
 					}
 				}
             }
+			return new AST::Expression(GetStringFromStatement(Expr), StatementClass::CXXConstructExprClass,
+				WalkDeclaration(ConstructorExpr->getConstructor()),
+				WalkExpression(Arg));
         }
         return new AST::Expression(GetStringFromStatement(Expr), StatementClass::CXXConstructExprClass,
             WalkDeclaration(ConstructorExpr->getConstructor()));

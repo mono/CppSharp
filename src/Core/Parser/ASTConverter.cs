@@ -852,9 +852,14 @@ namespace CppSharp
             if (statement.Class == StatementClass.ImplicitCastExpr || statement.Class == StatementClass.ExplicitCastExpr)
             {
                 var castExp = new AST.CastExpr();
-                var subExpr = VisitStatement(((Expression)statement).Subexpression);
-                castExp.SubExpression = subExpr as AST.BuiltinTypeExpression; // may be null!
+                castExp.SubExpression = VisitStatement(((Expression)statement).Subexpression);
                 expression = castExp;
+            }
+            else if (statement.Class == StatementClass.CXXConstructExprClass)
+            {
+                var ctorExp = new AST.CtorExpr();
+                ctorExp.SubExpression = VisitStatement(((Expression)statement).Subexpression);
+                expression = ctorExp;
             }
             else
             {

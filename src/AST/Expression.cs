@@ -36,22 +36,31 @@ namespace CppSharp.AST
 
         public override T Visit<T>(IExpressionVisitor<T> visitor)
         {
-            return visitor.VisitBuiltinExpression(this);
+            return visitor.VisitExpression(this);
         }
     }
 
     public class CastExpr : Expression
     {
-        public BuiltinTypeExpression SubExpression;
+        public Expression SubExpression;
 
         public override T Visit<T>(IExpressionVisitor<T> visitor)
         {
-            return visitor.VisitBuiltinExpression(SubExpression);
+            return visitor.VisitExpression(this);
+        }
+    }
+    public class CtorExpr : Expression
+    {
+        public Expression SubExpression;
+
+        public override T Visit<T>(IExpressionVisitor<T> visitor)
+        {
+            return visitor.VisitExpression(this);
         }
     }
 
     public interface IExpressionVisitor<out T>
     {
-        T VisitBuiltinExpression(BuiltinTypeExpression builtinType);
+        T VisitExpression(Expression exp);
     }
 }

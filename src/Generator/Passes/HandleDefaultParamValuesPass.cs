@@ -39,7 +39,7 @@ namespace CppSharp.Passes
                 if (defaultConstruct == true)
                     continue;
 
-                if (CheckForEnumValue(parameter, desugared))
+                if (CheckForEnumValue(parameter.DefaultArgument, desugared))
                     continue;
 
                 CheckForDefaultEmptyChar(parameter, desugared);
@@ -102,7 +102,14 @@ namespace CppSharp.Passes
                 Enumeration @enum;
                 if (typeInSignature.TryGetEnum(out @enum))
                 {
-                    return true;
+                    var arg = parameter.DefaultArgument as CastExpr;
+                    var literal = (arg.SubExpression as CtorExpr).SubExpression;
+                    if (CheckForEnumValue(literal, desugared))
+                    {
+                        arg.String = literal.String;
+                        arg.SubExpression.String = literal.String;
+                        return true;
+                    }
                 }
                 if (mappedTo == "string" && ctor.Parameters.Count == 0)
                 {
@@ -126,12 +133,12 @@ namespace CppSharp.Passes
             return decl.IsValueType ? true : (bool?) null;
         }
 
-        private static bool CheckForEnumValue(Parameter parameter, Type desugared)
+        private static bool CheckForEnumValue(Expression arg, Type desugared)
         {
-            var enumItem = parameter.DefaultArgument.Declaration as Enumeration.Item;
+            var enumItem = arg.Declaration as Enumeration.Item;
             if (enumItem != null)
             {
-                parameter.DefaultArgument.String = string.Format("{0}{1}{2}.{3}",
+                arg.String = string.Format("{0}{1}{2}.{3}",
                     desugared.IsPrimitiveType() ? "(int) " : string.Empty,
                     string.IsNullOrEmpty(enumItem.Namespace.Namespace.Name)
                         ? string.Empty
@@ -139,14 +146,14 @@ namespace CppSharp.Passes
                 return true;
             }
 
-            var call = parameter.DefaultArgument.Declaration as Function;
-            if (call != null || parameter.DefaultArgument.Class == StatementClass.BinaryOperator)
+            var call = arg.Declaration as Function;
+            if (call != null || arg.Class == StatementClass.BinaryOperator)
             {
-                string @params = regexFunctionParams.Match(parameter.DefaultArgument.String).Groups[1].Value;
+                string @params = regexFunctionParams.Match(arg.String).Groups[1].Value;
                 if (@params.Contains("::"))
-                    parameter.DefaultArgument.String = regexDoubleColon.Replace(@params, desugared + ".");
+                    arg.String = regexDoubleColon.Replace(@params, desugared + ".");
                 else
-                    parameter.DefaultArgument.String = regexName.Replace(@params, desugared + ".$1");
+                    arg.String = regexName.Replace(@params, desugared + ".$1");
                 return true;
             }
             return false;
