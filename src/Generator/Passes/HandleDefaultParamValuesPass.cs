@@ -110,6 +110,10 @@ namespace CppSharp.Passes
                         arg.SubExpression.String = literal.String;
                         return true;
                     }
+                    else
+                    {
+                        return false;
+                    }
                 }
                 if (mappedTo == "string" && ctor.Parameters.Count == 0)
                 {
@@ -121,7 +125,16 @@ namespace CppSharp.Passes
             if (parameter.DefaultArgument.Class == StatementClass.ImplicitCast)
             {
                 // Make the implicit cast explicit
-                parameter.DefaultArgument.String = string.Format("new {0}({1})", ctor.Name, parameter.DefaultArgument.String);
+                var implicitCtor = (parameter.DefaultArgument as CastExpr).SubExpression;
+                var innerArg = (implicitCtor as CtorExpr).SubExpression;
+                if (innerArg.Class == StatementClass.ConstructorReference)
+                {
+                    parameter.DefaultArgument.String = string.Format("new {0}(new {1})", ctor.Name, parameter.DefaultArgument.String);
+                }
+                else
+                {
+                    parameter.DefaultArgument.String = string.Format("new {0}({1})", ctor.Name, parameter.DefaultArgument.String);
+                }
             }
             else
             {
@@ -147,7 +160,7 @@ namespace CppSharp.Passes
             }
 
             var call = arg.Declaration as Function;
-            if (call != null || arg.Class == StatementClass.BinaryOperator)
+            if ((call != null && call.ReturnType.Type.IsEnum()) || arg.Class == StatementClass.BinaryOperator)
             {
                 string @params = regexFunctionParams.Match(arg.String).Groups[1].Value;
                 if (@params.Contains("::"))
