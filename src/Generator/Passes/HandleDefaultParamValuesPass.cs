@@ -102,8 +102,8 @@ namespace CppSharp.Passes
                 Enumeration @enum;
                 if (typeInSignature.TryGetEnum(out @enum))
                 {
-                    var arg = parameter.DefaultArgument as CastExpr;
-                    var literal = (arg.SubExpression as CtorExpr).SubExpression;
+                    var arg = (CastExpr)parameter.DefaultArgument;
+                    var literal = ((CtorExpr)arg.SubExpression).SubExpression;
                     if (CheckForEnumValue(literal, desugared))
                     {
                         arg.String = literal.String;
@@ -125,8 +125,8 @@ namespace CppSharp.Passes
             if (parameter.DefaultArgument.Class == StatementClass.ImplicitCast)
             {
                 // Make the implicit cast explicit
-                var implicitCtor = (parameter.DefaultArgument as CastExpr).SubExpression;
-                var innerArg = (implicitCtor as CtorExpr).SubExpression;
+                var implicitCtor = ((CastExpr)parameter.DefaultArgument).SubExpression;
+                var innerArg = ((CtorExpr)implicitCtor).SubExpression;
                 if (innerArg.Class == StatementClass.ConstructorReference)
                 {
                     parameter.DefaultArgument.String = string.Format("new {0}(new {1})", ctor.Name, parameter.DefaultArgument.String);

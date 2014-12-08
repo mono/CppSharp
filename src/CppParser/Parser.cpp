@@ -2510,8 +2510,13 @@ AST::Expression* Parser::WalkExpression(clang::Expr* Expr)
     case Stmt::CXXFunctionalCastExprClass:
     case Stmt::CXXReinterpretCastExprClass:
     case Stmt::CXXStaticCastExprClass:
+        return  new AST::Expression(GetStringFromStatement(Expr), StatementClass::ExplicitCastExpr,
+            0,
+            WalkExpression(cast<CastExpr>(Expr)->getSubExpr()));
     case Stmt::ImplicitCastExprClass:
-        return WalkExpression(cast<CastExpr>(Expr)->getSubExprAsWritten());
+        return  new AST::Expression(GetStringFromStatement(Expr), StatementClass::ImplicitCastExpr,
+            0,
+            WalkExpression(cast<CastExpr>(Expr)->getSubExpr()));
     case Stmt::CXXOperatorCallExprClass:
         return new AST::Expression(GetStringFromStatement(Expr), StatementClass::CXXOperatorCallExpr,
             WalkDeclaration(cast<CXXOperatorCallExpr>(Expr)->getCalleeDecl()));
@@ -2525,35 +2530,20 @@ AST::Expression* Parser::WalkExpression(clang::Expr* Expr)
             auto TemporaryExpr = dyn_cast<MaterializeTemporaryExpr>(Arg);
             if (TemporaryExpr)
             {
-                auto Cast = dyn_cast<CastExpr>(TemporaryExpr->GetTemporaryExpr());
-                if (Cast)
-				{
-					switch (Cast->getStmtClass())
-					{
-					case Stmt::ImplicitCastExprClass:
-						return  new AST::Expression(GetStringFromStatement(Expr), StatementClass::ImplicitCastExpr,
-							WalkDeclaration(ConstructorExpr->getConstructor()),
-							WalkExpression(Cast->getSubExpr()));
-					case Stmt::CStyleCastExprClass:
-					case Stmt::CXXConstCastExprClass:
-					case Stmt::CXXDynamicCastExprClass:
-					case Stmt::CXXFunctionalCastExprClass:
-					case Stmt::CXXReinterpretCastExprClass:
-					case Stmt::CXXStaticCastExprClass:
-						return  new AST::Expression(GetStringFromStatement(Expr), StatementClass::ExplicitCastExpr,
-							WalkDeclaration(ConstructorExpr->getConstructor()),
-							WalkExpression(Cast->getSubExpr()));
-					default:
-						break;
-					}
-				}
+                return WalkExpression(TemporaryExpr->GetTemporaryExpr());
             }
-			return new AST::Expression(GetStringFromStatement(Expr), StatementClass::CXXConstructExprClass,
-				WalkDeclaration(ConstructorExpr->getConstructor()),
-				WalkExpression(Arg));
+            else
+            {
+                return new AST::Expression(GetStringFromStatement(Expr), StatementClass::CXXConstructExprClass,
+                    WalkDeclaration(ConstructorExpr->getConstructor()),
+                    WalkExpression(Arg));
+            }
         }
-        return new AST::Expression(GetStringFromStatement(Expr), StatementClass::CXXConstructExprClass,
-            WalkDeclaration(ConstructorExpr->getConstructor()));
+        else
+        {
+            return new AST::Expression(GetStringFromStatement(Expr), StatementClass::CXXConstructExprClass,
+                WalkDeclaration(ConstructorExpr->getConstructor()));
+        }
     }
     case Stmt::MaterializeTemporaryExprClass:
         return WalkExpression(cast<MaterializeTemporaryExpr>(Expr)->GetTemporaryExpr());

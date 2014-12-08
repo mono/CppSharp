@@ -465,9 +465,9 @@ enum class StatementClass
     BinaryOperator,
     DeclRefExprClass,
     CXXConstructExprClass,
-	CXXOperatorCallExpr,
-	ImplicitCastExpr,
-	ExplicitCastExpr,
+    CXXOperatorCallExpr,
+    ImplicitCastExpr,
+    ExplicitCastExpr,
 };
 
 class CS_API Statement
@@ -482,8 +482,8 @@ public:
 class CS_API Expression : public Statement
 {
 public:
-	Expression(const std::string& str, StatementClass Class = StatementClass::Any, Declaration* decl = 0, Expression* subexpr = 0);
-	Expression* Subexpression;
+    Expression(const std::string& str, StatementClass Class = StatementClass::Any, Declaration* decl = 0, Expression* subexpr = 0);
+    Expression* Subexpression;
 };
 
 class CS_API Parameter : public Declaration
