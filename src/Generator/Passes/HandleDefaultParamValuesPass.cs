@@ -42,12 +42,30 @@ namespace CppSharp.Passes
                 if (CheckForEnumValue(parameter.DefaultArgument, desugared))
                     continue;
 
+                CheckForAnonExpression(desugared, parameter);
+
                 CheckForDefaultEmptyChar(parameter, desugared);
+
             }
 
             GenerateOverloads(function, overloadIndices);
 
             return result;
+        }
+
+        private bool CheckForAnonExpression(Type desugared, Parameter parameter)
+        {
+            var cast = parameter.DefaultArgument as CastExpr;
+            if (cast != null)
+            {
+                if (cast.SubExpression is BuiltinTypeExpression)
+                {
+                    // The output string is correct in the deepest expression. Copy it to the outernmost.
+                    cast.String = cast.SubExpression.String;
+                    return true;
+                }
+            }
+            return true;
         }
 
         private static bool CheckForDefaultPointer(Type desugared, Parameter parameter)
