@@ -883,7 +883,7 @@ namespace CppSharp
                         var castExp = new AST.CastExpr();
                         castExp.SubExpression = VisitStatement(((Expression)statement).Subexpression);
                         expression = castExp;
-                        expression.Class = AST.StatementClass.ImplicitCast;
+                        expression.Class = AST.StatementClass.ExplicitCast;
                         break;
                     }
                 default:

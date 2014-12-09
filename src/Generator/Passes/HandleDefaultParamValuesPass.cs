@@ -64,18 +64,37 @@ namespace CppSharp.Passes
 
         private bool? CheckForDefaultConstruct(Type desugared, Parameter parameter)
         {
-            Method ctor = parameter.DefaultArgument.Declaration as Method;
+            // Unwrapping the constructor and a possible cast
+            Method ctor;
+            CastExpr cast;
+            if (parameter.DefaultArgument.Class == StatementClass.ConstructorReference)
+            {
+                ctor = parameter.DefaultArgument.Declaration as Method;
+                cast = ((CtorExpr)parameter.DefaultArgument).SubExpression as CastExpr;
+            }
+            else if (parameter.DefaultArgument.Class == StatementClass.ImplicitCast || parameter.DefaultArgument.Class == StatementClass.ExplicitCast)
+            {
+                ctor = ((CastExpr)parameter.DefaultArgument).SubExpression.Declaration as Method;
+                cast = parameter.DefaultArgument as CastExpr;
+            }
+            else
+            {
+                return false;
+            }
+
             if (ctor == null || !ctor.IsConstructor)
                 return false;
 
+            // Unwrapping the underlying type behind a possible pointer/reference
             Type type;
             desugared.IsPointerTo(out type);
             type = type ?? desugared;
+
             Class decl;
             if (!type.TryGetClass(out decl))
                 return false;
-            TypeMap typeMap;
 
+            TypeMap typeMap;
             if (Driver.TypeDatabase.FindTypeMap(decl, type, out typeMap))
             {
                 Type typeInSignature;
@@ -102,12 +121,14 @@ namespace CppSharp.Passes
                 Enumeration @enum;
                 if (typeInSignature.TryGetEnum(out @enum))
                 {
-                    var arg = (CastExpr)parameter.DefaultArgument;
-                    var literal = ((CtorExpr)arg.SubExpression).SubExpression;
+                    var argCtor = (CtorExpr)parameter.DefaultArgument;
+                    var argCast = (CastExpr)argCtor.SubExpression;
+                    Expression literal = ((CtorExpr)argCast.SubExpression).SubExpression;
+                    
                     if (CheckForEnumValue(literal, desugared))
                     {
-                        arg.String = literal.String;
-                        arg.SubExpression.String = literal.String;
+                        argCtor.String = literal.String;
+                        argCtor.SubExpression.String = literal.String;
                         return true;
                     }
                     else
@@ -122,12 +143,15 @@ namespace CppSharp.Passes
                 }
             }
 
-            if (parameter.DefaultArgument.Class == StatementClass.ImplicitCast)
+            bool pointerCast = type != desugared;
+
+            // Generating the output string
+            if (cast != null && cast.Class == StatementClass.ImplicitCast && !pointerCast)
             {
                 // Make the implicit cast explicit
-                var implicitCtor = ((CastExpr)parameter.DefaultArgument).SubExpression;
+                var implicitCtor = cast.SubExpression;
                 var innerArg = ((CtorExpr)implicitCtor).SubExpression;
-                if (innerArg.Class == StatementClass.ConstructorReference)
+                if (innerArg != null && innerArg.Class == StatementClass.ConstructorReference)
                 {
                     parameter.DefaultArgument.String = string.Format("new {0}(new {1})", ctor.Name, parameter.DefaultArgument.String);
                 }
@@ -138,6 +162,7 @@ namespace CppSharp.Passes
             }
             else
             {
+                // Plain constructor - just add "new"
                 parameter.DefaultArgument.String = string.Format("new {0}", parameter.DefaultArgument.String);
                 if (ctor.Parameters.Count > 0 && ctor.Parameters[0].OriginalName == "_0")
                     parameter.DefaultArgument.String = parameter.DefaultArgument.String.Replace("(0)", "()");
@@ -148,7 +173,16 @@ namespace CppSharp.Passes
 
         private static bool CheckForEnumValue(Expression arg, Type desugared)
         {
-            var enumItem = arg.Declaration as Enumeration.Item;
+            // Handle a simple cast (between int and enum, for example)
+            var argCast = arg as CastExpr;
+            Expression literal;
+            if (argCast != null)
+                literal = argCast.SubExpression;
+            else
+                literal = arg;
+
+            // The default case
+            var enumItem = literal.Declaration as Enumeration.Item;
             if (enumItem != null)
             {
                 arg.String = string.Format("{0}{1}{2}.{3}",
@@ -158,7 +192,7 @@ namespace CppSharp.Passes
                         : enumItem.Namespace.Namespace.Name + ".", enumItem.Namespace.Name, enumItem.Name);
                 return true;
             }
-
+            // Handle cases like "Flags::Flag1 | Flags::Flag2"
             var call = arg.Declaration as Function;
             if ((call != null && call.ReturnType.Type.IsEnum()) || arg.Class == StatementClass.BinaryOperator)
             {
