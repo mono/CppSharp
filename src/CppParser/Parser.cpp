@@ -2526,9 +2526,16 @@ AST::Expression* Parser::WalkExpression(clang::Expr* Expr)
         auto ConstructorExpr = cast<CXXConstructExpr>(Expr);
         if (ConstructorExpr->getNumArgs() == 1)
         {
-            return new AST::Expression(GetStringFromStatement(Expr), StatementClass::CXXConstructExprClass,
-                WalkDeclaration(ConstructorExpr->getConstructor()),
-                WalkExpression(ConstructorExpr->getArg(0)));
+            if (ConstructorExpr->isElidable())
+            {
+                return WalkExpression(ConstructorExpr->getArg(0));
+            }
+            else
+            {
+                return new AST::Expression(GetStringFromStatement(Expr), StatementClass::CXXConstructExprClass,
+                    WalkDeclaration(ConstructorExpr->getConstructor()),
+                    WalkExpression(ConstructorExpr->getArg(0)));
+            }
         }
         else
         {

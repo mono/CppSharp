@@ -28,7 +28,7 @@ namespace CppSharp.Passes
                 if (CheckForDefaultPointer(desugared, parameter))
                     continue;
 
-                bool? defaultConstruct = CheckForDefaultConstruct(desugared, parameter);
+                bool? defaultConstruct = CheckForDefaultConstruct(desugared, parameter.DefaultArgument);
                 if (defaultConstruct == null ||
                     (!Driver.Options.MarshalCharAsManagedChar &&
                      parameter.Type.Desugar().IsPrimitiveType(PrimitiveType.UChar)))
@@ -80,25 +80,28 @@ namespace CppSharp.Passes
             return false;
         }
 
-        private bool? CheckForDefaultConstruct(Type desugared, Parameter parameter)
+        private bool? CheckForDefaultConstruct(Type desugared, Expression arg)
         {
             // Unwrapping the constructor and a possible cast
-            Method ctor;
-            CastExpr cast;
-            if (parameter.DefaultArgument.Class == StatementClass.ConstructorReference)
+            Method ctor = null;
+            CastExpr castExpression = null;
+            CtorExpr ctorExpression = null;
+            if (arg is CtorExpr)
             {
-                ctor = parameter.DefaultArgument.Declaration as Method;
-                cast = ((CtorExpr)parameter.DefaultArgument).SubExpression as CastExpr;
+                ctorExpression = (CtorExpr)arg;
+                ctor = (Method)ctorExpression.Declaration;
             }
-            else if (parameter.DefaultArgument.Class == StatementClass.ImplicitCast || parameter.DefaultArgument.Class == StatementClass.ExplicitCast)
+            else if (arg is CastExpr && ((CastExpr)arg).SubExpression is CtorExpr)
             {
-                ctor = ((CastExpr)parameter.DefaultArgument).SubExpression.Declaration as Method;
-                cast = parameter.DefaultArgument as CastExpr;
+                castExpression = (CastExpr)arg;
+                ctorExpression = (CtorExpr)castExpression.SubExpression;
+                ctor = (Method)ctorExpression.Declaration;
             }
             else
             {
                 return false;
             }
+            var innerArg = ctorExpression.SubExpression;
 
             if (ctor == null || !ctor.IsConstructor)
                 return false;
@@ -139,14 +142,13 @@ namespace CppSharp.Passes
                 Enumeration @enum;
                 if (typeInSignature.TryGetEnum(out @enum))
                 {
-                    var argCtor = (CtorExpr)parameter.DefaultArgument;
-                    var argCast = (CastExpr)argCtor.SubExpression;
+                    var argCast = (CastExpr)arg;
                     Expression literal = ((CtorExpr)argCast.SubExpression).SubExpression;
                     
                     if (CheckForEnumValue(literal, desugared))
                     {
-                        argCtor.String = literal.String;
-                        argCtor.SubExpression.String = literal.String;
+                        argCast.String = literal.String;
+                        argCast.SubExpression.String = literal.String;
                         return true;
                     }
                     else
@@ -156,35 +158,28 @@ namespace CppSharp.Passes
                 }
                 if (mappedTo == "string" && ctor.Parameters.Count == 0)
                 {
-                    parameter.DefaultArgument.String = "\"\"";
+                    arg.String = "\"\"";
                     return true;
                 }
             }
 
-            bool pointerCast = type != desugared;
-
-            // Generating the output string
-            if (cast != null && cast.Class == StatementClass.ImplicitCast && !pointerCast)
+            if (innerArg is CtorExpr || innerArg is CastExpr)
             {
-                // Make the implicit cast explicit
-                var implicitCtor = cast.SubExpression;
-                var innerArg = ((CtorExpr)implicitCtor).SubExpression;
-                if (innerArg != null && innerArg.Class == StatementClass.ConstructorReference)
-                {
-                    parameter.DefaultArgument.String = string.Format("new {0}(new {1})", ctor.Name, parameter.DefaultArgument.String);
-                }
-                else
-                {
-                    parameter.DefaultArgument.String = string.Format("new {0}({1})", ctor.Name, parameter.DefaultArgument.String);
-                }
+                Type innerDesugared = ctor.Parameters[0].Type.Desugar();
+                CheckForDefaultConstruct(innerDesugared, innerArg);
+                arg.String = string.Format("new {0}({1})", ctor.Name, innerArg.String);
+            }
+            else if (innerArg != null)
+            {
+                arg.String = string.Format("new {0}({1})", ctor.Name, innerArg.String);
             }
             else
             {
-                // Plain constructor - just add "new"
-                parameter.DefaultArgument.String = string.Format("new {0}", parameter.DefaultArgument.String);
-                if (ctor.Parameters.Count > 0 && ctor.Parameters[0].OriginalName == "_0")
-                    parameter.DefaultArgument.String = parameter.DefaultArgument.String.Replace("(0)", "()");
+                arg.String = string.Format("new {0}()", ctor.Name);
             }
+            if (ctor.Parameters.Count > 0 && ctor.Parameters[0].OriginalName == "_0")
+                arg.String = arg.String.Replace("(0)", "()");
+
 
             return decl.IsValueType ? true : (bool?) null;
         }
