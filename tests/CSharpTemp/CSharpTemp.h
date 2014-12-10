@@ -228,6 +228,21 @@ private:
 
 #define DEFAULT_INT (2 * 1000UL + 500UL)
 
+namespace Qt
+{
+    enum GlobalColor {
+        black,
+        white,
+    };
+}
+
+class QColor
+{
+public:
+    QColor();
+    QColor(Qt::GlobalColor color);
+};
+
 class DLL_API MethodsWithDefaultValues
 {
 public:
@@ -252,6 +267,7 @@ public:
     void defaultImplicitCtorChar(Quux arg = 'a');
     void defaultImplicitCtorFoo(Quux arg = Foo());
     void defaultIntWithLongExpression(unsigned int i = DEFAULT_INT);
+    void defaultRefTypeEnumImplicitCtor(const QColor &fillColor = Qt::white);
 };
 
 class DLL_API HasPrivateOverrideBase

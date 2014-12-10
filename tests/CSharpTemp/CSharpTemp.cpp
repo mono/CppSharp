@@ -52,6 +52,18 @@ Quux::Quux(Foo f)
 
 }
 
+
+
+QColor::QColor()
+{
+
+}
+
+QColor::QColor(Qt::GlobalColor color)
+{
+
+}
+
 Qux::Qux()
 {
 
@@ -324,6 +336,10 @@ void MethodsWithDefaultValues::defaultImplicitCtorChar(Quux arg)
 }
 
 void MethodsWithDefaultValues::defaultIntWithLongExpression(unsigned int i)
+{
+}
+
+void MethodsWithDefaultValues::defaultRefTypeEnumImplicitCtor(const QColor &fillColor)
 {
 }
 
