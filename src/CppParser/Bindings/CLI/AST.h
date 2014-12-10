@@ -214,7 +214,9 @@ namespace CppSharp
                 BinaryOperator = 1,
                 DeclRefExprClass = 2,
                 CXXConstructExprClass = 3,
-                CXXOperatorCallExpr = 4
+                CXXOperatorCallExpr = 4,
+                ImplicitCastExpr = 5,
+                ExplicitCastExpr = 6
             };
 
             public enum struct TemplateSpecializationKind
@@ -1211,6 +1213,11 @@ namespace CppSharp
 
                 Expression(::CppSharp::CppParser::AST::Expression* native);
                 static Expression^ __CreateInstance(::System::IntPtr native);
+                property CppSharp::Parser::AST::Expression^ Subexpression
+                {
+                    CppSharp::Parser::AST::Expression^ get();
+                    void set(CppSharp::Parser::AST::Expression^);
+                }
             };
 
             public ref class Parameter : CppSharp::Parser::AST::Declaration
