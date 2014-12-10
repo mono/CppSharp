@@ -167,19 +167,20 @@ namespace CppSharp.Passes
             {
                 Type innerDesugared = ctor.Parameters[0].Type.Desugar();
                 CheckForDefaultConstruct(innerDesugared, innerArg);
+                if (innerDesugared.IsPointer() && innerArg.String == "0")
+                    innerArg.String = "";
                 arg.String = string.Format("new {0}({1})", ctor.Name, innerArg.String);
             }
             else if (innerArg != null)
             {
+                Type innerDesugared = ctor.Parameters[0].Type.Desugar();
+                CheckForEnumValue(innerArg, innerDesugared);
                 arg.String = string.Format("new {0}({1})", ctor.Name, innerArg.String);
             }
             else
             {
                 arg.String = string.Format("new {0}()", ctor.Name);
             }
-            if (ctor.Parameters.Count > 0 && ctor.Parameters[0].OriginalName == "_0")
-                arg.String = arg.String.Replace("(0)", "()");
-
 
             return decl.IsValueType ? true : (bool?) null;
         }
