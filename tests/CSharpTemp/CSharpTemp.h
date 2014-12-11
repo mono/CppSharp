@@ -23,6 +23,9 @@ public:
     Quux(int i);
     Quux(char c);
     Quux(Foo f);
+
+    virtual bool operator<(const Quux &other) const;
+
 private:
     int priv;
 };

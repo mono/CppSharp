@@ -52,6 +52,11 @@ Quux::Quux(Foo f)
 
 }
 
+bool Quux::operator<(const Quux &other) const
+{
+    return other.priv < this->priv;
+}
+
 
 
 QColor::QColor()
