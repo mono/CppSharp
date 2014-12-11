@@ -269,6 +269,7 @@ public:
     void defaultImplicitCtorFoo(Quux arg = Foo());
     void defaultIntWithLongExpression(unsigned int i = DEFAULT_INT);
     void defaultRefTypeEnumImplicitCtor(const QColor &fillColor = Qt::white);
+    void rotate4x4Matrix(float angle, float x, float y, float z = 0.0f);
 };
 
 class DLL_API HasPrivateOverrideBase
