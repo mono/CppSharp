@@ -343,10 +343,6 @@ void MethodsWithDefaultValues::defaultRefTypeEnumImplicitCtor(const QColor &fill
 {
 }
 
-void MethodsWithDefaultValues::rotate4x4Matrix(float angle, float x, float y, float z)
-{
-}
-
 void HasPrivateOverrideBase::privateOverride(int i)
 {
 }

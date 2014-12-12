@@ -28,8 +28,6 @@ namespace CppSharp.Passes
                 if (CheckForDefaultPointer(desugared, parameter))
                     continue;
 
-                CheckFloatSyntax(desugared, parameter);
-
                 bool? defaultConstruct = CheckForDefaultConstruct(desugared, parameter.DefaultArgument);
                 if (defaultConstruct == null ||
                     (!Driver.Options.MarshalCharAsManagedChar &&
@@ -53,15 +51,6 @@ namespace CppSharp.Passes
             GenerateOverloads(function, overloadIndices);
 
             return result;
-        }
-
-        private void CheckFloatSyntax(Type desugared, Parameter parameter)
-        {
-            var builtin = desugared as BuiltinType;
-            if (builtin != null && builtin.Type == AST.PrimitiveType.Float && parameter.DefaultArgument.String.EndsWith(".F"))
-            {
-                parameter.DefaultArgument.String = parameter.DefaultArgument.String.Replace(".F", ".0F");
-            }
         }
 
         private bool CheckForAnonExpression(Type desugared, Parameter parameter)
