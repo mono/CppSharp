@@ -49,6 +49,7 @@ function SetupTestGeneratorProject(name)
 
     links
     {
+      "System.Core",
       "CppSharp.AST",
       "CppSharp.Generator",
       "CppSharp.Generator.Tests"
