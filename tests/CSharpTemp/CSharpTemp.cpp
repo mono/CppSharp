@@ -277,12 +277,6 @@ QGenericArgument::QGenericArgument(const char *name)
 
 MethodsWithDefaultValues::MethodsWithDefaultValues(Foo foo)
 {
-    m_foo = foo;
-}
-
-MethodsWithDefaultValues::MethodsWithDefaultValues(int a)
-{
-    m_foo.A = a;
 }
 
 void MethodsWithDefaultValues::defaultPointer(Foo *ptr)
@@ -349,15 +343,6 @@ void MethodsWithDefaultValues::defaultRefTypeEnumImplicitCtor(const QColor &fill
 {
 }
 
-void MethodsWithDefaultValues::rotate4x4Matrix(float angle, float x, float y, float z)
-{
-}
-
-int MethodsWithDefaultValues::getA()
-{
-    return m_foo.A;
-}
-
 void HasPrivateOverrideBase::privateOverride(int i)
 {
 }
@@ -374,20 +359,4 @@ IgnoredType<int> PropertyWithIgnoredType::ignoredType()
 void PropertyWithIgnoredType::setIgnoredType(const IgnoredType<int> &value)
 {
     _ignoredType = value;
-}
-
-StructWithPrivateFields::StructWithPrivateFields(int simplePrivateField, Foo complexPrivateField)
-{
-    this->simplePrivateField = simplePrivateField;
-    this->complexPrivateField = complexPrivateField;
-}
-
-int StructWithPrivateFields::getSimplePrivateField()
-{
-    return simplePrivateField;
-}
-
-Foo StructWithPrivateFields::getComplexPrivateField()
-{
-    return complexPrivateField;
 }
