@@ -137,7 +137,9 @@ namespace CppSharp
                 BinaryOperator = 1,
                 DeclRefExprClass = 2,
                 CXXConstructExprClass = 3,
-                CXXOperatorCallExpr = 4
+                CXXOperatorCallExpr = 4,
+                ImplicitCastExpr = 5,
+                ExplicitCastExpr = 6
             }
 
             public enum TemplateSpecializationKind
@@ -4169,7 +4171,7 @@ namespace CppSharp
 
             public unsafe partial class Expression : CppSharp.Parser.AST.Statement, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 24)]
+                [StructLayout(LayoutKind.Explicit, Size = 32)]
                 public new partial struct Internal
                 {
                     [FieldOffset(0)]
@@ -4177,6 +4179,9 @@ namespace CppSharp
 
                     [FieldOffset(8)]
                     public global::System.IntPtr Decl;
+
+                    [FieldOffset(24)]
+                    public global::System.IntPtr Subexpression;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -4203,7 +4208,7 @@ namespace CppSharp
 
                 private static Expression.Internal* __CopyValue(Expression.Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(24);
+                    var ret = Marshal.AllocHGlobal(32);
                     CppSharp.Parser.AST.Expression.Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return (Expression.Internal*) ret;
                 }
@@ -4226,6 +4231,21 @@ namespace CppSharp
                         Marshal.FreeHGlobal(__Instance);
                     }
                     base.Dispose(disposing);
+                }
+
+                public CppSharp.Parser.AST.Expression Subexpression
+                {
+                    get
+                    {
+                        var __ptr = (Internal*)__Instance.ToPointer();
+                        return (__ptr->Subexpression == IntPtr.Zero) ? null : CppSharp.Parser.AST.Expression.__CreateInstance(__ptr->Subexpression);
+                    }
+
+                    set
+                    {
+                        var __ptr = (Internal*)__Instance.ToPointer();
+                        __ptr->Subexpression = value == (CppSharp.Parser.AST.Expression) null ? global::System.IntPtr.Zero : value.__Instance;
+                    }
                 }
             }
 
