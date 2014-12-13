@@ -45,6 +45,8 @@ public:
     typedef Foo* FooPtr;
 
     void TakesTypedefedPtr(FooPtr date);
+
+    bool operator ==(const Foo& other) const;
 };
 
 struct DLL_API Bar
@@ -61,6 +63,8 @@ struct DLL_API Bar
     float B;
 
     Bar* returnPointerToValueType();
+
+    bool operator ==(const Bar& other) const;
 };
 
 class DLL_API Foo2 : public Foo
