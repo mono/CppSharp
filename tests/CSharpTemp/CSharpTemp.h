@@ -59,6 +59,7 @@ public:
 private:
     int index;
     Foo m_foo;
+    Foo foos[4];
 };
 
 Bar::Bar() {}
