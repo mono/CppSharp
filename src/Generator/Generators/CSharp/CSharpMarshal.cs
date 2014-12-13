@@ -568,7 +568,11 @@ namespace CppSharp.Generators.CSharp
                 if (type.TryGetClass(out decl) && decl.IsValueType)
                     Context.Return.Write("{0}.{1}", param, Helpers.InstanceIdentifier);
                 else
-                    Context.Return.Write("{0} == ({2}) null ? global::System.IntPtr.Zero : {0}.{1}", param,
+                    Context.Return.Write("{0}{1}.{2}",
+                        method != null && method.OperatorKind == CXXOperatorKind.EqualEqual
+                            ? string.Empty
+                            : string.Format("ReferenceEquals({0}, null) ? global::System.IntPtr.Zero : ", param),
+                        param,
                         Helpers.InstanceIdentifier, type);
                 return;
             }

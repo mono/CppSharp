@@ -265,7 +265,6 @@ namespace CppSharp.AST
             set { if (value) ExplicitlyIgnore(); }
         }
 
-        [Obsolete("Replace set by ExplicitlyIgnore(). Replace get by GenerationKind == GenerationKind.None.")]
         public virtual bool Ignore
         {
             get { return GenerationKind == GenerationKind.None; }

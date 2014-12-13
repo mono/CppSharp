@@ -23,6 +23,11 @@ void Foo::TakesTypedefedPtr(FooPtr date)
 {
 }
 
+bool Foo::operator ==(const Foo& other) const
+{
+    return A == other.A && B == other.B;
+}
+
 Foo2::Foo2() {}
 
 Foo2 Foo2::operator<<(signed int i)
@@ -60,6 +65,11 @@ Bar::Item Bar::RetItem1()
 Bar* Bar::returnPointerToValueType()
 {
     return this;
+}
+
+bool Bar::operator ==(const Bar& other) const
+{
+    return A == other.A && B == other.B;
 }
 
 Bar2::Nested::operator int() const

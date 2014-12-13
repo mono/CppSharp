@@ -212,7 +212,7 @@ namespace CppSharp.Generators.CLI
                 foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.Ignore))
                     GenerateClassMethods(@base.Class, realOwner);
 
-            foreach (var method in @class.Methods)
+            foreach (var method in @class.Methods.Where(m => @class == realOwner || !m.IsOperator))
             {
                 if (ASTUtils.CheckIgnoreMethod(method, Options))
                     continue;
@@ -764,7 +764,39 @@ namespace CppSharp.Generators.CLI
             PopBlock();
 
             WriteCloseBraceIndent();
+
+            if (method.OperatorKind == CXXOperatorKind.EqualEqual)
+            {
+                GenerateEquals(method, @class);
+            }
+
             PopBlock(NewLineKind.Always);
+        }
+
+        private void GenerateEquals(Function method, Class @class)
+        {
+            Class leftHandSide;
+            Class rightHandSide;
+            if (method.Parameters[0].Type.SkipPointerRefs().TryGetClass(out leftHandSide) &&
+                leftHandSide.OriginalPtr == @class.OriginalPtr &&
+                method.Parameters[1].Type.SkipPointerRefs().TryGetClass(out rightHandSide) &&
+                rightHandSide.OriginalPtr == @class.OriginalPtr)
+            {
+                NewLine();
+                var qualifiedIdentifier = QualifiedIdentifier(@class);
+                WriteLine("bool {0}::Equals(::System::Object^ obj)", qualifiedIdentifier);
+                WriteStartBraceIndent();
+                if (@class.IsRefType)
+                {
+                    WriteLine("return this == dynamic_cast<{0}^>(obj);", qualifiedIdentifier);
+                }
+                else
+                {
+                    WriteLine("if (!(obj is {0})) return false;", @class.Name);
+                    WriteLine("return this == ({0}) obj;", @class.Name);
+                }
+                WriteCloseBraceIndent();
+            }
         }
 
         private void GenerateValueTypeConstructorCall(Method method, Class @class)

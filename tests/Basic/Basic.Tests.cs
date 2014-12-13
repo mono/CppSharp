@@ -458,5 +458,11 @@ public class BasicTests : GeneratorTestFixture
     {
         new InvokesInternalCtorAmbiguity().InvokeInternalCtor();
     }
+
+    [Test]
+    public void TestEqualityOperator()
+    {
+        Assert.AreEqual(new Foo { A = 5, B = 5.5f }, new Foo { A = 5, B = 5.5f });
+    }
 }
  
