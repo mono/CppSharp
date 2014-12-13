@@ -263,7 +263,7 @@ namespace CppSharp.Generators.CLI
             GenerateClassProperties(@class);
 
             GenerateClassEvents(@class);
-            GenerateClassMethods(@class);
+            GenerateClassMethods(@class.Methods);
 
             if (Options.GenerateFunctionTemplates)
                 GenerateClassGenericMethods(@class);
@@ -487,16 +487,21 @@ namespace CppSharp.Generators.CLI
             }
         }
 
-        public void GenerateClassMethods(Class @class)
+        public void GenerateClassMethods(List<Method> methods)
         {
+            if (methods.Count == 0)
+                return;
+
             PushIndent();
+
+            var @class = (Class) methods[0].Namespace;
 
             if (@class.IsValueType)
                 foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.Ignore))
-                    GenerateClassMethods(@base.Class);
+                    GenerateClassMethods(@base.Class.Methods.Where(m => !m.IsOperator).ToList());
 
             var staticMethods = new List<Method>();
-            foreach (var method in @class.Methods)
+            foreach (var method in methods)
             {
                 if (ASTUtils.CheckIgnoreMethod(method, Options))
                     continue;
@@ -710,7 +715,26 @@ namespace CppSharp.Generators.CLI
 
             WriteLine(";");
 
+            if (method.OperatorKind == CXXOperatorKind.EqualEqual)
+            {
+                GenerateEquals(method, (Class) method.Namespace);
+            }
+
             PopBlock(NewLineKind.BeforeNextBlock);
+        }
+
+        private void GenerateEquals(Function method, Class @class)
+        {
+            Class leftHandSide;
+            Class rightHandSide;
+            if (method.Parameters[0].Type.SkipPointerRefs().TryGetClass(out leftHandSide) &&
+                leftHandSide.OriginalPtr == @class.OriginalPtr &&
+                method.Parameters[1].Type.SkipPointerRefs().TryGetClass(out rightHandSide) &&
+                rightHandSide.OriginalPtr == @class.OriginalPtr)
+            {
+                NewLine();
+                WriteLine("virtual bool Equals(::System::Object^ obj) override;");
+            }
         }
 
         public bool GenerateTypedef(TypedefDecl typedef)

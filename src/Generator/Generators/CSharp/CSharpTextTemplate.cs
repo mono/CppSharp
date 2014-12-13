@@ -358,7 +358,7 @@ namespace CppSharp.Generators.CSharp
                 if (@class.IsUnion)
                     GenerateUnionFields(@class);
 
-                GenerateClassMethods(@class);
+                GenerateClassMethods(@class.Methods);
                 GenerateClassVariables(@class);
                 GenerateClassProperties(@class);
 
@@ -1133,14 +1133,19 @@ namespace CppSharp.Generators.CSharp
             return false;
         }
 
-        public void GenerateClassMethods(Class @class)
+        public void GenerateClassMethods(IList<Method> methods)
         {
+            if (methods.Count == 0)
+                return;
+
+            var @class = (Class) methods[0].Namespace;
+
             if (@class.IsValueType)
                 foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.Ignore))
-                    GenerateClassMethods(@base.Class);
+                    GenerateClassMethods(@base.Class.Methods.Where(m => !m.IsOperator).ToList());
 
             var staticMethods = new List<Method>();
-            foreach (var method in @class.Methods)
+            foreach (var method in methods)
             {
                 if (ASTUtils.CheckIgnoreMethod(method, Options))
                     continue;
@@ -2112,7 +2117,7 @@ namespace CppSharp.Generators.CSharp
                     string.Join(", ",
                         method.Parameters.Where(
                             p => p.Kind == ParameterKind.Regular).Select(
-                                p => p.GenerationKind == GenerationKind.None ? p.DefaultArgument.String : p.Name)));
+                                p => p.Ignore ? p.DefaultArgument.String : p.Name)));
             }
 
             if (Driver.Options.GenerateAbstractImpls && method.IsPure)
@@ -2142,7 +2147,7 @@ namespace CppSharp.Generators.CSharp
                         string.Join(", ",
                             method.Parameters.Where(
                                 p => p.Kind == ParameterKind.Regular).Select(
-                                    p => p.GenerationKind == GenerationKind.None ? p.DefaultArgument.String : p.Name)));
+                                    p => p.Ignore ? p.DefaultArgument.String : p.Name)));
                 }
                 goto SkipImpl;
             }
@@ -2185,7 +2190,38 @@ namespace CppSharp.Generators.CSharp
             SkipImpl:
 
             WriteCloseBraceIndent();
+
+            if (method.OperatorKind == CXXOperatorKind.EqualEqual)
+            {
+                GenerateEquals(method, @class);
+            }
+
             PopBlock(NewLineKind.BeforeNextBlock);
+        }
+
+        private void GenerateEquals(Function method, Class @class)
+        {
+            Class leftHandSide;
+            Class rightHandSide;
+            if (method.Parameters[0].Type.SkipPointerRefs().TryGetClass(out leftHandSide) &&
+                leftHandSide.OriginalPtr == @class.OriginalPtr &&
+                method.Parameters[1].Type.SkipPointerRefs().TryGetClass(out rightHandSide) &&
+                rightHandSide.OriginalPtr == @class.OriginalPtr)
+            {
+                NewLine();
+                WriteLine("public override bool Equals(object obj)");
+                WriteStartBraceIndent();
+                if (@class.IsRefType)
+                {
+                    WriteLine("return this == obj as {0};", @class.Name);
+                }
+                else
+                {
+                    WriteLine("if (!(obj is {0})) return false;", @class.Name);
+                    WriteLine("return this == ({0}) obj;", @class.Name);
+                }
+                WriteCloseBraceIndent();
+            }
         }
 
         private void CheckArgumentRange(Function method)
@@ -2264,6 +2300,14 @@ namespace CppSharp.Generators.CSharp
                               @operator, method.Parameters[1].Name);
                 }
                 return;
+            }
+
+            if (method.OperatorKind == CXXOperatorKind.EqualEqual)
+            {
+                WriteLine("bool {0}Null = ReferenceEquals({0}, null);", method.Parameters[0].Name);
+                WriteLine("bool {0}Null = ReferenceEquals({0}, null);", method.Parameters[1].Name);
+                WriteLine("if ({0}Null || {1}Null)", method.Parameters[0].Name, method.Parameters[1].Name);
+                WriteLineIndent("return {0}Null && {1}Null;", method.Parameters[0].Name, method.Parameters[1].Name);
             }
 
             GenerateInternalFunctionCall(method);
@@ -2407,7 +2451,7 @@ namespace CppSharp.Generators.CSharp
                 {
                     if (operatorParam != null)
                     {
-                        names.Insert(instanceIndex, operatorParam.Name + "." + Helpers.InstanceIdentifier);
+                        names.Insert(instanceIndex, @params[0].Name);
                     }
                     else
                     {
