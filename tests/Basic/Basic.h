@@ -490,6 +490,8 @@ public:
     TestProperties* operator[](unsigned char b);
     // Should lead to a read-only indexer with return type TestProperties
     const TestProperties& operator[](short b);
+    // Should lead to a read-only indexer with argument type TestProperties
+    foo_t operator[](TestProperties b);
 };
 
 TestIndexedProperties::TestIndexedProperties() : p(1), f() {}
@@ -499,6 +501,7 @@ foo_t* TestIndexedProperties::operator[](float f) { return &p; }
 const foo_t& TestIndexedProperties::operator[](double f) { return p; }
 TestProperties* TestIndexedProperties::operator[](unsigned char b) { return &f; }
 const TestProperties& TestIndexedProperties::operator[](short b) { return f; }
+foo_t TestIndexedProperties::operator[](TestProperties b) { return p; }
 
 struct DLL_API TestIndexedPropertiesInValueType
 {

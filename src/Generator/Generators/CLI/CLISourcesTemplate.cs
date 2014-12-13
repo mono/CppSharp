@@ -409,7 +409,18 @@ namespace CppSharp.Generators.CLI
                 param.Visit(marshal);
 
                 if (isIndexer)
-                    variable += string.Format("({0})", indexParameter.Name);
+                {
+                    var ctx2 = new MarshalContext(Driver)
+                    {
+                        Parameter = indexParameter,
+                        ArgName = indexParameter.Name
+                    };
+
+                    var marshal2 = new CLIMarshalManagedToNativePrinter(ctx2);
+                    indexParameter.Visit(marshal2);
+
+                    variable += string.Format("({0})", marshal2.Context.Return);
+                }
 
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                     Write(marshal.Context.SupportBefore);
