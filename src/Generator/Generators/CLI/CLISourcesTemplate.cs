@@ -398,19 +398,13 @@ namespace CppSharp.Generators.CLI
                     variable = string.Format("((::{0}*)NativePtr)->{1}",
                                              @class.QualifiedOriginalName, decl.OriginalName);
 
-                var ctx = new MarshalContext(Driver)
-                {
-                    Parameter = param,
-                    ArgName = param.Name,
-                    ReturnVarName = variable
-                };
-
-                var marshal = new CLIMarshalManagedToNativePrinter(ctx);
-                param.Visit(marshal);
-
                 if (isIndexer)
-                    variable += string.Format("({0})", indexParameter.Name);
+                {
+                    var indexMarshal = MarshalVariable(indexParameter);
+                    variable += string.Format("({0})", indexMarshal.Context.Return);
+                }
 
+                var marshal = MarshalVariable(param, variable);
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                     Write(marshal.Context.SupportBefore);
 
@@ -425,6 +419,20 @@ namespace CppSharp.Generators.CLI
 
             WriteCloseBraceIndent();
             NewLine();
+        }
+
+        private CLIMarshalManagedToNativePrinter MarshalVariable(Parameter param, string name = null)
+        {
+            var ctx = new MarshalContext(Driver)
+            {
+                Parameter = param,
+                ArgName = param.Name,
+                ReturnVarName = name
+            };
+
+            var marshal = new CLIMarshalManagedToNativePrinter(ctx);
+            param.Visit(marshal);
+            return marshal;
         }
 
         private void GeneratePropertyGetter<T>(T decl, Class @class, string name, Type type)
