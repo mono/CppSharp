@@ -13,34 +13,34 @@
 
 // copy from widenPath ('llvm/lib/Support/Windows/Path.inc')
 static std::string normalizePath(const std::string & File) {
-    llvm::SmallString<2 * 128> Result;
+	llvm::SmallString<2 * 128> Result;
 
-    for (llvm::sys::path::const_iterator I = llvm::sys::path::begin(File),
-        E = llvm::sys::path::end(File);
-        I != E; ++I) {
-        if (I->size() == 1 && *I == ".")
-            continue;
-        if (I->size() == 2 && *I == "..")
-            llvm::sys::path::remove_filename(Result);
-        else
-            llvm::sys::path::append(Result, *I);
-    }
+	for (llvm::sys::path::const_iterator I = llvm::sys::path::begin(File),
+		E = llvm::sys::path::end(File);
+		I != E; ++I) {
+		if (I->size() == 1 && *I == ".")
+			continue;
+		if (I->size() == 2 && *I == "..")
+			llvm::sys::path::remove_filename(Result);
+		else
+			llvm::sys::path::append(Result, *I);
+	}
 
 #ifdef _WIN32
-    // Clean up the file path.
-    std::replace(Result.begin(), Result.end(), '/', '\\');
+	// Clean up the file path.
+	std::replace(Result.begin(), Result.end(), '/', '\\');
 #endif
 
-    return Result.c_str();
+	return Result.c_str();
 }
 
 template<typename T>
 static std::vector<T> split(const T & str, const T & delimiters) {
     std::vector<T> v;
-    if (str.length() == 0) {
-        v.push_back(str);
-        return v;
-    }
+	if (str.length() == 0) {
+		v.push_back(str);
+		return v;
+	}
     typename T::size_type start = 0;
     auto pos = str.find_first_of(delimiters, start);
     while(pos != T::npos) {
@@ -650,18 +650,18 @@ ASTContext::ASTContext() {}
 
 TranslationUnit* ASTContext::FindOrCreateModule(std::string File)
 {
-    auto normalizedFile = normalizePath(File);
+	auto normalizedFile = normalizePath(File);
 
     auto existingUnit = std::find_if(TranslationUnits.begin(),
         TranslationUnits.end(), [&](TranslationUnit* unit) {
-            return unit && unit->FileName == normalizedFile;
+			return unit && unit->FileName == normalizedFile;
     });
 
     if (existingUnit != TranslationUnits.end())
         return *existingUnit;
 
     auto unit = new TranslationUnit();
-    unit->FileName = normalizedFile;
+	unit->FileName = normalizedFile;
     TranslationUnits.push_back(unit);
 
     return unit;
