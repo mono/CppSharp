@@ -126,6 +126,17 @@ namespace CppSharp.Generators.CSharp
                     }
                     return string.Format("{0}*", array.Type.Visit(this, quals));
                 }
+
+                Class @class;
+                if (arrayType.TryGetClass(out @class))
+                {
+                    return new CSharpTypePrinterResult()
+                    {
+                        Type = "fixed byte",
+                        NameSuffix = string.Format("[{0}]", array.Size * @class.Layout.Size)
+                    };
+                }
+
                 // Do not write the fixed keyword multiple times for nested array types
                 var fixedKeyword = array.Type is ArrayType ? string.Empty : "fixed ";
                 return new CSharpTypePrinterResult()
