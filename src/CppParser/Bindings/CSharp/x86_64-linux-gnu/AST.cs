@@ -538,7 +538,7 @@ namespace CppSharp
                     set
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        __ptr->Type = value == (CppSharp.Parser.AST.Type) null ? global::System.IntPtr.Zero : value.__Instance;
+                        __ptr->Type = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
 
@@ -641,7 +641,7 @@ namespace CppSharp
                     set
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        __ptr->Declaration = value == (CppSharp.Parser.AST.Declaration) null ? global::System.IntPtr.Zero : value.__Instance;
+                        __ptr->Declaration = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
             }
@@ -887,7 +887,7 @@ namespace CppSharp
 
                 public void addParameters(CppSharp.Parser.AST.Parameter s)
                 {
-                    var arg0 = s == (CppSharp.Parser.AST.Parameter) null ? global::System.IntPtr.Zero : s.__Instance;
+                    var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
                     Internal.addParameters_0(__Instance, arg0);
                 }
 
@@ -1221,7 +1221,7 @@ namespace CppSharp
                     set
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        __ptr->Declaration = value == (CppSharp.Parser.AST.TypedefDecl) null ? global::System.IntPtr.Zero : value.__Instance;
+                        __ptr->Declaration = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
             }
@@ -1590,7 +1590,7 @@ namespace CppSharp
                     set
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        __ptr->Declaration = value == (CppSharp.Parser.AST.Declaration) null ? global::System.IntPtr.Zero : value.__Instance;
+                        __ptr->Declaration = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
 
@@ -1719,7 +1719,7 @@ namespace CppSharp
 
                 public void addArguments(CppSharp.Parser.AST.TemplateArgument s)
                 {
-                    var arg0 = s == (CppSharp.Parser.AST.TemplateArgument) null ? global::System.IntPtr.Zero : s.__Instance;
+                    var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
                     Internal.addArguments_0(__Instance, arg0);
                 }
 
@@ -1748,7 +1748,7 @@ namespace CppSharp
                     set
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        __ptr->Template = value == (CppSharp.Parser.AST.Template) null ? global::System.IntPtr.Zero : value.__Instance;
+                        __ptr->Template = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
 
@@ -1763,7 +1763,7 @@ namespace CppSharp
                     set
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        __ptr->Desugared = value == (CppSharp.Parser.AST.Type) null ? global::System.IntPtr.Zero : value.__Instance;
+                        __ptr->Desugared = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
             }
@@ -1869,10 +1869,19 @@ namespace CppSharp
 
                 public static bool operator ==(CppSharp.Parser.AST.TemplateParameter __op, CppSharp.Parser.AST.TemplateParameter param)
                 {
-                    var arg0 = __op == (CppSharp.Parser.AST.TemplateParameter) null ? global::System.IntPtr.Zero : __op.__Instance;
-                    var arg1 = param == (CppSharp.Parser.AST.TemplateParameter) null ? global::System.IntPtr.Zero : param.__Instance;
-                    var __ret = Internal.OperatorEqualEqual_0(__op.__Instance, arg1);
+                    bool __opNull = ReferenceEquals(__op, null);
+                    bool paramNull = ReferenceEquals(param, null);
+                    if (__opNull || paramNull)
+                        return __opNull && paramNull;
+                    var arg0 = __op.__Instance;
+                    var arg1 = param.__Instance;
+                    var __ret = Internal.OperatorEqualEqual_0(arg0, arg1);
                     return __ret;
+                }
+
+                public override bool Equals(object obj)
+                {
+                    return this == obj as TemplateParameter;
                 }
 
                 public string Name
@@ -2229,7 +2238,7 @@ namespace CppSharp
                     set
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        __ptr->TemplateSpecialization = value == (CppSharp.Parser.AST.TemplateSpecializationType) null ? global::System.IntPtr.Zero : value.__Instance;
+                        __ptr->TemplateSpecialization = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
 
@@ -2244,7 +2253,7 @@ namespace CppSharp
                     set
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        __ptr->Class = value == (CppSharp.Parser.AST.Class) null ? global::System.IntPtr.Zero : value.__Instance;
+                        __ptr->Class = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
             }
@@ -2596,7 +2605,7 @@ namespace CppSharp
                     set
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        __ptr->Declaration = value == (CppSharp.Parser.AST.Declaration) null ? global::System.IntPtr.Zero : value.__Instance;
+                        __ptr->Declaration = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
             }
@@ -2704,7 +2713,7 @@ namespace CppSharp
 
                 public void addComponents(CppSharp.Parser.AST.VTableComponent s)
                 {
-                    var arg0 = s == (CppSharp.Parser.AST.VTableComponent) null ? global::System.IntPtr.Zero : s.__Instance;
+                    var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
                     Internal.addComponents_0(__Instance, arg0);
                 }
 
@@ -2996,7 +3005,7 @@ namespace CppSharp
 
                 public void addVFTables(CppSharp.Parser.AST.VFTableInfo s)
                 {
-                    var arg0 = s == (CppSharp.Parser.AST.VFTableInfo) null ? global::System.IntPtr.Zero : s.__Instance;
+                    var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
                     Internal.addVFTables_0(__Instance, arg0);
                 }
 
@@ -3275,7 +3284,7 @@ namespace CppSharp
 
                 public void addPreprocessedEntities(CppSharp.Parser.AST.PreprocessedEntity s)
                 {
-                    var arg0 = s == (CppSharp.Parser.AST.PreprocessedEntity) null ? global::System.IntPtr.Zero : s.__Instance;
+                    var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
                     Internal.addPreprocessedEntities_0(__Instance, arg0);
                 }
 
@@ -3368,7 +3377,7 @@ namespace CppSharp
                     set
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        __ptr->_Namespace = value == (CppSharp.Parser.AST.DeclarationContext) null ? global::System.IntPtr.Zero : value.__Instance;
+                        __ptr->_Namespace = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
 
@@ -3398,7 +3407,7 @@ namespace CppSharp
                     set
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        __ptr->Comment = value == (CppSharp.Parser.AST.RawComment) null ? global::System.IntPtr.Zero : value.__Instance;
+                        __ptr->Comment = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
 
@@ -3443,7 +3452,7 @@ namespace CppSharp
                     set
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        __ptr->CompleteDeclaration = value == (CppSharp.Parser.AST.Declaration) null ? global::System.IntPtr.Zero : value.__Instance;
+                        __ptr->CompleteDeclaration = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
 
@@ -3729,7 +3738,7 @@ namespace CppSharp
 
                 public void addNamespaces(CppSharp.Parser.AST.Namespace s)
                 {
-                    var arg0 = s == (CppSharp.Parser.AST.Namespace) null ? global::System.IntPtr.Zero : s.__Instance;
+                    var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
                     Internal.addNamespaces_0(__Instance, arg0);
                 }
 
@@ -3747,7 +3756,7 @@ namespace CppSharp
 
                 public void addEnums(CppSharp.Parser.AST.Enumeration s)
                 {
-                    var arg0 = s == (CppSharp.Parser.AST.Enumeration) null ? global::System.IntPtr.Zero : s.__Instance;
+                    var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
                     Internal.addEnums_0(__Instance, arg0);
                 }
 
@@ -3765,7 +3774,7 @@ namespace CppSharp
 
                 public void addFunctions(CppSharp.Parser.AST.Function s)
                 {
-                    var arg0 = s == (CppSharp.Parser.AST.Function) null ? global::System.IntPtr.Zero : s.__Instance;
+                    var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
                     Internal.addFunctions_0(__Instance, arg0);
                 }
 
@@ -3783,7 +3792,7 @@ namespace CppSharp
 
                 public void addClasses(CppSharp.Parser.AST.Class s)
                 {
-                    var arg0 = s == (CppSharp.Parser.AST.Class) null ? global::System.IntPtr.Zero : s.__Instance;
+                    var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
                     Internal.addClasses_0(__Instance, arg0);
                 }
 
@@ -3801,7 +3810,7 @@ namespace CppSharp
 
                 public void addTemplates(CppSharp.Parser.AST.Template s)
                 {
-                    var arg0 = s == (CppSharp.Parser.AST.Template) null ? global::System.IntPtr.Zero : s.__Instance;
+                    var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
                     Internal.addTemplates_0(__Instance, arg0);
                 }
 
@@ -3819,7 +3828,7 @@ namespace CppSharp
 
                 public void addTypedefs(CppSharp.Parser.AST.TypedefDecl s)
                 {
-                    var arg0 = s == (CppSharp.Parser.AST.TypedefDecl) null ? global::System.IntPtr.Zero : s.__Instance;
+                    var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
                     Internal.addTypedefs_0(__Instance, arg0);
                 }
 
@@ -3837,7 +3846,7 @@ namespace CppSharp
 
                 public void addVariables(CppSharp.Parser.AST.Variable s)
                 {
-                    var arg0 = s == (CppSharp.Parser.AST.Variable) null ? global::System.IntPtr.Zero : s.__Instance;
+                    var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
                     Internal.addVariables_0(__Instance, arg0);
                 }
 
@@ -4164,7 +4173,7 @@ namespace CppSharp
                     set
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        __ptr->Decl = value == (CppSharp.Parser.AST.Declaration) null ? global::System.IntPtr.Zero : value.__Instance;
+                        __ptr->Decl = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
             }
@@ -4244,7 +4253,7 @@ namespace CppSharp
                     set
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        __ptr->Subexpression = value == (CppSharp.Parser.AST.Expression) null ? global::System.IntPtr.Zero : value.__Instance;
+                        __ptr->Subexpression = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
             }
@@ -4433,7 +4442,7 @@ namespace CppSharp
                     set
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        __ptr->DefaultArgument = value == (CppSharp.Parser.AST.Expression) null ? global::System.IntPtr.Zero : value.__Instance;
+                        __ptr->DefaultArgument = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
             }
@@ -4615,7 +4624,7 @@ namespace CppSharp
 
                 public void addParameters(CppSharp.Parser.AST.Parameter s)
                 {
-                    var arg0 = s == (CppSharp.Parser.AST.Parameter) null ? global::System.IntPtr.Zero : s.__Instance;
+                    var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
                     Internal.addParameters_0(__Instance, arg0);
                 }
 
@@ -4813,7 +4822,7 @@ namespace CppSharp
                     set
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        __ptr->SpecializationInfo = value == (CppSharp.Parser.AST.FunctionTemplateSpecialization) null ? global::System.IntPtr.Zero : value.__Instance;
+                        __ptr->SpecializationInfo = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
             }
@@ -4993,7 +5002,7 @@ namespace CppSharp
                     set
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        __ptr->AccessDecl = value == (CppSharp.Parser.AST.AccessSpecifierDecl) null ? global::System.IntPtr.Zero : value.__Instance;
+                        __ptr->AccessDecl = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
 
@@ -5454,7 +5463,7 @@ namespace CppSharp
 
                 public void addItems(CppSharp.Parser.AST.Enumeration.Item s)
                 {
-                    var arg0 = s == (CppSharp.Parser.AST.Enumeration.Item) null ? global::System.IntPtr.Zero : s.__Instance;
+                    var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
                     Internal.addItems_0(__Instance, arg0);
                 }
 
@@ -5498,7 +5507,7 @@ namespace CppSharp
                     set
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        __ptr->Type = value == (CppSharp.Parser.AST.Type) null ? global::System.IntPtr.Zero : value.__Instance;
+                        __ptr->Type = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
 
@@ -5513,7 +5522,7 @@ namespace CppSharp
                     set
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        __ptr->BuiltinType = value == (CppSharp.Parser.AST.BuiltinType) null ? global::System.IntPtr.Zero : value.__Instance;
+                        __ptr->BuiltinType = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
             }
@@ -5781,7 +5790,7 @@ namespace CppSharp
                     set
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        __ptr->Type = value == (CppSharp.Parser.AST.Type) null ? global::System.IntPtr.Zero : value.__Instance;
+                        __ptr->Type = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
             }
@@ -5934,7 +5943,7 @@ namespace CppSharp
                     set
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        __ptr->Class = value == (CppSharp.Parser.AST.Class) null ? global::System.IntPtr.Zero : value.__Instance;
+                        __ptr->Class = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
             }
@@ -6258,7 +6267,7 @@ namespace CppSharp
 
                 public void addBases(CppSharp.Parser.AST.BaseClassSpecifier s)
                 {
-                    var arg0 = s == (CppSharp.Parser.AST.BaseClassSpecifier) null ? global::System.IntPtr.Zero : s.__Instance;
+                    var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
                     Internal.addBases_0(__Instance, arg0);
                 }
 
@@ -6276,7 +6285,7 @@ namespace CppSharp
 
                 public void addFields(CppSharp.Parser.AST.Field s)
                 {
-                    var arg0 = s == (CppSharp.Parser.AST.Field) null ? global::System.IntPtr.Zero : s.__Instance;
+                    var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
                     Internal.addFields_0(__Instance, arg0);
                 }
 
@@ -6294,7 +6303,7 @@ namespace CppSharp
 
                 public void addMethods(CppSharp.Parser.AST.Method s)
                 {
-                    var arg0 = s == (CppSharp.Parser.AST.Method) null ? global::System.IntPtr.Zero : s.__Instance;
+                    var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
                     Internal.addMethods_0(__Instance, arg0);
                 }
 
@@ -6312,7 +6321,7 @@ namespace CppSharp
 
                 public void addSpecifiers(CppSharp.Parser.AST.AccessSpecifierDecl s)
                 {
-                    var arg0 = s == (CppSharp.Parser.AST.AccessSpecifierDecl) null ? global::System.IntPtr.Zero : s.__Instance;
+                    var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
                     Internal.addSpecifiers_0(__Instance, arg0);
                 }
 
@@ -6503,7 +6512,7 @@ namespace CppSharp
                     set
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        __ptr->Layout = value == (CppSharp.Parser.AST.ClassLayout) null ? global::System.IntPtr.Zero : value.__Instance;
+                        __ptr->Layout = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
             }
@@ -6652,7 +6661,7 @@ namespace CppSharp
 
                 public void addParameters(CppSharp.Parser.AST.TemplateParameter s)
                 {
-                    var arg0 = s == (CppSharp.Parser.AST.TemplateParameter) null ? global::System.IntPtr.Zero : s.__Instance;
+                    var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
                     Internal.addParameters_0(__Instance, arg0);
                 }
 
@@ -6681,7 +6690,7 @@ namespace CppSharp
                     set
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        __ptr->TemplatedDecl = value == (CppSharp.Parser.AST.Declaration) null ? global::System.IntPtr.Zero : value.__Instance;
+                        __ptr->TemplatedDecl = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
             }
@@ -6816,7 +6825,7 @@ namespace CppSharp
 
                 public void addSpecializations(CppSharp.Parser.AST.ClassTemplateSpecialization s)
                 {
-                    var arg0 = s == (CppSharp.Parser.AST.ClassTemplateSpecialization) null ? global::System.IntPtr.Zero : s.__Instance;
+                    var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
                     Internal.addSpecializations_0(__Instance, arg0);
                 }
 
@@ -7001,7 +7010,7 @@ namespace CppSharp
 
                 public void addArguments(CppSharp.Parser.AST.TemplateArgument s)
                 {
-                    var arg0 = s == (CppSharp.Parser.AST.TemplateArgument) null ? global::System.IntPtr.Zero : s.__Instance;
+                    var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
                     Internal.addArguments_0(__Instance, arg0);
                 }
 
@@ -7030,7 +7039,7 @@ namespace CppSharp
                     set
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        __ptr->TemplatedDecl = value == (CppSharp.Parser.AST.ClassTemplate) null ? global::System.IntPtr.Zero : value.__Instance;
+                        __ptr->TemplatedDecl = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
 
@@ -7318,7 +7327,7 @@ namespace CppSharp
 
                 public void addSpecializations(CppSharp.Parser.AST.FunctionTemplateSpecialization s)
                 {
-                    var arg0 = s == (CppSharp.Parser.AST.FunctionTemplateSpecialization) null ? global::System.IntPtr.Zero : s.__Instance;
+                    var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
                     Internal.addSpecializations_0(__Instance, arg0);
                 }
 
@@ -7450,7 +7459,7 @@ namespace CppSharp
 
                 public void addArguments(CppSharp.Parser.AST.TemplateArgument s)
                 {
-                    var arg0 = s == (CppSharp.Parser.AST.TemplateArgument) null ? global::System.IntPtr.Zero : s.__Instance;
+                    var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
                     Internal.addArguments_0(__Instance, arg0);
                 }
 
@@ -7479,7 +7488,7 @@ namespace CppSharp
                     set
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        __ptr->Template = value == (CppSharp.Parser.AST.FunctionTemplate) null ? global::System.IntPtr.Zero : value.__Instance;
+                        __ptr->Template = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
 
@@ -7494,7 +7503,7 @@ namespace CppSharp
                     set
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        __ptr->SpecializedFunction = value == (CppSharp.Parser.AST.Function) null ? global::System.IntPtr.Zero : value.__Instance;
+                        __ptr->SpecializedFunction = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
 
@@ -8022,7 +8031,7 @@ namespace CppSharp
                     set
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        __ptr->Definition = value == (CppSharp.Parser.AST.MacroDefinition) null ? global::System.IntPtr.Zero : value.__Instance;
+                        __ptr->Definition = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
             }
@@ -8173,7 +8182,7 @@ namespace CppSharp
 
                 public void addMacros(CppSharp.Parser.AST.MacroDefinition s)
                 {
-                    var arg0 = s == (CppSharp.Parser.AST.MacroDefinition) null ? global::System.IntPtr.Zero : s.__Instance;
+                    var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
                     Internal.addMacros_0(__Instance, arg0);
                 }
 
@@ -8545,7 +8554,7 @@ namespace CppSharp
 
                 public void addTranslationUnits(CppSharp.Parser.AST.TranslationUnit s)
                 {
-                    var arg0 = s == (CppSharp.Parser.AST.TranslationUnit) null ? global::System.IntPtr.Zero : s.__Instance;
+                    var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
                     Internal.addTranslationUnits_0(__Instance, arg0);
                 }
 
@@ -8881,7 +8890,7 @@ namespace CppSharp
                     set
                     {
                         var __ptr = (Internal*)__Instance.ToPointer();
-                        __ptr->FullCommentBlock = value == (CppSharp.Parser.AST.FullComment) null ? global::System.IntPtr.Zero : value.__Instance;
+                        __ptr->FullCommentBlock = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
             }

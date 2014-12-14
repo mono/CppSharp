@@ -497,7 +497,7 @@ namespace CppSharp
                 set
                 {
                     var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->ASTContext = value == (CppSharp.Parser.AST.ASTContext) null ? global::System.IntPtr.Zero : value.__Instance;
+                    __ptr->ASTContext = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                 }
             }
 
@@ -907,7 +907,7 @@ namespace CppSharp
 
             public void addDiagnostics(CppSharp.Parser.ParserDiagnostic s)
             {
-                var arg0 = s == (CppSharp.Parser.ParserDiagnostic) null ? global::System.IntPtr.Zero : s.__Instance;
+                var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
                 Internal.addDiagnostics_0(__Instance, arg0);
             }
 
@@ -951,7 +951,7 @@ namespace CppSharp
                 set
                 {
                     var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->ASTContext = value == (CppSharp.Parser.AST.ASTContext) null ? global::System.IntPtr.Zero : value.__Instance;
+                    __ptr->ASTContext = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                 }
             }
 
@@ -966,7 +966,7 @@ namespace CppSharp
                 set
                 {
                     var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->Library = value == (CppSharp.Parser.AST.NativeLibrary) null ? global::System.IntPtr.Zero : value.__Instance;
+                    __ptr->Library = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                 }
             }
         }
@@ -1051,7 +1051,7 @@ namespace CppSharp
 
             public static CppSharp.Parser.ParserResult ParseHeader(CppSharp.Parser.ParserOptions Opts)
             {
-                var arg0 = Opts == (CppSharp.Parser.ParserOptions) null ? global::System.IntPtr.Zero : Opts.__Instance;
+                var arg0 = ReferenceEquals(Opts, null) ? global::System.IntPtr.Zero : Opts.__Instance;
                 var __ret = Internal.ParseHeader_0(arg0);
                 if (__ret == global::System.IntPtr.Zero) return null;
                 return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.ParserResult.__CreateInstance(__ret);
@@ -1059,7 +1059,7 @@ namespace CppSharp
 
             public static CppSharp.Parser.ParserResult ParseLibrary(CppSharp.Parser.ParserOptions Opts)
             {
-                var arg0 = Opts == (CppSharp.Parser.ParserOptions) null ? global::System.IntPtr.Zero : Opts.__Instance;
+                var arg0 = ReferenceEquals(Opts, null) ? global::System.IntPtr.Zero : Opts.__Instance;
                 var __ret = Internal.ParseLibrary_0(arg0);
                 if (__ret == global::System.IntPtr.Zero) return null;
                 return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.ParserResult.__CreateInstance(__ret);
@@ -1067,7 +1067,7 @@ namespace CppSharp
 
             public static CppSharp.Parser.ParserTargetInfo GetTargetInfo(CppSharp.Parser.ParserOptions Opts)
             {
-                var arg0 = Opts == (CppSharp.Parser.ParserOptions) null ? global::System.IntPtr.Zero : Opts.__Instance;
+                var arg0 = ReferenceEquals(Opts, null) ? global::System.IntPtr.Zero : Opts.__Instance;
                 var __ret = Internal.GetTargetInfo_0(arg0);
                 if (__ret == global::System.IntPtr.Zero) return null;
                 return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.ParserTargetInfo.__CreateInstance(__ret);
