@@ -799,12 +799,11 @@ namespace CppSharp.Generators.CLI
                 WriteStartBraceIndent();
                 if (@class.IsRefType)
                 {
-                    WriteLine("return this == dynamic_cast<{0}^>(obj);", qualifiedIdentifier);
+                    WriteLine("return this == safe_cast<{0}^>(obj);", qualifiedIdentifier);
                 }
                 else
                 {
-                    WriteLine("if (!(obj is {0})) return false;", @class.Name);
-                    WriteLine("return this == ({0}) obj;", @class.Name);
+                    WriteLine("return *this == safe_cast<{0}>(obj);", qualifiedIdentifier);
                 }
                 WriteCloseBraceIndent();
             }
