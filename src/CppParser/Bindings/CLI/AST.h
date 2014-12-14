@@ -695,6 +695,8 @@ namespace CppSharp
                 }
 
                 static bool operator==(CppSharp::Parser::AST::TemplateParameter^ __op, CppSharp::Parser::AST::TemplateParameter^ param);
+
+                virtual bool Equals(::System::Object^ obj) override;
             };
 
             public ref class TemplateParameterType : CppSharp::Parser::AST::Type

@@ -599,6 +599,11 @@ bool CppSharp::Parser::AST::TemplateParameter::operator==(CppSharp::Parser::AST:
     return __ret;
 }
 
+bool CppSharp::Parser::AST::TemplateParameter::Equals(::System::Object^ obj)
+{
+    return this == safe_cast<CppSharp::Parser::AST::TemplateParameter^>(obj);
+}
+
 System::IntPtr CppSharp::Parser::AST::TemplateParameter::__Instance::get()
 {
     return System::IntPtr(NativePtr);
