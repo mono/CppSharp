@@ -33,6 +33,10 @@ public class BasicTests : GeneratorTestFixture
                 Assert.AreEqual(i, (*pointerPointer)[i]);
             }
         }
+        
+        Assert.AreEqual(0, Foo3.constArray[0]);
+        Assert.AreEqual(1, Foo3.constArray[1]);
+        Assert.AreEqual(2, Foo3.constArray[2]);
 
         var bar = new Bar { A = 4, B = 7 };
         Assert.That(hello.AddBar(bar), Is.EqualTo(11));
