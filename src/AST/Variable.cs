@@ -12,5 +12,20 @@ namespace CppSharp.AST
         public QualifiedType QualifiedType { get; set; }
 
         public string Mangled { get; set; }
+
+        public bool IsConst
+        {
+            get
+            {
+                if (QualifiedType.Qualifiers.IsConst)
+                    return true;
+
+                var arrayType = Type as ArrayType;
+                if (arrayType == null)
+                    return false;
+
+                return arrayType.QualifiedType.Qualifiers.IsConst;
+            }
+        }
     }
 }
