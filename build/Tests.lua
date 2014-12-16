@@ -80,6 +80,7 @@ function SetupTestNativeProject(name)
     kind "SharedLib"
     language "C++"
 
+    defines { "DLL_EXPORT" }
     flags { common_flags }
     files { "**.h", "**.cpp" }
 end

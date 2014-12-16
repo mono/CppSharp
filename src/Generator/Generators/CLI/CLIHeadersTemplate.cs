@@ -545,7 +545,7 @@ namespace CppSharp.Generators.CLI
 
                 WriteLine("{0} get();", type);
 
-                if (!variable.QualifiedType.Qualifiers.IsConst)
+                if (!variable.IsConst)
                     WriteLine("void set({0});", type);
 
                 WriteCloseBraceIndent();
