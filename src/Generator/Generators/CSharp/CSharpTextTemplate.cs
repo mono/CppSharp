@@ -1285,10 +1285,16 @@ namespace CppSharp.Generators.CSharp
 
         #region Virtual Tables
 
+        public List<VTableComponent> GetValidVTableMethodEntries(Class @class)
+        {
+            var entries = VTables.GatherVTableMethodEntries(@class);
+            return entries.Where(e => !e.Ignore && !e.Method.IsOperator).ToList();
+        }
+
         public List<VTableComponent> GetUniqueVTableMethodEntries(Class @class)
         {
             var uniqueEntries = new OrderedSet<VTableComponent>();
-            foreach (var entry in VTables.GatherVTableMethodEntries(@class))
+            foreach (var entry in GetValidVTableMethodEntries(@class))
                 uniqueEntries.Add(entry);
 
             return uniqueEntries.ToList();
@@ -1297,8 +1303,7 @@ namespace CppSharp.Generators.CSharp
         public void GenerateVTable(Class @class)
         {
             var entries = VTables.GatherVTableMethodEntries(@class);
-            var wrappedEntries = GetUniqueVTableMethodEntries(@class).Where(
-                e => !e.Ignore).ToList();
+            var wrappedEntries = GetUniqueVTableMethodEntries(@class);
             if (wrappedEntries.Count == 0)
                 return;
 
@@ -1479,7 +1484,7 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateVTableClassSetupCall(Class @class, bool addPointerGuard = false)
         {
-            var entries = VTables.GatherVTableMethodEntries(@class);
+            var entries = GetUniqueVTableMethodEntries(@class);
             if (Options.GenerateVirtualTables && @class.IsDynamic && entries.Count != 0)
             {
                 // called from internal ctors which may have been passed an IntPtr.Zero
@@ -1489,7 +1494,9 @@ namespace CppSharp.Generators.CSharp
                         Helpers.InstanceIdentifier);
                     PushIndent();
                 }
+
                 WriteLine("SetupVTables({0});", Generator.GeneratedIdentifier("Instance"));
+
                 if (addPointerGuard)
                     PopIndent();
             }
@@ -2070,7 +2077,7 @@ namespace CppSharp.Generators.CSharp
                 Write(Helpers.GetAccess(GetValidMethodAccess(method)));
             }
 
-            if (method.IsVirtual && !method.IsOverride &&
+            if (method.IsVirtual && !method.IsOverride && !method.IsOperator &&
                 (!Driver.Options.GenerateAbstractImpls || !method.IsPure))
                 Write("virtual ");
 
