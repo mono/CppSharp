@@ -68,7 +68,7 @@ function SetupTestGeneratorBuildEvent(name)
   end
 end
 
-function SetupTestNativeProject(name)
+function SetupTestNativeProject(name, depends)
   if string.starts(action, "vs") and not os.is_windows() then
     return
   end
@@ -82,6 +82,10 @@ function SetupTestNativeProject(name)
 
     flags { common_flags }
     files { "**.h", "**.cpp" }
+
+    if depends ~= nil then
+      links { depends }
+    end
 end
 
 function LinkNUnit()
