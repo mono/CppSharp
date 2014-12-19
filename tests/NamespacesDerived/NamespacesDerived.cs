@@ -60,7 +60,7 @@ namespace CppSharp.Tests
             {
                 if (unit.FileName != "Derived.h")
                 {
-                    unit.ExplicityIgnored = true;
+                    unit.GenerationKind = GenerationKind.Link;
                 }
             }
             
