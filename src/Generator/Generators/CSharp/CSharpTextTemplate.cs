@@ -116,7 +116,7 @@ namespace CppSharp.Generators.CSharp
                 ctx = ctx.Namespace;
             }
 
-            if (Options.GenerateLibraryNamespace)
+            if (decl.GenerationKind == GenerationKind.Generate && Options.GenerateLibraryNamespace)
                 names.Add(Options.OutputNamespace);
 
             names.Reverse();
@@ -744,7 +744,7 @@ namespace CppSharp.Generators.CSharp
 
             var bases = new List<string>();
 
-            var needsBase = @class.HasGeneratedBase && @class.IsGenerated;
+            var needsBase =  @class.HasNonIgnoredBase && @class.IsGenerated;
 
             if (needsBase)
             {
@@ -1912,7 +1912,7 @@ namespace CppSharp.Generators.CSharp
             {
                 PushBlock(CSharpBlockKind.Method);
                 WriteLine("public static {0}{1} {2}(global::System.IntPtr native)",
-                    @class.HasGeneratedBase && !@class.BaseClass.IsAbstract ? "new " : string.Empty,
+                    @class.HasNonIgnoredBase && !@class.BaseClass.IsAbstract ? "new " : string.Empty,
                     safeIdentifier, Helpers.CreateInstanceIdentifier);
                 WriteStartBraceIndent();
                 WriteLine("return new {0}(({1}.Internal*) native);", safeIdentifier, className);
