@@ -1,5 +1,5 @@
 #include "../Tests.h"
-#include "../NamespacesBase/Base.h"
+#include "../NamespacesBase/NamespacesBase.h"
 
 class DLL_API Derived : public Base
 {
