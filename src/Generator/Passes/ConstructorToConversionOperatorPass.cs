@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using CppSharp.AST;
+﻿using CppSharp.AST;
 using CppSharp.AST.Extensions;
 
 namespace CppSharp.Passes
@@ -19,38 +18,45 @@ namespace CppSharp.Passes
             if (method.Parameters.Count != 1)
                 return false;
             var parameter = method.Parameters[0];
-            var parameterType = parameter.Type as PointerType;
-            if (parameterType == null)
-                return false;
-            if (!parameterType.IsReference)
-                return false;
-            var qualifiedPointee = parameterType.QualifiedPointee;
+            // TODO: disable implicit operators for C++/CLI because they seem not to be support parameters
+            if (!Driver.Options.IsCSharpGenerator)
+            {
+                var pointerType = parameter.Type as PointerType;
+                if (pointerType != null && !pointerType.IsReference)
+                    return false;
+            }
+            var qualifiedPointee = parameter.Type.SkipPointerRefs();
             Class castFromClass;
-            if (!qualifiedPointee.Type.TryGetClass(out castFromClass))
-                return false;
-            var castToClass = method.OriginalNamespace as Class;
-            if (castToClass == null)
-                return false;
-            if (castFromClass == castToClass)
-                return false;
+            if (qualifiedPointee.TryGetClass(out castFromClass))
+            {
+                var castToClass = method.OriginalNamespace as Class;
+                if (castToClass == null)
+                    return false;
+                if (castFromClass == castToClass)
+                    return false;
+            }
 
             var operatorKind = method.IsExplicit
                 ? CXXOperatorKind.ExplicitConversion
                 : CXXOperatorKind.Conversion;
-            var castToType = new TagType(castToClass);
-            var qualifiedCastToType = new QualifiedType(castToType);
-            var conversionOperator = new Method()
+            var qualifiedCastToType = new QualifiedType(new TagType(method.Namespace));
+            var conversionOperator = new Method
             {
                 Name = Operators.GetOperatorIdentifier(operatorKind),
-                Namespace = castFromClass,
+                Namespace = method.Namespace,
                 Kind = CXXMethodKind.Conversion,
                 SynthKind = FunctionSynthKind.ComplementOperator,
                 ConversionType = qualifiedCastToType,
-                ReturnType = qualifiedCastToType
+                ReturnType = qualifiedCastToType,
+                OperatorKind = operatorKind
             };
-            conversionOperator.OperatorKind = operatorKind;
-
-            castFromClass.Methods.Add(conversionOperator);
+            var p = new Parameter(parameter);
+            Class @class;
+            if (p.Type.SkipPointerRefs().TryGetClass(out @class))
+                p.QualifiedType = new QualifiedType(new TagType(@class), parameter.QualifiedType.Qualifiers);
+            p.DefaultArgument = null;
+            conversionOperator.Parameters.Add(p);
+            ((Class) method.Namespace).Methods.Add(conversionOperator);
             return true;
         }
     }

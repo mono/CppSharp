@@ -71,18 +71,21 @@ namespace CppSharp.Passes
                     if (@operator.IsStatic)
                         @operator.Parameters = @operator.Parameters.Skip(1).ToList();
 
-                    var type = new PointerType
+                    if (@operator.ConversionType.Type == null || @operator.Parameters.Count == 0)
                     {
-                        QualifiedPointee = new QualifiedType(new TagType(@class)),
-                        Modifier = PointerType.TypeModifier.LVReference
-                    };
+                        var type = new PointerType
+                        {
+                            QualifiedPointee = new QualifiedType(new TagType(@class)),
+                            Modifier = PointerType.TypeModifier.LVReference
+                        };
 
-                    @operator.Parameters.Insert(0, new Parameter
-                    {
-                        Name = Generator.GeneratedIdentifier("op"),
-                        QualifiedType = new QualifiedType(type),
-                        Kind = ParameterKind.OperatorParameter
-                    });
+                        @operator.Parameters.Insert(0, new Parameter
+                        {
+                            Name = Generator.GeneratedIdentifier("op"),
+                            QualifiedType = new QualifiedType(type),
+                            Kind = ParameterKind.OperatorParameter
+                        });
+                    }
                 }
             }
         }
