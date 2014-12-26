@@ -452,12 +452,18 @@ public:
 	operator char();
 	operator int();
 	operator short();
+
+	virtual bool operator<(const ClassWithOverloadedOperators &other) const;
 };
 
 ClassWithOverloadedOperators::ClassWithOverloadedOperators() {}
 ClassWithOverloadedOperators::operator char() { return 1; }
 ClassWithOverloadedOperators::operator int() { return 2; }
 ClassWithOverloadedOperators::operator short() { return 3; }
+bool ClassWithOverloadedOperators::
+     operator<(const ClassWithOverloadedOperators &other) const {
+     return true;
+}
 
 // Tests global static function generation
 DLL_API int Function()

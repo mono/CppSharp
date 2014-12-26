@@ -161,13 +161,13 @@ namespace CppSharp.AST
             }
         }
 
-        public bool HasGeneratedBase
+        public bool HasNonIgnoredBase
         {
             get
             {
                 return HasBaseClass && !IsValueType
                        && !Bases[0].Class.IsValueType
-                       && Bases[0].Class.IsGenerated;
+                       && Bases[0].Class.GenerationKind != GenerationKind.None;
             }
         }
 

@@ -683,7 +683,7 @@ namespace CppSharp.Generators.CLI
 
             GenerateDeclarationCommon(method);
 
-            if (method.IsVirtual || method.IsOverride)
+            if ((method.IsVirtual || method.IsOverride) && !method.IsOperator)
                 Write("virtual ");
 
             var isBuiltinOperator = method.IsOperator &&

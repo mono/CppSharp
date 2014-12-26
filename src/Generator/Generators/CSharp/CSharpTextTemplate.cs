@@ -116,7 +116,7 @@ namespace CppSharp.Generators.CSharp
                 ctx = ctx.Namespace;
             }
 
-            if (Options.GenerateLibraryNamespace)
+            if (decl.GenerationKind == GenerationKind.Generate && Options.GenerateLibraryNamespace)
                 names.Add(Options.OutputNamespace);
 
             names.Reverse();
@@ -744,7 +744,7 @@ namespace CppSharp.Generators.CSharp
 
             var bases = new List<string>();
 
-            var needsBase = @class.HasGeneratedBase && @class.IsGenerated;
+            var needsBase =  @class.HasNonIgnoredBase && @class.IsGenerated;
 
             if (needsBase)
             {
@@ -1285,10 +1285,16 @@ namespace CppSharp.Generators.CSharp
 
         #region Virtual Tables
 
+        public List<VTableComponent> GetValidVTableMethodEntries(Class @class)
+        {
+            var entries = VTables.GatherVTableMethodEntries(@class);
+            return entries.Where(e => !e.Ignore && !e.Method.IsOperator).ToList();
+        }
+
         public List<VTableComponent> GetUniqueVTableMethodEntries(Class @class)
         {
             var uniqueEntries = new OrderedSet<VTableComponent>();
-            foreach (var entry in VTables.GatherVTableMethodEntries(@class))
+            foreach (var entry in GetValidVTableMethodEntries(@class))
                 uniqueEntries.Add(entry);
 
             return uniqueEntries.ToList();
@@ -1297,8 +1303,7 @@ namespace CppSharp.Generators.CSharp
         public void GenerateVTable(Class @class)
         {
             var entries = VTables.GatherVTableMethodEntries(@class);
-            var wrappedEntries = GetUniqueVTableMethodEntries(@class).Where(
-                e => !e.Ignore).ToList();
+            var wrappedEntries = GetUniqueVTableMethodEntries(@class);
             if (wrappedEntries.Count == 0)
                 return;
 
@@ -1391,11 +1396,11 @@ namespace CppSharp.Generators.CSharp
             switch (Driver.Options.Abi)
             {
                 case CppAbi.Microsoft:
-                    AllocateNewVTablesMS(@class);
+                    AllocateNewVTablesMS(@class, entries, wrappedEntries);
                     break;
                 case CppAbi.Itanium:
                 case CppAbi.ARM:
-                    AllocateNewVTablesItanium(@class, entries);
+                    AllocateNewVTablesItanium(@class, entries, wrappedEntries);
                     break;
             }
 
@@ -1417,10 +1422,10 @@ namespace CppSharp.Generators.CSharp
         {
             WriteLine("_OldVTables = new void*[1];");
             WriteLine("_OldVTables[0] = native->vfptr0.ToPointer();");
-
         }
 
-        private void AllocateNewVTablesMS(Class @class)
+        private void AllocateNewVTablesMS(Class @class, IList<VTableComponent> entries,
+            IList<VTableComponent> wrappedEntries)
         {
             WriteLine("_NewVTables = new void*[{0}];", @class.Layout.VFTables.Count);
 
@@ -1432,18 +1437,7 @@ namespace CppSharp.Generators.CSharp
                     tableIndex, size, Driver.TargetInfo.PointerWidth / 8);
                 WriteLine("_NewVTables[{0}] = vfptr{0}.ToPointer();", tableIndex);
 
-                for (int entryIndex = 0; entryIndex < vfptr.Layout.Components.Count; entryIndex++)
-                {
-                    var entry = vfptr.Layout.Components[entryIndex];
-                    var offsetInBytes = VTables.GetVTableComponentIndex(@class, entry)
-                        * (Driver.TargetInfo.PointerWidth / 8);
-                    if (entry.Ignore)
-                        WriteLine("*(void**)(vfptr{0} + {1}) = *(void**)(native->vfptr{0} + {1});",
-                            tableIndex, offsetInBytes);
-                    else
-                        WriteLine("*(void**)(vfptr{0} + {1}) = _Thunks[{2}];", tableIndex,
-                            offsetInBytes, entryIndex);
-                }
+                AllocateNewVTableEntries(@class, entries, wrappedEntries, tableIndex);
             }
 
             WriteCloseBraceIndent();
@@ -1453,7 +1447,8 @@ namespace CppSharp.Generators.CSharp
                 WriteLine("native->vfptr{0} = new IntPtr(_NewVTables[{0}]);", i);
         }
 
-        private void AllocateNewVTablesItanium(Class @class, IList<VTableComponent> entries)
+        private void AllocateNewVTablesItanium(Class @class, IList<VTableComponent> entries,
+            IList<VTableComponent> wrappedEntries)
         {
             WriteLine("_NewVTables = new void*[1];");
 
@@ -1462,16 +1457,7 @@ namespace CppSharp.Generators.CSharp
             WriteLine("var vfptr{0} = Marshal.AllocHGlobal({1} * {2});", 0, size, Driver.TargetInfo.PointerWidth / 8);
             WriteLine("_NewVTables[0] = vfptr0.ToPointer();");
 
-            for (int i = 0; i < entries.Count; i++)
-            {
-                var entry = entries[i];
-                var offsetInBytes = VTables.GetVTableComponentIndex(@class, entry)
-                    * (Driver.TargetInfo.PointerWidth / 8);
-                if (entry.Ignore)
-                    WriteLine("*(void**)(vfptr0 + {0}) = *(void**)(native->vfptr0 + {0});", offsetInBytes);
-                else
-                    WriteLine("*(void**)(vfptr0 + {0}) = _Thunks[{1}];", offsetInBytes, i);
-            }
+            AllocateNewVTableEntries(@class, entries, wrappedEntries, tableIndex: 0);
 
             WriteCloseBraceIndent();
             NewLine();
@@ -1479,9 +1465,26 @@ namespace CppSharp.Generators.CSharp
             WriteLine("native->vfptr0 = new IntPtr(_NewVTables[0]);");
         }
 
+        private void AllocateNewVTableEntries(Class @class, IList<VTableComponent> entries,
+            IList<VTableComponent> wrappedEntries, int tableIndex)
+        {
+            foreach (var entry in entries)
+            {
+                var offsetInBytes = VTables.GetVTableComponentIndex(@class, entry)
+                                    * (Driver.TargetInfo.PointerWidth / 8);
+
+                if (entry.Ignore)
+                    WriteLine("*(void**)(vfptr{0} + {1}) = *(void**)(native->vfptr{0} + {1});",
+                        tableIndex, offsetInBytes);
+                else
+                    WriteLine("*(void**)(vfptr{0} + {1}) = _Thunks[{2}];", tableIndex,
+                        offsetInBytes, wrappedEntries.IndexOf(entry));
+            }
+        }
+
         private void GenerateVTableClassSetupCall(Class @class, bool addPointerGuard = false)
         {
-            var entries = VTables.GatherVTableMethodEntries(@class);
+            var entries = GetUniqueVTableMethodEntries(@class);
             if (Options.GenerateVirtualTables && @class.IsDynamic && entries.Count != 0)
             {
                 // called from internal ctors which may have been passed an IntPtr.Zero
@@ -1491,7 +1494,9 @@ namespace CppSharp.Generators.CSharp
                         Helpers.InstanceIdentifier);
                     PushIndent();
                 }
+
                 WriteLine("SetupVTables({0});", Generator.GeneratedIdentifier("Instance"));
+
                 if (addPointerGuard)
                     PopIndent();
             }
@@ -1907,7 +1912,7 @@ namespace CppSharp.Generators.CSharp
             {
                 PushBlock(CSharpBlockKind.Method);
                 WriteLine("public static {0}{1} {2}(global::System.IntPtr native)",
-                    @class.HasGeneratedBase && !@class.BaseClass.IsAbstract ? "new " : string.Empty,
+                    @class.HasNonIgnoredBase && !@class.BaseClass.IsAbstract ? "new " : string.Empty,
                     safeIdentifier, Helpers.CreateInstanceIdentifier);
                 WriteStartBraceIndent();
                 WriteLine("return new {0}(({1}.Internal*) native);", safeIdentifier, className);
@@ -2072,7 +2077,7 @@ namespace CppSharp.Generators.CSharp
                 Write(Helpers.GetAccess(GetValidMethodAccess(method)));
             }
 
-            if (method.IsVirtual && !method.IsOverride &&
+            if (method.IsVirtual && !method.IsOverride && !method.IsOperator &&
                 (!Driver.Options.GenerateAbstractImpls || !method.IsPure))
                 Write("virtual ");
 

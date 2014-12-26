@@ -57,6 +57,7 @@ namespace CppSharp.Passes
                     @operator.ExplicitlyIgnore();
                     continue;
                 }
+
                 if (@operator.IsNonMemberOperator)
                     continue;
 
@@ -70,7 +71,7 @@ namespace CppSharp.Passes
                     if (@operator.IsStatic)
                         @operator.Parameters = @operator.Parameters.Skip(1).ToList();
 
-                    var type = new PointerType()
+                    var type = new PointerType
                     {
                         QualifiedPointee = new QualifiedType(new TagType(@class)),
                         Modifier = PointerType.TypeModifier.LVReference
