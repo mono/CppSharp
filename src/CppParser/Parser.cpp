@@ -2512,13 +2512,66 @@ AST::Expression* Parser::WalkExpression(clang::Expr* Expr)
     case Stmt::CXXFunctionalCastExprClass:
     case Stmt::CXXReinterpretCastExprClass:
     case Stmt::CXXStaticCastExprClass:
+    case Stmt::ImplicitCastExprClass:
+        return WalkExpression(cast<CastExpr>(Expr)->getSubExprAsWritten());
+    case Stmt::CXXOperatorCallExprClass:
+        return new AST::Expression(GetStringFromStatement(Expr), StatementClass::CXXOperatorCallExpr,
+            WalkDeclaration(cast<CXXOperatorCallExpr>(Expr)->getCalleeDecl()));
+    case Stmt::CXXConstructExprClass:
+    case Stmt::CXXTemporaryObjectExprClass:
+    {
+        auto ConstructorExpr = cast<CXXConstructExpr>(Expr);
+        if (ConstructorExpr->getNumArgs() == 1)
+        {
+            auto Arg = ConstructorExpr->getArg(0);
+            auto TemporaryExpr = dyn_cast<MaterializeTemporaryExpr>(Arg);
+            if (TemporaryExpr)
+            {
+                auto Cast = dyn_cast<CastExpr>(TemporaryExpr->GetTemporaryExpr());
+                if (Cast && Cast->getSubExprAsWritten()->getStmtClass() != Stmt::IntegerLiteralClass)
+                    return WalkExpression(Cast->getSubExprAsWritten());
+            }
+        }
+        return new AST::Expression(GetStringFromStatement(Expr), StatementClass::CXXConstructExprClass,
+            WalkDeclaration(ConstructorExpr->getConstructor()));
+    }
+    case Stmt::MaterializeTemporaryExprClass:
+        return WalkExpression(cast<MaterializeTemporaryExpr>(Expr)->GetTemporaryExpr());
+    default:
+        break;
+    }
+    llvm::APSInt integer;
+    if (Expr->getStmtClass() != Stmt::CharacterLiteralClass &&
+        Expr->getStmtClass() != Stmt::CXXBoolLiteralExprClass &&
+        Expr->EvaluateAsInt(integer, C->getASTContext()))
+        return new AST::Expression(integer.toString(10));
+    return new AST::Expression(GetStringFromStatement(Expr));
+}
+
+AST::Expression* Parser::WalkExpressionEx(clang::Expr* Expr)
+{
+    using namespace clang;
+
+    switch (Expr->getStmtClass())
+    {
+    case Stmt::BinaryOperatorClass:
+        return new AST::Expression(GetStringFromStatement(Expr), StatementClass::BinaryOperator);
+    case Stmt::DeclRefExprClass:
+        return new AST::Expression(GetStringFromStatement(Expr), StatementClass::DeclRefExprClass,
+            WalkDeclaration(cast<DeclRefExpr>(Expr)->getDecl()));
+    case Stmt::CStyleCastExprClass:
+    case Stmt::CXXConstCastExprClass:
+    case Stmt::CXXDynamicCastExprClass:
+    case Stmt::CXXFunctionalCastExprClass:
+    case Stmt::CXXReinterpretCastExprClass:
+    case Stmt::CXXStaticCastExprClass:
         return  new AST::Expression(GetStringFromStatement(Expr), StatementClass::ExplicitCastExpr,
             0,
-            WalkExpression(cast<CastExpr>(Expr)->getSubExpr()));
+            WalkExpressionEx(cast<CastExpr>(Expr)->getSubExpr()));
     case Stmt::ImplicitCastExprClass:
         return  new AST::Expression(GetStringFromStatement(Expr), StatementClass::ImplicitCastExpr,
             0,
-            WalkExpression(cast<CastExpr>(Expr)->getSubExpr()));
+            WalkExpressionEx(cast<CastExpr>(Expr)->getSubExpr()));
     case Stmt::CXXOperatorCallExprClass:
         return new AST::Expression(GetStringFromStatement(Expr), StatementClass::CXXOperatorCallExpr,
             WalkDeclaration(cast<CXXOperatorCallExpr>(Expr)->getCalleeDecl()));
@@ -2530,13 +2583,13 @@ AST::Expression* Parser::WalkExpression(clang::Expr* Expr)
         {
             if (ConstructorExpr->isElidable())
             {
-                return WalkExpression(ConstructorExpr->getArg(0));
+                return WalkExpressionEx(ConstructorExpr->getArg(0));
             }
             else
             {
                 return new AST::Expression(GetStringFromStatement(Expr), StatementClass::CXXConstructExprClass,
                     WalkDeclaration(ConstructorExpr->getConstructor()),
-                    WalkExpression(ConstructorExpr->getArg(0)));
+                    WalkExpressionEx(ConstructorExpr->getArg(0)));
             }
         }
         else
@@ -2546,7 +2599,7 @@ AST::Expression* Parser::WalkExpression(clang::Expr* Expr)
         }
     }
     case Stmt::MaterializeTemporaryExprClass:
-        return WalkExpression(cast<MaterializeTemporaryExpr>(Expr)->GetTemporaryExpr());
+        return WalkExpressionEx(cast<MaterializeTemporaryExpr>(Expr)->GetTemporaryExpr());
     default:
         break;
     }
