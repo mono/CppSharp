@@ -1250,6 +1250,9 @@ Field* Parser::WalkFieldCXX(clang::FieldDecl* FD, Class* Class)
     F->QualifiedType = GetQualifiedType(FD->getType(), WalkType(FD->getType(), &TL));
     F->Access = ConvertToAccess(FD->getAccess());
     F->Class = Class;
+    F->IsBitField = FD->isBitField();
+    if (F->IsBitField)
+        F->BitWidth = FD->getBitWidthValue(C->getASTContext());
 
     Class->Fields.push_back(F);
 
@@ -2408,8 +2411,7 @@ PreprocessedEntity* Parser::WalkPreprocessedEntity(
         Entity = new MacroExpansion();
 
         std::string Text;
-        if (!GetDeclText(PPEntity->getSourceRange(), Text))
-            return nullptr;
+        GetDeclText(PPEntity->getSourceRange(), Text);
 
         static_cast<MacroExpansion*>(Entity)->Text = Text;
         break;
