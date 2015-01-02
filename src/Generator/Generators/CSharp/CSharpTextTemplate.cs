@@ -2289,9 +2289,13 @@ namespace CppSharp.Generators.CSharp
                 if (method.Kind == CXXMethodKind.Conversion)
                 {
                     // To avoid ambiguity when having the multiple inheritance pass enabled
-                    var @interface = @class.Namespace.Classes.Find(c => c.OriginalClass == @class);
+                    var paramType = method.Parameters[0].Type.SkipPointerRefs().Desugar();
+                    Class paramClass;
+                    Class @interface = null;
+                    if (paramType.TryGetClass(out paramClass))
+                        @interface = paramClass.Namespace.Classes.Find(c => c.OriginalClass == paramClass);
                     if (@interface != null)
-                        WriteLine("return new {0}(({2}){1});", method.ConversionType,
+                        WriteLine("return new {0}(({2}) {1});", method.ConversionType,
                                   method.Parameters[0].Name, @interface.Name);
                     else
                         WriteLine("return new {0}({1});", method.ConversionType,

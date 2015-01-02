@@ -15,6 +15,7 @@ namespace CppSharp.Passes
         private static readonly Regex regexFunctionParams = new Regex(@"\(?(.+)\)?", RegexOptions.Compiled);
         private static readonly Regex regexDoubleColon = new Regex(@"\w+::", RegexOptions.Compiled);
         private static readonly Regex regexName = new Regex(@"(\w+)", RegexOptions.Compiled);
+        private static readonly Regex regexCtor = new Regex(@"^(\w+)\s*\(\w*\)$", RegexOptions.Compiled);
 
         public override bool VisitFunctionDecl(Function function)
         {
@@ -44,10 +45,7 @@ namespace CppSharp.Passes
                 if (CheckForEnumValue(parameter.DefaultArgument, desugared))
                     continue;
 
-                CheckForAnonExpression(desugared, parameter);
-
                 CheckForDefaultEmptyChar(parameter, desugared);
-
             }
 
             GenerateOverloads(function, overloadIndices);
@@ -64,21 +62,6 @@ namespace CppSharp.Passes
             }
         }
 
-        private bool CheckForAnonExpression(Type desugared, Parameter parameter)
-        {
-            var cast = parameter.DefaultArgument as CastExpr;
-            if (cast != null)
-            {
-                if (cast.SubExpression is BuiltinTypeExpression)
-                {
-                    // The output string is correct in the deepest expression. Copy it to the outernmost.
-                    cast.String = cast.SubExpression.String;
-                    return true;
-                }
-            }
-            return true;
-        }
-
         private static bool CheckForDefaultPointer(Type desugared, Parameter parameter)
         {
             if (desugared.IsPointer())
@@ -93,30 +76,6 @@ namespace CppSharp.Passes
 
         private bool? CheckForDefaultConstruct(Type desugared, Expression arg)
         {
-            // Unwrapping the constructor and a possible cast
-            Method ctor = null;
-            CastExpr castExpression = null;
-            CtorExpr ctorExpression = null;
-            if (arg is CtorExpr)
-            {
-                ctorExpression = (CtorExpr)arg;
-                ctor = (Method)ctorExpression.Declaration;
-            }
-            else if (arg is CastExpr && ((CastExpr)arg).SubExpression is CtorExpr)
-            {
-                castExpression = (CastExpr)arg;
-                ctorExpression = (CtorExpr)castExpression.SubExpression;
-                ctor = (Method)ctorExpression.Declaration;
-            }
-            else
-            {
-                return false;
-            }
-            var innerArg = ctorExpression.SubExpression;
-
-            if (ctor == null || !ctor.IsConstructor)
-                return false;
-
             // Unwrapping the underlying type behind a possible pointer/reference
             Type type;
             desugared.IsPointerTo(out type);
@@ -125,6 +84,8 @@ namespace CppSharp.Passes
             Class decl;
             if (!type.TryGetClass(out decl))
                 return false;
+
+            var ctor = arg.Declaration as Method;
 
             TypeMap typeMap;
             if (Driver.TypeDatabase.FindTypeMap(decl, type, out typeMap))
@@ -153,20 +114,11 @@ namespace CppSharp.Passes
                 Enumeration @enum;
                 if (typeInSignature.TryGetEnum(out @enum))
                 {
-                    var argCast = (CastExpr)arg;
-                    Expression literal = ((CtorExpr)argCast.SubExpression).SubExpression;
-                    
-                    if (CheckForEnumValue(literal, desugared))
-                    {
-                        argCast.String = literal.String;
-                        argCast.SubExpression.String = literal.String;
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
+                    return false;
                 }
+
+                if (ctor == null || !ctor.IsConstructor)
+                    return false;
                 if (mappedTo == "string" && ctor.Parameters.Count == 0)
                 {
                     arg.String = "\"\"";
@@ -174,23 +126,24 @@ namespace CppSharp.Passes
                 }
             }
 
-            if (innerArg is CtorExpr || innerArg is CastExpr)
+            if (regexCtor.IsMatch(arg.String))
             {
-                Type innerDesugared = ctor.Parameters[0].Type.Desugar();
-                CheckForDefaultConstruct(innerDesugared, innerArg);
-                if (innerDesugared.IsPointer() && innerArg.String == "0")
-                    innerArg.String = "";
-                arg.String = string.Format("new {0}({1})", ctor.Name, innerArg.String);
-            }
-            else if (innerArg != null)
-            {
-                Type innerDesugared = ctor.Parameters[0].Type.Desugar();
-                CheckForEnumValue(innerArg, innerDesugared);
-                arg.String = string.Format("new {0}({1})", ctor.Name, innerArg.String);
+                arg.String = string.Format("new {0}", arg.String);
+                if (ctor != null && ctor.Parameters.Count > 0 && ctor.Parameters[0].Type.IsAddress())
+                {
+                    arg.String = arg.String.Replace("(0)", "()");
+                    return decl.IsValueType ? true : (bool?) null;
+                }
             }
             else
             {
-                arg.String = string.Format("new {0}()", ctor.Name);
+                if (ctor != null && ctor.Parameters.Count > 0)
+                {
+                    var finalPointee = ctor.Parameters[0].Type.SkipPointerRefs().Desugar();
+                    Enumeration @enum;
+                    if (finalPointee.TryGetEnum(out @enum))
+                        TranslateEnumExpression(arg, finalPointee, arg.String);
+                }
             }
 
             return decl.IsValueType ? true : (bool?) null;
@@ -198,16 +151,7 @@ namespace CppSharp.Passes
 
         private static bool CheckForEnumValue(Expression arg, Type desugared)
         {
-            // Handle a simple cast (between int and enum, for example)
-            var argCast = arg as CastExpr;
-            Expression literal;
-            if (argCast != null)
-                literal = argCast.SubExpression;
-            else
-                literal = arg;
-
-            // The default case
-            var enumItem = literal.Declaration as Enumeration.Item;
+            var enumItem = arg.Declaration as Enumeration.Item;
             if (enumItem != null)
             {
                 arg.String = string.Format("{0}{1}{2}.{3}",
@@ -217,18 +161,23 @@ namespace CppSharp.Passes
                         : enumItem.Namespace.Namespace.Name + ".", enumItem.Namespace.Name, enumItem.Name);
                 return true;
             }
-            // Handle cases like "Flags::Flag1 | Flags::Flag2"
+
             var call = arg.Declaration as Function;
-            if ((call != null && call.ReturnType.Type.IsEnum()) || arg.Class == StatementClass.BinaryOperator)
+            if ((call != null || arg.Class == StatementClass.BinaryOperator) && arg.String != "0")
             {
                 string @params = regexFunctionParams.Match(arg.String).Groups[1].Value;
-                if (@params.Contains("::"))
-                    arg.String = regexDoubleColon.Replace(@params, desugared + ".");
-                else
-                    arg.String = regexName.Replace(@params, desugared + ".$1");
+                TranslateEnumExpression(arg, desugared, @params);
                 return true;
             }
             return false;
+        }
+
+        private static void TranslateEnumExpression(Expression arg, Type desugared, string @params)
+        {
+            if (@params.Contains("::"))
+                arg.String = regexDoubleColon.Replace(@params, desugared + ".");
+            else
+                arg.String = regexName.Replace(@params, desugared + ".$1");
         }
 
         private void CheckForDefaultEmptyChar(Parameter parameter, Type desugared)
