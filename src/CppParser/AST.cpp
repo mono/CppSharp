@@ -519,7 +519,8 @@ DEF_STRING(Variable, Mangled)
 
 BaseClassSpecifier::BaseClassSpecifier() : Type(0) {}
 
-Field::Field() : Declaration(DeclarationKind::Field), Class(0) {}
+Field::Field() : Declaration(DeclarationKind::Field), Class(0),
+    IsBitField(false), BitWidth(0) {}
 
 AccessSpecifierDecl::AccessSpecifierDecl()
     : Declaration(DeclarationKind::AccessSpecifier) {}

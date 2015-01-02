@@ -1149,6 +1149,8 @@ namespace CppSharp
             _field.Access = VisitAccessSpecifier(decl.Access);
             _field.Offset = decl.Offset;
             _field.Class = Visit(decl.Class) as AST.Class;
+            _field.IsBitField = decl.IsBitField;
+            _field.BitWidth = decl.BitWidth;
 
             return _field;
         }

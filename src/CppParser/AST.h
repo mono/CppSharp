@@ -662,6 +662,8 @@ public:
     CppSharp::CppParser::AST::QualifiedType QualifiedType;
     unsigned Offset;
     CppSharp::CppParser::AST::Class* Class;
+    bool IsBitField;
+    unsigned BitWidth;
 };
 
 class CS_API AccessSpecifierDecl : public Declaration

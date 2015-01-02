@@ -18,6 +18,10 @@ namespace CppSharp.AST
 
         public Expression Expression { get; set; }
 
+        public bool IsBitField { get; set; }
+
+        public uint BitWidth { get; set; }
+
         public Field()
         {
             Offset = 0;
@@ -37,6 +41,8 @@ namespace CppSharp.AST
             Offset = field.Offset;
             Class = field.Class;
             Expression = field.Expression;
+            IsBitField = field.IsBitField;
+            BitWidth = field.BitWidth;
         }
 
         public override T Visit<T>(IDeclVisitor<T> visitor)

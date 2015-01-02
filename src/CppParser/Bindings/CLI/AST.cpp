@@ -2198,6 +2198,26 @@ void CppSharp::Parser::AST::Field::Class::set(CppSharp::Parser::AST::Class^ valu
     ((::CppSharp::CppParser::AST::Field*)NativePtr)->Class = (::CppSharp::CppParser::AST::Class*)value->NativePtr;
 }
 
+bool CppSharp::Parser::AST::Field::IsBitField::get()
+{
+    return ((::CppSharp::CppParser::AST::Field*)NativePtr)->IsBitField;
+}
+
+void CppSharp::Parser::AST::Field::IsBitField::set(bool value)
+{
+    ((::CppSharp::CppParser::AST::Field*)NativePtr)->IsBitField = value;
+}
+
+unsigned int CppSharp::Parser::AST::Field::BitWidth::get()
+{
+    return ((::CppSharp::CppParser::AST::Field*)NativePtr)->BitWidth;
+}
+
+void CppSharp::Parser::AST::Field::BitWidth::set(unsigned int value)
+{
+    ((::CppSharp::CppParser::AST::Field*)NativePtr)->BitWidth = value;
+}
+
 CppSharp::Parser::AST::AccessSpecifierDecl::AccessSpecifierDecl(::CppSharp::CppParser::AST::AccessSpecifierDecl* native)
     : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)native)
 {
