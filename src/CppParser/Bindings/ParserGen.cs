@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using CppSharp.AST;
 using CppSharp.Generators;
 using CppSharp.Passes;
@@ -73,8 +75,8 @@ namespace CppSharp
             options.addIncludeDirs(basePath);
             options.addLibraryDirs(".");
 
-            options.OutputDir = Path.Combine(GetSourceDirectory("src"), @"CppParser\Bindings",
-                Kind.ToString());
+            options.OutputDir = Path.Combine(GetSourceDirectory("src"), "CppParser",
+                "Bindings", Kind.ToString());
 
             if (Kind == GeneratorKind.CSharp)
                 options.OutputDir = Path.Combine(options.OutputDir, options.TargetTriple);
@@ -108,6 +110,21 @@ namespace CppSharp
             options.MicrosoftMode = false;
             options.NoBuiltinIncludes = true;
 
+            if (IsMacOS)
+            {
+                var headersPaths = new List<string> {
+                    Path.Combine(GetSourceDirectory("deps"), "llvm/tools/clang/lib/Headers"),
+                    Path.Combine(GetSourceDirectory("deps"), "libcxx", "include"),
+                    "/usr/include",
+                };
+
+                foreach (var header in headersPaths)
+                    Console.WriteLine(header);
+
+                foreach (var header in headersPaths)
+                    options.addSystemIncludeDirs(header);
+            }
+
             var headersPath = Path.Combine(GetSourceDirectory("build"), "headers",
                 "osx");
 
@@ -133,20 +150,61 @@ namespace CppSharp
         {
         }
 
+        public static bool IsWindows
+        {
+            get {
+                switch (Environment.OSVersion.Platform) 
+                {
+                case PlatformID.Win32NT:
+                case PlatformID.Win32S:
+                case PlatformID.Win32Windows:
+                case PlatformID.WinCE:
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
+        [DllImport ("libc")]
+        static extern int uname (IntPtr buf);
+
+        public static bool IsMacOS {
+            get {
+                if (Environment.OSVersion.Platform != PlatformID.Unix)
+                    return false;
+
+                IntPtr buf = Marshal.AllocHGlobal (8192);
+                if (uname (buf) == 0) {
+                    string os = Marshal.PtrToStringAnsi (buf);
+                    switch (os) {
+                    case "Darwin":
+                        return true;
+                    }
+                }
+                Marshal.FreeHGlobal (buf);
+
+                return false;
+            }
+        }
+
         public static void Main(string[] args)
         {
-            Console.WriteLine("Generating the C++/CLI parser bindings for Windows...");
-            ConsoleDriver.Run(new ParserGen(GeneratorKind.CLI, "i686-pc-win32-msvc",
-                CppAbi.Microsoft));
-            Console.WriteLine();
+            if (IsWindows)
+            {
+                Console.WriteLine("Generating the C++/CLI parser bindings for Windows...");
+                ConsoleDriver.Run(new ParserGen(GeneratorKind.CLI, "i686-pc-win32-msvc",
+                    CppAbi.Microsoft));
+                Console.WriteLine();
 
-            Console.WriteLine("Generating the C# parser bindings for Windows...");
-            ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "i686-pc-win32-msvc",
-                CppAbi.Microsoft));
-            Console.WriteLine();
+                Console.WriteLine("Generating the C# parser bindings for Windows...");
+                ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "i686-pc-win32-msvc",
+                    CppAbi.Microsoft));
+                Console.WriteLine();
+            }
 
             var osxHeadersPath = Path.Combine(GetSourceDirectory("build"), @"headers\osx");
-            if (Directory.Exists(osxHeadersPath))
+            if (Directory.Exists(osxHeadersPath) || IsMacOS)
             {
                 Console.WriteLine("Generating the C# parser bindings for OSX...");
                 ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "i686-apple-darwin12.4.0",
