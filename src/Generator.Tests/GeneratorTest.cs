@@ -45,6 +45,13 @@ namespace CppSharp.Utils
             var path = Path.GetFullPath(GetTestsDirectory(name));
             options.addIncludeDirs(path);
 
+            var headersPaths = new System.Collections.Generic.List<string> {
+                Path.GetFullPath(Path.Combine(path, "../../deps/llvm/tools/clang/lib/Headers"))
+            };
+
+            foreach (var header in headersPaths)
+                options.addSystemIncludeDirs(header);
+
             driver.Diagnostics.EmitMessage("Looking for tests in: {0}", path);
             var files = Directory.EnumerateFiles(path, "*.h");
             foreach (var file in files)
