@@ -1,6 +1,8 @@
 #include "../Tests.h"
 
+#ifdef _WIN32
 #include <vadefs.h>
+#endif
 #include <string>
 
 class DLL_API IgnoredType
