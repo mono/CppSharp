@@ -126,5 +126,18 @@ namespace CppSharp.AST
             }
             return null;
         }
+
+        public static bool HasRefBase(this Class @class)
+        {
+            Class baseClass = null;
+
+            if (@class.HasBaseClass)
+                baseClass = @class.Bases[0].Class;
+
+            var hasRefBase = baseClass != null && baseClass.IsRefType
+                             && baseClass.IsDeclared;
+
+            return hasRefBase;
+        }
     }
 }

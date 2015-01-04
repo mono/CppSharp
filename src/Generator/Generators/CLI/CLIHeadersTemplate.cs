@@ -255,7 +255,7 @@ namespace CppSharp.Generators.CLI
 
             var nativeType = string.Format("::{0}*", @class.QualifiedOriginalName);
 
-            if (CSharpTextTemplate.ShouldGenerateClassNativeField(@class))
+            if (CLIGenerator.ShouldGenerateClassNativeField(@class))
                 GenerateClassNativeField(@class, nativeType);
 
             GenerateClassConstructors(@class, nativeType);
@@ -583,7 +583,7 @@ namespace CppSharp.Generators.CLI
 
             if (!@class.IsStatic)
             {
-                if (CSharpTextTemplate.HasRefBase(@class))
+                if (@class.HasRefBase())
                     Write(" : {0}", QualifiedIdentifier(@class.Bases[0].Class));
                 else if (@class.IsRefType)
                     Write(" : ICppInstance");

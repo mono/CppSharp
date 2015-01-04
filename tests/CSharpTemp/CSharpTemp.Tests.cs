@@ -174,4 +174,12 @@ public class CSharpTempTests : GeneratorTestFixture
         MethodsWithDefaultValues m1 = 5;
         Assert.AreEqual(5, m1.A);
     }
+
+    [Test]
+    public void TestStructWithPrivateFields()
+    {
+        var structWithPrivateFields = new StructWithPrivateFields(10, new Foo { A = 5 });
+        Assert.AreEqual(10, structWithPrivateFields.SimplePrivateField);
+        Assert.AreEqual(5, structWithPrivateFields.ComplexPrivateField.A);
+    }
 }
