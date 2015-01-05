@@ -375,3 +375,19 @@ void PropertyWithIgnoredType::setIgnoredType(const IgnoredType<int> &value)
 {
     _ignoredType = value;
 }
+
+StructWithPrivateFields::StructWithPrivateFields(int simplePrivateField, Foo complexPrivateField)
+{
+    this->simplePrivateField = simplePrivateField;
+    this->complexPrivateField = complexPrivateField;
+}
+
+int StructWithPrivateFields::getSimplePrivateField()
+{
+    return simplePrivateField;
+}
+
+Foo StructWithPrivateFields::getComplexPrivateField()
+{
+    return complexPrivateField;
+}

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using CppSharp.AST;
 
 namespace CppSharp.Passes
@@ -104,13 +105,15 @@ namespace CppSharp.Passes
                 var method1 = function as Method;
                 var method2 = overload as Method;
 
-                if (method1.IsConst && !method2.IsConst)
+                var sameParams = method1.Parameters.SequenceEqual(method2.Parameters, new ParameterTypeComparer());
+
+                if (method1.IsConst && !method2.IsConst && sameParams)
                 {
                     method1.ExplicitlyIgnore();
                     return false;
                 }
 
-                if (method2.IsConst && !method1.IsConst)
+                if (method2.IsConst && !method1.IsConst && sameParams)
                 {
                     method2.ExplicitlyIgnore();
                     return false;

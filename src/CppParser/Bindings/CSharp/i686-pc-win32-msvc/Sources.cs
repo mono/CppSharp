@@ -34,6 +34,9 @@ namespace CppSharp
                 internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
             }
 
+            private SourceLocation.Internal __instance;
+            public SourceLocation.Internal __Instance { get { return __instance; } }
+
             public static SourceLocation __CreateInstance(global::System.IntPtr native)
             {
                 return new SourceLocation((SourceLocation.Internal*) native);
@@ -45,43 +48,36 @@ namespace CppSharp
             }
 
             private SourceLocation(SourceLocation.Internal native)
-                : this(&native)
+                : this()
             {
+                __instance = native;
             }
 
             private SourceLocation(SourceLocation.Internal* native, bool isInternalImpl = false) : this()
             {
-                var __ptr = native;
-                ID = __ptr->ID;
-            }
-
-            internal Internal ToInternal()
-            {
-                var __native = new CppSharp.Parser.SourceLocation.Internal();
-                var __ptr = &__native;
-                __native.ID = ID;
-                return __native;
-            }
-
-            internal void FromInternal(Internal* native)
-            {
-                var __ptr = native;
-                ID = __ptr->ID;
+                __instance = *native;
             }
 
             public SourceLocation(uint ID)
                 : this()
             {
-                var __fixedInstance = ToInternal();
-                Internal.ctor_1(new global::System.IntPtr(&__fixedInstance), ID);
-                FromInternal(&__fixedInstance);
+                fixed (Internal* __instancePtr = &__instance)
+                {
+                    Internal.ctor_1(new global::System.IntPtr(__instancePtr), ID);
+                }
             }
 
             public uint ID
             {
-                get;
+                get
+                {
+                    return __instance.ID;
+                }
 
-                set;
+                set
+                {
+                    __instance.ID = value;
+                }
             }
         }
     }

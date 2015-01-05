@@ -140,7 +140,7 @@ namespace CppSharp.Generators.CLI
 
             GenerateClassMethods(@class, @class);
 
-            if (CSharpTextTemplate.ShouldGenerateClassNativeField(@class))
+            if (CLIGenerator.ShouldGenerateClassNativeField(@class))
             {
                 PushBlock(CLIBlockKind.Method);
                 WriteLine("System::IntPtr {0}::{1}::get()",
@@ -252,7 +252,7 @@ namespace CppSharp.Generators.CLI
             WriteLine("{0}::~{1}()", QualifiedIdentifier(@class), @class.Name);
             WriteStartBraceIndent();
 
-            if (CSharpTextTemplate.ShouldGenerateClassNativeField(@class))
+            if (CLIGenerator.ShouldGenerateClassNativeField(@class))
                 WriteLine("delete NativePtr;");
 
             WriteCloseBraceIndent();
@@ -267,7 +267,7 @@ namespace CppSharp.Generators.CLI
             WriteLine("{0}::!{1}()", QualifiedIdentifier(@class), @class.Name);
             WriteStartBraceIndent();
 
-            if (CSharpTextTemplate.ShouldGenerateClassNativeField(@class))
+            if (CLIGenerator.ShouldGenerateClassNativeField(@class))
                 WriteLine("delete NativePtr;");
 
             WriteCloseBraceIndent();

@@ -25,6 +25,7 @@
 #include <clang/Config/config.h>
 #include <clang/AST/ASTContext.h>
 #include <clang/AST/Comment.h>
+#include <clang/AST/DeclFriend.h>
 #include <clang/AST/DeclTemplate.h>
 #include <clang/AST/ExprCXX.h>
 #include <clang/Lex/DirectoryLookup.h>
@@ -2902,6 +2903,14 @@ Declaration* Parser::WalkDeclaration(clang::Decl* D,
         Decl->_Namespace = NS;
         break;
     }
+    case Decl::Friend:
+    {
+        auto FD = cast<FriendDecl>(D);
+        if (auto Friend = FD->getFriendDecl())
+            return WalkDeclaration(Friend, IgnoreSystemDecls, CanBeDefinition);
+
+        break;
+    }
     // Ignore these declarations since they must have been declared in
     // a class already.
     case Decl::CXXDestructor:
@@ -2910,7 +2919,6 @@ Declaration* Parser::WalkDeclaration(clang::Decl* D,
         break;
     case Decl::Empty:
     case Decl::AccessSpec:
-    case Decl::Friend:
     case Decl::Using:
     case Decl::UsingDirective:
     case Decl::UsingShadow:

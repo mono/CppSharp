@@ -245,14 +245,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->Char16Type;
+                    return ((Internal*) __Instance)->Char16Type;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->Char16Type = value;
+                    ((Internal*) __Instance)->Char16Type = value;
                 }
             }
 
@@ -260,14 +258,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->Char32Type;
+                    return ((Internal*) __Instance)->Char32Type;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->Char32Type = value;
+                    ((Internal*) __Instance)->Char32Type = value;
                 }
             }
 
@@ -275,14 +271,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->Int64Type;
+                    return ((Internal*) __Instance)->Int64Type;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->Int64Type = value;
+                    ((Internal*) __Instance)->Int64Type = value;
                 }
             }
 
@@ -290,14 +284,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->IntMaxType;
+                    return ((Internal*) __Instance)->IntMaxType;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->IntMaxType = value;
+                    ((Internal*) __Instance)->IntMaxType = value;
                 }
             }
 
@@ -305,14 +297,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->IntPtrType;
+                    return ((Internal*) __Instance)->IntPtrType;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->IntPtrType = value;
+                    ((Internal*) __Instance)->IntPtrType = value;
                 }
             }
 
@@ -320,14 +310,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->SizeType;
+                    return ((Internal*) __Instance)->SizeType;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->SizeType = value;
+                    ((Internal*) __Instance)->SizeType = value;
                 }
             }
 
@@ -335,14 +323,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->UIntMaxType;
+                    return ((Internal*) __Instance)->UIntMaxType;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->UIntMaxType = value;
+                    ((Internal*) __Instance)->UIntMaxType = value;
                 }
             }
 
@@ -350,14 +336,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->WCharType;
+                    return ((Internal*) __Instance)->WCharType;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->WCharType = value;
+                    ((Internal*) __Instance)->WCharType = value;
                 }
             }
 
@@ -365,14 +349,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->WIntType;
+                    return ((Internal*) __Instance)->WIntType;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->WIntType = value;
+                    ((Internal*) __Instance)->WIntType = value;
                 }
             }
 
@@ -380,14 +362,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->BoolAlign;
+                    return ((Internal*) __Instance)->BoolAlign;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->BoolAlign = value;
+                    ((Internal*) __Instance)->BoolAlign = value;
                 }
             }
 
@@ -395,14 +375,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->BoolWidth;
+                    return ((Internal*) __Instance)->BoolWidth;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->BoolWidth = value;
+                    ((Internal*) __Instance)->BoolWidth = value;
                 }
             }
 
@@ -410,14 +388,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->CharAlign;
+                    return ((Internal*) __Instance)->CharAlign;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->CharAlign = value;
+                    ((Internal*) __Instance)->CharAlign = value;
                 }
             }
 
@@ -425,14 +401,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->CharWidth;
+                    return ((Internal*) __Instance)->CharWidth;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->CharWidth = value;
+                    ((Internal*) __Instance)->CharWidth = value;
                 }
             }
 
@@ -440,14 +414,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->Char16Align;
+                    return ((Internal*) __Instance)->Char16Align;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->Char16Align = value;
+                    ((Internal*) __Instance)->Char16Align = value;
                 }
             }
 
@@ -455,14 +427,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->Char16Width;
+                    return ((Internal*) __Instance)->Char16Width;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->Char16Width = value;
+                    ((Internal*) __Instance)->Char16Width = value;
                 }
             }
 
@@ -470,14 +440,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->Char32Align;
+                    return ((Internal*) __Instance)->Char32Align;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->Char32Align = value;
+                    ((Internal*) __Instance)->Char32Align = value;
                 }
             }
 
@@ -485,14 +453,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->Char32Width;
+                    return ((Internal*) __Instance)->Char32Width;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->Char32Width = value;
+                    ((Internal*) __Instance)->Char32Width = value;
                 }
             }
 
@@ -500,14 +466,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->HalfAlign;
+                    return ((Internal*) __Instance)->HalfAlign;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->HalfAlign = value;
+                    ((Internal*) __Instance)->HalfAlign = value;
                 }
             }
 
@@ -515,14 +479,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->HalfWidth;
+                    return ((Internal*) __Instance)->HalfWidth;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->HalfWidth = value;
+                    ((Internal*) __Instance)->HalfWidth = value;
                 }
             }
 
@@ -530,14 +492,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->FloatAlign;
+                    return ((Internal*) __Instance)->FloatAlign;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->FloatAlign = value;
+                    ((Internal*) __Instance)->FloatAlign = value;
                 }
             }
 
@@ -545,14 +505,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->FloatWidth;
+                    return ((Internal*) __Instance)->FloatWidth;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->FloatWidth = value;
+                    ((Internal*) __Instance)->FloatWidth = value;
                 }
             }
 
@@ -560,14 +518,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->DoubleAlign;
+                    return ((Internal*) __Instance)->DoubleAlign;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->DoubleAlign = value;
+                    ((Internal*) __Instance)->DoubleAlign = value;
                 }
             }
 
@@ -575,14 +531,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->DoubleWidth;
+                    return ((Internal*) __Instance)->DoubleWidth;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->DoubleWidth = value;
+                    ((Internal*) __Instance)->DoubleWidth = value;
                 }
             }
 
@@ -590,14 +544,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->ShortAlign;
+                    return ((Internal*) __Instance)->ShortAlign;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->ShortAlign = value;
+                    ((Internal*) __Instance)->ShortAlign = value;
                 }
             }
 
@@ -605,14 +557,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->ShortWidth;
+                    return ((Internal*) __Instance)->ShortWidth;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->ShortWidth = value;
+                    ((Internal*) __Instance)->ShortWidth = value;
                 }
             }
 
@@ -620,14 +570,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->IntAlign;
+                    return ((Internal*) __Instance)->IntAlign;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->IntAlign = value;
+                    ((Internal*) __Instance)->IntAlign = value;
                 }
             }
 
@@ -635,14 +583,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->IntWidth;
+                    return ((Internal*) __Instance)->IntWidth;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->IntWidth = value;
+                    ((Internal*) __Instance)->IntWidth = value;
                 }
             }
 
@@ -650,14 +596,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->IntMaxTWidth;
+                    return ((Internal*) __Instance)->IntMaxTWidth;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->IntMaxTWidth = value;
+                    ((Internal*) __Instance)->IntMaxTWidth = value;
                 }
             }
 
@@ -665,14 +609,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->LongAlign;
+                    return ((Internal*) __Instance)->LongAlign;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->LongAlign = value;
+                    ((Internal*) __Instance)->LongAlign = value;
                 }
             }
 
@@ -680,14 +622,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->LongWidth;
+                    return ((Internal*) __Instance)->LongWidth;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->LongWidth = value;
+                    ((Internal*) __Instance)->LongWidth = value;
                 }
             }
 
@@ -695,14 +635,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->LongDoubleAlign;
+                    return ((Internal*) __Instance)->LongDoubleAlign;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->LongDoubleAlign = value;
+                    ((Internal*) __Instance)->LongDoubleAlign = value;
                 }
             }
 
@@ -710,14 +648,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->LongDoubleWidth;
+                    return ((Internal*) __Instance)->LongDoubleWidth;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->LongDoubleWidth = value;
+                    ((Internal*) __Instance)->LongDoubleWidth = value;
                 }
             }
 
@@ -725,14 +661,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->LongLongAlign;
+                    return ((Internal*) __Instance)->LongLongAlign;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->LongLongAlign = value;
+                    ((Internal*) __Instance)->LongLongAlign = value;
                 }
             }
 
@@ -740,14 +674,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->LongLongWidth;
+                    return ((Internal*) __Instance)->LongLongWidth;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->LongLongWidth = value;
+                    ((Internal*) __Instance)->LongLongWidth = value;
                 }
             }
 
@@ -755,14 +687,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->PointerAlign;
+                    return ((Internal*) __Instance)->PointerAlign;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->PointerAlign = value;
+                    ((Internal*) __Instance)->PointerAlign = value;
                 }
             }
 
@@ -770,14 +700,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->PointerWidth;
+                    return ((Internal*) __Instance)->PointerWidth;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->PointerWidth = value;
+                    ((Internal*) __Instance)->PointerWidth = value;
                 }
             }
 
@@ -785,14 +713,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->WCharAlign;
+                    return ((Internal*) __Instance)->WCharAlign;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->WCharAlign = value;
+                    ((Internal*) __Instance)->WCharAlign = value;
                 }
             }
 
@@ -800,14 +726,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->WCharWidth;
+                    return ((Internal*) __Instance)->WCharWidth;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->WCharWidth = value;
+                    ((Internal*) __Instance)->WCharWidth = value;
                 }
             }
         }

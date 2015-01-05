@@ -87,6 +87,7 @@ namespace CppSharp.Tests
         {
             ctx.SetClassAsValueType("TestCopyConstructorVal");
             ctx.SetClassAsValueType("QGenericArgument");
+            ctx.SetClassAsValueType("StructWithPrivateFields");
 
             ctx.IgnoreClassWithName("IgnoredTypeInheritingNonIgnoredWithNoEmptyCtor");
         }

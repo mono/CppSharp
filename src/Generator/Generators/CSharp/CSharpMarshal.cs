@@ -426,9 +426,10 @@ namespace CppSharp.Generators.CSharp
                 }
                 else
                 {
-                    Context.SupportBefore.WriteLine("var {0} = {1}.ToInternal();",
+                    Context.SupportBefore.WriteLine("var {0} = {1}.{2};",
                             Generator.GeneratedIdentifier(Context.ArgName),
-                            Context.Parameter.Name);
+                            Context.Parameter.Name,
+                            Helpers.InstanceIdentifier);
                 }
 
                 Context.Return.Write("new global::System.IntPtr(&{0})",
@@ -586,7 +587,7 @@ namespace CppSharp.Generators.CSharp
 
         private void MarshalValueClass()
         {
-            Context.Return.Write("{0}.ToInternal()", Context.Parameter.Name);
+            Context.Return.Write("{0}.{1}", Context.Parameter.Name, Helpers.InstanceIdentifier);
         }
 
         public override bool VisitFieldDecl(Field field)

@@ -311,3 +311,16 @@ public:
 private:
     IgnoredType<int> _ignoredType;
 };
+
+class DLL_API StructWithPrivateFields
+{
+public:
+    StructWithPrivateFields(int simplePrivateField, Foo complexPrivateField);
+    int getSimplePrivateField();
+    Foo getComplexPrivateField();
+protected:
+    int protectedField;
+private:
+    int simplePrivateField;
+    Foo complexPrivateField;
+};
