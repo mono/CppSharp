@@ -671,3 +671,10 @@ public:
 private:
     int m;
 };
+
+class DLL_API DifferentConstOverloads
+{
+public:
+    bool operator ==(const DifferentConstOverloads& other);
+    bool operator ==(int number) const;
+};

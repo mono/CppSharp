@@ -357,3 +357,13 @@ DLL_API inline const HasFriend operator+(const HasFriend& f1, const HasFriend& f
 {
     return HasFriend(f1.m + f2.m);
 }
+
+bool DifferentConstOverloads::operator ==(const DifferentConstOverloads& other)
+{
+    return true;
+}
+
+bool DifferentConstOverloads::operator ==(int number) const
+{
+    return false;
+}

@@ -467,5 +467,21 @@ public class BasicTests : GeneratorTestFixture
         Assert.AreEqual(new Bar { A = 5, B = 5.5f }, new Bar { A = 5, B = 5.5f });
         Assert.AreNotEqual(new Bar { A = 5, B = 5.6f }, new Bar { A = 5, B = 5.5f });
     }
+
+    [Test]
+    public void TestFriendOperator()
+    {
+        HasFriend h1 = 5;
+        HasFriend h2 = 10;
+        Assert.AreEqual(15, (h1 + h2).M);
+    }
+
+    [Test]
+    public void TestOperatorOverloads()
+    {
+        var differentConstOverloads = new DifferentConstOverloads();
+        Assert.IsTrue(differentConstOverloads == new DifferentConstOverloads());
+        Assert.IsFalse(differentConstOverloads == 5);
+    }
 }
  
