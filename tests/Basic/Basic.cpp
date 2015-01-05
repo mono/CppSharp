@@ -342,3 +342,18 @@ InternalCtorAmbiguity* InvokesInternalCtorAmbiguity::InvokeInternalCtor()
 {
     return ptr;
 }
+
+HasFriend::HasFriend(int m)
+{
+    this->m = m;
+}
+
+int HasFriend::getM()
+{
+    return m;
+}
+
+DLL_API inline const HasFriend operator+(const HasFriend& f1, const HasFriend& f2)
+{
+    return HasFriend(f1.m + f2.m);
+}
