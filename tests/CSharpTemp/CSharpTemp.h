@@ -10,7 +10,7 @@ public:
     int& operator[](int i);
     int A;
 
-    static int null;
+    static const int rename = 5;
 
 protected:
     int P;

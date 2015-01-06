@@ -123,12 +123,6 @@ namespace CppSharp.Passes
             return base.VisitTypedefDecl(typedef);
         }
 
-        public override bool VisitVariableDecl(Variable variable)
-        {
-            variable.Name = CheckName(variable.Name);
-            return base.VisitVariableDecl(variable);
-        }
-
         private static void CheckEnumName(Enumeration @enum)
         {
             // If we still do not have a valid name, then try to guess one

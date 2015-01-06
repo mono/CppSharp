@@ -483,5 +483,11 @@ public class BasicTests : GeneratorTestFixture
         Assert.IsTrue(differentConstOverloads == new DifferentConstOverloads());
         Assert.IsFalse(differentConstOverloads == 5);
     }
+
+    [Test]
+    public void TestRenamingVariableNamedAfterKeyword()
+    {
+        Assert.AreEqual(10, Foo.@unsafe);
+    }
 }
  

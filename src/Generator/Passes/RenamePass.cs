@@ -55,6 +55,7 @@ namespace CppSharp.Passes
             if (decl is Event) return true;
             if (decl is TypedefDecl) return true;
             if (decl is Namespace && !(decl is TranslationUnit)) return true;
+            if (decl is Variable) return true;
             return false;
         }
 
@@ -213,6 +214,14 @@ namespace CppSharp.Passes
 
             return base.VisitEvent(@event);
         }
+
+        public override bool VisitVariableDecl(Variable variable)
+        {
+            if (!Targets.HasFlag(RenameTargets.Variable))
+                return false;
+
+            return base.VisitVariableDecl(variable);
+        }
     }
 
     [Flags]
@@ -228,7 +237,8 @@ namespace CppSharp.Passes
         Event     = 1 << 7,
         Property  = 1 << 8,
         Delegate  = 1 << 9,
-        Any = Function | Method | Parameter | Class | Field | Enum | EnumItem | Event | Property | Delegate,
+        Variable  = 1 << 10,
+        Any = Function | Method | Parameter | Class | Field | Enum | EnumItem | Event | Property | Delegate | Variable
     }
 
     /// <summary>
@@ -311,6 +321,10 @@ namespace CppSharp.Passes
         /// <returns>string</returns>
         static string ConvertCaseString(string phrase, RenameCasePattern pattern)
         {
+            // check if it's been renamed to avoid a keyword
+            if (phrase.StartsWith("@"))
+                phrase = phrase.Substring(1);
+
             var splittedPhrase = phrase.Split(' ', '-', '.');
             var sb = new StringBuilder();
 
