@@ -95,7 +95,7 @@ namespace CppSharp.Tests
         public override void Postprocess(Driver driver, ASTContext ctx)
         {
             new CaseRenamePass(
-                RenameTargets.Function | RenameTargets.Method | RenameTargets.Property | RenameTargets.Delegate,
+                RenameTargets.Function | RenameTargets.Method | RenameTargets.Property | RenameTargets.Delegate | RenameTargets.Variable,
                 RenameCasePattern.UpperCamelCase).VisitLibrary(driver.ASTContext);
         }
 

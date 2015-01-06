@@ -346,6 +346,9 @@ namespace CppSharp.AST
 
         public virtual bool VisitVariableDecl(Variable variable)
         {
+            if (!VisitDeclaration(variable))
+                return false;
+
             return variable.Type.Visit(this, variable.QualifiedType.Qualifiers);
         }
 

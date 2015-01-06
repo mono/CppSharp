@@ -182,4 +182,10 @@ public class CSharpTempTests : GeneratorTestFixture
         Assert.AreEqual(10, structWithPrivateFields.SimplePrivateField);
         Assert.AreEqual(5, structWithPrivateFields.ComplexPrivateField.A);
     }
+
+    [Test]
+    public void TestRenamingVariable()
+    {
+        Assert.AreEqual(5, Foo.Rename);
+    }
 }
