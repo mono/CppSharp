@@ -490,14 +490,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return (__ptr->ASTContext == IntPtr.Zero) ? null : CppSharp.Parser.AST.ASTContext.__CreateInstance(__ptr->ASTContext);
+                    return (((Internal*) __Instance)->ASTContext == IntPtr.Zero) ? null : CppSharp.Parser.AST.ASTContext.__CreateInstance(((Internal*) __Instance)->ASTContext);
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->ASTContext = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    ((Internal*) __Instance)->ASTContext = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                 }
             }
 
@@ -505,14 +503,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->ToolSetToUse;
+                    return ((Internal*) __Instance)->ToolSetToUse;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->ToolSetToUse = value;
+                    ((Internal*) __Instance)->ToolSetToUse = value;
                 }
             }
 
@@ -520,14 +516,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->Abi;
+                    return ((Internal*) __Instance)->Abi;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->Abi = value;
+                    ((Internal*) __Instance)->Abi = value;
                 }
             }
 
@@ -535,14 +529,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->NoStandardIncludes;
+                    return ((Internal*) __Instance)->NoStandardIncludes;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->NoStandardIncludes = value;
+                    ((Internal*) __Instance)->NoStandardIncludes = value;
                 }
             }
 
@@ -550,14 +542,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->NoBuiltinIncludes;
+                    return ((Internal*) __Instance)->NoBuiltinIncludes;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->NoBuiltinIncludes = value;
+                    ((Internal*) __Instance)->NoBuiltinIncludes = value;
                 }
             }
 
@@ -565,14 +555,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->MicrosoftMode;
+                    return ((Internal*) __Instance)->MicrosoftMode;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->MicrosoftMode = value;
+                    ((Internal*) __Instance)->MicrosoftMode = value;
                 }
             }
 
@@ -580,14 +568,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->Verbose;
+                    return ((Internal*) __Instance)->Verbose;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->Verbose = value;
+                    ((Internal*) __Instance)->Verbose = value;
                 }
             }
 
@@ -595,14 +581,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->LanguageVersion;
+                    return ((Internal*) __Instance)->LanguageVersion;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->LanguageVersion = value;
+                    ((Internal*) __Instance)->LanguageVersion = value;
                 }
             }
         }
@@ -749,14 +733,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->Level;
+                    return ((Internal*) __Instance)->Level;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->Level = value;
+                    ((Internal*) __Instance)->Level = value;
                 }
             }
 
@@ -764,14 +746,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->LineNumber;
+                    return ((Internal*) __Instance)->LineNumber;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->LineNumber = value;
+                    ((Internal*) __Instance)->LineNumber = value;
                 }
             }
 
@@ -779,14 +759,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->ColumnNumber;
+                    return ((Internal*) __Instance)->ColumnNumber;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->ColumnNumber = value;
+                    ((Internal*) __Instance)->ColumnNumber = value;
                 }
             }
         }
@@ -929,14 +907,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return __ptr->Kind;
+                    return ((Internal*) __Instance)->Kind;
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->Kind = value;
+                    ((Internal*) __Instance)->Kind = value;
                 }
             }
 
@@ -944,14 +920,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return (__ptr->ASTContext == IntPtr.Zero) ? null : CppSharp.Parser.AST.ASTContext.__CreateInstance(__ptr->ASTContext);
+                    return (((Internal*) __Instance)->ASTContext == IntPtr.Zero) ? null : CppSharp.Parser.AST.ASTContext.__CreateInstance(((Internal*) __Instance)->ASTContext);
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->ASTContext = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    ((Internal*) __Instance)->ASTContext = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                 }
             }
 
@@ -959,14 +933,12 @@ namespace CppSharp
             {
                 get
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    return (__ptr->Library == IntPtr.Zero) ? null : CppSharp.Parser.AST.NativeLibrary.__CreateInstance(__ptr->Library);
+                    return (((Internal*) __Instance)->Library == IntPtr.Zero) ? null : CppSharp.Parser.AST.NativeLibrary.__CreateInstance(((Internal*) __Instance)->Library);
                 }
 
                 set
                 {
-                    var __ptr = (Internal*)__Instance.ToPointer();
-                    __ptr->Library = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    ((Internal*) __Instance)->Library = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                 }
             }
         }

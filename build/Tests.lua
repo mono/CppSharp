@@ -15,8 +15,8 @@ end
 function SetupTestProject(name, file, lib)
   SetupTestGeneratorProject(name)
   SetupTestNativeProject(name)  
-  SetupTestProjectsCSharp(name, file, lib)
-  SetupTestProjectsCLI(name, file, lib)
+  SetupTestProjectsCSharp(name)
+  SetupTestProjectsCLI(name)
 end
 
 function SetupTestCSharp(name)
@@ -103,7 +103,7 @@ function LinkNUnit()
   }
 end
 
-function SetupTestProjectsCSharp(name, file, lib)
+function SetupTestProjectsCSharp(name, depends)
   project(name .. ".CSharp")
     SetupManagedTestProject()
 
@@ -115,7 +115,13 @@ function SetupTestProjectsCSharp(name, file, lib)
       path.join(gendir, name, name .. ".cs"),
     }
 
-    links { "CppSharp.Runtime" }
+    linktable = { "CppSharp.Runtime" }
+
+    if depends ~= nil then
+      table.insert(linktable, depends)
+    end
+
+    links(linktable)
 
   project(name .. ".Tests.CSharp")
     SetupManagedTestProject()
@@ -128,7 +134,7 @@ function SetupTestProjectsCSharp(name, file, lib)
     links { "CppSharp.Runtime" }
 end
 
-function SetupTestProjectsCLI(name, file, lib)
+function SetupTestProjectsCLI(name)
   if not os.is_windows() then
     return
   end

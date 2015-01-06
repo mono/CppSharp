@@ -1,4 +1,4 @@
-?using System;
+using System;
 using CppSharp.AST;
 using CppSharp.Generators;
 using CppSharp.Utils;
@@ -15,13 +15,14 @@ namespace CppSharp.Tests
 
         public override void SetupPasses(Driver driver)
         {
+            driver.Options.DependentNameSpaces.Add("NamespacesBase");
         }
 
         public override void Preprocess(Driver driver, ASTContext ctx)
         {
             foreach (TranslationUnit unit in ctx.TranslationUnits)
             {
-                if (unit.FileName != "Derived.h")
+                if (unit.FileName != "NamespacesDerived.h")
                 {
                     unit.GenerationKind = GenerationKind.Link;
                 }

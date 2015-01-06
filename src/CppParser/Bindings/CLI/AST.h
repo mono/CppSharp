@@ -1581,6 +1581,18 @@ namespace CppSharp
                     CppSharp::Parser::AST::Class^ get();
                     void set(CppSharp::Parser::AST::Class^);
                 }
+
+                property bool IsBitField
+                {
+                    bool get();
+                    void set(bool);
+                }
+
+                property unsigned int BitWidth
+                {
+                    unsigned int get();
+                    void set(unsigned int);
+                }
             };
 
             public ref class AccessSpecifierDecl : CppSharp::Parser::AST::Declaration

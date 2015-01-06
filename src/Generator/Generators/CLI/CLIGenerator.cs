@@ -38,5 +38,12 @@ namespace CppSharp.Generators.CLI
                 Driver.TranslationUnitPasses.AddPass(new ObjectOverridesPass());
             return true;
         }
+
+        public static bool ShouldGenerateClassNativeField(Class @class)
+        {
+            if (@class.IsStatic)
+                return false;
+            return @class.IsRefType && (!@class.HasBase || !@class.HasRefBase());
+        }
     }
 }

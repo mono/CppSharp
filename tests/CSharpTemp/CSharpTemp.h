@@ -248,6 +248,7 @@ class DLL_API MethodsWithDefaultValues
 {
 public:
     MethodsWithDefaultValues(Foo foo = Foo());
+    MethodsWithDefaultValues(int a);
     void defaultPointer(Foo* ptr = 0);
     void defaultVoidStar(void* ptr = 0);
     void defaultValueType(QGenericArgument valueType = QGenericArgument());
@@ -270,6 +271,9 @@ public:
     void defaultIntWithLongExpression(unsigned int i = DEFAULT_INT);
     void defaultRefTypeEnumImplicitCtor(const QColor &fillColor = Qt::white);
     void rotate4x4Matrix(float angle, float x, float y, float z = 0.0f);
+    int getA();
+private:
+    Foo m_foo;
 };
 
 class DLL_API HasPrivateOverrideBase
@@ -306,4 +310,17 @@ public:
     void setIgnoredType(const IgnoredType<int>& value);
 private:
     IgnoredType<int> _ignoredType;
+};
+
+class DLL_API StructWithPrivateFields
+{
+public:
+    StructWithPrivateFields(int simplePrivateField, Foo complexPrivateField);
+    int getSimplePrivateField();
+    Foo getComplexPrivateField();
+protected:
+    int protectedField;
+private:
+    int simplePrivateField;
+    Foo complexPrivateField;
 };

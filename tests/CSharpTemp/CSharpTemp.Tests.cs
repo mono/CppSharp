@@ -164,4 +164,22 @@ public class CSharpTempTests : GeneratorTestFixture
             Assert.AreEqual(q1.Array[i], q2.Array[i]);
         }
     }
+
+    [Test]
+    public void TestImplicitCtor()
+    {
+        Foo foo = new Foo { A = 10 };
+        MethodsWithDefaultValues m = foo;
+        Assert.AreEqual(foo.A, m.A);
+        MethodsWithDefaultValues m1 = 5;
+        Assert.AreEqual(5, m1.A);
+    }
+
+    [Test]
+    public void TestStructWithPrivateFields()
+    {
+        var structWithPrivateFields = new StructWithPrivateFields(10, new Foo { A = 5 });
+        Assert.AreEqual(10, structWithPrivateFields.SimplePrivateField);
+        Assert.AreEqual(5, structWithPrivateFields.ComplexPrivateField.A);
+    }
 }

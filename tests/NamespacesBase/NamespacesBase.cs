@@ -1,4 +1,4 @@
-?using System;
+using System;
 using CppSharp.AST;
 using CppSharp.Generators;
 using CppSharp.Utils;

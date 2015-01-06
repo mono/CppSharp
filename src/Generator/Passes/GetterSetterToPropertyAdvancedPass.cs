@@ -276,7 +276,7 @@ namespace CppSharp.Passes
 
         public override bool VisitClassDecl(Class @class)
         {
-            if (base.VisitClassDecl(@class))
+            if (VisitDeclarationContext(@class))
             {
                 new PropertyGenerator(@class, Log).GenerateProperties();
             }

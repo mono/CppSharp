@@ -41,6 +41,7 @@ namespace CppSharp.Generators.CSharp
             return new string(id.Select(c => char.IsLetterOrDigit(c) ? c : '_').ToArray());
         }
 
+        public const string InstanceField = "__instance";
         public const string InstanceIdentifier = "__Instance";
 
         public const string OwnsNativeInstanceIdentifier = "__ownsNativeInstance";
@@ -343,8 +344,17 @@ namespace CppSharp.Generators.CSharp
                 if (ShouldGenerateClassNativeField(@class))
                 {
                     PushBlock(CSharpBlockKind.Field);
-                    WriteLine("public global::System.IntPtr {0} {{ get; {1} set; }}",
-                        Helpers.InstanceIdentifier, @class.IsValueType ? "private" : "protected");
+                    if (@class.IsValueType)
+                    {
+                        WriteLine("private {0}.Internal {1};", @class.Name, Helpers.InstanceField);
+                        WriteLine("public {0}.Internal {1} {{ get {{ return {2}; }} }}", @class.Name,
+                            Helpers.InstanceIdentifier, Helpers.InstanceField);
+                    }
+                    else
+                    {
+                        WriteLine("public {0} {1} {{ get; protected set; }}",
+                            "global::System.IntPtr", Helpers.InstanceIdentifier);
+                    }
                     PopBlock(NewLineKind.BeforeNextBlock);
                 }
 
@@ -354,9 +364,6 @@ namespace CppSharp.Generators.CSharp
                 }
 
                 GenerateClassConstructors(@class);
-
-                if (@class.IsUnion)
-                    GenerateUnionFields(@class);
 
                 GenerateClassMethods(@class.Methods);
                 GenerateClassVariables(@class);
@@ -591,141 +598,15 @@ namespace CppSharp.Generators.CSharp
             WriteLine("partial struct Internal");
         }
 
-        private void GenerateStructMarshalingProperties(Class @class)
-        {
-            foreach (var @base in @class.Bases)
-            {
-                if (!@base.IsClass || !@base.Class.IsDeclared)
-                    continue;
-
-                GenerateStructMarshalingProperties(@base.Class);
-            }
-
-            for (int i = 0; i < @class.Properties.Count; i++)
-            {
-                var property = @class.Properties[i];
-                if (!property.IsGenerated || property.Field == null) continue;
-
-                var nativeField = string.Format("{0}->{1}",
-                    Generator.GeneratedIdentifier("ptr"),
-                    Helpers.SafeIdentifier(property.Field.OriginalName));
-
-                var ctx = new CSharpMarshalContext(Driver)
-                {
-                    Kind = CSharpMarshalKind.NativeField,
-                    ArgName = property.Name,
-                    ReturnVarName = nativeField,
-                    ReturnType = property.QualifiedType
-                };
-
-                var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
-                property.Visit(marshal);
-
-                if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
-                    Write(marshal.Context.SupportBefore);
-
-                if (marshal.Context.Return.StringBuilder.Length > 0)
-                {
-                    WriteLine("{0} = {1};", property.Name, marshal.Context.Return);                    
-                }
-            }
-        }
-
-        private void GenerateStructInternalMarshaling(Class @class)
-        {
-            var marshalVar = Generator.GeneratedIdentifier("native");
-
-            WriteLine("var {0} = new {1}.Internal();", marshalVar, QualifiedIdentifier(@class));
-            WriteLine("var {0} = &{1};", Generator.GeneratedIdentifier("ptr"), marshalVar);
-            GenerateStructInternalMarshalingProperties(@class, marshalVar);
-
-            WriteLine("return {0};", marshalVar);
-        }
-
-        private void GenerateStructInternalMarshalingProperties(Class @class, string marshalVar)
-        {
-            foreach (var @base in @class.Bases)
-            {
-                if (!@base.IsClass || !@base.Class.IsDeclared)
-                    continue;
-
-                var baseClass = @base.Class;
-                GenerateStructInternalMarshalingProperties(baseClass, marshalVar);
-            }
-
-            foreach (var property in @class.Properties)
-            {
-                if (!property.IsGenerated || property.Field == null)
-                    continue;
-
-                GenerateStructInternalMarshalingProperty(property, marshalVar);
-            }
-        }
-
-        private void GenerateStructInternalMarshalingProperty(Property property, string marshalVar)
-        {
-            var nativeField = string.Format("{0}->{1}",
-                Generator.GeneratedIdentifier("ptr"),
-                Helpers.SafeIdentifier(property.Field.OriginalName));
-            var marshalCtx = new CSharpMarshalContext(Driver)
-            {
-                ArgName = property.Name,
-                ReturnVarName = nativeField,
-            };
-
-            var marshal = new CSharpMarshalManagedToNativePrinter(marshalCtx);
-            property.Visit(marshal);
-
-            Type type;
-            Class @class;
-            var isRef = property.Type.IsPointerTo(out type) &&
-                !(type.TryGetClass(out @class) && @class.IsValueType) &&
-                !type.IsPrimitiveType();
-
-            if (isRef)
-            {
-                WriteLine("if ({0} != null)", property.Name);
-                WriteStartBraceIndent();
-            }
-
-            if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
-               WriteLine(marshal.Context.SupportBefore);
-
-            if (marshal.Context.Return.StringBuilder.Length > 0)
-            {
-                WriteLine("{0}.{1} = {2};", marshalVar,
-                    Helpers.SafeIdentifier(property.OriginalName), marshal.Context.Return);
-            }
-
-            if (isRef)
-                WriteCloseBraceIndent();
-        }
-
-        public static bool HasRefBase(Class @class)
-        {
-            Class baseClass = null;
-
-            if (@class.HasBaseClass)
-                baseClass = @class.Bases[0].Class;
-
-            var hasRefBase = baseClass != null && baseClass.IsRefType
-                             && baseClass.IsDeclared;
-
-            return hasRefBase;
-        }
-
         public static bool ShouldGenerateClassNativeField(Class @class)
         {
             if (@class.IsStatic)
                 return false;
-            return @class.IsRefType && (!@class.HasBase || !HasRefBase(@class));
+            return @class.IsValueType || !@class.HasBase || !@class.HasRefBase();
         }
 
         public void GenerateClassProlog(Class @class)
         {
-            if (@class.IsUnion)
-                WriteLine("[StructLayout(LayoutKind.Explicit)]");
-
             Write(@class.IsInternal ? "internal " : Helpers.GetAccess(@class.Access));
             Write("unsafe ");
 
@@ -829,8 +710,6 @@ namespace CppSharp.Generators.CSharp
             GenerateDeclarationCommon(field);
 
             var @class = (Class) field.Namespace;
-            if (@class.IsUnion)
-                WriteLine("[FieldOffset({0})]", field.Offset);
 
             WriteLine("{0} {1} {2};", @public ? "public" : "private",
                 field.Type, field.Name);
@@ -928,31 +807,16 @@ namespace CppSharp.Generators.CSharp
                 var field = decl as Field;
                 if (WrapSetterArrayOfPointers(decl.Name, field.Type))
                     return;
-                if (@class.IsValueType)
-                {
-                    if (@class.IsUnion)
-                    {
-                        NewLine();
-                        WriteStartBraceIndent();
-                        WriteLine("{0} = value;", decl.Name);
-                        WriteCloseBraceIndent();
-                        PopBlock(NewLineKind.BeforeNextBlock);
-                        return;
-                    }
-                    WriteLine(";");
-                    PopBlock(NewLineKind.BeforeNextBlock);
-                    return;
-                }
 
                 NewLine();
                 WriteStartBraceIndent();
 
-                WriteLine("var {0} = (Internal*){1}.ToPointer();",
-                    Generator.GeneratedIdentifier("ptr"), Helpers.InstanceIdentifier);
-
                 var marshal = new CSharpMarshalManagedToNativePrinter(ctx);
-                ctx.ReturnVarName = string.Format("{0}->{1}",
-                    Generator.GeneratedIdentifier("ptr"),
+                ctx.ReturnVarName = string.Format("{0}{1}{2}",
+                    @class.IsValueType
+                        ? Helpers.InstanceField
+                        : string.Format("((Internal*) {0})", Helpers.InstanceIdentifier),
+                    @class.IsValueType ? "." : "->",
                     Helpers.SafeIdentifier(field.OriginalName));
                 param.Visit(marshal);
 
@@ -1037,33 +901,19 @@ namespace CppSharp.Generators.CSharp
                 var field = decl as Field;
                 if (WrapGetterArrayOfPointers(decl.Name, field.Type))
                     return;
-                if (@class.IsValueType)
-                {
-                    if (@class.IsUnion)
-                    {
-                        NewLine();
-                        WriteStartBraceIndent();
-                        WriteLine("return {0};", decl.Name);
-                        WriteCloseBraceIndent();
-                        PopBlock(NewLineKind.BeforeNextBlock);
-                        return;
-                    }
-                    WriteLine(";");
-                    PopBlock(NewLineKind.BeforeNextBlock);
-                    return;
-                }
 
                 NewLine();
                 WriteStartBraceIndent();
-
-                WriteLine("var {0} = (Internal*){1}.ToPointer();",
-                    Generator.GeneratedIdentifier("ptr"), Helpers.InstanceIdentifier);
 
                 var ctx = new CSharpMarshalContext(Driver)
                 {
                     Kind = CSharpMarshalKind.NativeField,
                     ArgName = decl.Name,
-                    ReturnVarName = string.Format("{0}->{1}", Generator.GeneratedIdentifier("ptr"),
+                    ReturnVarName = string.Format("{0}{1}{2}",
+                        @class.IsValueType
+                            ? Helpers.InstanceField
+                            : string.Format("((Internal*) {0})", Helpers.InstanceIdentifier),
+                        @class.IsValueType ? "." : "->",
                         Helpers.SafeIdentifier(field.OriginalName)),
                     ReturnType = decl.QualifiedType
                 };
@@ -1944,31 +1794,11 @@ namespace CppSharp.Generators.CSharp
             }
             else
             {
-                WriteLine("var {0} = {1};",
-                    Generator.GeneratedIdentifier("ptr"), "native");
-                GenerateStructMarshalingProperties(@class);
+                WriteLine("{0} = *native;", Helpers.InstanceField);
             }
 
             WriteCloseBraceIndent();
             PopBlock(NewLineKind.BeforeNextBlock);
-
-            if (@class.IsValueType)
-            {
-                PushBlock(CSharpBlockKind.Method);
-                WriteLine("internal Internal ToInternal()");
-                WriteStartBraceIndent();
-                GenerateStructInternalMarshaling(@class);
-                WriteCloseBraceIndent();
-                PopBlock(NewLineKind.BeforeNextBlock);
-
-                PushBlock(CSharpBlockKind.Method);
-                WriteLine("internal void FromInternal(Internal* native)");
-                WriteStartBraceIndent();
-                WriteLine("var {0} = {1};", Generator.GeneratedIdentifier("ptr"), "native");
-                GenerateStructMarshalingProperties(@class);
-                WriteCloseBraceIndent();
-                PopBlock(NewLineKind.BeforeNextBlock);
-            }
         }
 
         private void GenerateNativeConstructorByValue(Class @class, string className, string safeIdentifier)
@@ -2012,11 +1842,15 @@ namespace CppSharp.Generators.CSharp
             }
             PushBlock(CSharpBlockKind.Method);
             WriteLine("private {0}({1}.Internal native)", safeIdentifier, className);
-            WriteLineIndent(@class.IsRefType ? ": this(__CopyValue(native))" : ": this(&native)");
+            WriteLineIndent(@class.IsRefType ? ": this(__CopyValue(native))" : ": this()");
             WriteStartBraceIndent();
             if (@class.IsRefType)
             {
-                WriteLine("{0} = true;", Helpers.OwnsNativeInstanceIdentifier);                
+                WriteLine("{0} = true;", Helpers.OwnsNativeInstanceIdentifier);
+            }
+            else
+            {
+                WriteLine("{0} = native;", Helpers.InstanceField);
             }
             WriteCloseBraceIndent();
             PopBlock(NewLineKind.BeforeNextBlock);
@@ -2146,7 +1980,7 @@ namespace CppSharp.Generators.CSharp
                 if (!method.IsConstructor)
                 {
                     Type type = method.OriginalReturnType.Type;
-                    this.WriteLine("{0}{1}({2});",
+                    WriteLine("{0}{1}({2});",
                         type.IsPrimitiveType(PrimitiveType.Void) ? string.Empty : "return ",
                         method.Name,
                         string.Join(", ",
@@ -2289,9 +2123,13 @@ namespace CppSharp.Generators.CSharp
                 if (method.Kind == CXXMethodKind.Conversion)
                 {
                     // To avoid ambiguity when having the multiple inheritance pass enabled
-                    var @interface = @class.Namespace.Classes.Find(c => c.OriginalClass == @class);
+                    var paramType = method.Parameters[0].Type.SkipPointerRefs().Desugar();
+                    Class paramClass;
+                    Class @interface = null;
+                    if (paramType.TryGetClass(out paramClass))
+                        @interface = paramClass.Namespace.Classes.Find(c => c.OriginalClass == paramClass);
                     if (@interface != null)
-                        WriteLine("return new {0}(({2}){1});", method.ConversionType,
+                        WriteLine("return new {0}(({2}) {1});", method.ConversionType,
                                   method.Parameters[0].Name, @interface.Name);
                     else
                         WriteLine("return new {0}({1});", method.ConversionType,
@@ -2329,8 +2167,8 @@ namespace CppSharp.Generators.CSharp
                 if (@class.HasNonTrivialCopyConstructor)
                     GenerateInternalFunctionCall(method);
                 else
-                    WriteLine("*(({0}.Internal*) __Instance) = *(({0}.Internal*) {1}.__Instance);",
-                        @class.Name, method.Parameters[0].Name);
+                    WriteLine("*(({0}.Internal*) {2}) = *(({0}.Internal*) {1}.{2});",
+                        @class.Name, method.Parameters[0].Name, Helpers.InstanceIdentifier);
             }
             else
             {
@@ -2449,8 +2287,7 @@ namespace CppSharp.Generators.CSharp
 
                 if (needsFixedThis)
                 {
-                    names.Insert(instanceIndex, string.Format("new global::System.IntPtr(&{0})",
-                        GeneratedIdentifier("fixedInstance")));
+                    names.Insert(instanceIndex, string.Format("new global::System.IntPtr(__instancePtr)"));
                 }
                 else
                 {
@@ -2467,11 +2304,15 @@ namespace CppSharp.Generators.CSharp
 
             if (needsFixedThis)
             {
-                WriteLine("var {0} = {1};", Generator.GeneratedIdentifier("fixedInstance"),
-                    (method.IsOperator && method.OperatorKind != CXXOperatorKind.Subscript ?
-                        method.Parameters.First(
-                            p => p.Kind == ParameterKind.OperatorParameter).Name + "." :
-                        string.Empty) + "ToInternal()");
+                if (operatorParam == null)
+                {
+                    WriteLine("fixed (Internal* __instancePtr = &{0})", Helpers.InstanceField);
+                    WriteStartBraceIndent();
+                }
+                else
+                {
+                    WriteLine("var __instancePtr = &{0}.{1};", operatorParam.Name, Helpers.InstanceField);
+                }
             }
 
             if (needsReturn && !originalFunction.HasIndirectReturnTypeParameter)
@@ -2484,26 +2325,14 @@ namespace CppSharp.Generators.CSharp
 
             cleanups.AddRange(
                 from param in @params
-                select param.Context into context
+                select param.Context
+                into context
                 where context != null && !string.IsNullOrWhiteSpace(context.Cleanup)
                 select context.Cleanup);
 
             foreach (var cleanup in cleanups)
             {
                 Write(cleanup);
-            }
-
-            if (needsFixedThis)
-            {
-                if (operatorParam != null)
-                {
-                    WriteLine("{0}.FromInternal(&{1});",
-                        operatorParam.Name, Generator.GeneratedIdentifier("fixedInstance"));
-                }
-                else
-                {
-                    WriteLine("FromInternal(&{0});", Generator.GeneratedIdentifier("fixedInstance"));
-                }
             }
 
             if (needsReturn)
@@ -2550,13 +2379,16 @@ namespace CppSharp.Generators.CSharp
 
                 // Special case for indexer - needs to dereference if the internal
                 // function is a pointer type and the property is not.
-                if (retType.Type.IsAddress() && 
+                if (retType.Type.IsAddress() &&
                     retType.Type.GetPointee().Equals(returnType) &&
                     returnType.IsPrimitiveType())
                     WriteLine("return *{0};", marshal.Context.Return);
                 else
                     WriteLine("return {0};", marshal.Context.Return);
             }
+
+            if (needsFixedThis && operatorParam == null)
+                WriteCloseBraceIndent();
         }
 
         private int GetInstanceParamIndex(Function function)
@@ -2602,16 +2434,6 @@ namespace CppSharp.Generators.CSharp
                 if (!string.IsNullOrWhiteSpace(marshal.CSharpContext.Cleanup))
                     cleanups.Add(marshal.CSharpContext.Cleanup);
             }
-        }
-
-        private static bool IsInstanceFunction(Function function)
-        {
-            var isInstanceFunction = false;
-
-            var method = function as Method;
-            if (method != null)
-                isInstanceFunction = method.Conversion == MethodConversionKind.None;
-            return isInstanceFunction;
         }
 
         public struct ParamMarshal
@@ -2703,7 +2525,7 @@ namespace CppSharp.Generators.CSharp
             return string.Join(", ",
                 from param in @params
                 where param.Kind != ParameterKind.IndirectReturnType && !param.Ignore
-                let typeName = param.CSharpType(this.TypePrinter)
+                let typeName = param.CSharpType(TypePrinter)
                 select string.Format("{0}{1} {2}", GetParameterUsage(param.Usage),
                     typeName, param.Name +
                         (param.DefaultArgument == null || !Options.GenerateDefaultValuesForArguments ?
@@ -2888,7 +2710,7 @@ namespace CppSharp.Generators.CSharp
 
             var @params = new List<string>();
 
-            var typePrinter = TypePrinter as CSharpTypePrinter;
+            var typePrinter = TypePrinter;
             typePrinter.PushContext(CSharpTypePrinterContextKind.Native);
 
             var retParam = new Parameter { QualifiedType = function.ReturnType };
