@@ -129,6 +129,7 @@ namespace CppSharp
         public abstract TRet VisitEnumeration(Enumeration decl);
         public abstract TRet VisitEnumerationItem(Enumeration.Item decl);
         public abstract TRet VisitVariable(Variable decl);
+        public abstract TRet VisitFriend(Friend decl);
         public abstract TRet VisitField(Field decl);
         public abstract TRet VisitAccessSpecifier(AccessSpecifierDecl decl);
         public abstract TRet VisitClass(Class decl);
@@ -189,6 +190,11 @@ namespace CppSharp
                     {
                         var _decl = Variable.__CreateInstance(decl.__Instance);
                         return VisitVariable(_decl);
+                    }
+                case DeclarationKind.Friend:
+                    {
+                        var _decl = Friend.__CreateInstance(decl.__Instance);
+                        return VisitFriend(_decl);
                     }
                 case DeclarationKind.Field:
                     {
@@ -788,6 +794,13 @@ namespace CppSharp
                 _ctx.Variables.Add(_decl);
             }
 
+            for (uint i = 0; i < ctx.FriendsCount; ++i)
+            {
+                var decl = ctx.getFriends(i);
+                var _decl = Visit(decl) as AST.Friend;
+                _ctx.Declarations.Add(_decl);
+            }
+
             // Anonymous types
         }
 
@@ -1137,6 +1150,15 @@ namespace CppSharp
                 decl.QualifiedType);
 
             return _variable;
+        }
+
+        public override AST.Declaration VisitFriend(Friend decl)
+        {
+            var _friend = new AST.Friend();
+            VisitDeclaration(decl, _friend);
+            _friend.Declaration = Visit(decl.Declaration);
+
+            return _friend;
         }
 
         public override AST.Declaration VisitField(Field decl)

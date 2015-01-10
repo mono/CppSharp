@@ -404,6 +404,11 @@ namespace CppSharp.Generators.CLI
             throw new NotImplementedException();
         }
 
+        public string VisitFriend(Friend friend)
+        {
+            throw new NotImplementedException();
+        }
+
         public string ToString(Type type)
         {
             return type.Visit(this);

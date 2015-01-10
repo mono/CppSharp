@@ -237,6 +237,11 @@ namespace CppSharp.Passes
             return false;
         }
 
+        public bool VisitFriend(Friend friend)
+        {
+            return false;
+        }
+
         #endregion
     }
 

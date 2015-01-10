@@ -2373,6 +2373,34 @@ Variable* Parser::WalkVariable(clang::VarDecl *VD)
 
 //-----------------------------------//
 
+Friend* Parser::WalkFriend(clang::FriendDecl *FD)
+{
+    using namespace clang;
+
+    auto NS = GetNamespace(FD);
+    assert(NS && "Expected a valid namespace");
+
+    auto USR = GetDeclUSR(FD);
+    if (auto F = NS->FindFriend(USR))
+        return F;
+
+    auto F = new Friend();
+    HandleDeclaration(FD, F);
+    F->_Namespace = NS;
+
+    if (auto D = FD->getFriendDecl())
+        F->Declaration = WalkDeclarationDef(D);
+
+    //auto TL = FD->getFriendType()->getTypeLoc();
+    //F->QualifiedType = GetQualifiedType(VD->getType(), WalkType(FD->getFriendType(), &TL));
+
+    NS->Friends.push_back(F);
+
+    return F;
+}
+
+//-----------------------------------//
+
 bool Parser::GetDeclText(clang::SourceRange SR, std::string& Text)
 {
     using namespace clang;
@@ -2906,9 +2934,7 @@ Declaration* Parser::WalkDeclaration(clang::Decl* D,
     case Decl::Friend:
     {
         auto FD = cast<FriendDecl>(D);
-        if (auto Friend = FD->getFriendDecl())
-            return WalkDeclaration(Friend, IgnoreSystemDecls, CanBeDefinition);
-
+        Decl = WalkFriend(FD);
         break;
     }
     // Ignore these declarations since they must have been declared in

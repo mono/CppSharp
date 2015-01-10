@@ -599,6 +599,11 @@ namespace CppSharp.Generators.CSharp
             throw new NotImplementedException();
         }
 
+        public CSharpTypePrinterResult VisitFriend(Friend friend)
+        {
+            throw new NotImplementedException();
+        }
+
         public CSharpTypePrinterResult VisitParameters(IEnumerable<Parameter> @params,
             bool hasNames)
         {

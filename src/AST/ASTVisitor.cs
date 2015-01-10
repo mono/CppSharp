@@ -293,6 +293,14 @@ namespace CppSharp.AST
             return property.Type.Visit(this);
         }
 
+        public bool VisitFriend(Friend friend)
+        {
+            if (!VisitDeclaration(friend))
+                return false;
+
+            return friend.Declaration.Visit(this);
+        }
+
         public virtual bool VisitFunctionDecl(Function function)
         {
             if (!VisitDeclaration(function))

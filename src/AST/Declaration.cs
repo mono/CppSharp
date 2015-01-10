@@ -381,5 +381,6 @@ namespace CppSharp.AST
         T VisitNamespace(Namespace @namespace);
         T VisitEvent(Event @event);
         T VisitProperty(Property @property);
+        T VisitFriend(Friend friend);
     }
 }

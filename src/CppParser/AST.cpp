@@ -189,6 +189,7 @@ DEF_VECTOR(DeclarationContext, Class*, Classes)
 DEF_VECTOR(DeclarationContext, Template*, Templates)
 DEF_VECTOR(DeclarationContext, TypedefDecl*, Typedefs)
 DEF_VECTOR(DeclarationContext, Variable*, Variables)
+DEF_VECTOR(DeclarationContext, Friend*, Friends)
 
 Declaration* DeclarationContext::FindAnonymous(const std::string& key)
 {
@@ -451,7 +452,20 @@ Variable* DeclarationContext::FindVariable(const std::string& USR)
     return nullptr;
 }
 
+Friend* DeclarationContext::FindFriend(const std::string& USR)
+{
+    auto found = std::find_if(Friends.begin(), Friends.end(),
+        [&](Friend* var) { return var->USR == USR; });
+
+    if (found != Friends.end())
+        return *found;
+
+    return nullptr;
+}
+
 TypedefDecl::TypedefDecl() : Declaration(DeclarationKind::Typedef) {}
+
+Friend::Friend() : CppSharp::CppParser::AST::Declaration(DeclarationKind::Friend), Declaration(0) {}
 
 DEF_STRING(Statement, String)
 

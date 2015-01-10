@@ -324,6 +324,11 @@ namespace CppSharp.Types
             return VisitDeclaration(property);
         }
 
+        public string VisitFriend(Friend friend)
+        {
+            throw new NotImplementedException();
+        }
+
         public string ToString(Type type)
         {
             return type.Visit(this);

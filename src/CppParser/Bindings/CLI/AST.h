@@ -44,6 +44,7 @@ namespace CppSharp
             ref class Enumeration;
             ref class Expression;
             ref class Field;
+            ref class Friend;
             ref class FullComment;
             ref class Function;
             ref class FunctionTemplate;
@@ -130,7 +131,8 @@ namespace CppSharp
                 PreprocessedEntity = 17,
                 MacroDefinition = 18,
                 MacroExpansion = 19,
-                TranslationUnit = 20
+                TranslationUnit = 20,
+                Friend = 21
             };
 
             public enum struct AccessSpecifier
@@ -1113,6 +1115,11 @@ namespace CppSharp
                     unsigned int get();
                 }
 
+                property unsigned int FriendsCount
+                {
+                    unsigned int get();
+                }
+
                 property bool IsAnonymous
                 {
                     bool get();
@@ -1160,6 +1167,12 @@ namespace CppSharp
                 void addVariables(CppSharp::Parser::AST::Variable^ s);
 
                 void clearVariables();
+
+                CppSharp::Parser::AST::Friend^ getFriends(unsigned int i);
+
+                void addFriends(CppSharp::Parser::AST::Friend^ s);
+
+                void clearFriends();
             };
 
             public ref class TypedefDecl : CppSharp::Parser::AST::Declaration
@@ -1174,6 +1187,21 @@ namespace CppSharp
                 {
                     CppSharp::Parser::AST::QualifiedType^ get();
                     void set(CppSharp::Parser::AST::QualifiedType^);
+                }
+            };
+
+            public ref class Friend : CppSharp::Parser::AST::Declaration
+            {
+            public:
+
+                Friend(::CppSharp::CppParser::AST::Friend* native);
+                static Friend^ __CreateInstance(::System::IntPtr native);
+                Friend();
+
+                property CppSharp::Parser::AST::Declaration^ Declaration
+                {
+                    CppSharp::Parser::AST::Declaration^ get();
+                    void set(CppSharp::Parser::AST::Declaration^);
                 }
             };
 

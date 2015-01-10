@@ -146,6 +146,11 @@ namespace CppSharp.Generator.Tests.AST
             {
                 throw new System.NotImplementedException();
             }
+
+            public bool VisitFriend(Friend friend)
+            {
+                throw new System.NotImplementedException();
+            }
         }
         #endregion
 

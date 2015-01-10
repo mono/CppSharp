@@ -362,7 +362,8 @@ enum class DeclarationKind
     PreprocessedEntity,
     MacroDefinition,
     MacroExpansion,
-    TranslationUnit
+    TranslationUnit,
+    Friend,
 };
 
 #define DECLARE_DECL_KIND(klass, kind) \
@@ -410,6 +411,7 @@ class Template;
 class ClassTemplate;
 class FunctionTemplate;
 class Variable;
+class Friend;
 
 class CS_API DeclarationContext : public Declaration
 {
@@ -440,6 +442,8 @@ public:
 
     CS_IGNORE Variable* FindVariable(const std::string& USR);
 
+    CS_IGNORE Friend* FindFriend(const std::string& USR);
+
     VECTOR(Namespace*, Namespaces)
     VECTOR(Enumeration*, Enums)
     VECTOR(Function*, Functions)
@@ -447,6 +451,8 @@ public:
     VECTOR(Template*, Templates)
     VECTOR(TypedefDecl*, Typedefs)
     VECTOR(Variable*, Variables)
+    VECTOR(Friend*, Friends)
+
     std::map<std::string, Declaration*> Anonymous;
 
     bool IsAnonymous;
@@ -457,6 +463,13 @@ class CS_API TypedefDecl : public Declaration
 public:
     DECLARE_DECL_KIND(TypedefDecl, Typedef)
     CppSharp::CppParser::AST::QualifiedType QualifiedType;
+};
+
+class CS_API Friend : public Declaration
+{
+public:
+    DECLARE_DECL_KIND(Friend, Friend)
+    CppSharp::CppParser::AST::Declaration* Declaration;
 };
 
 enum class StatementClass

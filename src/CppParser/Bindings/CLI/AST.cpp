@@ -1425,6 +1425,24 @@ void CppSharp::Parser::AST::DeclarationContext::clearVariables()
     ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->clearVariables();
 }
 
+CppSharp::Parser::AST::Friend^ CppSharp::Parser::AST::DeclarationContext::getFriends(unsigned int i)
+{
+    auto __ret = ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->getFriends(i);
+    if (__ret == nullptr) return nullptr;
+    return (__ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::Friend((::CppSharp::CppParser::AST::Friend*)__ret);
+}
+
+void CppSharp::Parser::AST::DeclarationContext::addFriends(CppSharp::Parser::AST::Friend^ s)
+{
+    auto arg0 = (::CppSharp::CppParser::AST::Friend*)s->NativePtr;
+    ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->addFriends(arg0);
+}
+
+void CppSharp::Parser::AST::DeclarationContext::clearFriends()
+{
+    ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->clearFriends();
+}
+
 unsigned int CppSharp::Parser::AST::DeclarationContext::NamespacesCount::get()
 {
     auto __ret = ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->getNamespacesCount();
@@ -1467,6 +1485,12 @@ unsigned int CppSharp::Parser::AST::DeclarationContext::VariablesCount::get()
     return __ret;
 }
 
+unsigned int CppSharp::Parser::AST::DeclarationContext::FriendsCount::get()
+{
+    auto __ret = ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->getFriendsCount();
+    return __ret;
+}
+
 bool CppSharp::Parser::AST::DeclarationContext::IsAnonymous::get()
 {
     return ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->IsAnonymous;
@@ -1501,6 +1525,32 @@ CppSharp::Parser::AST::QualifiedType^ CppSharp::Parser::AST::TypedefDecl::Qualif
 void CppSharp::Parser::AST::TypedefDecl::QualifiedType::set(CppSharp::Parser::AST::QualifiedType^ value)
 {
     ((::CppSharp::CppParser::AST::TypedefDecl*)NativePtr)->QualifiedType = *(::CppSharp::CppParser::AST::QualifiedType*)value->NativePtr;
+}
+
+CppSharp::Parser::AST::Friend::Friend(::CppSharp::CppParser::AST::Friend* native)
+    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)native)
+{
+}
+
+CppSharp::Parser::AST::Friend^ CppSharp::Parser::AST::Friend::__CreateInstance(::System::IntPtr native)
+{
+    return gcnew CppSharp::Parser::AST::Friend((::CppSharp::CppParser::AST::Friend*) native.ToPointer());
+}
+
+CppSharp::Parser::AST::Friend::Friend()
+    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)nullptr)
+{
+    NativePtr = new ::CppSharp::CppParser::AST::Friend();
+}
+
+CppSharp::Parser::AST::Declaration^ CppSharp::Parser::AST::Friend::Declaration::get()
+{
+    return (((::CppSharp::CppParser::AST::Friend*)NativePtr)->Declaration == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)((::CppSharp::CppParser::AST::Friend*)NativePtr)->Declaration);
+}
+
+void CppSharp::Parser::AST::Friend::Declaration::set(CppSharp::Parser::AST::Declaration^ value)
+{
+    ((::CppSharp::CppParser::AST::Friend*)NativePtr)->Declaration = (::CppSharp::CppParser::AST::Declaration*)value->NativePtr;
 }
 
 CppSharp::Parser::AST::Statement::Statement(::CppSharp::CppParser::AST::Statement* native)

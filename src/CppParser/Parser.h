@@ -86,6 +86,7 @@ protected:
     FunctionTemplate* WalkFunctionTemplate(clang::FunctionTemplateDecl* TD);
     FunctionTemplateSpecialization* WalkFunctionTemplateSpec(clang::FunctionTemplateSpecializationInfo* FTS, Function* Function);
     Variable* WalkVariable(clang::VarDecl* VD);
+    Friend* WalkFriend(clang::FriendDecl* FD);
     RawComment* WalkRawComment(const clang::RawComment* RC);
     Type* WalkType(clang::QualType QualType, clang::TypeLoc* TL = 0,
       bool DesugarType = false);
