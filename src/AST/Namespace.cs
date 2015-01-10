@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Linq;
 
 namespace CppSharp.AST
@@ -12,15 +11,48 @@ namespace CppSharp.AST
     {
         public bool IsAnonymous { get; set; }
 
-        public List<Namespace> Namespaces;
-        public List<Enumeration> Enums;
-        public List<Function> Functions;
-        public List<Class> Classes;
-        public List<Template> Templates;
-        public List<TypedefDecl> Typedefs;
-        public List<Variable> Variables;
-        public List<Event> Events;
+        public List<Declaration> Declarations;
         public List<TypeReference> TypeReferences;
+
+        public DeclIterator<Namespace> Namespaces
+        {
+            get { return new DeclIterator<Namespace>(Declarations); }
+        }
+
+        public DeclIterator<Enumeration> Enums
+        {
+            get { return new DeclIterator<Enumeration>(Declarations); }
+        }
+
+        public DeclIterator<Function> Functions
+        {
+            get { return new DeclIterator<Function>(Declarations); }
+        }
+
+        public DeclIterator<Class> Classes
+        {
+            get { return new DeclIterator<Class>(Declarations); }
+        }
+
+        public DeclIterator<Template> Templates
+        {
+            get { return new DeclIterator<Template>(Declarations); }
+        }
+
+        public DeclIterator<TypedefDecl> Typedefs
+        {
+            get { return new DeclIterator<TypedefDecl>(Declarations); }
+        }
+
+        public DeclIterator<Variable> Variables
+        {
+            get { return new DeclIterator<Variable>(Declarations); }
+        }
+
+        public DeclIterator<Event> Events
+        {
+            get { return new DeclIterator<Event>(Declarations); }
+        }
 
         // Used to keep track of anonymous declarations.
         public Dictionary<ulong, Declaration> Anonymous; 
@@ -40,14 +72,7 @@ namespace CppSharp.AST
 
         protected DeclarationContext()
         {
-            Namespaces = new List<Namespace>();
-            Enums = new List<Enumeration>();
-            Functions = new List<Function>();
-            Classes = new List<Class>();
-            Templates = new List<Template>();
-            Typedefs = new List<TypedefDecl>();
-            Variables = new List<Variable>();
-            Events = new List<Event>();
+            Declarations = new List<Declaration>();
             TypeReferences = new List<TypeReference>();
             Anonymous = new Dictionary<ulong, Declaration>();
         }
@@ -55,14 +80,7 @@ namespace CppSharp.AST
         protected DeclarationContext(DeclarationContext dc)
             : base(dc)
         {
-            Namespaces = new List<Namespace>(dc.Namespaces);
-            Enums = new List<Enumeration>(dc.Enums);
-            Functions = new List<Function>(dc.Functions);
-            Classes = new List<Class>(dc.Classes);
-            Templates = new List<Template>(dc.Templates);
-            Typedefs = new List<TypedefDecl>(dc.Typedefs);
-            Variables = new List<Variable>(dc.Variables);
-            Events = new List<Event>(dc.Events);
+            Declarations = dc.Declarations;
             TypeReferences = new List<TypeReference>(dc.TypeReferences);
             Anonymous = new Dictionary<ulong, Declaration>(dc.Anonymous);
             IsAnonymous = dc.IsAnonymous;
@@ -304,9 +322,8 @@ namespace CppSharp.AST
             // Replace the incomplete declaration with the complete one.
             if (@class.IsIncomplete)
             {
-                var index = Classes.FindIndex(c => c == @class);
                 @class.CompleteDeclaration = newClass;
-                Classes[index] = newClass;
+                Classes.Replace(@class, newClass);
             }
 
             return newClass;
@@ -400,7 +417,7 @@ namespace CppSharp.AST
         {
             get
             {
-                Predicate<Declaration> pred = (t => t.IsGenerated);
+                Func<Declaration, bool> pred = (t => t.IsGenerated);
                 return Enums.Exists(pred) || HasFunctions || Typedefs.Exists(pred)
                     || Classes.Any() || Namespaces.Exists(n => n.HasDeclarations);
             }
@@ -410,7 +427,7 @@ namespace CppSharp.AST
         {
             get
             {
-                Predicate<Declaration> pred = (t => t.IsGenerated);
+                Func<Declaration, bool> pred = (t => t.IsGenerated);
                 return Functions.Exists(pred) || Namespaces.Exists(n => n.HasFunctions);
             }
         }
