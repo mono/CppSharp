@@ -673,6 +673,18 @@ private:
     int m;
 };
 
+template<typename T> class FriendTemplate
+{
+    template<typename TT>
+    friend FriendTemplate<TT> func(const FriendTemplate<TT>&);
+
+    friend FriendTemplate;
+    friend class FriendTemplate;
+
+    template<typename TT>
+    friend class FriendTemplate;
+};
+
 class DLL_API DifferentConstOverloads
 {
 public:
