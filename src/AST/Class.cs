@@ -28,6 +28,7 @@ namespace CppSharp.AST
         public AccessSpecifier Access { get; set; }
         public bool IsVirtual { get; set; }
         public Type Type { get; set; }
+        public int Offset { get; set; }
 
         public Class Class
         {

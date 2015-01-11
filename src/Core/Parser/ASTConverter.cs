@@ -655,7 +655,8 @@ namespace CppSharp
             {
                 IsVirtual = @base.IsVirtual,
                 Access = VisitAccessSpecifier(@base.Access),
-                Type = typeConverter.Visit(@base.Type)
+                Type = typeConverter.Visit(@base.Type),
+                Offset = @base.Offset
             };
 
             return _base;

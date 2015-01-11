@@ -1582,6 +1582,12 @@ namespace CppSharp
                     CppSharp::Parser::AST::Type^ get();
                     void set(CppSharp::Parser::AST::Type^);
                 }
+
+                property int Offset
+                {
+                    int get();
+                    void set(int);
+                }
             };
 
             public ref class Field : CppSharp::Parser::AST::Declaration

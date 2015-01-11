@@ -5641,7 +5641,7 @@ namespace CppSharp
 
             public unsafe partial class BaseClassSpecifier : IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 12)]
+                [StructLayout(LayoutKind.Explicit, Size = 16)]
                 public partial struct Internal
                 {
                     [FieldOffset(0)]
@@ -5652,6 +5652,9 @@ namespace CppSharp
 
                     [FieldOffset(8)]
                     public global::System.IntPtr Type;
+
+                    [FieldOffset(12)]
+                    public int Offset;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -5680,7 +5683,7 @@ namespace CppSharp
 
                 private static BaseClassSpecifier.Internal* __CopyValue(BaseClassSpecifier.Internal native)
                 {
-                    var ret = (BaseClassSpecifier.Internal*) Marshal.AllocHGlobal(12);
+                    var ret = (BaseClassSpecifier.Internal*) Marshal.AllocHGlobal(16);
                     *ret = native;
                     return ret;
                 }
@@ -5698,7 +5701,7 @@ namespace CppSharp
 
                 public BaseClassSpecifier()
                 {
-                    __Instance = Marshal.AllocHGlobal(12);
+                    __Instance = Marshal.AllocHGlobal(16);
                     __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
@@ -5753,6 +5756,19 @@ namespace CppSharp
                     set
                     {
                         ((Internal*) __Instance)->Type = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
+
+                public int Offset
+                {
+                    get
+                    {
+                        return ((Internal*) __Instance)->Offset;
+                    }
+
+                    set
+                    {
+                        ((Internal*) __Instance)->Offset = value;
                     }
                 }
             }

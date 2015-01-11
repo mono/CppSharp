@@ -2202,6 +2202,16 @@ void CppSharp::Parser::AST::BaseClassSpecifier::Type::set(CppSharp::Parser::AST:
     ((::CppSharp::CppParser::AST::BaseClassSpecifier*)NativePtr)->Type = (::CppSharp::CppParser::AST::Type*)value->NativePtr;
 }
 
+int CppSharp::Parser::AST::BaseClassSpecifier::Offset::get()
+{
+    return ((::CppSharp::CppParser::AST::BaseClassSpecifier*)NativePtr)->Offset;
+}
+
+void CppSharp::Parser::AST::BaseClassSpecifier::Offset::set(int value)
+{
+    ((::CppSharp::CppParser::AST::BaseClassSpecifier*)NativePtr)->Offset = value;
+}
+
 CppSharp::Parser::AST::Field::Field(::CppSharp::CppParser::AST::Field* native)
     : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)native)
 {

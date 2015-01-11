@@ -664,6 +664,7 @@ struct CS_API BaseClassSpecifier
     AccessSpecifier Access;
     bool IsVirtual;
     CppSharp::CppParser::AST::Type* Type;
+    int Offset;
 };
 
 class Class;

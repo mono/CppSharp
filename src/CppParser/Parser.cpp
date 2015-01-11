@@ -794,6 +794,10 @@ void Parser::WalkRecordCXX(clang::CXXRecordDecl* Record, Class* RC)
         auto BSTL = BS.getTypeSourceInfo()->getTypeLoc();
         Base->Type = WalkType(BS.getType(), &BSTL);
 
+        auto BaseDecl = BS.getType()->getAsCXXRecordDecl();
+        auto Offset = Layout->getBaseClassOffset(BaseDecl);
+        Base->Offset = Offset.getQuantity();
+
         RC->Bases.push_back(Base);
     }
 
