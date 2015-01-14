@@ -751,6 +751,21 @@ void Parser::WalkRecord(clang::RecordDecl* Record, Class* RC)
     }
 }
 
+static clang::CXXRecordDecl* GetCXXRecordDeclFromBaseType(const clang::Type* Ty) {
+    using namespace clang;
+
+    if (auto RT = Ty->getAs<clang::RecordType>())
+        return dyn_cast<clang::CXXRecordDecl>(RT->getDecl());
+    else if (auto TST = Ty->getAs<clang::TemplateSpecializationType>())
+        return dyn_cast<clang::CXXRecordDecl>(
+            TST->getTemplateName().getAsTemplateDecl()->getTemplatedDecl());
+    else if (auto Injected = Ty->getAs<clang::InjectedClassNameType>())
+        return Injected->getDecl();
+
+    assert("Could not get base CXX record from type");
+    return nullptr;
+}
+
 void Parser::WalkRecordCXX(clang::CXXRecordDecl* Record, Class* RC)
 {
     using namespace clang;
@@ -794,9 +809,12 @@ void Parser::WalkRecordCXX(clang::CXXRecordDecl* Record, Class* RC)
         auto BSTL = BS.getTypeSourceInfo()->getTypeLoc();
         Base->Type = WalkType(BS.getType(), &BSTL);
 
-        auto BaseDecl = BS.getType()->getAsCXXRecordDecl();
-        auto Offset = Layout->getBaseClassOffset(BaseDecl);
-        Base->Offset = Offset.getQuantity();
+        auto BaseDecl = GetCXXRecordDeclFromBaseType(BS.getType().getTypePtr());
+        if (BaseDecl && Layout)
+        {
+            auto Offset = Layout->getBaseClassOffset(BaseDecl);
+            Base->Offset = Offset.getQuantity();
+        }
 
         RC->Bases.push_back(Base);
     }
