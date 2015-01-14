@@ -278,6 +278,11 @@ namespace CppSharp.Passes
         {
             if (VisitDeclarationContext(@class))
             {
+                if (Options.VisitClassBases)
+                    foreach (var baseClass in @class.Bases)
+                        if (baseClass.IsClass)
+                            VisitClassDecl(baseClass.Class);
+
                 new PropertyGenerator(@class, Log).GenerateProperties();
             }
             return false;
