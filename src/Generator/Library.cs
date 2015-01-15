@@ -332,6 +332,87 @@ namespace CppSharp
             }
         }
 
+        public static void IgnoreClassVariable(this ASTContext context, string name, string variable)
+        {
+            foreach (var @class in context.FindClass(name))
+            {
+                foreach (var classVariable in @class.Variables.FindAll(f => f.Name == variable))
+                    classVariable.ExplicitlyIgnore();
+            }
+        }
+
+        public static void IgnoreClassVariable(this ASTContext context, string name, string variable)
+        {
+            foreach (var @class in context.FindClass(name))
+            {
+                foreach (var classVariable in @class.Variables.FindAll(f => f.Name == variable))
+                    classVariable.ExplicitlyIgnore();
+            }
+        }
+
+        public static void IgnoreClassVariable(this ASTContext context, string name, string variable)
+        {
+            foreach (var @class in context.FindClass(name))
+            {
+                foreach (var classVariable in @class.Variables.FindAll(f => f.Name == variable))
+                    classVariable.ExplicitlyIgnore();
+            }
+        }
+
+        public static void IgnoreClassVariable(this ASTContext context, string name, string variable)
+        {
+            foreach (var @class in context.FindClass(name))
+            {
+                foreach (var classVariable in @class.Variables.FindAll(f => f.Name == variable))
+                    classVariable.ExplicitlyIgnore();
+            }
+        }
+
+        public static void IgnoreClassVariable(this ASTContext context, string name, string variable)
+        {
+            foreach (var @class in context.FindClass(name))
+            {
+                foreach (var classVariable in @class.Variables.FindAll(f => f.Name == variable))
+                    classVariable.ExplicitlyIgnore();
+            }
+        }
+
+        public static void IgnoreClassVariable(this ASTContext context, string name, string variable)
+        {
+            foreach (var @class in context.FindClass(name))
+            {
+                foreach (var classVariable in @class.Variables.FindAll(f => f.Name == variable))
+                    classVariable.ExplicitlyIgnore();
+            }
+        }
+
+        public static void IgnoreClassVariable(this ASTContext context, string name, string variable)
+        {
+            foreach (var @class in context.FindClass(name))
+            {
+                foreach (var classVariable in @class.Variables.FindAll(f => f.Name == variable))
+                    classVariable.ExplicitlyIgnore();
+            }
+        }
+
+        public static void IgnoreClassVariable(this ASTContext context, string name, string variable)
+        {
+            foreach (var @class in context.FindClass(name))
+            {
+                foreach (var classVariable in @class.Variables.FindAll(f => f.Name == variable))
+                    classVariable.ExplicitlyIgnore();
+            }
+        }
+
+        public static void IgnoreClassVariable(this ASTContext context, string name, string variable)
+        {
+            foreach (var @class in context.FindClass(name))
+            {
+                foreach (var classVariable in @class.Variables.FindAll(f => f.Name == variable))
+                    classVariable.ExplicitlyIgnore();
+            }
+        }
+
         #endregion
 
         #region Module Helpers

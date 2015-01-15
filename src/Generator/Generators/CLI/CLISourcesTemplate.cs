@@ -617,7 +617,7 @@ namespace CppSharp.Generators.CLI
         {
             GeneratePropertyGetter(variable, @class, variable.Name, variable.Type);
 
-            if (!variable.QualifiedType.Qualifiers.IsConst)
+            if (!variable.IsConst)
                 GeneratePropertySetter(variable, @class, variable.Name, variable.Type);
         }
 

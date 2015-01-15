@@ -1,6 +1,9 @@
 #include "Basic.h"
 #include <string.h>
 
+const int Foo3::constArray[] = { 0, 1, 2 };
+const IgnoredType Foo3::constMarshaledArray[3];
+
 Foo::Foo()
 {
     auto p = new int[4];

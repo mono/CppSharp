@@ -91,6 +91,13 @@ public:
 
 DLL_API Bar::Item operator |(Bar::Item left, Bar::Item right);
 
+class DLL_API2 Foo3
+{
+public:
+    static const int constArray[3];
+    static const IgnoredType constMarshaledArray[3];
+};
+
 struct DLL_API Bar2 : public Bar
 {
     // Conversion operators
