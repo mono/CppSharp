@@ -496,7 +496,8 @@ namespace CppSharp.Generators.CSharp
 
             Action<Method> tryAddOverload = method =>
             {
-                if (method.IsSynthetized)
+                if (method.IsSynthetized &&
+                    method.SynthKind != FunctionSynthKind.AdjustedMethod)
                     return;
 
                 if (method.IsProxy)
@@ -2298,6 +2299,8 @@ namespace CppSharp.Generators.CSharp
                     else
                     {
                         names.Insert(instanceIndex, Helpers.InstanceIdentifier);
+                        if (method.SynthKind == FunctionSynthKind.AdjustedMethod)
+                            names[instanceIndex] += " + " + method.AdjustedOffset.ToString();
                     }
                 }
             }

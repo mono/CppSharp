@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CppSharp.AST;
 using CppSharp.Generators.CSharp;
@@ -24,10 +25,79 @@ namespace CppSharp.Passes
             return result;
         }
 
+        public static bool ComputeClassPath(Class current, Class target,
+            List<BaseClassSpecifier> path)
+        {
+            if (target == current)
+                return true;
+
+            foreach (var @base in current.Bases)
+            {
+                path.Add(@base);
+
+                if (ComputeClassPath(@base.Class, target, path))
+                    return false;
+            }
+
+            path.RemoveAt(path.Count-1);
+            return false;
+        }
+
+        public static List<BaseClassSpecifier> ComputeClassPath(Class from, Class to)
+        {
+            var path = new List<BaseClassSpecifier>();
+
+            ComputeClassPath(from, to, path);
+            return path;
+        }
+
+        int ComputeNonVirtualBaseClassOffset(Class from, Class to)
+        {
+            var bases = ComputeClassPath(from, to);
+            return bases.Sum(@base => @base.Offset);
+        }
+
+        public void CheckNonVirtualInheritedFunctions(Class @class, Class originalClass = null)
+        {
+            if (originalClass == null)
+                originalClass = @class;
+
+            foreach (BaseClassSpecifier baseSpecifier in @class.Bases)
+            {
+                var @base = baseSpecifier.Class;
+                if (@base.IsInterface) continue;
+
+                var nonVirtualOffset = ComputeNonVirtualBaseClassOffset(originalClass, @base);
+                if (nonVirtualOffset == 0)
+                    continue;
+
+                foreach (var method in @base.Methods.Where(method =>
+                    !method.IsVirtual && (method.Kind == CXXMethodKind.Normal)))
+                {
+                    Console.WriteLine(method);
+
+                    var adjustedMethod = new Method(method)
+                    {
+                        SynthKind = FunctionSynthKind.AdjustedMethod,
+                        AdjustedOffset = nonVirtualOffset,
+                    };
+
+                    originalClass.Methods.Add(adjustedMethod);
+                }
+
+                CheckNonVirtualInheritedFunctions(@base, originalClass);
+            }
+        }
+
         public override bool VisitClassDecl(Class @class)
         {
+            if (AlreadyVisited(@class))
+                return false;
+
+            CheckNonVirtualInheritedFunctions(@class);
+
             // skip the first base because we can inherit from one class
-            for (int i = 1; i < @class.Bases.Count; i++)
+            for (var i = 1; i < @class.Bases.Count; i++)
             {
                 var @base = @class.Bases[i].Class;
                 if (@base.IsInterface) continue;

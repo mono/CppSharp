@@ -95,6 +95,7 @@ namespace CppSharp.AST
             IsMoveConstructor = method.IsMoveConstructor;
             Conversion = method.Conversion;
             SynthKind = method.SynthKind;
+            AdjustedOffset = method.AdjustedOffset;
         }
 
         public Method(Function function)
@@ -147,6 +148,8 @@ namespace CppSharp.AST
         public QualifiedType ConversionType { get; set; }
 
         public Class ExplicitInterfaceImpl { get; set; }
+
+        public int AdjustedOffset { get; set; }
 
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {

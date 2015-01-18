@@ -188,4 +188,16 @@ public class CSharpTempTests : GeneratorTestFixture
     {
         Assert.AreEqual(5, Foo.Rename);
     }
+
+    [Test, Ignore]
+    public void TestPrimarySecondaryBase()
+    {
+        var a = new MI_A0();
+        var resa = a.Get();
+        Assert.That(resa, Is.EqualTo(50));
+
+        var c = new MI_C();
+        var res = c.Get();
+        Assert.That(res, Is.EqualTo(50));
+    }
 }

@@ -94,7 +94,8 @@ namespace CppSharp.AST
         ComplementOperator,
         AbstractImplCall,
         DefaultValueOverload,
-        InterfaceInstance
+        InterfaceInstance,
+        AdjustedMethod
     }
 
     public class Function : Declaration, ITypedDecl, IMangledDecl

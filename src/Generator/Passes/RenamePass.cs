@@ -105,7 +105,7 @@ namespace CppSharp.Passes
             declarations.AddRange(decl.Namespace.Enums);
             declarations.AddRange(decl.Namespace.Events);
             var function = decl as Function;
-            if (function != null)
+            if (function != null && function.SynthKind != FunctionSynthKind.AdjustedMethod)
             {
                 // account for overloads
                 declarations.AddRange(GetFunctionsWithTheSameParams(function));

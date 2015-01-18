@@ -312,6 +312,41 @@ private:
     IgnoredType<int> _ignoredType;
 };
 
+// --- Multiple inheritance
+
+struct DLL_API MI_A0
+{
+    MI_A0();
+    int get();
+    int F;
+};
+
+MI_A0::MI_A0() : F(50) {}
+int MI_A0::get() { return F; };
+
+struct DLL_API MI_A
+{
+    MI_A();
+    virtual void v(int i = 5);
+};
+
+MI_A::MI_A() {}
+void MI_A::v(int i) {}
+
+struct DLL_API MI_B : public MI_A
+{
+    MI_B();
+};
+
+MI_B::MI_B() {}
+
+struct DLL_API MI_C : public MI_A0, public MI_B
+{
+    MI_C();
+};
+
+MI_C::MI_C() {}
+
 class DLL_API StructWithPrivateFields
 {
 public:
