@@ -94,7 +94,7 @@ namespace CppSharp.Passes
             if (AlreadyVisited(@class))
                 return false;
 
-            CheckNonVirtualInheritedFunctions(@class);
+            //CheckNonVirtualInheritedFunctions(@class);
 
             // skip the first base because we can inherit from one class
             for (var i = 1; i < @class.Bases.Count; i++)
