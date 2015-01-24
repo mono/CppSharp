@@ -150,15 +150,18 @@ namespace CppSharp.Passes
 
             if (@interface.Bases.Count == 0)
             {
-                Property instance = new Property();
-                instance.Namespace = @interface;
-                instance.Name = Helpers.InstanceIdentifier;
-                instance.QualifiedType = new QualifiedType(new BuiltinType(PrimitiveType.IntPtr));
-                instance.GetMethod = new Method
+                var instance = new Property
                 {
-                    SynthKind = FunctionSynthKind.InterfaceInstance,
-                    Namespace = @interface
+                    Namespace = @interface,
+                    Name = Helpers.InstanceIdentifier,
+                    QualifiedType = new QualifiedType(new BuiltinType(PrimitiveType.IntPtr)),
+                    GetMethod = new Method
+                    {
+                        SynthKind = FunctionSynthKind.InterfaceInstance,
+                        Namespace = @interface
+                    }
                 };
+
                 @interface.Properties.Add(instance);
             }
 
