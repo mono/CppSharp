@@ -551,9 +551,6 @@ namespace CppSharp.Generators.CSharp
             var ctx = decl.Namespace;
             while (ctx != null)
             {
-                if (ctx is TranslationUnit)
-                    break;
-
                 if (!string.IsNullOrWhiteSpace(ctx.Name))
                     names.Add(ctx.Name);
 

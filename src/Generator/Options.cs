@@ -44,6 +44,9 @@ namespace CppSharp
             CodeFiles = new List<string>();
 
             StripLibPrefix = true;
+
+            ImportNames = new Dictionary<string,DeclInfo>();
+            ExportNames = new Dictionary<string, DeclInfo>();
         }
 
         // General options
@@ -189,6 +192,9 @@ namespace CppSharp
         public bool GenerateDefaultValuesForArguments { get; set; }
 
         public bool StripLibPrefix { get; set; }
+
+        public Dictionary<string, DeclInfo> ExportNames { set; get; }
+        public Dictionary<string, DeclInfo> ImportNames { set; get; }
     }
 
     public class InvalidOptionException : Exception

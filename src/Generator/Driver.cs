@@ -279,6 +279,9 @@ namespace CppSharp
 
             if (Options.GeneratePropertiesAdvanced)
                 TranslationUnitPasses.AddPass(new GetterSetterToPropertyAdvancedPass());
+
+            TranslationUnitPasses.AddPass(new ImportDeclsPass());
+            TranslationUnitPasses.AddPass(new ExportDeclsPass());
         }
 
         public void ProcessCode()
