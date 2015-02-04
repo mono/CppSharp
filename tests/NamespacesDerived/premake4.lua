@@ -1,4 +1,4 @@
 group "Tests/Namespaces"
-  SetupTestGeneratorProject("NamespacesDerived")
-  SetupTestNativeProject("NamespacesDerived", "NamespacesBase.Native")
-  SetupTestProjectsCSharp("NamespacesDerived", "NamespacesBase.CSharp")
+  SetupTestGeneratorProject("NamespacesDerived", "NamespacesBase")
+  SetupTestNativeProject("NamespacesDerived",    "NamespacesBase")
+  SetupTestProjectsCSharp("NamespacesDerived",   "NamespacesBase")
