@@ -2,6 +2,9 @@ using System;
 using CppSharp.AST;
 using CppSharp.Generators;
 using CppSharp.Utils;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
+using System.Collections.Generic;
 
 namespace CppSharp.Tests
 {
@@ -15,7 +18,7 @@ namespace CppSharp.Tests
 
         public override void SetupPasses(Driver driver)
         {
-            driver.Options.DependentNameSpaces.Add("NamespacesBase");
+         //   driver.Options.DependentNameSpaces.Add("NamespacesBase");
         }
 
         public override void Preprocess(Driver driver, ASTContext ctx)
@@ -39,7 +42,10 @@ namespace CppSharp.Tests
 
         public static void Main(string[] args)
         {
+
+            ConsoleDriver.Run(new NamespacesBaseTests(GeneratorKind.CSharp));
             ConsoleDriver.Run(new NamespacesDerivedTests(GeneratorKind.CSharp));
+
         }
 
     }

@@ -32,6 +32,13 @@ namespace CppSharp
         public ASTContext ASTContext { get; private set; }
         public SymbolContext Symbols { get; private set; }
 
+        public struct TransUnitInfo
+        {
+            public string transUnit;
+            public string rootNamespaceName;
+        }
+        public static Dictionary<string, TransUnitInfo> DependencyNamespaces { get; private set; }
+
         public Driver(DriverOptions options, IDiagnosticConsumer diagnostics)
         {
             Options = options;
@@ -42,6 +49,9 @@ namespace CppSharp
             TypeDatabase = new TypeMapDatabase();
             TranslationUnitPasses = new PassBuilder<TranslationUnitPass>(this);
             GeneratorOutputPasses = new PassBuilder<GeneratorOutputPass>(this);
+            if (Driver.DependencyNamespaces == null) {
+                Driver.DependencyNamespaces = new Dictionary<string, TransUnitInfo>();
+            }
         }
 
         Generator CreateGeneratorFromKind(GeneratorKind kind)
@@ -279,6 +289,8 @@ namespace CppSharp
 
             if (Options.GeneratePropertiesAdvanced)
                 TranslationUnitPasses.AddPass(new GetterSetterToPropertyAdvancedPass());
+
+            TranslationUnitPasses.AddPass(new RenameRootNamespacesPass());
         }
 
         public void ProcessCode()

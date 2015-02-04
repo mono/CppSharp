@@ -2,6 +2,9 @@ using System;
 using CppSharp.AST;
 using CppSharp.Generators;
 using CppSharp.Utils;
+using System.Collections.Generic;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 
 namespace CppSharp.Tests
 {
@@ -30,9 +33,9 @@ namespace CppSharp.Tests
 
         public static void Main(string[] args)
         {
-            ConsoleDriver.Run(new NamespacesBaseTests(GeneratorKind.CSharp));
-        }
 
+            ConsoleDriver.Run(new NamespacesBaseTests(GeneratorKind.CSharp));
+
+        }
     }
 }
-
