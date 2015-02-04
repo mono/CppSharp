@@ -38,7 +38,7 @@ function SetupManagedTestProject()
     SetupManagedProject()
 end
 
-function SetupTestGeneratorProject(name)
+function SetupTestGeneratorProject(name, depends)
   project(name .. ".Gen")
     SetupManagedTestProject()
     kind "ConsoleApp"
@@ -47,13 +47,18 @@ function SetupTestGeneratorProject(name)
 
     dependson { name .. ".Native" }
 
-    links
-    {
+    linktable = {
       "System.Core",
       "CppSharp.AST",
       "CppSharp.Generator",
-      "CppSharp.Generator.Tests"
+      "CppSharp.Generator.Tests",
     }
+
+    if depends ~= nil then
+      table.insert(linktable, depends .. ".Gen")
+    end
+
+    links(linktable)
 
     SetupParser()
 end
@@ -84,7 +89,7 @@ function SetupTestNativeProject(name, depends)
     files { "**.h", "**.cpp" }
 
     if depends ~= nil then
-      links { depends }
+      links { depends .. ".Native" }
     end
 end
 
@@ -117,7 +122,7 @@ function SetupTestProjectsCSharp(name, depends)
     linktable = { "CppSharp.Runtime" }
 
     if depends ~= nil then
-      table.insert(linktable, depends)
+      table.insert(linktable, depends .. ".CSharp")
     end
 
     links(linktable)
