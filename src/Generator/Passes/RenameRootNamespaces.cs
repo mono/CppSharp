@@ -20,7 +20,9 @@ namespace CppSharp.Passes
             var fileName = unit.TranslationUnit.FileName;
             if (Driver.RootNamespaceRenames.ContainsKey(fileName))
             {
-                unit.Name = Driver.RootNamespaceRenames[fileName].rootNamespaceName;
+                var rootNamespace = Driver.RootNamespaceRenames[fileName].rootNamespaceName;
+                if (this.Driver.Options.OutputNamespace != rootNamespace)
+                    unit.Name = rootNamespace;
             }
             else if (unit.GenerationKind == GenerationKind.Generate)
             {

@@ -133,7 +133,7 @@ namespace CppSharp.Generators.CSharp
             if (reference.GenerationKind == GenerationKind.Generate && Options.GenerateLibraryNamespace)
                 refNames.Push(Options.OutputNamespace);
 
-            while (refNames.Count > 0 && ctxNames.Count > 0 &&refNames.Peek() == ctxNames.Peek())
+            while (refNames.Count > 1 && ctxNames.Count > 1 &&refNames.Peek() == ctxNames.Peek())
             {
                 refNames.Pop();
                 ctxNames.Pop();
