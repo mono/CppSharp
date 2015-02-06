@@ -105,6 +105,43 @@ namespace CppSharp.Generators.CSharp
 
         #region Identifiers
 
+        // Takes a declaration (type, class etc.) that is referenced from a context, and the context.
+        // If the referenced name needs a qualification in the context, add it. Otherwise, return just the name.
+        public string QualifiedIdentifierIfNeeded(Declaration context, Declaration reference)
+        {
+            var refNames = new Stack<string>();
+            var ctxNames = new Stack<string>();
+
+            var refCtx = reference;
+            while (refCtx != null)
+            {
+                if (!string.IsNullOrWhiteSpace(refCtx.Name))
+                    refNames.Push(refCtx.Name);
+                refCtx = refCtx.Namespace;
+            }
+
+            var ctxCtx = context;
+            while (ctxCtx != null)
+            {
+                if (!string.IsNullOrWhiteSpace(ctxCtx.Name))
+                    ctxNames.Push(ctxCtx.Name);
+                ctxCtx = ctxCtx.Namespace;
+            }
+
+            if (context.GenerationKind == GenerationKind.Generate && Options.GenerateLibraryNamespace)
+                ctxNames.Push(Options.OutputNamespace);
+            if (reference.GenerationKind == GenerationKind.Generate && Options.GenerateLibraryNamespace)
+                refNames.Push(Options.OutputNamespace);
+
+            while (refNames.Count > 0 && ctxNames.Count > 0 &&refNames.Peek() == ctxNames.Peek())
+            {
+                refNames.Pop();
+                ctxNames.Pop();
+            }
+
+            return string.Join(".", refNames);
+        }
+
         public string QualifiedIdentifier(Declaration decl)
         {
             var names = new List<string> { decl.Name };
@@ -633,7 +670,7 @@ namespace CppSharp.Generators.CSharp
                 bases.AddRange(
                     from @base in @class.Bases
                     where @base.IsClass
-                    select QualifiedIdentifier(@base.Class));
+                    select QualifiedIdentifierIfNeeded(@class, @base.Class));
             }
 
             if (@class.IsGenerated)
@@ -1781,7 +1818,7 @@ namespace CppSharp.Generators.CSharp
             var hasBaseClass = @class.HasBaseClass && @class.BaseClass.IsRefType;
             if (hasBaseClass)
                 WriteLineIndent(": base(({0}.Internal*) native{1})",
-                    QualifiedIdentifier(@class.BaseClass), @class.IsAbstractImpl ? ", true" : string.Empty);
+                    QualifiedIdentifierIfNeeded(@class, @class.BaseClass), @class.IsAbstractImpl ? ", true" : string.Empty);
 
             WriteStartBraceIndent();
 
@@ -1828,7 +1865,7 @@ namespace CppSharp.Generators.CSharp
                     // Allocate memory for a new native object and call the ctor.
                     WriteLine("var ret = Marshal.AllocHGlobal({0});", @class.Layout.Size);
                     WriteLine("{0}.Internal.{1}(ret, new global::System.IntPtr(&native));",
-                        QualifiedIdentifier(@class), GetFunctionNativeIdentifier(copyCtorMethod));
+                        QualifiedIdentifierIfNeeded(@class, @class), GetFunctionNativeIdentifier(copyCtorMethod));
                     WriteLine("return ({0}.Internal*) ret;", className);
                 }
                 else
@@ -2243,7 +2280,7 @@ namespace CppSharp.Generators.CSharp
                 if (construct == null)
                 {
                     WriteLine("var {0} = new {1}.Internal();", GeneratedIdentifier("ret"),
-                        QualifiedIdentifier(retClass.OriginalClass ?? retClass));
+                        QualifiedIdentifierIfNeeded(function, retClass.OriginalClass ?? retClass));
                 }
                 else
                 {

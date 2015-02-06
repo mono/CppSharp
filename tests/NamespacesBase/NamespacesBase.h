@@ -3,7 +3,7 @@
 
 namespace OverlappingNamespace
 {
-    enum Colors {
+    enum ColorsEnum {
         white,
         black,
         red,
@@ -20,6 +20,8 @@ namespace OverlappingNamespace
         };
     };
 }
+
+
 
 class DLL_API Base
 {
