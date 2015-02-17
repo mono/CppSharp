@@ -32,7 +32,5 @@ namespace CppSharp.Tests
         {
             ConsoleDriver.Run(new NamespacesBaseTests(GeneratorKind.CSharp));
         }
-
     }
 }
-
