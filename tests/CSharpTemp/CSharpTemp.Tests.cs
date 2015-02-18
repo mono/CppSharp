@@ -200,4 +200,10 @@ public class CSharpTempTests : GeneratorTestFixture
         var res = c.Get();
         Assert.That(res, Is.EqualTo(50));
     }
+
+    [Test]
+    public void TestInnerClasses()
+    {
+        QMap.Iterator test_iter;
+    }
 }

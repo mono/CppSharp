@@ -983,8 +983,9 @@ ClassTemplate* Parser::WalkClassTemplate(clang::ClassTemplateDecl* TD)
     NS->Templates.push_back(CT);
 
     bool Process;
-    CT->TemplatedDecl = GetRecord(TD->getTemplatedDecl(), Process); 
-    WalkRecordCXX(TD->getTemplatedDecl());
+    auto RC = GetRecord(TD->getTemplatedDecl(), Process);
+    CT->TemplatedDecl = RC;
+    WalkRecordCXX(TD->getTemplatedDecl(), RC);
 
     CT->Parameters = WalkTemplateParameterList(TD->getTemplateParameters());
 

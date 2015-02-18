@@ -359,3 +359,38 @@ private:
     int simplePrivateField;
     Foo complexPrivateField;
 };
+
+
+template <class Key, class T>
+class QMap
+{
+    struct Node
+    {
+        Key key;
+        T value;
+    };
+
+public:
+    QMap(const QMap<Key, T> &other);
+
+    class const_iterator;
+
+    class iterator
+    {
+    public:
+        int test() {
+            return 1;
+        }
+        friend class const_iterator;
+        friend class QMap<Key, T>;
+    };
+    friend class iterator;
+
+    class const_iterator
+    {
+        friend class iterator;
+        friend class QMap<Key, T>;
+    };
+    friend class const_iterator;
+
+};
