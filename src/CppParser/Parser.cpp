@@ -2703,10 +2703,8 @@ void Parser::HandlePreprocessedEntities(Declaration* Decl,
 
     auto Range = PPRecord->getPreprocessedEntitiesInRange(sourceRange);
 
-    for (auto it = Range.first; it != Range.second; ++it)
+    for (auto PPEntity : Range)
     {
-        auto PPEntity = (*it);
-
         auto Entity = WalkPreprocessedEntity(Decl, PPEntity);
         if (!Entity) continue;
  
