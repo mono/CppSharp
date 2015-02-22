@@ -403,3 +403,27 @@ template <> struct QIntegerForSize<4> { typedef uint32_t Unsigned; typedef int32
 template <> struct QIntegerForSize<8> { typedef uint64_t Unsigned; typedef int64_t Signed; };
 typedef QIntegerForSize<Q_PROCESSOR_WORDSIZE>::Signed qregisterint;
 typedef QIntegerForSize<Q_PROCESSOR_WORDSIZE>::Unsigned qregisteruint;
+
+class QSize
+{
+public:
+    QSize(int w, int h);
+    friend inline const QSize operator+(const QSize &, const QSize &);
+    friend inline const QSize operator-(const QSize &, const QSize &);
+
+private:
+    int wd;
+    int ht;
+};
+
+inline QSize::QSize(int w, int h) : wd(w), ht(h) {}
+
+inline const QSize operator+(const QSize & s1, const QSize & s2)
+{
+    return QSize(s1.wd + s2.wd, s1.ht + s2.ht);
+}
+
+inline const QSize operator-(const QSize &s1, const QSize &s2)
+{
+    return QSize(s1.wd - s2.wd, s1.ht - s2.ht);
+}

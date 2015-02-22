@@ -2408,7 +2408,11 @@ Friend* Parser::WalkFriend(clang::FriendDecl *FD)
     auto NS = GetNamespace(FD);
     assert(NS && "Expected a valid namespace");
 
-    auto USR = GetDeclUSR(FD);
+    auto FriendDecl = FD->getFriendDecl();
+
+    // Work around clangIndex's lack of USR handling for friends and pass the
+    // pointed to friend declaration instead.
+    auto USR = GetDeclUSR(FriendDecl ? (Decl*)FriendDecl : FD);
     if (auto F = NS->FindFriend(USR))
         return F;
 
@@ -2416,8 +2420,8 @@ Friend* Parser::WalkFriend(clang::FriendDecl *FD)
     HandleDeclaration(FD, F);
     F->_Namespace = NS;
 
-    if (auto D = FD->getFriendDecl())
-        F->Declaration = WalkDeclarationDef(D);
+    if (FriendDecl)
+        F->Declaration = WalkDeclarationDef(FriendDecl);
 
     //auto TL = FD->getFriendType()->getTypeLoc();
     //F->QualifiedType = GetQualifiedType(VD->getType(), WalkType(FD->getFriendType(), &TL));
