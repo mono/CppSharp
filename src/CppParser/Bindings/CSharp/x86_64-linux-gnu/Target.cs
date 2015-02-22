@@ -187,7 +187,7 @@ namespace CppSharp
             private static ParserTargetInfo.Internal* __CopyValue(ParserTargetInfo.Internal native)
             {
                 var ret = Marshal.AllocHGlobal(160);
-                CppSharp.Parser.ParserTargetInfo.Internal.cctor_0(ret, new global::System.IntPtr(&native));
+                ParserTargetInfo.Internal.cctor_0(ret, new global::System.IntPtr(&native));
                 return (ParserTargetInfo.Internal*) ret;
             }
 

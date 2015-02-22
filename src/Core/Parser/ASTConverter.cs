@@ -727,6 +727,7 @@ namespace CppSharp
             _decl.Name = decl.Name;
             _decl.Namespace = Visit(decl._Namespace) as AST.DeclarationContext;
             _decl.Location = new SourceLocation(decl.Location.ID);
+            _decl.LineNumber = decl.LineNumber;
             _decl.DebugText = decl.DebugText;
             _decl.IsIncomplete = decl.IsIncomplete;
             _decl.IsDependent = decl.IsDependent;

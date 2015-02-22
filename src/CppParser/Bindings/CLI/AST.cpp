@@ -1222,6 +1222,16 @@ void CppSharp::Parser::AST::Declaration::Location::set(CppSharp::Parser::SourceL
     ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->Location = _marshal0;
 }
 
+int CppSharp::Parser::AST::Declaration::LineNumber::get()
+{
+    return ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->LineNumber;
+}
+
+void CppSharp::Parser::AST::Declaration::LineNumber::set(int value)
+{
+    ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->LineNumber = value;
+}
+
 CppSharp::Parser::AST::RawComment^ CppSharp::Parser::AST::Declaration::Comment::get()
 {
     return (((::CppSharp::CppParser::AST::Declaration*)NativePtr)->Comment == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::RawComment((::CppSharp::CppParser::AST::RawComment*)((::CppSharp::CppParser::AST::Declaration*)NativePtr)->Comment);

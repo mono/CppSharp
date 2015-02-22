@@ -2735,6 +2735,8 @@ void Parser::HandleDeclaration(clang::Decl* D, Declaration* Decl)
     Decl->OriginalPtr = (void*) D;
     Decl->USR = GetDeclUSR(D);
     Decl->Location = SourceLocation(D->getLocation().getRawEncoding());
+    auto DecomposedLoc = C->getSourceManager().getDecomposedLoc(D->getLocation());
+    Decl->LineNumber = C->getSourceManager().getLineNumber(DecomposedLoc.first, DecomposedLoc.second);
 
     if (Decl->PreprocessedEntities.empty() && !D->isImplicit())
     {
