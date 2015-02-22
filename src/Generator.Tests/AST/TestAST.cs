@@ -236,5 +236,11 @@ namespace CppSharp.Generator.Tests.AST
         {
             Assert.IsNotNull(AstContext.FindClass("HiddenInNamespace").FirstOrDefault());
         }
+
+        [Test]
+        public void TestLineNumber()
+        {
+            Assert.AreEqual(63, AstContext.FindClass("HiddenInNamespace").First().LineNumber);
+        }
     }
 }

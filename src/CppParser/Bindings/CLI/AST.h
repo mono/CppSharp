@@ -1029,6 +1029,12 @@ namespace CppSharp
                     void set(CppSharp::Parser::SourceLocation);
                 }
 
+                property int LineNumber
+                {
+                    int get();
+                    void set(int);
+                }
+
                 property CppSharp::Parser::AST::RawComment^ Comment
                 {
                     CppSharp::Parser::AST::RawComment^ get();

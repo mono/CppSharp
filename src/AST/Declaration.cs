@@ -55,6 +55,8 @@ namespace CppSharp.AST
     {
         public SourceLocation Location;
 
+        public int LineNumber { get; set; }
+
         private DeclarationContext @namespace;
         public DeclarationContext OriginalNamespace;
 
