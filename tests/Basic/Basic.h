@@ -668,6 +668,7 @@ class DLL_API HasFriend
 public:
     HasFriend(int m);
     DLL_API friend inline const HasFriend operator+(const HasFriend& f1, const HasFriend& f2);
+    DLL_API friend inline const HasFriend operator-(const HasFriend& f1, const HasFriend& f2);
     int getM();
 private:
     int m;
