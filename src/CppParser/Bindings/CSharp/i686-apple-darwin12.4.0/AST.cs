@@ -267,7 +267,7 @@ namespace CppSharp
                 private static Type.Internal* __CopyValue(Type.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(8);
-                    Type.Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.Type.Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return (Type.Internal*) ret;
                 }
 
@@ -545,7 +545,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class TagType : Type, IDisposable
+            public unsafe partial class TagType : CppSharp.Parser.AST.Type, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 12)]
                 public new partial struct Internal
@@ -585,7 +585,7 @@ namespace CppSharp
                 private static TagType.Internal* __CopyValue(TagType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(12);
-                    TagType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.TagType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (TagType.Internal*) ret;
                 }
 
@@ -596,7 +596,7 @@ namespace CppSharp
                 }
 
                 protected TagType(TagType.Internal* native, bool isInternalImpl = false)
-                    : base((Type.Internal*) native)
+                    : base((CppSharp.Parser.AST.Type.Internal*) native)
                 {
                 }
 
@@ -631,7 +631,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class ArrayType : Type, IDisposable
+            public unsafe partial class ArrayType : CppSharp.Parser.AST.Type, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 24)]
                 public new partial struct Internal
@@ -685,7 +685,7 @@ namespace CppSharp
                 private static ArrayType.Internal* __CopyValue(ArrayType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(24);
-                    ArrayType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.ArrayType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (ArrayType.Internal*) ret;
                 }
 
@@ -696,7 +696,7 @@ namespace CppSharp
                 }
 
                 protected ArrayType(ArrayType.Internal* native, bool isInternalImpl = false)
-                    : base((Type.Internal*) native)
+                    : base((CppSharp.Parser.AST.Type.Internal*) native)
                 {
                 }
 
@@ -757,7 +757,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class FunctionType : Type, IDisposable
+            public unsafe partial class FunctionType : CppSharp.Parser.AST.Type, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 32)]
                 public new partial struct Internal
@@ -825,7 +825,7 @@ namespace CppSharp
                 private static FunctionType.Internal* __CopyValue(FunctionType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(32);
-                    FunctionType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.FunctionType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (FunctionType.Internal*) ret;
                 }
 
@@ -836,7 +836,7 @@ namespace CppSharp
                 }
 
                 protected FunctionType(FunctionType.Internal* native, bool isInternalImpl = false)
-                    : base((Type.Internal*) native)
+                    : base((CppSharp.Parser.AST.Type.Internal*) native)
                 {
                 }
 
@@ -911,7 +911,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class PointerType : Type, IDisposable
+            public unsafe partial class PointerType : CppSharp.Parser.AST.Type, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 20)]
                 public new partial struct Internal
@@ -962,7 +962,7 @@ namespace CppSharp
                 private static PointerType.Internal* __CopyValue(PointerType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(20);
-                    PointerType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.PointerType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (PointerType.Internal*) ret;
                 }
 
@@ -973,7 +973,7 @@ namespace CppSharp
                 }
 
                 protected PointerType(PointerType.Internal* native, bool isInternalImpl = false)
-                    : base((Type.Internal*) native)
+                    : base((CppSharp.Parser.AST.Type.Internal*) native)
                 {
                 }
 
@@ -1021,7 +1021,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class MemberPointerType : Type, IDisposable
+            public unsafe partial class MemberPointerType : CppSharp.Parser.AST.Type, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 16)]
                 public new partial struct Internal
@@ -1061,7 +1061,7 @@ namespace CppSharp
                 private static MemberPointerType.Internal* __CopyValue(MemberPointerType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(16);
-                    MemberPointerType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.MemberPointerType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (MemberPointerType.Internal*) ret;
                 }
 
@@ -1072,7 +1072,7 @@ namespace CppSharp
                 }
 
                 protected MemberPointerType(MemberPointerType.Internal* native, bool isInternalImpl = false)
-                    : base((Type.Internal*) native)
+                    : base((CppSharp.Parser.AST.Type.Internal*) native)
                 {
                 }
 
@@ -1107,7 +1107,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class TypedefType : Type, IDisposable
+            public unsafe partial class TypedefType : CppSharp.Parser.AST.Type, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 12)]
                 public new partial struct Internal
@@ -1147,7 +1147,7 @@ namespace CppSharp
                 private static TypedefType.Internal* __CopyValue(TypedefType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(12);
-                    TypedefType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.TypedefType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (TypedefType.Internal*) ret;
                 }
 
@@ -1158,7 +1158,7 @@ namespace CppSharp
                 }
 
                 protected TypedefType(TypedefType.Internal* native, bool isInternalImpl = false)
-                    : base((Type.Internal*) native)
+                    : base((CppSharp.Parser.AST.Type.Internal*) native)
                 {
                 }
 
@@ -1193,7 +1193,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class AttributedType : Type, IDisposable
+            public unsafe partial class AttributedType : CppSharp.Parser.AST.Type, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 24)]
                 public new partial struct Internal
@@ -1236,7 +1236,7 @@ namespace CppSharp
                 private static AttributedType.Internal* __CopyValue(AttributedType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(24);
-                    AttributedType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.AttributedType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (AttributedType.Internal*) ret;
                 }
 
@@ -1247,7 +1247,7 @@ namespace CppSharp
                 }
 
                 protected AttributedType(AttributedType.Internal* native, bool isInternalImpl = false)
-                    : base((Type.Internal*) native)
+                    : base((CppSharp.Parser.AST.Type.Internal*) native)
                 {
                 }
 
@@ -1295,7 +1295,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class DecayedType : Type, IDisposable
+            public unsafe partial class DecayedType : CppSharp.Parser.AST.Type, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 32)]
                 public new partial struct Internal
@@ -1341,7 +1341,7 @@ namespace CppSharp
                 private static DecayedType.Internal* __CopyValue(DecayedType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(32);
-                    DecayedType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.DecayedType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (DecayedType.Internal*) ret;
                 }
 
@@ -1352,7 +1352,7 @@ namespace CppSharp
                 }
 
                 protected DecayedType(DecayedType.Internal* native, bool isInternalImpl = false)
-                    : base((Type.Internal*) native)
+                    : base((CppSharp.Parser.AST.Type.Internal*) native)
                 {
                 }
 
@@ -1559,7 +1559,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class TemplateSpecializationType : Type, IDisposable
+            public unsafe partial class TemplateSpecializationType : CppSharp.Parser.AST.Type, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 28)]
                 public new partial struct Internal
@@ -1627,7 +1627,7 @@ namespace CppSharp
                 private static TemplateSpecializationType.Internal* __CopyValue(TemplateSpecializationType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(28);
-                    TemplateSpecializationType.Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.TemplateSpecializationType.Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return (TemplateSpecializationType.Internal*) ret;
                 }
 
@@ -1638,7 +1638,7 @@ namespace CppSharp
                 }
 
                 protected TemplateSpecializationType(TemplateSpecializationType.Internal* native, bool isInternalImpl = false)
-                    : base((Type.Internal*) native)
+                    : base((CppSharp.Parser.AST.Type.Internal*) native)
                 {
                 }
 
@@ -1661,7 +1661,7 @@ namespace CppSharp
 
                 public CppSharp.Parser.AST.TemplateArgument getArguments(uint i)
                 {
-                    var __ret = new TemplateArgument.Internal();
+                    var __ret = new CppSharp.Parser.AST.TemplateArgument.Internal();
                     Internal.getArguments_0(new IntPtr(&__ret), __Instance, i);
                     return CppSharp.Parser.AST.TemplateArgument.__CreateInstance(__ret);
                 }
@@ -1770,7 +1770,7 @@ namespace CppSharp
                 private static TemplateParameter.Internal* __CopyValue(TemplateParameter.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(16);
-                    TemplateParameter.Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.TemplateParameter.Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return (TemplateParameter.Internal*) ret;
                 }
 
@@ -1860,7 +1860,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class TemplateParameterType : Type, IDisposable
+            public unsafe partial class TemplateParameterType : CppSharp.Parser.AST.Type, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 36)]
                 public new partial struct Internal
@@ -1914,7 +1914,7 @@ namespace CppSharp
                 private static TemplateParameterType.Internal* __CopyValue(TemplateParameterType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(36);
-                    TemplateParameterType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.TemplateParameterType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (TemplateParameterType.Internal*) ret;
                 }
 
@@ -1925,7 +1925,7 @@ namespace CppSharp
                 }
 
                 protected TemplateParameterType(TemplateParameterType.Internal* native, bool isInternalImpl = false)
-                    : base((Type.Internal*) native)
+                    : base((CppSharp.Parser.AST.Type.Internal*) native)
                 {
                 }
 
@@ -1999,7 +1999,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class TemplateParameterSubstitutionType : Type, IDisposable
+            public unsafe partial class TemplateParameterSubstitutionType : CppSharp.Parser.AST.Type, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 16)]
                 public new partial struct Internal
@@ -2039,7 +2039,7 @@ namespace CppSharp
                 private static TemplateParameterSubstitutionType.Internal* __CopyValue(TemplateParameterSubstitutionType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(16);
-                    TemplateParameterSubstitutionType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.TemplateParameterSubstitutionType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (TemplateParameterSubstitutionType.Internal*) ret;
                 }
 
@@ -2050,7 +2050,7 @@ namespace CppSharp
                 }
 
                 protected TemplateParameterSubstitutionType(TemplateParameterSubstitutionType.Internal* native, bool isInternalImpl = false)
-                    : base((Type.Internal*) native)
+                    : base((CppSharp.Parser.AST.Type.Internal*) native)
                 {
                 }
 
@@ -2085,7 +2085,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class InjectedClassNameType : Type, IDisposable
+            public unsafe partial class InjectedClassNameType : CppSharp.Parser.AST.Type, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 16)]
                 public new partial struct Internal
@@ -2128,7 +2128,7 @@ namespace CppSharp
                 private static InjectedClassNameType.Internal* __CopyValue(InjectedClassNameType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(16);
-                    InjectedClassNameType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.InjectedClassNameType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (InjectedClassNameType.Internal*) ret;
                 }
 
@@ -2139,7 +2139,7 @@ namespace CppSharp
                 }
 
                 protected InjectedClassNameType(InjectedClassNameType.Internal* native, bool isInternalImpl = false)
-                    : base((Type.Internal*) native)
+                    : base((CppSharp.Parser.AST.Type.Internal*) native)
                 {
                 }
 
@@ -2187,7 +2187,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class DependentNameType : Type, IDisposable
+            public unsafe partial class DependentNameType : CppSharp.Parser.AST.Type, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 8)]
                 public new partial struct Internal
@@ -2224,7 +2224,7 @@ namespace CppSharp
                 private static DependentNameType.Internal* __CopyValue(DependentNameType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(8);
-                    DependentNameType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.DependentNameType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (DependentNameType.Internal*) ret;
                 }
 
@@ -2235,7 +2235,7 @@ namespace CppSharp
                 }
 
                 protected DependentNameType(DependentNameType.Internal* native, bool isInternalImpl = false)
-                    : base((Type.Internal*) native)
+                    : base((CppSharp.Parser.AST.Type.Internal*) native)
                 {
                 }
 
@@ -2257,7 +2257,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class PackExpansionType : Type, IDisposable
+            public unsafe partial class PackExpansionType : CppSharp.Parser.AST.Type, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 8)]
                 public new partial struct Internal
@@ -2294,7 +2294,7 @@ namespace CppSharp
                 private static PackExpansionType.Internal* __CopyValue(PackExpansionType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(8);
-                    PackExpansionType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.PackExpansionType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (PackExpansionType.Internal*) ret;
                 }
 
@@ -2305,7 +2305,7 @@ namespace CppSharp
                 }
 
                 protected PackExpansionType(PackExpansionType.Internal* native, bool isInternalImpl = false)
-                    : base((Type.Internal*) native)
+                    : base((CppSharp.Parser.AST.Type.Internal*) native)
                 {
                 }
 
@@ -2327,7 +2327,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class BuiltinType : Type, IDisposable
+            public unsafe partial class BuiltinType : CppSharp.Parser.AST.Type, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 12)]
                 public new partial struct Internal
@@ -2367,7 +2367,7 @@ namespace CppSharp
                 private static BuiltinType.Internal* __CopyValue(BuiltinType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(12);
-                    BuiltinType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.BuiltinType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (BuiltinType.Internal*) ret;
                 }
 
@@ -2378,7 +2378,7 @@ namespace CppSharp
                 }
 
                 protected BuiltinType(BuiltinType.Internal* native, bool isInternalImpl = false)
-                    : base((Type.Internal*) native)
+                    : base((CppSharp.Parser.AST.Type.Internal*) native)
                 {
                 }
 
@@ -2589,7 +2589,7 @@ namespace CppSharp
                 private static VTableLayout.Internal* __CopyValue(VTableLayout.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(12);
-                    VTableLayout.Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.VTableLayout.Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return (VTableLayout.Internal*) ret;
                 }
 
@@ -2628,7 +2628,7 @@ namespace CppSharp
 
                 public CppSharp.Parser.AST.VTableComponent getComponents(uint i)
                 {
-                    var __ret = new VTableComponent.Internal();
+                    var __ret = new CppSharp.Parser.AST.VTableComponent.Internal();
                     Internal.getComponents_0(new IntPtr(&__ret), __Instance, i);
                     return CppSharp.Parser.AST.VTableComponent.__CreateInstance(__ret);
                 }
@@ -2704,7 +2704,7 @@ namespace CppSharp
                 private static VFTableInfo.Internal* __CopyValue(VFTableInfo.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(28);
-                    VFTableInfo.Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.VFTableInfo.Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return (VFTableInfo.Internal*) ret;
                 }
 
@@ -2873,7 +2873,7 @@ namespace CppSharp
                 private static ClassLayout.Internal* __CopyValue(ClassLayout.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(48);
-                    ClassLayout.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.ClassLayout.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (ClassLayout.Internal*) ret;
                 }
 
@@ -2912,7 +2912,7 @@ namespace CppSharp
 
                 public CppSharp.Parser.AST.VFTableInfo getVFTables(uint i)
                 {
-                    var __ret = new VFTableInfo.Internal();
+                    var __ret = new CppSharp.Parser.AST.VFTableInfo.Internal();
                     Internal.getVFTables_0(new IntPtr(&__ret), __Instance, i);
                     return CppSharp.Parser.AST.VFTableInfo.__CreateInstance(__ret);
                 }
@@ -3140,7 +3140,7 @@ namespace CppSharp
                 private static Declaration.Internal* __CopyValue(Declaration.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(88);
-                    Declaration.Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.Declaration.Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return (Declaration.Internal*) ret;
                 }
 
@@ -3383,7 +3383,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class DeclarationContext : Declaration, IDisposable
+            public unsafe partial class DeclarationContext : CppSharp.Parser.AST.Declaration, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 200)]
                 public new partial struct Internal
@@ -3615,7 +3615,7 @@ namespace CppSharp
                 private static DeclarationContext.Internal* __CopyValue(DeclarationContext.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(200);
-                    DeclarationContext.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.DeclarationContext.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (DeclarationContext.Internal*) ret;
                 }
 
@@ -3626,7 +3626,7 @@ namespace CppSharp
                 }
 
                 protected DeclarationContext(DeclarationContext.Internal* native, bool isInternalImpl = false)
-                    : base((Declaration.Internal*) native)
+                    : base((CppSharp.Parser.AST.Declaration.Internal*) native)
                 {
                 }
 
@@ -3878,7 +3878,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class TypedefDecl : Declaration, IDisposable
+            public unsafe partial class TypedefDecl : CppSharp.Parser.AST.Declaration, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 96)]
                 public new partial struct Internal
@@ -3950,7 +3950,7 @@ namespace CppSharp
                 private static TypedefDecl.Internal* __CopyValue(TypedefDecl.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(96);
-                    TypedefDecl.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.TypedefDecl.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (TypedefDecl.Internal*) ret;
                 }
 
@@ -3961,7 +3961,7 @@ namespace CppSharp
                 }
 
                 protected TypedefDecl(TypedefDecl.Internal* native, bool isInternalImpl = false)
-                    : base((Declaration.Internal*) native)
+                    : base((CppSharp.Parser.AST.Declaration.Internal*) native)
                 {
                 }
 
@@ -3996,7 +3996,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class Friend : Declaration, IDisposable
+            public unsafe partial class Friend : CppSharp.Parser.AST.Declaration, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 92)]
                 public new partial struct Internal
@@ -4068,7 +4068,7 @@ namespace CppSharp
                 private static Friend.Internal* __CopyValue(Friend.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(92);
-                    Friend.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.Friend.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (Friend.Internal*) ret;
                 }
 
@@ -4079,7 +4079,7 @@ namespace CppSharp
                 }
 
                 protected Friend(Friend.Internal* native, bool isInternalImpl = false)
-                    : base((Declaration.Internal*) native)
+                    : base((CppSharp.Parser.AST.Declaration.Internal*) native)
                 {
                 }
 
@@ -4163,7 +4163,7 @@ namespace CppSharp
                 private static Statement.Internal* __CopyValue(Statement.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(20);
-                    Statement.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.Statement.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (Statement.Internal*) ret;
                 }
 
@@ -4237,7 +4237,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class Expression : Statement, IDisposable
+            public unsafe partial class Expression : CppSharp.Parser.AST.Statement, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 24)]
                 public new partial struct Internal
@@ -4277,7 +4277,7 @@ namespace CppSharp
                 private static Expression.Internal* __CopyValue(Expression.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(24);
-                    Expression.Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.Expression.Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return (Expression.Internal*) ret;
                 }
 
@@ -4288,7 +4288,7 @@ namespace CppSharp
                 }
 
                 protected Expression(Expression.Internal* native, bool isInternalImpl = false)
-                    : base((Statement.Internal*) native)
+                    : base((CppSharp.Parser.AST.Statement.Internal*) native)
                 {
                 }
 
@@ -4315,7 +4315,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class Parameter : Declaration, IDisposable
+            public unsafe partial class Parameter : CppSharp.Parser.AST.Declaration, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 108)]
                 public new partial struct Internal
@@ -4399,7 +4399,7 @@ namespace CppSharp
                 private static Parameter.Internal* __CopyValue(Parameter.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(108);
-                    Parameter.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.Parameter.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (Parameter.Internal*) ret;
                 }
 
@@ -4410,7 +4410,7 @@ namespace CppSharp
                 }
 
                 protected Parameter(Parameter.Internal* native, bool isInternalImpl = false)
-                    : base((Declaration.Internal*) native)
+                    : base((CppSharp.Parser.AST.Declaration.Internal*) native)
                 {
                 }
 
@@ -4497,7 +4497,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class Function : Declaration, IDisposable
+            public unsafe partial class Function : CppSharp.Parser.AST.Declaration, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 152)]
                 public new partial struct Internal
@@ -4636,7 +4636,7 @@ namespace CppSharp
                 private static Function.Internal* __CopyValue(Function.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(152);
-                    Function.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.Function.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (Function.Internal*) ret;
                 }
 
@@ -4647,7 +4647,7 @@ namespace CppSharp
                 }
 
                 protected Function(Function.Internal* native, bool isInternalImpl = false)
-                    : base((Declaration.Internal*) native)
+                    : base((CppSharp.Parser.AST.Declaration.Internal*) native)
                 {
                 }
 
@@ -4860,7 +4860,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class Method : Function, IDisposable
+            public unsafe partial class Method : CppSharp.Parser.AST.Function, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 180)]
                 public new partial struct Internal
@@ -4995,7 +4995,7 @@ namespace CppSharp
                 private static Method.Internal* __CopyValue(Method.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(180);
-                    Method.Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.Method.Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return (Method.Internal*) ret;
                 }
 
@@ -5006,7 +5006,7 @@ namespace CppSharp
                 }
 
                 protected Method(Method.Internal* native, bool isInternalImpl = false)
-                    : base((Function.Internal*) native)
+                    : base((CppSharp.Parser.AST.Function.Internal*) native)
                 {
                 }
 
@@ -5184,7 +5184,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class Enumeration : DeclarationContext, IDisposable
+            public unsafe partial class Enumeration : CppSharp.Parser.AST.DeclarationContext, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 224)]
                 public new partial struct Internal
@@ -5278,7 +5278,7 @@ namespace CppSharp
                     Flags = 4
                 }
 
-                public unsafe partial class Item : Declaration, IDisposable
+                public unsafe partial class Item : CppSharp.Parser.AST.Declaration, IDisposable
                 {
                     [StructLayout(LayoutKind.Explicit, Size = 108)]
                     public new partial struct Internal
@@ -5360,7 +5360,7 @@ namespace CppSharp
                     private static Item.Internal* __CopyValue(Item.Internal native)
                     {
                         var ret = Marshal.AllocHGlobal(108);
-                        Item.Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                        CppSharp.Parser.AST.Enumeration.Item.Internal.cctor_1(ret, new global::System.IntPtr(&native));
                         return (Item.Internal*) ret;
                     }
 
@@ -5371,7 +5371,7 @@ namespace CppSharp
                     }
 
                     protected Item(Item.Internal* native, bool isInternalImpl = false)
-                        : base((Declaration.Internal*) native)
+                        : base((CppSharp.Parser.AST.Declaration.Internal*) native)
                     {
                     }
 
@@ -5438,7 +5438,7 @@ namespace CppSharp
                 private static Enumeration.Internal* __CopyValue(Enumeration.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(224);
-                    Enumeration.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.Enumeration.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (Enumeration.Internal*) ret;
                 }
 
@@ -5449,7 +5449,7 @@ namespace CppSharp
                 }
 
                 protected Enumeration(Enumeration.Internal* native, bool isInternalImpl = false)
-                    : base((DeclarationContext.Internal*) native)
+                    : base((CppSharp.Parser.AST.DeclarationContext.Internal*) native)
                 {
                 }
 
@@ -5472,7 +5472,7 @@ namespace CppSharp
 
                 public CppSharp.Parser.AST.Enumeration.Item getItems(uint i)
                 {
-                    var __ret = new Item.Internal();
+                    var __ret = new CppSharp.Parser.AST.Enumeration.Item.Internal();
                     Internal.getItems_0(new IntPtr(&__ret), __Instance, i);
                     return CppSharp.Parser.AST.Enumeration.Item.__CreateInstance(__ret);
                 }
@@ -5537,7 +5537,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class Variable : Declaration, IDisposable
+            public unsafe partial class Variable : CppSharp.Parser.AST.Declaration, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 108)]
                 public new partial struct Internal
@@ -5619,7 +5619,7 @@ namespace CppSharp
                 private static Variable.Internal* __CopyValue(Variable.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(108);
-                    Variable.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.Variable.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (Variable.Internal*) ret;
                 }
 
@@ -5630,7 +5630,7 @@ namespace CppSharp
                 }
 
                 protected Variable(Variable.Internal* native, bool isInternalImpl = false)
-                    : base((Declaration.Internal*) native)
+                    : base((CppSharp.Parser.AST.Declaration.Internal*) native)
                 {
                 }
 
@@ -5816,7 +5816,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class Field : Declaration, IDisposable
+            public unsafe partial class Field : CppSharp.Parser.AST.Declaration, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 112)]
                 public new partial struct Internal
@@ -5900,7 +5900,7 @@ namespace CppSharp
                 private static Field.Internal* __CopyValue(Field.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(112);
-                    Field.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.Field.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (Field.Internal*) ret;
                 }
 
@@ -5911,7 +5911,7 @@ namespace CppSharp
                 }
 
                 protected Field(Field.Internal* native, bool isInternalImpl = false)
-                    : base((Declaration.Internal*) native)
+                    : base((CppSharp.Parser.AST.Declaration.Internal*) native)
                 {
                 }
 
@@ -5998,7 +5998,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class AccessSpecifierDecl : Declaration, IDisposable
+            public unsafe partial class AccessSpecifierDecl : CppSharp.Parser.AST.Declaration, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 88)]
                 public new partial struct Internal
@@ -6067,7 +6067,7 @@ namespace CppSharp
                 private static AccessSpecifierDecl.Internal* __CopyValue(AccessSpecifierDecl.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(88);
-                    AccessSpecifierDecl.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.AccessSpecifierDecl.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (AccessSpecifierDecl.Internal*) ret;
                 }
 
@@ -6078,7 +6078,7 @@ namespace CppSharp
                 }
 
                 protected AccessSpecifierDecl(AccessSpecifierDecl.Internal* native, bool isInternalImpl = false)
-                    : base((Declaration.Internal*) native)
+                    : base((CppSharp.Parser.AST.Declaration.Internal*) native)
                 {
                 }
 
@@ -6100,7 +6100,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class Class : DeclarationContext, IDisposable
+            public unsafe partial class Class : CppSharp.Parser.AST.DeclarationContext, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 264)]
                 public new partial struct Internal
@@ -6282,7 +6282,7 @@ namespace CppSharp
                 private static Class.Internal* __CopyValue(Class.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(264);
-                    Class.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.Class.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (Class.Internal*) ret;
                 }
 
@@ -6293,7 +6293,7 @@ namespace CppSharp
                 }
 
                 protected Class(Class.Internal* native, bool isInternalImpl = false)
-                    : base((DeclarationContext.Internal*) native)
+                    : base((CppSharp.Parser.AST.DeclarationContext.Internal*) native)
                 {
                 }
 
@@ -6553,7 +6553,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class Template : Declaration, IDisposable
+            public unsafe partial class Template : CppSharp.Parser.AST.Declaration, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 104)]
                 public new partial struct Internal
@@ -6650,7 +6650,7 @@ namespace CppSharp
                 private static Template.Internal* __CopyValue(Template.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(104);
-                    Template.Internal.cctor_3(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.Template.Internal.cctor_3(ret, new global::System.IntPtr(&native));
                     return (Template.Internal*) ret;
                 }
 
@@ -6661,7 +6661,7 @@ namespace CppSharp
                 }
 
                 protected Template(Template.Internal* native, bool isInternalImpl = false)
-                    : base((Declaration.Internal*) native)
+                    : base((CppSharp.Parser.AST.Declaration.Internal*) native)
                 {
                 }
 
@@ -6693,7 +6693,7 @@ namespace CppSharp
 
                 public CppSharp.Parser.AST.TemplateParameter getParameters(uint i)
                 {
-                    var __ret = new TemplateParameter.Internal();
+                    var __ret = new CppSharp.Parser.AST.TemplateParameter.Internal();
                     Internal.getParameters_0(new IntPtr(&__ret), __Instance, i);
                     return CppSharp.Parser.AST.TemplateParameter.__CreateInstance(__ret);
                 }
@@ -6732,7 +6732,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class ClassTemplate : Template, IDisposable
+            public unsafe partial class ClassTemplate : CppSharp.Parser.AST.Template, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 116)]
                 public new partial struct Internal
@@ -6824,7 +6824,7 @@ namespace CppSharp
                 private static ClassTemplate.Internal* __CopyValue(ClassTemplate.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(116);
-                    ClassTemplate.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.ClassTemplate.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (ClassTemplate.Internal*) ret;
                 }
 
@@ -6835,7 +6835,7 @@ namespace CppSharp
                 }
 
                 protected ClassTemplate(ClassTemplate.Internal* native, bool isInternalImpl = false)
-                    : base((Template.Internal*) native)
+                    : base((CppSharp.Parser.AST.Template.Internal*) native)
                 {
                 }
 
@@ -6884,7 +6884,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class ClassTemplateSpecialization : Class, IDisposable
+            public unsafe partial class ClassTemplateSpecialization : CppSharp.Parser.AST.Class, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 284)]
                 public new partial struct Internal
@@ -7012,7 +7012,7 @@ namespace CppSharp
                 private static ClassTemplateSpecialization.Internal* __CopyValue(ClassTemplateSpecialization.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(284);
-                    ClassTemplateSpecialization.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.ClassTemplateSpecialization.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (ClassTemplateSpecialization.Internal*) ret;
                 }
 
@@ -7023,7 +7023,7 @@ namespace CppSharp
                 }
 
                 protected ClassTemplateSpecialization(ClassTemplateSpecialization.Internal* native, bool isInternalImpl = false)
-                    : base((Class.Internal*) native)
+                    : base((CppSharp.Parser.AST.Class.Internal*) native)
                 {
                 }
 
@@ -7046,7 +7046,7 @@ namespace CppSharp
 
                 public CppSharp.Parser.AST.TemplateArgument getArguments(uint i)
                 {
-                    var __ret = new TemplateArgument.Internal();
+                    var __ret = new CppSharp.Parser.AST.TemplateArgument.Internal();
                     Internal.getArguments_0(new IntPtr(&__ret), __Instance, i);
                     return CppSharp.Parser.AST.TemplateArgument.__CreateInstance(__ret);
                 }
@@ -7098,7 +7098,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class ClassTemplatePartialSpecialization : ClassTemplateSpecialization, IDisposable
+            public unsafe partial class ClassTemplatePartialSpecialization : CppSharp.Parser.AST.ClassTemplateSpecialization, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 284)]
                 public new partial struct Internal
@@ -7206,7 +7206,7 @@ namespace CppSharp
                 private static ClassTemplatePartialSpecialization.Internal* __CopyValue(ClassTemplatePartialSpecialization.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(284);
-                    ClassTemplatePartialSpecialization.Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.ClassTemplatePartialSpecialization.Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return (ClassTemplatePartialSpecialization.Internal*) ret;
                 }
 
@@ -7217,7 +7217,7 @@ namespace CppSharp
                 }
 
                 protected ClassTemplatePartialSpecialization(ClassTemplatePartialSpecialization.Internal* native, bool isInternalImpl = false)
-                    : base((ClassTemplateSpecialization.Internal*) native)
+                    : base((CppSharp.Parser.AST.ClassTemplateSpecialization.Internal*) native)
                 {
                 }
 
@@ -7239,7 +7239,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class FunctionTemplate : Template, IDisposable
+            public unsafe partial class FunctionTemplate : CppSharp.Parser.AST.Template, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 116)]
                 public new partial struct Internal
@@ -7331,7 +7331,7 @@ namespace CppSharp
                 private static FunctionTemplate.Internal* __CopyValue(FunctionTemplate.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(116);
-                    FunctionTemplate.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.FunctionTemplate.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (FunctionTemplate.Internal*) ret;
                 }
 
@@ -7342,7 +7342,7 @@ namespace CppSharp
                 }
 
                 protected FunctionTemplate(FunctionTemplate.Internal* native, bool isInternalImpl = false)
-                    : base((Template.Internal*) native)
+                    : base((CppSharp.Parser.AST.Template.Internal*) native)
                 {
                 }
 
@@ -7458,7 +7458,7 @@ namespace CppSharp
                 private static FunctionTemplateSpecialization.Internal* __CopyValue(FunctionTemplateSpecialization.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(24);
-                    FunctionTemplateSpecialization.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.FunctionTemplateSpecialization.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (FunctionTemplateSpecialization.Internal*) ret;
                 }
 
@@ -7497,7 +7497,7 @@ namespace CppSharp
 
                 public CppSharp.Parser.AST.TemplateArgument getArguments(uint i)
                 {
-                    var __ret = new TemplateArgument.Internal();
+                    var __ret = new CppSharp.Parser.AST.TemplateArgument.Internal();
                     Internal.getArguments_0(new IntPtr(&__ret), __Instance, i);
                     return CppSharp.Parser.AST.TemplateArgument.__CreateInstance(__ret);
                 }
@@ -7562,7 +7562,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class Namespace : DeclarationContext, IDisposable
+            public unsafe partial class Namespace : CppSharp.Parser.AST.DeclarationContext, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 200)]
                 public new partial struct Internal
@@ -7637,7 +7637,7 @@ namespace CppSharp
                 private static Namespace.Internal* __CopyValue(Namespace.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(200);
-                    Namespace.Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.Namespace.Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return (Namespace.Internal*) ret;
                 }
 
@@ -7648,7 +7648,7 @@ namespace CppSharp
                 }
 
                 protected Namespace(Namespace.Internal* native, bool isInternalImpl = false)
-                    : base((DeclarationContext.Internal*) native)
+                    : base((CppSharp.Parser.AST.DeclarationContext.Internal*) native)
                 {
                 }
 
@@ -7683,7 +7683,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class PreprocessedEntity : Declaration, IDisposable
+            public unsafe partial class PreprocessedEntity : CppSharp.Parser.AST.Declaration, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 92)]
                 public new partial struct Internal
@@ -7755,7 +7755,7 @@ namespace CppSharp
                 private static PreprocessedEntity.Internal* __CopyValue(PreprocessedEntity.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(92);
-                    PreprocessedEntity.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.PreprocessedEntity.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (PreprocessedEntity.Internal*) ret;
                 }
 
@@ -7766,7 +7766,7 @@ namespace CppSharp
                 }
 
                 protected PreprocessedEntity(PreprocessedEntity.Internal* native, bool isInternalImpl = false)
-                    : base((Declaration.Internal*) native)
+                    : base((CppSharp.Parser.AST.Declaration.Internal*) native)
                 {
                 }
 
@@ -7801,7 +7801,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class MacroDefinition : PreprocessedEntity, IDisposable
+            public unsafe partial class MacroDefinition : CppSharp.Parser.AST.PreprocessedEntity, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 104)]
                 public new partial struct Internal
@@ -7883,7 +7883,7 @@ namespace CppSharp
                 private static MacroDefinition.Internal* __CopyValue(MacroDefinition.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(104);
-                    MacroDefinition.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.MacroDefinition.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (MacroDefinition.Internal*) ret;
                 }
 
@@ -7894,7 +7894,7 @@ namespace CppSharp
                 }
 
                 protected MacroDefinition(MacroDefinition.Internal* native, bool isInternalImpl = false)
-                    : base((PreprocessedEntity.Internal*) native)
+                    : base((CppSharp.Parser.AST.PreprocessedEntity.Internal*) native)
                 {
                 }
 
@@ -7933,7 +7933,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class MacroExpansion : PreprocessedEntity, IDisposable
+            public unsafe partial class MacroExpansion : CppSharp.Parser.AST.PreprocessedEntity, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 108)]
                 public new partial struct Internal
@@ -8018,7 +8018,7 @@ namespace CppSharp
                 private static MacroExpansion.Internal* __CopyValue(MacroExpansion.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(108);
-                    MacroExpansion.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.MacroExpansion.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (MacroExpansion.Internal*) ret;
                 }
 
@@ -8029,7 +8029,7 @@ namespace CppSharp
                 }
 
                 protected MacroExpansion(MacroExpansion.Internal* native, bool isInternalImpl = false)
-                    : base((PreprocessedEntity.Internal*) native)
+                    : base((CppSharp.Parser.AST.PreprocessedEntity.Internal*) native)
                 {
                 }
 
@@ -8081,7 +8081,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class TranslationUnit : Namespace, IDisposable
+            public unsafe partial class TranslationUnit : CppSharp.Parser.AST.Namespace, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 228)]
                 public new partial struct Internal
@@ -8189,7 +8189,7 @@ namespace CppSharp
                 private static TranslationUnit.Internal* __CopyValue(TranslationUnit.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(228);
-                    TranslationUnit.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.TranslationUnit.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (TranslationUnit.Internal*) ret;
                 }
 
@@ -8200,7 +8200,7 @@ namespace CppSharp
                 }
 
                 protected TranslationUnit(TranslationUnit.Internal* native, bool isInternalImpl = false)
-                    : base((Namespace.Internal*) native)
+                    : base((CppSharp.Parser.AST.Namespace.Internal*) native)
                 {
                 }
 
@@ -8370,7 +8370,7 @@ namespace CppSharp
                 private static NativeLibrary.Internal* __CopyValue(NativeLibrary.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(40);
-                    NativeLibrary.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.NativeLibrary.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (NativeLibrary.Internal*) ret;
                 }
 
@@ -8552,7 +8552,7 @@ namespace CppSharp
                 private static ASTContext.Internal* __CopyValue(ASTContext.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(12);
-                    ASTContext.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.ASTContext.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (ASTContext.Internal*) ret;
                 }
 
@@ -8704,7 +8704,7 @@ namespace CppSharp
                 }
             }
 
-            public unsafe partial class FullComment : Comment, IDisposable
+            public unsafe partial class FullComment : CppSharp.Parser.AST.Comment, IDisposable
             {
                 [StructLayout(LayoutKind.Explicit, Size = 4)]
                 public new partial struct Internal
@@ -8749,7 +8749,7 @@ namespace CppSharp
                 }
 
                 protected FullComment(FullComment.Internal* native, bool isInternalImpl = false)
-                    : base((Comment.Internal*) native)
+                    : base((CppSharp.Parser.AST.Comment.Internal*) native)
                 {
                 }
 
@@ -8835,7 +8835,7 @@ namespace CppSharp
                 private static RawComment.Internal* __CopyValue(RawComment.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(32);
-                    RawComment.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.RawComment.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (RawComment.Internal*) ret;
                 }
 

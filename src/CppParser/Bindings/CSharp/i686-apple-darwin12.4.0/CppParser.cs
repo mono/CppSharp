@@ -247,7 +247,7 @@ namespace CppSharp
             private static ParserOptions.Internal* __CopyValue(ParserOptions.Internal native)
             {
                 var ret = Marshal.AllocHGlobal(116);
-                ParserOptions.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                CppSharp.Parser.ParserOptions.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                 return (ParserOptions.Internal*) ret;
             }
 
@@ -658,7 +658,7 @@ namespace CppSharp
             private static ParserDiagnostic.Internal* __CopyValue(ParserDiagnostic.Internal native)
             {
                 var ret = Marshal.AllocHGlobal(36);
-                ParserDiagnostic.Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                CppSharp.Parser.ParserDiagnostic.Internal.cctor_1(ret, new global::System.IntPtr(&native));
                 return (ParserDiagnostic.Internal*) ret;
             }
 
@@ -839,7 +839,7 @@ namespace CppSharp
             private static ParserResult.Internal* __CopyValue(ParserResult.Internal native)
             {
                 var ret = Marshal.AllocHGlobal(28);
-                ParserResult.Internal.cctor_1(ret, new global::System.IntPtr(&native));
+                CppSharp.Parser.ParserResult.Internal.cctor_1(ret, new global::System.IntPtr(&native));
                 return (ParserResult.Internal*) ret;
             }
 
@@ -878,7 +878,7 @@ namespace CppSharp
 
             public CppSharp.Parser.ParserDiagnostic getDiagnostics(uint i)
             {
-                var __ret = new ParserDiagnostic.Internal();
+                var __ret = new CppSharp.Parser.ParserDiagnostic.Internal();
                 Internal.getDiagnostics_0(new IntPtr(&__ret), __Instance, i);
                 return CppSharp.Parser.ParserDiagnostic.__CreateInstance(__ret);
             }
