@@ -474,6 +474,7 @@ public class BasicTests : GeneratorTestFixture
         HasFriend h1 = 5;
         HasFriend h2 = 10;
         Assert.AreEqual(15, (h1 + h2).M);
+        Assert.AreEqual(-5, (h1 - h2).M);
     }
 
     [Test]

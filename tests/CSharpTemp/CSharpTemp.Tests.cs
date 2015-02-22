@@ -206,14 +206,4 @@ public class CSharpTempTests : GeneratorTestFixture
     {
         QMap.Iterator test_iter;
     }
-
-    [Test]
-    public void TestMultipleNonMemberFriends()
-    {
-        var s1 = new QSize();
-        var s2 = new QSize();
-
-        var sum = s1 + s2;
-        var sub = s1 - s2;
-    }
 }
