@@ -22,7 +22,7 @@ Git repository urls found here: [http://llvm.org/docs/GettingStarted.html#git-mi
 
 ## Compiling on Windows/Visual Studio
 
-### Compiling LLVM on Windows/Visual Studio
+### Compiling LLVM on Windows/Visual Studio (32-bit binaries)
 
 ```shell
 cd <CppSharp>\deps\llvm\build
@@ -30,6 +30,16 @@ cd <CppSharp>\deps\llvm\build
 cmake -G "Visual Studio 12" -DCLANG_BUILD_EXAMPLES=false -DCLANG_INCLUDE_DOCS=false -DCLANG_INCLUDE_TESTS=false -DCLANG_INCLUDE_DOCS=false -DCLANG_BUILD_EXAMPLES=false -DLLVM_TARGETS_TO_BUILD="X86" -DLLVM_INCLUDE_EXAMPLES=false -DLLVM_INCLUDE_DOCS=false -DLLVM_INCLUDE_TESTS=false ..
 
 msbuild LLVM.sln /p:Configuration=RelWithDebInfo;Platform=Win32 /m
+```
+
+OR, if you need 64-bit binaries:
+
+```shell
+cd <CppSharp>\deps\llvm\build
+
+cmake -G "Visual Studio 12 Win64" -DCLANG_BUILD_EXAMPLES=false -DCLANG_INCLUDE_DOCS=false -DCLANG_INCLUDE_TESTS=false -DCLANG_INCLUDE_DOCS=false -DCLANG_BUILD_EXAMPLES=false -DLLVM_TARGETS_TO_BUILD="X86" -DLLVM_INCLUDE_EXAMPLES=false -DLLVM_INCLUDE_DOCS=false -DLLVM_INCLUDE_TESTS=false ..
+
+msbuild LLVM.sln /p:Configuration=RelWithDebInfo;Platform=x64 /m
 ```
 
 Last revisions known to work:
