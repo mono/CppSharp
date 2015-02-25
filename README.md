@@ -1,5 +1,9 @@
 CppSharp is a collection of libraries for working with C++ code from .NET.
 
+# ANNOUNCEMENT
+
+We'll be participating in Google Summer of Code 2015 as part of the Mono organization. If you're interested in contributing to the project as part of the program then get in touch!
+
 ### Generator
 
 Generates .NET bindings that wrap C/C++ code allowing interoperability with
