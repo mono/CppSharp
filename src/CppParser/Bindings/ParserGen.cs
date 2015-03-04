@@ -210,7 +210,13 @@ namespace CppSharp
                 ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "i686-apple-darwin12.4.0",
                     CppAbi.Itanium));
                 Console.WriteLine();
+
+                Console.WriteLine("Generating the C# parser bindings for OSX...");
+                ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "x86_64-apple-darwin12.4.0",
+                    CppAbi.Itanium));
+                Console.WriteLine();
             }
+
 
             if (Directory.Exists(LINUX_INCLUDE_BASE_DIR))
             {
