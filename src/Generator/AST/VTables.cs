@@ -12,11 +12,13 @@ namespace CppSharp.AST
             {
             case CppAbi.Microsoft:
                 return GatherVTableMethodsMS(@class);
-            default:
+            case CppAbi.Itanium:
                 return GatherVTableMethodsItanium(@class);
             }
 
-            throw new NotSupportedException();
+            throw new NotSupportedException(
+                string.Format("VTable format for {0} is not supported", @class.Layout.ABI.ToString().Split('.').Last())
+            );
         }
 
         private static List<VTableComponent> GatherVTableMethodEntries(VTableLayout layout)
