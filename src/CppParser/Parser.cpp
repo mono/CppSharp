@@ -2412,7 +2412,7 @@ Friend* Parser::WalkFriend(clang::FriendDecl *FD)
 
     // Work around clangIndex's lack of USR handling for friends and pass the
     // pointed to friend declaration instead.
-    auto USR = GetDeclUSR(FriendDecl ? (Decl*)FriendDecl : FD);
+    auto USR = GetDeclUSR(FriendDecl ? ((Decl*)FriendDecl) : FD);
     if (auto F = NS->FindFriend(USR))
         return F;
 
