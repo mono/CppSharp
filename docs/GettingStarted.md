@@ -83,6 +83,8 @@ run the upgrade process after generation.
     - 32-bit builds: `config=release_x32 make`
     - 64-bit builds: `config=release_x64 make`
 
+The version you compile needs to match the version of the Mono VM installed on your system which you can find by running `mono --version`. The reason for this is because a 32-bit VM will only be able to load 32-bit shared libraries and vice-versa for 64-bits.
+
 ## Compiling on Linux (experimental)
 
 The Linux support is not complete, and these directions are included for developing CppSharp developers.
