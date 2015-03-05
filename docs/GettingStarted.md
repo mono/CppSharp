@@ -116,13 +116,7 @@ We depend on a somewhat recent version of Mono (.NET 4.5). Ubuntu 14.04 contains
 sudo apt-get install mono-devel
 ```
 
-If you're using a pre-14.04 Ubuntu-based distribution you can install an up-to-date version from: https://launchpad.net/~directhex/+archive/monoxide.
-
-```shell
-sudo add-apt-repository ppa:directhex/monoxide
-sudo apt-get update
-sudo apt-get install mono-devel
-```
+If you are using another distribution then please look into the [download page](http://www.mono-project.com/download/#download-lin) on the Mono website.
 
 Generate the makefiles, and build CppSharp:
 
