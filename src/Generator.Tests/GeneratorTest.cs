@@ -2,6 +2,7 @@
 using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Runtime.InteropServices;
 using CppSharp.AST;
 using CppSharp.Generators;
 using NUnit.Framework;
