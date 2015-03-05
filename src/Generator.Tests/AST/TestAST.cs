@@ -9,8 +9,6 @@ namespace CppSharp.Generator.Tests.AST
     [TestFixture]
     public class TestAST : ASTTestFixture
     {
-        private PassBuilder<TranslationUnitPass> passBuilder;
-
         [TestFixtureSetUp]
         public void Init()
         {
@@ -20,7 +18,6 @@ namespace CppSharp.Generator.Tests.AST
         public void Setup()
         {
             ParseLibrary("AST.h", "ASTExtensions.h");
-            passBuilder = new PassBuilder<TranslationUnitPass>(Driver);
         }
 
         [Test]

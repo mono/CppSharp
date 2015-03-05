@@ -619,7 +619,7 @@ namespace CppSharp
             if (decl == null)
                 return null;
 
-            if (decl.OriginalPtr == null)
+            if (decl.OriginalPtr == IntPtr.Zero)
                 throw new NotSupportedException("Original pointer must not be null");
 
             var originalPtr = decl.OriginalPtr;
