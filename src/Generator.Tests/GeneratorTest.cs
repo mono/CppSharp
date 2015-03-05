@@ -49,6 +49,10 @@ namespace CppSharp.Utils
                 Path.GetFullPath(Path.Combine(path, "../../deps/llvm/tools/clang/lib/Headers"))
             };
 
+            if (IsMacOS) {
+                options.addArguments ("-stdlib=libc++");
+            }
+
             foreach (var header in headersPaths)
                 options.addSystemIncludeDirs(header);
 
@@ -104,6 +108,28 @@ namespace CppSharp.Utils
             }
 
             throw new Exception("Could not find tests output directory");
+        }
+
+        [DllImport ("libc")]
+        static extern int uname (IntPtr buf);
+
+        public static bool IsMacOS {
+            get {
+                if (Environment.OSVersion.Platform != PlatformID.Unix)
+                    return false;
+
+                IntPtr buf = Marshal.AllocHGlobal (8192);
+                if (uname (buf) == 0) {
+                    string os = Marshal.PtrToStringAnsi (buf);
+                    switch (os) {
+                    case "Darwin":
+                        return true;
+                    }
+                }
+                Marshal.FreeHGlobal (buf);
+
+                return false;
+            }
         }
         #endregion
     }
