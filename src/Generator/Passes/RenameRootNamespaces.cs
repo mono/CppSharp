@@ -8,12 +8,10 @@ namespace CppSharp.Passes
     // names with fully qualified namespace prefixes.
     public class RenameRootNamespacesPass : TranslationUnitPass
     {
-
         public override bool VisitTranslationUnit(TranslationUnit unit)
         {
             if (!base.VisitTranslationUnit(unit))
                 return false;
-
 
             var fileName = unit.TranslationUnit.FileName;
             if (Driver.RootNamespaceRenames.ContainsKey(fileName))
@@ -32,6 +30,5 @@ namespace CppSharp.Passes
             }
             return true;
         }
-
     }
 }
