@@ -127,6 +127,7 @@ namespace CppSharp.AST
             OriginalFunction = function.OriginalFunction;
             Mangled = function.Mangled;
             Index = function.Index;
+            Signature = function.Signature;
             if (function.SpecializationInfo != null)
             {
                 SpecializationInfo = new FunctionTemplateSpecialization(function.SpecializationInfo);
