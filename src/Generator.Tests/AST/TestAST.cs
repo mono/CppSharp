@@ -239,5 +239,13 @@ namespace CppSharp.Generator.Tests.AST
         {
             Assert.AreEqual(63, AstContext.FindClass("HiddenInNamespace").First().LineNumber);
         }
+
+        [Test]
+        public void TestSignature()
+        {
+            Assert.AreEqual("void testSignature()", AstContext.FindFunction("testSignature").Single().Signature);
+            Assert.AreEqual("void testImpl()", AstContext.FindFunction("testImpl").Single().Signature);
+            Assert.AreEqual("void testConstSignature() const", AstContext.FindClass("HasConstFunction").Single().FindMethod("testConstSignature").Signature);
+        }
     }
 }
