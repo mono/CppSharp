@@ -2218,7 +2218,10 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, Function* F,
         }
     }
 
-    clang::SourceRange Range(FD->getLocStart(), ParamEndLoc);
+    // for some weird reason 'kw_const' doesn't work; Clang considers the 'const' a 'raw_identifier'
+    const clang::SourceLocation& EndLoc = Lexer::findLocationAfterToken(
+        ParamEndLoc, tok::TokenKind::raw_identifier, C->getSourceManager(), C->getLangOpts(), true);
+    clang::SourceRange Range(FD->getLocStart(), EndLoc.isValid() ? EndLoc.getLocWithOffset(/* ignore ; */ -1) : ParamEndLoc);
     if (ResultLoc.isValid())
         Range.setBegin(ResultLoc);
 

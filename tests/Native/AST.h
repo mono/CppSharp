@@ -64,3 +64,15 @@ namespace HidesClass
     {
     };
 }
+
+void testSignature();
+
+class HasConstFunction
+{
+public:
+    void testConstSignature() const;
+};
+
+void testImpl()
+{
+}
