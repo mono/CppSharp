@@ -33,4 +33,7 @@ src/generator/generator
 /build/vs2012
 /build/vs2013
 /build/gmake
-/deps/llvm
+!/build/premake5.exe
+!/build/NuGet.exe
+!/build/packages.config
+/deps/

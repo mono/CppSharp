@@ -4,6 +4,7 @@
 
 config = {}
 
+dofile "DownloadDeps.lua"
 dofile "Helpers.lua"
 dofile "Tests.lua"
 dofile "LLVM.lua"
