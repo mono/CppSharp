@@ -444,6 +444,23 @@ public class BasicTests : GeneratorTestFixture
     }
 
     [Test]
+    public void TestPassAnonymousDelegate()
+    {
+        var testDelegates = new TestDelegates();
+        int value = testDelegates.MarshalAnonymousDelegate(i => i * 2);
+        Assert.AreEqual(2, value);
+    }
+
+    [Test]
+    public void TestGetAnonymousDelegate()
+    {
+        var testDelegates = new TestDelegates();
+        var @delegate = testDelegates.MarshalAnonymousDelegate4();
+        int value = @delegate.Invoke(1);
+        Assert.AreEqual(2, value);
+    }
+
+    [Test]
     public void TestFixedArrays()
     {
         var foo = new Foo();

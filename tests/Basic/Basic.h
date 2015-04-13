@@ -308,6 +308,11 @@ struct DLL_API TestDelegates
     int CDecl(DelegateCDecl del) { return del(1); }
     void MarshalUnattributedDelegate(DelegateInGlobalNamespace del);
 
+    int MarshalAnonymousDelegate(int (*del)(int n));
+    void MarshalAnonymousDelegate2(int (*del)(int n));
+    void MarshalAnonymousDelegate3(float (*del)(float n));
+    int (*MarshalAnonymousDelegate4())(int n);
+
     DelegateInClass A;
     DelegateInGlobalNamespace B;
     // As long as we can't marshal them make sure they're ignored

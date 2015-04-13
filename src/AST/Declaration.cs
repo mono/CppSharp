@@ -360,6 +360,7 @@ namespace CppSharp.AST
     {
         public Type Type { get { return QualifiedType.Type; } }
         public QualifiedType QualifiedType { get; set; }
+        public bool IsSynthetized { get; set; }
 
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {

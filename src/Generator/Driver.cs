@@ -253,6 +253,7 @@ namespace CppSharp
             TranslationUnitPasses.AddPass(new CheckStaticClass());
             TranslationUnitPasses.AddPass(new MoveOperatorToClassPass());
             TranslationUnitPasses.AddPass(new MoveFunctionToClassPass());
+            TranslationUnitPasses.AddPass(new GenerateAnonymousDelegatesPass());
 
             if (Options.GenerateConversionOperators)
                 TranslationUnitPasses.AddPass(new ConstructorToConversionOperatorPass());
