@@ -346,6 +346,10 @@ int (*TestDelegates::MarshalAnonymousDelegate4())(int n)
     return f;
 }
 
+void TestDelegates::MarshalDelegateInAnotherUnit(DelegateInAnotherUnit del)
+{
+}
+
 std::string HasStdString::testStdString(std::string s)
 {
     return s + "_test";

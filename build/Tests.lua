@@ -12,11 +12,11 @@ function SetupExampleProject()
   SetupParser()
 end
 
-function SetupTestProject(name, file, lib)
+function SetupTestProject(name, extraFiles)
   SetupTestGeneratorProject(name)
   SetupTestNativeProject(name)  
-  SetupTestProjectsCSharp(name)
-  SetupTestProjectsCLI(name)
+  SetupTestProjectsCSharp(name, nil, extraFiles)
+  SetupTestProjectsCLI(name, extraFiles)
 end
 
 function SetupTestCSharp(name)
@@ -107,7 +107,7 @@ function LinkNUnit()
   }
 end
 
-function SetupTestProjectsCSharp(name, depends)
+function SetupTestProjectsCSharp(name, depends, extraFiles)
   project(name .. ".CSharp")
     SetupManagedTestProject()
 
@@ -118,6 +118,11 @@ function SetupTestProjectsCSharp(name, depends)
     {
       path.join(gendir, name, name .. ".cs"),
     }
+    if extraFiles ~= nil then
+      for _, file in pairs(extraFiles) do
+        files { path.join(gendir, name, file .. ".cs") }
+      end
+    end
 
     linktable = { "CppSharp.Runtime" }
 
@@ -138,7 +143,7 @@ function SetupTestProjectsCSharp(name, depends)
     links { "CppSharp.Runtime" }
 end
 
-function SetupTestProjectsCLI(name)
+function SetupTestProjectsCLI(name, extraFiles)
   if not os.is_windows() then
     return
   end
@@ -156,8 +161,14 @@ function SetupTestProjectsCLI(name)
     files
     {
       path.join(gendir, name, name .. ".cpp"),
-      path.join(gendir, name, name .. ".h"),
+      path.join(gendir, name, name .. ".h")
     }
+    if extraFiles ~= nil then
+      for _, file in pairs(extraFiles) do
+        files { path.join(gendir, name, file .. ".cpp") }
+        files { path.join(gendir, name, file .. ".h") }
+      end
+    end
 
     includedirs { path.join(testsdir, name), incdir }
     links { name .. ".Native" }    

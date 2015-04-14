@@ -1,4 +1,5 @@
 #include "../Tests.h"
+#include "AnotherUnit.h"
 
 #ifdef _WIN32
 #include <vadefs.h>
@@ -312,6 +313,8 @@ struct DLL_API TestDelegates
     void MarshalAnonymousDelegate2(int (*del)(int n));
     void MarshalAnonymousDelegate3(float (*del)(float n));
     int (*MarshalAnonymousDelegate4())(int n);
+
+    void MarshalDelegateInAnotherUnit(DelegateInAnotherUnit del);
 
     DelegateInClass A;
     DelegateInGlobalNamespace B;
