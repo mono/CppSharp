@@ -14,19 +14,29 @@ namespace CppSharp.Passes
     /// </summary>
     public class GenerateAnonymousDelegatesPass : TranslationUnitPass
     {
-        /// <summary>
-        /// The generated typedefs. The tree can't be modified while iterating over it, so we collect all the typedefs
-        /// and add them at the end.
-        /// </summary>
-        private readonly Dictionary<DeclarationContext, List<TypedefDecl>> allTypedefs =
-            new Dictionary<DeclarationContext, List<TypedefDecl>>();
-
-        public override bool VisitTranslationUnit(TranslationUnit unit)
+        private struct Typedef
         {
-            bool result = base.VisitTranslationUnit(unit);
+            public DeclarationContext Context;
+            public TypedefDecl Declaration;
+        }
+
+        /// <summary>
+        /// The generated typedefs keyed by the qualified declaration context name. The tree can't be modified while
+        /// iterating over it, so we collect all the typedefs and add them at the end.
+        /// </summary>
+        private readonly Dictionary<string, List<Typedef>> allTypedefs = new Dictionary<string, List<Typedef>>();
+
+        public override bool VisitLibrary(ASTContext context)
+        {
+            bool result = base.VisitLibrary(context);
 
             foreach (var typedef in allTypedefs)
-                typedef.Key.Declarations.AddRange(typedef.Value);
+            {
+                foreach (var foo in typedef.Value)
+                {
+                    foo.Context.Declarations.Add(foo.Declaration);
+                }
+            }
             allTypedefs.Clear();
 
             return result;
@@ -61,11 +71,11 @@ namespace CppSharp.Passes
             if (functionType == null)
                 return type;
 
-            List<TypedefDecl> typedefs;
-            if (!allTypedefs.TryGetValue(@namespace, out typedefs))
+            List<Typedef> typedefs;
+            if (!allTypedefs.TryGetValue(@namespace.QualifiedName, out typedefs))
             {
-                typedefs = new List<TypedefDecl>();
-                allTypedefs.Add(@namespace, typedefs);
+                typedefs = new List<Typedef>();
+                allTypedefs.Add(@namespace.QualifiedName, typedefs);
             }
 
             var typedef = FindMatchingTypedef(typedefs, functionType);
@@ -84,7 +94,11 @@ namespace CppSharp.Passes
                     QualifiedType = type,
                     IsSynthetized = true
                 };
-                typedefs.Add(typedef);
+                typedefs.Add(new Typedef
+                {
+                    Context = @namespace,
+                    Declaration = typedef
+                });
             }
 
             var typedefType = new TypedefType
@@ -100,13 +114,13 @@ namespace CppSharp.Passes
         /// <param name="typedefs">The typedef list to search.</param>
         /// <param name="functionType">The function to match.</param>
         /// <returns>The matching typedef, or null if not found.</returns>
-        private TypedefDecl FindMatchingTypedef(List<TypedefDecl> typedefs, FunctionType functionType)
+        private TypedefDecl FindMatchingTypedef(List<Typedef> typedefs, FunctionType functionType)
         {
             return (from typedef in typedefs
-                let type = (FunctionType)typedef.Type.GetPointee()
+                let type = (FunctionType)typedef.Declaration.Type.GetPointee()
                 where type.ReturnType == functionType.ReturnType &&
                       type.Parameters.SequenceEqual(functionType.Parameters, new ParameterTypeComparer())
-                select typedef).SingleOrDefault();
+                select typedef.Declaration).SingleOrDefault();
         }
     }
 }

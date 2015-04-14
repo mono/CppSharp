@@ -1,8 +1,8 @@
 ﻿using System;
 using CppSharp.Utils;
 using NUnit.Framework;
-using Basic;
-using Enum = Basic.Enum;
+using BasicTest;
+using Enum = BasicTest.Enum;
 
 public class BasicTests : GeneratorTestFixture
 {
@@ -349,7 +349,7 @@ public class BasicTests : GeneratorTestFixture
     [Test]
     public void TestFunctions()
     {
-        var ret = Basic.basic.Function();
+        var ret = BasicTest.basic.Function();
         Assert.That(ret, Is.EqualTo(5));
     }
 

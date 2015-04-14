@@ -326,6 +326,16 @@ TestDelegates::TestDelegates() : A(Double), B(Double), C(&TestDelegates::Triple)
 {
 }
 
+namespace DelegateNamespace
+{
+    namespace Nested
+    {
+        void DLL_API f1(void (*)());
+    }
+
+    void DLL_API f2(void (*)());
+}
+
 // Tests memory leaks in constructors
 //  C#:  Marshal.FreeHGlobal(arg0);
 struct DLL_API TestMemoryLeaks

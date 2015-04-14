@@ -346,7 +346,15 @@ int (*TestDelegates::MarshalAnonymousDelegate4())(int n)
     return f;
 }
 
+void DelegateNamespace::Nested::f1(void (*)())
+{
+}
+
 void TestDelegates::MarshalDelegateInAnotherUnit(DelegateInAnotherUnit del)
+{
+}
+
+void DelegateNamespace::f2(void (*)())
 {
 }
 
