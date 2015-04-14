@@ -586,7 +586,17 @@ namespace CppSharp.Generators.CLI
             FunctionType func;
             if (decl.Type.IsPointerTo(out func))
             {
-                VisitDelegateType(func, "::" + typedef.Declaration.QualifiedOriginalName);
+                // Use the original typedef name if available, otherwise just use the function pointer type
+                string cppTypeName;
+                if (!decl.IsSynthetized)
+                    cppTypeName = "::" + typedef.Declaration.QualifiedOriginalName;
+                else
+                {
+                    var cppTypePrinter = new CppTypePrinter(Context.Driver.TypeDatabase);
+                    cppTypeName = decl.Type.Visit(cppTypePrinter, quals);
+                }
+
+                VisitDelegateType(func, cppTypeName);
                 return true;
             }
 

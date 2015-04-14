@@ -1,4 +1,5 @@
 #include "../Tests.h"
+#include "AnotherUnit.h"
 
 #ifdef _WIN32
 #include <vadefs.h>
@@ -308,6 +309,13 @@ struct DLL_API TestDelegates
     int CDecl(DelegateCDecl del) { return del(1); }
     void MarshalUnattributedDelegate(DelegateInGlobalNamespace del);
 
+    int MarshalAnonymousDelegate(int (*del)(int n));
+    void MarshalAnonymousDelegate2(int (*del)(int n));
+    void MarshalAnonymousDelegate3(float (*del)(float n));
+    int (*MarshalAnonymousDelegate4())(int n);
+
+    void MarshalDelegateInAnotherUnit(DelegateInAnotherUnit del);
+
     DelegateInClass A;
     DelegateInGlobalNamespace B;
     // As long as we can't marshal them make sure they're ignored
@@ -316,6 +324,16 @@ struct DLL_API TestDelegates
 
 TestDelegates::TestDelegates() : A(Double), B(Double), C(&TestDelegates::Triple)
 {
+}
+
+namespace DelegateNamespace
+{
+    namespace Nested
+    {
+        void DLL_API f1(void (*)());
+    }
+
+    void DLL_API f2(void (*)());
 }
 
 // Tests memory leaks in constructors

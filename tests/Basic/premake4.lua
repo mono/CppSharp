@@ -1,2 +1,2 @@
 group "Tests/Basic"
-  SetupTestProject("Basic")
+  SetupTestProject("Basic", { "AnotherUnit" })

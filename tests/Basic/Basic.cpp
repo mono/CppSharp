@@ -323,6 +323,41 @@ void TestDelegates::MarshalUnattributedDelegate(DelegateInGlobalNamespace del)
 {
 }
 
+int TestDelegates::MarshalAnonymousDelegate(int (*del)(int n))
+{
+    return del(1);
+}
+
+void TestDelegates::MarshalAnonymousDelegate2(int (*del)(int n))
+{
+}
+
+void TestDelegates::MarshalAnonymousDelegate3(float (*del)(float n))
+{
+}
+
+int f(int n)
+{
+    return n * 2;
+}
+
+int (*TestDelegates::MarshalAnonymousDelegate4())(int n)
+{
+    return f;
+}
+
+void DelegateNamespace::Nested::f1(void (*)())
+{
+}
+
+void TestDelegates::MarshalDelegateInAnotherUnit(DelegateInAnotherUnit del)
+{
+}
+
+void DelegateNamespace::f2(void (*)())
+{
+}
+
 std::string HasStdString::testStdString(std::string s)
 {
     return s + "_test";

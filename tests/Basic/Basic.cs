@@ -13,6 +13,13 @@ namespace CppSharp.Tests
 
         }
 
+        public override void Setup(Driver driver)
+        {
+            base.Setup(driver);
+
+            driver.Options.OutputNamespace = "BasicTest";
+        }
+
         public override void SetupPasses(Driver driver)
         {
             if (driver.Options.IsCSharpGenerator)
