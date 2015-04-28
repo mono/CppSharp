@@ -2218,12 +2218,21 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, Function* F,
         }
     }
 
-    // for some weird reason 'kw_const' doesn't work; Clang considers the 'const' a 'raw_identifier'
-    const clang::SourceLocation& EndLoc = Lexer::findLocationAfterToken(
-        ParamEndLoc, tok::TokenKind::raw_identifier, C->getSourceManager(), C->getLangOpts(), true);
-    clang::SourceRange Range(FD->getLocStart(), EndLoc.isValid() ? EndLoc.getLocWithOffset(/* ignore ; */ -1) : ParamEndLoc);
+    clang::SourceLocation BeginLoc = FD->getLocStart();
     if (ResultLoc.isValid())
-        Range.setBegin(ResultLoc);
+        BeginLoc = ResultLoc;
+
+    // For some weird reason 'kw_const' doesn't work; Clang considers the 'const' a 'raw_identifier'
+    clang::SourceLocation EndLoc = Lexer::findLocationAfterToken(
+        ParamEndLoc, tok::TokenKind::raw_identifier, C->getSourceManager(), C->getLangOpts(),
+        /*SkipTrailingWhitespaceAndNewLine=*/true);
+
+    if (EndLoc.isValid())
+        EndLoc = EndLoc.getLocWithOffset(/*Offset=*/-1);
+    else
+        EndLoc = ParamEndLoc;
+
+    clang::SourceRange Range(BeginLoc, EndLoc);
 
     std::string Sig;
     if (GetDeclText(Range, Sig))
