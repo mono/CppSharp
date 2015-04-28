@@ -71,6 +71,7 @@ class HasConstFunction
 {
 public:
     void testConstSignature() const;
+    const int& testConstRefSignature();
 };
 
 void testImpl()

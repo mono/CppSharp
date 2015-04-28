@@ -2219,8 +2219,6 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, Function* F,
     }
 
     clang::SourceLocation BeginLoc = FD->getLocStart();
-    if (ResultLoc.isValid())
-        BeginLoc = ResultLoc;
 
     // For some weird reason 'kw_const' doesn't work; Clang considers the 'const' a 'raw_identifier'
     clang::SourceLocation EndLoc = Lexer::findLocationAfterToken(
