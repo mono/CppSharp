@@ -2431,7 +2431,22 @@ Friend* Parser::WalkFriend(clang::FriendDecl *FD)
     F->_Namespace = NS;
 
     if (FriendDecl)
+    {
         F->Declaration = WalkDeclarationDef(FriendDecl);
+        if (F->Declaration)
+        {
+            for (auto it = FriendDecl->redecls_begin(); it != FriendDecl->redecls_end(); it++)
+            {
+                if (it->getLocation() != FriendDecl->getLocation())
+                {
+                    auto DecomposedLoc = C->getSourceManager().getDecomposedLoc(it->getLocation());
+                    F->Declaration->LineNumber = C->getSourceManager().getLineNumber(
+                        DecomposedLoc.first, DecomposedLoc.second);
+                    break;
+                }
+            }
+        }
+    }
 
     //auto TL = FD->getFriendType()->getTypeLoc();
     //F->QualifiedType = GetQualifiedType(VD->getType(), WalkType(FD->getFriendType(), &TL));
