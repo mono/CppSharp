@@ -1222,14 +1222,24 @@ void CppSharp::Parser::AST::Declaration::Location::set(CppSharp::Parser::SourceL
     ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->Location = _marshal0;
 }
 
-int CppSharp::Parser::AST::Declaration::LineNumber::get()
+int CppSharp::Parser::AST::Declaration::LineNumberStart::get()
 {
-    return ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->LineNumber;
+    return ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->LineNumberStart;
 }
 
-void CppSharp::Parser::AST::Declaration::LineNumber::set(int value)
+void CppSharp::Parser::AST::Declaration::LineNumberStart::set(int value)
 {
-    ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->LineNumber = value;
+    ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->LineNumberStart = value;
+}
+
+int CppSharp::Parser::AST::Declaration::LineNumberEnd::get()
+{
+    return ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->LineNumberEnd;
+}
+
+void CppSharp::Parser::AST::Declaration::LineNumberEnd::set(int value)
+{
+    ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->LineNumberEnd = value;
 }
 
 CppSharp::Parser::AST::RawComment^ CppSharp::Parser::AST::Declaration::Comment::get()

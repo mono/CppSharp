@@ -390,7 +390,8 @@ public:
     AccessSpecifier Access;
     DeclarationContext* _Namespace;
     SourceLocation Location;
-    int LineNumber;
+    int LineNumberStart;
+    int LineNumberEnd;
     STRING(Name)
     RawComment* Comment;
     STRING(DebugText)

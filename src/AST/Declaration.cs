@@ -55,7 +55,8 @@ namespace CppSharp.AST
     {
         public SourceLocation Location;
 
-        public int LineNumber { get; set; }
+        public int LineNumberStart { get; set; }
+        public int LineNumberEnd { get; set; }
 
         private DeclarationContext @namespace;
         public DeclarationContext OriginalNamespace;
@@ -342,7 +343,8 @@ namespace CppSharp.AST
             PreprocessedEntities = new List<PreprocessedEntity>(
                 declaration.PreprocessedEntities);
             OriginalPtr = declaration.OriginalPtr;
-            LineNumber = declaration.LineNumber;
+            this.LineNumberStart = declaration.LineNumberStart;
+            this.LineNumberEnd = declaration.LineNumberEnd;
         }
 
         public override string ToString()
