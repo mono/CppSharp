@@ -237,13 +237,13 @@ namespace CppSharp.Generator.Tests.AST
         [Test]
         public void TestLineNumber()
         {
-            Assert.AreEqual(63, AstContext.FindClass("HiddenInNamespace").First().LineNumber);
+            Assert.AreEqual(63, AstContext.FindClass("HiddenInNamespace").First().LineNumberStart);
         }
 
         [Test]
         public void TestLineNumberOfFriend()
         {
-            Assert.AreEqual(83, AstContext.FindFunction("operator+").First().LineNumber);
+            Assert.AreEqual(83, AstContext.FindFunction("operator+").First().LineNumberStart);
         }
 
         [Test]

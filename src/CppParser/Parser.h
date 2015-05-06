@@ -144,6 +144,7 @@ private:
                                  llvm::object::basic_symbol_iterator Begin,
                                  llvm::object::basic_symbol_iterator End,
                                  CppSharp::CppParser::NativeLibrary*& NativeLib);
+    Declaration* GetDeclarationFromFriend(clang::NamedDecl* FriendDecl);
 };
 
 } }

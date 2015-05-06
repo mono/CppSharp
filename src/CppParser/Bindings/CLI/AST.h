@@ -1029,7 +1029,13 @@ namespace CppSharp
                     void set(CppSharp::Parser::SourceLocation);
                 }
 
-                property int LineNumber
+                property int LineNumberStart
+                {
+                    int get();
+                    void set(int);
+                }
+
+                property int LineNumberEnd
                 {
                     int get();
                     void set(int);

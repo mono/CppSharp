@@ -2434,20 +2434,7 @@ Friend* Parser::WalkFriend(clang::FriendDecl *FD)
 
     if (FriendDecl)
     {
-        F->Declaration = WalkDeclarationDef(FriendDecl);
-        if (F->Declaration)
-        {
-            for (auto it = FriendDecl->redecls_begin(); it != FriendDecl->redecls_end(); it++)
-            {
-                if (it->getLocation() != FriendDecl->getLocation())
-                {
-                    auto DecomposedLoc = C->getSourceManager().getDecomposedLoc(it->getLocation());
-                    F->Declaration->LineNumber = C->getSourceManager().getLineNumber(
-                        DecomposedLoc.first, DecomposedLoc.second);
-                    break;
-                }
-            }
-        }
+        F->Declaration = GetDeclarationFromFriend(FriendDecl);
     }
 
     //auto TL = FD->getFriendType()->getTypeLoc();
@@ -2762,8 +2749,11 @@ void Parser::HandleDeclaration(clang::Decl* D, Declaration* Decl)
     Decl->OriginalPtr = (void*) D;
     Decl->USR = GetDeclUSR(D);
     Decl->Location = SourceLocation(D->getLocation().getRawEncoding());
-    auto DecomposedLoc = C->getSourceManager().getDecomposedLoc(D->getLocation());
-    Decl->LineNumber = C->getSourceManager().getLineNumber(DecomposedLoc.first, DecomposedLoc.second);
+    auto& SM = C->getSourceManager();
+    auto DecomposedLocStart = SM.getDecomposedLoc(D->getLocation());
+    Decl->LineNumberStart = SM.getLineNumber(DecomposedLocStart.first, DecomposedLocStart.second);
+    auto DecomposedLocEnd = SM.getDecomposedLoc(D->getLocEnd());
+    Decl->LineNumberEnd = SM.getLineNumber(DecomposedLocEnd.first, DecomposedLocEnd.second);
 
     if (Decl->PreprocessedEntities.empty() && !D->isImplicit())
     {
@@ -3516,4 +3506,35 @@ ParserTargetInfo* Parser::GetTargetInfo()
     parserTargetInfo->WCharWidth = AST->getTargetInfo().getWCharWidth();
 
     return parserTargetInfo;
+}
+
+Declaration* Parser::GetDeclarationFromFriend(clang::NamedDecl* FriendDecl)
+{
+    Declaration* Decl = WalkDeclarationDef(FriendDecl);
+    if (!Decl) return nullptr;
+
+    int MinLineNumberStart = std::numeric_limits<int>::max();
+    int MinLineNumberEnd = std::numeric_limits<int>::max();
+    auto& SM = C->getSourceManager();
+    for (auto it = FriendDecl->redecls_begin(); it != FriendDecl->redecls_end(); it++)
+    {
+        if (it->getLocation() != FriendDecl->getLocation())
+        {
+            auto DecomposedLocStart = SM.getDecomposedLoc(it->getLocation());
+            int NewLineNumberStart = SM.getLineNumber(DecomposedLocStart.first, DecomposedLocStart.second);
+            auto DecomposedLocEnd = SM.getDecomposedLoc(it->getLocEnd());
+            int NewLineNumberEnd = SM.getLineNumber(DecomposedLocEnd.first, DecomposedLocEnd.second);
+            if (NewLineNumberStart < MinLineNumberStart)
+            {
+                MinLineNumberStart = NewLineNumberStart;
+                MinLineNumberEnd = NewLineNumberEnd;
+            }
+        }
+    }
+    if (MinLineNumberStart < std::numeric_limits<int>::max())
+    {
+        Decl->LineNumberStart = MinLineNumberStart;
+        Decl->LineNumberEnd = MinLineNumberEnd;
+    }
+    return Decl;
 }
