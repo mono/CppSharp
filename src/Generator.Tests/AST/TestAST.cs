@@ -256,5 +256,13 @@ namespace CppSharp.Generator.Tests.AST
             //Assert.AreEqual("const int& testConstRefSignature()", AstContext.FindClass("HasConstFunction").Single().FindMethod("testConstRefSignature").Signature);
             //Assert.AreEqual("const int& testStaticConstRefSignature()", AstContext.FindClass("HasConstFunction").Single().FindMethod("testStaticConstRefSignature").Signature);
         }
+
+        [Test]
+        public void TestAmbiguity()
+        {
+            new CheckAmbiguousFunctions { Driver = new Driver(new DriverOptions(), new TextDiagnosticPrinter()) }
+                .VisitLibrary(AstContext);
+            Assert.IsTrue(AstContext.FindClass("HasAmbiguousFunctions").Single().FindMethod("ambiguous").IsAmbiguous);            
+        }
     }
 }
