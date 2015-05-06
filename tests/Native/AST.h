@@ -84,3 +84,10 @@ inline const TestTemplateClass2 operator+(const TestTemplateClass2& f1, const Te
 {
     return TestTemplateClass2();
 }
+
+class HasAmbiguousFunctions
+{
+public:
+    void ambiguous();
+    void ambiguous() const;
+};
