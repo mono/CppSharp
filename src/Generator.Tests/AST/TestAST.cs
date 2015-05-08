@@ -243,7 +243,7 @@ namespace CppSharp.Generator.Tests.AST
         [Test]
         public void TestLineNumberOfFriend()
         {
-            Assert.AreEqual(83, AstContext.FindFunction("operator+").First().LineNumberStart);
+            Assert.AreEqual(86, AstContext.FindFunction("operator+").First().LineNumberStart);
         }
 
         [Test]
@@ -251,7 +251,10 @@ namespace CppSharp.Generator.Tests.AST
         {
             Assert.AreEqual("void testSignature()", AstContext.FindFunction("testSignature").Single().Signature);
             Assert.AreEqual("void testImpl()", AstContext.FindFunction("testImpl").Single().Signature);
-            Assert.AreEqual("void testConstSignature() const", AstContext.FindClass("HasConstFunction").Single().FindMethod("testConstSignature").Signature);
+            Assert.AreEqual("void testConstSignature() const",
+                AstContext.FindClass("HasConstFunction").Single().FindMethod("testConstSignature").Signature);
+            Assert.AreEqual("void testConstSignatureWithTrailingMacro() const",
+                AstContext.FindClass("HasConstFunction").Single().FindMethod("testConstSignatureWithTrailingMacro").Signature);
             // TODO: restore when the const of a return type is fixed properly
             //Assert.AreEqual("const int& testConstRefSignature()", AstContext.FindClass("HasConstFunction").Single().FindMethod("testConstRefSignature").Signature);
             //Assert.AreEqual("const int& testStaticConstRefSignature()", AstContext.FindClass("HasConstFunction").Single().FindMethod("testStaticConstRefSignature").Signature);
