@@ -191,5 +191,16 @@ namespace CppSharp.Generator.Tests.Passes
             Assert.IsTrue(constMethodWithParam.GenerationKind == GenerationKind.None);
             Assert.IsTrue(nonConstMethodWithParam.GenerationKind == GenerationKind.Generate);
         }
+
+        [Test]
+        public void TestSetMethodAsInternal()
+        {
+            var c = AstContext.Class("TestMethodAsInternal");
+            var method = c.Method("beInternal");
+            Assert.IsTrue(method.Access == AccessSpecifier.Public);
+            passBuilder.AddPass(new CheckMacroPass());
+            passBuilder.RunPasses(pass => pass.VisitLibrary(AstContext));
+            Assert.IsTrue(method.Access == AccessSpecifier.Internal);
+        }
     }
 }
