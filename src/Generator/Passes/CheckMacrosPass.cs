@@ -42,6 +42,10 @@ namespace CppSharp.Passes
     ///     CS_CONSTRAINT(TYPE [, TYPE]*) (templates)
     ///         Used to define constraint of generated generic type or generic method.
     /// 
+    ///     CS_INTERNAL (methods)
+    ///         Used to flag a method as internal to an assembly. So, it is
+    ///         not accessible outside that assembly.
+    /// 
     /// There isn't a standardized header provided by CppSharp so you will
     /// have to define these on your own.
     /// </summary>
@@ -154,6 +158,9 @@ namespace CppSharp.Passes
             if (expansions.Any(e => e.Text == Prefix + "_HASHCODE"
                 || e.Text == Prefix + "_EQUALS"))
                 method.ExplicitlyIgnore();
+
+            if (expansions.Any(e => e.Text == Prefix + "_INTERNAL"))
+                method.Access = AccessSpecifier.Internal;   
 
             return base.VisitMethodDecl(method);
         }
