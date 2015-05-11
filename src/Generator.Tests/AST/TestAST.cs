@@ -241,6 +241,12 @@ namespace CppSharp.Generator.Tests.AST
         }
 
         [Test]
+        public void TestLineNumberOfFriend()
+        {
+            Assert.AreEqual(82, AstContext.FindFunction("operator+").First().LineNumber);
+        }
+
+        [Test]
         public void TestSignature()
         {
             Assert.AreEqual("void testSignature()", AstContext.FindFunction("testSignature").Single().Signature);

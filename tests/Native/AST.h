@@ -72,8 +72,14 @@ class HasConstFunction
 public:
     void testConstSignature() const;
     const int& testConstRefSignature();
+    friend inline const TestTemplateClass2 operator+(const TestTemplateClass2& f1, const TestTemplateClass2& f2);
 };
 
 void testImpl()
 {
+}
+
+inline const TestTemplateClass2 operator+(const TestTemplateClass2& f1, const TestTemplateClass2& f2)
+{
+    return TestTemplateClass2();
 }
