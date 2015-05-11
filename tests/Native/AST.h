@@ -67,11 +67,15 @@ namespace HidesClass
 
 void testSignature();
 
+#define MY_MACRO
+
 class HasConstFunction
 {
 public:
     void testConstSignature() const;
+    void testConstSignatureWithTrailingMacro() const MY_MACRO;
     const int& testConstRefSignature();
+    static const int& testStaticConstRefSignature();
     friend inline const TestTemplateClass2 operator+(const TestTemplateClass2& f1, const TestTemplateClass2& f2);
 };
 
@@ -83,3 +87,10 @@ inline const TestTemplateClass2 operator+(const TestTemplateClass2& f1, const Te
 {
     return TestTemplateClass2();
 }
+
+class HasAmbiguousFunctions
+{
+public:
+    void ambiguous();
+    void ambiguous() const;
+};

@@ -3031,7 +3031,7 @@ namespace CppSharp
 
             public unsafe partial class Declaration : IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 124)]
+                [StructLayout(LayoutKind.Explicit, Size = 128)]
                 public partial struct Internal
                 {
                     [FieldOffset(0)]
@@ -3047,24 +3047,27 @@ namespace CppSharp
                     public CppSharp.Parser.SourceLocation.Internal Location;
 
                     [FieldOffset(16)]
-                    public int LineNumber;
+                    public int LineNumberStart;
 
-                    [FieldOffset(44)]
+                    [FieldOffset(20)]
+                    public int LineNumberEnd;
+
+                    [FieldOffset(48)]
                     public global::System.IntPtr Comment;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     public bool IsIncomplete;
 
-                    [FieldOffset(73)]
+                    [FieldOffset(77)]
                     public bool IsDependent;
 
-                    [FieldOffset(76)]
+                    [FieldOffset(80)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(80)]
+                    [FieldOffset(84)]
                     public uint DefinitionOrder;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     public global::System.IntPtr OriginalPtr;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -3139,7 +3142,7 @@ namespace CppSharp
 
                 private static Declaration.Internal* __CopyValue(Declaration.Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(124);
+                    var ret = Marshal.AllocHGlobal(128);
                     CppSharp.Parser.AST.Declaration.Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return (Declaration.Internal*) ret;
                 }
@@ -3157,7 +3160,7 @@ namespace CppSharp
 
                 public Declaration(CppSharp.Parser.AST.DeclarationKind kind)
                 {
-                    __Instance = Marshal.AllocHGlobal(124);
+                    __Instance = Marshal.AllocHGlobal(128);
                     __ownsNativeInstance = true;
                     var arg0 = kind;
                     Internal.ctor_0(__Instance, arg0);
@@ -3291,16 +3294,29 @@ namespace CppSharp
                     }
                 }
 
-                public int LineNumber
+                public int LineNumberStart
                 {
                     get
                     {
-                        return ((Internal*) __Instance)->LineNumber;
+                        return ((Internal*) __Instance)->LineNumberStart;
                     }
 
                     set
                     {
-                        ((Internal*) __Instance)->LineNumber = value;
+                        ((Internal*) __Instance)->LineNumberStart = value;
+                    }
+                }
+
+                public int LineNumberEnd
+                {
+                    get
+                    {
+                        return ((Internal*) __Instance)->LineNumberEnd;
+                    }
+
+                    set
+                    {
+                        ((Internal*) __Instance)->LineNumberEnd = value;
                     }
                 }
 
@@ -3385,7 +3401,7 @@ namespace CppSharp
 
             public unsafe partial class DeclarationContext : CppSharp.Parser.AST.Declaration, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 232)]
+                [StructLayout(LayoutKind.Explicit, Size = 236)]
                 public new partial struct Internal
                 {
                     [FieldOffset(0)]
@@ -3401,27 +3417,30 @@ namespace CppSharp
                     public CppSharp.Parser.SourceLocation.Internal Location;
 
                     [FieldOffset(16)]
-                    public int LineNumber;
+                    public int LineNumberStart;
 
-                    [FieldOffset(44)]
+                    [FieldOffset(20)]
+                    public int LineNumberEnd;
+
+                    [FieldOffset(48)]
                     public global::System.IntPtr Comment;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     public bool IsIncomplete;
 
-                    [FieldOffset(73)]
+                    [FieldOffset(77)]
                     public bool IsDependent;
 
-                    [FieldOffset(76)]
+                    [FieldOffset(80)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(80)]
+                    [FieldOffset(84)]
                     public uint DefinitionOrder;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     public global::System.IntPtr OriginalPtr;
 
-                    [FieldOffset(228)]
+                    [FieldOffset(232)]
                     public bool IsAnonymous;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -3614,7 +3633,7 @@ namespace CppSharp
 
                 private static DeclarationContext.Internal* __CopyValue(DeclarationContext.Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(232);
+                    var ret = Marshal.AllocHGlobal(236);
                     CppSharp.Parser.AST.DeclarationContext.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (DeclarationContext.Internal*) ret;
                 }
@@ -3633,7 +3652,7 @@ namespace CppSharp
                 public DeclarationContext(CppSharp.Parser.AST.DeclarationKind kind)
                     : this((Internal*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(232);
+                    __Instance = Marshal.AllocHGlobal(236);
                     __ownsNativeInstance = true;
                     var arg0 = kind;
                     Internal.ctor_0(__Instance, arg0);
@@ -3880,7 +3899,7 @@ namespace CppSharp
 
             public unsafe partial class TypedefDecl : CppSharp.Parser.AST.Declaration, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 132)]
+                [StructLayout(LayoutKind.Explicit, Size = 136)]
                 public new partial struct Internal
                 {
                     [FieldOffset(0)]
@@ -3896,27 +3915,30 @@ namespace CppSharp
                     public CppSharp.Parser.SourceLocation.Internal Location;
 
                     [FieldOffset(16)]
-                    public int LineNumber;
+                    public int LineNumberStart;
 
-                    [FieldOffset(44)]
+                    [FieldOffset(20)]
+                    public int LineNumberEnd;
+
+                    [FieldOffset(48)]
                     public global::System.IntPtr Comment;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     public bool IsIncomplete;
 
-                    [FieldOffset(73)]
+                    [FieldOffset(77)]
                     public bool IsDependent;
 
-                    [FieldOffset(76)]
+                    [FieldOffset(80)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(80)]
+                    [FieldOffset(84)]
                     public uint DefinitionOrder;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     public global::System.IntPtr OriginalPtr;
 
-                    [FieldOffset(124)]
+                    [FieldOffset(128)]
                     public CppSharp.Parser.AST.QualifiedType.Internal QualifiedType;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -3949,7 +3971,7 @@ namespace CppSharp
 
                 private static TypedefDecl.Internal* __CopyValue(TypedefDecl.Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(132);
+                    var ret = Marshal.AllocHGlobal(136);
                     CppSharp.Parser.AST.TypedefDecl.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (TypedefDecl.Internal*) ret;
                 }
@@ -3968,7 +3990,7 @@ namespace CppSharp
                 public TypedefDecl()
                     : this((Internal*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(132);
+                    __Instance = Marshal.AllocHGlobal(136);
                     __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
@@ -3998,7 +4020,7 @@ namespace CppSharp
 
             public unsafe partial class Friend : CppSharp.Parser.AST.Declaration, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 128)]
+                [StructLayout(LayoutKind.Explicit, Size = 132)]
                 public new partial struct Internal
                 {
                     [FieldOffset(0)]
@@ -4014,27 +4036,30 @@ namespace CppSharp
                     public CppSharp.Parser.SourceLocation.Internal Location;
 
                     [FieldOffset(16)]
-                    public int LineNumber;
+                    public int LineNumberStart;
 
-                    [FieldOffset(44)]
+                    [FieldOffset(20)]
+                    public int LineNumberEnd;
+
+                    [FieldOffset(48)]
                     public global::System.IntPtr Comment;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     public bool IsIncomplete;
 
-                    [FieldOffset(73)]
+                    [FieldOffset(77)]
                     public bool IsDependent;
 
-                    [FieldOffset(76)]
+                    [FieldOffset(80)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(80)]
+                    [FieldOffset(84)]
                     public uint DefinitionOrder;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     public global::System.IntPtr OriginalPtr;
 
-                    [FieldOffset(124)]
+                    [FieldOffset(128)]
                     public global::System.IntPtr Declaration;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -4067,7 +4092,7 @@ namespace CppSharp
 
                 private static Friend.Internal* __CopyValue(Friend.Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(128);
+                    var ret = Marshal.AllocHGlobal(132);
                     CppSharp.Parser.AST.Friend.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (Friend.Internal*) ret;
                 }
@@ -4086,7 +4111,7 @@ namespace CppSharp
                 public Friend()
                     : this((Internal*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(128);
+                    __Instance = Marshal.AllocHGlobal(132);
                     __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
@@ -4317,7 +4342,7 @@ namespace CppSharp
 
             public unsafe partial class Parameter : CppSharp.Parser.AST.Declaration, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 144)]
+                [StructLayout(LayoutKind.Explicit, Size = 148)]
                 public new partial struct Internal
                 {
                     [FieldOffset(0)]
@@ -4333,39 +4358,42 @@ namespace CppSharp
                     public CppSharp.Parser.SourceLocation.Internal Location;
 
                     [FieldOffset(16)]
-                    public int LineNumber;
+                    public int LineNumberStart;
 
-                    [FieldOffset(44)]
+                    [FieldOffset(20)]
+                    public int LineNumberEnd;
+
+                    [FieldOffset(48)]
                     public global::System.IntPtr Comment;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     public bool IsIncomplete;
 
-                    [FieldOffset(73)]
+                    [FieldOffset(77)]
                     public bool IsDependent;
 
-                    [FieldOffset(76)]
+                    [FieldOffset(80)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(80)]
+                    [FieldOffset(84)]
                     public uint DefinitionOrder;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     public global::System.IntPtr OriginalPtr;
 
-                    [FieldOffset(124)]
+                    [FieldOffset(128)]
                     public CppSharp.Parser.AST.QualifiedType.Internal QualifiedType;
 
-                    [FieldOffset(132)]
+                    [FieldOffset(136)]
                     public bool IsIndirect;
 
-                    [FieldOffset(133)]
+                    [FieldOffset(137)]
                     public bool HasDefaultValue;
 
-                    [FieldOffset(136)]
+                    [FieldOffset(140)]
                     public uint Index;
 
-                    [FieldOffset(140)]
+                    [FieldOffset(144)]
                     public global::System.IntPtr DefaultArgument;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -4398,7 +4426,7 @@ namespace CppSharp
 
                 private static Parameter.Internal* __CopyValue(Parameter.Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(144);
+                    var ret = Marshal.AllocHGlobal(148);
                     CppSharp.Parser.AST.Parameter.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (Parameter.Internal*) ret;
                 }
@@ -4417,7 +4445,7 @@ namespace CppSharp
                 public Parameter()
                     : this((Internal*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(144);
+                    __Instance = Marshal.AllocHGlobal(148);
                     __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
@@ -4499,7 +4527,7 @@ namespace CppSharp
 
             public unsafe partial class Function : CppSharp.Parser.AST.Declaration, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 212)]
+                [StructLayout(LayoutKind.Explicit, Size = 216)]
                 public new partial struct Internal
                 {
                     [FieldOffset(0)]
@@ -4515,54 +4543,57 @@ namespace CppSharp
                     public CppSharp.Parser.SourceLocation.Internal Location;
 
                     [FieldOffset(16)]
-                    public int LineNumber;
+                    public int LineNumberStart;
 
-                    [FieldOffset(44)]
+                    [FieldOffset(20)]
+                    public int LineNumberEnd;
+
+                    [FieldOffset(48)]
                     public global::System.IntPtr Comment;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     public bool IsIncomplete;
 
-                    [FieldOffset(73)]
+                    [FieldOffset(77)]
                     public bool IsDependent;
 
-                    [FieldOffset(76)]
+                    [FieldOffset(80)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(80)]
+                    [FieldOffset(84)]
                     public uint DefinitionOrder;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     public global::System.IntPtr OriginalPtr;
 
-                    [FieldOffset(124)]
+                    [FieldOffset(128)]
                     public CppSharp.Parser.AST.QualifiedType.Internal ReturnType;
 
-                    [FieldOffset(132)]
+                    [FieldOffset(136)]
                     public bool IsReturnIndirect;
 
-                    [FieldOffset(133)]
+                    [FieldOffset(137)]
                     public bool HasThisReturn;
 
-                    [FieldOffset(134)]
+                    [FieldOffset(138)]
                     public bool IsVariadic;
 
-                    [FieldOffset(135)]
+                    [FieldOffset(139)]
                     public bool IsInline;
 
-                    [FieldOffset(136)]
+                    [FieldOffset(140)]
                     public bool IsPure;
 
-                    [FieldOffset(137)]
+                    [FieldOffset(141)]
                     public bool IsDeleted;
 
-                    [FieldOffset(140)]
+                    [FieldOffset(144)]
                     public CppSharp.Parser.AST.CXXOperatorKind OperatorKind;
 
-                    [FieldOffset(192)]
+                    [FieldOffset(196)]
                     public CppSharp.Parser.AST.CallingConvention CallingConvention;
 
-                    [FieldOffset(208)]
+                    [FieldOffset(212)]
                     public global::System.IntPtr SpecializationInfo;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -4635,7 +4666,7 @@ namespace CppSharp
 
                 private static Function.Internal* __CopyValue(Function.Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(212);
+                    var ret = Marshal.AllocHGlobal(216);
                     CppSharp.Parser.AST.Function.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (Function.Internal*) ret;
                 }
@@ -4654,7 +4685,7 @@ namespace CppSharp
                 public Function()
                     : this((Internal*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(212);
+                    __Instance = Marshal.AllocHGlobal(216);
                     __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
@@ -4862,7 +4893,7 @@ namespace CppSharp
 
             public unsafe partial class Method : CppSharp.Parser.AST.Function, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 240)]
+                [StructLayout(LayoutKind.Explicit, Size = 244)]
                 public new partial struct Internal
                 {
                     [FieldOffset(0)]
@@ -4878,90 +4909,93 @@ namespace CppSharp
                     public CppSharp.Parser.SourceLocation.Internal Location;
 
                     [FieldOffset(16)]
-                    public int LineNumber;
+                    public int LineNumberStart;
 
-                    [FieldOffset(44)]
+                    [FieldOffset(20)]
+                    public int LineNumberEnd;
+
+                    [FieldOffset(48)]
                     public global::System.IntPtr Comment;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     public bool IsIncomplete;
 
-                    [FieldOffset(73)]
+                    [FieldOffset(77)]
                     public bool IsDependent;
 
-                    [FieldOffset(76)]
+                    [FieldOffset(80)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(80)]
+                    [FieldOffset(84)]
                     public uint DefinitionOrder;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     public global::System.IntPtr OriginalPtr;
 
-                    [FieldOffset(124)]
+                    [FieldOffset(128)]
                     public CppSharp.Parser.AST.QualifiedType.Internal ReturnType;
 
-                    [FieldOffset(132)]
+                    [FieldOffset(136)]
                     public bool IsReturnIndirect;
 
-                    [FieldOffset(133)]
+                    [FieldOffset(137)]
                     public bool HasThisReturn;
 
-                    [FieldOffset(134)]
+                    [FieldOffset(138)]
                     public bool IsVariadic;
 
-                    [FieldOffset(135)]
+                    [FieldOffset(139)]
                     public bool IsInline;
 
-                    [FieldOffset(136)]
+                    [FieldOffset(140)]
                     public bool IsPure;
 
-                    [FieldOffset(137)]
+                    [FieldOffset(141)]
                     public bool IsDeleted;
 
-                    [FieldOffset(140)]
+                    [FieldOffset(144)]
                     public CppSharp.Parser.AST.CXXOperatorKind OperatorKind;
 
-                    [FieldOffset(192)]
+                    [FieldOffset(196)]
                     public CppSharp.Parser.AST.CallingConvention CallingConvention;
 
-                    [FieldOffset(208)]
+                    [FieldOffset(212)]
                     public global::System.IntPtr SpecializationInfo;
 
-                    [FieldOffset(212)]
+                    [FieldOffset(216)]
                     public global::System.IntPtr AccessDecl;
 
-                    [FieldOffset(216)]
+                    [FieldOffset(220)]
                     public bool IsVirtual;
 
-                    [FieldOffset(217)]
+                    [FieldOffset(221)]
                     public bool IsStatic;
 
-                    [FieldOffset(218)]
+                    [FieldOffset(222)]
                     public bool IsConst;
 
-                    [FieldOffset(219)]
+                    [FieldOffset(223)]
                     public bool IsImplicit;
 
-                    [FieldOffset(220)]
+                    [FieldOffset(224)]
                     public bool IsExplicit;
 
-                    [FieldOffset(221)]
+                    [FieldOffset(225)]
                     public bool IsOverride;
 
-                    [FieldOffset(224)]
+                    [FieldOffset(228)]
                     public CppSharp.Parser.AST.CXXMethodKind MethodKind;
 
-                    [FieldOffset(228)]
+                    [FieldOffset(232)]
                     public bool IsDefaultConstructor;
 
-                    [FieldOffset(229)]
+                    [FieldOffset(233)]
                     public bool IsCopyConstructor;
 
-                    [FieldOffset(230)]
+                    [FieldOffset(234)]
                     public bool IsMoveConstructor;
 
-                    [FieldOffset(232)]
+                    [FieldOffset(236)]
                     public CppSharp.Parser.AST.QualifiedType.Internal ConversionType;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -4994,7 +5028,7 @@ namespace CppSharp
 
                 private static Method.Internal* __CopyValue(Method.Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(240);
+                    var ret = Marshal.AllocHGlobal(244);
                     CppSharp.Parser.AST.Method.Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return (Method.Internal*) ret;
                 }
@@ -5013,7 +5047,7 @@ namespace CppSharp
                 public Method()
                     : this((Internal*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(240);
+                    __Instance = Marshal.AllocHGlobal(244);
                     __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
@@ -5186,7 +5220,7 @@ namespace CppSharp
 
             public unsafe partial class Enumeration : CppSharp.Parser.AST.DeclarationContext, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 256)]
+                [StructLayout(LayoutKind.Explicit, Size = 260)]
                 public new partial struct Internal
                 {
                     [FieldOffset(0)]
@@ -5202,36 +5236,39 @@ namespace CppSharp
                     public CppSharp.Parser.SourceLocation.Internal Location;
 
                     [FieldOffset(16)]
-                    public int LineNumber;
+                    public int LineNumberStart;
 
-                    [FieldOffset(44)]
+                    [FieldOffset(20)]
+                    public int LineNumberEnd;
+
+                    [FieldOffset(48)]
                     public global::System.IntPtr Comment;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     public bool IsIncomplete;
 
-                    [FieldOffset(73)]
+                    [FieldOffset(77)]
                     public bool IsDependent;
 
-                    [FieldOffset(76)]
+                    [FieldOffset(80)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(80)]
+                    [FieldOffset(84)]
                     public uint DefinitionOrder;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     public global::System.IntPtr OriginalPtr;
 
-                    [FieldOffset(228)]
+                    [FieldOffset(232)]
                     public bool IsAnonymous;
 
-                    [FieldOffset(232)]
+                    [FieldOffset(236)]
                     public CppSharp.Parser.AST.Enumeration.EnumModifiers Modifiers;
 
-                    [FieldOffset(236)]
+                    [FieldOffset(240)]
                     public global::System.IntPtr Type;
 
-                    [FieldOffset(240)]
+                    [FieldOffset(244)]
                     public global::System.IntPtr BuiltinType;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -5296,24 +5333,27 @@ namespace CppSharp
                         public CppSharp.Parser.SourceLocation.Internal Location;
 
                         [FieldOffset(16)]
-                        public int LineNumber;
+                        public int LineNumberStart;
 
-                        [FieldOffset(44)]
+                        [FieldOffset(20)]
+                        public int LineNumberEnd;
+
+                        [FieldOffset(48)]
                         public global::System.IntPtr Comment;
 
-                        [FieldOffset(72)]
+                        [FieldOffset(76)]
                         public bool IsIncomplete;
 
-                        [FieldOffset(73)]
+                        [FieldOffset(77)]
                         public bool IsDependent;
 
-                        [FieldOffset(76)]
+                        [FieldOffset(80)]
                         public global::System.IntPtr CompleteDeclaration;
 
-                        [FieldOffset(80)]
+                        [FieldOffset(84)]
                         public uint DefinitionOrder;
 
-                        [FieldOffset(96)]
+                        [FieldOffset(100)]
                         public global::System.IntPtr OriginalPtr;
 
                         [FieldOffset(152)]
@@ -5437,7 +5477,7 @@ namespace CppSharp
 
                 private static Enumeration.Internal* __CopyValue(Enumeration.Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(256);
+                    var ret = Marshal.AllocHGlobal(260);
                     CppSharp.Parser.AST.Enumeration.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (Enumeration.Internal*) ret;
                 }
@@ -5456,7 +5496,7 @@ namespace CppSharp
                 public Enumeration()
                     : this((Internal*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(256);
+                    __Instance = Marshal.AllocHGlobal(260);
                     __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
@@ -5539,7 +5579,7 @@ namespace CppSharp
 
             public unsafe partial class Variable : CppSharp.Parser.AST.Declaration, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 156)]
+                [StructLayout(LayoutKind.Explicit, Size = 160)]
                 public new partial struct Internal
                 {
                     [FieldOffset(0)]
@@ -5555,27 +5595,30 @@ namespace CppSharp
                     public CppSharp.Parser.SourceLocation.Internal Location;
 
                     [FieldOffset(16)]
-                    public int LineNumber;
+                    public int LineNumberStart;
 
-                    [FieldOffset(44)]
+                    [FieldOffset(20)]
+                    public int LineNumberEnd;
+
+                    [FieldOffset(48)]
                     public global::System.IntPtr Comment;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     public bool IsIncomplete;
 
-                    [FieldOffset(73)]
+                    [FieldOffset(77)]
                     public bool IsDependent;
 
-                    [FieldOffset(76)]
+                    [FieldOffset(80)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(80)]
+                    [FieldOffset(84)]
                     public uint DefinitionOrder;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     public global::System.IntPtr OriginalPtr;
 
-                    [FieldOffset(148)]
+                    [FieldOffset(152)]
                     public CppSharp.Parser.AST.QualifiedType.Internal QualifiedType;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -5618,7 +5661,7 @@ namespace CppSharp
 
                 private static Variable.Internal* __CopyValue(Variable.Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(156);
+                    var ret = Marshal.AllocHGlobal(160);
                     CppSharp.Parser.AST.Variable.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (Variable.Internal*) ret;
                 }
@@ -5637,7 +5680,7 @@ namespace CppSharp
                 public Variable()
                     : this((Internal*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(156);
+                    __Instance = Marshal.AllocHGlobal(160);
                     __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
@@ -5818,7 +5861,7 @@ namespace CppSharp
 
             public unsafe partial class Field : CppSharp.Parser.AST.Declaration, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 148)]
+                [StructLayout(LayoutKind.Explicit, Size = 152)]
                 public new partial struct Internal
                 {
                     [FieldOffset(0)]
@@ -5834,39 +5877,42 @@ namespace CppSharp
                     public CppSharp.Parser.SourceLocation.Internal Location;
 
                     [FieldOffset(16)]
-                    public int LineNumber;
+                    public int LineNumberStart;
 
-                    [FieldOffset(44)]
+                    [FieldOffset(20)]
+                    public int LineNumberEnd;
+
+                    [FieldOffset(48)]
                     public global::System.IntPtr Comment;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     public bool IsIncomplete;
 
-                    [FieldOffset(73)]
+                    [FieldOffset(77)]
                     public bool IsDependent;
 
-                    [FieldOffset(76)]
+                    [FieldOffset(80)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(80)]
+                    [FieldOffset(84)]
                     public uint DefinitionOrder;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     public global::System.IntPtr OriginalPtr;
 
-                    [FieldOffset(124)]
+                    [FieldOffset(128)]
                     public CppSharp.Parser.AST.QualifiedType.Internal QualifiedType;
 
-                    [FieldOffset(132)]
+                    [FieldOffset(136)]
                     public uint Offset;
 
-                    [FieldOffset(136)]
+                    [FieldOffset(140)]
                     public global::System.IntPtr Class;
 
-                    [FieldOffset(140)]
+                    [FieldOffset(144)]
                     public bool IsBitField;
 
-                    [FieldOffset(144)]
+                    [FieldOffset(148)]
                     public uint BitWidth;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -5899,7 +5945,7 @@ namespace CppSharp
 
                 private static Field.Internal* __CopyValue(Field.Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(148);
+                    var ret = Marshal.AllocHGlobal(152);
                     CppSharp.Parser.AST.Field.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (Field.Internal*) ret;
                 }
@@ -5918,7 +5964,7 @@ namespace CppSharp
                 public Field()
                     : this((Internal*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(148);
+                    __Instance = Marshal.AllocHGlobal(152);
                     __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
@@ -6000,7 +6046,7 @@ namespace CppSharp
 
             public unsafe partial class AccessSpecifierDecl : CppSharp.Parser.AST.Declaration, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 124)]
+                [StructLayout(LayoutKind.Explicit, Size = 128)]
                 public new partial struct Internal
                 {
                     [FieldOffset(0)]
@@ -6016,24 +6062,27 @@ namespace CppSharp
                     public CppSharp.Parser.SourceLocation.Internal Location;
 
                     [FieldOffset(16)]
-                    public int LineNumber;
+                    public int LineNumberStart;
 
-                    [FieldOffset(44)]
+                    [FieldOffset(20)]
+                    public int LineNumberEnd;
+
+                    [FieldOffset(48)]
                     public global::System.IntPtr Comment;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     public bool IsIncomplete;
 
-                    [FieldOffset(73)]
+                    [FieldOffset(77)]
                     public bool IsDependent;
 
-                    [FieldOffset(76)]
+                    [FieldOffset(80)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(80)]
+                    [FieldOffset(84)]
                     public uint DefinitionOrder;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     public global::System.IntPtr OriginalPtr;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -6066,7 +6115,7 @@ namespace CppSharp
 
                 private static AccessSpecifierDecl.Internal* __CopyValue(AccessSpecifierDecl.Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(124);
+                    var ret = Marshal.AllocHGlobal(128);
                     CppSharp.Parser.AST.AccessSpecifierDecl.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (AccessSpecifierDecl.Internal*) ret;
                 }
@@ -6085,7 +6134,7 @@ namespace CppSharp
                 public AccessSpecifierDecl()
                     : this((Internal*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(124);
+                    __Instance = Marshal.AllocHGlobal(128);
                     __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
@@ -6102,7 +6151,7 @@ namespace CppSharp
 
             public unsafe partial class Class : CppSharp.Parser.AST.DeclarationContext, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 296)]
+                [StructLayout(LayoutKind.Explicit, Size = 300)]
                 public new partial struct Internal
                 {
                     [FieldOffset(0)]
@@ -6118,57 +6167,60 @@ namespace CppSharp
                     public CppSharp.Parser.SourceLocation.Internal Location;
 
                     [FieldOffset(16)]
-                    public int LineNumber;
+                    public int LineNumberStart;
 
-                    [FieldOffset(44)]
+                    [FieldOffset(20)]
+                    public int LineNumberEnd;
+
+                    [FieldOffset(48)]
                     public global::System.IntPtr Comment;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     public bool IsIncomplete;
 
-                    [FieldOffset(73)]
+                    [FieldOffset(77)]
                     public bool IsDependent;
 
-                    [FieldOffset(76)]
+                    [FieldOffset(80)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(80)]
+                    [FieldOffset(84)]
                     public uint DefinitionOrder;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     public global::System.IntPtr OriginalPtr;
 
-                    [FieldOffset(228)]
+                    [FieldOffset(232)]
                     public bool IsAnonymous;
 
-                    [FieldOffset(280)]
+                    [FieldOffset(284)]
                     public bool IsPOD;
 
-                    [FieldOffset(281)]
+                    [FieldOffset(285)]
                     public bool IsAbstract;
 
-                    [FieldOffset(282)]
+                    [FieldOffset(286)]
                     public bool IsUnion;
 
-                    [FieldOffset(283)]
+                    [FieldOffset(287)]
                     public bool IsDynamic;
 
-                    [FieldOffset(284)]
+                    [FieldOffset(288)]
                     public bool IsPolymorphic;
 
-                    [FieldOffset(285)]
+                    [FieldOffset(289)]
                     public bool HasNonTrivialDefaultConstructor;
 
-                    [FieldOffset(286)]
+                    [FieldOffset(290)]
                     public bool HasNonTrivialCopyConstructor;
 
-                    [FieldOffset(287)]
+                    [FieldOffset(291)]
                     public bool HasNonTrivialDestructor;
 
-                    [FieldOffset(288)]
+                    [FieldOffset(292)]
                     public bool IsExternCContext;
 
-                    [FieldOffset(292)]
+                    [FieldOffset(296)]
                     public global::System.IntPtr Layout;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -6281,7 +6333,7 @@ namespace CppSharp
 
                 private static Class.Internal* __CopyValue(Class.Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(296);
+                    var ret = Marshal.AllocHGlobal(300);
                     CppSharp.Parser.AST.Class.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (Class.Internal*) ret;
                 }
@@ -6300,7 +6352,7 @@ namespace CppSharp
                 public Class()
                     : this((Internal*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(296);
+                    __Instance = Marshal.AllocHGlobal(300);
                     __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
@@ -6555,7 +6607,7 @@ namespace CppSharp
 
             public unsafe partial class Template : CppSharp.Parser.AST.Declaration, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 140)]
+                [StructLayout(LayoutKind.Explicit, Size = 144)]
                 public new partial struct Internal
                 {
                     [FieldOffset(0)]
@@ -6571,27 +6623,30 @@ namespace CppSharp
                     public CppSharp.Parser.SourceLocation.Internal Location;
 
                     [FieldOffset(16)]
-                    public int LineNumber;
+                    public int LineNumberStart;
 
-                    [FieldOffset(44)]
+                    [FieldOffset(20)]
+                    public int LineNumberEnd;
+
+                    [FieldOffset(48)]
                     public global::System.IntPtr Comment;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     public bool IsIncomplete;
 
-                    [FieldOffset(73)]
+                    [FieldOffset(77)]
                     public bool IsDependent;
 
-                    [FieldOffset(76)]
+                    [FieldOffset(80)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(80)]
+                    [FieldOffset(84)]
                     public uint DefinitionOrder;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     public global::System.IntPtr OriginalPtr;
 
-                    [FieldOffset(124)]
+                    [FieldOffset(128)]
                     public global::System.IntPtr TemplatedDecl;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -6649,7 +6704,7 @@ namespace CppSharp
 
                 private static Template.Internal* __CopyValue(Template.Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(140);
+                    var ret = Marshal.AllocHGlobal(144);
                     CppSharp.Parser.AST.Template.Internal.cctor_3(ret, new global::System.IntPtr(&native));
                     return (Template.Internal*) ret;
                 }
@@ -6668,7 +6723,7 @@ namespace CppSharp
                 public Template(CppSharp.Parser.AST.DeclarationKind kind)
                     : this((Internal*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(140);
+                    __Instance = Marshal.AllocHGlobal(144);
                     __ownsNativeInstance = true;
                     var arg0 = kind;
                     Internal.ctor_0(__Instance, arg0);
@@ -6677,7 +6732,7 @@ namespace CppSharp
                 public Template()
                     : this((Internal*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(140);
+                    __Instance = Marshal.AllocHGlobal(144);
                     __ownsNativeInstance = true;
                     Internal.ctor_1(__Instance);
                 }
@@ -6734,7 +6789,7 @@ namespace CppSharp
 
             public unsafe partial class ClassTemplate : CppSharp.Parser.AST.Template, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 152)]
+                [StructLayout(LayoutKind.Explicit, Size = 156)]
                 public new partial struct Internal
                 {
                     [FieldOffset(0)]
@@ -6750,27 +6805,30 @@ namespace CppSharp
                     public CppSharp.Parser.SourceLocation.Internal Location;
 
                     [FieldOffset(16)]
-                    public int LineNumber;
+                    public int LineNumberStart;
 
-                    [FieldOffset(44)]
+                    [FieldOffset(20)]
+                    public int LineNumberEnd;
+
+                    [FieldOffset(48)]
                     public global::System.IntPtr Comment;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     public bool IsIncomplete;
 
-                    [FieldOffset(73)]
+                    [FieldOffset(77)]
                     public bool IsDependent;
 
-                    [FieldOffset(76)]
+                    [FieldOffset(80)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(80)]
+                    [FieldOffset(84)]
                     public uint DefinitionOrder;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     public global::System.IntPtr OriginalPtr;
 
-                    [FieldOffset(124)]
+                    [FieldOffset(128)]
                     public global::System.IntPtr TemplatedDecl;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -6823,7 +6881,7 @@ namespace CppSharp
 
                 private static ClassTemplate.Internal* __CopyValue(ClassTemplate.Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(152);
+                    var ret = Marshal.AllocHGlobal(156);
                     CppSharp.Parser.AST.ClassTemplate.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (ClassTemplate.Internal*) ret;
                 }
@@ -6842,7 +6900,7 @@ namespace CppSharp
                 public ClassTemplate()
                     : this((Internal*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(152);
+                    __Instance = Marshal.AllocHGlobal(156);
                     __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
@@ -6886,7 +6944,7 @@ namespace CppSharp
 
             public unsafe partial class ClassTemplateSpecialization : CppSharp.Parser.AST.Class, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 316)]
+                [StructLayout(LayoutKind.Explicit, Size = 320)]
                 public new partial struct Internal
                 {
                     [FieldOffset(0)]
@@ -6902,63 +6960,66 @@ namespace CppSharp
                     public CppSharp.Parser.SourceLocation.Internal Location;
 
                     [FieldOffset(16)]
-                    public int LineNumber;
+                    public int LineNumberStart;
 
-                    [FieldOffset(44)]
+                    [FieldOffset(20)]
+                    public int LineNumberEnd;
+
+                    [FieldOffset(48)]
                     public global::System.IntPtr Comment;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     public bool IsIncomplete;
 
-                    [FieldOffset(73)]
+                    [FieldOffset(77)]
                     public bool IsDependent;
 
-                    [FieldOffset(76)]
+                    [FieldOffset(80)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(80)]
+                    [FieldOffset(84)]
                     public uint DefinitionOrder;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     public global::System.IntPtr OriginalPtr;
 
-                    [FieldOffset(228)]
+                    [FieldOffset(232)]
                     public bool IsAnonymous;
 
-                    [FieldOffset(280)]
+                    [FieldOffset(284)]
                     public bool IsPOD;
 
-                    [FieldOffset(281)]
+                    [FieldOffset(285)]
                     public bool IsAbstract;
 
-                    [FieldOffset(282)]
+                    [FieldOffset(286)]
                     public bool IsUnion;
 
-                    [FieldOffset(283)]
+                    [FieldOffset(287)]
                     public bool IsDynamic;
 
-                    [FieldOffset(284)]
+                    [FieldOffset(288)]
                     public bool IsPolymorphic;
 
-                    [FieldOffset(285)]
+                    [FieldOffset(289)]
                     public bool HasNonTrivialDefaultConstructor;
 
-                    [FieldOffset(286)]
+                    [FieldOffset(290)]
                     public bool HasNonTrivialCopyConstructor;
 
-                    [FieldOffset(287)]
+                    [FieldOffset(291)]
                     public bool HasNonTrivialDestructor;
 
-                    [FieldOffset(288)]
+                    [FieldOffset(292)]
                     public bool IsExternCContext;
 
-                    [FieldOffset(292)]
+                    [FieldOffset(296)]
                     public global::System.IntPtr Layout;
 
-                    [FieldOffset(296)]
+                    [FieldOffset(300)]
                     public global::System.IntPtr TemplatedDecl;
 
-                    [FieldOffset(312)]
+                    [FieldOffset(316)]
                     public CppSharp.Parser.AST.TemplateSpecializationKind SpecializationKind;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -7011,7 +7072,7 @@ namespace CppSharp
 
                 private static ClassTemplateSpecialization.Internal* __CopyValue(ClassTemplateSpecialization.Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(316);
+                    var ret = Marshal.AllocHGlobal(320);
                     CppSharp.Parser.AST.ClassTemplateSpecialization.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (ClassTemplateSpecialization.Internal*) ret;
                 }
@@ -7030,7 +7091,7 @@ namespace CppSharp
                 public ClassTemplateSpecialization()
                     : this((Internal*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(316);
+                    __Instance = Marshal.AllocHGlobal(320);
                     __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
@@ -7100,7 +7161,7 @@ namespace CppSharp
 
             public unsafe partial class ClassTemplatePartialSpecialization : CppSharp.Parser.AST.ClassTemplateSpecialization, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 316)]
+                [StructLayout(LayoutKind.Explicit, Size = 320)]
                 public new partial struct Internal
                 {
                     [FieldOffset(0)]
@@ -7116,63 +7177,66 @@ namespace CppSharp
                     public CppSharp.Parser.SourceLocation.Internal Location;
 
                     [FieldOffset(16)]
-                    public int LineNumber;
+                    public int LineNumberStart;
 
-                    [FieldOffset(44)]
+                    [FieldOffset(20)]
+                    public int LineNumberEnd;
+
+                    [FieldOffset(48)]
                     public global::System.IntPtr Comment;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     public bool IsIncomplete;
 
-                    [FieldOffset(73)]
+                    [FieldOffset(77)]
                     public bool IsDependent;
 
-                    [FieldOffset(76)]
+                    [FieldOffset(80)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(80)]
+                    [FieldOffset(84)]
                     public uint DefinitionOrder;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     public global::System.IntPtr OriginalPtr;
 
-                    [FieldOffset(228)]
+                    [FieldOffset(232)]
                     public bool IsAnonymous;
 
-                    [FieldOffset(280)]
+                    [FieldOffset(284)]
                     public bool IsPOD;
 
-                    [FieldOffset(281)]
+                    [FieldOffset(285)]
                     public bool IsAbstract;
 
-                    [FieldOffset(282)]
+                    [FieldOffset(286)]
                     public bool IsUnion;
 
-                    [FieldOffset(283)]
+                    [FieldOffset(287)]
                     public bool IsDynamic;
 
-                    [FieldOffset(284)]
+                    [FieldOffset(288)]
                     public bool IsPolymorphic;
 
-                    [FieldOffset(285)]
+                    [FieldOffset(289)]
                     public bool HasNonTrivialDefaultConstructor;
 
-                    [FieldOffset(286)]
+                    [FieldOffset(290)]
                     public bool HasNonTrivialCopyConstructor;
 
-                    [FieldOffset(287)]
+                    [FieldOffset(291)]
                     public bool HasNonTrivialDestructor;
 
-                    [FieldOffset(288)]
+                    [FieldOffset(292)]
                     public bool IsExternCContext;
 
-                    [FieldOffset(292)]
+                    [FieldOffset(296)]
                     public global::System.IntPtr Layout;
 
-                    [FieldOffset(296)]
+                    [FieldOffset(300)]
                     public global::System.IntPtr TemplatedDecl;
 
-                    [FieldOffset(312)]
+                    [FieldOffset(316)]
                     public CppSharp.Parser.AST.TemplateSpecializationKind SpecializationKind;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -7205,7 +7269,7 @@ namespace CppSharp
 
                 private static ClassTemplatePartialSpecialization.Internal* __CopyValue(ClassTemplatePartialSpecialization.Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(316);
+                    var ret = Marshal.AllocHGlobal(320);
                     CppSharp.Parser.AST.ClassTemplatePartialSpecialization.Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return (ClassTemplatePartialSpecialization.Internal*) ret;
                 }
@@ -7224,7 +7288,7 @@ namespace CppSharp
                 public ClassTemplatePartialSpecialization()
                     : this((Internal*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(316);
+                    __Instance = Marshal.AllocHGlobal(320);
                     __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
@@ -7241,7 +7305,7 @@ namespace CppSharp
 
             public unsafe partial class FunctionTemplate : CppSharp.Parser.AST.Template, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 152)]
+                [StructLayout(LayoutKind.Explicit, Size = 156)]
                 public new partial struct Internal
                 {
                     [FieldOffset(0)]
@@ -7257,27 +7321,30 @@ namespace CppSharp
                     public CppSharp.Parser.SourceLocation.Internal Location;
 
                     [FieldOffset(16)]
-                    public int LineNumber;
+                    public int LineNumberStart;
 
-                    [FieldOffset(44)]
+                    [FieldOffset(20)]
+                    public int LineNumberEnd;
+
+                    [FieldOffset(48)]
                     public global::System.IntPtr Comment;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     public bool IsIncomplete;
 
-                    [FieldOffset(73)]
+                    [FieldOffset(77)]
                     public bool IsDependent;
 
-                    [FieldOffset(76)]
+                    [FieldOffset(80)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(80)]
+                    [FieldOffset(84)]
                     public uint DefinitionOrder;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     public global::System.IntPtr OriginalPtr;
 
-                    [FieldOffset(124)]
+                    [FieldOffset(128)]
                     public global::System.IntPtr TemplatedDecl;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -7330,7 +7397,7 @@ namespace CppSharp
 
                 private static FunctionTemplate.Internal* __CopyValue(FunctionTemplate.Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(152);
+                    var ret = Marshal.AllocHGlobal(156);
                     CppSharp.Parser.AST.FunctionTemplate.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (FunctionTemplate.Internal*) ret;
                 }
@@ -7349,7 +7416,7 @@ namespace CppSharp
                 public FunctionTemplate()
                     : this((Internal*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(152);
+                    __Instance = Marshal.AllocHGlobal(156);
                     __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
@@ -7564,7 +7631,7 @@ namespace CppSharp
 
             public unsafe partial class Namespace : CppSharp.Parser.AST.DeclarationContext, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 236)]
+                [StructLayout(LayoutKind.Explicit, Size = 240)]
                 public new partial struct Internal
                 {
                     [FieldOffset(0)]
@@ -7580,30 +7647,33 @@ namespace CppSharp
                     public CppSharp.Parser.SourceLocation.Internal Location;
 
                     [FieldOffset(16)]
-                    public int LineNumber;
+                    public int LineNumberStart;
 
-                    [FieldOffset(44)]
+                    [FieldOffset(20)]
+                    public int LineNumberEnd;
+
+                    [FieldOffset(48)]
                     public global::System.IntPtr Comment;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     public bool IsIncomplete;
 
-                    [FieldOffset(73)]
+                    [FieldOffset(77)]
                     public bool IsDependent;
 
-                    [FieldOffset(76)]
+                    [FieldOffset(80)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(80)]
+                    [FieldOffset(84)]
                     public uint DefinitionOrder;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     public global::System.IntPtr OriginalPtr;
 
-                    [FieldOffset(228)]
+                    [FieldOffset(232)]
                     public bool IsAnonymous;
 
-                    [FieldOffset(232)]
+                    [FieldOffset(236)]
                     public bool IsInline;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -7636,7 +7706,7 @@ namespace CppSharp
 
                 private static Namespace.Internal* __CopyValue(Namespace.Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(236);
+                    var ret = Marshal.AllocHGlobal(240);
                     CppSharp.Parser.AST.Namespace.Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return (Namespace.Internal*) ret;
                 }
@@ -7655,7 +7725,7 @@ namespace CppSharp
                 public Namespace()
                     : this((Internal*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(236);
+                    __Instance = Marshal.AllocHGlobal(240);
                     __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
@@ -7685,7 +7755,7 @@ namespace CppSharp
 
             public unsafe partial class PreprocessedEntity : CppSharp.Parser.AST.Declaration, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 128)]
+                [StructLayout(LayoutKind.Explicit, Size = 132)]
                 public new partial struct Internal
                 {
                     [FieldOffset(0)]
@@ -7701,27 +7771,30 @@ namespace CppSharp
                     public CppSharp.Parser.SourceLocation.Internal Location;
 
                     [FieldOffset(16)]
-                    public int LineNumber;
+                    public int LineNumberStart;
 
-                    [FieldOffset(44)]
+                    [FieldOffset(20)]
+                    public int LineNumberEnd;
+
+                    [FieldOffset(48)]
                     public global::System.IntPtr Comment;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     public bool IsIncomplete;
 
-                    [FieldOffset(73)]
+                    [FieldOffset(77)]
                     public bool IsDependent;
 
-                    [FieldOffset(76)]
+                    [FieldOffset(80)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(80)]
+                    [FieldOffset(84)]
                     public uint DefinitionOrder;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     public global::System.IntPtr OriginalPtr;
 
-                    [FieldOffset(124)]
+                    [FieldOffset(128)]
                     public CppSharp.Parser.AST.MacroLocation MacroLocation;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -7754,7 +7827,7 @@ namespace CppSharp
 
                 private static PreprocessedEntity.Internal* __CopyValue(PreprocessedEntity.Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(128);
+                    var ret = Marshal.AllocHGlobal(132);
                     CppSharp.Parser.AST.PreprocessedEntity.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (PreprocessedEntity.Internal*) ret;
                 }
@@ -7773,7 +7846,7 @@ namespace CppSharp
                 public PreprocessedEntity()
                     : this((Internal*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(128);
+                    __Instance = Marshal.AllocHGlobal(132);
                     __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
@@ -7803,7 +7876,7 @@ namespace CppSharp
 
             public unsafe partial class MacroDefinition : CppSharp.Parser.AST.PreprocessedEntity, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 152)]
+                [StructLayout(LayoutKind.Explicit, Size = 156)]
                 public new partial struct Internal
                 {
                     [FieldOffset(0)]
@@ -7819,27 +7892,30 @@ namespace CppSharp
                     public CppSharp.Parser.SourceLocation.Internal Location;
 
                     [FieldOffset(16)]
-                    public int LineNumber;
+                    public int LineNumberStart;
 
-                    [FieldOffset(44)]
+                    [FieldOffset(20)]
+                    public int LineNumberEnd;
+
+                    [FieldOffset(48)]
                     public global::System.IntPtr Comment;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     public bool IsIncomplete;
 
-                    [FieldOffset(73)]
+                    [FieldOffset(77)]
                     public bool IsDependent;
 
-                    [FieldOffset(76)]
+                    [FieldOffset(80)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(80)]
+                    [FieldOffset(84)]
                     public uint DefinitionOrder;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     public global::System.IntPtr OriginalPtr;
 
-                    [FieldOffset(124)]
+                    [FieldOffset(128)]
                     public CppSharp.Parser.AST.MacroLocation MacroLocation;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -7882,7 +7958,7 @@ namespace CppSharp
 
                 private static MacroDefinition.Internal* __CopyValue(MacroDefinition.Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(152);
+                    var ret = Marshal.AllocHGlobal(156);
                     CppSharp.Parser.AST.MacroDefinition.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (MacroDefinition.Internal*) ret;
                 }
@@ -7901,7 +7977,7 @@ namespace CppSharp
                 public MacroDefinition()
                     : this((Internal*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(152);
+                    __Instance = Marshal.AllocHGlobal(156);
                     __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
@@ -7935,7 +8011,7 @@ namespace CppSharp
 
             public unsafe partial class MacroExpansion : CppSharp.Parser.AST.PreprocessedEntity, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 156)]
+                [StructLayout(LayoutKind.Explicit, Size = 160)]
                 public new partial struct Internal
                 {
                     [FieldOffset(0)]
@@ -7951,30 +8027,33 @@ namespace CppSharp
                     public CppSharp.Parser.SourceLocation.Internal Location;
 
                     [FieldOffset(16)]
-                    public int LineNumber;
+                    public int LineNumberStart;
 
-                    [FieldOffset(44)]
+                    [FieldOffset(20)]
+                    public int LineNumberEnd;
+
+                    [FieldOffset(48)]
                     public global::System.IntPtr Comment;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     public bool IsIncomplete;
 
-                    [FieldOffset(73)]
+                    [FieldOffset(77)]
                     public bool IsDependent;
 
-                    [FieldOffset(76)]
+                    [FieldOffset(80)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(80)]
+                    [FieldOffset(84)]
                     public uint DefinitionOrder;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     public global::System.IntPtr OriginalPtr;
 
-                    [FieldOffset(124)]
+                    [FieldOffset(128)]
                     public CppSharp.Parser.AST.MacroLocation MacroLocation;
 
-                    [FieldOffset(152)]
+                    [FieldOffset(156)]
                     public global::System.IntPtr Definition;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -8017,7 +8096,7 @@ namespace CppSharp
 
                 private static MacroExpansion.Internal* __CopyValue(MacroExpansion.Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(156);
+                    var ret = Marshal.AllocHGlobal(160);
                     CppSharp.Parser.AST.MacroExpansion.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (MacroExpansion.Internal*) ret;
                 }
@@ -8036,7 +8115,7 @@ namespace CppSharp
                 public MacroExpansion()
                     : this((Internal*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(156);
+                    __Instance = Marshal.AllocHGlobal(160);
                     __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
@@ -8083,7 +8162,7 @@ namespace CppSharp
 
             public unsafe partial class TranslationUnit : CppSharp.Parser.AST.Namespace, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 276)]
+                [StructLayout(LayoutKind.Explicit, Size = 280)]
                 public new partial struct Internal
                 {
                     [FieldOffset(0)]
@@ -8099,33 +8178,36 @@ namespace CppSharp
                     public CppSharp.Parser.SourceLocation.Internal Location;
 
                     [FieldOffset(16)]
-                    public int LineNumber;
+                    public int LineNumberStart;
 
-                    [FieldOffset(44)]
+                    [FieldOffset(20)]
+                    public int LineNumberEnd;
+
+                    [FieldOffset(48)]
                     public global::System.IntPtr Comment;
 
-                    [FieldOffset(72)]
+                    [FieldOffset(76)]
                     public bool IsIncomplete;
 
-                    [FieldOffset(73)]
+                    [FieldOffset(77)]
                     public bool IsDependent;
 
-                    [FieldOffset(76)]
+                    [FieldOffset(80)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(80)]
+                    [FieldOffset(84)]
                     public uint DefinitionOrder;
 
-                    [FieldOffset(96)]
+                    [FieldOffset(100)]
                     public global::System.IntPtr OriginalPtr;
 
-                    [FieldOffset(228)]
+                    [FieldOffset(232)]
                     public bool IsAnonymous;
 
-                    [FieldOffset(232)]
+                    [FieldOffset(236)]
                     public bool IsInline;
 
-                    [FieldOffset(260)]
+                    [FieldOffset(264)]
                     public bool IsSystemHeader;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -8188,7 +8270,7 @@ namespace CppSharp
 
                 private static TranslationUnit.Internal* __CopyValue(TranslationUnit.Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(276);
+                    var ret = Marshal.AllocHGlobal(280);
                     CppSharp.Parser.AST.TranslationUnit.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (TranslationUnit.Internal*) ret;
                 }
@@ -8207,7 +8289,7 @@ namespace CppSharp
                 public TranslationUnit()
                     : this((Internal*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(276);
+                    __Instance = Marshal.AllocHGlobal(280);
                     __ownsNativeInstance = true;
                     Internal.ctor_0(__Instance);
                 }
