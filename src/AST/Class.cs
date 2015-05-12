@@ -10,7 +10,8 @@ namespace CppSharp.AST
     {
         Private,
         Protected,
-        Public
+        Public,
+        Internal
     }
 
     // A C++ access specifier declaration.

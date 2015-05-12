@@ -53,6 +53,7 @@ namespace CppSharp.Generators.CSharp
             switch (accessSpecifier)
             {
                 case AccessSpecifier.Private:
+                case AccessSpecifier.Internal:
                     return "internal ";
                 case AccessSpecifier.Protected:
                     return "protected ";
