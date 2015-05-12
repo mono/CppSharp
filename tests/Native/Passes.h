@@ -61,3 +61,9 @@ struct TestCheckAmbiguousFunctionsPass
     int Method(int x);
     int Method(int x) const;
 };
+
+#define CS_INTERNAL
+struct TestMethodAsInternal
+{
+    int CS_INTERNAL beInternal();
+};
