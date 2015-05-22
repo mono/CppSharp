@@ -345,7 +345,18 @@ namespace CppSharp.Generators.CSharp
                 return;
 
             PushBlock(BlockKind.InlineComment);
-            WriteLine("/// <summary>{0}</summary>", comment.BriefText);
+            if (comment.BriefText.Contains("\n"))
+            {
+                WriteLine("/// <summary>");
+                foreach (string line in HtmlEncoder.HtmlEncode(comment.BriefText).Split(
+                                            Environment.NewLine.ToCharArray()))
+                    WriteLine("/// <para>{0}</para>", line);
+                WriteLine("/// </summary>");
+            }
+            else
+            {
+                WriteLine("/// <summary>{0}</summary>", comment.BriefText);                
+            }
             PopBlock();
         }
 
