@@ -647,6 +647,24 @@ public:
         {
         };
     };
+	struct
+	{
+		struct
+		{
+		};
+	};
+	struct
+	{
+		struct
+		{
+		};
+	};
+	struct
+	{
+		struct
+		{
+		};
+	};
 
     union as_types
     {

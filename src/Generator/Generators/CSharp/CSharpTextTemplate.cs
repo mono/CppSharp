@@ -713,6 +713,11 @@ namespace CppSharp.Generators.CSharp
 
             var safeIdentifier = Helpers.SafeIdentifier(field.OriginalName);
 
+            if(safeIdentifier.All(c => c.Equals('_')))
+            {
+                safeIdentifier = Helpers.SafeIdentifier(field.Name);
+            }
+
             PushBlock(CSharpBlockKind.Field);
 
             WriteLine("[FieldOffset({0})]", field.OffsetInBytes);
