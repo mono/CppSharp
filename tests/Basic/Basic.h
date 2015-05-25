@@ -710,3 +710,13 @@ public:
     bool operator ==(const DifferentConstOverloads& other);
     bool operator ==(int number) const;
 };
+
+#define ARRAY_LENGTH 5
+#define CS_VALUE_TYPE
+struct CS_VALUE_TYPE ValueTypeArrays
+{
+	float firstValueTypeArrray[ARRAY_LENGTH];
+	int secondValueTypeArray[ARRAY_LENGTH];
+	char thirdValueTypeArray[ARRAY_LENGTH];
+	size_t size;
+};
