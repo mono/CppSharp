@@ -859,10 +859,10 @@ namespace CppSharp.Generators.CSharp
 
                 var arrayType = field.Type as ArrayType;
                 
-                if(arrayType!=null && @class.IsValueType==true)
+                if(arrayType != null && @class.IsValueType)
                 {
-                    CSharpTypePrinter _ctp = new CSharpTypePrinter(ctx.Driver);
-                    string type = arrayType.CSharpType(_ctp).Type;
+                    CSharpTypePrinter typePrinter = new CSharpTypePrinter(ctx.Driver);
+                    string type = arrayType.CSharpType(typePrinter).Type;
                     WriteLine(string.Format("fixed ({0} __arrPtr = {1}.{2})",
                         type.Replace("[]","*"), Helpers.InstanceField,
                         Helpers.SafeIdentifier(field.OriginalName)));
@@ -889,7 +889,7 @@ namespace CppSharp.Generators.CSharp
                     WriteLine("{0} = {1};", ctx.ReturnVarName, marshal.Context.Return);                    
                 }
 
-                if (arrayType != null && @class.IsValueType == true)
+                if (arrayType != null && @class.IsValueType)
                 {
                     WriteCloseBraceIndent();
                 }
@@ -986,10 +986,10 @@ namespace CppSharp.Generators.CSharp
 
                 var arrayType = field.Type as ArrayType;
 
-                if (arrayType != null && @class.IsValueType == true)
+                if (arrayType != null && @class.IsValueType)
                 {
-                    CSharpTypePrinter _ctp = new CSharpTypePrinter(ctx.Driver);
-                    string type = arrayType.CSharpType(_ctp).Type;
+                    CSharpTypePrinter typePrinter = new CSharpTypePrinter(ctx.Driver);
+                    string type = arrayType.CSharpType(typePrinter).Type;
                     WriteLine(string.Format("fixed ({0} __arrPtr = {1}.{2})",
                         type.Replace("[]", "*"), Helpers.InstanceField,
                         Helpers.SafeIdentifier(field.OriginalName)));
@@ -1006,7 +1006,7 @@ namespace CppSharp.Generators.CSharp
                 WriteLine("return {0};", marshal.Context.Return);
 
 
-                if (arrayType != null && @class.IsValueType == true)
+                if (arrayType != null && @class.IsValueType)
                 {
                     WriteCloseBraceIndent();
                 }
