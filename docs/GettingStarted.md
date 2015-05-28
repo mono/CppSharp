@@ -20,6 +20,12 @@ Git repository urls found here: [http://llvm.org/docs/GettingStarted.html#git-mi
 3. Clone Clang to `<CppSharp>\deps\llvm\tools\clang`
 4. Create directory `<CppSharp>\deps\llvm\build`
 
+Last revisions known to work:
+
+LLVM `r230176` / Git mirror revision `0e8abfa6ed986c892ec723236e32e78fd9c47b88`.
+
+Clang `r230160` / Git mirror revision `3457cd5516ac741fa106623d9578f5ac88593f4d`.
+
 ## Compiling on Windows/Visual Studio
 
 ### Compiling LLVM on Windows/Visual Studio (32-bit binaries)
@@ -41,12 +47,6 @@ cmake -G "Visual Studio 12 Win64" -DCLANG_BUILD_EXAMPLES=false -DCLANG_INCLUDE_D
 
 msbuild LLVM.sln /p:Configuration=RelWithDebInfo;Platform=x64 /m
 ```
-
-Last revisions known to work:
-
-LLVM `r230176` / Git mirror revision `0e8abfa6ed986c892ec723236e32e78fd9c47b88`.
-
-Clang `r230160` / Git mirror revision `3457cd5516ac741fa106623d9578f5ac88593f4d`.
 
 ### Compiling CppSharp on Windows/Visual Studio
 
