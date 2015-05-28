@@ -76,6 +76,14 @@ run the upgrade process after generation.
     - LLVM_ENABLE_LIBCXX (enables libc++ standard library support)
     - LLVM_BUILD_32_BITS for 32-bit builds (defaults to 64-bit)
 
+```shell
+cd deps/llvm/build
+
+cmake -G "Unix Makefiles" -DLLVM_ENABLE_CXX11=true -DLLVM_ENABLE_LIBCXX=true -DLLVM_BUILD_32_BITS=true -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
+
+make
+```
+
 ### Compiling CppSharp on Mac OS X
 
 1. Run `premake5-osx gmake` in <CppSharp>\build
