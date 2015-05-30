@@ -710,3 +710,22 @@ public:
     bool operator ==(const DifferentConstOverloads& other);
     bool operator ==(int number) const;
 };
+
+#define CS_API
+#define CS_VALUE_TYPE
+class CS_API ClassPassTry
+{
+public:
+	int n;
+	char c;
+};
+
+void funcTry(CS_OUT ClassPassTry* classTry)
+{
+
+}
+
+void funcTry2(CS_OUT ClassPassTry classTry)
+{
+
+}
