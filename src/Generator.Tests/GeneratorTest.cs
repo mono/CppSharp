@@ -51,7 +51,7 @@ namespace CppSharp.Utils
             };
 
             if (IsMacOS) {
-                options.addArguments ("-stdlib=libc++");
+                options.SetupXcode();
             }
 
             foreach (var header in headersPaths)
