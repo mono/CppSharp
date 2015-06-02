@@ -41,12 +41,13 @@ namespace CppSharp.Generators.CSharp
             return new string(id.Select(c => char.IsLetterOrDigit(c) ? c : '_').ToArray());
         }
 
-        public const string InstanceField = "__instance";
-        public const string InstanceIdentifier = "__Instance";
+        public static readonly string InstanceField = Generator.GeneratedIdentifier("instance");
+        public static readonly string InstanceIdentifier = Generator.GeneratedIdentifier("Instance");
+        public static readonly string ReturnIdentifier = Generator.GeneratedIdentifier("ret");
 
-        public const string OwnsNativeInstanceIdentifier = "__ownsNativeInstance";
+        public static readonly string OwnsNativeInstanceIdentifier = Generator.GeneratedIdentifier("ownsNativeInstance");
 
-        public const string CreateInstanceIdentifier = "__CreateInstance";
+        public static readonly string CreateInstanceIdentifier = Generator.GeneratedIdentifier("CreateInstance");
 
         public static string GetAccess(AccessSpecifier accessSpecifier)
         {
@@ -1437,7 +1438,7 @@ namespace CppSharp.Generators.CSharp
             var hasReturn = !method.OriginalReturnType.Type.IsPrimitiveType(PrimitiveType.Void);
 
             if (hasReturn)
-                Write("var _ret = ");
+                Write("var {0} = ", Helpers.ReturnIdentifier);
 
             // HACK: because of the non-shared v-table entries bug we must look for the real method by name
             Method m = ((Class) method.Namespace).GetMethodByName(method.Name);
@@ -1454,14 +1455,14 @@ namespace CppSharp.Generators.CSharp
             {
                 var param = new Parameter
                 {
-                    Name = "_ret",
+                    Name = Helpers.ReturnIdentifier,
                     QualifiedType = method.ReturnType
                 };
 
                 // Marshal the managed result to native
                 var ctx = new CSharpMarshalContext(Driver)
                 {
-                    ArgName = "_ret",
+                    ArgName = Helpers.ReturnIdentifier,
                     Parameter = param,
                     Function = method
                 };
@@ -2290,7 +2291,7 @@ namespace CppSharp.Generators.CSharp
 
                 if (construct == null)
                 {
-                    WriteLine("var {0} = new {1}.Internal();", GeneratedIdentifier("ret"),
+                    WriteLine("var {0} = new {1}.Internal();", Helpers.ReturnIdentifier,
                         QualifiedIdentifierIfNeeded(function, retClass.OriginalClass ?? retClass));
                 }
                 else
@@ -2301,7 +2302,7 @@ namespace CppSharp.Generators.CSharp
                             {
                                 Type = indirectRetType.Type.Desugar()
                             }),
-                            GeneratedIdentifier("ret"));
+                            Helpers.ReturnIdentifier);
                     else
                         WriteLine("var {0} = {1};", construct);
                 }
@@ -2326,7 +2327,7 @@ namespace CppSharp.Generators.CSharp
 
             if (originalFunction.HasIndirectReturnTypeParameter)
             {
-                var name = string.Format("new IntPtr(&{0})", GeneratedIdentifier("ret"));
+                var name = string.Format("new IntPtr(&{0})", Helpers.ReturnIdentifier);
                 names.Insert(0, name);
             }
 
@@ -2367,7 +2368,7 @@ namespace CppSharp.Generators.CSharp
             }
 
             if (needsReturn && !originalFunction.HasIndirectReturnTypeParameter)
-                Write("var {0} = ", GeneratedIdentifier("ret"));
+                Write("var {0} = ", Helpers.ReturnIdentifier);
 
             WriteLine("{0}({1});", functionName, string.Join(", ", names));
 
@@ -2417,8 +2418,8 @@ namespace CppSharp.Generators.CSharp
 
                 var ctx = new CSharpMarshalContext(Driver)
                 {
-                    ArgName = GeneratedIdentifier("ret"),
-                    ReturnVarName = GeneratedIdentifier("ret"),
+                    ArgName = Helpers.ReturnIdentifier,
+                    ReturnVarName = Helpers.ReturnIdentifier,
                     ReturnType = retType
                 };
 
