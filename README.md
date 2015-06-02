@@ -1,8 +1,14 @@
+## News
+
+2nd, June 2015: We're having three students contributing to the project this summer, as part of Google Summer of Code.
+
+* Alexandre Esteves
+* Dimitar Dobrev (@ddobrev)
+* Abhinav Tripathi (@genuinelucifer)
+
+## Overview
+
 CppSharp is a collection of libraries for working with C++ code from .NET.
-
-# ANNOUNCEMENT
-
-We'll be participating in Google Summer of Code 2015 as part of the Mono organization. If you're interested in contributing to the project as part of the program then get in touch!
 
 ### Generator
 
