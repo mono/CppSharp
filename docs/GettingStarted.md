@@ -72,14 +72,13 @@ run the upgrade process after generation.
 
 1. Compile LLVM solution in *RelWithDebInfo* mode
    The following CMake variables should be enabled:
-    - LLVM_ENABLE_CXX11 (enables C++11 support)
     - LLVM_ENABLE_LIBCXX (enables libc++ standard library support)
     - LLVM_BUILD_32_BITS for 32-bit builds (defaults to 64-bit)
 
 ```shell
 cd deps/llvm/build
 
-cmake -G "Unix Makefiles" -DLLVM_ENABLE_CXX11=true -DLLVM_ENABLE_LIBCXX=true -DLLVM_BUILD_32_BITS=true -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
+cmake -G "Unix Makefiles" -DLLVM_ENABLE_LIBCXX=true -DLLVM_BUILD_32_BITS=true -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
 
 make
 ```
