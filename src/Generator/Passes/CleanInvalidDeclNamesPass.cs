@@ -3,6 +3,7 @@ using System.Linq;
 using CppSharp.AST;
 using CppSharp.Generators.CLI;
 using CppSharp.Generators.CSharp;
+using System.Text;
 
 namespace CppSharp.Passes
 {
@@ -152,6 +153,21 @@ namespace CppSharp.Passes
         {
             item.Name = CheckName(item.Name);
             return base.VisitEnumItem(item);
+        }
+
+        public override bool VisitFieldDecl(Field field)
+        {
+            if (field.Class.Fields.Count(c => c.Name.Equals(field.Name)) > 1)
+            {
+                StringBuilder str = new StringBuilder();
+                str.Append(field.Name);
+                do
+                {
+                    str.Append('_');
+                } while (field.Class.Fields.Any(c => c.Name.Equals(str.ToString())));
+                field.Name = str.ToString();
+            }
+            return base.VisitFieldDecl(field);
         }
     }
 }
