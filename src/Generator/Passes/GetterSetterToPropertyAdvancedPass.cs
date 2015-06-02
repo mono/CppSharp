@@ -254,6 +254,11 @@ namespace CppSharp.Passes
             var assembly = Assembly.GetExecutingAssembly();
             using (var resourceStream = GetResourceStream(assembly))
             {
+                // For some reason, embedded resources are not working when compiling the
+                // Premake-generated VS project files with xbuild under OSX. Workaround this for now.
+                if (resourceStream == null)
+                    return;
+
                 using (var streamReader = new StreamReader(resourceStream))
                     while (!streamReader.EndOfStream)
                         verbs.Add(streamReader.ReadLine());
