@@ -379,7 +379,7 @@ New passes are added to the generator by using the API provided by `PassBuilder`
 ```csharp
 void SetupPasses(Driver driver)
 {
-	driver.TranslationUnitPasses.AddPass(new RenameDeclsUpperCase(RenameTargets.Any));
+	driver.TranslationUnitPasses.RenameDeclsUpperCase(RenameTargets.Any);
 	driver.TranslationUnitPasses.AddPass(new FunctionToInstanceMethodPass());
 }
 ```
