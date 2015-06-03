@@ -928,7 +928,7 @@ namespace CppSharp.Generators.CLI
 
             var @params = GenerateFunctionParamsMarshal(function.Parameters, function);
 
-            var returnIdentifier = Generator.GeneratedIdentifier("ret");
+            var returnIdentifier = Helpers.ReturnIdentifier;
             if (needsReturn)
                 if (retType.Type.IsReference())
                     Write("auto &{0} = ", returnIdentifier);
