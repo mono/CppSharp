@@ -421,3 +421,30 @@ void TestPointers::TestTripleCharPointers(const char*** names)
 {
 
 }
+
+class DLL_API HasVirtualDtor1
+{
+public:
+    virtual ~HasVirtualDtor1();
+};
+
+class DLL_API HasVirtualDtor2
+{
+public:
+    HasVirtualDtor2();
+    virtual ~HasVirtualDtor2();
+    HasVirtualDtor1* getHasVirtualDtor1();
+    virtual void virtualFunction(const HasVirtualDtor1& param1, const HasVirtualDtor1& param2);
+private:
+    HasVirtualDtor1* hasVirtualDtor1;
+};
+
+class DLL_API TestNativeToManagedMap
+{
+public:
+    TestNativeToManagedMap();
+    virtual ~TestNativeToManagedMap();
+    HasVirtualDtor2* getHasVirtualDtor2();
+private:
+    HasVirtualDtor2* hasVirtualDtor2;
+};

@@ -391,3 +391,41 @@ Foo StructWithPrivateFields::getComplexPrivateField()
 {
     return complexPrivateField;
 }
+
+HasVirtualDtor1::~HasVirtualDtor1()
+{
+}
+
+HasVirtualDtor2::HasVirtualDtor2()
+{
+    hasVirtualDtor1 = new HasVirtualDtor1();
+}
+
+HasVirtualDtor2::~HasVirtualDtor2()
+{
+    delete hasVirtualDtor1;
+}
+
+HasVirtualDtor1* HasVirtualDtor2::getHasVirtualDtor1()
+{
+    return hasVirtualDtor1;
+}
+
+void HasVirtualDtor2::virtualFunction(const HasVirtualDtor1& param1, const HasVirtualDtor1& param2)
+{
+}
+
+TestNativeToManagedMap::TestNativeToManagedMap()
+{
+    hasVirtualDtor2 = new HasVirtualDtor2();
+}
+
+TestNativeToManagedMap::~TestNativeToManagedMap()
+{
+    delete hasVirtualDtor2;
+}
+
+HasVirtualDtor2* TestNativeToManagedMap::getHasVirtualDtor2()
+{
+    return hasVirtualDtor2;
+}

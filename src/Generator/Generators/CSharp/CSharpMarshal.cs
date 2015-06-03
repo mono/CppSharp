@@ -269,20 +269,33 @@ namespace CppSharp.Generators.CSharp
                     "Internal" : "");
 
             if (returnType.IsAddress())
-                Context.Return.Write("({0} == IntPtr.Zero) ? {1} : {2}.{3}({0})", instance,
-                    @class.IsRefType ? "null" : string.Format("new {0}()", type),
-                    type, Helpers.CreateInstanceIdentifier);
+            {
+                var ret = Generator.GeneratedIdentifier("result") + Context.ParameterIndex;
+                Context.SupportBefore.WriteLine("{0} {1};", type, ret);
+                Context.SupportBefore.WriteLine("if ({0} == IntPtr.Zero) {1} = {2};", instance, ret,
+                    @class.IsRefType ? "null" : string.Format("new {0}()", type));
+                var dtor = @class.Destructors.FirstOrDefault();
+                var map = @class.IsRefType && dtor != null && dtor.IsVirtual;
+                if (map)
+                {
+                    Context.SupportBefore.WriteLine(
+                        "else if (CppSharp.Runtime.Helpers.NativeToManagedMap.ContainsKey({0}))", instance);
+                    Context.SupportBefore.WriteLineIndent("{0} = ({1}) CppSharp.Runtime.Helpers.NativeToManagedMap[{2}];",
+                        ret, type, instance);
+                    Context.SupportBefore.WriteLine("else CppSharp.Runtime.Helpers.NativeToManagedMap[{3}] = {0} = {1}.{2}({3});", ret, type,
+                        Helpers.CreateInstanceIdentifier, instance);
+                }
+                else
+                {
+                    Context.SupportBefore.WriteLine("else {0} = {1}.{2}({3});", ret, type,
+                        Helpers.CreateInstanceIdentifier, instance);   
+                }
+                Context.Return.Write(ret);
+            }
             else
                 Context.Return.Write("{0}.{1}({2})", type, Helpers.CreateInstanceIdentifier, instance);
 
             return true;
-        }
-
-        private static bool FindTypeMap(ITypeMapDatabase typeMapDatabase,
-            Class @class, out TypeMap typeMap)
-        {
-            return typeMapDatabase.FindTypeMap(@class, out typeMap) ||
-                   (@class.HasBase && FindTypeMap(typeMapDatabase, @class.Bases[0].Class, out typeMap));
         }
 
         public override bool VisitEnumDecl(Enumeration @enum)
