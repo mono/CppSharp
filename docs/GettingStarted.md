@@ -179,13 +179,13 @@ public interface ILibrary
 	void Setup(Driver driver);
 
 	/// Setup your passes here.
-	void SetupPasses(Driver driver, PassBuilder passes);
+	void SetupPasses(Driver driver);
 
 	/// Do transformations that should happen before passes are processed.
-	void Preprocess(Driver driver, Library lib);
+	void Preprocess(Driver driver, ASTContext ctx);
 
 	/// Do transformations that should happen after passes are processed.
-	void Postprocess(Driver driver, Library lib);
+	void Postprocess(Driver driver, ASTContext ctx);
 }
 ```
 
@@ -372,15 +372,15 @@ whose methods get called for each declaration that was parsed from the headers
 CppSharp already comes with a collection of useful built-in passes and we will
 now see how to use them to fix the flaws enumerated above. 
 
-2. `void SetupPasses(Driver driver, PassBuilder passes)`
+2. `void SetupPasses(Driver driver)`
 
 New passes are added to the generator by using the API provided by `PassBuilder`.
 
 ```csharp
-void SetupPasses(Driver driver, PassBuilder passes)
+void SetupPasses(Driver driver)
 {
-	passes.RenameDeclsUpperCase(RenameTargets.Any);
-	passes.FunctionToInstanceMethod();
+	driver.TranslationUnitPasses.AddPass(new RenameDeclsUpperCase(RenameTargets.Any));
+	driver.TranslationUnitPasses.AddPass(new FunctionToInstanceMethodPass());
 }
 ```
 
@@ -487,8 +487,8 @@ Now that the bindings are looking good from a .NET perspective, let's see how
 we can achieve more advanced things by using the remaining overloads in the
 interface.
 
-3. `void Preprocess(Driver driver, Library lib);`
-4. `void Postprocess(Driver driver, Library lib);`
+3. `void Preprocess(Driver driver, ASTContext ctx);`
+4. `void Postprocess(Driver driver, ASTContext ctx);`
 
 As their comments suggest, these get called either before or after the the
 passes we setup earlier are run and they allow you free reign to manipulate
@@ -498,11 +498,11 @@ Let's say we want to change the class to provide .NET value semantics,
 drop one field from the generated bindings and rename the `FooAdd` function.
     
 ```csharp            
-void Postprocess(Driver driver, Library lib)
+void Postprocess(Driver driver, ASTContext ctx)
 {
-  	lib.SetClassAsValueType("Foo");
-  	lib.SetNameOfFunction("FooAdd", "FooCalc");
-  	lib.IgnoreClassField("Foo", "b");
+  	ctx.SetClassAsValueType("Foo");
+  	ctx.SetNameOfFunction("FooAdd", "FooCalc");
+  	ctx.IgnoreClassField("Foo", "b");
 }            
 ```
 
