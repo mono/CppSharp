@@ -142,20 +142,24 @@ namespace CppSharp.Generators.CSharp
             if (!VisitType(pointer, quals))
                 return false;
 
-            var pointee = pointer.Pointee.Desugar();
+            var param = Context.Parameter;
+            var isRefParam = param != null && (param.IsInOut || param.IsOut);
 
-            if (CSharpTypePrinter.IsConstCharString(pointer))
+            var pointee = pointer.Pointee.Desugar();
+            bool marshalPointeeAsString = CSharpTypePrinter.IsConstCharString(pointee) && isRefParam;
+
+            if (CSharpTypePrinter.IsConstCharString(pointer) || marshalPointeeAsString)
             {
                 Context.Return.Write(MarshalStringToManaged(Context.ReturnVarName,
-                    pointer.Pointee.Desugar() as BuiltinType));
+                    pointer.GetFinalPointee() as BuiltinType));
                 return true;
             }
 
+            var finalPointee = pointer.GetFinalPointee();
             PrimitiveType primitive;
-            if (pointee.IsPrimitiveType(out primitive) || pointee.IsEnumType())
+            if (finalPointee.IsPrimitiveType(out primitive) || finalPointee.IsEnumType())
             {
-                var param = Context.Parameter;
-                if (param != null && (param.IsOut || param.IsInOut))
+                if (isRefParam)
                 {
                     Context.Return.Write("_{0}", param.Name);
                     return true;
@@ -386,18 +390,20 @@ namespace CppSharp.Generators.CSharp
             if (!VisitType(pointer, quals))
                 return false;
 
-            var pointee = pointer.Pointee.Desugar();
+            var param = Context.Parameter;
+            var isRefParam = param != null && (param.IsInOut || param.IsOut);
 
-            if ((pointee.IsPrimitiveType(PrimitiveType.Char) ||
-                pointee.IsPrimitiveType(PrimitiveType.WideChar)) &&
-                pointer.QualifiedPointee.Qualifiers.IsConst)
+            var pointee = pointer.Pointee.Desugar();
+            bool marshalPointeeAsString = CSharpTypePrinter.IsConstCharString(pointee) && isRefParam;
+
+            if (CSharpTypePrinter.IsConstCharString(pointer) || marshalPointeeAsString)
             {
-                if (Context.Parameter.IsOut)
+                if (param.IsOut)
                 {
                     Context.Return.Write("IntPtr.Zero");
                     CSharpContext.ArgumentPrefix.Write("&");
                 }
-                else if (Context.Parameter.IsInOut)
+                else if (param.IsInOut)
                 {
                     Context.Return.Write(MarshalStringToUnmanaged(Context.Parameter.Name));
                     CSharpContext.ArgumentPrefix.Write("&");
@@ -437,18 +443,17 @@ namespace CppSharp.Generators.CSharp
                 return true;
             }
 
+            var finalPointee = pointer.GetFinalPointee();
             PrimitiveType primitive;
-            if (pointee.IsPrimitiveType(out primitive) || pointee.IsEnumType())
+            if (finalPointee.IsPrimitiveType(out primitive) || finalPointee.IsEnumType())
             {
-                var param = Context.Parameter;
-
                 // From MSDN: "note that a ref or out parameter is classified as a moveable
                 // variable". This means we must create a local variable to hold the result
                 // and then assign this value to the parameter.
 
-                if (param.IsOut || param.IsInOut)
+                if (isRefParam)
                 {
-                    var typeName = Type.TypePrinterDelegate(pointee);
+                    var typeName = Type.TypePrinterDelegate(finalPointee);
 
                     if (param.IsInOut)
                         Context.SupportBefore.WriteLine("{0} _{1} = {1};", typeName, param.Name);

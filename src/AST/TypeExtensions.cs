@@ -229,5 +229,20 @@
             }
             return finalPointee;
         }
+
+        public static PointerType GetFinalPointer(this Type t)
+        {
+            var type = t as PointerType;
+
+            if (type == null)
+                return null;
+            
+            var pointee = type.Desugar().GetPointee();
+
+            if (pointee.IsPointer())
+                return pointee.GetFinalPointer();
+
+            return type;
+        }
     }
 }

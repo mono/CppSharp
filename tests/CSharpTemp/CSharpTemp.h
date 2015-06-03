@@ -403,3 +403,21 @@ template <> struct QIntegerForSize<4> { typedef uint32_t Unsigned; typedef int32
 template <> struct QIntegerForSize<8> { typedef uint64_t Unsigned; typedef int64_t Signed; };
 typedef QIntegerForSize<Q_PROCESSOR_WORDSIZE>::Signed qregisterint;
 typedef QIntegerForSize<Q_PROCESSOR_WORDSIZE>::Unsigned qregisteruint;
+
+struct DLL_API TestPointers
+{
+    void TestDoubleCharPointers(const char** names);
+    void TestTripleCharPointers(const char*** names);
+
+    const char** Names;
+};
+
+void TestPointers::TestDoubleCharPointers(const char** names)
+{
+
+}
+
+void TestPointers::TestTripleCharPointers(const char*** names)
+{
+
+}

@@ -192,9 +192,9 @@ namespace CppSharp.Generators.CSharp
                     pointer.QualifiedPointee.Qualifiers.IsConst;
         }
 
-        public static bool IsConstCharString(QualifiedType qualType)
+        public static bool IsConstCharString(Type type)
         {
-            var desugared = qualType.Type.Desugar();
+            var desugared = type.Desugar();
 
             if (!(desugared is PointerType))
                 return false;
@@ -202,6 +202,13 @@ namespace CppSharp.Generators.CSharp
             var pointer = desugared as PointerType;
             return IsConstCharString(pointer);
         }
+
+        public static bool IsConstCharString(QualifiedType qualType)
+        {
+            return IsConstCharString(qualType.Type);
+        }
+
+        bool AllowStrings = true;
 
         public CSharpTypePrinterResult VisitPointerType(PointerType pointer,
             TypeQualifiers quals)
@@ -216,7 +223,7 @@ namespace CppSharp.Generators.CSharp
 
             var isManagedContext = ContextKind == CSharpTypePrinterContextKind.Managed;
 
-            if (IsConstCharString(pointer))
+            if (AllowStrings && IsConstCharString(pointer))
                 return isManagedContext ? "string" : "global::System.IntPtr";
 
             var desugared = pointee.Desugar();
@@ -240,7 +247,12 @@ namespace CppSharp.Generators.CSharp
                     pointee.IsPrimitiveType(PrimitiveType.Void))
                     return "global::System.IntPtr";
 
+                // Do not allow strings inside primitive arrays case, else we'll get invalid types
+                // like string* for const char **.
+                AllowStrings = isRefParam;
                 var result = pointee.Visit(this, quals);
+                AllowStrings = true;
+
                 return !isRefParam && result.Type == "global::System.IntPtr" ? "void**" : result + "*";
             }
 
