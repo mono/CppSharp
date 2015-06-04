@@ -44,6 +44,7 @@ namespace CppSharp.Generators.CSharp
         public static readonly string InstanceField = Generator.GeneratedIdentifier("instance");
         public static readonly string InstanceIdentifier = Generator.GeneratedIdentifier("Instance");
         public static readonly string ReturnIdentifier = Generator.GeneratedIdentifier("ret");
+        public static readonly string DummyIdentifier = Generator.GeneratedIdentifier("dummy");
 
         public static readonly string OwnsNativeInstanceIdentifier = Generator.GeneratedIdentifier("ownsNativeInstance");
 
@@ -1423,7 +1424,8 @@ namespace CppSharp.Generators.CSharp
                 var ctx = new CSharpMarshalContext(Driver)
                 {
                     ReturnType = param.QualifiedType,
-                    ReturnVarName = param.Name
+                    ReturnVarName = param.Name,
+                    ParameterIndex = i
                 };
 
                 var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
@@ -1758,20 +1760,24 @@ namespace CppSharp.Generators.CSharp
             WriteLine("void Dispose(bool disposing)");
             WriteStartBraceIndent();
 
-            if (ShouldGenerateClassNativeField(@class))
+            var dtor = @class.Destructors.FirstOrDefault();
+            if (@class.IsRefType && dtor != null && dtor.IsVirtual)
             {
-                var dtor = @class.Methods.FirstOrDefault(method => method.IsDestructor);
-                if (dtor != null)
+                WriteLine("object {0};", Helpers.DummyIdentifier);
+                WriteLine("CppSharp.Runtime.Helpers.NativeToManagedMap.TryRemove({0}, out {1});",
+                    Helpers.InstanceIdentifier, Helpers.DummyIdentifier);
+            }
+
+            if (ShouldGenerateClassNativeField(@class) && dtor != null)
+            {
+                if (dtor.Access != AccessSpecifier.Private && @class.HasNonTrivialDestructor && !dtor.IsPure)
                 {
-                    if (dtor.Access != AccessSpecifier.Private && @class.HasNonTrivialDestructor && !dtor.IsPure)
+                    NativeLibrary library;
+                    if (!Options.CheckSymbols ||
+                        Driver.Symbols.FindLibraryBySymbol(dtor.Mangled, out library))
                     {
-                        NativeLibrary library;
-                        if (!Options.CheckSymbols ||
-                            Driver.Symbols.FindLibraryBySymbol(dtor.Mangled, out library))
-                        {
-                            WriteLine("Internal.{0}({1});", GetFunctionNativeIdentifier(dtor),
-                                Helpers.InstanceIdentifier);
-                        }
+                        WriteLine("Internal.{0}({1});", GetFunctionNativeIdentifier(dtor),
+                            Helpers.InstanceIdentifier);
                     }
                 }
             }
@@ -2389,33 +2395,6 @@ namespace CppSharp.Generators.CSharp
 
             if (needsReturn)
             {
-                TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
-                var retTypeName = retType.CSharpType(TypePrinter).Type;
-                TypePrinter.PopContext();
-
-                var isIntPtr = retTypeName.Contains("IntPtr");
-
-                Type pointee;
-                if (retType.Type.IsPointerTo(out pointee) && isIntPtr)
-                {
-                    pointee = pointee.Desugar();
-                    string @null;
-                    Class @class;
-                    if (pointee.TryGetClass(out @class) && @class.IsValueType)
-                    {
-                        @null = string.Format("new {0}()", pointee);
-                    }
-                    else
-                    {
-                        @null = (pointee.IsPrimitiveType() ||
-                            pointee.IsPointer()) &&
-                            !CSharpTypePrinter.IsConstCharString(retType) ?
-                            "IntPtr.Zero" : "null";
-                    }
-                    WriteLine("if ({0} == global::System.IntPtr.Zero) return {1};",
-                        Generator.GeneratedIdentifier("ret"), @null);
-                }
-
                 var ctx = new CSharpMarshalContext(Driver)
                 {
                     ArgName = Helpers.ReturnIdentifier,

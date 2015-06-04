@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using CppSharp.Runtime;
 using CSharpTemp;
 using CppSharp.Utils;
 using NUnit.Framework;
@@ -205,5 +206,23 @@ public class CSharpTempTests : GeneratorTestFixture
     public void TestInnerClasses()
     {
         QMap.Iterator test_iter;
+    }
+
+    [Test]
+    public void TestNativeToManagedMap()
+    {
+        IntPtr native1;
+        IntPtr native2;
+        using (var testNativeToManagedMap = new TestNativeToManagedMap())
+        {
+            var hasVirtualDtor2 = testNativeToManagedMap.HasVirtualDtor2;
+            native2 = hasVirtualDtor2.__Instance;
+            native1 = hasVirtualDtor2.HasVirtualDtor1.__Instance;
+            Assert.IsTrue(Helpers.NativeToManagedMap.ContainsKey(native2));
+            Assert.IsTrue(Helpers.NativeToManagedMap.ContainsKey(native1));
+            Assert.AreSame(hasVirtualDtor2, testNativeToManagedMap.HasVirtualDtor2);
+        }
+        Assert.IsFalse(Helpers.NativeToManagedMap.ContainsKey(native2));
+        Assert.IsFalse(Helpers.NativeToManagedMap.ContainsKey(native1));
     }
 }
