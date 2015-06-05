@@ -399,6 +399,12 @@ namespace CppSharp.Generators.CSharp
                     {
                         WriteLine("public {0} {1} {{ get; protected set; }}",
                             "global::System.IntPtr", Helpers.InstanceIdentifier);
+
+                        // use interfaces if any - derived types with a secondary base this class must be compatible with the map
+                        var @interface = @class.Namespace.Classes.Find(c => c.OriginalClass == @class);
+                        WriteLine(
+                            "public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, {0}> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, {0}>();",
+                            @interface != null ? @interface.Name : @class.Name);
                     }
                     PopBlock(NewLineKind.BeforeNextBlock);
                 }
@@ -1760,14 +1766,21 @@ namespace CppSharp.Generators.CSharp
             WriteLine("void Dispose(bool disposing)");
             WriteStartBraceIndent();
 
-            var dtor = @class.Destructors.FirstOrDefault();
-            if (@class.IsRefType && dtor != null && dtor.IsVirtual)
+            if (@class.IsRefType)
             {
-                WriteLine("object {0};", Helpers.DummyIdentifier);
-                WriteLine("CppSharp.Runtime.Helpers.NativeToManagedMap.TryRemove({0}, out {1});",
+                var @base = @class.GetRootBase();
+                var className = @base.IsAbstractImpl ? @base.BaseClass.Name : @base.Name;
+
+                // Use interfaces if any - derived types with a this class as a seconary base, must be compatible with the map
+                var @interface = @base.Namespace.Classes.Find(c => c.OriginalClass == @base);
+
+                // The local var must be of the exact type in the object map because of TryRemove
+                WriteLine("{0} {1};", @interface != null ? @interface.Name : className, Helpers.DummyIdentifier);
+                WriteLine("NativeToManagedMap.TryRemove({0}, out {1});",
                     Helpers.InstanceIdentifier, Helpers.DummyIdentifier);
             }
 
+            var dtor = @class.Destructors.FirstOrDefault();
             if (ShouldGenerateClassNativeField(@class) && dtor != null)
             {
                 if (dtor.Access != AccessSpecifier.Private && @class.HasNonTrivialDestructor && !dtor.IsPure)
@@ -1806,32 +1819,26 @@ namespace CppSharp.Generators.CSharp
                 PopBlock(NewLineKind.BeforeNextBlock);   
             }
 
-            string className = @class.Name;
-            string safeIdentifier = className;
-            if (@class.IsAbstractImpl)
-            {
-                className = className.Substring(0,
-                    safeIdentifier.LastIndexOf("Internal", StringComparison.Ordinal));
-            }
+            string className = @class.IsAbstractImpl ? @class.BaseClass.Name : @class.Name;
 
             if (!@class.IsAbstract)
             {
                 PushBlock(CSharpBlockKind.Method);
                 WriteLine("public static {0}{1} {2}(global::System.IntPtr native)",
                     @class.HasNonIgnoredBase && !@class.BaseClass.IsAbstract ? "new " : string.Empty,
-                    safeIdentifier, Helpers.CreateInstanceIdentifier);
+                    @class.Name, Helpers.CreateInstanceIdentifier);
                 WriteStartBraceIndent();
-                WriteLine("return new {0}(({1}.Internal*) native);", safeIdentifier, className);
+                WriteLine("return new {0}(({1}.Internal*) native);", @class.Name, className);
                 WriteCloseBraceIndent();
                 PopBlock(NewLineKind.BeforeNextBlock);
 
-                GenerateNativeConstructorByValue(@class, className, safeIdentifier);
+                GenerateNativeConstructorByValue(@class, className, @class.Name);
             }
 
             PushBlock(CSharpBlockKind.Method);
             WriteLine("{0} {1}({2}.Internal* native, bool isInternalImpl = false){3}",
                 @class.IsRefType ? "protected" : "private",
-                safeIdentifier, className, @class.IsValueType ? " : this()" : string.Empty);
+                @class.Name, className, @class.IsValueType ? " : this()" : string.Empty);
 
             var hasBaseClass = @class.HasBaseClass && @class.BaseClass.IsRefType;
             if (hasBaseClass)
@@ -1903,6 +1910,7 @@ namespace CppSharp.Generators.CSharp
             if (@class.IsRefType)
             {
                 WriteLine("{0} = true;", Helpers.OwnsNativeInstanceIdentifier);
+                WriteLine("NativeToManagedMap[{0}] = this;", Helpers.InstanceIdentifier);
             }
             else
             {
@@ -2217,6 +2225,7 @@ namespace CppSharp.Generators.CSharp
             WriteLine("{0} = Marshal.AllocHGlobal({1});", Helpers.InstanceIdentifier,
                 @class.Layout.Size);
             WriteLine("{0} = true;", Helpers.OwnsNativeInstanceIdentifier);
+            WriteLine("NativeToManagedMap[{0}] = this;", Helpers.InstanceIdentifier);
 
             if (method.IsCopyConstructor)
             {
@@ -2399,7 +2408,8 @@ namespace CppSharp.Generators.CSharp
                 {
                     ArgName = Helpers.ReturnIdentifier,
                     ReturnVarName = Helpers.ReturnIdentifier,
-                    ReturnType = retType
+                    ReturnType = retType,
+                    Parameter = operatorParam
                 };
 
                 var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);

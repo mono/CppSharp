@@ -259,41 +259,19 @@ namespace CppSharp.Generators.CSharp
 
         public override bool VisitClassDecl(Class @class)
         {
-            var instance = Context.ReturnVarName;
-
-            @class = @class.OriginalClass ?? @class;
+            var originalClass = @class.OriginalClass ?? @class;
             Type returnType = Context.ReturnType.Type.Desugar();
 
-            var type = QualifiedIdentifier(@class) +
-                (Context.Driver.Options.GenerateAbstractImpls && @class.IsAbstract ?
+            // if the class is an abstract impl, use the original for the object map
+            var qualifiedClass = QualifiedIdentifier(originalClass);
+            var type = qualifiedClass +
+                (Context.Driver.Options.GenerateAbstractImpls && originalClass.IsAbstract ?
                     "Internal" : "");
 
             if (returnType.IsAddress())
-            {
-                var ret = Generator.GeneratedIdentifier("result") + Context.ParameterIndex;
-                Context.SupportBefore.WriteLine("{0} {1};", type, ret);
-                Context.SupportBefore.WriteLine("if ({0} == IntPtr.Zero) {1} = {2};", instance, ret,
-                    @class.IsRefType ? "null" : string.Format("new {0}()", type));
-                var dtor = @class.Destructors.FirstOrDefault();
-                var map = @class.IsRefType && dtor != null && dtor.IsVirtual;
-                if (map)
-                {
-                    Context.SupportBefore.WriteLine(
-                        "else if (CppSharp.Runtime.Helpers.NativeToManagedMap.ContainsKey({0}))", instance);
-                    Context.SupportBefore.WriteLineIndent("{0} = ({1}) CppSharp.Runtime.Helpers.NativeToManagedMap[{2}];",
-                        ret, type, instance);
-                    Context.SupportBefore.WriteLine("else CppSharp.Runtime.Helpers.NativeToManagedMap[{3}] = {0} = {1}.{2}({3});", ret, type,
-                        Helpers.CreateInstanceIdentifier, instance);
-                }
-                else
-                {
-                    Context.SupportBefore.WriteLine("else {0} = {1}.{2}({3});", ret, type,
-                        Helpers.CreateInstanceIdentifier, instance);   
-                }
-                Context.Return.Write(ret);
-            }
+                Context.Return.Write(HandleReturnedPointer(@class, type, qualifiedClass));
             else
-                Context.Return.Write("{0}.{1}({2})", type, Helpers.CreateInstanceIdentifier, instance);
+                Context.Return.Write("{0}.{1}({2})", type, Helpers.CreateInstanceIdentifier, Context.ReturnVarName);
 
             return true;
         }
@@ -329,6 +307,40 @@ namespace CppSharp.Generators.CSharp
 
             Context.Return.Write("_{0}", parameter.Name);
             return true;
+        }
+
+        private string HandleReturnedPointer(Class @class, string type, string qualifiedClass)
+        {
+            var originalClass = @class.OriginalClass ?? @class;
+            var ret = Generator.GeneratedIdentifier("result") + Context.ParameterIndex;
+            Context.SupportBefore.WriteLine("{0} {1};", @class.Name, ret);
+            Context.SupportBefore.WriteLine("if ({0} == IntPtr.Zero) {1} = {2};", Context.ReturnVarName, ret,
+                originalClass.IsRefType ? "null" : string.Format("new {0}()", type));
+            if (originalClass.IsRefType)
+            {
+                Context.SupportBefore.WriteLine(
+                    "else if ({0}.NativeToManagedMap.ContainsKey({1}))", qualifiedClass, Context.ReturnVarName);
+                Context.SupportBefore.WriteLineIndent("{0} = ({1}) {2}.NativeToManagedMap[{3}];",
+                    ret, @class.Name, qualifiedClass, Context.ReturnVarName);
+                var dtor = originalClass.Destructors.FirstOrDefault();
+                if (dtor != null && dtor.IsVirtual)
+                {
+                    Context.SupportBefore.WriteLine("else {0}.NativeToManagedMap[{1}] = {2} = {3}.{4}({1});",
+                        qualifiedClass, Context.ReturnVarName, ret, type,
+                        Helpers.CreateInstanceIdentifier, Context.ReturnVarName);
+                }
+                else
+                {
+                    Context.SupportBefore.WriteLine("else {0} = {1}.{2}({3});", ret, type,
+                        Helpers.CreateInstanceIdentifier, Context.ReturnVarName);
+                }
+            }
+            else
+            {
+                Context.SupportBefore.WriteLine("else {0} = {1}.{2}({3});", ret, type,
+                    Helpers.CreateInstanceIdentifier, Context.ReturnVarName);
+            }
+            return ret;
         }
     }
 

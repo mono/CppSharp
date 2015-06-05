@@ -37,6 +37,8 @@ public:
     int farAwayFunc() const;
     int array[3];
     void obsolete();
+    Qux* getInterface();
+    void setInterface(Qux* qux);
 };
 
 class DLL_API Bar : public Qux
@@ -445,6 +447,9 @@ public:
     TestNativeToManagedMap();
     virtual ~TestNativeToManagedMap();
     HasVirtualDtor2* getHasVirtualDtor2();
+    Bar* propertyWithNoVirtualDtor() const;
+    void setPropertyWithNoVirtualDtor(Bar* bar);
 private:
     HasVirtualDtor2* hasVirtualDtor2;
+    Bar* bar;
 };
