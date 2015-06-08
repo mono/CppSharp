@@ -209,7 +209,7 @@ public class CSharpTempTests : GeneratorTestFixture
     }
 
     [Test]
-    public void TestNativeToManagedMap()
+    public void TestNativeToManagedMapWithForeignObjects()
     {
         IntPtr native1;
         IntPtr native2;
@@ -218,11 +218,25 @@ public class CSharpTempTests : GeneratorTestFixture
             var hasVirtualDtor2 = testNativeToManagedMap.HasVirtualDtor2;
             native2 = hasVirtualDtor2.__Instance;
             native1 = hasVirtualDtor2.HasVirtualDtor1.__Instance;
-            Assert.IsTrue(Helpers.NativeToManagedMap.ContainsKey(native2));
-            Assert.IsTrue(Helpers.NativeToManagedMap.ContainsKey(native1));
+            Assert.IsTrue(HasVirtualDtor2.NativeToManagedMap.ContainsKey(native2));
+            Assert.IsTrue(HasVirtualDtor1.NativeToManagedMap.ContainsKey(native1));
             Assert.AreSame(hasVirtualDtor2, testNativeToManagedMap.HasVirtualDtor2);
         }
-        Assert.IsFalse(Helpers.NativeToManagedMap.ContainsKey(native2));
-        Assert.IsFalse(Helpers.NativeToManagedMap.ContainsKey(native1));
+        Assert.IsFalse(HasVirtualDtor2.NativeToManagedMap.ContainsKey(native2));
+        Assert.IsFalse(HasVirtualDtor1.NativeToManagedMap.ContainsKey(native1));
+    }
+
+    [Test]
+    public void TestNativeToManagedMapWithOwnObjects()
+    {
+        using (var testNativeToManagedMap = new TestNativeToManagedMap())
+        {
+            var bar = new Bar();
+            testNativeToManagedMap.PropertyWithNoVirtualDtor = bar;
+            Assert.AreSame(bar, testNativeToManagedMap.PropertyWithNoVirtualDtor);
+            Assert.IsTrue(Bar.NativeToManagedMap.ContainsKey(bar.__Instance));
+            bar.Dispose();
+            Assert.IsFalse(Bar.NativeToManagedMap.ContainsKey(bar.__Instance));
+        }
     }
 }

@@ -20,7 +20,7 @@ namespace CppSharp.Passes
 
         private static void ChangeToInterfaceType(QualifiedType type)
         {
-            var tagType = type.Type.SkipPointerRefs() as TagType;
+            var tagType = type.Type.GetFinalPointee() as TagType;
             if (tagType != null)
             {
                 var @class = tagType.Declaration as Class;

@@ -43,6 +43,17 @@ namespace CppSharp.AST
             }
         }
 
+        public static Class GetRootBase(this Class @class)
+        {
+            while (true)
+            {
+                if (@class.BaseClass == null)
+                    return @class;
+
+                @class = @class.BaseClass;
+            }
+        }
+
         public static Method GetRootBaseMethod(this Class c, Method @override, bool onlyFirstBase = false)
         {
             return (from @base in c.Bases

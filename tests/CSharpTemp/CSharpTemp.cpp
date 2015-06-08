@@ -84,6 +84,15 @@ void Qux::obsolete()
 
 }
 
+Qux* Qux::getInterface()
+{
+    return this;
+}
+
+void Qux::setInterface(Qux *qux)
+{
+}
+
 int Bar::method()
 {
     return 2;
@@ -428,4 +437,14 @@ TestNativeToManagedMap::~TestNativeToManagedMap()
 HasVirtualDtor2* TestNativeToManagedMap::getHasVirtualDtor2()
 {
     return hasVirtualDtor2;
+}
+
+Bar* TestNativeToManagedMap::propertyWithNoVirtualDtor() const
+{
+    return bar;
+}
+
+void TestNativeToManagedMap::setPropertyWithNoVirtualDtor(Bar* bar)
+{
+    this->bar = bar;
 }

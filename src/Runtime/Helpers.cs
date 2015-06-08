@@ -12,12 +12,5 @@ namespace CppSharp.Runtime
         [DllImport("libc", EntryPoint = "memcpy")]
 #endif
         public static extern IntPtr memcpy(IntPtr dest, IntPtr src, UIntPtr count);
-
-        public static ConcurrentDictionary<IntPtr, object> NativeToManagedMap
-        {
-            get { return nativeToManagedMap; }
-        }
-
-        private static readonly ConcurrentDictionary<IntPtr, object> nativeToManagedMap = new ConcurrentDictionary<IntPtr, object>();
     }
 }
