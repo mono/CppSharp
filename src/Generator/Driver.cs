@@ -223,6 +223,9 @@ namespace CppSharp
         {
             foreach (var library in Options.Libraries)
             {
+                if (this.Symbols.Libraries.Any(l => l.FileName == library))
+                    continue;
+
                 var parser = new ClangParser();
                 parser.LibraryParsed += OnFileParsed;
 
