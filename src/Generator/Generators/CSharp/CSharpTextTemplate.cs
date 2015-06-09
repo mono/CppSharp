@@ -1745,7 +1745,8 @@ namespace CppSharp.Generators.CSharp
                 WriteStartBraceIndent();
 
                 WriteLine("Dispose(disposing: true);");
-                WriteLine("GC.SuppressFinalize(this);");
+                if (Options.GenerateFinalizers)
+                    WriteLine("GC.SuppressFinalize(this);");
 
                 WriteCloseBraceIndent();
                 PopBlock(NewLineKind.BeforeNextBlock);
