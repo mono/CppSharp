@@ -43,11 +43,11 @@ namespace CppSharp.AST
             }
         }
 
-        public static Class GetRootBase(this Class @class)
+        public static Class GetNonIgnoredRootBase(this Class @class)
         {
             while (true)
             {
-                if (@class.BaseClass == null)
+                if (!@class.HasNonIgnoredBase || @class.BaseClass == null)
                     return @class;
 
                 @class = @class.BaseClass;
