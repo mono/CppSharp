@@ -230,6 +230,10 @@ private:
     const char* _name;
 };
 
+class TestObjectMapWithClassDerivedFromStruct : public QGenericArgument
+{
+};
+
 #define DEFAULT_INT (2 * 1000UL + 500UL)
 
 namespace Qt

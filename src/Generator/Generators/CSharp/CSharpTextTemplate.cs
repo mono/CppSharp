@@ -1784,7 +1784,7 @@ namespace CppSharp.Generators.CSharp
 
             if (@class.IsRefType)
             {
-                var @base = @class.GetRootBase();
+                var @base = @class.GetNonIgnoredRootBase();
                 var className = @base.IsAbstractImpl ? @base.BaseClass.Name : @base.Name;
 
                 // Use interfaces if any - derived types with a this class as a seconary base, must be compatible with the map
