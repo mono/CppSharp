@@ -239,4 +239,18 @@ public class CSharpTempTests : GeneratorTestFixture
             Assert.IsFalse(Bar.NativeToManagedMap.ContainsKey(bar.__Instance));
         }
     }
+
+    [Test]
+    public void TestNotDestroyingForeignObjects()
+    {
+        using (var testNativeToManagedMap = new TestNativeToManagedMap())
+        {
+            var hasVirtualDtor2 = testNativeToManagedMap.HasVirtualDtor2;
+            hasVirtualDtor2.Dispose();
+            using (var hasVirtualDtor1 = hasVirtualDtor2.HasVirtualDtor1)
+            {
+                Assert.AreEqual(5, hasVirtualDtor1.TestField);
+            }
+        }
+    }
 }

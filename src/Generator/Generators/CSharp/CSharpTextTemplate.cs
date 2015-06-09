@@ -1766,6 +1766,21 @@ namespace CppSharp.Generators.CSharp
 
             WriteLine("void Dispose(bool disposing)");
             WriteStartBraceIndent();
+            const string destroyNativeInstance = "DestroyNativeInstance";
+            WriteLine("{0}(false);", destroyNativeInstance);
+            if (hasBaseClass)
+                WriteLine("base.Dispose(disposing);");
+            WriteCloseBraceIndent();
+            NewLine();
+
+            WriteLine("public void {0}()", destroyNativeInstance);
+            WriteStartBraceIndent();
+            WriteLine("{0}(true);", destroyNativeInstance);
+            WriteCloseBraceIndent();
+            NewLine();
+
+            WriteLine("private void {0}(bool force)", destroyNativeInstance);
+            WriteStartBraceIndent();
 
             if (@class.IsRefType)
             {
@@ -1790,7 +1805,8 @@ namespace CppSharp.Generators.CSharp
                     if (!Options.CheckSymbols ||
                         Driver.Symbols.FindLibraryBySymbol(dtor.Mangled, out library))
                     {
-                        WriteLine("Internal.{0}({1});", GetFunctionNativeIdentifier(dtor),
+                        WriteLine("if ({0} || force)", Helpers.OwnsNativeInstanceIdentifier);
+                        WriteLineIndent("Internal.{0}({1});", GetFunctionNativeIdentifier(dtor),
                             Helpers.InstanceIdentifier);
                     }
                 }
@@ -1799,13 +1815,8 @@ namespace CppSharp.Generators.CSharp
             if (@class.IsRefType)
             {
                 WriteLine("if ({0})", Helpers.OwnsNativeInstanceIdentifier);
-                WriteStartBraceIndent();
-                WriteLine("Marshal.FreeHGlobal({0});", Helpers.InstanceIdentifier);
-                WriteCloseBraceIndent();
+                WriteLineIndent("Marshal.FreeHGlobal({0});", Helpers.InstanceIdentifier);
             }
-
-            if (hasBaseClass)
-                WriteLine("base.Dispose(disposing);");
 
             WriteCloseBraceIndent();
             PopBlock(NewLineKind.BeforeNextBlock);

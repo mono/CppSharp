@@ -401,6 +401,11 @@ Foo StructWithPrivateFields::getComplexPrivateField()
     return complexPrivateField;
 }
 
+HasVirtualDtor1::HasVirtualDtor1()
+{
+    testField = 5;
+}
+
 HasVirtualDtor1::~HasVirtualDtor1()
 {
 }

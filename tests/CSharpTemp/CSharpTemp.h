@@ -427,7 +427,9 @@ void TestPointers::TestTripleCharPointers(const char*** names)
 class DLL_API HasVirtualDtor1
 {
 public:
+    HasVirtualDtor1();
     virtual ~HasVirtualDtor1();
+    int testField;
 };
 
 class DLL_API HasVirtualDtor2
