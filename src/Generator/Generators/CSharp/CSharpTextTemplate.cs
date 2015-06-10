@@ -869,12 +869,29 @@ namespace CppSharp.Generators.CSharp
                 WriteStartBraceIndent();
 
                 var marshal = new CSharpMarshalManagedToNativePrinter(ctx);
-                ctx.ReturnVarName = string.Format("{0}{1}{2}",
+
+                var arrayType = field.Type as ArrayType;
+                
+                if(arrayType != null && @class.IsValueType)
+                {
+                    CSharpTypePrinter typePrinter = new CSharpTypePrinter(ctx.Driver);
+                    string type = arrayType.CSharpType(typePrinter).Type;
+                    WriteLine(string.Format("fixed ({0} __arrPtr = {1}.{2})",
+                        type.Replace("[]","*"), Helpers.InstanceField,
+                        Helpers.SafeIdentifier(field.OriginalName)));
+                    WriteStartBraceIndent();
+                    ctx.ReturnVarName = string.Format("__arrPtr");
+                }
+                else
+                {
+                    ctx.ReturnVarName = string.Format("{0}{1}{2}",
                     @class.IsValueType
                         ? Helpers.InstanceField
                         : string.Format("((Internal*) {0})", Helpers.InstanceIdentifier),
                     @class.IsValueType ? "." : "->",
                     Helpers.SafeIdentifier(field.OriginalName));
+                }
+                
                 param.Visit(marshal);
 
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
@@ -883,6 +900,11 @@ namespace CppSharp.Generators.CSharp
                 if (marshal.Context.Return.StringBuilder.Length > 0)
                 {
                     WriteLine("{0} = {1};", ctx.ReturnVarName, marshal.Context.Return);                    
+                }
+
+                if (arrayType != null && @class.IsValueType)
+                {
+                    WriteCloseBraceIndent();
                 }
 
                 WriteCloseBraceIndent();
@@ -975,6 +997,19 @@ namespace CppSharp.Generators.CSharp
                     ReturnType = decl.QualifiedType
                 };
 
+                var arrayType = field.Type as ArrayType;
+
+                if (arrayType != null && @class.IsValueType)
+                {
+                    CSharpTypePrinter typePrinter = new CSharpTypePrinter(ctx.Driver);
+                    string type = arrayType.CSharpType(typePrinter).Type;
+                    WriteLine(string.Format("fixed ({0} __arrPtr = {1}.{2})",
+                        type.Replace("[]", "*"), Helpers.InstanceField,
+                        Helpers.SafeIdentifier(field.OriginalName)));
+                    WriteStartBraceIndent();
+                    ctx.ReturnVarName = string.Format("__arrPtr");
+                }
+
                 var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
                 decl.CSharpMarshalToManaged(marshal);
 
@@ -982,6 +1017,14 @@ namespace CppSharp.Generators.CSharp
                     Write(marshal.Context.SupportBefore);
 
                 WriteLine("return {0};", marshal.Context.Return);
+
+
+                if (arrayType != null && @class.IsValueType)
+                {
+                    WriteCloseBraceIndent();
+                }
+
+                
             }
             else if (decl is Variable)
             {
