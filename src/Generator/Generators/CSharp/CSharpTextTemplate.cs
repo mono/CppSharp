@@ -2523,7 +2523,10 @@ namespace CppSharp.Generators.CSharp
                 var paramType = param.Type;
 
                 Class @class;
-                if (paramType.Desugar().TryGetClass(out @class) && @class.IsRefType)
+                if ( (paramType.Desugar().TryGetClass(out @class) || 
+                         (paramType.IsPointer() && paramType.GetFinalPointee()
+                                        .Desugar().TryGetClass(out @class)))
+                      && @class.IsRefType)
                 {
                     WriteLine("{0} = new {1}();", param.Name, paramType);
                 }
