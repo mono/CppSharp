@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using CppSharp.AST;
 
 namespace CppSharp.Passes
@@ -14,21 +15,19 @@ namespace CppSharp.Passes
                 return false;
 
             var fileName = unit.TranslationUnit.FileName;
-            if (Driver.RootNamespaceRenames.ContainsKey(fileName))
+            if (rootNamespaceRenames.ContainsKey(fileName))
             {
-                var rootNamespace = Driver.RootNamespaceRenames[fileName].rootNamespaceName;
+                var rootNamespace = rootNamespaceRenames[fileName];
                 if (this.Driver.Options.OutputNamespace != rootNamespace)
                     unit.Name = rootNamespace;
             }
             else if (unit.GenerationKind == GenerationKind.Generate)
             {
-                Driver.RootNamespaceRenames.Add(fileName, new Driver.TranslationUnitRenameInfo
-                {
-                    translationUnit = fileName,
-                    rootNamespaceName = Driver.Options.OutputNamespace,
-                });
+                rootNamespaceRenames.Add(fileName, Driver.Options.OutputNamespace);
             }
             return true;
         }
+
+        private static readonly Dictionary<string, string> rootNamespaceRenames = new Dictionary<string, string>();
     }
 }
