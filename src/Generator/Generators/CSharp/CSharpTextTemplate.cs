@@ -670,7 +670,7 @@ namespace CppSharp.Generators.CSharp
                 bases.AddRange(
                     from @base in @class.Bases
                     where @base.IsClass
-                    select QualifiedIdentifierIfNeeded(@class, @base.Class));
+                    select QualifiedIdentifierIfNeeded(@base.Class));
             }
 
             if (@class.IsGenerated)
@@ -1841,7 +1841,7 @@ namespace CppSharp.Generators.CSharp
             var hasBaseClass = @class.HasBaseClass && @class.BaseClass.IsRefType;
             if (hasBaseClass)
                 WriteLineIndent(": base(({0}.Internal*) native{1})",
-                    QualifiedIdentifierIfNeeded(@class, @class.BaseClass), @class.IsAbstractImpl ? ", true" : string.Empty);
+                    QualifiedIdentifierIfNeeded(@class.BaseClass), @class.IsAbstractImpl ? ", true" : string.Empty);
 
             WriteStartBraceIndent();
 
@@ -1888,7 +1888,7 @@ namespace CppSharp.Generators.CSharp
                     // Allocate memory for a new native object and call the ctor.
                     WriteLine("var ret = Marshal.AllocHGlobal({0});", @class.Layout.Size);
                     WriteLine("{0}.Internal.{1}(ret, new global::System.IntPtr(&native));",
-                        QualifiedIdentifierIfNeeded(@class, @class), GetFunctionNativeIdentifier(copyCtorMethod));
+                        QualifiedIdentifierIfNeeded(@class), GetFunctionNativeIdentifier(copyCtorMethod));
                     WriteLine("return ({0}.Internal*) ret;", className);
                 }
                 else
@@ -2305,7 +2305,7 @@ namespace CppSharp.Generators.CSharp
                 if (construct == null)
                 {
                     WriteLine("var {0} = new {1}.Internal();", Helpers.ReturnIdentifier,
-                        QualifiedIdentifierIfNeeded(function, retClass.OriginalClass ?? retClass));
+                        QualifiedIdentifierIfNeeded(retClass.OriginalClass ?? retClass));
                 }
                 else
                 {
