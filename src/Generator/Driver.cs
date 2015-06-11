@@ -32,18 +32,6 @@ namespace CppSharp
         public ASTContext ASTContext { get; private set; }
         public SymbolContext Symbols { get; private set; }
 
-        public struct TranslationUnitRenameInfo
-        {
-            public string translationUnit;
-            public string rootNamespaceName;
-        }
-        public static Dictionary<string, TranslationUnitRenameInfo> RootNamespaceRenames { get; private set; }
-
-        static Driver()
-        {
-            Driver.RootNamespaceRenames = new Dictionary<string, TranslationUnitRenameInfo>();
-        }
-
         public Driver(DriverOptions options, IDiagnosticConsumer diagnostics)
         {
             Options = options;
@@ -272,6 +260,7 @@ namespace CppSharp
             TranslationUnitPasses.AddPass(new CheckIgnoredDeclsPass());
             TranslationUnitPasses.AddPass(new CheckFlagEnumsPass());
             TranslationUnitPasses.AddPass(new CheckDuplicatedNamesPass());
+            TranslationUnitPasses.AddPass(new RenameRootNamespacesPass());
             if (Options.IsCSharpGenerator && Options.GenerateDefaultValuesForArguments)
             {
                 TranslationUnitPasses.AddPass(new HandleDefaultParamValuesPass());
@@ -295,8 +284,6 @@ namespace CppSharp
 
             if (Options.GeneratePropertiesAdvanced)
                 TranslationUnitPasses.AddPass(new GetterSetterToPropertyAdvancedPass());
-
-            TranslationUnitPasses.AddPass(new RenameRootNamespacesPass());
         }
 
         public void ProcessCode()
