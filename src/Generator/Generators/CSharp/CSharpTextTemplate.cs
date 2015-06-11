@@ -110,10 +110,9 @@ namespace CppSharp.Generators.CSharp
 
         // Takes a declaration (type, class etc.) that is referenced from a context, and the context.
         // If the referenced name needs a qualification in the context, add it. Otherwise, return just the name.
-        public string QualifiedIdentifierIfNeeded(Declaration context, Declaration reference)
+        private static string QualifiedIdentifierIfNeeded(Declaration reference)
         {
             var refNames = new Stack<string>();
-            var ctxNames = new Stack<string>();
 
             var refCtx = reference;
             while (refCtx != null)
@@ -122,19 +121,6 @@ namespace CppSharp.Generators.CSharp
                     refNames.Push(refCtx.Name);
                 refCtx = refCtx.Namespace;
             }
-
-            var ctxCtx = context;
-            while (ctxCtx != null)
-            {
-                if (!string.IsNullOrWhiteSpace(ctxCtx.Name))
-                    ctxNames.Push(ctxCtx.Name);
-                ctxCtx = ctxCtx.Namespace;
-            }
-
-            if (context.GenerationKind == GenerationKind.Generate && Options.GenerateLibraryNamespace)
-                ctxNames.Push(Options.OutputNamespace);
-            if (reference.GenerationKind == GenerationKind.Generate && Options.GenerateLibraryNamespace)
-                refNames.Push(Options.OutputNamespace);
 
             return string.Join(".", refNames);
         }
