@@ -133,7 +133,7 @@ namespace CppSharp
         public List<string> NoGenIncludeDirs;
 
         /// <summary>
-        /// Wether the generated C# code should be automatically compiled.
+        /// Whether the generated C# code should be automatically compiled.
         /// </summary>
         public bool CompileCode;
 

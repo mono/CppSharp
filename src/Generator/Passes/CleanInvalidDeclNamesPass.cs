@@ -74,6 +74,17 @@ namespace CppSharp.Passes
             var ret = base.VisitClassDecl(@class);
             this.uniqueName = currentUniqueName;
 
+            if (@class.Namespace.Classes.Any(d => d != @class && d.Name == @class.Name))
+            {
+                StringBuilder str = new StringBuilder();
+                str.Append(@class.Name);
+                do
+                {
+                    str.Append('_');
+                } while (@class.Classes.Any(d => d != @class && d.Name == str.ToString()));
+                @class.Name = str.ToString();
+            }
+
             return ret;
         }
 
