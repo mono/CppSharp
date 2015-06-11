@@ -647,24 +647,24 @@ public:
         {
         };
     };
-	struct
-	{
-		struct
-		{
-		};
-	};
-	struct
-	{
-		struct
-		{
-		};
-	};
-	struct
-	{
-		struct
-		{
-		};
-	};
+    struct
+    {
+        struct
+        {
+        };
+    };
+    struct
+    {
+        struct
+        {
+        };
+    };
+    struct
+    {
+        struct
+        {
+        };
+    };
 
     union as_types
     {
@@ -727,4 +727,17 @@ class DLL_API DifferentConstOverloads
 public:
     bool operator ==(const DifferentConstOverloads& other);
     bool operator ==(int number) const;
+};
+
+class TestNamingAnonymousTypesInUnion
+{
+public:
+    union {
+        struct {
+        } argb;
+        struct {
+        } ahsv;
+        struct {
+        } acmyk;
+    } ct;
 };
