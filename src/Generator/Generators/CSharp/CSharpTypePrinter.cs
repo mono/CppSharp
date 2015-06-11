@@ -364,7 +364,7 @@ namespace CppSharp.Generators.CSharp
                 }
             }
 
-            return decl.Name + (ContextKind == CSharpTypePrinterContextKind.Native ?
+            return GetNestedQualifiedName(decl) + (ContextKind == CSharpTypePrinterContextKind.Native ?
                 ".Internal" : string.Empty);
         }
 
