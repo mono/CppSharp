@@ -67,9 +67,19 @@ namespace CppSharp.Passes
         private void CheckFloatSyntax(Type desugared, Parameter parameter)
         {
             var builtin = desugared as BuiltinType;
-            if (builtin != null && builtin.Type == AST.PrimitiveType.Float && parameter.DefaultArgument.String.EndsWith(".F"))
+            if (builtin != null)
             {
-                parameter.DefaultArgument.String = parameter.DefaultArgument.String.Replace(".F", ".0F");
+                switch (builtin.Type)
+                {
+                    case PrimitiveType.Float:
+                        if (parameter.DefaultArgument.String.EndsWith(".F"))
+                            parameter.DefaultArgument.String = parameter.DefaultArgument.String.Replace(".F", ".0F");
+                        break;
+                    case PrimitiveType.Double:
+                        if (parameter.DefaultArgument.String.EndsWith("."))
+                            parameter.DefaultArgument.String += '0';
+                        break;
+                }
             }
         }
 
