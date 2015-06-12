@@ -362,6 +362,10 @@ void MethodsWithDefaultValues::rotate4x4Matrix(float angle, float x, float y, fl
 {
 }
 
+void MethodsWithDefaultValues::defaultPointerToValueType(QGenericArgument* pointer)
+{
+}
+
 int MethodsWithDefaultValues::getA()
 {
     return m_foo.A;
