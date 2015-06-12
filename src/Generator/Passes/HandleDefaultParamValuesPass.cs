@@ -3,7 +3,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
-using CppSharp.Generators.CLI;
 using CppSharp.Generators.CSharp;
 using CppSharp.Types;
 using Type = CppSharp.AST.Type;
@@ -15,7 +14,19 @@ namespace CppSharp.Passes
         private static readonly Regex regexFunctionParams = new Regex(@"\(?(.+)\)?", RegexOptions.Compiled);
         private static readonly Regex regexDoubleColon = new Regex(@"\w+::", RegexOptions.Compiled);
         private static readonly Regex regexName = new Regex(@"(\w+)", RegexOptions.Compiled);
-        private static readonly Regex regexCtor = new Regex(@"^(\w+)\s*\(\w*\)$", RegexOptions.Compiled);
+        private static readonly Regex regexCtor = new Regex(@"^([\w<,>:]+)\s*(\(\w*\))$", RegexOptions.Compiled);
+
+        public HandleDefaultParamValuesPass()
+        {
+            Options.VisitFunctionParameters = false;
+        }
+
+        public override bool VisitTranslationUnit(TranslationUnit unit)
+        {
+            if (!unit.IsGenerated)
+                return false;
+            return base.VisitTranslationUnit(unit);
+        }
 
         public override bool VisitFunctionDecl(Function function)
         {
@@ -62,13 +73,24 @@ namespace CppSharp.Passes
             }
         }
 
-        private static bool CheckForDefaultPointer(Type desugared, Parameter parameter)
+        private bool CheckForDefaultPointer(Type desugared, Parameter parameter)
         {
             if (desugared.IsPointer())
             {
                 // IntPtr.Zero is not a constant
-                parameter.DefaultArgument.String = desugared.IsPointerToPrimitiveType(PrimitiveType.Void) ?
-                    "new global::System.IntPtr()" : "null";
+                if (desugared.IsPointerToPrimitiveType(PrimitiveType.Void))
+                {
+                    parameter.DefaultArgument.String = "new global::System.IntPtr()";
+                    return true;
+                }
+                Class @class;
+                if (desugared.GetFinalPointee().TryGetClass(out @class) && @class.IsValueType)
+                {
+                    parameter.DefaultArgument.String = string.Format("new {0}()",
+                        new CSharpTypePrinter(Driver).VisitClassDecl(@class));
+                    return true;
+                }
+                parameter.DefaultArgument.String = "null";
                 return true;
             }
             return false;
@@ -90,27 +112,13 @@ namespace CppSharp.Passes
             TypeMap typeMap;
             if (Driver.TypeDatabase.FindTypeMap(decl, type, out typeMap))
             {
-                Type typeInSignature;
-                string mappedTo;
-                if (Driver.Options.IsCSharpGenerator)
+                var typePrinterContext = new CSharpTypePrinterContext
                 {
-                    var typePrinterContext = new CSharpTypePrinterContext
-                    {
-                        CSharpKind = CSharpTypePrinterContextKind.Managed,
-                        Type = type
-                    };
-                    typeInSignature = typeMap.CSharpSignatureType(typePrinterContext).SkipPointerRefs();
-                    mappedTo = typeMap.CSharpSignature(typePrinterContext);
-                }
-                else
-                {
-                    var typePrinterContext = new CLITypePrinterContext
-                    {
-                        Type = type
-                    };
-                    typeInSignature = typeMap.CLISignatureType(typePrinterContext).SkipPointerRefs();
-                    mappedTo = typeMap.CLISignature(typePrinterContext);
-                }
+                    CSharpKind = CSharpTypePrinterContextKind.Managed,
+                    Type = type
+                };
+                var typeInSignature = typeMap.CSharpSignatureType(typePrinterContext).SkipPointerRefs();
+                var mappedTo = typeMap.CSharpSignature(typePrinterContext);
                 Enumeration @enum;
                 if (typeInSignature.TryGetEnum(out @enum))
                 {
