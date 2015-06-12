@@ -366,6 +366,10 @@ void MethodsWithDefaultValues::defaultPointerToValueType(QGenericArgument* point
 {
 }
 
+void MethodsWithDefaultValues::defaultDoubleWithoutF(double d1, double d2)
+{
+}
+
 int MethodsWithDefaultValues::getA()
 {
     return m_foo.A;
