@@ -1399,7 +1399,7 @@ namespace CppSharp.Generators.CSharp
         {
             if (method.IsDestructor)
             {
-                WriteLine("target.Dispose();");
+                WriteLine("target.DestroyNativeInstance();");
                 return;
             }
 
@@ -1759,7 +1759,7 @@ namespace CppSharp.Generators.CSharp
             WriteCloseBraceIndent();
             NewLine();
 
-            WriteLine("public void {0}()", destroyNativeInstance);
+            WriteLine("public virtual void {0}()", destroyNativeInstance);
             WriteStartBraceIndent();
             WriteLine("{0}(true);", destroyNativeInstance);
             WriteCloseBraceIndent();
