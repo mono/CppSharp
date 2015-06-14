@@ -167,16 +167,14 @@ namespace CppSharp.Passes
             return decl.IsValueType ? true : (bool?) null;
         }
 
-        private static bool CheckForEnumValue(Expression arg, Type desugared)
+        private bool CheckForEnumValue(Expression arg, Type desugared)
         {
             var enumItem = arg.Declaration as Enumeration.Item;
             if (enumItem != null)
             {
-                arg.String = string.Format("{0}{1}{2}.{3}",
+                arg.String = string.Format("{0}{1}.{2}",
                     desugared.IsPrimitiveType() ? "(int) " : string.Empty,
-                    string.IsNullOrEmpty(enumItem.Namespace.Namespace.Name)
-                        ? string.Empty
-                        : enumItem.Namespace.Namespace.Name + ".", enumItem.Namespace.Name, enumItem.Name);
+                    new CSharpTypePrinter(Driver).VisitEnumDecl((Enumeration) enumItem.Namespace), enumItem.Name);
                 return true;
             }
 
