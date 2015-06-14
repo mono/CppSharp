@@ -32,6 +32,8 @@ namespace CppSharp
         public ASTContext ASTContext { get; private set; }
         public SymbolContext Symbols { get; private set; }
 
+        private static readonly Dictionary<string, string> libraryMappings = new Dictionary<string, string>();
+
         public Driver(DriverOptions options, IDiagnosticConsumer diagnostics)
         {
             Options = options;
@@ -363,9 +365,15 @@ namespace CppSharp
 
             compilerParameters.ReferencedAssemblies.Add(typeof (object).Assembly.Location);
             var location = Assembly.GetExecutingAssembly().Location;
-            var locationRuntime = Path.Combine(Path.GetDirectoryName(location),
-                "CppSharp.Runtime.dll");
+            var outputDir = Path.GetDirectoryName(location);
+            var locationRuntime = Path.Combine(outputDir, "CppSharp.Runtime.dll");
             compilerParameters.ReferencedAssemblies.Add(locationRuntime);
+
+            compilerParameters.ReferencedAssemblies.AddRange(Symbols.Libraries.SelectMany(
+                lib => lib.Dependencies.Where(
+                    d => libraryMappings.ContainsKey(d) &&
+                         !compilerParameters.ReferencedAssemblies.Contains(libraryMappings[d]))
+                    .Select(l => libraryMappings[l])).ToArray());
 
             var codeProvider = new CSharpCodeProvider(
                 new Dictionary<string, string> {{"CompilerVersion", "v4.0"}});
@@ -375,6 +383,13 @@ namespace CppSharp
             var errors = compilerResults.Errors.Cast<CompilerError>();
             foreach (var error in errors.Where(error => !error.IsWarning))
                 Diagnostics.EmitError(error.ToString());
+
+            if (compilerResults.Errors.Count == 0)
+            {
+                var wrapper = Path.Combine(outputDir, assemblyFile);
+                foreach (var library in Options.Libraries)
+                    libraryMappings[library] = wrapper;
+            }
         }
 
         public void AddTranslationUnitPass(TranslationUnitPass pass)
