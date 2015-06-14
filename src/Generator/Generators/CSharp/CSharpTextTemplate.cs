@@ -1771,13 +1771,14 @@ namespace CppSharp.Generators.CSharp
             if (@class.IsRefType)
             {
                 var @base = @class.GetNonIgnoredRootBase();
-                var className = @base.IsAbstractImpl ? @base.BaseClass.Name : @base.Name;
 
                 // Use interfaces if any - derived types with a this class as a seconary base, must be compatible with the map
                 var @interface = @base.Namespace.Classes.Find(c => c.OriginalClass == @base);
 
                 // The local var must be of the exact type in the object map because of TryRemove
-                WriteLine("{0} {1};", @interface != null ? @interface.Name : className, Helpers.DummyIdentifier);
+                WriteLine("{0} {1};",
+                    QualifiedIdentifierIfNeeded(@interface ?? (@base.IsAbstractImpl ? @base.BaseClass : @base)),
+                    Helpers.DummyIdentifier);
                 WriteLine("NativeToManagedMap.TryRemove({0}, out {1});",
                     Helpers.InstanceIdentifier, Helpers.DummyIdentifier);
             }
