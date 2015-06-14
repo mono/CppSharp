@@ -251,11 +251,17 @@ public:
     QColor(Qt::GlobalColor color);
 };
 
+template <typename T>
+class QList
+{
+};
+
 class DLL_API MethodsWithDefaultValues
 {
 public:
     MethodsWithDefaultValues(Foo foo = Foo());
     MethodsWithDefaultValues(int a);
+    MethodsWithDefaultValues(double d, QList<QColor> list = QList<QColor>());
     void defaultPointer(Foo* ptr = 0);
     void defaultVoidStar(void* ptr = 0);
     void defaultValueType(QGenericArgument valueType = QGenericArgument());

@@ -294,6 +294,10 @@ MethodsWithDefaultValues::MethodsWithDefaultValues(int a)
     m_foo.A = a;
 }
 
+MethodsWithDefaultValues::MethodsWithDefaultValues(double d, QList<QColor> list)
+{
+}
+
 void MethodsWithDefaultValues::defaultPointer(Foo *ptr)
 {
 }

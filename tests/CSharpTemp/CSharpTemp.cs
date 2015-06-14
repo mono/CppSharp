@@ -41,6 +41,43 @@ namespace CppSharp.Tests
         }
     }
 
+    [TypeMap("QList")]
+    public class QList : TypeMap
+    {
+        public override bool IsIgnored
+        {
+            get
+            {
+                var type = (TemplateSpecializationType) this.Type;
+                var pointeeType = type.Arguments[0].Type;
+                var checker = new TypeIgnoreChecker(TypeMapDatabase);
+                pointeeType.Visit(checker);
+                return checker.IsIgnored;
+            }
+        }
+
+        public override string CSharpSignature(CSharpTypePrinterContext ctx)
+        {
+            if (ctx.CSharpKind == CSharpTypePrinterContextKind.Native)
+                return Type.IsAddress() ? "QList.Internal*" : "QList.Internal";
+
+            return string.Format("System.Collections.Generic.{0}<{1}>",
+                ctx.CSharpKind == CSharpTypePrinterContextKind.DefaultExpression ? "List" : "IList",
+                ctx.GetTemplateParameterList());
+        }
+
+        public override void CSharpMarshalToNative(MarshalContext ctx)
+        {
+            // pointless, put just so that the generated code compiles
+            ctx.Return.Write("new QList.Internal()");
+        }
+
+        public override void CSharpMarshalToManaged(MarshalContext ctx)
+        {
+            ctx.Return.Write(ctx.ReturnVarName);
+        }
+    }
+
     public class TestAttributesPass : TranslationUnitPass
     {
         public override bool VisitFunctionDecl(Function function)

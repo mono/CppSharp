@@ -42,7 +42,8 @@ namespace CppSharp.Passes
 
                 CheckFloatSyntax(desugared, parameter);
 
-                bool? defaultConstruct = CheckForDefaultConstruct(desugared, parameter.DefaultArgument);
+                bool? defaultConstruct = CheckForDefaultConstruct(desugared, parameter.DefaultArgument,
+                    parameter.QualifiedType.Qualifiers);
                 if (defaultConstruct == null ||
                     (!Driver.Options.MarshalCharAsManagedChar &&
                      parameter.Type.Desugar().IsPrimitiveType(PrimitiveType.UChar)))
@@ -106,12 +107,10 @@ namespace CppSharp.Passes
             return false;
         }
 
-        private bool? CheckForDefaultConstruct(Type desugared, Expression arg)
+        private bool? CheckForDefaultConstruct(Type desugared, Expression arg, TypeQualifiers qualifiers)
         {
             // Unwrapping the underlying type behind a possible pointer/reference
-            Type type;
-            desugared.IsPointerTo(out type);
-            type = type ?? desugared;
+            Type type = desugared.GetFinalPointee() ?? desugared;
 
             Class decl;
             if (!type.TryGetClass(out decl))
@@ -120,38 +119,48 @@ namespace CppSharp.Passes
             var ctor = arg.Declaration as Method;
 
             TypeMap typeMap;
+            var typePrinterContext = new CSharpTypePrinterContext
+            {
+                CSharpKind = CSharpTypePrinterContextKind.DefaultExpression,
+                Type = type
+            };
+
+            string typePrinterResult = null;
             if (Driver.TypeDatabase.FindTypeMap(decl, type, out typeMap))
             {
-                var typePrinterContext = new CSharpTypePrinterContext
-                {
-                    CSharpKind = CSharpTypePrinterContextKind.Managed,
-                    Type = type
-                };
                 var typeInSignature = typeMap.CSharpSignatureType(typePrinterContext).SkipPointerRefs();
-                var mappedTo = typeMap.CSharpSignature(typePrinterContext);
                 Enumeration @enum;
                 if (typeInSignature.TryGetEnum(out @enum))
-                {
                     return false;
-                }
 
                 if (ctor == null || !ctor.IsConstructor)
                     return false;
-                if (mappedTo == "string" && ctor.Parameters.Count == 0)
+
+                typePrinterResult = typeMap.CSharpSignature(typePrinterContext);
+                if (typePrinterResult == "string" && ctor.Parameters.Count == 0)
                 {
                     arg.String = "\"\"";
                     return true;
                 }
             }
 
-            if (regexCtor.IsMatch(arg.String))
+            var match = regexCtor.Match(arg.String);
+            if (match.Success)
             {
-                arg.String = string.Format("new {0}", arg.String);
-                if (ctor != null && ctor.Parameters.Count > 0 && ctor.Parameters[0].Type.IsAddress())
+                if (ctor != null)
                 {
-                    arg.String = arg.String.Replace("(0)", "()");
-                    return decl.IsValueType ? true : (bool?) null;
+                    var templateSpecializationType = type as TemplateSpecializationType;
+                    var typePrinter = new CSharpTypePrinter(Driver);
+                    typePrinterResult = typePrinterResult ?? (templateSpecializationType != null
+                        ? typePrinter.VisitTemplateSpecializationType(templateSpecializationType, qualifiers)
+                        : typePrinter.VisitClassDecl((Class) ctor.Namespace)).Type;
+
+                    arg.String = string.Format("new {0}{1}", typePrinterResult, match.Groups[2].Value);
+                    if (ctor.Parameters.Count > 0 && ctor.Parameters[0].Type.IsAddress())
+                        arg.String = arg.String.Replace("(0)", "()");
                 }
+                else
+                    arg.String = string.Format("new {0}", arg.String);
             }
             else
             {

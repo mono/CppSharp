@@ -13,7 +13,8 @@ namespace CppSharp.Generators.CSharp
         Native,
         Managed,
         ManagedPointer,
-        GenericDelegate
+        GenericDelegate,
+        DefaultExpression
     }
 
     public class CSharpTypePrinterContext : TypePrinterContext
@@ -53,7 +54,7 @@ namespace CppSharp.Generators.CSharp
     public class CSharpTypePrinter : ITypePrinter<CSharpTypePrinterResult>,
         IDeclVisitor<CSharpTypePrinterResult>
     {
-        private Driver driver;
+        private readonly Driver driver;
 
         private readonly Stack<CSharpTypePrinterContextKind> contexts;
 
