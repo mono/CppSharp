@@ -56,5 +56,5 @@ public:
     OverlappingNamespace::InDerivedLib nestedNSComponent;
     OverlappingNamespace::InDerivedLib getNestedNSComponent();
     void setNestedNSComponent(OverlappingNamespace::InDerivedLib);
-
+    void defaultEnumValueFromDependency(OverlappingNamespace::ColorsEnum c = OverlappingNamespace::ColorsEnum::black);
 };

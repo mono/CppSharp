@@ -58,3 +58,7 @@ void Derived2::setNestedNSComponent(OverlappingNamespace::InDerivedLib c)
 {
     nestedNSComponent = c;
 }
+
+void Derived2::defaultEnumValueFromDependency(OverlappingNamespace::ColorsEnum c)
+{
+}

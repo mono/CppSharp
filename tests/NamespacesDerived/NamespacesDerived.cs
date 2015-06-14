@@ -1,4 +1,3 @@
-using System;
 using CppSharp.AST;
 using CppSharp.Generators;
 using CppSharp.Utils;
@@ -15,6 +14,7 @@ namespace CppSharp.Tests
 
         public override void SetupPasses(Driver driver)
         {
+            driver.Options.GenerateDefaultValuesForArguments = true;
         }
 
         public override void Preprocess(Driver driver, ASTContext ctx)
