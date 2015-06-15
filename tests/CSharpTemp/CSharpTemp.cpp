@@ -487,6 +487,10 @@ void SecondaryBase::function()
 {
 }
 
+void SecondaryBase::protectedFunction()
+{
+}
+
 void TestOverrideFromSecondaryBase::VirtualMember()
 {
 }
