@@ -40,7 +40,7 @@ namespace CppSharp.Passes
         public virtual bool Rename(Declaration decl, out string newName)
         {
             var method = decl as Method;
-            if (method != null)
+            if (method != null && !method.IsStatic)
             {
                 var rootBaseMethod = ((Class) method.Namespace).GetRootBaseMethod(method);
                 if (rootBaseMethod != null && rootBaseMethod != method)
@@ -51,7 +51,7 @@ namespace CppSharp.Passes
             }
 
             var property = decl as Property;
-            if (property != null)
+            if (property != null && !property.IsStatic)
             {
                 var rootBaseProperty = ((Class) property.Namespace).GetRootBaseProperty(property);
                 if (rootBaseProperty != null && rootBaseProperty != property)
