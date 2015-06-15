@@ -497,6 +497,8 @@ public:
     int property();
     void setProperty(int value);
     void function();
+protected:
+    void protectedFunction();
 };
 
 class DLL_API TestOverrideFromSecondaryBase : public Foo, public SecondaryBase

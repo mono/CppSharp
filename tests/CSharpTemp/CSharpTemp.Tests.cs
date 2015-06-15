@@ -8,6 +8,14 @@ using Foo = CSharpTemp.Foo;
 
 public class CSharpTempTests : GeneratorTestFixture
 {
+    public class ExtendsWrapper : TestOverrideFromSecondaryBase
+    {
+        public ExtendsWrapper()
+        {
+            ProtectedFunction();
+        }
+    }
+
     [Test]
     public void TestIndexer()
     {
