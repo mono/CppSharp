@@ -1647,6 +1647,50 @@ void CppSharp::Parser::AST::Expression::Subexpression::set(CppSharp::Parser::AST
     ((::CppSharp::CppParser::AST::Expression*)NativePtr)->Subexpression = (::CppSharp::CppParser::AST::Expression*)value->NativePtr;
 }
 
+CppSharp::Parser::AST::BinaryOperator::BinaryOperator(::CppSharp::CppParser::AST::BinaryOperator* native)
+    : CppSharp::Parser::AST::Expression((::CppSharp::CppParser::AST::Expression*)native)
+{
+}
+
+CppSharp::Parser::AST::BinaryOperator^ CppSharp::Parser::AST::BinaryOperator::__CreateInstance(::System::IntPtr native)
+{
+    return gcnew CppSharp::Parser::AST::BinaryOperator((::CppSharp::CppParser::AST::BinaryOperator*) native.ToPointer());
+}
+
+System::String^ CppSharp::Parser::AST::BinaryOperator::OpcodeStr::get()
+{
+    auto __ret = ((::CppSharp::CppParser::AST::BinaryOperator*)NativePtr)->getOpcodeStr();
+    if (__ret == nullptr) return nullptr;
+    return clix::marshalString<clix::E_UTF8>(__ret);
+}
+
+void CppSharp::Parser::AST::BinaryOperator::OpcodeStr::set(System::String^ s)
+{
+    auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
+    auto arg0 = _arg0.c_str();
+    ((::CppSharp::CppParser::AST::BinaryOperator*)NativePtr)->setOpcodeStr(arg0);
+}
+
+CppSharp::Parser::AST::Expression^ CppSharp::Parser::AST::BinaryOperator::LHS::get()
+{
+    return (((::CppSharp::CppParser::AST::BinaryOperator*)NativePtr)->LHS == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::Expression((::CppSharp::CppParser::AST::Expression*)((::CppSharp::CppParser::AST::BinaryOperator*)NativePtr)->LHS);
+}
+
+void CppSharp::Parser::AST::BinaryOperator::LHS::set(CppSharp::Parser::AST::Expression^ value)
+{
+    ((::CppSharp::CppParser::AST::BinaryOperator*)NativePtr)->LHS = (::CppSharp::CppParser::AST::Expression*)value->NativePtr;
+}
+
+CppSharp::Parser::AST::Expression^ CppSharp::Parser::AST::BinaryOperator::RHS::get()
+{
+    return (((::CppSharp::CppParser::AST::BinaryOperator*)NativePtr)->RHS == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::Expression((::CppSharp::CppParser::AST::Expression*)((::CppSharp::CppParser::AST::BinaryOperator*)NativePtr)->RHS);
+}
+
+void CppSharp::Parser::AST::BinaryOperator::RHS::set(CppSharp::Parser::AST::Expression^ value)
+{
+    ((::CppSharp::CppParser::AST::BinaryOperator*)NativePtr)->RHS = (::CppSharp::CppParser::AST::Expression*)value->NativePtr;
+}
+
 CppSharp::Parser::AST::Parameter::Parameter(::CppSharp::CppParser::AST::Parameter* native)
     : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)native)
 {

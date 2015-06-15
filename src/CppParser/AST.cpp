@@ -478,6 +478,11 @@ Statement::Statement(const std::string& str, StatementClass stmtClass, Declarati
 Expression::Expression(const std::string& str, StatementClass stmtClass, Declaration* decl, Expression* subexpr)
 :Statement(str, stmtClass, decl), Subexpression(subexpr) {}
 
+BinaryOperator::BinaryOperator(const std::string& str, Expression* lhs, Expression* rhs, const std::string& opcodeStr)
+    : Expression(str, StatementClass::BinaryOperator), LHS(lhs), RHS(rhs), OpcodeStr(opcodeStr) {}
+
+DEF_STRING(BinaryOperator, OpcodeStr)
+
 Parameter::Parameter() : Declaration(DeclarationKind::Parameter),
     IsIndirect(false), HasDefaultValue(false), DefaultArgument(0) {}
 

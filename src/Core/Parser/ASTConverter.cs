@@ -867,8 +867,9 @@ namespace CppSharp
             switch (statement.Class)
             {
                 case StatementClass.BinaryOperator:
-                    expression = new AST.BuiltinTypeExpression();
-                    expression.Class = AST.StatementClass.BinaryOperator;
+                    var binaryOperator = BinaryOperator.__CreateInstance(statement.__Instance);
+                    expression = new AST.BinaryOperator(VisitStatement(binaryOperator.LHS),
+                        VisitStatement(binaryOperator.RHS), binaryOperator.OpcodeStr);
                     break;
                 case StatementClass.DeclRefExprClass:
                     expression = new AST.BuiltinTypeExpression();
@@ -881,7 +882,7 @@ namespace CppSharp
                 case StatementClass.CXXConstructExprClass:
                     {
                         var ctorExp = new AST.CtorExpr();
-                        ctorExp.SubExpression = VisitStatement(((Expression)statement).Subexpression);
+                        ctorExp.SubExpression = VisitStatement(((Expression) statement).Subexpression);
                         expression = ctorExp;
                         expression.Class = AST.StatementClass.ConstructorReference;
                         break;
@@ -889,7 +890,7 @@ namespace CppSharp
                 case StatementClass.ImplicitCastExpr:
                     {
                         var castExp = new AST.CastExpr();
-                        castExp.SubExpression = VisitStatement(((Expression)statement).Subexpression);
+                        castExp.SubExpression = VisitStatement(((Expression) statement).Subexpression);
                         expression = castExp;
                         expression.Class = AST.StatementClass.ImplicitCast;
                         break;
@@ -897,7 +898,7 @@ namespace CppSharp
                 case StatementClass.ExplicitCastExpr:
                     {
                         var castExp = new AST.CastExpr();
-                        castExp.SubExpression = VisitStatement(((Expression)statement).Subexpression);
+                        castExp.SubExpression = VisitStatement(((Expression) statement).Subexpression);
                         expression = castExp;
                         expression.Class = AST.StatementClass.ExplicitCast;
                         break;

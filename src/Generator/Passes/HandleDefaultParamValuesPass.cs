@@ -54,6 +54,9 @@ namespace CppSharp.Passes
                 if (defaultConstruct == true)
                     continue;
 
+                if (CheckForBinaryOperator(parameter.DefaultArgument, desugared))
+                    continue;
+
                 if (CheckForEnumValue(parameter.DefaultArgument, desugared))
                     continue;
 
@@ -176,6 +179,18 @@ namespace CppSharp.Passes
             return decl.IsValueType ? true : (bool?) null;
         }
 
+        private bool CheckForBinaryOperator(Expression arg, Type desugared)
+        {
+            if (arg.Class != StatementClass.BinaryOperator) return false;
+
+            var binaryOperator = (BinaryOperator) arg;
+            CheckForEnumValue(binaryOperator.LHS, desugared);
+            CheckForEnumValue(binaryOperator.RHS, desugared);
+            arg.String = string.Format("{0} {1} {2}", binaryOperator.LHS.String,
+                binaryOperator.OpcodeStr, binaryOperator.RHS.String);
+            return true;
+        }
+
         private bool CheckForEnumValue(Expression arg, Type desugared)
         {
             var enumItem = arg.Declaration as Enumeration.Item;
@@ -188,7 +203,7 @@ namespace CppSharp.Passes
             }
 
             var call = arg.Declaration as Function;
-            if ((call != null || arg.Class == StatementClass.BinaryOperator) && arg.String != "0")
+            if (call != null && arg.String != "0")
             {
                 string @params = regexFunctionParams.Match(arg.String).Groups[1].Value;
                 TranslateEnumExpression(arg, desugared, @params);

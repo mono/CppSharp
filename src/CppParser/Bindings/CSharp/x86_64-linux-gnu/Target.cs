@@ -171,6 +171,7 @@ namespace CppSharp
             }
 
             public global::System.IntPtr __Instance { get; protected set; }
+            public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ParserTargetInfo> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ParserTargetInfo>();
 
             private readonly bool __ownsNativeInstance;
 
@@ -195,6 +196,7 @@ namespace CppSharp
                 : this(__CopyValue(native))
             {
                 __ownsNativeInstance = true;
+                NativeToManagedMap[__Instance] = this;
             }
 
             protected ParserTargetInfo(ParserTargetInfo.Internal* native, bool isInternalImpl = false)
@@ -206,22 +208,33 @@ namespace CppSharp
             {
                 __Instance = Marshal.AllocHGlobal(160);
                 __ownsNativeInstance = true;
+                NativeToManagedMap[__Instance] = this;
                 Internal.ctor_2(__Instance);
             }
 
             public void Dispose()
             {
                 Dispose(disposing: true);
-                GC.SuppressFinalize(this);
             }
 
             protected virtual void Dispose(bool disposing)
             {
-                Internal.dtor_0(__Instance);
+                DestroyNativeInstance(false);
+            }
+
+            public virtual void DestroyNativeInstance()
+            {
+                DestroyNativeInstance(true);
+            }
+
+            private void DestroyNativeInstance(bool force)
+            {
+                CppSharp.Parser.ParserTargetInfo __dummy;
+                NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                if (__ownsNativeInstance || force)
+                    Internal.dtor_0(__Instance);
                 if (__ownsNativeInstance)
-                {
                     Marshal.FreeHGlobal(__Instance);
-                }
             }
 
             public string ABI
@@ -229,7 +242,6 @@ namespace CppSharp
                 get
                 {
                     var __ret = Internal.getABI_0(__Instance);
-                    if (__ret == global::System.IntPtr.Zero) return null;
                     return Marshal.PtrToStringAnsi(__ret);
                 }
 

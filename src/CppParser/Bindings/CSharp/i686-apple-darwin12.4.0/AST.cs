@@ -251,6 +251,7 @@ namespace CppSharp
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
+                public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Type> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Type>();
 
                 private readonly bool __ownsNativeInstance;
 
@@ -275,6 +276,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected Type(Type.Internal* native, bool isInternalImpl = false)
@@ -286,6 +288,7 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(8);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     var arg0 = kind;
                     Internal.ctor_0(__Instance, arg0);
                 }
@@ -293,15 +296,24 @@ namespace CppSharp
                 public void Dispose()
                 {
                     Dispose(disposing: true);
-                    GC.SuppressFinalize(this);
                 }
 
                 protected virtual void Dispose(bool disposing)
                 {
+                    DestroyNativeInstance(false);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.Type __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
                     if (__ownsNativeInstance)
-                    {
                         Marshal.FreeHGlobal(__Instance);
-                    }
                 }
 
                 public CppSharp.Parser.AST.TypeKind Kind
@@ -352,6 +364,7 @@ namespace CppSharp
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
+                public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, TypeQualifiers> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, TypeQualifiers>();
 
                 private readonly bool __ownsNativeInstance;
 
@@ -376,6 +389,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected TypeQualifiers(TypeQualifiers.Internal* native, bool isInternalImpl = false)
@@ -387,20 +401,30 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(3);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 public void Dispose()
                 {
                     Dispose(disposing: true);
-                    GC.SuppressFinalize(this);
                 }
 
                 protected virtual void Dispose(bool disposing)
                 {
+                    DestroyNativeInstance(false);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.TypeQualifiers __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
                     if (__ownsNativeInstance)
-                    {
                         Marshal.FreeHGlobal(__Instance);
-                    }
                 }
 
                 public bool IsConst
@@ -466,6 +490,7 @@ namespace CppSharp
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
+                public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, QualifiedType> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, QualifiedType>();
 
                 private readonly bool __ownsNativeInstance;
 
@@ -490,6 +515,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected QualifiedType(QualifiedType.Internal* native, bool isInternalImpl = false)
@@ -501,28 +527,43 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(8);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 public void Dispose()
                 {
                     Dispose(disposing: true);
-                    GC.SuppressFinalize(this);
                 }
 
                 protected virtual void Dispose(bool disposing)
                 {
+                    DestroyNativeInstance(false);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.QualifiedType __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
                     if (__ownsNativeInstance)
-                    {
                         Marshal.FreeHGlobal(__Instance);
-                    }
                 }
 
                 public CppSharp.Parser.AST.Type Type
                 {
                     get
                     {
-                        return (((Internal*) __Instance)->Type == IntPtr.Zero) ? null : CppSharp.Parser.AST.Type.__CreateInstance(((Internal*) __Instance)->Type);
+                        Type __result0;
+                        if (((Internal*) __Instance)->Type == IntPtr.Zero) __result0 = null;
+                        else if (CppSharp.Parser.AST.Type.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->Type))
+                            __result0 = (Type) CppSharp.Parser.AST.Type.NativeToManagedMap[((Internal*) __Instance)->Type];
+                        else __result0 = CppSharp.Parser.AST.Type.__CreateInstance(((Internal*) __Instance)->Type);
+                        return __result0;
                     }
 
                     set
@@ -593,6 +634,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected TagType(TagType.Internal* native, bool isInternalImpl = false)
@@ -605,23 +647,39 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(12);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
-                    if (__ownsNativeInstance)
-                    {
-                        Marshal.FreeHGlobal(__Instance);
-                    }
+                    DestroyNativeInstance(false);
                     base.Dispose(disposing);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.Type __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.Declaration Declaration
                 {
                     get
                     {
-                        return (((Internal*) __Instance)->Declaration == IntPtr.Zero) ? null : CppSharp.Parser.AST.Declaration.__CreateInstance(((Internal*) __Instance)->Declaration);
+                        Declaration __result0;
+                        if (((Internal*) __Instance)->Declaration == IntPtr.Zero) __result0 = null;
+                        else if (CppSharp.Parser.AST.Declaration.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->Declaration))
+                            __result0 = (Declaration) CppSharp.Parser.AST.Declaration.NativeToManagedMap[((Internal*) __Instance)->Declaration];
+                        else __result0 = CppSharp.Parser.AST.Declaration.__CreateInstance(((Internal*) __Instance)->Declaration);
+                        return __result0;
                     }
 
                     set
@@ -693,6 +751,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected ArrayType(ArrayType.Internal* native, bool isInternalImpl = false)
@@ -705,16 +764,27 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(24);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
-                    if (__ownsNativeInstance)
-                    {
-                        Marshal.FreeHGlobal(__Instance);
-                    }
+                    DestroyNativeInstance(false);
                     base.Dispose(disposing);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.Type __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.QualifiedType QualifiedType
@@ -833,6 +903,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected FunctionType(FunctionType.Internal* native, bool isInternalImpl = false)
@@ -845,23 +916,38 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(32);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
-                    if (__ownsNativeInstance)
-                    {
-                        Marshal.FreeHGlobal(__Instance);
-                    }
+                    DestroyNativeInstance(false);
                     base.Dispose(disposing);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.Type __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.Parameter getParameters(uint i)
                 {
                     var __ret = Internal.getParameters_0(__Instance, i);
-                    if (__ret == global::System.IntPtr.Zero) return null;
-                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.Parameter.__CreateInstance(__ret);
+                    Parameter __result0;
+                    if (__ret == IntPtr.Zero) __result0 = null;
+                    else if (CppSharp.Parser.AST.Parameter.NativeToManagedMap.ContainsKey(__ret))
+                        __result0 = (Parameter) CppSharp.Parser.AST.Parameter.NativeToManagedMap[__ret];
+                    else __result0 = CppSharp.Parser.AST.Parameter.__CreateInstance(__ret);
+                    return __result0;
                 }
 
                 public void addParameters(CppSharp.Parser.AST.Parameter s)
@@ -970,6 +1056,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected PointerType(PointerType.Internal* native, bool isInternalImpl = false)
@@ -982,16 +1069,27 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(20);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
-                    if (__ownsNativeInstance)
-                    {
-                        Marshal.FreeHGlobal(__Instance);
-                    }
+                    DestroyNativeInstance(false);
                     base.Dispose(disposing);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.Type __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.QualifiedType QualifiedPointee
@@ -1069,6 +1167,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected MemberPointerType(MemberPointerType.Internal* native, bool isInternalImpl = false)
@@ -1081,16 +1180,27 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(16);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
-                    if (__ownsNativeInstance)
-                    {
-                        Marshal.FreeHGlobal(__Instance);
-                    }
+                    DestroyNativeInstance(false);
                     base.Dispose(disposing);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.Type __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.QualifiedType Pointee
@@ -1155,6 +1265,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected TypedefType(TypedefType.Internal* native, bool isInternalImpl = false)
@@ -1167,23 +1278,39 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(12);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
-                    if (__ownsNativeInstance)
-                    {
-                        Marshal.FreeHGlobal(__Instance);
-                    }
+                    DestroyNativeInstance(false);
                     base.Dispose(disposing);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.Type __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.TypedefDecl Declaration
                 {
                     get
                     {
-                        return (((Internal*) __Instance)->Declaration == IntPtr.Zero) ? null : CppSharp.Parser.AST.TypedefDecl.__CreateInstance(((Internal*) __Instance)->Declaration);
+                        TypedefDecl __result0;
+                        if (((Internal*) __Instance)->Declaration == IntPtr.Zero) __result0 = null;
+                        else if (CppSharp.Parser.AST.TypedefDecl.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->Declaration))
+                            __result0 = (TypedefDecl) CppSharp.Parser.AST.TypedefDecl.NativeToManagedMap[((Internal*) __Instance)->Declaration];
+                        else __result0 = CppSharp.Parser.AST.TypedefDecl.__CreateInstance(((Internal*) __Instance)->Declaration);
+                        return __result0;
                     }
 
                     set
@@ -1244,6 +1371,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected AttributedType(AttributedType.Internal* native, bool isInternalImpl = false)
@@ -1256,16 +1384,27 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(24);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
-                    if (__ownsNativeInstance)
-                    {
-                        Marshal.FreeHGlobal(__Instance);
-                    }
+                    DestroyNativeInstance(false);
                     base.Dispose(disposing);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.Type __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.QualifiedType Modified
@@ -1349,6 +1488,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected DecayedType(DecayedType.Internal* native, bool isInternalImpl = false)
@@ -1361,16 +1501,27 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(32);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
-                    if (__ownsNativeInstance)
-                    {
-                        Marshal.FreeHGlobal(__Instance);
-                    }
+                    DestroyNativeInstance(false);
                     base.Dispose(disposing);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.Type __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.QualifiedType Decayed
@@ -1454,6 +1605,7 @@ namespace CppSharp
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
+                public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, TemplateArgument> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, TemplateArgument>();
 
                 private readonly bool __ownsNativeInstance;
 
@@ -1478,6 +1630,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected TemplateArgument(TemplateArgument.Internal* native, bool isInternalImpl = false)
@@ -1489,21 +1642,31 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(20);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 public void Dispose()
                 {
                     Dispose(disposing: true);
-                    GC.SuppressFinalize(this);
                 }
 
                 protected virtual void Dispose(bool disposing)
                 {
+                    DestroyNativeInstance(false);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.TemplateArgument __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
                     if (__ownsNativeInstance)
-                    {
                         Marshal.FreeHGlobal(__Instance);
-                    }
                 }
 
                 public CppSharp.Parser.AST.TemplateArgument.ArgumentKind Kind
@@ -1536,7 +1699,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return (((Internal*) __Instance)->Declaration == IntPtr.Zero) ? null : CppSharp.Parser.AST.Declaration.__CreateInstance(((Internal*) __Instance)->Declaration);
+                        Declaration __result0;
+                        if (((Internal*) __Instance)->Declaration == IntPtr.Zero) __result0 = null;
+                        else if (CppSharp.Parser.AST.Declaration.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->Declaration))
+                            __result0 = (Declaration) CppSharp.Parser.AST.Declaration.NativeToManagedMap[((Internal*) __Instance)->Declaration];
+                        else __result0 = CppSharp.Parser.AST.Declaration.__CreateInstance(((Internal*) __Instance)->Declaration);
+                        return __result0;
                     }
 
                     set
@@ -1635,6 +1803,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected TemplateSpecializationType(TemplateSpecializationType.Internal* native, bool isInternalImpl = false)
@@ -1647,16 +1816,27 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(28);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
-                    if (__ownsNativeInstance)
-                    {
-                        Marshal.FreeHGlobal(__Instance);
-                    }
+                    DestroyNativeInstance(false);
                     base.Dispose(disposing);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.Type __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.TemplateArgument getArguments(uint i)
@@ -1690,7 +1870,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return (((Internal*) __Instance)->Template == IntPtr.Zero) ? null : CppSharp.Parser.AST.Template.__CreateInstance(((Internal*) __Instance)->Template);
+                        Template __result0;
+                        if (((Internal*) __Instance)->Template == IntPtr.Zero) __result0 = null;
+                        else if (CppSharp.Parser.AST.Template.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->Template))
+                            __result0 = (Template) CppSharp.Parser.AST.Template.NativeToManagedMap[((Internal*) __Instance)->Template];
+                        else __result0 = CppSharp.Parser.AST.Template.__CreateInstance(((Internal*) __Instance)->Template);
+                        return __result0;
                     }
 
                     set
@@ -1703,7 +1888,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return (((Internal*) __Instance)->Desugared == IntPtr.Zero) ? null : CppSharp.Parser.AST.Type.__CreateInstance(((Internal*) __Instance)->Desugared);
+                        Type __result0;
+                        if (((Internal*) __Instance)->Desugared == IntPtr.Zero) __result0 = null;
+                        else if (CppSharp.Parser.AST.Type.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->Desugared))
+                            __result0 = (Type) CppSharp.Parser.AST.Type.NativeToManagedMap[((Internal*) __Instance)->Desugared];
+                        else __result0 = CppSharp.Parser.AST.Type.__CreateInstance(((Internal*) __Instance)->Desugared);
+                        return __result0;
                     }
 
                     set
@@ -1754,6 +1944,7 @@ namespace CppSharp
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
+                public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, TemplateParameter> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, TemplateParameter>();
 
                 private readonly bool __ownsNativeInstance;
 
@@ -1778,6 +1969,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected TemplateParameter(TemplateParameter.Internal* native, bool isInternalImpl = false)
@@ -1789,22 +1981,33 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(16);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 public void Dispose()
                 {
                     Dispose(disposing: true);
-                    GC.SuppressFinalize(this);
                 }
 
                 protected virtual void Dispose(bool disposing)
                 {
-                    Internal.dtor_0(__Instance);
+                    DestroyNativeInstance(false);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.TemplateParameter __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance || force)
+                        Internal.dtor_0(__Instance);
                     if (__ownsNativeInstance)
-                    {
                         Marshal.FreeHGlobal(__Instance);
-                    }
                 }
 
                 public static bool operator !=(CppSharp.Parser.AST.TemplateParameter __op, CppSharp.Parser.AST.TemplateParameter param)
@@ -1834,7 +2037,6 @@ namespace CppSharp
                     get
                     {
                         var __ret = Internal.getName_0(__Instance);
-                        if (__ret == global::System.IntPtr.Zero) return null;
                         return Marshal.PtrToStringAnsi(__ret);
                     }
 
@@ -1922,6 +2124,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected TemplateParameterType(TemplateParameterType.Internal* native, bool isInternalImpl = false)
@@ -1934,16 +2137,27 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(36);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
-                    if (__ownsNativeInstance)
-                    {
-                        Marshal.FreeHGlobal(__Instance);
-                    }
+                    DestroyNativeInstance(false);
                     base.Dispose(disposing);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.Type __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.TemplateParameter Parameter
@@ -2047,6 +2261,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected TemplateParameterSubstitutionType(TemplateParameterSubstitutionType.Internal* native, bool isInternalImpl = false)
@@ -2059,16 +2274,27 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(16);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
-                    if (__ownsNativeInstance)
-                    {
-                        Marshal.FreeHGlobal(__Instance);
-                    }
+                    DestroyNativeInstance(false);
                     base.Dispose(disposing);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.Type __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.QualifiedType Replacement
@@ -2136,6 +2362,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected InjectedClassNameType(InjectedClassNameType.Internal* native, bool isInternalImpl = false)
@@ -2148,23 +2375,39 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(16);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
-                    if (__ownsNativeInstance)
-                    {
-                        Marshal.FreeHGlobal(__Instance);
-                    }
+                    DestroyNativeInstance(false);
                     base.Dispose(disposing);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.Type __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.TemplateSpecializationType TemplateSpecialization
                 {
                     get
                     {
-                        return (((Internal*) __Instance)->TemplateSpecialization == IntPtr.Zero) ? null : CppSharp.Parser.AST.TemplateSpecializationType.__CreateInstance(((Internal*) __Instance)->TemplateSpecialization);
+                        TemplateSpecializationType __result0;
+                        if (((Internal*) __Instance)->TemplateSpecialization == IntPtr.Zero) __result0 = null;
+                        else if (CppSharp.Parser.AST.TemplateSpecializationType.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->TemplateSpecialization))
+                            __result0 = (TemplateSpecializationType) CppSharp.Parser.AST.TemplateSpecializationType.NativeToManagedMap[((Internal*) __Instance)->TemplateSpecialization];
+                        else __result0 = CppSharp.Parser.AST.TemplateSpecializationType.__CreateInstance(((Internal*) __Instance)->TemplateSpecialization);
+                        return __result0;
                     }
 
                     set
@@ -2177,7 +2420,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return (((Internal*) __Instance)->Class == IntPtr.Zero) ? null : CppSharp.Parser.AST.Class.__CreateInstance(((Internal*) __Instance)->Class);
+                        Class __result0;
+                        if (((Internal*) __Instance)->Class == IntPtr.Zero) __result0 = null;
+                        else if (CppSharp.Parser.AST.Class.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->Class))
+                            __result0 = (Class) CppSharp.Parser.AST.Class.NativeToManagedMap[((Internal*) __Instance)->Class];
+                        else __result0 = CppSharp.Parser.AST.Class.__CreateInstance(((Internal*) __Instance)->Class);
+                        return __result0;
                     }
 
                     set
@@ -2232,6 +2480,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected DependentNameType(DependentNameType.Internal* native, bool isInternalImpl = false)
@@ -2244,16 +2493,27 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(8);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
-                    if (__ownsNativeInstance)
-                    {
-                        Marshal.FreeHGlobal(__Instance);
-                    }
+                    DestroyNativeInstance(false);
                     base.Dispose(disposing);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.Type __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
             }
 
@@ -2302,6 +2562,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected PackExpansionType(PackExpansionType.Internal* native, bool isInternalImpl = false)
@@ -2314,16 +2575,27 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(8);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
-                    if (__ownsNativeInstance)
-                    {
-                        Marshal.FreeHGlobal(__Instance);
-                    }
+                    DestroyNativeInstance(false);
                     base.Dispose(disposing);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.Type __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
             }
 
@@ -2375,6 +2647,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected BuiltinType(BuiltinType.Internal* native, bool isInternalImpl = false)
@@ -2387,16 +2660,27 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(12);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
-                    if (__ownsNativeInstance)
-                    {
-                        Marshal.FreeHGlobal(__Instance);
-                    }
+                    DestroyNativeInstance(false);
                     base.Dispose(disposing);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.Type __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.PrimitiveType Type
@@ -2439,6 +2723,7 @@ namespace CppSharp
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
+                public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, VTableComponent> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, VTableComponent>();
 
                 private readonly bool __ownsNativeInstance;
 
@@ -2463,6 +2748,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected VTableComponent(VTableComponent.Internal* native, bool isInternalImpl = false)
@@ -2474,21 +2760,31 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(12);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 public void Dispose()
                 {
                     Dispose(disposing: true);
-                    GC.SuppressFinalize(this);
                 }
 
                 protected virtual void Dispose(bool disposing)
                 {
+                    DestroyNativeInstance(false);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.VTableComponent __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
                     if (__ownsNativeInstance)
-                    {
                         Marshal.FreeHGlobal(__Instance);
-                    }
                 }
 
                 public CppSharp.Parser.AST.VTableComponentKind Kind
@@ -2521,7 +2817,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return (((Internal*) __Instance)->Declaration == IntPtr.Zero) ? null : CppSharp.Parser.AST.Declaration.__CreateInstance(((Internal*) __Instance)->Declaration);
+                        Declaration __result0;
+                        if (((Internal*) __Instance)->Declaration == IntPtr.Zero) __result0 = null;
+                        else if (CppSharp.Parser.AST.Declaration.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->Declaration))
+                            __result0 = (Declaration) CppSharp.Parser.AST.Declaration.NativeToManagedMap[((Internal*) __Instance)->Declaration];
+                        else __result0 = CppSharp.Parser.AST.Declaration.__CreateInstance(((Internal*) __Instance)->Declaration);
+                        return __result0;
                     }
 
                     set
@@ -2573,6 +2874,7 @@ namespace CppSharp
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
+                public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, VTableLayout> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, VTableLayout>();
 
                 private readonly bool __ownsNativeInstance;
 
@@ -2597,6 +2899,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected VTableLayout(VTableLayout.Internal* native, bool isInternalImpl = false)
@@ -2608,22 +2911,33 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(12);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 public void Dispose()
                 {
                     Dispose(disposing: true);
-                    GC.SuppressFinalize(this);
                 }
 
                 protected virtual void Dispose(bool disposing)
                 {
-                    Internal.dtor_0(__Instance);
+                    DestroyNativeInstance(false);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.VTableLayout __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance || force)
+                        Internal.dtor_0(__Instance);
                     if (__ownsNativeInstance)
-                    {
                         Marshal.FreeHGlobal(__Instance);
-                    }
                 }
 
                 public CppSharp.Parser.AST.VTableComponent getComponents(uint i)
@@ -2688,6 +3002,7 @@ namespace CppSharp
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
+                public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, VFTableInfo> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, VFTableInfo>();
 
                 private readonly bool __ownsNativeInstance;
 
@@ -2712,6 +3027,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected VFTableInfo(VFTableInfo.Internal* native, bool isInternalImpl = false)
@@ -2723,22 +3039,33 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(28);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 public void Dispose()
                 {
                     Dispose(disposing: true);
-                    GC.SuppressFinalize(this);
                 }
 
                 protected virtual void Dispose(bool disposing)
                 {
-                    Internal.dtor_0(__Instance);
+                    DestroyNativeInstance(false);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.VFTableInfo __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance || force)
+                        Internal.dtor_0(__Instance);
                     if (__ownsNativeInstance)
-                    {
                         Marshal.FreeHGlobal(__Instance);
-                    }
                 }
 
                 public ulong VBTableIndex
@@ -2857,6 +3184,7 @@ namespace CppSharp
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
+                public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ClassLayout> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ClassLayout>();
 
                 private readonly bool __ownsNativeInstance;
 
@@ -2881,6 +3209,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected ClassLayout(ClassLayout.Internal* native, bool isInternalImpl = false)
@@ -2892,22 +3221,33 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(48);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 public void Dispose()
                 {
                     Dispose(disposing: true);
-                    GC.SuppressFinalize(this);
                 }
 
                 protected virtual void Dispose(bool disposing)
                 {
-                    Internal.dtor_0(__Instance);
+                    DestroyNativeInstance(false);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.ClassLayout __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance || force)
+                        Internal.dtor_0(__Instance);
                     if (__ownsNativeInstance)
-                    {
                         Marshal.FreeHGlobal(__Instance);
-                    }
                 }
 
                 public CppSharp.Parser.AST.VFTableInfo getVFTables(uint i)
@@ -3127,6 +3467,7 @@ namespace CppSharp
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
+                public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Declaration> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Declaration>();
 
                 private readonly bool __ownsNativeInstance;
 
@@ -3151,6 +3492,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected Declaration(Declaration.Internal* native, bool isInternalImpl = false)
@@ -3162,6 +3504,7 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(92);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     var arg0 = kind;
                     Internal.ctor_0(__Instance, arg0);
                 }
@@ -3169,23 +3512,37 @@ namespace CppSharp
                 public void Dispose()
                 {
                     Dispose(disposing: true);
-                    GC.SuppressFinalize(this);
                 }
 
                 protected virtual void Dispose(bool disposing)
                 {
-                    Internal.dtor_0(__Instance);
+                    DestroyNativeInstance(false);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.Declaration __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance || force)
+                        Internal.dtor_0(__Instance);
                     if (__ownsNativeInstance)
-                    {
                         Marshal.FreeHGlobal(__Instance);
-                    }
                 }
 
                 public CppSharp.Parser.AST.PreprocessedEntity getPreprocessedEntities(uint i)
                 {
                     var __ret = Internal.getPreprocessedEntities_0(__Instance, i);
-                    if (__ret == global::System.IntPtr.Zero) return null;
-                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.PreprocessedEntity.__CreateInstance(__ret);
+                    PreprocessedEntity __result0;
+                    if (__ret == IntPtr.Zero) __result0 = null;
+                    else if (CppSharp.Parser.AST.PreprocessedEntity.NativeToManagedMap.ContainsKey(__ret))
+                        __result0 = (PreprocessedEntity) CppSharp.Parser.AST.PreprocessedEntity.NativeToManagedMap[__ret];
+                    else __result0 = CppSharp.Parser.AST.PreprocessedEntity.__CreateInstance(__ret);
+                    return __result0;
                 }
 
                 public void addPreprocessedEntities(CppSharp.Parser.AST.PreprocessedEntity s)
@@ -3204,7 +3561,6 @@ namespace CppSharp
                     get
                     {
                         var __ret = Internal.getName_0(__Instance);
-                        if (__ret == global::System.IntPtr.Zero) return null;
                         return Marshal.PtrToStringAnsi(__ret);
                     }
 
@@ -3221,7 +3577,6 @@ namespace CppSharp
                     get
                     {
                         var __ret = Internal.getDebugText_0(__Instance);
-                        if (__ret == global::System.IntPtr.Zero) return null;
                         return Marshal.PtrToStringAnsi(__ret);
                     }
 
@@ -3272,7 +3627,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return (((Internal*) __Instance)->_Namespace == IntPtr.Zero) ? null : CppSharp.Parser.AST.DeclarationContext.__CreateInstance(((Internal*) __Instance)->_Namespace);
+                        DeclarationContext __result0;
+                        if (((Internal*) __Instance)->_Namespace == IntPtr.Zero) __result0 = null;
+                        else if (CppSharp.Parser.AST.DeclarationContext.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->_Namespace))
+                            __result0 = (DeclarationContext) CppSharp.Parser.AST.DeclarationContext.NativeToManagedMap[((Internal*) __Instance)->_Namespace];
+                        else __result0 = CppSharp.Parser.AST.DeclarationContext.__CreateInstance(((Internal*) __Instance)->_Namespace);
+                        return __result0;
                     }
 
                     set
@@ -3324,7 +3684,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return (((Internal*) __Instance)->Comment == IntPtr.Zero) ? null : CppSharp.Parser.AST.RawComment.__CreateInstance(((Internal*) __Instance)->Comment);
+                        RawComment __result0;
+                        if (((Internal*) __Instance)->Comment == IntPtr.Zero) __result0 = null;
+                        else if (CppSharp.Parser.AST.RawComment.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->Comment))
+                            __result0 = (RawComment) CppSharp.Parser.AST.RawComment.NativeToManagedMap[((Internal*) __Instance)->Comment];
+                        else __result0 = CppSharp.Parser.AST.RawComment.__CreateInstance(((Internal*) __Instance)->Comment);
+                        return __result0;
                     }
 
                     set
@@ -3363,7 +3728,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return (((Internal*) __Instance)->CompleteDeclaration == IntPtr.Zero) ? null : CppSharp.Parser.AST.Declaration.__CreateInstance(((Internal*) __Instance)->CompleteDeclaration);
+                        Declaration __result0;
+                        if (((Internal*) __Instance)->CompleteDeclaration == IntPtr.Zero) __result0 = null;
+                        else if (CppSharp.Parser.AST.Declaration.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->CompleteDeclaration))
+                            __result0 = (Declaration) CppSharp.Parser.AST.Declaration.NativeToManagedMap[((Internal*) __Instance)->CompleteDeclaration];
+                        else __result0 = CppSharp.Parser.AST.Declaration.__CreateInstance(((Internal*) __Instance)->CompleteDeclaration);
+                        return __result0;
                     }
 
                     set
@@ -3642,6 +4012,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected DeclarationContext(DeclarationContext.Internal* native, bool isInternalImpl = false)
@@ -3654,24 +4025,39 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(204);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     var arg0 = kind;
                     Internal.ctor_0(__Instance, arg0);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
-                    if (__ownsNativeInstance)
-                    {
-                        Marshal.FreeHGlobal(__Instance);
-                    }
+                    DestroyNativeInstance(false);
                     base.Dispose(disposing);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.Declaration __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.Namespace getNamespaces(uint i)
                 {
                     var __ret = Internal.getNamespaces_0(__Instance, i);
-                    if (__ret == global::System.IntPtr.Zero) return null;
-                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.Namespace.__CreateInstance(__ret);
+                    Namespace __result0;
+                    if (__ret == IntPtr.Zero) __result0 = null;
+                    else if (CppSharp.Parser.AST.Namespace.NativeToManagedMap.ContainsKey(__ret))
+                        __result0 = (Namespace) CppSharp.Parser.AST.Namespace.NativeToManagedMap[__ret];
+                    else __result0 = CppSharp.Parser.AST.Namespace.__CreateInstance(__ret);
+                    return __result0;
                 }
 
                 public void addNamespaces(CppSharp.Parser.AST.Namespace s)
@@ -3688,8 +4074,12 @@ namespace CppSharp
                 public CppSharp.Parser.AST.Enumeration getEnums(uint i)
                 {
                     var __ret = Internal.getEnums_0(__Instance, i);
-                    if (__ret == global::System.IntPtr.Zero) return null;
-                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.Enumeration.__CreateInstance(__ret);
+                    Enumeration __result0;
+                    if (__ret == IntPtr.Zero) __result0 = null;
+                    else if (CppSharp.Parser.AST.Enumeration.NativeToManagedMap.ContainsKey(__ret))
+                        __result0 = (Enumeration) CppSharp.Parser.AST.Enumeration.NativeToManagedMap[__ret];
+                    else __result0 = CppSharp.Parser.AST.Enumeration.__CreateInstance(__ret);
+                    return __result0;
                 }
 
                 public void addEnums(CppSharp.Parser.AST.Enumeration s)
@@ -3706,8 +4096,12 @@ namespace CppSharp
                 public CppSharp.Parser.AST.Function getFunctions(uint i)
                 {
                     var __ret = Internal.getFunctions_0(__Instance, i);
-                    if (__ret == global::System.IntPtr.Zero) return null;
-                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.Function.__CreateInstance(__ret);
+                    Function __result0;
+                    if (__ret == IntPtr.Zero) __result0 = null;
+                    else if (CppSharp.Parser.AST.Function.NativeToManagedMap.ContainsKey(__ret))
+                        __result0 = (Function) CppSharp.Parser.AST.Function.NativeToManagedMap[__ret];
+                    else __result0 = CppSharp.Parser.AST.Function.__CreateInstance(__ret);
+                    return __result0;
                 }
 
                 public void addFunctions(CppSharp.Parser.AST.Function s)
@@ -3724,8 +4118,12 @@ namespace CppSharp
                 public CppSharp.Parser.AST.Class getClasses(uint i)
                 {
                     var __ret = Internal.getClasses_0(__Instance, i);
-                    if (__ret == global::System.IntPtr.Zero) return null;
-                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.Class.__CreateInstance(__ret);
+                    Class __result0;
+                    if (__ret == IntPtr.Zero) __result0 = null;
+                    else if (CppSharp.Parser.AST.Class.NativeToManagedMap.ContainsKey(__ret))
+                        __result0 = (Class) CppSharp.Parser.AST.Class.NativeToManagedMap[__ret];
+                    else __result0 = CppSharp.Parser.AST.Class.__CreateInstance(__ret);
+                    return __result0;
                 }
 
                 public void addClasses(CppSharp.Parser.AST.Class s)
@@ -3742,8 +4140,12 @@ namespace CppSharp
                 public CppSharp.Parser.AST.Template getTemplates(uint i)
                 {
                     var __ret = Internal.getTemplates_0(__Instance, i);
-                    if (__ret == global::System.IntPtr.Zero) return null;
-                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.Template.__CreateInstance(__ret);
+                    Template __result0;
+                    if (__ret == IntPtr.Zero) __result0 = null;
+                    else if (CppSharp.Parser.AST.Template.NativeToManagedMap.ContainsKey(__ret))
+                        __result0 = (Template) CppSharp.Parser.AST.Template.NativeToManagedMap[__ret];
+                    else __result0 = CppSharp.Parser.AST.Template.__CreateInstance(__ret);
+                    return __result0;
                 }
 
                 public void addTemplates(CppSharp.Parser.AST.Template s)
@@ -3760,8 +4162,12 @@ namespace CppSharp
                 public CppSharp.Parser.AST.TypedefDecl getTypedefs(uint i)
                 {
                     var __ret = Internal.getTypedefs_0(__Instance, i);
-                    if (__ret == global::System.IntPtr.Zero) return null;
-                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.TypedefDecl.__CreateInstance(__ret);
+                    TypedefDecl __result0;
+                    if (__ret == IntPtr.Zero) __result0 = null;
+                    else if (CppSharp.Parser.AST.TypedefDecl.NativeToManagedMap.ContainsKey(__ret))
+                        __result0 = (TypedefDecl) CppSharp.Parser.AST.TypedefDecl.NativeToManagedMap[__ret];
+                    else __result0 = CppSharp.Parser.AST.TypedefDecl.__CreateInstance(__ret);
+                    return __result0;
                 }
 
                 public void addTypedefs(CppSharp.Parser.AST.TypedefDecl s)
@@ -3778,8 +4184,12 @@ namespace CppSharp
                 public CppSharp.Parser.AST.Variable getVariables(uint i)
                 {
                     var __ret = Internal.getVariables_0(__Instance, i);
-                    if (__ret == global::System.IntPtr.Zero) return null;
-                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.Variable.__CreateInstance(__ret);
+                    Variable __result0;
+                    if (__ret == IntPtr.Zero) __result0 = null;
+                    else if (CppSharp.Parser.AST.Variable.NativeToManagedMap.ContainsKey(__ret))
+                        __result0 = (Variable) CppSharp.Parser.AST.Variable.NativeToManagedMap[__ret];
+                    else __result0 = CppSharp.Parser.AST.Variable.__CreateInstance(__ret);
+                    return __result0;
                 }
 
                 public void addVariables(CppSharp.Parser.AST.Variable s)
@@ -3796,8 +4206,12 @@ namespace CppSharp
                 public CppSharp.Parser.AST.Friend getFriends(uint i)
                 {
                     var __ret = Internal.getFriends_0(__Instance, i);
-                    if (__ret == global::System.IntPtr.Zero) return null;
-                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.Friend.__CreateInstance(__ret);
+                    Friend __result0;
+                    if (__ret == IntPtr.Zero) __result0 = null;
+                    else if (CppSharp.Parser.AST.Friend.NativeToManagedMap.ContainsKey(__ret))
+                        __result0 = (Friend) CppSharp.Parser.AST.Friend.NativeToManagedMap[__ret];
+                    else __result0 = CppSharp.Parser.AST.Friend.__CreateInstance(__ret);
+                    return __result0;
                 }
 
                 public void addFriends(CppSharp.Parser.AST.Friend s)
@@ -3980,6 +4394,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected TypedefDecl(TypedefDecl.Internal* native, bool isInternalImpl = false)
@@ -3992,16 +4407,27 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(100);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
-                    if (__ownsNativeInstance)
-                    {
-                        Marshal.FreeHGlobal(__Instance);
-                    }
+                    DestroyNativeInstance(false);
                     base.Dispose(disposing);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.Declaration __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.QualifiedType QualifiedType
@@ -4101,6 +4527,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected Friend(Friend.Internal* native, bool isInternalImpl = false)
@@ -4113,23 +4540,39 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(96);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
-                    if (__ownsNativeInstance)
-                    {
-                        Marshal.FreeHGlobal(__Instance);
-                    }
+                    DestroyNativeInstance(false);
                     base.Dispose(disposing);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.Declaration __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.Declaration Declaration
                 {
                     get
                     {
-                        return (((Internal*) __Instance)->Declaration == IntPtr.Zero) ? null : CppSharp.Parser.AST.Declaration.__CreateInstance(((Internal*) __Instance)->Declaration);
+                        Declaration __result0;
+                        if (((Internal*) __Instance)->Declaration == IntPtr.Zero) __result0 = null;
+                        else if (CppSharp.Parser.AST.Declaration.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->Declaration))
+                            __result0 = (Declaration) CppSharp.Parser.AST.Declaration.NativeToManagedMap[((Internal*) __Instance)->Declaration];
+                        else __result0 = CppSharp.Parser.AST.Declaration.__CreateInstance(((Internal*) __Instance)->Declaration);
+                        return __result0;
                     }
 
                     set
@@ -4172,6 +4615,7 @@ namespace CppSharp
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
+                public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Statement> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Statement>();
 
                 private readonly bool __ownsNativeInstance;
 
@@ -4196,6 +4640,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected Statement(Statement.Internal* native, bool isInternalImpl = false)
@@ -4206,16 +4651,26 @@ namespace CppSharp
                 public void Dispose()
                 {
                     Dispose(disposing: true);
-                    GC.SuppressFinalize(this);
                 }
 
                 protected virtual void Dispose(bool disposing)
                 {
-                    Internal.dtor_0(__Instance);
+                    DestroyNativeInstance(false);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.Statement __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance || force)
+                        Internal.dtor_0(__Instance);
                     if (__ownsNativeInstance)
-                    {
                         Marshal.FreeHGlobal(__Instance);
-                    }
                 }
 
                 public string String
@@ -4223,7 +4678,6 @@ namespace CppSharp
                     get
                     {
                         var __ret = Internal.getString_0(__Instance);
-                        if (__ret == global::System.IntPtr.Zero) return null;
                         return Marshal.PtrToStringAnsi(__ret);
                     }
 
@@ -4252,7 +4706,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return (((Internal*) __Instance)->Decl == IntPtr.Zero) ? null : CppSharp.Parser.AST.Declaration.__CreateInstance(((Internal*) __Instance)->Decl);
+                        Declaration __result0;
+                        if (((Internal*) __Instance)->Decl == IntPtr.Zero) __result0 = null;
+                        else if (CppSharp.Parser.AST.Declaration.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->Decl))
+                            __result0 = (Declaration) CppSharp.Parser.AST.Declaration.NativeToManagedMap[((Internal*) __Instance)->Decl];
+                        else __result0 = CppSharp.Parser.AST.Declaration.__CreateInstance(((Internal*) __Instance)->Decl);
+                        return __result0;
                     }
 
                     set
@@ -4310,6 +4769,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected Expression(Expression.Internal* native, bool isInternalImpl = false)
@@ -4319,23 +4779,182 @@ namespace CppSharp
 
                 protected override void Dispose(bool disposing)
                 {
-                    if (__ownsNativeInstance)
-                    {
-                        Marshal.FreeHGlobal(__Instance);
-                    }
+                    DestroyNativeInstance(false);
                     base.Dispose(disposing);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.Statement __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.Expression Subexpression
                 {
                     get
                     {
-                        return (((Internal*) __Instance)->Subexpression == IntPtr.Zero) ? null : CppSharp.Parser.AST.Expression.__CreateInstance(((Internal*) __Instance)->Subexpression);
+                        Expression __result0;
+                        if (((Internal*) __Instance)->Subexpression == IntPtr.Zero) __result0 = null;
+                        else if (CppSharp.Parser.AST.Expression.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->Subexpression))
+                            __result0 = (Expression) CppSharp.Parser.AST.Expression.NativeToManagedMap[((Internal*) __Instance)->Subexpression];
+                        else __result0 = CppSharp.Parser.AST.Expression.__CreateInstance(((Internal*) __Instance)->Subexpression);
+                        return __result0;
                     }
 
                     set
                     {
                         ((Internal*) __Instance)->Subexpression = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
+            }
+
+            public unsafe partial class BinaryOperator : CppSharp.Parser.AST.Expression, IDisposable
+            {
+                [StructLayout(LayoutKind.Explicit, Size = 44)]
+                public new partial struct Internal
+                {
+                    [FieldOffset(0)]
+                    public CppSharp.Parser.AST.StatementClass Class;
+
+                    [FieldOffset(4)]
+                    public global::System.IntPtr Decl;
+
+                    [FieldOffset(20)]
+                    public global::System.IntPtr Subexpression;
+
+                    [FieldOffset(24)]
+                    public global::System.IntPtr LHS;
+
+                    [FieldOffset(28)]
+                    public global::System.IntPtr RHS;
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST14BinaryOperatorC2ERKS2_")]
+                    internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST14BinaryOperatorD2Ev")]
+                    internal static extern void dtor_0(global::System.IntPtr instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST14BinaryOperator12getOpcodeStrEv")]
+                    internal static extern global::System.IntPtr getOpcodeStr_0(global::System.IntPtr instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST14BinaryOperator12setOpcodeStrEPKc")]
+                    internal static extern void setOpcodeStr_0(global::System.IntPtr instance, global::System.IntPtr s);
+                }
+
+                private readonly bool __ownsNativeInstance;
+
+                public static new BinaryOperator __CreateInstance(global::System.IntPtr native)
+                {
+                    return new BinaryOperator((BinaryOperator.Internal*) native);
+                }
+
+                public static BinaryOperator __CreateInstance(BinaryOperator.Internal native)
+                {
+                    return new BinaryOperator(native);
+                }
+
+                private static BinaryOperator.Internal* __CopyValue(BinaryOperator.Internal native)
+                {
+                    var ret = Marshal.AllocHGlobal(44);
+                    CppSharp.Parser.AST.BinaryOperator.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    return (BinaryOperator.Internal*) ret;
+                }
+
+                private BinaryOperator(BinaryOperator.Internal native)
+                    : this(__CopyValue(native))
+                {
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                }
+
+                protected BinaryOperator(BinaryOperator.Internal* native, bool isInternalImpl = false)
+                    : base((CppSharp.Parser.AST.Expression.Internal*) native)
+                {
+                }
+
+                protected override void Dispose(bool disposing)
+                {
+                    DestroyNativeInstance(false);
+                    base.Dispose(disposing);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.Statement __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
+                }
+
+                public string OpcodeStr
+                {
+                    get
+                    {
+                        var __ret = Internal.getOpcodeStr_0(__Instance);
+                        return Marshal.PtrToStringAnsi(__ret);
+                    }
+
+                    set
+                    {
+                        var arg0 = Marshal.StringToHGlobalAnsi(value);
+                        Internal.setOpcodeStr_0(__Instance, arg0);
+                        Marshal.FreeHGlobal(arg0);
+                    }
+                }
+
+                public CppSharp.Parser.AST.Expression LHS
+                {
+                    get
+                    {
+                        Expression __result0;
+                        if (((Internal*) __Instance)->LHS == IntPtr.Zero) __result0 = null;
+                        else if (CppSharp.Parser.AST.Expression.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->LHS))
+                            __result0 = (Expression) CppSharp.Parser.AST.Expression.NativeToManagedMap[((Internal*) __Instance)->LHS];
+                        else __result0 = CppSharp.Parser.AST.Expression.__CreateInstance(((Internal*) __Instance)->LHS);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((Internal*) __Instance)->LHS = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
+
+                public CppSharp.Parser.AST.Expression RHS
+                {
+                    get
+                    {
+                        Expression __result0;
+                        if (((Internal*) __Instance)->RHS == IntPtr.Zero) __result0 = null;
+                        else if (CppSharp.Parser.AST.Expression.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->RHS))
+                            __result0 = (Expression) CppSharp.Parser.AST.Expression.NativeToManagedMap[((Internal*) __Instance)->RHS];
+                        else __result0 = CppSharp.Parser.AST.Expression.__CreateInstance(((Internal*) __Instance)->RHS);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((Internal*) __Instance)->RHS = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                     }
                 }
             }
@@ -4435,6 +5054,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected Parameter(Parameter.Internal* native, bool isInternalImpl = false)
@@ -4447,16 +5067,27 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(112);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
-                    if (__ownsNativeInstance)
-                    {
-                        Marshal.FreeHGlobal(__Instance);
-                    }
+                    DestroyNativeInstance(false);
                     base.Dispose(disposing);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.Declaration __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.QualifiedType QualifiedType
@@ -4515,7 +5146,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return (((Internal*) __Instance)->DefaultArgument == IntPtr.Zero) ? null : CppSharp.Parser.AST.Expression.__CreateInstance(((Internal*) __Instance)->DefaultArgument);
+                        Expression __result0;
+                        if (((Internal*) __Instance)->DefaultArgument == IntPtr.Zero) __result0 = null;
+                        else if (CppSharp.Parser.AST.Expression.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->DefaultArgument))
+                            __result0 = (Expression) CppSharp.Parser.AST.Expression.NativeToManagedMap[((Internal*) __Instance)->DefaultArgument];
+                        else __result0 = CppSharp.Parser.AST.Expression.__CreateInstance(((Internal*) __Instance)->DefaultArgument);
+                        return __result0;
                     }
 
                     set
@@ -4675,6 +5311,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected Function(Function.Internal* native, bool isInternalImpl = false)
@@ -4687,23 +5324,38 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(156);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
-                    if (__ownsNativeInstance)
-                    {
-                        Marshal.FreeHGlobal(__Instance);
-                    }
+                    DestroyNativeInstance(false);
                     base.Dispose(disposing);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.Declaration __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.Parameter getParameters(uint i)
                 {
                     var __ret = Internal.getParameters_0(__Instance, i);
-                    if (__ret == global::System.IntPtr.Zero) return null;
-                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.Parameter.__CreateInstance(__ret);
+                    Parameter __result0;
+                    if (__ret == IntPtr.Zero) __result0 = null;
+                    else if (CppSharp.Parser.AST.Parameter.NativeToManagedMap.ContainsKey(__ret))
+                        __result0 = (Parameter) CppSharp.Parser.AST.Parameter.NativeToManagedMap[__ret];
+                    else __result0 = CppSharp.Parser.AST.Parameter.__CreateInstance(__ret);
+                    return __result0;
                 }
 
                 public void addParameters(CppSharp.Parser.AST.Parameter s)
@@ -4722,7 +5374,6 @@ namespace CppSharp
                     get
                     {
                         var __ret = Internal.getMangled_0(__Instance);
-                        if (__ret == global::System.IntPtr.Zero) return null;
                         return Marshal.PtrToStringAnsi(__ret);
                     }
 
@@ -4739,7 +5390,6 @@ namespace CppSharp
                     get
                     {
                         var __ret = Internal.getSignature_0(__Instance);
-                        if (__ret == global::System.IntPtr.Zero) return null;
                         return Marshal.PtrToStringAnsi(__ret);
                     }
 
@@ -4881,7 +5531,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return (((Internal*) __Instance)->SpecializationInfo == IntPtr.Zero) ? null : CppSharp.Parser.AST.FunctionTemplateSpecialization.__CreateInstance(((Internal*) __Instance)->SpecializationInfo);
+                        FunctionTemplateSpecialization __result0;
+                        if (((Internal*) __Instance)->SpecializationInfo == IntPtr.Zero) __result0 = null;
+                        else if (CppSharp.Parser.AST.FunctionTemplateSpecialization.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->SpecializationInfo))
+                            __result0 = (FunctionTemplateSpecialization) CppSharp.Parser.AST.FunctionTemplateSpecialization.NativeToManagedMap[((Internal*) __Instance)->SpecializationInfo];
+                        else __result0 = CppSharp.Parser.AST.FunctionTemplateSpecialization.__CreateInstance(((Internal*) __Instance)->SpecializationInfo);
+                        return __result0;
                     }
 
                     set
@@ -5037,6 +5692,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected Method(Method.Internal* native, bool isInternalImpl = false)
@@ -5049,23 +5705,39 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(184);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
-                    if (__ownsNativeInstance)
-                    {
-                        Marshal.FreeHGlobal(__Instance);
-                    }
+                    DestroyNativeInstance(false);
                     base.Dispose(disposing);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.Declaration __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.AccessSpecifierDecl AccessDecl
                 {
                     get
                     {
-                        return (((Internal*) __Instance)->AccessDecl == IntPtr.Zero) ? null : CppSharp.Parser.AST.AccessSpecifierDecl.__CreateInstance(((Internal*) __Instance)->AccessDecl);
+                        AccessSpecifierDecl __result0;
+                        if (((Internal*) __Instance)->AccessDecl == IntPtr.Zero) __result0 = null;
+                        else if (CppSharp.Parser.AST.AccessSpecifierDecl.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->AccessDecl))
+                            __result0 = (AccessSpecifierDecl) CppSharp.Parser.AST.AccessSpecifierDecl.NativeToManagedMap[((Internal*) __Instance)->AccessDecl];
+                        else __result0 = CppSharp.Parser.AST.AccessSpecifierDecl.__CreateInstance(((Internal*) __Instance)->AccessDecl);
+                        return __result0;
                     }
 
                     set
@@ -5408,6 +6080,7 @@ namespace CppSharp
                         : this(__CopyValue(native))
                     {
                         __ownsNativeInstance = true;
+                        NativeToManagedMap[__Instance] = this;
                     }
 
                     protected Item(Item.Internal* native, bool isInternalImpl = false)
@@ -5420,16 +6093,27 @@ namespace CppSharp
                     {
                         __Instance = Marshal.AllocHGlobal(112);
                         __ownsNativeInstance = true;
+                        NativeToManagedMap[__Instance] = this;
                         Internal.ctor_0(__Instance);
                     }
 
                     protected override void Dispose(bool disposing)
                     {
-                        if (__ownsNativeInstance)
-                        {
-                            Marshal.FreeHGlobal(__Instance);
-                        }
+                        DestroyNativeInstance(false);
                         base.Dispose(disposing);
+                    }
+
+                    public virtual void DestroyNativeInstance()
+                    {
+                        DestroyNativeInstance(true);
+                    }
+
+                    private void DestroyNativeInstance(bool force)
+                    {
+                        CppSharp.Parser.AST.Declaration __dummy;
+                        NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                        if (__ownsNativeInstance)
+                            Marshal.FreeHGlobal(__Instance);
                     }
 
                     public string Expression
@@ -5437,7 +6121,6 @@ namespace CppSharp
                         get
                         {
                             var __ret = Internal.getExpression_0(__Instance);
-                            if (__ret == global::System.IntPtr.Zero) return null;
                             return Marshal.PtrToStringAnsi(__ret);
                         }
 
@@ -5486,6 +6169,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected Enumeration(Enumeration.Internal* native, bool isInternalImpl = false)
@@ -5498,16 +6182,27 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(228);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
-                    if (__ownsNativeInstance)
-                    {
-                        Marshal.FreeHGlobal(__Instance);
-                    }
+                    DestroyNativeInstance(false);
                     base.Dispose(disposing);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.Declaration __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.Enumeration.Item getItems(uint i)
@@ -5554,7 +6249,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return (((Internal*) __Instance)->Type == IntPtr.Zero) ? null : CppSharp.Parser.AST.Type.__CreateInstance(((Internal*) __Instance)->Type);
+                        Type __result0;
+                        if (((Internal*) __Instance)->Type == IntPtr.Zero) __result0 = null;
+                        else if (CppSharp.Parser.AST.Type.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->Type))
+                            __result0 = (Type) CppSharp.Parser.AST.Type.NativeToManagedMap[((Internal*) __Instance)->Type];
+                        else __result0 = CppSharp.Parser.AST.Type.__CreateInstance(((Internal*) __Instance)->Type);
+                        return __result0;
                     }
 
                     set
@@ -5567,7 +6267,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return (((Internal*) __Instance)->BuiltinType == IntPtr.Zero) ? null : CppSharp.Parser.AST.BuiltinType.__CreateInstance(((Internal*) __Instance)->BuiltinType);
+                        BuiltinType __result0;
+                        if (((Internal*) __Instance)->BuiltinType == IntPtr.Zero) __result0 = null;
+                        else if (CppSharp.Parser.AST.BuiltinType.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->BuiltinType))
+                            __result0 = (BuiltinType) CppSharp.Parser.AST.BuiltinType.NativeToManagedMap[((Internal*) __Instance)->BuiltinType];
+                        else __result0 = CppSharp.Parser.AST.BuiltinType.__CreateInstance(((Internal*) __Instance)->BuiltinType);
+                        return __result0;
                     }
 
                     set
@@ -5670,6 +6375,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected Variable(Variable.Internal* native, bool isInternalImpl = false)
@@ -5682,16 +6388,27 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(112);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
-                    if (__ownsNativeInstance)
-                    {
-                        Marshal.FreeHGlobal(__Instance);
-                    }
+                    DestroyNativeInstance(false);
                     base.Dispose(disposing);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.Declaration __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public string Mangled
@@ -5699,7 +6416,6 @@ namespace CppSharp
                     get
                     {
                         var __ret = Internal.getMangled_0(__Instance);
-                        if (__ret == global::System.IntPtr.Zero) return null;
                         return Marshal.PtrToStringAnsi(__ret);
                     }
 
@@ -5754,6 +6470,7 @@ namespace CppSharp
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
+                public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, BaseClassSpecifier> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, BaseClassSpecifier>();
 
                 private readonly bool __ownsNativeInstance;
 
@@ -5778,6 +6495,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected BaseClassSpecifier(BaseClassSpecifier.Internal* native, bool isInternalImpl = false)
@@ -5789,21 +6507,31 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(16);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 public void Dispose()
                 {
                     Dispose(disposing: true);
-                    GC.SuppressFinalize(this);
                 }
 
                 protected virtual void Dispose(bool disposing)
                 {
+                    DestroyNativeInstance(false);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.BaseClassSpecifier __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
                     if (__ownsNativeInstance)
-                    {
                         Marshal.FreeHGlobal(__Instance);
-                    }
                 }
 
                 public CppSharp.Parser.AST.AccessSpecifier Access
@@ -5836,7 +6564,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return (((Internal*) __Instance)->Type == IntPtr.Zero) ? null : CppSharp.Parser.AST.Type.__CreateInstance(((Internal*) __Instance)->Type);
+                        Type __result0;
+                        if (((Internal*) __Instance)->Type == IntPtr.Zero) __result0 = null;
+                        else if (CppSharp.Parser.AST.Type.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->Type))
+                            __result0 = (Type) CppSharp.Parser.AST.Type.NativeToManagedMap[((Internal*) __Instance)->Type];
+                        else __result0 = CppSharp.Parser.AST.Type.__CreateInstance(((Internal*) __Instance)->Type);
+                        return __result0;
                     }
 
                     set
@@ -5954,6 +6687,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected Field(Field.Internal* native, bool isInternalImpl = false)
@@ -5966,16 +6700,27 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(116);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
-                    if (__ownsNativeInstance)
-                    {
-                        Marshal.FreeHGlobal(__Instance);
-                    }
+                    DestroyNativeInstance(false);
                     base.Dispose(disposing);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.Declaration __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.QualifiedType QualifiedType
@@ -6008,7 +6753,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return (((Internal*) __Instance)->Class == IntPtr.Zero) ? null : CppSharp.Parser.AST.Class.__CreateInstance(((Internal*) __Instance)->Class);
+                        Class __result0;
+                        if (((Internal*) __Instance)->Class == IntPtr.Zero) __result0 = null;
+                        else if (CppSharp.Parser.AST.Class.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->Class))
+                            __result0 = (Class) CppSharp.Parser.AST.Class.NativeToManagedMap[((Internal*) __Instance)->Class];
+                        else __result0 = CppSharp.Parser.AST.Class.__CreateInstance(((Internal*) __Instance)->Class);
+                        return __result0;
                     }
 
                     set
@@ -6124,6 +6874,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected AccessSpecifierDecl(AccessSpecifierDecl.Internal* native, bool isInternalImpl = false)
@@ -6136,16 +6887,27 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(92);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
-                    if (__ownsNativeInstance)
-                    {
-                        Marshal.FreeHGlobal(__Instance);
-                    }
+                    DestroyNativeInstance(false);
                     base.Dispose(disposing);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.Declaration __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
             }
 
@@ -6342,6 +7104,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected Class(Class.Internal* native, bool isInternalImpl = false)
@@ -6354,23 +7117,38 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(268);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
-                    if (__ownsNativeInstance)
-                    {
-                        Marshal.FreeHGlobal(__Instance);
-                    }
+                    DestroyNativeInstance(false);
                     base.Dispose(disposing);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.Declaration __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.BaseClassSpecifier getBases(uint i)
                 {
                     var __ret = Internal.getBases_0(__Instance, i);
-                    if (__ret == global::System.IntPtr.Zero) return null;
-                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.BaseClassSpecifier.__CreateInstance(__ret);
+                    BaseClassSpecifier __result0;
+                    if (__ret == IntPtr.Zero) __result0 = null;
+                    else if (CppSharp.Parser.AST.BaseClassSpecifier.NativeToManagedMap.ContainsKey(__ret))
+                        __result0 = (BaseClassSpecifier) CppSharp.Parser.AST.BaseClassSpecifier.NativeToManagedMap[__ret];
+                    else __result0 = CppSharp.Parser.AST.BaseClassSpecifier.__CreateInstance(__ret);
+                    return __result0;
                 }
 
                 public void addBases(CppSharp.Parser.AST.BaseClassSpecifier s)
@@ -6387,8 +7165,12 @@ namespace CppSharp
                 public CppSharp.Parser.AST.Field getFields(uint i)
                 {
                     var __ret = Internal.getFields_0(__Instance, i);
-                    if (__ret == global::System.IntPtr.Zero) return null;
-                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.Field.__CreateInstance(__ret);
+                    Field __result0;
+                    if (__ret == IntPtr.Zero) __result0 = null;
+                    else if (CppSharp.Parser.AST.Field.NativeToManagedMap.ContainsKey(__ret))
+                        __result0 = (Field) CppSharp.Parser.AST.Field.NativeToManagedMap[__ret];
+                    else __result0 = CppSharp.Parser.AST.Field.__CreateInstance(__ret);
+                    return __result0;
                 }
 
                 public void addFields(CppSharp.Parser.AST.Field s)
@@ -6405,8 +7187,12 @@ namespace CppSharp
                 public CppSharp.Parser.AST.Method getMethods(uint i)
                 {
                     var __ret = Internal.getMethods_0(__Instance, i);
-                    if (__ret == global::System.IntPtr.Zero) return null;
-                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.Method.__CreateInstance(__ret);
+                    Method __result0;
+                    if (__ret == IntPtr.Zero) __result0 = null;
+                    else if (CppSharp.Parser.AST.Method.NativeToManagedMap.ContainsKey(__ret))
+                        __result0 = (Method) CppSharp.Parser.AST.Method.NativeToManagedMap[__ret];
+                    else __result0 = CppSharp.Parser.AST.Method.__CreateInstance(__ret);
+                    return __result0;
                 }
 
                 public void addMethods(CppSharp.Parser.AST.Method s)
@@ -6423,8 +7209,12 @@ namespace CppSharp
                 public CppSharp.Parser.AST.AccessSpecifierDecl getSpecifiers(uint i)
                 {
                     var __ret = Internal.getSpecifiers_0(__Instance, i);
-                    if (__ret == global::System.IntPtr.Zero) return null;
-                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.AccessSpecifierDecl.__CreateInstance(__ret);
+                    AccessSpecifierDecl __result0;
+                    if (__ret == IntPtr.Zero) __result0 = null;
+                    else if (CppSharp.Parser.AST.AccessSpecifierDecl.NativeToManagedMap.ContainsKey(__ret))
+                        __result0 = (AccessSpecifierDecl) CppSharp.Parser.AST.AccessSpecifierDecl.NativeToManagedMap[__ret];
+                    else __result0 = CppSharp.Parser.AST.AccessSpecifierDecl.__CreateInstance(__ret);
+                    return __result0;
                 }
 
                 public void addSpecifiers(CppSharp.Parser.AST.AccessSpecifierDecl s)
@@ -6595,7 +7385,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return (((Internal*) __Instance)->Layout == IntPtr.Zero) ? null : CppSharp.Parser.AST.ClassLayout.__CreateInstance(((Internal*) __Instance)->Layout);
+                        ClassLayout __result0;
+                        if (((Internal*) __Instance)->Layout == IntPtr.Zero) __result0 = null;
+                        else if (CppSharp.Parser.AST.ClassLayout.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->Layout))
+                            __result0 = (ClassLayout) CppSharp.Parser.AST.ClassLayout.NativeToManagedMap[((Internal*) __Instance)->Layout];
+                        else __result0 = CppSharp.Parser.AST.ClassLayout.__CreateInstance(((Internal*) __Instance)->Layout);
+                        return __result0;
                     }
 
                     set
@@ -6713,6 +7508,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected Template(Template.Internal* native, bool isInternalImpl = false)
@@ -6725,6 +7521,7 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(108);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     var arg0 = kind;
                     Internal.ctor_0(__Instance, arg0);
                 }
@@ -6734,16 +7531,27 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(108);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_1(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
-                    if (__ownsNativeInstance)
-                    {
-                        Marshal.FreeHGlobal(__Instance);
-                    }
+                    DestroyNativeInstance(false);
                     base.Dispose(disposing);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.Declaration __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.TemplateParameter getParameters(uint i)
@@ -6777,7 +7585,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return (((Internal*) __Instance)->TemplatedDecl == IntPtr.Zero) ? null : CppSharp.Parser.AST.Declaration.__CreateInstance(((Internal*) __Instance)->TemplatedDecl);
+                        Declaration __result0;
+                        if (((Internal*) __Instance)->TemplatedDecl == IntPtr.Zero) __result0 = null;
+                        else if (CppSharp.Parser.AST.Declaration.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->TemplatedDecl))
+                            __result0 = (Declaration) CppSharp.Parser.AST.Declaration.NativeToManagedMap[((Internal*) __Instance)->TemplatedDecl];
+                        else __result0 = CppSharp.Parser.AST.Declaration.__CreateInstance(((Internal*) __Instance)->TemplatedDecl);
+                        return __result0;
                     }
 
                     set
@@ -6890,6 +7703,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected ClassTemplate(ClassTemplate.Internal* native, bool isInternalImpl = false)
@@ -6902,23 +7716,38 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(120);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
-                    if (__ownsNativeInstance)
-                    {
-                        Marshal.FreeHGlobal(__Instance);
-                    }
+                    DestroyNativeInstance(false);
                     base.Dispose(disposing);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.Declaration __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.ClassTemplateSpecialization getSpecializations(uint i)
                 {
                     var __ret = Internal.getSpecializations_0(__Instance, i);
-                    if (__ret == global::System.IntPtr.Zero) return null;
-                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.ClassTemplateSpecialization.__CreateInstance(__ret);
+                    ClassTemplateSpecialization __result0;
+                    if (__ret == IntPtr.Zero) __result0 = null;
+                    else if (CppSharp.Parser.AST.ClassTemplateSpecialization.NativeToManagedMap.ContainsKey(__ret))
+                        __result0 = (ClassTemplateSpecialization) CppSharp.Parser.AST.ClassTemplateSpecialization.NativeToManagedMap[__ret];
+                    else __result0 = CppSharp.Parser.AST.ClassTemplateSpecialization.__CreateInstance(__ret);
+                    return __result0;
                 }
 
                 public void addSpecializations(CppSharp.Parser.AST.ClassTemplateSpecialization s)
@@ -7081,6 +7910,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected ClassTemplateSpecialization(ClassTemplateSpecialization.Internal* native, bool isInternalImpl = false)
@@ -7093,16 +7923,27 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(288);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
-                    if (__ownsNativeInstance)
-                    {
-                        Marshal.FreeHGlobal(__Instance);
-                    }
+                    DestroyNativeInstance(false);
                     base.Dispose(disposing);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.Declaration __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.TemplateArgument getArguments(uint i)
@@ -7136,7 +7977,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return (((Internal*) __Instance)->TemplatedDecl == IntPtr.Zero) ? null : CppSharp.Parser.AST.ClassTemplate.__CreateInstance(((Internal*) __Instance)->TemplatedDecl);
+                        ClassTemplate __result0;
+                        if (((Internal*) __Instance)->TemplatedDecl == IntPtr.Zero) __result0 = null;
+                        else if (CppSharp.Parser.AST.ClassTemplate.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->TemplatedDecl))
+                            __result0 = (ClassTemplate) CppSharp.Parser.AST.ClassTemplate.NativeToManagedMap[((Internal*) __Instance)->TemplatedDecl];
+                        else __result0 = CppSharp.Parser.AST.ClassTemplate.__CreateInstance(((Internal*) __Instance)->TemplatedDecl);
+                        return __result0;
                     }
 
                     set
@@ -7278,6 +8124,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected ClassTemplatePartialSpecialization(ClassTemplatePartialSpecialization.Internal* native, bool isInternalImpl = false)
@@ -7290,16 +8137,27 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(288);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
-                    if (__ownsNativeInstance)
-                    {
-                        Marshal.FreeHGlobal(__Instance);
-                    }
+                    DestroyNativeInstance(false);
                     base.Dispose(disposing);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.Declaration __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
             }
 
@@ -7406,6 +8264,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected FunctionTemplate(FunctionTemplate.Internal* native, bool isInternalImpl = false)
@@ -7418,23 +8277,38 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(120);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
-                    if (__ownsNativeInstance)
-                    {
-                        Marshal.FreeHGlobal(__Instance);
-                    }
+                    DestroyNativeInstance(false);
                     base.Dispose(disposing);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.Declaration __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.FunctionTemplateSpecialization getSpecializations(uint i)
                 {
                     var __ret = Internal.getSpecializations_0(__Instance, i);
-                    if (__ret == global::System.IntPtr.Zero) return null;
-                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.FunctionTemplateSpecialization.__CreateInstance(__ret);
+                    FunctionTemplateSpecialization __result0;
+                    if (__ret == IntPtr.Zero) __result0 = null;
+                    else if (CppSharp.Parser.AST.FunctionTemplateSpecialization.NativeToManagedMap.ContainsKey(__ret))
+                        __result0 = (FunctionTemplateSpecialization) CppSharp.Parser.AST.FunctionTemplateSpecialization.NativeToManagedMap[__ret];
+                    else __result0 = CppSharp.Parser.AST.FunctionTemplateSpecialization.__CreateInstance(__ret);
+                    return __result0;
                 }
 
                 public void addSpecializations(CppSharp.Parser.AST.FunctionTemplateSpecialization s)
@@ -7509,6 +8383,7 @@ namespace CppSharp
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
+                public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, FunctionTemplateSpecialization> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, FunctionTemplateSpecialization>();
 
                 private readonly bool __ownsNativeInstance;
 
@@ -7533,6 +8408,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected FunctionTemplateSpecialization(FunctionTemplateSpecialization.Internal* native, bool isInternalImpl = false)
@@ -7544,22 +8420,33 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(24);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 public void Dispose()
                 {
                     Dispose(disposing: true);
-                    GC.SuppressFinalize(this);
                 }
 
                 protected virtual void Dispose(bool disposing)
                 {
-                    Internal.dtor_0(__Instance);
+                    DestroyNativeInstance(false);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.FunctionTemplateSpecialization __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance || force)
+                        Internal.dtor_0(__Instance);
                     if (__ownsNativeInstance)
-                    {
                         Marshal.FreeHGlobal(__Instance);
-                    }
                 }
 
                 public CppSharp.Parser.AST.TemplateArgument getArguments(uint i)
@@ -7593,7 +8480,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return (((Internal*) __Instance)->Template == IntPtr.Zero) ? null : CppSharp.Parser.AST.FunctionTemplate.__CreateInstance(((Internal*) __Instance)->Template);
+                        FunctionTemplate __result0;
+                        if (((Internal*) __Instance)->Template == IntPtr.Zero) __result0 = null;
+                        else if (CppSharp.Parser.AST.FunctionTemplate.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->Template))
+                            __result0 = (FunctionTemplate) CppSharp.Parser.AST.FunctionTemplate.NativeToManagedMap[((Internal*) __Instance)->Template];
+                        else __result0 = CppSharp.Parser.AST.FunctionTemplate.__CreateInstance(((Internal*) __Instance)->Template);
+                        return __result0;
                     }
 
                     set
@@ -7606,7 +8498,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return (((Internal*) __Instance)->SpecializedFunction == IntPtr.Zero) ? null : CppSharp.Parser.AST.Function.__CreateInstance(((Internal*) __Instance)->SpecializedFunction);
+                        Function __result0;
+                        if (((Internal*) __Instance)->SpecializedFunction == IntPtr.Zero) __result0 = null;
+                        else if (CppSharp.Parser.AST.Function.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->SpecializedFunction))
+                            __result0 = (Function) CppSharp.Parser.AST.Function.NativeToManagedMap[((Internal*) __Instance)->SpecializedFunction];
+                        else __result0 = CppSharp.Parser.AST.Function.__CreateInstance(((Internal*) __Instance)->SpecializedFunction);
+                        return __result0;
                     }
 
                     set
@@ -7715,6 +8612,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected Namespace(Namespace.Internal* native, bool isInternalImpl = false)
@@ -7727,16 +8625,27 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(204);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
-                    if (__ownsNativeInstance)
-                    {
-                        Marshal.FreeHGlobal(__Instance);
-                    }
+                    DestroyNativeInstance(false);
                     base.Dispose(disposing);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.Declaration __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public bool IsInline
@@ -7836,6 +8745,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected PreprocessedEntity(PreprocessedEntity.Internal* native, bool isInternalImpl = false)
@@ -7848,16 +8758,27 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(96);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
-                    if (__ownsNativeInstance)
-                    {
-                        Marshal.FreeHGlobal(__Instance);
-                    }
+                    DestroyNativeInstance(false);
                     base.Dispose(disposing);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.Declaration __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.MacroLocation MacroLocation
@@ -7967,6 +8888,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected MacroDefinition(MacroDefinition.Internal* native, bool isInternalImpl = false)
@@ -7979,16 +8901,27 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(108);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
-                    if (__ownsNativeInstance)
-                    {
-                        Marshal.FreeHGlobal(__Instance);
-                    }
+                    DestroyNativeInstance(false);
                     base.Dispose(disposing);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.Declaration __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public string Expression
@@ -7996,7 +8929,6 @@ namespace CppSharp
                     get
                     {
                         var __ret = Internal.getExpression_0(__Instance);
-                        if (__ret == global::System.IntPtr.Zero) return null;
                         return Marshal.PtrToStringAnsi(__ret);
                     }
 
@@ -8105,6 +9037,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected MacroExpansion(MacroExpansion.Internal* native, bool isInternalImpl = false)
@@ -8117,16 +9050,27 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(112);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
-                    if (__ownsNativeInstance)
-                    {
-                        Marshal.FreeHGlobal(__Instance);
-                    }
+                    DestroyNativeInstance(false);
                     base.Dispose(disposing);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.Declaration __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public string Text
@@ -8134,7 +9078,6 @@ namespace CppSharp
                     get
                     {
                         var __ret = Internal.getText_0(__Instance);
-                        if (__ret == global::System.IntPtr.Zero) return null;
                         return Marshal.PtrToStringAnsi(__ret);
                     }
 
@@ -8150,7 +9093,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return (((Internal*) __Instance)->Definition == IntPtr.Zero) ? null : CppSharp.Parser.AST.MacroDefinition.__CreateInstance(((Internal*) __Instance)->Definition);
+                        MacroDefinition __result0;
+                        if (((Internal*) __Instance)->Definition == IntPtr.Zero) __result0 = null;
+                        else if (CppSharp.Parser.AST.MacroDefinition.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->Definition))
+                            __result0 = (MacroDefinition) CppSharp.Parser.AST.MacroDefinition.NativeToManagedMap[((Internal*) __Instance)->Definition];
+                        else __result0 = CppSharp.Parser.AST.MacroDefinition.__CreateInstance(((Internal*) __Instance)->Definition);
+                        return __result0;
                     }
 
                     set
@@ -8279,6 +9227,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected TranslationUnit(TranslationUnit.Internal* native, bool isInternalImpl = false)
@@ -8291,23 +9240,38 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(232);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
-                    if (__ownsNativeInstance)
-                    {
-                        Marshal.FreeHGlobal(__Instance);
-                    }
+                    DestroyNativeInstance(false);
                     base.Dispose(disposing);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.Declaration __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.MacroDefinition getMacros(uint i)
                 {
                     var __ret = Internal.getMacros_0(__Instance, i);
-                    if (__ret == global::System.IntPtr.Zero) return null;
-                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.MacroDefinition.__CreateInstance(__ret);
+                    MacroDefinition __result0;
+                    if (__ret == IntPtr.Zero) __result0 = null;
+                    else if (CppSharp.Parser.AST.MacroDefinition.NativeToManagedMap.ContainsKey(__ret))
+                        __result0 = (MacroDefinition) CppSharp.Parser.AST.MacroDefinition.NativeToManagedMap[__ret];
+                    else __result0 = CppSharp.Parser.AST.MacroDefinition.__CreateInstance(__ret);
+                    return __result0;
                 }
 
                 public void addMacros(CppSharp.Parser.AST.MacroDefinition s)
@@ -8326,7 +9290,6 @@ namespace CppSharp
                     get
                     {
                         var __ret = Internal.getFileName_0(__Instance);
-                        if (__ret == global::System.IntPtr.Zero) return null;
                         return Marshal.PtrToStringAnsi(__ret);
                     }
 
@@ -8436,6 +9399,7 @@ namespace CppSharp
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
+                public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, NativeLibrary> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, NativeLibrary>();
 
                 private readonly bool __ownsNativeInstance;
 
@@ -8460,6 +9424,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected NativeLibrary(NativeLibrary.Internal* native, bool isInternalImpl = false)
@@ -8471,28 +9436,38 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(40);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 public void Dispose()
                 {
                     Dispose(disposing: true);
-                    GC.SuppressFinalize(this);
                 }
 
                 protected virtual void Dispose(bool disposing)
                 {
-                    Internal.dtor_0(__Instance);
+                    DestroyNativeInstance(false);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.NativeLibrary __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance || force)
+                        Internal.dtor_0(__Instance);
                     if (__ownsNativeInstance)
-                    {
                         Marshal.FreeHGlobal(__Instance);
-                    }
                 }
 
                 public string getSymbols(uint i)
                 {
                     var __ret = Internal.getSymbols_0(__Instance, i);
-                    if (__ret == global::System.IntPtr.Zero) return null;
                     return Marshal.PtrToStringAnsi(__ret);
                 }
 
@@ -8511,7 +9486,6 @@ namespace CppSharp
                 public string getDependencies(uint i)
                 {
                     var __ret = Internal.getDependencies_0(__Instance, i);
-                    if (__ret == global::System.IntPtr.Zero) return null;
                     return Marshal.PtrToStringAnsi(__ret);
                 }
 
@@ -8532,7 +9506,6 @@ namespace CppSharp
                     get
                     {
                         var __ret = Internal.getFileName_0(__Instance);
-                        if (__ret == global::System.IntPtr.Zero) return null;
                         return Marshal.PtrToStringAnsi(__ret);
                     }
 
@@ -8618,6 +9591,7 @@ namespace CppSharp
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
+                public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ASTContext> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ASTContext>();
 
                 private readonly bool __ownsNativeInstance;
 
@@ -8642,6 +9616,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected ASTContext(ASTContext.Internal* native, bool isInternalImpl = false)
@@ -8653,29 +9628,44 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(12);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 public void Dispose()
                 {
                     Dispose(disposing: true);
-                    GC.SuppressFinalize(this);
                 }
 
                 protected virtual void Dispose(bool disposing)
                 {
-                    Internal.dtor_0(__Instance);
+                    DestroyNativeInstance(false);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.ASTContext __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance || force)
+                        Internal.dtor_0(__Instance);
                     if (__ownsNativeInstance)
-                    {
                         Marshal.FreeHGlobal(__Instance);
-                    }
                 }
 
                 public CppSharp.Parser.AST.TranslationUnit getTranslationUnits(uint i)
                 {
                     var __ret = Internal.getTranslationUnits_0(__Instance, i);
-                    if (__ret == global::System.IntPtr.Zero) return null;
-                    return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.AST.TranslationUnit.__CreateInstance(__ret);
+                    TranslationUnit __result0;
+                    if (__ret == IntPtr.Zero) __result0 = null;
+                    else if (CppSharp.Parser.AST.TranslationUnit.NativeToManagedMap.ContainsKey(__ret))
+                        __result0 = (TranslationUnit) CppSharp.Parser.AST.TranslationUnit.NativeToManagedMap[__ret];
+                    else __result0 = CppSharp.Parser.AST.TranslationUnit.__CreateInstance(__ret);
+                    return __result0;
                 }
 
                 public void addTranslationUnits(CppSharp.Parser.AST.TranslationUnit s)
@@ -8719,6 +9709,7 @@ namespace CppSharp
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
+                public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Comment> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Comment>();
 
                 private readonly bool __ownsNativeInstance;
 
@@ -8743,6 +9734,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected Comment(Comment.Internal* native, bool isInternalImpl = false)
@@ -8754,6 +9746,7 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(4);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     var arg0 = kind;
                     Internal.ctor_0(__Instance, arg0);
                 }
@@ -8761,15 +9754,24 @@ namespace CppSharp
                 public void Dispose()
                 {
                     Dispose(disposing: true);
-                    GC.SuppressFinalize(this);
                 }
 
                 protected virtual void Dispose(bool disposing)
                 {
+                    DestroyNativeInstance(false);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.Comment __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
                     if (__ownsNativeInstance)
-                    {
                         Marshal.FreeHGlobal(__Instance);
-                    }
                 }
 
                 public CppSharp.Parser.AST.CommentKind Kind
@@ -8828,6 +9830,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected FullComment(FullComment.Internal* native, bool isInternalImpl = false)
@@ -8840,16 +9843,27 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(4);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 protected override void Dispose(bool disposing)
                 {
-                    if (__ownsNativeInstance)
-                    {
-                        Marshal.FreeHGlobal(__Instance);
-                    }
+                    DestroyNativeInstance(false);
                     base.Dispose(disposing);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.Comment __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
             }
 
@@ -8901,6 +9915,7 @@ namespace CppSharp
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
+                public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, RawComment> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, RawComment>();
 
                 private readonly bool __ownsNativeInstance;
 
@@ -8925,6 +9940,7 @@ namespace CppSharp
                     : this(__CopyValue(native))
                 {
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                 }
 
                 protected RawComment(RawComment.Internal* native, bool isInternalImpl = false)
@@ -8936,22 +9952,33 @@ namespace CppSharp
                 {
                     __Instance = Marshal.AllocHGlobal(32);
                     __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
                 }
 
                 public void Dispose()
                 {
                     Dispose(disposing: true);
-                    GC.SuppressFinalize(this);
                 }
 
                 protected virtual void Dispose(bool disposing)
                 {
-                    Internal.dtor_0(__Instance);
+                    DestroyNativeInstance(false);
+                }
+
+                public virtual void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.RawComment __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance || force)
+                        Internal.dtor_0(__Instance);
                     if (__ownsNativeInstance)
-                    {
                         Marshal.FreeHGlobal(__Instance);
-                    }
                 }
 
                 public string Text
@@ -8959,7 +9986,6 @@ namespace CppSharp
                     get
                     {
                         var __ret = Internal.getText_0(__Instance);
-                        if (__ret == global::System.IntPtr.Zero) return null;
                         return Marshal.PtrToStringAnsi(__ret);
                     }
 
@@ -8976,7 +10002,6 @@ namespace CppSharp
                     get
                     {
                         var __ret = Internal.getBriefText_0(__Instance);
-                        if (__ret == global::System.IntPtr.Zero) return null;
                         return Marshal.PtrToStringAnsi(__ret);
                     }
 
@@ -9005,7 +10030,12 @@ namespace CppSharp
                 {
                     get
                     {
-                        return (((Internal*) __Instance)->FullCommentBlock == IntPtr.Zero) ? null : CppSharp.Parser.AST.FullComment.__CreateInstance(((Internal*) __Instance)->FullCommentBlock);
+                        FullComment __result0;
+                        if (((Internal*) __Instance)->FullCommentBlock == IntPtr.Zero) __result0 = null;
+                        else if (CppSharp.Parser.AST.FullComment.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->FullCommentBlock))
+                            __result0 = (FullComment) CppSharp.Parser.AST.FullComment.NativeToManagedMap[((Internal*) __Instance)->FullCommentBlock];
+                        else __result0 = CppSharp.Parser.AST.FullComment.__CreateInstance(((Internal*) __Instance)->FullCommentBlock);
+                        return __result0;
                     }
 
                     set

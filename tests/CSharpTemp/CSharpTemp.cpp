@@ -374,6 +374,10 @@ void MethodsWithDefaultValues::defaultDoubleWithoutF(double d1, double d2)
 {
 }
 
+void MethodsWithDefaultValues::defaultIntExpressionWithEnum(int i)
+{
+}
+
 int MethodsWithDefaultValues::getA()
 {
     return m_foo.A;
