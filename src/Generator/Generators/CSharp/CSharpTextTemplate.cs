@@ -470,6 +470,7 @@ namespace CppSharp.Generators.CSharp
                 var type = prop.Type;
                 if (prop.Parameters.Count > 0 && prop.Type.IsPointerToPrimitiveType())
                     type = ((PointerType) prop.Type).Pointee;
+                GenerateDeclarationCommon(prop);
                 Write("{0} {1} {{ ", type, GetPropertyName(prop));
                 if (prop.HasGetter)
                     Write("get; ");
@@ -1119,7 +1120,8 @@ namespace CppSharp.Generators.CSharp
                     if (prop.IsStatic)
                         Write("static ");
 
-                    if (prop.IsOverride)
+                    // check if overriding a property from a secondary base
+                    if (prop.IsOverride && @class.GetRootBaseProperty(prop, true) != null)
                         Write("override ");
                     else if (prop.IsPure && Driver.Options.GenerateAbstractImpls)
                         Write("abstract ");
@@ -1761,7 +1763,7 @@ namespace CppSharp.Generators.CSharp
             WriteCloseBraceIndent();
             NewLine();
 
-            WriteLine("public virtual void {0}()", destroyNativeInstance);
+            WriteLine("public {0} void {1}()", hasBaseClass ? "override" : "virtual", destroyNativeInstance);
             WriteStartBraceIndent();
             WriteLine("{0}(true);", destroyNativeInstance);
             WriteCloseBraceIndent();
@@ -1976,7 +1978,10 @@ namespace CppSharp.Generators.CSharp
                 Write(Helpers.GetAccess(GetValidMethodAccess(method)));
             }
 
-            if (method.IsVirtual && !method.IsOverride && !method.IsOperator &&
+            // check if overriding a function from a secondary base
+            var isOverride = method.IsOverride && @class.GetRootBaseMethod(method, true) != null;
+
+            if (method.IsVirtual && !isOverride && !method.IsOperator &&
                 (!Driver.Options.GenerateAbstractImpls || !method.IsPure))
                 Write("virtual ");
 
@@ -1986,7 +1991,7 @@ namespace CppSharp.Generators.CSharp
             if (method.IsStatic || isBuiltinOperator)
                 Write("static ");
 
-            if (method.IsOverride)
+            if (isOverride)
             {
                 if (method.Access == AccessSpecifier.Private)
                     Write("sealed ");
