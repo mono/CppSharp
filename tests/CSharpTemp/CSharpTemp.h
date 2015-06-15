@@ -482,9 +482,21 @@ protected:
 class DLL_API SecondaryBase
 {
 public:
+    enum Property
+    {
+        P1,
+        P2
+    };
+    enum Function
+    {
+        M1,
+        M2
+    };
+
     virtual void VirtualMember();
     int property();
     void setProperty(int value);
+    void function();
 };
 
 class DLL_API TestOverrideFromSecondaryBase : public Foo, public SecondaryBase

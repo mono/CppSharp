@@ -446,8 +446,6 @@ namespace CppSharp.Generators.CSharp
             NewLine();
             WriteStartBraceIndent();
 
-            GenerateDeclContext(@class);
-
             foreach (var method in @class.Methods.Where(m =>
                 !ASTUtils.CheckIgnoreMethod(m, Options) && m.Access == AccessSpecifier.Public))
             {

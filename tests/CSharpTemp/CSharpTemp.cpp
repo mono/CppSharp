@@ -483,6 +483,10 @@ void SecondaryBase::setProperty(int value)
 {
 }
 
+void SecondaryBase::function()
+{
+}
+
 void TestOverrideFromSecondaryBase::VirtualMember()
 {
 }

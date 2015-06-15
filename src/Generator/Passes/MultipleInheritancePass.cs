@@ -147,6 +147,8 @@ namespace CppSharp.Passes
                 select new Property(property) { Namespace = @interface });
 
             @interface.Fields.AddRange(@base.Fields);
+            // avoid conflicts when potentially renaming later
+            @interface.Declarations.AddRange(@base.Declarations);
 
             if (@interface.Bases.Count == 0)
             {
