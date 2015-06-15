@@ -2030,7 +2030,8 @@ namespace CppSharp.Generators.CSharp
             }
             NewLine();
 
-            if (method.Kind == CXXMethodKind.Constructor)
+            if (method.Kind == CXXMethodKind.Constructor &&
+                method.SynthKind != FunctionSynthKind.DefaultValueOverload)
                 GenerateClassConstructorBase(@class, method);
 
             WriteStartBraceIndent();

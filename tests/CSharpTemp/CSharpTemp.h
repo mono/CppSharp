@@ -256,7 +256,7 @@ class QList
 {
 };
 
-class DLL_API MethodsWithDefaultValues
+class DLL_API MethodsWithDefaultValues : public Quux
 {
 public:
     MethodsWithDefaultValues(Foo foo = Foo());
