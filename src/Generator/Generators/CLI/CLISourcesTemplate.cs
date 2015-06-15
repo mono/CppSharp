@@ -983,7 +983,23 @@ namespace CppSharp.Generators.CLI
                 if(param.Usage != ParameterUsage.Out && param.Usage != ParameterUsage.InOut)
                     continue;
 
+                if (param.Type.IsPointer() && !param.Type.GetFinalPointee().IsPrimitiveType())
+                {
+                    Parameter par = new Parameter(param);
+                    QualifiedType qType = new QualifiedType(par.Type.GetFinalPointee());
+                    par.QualifiedType = qType;
+                    param = par;
+                }
+
                 var nativeVarName = paramInfo.Name;
+
+                if(param.Type.IsPointer() && !param.Type.IsPointerToPrimitiveType() && !param.Type.GetFinalPointee().IsPrimitiveType())
+                {
+                    Parameter par = new Parameter(param);
+                    QualifiedType qType = new QualifiedType(par.Type.GetFinalPointee());
+                    par.QualifiedType = qType;
+                    param = par;
+                }
 
                 var ctx = new MarshalContext(Driver)
                     {
