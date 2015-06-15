@@ -468,3 +468,13 @@ private:
     HasVirtualDtor2* hasVirtualDtor2;
     Bar* bar;
 };
+
+class HasProtectedNestedAnonymousType
+{
+protected:
+    union
+    {
+        int i;
+        double d;
+    } u;
+};

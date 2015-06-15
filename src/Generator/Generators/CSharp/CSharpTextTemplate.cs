@@ -646,6 +646,8 @@ namespace CppSharp.Generators.CSharp
         public void GenerateClassProlog(Class @class)
         {
             Write(@class.IsInternal ? "internal " : Helpers.GetAccess(@class.Access));
+            if (@class.Access == AccessSpecifier.Protected)
+                Write("internal ");
             Write("unsafe ");
 
             if (Driver.Options.GenerateAbstractImpls && @class.IsAbstract)
