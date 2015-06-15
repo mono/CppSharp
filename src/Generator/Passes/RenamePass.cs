@@ -37,7 +37,33 @@ namespace CppSharp.Passes
             Targets = targets;
         }
 
-        public abstract bool Rename(string name, out string newName);
+        public virtual bool Rename(Declaration decl, out string newName)
+        {
+            var method = decl as Method;
+            if (method != null)
+            {
+                var rootBaseMethod = ((Class) method.Namespace).GetRootBaseMethod(method);
+                if (rootBaseMethod != null && rootBaseMethod != method)
+                {
+                    newName = rootBaseMethod.Name;
+                    return true;
+                }
+            }
+
+            var property = decl as Property;
+            if (property != null)
+            {
+                var rootBaseProperty = ((Class) property.Namespace).GetRootBaseProperty(property);
+                if (rootBaseProperty != null && rootBaseProperty != property)
+                {
+                    newName = rootBaseProperty.Name;
+                    return true;
+                }
+            }
+
+            newName = decl.Name;
+            return false;
+        }
 
         public bool IsRenameableDecl(Declaration decl)
         {
@@ -93,7 +119,7 @@ namespace CppSharp.Passes
         private bool Rename(Declaration decl)
         {
             string newName;
-            if (Rename(decl.Name, out newName) && !AreThereConflicts(decl, newName))
+            if (Rename(decl, out newName) && !AreThereConflicts(decl, newName))
                 decl.Name = newName;
             return true;
         }
@@ -147,7 +173,7 @@ namespace CppSharp.Passes
                 return false;
 
             string newName;
-            if (Rename(item.Name, out newName))
+            if (Rename(item, out newName))
             {
                 item.Name = newName;
                 return true;
@@ -262,11 +288,13 @@ namespace CppSharp.Passes
             Targets = targets;
         }
 
-        public override bool Rename(string name, out string newName)
+        public override bool Rename(Declaration decl, out string newName)
         {
-            var replace = Regex.Replace(name, Pattern, Replacement);
+            if (base.Rename(decl, out newName)) return true;
 
-            if (!name.Equals(replace))
+            var replace = Regex.Replace(decl.Name, Pattern, Replacement);
+
+            if (!decl.Name.Equals(replace))
             {
                 newName = replace;
                 return true;
@@ -296,17 +324,17 @@ namespace CppSharp.Passes
             Pattern = pattern;
         }
 
-        public override bool Rename(string name, out string newName)
+        public override bool Rename(Declaration decl, out string newName)
         {
-            newName = null;
+            if (base.Rename(decl, out newName)) return true;
 
             switch (Pattern)
             {
             case RenameCasePattern.LowerCamelCase:
-                newName = ConvertCaseString(name, RenameCasePattern.LowerCamelCase);
+                newName = ConvertCaseString(decl.Name, RenameCasePattern.LowerCamelCase);
                 return true;
             case RenameCasePattern.UpperCamelCase:
-                newName = ConvertCaseString(name, RenameCasePattern.UpperCamelCase);
+                newName = ConvertCaseString(decl.Name, RenameCasePattern.UpperCamelCase);
                 return true;
             }
 
