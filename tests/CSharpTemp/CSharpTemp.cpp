@@ -469,3 +469,20 @@ void TestNativeToManagedMap::setPropertyWithNoVirtualDtor(Bar* bar)
 {
     this->bar = bar;
 }
+
+void SecondaryBase::VirtualMember()
+{
+}
+
+int SecondaryBase::property()
+{
+    return 0;
+}
+
+void SecondaryBase::setProperty(int value)
+{
+}
+
+void TestOverrideFromSecondaryBase::VirtualMember()
+{
+}

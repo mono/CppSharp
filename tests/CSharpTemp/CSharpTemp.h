@@ -478,3 +478,18 @@ protected:
         double d;
     } u;
 };
+
+class DLL_API SecondaryBase
+{
+public:
+    virtual void VirtualMember();
+    int property();
+    void setProperty(int value);
+};
+
+class DLL_API TestOverrideFromSecondaryBase : public Foo, public SecondaryBase
+{
+public:
+    void VirtualMember();
+    void setProperty(int value);
+};
