@@ -2565,7 +2565,12 @@ AST::Expression* Parser::WalkExpression(clang::Expr* Expr)
     switch (Expr->getStmtClass())
     {
     case Stmt::BinaryOperatorClass:
-        return new AST::Expression(GetStringFromStatement(Expr), StatementClass::BinaryOperator);
+    {
+        auto BinaryOperator = cast<clang::BinaryOperator>(Expr);
+        return new AST::BinaryOperator(GetStringFromStatement(Expr),
+            WalkExpression(BinaryOperator->getLHS()), WalkExpression(BinaryOperator->getRHS()),
+            BinaryOperator->getOpcodeStr().str());
+    }
     case Stmt::DeclRefExprClass:
         return new AST::Expression(GetStringFromStatement(Expr), StatementClass::DeclRefExprClass,
             WalkDeclaration(cast<DeclRefExpr>(Expr)->getDecl()));

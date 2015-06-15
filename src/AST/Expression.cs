@@ -49,9 +49,30 @@ namespace CppSharp.AST
             return visitor.VisitExpression(this);
         }
     }
+
     public class CtorExpr : Expression
     {
         public Expression SubExpression;
+
+        public override T Visit<T>(IExpressionVisitor<T> visitor)
+        {
+            return visitor.VisitExpression(this);
+        }
+    }
+
+    public class BinaryOperator : Expression
+    {
+        public BinaryOperator(Expression lhs, Expression rhs, string opcodeStr)
+        {
+            Class = StatementClass.BinaryOperator;
+            this.LHS = lhs;
+            this.RHS = rhs;
+            this.OpcodeStr = opcodeStr;
+        }
+
+        public Expression LHS { get; set; }
+        public Expression RHS { get; set; }
+        public string OpcodeStr { get; set; }
 
         public override T Visit<T>(IExpressionVisitor<T> visitor)
         {

@@ -286,6 +286,7 @@ public:
     void rotate4x4Matrix(float angle, float x, float y, float z = 0.0f);
     void defaultPointerToValueType(QGenericArgument* pointer = 0);
     void defaultDoubleWithoutF(double d1 = 1.0, double d2 = 1.);
+    void defaultIntExpressionWithEnum(int i = Qt::GlobalColor::black + 1);
     int getA();
 private:
     Foo m_foo;

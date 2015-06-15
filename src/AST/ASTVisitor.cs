@@ -29,6 +29,7 @@ namespace CppSharp.AST
         public bool VisitNamespaceEvents = true;
         public bool VisitNamespaceVariables = true;
 
+        public bool VisitFunctionReturnType = true;
         public bool VisitFunctionParameters = true;
         public bool VisitTemplateArguments = true;
     }
@@ -307,7 +308,7 @@ namespace CppSharp.AST
                 return false;
 
             var retType = function.ReturnType;
-            if (retType.Type != null)
+            if (Options.VisitFunctionReturnType && retType.Type != null)
                 retType.Type.Visit(this, retType.Qualifiers);
 
             if (Options.VisitFunctionParameters)

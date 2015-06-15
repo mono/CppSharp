@@ -501,6 +501,15 @@ public:
     Expression* Subexpression;
 };
 
+class CS_API BinaryOperator : public Expression
+{
+public:
+    BinaryOperator(const std::string& str, Expression* lhs, Expression* rhs, const std::string& opcodeStr);
+    Expression* LHS;
+    Expression* RHS;
+    STRING(OpcodeStr)
+};
+
 class CS_API Parameter : public Declaration
 {
 public:

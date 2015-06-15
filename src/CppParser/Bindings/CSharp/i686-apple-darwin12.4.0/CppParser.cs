@@ -231,6 +231,7 @@ namespace CppSharp
             }
 
             public global::System.IntPtr __Instance { get; protected set; }
+            public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ParserOptions> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ParserOptions>();
 
             private readonly bool __ownsNativeInstance;
 
@@ -255,6 +256,7 @@ namespace CppSharp
                 : this(__CopyValue(native))
             {
                 __ownsNativeInstance = true;
+                NativeToManagedMap[__Instance] = this;
             }
 
             protected ParserOptions(ParserOptions.Internal* native, bool isInternalImpl = false)
@@ -266,28 +268,38 @@ namespace CppSharp
             {
                 __Instance = Marshal.AllocHGlobal(116);
                 __ownsNativeInstance = true;
+                NativeToManagedMap[__Instance] = this;
                 Internal.ctor_0(__Instance);
             }
 
             public void Dispose()
             {
                 Dispose(disposing: true);
-                GC.SuppressFinalize(this);
             }
 
             protected virtual void Dispose(bool disposing)
             {
-                Internal.dtor_0(__Instance);
+                DestroyNativeInstance(false);
+            }
+
+            public virtual void DestroyNativeInstance()
+            {
+                DestroyNativeInstance(true);
+            }
+
+            private void DestroyNativeInstance(bool force)
+            {
+                CppSharp.Parser.ParserOptions __dummy;
+                NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                if (__ownsNativeInstance || force)
+                    Internal.dtor_0(__Instance);
                 if (__ownsNativeInstance)
-                {
                     Marshal.FreeHGlobal(__Instance);
-                }
             }
 
             public string getArguments(uint i)
             {
                 var __ret = Internal.getArguments_0(__Instance, i);
-                if (__ret == global::System.IntPtr.Zero) return null;
                 return Marshal.PtrToStringAnsi(__ret);
             }
 
@@ -306,7 +318,6 @@ namespace CppSharp
             public string getIncludeDirs(uint i)
             {
                 var __ret = Internal.getIncludeDirs_0(__Instance, i);
-                if (__ret == global::System.IntPtr.Zero) return null;
                 return Marshal.PtrToStringAnsi(__ret);
             }
 
@@ -325,7 +336,6 @@ namespace CppSharp
             public string getSystemIncludeDirs(uint i)
             {
                 var __ret = Internal.getSystemIncludeDirs_0(__Instance, i);
-                if (__ret == global::System.IntPtr.Zero) return null;
                 return Marshal.PtrToStringAnsi(__ret);
             }
 
@@ -344,7 +354,6 @@ namespace CppSharp
             public string getDefines(uint i)
             {
                 var __ret = Internal.getDefines_0(__Instance, i);
-                if (__ret == global::System.IntPtr.Zero) return null;
                 return Marshal.PtrToStringAnsi(__ret);
             }
 
@@ -363,7 +372,6 @@ namespace CppSharp
             public string getUndefines(uint i)
             {
                 var __ret = Internal.getUndefines_0(__Instance, i);
-                if (__ret == global::System.IntPtr.Zero) return null;
                 return Marshal.PtrToStringAnsi(__ret);
             }
 
@@ -382,7 +390,6 @@ namespace CppSharp
             public string getLibraryDirs(uint i)
             {
                 var __ret = Internal.getLibraryDirs_0(__Instance, i);
-                if (__ret == global::System.IntPtr.Zero) return null;
                 return Marshal.PtrToStringAnsi(__ret);
             }
 
@@ -412,7 +419,6 @@ namespace CppSharp
                 get
                 {
                     var __ret = Internal.getFileName_0(__Instance);
-                    if (__ret == global::System.IntPtr.Zero) return null;
                     return Marshal.PtrToStringAnsi(__ret);
                 }
 
@@ -474,7 +480,6 @@ namespace CppSharp
                 get
                 {
                     var __ret = Internal.getTargetTriple_0(__Instance);
-                    if (__ret == global::System.IntPtr.Zero) return null;
                     return Marshal.PtrToStringAnsi(__ret);
                 }
 
@@ -490,7 +495,12 @@ namespace CppSharp
             {
                 get
                 {
-                    return (((Internal*) __Instance)->ASTContext == IntPtr.Zero) ? null : CppSharp.Parser.AST.ASTContext.__CreateInstance(((Internal*) __Instance)->ASTContext);
+                    ASTContext __result0;
+                    if (((Internal*) __Instance)->ASTContext == IntPtr.Zero) __result0 = null;
+                    else if (CppSharp.Parser.AST.ASTContext.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->ASTContext))
+                        __result0 = (ASTContext) CppSharp.Parser.AST.ASTContext.NativeToManagedMap[((Internal*) __Instance)->ASTContext];
+                    else __result0 = CppSharp.Parser.AST.ASTContext.__CreateInstance(((Internal*) __Instance)->ASTContext);
+                    return __result0;
                 }
 
                 set
@@ -642,6 +652,7 @@ namespace CppSharp
             }
 
             public global::System.IntPtr __Instance { get; protected set; }
+            public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ParserDiagnostic> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ParserDiagnostic>();
 
             private readonly bool __ownsNativeInstance;
 
@@ -666,6 +677,7 @@ namespace CppSharp
                 : this(__CopyValue(native))
             {
                 __ownsNativeInstance = true;
+                NativeToManagedMap[__Instance] = this;
             }
 
             protected ParserDiagnostic(ParserDiagnostic.Internal* native, bool isInternalImpl = false)
@@ -677,22 +689,33 @@ namespace CppSharp
             {
                 __Instance = Marshal.AllocHGlobal(36);
                 __ownsNativeInstance = true;
+                NativeToManagedMap[__Instance] = this;
                 Internal.ctor_0(__Instance);
             }
 
             public void Dispose()
             {
                 Dispose(disposing: true);
-                GC.SuppressFinalize(this);
             }
 
             protected virtual void Dispose(bool disposing)
             {
-                Internal.dtor_0(__Instance);
+                DestroyNativeInstance(false);
+            }
+
+            public virtual void DestroyNativeInstance()
+            {
+                DestroyNativeInstance(true);
+            }
+
+            private void DestroyNativeInstance(bool force)
+            {
+                CppSharp.Parser.ParserDiagnostic __dummy;
+                NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                if (__ownsNativeInstance || force)
+                    Internal.dtor_0(__Instance);
                 if (__ownsNativeInstance)
-                {
                     Marshal.FreeHGlobal(__Instance);
-                }
             }
 
             public string FileName
@@ -700,7 +723,6 @@ namespace CppSharp
                 get
                 {
                     var __ret = Internal.getFileName_0(__Instance);
-                    if (__ret == global::System.IntPtr.Zero) return null;
                     return Marshal.PtrToStringAnsi(__ret);
                 }
 
@@ -717,7 +739,6 @@ namespace CppSharp
                 get
                 {
                     var __ret = Internal.getMessage_0(__Instance);
-                    if (__ret == global::System.IntPtr.Zero) return null;
                     return Marshal.PtrToStringAnsi(__ret);
                 }
 
@@ -823,6 +844,7 @@ namespace CppSharp
             }
 
             public global::System.IntPtr __Instance { get; protected set; }
+            public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ParserResult> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ParserResult>();
 
             private readonly bool __ownsNativeInstance;
 
@@ -847,6 +869,7 @@ namespace CppSharp
                 : this(__CopyValue(native))
             {
                 __ownsNativeInstance = true;
+                NativeToManagedMap[__Instance] = this;
             }
 
             protected ParserResult(ParserResult.Internal* native, bool isInternalImpl = false)
@@ -858,22 +881,33 @@ namespace CppSharp
             {
                 __Instance = Marshal.AllocHGlobal(28);
                 __ownsNativeInstance = true;
+                NativeToManagedMap[__Instance] = this;
                 Internal.ctor_0(__Instance);
             }
 
             public void Dispose()
             {
                 Dispose(disposing: true);
-                GC.SuppressFinalize(this);
             }
 
             protected virtual void Dispose(bool disposing)
             {
-                Internal.dtor_0(__Instance);
+                DestroyNativeInstance(false);
+            }
+
+            public virtual void DestroyNativeInstance()
+            {
+                DestroyNativeInstance(true);
+            }
+
+            private void DestroyNativeInstance(bool force)
+            {
+                CppSharp.Parser.ParserResult __dummy;
+                NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                if (__ownsNativeInstance || force)
+                    Internal.dtor_0(__Instance);
                 if (__ownsNativeInstance)
-                {
                     Marshal.FreeHGlobal(__Instance);
-                }
             }
 
             public CppSharp.Parser.ParserDiagnostic getDiagnostics(uint i)
@@ -920,7 +954,12 @@ namespace CppSharp
             {
                 get
                 {
-                    return (((Internal*) __Instance)->ASTContext == IntPtr.Zero) ? null : CppSharp.Parser.AST.ASTContext.__CreateInstance(((Internal*) __Instance)->ASTContext);
+                    ASTContext __result0;
+                    if (((Internal*) __Instance)->ASTContext == IntPtr.Zero) __result0 = null;
+                    else if (CppSharp.Parser.AST.ASTContext.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->ASTContext))
+                        __result0 = (ASTContext) CppSharp.Parser.AST.ASTContext.NativeToManagedMap[((Internal*) __Instance)->ASTContext];
+                    else __result0 = CppSharp.Parser.AST.ASTContext.__CreateInstance(((Internal*) __Instance)->ASTContext);
+                    return __result0;
                 }
 
                 set
@@ -933,7 +972,12 @@ namespace CppSharp
             {
                 get
                 {
-                    return (((Internal*) __Instance)->Library == IntPtr.Zero) ? null : CppSharp.Parser.AST.NativeLibrary.__CreateInstance(((Internal*) __Instance)->Library);
+                    NativeLibrary __result0;
+                    if (((Internal*) __Instance)->Library == IntPtr.Zero) __result0 = null;
+                    else if (CppSharp.Parser.AST.NativeLibrary.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->Library))
+                        __result0 = (NativeLibrary) CppSharp.Parser.AST.NativeLibrary.NativeToManagedMap[((Internal*) __Instance)->Library];
+                    else __result0 = CppSharp.Parser.AST.NativeLibrary.__CreateInstance(((Internal*) __Instance)->Library);
+                    return __result0;
                 }
 
                 set
@@ -970,6 +1014,7 @@ namespace CppSharp
             }
 
             public global::System.IntPtr __Instance { get; protected set; }
+            public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ClangParser> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ClangParser>();
 
             private readonly bool __ownsNativeInstance;
 
@@ -994,6 +1039,7 @@ namespace CppSharp
                 : this(__CopyValue(native))
             {
                 __ownsNativeInstance = true;
+                NativeToManagedMap[__Instance] = this;
             }
 
             protected ClangParser(ClangParser.Internal* native, bool isInternalImpl = false)
@@ -1005,44 +1051,66 @@ namespace CppSharp
             {
                 __Instance = Marshal.AllocHGlobal(1);
                 __ownsNativeInstance = true;
+                NativeToManagedMap[__Instance] = this;
             }
 
             public void Dispose()
             {
                 Dispose(disposing: true);
-                GC.SuppressFinalize(this);
             }
 
             protected virtual void Dispose(bool disposing)
             {
+                DestroyNativeInstance(false);
+            }
+
+            public virtual void DestroyNativeInstance()
+            {
+                DestroyNativeInstance(true);
+            }
+
+            private void DestroyNativeInstance(bool force)
+            {
+                CppSharp.Parser.ClangParser __dummy;
+                NativeToManagedMap.TryRemove(__Instance, out __dummy);
                 if (__ownsNativeInstance)
-                {
                     Marshal.FreeHGlobal(__Instance);
-                }
             }
 
             public static CppSharp.Parser.ParserResult ParseHeader(CppSharp.Parser.ParserOptions Opts)
             {
                 var arg0 = ReferenceEquals(Opts, null) ? global::System.IntPtr.Zero : Opts.__Instance;
                 var __ret = Internal.ParseHeader_0(arg0);
-                if (__ret == global::System.IntPtr.Zero) return null;
-                return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.ParserResult.__CreateInstance(__ret);
+                ParserResult __result0;
+                if (__ret == IntPtr.Zero) __result0 = null;
+                else if (CppSharp.Parser.ParserResult.NativeToManagedMap.ContainsKey(__ret))
+                    __result0 = (ParserResult) CppSharp.Parser.ParserResult.NativeToManagedMap[__ret];
+                else __result0 = CppSharp.Parser.ParserResult.__CreateInstance(__ret);
+                return __result0;
             }
 
             public static CppSharp.Parser.ParserResult ParseLibrary(CppSharp.Parser.ParserOptions Opts)
             {
                 var arg0 = ReferenceEquals(Opts, null) ? global::System.IntPtr.Zero : Opts.__Instance;
                 var __ret = Internal.ParseLibrary_0(arg0);
-                if (__ret == global::System.IntPtr.Zero) return null;
-                return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.ParserResult.__CreateInstance(__ret);
+                ParserResult __result0;
+                if (__ret == IntPtr.Zero) __result0 = null;
+                else if (CppSharp.Parser.ParserResult.NativeToManagedMap.ContainsKey(__ret))
+                    __result0 = (ParserResult) CppSharp.Parser.ParserResult.NativeToManagedMap[__ret];
+                else __result0 = CppSharp.Parser.ParserResult.__CreateInstance(__ret);
+                return __result0;
             }
 
             public static CppSharp.Parser.ParserTargetInfo GetTargetInfo(CppSharp.Parser.ParserOptions Opts)
             {
                 var arg0 = ReferenceEquals(Opts, null) ? global::System.IntPtr.Zero : Opts.__Instance;
                 var __ret = Internal.GetTargetInfo_0(arg0);
-                if (__ret == global::System.IntPtr.Zero) return null;
-                return (__ret == IntPtr.Zero) ? null : CppSharp.Parser.ParserTargetInfo.__CreateInstance(__ret);
+                ParserTargetInfo __result0;
+                if (__ret == IntPtr.Zero) __result0 = null;
+                else if (CppSharp.Parser.ParserTargetInfo.NativeToManagedMap.ContainsKey(__ret))
+                    __result0 = (ParserTargetInfo) CppSharp.Parser.ParserTargetInfo.NativeToManagedMap[__ret];
+                else __result0 = CppSharp.Parser.ParserTargetInfo.__CreateInstance(__ret);
+                return __result0;
             }
         }
     }

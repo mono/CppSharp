@@ -30,6 +30,7 @@ namespace CppSharp
             ref class ArrayType;
             ref class AttributedType;
             ref class BaseClassSpecifier;
+            ref class BinaryOperator;
             ref class BuiltinType;
             ref class Class;
             ref class ClassLayout;
@@ -1256,6 +1257,31 @@ namespace CppSharp
                 Expression(::CppSharp::CppParser::AST::Expression* native);
                 static Expression^ __CreateInstance(::System::IntPtr native);
                 property CppSharp::Parser::AST::Expression^ Subexpression
+                {
+                    CppSharp::Parser::AST::Expression^ get();
+                    void set(CppSharp::Parser::AST::Expression^);
+                }
+            };
+
+            public ref class BinaryOperator : CppSharp::Parser::AST::Expression
+            {
+            public:
+
+                BinaryOperator(::CppSharp::CppParser::AST::BinaryOperator* native);
+                static BinaryOperator^ __CreateInstance(::System::IntPtr native);
+                property System::String^ OpcodeStr
+                {
+                    System::String^ get();
+                    void set(System::String^);
+                }
+
+                property CppSharp::Parser::AST::Expression^ LHS
+                {
+                    CppSharp::Parser::AST::Expression^ get();
+                    void set(CppSharp::Parser::AST::Expression^);
+                }
+
+                property CppSharp::Parser::AST::Expression^ RHS
                 {
                     CppSharp::Parser::AST::Expression^ get();
                     void set(CppSharp::Parser::AST::Expression^);
