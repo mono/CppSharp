@@ -741,3 +741,14 @@ public:
         } acmyk;
     } ct;
 };
+
+#define CS_API
+class CS_API ClassPassTry
+{
+public:
+	int n;
+	char c;
+};
+
+void funcTry(CS_OUT ClassPassTry* classTry) { }
+void funcTry2(CS_OUT ClassPassTry classTry) { }
