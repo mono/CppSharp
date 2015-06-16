@@ -90,13 +90,13 @@ namespace CppSharp
             switch (result.Kind)
             {
                 case ParserResultKind.Success:
-                    Diagnostics.EmitMessage("Parsed '{0}'", file);
+                    Diagnostics.Message("Parsed '{0}'", file);
                     break;
                 case ParserResultKind.Error:
-                    Diagnostics.EmitError("Error parsing '{0}'", file);
+                    Diagnostics.Error("Error parsing '{0}'", file);
                     break;
                 case ParserResultKind.FileNotFound:
-                    Diagnostics.EmitError("File '{0}' was not found", file);
+                    Diagnostics.Error("File '{0}' was not found", file);
                     break;
             }
 
@@ -111,7 +111,7 @@ namespace CppSharp
                 if (diag.Level == ParserDiagnosticLevel.Note)
                     continue;
 
-                Diagnostics.EmitMessage("{0}({1},{2}): {3}: {4}",
+                Diagnostics.Message("{0}({1},{2}): {3}: {4}",
                     diag.FileName, diag.LineNumber, diag.ColumnNumber,
                     diag.Level.ToString().ToLower(), diag.Message);
             }
@@ -326,7 +326,7 @@ namespace CppSharp
                 foreach (var template in output.Templates)
                 {
                     var fileRelativePath = string.Format("{0}.{1}", fileBase, template.FileExtension);
-                    Diagnostics.EmitMessage("Generated '{0}'", fileRelativePath);
+                    Diagnostics.Message("Generated '{0}'", fileRelativePath);
 
                     var file = Path.Combine(outputPath, fileRelativePath);
                     File.WriteAllText(file, template.Generate());
@@ -378,7 +378,7 @@ namespace CppSharp
 
             var errors = compilerResults.Errors.Cast<CompilerError>();
             foreach (var error in errors.Where(error => !error.IsWarning))
-                Diagnostics.EmitError(error.ToString());
+                Diagnostics.Error(error.ToString());
 
             if (compilerResults.Errors.Count == 0)
             {
@@ -415,18 +415,18 @@ namespace CppSharp
                 Log.Level = DiagnosticKind.Debug;
 
             if (!options.Quiet)
-                Log.EmitMessage("Parsing libraries...");
+                Log.Message("Parsing libraries...");
 
             if (!driver.ParseLibraries())
                 return;
 
             if (!options.Quiet)
-                Log.EmitMessage("Indexing library symbols...");
+                Log.Message("Indexing library symbols...");
 
             driver.Symbols.IndexSymbols();
 
             if (!options.Quiet)
-                Log.EmitMessage("Parsing code...");
+                Log.Message("Parsing code...");
 
             driver.BuildParseOptions();
 
@@ -434,7 +434,7 @@ namespace CppSharp
                 return;
 
             if (!options.Quiet)
-                Log.EmitMessage("Processing code...");
+                Log.Message("Processing code...");
 
             library.Preprocess(driver, driver.ASTContext);
 
@@ -444,7 +444,7 @@ namespace CppSharp
             library.Postprocess(driver, driver.ASTContext);
 
             if (!options.Quiet)
-                Log.EmitMessage("Generating code...");
+                Log.Message("Generating code...");
 
             var outputs = driver.GenerateCode();
 

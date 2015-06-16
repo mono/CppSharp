@@ -76,12 +76,12 @@ namespace CppSharp.Passes
             if (function.IsOperator)
             {
                 // TODO: turn into a method; append the original type (say, "signed long") of the last parameter to the type so that the user knows which overload is called
-                Driver.Diagnostics.EmitWarning("Duplicate operator {0} ignored", function.Name);
+                Driver.Diagnostics.Warning("Duplicate operator {0} ignored", function.Name);
                 function.ExplicitlyIgnore();
             }
             else if (method != null && method.IsConstructor)
             {
-                Driver.Diagnostics.EmitWarning("Duplicate constructor {0} ignored", function.Name);
+                Driver.Diagnostics.Warning("Duplicate constructor {0} ignored", function.Name);
                 function.ExplicitlyIgnore();
             }
             else

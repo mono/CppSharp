@@ -52,7 +52,7 @@ namespace CppSharp.Passes
             if (@enum.CompleteDeclaration == null)
             {
                 @enum.GenerationKind = GenerationKind.Internal;
-                Driver.Diagnostics.EmitWarning("Unresolved declaration: {0}", @enum.Name);
+                Driver.Diagnostics.Warning("Unresolved declaration: {0}", @enum.Name);
             }
 
         Out:

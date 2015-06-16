@@ -22,7 +22,7 @@ namespace CppSharp.Passes
                 if (vfptr.Layout.Components.Count == uniqueEntries.Count)
                     continue;
 
-                Driver.Diagnostics.EmitWarning(
+                Driver.Diagnostics.Warning(
                     "Class '{0}' found with duplicated vftable components",
                     @class.Name);
                 vfptr.Layout.Components = uniqueEntries.ToList();

@@ -34,8 +34,8 @@ namespace CppSharp.Utils
             options.Quiet = true;
             options.IgnoreParseWarnings = true;
 
-            driver.Diagnostics.EmitMessage("");
-            driver.Diagnostics.EmitMessage("Generating bindings for {0} ({1})",
+            driver.Diagnostics.Message("");
+            driver.Diagnostics.Message("Generating bindings for {0} ({1})",
                 options.LibraryName, options.GeneratorKind.ToString());
 
             // Workaround for CLR which does not check for .dll if the
@@ -57,7 +57,7 @@ namespace CppSharp.Utils
             foreach (var header in headersPaths)
                 options.addSystemIncludeDirs(header);
 
-            driver.Diagnostics.EmitMessage("Looking for tests in: {0}", path);
+            driver.Diagnostics.Message("Looking for tests in: {0}", path);
             var files = Directory.EnumerateFiles(path, "*.h");
             foreach (var file in files)
                 options.Headers.Add(Path.GetFileName(file));

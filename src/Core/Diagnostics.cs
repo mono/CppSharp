@@ -49,7 +49,7 @@ namespace CppSharp
             consumer.Emit(diagInfo);
         }
 
-        public static void EmitMessage(this IDiagnosticConsumer consumer,
+        public static void Message(this IDiagnosticConsumer consumer,
             string msg, params object[] args)
         {
             var diagInfo = new DiagnosticInfo
@@ -61,7 +61,7 @@ namespace CppSharp
             consumer.Emit(diagInfo);
         }
 
-        public static void EmitWarning(this IDiagnosticConsumer consumer,
+        public static void Warning(this IDiagnosticConsumer consumer,
             string msg, params object[] args)
         {
             var diagInfo = new DiagnosticInfo
@@ -73,7 +73,7 @@ namespace CppSharp
             consumer.Emit(diagInfo);
         }
 
-        public static void EmitError(this IDiagnosticConsumer consumer,
+        public static void Error(this IDiagnosticConsumer consumer,
             string msg, params object[] args)
         {
             var diagInfo = new DiagnosticInfo
@@ -85,7 +85,7 @@ namespace CppSharp
             consumer.Emit(diagInfo);
         }
 
-        public static void EmitError(this IDiagnosticConsumer consumer,
+        public static void Error(this IDiagnosticConsumer consumer,
             string msg)
         {
             var diagInfo = new DiagnosticInfo
