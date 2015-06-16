@@ -7,8 +7,8 @@ project "CppSharp.Generator.Tests"
   
   libdirs 
   {
-    depsdir .. "/NUnit",
-    depsdir .. "/NSubstitute"
+    depsdir .. "/NUnit.2.6.2/lib",
+    depsdir .. "/NSubstitute.1.4.3.0/lib/NET40"
   }
   
   SetupParser()
