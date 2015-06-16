@@ -5,19 +5,6 @@ using System.Linq;
 
 namespace CppSharp
 {
-    public enum DiagnosticId
-    {
-        None,
-        UnresolvedDeclaration,
-        AmbiguousOverload,
-        InvalidOperatorOverload,
-        SymbolNotFound,
-        FileGenerated,
-        ParseResult,
-        ParserDiagnostic,
-        PropertySynthetized
-    }
-
     /// <summary>
     /// Represents the kind of the diagnostic.
     /// </summary>
@@ -53,12 +40,6 @@ namespace CppSharp
         public static void Debug(this IDiagnosticConsumer consumer,
             string msg, params object[] args)
         {
-            consumer.Debug(DiagnosticId.None, msg, args);
-        }
-
-        public static void Debug(this IDiagnosticConsumer consumer,
-            DiagnosticId id, string msg, params object[] args)
-        {
             var diagInfo = new DiagnosticInfo
             {
                 Kind = DiagnosticKind.Debug,
@@ -69,7 +50,7 @@ namespace CppSharp
         }
 
         public static void EmitMessage(this IDiagnosticConsumer consumer,
-            DiagnosticId id, string msg, params object[] args)
+            string msg, params object[] args)
         {
             var diagInfo = new DiagnosticInfo
                 {
@@ -81,7 +62,7 @@ namespace CppSharp
         }
 
         public static void EmitWarning(this IDiagnosticConsumer consumer,
-            DiagnosticId id, string msg, params object[] args)
+            string msg, params object[] args)
         {
             var diagInfo = new DiagnosticInfo
             {
@@ -93,35 +74,11 @@ namespace CppSharp
         }
 
         public static void EmitError(this IDiagnosticConsumer consumer,
-            DiagnosticId id, string msg, params object[] args)
+            string msg, params object[] args)
         {
             var diagInfo = new DiagnosticInfo
             {
                 Kind = DiagnosticKind.Error,
-                Message = string.Format(msg, args)
-            };
-
-            consumer.Emit(diagInfo);
-        }
-
-        public static void EmitMessage(this IDiagnosticConsumer consumer,
-            string msg, params object[] args)
-        {
-            var diagInfo = new DiagnosticInfo
-                {
-                    Kind = DiagnosticKind.Message,
-                    Message = string.Format(msg, args)
-                };
-
-            consumer.Emit(diagInfo);
-        }
-
-        public static void EmitWarning(this IDiagnosticConsumer consumer,
-            string msg, params object[] args)
-        {
-            var diagInfo = new DiagnosticInfo
-            {
-                Kind = DiagnosticKind.Warning,
                 Message = string.Format(msg, args)
             };
 

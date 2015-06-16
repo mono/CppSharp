@@ -28,8 +28,7 @@ namespace CppSharp.Passes
 
             if (!Driver.Symbols.FindSymbol(ref symbol))
             {
-                Driver.Diagnostics.EmitWarning(DiagnosticId.SymbolNotFound,
-                    "Symbol not found: {0}", symbol);
+                Driver.Diagnostics.EmitWarning("Symbol not found: {0}", symbol);
                 return false;
             }
 

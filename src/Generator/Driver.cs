@@ -90,16 +90,13 @@ namespace CppSharp
             switch (result.Kind)
             {
                 case ParserResultKind.Success:
-                    Diagnostics.EmitMessage(DiagnosticId.ParseResult,
-                        "Parsed '{0}'", file);
+                    Diagnostics.EmitMessage("Parsed '{0}'", file);
                     break;
                 case ParserResultKind.Error:
-                    Diagnostics.EmitError(DiagnosticId.ParseResult,
-                        "Error parsing '{0}'", file);
+                    Diagnostics.EmitError("Error parsing '{0}'", file);
                     break;
                 case ParserResultKind.FileNotFound:
-                    Diagnostics.EmitError(DiagnosticId.ParseResult,
-                        "File '{0}' was not found", file);
+                    Diagnostics.EmitError("File '{0}' was not found", file);
                     break;
             }
 
@@ -114,10 +111,9 @@ namespace CppSharp
                 if (diag.Level == ParserDiagnosticLevel.Note)
                     continue;
 
-                Diagnostics.EmitMessage(DiagnosticId.ParserDiagnostic,
-                    "{0}({1},{2}): {3}: {4}", diag.FileName, diag.LineNumber,
-                    diag.ColumnNumber, diag.Level.ToString().ToLower(),
-                    diag.Message);
+                Diagnostics.EmitMessage("{0}({1},{2}): {3}: {4}",
+                    diag.FileName, diag.LineNumber, diag.ColumnNumber,
+                    diag.Level.ToString().ToLower(), diag.Message);
             }
         }
 
