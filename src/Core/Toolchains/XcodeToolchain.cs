@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace CppSharp
 {
-    public static class Toolchains
+    public static class XcodeToolchain
     {
         public static string GetXcodePath()
         {
@@ -82,13 +82,13 @@ namespace CppSharp
     {
         public static void SetupXcode(this ParserOptions options)
         {
-            var builtinsPath = Toolchains.GetXcodeBuiltinIncludesFolder();
+            var builtinsPath = XcodeToolchain.GetXcodeBuiltinIncludesFolder();
             options.addSystemIncludeDirs(builtinsPath);
 
-            var cppIncPath = Toolchains.GetXcodeCppIncludesFolder();
+            var cppIncPath = XcodeToolchain.GetXcodeCppIncludesFolder();
             options.addSystemIncludeDirs(cppIncPath);
 
-            var includePath = Toolchains.GetXcodeIncludesFolder();
+            var includePath = XcodeToolchain.GetXcodeIncludesFolder();
             options.addSystemIncludeDirs(includePath);
 
             options.NoBuiltinIncludes = true;
