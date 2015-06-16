@@ -491,6 +491,19 @@ void SecondaryBase::protectedFunction()
 {
 }
 
+int SecondaryBase::protectedProperty()
+{
+    return 0;
+}
+
+void SecondaryBase::setProtectedProperty(int value)
+{
+}
+
 void TestOverrideFromSecondaryBase::VirtualMember()
+{
+}
+
+void TestOverrideFromSecondaryBase::setProperty(int value)
 {
 }

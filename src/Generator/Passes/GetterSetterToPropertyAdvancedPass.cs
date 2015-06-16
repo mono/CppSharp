@@ -132,17 +132,23 @@ namespace CppSharp.Passes
 
             private static void GenerateProperty(DeclarationContext context, Method getter, Method setter = null)
             {
-                Class type = (Class) context;
+                var type = (Class) context;
                 if (type.Properties.All(p => getter.Name != p.Name ||
-                        p.ExplicitInterfaceImpl != getter.ExplicitInterfaceImpl))
+                    p.ExplicitInterfaceImpl != getter.ExplicitInterfaceImpl))
                 {
-                    Property property = new Property();
-                    property.Name = GetPropertyName(getter.Name);
-                    property.Namespace = type;
-                    property.QualifiedType = getter.OriginalReturnType;
+                    var property = new Property
+                    {
+                        Access = getter.Access == AccessSpecifier.Public ||
+                            (setter != null && setter.Access == AccessSpecifier.Public)
+                            ? AccessSpecifier.Public
+                            : AccessSpecifier.Protected,
+                        Name = GetPropertyName(getter.Name),
+                        Namespace = type,
+                        QualifiedType = getter.OriginalReturnType
+                    };
                     if (getter.IsOverride || (setter != null && setter.IsOverride))
                     {
-                        Property baseVirtualProperty = type.GetRootBaseProperty(property);
+                        var baseVirtualProperty = type.GetRootBaseProperty(property);
                         if (baseVirtualProperty.SetMethod == null)
                             setter = null;
                     }
@@ -155,28 +161,35 @@ namespace CppSharp.Passes
                     }
                     if (getter.Comment != null)
                     {
-                        var comment = new RawComment();
-                        comment.Kind = getter.Comment.Kind;
-                        comment.BriefText = getter.Comment.BriefText;
-                        comment.Text = getter.Comment.Text;
-                        if (getter.Comment.FullComment != null)
-                        {
-                            comment.FullComment = new FullComment();
-                            comment.FullComment.Blocks.AddRange(getter.Comment.FullComment.Blocks);
-                            if (setter != null && setter.Comment != null)
-                            {
-                                comment.BriefText += Environment.NewLine + setter.Comment.BriefText;
-                                comment.Text += Environment.NewLine + setter.Comment.Text;
-                                comment.FullComment.Blocks.AddRange(setter.Comment.FullComment.Blocks);
-                            }
-                        }
-                        property.Comment = comment;
+                        property.Comment = CombineComments(getter, setter);
                     }
                     type.Properties.Add(property);
                     getter.GenerationKind = GenerationKind.Internal;
                     if (setter != null)
                         setter.GenerationKind = GenerationKind.Internal;
                 }
+            }
+
+            private static RawComment CombineComments(Declaration getter, Declaration setter)
+            {
+                var comment = new RawComment
+                {
+                    Kind = getter.Comment.Kind,
+                    BriefText = getter.Comment.BriefText,
+                    Text = getter.Comment.Text
+                };
+                if (getter.Comment.FullComment != null)
+                {
+                    comment.FullComment = new FullComment();
+                    comment.FullComment.Blocks.AddRange(getter.Comment.FullComment.Blocks);
+                    if (setter != null && setter.Comment != null)
+                    {
+                        comment.BriefText += Environment.NewLine + setter.Comment.BriefText;
+                        comment.Text += Environment.NewLine + setter.Comment.Text;
+                        comment.FullComment.Blocks.AddRange(setter.Comment.FullComment.Blocks);
+                    }
+                }
+                return comment;
             }
 
             private static string GetPropertyName(string name)

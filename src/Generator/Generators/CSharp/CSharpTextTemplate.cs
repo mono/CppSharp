@@ -462,7 +462,7 @@ namespace CppSharp.Generators.CSharp
 
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
-            foreach (var prop in @class.Properties.Where(p => p.IsGenerated))
+            foreach (var prop in @class.Properties.Where(p => p.IsGenerated && p.Access == AccessSpecifier.Public))
             {
                 PushBlock(CSharpBlockKind.Property);
                 var type = prop.Type;
