@@ -33,4 +33,8 @@ src/generator/generator
 /build/vs2012
 /build/vs2013
 /build/gmake
+/build/headers
 /deps/llvm
+/extra
+/site
+/wip
