@@ -40,15 +40,15 @@ namespace CppSharp.Generators.CLI
             return decl.Visit(this);
         }
 
-        private static int _arrayNum = 0;
+        private static int arrayNum = 0;
         public override bool VisitArrayType(ArrayType array, TypeQualifiers quals)
         {
             switch (array.SizeType)
             {
                 case ArrayType.ArraySize.Constant:
                     var supportBefore = Context.SupportBefore;
-                    string value = Generator.GeneratedIdentifier("array") + _arrayNum;
-                    ++_arrayNum;
+                    string value = Generator.GeneratedIdentifier("array") + arrayNum;
+                    ++arrayNum;
                     supportBefore.WriteLine("cli::array<{0}>^ {1} = nullptr;", array.Type, value, array.Size);
                     supportBefore.WriteLine("if ({0} != 0)", Context.ReturnVarName);
                     supportBefore.WriteStartBraceIndent();

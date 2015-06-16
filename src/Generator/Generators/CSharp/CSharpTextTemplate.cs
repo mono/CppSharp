@@ -863,11 +863,12 @@ namespace CppSharp.Generators.CSharp
                 {
                     CSharpTypePrinter typePrinter = new CSharpTypePrinter(ctx.Driver);
                     string type = arrayType.CSharpType(typePrinter).Type;
-                    WriteLine(string.Format("fixed ({0} __arrPtr = {1}.{2})",
-                        type.Replace("[]","*"), Helpers.InstanceField,
+                    string arrPtrIden = Helpers.SafeIdentifier("__arrPtr");
+                    WriteLine(string.Format("fixed ({0} {1} = {2}.{3})",
+                        type.Replace("[]","*"), arrPtrIden, Helpers.InstanceField,
                         Helpers.SafeIdentifier(field.OriginalName)));
                     WriteStartBraceIndent();
-                    ctx.ReturnVarName = string.Format("__arrPtr");
+                    ctx.ReturnVarName = arrPtrIden;
                 }
                 else
                 {
@@ -890,9 +891,7 @@ namespace CppSharp.Generators.CSharp
                 }
 
                 if (arrayType != null && @class.IsValueType)
-                {
                     WriteCloseBraceIndent();
-                }
 
                 WriteCloseBraceIndent();
             }
@@ -990,11 +989,12 @@ namespace CppSharp.Generators.CSharp
                 {
                     CSharpTypePrinter typePrinter = new CSharpTypePrinter(ctx.Driver);
                     string type = arrayType.CSharpType(typePrinter).Type;
-                    WriteLine(string.Format("fixed ({0} __arrPtr = {1}.{2})",
-                        type.Replace("[]", "*"), Helpers.InstanceField,
+                    string arrPtrIden = Helpers.SafeIdentifier("__arrPtr");
+                    WriteLine(string.Format("fixed ({0} {1} = {2}.{3})",
+                        type.Replace("[]","*"), arrPtrIden, Helpers.InstanceField,
                         Helpers.SafeIdentifier(field.OriginalName)));
                     WriteStartBraceIndent();
-                    ctx.ReturnVarName = string.Format("__arrPtr");
+                    ctx.ReturnVarName = arrPtrIden;
                 }
 
                 var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
@@ -1005,13 +1005,8 @@ namespace CppSharp.Generators.CSharp
 
                 WriteLine("return {0};", marshal.Context.Return);
 
-
                 if (arrayType != null && @class.IsValueType)
-                {
                     WriteCloseBraceIndent();
-                }
-
-                
             }
             else if (decl is Variable)
             {
