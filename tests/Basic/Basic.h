@@ -752,3 +752,13 @@ public:
 
 void funcTry(CS_OUT ClassPassTry* classTry) { }
 void funcTry2(CS_OUT ClassPassTry classTry) { }
+
+#define ARRAY_LENGTH 5
+#define CS_VALUE_TYPE
+struct CS_VALUE_TYPE ValueTypeArrays
+{
+	float firstValueTypeArrray[ARRAY_LENGTH];
+	int secondValueTypeArray[ARRAY_LENGTH];
+	char thirdValueTypeArray[ARRAY_LENGTH];
+	size_t size;
+};

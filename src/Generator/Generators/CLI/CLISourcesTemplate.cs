@@ -666,6 +666,7 @@ namespace CppSharp.Generators.CLI
                 GenerateStructMarshaling(@base.Class, nativeVar);
             }
 
+            int paramIndex = 0;
             foreach (var property in @class.Properties.Where( p => !ASTUtils.CheckIgnoreProperty(p)))
             {
                 if (property.Field == null)
@@ -679,7 +680,8 @@ namespace CppSharp.Generators.CLI
                     ArgName = property.Name,
                     ReturnVarName = nativeField,
                     ReturnType = property.QualifiedType,
-                    Declaration = property.Field
+                    Declaration = property.Field,
+                    ParameterIndex = paramIndex++
                 };
 
                 var marshal = new CLIMarshalNativeToManagedPrinter(ctx);
