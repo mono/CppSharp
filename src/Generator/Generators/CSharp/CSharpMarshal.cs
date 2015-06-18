@@ -321,7 +321,7 @@ namespace CppSharp.Generators.CSharp
                 Context.SupportBefore.WriteLine(
                     "else if ({0}.NativeToManagedMap.ContainsKey({1}))", qualifiedClass, Context.ReturnVarName);
                 Context.SupportBefore.WriteLineIndent("{0} = ({1}) {2}.NativeToManagedMap[{3}];",
-                    ret, @class.Name, qualifiedClass, Context.ReturnVarName);
+                    ret, QualifiedIdentifier(@class), qualifiedClass, Context.ReturnVarName);
                 var dtor = originalClass.Destructors.FirstOrDefault();
                 if (dtor != null && dtor.IsVirtual)
                 {
