@@ -1879,7 +1879,7 @@ namespace CppSharp.Generators.CSharp
                 PushBlock(CSharpBlockKind.Method);
                 WriteLine("private static {0}.Internal* __CopyValue({0}.Internal native)", className);
                 WriteStartBraceIndent();
-                if (@class.HasNonTrivialCopyConstructor)
+                if (@class.HasNonTrivialCopyConstructor && Options.GenerateCopyConstructors)
                 {
                     // Find a valid copy constructor overload.
                     var copyCtorMethod = @class.Methods.FirstOrDefault(method =>
