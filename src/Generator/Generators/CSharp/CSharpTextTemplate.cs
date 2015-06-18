@@ -99,7 +99,8 @@ namespace CppSharp.Generators.CSharp
             get { return "cs"; }
         }
 
-        public CSharpTextTemplate(Driver driver, IEnumerable<TranslationUnit> units, CSharpTypePrinter typePrinter, CSharpExpressionPrinter expressionPrinter)
+        public CSharpTextTemplate(Driver driver, IEnumerable<TranslationUnit> units,
+            CSharpTypePrinter typePrinter, CSharpExpressionPrinter expressionPrinter)
             : base(driver, units)
         {
             TypePrinter = typePrinter;
@@ -487,7 +488,7 @@ namespace CppSharp.Generators.CSharp
         {
             foreach (var field in @class.Fields)
             {
-                GenerateClassField(field);                
+                GenerateClassField(field);
             }
         }
 
@@ -500,8 +501,7 @@ namespace CppSharp.Generators.CSharp
             GenerateClassInternalHead(@class);
             WriteStartBraceIndent();
 
-            var typePrinter = TypePrinter;
-            typePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+            TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
 
             GenerateClassFields(@class, GenerateClassInternalsField, true);
             if (@class.IsGenerated)
@@ -512,18 +512,17 @@ namespace CppSharp.Generators.CSharp
                 var functions = GatherClassInternalFunctions(@class);
 
                 foreach (var function in functions)
-                {
                     GenerateInternalFunction(function);
-                }
             }
 
-            typePrinter.PopContext();
+            TypePrinter.PopContext();
 
             WriteCloseBraceIndent();
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
-        private IEnumerable<Function> GatherClassInternalFunctions(Class @class, bool includeCtors = true)
+        private IEnumerable<Function> GatherClassInternalFunctions(Class @class,
+            bool includeCtors = true)
         {
             var functions = new List<Function>();
             if (@class.IsValueType)
@@ -780,7 +779,8 @@ namespace CppSharp.Generators.CSharp
             return Tuple.Create(library, decl.Mangled);
         }
 
-        private void GeneratePropertySetter<T>(QualifiedType returnType, T decl, Class @class, bool isAbstract = false)
+        private void GeneratePropertySetter<T>(QualifiedType returnType, T decl,
+            Class @class, bool isAbstract = false)
             where T : Declaration, ITypedDecl
         {
             if (!(decl is Function || decl is Field) )
@@ -886,7 +886,7 @@ namespace CppSharp.Generators.CSharp
 
                 if (marshal.Context.Return.StringBuilder.Length > 0)
                 {
-                    WriteLine("{0} = {1};", ctx.ReturnVarName, marshal.Context.Return);                    
+                    WriteLine("{0} = {1};", ctx.ReturnVarName, marshal.Context.Return);
                 }
 
                 if (arrayType != null && @class.IsValueType)
@@ -936,7 +936,8 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
-        private void GeneratePropertyGetter<T>(QualifiedType returnType, T decl, Class @class, bool isAbstract = false)
+        private void GeneratePropertyGetter<T>(QualifiedType returnType, T decl,
+            Class @class, bool isAbstract = false)
             where T : Declaration, ITypedDecl
         {
             PushBlock(CSharpBlockKind.Method);
