@@ -509,3 +509,27 @@ public:
     void VirtualMember();
     void setProperty(int value);
 };
+
+class DLL_API TestParamToInterfacePassBaseOne
+{
+};
+
+class DLL_API TestParamToInterfacePassBaseTwo
+{
+	int m;
+public:
+	int getM();
+	void setM(int n);
+	const TestParamToInterfacePassBaseTwo& operator++();
+	TestParamToInterfacePassBaseTwo();
+	TestParamToInterfacePassBaseTwo(int n);
+};
+
+class DLL_API TestParamToInterfacePass : public TestParamToInterfacePassBaseOne, public TestParamToInterfacePassBaseTwo
+{
+public:
+	TestParamToInterfacePassBaseTwo addM(TestParamToInterfacePassBaseTwo b);
+	TestParamToInterfacePassBaseTwo operator+(TestParamToInterfacePassBaseTwo b);
+	TestParamToInterfacePass(TestParamToInterfacePassBaseTwo b);
+	TestParamToInterfacePass();
+};

@@ -261,4 +261,20 @@ public class CSharpTempTests : GeneratorTestFixture
             }
         }
     }
+
+    [Test]
+    public void TestParamTypeToInterfacePass()
+    {
+        var baseClass = new TestParamToInterfacePassBaseTwo();
+        baseClass++;
+        Assert.AreEqual(baseClass.M, 1);
+        ITestParamToInterfacePassBaseTwo baseInterface = new TestParamToInterfacePassBaseTwo();
+        var dervClass = new TestParamToInterfacePass();
+        dervClass.AddM(baseClass);
+        Assert.AreEqual(dervClass.M, 1);
+        dervClass = new TestParamToInterfacePass(dervClass + baseClass);
+        Assert.AreEqual(dervClass.M, 2);
+        dervClass = new TestParamToInterfacePass(dervClass + baseInterface);
+        Assert.AreEqual(dervClass.M, 2);
+    }
 }
