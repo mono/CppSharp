@@ -1,20 +1,24 @@
-## News
-
-2nd, June 2015: We're having three students contributing to the project this summer, as part of Google Summer of Code.
-
-* Alexandre Esteves
-* Dimitar Dobrev (@ddobrev)
-* Abhinav Tripathi (@genuinelucifer)
-
-## Overview
-
 CppSharp is a collection of libraries for working with C++ code from .NET.
 
-### Generator
+It has multiple use cases, from parsing C++ code to automatically generateing
+.NET bindings for wrapping C/C++ native code allowing interoperability with
+managed languages like C#.
 
-Generates .NET bindings that wrap C/C++ code allowing interoperability with
-managed languages. This is useful if you want to consume an existing native
-library in your managed code or add scripting support to a native codebase.
+This can be used to consume an existing native library in your managed code
+or add scripting support to a native codebase.
+
+## Build Status
+
+| windows-vs-x86            |
+|---------------------------|
+| [![windows-vs-x86][1]][2] |
+
+[1]: https://ci.appveyor.com/api/projects/status/5o9gxjcttuaup671/branch/master?svg=true
+[2]: https://ci.appveyor.com/project/tritao/CppSharp/branch/master
+
+## Libraries
+
+### Generator
  
  * Multiple backends: C++/CLI and C# P/Invoke
  * Multiple ABIs: Itanium, MS, ARM, iOS and iOS64
@@ -46,16 +50,9 @@ Provides APIs for parsing C++ source code.
 * Parsing of shared libraries symbols 
 * Based on the very accurate Clang C++ parser.
  
-## Community
-
-Mailing list: [Google group](https://groups.google.com/forum/#!forum/cppsharp-list)
-
-Build bot (CI): [builds.tritao.eu](builds.tritao.eu)
-
 ## Documentation
 
-The documentation is still a work-in-progress, please see the following resources
-for more information:
+Please see the following resources for more information:
 
 [Getting Started](docs/GettingStarted.md)
 
@@ -63,6 +60,19 @@ for more information:
 
 [Developer's Manual](docs/DevManual.md)
 
-## Building custom wrappers and consulting
+## Community
 
-Please contact @ddobrev.
+Mailing list: [Google group](https://groups.google.com/forum/#!forum/cppsharp-list)
+
+## News
+
+2nd, June 2015: We're having three students contributing to the project this summer,
+as part of Google Summer of Code.
+
+* Alexandre Esteves (@afesteves)
+* Dimitar Dobrev (@ddobrev)
+* Abhinav Tripathi (@genuinelucifer)
+
+## Support
+
+For pressional services related to building custom wrappers and consulting please contact @ddobrev.
