@@ -1,6 +1,6 @@
 CppSharp is a collection of libraries for working with C++ code from .NET.
 
-It has multiple use cases, from parsing C++ code to automatically generateing
+It has multiple use cases, from parsing C++ code to automatically generating
 .NET bindings for wrapping C/C++ native code allowing interoperability with
 managed languages like C#.
 
