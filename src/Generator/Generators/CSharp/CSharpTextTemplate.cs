@@ -2114,6 +2114,10 @@ namespace CppSharp.Generators.CSharp
                 {
                     GenerateAbstractImplCall(method, @class);
                 }
+                else if (method.IsVirtual)
+                {
+                    GenerateVirtualFunctionCall(method, @class);
+                }
                 else
                 {
                     GenerateInternalFunctionCall(method);
@@ -2197,6 +2201,40 @@ namespace CppSharp.Generators.CSharp
                     return method.IsOverride ?
                         ((Class) method.Namespace).GetRootBaseMethod(method).Access : method.Access;
             }
+        }
+
+        private void GenerateVirtualFunctionCall(Function function, Class @class)
+        {
+            string delegateId, @delegate;
+            Write(GetVirtualCallDelegate(function, @class, out delegateId, out @delegate));
+            WriteLine("if({0} == {1}.{2})", @delegateId, @class.QualifiedName, @delegate + "Instance");
+            WriteStartBraceIndent();
+            GenerateInternalFunctionCall(function);
+            WriteCloseBraceIndent();
+            WriteLine("else");
+            WriteStartBraceIndent();
+            GenerateFunctionCall(delegateId, function.Parameters, function);
+            WriteCloseBraceIndent();
+        }
+
+        public string GetVirtualCallDelegate(Function function, Class @class,
+            out string delegateId,out string @delegate)
+        {
+            var virtualCallBuilder = new StringBuilder();
+            var i = VTables.GetVTableIndex(function, @class);
+            virtualCallBuilder.AppendFormat("void* slot = *(void**) ((({0}.Internal*) {1})->vfptr0 + {2} * {3});",
+                (@class.BaseClass ?? @class).Name, Helpers.InstanceIdentifier, i, Driver.TargetInfo.PointerWidth / 8);
+            virtualCallBuilder.AppendLine();
+
+            @delegate = GetVTableMethodDelegateName(function.OriginalFunction ?? function);
+            delegateId = Generator.GeneratedIdentifier(@delegate);
+
+            virtualCallBuilder.AppendFormat(
+                "var {1} = ({0}) Marshal.GetDelegateForFunctionPointer(new IntPtr(slot), typeof({0}));",
+                @delegate, delegateId);
+
+            virtualCallBuilder.AppendLine();
+            return virtualCallBuilder.ToString();
         }
 
         private void GenerateAbstractImplCall(Function function, Class @class)
