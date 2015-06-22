@@ -511,12 +511,13 @@ public class BasicTests : GeneratorTestFixture
     [Test]
     public void TestVirtualFuntionRetVal()
     {
-        AbstractFoo absFoo = new ImplementsAbstractFoo();
-        Assert.AreEqual(5, absFoo.pureFunction(0));         //Working
+        BaseClassVirtual baseClass = new DerivedClassVirtual();
+        var reta = baseClass.retInt();
+        Assert.AreEqual(reta, 2);                             //Working!
 
         var baseVirtual = BaseClassVirtual.Base;
         var ret = baseVirtual.retInt();
-        Assert.AreEqual(ret, 2);                             //Not Working
+        Assert.AreEqual(ret, 2);                             //Not Working! TEST FAILS HERE!
     }
 }
  
