@@ -583,7 +583,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        Type __result0;
+                        CppSharp.Parser.AST.Type __result0;
                         if (((Internal*) __Instance)->Type == IntPtr.Zero) __result0 = null;
                         else if (CppSharp.Parser.AST.Type.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->Type))
                             __result0 = (CppSharp.Parser.AST.Type) CppSharp.Parser.AST.Type.NativeToManagedMap[((Internal*) __Instance)->Type];
@@ -709,7 +709,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        Declaration __result0;
+                        CppSharp.Parser.AST.Declaration __result0;
                         if (((Internal*) __Instance)->Declaration == IntPtr.Zero) __result0 = null;
                         else if (CppSharp.Parser.AST.Declaration.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->Declaration))
                             __result0 = (CppSharp.Parser.AST.Declaration) CppSharp.Parser.AST.Declaration.NativeToManagedMap[((Internal*) __Instance)->Declaration];
@@ -997,7 +997,7 @@ namespace CppSharp
                 public CppSharp.Parser.AST.Parameter getParameters(uint i)
                 {
                     var __ret = Internal.getParameters_0(__Instance, i);
-                    Parameter __result0;
+                    CppSharp.Parser.AST.Parameter __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (CppSharp.Parser.AST.Parameter.NativeToManagedMap.ContainsKey(__ret))
                         __result0 = (CppSharp.Parser.AST.Parameter) CppSharp.Parser.AST.Parameter.NativeToManagedMap[__ret];
@@ -1390,7 +1390,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        TypedefDecl __result0;
+                        CppSharp.Parser.AST.TypedefDecl __result0;
                         if (((Internal*) __Instance)->Declaration == IntPtr.Zero) __result0 = null;
                         else if (CppSharp.Parser.AST.TypedefDecl.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->Declaration))
                             __result0 = (CppSharp.Parser.AST.TypedefDecl) CppSharp.Parser.AST.TypedefDecl.NativeToManagedMap[((Internal*) __Instance)->Declaration];
@@ -1812,7 +1812,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        Declaration __result0;
+                        CppSharp.Parser.AST.Declaration __result0;
                         if (((Internal*) __Instance)->Declaration == IntPtr.Zero) __result0 = null;
                         else if (CppSharp.Parser.AST.Declaration.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->Declaration))
                             __result0 = (CppSharp.Parser.AST.Declaration) CppSharp.Parser.AST.Declaration.NativeToManagedMap[((Internal*) __Instance)->Declaration];
@@ -1993,7 +1993,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        Template __result0;
+                        CppSharp.Parser.AST.Template __result0;
                         if (((Internal*) __Instance)->Template == IntPtr.Zero) __result0 = null;
                         else if (CppSharp.Parser.AST.Template.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->Template))
                             __result0 = (CppSharp.Parser.AST.Template) CppSharp.Parser.AST.Template.NativeToManagedMap[((Internal*) __Instance)->Template];
@@ -2011,7 +2011,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        Type __result0;
+                        CppSharp.Parser.AST.Type __result0;
                         if (((Internal*) __Instance)->Desugared == IntPtr.Zero) __result0 = null;
                         else if (CppSharp.Parser.AST.Type.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->Desugared))
                             __result0 = (CppSharp.Parser.AST.Type) CppSharp.Parser.AST.Type.NativeToManagedMap[((Internal*) __Instance)->Desugared];
@@ -2564,7 +2564,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        TemplateSpecializationType __result0;
+                        CppSharp.Parser.AST.TemplateSpecializationType __result0;
                         if (((Internal*) __Instance)->TemplateSpecialization == IntPtr.Zero) __result0 = null;
                         else if (CppSharp.Parser.AST.TemplateSpecializationType.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->TemplateSpecialization))
                             __result0 = (CppSharp.Parser.AST.TemplateSpecializationType) CppSharp.Parser.AST.TemplateSpecializationType.NativeToManagedMap[((Internal*) __Instance)->TemplateSpecialization];
@@ -2582,7 +2582,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        Class __result0;
+                        CppSharp.Parser.AST.Class __result0;
                         if (((Internal*) __Instance)->Class == IntPtr.Zero) __result0 = null;
                         else if (CppSharp.Parser.AST.Class.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->Class))
                             __result0 = (CppSharp.Parser.AST.Class) CppSharp.Parser.AST.Class.NativeToManagedMap[((Internal*) __Instance)->Class];
@@ -3017,7 +3017,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        Declaration __result0;
+                        CppSharp.Parser.AST.Declaration __result0;
                         if (((Internal*) __Instance)->Declaration == IntPtr.Zero) __result0 = null;
                         else if (CppSharp.Parser.AST.Declaration.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->Declaration))
                             __result0 = (CppSharp.Parser.AST.Declaration) CppSharp.Parser.AST.Declaration.NativeToManagedMap[((Internal*) __Instance)->Declaration];
@@ -3772,7 +3772,7 @@ namespace CppSharp
                 public CppSharp.Parser.AST.PreprocessedEntity getPreprocessedEntities(uint i)
                 {
                     var __ret = Internal.getPreprocessedEntities_0(__Instance, i);
-                    PreprocessedEntity __result0;
+                    CppSharp.Parser.AST.PreprocessedEntity __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (CppSharp.Parser.AST.PreprocessedEntity.NativeToManagedMap.ContainsKey(__ret))
                         __result0 = (CppSharp.Parser.AST.PreprocessedEntity) CppSharp.Parser.AST.PreprocessedEntity.NativeToManagedMap[__ret];
@@ -3862,7 +3862,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        DeclarationContext __result0;
+                        CppSharp.Parser.AST.DeclarationContext __result0;
                         if (((Internal*) __Instance)->_Namespace == IntPtr.Zero) __result0 = null;
                         else if (CppSharp.Parser.AST.DeclarationContext.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->_Namespace))
                             __result0 = (CppSharp.Parser.AST.DeclarationContext) CppSharp.Parser.AST.DeclarationContext.NativeToManagedMap[((Internal*) __Instance)->_Namespace];
@@ -3919,7 +3919,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        RawComment __result0;
+                        CppSharp.Parser.AST.RawComment __result0;
                         if (((Internal*) __Instance)->Comment == IntPtr.Zero) __result0 = null;
                         else if (CppSharp.Parser.AST.RawComment.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->Comment))
                             __result0 = (CppSharp.Parser.AST.RawComment) CppSharp.Parser.AST.RawComment.NativeToManagedMap[((Internal*) __Instance)->Comment];
@@ -3963,7 +3963,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        Declaration __result0;
+                        CppSharp.Parser.AST.Declaration __result0;
                         if (((Internal*) __Instance)->CompleteDeclaration == IntPtr.Zero) __result0 = null;
                         else if (CppSharp.Parser.AST.Declaration.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->CompleteDeclaration))
                             __result0 = (CppSharp.Parser.AST.Declaration) CppSharp.Parser.AST.Declaration.NativeToManagedMap[((Internal*) __Instance)->CompleteDeclaration];
@@ -4297,7 +4297,7 @@ namespace CppSharp
                 public CppSharp.Parser.AST.Namespace getNamespaces(uint i)
                 {
                     var __ret = Internal.getNamespaces_0(__Instance, i);
-                    Namespace __result0;
+                    CppSharp.Parser.AST.Namespace __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (CppSharp.Parser.AST.Namespace.NativeToManagedMap.ContainsKey(__ret))
                         __result0 = (CppSharp.Parser.AST.Namespace) CppSharp.Parser.AST.Namespace.NativeToManagedMap[__ret];
@@ -4319,7 +4319,7 @@ namespace CppSharp
                 public CppSharp.Parser.AST.Enumeration getEnums(uint i)
                 {
                     var __ret = Internal.getEnums_0(__Instance, i);
-                    Enumeration __result0;
+                    CppSharp.Parser.AST.Enumeration __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (CppSharp.Parser.AST.Enumeration.NativeToManagedMap.ContainsKey(__ret))
                         __result0 = (CppSharp.Parser.AST.Enumeration) CppSharp.Parser.AST.Enumeration.NativeToManagedMap[__ret];
@@ -4341,7 +4341,7 @@ namespace CppSharp
                 public CppSharp.Parser.AST.Function getFunctions(uint i)
                 {
                     var __ret = Internal.getFunctions_0(__Instance, i);
-                    Function __result0;
+                    CppSharp.Parser.AST.Function __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (CppSharp.Parser.AST.Function.NativeToManagedMap.ContainsKey(__ret))
                         __result0 = (CppSharp.Parser.AST.Function) CppSharp.Parser.AST.Function.NativeToManagedMap[__ret];
@@ -4363,7 +4363,7 @@ namespace CppSharp
                 public CppSharp.Parser.AST.Class getClasses(uint i)
                 {
                     var __ret = Internal.getClasses_0(__Instance, i);
-                    Class __result0;
+                    CppSharp.Parser.AST.Class __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (CppSharp.Parser.AST.Class.NativeToManagedMap.ContainsKey(__ret))
                         __result0 = (CppSharp.Parser.AST.Class) CppSharp.Parser.AST.Class.NativeToManagedMap[__ret];
@@ -4385,7 +4385,7 @@ namespace CppSharp
                 public CppSharp.Parser.AST.Template getTemplates(uint i)
                 {
                     var __ret = Internal.getTemplates_0(__Instance, i);
-                    Template __result0;
+                    CppSharp.Parser.AST.Template __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (CppSharp.Parser.AST.Template.NativeToManagedMap.ContainsKey(__ret))
                         __result0 = (CppSharp.Parser.AST.Template) CppSharp.Parser.AST.Template.NativeToManagedMap[__ret];
@@ -4407,7 +4407,7 @@ namespace CppSharp
                 public CppSharp.Parser.AST.TypedefDecl getTypedefs(uint i)
                 {
                     var __ret = Internal.getTypedefs_0(__Instance, i);
-                    TypedefDecl __result0;
+                    CppSharp.Parser.AST.TypedefDecl __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (CppSharp.Parser.AST.TypedefDecl.NativeToManagedMap.ContainsKey(__ret))
                         __result0 = (CppSharp.Parser.AST.TypedefDecl) CppSharp.Parser.AST.TypedefDecl.NativeToManagedMap[__ret];
@@ -4429,7 +4429,7 @@ namespace CppSharp
                 public CppSharp.Parser.AST.Variable getVariables(uint i)
                 {
                     var __ret = Internal.getVariables_0(__Instance, i);
-                    Variable __result0;
+                    CppSharp.Parser.AST.Variable __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (CppSharp.Parser.AST.Variable.NativeToManagedMap.ContainsKey(__ret))
                         __result0 = (CppSharp.Parser.AST.Variable) CppSharp.Parser.AST.Variable.NativeToManagedMap[__ret];
@@ -4451,7 +4451,7 @@ namespace CppSharp
                 public CppSharp.Parser.AST.Friend getFriends(uint i)
                 {
                     var __ret = Internal.getFriends_0(__Instance, i);
-                    Friend __result0;
+                    CppSharp.Parser.AST.Friend __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (CppSharp.Parser.AST.Friend.NativeToManagedMap.ContainsKey(__ret))
                         __result0 = (CppSharp.Parser.AST.Friend) CppSharp.Parser.AST.Friend.NativeToManagedMap[__ret];
@@ -4832,7 +4832,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        Declaration __result0;
+                        CppSharp.Parser.AST.Declaration __result0;
                         if (((Internal*) __Instance)->Declaration == IntPtr.Zero) __result0 = null;
                         else if (CppSharp.Parser.AST.Declaration.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->Declaration))
                             __result0 = (CppSharp.Parser.AST.Declaration) CppSharp.Parser.AST.Declaration.NativeToManagedMap[((Internal*) __Instance)->Declaration];
@@ -4980,7 +4980,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        Declaration __result0;
+                        CppSharp.Parser.AST.Declaration __result0;
                         if (((Internal*) __Instance)->Decl == IntPtr.Zero) __result0 = null;
                         else if (CppSharp.Parser.AST.Declaration.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->Decl))
                             __result0 = (CppSharp.Parser.AST.Declaration) CppSharp.Parser.AST.Declaration.NativeToManagedMap[((Internal*) __Instance)->Decl];
@@ -5084,7 +5084,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        Expression __result0;
+                        CppSharp.Parser.AST.Expression __result0;
                         if (((Internal*) __Instance)->Subexpression == IntPtr.Zero) __result0 = null;
                         else if (CppSharp.Parser.AST.Expression.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->Subexpression))
                             __result0 = (CppSharp.Parser.AST.Expression) CppSharp.Parser.AST.Expression.NativeToManagedMap[((Internal*) __Instance)->Subexpression];
@@ -5220,7 +5220,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        Expression __result0;
+                        CppSharp.Parser.AST.Expression __result0;
                         if (((Internal*) __Instance)->LHS == IntPtr.Zero) __result0 = null;
                         else if (CppSharp.Parser.AST.Expression.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->LHS))
                             __result0 = (CppSharp.Parser.AST.Expression) CppSharp.Parser.AST.Expression.NativeToManagedMap[((Internal*) __Instance)->LHS];
@@ -5238,7 +5238,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        Expression __result0;
+                        CppSharp.Parser.AST.Expression __result0;
                         if (((Internal*) __Instance)->RHS == IntPtr.Zero) __result0 = null;
                         else if (CppSharp.Parser.AST.Expression.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->RHS))
                             __result0 = (CppSharp.Parser.AST.Expression) CppSharp.Parser.AST.Expression.NativeToManagedMap[((Internal*) __Instance)->RHS];
@@ -5450,7 +5450,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        Expression __result0;
+                        CppSharp.Parser.AST.Expression __result0;
                         if (((Internal*) __Instance)->DefaultArgument == IntPtr.Zero) __result0 = null;
                         else if (CppSharp.Parser.AST.Expression.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->DefaultArgument))
                             __result0 = (CppSharp.Parser.AST.Expression) CppSharp.Parser.AST.Expression.NativeToManagedMap[((Internal*) __Instance)->DefaultArgument];
@@ -5664,7 +5664,7 @@ namespace CppSharp
                 public CppSharp.Parser.AST.Parameter getParameters(uint i)
                 {
                     var __ret = Internal.getParameters_0(__Instance, i);
-                    Parameter __result0;
+                    CppSharp.Parser.AST.Parameter __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (CppSharp.Parser.AST.Parameter.NativeToManagedMap.ContainsKey(__ret))
                         __result0 = (CppSharp.Parser.AST.Parameter) CppSharp.Parser.AST.Parameter.NativeToManagedMap[__ret];
@@ -5845,7 +5845,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        FunctionTemplateSpecialization __result0;
+                        CppSharp.Parser.AST.FunctionTemplateSpecialization __result0;
                         if (((Internal*) __Instance)->SpecializationInfo == IntPtr.Zero) __result0 = null;
                         else if (CppSharp.Parser.AST.FunctionTemplateSpecialization.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->SpecializationInfo))
                             __result0 = (CppSharp.Parser.AST.FunctionTemplateSpecialization) CppSharp.Parser.AST.FunctionTemplateSpecialization.NativeToManagedMap[((Internal*) __Instance)->SpecializationInfo];
@@ -6056,7 +6056,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        AccessSpecifierDecl __result0;
+                        CppSharp.Parser.AST.AccessSpecifierDecl __result0;
                         if (((Internal*) __Instance)->AccessDecl == IntPtr.Zero) __result0 = null;
                         else if (CppSharp.Parser.AST.AccessSpecifierDecl.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->AccessDecl))
                             __result0 = (CppSharp.Parser.AST.AccessSpecifierDecl) CppSharp.Parser.AST.AccessSpecifierDecl.NativeToManagedMap[((Internal*) __Instance)->AccessDecl];
@@ -6593,7 +6593,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        Type __result0;
+                        CppSharp.Parser.AST.Type __result0;
                         if (((Internal*) __Instance)->Type == IntPtr.Zero) __result0 = null;
                         else if (CppSharp.Parser.AST.Type.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->Type))
                             __result0 = (CppSharp.Parser.AST.Type) CppSharp.Parser.AST.Type.NativeToManagedMap[((Internal*) __Instance)->Type];
@@ -6611,7 +6611,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        BuiltinType __result0;
+                        CppSharp.Parser.AST.BuiltinType __result0;
                         if (((Internal*) __Instance)->BuiltinType == IntPtr.Zero) __result0 = null;
                         else if (CppSharp.Parser.AST.BuiltinType.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->BuiltinType))
                             __result0 = (CppSharp.Parser.AST.BuiltinType) CppSharp.Parser.AST.BuiltinType.NativeToManagedMap[((Internal*) __Instance)->BuiltinType];
@@ -6926,7 +6926,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        Type __result0;
+                        CppSharp.Parser.AST.Type __result0;
                         if (((Internal*) __Instance)->Type == IntPtr.Zero) __result0 = null;
                         else if (CppSharp.Parser.AST.Type.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->Type))
                             __result0 = (CppSharp.Parser.AST.Type) CppSharp.Parser.AST.Type.NativeToManagedMap[((Internal*) __Instance)->Type];
@@ -7125,7 +7125,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        Class __result0;
+                        CppSharp.Parser.AST.Class __result0;
                         if (((Internal*) __Instance)->Class == IntPtr.Zero) __result0 = null;
                         else if (CppSharp.Parser.AST.Class.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->Class))
                             __result0 = (CppSharp.Parser.AST.Class) CppSharp.Parser.AST.Class.NativeToManagedMap[((Internal*) __Instance)->Class];
@@ -7535,7 +7535,7 @@ namespace CppSharp
                 public CppSharp.Parser.AST.BaseClassSpecifier getBases(uint i)
                 {
                     var __ret = Internal.getBases_0(__Instance, i);
-                    BaseClassSpecifier __result0;
+                    CppSharp.Parser.AST.BaseClassSpecifier __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (CppSharp.Parser.AST.BaseClassSpecifier.NativeToManagedMap.ContainsKey(__ret))
                         __result0 = (CppSharp.Parser.AST.BaseClassSpecifier) CppSharp.Parser.AST.BaseClassSpecifier.NativeToManagedMap[__ret];
@@ -7557,7 +7557,7 @@ namespace CppSharp
                 public CppSharp.Parser.AST.Field getFields(uint i)
                 {
                     var __ret = Internal.getFields_0(__Instance, i);
-                    Field __result0;
+                    CppSharp.Parser.AST.Field __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (CppSharp.Parser.AST.Field.NativeToManagedMap.ContainsKey(__ret))
                         __result0 = (CppSharp.Parser.AST.Field) CppSharp.Parser.AST.Field.NativeToManagedMap[__ret];
@@ -7579,7 +7579,7 @@ namespace CppSharp
                 public CppSharp.Parser.AST.Method getMethods(uint i)
                 {
                     var __ret = Internal.getMethods_0(__Instance, i);
-                    Method __result0;
+                    CppSharp.Parser.AST.Method __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (CppSharp.Parser.AST.Method.NativeToManagedMap.ContainsKey(__ret))
                         __result0 = (CppSharp.Parser.AST.Method) CppSharp.Parser.AST.Method.NativeToManagedMap[__ret];
@@ -7601,7 +7601,7 @@ namespace CppSharp
                 public CppSharp.Parser.AST.AccessSpecifierDecl getSpecifiers(uint i)
                 {
                     var __ret = Internal.getSpecifiers_0(__Instance, i);
-                    AccessSpecifierDecl __result0;
+                    CppSharp.Parser.AST.AccessSpecifierDecl __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (CppSharp.Parser.AST.AccessSpecifierDecl.NativeToManagedMap.ContainsKey(__ret))
                         __result0 = (CppSharp.Parser.AST.AccessSpecifierDecl) CppSharp.Parser.AST.AccessSpecifierDecl.NativeToManagedMap[__ret];
@@ -7777,7 +7777,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        ClassLayout __result0;
+                        CppSharp.Parser.AST.ClassLayout __result0;
                         if (((Internal*) __Instance)->Layout == IntPtr.Zero) __result0 = null;
                         else if (CppSharp.Parser.AST.ClassLayout.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->Layout))
                             __result0 = (CppSharp.Parser.AST.ClassLayout) CppSharp.Parser.AST.ClassLayout.NativeToManagedMap[((Internal*) __Instance)->Layout];
@@ -7987,7 +7987,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        Declaration __result0;
+                        CppSharp.Parser.AST.Declaration __result0;
                         if (((Internal*) __Instance)->TemplatedDecl == IntPtr.Zero) __result0 = null;
                         else if (CppSharp.Parser.AST.Declaration.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->TemplatedDecl))
                             __result0 = (CppSharp.Parser.AST.Declaration) CppSharp.Parser.AST.Declaration.NativeToManagedMap[((Internal*) __Instance)->TemplatedDecl];
@@ -8154,7 +8154,7 @@ namespace CppSharp
                 public CppSharp.Parser.AST.ClassTemplateSpecialization getSpecializations(uint i)
                 {
                     var __ret = Internal.getSpecializations_0(__Instance, i);
-                    ClassTemplateSpecialization __result0;
+                    CppSharp.Parser.AST.ClassTemplateSpecialization __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (CppSharp.Parser.AST.ClassTemplateSpecialization.NativeToManagedMap.ContainsKey(__ret))
                         __result0 = (CppSharp.Parser.AST.ClassTemplateSpecialization) CppSharp.Parser.AST.ClassTemplateSpecialization.NativeToManagedMap[__ret];
@@ -8399,7 +8399,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        ClassTemplate __result0;
+                        CppSharp.Parser.AST.ClassTemplate __result0;
                         if (((Internal*) __Instance)->TemplatedDecl == IntPtr.Zero) __result0 = null;
                         else if (CppSharp.Parser.AST.ClassTemplate.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->TemplatedDecl))
                             __result0 = (CppSharp.Parser.AST.ClassTemplate) CppSharp.Parser.AST.ClassTemplate.NativeToManagedMap[((Internal*) __Instance)->TemplatedDecl];
@@ -8745,7 +8745,7 @@ namespace CppSharp
                 public CppSharp.Parser.AST.FunctionTemplateSpecialization getSpecializations(uint i)
                 {
                     var __ret = Internal.getSpecializations_0(__Instance, i);
-                    FunctionTemplateSpecialization __result0;
+                    CppSharp.Parser.AST.FunctionTemplateSpecialization __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (CppSharp.Parser.AST.FunctionTemplateSpecialization.NativeToManagedMap.ContainsKey(__ret))
                         __result0 = (CppSharp.Parser.AST.FunctionTemplateSpecialization) CppSharp.Parser.AST.FunctionTemplateSpecialization.NativeToManagedMap[__ret];
@@ -8931,7 +8931,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        FunctionTemplate __result0;
+                        CppSharp.Parser.AST.FunctionTemplate __result0;
                         if (((Internal*) __Instance)->Template == IntPtr.Zero) __result0 = null;
                         else if (CppSharp.Parser.AST.FunctionTemplate.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->Template))
                             __result0 = (CppSharp.Parser.AST.FunctionTemplate) CppSharp.Parser.AST.FunctionTemplate.NativeToManagedMap[((Internal*) __Instance)->Template];
@@ -8949,7 +8949,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        Function __result0;
+                        CppSharp.Parser.AST.Function __result0;
                         if (((Internal*) __Instance)->SpecializedFunction == IntPtr.Zero) __result0 = null;
                         else if (CppSharp.Parser.AST.Function.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->SpecializedFunction))
                             __result0 = (CppSharp.Parser.AST.Function) CppSharp.Parser.AST.Function.NativeToManagedMap[((Internal*) __Instance)->SpecializedFunction];
@@ -9584,7 +9584,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        MacroDefinition __result0;
+                        CppSharp.Parser.AST.MacroDefinition __result0;
                         if (((Internal*) __Instance)->Definition == IntPtr.Zero) __result0 = null;
                         else if (CppSharp.Parser.AST.MacroDefinition.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->Definition))
                             __result0 = (CppSharp.Parser.AST.MacroDefinition) CppSharp.Parser.AST.MacroDefinition.NativeToManagedMap[((Internal*) __Instance)->Definition];
@@ -9767,7 +9767,7 @@ namespace CppSharp
                 public CppSharp.Parser.AST.MacroDefinition getMacros(uint i)
                 {
                     var __ret = Internal.getMacros_0(__Instance, i);
-                    MacroDefinition __result0;
+                    CppSharp.Parser.AST.MacroDefinition __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (CppSharp.Parser.AST.MacroDefinition.NativeToManagedMap.ContainsKey(__ret))
                         __result0 = (CppSharp.Parser.AST.MacroDefinition) CppSharp.Parser.AST.MacroDefinition.NativeToManagedMap[__ret];
@@ -10179,7 +10179,7 @@ namespace CppSharp
                 public CppSharp.Parser.AST.TranslationUnit getTranslationUnits(uint i)
                 {
                     var __ret = Internal.getTranslationUnits_0(__Instance, i);
-                    TranslationUnit __result0;
+                    CppSharp.Parser.AST.TranslationUnit __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (CppSharp.Parser.AST.TranslationUnit.NativeToManagedMap.ContainsKey(__ret))
                         __result0 = (CppSharp.Parser.AST.TranslationUnit) CppSharp.Parser.AST.TranslationUnit.NativeToManagedMap[__ret];
@@ -10575,7 +10575,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        FullComment __result0;
+                        CppSharp.Parser.AST.FullComment __result0;
                         if (((Internal*) __Instance)->FullCommentBlock == IntPtr.Zero) __result0 = null;
                         else if (CppSharp.Parser.AST.FullComment.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->FullCommentBlock))
                             __result0 = (CppSharp.Parser.AST.FullComment) CppSharp.Parser.AST.FullComment.NativeToManagedMap[((Internal*) __Instance)->FullCommentBlock];
