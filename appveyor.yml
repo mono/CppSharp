@@ -40,9 +40,8 @@ environment:
 # install:
 
 build_script:
-  - 'echo Building...'
-  - 'cd build; premake5.exe --file=premake4.lua %VS_VERSION%'
-  - 'msbuild %BUILD_PATH%\CppSharp.sln'
+  - build\premake5.exe --file=build\premake4.lua %VS_VERSION%
+  - msbuild %BUILD_PATH%\CppSharp.sln
 
 #---------------------------------#
 #      artifacts configuration    #
