@@ -16,7 +16,7 @@ namespace CppSharp
     /// </summary>
     class ParserGen : ILibrary
     {
-        const string LINUX_INCLUDE_BASE_DIR = "../../../../deps/x86_64-linux-gnu";
+        const string LINUX_INCLUDE_BASE_DIR = "../../../../build/headers/x86_64-linux-gnu";
 
         internal readonly GeneratorKind Kind;
         internal readonly string Triple;
