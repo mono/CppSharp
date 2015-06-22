@@ -34,10 +34,13 @@ configuration:
 
 environment:
   VS_VERSION: vs2013
+  DEPS_PATH: '%APPVEYOR_BUILD_FOLDER%\deps'
   LLVM_PATH: '%APPVEYOR_BUILD_FOLDER%\deps\llvm'
   BUILD_PATH: '%APPVEYOR_BUILD_FOLDER%\build\%VS_VERSION%'
 
-# install:
+install:
+  - appveyor DownloadFile https://dl.dropboxusercontent.com/u/194502/CppSharp/llvm.7z
+  - 7z x llvm.7z -o%DEPS_PATH% -y
 
 build_script:
   - build\premake5.exe --file=build\premake4.lua %VS_VERSION%
