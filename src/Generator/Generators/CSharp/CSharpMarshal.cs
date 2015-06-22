@@ -313,7 +313,7 @@ namespace CppSharp.Generators.CSharp
         {
             var originalClass = @class.OriginalClass ?? @class;
             var ret = Generator.GeneratedIdentifier("result") + Context.ParameterIndex;
-            Context.SupportBefore.WriteLine("{0} {1};", @class.Name, ret);
+            Context.SupportBefore.WriteLine("{0} {1};", QualifiedIdentifier(@class), ret);
             Context.SupportBefore.WriteLine("if ({0} == IntPtr.Zero) {1} = {2};", Context.ReturnVarName, ret,
                 originalClass.IsRefType ? "null" : string.Format("new {0}()", type));
             if (originalClass.IsRefType)
