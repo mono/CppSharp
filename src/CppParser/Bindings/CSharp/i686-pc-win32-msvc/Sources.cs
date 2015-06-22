@@ -67,6 +67,17 @@ namespace CppSharp
                 }
             }
 
+            public SourceLocation(CppSharp.Parser.SourceLocation _0)
+                : this()
+            {
+                var __arg0 = _0.__Instance;
+                var arg0 = new global::System.IntPtr(&__arg0);
+                fixed (Internal* __instancePtr = &__instance)
+                {
+                    Internal.cctor_2(new global::System.IntPtr(__instancePtr), arg0);
+                }
+            }
+
             public uint ID
             {
                 get

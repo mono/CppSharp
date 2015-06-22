@@ -134,6 +134,12 @@ void CppSharp::Parser::ParserOptions::clearLibraryDirs()
     ((::CppSharp::CppParser::ParserOptions*)NativePtr)->clearLibraryDirs();
 }
 
+CppSharp::Parser::ParserOptions::ParserOptions(CppSharp::Parser::ParserOptions^ _0)
+{
+    auto &arg0 = *(::CppSharp::CppParser::ParserOptions*)_0->NativePtr;
+    NativePtr = new ::CppSharp::CppParser::ParserOptions(arg0);
+}
+
 System::IntPtr CppSharp::Parser::ParserOptions::__Instance::get()
 {
     return System::IntPtr(NativePtr);
@@ -303,6 +309,12 @@ CppSharp::Parser::ParserDiagnostic::ParserDiagnostic()
     NativePtr = new ::CppSharp::CppParser::ParserDiagnostic();
 }
 
+CppSharp::Parser::ParserDiagnostic::ParserDiagnostic(CppSharp::Parser::ParserDiagnostic^ _0)
+{
+    auto &arg0 = *(::CppSharp::CppParser::ParserDiagnostic*)_0->NativePtr;
+    NativePtr = new ::CppSharp::CppParser::ParserDiagnostic(arg0);
+}
+
 System::IntPtr CppSharp::Parser::ParserDiagnostic::__Instance::get()
 {
     return System::IntPtr(NativePtr);
@@ -384,6 +396,12 @@ CppSharp::Parser::ParserResult^ CppSharp::Parser::ParserResult::__CreateInstance
 CppSharp::Parser::ParserResult::ParserResult()
 {
     NativePtr = new ::CppSharp::CppParser::ParserResult();
+}
+
+CppSharp::Parser::ParserResult::ParserResult(CppSharp::Parser::ParserResult^ _0)
+{
+    auto &arg0 = *(::CppSharp::CppParser::ParserResult*)_0->NativePtr;
+    NativePtr = new ::CppSharp::CppParser::ParserResult(arg0);
 }
 
 CppSharp::Parser::ParserDiagnostic^ CppSharp::Parser::ParserResult::getDiagnostics(unsigned int i)
@@ -487,6 +505,12 @@ CppSharp::Parser::ParserTargetInfo^ CppSharp::Parser::ClangParser::GetTargetInfo
 CppSharp::Parser::ClangParser::ClangParser()
 {
     NativePtr = new ::CppSharp::CppParser::ClangParser();
+}
+
+CppSharp::Parser::ClangParser::ClangParser(CppSharp::Parser::ClangParser^ _0)
+{
+    auto &arg0 = *(::CppSharp::CppParser::ClangParser*)_0->NativePtr;
+    NativePtr = new ::CppSharp::CppParser::ClangParser(arg0);
 }
 
 System::IntPtr CppSharp::Parser::ClangParser::__Instance::get()

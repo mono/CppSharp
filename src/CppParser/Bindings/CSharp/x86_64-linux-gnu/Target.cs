@@ -204,6 +204,15 @@ namespace CppSharp
                 __Instance = new global::System.IntPtr(native);
             }
 
+            public ParserTargetInfo(CppSharp.Parser.ParserTargetInfo _0)
+            {
+                __Instance = Marshal.AllocHGlobal(160);
+                __ownsNativeInstance = true;
+                NativeToManagedMap[__Instance] = this;
+                var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
+                Internal.cctor_0(__Instance, arg0);
+            }
+
             public ParserTargetInfo()
             {
                 __Instance = Marshal.AllocHGlobal(160);
