@@ -36,3 +36,4 @@ project "CppSharp.CppParser"
 end
 
 include ("Bindings")
+include ("Bootstrap")
