@@ -507,3 +507,49 @@ void TestOverrideFromSecondaryBase::VirtualMember()
 void TestOverrideFromSecondaryBase::setProperty(int value)
 {
 }
+
+int TestParamToInterfacePassBaseTwo::getM()
+{
+	return m;
+}
+
+void TestParamToInterfacePassBaseTwo::setM(int n)
+{
+	m = n;
+}
+
+const TestParamToInterfacePassBaseTwo& TestParamToInterfacePassBaseTwo::operator++()
+{
+	++m;
+	return *this;
+}
+
+TestParamToInterfacePassBaseTwo::TestParamToInterfacePassBaseTwo()
+{
+	m = 0;
+}
+
+TestParamToInterfacePassBaseTwo::TestParamToInterfacePassBaseTwo(int n)
+{
+	m = n;
+}
+
+TestParamToInterfacePassBaseTwo TestParamToInterfacePass::addM(TestParamToInterfacePassBaseTwo b)
+{
+	this->setM(this->getM() + b.getM());
+	return *this;
+}
+
+TestParamToInterfacePassBaseTwo TestParamToInterfacePass::operator+(TestParamToInterfacePassBaseTwo b)
+{
+	return TestParamToInterfacePassBaseTwo(this->getM() + b.getM());
+}
+
+TestParamToInterfacePass::TestParamToInterfacePass(TestParamToInterfacePassBaseTwo b)
+{
+	this->setM(b.getM());
+}
+
+TestParamToInterfacePass::TestParamToInterfacePass() : TestParamToInterfacePassBaseOne(), TestParamToInterfacePassBaseTwo()
+{
+}
