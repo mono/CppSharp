@@ -1,9 +1,7 @@
-using CppSharp.AST;
-using CppSharp.Parser;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using CppSharp.Parser;
 
 namespace CppSharp
 {
@@ -78,7 +76,7 @@ namespace CppSharp
         }
     }
 
-    public static class OptionsExtensions
+    public static partial class OptionsExtensions
     {
         public static void SetupXcode(this ParserOptions options)
         {
