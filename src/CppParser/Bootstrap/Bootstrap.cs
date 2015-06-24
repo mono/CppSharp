@@ -1,14 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
-using CppSharp;
 using CppSharp.AST;
-using CppSharp.Generators;
-using CppSharp.Passes;
-using CppSharp.Types;
-using CppAbi = CppSharp.Parser.AST.CppAbi;
 
 namespace CppSharp
 {
@@ -38,26 +31,27 @@ namespace CppSharp
         public void Setup(Driver driver)
         {
             var options = driver.Options;
-			options.LibraryName = "CppSharp";
-			options.DryRun = true;
+            options.LibraryName = "CppSharp";
+            options.DryRun = true;
             options.Headers.AddRange(new string[]
             {
                 "clang/AST/Expr.h",
             });
-			options.SetupXcode();
-			options.MicrosoftMode = false;
-			options.TargetTriple = "i686-apple-darwin12.4.0";
 
-			options.addDefines ("__STDC_LIMIT_MACROS");
-			options.addDefines ("__STDC_CONSTANT_MACROS");
+            options.SetupXcode();
+            options.MicrosoftMode = false;
+            options.TargetTriple = "i686-apple-darwin12.4.0";
 
-			var llvmPath = Path.Combine (GetSourceDirectory ("deps"), "llvm");
-			var clangPath = Path.Combine(llvmPath, "tools", "clang");
+            options.addDefines ("__STDC_LIMIT_MACROS");
+            options.addDefines ("__STDC_CONSTANT_MACROS");
 
-			options.addIncludeDirs(Path.Combine(llvmPath, "include"));
-			options.addIncludeDirs(Path.Combine(llvmPath, "build", "include"));
-			options.addIncludeDirs (Path.Combine (llvmPath, "build", "tools", "clang", "include"));
-			options.addIncludeDirs(Path.Combine(clangPath, "include"));
+            var llvmPath = Path.Combine (GetSourceDirectory ("deps"), "llvm");
+            var clangPath = Path.Combine(llvmPath, "tools", "clang");
+
+            options.addIncludeDirs(Path.Combine(llvmPath, "include"));
+            options.addIncludeDirs(Path.Combine(llvmPath, "build", "include"));
+            options.addIncludeDirs (Path.Combine (llvmPath, "build", "tools", "clang", "include"));
+            options.addIncludeDirs(Path.Combine(clangPath, "include"));
         }
 
         public void SetupPasses(Driver driver)
@@ -68,13 +62,13 @@ namespace CppSharp
         {
             ctx.RenameNamespace("CppSharp::CppParser", "Parser");
 
-			var exprClass = ctx.FindCompleteClass ("clang::Expr");
+            var exprClass = ctx.FindCompleteClass ("clang::Expr");
 
-			var exprUnit = ctx.TranslationUnits [0];
-			var subclassVisitor = new SubclassVisitor (exprClass);
-			exprUnit.Visit (subclassVisitor);
+            var exprUnit = ctx.TranslationUnits [0];
+            var subclassVisitor = new SubclassVisitor (exprClass);
+            exprUnit.Visit (subclassVisitor);
 
-			var subclasses = subclassVisitor.Classes;
+            var subclasses = subclassVisitor.Classes;
         }
 
         public void Postprocess(Driver driver, ASTContext ctx)
@@ -84,39 +78,39 @@ namespace CppSharp
         public static void Main(string[] args)
         {
             Console.WriteLine("Generating parser bootstrap code...");
-			ConsoleDriver.Run(new Bootstrap());
+            ConsoleDriver.Run(new Bootstrap());
             Console.WriteLine();
- 	   }
-	}
+        }
+    }
 
-	class SubclassVisitor : AstVisitor
-	{
-		public HashSet<Class> Classes;
-		Class expressionClass;
+    class SubclassVisitor : AstVisitor
+    {
+        public HashSet<Class> Classes;
+        Class expressionClass;
 
-		public SubclassVisitor (Class expression)
-		{
-			expressionClass = expression;
-			Classes = new HashSet<Class> ();
-		}
+        public SubclassVisitor (Class expression)
+        {
+            expressionClass = expression;
+            Classes = new HashSet<Class> ();
+        }
 
-		static bool IsDerivedFrom(Class subclass, Class superclass)
-		{
-			if (subclass == null)
-				return false;
+        static bool IsDerivedFrom(Class subclass, Class superclass)
+        {
+            if (subclass == null)
+                return false;
 
-			if (subclass == superclass)
-				return true;
+            if (subclass == superclass)
+                return true;
 
-			return IsDerivedFrom (subclass.BaseClass, superclass);
-		}
+            return IsDerivedFrom (subclass.BaseClass, superclass);
+        }
 
-		public override bool VisitClassDecl (Class @class)
-		{
-			if (!@class.IsIncomplete && IsDerivedFrom (@class, expressionClass))
-				Classes.Add (@class);
-				
-			return base.VisitClassDecl (@class);
-		}
-	}
+        public override bool VisitClassDecl (Class @class)
+        {
+            if (!@class.IsIncomplete && IsDerivedFrom (@class, expressionClass))
+                Classes.Add (@class);
+
+            return base.VisitClassDecl (@class);
+        }
+    }
 }
