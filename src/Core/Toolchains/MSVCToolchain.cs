@@ -81,7 +81,7 @@ namespace CppSharp
                 case VisualStudioVersion.Latest:
                     return 14;
                 default:
-                    throw new ArgumentOutOfRangeException("Unknown Visual Studio version");
+                    throw new Exception("Unknown Visual Studio version");
             }
         }
 
@@ -91,7 +91,7 @@ namespace CppSharp
             var includes = new List<string>();
 
             List<ToolchainVersion> vsSdks;
-            MSVCToolchain.GetVisualStudioSdks(out vsSdks);
+            GetVisualStudioSdks(out vsSdks);
 
             if (vsSdks.Count == 0)
                 throw new Exception("Could not find a valid Visual Studio toolchain");
@@ -124,7 +124,7 @@ namespace CppSharp
             }
 
             List<ToolchainVersion> windowSdks;
-            MSVCToolchain.GetWindowsSdks(out windowSdks);
+            GetWindowsSdks(out windowSdks);
 
             var windowSdk = (windowsSdkMajorVer != 0)
                 ? windowSdks.Find(version =>
@@ -264,19 +264,17 @@ namespace CppSharp
             string subKey;
             var hive = GetRegistryHive(keyPath, out subKey);
             using (var rootKey = RegistryKey.OpenBaseKey(hive, view))
+            using (var key = rootKey.OpenSubKey(subKey, writable: false))
             {
-                using (var key = rootKey.OpenSubKey(subKey, writable: false))
-                {
-                    if (key == null)
-                        return false;
+                if (key == null)
+                    return false;
 
-                    foreach (var subKeyName in key.GetSubKeyNames())
-                    {
-                        ToolchainVersion entry;
-                        if (HandleToolchainRegistrySubKey(out entry, key, valueName,
-                            subKeyName))
-                            entries.Add(entry);
-                    }
+                foreach (var subKeyName in key.GetSubKeyNames())
+                {
+                    ToolchainVersion entry;
+                    if (HandleToolchainRegistrySubKey(out entry, key, valueName,
+                        subKeyName))
+                        entries.Add(entry);
                 }
             }
 
