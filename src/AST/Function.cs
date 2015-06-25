@@ -26,7 +26,7 @@ namespace CppSharp.AST
         Regular,
         IndirectReturnType,
         OperatorParameter,
-        ImplcicitDestructorParameter
+        ImplicitDestructorParameter
     }
 
     public class Parameter : Declaration, ITypedDecl

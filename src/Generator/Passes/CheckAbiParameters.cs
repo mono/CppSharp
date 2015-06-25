@@ -55,7 +55,7 @@ namespace CppSharp.Passes
             {
                 method.Parameters.Add(new Parameter
                 {
-                    Kind = ParameterKind.ImplcicitDestructorParameter,
+                    Kind = ParameterKind.ImplicitDestructorParameter,
                     QualifiedType = new QualifiedType(new BuiltinType(PrimitiveType.Int)),
                     Name = "delete"
                 });
