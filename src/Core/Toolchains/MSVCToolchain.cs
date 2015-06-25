@@ -106,6 +106,11 @@ namespace CppSharp
             if (vsSdks.Count == 0)
                 throw new Exception("Could not find a valid Visual Studio toolchain");
 
+            // Clang cannot deal yet with VS 2015, so remove it from SDKs.
+            if (vsVersion == VisualStudioVersion.Latest)
+                vsSdks.Remove(vsSdks.Find(version =>
+                    (int) version.Version == GetVisualStudioVersion(vsVersion)));
+
             var vsSdk = (vsVersion == VisualStudioVersion.Latest)
                 ? vsSdks.Last()
                 : vsSdks.Find(version =>
