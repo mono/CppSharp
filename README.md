@@ -75,4 +75,4 @@ as part of Google Summer of Code.
 
 ## Support
 
-For pressional services related to building custom wrappers and consulting please contact @ddobrev.
+For professional services related to building custom wrappers and consulting please contact @ddobrev.

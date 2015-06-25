@@ -1838,7 +1838,7 @@ namespace CppSharp.Generators.CSharp
 
                         var implicitArg = string.Empty;
                         if (dtor.Parameters.Any(parameter =>
-                            parameter.Kind == ParameterKind.ImplcicitDestructorParameter))
+                            parameter.Kind == ParameterKind.ImplicitDestructorParameter))
                             implicitArg = ", 0"; // Do not delete instance in MS ABI.
                         WriteLineIndent("Internal.{0}({1}{2});", GetFunctionNativeIdentifier(dtor),
                             Helpers.InstanceIdentifier, implicitArg);
