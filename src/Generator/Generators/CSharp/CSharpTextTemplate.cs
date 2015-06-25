@@ -1835,8 +1835,13 @@ namespace CppSharp.Generators.CSharp
                         Driver.Symbols.FindLibraryBySymbol(dtor.Mangled, out library))
                     {
                         WriteLine("if ({0} || force)", Helpers.OwnsNativeInstanceIdentifier);
-                        WriteLineIndent("Internal.{0}({1});", GetFunctionNativeIdentifier(dtor),
-                            Helpers.InstanceIdentifier);
+
+                        var implicitArg = string.Empty;
+                        if (dtor.Parameters.Any(parameter =>
+                            parameter.Kind == ParameterKind.ImplcicitDestructorParameter))
+                            implicitArg = ", 0"; // Do not delete instance in MS ABI.
+                        WriteLineIndent("Internal.{0}({1}{2});", GetFunctionNativeIdentifier(dtor),
+                            Helpers.InstanceIdentifier, implicitArg);
                     }
                 }
             }

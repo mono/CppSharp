@@ -39,13 +39,26 @@ namespace CppSharp.Passes
                     PrimitiveType.Void));
             }
 
+            var method = function as Method;
+
             if (function.HasThisReturn)
             {
                 // This flag should only be true on methods.
-                var method = (Method) function;
                 var classType = new QualifiedType(new TagType(method.Namespace),
                     new TypeQualifiers {IsConst = true});
                 function.ReturnType = new QualifiedType(new PointerType(classType));
+            }
+
+            // Deleting destructors (default in v-table) accept an i32 bitfield as a
+            // second parameter.in MS ABI.
+            if (method != null && method.IsDestructor && Driver.Options.IsMicrosoftAbi)
+            {
+                method.Parameters.Add(new Parameter
+                {
+                    Kind = ParameterKind.ImplcicitDestructorParameter,
+                    QualifiedType = new QualifiedType(new BuiltinType(PrimitiveType.Int)),
+                    Name = "delete"
+                });
             }
 
             // TODO: Handle indirect parameters
