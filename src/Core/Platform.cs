@@ -47,4 +47,10 @@ namespace CppSharp
                 return false;
             }
         }
+
+        public static bool IsMono
+        {
+            get { return System.Type.GetType("Mono.Runtime") == null; }
+        }
+    }
 }

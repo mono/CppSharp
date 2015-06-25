@@ -2,7 +2,6 @@
 using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using System.Runtime.InteropServices;
 using CppSharp.AST;
 using CppSharp.Generators;
 using NUnit.Framework;
@@ -40,7 +39,7 @@ namespace CppSharp.Utils
 
             // Workaround for CLR which does not check for .dll if the
             // name already has a dot.
-            if (System.Type.GetType("Mono.Runtime") == null)
+            if (Platform.IsMono)
                 options.SharedLibraryName += ".dll";
 
             var path = Path.GetFullPath(GetTestsDirectory(name));
