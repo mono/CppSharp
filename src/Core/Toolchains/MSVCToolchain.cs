@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using CppSharp.Parser;
+using CppSharp.Parser.AST;
 using Microsoft.Win32;
 
 namespace CppSharp
@@ -463,6 +464,7 @@ namespace CppSharp
             options.MicrosoftMode = true;
             options.NoBuiltinIncludes = true;
             options.NoStandardIncludes = true;
+            options.Abi = CppAbi.Microsoft;
 
             var includes = MSVCToolchain.GetSystemIncludes(vsVersion);
             foreach (var include in includes)
