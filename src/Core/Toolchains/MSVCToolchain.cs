@@ -21,7 +21,10 @@ namespace CppSharp
     /// Represents a toolchain with associated version and directory.
     public struct ToolchainVersion
     {
+        /// Version of the toolchain.
         public float Version;
+
+        /// Directory location of the toolchain.
         public string Directory;
 
         public override string ToString()
