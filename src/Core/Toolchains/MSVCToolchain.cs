@@ -121,16 +121,29 @@ namespace CppSharp
             // is supposed to be used with this VS version.
             var vcVarsPath = Path.Combine(vsDir, @"Common7\Tools\VCVarsQueryRegistry.bat");
 
-            int windowsSdkMajorVer = 0, windowsSdkMinorVer = 0;
+            int windowsSdkMajorVer = 0;
+            string kitsRootKey = string.Empty;
             if (File.Exists(vcVarsPath))
             {
                 var vcVarsFile = File.ReadAllText(vcVarsPath);
                 var match = Regex.Match(vcVarsFile, @"Windows\\v([1-9][0-9]*)\.?([0-9]*)");
                 if (match.Success)
-                {
                     windowsSdkMajorVer = int.Parse(match.Groups[1].Value);
-                    windowsSdkMinorVer = int.Parse(match.Groups[2].Value);
-                }
+
+                match = Regex.Match(vcVarsFile, @"KitsRoot([1-9][0-9]*)");
+                if (match.Success)
+                    kitsRootKey = match.Groups[0].Value;
+            }
+
+            // Check vsvars32.bat to see location of the new Universal C runtime library.
+            string ucrtPaths = string.Empty;
+            var vsVarsPath = Path.Combine(vsDir, @"Common7\Tools\vsvars32.bat");
+            if (File.Exists(vsVarsPath))
+            {
+                var vsVarsFile = File.ReadAllText(vsVarsPath);
+                var match = Regex.Match(vsVarsFile, @"INCLUDE=%UniversalCRTSdkDir%(.+)%INCLUDE%");
+                if (match.Success)
+                    ucrtPaths = match.Groups[1].Value;
             }
 
             List<ToolchainVersion> windowSdks;
@@ -168,6 +181,12 @@ namespace CppSharp
             var windowsKitSdk = (!string.IsNullOrWhiteSpace(kitsRootKey))
                 ? windowsKitsSdks.Find(version => version.Value == kitsRootKey)
                 : windowsKitsSdks.Last();
+
+            if (!string.IsNullOrWhiteSpace(ucrtPaths))
+            {
+                foreach (var path in ucrtPaths.Split(';'))
+                    includes.Add(Path.Combine(windowsKitSdk.Directory, path.TrimStart('\\')));
+            }
 
             return includes;
         }
