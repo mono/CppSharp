@@ -27,6 +27,9 @@ namespace CppSharp
         /// Directory location of the toolchain.
         public string Directory;
 
+        /// Extra data value associated with the toolchain.
+        public string Value;
+
         public override string ToString()
         {
             return string.Format("{0} (version: {1})", Directory, Version);
@@ -52,6 +55,10 @@ namespace CppSharp
             List<ToolchainVersion> windowsSdks;
             GetWindowsSdks(out windowsSdks);
             DumpSdks("Windows", windowsSdks);
+
+            List<ToolchainVersion> windowsKitsSdks;
+            GetWindowsKitsSdks(out windowsKitsSdks);
+            DumpSdks("Windows Kits", windowsKitsSdks);
 
             List<ToolchainVersion> netFrameworkSdks;
             GetNetFrameworkSdks(out netFrameworkSdks);
@@ -155,6 +162,13 @@ namespace CppSharp
                 }
             }
 
+            List<ToolchainVersion> windowsKitsSdks;
+            GetWindowsKitsSdks(out windowsKitsSdks);
+
+            var windowsKitSdk = (!string.IsNullOrWhiteSpace(kitsRootKey))
+                ? windowsKitsSdks.Find(version => version.Value == kitsRootKey)
+                : windowsKitsSdks.Last();
+
             return includes;
         }
 
@@ -221,6 +235,27 @@ namespace CppSharp
             return versions.Count != 0;
         }
 
+        /// Gets Windows Kits SDK installation directories.
+        public static bool GetWindowsKitsSdks(out List<ToolchainVersion> versions)
+        {
+            versions = new List<ToolchainVersion>();
+
+            GetToolchainsFromSystemRegistryValues(
+                "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows Kits\\Installed Roots",
+                "KitsRoot", versions, RegistryView.Registry32);
+
+            if (versions.Count == 0 && Environment.Is64BitProcess)
+            {
+                GetToolchainsFromSystemRegistryValues(
+                    "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows Kits\\Installed Roots",
+                    "KitsRoot", versions, RegistryView.Registry64);
+            }
+
+            versions.Sort((v1, v2) => (int)(v1.Version - v2.Version));
+
+            return true;
+        }
+
         /// Gets Visual Studio installation directories.
         public static bool GetVisualStudioSdks(out List<ToolchainVersion> versions)
         {
@@ -249,6 +284,51 @@ namespace CppSharp
             }
 
             versions.Sort((v1, v2) => (int)(v1.Version - v2.Version));
+
+            return true;
+        }
+
+        /// Read registry strings looking for matching values.
+        public static bool GetToolchainsFromSystemRegistryValues(string keyPath,
+            string matchValue, ICollection<ToolchainVersion> entries, RegistryView view)
+        {
+            string subKey;
+            var hive = GetRegistryHive(keyPath, out subKey);
+            using (var rootKey = RegistryKey.OpenBaseKey(hive, view))
+            using (var key = rootKey.OpenSubKey(subKey, writable: false))
+            {
+                if (key == null)
+                    return false;
+
+                foreach (var valueName in key.GetValueNames())
+                {
+                    if (!valueName.Contains(matchValue))
+                        continue;
+
+                    var value = key.GetValue(valueName) as string;
+                    if (value == null)
+                        continue;
+
+                    float version = 0;
+
+                    // Get the number version from the key value.
+                    var match = Regex.Match(value, @".*([1-9][0-9]*\.?[0-9]*)");
+                    if (match.Success)
+                    {
+                        float.TryParse(match.Groups[1].Value, NumberStyles.Number,
+                            CultureInfo.InvariantCulture, out version);
+                    }
+
+                    var entry = new ToolchainVersion
+                    {
+                        Directory = value,
+                        Version = version,
+                        Value = valueName
+                    };
+
+                    entries.Add(entry);
+                }
+            }
 
             return true;
         }
