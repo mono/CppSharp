@@ -1,9 +1,10 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using CppSharp.AST;
 
-namespace CppSharp
+namespace CppSharp.Parser.Bootstrap
 {
     /// <summary>
     /// Generates parser bootstrap code.
@@ -42,8 +43,8 @@ namespace CppSharp
             options.MicrosoftMode = false;
             options.TargetTriple = "i686-apple-darwin12.4.0";
 
-            options.addDefines ("__STDC_LIMIT_MACROS");
-            options.addDefines ("__STDC_CONSTANT_MACROS");
+			options.addDefines ("__STDC_LIMIT_MACROS");
+			options.addDefines ("__STDC_CONSTANT_MACROS");
 
             var llvmPath = Path.Combine (GetSourceDirectory ("deps"), "llvm");
             var clangPath = Path.Combine(llvmPath, "tools", "clang");
@@ -68,8 +69,14 @@ namespace CppSharp
             var subclassVisitor = new SubclassVisitor (exprClass);
             exprUnit.Visit (subclassVisitor);
 
-            var subclasses = subclassVisitor.Classes;
+			ASTGenerator gen = new ASTGenerator (driver, ctx);
+
+			var subclasses = subclassVisitor.Classes;
+			subclasses.ToList().Where(c => c.Name == "BinaryOperator").ToList().ForEach (c => gen.WriteExprClass (c));
+			Console.WriteLine (gen);
         }
+
+	
 
         public void Postprocess(Driver driver, ASTContext ctx)
         {
