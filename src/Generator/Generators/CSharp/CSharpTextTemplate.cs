@@ -641,6 +641,25 @@ namespace CppSharp.Generators.CSharp
             return @class.IsValueType || !@class.HasBase || !@class.HasRefBase();
         }
 
+        private bool CheckClassIsStructible(Class @class)
+        {
+            if (@class.IsValueType)
+                return true;
+            if (@class.IsInterface)
+                return false;
+
+            var allTrUnits = Driver.ASTContext.TranslationUnits;
+            foreach (var trUnit in allTrUnits)
+            {
+                foreach (var cls in trUnit.Classes)
+                {
+                    if (cls.BaseClass == @class)
+                        return false;
+                }
+            }
+            return true;
+        }
+
         public void GenerateClassProlog(Class @class)
         {
             Write(@class.IsInternal ? "internal " : Helpers.GetAccess(@class.Access));
@@ -658,7 +677,8 @@ namespace CppSharp.Generators.CSharp
             if (Options.GeneratePartialClasses)
                 Write("partial ");
 
-            Write(@class.IsInterface ? "interface " : (@class.IsValueType ? "struct " : "class "));
+            var isClassStructible = CheckClassIsStructible(@class);
+            Write(@class.IsInterface ? "interface " : ((@class.IsValueType || isClassStructible) ? "struct " : "class "));
             Write("{0}", @class.Name);
 
             var bases = new List<string>();

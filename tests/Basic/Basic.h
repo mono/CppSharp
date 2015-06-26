@@ -762,3 +762,11 @@ struct CS_VALUE_TYPE ValueTypeArrays
 	char thirdValueTypeArray[ARRAY_LENGTH];
 	size_t size;
 };
+
+DLL_API class StructTransformCheckClass
+{
+};
+
+DLL_API struct StructTransformCheckStruct
+{
+};
