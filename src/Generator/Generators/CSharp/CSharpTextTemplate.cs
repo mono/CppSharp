@@ -19,7 +19,7 @@ namespace CppSharp.Generators.CSharp
     public static class Helpers
     {
         // from https://github.com/mono/mono/blob/master/mcs/class/System/Microsoft.CSharp/CSharpCodeGenerator.cs
-        private static readonly string[] Keywords = new string[]
+        private static readonly string[] Keywords =
             {
                 "abstract", "event", "new", "struct", "as", "explicit", "null", "switch",
                 "base", "extern", "this", "false", "operator", "throw", "break", "finally",
@@ -484,14 +484,6 @@ namespace CppSharp.Generators.CSharp
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
-        private void GenerateUnionFields(Class @class)
-        {
-            foreach (var field in @class.Fields)
-            {
-                GenerateClassField(field);
-            }
-        }
-
         public void GenerateClassInternals(Class @class)
         {
             PushBlock(CSharpBlockKind.InternalsClass);
@@ -599,24 +591,20 @@ namespace CppSharp.Generators.CSharp
             {
                 @params.Add("global::System.IntPtr instance");
 
-                if (method.IsConstructor && base.Options.IsMicrosoftAbi)
+                if (method.IsConstructor && Options.IsMicrosoftAbi)
                     retType = "global::System.IntPtr";
             }
 
-            foreach (var param in function.Parameters)
-            {
-                if (param.Kind == ParameterKind.OperatorParameter)
-                    continue;
-
-                var typeName = param.CSharpType(TypePrinter);
-                @params.Add(string.Format("{0} {1}", typeName, param.Name));
-            }
+            @params.AddRange(from param in function.Parameters
+                             where param.Kind != ParameterKind.OperatorParameter
+                             let typeName = param.CSharpType(TypePrinter)
+                             select string.Format("{0} {1}", typeName, param.Name));
 
             if (method != null && method.IsConstructor)
             {
                 var @class = (Class) method.Namespace;
                 if (Options.IsMicrosoftAbi && @class.Layout.HasVirtualBases)
-                    @params.Add("int " + CSharpTextTemplate.GeneratedIdentifier("forBases"));
+                    @params.Add("int " + GeneratedIdentifier("forBases"));
             }
 
             TypePrinter.PopContext();
@@ -752,8 +740,6 @@ namespace CppSharp.Generators.CSharp
 
             GenerateDeclarationCommon(field);
 
-            var @class = (Class) field.Namespace;
-
             WriteLine("{0} {1} {2};", @public ? "public" : "private",
                 field.Type, field.Name);
 
@@ -779,8 +765,7 @@ namespace CppSharp.Generators.CSharp
             return Tuple.Create(library, decl.Mangled);
         }
 
-        private void GeneratePropertySetter<T>(QualifiedType returnType, T decl,
-            Class @class, bool isAbstract = false)
+        private void GeneratePropertySetter<T>(T decl, Class @class, bool isAbstract = false)
             where T : Declaration, ITypedDecl
         {
             if (!(decl is Function || decl is Field) )
@@ -831,7 +816,7 @@ namespace CppSharp.Generators.CSharp
                     {
                         if (method.OperatorKind == CXXOperatorKind.Subscript)
                         {
-                            GenerateIndexerSetter(returnType, method);
+                            GenerateIndexerSetter(method);
                         }
                         else
                         {
@@ -917,7 +902,7 @@ namespace CppSharp.Generators.CSharp
             return false;
         }
 
-        private void GenerateIndexerSetter(QualifiedType returnType, Function function)
+        private void GenerateIndexerSetter(Function function)
         {
             Type type;
             function.Type.IsPointerTo(out type);
@@ -1179,7 +1164,7 @@ namespace CppSharp.Generators.CSharp
                         GeneratePropertyGetter(prop.QualifiedType, prop.Field, @class);
 
                     if (prop.HasSetter)
-                        GeneratePropertySetter(prop.Field.QualifiedType, prop.Field, @class);
+                        GeneratePropertySetter(prop.Field, @class);
                 }
                 else
                 {
@@ -1187,7 +1172,7 @@ namespace CppSharp.Generators.CSharp
                         GeneratePropertyGetter(prop.QualifiedType, prop.GetMethod, @class, prop.IsPure);
 
                     if (prop.HasSetter)
-                        GeneratePropertySetter(prop.QualifiedType, prop.SetMethod, @class, prop.IsPure);
+                        GeneratePropertySetter(prop.SetMethod, @class, prop.IsPure);
                 }
 
                 WriteCloseBraceIndent();
@@ -1212,7 +1197,7 @@ namespace CppSharp.Generators.CSharp
             GeneratePropertyGetter(variable.QualifiedType, variable, @class);
 
             if (!variable.QualifiedType.Qualifiers.IsConst)
-                GeneratePropertySetter(variable.QualifiedType, variable, @class);
+                GeneratePropertySetter(variable, @class);
 
             WriteCloseBraceIndent();
             PopBlock(NewLineKind.BeforeNextBlock);
@@ -1966,7 +1951,7 @@ namespace CppSharp.Generators.CSharp
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
-        private bool GenerateClassConstructorBase(Class @class, Method method)
+        private void GenerateClassConstructorBase(Class @class, Method method)
         {
             var hasBase = @class.HasBaseClass;
 
@@ -1975,10 +1960,7 @@ namespace CppSharp.Generators.CSharp
                 PushIndent();
                 Write(": this(");
 
-                if (method != null)
-                    Write("(Internal*) null");
-                else
-                    Write("native");
+                Write(method != null ? "(Internal*) null" : "native");
 
                 WriteLine(")");
                 PopIndent();
@@ -1986,8 +1968,6 @@ namespace CppSharp.Generators.CSharp
 
             if (@class.IsValueType)
                 WriteLineIndent(": this()");
-
-            return hasBase;
         }
 
         #endregion
@@ -2111,7 +2091,7 @@ namespace CppSharp.Generators.CSharp
                 }
                 else if (method.IsOperator)
                 {
-                    GenerateOperator(method, @class);
+                    GenerateOperator(method);
                 }
                 else if (method.SynthKind == FunctionSynthKind.AbstractImplCall)
                 {
@@ -2130,7 +2110,7 @@ namespace CppSharp.Generators.CSharp
                 }
                 else if (method.IsOperator)
                 {
-                    GenerateOperator(method, @class);
+                    GenerateOperator(method);
                 }
                 else
                 {
@@ -2228,7 +2208,7 @@ namespace CppSharp.Generators.CSharp
             return virtualCallBuilder.ToString();
         }
 
-        private void GenerateOperator(Method method, Class @class)
+        private void GenerateOperator(Method method)
         {
             if (method.SynthKind == FunctionSynthKind.ComplementOperator)
             {
@@ -2396,7 +2376,7 @@ namespace CppSharp.Generators.CSharp
 
             if (needsInstance)
             {
-                var instanceIndex = GetInstanceParamIndex(function);
+                var instanceIndex = GetInstanceParamIndex(method);
 
                 if (needsFixedThis)
                 {
@@ -2480,10 +2460,8 @@ namespace CppSharp.Generators.CSharp
                 WriteCloseBraceIndent();
         }
 
-        private int GetInstanceParamIndex(Function function)
+        private int GetInstanceParamIndex(Method method)
         {
-            var method = function as Method;
-
             if (Options.IsMicrosoftAbi)
                 return 0;
 
@@ -2837,8 +2815,7 @@ namespace CppSharp.Generators.CSharp
 
             if (method != null && method.IsConstructor)
             {
-                var @class = method.Namespace as Class;
-                if (Options.IsMicrosoftAbi && @class.Layout.HasVirtualBases)
+                if (Options.IsMicrosoftAbi && ((Class) method.Namespace).Layout.HasVirtualBases)
                     @params.Add("int " + GeneratedIdentifier("forBases"));
             }
 
