@@ -14,7 +14,6 @@ namespace CppSharp.Tests
 
         public override void SetupPasses(Driver driver)
         {
-            driver.Options.GenerateVirtualTables = true;
             driver.TranslationUnitPasses.RenameDeclsUpperCase(RenameTargets.Any);
             driver.TranslationUnitPasses.AddPass(new FunctionToInstanceMethodPass());
         }

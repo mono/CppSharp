@@ -274,8 +274,7 @@ namespace CppSharp
                 TranslationUnitPasses.AddPass(new ParamTypeToInterfacePass());
             }
 
-            if (Options.GenerateVirtualTables)
-                TranslationUnitPasses.AddPass(new CheckVTableComponentsPass());
+            TranslationUnitPasses.AddPass(new CheckVTableComponentsPass());
 
             if (Options.GenerateProperties)
                 TranslationUnitPasses.AddPass(new GetterSetterToPropertyPass());

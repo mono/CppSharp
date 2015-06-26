@@ -407,7 +407,7 @@ namespace CppSharp.Generators.CSharp
                 GenerateClassVariables(@class);
                 GenerateClassProperties(@class);
 
-                if (Options.GenerateVirtualTables && @class.IsDynamic)
+                if (@class.IsDynamic)
                     GenerateVTable(@class);
             }
         exit:
@@ -498,7 +498,7 @@ namespace CppSharp.Generators.CSharp
             GenerateClassFields(@class, GenerateClassInternalsField, true);
             if (@class.IsGenerated)
             {
-                if (Options.GenerateVirtualTables && @class.IsDynamic)
+                if (@class.IsDynamic)
                     GenerateVTablePointers(@class);
 
                 var functions = GatherClassInternalFunctions(@class);
@@ -1405,7 +1405,7 @@ namespace CppSharp.Generators.CSharp
         private void GenerateVTableClassSetupCall(Class @class, bool addPointerGuard = false)
         {
             var entries = GetUniqueVTableMethodEntries(@class);
-            if (Options.GenerateVirtualTables && @class.IsDynamic && entries.Count != 0)
+            if (@class.IsDynamic && entries.Count != 0)
             {
                 // called from internal ctors which may have been passed an IntPtr.Zero
                 if (addPointerGuard)

@@ -92,7 +92,6 @@ namespace CppSharp
         public bool GenerateLibraryNamespace;
         public bool GenerateFunctionTemplates;
         public bool GeneratePartialClasses;
-        public bool GenerateVirtualTables;
         public bool GenerateInterfacesForMultipleInheritance;
         public bool GenerateInternalImports;
         public bool GenerateClassMarshals;
