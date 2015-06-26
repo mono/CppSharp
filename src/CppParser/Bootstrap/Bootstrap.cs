@@ -62,17 +62,43 @@ namespace CppSharp.Parser.Bootstrap
         public void Preprocess(Driver driver, ASTContext ctx)
         {
             ctx.RenameNamespace("CppSharp::CppParser", "Parser");
-
-            var exprClass = ctx.FindCompleteClass ("clang::Expr");
-
-            var exprUnit = ctx.TranslationUnits [0];
-            var subclassVisitor = new SubclassVisitor (exprClass);
-            exprUnit.Visit (subclassVisitor);
-
 			ASTGenerator gen = new ASTGenerator (driver, ctx);
 
-			var subclasses = subclassVisitor.Classes;
-			subclasses.ToList().Where(c => c.Name == "BinaryOperator").ToList().ForEach (c => gen.WriteExprClass (c));
+
+			/*
+			var exprClass = ctx.FindCompleteClass ("clang::Expr");
+
+			var exprUnit = ctx.TranslationUnits [0];
+
+			var subclassVisitor = new SubclassVisitor (exprClass);
+			exprUnit.Visit (subclassVisitor);
+
+
+			subclassVisitor.Classes.ToList().
+				Where(c => c.Name == "BinaryOperator").ToList().
+				ForEach (c => gen.WriteExprClass (c));
+			Console.WriteLine (gen);
+			*/
+
+			/*
+			var subclasses = ctx.TranslationUnits.
+				SelectMany (u => u.Classes);
+				//Where (c => IsDerivedFrom (c, exprClass)).
+				//Where (c => c.Name == "BinaryOperator").
+			subclasses.ToList().ForEach (c => gen.WriteExprClass (c));
+			Console.WriteLine (gen);
+			*/
+
+			var enumTargets = new Dictionary<String, String[]> {
+				{ "clang::Stmt", new[] { "StmtClass", "APFloatSemantics" } }
+			};
+
+			var enums = enumTargets.
+				SelectMany(t => ctx.FindCompleteClass(t.Key).
+					Declarations.OfType<Enumeration>().
+					Where(e => t.Value.Contains(e.Name)));
+			
+			enums.ToList().ForEach(gen.WriteEnum);
 			Console.WriteLine (gen);
         }
 
@@ -87,37 +113,40 @@ namespace CppSharp.Parser.Bootstrap
             Console.WriteLine("Generating parser bootstrap code...");
             ConsoleDriver.Run(new Bootstrap());
             Console.WriteLine();
-        }
-    }
+ 	   }
 
-    class SubclassVisitor : AstVisitor
-    {
-        public HashSet<Class> Classes;
-        Class expressionClass;
+		public static bool IsDerivedFrom(Class subclass, Class superclass)
+		{
+			if (subclass == null)			return false;
+			if (subclass == superclass)		return true;
+			return IsDerivedFrom (subclass.BaseClass, superclass);
+		}
+	}
 
-        public SubclassVisitor (Class expression)
-        {
-            expressionClass = expression;
-            Classes = new HashSet<Class> ();
-        }
+	class SubclassVisitor : AstVisitor
+	{
+		public HashSet<Class> Classes;
+		Class expressionClass;
 
-        static bool IsDerivedFrom(Class subclass, Class superclass)
-        {
-            if (subclass == null)
-                return false;
+		public SubclassVisitor (Class expression)
+		{
+			expressionClass = expression;
+			Classes = new HashSet<Class> ();
+		}
 
-            if (subclass == superclass)
-                return true;
+		static bool IsDerivedFrom(Class subclass, Class superclass)
+		{
+			if (subclass == null)			return false;
+			if (subclass == superclass)		return true;
+			return IsDerivedFrom (subclass.BaseClass, superclass);
+		}
 
-            return IsDerivedFrom (subclass.BaseClass, superclass);
-        }
-
-        public override bool VisitClassDecl (Class @class)
-        {
-            if (!@class.IsIncomplete && IsDerivedFrom (@class, expressionClass))
-                Classes.Add (@class);
-
-            return base.VisitClassDecl (@class);
-        }
-    }
+		public override bool VisitClassDecl (Class @class)
+		{
+			if (!@class.IsIncomplete && IsDerivedFrom (@class, expressionClass))
+				Classes.Add (@class);
+				
+			return base.VisitClassDecl (@class);
+		}
+	}
 }
