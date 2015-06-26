@@ -227,6 +227,10 @@ namespace CppSharp.Generators.CSharp
             // Generate all the struct/class declarations.
             foreach (var @class in context.Classes)
             {
+                var isClassStructible = CheckClassIsStructible(@class);
+                if (isClassStructible)
+                    @class.Type = ClassType.ValueType;
+
                 if (@class.IsIncomplete)
                     continue;
 
@@ -647,13 +651,19 @@ namespace CppSharp.Generators.CSharp
                 return true;
             if (@class.IsInterface)
                 return false;
+            if (@class.IsStatic)
+                return false;
+            if (@class.IsAbstract)
+                return false;
+            if (@class.HasBase)
+                return false;
 
             var allTrUnits = Driver.ASTContext.TranslationUnits;
             foreach (var trUnit in allTrUnits)
             {
                 foreach (var cls in trUnit.Classes)
                 {
-                    if (cls.BaseClass == @class)
+                    if (cls.Bases.Any(clss => clss.IsClass && clss.Class == @class))
                         return false;
                 }
             }
@@ -677,8 +687,7 @@ namespace CppSharp.Generators.CSharp
             if (Options.GeneratePartialClasses)
                 Write("partial ");
 
-            var isClassStructible = CheckClassIsStructible(@class);
-            Write(@class.IsInterface ? "interface " : ((@class.IsValueType || isClassStructible) ? "struct " : "class "));
+            Write(@class.IsInterface ? "interface " : (@class.IsValueType ? "struct " : "class "));
             Write("{0}", @class.Name);
 
             var bases = new List<string>();
