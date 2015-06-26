@@ -648,7 +648,7 @@ namespace CppSharp.Generators.CSharp
                 Write("internal ");
             Write("unsafe ");
 
-            if (Driver.Options.GenerateAbstractImpls && @class.IsAbstract)
+            if (@class.IsAbstract)
                 Write("abstract ");
 
             if (@class.IsStatic)
@@ -806,7 +806,7 @@ namespace CppSharp.Generators.CSharp
             if (decl is Function)
             {
                 var function = decl as Function;
-                if (isAbstract && Driver.Options.GenerateAbstractImpls)
+                if (isAbstract)
                 {
                     Write(";");
                     PopBlock(NewLineKind.BeforeNextBlock);
@@ -946,7 +946,7 @@ namespace CppSharp.Generators.CSharp
             if (decl is Function)
             {
                 var function = decl as Function;
-                if (isAbstract && Driver.Options.GenerateAbstractImpls)
+                if (isAbstract)
                 {
                     Write(";");
                     PopBlock(NewLineKind.BeforeNextBlock);
@@ -1159,7 +1159,7 @@ namespace CppSharp.Generators.CSharp
                     // check if overriding a property from a secondary base
                     if (prop.IsOverride && @class.GetRootBaseProperty(prop, true) != null)
                         Write("override ");
-                    else if (prop.IsPure && Driver.Options.GenerateAbstractImpls)
+                    else if (prop.IsPure)
                         Write("abstract ");
                     else if (prop.IsVirtual)
                         Write("virtual ");
@@ -2024,8 +2024,7 @@ namespace CppSharp.Generators.CSharp
             // check if overriding a function from a secondary base
             var isOverride = method.IsOverride && @class.GetRootBaseMethod(method, true) != null;
 
-            if (method.IsVirtual && !isOverride && !method.IsOperator &&
-                (!Driver.Options.GenerateAbstractImpls || !method.IsPure))
+            if (method.IsVirtual && !isOverride && !method.IsOperator && !method.IsPure)
                 Write("virtual ");
 
             var isBuiltinOperator = method.IsOperator &&
@@ -2041,7 +2040,7 @@ namespace CppSharp.Generators.CSharp
                 Write("override ");
             }
 
-            if (Driver.Options.GenerateAbstractImpls && method.IsPure)
+            if (method.IsPure)
                 Write("abstract ");
 
             var functionName = GetMethodIdentifier(method);
@@ -2062,8 +2061,7 @@ namespace CppSharp.Generators.CSharp
 
             Write(")");
 
-            if (method.SynthKind == FunctionSynthKind.DefaultValueOverload && method.IsConstructor &&
-                !(Driver.Options.GenerateAbstractImpls && method.IsPure))
+            if (method.SynthKind == FunctionSynthKind.DefaultValueOverload && method.IsConstructor && !method.IsPure)
             {
                 Write(" : this({0})",
                     string.Join(", ",
@@ -2072,7 +2070,7 @@ namespace CppSharp.Generators.CSharp
                                 p => p.Ignore ? p.DefaultArgument.String : p.Name)));
             }
 
-            if (Driver.Options.GenerateAbstractImpls && method.IsPure)
+            if (method.IsPure)
             {
                 Write(";");
                 PopBlock(NewLineKind.BeforeNextBlock);

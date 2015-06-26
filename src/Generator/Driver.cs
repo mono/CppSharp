@@ -265,7 +265,7 @@ namespace CppSharp
                 TranslationUnitPasses.AddPass(new FixDefaultParamValuesOfOverridesPass());
             }
 
-            if (Options.GenerateAbstractImpls)
+            if (Options.IsCSharpGenerator)
                 TranslationUnitPasses.AddPass(new GenerateAbstractImplementationsPass());
 
             if (Options.GenerateInterfacesForMultipleInheritance)

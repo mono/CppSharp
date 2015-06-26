@@ -264,9 +264,7 @@ namespace CppSharp.Generators.CSharp
 
             // if the class is an abstract impl, use the original for the object map
             var qualifiedClass = QualifiedIdentifier(originalClass);
-            var type = qualifiedClass +
-                (Context.Driver.Options.GenerateAbstractImpls && originalClass.IsAbstract ?
-                    "Internal" : "");
+            var type = string.Format("{0}{1}", qualifiedClass, originalClass.IsAbstract ? "Internal" : "");
 
             if (returnType.IsAddress())
                 Context.Return.Write(HandleReturnedPointer(@class, type, qualifiedClass));
