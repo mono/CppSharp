@@ -264,12 +264,11 @@ namespace CppSharp.Generators.CSharp
 
             // if the class is an abstract impl, use the original for the object map
             var qualifiedClass = QualifiedIdentifier(originalClass);
-            var type = string.Format("{0}{1}", qualifiedClass, originalClass.IsAbstract ? "Internal" : "");
 
             if (returnType.IsAddress())
-                Context.Return.Write(HandleReturnedPointer(@class, type, qualifiedClass));
+                Context.Return.Write(HandleReturnedPointer(@class, qualifiedClass));
             else
-                Context.Return.Write("{0}.{1}({2})", type, Helpers.CreateInstanceIdentifier, Context.ReturnVarName);
+                Context.Return.Write("{0}.{1}({2})", qualifiedClass, Helpers.CreateInstanceIdentifier, Context.ReturnVarName);
 
             return true;
         }
@@ -307,13 +306,13 @@ namespace CppSharp.Generators.CSharp
             return true;
         }
 
-        private string HandleReturnedPointer(Class @class, string type, string qualifiedClass)
+        private string HandleReturnedPointer(Class @class, string qualifiedClass)
         {
             var originalClass = @class.OriginalClass ?? @class;
             var ret = Generator.GeneratedIdentifier("result") + Context.ParameterIndex;
             Context.SupportBefore.WriteLine("{0} {1};", QualifiedIdentifier(@class), ret);
             Context.SupportBefore.WriteLine("if ({0} == IntPtr.Zero) {1} = {2};", Context.ReturnVarName, ret,
-                originalClass.IsRefType ? "null" : string.Format("new {0}()", type));
+                originalClass.IsRefType ? "null" : string.Format("new {0}()", qualifiedClass));
             if (originalClass.IsRefType)
             {
                 Context.SupportBefore.WriteLine(
@@ -324,18 +323,18 @@ namespace CppSharp.Generators.CSharp
                 if (dtor != null && dtor.IsVirtual)
                 {
                     Context.SupportBefore.WriteLine("else {0}.NativeToManagedMap[{1}] = {2} = ({3}) {4}.{5}({1});",
-                        qualifiedClass, Context.ReturnVarName, ret, QualifiedIdentifier(@class), type,
+                        qualifiedClass, Context.ReturnVarName, ret, QualifiedIdentifier(@class), qualifiedClass,
                         Helpers.CreateInstanceIdentifier, Context.ReturnVarName);
                 }
                 else
                 {
-                    Context.SupportBefore.WriteLine("else {0} = {1}.{2}({3});", ret, type,
+                    Context.SupportBefore.WriteLine("else {0} = {1}.{2}({3});", ret, qualifiedClass,
                         Helpers.CreateInstanceIdentifier, Context.ReturnVarName);
                 }
             }
             else
             {
-                Context.SupportBefore.WriteLine("else {0} = {1}.{2}({3});", ret, type,
+                Context.SupportBefore.WriteLine("else {0} = {1}.{2}({3});", ret, qualifiedClass,
                     Helpers.CreateInstanceIdentifier, Context.ReturnVarName);
             }
             return ret;

@@ -1847,28 +1847,29 @@ namespace CppSharp.Generators.CSharp
             {
                 PushBlock(CSharpBlockKind.Field);
                 WriteLine("private readonly bool {0};", Helpers.OwnsNativeInstanceIdentifier);
-                PopBlock(NewLineKind.BeforeNextBlock);   
+                PopBlock(NewLineKind.BeforeNextBlock);
             }
 
             string className = @class.IsAbstractImpl ? @class.BaseClass.Name : @class.Name;
 
-            if (!@class.IsAbstract)
+            var ctorCall = string.Format("{0}{1}", @class.Name, @class.IsAbstract ? "Internal" : "");
+            if (!@class.IsAbstractImpl)
             {
                 PushBlock(CSharpBlockKind.Method);
                 WriteLine("public static {0}{1} {2}(global::System.IntPtr native)",
                     @class.HasNonIgnoredBase && !@class.BaseClass.IsAbstract ? "new " : string.Empty,
                     @class.Name, Helpers.CreateInstanceIdentifier);
                 WriteStartBraceIndent();
-                WriteLine("return new {0}(({1}.Internal*) native);", @class.Name, className);
+                WriteLine("return new {0}(({1}.Internal*) native);", ctorCall, className);
                 WriteCloseBraceIndent();
                 PopBlock(NewLineKind.BeforeNextBlock);
-
-                GenerateNativeConstructorByValue(@class, className, @class.Name);
             }
+
+            GenerateNativeConstructorByValue(@class, className, ctorCall);
 
             PushBlock(CSharpBlockKind.Method);
             WriteLine("{0} {1}({2}.Internal* native, bool isInternalImpl = false){3}",
-                @class.IsRefType ? "protected" : "private",
+                @class.IsAbstractImpl ? "internal" : (@class.IsRefType ? "protected" : "private"),
                 @class.Name, className, @class.IsValueType ? " : this()" : string.Empty);
 
             var hasBaseClass = @class.HasBaseClass && @class.BaseClass.IsRefType;
@@ -1895,16 +1896,19 @@ namespace CppSharp.Generators.CSharp
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
-        private void GenerateNativeConstructorByValue(Class @class, string className, string safeIdentifier)
+        private void GenerateNativeConstructorByValue(Class @class, string className, string ctorCall)
         {
-            PushBlock(CSharpBlockKind.Method);
-            WriteLine("public static {0} {1}({0}.Internal native)", className, Helpers.CreateInstanceIdentifier);
-            WriteStartBraceIndent();
-            WriteLine("return new {0}(native);", safeIdentifier);
-            WriteCloseBraceIndent();
-            PopBlock(NewLineKind.BeforeNextBlock);
+            if (!@class.IsAbstractImpl)
+            {
+                PushBlock(CSharpBlockKind.Method);
+                WriteLine("public static {0} {1}({0}.Internal native)", className, Helpers.CreateInstanceIdentifier);
+                WriteStartBraceIndent();
+                WriteLine("return new {0}(native);", ctorCall);
+                WriteCloseBraceIndent();
+                PopBlock(NewLineKind.BeforeNextBlock);   
+            }
 
-            if (@class.IsRefType)
+            if (@class.IsRefType && !@class.IsAbstract)
             {
                 PushBlock(CSharpBlockKind.Method);
                 WriteLine("private static {0}.Internal* __CopyValue({0}.Internal native)", className);
@@ -1934,21 +1938,25 @@ namespace CppSharp.Generators.CSharp
                 WriteCloseBraceIndent();
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
-            PushBlock(CSharpBlockKind.Method);
-            WriteLine("private {0}({1}.Internal native)", safeIdentifier, className);
-            WriteLineIndent(@class.IsRefType ? ": this(__CopyValue(native))" : ": this()");
-            WriteStartBraceIndent();
-            if (@class.IsRefType)
+            if (!@class.IsAbstract)
             {
-                WriteLine("{0} = true;", Helpers.OwnsNativeInstanceIdentifier);
-                WriteLine("NativeToManagedMap[{0}] = this;", Helpers.InstanceIdentifier);
+                PushBlock(CSharpBlockKind.Method);
+                WriteLine("{0} {1}({2}.Internal native)",
+                    @class.IsAbstractImpl ? "internal" : "private", @class.Name, className);
+                WriteLineIndent(@class.IsRefType ? ": this(__CopyValue(native))" : ": this()");
+                WriteStartBraceIndent();
+                if (@class.IsRefType)
+                {
+                    WriteLine("{0} = true;", Helpers.OwnsNativeInstanceIdentifier);
+                    WriteLine("NativeToManagedMap[{0}] = this;", Helpers.InstanceIdentifier);
+                }
+                else
+                {
+                    WriteLine("{0} = native;", Helpers.InstanceField);
+                }
+                WriteCloseBraceIndent();
+                PopBlock(NewLineKind.BeforeNextBlock);
             }
-            else
-            {
-                WriteLine("{0} = native;", Helpers.InstanceField);
-            }
-            WriteCloseBraceIndent();
-            PopBlock(NewLineKind.BeforeNextBlock);
         }
 
         private void GenerateClassConstructorBase(Class @class, Method method)
