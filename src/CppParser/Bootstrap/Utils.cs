@@ -40,17 +40,19 @@ namespace CppSharp.Parser.Bootstrap
         {
             WriteEnumStart (e);
             e.Items.ForEach (WriteEnumItem);
-            WriteEnumEnd ();
+            WriteEnumEnd (e);
+            NewLine ();
         }
 
-        public abstract void WriteEnumItem (Enumeration.Item i);
+        public abstract void WriteEnumStart (Enumeration e);
+        public abstract void WriteEnumEnd   (Enumeration e);
 
-        public void WriteEnumStart (Enumeration e)
+        public void WriteEnumItem   (Enumeration.Item i)
         {
-            WriteLine ("enum class {0}", e.Name);
-            WriteStartBraceIndent ();
+            WriteLine (i.Name + ",");           
         }
 
+       
         public void WriteExprClass (Class exprClass)
         {
 			
@@ -103,13 +105,7 @@ namespace CppSharp.Parser.Bootstrap
             WriteCloseBraceIndent ();
             NewLine ();
         }
-
-        public void WriteEnumEnd ()
-        {
-            PopIndent ();
-            WriteLine ("};");
-            NewLine ();
-        }
+         
 
         public void WriteAccessors (Field field)
         {
@@ -128,9 +124,38 @@ namespace CppSharp.Parser.Bootstrap
         {
         }
 
-        public override void WriteEnumItem (Enumeration.Item i)
+        public override void WriteEnumStart (Enumeration e)
         {
-            WriteLine (i.Name + ",");			
+            WriteLine ("enum class {0}", e.Name);
+            WriteStartBraceIndent ();
+        }
+
+        public override void WriteEnumEnd   (Enumeration e)
+        {
+            PopIndent ();
+            WriteLine ("};");
+        }
+
+
+
+    }
+
+
+    class CsharpASTGenerator : ASTGenerator
+    {
+        public CsharpASTGenerator (Driver driver, ASTContext ctx) : base (driver, ctx)
+        {
+        }
+
+        public override void WriteEnumStart (Enumeration e)
+        {
+            WriteLine ("public enum {0}", e.Name);
+            WriteStartBraceIndent ();
+        }
+
+        public override void WriteEnumEnd   (Enumeration e)
+        {
+            WriteCloseBraceIndent ();
         }
     }
 }

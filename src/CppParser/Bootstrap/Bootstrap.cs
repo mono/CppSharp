@@ -66,7 +66,7 @@ namespace CppSharp.Parser.Bootstrap
             ctx.RenameNamespace ("CppSharp::CppParser", "Parser");
 
             //exprs
-            ASTGenerator gen = new CppASTGenerator (driver, ctx);
+            ASTGenerator gen = new CsharpASTGenerator (driver, ctx);
 
             var exprClass = ctx.FindCompleteClass ("clang::Expr");
             var visitor = new DeclarationVisitor<Class> (exprClass.isBaseOf);
@@ -76,7 +76,7 @@ namespace CppSharp.Parser.Bootstrap
 
 
             //enums
-            gen = new CppASTGenerator (driver, ctx);
+            gen = new CsharpASTGenerator (driver, ctx);
             var enumTargets = new Dictionary<String, String[]> {
                 { "clang", 			new[] { "CallingConv" } },
                 { "clang::Stmt",	new[] { "StmtClass", "APFloatSemantics" } },
