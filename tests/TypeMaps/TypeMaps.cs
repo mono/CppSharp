@@ -15,9 +15,6 @@ namespace CppSharp.Tests
 
         public override void SetupPasses(Driver driver)
         {
-            if (driver.Options.IsCSharpGenerator)
-                driver.Options.GenerateAbstractImpls = true;
-            driver.Options.GenerateVirtualTables = true;
             driver.Options.GenerateCopyConstructors = true;
             driver.Options.MarshalCharAsManagedChar = true;
             driver.Options.GenerateProperties = true;

@@ -19,7 +19,7 @@ namespace CppSharp.Generators.CSharp
     public static class Helpers
     {
         // from https://github.com/mono/mono/blob/master/mcs/class/System/Microsoft.CSharp/CSharpCodeGenerator.cs
-        private static readonly string[] Keywords = new string[]
+        private static readonly string[] Keywords =
             {
                 "abstract", "event", "new", "struct", "as", "explicit", "null", "switch",
                 "base", "extern", "this", "false", "operator", "throw", "break", "finally",
@@ -407,7 +407,7 @@ namespace CppSharp.Generators.CSharp
                 GenerateClassVariables(@class);
                 GenerateClassProperties(@class);
 
-                if (Options.GenerateVirtualTables && @class.IsDynamic)
+                if (@class.IsDynamic)
                     GenerateVTable(@class);
             }
         exit:
@@ -484,14 +484,6 @@ namespace CppSharp.Generators.CSharp
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
-        private void GenerateUnionFields(Class @class)
-        {
-            foreach (var field in @class.Fields)
-            {
-                GenerateClassField(field);
-            }
-        }
-
         public void GenerateClassInternals(Class @class)
         {
             PushBlock(CSharpBlockKind.InternalsClass);
@@ -506,7 +498,7 @@ namespace CppSharp.Generators.CSharp
             GenerateClassFields(@class, GenerateClassInternalsField, true);
             if (@class.IsGenerated)
             {
-                if (Options.GenerateVirtualTables && @class.IsDynamic)
+                if (@class.IsDynamic)
                     GenerateVTablePointers(@class);
 
                 var functions = GatherClassInternalFunctions(@class);
@@ -599,24 +591,20 @@ namespace CppSharp.Generators.CSharp
             {
                 @params.Add("global::System.IntPtr instance");
 
-                if (method.IsConstructor && base.Options.IsMicrosoftAbi)
+                if (method.IsConstructor && Options.IsMicrosoftAbi)
                     retType = "global::System.IntPtr";
             }
 
-            foreach (var param in function.Parameters)
-            {
-                if (param.Kind == ParameterKind.OperatorParameter)
-                    continue;
-
-                var typeName = param.CSharpType(TypePrinter);
-                @params.Add(string.Format("{0} {1}", typeName, param.Name));
-            }
+            @params.AddRange(from param in function.Parameters
+                             where param.Kind != ParameterKind.OperatorParameter
+                             let typeName = param.CSharpType(TypePrinter)
+                             select string.Format("{0} {1}", typeName, param.Name));
 
             if (method != null && method.IsConstructor)
             {
                 var @class = (Class) method.Namespace;
                 if (Options.IsMicrosoftAbi && @class.Layout.HasVirtualBases)
-                    @params.Add("int " + CSharpTextTemplate.GeneratedIdentifier("forBases"));
+                    @params.Add("int " + GeneratedIdentifier("forBases"));
             }
 
             TypePrinter.PopContext();
@@ -648,7 +636,7 @@ namespace CppSharp.Generators.CSharp
                 Write("internal ");
             Write("unsafe ");
 
-            if (Driver.Options.GenerateAbstractImpls && @class.IsAbstract)
+            if (@class.IsAbstract)
                 Write("abstract ");
 
             if (@class.IsStatic)
@@ -752,8 +740,6 @@ namespace CppSharp.Generators.CSharp
 
             GenerateDeclarationCommon(field);
 
-            var @class = (Class) field.Namespace;
-
             WriteLine("{0} {1} {2};", @public ? "public" : "private",
                 field.Type, field.Name);
 
@@ -779,8 +765,7 @@ namespace CppSharp.Generators.CSharp
             return Tuple.Create(library, decl.Mangled);
         }
 
-        private void GeneratePropertySetter<T>(QualifiedType returnType, T decl,
-            Class @class, bool isAbstract = false)
+        private void GeneratePropertySetter<T>(T decl, Class @class, bool isAbstract = false)
             where T : Declaration, ITypedDecl
         {
             if (!(decl is Function || decl is Field) )
@@ -806,7 +791,7 @@ namespace CppSharp.Generators.CSharp
             if (decl is Function)
             {
                 var function = decl as Function;
-                if (isAbstract && Driver.Options.GenerateAbstractImpls)
+                if (isAbstract)
                 {
                     Write(";");
                     PopBlock(NewLineKind.BeforeNextBlock);
@@ -831,7 +816,7 @@ namespace CppSharp.Generators.CSharp
                     {
                         if (method.OperatorKind == CXXOperatorKind.Subscript)
                         {
-                            GenerateIndexerSetter(returnType, method);
+                            GenerateIndexerSetter(method);
                         }
                         else
                         {
@@ -917,7 +902,7 @@ namespace CppSharp.Generators.CSharp
             return false;
         }
 
-        private void GenerateIndexerSetter(QualifiedType returnType, Function function)
+        private void GenerateIndexerSetter(Function function)
         {
             Type type;
             function.Type.IsPointerTo(out type);
@@ -946,7 +931,7 @@ namespace CppSharp.Generators.CSharp
             if (decl is Function)
             {
                 var function = decl as Function;
-                if (isAbstract && Driver.Options.GenerateAbstractImpls)
+                if (isAbstract)
                 {
                     Write(";");
                     PopBlock(NewLineKind.BeforeNextBlock);
@@ -1159,7 +1144,7 @@ namespace CppSharp.Generators.CSharp
                     // check if overriding a property from a secondary base
                     if (prop.IsOverride && @class.GetRootBaseProperty(prop, true) != null)
                         Write("override ");
-                    else if (prop.IsPure && Driver.Options.GenerateAbstractImpls)
+                    else if (prop.IsPure)
                         Write("abstract ");
                     else if (prop.IsVirtual)
                         Write("virtual ");
@@ -1179,7 +1164,7 @@ namespace CppSharp.Generators.CSharp
                         GeneratePropertyGetter(prop.QualifiedType, prop.Field, @class);
 
                     if (prop.HasSetter)
-                        GeneratePropertySetter(prop.Field.QualifiedType, prop.Field, @class);
+                        GeneratePropertySetter(prop.Field, @class);
                 }
                 else
                 {
@@ -1187,7 +1172,7 @@ namespace CppSharp.Generators.CSharp
                         GeneratePropertyGetter(prop.QualifiedType, prop.GetMethod, @class, prop.IsPure);
 
                     if (prop.HasSetter)
-                        GeneratePropertySetter(prop.QualifiedType, prop.SetMethod, @class, prop.IsPure);
+                        GeneratePropertySetter(prop.SetMethod, @class, prop.IsPure);
                 }
 
                 WriteCloseBraceIndent();
@@ -1212,7 +1197,7 @@ namespace CppSharp.Generators.CSharp
             GeneratePropertyGetter(variable.QualifiedType, variable, @class);
 
             if (!variable.QualifiedType.Qualifiers.IsConst)
-                GeneratePropertySetter(variable.QualifiedType, variable, @class);
+                GeneratePropertySetter(variable, @class);
 
             WriteCloseBraceIndent();
             PopBlock(NewLineKind.BeforeNextBlock);
@@ -1420,7 +1405,7 @@ namespace CppSharp.Generators.CSharp
         private void GenerateVTableClassSetupCall(Class @class, bool addPointerGuard = false)
         {
             var entries = GetUniqueVTableMethodEntries(@class);
-            if (Options.GenerateVirtualTables && @class.IsDynamic && entries.Count != 0)
+            if (@class.IsDynamic && entries.Count != 0)
             {
                 // called from internal ctors which may have been passed an IntPtr.Zero
                 if (addPointerGuard)
@@ -1862,28 +1847,29 @@ namespace CppSharp.Generators.CSharp
             {
                 PushBlock(CSharpBlockKind.Field);
                 WriteLine("private readonly bool {0};", Helpers.OwnsNativeInstanceIdentifier);
-                PopBlock(NewLineKind.BeforeNextBlock);   
+                PopBlock(NewLineKind.BeforeNextBlock);
             }
 
             string className = @class.IsAbstractImpl ? @class.BaseClass.Name : @class.Name;
 
-            if (!@class.IsAbstract)
+            var ctorCall = string.Format("{0}{1}", @class.Name, @class.IsAbstract ? "Internal" : "");
+            if (!@class.IsAbstractImpl)
             {
                 PushBlock(CSharpBlockKind.Method);
                 WriteLine("public static {0}{1} {2}(global::System.IntPtr native)",
                     @class.HasNonIgnoredBase && !@class.BaseClass.IsAbstract ? "new " : string.Empty,
                     @class.Name, Helpers.CreateInstanceIdentifier);
                 WriteStartBraceIndent();
-                WriteLine("return new {0}(({1}.Internal*) native);", @class.Name, className);
+                WriteLine("return new {0}(({1}.Internal*) native);", ctorCall, className);
                 WriteCloseBraceIndent();
                 PopBlock(NewLineKind.BeforeNextBlock);
-
-                GenerateNativeConstructorByValue(@class, className, @class.Name);
             }
+
+            GenerateNativeConstructorByValue(@class, className, ctorCall);
 
             PushBlock(CSharpBlockKind.Method);
             WriteLine("{0} {1}({2}.Internal* native, bool isInternalImpl = false){3}",
-                @class.IsRefType ? "protected" : "private",
+                @class.IsAbstractImpl ? "internal" : (@class.IsRefType ? "protected" : "private"),
                 @class.Name, className, @class.IsValueType ? " : this()" : string.Empty);
 
             var hasBaseClass = @class.HasBaseClass && @class.BaseClass.IsRefType;
@@ -1910,16 +1896,19 @@ namespace CppSharp.Generators.CSharp
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
-        private void GenerateNativeConstructorByValue(Class @class, string className, string safeIdentifier)
+        private void GenerateNativeConstructorByValue(Class @class, string className, string ctorCall)
         {
-            PushBlock(CSharpBlockKind.Method);
-            WriteLine("public static {0} {1}({0}.Internal native)", className, Helpers.CreateInstanceIdentifier);
-            WriteStartBraceIndent();
-            WriteLine("return new {0}(native);", safeIdentifier);
-            WriteCloseBraceIndent();
-            PopBlock(NewLineKind.BeforeNextBlock);
+            if (!@class.IsAbstractImpl)
+            {
+                PushBlock(CSharpBlockKind.Method);
+                WriteLine("public static {0} {1}({0}.Internal native)", className, Helpers.CreateInstanceIdentifier);
+                WriteStartBraceIndent();
+                WriteLine("return new {0}(native);", ctorCall);
+                WriteCloseBraceIndent();
+                PopBlock(NewLineKind.BeforeNextBlock);   
+            }
 
-            if (@class.IsRefType)
+            if (@class.IsRefType && !@class.IsAbstract)
             {
                 PushBlock(CSharpBlockKind.Method);
                 WriteLine("private static {0}.Internal* __CopyValue({0}.Internal native)", className);
@@ -1949,24 +1938,28 @@ namespace CppSharp.Generators.CSharp
                 WriteCloseBraceIndent();
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
-            PushBlock(CSharpBlockKind.Method);
-            WriteLine("private {0}({1}.Internal native)", safeIdentifier, className);
-            WriteLineIndent(@class.IsRefType ? ": this(__CopyValue(native))" : ": this()");
-            WriteStartBraceIndent();
-            if (@class.IsRefType)
+            if (!@class.IsAbstract)
             {
-                WriteLine("{0} = true;", Helpers.OwnsNativeInstanceIdentifier);
-                WriteLine("NativeToManagedMap[{0}] = this;", Helpers.InstanceIdentifier);
+                PushBlock(CSharpBlockKind.Method);
+                WriteLine("{0} {1}({2}.Internal native)",
+                    @class.IsAbstractImpl ? "internal" : "private", @class.Name, className);
+                WriteLineIndent(@class.IsRefType ? ": this(__CopyValue(native))" : ": this()");
+                WriteStartBraceIndent();
+                if (@class.IsRefType)
+                {
+                    WriteLine("{0} = true;", Helpers.OwnsNativeInstanceIdentifier);
+                    WriteLine("NativeToManagedMap[{0}] = this;", Helpers.InstanceIdentifier);
+                }
+                else
+                {
+                    WriteLine("{0} = native;", Helpers.InstanceField);
+                }
+                WriteCloseBraceIndent();
+                PopBlock(NewLineKind.BeforeNextBlock);
             }
-            else
-            {
-                WriteLine("{0} = native;", Helpers.InstanceField);
-            }
-            WriteCloseBraceIndent();
-            PopBlock(NewLineKind.BeforeNextBlock);
         }
 
-        private bool GenerateClassConstructorBase(Class @class, Method method)
+        private void GenerateClassConstructorBase(Class @class, Method method)
         {
             var hasBase = @class.HasBaseClass;
 
@@ -1975,10 +1968,7 @@ namespace CppSharp.Generators.CSharp
                 PushIndent();
                 Write(": this(");
 
-                if (method != null)
-                    Write("(Internal*) null");
-                else
-                    Write("native");
+                Write(method != null ? "(Internal*) null" : "native");
 
                 WriteLine(")");
                 PopIndent();
@@ -1986,8 +1976,6 @@ namespace CppSharp.Generators.CSharp
 
             if (@class.IsValueType)
                 WriteLineIndent(": this()");
-
-            return hasBase;
         }
 
         #endregion
@@ -2024,8 +2012,7 @@ namespace CppSharp.Generators.CSharp
             // check if overriding a function from a secondary base
             var isOverride = method.IsOverride && @class.GetRootBaseMethod(method, true) != null;
 
-            if (method.IsVirtual && !isOverride && !method.IsOperator &&
-                (!Driver.Options.GenerateAbstractImpls || !method.IsPure))
+            if (method.IsVirtual && !isOverride && !method.IsOperator && !method.IsPure)
                 Write("virtual ");
 
             var isBuiltinOperator = method.IsOperator &&
@@ -2041,7 +2028,7 @@ namespace CppSharp.Generators.CSharp
                 Write("override ");
             }
 
-            if (Driver.Options.GenerateAbstractImpls && method.IsPure)
+            if (method.IsPure)
                 Write("abstract ");
 
             var functionName = GetMethodIdentifier(method);
@@ -2062,8 +2049,7 @@ namespace CppSharp.Generators.CSharp
 
             Write(")");
 
-            if (method.SynthKind == FunctionSynthKind.DefaultValueOverload && method.IsConstructor &&
-                !(Driver.Options.GenerateAbstractImpls && method.IsPure))
+            if (method.SynthKind == FunctionSynthKind.DefaultValueOverload && method.IsConstructor && !method.IsPure)
             {
                 Write(" : this({0})",
                     string.Join(", ",
@@ -2072,7 +2058,7 @@ namespace CppSharp.Generators.CSharp
                                 p => p.Ignore ? p.DefaultArgument.String : p.Name)));
             }
 
-            if (Driver.Options.GenerateAbstractImpls && method.IsPure)
+            if (method.IsPure)
             {
                 Write(";");
                 PopBlock(NewLineKind.BeforeNextBlock);
@@ -2113,7 +2099,7 @@ namespace CppSharp.Generators.CSharp
                 }
                 else if (method.IsOperator)
                 {
-                    GenerateOperator(method, @class);
+                    GenerateOperator(method);
                 }
                 else if (method.SynthKind == FunctionSynthKind.AbstractImplCall)
                 {
@@ -2132,7 +2118,7 @@ namespace CppSharp.Generators.CSharp
                 }
                 else if (method.IsOperator)
                 {
-                    GenerateOperator(method, @class);
+                    GenerateOperator(method);
                 }
                 else
                 {
@@ -2230,7 +2216,7 @@ namespace CppSharp.Generators.CSharp
             return virtualCallBuilder.ToString();
         }
 
-        private void GenerateOperator(Method method, Class @class)
+        private void GenerateOperator(Method method)
         {
             if (method.SynthKind == FunctionSynthKind.ComplementOperator)
             {
@@ -2398,7 +2384,7 @@ namespace CppSharp.Generators.CSharp
 
             if (needsInstance)
             {
-                var instanceIndex = GetInstanceParamIndex(function);
+                var instanceIndex = GetInstanceParamIndex(method);
 
                 if (needsFixedThis)
                 {
@@ -2482,10 +2468,8 @@ namespace CppSharp.Generators.CSharp
                 WriteCloseBraceIndent();
         }
 
-        private int GetInstanceParamIndex(Function function)
+        private int GetInstanceParamIndex(Method method)
         {
-            var method = function as Method;
-
             if (Options.IsMicrosoftAbi)
                 return 0;
 
@@ -2839,8 +2823,7 @@ namespace CppSharp.Generators.CSharp
 
             if (method != null && method.IsConstructor)
             {
-                var @class = method.Namespace as Class;
-                if (Options.IsMicrosoftAbi && @class.Layout.HasVirtualBases)
+                if (Options.IsMicrosoftAbi && ((Class) method.Namespace).Layout.HasVirtualBases)
                     @params.Add("int " + GeneratedIdentifier("forBases"));
             }
 

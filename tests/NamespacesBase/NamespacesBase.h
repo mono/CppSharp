@@ -32,3 +32,9 @@ public:
 private:
     int b;
 };
+
+class DLL_API Abstract
+{
+public:
+    virtual void abstractFunction() = 0;
+};

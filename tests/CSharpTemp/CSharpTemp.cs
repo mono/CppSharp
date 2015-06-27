@@ -106,10 +106,8 @@ namespace CppSharp.Tests
 
         public override void SetupPasses(Driver driver)
         {
-            driver.Options.GenerateAbstractImpls = true;
             driver.Options.GenerateInterfacesForMultipleInheritance = true;
             driver.Options.GeneratePropertiesAdvanced = true;
-            driver.Options.GenerateVirtualTables = true;
             driver.Options.GenerateCopyConstructors = true;
             // To ensure that calls to constructors in conversion operators
             // are not ambiguous with multiple inheritance pass enabled.
