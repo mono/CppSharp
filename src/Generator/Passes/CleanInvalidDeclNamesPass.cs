@@ -56,19 +56,6 @@ namespace CppSharp.Passes
 
         public override bool VisitClassDecl(Class @class)
         {
-            if (@class.IsDynamic)
-            {
-                // HACK: entries in v-tables are not shared (as objects) with the virtual methods they represent;
-                // this is why this pass fixes only the arg names used with real methods, 
-                // while the v-table entries could remain with empty names;
-                // this should be fixed in the parser: it should reuse method objects
-                foreach (var parameter in VTables.GatherVTableMethodEntries(@class).Where(
-                    entry => entry.Method != null).SelectMany(entry => entry.Method.Parameters))
-                {
-                    parameter.Name = CheckName(parameter.Name);
-                }
-            }
-
             var currentUniqueName = this.uniqueName;
             this.uniqueName = 0;
             var ret = base.VisitClassDecl(@class);

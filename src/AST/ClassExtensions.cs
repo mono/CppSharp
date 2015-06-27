@@ -61,7 +61,7 @@ namespace CppSharp.AST
                 let baseMethod = (
                     from method in @base.Class.Methods
                     where
-                        method.Name == @override.Name &&
+                        method.OriginalName == @override.OriginalName &&
                         method.ReturnType == @override.ReturnType &&
                         method.Parameters.SequenceEqual(@override.Parameters,
                             new ParameterTypeComparer())
@@ -78,7 +78,7 @@ namespace CppSharp.AST
                 let baseProperty = (
                     from property in @base.Class.Properties
                     where
-                        property.Name == @override.Name &&
+                        property.OriginalName == @override.OriginalName &&
                         property.Parameters.SequenceEqual(@override.Parameters,
                             new ParameterTypeComparer())
                     select property).FirstOrDefault()
@@ -123,9 +123,7 @@ namespace CppSharp.AST
 
         public static Method GetMethodByName(this Class c, string methodName)
         {
-            var method = c.Methods.FirstOrDefault(
-                // HACK: because of the non-shared v-table entries bug one copy may have been renamed and the other not
-                m => string.Compare(m.Name, methodName, StringComparison.OrdinalIgnoreCase) == 0);
+            var method = c.Methods.FirstOrDefault(m => m.Name == methodName);
             if (method != null)
                 return method;
 
