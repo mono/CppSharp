@@ -875,7 +875,7 @@ namespace CppSharp.Generators.CSharp
                 else
                 {
                     ctx.ReturnVarName = string.Format("{0}{1}{2}",
-                    (@class.IsValueType)
+                    @class.IsValueType
                         ? Helpers.InstanceField
                         : string.Format("((Internal*) {0})", Helpers.InstanceIdentifier),
                     @class.IsValueType ? "." : "->",
@@ -980,14 +980,14 @@ namespace CppSharp.Generators.CSharp
                         @class.IsValueType
                             ? Helpers.InstanceField
                             : string.Format("((Internal*) {0})", Helpers.InstanceIdentifier),
-                        @class.IsValueType? "." : "->",
+                        @class.IsValueType ? "." : "->",
                         Helpers.SafeIdentifier(field.OriginalName)),
                     ReturnType = decl.QualifiedType
                 };
 
                 var arrayType = field.Type as ArrayType;
 
-                if (arrayType != null && (@class.IsValueType || @class.IsStruct))
+                if (arrayType != null && @class.IsValueType)
                 {
                     CSharpTypePrinter typePrinter = new CSharpTypePrinter(ctx.Driver);
                     string type = arrayType.CSharpType(typePrinter).Type;
@@ -2333,7 +2333,7 @@ namespace CppSharp.Generators.CSharp
             {
                 var @class = (Class) method.Namespace;
                 isValueType = @class.IsValueType;
-                
+
                 operatorParam = method.Parameters.FirstOrDefault(
                     p => p.Kind == ParameterKind.OperatorParameter);
                 needsInstance = !method.IsStatic || operatorParam != null;

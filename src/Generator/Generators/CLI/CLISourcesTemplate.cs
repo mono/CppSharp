@@ -218,7 +218,7 @@ namespace CppSharp.Generators.CLI
                     continue;
 
                 // C++/CLI does not allow special member funtions for value types.
-                if ((@class.IsValueType) && method.IsCopyConstructor)
+                if (@class.IsValueType && method.IsCopyConstructor)
                     continue;
 
                 // Do not generate constructors or destructors from base classes.

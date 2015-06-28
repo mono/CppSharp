@@ -2837,7 +2837,7 @@ void CppSharp::Parser::AST::Class::IsExternCContext::set(bool value)
 
 bool CppSharp::Parser::AST::Class::DeclaredStruct::get()
 {
-	return ((::CppSharp::CppParser::AST::Class*)NativePtr)->DeclaredStruct;
+    return ((::CppSharp::CppParser::AST::Class*)NativePtr)->DeclaredStruct;
 }
 
 CppSharp::Parser::AST::ClassLayout^ CppSharp::Parser::AST::Class::Layout::get()
