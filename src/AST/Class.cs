@@ -102,7 +102,7 @@ namespace CppSharp.AST
         // True if the class represents a static class.
         public bool IsStatic;
 
-        // True is declared with 'struct' keyword
+        // True if declared with 'struct' keyword
         public bool DeclaredStruct;
 
         public Class()
