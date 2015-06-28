@@ -1,4 +1,5 @@
-﻿using CppSharp.AST;
+﻿using System.Linq;
+using CppSharp.AST;
 using Interop = System.Runtime.InteropServices;
 
 namespace CppSharp.Generators
@@ -22,6 +23,36 @@ namespace CppSharp.Generators
             }
 
             return Interop.CallingConvention.Winapi;
+        }
+
+        public static bool CheckClassIsStructible(Class @class, Driver Driver)
+        {
+            if (!@class.DeclaredStruct)
+                return false;
+
+            if (@class.IsValueType)
+                return true;
+            if (@class.IsInterface)
+                return false;
+            if (@class.IsStatic)
+                return false;
+            if (@class.IsAbstract)
+                return false;
+            if (@class.Methods.Any(m => m.IsStatic))
+                return false;
+            if (@class.Methods.Any(m => m.IsOperator))
+                return false;
+
+            var allTrUnits = Driver.ASTContext.TranslationUnits;
+            foreach (var trUnit in allTrUnits)
+            {
+                foreach (var cls in trUnit.Classes)
+                {
+                    if (cls.Bases.Any(clss => clss.IsClass && clss.Class == @class))
+                        return false;
+                }
+            }
+            return true;
         }
     }
 }

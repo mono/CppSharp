@@ -98,7 +98,7 @@ namespace CppSharp.Passes
                     return true;
                 }
                 Class @class;
-                if (desugared.GetFinalPointee().TryGetClass(out @class) && (@class.IsValueType || @class.IsStruct))
+                if (desugared.GetFinalPointee().TryGetClass(out @class) && @class.IsValueType)
                 {
                     parameter.DefaultArgument.String = string.Format("new {0}()",
                         new CSharpTypePrinter(Driver).VisitClassDecl(@class));
@@ -176,7 +176,7 @@ namespace CppSharp.Passes
                 }
             }
 
-            return (decl.IsValueType || decl.IsStruct) ? true : (bool?) null;
+            return decl.IsValueType ? true : (bool?) null;
         }
 
         private bool CheckForBinaryOperator(Expression arg, Type desugared)

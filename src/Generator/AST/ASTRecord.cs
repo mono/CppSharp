@@ -147,7 +147,7 @@ namespace CppSharp.Generators.AST
             var field = (Field)ancestors.Pop();
                 
             Class decl;
-            return field.Type.Desugar().TryGetClass(out decl) && (decl.IsValueType || decl.IsStruct);
+            return field.Type.Desugar().TryGetClass(out decl) && decl.IsValueType;
         }
 
         public static bool IsDelegate(this ASTRecord record)

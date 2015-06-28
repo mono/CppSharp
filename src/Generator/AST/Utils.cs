@@ -24,7 +24,7 @@ namespace CppSharp.AST
             var isEmptyCtor = method.IsConstructor && method.Parameters.Count == 0;
 
             var @class = method.Namespace as Class;
-            if (@class != null && (@class.IsValueType || @class.IsStruct) && isEmptyCtor)
+            if (@class != null && @class.IsValueType && isEmptyCtor)
                 return true;
 
             if (method.IsMoveConstructor)
@@ -68,7 +68,7 @@ namespace CppSharp.AST
             if (field.Access == AccessSpecifier.Private && !useInternals) 
                 return true;
 
-            if ((field.Class.IsValueType || field.Class.IsStruct) && field.IsDeclared)
+            if (field.Class.IsValueType && field.IsDeclared)
                 return false;
 
             return !field.IsGenerated && (!useInternals || !field.IsInternal);
@@ -79,7 +79,7 @@ namespace CppSharp.AST
             if (prop.Access == AccessSpecifier.Private)
                 return true;
 
-            if (prop.Field != null && (prop.Field.Class.IsValueType || prop.Field.Class.IsStruct) && prop.IsDeclared)
+            if (prop.Field != null && prop.Field.Class.IsValueType && prop.IsDeclared)
                 return false;
 
             return !prop.IsGenerated;

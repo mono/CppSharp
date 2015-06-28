@@ -1840,10 +1840,10 @@ namespace CppSharp
                     void set(bool);
                 }
 
-				property bool DeclaredStruct
-				{
-					bool get();
-				}
+                property bool DeclaredStruct
+                {
+                    bool get();
+                }
 
                 property CppSharp::Parser::AST::ClassLayout^ Layout
                 {

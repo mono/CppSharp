@@ -188,7 +188,7 @@ namespace CppSharp.AST
 
         public bool IsValueType
         {
-            get { return Type == ClassType.ValueType || IsUnion; }
+            get { return Type == ClassType.ValueType || IsUnion || IsStruct; }
         }
 
         public bool IsRefType

@@ -353,7 +353,7 @@ namespace CppSharp.Generators.CSharp
 
         public void GenerateClass(Class @class)
         {
-            @class.IsStruct = CheckClassIsStructible(@class);
+            @class.IsStruct = ExtensionMethods.CheckClassIsStructible(@class, Driver);
 
             if (@class.IsIncomplete)
                 return;
@@ -378,7 +378,7 @@ namespace CppSharp.Generators.CSharp
                 if (ShouldGenerateClassNativeField(@class))
                 {
                     PushBlock(CSharpBlockKind.Field);
-                    if (@class.IsValueType || @class.IsStruct)
+                    if (@class.IsValueType)
                     {
                         WriteLine("private {0}.Internal {1};", @class.Name, Helpers.InstanceField);
                         WriteLine("public {0}.Internal {1} {{ get {{ return {2}; }} }}", @class.Name,
@@ -435,38 +435,6 @@ namespace CppSharp.Generators.CSharp
             WriteCloseBraceIndent();
             NewLine();
         }
-
-         private bool CheckClassIsStructible(Class @class)
-         {
-             if(!@class.DeclaredStruct)
-                 return false;
-
-             if (@class.IsValueType)
-                 return true;
-             if (@class.IsInterface)
-                 return false;
-             if (@class.IsStatic)
-                 return false;
-             if (@class.IsAbstract)
-                 return false;
-             if (@class.HasBase)
-                 return false;
-             if (@class.Methods.Any(m => m.IsStatic))
-                 return false;
-             if (@class.Methods.Any(m => m.IsOperator))
-                 return false;
-
-             var allTrUnits = Driver.ASTContext.TranslationUnits;
-             foreach (var trUnit in allTrUnits)
-             {
-                 foreach (var cls in trUnit.Classes)
-                 {
-                     if (cls.Bases.Any(clss => clss.IsClass && clss.Class == @class))
-                         return false;
-                 }
-             }
-             return true;
-         }
 
         private void GenerateInterface(Class @class)
         {
@@ -559,7 +527,7 @@ namespace CppSharp.Generators.CSharp
             bool includeCtors = true)
         {
             var functions = new List<Function>();
-            if (@class.IsValueType || @class.IsStruct)
+            if (@class.IsValueType)
                 foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.Ignore))
                     functions.AddRange(GatherClassInternalFunctions(@base.Class, false));
 
@@ -672,7 +640,7 @@ namespace CppSharp.Generators.CSharp
         {
             if (@class.IsStatic)
                 return false;
-            return @class.IsValueType || @class.IsStruct || !@class.HasBase || !@class.HasRefBase();
+            return @class.IsValueType || !@class.HasBase || !@class.HasRefBase();
         }
 
         public void GenerateClassProlog(Class @class)
@@ -692,7 +660,7 @@ namespace CppSharp.Generators.CSharp
             if (Options.GeneratePartialClasses)
                 Write("partial ");
 
-            Write(@class.IsInterface ? "interface " : ((@class.IsValueType || @class.IsStruct) ? "struct " : "class "));
+            Write(@class.IsInterface ? "interface " : (@class.IsValueType ? "struct " : "class "));
             Write("{0}", @class.Name);
 
             var bases = new List<string>();
@@ -893,7 +861,7 @@ namespace CppSharp.Generators.CSharp
 
                 var arrayType = field.Type as ArrayType;
 
-                if (arrayType != null && (@class.IsValueType || @class.IsStruct))
+                if (arrayType != null && @class.IsValueType)
                 {
                     CSharpTypePrinter typePrinter = new CSharpTypePrinter(ctx.Driver);
                     string type = arrayType.CSharpType(typePrinter).Type;
@@ -907,10 +875,10 @@ namespace CppSharp.Generators.CSharp
                 else
                 {
                     ctx.ReturnVarName = string.Format("{0}{1}{2}",
-                    (@class.IsValueType || @class.IsStruct)
+                    (@class.IsValueType)
                         ? Helpers.InstanceField
                         : string.Format("((Internal*) {0})", Helpers.InstanceIdentifier),
-                    (@class.IsValueType || @class.IsStruct) ? "." : "->",
+                    @class.IsValueType ? "." : "->",
                     Helpers.SafeIdentifier(field.OriginalName));
                 }
                 param.Visit(marshal);
@@ -923,7 +891,7 @@ namespace CppSharp.Generators.CSharp
                     WriteLine("{0} = {1};", ctx.ReturnVarName, marshal.Context.Return);
                 }
 
-                if (arrayType != null && (@class.IsValueType || @class.IsStruct))
+                if (arrayType != null && @class.IsValueType)
                     WriteCloseBraceIndent();
 
                 WriteCloseBraceIndent();
@@ -1009,10 +977,10 @@ namespace CppSharp.Generators.CSharp
                     Kind = CSharpMarshalKind.NativeField,
                     ArgName = decl.Name,
                     ReturnVarName = string.Format("{0}{1}{2}",
-                        (@class.IsValueType || @class.IsStruct)
+                        @class.IsValueType
                             ? Helpers.InstanceField
                             : string.Format("((Internal*) {0})", Helpers.InstanceIdentifier),
-                        (@class.IsValueType || @class.IsStruct) ? "." : "->",
+                        @class.IsValueType? "." : "->",
                         Helpers.SafeIdentifier(field.OriginalName)),
                     ReturnType = decl.QualifiedType
                 };
@@ -1039,7 +1007,7 @@ namespace CppSharp.Generators.CSharp
 
                 WriteLine("return {0};", marshal.Context.Return);
 
-                if (arrayType != null && (@class.IsValueType || @class.IsStruct))
+                if (arrayType != null && @class.IsValueType)
                     WriteCloseBraceIndent();
             }
             else if (decl is Variable)
@@ -1106,7 +1074,7 @@ namespace CppSharp.Generators.CSharp
 
             var @class = (Class) methods[0].Namespace;
 
-            if (@class.IsValueType || @class.IsStruct)
+            if (@class.IsValueType)
                 foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.Ignore))
                     GenerateClassMethods(@base.Class.Methods.Where(m => !m.IsOperator).ToList());
 
@@ -1136,7 +1104,7 @@ namespace CppSharp.Generators.CSharp
 
         public void GenerateClassVariables(Class @class)
         {
-            if (@class.IsValueType || @class.IsStruct)
+            if (@class.IsValueType)
                 foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.Ignore))
                     GenerateClassVariables(@base.Class);
 
@@ -1155,7 +1123,7 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateClassProperties(Class @class)
         {
-            if (@class.IsValueType || @class.IsStruct)
+            if (@class.IsValueType)
                 foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.Ignore && b.Class.IsDeclared))
                     GenerateClassProperties(@base.Class);
 
@@ -1816,7 +1784,7 @@ namespace CppSharp.Generators.CSharp
 
             // Generate Dispose(bool) method
             PushBlock(CSharpBlockKind.Method);
-            if (@class.IsValueType || @class.IsStruct)
+            if (@class.IsValueType)
             {
                 Write("private ");
             }
@@ -1918,7 +1886,7 @@ namespace CppSharp.Generators.CSharp
             PushBlock(CSharpBlockKind.Method);
             WriteLine("{0} {1}({2}.Internal* native, bool isInternalImpl = false){3}",
                 @class.IsRefType ? "protected" : "private",
-                @class.Name, className, (@class.IsValueType || @class.IsStruct) ? " : this()" : string.Empty);
+                @class.Name, className, @class.IsValueType ? " : this()" : string.Empty);
 
             var hasBaseClass = @class.HasBaseClass && @class.BaseClass.IsRefType;
             if (hasBaseClass)
@@ -2004,7 +1972,7 @@ namespace CppSharp.Generators.CSharp
         {
             var hasBase = @class.HasBaseClass;
 
-            if (hasBase && !(@class.IsValueType || @class.IsStruct))
+            if (hasBase && !@class.IsValueType)
             {
                 PushIndent();
                 Write(": this(");
@@ -2018,7 +1986,7 @@ namespace CppSharp.Generators.CSharp
                 PopIndent();
             }
 
-            if (@class.IsValueType || @class.IsStruct)
+            if (@class.IsValueType)
                 WriteLineIndent(": this()");
 
             return hasBase;
@@ -2158,7 +2126,7 @@ namespace CppSharp.Generators.CSharp
                     GenerateInternalFunctionCall(method);
                 }
             }
-            else if (@class.IsValueType || @class.IsStruct)
+            else if (@class.IsValueType)
             {
                 if (method.IsConstructor)
                 {
@@ -2364,7 +2332,7 @@ namespace CppSharp.Generators.CSharp
             if (method != null)
             {
                 var @class = (Class) method.Namespace;
-                isValueType = @class.IsValueType || @class.IsStruct;
+                isValueType = @class.IsValueType;
                 
                 operatorParam = method.Parameters.FirstOrDefault(
                     p => p.Kind == ParameterKind.OperatorParameter);

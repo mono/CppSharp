@@ -14,7 +14,7 @@ namespace CppSharp.AST
             type = type ?? p.Field.Type;
 
             Class decl;
-            return type.TryGetClass(out decl) && (decl.IsValueType || decl.IsStruct);
+            return type.TryGetClass(out decl) && decl.IsValueType;
         }
     }
 }

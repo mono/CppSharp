@@ -448,7 +448,7 @@ namespace CppSharp.Generators.CSharp
             }
 
             Class @class;
-            if (pointee.TryGetClass(out @class) && (@class.IsValueType || @class.IsStruct))
+            if (pointee.TryGetClass(out @class) && @class.IsValueType)
             {
                 if (Context.Parameter.Usage == ParameterUsage.Out)
                 {
@@ -568,7 +568,7 @@ namespace CppSharp.Generators.CSharp
             if (!VisitDeclaration(@class))
                 return false;
 
-            if (@class.IsValueType || @class.IsStruct)
+            if (@class.IsValueType)
             {
                 MarshalValueClass();
             }
@@ -596,7 +596,7 @@ namespace CppSharp.Generators.CSharp
             if (type.IsAddress())
             {
                 Class decl;
-                if (type.TryGetClass(out decl) && (decl.IsValueType || decl.IsStruct))
+                if (type.TryGetClass(out decl) && decl.IsValueType)
                     Context.Return.Write("{0}.{1}", param, Helpers.InstanceIdentifier);
                 else
                     Context.Return.Write("{0}{1}.{2}",
