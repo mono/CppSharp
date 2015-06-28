@@ -102,7 +102,7 @@ namespace CppSharp
 
             // We can't handle value types yet
             // The generated code assumes that a NativePtr is available
-            if (@class.IsValueType)
+            if (@class.IsValueType || @class.IsStruct)
                 return false;
 
             foreach (var method in @class.Methods)

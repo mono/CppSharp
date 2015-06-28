@@ -208,7 +208,7 @@ namespace CppSharp.Generators.CLI
 
         private void GenerateClassMethods(Class @class, Class realOwner)
         {
-            if (@class.IsValueType)
+            if (@class.IsValueType || @class.IsStruct)
                 foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.Ignore))
                     GenerateClassMethods(@base.Class, realOwner);
 
@@ -218,7 +218,7 @@ namespace CppSharp.Generators.CLI
                     continue;
 
                 // C++/CLI does not allow special member funtions for value types.
-                if (@class.IsValueType && method.IsCopyConstructor)
+                if ((@class.IsValueType || @class.IsStruct) && method.IsCopyConstructor)
                     continue;
 
                 // Do not generate constructors or destructors from base classes.
@@ -232,7 +232,7 @@ namespace CppSharp.Generators.CLI
 
         private void GenerateClassProperties(Class @class, Class realOwner)
         {
-            if (@class.IsValueType)
+            if (@class.IsValueType || @class.IsStruct)
             {
                 foreach (var @base in @class.Bases.Where(b => b.IsClass && b.Class.IsDeclared))
                 {
@@ -377,7 +377,7 @@ namespace CppSharp.Generators.CLI
             }
             else
             {
-                if (@class.IsValueType && decl is Field)
+                if ((@class.IsValueType || @class.IsStruct) && decl is Field)
                 {
                     WriteLine("{0} = value;", decl.Name);
                     WriteCloseBraceIndent();
@@ -470,7 +470,7 @@ namespace CppSharp.Generators.CLI
             }
             else
             {
-                if (@class.IsValueType && decl is Field)
+                if ((@class.IsValueType || @class.IsStruct) && decl is Field)
                 {
                     WriteLine("return {0};", decl.Name);
                     WriteCloseBraceIndent();
@@ -700,7 +700,7 @@ namespace CppSharp.Generators.CLI
             if (!hasBase)
                 return false;
 
-            if (!@class.IsValueType)
+            if (!(@class.IsValueType || @class.IsStruct))
             {
                 PushIndent();
 
@@ -764,7 +764,7 @@ namespace CppSharp.Generators.CLI
                     GenerateFunctionCall(method, @class);
                 }
             }
-            else if (@class.IsValueType)
+            else if (@class.IsValueType || @class.IsStruct)
             {
                 if (!method.IsConstructor)
                     GenerateFunctionCall(method, @class);
@@ -909,7 +909,7 @@ namespace CppSharp.Generators.CLI
             var needsReturn = !retType.Type.IsPrimitiveType(PrimitiveType.Void);
 
             const string valueMarshalName = "_this0";
-            var isValueType = @class != null && @class.IsValueType;
+            var isValueType = @class != null && (@class.IsValueType || @class.IsStruct);
             if (isValueType && !IsNativeFunctionOrStaticMethod(function))
             {
                 WriteLine("auto {0} = ::{1}();", valueMarshalName, @class.QualifiedOriginalName);

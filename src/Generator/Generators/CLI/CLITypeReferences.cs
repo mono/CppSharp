@@ -191,7 +191,7 @@ namespace CppSharp.Generators.CLI
             if (@class.IsIncomplete && @class.CompleteDeclaration != null)
                 @class = (Class) @class.CompleteDeclaration;
 
-            var keywords = @class.IsValueType? "value struct" : "ref class";
+            var keywords = (@class.IsValueType || @class.IsStruct) ? "value struct" : "ref class";
             var @ref = string.Format("{0} {1};", keywords, @class.Name);
             
             GetTypeReference(@class).FowardReference = @ref;

@@ -102,6 +102,9 @@ namespace CppSharp.AST
         // True if the class represents a static class.
         public bool IsStatic;
 
+        // True is declared with 'struct' keyword
+        public bool DeclaredStruct;
+
         public Class()
         {
             Bases = new List<BaseClassSpecifier>();
@@ -113,6 +116,7 @@ namespace CppSharp.AST
             IsUnion = false;
             IsOpaque = false;
             IsPOD = false;
+            IsStruct = false;
             Type = ClassType.RefType;
             Layout = new ClassLayout();
         }
@@ -137,6 +141,7 @@ namespace CppSharp.AST
             HasNonTrivialCopyConstructor = @class.HasNonTrivialCopyConstructor;
             HasNonTrivialDestructor = @class.HasNonTrivialDestructor;
             IsStatic = @class.IsStatic;
+            IsStruct = @class.IsStruct;
         }
 
         public bool HasBase
@@ -147,6 +152,12 @@ namespace CppSharp.AST
         public bool HasBaseClass
         {
             get { return BaseClass != null; }
+        }
+
+        public bool IsStruct
+        {
+            get;
+            set;
         }
 
         public Class BaseClass

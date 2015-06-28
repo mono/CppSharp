@@ -762,3 +762,6 @@ struct CS_VALUE_TYPE ValueTypeArrays
 	char thirdValueTypeArray[ARRAY_LENGTH];
 	size_t size;
 };
+
+DLL_API class TestIsStructClass { };
+DLL_API struct TestIsStructStruct { };

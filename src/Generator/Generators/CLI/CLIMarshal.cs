@@ -514,7 +514,7 @@ namespace CppSharp.Generators.CLI
             }
 
             Class @class;
-            if (pointee.TryGetClass(out @class) && @class.IsValueType)
+            if (pointee.TryGetClass(out @class) && (@class.IsValueType || @class.IsStruct))
             {
                 if (Context.Function == null)
                     Context.Return.Write("&");
@@ -644,7 +644,7 @@ namespace CppSharp.Generators.CLI
             if (@class.CompleteDeclaration != null)
                 return VisitClassDecl(@class.CompleteDeclaration as Class);
 
-            if (@class.IsValueType)
+            if (@class.IsValueType || @class.IsStruct)
             {
                 MarshalValueClass(@class);
             }
@@ -746,7 +746,7 @@ namespace CppSharp.Generators.CLI
             Type type;
             Class @class;
             var isRef = property.Type.IsPointerTo(out type) &&
-                !(type.TryGetClass(out @class) && @class.IsValueType) &&
+                !(type.TryGetClass(out @class) && (@class.IsValueType || @class.IsStruct)) &&
                 !type.IsPrimitiveType();
 
             if (isRef)

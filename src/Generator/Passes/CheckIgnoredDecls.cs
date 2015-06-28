@@ -17,7 +17,7 @@ namespace CppSharp.Passes
                 return true;
             case AccessSpecifier.Protected:
                 var @class = decl.Namespace as Class;
-                if (@class != null && @class.IsValueType)
+                if (@class != null && (@class.IsValueType || @class.IsStruct))
                     return false;
                 return generateNonPublicDecls;
             case AccessSpecifier.Private:

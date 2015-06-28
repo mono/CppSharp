@@ -137,6 +137,9 @@ namespace CppSharp.Generators.CLI
             var typeReferences = typeReferenceCollector.TypeReferences;
             var @namespace = ConvertForwardReferencesToNamespaces(typeReferences);
 
+            foreach (var cls in @namespace.Classes)
+                cls.IsStruct = CheckClassIsStructible(cls);
+
             GenerateNamespace(@namespace);
         }
 
@@ -283,6 +286,34 @@ namespace CppSharp.Generators.CLI
             WriteLine("};");
         }
 
+        private bool CheckClassIsStructible(Class @class)
+         {
+             if(!@class.DeclaredStruct)
+                 return false;
+
+             if (@class.IsValueType)
+                 return true;
+             if (@class.IsInterface)
+                 return false;
+             if (@class.IsStatic)
+                 return false;
+             if (@class.IsAbstract)
+                 return false;
+             if (@class.HasBase)
+                 return false;
+
+             var allTrUnits = Driver.ASTContext.TranslationUnits;
+             foreach (var trUnit in allTrUnits)
+             {
+                 foreach (var cls in trUnit.Classes)
+                 {
+                     if (cls.Bases.Any(clss => clss.IsClass && clss.Class == @class))
+                         return false;
+                 }
+             }
+             return true;
+         }
+
         public void GenerateClassNativeField(Class @class, string nativeType)
         {
             WriteLineIndent("property {0} NativePtr;", nativeType);
@@ -376,7 +407,7 @@ namespace CppSharp.Generators.CLI
                     continue;
 
                 // C++/CLI does not allow special member funtions for value types.
-                if (@class.IsValueType && ctor.IsCopyConstructor)
+                if ((@class.IsValueType || @class.IsStruct) && ctor.IsCopyConstructor)
                     continue;
 
                 GenerateMethod(ctor);
@@ -414,7 +445,7 @@ namespace CppSharp.Generators.CLI
         {
             // Handle the case of struct (value-type) inheritance by adding the base
             // properties to the managed value subtypes.
-            if (@class.IsValueType)
+            if (@class.IsValueType || @class.IsValueType)
             {
                 foreach (var @base in @class.Bases.Where(b => b.IsClass && b.Class.IsDeclared))
                 {
@@ -496,7 +527,7 @@ namespace CppSharp.Generators.CLI
 
             var @class = (Class) methods[0].Namespace;
 
-            if (@class.IsValueType)
+            if (@class.IsValueType || @class.IsStruct)
                 foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.Ignore))
                     GenerateClassMethods(@base.Class.Methods.Where(m => !m.IsOperator).ToList());
 
@@ -568,7 +599,7 @@ namespace CppSharp.Generators.CLI
             if (isTopLevel)
                 Write("public ");
 
-            Write(@class.IsValueType ? "value struct " : "ref class ");
+            Write((@class.IsValueType || @class.IsStruct) ? "value struct " : "ref class ");
 
             Write("{0}", @class.Name);
 
@@ -601,7 +632,7 @@ namespace CppSharp.Generators.CLI
         {
             // Handle the case of struct (value-type) inheritance by adding the base
             // properties to the managed value subtypes.
-            if (@class.IsValueType)
+            if (@class.IsValueType || @class.IsStruct)
             {
                 foreach (var @base in @class.Bases.Where(b => b.IsClass && b.Class.IsDeclared))
                 {

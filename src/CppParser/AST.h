@@ -716,6 +716,7 @@ public:
     bool HasNonTrivialCopyConstructor;
     bool HasNonTrivialDestructor;
     bool IsExternCContext;
+	bool DeclaredStruct;
 
     ClassLayout* Layout;
 };
