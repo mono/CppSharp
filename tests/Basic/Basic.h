@@ -486,9 +486,8 @@ DLL_API int Function()
 }
 
 // Tests properties
-class DLL_API TestProperties
+struct DLL_API TestProperties
 {
-public:
     TestProperties();
     int Field;
 

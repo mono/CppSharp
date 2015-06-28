@@ -353,10 +353,6 @@ namespace CppSharp.Generators.CSharp
 
         public void GenerateClass(Class @class)
         {
-            if(@class.DeclaredStruct)
-            {
-                WriteLine("//Declared Struct");
-            }
             @class.IsStruct = CheckClassIsStructible(@class);
 
             if (@class.IsIncomplete)
@@ -454,6 +450,10 @@ namespace CppSharp.Generators.CSharp
              if (@class.IsAbstract)
                  return false;
              if (@class.HasBase)
+                 return false;
+             if (@class.Methods.Any(m => m.IsStatic))
+                 return false;
+             if (@class.Methods.Any(m => m.IsOperator))
                  return false;
 
              var allTrUnits = Driver.ASTContext.TranslationUnits;

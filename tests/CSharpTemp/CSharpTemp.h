@@ -175,9 +175,8 @@ private:
 };
 
 // Tests destructors
-class DLL_API TestDestructors
+struct DLL_API TestDestructors
 {
-public:
     static void InitMarker() { Marker = 0; }
     static int Marker;
 
