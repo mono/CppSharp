@@ -32,13 +32,7 @@ namespace CppSharp.Generators
 
             if (@class.IsValueType)
                 return true;
-            if (@class.IsInterface)
-                return false;
-            if (@class.IsStatic)
-                return false;
-            if (@class.IsAbstract)
-                return false;
-            if (@class.Methods.Any(m => m.IsStatic))
+            if (@class.IsInterface || @class.IsStatic || @class.IsAbstract)
                 return false;
             if (@class.Methods.Any(m => m.IsOperator))
                 return false;
@@ -52,6 +46,7 @@ namespace CppSharp.Generators
                         return false;
                 }
             }
+
             return true;
         }
     }
