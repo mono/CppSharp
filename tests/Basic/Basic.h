@@ -486,8 +486,9 @@ DLL_API int Function()
 }
 
 // Tests properties
-struct DLL_API TestProperties
+class DLL_API TestProperties
 {
+public:
     TestProperties();
     int Field;
 
@@ -763,5 +764,7 @@ struct CS_VALUE_TYPE ValueTypeArrays
 	size_t size;
 };
 
-DLL_API class TestIsStructClass { };
-DLL_API struct TestIsStructStruct { };
+DLL_API class TestIsStructFreeClass { };
+DLL_API struct TestIsStructFreeStruct { };
+DLL_API struct TestIsStructInheritedStruct { };
+DLL_API struct TestIsStructInheritingStruct : public TestIsStructInheritedStruct { };

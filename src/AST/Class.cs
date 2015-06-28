@@ -193,7 +193,7 @@ namespace CppSharp.AST
 
         public bool IsRefType
         {
-            get { return Type == ClassType.RefType && !IsUnion; }
+            get { return Type == ClassType.RefType && !IsUnion && !IsStruct; }
         }
 
         public bool IsInterface
