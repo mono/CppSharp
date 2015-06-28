@@ -227,6 +227,10 @@ namespace CppSharp.Generators.CSharp
             // Generate all the struct/class declarations.
             foreach (var @class in context.Classes)
             {
+                var isClassStructible = CheckClassIsStructible(@class);
+                if (isClassStructible)
+                    @class.Type = ClassType.ValueType;
+
                 if (@class.IsIncomplete)
                     continue;
 
@@ -627,6 +631,31 @@ namespace CppSharp.Generators.CSharp
             if (@class.IsStatic)
                 return false;
             return @class.IsValueType || !@class.HasBase || !@class.HasRefBase();
+        }
+
+        private bool CheckClassIsStructible(Class @class)
+        {
+            if (@class.IsValueType)
+                return true;
+            if (@class.IsInterface)
+                return false;
+            if (@class.IsStatic)
+                return false;
+            if (@class.IsAbstract)
+                return false;
+            if (@class.HasBase)
+                return false;
+
+            var allTrUnits = Driver.ASTContext.TranslationUnits;
+            foreach (var trUnit in allTrUnits)
+            {
+                foreach (var cls in trUnit.Classes)
+                {
+                    if (cls.Bases.Any(clss => clss.IsClass && clss.Class == @class))
+                        return false;
+                }
+            }
+            return true;
         }
 
         public void GenerateClassProlog(Class @class)
