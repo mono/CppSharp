@@ -1840,7 +1840,7 @@ namespace CppSharp
                     void set(bool);
                 }
 
-                property bool DeclaredStruct
+                property bool IsStruct
                 {
                     bool get();
                 }

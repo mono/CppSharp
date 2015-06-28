@@ -27,15 +27,15 @@ namespace CppSharp.Generators
 
         public static bool CheckClassIsStructible(Class @class, Driver Driver)
         {
-            if (!@class.DeclaredStruct)
+            if (!@class.IsStruct)
                 return false;
-
-            if (@class.IsValueType)
-                return true;
             if (@class.IsInterface || @class.IsStatic || @class.IsAbstract)
                 return false;
             if (@class.Methods.Any(m => m.IsOperator))
                 return false;
+
+            if (@class.IsValueType)
+                return true;
 
             var allTrUnits = Driver.ASTContext.TranslationUnits;
             foreach (var trUnit in allTrUnits)

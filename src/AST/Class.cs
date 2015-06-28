@@ -102,9 +102,6 @@ namespace CppSharp.AST
         // True if the class represents a static class.
         public bool IsStatic;
 
-        // True if declared with 'struct' keyword
-        public bool DeclaredStruct;
-
         public Class()
         {
             Bases = new List<BaseClassSpecifier>();
