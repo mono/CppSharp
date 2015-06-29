@@ -407,3 +407,16 @@ bool DifferentConstOverloads::operator ==(int number) const
 {
     return false;
 }
+
+void RefTypeToValTypeCheckBase::doSmthProt()
+{
+}
+
+int RefTypeToValTypeCheckBase::getF()
+{
+	return f;
+}
+
+void RefTypeToValTypeCheckBase::doSmthVirt()
+{
+}

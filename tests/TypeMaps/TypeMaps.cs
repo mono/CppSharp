@@ -23,7 +23,7 @@ namespace CppSharp.Tests
 
         public override void Preprocess(Driver driver, ASTContext ctx)
         {
-            ctx.SetClassAsValueType("HasQList");
+            ctx.SetClassAsValueType("HasQList", driver.Options.IsCLIGenerator);
             ctx.FindCompleteClass("QList").Constructors.First(c => c.IsCopyConstructor).GenerationKind = GenerationKind.None;
             ctx.IgnoreClassWithName("IgnoredType");
         }

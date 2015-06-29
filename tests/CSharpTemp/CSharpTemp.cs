@@ -120,10 +120,11 @@ namespace CppSharp.Tests
 
         public override void Preprocess(Driver driver, ASTContext ctx)
         {
-            ctx.SetClassAsValueType("TestCopyConstructorVal");
-            ctx.SetClassAsValueType("QGenericArgument");
-            ctx.SetClassAsValueType("StructWithPrivateFields");
-            ctx.SetClassAsValueType("QSize");
+            bool isCLIGenerator = driver.Options.IsCLIGenerator;
+            ctx.SetClassAsValueType("TestCopyConstructorVal", isCLIGenerator);
+            ctx.SetClassAsValueType("QGenericArgument", isCLIGenerator);
+            ctx.SetClassAsValueType("StructWithPrivateFields", isCLIGenerator);
+            ctx.SetClassAsValueType("QSize", isCLIGenerator);
 
             ctx.IgnoreClassWithName("IgnoredTypeInheritingNonIgnoredWithNoEmptyCtor");
         }
