@@ -25,29 +25,31 @@ namespace CppSharp.Generators
             return Interop.CallingConvention.Winapi;
         }
 
-        public static bool CheckClassIsStructible(Class @class, Driver Driver)
-        {
-            if (!@class.IsStruct)
-                return false;
-            if (@class.IsInterface || @class.IsStatic || @class.IsAbstract)
-                return false;
-            if (@class.Methods.Any(m => m.IsOperator))
-                return false;
+       public static bool CheckClassIsStructible(Class @class, Driver Driver)
+       {
+           if (@class.IsValueType)
+               return true;
 
-            if (@class.IsValueType)
-                return true;
+           if (!@class.IsStruct)
+               return false;
+           if (@class.IsInterface || @class.IsStatic || @class.IsAbstract)
+               return false;
+           if (@class.Declarations.Any(decl => decl.Access == AccessSpecifier.Protected))
+               return false;
+           if (@class.Methods.Any(m => m.IsVirtual))
+               return false;
 
-            var allTrUnits = Driver.ASTContext.TranslationUnits;
-            foreach (var trUnit in allTrUnits)
-            {
-                foreach (var cls in trUnit.Classes)
-                {
-                    if (cls.Bases.Any(clss => clss.IsClass && clss.Class == @class))
-                        return false;
-                }
-            }
+           var allTrUnits = Driver.ASTContext.TranslationUnits;
+           foreach (var trUnit in allTrUnits)
+           {
+               foreach (var cls in trUnit.Classes)
+               {
+                   if (cls.Bases.Any(clss => clss.IsClass && clss.Class == @class))
+                       return false;
+               }
+           }
 
-            return true;
-        }
+           return true;
+       }
     }
 }
