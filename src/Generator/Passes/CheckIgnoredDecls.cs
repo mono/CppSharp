@@ -1,5 +1,4 @@
-﻿using System;
-using CppSharp.AST;
+﻿using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Types;
 
@@ -322,7 +321,7 @@ namespace CppSharp.Passes
         /// reasons: incomplete definitions, being explicitly ignored, or also
         /// by being a type we do not know how to handle.
         /// </remarks>
-        bool HasInvalidType(AST.Type type, out string msg)
+        bool HasInvalidType(Type type, out string msg)
         {
             if (type == null)
             {
@@ -364,7 +363,7 @@ namespace CppSharp.Passes
                 return true;
             }
 
-            if (!IsDeclComplete(decl))
+            if (decl.IsIncomplete)
             {
                 msg = "incomplete";
                 return true;
@@ -380,19 +379,21 @@ namespace CppSharp.Passes
             return false;
         }
 
-        static bool IsTypeComplete(AST.Type type)
+        private static bool IsTypeComplete(Type type)
         {
-            var checker = new TypeCompletionChecker();
-            return type.Visit(checker);
+            var desugared = type.Desugar();
+            var finalType = (desugared.GetFinalPointee() ?? desugared).Desugar();
+
+            var templateSpecializationType = finalType as TemplateSpecializationType;
+            if (templateSpecializationType != null)
+                finalType = templateSpecializationType.Desugared;
+
+            Declaration decl;
+            if (!finalType.TryGetDeclaration(out decl)) return true;
+            return !decl.IsIncomplete;
         }
 
-        static bool IsDeclComplete(Declaration decl)
-        {
-            var checker = new TypeCompletionChecker();
-            return decl.Visit(checker);
-        }
-
-        bool IsTypeIgnored(AST.Type type)
+        bool IsTypeIgnored(Type type)
         {
             var checker = new TypeIgnoreChecker(Driver.TypeDatabase);
             type.Visit(checker);
