@@ -321,7 +321,7 @@ namespace CppSharp.Passes
         /// reasons: incomplete definitions, being explicitly ignored, or also
         /// by being a type we do not know how to handle.
         /// </remarks>
-        bool HasInvalidType(Type type, out string msg)
+        private bool HasInvalidType(Type type, out string msg)
         {
             if (type == null)
             {
@@ -355,7 +355,7 @@ namespace CppSharp.Passes
             return false;
         }
 
-        bool HasInvalidDecl(Declaration decl, out string msg)
+        private bool HasInvalidDecl(Declaration decl, out string msg)
         {
             if (decl == null)
             {
@@ -393,7 +393,7 @@ namespace CppSharp.Passes
             return !decl.IsIncomplete;
         }
 
-        bool IsTypeIgnored(Type type)
+        private bool IsTypeIgnored(Type type)
         {
             var checker = new TypeIgnoreChecker(Driver.TypeDatabase);
             type.Visit(checker);
@@ -401,12 +401,14 @@ namespace CppSharp.Passes
             return checker.IsIgnored;
         }
 
-        bool IsDeclIgnored(Declaration decl)
+        private bool IsDeclIgnored(Declaration decl)
         {
-            var checker = new TypeIgnoreChecker(Driver.TypeDatabase);
-            decl.Visit(checker);
+            var parameter = decl as Parameter;
+            if (parameter != null && parameter.Type.Desugar().IsPrimitiveType(PrimitiveType.Null))
+                return true;
 
-            return checker.IsIgnored;
+            TypeMap typeMap;
+            return Driver.TypeDatabase.FindTypeMap(decl, out typeMap) ? typeMap.IsIgnored : decl.Ignore;
         }
 
         #endregion
