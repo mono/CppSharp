@@ -60,14 +60,3 @@ artifacts:
 
 deploy: off
 
-#---------------------------------#
-#         notifications           #
-#---------------------------------#
-
-notifications:
-  - provider: Email
-    to:
-      - joao@tritao.eu
-    subject: 'Build {{status}}'
-    message: "{{message}}, {{commitId}}, ..."
-    on_build_status_changed: true
