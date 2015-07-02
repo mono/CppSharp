@@ -5,29 +5,6 @@ using CppSharp.Types;
 namespace CppSharp
 {
     /// <summary>
-    /// This type checker is used to check if a type is complete.
-    /// </summary>
-    public class TypeCompletionChecker : AstVisitor
-    {
-        public TypeCompletionChecker()
-        {
-            Options.VisitClassBases = false;
-            Options.VisitTemplateArguments = false;
-        }
-
-        public override bool VisitDeclaration(Declaration decl)
-        {
-            if (AlreadyVisited(decl))
-                return false;
-
-            if (decl.CompleteDeclaration != null)
-                return true;
-
-            return !decl.IsIncomplete;
-        }
-    }
-
-    /// <summary>
     /// This type checker is used to check if a type is ignored.
     /// </summary>
     public class TypeIgnoreChecker : AstVisitor
