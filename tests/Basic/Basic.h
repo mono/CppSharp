@@ -6,17 +6,6 @@
 #endif
 #include <string>
 
-class DLL_API IgnoredType
-{
-    class IgnoredNested
-    {
-    private:
-        int i;
-    };
-private:
-    int i;
-};
-
 class DLL_API Foo
 {
 private:
@@ -31,7 +20,6 @@ public:
     Foo(Private p);
     int A;
     float B;
-    IgnoredType ignoredType;
     int fixedArray[3];
     void* ptr;
     static const int unsafe = 10;

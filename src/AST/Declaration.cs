@@ -31,7 +31,7 @@ namespace CppSharp.AST
     public enum GenerationKind
     {
         /// <summary>
-        /// Declaration is not generated.
+        // Declaration is not generated.
         /// </summary>
         None,
         /// <summary>
@@ -200,8 +200,7 @@ namespace CppSharp.AST
                     return generationKind.Value;
 
                 if (Namespace != null)
-                    // fields in nested classes have to always be generated
-                    return !Namespace.IsGenerated && this is Field ? GenerationKind.Internal : Namespace.GenerationKind;
+                    return Namespace.GenerationKind;
 
                 return GenerationKind.Generate;
             }
@@ -353,6 +352,7 @@ namespace CppSharp.AST
         }
 
         public abstract T Visit<T>(IDeclVisitor<T> visitor);
+
     }
 
     /// <summary>

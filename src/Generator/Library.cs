@@ -184,7 +184,7 @@ namespace CppSharp
         public static void IgnoreClassWithName(this ASTContext context, string name)
         {
             foreach (var @class in context.FindClass(name))
-                @class.GenerationKind = GenerationKind.Internal;
+                @class.ExplicitlyIgnore();
         }
 
         public static void SetClassAsOpaque(this ASTContext context, string name)
