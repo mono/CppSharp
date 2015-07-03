@@ -495,28 +495,28 @@ Parser::WalkVTableComponent(const clang::VTableComponent& Component)
     {
         VTC.Kind = VTableComponentKind::FunctionPointer;
         auto MD = const_cast<CXXMethodDecl*>(Component.getFunctionDecl());
-        VTC.Declaration = WalkMethodCXX(MD);
+        VTC.Declaration = WalkMethodCXX(MD, /*AddToClass=*/false);
         break;
     }
     case clang::VTableComponent::CK_CompleteDtorPointer:
     {
         VTC.Kind = VTableComponentKind::CompleteDtorPointer;
         auto MD = const_cast<CXXDestructorDecl*>(Component.getDestructorDecl());
-        VTC.Declaration = WalkMethodCXX(MD);
+        VTC.Declaration = WalkMethodCXX(MD, /*AddToClass=*/false);
         break;
     }
     case clang::VTableComponent::CK_DeletingDtorPointer:
     {
         VTC.Kind = VTableComponentKind::DeletingDtorPointer;
         auto MD = const_cast<CXXDestructorDecl*>(Component.getDestructorDecl());
-        VTC.Declaration = WalkMethodCXX(MD);
+        VTC.Declaration = WalkMethodCXX(MD, /*AddToClass=*/false);
         break;
     }
     case clang::VTableComponent::CK_UnusedFunctionPointer:
     {
         VTC.Kind = VTableComponentKind::UnusedFunctionPointer;
         auto MD = const_cast<CXXMethodDecl*>(Component.getUnusedFunctionDecl());
-        VTC.Declaration = WalkMethodCXX(MD);
+        VTC.Declaration = WalkMethodCXX(MD, /*AddToClass=*/false);
         break;
     }
     default:
