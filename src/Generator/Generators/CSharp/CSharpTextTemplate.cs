@@ -344,7 +344,7 @@ namespace CppSharp.Generators.CSharp
             }
             else
             {
-                WriteLine("/// <summary>{0}</summary>", comment.BriefText);                
+                WriteLine("/// <summary>{0}</summary>", comment.BriefText);
             }
             PopBlock();
         }
@@ -807,7 +807,9 @@ namespace CppSharp.Generators.CSharp
 
                 if (function.SynthKind == FunctionSynthKind.AbstractImplCall)
                 {
-                    GenerateAbstractImplCall(function, @class);
+                    string delegateId;
+                    Write(GetAbstractCallDelegate(function, @class, out delegateId));
+                    GenerateFunctionCall(delegateId, new List<Parameter> { param }, function);
                 }
                 else
                 {
@@ -820,8 +822,7 @@ namespace CppSharp.Generators.CSharp
                         }
                         else
                         {
-                            var parameters = new List<Parameter> { param };
-                            GenerateInternalFunctionCall(function, parameters);
+                            GenerateInternalFunctionCall(function, new List<Parameter> { param });
                         }
                     }
                     else

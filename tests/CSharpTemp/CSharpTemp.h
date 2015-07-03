@@ -96,7 +96,7 @@ class DLL_API AbstractProprietor
 {
 public:
     virtual int getValue();
-    virtual void setValue(int value) = 0;
+    virtual void setValue(int newValue) = 0;
 
     virtual long prop() = 0;
     virtual void setProp(long prop);
