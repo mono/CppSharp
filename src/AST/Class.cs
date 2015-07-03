@@ -113,6 +113,7 @@ namespace CppSharp.AST
             IsUnion = false;
             IsOpaque = false;
             IsPOD = false;
+            IsStruct = false;
             Type = ClassType.RefType;
             Layout = new ClassLayout();
         }
@@ -137,6 +138,7 @@ namespace CppSharp.AST
             HasNonTrivialCopyConstructor = @class.HasNonTrivialCopyConstructor;
             HasNonTrivialDestructor = @class.HasNonTrivialDestructor;
             IsStatic = @class.IsStatic;
+            IsStruct = @class.IsStruct;
         }
 
         public bool HasBase
@@ -147,6 +149,12 @@ namespace CppSharp.AST
         public bool HasBaseClass
         {
             get { return BaseClass != null; }
+        }
+
+        public bool IsStruct
+        {
+            get;
+            set;
         }
 
         public Class BaseClass
@@ -177,12 +185,12 @@ namespace CppSharp.AST
 
         public bool IsValueType
         {
-            get { return Type == ClassType.ValueType || IsUnion; }
+            get { return Type == ClassType.ValueType || IsUnion || IsStruct; }
         }
 
         public bool IsRefType
         {
-            get { return Type == ClassType.RefType && !IsUnion; }
+            get { return Type == ClassType.RefType && !IsUnion && !IsStruct; }
         }
 
         public bool IsInterface

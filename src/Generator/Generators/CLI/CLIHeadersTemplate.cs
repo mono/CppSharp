@@ -137,6 +137,9 @@ namespace CppSharp.Generators.CLI
             var typeReferences = typeReferenceCollector.TypeReferences;
             var @namespace = ConvertForwardReferencesToNamespaces(typeReferences);
 
+            foreach (var cls in @namespace.Classes)
+                cls.IsStruct = ExtensionMethods.CheckClassIsStructible(cls, Driver);
+
             GenerateNamespace(@namespace);
         }
 

@@ -1231,6 +1231,7 @@ namespace CppSharp
             _class.HasNonTrivialCopyConstructor = @class.HasNonTrivialCopyConstructor;
             _class.HasNonTrivialDestructor = @class.HasNonTrivialDestructor;
             _class.IsExternCContext = @class.IsExternCContext;
+            _class.IsStruct = @class.IsStruct;
 
             if (@class.Layout != null)
                 _class.Layout = VisitClassLayout(@class.Layout);

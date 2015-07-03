@@ -353,6 +353,8 @@ namespace CppSharp.Generators.CSharp
 
         public void GenerateClass(Class @class)
         {
+            @class.IsStruct = ExtensionMethods.CheckClassIsStructible(@class, Driver);
+
             if (@class.IsIncomplete)
                 return;
 
