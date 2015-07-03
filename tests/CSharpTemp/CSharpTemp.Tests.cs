@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Reflection;
-using CppSharp.Runtime;
-using CSharpTemp;
 using CppSharp.Utils;
+using CSharpTemp;
 using NUnit.Framework;
-using Foo = CSharpTemp.Foo;
 
 public class CSharpTempTests : GeneratorTestFixture
 {
@@ -59,6 +57,7 @@ public class CSharpTempTests : GeneratorTestFixture
     public void TestProperties()
     {
         var proprietor = new Proprietor();
+        Assert.That(proprietor.Parent, Is.EqualTo(0));
         proprietor.Value = 20;
         Assert.That(proprietor.Value, Is.EqualTo(20));
         proprietor.Prop = 50;

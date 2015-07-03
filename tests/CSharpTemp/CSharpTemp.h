@@ -102,6 +102,7 @@ public:
     virtual void setProp(long prop);
 
     virtual int parent();
+    virtual int parent() const;
 
 protected:
     int m_value;

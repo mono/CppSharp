@@ -161,10 +161,10 @@ namespace CppSharp.Passes
             if (method != null)
             {
                 return ((Class) method.Namespace).Methods.Where(
-                    m => m.Parameters.SequenceEqual(function.Parameters, new ParameterComparer()));
+                    m => !m.Ignore && m.Parameters.SequenceEqual(function.Parameters, new ParameterComparer()));
             }
             return function.Namespace.Functions.Where(
-                f => f.Parameters.SequenceEqual(function.Parameters, new ParameterComparer()));
+                f => !f.Ignore && f.Parameters.SequenceEqual(function.Parameters, new ParameterComparer()));
         }
 
         public override bool VisitEnumItem(Enumeration.Item item)

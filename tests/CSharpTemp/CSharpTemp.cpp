@@ -152,6 +152,11 @@ int AbstractProprietor::parent()
     return 0;
 }
 
+int AbstractProprietor::parent() const
+{
+    return 0;
+}
+
 void Proprietor::setValue(int value)
 {
     m_value = value;
