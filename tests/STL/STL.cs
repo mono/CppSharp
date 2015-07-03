@@ -13,7 +13,7 @@ namespace CppSharp.Tests
 
         public override void Preprocess(Driver driver, ASTContext ctx)
         {
-            ctx.SetClassAsValueType("IntWrapperValueType");
+            ctx.SetClassAsValueType("IntWrapperValueType", driver.Options.IsCLIGenerator);
         }
 
         public static void Main(string[] args)

@@ -762,3 +762,18 @@ struct CS_VALUE_TYPE ValueTypeArrays
 	char thirdValueTypeArray[ARRAY_LENGTH];
 	size_t size;
 };
+
+class DLL_API RefTypeToValTypeCheckBase
+{
+protected:
+	void doSmthProt();
+	int aVar;
+	int f;
+	int getF();
+public:
+	virtual void doSmthVirt();
+};
+
+class CS_VALUE_TYPE RefTypeToValTypeCheckDerived : public RefTypeToValTypeCheckBase
+{
+};
