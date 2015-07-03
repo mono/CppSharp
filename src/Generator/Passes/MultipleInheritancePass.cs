@@ -91,7 +91,7 @@ namespace CppSharp.Passes
 
         public override bool VisitClassDecl(Class @class)
         {
-            if (AlreadyVisited(@class))
+            if (!base.VisitClassDecl(@class))
                 return false;
 
             //CheckNonVirtualInheritedFunctions(@class);
@@ -105,7 +105,7 @@ namespace CppSharp.Passes
                 var @interface = GetInterface(@class, @base, true);
                 @class.Bases[i] = new BaseClassSpecifier { Type = new TagType(@interface) };
             }
-            return base.VisitClassDecl(@class);
+            return true;
         }
 
         private Class GetInterface(Class @class, Class @base, bool addMembers = false)

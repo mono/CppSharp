@@ -70,6 +70,10 @@ Bar::Bar() {}
 class DLL_API Baz : public Foo, public Bar
 {
 public:
+    class NestedBase1 {};
+    class NestedBase2 {};
+    class NestedDerived : public NestedBase1, public NestedBase2 {};
+
     Baz();
 
     int takesQux(const Qux& qux);
