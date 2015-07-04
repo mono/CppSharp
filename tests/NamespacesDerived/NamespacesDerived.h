@@ -44,6 +44,8 @@ public:
     Base2();
 };
 
+template <typename T> class TemplateClass;
+
 class Derived2 : public Base2
 {
 public:
@@ -59,4 +61,6 @@ public:
     void defaultEnumValueFromDependency(OverlappingNamespace::ColorsEnum c = OverlappingNamespace::ColorsEnum::black);
 
     Abstract* getAbstract();
+private:
+    TemplateClass<int> t;
 };
