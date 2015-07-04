@@ -47,3 +47,8 @@ class DLL_API Abstract
 public:
     virtual void abstractFunction() = 0;
 };
+
+template <typename T>
+class TemplateClass
+{
+};
