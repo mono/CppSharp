@@ -10,6 +10,7 @@ public:
     int operator[](unsigned int i);
     int& operator[](int i);
     int A;
+    int* (*functionPtrReturnsPtrParam)();
 
     static const int rename = 5;
 

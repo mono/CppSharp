@@ -180,7 +180,13 @@ namespace CppSharp.Generators.CSharp
             if (!string.IsNullOrEmpty(args))
                 args = string.Format(", {0}", args);
 
-            return string.Format("Func<{0}{1}>", returnType.Visit(this), args);
+            PushContext(CSharpTypePrinterContextKind.GenericDelegate);
+
+            var returnTypePrinterResult = returnType.Visit(this);
+
+            PopContext();
+
+            return string.Format("Func<{0}{1}>", returnTypePrinterResult, args);
         }
 
         public static bool IsConstCharString(PointerType pointer)
