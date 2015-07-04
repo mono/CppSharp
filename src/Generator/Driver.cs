@@ -358,7 +358,10 @@ namespace CppSharp
                     CompilerOptions = compilerOptions.ToString()
                 };
 
-            compilerParameters.ReferencedAssemblies.Add(typeof (object).Assembly.Location);
+            // add references to System and System.Core
+            compilerParameters.ReferencedAssemblies.Add(typeof(object).Assembly.Location);
+            compilerParameters.ReferencedAssemblies.Add(typeof(Enumerable).Assembly.Location);
+
             var location = Assembly.GetExecutingAssembly().Location;
             var outputDir = Path.GetDirectoryName(location);
             var locationRuntime = Path.Combine(outputDir, "CppSharp.Runtime.dll");
