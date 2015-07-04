@@ -250,7 +250,7 @@ namespace Qt
     };
 }
 
-class QColor
+class DLL_API QColor
 {
 public:
     QColor();

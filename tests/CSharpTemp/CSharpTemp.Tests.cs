@@ -128,16 +128,31 @@ public class CSharpTempTests : GeneratorTestFixture
     public void TestDefaultArguments()
     {
         var methodsWithDefaultValues = new MethodsWithDefaultValues();
-        methodsWithDefaultValues.DefaultChar();
-        methodsWithDefaultValues.DefaultEmptyChar();
         methodsWithDefaultValues.DefaultPointer();
         methodsWithDefaultValues.DefaultVoidStar();
         methodsWithDefaultValues.DefaultValueType();
-        methodsWithDefaultValues.DefaultRefTypeAfterOthers();
-        methodsWithDefaultValues.DefaultRefTypeBeforeAndAfterOthers(5, new Foo());
+        methodsWithDefaultValues.DefaultChar();
+        methodsWithDefaultValues.DefaultEmptyChar();
         methodsWithDefaultValues.DefaultRefTypeBeforeOthers();
-        methodsWithDefaultValues.DefaultValueType();
+        methodsWithDefaultValues.DefaultRefTypeAfterOthers();
+        methodsWithDefaultValues.DefaultRefTypeBeforeAndAfterOthers(0, null);
         methodsWithDefaultValues.DefaultIntAssignedAnEnum();
+        methodsWithDefaultValues.defaultRefAssignedValue();
+        methodsWithDefaultValues.DefaultRefAssignedValue();
+        methodsWithDefaultValues.DefaultEnumAssignedBitwiseOr();
+        methodsWithDefaultValues.DefaultEnumAssignedBitwiseOrShort();
+        methodsWithDefaultValues.DefaultNonEmptyCtor();
+        methodsWithDefaultValues.DefaultMappedToEnum();
+        methodsWithDefaultValues.DefaultMappedToZeroEnum();
+        methodsWithDefaultValues.DefaultImplicitCtorInt();
+        methodsWithDefaultValues.DefaultImplicitCtorChar();
+        methodsWithDefaultValues.DefaultImplicitCtorFoo();
+        methodsWithDefaultValues.DefaultIntWithLongExpression();
+        methodsWithDefaultValues.DefaultRefTypeEnumImplicitCtor();
+        methodsWithDefaultValues.Rotate4x4Matrix(0, 0, 0);
+        methodsWithDefaultValues.DefaultPointerToValueType();
+        methodsWithDefaultValues.DefaultDoubleWithoutF();
+        methodsWithDefaultValues.DefaultIntExpressionWithEnum();
     }
 
     [Test]

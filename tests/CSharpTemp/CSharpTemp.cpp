@@ -343,6 +343,22 @@ void MethodsWithDefaultValues::defaultRefAssignedValue(const Foo &fooRef)
 {
 }
 
+void MethodsWithDefaultValues::DefaultRefAssignedValue(const Foo &fooRef)
+{
+}
+
+void MethodsWithDefaultValues::defaultEnumAssignedBitwiseOr(Flags flags)
+{
+}
+
+void MethodsWithDefaultValues::defaultEnumAssignedBitwiseOrShort(UntypedFlags flags)
+{
+}
+
+void MethodsWithDefaultValues::defaultNonEmptyCtor(QGenericArgument arg)
+{
+}
+
 void MethodsWithDefaultValues::defaultMappedToEnum(QFlags<Flags> qFlags)
 {
 }
@@ -356,6 +372,10 @@ void MethodsWithDefaultValues::defaultImplicitCtorInt(Quux arg)
 }
 
 void MethodsWithDefaultValues::defaultImplicitCtorChar(Quux arg)
+{
+}
+
+void MethodsWithDefaultValues::defaultImplicitCtorFoo(Quux arg)
 {
 }
 
