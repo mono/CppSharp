@@ -5,7 +5,6 @@ using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Generators.CSharp;
 using CppSharp.Types;
-using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Passes
 {
@@ -14,7 +13,7 @@ namespace CppSharp.Passes
         private static readonly Regex regexFunctionParams = new Regex(@"\(?(.+)\)?", RegexOptions.Compiled);
         private static readonly Regex regexDoubleColon = new Regex(@"\w+::", RegexOptions.Compiled);
         private static readonly Regex regexName = new Regex(@"(\w+)", RegexOptions.Compiled);
-        private static readonly Regex regexCtor = new Regex(@"^([\w<,>:]+)\s*(\(\w*\))$", RegexOptions.Compiled);
+        private static readonly Regex regexCtor = new Regex(@"^([\w<,>:]+)\s*(\([\w, ]*\))$", RegexOptions.Compiled);
 
         public HandleDefaultParamValuesPass()
         {

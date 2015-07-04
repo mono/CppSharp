@@ -153,6 +153,7 @@ public class CSharpTempTests : GeneratorTestFixture
         methodsWithDefaultValues.DefaultPointerToValueType();
         methodsWithDefaultValues.DefaultDoubleWithoutF();
         methodsWithDefaultValues.DefaultIntExpressionWithEnum();
+        methodsWithDefaultValues.DefaultCtorWithMoreThanOneArg();
     }
 
     [Test]

@@ -289,6 +289,10 @@ QGenericArgument::QGenericArgument(const char *name)
     _name = name;
 }
 
+MethodsWithDefaultValues::QMargins::QMargins(int left, int top, int right, int bottom)
+{
+}
+
 MethodsWithDefaultValues::MethodsWithDefaultValues(Foo foo)
 {
     m_foo = foo;
@@ -400,6 +404,10 @@ void MethodsWithDefaultValues::defaultDoubleWithoutF(double d1, double d2)
 }
 
 void MethodsWithDefaultValues::defaultIntExpressionWithEnum(int i)
+{
+}
+
+void MethodsWithDefaultValues::defaultCtorWithMoreThanOneArg(QMargins m)
 {
 }
 

@@ -265,6 +265,12 @@ class QList
 class DLL_API MethodsWithDefaultValues : public Quux
 {
 public:
+    class DLL_API QMargins
+    {
+    public:
+        QMargins(int left, int top, int right, int bottom);
+    };
+
     MethodsWithDefaultValues(Foo foo = Foo());
     MethodsWithDefaultValues(int a);
     MethodsWithDefaultValues(double d, QList<QColor> list = QList<QColor>());
@@ -293,6 +299,7 @@ public:
     void defaultPointerToValueType(QGenericArgument* pointer = 0);
     void defaultDoubleWithoutF(double d1 = 1.0, double d2 = 1.);
     void defaultIntExpressionWithEnum(int i = Qt::GlobalColor::black + 1);
+    void defaultCtorWithMoreThanOneArg(QMargins m = QMargins(0, 0, 0, 0));
     int getA();
 private:
     Foo m_foo;
