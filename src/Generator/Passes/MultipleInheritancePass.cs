@@ -16,6 +16,18 @@ namespace CppSharp.Passes
         /// </summary>
         private readonly Dictionary<Class, Class> interfaces = new Dictionary<Class, Class>();
 
+        public MultipleInheritancePass()
+        {
+            Options.VisitClassFields = false;
+            Options.VisitNamespaceEnums = false;
+            Options.VisitNamespaceVariables = false;
+            Options.VisitTemplateArguments = false;
+            Options.VisitClassMethods = false;
+            Options.VisitClassProperties = false;
+            Options.VisitFunctionReturnType = false;
+            Options.VisitFunctionParameters = false;
+        }
+
         public override bool VisitTranslationUnit(TranslationUnit unit)
         {
             bool result = base.VisitTranslationUnit(unit);
@@ -102,13 +114,15 @@ namespace CppSharp.Passes
                 var @base = @class.Bases[i].Class;
                 if (@base.IsInterface) continue;
 
-                var @interface = GetInterface(@class, @base, true);
+                var @interface = GetInterface(@base);
                 @class.Bases[i] = new BaseClassSpecifier { Type = new TagType(@interface) };
+                ImplementInterfaceMethods(@class, @interface);
+                ImplementInterfaceProperties(@class, @interface);
             }
             return true;
         }
 
-        private Class GetInterface(Class @class, Class @base, bool addMembers = false)
+        private Class GetInterface(Class @base)
         {
             if (@base.CompleteDeclaration != null)
                 @base = (Class) @base.CompleteDeclaration;
@@ -117,10 +131,10 @@ namespace CppSharp.Passes
                 return interfaces[@base];
 
             return @base.Namespace.Classes.FirstOrDefault(c => c.Name == name) ??
-                GetNewInterface(@class, name, @base, addMembers);
+                GetNewInterface(name, @base);
         }
 
-        private Class GetNewInterface(Class @class, string name, Class @base, bool addMembers = false)
+        private Class GetNewInterface(string name, Class @base)
         {
             var @interface = new Class
                 {
@@ -133,7 +147,7 @@ namespace CppSharp.Passes
 
             @interface.Bases.AddRange(
                 from b in @base.Bases
-                let i = GetInterface(@base, b.Class)
+                let i = GetInterface(b.Class)
                 select new BaseClassSpecifier { Type = new TagType(i) });
 
             @interface.Methods.AddRange(
@@ -169,11 +183,6 @@ namespace CppSharp.Passes
 
             @interface.Events.AddRange(@base.Events);
 
-            if (addMembers)
-            {
-                ImplementInterfaceMethods(@class, @interface);
-                ImplementInterfaceProperties(@class, @interface);
-            }
             if (@base.Bases.All(b => b.Class != @interface))
                 @base.Bases.Add(new BaseClassSpecifier { Type = new TagType(@interface) });
 
