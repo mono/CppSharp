@@ -119,7 +119,7 @@ namespace CppSharp.AST
             get { return OriginalName; }
         }
 
-        private string GetQualifiedName(Func<Declaration, string> getName,
+        public string GetQualifiedName(Func<Declaration, string> getName,
             Func<Declaration, DeclarationContext> getNamespace)
         {
             if (Namespace == null)
