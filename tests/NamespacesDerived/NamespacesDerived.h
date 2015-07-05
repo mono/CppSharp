@@ -17,7 +17,7 @@ namespace OverlappingNamespace
 
 
 // Using a type imported from a different library.
-class DLL_API Derived : public Base
+class DLL_API Derived : public Base2
 {
 public:
     Derived();
@@ -25,6 +25,8 @@ public:
     Base baseComponent;
     Base getBase();
     void setBase(Base);
+
+    void parent(int i);
 
     OverlappingNamespace::InBaseLib nestedNSComponent;
     OverlappingNamespace::InBaseLib getNestedNSComponent();
@@ -36,22 +38,17 @@ private:
     int d;
 };
 
-
 // For reference: using a type derived in the same library
-class Base2
+class Base3
 {
-public:
-    Base2();
 };
 
-class Derived2 : public Base2
+class Derived2 : public Base3
 {
 public:
-    Derived2();
-
-    Base2 baseComponent;
-    Base2 getBase();
-    void setBase(Base2);
+    Base3 baseComponent;
+    Base3 getBase();
+    void setBase(Base3);
 
     OverlappingNamespace::InDerivedLib nestedNSComponent;
     OverlappingNamespace::InDerivedLib getNestedNSComponent();

@@ -25,7 +25,8 @@ namespace CppSharp.Passes
             {
                 this.log = log;
                 foreach (var method in @class.Methods.Where(
-                    m => !m.IsConstructor && !m.IsDestructor && !m.IsOperator && m.IsGenerated))
+                    m => !m.IsConstructor && !m.IsDestructor && !m.IsOperator &&
+                        (m.IsGenerated || m.GenerationKind == GenerationKind.Link)))
                     DistributeMethod(method);
             }
 
@@ -36,7 +37,7 @@ namespace CppSharp.Passes
 
                 foreach (Method getter in
                     from getter in getters
-                    where getter.IsGenerated &&
+                    where (getter.IsGenerated || getter.GenerationKind == GenerationKind.Link) &&
                           ((Class) getter.Namespace).Methods.All(m => m == getter || m.Ignore || m.Name != getter.Name)
                     select getter)
                 {

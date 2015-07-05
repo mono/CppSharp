@@ -5,7 +5,7 @@ OverlappingNamespace::InDerivedLib::InDerivedLib() : parentNSComponent(), color(
 {
 }
 
-Derived::Derived() : Base(10), baseComponent(5), nestedNSComponent(), color(OverlappingNamespace::blue)
+Derived::Derived() : Base2(10), baseComponent(5), nestedNSComponent(), color(OverlappingNamespace::blue)
 {
 }
 
@@ -19,6 +19,10 @@ void Derived::setBase(Base b)
     baseComponent = b;
 }
 
+void Derived::parent(int i)
+{
+}
+
 OverlappingNamespace::InBaseLib Derived::getNestedNSComponent()
 {
     return nestedNSComponent;
@@ -29,22 +33,12 @@ void Derived::setNestedNSComponent(OverlappingNamespace::InBaseLib c)
     nestedNSComponent = c;
 }
 
-
-Base2::Base2()
-{
-}
-
-
-Derived2::Derived2() : Base2()
-{
-}
-
-Base2 Derived2::getBase()
+Base3 Derived2::getBase()
 {
     return baseComponent;
 }
 
-void Derived2::setBase(Base2 b)
+void Derived2::setBase(Base3 b)
 {
     baseComponent = b;
 }

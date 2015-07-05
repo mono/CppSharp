@@ -28,9 +28,18 @@ class DLL_API Base
 public:
     Base(int i);
     Base();
+    int parent();
 
 private:
     int b;
+};
+
+class DLL_API Base2 : public Base
+{
+public:
+    Base2(int i);
+    Base2();
+    virtual void parent(int i);
 };
 
 class DLL_API Abstract
