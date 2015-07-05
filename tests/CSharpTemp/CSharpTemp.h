@@ -68,6 +68,10 @@ private:
 
 Bar::Bar() {}
 
+class DLL_API ForceCreationOfInterface : public Foo, public Bar
+{
+};
+
 class DLL_API Baz : public Foo, public Bar
 {
 public:

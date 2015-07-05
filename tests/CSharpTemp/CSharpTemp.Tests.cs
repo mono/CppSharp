@@ -15,6 +15,14 @@ public class CSharpTempTests : GeneratorTestFixture
     }
 
     [Test]
+    public void TestIncompilableCode()
+    {
+        using (new ForceCreationOfInterface())
+        {
+        }
+    }
+
+    [Test]
     public void TestIndexer()
     {
         var foo = new Foo();
