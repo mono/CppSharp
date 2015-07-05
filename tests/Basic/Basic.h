@@ -750,3 +750,16 @@ struct CS_VALUE_TYPE ValueTypeArrays
 	char thirdValueTypeArray[ARRAY_LENGTH];
 	size_t size;
 };
+
+class DLL_API BaseClassVirtual
+{
+public:
+	virtual int retInt();
+	static BaseClassVirtual getBase();
+};
+
+class DLL_API DerivedClassVirtual : public BaseClassVirtual
+{
+public:
+	virtual int retInt();
+};

@@ -507,5 +507,17 @@ public class BasicTests : GeneratorTestFixture
     {
         Assert.AreEqual(10, Foo.@unsafe);
     }
+
+    [Test]
+    public void TestVirtualFuntionRetVal()
+    {
+        BaseClassVirtual baseClass = new DerivedClassVirtual();
+        var reta = baseClass.retInt();
+        Assert.AreEqual(reta, 2);                             //Working!
+
+        var baseVirtual = BaseClassVirtual.Base;
+        var ret = baseVirtual.retInt();
+        Assert.AreEqual(ret, 2);                             //Not Working! TEST FAILS HERE!
+    }
 }
  
