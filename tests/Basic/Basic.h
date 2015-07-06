@@ -750,3 +750,17 @@ struct CS_VALUE_TYPE ValueTypeArrays
 	char thirdValueTypeArray[ARRAY_LENGTH];
 	size_t size;
 };
+
+class DLL_API HasVirtualProperty
+{
+public:
+    virtual int getProperty();
+    virtual void setProperty(int value);
+};
+
+class DLL_API ChangedAccessOfInheritedProperty : public HasVirtualProperty
+{
+protected:
+    int getProperty();
+    void setProperty(int value);
+};

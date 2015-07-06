@@ -407,3 +407,21 @@ bool DifferentConstOverloads::operator ==(int number) const
 {
     return false;
 }
+
+int HasVirtualProperty::getProperty()
+{
+    return 1;
+}
+
+void HasVirtualProperty::setProperty(int value)
+{
+}
+
+int ChangedAccessOfInheritedProperty::getProperty()
+{
+    return 2;
+}
+
+void ChangedAccessOfInheritedProperty::setProperty(int value)
+{
+}

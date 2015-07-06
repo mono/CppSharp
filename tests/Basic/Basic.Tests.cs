@@ -4,8 +4,15 @@ using NUnit.Framework;
 using BasicTest;
 using Enum = BasicTest.Enum;
 
+[TestFixture]
 public class BasicTests : GeneratorTestFixture
 {
+    [Test]
+    public void TestUncompilableCode()
+    {
+        Assert.That(new ChangedAccessOfInheritedProperty().Property, Is.EqualTo(2));
+    }
+
     [Test]
     public void TestHello()
     {
