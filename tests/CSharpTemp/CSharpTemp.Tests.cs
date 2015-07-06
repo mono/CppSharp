@@ -15,7 +15,7 @@ public class CSharpTempTests : GeneratorTestFixture
     }
 
     [Test]
-    public void TestIncompilableCode()
+    public void TestUncompilableCode()
     {
         using (new ForceCreationOfInterface())
         {
