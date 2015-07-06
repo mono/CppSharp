@@ -87,7 +87,7 @@ namespace CppSharp
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                     EntryPoint="??1ParserOptions@CppParser@CppSharp@@QAE@XZ")]
-                internal static extern void dtor_0(global::System.IntPtr instance);
+                internal static extern void dtor_0(global::System.IntPtr instance, int delete);
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -301,7 +301,7 @@ namespace CppSharp
                 CppSharp.Parser.ParserOptions __dummy;
                 NativeToManagedMap.TryRemove(__Instance, out __dummy);
                 if (__ownsNativeInstance || force)
-                    Internal.dtor_0(__Instance);
+                    Internal.dtor_0(__Instance, 0);
                 if (__ownsNativeInstance)
                     Marshal.FreeHGlobal(__Instance);
             }
@@ -637,7 +637,7 @@ namespace CppSharp
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                     EntryPoint="??1ParserDiagnostic@CppParser@CppSharp@@QAE@XZ")]
-                internal static extern void dtor_0(global::System.IntPtr instance);
+                internal static extern void dtor_0(global::System.IntPtr instance, int delete);
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -731,7 +731,7 @@ namespace CppSharp
                 CppSharp.Parser.ParserDiagnostic __dummy;
                 NativeToManagedMap.TryRemove(__Instance, out __dummy);
                 if (__ownsNativeInstance || force)
-                    Internal.dtor_0(__Instance);
+                    Internal.dtor_0(__Instance, 0);
                 if (__ownsNativeInstance)
                     Marshal.FreeHGlobal(__Instance);
             }
@@ -822,9 +822,6 @@ namespace CppSharp
                 [FieldOffset(20)]
                 public global::System.IntPtr Library;
 
-                [FieldOffset(24)]
-                public global::System.IntPtr CodeParser;
-
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                     EntryPoint="??0ParserResult@CppParser@CppSharp@@QAE@XZ")]
@@ -838,7 +835,7 @@ namespace CppSharp
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                     EntryPoint="??1ParserResult@CppParser@CppSharp@@QAE@XZ")]
-                internal static extern void dtor_0(global::System.IntPtr instance);
+                internal static extern void dtor_0(global::System.IntPtr instance, int delete);
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -932,7 +929,7 @@ namespace CppSharp
                 CppSharp.Parser.ParserResult __dummy;
                 NativeToManagedMap.TryRemove(__Instance, out __dummy);
                 if (__ownsNativeInstance || force)
-                    Internal.dtor_0(__Instance);
+                    Internal.dtor_0(__Instance, 0);
                 if (__ownsNativeInstance)
                     Marshal.FreeHGlobal(__Instance);
             }

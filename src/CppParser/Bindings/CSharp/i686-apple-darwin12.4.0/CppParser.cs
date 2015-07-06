@@ -822,9 +822,6 @@ namespace CppSharp
                 [FieldOffset(20)]
                 public global::System.IntPtr Library;
 
-                [FieldOffset(24)]
-                public global::System.IntPtr CodeParser;
-
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                     EntryPoint="_ZN8CppSharp9CppParser12ParserResultC2Ev")]
