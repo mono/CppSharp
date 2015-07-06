@@ -55,7 +55,9 @@ namespace CppSharp.Passes
                     if (char.IsLower(setter.Name[0]))
                         nameBuilder[0] = char.ToLowerInvariant(nameBuilder[0]);
                     string afterSet = nameBuilder.ToString();
-                    foreach (var getter in nonSetters.Where(m => m.Namespace == type))
+                    var s = setter;
+                    foreach (var getter in nonSetters.Where(m => m.Namespace == type &&
+                                                                 m.ExplicitInterfaceImpl == s.ExplicitInterfaceImpl))
                     {
                         var name = GetReadWritePropertyName(getter, afterSet);
                         if (name == afterSet &&
@@ -82,11 +84,11 @@ namespace CppSharp.Passes
                             goto next;
                         }
                     }
-                    Property baseVirtualProperty = type.GetRootBaseProperty(new Property { Name = afterSet });
-                    if (!type.IsInterface && baseVirtualProperty != null)
+                    Property baseProperty = type.GetRootBaseProperty(new Property { Name = afterSet });
+                    if (!type.IsInterface && baseProperty != null && baseProperty.IsVirtual && setter.IsVirtual)
                     {
-                        bool isReadOnly = baseVirtualProperty.SetMethod == null;
-                        GenerateProperty(setter.Namespace, baseVirtualProperty.GetMethod,
+                        bool isReadOnly = baseProperty.SetMethod == null;
+                        GenerateProperty(setter.Namespace, baseProperty.GetMethod,
                             readOnly || isReadOnly ? null : setter);
                     }
                 next:
@@ -96,14 +98,14 @@ namespace CppSharp.Passes
                 {
                     Class type = (Class) nonSetter.Namespace;
                     string name = GetPropertyName(nonSetter.Name);
-                    Property baseVirtualProperty = type.GetRootBaseProperty(new Property { Name = name });
-                    if (!type.IsInterface && baseVirtualProperty != null)
+                    Property baseProperty = type.GetRootBaseProperty(new Property { Name = name });
+                    if (!type.IsInterface && baseProperty != null && baseProperty.IsVirtual)
                     {
-                        bool isReadOnly = baseVirtualProperty.SetMethod == null;
+                        bool isReadOnly = baseProperty.SetMethod == null;
                         if (readOnly == isReadOnly)
                         {
                             GenerateProperty(nonSetter.Namespace, nonSetter,
-                                readOnly ? null : baseVirtualProperty.SetMethod);
+                                readOnly ? null : baseProperty.SetMethod);
                         }
                     }
                 }

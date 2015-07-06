@@ -137,6 +137,10 @@ Qux Baz::returnQux()
     return Qux();
 }
 
+void Baz::setMethod(int value)
+{
+}
+
 int AbstractProprietor::getValue()
 {
     return m_value;

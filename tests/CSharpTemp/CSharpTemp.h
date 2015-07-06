@@ -83,6 +83,7 @@ public:
 
     int takesQux(const Qux& qux);
     Qux returnQux();
+    void setMethod(int value);
 
     typedef bool (*FunctionTypedef)(const void *);
     FunctionTypedef functionTypedef;

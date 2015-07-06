@@ -50,16 +50,19 @@ public class CSharpTempTests : GeneratorTestFixture
     [Test]
     public void TestMultipleInheritance()
     {
-        var baz = new Baz();
-        Assert.That(baz.Method, Is.EqualTo(1));
-        var bar = (IBar) baz;
-        Assert.That(bar.Method, Is.EqualTo(2));
-        Assert.That(baz[0], Is.EqualTo(50));
-        bar[0] = new Foo { A = 1000 };
-        Assert.That(bar[0].A, Is.EqualTo(1000));
-        Assert.That(baz.FarAwayFunc, Is.EqualTo(20));
-        Assert.That(baz.TakesQux(baz), Is.EqualTo(20));
-        Assert.That(baz.ReturnQux().FarAwayFunc, Is.EqualTo(20));
+        using (var baz = new Baz())
+        {
+            Assert.That(baz.Method, Is.EqualTo(1));
+            var bar = (IBar) baz;
+            Assert.That(bar.Method, Is.EqualTo(2));
+            Assert.That(baz[0], Is.EqualTo(50));
+            bar[0] = new Foo { A = 1000 };
+            Assert.That(bar[0].A, Is.EqualTo(1000));
+            Assert.That(baz.FarAwayFunc, Is.EqualTo(20));
+            Assert.That(baz.TakesQux(baz), Is.EqualTo(20));
+            Assert.That(baz.ReturnQux().FarAwayFunc, Is.EqualTo(20));
+            baz.SetMethod(1);
+        }
     }
 
     [Test]
