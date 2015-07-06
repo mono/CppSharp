@@ -1136,7 +1136,7 @@ namespace CppSharp.Generators.CSharp
                 GenerateDeclarationCommon(prop);
                 if (prop.ExplicitInterfaceImpl == null)
                 {
-                    Write(Helpers.GetAccess(prop.Access));
+                    Write(Helpers.GetAccess(GetValidPropertyAccess(prop)));
 
                     if (prop.IsStatic)
                         Write("static ");
@@ -2185,6 +2185,18 @@ namespace CppSharp.Generators.CSharp
                 default:
                     return method.IsOverride ?
                         ((Class) method.Namespace).GetRootBaseMethod(method).Access : method.Access;
+            }
+        }
+
+        private static AccessSpecifier GetValidPropertyAccess(Property property)
+        {
+            switch (property.Access)
+            {
+                case AccessSpecifier.Public:
+                    return AccessSpecifier.Public;
+                default:
+                    return property.IsOverride ?
+                        ((Class) property.Namespace).GetRootBaseProperty(property).Access : property.Access;
             }
         }
 
