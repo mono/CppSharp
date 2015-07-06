@@ -2593,6 +2593,17 @@ namespace CppSharp.Generators.CSharp
             return paramMarshal;
         }
 
+        private CSharpTypePrinterResult ReturnTypeCheckIsParamRefConvertible(Parameter param)
+        {
+            if(!param.HasDefaultValue && !param.IsOut && !param.IsInOut
+               && param.Type.IsPointerToPrimitiveType() && !param.Type.IsPointerToPrimitiveType(PrimitiveType.Char)
+               && !param.Type.IsPointerToPrimitiveType(PrimitiveType.Void))
+            {
+                param.Usage = ParameterUsage.InOut;
+            }
+            return param.CSharpType(TypePrinter);
+        }
+
         static string GetParameterUsage(ParameterUsage usage)
         {
             switch (usage)
@@ -2611,7 +2622,7 @@ namespace CppSharp.Generators.CSharp
             return string.Join(", ",
                 from param in @params
                 where param.Kind != ParameterKind.IndirectReturnType && !param.Ignore
-                let typeName = param.CSharpType(TypePrinter)
+                let typeName = ReturnTypeCheckIsParamRefConvertible(param)
                 select string.Format("{0}{1} {2}", GetParameterUsage(param.Usage),
                     typeName, param.Name +
                         (param.DefaultArgument == null || !Options.GenerateDefaultValuesForArguments ?

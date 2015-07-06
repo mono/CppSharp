@@ -550,3 +550,7 @@ public:
 	TestParamToInterfacePass(TestParamToInterfacePassBaseTwo b);
 	TestParamToInterfacePass();
 };
+
+DLL_API class SomeRandomClassObject { };
+DLL_API int* pdefnull = 0;
+DLL_API void funcParamPrimitiveRefTypeCheck(int* pOne, char* pTwo, SomeRandomClassObject* pThree, int* pFour = pdefnull) { }
