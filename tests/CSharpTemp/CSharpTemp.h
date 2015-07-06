@@ -550,3 +550,19 @@ public:
 	TestParamToInterfacePass(TestParamToInterfacePassBaseTwo b);
 	TestParamToInterfacePass();
 };
+
+class DLL_API HasProtectedVirtual
+{
+protected:
+    virtual void protectedVirtual();
+};
+
+class DLL_API InheritanceBuffer : public Foo, public HasProtectedVirtual
+{
+};
+
+class DLL_API InheritsProtectedVirtualFromSecondaryBase : public InheritanceBuffer
+{
+protected:
+    void protectedVirtual();
+};

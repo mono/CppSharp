@@ -66,7 +66,7 @@ namespace CppSharp.AST
                         method.Parameters.SequenceEqual(@override.Parameters,
                             new ParameterTypeComparer())
                     select method).FirstOrDefault()
-                let rootBaseMethod = @base.Class.GetRootBaseMethod(@override) ?? baseMethod
+                let rootBaseMethod = @base.Class.GetRootBaseMethod(@override, onlyFirstBase) ?? baseMethod
                 where rootBaseMethod != null || onlyFirstBase
                 select rootBaseMethod).FirstOrDefault();
         }

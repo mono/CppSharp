@@ -586,3 +586,11 @@ TestParamToInterfacePass::TestParamToInterfacePass(TestParamToInterfacePassBaseT
 TestParamToInterfacePass::TestParamToInterfacePass() : TestParamToInterfacePassBaseOne(), TestParamToInterfacePassBaseTwo()
 {
 }
+
+void HasProtectedVirtual::protectedVirtual()
+{
+}
+
+void InheritsProtectedVirtualFromSecondaryBase::protectedVirtual()
+{
+}

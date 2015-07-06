@@ -2008,7 +2008,9 @@ namespace CppSharp.Generators.CSharp
             }
 
             // check if overriding a function from a secondary base
-            var isOverride = method.IsOverride && @class.GetRootBaseMethod(method, true) != null;
+            Method rootBaseMethod;
+            var isOverride = method.IsOverride &&
+                (rootBaseMethod = @class.GetRootBaseMethod(method, true)) != null && rootBaseMethod.IsVirtual;
 
             if (method.IsVirtual && !isOverride && !method.IsOperator && !method.IsPure)
                 Write("virtual ");

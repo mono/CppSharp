@@ -17,9 +17,10 @@ public class CSharpTempTests : GeneratorTestFixture
     [Test]
     public void TestUncompilableCode()
     {
-        using (new ForceCreationOfInterface())
-        {
-        }
+        new ForceCreationOfInterface().Dispose();
+        new InheritsProtectedVirtualFromSecondaryBase().Dispose();
+        new InheritanceBuffer().Dispose();
+        new HasProtectedVirtual().Dispose();
     }
 
     [Test]
