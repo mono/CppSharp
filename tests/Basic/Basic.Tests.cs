@@ -11,6 +11,7 @@ public class BasicTests : GeneratorTestFixture
     public void TestUncompilableCode()
     {
         Assert.That(new ChangedAccessOfInheritedProperty().Property, Is.EqualTo(2));
+        Foo.NestedAbstract a;
     }
 
     [Test]

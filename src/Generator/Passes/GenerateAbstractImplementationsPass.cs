@@ -35,11 +35,11 @@ namespace CppSharp.Passes
 
         public override bool VisitClassDecl(Class @class)
         {
+            if (!base.VisitClassDecl(@class))
+                return false;
+
             if (@class.CompleteDeclaration != null)
                 return VisitClassDecl(@class.CompleteDeclaration as Class);
-
-            if (!VisitDeclaration(@class))
-                return false;
 
             if (@class.IsAbstract)
             {
@@ -50,7 +50,7 @@ namespace CppSharp.Passes
                 internalImpls.Add(AddInternalImplementation(@class));
             }
 
-            return base.VisitClassDecl(@class);
+            return @class.IsAbstract;
         }
 
         private Class AddInternalImplementation(Class @class)

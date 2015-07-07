@@ -15,6 +15,11 @@ private:
         Value2
     };
 public:
+    class NestedAbstract
+    {
+    public:
+        virtual void abstractFunctionInNestedClass() = 0;
+    };
 
     Foo();
     Foo(Private p);
