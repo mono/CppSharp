@@ -179,6 +179,10 @@
                     return replacement.Desugar();
             }
 
+            var attributedType = t as AttributedType;
+            if (attributedType != null)
+                return attributedType.Equivalent.Type.Desugar();
+
             return t;
         }
 
