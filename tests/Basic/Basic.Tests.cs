@@ -181,6 +181,7 @@ public class BasicTests : GeneratorTestFixture
     {
         var foo2 = new Foo2 {C = 2};
         Foo2 result = foo2 << 3;
+        foo2.testKeywordParam(IntPtr.Zero, Bar.Item.Item1, 1);
         Assert.That(result.C, Is.EqualTo(16));
     }
 

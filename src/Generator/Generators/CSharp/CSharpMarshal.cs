@@ -528,7 +528,7 @@ namespace CppSharp.Generators.CSharp
                 case PrimitiveType.Float:
                 case PrimitiveType.Double:
                 case PrimitiveType.WideChar:
-                    Context.Return.Write(Helpers.SafeIdentifier(Context.Parameter.Name));
+                    Context.Return.Write(Context.Parameter.Name);
                     return true;
                 case PrimitiveType.Char16:
                     return false;
@@ -647,7 +647,7 @@ namespace CppSharp.Generators.CSharp
 
         public override bool VisitEnumDecl(Enumeration @enum)
         {
-            Context.Return.Write(Helpers.SafeIdentifier(Context.Parameter.Name));
+            Context.Return.Write(Context.Parameter.Name);
             return true;
         }
 

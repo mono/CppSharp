@@ -75,7 +75,7 @@ public:
     Foo2 operator<<(signed long l);
     Bar valueTypeField;
     char testCharMarshalling(char c);
-    void testKeywordParam(void* where);
+    void testKeywordParam(void* where, Bar::Item event, int ref);
 };
 
 DLL_API Bar::Item operator |(Bar::Item left, Bar::Item right);
