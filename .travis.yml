@@ -6,7 +6,9 @@ addons:
     - ubuntu-toolchain-r-test
     packages:
     - gcc-4.8
+    - gcc-4.8-multilib
     - g++-4.8
+    - g++-4.8-multilib
 
 install:
   - sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
