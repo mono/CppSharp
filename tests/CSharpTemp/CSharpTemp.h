@@ -568,3 +568,5 @@ class DLL_API InheritsProtectedVirtualFromSecondaryBase : public InheritanceBuff
 protected:
     void protectedVirtual();
 };
+
+void DLL_API freeFunctionWithUnsupportedDefaultArg(Foo foo = Foo());

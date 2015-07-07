@@ -598,3 +598,7 @@ void HasProtectedVirtual::protectedVirtual()
 void InheritsProtectedVirtualFromSecondaryBase::protectedVirtual()
 {
 }
+
+void freeFunctionWithUnsupportedDefaultArg(Foo foo)
+{
+}

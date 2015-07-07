@@ -15,6 +15,8 @@ namespace CppSharp.Passes
         private static readonly Regex regexName = new Regex(@"(\w+)", RegexOptions.Compiled);
         private static readonly Regex regexCtor = new Regex(@"^([\w<,>:]+)\s*(\([\w, ]*\))$", RegexOptions.Compiled);
 
+        private readonly Dictionary<DeclarationContext, List<Function>> overloads = new Dictionary<DeclarationContext, List<Function>>(); 
+
         public HandleDefaultParamValuesPass()
         {
             Options.VisitFunctionParameters = false;
@@ -24,12 +26,17 @@ namespace CppSharp.Passes
         {
             if (!unit.IsGenerated)
                 return false;
-            return base.VisitTranslationUnit(unit);
+            var result = base.VisitTranslationUnit(unit);
+            foreach (var overload in overloads)
+                overload.Key.Functions.AddRange(overload.Value);
+            overloads.Clear();
+            return result;
         }
 
         public override bool VisitFunctionDecl(Function function)
         {
-            bool result = base.VisitFunctionDecl(function);
+            if (!base.VisitFunctionDecl(function))
+                return false;
 
             var overloadIndices = new List<int>(function.Parameters.Count);
             foreach (var parameter in function.Parameters.Where(p => p.DefaultArgument != null))
@@ -64,7 +71,7 @@ namespace CppSharp.Passes
 
             GenerateOverloads(function, overloadIndices);
 
-            return result;
+            return true;
         }
 
         private void CheckFloatSyntax(Type desugared, Parameter parameter)
@@ -228,7 +235,7 @@ namespace CppSharp.Passes
             }
         }
 
-        private static void GenerateOverloads(Function function, List<int> overloadIndices)
+        private void GenerateOverloads(Function function, List<int> overloadIndices)
         {
             foreach (var overloadIndex in overloadIndices)
             {
@@ -247,7 +254,14 @@ namespace CppSharp.Passes
                 if (method != null)
                     ((Class) function.Namespace).Methods.Add((Method) overload);
                 else
-                    function.Namespace.Functions.Add(overload);
+                {
+                    List<Function> functions;
+                    if (overloads.ContainsKey(function.Namespace))
+                        functions = overloads[function.Namespace];
+                    else
+                        overloads.Add(function.Namespace, functions = new List<Function>());
+                    functions.Add(overload);
+                }
 
                 for (int i = 0; i <= overloadIndex; i++)
                     function.Parameters[i].DefaultArgument = null;

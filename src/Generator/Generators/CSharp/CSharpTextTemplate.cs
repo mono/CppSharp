@@ -250,7 +250,7 @@ namespace CppSharp.Generators.CSharp
                 // Generate all the internal function declarations.
                 foreach (var function in context.Functions)
                 {
-                    if (!function.IsGenerated && !function.IsInternal ) continue;
+                    if ((!function.IsGenerated && !function.IsInternal) || function.IsSynthetized) continue;
 
                     GenerateInternalFunction(function);
                 }
@@ -1991,7 +1991,10 @@ namespace CppSharp.Generators.CSharp
             WriteLine(")");
             WriteStartBraceIndent();
 
-            GenerateInternalFunctionCall(function);
+            if (function.SynthKind == FunctionSynthKind.DefaultValueOverload)
+                GenerateOverloadCall(function);
+            else
+                GenerateInternalFunctionCall(function);
 
             WriteCloseBraceIndent();
             PopBlock(NewLineKind.BeforeNextBlock);
@@ -2079,14 +2082,7 @@ namespace CppSharp.Generators.CSharp
             {
                 if (!method.IsConstructor)
                 {
-                    Type type = method.OriginalReturnType.Type;
-                    WriteLine("{0}{1}({2});",
-                        type.IsPrimitiveType(PrimitiveType.Void) ? string.Empty : "return ",
-                        method.Name,
-                        string.Join(", ",
-                            method.Parameters.Where(
-                                p => p.Kind == ParameterKind.Regular).Select(
-                                    p => p.Ignore ? p.DefaultArgument.String : p.Name)));
+                    GenerateOverloadCall(method);
                 }
                 goto SkipImpl;
             }
@@ -2136,6 +2132,18 @@ namespace CppSharp.Generators.CSharp
             }
 
             PopBlock(NewLineKind.BeforeNextBlock);
+        }
+
+        private void GenerateOverloadCall(Function function)
+        {
+            Type type = function.OriginalReturnType.Type;
+            WriteLine("{0}{1}({2});",
+                type.IsPrimitiveType(PrimitiveType.Void) ? string.Empty : "return ",
+                function.Name,
+                string.Join(", ",
+                    function.Parameters.Where(
+                        p => p.Kind == ParameterKind.Regular).Select(
+                            p => p.Ignore ? p.DefaultArgument.String : p.Name)));
         }
 
         private void GenerateEquals(Function method, Class @class)
