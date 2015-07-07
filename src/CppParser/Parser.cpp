@@ -87,10 +87,6 @@ static std::string GetClangBuiltinIncludeDir()
 
 //-----------------------------------//
 
-#ifdef _MSC_VER
-std::vector<std::string> GetWindowsSystemIncludeDirs();
-#endif
-
 static clang::TargetCXXABI::Kind
 ConvertToClangTargetCXXABI(CppSharp::CppParser::AST::CppAbi abi)
 {
@@ -228,14 +224,6 @@ void Parser::SetupHeader()
         /*IsFramework=*/false, /*IgnoreSysRoot=*/false);
 
 #ifdef _MSC_VER
-    if (!Opts->NoBuiltinIncludes)
-    {
-        std::vector<std::string> SystemDirs = GetWindowsSystemIncludeDirs();
-        for(unsigned i = 0; i < SystemDirs.size(); i++)
-            HSOpts.AddPath(SystemDirs[i], frontend::System, /*IsFramework=*/false,
-                /*IgnoreSysRoot=*/false);
-    }
-
     if (Opts->MicrosoftMode)
     {
 		LangOpts.MSCompatibilityVersion = Opts->ToolSetToUse;
