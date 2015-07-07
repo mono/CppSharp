@@ -1,8 +1,10 @@
 #!/bin/sh
 
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
 if [ $(uname -m) = "x86_64" ]; then
-	./premake5-linux-64 $*
+	$DIR/premake5-linux-64 $*
 else
-	./premake5-linux-32 $*
+	$DIR/premake5-linux-32 $*
 fi
 
