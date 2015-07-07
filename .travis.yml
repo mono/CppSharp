@@ -5,8 +5,7 @@ install:
   - echo "deb http://download.mono-project.com/repo/debian wheezy main" | sudo tee /etc/apt/sources.list.d/mono-xamarin.list
   - echo "deb http://download.mono-project.com/repo/debian wheezy-libtiff-compat main" | sudo tee -a /etc/apt/sources.list.d/mono-xamarin.list
   - sudo apt-get update -qq
-  - sudo apt-get install -y aptitude
-  - sudo aptitude install mono-devel nuget
+  - sudo apt-get install -y mono-devel nuget
   - build/premake5-linux-64 --file=build/premake4.lua gmake
   - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
 
