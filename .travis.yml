@@ -22,5 +22,5 @@ install:
 
 
 script:
-  - config=debug_x32 make -C build/gmake/
+  - config=release_x64 make -C build/gmake/
   - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe build/gmake/lib/Debug_x32/CppSharp.*Tests*.dll
