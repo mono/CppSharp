@@ -175,10 +175,16 @@ namespace CppSharp
                 @class.Name = name;
         }
 
-        public static void SetClassAsValueType(this ASTContext context, string className)
+        public static void SetClassAsValueType(this ASTContext context, string className, bool isCLIGenerator)
         {
             foreach (var @class in context.FindClass(className))
-                @class.Type = ClassType.ValueType;
+            {
+                // C++/CLI cannot have a value type derived from a ref type
+                if (isCLIGenerator && @class.HasBaseClass && @class.BaseClass.IsRefType)
+                    @class.Type = ClassType.RefType;
+                else
+                    @class.Type = ClassType.ValueType;
+            }
         }
 
         public static void IgnoreClassWithName(this ASTContext context, string name)

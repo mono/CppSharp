@@ -764,3 +764,18 @@ protected:
     int getProperty();
     void setProperty(int value);
 };
+
+class DLL_API RefTypeToValTypeCheckBase
+{
+protected:
+	void doSmthProt();
+	int aVar;
+	int f;
+	int getF();
+public:
+	virtual void doSmthVirt();
+};
+
+class CS_VALUE_TYPE RefTypeToValTypeCheckDerived : public RefTypeToValTypeCheckBase
+{
+};
