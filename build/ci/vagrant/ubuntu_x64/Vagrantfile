@@ -93,6 +93,8 @@ Vagrant.configure(2) do |config|
   # Build tools
   apt-get install -y git build-essential clang cmake ninja-build
 
+  aot-get install -y p7zip-full
+
   # Mono
   apt-get install -y mono-devel
 
@@ -127,6 +129,45 @@ Vagrant.configure(2) do |config|
   cmake -G Ninja -DCLANG_BUILD_EXAMPLES=false -DCLANG_INCLUDE_DOCS=false -DCLANG_INCLUDE_TESTS=false -DCLANG_INCLUDE_DOCS=false -DCLANG_BUILD_EXAMPLES=false -DLLVM_TARGETS_TO_BUILD="X86" -DLLVM_INCLUDE_EXAMPLES=false -DLLVM_INCLUDE_DOCS=false -DLLVM_INCLUDE_TESTS=false ..
 
   ninja
+
+  # make the output package
+  cd ..
+  if [ -d "out" ]; then rm -rf out; fi
+  mkdir out
+  mkdir -p out/tools/clang
+  mkdir -p out/tools/clang/lib/CodeGen
+  mkdir -p out/build/
+  mkdir -p out/build/lib
+  mkdir -p out/build/tools/clang
+  mkdir -p out/build/tools/clang/lib
+
+  cp -R include/ out/
+  cp -R build/include/ out/build
+  cp build/lib/*.a out/build/lib
+
+  cp -R tools/clang/include/ out/tools/clang
+  cp -R tools/clang/lib/CodeGen/*.h out/tools/clang/lib/CodeGen
+  cp -R build/tools/clang/include/ out/build/tools/clang
+
+  rm out/build/lib/libllvm*ObjCARCOpts*.a
+  rm out/build/lib/libclang*ARC*.a
+  rm out/build/lib/libclang*Matchers*.a
+  rm out/build/lib/libclang*Rewrite*.a
+  rm out/build/lib/libclang*StaticAnalyzer*.a
+  rm out/build/lib/libclang*Tooling*.a
+
+  7z a llvm_linux_x86_64.7z ./out/* 
+
+  # upload to dropbox
+  curl "https://raw.githubusercontent.com/andreafabrizi/Dropbox-Uploader/master/dropbox_uploader.sh" -o dropbox_uploader.sh
+
+  echo APPKEY= > ~/.dropbox_uploader
+  echo APPSECRET= >> ~/.dropbox_uploader
+  echo ACCESS_LEVEL=sandbox >> ~/.dropbox_uploader
+  echo OAUTH_ACCESS_TOKEN= >> ~/.dropbox_uploader
+  echo OAUTH_ACCESS_TOKEN_SECRET= >> ~/.dropbox_uploader
+
+  ./dropbox_uploader.sh upload llvm_linux_x86_64.7z llvm_linux_x86_64.7z
 
   SHELL
 end
