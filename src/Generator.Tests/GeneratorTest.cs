@@ -49,10 +49,6 @@ namespace CppSharp.Utils
                 Path.GetFullPath(Path.Combine(path, "../../deps/llvm/tools/clang/lib/Headers"))
             };
 
-            if (Platform.IsMacOS) {
-                options.SetupXcode();
-            }
-
             foreach (var header in headersPaths)
                 options.addSystemIncludeDirs(header);
 
