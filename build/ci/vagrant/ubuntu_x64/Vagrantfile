@@ -93,7 +93,7 @@ Vagrant.configure(2) do |config|
   # Build tools
   apt-get install -y git build-essential clang cmake ninja-build
 
-  aot-get install -y p7zip-full
+  apt-get install -y p7zip-full
 
   # Mono
   apt-get install -y mono-devel
