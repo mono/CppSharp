@@ -76,8 +76,18 @@ namespace CppSharp
         {
             ValidateOptions(Options);
 
+            SetupIncludes();
+
             TypeDatabase.SetupTypeMaps(Options.GeneratorKind);
             Generator = CreateGeneratorFromKind(Options.GeneratorKind);
+        }
+
+        public void SetupIncludes()
+        {
+            if (Platform.IsMacOS)
+                Options.SetupXcode();
+            else if (Platform.IsWindows && !Options.NoBuiltinIncludes)
+                Options.SetupMSVC();
         }
 
         void OnSourceFileParsed(SourceFile file, ParserResult result)

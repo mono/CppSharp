@@ -17,7 +17,6 @@ project "CppSharp.CppParser"
 
   configuration "vs*"
     buildoptions { clang_msvc_flags }
-    files { "VSLookup.cpp" }    
 
   configuration "*"
   

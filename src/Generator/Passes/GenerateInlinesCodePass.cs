@@ -17,7 +17,7 @@ namespace CppSharp.Passes
         {
             var cppBuilder = new StringBuilder();
             foreach (var header in Driver.Options.Headers)
-                cppBuilder.AppendFormat("#include \"{0}\"\n", header);
+                cppBuilder.AppendFormat("#include <{0}>\n", header);
             var cpp = string.Format("{0}.cpp", Driver.Options.InlinesLibraryName);
             var path = Path.Combine(Driver.Options.OutputDir, cpp);
             File.WriteAllText(path, cppBuilder.ToString());

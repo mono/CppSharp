@@ -6,21 +6,20 @@ addons:
     - ubuntu-toolchain-r-test
     packages:
     - gcc-4.8
-    - gcc-4.8-multilib
     - g++-4.8
-    - g++-4.8-multilib
 
 install:
   - sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
   - echo "deb http://download.mono-project.com/repo/debian wheezy main" | sudo tee /etc/apt/sources.list.d/mono-xamarin.list
   - echo "deb http://download.mono-project.com/repo/debian wheezy-libtiff-compat main" | sudo tee -a /etc/apt/sources.list.d/mono-xamarin.list
   - sudo apt-get update -qq
-  - sudo apt-get install -y mono-devel nuget
-  - build/premake5-linux-64 --file=build/premake4.lua gmake
+  - sudo apt-get install -y mono-devel nuget p7zip-full
   - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
   - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
-
+  - wget -O llvm_linux_x86_64.7z https://www.dropbox.com/s/zxigif3vghsdfli/llvm_linux_x86_64.7z?dl=0
+  - 7z x llvm_linux_x86_64.7z -odeps/llvm -y  
 
 script:
+  - build/premake5-linux-64 --file=build/premake4.lua gmake
   - config=release_x64 make -C build/gmake/
-  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe build/gmake/lib/Debug_x32/CppSharp.*Tests*.dll
+  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe build/gmake/lib/Release_x64/CppSharp.*Tests*.dll
