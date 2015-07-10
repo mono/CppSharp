@@ -31,6 +31,7 @@ namespace CppSharp.Utils
             options.SharedLibraryName = name + ".Native";
             options.GenerateLibraryNamespace = true;
             options.Quiet = true;
+            options.Verbose = true;
             options.IgnoreParseWarnings = true;
 
             driver.Diagnostics.Message("");
