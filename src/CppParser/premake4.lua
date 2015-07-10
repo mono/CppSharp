@@ -18,7 +18,7 @@ project "CppSharp.CppParser"
   local copy = os.is_windows() and "xcopy /Q /E /Y /I" or "cp -rf";
   local headers = path.getabsolute(path.join(LLVMRootDir, "lib/"))
   if os.isdir(headers) then
-    postbuildcommands { copy .. " " .. headers .. " " .. path.getabsolute(targetdir()) }
+    postbuildcommands { copy .. " " .. headers .. " %{cfg.targetdir}" }
   end
 
   configuration "vs*"
