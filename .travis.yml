@@ -24,4 +24,4 @@ install:
 script:
   - build/premake5-linux-64 --file=build/premake4.lua gmake
   - config=release_x64 make -C build/gmake/
-  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe build/gmake/lib/Release_x64/CppSharp.*Tests*.dll
+  - for test in build/gmake/lib/Release_x64/*.Tests.*.dll; do MONO_PATH=deps/NUnit.Runners.2.6.4/tools mono deps/NUnit.Runners.2.6.4/tools/nunit-console.exe $test; done
