@@ -11,7 +11,7 @@ public:
     int& operator[](int i);
     int A;
     int* (*functionPtrReturnsPtrParam)();
-    int (__stdcall *attributedFunctionPtr)();
+    int (STDCALL *attributedFunctionPtr)();
 
     static const int rename = 5;
 
