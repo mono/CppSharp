@@ -44,6 +44,15 @@
 #include <CodeGen/CGCall.h>
 #include <CodeGen/CGCXXABI.h>
 
+#if defined(__APPLE__) || defined(__linux__)
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE
+#endif
+#include <dlfcn.h>
+
+#define HAVE_DLFCN
+#endif
+
 using namespace CppSharp::CppParser;
 
 // We use this as a placeholder for pointer values that should be ignored.
@@ -57,7 +66,18 @@ Parser::Parser(ParserOptions* Opts) : Lib(Opts->ASTContext), Opts(Opts), Index(0
 
 //-----------------------------------//
 
-static std::string GetClangResourceDir(const std::string& Dir)
+std::string GetCurrentLibraryDir()
+{
+#ifdef HAVE_DLFCN
+    Dl_info dl_info;
+    dladdr((void *)GetCurrentLibraryDir, &dl_info);
+    return dl_info.dli_fname;
+#else
+    return ".";
+#endif
+}
+
+static std::string GetClangResourceDir()
 {
     using namespace llvm;
     using namespace clang;
@@ -65,22 +85,13 @@ static std::string GetClangResourceDir(const std::string& Dir)
     // Compute the path to the resource directory.
     StringRef ClangResourceDir(CLANG_RESOURCE_DIR);
     
-    SmallString<128> P(Dir);
+    SmallString<128> P(GetCurrentLibraryDir());
+    llvm::sys::path::remove_filename(P);
     
     if (ClangResourceDir != "")
         llvm::sys::path::append(P, ClangResourceDir);
     else
         llvm::sys::path::append(P, "lib", "clang", CLANG_VERSION_STRING);
-    
-    return P.str();
-}
-
-static std::string GetClangBuiltinIncludeDir()
-{
-    using namespace llvm;
-    
-    SmallString<128> P( GetClangResourceDir(".") );
-    llvm::sys::path::append(P, "include");
     
     return P.str();
 }
@@ -219,9 +230,12 @@ void Parser::SetupHeader()
     }
 
     // Initialize the default platform headers.
-    HSOpts.ResourceDir = GetClangResourceDir(".");
-    HSOpts.AddPath(GetClangBuiltinIncludeDir(), clang::frontend::System,
-        /*IsFramework=*/false, /*IgnoreSysRoot=*/false);
+    HSOpts.ResourceDir = GetClangResourceDir();
+
+    llvm::SmallString<128> ResourceDir(HSOpts.ResourceDir);
+    llvm::sys::path::append(ResourceDir, "include");
+    HSOpts.AddPath(ResourceDir.str(), clang::frontend::System, /*IsFramework=*/false,
+        /*IgnoreSysRoot=*/false);
 
 #ifdef _MSC_VER
     if (Opts->MicrosoftMode)
