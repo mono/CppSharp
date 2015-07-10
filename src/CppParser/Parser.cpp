@@ -18,6 +18,7 @@
 #include <llvm/Object/COFF.h>
 #include <llvm/Object/ObjectFile.h>
 #include <llvm/Object/ELFObjectFile.h>
+#include <llvm/Option/ArgList.h>
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/Module.h>
 #include <llvm/IR/DataLayout.h>
@@ -36,6 +37,8 @@
 #include <clang/Sema/Sema.h>
 #include <clang/Sema/SemaConsumer.h>
 #include <clang/Frontend/Utils.h>
+#include <clang/Driver/Driver.h>
+#include <clang/Driver/ToolChain.h>
 #include <clang/Driver/Util.h>
 #include <clang/Index/USRGeneration.h>
 #include <CodeGen/CodeGenModule.h>
@@ -43,6 +46,7 @@
 #include <CodeGen/TargetInfo.h>
 #include <CodeGen/CGCall.h>
 #include <CodeGen/CGCXXABI.h>
+#include <Driver/ToolChains.h>
 
 #if defined(__APPLE__) || defined(__linux__)
 #ifndef _GNU_SOURCE
@@ -244,6 +248,28 @@ void Parser::SetupHeader()
 		if (!LangOpts.MSCompatibilityVersion) LangOpts.MSCompatibilityVersion = 1700;
     }
 #endif
+
+    llvm::opt::InputArgList Args(0, 0);
+    clang::driver::Driver D("", TO->Triple, C->getDiagnostics());
+    clang::driver::ToolChain *TC = nullptr;
+    llvm::Triple Target(TO->Triple);
+    switch (Target.getOS()) {
+    // Extend this for other triples if needed, see clang's Driver::getToolChain.
+    case llvm::Triple::Linux:
+      TC = new clang::driver::toolchains::Linux(D, Target, Args);
+      break;
+    }
+
+    if (TC && !Opts->NoStandardIncludes) {
+        llvm::opt::ArgStringList Includes;
+        TC->AddClangSystemIncludeArgs(Args, Includes);
+        TC->AddClangCXXStdlibIncludeArgs(Args, Includes);
+        for (auto& Arg : Includes) {
+            if (strlen(Arg) > 0 && Arg[0] != '-')
+                HSOpts.AddPath(Arg, frontend::System, /*IsFramework=*/false,
+                    /*IgnoreSysRoot=*/false);
+        }
+    }
 
     // Enable preprocessing record.
     PPOpts.DetailedRecord = true;
