@@ -14,7 +14,9 @@ install:
   - echo "deb http://download.mono-project.com/repo/debian wheezy-libtiff-compat main" | sudo tee -a /etc/apt/sources.list.d/mono-xamarin.list
   - sudo apt-get update -qq
   - sudo apt-get install -y mono-devel nuget p7zip-full
-  - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
+  - nuget install NUnit -Version 2.6.4 -OutputDirectory deps
+  - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory deps
+  - cp deps/NUnit.2.6.4/lib/nunit.framework.* deps/NUnit/ 
   - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
   - wget -O llvm_linux_x86_64.7z https://www.dropbox.com/s/zxigif3vghsdfli/llvm_linux_x86_64.7z?dl=0
   - 7z x llvm_linux_x86_64.7z -odeps/llvm -y  
