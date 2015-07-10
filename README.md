@@ -9,12 +9,14 @@ or add scripting support to a native codebase.
 
 ## Build Status
 
-| windows-vs-x86            |
-|---------------------------|
-| [![windows-vs-x86][1]][2] |
+| windows-vs-x86            | linux-gcc-x86_64            |
+|---------------------------|-----------------------------|
+| [![windows-vs-x86][1]][2] | [![linux-gcc-x86_64][3]][4] |
 
 [1]: https://ci.appveyor.com/api/projects/status/5o9gxjcttuaup671/branch/master?svg=true
 [2]: https://ci.appveyor.com/project/tritao/CppSharp/branch/master
+[3]: https://travis-ci.org/mono/CppSharp.svg?branch=master
+[4]: https://travis-ci.org/mono/CppSharp
 
 ## Libraries
 
