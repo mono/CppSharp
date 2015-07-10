@@ -347,19 +347,25 @@ struct DLL_API TestStaticClass
 {
     static int Add(int a, int b);
 
-	static int GetOneTwoThree() { return 123; }
+	static int GetOneTwoThree();
 
 protected:
 
-	static int _Mult(int a, int b) { return a * b; }
+	static int _Mult(int a, int b);
 
-	static int GetFourFiveSix() { return 456; }
+	static int GetFourFiveSix();
 
 private:
     TestStaticClass();
 };
 
 int TestStaticClass::Add(int a, int b) { return a + b; }
+
+int TestStaticClass::GetOneTwoThree() { return 123; }
+
+int TestStaticClass::_Mult(int a, int b) { return a * b; }
+
+int TestStaticClass::GetFourFiveSix() { return 456; }
 
 struct DLL_API TestStaticClassDerived : TestStaticClass
 {
