@@ -685,6 +685,7 @@ void Parser::WalkRecord(clang::RecordDecl* Record, Class* RC)
     RC->IsUnion = Record->isUnion();
     RC->IsDependent = Record->isDependentType();
     RC->IsExternCContext = Record->isExternCContext();
+    RC->IsStruct = Record->isStruct();
 
     bool hasLayout = !Record->isDependentType() && !Record->isInvalidDecl();
 

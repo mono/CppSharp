@@ -1840,6 +1840,11 @@ namespace CppSharp
                     void set(bool);
                 }
 
+                property bool IsStruct
+                {
+                    bool get();
+                }
+
                 property CppSharp::Parser::AST::ClassLayout^ Layout
                 {
                     CppSharp::Parser::AST::ClassLayout^ get();

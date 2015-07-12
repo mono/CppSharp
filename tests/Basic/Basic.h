@@ -779,3 +779,8 @@ public:
 class CS_VALUE_TYPE RefTypeToValTypeCheckDerived : public RefTypeToValTypeCheckBase
 {
 };
+
+DLL_API class TestIsStructFreeClass { };
+DLL_API struct TestIsStructFreeStruct { };
+DLL_API struct TestIsStructInheritedStruct { };
+DLL_API struct TestIsStructInheritingStruct : public TestIsStructInheritedStruct { };

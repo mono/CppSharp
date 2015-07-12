@@ -2835,6 +2835,11 @@ void CppSharp::Parser::AST::Class::IsExternCContext::set(bool value)
     ((::CppSharp::CppParser::AST::Class*)NativePtr)->IsExternCContext = value;
 }
 
+bool CppSharp::Parser::AST::Class::IsStruct::get()
+{
+    return ((::CppSharp::CppParser::AST::Class*)NativePtr)->IsStruct;
+}
+
 CppSharp::Parser::AST::ClassLayout^ CppSharp::Parser::AST::Class::Layout::get()
 {
     return (((::CppSharp::CppParser::AST::Class*)NativePtr)->Layout == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::ClassLayout((::CppSharp::CppParser::AST::ClassLayout*)((::CppSharp::CppParser::AST::Class*)NativePtr)->Layout);

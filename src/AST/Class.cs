@@ -113,6 +113,7 @@ namespace CppSharp.AST
             IsUnion = false;
             IsOpaque = false;
             IsPOD = false;
+            IsStruct = false;
             Type = ClassType.RefType;
             Layout = new ClassLayout();
         }
@@ -137,6 +138,7 @@ namespace CppSharp.AST
             HasNonTrivialCopyConstructor = @class.HasNonTrivialCopyConstructor;
             HasNonTrivialDestructor = @class.HasNonTrivialDestructor;
             IsStatic = @class.IsStatic;
+            IsStruct = @class.IsStruct;
         }
 
         public bool HasBase
@@ -174,6 +176,12 @@ namespace CppSharp.AST
         }
 
         public Class OriginalClass { get; set; }
+
+        public bool IsStruct
+        {
+            get;
+            set;
+        }
 
         public bool IsValueType
         {

@@ -32,6 +32,7 @@ namespace CppSharp.Tests
         {
             driver.AddTranslationUnitPass(new GetterSetterToPropertyPass());
             driver.AddTranslationUnitPass(new CheckMacroPass());
+            driver.AddTranslationUnitPass(new MarshalStructAsValTypeIfPossiblePass());
             bool isCLIGenerator = driver.Options.IsCLIGenerator;
             ctx.SetClassAsValueType("Bar", isCLIGenerator);
             ctx.SetClassAsValueType("Bar2", isCLIGenerator);
