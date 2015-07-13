@@ -31,12 +31,14 @@ private:
     int priv;
 };
 
+class Bar;
 
 class DLL_API Qux
 {
 public:
     Qux();
     Qux(Foo foo);
+    Qux(Bar bar);
     int farAwayFunc() const;
     int array[3];
     void obsolete();
@@ -53,6 +55,7 @@ public:
         Item2
     };
     Bar();
+    Bar(Qux qux);
     int method();
     const Foo& operator[](int i) const;
     Foo& operator[](int i);

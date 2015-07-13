@@ -83,6 +83,10 @@ Qux::Qux(Foo foo)
 
 }
 
+Qux::Qux(Bar bar)
+{
+}
+
 int Qux::farAwayFunc() const
 {
     return 20;
@@ -99,6 +103,10 @@ Qux* Qux::getInterface()
 }
 
 void Qux::setInterface(Qux *qux)
+{
+}
+
+Bar::Bar(Qux qux)
 {
 }
 

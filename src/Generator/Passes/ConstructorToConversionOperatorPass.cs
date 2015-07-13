@@ -28,9 +28,9 @@ namespace CppSharp.Passes
             var castToClass = method.OriginalNamespace as Class;
             if (qualifiedPointee.TryGetClass(out castFromClass))
             {
-                if (castToClass == null)
+                if (castToClass == null || castToClass.IsAbstract)
                     return false;
-                if (castFromClass == castToClass)
+                if (ConvertsBetweenDerivedTypes(castToClass, castFromClass))
                     return false;
             }
             if (castToClass != null && castToClass.IsAbstract)
@@ -58,6 +58,25 @@ namespace CppSharp.Passes
             conversionOperator.Parameters.Add(p);
             ((Class) method.Namespace).Methods.Add(conversionOperator);
             return true;
+        }
+
+        private static bool ConvertsBetweenDerivedTypes(Class castToClass, Class castFromClass)
+        {
+            var @base = castToClass;
+            while (@base != null)
+            {
+                if (@base == castFromClass)
+                    return true;
+                @base = @base.BaseClass;
+            }
+            @base = castFromClass;
+            while (@base != null)
+            {
+                if (@base == castToClass)
+                    return true;
+                @base = @base.BaseClass;
+            }
+            return false;
         }
     }
 }

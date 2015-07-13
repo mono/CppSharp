@@ -27,6 +27,10 @@ public class CSharpTempTests : GeneratorTestFixture
             var isNoParams = foo.IsNoParams;
             foo.SetNoParams();
         }
+        using (var qux = new Qux())
+        {
+            new Bar(qux).Dispose();
+        }
     }
 
     [Test]
