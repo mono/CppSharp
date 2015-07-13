@@ -46,7 +46,8 @@ namespace CppSharp.Passes
                 SynthKind = FunctionSynthKind.ComplementOperator,
                 ConversionType = qualifiedCastToType,
                 ReturnType = qualifiedCastToType,
-                OperatorKind = operatorKind
+                OperatorKind = operatorKind,
+                IsExplicit = method.IsExplicit
             };
             var p = new Parameter(parameter);
             Class @class;
