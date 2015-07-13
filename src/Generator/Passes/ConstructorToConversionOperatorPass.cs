@@ -23,17 +23,18 @@ namespace CppSharp.Passes
                 if (pointerType != null && !pointerType.IsReference)
                     return false;
             }
-            var qualifiedPointee = parameter.Type.SkipPointerRefs();
+            var qualifiedPointee = parameter.Type.GetFinalPointee() ?? parameter.Type;
             Class castFromClass;
+            var castToClass = method.OriginalNamespace as Class;
             if (qualifiedPointee.TryGetClass(out castFromClass))
             {
-                var castToClass = method.OriginalNamespace as Class;
                 if (castToClass == null)
                     return false;
                 if (castFromClass == castToClass)
                     return false;
             }
-
+            if (castToClass != null && castToClass.IsAbstract)
+                return false;
             var operatorKind = method.IsExplicit
                 ? CXXOperatorKind.ExplicitConversion
                 : CXXOperatorKind.Conversion;

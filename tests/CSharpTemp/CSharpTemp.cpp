@@ -170,6 +170,18 @@ int AbstractProprietor::parent() const
     return 0;
 }
 
+AbstractProprietor::AbstractProprietor()
+{
+}
+
+AbstractProprietor::AbstractProprietor(int i)
+{
+}
+
+Proprietor::Proprietor(int i) : AbstractProprietor(i)
+{
+}
+
 void Proprietor::setValue(int value)
 {
     m_value = value;
