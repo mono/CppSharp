@@ -11,12 +11,10 @@ namespace CppSharp.Passes
     {
         public override bool VisitMethodDecl(Method method)
         {
-            if (!method.IsConstructor)
+            if (AlreadyVisited(method) || !method.IsGenerated || !method.IsConstructor ||
+                method.IsCopyConstructor || method.Parameters.Count != 1)
                 return false;
-            if (method.IsCopyConstructor)
-                return false;
-            if (method.Parameters.Count != 1)
-                return false;
+
             var parameter = method.Parameters[0];
             // TODO: disable implicit operators for C++/CLI because they seem not to be support parameters
             if (!Driver.Options.IsCSharpGenerator)
