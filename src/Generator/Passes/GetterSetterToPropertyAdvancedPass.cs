@@ -222,7 +222,7 @@ namespace CppSharp.Passes
                 {
                     if (method.Parameters.Count == 1)
                         setters.Add(method);
-                    else
+                    else if (method.Parameters.Count > 1)
                         setMethods.Add(method);
                 }
                 else

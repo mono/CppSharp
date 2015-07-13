@@ -26,6 +26,15 @@ int& Foo::operator[](int i)
     return P;
 }
 
+bool Foo::isNoParams()
+{
+    return false;
+}
+
+void Foo::setNoParams()
+{
+}
+
 const Foo& Bar::operator[](int i) const
 {
     return m_foo;

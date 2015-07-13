@@ -21,7 +21,11 @@ public class CSharpTempTests : GeneratorTestFixture
         new InheritsProtectedVirtualFromSecondaryBase().Dispose();
         new InheritanceBuffer().Dispose();
         new HasProtectedVirtual().Dispose();
-        CSharpTemp.CSharpTemp.FreeFunctionWithUnsupportedDefaultArg();
+        using (var foo = new Foo())
+        {
+            var isNoParams = foo.IsNoParams;
+            foo.SetNoParams();
+        }
     }
 
     [Test]
