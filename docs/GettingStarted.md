@@ -76,7 +76,7 @@ run the upgrade process after generation.
     - LLVM_BUILD_32_BITS for 32-bit builds (defaults to 64-bit)
 
 ```shell
-cd deps/llvm/build
+mkdir -p deps/llvm/build && cd deps/llvm/build
 
 cmake -G "Unix Makefiles" -DLLVM_ENABLE_LIBCXX=true -DLLVM_BUILD_32_BITS=true -DCMAKE_BUILD_TYPE=RelWithDebInfo ..
 
