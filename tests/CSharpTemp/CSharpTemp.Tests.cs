@@ -248,6 +248,12 @@ public class CSharpTempTests : GeneratorTestFixture
     }
 
     [Test]
+    public void TestInnerClasses()
+    {
+        QMap.Iterator test_iter;
+    }
+
+    [Test]
     public void TestNativeToManagedMapWithForeignObjects()
     {
         IntPtr native1;

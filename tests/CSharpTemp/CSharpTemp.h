@@ -80,7 +80,11 @@ class DLL_API ForceCreationOfInterface : public Foo, public Bar
 class DLL_API Baz : public Foo, public Bar
 {
 public:
-    class NestedBase1 {};
+    class NestedBase1 {
+        int f1;
+        double f2;
+        void* f3;
+    };
     class NestedBase2 {};
     class NestedDerived : public NestedBase1, public NestedBase2 {};
 

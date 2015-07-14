@@ -34,6 +34,7 @@ namespace CppSharp.Tests
             driver.AddTranslationUnitPass(new CheckMacroPass());
             ctx.SetClassAsValueType("Bar");
             ctx.SetClassAsValueType("Bar2");
+            ctx.IgnoreClassWithName("IgnoredType");
         }
 
         public static void Main(string[] args)

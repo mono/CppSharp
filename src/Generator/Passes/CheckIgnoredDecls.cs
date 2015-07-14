@@ -40,13 +40,13 @@ namespace CppSharp.Passes
             {
                 Log.Debug("Decl '{0}' was ignored due to invalid access",
                     decl.Name);
-                decl.ExplicitlyIgnore();
+                decl.GenerationKind = decl is Field ? GenerationKind.Internal : GenerationKind.None;
                 return true;
             }
 
             if (decl.IsDependent)
             {
-                decl.ExplicitlyIgnore();
+                decl.GenerationKind = decl is Field ? GenerationKind.Internal : GenerationKind.None;
                 Log.Debug("Decl '{0}' was ignored due to dependent context",
                     decl.Name);
                 return true;
@@ -62,11 +62,13 @@ namespace CppSharp.Passes
 
             var type = field.Type;
 
-            string msg;
-            if (!HasInvalidType(type, out msg))
+            Declaration decl;
+            type.TryGetDeclaration(out decl);
+            string msg = "internal";
+            if (decl == null || (decl.GenerationKind != GenerationKind.Internal && !HasInvalidType(type, out msg)))
                 return false;
 
-            field.ExplicitlyIgnore();
+            field.GenerationKind = GenerationKind.Internal;
 
             var @class = (Class)field.Namespace;
 

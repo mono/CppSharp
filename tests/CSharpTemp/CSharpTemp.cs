@@ -59,8 +59,7 @@ namespace CppSharp.Tests
         public override string CSharpSignature(CSharpTypePrinterContext ctx)
         {
             if (ctx.CSharpKind == CSharpTypePrinterContextKind.Native)
-                // pointless, put just so that the generated code compiles
-                return "global::System.IntPtr";
+                return Type.IsAddress() ? "QList.Internal*" : "QList.Internal";
 
             return string.Format("System.Collections.Generic.{0}<{1}>",
                 ctx.CSharpKind == CSharpTypePrinterContextKind.DefaultExpression ? "List" : "IList",
@@ -70,7 +69,7 @@ namespace CppSharp.Tests
         public override void CSharpMarshalToNative(MarshalContext ctx)
         {
             // pointless, put just so that the generated code compiles
-            ctx.Return.Write("new global::System.IntPtr()");
+            ctx.Return.Write("new QList.Internal()");
         }
 
         public override void CSharpMarshalToManaged(MarshalContext ctx)

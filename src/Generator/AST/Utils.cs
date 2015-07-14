@@ -65,7 +65,7 @@ namespace CppSharp.AST
 
         public static bool CheckIgnoreField(Field field, bool useInternals = false)
         {
-            if (field.Access == AccessSpecifier.Private) 
+            if (field.Access == AccessSpecifier.Private && !useInternals) 
                 return true;
 
             if (field.Class.IsValueType && field.IsDeclared)
