@@ -23,9 +23,6 @@ shallow_clone: true
 matrix:
   fast_finish: true
 
-cache:
-  - '%LLVM_PATH%'
-
 platform:
   - x86
 
