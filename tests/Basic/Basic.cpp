@@ -267,6 +267,26 @@ Bar indirectReturn()
     return Bar();
 }
 
+int TestDelegates::Double(int N)
+{
+    return N * 2;
+}
+
+int TestDelegates::Triple(int N)
+{
+    return N * 3;
+}
+
+int TestDelegates::StdCall(DelegateStdCall del)
+{
+    return del(1);
+}
+
+int TestDelegates::CDecl(DelegateCDecl del)
+{
+    return del(1);
+}
+
 int ImplementsAbstractFoo::pureFunction(int i)
 {
     return 5;
@@ -346,6 +366,26 @@ int (*TestDelegates::MarshalAnonymousDelegate4())(int n)
     return f;
 }
 
+ClassA::ClassA(int value)
+{
+    Value = value;
+}
+
+ClassB::ClassB(const ClassA &x)
+{
+    Value = x.Value;
+}
+
+ClassC::ClassC(const ClassA *x)
+{
+    Value = x->Value;
+}
+
+ClassC::ClassC(const ClassB &x)
+{
+    Value = x.Value;
+}
+
 void DelegateNamespace::Nested::f1(void (*)())
 {
 }
@@ -388,12 +428,12 @@ int HasFriend::getM()
     return m;
 }
 
-DLL_API inline const HasFriend operator+(const HasFriend& f1, const HasFriend& f2)
+DLL_API const HasFriend operator+(const HasFriend& f1, const HasFriend& f2)
 {
     return HasFriend(f1.m + f2.m);
 }
 
-DLL_API inline const HasFriend operator-(const HasFriend& f1, const HasFriend& f2)
+DLL_API const HasFriend operator-(const HasFriend& f1, const HasFriend& f2)
 {
     return HasFriend(f1.m - f2.m);
 }
@@ -414,6 +454,10 @@ int HasVirtualProperty::getProperty()
 }
 
 void HasVirtualProperty::setProperty(int value)
+{
+}
+
+ChangedAccessOfInheritedProperty::ChangedAccessOfInheritedProperty()
 {
 }
 

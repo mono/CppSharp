@@ -307,11 +307,11 @@ struct DLL_API TestDelegates
     typedef int(TestDelegates::*MemberDelegate)(int);
 
     TestDelegates();
-    static int Double(int N) { return N * 2; }
-    int Triple(int N) { return N * 3; }
+    static int Double(int N);
+    int Triple(int N);
 
-    int StdCall(DelegateStdCall del) { return del(1); }
-    int CDecl(DelegateCDecl del) { return del(1); }
+    int StdCall(DelegateStdCall del);
+    int CDecl(DelegateCDecl del);
     void MarshalUnattributedDelegate(DelegateInGlobalNamespace del);
 
     int MarshalAnonymousDelegate(int (*del)(int n));
@@ -595,14 +595,14 @@ int TestGetterSetterToProperties::getHeight() { return 480; }
 class DLL_API ClassA 
 {
 public:
-    ClassA(int value) { Value = value; }
+    ClassA(int value);
     int Value;
 };
 class DLL_API ClassB
 {
 public:
     // conversion from ClassA (constructor):
-    ClassB(const ClassA& x) { Value = x.Value; }
+    ClassB(const ClassA& x);
     int Value;
     // conversion from ClassA (assignment):
     //ClassB& operator= (const ClassA& x) { return *this; }
@@ -613,9 +613,9 @@ class DLL_API ClassC
 {
 public:
     // This should NOT lead to a conversion
-    ClassC(const ClassA* x) { Value = x->Value; }
+    ClassC(const ClassA* x);
     // This should lead to an explicit conversion
-    explicit ClassC(const ClassB& x) { Value = x.Value; }
+    explicit ClassC(const ClassB& x);
     int Value;
 };
 
@@ -714,8 +714,8 @@ class DLL_API HasFriend
 {
 public:
     HasFriend(int m);
-    DLL_API friend inline const HasFriend operator+(const HasFriend& f1, const HasFriend& f2);
-    DLL_API friend inline const HasFriend operator-(const HasFriend& f1, const HasFriend& f2);
+    DLL_API friend const HasFriend operator+(const HasFriend& f1, const HasFriend& f2);
+    DLL_API friend const HasFriend operator-(const HasFriend& f1, const HasFriend& f2);
     int getM();
 private:
     int m;
@@ -783,6 +783,8 @@ public:
 
 class DLL_API ChangedAccessOfInheritedProperty : public HasVirtualProperty
 {
+public:
+    ChangedAccessOfInheritedProperty();
 protected:
     int getProperty();
     void setProperty(int value);
