@@ -787,3 +787,13 @@ protected:
     int getProperty();
     void setProperty(int value);
 };
+
+class DLL_API Empty
+{
+};
+
+class DLL_API ReturnsEmpty
+{
+public:
+    Empty getEmpty();
+};

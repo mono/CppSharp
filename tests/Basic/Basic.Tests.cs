@@ -516,5 +516,11 @@ public class BasicTests : GeneratorTestFixture
     {
         Assert.AreEqual(10, Foo.@unsafe);
     }
+
+    [Test]
+    public void TestMarshallingEmptyType()
+    {
+        var empty = new ReturnsEmpty().Empty;
+    }
 }
  

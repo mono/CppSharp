@@ -425,3 +425,8 @@ int ChangedAccessOfInheritedProperty::getProperty()
 void ChangedAccessOfInheritedProperty::setProperty(int value)
 {
 }
+
+Empty ReturnsEmpty::getEmpty()
+{
+    return Empty();
+}

@@ -12,6 +12,9 @@ namespace CppSharp.Passes
     /// and use that to call the function instead. In the case of parameters
     /// then the type of that parameter is converted to a pointer.
     /// 
+    /// Furthermore, there's at least one ABI (System V) that gives to empty structs
+    /// size 1 in C++ and size 0 in C. The former causes crashes in older versions of Mono.
+    /// 
     /// Itanium ABI reference (3.1.4 Return values):
     /// http://refspecs.linux-foundation.org/cxxabi-1.83.html#calls
     ///
@@ -20,6 +23,17 @@ namespace CppSharp.Passes
     /// </summary>
     public class CheckAbiParameters : TranslationUnitPass
     {
+        public override bool VisitClassDecl(Class @class)
+        {
+            if (!base.VisitClassDecl(@class))
+                return false;
+
+            if (@class.Fields.Count == 0)
+                @class.Layout.Size = @class.Layout.DataSize = 0;
+
+            return true;
+        }
+
         public override bool VisitFunctionDecl(Function function)
         {
             if (!VisitDeclaration(function))
