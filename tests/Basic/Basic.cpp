@@ -425,3 +425,16 @@ int ChangedAccessOfInheritedProperty::getProperty()
 void ChangedAccessOfInheritedProperty::setProperty(int value)
 {
 }
+
+void RefTypeToValTypeCheckBase::doSmthProt()
+{
+}
+
+int RefTypeToValTypeCheckBase::getF()
+{
+	return f;
+}
+
+void RefTypeToValTypeCheckBase::doSmthVirt()
+{
+}

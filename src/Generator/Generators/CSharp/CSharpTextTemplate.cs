@@ -764,13 +764,14 @@ namespace CppSharp.Generators.CSharp
             return Tuple.Create(library, decl.Mangled);
         }
 
-        private void GeneratePropertySetter<T>(T decl, Class @class, bool isAbstract = false)
+        private void GeneratePropertySetter<T>(T decl, Class @class, bool isAbstract = false, Class originalClass = null)
             where T : Declaration, ITypedDecl
         {
             if (!(decl is Function || decl is Field) )
             {
                 return;
             }
+            originalClass = originalClass ?? @class;
 
             PushBlock(CSharpBlockKind.Method);
             Write("set");
@@ -821,12 +822,12 @@ namespace CppSharp.Generators.CSharp
                         }
                         else
                         {
-                            GenerateInternalFunctionCall(function, new List<Parameter> { param });
+                            GenerateInternalFunctionCall(function, new List<Parameter> { param }, null, originalClass);
                         }
                     }
                     else
                     {
-                        GenerateInternalFunctionCall(function, new List<Parameter> { param });
+                        GenerateInternalFunctionCall(function, new List<Parameter> { param }, null, originalClass);
                     }
                 }
                 WriteCloseBraceIndent();
@@ -844,7 +845,7 @@ namespace CppSharp.Generators.CSharp
 
                 var arrayType = field.Type as ArrayType;
 
-                if (arrayType != null && @class.IsValueType)
+                if (arrayType != null && originalClass.IsValueType)
                 {
                     CSharpTypePrinter typePrinter = new CSharpTypePrinter(ctx.Driver);
                     string type = arrayType.CSharpType(typePrinter).Type;
@@ -858,10 +859,10 @@ namespace CppSharp.Generators.CSharp
                 else
                 {
                     ctx.ReturnVarName = string.Format("{0}{1}{2}",
-                    @class.IsValueType
+                    originalClass.IsValueType
                         ? Helpers.InstanceField
                         : string.Format("((Internal*) {0})", Helpers.InstanceIdentifier),
-                    @class.IsValueType ? "." : "->",
+                    originalClass.IsValueType ? "." : "->",
                     Helpers.SafeIdentifier(field.OriginalName));
                 }
                 param.Visit(marshal);
@@ -874,7 +875,7 @@ namespace CppSharp.Generators.CSharp
                     WriteLine("{0} = {1};", ctx.ReturnVarName, marshal.Context.Return);
                 }
 
-                if (arrayType != null && @class.IsValueType)
+                if (arrayType != null && originalClass.IsValueType)
                     WriteCloseBraceIndent();
 
                 WriteCloseBraceIndent();
@@ -915,16 +916,23 @@ namespace CppSharp.Generators.CSharp
             }
             else
             {
-                WriteLine("*({0}.Internal*) Internal.{1}({2}, {3}) = *({0}.Internal*) value.{2};",
-                    type.ToString(), internalFunction,
-                    Helpers.InstanceIdentifier, function.Parameters[0].Name);
+                Class @class;
+                if(type.TryGetClass(out @class) && @class.IsValueType)
+                    WriteLine("*({0}.Internal*) Internal.{1}({2}, {3}) = ({0}.Internal) value.{2};",
+                        type.ToString(), internalFunction,
+                        Helpers.InstanceIdentifier, function.Parameters[0].Name);
+                else
+                    WriteLine("*({0}.Internal*) Internal.{1}({2}, {3}) = *({0}.Internal*) value.{2};",
+                        type.ToString(), internalFunction,
+                        Helpers.InstanceIdentifier, function.Parameters[0].Name);
             }
         }
 
         private void GeneratePropertyGetter<T>(QualifiedType returnType, T decl,
-            Class @class, bool isAbstract = false)
+            Class @class, bool isAbstract = false, Class originalClass = null)
             where T : Declaration, ITypedDecl
         {
+            originalClass = originalClass ?? @class;
             PushBlock(CSharpBlockKind.Method);
             Write("get");
 
@@ -944,7 +952,7 @@ namespace CppSharp.Generators.CSharp
                 if (method != null && method.SynthKind == FunctionSynthKind.AbstractImplCall)
                     GenerateAbstractImplCall(method, @class);
                 else
-                    GenerateInternalFunctionCall(function, function.Parameters, returnType.Type);
+                    GenerateInternalFunctionCall(function, function.Parameters, returnType.Type, originalClass);
             }
             else if (decl is Field)
             {
@@ -960,17 +968,17 @@ namespace CppSharp.Generators.CSharp
                     Kind = CSharpMarshalKind.NativeField,
                     ArgName = decl.Name,
                     ReturnVarName = string.Format("{0}{1}{2}",
-                        @class.IsValueType
+                        originalClass.IsValueType
                             ? Helpers.InstanceField
                             : string.Format("((Internal*) {0})", Helpers.InstanceIdentifier),
-                        @class.IsValueType ? "." : "->",
+                        originalClass.IsValueType ? "." : "->",
                         Helpers.SafeIdentifier(field.OriginalName)),
                     ReturnType = decl.QualifiedType
                 };
 
                 var arrayType = field.Type as ArrayType;
 
-                if (arrayType != null && @class.IsValueType)
+                if (arrayType != null && originalClass.IsValueType)
                 {
                     CSharpTypePrinter typePrinter = new CSharpTypePrinter(ctx.Driver);
                     string type = arrayType.CSharpType(typePrinter).Type;
@@ -990,7 +998,7 @@ namespace CppSharp.Generators.CSharp
 
                 WriteLine("return {0};", marshal.Context.Return);
 
-                if (arrayType != null && @class.IsValueType)
+                if (arrayType != null && originalClass.IsValueType)
                     WriteCloseBraceIndent();
             }
             else if (decl is Variable)
@@ -1050,16 +1058,17 @@ namespace CppSharp.Generators.CSharp
             return false;
         }
 
-        public void GenerateClassMethods(IList<Method> methods)
+        public void GenerateClassMethods(IList<Method> methods, Class originalClass = null)
         {
             if (methods.Count == 0)
                 return;
 
             var @class = (Class) methods[0].Namespace;
+            originalClass = originalClass ?? @class;
 
             if (@class.IsValueType)
                 foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.Ignore))
-                    GenerateClassMethods(@base.Class.Methods.Where(m => !m.IsOperator).ToList());
+                    GenerateClassMethods(@base.Class.Methods.Where(m => !m.IsOperator).ToList(), originalClass);
 
             var staticMethods = new List<Method>();
             foreach (var method in methods)
@@ -1070,26 +1079,30 @@ namespace CppSharp.Generators.CSharp
                 if (method.IsConstructor)
                     continue;
 
+                if (originalClass.IsValueType && method.Access == AccessSpecifier.Protected)
+                    method.Access = AccessSpecifier.Private;
+
                 if (method.IsStatic)
                 {
                     staticMethods.Add(method);
                     continue;
                 }
 
-                GenerateMethod(method, @class);
+                GenerateMethod(method, @class, originalClass);
             }
 
             foreach (var method in staticMethods)
             {
-                GenerateMethod(method, @class);
+                GenerateMethod(method, @class, originalClass);
             }
         }
 
-        public void GenerateClassVariables(Class @class)
+        public void GenerateClassVariables(Class @class, Class originalClass = null)
         {
+            originalClass = originalClass ?? @class;
             if (@class.IsValueType)
                 foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.Ignore))
-                    GenerateClassVariables(@base.Class);
+                    GenerateClassVariables(@base.Class, originalClass);
 
             foreach (var variable in @class.Variables)
             {
@@ -1100,21 +1113,23 @@ namespace CppSharp.Generators.CSharp
 
                 var type = variable.Type;
 
-                GenerateVariable(@class, type, variable);
+                GenerateVariable(@class, type, variable, originalClass);
             }
         }
 
-        private void GenerateClassProperties(Class @class)
+        private void GenerateClassProperties(Class @class, Class originalClass = null)
         {
+            originalClass = originalClass ?? @class;
             if (@class.IsValueType)
                 foreach (var @base in @class.Bases.Where(b => b.IsClass && !b.Class.Ignore && b.Class.IsDeclared))
-                    GenerateClassProperties(@base.Class);
+                    GenerateClassProperties(@base.Class, originalClass);
 
-            GenerateProperties(@class);
+            GenerateProperties(@class, originalClass);
         }
 
-        private void GenerateProperties(Class @class)
+        private void GenerateProperties(Class @class, Class originalClass = null)
         {
+            originalClass = originalClass ?? @class;
             foreach (var prop in @class.Properties.Where(p => p.IsGenerated))
             {
                 if (prop.IsInRefTypeAndBackedByValueClassField())
@@ -1136,6 +1151,8 @@ namespace CppSharp.Generators.CSharp
                 GenerateDeclarationCommon(prop);
                 if (prop.ExplicitInterfaceImpl == null)
                 {
+                    if (originalClass.IsValueType && prop.Access == AccessSpecifier.Protected)
+                        prop.Access = AccessSpecifier.Private;
                     Write(Helpers.GetAccess(GetValidPropertyAccess(prop)));
 
                     if (prop.IsStatic)
@@ -1146,7 +1163,7 @@ namespace CppSharp.Generators.CSharp
                         Write("override ");
                     else if (prop.IsPure)
                         Write("abstract ");
-                    else if (prop.IsVirtual)
+                    else if (prop.IsVirtual && !originalClass.IsValueType)
                         Write("virtual ");
 
                     WriteLine("{0} {1}", prop.Type, GetPropertyName(prop));
@@ -1161,18 +1178,18 @@ namespace CppSharp.Generators.CSharp
                 if (prop.Field != null)
                 {
                     if (prop.HasGetter)
-                        GeneratePropertyGetter(prop.QualifiedType, prop.Field, @class);
+                        GeneratePropertyGetter(prop.QualifiedType, prop.Field, @class, false, originalClass);
 
                     if (prop.HasSetter)
-                        GeneratePropertySetter(prop.Field, @class);
+                        GeneratePropertySetter(prop.Field, @class, false, originalClass);
                 }
                 else
                 {
                     if (prop.HasGetter)
-                        GeneratePropertyGetter(prop.QualifiedType, prop.GetMethod, @class, prop.IsPure);
+                        GeneratePropertyGetter(prop.QualifiedType, prop.GetMethod, @class, prop.IsPure, originalClass);
 
                     if (prop.HasSetter)
-                        GeneratePropertySetter(prop.SetMethod, @class, prop.IsPure);
+                        GeneratePropertySetter(prop.SetMethod, @class, prop.IsPure, originalClass);
                 }
 
                 WriteCloseBraceIndent();
@@ -1186,18 +1203,19 @@ namespace CppSharp.Generators.CSharp
                 : string.Format("this[{0}]", FormatMethodParameters(prop.Parameters));
         }
 
-        private void GenerateVariable(Class @class, Type type, Variable variable)
+        private void GenerateVariable(Class @class, Type type, Variable variable, Class originalClass = null)
         {
+            originalClass = originalClass ?? @class;
             PushBlock(CSharpBlockKind.Variable);
             
             GenerateDeclarationCommon(variable);
             WriteLine("public static {0} {1}", type, variable.Name);
             WriteStartBraceIndent();
 
-            GeneratePropertyGetter(variable.QualifiedType, variable, @class);
+            GeneratePropertyGetter(variable.QualifiedType, variable, @class, false, originalClass);
 
             if (!variable.QualifiedType.Qualifiers.IsConst)
-                GeneratePropertySetter(variable, @class);
+                GeneratePropertySetter(variable, @class, false, originalClass);
 
             WriteCloseBraceIndent();
             PopBlock(NewLineKind.BeforeNextBlock);
@@ -1871,7 +1889,7 @@ namespace CppSharp.Generators.CSharp
                 @class.Name, className, @class.IsValueType ? " : this()" : string.Empty);
 
             var hasBaseClass = @class.HasBaseClass && @class.BaseClass.IsRefType;
-            if (hasBaseClass)
+            if (hasBaseClass && !@class.IsValueType)
                 WriteLineIndent(": base(({0}.Internal*) native{1})",
                     QualifiedIdentifierIfNeeded(@class.BaseClass), @class.IsAbstractImpl ? ", true" : string.Empty);
 
@@ -2000,13 +2018,16 @@ namespace CppSharp.Generators.CSharp
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
-        public void GenerateMethod(Method method, Class @class)
+        public void GenerateMethod(Method method, Class @class, Class originalClass = null)
         {
+            originalClass = originalClass ?? @class;
             PushBlock(CSharpBlockKind.Method, method);
             GenerateDeclarationCommon(method);
 
             if (method.ExplicitInterfaceImpl == null)
             {
+                if (originalClass.IsValueType && method.Access == AccessSpecifier.Protected)
+                    method.Access = AccessSpecifier.Private;
                 Write(Helpers.GetAccess(GetValidMethodAccess(method)));
             }
 
@@ -2015,7 +2036,7 @@ namespace CppSharp.Generators.CSharp
             var isOverride = method.IsOverride &&
                 (rootBaseMethod = @class.GetRootBaseMethod(method, true)) != null && rootBaseMethod.IsVirtual;
 
-            if (method.IsVirtual && !isOverride && !method.IsOperator && !method.IsPure)
+            if (method.IsVirtual && !isOverride && !method.IsOperator && !method.IsPure && !originalClass.IsValueType)
                 Write("virtual ");
 
             var isBuiltinOperator = method.IsOperator &&
@@ -2103,7 +2124,7 @@ namespace CppSharp.Generators.CSharp
                 }
                 else
                 {
-                    GenerateInternalFunctionCall(method);
+                    GenerateInternalFunctionCall(method, null, null, originalClass);
                 }
             }
             else if (@class.IsValueType)
@@ -2118,7 +2139,7 @@ namespace CppSharp.Generators.CSharp
                 }
                 else
                 {
-                    GenerateInternalFunctionCall(method);
+                    GenerateInternalFunctionCall(method, null, null, originalClass);
                 }
             }
 
@@ -2301,7 +2322,7 @@ namespace CppSharp.Generators.CSharp
         }
 
         public void GenerateInternalFunctionCall(Function function,
-            List<Parameter> parameters = null, Type returnType = null)
+            List<Parameter> parameters = null, Type returnType = null, Class originalClass = null)
         {
             if (parameters == null)
                 parameters = function.Parameters;
@@ -2309,11 +2330,11 @@ namespace CppSharp.Generators.CSharp
             CheckArgumentRange(function);
             var functionName = string.Format("Internal.{0}",
                 GetFunctionNativeIdentifier(function));
-            GenerateFunctionCall(functionName, parameters, function, returnType);
+            GenerateFunctionCall(functionName, parameters, function, returnType, originalClass);
         }
 
         public void GenerateFunctionCall(string functionName, List<Parameter> parameters,
-            Function function, Type returnType = null)
+            Function function, Type returnType = null, Class originalClass = null)
         {
             if (function.IsPure)
             {
@@ -2336,7 +2357,8 @@ namespace CppSharp.Generators.CSharp
             if (method != null)
             {
                 var @class = (Class) method.Namespace;
-                isValueType = @class.IsValueType;
+                originalClass = originalClass ?? @class;
+                isValueType = originalClass.IsValueType;
 
                 operatorParam = method.Parameters.FirstOrDefault(
                     p => p.Kind == ParameterKind.OperatorParameter);

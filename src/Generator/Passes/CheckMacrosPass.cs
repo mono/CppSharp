@@ -108,7 +108,13 @@ namespace CppSharp.Passes
             var expansions = @class.PreprocessedEntities.OfType<MacroExpansion>();
 
             if (expansions.Any(e => e.Text == Prefix + "_VALUE_TYPE"))
-                @class.Type = ClassType.ValueType;
+            {
+                // C++/CLI cannot have a value type derived from a ref type
+                if(Driver.Options.IsCLIGenerator && @class.HasBaseClass && @class.BaseClass.IsRefType)
+                    @class.Type = ClassType.RefType;
+                else
+                    @class.Type = ClassType.ValueType;
+            }
 
             // If the class is a forward declaration, then we process the macro expansions
             // of the complete class as if they were specified on the forward declaration.
