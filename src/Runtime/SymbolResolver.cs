@@ -59,7 +59,7 @@ namespace CppSharp
         {
             foreach (var format in formats)
             {
-                var attempted = string.Format (format, name);
+                var attempted = System.IO.Path.Combine(Environment.CurrentDirectory, string.Format (format, name));
                 var ptr = loadImage (attempted);
 
                 if (ptr == IntPtr.Zero)
@@ -87,10 +87,12 @@ namespace CppSharp
         }
 
         #region POSIX
+		
+        private const int RTLD_LAZY = 0x1;
 
         static IntPtr dlopen (string path)
         {
-            return dlopen (path, 0x0);
+            return dlopen (path, RTLD_LAZY);
         }
 
         [DllImport ("dl", CharSet=CharSet.Ansi)]
