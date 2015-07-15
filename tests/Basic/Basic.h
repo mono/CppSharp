@@ -39,7 +39,7 @@ public:
     IgnoredType ignoredType;
     int fixedArray[3];
     void* ptr;
-    static const int unsafe = 10;
+    static const int unsafe;
 
 	const char* GetANSI();
 	// TODO: VC++ does not support char16

@@ -14,6 +14,8 @@ Foo::Foo(Private p)
 {
 }
 
+DLL_API const int Foo::unsafe = 10;
+
 const char* Foo::GetANSI()
 {
 	return "ANSI";
