@@ -1,4 +1,5 @@
-﻿using CppSharp.AST;
+﻿using System.Linq;
+using CppSharp.AST;
 
 namespace CppSharp.Passes
 {
@@ -28,8 +29,10 @@ namespace CppSharp.Passes
             if (!base.VisitClassDecl(@class))
                 return false;
 
-            if (@class.Fields.Count == 0)
-                @class.Layout.Size = @class.Layout.DataSize = 0;
+            if (HasFieldsOrVirtuals(@class))
+                return false;
+
+            @class.Layout.Size = @class.Layout.DataSize = 0;
 
             return true;
         }
@@ -78,6 +81,13 @@ namespace CppSharp.Passes
             // TODO: Handle indirect parameters
 
             return true;
+        }
+
+        private static bool HasFieldsOrVirtuals(Class @class)
+        {
+            if (@class.Fields.Count > 0 || @class.IsDynamic)
+                return true;
+            return @class.Bases.Any(@base => @base.IsClass && HasFieldsOrVirtuals(@base.Class));
         }
     }
 }
