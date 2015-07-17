@@ -344,4 +344,23 @@ namespace CppSharp.Types.Std
             typeRef.Include = include;
         }
     }
+
+    [TypeMap("FILE")]
+    public class FILE : TypeMap
+    {
+        public override string CSharpSignature(CSharpTypePrinterContext ctx)
+        {
+            return "global::System.IntPtr";
+        }
+
+        public override void CSharpMarshalToNative(MarshalContext ctx)
+        {
+            ctx.Return.WriteLine(ctx.Parameter.Name);
+        }
+
+        public override void CSharpMarshalToManaged(MarshalContext ctx)
+        {
+            ctx.Return.WriteLine(ctx.ReturnVarName);
+        }
+    }
 }
