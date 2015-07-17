@@ -131,12 +131,19 @@ void Parser::SetupHeader()
     std::vector<const char*> args;
     args.push_back("-cc1");
 
-    // Enable C++ language mode
-    args.push_back("-xc++");
     switch (Opts->LanguageVersion)
     {
     case CppParser::LanguageVersion::C:
-        args.push_back("-std=c");
+        args.push_back("-xc");
+    case CppParser::LanguageVersion::CPlusPlus98:
+    case CppParser::LanguageVersion::CPlusPlus11:
+        args.push_back("-xc++");
+    }
+
+    switch (Opts->LanguageVersion)
+    {
+    case CppParser::LanguageVersion::C:
+        args.push_back("-std=gnu99");
         break;
     case CppParser::LanguageVersion::CPlusPlus98:
         args.push_back("-std=gnu++98");
