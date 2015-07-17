@@ -75,6 +75,8 @@ Bar::Bar() {}
 
 class DLL_API ForceCreationOfInterface : public Foo, public Bar
 {
+public:
+    ForceCreationOfInterface();
 };
 
 class DLL_API Baz : public Foo, public Bar
@@ -200,7 +202,7 @@ private:
 // Tests destructors
 struct DLL_API TestDestructors
 {
-    static void InitMarker() { Marker = 0; }
+    static void InitMarker();
     static int Marker;
 
     TestDestructors();
@@ -330,6 +332,8 @@ public:
 
 class DLL_API HasPrivateOverride : public HasPrivateOverrideBase
 {
+public:
+    HasPrivateOverride();
 private:
     virtual void privateOverride(int i);
 };
@@ -566,16 +570,22 @@ public:
 
 class DLL_API HasProtectedVirtual
 {
+public:
+    HasProtectedVirtual();
 protected:
     virtual void protectedVirtual();
 };
 
 class DLL_API InheritanceBuffer : public Foo, public HasProtectedVirtual
 {
+public:
+    InheritanceBuffer();
 };
 
 class DLL_API InheritsProtectedVirtualFromSecondaryBase : public InheritanceBuffer
 {
+public:
+    InheritsProtectedVirtualFromSecondaryBase();
 protected:
     void protectedVirtual();
 };

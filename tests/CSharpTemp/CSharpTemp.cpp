@@ -35,6 +35,8 @@ void Foo::setNoParams()
 {
 }
 
+const int Foo::rename;
+
 const Foo& Bar::operator[](int i) const
 {
     return m_foo;
@@ -142,6 +144,10 @@ Bar Bar::operator ++(int i)
     Bar bar = *this;
     index++;
     return bar;
+}
+
+ForceCreationOfInterface::ForceCreationOfInterface()
+{
 }
 
 int Baz::takesQux(const Qux& qux)
@@ -293,6 +299,11 @@ bool P::isBool()
 void P::setIsBool(bool value)
 {
 
+}
+
+void TestDestructors::InitMarker()
+{
+    Marker = 0;
 }
 
 int TestDestructors::Marker = 0;
@@ -450,6 +461,10 @@ int MethodsWithDefaultValues::getA()
 }
 
 void HasPrivateOverrideBase::privateOverride(int i)
+{
+}
+
+HasPrivateOverride::HasPrivateOverride()
 {
 }
 
@@ -620,7 +635,19 @@ TestParamToInterfacePass::TestParamToInterfacePass() : TestParamToInterfacePassB
 {
 }
 
+HasProtectedVirtual::HasProtectedVirtual()
+{
+}
+
 void HasProtectedVirtual::protectedVirtual()
+{
+}
+
+InheritanceBuffer::InheritanceBuffer()
+{
+}
+
+InheritsProtectedVirtualFromSecondaryBase::InheritsProtectedVirtualFromSecondaryBase()
 {
 }
 
