@@ -39,7 +39,7 @@ namespace CppSharp.Utils
 
             // Workaround for CLR which does not check for .dll if the
             // name already has a dot.
-            if (Platform.IsMono)
+            if (!Platform.IsMono)
                 options.SharedLibraryName += ".dll";
 
             var path = Path.GetFullPath(GetTestsDirectory(name));

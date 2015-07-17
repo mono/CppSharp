@@ -60,6 +60,11 @@ public class CSharpTempTests : GeneratorTestFixture
     [Test]
     public void TestMultipleInheritance()
     {
+        // TODO: remove when the bug in question is fixed
+        if (Type.GetType("Mono.Runtime") != null)
+        {
+            Assert.Fail("Crashes with Mono because of a problem with marshalling arrays: https://gist.github.com/tritao/7e62c71ffe57d6bc326e");
+        }
         using (var baz = new Baz())
         {
             Assert.That(baz.Method, Is.EqualTo(1));
