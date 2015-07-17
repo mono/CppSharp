@@ -86,6 +86,11 @@ namespace CppSharp.Passes
                 @class.Methods.Any(ReturnsClassInstance))
                 return false;
 
+            // If the class is to be used as an opaque type, then it cannot be
+            // bound as static.
+            if (@class.IsOpaque)
+                return false;
+
             // TODO: We should take C++ friends into account here, they might allow
             // a class to be instantiated even it if's not possible to instantiate
             // it using just its regular members.
