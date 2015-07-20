@@ -221,7 +221,7 @@ namespace CppSharp.Generators.CLI
         {
             PushBlock(CLIBlockKind.FunctionsClass);
 
-            WriteLine("public ref class {0}", TranslationUnit.FileNameWithoutExtension);
+            WriteLine("public ref class {0}", TranslationUnit.FileNameWithoutExtension + "WrapperClass");
             WriteLine("{");
             WriteLine("public:");
             PushIndent();
