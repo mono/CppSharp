@@ -654,7 +654,7 @@ namespace CppSharp.Generators.CLI
             WriteLine("{0}^ {0}::{1}(::System::IntPtr native)", qualifiedIdentifier, Helpers.CreateInstanceIdentifier);
 
             WriteStartBraceIndent();
-            WriteLine("return gcnew {0}(({1}) native.ToPointer());", qualifiedIdentifier, nativeType);
+            WriteLine("return gcnew ::{0}(({1}) native.ToPointer());", qualifiedIdentifier, nativeType);
             WriteCloseBraceIndent();
             NewLine();
         }

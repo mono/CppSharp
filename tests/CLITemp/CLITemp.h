@@ -47,3 +47,5 @@ std::ostream& operator<<(std::ostream& os, const Date& dt)
     os << dt.mo << '/' << dt.da << '/' << dt.yr;
     return os;
 }
+
+DLL_API void testFreeFunction();

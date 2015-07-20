@@ -9,3 +9,8 @@ std::string Date::testStdString(std::string s)
 {
     return s + "_test";
 }
+
+void testFreeFunction()
+{
+
+}
