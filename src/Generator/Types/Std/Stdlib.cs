@@ -355,12 +355,12 @@ namespace CppSharp.Types.Std
 
         public override void CSharpMarshalToNative(MarshalContext ctx)
         {
-            ctx.Return.WriteLine(ctx.Parameter.Name);
+            ctx.Return.Write(ctx.Parameter.Name);
         }
 
         public override void CSharpMarshalToManaged(MarshalContext ctx)
         {
-            ctx.Return.WriteLine(ctx.ReturnVarName);
+            ctx.Return.Write(ctx.ReturnVarName);
         }
     }
 }
