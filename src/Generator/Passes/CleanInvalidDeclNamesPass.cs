@@ -1,9 +1,8 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
+using System.Text;
 using CppSharp.AST;
 using CppSharp.Generators.CLI;
 using CppSharp.Generators.CSharp;
-using System.Text;
 
 namespace CppSharp.Passes
 {
@@ -28,6 +27,9 @@ namespace CppSharp.Passes
 
         public override bool VisitDeclaration(Declaration decl)
         {
+            if (!base.VisitDeclaration(decl))
+                return false;
+
             // Do not clean up namespace names since it can mess up with the
             // names of anonymous or the global namespace.
             if (decl is Namespace)
@@ -38,7 +40,7 @@ namespace CppSharp.Passes
             {
                 decl.Name = decl.Namespace.Name == "_" ? "__" : "_";
                 decl.ExplicitlyIgnore();
-                return false;
+                return true;
             }
 
             Function function = decl as Function;
@@ -46,7 +48,7 @@ namespace CppSharp.Passes
                 decl.Name = CheckName(decl.Name);
 
             StringHelpers.CleanupText(ref decl.DebugText);
-            return base.VisitDeclaration(decl);
+            return true;
         }
 
         public override bool VisitParameterDecl(Parameter parameter)
@@ -56,10 +58,10 @@ namespace CppSharp.Passes
 
         public override bool VisitClassDecl(Class @class)
         {
-            var currentUniqueName = this.uniqueName;
-            this.uniqueName = 0;
-            var ret = base.VisitClassDecl(@class);
-            this.uniqueName = currentUniqueName;
+            var currentUniqueName = uniqueName;
+            uniqueName = 0;
+            base.VisitClassDecl(@class);
+            uniqueName = currentUniqueName;
 
             if (@class.Namespace.Classes.Any(d => d != @class && d.Name == @class.Name))
             {
@@ -72,25 +74,25 @@ namespace CppSharp.Passes
                 @class.Name = str.ToString();
             }
 
-            return ret;
+            return true;
         }
 
         public override bool VisitFunctionDecl(Function function)
         {
-            var currentUniqueName = this.uniqueName;
-            this.uniqueName = 0;
+            var currentUniqueName = uniqueName;
+            uniqueName = 0;
             var ret = base.VisitFunctionDecl(function);
-            this.uniqueName = currentUniqueName;
+            uniqueName = currentUniqueName;
 
             return ret;
         }
 
         public override bool VisitEvent(Event @event)
         {
-            var currentUniqueName = this.uniqueName;
-            this.uniqueName = 0;
+            var currentUniqueName = uniqueName;
+            uniqueName = 0;
             var ret = base.VisitEvent(@event);
-            this.uniqueName = currentUniqueName;
+            uniqueName = currentUniqueName;
 
             return ret;
         }
@@ -108,6 +110,9 @@ namespace CppSharp.Passes
 
         public override bool VisitTypedefDecl(TypedefDecl typedef)
         {
+            if (base.VisitTypedefDecl(typedef))
+                return false;
+
             var @class = typedef.Namespace.FindClass(typedef.Name);
 
             // Clang will walk the typedef'd tag decl and the typedef decl,
@@ -119,7 +124,7 @@ namespace CppSharp.Passes
             if (typedef.Type == null)
                 typedef.ExplicitlyIgnore();
 
-            return base.VisitTypedefDecl(typedef);
+            return true;
         }
 
         private static void CheckEnumName(Enumeration @enum)
@@ -127,7 +132,7 @@ namespace CppSharp.Passes
             // If we still do not have a valid name, then try to guess one
             // based on the enum value names.
 
-            if (!String.IsNullOrWhiteSpace(@enum.Name))
+            if (!string.IsNullOrWhiteSpace(@enum.OriginalName))
                 return;
 
             var prefix = @enum.Items.Select(item => item.Name)
@@ -137,24 +142,33 @@ namespace CppSharp.Passes
             if (prefix.Length < 3)
                 return;
 
-            prefix = prefix.Trim().Trim(new char[] { '_' });
+            prefix = prefix.Trim().Trim('_');
             @enum.Name = prefix;
         }
 
         public override bool VisitEnumDecl(Enumeration @enum)
         {
+            if (!base.VisitEnumDecl(@enum))
+                return false;
+
             CheckEnumName(@enum);
-            return base.VisitEnumDecl(@enum);
+            return true;
         }
 
         public override bool VisitEnumItem(Enumeration.Item item)
         {
+            if (!base.VisitEnumItem(item))
+                return false;
+
             item.Name = CheckName(item.Name);
-            return base.VisitEnumItem(item);
+            return true;
         }
 
         public override bool VisitFieldDecl(Field field)
         {
+            if (!base.VisitFieldDecl(field))
+                return false;
+
             if (field.Class.Fields.Count(c => c.Name.Equals(field.Name)) > 1)
             {
                 StringBuilder str = new StringBuilder();
@@ -165,7 +179,7 @@ namespace CppSharp.Passes
                 } while (field.Class.Fields.Any(c => c.Name.Equals(str.ToString())));
                 field.Name = str.ToString();
             }
-            return base.VisitFieldDecl(field);
+            return true;
         }
     }
 }

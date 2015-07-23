@@ -94,7 +94,7 @@ namespace CppSharp.AST
             set
             {
                 name = value;
-                if (string.IsNullOrEmpty(OriginalName))
+                if (OriginalName == null)
                     OriginalName = name;
             }
         }

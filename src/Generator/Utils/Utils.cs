@@ -127,12 +127,15 @@ namespace CppSharp
         public static void CleanupText(ref string debugText)
         {
             // Strip off newlines from the debug text.
-            if (String.IsNullOrWhiteSpace(debugText))
-                debugText = String.Empty;
+            if (string.IsNullOrWhiteSpace(debugText))
+            {
+                debugText = string.Empty;
+                return;
+            }
 
             // TODO: Make this transformation in the output.
-            debugText = Regex.Replace(debugText, " ( )+", " ");
-            debugText = Regex.Replace(debugText, "\n", "");
+            debugText = Regex.Replace(debugText, " {2,}", " ");
+            debugText = debugText.Replace("\n", "");
         }
 
         public static string[] SplitCamelCase(string input)
