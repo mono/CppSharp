@@ -401,9 +401,8 @@ namespace CppSharp.Generators.CSharp
 
         public bool VisitDelegateType(FunctionType function, string type)
         {
-            Context.Return.Write("Marshal.GetFunctionPointerForDelegate({0})",
-                Context.Parameter.Name);
-
+            Context.Return.Write("{0} == null ? global::System.IntPtr.Zero : Marshal.GetFunctionPointerForDelegate({0})",
+                  Context.Parameter.Name);
             return true;
         }
 
