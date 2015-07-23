@@ -327,4 +327,14 @@ public class CSharpTempTests : GeneratorTestFixture
         dervClass = new TestParamToInterfacePass(dervClass + baseInterface);
         Assert.AreEqual(dervClass.M, 2);
     }
+
+    [Test]
+    public void TestNullAttributedFunctionPtr()
+    {
+        using (var foo = new Foo())
+        {
+            foo.AttributedFunctionPtr = null;
+        }
+    }
+
 }
