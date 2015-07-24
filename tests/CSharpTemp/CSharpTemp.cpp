@@ -236,6 +236,11 @@ ComplexType::ComplexType() : qFlags(QFlags<TestFlag>(TestFlag::Flag2))
 {
 }
 
+ComplexType::ComplexType(const QFlags<TestFlag> f) : qFlags(QFlags<TestFlag>(TestFlag::Flag2))
+{
+    qFlags = f;
+}
+
 int ComplexType::check()
 {
     return 5;

@@ -50,12 +50,7 @@ namespace CppSharp.Passes
                 OperatorKind = operatorKind,
                 IsExplicit = method.IsExplicit
             };
-            var p = new Parameter(parameter);
-            Class @class;
-            if (p.Type.SkipPointerRefs().TryGetClass(out @class))
-                p.QualifiedType = new QualifiedType(new TagType(@class), parameter.QualifiedType.Qualifiers);
-            p.DefaultArgument = null;
-            conversionOperator.Parameters.Add(p);
+            conversionOperator.Parameters.Add(new Parameter(parameter) { DefaultArgument = null });
             ((Class) method.Namespace).Methods.Add(conversionOperator);
             return true;
         }

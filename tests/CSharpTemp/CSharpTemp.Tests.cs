@@ -39,6 +39,9 @@ public class CSharpTempTests : GeneratorTestFixture
                 new Bar(qux).Dispose();
             }
         }
+        using (ComplexType complexType = TestFlag.Flag1)
+        {
+        }
     }
 
     [Test]

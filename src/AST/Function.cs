@@ -195,6 +195,13 @@ namespace CppSharp.AST
 
                 return hiddenParam.QualifiedType;
             }
+            set
+            {
+                if (HasIndirectReturnTypeParameter)
+                    Parameters.Single(p => p.Kind == ParameterKind.IndirectReturnType).QualifiedType = value;
+                else
+                    ReturnType = value;
+            }
         }
 
         public FunctionSynthKind SynthKind { get; set; }

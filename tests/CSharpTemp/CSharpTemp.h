@@ -167,6 +167,7 @@ class DLL_API ComplexType
 {
 public:
     ComplexType();
+    ComplexType(const QFlags<TestFlag> f);
     int check();
     QFlags<TestFlag> returnsQFlags();
     void takesQFlags(const QFlags<int> f);
