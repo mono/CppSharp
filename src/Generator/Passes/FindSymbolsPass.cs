@@ -6,6 +6,9 @@ namespace CppSharp.Passes
     {
         public override bool VisitDeclaration(Declaration decl)
         {
+            if (!base.VisitDeclaration(decl))
+                return false;
+
             var options = Driver.Options;
             if (!options.CheckSymbols || options.IsCLIGenerator)
                 return false;
@@ -19,7 +22,7 @@ namespace CppSharp.Passes
                 return false;
             }
 
-            return base.VisitDeclaration(decl);
+            return true;
         }
 
         private bool VisitMangledDeclaration(IMangledDecl mangledDecl)
