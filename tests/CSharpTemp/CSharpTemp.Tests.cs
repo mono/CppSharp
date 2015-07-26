@@ -340,4 +340,35 @@ public class CSharpTempTests : GeneratorTestFixture
         }
     }
 
+    [Test]
+    public void TestMultiOverLoadNPtrToRefTypeGen()
+    {
+        unsafe
+        {
+            var obj = new MultiOverLoadNPtrToRefTypeGenTest();
+            var p = obj.ReturnPrimTypePtr();
+            Assert.AreEqual(0, p[0]);                 // Pass!
+            Assert.AreEqual(0, p[1]);                 // Pass!
+            Assert.AreEqual(0, p[2]);                 // Pass!
+
+            obj.TakePrimTypePtr(ref *p);
+            Assert.AreEqual(100, p[0]);               // Pass!
+            //Assert.AreEqual(200, p[1]);               // Fail!
+            //Assert.AreEqual(300, p[2]);               // Fail!
+            
+            int[] array = { 1, 2, 3 };
+            fixed (int* p1 = array)
+            {
+                obj.TakePrimTypePtr(ref *p1);
+                Assert.AreEqual(100, p1[0]);          //Pass!
+                //Assert.AreEqual(200, p1[1]);          //Fail!
+                //Assert.AreEqual(300, p1[2]);          //Fail!
+            }
+
+            Assert.AreEqual(100, array[0]);           //Pass!!!
+            //Assert.AreEqual(200, array[1]);           //FAIL!!!
+            //Assert.AreEqual(300, array[2]);           //FAIL!!!
+        }
+    }
+
 }
