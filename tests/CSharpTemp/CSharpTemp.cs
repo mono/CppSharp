@@ -78,6 +78,26 @@ namespace CppSharp.Tests
         }
     }
 
+    [TypeMap("TypeMappedWithOperator")]
+    public class TypeMappedWithOperator : TypeMap
+    {
+        public override string CSharpSignature(CSharpTypePrinterContext ctx)
+        {
+            // doesn't matter, we just need it to compile
+            return "int";
+        }
+
+        public override void CSharpMarshalToNative(MarshalContext ctx)
+        {
+            ctx.Return.Write(ctx.Parameter.Name);
+        }
+
+        public override void CSharpMarshalToManaged(MarshalContext ctx)
+        {
+            ctx.Return.Write(ctx.ReturnVarName);
+        }
+    }
+
     public class TestAttributesPass : TranslationUnitPass
     {
         public override bool VisitFunctionDecl(Function function)

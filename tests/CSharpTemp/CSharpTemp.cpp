@@ -663,3 +663,12 @@ void InheritsProtectedVirtualFromSecondaryBase::protectedVirtual()
 void freeFunctionWithUnsupportedDefaultArg(Foo foo)
 {
 }
+
+TypeMappedWithOperator::TypeMappedWithOperator()
+{
+}
+
+int TypeMappedWithOperator::operator |(int i)
+{
+   return 0;
+}

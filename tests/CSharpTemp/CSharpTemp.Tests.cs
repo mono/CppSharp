@@ -42,6 +42,10 @@ public class CSharpTempTests : GeneratorTestFixture
         using (ComplexType complexType = TestFlag.Flag1)
         {
         }
+        using (var typeMappedWithOperator = new TypeMappedWithOperator())
+        {
+            int i = typeMappedWithOperator | 5;
+        }
     }
 
     [Test]

@@ -593,3 +593,10 @@ protected:
 };
 
 void DLL_API freeFunctionWithUnsupportedDefaultArg(Foo foo = Foo());
+
+class DLL_API TypeMappedWithOperator
+{
+public:
+    TypeMappedWithOperator();
+    int operator |(int i);
+};

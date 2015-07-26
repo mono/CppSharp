@@ -356,6 +356,14 @@ namespace CppSharp.Generators.CSharp
             if (@class.IsIncomplete)
                 return;
 
+            System.Type typeMap = null;
+            if (Driver.TypeDatabase.TypeMaps.ContainsKey(@class.Name))
+            {
+                typeMap = Driver.TypeDatabase.TypeMaps[@class.Name];
+                // disable the type map for the mapped class itself so that operator params are not mapped
+                Driver.TypeDatabase.TypeMaps.Remove(@class.Name);
+            }
+
             PushBlock(CSharpBlockKind.Class);
             GenerateDeclarationCommon(@class);
 
@@ -413,6 +421,9 @@ namespace CppSharp.Generators.CSharp
         exit:
             WriteCloseBraceIndent();
             PopBlock(NewLineKind.BeforeNextBlock);
+
+            if (typeMap != null)
+                Driver.TypeDatabase.TypeMaps.Add(@class.Name, typeMap);
         }
 
         private void GenerateClassMarshals(Class @class)
