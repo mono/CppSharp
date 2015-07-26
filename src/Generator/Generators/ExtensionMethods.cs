@@ -1,10 +1,15 @@
-﻿using CppSharp.AST;
+﻿using System.Collections.Generic;
+using CppSharp.AST;
 using Interop = System.Runtime.InteropServices;
 
 namespace CppSharp.Generators
 {
     public static class ExtensionMethods
     {
+        public static List<PrimitiveType> AllowedToHaveDefaultPtrVals = new List<PrimitiveType> {PrimitiveType.Bool, PrimitiveType.Double, PrimitiveType.Float,
+                                                                         PrimitiveType.Int, PrimitiveType.Long, PrimitiveType.LongLong, PrimitiveType.Short,
+                                                                         PrimitiveType.UInt, PrimitiveType.ULong, PrimitiveType.ULongLong, PrimitiveType.UShort};
+
         public static Interop.CallingConvention ToInteropCallConv(this CallingConvention convention)
         {
             switch (convention)

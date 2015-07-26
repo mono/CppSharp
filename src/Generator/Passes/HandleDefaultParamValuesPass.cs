@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
+using CppSharp.Generators;
 using CppSharp.Generators.CSharp;
 using CppSharp.Types;
 
@@ -52,7 +54,9 @@ namespace CppSharp.Passes
                     parameter.QualifiedType.Qualifiers);
                 if (defaultConstruct == null ||
                     (!Driver.Options.MarshalCharAsManagedChar &&
-                     parameter.Type.Desugar().IsPrimitiveType(PrimitiveType.UChar)))
+                     parameter.Type.Desugar().IsPrimitiveType(PrimitiveType.UChar)) ||
+                    (parameter.Type.IsPointerToPrimitiveType() && ExtensionMethods.AllowedToHaveDefaultPtrVals.Any(
+                    primType => parameter.Type.Desugar().IsPointerToPrimitiveType(primType)) && parameter.Usage == ParameterUsage.InOut))
                 {
                     overloadIndices.Add(function.Parameters.IndexOf(parameter));
                     continue;
@@ -103,6 +107,13 @@ namespace CppSharp.Passes
                     parameter.DefaultArgument.String = "new global::System.IntPtr()";
                     return true;
                 }
+
+                if (parameter.Usage == ParameterUsage.InOut && parameter.Type.IsPointerToPrimitiveType() &&
+                    ExtensionMethods.AllowedToHaveDefaultPtrVals.Any(
+                        primType => desugared.IsPointerToPrimitiveType(primType)))
+                    return false;
+                    
+
                 Class @class;
                 if (desugared.GetFinalPointee().TryGetClass(out @class) && @class.IsValueType)
                 {
@@ -110,9 +121,11 @@ namespace CppSharp.Passes
                         new CSharpTypePrinter(Driver).VisitClassDecl(@class));
                     return true;
                 }
+                
                 parameter.DefaultArgument.String = "null";
                 return true;
             }
+            
             return false;
         }
 
@@ -243,9 +256,10 @@ namespace CppSharp.Passes
                 Function overload = method != null ? new Method(method) : new Function(function);
                 overload.OriginalFunction = function;
                 overload.SynthKind = FunctionSynthKind.DefaultValueOverload;
-                overload.Parameters[overloadIndex].GenerationKind = GenerationKind.None;
+                for (int i = overloadIndex; i < function.Parameters.Count; ++i )
+                    overload.Parameters[i].GenerationKind = GenerationKind.None;
 
-                var indices = overloadIndices.Where(i => i != overloadIndex).ToList();
+                var indices = overloadIndices.Where(i => i < overloadIndex).ToList();
                 if (indices.Any())
                     for (int i = 0; i <= indices.Last(); i++)
                         if (i != overloadIndex)

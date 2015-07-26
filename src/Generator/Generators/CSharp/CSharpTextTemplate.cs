@@ -2137,6 +2137,25 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateOverloadCall(Function function)
         {
+            var needUnsafe = function.Parameters.Any(p => p.Kind == ParameterKind.Regular && p.Ignore
+                             && p.Type.IsPointerToPrimitiveType() && p.Usage == ParameterUsage.InOut && p.HasDefaultValue);
+            if(needUnsafe)
+            {
+                WriteLine("unsafe");
+                WriteStartBraceIndent();
+                int i = 0;
+                foreach(Parameter param in function.Parameters.Where(
+                            p => p.Kind == ParameterKind.Regular &&
+                                 p.Ignore && p.Type.IsPointerToPrimitiveType() && p.Usage == ParameterUsage.InOut && p.HasDefaultValue))
+                {
+                    var strtype = param.Type.CSharpType(TypePrinter).ToString();
+                    WriteLine("{0} arg{1} = ({0}){2};", strtype, i, param.DefaultArgument.String);
+                    WriteLine("{0} param{1} = *arg{1};", strtype.Substring(0, strtype.Length - 1), i);
+                    ++i;
+                }
+            }
+
+            int j = 0;
             Type type = function.OriginalReturnType.Type;
             WriteLine("{0}{1}({2});",
                 type.IsPrimitiveType(PrimitiveType.Void) ? string.Empty : "return ",
@@ -2144,7 +2163,10 @@ namespace CppSharp.Generators.CSharp
                 string.Join(", ",
                     function.Parameters.Where(
                         p => p.Kind == ParameterKind.Regular).Select(
-                            p => p.Ignore ? p.DefaultArgument.String : p.Name)));
+                        p => p.Ignore ? ((p.Type.IsPointerToPrimitiveType() && p.Usage == ParameterUsage.InOut && p.HasDefaultValue) ? "ref param" + j++ : p.DefaultArgument.String)
+                                        : (p.Usage == ParameterUsage.InOut ? "ref " : string.Empty) + p.Name)));
+            if(needUnsafe)
+                WriteCloseBraceIndent();
         }
 
         private void GenerateEquals(Function method, Class @class)
@@ -2487,6 +2509,10 @@ namespace CppSharp.Generators.CSharp
 
             if (needsFixedThis && operatorParam == null)
                 WriteCloseBraceIndent();
+
+            var numFixedBlocks = @params.Count(param => param.HasFixedBlock);
+            for(var i=0; i<numFixedBlocks; ++i)
+                WriteCloseBraceIndent();
         }
 
         private int GetInstanceParamIndex(Method method)
@@ -2508,6 +2534,10 @@ namespace CppSharp.Generators.CSharp
             {
                 var param = paramInfo.Param;
                 if (!(param.IsOut || param.IsInOut)) continue;
+                if (param.IsInOut && param.Type.IsPointerToPrimitiveType()
+                    && ExtensionMethods.AllowedToHaveDefaultPtrVals.Any(
+                        primType => param.Type.IsPointerToPrimitiveType(primType)))
+                    continue;
 
                 var nativeVarName = paramInfo.Name;
 
@@ -2537,6 +2567,7 @@ namespace CppSharp.Generators.CSharp
             public string Name;
             public Parameter Param;
             public CSharpMarshalContext Context;
+            public bool HasFixedBlock;
         }
 
         public List<ParamMarshal> GenerateFunctionParamsMarshal(IEnumerable<Parameter> @params,
@@ -2566,7 +2597,7 @@ namespace CppSharp.Generators.CSharp
             }
 
             var argName = "arg" + paramIndex.ToString(CultureInfo.InvariantCulture);
-            var paramMarshal = new ParamMarshal { Name = argName, Param = param };
+            var paramMarshal = new ParamMarshal { Name = argName, Param = param, HasFixedBlock = false };
 
             if (param.IsOut || param.IsInOut)
             {
@@ -2590,16 +2621,26 @@ namespace CppSharp.Generators.CSharp
 
             paramMarshal.Context = ctx;
 
-            var marshal = new CSharpMarshalManagedToNativePrinter(ctx);
-            param.CSharpMarshalToNative(marshal);
+            if (param.IsInOut && param.Type.IsPointerToPrimitiveType()
+                && ExtensionMethods.AllowedToHaveDefaultPtrVals.Any(primType => param.Type.IsPointerToPrimitiveType(primType)))
+            {
+                WriteLine("fixed({0} {1} = &{2})", param.Type.CSharpType(TypePrinter), argName, param.Name);
+                paramMarshal.HasFixedBlock = true;
+                WriteStartBraceIndent();
+            }
+            else
+            {
+                var marshal = new CSharpMarshalManagedToNativePrinter(ctx);
+                param.CSharpMarshalToNative(marshal);
 
-            if (string.IsNullOrEmpty(marshal.Context.Return))
-                throw new Exception("Cannot marshal argument of function");
+                if (string.IsNullOrEmpty(marshal.Context.Return))
+                    throw new Exception("Cannot marshal argument of function");
 
-            if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
-                Write(marshal.Context.SupportBefore);
+                if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
+                    Write(marshal.Context.SupportBefore);
 
-            WriteLine("var {0} = {1};", argName, marshal.Context.Return);
+                WriteLine("var {0} = {1};", argName, marshal.Context.Return);
+            }
 
             return paramMarshal;
         }
