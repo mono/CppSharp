@@ -15,6 +15,10 @@ namespace CppSharp.Passes
         private static readonly Regex regexName = new Regex(@"(\w+)", RegexOptions.Compiled);
         private static readonly Regex regexCtor = new Regex(@"^([\w<,>:]+)\s*(\([\w, ]*\))$", RegexOptions.Compiled);
 
+        private static List<PrimitiveType> AllowedToHaveDefaultPtrVals = new List<PrimitiveType> {PrimitiveType.Bool, PrimitiveType.Double, PrimitiveType.Float,
+                                                                         PrimitiveType.Int, PrimitiveType.Long, PrimitiveType.LongLong, PrimitiveType.Short,
+                                                                         PrimitiveType.UInt, PrimitiveType.ULong, PrimitiveType.ULongLong, PrimitiveType.UShort};
+
         private readonly Dictionary<DeclarationContext, List<Function>> overloads = new Dictionary<DeclarationContext, List<Function>>(); 
 
         public HandleDefaultParamValuesPass()
@@ -52,7 +56,8 @@ namespace CppSharp.Passes
                     parameter.QualifiedType.Qualifiers);
                 if (defaultConstruct == null ||
                     (!Driver.Options.MarshalCharAsManagedChar &&
-                     parameter.Type.Desugar().IsPrimitiveType(PrimitiveType.UChar)))
+                     parameter.Type.Desugar().IsPrimitiveType(PrimitiveType.UChar)) ||
+                    (parameter.Type.IsPointerToPrimitiveType() && parameter.Usage == ParameterUsage.InOut))
                 {
                     overloadIndices.Add(function.Parameters.IndexOf(parameter));
                     continue;
@@ -110,6 +115,8 @@ namespace CppSharp.Passes
                         new CSharpTypePrinter(Driver).VisitClassDecl(@class));
                     return true;
                 }
+                if (AllowedToHaveDefaultPtrVals.Any(type => parameter.Type.IsPointerToPrimitiveType(type)))
+                    return false;
                 parameter.DefaultArgument.String = "null";
                 return true;
             }
@@ -243,9 +250,10 @@ namespace CppSharp.Passes
                 Function overload = method != null ? new Method(method) : new Function(function);
                 overload.OriginalFunction = function;
                 overload.SynthKind = FunctionSynthKind.DefaultValueOverload;
-                overload.Parameters[overloadIndex].GenerationKind = GenerationKind.None;
+                for (int i = overloadIndex; i < function.Parameters.Count; ++i )
+                    overload.Parameters[i].GenerationKind = GenerationKind.None;
 
-                var indices = overloadIndices.Where(i => i != overloadIndex).ToList();
+                var indices = overloadIndices.Where(i => i < overloadIndex).ToList();
                 if (indices.Any())
                     for (int i = 0; i <= indices.Last(); i++)
                         if (i != overloadIndex)

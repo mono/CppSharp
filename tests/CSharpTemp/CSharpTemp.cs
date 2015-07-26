@@ -112,6 +112,7 @@ namespace CppSharp.Tests
             // To ensure that calls to constructors in conversion operators
             // are not ambiguous with multiple inheritance pass enabled.
             driver.Options.GenerateConversionOperators = true;
+            driver.TranslationUnitPasses.AddPass(new MarshalPrimitivePointersAsRefTypePass());
             driver.TranslationUnitPasses.AddPass(new TestAttributesPass());
             driver.Options.MarshalCharAsManagedChar = true;
             driver.Options.GenerateDefaultValuesForArguments = true;
