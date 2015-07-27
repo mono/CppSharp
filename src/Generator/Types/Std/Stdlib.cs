@@ -289,6 +289,8 @@ namespace CppSharp.Types.Std
     [TypeMap("std::shared_ptr")]
     public class SharedPtr : TypeMap
     {
+        public override bool IsIgnored { get { return true; } }
+
         public override string CLISignature(CLITypePrinterContext ctx)
         {
             throw new System.NotImplementedException();
