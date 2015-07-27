@@ -59,7 +59,7 @@
 
         public override string ToString()
         {
-            return Expression;
+            return string.Format("{0} = {1}", Name, Expression);
         }
     }
 }
