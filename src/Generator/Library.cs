@@ -139,6 +139,10 @@ namespace CppSharp
                     if (macro.Enumeration != null)
                         continue;
 
+                    // Skip this macro if the enum already has an item with same entry.
+                    if (@enum.Items.Exists(it => it.Name == macro.Name))
+                        continue;
+
                     var item = GenerateEnumItemFromMacro(context, macro);
                     @enum.AddItem(item);
 
