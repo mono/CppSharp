@@ -23,7 +23,7 @@ namespace CppSharp.Passes
                 return false;
             if (@class.Declarations.Any(decl => decl.Access == AccessSpecifier.Protected))
                 return false;
-            if (@class.Methods.Any(m => m.IsVirtual))
+            if (@class.IsDynamic)
                 return false;
             if (@class.HasBaseClass && @class.BaseClass.IsRefType)
                 return false;
@@ -33,10 +33,7 @@ namespace CppSharp.Passes
                                   cls => cls.Bases.Any(clss => clss.IsClass && clss.Class == @class))))
                 return false;
 
-            if (@class.IsPOD || @class.IsValueType)
-                return true;
-
-            return false;
+            return @class.IsPOD;
         }
     }
 }
