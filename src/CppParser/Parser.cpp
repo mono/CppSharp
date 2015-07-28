@@ -10,6 +10,7 @@
 #endif
 
 #include "Parser.h"
+#include "ELFDumper.h"
 
 #include <llvm/Support/Host.h>
 #include <llvm/Support/Path.h>
@@ -284,7 +285,7 @@ void Parser::SetupHeader()
     C->createPreprocessor(TU_Complete);
 
     Preprocessor& PP = C->getPreprocessor();
-    PP.getBuiltinInfo().InitializeBuiltins(PP.getIdentifierTable(),
+    PP.getBuiltinInfo().initializeBuiltins(PP.getIdentifierTable(),
         PP.getLangOpts());
 
     C->createASTContext();
@@ -2517,7 +2518,7 @@ PreprocessedEntity* Parser::WalkPreprocessedEntity(
     }
     case clang::PreprocessedEntity::MacroDefinitionKind:
     {
-        auto MD = cast<clang::MacroDefinition>(PPEntity);
+        auto MD = cast<clang::MacroDefinitionRecord>(PPEntity);
 
         if (!IsValidDeclaration(MD->getLocation()))
             break;
@@ -3160,13 +3161,11 @@ ParserResult* Parser::ParseHeader(const std::string& File, ParserResult* res)
     std::unique_ptr<llvm::Module> M(new llvm::Module("", Ctx));
 
     M->setTargetTriple(AST->getTargetInfo().getTriple().getTriple());
-    M->setDataLayout(AST->getTargetInfo().getTargetDescription());
-    std::unique_ptr<llvm::DataLayout> TD(new llvm::DataLayout(AST->getTargetInfo()
-        .getTargetDescription()));
+    M->setDataLayout(AST->getTargetInfo().getDataLayoutString());
 
     std::unique_ptr<clang::CodeGen::CodeGenModule> CGM(
-        new clang::CodeGen::CodeGenModule(C->getASTContext(), C->getCodeGenOpts(),
-        *M, *TD, C->getDiagnostics()));
+        new clang::CodeGen::CodeGenModule(C->getASTContext(), C->getHeaderSearchOpts(),
+        C->getPreprocessorOpts(), C->getCodeGenOpts(), *M, C->getDiagnostics()));
 
     std::unique_ptr<clang::CodeGen::CodeGenTypes> CGT(
         new clang::CodeGen::CodeGenTypes(*CGM.get()));
@@ -3212,9 +3211,9 @@ static ArchType ConvertArchType(unsigned int archType)
 template<class ELFT>
 static void ReadELFDependencies(const llvm::object::ELFFile<ELFT>* ELFFile, CppSharp::CppParser::NativeLibrary*& NativeLib)
 {
-    for (const auto &Entry : ELFFile->dynamic_table())
-        if (Entry.d_tag == llvm::ELF::DT_NEEDED)
-            NativeLib->Dependencies.push_back(ELFFile->getDynamicString(Entry.d_un.d_val));
+    ELFDumper<ELFT> ELFDumper(ELFFile);
+    for (const auto &Dependency : ELFDumper.getNeededLibraries())
+        NativeLib->Dependencies.push_back(Dependency);
 }
 
 ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
@@ -3228,8 +3227,8 @@ ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
 
     if (ObjectFile->isELF())
     {
-        auto IDyn = llvm::object::getELFDynamicSymbolIterators(ObjectFile);
-        for (auto it = IDyn.first; it != IDyn.second; ++it)
+        auto IDyn = llvm::cast<llvm::object::ELFObjectFileBase>(ObjectFile)->getDynamicSymbolIterators();
+        for (auto it = IDyn.begin(); it != IDyn.end(); ++it)
         {
             std::string Sym;
             llvm::raw_string_ostream SymStream(Sym);
@@ -3262,16 +3261,16 @@ ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
     {
         if (auto COFFObjectFile = llvm::dyn_cast<llvm::object::COFFObjectFile>(ObjectFile))
         {
-            for (auto it = COFFObjectFile->export_directory_begin(); it != COFFObjectFile->export_directory_end(); ++it)
+            for (auto ExportedSymbol : COFFObjectFile->export_directories())
             {
                 llvm::StringRef Symbol;
-                if (!it->getSymbolName(Symbol))
+                if (!ExportedSymbol.getSymbolName(Symbol))
                     NativeLib->Symbols.push_back(Symbol);
             }
-            for (auto dep = COFFObjectFile->import_directory_begin(); dep != COFFObjectFile->import_directory_end(); ++dep)
+            for (auto ImportedSymbol : COFFObjectFile->import_directories())
             {
                 llvm::StringRef Name;
-                if (!dep->getName(Name) && (Name.endswith(".dll") || Name.endswith(".DLL")))
+                if (!ImportedSymbol.getName(Name) && (Name.endswith(".dll") || Name.endswith(".DLL")))
                     NativeLib->Dependencies.push_back(Name);
             }
         }
@@ -3422,13 +3421,11 @@ ParserTargetInfo* Parser::GetTargetInfo()
     std::unique_ptr<llvm::Module> M(new llvm::Module("", Ctx));
 
     M->setTargetTriple(AST->getTargetInfo().getTriple().getTriple());
-    M->setDataLayout(AST->getTargetInfo().getTargetDescription());
-    std::unique_ptr<llvm::DataLayout> TD(new llvm::DataLayout(AST->getTargetInfo()
-        .getTargetDescription()));
+    M->setDataLayout(AST->getTargetInfo().getDataLayoutString());
 
     std::unique_ptr<clang::CodeGen::CodeGenModule> CGM(
-        new clang::CodeGen::CodeGenModule(C->getASTContext(), C->getCodeGenOpts(),
-        *M, *TD, C->getDiagnostics()));
+        new clang::CodeGen::CodeGenModule(C->getASTContext(), C->getHeaderSearchOpts(),
+        C->getPreprocessorOpts(), C->getCodeGenOpts(), *M, C->getDiagnostics()));
 
     std::unique_ptr<clang::CodeGen::CodeGenTypes> CGT(
         new clang::CodeGen::CodeGenTypes(*CGM.get()));
