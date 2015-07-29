@@ -822,6 +822,9 @@ namespace CppSharp
                 [FieldOffset(20)]
                 public global::System.IntPtr Library;
 
+                [FieldOffset(24)]
+                public global::System.IntPtr CodeParser;
+
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                     EntryPoint="_ZN8CppSharp9CppParser12ParserResultC2Ev")]
@@ -1013,7 +1016,7 @@ namespace CppSharp
 
         public unsafe partial class ClangParser : IDisposable
         {
-            [StructLayout(LayoutKind.Explicit, Size = 1)]
+            [StructLayout(LayoutKind.Explicit, Size = 0)]
             public partial struct Internal
             {
                 [SuppressUnmanagedCodeSecurity]
@@ -1054,7 +1057,7 @@ namespace CppSharp
 
             private static ClangParser.Internal* __CopyValue(ClangParser.Internal native)
             {
-                var ret = (ClangParser.Internal*) Marshal.AllocHGlobal(1);
+                var ret = (ClangParser.Internal*) Marshal.AllocHGlobal(0);
                 *ret = native;
                 return ret;
             }
@@ -1073,14 +1076,14 @@ namespace CppSharp
 
             public ClangParser()
             {
-                __Instance = Marshal.AllocHGlobal(1);
+                __Instance = Marshal.AllocHGlobal(0);
                 __ownsNativeInstance = true;
                 NativeToManagedMap[__Instance] = this;
             }
 
             public ClangParser(CppSharp.Parser.ClangParser _0)
             {
-                __Instance = Marshal.AllocHGlobal(1);
+                __Instance = Marshal.AllocHGlobal(0);
                 __ownsNativeInstance = true;
                 NativeToManagedMap[__Instance] = this;
                 *((ClangParser.Internal*) __Instance) = *((ClangParser.Internal*) _0.__Instance);

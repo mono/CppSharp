@@ -31,6 +31,8 @@ namespace CppSharp
             ref class AttributedType;
             ref class BaseClassSpecifier;
             ref class BinaryOperator;
+            ref class BlockCommandComment;
+            ref class BlockContentComment;
             ref class BuiltinType;
             ref class Class;
             ref class ClassLayout;
@@ -51,7 +53,12 @@ namespace CppSharp
             ref class FunctionTemplate;
             ref class FunctionTemplateSpecialization;
             ref class FunctionType;
+            ref class HTMLEndTagComment;
+            ref class HTMLStartTagComment;
+            ref class HTMLTagComment;
             ref class InjectedClassNameType;
+            ref class InlineCommandComment;
+            ref class InlineContentComment;
             ref class MacroDefinition;
             ref class MacroExpansion;
             ref class MemberPointerType;
@@ -59,12 +66,15 @@ namespace CppSharp
             ref class Namespace;
             ref class NativeLibrary;
             ref class PackExpansionType;
+            ref class ParagraphComment;
+            ref class ParamCommandComment;
             ref class Parameter;
             ref class PointerType;
             ref class PreprocessedEntity;
             ref class QualifiedType;
             ref class RawComment;
             ref class Statement;
+            ref class TParamCommandComment;
             ref class TagType;
             ref class Template;
             ref class TemplateArgument;
@@ -72,6 +82,7 @@ namespace CppSharp
             ref class TemplateParameterSubstitutionType;
             ref class TemplateParameterType;
             ref class TemplateSpecializationType;
+            ref class TextComment;
             ref class TranslationUnit;
             ref class Type;
             ref class TypeQualifiers;
@@ -81,6 +92,9 @@ namespace CppSharp
             ref class VTableComponent;
             ref class VTableLayout;
             ref class Variable;
+            ref class VerbatimBlockComment;
+            ref class VerbatimBlockLineComment;
+            ref class VerbatimLineComment;
         }
     }
 }
@@ -287,7 +301,21 @@ namespace CppSharp
 
             public enum struct CommentKind
             {
-                FullComment = 0
+                FullComment = 0,
+                BlockContentComment = 1,
+                BlockCommandComment = 2,
+                ParamCommandComment = 3,
+                TParamCommandComment = 4,
+                VerbatimBlockComment = 5,
+                VerbatimLineComment = 6,
+                ParagraphComment = 7,
+                HTMLTagComment = 8,
+                HTMLStartTagComment = 9,
+                HTMLEndTagComment = 10,
+                TextComment = 11,
+                InlineContentComment = 12,
+                InlineCommandComment = 13,
+                VerbatimBlockLineComment = 14
             };
 
             public enum struct MacroLocation
@@ -2250,6 +2278,19 @@ namespace CppSharp
                 }
             };
 
+            public ref class BlockContentComment : CppSharp::Parser::AST::Comment
+            {
+            public:
+
+                BlockContentComment(::CppSharp::CppParser::AST::BlockContentComment* native);
+                static BlockContentComment^ __CreateInstance(::System::IntPtr native);
+                BlockContentComment();
+
+                BlockContentComment(CppSharp::Parser::AST::CommentKind Kind);
+
+                BlockContentComment(CppSharp::Parser::AST::BlockContentComment^ _0);
+            };
+
             public ref class FullComment : CppSharp::Parser::AST::Comment
             {
             public:
@@ -2259,6 +2300,385 @@ namespace CppSharp
                 FullComment();
 
                 FullComment(CppSharp::Parser::AST::FullComment^ _0);
+
+                property unsigned int BlocksCount
+                {
+                    unsigned int get();
+                }
+
+                CppSharp::Parser::AST::BlockContentComment^ getBlocks(unsigned int i);
+
+                void addBlocks(CppSharp::Parser::AST::BlockContentComment^ s);
+
+                void clearBlocks();
+            };
+
+            public ref class BlockCommandComment : CppSharp::Parser::AST::BlockContentComment
+            {
+            public:
+
+                ref class Argument : ICppInstance
+                {
+                public:
+
+                    property ::CppSharp::CppParser::AST::BlockCommandComment::Argument* NativePtr;
+                    property System::IntPtr __Instance
+                    {
+                        virtual System::IntPtr get();
+                        virtual void set(System::IntPtr instance);
+                    }
+
+                    Argument(::CppSharp::CppParser::AST::BlockCommandComment::Argument* native);
+                    static Argument^ __CreateInstance(::System::IntPtr native);
+                    Argument();
+
+                    Argument(CppSharp::Parser::AST::BlockCommandComment::Argument^ _0);
+
+                    property System::String^ Text
+                    {
+                        System::String^ get();
+                        void set(System::String^);
+                    }
+                };
+
+                BlockCommandComment(::CppSharp::CppParser::AST::BlockCommandComment* native);
+                static BlockCommandComment^ __CreateInstance(::System::IntPtr native);
+                BlockCommandComment();
+
+                BlockCommandComment(CppSharp::Parser::AST::CommentKind Kind);
+
+                BlockCommandComment(CppSharp::Parser::AST::BlockCommandComment^ _0);
+
+                property unsigned int ArgumentsCount
+                {
+                    unsigned int get();
+                }
+
+                property unsigned int CommandId
+                {
+                    unsigned int get();
+                    void set(unsigned int);
+                }
+
+                CppSharp::Parser::AST::BlockCommandComment::Argument^ getArguments(unsigned int i);
+
+                void addArguments(CppSharp::Parser::AST::BlockCommandComment::Argument^ s);
+
+                void clearArguments();
+            };
+
+            public ref class ParamCommandComment : CppSharp::Parser::AST::BlockCommandComment
+            {
+            public:
+
+                enum struct PassDirection
+                {
+                    In = 0,
+                    Out = 1,
+                    InOut = 2
+                };
+
+                ParamCommandComment(::CppSharp::CppParser::AST::ParamCommandComment* native);
+                static ParamCommandComment^ __CreateInstance(::System::IntPtr native);
+                ParamCommandComment();
+
+                ParamCommandComment(CppSharp::Parser::AST::ParamCommandComment^ _0);
+
+                property CppSharp::Parser::AST::ParamCommandComment::PassDirection Direction
+                {
+                    CppSharp::Parser::AST::ParamCommandComment::PassDirection get();
+                    void set(CppSharp::Parser::AST::ParamCommandComment::PassDirection);
+                }
+
+                property unsigned int ParamIndex
+                {
+                    unsigned int get();
+                    void set(unsigned int);
+                }
+            };
+
+            public ref class TParamCommandComment : CppSharp::Parser::AST::BlockCommandComment
+            {
+            public:
+
+                TParamCommandComment(::CppSharp::CppParser::AST::TParamCommandComment* native);
+                static TParamCommandComment^ __CreateInstance(::System::IntPtr native);
+                TParamCommandComment();
+
+                TParamCommandComment(CppSharp::Parser::AST::TParamCommandComment^ _0);
+
+                property unsigned int PositionCount
+                {
+                    unsigned int get();
+                }
+
+                unsigned int getPosition(unsigned int i);
+
+                void addPosition(unsigned int* s);
+
+                void clearPosition();
+            };
+
+            public ref class VerbatimBlockLineComment : CppSharp::Parser::AST::Comment
+            {
+            public:
+
+                VerbatimBlockLineComment(::CppSharp::CppParser::AST::VerbatimBlockLineComment* native);
+                static VerbatimBlockLineComment^ __CreateInstance(::System::IntPtr native);
+                VerbatimBlockLineComment();
+
+                VerbatimBlockLineComment(CppSharp::Parser::AST::VerbatimBlockLineComment^ _0);
+
+                property System::String^ Text
+                {
+                    System::String^ get();
+                    void set(System::String^);
+                }
+            };
+
+            public ref class VerbatimBlockComment : CppSharp::Parser::AST::BlockCommandComment
+            {
+            public:
+
+                VerbatimBlockComment(::CppSharp::CppParser::AST::VerbatimBlockComment* native);
+                static VerbatimBlockComment^ __CreateInstance(::System::IntPtr native);
+                VerbatimBlockComment();
+
+                VerbatimBlockComment(CppSharp::Parser::AST::VerbatimBlockComment^ _0);
+
+                property unsigned int LinesCount
+                {
+                    unsigned int get();
+                }
+
+                CppSharp::Parser::AST::VerbatimBlockLineComment^ getLines(unsigned int i);
+
+                void addLines(CppSharp::Parser::AST::VerbatimBlockLineComment^ s);
+
+                void clearLines();
+            };
+
+            public ref class VerbatimLineComment : CppSharp::Parser::AST::BlockCommandComment
+            {
+            public:
+
+                VerbatimLineComment(::CppSharp::CppParser::AST::VerbatimLineComment* native);
+                static VerbatimLineComment^ __CreateInstance(::System::IntPtr native);
+                VerbatimLineComment();
+
+                VerbatimLineComment(CppSharp::Parser::AST::VerbatimLineComment^ _0);
+
+                property System::String^ Text
+                {
+                    System::String^ get();
+                    void set(System::String^);
+                }
+            };
+
+            public ref class InlineContentComment : CppSharp::Parser::AST::Comment
+            {
+            public:
+
+                InlineContentComment(::CppSharp::CppParser::AST::InlineContentComment* native);
+                static InlineContentComment^ __CreateInstance(::System::IntPtr native);
+                InlineContentComment();
+
+                InlineContentComment(CppSharp::Parser::AST::CommentKind Kind);
+
+                InlineContentComment(CppSharp::Parser::AST::InlineContentComment^ _0);
+            };
+
+            public ref class ParagraphComment : CppSharp::Parser::AST::BlockContentComment
+            {
+            public:
+
+                ParagraphComment(::CppSharp::CppParser::AST::ParagraphComment* native);
+                static ParagraphComment^ __CreateInstance(::System::IntPtr native);
+                ParagraphComment();
+
+                ParagraphComment(CppSharp::Parser::AST::ParagraphComment^ _0);
+
+                property unsigned int ContentCount
+                {
+                    unsigned int get();
+                }
+
+                property bool IsWhitespace
+                {
+                    bool get();
+                    void set(bool);
+                }
+
+                CppSharp::Parser::AST::InlineContentComment^ getContent(unsigned int i);
+
+                void addContent(CppSharp::Parser::AST::InlineContentComment^ s);
+
+                void clearContent();
+            };
+
+            public ref class InlineCommandComment : CppSharp::Parser::AST::InlineContentComment
+            {
+            public:
+
+                enum struct RenderKind
+                {
+                    RenderNormal = 0,
+                    RenderBold = 1,
+                    RenderMonospaced = 2,
+                    RenderEmphasized = 3
+                };
+
+                ref class Argument : ICppInstance
+                {
+                public:
+
+                    property ::CppSharp::CppParser::AST::InlineCommandComment::Argument* NativePtr;
+                    property System::IntPtr __Instance
+                    {
+                        virtual System::IntPtr get();
+                        virtual void set(System::IntPtr instance);
+                    }
+
+                    Argument(::CppSharp::CppParser::AST::InlineCommandComment::Argument* native);
+                    static Argument^ __CreateInstance(::System::IntPtr native);
+                    Argument();
+
+                    Argument(CppSharp::Parser::AST::InlineCommandComment::Argument^ _0);
+
+                    property System::String^ Text
+                    {
+                        System::String^ get();
+                        void set(System::String^);
+                    }
+                };
+
+                InlineCommandComment(::CppSharp::CppParser::AST::InlineCommandComment* native);
+                static InlineCommandComment^ __CreateInstance(::System::IntPtr native);
+                InlineCommandComment();
+
+                InlineCommandComment(CppSharp::Parser::AST::InlineCommandComment^ _0);
+
+                property unsigned int ArgumentsCount
+                {
+                    unsigned int get();
+                }
+
+                property CppSharp::Parser::AST::InlineCommandComment::RenderKind CommentRenderKind
+                {
+                    CppSharp::Parser::AST::InlineCommandComment::RenderKind get();
+                    void set(CppSharp::Parser::AST::InlineCommandComment::RenderKind);
+                }
+
+                CppSharp::Parser::AST::InlineCommandComment::Argument^ getArguments(unsigned int i);
+
+                void addArguments(CppSharp::Parser::AST::InlineCommandComment::Argument^ s);
+
+                void clearArguments();
+            };
+
+            public ref class HTMLTagComment : CppSharp::Parser::AST::InlineContentComment
+            {
+            public:
+
+                HTMLTagComment(::CppSharp::CppParser::AST::HTMLTagComment* native);
+                static HTMLTagComment^ __CreateInstance(::System::IntPtr native);
+                HTMLTagComment();
+
+                HTMLTagComment(CppSharp::Parser::AST::CommentKind Kind);
+
+                HTMLTagComment(CppSharp::Parser::AST::HTMLTagComment^ _0);
+            };
+
+            public ref class HTMLStartTagComment : CppSharp::Parser::AST::HTMLTagComment
+            {
+            public:
+
+                ref class Attribute : ICppInstance
+                {
+                public:
+
+                    property ::CppSharp::CppParser::AST::HTMLStartTagComment::Attribute* NativePtr;
+                    property System::IntPtr __Instance
+                    {
+                        virtual System::IntPtr get();
+                        virtual void set(System::IntPtr instance);
+                    }
+
+                    Attribute(::CppSharp::CppParser::AST::HTMLStartTagComment::Attribute* native);
+                    static Attribute^ __CreateInstance(::System::IntPtr native);
+                    Attribute();
+
+                    Attribute(CppSharp::Parser::AST::HTMLStartTagComment::Attribute^ _0);
+
+                    property System::String^ Name
+                    {
+                        System::String^ get();
+                        void set(System::String^);
+                    }
+
+                    property System::String^ Value
+                    {
+                        System::String^ get();
+                        void set(System::String^);
+                    }
+                };
+
+                HTMLStartTagComment(::CppSharp::CppParser::AST::HTMLStartTagComment* native);
+                static HTMLStartTagComment^ __CreateInstance(::System::IntPtr native);
+                HTMLStartTagComment();
+
+                HTMLStartTagComment(CppSharp::Parser::AST::HTMLStartTagComment^ _0);
+
+                property System::String^ TagName
+                {
+                    System::String^ get();
+                    void set(System::String^);
+                }
+
+                property unsigned int AttributesCount
+                {
+                    unsigned int get();
+                }
+
+                CppSharp::Parser::AST::HTMLStartTagComment::Attribute^ getAttributes(unsigned int i);
+
+                void addAttributes(CppSharp::Parser::AST::HTMLStartTagComment::Attribute^ s);
+
+                void clearAttributes();
+            };
+
+            public ref class HTMLEndTagComment : CppSharp::Parser::AST::HTMLTagComment
+            {
+            public:
+
+                HTMLEndTagComment(::CppSharp::CppParser::AST::HTMLEndTagComment* native);
+                static HTMLEndTagComment^ __CreateInstance(::System::IntPtr native);
+                HTMLEndTagComment();
+
+                HTMLEndTagComment(CppSharp::Parser::AST::HTMLEndTagComment^ _0);
+
+                property System::String^ TagName
+                {
+                    System::String^ get();
+                    void set(System::String^);
+                }
+            };
+
+            public ref class TextComment : CppSharp::Parser::AST::InlineContentComment
+            {
+            public:
+
+                TextComment(::CppSharp::CppParser::AST::TextComment* native);
+                static TextComment^ __CreateInstance(::System::IntPtr native);
+                TextComment();
+
+                TextComment(CppSharp::Parser::AST::TextComment^ _0);
+
+                property System::String^ Text
+                {
+                    System::String^ get();
+                    void set(System::String^);
+                }
             };
 
             public ref class RawComment : ICppInstance

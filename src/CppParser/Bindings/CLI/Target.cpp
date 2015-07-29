@@ -10,7 +10,7 @@ CppSharp::Parser::ParserTargetInfo::ParserTargetInfo(::CppSharp::CppParser::Pars
 
 CppSharp::Parser::ParserTargetInfo^ CppSharp::Parser::ParserTargetInfo::__CreateInstance(::System::IntPtr native)
 {
-    return gcnew CppSharp::Parser::ParserTargetInfo((::CppSharp::CppParser::ParserTargetInfo*) native.ToPointer());
+    return gcnew ::CppSharp::Parser::ParserTargetInfo((::CppSharp::CppParser::ParserTargetInfo*) native.ToPointer());
 }
 
 CppSharp::Parser::ParserTargetInfo::ParserTargetInfo()

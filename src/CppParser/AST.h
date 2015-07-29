@@ -863,6 +863,20 @@ public:
 enum struct CommentKind
 {
     FullComment,
+    BlockContentComment,
+    BlockCommandComment,
+    ParamCommandComment,
+    TParamCommandComment,
+    VerbatimBlockComment,
+    VerbatimLineComment,
+    ParagraphComment,
+    HTMLTagComment,
+    HTMLStartTagComment,
+    HTMLEndTagComment,
+    TextComment,
+    InlineContentComment,
+    InlineCommandComment,
+    VerbatimBlockLineComment
 };
 
 class CS_API CS_ABSTRACT Comment
@@ -872,10 +886,147 @@ public:
     CommentKind Kind;
 };
 
+class CS_API BlockContentComment : public Comment
+{
+public:
+    BlockContentComment();
+    BlockContentComment(CommentKind Kind);
+};
+
 class CS_API FullComment : public Comment
 {
 public:
     FullComment();
+    VECTOR(BlockContentComment*, Blocks)
+};
+
+class CS_API BlockCommandComment : public BlockContentComment
+{
+public:
+    class CS_API Argument
+    {
+    public:
+        Argument();
+        STRING(Text)
+    };
+    BlockCommandComment();
+    BlockCommandComment(CommentKind Kind);
+    unsigned CommandId;
+    VECTOR(Argument, Arguments)
+};
+
+class CS_API ParamCommandComment : public BlockCommandComment
+{
+public:
+    enum PassDirection
+    {
+        In,
+        Out,
+        InOut
+    };
+    ParamCommandComment();
+    PassDirection Direction;
+    unsigned ParamIndex;
+};
+
+class CS_API TParamCommandComment : public BlockCommandComment
+{
+public:
+    TParamCommandComment();
+    VECTOR(unsigned, Position)
+};
+
+class CS_API VerbatimBlockLineComment : public Comment
+{
+public:
+    VerbatimBlockLineComment();
+    STRING(Text)
+};
+
+class CS_API VerbatimBlockComment : public BlockCommandComment
+{
+public:
+    VerbatimBlockComment();
+    VECTOR(VerbatimBlockLineComment*, Lines)
+};
+
+class CS_API VerbatimLineComment : public BlockCommandComment
+{
+public:
+    VerbatimLineComment();
+    STRING(Text)
+};
+
+class CS_API InlineContentComment : public Comment
+{
+public:
+    InlineContentComment();
+    InlineContentComment(CommentKind Kind);
+};
+
+class CS_API ParagraphComment : public BlockContentComment
+{
+public:
+    ParagraphComment();
+    bool IsWhitespace;
+    VECTOR(InlineContentComment*, Content)
+};
+
+class CS_API InlineCommandComment : public InlineContentComment
+{
+public:
+    enum RenderKind
+    {
+        RenderNormal,
+        RenderBold,
+        RenderMonospaced,
+        RenderEmphasized
+    };
+    class CS_API Argument
+    {
+    public:
+        Argument();
+        STRING(Text)
+    };
+    InlineCommandComment();
+    RenderKind CommentRenderKind;
+    VECTOR(Argument, Arguments)
+};
+
+class CS_API HTMLTagComment : public InlineContentComment
+{
+public:
+    HTMLTagComment();
+    HTMLTagComment(CommentKind Kind);
+};
+
+class CS_API HTMLStartTagComment : public HTMLTagComment
+{
+public:
+    class CS_API Attribute
+    {
+    public:
+        Attribute();
+        STRING(Name)
+        STRING(Value)
+    };
+    HTMLStartTagComment();
+    STRING(TagName)
+    VECTOR(Attribute, Attributes)
+};
+
+class CS_API HTMLEndTagComment : public HTMLTagComment
+{
+public:
+    HTMLEndTagComment();
+    STRING(TagName)
+};
+
+class CS_API TextComment : public InlineContentComment
+{
+public:
+    TextComment();
+    STRING(Text)
 };
 
 enum class RawCommentKind

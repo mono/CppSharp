@@ -701,4 +701,78 @@ RawComment::RawComment() : FullCommentBlock(0) {}
 
 FullComment::FullComment() : Comment(CommentKind::FullComment) {}
 
+DEF_VECTOR(FullComment, BlockContentComment*, Blocks)
+
+BlockContentComment::BlockContentComment() : Comment(CommentKind::BlockContentComment) {}
+
+BlockContentComment::BlockContentComment(CommentKind Kind) : Comment(Kind) {}
+
+BlockCommandComment::Argument::Argument() {}
+
+DEF_STRING(BlockCommandComment::Argument, Text)
+
+BlockCommandComment::BlockCommandComment() : BlockContentComment(CommentKind::BlockCommandComment), CommandId(0) {}
+
+BlockCommandComment::BlockCommandComment(CommentKind Kind) : BlockContentComment(Kind) {}
+
+DEF_VECTOR(BlockCommandComment, BlockCommandComment::Argument, Arguments)
+
+ParamCommandComment::ParamCommandComment() : BlockCommandComment(CommentKind::ParamCommandComment), Direction(PassDirection::In), ParamIndex(0) {}
+
+TParamCommandComment::TParamCommandComment() : BlockCommandComment(CommentKind::TParamCommandComment) {}
+
+DEF_VECTOR(TParamCommandComment, unsigned, Position)
+
+VerbatimBlockComment::VerbatimBlockComment() : BlockCommandComment(CommentKind::VerbatimBlockComment) {}
+
+DEF_VECTOR(VerbatimBlockComment, VerbatimBlockLineComment*, Lines)
+
+VerbatimLineComment::VerbatimLineComment() : BlockCommandComment(CommentKind::VerbatimLineComment) {}
+
+DEF_STRING(VerbatimLineComment, Text)
+
+ParagraphComment::ParagraphComment() : BlockContentComment(CommentKind::ParagraphComment), IsWhitespace(false) {}
+
+DEF_VECTOR(ParagraphComment, InlineContentComment*, Content)
+
+HTMLTagComment::HTMLTagComment() : InlineContentComment(CommentKind::HTMLTagComment) {}
+
+HTMLTagComment::HTMLTagComment(CommentKind Kind) : InlineContentComment(Kind) {}
+
+HTMLStartTagComment::Attribute::Attribute() {}
+
+DEF_STRING(HTMLStartTagComment::Attribute, Name)
+
+DEF_STRING(HTMLStartTagComment::Attribute, Value)
+
+HTMLStartTagComment::HTMLStartTagComment() : HTMLTagComment(CommentKind::HTMLStartTagComment) {}
+
+DEF_VECTOR(HTMLStartTagComment, HTMLStartTagComment::Attribute, Attributes)
+
+DEF_STRING(HTMLStartTagComment, TagName)
+
+HTMLEndTagComment::HTMLEndTagComment() : HTMLTagComment(CommentKind::HTMLEndTagComment) {}
+
+DEF_STRING(HTMLEndTagComment, TagName)
+
+InlineContentComment::InlineContentComment() : Comment(CommentKind::InlineContentComment) {}
+
+InlineContentComment::InlineContentComment(CommentKind Kind) : Comment(Kind) {}
+
+TextComment::TextComment() : InlineContentComment(CommentKind::TextComment) {}
+
+DEF_STRING(TextComment, Text)
+
+InlineCommandComment::Argument::Argument() {}
+
+DEF_STRING(InlineCommandComment::Argument, Text)
+
+InlineCommandComment::InlineCommandComment() : InlineContentComment(CommentKind::InlineCommandComment), CommentRenderKind(RenderNormal) {}
+
+DEF_VECTOR(InlineCommandComment, InlineCommandComment::Argument, Arguments)
+
+VerbatimBlockLineComment::VerbatimBlockLineComment() : Comment(CommentKind::VerbatimBlockLineComment) {}
+
+DEF_STRING(VerbatimBlockLineComment, Text)
+
 } } }

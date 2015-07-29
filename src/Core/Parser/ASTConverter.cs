@@ -254,15 +254,56 @@ namespace CppSharp
     {
         public abstract TRet VisitFullComment(FullComment comment);
 
-        public virtual TRet Visit(Parser.AST.Comment comment)
+        protected abstract TRet VisitBlockCommandComment(BlockCommandComment comment);
+
+        protected abstract TRet VisitParamCommandComment(ParamCommandComment comment);
+
+        protected abstract TRet VisitTParamCommandComment(TParamCommandComment comment);
+
+        protected abstract TRet VisitVerbatimBlockComment(VerbatimBlockComment comment);
+
+        protected abstract TRet VisitVerbatimLineComment(VerbatimLineComment comment);
+
+        protected abstract TRet VisitParagraphComment(ParagraphComment comment);
+
+        protected abstract TRet VisitHTMLStartTagComment(HTMLStartTagComment comment);
+
+        protected abstract TRet VisitHTMLEndTagComment(HTMLEndTagComment comment);
+
+        protected abstract TRet VisitTextComment(TextComment comment);
+
+        protected abstract TRet VisitInlineCommandComment(InlineCommandComment comment);
+
+        protected abstract TRet VisitVerbatimBlockLineComment(VerbatimBlockLineComment comment);
+
+        public virtual TRet Visit(Comment comment)
         {
             switch (comment.Kind)
             {
                 case CommentKind.FullComment:
-                    {
-                        var _comment = FullComment.__CreateInstance(comment.__Instance);
-                        return VisitFullComment(_comment);
-                    }
+                    return VisitFullComment(FullComment.__CreateInstance(comment.__Instance));
+                case CommentKind.BlockCommandComment:
+                    return VisitBlockCommandComment(BlockCommandComment.__CreateInstance(comment.__Instance));
+                case CommentKind.ParamCommandComment:
+                    return VisitParamCommandComment(ParamCommandComment.__CreateInstance(comment.__Instance));
+                case CommentKind.TParamCommandComment:
+                    return VisitTParamCommandComment(TParamCommandComment.__CreateInstance(comment.__Instance));
+                case CommentKind.VerbatimBlockComment:
+                    return VisitVerbatimBlockComment(VerbatimBlockComment.__CreateInstance(comment.__Instance));
+                case CommentKind.VerbatimLineComment:
+                    return VisitVerbatimLineComment(VerbatimLineComment.__CreateInstance(comment.__Instance));
+                case CommentKind.ParagraphComment:
+                    return VisitParagraphComment(ParagraphComment.__CreateInstance(comment.__Instance));
+                case CommentKind.HTMLStartTagComment:
+                    return VisitHTMLStartTagComment(HTMLStartTagComment.__CreateInstance(comment.__Instance));
+                case CommentKind.HTMLEndTagComment:
+                    return VisitHTMLEndTagComment(HTMLEndTagComment.__CreateInstance(comment.__Instance));
+                case CommentKind.TextComment:
+                    return VisitTextComment(TextComment.__CreateInstance(comment.__Instance));
+                case CommentKind.InlineCommandComment:
+                    return VisitInlineCommandComment(InlineCommandComment.__CreateInstance(comment.__Instance));
+                case CommentKind.VerbatimBlockLineComment:
+                    return VisitVerbatimBlockLineComment(VerbatimBlockLineComment.__CreateInstance(comment.__Instance));
             }
 
             throw new ArgumentOutOfRangeException();
@@ -1542,7 +1583,121 @@ namespace CppSharp
     {
         public override AST.Comment VisitFullComment(FullComment comment)
         {
-            throw new NotImplementedException();
+            var fullComment = new AST.FullComment();
+            for (uint i = 0; i < comment.BlocksCount; i++)
+                fullComment.Blocks.Add((AST.BlockContentComment) Visit(comment.getBlocks(i)));
+            return fullComment;
+        }
+
+        protected override AST.Comment VisitBlockCommandComment(BlockCommandComment comment)
+        {
+            var blockCommandComment = new AST.BlockCommandComment();
+            VisitBlockCommandComment(blockCommandComment, comment);
+            return blockCommandComment;
+        }
+
+        protected override AST.Comment VisitParamCommandComment(ParamCommandComment comment)
+        {
+            var paramCommandComment = new AST.ParamCommandComment();
+            switch (comment.Direction)
+            {
+                case ParamCommandComment.PassDirection.In:
+                    paramCommandComment.Direction = AST.ParamCommandComment.PassDirection.In;
+                    break;
+                case ParamCommandComment.PassDirection.Out:
+                    paramCommandComment.Direction = AST.ParamCommandComment.PassDirection.Out;
+                    break;
+                case ParamCommandComment.PassDirection.InOut:
+                    paramCommandComment.Direction = AST.ParamCommandComment.PassDirection.InOut;
+                    break;
+            }
+            paramCommandComment.ParamIndex = comment.ParamIndex;
+            return paramCommandComment;
+        }
+
+        protected override AST.Comment VisitTParamCommandComment(TParamCommandComment comment)
+        {
+            var paramCommandComment = new AST.TParamCommandComment();
+            for (uint i = 0; i < comment.PositionCount; i++)
+                paramCommandComment.Position.Add(comment.getPosition(i));
+            VisitBlockCommandComment(paramCommandComment, comment);
+            return paramCommandComment;
+        }
+
+        protected override AST.Comment VisitVerbatimBlockComment(VerbatimBlockComment comment)
+        {
+            var verbatimBlockComment = new AST.VerbatimBlockComment();
+            for (uint i = 0; i < comment.LinesCount; i++)
+                verbatimBlockComment.Lines.Add((AST.VerbatimBlockLineComment) Visit(comment.getLines(i)));
+            VisitBlockCommandComment(verbatimBlockComment, comment);
+            return verbatimBlockComment;
+        }
+
+        protected override AST.Comment VisitVerbatimLineComment(VerbatimLineComment comment)
+        {
+            var verbatimLineComment = new AST.VerbatimLineComment { Text = comment.Text };
+            VisitBlockCommandComment(verbatimLineComment, comment);
+            return verbatimLineComment;
+        }
+
+        protected override AST.Comment VisitParagraphComment(ParagraphComment comment)
+        {
+            var paragraphComment = new AST.ParagraphComment();
+            for (uint i = 0; i < comment.ContentCount; i++)
+                paragraphComment.Content.Add((AST.InlineContentComment) Visit(comment.getContent(i)));
+            paragraphComment.IsWhitespace = comment.IsWhitespace;
+            return paragraphComment;
+        }
+
+        protected override AST.Comment VisitHTMLStartTagComment(HTMLStartTagComment comment)
+        {
+            var htmlStartTagComment = new AST.HTMLStartTagComment();
+            for (uint i = 0; i < comment.AttributesCount; i++)
+            {
+                var attribute = new AST.HTMLStartTagComment.Attribute();
+                var _attribute = comment.getAttributes(i);
+                attribute.Name = _attribute.Name;
+                attribute.Value = _attribute.Value;
+                htmlStartTagComment.Attributes.Add(attribute);
+            }
+            htmlStartTagComment.TagName = comment.TagName;
+            return htmlStartTagComment;
+        }
+
+        protected override AST.Comment VisitHTMLEndTagComment(HTMLEndTagComment comment)
+        {
+            return new AST.HTMLEndTagComment { TagName = comment.TagName };
+        }
+
+        protected override AST.Comment VisitTextComment(TextComment comment)
+        {
+            return new AST.TextComment { Text = comment.Text };
+        }
+
+        protected override AST.Comment VisitInlineCommandComment(InlineCommandComment comment)
+        {
+            var inlineCommandComment = new AST.InlineCommandComment();
+            for (uint i = 0; i < comment.ArgumentsCount; i++)
+            {
+                var argument = new AST.InlineCommandComment.Argument { Text = comment.getArguments(i).Text };
+                inlineCommandComment.Arguments.Add(argument);
+            }
+            return inlineCommandComment;
+        }
+
+        protected override AST.Comment VisitVerbatimBlockLineComment(VerbatimBlockLineComment comment)
+        {
+            return new AST.VerbatimBlockLineComment { Text = comment.Text };
+        }
+
+        private static void VisitBlockCommandComment(AST.BlockCommandComment blockCommandComment, BlockCommandComment comment)
+        {
+            blockCommandComment.CommandId = comment.CommandId;
+            for (uint i = 0; i < comment.ArgumentsCount; i++)
+            {
+                var argument = new AST.BlockCommandComment.Argument { Text = comment.getArguments(i).Text };
+                blockCommandComment.Arguments.Add(argument);
+            }
         }
     }
 

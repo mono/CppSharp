@@ -355,7 +355,7 @@ namespace CppSharp.AST
     /// <summary>
     /// A command with word-like arguments that is considered inline content.
     /// </summary>
-    public class InlineCommandComment : Comment
+    public class InlineCommandComment : InlineContentComment
     {
         public struct Argument
         {
@@ -388,7 +388,7 @@ namespace CppSharp.AST
     /// <summary>
     /// A line of text contained in a verbatim block.
     /// </summary>
-    public class VerbatimBlockLineComment : BlockCommandComment
+    public class VerbatimBlockLineComment : Comment
     {
         public string Text;
 
