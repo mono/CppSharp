@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
+using System.Collections.Generic;
 using CppSharp.AST;
+using CppSharp.AST.Extensions;
 using Interop = System.Runtime.InteropServices;
 
 namespace CppSharp.Generators
@@ -27,6 +29,12 @@ namespace CppSharp.Generators
             }
 
             return Interop.CallingConvention.Winapi;
+        }
+
+        public static bool IsParamPrimToRefTypeConvertible(Parameter param, bool checkParamUsage = true)
+        {
+            return (checkParamUsage ? param.IsInOut : true) && param.Type.IsPointerToPrimitiveType()
+                && AllowedToHaveDefaultPtrVals.Any(primType => param.Type.IsPointerToPrimitiveType(primType));
         }
     }
 }

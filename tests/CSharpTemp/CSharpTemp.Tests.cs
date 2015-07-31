@@ -341,34 +341,31 @@ public class CSharpTempTests : GeneratorTestFixture
     }
 
     [Test]
-    public void TestMultiOverLoadNPtrToRefTypeGen()
+    public unsafe void TestMultiOverLoadNPtrToRefTypeGen()
     {
-        unsafe
-        {
-            var obj = new MultiOverLoadNPtrToRefTypeGenTest();
-            var p = obj.ReturnPrimTypePtr();
-            Assert.AreEqual(0, p[0]);
-            Assert.AreEqual(0, p[1]);
-            Assert.AreEqual(0, p[2]);
+        var obj = new MultiOverLoadNPtrToRefTypeGenTest();
+        var p = obj.ReturnPrimTypePtr();
+        Assert.AreEqual(0, p[0]);
+        Assert.AreEqual(0, p[1]);
+        Assert.AreEqual(0, p[2]);
 
-            obj.TakePrimTypePtr(ref *p);
-            Assert.AreEqual(100, p[0]);
-            Assert.AreEqual(200, p[1]);
-            Assert.AreEqual(300, p[2]);
+        obj.TakePrimTypePtr(ref *p);
+        Assert.AreEqual(100, p[0]);
+        Assert.AreEqual(200, p[1]);
+        Assert.AreEqual(300, p[2]);
             
-            int[] array = { 1, 2, 3 };
-            fixed (int* p1 = array)
-            {
-                obj.TakePrimTypePtr(ref *p1);
-                Assert.AreEqual(100, p1[0]);
-                Assert.AreEqual(200, p1[1]);
-                Assert.AreEqual(300, p1[2]);
-            }
-
-            Assert.AreEqual(100, array[0]);
-            Assert.AreEqual(200, array[1]);
-            Assert.AreEqual(300, array[2]);
+        int[] array = { 1, 2, 3 };
+        fixed (int* p1 = array)
+        {
+            obj.TakePrimTypePtr(ref *p1);
+            Assert.AreEqual(100, p1[0]);
+            Assert.AreEqual(200, p1[1]);
+            Assert.AreEqual(300, p1[2]);
         }
+
+        Assert.AreEqual(100, array[0]);
+        Assert.AreEqual(200, array[1]);
+        Assert.AreEqual(300, array[2]);
     }
 
 }

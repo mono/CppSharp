@@ -13,8 +13,7 @@ namespace CppSharp.Passes
 
         public override bool VisitFunctionDecl(Function function)
         {
-            foreach(var param in function.Parameters.Where(p => !p.IsOut && p.Type.IsPointerToPrimitiveType()
-                                          && ExtensionMethods.AllowedToHaveDefaultPtrVals.Any(defPtrType => p.Type.IsPointerToPrimitiveType(defPtrType))))
+            foreach(var param in function.Parameters.Where(p => !p.IsOut && ExtensionMethods.IsParamPrimToRefTypeConvertible(p, false)))
             {
                 param.Usage = ParameterUsage.InOut;
             }

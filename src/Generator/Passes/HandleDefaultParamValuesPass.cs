@@ -54,9 +54,8 @@ namespace CppSharp.Passes
                     parameter.QualifiedType.Qualifiers);
                 if (defaultConstruct == null ||
                     (!Driver.Options.MarshalCharAsManagedChar &&
-                     parameter.Type.Desugar().IsPrimitiveType(PrimitiveType.UChar)) ||
-                    (parameter.Type.IsPointerToPrimitiveType() && ExtensionMethods.AllowedToHaveDefaultPtrVals.Any(
-                    primType => parameter.Type.Desugar().IsPointerToPrimitiveType(primType)) && parameter.Usage == ParameterUsage.InOut))
+                    parameter.Type.Desugar().IsPrimitiveType(PrimitiveType.UChar)) ||
+                    ExtensionMethods.IsParamPrimToRefTypeConvertible(parameter))
                 {
                     overloadIndices.Add(function.Parameters.IndexOf(parameter));
                     continue;
@@ -108,9 +107,7 @@ namespace CppSharp.Passes
                     return true;
                 }
 
-                if (parameter.Usage == ParameterUsage.InOut && parameter.Type.IsPointerToPrimitiveType() &&
-                    ExtensionMethods.AllowedToHaveDefaultPtrVals.Any(
-                        primType => desugared.IsPointerToPrimitiveType(primType)))
+                if (ExtensionMethods.IsParamPrimToRefTypeConvertible(parameter))
                     return false;
                     
 
