@@ -106,10 +106,8 @@ namespace CppSharp.Passes
                     parameter.DefaultArgument.String = "new global::System.IntPtr()";
                     return true;
                 }
-
                 if (ExtensionMethods.IsParamPrimToRefTypeConvertible(parameter))
                     return false;
-                    
 
                 Class @class;
                 if (desugared.GetFinalPointee().TryGetClass(out @class) && @class.IsValueType)
@@ -118,11 +116,9 @@ namespace CppSharp.Passes
                         new CSharpTypePrinter(Driver).VisitClassDecl(@class));
                     return true;
                 }
-                
                 parameter.DefaultArgument.String = "null";
                 return true;
             }
-            
             return false;
         }
 
