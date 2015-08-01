@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
+using CppSharp.Generators;
 using CppSharp.Generators.CSharp;
 using CppSharp.Types;
 
@@ -52,7 +54,8 @@ namespace CppSharp.Passes
                     parameter.QualifiedType.Qualifiers);
                 if (defaultConstruct == null ||
                     (!Driver.Options.MarshalCharAsManagedChar &&
-                     parameter.Type.Desugar().IsPrimitiveType(PrimitiveType.UChar)))
+                     parameter.Type.Desugar().IsPrimitiveType(PrimitiveType.UChar)) ||
+                     parameter.IsPrimitiveParameterConvertibleToRef())
                 {
                     overloadIndices.Add(function.Parameters.IndexOf(parameter));
                     continue;
@@ -103,6 +106,8 @@ namespace CppSharp.Passes
                     parameter.DefaultArgument.String = "new global::System.IntPtr()";
                     return true;
                 }
+                if (parameter.IsPrimitiveParameterConvertibleToRef())
+                    return false;
                 Class @class;
                 if (desugared.GetFinalPointee().TryGetClass(out @class) && @class.IsValueType)
                 {
@@ -243,9 +248,10 @@ namespace CppSharp.Passes
                 Function overload = method != null ? new Method(method) : new Function(function);
                 overload.OriginalFunction = function;
                 overload.SynthKind = FunctionSynthKind.DefaultValueOverload;
-                overload.Parameters[overloadIndex].GenerationKind = GenerationKind.None;
+                for (int i = overloadIndex; i < function.Parameters.Count; ++i)
+                    overload.Parameters[i].GenerationKind = GenerationKind.None;
 
-                var indices = overloadIndices.Where(i => i != overloadIndex).ToList();
+                var indices = overloadIndices.Where(i => i < overloadIndex).ToList();
                 if (indices.Any())
                     for (int i = 0; i <= indices.Last(); i++)
                         if (i != overloadIndex)

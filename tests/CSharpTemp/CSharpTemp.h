@@ -617,3 +617,16 @@ public:
     HasOverrideOfHasPropertyWithDerivedType();
     virtual void causeRenamingError();
 };
+
+class DLL_API MultiOverloadPtrToRef
+{
+    int * arr;
+public:
+    void funcPrimitivePtrToRef(int *pOne, char* pTwo, float* pThree, bool* pFour = 0);
+    void funcPrimitivePtrToRefWithDefVal(int* pOne, char* pTwo, Foo* pThree, int* pFour = 0);
+    void funcPrimitivePtrToRefWithMultiOverload(int* pOne, char* pTwo, Foo* pThree, int* pFour = 0, long* pFive = 0);
+
+    MultiOverloadPtrToRef();
+    int* ReturnPrimTypePtr();
+    void TakePrimTypePtr(int* ptr);
+};

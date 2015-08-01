@@ -688,3 +688,32 @@ HasOverrideOfHasPropertyWithDerivedType::HasOverrideOfHasPropertyWithDerivedType
 void HasOverrideOfHasPropertyWithDerivedType::causeRenamingError()
 {
 }
+
+void MultiOverloadPtrToRef::funcPrimitivePtrToRef(int* pOne, char* pTwo, float* pThree, bool* pFour)
+{
+}
+
+void MultiOverloadPtrToRef::funcPrimitivePtrToRefWithDefVal(int* pOne, char* pTwo, Foo* pThree, int* pFour)
+{
+}
+
+void MultiOverloadPtrToRef::funcPrimitivePtrToRefWithMultiOverload(int* pOne, char* pTwo, Foo* pThree, int* pFour, long* pFive)
+{
+}
+
+MultiOverloadPtrToRef::MultiOverloadPtrToRef()
+{
+    arr = new int[3]{0};
+}
+
+int* MultiOverloadPtrToRef::ReturnPrimTypePtr()
+{
+    return arr;
+}
+
+void MultiOverloadPtrToRef::TakePrimTypePtr(int* ptr)
+{
+    ptr[0] = 100;
+    ptr[1] = 200;
+    ptr[2] = 300;
+}

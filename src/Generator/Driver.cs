@@ -242,6 +242,7 @@ namespace CppSharp
             TranslationUnitPasses.AddPass(new SortDeclarationsPass());
             TranslationUnitPasses.AddPass(new ResolveIncompleteDeclsPass());
             TranslationUnitPasses.AddPass(new CheckIgnoredDeclsPass());
+            TranslationUnitPasses.AddPass(new MarshalPrimitivePointersAsRefTypePass());
 
             if (Options.IsCSharpGenerator && Options.GenerateInlines)
                 TranslationUnitPasses.AddPass(new GenerateInlinesCodePass());
