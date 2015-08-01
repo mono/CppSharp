@@ -600,3 +600,16 @@ public:
     TypeMappedWithOperator();
     int operator |(int i);
 };
+
+class DLL_API MultiOverLoadNPtrToRefTypeGenTest
+{
+	int * arr;
+public:
+	void funcPrimPtrToRefType(int *pOne, char* pTwo, float* pThree);
+	void funcPrimPtrToRefTypeWithDefVal(int* pOne, char* pTwo, Foo* pThree, int* pFour = 0);
+	void funcPrimPtrToRefTypeWithMultiOverload(int* pOne, char* pTwo, Foo* pThree, int* pFour = 0, long* pFive = 0);
+	
+	MultiOverLoadNPtrToRefTypeGenTest();
+	int* ReturnPrimTypePtr();
+	void TakePrimTypePtr(int* ptr);
+};

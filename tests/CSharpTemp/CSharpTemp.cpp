@@ -672,3 +672,32 @@ int TypeMappedWithOperator::operator |(int i)
 {
    return 0;
 }
+
+void MultiOverLoadNPtrToRefTypeGenTest::funcPrimPtrToRefType(int* pOne, char* pTwo, float* pThree)
+{
+}
+
+void MultiOverLoadNPtrToRefTypeGenTest::funcPrimPtrToRefTypeWithDefVal(int* pOne, char* pTwo, Foo* pThree, int* pFour)
+{
+}
+
+void MultiOverLoadNPtrToRefTypeGenTest::funcPrimPtrToRefTypeWithMultiOverload(int* pOne, char* pTwo, Foo* pThree, int* pFour, long* pFive)
+{
+}
+
+MultiOverLoadNPtrToRefTypeGenTest::MultiOverLoadNPtrToRefTypeGenTest()
+{
+	arr = new int[3]{0};
+}
+
+int* MultiOverLoadNPtrToRefTypeGenTest::ReturnPrimTypePtr()
+{
+	return arr;
+}
+
+void MultiOverLoadNPtrToRefTypeGenTest::TakePrimTypePtr(int* ptr)
+{
+	ptr[0] = 100;
+	ptr[1] = 200;
+	ptr[2] = 300;
+}
