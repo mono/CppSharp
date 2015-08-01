@@ -2035,13 +2035,6 @@ namespace CppSharp.Generators.CSharp
             if (method.IsPure)
                 Write("abstract ");
 
-            if(method.SynthKind == FunctionSynthKind.DefaultValueOverload)
-            {
-                var needUnsafe = method.Parameters.Any(p => p.Kind == ParameterKind.Regular && p.Ignore
-                             && p.Type.IsPointerToPrimitiveType() && p.Usage == ParameterUsage.InOut && p.HasDefaultValue);
-                Write("unsafe ");
-            }
-
             var functionName = GetMethodIdentifier(method);
 
             if (method.IsConstructor || method.IsDestructor)
