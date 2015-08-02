@@ -160,6 +160,7 @@ namespace CppSharp.Generators.CSharp
             WriteLine("using System;");
             WriteLine("using System.Runtime.InteropServices;");
             WriteLine("using System.Security;");
+            WriteLine("using System.Text;");
             foreach (var customUsingStatement in Options.DependentNameSpaces)
             {
                 WriteLine(string.Format("using {0};", customUsingStatement));
@@ -2628,12 +2629,25 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
+        private string ReturnMethodParamType(Parameter param)
+        {
+            string type = param.CSharpType(TypePrinter).ToString();
+            var ptrType = param.Type as PointerType;
+            if (!(ptrType == null ? false : CSharpTypePrinter.IsConstCharString(param.Type as PointerType))
+                 && (param.Type.IsPointerToPrimitiveType(PrimitiveType.Char) ||
+                 param.Type.IsPointerToPrimitiveType(PrimitiveType.WideChar)))
+            {
+                type = "StringBuilder";
+            }
+            return type;
+        }
+
         private string FormatMethodParameters(IEnumerable<Parameter> @params)
         {
             return string.Join(", ",
                 from param in @params
                 where param.Kind != ParameterKind.IndirectReturnType && !param.Ignore
-                let typeName = param.CSharpType(TypePrinter)
+                let typeName = ReturnMethodParamType(param)
                 select string.Format("{0}{1} {2}", GetParameterUsage(param.Usage),
                     typeName, param.Name +
                         (param.DefaultArgument == null || !Options.GenerateDefaultValuesForArguments ?
@@ -2815,6 +2829,10 @@ namespace CppSharp.Generators.CSharp
 
             if (function.ReturnType.Type.IsPrimitiveType(PrimitiveType.Bool))
                 WriteLine("[return: MarshalAsAttribute(UnmanagedType.I1)]");
+            else if (function.ReturnType.Type.IsPrimitiveType(PrimitiveType.Char))
+                WriteLine("[return: MarshalAsAttribute(UnmanagedType.LPStr)]");
+            else if (function.ReturnType.Type.IsPrimitiveType(PrimitiveType.WideChar))
+                WriteLine("[return: MarshalAsAttribute(UnmanagedType.LPWStr)]");
 
             var @params = new List<string>();
 
@@ -2846,7 +2864,14 @@ namespace CppSharp.Generators.CSharp
 
                 var typeName = param.CSharpType(typePrinter);
 
-                @params.Add(string.Format("{0} {1}", typeName, param.Name));
+                var ptrType = param.Type as PointerType;
+                var isConst = (ptrType == null ? false : CSharpTypePrinter.IsConstCharString(ptrType));
+                if(!isConst && param.Type.IsPointerToPrimitiveType(PrimitiveType.Char))
+                    @params.Add(string.Format("[MarshalAs(UnmanagedType.LPStr)]{0} {1}", "StringBuilder", param.Name));
+                else if (!isConst && param.Type.IsPointerToPrimitiveType(PrimitiveType.WideChar))
+                    @params.Add(string.Format("[MarshalAs(UnmanagedType.LPWStr)]{0} {1}", "StringBuilder", param.Name));
+                else
+                    @params.Add(string.Format("{0} {1}", typeName, param.Name));
 
                 if (param.Kind == ParameterKind.IndirectReturnType &&
                     isInstanceMethod && Options.IsItaniumLikeAbi)
