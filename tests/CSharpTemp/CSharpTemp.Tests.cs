@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Reflection;
 using CppSharp.Utils;
 using CSharpTemp;
@@ -344,4 +345,12 @@ public class CSharpTempTests : GeneratorTestFixture
         }
     }
 
+    [Test]
+    public unsafe void TestMarshallingOfCharPtr()
+    {
+        var obj = new CheckMarshllingOfCharPtr();
+        var str = obj.FuncRetCharPtr;
+        Assert.AreEqual('S', str[0]);
+        Assert.AreEqual('i', str[3]);
+    }
 }

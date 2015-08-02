@@ -752,8 +752,12 @@ namespace CppSharp.Generators.CSharp
 
             GenerateDeclarationCommon(field);
 
+            string strType = field.Type.ToString();
+            if (IsNonConstCharPtrType(field.Type))
+                strType = "StringBuilder";
+
             WriteLine("{0} {1} {2};", @public ? "public" : "private",
-                field.Type, field.Name);
+                strType, field.Name);
 
             PopBlock(NewLineKind.BeforeNextBlock);
         }
@@ -1146,6 +1150,9 @@ namespace CppSharp.Generators.CSharp
                         GeneratedIdentifier(string.Format("{0}Initialised", prop.Field.OriginalName)));
                 }
 
+                string strType = prop.Type.ToString();
+                if (IsNonConstCharPtrType(prop.Type))
+                    strType = "StringBuilder";
                 GenerateDeclarationCommon(prop);
                 if (prop.ExplicitInterfaceImpl == null)
                 {
@@ -1162,11 +1169,11 @@ namespace CppSharp.Generators.CSharp
                     else if (prop.IsVirtual)
                         Write("virtual ");
 
-                    WriteLine("{0} {1}", prop.Type, GetPropertyName(prop));
+                    WriteLine("{0} {1}", strType, GetPropertyName(prop));
                 }
                 else
                 {
-                    WriteLine("{0} {1}.{2}", prop.Type, prop.ExplicitInterfaceImpl.Name,
+                    WriteLine("{0} {1}.{2}", strType, prop.ExplicitInterfaceImpl.Name,
                         GetPropertyName(prop));
                 }
                 WriteStartBraceIndent();
@@ -1204,7 +1211,11 @@ namespace CppSharp.Generators.CSharp
             PushBlock(CSharpBlockKind.Variable);
             
             GenerateDeclarationCommon(variable);
-            WriteLine("public static {0} {1}", type, variable.Name);
+            string strType = type.ToString();
+            if (IsNonConstCharPtrType(type))
+                strType = "StringBuilder";
+
+            WriteLine("public static {0} {1}", strType, variable.Name);
             WriteStartBraceIndent();
 
             GeneratePropertyGetter(variable.QualifiedType, variable, @class);
@@ -2629,16 +2640,24 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
+        private bool IsNonConstCharPtrType(Type type)
+        {
+            var ptrType = type as PointerType;
+            var isConst = (ptrType == null ? false : CSharpTypePrinter.IsConstCharString(ptrType));
+            return !isConst && (ptrType.IsPointerToPrimitiveType(PrimitiveType.Char) ||
+                    ptrType.IsPointerToPrimitiveType(PrimitiveType.WideChar));
+        }
+
+        private bool IsNonConstCharPtrParam(Parameter param)
+        {
+            return IsNonConstCharPtrType(param.Type);
+        }
+
         private string ReturnMethodParamType(Parameter param)
         {
             string type = param.CSharpType(TypePrinter).ToString();
-            var ptrType = param.Type as PointerType;
-            if (!(ptrType == null ? false : CSharpTypePrinter.IsConstCharString(param.Type as PointerType))
-                 && (param.Type.IsPointerToPrimitiveType(PrimitiveType.Char) ||
-                 param.Type.IsPointerToPrimitiveType(PrimitiveType.WideChar)))
-            {
+            if (IsNonConstCharPtrParam(param))
                 type = "StringBuilder";
-            }
             return type;
         }
 
@@ -2841,6 +2860,8 @@ namespace CppSharp.Generators.CSharp
 
             var retParam = new Parameter { QualifiedType = function.ReturnType };
             var retType = retParam.CSharpType(typePrinter);
+            if (IsNonConstCharPtrParam(retParam))
+                retType = new CSharpTypePrinterResult() { Type = "StringBuilder" };
 
             var method = function as Method;
             var isInstanceMethod = method != null && !method.IsStatic;
@@ -2864,11 +2885,10 @@ namespace CppSharp.Generators.CSharp
 
                 var typeName = param.CSharpType(typePrinter);
 
-                var ptrType = param.Type as PointerType;
-                var isConst = (ptrType == null ? false : CSharpTypePrinter.IsConstCharString(ptrType));
-                if(!isConst && param.Type.IsPointerToPrimitiveType(PrimitiveType.Char))
+                var isNonConst = IsNonConstCharPtrParam(param);
+                if (isNonConst && param.Type.IsPointerToPrimitiveType(PrimitiveType.Char))
                     @params.Add(string.Format("[MarshalAs(UnmanagedType.LPStr)]{0} {1}", "StringBuilder", param.Name));
-                else if (!isConst && param.Type.IsPointerToPrimitiveType(PrimitiveType.WideChar))
+                else if (isNonConst && param.Type.IsPointerToPrimitiveType(PrimitiveType.WideChar))
                     @params.Add(string.Format("[MarshalAs(UnmanagedType.LPWStr)]{0} {1}", "StringBuilder", param.Name));
                 else
                     @params.Add(string.Format("{0} {1}", typeName, param.Name));

@@ -672,3 +672,41 @@ int TypeMappedWithOperator::operator |(int i)
 {
    return 0;
 }
+
+void CheckMarshllingOfCharPtr::funcWithCharPtr(char* ptr)
+{
+	str = ptr;
+}
+
+char* CheckMarshllingOfCharPtr::funcRetCharPtr()
+{
+	return str;
+}
+
+void CheckMarshllingOfCharPtr::funcWithWideCharPtr(wchar_t* ptr)
+{
+	wstr = ptr;
+}
+
+wchar_t* CheckMarshllingOfCharPtr::funcRetWideCharPtr()
+{
+	return wstr;
+}
+
+CheckMarshllingOfCharPtr::CheckMarshllingOfCharPtr()
+{
+	str = new char[25];
+	str[0] = 'S';
+	str[1] = 'r';
+	str[2] = 'i';
+	str[3] = 'n';
+	str[4] = 'g';
+	str[5] = '\0';
+	wstr = new wchar_t[25];
+	wstr[0] = 'S';
+	wstr[1] = 'r';
+	wstr[2] = 'i';
+	wstr[3] = 'n';
+	wstr[4] = 'g';
+	wstr[5] = '\0';
+}
