@@ -436,12 +436,6 @@ namespace CppSharp.Generators.CSharp
                 }
                 return true;
             }
-            /*
-            if(pointer.IsPointerToPrimitiveType(PrimitiveType.Char) ||
-               pointer.IsPointerToPrimitiveType(PrimitiveType.WideChar))
-            {
-                Context.Return.WriteLine("new StringBuilder();");
-            }*/
 
             if (pointee is FunctionType)
             {
