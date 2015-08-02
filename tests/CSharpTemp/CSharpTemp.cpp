@@ -697,16 +697,18 @@ CheckMarshllingOfCharPtr::CheckMarshllingOfCharPtr()
 {
 	str = new char[25];
 	str[0] = 'S';
-	str[1] = 'r';
-	str[2] = 'i';
-	str[3] = 'n';
-	str[4] = 'g';
-	str[5] = '\0';
+	str[1] = 't';
+	str[2] = 'r';
+	str[3] = 'i';
+	str[4] = 'n';
+	str[5] = 'g';
+	str[6] = '\0';
 	wstr = new wchar_t[25];
 	wstr[0] = 'S';
-	wstr[1] = 'r';
-	wstr[2] = 'i';
-	wstr[3] = 'n';
-	wstr[4] = 'g';
-	wstr[5] = '\0';
+	wstr[1] = 't';
+	wstr[2] = 'r';
+	wstr[3] = 'i';
+	wstr[4] = 'n';
+	wstr[5] = 'g';
+	wstr[6] = '\0';
 }
