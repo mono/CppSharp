@@ -185,10 +185,7 @@ namespace CppSharp.AST
         public virtual bool VisitTemplateParameterType(TemplateParameterType param,
             TypeQualifiers quals)
         {
-            if (!VisitType(param, quals))
-                return false;
-
-            return true;
+            return VisitType(param, quals);
         }
 
         public virtual bool VisitTemplateParameterSubstitutionType(
@@ -203,19 +200,13 @@ namespace CppSharp.AST
         public virtual bool VisitInjectedClassNameType(InjectedClassNameType injected,
             TypeQualifiers quals)
         {
-            if (!VisitType(injected, quals))
-                return false;
-
-            return true;
+            return VisitType(injected, quals);
         }
 
         public virtual bool VisitDependentNameType(DependentNameType dependent,
             TypeQualifiers quals)
         {
-            if (!VisitType(dependent, quals))
-                return false;
-
-            return true;
+            return VisitType(dependent, quals);
         }
 
         public bool VisitPackExpansionType(PackExpansionType packExpansionType, TypeQualifiers quals)
@@ -230,10 +221,7 @@ namespace CppSharp.AST
 
         public virtual bool VisitCILType(CILType type, TypeQualifiers quals)
         {
-            if (!VisitType(type, quals))
-                return false;
-
-            return true;
+            return VisitType(type, quals);
         }
 
         #endregion
@@ -371,10 +359,7 @@ namespace CppSharp.AST
 
         public virtual bool VisitClassTemplateDecl(ClassTemplate template)
         {
-            if (!VisitDeclaration(template))
-                return false;
-
-            return true;
+            return VisitDeclaration(template);
         }
 
         public virtual bool VisitFunctionTemplateDecl(FunctionTemplate template)
