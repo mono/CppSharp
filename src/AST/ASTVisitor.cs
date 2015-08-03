@@ -63,6 +63,12 @@ namespace CppSharp.AST
 
         #region Type Visitors
 
+        public virtual void VisitAll<D>(IEnumerable<D> decs) where D:Declaration
+        {
+            foreach (var d in decs)
+                d.Visit(this);
+        }
+
         public virtual bool VisitType(Type type, TypeQualifiers quals)
         {
             return true;
@@ -97,8 +103,7 @@ namespace CppSharp.AST
                 function.ReturnType.Visit(this);
 
             if (Options.VisitFunctionParameters)
-                foreach (var param in function.Parameters)
-                    param.Visit(this);
+                VisitAll(function.Parameters);
 
             return true;
         }
@@ -303,8 +308,7 @@ namespace CppSharp.AST
                 retType.Type.Visit(this, retType.Qualifiers);
 
             if (Options.VisitFunctionParameters)
-                foreach (var param in function.Parameters)
-                    param.Visit(this);
+                VisitAll(function.Parameters);
 
             return true;
         }
@@ -385,34 +389,25 @@ namespace CppSharp.AST
             if (!VisitDeclaration(context))
                 return false;
 
-            foreach (var decl in context.Classes)
-                decl.Visit(this);
-
-            foreach (var decl in context.Functions)
-                decl.Visit(this);
+            VisitAll(context.Classes);
+            VisitAll(context.Functions);
 
             if (Options.VisitNamespaceEnums)
-                foreach (var decl in context.Enums)
-                  decl.Visit(this);
+                VisitAll(context.Enums);
 
             if (Options.VisitNamespaceTemplates)
-                foreach (var decl in context.Templates)
-                    decl.Visit(this);
+                VisitAll(context.Templates);
 
             if (Options.VisitNamespaceTypedefs)
-                foreach (var decl in context.Typedefs)
-                    decl.Visit(this);
+                VisitAll(context.Typedefs);
 
             if (Options.VisitNamespaceVariables)
-                foreach (var decl in context.Variables)
-                    decl.Visit(this);
+                VisitAll(context.Variables);
 
             if (Options.VisitNamespaceEvents)
-                foreach (var decl in context.Events)
-                    decl.Visit(this);
+                VisitAll(context.Events);
 
-            foreach (var decl in context.Namespaces)
-                decl.Visit(this);
+            VisitAll(context.Namespaces);
 
             return true;
         }
@@ -422,9 +417,7 @@ namespace CppSharp.AST
             if (!VisitDeclaration(@event))
                 return false;
 
-            foreach (var param in @event.Parameters)
-                param.Visit(this);
-
+            VisitAll(@event.Parameters);
             return true;
         }
 
