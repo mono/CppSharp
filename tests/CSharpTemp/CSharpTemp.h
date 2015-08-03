@@ -600,3 +600,15 @@ public:
     TypeMappedWithOperator();
     int operator |(int i);
 };
+
+class DLL_API CheckMarshllingOfCharPtr
+{
+	char* str;
+	wchar_t* wstr;
+public:
+	CheckMarshllingOfCharPtr();
+	void funcWithCharPtr(char* ptr);
+	void funcWithWideCharPtr(wchar_t* ptr);
+	char* funcRetCharPtr();
+	wchar_t* funcRetWideCharPtr();
+};

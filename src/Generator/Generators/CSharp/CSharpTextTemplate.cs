@@ -160,6 +160,7 @@ namespace CppSharp.Generators.CSharp
             WriteLine("using System;");
             WriteLine("using System.Runtime.InteropServices;");
             WriteLine("using System.Security;");
+            WriteLine("using System.Text;");
             foreach (var customUsingStatement in Options.DependentNameSpaces)
             {
                 WriteLine(string.Format("using {0};", customUsingStatement));
@@ -751,8 +752,12 @@ namespace CppSharp.Generators.CSharp
 
             GenerateDeclarationCommon(field);
 
+            string strType = field.Type.ToString();
+            if (IsNonConstCharPtrType(field.Type))
+                strType = "StringBuilder";
+
             WriteLine("{0} {1} {2};", @public ? "public" : "private",
-                field.Type, field.Name);
+                strType, field.Name);
 
             PopBlock(NewLineKind.BeforeNextBlock);
         }
@@ -1145,6 +1150,9 @@ namespace CppSharp.Generators.CSharp
                         GeneratedIdentifier(string.Format("{0}Initialised", prop.Field.OriginalName)));
                 }
 
+                string strType = prop.Type.ToString();
+                if (IsNonConstCharPtrType(prop.Type))
+                    strType = "StringBuilder";
                 GenerateDeclarationCommon(prop);
                 if (prop.ExplicitInterfaceImpl == null)
                 {
@@ -1161,11 +1169,11 @@ namespace CppSharp.Generators.CSharp
                     else if (prop.IsVirtual)
                         Write("virtual ");
 
-                    WriteLine("{0} {1}", prop.Type, GetPropertyName(prop));
+                    WriteLine("{0} {1}", strType, GetPropertyName(prop));
                 }
                 else
                 {
-                    WriteLine("{0} {1}.{2}", prop.Type, prop.ExplicitInterfaceImpl.Name,
+                    WriteLine("{0} {1}.{2}", strType, prop.ExplicitInterfaceImpl.Name,
                         GetPropertyName(prop));
                 }
                 WriteStartBraceIndent();
@@ -1203,7 +1211,11 @@ namespace CppSharp.Generators.CSharp
             PushBlock(CSharpBlockKind.Variable);
             
             GenerateDeclarationCommon(variable);
-            WriteLine("public static {0} {1}", type, variable.Name);
+            string strType = type.ToString();
+            if (IsNonConstCharPtrType(type))
+                strType = "StringBuilder";
+
+            WriteLine("public static {0} {1}", strType, variable.Name);
             WriteStartBraceIndent();
 
             GeneratePropertyGetter(variable.QualifiedType, variable, @class);
@@ -2628,12 +2640,33 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
+        private bool IsNonConstCharPtrType(Type type)
+        {
+            var ptrType = type as PointerType;
+            var isConst = (ptrType == null ? false : CSharpTypePrinter.IsConstCharString(ptrType));
+            return !isConst && (ptrType.IsPointerToPrimitiveType(PrimitiveType.Char) ||
+                    ptrType.IsPointerToPrimitiveType(PrimitiveType.WideChar));
+        }
+
+        private bool IsNonConstCharPtrParam(Parameter param)
+        {
+            return IsNonConstCharPtrType(param.Type);
+        }
+
+        private string ReturnMethodParamType(Parameter param)
+        {
+            string type = param.CSharpType(TypePrinter).ToString();
+            if (IsNonConstCharPtrParam(param))
+                type = "StringBuilder";
+            return type;
+        }
+
         private string FormatMethodParameters(IEnumerable<Parameter> @params)
         {
             return string.Join(", ",
                 from param in @params
                 where param.Kind != ParameterKind.IndirectReturnType && !param.Ignore
-                let typeName = param.CSharpType(TypePrinter)
+                let typeName = ReturnMethodParamType(param)
                 select string.Format("{0}{1} {2}", GetParameterUsage(param.Usage),
                     typeName, param.Name +
                         (param.DefaultArgument == null || !Options.GenerateDefaultValuesForArguments ?
@@ -2813,8 +2846,14 @@ namespace CppSharp.Generators.CSharp
 
             WriteLineIndent("EntryPoint=\"{0}\")]", function.Mangled);
 
+            var isNonConst = IsNonConstCharPtrType(function.ReturnType.Type);
+
             if (function.ReturnType.Type.IsPrimitiveType(PrimitiveType.Bool))
                 WriteLine("[return: MarshalAsAttribute(UnmanagedType.I1)]");
+            else if (isNonConst && function.ReturnType.Type.IsPointerToPrimitiveType(PrimitiveType.Char))
+                WriteLine("[return: MarshalAsAttribute(UnmanagedType.LPStr)]");
+            else if (isNonConst && function.ReturnType.Type.IsPointerToPrimitiveType(PrimitiveType.WideChar))
+                WriteLine("[return: MarshalAsAttribute(UnmanagedType.LPWStr)]");
 
             var @params = new List<string>();
 
@@ -2823,6 +2862,8 @@ namespace CppSharp.Generators.CSharp
 
             var retParam = new Parameter { QualifiedType = function.ReturnType };
             var retType = retParam.CSharpType(typePrinter);
+            if (IsNonConstCharPtrParam(retParam))
+                retType = new CSharpTypePrinterResult() { Type = "StringBuilder" };
 
             var method = function as Method;
             var isInstanceMethod = method != null && !method.IsStatic;
@@ -2846,7 +2887,13 @@ namespace CppSharp.Generators.CSharp
 
                 var typeName = param.CSharpType(typePrinter);
 
-                @params.Add(string.Format("{0} {1}", typeName, param.Name));
+                var isNonConstRet = IsNonConstCharPtrParam(param);
+                if (isNonConstRet && param.Type.IsPointerToPrimitiveType(PrimitiveType.Char))
+                    @params.Add(string.Format("[MarshalAs(UnmanagedType.LPStr)]{0} {1}", "StringBuilder", param.Name));
+                else if (isNonConstRet && param.Type.IsPointerToPrimitiveType(PrimitiveType.WideChar))
+                    @params.Add(string.Format("[MarshalAs(UnmanagedType.LPWStr)]{0} {1}", "StringBuilder", param.Name));
+                else
+                    @params.Add(string.Format("{0} {1}", typeName, param.Name));
 
                 if (param.Kind == ParameterKind.IndirectReturnType &&
                     isInstanceMethod && Options.IsItaniumLikeAbi)
