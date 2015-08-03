@@ -2846,11 +2846,13 @@ namespace CppSharp.Generators.CSharp
 
             WriteLineIndent("EntryPoint=\"{0}\")]", function.Mangled);
 
+            var isNonConst = IsNonConstCharPtrType(function.ReturnType.Type);
+
             if (function.ReturnType.Type.IsPrimitiveType(PrimitiveType.Bool))
                 WriteLine("[return: MarshalAsAttribute(UnmanagedType.I1)]");
-            else if (function.ReturnType.Type.IsPrimitiveType(PrimitiveType.Char))
+            else if (isNonConst && function.ReturnType.Type.IsPointerToPrimitiveType(PrimitiveType.Char))
                 WriteLine("[return: MarshalAsAttribute(UnmanagedType.LPStr)]");
-            else if (function.ReturnType.Type.IsPrimitiveType(PrimitiveType.WideChar))
+            else if (isNonConst && function.ReturnType.Type.IsPointerToPrimitiveType(PrimitiveType.WideChar))
                 WriteLine("[return: MarshalAsAttribute(UnmanagedType.LPWStr)]");
 
             var @params = new List<string>();
@@ -2885,10 +2887,10 @@ namespace CppSharp.Generators.CSharp
 
                 var typeName = param.CSharpType(typePrinter);
 
-                var isNonConst = IsNonConstCharPtrParam(param);
-                if (isNonConst && param.Type.IsPointerToPrimitiveType(PrimitiveType.Char))
+                var isNonConstRet = IsNonConstCharPtrParam(param);
+                if (isNonConstRet && param.Type.IsPointerToPrimitiveType(PrimitiveType.Char))
                     @params.Add(string.Format("[MarshalAs(UnmanagedType.LPStr)]{0} {1}", "StringBuilder", param.Name));
-                else if (isNonConst && param.Type.IsPointerToPrimitiveType(PrimitiveType.WideChar))
+                else if (isNonConstRet && param.Type.IsPointerToPrimitiveType(PrimitiveType.WideChar))
                     @params.Add(string.Format("[MarshalAs(UnmanagedType.LPWStr)]{0} {1}", "StringBuilder", param.Name));
                 else
                     @params.Add(string.Format("{0} {1}", typeName, param.Name));
