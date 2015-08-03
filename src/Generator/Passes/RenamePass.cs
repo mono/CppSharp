@@ -30,9 +30,13 @@ namespace CppSharp.Passes
 
         protected RenamePass()
         {
+            Options.VisitFunctionReturnType = false;
+            Options.VisitFunctionParameters = false;
+            Options.VisitTemplateArguments = false;
         }
 
         protected RenamePass(RenameTargets targets)
+            : this()
         {
             Targets = targets;
         }
@@ -83,23 +87,6 @@ namespace CppSharp.Passes
             if (decl is Namespace && !(decl is TranslationUnit)) return true;
             if (decl is Variable) return true;
             return false;
-        }
-
-        public override bool VisitClassDecl(Class @class)
-        {
-            if (@class.IsDynamic)
-            {
-                // HACK: entries in v-tables are not shared (as objects) with the virtual methods they represent;
-                // this is why this pass has to rename entries in the v-table as well;
-                // this should be fixed in the parser: it should reuse method objects
-                foreach (var method in VTables.GatherVTableMethodEntries(@class).Where(
-                    e => e.Method != null && IsRenameableDecl(e.Method)).Select(e => e.Method))
-                {
-                    Rename(method);
-                }
-            }
-
-            return base.VisitClassDecl(@class);
         }
 
         public override bool VisitDeclaration(Declaration decl)

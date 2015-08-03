@@ -57,7 +57,7 @@ namespace CppSharp.AST
         public static Method GetRootBaseMethod(this Class c, Method @override, bool onlyFirstBase = false)
         {
             return (from @base in c.Bases
-                where @base.IsClass && (!onlyFirstBase || !@base.Class.IsInterface)
+                where @base.IsClass && @base.Class.OriginalClass != c && (!onlyFirstBase || !@base.Class.IsInterface)
                 let baseMethod = (
                     from method in @base.Class.Methods
                     where
@@ -74,7 +74,7 @@ namespace CppSharp.AST
         public static Property GetRootBaseProperty(this Class c, Property @override, bool onlyFirstBase = false)
         {
             return (from @base in c.Bases
-                where (!onlyFirstBase || !@base.Class.IsInterface) && @base.IsClass
+                where @base.IsClass && @base.Class.OriginalClass != c && (!onlyFirstBase || !@base.Class.IsInterface)
                 let baseProperty = (
                     from property in @base.Class.Properties
                     where
@@ -82,7 +82,7 @@ namespace CppSharp.AST
                         property.Parameters.SequenceEqual(@override.Parameters,
                             new ParameterTypeComparer())
                     select property).FirstOrDefault()
-                let rootBaseProperty = @base.Class.GetRootBaseProperty(@override) ?? baseProperty
+                let rootBaseProperty = @base.Class.GetRootBaseProperty(@override, onlyFirstBase) ?? baseProperty
                 where rootBaseProperty != null || onlyFirstBase
                 select rootBaseProperty).FirstOrDefault();
         }

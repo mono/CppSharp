@@ -672,3 +672,19 @@ int TypeMappedWithOperator::operator |(int i)
 {
    return 0;
 }
+
+HasPropertyWithDerivedType::HasPropertyWithDerivedType()
+{
+}
+
+void HasPropertyWithDerivedType::causeRenamingError()
+{
+}
+
+HasOverrideOfHasPropertyWithDerivedType::HasOverrideOfHasPropertyWithDerivedType()
+{
+}
+
+void HasOverrideOfHasPropertyWithDerivedType::causeRenamingError()
+{
+}

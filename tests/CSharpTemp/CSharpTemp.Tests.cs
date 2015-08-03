@@ -27,6 +27,8 @@ public class CSharpTempTests : GeneratorTestFixture
             var isNoParams = foo.IsNoParams;
             foo.SetNoParams();
         }
+        using (var hasOverride = new HasOverrideOfHasPropertyWithDerivedType())
+            hasOverride.CauseRenamingError();
         // TODO: remove when the bug in question is fixed
         if (Type.GetType("Mono.Runtime") != null)
         {
@@ -343,5 +345,4 @@ public class CSharpTempTests : GeneratorTestFixture
             foo.AttributedFunctionPtr = null;
         }
     }
-
 }

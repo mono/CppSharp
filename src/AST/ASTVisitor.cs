@@ -291,7 +291,10 @@ namespace CppSharp.AST
             if (!VisitDeclaration(property))
                 return false;
 
-            return property.Type.Visit(this);
+            if (Options.VisitFunctionReturnType)
+                return property.Type.Visit(this);
+
+            return true;
         }
 
         public bool VisitFriend(Friend friend)

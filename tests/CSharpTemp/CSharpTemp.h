@@ -600,3 +600,20 @@ public:
     TypeMappedWithOperator();
     int operator |(int i);
 };
+
+class HasOverrideOfHasPropertyWithDerivedType;
+
+class DLL_API HasPropertyWithDerivedType
+{
+public:
+    HasPropertyWithDerivedType();
+    HasOverrideOfHasPropertyWithDerivedType* hasPropertyWithDerivedTypeSubclass;
+    virtual void causeRenamingError();
+};
+
+class DLL_API HasOverrideOfHasPropertyWithDerivedType : public HasPropertyWithDerivedType
+{
+public:
+    HasOverrideOfHasPropertyWithDerivedType();
+    virtual void causeRenamingError();
+};
