@@ -207,13 +207,7 @@
         /// </summary>
         public static Type GetPointee(this Type t)
         {
-            var ptr = t as PointerType;
-            if (ptr != null)
-                return ptr.Pointee;
-            var memberPtr = t as MemberPointerType;
-            if (memberPtr != null)
-                return memberPtr.QualifiedPointee.Type;
-            return null;
+            return (t as PointerType)?.Pointee ?? (t as MemberPointerType)?.QualifiedPointee.Type;
         }
 
         /// <summary>
