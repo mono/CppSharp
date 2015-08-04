@@ -14,8 +14,3 @@ void testFreeFunction()
 {
 
 }
-
-void UseFoo::takesFooPtr(Foo* ptr)
-{
-
-}

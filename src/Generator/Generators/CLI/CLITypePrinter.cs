@@ -327,7 +327,7 @@ namespace CppSharp.Generators.CLI
 
             names.Add(decl.Visit(this));
 
-            return "::" + string.Join("::", names);
+            return string.Join("::", names);
         }
 
         public string VisitClassDecl(Class @class)

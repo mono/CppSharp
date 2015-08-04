@@ -49,11 +49,3 @@ std::ostream& operator<<(std::ostream& os, const Date& dt)
 }
 
 DLL_API void testFreeFunction();
-
-class DLL_API Foo { };
-
-class DLL_API UseFoo
-{
-public:
-    void takesFooPtr(Foo* ptr);
-};
