@@ -701,7 +701,7 @@ void MultiOverloadPtrToRef::funcPrimitivePtrToRefWithMultiOverload(int* pOne, ch
 {
 }
 
-MultiOverloadPtrToRef::MultiOverloadPtrToRef()
+MultiOverloadPtrToRef::MultiOverloadPtrToRef(int* param)
 {
     arr = new int[3]{0};
 }

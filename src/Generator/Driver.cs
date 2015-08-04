@@ -242,7 +242,6 @@ namespace CppSharp
             TranslationUnitPasses.AddPass(new SortDeclarationsPass());
             TranslationUnitPasses.AddPass(new ResolveIncompleteDeclsPass());
             TranslationUnitPasses.AddPass(new CheckIgnoredDeclsPass());
-            TranslationUnitPasses.AddPass(new MarshalPrimitivePointersAsRefTypePass());
 
             if (Options.IsCSharpGenerator && Options.GenerateInlines)
                 TranslationUnitPasses.AddPass(new GenerateInlinesCodePass());
@@ -258,6 +257,7 @@ namespace CppSharp
             if (Options.GenerateConversionOperators)
                 TranslationUnitPasses.AddPass(new ConstructorToConversionOperatorPass());
 
+            TranslationUnitPasses.AddPass(new MarshalPrimitivePointersAsRefTypePass());
             TranslationUnitPasses.AddPass(new CheckAmbiguousFunctions());
             TranslationUnitPasses.AddPass(new CheckOperatorsOverloadsPass());
             TranslationUnitPasses.AddPass(new CheckVirtualOverrideReturnCovariance());
