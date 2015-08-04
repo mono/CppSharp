@@ -2281,10 +2281,11 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, Function* F,
         P->HasDefaultValue = VD->hasDefaultArg();
         P->_Namespace = NS;
         P->Index = VD->getFunctionScopeIndex();
-        if (VD->hasDefaultArg() && !VD->hasUnparsedDefaultArg() && !VD->hasUninstantiatedDefaultArg())
-        {
-            P->DefaultArgument = WalkExpression(VD->getDefaultArg());
-        }
+        if (VD->hasDefaultArg() && !VD->hasUnparsedDefaultArg())
+            if (VD->hasUninstantiatedDefaultArg())
+                P->DefaultArgument = WalkExpression(VD->getUninstantiatedDefaultArg());
+            else
+                P->DefaultArgument = WalkExpression(VD->getDefaultArg());
         HandleDeclaration(VD, P);
 
         F->Parameters.push_back(P);
@@ -2630,9 +2631,12 @@ AST::Expression* Parser::WalkExpression(clang::Expr* Expr)
             auto TemporaryExpr = dyn_cast<MaterializeTemporaryExpr>(Arg);
             if (TemporaryExpr)
             {
-                auto Cast = dyn_cast<CastExpr>(TemporaryExpr->GetTemporaryExpr());
-                if (Cast && Cast->getSubExprAsWritten()->getStmtClass() != Stmt::IntegerLiteralClass)
-                    return WalkExpression(Cast->getSubExprAsWritten());
+                auto SubTemporaryExpr = TemporaryExpr->GetTemporaryExpr();
+                auto Cast = dyn_cast<CastExpr>(SubTemporaryExpr);
+                if (!Cast || Cast->getSubExprAsWritten()->getStmtClass() != Stmt::IntegerLiteralClass)
+                    return WalkExpression(SubTemporaryExpr);
+                return new AST::Expression(GetStringFromStatement(Expr), StatementClass::CXXConstructExprClass,
+                    WalkDeclaration(ConstructorExpr->getConstructor()), WalkExpression(SubTemporaryExpr));
             }
         }
         return new AST::Expression(GetStringFromStatement(Expr), StatementClass::CXXConstructExprClass,

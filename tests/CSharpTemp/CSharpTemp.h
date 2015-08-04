@@ -148,14 +148,31 @@ Proprietor::Proprietor() {}
 template <typename T>
 class DLL_API QFlags
 {
+    typedef int Int;
     typedef int (*Zero);
 public:
     QFlags(T t);
-    QFlags(Zero);
-    operator T();
+    QFlags(Zero = 0);
+    operator Int();
 private:
-    T flag;
+    int flag;
 };
+
+template <typename T>
+QFlags<T>::QFlags(T t) : flag(Int(t))
+{
+}
+
+template <typename T>
+QFlags<T>::QFlags(Zero) : flag(Int(0))
+{
+}
+
+template <typename T>
+QFlags<T>::operator Int()
+{
+    return flag;
+}
 
 enum class TestFlag
 {
@@ -311,6 +328,7 @@ public:
     void defaultNonEmptyCtor(QGenericArgument arg = QGenericArgument(0));
     void defaultMappedToEnum(QFlags<Flags> qFlags = Flags::Flag1);
     void defaultMappedToZeroEnum(QFlags<Flags> qFlags = 0);
+    void defaultMappedToEnumAssignedWithCtor(QFlags<Flags> qFlags = QFlags<Flags>());
     void defaultImplicitCtorInt(Quux arg = 0);
     void defaultImplicitCtorChar(Quux arg = 'a');
     void defaultImplicitCtorFoo(Quux arg = Foo());

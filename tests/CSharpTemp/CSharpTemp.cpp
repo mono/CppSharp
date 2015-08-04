@@ -216,22 +216,6 @@ long P::prop()
     return m_property + 100;
 }
 
-template <typename T>
-QFlags<T>::QFlags(T t) : flag(t)
-{
-}
-
-template <typename T>
-QFlags<T>::QFlags(Zero) : flag(0)
-{
-}
-
-template <typename T>
-QFlags<T>::operator T()
-{
-    return flag;
-}
-
 ComplexType::ComplexType() : qFlags(QFlags<TestFlag>(TestFlag::Flag2))
 {
 }
@@ -417,6 +401,10 @@ void MethodsWithDefaultValues::defaultMappedToEnum(QFlags<Flags> qFlags)
 }
 
 void MethodsWithDefaultValues::defaultMappedToZeroEnum(QFlags<Flags> qFlags)
+{
+}
+
+void MethodsWithDefaultValues::defaultMappedToEnumAssignedWithCtor(QFlags<Flags> qFlags)
 {
 }
 

@@ -188,6 +188,7 @@ public class CSharpTempTests : GeneratorTestFixture
         methodsWithDefaultValues.DefaultNonEmptyCtor();
         methodsWithDefaultValues.DefaultMappedToEnum();
         methodsWithDefaultValues.DefaultMappedToZeroEnum();
+        methodsWithDefaultValues.DefaultMappedToEnumAssignedWithCtor();
         methodsWithDefaultValues.DefaultImplicitCtorInt();
         methodsWithDefaultValues.DefaultImplicitCtorChar();
         methodsWithDefaultValues.DefaultImplicitCtorFoo();
