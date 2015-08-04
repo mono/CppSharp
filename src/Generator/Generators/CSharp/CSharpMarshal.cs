@@ -284,10 +284,10 @@ namespace CppSharp.Generators.CSharp
             if (parameter.Usage == ParameterUsage.Unknown || parameter.IsIn)
                 return base.VisitParameterDecl(parameter);
 
-            var ctx = new CSharpMarshalContext(base.Context.Driver)
+            var ctx = new CSharpMarshalContext(Context.Driver)
             {
-                ReturnType = base.Context.ReturnType,
-                ReturnVarName = base.Context.ReturnVarName
+                ReturnType = Context.ReturnType,
+                ReturnVarName = Context.ReturnVarName
             };
 
             var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
@@ -296,13 +296,14 @@ namespace CppSharp.Generators.CSharp
             if (!string.IsNullOrWhiteSpace(ctx.SupportBefore))
                 Context.SupportBefore.WriteLine(ctx.SupportBefore);
 
-            if (!string.IsNullOrWhiteSpace(ctx.Return))
+            if (!string.IsNullOrWhiteSpace(ctx.Return) && !parameter.IsPrimitiveParameterConvertibleToRef())
             {
                 Context.SupportBefore.WriteLine("var _{0} = {1};", parameter.Name,
                     ctx.Return);
             }
 
-            Context.Return.Write("_{0}", parameter.Name);
+            Context.Return.Write("{0}{1}",
+                parameter.IsPrimitiveParameterConvertibleToRef() ? "ref *" : "_", parameter.Name);
             return true;
         }
 
