@@ -2283,12 +2283,14 @@ namespace CppSharp.Generators.CSharp
                     Class @interface = null;
                     if (paramType.TryGetClass(out paramClass))
                         @interface = paramClass.Namespace.Classes.Find(c => c.OriginalClass == paramClass);
+
+                    var paramName = string.Format("{0}{1}",
+                        method.Parameters[0].IsPrimitiveParameterConvertibleToRef() ? "ref *" : string.Empty,
+                        method.Parameters[0].Name);
                     if (@interface != null)
-                        WriteLine("return new {0}(({2}) {1});", method.ConversionType,
-                                  method.Parameters[0].Name, @interface.Name);
+                        WriteLine("return new {0}(({2}) {1});", method.ConversionType, paramName, @interface.Name);
                     else
-                        WriteLine("return new {0}({1});", method.ConversionType,
-                                  method.Parameters[0].Name);
+                        WriteLine("return new {0}({1});", method.ConversionType, paramName);
                 }
                 else
                 {

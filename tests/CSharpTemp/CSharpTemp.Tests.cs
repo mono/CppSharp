@@ -350,6 +350,8 @@ public class CSharpTempTests : GeneratorTestFixture
     public unsafe void TestMultiOverLoadPtrToRef()
     {
         var r = 0;
+        MultiOverloadPtrToRef m = &r;
+        m.Dispose();
         var obj = new MultiOverloadPtrToRef(ref r);
         var p = obj.ReturnPrimTypePtr();
         Assert.AreEqual(0, p[0]);
