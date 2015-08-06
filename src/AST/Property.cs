@@ -128,6 +128,5 @@ namespace CppSharp.AST
         {
             return visitor.VisitProperty(this);
         }
-
     }
 }

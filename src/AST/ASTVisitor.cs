@@ -63,9 +63,9 @@ namespace CppSharp.AST
 
         #region Type Visitors
 
-        public virtual void VisitAll<D>(IEnumerable<D> decs) where D:Declaration
+        public virtual void VisitAll<D>(IEnumerable<D> decls) where D:Declaration
         {
-            foreach (var d in decs)
+            foreach (var d in decls)
                 d.Visit(this);
         }
 

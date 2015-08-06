@@ -45,7 +45,7 @@ namespace CppSharp
             options.addDefines ("__STDC_LIMIT_MACROS");
             options.addDefines ("__STDC_CONSTANT_MACROS");
 
-            var llvmPath = Path.Combine (GetSourceDirectory ("deps"), "llvm");
+            var llvmPath = Path.Combine(GetSourceDirectory("deps"), "llvm");
             var clangPath = Path.Combine(llvmPath, "tools", "clang");
 
             options.addIncludeDirs(Path.Combine(llvmPath, "include"));
@@ -65,10 +65,15 @@ namespace CppSharp
             var exprClass = ctx.FindCompleteClass ("clang::Expr");
 
             var exprUnit = ctx.TranslationUnits [0];
+<<<<<<< 2ac73904c4d5da6b11556d84435a14696f898efe
             var subclassVisitor = new SubclassVisitor (exprClass);
             exprUnit.Visit (subclassVisitor);
 
             var subclasses = subclassVisitor.Classes;
+=======
+            var subclassVisitor = new SubclassVisitor(exprClass);
+            exprUnit.Visit(subclassVisitor);
+>>>>>>> applied remarks to pull request
         }
 
         public void Postprocess(Driver driver, ASTContext ctx)
