@@ -2010,7 +2010,10 @@ namespace CppSharp.Generators.CSharp
             GenerateDeclarationCommon(function);
 
             var functionName = GetFunctionIdentifier(function);
-            Write("public static {0} {1}(", function.OriginalReturnType, functionName);
+            if (IsNonConstCharPtrType(function.OriginalReturnType.Type))
+                Write("public static {0} {1}(", "StringBuilder", functionName);
+            else
+                Write("public static {0} {1}(", function.OriginalReturnType, functionName);
             Write(FormatMethodParameters(function.Parameters));
             WriteLine(")");
             WriteStartBraceIndent();
@@ -2068,6 +2071,8 @@ namespace CppSharp.Generators.CSharp
             else if (method.OperatorKind == CXXOperatorKind.Conversion || 
                      method.OperatorKind == CXXOperatorKind.ExplicitConversion)
                 Write("{0} {1}(", functionName, method.OriginalReturnType);
+            else if (IsNonConstCharPtrType(method.OriginalReturnType.Type))
+                Write("{0} {1}(", "StringBuilder", functionName);
             else
                 Write("{0} {1}(", method.OriginalReturnType, functionName);
 
@@ -2887,10 +2892,10 @@ namespace CppSharp.Generators.CSharp
 
                 var typeName = param.CSharpType(typePrinter);
 
-                var isNonConstRet = IsNonConstCharPtrParam(param);
-                if (isNonConstRet && param.Type.IsPointerToPrimitiveType(PrimitiveType.Char))
+                var isNonConstParam = IsNonConstCharPtrParam(param);
+                if (isNonConstParam && param.Type.IsPointerToPrimitiveType(PrimitiveType.Char))
                     @params.Add(string.Format("[MarshalAs(UnmanagedType.LPStr)]{0} {1}", "StringBuilder", param.Name));
-                else if (isNonConstRet && param.Type.IsPointerToPrimitiveType(PrimitiveType.WideChar))
+                else if (isNonConstParam && param.Type.IsPointerToPrimitiveType(PrimitiveType.WideChar))
                     @params.Add(string.Format("[MarshalAs(UnmanagedType.LPWStr)]{0} {1}", "StringBuilder", param.Name));
                 else
                     @params.Add(string.Format("{0} {1}", typeName, param.Name));
