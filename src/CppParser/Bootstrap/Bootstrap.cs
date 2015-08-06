@@ -1,9 +1,10 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using CppSharp.AST;
 
-namespace CppSharp
+namespace CppSharp.Parser.Bootstrap
 {
     /// <summary>
     /// Generates parser bootstrap code.
@@ -14,11 +15,11 @@ namespace CppSharp
         {
             var directory = Directory.GetParent(Directory.GetCurrentDirectory());
 
-            while (directory != null)
+            while(directory != null)
             {
                 var path = Path.Combine(directory.FullName, dir);
 
-                if (Directory.Exists(path) &&
+                if(Directory.Exists(path) &&
                     Directory.Exists(Path.Combine(directory.FullName, "patches")))
                     return path;
 
@@ -33,24 +34,26 @@ namespace CppSharp
             var options = driver.Options;
             options.LibraryName = "CppSharp";
             options.DryRun = true;
-            options.Headers.AddRange(new string[]
-            {
+            options.Headers.AddRange(new string[] {
+                //"clang/AST/AST.h",
                 "clang/AST/Expr.h",
+                "clang/AST/Stmt.h",
+                "clang/Basic/Specifiers.h",
             });
 
             options.SetupXcode();
             options.MicrosoftMode = false;
             options.TargetTriple = "i686-apple-darwin12.4.0";
 
-            options.addDefines ("__STDC_LIMIT_MACROS");
-            options.addDefines ("__STDC_CONSTANT_MACROS");
+            options.addDefines("__STDC_LIMIT_MACROS");
+            options.addDefines("__STDC_CONSTANT_MACROS");
 
-            var llvmPath = Path.Combine (GetSourceDirectory ("deps"), "llvm");
+            var llvmPath = Path.Combine(GetSourceDirectory("deps"), "llvm");
             var clangPath = Path.Combine(llvmPath, "tools", "clang");
 
             options.addIncludeDirs(Path.Combine(llvmPath, "include"));
             options.addIncludeDirs(Path.Combine(llvmPath, "build", "include"));
-            options.addIncludeDirs (Path.Combine (llvmPath, "build", "tools", "clang", "include"));
+            options.addIncludeDirs(Path.Combine(llvmPath, "build", "tools", "clang", "include"));
             options.addIncludeDirs(Path.Combine(clangPath, "include"));
         }
 
@@ -58,18 +61,35 @@ namespace CppSharp
         {
         }
 
+
         public void Preprocess(Driver driver, ASTContext ctx)
         {
             ctx.RenameNamespace("CppSharp::CppParser", "Parser");
 
-            var exprClass = ctx.FindCompleteClass ("clang::Expr");
+            //exprs
+            ASTGenerator gen = new CsharpASTGenerator(driver, ctx);
 
-            var exprUnit = ctx.TranslationUnits [0];
-            var subclassVisitor = new SubclassVisitor (exprClass);
-            exprUnit.Visit (subclassVisitor);
+            var exprClass = ctx.FindCompleteClass("clang::Expr");
+            var visitor = new DeclarationVisitor<Class>(exprClass.isBaseOf);
+            exprClass.TranslationUnit.Visit(visitor);
+            visitor.decls.ToList().ForEach(gen.WriteExprClass);
+            Console.WriteLine(gen);
 
-            var subclasses = subclassVisitor.Classes;
+
+            //enums
+            gen = new CsharpASTGenerator(driver, ctx);
+            var enumTargets = new Dictionary<String, String[]> {
+                { "clang", 			new[] { "CallingConv" } },
+                { "clang::Stmt",	new[] { "StmtClass", "APFloatSemantics" } },
+            };
+
+            var qualifiedNames = enumTargets.SelectMany(kv => kv.Value.Select(name => kv.Key + "::" + name));
+            var enums = qualifiedNames.Select(ctx.FindCompleteEnum);
+
+            enums.ToList().ForEach(gen.WriteEnum);
+            Console.WriteLine(gen);
         }
+
 
         public void Postprocess(Driver driver, ASTContext ctx)
         {
@@ -83,34 +103,23 @@ namespace CppSharp
         }
     }
 
-    class SubclassVisitor : AstVisitor
+    class DeclarationVisitor<T> : AstVisitor where T : Declaration
     {
-        public HashSet<Class> Classes;
-        Class expressionClass;
+        public HashSet<T> decls = new HashSet<T>();
+        public Predicate<T> pred;
 
-        public SubclassVisitor (Class expression)
+        public DeclarationVisitor(Predicate<T> p)
         {
-            expressionClass = expression;
-            Classes = new HashSet<Class> ();
+            pred = p;
         }
 
-        static bool IsDerivedFrom(Class subclass, Class superclass)
+        public override bool VisitDeclaration(Declaration decl)
         {
-            if (subclass == null)
-                return false;
+            var t = decl as T;
+            if(!decl.IsIncomplete && t != null && pred(t))
+                decls.Add(t);
 
-            if (subclass == superclass)
-                return true;
-
-            return IsDerivedFrom (subclass.BaseClass, superclass);
-        }
-
-        public override bool VisitClassDecl (Class @class)
-        {
-            if (!@class.IsIncomplete && IsDerivedFrom (@class, expressionClass))
-                Classes.Add (@class);
-
-            return base.VisitClassDecl (@class);
+            return base.VisitDeclaration(decl);
         }
     }
 }

@@ -192,7 +192,7 @@ namespace CppSharp.AST
             var enumName = entries[entries.Count - 1];
             var namespaces = entries.Take(entries.Count - 1);
 
-            var @namespace = FindNamespace(namespaces);
+            var @namespace = FindDeclaration(namespaces);
             if (@namespace == null)
                 return null;
 

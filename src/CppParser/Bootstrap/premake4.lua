@@ -5,7 +5,7 @@ project "CppSharp.Parser.Bootstrap"
   SetupManagedProject()
   debugdir "."
   
-  files { "Bootstrap.cs", "*.lua" }
+  files { "*.cs", "*.lua" }
   links { "CppSharp", "CppSharp.AST", "CppSharp.Generator", "System", "System.Core" }
 
   SetupParser()
