@@ -165,7 +165,13 @@ namespace CppSharp.AST
         {
             get
             {
-                return Bases.FirstOrDefault(b => b.IsClass && b.Class.IsDeclared)?.Class;
+                foreach (var @base in Bases)
+                {
+                    if (@base.IsClass && @base.Class.IsDeclared)
+                        return @base.Class;
+                }
+
+                return null;
             }
         }
 
