@@ -111,7 +111,7 @@ static Comment* ConvertCommentBlock(clang::comments::Comment* C)
         for (auto I = CK->child_begin(), E = CK->child_end(); I != E; ++I)
         {
             auto Content = ConvertCommentBlock(*I);
-            FC->Blocks.push_back(cast<BlockContentComment>(Content));
+            FC->Blocks.push_back(static_cast<BlockContentComment*>(Content));
         }
         break;
     }
@@ -154,7 +154,7 @@ static Comment* ConvertCommentBlock(clang::comments::Comment* C)
         for (auto I = CK->child_begin(), E = CK->child_end(); I != E; ++I)
         {
             auto Line = ConvertCommentBlock(*I);
-            VB->Lines.push_back(cast<VerbatimBlockLineComment>(Line));
+            VB->Lines.push_back(static_cast<VerbatimBlockLineComment*>(Line));
         }
         break;
     }
@@ -174,7 +174,7 @@ static Comment* ConvertCommentBlock(clang::comments::Comment* C)
         for (auto I = CK->child_begin(), E = CK->child_end(); I != E; ++I)
         {
             auto Content = ConvertCommentBlock(*I);
-            PC->Content.push_back(cast<InlineContentComment>(Content));
+            PC->Content.push_back(static_cast<InlineContentComment*>(Content));
         }
         PC->IsWhitespace = CK->isWhitespace();
         break;
