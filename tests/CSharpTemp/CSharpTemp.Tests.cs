@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 using System.Reflection;
 using CppSharp.Utils;
 using CSharpTemp;
@@ -351,6 +350,20 @@ public class CSharpTempTests : GeneratorTestFixture
         var obj = new CheckMarshllingOfCharPtr();
         var str = obj.FuncRetCharPtr;
         Assert.AreEqual('S', str[0]);
-        Assert.AreEqual('i', str[3]);
+        str[0] = 'j';
+        var obj2 = new CheckMarshllingOfCharPtr();
+        obj2.FuncWithCharPtr(str);                      //THIS LINE
+        var astr = obj2.FuncRetCharPtr;                 //          causes this one to Abort
+        Assert.AreEqual('j', str[0]);
+        
+        var wstr = obj.FuncRetWideCharPtr;
+        Assert.AreEqual('S', wstr[0]);
+        wstr[0] = 'j';
+        obj.FuncWithWideCharPtr(wstr);                  //THIS LINE
+        wstr = obj.FuncRetWideCharPtr;                  //          causes this one to Abort
+        Assert.AreEqual('j', wstr[0]);
+
+        var fstr = CSharpTemp.CSharpTemp.FreeFuncWithCharPtrRet(str);    //EVEN this aborts
+        Assert.AreEqual('t', fstr[1]);
     }
 }

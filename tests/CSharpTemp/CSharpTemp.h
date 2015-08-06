@@ -612,3 +612,5 @@ public:
 	char* funcRetCharPtr();
 	wchar_t* funcRetWideCharPtr();
 };
+
+DLL_API char* freeFuncWithCharPtrRet(char* ptr);

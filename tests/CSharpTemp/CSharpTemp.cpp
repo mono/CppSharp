@@ -696,7 +696,13 @@ wchar_t* CheckMarshllingOfCharPtr::funcRetWideCharPtr()
 CheckMarshllingOfCharPtr::CheckMarshllingOfCharPtr()
 {
 	str = new char[25];
-	str = "String";
+	str[0] = 'S';
+	str[1] = 't';
+	str[2] = 'r';
+	str[3] = 'i';
+	str[4] = 'n';
+	str[5] = 'g';
+	str[6] = '\0';
 	wstr = new wchar_t[25];
 	wstr[0] = 'S';
 	wstr[1] = 't';
@@ -705,4 +711,10 @@ CheckMarshllingOfCharPtr::CheckMarshllingOfCharPtr()
 	wstr[4] = 'n';
 	wstr[5] = 'g';
 	wstr[6] = '\0';
+}
+
+char* freeFuncWithCharPtrRet(char* ptr)
+{
+	ptr = "ptr";
+	return ptr;
 }
