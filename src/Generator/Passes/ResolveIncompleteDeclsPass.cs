@@ -4,14 +4,6 @@ namespace CppSharp.Passes
 {
     public class ResolveIncompleteDeclsPass : TranslationUnitPass
     {
-        public override bool VisitDeclaration(Declaration decl)
-        {
-            if (AlreadyVisited(decl))
-                return false;
-
-            return decl.IsGenerated;
-        }
-
         public override bool VisitClassDecl(Class @class)
         {
             if (!base.VisitClassDecl(@class))
