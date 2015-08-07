@@ -34,6 +34,7 @@ namespace CppSharp
             ref class BlockCommandComment;
             ref class BlockContentComment;
             ref class BuiltinType;
+            ref class CXXConstructExpr;
             ref class Class;
             ref class ClassLayout;
             ref class ClassTemplate;
@@ -1343,12 +1344,6 @@ namespace CppSharp
                 Expression(::CppSharp::CppParser::AST::Expression* native);
                 static Expression^ __CreateInstance(::System::IntPtr native);
                 Expression(CppSharp::Parser::AST::Expression^ _0);
-
-                property CppSharp::Parser::AST::Expression^ Subexpression
-                {
-                    CppSharp::Parser::AST::Expression^ get();
-                    void set(CppSharp::Parser::AST::Expression^);
-                }
             };
 
             public ref class BinaryOperator : CppSharp::Parser::AST::Expression
@@ -1376,6 +1371,26 @@ namespace CppSharp
                     CppSharp::Parser::AST::Expression^ get();
                     void set(CppSharp::Parser::AST::Expression^);
                 }
+            };
+
+            public ref class CXXConstructExpr : CppSharp::Parser::AST::Expression
+            {
+            public:
+
+                CXXConstructExpr(::CppSharp::CppParser::AST::CXXConstructExpr* native);
+                static CXXConstructExpr^ __CreateInstance(::System::IntPtr native);
+                CXXConstructExpr(CppSharp::Parser::AST::CXXConstructExpr^ _0);
+
+                property unsigned int ArgumentsCount
+                {
+                    unsigned int get();
+                }
+
+                CppSharp::Parser::AST::Expression^ getArguments(unsigned int i);
+
+                void addArguments(CppSharp::Parser::AST::Expression^ s);
+
+                void clearArguments();
             };
 
             public ref class Parameter : CppSharp::Parser::AST::Declaration
@@ -2414,7 +2429,7 @@ namespace CppSharp
 
                 unsigned int getPosition(unsigned int i);
 
-                void addPosition(unsigned int* s);
+                void addPosition([System::Runtime::InteropServices::In, System::Runtime::InteropServices::Out] unsigned int% s);
 
                 void clearPosition();
             };

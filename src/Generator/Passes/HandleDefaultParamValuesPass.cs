@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
@@ -14,7 +15,6 @@ namespace CppSharp.Passes
         private static readonly Regex regexFunctionParams = new Regex(@"\(?(.+)\)?", RegexOptions.Compiled);
         private static readonly Regex regexDoubleColon = new Regex(@"\w+::", RegexOptions.Compiled);
         private static readonly Regex regexName = new Regex(@"(\w+)", RegexOptions.Compiled);
-        private static readonly Regex regexCtor = new Regex(@"^([\w<,>:]+)\s*(\([\w, ]*\))$", RegexOptions.Compiled);
 
         private readonly Dictionary<DeclarationContext, List<Function>> overloads =
             new Dictionary<DeclarationContext, List<Function>>();
@@ -43,33 +43,10 @@ namespace CppSharp.Passes
             var overloadIndices = new List<int>(function.Parameters.Count);
             foreach (var parameter in function.Parameters.Where(p => p.DefaultArgument != null))
             {
-                Type desugared = parameter.Type.Desugar();
-
-                if (CheckForDefaultPointer(desugared, parameter))
-                    continue;
-
-                CheckFloatSyntax(desugared, parameter);
-
-                bool? defaultConstruct = CheckForDefaultConstruct(desugared,
-                    parameter.DefaultArgument, parameter.QualifiedType.Qualifiers);
-                if (defaultConstruct == null ||
-                    (!Driver.Options.MarshalCharAsManagedChar &&
-                     parameter.Type.Desugar().IsPrimitiveType(PrimitiveType.UChar)) ||
-                     parameter.IsPrimitiveParameterConvertibleToRef())
-                {
+                var result = parameter.DefaultArgument.String;
+                if (PrintExpression(parameter.Type, parameter.DefaultArgument, ref result) == null)
                     overloadIndices.Add(function.Parameters.IndexOf(parameter));
-                    continue;
-                }
-                if (defaultConstruct == true)
-                    continue;
-
-                if (CheckForBinaryOperator(parameter.DefaultArgument, desugared))
-                    continue;
-
-                if (CheckForEnumValue(parameter.DefaultArgument, desugared))
-                    continue;
-
-                CheckForDefaultEmptyChar(parameter, desugared);
+                parameter.DefaultArgument.String = result;
             }
 
             GenerateOverloads(function, overloadIndices);
@@ -77,7 +54,133 @@ namespace CppSharp.Passes
             return true;
         }
 
-        private void CheckFloatSyntax(Type desugared, Parameter parameter)
+        private bool? PrintExpression(Type type, Expression expression, ref string result)
+        {
+            var desugared = type.Desugar();
+
+            if ((!Driver.Options.MarshalCharAsManagedChar &&
+                 desugared.IsPrimitiveType(PrimitiveType.UChar)) ||
+                type.IsPrimitiveTypeConvertibleToRef())
+                return null;
+
+            if (CheckForDefaultPointer(desugared, ref result))
+                return true;
+
+            var defaultConstruct = CheckForDefaultConstruct(desugared, expression, ref result);
+            if (defaultConstruct != false)
+                return defaultConstruct;
+
+            return CheckFloatSyntax(desugared, expression, ref result) ||
+                CheckForBinaryOperator(desugared, expression, ref result) ||
+                CheckForEnumValue(desugared, expression, ref result) ||
+                CheckForDefaultEmptyChar(desugared, expression, ref result);
+        }
+
+        private bool CheckForDefaultPointer(Type desugared, ref string result)
+        {
+            if (!desugared.IsPointer())
+                return false;
+
+            // IntPtr.Zero is not a constant
+            if (desugared.IsPointerToPrimitiveType(PrimitiveType.Void))
+            {
+                result = "new global::System.IntPtr()";
+                return true;
+            }
+
+            if (desugared.IsPrimitiveTypeConvertibleToRef())
+                return false;
+
+            Class @class;
+            if (desugared.GetFinalPointee().TryGetClass(out @class) && @class.IsValueType)
+            {
+                result = string.Format("new {0}()",
+                    new CSharpTypePrinter(Driver).VisitClassDecl(@class));
+                return true;
+            }
+
+            result = "null";
+            return true;
+        }
+
+        private bool? CheckForDefaultConstruct(Type desugared, Statement statement,
+            ref string result)
+        {
+            var type = desugared.GetFinalPointee() ?? desugared;
+
+            Class decl;
+            if (!type.TryGetClass(out decl))
+                return false;
+
+            var ctor = statement as CXXConstructExpr;
+
+            TypeMap typeMap;
+
+            var typePrinter = new CSharpTypePrinter(Driver);
+            typePrinter.PushContext(CSharpTypePrinterContextKind.DefaultExpression);
+            var typePrinterResult = type.Visit(typePrinter).Type;
+            if (Driver.TypeDatabase.FindTypeMap(decl, type, out typeMap))
+            {
+                var typeInSignature = typeMap.CSharpSignatureType(
+                    typePrinter.Context).SkipPointerRefs().Desugar();
+                Enumeration @enum;
+                if (typeInSignature.TryGetEnum(out @enum))
+                {
+                    if (ctor != null &&
+                        (ctor.Arguments.Count == 0 ||
+                         HasSingleZeroArgExpression((Function) ctor.Declaration)))
+                    {
+                        result = "0";
+                        return true;
+                    }
+                    return false;
+                }
+
+                if (ctor != null && typePrinterResult == "string" && ctor.Arguments.Count == 0)
+                {
+                    result = "\"\"";
+                    return true;
+                }
+            }
+
+            if (ctor == null)
+                return decl.IsValueType ? (bool?) false : null;
+
+            var method = (Method) statement.Declaration;
+            var expressionSupported = decl.IsValueType && method.Parameters.Count == 0;
+
+            if (statement.String.Contains('('))
+            {
+                var argsBuilder = new StringBuilder("new ");
+                argsBuilder.Append(typePrinterResult);
+                argsBuilder.Append('(');
+                for (var i = 0; i < ctor.Arguments.Count; i++)
+                {
+                    var argument = ctor.Arguments[i];
+                    var argResult = argument.String;
+                    expressionSupported &= PrintExpression(method.Parameters[i].Type.Desugar(),
+                        argument, ref argResult) ?? false;
+                    argsBuilder.Append(argResult);
+                    if (i < ctor.Arguments.Count - 1)
+                        argsBuilder.Append(", ");
+                }
+                argsBuilder.Append(')');
+                result = argsBuilder.ToString();
+            }
+            else
+            {
+                if (method.Parameters.Count > 0)
+                {
+                    var paramType = method.Parameters[0].Type.SkipPointerRefs().Desugar();
+                    Enumeration @enum;
+                    if (paramType.TryGetEnum(out @enum))
+                        result = TranslateEnumExpression(method, paramType, statement.String);
+                }
+            }
+            return expressionSupported ? true : (bool?) null;
+        }
+
+        private static bool CheckFloatSyntax(Type desugared, Statement statement, ref string result)
         {
             var builtin = desugared as BuiltinType;
             if (builtin != null)
@@ -85,156 +188,73 @@ namespace CppSharp.Passes
                 switch (builtin.Type)
                 {
                     case PrimitiveType.Float:
-                        if (parameter.DefaultArgument.String.EndsWith(".F"))
-                            parameter.DefaultArgument.String =
-                                parameter.DefaultArgument.String.Replace(".F", ".0F");
+                        if (statement.String.EndsWith(".F"))
+                        {
+                            result = statement.String.Replace(".F", ".0F");
+                            return true;
+                        }
                         break;
                     case PrimitiveType.Double:
-                        if (parameter.DefaultArgument.String.EndsWith("."))
-                            parameter.DefaultArgument.String += '0';
+                        if (statement.String.EndsWith("."))
+                        {
+                            result = statement.String + '0';
+                            return true;
+                        }
                         break;
                 }
-            }
-        }
-
-        private bool CheckForDefaultPointer(Type desugared, Parameter parameter)
-        {
-            if (desugared.IsPointer())
-            {
-                // IntPtr.Zero is not a constant
-                if (desugared.IsPointerToPrimitiveType(PrimitiveType.Void))
-                {
-                    parameter.DefaultArgument.String = "new global::System.IntPtr()";
-                    return true;
-                }
-                if (parameter.IsPrimitiveParameterConvertibleToRef())
-                    return false;
-                Class @class;
-                if (desugared.GetFinalPointee().TryGetClass(out @class) && @class.IsValueType)
-                {
-                    parameter.DefaultArgument.String = string.Format("new {0}()",
-                        new CSharpTypePrinter(Driver).VisitClassDecl(@class));
-                    return true;
-                }
-                parameter.DefaultArgument.String = "null";
-                return true;
             }
             return false;
         }
 
-        private bool? CheckForDefaultConstruct(Type desugared, Statement arg,
-            TypeQualifiers qualifiers)
+        private bool CheckForBinaryOperator(Type desugared, Expression expression,
+            ref string result)
         {
-            // Unwrapping the underlying type behind a possible pointer/reference
-            Type type = desugared.GetFinalPointee() ?? desugared;
-
-            Class decl;
-            if (!type.TryGetClass(out decl))
+            if (expression.Class != StatementClass.BinaryOperator)
                 return false;
 
-            var ctor = arg.Declaration as Method;
+            var binaryOperator = (BinaryOperator) expression;
 
-            TypeMap typeMap;
-            var typePrinterContext = new CSharpTypePrinterContext
-            {
-                CSharpKind = CSharpTypePrinterContextKind.DefaultExpression,
-                Type = type
-            };
+            var lhsResult = binaryOperator.LHS.String;
+            CheckForEnumValue(desugared, binaryOperator.LHS, ref lhsResult);
 
-            string typePrinterResult = null;
-            if (Driver.TypeDatabase.FindTypeMap(decl, type, out typeMap))
-            {
-                var typeInSignature = typeMap.CSharpSignatureType(
-                    typePrinterContext).SkipPointerRefs().Desugar();
-                Enumeration @enum;
-                if (typeInSignature.TryGetEnum(out @enum))
-                    return false;
+            var rhsResult = binaryOperator.RHS.String;
+            CheckForEnumValue(desugared, binaryOperator.RHS, ref rhsResult);
 
-                if (ctor == null || !ctor.IsConstructor)
-                    return false;
-
-                typePrinterResult = typeMap.CSharpSignature(typePrinterContext);
-                if (typePrinterResult == "string" && ctor.Parameters.Count == 0)
-                {
-                    arg.String = "\"\"";
-                    return true;
-                }
-            }
-
-            var match = regexCtor.Match(arg.String);
-            if (match.Success)
-            {
-                if (ctor != null)
-                {
-                    var templateSpecializationType = type as TemplateSpecializationType;
-                    var typePrinter = new CSharpTypePrinter(Driver);
-                    typePrinterResult = typePrinterResult ?? (templateSpecializationType != null
-                        ? typePrinter.VisitTemplateSpecializationType(
-                            templateSpecializationType, qualifiers)
-                        : typePrinter.VisitClassDecl((Class) ctor.Namespace)).Type;
-
-                    arg.String = string.Format("new {0}{1}", typePrinterResult,
-                        match.Groups[2].Value);
-                    if (ctor.Parameters.Count > 0 && ctor.Parameters[0].Type.IsAddress())
-                        arg.String = arg.String.Replace("(0)", "()");
-                }
-                else
-                    arg.String = string.Format("new {0}", arg.String);
-            }
-            else
-            {
-                if (ctor != null && ctor.Parameters.Count > 0)
-                {
-                    var finalPointee = ctor.Parameters[0].Type.SkipPointerRefs().Desugar();
-                    Enumeration @enum;
-                    if (finalPointee.TryGetEnum(out @enum))
-                        TranslateEnumExpression(ctor, arg, finalPointee, arg.String);
-                }
-            }
-
-            return decl.IsValueType ? true : (bool?) null;
-        }
-
-        private bool CheckForBinaryOperator(Expression arg, Type desugared)
-        {
-            if (arg.Class != StatementClass.BinaryOperator) return false;
-
-            var binaryOperator = (BinaryOperator) arg;
-            CheckForEnumValue(binaryOperator.LHS, desugared);
-            CheckForEnumValue(binaryOperator.RHS, desugared);
-            arg.String = string.Format("{0} {1} {2}", binaryOperator.LHS.String,
-                binaryOperator.OpcodeStr, binaryOperator.RHS.String);
+            result = string.Format("{0} {1} {2}", lhsResult,
+                binaryOperator.OpcodeStr, rhsResult);
             return true;
         }
 
-        private bool CheckForEnumValue(Expression arg, Type desugared)
+        private bool CheckForEnumValue(Type desugared, Statement statement,
+            ref string result)
         {
-            var enumItem = arg.Declaration as Enumeration.Item;
+            var enumItem = statement.Declaration as Enumeration.Item;
             if (enumItem != null)
             {
-                arg.String = string.Format("{0}{1}.{2}",
+                result = string.Format("{0}{1}.{2}",
                     desugared.IsPrimitiveType() ? "(int) " : string.Empty,
                     new CSharpTypePrinter(Driver).VisitEnumDecl(
                         (Enumeration) enumItem.Namespace), enumItem.Name);
                 return true;
             }
 
-            var call = arg.Declaration as Function;
-            if (call != null && arg.String != "0")
+            var call = statement.Declaration as Function;
+            if (call != null && statement.String != "0")
             {
-                string @params = regexFunctionParams.Match(arg.String).Groups[1].Value;
-                TranslateEnumExpression(call, arg, desugared, @params);
+                var @params = regexFunctionParams.Match(statement.String).Groups[1].Value;
+                result = TranslateEnumExpression(call, desugared, @params);
                 return true;
             }
+
             return false;
         }
 
-        private void TranslateEnumExpression(Function function, Statement arg,
+        private string TranslateEnumExpression(Function function,
             Type desugared, string @params)
         {
             TypeMap typeMap;
             if ((function.Parameters.Count == 0 ||
-                 HasSingleZeroExpression(function)) &&
+                 HasSingleZeroArgExpression(function)) &&
                 Driver.TypeDatabase.FindTypeMap(desugared, out typeMap))
             {
                 var typeInSignature = typeMap.CSharpSignatureType(new CSharpTypePrinterContext
@@ -244,18 +264,16 @@ namespace CppSharp.Passes
                 }).SkipPointerRefs().Desugar();
                 Enumeration @enum;
                 if (typeInSignature.TryGetEnum(out @enum))
-                {
-                    arg.String = "0";
-                    return;
-                }
+                    return "0";
             }
+
             if (@params.Contains("::"))
-                arg.String = regexDoubleColon.Replace(@params, desugared + ".");
-            else
-                arg.String = regexName.Replace(@params, desugared + ".$1");
+                return regexDoubleColon.Replace(@params, desugared + ".");
+
+            return regexName.Replace(@params, desugared + ".$1");
         }
 
-        private static bool HasSingleZeroExpression(Function function)
+        private static bool HasSingleZeroArgExpression(Function function)
         {
             if (function.Parameters.Count != 1)
                 return false;
@@ -265,14 +283,18 @@ namespace CppSharp.Passes
                 ((BuiltinTypeExpression) defaultArgument).Value == 0;
         }
 
-        private void CheckForDefaultEmptyChar(Parameter parameter, Type desugared)
+        private bool CheckForDefaultEmptyChar(Type desugared, Statement statement,
+            ref string result)
         {
-            if (parameter.DefaultArgument.String == "0" &&
+            if (statement.String == "0" &&
                 Driver.Options.MarshalCharAsManagedChar &&
                 desugared.IsPrimitiveType(PrimitiveType.Char))
             {
-                parameter.DefaultArgument.String = "'\\0'";
+                result = "'\\0'";
+                return true;
             }
+
+            return false;
         }
 
         private void GenerateOverloads(Function function, List<int> overloadIndices)

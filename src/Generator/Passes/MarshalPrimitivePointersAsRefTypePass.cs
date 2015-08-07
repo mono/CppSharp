@@ -14,7 +14,7 @@ namespace CppSharp.Passes
                 return false;
 
             foreach (var param in function.Parameters.Where(
-                p => !p.IsOut && p.IsPrimitiveParameterConvertibleToRef()))
+                p => !p.IsOut && p.Type.IsPrimitiveTypeConvertibleToRef()))
                 param.Usage = ParameterUsage.InOut;
 
             return true;

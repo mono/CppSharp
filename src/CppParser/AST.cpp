@@ -475,13 +475,18 @@ DEF_STRING(Statement, String)
 
 Statement::Statement(const std::string& str, StatementClass stmtClass, Declaration* decl) : String(str), Class(stmtClass), Decl(decl) {}
 
-Expression::Expression(const std::string& str, StatementClass stmtClass, Declaration* decl, Expression* subexpr)
-:Statement(str, stmtClass, decl), Subexpression(subexpr) {}
+Expression::Expression(const std::string& str, StatementClass stmtClass, Declaration* decl)
+    : Statement(str, stmtClass, decl) {}
 
 BinaryOperator::BinaryOperator(const std::string& str, Expression* lhs, Expression* rhs, const std::string& opcodeStr)
     : Expression(str, StatementClass::BinaryOperator), LHS(lhs), RHS(rhs), OpcodeStr(opcodeStr) {}
 
 DEF_STRING(BinaryOperator, OpcodeStr)
+
+CXXConstructExpr::CXXConstructExpr(const std::string& str, Declaration* decl)
+    : Expression(str, StatementClass::CXXConstructExprClass, decl) {}
+
+DEF_VECTOR(CXXConstructExpr, Expression*, Arguments)
 
 Parameter::Parameter() : Declaration(DeclarationKind::Parameter),
     IsIndirect(false), HasDefaultValue(false), DefaultArgument(0) {}

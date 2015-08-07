@@ -497,8 +497,7 @@ public:
 class CS_API Expression : public Statement
 {
 public:
-    Expression(const std::string& str, StatementClass Class = StatementClass::Any, Declaration* decl = 0, Expression* subexpr = 0);
-    Expression* Subexpression;
+    Expression(const std::string& str, StatementClass Class = StatementClass::Any, Declaration* decl = 0);
 };
 
 class CS_API BinaryOperator : public Expression
@@ -508,6 +507,13 @@ public:
     Expression* LHS;
     Expression* RHS;
     STRING(OpcodeStr)
+};
+
+class CS_API CXXConstructExpr : public Expression
+{
+public:
+    CXXConstructExpr(const std::string& str, Declaration* decl = 0);
+    VECTOR(Expression*, Arguments)
 };
 
 class CS_API Parameter : public Declaration

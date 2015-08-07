@@ -27,7 +27,7 @@ namespace CppSharp.Generators
             return Interop.CallingConvention.Winapi;
         }
 
-        public static bool IsPrimitiveParameterConvertibleToRef(this Parameter param)
+        public static bool IsPrimitiveTypeConvertibleToRef(this Type type)
         {
             var allowedToHaveDefaultPtrVals = new List<PrimitiveType>
             {
@@ -43,8 +43,8 @@ namespace CppSharp.Generators
                 PrimitiveType.ULongLong,
                 PrimitiveType.UShort
             };
-            return param.Type.IsPointerToPrimitiveType()
-                && allowedToHaveDefaultPtrVals.Any(primType => param.Type.IsPointerToPrimitiveType(primType));
+            return type.IsPointerToPrimitiveType() &&
+                allowedToHaveDefaultPtrVals.Any(type.IsPointerToPrimitiveType);
         }
     }
 }

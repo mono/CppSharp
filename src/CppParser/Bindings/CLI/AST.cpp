@@ -1836,16 +1836,6 @@ CppSharp::Parser::AST::Expression::Expression(CppSharp::Parser::AST::Expression^
     NativePtr = new ::CppSharp::CppParser::AST::Expression(arg0);
 }
 
-CppSharp::Parser::AST::Expression^ CppSharp::Parser::AST::Expression::Subexpression::get()
-{
-    return (((::CppSharp::CppParser::AST::Expression*)NativePtr)->Subexpression == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::Expression((::CppSharp::CppParser::AST::Expression*)((::CppSharp::CppParser::AST::Expression*)NativePtr)->Subexpression);
-}
-
-void CppSharp::Parser::AST::Expression::Subexpression::set(CppSharp::Parser::AST::Expression^ value)
-{
-    ((::CppSharp::CppParser::AST::Expression*)NativePtr)->Subexpression = (::CppSharp::CppParser::AST::Expression*)value->NativePtr;
-}
-
 CppSharp::Parser::AST::BinaryOperator::BinaryOperator(::CppSharp::CppParser::AST::BinaryOperator* native)
     : CppSharp::Parser::AST::Expression((::CppSharp::CppParser::AST::Expression*)native)
 {
@@ -1895,6 +1885,47 @@ CppSharp::Parser::AST::Expression^ CppSharp::Parser::AST::BinaryOperator::RHS::g
 void CppSharp::Parser::AST::BinaryOperator::RHS::set(CppSharp::Parser::AST::Expression^ value)
 {
     ((::CppSharp::CppParser::AST::BinaryOperator*)NativePtr)->RHS = (::CppSharp::CppParser::AST::Expression*)value->NativePtr;
+}
+
+CppSharp::Parser::AST::CXXConstructExpr::CXXConstructExpr(::CppSharp::CppParser::AST::CXXConstructExpr* native)
+    : CppSharp::Parser::AST::Expression((::CppSharp::CppParser::AST::Expression*)native)
+{
+}
+
+CppSharp::Parser::AST::CXXConstructExpr^ CppSharp::Parser::AST::CXXConstructExpr::__CreateInstance(::System::IntPtr native)
+{
+    return gcnew ::CppSharp::Parser::AST::CXXConstructExpr((::CppSharp::CppParser::AST::CXXConstructExpr*) native.ToPointer());
+}
+
+CppSharp::Parser::AST::Expression^ CppSharp::Parser::AST::CXXConstructExpr::getArguments(unsigned int i)
+{
+    auto __ret = ((::CppSharp::CppParser::AST::CXXConstructExpr*)NativePtr)->getArguments(i);
+    if (__ret == nullptr) return nullptr;
+    return (__ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::Expression((::CppSharp::CppParser::AST::Expression*)__ret);
+}
+
+void CppSharp::Parser::AST::CXXConstructExpr::addArguments(CppSharp::Parser::AST::Expression^ s)
+{
+    auto arg0 = (::CppSharp::CppParser::AST::Expression*)s->NativePtr;
+    ((::CppSharp::CppParser::AST::CXXConstructExpr*)NativePtr)->addArguments(arg0);
+}
+
+void CppSharp::Parser::AST::CXXConstructExpr::clearArguments()
+{
+    ((::CppSharp::CppParser::AST::CXXConstructExpr*)NativePtr)->clearArguments();
+}
+
+CppSharp::Parser::AST::CXXConstructExpr::CXXConstructExpr(CppSharp::Parser::AST::CXXConstructExpr^ _0)
+    : CppSharp::Parser::AST::Expression((::CppSharp::CppParser::AST::Expression*)nullptr)
+{
+    auto &arg0 = *(::CppSharp::CppParser::AST::CXXConstructExpr*)_0->NativePtr;
+    NativePtr = new ::CppSharp::CppParser::AST::CXXConstructExpr(arg0);
+}
+
+unsigned int CppSharp::Parser::AST::CXXConstructExpr::ArgumentsCount::get()
+{
+    auto __ret = ((::CppSharp::CppParser::AST::CXXConstructExpr*)NativePtr)->getArgumentsCount();
+    return __ret;
 }
 
 CppSharp::Parser::AST::Parameter::Parameter(::CppSharp::CppParser::AST::Parameter* native)
@@ -3852,10 +3883,11 @@ unsigned int CppSharp::Parser::AST::TParamCommandComment::getPosition(unsigned i
     return __ret;
 }
 
-void CppSharp::Parser::AST::TParamCommandComment::addPosition(unsigned int* s)
+void CppSharp::Parser::AST::TParamCommandComment::addPosition([System::Runtime::InteropServices::In, System::Runtime::InteropServices::Out] unsigned int% s)
 {
-    auto arg0 = (unsigned int&)s;
+    unsigned int arg0 = s;
     ((::CppSharp::CppParser::AST::TParamCommandComment*)NativePtr)->addPosition(arg0);
+    s = arg0;
 }
 
 void CppSharp::Parser::AST::TParamCommandComment::clearPosition()

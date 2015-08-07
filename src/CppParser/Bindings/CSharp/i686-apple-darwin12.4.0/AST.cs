@@ -5012,7 +5012,7 @@ namespace CppSharp
 
             public unsafe partial class Expression : CppSharp.Parser.AST.Statement, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 24)]
+                [StructLayout(LayoutKind.Explicit, Size = 20)]
                 public new partial struct Internal
                 {
                     [FieldOffset(0)]
@@ -5020,9 +5020,6 @@ namespace CppSharp
 
                     [FieldOffset(4)]
                     public global::System.IntPtr Decl;
-
-                    [FieldOffset(20)]
-                    public global::System.IntPtr Subexpression;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -5049,7 +5046,7 @@ namespace CppSharp
 
                 private static Expression.Internal* __CopyValue(Expression.Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(24);
+                    var ret = Marshal.AllocHGlobal(20);
                     CppSharp.Parser.AST.Expression.Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return (Expression.Internal*) ret;
                 }
@@ -5069,7 +5066,7 @@ namespace CppSharp
                 public Expression(CppSharp.Parser.AST.Expression _0)
                     : this((Internal*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(24);
+                    __Instance = Marshal.AllocHGlobal(20);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
@@ -5094,29 +5091,11 @@ namespace CppSharp
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
                 }
-
-                public CppSharp.Parser.AST.Expression Subexpression
-                {
-                    get
-                    {
-                        CppSharp.Parser.AST.Expression __result0;
-                        if (((Internal*) __Instance)->Subexpression == IntPtr.Zero) __result0 = null;
-                        else if (CppSharp.Parser.AST.Expression.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->Subexpression))
-                            __result0 = (CppSharp.Parser.AST.Expression) CppSharp.Parser.AST.Expression.NativeToManagedMap[((Internal*) __Instance)->Subexpression];
-                        else __result0 = CppSharp.Parser.AST.Expression.__CreateInstance(((Internal*) __Instance)->Subexpression);
-                        return __result0;
-                    }
-
-                    set
-                    {
-                        ((Internal*) __Instance)->Subexpression = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
-                    }
-                }
             }
 
             public unsafe partial class BinaryOperator : CppSharp.Parser.AST.Expression, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 44)]
+                [StructLayout(LayoutKind.Explicit, Size = 40)]
                 public new partial struct Internal
                 {
                     [FieldOffset(0)]
@@ -5126,12 +5105,9 @@ namespace CppSharp
                     public global::System.IntPtr Decl;
 
                     [FieldOffset(20)]
-                    public global::System.IntPtr Subexpression;
-
-                    [FieldOffset(24)]
                     public global::System.IntPtr LHS;
 
-                    [FieldOffset(28)]
+                    [FieldOffset(24)]
                     public global::System.IntPtr RHS;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -5169,7 +5145,7 @@ namespace CppSharp
 
                 private static BinaryOperator.Internal* __CopyValue(BinaryOperator.Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(44);
+                    var ret = Marshal.AllocHGlobal(40);
                     CppSharp.Parser.AST.BinaryOperator.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (BinaryOperator.Internal*) ret;
                 }
@@ -5189,7 +5165,7 @@ namespace CppSharp
                 public BinaryOperator(CppSharp.Parser.AST.BinaryOperator _0)
                     : this((Internal*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(44);
+                    __Instance = Marshal.AllocHGlobal(40);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
@@ -5264,6 +5240,140 @@ namespace CppSharp
                     set
                     {
                         ((Internal*) __Instance)->RHS = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
+            }
+
+            public unsafe partial class CXXConstructExpr : CppSharp.Parser.AST.Expression, IDisposable
+            {
+                [StructLayout(LayoutKind.Explicit, Size = 32)]
+                public new partial struct Internal
+                {
+                    [FieldOffset(0)]
+                    public CppSharp.Parser.AST.StatementClass Class;
+
+                    [FieldOffset(4)]
+                    public global::System.IntPtr Decl;
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST16CXXConstructExprC2ERKS2_")]
+                    internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST16CXXConstructExprD2Ev")]
+                    internal static extern void dtor_0(global::System.IntPtr instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST16CXXConstructExpr12getArgumentsEj")]
+                    internal static extern global::System.IntPtr getArguments_0(global::System.IntPtr instance, uint i);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST16CXXConstructExpr12addArgumentsERPNS1_10ExpressionE")]
+                    internal static extern void addArguments_0(global::System.IntPtr instance, global::System.IntPtr s);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST16CXXConstructExpr14clearArgumentsEv")]
+                    internal static extern void clearArguments_0(global::System.IntPtr instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST16CXXConstructExpr17getArgumentsCountEv")]
+                    internal static extern uint getArgumentsCount_0(global::System.IntPtr instance);
+                }
+
+                private readonly bool __ownsNativeInstance;
+
+                public static new CXXConstructExpr __CreateInstance(global::System.IntPtr native)
+                {
+                    return new CXXConstructExpr((CXXConstructExpr.Internal*) native);
+                }
+
+                public static CXXConstructExpr __CreateInstance(CXXConstructExpr.Internal native)
+                {
+                    return new CXXConstructExpr(native);
+                }
+
+                private static CXXConstructExpr.Internal* __CopyValue(CXXConstructExpr.Internal native)
+                {
+                    var ret = Marshal.AllocHGlobal(32);
+                    CppSharp.Parser.AST.CXXConstructExpr.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    return (CXXConstructExpr.Internal*) ret;
+                }
+
+                private CXXConstructExpr(CXXConstructExpr.Internal native)
+                    : this(__CopyValue(native))
+                {
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                }
+
+                protected CXXConstructExpr(CXXConstructExpr.Internal* native, bool isInternalImpl = false)
+                    : base((CppSharp.Parser.AST.Expression.Internal*) native)
+                {
+                }
+
+                public CXXConstructExpr(CppSharp.Parser.AST.CXXConstructExpr _0)
+                    : this((Internal*) null)
+                {
+                    __Instance = Marshal.AllocHGlobal(32);
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
+                    Internal.cctor_2(__Instance, arg0);
+                }
+
+                protected override void Dispose(bool disposing)
+                {
+                    DestroyNativeInstance(false);
+                    base.Dispose(disposing);
+                }
+
+                public override void DestroyNativeInstance()
+                {
+                    DestroyNativeInstance(true);
+                }
+
+                private void DestroyNativeInstance(bool force)
+                {
+                    CppSharp.Parser.AST.Statement __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
+                }
+
+                public CppSharp.Parser.AST.Expression getArguments(uint i)
+                {
+                    var __ret = Internal.getArguments_0(__Instance, i);
+                    CppSharp.Parser.AST.Expression __result0;
+                    if (__ret == IntPtr.Zero) __result0 = null;
+                    else if (CppSharp.Parser.AST.Expression.NativeToManagedMap.ContainsKey(__ret))
+                        __result0 = (CppSharp.Parser.AST.Expression) CppSharp.Parser.AST.Expression.NativeToManagedMap[__ret];
+                    else __result0 = CppSharp.Parser.AST.Expression.__CreateInstance(__ret);
+                    return __result0;
+                }
+
+                public void addArguments(CppSharp.Parser.AST.Expression s)
+                {
+                    var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
+                    Internal.addArguments_0(__Instance, arg0);
+                }
+
+                public void clearArguments()
+                {
+                    Internal.clearArguments_0(__Instance);
+                }
+
+                public uint ArgumentsCount
+                {
+                    get
+                    {
+                        var __ret = Internal.getArgumentsCount_0(__Instance);
+                        return __ret;
                     }
                 }
             }
@@ -11132,10 +11242,12 @@ namespace CppSharp
                     return __ret;
                 }
 
-                public void addPosition(uint* s)
+                public void addPosition(ref uint s)
                 {
-                    var arg0 = s;
-                    Internal.addPosition_0(__Instance, arg0);
+                    fixed (uint* arg0 = &s)
+                    {
+                        Internal.addPosition_0(__Instance, arg0);
+                    }
                 }
 
                 public void clearPosition()

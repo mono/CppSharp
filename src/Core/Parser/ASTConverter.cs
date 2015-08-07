@@ -921,34 +921,20 @@ namespace CppSharp
                     expression.Class = AST.StatementClass.CXXOperatorCall;
                     break;
                 case StatementClass.CXXConstructExprClass:
+                    var constructorExpression = new AST.CXXConstructExpr();
+                    var constructorExpr = CXXConstructExpr.__CreateInstance(statement.__Instance);
+                    for (uint i = 0; i < constructorExpr.ArgumentsCount; i++)
                     {
-                        var ctorExp = new AST.CtorExpr();
-                        ctorExp.SubExpression = VisitStatement(((Expression) statement).Subexpression);
-                        expression = ctorExp;
-                        expression.Class = AST.StatementClass.ConstructorReference;
-                        break;
+                        var argument = VisitStatement(constructorExpr.getArguments(i));
+                        constructorExpression.Arguments.Add(argument);
                     }
-                case StatementClass.ImplicitCastExpr:
-                    {
-                        var castExp = new AST.CastExpr();
-                        castExp.SubExpression = VisitStatement(((Expression) statement).Subexpression);
-                        expression = castExp;
-                        expression.Class = AST.StatementClass.ImplicitCast;
-                        break;
-                    }
-                case StatementClass.ExplicitCastExpr:
-                    {
-                        var castExp = new AST.CastExpr();
-                        castExp.SubExpression = VisitStatement(((Expression) statement).Subexpression);
-                        expression = castExp;
-                        expression.Class = AST.StatementClass.ExplicitCast;
-                        break;
-                    }
+                    expression = constructorExpression;
+                    break;
                 default:
                     expression = new AST.BuiltinTypeExpression();
                     break;
             }
-            expression.Declaration = this.typeConverter.declConverter.Visit(statement.Decl);
+            expression.Declaration = typeConverter.declConverter.Visit(statement.Decl);
             expression.String = statement.String;
             return expression;
         }

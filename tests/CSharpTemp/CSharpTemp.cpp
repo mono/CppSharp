@@ -322,6 +322,18 @@ QGenericArgument::QGenericArgument(const char *name)
     _name = name;
 }
 
+QPoint::QPoint(int x, int y)
+{
+}
+
+QSize::QSize(int w, int h)
+{
+}
+
+QRect::QRect(QPoint p, QSize s)
+{
+}
+
 MethodsWithDefaultValues::QMargins::QMargins(int left, int top, int right, int bottom)
 {
 }
@@ -445,6 +457,10 @@ void MethodsWithDefaultValues::defaultIntExpressionWithEnum(int i)
 }
 
 void MethodsWithDefaultValues::defaultCtorWithMoreThanOneArg(QMargins m)
+{
+}
+
+void MethodsWithDefaultValues::defaultWithComplexArgs(const QRect& rectangle)
 {
 }
 

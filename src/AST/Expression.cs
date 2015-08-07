@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace CppSharp.AST
 {
     public abstract class Expression : Statement
@@ -40,19 +42,14 @@ namespace CppSharp.AST
         }
     }
 
-    public class CastExpr : Expression
+    public class CXXConstructExpr : Expression
     {
-        public Expression SubExpression;
-
-        public override T Visit<T>(IExpressionVisitor<T> visitor)
+        public CXXConstructExpr()
         {
-            return visitor.VisitExpression(this);
+            Arguments = new List<Expression>();
         }
-    }
 
-    public class CtorExpr : Expression
-    {
-        public Expression SubExpression;
+        public List<Expression> Arguments { get; private set; }
 
         public override T Visit<T>(IExpressionVisitor<T> visitor)
         {

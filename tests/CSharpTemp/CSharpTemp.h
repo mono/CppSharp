@@ -300,6 +300,24 @@ class QList
 {
 };
 
+class DLL_API QPoint
+{
+public:
+    QPoint(int x, int y);
+};
+
+class DLL_API QSize
+{
+public:
+    QSize(int w, int h);
+};
+
+class DLL_API QRect
+{
+public:
+    QRect(QPoint p, QSize s);
+};
+
 class DLL_API MethodsWithDefaultValues : public Quux
 {
 public:
@@ -339,6 +357,7 @@ public:
     void defaultDoubleWithoutF(double d1 = 1.0, double d2 = 1.);
     void defaultIntExpressionWithEnum(int i = Qt::GlobalColor::black + 1);
     void defaultCtorWithMoreThanOneArg(QMargins m = QMargins(0, 0, 0, 0));
+    void defaultWithComplexArgs(const QRect& rectangle = QRect(QPoint(0, 0), QSize(-1, -1)));
     int getA();
 private:
     Foo m_foo;

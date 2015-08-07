@@ -296,14 +296,15 @@ namespace CppSharp.Generators.CSharp
             if (!string.IsNullOrWhiteSpace(ctx.SupportBefore))
                 Context.SupportBefore.WriteLine(ctx.SupportBefore);
 
-            if (!string.IsNullOrWhiteSpace(ctx.Return) && !parameter.IsPrimitiveParameterConvertibleToRef())
+            if (!string.IsNullOrWhiteSpace(ctx.Return) &&
+                !parameter.Type.IsPrimitiveTypeConvertibleToRef())
             {
                 Context.SupportBefore.WriteLine("var _{0} = {1};", parameter.Name,
                     ctx.Return);
             }
 
             Context.Return.Write("{0}{1}",
-                parameter.IsPrimitiveParameterConvertibleToRef() ? "ref *" : "_", parameter.Name);
+                parameter.Type.IsPrimitiveTypeConvertibleToRef() ? "ref *" : "_", parameter.Name);
             return true;
         }
 

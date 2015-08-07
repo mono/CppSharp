@@ -2285,10 +2285,12 @@ namespace CppSharp.Generators.CSharp
                         @interface = paramClass.Namespace.Classes.Find(c => c.OriginalClass == paramClass);
 
                     var paramName = string.Format("{0}{1}",
-                        method.Parameters[0].IsPrimitiveParameterConvertibleToRef() ? "ref *" : string.Empty,
+                        method.Parameters[0].Type.IsPrimitiveTypeConvertibleToRef() ?
+                        "ref *" : string.Empty,
                         method.Parameters[0].Name);
                     if (@interface != null)
-                        WriteLine("return new {0}(({2}) {1});", method.ConversionType, paramName, @interface.Name);
+                        WriteLine("return new {0}(({2}) {1});",
+                            method.ConversionType, paramName, @interface.Name);
                     else
                         WriteLine("return new {0}({1});", method.ConversionType, paramName);
                 }
@@ -2304,10 +2306,14 @@ namespace CppSharp.Generators.CSharp
 
             if (method.OperatorKind == CXXOperatorKind.EqualEqual)
             {
-                WriteLine("bool {0}Null = ReferenceEquals({0}, null);", method.Parameters[0].Name);
-                WriteLine("bool {0}Null = ReferenceEquals({0}, null);", method.Parameters[1].Name);
-                WriteLine("if ({0}Null || {1}Null)", method.Parameters[0].Name, method.Parameters[1].Name);
-                WriteLineIndent("return {0}Null && {1}Null;", method.Parameters[0].Name, method.Parameters[1].Name);
+                WriteLine("bool {0}Null = ReferenceEquals({0}, null);",
+                    method.Parameters[0].Name);
+                WriteLine("bool {0}Null = ReferenceEquals({0}, null);",
+                    method.Parameters[1].Name);
+                WriteLine("if ({0}Null || {1}Null)",
+                    method.Parameters[0].Name, method.Parameters[1].Name);
+                WriteLineIndent("return {0}Null && {1}Null;",
+                    method.Parameters[0].Name, method.Parameters[1].Name);
             }
 
             GenerateInternalFunctionCall(method);
@@ -2548,7 +2554,7 @@ namespace CppSharp.Generators.CSharp
             {
                 var param = paramInfo.Param;
                 if (!(param.IsOut || param.IsInOut)) continue;
-                if (param.IsPrimitiveParameterConvertibleToRef())
+                if (param.Type.IsPrimitiveTypeConvertibleToRef())
                     continue;
 
                 var nativeVarName = paramInfo.Name;
@@ -2633,7 +2639,7 @@ namespace CppSharp.Generators.CSharp
 
             paramMarshal.Context = ctx;
 
-            if (param.IsPrimitiveParameterConvertibleToRef())
+            if (param.Type.IsPrimitiveTypeConvertibleToRef())
             {
                 WriteLine("fixed ({0} {1} = &{2})", param.Type.CSharpType(TypePrinter), argName, param.Name);
                 paramMarshal.HasFixedBlock = true;

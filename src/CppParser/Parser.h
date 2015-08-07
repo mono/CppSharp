@@ -99,7 +99,6 @@ protected:
     PreprocessedEntity* WalkPreprocessedEntity(Declaration* Decl,
         clang::PreprocessedEntity* PPEntity);
     AST::Expression* WalkExpression(clang::Expr* Expression);
-    AST::Expression* WalkExpressionEx(clang::Expr* Expression);
     std::string GetStringFromStatement(const clang::Stmt* Statement);
 
     // Clang helpers
