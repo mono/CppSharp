@@ -752,12 +752,8 @@ namespace CppSharp.Generators.CSharp
 
             GenerateDeclarationCommon(field);
 
-            string strType = field.Type.ToString();
-            if (IsNonConstCharPtrType(field.Type))
-                strType = "StringBuilder";
-
             WriteLine("{0} {1} {2};", @public ? "public" : "private",
-                strType, field.Name);
+                field.Type, field.Name);
 
             PopBlock(NewLineKind.BeforeNextBlock);
         }
@@ -1150,9 +1146,6 @@ namespace CppSharp.Generators.CSharp
                         GeneratedIdentifier(string.Format("{0}Initialised", prop.Field.OriginalName)));
                 }
 
-                string strType = prop.Type.ToString();
-                if (IsNonConstCharPtrType(prop.Type))
-                    strType = "string";
                 GenerateDeclarationCommon(prop);
                 if (prop.ExplicitInterfaceImpl == null)
                 {
@@ -1169,11 +1162,11 @@ namespace CppSharp.Generators.CSharp
                     else if (prop.IsVirtual)
                         Write("virtual ");
 
-                    WriteLine("{0} {1}", strType, GetPropertyName(prop));
+                    WriteLine("{0} {1}", prop.Type, GetPropertyName(prop));
                 }
                 else
                 {
-                    WriteLine("{0} {1}.{2}", strType, prop.ExplicitInterfaceImpl.Name,
+                    WriteLine("{0} {1}.{2}", prop.Type, prop.ExplicitInterfaceImpl.Name,
                         GetPropertyName(prop));
                 }
                 WriteStartBraceIndent();
@@ -1211,11 +1204,8 @@ namespace CppSharp.Generators.CSharp
             PushBlock(CSharpBlockKind.Variable);
             
             GenerateDeclarationCommon(variable);
-            string strType = type.ToString();
-            if (IsNonConstCharPtrType(type))
-                strType = "StringBuilder";
 
-            WriteLine("public static {0} {1}", strType, variable.Name);
+            WriteLine("public static {0} {1}", type, variable.Name);
             WriteStartBraceIndent();
 
             GeneratePropertyGetter(variable.QualifiedType, variable, @class);
@@ -2010,10 +2000,7 @@ namespace CppSharp.Generators.CSharp
             GenerateDeclarationCommon(function);
 
             var functionName = GetFunctionIdentifier(function);
-            if (IsNonConstCharPtrType(function.OriginalReturnType.Type))
-                Write("public static {0} {1}(", "string", functionName);
-            else
-                Write("public static {0} {1}(", function.OriginalReturnType, functionName);
+            Write("public static {0} {1}(", function.OriginalReturnType, functionName);
             Write(FormatMethodParameters(function.Parameters));
             WriteLine(")");
             WriteStartBraceIndent();
@@ -2071,8 +2058,6 @@ namespace CppSharp.Generators.CSharp
             else if (method.OperatorKind == CXXOperatorKind.Conversion || 
                      method.OperatorKind == CXXOperatorKind.ExplicitConversion)
                 Write("{0} {1}(", functionName, method.OriginalReturnType);
-            else if (IsNonConstCharPtrType(method.OriginalReturnType.Type))
-                Write("{0} {1}(", "string", functionName);
             else
                 Write("{0} {1}(", method.OriginalReturnType, functionName);
 
@@ -2851,14 +2836,8 @@ namespace CppSharp.Generators.CSharp
 
             WriteLineIndent("EntryPoint=\"{0}\")]", function.Mangled);
 
-            var isNonConst = IsNonConstCharPtrType(function.ReturnType.Type);
-
             if (function.ReturnType.Type.IsPrimitiveType(PrimitiveType.Bool))
                 WriteLine("[return: MarshalAsAttribute(UnmanagedType.I1)]");
-            else if (isNonConst && function.ReturnType.Type.IsPointerToPrimitiveType(PrimitiveType.Char))
-                WriteLine("[return: MarshalAsAttribute(UnmanagedType.LPStr)]");
-            else if (isNonConst && function.ReturnType.Type.IsPointerToPrimitiveType(PrimitiveType.WideChar))
-                WriteLine("[return: MarshalAsAttribute(UnmanagedType.LPWStr)]");
 
             var @params = new List<string>();
 
@@ -2867,8 +2846,6 @@ namespace CppSharp.Generators.CSharp
 
             var retParam = new Parameter { QualifiedType = function.ReturnType };
             var retType = retParam.CSharpType(typePrinter);
-            if (IsNonConstCharPtrParam(retParam))
-                retType = new CSharpTypePrinterResult() { Type = "string" };
 
             var method = function as Method;
             var isInstanceMethod = method != null && !method.IsStatic;
