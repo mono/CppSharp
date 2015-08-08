@@ -349,26 +349,30 @@ public class CSharpTempTests : GeneratorTestFixture
     public unsafe void TestMarshallingOfCharPtr()
     {
         var obj = new CheckMarshllingOfCharPtr();
-
         var wstr = obj.FuncRetWideCharPtr;
-        Assert.AreEqual('S', wstr[0]);                                     //PASS!
+        Assert.AreEqual('S', wstr[0]);
         var wstrBuilt = new StringBuilder(new string(wstr));
         wstrBuilt[0] = 'j';
         obj.FuncWithWideCharPtr(wstrBuilt);
         wstr = obj.FuncRetWideCharPtr;
-        Assert.AreEqual('j', wstr[0]);                                     //PASS!
+        Assert.AreEqual('j', wstr[0]);
 
-        
-        var str = obj.FuncRetCharPtr;
-        //Assert.AreEqual('S', str[0]);                                    //FAIL!
         var obj2 = new CheckMarshllingOfCharPtr();
-        var strBuilt = new StringBuilder(new string(str));
+        var str = obj2.FuncRetCharPtr;
+        byte[] bytes = Encoding.UTF32.GetBytes(new string(str));
+        var myString = Encoding.ASCII.GetString(bytes);
+        Assert.AreEqual('S', myString[0]);
+        var strBuilt = new StringBuilder(myString);
         strBuilt[0] = 'j';
         obj2.FuncWithCharPtr(strBuilt);                      
         var astr = obj2.FuncRetCharPtr;
-        //Assert.AreEqual('j', astr[0]);                                    //FAIL!
-        
-        var fstr = CSharpTemp.CSharpTemp.FreeFuncWithCharPtrRet(strBuilt); 
-        //Assert.AreEqual('t', fstr[1]);                                    //FAIL!
+        bytes = Encoding.UTF32.GetBytes(new string(astr));
+        myString = Encoding.ASCII.GetString(bytes);
+        Assert.AreEqual('j', myString[0]);
+
+        var fstr = CSharpTemp.CSharpTemp.FreeFuncWithCharPtrRet(strBuilt);
+        byte[] fbytes = Encoding.UTF32.GetBytes(new string(fstr));
+        var fmyString = Encoding.ASCII.GetString(fbytes);
+        Assert.AreEqual('t', fmyString[1]);
     }
 }

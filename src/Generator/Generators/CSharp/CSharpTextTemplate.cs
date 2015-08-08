@@ -1204,7 +1204,6 @@ namespace CppSharp.Generators.CSharp
             PushBlock(CSharpBlockKind.Variable);
             
             GenerateDeclarationCommon(variable);
-
             WriteLine("public static {0} {1}", type, variable.Name);
             WriteStartBraceIndent();
 
