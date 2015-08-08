@@ -33,7 +33,7 @@ namespace CppSharp.Passes
                                   cls => cls.Bases.Any(clss => clss.IsClass && clss.Class == @class))))
                 return false;
 
-            return @class.IsPOD;
+            return @class.IsPOD && !@class.IsForcedRefType;
         }
     }
 }

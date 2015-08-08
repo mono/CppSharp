@@ -2,7 +2,8 @@
 #include <vector>
 #include <ostream>
 
-struct DLL_API IntWrapper
+#define CS_REF_TYPE
+struct DLL_API CS_REF_TYPE IntWrapper
 {
     int Value;
 };

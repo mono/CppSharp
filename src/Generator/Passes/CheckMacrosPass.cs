@@ -46,6 +46,10 @@ namespace CppSharp.Passes
     ///         Used to flag a method as internal to an assembly. So, it is
     ///         not accessible outside that assembly.
     /// 
+    ///     CS_REF_TYPE (classes and structs)
+    ///         Used to flag a type as ref type. So, it is generated as a C# class
+    ///         even when the CheckValueTypeClassesPass is enabled.
+    /// 
     /// There isn't a standardized header provided by CppSharp so you will
     /// have to define these on your own.
     /// </summary>
@@ -109,6 +113,8 @@ namespace CppSharp.Passes
 
             if (expansions.Any(e => e.Text == Prefix + "_VALUE_TYPE"))
                 @class.Type = ClassType.ValueType;
+            else if (expansions.Any(e => e.Text == Prefix + "_REF_TYPE"))
+                @class.IsForcedRefType = true;
 
             // If the class is a forward declaration, then we process the macro expansions
             // of the complete class as if they were specified on the forward declaration.

@@ -113,6 +113,7 @@ namespace CppSharp.AST
             IsUnion = false;
             IsOpaque = false;
             IsPOD = false;
+            IsForcedRefType = false;
             Type = ClassType.RefType;
             Layout = new ClassLayout();
         }
@@ -137,6 +138,13 @@ namespace CppSharp.AST
             HasNonTrivialCopyConstructor = @class.HasNonTrivialCopyConstructor;
             HasNonTrivialDestructor = @class.HasNonTrivialDestructor;
             IsStatic = @class.IsStatic;
+            IsForcedRefType = @class.IsForcedRefType;
+        }
+
+        public bool IsForcedRefType
+        {
+            get;
+            set;
         }
 
         public bool HasBase

@@ -285,7 +285,6 @@ namespace CppSharp
             }
 
             TranslationUnitPasses.AddPass(new CheckVTableComponentsPass());
-            TranslationUnitPasses.AddPass(new CheckValueTypeClassesPass());
 
             if (Options.GenerateProperties)
                 TranslationUnitPasses.AddPass(new GetterSetterToPropertyPass());
