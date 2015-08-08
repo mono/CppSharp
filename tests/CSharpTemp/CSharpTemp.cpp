@@ -675,7 +675,9 @@ int TypeMappedWithOperator::operator |(int i)
 
 void CheckMarshllingOfCharPtr::funcWithCharPtr(char* ptr)
 {
-	str = ptr;
+	delete str;
+	//str = new char[sizeof(ptr)/sizeof(char)];
+	str = &(*ptr);
 }
 
 char* CheckMarshllingOfCharPtr::funcRetCharPtr()
@@ -713,8 +715,16 @@ CheckMarshllingOfCharPtr::CheckMarshllingOfCharPtr()
 	wstr[6] = '\0';
 }
 
+CheckMarshllingOfCharPtr::~CheckMarshllingOfCharPtr()
+{
+	delete str;
+	delete wstr;
+}
+
 char* freeFuncWithCharPtrRet(char* ptr)
 {
-	ptr = "ptr";
+	ptr[0] = 'p';
+	ptr[1] = 't';
+	ptr[2] = 'r';
 	return ptr;
 }

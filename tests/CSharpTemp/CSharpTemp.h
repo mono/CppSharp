@@ -607,6 +607,7 @@ class DLL_API CheckMarshllingOfCharPtr
 	wchar_t* wstr;
 public:
 	CheckMarshllingOfCharPtr();
+	~CheckMarshllingOfCharPtr();
 	void funcWithCharPtr(char* ptr);
 	void funcWithWideCharPtr(wchar_t* ptr);
 	char* funcRetCharPtr();

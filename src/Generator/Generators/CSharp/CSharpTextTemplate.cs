@@ -1152,7 +1152,7 @@ namespace CppSharp.Generators.CSharp
 
                 string strType = prop.Type.ToString();
                 if (IsNonConstCharPtrType(prop.Type))
-                    strType = "StringBuilder";
+                    strType = "string";
                 GenerateDeclarationCommon(prop);
                 if (prop.ExplicitInterfaceImpl == null)
                 {
@@ -2011,7 +2011,7 @@ namespace CppSharp.Generators.CSharp
 
             var functionName = GetFunctionIdentifier(function);
             if (IsNonConstCharPtrType(function.OriginalReturnType.Type))
-                Write("public static {0} {1}(", "StringBuilder", functionName);
+                Write("public static {0} {1}(", "string", functionName);
             else
                 Write("public static {0} {1}(", function.OriginalReturnType, functionName);
             Write(FormatMethodParameters(function.Parameters));
@@ -2072,7 +2072,7 @@ namespace CppSharp.Generators.CSharp
                      method.OperatorKind == CXXOperatorKind.ExplicitConversion)
                 Write("{0} {1}(", functionName, method.OriginalReturnType);
             else if (IsNonConstCharPtrType(method.OriginalReturnType.Type))
-                Write("{0} {1}(", "StringBuilder", functionName);
+                Write("{0} {1}(", "string", functionName);
             else
                 Write("{0} {1}(", method.OriginalReturnType, functionName);
 
@@ -2868,7 +2868,7 @@ namespace CppSharp.Generators.CSharp
             var retParam = new Parameter { QualifiedType = function.ReturnType };
             var retType = retParam.CSharpType(typePrinter);
             if (IsNonConstCharPtrParam(retParam))
-                retType = new CSharpTypePrinterResult() { Type = "StringBuilder" };
+                retType = new CSharpTypePrinterResult() { Type = "string" };
 
             var method = function as Method;
             var isInstanceMethod = method != null && !method.IsStatic;
