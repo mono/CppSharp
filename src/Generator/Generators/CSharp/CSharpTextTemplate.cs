@@ -2576,9 +2576,7 @@ namespace CppSharp.Generators.CSharp
                 if ( (paramType.GetFinalPointee() ?? paramType).Desugar().TryGetClass(out @class))
                 {
                     if(@class.IsRefType || @class.IsValueType)
-                        WriteLine("{0} = new {1}();", param.Name, paramType);/*
-                    else if(@class.IsRefType)
-                        WriteLine("{0} = new {1}();", param.Name, paramType);*/
+                        WriteLine("{0} = new {1}();", param.Name, paramType);
                 }
             }
 
