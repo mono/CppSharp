@@ -677,7 +677,7 @@ void CheckMarshllingOfCharPtr::funcWithCharPtr(char* ptr)
 {
 	delete str;
 	//str = new char[sizeof(ptr)/sizeof(char)];
-	str = &(*ptr);
+	str = ptr;
 }
 
 char* CheckMarshllingOfCharPtr::funcRetCharPtr()
@@ -687,6 +687,7 @@ char* CheckMarshllingOfCharPtr::funcRetCharPtr()
 
 void CheckMarshllingOfCharPtr::funcWithWideCharPtr(wchar_t* ptr)
 {
+	delete wstr;
 	wstr = ptr;
 }
 

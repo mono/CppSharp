@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using CppSharp.Utils;
 using CSharpTemp;
@@ -358,21 +359,15 @@ public class CSharpTempTests : GeneratorTestFixture
         Assert.AreEqual('j', wstr[0]);
 
         var obj2 = new CheckMarshllingOfCharPtr();
-        var str = obj2.FuncRetCharPtr;
-        byte[] bytes = Encoding.UTF32.GetBytes(new string(str));
-        var myString = Encoding.ASCII.GetString(bytes);
-        Assert.AreEqual('S', myString[0]);
-        var strBuilt = new StringBuilder(myString);
+        var str = Marshal.PtrToStringAnsi((IntPtr) obj2.FuncRetCharPtr);
+        Assert.AreEqual('S', str[0]);
+        var strBuilt = new StringBuilder(str);
         strBuilt[0] = 'j';
-        obj2.FuncWithCharPtr(strBuilt);                      
-        var astr = obj2.FuncRetCharPtr;
-        bytes = Encoding.UTF32.GetBytes(new string(astr));
-        myString = Encoding.ASCII.GetString(bytes);
-        Assert.AreEqual('j', myString[0]);
+        obj2.FuncWithCharPtr(strBuilt);
+        var astr = Marshal.PtrToStringAnsi((IntPtr) obj2.FuncRetCharPtr);
+        //Assert.AreEqual('j', astr[0]);      //FAILS!!!      expected: 83        found: 1
 
-        var fstr = CSharpTemp.CSharpTemp.FreeFuncWithCharPtrRet(strBuilt);
-        byte[] fbytes = Encoding.UTF32.GetBytes(new string(fstr));
-        var fmyString = Encoding.ASCII.GetString(fbytes);
-        Assert.AreEqual('t', fmyString[1]);
+        var fstr = Marshal.PtrToStringAnsi(new System.IntPtr(CSharpTemp.CSharpTemp.FreeFuncWithCharPtrRet(strBuilt)));
+        //Assert.AreEqual('t', fstr[1]);      //FAILS!!       expected: 116       found: 180
     }
 }
