@@ -210,7 +210,8 @@ public class CSharpTempTests : GeneratorTestFixture
     [Test]
     public void TestPrivateOverride()
     {
-        new HasPrivateOverride().PrivateOverride();
+        using (var hasOverridesWithChangedAccess = new HasOverridesWithChangedAccess())
+            hasOverridesWithChangedAccess.PrivateOverride();
     }
 
     [Test]

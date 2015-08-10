@@ -363,16 +363,20 @@ private:
     Foo m_foo;
 };
 
-class DLL_API HasPrivateOverrideBase
+class DLL_API HasOverridesWithChangedAccessBase
 {
 public:
+    HasOverridesWithChangedAccessBase();
     virtual void privateOverride(int i = 5);
+protected:
+    virtual void publicOverride();
 };
 
-class DLL_API HasPrivateOverride : public HasPrivateOverrideBase
+class DLL_API HasOverridesWithChangedAccess : public HasOverridesWithChangedAccessBase
 {
 public:
-    HasPrivateOverride();
+    HasOverridesWithChangedAccess();
+    void publicOverride();
 private:
     virtual void privateOverride(int i);
 };

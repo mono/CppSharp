@@ -2223,14 +2223,9 @@ namespace CppSharp.Generators.CSharp
 
         private static AccessSpecifier GetValidMethodAccess(Method method)
         {
-            switch (method.Access)
-            {
-                case AccessSpecifier.Public:
-                    return AccessSpecifier.Public;
-                default:
-                    return method.IsOverride ?
-                        ((Class) method.Namespace).GetRootBaseMethod(method).Access : method.Access;
-            }
+            return method.IsOverride
+                ? ((Class) method.Namespace).GetRootBaseMethod(method).Access
+                : method.Access;
         }
 
         private static AccessSpecifier GetValidPropertyAccess(Property property)

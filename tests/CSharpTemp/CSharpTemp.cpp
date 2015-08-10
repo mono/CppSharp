@@ -469,15 +469,27 @@ int MethodsWithDefaultValues::getA()
     return m_foo.A;
 }
 
-void HasPrivateOverrideBase::privateOverride(int i)
+HasOverridesWithChangedAccessBase::HasOverridesWithChangedAccessBase()
 {
 }
 
-HasPrivateOverride::HasPrivateOverride()
+void HasOverridesWithChangedAccessBase::privateOverride(int i)
 {
 }
 
-void HasPrivateOverride::privateOverride(int i)
+void HasOverridesWithChangedAccessBase::publicOverride()
+{
+}
+
+HasOverridesWithChangedAccess::HasOverridesWithChangedAccess()
+{
+}
+
+void HasOverridesWithChangedAccess::privateOverride(int i)
+{
+}
+
+void HasOverridesWithChangedAccess::publicOverride()
 {
 }
 
