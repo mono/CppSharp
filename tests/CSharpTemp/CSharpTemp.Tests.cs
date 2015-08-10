@@ -22,6 +22,14 @@ public class CSharpTempTests : GeneratorTestFixture
         new InheritanceBuffer().Dispose();
         new HasProtectedVirtual().Dispose();
         new Proprietor(5).Dispose();
+        using (var testOverrideFromSecondaryBase = new TestOverrideFromSecondaryBase())
+        {
+            testOverrideFromSecondaryBase.function();
+            var ok = false;
+            testOverrideFromSecondaryBase.function(ref ok);
+            var property = testOverrideFromSecondaryBase.property;
+            testOverrideFromSecondaryBase.VirtualMember();
+        }
         using (var foo = new Foo())
         {
             var isNoParams = foo.IsNoParams;

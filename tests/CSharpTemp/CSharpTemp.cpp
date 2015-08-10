@@ -585,7 +585,7 @@ void SecondaryBase::setProperty(int value)
 {
 }
 
-void SecondaryBase::function()
+void SecondaryBase::function(bool* ok)
 {
 }
 
@@ -599,6 +599,10 @@ int SecondaryBase::protectedProperty()
 }
 
 void SecondaryBase::setProtectedProperty(int value)
+{
+}
+
+TestOverrideFromSecondaryBase::TestOverrideFromSecondaryBase()
 {
 }
 

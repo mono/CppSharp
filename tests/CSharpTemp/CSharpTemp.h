@@ -573,7 +573,7 @@ public:
     virtual void VirtualMember();
     int property();
     void setProperty(int value);
-    void function();
+    void function(bool* ok = 0);
 protected:
     void protectedFunction();
     int protectedProperty();
@@ -583,6 +583,7 @@ protected:
 class DLL_API TestOverrideFromSecondaryBase : public Foo, public SecondaryBase
 {
 public:
+    TestOverrideFromSecondaryBase();
     void VirtualMember();
     void setProperty(int value);
 };
