@@ -100,18 +100,6 @@ namespace CppSharp.Passes
             names = new Dictionary<string, DeclarationName>();
         }
 
-        public override bool VisitFieldDecl(Field decl)
-        {
-            if (!VisitDeclaration(decl))
-                return false;
-
-            if (ASTUtils.CheckIgnoreField(decl))
-                return false;
-
-            CheckDuplicate(decl);
-            return false;
-        }
-
         public override bool VisitProperty(Property decl)
         {
             if (!VisitDeclaration(decl))
@@ -165,8 +153,12 @@ namespace CppSharp.Passes
             foreach (var function in @class.Functions)
                 VisitFunctionDecl(function);
 
-            foreach (var field in @class.Fields)
-                VisitFieldDecl(field);
+            foreach (var fields in GetAllFields(@class).GroupBy(f => f.OriginalName).Where(
+                g => !string.IsNullOrEmpty(g.Key)).Select(g => g.ToList()))
+            {
+                for (var i = 1; i < fields.Count; i++)
+                    fields[i].InternalName = fields[i].OriginalName + i;
+            }
 
             foreach (var property in @class.Properties)
                 VisitProperty(property);
@@ -181,6 +173,15 @@ namespace CppSharp.Passes
                 method.Index = total++;
 
             return false;
+        }
+
+        private static IEnumerable<Field> GetAllFields(Class @class)
+        {
+            var fields = new List<Field>();
+            foreach (var @base in @class.Bases.Where(b => b.IsClass))
+                fields.AddRange(GetAllFields(@base.Class));
+            fields.AddRange(@class.Fields);
+            return fields;
         }
 
         void CheckDuplicate(Declaration decl)

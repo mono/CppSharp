@@ -93,6 +93,8 @@ public:
 
     Baz();
 
+    int P;
+
     int takesQux(const Qux& qux);
     Qux returnQux();
     void setMethod(int value);
@@ -101,7 +103,7 @@ public:
     FunctionTypedef functionTypedef;
 };
 
-Baz::Baz() {}
+Baz::Baz() : P(5) {}
 
 struct QArrayData
 {

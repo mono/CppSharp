@@ -102,6 +102,7 @@ public class CSharpTempTests : GeneratorTestFixture
             Assert.That(baz.TakesQux(baz), Is.EqualTo(20));
             Assert.That(baz.ReturnQux().FarAwayFunc, Is.EqualTo(20));
             baz.SetMethod(1);
+            Assert.AreEqual(5, baz.P);
         }
     }
 
