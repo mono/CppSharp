@@ -715,7 +715,7 @@ namespace CppSharp.Generators.CSharp
                 !(@class != null && @class.IsUnion)) || (@class != null && @class.TranslationUnit.IsSystemHeader))
                 return;
 
-            var safeIdentifier = Helpers.SafeIdentifier(field.OriginalName);
+            var safeIdentifier = Helpers.SafeIdentifier(field.InternalName);
 
             if(safeIdentifier.All(c => c.Equals('_')))
             {
@@ -863,7 +863,7 @@ namespace CppSharp.Generators.CSharp
                     string arrPtrIden = Helpers.SafeIdentifier("arrPtr");
                     WriteLine(string.Format("fixed ({0} {1} = {2}.{3})",
                         type.Replace("[]", "*"), arrPtrIden, Helpers.InstanceField,
-                        Helpers.SafeIdentifier(field.OriginalName)));
+                        Helpers.SafeIdentifier(field.InternalName)));
                     WriteStartBraceIndent();
                     ctx.ReturnVarName = arrPtrIden;
                 }
@@ -874,7 +874,7 @@ namespace CppSharp.Generators.CSharp
                         ? Helpers.InstanceField
                         : string.Format("((Internal*) {0})", Helpers.InstanceIdentifier),
                     @class.IsValueType ? "." : "->",
-                    Helpers.SafeIdentifier(field.OriginalName));
+                    Helpers.SafeIdentifier(field.InternalName));
                 }
                 param.Visit(marshal);
 
@@ -976,7 +976,7 @@ namespace CppSharp.Generators.CSharp
                             ? Helpers.InstanceField
                             : string.Format("((Internal*) {0})", Helpers.InstanceIdentifier),
                         @class.IsValueType ? "." : "->",
-                        Helpers.SafeIdentifier(field.OriginalName)),
+                        Helpers.SafeIdentifier(field.InternalName)),
                     ReturnType = decl.QualifiedType
                 };
 
@@ -989,7 +989,7 @@ namespace CppSharp.Generators.CSharp
                     string arrPtrIden = Helpers.SafeIdentifier("arrPtr");
                     WriteLine(string.Format("fixed ({0} {1} = {2}.{3})",
                         type.Replace("[]","*"), arrPtrIden, Helpers.InstanceField,
-                        Helpers.SafeIdentifier(field.OriginalName)));
+                        Helpers.SafeIdentifier(field.InternalName)));
                     WriteStartBraceIndent();
                     ctx.ReturnVarName = arrPtrIden;
                 }
@@ -1142,7 +1142,7 @@ namespace CppSharp.Generators.CSharp
                 {
                     GenerateClassField(prop.Field);
                     WriteLine("private bool {0};",
-                        GeneratedIdentifier(string.Format("{0}Initialised", prop.Field.OriginalName)));
+                        GeneratedIdentifier(string.Format("{0}Initialised", prop.Field.InternalName)));
                 }
 
                 GenerateDeclarationCommon(prop);

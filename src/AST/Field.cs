@@ -22,6 +22,12 @@ namespace CppSharp.AST
 
         public uint BitWidth { get; set; }
 
+        public string InternalName
+        {
+            get { return internalName ?? (internalName = OriginalName); }
+            set { internalName = value; }
+        }
+
         public Field()
         {
             Offset = 0;
@@ -49,5 +55,7 @@ namespace CppSharp.AST
         {
             return visitor.VisitFieldDecl(this);
         }
+
+        private string internalName;
     }
 }
