@@ -672,3 +672,23 @@ public:
     int* ReturnPrimTypePtr();
     void TakePrimTypePtr(int* ptr);
 };
+
+class DLL_API OverrideFromIndirectSecondaryBaseBase
+{
+public:
+    OverrideFromIndirectSecondaryBaseBase();
+    virtual int property();
+};
+
+class DLL_API OverrideFromDirectSecondaryBase : public Foo, public OverrideFromIndirectSecondaryBaseBase
+{
+public:
+    OverrideFromDirectSecondaryBase();
+};
+
+class OverrideFromIndirectSecondaryBase : public OverrideFromDirectSecondaryBase
+{
+public:
+    OverrideFromIndirectSecondaryBase();
+    int property();
+};

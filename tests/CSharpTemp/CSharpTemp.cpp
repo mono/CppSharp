@@ -737,3 +737,25 @@ void MultiOverloadPtrToRef::TakePrimTypePtr(int* ptr)
     ptr[1] = 200;
     ptr[2] = 300;
 }
+
+OverrideFromIndirectSecondaryBaseBase::OverrideFromIndirectSecondaryBaseBase()
+{
+}
+
+int OverrideFromIndirectSecondaryBaseBase::property()
+{
+    return 0;
+}
+
+OverrideFromDirectSecondaryBase::OverrideFromDirectSecondaryBase()
+{
+}
+
+OverrideFromIndirectSecondaryBase::OverrideFromIndirectSecondaryBase()
+{
+}
+
+int OverrideFromIndirectSecondaryBase::property()
+{
+    return 1;
+}

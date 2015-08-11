@@ -1154,11 +1154,17 @@ namespace CppSharp.Generators.CSharp
                         Write("static ");
 
                     // check if overriding a property from a secondary base
-                    if (prop.IsOverride && @class.GetRootBaseProperty(prop, true) != null)
+                    Property rootBaseProperty;
+                    var isOverride = prop.IsOverride &&
+                        (rootBaseProperty = @class.GetRootBaseProperty(prop, true)) != null &&
+                        (rootBaseProperty.IsVirtual || rootBaseProperty.IsPure);
+
+                    if (isOverride)
                         Write("override ");
                     else if (prop.IsPure)
                         Write("abstract ");
-                    else if (prop.IsVirtual)
+
+                    if (prop.IsVirtual && !isOverride && !prop.IsPure)
                         Write("virtual ");
 
                     WriteLine("{0} {1}", prop.Type, GetPropertyName(prop));
@@ -2025,7 +2031,8 @@ namespace CppSharp.Generators.CSharp
             // check if overriding a function from a secondary base
             Method rootBaseMethod;
             var isOverride = method.IsOverride &&
-                (rootBaseMethod = @class.GetRootBaseMethod(method, true)) != null && rootBaseMethod.IsVirtual;
+                (rootBaseMethod = @class.GetRootBaseMethod(method, true)) != null &&
+                (rootBaseMethod.IsVirtual || rootBaseMethod.IsPure);
 
             if (method.IsVirtual && !isOverride && !method.IsOperator && !method.IsPure)
                 Write("virtual ");

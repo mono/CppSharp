@@ -199,12 +199,7 @@ namespace CppSharp.Passes
                         m.Parameters.SequenceEqual(method.Parameters.Where(p => !p.Ignore),
                             parameterTypeComparer)))
                     continue;
-                var impl = new Method(method)
-                    {
-                        Namespace = @class,
-                        IsVirtual = false,
-                        IsOverride = false
-                    };
+                var impl = new Method(method) { Namespace = @class };
                 var rootBaseMethod = @class.GetRootBaseMethod(method, true);
                 if (rootBaseMethod != null && rootBaseMethod.IsDeclared)
                     impl.ExplicitInterfaceImpl = @interface;
