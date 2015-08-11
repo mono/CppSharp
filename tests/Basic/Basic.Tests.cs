@@ -12,6 +12,7 @@ public class BasicTests : GeneratorTestFixture
     {
         Assert.That(new ChangedAccessOfInheritedProperty().Property, Is.EqualTo(2));
         Foo.NestedAbstract a;
+        var renamedEmptyEnum = Foo.RenamedEmptyEnum.EmptyEnum1;
     }
 
     [Test]

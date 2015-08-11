@@ -26,6 +26,12 @@ private:
         Value2
     };
 public:
+    enum
+    {
+        EmptyEnum1,
+        EmptyEnum2
+    };
+
     class NestedAbstract
     {
     public:

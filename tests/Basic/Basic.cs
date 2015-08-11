@@ -1,3 +1,4 @@
+using System.Linq;
 using CppSharp.AST;
 using CppSharp.Generators;
 using CppSharp.Passes;
@@ -35,6 +36,9 @@ namespace CppSharp.Tests
             ctx.SetClassAsValueType("Bar");
             ctx.SetClassAsValueType("Bar2");
             ctx.IgnoreClassWithName("IgnoredType");
+
+            ctx.FindCompleteClass("Foo").Enums.First(
+                e => string.IsNullOrEmpty(e.Name)).Name = "RenamedEmptyEnum";
         }
 
         public static void Main(string[] args)

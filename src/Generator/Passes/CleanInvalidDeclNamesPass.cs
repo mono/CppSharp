@@ -44,7 +44,7 @@ namespace CppSharp.Passes
             }
 
             Function function = decl as Function;
-            if (function == null || !function.IsOperator)
+            if ((function == null || !function.IsOperator) && !(decl is Enumeration))
                 decl.Name = CheckName(decl.Name);
 
             StringHelpers.CleanupText(ref decl.DebugText);
@@ -127,12 +127,12 @@ namespace CppSharp.Passes
             return true;
         }
 
-        private static void CheckEnumName(Enumeration @enum)
+        private void CheckEnumName(Enumeration @enum)
         {
             // If we still do not have a valid name, then try to guess one
             // based on the enum value names.
 
-            if (!string.IsNullOrWhiteSpace(@enum.OriginalName))
+            if (!string.IsNullOrWhiteSpace(@enum.Name))
                 return;
 
             var prefix = @enum.Items.Select(item => item.Name)
@@ -140,7 +140,10 @@ namespace CppSharp.Passes
 
             // Try a simple heuristic to make sure we end up with a valid name.
             if (prefix.Length < 3)
+            {
+                @enum.Name = CheckName(@enum.Name);
                 return;
+            }
 
             prefix = prefix.Trim().Trim('_');
             @enum.Name = prefix;
