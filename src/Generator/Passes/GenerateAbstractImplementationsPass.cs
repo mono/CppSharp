@@ -122,11 +122,11 @@ namespace CppSharp.Passes
 
         private static List<Method> GetOverriddenMethods(Class @class)
         {
-            var abstractMethods = @class.Methods.Where(m => m.IsOverride).ToList();
+            var overriddenMethods = @class.Methods.Where(m => m.IsOverride && !m.IsPure).ToList();
             foreach (var @base in @class.Bases)
-                abstractMethods.AddRange(GetOverriddenMethods(@base.Class));
+                overriddenMethods.AddRange(GetOverriddenMethods(@base.Class));
 
-            return abstractMethods;
+            return overriddenMethods;
         }
 
         private void FillVTable(Class @class, IList<Method> abstractMethods, Class internalImplementation)
