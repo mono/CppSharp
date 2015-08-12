@@ -45,6 +45,7 @@ namespace CppSharp.Generators.CSharp
         public static readonly string InstanceIdentifier = Generator.GeneratedIdentifier("Instance");
         public static readonly string ReturnIdentifier = Generator.GeneratedIdentifier("ret");
         public static readonly string DummyIdentifier = Generator.GeneratedIdentifier("dummy");
+        public static readonly string TargetIdentifier = Generator.GeneratedIdentifier("target");
 
         public static readonly string OwnsNativeInstanceIdentifier = Generator.GeneratedIdentifier("ownsNativeInstance");
 
@@ -1444,7 +1445,7 @@ namespace CppSharp.Generators.CSharp
         {
             if (method.IsDestructor)
             {
-                WriteLine("target.DestroyNativeInstance();");
+                WriteLine("{0}.DestroyNativeInstance();", Helpers.TargetIdentifier);
                 return;
             }
 
@@ -1481,7 +1482,8 @@ namespace CppSharp.Generators.CSharp
 
             if (method.IsGenerated)
             {
-                WriteLine("target.{0}({1});", method.Name, string.Join(", ", marshals));              
+                WriteLine("{0}.{1}({2});", Helpers.TargetIdentifier,
+                    method.Name, string.Join(", ", marshals));              
             }
             else
             {
@@ -1522,12 +1524,12 @@ namespace CppSharp.Generators.CSharp
             {
                 property = ((Class) method.Namespace).Properties.First(
                     p => p.SetMethod == method);
-                WriteLine("target.{0} = {1};", property.Name,
+                WriteLine("{0}.{1} = {2};", Helpers.TargetIdentifier, property.Name,
                     string.Join(", ", marshals));
             }
             else
             {
-                WriteLine("target.{0};", property.Name);
+                WriteLine("{0}.{1};", Helpers.TargetIdentifier, property.Name);
             }
         }
 
@@ -1565,7 +1567,7 @@ namespace CppSharp.Generators.CSharp
             WriteLineIndent("throw new global::System.Exception(\"No managed instance was found\");");
             NewLine();
 
-            WriteLine("var target = ({0}) _References[instance].Target;", @class.Name);
+            WriteLine("var {0} = ({1}) _References[instance].Target;", Helpers.TargetIdentifier, @class.Name);
             GenerateVTableManagedCall(method);
 
             WriteCloseBraceIndent();

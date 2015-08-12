@@ -784,7 +784,7 @@ class DLL_API HasVirtualProperty
 {
 public:
     virtual int getProperty();
-    virtual void setProperty(int value);
+    virtual void setProperty(int target);
 };
 
 class DLL_API ChangedAccessOfInheritedProperty : public HasVirtualProperty

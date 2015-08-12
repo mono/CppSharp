@@ -455,7 +455,7 @@ int HasVirtualProperty::getProperty()
     return 1;
 }
 
-void HasVirtualProperty::setProperty(int value)
+void HasVirtualProperty::setProperty(int target)
 {
 }
 
