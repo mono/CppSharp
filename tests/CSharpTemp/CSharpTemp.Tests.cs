@@ -393,4 +393,33 @@ public class CSharpTempTests : GeneratorTestFixture
         obj.FuncPrimitivePtrToRefWithDefVal(ref refInt, null, null, ref refInt);
         obj.FuncPrimitivePtrToRefWithMultiOverload(ref refInt, null, null, ref refInt);
     }
+
+    [Test]
+    public void TestFixedArrayRefType()
+    {
+        Foo[] foos = new Foo[4];
+        foos[0] = new Foo();
+        foos[0].A = 5;
+        foos[1] = new Foo();
+        foos[1].A = 6;
+        foos[2] = new Foo();
+        foos[2].A = 7;
+        foos[3] = new Foo();
+        foos[3].A = 8;
+        Bar bar = new Bar();
+        bar.Foos = foos;
+
+        Foo[] retFoos = bar.Foos;
+        Assert.AreEqual(5, retFoos[0].A);
+        Assert.AreEqual(6, retFoos[1].A);
+        Assert.AreEqual(7, retFoos[2].A);
+        Assert.AreEqual(8, retFoos[3].A);
+
+        Foo[] foosMore = new Foo[2];
+        foosMore[0] = new Foo();
+        foosMore[1] = new Foo();
+        var ex = Assert.Throws<ArgumentOutOfRangeException>(() => bar.Foos = foosMore);
+        Assert.AreEqual("value", ex.ParamName);
+        Assert.AreEqual("The provided array's dimensions doesn't match the required size.\r\nParameter name: value", ex.Message);
+    }
 }

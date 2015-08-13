@@ -111,6 +111,7 @@ namespace CppSharp.Generators.CSharp
             if (!VisitType(array, quals))
                 return false;
 
+            Class @class;
             switch (array.SizeType)
             {
                 case ArrayType.ArraySize.Constant:
@@ -124,6 +125,9 @@ namespace CppSharp.Generators.CSharp
                     if (array.Type.IsPointerToPrimitiveType(PrimitiveType.Void))
                         supportBefore.WriteLineIndent("{0}[i] = new global::System.IntPtr({1}[i]);",
                             value, Context.ReturnVarName);
+                    else if (array.Type.Desugar().TryGetClass(out @class) && @class.IsRefType)
+                        supportBefore.WriteLineIndent("{0}[i] = {1}.{2}(*(({1}.Internal*)&({3}[i * sizeof({1}.Internal)])));", 
+                            value, array.Type, Helpers.CreateInstanceIdentifier, Context.ReturnVarName);
                     else
                         supportBefore.WriteLineIndent("{0}[i] = {1}[i];", value, Context.ReturnVarName);
                     supportBefore.WriteCloseBraceIndent();
@@ -382,16 +386,27 @@ namespace CppSharp.Generators.CSharp
             if (!VisitType(array, quals))
                 return false;
 
+            Class @class;
             switch (array.SizeType)
             {
                 case ArrayType.ArraySize.Constant:
                     var supportBefore = Context.SupportBefore;
                     supportBefore.WriteLine("if ({0} != null)", Context.ArgName);
                     supportBefore.WriteStartBraceIndent();
+                    if (array.Type.Desugar().TryGetClass(out @class) && @class.IsRefType)
+                    {
+                        supportBefore.WriteLine("if (value.Length != {0})", array.Size);
+                        supportBefore.WriteLineIndent("throw new ArgumentOutOfRangeException(\"{0}\", \"The provided array's dimensions doesn't match the required size.\");",
+                            Context.Parameter.Name);
+                    }
                     supportBefore.WriteLine("for (int i = 0; i < {0}; i++)", array.Size);
-                    supportBefore.WriteLineIndent("{0}[i] = {1}[i]{2};",
-                        Context.ReturnVarName, Context.ArgName,
-                        array.Type.IsPointerToPrimitiveType(PrimitiveType.Void) ? ".ToPointer()" : string.Empty);
+                    if (@class != null && @class.IsRefType)
+                        supportBefore.WriteLineIndent("{0}[i * sizeof({2}.Internal)] = *((byte*)({2}.Internal*){1}[i].__Instance);",
+                            Context.ReturnVarName, Context.ArgName, array.Type);
+                    else
+                        supportBefore.WriteLineIndent("{0}[i] = {1}[i]{2};",
+                            Context.ReturnVarName, Context.ArgName,
+                            array.Type.IsPointerToPrimitiveType(PrimitiveType.Void) ? ".ToPointer()" : string.Empty);
                     supportBefore.WriteCloseBraceIndent();
                     break;
                 default:
