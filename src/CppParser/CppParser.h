@@ -11,6 +11,8 @@
 #include "Helpers.h"
 #include "Target.h"
 
+#include <clang/AST/ASTContext.h>
+
 namespace CppSharp { namespace CppParser {
 
 using namespace CppSharp::CppParser::AST;
@@ -122,6 +124,8 @@ public:
     static ParserResult* ParseHeader(ParserOptions* Opts);
     static ParserResult* ParseLibrary(ParserOptions* Opts);
     static ParserTargetInfo* GetTargetInfo(ParserOptions* Opts);
+
+    static clang::ASTContext* ClangAST;
 };
 
 } }

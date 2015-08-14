@@ -3114,6 +3114,7 @@ void Parser::HandleDiagnostics(ParserResult* res)
     }
 }
 
+clang::ASTContext* ClangParser::ClangAST;
 ParserResult* Parser::ParseHeader(const std::string& File, ParserResult* res)
 {
     assert(Opts->ASTContext && "Expected a valid ASTContext");
@@ -3208,6 +3209,7 @@ ParserResult* Parser::ParseHeader(const std::string& File, ParserResult* res)
     WalkAST();
 
     res->Kind = ParserResultKind::Success;
+    ClangParser::ClangAST = AST;
     return res;
  }
 
