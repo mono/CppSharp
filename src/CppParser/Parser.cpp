@@ -262,6 +262,8 @@ void Parser::SetupHeader()
     case llvm::Triple::Linux:
       TC = new clang::driver::toolchains::Linux(D, Target, Args);
       break;
+    default:
+      break;
     }
 
     if (TC && !Opts->NoStandardIncludes) {
