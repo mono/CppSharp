@@ -648,6 +648,10 @@ namespace CppSharp.Generators.CSharp
         {
             foreach (var @base in @class.Bases.Where(b => b.Class != null))
             {
+                //FIXME: @base.Class for ConcreteTypeLoc (and subclasses) is null
+                // https://github.com/llvm-mirror/clang/blob/master/include/clang/AST/TypeLoc.h#L324 
+                if (@base.Class == null) continue;
+
                 TypeMap typeMap;
                 if ((!Driver.TypeDatabase.FindTypeMap(@base.Type, out typeMap) && !@base.Class.IsDeclared) ||
                     @base.Class.OriginalClass == @class)
