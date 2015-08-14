@@ -1,7 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using CppSharp.AST;
+using CppSharp.Generators;
 
 namespace CppSharp
 {
@@ -32,12 +32,12 @@ namespace CppSharp
         {
             var options = driver.Options;
             options.LibraryName = "CppSharp";
-            options.DryRun = true;
+
             options.Headers.AddRange(new string[]
             {
+                "CppParser.h",
                 "clang/AST/Expr.h",
             });
-
             options.SetupXcode();
             options.MicrosoftMode = false;
             options.TargetTriple = "i686-apple-darwin12.4.0";
@@ -45,13 +45,18 @@ namespace CppSharp
             options.addDefines ("__STDC_LIMIT_MACROS");
             options.addDefines ("__STDC_CONSTANT_MACROS");
 
+            var parserPath = Path.Combine(GetSourceDirectory("src"), "CppParser");
             var llvmPath = Path.Combine(GetSourceDirectory("deps"), "llvm");
             var clangPath = Path.Combine(llvmPath, "tools", "clang");
 
+            options.addIncludeDirs(parserPath);
             options.addIncludeDirs(Path.Combine(llvmPath, "include"));
             options.addIncludeDirs(Path.Combine(llvmPath, "build", "include"));
-            options.addIncludeDirs (Path.Combine (llvmPath, "build", "tools", "clang", "include"));
+            options.addIncludeDirs(Path.Combine(llvmPath, "build", "tools", "clang", "include"));
             options.addIncludeDirs(Path.Combine(clangPath, "include"));
+                       
+            options.OutputDir = Path.Combine(parserPath, "Bootstrap",
+                "Bindings", GeneratorKind.CSharp.ToString(), options.TargetTriple);
         }
 
         public void SetupPasses(Driver driver)
@@ -60,20 +65,6 @@ namespace CppSharp
 
         public void Preprocess(Driver driver, ASTContext ctx)
         {
-            ctx.RenameNamespace("CppSharp::CppParser", "Parser");
-
-            var exprClass = ctx.FindCompleteClass ("clang::Expr");
-
-            var exprUnit = ctx.TranslationUnits [0];
-<<<<<<< 2ac73904c4d5da6b11556d84435a14696f898efe
-            var subclassVisitor = new SubclassVisitor (exprClass);
-            exprUnit.Visit (subclassVisitor);
-
-            var subclasses = subclassVisitor.Classes;
-=======
-            var subclassVisitor = new SubclassVisitor(exprClass);
-            exprUnit.Visit(subclassVisitor);
->>>>>>> applied remarks to pull request
         }
 
         public void Postprocess(Driver driver, ASTContext ctx)
@@ -85,37 +76,6 @@ namespace CppSharp
             Console.WriteLine("Generating parser bootstrap code...");
             ConsoleDriver.Run(new Bootstrap());
             Console.WriteLine();
-        }
-    }
-
-    class SubclassVisitor : AstVisitor
-    {
-        public HashSet<Class> Classes;
-        Class expressionClass;
-
-        public SubclassVisitor (Class expression)
-        {
-            expressionClass = expression;
-            Classes = new HashSet<Class> ();
-        }
-
-        static bool IsDerivedFrom(Class subclass, Class superclass)
-        {
-            if (subclass == null)
-                return false;
-
-            if (subclass == superclass)
-                return true;
-
-            return IsDerivedFrom (subclass.BaseClass, superclass);
-        }
-
-        public override bool VisitClassDecl (Class @class)
-        {
-            if (!@class.IsIncomplete && IsDerivedFrom (@class, expressionClass))
-                Classes.Add (@class);
-
-            return base.VisitClassDecl (@class);
         }
     }
 }
