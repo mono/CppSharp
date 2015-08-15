@@ -142,9 +142,11 @@ namespace CppSharp.Generators.CLI
 
             if (CLIGenerator.ShouldGenerateClassNativeField(@class))
             {
+                var qualifiedIdentifier = QualifiedIdentifier(@class);
+
                 PushBlock(CLIBlockKind.Method);
                 WriteLine("System::IntPtr {0}::{1}::get()",
-                    QualifiedIdentifier(@class), Helpers.InstanceIdentifier);
+                    qualifiedIdentifier, Helpers.InstanceIdentifier);
                 WriteStartBraceIndent();
                 WriteLine("return System::IntPtr(NativePtr);");
                 WriteCloseBraceIndent();
@@ -152,7 +154,7 @@ namespace CppSharp.Generators.CLI
 
                 PushBlock(CLIBlockKind.Method);
                 WriteLine("void {0}::{1}::set(System::IntPtr object)",
-                    QualifiedIdentifier(@class), Helpers.InstanceIdentifier);
+                    qualifiedIdentifier, Helpers.InstanceIdentifier);
                 WriteStartBraceIndent();
                 var nativeType = string.Format("::{0}*", @class.QualifiedOriginalName);
                 WriteLine("NativePtr = ({0})object.ToPointer();", nativeType);
@@ -194,14 +196,15 @@ namespace CppSharp.Generators.CLI
             // Output a default constructor that takes the native pointer.
             GenerateClassConstructor(@class);
 
-            if (Options.GenerateFinalizers && @class.IsRefType)
+            if (@class.IsRefType)
             {
                 var destructor = @class.Destructors
                     .FirstOrDefault(d => d.Parameters.Count == 0 && d.Access == AccessSpecifier.Public);
                 if (destructor != null)
                 {
                     GenerateClassDestructor(@class);
-                    GenerateClassFinalizer(@class);
+                    if (Options.GenerateFinalizers)
+                        GenerateClassFinalizer(@class);
                 }
             }
         }
@@ -253,7 +256,10 @@ namespace CppSharp.Generators.CLI
             WriteStartBraceIndent();
 
             if (CLIGenerator.ShouldGenerateClassNativeField(@class))
-                WriteLine("delete NativePtr;");
+            {
+                WriteLine("if ({0})", Helpers.OwnsNativeInstanceIdentifier);
+                WriteLineIndent("delete NativePtr;");
+            }
 
             WriteCloseBraceIndent();
 
@@ -632,6 +638,8 @@ namespace CppSharp.Generators.CLI
 
             var hasBase = GenerateClassConstructorBase(@class);
 
+            InitialiseOwnsNativeInstance(@class, hasBase, false);
+
             WriteStartBraceIndent();
 
             const string nativePtr = "native";
@@ -657,6 +665,18 @@ namespace CppSharp.Generators.CLI
             WriteLine("return gcnew ::{0}(({1}) native.ToPointer());", qualifiedIdentifier, nativeType);
             WriteCloseBraceIndent();
             NewLine();
+        }
+
+        private void InitialiseOwnsNativeInstance(Class @class, bool hasBase, bool ownsNativeInstance)
+        {
+            if (!CLIGenerator.ShouldGenerateClassNativeField(@class)) return;
+
+            PushIndent();
+            Write(hasBase ? "," : ":");
+            PopIndent();
+
+            WriteLine(" {0}({1})", Helpers.OwnsNativeInstanceIdentifier,
+                ownsNativeInstance ? "true" : "false");
         }
 
         private void GenerateStructMarshaling(Class @class, string nativeVar)
@@ -738,7 +758,10 @@ namespace CppSharp.Generators.CLI
             WriteLine(")");
 
             if (method.IsConstructor)
-                GenerateClassConstructorBase(@class, method: method);
+            {
+                var hasBase = GenerateClassConstructorBase(@class, method: method);
+                InitialiseOwnsNativeInstance(@class, hasBase, true);
+            }
 
             WriteStartBraceIndent();
 

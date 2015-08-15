@@ -275,7 +275,9 @@ namespace CppSharp.Generators.CLI
             var accBlock = PopBlock(NewLineKind.IfNotEmpty);
 
             PushBlock(CLIBlockKind.Fields);
-            GenerateClassFields(@class);   
+            GenerateClassFields(@class);
+            if (CLIGenerator.ShouldGenerateClassNativeField(@class))
+                WriteLineIndent("bool {0};", Helpers.OwnsNativeInstanceIdentifier);
             var fieldsBlock = PopBlock();
 
             accBlock.CheckGenerate = () => !fieldsBlock.IsEmpty;
@@ -382,14 +384,15 @@ namespace CppSharp.Generators.CLI
                 GenerateMethod(ctor);
             }
 
-            if (Options.GenerateFinalizers && @class.IsRefType)
+            if (@class.IsRefType)
             {
                 var destructor = @class.Destructors
                     .FirstOrDefault(d => d.Parameters.Count == 0 && d.Access == AccessSpecifier.Public);
                 if (destructor != null)
                 {
                     GenerateClassDestructor(@class);
-                    GenerateClassFinalizer(@class);
+                    if (Options.GenerateFinalizers)
+                        GenerateClassFinalizer(@class);
                 }
             }
 

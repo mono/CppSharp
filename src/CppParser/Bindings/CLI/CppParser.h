@@ -82,6 +82,8 @@ namespace CppSharp
 
             ParserOptions(CppSharp::Parser::ParserOptions^ _0);
 
+            ~ParserOptions();
+
             property unsigned int ArgumentsCount
             {
                 unsigned int get();
@@ -207,6 +209,9 @@ namespace CppSharp
             void addLibraryDirs(System::String^ s);
 
             void clearLibraryDirs();
+
+            private:
+            bool __ownsNativeInstance;
         };
 
         public ref class ParserDiagnostic : ICppInstance
@@ -225,6 +230,8 @@ namespace CppSharp
             ParserDiagnostic();
 
             ParserDiagnostic(CppSharp::Parser::ParserDiagnostic^ _0);
+
+            ~ParserDiagnostic();
 
             property System::String^ FileName
             {
@@ -255,6 +262,9 @@ namespace CppSharp
                 int get();
                 void set(int);
             }
+
+            private:
+            bool __ownsNativeInstance;
         };
 
         public ref class ParserResult : ICppInstance
@@ -273,6 +283,8 @@ namespace CppSharp
             ParserResult();
 
             ParserResult(CppSharp::Parser::ParserResult^ _0);
+
+            ~ParserResult();
 
             property unsigned int DiagnosticsCount
             {
@@ -302,6 +314,9 @@ namespace CppSharp
             void addDiagnostics(CppSharp::Parser::ParserDiagnostic^ s);
 
             void clearDiagnostics();
+
+            private:
+            bool __ownsNativeInstance;
         };
 
         public ref class ClangParser : ICppInstance
@@ -321,11 +336,16 @@ namespace CppSharp
 
             ClangParser(CppSharp::Parser::ClangParser^ _0);
 
+            ~ClangParser();
+
             static CppSharp::Parser::ParserResult^ ParseHeader(CppSharp::Parser::ParserOptions^ Opts);
 
             static CppSharp::Parser::ParserResult^ ParseLibrary(CppSharp::Parser::ParserOptions^ Opts);
 
             static CppSharp::Parser::ParserTargetInfo^ GetTargetInfo(CppSharp::Parser::ParserOptions^ Opts);
+
+            private:
+            bool __ownsNativeInstance;
         };
     }
 }

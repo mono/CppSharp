@@ -4,6 +4,7 @@ using namespace System;
 using namespace System::Runtime::InteropServices;
 
 CppSharp::Parser::ParserTargetInfo::ParserTargetInfo(::CppSharp::CppParser::ParserTargetInfo* native)
+    : __ownsNativeInstance(false)
 {
     NativePtr = native;
 }
@@ -13,12 +14,20 @@ CppSharp::Parser::ParserTargetInfo^ CppSharp::Parser::ParserTargetInfo::__Create
     return gcnew ::CppSharp::Parser::ParserTargetInfo((::CppSharp::CppParser::ParserTargetInfo*) native.ToPointer());
 }
 
+CppSharp::Parser::ParserTargetInfo::~ParserTargetInfo()
+{
+    if (__ownsNativeInstance)
+        delete NativePtr;
+}
+
 CppSharp::Parser::ParserTargetInfo::ParserTargetInfo()
+    : __ownsNativeInstance(true)
 {
     NativePtr = new ::CppSharp::CppParser::ParserTargetInfo();
 }
 
 CppSharp::Parser::ParserTargetInfo::ParserTargetInfo(CppSharp::Parser::ParserTargetInfo^ _0)
+    : __ownsNativeInstance(true)
 {
     auto &arg0 = *(::CppSharp::CppParser::ParserTargetInfo*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::ParserTargetInfo(arg0);
