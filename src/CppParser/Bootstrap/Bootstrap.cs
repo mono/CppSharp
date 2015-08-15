@@ -64,6 +64,7 @@ namespace CppSharp
             options.addDefines ("__STDC_CONSTANT_MACROS");
 
             var parserPath = Path.Combine(GetSourceDirectory("src"), "CppParser");
+            var bootstrapPath = Path.Combine(parserPath, "Bootstrap");
             var llvmPath = Path.Combine(GetSourceDirectory("deps"), "llvm");
             var clangPath = Path.Combine(llvmPath, "tools", "clang");
 
@@ -73,7 +74,7 @@ namespace CppSharp
             options.addIncludeDirs(Path.Combine(llvmPath, "build", "tools", "clang", "include"));
             options.addIncludeDirs(Path.Combine(clangPath, "include"));
 
-            options.OutputDir = Path.Combine(parserPath, "Bootstrap", "Bindings", Kind.ToString(), options.TargetTriple);
+            options.OutputDir = Path.Combine(bootstrapPath, Kind.ToString(), options.TargetTriple);
         }
 
         public void SetupPasses(Driver driver)
