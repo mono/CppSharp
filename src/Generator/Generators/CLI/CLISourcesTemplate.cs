@@ -638,7 +638,14 @@ namespace CppSharp.Generators.CLI
 
             var hasBase = GenerateClassConstructorBase(@class);
 
-            InitialiseOwnsNativeInstance(@class, hasBase, false);
+            if (CLIGenerator.ShouldGenerateClassNativeField(@class))
+            {
+                PushIndent();
+                Write(hasBase ? "," : ":");
+                PopIndent();
+
+                WriteLine(" {0}(false)", Helpers.OwnsNativeInstanceIdentifier);
+            }
 
             WriteStartBraceIndent();
 
@@ -658,25 +665,33 @@ namespace CppSharp.Generators.CLI
 
             WriteCloseBraceIndent();
             NewLine();
-
             WriteLine("{0}^ {0}::{1}(::System::IntPtr native)", qualifiedIdentifier, Helpers.CreateInstanceIdentifier);
 
             WriteStartBraceIndent();
-            WriteLine("return gcnew ::{0}(({1}) native.ToPointer());", qualifiedIdentifier, nativeType);
+
+            if (@class.IsRefType)
+            {
+                WriteLine("return ::{0}::{1}(native, false);",
+                    qualifiedIdentifier, Helpers.CreateInstanceIdentifier);
+                WriteCloseBraceIndent();
+                NewLine();
+
+                WriteLine("{0}^ {0}::{1}(::System::IntPtr native, bool {2})",
+                    qualifiedIdentifier, Helpers.CreateInstanceIdentifier, Helpers.OwnsNativeInstanceIdentifier);
+
+                WriteStartBraceIndent();
+                WriteLine("::{0}^ result = gcnew ::{0}(({1}) native.ToPointer());", qualifiedIdentifier, nativeType);
+                if (@class.IsRefType)
+                    WriteLine("result->{0} = {0};", Helpers.OwnsNativeInstanceIdentifier);
+                WriteLine("return result;");
+            }
+            else
+            {
+                WriteLine("return gcnew ::{0}(({1}) native.ToPointer());", qualifiedIdentifier, nativeType);
+            }
+
             WriteCloseBraceIndent();
             NewLine();
-        }
-
-        private void InitialiseOwnsNativeInstance(Class @class, bool hasBase, bool ownsNativeInstance)
-        {
-            if (!CLIGenerator.ShouldGenerateClassNativeField(@class)) return;
-
-            PushIndent();
-            Write(hasBase ? "," : ":");
-            PopIndent();
-
-            WriteLine(" {0}({1})", Helpers.OwnsNativeInstanceIdentifier,
-                ownsNativeInstance ? "true" : "false");
         }
 
         private void GenerateStructMarshaling(Class @class, string nativeVar)
@@ -758,14 +773,14 @@ namespace CppSharp.Generators.CLI
             WriteLine(")");
 
             if (method.IsConstructor)
-            {
-                var hasBase = GenerateClassConstructorBase(@class, method: method);
-                InitialiseOwnsNativeInstance(@class, hasBase, true);
-            }
+                GenerateClassConstructorBase(@class, method: method);
 
             WriteStartBraceIndent();
 
             PushBlock(CLIBlockKind.MethodBody, method);
+
+            if (method.IsConstructor && @class.IsRefType)
+                WriteLine("{0} = true;", Helpers.OwnsNativeInstanceIdentifier);
 
             if (method.IsProxy)
                 goto SkipImpl;

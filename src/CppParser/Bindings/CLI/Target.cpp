@@ -11,7 +11,14 @@ CppSharp::Parser::ParserTargetInfo::ParserTargetInfo(::CppSharp::CppParser::Pars
 
 CppSharp::Parser::ParserTargetInfo^ CppSharp::Parser::ParserTargetInfo::__CreateInstance(::System::IntPtr native)
 {
-    return gcnew ::CppSharp::Parser::ParserTargetInfo((::CppSharp::CppParser::ParserTargetInfo*) native.ToPointer());
+    return ::CppSharp::Parser::ParserTargetInfo::__CreateInstance(native, false);
+}
+
+CppSharp::Parser::ParserTargetInfo^ CppSharp::Parser::ParserTargetInfo::__CreateInstance(::System::IntPtr native, bool __ownsNativeInstance)
+{
+    ::CppSharp::Parser::ParserTargetInfo^ result = gcnew ::CppSharp::Parser::ParserTargetInfo((::CppSharp::CppParser::ParserTargetInfo*) native.ToPointer());
+    result->__ownsNativeInstance = __ownsNativeInstance;
+    return result;
 }
 
 CppSharp::Parser::ParserTargetInfo::~ParserTargetInfo()
@@ -21,14 +28,14 @@ CppSharp::Parser::ParserTargetInfo::~ParserTargetInfo()
 }
 
 CppSharp::Parser::ParserTargetInfo::ParserTargetInfo()
-    : __ownsNativeInstance(true)
 {
+    __ownsNativeInstance = true;
     NativePtr = new ::CppSharp::CppParser::ParserTargetInfo();
 }
 
 CppSharp::Parser::ParserTargetInfo::ParserTargetInfo(CppSharp::Parser::ParserTargetInfo^ _0)
-    : __ownsNativeInstance(true)
 {
+    __ownsNativeInstance = true;
     auto &arg0 = *(::CppSharp::CppParser::ParserTargetInfo*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::ParserTargetInfo(arg0);
 }

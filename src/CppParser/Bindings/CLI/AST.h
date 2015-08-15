@@ -349,6 +349,7 @@ namespace CppSharp
 
                 Type(::CppSharp::CppParser::AST::Type* native);
                 static Type^ __CreateInstance(::System::IntPtr native);
+                static Type^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 Type(CppSharp::Parser::AST::TypeKind kind);
 
                 Type(CppSharp::Parser::AST::Type^ _0);
@@ -367,7 +368,7 @@ namespace CppSharp
                     void set(bool);
                 }
 
-                private:
+                protected:
                 bool __ownsNativeInstance;
             };
 
@@ -384,6 +385,7 @@ namespace CppSharp
 
                 TypeQualifiers(::CppSharp::CppParser::AST::TypeQualifiers* native);
                 static TypeQualifiers^ __CreateInstance(::System::IntPtr native);
+                static TypeQualifiers^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 TypeQualifiers(CppSharp::Parser::AST::TypeQualifiers^ _0);
 
                 TypeQualifiers();
@@ -408,7 +410,7 @@ namespace CppSharp
                     void set(bool);
                 }
 
-                private:
+                protected:
                 bool __ownsNativeInstance;
             };
 
@@ -425,6 +427,7 @@ namespace CppSharp
 
                 QualifiedType(::CppSharp::CppParser::AST::QualifiedType* native);
                 static QualifiedType^ __CreateInstance(::System::IntPtr native);
+                static QualifiedType^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 QualifiedType();
 
                 QualifiedType(CppSharp::Parser::AST::QualifiedType^ _0);
@@ -443,7 +446,7 @@ namespace CppSharp
                     void set(CppSharp::Parser::AST::TypeQualifiers^);
                 }
 
-                private:
+                protected:
                 bool __ownsNativeInstance;
             };
 
@@ -453,6 +456,7 @@ namespace CppSharp
 
                 TagType(::CppSharp::CppParser::AST::TagType* native);
                 static TagType^ __CreateInstance(::System::IntPtr native);
+                static TagType^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 TagType();
 
                 TagType(CppSharp::Parser::AST::TagType^ _0);
@@ -480,6 +484,7 @@ namespace CppSharp
 
                 ArrayType(::CppSharp::CppParser::AST::ArrayType* native);
                 static ArrayType^ __CreateInstance(::System::IntPtr native);
+                static ArrayType^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 ArrayType();
 
                 ArrayType(CppSharp::Parser::AST::ArrayType^ _0);
@@ -511,6 +516,7 @@ namespace CppSharp
 
                 FunctionType(::CppSharp::CppParser::AST::FunctionType* native);
                 static FunctionType^ __CreateInstance(::System::IntPtr native);
+                static FunctionType^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 FunctionType();
 
                 FunctionType(CppSharp::Parser::AST::FunctionType^ _0);
@@ -555,6 +561,7 @@ namespace CppSharp
 
                 PointerType(::CppSharp::CppParser::AST::PointerType* native);
                 static PointerType^ __CreateInstance(::System::IntPtr native);
+                static PointerType^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 PointerType();
 
                 PointerType(CppSharp::Parser::AST::PointerType^ _0);
@@ -580,6 +587,7 @@ namespace CppSharp
 
                 MemberPointerType(::CppSharp::CppParser::AST::MemberPointerType* native);
                 static MemberPointerType^ __CreateInstance(::System::IntPtr native);
+                static MemberPointerType^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 MemberPointerType();
 
                 MemberPointerType(CppSharp::Parser::AST::MemberPointerType^ _0);
@@ -599,6 +607,7 @@ namespace CppSharp
 
                 TypedefType(::CppSharp::CppParser::AST::TypedefType* native);
                 static TypedefType^ __CreateInstance(::System::IntPtr native);
+                static TypedefType^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 TypedefType();
 
                 TypedefType(CppSharp::Parser::AST::TypedefType^ _0);
@@ -618,6 +627,7 @@ namespace CppSharp
 
                 AttributedType(::CppSharp::CppParser::AST::AttributedType* native);
                 static AttributedType^ __CreateInstance(::System::IntPtr native);
+                static AttributedType^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 AttributedType();
 
                 AttributedType(CppSharp::Parser::AST::AttributedType^ _0);
@@ -643,6 +653,7 @@ namespace CppSharp
 
                 DecayedType(::CppSharp::CppParser::AST::DecayedType* native);
                 static DecayedType^ __CreateInstance(::System::IntPtr native);
+                static DecayedType^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 DecayedType();
 
                 DecayedType(CppSharp::Parser::AST::DecayedType^ _0);
@@ -693,6 +704,7 @@ namespace CppSharp
 
                 TemplateArgument(::CppSharp::CppParser::AST::TemplateArgument* native);
                 static TemplateArgument^ __CreateInstance(::System::IntPtr native);
+                static TemplateArgument^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 TemplateArgument();
 
                 TemplateArgument(CppSharp::Parser::AST::TemplateArgument^ _0);
@@ -723,7 +735,7 @@ namespace CppSharp
                     void set(long);
                 }
 
-                private:
+                protected:
                 bool __ownsNativeInstance;
             };
 
@@ -733,6 +745,7 @@ namespace CppSharp
 
                 TemplateSpecializationType(::CppSharp::CppParser::AST::TemplateSpecializationType* native);
                 static TemplateSpecializationType^ __CreateInstance(::System::IntPtr native);
+                static TemplateSpecializationType^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 TemplateSpecializationType();
 
                 TemplateSpecializationType(CppSharp::Parser::AST::TemplateSpecializationType^ _0);
@@ -776,6 +789,7 @@ namespace CppSharp
 
                 TemplateParameter(::CppSharp::CppParser::AST::TemplateParameter* native);
                 static TemplateParameter^ __CreateInstance(::System::IntPtr native);
+                static TemplateParameter^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 TemplateParameter();
 
                 TemplateParameter(CppSharp::Parser::AST::TemplateParameter^ _0);
@@ -798,7 +812,7 @@ namespace CppSharp
 
                 virtual bool Equals(::System::Object^ obj) override;
 
-                private:
+                protected:
                 bool __ownsNativeInstance;
             };
 
@@ -808,6 +822,7 @@ namespace CppSharp
 
                 TemplateParameterType(::CppSharp::CppParser::AST::TemplateParameterType* native);
                 static TemplateParameterType^ __CreateInstance(::System::IntPtr native);
+                static TemplateParameterType^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 TemplateParameterType();
 
                 TemplateParameterType(CppSharp::Parser::AST::TemplateParameterType^ _0);
@@ -845,6 +860,7 @@ namespace CppSharp
 
                 TemplateParameterSubstitutionType(::CppSharp::CppParser::AST::TemplateParameterSubstitutionType* native);
                 static TemplateParameterSubstitutionType^ __CreateInstance(::System::IntPtr native);
+                static TemplateParameterSubstitutionType^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 TemplateParameterSubstitutionType();
 
                 TemplateParameterSubstitutionType(CppSharp::Parser::AST::TemplateParameterSubstitutionType^ _0);
@@ -864,6 +880,7 @@ namespace CppSharp
 
                 InjectedClassNameType(::CppSharp::CppParser::AST::InjectedClassNameType* native);
                 static InjectedClassNameType^ __CreateInstance(::System::IntPtr native);
+                static InjectedClassNameType^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 InjectedClassNameType();
 
                 InjectedClassNameType(CppSharp::Parser::AST::InjectedClassNameType^ _0);
@@ -889,6 +906,7 @@ namespace CppSharp
 
                 DependentNameType(::CppSharp::CppParser::AST::DependentNameType* native);
                 static DependentNameType^ __CreateInstance(::System::IntPtr native);
+                static DependentNameType^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 DependentNameType();
 
                 DependentNameType(CppSharp::Parser::AST::DependentNameType^ _0);
@@ -902,6 +920,7 @@ namespace CppSharp
 
                 PackExpansionType(::CppSharp::CppParser::AST::PackExpansionType* native);
                 static PackExpansionType^ __CreateInstance(::System::IntPtr native);
+                static PackExpansionType^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 PackExpansionType();
 
                 PackExpansionType(CppSharp::Parser::AST::PackExpansionType^ _0);
@@ -915,6 +934,7 @@ namespace CppSharp
 
                 BuiltinType(::CppSharp::CppParser::AST::BuiltinType* native);
                 static BuiltinType^ __CreateInstance(::System::IntPtr native);
+                static BuiltinType^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 BuiltinType();
 
                 BuiltinType(CppSharp::Parser::AST::BuiltinType^ _0);
@@ -941,6 +961,7 @@ namespace CppSharp
 
                 VTableComponent(::CppSharp::CppParser::AST::VTableComponent* native);
                 static VTableComponent^ __CreateInstance(::System::IntPtr native);
+                static VTableComponent^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 VTableComponent();
 
                 VTableComponent(CppSharp::Parser::AST::VTableComponent^ _0);
@@ -965,7 +986,7 @@ namespace CppSharp
                     void set(CppSharp::Parser::AST::Declaration^);
                 }
 
-                private:
+                protected:
                 bool __ownsNativeInstance;
             };
 
@@ -982,6 +1003,7 @@ namespace CppSharp
 
                 VTableLayout(::CppSharp::CppParser::AST::VTableLayout* native);
                 static VTableLayout^ __CreateInstance(::System::IntPtr native);
+                static VTableLayout^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 VTableLayout();
 
                 VTableLayout(CppSharp::Parser::AST::VTableLayout^ _0);
@@ -999,7 +1021,7 @@ namespace CppSharp
 
                 void clearComponents();
 
-                private:
+                protected:
                 bool __ownsNativeInstance;
             };
 
@@ -1016,6 +1038,7 @@ namespace CppSharp
 
                 VFTableInfo(::CppSharp::CppParser::AST::VFTableInfo* native);
                 static VFTableInfo^ __CreateInstance(::System::IntPtr native);
+                static VFTableInfo^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 VFTableInfo();
 
                 VFTableInfo(CppSharp::Parser::AST::VFTableInfo^ _0);
@@ -1046,7 +1069,7 @@ namespace CppSharp
                     void set(CppSharp::Parser::AST::VTableLayout^);
                 }
 
-                private:
+                protected:
                 bool __ownsNativeInstance;
             };
 
@@ -1063,6 +1086,7 @@ namespace CppSharp
 
                 ClassLayout(::CppSharp::CppParser::AST::ClassLayout* native);
                 static ClassLayout^ __CreateInstance(::System::IntPtr native);
+                static ClassLayout^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 ClassLayout();
 
                 ClassLayout(CppSharp::Parser::AST::ClassLayout^ _0);
@@ -1122,7 +1146,7 @@ namespace CppSharp
 
                 void clearVFTables();
 
-                private:
+                protected:
                 bool __ownsNativeInstance;
             };
 
@@ -1139,6 +1163,7 @@ namespace CppSharp
 
                 Declaration(::CppSharp::CppParser::AST::Declaration* native);
                 static Declaration^ __CreateInstance(::System::IntPtr native);
+                static Declaration^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 Declaration(CppSharp::Parser::AST::DeclarationKind kind);
 
                 Declaration(CppSharp::Parser::AST::Declaration^ _0);
@@ -1240,7 +1265,7 @@ namespace CppSharp
 
                 void clearPreprocessedEntities();
 
-                private:
+                protected:
                 bool __ownsNativeInstance;
             };
 
@@ -1250,6 +1275,7 @@ namespace CppSharp
 
                 DeclarationContext(::CppSharp::CppParser::AST::DeclarationContext* native);
                 static DeclarationContext^ __CreateInstance(::System::IntPtr native);
+                static DeclarationContext^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 DeclarationContext(CppSharp::Parser::AST::DeclarationKind kind);
 
                 DeclarationContext(CppSharp::Parser::AST::DeclarationContext^ _0);
@@ -1357,6 +1383,7 @@ namespace CppSharp
 
                 TypedefDecl(::CppSharp::CppParser::AST::TypedefDecl* native);
                 static TypedefDecl^ __CreateInstance(::System::IntPtr native);
+                static TypedefDecl^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 TypedefDecl();
 
                 TypedefDecl(CppSharp::Parser::AST::TypedefDecl^ _0);
@@ -1376,6 +1403,7 @@ namespace CppSharp
 
                 Friend(::CppSharp::CppParser::AST::Friend* native);
                 static Friend^ __CreateInstance(::System::IntPtr native);
+                static Friend^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 Friend();
 
                 Friend(CppSharp::Parser::AST::Friend^ _0);
@@ -1402,6 +1430,7 @@ namespace CppSharp
 
                 Statement(::CppSharp::CppParser::AST::Statement* native);
                 static Statement^ __CreateInstance(::System::IntPtr native);
+                static Statement^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 Statement(CppSharp::Parser::AST::Statement^ _0);
 
                 ~Statement();
@@ -1424,7 +1453,7 @@ namespace CppSharp
                     void set(CppSharp::Parser::AST::Declaration^);
                 }
 
-                private:
+                protected:
                 bool __ownsNativeInstance;
             };
 
@@ -1434,6 +1463,7 @@ namespace CppSharp
 
                 Expression(::CppSharp::CppParser::AST::Expression* native);
                 static Expression^ __CreateInstance(::System::IntPtr native);
+                static Expression^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 Expression(CppSharp::Parser::AST::Expression^ _0);
 
                 ~Expression();
@@ -1445,6 +1475,7 @@ namespace CppSharp
 
                 BinaryOperator(::CppSharp::CppParser::AST::BinaryOperator* native);
                 static BinaryOperator^ __CreateInstance(::System::IntPtr native);
+                static BinaryOperator^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 BinaryOperator(CppSharp::Parser::AST::BinaryOperator^ _0);
 
                 ~BinaryOperator();
@@ -1474,6 +1505,7 @@ namespace CppSharp
 
                 CXXConstructExpr(::CppSharp::CppParser::AST::CXXConstructExpr* native);
                 static CXXConstructExpr^ __CreateInstance(::System::IntPtr native);
+                static CXXConstructExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 CXXConstructExpr(CppSharp::Parser::AST::CXXConstructExpr^ _0);
 
                 ~CXXConstructExpr();
@@ -1496,6 +1528,7 @@ namespace CppSharp
 
                 Parameter(::CppSharp::CppParser::AST::Parameter* native);
                 static Parameter^ __CreateInstance(::System::IntPtr native);
+                static Parameter^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 Parameter();
 
                 Parameter(CppSharp::Parser::AST::Parameter^ _0);
@@ -1539,6 +1572,7 @@ namespace CppSharp
 
                 Function(::CppSharp::CppParser::AST::Function* native);
                 static Function^ __CreateInstance(::System::IntPtr native);
+                static Function^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 Function();
 
                 Function(CppSharp::Parser::AST::Function^ _0);
@@ -1635,6 +1669,7 @@ namespace CppSharp
 
                 Method(::CppSharp::CppParser::AST::Method* native);
                 static Method^ __CreateInstance(::System::IntPtr native);
+                static Method^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 Method();
 
                 Method(CppSharp::Parser::AST::Method^ _0);
@@ -1732,6 +1767,7 @@ namespace CppSharp
 
                     Item(::CppSharp::CppParser::AST::Enumeration::Item* native);
                     static Item^ __CreateInstance(::System::IntPtr native);
+                    static Item^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                     Item();
 
                     Item(CppSharp::Parser::AST::Enumeration::Item^ _0);
@@ -1753,6 +1789,7 @@ namespace CppSharp
 
                 Enumeration(::CppSharp::CppParser::AST::Enumeration* native);
                 static Enumeration^ __CreateInstance(::System::IntPtr native);
+                static Enumeration^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 Enumeration();
 
                 Enumeration(CppSharp::Parser::AST::Enumeration^ _0);
@@ -1795,6 +1832,7 @@ namespace CppSharp
 
                 Variable(::CppSharp::CppParser::AST::Variable* native);
                 static Variable^ __CreateInstance(::System::IntPtr native);
+                static Variable^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 Variable();
 
                 Variable(CppSharp::Parser::AST::Variable^ _0);
@@ -1827,6 +1865,7 @@ namespace CppSharp
 
                 BaseClassSpecifier(::CppSharp::CppParser::AST::BaseClassSpecifier* native);
                 static BaseClassSpecifier^ __CreateInstance(::System::IntPtr native);
+                static BaseClassSpecifier^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 BaseClassSpecifier();
 
                 BaseClassSpecifier(CppSharp::Parser::AST::BaseClassSpecifier^ _0);
@@ -1857,7 +1896,7 @@ namespace CppSharp
                     void set(int);
                 }
 
-                private:
+                protected:
                 bool __ownsNativeInstance;
             };
 
@@ -1867,6 +1906,7 @@ namespace CppSharp
 
                 Field(::CppSharp::CppParser::AST::Field* native);
                 static Field^ __CreateInstance(::System::IntPtr native);
+                static Field^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 Field();
 
                 Field(CppSharp::Parser::AST::Field^ _0);
@@ -1910,6 +1950,7 @@ namespace CppSharp
 
                 AccessSpecifierDecl(::CppSharp::CppParser::AST::AccessSpecifierDecl* native);
                 static AccessSpecifierDecl^ __CreateInstance(::System::IntPtr native);
+                static AccessSpecifierDecl^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 AccessSpecifierDecl();
 
                 AccessSpecifierDecl(CppSharp::Parser::AST::AccessSpecifierDecl^ _0);
@@ -1923,6 +1964,7 @@ namespace CppSharp
 
                 Class(::CppSharp::CppParser::AST::Class* native);
                 static Class^ __CreateInstance(::System::IntPtr native);
+                static Class^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 Class();
 
                 Class(CppSharp::Parser::AST::Class^ _0);
@@ -2040,6 +2082,7 @@ namespace CppSharp
 
                 Template(::CppSharp::CppParser::AST::Template* native);
                 static Template^ __CreateInstance(::System::IntPtr native);
+                static Template^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 Template(CppSharp::Parser::AST::DeclarationKind kind);
 
                 Template();
@@ -2072,6 +2115,7 @@ namespace CppSharp
 
                 ClassTemplate(::CppSharp::CppParser::AST::ClassTemplate* native);
                 static ClassTemplate^ __CreateInstance(::System::IntPtr native);
+                static ClassTemplate^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 ClassTemplate();
 
                 ClassTemplate(CppSharp::Parser::AST::ClassTemplate^ _0);
@@ -2096,6 +2140,7 @@ namespace CppSharp
 
                 ClassTemplateSpecialization(::CppSharp::CppParser::AST::ClassTemplateSpecialization* native);
                 static ClassTemplateSpecialization^ __CreateInstance(::System::IntPtr native);
+                static ClassTemplateSpecialization^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 ClassTemplateSpecialization();
 
                 ClassTemplateSpecialization(CppSharp::Parser::AST::ClassTemplateSpecialization^ _0);
@@ -2132,6 +2177,7 @@ namespace CppSharp
 
                 ClassTemplatePartialSpecialization(::CppSharp::CppParser::AST::ClassTemplatePartialSpecialization* native);
                 static ClassTemplatePartialSpecialization^ __CreateInstance(::System::IntPtr native);
+                static ClassTemplatePartialSpecialization^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 ClassTemplatePartialSpecialization();
 
                 ClassTemplatePartialSpecialization(CppSharp::Parser::AST::ClassTemplatePartialSpecialization^ _0);
@@ -2145,6 +2191,7 @@ namespace CppSharp
 
                 FunctionTemplate(::CppSharp::CppParser::AST::FunctionTemplate* native);
                 static FunctionTemplate^ __CreateInstance(::System::IntPtr native);
+                static FunctionTemplate^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 FunctionTemplate();
 
                 FunctionTemplate(CppSharp::Parser::AST::FunctionTemplate^ _0);
@@ -2176,6 +2223,7 @@ namespace CppSharp
 
                 FunctionTemplateSpecialization(::CppSharp::CppParser::AST::FunctionTemplateSpecialization* native);
                 static FunctionTemplateSpecialization^ __CreateInstance(::System::IntPtr native);
+                static FunctionTemplateSpecialization^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 FunctionTemplateSpecialization();
 
                 FunctionTemplateSpecialization(CppSharp::Parser::AST::FunctionTemplateSpecialization^ _0);
@@ -2211,7 +2259,7 @@ namespace CppSharp
 
                 void clearArguments();
 
-                private:
+                protected:
                 bool __ownsNativeInstance;
             };
 
@@ -2221,6 +2269,7 @@ namespace CppSharp
 
                 Namespace(::CppSharp::CppParser::AST::Namespace* native);
                 static Namespace^ __CreateInstance(::System::IntPtr native);
+                static Namespace^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 Namespace();
 
                 Namespace(CppSharp::Parser::AST::Namespace^ _0);
@@ -2240,6 +2289,7 @@ namespace CppSharp
 
                 PreprocessedEntity(::CppSharp::CppParser::AST::PreprocessedEntity* native);
                 static PreprocessedEntity^ __CreateInstance(::System::IntPtr native);
+                static PreprocessedEntity^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 PreprocessedEntity();
 
                 PreprocessedEntity(CppSharp::Parser::AST::PreprocessedEntity^ _0);
@@ -2259,6 +2309,7 @@ namespace CppSharp
 
                 MacroDefinition(::CppSharp::CppParser::AST::MacroDefinition* native);
                 static MacroDefinition^ __CreateInstance(::System::IntPtr native);
+                static MacroDefinition^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 MacroDefinition();
 
                 MacroDefinition(CppSharp::Parser::AST::MacroDefinition^ _0);
@@ -2278,6 +2329,7 @@ namespace CppSharp
 
                 MacroExpansion(::CppSharp::CppParser::AST::MacroExpansion* native);
                 static MacroExpansion^ __CreateInstance(::System::IntPtr native);
+                static MacroExpansion^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 MacroExpansion();
 
                 MacroExpansion(CppSharp::Parser::AST::MacroExpansion^ _0);
@@ -2303,6 +2355,7 @@ namespace CppSharp
 
                 TranslationUnit(::CppSharp::CppParser::AST::TranslationUnit* native);
                 static TranslationUnit^ __CreateInstance(::System::IntPtr native);
+                static TranslationUnit^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 TranslationUnit();
 
                 TranslationUnit(CppSharp::Parser::AST::TranslationUnit^ _0);
@@ -2346,6 +2399,7 @@ namespace CppSharp
 
                 NativeLibrary(::CppSharp::CppParser::AST::NativeLibrary* native);
                 static NativeLibrary^ __CreateInstance(::System::IntPtr native);
+                static NativeLibrary^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 NativeLibrary();
 
                 NativeLibrary(CppSharp::Parser::AST::NativeLibrary^ _0);
@@ -2386,7 +2440,7 @@ namespace CppSharp
 
                 void clearDependencies();
 
-                private:
+                protected:
                 bool __ownsNativeInstance;
             };
 
@@ -2403,6 +2457,7 @@ namespace CppSharp
 
                 ASTContext(::CppSharp::CppParser::AST::ASTContext* native);
                 static ASTContext^ __CreateInstance(::System::IntPtr native);
+                static ASTContext^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 ASTContext();
 
                 ASTContext(CppSharp::Parser::AST::ASTContext^ _0);
@@ -2420,7 +2475,7 @@ namespace CppSharp
 
                 void clearTranslationUnits();
 
-                private:
+                protected:
                 bool __ownsNativeInstance;
             };
 
@@ -2437,6 +2492,7 @@ namespace CppSharp
 
                 Comment(::CppSharp::CppParser::AST::Comment* native);
                 static Comment^ __CreateInstance(::System::IntPtr native);
+                static Comment^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 Comment(CppSharp::Parser::AST::CommentKind kind);
 
                 Comment(CppSharp::Parser::AST::Comment^ _0);
@@ -2449,7 +2505,7 @@ namespace CppSharp
                     void set(CppSharp::Parser::AST::CommentKind);
                 }
 
-                private:
+                protected:
                 bool __ownsNativeInstance;
             };
 
@@ -2459,6 +2515,7 @@ namespace CppSharp
 
                 BlockContentComment(::CppSharp::CppParser::AST::BlockContentComment* native);
                 static BlockContentComment^ __CreateInstance(::System::IntPtr native);
+                static BlockContentComment^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 BlockContentComment();
 
                 BlockContentComment(CppSharp::Parser::AST::CommentKind Kind);
@@ -2474,6 +2531,7 @@ namespace CppSharp
 
                 FullComment(::CppSharp::CppParser::AST::FullComment* native);
                 static FullComment^ __CreateInstance(::System::IntPtr native);
+                static FullComment^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 FullComment();
 
                 FullComment(CppSharp::Parser::AST::FullComment^ _0);
@@ -2509,6 +2567,7 @@ namespace CppSharp
 
                     Argument(::CppSharp::CppParser::AST::BlockCommandComment::Argument* native);
                     static Argument^ __CreateInstance(::System::IntPtr native);
+                    static Argument^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                     Argument();
 
                     Argument(CppSharp::Parser::AST::BlockCommandComment::Argument^ _0);
@@ -2521,12 +2580,13 @@ namespace CppSharp
                         void set(System::String^);
                     }
 
-                    private:
+                    protected:
                     bool __ownsNativeInstance;
                 };
 
                 BlockCommandComment(::CppSharp::CppParser::AST::BlockCommandComment* native);
                 static BlockCommandComment^ __CreateInstance(::System::IntPtr native);
+                static BlockCommandComment^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 BlockCommandComment();
 
                 BlockCommandComment(CppSharp::Parser::AST::CommentKind Kind);
@@ -2566,6 +2626,7 @@ namespace CppSharp
 
                 ParamCommandComment(::CppSharp::CppParser::AST::ParamCommandComment* native);
                 static ParamCommandComment^ __CreateInstance(::System::IntPtr native);
+                static ParamCommandComment^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 ParamCommandComment();
 
                 ParamCommandComment(CppSharp::Parser::AST::ParamCommandComment^ _0);
@@ -2591,6 +2652,7 @@ namespace CppSharp
 
                 TParamCommandComment(::CppSharp::CppParser::AST::TParamCommandComment* native);
                 static TParamCommandComment^ __CreateInstance(::System::IntPtr native);
+                static TParamCommandComment^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 TParamCommandComment();
 
                 TParamCommandComment(CppSharp::Parser::AST::TParamCommandComment^ _0);
@@ -2615,6 +2677,7 @@ namespace CppSharp
 
                 VerbatimBlockLineComment(::CppSharp::CppParser::AST::VerbatimBlockLineComment* native);
                 static VerbatimBlockLineComment^ __CreateInstance(::System::IntPtr native);
+                static VerbatimBlockLineComment^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 VerbatimBlockLineComment();
 
                 VerbatimBlockLineComment(CppSharp::Parser::AST::VerbatimBlockLineComment^ _0);
@@ -2634,6 +2697,7 @@ namespace CppSharp
 
                 VerbatimBlockComment(::CppSharp::CppParser::AST::VerbatimBlockComment* native);
                 static VerbatimBlockComment^ __CreateInstance(::System::IntPtr native);
+                static VerbatimBlockComment^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 VerbatimBlockComment();
 
                 VerbatimBlockComment(CppSharp::Parser::AST::VerbatimBlockComment^ _0);
@@ -2658,6 +2722,7 @@ namespace CppSharp
 
                 VerbatimLineComment(::CppSharp::CppParser::AST::VerbatimLineComment* native);
                 static VerbatimLineComment^ __CreateInstance(::System::IntPtr native);
+                static VerbatimLineComment^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 VerbatimLineComment();
 
                 VerbatimLineComment(CppSharp::Parser::AST::VerbatimLineComment^ _0);
@@ -2677,6 +2742,7 @@ namespace CppSharp
 
                 InlineContentComment(::CppSharp::CppParser::AST::InlineContentComment* native);
                 static InlineContentComment^ __CreateInstance(::System::IntPtr native);
+                static InlineContentComment^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 InlineContentComment();
 
                 InlineContentComment(CppSharp::Parser::AST::CommentKind Kind);
@@ -2692,6 +2758,7 @@ namespace CppSharp
 
                 ParagraphComment(::CppSharp::CppParser::AST::ParagraphComment* native);
                 static ParagraphComment^ __CreateInstance(::System::IntPtr native);
+                static ParagraphComment^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 ParagraphComment();
 
                 ParagraphComment(CppSharp::Parser::AST::ParagraphComment^ _0);
@@ -2741,6 +2808,7 @@ namespace CppSharp
 
                     Argument(::CppSharp::CppParser::AST::InlineCommandComment::Argument* native);
                     static Argument^ __CreateInstance(::System::IntPtr native);
+                    static Argument^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                     Argument();
 
                     Argument(CppSharp::Parser::AST::InlineCommandComment::Argument^ _0);
@@ -2753,12 +2821,13 @@ namespace CppSharp
                         void set(System::String^);
                     }
 
-                    private:
+                    protected:
                     bool __ownsNativeInstance;
                 };
 
                 InlineCommandComment(::CppSharp::CppParser::AST::InlineCommandComment* native);
                 static InlineCommandComment^ __CreateInstance(::System::IntPtr native);
+                static InlineCommandComment^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 InlineCommandComment();
 
                 InlineCommandComment(CppSharp::Parser::AST::InlineCommandComment^ _0);
@@ -2789,6 +2858,7 @@ namespace CppSharp
 
                 HTMLTagComment(::CppSharp::CppParser::AST::HTMLTagComment* native);
                 static HTMLTagComment^ __CreateInstance(::System::IntPtr native);
+                static HTMLTagComment^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 HTMLTagComment();
 
                 HTMLTagComment(CppSharp::Parser::AST::CommentKind Kind);
@@ -2815,6 +2885,7 @@ namespace CppSharp
 
                     Attribute(::CppSharp::CppParser::AST::HTMLStartTagComment::Attribute* native);
                     static Attribute^ __CreateInstance(::System::IntPtr native);
+                    static Attribute^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                     Attribute();
 
                     Attribute(CppSharp::Parser::AST::HTMLStartTagComment::Attribute^ _0);
@@ -2833,12 +2904,13 @@ namespace CppSharp
                         void set(System::String^);
                     }
 
-                    private:
+                    protected:
                     bool __ownsNativeInstance;
                 };
 
                 HTMLStartTagComment(::CppSharp::CppParser::AST::HTMLStartTagComment* native);
                 static HTMLStartTagComment^ __CreateInstance(::System::IntPtr native);
+                static HTMLStartTagComment^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 HTMLStartTagComment();
 
                 HTMLStartTagComment(CppSharp::Parser::AST::HTMLStartTagComment^ _0);
@@ -2869,6 +2941,7 @@ namespace CppSharp
 
                 HTMLEndTagComment(::CppSharp::CppParser::AST::HTMLEndTagComment* native);
                 static HTMLEndTagComment^ __CreateInstance(::System::IntPtr native);
+                static HTMLEndTagComment^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 HTMLEndTagComment();
 
                 HTMLEndTagComment(CppSharp::Parser::AST::HTMLEndTagComment^ _0);
@@ -2888,6 +2961,7 @@ namespace CppSharp
 
                 TextComment(::CppSharp::CppParser::AST::TextComment* native);
                 static TextComment^ __CreateInstance(::System::IntPtr native);
+                static TextComment^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 TextComment();
 
                 TextComment(CppSharp::Parser::AST::TextComment^ _0);
@@ -2914,6 +2988,7 @@ namespace CppSharp
 
                 RawComment(::CppSharp::CppParser::AST::RawComment* native);
                 static RawComment^ __CreateInstance(::System::IntPtr native);
+                static RawComment^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
                 RawComment();
 
                 RawComment(CppSharp::Parser::AST::RawComment^ _0);
@@ -2944,7 +3019,7 @@ namespace CppSharp
                     void set(CppSharp::Parser::AST::FullComment^);
                 }
 
-                private:
+                protected:
                 bool __ownsNativeInstance;
             };
         }

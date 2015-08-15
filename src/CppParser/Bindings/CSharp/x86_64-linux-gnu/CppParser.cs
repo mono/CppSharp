@@ -233,11 +233,11 @@ namespace CppSharp
             public global::System.IntPtr __Instance { get; protected set; }
             public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ParserOptions> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ParserOptions>();
 
-            private readonly bool __ownsNativeInstance;
+            private bool __ownsNativeInstance;
 
-            public static ParserOptions __CreateInstance(global::System.IntPtr native)
+            public static ParserOptions __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
             {
-                return new ParserOptions((ParserOptions.Internal*) native);
+                return new ParserOptions((ParserOptions.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
             }
 
             public static ParserOptions __CreateInstance(ParserOptions.Internal native)
@@ -663,11 +663,11 @@ namespace CppSharp
             public global::System.IntPtr __Instance { get; protected set; }
             public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ParserDiagnostic> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ParserDiagnostic>();
 
-            private readonly bool __ownsNativeInstance;
+            private bool __ownsNativeInstance;
 
-            public static ParserDiagnostic __CreateInstance(global::System.IntPtr native)
+            public static ParserDiagnostic __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
             {
-                return new ParserDiagnostic((ParserDiagnostic.Internal*) native);
+                return new ParserDiagnostic((ParserDiagnostic.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
             }
 
             public static ParserDiagnostic __CreateInstance(ParserDiagnostic.Internal native)
@@ -864,11 +864,11 @@ namespace CppSharp
             public global::System.IntPtr __Instance { get; protected set; }
             public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ParserResult> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ParserResult>();
 
-            private readonly bool __ownsNativeInstance;
+            private bool __ownsNativeInstance;
 
-            public static ParserResult __CreateInstance(global::System.IntPtr native)
+            public static ParserResult __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
             {
-                return new ParserResult((ParserResult.Internal*) native);
+                return new ParserResult((ParserResult.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
             }
 
             public static ParserResult __CreateInstance(ParserResult.Internal native)
@@ -1043,11 +1043,11 @@ namespace CppSharp
             public global::System.IntPtr __Instance { get; protected set; }
             public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ClangParser> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ClangParser>();
 
-            private readonly bool __ownsNativeInstance;
+            private bool __ownsNativeInstance;
 
-            public static ClangParser __CreateInstance(global::System.IntPtr native)
+            public static ClangParser __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
             {
-                return new ClangParser((ClangParser.Internal*) native);
+                return new ClangParser((ClangParser.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
             }
 
             public static ClangParser __CreateInstance(ClangParser.Internal native)

@@ -270,14 +270,23 @@ namespace CppSharp.Generators.CLI
 
             GenerateClassVariables(@class);
 
+            if (CLIGenerator.ShouldGenerateClassNativeField(@class))
+            {
+                PushBlock(CLIBlockKind.AccessSpecifier);
+                WriteLine("protected:");
+                PopBlock(NewLineKind.IfNotEmpty);
+
+                PushBlock(CLIBlockKind.Fields);
+                WriteLineIndent("bool {0};", Helpers.OwnsNativeInstanceIdentifier);
+                PopBlock();
+            }
+
             PushBlock(CLIBlockKind.AccessSpecifier);
             WriteLine("private:");
             var accBlock = PopBlock(NewLineKind.IfNotEmpty);
 
             PushBlock(CLIBlockKind.Fields);
             GenerateClassFields(@class);
-            if (CLIGenerator.ShouldGenerateClassNativeField(@class))
-                WriteLineIndent("bool {0};", Helpers.OwnsNativeInstanceIdentifier);
             var fieldsBlock = PopBlock();
 
             accBlock.CheckGenerate = () => !fieldsBlock.IsEmpty;
@@ -370,7 +379,11 @@ namespace CppSharp.Generators.CLI
 
             // Output a default constructor that takes the native pointer.
             WriteLine("{0}({1} native);", @class.Name, nativeType);
-            WriteLine("static {0}^ {1}(::System::IntPtr native);", @class.Name, Helpers.CreateInstanceIdentifier);
+            WriteLine("static {0}^ {1}(::System::IntPtr native);",
+                @class.Name, Helpers.CreateInstanceIdentifier);
+            if (@class.IsRefType)
+                WriteLine("static {0}^ {1}(::System::IntPtr native, bool {2});",
+                    @class.Name, Helpers.CreateInstanceIdentifier, Helpers.OwnsNativeInstanceIdentifier);
 
             foreach (var ctor in @class.Constructors)
             {
