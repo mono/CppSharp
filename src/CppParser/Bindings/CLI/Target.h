@@ -44,6 +44,7 @@ namespace CppSharp
 
             ParserTargetInfo(::CppSharp::CppParser::ParserTargetInfo* native);
             static ParserTargetInfo^ __CreateInstance(::System::IntPtr native);
+            static ParserTargetInfo^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
             ParserTargetInfo();
 
             ParserTargetInfo(CppSharp::Parser::ParserTargetInfo^ _0);
@@ -284,7 +285,7 @@ namespace CppSharp
                 void set(unsigned int);
             }
 
-            private:
+            protected:
             bool __ownsNativeInstance;
         };
     }

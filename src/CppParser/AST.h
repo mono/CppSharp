@@ -310,6 +310,7 @@ struct CS_API VTableLayout
 {
     VTableLayout();
     VTableLayout(const VTableLayout&);
+    ~VTableLayout();
     VECTOR(VTableComponent, Components)
 };
 

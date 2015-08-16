@@ -173,11 +173,11 @@ namespace CppSharp
             public global::System.IntPtr __Instance { get; protected set; }
             public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ParserTargetInfo> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ParserTargetInfo>();
 
-            private readonly bool __ownsNativeInstance;
+            private bool __ownsNativeInstance;
 
-            public static ParserTargetInfo __CreateInstance(global::System.IntPtr native)
+            public static ParserTargetInfo __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
             {
-                return new ParserTargetInfo((ParserTargetInfo.Internal*) native);
+                return new ParserTargetInfo((ParserTargetInfo.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
             }
 
             public static ParserTargetInfo __CreateInstance(ParserTargetInfo.Internal native)

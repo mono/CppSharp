@@ -78,6 +78,7 @@ namespace CppSharp
 
             ParserOptions(::CppSharp::CppParser::ParserOptions* native);
             static ParserOptions^ __CreateInstance(::System::IntPtr native);
+            static ParserOptions^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
             ParserOptions();
 
             ParserOptions(CppSharp::Parser::ParserOptions^ _0);
@@ -210,7 +211,7 @@ namespace CppSharp
 
             void clearLibraryDirs();
 
-            private:
+            protected:
             bool __ownsNativeInstance;
         };
 
@@ -227,6 +228,7 @@ namespace CppSharp
 
             ParserDiagnostic(::CppSharp::CppParser::ParserDiagnostic* native);
             static ParserDiagnostic^ __CreateInstance(::System::IntPtr native);
+            static ParserDiagnostic^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
             ParserDiagnostic();
 
             ParserDiagnostic(CppSharp::Parser::ParserDiagnostic^ _0);
@@ -263,7 +265,7 @@ namespace CppSharp
                 void set(int);
             }
 
-            private:
+            protected:
             bool __ownsNativeInstance;
         };
 
@@ -280,6 +282,7 @@ namespace CppSharp
 
             ParserResult(::CppSharp::CppParser::ParserResult* native);
             static ParserResult^ __CreateInstance(::System::IntPtr native);
+            static ParserResult^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
             ParserResult();
 
             ParserResult(CppSharp::Parser::ParserResult^ _0);
@@ -315,7 +318,7 @@ namespace CppSharp
 
             void clearDiagnostics();
 
-            private:
+            protected:
             bool __ownsNativeInstance;
         };
 
@@ -332,6 +335,7 @@ namespace CppSharp
 
             ClangParser(::CppSharp::CppParser::ClangParser* native);
             static ClangParser^ __CreateInstance(::System::IntPtr native);
+            static ClangParser^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
             ClangParser();
 
             ClangParser(CppSharp::Parser::ClangParser^ _0);
@@ -344,7 +348,7 @@ namespace CppSharp
 
             static CppSharp::Parser::ParserTargetInfo^ GetTargetInfo(CppSharp::Parser::ParserOptions^ Opts);
 
-            private:
+            protected:
             bool __ownsNativeInstance;
         };
     }

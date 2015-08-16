@@ -267,11 +267,11 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
                 public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Type> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Type>();
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static Type __CreateInstance(global::System.IntPtr native)
+                public static Type __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new Type((Type.Internal*) native);
+                    return new Type((Type.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static Type __CreateInstance(Type.Internal native)
@@ -389,11 +389,11 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
                 public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, TypeQualifiers> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, TypeQualifiers>();
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static TypeQualifiers __CreateInstance(global::System.IntPtr native)
+                public static TypeQualifiers __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new TypeQualifiers((TypeQualifiers.Internal*) native);
+                    return new TypeQualifiers((TypeQualifiers.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static TypeQualifiers __CreateInstance(TypeQualifiers.Internal native)
@@ -523,11 +523,11 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
                 public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, QualifiedType> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, QualifiedType>();
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static QualifiedType __CreateInstance(global::System.IntPtr native)
+                public static QualifiedType __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new QualifiedType((QualifiedType.Internal*) native);
+                    return new QualifiedType((QualifiedType.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static QualifiedType __CreateInstance(QualifiedType.Internal native)
@@ -650,11 +650,11 @@ namespace CppSharp
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new TagType __CreateInstance(global::System.IntPtr native)
+                public static new TagType __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new TagType((TagType.Internal*) native);
+                    return new TagType((TagType.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static TagType __CreateInstance(TagType.Internal native)
@@ -777,11 +777,11 @@ namespace CppSharp
                     Incomplete = 3
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new ArrayType __CreateInstance(global::System.IntPtr native)
+                public static new ArrayType __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new ArrayType((ArrayType.Internal*) native);
+                    return new ArrayType((ArrayType.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static ArrayType __CreateInstance(ArrayType.Internal native)
@@ -939,11 +939,11 @@ namespace CppSharp
                     internal static extern uint getParametersCount_0(global::System.IntPtr instance);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new FunctionType __CreateInstance(global::System.IntPtr native)
+                public static new FunctionType __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new FunctionType((FunctionType.Internal*) native);
+                    return new FunctionType((FunctionType.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static FunctionType __CreateInstance(FunctionType.Internal native)
@@ -1102,11 +1102,11 @@ namespace CppSharp
                     RVReference = 3
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new PointerType __CreateInstance(global::System.IntPtr native)
+                public static new PointerType __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new PointerType((PointerType.Internal*) native);
+                    return new PointerType((PointerType.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static PointerType __CreateInstance(PointerType.Internal native)
@@ -1223,11 +1223,11 @@ namespace CppSharp
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new MemberPointerType __CreateInstance(global::System.IntPtr native)
+                public static new MemberPointerType __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new MemberPointerType((MemberPointerType.Internal*) native);
+                    return new MemberPointerType((MemberPointerType.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static MemberPointerType __CreateInstance(MemberPointerType.Internal native)
@@ -1331,11 +1331,11 @@ namespace CppSharp
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new TypedefType __CreateInstance(global::System.IntPtr native)
+                public static new TypedefType __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new TypedefType((TypedefType.Internal*) native);
+                    return new TypedefType((TypedefType.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static TypedefType __CreateInstance(TypedefType.Internal native)
@@ -1447,11 +1447,11 @@ namespace CppSharp
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new AttributedType __CreateInstance(global::System.IntPtr native)
+                public static new AttributedType __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new AttributedType((AttributedType.Internal*) native);
+                    return new AttributedType((AttributedType.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static AttributedType __CreateInstance(AttributedType.Internal native)
@@ -1574,11 +1574,11 @@ namespace CppSharp
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new DecayedType __CreateInstance(global::System.IntPtr native)
+                public static new DecayedType __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new DecayedType((DecayedType.Internal*) native);
+                    return new DecayedType((DecayedType.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static DecayedType __CreateInstance(DecayedType.Internal native)
@@ -1726,11 +1726,11 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
                 public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, TemplateArgument> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, TemplateArgument>();
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static TemplateArgument __CreateInstance(global::System.IntPtr native)
+                public static TemplateArgument __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new TemplateArgument((TemplateArgument.Internal*) native);
+                    return new TemplateArgument((TemplateArgument.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static TemplateArgument __CreateInstance(TemplateArgument.Internal native)
@@ -1907,11 +1907,11 @@ namespace CppSharp
                     internal static extern uint getArgumentsCount_0(global::System.IntPtr instance);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new TemplateSpecializationType __CreateInstance(global::System.IntPtr native)
+                public static new TemplateSpecializationType __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new TemplateSpecializationType((TemplateSpecializationType.Internal*) native);
+                    return new TemplateSpecializationType((TemplateSpecializationType.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static TemplateSpecializationType __CreateInstance(TemplateSpecializationType.Internal native)
@@ -2083,11 +2083,11 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
                 public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, TemplateParameter> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, TemplateParameter>();
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static TemplateParameter __CreateInstance(global::System.IntPtr native)
+                public static TemplateParameter __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new TemplateParameter((TemplateParameter.Internal*) native);
+                    return new TemplateParameter((TemplateParameter.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static TemplateParameter __CreateInstance(TemplateParameter.Internal native)
@@ -2247,11 +2247,11 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance, int delete);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new TemplateParameterType __CreateInstance(global::System.IntPtr native)
+                public static new TemplateParameterType __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new TemplateParameterType((TemplateParameterType.Internal*) native);
+                    return new TemplateParameterType((TemplateParameterType.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static TemplateParameterType __CreateInstance(TemplateParameterType.Internal native)
@@ -2394,11 +2394,11 @@ namespace CppSharp
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new TemplateParameterSubstitutionType __CreateInstance(global::System.IntPtr native)
+                public static new TemplateParameterSubstitutionType __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new TemplateParameterSubstitutionType((TemplateParameterSubstitutionType.Internal*) native);
+                    return new TemplateParameterSubstitutionType((TemplateParameterSubstitutionType.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static TemplateParameterSubstitutionType __CreateInstance(TemplateParameterSubstitutionType.Internal native)
@@ -2505,11 +2505,11 @@ namespace CppSharp
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new InjectedClassNameType __CreateInstance(global::System.IntPtr native)
+                public static new InjectedClassNameType __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new InjectedClassNameType((InjectedClassNameType.Internal*) native);
+                    return new InjectedClassNameType((InjectedClassNameType.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static InjectedClassNameType __CreateInstance(InjectedClassNameType.Internal native)
@@ -2633,11 +2633,11 @@ namespace CppSharp
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new DependentNameType __CreateInstance(global::System.IntPtr native)
+                public static new DependentNameType __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new DependentNameType((DependentNameType.Internal*) native);
+                    return new DependentNameType((DependentNameType.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static DependentNameType __CreateInstance(DependentNameType.Internal native)
@@ -2725,11 +2725,11 @@ namespace CppSharp
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new PackExpansionType __CreateInstance(global::System.IntPtr native)
+                public static new PackExpansionType __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new PackExpansionType((PackExpansionType.Internal*) native);
+                    return new PackExpansionType((PackExpansionType.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static PackExpansionType __CreateInstance(PackExpansionType.Internal native)
@@ -2820,11 +2820,11 @@ namespace CppSharp
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new BuiltinType __CreateInstance(global::System.IntPtr native)
+                public static new BuiltinType __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new BuiltinType((BuiltinType.Internal*) native);
+                    return new BuiltinType((BuiltinType.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static BuiltinType __CreateInstance(BuiltinType.Internal native)
@@ -2931,11 +2931,11 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
                 public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, VTableComponent> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, VTableComponent>();
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static VTableComponent __CreateInstance(global::System.IntPtr native)
+                public static VTableComponent __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new VTableComponent((VTableComponent.Internal*) native);
+                    return new VTableComponent((VTableComponent.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static VTableComponent __CreateInstance(VTableComponent.Internal native)
@@ -3090,11 +3090,11 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
                 public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, VTableLayout> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, VTableLayout>();
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static VTableLayout __CreateInstance(global::System.IntPtr native)
+                public static VTableLayout __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new VTableLayout((VTableLayout.Internal*) native);
+                    return new VTableLayout((VTableLayout.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static VTableLayout __CreateInstance(VTableLayout.Internal native)
@@ -3227,11 +3227,11 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
                 public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, VFTableInfo> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, VFTableInfo>();
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static VFTableInfo __CreateInstance(global::System.IntPtr native)
+                public static VFTableInfo __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new VFTableInfo((VFTableInfo.Internal*) native);
+                    return new VFTableInfo((VFTableInfo.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static VFTableInfo __CreateInstance(VFTableInfo.Internal native)
@@ -3418,11 +3418,11 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
                 public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ClassLayout> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ClassLayout>();
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static ClassLayout __CreateInstance(global::System.IntPtr native)
+                public static ClassLayout __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new ClassLayout((ClassLayout.Internal*) native);
+                    return new ClassLayout((ClassLayout.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static ClassLayout __CreateInstance(ClassLayout.Internal native)
@@ -3710,11 +3710,11 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
                 public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Declaration> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Declaration>();
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static Declaration __CreateInstance(global::System.IntPtr native)
+                public static Declaration __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new Declaration((Declaration.Internal*) native);
+                    return new Declaration((Declaration.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static Declaration __CreateInstance(Declaration.Internal native)
@@ -4239,11 +4239,11 @@ namespace CppSharp
                     internal static extern uint getFriendsCount_0(global::System.IntPtr instance);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new DeclarationContext __CreateInstance(global::System.IntPtr native)
+                public static new DeclarationContext __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new DeclarationContext((DeclarationContext.Internal*) native);
+                    return new DeclarationContext((DeclarationContext.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static DeclarationContext __CreateInstance(DeclarationContext.Internal native)
@@ -4631,11 +4631,11 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance, int delete);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new TypedefDecl __CreateInstance(global::System.IntPtr native)
+                public static new TypedefDecl __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new TypedefDecl((TypedefDecl.Internal*) native);
+                    return new TypedefDecl((TypedefDecl.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static TypedefDecl __CreateInstance(TypedefDecl.Internal native)
@@ -4774,11 +4774,11 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance, int delete);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new Friend __CreateInstance(global::System.IntPtr native)
+                public static new Friend __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new Friend((Friend.Internal*) native);
+                    return new Friend((Friend.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static Friend __CreateInstance(Friend.Internal native)
@@ -4897,11 +4897,11 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
                 public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Statement> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Statement>();
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static Statement __CreateInstance(global::System.IntPtr native)
+                public static Statement __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new Statement((Statement.Internal*) native);
+                    return new Statement((Statement.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static Statement __CreateInstance(Statement.Internal native)
@@ -5032,11 +5032,11 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance, int delete);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new Expression __CreateInstance(global::System.IntPtr native)
+                public static new Expression __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new Expression((Expression.Internal*) native);
+                    return new Expression((Expression.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static Expression __CreateInstance(Expression.Internal native)
@@ -5131,11 +5131,11 @@ namespace CppSharp
                     internal static extern void setOpcodeStr_0(global::System.IntPtr instance, global::System.IntPtr s);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new BinaryOperator __CreateInstance(global::System.IntPtr native)
+                public static new BinaryOperator __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new BinaryOperator((BinaryOperator.Internal*) native);
+                    return new BinaryOperator((BinaryOperator.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static BinaryOperator __CreateInstance(BinaryOperator.Internal native)
@@ -5286,11 +5286,11 @@ namespace CppSharp
                     internal static extern uint getArgumentsCount_0(global::System.IntPtr instance);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new CXXConstructExpr __CreateInstance(global::System.IntPtr native)
+                public static new CXXConstructExpr __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new CXXConstructExpr((CXXConstructExpr.Internal*) native);
+                    return new CXXConstructExpr((CXXConstructExpr.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static CXXConstructExpr __CreateInstance(CXXConstructExpr.Internal native)
@@ -5450,11 +5450,11 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance, int delete);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new Parameter __CreateInstance(global::System.IntPtr native)
+                public static new Parameter __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new Parameter((Parameter.Internal*) native);
+                    return new Parameter((Parameter.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static Parameter __CreateInstance(Parameter.Internal native)
@@ -5717,11 +5717,11 @@ namespace CppSharp
                     internal static extern uint getParametersCount_0(global::System.IntPtr instance);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new Function __CreateInstance(global::System.IntPtr native)
+                public static new Function __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new Function((Function.Internal*) native);
+                    return new Function((Function.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static Function __CreateInstance(Function.Internal native)
@@ -6108,11 +6108,11 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance, int delete);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new Method __CreateInstance(global::System.IntPtr native)
+                public static new Method __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new Method((Method.Internal*) native);
+                    return new Method((Method.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static Method __CreateInstance(Method.Internal native)
@@ -6506,11 +6506,11 @@ namespace CppSharp
                         internal static extern void setExpression_0(global::System.IntPtr instance, global::System.IntPtr s);
                     }
 
-                    private readonly bool __ownsNativeInstance;
+                    private bool __ownsNativeInstance;
 
-                    public static new Item __CreateInstance(global::System.IntPtr native)
+                    public static new Item __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                     {
-                        return new Item((Item.Internal*) native);
+                        return new Item((Item.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                     }
 
                     public static Item __CreateInstance(Item.Internal native)
@@ -6605,11 +6605,11 @@ namespace CppSharp
                     }
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new Enumeration __CreateInstance(global::System.IntPtr native)
+                public static new Enumeration __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new Enumeration((Enumeration.Internal*) native);
+                    return new Enumeration((Enumeration.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static Enumeration __CreateInstance(Enumeration.Internal native)
@@ -6821,11 +6821,11 @@ namespace CppSharp
                     internal static extern void setMangled_0(global::System.IntPtr instance, global::System.IntPtr s);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new Variable __CreateInstance(global::System.IntPtr native)
+                public static new Variable __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new Variable((Variable.Internal*) native);
+                    return new Variable((Variable.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static Variable __CreateInstance(Variable.Internal native)
@@ -6951,11 +6951,11 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
                 public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, BaseClassSpecifier> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, BaseClassSpecifier>();
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static BaseClassSpecifier __CreateInstance(global::System.IntPtr native)
+                public static BaseClassSpecifier __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new BaseClassSpecifier((BaseClassSpecifier.Internal*) native);
+                    return new BaseClassSpecifier((BaseClassSpecifier.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static BaseClassSpecifier __CreateInstance(BaseClassSpecifier.Internal native)
@@ -7151,11 +7151,11 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance, int delete);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new Field __CreateInstance(global::System.IntPtr native)
+                public static new Field __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new Field((Field.Internal*) native);
+                    return new Field((Field.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static Field __CreateInstance(Field.Internal native)
@@ -7348,11 +7348,11 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance, int delete);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new AccessSpecifierDecl __CreateInstance(global::System.IntPtr native)
+                public static new AccessSpecifierDecl __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new AccessSpecifierDecl((AccessSpecifierDecl.Internal*) native);
+                    return new AccessSpecifierDecl((AccessSpecifierDecl.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static AccessSpecifierDecl __CreateInstance(AccessSpecifierDecl.Internal native)
@@ -7588,11 +7588,11 @@ namespace CppSharp
                     internal static extern uint getSpecifiersCount_0(global::System.IntPtr instance);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new Class __CreateInstance(global::System.IntPtr native)
+                public static new Class __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new Class((Class.Internal*) native);
+                    return new Class((Class.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static Class __CreateInstance(Class.Internal native)
@@ -8002,11 +8002,11 @@ namespace CppSharp
                     internal static extern uint getParametersCount_0(global::System.IntPtr instance);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new Template __CreateInstance(global::System.IntPtr native)
+                public static new Template __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new Template((Template.Internal*) native);
+                    return new Template((Template.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static Template __CreateInstance(Template.Internal native)
@@ -8207,11 +8207,11 @@ namespace CppSharp
                     internal static extern uint getSpecializationsCount_0(global::System.IntPtr instance);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new ClassTemplate __CreateInstance(global::System.IntPtr native)
+                public static new ClassTemplate __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new ClassTemplate((ClassTemplate.Internal*) native);
+                    return new ClassTemplate((ClassTemplate.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static ClassTemplate __CreateInstance(ClassTemplate.Internal native)
@@ -8424,11 +8424,11 @@ namespace CppSharp
                     internal static extern uint getArgumentsCount_0(global::System.IntPtr instance);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new ClassTemplateSpecialization __CreateInstance(global::System.IntPtr native)
+                public static new ClassTemplateSpecialization __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new ClassTemplateSpecialization((ClassTemplateSpecialization.Internal*) native);
+                    return new ClassTemplateSpecialization((ClassTemplateSpecialization.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static ClassTemplateSpecialization __CreateInstance(ClassTemplateSpecialization.Internal native)
@@ -8648,11 +8648,11 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance, int delete);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new ClassTemplatePartialSpecialization __CreateInstance(global::System.IntPtr native)
+                public static new ClassTemplatePartialSpecialization __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new ClassTemplatePartialSpecialization((ClassTemplatePartialSpecialization.Internal*) native);
+                    return new ClassTemplatePartialSpecialization((ClassTemplatePartialSpecialization.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static ClassTemplatePartialSpecialization __CreateInstance(ClassTemplatePartialSpecialization.Internal native)
@@ -8798,11 +8798,11 @@ namespace CppSharp
                     internal static extern uint getSpecializationsCount_0(global::System.IntPtr instance);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new FunctionTemplate __CreateInstance(global::System.IntPtr native)
+                public static new FunctionTemplate __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new FunctionTemplate((FunctionTemplate.Internal*) native);
+                    return new FunctionTemplate((FunctionTemplate.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static FunctionTemplate __CreateInstance(FunctionTemplate.Internal native)
@@ -8952,11 +8952,11 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
                 public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, FunctionTemplateSpecialization> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, FunctionTemplateSpecialization>();
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static FunctionTemplateSpecialization __CreateInstance(global::System.IntPtr native)
+                public static FunctionTemplateSpecialization __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new FunctionTemplateSpecialization((FunctionTemplateSpecialization.Internal*) native);
+                    return new FunctionTemplateSpecialization((FunctionTemplateSpecialization.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static FunctionTemplateSpecialization __CreateInstance(FunctionTemplateSpecialization.Internal native)
@@ -9165,11 +9165,11 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance, int delete);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new Namespace __CreateInstance(global::System.IntPtr native)
+                public static new Namespace __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new Namespace((Namespace.Internal*) native);
+                    return new Namespace((Namespace.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static Namespace __CreateInstance(Namespace.Internal native)
@@ -9308,11 +9308,11 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance, int delete);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new PreprocessedEntity __CreateInstance(global::System.IntPtr native)
+                public static new PreprocessedEntity __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new PreprocessedEntity((PreprocessedEntity.Internal*) native);
+                    return new PreprocessedEntity((PreprocessedEntity.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static PreprocessedEntity __CreateInstance(PreprocessedEntity.Internal native)
@@ -9461,11 +9461,11 @@ namespace CppSharp
                     internal static extern void setExpression_0(global::System.IntPtr instance, global::System.IntPtr s);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new MacroDefinition __CreateInstance(global::System.IntPtr native)
+                public static new MacroDefinition __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new MacroDefinition((MacroDefinition.Internal*) native);
+                    return new MacroDefinition((MacroDefinition.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static MacroDefinition __CreateInstance(MacroDefinition.Internal native)
@@ -9620,11 +9620,11 @@ namespace CppSharp
                     internal static extern void setText_0(global::System.IntPtr instance, global::System.IntPtr s);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new MacroExpansion __CreateInstance(global::System.IntPtr native)
+                public static new MacroExpansion __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new MacroExpansion((MacroExpansion.Internal*) native);
+                    return new MacroExpansion((MacroExpansion.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static MacroExpansion __CreateInstance(MacroExpansion.Internal native)
@@ -9820,11 +9820,11 @@ namespace CppSharp
                     internal static extern uint getMacrosCount_0(global::System.IntPtr instance);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new TranslationUnit __CreateInstance(global::System.IntPtr native)
+                public static new TranslationUnit __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new TranslationUnit((TranslationUnit.Internal*) native);
+                    return new TranslationUnit((TranslationUnit.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static TranslationUnit __CreateInstance(TranslationUnit.Internal native)
@@ -10027,11 +10027,11 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
                 public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, NativeLibrary> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, NativeLibrary>();
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static NativeLibrary __CreateInstance(global::System.IntPtr native)
+                public static NativeLibrary __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new NativeLibrary((NativeLibrary.Internal*) native);
+                    return new NativeLibrary((NativeLibrary.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static NativeLibrary __CreateInstance(NativeLibrary.Internal native)
@@ -10228,11 +10228,11 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
                 public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ASTContext> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ASTContext>();
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static ASTContext __CreateInstance(global::System.IntPtr native)
+                public static ASTContext __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new ASTContext((ASTContext.Internal*) native);
+                    return new ASTContext((ASTContext.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static ASTContext __CreateInstance(ASTContext.Internal native)
@@ -10355,11 +10355,11 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
                 public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Comment> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Comment>();
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static Comment __CreateInstance(global::System.IntPtr native)
+                public static Comment __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new Comment((Comment.Internal*) native);
+                    return new Comment((Comment.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static Comment __CreateInstance(Comment.Internal native)
@@ -10464,11 +10464,11 @@ namespace CppSharp
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new BlockContentComment __CreateInstance(global::System.IntPtr native)
+                public static new BlockContentComment __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new BlockContentComment((BlockContentComment.Internal*) native);
+                    return new BlockContentComment((BlockContentComment.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static BlockContentComment __CreateInstance(BlockContentComment.Internal native)
@@ -10587,11 +10587,11 @@ namespace CppSharp
                     internal static extern uint getBlocksCount_0(global::System.IntPtr instance);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new FullComment __CreateInstance(global::System.IntPtr native)
+                public static new FullComment __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new FullComment((FullComment.Internal*) native);
+                    return new FullComment((FullComment.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static FullComment __CreateInstance(FullComment.Internal native)
@@ -10774,11 +10774,11 @@ namespace CppSharp
                     public global::System.IntPtr __Instance { get; protected set; }
                     public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Argument> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Argument>();
 
-                    private readonly bool __ownsNativeInstance;
+                    private bool __ownsNativeInstance;
 
-                    public static Argument __CreateInstance(global::System.IntPtr native)
+                    public static Argument __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                     {
-                        return new Argument((Argument.Internal*) native);
+                        return new Argument((Argument.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                     }
 
                     public static Argument __CreateInstance(Argument.Internal native)
@@ -10864,11 +10864,11 @@ namespace CppSharp
                     }
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new BlockCommandComment __CreateInstance(global::System.IntPtr native)
+                public static new BlockCommandComment __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new BlockCommandComment((BlockCommandComment.Internal*) native);
+                    return new BlockCommandComment((BlockCommandComment.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static BlockCommandComment __CreateInstance(BlockCommandComment.Internal native)
@@ -11024,11 +11024,11 @@ namespace CppSharp
                     InOut = 2
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new ParamCommandComment __CreateInstance(global::System.IntPtr native)
+                public static new ParamCommandComment __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new ParamCommandComment((ParamCommandComment.Internal*) native);
+                    return new ParamCommandComment((ParamCommandComment.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static ParamCommandComment __CreateInstance(ParamCommandComment.Internal native)
@@ -11167,11 +11167,11 @@ namespace CppSharp
                     internal static extern uint getPositionCount_0(global::System.IntPtr instance);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new TParamCommandComment __CreateInstance(global::System.IntPtr native)
+                public static new TParamCommandComment __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new TParamCommandComment((TParamCommandComment.Internal*) native);
+                    return new TParamCommandComment((TParamCommandComment.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static TParamCommandComment __CreateInstance(TParamCommandComment.Internal native)
@@ -11299,11 +11299,11 @@ namespace CppSharp
                     internal static extern void setText_0(global::System.IntPtr instance, global::System.IntPtr s);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new VerbatimBlockLineComment __CreateInstance(global::System.IntPtr native)
+                public static new VerbatimBlockLineComment __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new VerbatimBlockLineComment((VerbatimBlockLineComment.Internal*) native);
+                    return new VerbatimBlockLineComment((VerbatimBlockLineComment.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static VerbatimBlockLineComment __CreateInstance(VerbatimBlockLineComment.Internal native)
@@ -11432,11 +11432,11 @@ namespace CppSharp
                     internal static extern uint getLinesCount_0(global::System.IntPtr instance);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new VerbatimBlockComment __CreateInstance(global::System.IntPtr native)
+                public static new VerbatimBlockComment __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new VerbatimBlockComment((VerbatimBlockComment.Internal*) native);
+                    return new VerbatimBlockComment((VerbatimBlockComment.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static VerbatimBlockComment __CreateInstance(VerbatimBlockComment.Internal native)
@@ -11570,11 +11570,11 @@ namespace CppSharp
                     internal static extern void setText_0(global::System.IntPtr instance, global::System.IntPtr s);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new VerbatimLineComment __CreateInstance(global::System.IntPtr native)
+                public static new VerbatimLineComment __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new VerbatimLineComment((VerbatimLineComment.Internal*) native);
+                    return new VerbatimLineComment((VerbatimLineComment.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static VerbatimLineComment __CreateInstance(VerbatimLineComment.Internal native)
@@ -11680,11 +11680,11 @@ namespace CppSharp
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new InlineContentComment __CreateInstance(global::System.IntPtr native)
+                public static new InlineContentComment __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new InlineContentComment((InlineContentComment.Internal*) native);
+                    return new InlineContentComment((InlineContentComment.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static InlineContentComment __CreateInstance(InlineContentComment.Internal native)
@@ -11806,11 +11806,11 @@ namespace CppSharp
                     internal static extern uint getContentCount_0(global::System.IntPtr instance);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new ParagraphComment __CreateInstance(global::System.IntPtr native)
+                public static new ParagraphComment __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new ParagraphComment((ParagraphComment.Internal*) native);
+                    return new ParagraphComment((ParagraphComment.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static ParagraphComment __CreateInstance(ParagraphComment.Internal native)
@@ -12009,11 +12009,11 @@ namespace CppSharp
                     public global::System.IntPtr __Instance { get; protected set; }
                     public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Argument> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Argument>();
 
-                    private readonly bool __ownsNativeInstance;
+                    private bool __ownsNativeInstance;
 
-                    public static Argument __CreateInstance(global::System.IntPtr native)
+                    public static Argument __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                     {
-                        return new Argument((Argument.Internal*) native);
+                        return new Argument((Argument.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                     }
 
                     public static Argument __CreateInstance(Argument.Internal native)
@@ -12099,11 +12099,11 @@ namespace CppSharp
                     }
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new InlineCommandComment __CreateInstance(global::System.IntPtr native)
+                public static new InlineCommandComment __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new InlineCommandComment((InlineCommandComment.Internal*) native);
+                    return new InlineCommandComment((InlineCommandComment.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static InlineCommandComment __CreateInstance(InlineCommandComment.Internal native)
@@ -12233,11 +12233,11 @@ namespace CppSharp
                     internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new HTMLTagComment __CreateInstance(global::System.IntPtr native)
+                public static new HTMLTagComment __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new HTMLTagComment((HTMLTagComment.Internal*) native);
+                    return new HTMLTagComment((HTMLTagComment.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static HTMLTagComment __CreateInstance(HTMLTagComment.Internal native)
@@ -12410,11 +12410,11 @@ namespace CppSharp
                     public global::System.IntPtr __Instance { get; protected set; }
                     public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Attribute> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Attribute>();
 
-                    private readonly bool __ownsNativeInstance;
+                    private bool __ownsNativeInstance;
 
-                    public static Attribute __CreateInstance(global::System.IntPtr native)
+                    public static Attribute __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                     {
-                        return new Attribute((Attribute.Internal*) native);
+                        return new Attribute((Attribute.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                     }
 
                     public static Attribute __CreateInstance(Attribute.Internal native)
@@ -12516,11 +12516,11 @@ namespace CppSharp
                     }
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new HTMLStartTagComment __CreateInstance(global::System.IntPtr native)
+                public static new HTMLStartTagComment __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new HTMLStartTagComment((HTMLStartTagComment.Internal*) native);
+                    return new HTMLStartTagComment((HTMLStartTagComment.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static HTMLStartTagComment __CreateInstance(HTMLStartTagComment.Internal native)
@@ -12663,11 +12663,11 @@ namespace CppSharp
                     internal static extern void setTagName_0(global::System.IntPtr instance, global::System.IntPtr s);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new HTMLEndTagComment __CreateInstance(global::System.IntPtr native)
+                public static new HTMLEndTagComment __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new HTMLEndTagComment((HTMLEndTagComment.Internal*) native);
+                    return new HTMLEndTagComment((HTMLEndTagComment.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static HTMLEndTagComment __CreateInstance(HTMLEndTagComment.Internal native)
@@ -12783,11 +12783,11 @@ namespace CppSharp
                     internal static extern void setText_0(global::System.IntPtr instance, global::System.IntPtr s);
                 }
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static new TextComment __CreateInstance(global::System.IntPtr native)
+                public static new TextComment __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new TextComment((TextComment.Internal*) native);
+                    return new TextComment((TextComment.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static TextComment __CreateInstance(TextComment.Internal native)
@@ -12919,11 +12919,11 @@ namespace CppSharp
                 public global::System.IntPtr __Instance { get; protected set; }
                 public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, RawComment> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, RawComment>();
 
-                private readonly bool __ownsNativeInstance;
+                private bool __ownsNativeInstance;
 
-                public static RawComment __CreateInstance(global::System.IntPtr native)
+                public static RawComment __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
                 {
-                    return new RawComment((RawComment.Internal*) native);
+                    return new RawComment((RawComment.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
                 }
 
                 public static RawComment __CreateInstance(RawComment.Internal native)

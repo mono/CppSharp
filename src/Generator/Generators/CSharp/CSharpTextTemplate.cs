@@ -1864,7 +1864,7 @@ namespace CppSharp.Generators.CSharp
             if (@class.IsRefType)
             {
                 PushBlock(CSharpBlockKind.Field);
-                WriteLine("private readonly bool {0};", Helpers.OwnsNativeInstanceIdentifier);
+                WriteLine("private bool {0};", Helpers.OwnsNativeInstanceIdentifier);
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
 
@@ -1874,11 +1874,15 @@ namespace CppSharp.Generators.CSharp
             if (!@class.IsAbstractImpl)
             {
                 PushBlock(CSharpBlockKind.Method);
-                WriteLine("public static {0}{1} {2}(global::System.IntPtr native)",
+                WriteLine("public static {0}{1} {2}(global::System.IntPtr native{3})",
                     @class.HasNonIgnoredBase && !@class.BaseClass.IsAbstract ? "new " : string.Empty,
-                    @class.Name, Helpers.CreateInstanceIdentifier);
+                    @class.Name, Helpers.CreateInstanceIdentifier,
+                    @class.IsRefType ? ", bool ownsNativeInstance = false" : string.Empty);
                 WriteStartBraceIndent();
-                WriteLine("return new {0}(({1}.Internal*) native);", ctorCall, className);
+                WriteLine("return new {0}(({1}.Internal*) native){2};", ctorCall, className,
+                    @class.IsRefType
+                        ? string.Format(" {{ {0} = ownsNativeInstance }}", Helpers.OwnsNativeInstanceIdentifier)
+                        : string.Empty);
                 WriteCloseBraceIndent();
                 PopBlock(NewLineKind.BeforeNextBlock);
             }

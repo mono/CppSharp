@@ -129,6 +129,7 @@ VTableComponent::VTableComponent() : Offset(0), Declaration(0) {}
 // VTableLayout
 VTableLayout::VTableLayout() {}
 VTableLayout::VTableLayout(const VTableLayout& rhs) : Components(rhs.Components) {}
+VTableLayout::~VTableLayout() {}
 
 DEF_VECTOR(VTableLayout, VTableComponent, Components)
 
