@@ -341,11 +341,13 @@ namespace CppSharp.Passes
                 return true;
             }
 
+            Class @class;
             var arrayType = type as ArrayType;
             PrimitiveType primitive;
             if (arrayType != null && arrayType.SizeType == ArrayType.ArraySize.Constant &&
                 !arrayType.Type.IsPrimitiveType(out primitive) &&
-                !arrayType.Type.Desugar().IsPointerToPrimitiveType())
+                !arrayType.Type.Desugar().IsPointerToPrimitiveType() &&
+                !(arrayType.Type.Desugar().TryGetClass(out @class) && @class.IsRefType))
             {
                 msg = "unsupported";
                 return true;

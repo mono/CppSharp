@@ -65,11 +65,11 @@ public:
     const Bar& operator++();
     Bar operator++(int i);
     void* arrayOfPrimitivePointers[1];
+    Foo foos[4];
 
 private:
     int index;
     Foo m_foo;
-    Foo foos[4];
 };
 
 Bar::Bar() {}
