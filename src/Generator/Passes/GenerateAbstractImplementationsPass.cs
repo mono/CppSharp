@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using CppSharp.AST;
-using CppAbi = CppSharp.Parser.AST.CppAbi;
 
 namespace CppSharp.Passes
 {
@@ -53,7 +52,7 @@ namespace CppSharp.Passes
             return @class.IsAbstract;
         }
 
-        private Class AddInternalImplementation(Class @class)
+        private static Class AddInternalImplementation(Class @class)
         {
             var internalImpl = GetInternalImpl(@class);
 
@@ -70,8 +69,7 @@ namespace CppSharp.Passes
                     SynthKind = FunctionSynthKind.AbstractImplCall
                 });
 
-            internalImpl.Layout = new ClassLayout(@class.Layout);
-            FillVTable(@class, abstractMethods, internalImpl);
+            internalImpl.Layout = @class.Layout;
 
             return internalImpl;
         }
@@ -127,81 +125,6 @@ namespace CppSharp.Passes
                 overriddenMethods.AddRange(GetOverriddenMethods(@base.Class));
 
             return overriddenMethods;
-        }
-
-        private void FillVTable(Class @class, IList<Method> abstractMethods, Class internalImplementation)
-        {
-            switch (Driver.Options.Abi)
-            {
-                case CppAbi.Microsoft:
-                    CreateVTableMS(@class, abstractMethods, internalImplementation);
-                    break;
-                default:
-                    CreateVTableItanium(@class, abstractMethods, internalImplementation);
-                    break;
-            }
-        }
-
-        private static void CreateVTableMS(Class @class,
-            IList<Method> abstractMethods, Class internalImplementation)
-        {
-            var vtables = GetVTables(@class);
-            for (int i = 0; i < abstractMethods.Count; i++)
-            {
-                for (int j = 0; j < vtables.Count; j++)
-                {
-                    var vTable = vtables[j];
-                    var k = vTable.Layout.Components.FindIndex(v => v.Method == abstractMethods[i]);
-                    if (k >= 0)
-                    {
-                        var vTableComponent = vTable.Layout.Components[k];
-                        vTableComponent.Declaration = internalImplementation.Methods[i];
-                        vTable.Layout.Components[k] = vTableComponent;
-                        vtables[j] = vTable;
-                    }
-                }
-            }
-
-            internalImplementation.Layout.VFTables.Clear();
-            internalImplementation.Layout.VFTables.AddRange(vtables);
-        }
-
-        private static void CreateVTableItanium(Class @class,
-            IList<Method> abstractMethods, Class internalImplementation)
-        {
-            var vtableComponents = GetVTableComponents(@class);
-            for (var i = 0; i < abstractMethods.Count; i++)
-            {
-                var j = vtableComponents.FindIndex(v => v.Method == abstractMethods[i]);
-                var vtableComponent = vtableComponents[j];
-                vtableComponent.Declaration = internalImplementation.Methods[i];
-                vtableComponents[j] = vtableComponent;
-            }
-
-            internalImplementation.Layout.Layout.Components.Clear();
-            internalImplementation.Layout.Layout.Components.AddRange(vtableComponents);
-        }
-
-        private static List<VTableComponent> GetVTableComponents(Class @class)
-        {
-            var vtableComponents = new List<VTableComponent>(
-                @class.Layout.Layout.Components);
-
-            foreach (var @base in @class.Bases)
-                vtableComponents.AddRange(GetVTableComponents(@base.Class));
-
-            return vtableComponents;
-        }
-
-        private static List<VFTableInfo> GetVTables(Class @class)
-        {
-            var vtables = new List<VFTableInfo>(
-                @class.Layout.VFTables);
-
-            foreach (var @base in @class.Bases)
-                vtables.AddRange(GetVTables(@base.Class));
-
-            return vtables;
         }
     }
 }

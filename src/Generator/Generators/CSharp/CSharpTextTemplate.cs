@@ -820,7 +820,7 @@ namespace CppSharp.Generators.CSharp
                 if (function.SynthKind == FunctionSynthKind.AbstractImplCall)
                 {
                     string delegateId;
-                    Write(GetAbstractCallDelegate(function, @class, out delegateId));
+                    Write(GetAbstractCallDelegate(function, @class.BaseClass, out delegateId));
                     GenerateFunctionCall(delegateId, new List<Parameter> { param }, function);
                 }
                 else
@@ -955,7 +955,7 @@ namespace CppSharp.Generators.CSharp
                 WriteStartBraceIndent();
                 var method = function as Method;
                 if (method != null && method.SynthKind == FunctionSynthKind.AbstractImplCall)
-                    GenerateAbstractImplCall(method, @class);
+                    GenerateAbstractImplCall(method, @class.BaseClass);
                 else
                     GenerateInternalFunctionCall(function, function.Parameters, returnType.Type);
             }
@@ -2124,7 +2124,7 @@ namespace CppSharp.Generators.CSharp
                 }
                 else if (method.SynthKind == FunctionSynthKind.AbstractImplCall)
                 {
-                    GenerateAbstractImplCall(method, @class);
+                    GenerateAbstractImplCall(method, @class.BaseClass);
                 }
                 else
                 {
@@ -2264,9 +2264,9 @@ namespace CppSharp.Generators.CSharp
             out string delegateId)
         {
             var virtualCallBuilder = new StringBuilder();
-            var i = VTables.GetVTableIndex(function, @class);
+            var i = VTables.GetVTableIndex(function.OriginalFunction, @class);
             virtualCallBuilder.AppendFormat("void* slot = *(void**) ((({0}.Internal*) {1})->vfptr0 + {2} * {3});",
-                @class.BaseClass.Name, Helpers.InstanceIdentifier, i, Driver.TargetInfo.PointerWidth / 8);
+                @class.Name, Helpers.InstanceIdentifier, i, Driver.TargetInfo.PointerWidth / 8);
             virtualCallBuilder.AppendLine();
 
             string @delegate = GetVTableMethodDelegateName(function.OriginalFunction);
