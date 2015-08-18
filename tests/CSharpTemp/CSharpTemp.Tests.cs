@@ -420,6 +420,6 @@ public class CSharpTempTests : GeneratorTestFixture
         foosMore[1] = new Foo();
         var ex = Assert.Throws<ArgumentOutOfRangeException>(() => bar.Foos = foosMore);
         Assert.AreEqual("value", ex.ParamName);
-        Assert.AreEqual("The provided array's dimensions doesn't match the required size.\r\nParameter name: value", ex.Message);
+        Assert.AreEqual("The provided array's dimensions doesn't match the required size." + Environment.NewLine +"Parameter name: value", ex.Message);
     }
 }
