@@ -221,6 +221,10 @@ namespace CppSharp.Generators.CLI
         {
             PushBlock(CLIBlockKind.FunctionsClass);
 
+
+            WriteLine("namespace Globals");
+            WriteStartBraceIndent();
+
             WriteLine("public ref class {0}", TranslationUnit.FileNameWithoutExtension);
             WriteLine("{");
             WriteLine("public:");
@@ -234,7 +238,7 @@ namespace CppSharp.Generators.CLI
 
             PopIndent();
             WriteLine("};");
-
+            WriteCloseBraceIndent();
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
