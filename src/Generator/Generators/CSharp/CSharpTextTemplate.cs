@@ -1018,15 +1018,19 @@ namespace CppSharp.Generators.CSharp
                 var location = string.Format("CppSharp.SymbolResolver.ResolveSymbol(\"{0}\", \"{1}\")",
                     libSymbol.Item1, libSymbol.Item2);
 
-                WriteLine("var {0} = ({1}*){2};", Generator.GeneratedIdentifier("ptr"),
-                    @var.Type, location);
+                var isRefTypeArray = decl.Type is ArrayType && @class != null && @class.IsRefType;
+                if (isRefTypeArray)
+                    WriteLine("var {0} = (byte*){1};", Generator.GeneratedIdentifier("ptr"), location);
+                else
+                    WriteLine("var {0} = ({1}*){2};", Generator.GeneratedIdentifier("ptr"),
+                        @var.Type, location);
 
                 TypePrinter.PopContext();
 
                 var ctx = new CSharpMarshalContext(Driver)
                 {
                     ArgName = decl.Name,
-                    ReturnVarName = "*" + Generator.GeneratedIdentifier("ptr"),
+                    ReturnVarName = (isRefTypeArray ? string.Empty : "*") + Generator.GeneratedIdentifier("ptr"),
                     ReturnType = new QualifiedType(var.Type)
                 };
 
