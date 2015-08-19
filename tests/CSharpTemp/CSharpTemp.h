@@ -694,3 +694,9 @@ public:
     OverrideFromIndirectSecondaryBase();
     int property();
 };
+
+class DLL_API TestVariableWithFixedArrayType
+{
+public:
+	static Foo variableWithFixedArrayType[2];
+};
