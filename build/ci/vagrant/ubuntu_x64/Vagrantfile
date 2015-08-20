@@ -66,16 +66,19 @@ Vagrant.configure(2) do |config|
 
   mkcd ../../build
 
-  cmake -G Ninja -DCLANG_BUILD_EXAMPLES=false -DCLANG_INCLUDE_DOCS=false -DCLANG_INCLUDE_TESTS=false -DCLANG_INCLUDE_DOCS=false -DCLANG_BUILD_EXAMPLES=false -DLLVM_TARGETS_TO_BUILD="X86" -DLLVM_INCLUDE_EXAMPLES=false -DLLVM_INCLUDE_DOCS=false -DLLVM_INCLUDE_TESTS=false ..
+  cmake -G Ninja -DCLANG_BUILD_EXAMPLES=false -DCLANG_INCLUDE_DOCS=false -DCLANG_INCLUDE_TESTS=false -DCLANG_INCLUDE_DOCS=false -DCLANG_BUILD_EXAMPLES=false -DLLVM_TARGETS_TO_BUILD="X86" -DLLVM_INCLUDE_EXAMPLES=false -DLLVM_INCLUDE_DOCS=false -DLLVM_INCLUDE_TESTS=false -DCMAKE_BUILD_TYPE=Release ..
 
   ninja
+  ninja clang-headers
 
   # make the output package
   cd ..
   if [ -d "out" ]; then rm -rf out; fi
   mkdir out
+  mkdir -p out/lib/clang
   mkdir -p out/tools/clang
   mkdir -p out/tools/clang/lib/CodeGen
+  mkdir -p out/tools/clang/lib/Driver
   mkdir -p out/build/
   mkdir -p out/build/lib
   mkdir -p out/build/tools/clang
@@ -87,6 +90,8 @@ Vagrant.configure(2) do |config|
 
   cp -R tools/clang/include/ out/tools/clang
   cp -R tools/clang/lib/CodeGen/*.h out/tools/clang/lib/CodeGen
+  cp -R tools/clang/lib/Driver/*.h out/tools/clang/lib/Driver
+  cp -R build/lib/clang out/lib/clang
   cp -R build/tools/clang/include/ out/build/tools/clang
 
   rm out/build/lib/libllvm*ObjCARCOpts*.a
