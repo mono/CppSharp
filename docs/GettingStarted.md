@@ -20,11 +20,11 @@ Git repository urls found here: [http://llvm.org/docs/GettingStarted.html#git-mi
 3. Clone Clang to `<CppSharp>\deps\llvm\tools\clang`
 4. Create directory `<CppSharp>\deps\llvm\build`
 
-Last revisions known to work:
+Required LLVM/Clang commits:
 
-LLVM `r230176` / Git mirror revision `0e8abfa6ed986c892ec723236e32e78fd9c47b88`.
+[LLVM: see /build/LLVM-commit.](https://github.com/mono/CppSharp/tree/master/build/LLVM-commit)
 
-Clang `r230160` / Git mirror revision `3457cd5516ac741fa106623d9578f5ac88593f4d`.
+[Clang: see /build/Clang-commit.](https://github.com/mono/CppSharp/tree/master/build/Clang-commit)
 
 ## Compiling on Windows/Visual Studio
 

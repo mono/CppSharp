@@ -52,8 +52,8 @@ Vagrant.configure(2) do |config|
 
   cd llvm/
 
-  #change this hash if u need another version of Llvm
-  git reset --hard 0e8abfa6ed986c892ec723236e32e78fd9c47b8 
+  llvm_commit=`cat ../../build/LLVM-commit`
+  git reset --hard $llvm_commit
 
   cd tools/
 
@@ -61,8 +61,8 @@ Vagrant.configure(2) do |config|
 
   cd clang/
 
-  #change this hash if u need another version of Clang
-  git reset --hard 3457cd5516ac741fa106623d9578f5ac88593f4d
+  clang_commit=`cat ../../../../build/Clang-commit`
+  git reset --hard $clang_commit
 
   mkcd ../../build
 
