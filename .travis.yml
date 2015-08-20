@@ -18,6 +18,8 @@ install:
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then echo "deb http://download.mono-project.com/repo/debian wheezy-libtiff-compat main" | sudo tee -a /etc/apt/sources.list.d/mono-xamarin.list; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get update -qq; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get install -y mono-devel nuget p7zip-full; fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"; fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then brew install wget p7zip; fi
   - wget https://nuget.org/nuget.exe
   - mono nuget install NUnit -Version 2.6.4 -OutputDirectory deps
   - mono nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory deps
