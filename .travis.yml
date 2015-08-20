@@ -24,9 +24,9 @@ install:
   - mono nuget.exe install NUnit.Runners -Version 2.6.4 -OutputDirectory deps
   - cp deps/NUnit.2.6.4/lib/nunit.framework.* deps/NUnit/ 
   - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
-  - LLVM_LINUX = "https://www.dropbox.com/s/zxigif3vghsdfli/llvm_linux_x86_64.7z?dl=0"
-  - LLVM_OSX = "https://www.dropbox.com/s/57z1oawom2y38gt/llvm_osx_x86.7z?dl=0"
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then LLVM_URL = $LLVM_LINUX; else LLVM_URL = $LLVM_OSX; fi
+  - LLVM_LINUX="https://www.dropbox.com/s/zxigif3vghsdfli/llvm_linux_x86_64.7z?dl=0"
+  - LLVM_OSX="https://www.dropbox.com/s/57z1oawom2y38gt/llvm_osx_x86.7z?dl=0"
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then LLVM_URL=$LLVM_LINUX; else LLVM_URL=$LLVM_OSX; fi
   - wget -O llvm.7z $LLVM_URL
   - 7z x llvm.7z -odeps/llvm -y  
 
