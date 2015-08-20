@@ -20,8 +20,8 @@ install:
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get install -y mono-devel nuget p7zip-full; fi
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then brew install mono wget p7zip; fi
   - wget https://nuget.org/nuget.exe
-  - mono nuget install NUnit -Version 2.6.4 -OutputDirectory deps
-  - mono nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory deps
+  - mono nuget.exe install NUnit -Version 2.6.4 -OutputDirectory deps
+  - mono nuget.exe install NUnit.Runners -Version 2.6.4 -OutputDirectory deps
   - cp deps/NUnit.2.6.4/lib/nunit.framework.* deps/NUnit/ 
   - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
   - LLVM_LINUX = https://www.dropbox.com/s/zxigif3vghsdfli/llvm_linux_x86_64.7z?dl=0
