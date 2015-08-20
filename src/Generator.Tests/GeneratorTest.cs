@@ -45,11 +45,12 @@ namespace CppSharp.Utils
             var path = Path.GetFullPath(GetTestsDirectory(name));
             options.addIncludeDirs(path);
 
+#if BROKEN
             var foundClangResourceDir = false;
             for (uint i = 0; i < options.SystemIncludeDirsCount; ++i)
             {
                 var dir = options.getSystemIncludeDirs(i);
-                if (dir.Contains(@"lib/clang/"))
+                if (dir.Contains(Path.Combine("lib", "clang")))
                 {
                     foundClangResourceDir = true;
                     break;
@@ -59,8 +60,9 @@ namespace CppSharp.Utils
             if (!foundClangResourceDir)
             {
                 var dir = Path.GetFullPath(Path.Combine(path, "../../deps/llvm/tools/clang/lib/Headers"));
-				options.addSystemIncludeDirs(dir);
+                options.addSystemIncludeDirs(dir);
             }
+#endif
 
             driver.Diagnostics.Message("Looking for tests in: {0}", path);
             var files = Directory.EnumerateFiles(path, "*.h");
