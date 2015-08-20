@@ -16,7 +16,7 @@ class ELFDumper {
 public:
     ELFDumper(const llvm::object::ELFFile<ELFT> *Obj);
 
-    std::vector<llvm::StringRef> ELFDumper<ELFT>::getNeededLibraries() const;
+    std::vector<llvm::StringRef> getNeededLibraries() const;
 
 private:
     typedef llvm::object::ELFFile<ELFT> ELFO;
