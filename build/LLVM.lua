@@ -74,7 +74,6 @@ function SetupLLVMLibs()
       "LLVMScalarOpts",
       "LLVMInstCombine",
       "LLVMTransformUtils",
-      "LLVMipa",
       "LLVMAnalysis",
       "LLVMTarget",
       "LLVMMC",
