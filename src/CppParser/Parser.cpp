@@ -2283,10 +2283,12 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, Function* F,
         P->_Namespace = NS;
         P->Index = VD->getFunctionScopeIndex();
         if (VD->hasDefaultArg() && !VD->hasUnparsedDefaultArg())
+        {
             if (VD->hasUninstantiatedDefaultArg())
                 P->DefaultArgument = WalkExpression(VD->getUninstantiatedDefaultArg());
             else
                 P->DefaultArgument = WalkExpression(VD->getDefaultArg());
+        }
         HandleDeclaration(VD, P);
 
         F->Parameters.push_back(P);
