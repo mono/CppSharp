@@ -36,8 +36,8 @@ environment:
   BUILD_PATH: '%APPVEYOR_BUILD_FOLDER%\build\%VS_VERSION%'
 
 install:
-  - appveyor DownloadFile https://dl.dropboxusercontent.com/u/194502/CppSharp/llvm.7z
-  - 7z x llvm.7z -o%DEPS_PATH% -y
+  - appveyor DownloadFile https://dl.dropboxusercontent.com/u/194502/CppSharp/llvm_windows_x86.7z
+  - 7z x llvm_windows_x86.7z -o%DEPS_PATH%\llvm -y
 
 build_script:
   - build\premake5.exe --file=build\premake4.lua %VS_VERSION%
