@@ -52,7 +52,6 @@ function SetupLLVMLibs()
       "clangLex",
       "clangBasic",
       "clangIndex",
-      "LLVMObjCARCOpts",
       "LLVMLinker",
       "LLVMipo",
       "LLVMVectorize",
