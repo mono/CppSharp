@@ -9,9 +9,9 @@ or add scripting support to a native codebase.
 
 ## Build Status
 
-| windows-vs-x86            | linux-gcc-x86_64            |
-|---------------------------|-----------------------------|
-| [![windows-vs-x86][1]][2] | [![linux-gcc-x86_64][3]][4] |
+| windows-vs-x86            | linux-gcc-x86_64            | osx-clang-x86               |
+|---------------------------|-----------------------------|-----------------------------|
+| [![windows-vs-x86][1]][2] | [![linux-gcc-x86_64][3]][4] | [![osx-clang-x86][3]][4]
 
 [1]: https://ci.appveyor.com/api/projects/status/5o9gxjcttuaup671/branch/master?svg=true
 [2]: https://ci.appveyor.com/project/tritao/CppSharp/branch/master
