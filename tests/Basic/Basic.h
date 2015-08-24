@@ -805,3 +805,8 @@ class DLL_API ReturnsEmpty
 public:
     Empty getEmpty();
 };
+
+DLL_API class  TestIsStructFreeClass { };
+DLL_API struct TestIsStructFreeStruct { };
+DLL_API struct TestIsStructInheritedStruct { };
+DLL_API struct TestIsStructInheritingStruct : public TestIsStructInheritedStruct { };

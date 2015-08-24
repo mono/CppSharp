@@ -1,5 +1,6 @@
 using CppSharp.AST;
 using CppSharp.Generators;
+using CppSharp.Passes;
 using CppSharp.Utils;
 
 namespace CppSharp.Tests
@@ -14,6 +15,8 @@ namespace CppSharp.Tests
         public override void Preprocess(Driver driver, ASTContext ctx)
         {
             ctx.SetClassAsValueType("IntWrapperValueType");
+            driver.TranslationUnitPasses.AddPass(new CheckMacroPass());
+            driver.TranslationUnitPasses.AddPass(new CheckValueTypeClassesPass());
         }
 
         public static void Main(string[] args)
