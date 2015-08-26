@@ -2547,7 +2547,6 @@ namespace CppSharp.Generators.CSharp
             foreach (var paramInfo in @params)
             {
                 var param = paramInfo.Param;
-                Class @class;
                 if (!(param.IsOut || param.IsInOut)) continue;
                 if (param.IsPrimitiveParameterConvertibleToRef())
                     continue;
