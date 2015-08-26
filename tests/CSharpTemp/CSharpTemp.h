@@ -649,6 +649,10 @@ public:
     void TakePrimTypePtr(int* ptr);
 };
 
-void DLL_API funcTryInterfaceTypePtrOut(CS_OUT TestParamToInterfacePassBaseTwo* classTry) { }
-void DLL_API funcTryInterfaceTypeOut(CS_OUT TestParamToInterfacePassBaseTwo classTry) { }
-void DLL_API anyfunc(CS_OUT Foo foo) { }
+class DLL_API TestOutTypeIntefaces
+{
+public:
+	void funcTryInterfaceTypePtrOut(CS_OUT TestParamToInterfacePassBaseTwo* classTry) { }
+	void funcTryInterfaceTypeOut(CS_OUT TestParamToInterfacePassBaseTwo classTry) { }
+	void normalFuncOutTry(CS_OUT Foo foo) { }
+};

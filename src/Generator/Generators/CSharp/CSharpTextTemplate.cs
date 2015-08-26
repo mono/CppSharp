@@ -2547,6 +2547,7 @@ namespace CppSharp.Generators.CSharp
             foreach (var paramInfo in @params)
             {
                 var param = paramInfo.Param;
+                Class @class;
                 if (!(param.IsOut || param.IsInOut)) continue;
                 if (param.IsPrimitiveParameterConvertibleToRef())
                     continue;
@@ -2618,7 +2619,9 @@ namespace CppSharp.Generators.CSharp
                 Class @class;
                 if ((paramType.GetFinalPointee() ?? paramType).Desugar().TryGetClass(out @class))
                 {
-                    WriteLine("{0} = new {1}();", param.Name, paramType);
+                    var qualifiedIdentifier = CSharpMarshalNativeToManagedPrinter.QualifiedIdentifier(
+                                              @class.OriginalClass ?? @class);
+                    WriteLine("{0} = new {1}();", param.Name, qualifiedIdentifier);
                 }
             }
 
