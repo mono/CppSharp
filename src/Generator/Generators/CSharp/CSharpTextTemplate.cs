@@ -2634,10 +2634,11 @@ namespace CppSharp.Generators.CSharp
                 var paramType = param.Type;
 
                 Class @class;
-                if ( (paramType.GetFinalPointee() ?? paramType).Desugar().TryGetClass(out @class)
-                      && @class.IsRefType)
+                if ((paramType.GetFinalPointee() ?? paramType).Desugar().TryGetClass(out @class))
                 {
-                    WriteLine("{0} = new {1}();", param.Name, paramType);
+                    var qualifiedIdentifier = CSharpMarshalNativeToManagedPrinter.QualifiedIdentifier(
+                                              @class.OriginalClass ?? @class);
+                    WriteLine("{0} = new {1}();", param.Name, qualifiedIdentifier);
                 }
             }
 

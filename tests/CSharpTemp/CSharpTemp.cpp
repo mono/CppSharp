@@ -759,3 +759,11 @@ int OverrideFromIndirectSecondaryBase::property()
 {
     return 1;
 }
+
+void TestOutTypeInterfaces::funcTryInterfaceTypePtrOut(CS_OUT TestParamToInterfacePassBaseTwo* classTry)
+{
+}
+
+void TestOutTypeInterfaces::funcTryInterfaceTypeOut(CS_OUT TestParamToInterfacePassBaseTwo classTry)
+{
+}

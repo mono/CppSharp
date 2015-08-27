@@ -759,16 +759,10 @@ public:
     } ct;
 };
 
-#define CS_API
-class CS_API ClassPassTry
-{
-public:
-	int n;
-	char c;
-};
+class DLL_API RefTypeClassPassTry { };
 
-void funcTry(CS_OUT ClassPassTry* classTry) { }
-void funcTry2(CS_OUT ClassPassTry classTry) { }
+void DLL_API funcTryRefTypePtrOut(CS_OUT RefTypeClassPassTry* classTry);
+void DLL_API funcTryRefTypeOut(CS_OUT RefTypeClassPassTry classTry);
 
 #define ARRAY_LENGTH 5
 #define CS_VALUE_TYPE
@@ -805,3 +799,8 @@ class DLL_API ReturnsEmpty
 public:
     Empty getEmpty();
 };
+
+class DLL_API CS_VALUE_TYPE ValueTypeClassPassTry { };
+
+void DLL_API funcTryValTypePtrOut(CS_OUT ValueTypeClassPassTry* classTry);
+void DLL_API funcTryValTypeOut(CS_OUT ValueTypeClassPassTry classTry);

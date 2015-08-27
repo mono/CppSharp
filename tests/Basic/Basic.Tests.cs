@@ -523,5 +523,17 @@ public class BasicTests : GeneratorTestFixture
     {
         var empty = new ReturnsEmpty().Empty;
     }
+
+    [Test]
+    public void TestOutTypeClassesPassTry()
+    {
+        RefTypeClassPassTry refTypeClassPassTry;
+        basic.funcTryRefTypeOut(out refTypeClassPassTry);
+        basic.funcTryRefTypePtrOut(out refTypeClassPassTry);
+
+        ValueTypeClassPassTry valueTypeClassPassTry;
+        basic.funcTryValTypeOut(out valueTypeClassPassTry);
+        basic.funcTryValTypePtrOut(out valueTypeClassPassTry);
+    }
 }
  

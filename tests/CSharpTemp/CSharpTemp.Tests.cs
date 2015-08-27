@@ -422,4 +422,15 @@ public class CSharpTempTests : GeneratorTestFixture
         Assert.AreEqual("value", ex.ParamName);
         Assert.AreEqual("The provided array's dimensions doesn't match the required size." + Environment.NewLine +"Parameter name: value", ex.Message);
     }
+
+    [Test]
+    public void TestOutTypeInterfacePassTry()
+    {
+        var interfaceClassObj = new TestParamToInterfacePassBaseTwo();
+        ITestParamToInterfacePassBaseTwo interfaceType = interfaceClassObj;
+        var obj = new TestOutTypeInterfaces();
+        obj.FuncTryInterfaceTypeOut(out interfaceType);
+        ITestParamToInterfacePassBaseTwo interfaceTypePtr;
+        obj.FuncTryInterfaceTypePtrOut(out interfaceTypePtr);
+    }
 }
