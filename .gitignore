@@ -30,6 +30,7 @@ src/generator/generator
 *.csproj
 *.ilk
 *.manifest
+*.tmp
 /build/vs2012
 /build/vs2013
 /build/gmake

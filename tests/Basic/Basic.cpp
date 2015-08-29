@@ -476,3 +476,19 @@ Empty ReturnsEmpty::getEmpty()
 {
     return Empty();
 }
+
+void funcTryRefTypePtrOut(CS_OUT RefTypeClassPassTry* classTry)
+{
+}
+
+void funcTryRefTypeOut(CS_OUT RefTypeClassPassTry classTry)
+{
+}
+
+void funcTryValTypePtrOut(CS_OUT ValueTypeClassPassTry* classTry)
+{
+}
+
+void funcTryValTypeOut(CS_OUT ValueTypeClassPassTry classTry)
+{
+}

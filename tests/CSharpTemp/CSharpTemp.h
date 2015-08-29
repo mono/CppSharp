@@ -700,3 +700,10 @@ class DLL_API TestVariableWithFixedArrayType
 public:
 	static Foo variableWithFixedArrayType[2];
 };
+
+class DLL_API TestOutTypeInterfaces
+{
+public:
+	void funcTryInterfaceTypePtrOut(CS_OUT TestParamToInterfacePassBaseTwo* classTry);
+	void funcTryInterfaceTypeOut(CS_OUT TestParamToInterfacePassBaseTwo classTry);
+};
