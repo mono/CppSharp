@@ -433,4 +433,13 @@ public class CSharpTempTests : GeneratorTestFixture
         ITestParamToInterfacePassBaseTwo interfaceTypePtr;
         obj.FuncTryInterfaceTypePtrOut(out interfaceTypePtr);
     }
+
+    [Test]
+    public void TestConversionForCtorWithDefaultParams()
+    {
+        using (Foo foo = 15)
+        {
+            Assert.That(foo.A, Is.EqualTo(15));
+        }
+    }
 }

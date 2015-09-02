@@ -1,4 +1,5 @@
-﻿using CppSharp.AST;
+﻿using System.Linq;
+using CppSharp.AST;
 using CppSharp.AST.Extensions;
 
 namespace CppSharp.Passes
@@ -12,8 +13,24 @@ namespace CppSharp.Passes
         public override bool VisitMethodDecl(Method method)
         {
             if (AlreadyVisited(method) || !method.IsGenerated || !method.IsConstructor ||
-                method.IsCopyConstructor || method.Parameters.Count != 1)
+                method.IsCopyConstructor)
                 return false;
+
+            var @params = method.Parameters.Where(p => p.Kind == ParameterKind.Regular).ToList();
+            if (@params.Count == 0)
+                return false;
+
+            if (Driver.Options.GenerateDefaultValuesForArguments)
+            {
+                var nonDefaultParams = @params.Count(p => p.DefaultArgument == null);
+                if (nonDefaultParams > 1)
+                    return false;   
+            }
+            else
+            {
+                if (@params.Count != 1)
+                    return false;
+            }
 
             var parameter = method.Parameters[0];
             // TODO: disable implicit operators for C++/CLI because they seem not to be support parameters

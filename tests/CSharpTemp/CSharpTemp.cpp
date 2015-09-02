@@ -6,6 +6,12 @@ Foo::Foo()
     P = 50;
 }
 
+Foo::Foo(int a, int p)
+{
+    A = a;
+    P = p;
+}
+
 int Foo::method()
 {
     return 1;

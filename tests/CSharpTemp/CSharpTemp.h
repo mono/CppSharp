@@ -5,6 +5,7 @@ class DLL_API Foo
 {
 public:
     Foo();
+    Foo(int a, int p = 0);
     int method();
     int operator[](int i) const;
     int operator[](unsigned int i);
