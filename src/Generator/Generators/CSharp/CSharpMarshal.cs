@@ -189,7 +189,15 @@ namespace CppSharp.Generators.CSharp
 
             if (Equals(encoding, Encoding.Unicode) ||
                 Equals(encoding, Encoding.BigEndianUnicode))
-                return string.Format("Marshal.PtrToStringUni({0})", varName);
+            {
+                if (Context.Driver.TargetInfo.WCharWidth == 16)
+                    return string.Format("Marshal.PtrToStringUni({0})", varName);
+
+                const string encodingName = "System.Text.Encoding.UTF32";
+                return string.Format(
+                    "CppSharp.Runtime.Helpers.MarshalEncodedString({0}, {1})",
+                    varName, encodingName);
+            }
 
             throw new NotSupportedException(string.Format("{0} is not supported yet.",
                 Context.Driver.Options.Encoding.EncodingName));
