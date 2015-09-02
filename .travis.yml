@@ -19,7 +19,7 @@ install:
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get update -qq; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then sudo apt-get install -y mono-devel nuget p7zip-full; fi
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then brew install wget p7zip; fi
-  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then wget -O mono.pkg http://download.mono-project.com/archive/4.0.3/macos-10-x86/MonoFramework-MDK-4.0.3.20.macos10.xamarin.x86.pkg; fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then wget -O mono.pkg http://download.mono-project.com/archive/nightly/macos-10-x86/mono-MDK.pkg; fi
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then sudo installer -pkg "mono.pkg" -target /; fi
   - wget https://nuget.org/nuget.exe
   - mono nuget.exe install NUnit -Version 2.6.4 -OutputDirectory deps
