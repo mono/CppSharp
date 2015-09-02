@@ -729,18 +729,19 @@ namespace CppSharp.Generators.CSharp
 
             var fieldTypePrinted = field.QualifiedType.CSharpType(TypePrinter);
 
+            var typeName = safeIdentifier;
             if (!string.IsNullOrWhiteSpace(fieldTypePrinted.NameSuffix))
-                safeIdentifier += fieldTypePrinted.NameSuffix;
+                typeName += fieldTypePrinted.NameSuffix;
 
             var access = @class != null && !@class.IsGenerated ? "internal" : "public";
             if (field.Expression != null)
             {
                 var fieldValuePrinted = field.Expression.CSharpValue(ExpressionPrinter);
-                Write("{0} {1} {2} = {3};", access, fieldTypePrinted.Type, safeIdentifier, fieldValuePrinted);
+                Write("{0} {1} {2} = {3};", access, fieldTypePrinted.Type, typeName, fieldValuePrinted);
             }
             else
             {
-                Write("{0} {1} {2};", access, fieldTypePrinted.Type, safeIdentifier);
+                Write("{0} {1} {2};", access, fieldTypePrinted.Type, typeName);
             }
 
             PopBlock(NewLineKind.BeforeNextBlock);
