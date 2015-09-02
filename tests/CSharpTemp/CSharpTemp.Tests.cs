@@ -37,17 +37,9 @@ public class CSharpTempTests : GeneratorTestFixture
         }
         using (var hasOverride = new HasOverrideOfHasPropertyWithDerivedType())
             hasOverride.CauseRenamingError();
-        // TODO: remove when the bug in question is fixed
-        if (Type.GetType("Mono.Runtime") != null)
+        using (var qux = new Qux())
         {
-            Assert.Fail("Crashes with Mono because of a problem with marshalling arrays: https://gist.github.com/tritao/7e62c71ffe57d6bc326e");
-        }
-        else
-        {
-            using (var qux = new Qux())
-            {
-                new Bar(qux).Dispose();
-            }
+            new Bar(qux).Dispose();
         }
         using (ComplexType complexType = TestFlag.Flag1)
         {
@@ -85,11 +77,6 @@ public class CSharpTempTests : GeneratorTestFixture
     [Test]
     public void TestMultipleInheritance()
     {
-        // TODO: remove when the bug in question is fixed
-        if (Type.GetType("Mono.Runtime") != null)
-        {
-            Assert.Fail("Crashes with Mono because of a problem with marshalling arrays: https://gist.github.com/tritao/7e62c71ffe57d6bc326e");
-        }
         using (var baz = new Baz())
         {
             Assert.That(baz.Method, Is.EqualTo(1));
