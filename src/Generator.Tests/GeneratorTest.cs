@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -41,6 +42,9 @@ namespace CppSharp.Utils
             // name already has a dot.
             if (!Platform.IsMono)
                 options.SharedLibraryName += ".dll";
+
+            if (Platform.IsMacOS)
+                options.TargetTriple = Is32bitMono() ? "i686-apple-darwin" : "x86_64-apple-darwin";
 
             var path = Path.GetFullPath(GetTestsDirectory(name));
             options.addIncludeDirs(path);
@@ -116,6 +120,24 @@ namespace CppSharp.Utils
             }
 
             throw new Exception("Could not find tests output directory");
+        }
+
+        static bool Is32bitMono()
+        {
+            var process = new Process();
+            process.StartInfo.FileName = "mono";
+            process.StartInfo.Arguments = "--version";
+            process.StartInfo.CreateNoWindow = true;
+            process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            process.StartInfo.UseShellExecute = false;
+            process.StartInfo.RedirectStandardError = true;
+            process.StartInfo.RedirectStandardOutput = true;
+            process.Start();
+
+            var output = process.StandardOutput.ReadToEnd();
+            process.WaitForExit();
+
+            return output.Contains("x86");
         }
         #endregion
     }
