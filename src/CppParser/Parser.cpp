@@ -1750,10 +1750,11 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         if (TL && !TL->isNull()) Next = TL->getNextTypeLoc();
 
         auto A = new ArrayType();
-        A->QualifiedType = GetQualifiedType(AT->getElementType(),
-            WalkType(AT->getElementType(), &Next));
+        auto ElemTy = AT->getElementType();
+        A->QualifiedType = GetQualifiedType(ElemTy, WalkType(ElemTy, &Next));
         A->SizeType = ArrayType::ArraySize::Constant;
         A->Size = AST->getConstantArrayElementCount(AT);
+        A->ElementSize = (long)AST->getTypeSize(ElemTy);
 
         Ty = A;
         break;

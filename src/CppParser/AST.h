@@ -84,6 +84,7 @@ public:
     CppSharp::CppParser::AST::QualifiedType QualifiedType;
     ArraySize SizeType;
     long Size;
+    long ElementSize;
 };
 
 class Parameter;

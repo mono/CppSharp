@@ -166,6 +166,9 @@ namespace CppSharp.AST
         // In case of a constant size array.
         public long Size;
 
+        // Size of the element type of the array.
+        public long ElementSize;
+
         public ArrayType()
         {
         }

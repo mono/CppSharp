@@ -327,6 +327,16 @@ void CppSharp::Parser::AST::ArrayType::Size::set(long value)
     ((::CppSharp::CppParser::AST::ArrayType*)NativePtr)->Size = value;
 }
 
+long CppSharp::Parser::AST::ArrayType::ElementSize::get()
+{
+    return ((::CppSharp::CppParser::AST::ArrayType*)NativePtr)->ElementSize;
+}
+
+void CppSharp::Parser::AST::ArrayType::ElementSize::set(long value)
+{
+    ((::CppSharp::CppParser::AST::ArrayType*)NativePtr)->ElementSize = value;
+}
+
 CppSharp::Parser::AST::FunctionType::FunctionType(::CppSharp::CppParser::AST::FunctionType* native)
     : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)native)
 {

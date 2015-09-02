@@ -740,7 +740,7 @@ namespace CppSharp
 
             public unsafe partial class ArrayType : CppSharp.Parser.AST.Type, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 24)]
+                [StructLayout(LayoutKind.Explicit, Size = 28)]
                 public new partial struct Internal
                 {
                     [FieldOffset(0)]
@@ -757,6 +757,9 @@ namespace CppSharp
 
                     [FieldOffset(20)]
                     public int Size;
+
+                    [FieldOffset(24)]
+                    public int ElementSize;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -791,7 +794,7 @@ namespace CppSharp
 
                 private static ArrayType.Internal* __CopyValue(ArrayType.Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(24);
+                    var ret = Marshal.AllocHGlobal(28);
                     CppSharp.Parser.AST.ArrayType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return (ArrayType.Internal*) ret;
                 }
@@ -811,7 +814,7 @@ namespace CppSharp
                 public ArrayType()
                     : this((Internal*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(24);
+                    __Instance = Marshal.AllocHGlobal(28);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0(__Instance);
@@ -820,7 +823,7 @@ namespace CppSharp
                 public ArrayType(CppSharp.Parser.AST.ArrayType _0)
                     : this((Internal*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(24);
+                    __Instance = Marshal.AllocHGlobal(28);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
@@ -882,6 +885,19 @@ namespace CppSharp
                     set
                     {
                         ((Internal*) __Instance)->Size = value;
+                    }
+                }
+
+                public int ElementSize
+                {
+                    get
+                    {
+                        return ((Internal*) __Instance)->ElementSize;
+                    }
+
+                    set
+                    {
+                        ((Internal*) __Instance)->ElementSize = value;
                     }
                 }
             }

@@ -508,6 +508,12 @@ namespace CppSharp
                     long get();
                     void set(long);
                 }
+
+                property long ElementSize
+                {
+                    long get();
+                    void set(long);
+                }
             };
 
             public ref class FunctionType : CppSharp::Parser::AST::Type

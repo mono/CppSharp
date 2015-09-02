@@ -419,7 +419,8 @@ namespace CppSharp
             {
                 Size = type.Size,
                 SizeType = VisitArraySizeType(type.SizeType),
-                QualifiedType = VisitQualified(type.QualifiedType)
+                QualifiedType = VisitQualified(type.QualifiedType),
+                ElementSize = type.ElementSize
             };
             VisitType(type, _type);
             return _type;
