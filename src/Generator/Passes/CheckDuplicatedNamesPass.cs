@@ -53,16 +53,7 @@ namespace CppSharp.Passes
                  method.OperatorKind == CXXOperatorKind.ExplicitConversion))
                 @params = @params.Concat(new[] { method.ConversionType.ToString() });
             var signature = string.Format("{0}({1})", function.Name, string.Join( ", ", @params));
-            switch (function.OperatorKind)
-            {
-                // C# does not allow an explicit and an implicit operator from the same type
-                case CXXOperatorKind.Conversion:
-                    signature = signature.Replace("implicit ", "conversion ");
-                    break;
-                case CXXOperatorKind.ExplicitConversion:
-                    signature = signature.Replace("explicit ", "conversion ");
-                    break;
-            }
+            signature = FixSignatureForConversions(function, signature);
 
             if (Count == 0)
                 Count++;
@@ -92,6 +83,21 @@ namespace CppSharp.Passes
             else
                 function.Name += methodCount.ToString(CultureInfo.InvariantCulture);
             return true;
+        }
+
+        public static string FixSignatureForConversions(Function function, string signature)
+        {
+            switch (function.OperatorKind)
+            {
+                // C# does not allow an explicit and an implicit operator from the same type
+                case CXXOperatorKind.Conversion:
+                    signature = signature.Replace("implicit ", "conversion ");
+                    break;
+                case CXXOperatorKind.ExplicitConversion:
+                    signature = signature.Replace("explicit ", "conversion ");
+                    break;
+            }
+            return signature;
         }
     }
 
@@ -200,18 +206,7 @@ namespace CppSharp.Passes
             var fullName = decl.QualifiedName;
             var function = decl as Function;
             if (function != null)
-            {
-                switch (function.OperatorKind)
-                {
-                    // C# does not allow an explicit and an implicit operator from the same type
-                    case CXXOperatorKind.Conversion:
-                        fullName = fullName.Replace("implicit ", "conversion ");
-                        break;
-                    case CXXOperatorKind.ExplicitConversion:
-                        fullName = fullName.Replace("explicit ", "conversion ");
-                        break;
-                }
-            }
+                fullName = DeclarationName.FixSignatureForConversions(function, fullName);
 
             // If the name is not yet on the map, then add it.
             if (!names.ContainsKey(fullName))
