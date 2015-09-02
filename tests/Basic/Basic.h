@@ -73,6 +73,8 @@ struct DLL_API Bar
     };
 
     Bar();
+    Bar(Foo foo);
+    explicit Bar(const Foo* foo);
     Item RetItem1();
     int A;
     float B;

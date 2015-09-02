@@ -59,6 +59,14 @@ Bar::Bar()
 {
 }
 
+Bar::Bar(Foo foo)
+{
+}
+
+Bar::Bar(const Foo* foo)
+{
+}
+
 Bar::Item Bar::RetItem1()
 {
     return Bar::Item1;

@@ -8,23 +8,18 @@ namespace CppSharp.Passes
 {
     class DeclarationName
     {
-        public Driver Driver { get; set; }
-        private readonly string Name;
         private readonly Dictionary<string, int> methodSignatures;
         private int Count;
+        private readonly IDiagnosticConsumer diagnostics;
 
-        public DeclarationName(string name, Driver driver)
+        public DeclarationName(IDiagnosticConsumer diagnostics)
         {
-            Driver = driver;
-            Name = name;
+            this.diagnostics = diagnostics;
             methodSignatures = new Dictionary<string, int>();
         }
 
         public bool UpdateName(Declaration decl)
         {
-            if (decl.Name != Name)
-                throw new Exception("Invalid name");
-
             var function = decl as Function;
             if (function != null)
             {
@@ -57,7 +52,17 @@ namespace CppSharp.Passes
                 (method.OperatorKind == CXXOperatorKind.Conversion ||
                  method.OperatorKind == CXXOperatorKind.ExplicitConversion))
                 @params = @params.Concat(new[] { method.ConversionType.ToString() });
-            var signature = string.Format("{0}({1})", Name, string.Join( ", ", @params));
+            var signature = string.Format("{0}({1})", function.Name, string.Join( ", ", @params));
+            switch (function.OperatorKind)
+            {
+                // C# does not allow an explicit and an implicit operator from the same type
+                case CXXOperatorKind.Conversion:
+                    signature = signature.Replace("implicit ", "conversion ");
+                    break;
+                case CXXOperatorKind.ExplicitConversion:
+                    signature = signature.Replace("explicit ", "conversion ");
+                    break;
+            }
 
             if (Count == 0)
                 Count++;
@@ -70,18 +75,18 @@ namespace CppSharp.Passes
 
             var methodCount = ++methodSignatures[signature];
 
-            if (Count < methodCount+1)
-                Count = methodCount+1;
+            if (Count < methodCount + 1)
+                Count = methodCount + 1;
 
             if (function.IsOperator)
             {
                 // TODO: turn into a method; append the original type (say, "signed long") of the last parameter to the type so that the user knows which overload is called
-                Driver.Diagnostics.Warning("Duplicate operator {0} ignored", function.Name);
+                diagnostics.Warning("Duplicate operator {0} ignored", function.Name);
                 function.ExplicitlyIgnore();
             }
             else if (method != null && method.IsConstructor)
             {
-                Driver.Diagnostics.Warning("Duplicate constructor {0} ignored", function.Name);
+                diagnostics.Warning("Duplicate constructor {0} ignored", function.Name);
                 function.ExplicitlyIgnore();
             }
             else
@@ -184,7 +189,7 @@ namespace CppSharp.Passes
             return fields;
         }
 
-        void CheckDuplicate(Declaration decl)
+        private void CheckDuplicate(Declaration decl)
         {
             if (decl.IsDependent || !decl.IsGenerated)
                 return;
@@ -193,10 +198,24 @@ namespace CppSharp.Passes
                 return;
 
             var fullName = decl.QualifiedName;
+            var function = decl as Function;
+            if (function != null)
+            {
+                switch (function.OperatorKind)
+                {
+                    // C# does not allow an explicit and an implicit operator from the same type
+                    case CXXOperatorKind.Conversion:
+                        fullName = fullName.Replace("implicit ", "conversion ");
+                        break;
+                    case CXXOperatorKind.ExplicitConversion:
+                        fullName = fullName.Replace("explicit ", "conversion ");
+                        break;
+                }
+            }
 
             // If the name is not yet on the map, then add it.
             if (!names.ContainsKey(fullName))
-                names.Add(fullName, new DeclarationName(decl.Name, Driver));
+                names.Add(fullName, new DeclarationName(Driver.Diagnostics));
 
             if (names[fullName].UpdateName(decl))
             {
