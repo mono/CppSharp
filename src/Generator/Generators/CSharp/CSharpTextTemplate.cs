@@ -745,6 +745,26 @@ namespace CppSharp.Generators.CSharp
             }
 
             PopBlock(NewLineKind.BeforeNextBlock);
+
+            // Workaround a bug in Mono when handling fixed arrays in P/Invoke declarations.
+            // https://bugzilla.xamarin.com/show_bug.cgi?id=33571
+            var arrayType = field.Type.Desugar() as ArrayType;
+            if (arrayType != null && arrayType.SizeType == ArrayType.ArraySize.Constant &&
+                arrayType.Size > 0)
+            {
+                for (var i = 1; i < arrayType.Size; ++i)
+                {
+                    var dummy = new Field
+                    {
+                        Name = string.Format("{0}_{1}_{2}", Helpers.DummyIdentifier,
+                            safeIdentifier, i),
+                        QualifiedType = new QualifiedType(arrayType.Type),
+                        Offset = (uint)(field.Offset + (i * arrayType.ElementSize))
+                    };
+
+                    GenerateClassInternalsField(dummy);
+                }
+            }
         }
 
         private void GenerateClassField(Field field, bool @public = false)
