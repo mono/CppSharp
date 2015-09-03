@@ -120,7 +120,7 @@ namespace CppSharp.AST
 
         public Declaration Declaration;
 
-        public override T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals)
+        public override T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals = new TypeQualifiers())
         {
             return visitor.VisitTagType(this, quals);
         }
@@ -187,7 +187,7 @@ namespace CppSharp.AST
             get { return QualifiedType.Type; }
         }
 
-        public override T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals)
+        public override T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals = new TypeQualifiers())
         {
             return visitor.VisitArrayType(this, quals);
         }
@@ -241,7 +241,7 @@ namespace CppSharp.AST
             CallingConvention = type.CallingConvention;
         }
 
-        public override T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals)
+        public override T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals = new TypeQualifiers())
         {
             return visitor.VisitFunctionType(this, quals);
         }
@@ -315,7 +315,7 @@ namespace CppSharp.AST
 
         public TypeModifier Modifier;
 
-        public override T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals)
+        public override T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals = new TypeQualifiers())
         {
             return visitor.VisitPointerType(this, QualifiedPointee.Qualifiers);
         }
@@ -363,7 +363,7 @@ namespace CppSharp.AST
             get { return QualifiedPointee.Type; }
         }
 
-        public override T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals)
+        public override T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals = new TypeQualifiers())
         {
             return visitor.VisitMemberPointerType(this, quals);
         }
@@ -404,7 +404,7 @@ namespace CppSharp.AST
             Declaration = type.Declaration;
         }
 
-        public override T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals)
+        public override T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals = new TypeQualifiers())
         {
             return visitor.VisitTypedefType(this, quals);
         }
@@ -456,7 +456,7 @@ namespace CppSharp.AST
             Equivalent = new QualifiedType((Type) type.Equivalent.Type.Clone(), type.Equivalent.Qualifiers);
         }
 
-        public override T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals)
+        public override T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals = new TypeQualifiers())
         {
             return visitor.VisitAttributedType(this, quals);
         }
@@ -507,7 +507,7 @@ namespace CppSharp.AST
             Pointee = new QualifiedType((Type) type.Pointee.Type.Clone(), type.Pointee.Qualifiers);
         }
 
-        public override T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals)
+        public override T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals = new TypeQualifiers())
         {
             return visitor.VisitDecayedType(this, quals);
         }
@@ -971,7 +971,7 @@ namespace CppSharp.AST
         // Primitive type of built-in type.
         public PrimitiveType Type;
 
-        public override T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals)
+        public override T Visit<T>(ITypeVisitor<T> visitor, TypeQualifiers quals = new TypeQualifiers())
         {
             return visitor.VisitBuiltinType(this, quals);
         }
