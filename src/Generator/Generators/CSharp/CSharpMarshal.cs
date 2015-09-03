@@ -208,11 +208,16 @@ namespace CppSharp.Generators.CSharp
                 case PrimitiveType.Void:
                     return true;
                 case PrimitiveType.Char:
+                    // TODO: work around https://github.com/dotnet/coreclr/issues/1485
                     if (Context.Driver.Options.MarshalCharAsManagedChar)
                         Context.Return.Write("(char) ");
                     goto default;
                 case PrimitiveType.Char16:
                     return false;
+                case PrimitiveType.Bool:
+                    // TODO: work around https://github.com/dotnet/coreclr/issues/1485
+                    Context.Return.Write("{0} != 0", Context.ReturnVarName);
+                    return true;
                 default:
                     Context.Return.Write(Context.ReturnVarName);
                     return true;
@@ -533,11 +538,16 @@ namespace CppSharp.Generators.CSharp
                 case PrimitiveType.Void:
                     return true;
                 case PrimitiveType.Char:
+                    // TODO: work around https://github.com/dotnet/coreclr/issues/1485
                     if (Context.Driver.Options.MarshalCharAsManagedChar)
                         Context.Return.Write("(sbyte) ");
                     goto default;
                 case PrimitiveType.Char16:
                     return false;
+                case PrimitiveType.Bool:
+                    // TODO: work around https://github.com/dotnet/coreclr/issues/1485
+                    Context.Return.Write("(byte) ({0} ? 1 : 0)", Context.Parameter.Name);
+                    return true;
                 default:
                     Context.Return.Write(Context.Parameter.Name);
                     return true;

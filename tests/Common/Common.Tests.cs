@@ -538,8 +538,15 @@ public class CommonTests : GeneratorTestFixture
     [Test]
     public void TestVirtualReturningClassWithCharField()
     {
-        using (new HasVirtualReturningHasCharField())
+        using (var hasVirtualReturningHasProblematicFields = new HasVirtualReturningHasProblematicFields())
         {
+            var hasProblematicFields = hasVirtualReturningHasProblematicFields.returnsProblematicFields();
+            Assert.That(hasProblematicFields.b, Is.EqualTo(false));
+            hasProblematicFields.b = true;
+            Assert.That(hasProblematicFields.b, Is.EqualTo(true));
+            Assert.That(hasProblematicFields.c, Is.EqualTo(char.MinValue));
+            hasProblematicFields.c = 'a';
+            Assert.That(hasProblematicFields.c, Is.EqualTo('a'));
         }
     }
 }
