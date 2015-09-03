@@ -4,10 +4,10 @@ using CppSharp.Utils;
 
 namespace CppSharp.Tests
 {
-    public class CLITemp : GeneratorTest
+    public class CLITestsGenerator : GeneratorTest
     {
-        public CLITemp(GeneratorKind kind)
-            : base("CLITemp", kind)
+        public CLITestsGenerator(GeneratorKind kind)
+            : base("CLI", kind)
         {
         }
 
@@ -24,7 +24,7 @@ namespace CppSharp.Tests
 
         public static void Main(string[] args)
         {
-            ConsoleDriver.Run(new CLITemp(GeneratorKind.CLI));
+            ConsoleDriver.Run(new CLITestsGenerator(GeneratorKind.CLI));
         }
     }
 }

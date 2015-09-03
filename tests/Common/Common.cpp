@@ -1,4 +1,4 @@
-#include "Basic.h"
+#include "Common.h"
 #include <string.h>
 
 Foo::Foo()
@@ -335,7 +335,7 @@ void DefaultParameters::Bar()
 {
 }
 
-int test(basic& s)
+int test(common& s)
 {
     return 5;
 }

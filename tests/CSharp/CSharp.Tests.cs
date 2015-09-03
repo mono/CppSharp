@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Reflection;
 using CppSharp.Utils;
-using CSharpTemp;
+using CSharp;
 using NUnit.Framework;
 
-public class CSharpTempTests : GeneratorTestFixture
+public class CSharpTests : GeneratorTestFixture
 {
     public class ExtendsWrapper : TestOverrideFromSecondaryBase
     {
@@ -127,13 +127,13 @@ public class CSharpTempTests : GeneratorTestFixture
     [Test]
     public void TestDestructors()
     {
-        CSharpTemp.TestDestructors.InitMarker();
-        Assert.AreEqual(0, CSharpTemp.TestDestructors.Marker);
+        CSharp.TestDestructors.InitMarker();
+        Assert.AreEqual(0, CSharp.TestDestructors.Marker);
 
         var dtors = new TestDestructors();
-        Assert.AreEqual(0xf00d, CSharpTemp.TestDestructors.Marker);
+        Assert.AreEqual(0xf00d, CSharp.TestDestructors.Marker);
         dtors.Dispose();
-        Assert.AreEqual(0xcafe, CSharpTemp.TestDestructors.Marker);
+        Assert.AreEqual(0xcafe, CSharp.TestDestructors.Marker);
     }
 
     [Test]

@@ -4,10 +4,10 @@ using CppSharp.Utils;
 
 namespace CppSharp.Tests
 {
-    public class STL : GeneratorTest
+    public class StandardLibTestsGenerator : GeneratorTest
     {
-        public STL(GeneratorKind kind)
-            : base("STL", kind)
+        public StandardLibTestsGenerator(GeneratorKind kind)
+            : base("StandardLib", kind)
         {
         }
 
@@ -18,7 +18,7 @@ namespace CppSharp.Tests
 
         public static void Main(string[] args)
         {
-            ConsoleDriver.Run(new STL(GeneratorKind.CLI));
+            ConsoleDriver.Run(new StandardLibTestsGenerator(GeneratorKind.CLI));
         }
     }
 }

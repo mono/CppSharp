@@ -1,11 +1,11 @@
 ﻿using System;
+using BasicTest;
 using CppSharp.Utils;
 using NUnit.Framework;
-using BasicTest;
 using Enum = BasicTest.Enum;
 
 [TestFixture]
-public class BasicTests : GeneratorTestFixture
+public class CommonTests : GeneratorTestFixture
 {
     [Test]
     public void TestUncompilableCode()
@@ -235,7 +235,7 @@ public class BasicTests : GeneratorTestFixture
     [Test]
     public void TestMoveFunctionToClass()
     {
-        Assert.That(basic.test(new basic()), Is.EqualTo(5));
+        Assert.That(common.test(new common()), Is.EqualTo(5));
     }
 
     [Test]
@@ -358,7 +358,7 @@ public class BasicTests : GeneratorTestFixture
     [Test]
     public void TestFunctions()
     {
-        var ret = BasicTest.basic.Function();
+        var ret = BasicTest.common.Function();
         Assert.That(ret, Is.EqualTo(5));
     }
 
@@ -424,14 +424,14 @@ public class BasicTests : GeneratorTestFixture
     [Test]
     public unsafe void TestDecltype()
     {
-        var ret = basic.TestDecltype();
+        var ret = common.TestDecltype();
         Assert.AreEqual(0, ret);
     }
 
     [Test]
     public unsafe void TestNullPtrType()
     {
-        var ret = basic.TestNullPtrTypeRet();
+        var ret = common.TestNullPtrTypeRet();
         Assert.AreEqual(IntPtr.Zero, new IntPtr(ret));
     }
 
@@ -527,12 +527,12 @@ public class BasicTests : GeneratorTestFixture
     public void TestOutTypeClassesPassTry()
     {
         RefTypeClassPassTry refTypeClassPassTry;
-        basic.funcTryRefTypeOut(out refTypeClassPassTry);
-        basic.funcTryRefTypePtrOut(out refTypeClassPassTry);
+        common.funcTryRefTypeOut(out refTypeClassPassTry);
+        common.funcTryRefTypePtrOut(out refTypeClassPassTry);
 
         ValueTypeClassPassTry valueTypeClassPassTry;
-        basic.funcTryValTypeOut(out valueTypeClassPassTry);
-        basic.funcTryValTypePtrOut(out valueTypeClassPassTry);
+        common.funcTryValTypeOut(out valueTypeClassPassTry);
+        common.funcTryValTypePtrOut(out valueTypeClassPassTry);
     }
 }
  

@@ -5,10 +5,10 @@ using CppSharp.Utils;
 
 namespace CppSharp.Tests
 {
-    public class UTF16Tests : GeneratorTest
+    public class EncodingsTestsGenerator : GeneratorTest
     {
-        public UTF16Tests(GeneratorKind kind)
-            : base("UTF16", kind)
+        public EncodingsTestsGenerator(GeneratorKind kind)
+            : base("Encodings", kind)
         {
         }
 
@@ -24,7 +24,7 @@ namespace CppSharp.Tests
 
         public static void Main(string[] args)
         {
-            ConsoleDriver.Run(new UTF16Tests(GeneratorKind.CSharp));
+            ConsoleDriver.Run(new EncodingsTestsGenerator(GeneratorKind.CSharp));
         }
     }
 }

@@ -1,17 +1,17 @@
 ﻿using CppSharp.Utils;
 using NUnit.Framework;
-using STL;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using StandardLib;
 
-public class STLTests : GeneratorTestFixture
+public class StandardLibTests : GeneratorTestFixture
 {
     [Test]
     public void TestVectors()
     {
-        var vectors = new STL.TestVectors();
+        var vectors = new StandardLib.TestVectors();
 
         var sum = vectors.SumIntVector(new List<int> { 1, 2, 3 });
         Assert.AreEqual(sum, 6);

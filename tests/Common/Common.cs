@@ -6,10 +6,10 @@ using CppSharp.Utils;
 
 namespace CppSharp.Tests
 {
-    public class Basic : GeneratorTest
+    public class CommonTestsGenerator : GeneratorTest
     {
-        public Basic(GeneratorKind kind)
-            : base("Basic", kind)
+        public CommonTestsGenerator(GeneratorKind kind)
+            : base("Common", kind)
         {
 
         }
@@ -43,8 +43,8 @@ namespace CppSharp.Tests
 
         public static void Main(string[] args)
         {
-            ConsoleDriver.Run(new Basic(GeneratorKind.CLI));
-            ConsoleDriver.Run(new Basic(GeneratorKind.CSharp));
+            ConsoleDriver.Run(new CommonTestsGenerator(GeneratorKind.CLI));
+            ConsoleDriver.Run(new CommonTestsGenerator(GeneratorKind.CSharp));
         }
     }
 }

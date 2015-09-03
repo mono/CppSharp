@@ -117,10 +117,10 @@ namespace CppSharp.Tests
         }
     }
 
-    public class CSharpTempTests : GeneratorTest
+    public class CSharpTestsGenerator : GeneratorTest
     {
-        public CSharpTempTests(GeneratorKind kind)
-            : base("CSharpTemp", kind)
+        public CSharpTestsGenerator(GeneratorKind kind)
+            : base("CSharp", kind)
         {
         }
 
@@ -160,7 +160,7 @@ namespace CppSharp.Tests
 
         public static void Main(string[] args)
         {
-            ConsoleDriver.Run(new CSharpTempTests(GeneratorKind.CSharp));
+            ConsoleDriver.Run(new CSharpTestsGenerator(GeneratorKind.CSharp));
         }
     }
 }

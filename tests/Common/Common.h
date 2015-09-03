@@ -257,12 +257,12 @@ class Derived : public Base<Derived>
 };
 
 // Tests the MoveFunctionToClassPass
-class DLL_API basic
+class DLL_API common
 {
 
 };
 
-DLL_API int test(basic& s);
+DLL_API int test(common& s);
 
 // Tests the MoveOperatorToClassPass
 struct DLL_API TestMoveOperatorToClass

@@ -1,8 +1,8 @@
 ﻿using CppSharp.Utils;
 using NUnit.Framework;
-using Foo = UTF16.Foo;
+using Foo = Encodings.Foo;
 
-public class UTF16Tests : GeneratorTestFixture
+public class EncodingsTests : GeneratorTestFixture
 {
     [Test]
     public void TestFoo()
