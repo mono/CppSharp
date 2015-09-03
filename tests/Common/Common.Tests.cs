@@ -87,7 +87,7 @@ public class CommonTests : GeneratorTestFixture
         hello.StringInOutRef(ref str);
         Assert.That(str, Is.EqualTo("StringInOutRef"));
     }
-    
+
     [Test]
     public void TestPrimitiveOutParameters()
     {
@@ -133,7 +133,7 @@ public class CommonTests : GeneratorTestFixture
         var hello = new Hello();
 
         Enum e;
-        hello.EnumOut((int)Enum.C, out e);
+        hello.EnumOut((int) Enum.C, out e);
         Assert.That(e, Is.EqualTo(Enum.C));
     }
 
@@ -143,7 +143,7 @@ public class CommonTests : GeneratorTestFixture
         var hello = new Hello();
 
         Enum e;
-        hello.EnumOutRef((int)Enum.C, out e);
+        hello.EnumOutRef((int) Enum.C, out e);
         Assert.That(e, Is.EqualTo(Enum.C));
     }
 
@@ -170,7 +170,7 @@ public class CommonTests : GeneratorTestFixture
     [Test]
     public void TestNullRef()
     {
-        var hello = new Hello ();
+        var hello = new Hello();
         Assert.That(hello.RetNull(), Is.Null);
     }
 
@@ -185,7 +185,7 @@ public class CommonTests : GeneratorTestFixture
     [Test]
     public void TestLeftShiftOperator()
     {
-        var foo2 = new Foo2 {C = 2};
+        var foo2 = new Foo2 { C = 2 };
         Foo2 result = foo2 << 3;
         foo2.testKeywordParam(IntPtr.Zero, Bar.Item.Item1, 1);
         Assert.That(result.C, Is.EqualTo(16));
@@ -228,7 +228,7 @@ public class CommonTests : GeneratorTestFixture
 
         // Multiple argument operator
         var multiArg = new TestMoveOperatorToClass { A = 4, B = 7 };
-        var multiArgStar = multiArg * 2; 
+        var multiArgStar = multiArg * 2;
         Assert.That(multiArgStar, Is.EqualTo(8));
     }
 
@@ -251,7 +251,7 @@ public class CommonTests : GeneratorTestFixture
     [Test]
     public void TestConversionOperator()
     {
-        var bar = new Bar2 {A = 1, B = 2, C = 3};
+        var bar = new Bar2 { A = 1, B = 2, C = 3 };
         Foo2 foo = bar;
         Assert.AreEqual(foo.A, 1);
         Assert.AreEqual(foo.B, 2);
@@ -334,16 +334,16 @@ public class CommonTests : GeneratorTestFixture
         Assert.AreEqual(2, indexedProperties[0]);
         indexedProperties[0f] = 3;
         Assert.AreEqual(3, indexedProperties[0f]);
-        var properties = indexedProperties[(byte)0];
+        var properties = indexedProperties[(byte) 0];
         Assert.AreEqual(0, properties.Field);
         var newProperties = new TestProperties();
         newProperties.Field = 4;
-        indexedProperties[(byte)0] = newProperties;
-        Assert.AreEqual(4, indexedProperties[(byte)0].Field);
-        newProperties = indexedProperties[(short)0];
+        indexedProperties[(byte) 0] = newProperties;
+        Assert.AreEqual(4, indexedProperties[(byte) 0].Field);
+        newProperties = indexedProperties[(short) 0];
         Assert.AreEqual(4, newProperties.Field);
         newProperties.Field = 5;
-        Assert.AreEqual(5, indexedProperties[(byte)0].Field);
+        Assert.AreEqual(5, indexedProperties[(byte) 0].Field);
     }
 
     [Test]
@@ -351,8 +351,8 @@ public class CommonTests : GeneratorTestFixture
     {
         var @class = new ClassWithOverloadedOperators();
         Assert.AreEqual(1, (char) @class);
-        Assert.AreEqual(2, (int)@class);
-        Assert.AreEqual(3, (short)@class);
+        Assert.AreEqual(2, (int) @class);
+        Assert.AreEqual(3, (short) @class);
     }
 
     [Test]
@@ -417,7 +417,7 @@ public class CommonTests : GeneratorTestFixture
         var classA = new ClassA(10);
         ClassB classB = classA;
         Assert.AreEqual(classA.Value, classB.Value);
-        ClassC classC = (ClassC)classB;
+        ClassC classC = (ClassC) classB;
         Assert.AreEqual(classB.Value, classC.Value);
     }
 
