@@ -301,11 +301,6 @@ public class BasicTests : GeneratorTestFixture
         TestNotStaticClass.StaticFunction();
     }
 
-    [Test, Ignore]
-    public void TestChar16()
-    {
-    }
-
     [Test]
     public void TestCopyConstructor()
     {

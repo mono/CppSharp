@@ -48,8 +48,6 @@ public:
     static const int unsafe = 10;
 
 	const char* GetANSI();
-	// TODO: VC++ does not support char16
-	// char16 chr16;
 
     // Not properly handled yet - ignore
     float nested_array[2][2];
