@@ -2656,6 +2656,12 @@ namespace CppSharp.Generators.CSharp
         private ParamMarshal GenerateFunctionParamMarshal(Parameter param, int paramIndex,
             Function function = null)
         {
+            PrimitiveType primitive;
+            if (param.Type.IsPrimitiveType(out primitive) && primitive != PrimitiveType.Char)
+            {
+                return new ParamMarshal { Name = param.Name, Param = param };
+            }
+
             var argName = "arg" + paramIndex.ToString(CultureInfo.InvariantCulture);
             var paramMarshal = new ParamMarshal { Name = argName, Param = param };
 
