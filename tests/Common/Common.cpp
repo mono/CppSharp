@@ -501,11 +501,15 @@ void funcTryValTypeOut(CS_OUT ValueTypeClassPassTry classTry)
 {
 }
 
-HasVirtualReturningHasCharField::HasVirtualReturningHasCharField()
+HasProblematicFields::HasProblematicFields() : b(false), c(0)
 {
 }
 
-HasCharField HasVirtualReturningHasCharField::returnsCharField()
+HasVirtualReturningHasProblematicFields::HasVirtualReturningHasProblematicFields()
 {
-    return HasCharField();
+}
+
+HasProblematicFields HasVirtualReturningHasProblematicFields::returnsProblematicFields()
+{
+    return HasProblematicFields();
 }

@@ -2475,13 +2475,20 @@ namespace CppSharp.Generators.CSharp
                 if (param.Param == operatorParam && needsInstance)
                     continue;
 
-                var name = string.Empty;
+                var name = new StringBuilder();
                 if (param.Context != null
                     && !string.IsNullOrWhiteSpace(param.Context.ArgumentPrefix))
-                    name += param.Context.ArgumentPrefix;
+                    name.Append(param.Context.ArgumentPrefix);
 
-                name += param.Name;
-                names.Add(name);
+                // HACK: work around https://github.com/dotnet/coreclr/issues/1485
+                if ((param.Param.Type.GetFinalPointee() ?? param.Param.Type).IsPrimitiveType(PrimitiveType.Bool))
+                {
+                    var typePrinter = new CSharpTypePrinter(Driver);
+                    typePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+                    name.AppendFormat("({0}) ", param.Param.Type.Visit(typePrinter));
+                }
+                name.Append(param.Name);
+                names.Add(name.ToString());
             }
 
             var needsFixedThis = needsInstance && isValueType;
@@ -2657,7 +2664,9 @@ namespace CppSharp.Generators.CSharp
             Function function = null)
         {
             PrimitiveType primitive;
-            if (param.Type.IsPrimitiveType(out primitive) && primitive != PrimitiveType.Char)
+            // HACK: work around https://github.com/dotnet/coreclr/issues/1485
+            if (param.Type.IsPrimitiveType(out primitive) &&
+                primitive != PrimitiveType.Char && primitive != PrimitiveType.Bool)
             {
                 return new ParamMarshal { Name = param.Name, Param = param };
             }
