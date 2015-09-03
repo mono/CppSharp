@@ -420,6 +420,8 @@ class HasIgnoredField
 template <typename T>
 class DependentTypeWithNestedIndependent
 {
+    T array[1];
+
     union
     {
         int i;

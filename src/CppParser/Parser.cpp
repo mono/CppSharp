@@ -1754,7 +1754,8 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         A->QualifiedType = GetQualifiedType(ElemTy, WalkType(ElemTy, &Next));
         A->SizeType = ArrayType::ArraySize::Constant;
         A->Size = AST->getConstantArrayElementCount(AT);
-        A->ElementSize = (long)AST->getTypeSize(ElemTy);
+        if (!ElemTy->isDependentType())
+            A->ElementSize = (long)AST->getTypeSize(ElemTy);
 
         Ty = A;
         break;
