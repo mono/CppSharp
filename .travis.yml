@@ -37,4 +37,4 @@ script:
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then BUILD_CONF=release_x64; else BUILD_CONF=release_x32; fi
   - $PREMAKE --file=build/premake4.lua gmake
   - config=$BUILD_CONF make -C build/gmake/
-  - for test in build/gmake/lib/Release_*/*.Tests.*.dll; do MONO_PATH=deps/NUnit.Runners.2.6.4/tools mono deps/NUnit.Runners.2.6.4/tools/nunit-console.exe $test; done
+  - for test in build/gmake/lib/Release_*/*.Tests.*.dll; do MONO_PATH=deps/NUnit.Runners.2.6.4/tools mono deps/NUnit.Runners.2.6.4/tools/nunit-console.exe -nologo $test; done
