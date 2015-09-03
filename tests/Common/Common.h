@@ -804,3 +804,15 @@ class DLL_API CS_VALUE_TYPE ValueTypeClassPassTry { };
 
 void DLL_API funcTryValTypePtrOut(CS_OUT ValueTypeClassPassTry* classTry);
 void DLL_API funcTryValTypeOut(CS_OUT ValueTypeClassPassTry classTry);
+
+class DLL_API HasCharField
+{
+    char c;
+};
+
+class DLL_API HasVirtualReturningHasCharField
+{
+public:
+    HasVirtualReturningHasCharField();
+    virtual HasCharField returnsCharField();
+};

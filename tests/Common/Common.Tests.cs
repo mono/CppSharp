@@ -534,5 +534,13 @@ public class CommonTests : GeneratorTestFixture
         common.funcTryValTypeOut(out valueTypeClassPassTry);
         common.funcTryValTypePtrOut(out valueTypeClassPassTry);
     }
+
+    [Test]
+    public void TestVirtualReturningClassWithCharField()
+    {
+        using (new HasVirtualReturningHasCharField())
+        {
+        }
+    }
 }
  

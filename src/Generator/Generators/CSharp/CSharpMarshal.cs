@@ -169,6 +169,8 @@ namespace CppSharp.Generators.CSharp
                     return true;
                 }
 
+                if (Context.Driver.Options.MarshalCharAsManagedChar && primitive == PrimitiveType.Char)
+                    Context.Return.Write(string.Format("({0}) ", pointer));
                 Context.Return.Write(Context.ReturnVarName);
                 return true;
             }
@@ -197,9 +199,6 @@ namespace CppSharp.Generators.CSharp
             return string.Format(
                 "CppSharp.Runtime.Helpers.MarshalEncodedString({0}, {1})",
                 varName, encodingName);
-
-            throw new NotSupportedException(string.Format("{0} is not supported yet.",
-                Context.Driver.Options.Encoding.EncodingName));
         }
 
         public override bool VisitPrimitiveType(PrimitiveType primitive, TypeQualifiers quals)
@@ -208,28 +207,16 @@ namespace CppSharp.Generators.CSharp
             {
                 case PrimitiveType.Void:
                     return true;
-                case PrimitiveType.Bool:
                 case PrimitiveType.Char:
-                case PrimitiveType.UChar:
-                case PrimitiveType.Short:
-                case PrimitiveType.UShort:
-                case PrimitiveType.Int:
-                case PrimitiveType.UInt:
-                case PrimitiveType.Long:
-                case PrimitiveType.ULong:
-                case PrimitiveType.LongLong:
-                case PrimitiveType.ULongLong:
-                case PrimitiveType.Float:
-                case PrimitiveType.Double:
-                case PrimitiveType.WideChar:
-                case PrimitiveType.Null:
-                    Context.Return.Write(Context.ReturnVarName);
-                    return true;
+                    if (Context.Driver.Options.MarshalCharAsManagedChar)
+                        Context.Return.Write("(char) ");
+                    goto default;
                 case PrimitiveType.Char16:
                     return false;
+                default:
+                    Context.Return.Write(Context.ReturnVarName);
+                    return true;
             }
-
-            throw new NotImplementedException();
         }
 
         public override bool VisitTypedefType(TypedefType typedef, TypeQualifiers quals)
@@ -508,7 +495,15 @@ namespace CppSharp.Generators.CSharp
                     Context.Return.Write("&_{0}", param.Name);
                 }
                 else
+                {
+                    if (Context.Driver.Options.MarshalCharAsManagedChar && primitive == PrimitiveType.Char)
+                    {
+                        var typePrinter = new CSharpTypePrinter(Context.Driver);
+                        typePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+                        Context.Return.Write(string.Format("({0}) ", pointer.Visit(typePrinter)));
+                    }
                     Context.Return.Write(Context.Parameter.Name);
+                }
 
                 return true;
             }
@@ -537,27 +532,16 @@ namespace CppSharp.Generators.CSharp
             {
                 case PrimitiveType.Void:
                     return true;
-                case PrimitiveType.Bool:
                 case PrimitiveType.Char:
-                case PrimitiveType.UChar:
-                case PrimitiveType.Short:
-                case PrimitiveType.UShort:
-                case PrimitiveType.Int:
-                case PrimitiveType.UInt:
-                case PrimitiveType.Long:
-                case PrimitiveType.ULong:
-                case PrimitiveType.LongLong:
-                case PrimitiveType.ULongLong:
-                case PrimitiveType.Float:
-                case PrimitiveType.Double:
-                case PrimitiveType.WideChar:
-                    Context.Return.Write(Context.Parameter.Name);
-                    return true;
+                    if (Context.Driver.Options.MarshalCharAsManagedChar)
+                        Context.Return.Write("(sbyte) ");
+                    goto default;
                 case PrimitiveType.Char16:
                     return false;
+                default:
+                    Context.Return.Write(Context.Parameter.Name);
+                    return true;
             }
-
-            throw new NotImplementedException();
         }
 
         public override bool VisitTypedefType(TypedefType typedef, TypeQualifiers quals)

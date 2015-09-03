@@ -483,7 +483,11 @@ namespace CppSharp.Generators.CSharp
                 case PrimitiveType.Void: return "void";
                 case PrimitiveType.Char16:
                 case PrimitiveType.WideChar: return "char";
-                case PrimitiveType.Char: return this.driver.Options.MarshalCharAsManagedChar ? "char" : "sbyte";
+                case PrimitiveType.Char:
+                    return driver.Options.MarshalCharAsManagedChar &&
+                        ContextKind != CSharpTypePrinterContextKind.Native
+                        ? "char"
+                        : "sbyte";
                 case PrimitiveType.UChar: return "byte";
                 case PrimitiveType.Short:
                 case PrimitiveType.UShort:

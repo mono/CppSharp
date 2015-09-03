@@ -880,14 +880,7 @@ namespace CppSharp.Generators.CSharp
 
                 if (arrayType != null && @class.IsValueType)
                 {
-                    CSharpTypePrinter typePrinter = new CSharpTypePrinter(ctx.Driver);
-                    string type = arrayType.CSharpType(typePrinter).Type;
-                    string arrPtrIden = Helpers.SafeIdentifier("arrPtr");
-                    WriteLine(string.Format("fixed ({0} {1} = {2}.{3})",
-                        type.Replace("[]", "*"), arrPtrIden, Helpers.InstanceField,
-                        Helpers.SafeIdentifier(field.InternalName)));
-                    WriteStartBraceIndent();
-                    ctx.ReturnVarName = arrPtrIden;
+                    ctx.ReturnVarName = HandleValueArray(arrayType, field);
                 }
                 else
                 {
@@ -915,6 +908,36 @@ namespace CppSharp.Generators.CSharp
             }
 
             PopBlock(NewLineKind.BeforeNextBlock);
+        }
+
+        private string HandleValueArray(ArrayType arrayType, Field field)
+        {
+            var originalType = new PointerType(new QualifiedType(arrayType.Type));
+            var arrPtrIden = Generator.GeneratedIdentifier("arrPtr");
+            var arrPtr = arrPtrIden;
+            var finalElementType = (arrayType.Type.GetFinalPointee() ?? arrayType.Type);
+            var isChar = finalElementType.IsPrimitiveType(PrimitiveType.Char);
+
+            string type;
+            if (Driver.Options.MarshalCharAsManagedChar && isChar)
+            {
+                var typePrinter = new CSharpTypePrinter(Driver);
+                typePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+                type = originalType.Visit(typePrinter).Type;
+                arrPtrIden = Generator.GeneratedIdentifier(arrPtrIden);
+            }
+            else
+            {
+                type = originalType.ToString();
+            }
+
+            WriteLine(string.Format("fixed ({0} {1} = {2}.{3})",
+                type, arrPtrIden, Helpers.InstanceField,
+                Helpers.SafeIdentifier(field.InternalName)));
+            WriteStartBraceIndent();
+            if (Driver.Options.MarshalCharAsManagedChar && isChar)
+                WriteLine("var {0} = ({1}) {2};", arrPtr, originalType, arrPtrIden);
+            return arrPtr;
         }
 
         private bool WrapSetterArrayOfPointers(string name, Type fieldType)
@@ -1005,16 +1028,7 @@ namespace CppSharp.Generators.CSharp
                 var arrayType = field.Type as ArrayType;
 
                 if (arrayType != null && @class.IsValueType)
-                {
-                    CSharpTypePrinter typePrinter = new CSharpTypePrinter(ctx.Driver);
-                    string type = arrayType.CSharpType(typePrinter).Type;
-                    string arrPtrIden = Helpers.SafeIdentifier("arrPtr");
-                    WriteLine(string.Format("fixed ({0} {1} = {2}.{3})",
-                        type.Replace("[]","*"), arrPtrIden, Helpers.InstanceField,
-                        Helpers.SafeIdentifier(field.InternalName)));
-                    WriteStartBraceIndent();
-                    ctx.ReturnVarName = arrPtrIden;
-                }
+                    ctx.ReturnVarName = HandleValueArray(arrayType, field);
 
                 var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
                 decl.CSharpMarshalToManaged(marshal);
@@ -2642,11 +2656,6 @@ namespace CppSharp.Generators.CSharp
         private ParamMarshal GenerateFunctionParamMarshal(Parameter param, int paramIndex,
             Function function = null)
         {
-            if (param.Type is BuiltinType)
-            {
-                return new ParamMarshal { Name = param.Name, Param = param };
-            }
-
             var argName = "arg" + paramIndex.ToString(CultureInfo.InvariantCulture);
             var paramMarshal = new ParamMarshal { Name = argName, Param = param };
 

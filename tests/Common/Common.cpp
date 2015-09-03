@@ -500,3 +500,12 @@ void funcTryValTypePtrOut(CS_OUT ValueTypeClassPassTry* classTry)
 void funcTryValTypeOut(CS_OUT ValueTypeClassPassTry classTry)
 {
 }
+
+HasVirtualReturningHasCharField::HasVirtualReturningHasCharField()
+{
+}
+
+HasCharField HasVirtualReturningHasCharField::returnsCharField()
+{
+    return HasCharField();
+}
