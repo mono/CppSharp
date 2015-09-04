@@ -2480,7 +2480,7 @@ namespace CppSharp.Generators.CSharp
                     && !string.IsNullOrWhiteSpace(param.Context.ArgumentPrefix))
                     name.Append(param.Context.ArgumentPrefix);
 
-                // TODO: work around https://github.com/dotnet/coreclr/issues/1485
+                // returned structs must be blittable and bool isn't
                 if ((param.Param.Type.GetFinalPointee() ?? param.Param.Type).IsPrimitiveType(PrimitiveType.Bool))
                 {
                     var typePrinter = new CSharpTypePrinter(Driver);
@@ -2664,7 +2664,7 @@ namespace CppSharp.Generators.CSharp
             Function function = null)
         {
             PrimitiveType primitive;
-            // TODO: work around https://github.com/dotnet/coreclr/issues/1485
+            // returned structs must be blittable and bool and char aren't
             if (param.Type.IsPrimitiveType(out primitive) &&
                 primitive != PrimitiveType.Char && primitive != PrimitiveType.Bool)
             {

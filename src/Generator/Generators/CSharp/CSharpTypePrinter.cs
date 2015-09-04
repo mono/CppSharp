@@ -480,13 +480,13 @@ namespace CppSharp.Generators.CSharp
             switch (primitive)
             {
                 case PrimitiveType.Bool:
-                    // TODO: work around https://github.com/dotnet/coreclr/issues/1485
+                    // returned structs must be blittable and bool isn't
                     return ContextKind == CSharpTypePrinterContextKind.Native ? "byte" : "bool";
                 case PrimitiveType.Void: return "void";
                 case PrimitiveType.Char16:
                 case PrimitiveType.WideChar: return "char";
                 case PrimitiveType.Char:
-                    // TODO: work around https://github.com/dotnet/coreclr/issues/1485
+                    // returned structs must be blittable and char isn't
                     return driver.Options.MarshalCharAsManagedChar &&
                         ContextKind != CSharpTypePrinterContextKind.Native
                         ? "char"
