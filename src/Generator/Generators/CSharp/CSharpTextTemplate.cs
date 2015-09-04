@@ -589,28 +589,43 @@ namespace CppSharp.Generators.CSharp
             return functions;
         }
 
-        List<string> GatherInternalParams(Function function, out CSharpTypePrinterResult retType)
+        private List<string> GatherInternalParams(Function function, out CSharpTypePrinterResult retType)
         {
             var @params = new List<string>();
 
             TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
 
-            var retParam = new Parameter { QualifiedType = function.OriginalReturnType };
+            var retParam = new Parameter { QualifiedType = function.ReturnType };
             retType = retParam.CSharpType(TypePrinter);
 
             var method = function as Method;
-            if (method != null && !method.IsStatic)
+            var isInstanceMethod = method != null && !method.IsStatic;
+
+            if (isInstanceMethod && Options.IsMicrosoftAbi)
             {
                 @params.Add("global::System.IntPtr instance");
 
-                if (method.IsConstructor && Options.IsMicrosoftAbi)
+                if (method.IsConstructor)
                     retType = "global::System.IntPtr";
             }
 
-            @params.AddRange(from param in function.Parameters
-                             where param.Kind != ParameterKind.OperatorParameter
-                             let typeName = param.CSharpType(TypePrinter)
-                             select string.Format("{0} {1}", typeName, param.Name));
+            if (!function.HasIndirectReturnTypeParameter &&
+                isInstanceMethod && Options.IsItaniumLikeAbi)
+                @params.Add("global::System.IntPtr instance");
+
+            foreach (var param in function.Parameters)
+            {
+                if (param.Kind == ParameterKind.OperatorParameter)
+                    continue;
+
+                var typeName = param.CSharpType(TypePrinter);
+
+                @params.Add(string.Format("{0} {1}", typeName, param.Name));
+
+                if (param.Kind == ParameterKind.IndirectReturnType &&
+                    isInstanceMethod && Options.IsItaniumLikeAbi)
+                    @params.Add("global::System.IntPtr instance");
+            }
 
             if (method != null && method.IsConstructor)
             {
@@ -1551,7 +1566,18 @@ namespace CppSharp.Generators.CSharp
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                     Write(marshal.Context.SupportBefore);
 
-                WriteLine("return {0};", marshal.Context.Return);
+                if (method.HasIndirectReturnTypeParameter)
+                {
+                    var retParam = method.Parameters.First(p => p.Kind == ParameterKind.IndirectReturnType);
+                    TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+                    WriteLine("*({0}*) {1} = {2};",
+                        method.OriginalReturnType.Visit(TypePrinter), retParam.Name, marshal.Context.Return);
+                    TypePrinter.PopContext();
+                }
+                else
+                {
+                    WriteLine("return {0};", marshal.Context.Return);                    
+                }
             }
         }
 
@@ -2921,55 +2947,13 @@ namespace CppSharp.Generators.CSharp
             if (function.ReturnType.Type.IsPrimitiveType(PrimitiveType.Bool))
                 WriteLine("[return: MarshalAsAttribute(UnmanagedType.I1)]");
 
-            var @params = new List<string>();
-
-            var typePrinter = TypePrinter;
-            typePrinter.PushContext(CSharpTypePrinterContextKind.Native);
-
-            var retParam = new Parameter { QualifiedType = function.ReturnType };
-            var retType = retParam.CSharpType(typePrinter);
-
-            var method = function as Method;
-            var isInstanceMethod = method != null && !method.IsStatic;
-
-            if (isInstanceMethod && Options.IsMicrosoftAbi)
-            {
-                @params.Add("global::System.IntPtr instance");
-
-                if (method.IsConstructor)
-                    retType = "global::System.IntPtr";
-            }
-
-            if (!function.HasIndirectReturnTypeParameter &&
-                isInstanceMethod && Options.IsItaniumLikeAbi)
-                @params.Add("global::System.IntPtr instance");
-
-            foreach (var param in function.Parameters)
-            {
-                if (param.Kind == ParameterKind.OperatorParameter)
-                    continue;
-
-                var typeName = param.CSharpType(typePrinter);
-
-                @params.Add(string.Format("{0} {1}", typeName, param.Name));
-
-                if (param.Kind == ParameterKind.IndirectReturnType &&
-                    isInstanceMethod && Options.IsItaniumLikeAbi)
-                    @params.Add("global::System.IntPtr instance");
-            }
-
-            if (method != null && method.IsConstructor)
-            {
-                if (Options.IsMicrosoftAbi && ((Class) method.Namespace).Layout.HasVirtualBases)
-                    @params.Add("int " + GeneratedIdentifier("forBases"));
-            }
+            CSharpTypePrinterResult retType;
+            var @params = GatherInternalParams(function, out retType);
 
             WriteLine("internal static extern {0} {1}({2});", retType,
                       GetFunctionNativeIdentifier(function),
                       string.Join(", ", @params));
             PopBlock(NewLineKind.BeforeNextBlock);
-
-            typePrinter.PopContext();
         }
     }
 
