@@ -958,20 +958,20 @@ namespace CppSharp.Generators.CSharp
         private bool WrapSetterArrayOfPointers(string name, Type fieldType)
         {
             var arrayType = fieldType as ArrayType;
-            if (arrayType != null && arrayType.Type.IsPointerToPrimitiveType())
-            {
-                NewLine();
-                WriteStartBraceIndent();
-                WriteLine("{0} = value;", name);
-                WriteLine("if (!{0}{1})", name, "Initialised");
-                WriteStartBraceIndent();
-                WriteLine("{0}{1} = true;", name, "Initialised");
-                WriteCloseBraceIndent();
-                WriteCloseBraceIndent();
-                PopBlock(NewLineKind.BeforeNextBlock);
-                return true;
-            }
-            return false;
+            if (arrayType == null || !arrayType.Type.IsPointerToPrimitiveType())
+                return false;
+
+            NewLine();
+            WriteStartBraceIndent();
+            WriteLine("{0} = value;", name);
+            WriteLine("if (!{0}{1})", name, "Initialised");
+            WriteStartBraceIndent();
+            WriteLine("{0}{1} = true;", name, "Initialised");
+            WriteCloseBraceIndent();
+            WriteCloseBraceIndent();
+            PopBlock(NewLineKind.BeforeNextBlock);
+
+            return true;
         }
 
         private void GenerateIndexerSetter(Function function)
