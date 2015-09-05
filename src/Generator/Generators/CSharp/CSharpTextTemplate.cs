@@ -1520,7 +1520,7 @@ namespace CppSharp.Generators.CSharp
                     ParameterIndex = i
                 };
 
-                var marshal = new CSharpMarshalNativeToManagedPrinter(ctx);
+                var marshal = new CSharpMarshalNativeToManagedPrinter(ctx) { MarshalsParameter = true };
                 param.Visit(marshal);
 
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))

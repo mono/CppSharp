@@ -61,6 +61,8 @@ namespace CppSharp.Generators.CSharp
             Context.MarshalToManaged = this;
         }
 
+        public bool MarshalsParameter { get; set; }
+
         public static string QualifiedIdentifier(Declaration decl)
         {
             var names = new List<string> { decl.Name };
@@ -315,7 +317,8 @@ namespace CppSharp.Generators.CSharp
         {
             var originalClass = @class.OriginalClass ?? @class;
             var ret = Generator.GeneratedIdentifier("result") + Context.ParameterIndex;
-            Context.SupportBefore.WriteLine("{0} {1};", QualifiedIdentifier(@class), ret);
+            var qualifiedIdentifier = QualifiedIdentifier(@class);
+            Context.SupportBefore.WriteLine("{0} {1};", qualifiedIdentifier, ret);
             Context.SupportBefore.WriteLine("if ({0} == IntPtr.Zero) {1} = {2};", Context.ReturnVarName, ret,
                 originalClass.IsRefType ? "null" : string.Format("new {0}()", qualifiedClass));
             if (originalClass.IsRefType)
@@ -323,13 +326,15 @@ namespace CppSharp.Generators.CSharp
                 Context.SupportBefore.WriteLine(
                     "else if ({0}.NativeToManagedMap.ContainsKey({1}))", qualifiedClass, Context.ReturnVarName);
                 Context.SupportBefore.WriteLineIndent("{0} = ({1}) {2}.NativeToManagedMap[{3}];",
-                    ret, QualifiedIdentifier(@class), qualifiedClass, Context.ReturnVarName);
+                    ret, qualifiedIdentifier, qualifiedClass, Context.ReturnVarName);
                 var dtor = originalClass.Destructors.FirstOrDefault();
                 if (dtor != null && dtor.IsVirtual)
                 {
-                    Context.SupportBefore.WriteLine("else {0}.NativeToManagedMap[{1}] = {2} = ({3}) {4}.{5}({1});",
-                        qualifiedClass, Context.ReturnVarName, ret, QualifiedIdentifier(@class), qualifiedClass,
-                        Helpers.CreateInstanceIdentifier, Context.ReturnVarName);
+                    Context.SupportBefore.WriteLine("else {0}{1} = ({2}) {3}.{4}({5});",
+                        MarshalsParameter
+                            ? string.Empty
+                            : string.Format("{0}.NativeToManagedMap[{1}] = ", qualifiedClass, Context.ReturnVarName),
+                        ret, qualifiedIdentifier, qualifiedClass, Helpers.CreateInstanceIdentifier, Context.ReturnVarName);
                 }
                 else
                 {
