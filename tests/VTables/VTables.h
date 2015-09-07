@@ -22,6 +22,7 @@ DLL_API int FooCallFoo(Foo* foo);
 class DLL_API BaseClassVirtual
 {
 public:
+    BaseClassVirtual();
     static int virtualCallRetInt(BaseClassVirtual* base);
     virtual int retInt();
     static BaseClassVirtual getBase();
@@ -31,5 +32,6 @@ public:
 class DLL_API DerivedClassVirtual : public BaseClassVirtual
 {
 public:
+    DerivedClassVirtual();
     virtual int retInt() override;
 };
