@@ -513,3 +513,18 @@ HasProblematicFields HasVirtualReturningHasProblematicFields::returnsProblematic
 {
     return HasProblematicFields();
 }
+
+int BaseClassVirtual::retInt()
+{
+	return 1;
+}
+
+BaseClassVirtual BaseClassVirtual::getBase()
+{
+	return DerivedClassVirtual();
+}
+
+int DerivedClassVirtual::retInt()
+{
+	return 2;
+}

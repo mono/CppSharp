@@ -12,6 +12,22 @@ public class FooDerived : Foo
     }
 }
 
+public class ManagedDerivedClassVirtual : DerivedClassVirtual
+{
+    public override unsafe int RetInt()
+    {
+        return 15;
+    }
+}
+
+public class ManagedDerivedClassVirtualRetBase : DerivedClassVirtual
+{
+    public override unsafe int RetInt()
+    {
+        return base.RetInt();
+    }
+}
+
 public class VTablesTests : GeneratorTestFixture
 {
     [Test]
@@ -27,7 +43,36 @@ public class VTablesTests : GeneratorTestFixture
         Assert.That(foo2.CallFoo(), Is.EqualTo(12));
     }
 
-    static void Main(string[] args)
+    void TestVirtualFunction(BaseClassVirtual obj, int actual)
     {
+        var ret = obj.RetInt();
+        Assert.AreEqual(actual, ret);
+
+        ret = BaseClassVirtual.VirtualCallRetInt(obj);
+        Assert.AreEqual(actual, ret);
+    }
+
+    [Test]
+    public void TestVirtualFuntionRetVal()
+    {
+        // Virtual Functions Object Slicing case
+        // See http://stackoverflow.com/questions/3479712/virtual-functions-object-slicing
+        var baseVirtual = BaseClassVirtual.GetBase();
+        TestVirtualFunction(baseVirtual, 5);
+
+        BaseClassVirtual baseClass = new DerivedClassVirtual();
+        TestVirtualFunction(baseClass, 10);
+
+        var basePtr = BaseClassVirtual.GetBasePtr();
+        TestVirtualFunction(basePtr, 10);
+
+        var managed = new ManagedDerivedClassVirtual();
+        TestVirtualFunction(managed, 15);
+
+        baseClass = managed;
+        TestVirtualFunction(baseClass, 15);
+
+        var retBase = new ManagedDerivedClassVirtualRetBase();
+        TestVirtualFunction(retBase, 10);
     }
 }

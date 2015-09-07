@@ -2191,6 +2191,10 @@ namespace CppSharp.Generators.CSharp
                 {
                     GenerateAbstractImplCall(method, @class.BaseClass);
                 }
+                else if (method.IsVirtual)
+                {
+                    GenerateVirtualFunctionCall(method, @class);
+                }
                 else
                 {
                     GenerateInternalFunctionCall(method);
@@ -2340,6 +2344,33 @@ namespace CppSharp.Generators.CSharp
             virtualCallBuilder.AppendFormat(
                 "var {1} = ({0}) Marshal.GetDelegateForFunctionPointer(new IntPtr(slot), typeof({0}));",
                 @delegate, delegateId);
+            virtualCallBuilder.AppendLine();
+            return virtualCallBuilder.ToString();
+        }
+
+        private void GenerateVirtualFunctionCall(Method function, Class @class)
+        {
+            string delegateId, @delegate;
+            Write(GetVirtualCallDelegate(function, @class, out delegateId, out @delegate));
+            GenerateFunctionCall(delegateId, function.Parameters, function);
+        }
+
+        public string GetVirtualCallDelegate(Method function, Class @class,
+            out string delegateId, out string @delegate)
+        {
+            var virtualCallBuilder = new StringBuilder();
+            var i = VTables.GetVTableIndex(function, @class);
+            virtualCallBuilder.AppendFormat("void* slot = *(void**) ((IntPtr)__OriginalVTables[0] + {0} * {1});",
+                i, Driver.TargetInfo.PointerWidth / 8);
+            virtualCallBuilder.AppendLine();
+
+            @delegate = GetVTableMethodDelegateName(function.OriginalFunction ?? function);
+            delegateId = Generator.GeneratedIdentifier(@delegate);
+
+            virtualCallBuilder.AppendFormat(
+                "var {1} = ({0}) Marshal.GetDelegateForFunctionPointer(new IntPtr(slot), typeof({0}));",
+                @delegate, delegateId);
+
             virtualCallBuilder.AppendLine();
             return virtualCallBuilder.ToString();
         }

@@ -33,3 +33,29 @@ int FooCallFoo(Foo* foo)
 {
     return foo->vfoo() + 2;
 }
+
+int BaseClassVirtual::virtualCallRetInt(BaseClassVirtual* base)
+{
+    return base->retInt();
+}
+
+int BaseClassVirtual::retInt()
+{
+    return 5;
+}
+
+BaseClassVirtual BaseClassVirtual::getBase()
+{
+    return DerivedClassVirtual();
+}
+
+BaseClassVirtual* BaseClassVirtual::getBasePtr()
+{
+    return new DerivedClassVirtual();
+}
+
+int DerivedClassVirtual::retInt()
+{
+    return 10;
+}
+
