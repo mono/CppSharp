@@ -1312,8 +1312,8 @@ namespace CppSharp.Generators.CSharp
 
             const string dictionary = "System.Collections.Generic.Dictionary";
 
-            WriteLine("private static void*[] _OldVTables;");
-            WriteLine("private static void*[] _NewVTables;");
+            WriteLine("private static void*[] __OriginalVTables;");
+            WriteLine("private static void*[] __ManagedVTables;");
             WriteLine("private static void*[] _Thunks;");
             WriteLine("private static {0}<IntPtr, WeakReference> _References;", dictionary);
             NewLine();
@@ -1345,7 +1345,7 @@ namespace CppSharp.Generators.CSharp
             NewLine();
 
             // Save the original vftable pointers.
-            WriteLine("if (_OldVTables == null)");
+            WriteLine("if (__OriginalVTables == null)");
             WriteStartBraceIndent();
 
             switch (Driver.Options.Abi)
@@ -1383,7 +1383,7 @@ namespace CppSharp.Generators.CSharp
 
             NewLine();
 
-            WriteLine("if (_NewVTables == null)");
+            WriteLine("if (__ManagedVTables == null)");
             WriteStartBraceIndent();
 
             switch (Driver.Options.Abi)
@@ -1403,24 +1403,24 @@ namespace CppSharp.Generators.CSharp
 
         private void SaveOriginalVTablePointersMS(Class @class)
         {
-            WriteLine("_OldVTables = new void*[{0}];", @class.Layout.VFTables.Count);
+            WriteLine("__OriginalVTables = new void*[{0}];", @class.Layout.VFTables.Count);
 
             for (int i = 0; i < @class.Layout.VFTables.Count; i++)
             {
-                WriteLine("_OldVTables[{0}] = native->vfptr{0}.ToPointer();", i);
+                WriteLine("__OriginalVTables[{0}] = native->vfptr{0}.ToPointer();", i);
             }
         }
 
         private void SaveOriginalVTablePointersItanium()
         {
-            WriteLine("_OldVTables = new void*[1];");
-            WriteLine("_OldVTables[0] = native->vfptr0.ToPointer();");
+            WriteLine("__OriginalVTables = new void*[1];");
+            WriteLine("__OriginalVTables[0] = native->vfptr0.ToPointer();");
         }
 
         private void AllocateNewVTablesMS(Class @class, IList<VTableComponent> entries,
             IList<VTableComponent> wrappedEntries)
         {
-            WriteLine("_NewVTables = new void*[{0}];", @class.Layout.VFTables.Count);
+            WriteLine("__ManagedVTables = new void*[{0}];", @class.Layout.VFTables.Count);
 
             for (int tableIndex = 0; tableIndex < @class.Layout.VFTables.Count; tableIndex++)
             {
@@ -1428,7 +1428,7 @@ namespace CppSharp.Generators.CSharp
                 var size = vfptr.Layout.Components.Count;
                 WriteLine("var vfptr{0} = Marshal.AllocHGlobal({1} * {2});",
                     tableIndex, size, Driver.TargetInfo.PointerWidth / 8);
-                WriteLine("_NewVTables[{0}] = vfptr{0}.ToPointer();", tableIndex);
+                WriteLine("__ManagedVTables[{0}] = vfptr{0}.ToPointer();", tableIndex);
 
                 AllocateNewVTableEntries(@class, entries, wrappedEntries, tableIndex);
             }
@@ -1437,25 +1437,25 @@ namespace CppSharp.Generators.CSharp
             NewLine();
 
             for (var i = 0; i < @class.Layout.VFTables.Count; i++)
-                WriteLine("native->vfptr{0} = new IntPtr(_NewVTables[{0}]);", i);
+                WriteLine("native->vfptr{0} = new IntPtr(__ManagedVTables[{0}]);", i);
         }
 
         private void AllocateNewVTablesItanium(Class @class, IList<VTableComponent> entries,
             IList<VTableComponent> wrappedEntries)
         {
-            WriteLine("_NewVTables = new void*[1];");
+            WriteLine("__ManagedVTables = new void*[1];");
 
             // reserve space for the offset-to-top and RTTI pointers as well
             var size = entries.Count;
             WriteLine("var vfptr{0} = Marshal.AllocHGlobal({1} * {2});", 0, size, Driver.TargetInfo.PointerWidth / 8);
-            WriteLine("_NewVTables[0] = vfptr0.ToPointer();");
+            WriteLine("__ManagedVTables[0] = vfptr0.ToPointer();");
 
             AllocateNewVTableEntries(@class, entries, wrappedEntries, tableIndex: 0);
 
             WriteCloseBraceIndent();
             NewLine();
 
-            WriteLine("native->vfptr0 = new IntPtr(_NewVTables[0]);");
+            WriteLine("native->vfptr0 = new IntPtr(__ManagedVTables[0]);");
         }
 
         private void AllocateNewVTableEntries(Class @class, IList<VTableComponent> entries,
