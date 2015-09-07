@@ -173,6 +173,7 @@ namespace CppSharp.AST
             }
         }
 
+        // When we have an interface, this is the class mapped to that interface.
         public Class OriginalClass { get; set; }
 
         public bool IsValueType
