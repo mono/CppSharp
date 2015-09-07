@@ -2329,7 +2329,7 @@ namespace CppSharp.Generators.CSharp
             out string delegateId)
         {
             var virtualCallBuilder = new StringBuilder();
-            var i = VTables.GetVTableIndex(function.OriginalFunction, @class);
+            var i = VTables.GetVTableIndex(function.OriginalFunction as Method, @class);
             virtualCallBuilder.AppendFormat("void* slot = *(void**) ((({0}.Internal*) {1})->vfptr0 + {2} * {3});",
                 @class.Name, Helpers.InstanceIdentifier, i, Driver.TargetInfo.PointerWidth / 8);
             virtualCallBuilder.AppendLine();
