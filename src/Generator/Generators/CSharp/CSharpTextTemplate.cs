@@ -1397,16 +1397,10 @@ namespace CppSharp.Generators.CSharp
             WriteLine("if (__ManagedVTables == null)");
             WriteStartBraceIndent();
 
-            switch (Driver.Options.Abi)
-            {
-                case CppAbi.Microsoft:
-                    AllocateNewVTablesMS(@class, entries, wrappedEntries);
-                    break;
-                case CppAbi.Itanium:
-                case CppAbi.ARM:
-                    AllocateNewVTablesItanium(@class, entries, wrappedEntries);
-                    break;
-            }
+            if (Options.IsMicrosoftAbi)
+                AllocateNewVTablesMS(@class, entries, wrappedEntries);
+            else
+                AllocateNewVTablesItanium(@class, entries, wrappedEntries);
 
             WriteCloseBraceIndent();
             NewLine();
@@ -1663,29 +1657,27 @@ namespace CppSharp.Generators.CSharp
 
         public void GenerateVTablePointers(Class @class)
         {
-            switch (Driver.Options.Abi)
+            if (Options.IsMicrosoftAbi)
             {
-                case CppAbi.Microsoft:
-                    var index = 0;
-                    foreach (var info in @class.Layout.VFTables)
-                    {
-                        PushBlock(CSharpBlockKind.InternalsClassField);
-
-                        WriteLine("[FieldOffset({0})]", info.VFPtrFullOffset);
-                        WriteLine("public global::System.IntPtr vfptr{0};", index++);
-
-                        PopBlock(NewLineKind.BeforeNextBlock);
-                    }
-                    break;
-                case CppAbi.Itanium:
-                case CppAbi.ARM:
+                var index = 0;
+                foreach (var info in @class.Layout.VFTables)
+                {
                     PushBlock(CSharpBlockKind.InternalsClassField);
 
-                    WriteLine("[FieldOffset(0)]");
-                    WriteLine("public global::System.IntPtr vfptr0;");
+                    WriteLine("[FieldOffset({0})]", info.VFPtrFullOffset);
+                    WriteLine("public global::System.IntPtr vfptr{0};", index++);
 
                     PopBlock(NewLineKind.BeforeNextBlock);
-                    break;
+                }
+            }
+            else
+            {
+                PushBlock(CSharpBlockKind.InternalsClassField);
+
+                WriteLine("[FieldOffset(0)]");
+                WriteLine("public global::System.IntPtr vfptr0;");
+
+                PopBlock(NewLineKind.BeforeNextBlock);
             }
         }
 
