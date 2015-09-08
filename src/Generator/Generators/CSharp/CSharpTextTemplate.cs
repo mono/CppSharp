@@ -1324,9 +1324,33 @@ namespace CppSharp.Generators.CSharp
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
+        private void GenerateSaveOriginalVTables(Class @class)
+        {
+            WriteLine("void SaveOriginalVTables(global::System.IntPtr instance)");
+            WriteStartBraceIndent();
+
+            WriteLine("var native = (Internal*)instance.ToPointer();");
+            NewLine();
+
+            WriteLine("if (__OriginalVTables == null)");
+            WriteStartBraceIndent();
+
+            if (Options.IsMicrosoftAbi)
+                SaveOriginalVTablePointersMS(@class);
+            else
+                SaveOriginalVTablePointersItanium();
+
+            WriteCloseBraceIndent();
+
+            WriteCloseBraceIndent();
+            NewLine();
+        }
+
         private void GenerateVTableClassSetup(Class @class, string dictionary,
             IList<VTableComponent> entries, IList<VTableComponent> wrappedEntries)
         {
+            GenerateSaveOriginalVTables(@class);
+
             WriteLine("void SetupVTables(global::System.IntPtr instance)");
             WriteStartBraceIndent();
 
@@ -1345,20 +1369,7 @@ namespace CppSharp.Generators.CSharp
             NewLine();
 
             // Save the original vftable pointers.
-            WriteLine("if (__OriginalVTables == null)");
-            WriteStartBraceIndent();
-
-            switch (Driver.Options.Abi)
-            {
-                case CppAbi.Microsoft:
-                    SaveOriginalVTablePointersMS(@class);
-                    break;
-                case CppAbi.Itanium:
-                case CppAbi.ARM:
-                    SaveOriginalVTablePointersItanium();
-                    break;
-            }
-            WriteCloseBraceIndent();
+            WriteLine("SaveOriginalVTables(instance);");
             NewLine();
 
             // Get the _Thunks
