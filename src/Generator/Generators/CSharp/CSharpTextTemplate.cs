@@ -1965,7 +1965,9 @@ namespace CppSharp.Generators.CSharp
                 if (ShouldGenerateClassNativeField(@class))
                 {
                     WriteLine("{0} = new global::System.IntPtr(native);", Helpers.InstanceIdentifier);
-                    GenerateVTableClassSetupCall(@class, true);
+                    var dtor = @class.Destructors.FirstOrDefault();
+                    if (dtor != null && dtor.IsVirtual)
+                        GenerateVTableClassSetupCall(@class, true);
                 }
             }
             else
