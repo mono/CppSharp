@@ -401,6 +401,7 @@ namespace CppSharp.Generators.CSharp
                         WriteLine(
                             "public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, {0}> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, {0}>();",
                             @interface != null ? @interface.Name : @class.Name);
+                        WriteLine("protected void*[] __OriginalVTables;");
                     }
                     PopBlock(NewLineKind.BeforeNextBlock);
                 }
@@ -1312,7 +1313,6 @@ namespace CppSharp.Generators.CSharp
 
             const string dictionary = "System.Collections.Generic.Dictionary";
 
-            WriteLine("private void*[] __OriginalVTables;");
             WriteLine("private static void*[] __ManagedVTables;");
             WriteLine("private static void*[] _Thunks;");
             WriteLine("private static {0}<IntPtr, WeakReference> _References;", dictionary);
@@ -1324,33 +1324,9 @@ namespace CppSharp.Generators.CSharp
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
-        private void GenerateSaveOriginalVTables(Class @class)
-        {
-            WriteLine("void SaveOriginalVTables(global::System.IntPtr instance)");
-            WriteStartBraceIndent();
-
-            WriteLine("var native = (Internal*)instance.ToPointer();");
-            NewLine();
-
-            WriteLine("if (__OriginalVTables == null)");
-            WriteStartBraceIndent();
-
-            if (Options.IsMicrosoftAbi)
-                SaveOriginalVTablePointersMS(@class);
-            else
-                SaveOriginalVTablePointersItanium();
-
-            WriteCloseBraceIndent();
-
-            WriteCloseBraceIndent();
-            NewLine();
-        }
-
         private void GenerateVTableClassSetup(Class @class, string dictionary,
             IList<VTableComponent> entries, IList<VTableComponent> wrappedEntries)
         {
-            GenerateSaveOriginalVTables(@class);
-
             WriteLine("void SetupVTables(global::System.IntPtr instance)");
             WriteStartBraceIndent();
 
@@ -1369,7 +1345,15 @@ namespace CppSharp.Generators.CSharp
             NewLine();
 
             // Save the original vftable pointers.
-            WriteLine("SaveOriginalVTables(instance);");
+            WriteLine("if (__OriginalVTables == null)");
+            WriteStartBraceIndent();
+
+            if (Driver.Options.IsMicrosoftAbi)
+                SaveOriginalVTablePointersMS(@class);
+            else
+                SaveOriginalVTablePointersItanium();
+
+            WriteCloseBraceIndent();
             NewLine();
 
             // Get the _Thunks
@@ -1634,7 +1618,9 @@ namespace CppSharp.Generators.CSharp
             WriteStartBraceIndent();
 
             WriteLine("if (!_References.ContainsKey(instance))");
-            WriteLineIndent("throw new global::System.Exception(\"No managed instance was found\");");
+            WriteLineIndent(method.IsDestructor
+                ? "return;"
+                : "throw new global::System.Exception(\"No managed instance was found\");");
             NewLine();
 
             WriteLine("var {0} = ({1}) _References[instance].Target;", Helpers.TargetIdentifier, @class.Name);
@@ -1894,6 +1880,11 @@ namespace CppSharp.Generators.CSharp
                     Helpers.DummyIdentifier);
                 WriteLine("NativeToManagedMap.TryRemove({0}, out {1});",
                     Helpers.InstanceIdentifier, Helpers.DummyIdentifier);
+                if (@class.IsDynamic && GetUniqueVTableMethodEntries(@class).Count != 0)
+                {
+                    WriteLine("if (_References != null)");
+                    WriteLineIndent("_References.Remove({0});", Helpers.InstanceIdentifier);
+                }
             }
 
             var dtor = @class.Destructors.FirstOrDefault();
@@ -1974,7 +1965,9 @@ namespace CppSharp.Generators.CSharp
                 if (ShouldGenerateClassNativeField(@class))
                 {
                     WriteLine("{0} = new global::System.IntPtr(native);", Helpers.InstanceIdentifier);
-                    GenerateVTableClassSetupCall(@class, true);
+                    var dtor = @class.Destructors.FirstOrDefault();
+                    if (dtor != null && dtor.IsVirtual)
+                        GenerateVTableClassSetupCall(@class, true);
                 }
             }
             else
