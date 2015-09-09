@@ -401,6 +401,7 @@ namespace CppSharp.Generators.CSharp
                         WriteLine(
                             "public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, {0}> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, {0}>();",
                             @interface != null ? @interface.Name : @class.Name);
+                        WriteLine("protected void*[] __OriginalVTables;");
                     }
                     PopBlock(NewLineKind.BeforeNextBlock);
                 }
@@ -1312,7 +1313,6 @@ namespace CppSharp.Generators.CSharp
 
             const string dictionary = "System.Collections.Generic.Dictionary";
 
-            WriteLine("private void*[] __OriginalVTables;");
             WriteLine("private static void*[] __ManagedVTables;");
             WriteLine("private static void*[] _Thunks;");
             WriteLine("private static {0}<IntPtr, WeakReference> _References;", dictionary);
@@ -1878,12 +1878,26 @@ namespace CppSharp.Generators.CSharp
                     Helpers.DummyIdentifier);
                 WriteLine("NativeToManagedMap.TryRemove({0}, out {1});",
                     Helpers.InstanceIdentifier, Helpers.DummyIdentifier);
+                if (@class.IsDynamic && GetUniqueVTableMethodEntries(@class).Count != 0)
+                {
+                    WriteLine("if (_References != null)");
+                    WriteLineIndent("_References.Remove({0});", Helpers.InstanceIdentifier);
+
+                    if (Options.IsMicrosoftAbi)
+                        for (var i = 0; i < @class.Layout.VFTables.Count; i++)
+                            WriteLine("((Internal*) {0})->vfptr{1} = new global::System.IntPtr(__OriginalVTables[{1}]);",
+                                Helpers.InstanceIdentifier, i);
+                    else
+                        WriteLine("((Internal*) {0})->vfptr0 = new global::System.IntPtr(__OriginalVTables[0]);",
+                            Helpers.InstanceIdentifier);
+                }
             }
 
             var dtor = @class.Destructors.FirstOrDefault();
-            if (ShouldGenerateClassNativeField(@class) && dtor != null)
+            if (ShouldGenerateClassNativeField(@class))
             {
-                if (dtor.Access != AccessSpecifier.Private && @class.HasNonTrivialDestructor && !dtor.IsPure)
+                if (dtor != null && dtor.Access != AccessSpecifier.Private &&
+                    @class.HasNonTrivialDestructor && !dtor.IsPure)
                 {
                     NativeLibrary library;
                     if (!Options.CheckSymbols ||
@@ -1899,10 +1913,7 @@ namespace CppSharp.Generators.CSharp
                             Helpers.InstanceIdentifier, implicitArg);
                     }
                 }
-            }
 
-            if (@class.IsRefType)
-            {
                 WriteLine("if ({0})", Helpers.OwnsNativeInstanceIdentifier);
                 WriteLineIndent("Marshal.FreeHGlobal({0});", Helpers.InstanceIdentifier);
             }
