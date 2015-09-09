@@ -401,6 +401,7 @@ namespace CppSharp.Generators.CSharp
                         WriteLine(
                             "public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, {0}> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, {0}>();",
                             @interface != null ? @interface.Name : @class.Name);
+                        WriteLine("protected void*[] __OriginalVTables;");
                     }
                     PopBlock(NewLineKind.BeforeNextBlock);
                 }
@@ -1312,7 +1313,6 @@ namespace CppSharp.Generators.CSharp
 
             const string dictionary = "System.Collections.Generic.Dictionary";
 
-            WriteLine("private void*[] __OriginalVTables;");
             WriteLine("private static void*[] __ManagedVTables;");
             WriteLine("private static void*[] _Thunks;");
             WriteLine("private static {0}<IntPtr, WeakReference> _References;", dictionary);
