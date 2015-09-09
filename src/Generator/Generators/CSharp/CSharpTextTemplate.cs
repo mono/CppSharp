@@ -1618,7 +1618,9 @@ namespace CppSharp.Generators.CSharp
             WriteStartBraceIndent();
 
             WriteLine("if (!_References.ContainsKey(instance))");
-            WriteLineIndent("throw new global::System.Exception(\"No managed instance was found\");");
+            WriteLineIndent(method.IsDestructor
+                ? "return;"
+                : "throw new global::System.Exception(\"No managed instance was found\");");
             NewLine();
 
             WriteLine("var {0} = ({1}) _References[instance].Target;", Helpers.TargetIdentifier, @class.Name);
@@ -1878,6 +1880,11 @@ namespace CppSharp.Generators.CSharp
                     Helpers.DummyIdentifier);
                 WriteLine("NativeToManagedMap.TryRemove({0}, out {1});",
                     Helpers.InstanceIdentifier, Helpers.DummyIdentifier);
+                if (@class.IsDynamic && GetUniqueVTableMethodEntries(@class).Count != 0)
+                {
+                    WriteLine("if (_References != null)");
+                    WriteLineIndent("_References.Remove({0});", Helpers.InstanceIdentifier);
+                }
             }
 
             var dtor = @class.Destructors.FirstOrDefault();
