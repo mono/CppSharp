@@ -1348,10 +1348,7 @@ namespace CppSharp.Generators.CSharp
             WriteLine("if (__OriginalVTables == null)");
             WriteStartBraceIndent();
 
-            if (Driver.Options.IsMicrosoftAbi)
-                SaveOriginalVTablePointersMS(@class);
-            else
-                SaveOriginalVTablePointersItanium();
+            SaveOriginalVTablePointers(@class.Layout.VFTables);
 
             WriteCloseBraceIndent();
             NewLine();
@@ -1390,20 +1387,20 @@ namespace CppSharp.Generators.CSharp
             NewLine();
         }
 
-        private void SaveOriginalVTablePointersMS(Class @class)
+        private void SaveOriginalVTablePointers(ICollection<VFTableInfo> vfTables)
         {
-            WriteLine("__OriginalVTables = new void*[{0}];", @class.Layout.VFTables.Count);
-
-            for (int i = 0; i < @class.Layout.VFTables.Count; i++)
+            if (Driver.Options.IsMicrosoftAbi)
             {
-                WriteLine("__OriginalVTables[{0}] = native->vfptr{0}.ToPointer();", i);
-            }
-        }
+                WriteLine("__OriginalVTables = new void*[{0}];", vfTables.Count);
 
-        private void SaveOriginalVTablePointersItanium()
-        {
-            WriteLine("__OriginalVTables = new void*[1];");
-            WriteLine("__OriginalVTables[0] = native->vfptr0.ToPointer();");
+                for (var i = 0; i < vfTables.Count; i++)
+                    WriteLine("__OriginalVTables[{0}] = native->vfptr{0}.ToPointer();", i);
+            }
+            else
+            {
+                WriteLine("__OriginalVTables = new void*[1];");
+                WriteLine("__OriginalVTables[0] = native->vfptr0.ToPointer();");
+            }
         }
 
         private void AllocateNewVTablesMS(Class @class, IList<VTableComponent> entries,
@@ -1466,8 +1463,7 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateVTableClassSetupCall(Class @class, bool addPointerGuard = false)
         {
-            var entries = GetUniqueVTableMethodEntries(@class);
-            if (@class.IsDynamic && entries.Count != 0)
+            if (@class.IsDynamic && GetUniqueVTableMethodEntries(@class).Count != 0)
             {
                 // called from internal ctors which may have been passed an IntPtr.Zero
                 if (addPointerGuard)
@@ -1969,7 +1965,19 @@ namespace CppSharp.Generators.CSharp
                 if (ShouldGenerateClassNativeField(@class))
                 {
                     WriteLine("{0} = new global::System.IntPtr(native);", Helpers.InstanceIdentifier);
-                    GenerateVTableClassSetupCall(@class, true);
+                    var dtor = @class.Destructors.FirstOrDefault();
+                    if (dtor != null && dtor.IsVirtual)
+                        GenerateVTableClassSetupCall(@class, true);
+                    else
+                    {
+                        if (@class.IsDynamic && GetUniqueVTableMethodEntries(@class).Count != 0)
+                        {
+                            WriteLine("if (native != null)");
+                            WriteStartBraceIndent();
+                            SaveOriginalVTablePointers(@class.Layout.VFTables);
+                            WriteCloseBraceIndent();
+                        }
+                    }
                 }
             }
             else
