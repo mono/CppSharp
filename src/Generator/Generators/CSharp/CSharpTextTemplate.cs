@@ -1315,7 +1315,6 @@ namespace CppSharp.Generators.CSharp
 
             WriteLine("private static void*[] __ManagedVTables;");
             WriteLine("private static void*[] _Thunks;");
-            WriteLine("private static {0}<IntPtr, WeakReference> _References;", dictionary);
             NewLine();
 
             GenerateVTableClassSetup(@class, dictionary, entries, wrappedEntries);
@@ -1330,18 +1329,10 @@ namespace CppSharp.Generators.CSharp
             WriteLine("void SetupVTables()");
             WriteStartBraceIndent();
 
-            WriteLine("var native = (Internal*) {0}.ToPointer();", Helpers.InstanceIdentifier);
-            NewLine();
-
-            WriteLine("if (_References == null)");
-            WriteLineIndent("_References = new {0}<IntPtr, WeakReference>();", dictionary);
-            NewLine();
-
-            WriteLine("if (_References.ContainsKey({0}))", Helpers.InstanceIdentifier);
+            WriteLine("if (NativeToManagedMap.ContainsKey({0}))", Helpers.InstanceIdentifier);
             WriteLineIndent("return;");
 
-            NewLine();
-            WriteLine("_References[{0}] = new WeakReference(this);", Helpers.InstanceIdentifier);
+            WriteLine("var native = (Internal*) {0}.ToPointer();", Helpers.InstanceIdentifier);
             NewLine();
 
             // Save the original vftable pointers.
@@ -1613,11 +1604,11 @@ namespace CppSharp.Generators.CSharp
                 string.Join(", ", @params));
             WriteStartBraceIndent();
 
-            WriteLine("if (!_References.ContainsKey(instance))");
+            WriteLine("if (!NativeToManagedMap.ContainsKey(instance))");
             WriteLineIndent("throw new global::System.Exception(\"No managed instance was found\");");
             NewLine();
 
-            WriteLine("var {0} = ({1}) _References[instance].Target;", Helpers.TargetIdentifier, @class.Name);
+            WriteLine("var {0} = ({1}) NativeToManagedMap[instance];", Helpers.TargetIdentifier, @class.Name);
             GenerateVTableManagedCall(method);
 
             WriteCloseBraceIndent();
@@ -1876,9 +1867,6 @@ namespace CppSharp.Generators.CSharp
                     Helpers.InstanceIdentifier, Helpers.DummyIdentifier);
                 if (@class.IsDynamic && GetUniqueVTableMethodEntries(@class).Count != 0)
                 {
-                    WriteLine("if (_References != null)");
-                    WriteLineIndent("_References.Remove({0});", Helpers.InstanceIdentifier);
-
                     if (Options.IsMicrosoftAbi)
                         for (var i = 0; i < @class.Layout.VFTables.Count; i++)
                             WriteLine("((Internal*) {0})->vfptr{1} = new global::System.IntPtr(__OriginalVTables[{1}]);",
@@ -2408,7 +2396,6 @@ namespace CppSharp.Generators.CSharp
             WriteLine("{0} = Marshal.AllocHGlobal({1});", Helpers.InstanceIdentifier,
                 @class.Layout.Size);
             WriteLine("{0} = true;", Helpers.OwnsNativeInstanceIdentifier);
-            WriteLine("NativeToManagedMap[{0}] = this;", Helpers.InstanceIdentifier);
 
             if (method.IsCopyConstructor)
             {
@@ -2425,6 +2412,7 @@ namespace CppSharp.Generators.CSharp
             }
 
             GenerateVTableClassSetupCall(@class);
+            WriteLine("NativeToManagedMap[{0}] = this;", Helpers.InstanceIdentifier);
         }
 
         public void GenerateInternalFunctionCall(Function function,
