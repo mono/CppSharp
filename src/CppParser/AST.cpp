@@ -178,6 +178,10 @@ Declaration::Declaration(const Declaration& rhs)
 {
 }
 
+Declaration::~Declaration()
+{
+}
+
 DEF_STRING(Declaration, Name)
 DEF_STRING(Declaration, DebugText)
 DEF_VECTOR(Declaration, PreprocessedEntity*, PreprocessedEntities)
@@ -492,6 +496,12 @@ DEF_VECTOR(CXXConstructExpr, Expression*, Arguments)
 Parameter::Parameter() : Declaration(DeclarationKind::Parameter),
     IsIndirect(false), HasDefaultValue(false), DefaultArgument(0) {}
 
+Parameter::~Parameter()
+{
+    if (DefaultArgument)
+        delete DefaultArgument;
+}
+
 Function::Function() 
     : Declaration(DeclarationKind::Function)
     , IsReturnIndirect(false)
@@ -567,6 +577,12 @@ Class::Class()
     , IsExternCContext(false)
     , Layout(0)
 {
+}
+
+Class::~Class()
+{
+    if (Layout)
+        delete Layout;
 }
 
 DEF_VECTOR(Class, BaseClassSpecifier*, Bases)

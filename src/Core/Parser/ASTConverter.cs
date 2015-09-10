@@ -957,8 +957,6 @@ namespace CppSharp
             expression.Declaration = typeConverter.declConverter.Visit(statement.Decl);
             expression.String = statement.String;
 
-            NativeObjects.Add(statement);
-
             return expression;
         }
 
@@ -1313,8 +1311,6 @@ namespace CppSharp
                 var _vftableInfo = VisitVFTableInfo(vftableInfo);
                 _layout.VFTables.Add(_vftableInfo);
             }
-
-            NativeObjects.Add(layout);
 
             return _layout;
         }

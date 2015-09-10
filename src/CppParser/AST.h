@@ -387,6 +387,7 @@ class CS_API Declaration
 public:
     Declaration(DeclarationKind kind);
     Declaration(const Declaration&);
+    ~Declaration();
 
     DeclarationKind Kind;
     AccessSpecifier Access;
@@ -522,6 +523,7 @@ class CS_API Parameter : public Declaration
 {
 public:
     Parameter();
+    ~Parameter();
 
     CppSharp::CppParser::AST::QualifiedType QualifiedType;
     bool IsIndirect;
@@ -709,6 +711,7 @@ class CS_API Class : public DeclarationContext
 {
 public:
     Class();
+    ~Class();
 
     VECTOR(BaseClassSpecifier*, Bases)
     VECTOR(Field*, Fields)
