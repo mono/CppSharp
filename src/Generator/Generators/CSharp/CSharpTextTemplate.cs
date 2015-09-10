@@ -1327,21 +1327,21 @@ namespace CppSharp.Generators.CSharp
         private void GenerateVTableClassSetup(Class @class, string dictionary,
             IList<VTableComponent> entries, IList<VTableComponent> wrappedEntries)
         {
-            WriteLine("void SetupVTables(global::System.IntPtr instance)");
+            WriteLine("void SetupVTables()");
             WriteStartBraceIndent();
 
-            WriteLine("var native = (Internal*)instance.ToPointer();");
+            WriteLine("var native = (Internal*) {0}.ToPointer();", Helpers.InstanceIdentifier);
             NewLine();
 
             WriteLine("if (_References == null)");
             WriteLineIndent("_References = new {0}<IntPtr, WeakReference>();", dictionary);
             NewLine();
 
-            WriteLine("if (_References.ContainsKey(instance))");
+            WriteLine("if (_References.ContainsKey({0}))", Helpers.InstanceIdentifier);
             WriteLineIndent("return;");
 
             NewLine();
-            WriteLine("_References[instance] = new WeakReference(this);");
+            WriteLine("_References[{0}] = new WeakReference(this);", Helpers.InstanceIdentifier);
             NewLine();
 
             // Save the original vftable pointers.
@@ -1473,7 +1473,7 @@ namespace CppSharp.Generators.CSharp
                     PushIndent();
                 }
 
-                WriteLine("SetupVTables({0});", Generator.GeneratedIdentifier("Instance"));
+                WriteLine("SetupVTables();");
 
                 if (addPointerGuard)
                     PopIndent();
