@@ -1475,7 +1475,7 @@ namespace CppSharp.Generators.CSharp
         {
             if (method.IsDestructor)
             {
-                WriteLine("{0}.DestroyNativeInstance();", Helpers.TargetIdentifier);
+                WriteLine("{0}.Dispose(false);", Helpers.TargetIdentifier);
                 return;
             }
 
@@ -1784,11 +1784,13 @@ namespace CppSharp.Generators.CSharp
             if (@class.IsRefType)
             {
                 GenerateClassFinalizer(@class);
-                GenerateDisposeMethods(@class);
+                // only root bases need a Dispose
+                if (ShouldGenerateClassNativeField(@class))
+                    GenerateDisposeMethods(@class);
             }
         }
 
-        private void GenerateClassFinalizer(Class @class)
+        private void GenerateClassFinalizer(INamedDecl @class)
         {
             if (!Options.GenerateFinalizers)
                 return;
@@ -1836,21 +1838,9 @@ namespace CppSharp.Generators.CSharp
 
             WriteLine("void Dispose(bool disposing)");
             WriteStartBraceIndent();
-            const string destroyNativeInstance = "DestroyNativeInstance";
-            WriteLine("{0}(false);", destroyNativeInstance);
-            if (hasBaseClass)
-                WriteLine("base.Dispose(disposing);");
-            WriteCloseBraceIndent();
-            NewLine();
-
-            WriteLine("public {0} void {1}()", hasBaseClass ? "override" : "virtual", destroyNativeInstance);
-            WriteStartBraceIndent();
-            WriteLine("{0}(true);", destroyNativeInstance);
-            WriteCloseBraceIndent();
-            NewLine();
-
-            WriteLine("private void {0}(bool force)", destroyNativeInstance);
-            WriteStartBraceIndent();
+            WriteLine("if (!{0} && disposing)", Helpers.OwnsNativeInstanceIdentifier);
+            WriteLineIndent("throw new global::System.InvalidOperationException" +
+                "(\"Managed instances owned by native code cannot be disposed of.\");");
 
             if (@class.IsRefType)
             {
@@ -1878,33 +1868,21 @@ namespace CppSharp.Generators.CSharp
             }
 
             var dtor = @class.Destructors.FirstOrDefault();
-            if (ShouldGenerateClassNativeField(@class))
+            if (dtor != null && dtor.Access != AccessSpecifier.Private &&
+                @class.HasNonTrivialDestructor && !dtor.IsPure)
             {
-                if (dtor != null && dtor.Access != AccessSpecifier.Private &&
-                    @class.HasNonTrivialDestructor && !dtor.IsPure)
+                NativeLibrary library;
+                if (!Options.CheckSymbols ||
+                    Driver.Symbols.FindLibraryBySymbol(dtor.Mangled, out library))
                 {
-                    NativeLibrary library;
-                    if (!Options.CheckSymbols ||
-                        Driver.Symbols.FindLibraryBySymbol(dtor.Mangled, out library))
-                    {
-                        WriteLine("if ({0} || force)", Helpers.OwnsNativeInstanceIdentifier);
-
-                        if (dtor.IsVirtual)
-                        {
-                            WriteStartBraceIndent();
-                            GenerateVirtualFunctionCall(dtor, @class);
-                            WriteCloseBraceIndent();
-                        }
-                        else
-                        {
-                            GenerateInternalFunctionCall(dtor);
-                        }
-                    }
+                    if (dtor.IsVirtual)
+                        GenerateVirtualFunctionCall(dtor, @class);
+                    else
+                        GenerateInternalFunctionCall(dtor);
                 }
-
-                WriteLine("if ({0})", Helpers.OwnsNativeInstanceIdentifier);
-                WriteLineIndent("Marshal.FreeHGlobal({0});", Helpers.InstanceIdentifier);
             }
+
+            WriteLine("Marshal.FreeHGlobal({0});", Helpers.InstanceIdentifier);
 
             WriteCloseBraceIndent();
             PopBlock(NewLineKind.BeforeNextBlock);
