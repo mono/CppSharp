@@ -857,7 +857,7 @@ namespace CppSharp.Generators.CSharp
                 if (function.SynthKind == FunctionSynthKind.AbstractImplCall)
                 {
                     string delegateId;
-                    Write(GetAbstractCallDelegate(function, @class.BaseClass, out delegateId));
+                    Write(GetVirtualCallDelegate(function, @class.BaseClass, out delegateId));
                     GenerateFunctionCall(delegateId, new List<Parameter> { param }, function);
                 }
                 else
@@ -1015,7 +1015,7 @@ namespace CppSharp.Generators.CSharp
                 WriteStartBraceIndent();
                 var method = function as Method;
                 if (method != null && method.SynthKind == FunctionSynthKind.AbstractImplCall)
-                    GenerateAbstractImplCall(method, @class.BaseClass);
+                    GenerateVirtualFunctionCall(method, @class.BaseClass);
                 else
                     GenerateInternalFunctionCall(function, function.Parameters, returnType.Type);
             }
@@ -2195,7 +2195,7 @@ namespace CppSharp.Generators.CSharp
                 }
                 else if (method.SynthKind == FunctionSynthKind.AbstractImplCall)
                 {
-                    GenerateAbstractImplCall(method, @class.BaseClass);
+                    GenerateVirtualFunctionCall(method, @class.BaseClass);
                 }
                 else if (method.IsVirtual)
                 {
@@ -2328,49 +2328,23 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
-        private void GenerateAbstractImplCall(Function function, Class @class)
+        private void GenerateVirtualFunctionCall(Function function, Class @class)
         {
             string delegateId;
-            Write(GetAbstractCallDelegate(function, @class, out delegateId));
+            Write(GetVirtualCallDelegate(function, @class, out delegateId));
             GenerateFunctionCall(delegateId, function.Parameters, function);
         }
 
-        public string GetAbstractCallDelegate(Function function, Class @class,
+        public string GetVirtualCallDelegate(Function function, Class @class,
             out string delegateId)
         {
             var virtualCallBuilder = new StringBuilder();
-            var i = VTables.GetVTableIndex(function.OriginalFunction as Method, @class);
-            virtualCallBuilder.AppendFormat("void* slot = *(void**) ((({0}.Internal*) {1})->vfptr0 + {2} * {3});",
-                @class.Name, Helpers.InstanceIdentifier, i, Driver.TargetInfo.PointerWidth / 8);
-            virtualCallBuilder.AppendLine();
-
-            string @delegate = GetVTableMethodDelegateName(function.OriginalFunction);
-            delegateId = Generator.GeneratedIdentifier(@delegate);
-
-            virtualCallBuilder.AppendFormat(
-                "var {1} = ({0}) Marshal.GetDelegateForFunctionPointer(new IntPtr(slot), typeof({0}));",
-                @delegate, delegateId);
-            virtualCallBuilder.AppendLine();
-            return virtualCallBuilder.ToString();
-        }
-
-        private void GenerateVirtualFunctionCall(Method function, Class @class)
-        {
-            string delegateId, @delegate;
-            Write(GetVirtualCallDelegate(function, @class, out delegateId, out @delegate));
-            GenerateFunctionCall(delegateId, function.Parameters, function);
-        }
-
-        public string GetVirtualCallDelegate(Method function, Class @class,
-            out string delegateId, out string @delegate)
-        {
-            var virtualCallBuilder = new StringBuilder();
-            var i = VTables.GetVTableIndex(function, @class);
-            virtualCallBuilder.AppendFormat("void* slot = *(void**) ((IntPtr)__OriginalVTables[0] + {0} * {1});",
+            var i = VTables.GetVTableIndex((Method) (function.OriginalFunction ?? function), @class);
+            virtualCallBuilder.AppendFormat("void* slot = *(void**) ((IntPtr) __OriginalVTables[0] + {0} * {1});",
                 i, Driver.TargetInfo.PointerWidth / 8);
             virtualCallBuilder.AppendLine();
 
-            @delegate = GetVTableMethodDelegateName(function.OriginalFunction ?? function);
+            var @delegate = GetVTableMethodDelegateName(function.OriginalFunction ?? function);
             delegateId = Generator.GeneratedIdentifier(@delegate);
 
             virtualCallBuilder.AppendFormat(
@@ -2568,7 +2542,7 @@ namespace CppSharp.Generators.CSharp
 
                 if (needsFixedThis)
                 {
-                    names.Insert(instanceIndex, string.Format("new global::System.IntPtr(__instancePtr)"));
+                    names.Insert(instanceIndex, "new global::System.IntPtr(__instancePtr)");
                 }
                 else
                 {
@@ -2580,7 +2554,7 @@ namespace CppSharp.Generators.CSharp
                     {
                         names.Insert(instanceIndex, Helpers.InstanceIdentifier);
                         if (method.SynthKind == FunctionSynthKind.AdjustedMethod)
-                            names[instanceIndex] += " + " + method.AdjustedOffset.ToString();
+                            names[instanceIndex] += " + " + method.AdjustedOffset;
                     }
                 }
             }
