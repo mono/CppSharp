@@ -320,6 +320,15 @@ public class CSharpTests : GeneratorTestFixture
     }
 
     [Test]
+    public void TestCallingVirtualDtor()
+    {
+        var callDtorVirtually = new CallDtorVirtually();
+        var hasVirtualDtor1 = CallDtorVirtually.GetHasVirtualDtor1(callDtorVirtually);
+        hasVirtualDtor1.Dispose();
+        Assert.That(CallDtorVirtually.Destroyed, Is.True);
+    }
+
+    [Test]
     public void TestParamTypeToInterfacePass()
     {
         var baseClass = new TestParamToInterfacePassBaseTwo();

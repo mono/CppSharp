@@ -1889,12 +1889,16 @@ namespace CppSharp.Generators.CSharp
                     {
                         WriteLine("if ({0} || force)", Helpers.OwnsNativeInstanceIdentifier);
 
-                        var implicitArg = string.Empty;
-                        if (dtor.Parameters.Any(parameter =>
-                            parameter.Kind == ParameterKind.ImplicitDestructorParameter))
-                            implicitArg = ", 0"; // Do not delete instance in MS ABI.
-                        WriteLineIndent("Internal.{0}({1}{2});", GetFunctionNativeIdentifier(dtor),
-                            Helpers.InstanceIdentifier, implicitArg);
+                        if (dtor.IsVirtual)
+                        {
+                            WriteStartBraceIndent();
+                            GenerateVirtualFunctionCall(dtor, @class);
+                            WriteCloseBraceIndent();
+                        }
+                        else
+                        {
+                            GenerateInternalFunctionCall(dtor);
+                        }
                     }
                 }
 
@@ -1908,10 +1912,11 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateNativeConstructor(Class @class)
         {
-            if (@class.IsRefType)
+            var shouldGenerateClassNativeField = ShouldGenerateClassNativeField(@class);
+            if (@class.IsRefType && shouldGenerateClassNativeField)
             {
                 PushBlock(CSharpBlockKind.Field);
-                WriteLine("private bool {0};", Helpers.OwnsNativeInstanceIdentifier);
+                WriteLine("protected bool {0};", Helpers.OwnsNativeInstanceIdentifier);
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
 
@@ -1950,7 +1955,7 @@ namespace CppSharp.Generators.CSharp
 
             if (@class.IsRefType)
             {
-                if (ShouldGenerateClassNativeField(@class))
+                if (shouldGenerateClassNativeField)
                 {
                     WriteLine("{0} = new global::System.IntPtr(native);", Helpers.InstanceIdentifier);
                     var dtor = @class.Destructors.FirstOrDefault();
@@ -2689,11 +2694,13 @@ namespace CppSharp.Generators.CSharp
             Function function = null)
         {
             PrimitiveType primitive;
+            // Do not delete instance in MS ABI.
+            var name = param.Kind == ParameterKind.ImplicitDestructorParameter ? "0" : param.Name;
             // returned structs must be blittable and bool and char aren't
             if (param.Type.IsPrimitiveType(out primitive) &&
                 primitive != PrimitiveType.Char && primitive != PrimitiveType.Bool)
             {
-                return new ParamMarshal { Name = param.Name, Param = param };
+                return new ParamMarshal { Name = name, Param = param };
             }
 
             var argName = "arg" + paramIndex.ToString(CultureInfo.InvariantCulture);
@@ -2708,7 +2715,7 @@ namespace CppSharp.Generators.CSharp
                 {
                     var qualifiedIdentifier = CSharpMarshalNativeToManagedPrinter.QualifiedIdentifier(
                                               @class.OriginalClass ?? @class);
-                    WriteLine("{0} = new {1}();", param.Name, qualifiedIdentifier);
+                    WriteLine("{0} = new {1}();", name, qualifiedIdentifier);
                 }
             }
 
@@ -2724,7 +2731,7 @@ namespace CppSharp.Generators.CSharp
 
             if (param.Type.IsPrimitiveTypeConvertibleToRef())
             {
-                WriteLine("fixed ({0} {1} = &{2})", param.Type.CSharpType(TypePrinter), argName, param.Name);
+                WriteLine("fixed ({0} {1} = &{2})", param.Type.CSharpType(TypePrinter), argName, name);
                 paramMarshal.HasFixedBlock = true;
                 WriteStartBraceIndent();
             }

@@ -549,6 +549,15 @@ private:
     Bar* bar;
 };
 
+class DLL_API CallDtorVirtually : public HasVirtualDtor1
+{
+public:
+    CallDtorVirtually();
+    ~CallDtorVirtually();
+    static bool Destroyed;
+    static HasVirtualDtor1* getHasVirtualDtor1(HasVirtualDtor1* returned);
+};
+
 class HasProtectedNestedAnonymousType
 {
 protected:

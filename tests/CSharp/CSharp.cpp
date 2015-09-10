@@ -578,6 +578,22 @@ void TestNativeToManagedMap::setPropertyWithNoVirtualDtor(Bar* bar)
     this->bar = bar;
 }
 
+CallDtorVirtually::CallDtorVirtually()
+{
+}
+
+CallDtorVirtually::~CallDtorVirtually()
+{
+    Destroyed = true;
+}
+
+bool CallDtorVirtually::Destroyed = false;
+
+HasVirtualDtor1* CallDtorVirtually::getHasVirtualDtor1(HasVirtualDtor1* returned)
+{
+    return returned;
+}
+
 void SecondaryBase::VirtualMember()
 {
 }

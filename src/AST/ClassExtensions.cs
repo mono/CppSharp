@@ -61,10 +61,10 @@ namespace CppSharp.AST
                 let baseMethod = (
                     from method in @base.Class.Methods
                     where
-                        method.OriginalName == @override.OriginalName &&
-                        method.ReturnType == @override.ReturnType &&
-                        method.Parameters.SequenceEqual(@override.Parameters,
-                            new ParameterTypeComparer())
+                        (method.OriginalName == @override.OriginalName &&
+                         method.ReturnType == @override.ReturnType &&
+                         method.Parameters.SequenceEqual(@override.Parameters, new ParameterTypeComparer())) ||
+                        (@override.IsDestructor && method.IsDestructor && method.IsVirtual)
                     select method).FirstOrDefault()
                 let rootBaseMethod = @base.Class.GetRootBaseMethod(@override, onlyFirstBase) ?? baseMethod
                 where rootBaseMethod != null || onlyFirstBase
