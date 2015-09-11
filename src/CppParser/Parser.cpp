@@ -125,6 +125,72 @@ ConvertToClangTargetCXXABI(CppSharp::CppParser::AST::CppAbi abi)
     llvm_unreachable("Unsupported C++ ABI.");
 }
 
+// We use this custom target info class to be able to set overrides to the default
+// Clang triples info. The class has protected fields so we need to override it
+// to be able to set the value of those fields.
+class CustomTargetInfo : public clang::TargetInfo
+{
+    CustomTargetInfo() = delete;
+    clang::TargetInfo& Base;
+public:
+
+    CustomTargetInfo(clang::TargetInfo& TI) : clang::TargetInfo(TI), Base(TI) { }
+
+    /// \brief Appends the target-specific \#define values for this
+    /// target set to the specified buffer.
+    virtual void getTargetDefines(const clang::LangOptions &Opts,
+        clang::MacroBuilder &Builder) const
+    {
+        return Base.getTargetDefines(Opts, Builder);
+    }
+
+    /// Return information about target-specific builtins for
+    /// the current primary target, and info about which builtins are non-portable
+    /// across the current set of primary and secondary targets.
+    virtual void getTargetBuiltins(const clang::Builtin::Info *&Records,
+        unsigned &NumRecords) const
+    {
+        return Base.getTargetBuiltins(Records, NumRecords);
+    }
+
+    /// \brief Returns the kind of __builtin_va_list type that should be used
+    /// with this target.
+    virtual BuiltinVaListKind getBuiltinVaListKind() const
+    {
+        return Base.getBuiltinVaListKind();
+    }
+
+    /// \brief Returns a string of target-specific clobbers, in LLVM format.
+    virtual const char *getClobbers() const
+    {
+        return Base.getClobbers();
+    }
+
+    virtual void getGCCRegNames(const char * const *&Names,
+        unsigned &NumNames) const
+    {
+    }
+
+    virtual void getGCCRegAliases(const GCCRegAlias *&Aliases,
+        unsigned &NumAliases) const
+    {
+    }
+
+    virtual bool validateAsmConstraint(const char *&Name,
+        TargetInfo::ConstraintInfo &info) const
+    {
+        return false;
+    }
+
+    void setParserTargetInfo(ParserTargetInfo info)
+    {
+        // TODO: Support other kinds of target overrides.
+        // For now this is all that has been needed.
+        if (info.DoubleAlign != 0)
+            this->DoubleAlign = info.DoubleAlign;
+    }
+};
+
 void Parser::SetupHeader()
 {
     using namespace clang;
@@ -191,6 +257,13 @@ void Parser::SetupHeader()
         // Try again with the default triple.
         TO->Triple = llvm::sys::getDefaultTargetTriple();
         TI = TargetInfo::CreateTargetInfo(C->getDiagnostics(), TO);
+    }
+
+    if (Opts->TargetInfo != 0)
+    {
+        auto CTI = new CustomTargetInfo(*TI);
+        CTI->setParserTargetInfo(*Opts->TargetInfo);
+        TI = CTI;
     }
 
     assert(TI && "Expected valid target info");

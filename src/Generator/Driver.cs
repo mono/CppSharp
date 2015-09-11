@@ -139,7 +139,8 @@ namespace CppSharp
                 NoBuiltinIncludes = Options.NoBuiltinIncludes,
                 MicrosoftMode = Options.MicrosoftMode,
                 Verbose = Options.Verbose,
-                LanguageVersion = Options.LanguageVersion
+                LanguageVersion = Options.LanguageVersion,
+                TargetInfo = Options.TargetInfo
             };
 
             // This eventually gets passed to Clang's MSCompatibilityVersion, which
