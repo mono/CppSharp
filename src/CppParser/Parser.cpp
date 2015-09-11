@@ -252,8 +252,8 @@ void Parser::SetupHeader()
 #ifdef _MSC_VER
     if (Opts->MicrosoftMode)
     {
-		LangOpts.MSCompatibilityVersion = Opts->ToolSetToUse;
-		if (!LangOpts.MSCompatibilityVersion) LangOpts.MSCompatibilityVersion = 1700;
+        LangOpts.MSCompatibilityVersion = Opts->ToolSetToUse;
+        if (!LangOpts.MSCompatibilityVersion) LangOpts.MSCompatibilityVersion = 1700;
     }
 #endif
 
@@ -2155,7 +2155,7 @@ static const clang::CodeGen::CGFunctionInfo& GetCodeGenFuntionInfo(
     if (auto CD = dyn_cast<clang::CXXConstructorDecl>(FD)) {
         return CodeGenTypes->arrangeCXXStructorDeclaration(CD, clang::CodeGen::StructorType::Base);
     } else if (auto DD = dyn_cast<clang::CXXDestructorDecl>(FD)) {
-		return CodeGenTypes->arrangeCXXStructorDeclaration(DD, clang::CodeGen::StructorType::Base);
+        return CodeGenTypes->arrangeCXXStructorDeclaration(DD, clang::CodeGen::StructorType::Base);
     }
 
     return CodeGenTypes->arrangeFunctionDeclaration(FD);
@@ -3100,7 +3100,7 @@ ParserResult* Parser::ParseHeader(const std::string& File, ParserResult* res)
 
     SetupHeader();
 
-	std::unique_ptr<clang::SemaConsumer> SC(new clang::SemaConsumer());
+    std::unique_ptr<clang::SemaConsumer> SC(new clang::SemaConsumer());
     C->setASTConsumer(std::move(SC));
 
     C->createSema(clang::TU_Complete, 0);
@@ -3110,9 +3110,9 @@ ParserResult* Parser::ParseHeader(const std::string& File, ParserResult* res)
 
     // Check that the file is reachable.
     const clang::DirectoryLookup *Dir;
-	llvm::SmallVector<
-		std::pair<const clang::FileEntry *, const clang::DirectoryEntry *>,
-		0> Includers;
+    llvm::SmallVector<
+        std::pair<const clang::FileEntry *, const clang::DirectoryEntry *>,
+        0> Includers;
 
     auto FileEntry = C->getPreprocessor().getHeaderSearchInfo().LookupFile(File,
         clang::SourceLocation(), /*isAngled*/true,
@@ -3350,7 +3350,7 @@ ParserResult* Parser::ParseLibrary(const std::string& File, ParserResult* res)
     }
     std::unique_ptr<llvm::MemoryBuffer> FileBuf(std::move(Buffer.get()));
     auto BinaryOrErr = llvm::object::createBinary(FileBuf->getMemBufferRef(),
-		&llvm::getGlobalContext());
+        &llvm::getGlobalContext());
     if (BinaryOrErr.getError())
     {
         res->Kind = ParserResultKind::Error;
