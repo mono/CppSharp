@@ -146,13 +146,13 @@ namespace CppSharp
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                    EntryPoint="_ZN8CppSharp9CppParser16ParserTargetInfoC2ERKS1_")]
-                internal static extern void cctor_0(global::System.IntPtr instance, global::System.IntPtr _0);
+                    EntryPoint="_ZN8CppSharp9CppParser16ParserTargetInfoC2Ev")]
+                internal static extern void ctor_0(global::System.IntPtr instance);
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                    EntryPoint="_ZN8CppSharp9CppParser16ParserTargetInfoC2Ev")]
-                internal static extern void ctor_2(global::System.IntPtr instance);
+                    EntryPoint="_ZN8CppSharp9CppParser16ParserTargetInfoC2ERKS1_")]
+                internal static extern void cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -189,7 +189,7 @@ namespace CppSharp
             private static ParserTargetInfo.Internal* __CopyValue(ParserTargetInfo.Internal native)
             {
                 var ret = Marshal.AllocHGlobal(160);
-                CppSharp.Parser.ParserTargetInfo.Internal.cctor_0(ret, new global::System.IntPtr(&native));
+                CppSharp.Parser.ParserTargetInfo.Internal.cctor_1(ret, new global::System.IntPtr(&native));
                 return (ParserTargetInfo.Internal*) ret;
             }
 
@@ -205,20 +205,20 @@ namespace CppSharp
                 __Instance = new global::System.IntPtr(native);
             }
 
+            public ParserTargetInfo()
+            {
+                __Instance = Marshal.AllocHGlobal(160);
+                __ownsNativeInstance = true;
+                Internal.ctor_0(__Instance);
+                NativeToManagedMap[__Instance] = this;
+            }
+
             public ParserTargetInfo(CppSharp.Parser.ParserTargetInfo _0)
             {
                 __Instance = Marshal.AllocHGlobal(160);
                 __ownsNativeInstance = true;
                 var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                Internal.cctor_0(__Instance, arg0);
-                NativeToManagedMap[__Instance] = this;
-            }
-
-            public ParserTargetInfo()
-            {
-                __Instance = Marshal.AllocHGlobal(160);
-                __ownsNativeInstance = true;
-                Internal.ctor_2(__Instance);
+                Internal.cctor_1(__Instance, arg0);
                 NativeToManagedMap[__Instance] = this;
             }
 

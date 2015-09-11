@@ -58,6 +58,8 @@ struct CS_API ParserOptions
     bool MicrosoftMode;
     bool Verbose;
     LanguageVersion LanguageVersion;
+
+    ParserTargetInfo* TargetInfo;
 };
 
 enum class ParserDiagnosticLevel

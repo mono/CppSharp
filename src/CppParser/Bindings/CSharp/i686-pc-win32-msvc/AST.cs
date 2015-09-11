@@ -4923,7 +4923,7 @@ namespace CppSharp
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="??0Parameter@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                    internal static extern global::System.IntPtr cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -4944,7 +4944,7 @@ namespace CppSharp
                 private static Parameter.Internal* __CopyValue(Parameter.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(148);
-                    CppSharp.Parser.AST.Parameter.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.Parameter.Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return (Parameter.Internal*) ret;
                 }
 
@@ -4975,7 +4975,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(148);
                     __ownsNativeInstance = true;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_1(__Instance, arg0);
                     NativeToManagedMap[__Instance] = this;
                 }
 
@@ -6805,7 +6805,7 @@ namespace CppSharp
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="??0Class@AST@CppParser@CppSharp@@QAE@ABV0123@@Z")]
-                    internal static extern global::System.IntPtr cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                    internal static extern global::System.IntPtr cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -6906,7 +6906,7 @@ namespace CppSharp
                 private static Class.Internal* __CopyValue(Class.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(300);
-                    CppSharp.Parser.AST.Class.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.Class.Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return (Class.Internal*) ret;
                 }
 
@@ -6937,7 +6937,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(300);
                     __ownsNativeInstance = true;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_1(__Instance, arg0);
                     NativeToManagedMap[__Instance] = this;
                 }
 

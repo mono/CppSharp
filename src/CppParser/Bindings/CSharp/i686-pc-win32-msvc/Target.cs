@@ -147,7 +147,7 @@ namespace CppSharp
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                     EntryPoint="??0ParserTargetInfo@CppParser@CppSharp@@QAE@XZ")]
-                internal static extern global::System.IntPtr ctor_1(global::System.IntPtr instance);
+                internal static extern global::System.IntPtr ctor_0(global::System.IntPtr instance);
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -209,7 +209,7 @@ namespace CppSharp
             {
                 __Instance = Marshal.AllocHGlobal(176);
                 __ownsNativeInstance = true;
-                Internal.ctor_1(__Instance);
+                Internal.ctor_0(__Instance);
                 NativeToManagedMap[__Instance] = this;
             }
 

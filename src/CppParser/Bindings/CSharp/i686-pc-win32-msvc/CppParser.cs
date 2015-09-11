@@ -47,7 +47,7 @@ namespace CppSharp
 
         public unsafe partial class ParserOptions : IDisposable
         {
-            [StructLayout(LayoutKind.Explicit, Size = 140)]
+            [StructLayout(LayoutKind.Explicit, Size = 144)]
             public partial struct Internal
             {
                 [FieldOffset(96)]
@@ -73,6 +73,9 @@ namespace CppSharp
 
                 [FieldOffset(136)]
                 public CppSharp.Parser.LanguageVersion LanguageVersion;
+
+                [FieldOffset(140)]
+                public global::System.IntPtr TargetInfo;
 
                 [SuppressUnmanagedCodeSecurity]
                 [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -248,7 +251,7 @@ namespace CppSharp
 
             private static ParserOptions.Internal* __CopyValue(ParserOptions.Internal native)
             {
-                var ret = Marshal.AllocHGlobal(140);
+                var ret = Marshal.AllocHGlobal(144);
                 CppSharp.Parser.ParserOptions.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                 return (ParserOptions.Internal*) ret;
             }
@@ -267,7 +270,7 @@ namespace CppSharp
 
             public ParserOptions()
             {
-                __Instance = Marshal.AllocHGlobal(140);
+                __Instance = Marshal.AllocHGlobal(144);
                 __ownsNativeInstance = true;
                 Internal.ctor_0(__Instance);
                 NativeToManagedMap[__Instance] = this;
@@ -275,7 +278,7 @@ namespace CppSharp
 
             public ParserOptions(CppSharp.Parser.ParserOptions _0)
             {
-                __Instance = Marshal.AllocHGlobal(140);
+                __Instance = Marshal.AllocHGlobal(144);
                 __ownsNativeInstance = true;
                 var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
                 Internal.cctor_2(__Instance, arg0);
@@ -597,6 +600,24 @@ namespace CppSharp
                 set
                 {
                     ((Internal*) __Instance)->LanguageVersion = value;
+                }
+            }
+
+            public CppSharp.Parser.ParserTargetInfo TargetInfo
+            {
+                get
+                {
+                    CppSharp.Parser.ParserTargetInfo __result0;
+                    if (((Internal*) __Instance)->TargetInfo == IntPtr.Zero) __result0 = null;
+                    else if (CppSharp.Parser.ParserTargetInfo.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->TargetInfo))
+                        __result0 = (CppSharp.Parser.ParserTargetInfo) CppSharp.Parser.ParserTargetInfo.NativeToManagedMap[((Internal*) __Instance)->TargetInfo];
+                    else __result0 = CppSharp.Parser.ParserTargetInfo.__CreateInstance(((Internal*) __Instance)->TargetInfo);
+                    return __result0;
+                }
+
+                set
+                {
+                    ((Internal*) __Instance)->TargetInfo = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
                 }
             }
         }

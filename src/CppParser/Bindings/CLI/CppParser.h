@@ -175,6 +175,12 @@ namespace CppSharp
                 void set(CppSharp::Parser::LanguageVersion);
             }
 
+            property CppSharp::Parser::ParserTargetInfo^ TargetInfo
+            {
+                CppSharp::Parser::ParserTargetInfo^ get();
+                void set(CppSharp::Parser::ParserTargetInfo^);
+            }
+
             System::String^ getArguments(unsigned int i);
 
             void addArguments(System::String^ s);
