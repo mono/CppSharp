@@ -5124,6 +5124,9 @@ namespace {
 
             // Darwin on iOS uses a variant of the ARM C++ ABI.
             TheCXXABI.set(TargetCXXABI::iOS);
+
+            if (Triple.getArchName() == "armv7k")
+                DoubleAlign = 64;
         }
     };
 
