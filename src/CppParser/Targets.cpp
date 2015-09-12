@@ -7637,3 +7637,9 @@ const std::shared_ptr<TargetOptions> &Opts) {
 
     return Target.release();
 }
+
+TargetInfo * CreateTargetInfo(DiagnosticsEngine &Diags,
+    const std::shared_ptr<TargetOptions> &Opts)
+{
+    return TargetInfo::CreateTargetInfo(Diags, Opts);
+}

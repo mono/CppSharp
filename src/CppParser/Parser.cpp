@@ -125,6 +125,10 @@ ConvertToClangTargetCXXABI(CppSharp::CppParser::AST::CppAbi abi)
     llvm_unreachable("Unsupported C++ ABI.");
 }
 
+// Defined in Targets.cpp
+clang::TargetInfo * CreateTargetInfo(clang::DiagnosticsEngine &Diags,
+    const std::shared_ptr<clang::TargetOptions> &Opts);
+
 void Parser::SetupHeader()
 {
     using namespace clang;
@@ -184,7 +188,7 @@ void Parser::SetupHeader()
     if (!Opts->TargetTriple.empty())
         TO->Triple = llvm::Triple::normalize(Opts->TargetTriple);
 
-    TargetInfo* TI = TargetInfo::CreateTargetInfo(C->getDiagnostics(), TO);
+    TargetInfo* TI = CreateTargetInfo(C->getDiagnostics(), TO);
     if (!TI)
     {
         // We might have no target info due to an invalid user-provided triple.
