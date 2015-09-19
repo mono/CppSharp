@@ -1323,7 +1323,7 @@ Field* Parser::WalkFieldCXX(clang::FieldDecl* FD, Class* Class)
     F->Access = ConvertToAccess(FD->getAccess());
     F->Class = Class;
     F->IsBitField = FD->isBitField();
-    if (F->IsBitField && !F->IsDependent)
+    if (F->IsBitField && !F->IsDependent && !FD->getBitWidth()->isInstantiationDependent())
         F->BitWidth = FD->getBitWidthValue(C->getASTContext());
 
     Class->Fields.push_back(F);
