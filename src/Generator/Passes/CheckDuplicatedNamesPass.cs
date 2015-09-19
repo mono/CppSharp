@@ -189,7 +189,7 @@ namespace CppSharp.Passes
         private static IEnumerable<Field> GetAllFields(Class @class, List<Field> fields = null)
         {
             fields = fields ?? new List<Field>();
-            foreach (var @base in @class.Bases.Where(b => b.IsClass))
+            foreach (var @base in @class.Bases.Where(b => b.IsClass && b.Class != @class))
                 GetAllFields(@base.Class, fields);
             fields.AddRange(@class.Fields);
             return fields;
