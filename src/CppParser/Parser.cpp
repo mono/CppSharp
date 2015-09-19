@@ -1807,14 +1807,17 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         TypeLoc Next;
         if (TL && !TL->isNull())
         {
-            while (TL->getTypeLocClass() != TypeLoc::FunctionProto)
+            while (!TL->isNull() && TL->getTypeLocClass() != TypeLoc::FunctionProto)
             {
                 Next = TL->getNextTypeLoc();
                 TL = &Next;
             }
 
-            FTL = TL->getAs<FunctionProtoTypeLoc>();
-            RL = FTL.getReturnLoc();
+            if (!TL->isNull() && TL->getTypeLocClass() == TypeLoc::FunctionProto)
+            {
+                FTL = TL->getAs<FunctionProtoTypeLoc>();
+                RL = FTL.getReturnLoc();
+            }
         }
 
         auto F = new FunctionType();
