@@ -647,6 +647,9 @@ DLL_API decltype(nullptr) TestNullPtrTypeRet()
 template<typename T> struct DependentType
 {
     DependentType(typename T::Dependent* t) { }
+
+private:
+    struct Bitset { int length : sizeof(T); };
 };
 
 class PureDtor
