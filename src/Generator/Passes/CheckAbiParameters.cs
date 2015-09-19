@@ -87,7 +87,7 @@ namespace CppSharp.Passes
         {
             if (@class.Fields.Count > 0 || @class.IsDynamic)
                 return true;
-            return @class.Bases.Any(@base => @base.IsClass && HasFieldsOrVirtuals(@base.Class));
+            return @class.HasBaseClass && @class.Bases.Any(@base => @base.IsClass && HasFieldsOrVirtuals(@base.Class));
         }
     }
 }
