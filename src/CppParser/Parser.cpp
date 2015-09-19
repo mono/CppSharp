@@ -330,7 +330,10 @@ std::string Parser::GetDeclMangledName(clang::Decl* D, clang::TargetCXXABI ABI,
     llvm::raw_string_ostream Out(Mangled);
 
     if (const ValueDecl *VD = dyn_cast<ValueDecl>(ND))
-        IsDependent = VD->getType()->isDependentType();
+        IsDependent |= VD->getType()->isDependentType();
+
+    if (!IsDependent)
+        IsDependent |= ND->getDeclContext()->isDependentContext();
 
     if (!MC->shouldMangleDeclName(ND) || IsDependent)
         return ND->getDeclName().getAsString();
