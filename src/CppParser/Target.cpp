@@ -5,8 +5,6 @@
 *
 ************************************************************************/
 
-#pragma once
-
 #include "Target.h"
 
 namespace CppSharp { namespace CppParser {
