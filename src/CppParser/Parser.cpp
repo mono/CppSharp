@@ -297,8 +297,7 @@ void Parser::SetupHeader()
 
 //-----------------------------------//
 
-std::string Parser::GetDeclMangledName(clang::Decl* D, clang::TargetCXXABI ABI,
-                                       bool IsDependent)
+std::string Parser::GetDeclMangledName(clang::Decl* D)
 {
     using namespace clang;
 
@@ -313,7 +312,7 @@ std::string Parser::GetDeclMangledName(clang::Decl* D, clang::TargetCXXABI ABI,
     NamedDecl* ND = cast<NamedDecl>(D);
     std::unique_ptr<MangleContext> MC;
     
-    switch(ABI.getKind())
+    switch(TargetABI)
     {
     default:
        MC.reset(ItaniumMangleContext::create(*AST, AST->getDiagnostics()));
@@ -329,6 +328,7 @@ std::string Parser::GetDeclMangledName(clang::Decl* D, clang::TargetCXXABI ABI,
     std::string Mangled;
     llvm::raw_string_ostream Out(Mangled);
 
+    bool IsDependent = false;
     if (const ValueDecl *VD = dyn_cast<ValueDecl>(ND))
         IsDependent |= VD->getType()->isDependentType();
 
@@ -2241,7 +2241,7 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, Function* F,
     F->ReturnType = GetQualifiedType(FD->getReturnType(),
         WalkType(FD->getReturnType(), &RTL));
 
-    String Mangled = GetDeclMangledName(FD, TargetABI, IsDependent);
+    String Mangled = GetDeclMangledName(FD);
     F->Mangled = Mangled;
 
     clang::SourceLocation ParamStartLoc = FD->getLocStart();
@@ -2442,7 +2442,7 @@ Variable* Parser::WalkVariable(clang::VarDecl *VD)
     auto TL = VD->getTypeSourceInfo()->getTypeLoc();
     Var->QualifiedType = GetQualifiedType(VD->getType(), WalkType(VD->getType(), &TL));
 
-    auto Mangled = GetDeclMangledName(VD, TargetABI, /*IsDependent=*/false);
+    auto Mangled = GetDeclMangledName(VD);
     Var->Mangled = Mangled;
 
     NS->Variables.push_back(Var);

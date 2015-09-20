@@ -104,8 +104,7 @@ protected:
     // Clang helpers
     SourceLocationKind GetLocationKind(const clang::SourceLocation& Loc);
     bool IsValidDeclaration(const clang::SourceLocation& Loc);
-    std::string GetDeclMangledName(clang::Decl* D, clang::TargetCXXABI ABI,
-        bool IsDependent = false);
+    std::string GetDeclMangledName(clang::Decl* D);
     std::string GetTypeName(const clang::Type* Type);
     void WalkFunction(clang::FunctionDecl* FD, Function* F,
         bool IsDependent = false);
