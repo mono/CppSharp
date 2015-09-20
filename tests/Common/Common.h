@@ -837,3 +837,9 @@ class DLL_API DerivedClassVirtual : public BaseClassVirtual
 public:
 	virtual int retInt();
 };
+
+namespace boost
+{
+    template <class T>         struct is_member_pointer_cv         { static const bool value = false; };
+    template <class T, class U>struct is_member_pointer_cv<T U::*> { static const bool value = true; };
+}
