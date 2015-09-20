@@ -731,3 +731,5 @@ class DerivesFromTemplateInstantiation : public TemplateWithDependentField<int>
 public:
     DerivesFromTemplateInstantiation();
 };
+
+DLL_API int PassConstantArrayRef(int(&arr)[2]);

@@ -30,6 +30,7 @@ namespace CppSharp.Generators.CSharp
 
         public TextGenerator ArgumentPrefix { get; private set; }
         public TextGenerator Cleanup { get; private set; }
+        public bool HasFixedBlock { get; set; }
     }
 
     public abstract class CSharpMarshalPrinter : MarshalPrinter
@@ -390,34 +391,57 @@ namespace CppSharp.Generators.CSharp
             if (!VisitType(array, quals))
                 return false;
 
-            Class @class;
             switch (array.SizeType)
             {
                 case ArrayType.ArraySize.Constant:
-                    var supportBefore = Context.SupportBefore;
-                    supportBefore.WriteLine("if ({0} != null)", Context.ArgName);
-                    supportBefore.WriteStartBraceIndent();
-                    if (array.Type.Desugar().TryGetClass(out @class) && @class.IsRefType)
+                    if (string.IsNullOrEmpty(Context.ReturnVarName))
                     {
-                        supportBefore.WriteLine("if (value.Length != {0})", array.Size);
-                        supportBefore.WriteLineIndent("throw new ArgumentOutOfRangeException(\"{0}\", \"The provided array's dimensions doesn't match the required size.\");",
-                            Context.Parameter.Name);
+                        Context.SupportBefore.WriteLine("if ({0} == null || {0}.Length != {1})", Context.Parameter.Name, array.Size);
+                        ThrowArgumentOutOfRangeException();
+                        const string ptr = "__ptr";
+                        Context.SupportBefore.WriteLine("fixed ({0}* {1} = {2})", array.Type, ptr, Context.Parameter.Name);
+                        Context.SupportBefore.WriteStartBraceIndent();
+                        Context.Return.Write("new global::System.IntPtr({0})", ptr);
+                        CSharpContext.HasFixedBlock = true;
                     }
-                    supportBefore.WriteLine("for (int i = 0; i < {0}; i++)", array.Size);
-                    if (@class != null && @class.IsRefType)
-                        supportBefore.WriteLineIndent("{0}[i * sizeof({2}.Internal)] = *((byte*)({2}.Internal*){1}[i].__Instance);",
-                            Context.ReturnVarName, Context.ArgName, array.Type);
                     else
-                        supportBefore.WriteLineIndent("{0}[i] = {1}[i]{2};",
-                            Context.ReturnVarName, Context.ArgName,
-                            array.Type.IsPointerToPrimitiveType(PrimitiveType.Void) ? ".ToPointer()" : string.Empty);
-                    supportBefore.WriteCloseBraceIndent();
+                    {
+                        var supportBefore = Context.SupportBefore;
+                        supportBefore.WriteLine("if ({0} != null)", Context.ArgName);
+                        supportBefore.WriteStartBraceIndent();
+                        Class @class;
+                        if (array.Type.Desugar().TryGetClass(out @class) && @class.IsRefType)
+                        {
+                            supportBefore.WriteLine("if (value.Length != {0})", array.Size);
+                            ThrowArgumentOutOfRangeException();
+                        }
+                        supportBefore.WriteLine("for (int i = 0; i < {0}; i++)", array.Size);
+                        if (@class != null && @class.IsRefType)
+                            supportBefore.WriteLineIndent(
+                                "{0}[i * sizeof({2}.Internal)] = *((byte*)({2}.Internal*){1}[i].__Instance);",
+                                Context.ReturnVarName, Context.ArgName, array.Type);
+                        else
+                            supportBefore.WriteLineIndent("{0}[i] = {1}[i]{2};",
+                                Context.ReturnVarName, Context.ArgName,
+                                array.Type.IsPointerToPrimitiveType(PrimitiveType.Void)
+                                    ? ".ToPointer()"
+                                    : string.Empty);
+                        supportBefore.WriteCloseBraceIndent();
+                    }
                     break;
                 default:
                     Context.Return.Write("null");
                     break;
             }
             return true;
+        }
+
+        private void ThrowArgumentOutOfRangeException()
+        {
+            Context.SupportBefore.WriteLineIndent(
+                "throw new ArgumentOutOfRangeException(\"{0}\", " +
+                "\"The dimensions of the provided array don't match the required size.\");",
+                Context.Parameter.Name);
         }
 
         public bool VisitDelegateType(FunctionType function, string type)
@@ -431,6 +455,17 @@ namespace CppSharp.Generators.CSharp
         {
             if (!VisitType(pointer, quals))
                 return false;
+
+            if (Context.Function != null && pointer.IsPrimitiveTypeConvertibleToRef())
+            {
+                string refParamPtr = string.Format("__refParamPtr{0}", Context.ParameterIndex);
+                Context.SupportBefore.WriteLine("fixed ({0} {1} = &{2})",
+                    pointer, refParamPtr, Context.Parameter.Name);
+                CSharpContext.HasFixedBlock = true;
+                Context.SupportBefore.WriteStartBraceIndent();
+                Context.Return.Write(refParamPtr);
+                return true;
+            }
 
             var param = Context.Parameter;
             var isRefParam = param != null && (param.IsInOut || param.IsOut);

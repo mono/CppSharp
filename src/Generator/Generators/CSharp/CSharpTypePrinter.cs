@@ -276,7 +276,8 @@ namespace CppSharp.Generators.CSharp
             }
 
             Class @class;
-            if ((desugared.IsDependent || desugared.TryGetClass(out @class))
+            if ((desugared.IsDependent || desugared.TryGetClass(out @class) ||
+                (desugared is ArrayType && Context.Parameter != null))
                 && ContextKind == CSharpTypePrinterContextKind.Native)
             {
                 return "global::System.IntPtr";

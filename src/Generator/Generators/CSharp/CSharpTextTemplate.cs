@@ -2693,7 +2693,7 @@ namespace CppSharp.Generators.CSharp
                 if ((paramType.GetFinalPointee() ?? paramType).Desugar().TryGetClass(out @class))
                 {
                     var qualifiedIdentifier = CSharpMarshalNativeToManagedPrinter.QualifiedIdentifier(
-                                              @class.OriginalClass ?? @class);
+                        @class.OriginalClass ?? @class);
                     WriteLine("{0} = new {1}();", name, qualifiedIdentifier);
                 }
             }
@@ -2707,26 +2707,20 @@ namespace CppSharp.Generators.CSharp
             };
 
             paramMarshal.Context = ctx;
+            var marshal = new CSharpMarshalManagedToNativePrinter(ctx);
+            param.CSharpMarshalToNative(marshal);
+            paramMarshal.HasFixedBlock = ctx.HasFixedBlock;
 
-            if (param.Type.IsPrimitiveTypeConvertibleToRef())
-            {
-                WriteLine("fixed ({0} {1} = &{2})", param.Type.CSharpType(TypePrinter), argName, name);
-                paramMarshal.HasFixedBlock = true;
-                WriteStartBraceIndent();
-            }
-            else
-            {
-                var marshal = new CSharpMarshalManagedToNativePrinter(ctx);
-                param.CSharpMarshalToNative(marshal);
+            if (string.IsNullOrEmpty(marshal.Context.Return))
+                throw new Exception("Cannot marshal argument of function");
 
-                if (string.IsNullOrEmpty(marshal.Context.Return))
-                    throw new Exception("Cannot marshal argument of function");
+            if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
+                Write(marshal.Context.SupportBefore);
 
-                if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
-                    Write(marshal.Context.SupportBefore);
+            if (paramMarshal.HasFixedBlock)
+                PushIndent();
 
-                WriteLine("var {0} = {1};", argName, marshal.Context.Return);
-            }
+            WriteLine("var {0} = {1};", argName, marshal.Context.Return);
 
             return paramMarshal;
         }

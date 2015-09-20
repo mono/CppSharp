@@ -415,7 +415,7 @@ public class CSharpTests : GeneratorTestFixture
         foosMore[1] = new Foo();
         var ex = Assert.Throws<ArgumentOutOfRangeException>(() => bar.Foos = foosMore);
         Assert.AreEqual("value", ex.ParamName);
-        Assert.AreEqual("The provided array's dimensions doesn't match the required size." + Environment.NewLine +"Parameter name: value", ex.Message);
+        Assert.AreEqual("The dimensions of the provided array don't match the required size." + Environment.NewLine + "Parameter name: value", ex.Message);
     }
 
     [Test]
@@ -442,5 +442,15 @@ public class CSharpTests : GeneratorTestFixture
     public unsafe void TestSizeOfDerivesFromTemplateInstantiation()
     {
         Assert.That(sizeof(DerivesFromTemplateInstantiation.Internal), Is.EqualTo(sizeof(int)));
+    }
+
+    [Test]
+    public void TestReferenceToArrayWithConstSize()
+    {
+        int[] incorrectlySizedArray = { 1 };
+        Assert.Catch<ArgumentOutOfRangeException>(() => CSharp.CSharp.PassConstantArrayRef(incorrectlySizedArray));
+        int[] array = { 1, 2 };
+        var result = CSharp.CSharp.PassConstantArrayRef(array);
+        Assert.That(result, Is.EqualTo(array[0]));
     }
 }

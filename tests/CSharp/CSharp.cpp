@@ -798,3 +798,8 @@ TemplateWithDependentField<T>::TemplateWithDependentField()
 DerivesFromTemplateInstantiation::DerivesFromTemplateInstantiation()
 {
 }
+
+int PassConstantArrayRef(int(&arr)[2])
+{
+    return arr[0];
+}

@@ -431,14 +431,26 @@ namespace CppSharp.Generators.CLI
             switch (array.SizeType)
             {
                 case ArrayType.ArraySize.Constant:
-                    var supportBefore = Context.SupportBefore;
-                    supportBefore.WriteLine("if ({0} != nullptr)", Context.ArgName);
-                    supportBefore.WriteStartBraceIndent();
-                    supportBefore.WriteLine("for (int i = 0; i < {0}; i++)", array.Size);
-                    supportBefore.WriteLineIndent("{0}[i] = {1}[i]{2};",
-                        Context.ReturnVarName, Context.ArgName,
-                        array.Type.IsPointerToPrimitiveType(PrimitiveType.Void) ? ".ToPointer()" : string.Empty);
-                    supportBefore.WriteCloseBraceIndent();
+                    if (string.IsNullOrEmpty(Context.ReturnVarName))
+                    {
+                        const string pinnedPtr = "__pinnedPtr";
+                        Context.SupportBefore.WriteLine("cli::pin_ptr<{0}> {1} = &{2}[0];",
+                            array.Type, pinnedPtr, Context.Parameter.Name);
+                        const string arrayPtr = "__arrayPtr";
+                        Context.SupportBefore.WriteLine("{0}* {1} = {2};", array.Type, arrayPtr, pinnedPtr);
+                        Context.Return.Write("({0} (&)[{1}]) {2}", array.Type, array.Size, arrayPtr);
+                    }
+                    else
+                    {
+                        var supportBefore = Context.SupportBefore;
+                        supportBefore.WriteLine("if ({0} != nullptr)", Context.ArgName);
+                        supportBefore.WriteStartBraceIndent();
+                        supportBefore.WriteLine("for (int i = 0; i < {0}; i++)", array.Size);
+                        supportBefore.WriteLineIndent("{0}[i] = {1}[i]{2};",
+                            Context.ReturnVarName, Context.ArgName,
+                            array.Type.IsPointerToPrimitiveType(PrimitiveType.Void) ? ".ToPointer()" : string.Empty);
+                        supportBefore.WriteCloseBraceIndent();   
+                    }
                     break;
                 default:
                     Context.Return.Write("null");
