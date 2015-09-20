@@ -842,6 +842,48 @@ namespace boost
 {
     template <class T>         struct is_member_pointer_cv         { static const bool value = false; };
     template <class T, class U>struct is_member_pointer_cv<T U::*> { static const bool value = true; };
+
+    // all of this below tests corner cases with type locations
+    template<class T>
+    struct make_tuple_traits
+    {
+        typedef T type;
+
+        // commented away, see below  (JJ)
+        //  typedef typename IF<
+        //  boost::is_function<T>::value,
+        //  T&,
+        //  T>::RET type;
+    };
+
+    namespace detail
+    {
+        struct swallow_assign;
+        typedef void (detail::swallow_assign::*ignore_t)();
+        struct swallow_assign
+        {
+            swallow_assign(ignore_t(*)(ignore_t));
+            template<typename T>
+            swallow_assign const& operator=(const T&) const;
+        };
+
+        swallow_assign::swallow_assign(ignore_t (*)(ignore_t))
+        {
+        }
+
+        template<typename T>
+        swallow_assign const& swallow_assign::operator=(const T&) const
+        {
+            return *this;
+        }
+
+    } // namespace detail
+
+    template<>
+    struct make_tuple_traits<detail::ignore_t(detail::ignore_t)>
+    {
+        typedef detail::swallow_assign type;
+    };
 }
 
 template <std::size_t N, std::size_t... I>
