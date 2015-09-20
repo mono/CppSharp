@@ -789,3 +789,12 @@ void TestOutTypeInterfaces::funcTryInterfaceTypePtrOut(CS_OUT TestParamToInterfa
 void TestOutTypeInterfaces::funcTryInterfaceTypeOut(CS_OUT TestParamToInterfacePassBaseTwo classTry)
 {
 }
+
+template <typename T>
+TemplateWithDependentField<T>::TemplateWithDependentField()
+{
+}
+
+DerivesFromTemplateInstantiation::DerivesFromTemplateInstantiation()
+{
+}

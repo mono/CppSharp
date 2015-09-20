@@ -843,3 +843,6 @@ namespace boost
     template <class T>         struct is_member_pointer_cv         { static const bool value = false; };
     template <class T, class U>struct is_member_pointer_cv<T U::*> { static const bool value = true; };
 }
+
+template <std::size_t N, std::size_t... I>
+struct build_index_impl : build_index_impl<N - 1, N - 1, I...> {};

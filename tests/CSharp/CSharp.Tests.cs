@@ -437,4 +437,10 @@ public class CSharpTests : GeneratorTestFixture
             Assert.That(foo.A, Is.EqualTo(15));
         }
     }
+
+    [Test]
+    public unsafe void TestSizeOfDerivesFromTemplateInstantiation()
+    {
+        Assert.That(sizeof(DerivesFromTemplateInstantiation.Internal), Is.EqualTo(sizeof(int)));
+    }
 }

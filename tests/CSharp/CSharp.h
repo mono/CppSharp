@@ -708,12 +708,26 @@ public:
 class DLL_API TestVariableWithFixedArrayType
 {
 public:
-	static Foo variableWithFixedArrayType[2];
+    static Foo variableWithFixedArrayType[2];
 };
 
 class DLL_API TestOutTypeInterfaces
 {
 public:
-	void funcTryInterfaceTypePtrOut(CS_OUT TestParamToInterfacePassBaseTwo* classTry);
-	void funcTryInterfaceTypeOut(CS_OUT TestParamToInterfacePassBaseTwo classTry);
+    void funcTryInterfaceTypePtrOut(CS_OUT TestParamToInterfacePassBaseTwo* classTry);
+    void funcTryInterfaceTypeOut(CS_OUT TestParamToInterfacePassBaseTwo classTry);
+};
+
+template <typename T>
+class TemplateWithDependentField
+{
+public:
+    TemplateWithDependentField();
+    T t;
+};
+
+class DerivesFromTemplateInstantiation : public TemplateWithDependentField<int>
+{
+public:
+    DerivesFromTemplateInstantiation();
 };
