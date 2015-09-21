@@ -168,6 +168,7 @@ namespace CppSharp.AST
             get
             {
                 return HasBaseClass && !IsValueType
+                       && Bases[0].Class != null
                        && !Bases[0].Class.IsValueType
                        && Bases[0].Class.GenerationKind != GenerationKind.None;
             }
