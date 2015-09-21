@@ -706,7 +706,7 @@ namespace CppSharp.Generators.CSharp
 
         public void GenerateClassFields(Class @class, Action<Field> action, bool nativeFields = false)
         {
-            foreach (var @base in @class.Bases.Where(b => !(b.Type is DependentNameType)))
+            foreach (var @base in @class.Bases.Where(b => b.Class != null))
             {
                 TypeMap typeMap;
                 if ((!Driver.TypeDatabase.FindTypeMap(@base.Type, out typeMap) && !@base.Class.IsDeclared) ||
