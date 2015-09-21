@@ -33,13 +33,8 @@ namespace CppSharp.Generators.CSharp
         public bool HasFixedBlock { get; set; }
     }
 
-    public abstract class CSharpMarshalPrinter : MarshalPrinter
+    public abstract class CSharpMarshalPrinter : MarshalPrinter<CSharpMarshalContext>
     {
-        public CSharpMarshalContext CSharpContext
-        {
-            get { return Context as CSharpMarshalContext; }
-        }
-
         protected CSharpMarshalPrinter(CSharpMarshalContext context)
             : base(context)
         {
@@ -59,7 +54,6 @@ namespace CppSharp.Generators.CSharp
         public CSharpMarshalNativeToManagedPrinter(CSharpMarshalContext context)
             : base(context)
         {
-            Context.MarshalToManaged = this;
         }
 
         public bool MarshalsParameter { get; set; }
@@ -357,7 +351,6 @@ namespace CppSharp.Generators.CSharp
         public CSharpMarshalManagedToNativePrinter(CSharpMarshalContext context)
             : base(context)
         {
-            Context.MarshalToNative = this;
         }
 
         public override bool VisitType(Type type, TypeQualifiers quals)
@@ -402,7 +395,7 @@ namespace CppSharp.Generators.CSharp
                         Context.SupportBefore.WriteLine("fixed ({0}* {1} = {2})", array.Type, ptr, Context.Parameter.Name);
                         Context.SupportBefore.WriteStartBraceIndent();
                         Context.Return.Write("new global::System.IntPtr({0})", ptr);
-                        CSharpContext.HasFixedBlock = true;
+                        Context.HasFixedBlock = true;
                     }
                     else
                     {
@@ -458,10 +451,10 @@ namespace CppSharp.Generators.CSharp
 
             if (Context.Function != null && pointer.IsPrimitiveTypeConvertibleToRef())
             {
-                string refParamPtr = string.Format("__refParamPtr{0}", Context.ParameterIndex);
+                var refParamPtr = string.Format("__refParamPtr{0}", Context.ParameterIndex);
                 Context.SupportBefore.WriteLine("fixed ({0} {1} = &{2})",
                     pointer, refParamPtr, Context.Parameter.Name);
-                CSharpContext.HasFixedBlock = true;
+                Context.HasFixedBlock = true;
                 Context.SupportBefore.WriteStartBraceIndent();
                 Context.Return.Write(refParamPtr);
                 return true;
@@ -478,17 +471,17 @@ namespace CppSharp.Generators.CSharp
                 if (param.IsOut)
                 {
                     Context.Return.Write("IntPtr.Zero");
-                    CSharpContext.ArgumentPrefix.Write("&");
+                    Context.ArgumentPrefix.Write("&");
                 }
                 else if (param.IsInOut)
                 {
                     Context.Return.Write(MarshalStringToUnmanaged(Context.Parameter.Name));
-                    CSharpContext.ArgumentPrefix.Write("&");
+                    Context.ArgumentPrefix.Write("&");
                 }
                 else
                 {
                     Context.Return.Write(MarshalStringToUnmanaged(Context.Parameter.Name));
-                    CSharpContext.Cleanup.WriteLine("Marshal.FreeHGlobal({0});", Context.ArgName);
+                    Context.Cleanup.WriteLine("Marshal.FreeHGlobal({0});", Context.ArgName);
                 }
                 return true;
             }
@@ -602,7 +595,7 @@ namespace CppSharp.Generators.CSharp
             var decl = typedef.Declaration;
 
             FunctionType func;
-            if (decl.Type.IsPointerTo<FunctionType>(out func))
+            if (decl.Type.IsPointerTo(out func))
             {
                 VisitDelegateType(func, typedef.Declaration.OriginalName);
                 return true;
@@ -724,7 +717,7 @@ namespace CppSharp.Generators.CSharp
         public static void CSharpMarshalToNative(this QualifiedType type,
             CSharpMarshalManagedToNativePrinter printer)
         {
-            (printer.Context as CSharpMarshalContext).FullType = type;
+            printer.Context.FullType = type;
             type.Visit(printer);
         }
 
@@ -743,7 +736,7 @@ namespace CppSharp.Generators.CSharp
         public static void CSharpMarshalToManaged(this QualifiedType type,
             CSharpMarshalNativeToManagedPrinter printer)
         {
-            (printer.Context as CSharpMarshalContext).FullType = type;
+            printer.Context.FullType = type;
             type.Visit(printer);
         }
 

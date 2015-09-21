@@ -2638,8 +2638,8 @@ namespace CppSharp.Generators.CSharp
 
                 WriteLine("{0} = {1};", param.Name, marshal.Context.Return);
 
-                if (!string.IsNullOrWhiteSpace(marshal.CSharpContext.Cleanup))
-                    cleanups.Add(marshal.CSharpContext.Cleanup);
+                if (!string.IsNullOrWhiteSpace(marshal.Context.Cleanup))
+                    cleanups.Add(marshal.Context.Cleanup);
             }
         }
 

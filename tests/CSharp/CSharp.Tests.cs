@@ -102,8 +102,7 @@ public class CSharpTests : GeneratorTestFixture
         Assert.That(proprietor.Value, Is.EqualTo(20));
         proprietor.Prop = 50;
         Assert.That(proprietor.Prop, Is.EqualTo(50));
-        var p = new P((IQux) null);
-        p.Value = 20;
+        var p = new P((IQux) null) { Value = 20 };
         Assert.That(p.Value, Is.EqualTo(30));
         p.Prop = 50;
         Assert.That(p.Prop, Is.EqualTo(150));
@@ -299,9 +298,9 @@ public class CSharpTests : GeneratorTestFixture
             var bar = new Bar();
             testNativeToManagedMap.PropertyWithNoVirtualDtor = bar;
             Assert.AreSame(bar, testNativeToManagedMap.PropertyWithNoVirtualDtor);
-            Assert.IsTrue(Bar.NativeToManagedMap.ContainsKey(bar.__Instance));
+            Assert.IsTrue(Qux.NativeToManagedMap.ContainsKey(bar.__Instance));
             bar.Dispose();
-            Assert.IsFalse(Bar.NativeToManagedMap.ContainsKey(bar.__Instance));
+            Assert.IsFalse(Qux.NativeToManagedMap.ContainsKey(bar.__Instance));
         }
     }
 
@@ -393,16 +392,11 @@ public class CSharpTests : GeneratorTestFixture
     public void TestFixedArrayRefType()
     {
         Foo[] foos = new Foo[4];
-        foos[0] = new Foo();
-        foos[0].A = 5;
-        foos[1] = new Foo();
-        foos[1].A = 6;
-        foos[2] = new Foo();
-        foos[2].A = 7;
-        foos[3] = new Foo();
-        foos[3].A = 8;
-        Bar bar = new Bar();
-        bar.Foos = foos;
+        foos[0] = new Foo { A = 5 };
+        foos[1] = new Foo { A = 6 };
+        foos[2] = new Foo { A = 7 };
+        foos[3] = new Foo { A = 8 };
+        Bar bar = new Bar { Foos = foos };
 
         Foo[] retFoos = bar.Foos;
         Assert.AreEqual(5, retFoos[0].A);

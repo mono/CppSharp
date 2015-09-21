@@ -10,12 +10,11 @@ using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Generators.CLI
 {
-    public class CLIMarshalNativeToManagedPrinter : MarshalPrinter
+    public class CLIMarshalNativeToManagedPrinter : MarshalPrinter<MarshalContext>
     {
         public CLIMarshalNativeToManagedPrinter(MarshalContext marshalContext)
             : base(marshalContext)
         {
-            Context.MarshalToManaged = this;
         }
 
         public override bool VisitType(Type type, TypeQualifiers quals)
@@ -387,7 +386,7 @@ namespace CppSharp.Generators.CLI
         }
     }
 
-    public class CLIMarshalManagedToNativePrinter : MarshalPrinter
+    public class CLIMarshalManagedToNativePrinter : MarshalPrinter<MarshalContext>
     {
         public readonly TextGenerator VarPrefix;
         public readonly TextGenerator ArgumentPrefix;
