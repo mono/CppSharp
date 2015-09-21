@@ -34,7 +34,7 @@ namespace CppSharp.Passes
 
         public override bool VisitClassDecl(Class @class)
         {
-            if (!base.VisitClassDecl(@class))
+            if (!base.VisitClassDecl(@class) || @class.Ignore)
                 return false;
 
             if (@class.CompleteDeclaration != null)

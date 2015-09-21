@@ -828,14 +828,14 @@ public:
 class DLL_API BaseClassVirtual
 {
 public:
-	virtual int retInt();
-	static BaseClassVirtual getBase();
+    virtual int retInt();
+    static BaseClassVirtual getBase();
 };
 
 class DLL_API DerivedClassVirtual : public BaseClassVirtual
 {
 public:
-	virtual int retInt();
+    virtual int retInt();
 };
 
 namespace boost
@@ -888,3 +888,16 @@ namespace boost
 
 template <std::size_t N, std::size_t... I>
 struct build_index_impl : build_index_impl<N - 1, N - 1, I...> {};
+
+template <typename T>
+class AbstractTemplate
+{
+public:
+    AbstractTemplate();
+    void abstractFunction() = 0;
+};
+
+template <typename T>
+AbstractTemplate<T>::AbstractTemplate()
+{
+}

@@ -1899,9 +1899,7 @@ namespace CppSharp.Generators.CSharp
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
 
-            // TODO: We can still get an abstract impl even if BaseClass is null.
-            string className = @class.IsAbstractImpl && @class.BaseClass != null ?
-                @class.BaseClass.Name : @class.Name;
+            var className = @class.IsAbstractImpl ? @class.BaseClass.Name : @class.Name;
 
             var ctorCall = string.Format("{0}{1}", @class.Name, @class.IsAbstract ? "Internal" : "");
             if (!@class.IsAbstractImpl)
