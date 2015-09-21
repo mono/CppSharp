@@ -237,7 +237,8 @@ namespace CppSharp.Generators.CSharp
 
             // From http://msdn.microsoft.com/en-us/library/y31yhkeb.aspx
             // Any of the following types may be a pointer type:
-            // * sbyte, byte, short, ushort, int, uint, long, ulong, char, float, double, decimal, or bool.
+            // * sbyte, byte, short, ushort, int, uint, long, ulong, char, float, double,
+            //   decimal, or bool.
             // * Any enum type.
             // * Any pointer type.
             // * Any user-defined struct type that contains fields of unmanaged types only.
@@ -294,7 +295,8 @@ namespace CppSharp.Generators.CSharp
             {
                 return functionType.Visit(this, quals);
             }
-            throw new InvalidOperationException("A function pointer not pointing to a function type.");
+            throw new InvalidOperationException(
+                "A function pointer not pointing to a function type.");
         }
 
         public CSharpTypePrinterResult VisitBuiltinType(BuiltinType builtin,
@@ -338,12 +340,14 @@ namespace CppSharp.Generators.CSharp
             return decl.Type.Visit(this);
         }
 
-        public CSharpTypePrinterResult VisitAttributedType(AttributedType attributed, TypeQualifiers quals)
+        public CSharpTypePrinterResult VisitAttributedType(AttributedType attributed,
+            TypeQualifiers quals)
         {
             return attributed.Modified.Visit(this);
         }
 
-        public CSharpTypePrinterResult VisitDecayedType(DecayedType decayed, TypeQualifiers quals)
+        public CSharpTypePrinterResult VisitDecayedType(DecayedType decayed,
+            TypeQualifiers quals)
         {
             return decayed.Decayed.Visit(this);
         }
@@ -354,26 +358,29 @@ namespace CppSharp.Generators.CSharp
             var decl = template.Template.TemplatedDecl;
 
             TypeMap typeMap = null;
-            if (this.driver.TypeDatabase.FindTypeMap(template, out typeMap))
-            {
-                typeMap.Declaration = decl;
-                typeMap.Type = template;
-                Context.Type = template;
-                Context.CSharpKind = ContextKind;
+            if (!driver.TypeDatabase.FindTypeMap(template, out typeMap))
+                return GetNestedQualifiedName(decl) +
+                       (ContextKind == CSharpTypePrinterContextKind.Native
+                           ? ".Internal" : string.Empty);
 
-                string type = GetCSharpSignature(typeMap);
-                if (!string.IsNullOrEmpty(type))
+            typeMap.Declaration = decl;
+            typeMap.Type = template;
+            Context.Type = template;
+            Context.CSharpKind = ContextKind;
+
+            var type = GetCSharpSignature(typeMap);
+            if (!string.IsNullOrEmpty(type))
+            {
+                return new CSharpTypePrinterResult
                 {
-                    return new CSharpTypePrinterResult
-                    {
-                        Type = type,
-                        TypeMap = typeMap
-                    };
-                }
+                    Type = type,
+                    TypeMap = typeMap
+                };
             }
 
-            return GetNestedQualifiedName(decl) + (ContextKind == CSharpTypePrinterContextKind.Native ?
-                ".Internal" : string.Empty);
+            return GetNestedQualifiedName(decl) +
+                (ContextKind == CSharpTypePrinterContextKind.Native ?
+                    ".Internal" : string.Empty);
         }
 
         private string GetCSharpSignature(TypeMap typeMap)
@@ -407,7 +414,8 @@ namespace CppSharp.Generators.CSharp
             throw new NotImplementedException();
         }
 
-        public CSharpTypePrinterResult VisitPackExpansionType(PackExpansionType packExpansionType, TypeQualifiers quals)
+        public CSharpTypePrinterResult VisitPackExpansionType(PackExpansionType type,
+            TypeQualifiers quals)
         {
             return string.Empty;
         }
@@ -482,7 +490,8 @@ namespace CppSharp.Generators.CSharp
             {
                 case PrimitiveType.Bool:
                     // returned structs must be blittable and bool isn't
-                    return ContextKind == CSharpTypePrinterContextKind.Native ? "byte" : "bool";
+                    return ContextKind == CSharpTypePrinterContextKind.Native ?
+                        "byte" : "bool";
                 case PrimitiveType.Void: return "void";
                 case PrimitiveType.Char16:
                 case PrimitiveType.WideChar: return "char";
