@@ -1628,6 +1628,17 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
     assert(Type && "Expected a valid type");
     switch(Type->getTypeClass())
     {
+    case clang::Type::Atomic:
+    {
+        auto Atomic = Type->getAs<clang::AtomicType>();
+        assert(Atomic && "Expected an atomic type");
+
+        TypeLoc Next;
+        if (TL && !TL->isNull()) Next = TL->getNextTypeLoc();
+
+        Ty = WalkType(Atomic->getValueType(), &Next);
+        break;
+    }
     case clang::Type::Attributed:
     {
         auto Attributed = Type->getAs<clang::AttributedType>();
