@@ -292,9 +292,12 @@ namespace CppSharp.Generators.CSharp
         {
             FunctionType functionType;
             if (member.IsPointerTo(out functionType))
-            {
                 return functionType.Visit(this, quals);
-            }
+
+            // TODO: Non-function member pointer types are tricky to support.
+            // Re-visit this.
+            return "global::System.IntPtr";
+
             throw new InvalidOperationException(
                 "A function pointer not pointing to a function type.");
         }
