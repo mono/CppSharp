@@ -80,6 +80,28 @@ namespace CppSharp
                 Console.WriteLine("\t{0}", include);
         }
 
+        public static int GetCLVersion(VisualStudioVersion vsVersion)
+        {
+            int clVersion;
+            switch (vsVersion)
+            {
+                case VisualStudioVersion.VS2012:
+                    clVersion = 17;
+                    break;
+                case VisualStudioVersion.VS2013:
+                    clVersion = 18;
+                    break;
+                case VisualStudioVersion.VS2015:
+                case VisualStudioVersion.Latest:
+                    clVersion = 19;
+                    break;
+                default:
+                    throw new Exception("Unknown Visual Studio version");
+            }
+
+            return clVersion;
+        }
+
         static int GetVisualStudioVersion(VisualStudioVersion version)
         {
             switch (version)
@@ -465,6 +487,7 @@ namespace CppSharp
             options.NoBuiltinIncludes = true;
             options.NoStandardIncludes = true;
             options.Abi = CppAbi.Microsoft;
+            options.ToolSetToUse = MSVCToolchain.GetCLVersion(vsVersion) * 10000000;
 
             options.addArguments("-fms-extensions");
             options.addArguments("-fms-compatibility");
