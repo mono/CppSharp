@@ -165,14 +165,6 @@ void Parser::SetupHeader()
         args.push_back(Arg.c_str());
     }
 
-    // Enable the Microsoft parsing extensions
-    if (Opts->MicrosoftMode)
-    {
-        args.push_back("-fms-extensions");
-        args.push_back("-fms-compatibility");
-        args.push_back("-fdelayed-template-parsing");
-    }
-
     C.reset(new CompilerInstance());
     C->createDiagnostics();
 

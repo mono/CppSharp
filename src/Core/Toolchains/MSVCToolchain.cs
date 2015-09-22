@@ -466,6 +466,10 @@ namespace CppSharp
             options.NoStandardIncludes = true;
             options.Abi = CppAbi.Microsoft;
 
+            options.addArguments("-fms-extensions");
+            options.addArguments("-fms-compatibility");
+            options.addArguments("-fdelayed-template-parsing");
+
             var includes = MSVCToolchain.GetSystemIncludes(vsVersion);
             foreach (var include in includes)
                 options.addSystemIncludeDirs(include);
