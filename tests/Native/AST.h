@@ -94,3 +94,12 @@ public:
     void ambiguous();
     void ambiguous() const;
 };
+
+class Atomics
+{
+#if defined( __clang__ ) && defined( __has_extension )
+# if __has_extension( __c_atomic__ )
+    _Atomic(int) AtomicInt;
+# endif
+#endif
+};

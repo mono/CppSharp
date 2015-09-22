@@ -267,5 +267,13 @@ namespace CppSharp.Generator.Tests.AST
                 .VisitLibrary(AstContext);
             Assert.IsTrue(AstContext.FindClass("HasAmbiguousFunctions").Single().FindMethod("ambiguous").IsAmbiguous);            
         }
+
+        [Test]
+        public void TestAtomics()
+        {
+            var type = AstContext.FindClass("Atomics").Single().Fields
+                .Find(f => f.Name == "AtomicInt").Type as BuiltinType;
+            Assert.IsTrue(type != null && type.IsPrimitiveType(PrimitiveType.Int));
+        }
     }
 }
