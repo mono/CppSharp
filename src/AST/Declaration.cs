@@ -343,8 +343,8 @@ namespace CppSharp.AST
             PreprocessedEntities = new List<PreprocessedEntity>(
                 declaration.PreprocessedEntities);
             OriginalPtr = declaration.OriginalPtr;
-            this.LineNumberStart = declaration.LineNumberStart;
-            this.LineNumberEnd = declaration.LineNumberEnd;
+            LineNumberStart = declaration.LineNumberStart;
+            LineNumberEnd = declaration.LineNumberEnd;
         }
 
         public override string ToString()

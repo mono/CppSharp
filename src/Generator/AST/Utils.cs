@@ -1,7 +1,6 @@
 ﻿
 using System;
 using System.Linq;
-using Mono.Options;
 
 namespace CppSharp.AST
 {
