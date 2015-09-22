@@ -46,6 +46,7 @@ namespace CppSharp.Generators.CSharp
         public static readonly string ReturnIdentifier = Generator.GeneratedIdentifier("ret");
         public static readonly string DummyIdentifier = Generator.GeneratedIdentifier("dummy");
         public static readonly string TargetIdentifier = Generator.GeneratedIdentifier("target");
+        public static readonly string SlotIdentifier = Generator.GeneratedIdentifier("slot");
 
         public static readonly string OwnsNativeInstanceIdentifier = Generator.GeneratedIdentifier("ownsNativeInstance");
 
@@ -2312,16 +2313,16 @@ namespace CppSharp.Generators.CSharp
         {
             var virtualCallBuilder = new StringBuilder();
             var i = VTables.GetVTableIndex((Method) (function.OriginalFunction ?? function), @class);
-            virtualCallBuilder.AppendFormat("void* slot = *(void**) ((IntPtr) __OriginalVTables[0] + {0} * {1});",
-                i, Driver.TargetInfo.PointerWidth / 8);
+            virtualCallBuilder.AppendFormat("void* {0} = *(void**) ((IntPtr) __OriginalVTables[0] + {1} * {2});",
+                Helpers.SlotIdentifier, i, Driver.TargetInfo.PointerWidth / 8);
             virtualCallBuilder.AppendLine();
 
             var @delegate = GetVTableMethodDelegateName(function.OriginalFunction ?? function);
             delegateId = Generator.GeneratedIdentifier(@delegate);
 
             virtualCallBuilder.AppendFormat(
-                "var {1} = ({0}) Marshal.GetDelegateForFunctionPointer(new IntPtr(slot), typeof({0}));",
-                @delegate, delegateId);
+                "var {1} = ({0}) Marshal.GetDelegateForFunctionPointer(new IntPtr({2}), typeof({0}));",
+                @delegate, delegateId, Helpers.SlotIdentifier);
 
             virtualCallBuilder.AppendLine();
             return virtualCallBuilder.ToString();
