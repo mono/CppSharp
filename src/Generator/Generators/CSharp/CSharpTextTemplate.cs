@@ -2230,14 +2230,20 @@ namespace CppSharp.Generators.CSharp
                 }
             }
 
-            var index = 0;
+            GenerateManagedCall(function);
+        }
+
+        private void GenerateManagedCall(Function function, bool prependBase = false)
+        {
             var type = function.OriginalReturnType.Type;
-            WriteLine("{0}{1}({2});",
+            var index = 0;
+            WriteLine("{0}{1}{2}({3});",
                 type.IsPrimitiveType(PrimitiveType.Void) ? string.Empty : "return ",
+                prependBase ? "base." : string.Empty,
                 function.Name,
                 string.Join(", ",
                     function.Parameters.Where(
-                        p => p.Kind == ParameterKind.Regular).Select(
+                        p => p.Kind != ParameterKind.IndirectReturnType).Select(
                             p => p.Ignore ? OverloadParamNameWithDefValue(p, ref index) :
                                 (p.Usage == ParameterUsage.InOut ? "ref " : string.Empty) + p.Name)));
         }
@@ -2301,11 +2307,21 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
-        private void GenerateVirtualFunctionCall(Function function, Class @class)
+        private void GenerateVirtualFunctionCall(Method method, Class @class)
         {
-            string delegateId;
-            Write(GetVirtualCallDelegate(function, @class, out delegateId));
-            GenerateFunctionCall(delegateId, function.Parameters, function);
+            Method rootBaseMethod;
+            if (method.IsOverride && method.SynthKind != FunctionSynthKind.AbstractImplCall &&
+                (rootBaseMethod = ((Class) method.Namespace).GetRootBaseMethod(method, true)) != null &&
+                !rootBaseMethod.IsPure)
+            {
+                GenerateManagedCall(method, true);
+            }
+            else
+            {
+                string delegateId;
+                Write(GetVirtualCallDelegate(method, @class, out delegateId));
+                GenerateFunctionCall(delegateId, method.Parameters, method);
+            }
         }
 
         public string GetVirtualCallDelegate(Function function, Class @class,
