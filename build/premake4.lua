@@ -21,6 +21,9 @@ solution "CppSharp"
   debugdir (bindir)
 
   -- startproject "Generator"
+  configuration "vs2015"
+    framework "4.6"
+
   configuration "vs2013"
     framework "4.0"
 
