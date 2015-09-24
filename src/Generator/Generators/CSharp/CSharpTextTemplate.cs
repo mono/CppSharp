@@ -2310,8 +2310,8 @@ namespace CppSharp.Generators.CSharp
         private void GenerateVirtualFunctionCall(Method method, Class @class)
         {
             Method rootBaseMethod;
-            if (method.IsOverride && method.SynthKind != FunctionSynthKind.AbstractImplCall &&
-                (rootBaseMethod = ((Class) method.Namespace).GetRootBaseMethod(method, true)) != null &&
+            if (method.IsOverride && !method.IsPure && method.SynthKind != FunctionSynthKind.AbstractImplCall &&
+                (rootBaseMethod = ((Class) method.Namespace).GetRootBaseMethod(method, true, true)) != null &&
                 !rootBaseMethod.IsPure)
             {
                 GenerateManagedCall(method, true);

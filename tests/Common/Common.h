@@ -838,6 +838,19 @@ public:
     virtual int retInt();
 };
 
+class DLL_API DerivedClassAbstractVirtual : public DerivedClassVirtual
+{
+public:
+    virtual int retInt() = 0;
+};
+
+class DLL_API DerivedClassOverrideAbstractVirtual : public DerivedClassAbstractVirtual
+{
+public:
+    DerivedClassOverrideAbstractVirtual();
+    virtual int retInt();
+};
+
 namespace boost
 {
     template <class T>         struct is_member_pointer_cv         { static const bool value = false; };

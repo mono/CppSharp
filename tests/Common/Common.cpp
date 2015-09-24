@@ -528,3 +528,12 @@ int DerivedClassVirtual::retInt()
 {
 	return 2;
 }
+
+DerivedClassOverrideAbstractVirtual::DerivedClassOverrideAbstractVirtual()
+{
+}
+
+int DerivedClassOverrideAbstractVirtual::retInt()
+{
+    return 1;
+}

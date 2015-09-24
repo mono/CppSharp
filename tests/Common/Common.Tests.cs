@@ -1,8 +1,8 @@
 ﻿using System;
-using BasicTest;
+using CommonTest;
 using CppSharp.Utils;
 using NUnit.Framework;
-using Enum = BasicTest.Enum;
+using Enum = CommonTest.Enum;
 
 [TestFixture]
 public class CommonTests : GeneratorTestFixture
@@ -358,7 +358,7 @@ public class CommonTests : GeneratorTestFixture
     [Test]
     public void TestFunctions()
     {
-        var ret = BasicTest.common.Function();
+        var ret = common.Function();
         Assert.That(ret, Is.EqualTo(5));
     }
 

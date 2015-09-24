@@ -18,7 +18,7 @@ namespace CppSharp.Tests
         {
             base.Setup(driver);
 
-            driver.Options.OutputNamespace = "BasicTest";
+            driver.Options.OutputNamespace = "CommonTest";
         }
 
         public override void SetupPasses(Driver driver)

@@ -89,7 +89,7 @@ namespace CppSharp.Passes
             return internalImpl;
         }
 
-        private static List<Method> GetRelevantAbstractMethods(Class @class)
+        private static IEnumerable<Method> GetRelevantAbstractMethods(Class @class)
         {
             var abstractMethods = GetAbstractMethods(@class);
             var overriddenMethods = GetOverriddenMethods(@class);
@@ -98,11 +98,29 @@ namespace CppSharp.Passes
             for (var i = abstractMethods.Count - 1; i >= 0; i--)
             {
                 var @abstract = abstractMethods[i];
-                if (overriddenMethods.Find(m => m.Name == @abstract.Name &&
-                    m.ReturnType == @abstract.ReturnType &&
-                    m.Parameters.SequenceEqual(@abstract.Parameters, paramTypeCmp)) != null)
+                var @override = overriddenMethods.Find(m => m.Name == @abstract.Name && 
+                    m.ReturnType == @abstract.ReturnType && 
+                    m.Parameters.SequenceEqual(@abstract.Parameters, paramTypeCmp));
+                if (@override != null)
                 {
-                    abstractMethods.RemoveAt(i);
+                    if (@abstract.IsOverride)
+                    {
+                        var abstractMethod = abstractMethods[i];
+                        bool found;
+                        var rootBaseMethod = abstractMethod;
+                        do
+                        {
+                            rootBaseMethod = @class.GetRootBaseMethod(rootBaseMethod, false, true);
+                            if (found = (rootBaseMethod == @override))
+                                break;
+                        } while (rootBaseMethod != null);
+                        if (!found)
+                            abstractMethods.RemoveAt(i);
+                    }
+                    else
+                    {
+                        abstractMethods.RemoveAt(i);                        
+                    }
                 }
             }
 

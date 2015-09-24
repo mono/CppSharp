@@ -54,10 +54,10 @@ namespace CppSharp.AST
             }
         }
 
-        public static Method GetRootBaseMethod(this Class c, Method @override, bool onlyFirstBase = false)
+        public static Method GetRootBaseMethod(this Class c, Method @override, bool onlyPrimaryBase = false, bool oneLevel = false)
         {
             return (from @base in c.Bases
-                where @base.IsClass && @base.Class.OriginalClass != c && (!onlyFirstBase || !@base.Class.IsInterface)
+                where @base.IsClass && @base.Class.OriginalClass != c && (!onlyPrimaryBase || !@base.Class.IsInterface)
                 let baseMethod = (
                     from method in @base.Class.Methods
                     where
@@ -66,8 +66,10 @@ namespace CppSharp.AST
                          method.Parameters.SequenceEqual(@override.Parameters, new ParameterTypeComparer())) ||
                         (@override.IsDestructor && method.IsDestructor && method.IsVirtual)
                     select method).FirstOrDefault()
-                let rootBaseMethod = @base.Class.GetRootBaseMethod(@override, onlyFirstBase) ?? baseMethod
-                where rootBaseMethod != null || onlyFirstBase
+                let rootBaseMethod = oneLevel
+                    ? baseMethod
+                    : (@base.Class.GetRootBaseMethod(@override, onlyPrimaryBase) ?? baseMethod)
+                where rootBaseMethod != null || onlyPrimaryBase
                 select rootBaseMethod).FirstOrDefault();
         }
 
