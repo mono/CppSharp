@@ -33,6 +33,7 @@ src/generator/generator
 *.tmp
 /build/vs2012
 /build/vs2013
+/build/vs2015
 /build/gmake
 /build/headers
 /deps/llvm
