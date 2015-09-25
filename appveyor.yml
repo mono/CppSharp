@@ -41,7 +41,7 @@ install:
 
 build_script:
   - build\premake5.exe --file=build\premake4.lua %VS_VERSION%
-  - msbuild %BUILD_PATH%\CppSharp.sln
+  - msbuild %BUILD_PATH%\CppSharp.sln /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /verbosity:minimal
 
 #---------------------------------#
 #      artifacts configuration    #
