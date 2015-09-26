@@ -174,6 +174,11 @@ namespace CppSharp.AST
             }
         }
 
+        public bool NeedsBase
+        {
+            get { return HasNonIgnoredBase && IsGenerated; }
+        }
+
         // When we have an interface, this is the class mapped to that interface.
         public Class OriginalClass { get; set; }
 

@@ -645,7 +645,7 @@ namespace CppSharp.Generators.CSharp
         {
             Write("public ");
 
-            if (@class != null && @class.HasBaseClass)
+            if (@class != null && @class.NeedsBase && !@class.BaseClass.IsInterface)
                 Write("new ");
 
             WriteLine("partial struct Internal");
@@ -680,9 +680,7 @@ namespace CppSharp.Generators.CSharp
 
             var bases = new List<string>();
 
-            var needsBase =  @class.HasNonIgnoredBase && @class.IsGenerated;
-
-            if (needsBase)
+            if (@class.NeedsBase)
             {
                 bases.AddRange(
                     from @base in @class.Bases
@@ -1907,7 +1905,7 @@ namespace CppSharp.Generators.CSharp
             {
                 PushBlock(CSharpBlockKind.Method);
                 WriteLine("public static {0}{1} {2}(global::System.IntPtr native{3})",
-                    @class.HasNonIgnoredBase && !@class.BaseClass.IsAbstract ? "new " : string.Empty,
+                    @class.NeedsBase && !@class.BaseClass.IsInterface ? "new " : string.Empty,
                     @class.Name, Helpers.CreateInstanceIdentifier,
                     @class.IsRefType ? ", bool ownsNativeInstance = false" : string.Empty);
                 WriteStartBraceIndent();
