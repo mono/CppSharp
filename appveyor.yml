@@ -49,11 +49,21 @@ build_script:
 
 artifacts:
   - path: '%BUILD_PATH%\lib'
+    name: CppSharp-$(VS_VERSION)-master-$(APPVEYOR_BUILD_NUMBER)
     type: zip
 
 #---------------------------------#
 #     deployment configuration    #
 #---------------------------------#
 
-deploy: off
-
+deploy:
+  release: 'CppSharp'
+  description: "Latest successful CI builds of branch 'master'"
+  provider: GitHub
+  auth_token:
+    secure: tSYxyXeLtE0f6ZsXsGaHZEAw5Nj4TcgN/rx8uCfPnRjcE55OLAVn/8WXEiovNXLt
+  artifact: CppSharp-$(VS_VERSION)-master-$(APPVEYOR_BUILD_NUMBER).zip
+  draft: true
+  prerelease: true
+  on:
+    branch: master
