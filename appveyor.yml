@@ -34,6 +34,7 @@ environment:
   DEPS_PATH: '%APPVEYOR_BUILD_FOLDER%\deps'
   LLVM_PATH: '%APPVEYOR_BUILD_FOLDER%\deps\llvm'
   BUILD_PATH: '%APPVEYOR_BUILD_FOLDER%\build\%VS_VERSION%'
+  ARTIFACT_NAME: '%APPVEYOR_PROJECT_NAME%-%VS_VERSION%-%APPVEYOR_REPO_BRANCH%-%APPVEYOR_BUILD_NUMBER%.zip'
 
 install:
   - appveyor DownloadFile https://dl.dropboxusercontent.com/u/194502/CppSharp/llvm_windows_x86.7z
@@ -47,10 +48,10 @@ build_script:
 #      artifacts configuration    #
 #---------------------------------#
 
-artifacts:
-  - path: '%BUILD_PATH%\lib'
-    name: CppSharp-$(VS_VERSION)-master-$(APPVEYOR_BUILD_NUMBER)
-    type: zip
+after_build:
+  - echo 'Preparing artifacts...'
+  - 7z a %ARTIFACT_NAME% %BUILD_PATH%\lib\%CONFIGURATION%_x32\*
+  - appveyor PushArtifact %ARTIFACT_NAME%
 
 #---------------------------------#
 #     deployment configuration    #
@@ -62,7 +63,7 @@ deploy:
   provider: GitHub
   auth_token:
     secure: tSYxyXeLtE0f6ZsXsGaHZEAw5Nj4TcgN/rx8uCfPnRjcE55OLAVn/8WXEiovNXLt
-  artifact: CppSharp-$(VS_VERSION)-master-$(APPVEYOR_BUILD_NUMBER).zip
+  artifact: $(ARTIFACT_NAME)
   draft: true
   prerelease: true
   on:
