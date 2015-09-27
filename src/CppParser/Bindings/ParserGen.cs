@@ -30,7 +30,7 @@ namespace CppSharp
 
         static string GetSourceDirectory(string dir)
         {
-            var directory = Directory.GetParent(Directory.GetCurrentDirectory());
+            var directory = new DirectoryInfo(Directory.GetCurrentDirectory());
 
             while (directory != null)
             {
