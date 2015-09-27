@@ -31,10 +31,14 @@ configuration:
 
 environment:
   VS_VERSION: vs2013
+  BUILD_PLATFORM: 'x32'
   DEPS_PATH: '%APPVEYOR_BUILD_FOLDER%\deps'
   LLVM_PATH: '%APPVEYOR_BUILD_FOLDER%\deps\llvm'
   BUILD_PATH: '%APPVEYOR_BUILD_FOLDER%\build\%VS_VERSION%'
+  LIB_PATH: '%BUILD_PATH%\lib\%CONFIGURATION%_%BUILD_PLATFORM%'
   ARTIFACT_NAME: '%APPVEYOR_PROJECT_NAME%-%VS_VERSION%-%APPVEYOR_REPO_BRANCH%-%APPVEYOR_BUILD_NUMBER%.zip'
+  GITHUB_ACCESS_TOKEN:
+    secure: CrxPDgxTKC9ZRvFjttpRPO+e1DT8s0Zkk9HrAmHOIzDkOfFbbu1iTm/yJjZ2eDcd
 
 install:
   - appveyor DownloadFile https://dl.dropboxusercontent.com/u/194502/CppSharp/llvm_windows_x86.7z
@@ -45,12 +49,23 @@ build_script:
   - msbuild %BUILD_PATH%\CppSharp.sln /logger:"C:\Program Files\AppVeyor\BuildAgent\Appveyor.MSBuildLogger.dll" /verbosity:minimal
 
 #---------------------------------#
+#    parser bindings generation   #
+#---------------------------------#
+
+on_success:
+  - git config --global credential.helper store
+  - ps: Add-Content "$env:USERPROFILE\.git-credentials" "https://$($env:GITHUB_ACCESS_TOKEN):x-oauth-basic@github.com`n"
+  - '%LIB_PATH%\CppSharp.Parser.Gen.exe'
+  - git commit -m "CI: Re-generated the parser bindings"
+  - git push
+
+#---------------------------------#
 #      artifacts configuration    #
 #---------------------------------#
 
 after_build:
   - echo 'Preparing artifacts...'
-  - 7z a %ARTIFACT_NAME% %BUILD_PATH%\lib\%CONFIGURATION%_x32\*
+  - 7z a %ARTIFACT_NAME% %LIB_PATH%\CppSharp*
   - appveyor PushArtifact %ARTIFACT_NAME%
 
 #---------------------------------#
