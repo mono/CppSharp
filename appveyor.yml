@@ -38,6 +38,9 @@ environment:
   GITHUB_ACCESS_TOKEN:
     secure: CrxPDgxTKC9ZRvFjttpRPO+e1DT8s0Zkk9HrAmHOIzDkOfFbbu1iTm/yJjZ2eDcd
 
+init:
+  - git config --global core.autocrlf true
+
 install:
   - appveyor DownloadFile https://dl.dropboxusercontent.com/u/194502/CppSharp/llvm_windows_x86.7z
   - 7z x llvm_windows_x86.7z -o%DEPS_PATH%\llvm -y > nul
@@ -52,6 +55,7 @@ build_script:
 
 on_success:
   - git config --global user.name "CppSharp CI"
+  - git config --global user.email "cppsharp-ci@tritao.eu"
   - git config --global credential.helper store
   - ps: Add-Content "$env:USERPROFILE\.git-credentials" "https://$($env:GITHUB_ACCESS_TOKEN):x-oauth-basic@github.com`n"
   - git remote set-url origin https://github.com/mono/CppSharp.git
