@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using CppSharp.Utils;
 using CSharp;
@@ -446,5 +447,18 @@ public class CSharpTests : GeneratorTestFixture
         int[] array = { 1, 2 };
         var result = CSharp.CSharp.PassConstantArrayRef(array);
         Assert.That(result, Is.EqualTo(array[0]));
+    }
+
+    [Test]
+    public void TestComparison()
+    {
+        var testComparison1 = new TestComparison { A = 5, B = 5.5f };
+        var testComparison2 = new TestComparison { A = 5, B = 5.5f };
+        Assert.IsTrue(testComparison1 == testComparison2);
+        Assert.IsTrue(testComparison1.Equals(testComparison2));
+        var testHashes = new Dictionary<TestComparison, int>();
+        testHashes[testComparison1] = 1;
+        testHashes[testComparison2] = 2;
+        Assert.That(testHashes[testComparison1], Is.EqualTo(2));
     }
 }

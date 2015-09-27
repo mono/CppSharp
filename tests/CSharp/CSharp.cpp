@@ -803,3 +803,12 @@ int PassConstantArrayRef(int(&arr)[2])
 {
     return arr[0];
 }
+
+TestComparison::TestComparison()
+{
+}
+
+bool TestComparison::operator ==(const TestComparison& other) const
+{
+    return A == other.A && B == other.B;
+}

@@ -733,3 +733,12 @@ public:
 };
 
 DLL_API int PassConstantArrayRef(int(&arr)[2]);
+
+class DLL_API TestComparison
+{
+public:
+    TestComparison();
+    int A;
+    float B;
+    bool operator ==(const TestComparison& other) const;
+};

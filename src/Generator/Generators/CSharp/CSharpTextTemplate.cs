@@ -2199,7 +2199,7 @@ namespace CppSharp.Generators.CSharp
 
             if (method.OperatorKind == CXXOperatorKind.EqualEqual)
             {
-                GenerateEquals(method, @class);
+                GenerateEqualsAndGetHashCode(method, @class);
             }
 
             PopBlock(NewLineKind.BeforeNextBlock);
@@ -2246,7 +2246,7 @@ namespace CppSharp.Generators.CSharp
                                 (p.Usage == ParameterUsage.InOut ? "ref " : string.Empty) + p.Name)));
         }
 
-        private void GenerateEquals(Function method, Class @class)
+        private void GenerateEqualsAndGetHashCode(Function method, Class @class)
         {
             Class leftHandSide;
             Class rightHandSide;
@@ -2266,6 +2266,22 @@ namespace CppSharp.Generators.CSharp
                 {
                     WriteLine("if (!(obj is {0})) return false;", @class.Name);
                     WriteLine("return this == ({0}) obj;", @class.Name);
+                }
+                WriteCloseBraceIndent();
+
+                NewLine();
+
+                WriteLine("public override int GetHashCode()");
+                WriteStartBraceIndent();
+                if (@class.IsRefType)
+                {
+                    WriteLine("if ({0} == global::System.IntPtr.Zero)", Helpers.InstanceIdentifier);
+                    WriteLineIndent("return global::System.IntPtr.Zero.GetHashCode();");
+                    WriteLine("return (*(Internal*) {0}).GetHashCode();", Helpers.InstanceIdentifier);   
+                }
+                else
+                {
+                    WriteLine("return {0}.GetHashCode();", Helpers.InstanceIdentifier);                       
                 }
                 WriteCloseBraceIndent();
             }
