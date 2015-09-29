@@ -541,7 +541,7 @@ namespace CppSharp.Generators.CSharp
                     method.SynthKind != FunctionSynthKind.AdjustedMethod)
                     return;
 
-                if (method.IsProxy)
+                if (method.IsProxy || (method.IsVirtual && !method.IsOperator))
                     return;
 
                 functions.Add(method);
@@ -813,7 +813,8 @@ namespace CppSharp.Generators.CSharp
             return Tuple.Create(library, decl.Mangled);
         }
 
-        private void GeneratePropertySetter<T>(T decl, Class @class, bool isAbstract = false)
+        private void GeneratePropertySetter<T>(T decl,
+            Class @class, bool isAbstract = false, Property property = null)
             where T : Declaration, ITypedDecl
         {
             if (!(decl is Function || decl is Field) )
@@ -853,15 +854,14 @@ namespace CppSharp.Generators.CSharp
 
                 param.QualifiedType = function.Parameters[0].QualifiedType;
 
+                var method = function as Method;
                 if (function.SynthKind == FunctionSynthKind.AbstractImplCall)
-                {
-                    string delegateId;
-                    Write(GetVirtualCallDelegate(function, @class.BaseClass, out delegateId));
-                    GenerateFunctionCall(delegateId, new List<Parameter> { param }, function);
-                }
+                    GenerateVirtualPropertyCall(function, @class.BaseClass, property,
+                        new List<Parameter> { param });
+                else if (method != null && method.IsVirtual)
+                    GenerateVirtualPropertyCall(method, @class, property, new List<Parameter> { param });
                 else
                 {
-                    var method = function as Method;
                     if (method != null && method.OperatorKind == CXXOperatorKind.Subscript)
                     {
                         if (method.OperatorKind == CXXOperatorKind.Subscript)
@@ -994,7 +994,7 @@ namespace CppSharp.Generators.CSharp
         }
 
         private void GeneratePropertyGetter<T>(QualifiedType returnType, T decl,
-            Class @class, bool isAbstract = false)
+            Class @class, bool isAbstract = false, Property property = null)
             where T : Declaration, ITypedDecl
         {
             PushBlock(CSharpBlockKind.Method);
@@ -1012,9 +1012,12 @@ namespace CppSharp.Generators.CSharp
 
                 NewLine();
                 WriteStartBraceIndent();
+
                 var method = function as Method;
-                if (method != null && method.SynthKind == FunctionSynthKind.AbstractImplCall)
-                    GenerateVirtualFunctionCall(method, @class.BaseClass);
+                if (function.SynthKind == FunctionSynthKind.AbstractImplCall)
+                    GenerateVirtualPropertyCall(method, @class.BaseClass, property);
+                else if (method != null && method.IsVirtual)
+                    GenerateVirtualPropertyCall(method, @class, property);
                 else
                     GenerateInternalFunctionCall(function, function.Parameters, returnType.Type);
             }
@@ -1242,10 +1245,10 @@ namespace CppSharp.Generators.CSharp
                 else
                 {
                     if (prop.HasGetter)
-                        GeneratePropertyGetter(prop.QualifiedType, prop.GetMethod, @class, prop.IsPure);
+                        GeneratePropertyGetter(prop.QualifiedType, prop.GetMethod, @class, prop.IsPure, prop);
 
                     if (prop.HasSetter)
-                        GeneratePropertySetter(prop.SetMethod, @class, prop.IsPure);
+                        GeneratePropertySetter(prop.SetMethod, @class, prop.IsPure, prop);
                 }
 
                 WriteCloseBraceIndent();
@@ -2321,12 +2324,31 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
+        private void GenerateVirtualPropertyCall(Function method, Class @class,
+            Property property, List<Parameter> parameters = null)
+        {
+            Property baseProperty;
+            if (property.IsOverride && !property.IsPure &&
+                method.SynthKind != FunctionSynthKind.AbstractImplCall &&
+                (baseProperty = ((Class) method.Namespace).GetBaseProperty(property, true, true)) != null &&
+                !baseProperty.IsPure)
+            {
+                WriteLine(parameters == null ? "return base.{0};" : "base.{0} = value;", property.Name);
+            }
+            else
+            {
+                string delegateId;
+                Write(GetVirtualCallDelegate(method, @class, out delegateId));
+                GenerateFunctionCall(delegateId, parameters ?? method.Parameters, method);
+            }
+        }
+
         private void GenerateVirtualFunctionCall(Method method, Class @class)
         {
-            Method rootBaseMethod;
+            Method baseMethod;
             if (method.IsOverride && !method.IsPure && method.SynthKind != FunctionSynthKind.AbstractImplCall &&
-                (rootBaseMethod = ((Class) method.Namespace).GetBaseMethod(method, true, true)) != null &&
-                !rootBaseMethod.IsPure)
+                (baseMethod = ((Class) method.Namespace).GetBaseMethod(method, true, true)) != null &&
+                !baseMethod.IsPure)
             {
                 GenerateManagedCall(method, true);
             }
