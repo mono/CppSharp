@@ -8,7 +8,7 @@ using Enum = CommonTest.Enum;
 public class CommonTests : GeneratorTestFixture
 {
     [Test]
-    public void TestUncompilableCode()
+    public void TestCodeGeneration()
     {
         Assert.That(new ChangedAccessOfInheritedProperty().Property, Is.EqualTo(2));
         Foo.NestedAbstract a;
@@ -16,6 +16,10 @@ public class CommonTests : GeneratorTestFixture
         using (var foo = new Foo())
         {
             Bar bar = foo;
+        }
+        using (var overridesNonDirectVirtual = new OverridesNonDirectVirtual())
+        {
+            Assert.That(overridesNonDirectVirtual.retInt(), Is.EqualTo(3));
         }
     }
 

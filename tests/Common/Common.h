@@ -851,6 +851,19 @@ public:
     virtual int retInt();
 };
 
+class DLL_API BufferForVirtualFunction : public BaseClassVirtual
+{
+public:
+    BufferForVirtualFunction();
+};
+
+class DLL_API OverridesNonDirectVirtual : public BufferForVirtualFunction
+{
+public:
+    OverridesNonDirectVirtual();
+    virtual int retInt();
+};
+
 namespace boost
 {
     template <class T>         struct is_member_pointer_cv         { static const bool value = false; };

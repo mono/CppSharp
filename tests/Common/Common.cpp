@@ -537,3 +537,16 @@ int DerivedClassOverrideAbstractVirtual::retInt()
 {
     return 1;
 }
+
+BufferForVirtualFunction::BufferForVirtualFunction()
+{
+}
+
+OverridesNonDirectVirtual::OverridesNonDirectVirtual()
+{
+}
+
+int OverridesNonDirectVirtual::retInt()
+{
+    return 3;
+}

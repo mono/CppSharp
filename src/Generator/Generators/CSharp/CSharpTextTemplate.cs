@@ -301,7 +301,7 @@ namespace CppSharp.Generators.CSharp
 
         public void GenerateDebug(Declaration decl)
         {
-            if (Options.OutputDebug && !String.IsNullOrWhiteSpace(decl.DebugText))
+            if (Options.OutputDebug && !string.IsNullOrWhiteSpace(decl.DebugText))
                 WriteLine("// DEBUG: " + decl.DebugText);
         }
 
@@ -2079,7 +2079,7 @@ namespace CppSharp.Generators.CSharp
             // check if overriding a function from a secondary base
             Method rootBaseMethod;
             var isOverride = method.IsOverride &&
-                (rootBaseMethod = @class.GetRootBaseMethod(method, true)) != null &&
+                (rootBaseMethod = @class.GetBaseMethod(method, true)) != null &&
                 (rootBaseMethod.IsVirtual || rootBaseMethod.IsPure);
 
             if (method.IsVirtual && !isOverride && !method.IsOperator && !method.IsPure)
@@ -2305,7 +2305,7 @@ namespace CppSharp.Generators.CSharp
         private static AccessSpecifier GetValidMethodAccess(Method method)
         {
             return method.IsOverride
-                ? ((Class) method.Namespace).GetRootBaseMethod(method).Access
+                ? ((Class) method.Namespace).GetBaseMethod(method).Access
                 : method.Access;
         }
 
@@ -2325,7 +2325,7 @@ namespace CppSharp.Generators.CSharp
         {
             Method rootBaseMethod;
             if (method.IsOverride && !method.IsPure && method.SynthKind != FunctionSynthKind.AbstractImplCall &&
-                (rootBaseMethod = ((Class) method.Namespace).GetRootBaseMethod(method, true, true)) != null &&
+                (rootBaseMethod = ((Class) method.Namespace).GetBaseMethod(method, true, true)) != null &&
                 !rootBaseMethod.IsPure)
             {
                 GenerateManagedCall(method, true);

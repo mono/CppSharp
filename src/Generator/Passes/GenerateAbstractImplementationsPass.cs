@@ -110,7 +110,7 @@ namespace CppSharp.Passes
                         var rootBaseMethod = abstractMethod;
                         do
                         {
-                            rootBaseMethod = @class.GetRootBaseMethod(rootBaseMethod, false, true);
+                            rootBaseMethod = @class.GetBaseMethod(rootBaseMethod, false, true);
                             if (found = (rootBaseMethod == @override))
                                 break;
                         } while (rootBaseMethod != null);

@@ -169,7 +169,7 @@ namespace CppSharp.Passes
 
                 if (method.IsOverride)
                 {
-                    var baseOverride = @class.GetRootBaseMethod(method);
+                    var baseOverride = @class.GetBaseMethod(method);
                     if (baseOverride != null && !baseOverride.IsDeclared)
                     {
                         Log.Debug(

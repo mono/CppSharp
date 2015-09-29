@@ -46,7 +46,7 @@ namespace CppSharp.Passes
             var method = decl as Method;
             if (method != null && !method.IsStatic)
             {
-                var rootBaseMethod = ((Class) method.Namespace).GetRootBaseMethod(method);
+                var rootBaseMethod = ((Class) method.Namespace).GetBaseMethod(method);
                 if (rootBaseMethod != null && rootBaseMethod != method)
                 {
                     newName = rootBaseMethod.Name;

@@ -54,23 +54,38 @@ namespace CppSharp.AST
             }
         }
 
-        public static Method GetRootBaseMethod(this Class c, Method @override, bool onlyPrimaryBase = false, bool oneLevel = false)
+        public static Method GetBaseMethod(this Class c, Method @override, bool onlyPrimaryBase = false, bool getTopmost = false)
         {
-            return (from @base in c.Bases
-                where @base.IsClass && @base.Class.OriginalClass != c && (!onlyPrimaryBase || !@base.Class.IsInterface)
-                let baseMethod = (
-                    from method in @base.Class.Methods
+            foreach (var @base in c.Bases)
+            {
+                if (!@base.IsClass || @base.Class.OriginalClass == c || (onlyPrimaryBase && @base.Class.IsInterface))
+                    continue;
+
+                Method baseMethod;
+                if (!getTopmost)
+                {
+                    baseMethod = (@base.Class.GetBaseMethod(@override, onlyPrimaryBase));
+                    if (baseMethod != null)
+                        return baseMethod;
+                }
+
+                baseMethod = (from method in @base.Class.Methods
                     where
-                        (method.OriginalName == @override.OriginalName &&
-                         method.ReturnType == @override.ReturnType &&
+                        (method.OriginalName == @override.OriginalName && method.ReturnType == @override.ReturnType &&
                          method.Parameters.SequenceEqual(@override.Parameters, new ParameterTypeComparer())) ||
                         (@override.IsDestructor && method.IsDestructor && method.IsVirtual)
-                    select method).FirstOrDefault()
-                let rootBaseMethod = oneLevel
-                    ? baseMethod
-                    : (@base.Class.GetRootBaseMethod(@override, onlyPrimaryBase) ?? baseMethod)
-                where rootBaseMethod != null || onlyPrimaryBase
-                select rootBaseMethod).FirstOrDefault();
+                    select method).FirstOrDefault();
+                if (baseMethod != null)
+                    return baseMethod;
+
+                if (getTopmost)
+                {
+                    baseMethod = (@base.Class.GetBaseMethod(@override, onlyPrimaryBase));
+                    if (baseMethod != null)
+                        return baseMethod;
+                }
+            }
+            return null;
         }
 
         public static Property GetRootBaseProperty(this Class c, Property @override, bool onlyFirstBase = false)

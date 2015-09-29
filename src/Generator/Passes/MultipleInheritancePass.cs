@@ -200,7 +200,7 @@ namespace CppSharp.Passes
                             parameterTypeComparer)))
                     continue;
                 var impl = new Method(method) { Namespace = @class };
-                var rootBaseMethod = @class.GetRootBaseMethod(method, true);
+                var rootBaseMethod = @class.GetBaseMethod(method, true);
                 if (rootBaseMethod != null && rootBaseMethod.IsDeclared)
                     impl.ExplicitInterfaceImpl = @interface;
                 @class.Methods.Add(impl);
