@@ -214,7 +214,7 @@ namespace CppSharp.Passes
             foreach (var property in @interface.Properties.Where(p => p.Name != Helpers.InstanceIdentifier))
             {
                 var impl = new Property(property) { Namespace = @class };
-                var rootBaseProperty = @class.GetRootBaseProperty(property, true);
+                var rootBaseProperty = @class.GetBaseProperty(property, true);
                 if (rootBaseProperty != null && rootBaseProperty.IsDeclared)
                     impl.ExplicitInterfaceImpl = @interface;
                 @class.Properties.Add(impl);

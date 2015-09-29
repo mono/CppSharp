@@ -812,3 +812,24 @@ bool TestComparison::operator ==(const TestComparison& other) const
 {
     return A == other.A && B == other.B;
 }
+
+OverridePropertyFromIndirectPrimaryBaseBase::OverridePropertyFromIndirectPrimaryBaseBase()
+{
+}
+
+OverridePropertyFromDirectPrimaryBase::OverridePropertyFromDirectPrimaryBase()
+{
+}
+
+void OverridePropertyFromDirectPrimaryBase::setProperty(int value)
+{
+}
+
+OverridePropertyFromIndirectPrimaryBase::OverridePropertyFromIndirectPrimaryBase()
+{
+}
+
+int OverridePropertyFromIndirectPrimaryBase::property()
+{
+    return 5;
+}

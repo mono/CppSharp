@@ -461,4 +461,13 @@ public class CSharpTests : GeneratorTestFixture
         testHashes[testComparison2] = 2;
         Assert.That(testHashes[testComparison1], Is.EqualTo(2));
     }
+
+    [Test]
+    public void TestOverriddenPropertyFromIndirectBase()
+    {
+        using (var overridePropertyFromIndirectPrimaryBase = new OverridePropertyFromIndirectPrimaryBase())
+        {
+            Assert.That(overridePropertyFromIndirectPrimaryBase.Property, Is.EqualTo(5));
+        }
+    }
 }

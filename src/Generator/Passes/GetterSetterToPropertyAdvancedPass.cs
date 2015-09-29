@@ -84,7 +84,7 @@ namespace CppSharp.Passes
                             goto next;
                         }
                     }
-                    Property baseProperty = type.GetRootBaseProperty(new Property { Name = afterSet });
+                    Property baseProperty = type.GetBaseProperty(new Property { Name = afterSet }, getTopmost: true);
                     if (!type.IsInterface && baseProperty != null && baseProperty.IsVirtual && setter.IsVirtual)
                     {
                         bool isReadOnly = baseProperty.SetMethod == null;
@@ -98,7 +98,7 @@ namespace CppSharp.Passes
                 {
                     Class type = (Class) nonSetter.Namespace;
                     string name = GetPropertyName(nonSetter.Name);
-                    Property baseProperty = type.GetRootBaseProperty(new Property { Name = name });
+                    Property baseProperty = type.GetBaseProperty(new Property { Name = name }, getTopmost: true);
                     if (!type.IsInterface && baseProperty != null && baseProperty.IsVirtual)
                     {
                         bool isReadOnly = baseProperty.SetMethod == null;
@@ -151,7 +151,7 @@ namespace CppSharp.Passes
                     };
                     if (getter.IsOverride || (setter != null && setter.IsOverride))
                     {
-                        var baseVirtualProperty = type.GetRootBaseProperty(property);
+                        var baseVirtualProperty = type.GetBaseProperty(property, getTopmost: true);
                         if (baseVirtualProperty.SetMethod == null)
                             setter = null;
                     }

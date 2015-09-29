@@ -698,7 +698,7 @@ public:
     OverrideFromDirectSecondaryBase();
 };
 
-class OverrideFromIndirectSecondaryBase : public OverrideFromDirectSecondaryBase
+class DLL_API OverrideFromIndirectSecondaryBase : public OverrideFromDirectSecondaryBase
 {
 public:
     OverrideFromIndirectSecondaryBase();
@@ -741,4 +741,26 @@ public:
     int A;
     float B;
     bool operator ==(const TestComparison& other) const;
+};
+
+class DLL_API OverridePropertyFromIndirectPrimaryBaseBase
+{
+public:
+    OverridePropertyFromIndirectPrimaryBaseBase();
+    virtual int property() = 0;
+    virtual void setProperty(int value) = 0;
+};
+
+class DLL_API OverridePropertyFromDirectPrimaryBase : public OverridePropertyFromIndirectPrimaryBaseBase
+{
+public:
+    OverridePropertyFromDirectPrimaryBase();
+    void setProperty(int value);
+};
+
+class DLL_API OverridePropertyFromIndirectPrimaryBase : public OverridePropertyFromDirectPrimaryBase
+{
+public:
+    OverridePropertyFromIndirectPrimaryBase();
+    int property();
 };

@@ -80,7 +80,7 @@ namespace CppSharp.AST
 
                 if (getTopmost)
                 {
-                    baseMethod = (@base.Class.GetBaseMethod(@override, onlyPrimaryBase));
+                    baseMethod = (@base.Class.GetBaseMethod(@override, onlyPrimaryBase, true));
                     if (baseMethod != null)
                         return baseMethod;
                 }
@@ -88,20 +88,37 @@ namespace CppSharp.AST
             return null;
         }
 
-        public static Property GetRootBaseProperty(this Class c, Property @override, bool onlyFirstBase = false)
+        public static Property GetBaseProperty(this Class c, Property @override, bool onlyFirstBase = false, bool getTopmost = false)
         {
-            return (from @base in c.Bases
-                where @base.IsClass && @base.Class.OriginalClass != c && (!onlyFirstBase || !@base.Class.IsInterface)
-                let baseProperty = (
-                    from property in @base.Class.Properties
+            foreach (var @base in c.Bases)
+            {
+                if (!@base.IsClass || @base.Class.OriginalClass == c || (onlyFirstBase && @base.Class.IsInterface))
+                    continue;
+
+                Property baseProperty;
+                if (!getTopmost)
+                {
+                    baseProperty = @base.Class.GetBaseProperty(@override, onlyFirstBase);
+                    if (baseProperty != null)
+                        return baseProperty;
+                }
+
+                baseProperty = (from property in @base.Class.Properties
                     where
                         property.OriginalName == @override.OriginalName &&
-                        property.Parameters.SequenceEqual(@override.Parameters,
-                            new ParameterTypeComparer())
-                    select property).FirstOrDefault()
-                let rootBaseProperty = @base.Class.GetRootBaseProperty(@override, onlyFirstBase) ?? baseProperty
-                where rootBaseProperty != null || onlyFirstBase
-                select rootBaseProperty).FirstOrDefault();
+                        property.Parameters.SequenceEqual(@override.Parameters, new ParameterTypeComparer())
+                    select property).FirstOrDefault();
+                if (baseProperty != null)
+                    return baseProperty;
+
+                if (getTopmost)
+                {
+                    baseProperty = @base.Class.GetBaseProperty(@override, onlyFirstBase, true);
+                    if (baseProperty != null)
+                        return baseProperty;
+                }
+            }
+            return null;
         }
 
         public static Property GetPropertyByName(this Class c, string propertyName)

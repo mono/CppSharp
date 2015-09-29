@@ -1211,7 +1211,7 @@ namespace CppSharp.Generators.CSharp
                     // check if overriding a property from a secondary base
                     Property rootBaseProperty;
                     var isOverride = prop.IsOverride &&
-                        (rootBaseProperty = @class.GetRootBaseProperty(prop, true)) != null &&
+                        (rootBaseProperty = @class.GetBaseProperty(prop, true)) != null &&
                         (rootBaseProperty.IsVirtual || rootBaseProperty.IsPure);
 
                     if (isOverride)
@@ -2317,7 +2317,7 @@ namespace CppSharp.Generators.CSharp
                     return AccessSpecifier.Public;
                 default:
                     return property.IsOverride ?
-                        ((Class) property.Namespace).GetRootBaseProperty(property).Access : property.Access;
+                        ((Class) property.Namespace).GetBaseProperty(property).Access : property.Access;
             }
         }
 
