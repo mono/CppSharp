@@ -88,6 +88,12 @@ namespace CppSharp.AST
             return null;
         }
 
+        public static bool HasNonAbstractBaseMethod(this Class @class, Method method)
+        {
+            var baseMethod = @class.GetBaseMethod(method, true, true);
+            return baseMethod != null && !baseMethod.IsPure;
+        }
+
         public static Property GetBaseProperty(this Class c, Property @override, bool onlyFirstBase = false, bool getTopmost = false)
         {
             foreach (var @base in c.Bases)
@@ -119,6 +125,12 @@ namespace CppSharp.AST
                 }
             }
             return null;
+        }
+
+        public static bool HasNonAbstractBaseProperty(this Class @class, Property property)
+        {
+            var baseProperty = @class.GetBaseProperty(property, true, true);
+            return baseProperty != null && !baseProperty.IsPure;
         }
 
         public static Property GetPropertyByName(this Class c, string propertyName)

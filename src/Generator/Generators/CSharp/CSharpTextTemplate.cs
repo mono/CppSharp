@@ -2327,11 +2327,9 @@ namespace CppSharp.Generators.CSharp
         private void GenerateVirtualPropertyCall(Function method, Class @class,
             Property property, List<Parameter> parameters = null)
         {
-            Property baseProperty;
             if (property.IsOverride && !property.IsPure &&
                 method.SynthKind != FunctionSynthKind.AbstractImplCall &&
-                (baseProperty = ((Class) method.Namespace).GetBaseProperty(property, true, true)) != null &&
-                !baseProperty.IsPure)
+                @class.HasNonAbstractBaseProperty(property))
             {
                 WriteLine(parameters == null ? "return base.{0};" : "base.{0} = value;", property.Name);
             }
@@ -2345,10 +2343,9 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateVirtualFunctionCall(Method method, Class @class)
         {
-            Method baseMethod;
-            if (method.IsOverride && !method.IsPure && method.SynthKind != FunctionSynthKind.AbstractImplCall &&
-                (baseMethod = ((Class) method.Namespace).GetBaseMethod(method, true, true)) != null &&
-                !baseMethod.IsPure)
+            if (method.IsOverride && !method.IsPure &&
+                method.SynthKind != FunctionSynthKind.AbstractImplCall &&
+                @class.HasNonAbstractBaseMethod(method))
             {
                 GenerateManagedCall(method, true);
             }
