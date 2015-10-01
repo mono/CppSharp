@@ -37,16 +37,6 @@ namespace CppSharp.AST
                 return Declaration as Method;
             }
         }
-
-        public bool Ignore
-        {
-            get
-            {
-                return Method != null &&
-                       !Method.IsDeclared &&
-                       ((Class) Method.Namespace).GetPropertyByConstituentMethod(Method) == null;
-            }
-        }
     }
 
     /// <summary>

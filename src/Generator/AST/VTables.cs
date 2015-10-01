@@ -94,5 +94,13 @@ namespace CppSharp.AST
                     return @class.Layout.Layout.Components.FindIndex(m => m.Method == method) - 2;
             }
         }
+
+        public static bool IsIgnored(this VTableComponent entry)
+        {
+            return entry.Method != null &&
+                   (entry.Method.IsOperator ||
+                    (!entry.Method.IsDeclared &&
+                     ((Class) entry.Method.Namespace).GetPropertyByConstituentMethod(entry.Method) == null));
+        }
     }
 }
