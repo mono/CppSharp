@@ -833,3 +833,28 @@ int OverridePropertyFromIndirectPrimaryBase::property()
 {
     return 5;
 }
+
+QObject::QObject()
+{
+}
+
+QObject::~QObject()
+{
+}
+
+QWidget::QWidget()
+{
+    QApplication::instance->notify(this);
+}
+
+QApplication::QApplication()
+{
+    instance = this;
+}
+
+QApplication* QApplication::instance = 0;
+
+void QApplication::notify(QObject* receiver)
+{
+    delete receiver;
+}

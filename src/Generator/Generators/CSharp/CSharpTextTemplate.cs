@@ -1321,19 +1321,14 @@ namespace CppSharp.Generators.CSharp
             WriteLine("void SetupVTables()");
             WriteStartBraceIndent();
 
-            WriteLine("if (NativeToManagedMap.ContainsKey({0}))", Helpers.InstanceIdentifier);
+            WriteLine("if (__OriginalVTables != null)");
             WriteLineIndent("return;");
 
             WriteLine("var native = (Internal*) {0}.ToPointer();", Helpers.InstanceIdentifier);
             NewLine();
 
-            // Save the original vftable pointers.
-            WriteLine("if (__OriginalVTables == null)");
-            WriteStartBraceIndent();
-
             SaveOriginalVTablePointers(@class.Layout.VFTables);
 
-            WriteCloseBraceIndent();
             NewLine();
 
             // Get the _Thunks
@@ -1605,6 +1600,8 @@ namespace CppSharp.Generators.CSharp
             NewLine();
 
             WriteLine("var {0} = ({1}) NativeToManagedMap[instance];", Helpers.TargetIdentifier, @class.Name);
+            WriteLine("if ({0}.{1})", Helpers.TargetIdentifier, Helpers.OwnsNativeInstanceIdentifier);
+            WriteLineIndent("{0}.SetupVTables();", Helpers.TargetIdentifier);
             GenerateVTableManagedCall(method);
 
             WriteCloseBraceIndent();
@@ -2424,6 +2421,7 @@ namespace CppSharp.Generators.CSharp
             WriteLine("{0} = Marshal.AllocHGlobal({1});", Helpers.InstanceIdentifier,
                 @class.Layout.Size);
             WriteLine("{0} = true;", Helpers.OwnsNativeInstanceIdentifier);
+            WriteLine("NativeToManagedMap[{0}] = this;", Helpers.InstanceIdentifier);
 
             if (method.IsCopyConstructor)
             {
@@ -2440,7 +2438,6 @@ namespace CppSharp.Generators.CSharp
             }
 
             GenerateVTableClassSetupCall(@class);
-            WriteLine("NativeToManagedMap[{0}] = this;", Helpers.InstanceIdentifier);
         }
 
         public void GenerateInternalFunctionCall(Function function,

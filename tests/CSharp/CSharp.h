@@ -764,3 +764,25 @@ public:
     OverridePropertyFromIndirectPrimaryBase();
     int property();
 };
+
+class DLL_API QObject
+{
+public:
+    QObject();
+    virtual ~QObject();
+};
+
+class DLL_API QWidget : public QObject
+{
+public:
+    QWidget();
+};
+
+class DLL_API QApplication : public QObject
+{
+public:
+    QApplication();
+    static QApplication* instance;
+    virtual void notify(QObject* receiver);
+};
+

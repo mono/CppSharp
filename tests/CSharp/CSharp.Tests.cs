@@ -470,4 +470,13 @@ public class CSharpTests : GeneratorTestFixture
             Assert.That(overridePropertyFromIndirectPrimaryBase.Property, Is.EqualTo(5));
         }
     }
+
+    [Test]
+    public void TestCallingVirtualBeforeCtorFinished()
+    {
+        using (new QApplication())
+        {
+            new QWidget();
+        }
+    }
 }
