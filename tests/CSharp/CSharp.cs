@@ -128,7 +128,6 @@ namespace CppSharp.Tests
         {
             driver.Options.GenerateInterfacesForMultipleInheritance = true;
             driver.Options.GeneratePropertiesAdvanced = true;
-            driver.Options.GenerateCopyConstructors = true;
             // To ensure that calls to constructors in conversion operators
             // are not ambiguous with multiple inheritance pass enabled.
             driver.Options.GenerateConversionOperators = true;

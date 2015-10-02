@@ -319,15 +319,25 @@ namespace CppSharp.Generators.CLI
         {
             var names = new List<string>();
 
+            string rootNamespace = null;
             if (Options.GenerateLibraryNamespace)
-                names.Add(Driver.Options.OutputNamespace);
+                names.Add(rootNamespace = Driver.Options.OutputNamespace);
 
             if (!string.IsNullOrEmpty(decl.Namespace.QualifiedName))
+            {
                 names.Add(decl.Namespace.QualifiedName);
+                if (string.IsNullOrEmpty(rootNamespace))
+                    rootNamespace = decl.Namespace.QualifiedName;
+            }
 
             names.Add(decl.Visit(this));
 
-            return string.Join("::", names);
+            var result = string.Join("::", names);
+            var translationUnit = decl.Namespace as TranslationUnit;
+            if (translationUnit != null && translationUnit.HasFunctions &&
+                rootNamespace == translationUnit.FileNameWithoutExtension)
+                return "::" + result;
+            return result;
         }
 
         public string VisitClassDecl(Class @class)

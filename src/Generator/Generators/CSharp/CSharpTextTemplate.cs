@@ -553,7 +553,7 @@ namespace CppSharp.Generators.CSharp
                     if (@class.IsStatic || ctor.IsMoveConstructor)
                         continue;
 
-                    if (!ctor.IsGenerated && !(Options.GenerateCopyConstructors && ctor.IsCopyConstructor))
+                    if (!ctor.IsGenerated)
                         continue;
 
                     if (ctor.IsDefaultConstructor && !@class.HasNonTrivialDefaultConstructor)
@@ -1971,15 +1971,10 @@ namespace CppSharp.Generators.CSharp
                 PushBlock(CSharpBlockKind.Method);
                 WriteLine("private static {0}.Internal* __CopyValue({0}.Internal native)", className);
                 WriteStartBraceIndent();
-                if (@class.HasNonTrivialCopyConstructor && Options.GenerateCopyConstructors)
+                var copyCtorMethod = @class.Methods.FirstOrDefault(method =>
+                    method.IsCopyConstructor);
+                if (@class.HasNonTrivialCopyConstructor && copyCtorMethod != null && copyCtorMethod.IsGenerated)
                 {
-                    // Find a valid copy constructor overload.
-                    var copyCtorMethod = @class.Methods.FirstOrDefault(method =>
-                        method.IsCopyConstructor);
-
-                    if (copyCtorMethod == null)
-                        throw new NotSupportedException("Expected a valid copy constructor");
-
                     // Allocate memory for a new native object and call the ctor.
                     WriteLine("var ret = Marshal.AllocHGlobal({0});", @class.Layout.Size);
                     WriteLine("{0}.Internal.{1}(ret, new global::System.IntPtr(&native));",

@@ -41,9 +41,6 @@ namespace CppSharp.AST
             // Ignore copy constructor if a base class don't has or has a private copy constructor
             if (method.IsCopyConstructor)
             {
-                if (!options.GenerateCopyConstructors)
-                    return true;
-
                 var baseClass = @class;
                 while (baseClass != null && baseClass.HasBaseClass)
                 {

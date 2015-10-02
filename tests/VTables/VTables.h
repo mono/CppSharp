@@ -23,6 +23,7 @@ class DLL_API BaseClassVirtual
 {
 public:
     BaseClassVirtual();
+    BaseClassVirtual(const BaseClassVirtual& other);
     static int virtualCallRetInt(BaseClassVirtual* base);
     virtual int retInt();
     static BaseClassVirtual getBase();

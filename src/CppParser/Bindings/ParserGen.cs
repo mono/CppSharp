@@ -53,8 +53,7 @@ namespace CppSharp
             options.Abi = Abi;
             options.LibraryName = "CppSharp.CppParser.dll";
             options.GeneratorKind = Kind;
-            options.GenerateCopyConstructors = true;
-            options.Headers.AddRange(new string[]
+            options.Headers.AddRange(new[]
             {
                 "AST.h",
                 "Sources.h",

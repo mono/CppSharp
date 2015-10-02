@@ -23,7 +23,6 @@ namespace CppSharp.Tests
 
         public override void SetupPasses(Driver driver)
         {
-            driver.Options.GenerateCopyConstructors = true;
             driver.Options.MarshalCharAsManagedChar = true;
             driver.Options.GenerateProperties = true;
             driver.Options.GenerateConversionOperators = true;

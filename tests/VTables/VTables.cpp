@@ -38,6 +38,10 @@ BaseClassVirtual::BaseClassVirtual()
 {
 }
 
+BaseClassVirtual::BaseClassVirtual(const BaseClassVirtual& other)
+{
+}
+
 int BaseClassVirtual::virtualCallRetInt(BaseClassVirtual* base)
 {
     return base->retInt();
