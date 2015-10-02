@@ -15,7 +15,8 @@ namespace CppSharp.Passes
 
             var mangledDecl = decl as IMangledDecl;
             var method = decl as Method;
-            if (mangledDecl != null && !(method != null && (method.IsPure || method.IsSynthetized)) &&
+            if (decl.IsGenerated && mangledDecl != null &&
+                !(method != null && (method.IsPure || method.IsSynthetized)) &&
                 !VisitMangledDeclaration(mangledDecl))
             {
                 decl.ExplicitlyIgnore();

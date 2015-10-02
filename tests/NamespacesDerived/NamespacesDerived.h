@@ -61,3 +61,11 @@ public:
 private:
     TemplateClass<int> t;
 };
+
+class DLL_API HasVirtualInDependency : public HasVirtualInCore
+{
+public:
+    HasVirtualInDependency();
+    HasVirtualInDependency* managedObject;
+    int callManagedOverride();
+};

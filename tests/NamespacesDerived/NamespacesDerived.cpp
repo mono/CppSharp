@@ -61,3 +61,12 @@ Abstract* Derived2::getAbstract()
 {
     return 0;
 }
+
+HasVirtualInDependency::HasVirtualInDependency()
+{
+}
+
+int HasVirtualInDependency::callManagedOverride()
+{
+    return managedObject->virtualInCore(0);
+}

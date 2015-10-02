@@ -52,3 +52,10 @@ template <typename T>
 class TemplateClass
 {
 };
+
+class DLL_API HasVirtualInCore
+{
+public:
+    HasVirtualInCore();
+    virtual int virtualInCore(int parameter);
+};

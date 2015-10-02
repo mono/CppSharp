@@ -1479,7 +1479,7 @@ namespace CppSharp.Generators.CSharp
             for (int i = 0; i < method.Parameters.Count; i++)
             {
                 var param = method.Parameters[i];
-                if (!param.IsGenerated)
+                if (!param.IsGenerated && param.GenerationKind != GenerationKind.Link)
                     continue;
 
                 if (param.Kind == ParameterKind.IndirectReturnType)
@@ -1506,7 +1506,7 @@ namespace CppSharp.Generators.CSharp
             if (hasReturn)
                 Write("var {0} = ", Helpers.ReturnIdentifier);
 
-            if (method.IsGenerated)
+            if (method.IsGenerated || method.GenerationKind == GenerationKind.Link)
             {
                 WriteLine("{0}.{1}({2});", Helpers.TargetIdentifier,
                     method.Name, string.Join(", ", marshals));              
