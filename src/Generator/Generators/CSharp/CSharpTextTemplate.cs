@@ -1213,7 +1213,7 @@ namespace CppSharp.Generators.CSharp
                     // check if overriding a property from a secondary base
                     Property rootBaseProperty;
                     var isOverride = prop.IsOverride &&
-                        (rootBaseProperty = @class.GetBaseProperty(prop, true)) != null &&
+                        (rootBaseProperty = @class.GetBaseProperty(prop, true, true)) != null &&
                         (rootBaseProperty.IsVirtual || rootBaseProperty.IsPure);
 
                     if (isOverride)

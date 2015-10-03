@@ -858,3 +858,16 @@ void QApplication::notify(QObject* receiver)
 {
     delete receiver;
 }
+
+HasSamePropertyInDerivedAbstractType::HasSamePropertyInDerivedAbstractType()
+{
+}
+
+char* HasSamePropertyInDerivedAbstractType::property()
+{
+    return 0;
+}
+
+InheritsFromHasSamePropertyInDerivedAbstractType::InheritsFromHasSamePropertyInDerivedAbstractType()
+{
+}

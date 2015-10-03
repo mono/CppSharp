@@ -786,3 +786,16 @@ public:
     virtual void notify(QObject* receiver);
 };
 
+class DLL_API HasSamePropertyInDerivedAbstractType
+{
+public:
+    HasSamePropertyInDerivedAbstractType();
+    char* property();
+};
+
+class InheritsFromHasSamePropertyInDerivedAbstractType : public HasSamePropertyInDerivedAbstractType
+{
+public:
+    InheritsFromHasSamePropertyInDerivedAbstractType();
+    virtual int property() = 0;
+};
