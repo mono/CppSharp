@@ -325,11 +325,12 @@ namespace CppSharp.Generators.CSharp
                 var dtor = originalClass.Destructors.FirstOrDefault();
                 if (dtor != null && dtor.IsVirtual)
                 {
-                    Context.SupportBefore.WriteLine("else {0}{1} = ({2}) {3}.{4}({5});",
+                    Context.SupportBefore.WriteLine("else {0}{1} = ({2}) {3}.{4}({5}{6});",
                         MarshalsParameter
                             ? string.Empty
                             : string.Format("{0}.NativeToManagedMap[{1}] = ", qualifiedClass, Context.ReturnVarName),
-                        ret, qualifiedIdentifier, qualifiedClass, Helpers.CreateInstanceIdentifier, Context.ReturnVarName);
+                        ret, qualifiedIdentifier, qualifiedClass, Helpers.CreateInstanceIdentifier, Context.ReturnVarName,
+                        MarshalsParameter ? ", skipVTables: true" : string.Empty);
                 }
                 else
                 {

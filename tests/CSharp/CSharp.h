@@ -770,12 +770,16 @@ class DLL_API QObject
 public:
     QObject();
     virtual ~QObject();
+    virtual void event();
 };
 
 class DLL_API QWidget : public QObject
 {
 public:
     QWidget();
+    void event();
+private:
+    QObject child;
 };
 
 class DLL_API QApplication : public QObject

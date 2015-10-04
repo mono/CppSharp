@@ -1368,17 +1368,10 @@ namespace CppSharp.Generators.CSharp
         private void SaveOriginalVTablePointers(ICollection<VFTableInfo> vfTables)
         {
             if (Driver.Options.IsMicrosoftAbi)
-            {
-                WriteLine("__OriginalVTables = new void*[{0}];", vfTables.Count);
-
-                for (var i = 0; i < vfTables.Count; i++)
-                    WriteLine("__OriginalVTables[{0}] = native->vfptr{0}.ToPointer();", i);
-            }
+                WriteLine("__OriginalVTables = new void*[] {{ {0} }};",
+                    string.Join(", ", vfTables.Select((v, i) => string.Format("native->vfptr{0}.ToPointer()", i))));
             else
-            {
-                WriteLine("__OriginalVTables = new void*[1];");
-                WriteLine("__OriginalVTables[0] = native->vfptr0.ToPointer();");
-            }
+                WriteLine("__OriginalVTables = new void*[] { native->vfptr0.ToPointer() };");
         }
 
         private void AllocateNewVTablesMS(Class @class, IList<VTableComponent> wrappedEntries)
@@ -1443,23 +1436,10 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
-        private void GenerateVTableClassSetupCall(Class @class, bool addPointerGuard = false)
+        private void GenerateVTableClassSetupCall(Class @class)
         {
             if (@class.IsDynamic && GetUniqueVTableMethodEntries(@class).Count != 0)
-            {
-                // called from internal ctors which may have been passed an IntPtr.Zero
-                if (addPointerGuard)
-                {
-                    WriteLine("if ({0} != global::System.IntPtr.Zero && !isInternalImpl)",
-                        Helpers.InstanceIdentifier);
-                    PushIndent();
-                }
-
                 WriteLine("SetupVTables();");
-
-                if (addPointerGuard)
-                    PopIndent();
-            }
         }
 
         private void GenerateVTableManagedCall(Method method)
@@ -1898,12 +1878,13 @@ namespace CppSharp.Generators.CSharp
             if (!@class.IsAbstractImpl)
             {
                 PushBlock(CSharpBlockKind.Method);
-                WriteLine("public static {0}{1} {2}(global::System.IntPtr native{3})",
+                WriteLine("public static {0}{1} {2}(global::System.IntPtr native{3}{4})",
                     @class.NeedsBase && !@class.BaseClass.IsInterface ? "new " : string.Empty,
                     @class.Name, Helpers.CreateInstanceIdentifier,
-                    @class.IsRefType ? ", bool ownsNativeInstance = false" : string.Empty);
+                    @class.IsRefType ? ", bool ownsNativeInstance = false" : string.Empty,
+                    ", bool skipVTables = false");
                 WriteStartBraceIndent();
-                WriteLine("return new {0}(({1}.Internal*) native){2};", ctorCall, className,
+                WriteLine("return new {0}(({1}.Internal*) native, skipVTables){2};", ctorCall, className,
                     @class.IsRefType
                         ? string.Format(" {{ {0} = ownsNativeInstance }}", Helpers.OwnsNativeInstanceIdentifier)
                         : string.Empty);
@@ -1914,7 +1895,7 @@ namespace CppSharp.Generators.CSharp
             GenerateNativeConstructorByValue(@class, className, ctorCall);
 
             PushBlock(CSharpBlockKind.Method);
-            WriteLine("{0} {1}({2}.Internal* native, bool isInternalImpl = false){3}",
+            WriteLine("{0} {1}({2}.Internal* native, bool skipVTables = false){3}",
                 @class.IsAbstractImpl ? "internal" : (@class.IsRefType ? "protected" : "private"),
                 @class.Name, className, @class.IsValueType ? " : this()" : string.Empty);
 
@@ -1929,18 +1910,29 @@ namespace CppSharp.Generators.CSharp
             {
                 if (shouldGenerateClassNativeField)
                 {
+                    WriteLine("if (native == null)");
+                    WriteLineIndent("return;");
                     WriteLine("{0} = new global::System.IntPtr(native);", Helpers.InstanceIdentifier);
                     var dtor = @class.Destructors.FirstOrDefault();
                     if (dtor != null && dtor.IsVirtual)
-                        GenerateVTableClassSetupCall(@class, true);
+                    {
+                        WriteLine("if (skipVTables)");
+                        PushIndent();
+                        SaveOriginalVTablePointers(@class.Layout.VFTables);
+                        PopIndent();
+                        WriteLine("else");
+                        PushIndent();
+                        GenerateVTableClassSetupCall(@class);
+                        PopIndent();
+                    }
                     else
                     {
                         if (@class.IsDynamic && GetUniqueVTableMethodEntries(@class).Count != 0)
                         {
                             WriteLine("if (native != null)");
-                            WriteStartBraceIndent();
+                            PushIndent();
                             SaveOriginalVTablePointers(@class.Layout.VFTables);
-                            WriteCloseBraceIndent();
+                            PopIndent();
                         }
                     }
                 }
@@ -1959,9 +1951,10 @@ namespace CppSharp.Generators.CSharp
             if (!@class.IsAbstractImpl)
             {
                 PushBlock(CSharpBlockKind.Method);
-                WriteLine("public static {0} {1}({0}.Internal native)", className, Helpers.CreateInstanceIdentifier);
+                WriteLine("public static {0} {1}({0}.Internal native, bool skipVTables = false)",
+                    className, Helpers.CreateInstanceIdentifier);
                 WriteStartBraceIndent();
-                WriteLine("return new {0}(native);", ctorCall);
+                WriteLine("return new {0}(native, skipVTables);", ctorCall);
                 WriteCloseBraceIndent();
                 PopBlock(NewLineKind.BeforeNextBlock);   
             }
@@ -1994,9 +1987,9 @@ namespace CppSharp.Generators.CSharp
             if (!@class.IsAbstract)
             {
                 PushBlock(CSharpBlockKind.Method);
-                WriteLine("{0} {1}({2}.Internal native)",
+                WriteLine("{0} {1}({2}.Internal native, bool skipVTables = false)",
                     @class.IsAbstractImpl ? "internal" : "private", @class.Name, className);
-                WriteLineIndent(@class.IsRefType ? ": this(__CopyValue(native))" : ": this()");
+                WriteLineIndent(@class.IsRefType ? ": this(__CopyValue(native), skipVTables)" : ": this()");
                 WriteStartBraceIndent();
                 if (@class.IsRefType)
                 {

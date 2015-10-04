@@ -842,9 +842,18 @@ QObject::~QObject()
 {
 }
 
+void QObject::event()
+{
+}
+
 QWidget::QWidget()
 {
     QApplication::instance->notify(this);
+}
+
+void QWidget::event()
+{
+    QApplication::instance->notify(&child);
 }
 
 QApplication::QApplication()
@@ -856,7 +865,7 @@ QApplication* QApplication::instance = 0;
 
 void QApplication::notify(QObject* receiver)
 {
-    delete receiver;
+    receiver->event();
 }
 
 HasSamePropertyInDerivedAbstractType::HasSamePropertyInDerivedAbstractType()
