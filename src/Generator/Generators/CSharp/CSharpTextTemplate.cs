@@ -204,18 +204,9 @@ namespace CppSharp.Generators.CSharp
             public List<Type> param;
             //Type retType;
             public string pstrs, retType;
-            public string name;
+            public string name, Comment;
             public bool suppressWarning;
             public string CallingConvention;
-            /*
-            DelegateDef(int numpar)
-            {
-                numParams = numpar;
-                param = new List<Type>();
-                pstrs = "";
-                retType = "";
-                name = "";
-            }*/
         }
 
         private List<DelegateDef> AllDelegatesUsed = new List<DelegateDef>();
@@ -229,19 +220,23 @@ namespace CppSharp.Generators.CSharp
                 allps.Add(func.Parameters.ElementAt(i).Type);
             }
             string callingConvention = func.CallingConvention.ToInteropCallConv().ToString();;
+            CSharpTypePrinterResult retType;
+            var temp = GatherInternalParams(func, out retType);
             DelegateDef dd = new DelegateDef();
+            dd.Comment = "";
             for(int i = 0; i < AllDelegatesUsed.Count; ++i)
             {
                 dd = AllDelegatesUsed.ElementAt(i);
-                if (dd.suppressWarning == suppressWarning && dd.CallingConvention.Equals(callingConvention) && dd.numParams == func.Parameters.Count)
+                if (dd.retType.Equals(retType.ToString()) && dd.suppressWarning == suppressWarning && dd.CallingConvention.Equals(callingConvention) && dd.numParams == func.Parameters.Count)
                 {
-                    int jj=0;
-                    for(jj=0; jj<=dd.numParams; ++jj)
+                    int jj;
+                    for(jj=2; jj<=dd.numParams; ++jj)
                     {
-                        if(jj==1)
-                            continue;           //ELement 1 is ALWAYS IntPtr
                         if(dd.param.ElementAt(jj) != allps.ElementAt(jj))
+                        {
+                            dd.Comment = "/*Didn't match at " + jj + ". Expected: " + dd.param.ElementAt(jj).ToString() + allps.ElementAt(jj).ToString() + "... Was : " + "...*/";
                             break;
+                        }
                     }
                     if(jj>dd.numParams)
                         return "DelegatesStorage." + dd.name;
@@ -253,8 +248,6 @@ namespace CppSharp.Generators.CSharp
             dd.name = "DelegateTemplate"+ AllDelegatesUsed.Count;
             dd.suppressWarning = suppressWarning;
             dd.CallingConvention = callingConvention;
-            CSharpTypePrinterResult retType;
-            var temp = GatherInternalParams(func, out retType);
             dd.pstrs = string.Join(", ", temp);
             dd.retType = retType.ToString();
             AllDelegatesUsed.Add(dd);
@@ -274,25 +267,15 @@ namespace CppSharp.Generators.CSharp
             WriteStartBraceIndent();
             DelegateDef dd;
             Type t;
-            //string retT;//T, pars;
             for (int i = 0; i < AllDelegatesUsed.Count; ++i)
             {
                 dd = AllDelegatesUsed.ElementAt(i);
-                //retT = dd.param.ElementAt(0).CSharpType(TypePrinter).ToString();
-                /*pars = "";
-                for (int j = 1; j <= dd.numParams; ++j)
-                {
-                    t = dd.param.ElementAt(i);
-                    pars += t.CSharpType(TypePrinter) + " param" + j;
-                    if (j < dd.numParams)
-                        pars += ", ";
-                }*/
+                WriteLine(dd.Comment);
                 if(dd.suppressWarning)
                     WriteLine("[SuppressUnmanagedCodeSecurity]");
                 if(dd.CallingConvention != string.Empty)
                     WriteLine("[UnmanagedFunctionPointerAttribute(global::System.Runtime.InteropServices.CallingConvention.{0})]", dd.CallingConvention);
                 WriteLine("internal delegate {0} {1}({2});", dd.retType, dd.name, dd.pstrs);
-                WriteLine("");
             }
             WriteCloseBraceIndent();
         }
