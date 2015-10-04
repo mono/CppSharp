@@ -202,8 +202,12 @@ namespace CppSharp.Generators.CSharp
         {
             public int numParams;
             public List<Type> param;
+            //Type retType;
             public string pstrs, retType;
-            public string name;/*
+            public string name;
+            public bool suppressWarning;
+            public string CallingConvention;
+            /*
             DelegateDef(int numpar)
             {
                 numParams = numpar;
@@ -214,9 +218,9 @@ namespace CppSharp.Generators.CSharp
             }*/
         }
 
-        private static List<DelegateDef> AllDelegatesUsed = new List<DelegateDef>();
+        private List<DelegateDef> AllDelegatesUsed = new List<DelegateDef>();
 
-        private string GenerateDelegate(Method func)
+        private string GenerateDelegate(Method func, bool suppressWarning = true)
         {
             List<Type> allps = new List<Type>();
             allps.Add(func.ReturnType.Type);
@@ -224,47 +228,69 @@ namespace CppSharp.Generators.CSharp
             {
                 allps.Add(func.Parameters.ElementAt(i).Type);
             }
+            string callingConvention = func.CallingConvention.ToInteropCallConv().ToString();;
             DelegateDef dd = new DelegateDef();
             for(int i = 0; i < AllDelegatesUsed.Count; ++i)
             {
                 dd = AllDelegatesUsed.ElementAt(i);
-                if (dd.numParams == func.Parameters.Count && dd.param.Equals(allps))
-                    return "DelegatesStorage." + dd.name;
+                if (dd.suppressWarning == suppressWarning && dd.CallingConvention.Equals(callingConvention) && dd.numParams == func.Parameters.Count)
+                {
+                    int jj=0;
+                    for(jj=0; jj<=dd.numParams; ++jj)
+                    {
+                        if(jj==1)
+                            continue;           //ELement 1 is ALWAYS IntPtr
+                        if(dd.param.ElementAt(jj) != allps.ElementAt(jj))
+                            break;
+                    }
+                    if(jj>dd.numParams)
+                        return "DelegatesStorage." + dd.name;
+                }
+                    
             }
             dd.numParams = func.Parameters.Count;
             dd.param = new List<Type>(allps);
             dd.name = "DelegateTemplate"+ AllDelegatesUsed.Count;
-            AllDelegatesUsed.Add(dd);
+            dd.suppressWarning = suppressWarning;
+            dd.CallingConvention = callingConvention;
             CSharpTypePrinterResult retType;
             var temp = GatherInternalParams(func, out retType);
             dd.pstrs = string.Join(", ", temp);
             dd.retType = retType.ToString();
+            AllDelegatesUsed.Add(dd);
             return  "DelegatesStorage." + dd.name;
+        }
+        private string GenerateDelegate(Function func, bool suppressWarning = true)
+        {
+            return GenerateDelegate(func as Method, suppressWarning);
         }
 
         private void GenerateDelegatesClass()
         {
             if (AllDelegatesUsed.Count == 0)
                 return;
-            WriteLine("class DelegatesStorage");
+            WriteLine("");
+            WriteLine("public unsafe class DelegatesStorage");
             WriteStartBraceIndent();
             DelegateDef dd;
             Type t;
-            string retT, pars;
+            string retT;//T, pars;
             for (int i = 0; i < AllDelegatesUsed.Count; ++i)
             {
                 dd = AllDelegatesUsed.ElementAt(i);
                 retT = dd.param.ElementAt(0).CSharpType(TypePrinter).ToString();
-                pars = "";
+                /*pars = "";
                 for (int j = 1; j <= dd.numParams; ++j)
                 {
                     t = dd.param.ElementAt(i);
                     pars += t.CSharpType(TypePrinter) + " param" + j;
                     if (j < dd.numParams)
                         pars += ", ";
-                }
-                WriteLine("[SuppressUnmanagedCodeSecurity]");
-                WriteLine("[UnmanagedFunctionPointerAttribute(global::System.Runtime.InteropServices.CallingConvention.Cdecl)]");
+                }*/
+                if(dd.suppressWarning)
+                    WriteLine("[SuppressUnmanagedCodeSecurity]");
+                if(dd.CallingConvention != string.Empty)
+                    WriteLine("[UnmanagedFunctionPointerAttribute(global::System.Runtime.InteropServices.CallingConvention.{0})]", dd.CallingConvention);
                 WriteLine("internal delegate {0} {1}({2});", retT, dd.name, dd.pstrs);
                 WriteLine("");
             }
@@ -1677,11 +1703,12 @@ namespace CppSharp.Generators.CSharp
                 string.Join(", ", @params));
              * */
             var vTableMethodDelegateName = GenerateDelegate(method);
+            var vTableMethodDelegateNameOld = GetVTableMethodDelegateName(method);
 
-            WriteLine("private static {0} {1}Instance;", vTableMethodDelegateName, vTableMethodDelegateName.Substring(17));
+            WriteLine("private static {0} {1}Instance;", vTableMethodDelegateName, vTableMethodDelegateNameOld);
             NewLine();
 
-            WriteLine("private static {0} {1}Hook({2})", retType, vTableMethodDelegateName.Substring(17),
+            WriteLine("private static {0} {1}Hook({2})", retType, vTableMethodDelegateNameOld,
                 string.Join(", ", @params));
             WriteStartBraceIndent();
 
@@ -2445,8 +2472,8 @@ namespace CppSharp.Generators.CSharp
                 Helpers.SlotIdentifier, i, Driver.TargetInfo.PointerWidth / 8);
             virtualCallBuilder.AppendLine();
 
-            var @delegate = GetVTableMethodDelegateName(function.OriginalFunction ?? function);
-            delegateId = Generator.GeneratedIdentifier(@delegate);
+            var @delegate = GenerateDelegate(function.OriginalFunction ?? function);
+            delegateId = Generator.GeneratedIdentifier(GetVTableMethodDelegateName(function.OriginalFunction ?? function));
 
             virtualCallBuilder.AppendFormat(
                 "var {1} = ({0}) Marshal.GetDelegateForFunctionPointer(new IntPtr({2}), typeof({0}));",
