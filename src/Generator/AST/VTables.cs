@@ -72,26 +72,19 @@ namespace CppSharp.AST
             throw new NotSupportedException();
         }
 
-        static bool CanOverride(Method method, Method @override)
-        {
-            return method.OriginalName == @override.OriginalName &&
-                   method.ReturnType == @override.ReturnType &&
-                   method.Parameters.SequenceEqual(@override.Parameters,
-                       new ParameterTypeComparer());
-        }
 
-        public static int GetVTableIndex(Method method, Class @class)
+        public static int GetVTableIndex(Function function, Class @class)
         {
             switch (@class.Layout.ABI)
             {
                 case CppAbi.Microsoft:
                     return (from table in @class.Layout.VFTables
-                            let j = table.Layout.Components.FindIndex(m => CanOverride(m.Method, method))
+                            let j = table.Layout.Components.FindIndex(m => m.Method == function)
                             where j >= 0
                             select j).First();
                 default:
                     // ignore offset to top and RTTI
-                    return @class.Layout.Layout.Components.FindIndex(m => m.Method == method) - 2;
+                    return @class.Layout.Layout.Components.FindIndex(m => m.Method == function) - 2;
             }
         }
 

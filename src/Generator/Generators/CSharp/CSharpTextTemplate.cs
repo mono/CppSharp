@@ -2340,7 +2340,7 @@ namespace CppSharp.Generators.CSharp
             out string delegateId)
         {
             var virtualCallBuilder = new StringBuilder();
-            var i = VTables.GetVTableIndex((Method) (function.OriginalFunction ?? function), @class);
+            var i = VTables.GetVTableIndex(function.OriginalFunction ?? function, @class);
             virtualCallBuilder.AppendFormat("void* {0} = *(void**) ((IntPtr) __OriginalVTables[0] + {1} * {2});",
                 Helpers.SlotIdentifier, i, Driver.TargetInfo.PointerWidth / 8);
             virtualCallBuilder.AppendLine();
@@ -2436,7 +2436,7 @@ namespace CppSharp.Generators.CSharp
 
             CheckArgumentRange(function);
             var functionName = string.Format("Internal.{0}",
-                GetFunctionNativeIdentifier(function));
+                GetFunctionNativeIdentifier(function.OriginalFunction ?? function));
             GenerateFunctionCall(functionName, parameters, function, returnType);
         }
 

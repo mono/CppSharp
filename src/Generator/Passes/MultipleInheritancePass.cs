@@ -153,7 +153,7 @@ namespace CppSharp.Passes
             @interface.Methods.AddRange(
                 from m in @base.Methods
                 where !m.IsConstructor && !m.IsDestructor && !m.IsStatic && m.IsDeclared && !m.IsOperator
-                select new Method(m) { Namespace = @interface });
+                select new Method(m) { Namespace = @interface, OriginalFunction = m });
 
             @interface.Properties.AddRange(
                 from property in @base.Properties
@@ -199,7 +199,7 @@ namespace CppSharp.Passes
                         m.Parameters.SequenceEqual(method.Parameters.Where(p => !p.Ignore),
                             parameterTypeComparer)))
                     continue;
-                var impl = new Method(method) { Namespace = @class };
+                var impl = new Method(method) { Namespace = @class, OriginalFunction = method.OriginalFunction };
                 var rootBaseMethod = @class.GetBaseMethod(method, true);
                 if (rootBaseMethod != null && rootBaseMethod.IsDeclared)
                     impl.ExplicitInterfaceImpl = @interface;
