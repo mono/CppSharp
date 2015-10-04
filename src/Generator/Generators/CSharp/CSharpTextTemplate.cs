@@ -274,11 +274,11 @@ namespace CppSharp.Generators.CSharp
             WriteStartBraceIndent();
             DelegateDef dd;
             Type t;
-            string retT;//T, pars;
+            //string retT;//T, pars;
             for (int i = 0; i < AllDelegatesUsed.Count; ++i)
             {
                 dd = AllDelegatesUsed.ElementAt(i);
-                retT = dd.param.ElementAt(0).CSharpType(TypePrinter).ToString();
+                //retT = dd.param.ElementAt(0).CSharpType(TypePrinter).ToString();
                 /*pars = "";
                 for (int j = 1; j <= dd.numParams; ++j)
                 {
@@ -291,7 +291,7 @@ namespace CppSharp.Generators.CSharp
                     WriteLine("[SuppressUnmanagedCodeSecurity]");
                 if(dd.CallingConvention != string.Empty)
                     WriteLine("[UnmanagedFunctionPointerAttribute(global::System.Runtime.InteropServices.CallingConvention.{0})]", dd.CallingConvention);
-                WriteLine("internal delegate {0} {1}({2});", retT, dd.name, dd.pstrs);
+                WriteLine("internal delegate {0} {1}({2});", dd.retType, dd.name, dd.pstrs);
                 WriteLine("");
             }
             WriteCloseBraceIndent();
