@@ -306,25 +306,25 @@ namespace CppSharp.Generators.CSharp
 
         public void GenerateComment(RawComment comment)
         {
-            if (string.IsNullOrWhiteSpace(comment.BriefText))
-                return;
-
-            PushBlock(BlockKind.BlockComment);
-            WriteLine("/// <summary>");
-            foreach (string line in HtmlEncoder.HtmlEncode(comment.BriefText).Split(
-                                        Environment.NewLine.ToCharArray()))
-                WriteLine("/// <para>{0}</para>", line);
-            WriteLine("/// </summary>");
-
-            if (!string.IsNullOrWhiteSpace(comment.Text))
+            if (comment.FullComment != null)
             {
-                WriteLine("/// <remarks>");
-                foreach (string line in HtmlEncoder.HtmlEncode(comment.Text).Split(
-                                            Environment.NewLine.ToCharArray()))
-                    WriteLine("/// <para>{0}</para>", line);
-                WriteLine("/// </remarks>");
+                PushBlock(BlockKind.BlockComment);
+                WriteLine(comment.FullComment.CommentToString());
+                PopBlock();
             }
-            PopBlock();
+            else
+            {
+                if (string.IsNullOrWhiteSpace(comment.BriefText))
+                    return;
+
+                PushBlock(BlockKind.BlockComment);
+                WriteLine("<summary>");
+                foreach (string line in HtmlEncoder.HtmlEncode(comment.BriefText).Split(
+                                            Environment.NewLine.ToCharArray()))
+                    WriteLine("<para>{0}</para>", line);
+                WriteLine("</summary>");
+                PopBlock();
+            }
         }
 
         public void GenerateInlineSummary(RawComment comment)
@@ -337,15 +337,15 @@ namespace CppSharp.Generators.CSharp
             PushBlock(BlockKind.InlineComment);
             if (comment.BriefText.Contains("\n"))
             {
-                WriteLine("/// <summary>");
+                WriteLine("{0} <summary>", Options.CommentPrefix);
                 foreach (string line in HtmlEncoder.HtmlEncode(comment.BriefText).Split(
                                             Environment.NewLine.ToCharArray()))
-                    WriteLine("/// <para>{0}</para>", line);
-                WriteLine("/// </summary>");
+                    WriteLine("{0} <para>{1}</para>", Options.CommentPrefix, line);
+                WriteLine("{0} </summary>", Options.CommentPrefix);
             }
             else
             {
-                WriteLine("/// <summary>{0}</summary>", comment.BriefText);
+                WriteLine("{0} <summary>{1}</summary>", Options.CommentPrefix, comment.BriefText);
             }
             PopBlock();
         }
