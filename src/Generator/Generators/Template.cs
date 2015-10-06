@@ -126,22 +126,6 @@ namespace CppSharp.Generators
                 if (childBlock.isSubBlock)
                     totalIndent = 0;
 
-                if (childBlock.Kind == BlockKind.BlockComment)
-                {
-                    // Wrap the comment to the max line width.
-                    var maxSize = options.MaxIndent - totalIndent;
-                    maxSize -= options.CommentPrefix.Length + 2;
-
-                    lines = StringHelpers.WordWrapLines(childText, (int)maxSize);
-
-                    for (var i = 0; i < lines.Count; ++i)
-                    {
-                        var line = lines[i];
-                        if (!line.StartsWith(options.CommentPrefix))
-                            lines[i] = options.CommentPrefix + " " + line;
-                    }
-                }
-
                 foreach (var line in lines)
                 {
                     if (string.IsNullOrEmpty(line))
@@ -150,6 +134,13 @@ namespace CppSharp.Generators
                     if (!string.IsNullOrWhiteSpace(line))
                         builder.Append(new string(' ', (int)totalIndent));
 
+
+                    if (childBlock.Kind == BlockKind.BlockComment &&
+                        !line.StartsWith(options.CommentPrefix))
+                    {
+                        builder.Append(options.CommentPrefix);
+                        builder.Append(' ');
+                    }
                     builder.Append(line);
 
                     if (!line.EndsWith(Environment.NewLine))
