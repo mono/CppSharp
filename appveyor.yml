@@ -59,6 +59,7 @@ on_success:
   - git config --global credential.helper store
   - ps: Add-Content "$env:USERPROFILE\.git-credentials" "https://$($env:GITHUB_ACCESS_TOKEN):x-oauth-basic@github.com`n"
   - git remote set-url origin https://github.com/mono/CppSharp.git
+  - git checkout master
   - '%LIB_PATH%\CppSharp.Parser.Gen.exe'
   - 'git commit -a -m "CI: Re-generated the parser bindings"'
   - git push
