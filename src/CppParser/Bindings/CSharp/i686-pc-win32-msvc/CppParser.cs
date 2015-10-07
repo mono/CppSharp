@@ -239,14 +239,14 @@ namespace CppSharp
 
             protected bool __ownsNativeInstance;
 
-            public static ParserOptions __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
+            public static ParserOptions __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
             {
-                return new ParserOptions((ParserOptions.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
+                return new ParserOptions((ParserOptions.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
             }
 
-            public static ParserOptions __CreateInstance(ParserOptions.Internal native)
+            public static ParserOptions __CreateInstance(ParserOptions.Internal native, bool skipVTables = false)
             {
-                return new ParserOptions(native);
+                return new ParserOptions(native, skipVTables);
             }
 
             private static ParserOptions.Internal* __CopyValue(ParserOptions.Internal native)
@@ -256,15 +256,17 @@ namespace CppSharp
                 return (ParserOptions.Internal*) ret;
             }
 
-            private ParserOptions(ParserOptions.Internal native)
-                : this(__CopyValue(native))
+            private ParserOptions(ParserOptions.Internal native, bool skipVTables = false)
+                : this(__CopyValue(native), skipVTables)
             {
                 __ownsNativeInstance = true;
                 NativeToManagedMap[__Instance] = this;
             }
 
-            protected ParserOptions(ParserOptions.Internal* native, bool isInternalImpl = false)
+            protected ParserOptions(ParserOptions.Internal* native, bool skipVTables = false)
             {
+                if (native == null)
+                    return;
                 __Instance = new global::System.IntPtr(native);
             }
 
@@ -272,17 +274,17 @@ namespace CppSharp
             {
                 __Instance = Marshal.AllocHGlobal(144);
                 __ownsNativeInstance = true;
-                Internal.ctor_0(__Instance);
                 NativeToManagedMap[__Instance] = this;
+                Internal.ctor_0(__Instance);
             }
 
             public ParserOptions(CppSharp.Parser.ParserOptions _0)
             {
                 __Instance = Marshal.AllocHGlobal(144);
                 __ownsNativeInstance = true;
+                NativeToManagedMap[__Instance] = this;
                 var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
                 Internal.cctor_2(__Instance, arg0);
-                NativeToManagedMap[__Instance] = this;
             }
 
             public void Dispose()
@@ -678,14 +680,14 @@ namespace CppSharp
 
             protected bool __ownsNativeInstance;
 
-            public static ParserDiagnostic __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
+            public static ParserDiagnostic __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
             {
-                return new ParserDiagnostic((ParserDiagnostic.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
+                return new ParserDiagnostic((ParserDiagnostic.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
             }
 
-            public static ParserDiagnostic __CreateInstance(ParserDiagnostic.Internal native)
+            public static ParserDiagnostic __CreateInstance(ParserDiagnostic.Internal native, bool skipVTables = false)
             {
-                return new ParserDiagnostic(native);
+                return new ParserDiagnostic(native, skipVTables);
             }
 
             private static ParserDiagnostic.Internal* __CopyValue(ParserDiagnostic.Internal native)
@@ -695,15 +697,17 @@ namespace CppSharp
                 return (ParserDiagnostic.Internal*) ret;
             }
 
-            private ParserDiagnostic(ParserDiagnostic.Internal native)
-                : this(__CopyValue(native))
+            private ParserDiagnostic(ParserDiagnostic.Internal native, bool skipVTables = false)
+                : this(__CopyValue(native), skipVTables)
             {
                 __ownsNativeInstance = true;
                 NativeToManagedMap[__Instance] = this;
             }
 
-            protected ParserDiagnostic(ParserDiagnostic.Internal* native, bool isInternalImpl = false)
+            protected ParserDiagnostic(ParserDiagnostic.Internal* native, bool skipVTables = false)
             {
+                if (native == null)
+                    return;
                 __Instance = new global::System.IntPtr(native);
             }
 
@@ -711,17 +715,17 @@ namespace CppSharp
             {
                 __Instance = Marshal.AllocHGlobal(60);
                 __ownsNativeInstance = true;
-                Internal.ctor_0(__Instance);
                 NativeToManagedMap[__Instance] = this;
+                Internal.ctor_0(__Instance);
             }
 
             public ParserDiagnostic(CppSharp.Parser.ParserDiagnostic _0)
             {
                 __Instance = Marshal.AllocHGlobal(60);
                 __ownsNativeInstance = true;
+                NativeToManagedMap[__Instance] = this;
                 var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
                 Internal.cctor_1(__Instance, arg0);
-                NativeToManagedMap[__Instance] = this;
             }
 
             public void Dispose()
@@ -870,14 +874,14 @@ namespace CppSharp
 
             protected bool __ownsNativeInstance;
 
-            public static ParserResult __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
+            public static ParserResult __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
             {
-                return new ParserResult((ParserResult.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
+                return new ParserResult((ParserResult.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
             }
 
-            public static ParserResult __CreateInstance(ParserResult.Internal native)
+            public static ParserResult __CreateInstance(ParserResult.Internal native, bool skipVTables = false)
             {
-                return new ParserResult(native);
+                return new ParserResult(native, skipVTables);
             }
 
             private static ParserResult.Internal* __CopyValue(ParserResult.Internal native)
@@ -887,15 +891,17 @@ namespace CppSharp
                 return (ParserResult.Internal*) ret;
             }
 
-            private ParserResult(ParserResult.Internal native)
-                : this(__CopyValue(native))
+            private ParserResult(ParserResult.Internal native, bool skipVTables = false)
+                : this(__CopyValue(native), skipVTables)
             {
                 __ownsNativeInstance = true;
                 NativeToManagedMap[__Instance] = this;
             }
 
-            protected ParserResult(ParserResult.Internal* native, bool isInternalImpl = false)
+            protected ParserResult(ParserResult.Internal* native, bool skipVTables = false)
             {
+                if (native == null)
+                    return;
                 __Instance = new global::System.IntPtr(native);
             }
 
@@ -903,17 +909,17 @@ namespace CppSharp
             {
                 __Instance = Marshal.AllocHGlobal(28);
                 __ownsNativeInstance = true;
-                Internal.ctor_0(__Instance);
                 NativeToManagedMap[__Instance] = this;
+                Internal.ctor_0(__Instance);
             }
 
             public ParserResult(CppSharp.Parser.ParserResult _0)
             {
                 __Instance = Marshal.AllocHGlobal(28);
                 __ownsNativeInstance = true;
+                NativeToManagedMap[__Instance] = this;
                 var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
                 Internal.cctor_1(__Instance, arg0);
-                NativeToManagedMap[__Instance] = this;
             }
 
             public void Dispose()
@@ -1040,14 +1046,14 @@ namespace CppSharp
 
             protected bool __ownsNativeInstance;
 
-            public static ClangParser __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false)
+            public static ClangParser __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
             {
-                return new ClangParser((ClangParser.Internal*) native) { __ownsNativeInstance = ownsNativeInstance };
+                return new ClangParser((ClangParser.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
             }
 
-            public static ClangParser __CreateInstance(ClangParser.Internal native)
+            public static ClangParser __CreateInstance(ClangParser.Internal native, bool skipVTables = false)
             {
-                return new ClangParser(native);
+                return new ClangParser(native, skipVTables);
             }
 
             private static ClangParser.Internal* __CopyValue(ClangParser.Internal native)
@@ -1057,15 +1063,17 @@ namespace CppSharp
                 return ret;
             }
 
-            private ClangParser(ClangParser.Internal native)
-                : this(__CopyValue(native))
+            private ClangParser(ClangParser.Internal native, bool skipVTables = false)
+                : this(__CopyValue(native), skipVTables)
             {
                 __ownsNativeInstance = true;
                 NativeToManagedMap[__Instance] = this;
             }
 
-            protected ClangParser(ClangParser.Internal* native, bool isInternalImpl = false)
+            protected ClangParser(ClangParser.Internal* native, bool skipVTables = false)
             {
+                if (native == null)
+                    return;
                 __Instance = new global::System.IntPtr(native);
             }
 
@@ -1080,8 +1088,8 @@ namespace CppSharp
             {
                 __Instance = Marshal.AllocHGlobal(0);
                 __ownsNativeInstance = true;
-                *((ClangParser.Internal*) __Instance) = *((ClangParser.Internal*) _0.__Instance);
                 NativeToManagedMap[__Instance] = this;
+                *((ClangParser.Internal*) __Instance) = *((ClangParser.Internal*) _0.__Instance);
             }
 
             public void Dispose()
