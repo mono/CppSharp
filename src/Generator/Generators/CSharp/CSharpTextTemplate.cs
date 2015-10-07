@@ -1438,7 +1438,7 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateVTableClassSetupCall(Class @class)
         {
-            if (@class.IsDynamic && GetUniqueVTableMethodEntries(@class).Count != 0)
+            if (@class.IsDynamic && GetUniqueVTableMethodEntries(@class).Count > 0)
                 WriteLine("SetupVTables();");
         }
 
@@ -1901,40 +1901,38 @@ namespace CppSharp.Generators.CSharp
 
             var hasBaseClass = @class.HasBaseClass && @class.BaseClass.IsRefType;
             if (hasBaseClass)
-                WriteLineIndent(": base(({0}.Internal*) native{1})",
-                    QualifiedIdentifierIfNeeded(@class.BaseClass), @class.IsAbstractImpl ? ", true" : string.Empty);
+                WriteLineIndent(": base(({0}.Internal*) null)", QualifiedIdentifierIfNeeded(@class.BaseClass));
 
             WriteStartBraceIndent();
 
             if (@class.IsRefType)
             {
-                if (shouldGenerateClassNativeField)
+                if (!@class.IsAbstractImpl)
                 {
                     WriteLine("if (native == null)");
                     WriteLineIndent("return;");
-                    WriteLine("{0} = new global::System.IntPtr(native);", Helpers.InstanceIdentifier);
-                    var dtor = @class.Destructors.FirstOrDefault();
-                    if (dtor != null && dtor.IsVirtual)
-                    {
-                        WriteLine("if (skipVTables)");
-                        PushIndent();
-                        SaveOriginalVTablePointers(@class.Layout.VFTables);
-                        PopIndent();
-                        WriteLine("else");
-                        PushIndent();
-                        GenerateVTableClassSetupCall(@class);
-                        PopIndent();
-                    }
-                    else
-                    {
-                        if (@class.IsDynamic && GetUniqueVTableMethodEntries(@class).Count != 0)
-                        {
-                            WriteLine("if (native != null)");
-                            PushIndent();
-                            SaveOriginalVTablePointers(@class.Layout.VFTables);
-                            PopIndent();
-                        }
-                    }
+                }
+
+                WriteLine("{0} = new global::System.IntPtr(native);", Helpers.InstanceIdentifier);
+                var dtor = @class.Destructors.FirstOrDefault();
+                var hasVTables = @class.IsDynamic && GetUniqueVTableMethodEntries(@class).Count > 0;
+                var setupVTables = !@class.IsAbstractImpl && hasVTables && dtor != null && dtor.IsVirtual;
+                if (setupVTables)
+                {
+                    WriteLine("if (skipVTables)");
+                    PushIndent();
+                }
+
+                if (@class.IsAbstractImpl || hasVTables)
+                    SaveOriginalVTablePointers(@class.Layout.VFTables);
+
+                if (setupVTables)
+                {
+                    PopIndent();
+                    WriteLine("else");
+                    PushIndent();
+                    GenerateVTableClassSetupCall(@class);
+                    PopIndent();
                 }
             }
             else
