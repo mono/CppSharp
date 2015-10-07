@@ -39,4 +39,4 @@ script:
   - config=$BUILD_CONF make -C build/gmake/
   - TEST_RESULT=0
   - for test in build/gmake/lib/Release_*/*.Tests.*.dll; do MONO_PATH=deps/NUnit.Runners.2.6.4/tools mono deps/NUnit.Runners.2.6.4/tools/nunit-console.exe -nologo $test || TEST_RESULT=$?; done
-  - [ ! $TEST_RESULT -eq 0 ] && exit $TEST_RESULT
+  - '[ ! "$TEST_RESULT" -eq 0 ] && exit "$TEST_RESULT"'
