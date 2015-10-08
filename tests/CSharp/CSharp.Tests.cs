@@ -255,7 +255,7 @@ public class CSharpTests : GeneratorTestFixture
         Assert.AreEqual(5, Foo.Rename);
     }
 
-    [Test, Ignore]
+    [Test]
     public void TestPrimarySecondaryBase()
     {
         var a = new MI_A0();

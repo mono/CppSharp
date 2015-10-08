@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using CppSharp.AST;
 using CppSharp.Generators.CSharp;
@@ -37,85 +36,20 @@ namespace CppSharp.Passes
             return result;
         }
 
-        public static bool ComputeClassPath(Class current, Class target,
-            List<BaseClassSpecifier> path)
-        {
-            if (target == current)
-                return true;
-
-            foreach (var @base in current.Bases)
-            {
-                path.Add(@base);
-
-                if (ComputeClassPath(@base.Class, target, path))
-                    return false;
-            }
-
-            path.RemoveAt(path.Count-1);
-            return false;
-        }
-
-        public static List<BaseClassSpecifier> ComputeClassPath(Class from, Class to)
-        {
-            var path = new List<BaseClassSpecifier>();
-
-            ComputeClassPath(from, to, path);
-            return path;
-        }
-
-        int ComputeNonVirtualBaseClassOffset(Class from, Class to)
-        {
-            var bases = ComputeClassPath(from, to);
-            return bases.Sum(@base => @base.Offset);
-        }
-
-        public void CheckNonVirtualInheritedFunctions(Class @class, Class originalClass = null)
-        {
-            if (originalClass == null)
-                originalClass = @class;
-
-            foreach (BaseClassSpecifier baseSpecifier in @class.Bases)
-            {
-                var @base = baseSpecifier.Class;
-                if (@base.IsInterface) continue;
-
-                var nonVirtualOffset = ComputeNonVirtualBaseClassOffset(originalClass, @base);
-                if (nonVirtualOffset == 0)
-                    continue;
-
-                foreach (var method in @base.Methods.Where(method =>
-                    !method.IsVirtual && (method.Kind == CXXMethodKind.Normal)))
-                {
-                    Console.WriteLine(method);
-
-                    var adjustedMethod = new Method(method)
-                    {
-                        SynthKind = FunctionSynthKind.AdjustedMethod,
-                        AdjustedOffset = nonVirtualOffset,
-                    };
-
-                    originalClass.Methods.Add(adjustedMethod);
-                }
-
-                CheckNonVirtualInheritedFunctions(@base, originalClass);
-            }
-        }
-
         public override bool VisitClassDecl(Class @class)
         {
             if (!base.VisitClassDecl(@class))
                 return false;
 
-            //CheckNonVirtualInheritedFunctions(@class);
-
             // skip the first base because we can inherit from one class
             for (var i = 1; i < @class.Bases.Count; i++)
             {
-                var @base = @class.Bases[i].Class;
-                if (@base.IsInterface) continue;
+                var @base = @class.Bases[i];
+                var baseClass = @base.Class;
+                if (baseClass.IsInterface) continue;
 
-                var @interface = GetInterface(@base);
-                @class.Bases[i] = new BaseClassSpecifier { Type = new TagType(@interface) };
+                var @interface = GetInterface(baseClass);
+                @class.Bases[i] = new BaseClassSpecifier(@base) { Type = new TagType(@interface) };
                 ImplementInterfaceMethods(@class, @interface);
                 ImplementInterfaceProperties(@class, @interface);
             }
@@ -148,7 +82,7 @@ namespace CppSharp.Passes
             @interface.Bases.AddRange(
                 from b in @base.Bases
                 let i = GetInterface(b.Class)
-                select new BaseClassSpecifier { Type = new TagType(i) });
+                select new BaseClassSpecifier(b) { Type = new TagType(i) });
 
             @interface.Methods.AddRange(
                 from m in @base.Methods
@@ -158,7 +92,7 @@ namespace CppSharp.Passes
             @interface.Properties.AddRange(
                 from property in @base.Properties
                 where property.IsDeclared
-                select new Property(property) { Namespace = @interface });
+                select CreateInterfaceProperty(property, @interface));
 
             @interface.Fields.AddRange(@base.Fields);
             // avoid conflicts when potentially renaming later
@@ -188,6 +122,16 @@ namespace CppSharp.Passes
 
             interfaces.Add(@base, @interface);
             return @interface;
+        }
+
+        private static Property CreateInterfaceProperty(Property property, Class @interface)
+        {
+            var interfaceProperty = new Property(property) { Namespace = @interface };
+            if (interfaceProperty.GetMethod != null)
+                interfaceProperty.GetMethod.Namespace = @interface;
+            if (interfaceProperty.SetMethod != null)
+                interfaceProperty.SetMethod.Namespace = @interface;
+            return interfaceProperty;
         }
 
         private static void ImplementInterfaceMethods(Class @class, Class @interface)

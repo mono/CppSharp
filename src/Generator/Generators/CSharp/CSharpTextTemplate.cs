@@ -42,6 +42,7 @@ namespace CppSharp.Generators.CSharp
 
         public static readonly string InstanceField = Generator.GeneratedIdentifier("instance");
         public static readonly string InstanceIdentifier = Generator.GeneratedIdentifier("Instance");
+        public static readonly string PointerAdjustmentIdentifier = Generator.GeneratedIdentifier("PointerAdjustment");
         public static readonly string ReturnIdentifier = Generator.GeneratedIdentifier("ret");
         public static readonly string DummyIdentifier = Generator.GeneratedIdentifier("dummy");
         public static readonly string TargetIdentifier = Generator.GeneratedIdentifier("target");
@@ -395,6 +396,12 @@ namespace CppSharp.Generators.CSharp
                     {
                         WriteLine("public {0} {1} {{ get; protected set; }}",
                             "global::System.IntPtr", Helpers.InstanceIdentifier);
+
+                        PopBlock(NewLineKind.BeforeNextBlock);
+
+                        PushBlock(CSharpBlockKind.Field);
+
+                        WriteLine("protected int {0};", Helpers.PointerAdjustmentIdentifier);
 
                         // use interfaces if any - derived types with a secondary base this class must be compatible with the map
                         var @interface = @class.Namespace.Classes.Find(c => c.OriginalClass == @class);
@@ -982,13 +989,13 @@ namespace CppSharp.Generators.CSharp
             if (type.IsPrimitiveType(out primitiveType))
             {
                 WriteLine("*Internal.{0}({1}, {2}) = value;", internalFunction,
-                    Helpers.InstanceIdentifier, function.Parameters[0].Name);
+                    GetInstanceParam(function), function.Parameters[0].Name);
             }
             else
             {
-                WriteLine("*({0}.Internal*) Internal.{1}({2}, {3}) = *({0}.Internal*) value.{2};",
-                    type.ToString(), internalFunction,
-                    Helpers.InstanceIdentifier, function.Parameters[0].Name);
+                WriteLine("*({0}.Internal*) Internal.{1}({2}, {3}) = *({0}.Internal*) value.{4};",
+                    type.ToString(), internalFunction, GetInstanceParam(function),
+                    function.Parameters[0].Name, Helpers.InstanceIdentifier);
             }
         }
 
@@ -1907,6 +1914,8 @@ namespace CppSharp.Generators.CSharp
 
             if (@class.IsRefType)
             {
+                if (@class.HasBaseClass)
+                    WriteLine("{0} = {1};", Helpers.PointerAdjustmentIdentifier, ClassExtensions.ComputeNonVirtualBaseClassOffsetTo(@class, @class.BaseClass));
                 if (!@class.IsAbstractImpl)
                 {
                     WriteLine("if (native == null)");
@@ -2551,9 +2560,7 @@ namespace CppSharp.Generators.CSharp
                     }
                     else
                     {
-                        names.Insert(instanceIndex, Helpers.InstanceIdentifier);
-                        if (method.SynthKind == FunctionSynthKind.AdjustedMethod)
-                            names[instanceIndex] += " + " + method.AdjustedOffset;
+                        names.Insert(instanceIndex, GetInstanceParam(function));
                     }
                 }
             }
@@ -2625,7 +2632,34 @@ namespace CppSharp.Generators.CSharp
                 WriteCloseBraceIndent();
         }
 
-        private int GetInstanceParamIndex(Method method)
+        private static string GetInstanceParam(Function function, string parameter = "")
+        {
+            var from = (Class) function.Namespace;
+            var to = function.OriginalFunction == null ? @from.BaseClass :
+                (Class) function.OriginalFunction.Namespace;
+
+            var baseOffset = 0;
+            if (to != null)
+            {
+                to = to.OriginalClass ?? to;
+                baseOffset = @from.ComputeNonVirtualBaseClassOffsetTo(to);
+            }
+            var isPrimaryBase = from.BaseClass == to;
+            if (isPrimaryBase)
+            {
+                return string.Format("({0}{1} + {2}{3})",
+                    string.IsNullOrEmpty(parameter) ? string.Empty : (parameter + '.'),
+                    Helpers.InstanceIdentifier,
+                    Helpers.PointerAdjustmentIdentifier,
+                    baseOffset == 0 ? string.Empty : (" - " + baseOffset));
+            }
+            return string.Format("({0}{1}{2})",
+                string.IsNullOrEmpty(parameter) ? string.Empty : (parameter + '.'),
+                Helpers.InstanceIdentifier,
+                baseOffset == 0 ? string.Empty : " + " + baseOffset);
+        }
+
+        private int GetInstanceParamIndex(Function method)
         {
             if (Options.IsMicrosoftAbi)
                 return 0;

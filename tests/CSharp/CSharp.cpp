@@ -83,12 +83,18 @@ QColor::QColor(Qt::GlobalColor color)
 
 Qux::Qux()
 {
+}
 
+Qux::Qux(const Qux& other)
+{
+    for (int i = 0; i < 3; i++)
+    {
+        array[i] = other.array[i];
+    }
 }
 
 Qux::Qux(Foo foo)
 {
-
 }
 
 Qux::Qux(Bar bar)
@@ -111,6 +117,10 @@ Qux* Qux::getInterface()
 }
 
 void Qux::setInterface(Qux *qux)
+{
+}
+
+void Qux::v()
 {
 }
 

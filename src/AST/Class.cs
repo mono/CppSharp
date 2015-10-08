@@ -26,6 +26,18 @@ namespace CppSharp.AST
     // Represents a base class of a C++ class.
     public class BaseClassSpecifier
     {
+        public BaseClassSpecifier()
+        {
+        }
+
+        public BaseClassSpecifier(BaseClassSpecifier other)
+        {
+            Access = other.Access;
+            IsVirtual = other.IsVirtual;
+            Type = (Type) other.Type.Clone();
+            Offset = other.Offset;
+        }
+
         public AccessSpecifier Access { get; set; }
         public bool IsVirtual { get; set; }
         public Type Type { get; set; }
