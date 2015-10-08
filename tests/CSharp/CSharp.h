@@ -39,6 +39,7 @@ class DLL_API Qux
 {
 public:
     Qux();
+    Qux(const Qux& other);
     Qux(Foo foo);
     Qux(Bar bar);
     int farAwayFunc() const;
@@ -46,6 +47,7 @@ public:
     void obsolete();
     Qux* getInterface();
     void setInterface(Qux* qux);
+    virtual void v();
 };
 
 class DLL_API Bar : public Qux
