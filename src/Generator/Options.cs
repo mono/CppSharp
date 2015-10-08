@@ -11,7 +11,7 @@ namespace CppSharp
 {
     public class DriverOptions : ParserOptions
     {
-        static public bool IsUnixPlatform
+        public static bool IsUnixPlatform
         {
             get
             {
@@ -44,6 +44,8 @@ namespace CppSharp
             CodeFiles = new List<string>();
 
             StripLibPrefix = true;
+
+            ExplicitlyPatchedVirtualFunctions = new List<string>();
         }
 
         // General options
@@ -186,6 +188,11 @@ namespace CppSharp
         public bool GenerateDefaultValuesForArguments { get; set; }
 
         public bool StripLibPrefix { get; set; }
+
+        /// <summary>
+        /// C# end only: force patching of the virtual entries of the functions in this list.
+        /// </summary>
+        public List<string> ExplicitlyPatchedVirtualFunctions { get; private set; }
     }
 
     public class InvalidOptionException : Exception
