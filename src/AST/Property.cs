@@ -15,8 +15,12 @@ namespace CppSharp.AST
             : base(property)
         {
             QualifiedType = property.QualifiedType;
-            GetMethod = property.GetMethod;
-            SetMethod = property.SetMethod;
+            if (property.GetMethod != null)
+                GetMethod = new Method(property.GetMethod) { OriginalFunction = property.GetMethod };
+            if (property.SetMethod != null)
+                // handle indexers
+                SetMethod = property.GetMethod == property.SetMethod ?
+                    GetMethod : new Method(property.SetMethod) { OriginalFunction = property.SetMethod };
             Field = property.Field;
             parameters.AddRange(property.Parameters);
         }
