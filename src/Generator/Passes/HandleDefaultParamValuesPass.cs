@@ -117,7 +117,7 @@ namespace CppSharp.Passes
             TypeMap typeMap;
 
             var typePrinter = new CSharpTypePrinter(Driver);
-            typePrinter.PushContext(CSharpTypePrinterContextKind.DefaultExpression);
+            typePrinter.PushMarshalKind(CSharpMarshalKind.DefaultExpression);
             var typePrinterResult = type.Visit(typePrinter).Type;
             if (Driver.TypeDatabase.FindTypeMap(decl, type, out typeMap))
             {
@@ -259,7 +259,7 @@ namespace CppSharp.Passes
             {
                 var typeInSignature = typeMap.CSharpSignatureType(new CSharpTypePrinterContext
                 {
-                    CSharpKind = CSharpTypePrinterContextKind.DefaultExpression,
+                    MarshalKind = CSharpMarshalKind.DefaultExpression,
                     Type = desugared
                 }).SkipPointerRefs().Desugar();
                 Enumeration @enum;

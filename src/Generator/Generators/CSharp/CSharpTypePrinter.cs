@@ -11,27 +11,14 @@ namespace CppSharp.Generators.CSharp
     public enum CSharpTypePrinterContextKind
     {
         Native,
-        Managed,
-        ManagedPointer,
-        GenericDelegate,
-        DefaultExpression
+        Managed
     }
 
     public class CSharpTypePrinterContext : TypePrinterContext
     {
         public CSharpTypePrinterContextKind CSharpKind;
+        public CSharpMarshalKind MarshalKind;
         public QualifiedType FullType;
-
-        public CSharpTypePrinterContext()
-        {
-            
-        }
-
-        public CSharpTypePrinterContext(TypePrinterContextKind kind,
-            CSharpTypePrinterContextKind csharpKind) : base(kind)
-        {
-            CSharpKind = csharpKind;
-        }
     }
 
     public class CSharpTypePrinterResult
@@ -42,7 +29,7 @@ namespace CppSharp.Generators.CSharp
 
         public static implicit operator CSharpTypePrinterResult(string type)
         {
-            return new CSharpTypePrinterResult() {Type = type};
+            return new CSharpTypePrinterResult {Type = type};
         }
 
         public override string ToString()
@@ -57,10 +44,16 @@ namespace CppSharp.Generators.CSharp
         private readonly Driver driver;
 
         private readonly Stack<CSharpTypePrinterContextKind> contexts;
+        private readonly Stack<CSharpMarshalKind> marshalKinds;
 
         public CSharpTypePrinterContextKind ContextKind
         {
             get { return contexts.Peek(); }
+        }
+
+        public CSharpMarshalKind MarshalKind
+        {
+            get { return marshalKinds.Peek(); }
         }
 
         public CSharpTypePrinterContext Context;
@@ -70,7 +63,9 @@ namespace CppSharp.Generators.CSharp
             this.driver = driver;
 
             contexts = new Stack<CSharpTypePrinterContextKind>();
+            marshalKinds = new Stack<CSharpMarshalKind>();
             PushContext(CSharpTypePrinterContextKind.Managed);
+            PushMarshalKind(CSharpMarshalKind.Unknown);
 
             Context = new CSharpTypePrinterContext();
         }
@@ -85,16 +80,27 @@ namespace CppSharp.Generators.CSharp
             return contexts.Pop();
         }
 
+        public void PushMarshalKind(CSharpMarshalKind marshalKind)
+        {
+            marshalKinds.Push(marshalKind);
+        }
+
+        public CSharpMarshalKind PopMarshalKind()
+        {
+            return marshalKinds.Pop();
+        }
+
         public CSharpTypePrinterResult VisitTagType(TagType tag, TypeQualifiers quals)
         {
             if (tag.Declaration == null)
                 return string.Empty;
 
             TypeMap typeMap;
-            if (this.driver.TypeDatabase.FindTypeMap(tag.Declaration, out typeMap))
+            if (driver.TypeDatabase.FindTypeMap(tag.Declaration, out typeMap))
             {
                 typeMap.Type = tag;
                 Context.CSharpKind = ContextKind;
+                Context.MarshalKind = MarshalKind;
                 Context.Type = tag;
 
                 string type = typeMap.CSharpSignature(Context);
@@ -160,12 +166,12 @@ namespace CppSharp.Generators.CSharp
             var returnType = function.ReturnType;
             var args = string.Empty;
 
-            PushContext(CSharpTypePrinterContextKind.GenericDelegate);
+            PushMarshalKind(CSharpMarshalKind.GenericDelegate);
 
             if (arguments.Count > 0)
                 args = VisitParameters(function.Parameters, hasNames: false).Type;
 
-            PopContext();
+            PopMarshalKind();
 
             if (ContextKind != CSharpTypePrinterContextKind.Managed)
                 return "global::System.IntPtr";
@@ -180,11 +186,11 @@ namespace CppSharp.Generators.CSharp
             if (!string.IsNullOrEmpty(args))
                 args = string.Format(", {0}", args);
 
-            PushContext(CSharpTypePrinterContextKind.GenericDelegate);
+            PushMarshalKind(CSharpMarshalKind.GenericDelegate);
 
             var returnTypePrinterResult = returnType.Visit(this);
 
-            PopContext();
+            PopMarshalKind();
 
             return string.Format("Func<{0}{1}>", returnTypePrinterResult, args);
         }
@@ -215,7 +221,7 @@ namespace CppSharp.Generators.CSharp
             return IsConstCharString(qualType.Type);
         }
 
-        bool AllowStrings = true;
+        private bool allowStrings = true;
 
         public CSharpTypePrinterResult VisitPointerType(PointerType pointer,
             TypeQualifiers quals)
@@ -230,7 +236,7 @@ namespace CppSharp.Generators.CSharp
 
             var isManagedContext = ContextKind == CSharpTypePrinterContextKind.Managed;
 
-            if (AllowStrings && IsConstCharString(pointer))
+            if (allowStrings && IsConstCharString(pointer))
                 return isManagedContext ? "string" : "global::System.IntPtr";
 
             var desugared = pointee.Desugar();
@@ -251,15 +257,15 @@ namespace CppSharp.Generators.CSharp
                 if (isManagedContext && isRefParam)
                     return pointee.Visit(this, quals);
 
-                if (ContextKind == CSharpTypePrinterContextKind.GenericDelegate ||
+                if (MarshalKind == CSharpMarshalKind.GenericDelegate ||
                     pointee.IsPrimitiveType(PrimitiveType.Void))
                     return "global::System.IntPtr";
 
                 // Do not allow strings inside primitive arrays case, else we'll get invalid types
                 // like string* for const char **.
-                AllowStrings = isRefParam;
+                allowStrings = isRefParam;
                 var result = pointee.Visit(this, quals);
-                AllowStrings = true;
+                allowStrings = true;
 
                 return !isRefParam && result.Type == "global::System.IntPtr" ? "void**" : result + "*";
             }
@@ -297,9 +303,6 @@ namespace CppSharp.Generators.CSharp
             // TODO: Non-function member pointer types are tricky to support.
             // Re-visit this.
             return "global::System.IntPtr";
-
-            throw new InvalidOperationException(
-                "A function pointer not pointing to a function type.");
         }
 
         public CSharpTypePrinterResult VisitBuiltinType(BuiltinType builtin,
@@ -314,10 +317,11 @@ namespace CppSharp.Generators.CSharp
             var decl = typedef.Declaration;
 
             TypeMap typeMap;
-            if (this.driver.TypeDatabase.FindTypeMap(decl, out typeMap))
+            if (driver.TypeDatabase.FindTypeMap(decl, out typeMap))
             {
                 typeMap.Type = typedef;
                 Context.CSharpKind = ContextKind;
+                Context.MarshalKind = MarshalKind;
                 Context.Type = typedef;
 
                 string type = typeMap.CSharpSignature(Context);
@@ -360,7 +364,7 @@ namespace CppSharp.Generators.CSharp
         {
             var decl = template.Template.TemplatedDecl;
 
-            TypeMap typeMap = null;
+            TypeMap typeMap;
             if (!driver.TypeDatabase.FindTypeMap(template, out typeMap))
                 return GetNestedQualifiedName(decl) +
                        (ContextKind == CSharpTypePrinterContextKind.Native
@@ -370,6 +374,7 @@ namespace CppSharp.Generators.CSharp
             typeMap.Type = template;
             Context.Type = template;
             Context.CSharpKind = ContextKind;
+            Context.MarshalKind = MarshalKind;
 
             var type = GetCSharpSignature(typeMap);
             if (!string.IsNullOrEmpty(type))
@@ -389,6 +394,7 @@ namespace CppSharp.Generators.CSharp
         private string GetCSharpSignature(TypeMap typeMap)
         {
             Context.CSharpKind = ContextKind;
+            Context.MarshalKind = MarshalKind;
             return typeMap.CSharpSignature(Context);
         }
 
@@ -493,7 +499,7 @@ namespace CppSharp.Generators.CSharp
             {
                 case PrimitiveType.Bool:
                     // returned structs must be blittable and bool isn't
-                    return ContextKind == CSharpTypePrinterContextKind.Native ?
+                    return MarshalKind == CSharpMarshalKind.NativeField ?
                         "byte" : "bool";
                 case PrimitiveType.Void: return "void";
                 case PrimitiveType.Char16:
@@ -513,7 +519,7 @@ namespace CppSharp.Generators.CSharp
                 case PrimitiveType.ULong:
                 case PrimitiveType.LongLong:
                 case PrimitiveType.ULongLong:
-                    return GetIntString(primitive, this.driver.TargetInfo);
+                    return GetIntString(primitive, driver.TargetInfo);
                 case PrimitiveType.Float: return "float";
                 case PrimitiveType.Double: return "double";
                 case PrimitiveType.IntPtr: return "global::System.IntPtr";

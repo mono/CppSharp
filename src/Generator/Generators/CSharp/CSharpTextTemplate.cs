@@ -741,7 +741,9 @@ namespace CppSharp.Generators.CSharp
 
             WriteLine("[FieldOffset({0})]", field.OffsetInBytes);
 
+            TypePrinter.PushMarshalKind(CSharpMarshalKind.NativeField);
             var fieldTypePrinted = field.QualifiedType.CSharpType(TypePrinter);
+            TypePrinter.PopMarshalKind();
 
             var typeName = safeIdentifier;
             if (!string.IsNullOrWhiteSpace(fieldTypePrinted.NameSuffix))
@@ -888,6 +890,7 @@ namespace CppSharp.Generators.CSharp
                 NewLine();
                 WriteStartBraceIndent();
 
+                ctx.Kind = CSharpMarshalKind.NativeField;
                 var marshal = new CSharpMarshalManagedToNativePrinter(ctx);
 
                 var arrayType = field.Type as ArrayType;
@@ -2516,13 +2519,6 @@ namespace CppSharp.Generators.CSharp
                     && !string.IsNullOrWhiteSpace(param.Context.ArgumentPrefix))
                     name.Append(param.Context.ArgumentPrefix);
 
-                // returned structs must be blittable and bool isn't
-                if ((param.Param.Type.GetFinalPointee() ?? param.Param.Type).IsPrimitiveType(PrimitiveType.Bool))
-                {
-                    var typePrinter = new CSharpTypePrinter(Driver);
-                    typePrinter.PushContext(CSharpTypePrinterContextKind.Native);
-                    name.AppendFormat("({0}) ", param.Param.Type.Visit(typePrinter));
-                }
                 name.Append(param.Name);
                 names.Add(name.ToString());
             }
@@ -2702,9 +2698,7 @@ namespace CppSharp.Generators.CSharp
             PrimitiveType primitive;
             // Do not delete instance in MS ABI.
             var name = param.Kind == ParameterKind.ImplicitDestructorParameter ? "0" : param.Name;
-            // returned structs must be blittable and bool and char aren't
-            if (param.Type.IsPrimitiveType(out primitive) &&
-                primitive != PrimitiveType.Char && primitive != PrimitiveType.Bool)
+            if (param.Type.IsPrimitiveType(out primitive) && primitive != PrimitiveType.Char)
             {
                 return new ParamMarshal { Name = name, Param = param };
             }

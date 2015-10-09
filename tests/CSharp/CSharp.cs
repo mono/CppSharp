@@ -62,7 +62,7 @@ namespace CppSharp.Tests
                 return Type.IsAddress() ? "QList.Internal*" : "QList.Internal";
 
             return string.Format("System.Collections.Generic.{0}<{1}>",
-                ctx.CSharpKind == CSharpTypePrinterContextKind.DefaultExpression ? "List" : "IList",
+                ctx.MarshalKind == CSharpMarshalKind.DefaultExpression ? "List" : "IList",
                 ctx.GetTemplateParameterList());
         }
 
