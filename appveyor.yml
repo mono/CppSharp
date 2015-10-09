@@ -54,15 +54,15 @@ build_script:
 #---------------------------------#
 
 on_success:
-  - git config --global user.name "CppSharp CI"
-  - git config --global user.email "joao+cppsharp-ci@tritao.eu"
-  - git config --global credential.helper store
-  - ps: Add-Content "$env:USERPROFILE\.git-credentials" "https://$($env:GITHUB_ACCESS_TOKEN):x-oauth-basic@github.com`n"
-  - git remote set-url origin https://github.com/mono/CppSharp.git
-  - git checkout master
-  - '%LIB_PATH%\CppSharp.Parser.Gen.exe'
-  - 'git commit -a -m "CI: Re-generated the parser bindings"'
-  - git push
+  #- git config --global user.name "CppSharp CI"
+  #- git config --global user.email "joao+cppsharp-ci@tritao.eu"
+  #- git config --global credential.helper store
+  #- ps: Add-Content "$env:USERPROFILE\.git-credentials" "https://$($env:GITHUB_ACCESS_TOKEN):x-oauth-basic@github.com`n"
+  #- git remote set-url origin https://github.com/mono/CppSharp.git
+  #- git checkout master
+  #- '%LIB_PATH%\CppSharp.Parser.Gen.exe'
+  #- 'git commit -a -m "CI: Re-generated the parser bindings"'
+  #- git push
 
 #---------------------------------#
 #      artifacts configuration    #
