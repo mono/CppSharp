@@ -307,7 +307,7 @@ int ImplementsAbstractFoo::pureFunction1()
     return 10;
 }
 
-int ImplementsAbstractFoo::pureFunction2()
+int ImplementsAbstractFoo::pureFunction2(bool* ok)
 {
     return 15;
 }

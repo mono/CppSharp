@@ -270,14 +270,15 @@ namespace CppSharp
             TranslationUnitPasses.AddPass(new CheckFlagEnumsPass());
             TranslationUnitPasses.AddPass(new CheckDuplicatedNamesPass());
             TranslationUnitPasses.AddPass(new RenameRootNamespacesPass());
-            if (Options.IsCSharpGenerator && Options.GenerateDefaultValuesForArguments)
-            {
-                TranslationUnitPasses.AddPass(new HandleDefaultParamValuesPass());
-                TranslationUnitPasses.AddPass(new FixDefaultParamValuesOfOverridesPass());
-            }
-
             if (Options.IsCSharpGenerator)
+            {
                 TranslationUnitPasses.AddPass(new GenerateAbstractImplementationsPass());
+                if (Options.GenerateDefaultValuesForArguments)
+                {
+                    TranslationUnitPasses.AddPass(new HandleDefaultParamValuesPass());
+                    TranslationUnitPasses.AddPass(new FixDefaultParamValuesOfOverridesPass());
+                }
+            }
 
             if (Options.GenerateInterfacesForMultipleInheritance)
             {

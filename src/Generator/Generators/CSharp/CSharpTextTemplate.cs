@@ -2342,7 +2342,7 @@ namespace CppSharp.Generators.CSharp
         {
             var virtualCallBuilder = new StringBuilder();
             var i = VTables.GetVTableIndex(function.OriginalFunction ?? function, @class);
-            virtualCallBuilder.AppendFormat("void* {0} = *(void**) ((IntPtr) __OriginalVTables[0] + {1} * {2});",
+            virtualCallBuilder.AppendFormat("var {0} = *(void**) ((IntPtr) __OriginalVTables[0] + {1} * {2});",
                 Helpers.SlotIdentifier, i, Driver.TargetInfo.PointerWidth / 8);
             virtualCallBuilder.AppendLine();
 

@@ -190,17 +190,17 @@ public:
 class DLL_API AbstractFoo
 {
 public:
-    virtual int pureFunction(int i) = 0;
+    virtual int pureFunction(int i = 0) = 0;
     virtual int pureFunction1() = 0;
-    virtual int pureFunction2() = 0;
+    virtual int pureFunction2(bool* ok = 0) = 0;
 };
 
 class DLL_API ImplementsAbstractFoo : public AbstractFoo
 {
 public:
-    virtual int pureFunction(int i);
+    virtual int pureFunction(int i = 0);
     virtual int pureFunction1();
-    virtual int pureFunction2();
+    virtual int pureFunction2(bool* ok = 0);
 };
 
 class DLL_API ReturnsAbstractFoo

@@ -202,7 +202,8 @@ public class CommonTests : GeneratorTestFixture
         var abstractFoo = returnsAbstractFoo.Foo;
         Assert.AreEqual(abstractFoo.pureFunction(1), 5);
         Assert.AreEqual(abstractFoo.pureFunction1(), 10);
-        Assert.AreEqual(abstractFoo.pureFunction2(), 15);
+        var ok = false;
+        Assert.AreEqual(abstractFoo.pureFunction2(ref ok), 15);
     }
 
     [Test]

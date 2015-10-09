@@ -361,6 +361,7 @@ public:
     void defaultIntExpressionWithEnum(int i = Qt::GlobalColor::black + 1);
     void defaultCtorWithMoreThanOneArg(QMargins m = QMargins(0, 0, 0, 0));
     void defaultWithComplexArgs(const QRect& rectangle = QRect(QPoint(0, 0), QSize(-1, -1)));
+    void defaultWithRefManagedLong(long long* i = 0);
     int getA();
 private:
     Foo m_foo;
