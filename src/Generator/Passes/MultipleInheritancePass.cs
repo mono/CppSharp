@@ -199,7 +199,12 @@ namespace CppSharp.Passes
                         m.Parameters.SequenceEqual(method.Parameters.Where(p => !p.Ignore),
                             parameterTypeComparer)))
                     continue;
-                var impl = new Method(method) { Namespace = @class, OriginalFunction = method.OriginalFunction };
+                var impl = new Method(method)
+                    {
+                        Namespace = @class,
+                        OriginalNamespace = @interface,
+                        OriginalFunction = method.OriginalFunction
+                    };
                 var rootBaseMethod = @class.GetBaseMethod(method, true);
                 if (rootBaseMethod != null && rootBaseMethod.IsDeclared)
                     impl.ExplicitInterfaceImpl = @interface;
@@ -213,7 +218,7 @@ namespace CppSharp.Passes
         {
             foreach (var property in @interface.Properties.Where(p => p.Name != Helpers.InstanceIdentifier))
             {
-                var impl = new Property(property) { Namespace = @class };
+                var impl = new Property(property) { Namespace = @class, OriginalNamespace = @interface };
                 var rootBaseProperty = @class.GetBaseProperty(property, true);
                 if (rootBaseProperty != null && rootBaseProperty.IsDeclared)
                     impl.ExplicitInterfaceImpl = @interface;

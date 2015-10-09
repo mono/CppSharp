@@ -328,6 +328,7 @@ namespace CppSharp.AST
             : this()
         {
             Namespace = declaration.Namespace;
+            OriginalNamespace = declaration.OriginalNamespace;
             OriginalName = declaration.OriginalName;
             name = declaration.Name;
             Comment = declaration.Comment;
