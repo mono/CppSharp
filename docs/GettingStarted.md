@@ -4,8 +4,9 @@ From an higher level overview, CppSharp will take a bunch of user-provided C/C++
 headers and generate either C++/CLI or C# code that can be compiled into a
 regular .NET assembly.
 
-Since there are no binary releases yet, the project needs to be compiled from
-source first.
+To get started you can either compile from source or get one of the pre-compiled binary releases from the [releases archive](https://github.com/mono/CppSharp/releases).
+
+# Building from source
 
 ## LLVM/Clang source repositories ##
 
@@ -54,7 +55,7 @@ msbuild LLVM.sln /p:Configuration=RelWithDebInfo;Platform=x64 /m
 cd <CppSharp>\build
 
 generateprojects.bat
-
+)
 msbuild vs2013\CppSharp.sln /p:Configuration=Release;Platform=x86
 ```
 
@@ -92,11 +93,9 @@ make
 
 The version you compile needs to match the version of the Mono VM installed on your system which you can find by running `mono --version`. The reason for this is because a 32-bit VM will only be able to load 32-bit shared libraries and vice-versa for 64-bits.
 
-## Compiling on Linux (experimental)
+## Compiling on Linux
 
-The Linux support is not complete, and these directions are included for developing CppSharp developers.
-
-Only 64bit build works at the moment. The build has been verified on Ubuntu 14.04.
+Only 64-bits builds are supported at the moment. 
 
 ### Compiling LLVM on Linux
 
@@ -138,8 +137,6 @@ If you need more verbosity from the builds invoke `make` as:
 ```shell
 verbose=true make -C gmake config=release_x64
 ```
-
-Note that at the moment the build fails, as the CppSharp tests fail. However, the library itself has been built fine.
 
 Additionally, you may want to run a very simple test to see that it works. The test needs to find CppSharp library, so cppsharp-test needs to be clone in to the same directory where you cloned CppSharp. Also, the CppSharp directory needs to be named "cppsharp".
 
