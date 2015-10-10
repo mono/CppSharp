@@ -1389,7 +1389,7 @@ namespace CppSharp.Generators.CSharp
                     tableIndex, size, Driver.TargetInfo.PointerWidth / 8);
                 WriteLine("__ManagedVTables[{0}] = vfptr{0}.ToPointer();", tableIndex);
 
-                AllocateNewVTableEntries(@class, vfptr.Layout.Components, wrappedEntries, tableIndex);
+                AllocateNewVTableEntries(vfptr.Layout.Components, wrappedEntries, tableIndex);
             }
 
             WriteCloseBraceIndent();
@@ -1411,7 +1411,7 @@ namespace CppSharp.Generators.CSharp
             WriteLine("var vfptr0 = vtptr + {0} * {1};", offsetToTopAndRTTI, pointerSize);
             WriteLine("__ManagedVTables[0] = vfptr0.ToPointer();");
 
-            AllocateNewVTableEntries(@class, @class.Layout.Layout.Components,
+            AllocateNewVTableEntries(@class.Layout.Layout.Components,
                 wrappedEntries, tableIndex: 0);
 
             WriteCloseBraceIndent();
@@ -1420,13 +1420,15 @@ namespace CppSharp.Generators.CSharp
             WriteLine("native->vfptr0 = new IntPtr(__ManagedVTables[0]);");
         }
 
-        private void AllocateNewVTableEntries(Class @class, IEnumerable<VTableComponent> entries,
+        private void AllocateNewVTableEntries(IList<VTableComponent> entries,
             IList<VTableComponent> wrappedEntries, int tableIndex)
         {
+            const int offsetToTopAndRTTI = 2;
             var pointerSize = Driver.TargetInfo.PointerWidth / 8;
-            foreach (var entry in entries)
+            for (int i = 0; i < entries.Count; i++)
             {
-                var offsetInBytes = VTables.GetVTableComponentIndex(@class, entry) * pointerSize;
+                var entry = entries[i];
+                var offsetInBytes = (i - (Options.IsMicrosoftAbi ? 0 : offsetToTopAndRTTI)) * pointerSize;
 
                 if ((entry.Kind == VTableComponentKind.FunctionPointer ||
                      entry.Kind == VTableComponentKind.DeletingDtorPointer) &&
