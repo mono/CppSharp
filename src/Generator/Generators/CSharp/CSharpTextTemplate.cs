@@ -211,21 +211,23 @@ namespace CppSharp.Generators.CSharp
 
         private class DelegateSign
         {
-            public string retType;
+            public String retType;
             public bool suppressWarning;
             public System.Runtime.InteropServices.CallingConvention callingConvention;
 
             public List<QualifiedType> paramTypes;
 
             CSharpTypePrinter tp;
-            public DelegateSign(CSharpTextTemplate ctt)
+            CSharpTextTemplate ctt;
+            public DelegateSign(CSharpTextTemplate cTT)
             {
-                tp = ctt.TypePrinter;
+                tp = cTT.TypePrinter;
+                ctt = cTT;
             }
 
             public override int GetHashCode()
             {
-                return callingConvention.GetHashCode() ^ paramTypes.GetHashCode();
+                return 1;//callingConvention.GetHashCode() ^ paramTypes.GetHashCode();
             }
             public override bool Equals(object obj)
             {
@@ -237,15 +239,20 @@ namespace CppSharp.Generators.CSharp
             }
             private bool CompareWith(DelegateSign ds)
             {
-                if (!retType.Equals(ds.retType) || suppressWarning != ds.suppressWarning
-                   || callingConvention != ds.callingConvention)
+                if (retType != ds.retType || suppressWarning != ds.suppressWarning || paramTypes.Count != ds.paramTypes.Count)
+                {
+                    ctt.WriteLine("/**DelegateSign**The other parameters were different...\nForfirst: retType=" + retType + " suppressWarning=" + suppressWarning + " paramCount=" + paramTypes.Count+ "\nForsecond: retType=" + ds.retType + " suppressWarning=" + ds.suppressWarning + " paramCount=" + ds.paramTypes.Count+ "*/\n");
                     return false;
+                }
 
                 for(int i=0; i<paramTypes.Count; ++i)
                 {
                     //This doesn't work (most probably)
-                    if (!paramTypes.ElementAt(i).Equals(ds.paramTypes.ElementAt(i)))
+                    if (paramTypes.ElementAt(i).Type != ds.paramTypes.ElementAt(i).Type)
+                    {
+                        ctt.WriteLine("/**DelegateSign**The param type was different...*/");
                         return false;
+                    }
                     //This too! :(
                     //if (!paramTypes.ElementAt(i).CSharpType(tp).ToString().Equals(ds.paramTypes.ElementAt(i).CSharpType(tp).ToString()))
                     //    return false;
@@ -273,7 +280,7 @@ namespace CppSharp.Generators.CSharp
             DelegateDef dd;
             if (AllDelegates.TryGetValue(ds, out dd))
                 return "DelegatesStorage." + dd.name;
-
+            WriteLine("/*making new...*/");
             dd = new DelegateDef();
             if (ds.retType.Equals("void"))
                 dd.name = "Func_" + AllDelegates.Count;
@@ -2492,7 +2499,7 @@ namespace CppSharp.Generators.CSharp
                 Helpers.SlotIdentifier, i, Driver.TargetInfo.PointerWidth / 8);
             virtualCallBuilder.AppendLine();
 
-            var @delegate = GenerateDelegate(function.OriginalFunction ?? function);
+            var @delegate = GenerateDelegate(function);
             delegateId = Generator.GeneratedIdentifier(GetVTableMethodDelegateName(function.OriginalFunction ?? function));
 
             virtualCallBuilder.AppendFormat(
