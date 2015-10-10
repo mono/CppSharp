@@ -201,7 +201,7 @@ namespace CppSharp.Generators.CSharp
         private struct DelegateDef
         {
             public int numParams;
-            public List<Type> param;
+            public List<QualifiedType> param;
             //Type retType;
             public string pstrs, retType;
             public string name, Comment;
@@ -209,48 +209,85 @@ namespace CppSharp.Generators.CSharp
             public string CallingConvention;
         }
 
-        private List<DelegateDef> AllDelegatesUsed = new List<DelegateDef>();
+        private class DelegateSign
+        {
+            public string retType;
+            public bool suppressWarning;
+            public System.Runtime.InteropServices.CallingConvention callingConvention;
+
+            public List<QualifiedType> paramTypes;
+
+            CSharpTypePrinter tp;
+            public DelegateSign(CSharpTextTemplate ctt)
+            {
+                tp = ctt.TypePrinter;
+            }
+
+            public override int GetHashCode()
+            {
+                return callingConvention.GetHashCode() ^ paramTypes.GetHashCode();
+            }
+            public override bool Equals(object obj)
+            {
+                return Equals(obj as DelegateSign);
+            }
+            public bool Equals(DelegateSign obj)
+            {
+                return obj != null && CompareWith(obj);
+            }
+            private bool CompareWith(DelegateSign ds)
+            {
+                if (!retType.Equals(ds.retType) || suppressWarning != ds.suppressWarning
+                   || callingConvention != ds.callingConvention)
+                    return false;
+
+                for(int i=0; i<paramTypes.Count; ++i)
+                {
+                    //This doesn't work (most probably)
+                    if (!paramTypes.ElementAt(i).Equals(ds.paramTypes.ElementAt(i)))
+                        return false;
+                    //This too! :(
+                    //if (!paramTypes.ElementAt(i).CSharpType(tp).ToString().Equals(ds.paramTypes.ElementAt(i).CSharpType(tp).ToString()))
+                    //    return false;
+                }
+                return true;
+            }
+        }
+
+        private Dictionary<DelegateSign, DelegateDef> AllDelegates = new Dictionary<DelegateSign, DelegateDef>();
 
         private string GenerateDelegate(Method func, bool suppressWarning = true)
         {
-            List<Type> allps = new List<Type>();
-            allps.Add(func.ReturnType.Type);
-            for(int i = 0; i < func.Parameters.Count; ++i)
-            {
-                allps.Add(func.Parameters.ElementAt(i).Type);
-            }
-            string callingConvention = func.CallingConvention.ToInteropCallConv().ToString();;
+            DelegateSign ds = new DelegateSign(this);
+            ds.callingConvention = func.CallingConvention.ToInteropCallConv();
             CSharpTypePrinterResult retType;
             var temp = GatherInternalParams(func, out retType);
-            DelegateDef dd = new DelegateDef();
-            dd.Comment = "";
-            for(int i = 0; i < AllDelegatesUsed.Count; ++i)
+            ds.retType = retType.ToString();
+            ds.suppressWarning = suppressWarning;
+            ds.paramTypes = new List<QualifiedType>();
+            for(int i=0; i<func.Parameters.Count; ++i)
             {
-                dd = AllDelegatesUsed.ElementAt(i);
-                if (dd.retType.Equals(retType.ToString()) && dd.suppressWarning == suppressWarning && dd.CallingConvention.Equals(callingConvention) && dd.numParams == func.Parameters.Count)
-                {
-                    int jj;
-                    for(jj=2; jj<=dd.numParams; ++jj)
-                    {
-                        if(dd.param.ElementAt(jj) != allps.ElementAt(jj))
-                        {
-                            dd.Comment = "/*Didn't match at " + jj + ". Expected: " + dd.param.ElementAt(jj).ToString() + allps.ElementAt(jj).ToString() + "... Was : " + "...*/";
-                            break;
-                        }
-                    }
-                    if(jj>dd.numParams)
-                        return "DelegatesStorage." + dd.name;
-                }
-                    
+                ds.paramTypes.Add(func.Parameters.ElementAt(i).QualifiedType);
             }
-            dd.numParams = func.Parameters.Count;
-            dd.param = new List<Type>(allps);
-            dd.name = "DelegateTemplate"+ AllDelegatesUsed.Count;
-            dd.suppressWarning = suppressWarning;
-            dd.CallingConvention = callingConvention;
+
+            DelegateDef dd;
+            if (AllDelegates.TryGetValue(ds, out dd))
+                return "DelegatesStorage." + dd.name;
+
+            dd = new DelegateDef();
+            if (ds.retType.Equals("void"))
+                dd.name = "Func_" + AllDelegates.Count;
+            else
+                dd.name = "Action_" + AllDelegates.Count;
+            dd.retType = ds.retType;
             dd.pstrs = string.Join(", ", temp);
-            dd.retType = retType.ToString();
-            AllDelegatesUsed.Add(dd);
+            dd.param = ds.paramTypes;
+            dd.numParams = ds.paramTypes.Count;
+            dd.suppressWarning = suppressWarning;
+            dd.CallingConvention = ds.callingConvention.ToString();
+            dd.Comment = "/*Total Num Params =" + dd.numParams+ " */";
+            AllDelegates.Add(ds, dd);
+
             return  "DelegatesStorage." + dd.name;
         }
         private string GenerateDelegate(Function func, bool suppressWarning = true)
@@ -260,16 +297,16 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateDelegatesClass()
         {
-            if (AllDelegatesUsed.Count == 0)
+            if (AllDelegates.Count == 0)
                 return;
             WriteLine("");
             WriteLine("public unsafe class DelegatesStorage");
             WriteStartBraceIndent();
             DelegateDef dd;
             Type t;
-            for (int i = 0; i < AllDelegatesUsed.Count; ++i)
+            for (int i = 0; i < AllDelegates.Count; ++i)
             {
-                dd = AllDelegatesUsed.ElementAt(i);
+                dd = AllDelegates.ElementAt(i).Value;
                 WriteLine(dd.Comment);
                 if(dd.suppressWarning)
                     WriteLine("[SuppressUnmanagedCodeSecurity]");
