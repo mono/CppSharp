@@ -1407,8 +1407,7 @@ namespace CppSharp.Generators.CSharp
             var pointerSize = Driver.TargetInfo.PointerWidth / 8;
             WriteLine("var vtptr = Marshal.AllocHGlobal({0} * {1});", size, pointerSize);
 
-            const int offsetToTopAndRTTI = 2;
-            WriteLine("var vfptr0 = vtptr + {0} * {1};", offsetToTopAndRTTI, pointerSize);
+            WriteLine("var vfptr0 = vtptr + {0} * {1};", VTables.ItaniumOffsetToTopAndRTTI, pointerSize);
             WriteLine("__ManagedVTables[0] = vfptr0.ToPointer();");
 
             AllocateNewVTableEntries(@class.Layout.Layout.Components,
@@ -1423,12 +1422,12 @@ namespace CppSharp.Generators.CSharp
         private void AllocateNewVTableEntries(IList<VTableComponent> entries,
             IList<VTableComponent> wrappedEntries, int tableIndex)
         {
-            const int offsetToTopAndRTTI = 2;
             var pointerSize = Driver.TargetInfo.PointerWidth / 8;
             for (int i = 0; i < entries.Count; i++)
             {
                 var entry = entries[i];
-                var offsetInBytes = (i - (Options.IsMicrosoftAbi ? 0 : offsetToTopAndRTTI)) * pointerSize;
+                var offsetInBytes = pointerSize
+                    * (i - (Options.IsMicrosoftAbi ? 0 : VTables.ItaniumOffsetToTopAndRTTI));
 
                 if ((entry.Kind == VTableComponentKind.FunctionPointer ||
                      entry.Kind == VTableComponentKind.DeletingDtorPointer) &&

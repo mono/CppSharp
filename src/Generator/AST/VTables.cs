@@ -6,6 +6,8 @@ namespace CppSharp.AST
 {
     public static class VTables
     {
+        public const int ItaniumOffsetToTopAndRTTI = 2;
+
         public static List<VTableComponent> GatherVTableMethodEntries(Class @class)
         {
             switch (@class.Layout.ABI)
@@ -52,26 +54,6 @@ namespace CppSharp.AST
             return GatherVTableMethodEntries(@class.Layout.Layout);
         }
 
-        public static int GetVTableComponentIndex(Class @class, VTableComponent entry)
-        {
-            switch (@class.Layout.ABI)
-            {
-            case CppAbi.Microsoft:
-                foreach (var vfptr in @class.Layout.VFTables)
-                {
-                    var index = vfptr.Layout.Components.IndexOf(entry);
-                    if (index >= 0)
-                        return index;
-                }
-                break;
-            default:
-                // ignore offset to top and RTTI
-                return @class.Layout.Layout.Components.IndexOf(entry) - 2;
-            }
-
-            throw new NotSupportedException();
-        }
-
 
         public static int GetVTableIndex(Function function, Class @class)
         {
@@ -83,8 +65,7 @@ namespace CppSharp.AST
                             where j >= 0
                             select j).First();
                 default:
-                    // ignore offset to top and RTTI
-                    return @class.Layout.Layout.Components.FindIndex(m => m.Method == function) - 2;
+                    return @class.Layout.Layout.Components.FindIndex(m => m.Method == function) - ItaniumOffsetToTopAndRTTI;
             }
         }
 
