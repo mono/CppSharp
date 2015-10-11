@@ -55,7 +55,6 @@ msbuild LLVM.sln /p:Configuration=RelWithDebInfo;Platform=x64 /m
 cd <CppSharp>\build
 
 generateprojects.bat
-)
 msbuild vs2013\CppSharp.sln /p:Configuration=Release;Platform=x86
 ```
 
