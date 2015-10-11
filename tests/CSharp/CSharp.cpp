@@ -1191,3 +1191,33 @@ void HasSecondaryBaseWithAbstractWithDefaultArg::abstract(const Foo& foo)
 void HasSecondaryBaseWithAbstractWithDefaultArg::abstractWithNoDefaultArg(const Foo& foo)
 {
 }
+
+MissingObjectOnVirtualCallSecondaryBase::MissingObjectOnVirtualCallSecondaryBase()
+{
+}
+
+void MissingObjectOnVirtualCallSecondaryBase::f()
+{
+}
+
+MissingObjectOnVirtualCall::MissingObjectOnVirtualCall()
+{
+}
+
+void MissingObjectOnVirtualCall::f()
+{
+}
+
+HasMissingObjectOnVirtualCall::HasMissingObjectOnVirtualCall()
+{
+}
+
+void HasMissingObjectOnVirtualCall::makeMissingObjectOnVirtualCall()
+{
+    stackOverflowOnVirtualCall->f();
+}
+
+void HasMissingObjectOnVirtualCall::setMissingObjectOnVirtualCall(MissingObjectOnVirtualCall* value)
+{
+    stackOverflowOnVirtualCall = value;
+}

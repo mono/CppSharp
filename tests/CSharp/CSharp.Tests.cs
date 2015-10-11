@@ -647,4 +647,17 @@ public unsafe class CSharpTests : GeneratorTestFixture
             return base.HasPointerToEnumInParam(pointerToEnum);
         }
     }
+
+    [Test]
+    public void TestStackOverflowOnVirtualCall()
+    {
+        using (var hasMissingObjectOnVirtualCall = new HasMissingObjectOnVirtualCall())
+        {
+            using (var missingObjectOnVirtualCall = new MissingObjectOnVirtualCall())
+            {
+                hasMissingObjectOnVirtualCall.SetMissingObjectOnVirtualCall(missingObjectOnVirtualCall);
+                hasMissingObjectOnVirtualCall.MakeMissingObjectOnVirtualCall();
+            }
+        }
+    }
 }

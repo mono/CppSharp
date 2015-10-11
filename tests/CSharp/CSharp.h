@@ -1067,3 +1067,27 @@ public:
     virtual void abstract(const Foo& foo = Foo());
     virtual void abstractWithNoDefaultArg(const Foo& foo = Foo());
 };
+
+class DLL_API MissingObjectOnVirtualCallSecondaryBase
+{
+public:
+    MissingObjectOnVirtualCallSecondaryBase();
+    virtual void f();
+};
+
+class DLL_API MissingObjectOnVirtualCall : public HasVirtualDtor1, public MissingObjectOnVirtualCallSecondaryBase
+{
+public:
+    MissingObjectOnVirtualCall();
+    void f();
+};
+
+class DLL_API HasMissingObjectOnVirtualCall
+{
+public:
+    HasMissingObjectOnVirtualCall();
+    void makeMissingObjectOnVirtualCall();
+    void setMissingObjectOnVirtualCall(MissingObjectOnVirtualCall* value);
+private:
+    MissingObjectOnVirtualCall* stackOverflowOnVirtualCall;
+};
