@@ -894,3 +894,34 @@ char* HasSamePropertyInDerivedAbstractType::property()
 InheritsFromHasSamePropertyInDerivedAbstractType::InheritsFromHasSamePropertyInDerivedAbstractType()
 {
 }
+
+
+MissingObjectOnVirtualCallSecondaryBase::MissingObjectOnVirtualCallSecondaryBase()
+{
+}
+
+void MissingObjectOnVirtualCallSecondaryBase::f()
+{
+}
+
+MissingObjectOnVirtualCall::MissingObjectOnVirtualCall()
+{
+}
+
+void MissingObjectOnVirtualCall::f()
+{
+}
+
+HasMissingObjectOnVirtualCall::HasMissingObjectOnVirtualCall()
+{
+}
+
+void HasMissingObjectOnVirtualCall::makeMissingObjectOnVirtualCall()
+{
+    stackOverflowOnVirtualCall->f();
+}
+
+void HasMissingObjectOnVirtualCall::setMissingObjectOnVirtualCall(MissingObjectOnVirtualCall* value)
+{
+    stackOverflowOnVirtualCall = value;
+}

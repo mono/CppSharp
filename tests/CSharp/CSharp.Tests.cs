@@ -482,4 +482,17 @@ public class CSharpTests : GeneratorTestFixture
             new QWidget();
         }
     }
+
+    [Test]
+    public void TestStackOverflowOnVirtualCall()
+    {
+        using (var hasMissingObjectOnVirtualCall = new HasMissingObjectOnVirtualCall())
+        {
+            using (var missingObjectOnVirtualCall = new MissingObjectOnVirtualCall())
+            {
+                hasMissingObjectOnVirtualCall.SetMissingObjectOnVirtualCall(missingObjectOnVirtualCall);
+                hasMissingObjectOnVirtualCall.MakeMissingObjectOnVirtualCall();
+            }
+        }
+    }
 }

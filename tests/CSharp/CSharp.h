@@ -806,3 +806,27 @@ public:
     InheritsFromHasSamePropertyInDerivedAbstractType();
     virtual int property() = 0;
 };
+
+class DLL_API MissingObjectOnVirtualCallSecondaryBase
+{
+public:
+    MissingObjectOnVirtualCallSecondaryBase();
+    virtual void f();
+};
+
+class DLL_API MissingObjectOnVirtualCall : public HasVirtualDtor1, public MissingObjectOnVirtualCallSecondaryBase
+{
+public:
+    MissingObjectOnVirtualCall();
+    void f();
+};
+
+class DLL_API HasMissingObjectOnVirtualCall
+{
+public:
+    HasMissingObjectOnVirtualCall();
+    void makeMissingObjectOnVirtualCall();
+    void setMissingObjectOnVirtualCall(MissingObjectOnVirtualCall* value);
+private:
+    MissingObjectOnVirtualCall* stackOverflowOnVirtualCall;
+};
