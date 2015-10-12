@@ -806,3 +806,25 @@ public:
     InheritsFromHasSamePropertyInDerivedAbstractType();
     virtual int property() = 0;
 };
+
+
+class DLL_API MultipleInheritanceFieldOffsetsSecondaryBase
+{
+public:
+    MultipleInheritanceFieldOffsetsSecondaryBase();
+    int secondary;
+};
+
+class DLL_API MultipleInheritanceFieldOffsetsPrimaryBase
+{
+public:
+    MultipleInheritanceFieldOffsetsPrimaryBase();
+    int primary;
+};
+
+class DLL_API MultipleInheritanceFieldOffsets : public MultipleInheritanceFieldOffsetsPrimaryBase, public MultipleInheritanceFieldOffsetsSecondaryBase
+{
+public:
+    MultipleInheritanceFieldOffsets();
+    int own;
+};

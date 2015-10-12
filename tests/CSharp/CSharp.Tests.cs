@@ -479,7 +479,20 @@ public class CSharpTests : GeneratorTestFixture
     {
         using (new QApplication())
         {
-            new QWidget();
+            using (new QWidget())
+            {
+            }
+        }
+    }
+
+    [Test]
+    public void TestMultipleInheritanceFieldOffsets()
+    {
+        using (var multipleInheritanceFieldOffsets = new MultipleInheritanceFieldOffsets())
+        {
+            Assert.That(multipleInheritanceFieldOffsets.Primary, Is.EqualTo(1));
+            Assert.That(multipleInheritanceFieldOffsets.Secondary, Is.EqualTo(2));
+            Assert.That(multipleInheritanceFieldOffsets.Own, Is.EqualTo(3));
         }
     }
 }

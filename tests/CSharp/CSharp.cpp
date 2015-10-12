@@ -894,3 +894,15 @@ char* HasSamePropertyInDerivedAbstractType::property()
 InheritsFromHasSamePropertyInDerivedAbstractType::InheritsFromHasSamePropertyInDerivedAbstractType()
 {
 }
+
+MultipleInheritanceFieldOffsetsSecondaryBase::MultipleInheritanceFieldOffsetsSecondaryBase() : secondary(2)
+{
+}
+
+MultipleInheritanceFieldOffsetsPrimaryBase::MultipleInheritanceFieldOffsetsPrimaryBase() : primary(1)
+{
+}
+
+MultipleInheritanceFieldOffsets::MultipleInheritanceFieldOffsets() : own(3)
+{
+}

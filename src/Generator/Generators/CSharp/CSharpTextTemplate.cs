@@ -515,7 +515,7 @@ namespace CppSharp.Generators.CSharp
 
             TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
 
-            GenerateClassFields(@class, GenerateClassInternalsField, true);
+            GenerateClassFields(@class, @class, GenerateClassInternalsField, true);
             if (@class.IsGenerated)
             {
                 if (@class.IsDynamic)
@@ -709,7 +709,8 @@ namespace CppSharp.Generators.CSharp
                 Write(" : {0}", string.Join(", ", bases));
         }
 
-        public void GenerateClassFields(Class @class, Action<Field> action, bool nativeFields = false)
+        public void GenerateClassFields(Class owner, Class @class,
+            Action<Class, Field> action, bool nativeFields = false)
         {
             foreach (var @base in @class.Bases.Where(b => b.Class != null))
             {
@@ -718,17 +719,17 @@ namespace CppSharp.Generators.CSharp
                     @base.Class.OriginalClass == @class)
                     continue;
 
-                GenerateClassFields(@base.Class, action, nativeFields);
+                GenerateClassFields(owner, @base.Class, action, nativeFields);
             }
 
             foreach (var field in @class.Fields)
             {
                 if (ASTUtils.CheckIgnoreField(field, nativeFields)) continue;
-                action(field);
+                action(owner, field);
             }
         }
 
-        private void GenerateClassInternalsField(Field field)
+        private void GenerateClassInternalsField(Class owner, Field field)
         {
             // we do not support dependent fields yet, see https://github.com/mono/CppSharp/issues/197
             Class @class;
@@ -746,7 +747,8 @@ namespace CppSharp.Generators.CSharp
 
             PushBlock(CSharpBlockKind.Field);
 
-            WriteLine("[FieldOffset({0})]", field.OffsetInBytes);
+            WriteLine("[FieldOffset({0})]", field.OffsetInBytes +
+                owner.ComputeNonVirtualBaseClassOffsetTo((Class) field.Namespace));
 
             TypePrinter.PushMarshalKind(CSharpMarshalKind.NativeField);
             var fieldTypePrinted = field.QualifiedType.CSharpType(TypePrinter);
@@ -782,10 +784,11 @@ namespace CppSharp.Generators.CSharp
                         Name = string.Format("{0}_{1}_{2}", Helpers.DummyIdentifier,
                             safeIdentifier, i),
                         QualifiedType = new QualifiedType(arrayType.Type),
-                        Offset = (uint)(field.Offset + (i * arrayType.ElementSize))
+                        Offset = (uint) (field.Offset + i * arrayType.ElementSize),
+                        Namespace = owner
                     };
 
-                    GenerateClassInternalsField(dummy);
+                    GenerateClassInternalsField(owner, dummy);
                 }
             }
         }
