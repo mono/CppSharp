@@ -370,8 +370,7 @@ namespace CppSharp
                     CompilerOptions = compilerOptions.ToString()
                 };
 
-            // add references to System and System.Core
-            compilerParameters.ReferencedAssemblies.Add(typeof(object).Assembly.Location);
+            // add a reference to System.Core
             compilerParameters.ReferencedAssemblies.Add(typeof(Enumerable).Assembly.Location);
 
             var location = Assembly.GetExecutingAssembly().Location;
