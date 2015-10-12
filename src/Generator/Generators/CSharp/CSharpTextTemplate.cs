@@ -1867,7 +1867,8 @@ namespace CppSharp.Generators.CSharp
                 }
             }
 
-            WriteLine("Marshal.FreeHGlobal({0});", Helpers.InstanceIdentifier);
+            WriteLine("if ({0})", Helpers.OwnsNativeInstanceIdentifier);
+            WriteLineIndent("Marshal.FreeHGlobal({0});", Helpers.InstanceIdentifier);
 
             WriteCloseBraceIndent();
             PopBlock(NewLineKind.BeforeNextBlock);
