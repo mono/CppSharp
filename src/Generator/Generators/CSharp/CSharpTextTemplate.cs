@@ -198,15 +198,7 @@ namespace CppSharp.Generators.CSharp
             PopBlock();
         }
 
-        private struct DelegateDef
-        {
-            public string retType, signature;
-            public string name;
-            public bool suppressWarning;
-            public string CallingConvention;
-        }
-
-        private class DelegateSign
+        private class DelegateSignature
         {
             public string retType, signature;
             public bool suppressWarning;
@@ -218,13 +210,13 @@ namespace CppSharp.Generators.CSharp
             }
             public override bool Equals(object obj)
             {
-                return Equals(obj as DelegateSign);
+                return Equals(obj as DelegateSignature);
             }
-            public bool Equals(DelegateSign obj)
+            public bool Equals(DelegateSignature obj)
             {
                 return obj != null && CompareWith(obj);
             }
-            private bool CompareWith(DelegateSign ds)
+            private bool CompareWith(DelegateSignature ds)
             {
                 if (!retType.Equals(ds.retType) || !signature.Equals(ds.signature) || suppressWarning != ds.suppressWarning ||
                     callingConvention != ds.callingConvention)
@@ -286,32 +278,28 @@ namespace CppSharp.Generators.CSharp
             return string.Join(", ", @params);
         }
 
-        private Dictionary<DelegateSign, DelegateDef> AllDelegates = new Dictionary<DelegateSign, DelegateDef>();
+        private Dictionary<DelegateSignature, string> AllDelegates = new Dictionary<DelegateSignature, string>();
 
         private string GenerateDelegate(Method func, bool suppressWarning = true)
         {
-            DelegateSign ds = new DelegateSign();
+            DelegateSignature ds = new DelegateSignature();
             ds.callingConvention = func.CallingConvention.ToInteropCallConv();
             CSharpTypePrinterResult retType;
             ds.signature = GenerateDelegateSignature(func, out retType);
             ds.retType = retType.ToString();
             ds.suppressWarning = suppressWarning;
 
-            DelegateDef dd;
-            if (AllDelegates.TryGetValue(ds, out dd))
-                return "DelegatesStorage." + dd.name;
-            dd = new DelegateDef();
-            if (ds.retType.Equals("void"))
-                dd.name = "Func_" + AllDelegates.Count;
-            else
-                dd.name = "Action_" + AllDelegates.Count;
-            dd.retType = ds.retType;
-            dd.signature = ds.signature;
-            dd.suppressWarning = suppressWarning;
-            dd.CallingConvention = ds.callingConvention.ToString();
-            AllDelegates.Add(ds, dd);
+            string delegateName;
+            if (AllDelegates.TryGetValue(ds, out delegateName))
+                return "DelegatesStorage." + delegateName;
 
-            return  "DelegatesStorage." + dd.name;
+            if (ds.retType.Equals("void"))
+                delegateName = "Func_" + AllDelegates.Count;
+            else
+                delegateName = "Action_" + AllDelegates.Count;
+            AllDelegates.Add(ds, delegateName);
+
+            return "DelegatesStorage." + delegateName;
         }
         private string GenerateDelegate(Function func, bool suppressWarning = true)
         {
@@ -325,16 +313,17 @@ namespace CppSharp.Generators.CSharp
             WriteLine("");
             WriteLine("public unsafe class DelegatesStorage");
             WriteStartBraceIndent();
-            DelegateDef dd;
-            Type t;
+            DelegateSignature ds;
+            string delegateName;
             for (int i = 0; i < AllDelegates.Count; ++i)
             {
-                dd = AllDelegates.ElementAt(i).Value;
-                if(dd.suppressWarning)
+                ds = AllDelegates.ElementAt(i).Key;
+                delegateName = AllDelegates.ElementAt(i).Value;
+                if(ds.suppressWarning)
                     WriteLine("[SuppressUnmanagedCodeSecurity]");
-                if(dd.CallingConvention != string.Empty)
-                    WriteLine("[UnmanagedFunctionPointerAttribute(global::System.Runtime.InteropServices.CallingConvention.{0})]", dd.CallingConvention);
-                WriteLine("internal delegate {0} {1}({2});", dd.retType, dd.name, dd.signature);
+                if(ds.callingConvention != null)
+                    WriteLine("[UnmanagedFunctionPointerAttribute(global::System.Runtime.InteropServices.CallingConvention.{0})]", ds.callingConvention);
+                WriteLine("internal delegate {0} {1}({2});", ds.retType, delegateName, ds.signature);
                 if(i<(AllDelegates.Count-1))
                     WriteLine("");
             }
@@ -1727,25 +1716,8 @@ namespace CppSharp.Generators.CSharp
 
                 WriteLine("// {0}", cleanSig);
             }
-            /*WriteLine("[SuppressUnmanagedCodeSecurity]");
-            WriteLine("[UnmanagedFunctionPointerAttribute(global::System.Runtime.InteropServices.CallingConvention.{0})]",
-                method.CallingConvention.ToInteropCallConv());
-            */
             CSharpTypePrinterResult retType;
             var @params = GatherInternalParams(method, out retType);
-
-            /*
-             * WriteLine("[SuppressUnmanagedCodeSecurity]");
-            WriteLine("[UnmanagedFunctionPointerAttribute(global::System.Runtime.InteropServices.CallingConvention.{0})]",
-                method.CallingConvention.ToInteropCallConv());
-
-            CSharpTypePrinterResult retType;
-            var @params = GatherInternalParams(method, out retType);
-
-            var vTableMethodDelegateName = GetVTableMethodDelegateName(method);
-            WriteLine("internal delegate {0} {1}({2});", retType, vTableMethodDelegateName,
-                string.Join(", ", @params));
-             * */
             var vTableMethodDelegateName = GenerateDelegate(method);
             var vTableMethodDelegateNameOld = GetVTableMethodDelegateName(method);
 
