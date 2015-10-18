@@ -200,34 +200,21 @@ namespace CppSharp.Generators.CSharp
 
         private struct DelegateDef
         {
-            public int numParams;
-            public List<QualifiedType> param;
-            //Type retType;
-            public string pstrs, retType;
-            public string name, Comment;
+            public string retType, signature;
+            public string name;
             public bool suppressWarning;
             public string CallingConvention;
         }
 
         private class DelegateSign
         {
-            public String retType;
+            public string retType, signature;
             public bool suppressWarning;
             public System.Runtime.InteropServices.CallingConvention callingConvention;
 
-            public List<QualifiedType> paramTypes;
-
-            CSharpTypePrinter tp;
-            CSharpTextTemplate ctt;
-            public DelegateSign(CSharpTextTemplate cTT)
-            {
-                tp = cTT.TypePrinter;
-                ctt = cTT;
-            }
-
             public override int GetHashCode()
             {
-                return 1;//callingConvention.GetHashCode() ^ paramTypes.GetHashCode();
+                return retType.GetHashCode() ^ signature.GetHashCode() ^ callingConvention.GetHashCode();
             }
             public override bool Equals(object obj)
             {
@@ -239,60 +226,89 @@ namespace CppSharp.Generators.CSharp
             }
             private bool CompareWith(DelegateSign ds)
             {
-                if (retType != ds.retType || suppressWarning != ds.suppressWarning || paramTypes.Count != ds.paramTypes.Count)
+                if (!retType.Equals(ds.retType) || !signature.Equals(ds.signature) || suppressWarning != ds.suppressWarning ||
+                    callingConvention != ds.callingConvention)
                 {
-                    ctt.WriteLine("/**DelegateSign**The other parameters were different...\nForfirst: retType=" + retType + " suppressWarning=" + suppressWarning + " paramCount=" + paramTypes.Count+ "\nForsecond: retType=" + ds.retType + " suppressWarning=" + ds.suppressWarning + " paramCount=" + ds.paramTypes.Count+ "*/\n");
                     return false;
-                }
-
-                for(int i=0; i<paramTypes.Count; ++i)
-                {
-                    //This doesn't work (most probably)
-                    if (paramTypes.ElementAt(i).Type != ds.paramTypes.ElementAt(i).Type)
-                    {
-                        ctt.WriteLine("/**DelegateSign**The param type was different...*/");
-                        return false;
-                    }
-                    //This too! :(
-                    //if (!paramTypes.ElementAt(i).CSharpType(tp).ToString().Equals(ds.paramTypes.ElementAt(i).CSharpType(tp).ToString()))
-                    //    return false;
                 }
                 return true;
             }
+        }
+
+        private string GenerateDelegateSignature(Function function, out CSharpTypePrinterResult retType)
+        {
+            var @params = new List<string>();
+
+            TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+
+            var retParam = new Parameter { QualifiedType = function.ReturnType };
+            retType = retParam.CSharpType(TypePrinter);
+
+            var method = function as Method;
+            var isInstanceMethod = method != null && !method.IsStatic;
+
+            if (isInstanceMethod && Options.IsMicrosoftAbi)
+            {
+                @params.Add("global::System.IntPtr instance");
+
+                if (method.IsConstructor)
+                    retType = "global::System.IntPtr";
+            }
+
+            if (!function.HasIndirectReturnTypeParameter &&
+                isInstanceMethod && Options.IsItaniumLikeAbi)
+                @params.Add("global::System.IntPtr instance");
+
+            int i = 0;
+            foreach (var param in function.Parameters)
+            {
+                if (param.Kind == ParameterKind.OperatorParameter)
+                    continue;
+
+                var typeName = param.CSharpType(TypePrinter);
+
+                @params.Add(string.Format("{0} param{1}", typeName, i++));
+
+                if (param.Kind == ParameterKind.IndirectReturnType &&
+                    isInstanceMethod && Options.IsItaniumLikeAbi)
+                    @params.Add("global::System.IntPtr instance");
+            }
+
+            if (method != null && method.IsConstructor)
+            {
+                var @class = (Class)method.Namespace;
+                if (Options.IsMicrosoftAbi && @class.Layout.HasVirtualBases)
+                    @params.Add("int " + GeneratedIdentifier("forBases"));
+            }
+
+            TypePrinter.PopContext();
+
+            return string.Join(", ", @params);
         }
 
         private Dictionary<DelegateSign, DelegateDef> AllDelegates = new Dictionary<DelegateSign, DelegateDef>();
 
         private string GenerateDelegate(Method func, bool suppressWarning = true)
         {
-            DelegateSign ds = new DelegateSign(this);
+            DelegateSign ds = new DelegateSign();
             ds.callingConvention = func.CallingConvention.ToInteropCallConv();
             CSharpTypePrinterResult retType;
-            var temp = GatherInternalParams(func, out retType);
+            ds.signature = GenerateDelegateSignature(func, out retType);
             ds.retType = retType.ToString();
             ds.suppressWarning = suppressWarning;
-            ds.paramTypes = new List<QualifiedType>();
-            for(int i=0; i<func.Parameters.Count; ++i)
-            {
-                ds.paramTypes.Add(func.Parameters.ElementAt(i).QualifiedType);
-            }
 
             DelegateDef dd;
             if (AllDelegates.TryGetValue(ds, out dd))
                 return "DelegatesStorage." + dd.name;
-            WriteLine("/*making new...*/");
             dd = new DelegateDef();
             if (ds.retType.Equals("void"))
                 dd.name = "Func_" + AllDelegates.Count;
             else
                 dd.name = "Action_" + AllDelegates.Count;
             dd.retType = ds.retType;
-            dd.pstrs = string.Join(", ", temp);
-            dd.param = ds.paramTypes;
-            dd.numParams = ds.paramTypes.Count;
+            dd.signature = ds.signature;
             dd.suppressWarning = suppressWarning;
             dd.CallingConvention = ds.callingConvention.ToString();
-            dd.Comment = "/*Total Num Params =" + dd.numParams+ " */";
             AllDelegates.Add(ds, dd);
 
             return  "DelegatesStorage." + dd.name;
@@ -314,12 +330,13 @@ namespace CppSharp.Generators.CSharp
             for (int i = 0; i < AllDelegates.Count; ++i)
             {
                 dd = AllDelegates.ElementAt(i).Value;
-                WriteLine(dd.Comment);
                 if(dd.suppressWarning)
                     WriteLine("[SuppressUnmanagedCodeSecurity]");
                 if(dd.CallingConvention != string.Empty)
                     WriteLine("[UnmanagedFunctionPointerAttribute(global::System.Runtime.InteropServices.CallingConvention.{0})]", dd.CallingConvention);
-                WriteLine("internal delegate {0} {1}({2});", dd.retType, dd.name, dd.pstrs);
+                WriteLine("internal delegate {0} {1}({2});", dd.retType, dd.name, dd.signature);
+                if(i<(AllDelegates.Count-1))
+                    WriteLine("");
             }
             WriteCloseBraceIndent();
         }
