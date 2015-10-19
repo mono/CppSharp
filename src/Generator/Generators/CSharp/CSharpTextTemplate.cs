@@ -200,9 +200,31 @@ namespace CppSharp.Generators.CSharp
 
         private class DelegateSignature
         {
-            public string retType, signature;
-            public bool suppressWarning;
-            public System.Runtime.InteropServices.CallingConvention callingConvention;
+            public Type retType
+            {
+                get;
+                set;
+            }
+            public string retTypeStr
+            {
+                get;
+                set;
+            }
+            public string signature
+            {
+                get;
+                set;
+            }
+            public bool suppressWarning
+            {
+                get;
+                set;
+            }
+            public System.Runtime.InteropServices.CallingConvention callingConvention
+            {
+                get;
+                set;
+            }
 
             public override int GetHashCode()
             {
@@ -229,52 +251,7 @@ namespace CppSharp.Generators.CSharp
 
         private string GenerateDelegateSignature(Function function, out CSharpTypePrinterResult retType)
         {
-            var @params = new List<string>();
-
-            TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
-
-            var retParam = new Parameter { QualifiedType = function.ReturnType };
-            retType = retParam.CSharpType(TypePrinter);
-
-            var method = function as Method;
-            var isInstanceMethod = method != null && !method.IsStatic;
-
-            if (isInstanceMethod && Options.IsMicrosoftAbi)
-            {
-                @params.Add("global::System.IntPtr instance");
-
-                if (method.IsConstructor)
-                    retType = "global::System.IntPtr";
-            }
-
-            if (!function.HasIndirectReturnTypeParameter &&
-                isInstanceMethod && Options.IsItaniumLikeAbi)
-                @params.Add("global::System.IntPtr instance");
-
-            int i = 0;
-            foreach (var param in function.Parameters)
-            {
-                if (param.Kind == ParameterKind.OperatorParameter)
-                    continue;
-
-                var typeName = param.CSharpType(TypePrinter);
-
-                @params.Add(string.Format("{0} param{1}", typeName, i++));
-
-                if (param.Kind == ParameterKind.IndirectReturnType &&
-                    isInstanceMethod && Options.IsItaniumLikeAbi)
-                    @params.Add("global::System.IntPtr instance");
-            }
-
-            if (method != null && method.IsConstructor)
-            {
-                var @class = (Class)method.Namespace;
-                if (Options.IsMicrosoftAbi && @class.Layout.HasVirtualBases)
-                    @params.Add("int " + GeneratedIdentifier("forBases"));
-            }
-
-            TypePrinter.PopContext();
-
+            var @params = GatherInternalParams(function, out retType, false);
             return string.Join(", ", @params);
         }
 
@@ -286,20 +263,21 @@ namespace CppSharp.Generators.CSharp
             ds.callingConvention = func.CallingConvention.ToInteropCallConv();
             CSharpTypePrinterResult retType;
             ds.signature = GenerateDelegateSignature(func, out retType);
-            ds.retType = retType.ToString();
+            ds.retTypeStr = retType.ToString();
+            ds.retType = func.ReturnType.Type;
             ds.suppressWarning = suppressWarning;
 
             string delegateName;
             if (AllDelegates.TryGetValue(ds, out delegateName))
-                return "DelegatesStorage." + delegateName;
+                return delegateName;
 
-            if (ds.retType.Equals("void"))
+            if (ds.retType.IsPrimitiveType(PrimitiveType.Void))
                 delegateName = "Func_" + AllDelegates.Count;
             else
                 delegateName = "Action_" + AllDelegates.Count;
             AllDelegates.Add(ds, delegateName);
 
-            return "DelegatesStorage." + delegateName;
+            return delegateName;
         }
         private string GenerateDelegate(Function func, bool suppressWarning = true)
         {
@@ -310,24 +288,19 @@ namespace CppSharp.Generators.CSharp
         {
             if (AllDelegates.Count == 0)
                 return;
-            WriteLine("");
-            WriteLine("public unsafe class DelegatesStorage");
-            WriteStartBraceIndent();
             DelegateSignature ds;
             string delegateName;
-            for (int i = 0; i < AllDelegates.Count; ++i)
+            foreach (var e in AllDelegates)
             {
-                ds = AllDelegates.ElementAt(i).Key;
-                delegateName = AllDelegates.ElementAt(i).Value;
-                if(ds.suppressWarning)
+                ds = e.Key;
+                delegateName = e.Value;
+                WriteLine("");
+                if (ds.suppressWarning)
                     WriteLine("[SuppressUnmanagedCodeSecurity]");
-                if(ds.callingConvention != null)
+                if (ds.callingConvention != null)
                     WriteLine("[UnmanagedFunctionPointerAttribute(global::System.Runtime.InteropServices.CallingConvention.{0})]", ds.callingConvention);
-                WriteLine("internal delegate {0} {1}({2});", ds.retType, delegateName, ds.signature);
-                if(i<(AllDelegates.Count-1))
-                    WriteLine("");
+                WriteLine("internal unsafe delegate {0} {1}({2});", ds.retTypeStr, delegateName, ds.signature);
             }
-            WriteCloseBraceIndent();
         }
 
         private void GenerateDeclContext(DeclarationContext context)
@@ -724,7 +697,7 @@ namespace CppSharp.Generators.CSharp
             return functions;
         }
 
-        private List<string> GatherInternalParams(Function function, out CSharpTypePrinterResult retType)
+        private List<string> GatherInternalParams(Function function, out CSharpTypePrinterResult retType, bool useOriginalParamNames = true)
         {
             var @params = new List<string>();
 
@@ -748,6 +721,7 @@ namespace CppSharp.Generators.CSharp
                 isInstanceMethod && Options.IsItaniumLikeAbi)
                 @params.Add("global::System.IntPtr instance");
 
+            int i = 0;
             foreach (var param in function.Parameters)
             {
                 if (param.Kind == ParameterKind.OperatorParameter)
@@ -755,7 +729,7 @@ namespace CppSharp.Generators.CSharp
 
                 var typeName = param.CSharpType(TypePrinter);
 
-                @params.Add(string.Format("{0} {1}", typeName, param.Name));
+                @params.Add(string.Format("{0} {1}", typeName, useOriginalParamNames ? param.Name : "param" + i++));
 
                 if (param.Kind == ParameterKind.IndirectReturnType &&
                     isInstanceMethod && Options.IsItaniumLikeAbi)
