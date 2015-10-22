@@ -198,19 +198,19 @@ namespace CppSharp.Generators.CSharp
             PopBlock();
         }
 
-
         private class DelegateSignature
         {
             public string Signature { get; set; }
             public bool SuppressWarning { get; set; }
-            public string CallingConvention { get; set; }
-            public string StrReturnType { get; set; }
+            public System.Runtime.InteropServices.CallingConvention CallingConvention { get; set; }
+            public Type Type { get; set; }
         }
 
         private class OptionalOut<Type>
         {
             public List<Type> Result { get; set; }
         }
+
         private DelegateSignature GenerateDelegateSignature(Function function, bool suppressWarning, out CSharpTypePrinterResult retType, out string delegateName)
         {
             OptionalOut<string> allTypes = new OptionalOut<string>();
@@ -218,21 +218,20 @@ namespace CppSharp.Generators.CSharp
             var @params = GatherInternalParams(function, out retType, false, allTypes);
 
             DelegateSignature ds = new DelegateSignature();
-            ds.CallingConvention = function.CallingConvention.ToInteropCallConv().ToString();
+            ds.CallingConvention = function.CallingConvention.ToInteropCallConv();
             ds.SuppressWarning = suppressWarning;
 
-            allTypes.Result.Add(ds.CallingConvention);
-            allTypes.Result.Add(suppressWarning.ToString());
+            allTypes.Result.Add(ds.CallingConvention.ToString());
             delegateName = string.Join("_", allTypes.Result);
 
             ds.Signature =  string.Join(", ", @params);
-            ds.StrReturnType = retType.ToString();
+            ds.Type = function.ReturnType.Type;
             return ds;
         }
 
         private Dictionary<string, DelegateSignature> AllDelegates = new Dictionary<string, DelegateSignature>();
 
-        private string GenerateDelegate(Method func, bool suppressWarning = true)
+        private string GenerateDelegate(Function func, bool suppressWarning = true)
         {
             CSharpTypePrinterResult retType;
             string strName;
@@ -248,28 +247,22 @@ namespace CppSharp.Generators.CSharp
             AllDelegates.Add(strName, signature);
             return strName;
         }
-        private string GenerateDelegate(Function func, bool suppressWarning = true)
-        {
-            return GenerateDelegate(func as Method, suppressWarning);
-        }
 
         private void GenerateDelegatesClass()
         {
-            if (AllDelegates.Count == 0)
-                return;
-            DelegateSignature ds;
-            string delegateName;
+            TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
             foreach (var e in AllDelegates)
             {
-                delegateName = e.Key;
-                ds = e.Value;
+                var delegateName = e.Key;
+                var ds = e.Value;
                 WriteLine("");
                 if (ds.SuppressWarning)
                     WriteLine("[SuppressUnmanagedCodeSecurity]");
                 if (ds.CallingConvention != null)
-                    WriteLine("[UnmanagedFunctionPointerAttribute(global::System.Runtime.InteropServices.CallingConvention.{0})]", ds.CallingConvention);
-                WriteLine("internal unsafe delegate {0} {1}({2});", ds.StrReturnType, delegateName, ds.Signature);
+                    WriteLine("[UnmanagedFunctionPointerAttribute(global::System.Runtime.InteropServices.CallingConvention.{0})]", ds.CallingConvention.ToString());
+                WriteLine("internal unsafe delegate {0} {1}({2});", ds.Type.CSharpType(TypePrinter), delegateName, ds.Signature);
             }
+            TypePrinter.PopContext();
         }
 
         private void GenerateDeclContext(DeclarationContext context)
@@ -732,7 +725,7 @@ namespace CppSharp.Generators.CSharp
                 {
                     @params.Add("int " + GeneratedIdentifier("forBases"));
                     if (allTypesInOne != null)
-                        allTypesInOne.Result.Add("int_forBases");
+                        allTypesInOne.Result.Add("int");
                 }
             }
 
@@ -2455,7 +2448,7 @@ namespace CppSharp.Generators.CSharp
                 Helpers.SlotIdentifier, i, Driver.TargetInfo.PointerWidth / 8);
             virtualCallBuilder.AppendLine();
 
-            var @delegate = GenerateDelegate(function);
+            var @delegate = GenerateDelegate(function.OriginalFunction ?? function);
             delegateId = Generator.GeneratedIdentifier(GetVTableMethodDelegateName(function.OriginalFunction ?? function));
 
             virtualCallBuilder.AppendFormat(
