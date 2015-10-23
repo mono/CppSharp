@@ -175,12 +175,17 @@ namespace CppSharp.Generators.CSharp
                 WriteStartBraceIndent();
             }
 
+            foreach (var library in Driver.Options.Libraries.Where(l => !allDelegates.ContainsKey(l)))
+                allDelegates.Add(library, new Dictionary<string, DelegateSignature>());
+            if (allDelegates.Count == 0)
+                allDelegates.Add(string.Empty, new Dictionary<string, DelegateSignature>());
+
             foreach (var unit in TranslationUnits)
             {
                 GenerateDeclContext(unit);
             }
 
-            GenerateDelegatesClass();
+            GenerateDelegatesNamespace();
 
             if (Options.GenerateLibraryNamespace)
             {
@@ -202,19 +207,19 @@ namespace CppSharp.Generators.CSharp
         private class DelegateSignature
         {
             public string Signature { get; set; }
-            public bool SuppressWarning { get; set; }
             public System.Runtime.InteropServices.CallingConvention CallingConvention { get; set; }
             public Type Type { get; set; }
+            public string Namespace { get; set; }
         }
 
-        private DelegateSignature GenerateDelegateSignature(Function function, bool suppressWarning, out string delegateName)
+        private DelegateSignature GenerateDelegateSignature(Function function, out string delegateName)
         {
             var @params = GatherInternalParams(function, false).ToList();
 
             var ds = new DelegateSignature
                 {
                     CallingConvention = function.CallingConvention.ToInteropCallConv(),
-                    SuppressWarning = suppressWarning
+                    Namespace = Driver.Options.OutputNamespace
                 };
 
             TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
@@ -244,39 +249,81 @@ namespace CppSharp.Generators.CSharp
             return ds;
         }
 
-        private readonly Dictionary<string, DelegateSignature> allDelegates = new Dictionary<string, DelegateSignature>();
+        private static readonly Dictionary<string, Dictionary<string, DelegateSignature>> allDelegates = new Dictionary<string, Dictionary<string, DelegateSignature>>();
 
-        private string GenerateDelegate(Function func, bool suppressWarning = true)
+        private string GenerateDelegate(Function func)
         {
-            string strName;
-            var signature = GenerateDelegateSignature(func, suppressWarning, out strName);
+            string name;
+            var signature = GenerateDelegateSignature(func, out name);
             if (func.ReturnType.Type.IsPrimitiveType(PrimitiveType.Void))
-                strName = "Action_" + strName;
+                name = "Action_" + name;
             else
-                strName = "Func_" + strName;
-            DelegateSignature delegateSign;
-            if (allDelegates.TryGetValue(strName, out delegateSign))
-                return strName;
+                name = "Func_" + name;
 
-            allDelegates.Add(strName, signature);
-            return strName;
+            var delegateSignature = GetDelegateSignature(name, signature);
+
+            return string.IsNullOrEmpty(delegateSignature.Namespace) ||
+                Driver.Options.OutputNamespace == delegateSignature.Namespace
+                    ? string.Format("Delegates.{0}", name)
+                    : string.Format("{0}.Delegates.{1}", delegateSignature.Namespace, name);
         }
 
-        private void GenerateDelegatesClass()
+        private DelegateSignature GetDelegateSignature(string name, DelegateSignature signature)
         {
-            TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
-            foreach (var e in allDelegates)
+            DelegateSignature delegateSignature = null;
+            if (Driver.Options.Libraries.Count == 0)
+            {
+                if (allDelegates[string.Empty].TryGetValue(name, out delegateSignature))
+                    return delegateSignature;
+                allDelegates[string.Empty].Add(name, delegateSignature = signature);
+                return delegateSignature;
+            }
+
+            if (Driver.Options.Libraries.Union(Driver.Symbols.Libraries.SelectMany(l => l.Dependencies)).Any(
+                l => allDelegates.ContainsKey(l) && allDelegates[l].TryGetValue(name, out delegateSignature)))
+                return delegateSignature;
+
+            delegateSignature = signature;
+            foreach (var library in Driver.Options.Libraries)
+                allDelegates[library].Add(name, delegateSignature);
+            return delegateSignature;
+        }
+
+        private void GenerateDelegatesNamespace()
+        {
+            List<KeyValuePair<string, DelegateSignature>> delegates;
+            if (Driver.Options.Libraries.Count > 0)
+                delegates = allDelegates.Where(d =>
+                    Driver.Options.Libraries.Contains(d.Key)).SelectMany(d => d.Value).ToList();
+            else
+                delegates = allDelegates.SelectMany(d => d.Value).ToList();
+
+            if (delegates.Count > 0)
+            {
+                NewLine();
+                WriteLine("namespace Delegates");
+                WriteStartBraceIndent();
+
+                TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+            }
+
+            foreach (var e in delegates)
             {
                 var delegateName = e.Key;
                 var ds = e.Value;
                 NewLine();
-                if (ds.SuppressWarning)
-                    WriteLine("[SuppressUnmanagedCodeSecurity]");
-                WriteLine("[UnmanagedFunctionPointerAttribute(global::System.Runtime.InteropServices.CallingConvention.{0})]",
+                WriteLine("[SuppressUnmanagedCodeSecurity, " +
+                    "UnmanagedFunctionPointerAttribute(global::System.Runtime.InteropServices.CallingConvention.{0})]",
                     ds.CallingConvention.ToString());
-                WriteLine("internal unsafe delegate {0} {1}({2});", ds.Type.CSharpType(TypePrinter), delegateName, ds.Signature);
+                WriteLine("public unsafe delegate {0} {1}({2});", ds.Type.CSharpType(TypePrinter), delegateName, ds.Signature);
             }
-            TypePrinter.PopContext();
+
+            if (delegates.Count > 0)
+            {
+                TypePrinter.PopContext();
+
+                WriteCloseBraceIndent();
+            }
         }
 
         private void GenerateDeclContext(DeclarationContext context)
