@@ -1674,10 +1674,6 @@ namespace CppSharp.Generators.CSharp
 
         #region Events
 
-        private string delegateName;
-        private string delegateInstance;
-        private string delegateRaise;
-
         private void GenerateEvent(Event @event)
         {
             PushBlock(CSharpBlockKind.Event, @event);
@@ -1685,9 +1681,9 @@ namespace CppSharp.Generators.CSharp
             var args = TypePrinter.VisitParameters(@event.Parameters, hasNames: true);
             TypePrinter.PopContext();
 
-            delegateInstance = Generator.GeneratedIdentifier(@event.OriginalName);
-            delegateName = delegateInstance + "Delegate";
-            delegateRaise = delegateInstance + "RaiseInstance";
+            var delegateInstance = Generator.GeneratedIdentifier(@event.OriginalName);
+            var delegateName = delegateInstance + "Delegate";
+            var delegateRaise = delegateInstance + "RaiseInstance";
 
             WriteLine("[UnmanagedFunctionPointerAttribute(global::System.Runtime.InteropServices.CallingConvention.Cdecl)]");
             WriteLine("delegate void {0}({1});", delegateName, args);
@@ -1698,19 +1694,19 @@ namespace CppSharp.Generators.CSharp
             WriteLine("public event {0} {1}", @event.Type, @event.Name);
             WriteStartBraceIndent();
 
-            GenerateEventAdd(@event);
+            GenerateEventAdd(@event, delegateRaise, delegateName, delegateInstance);
             NewLine();
 
-            GenerateEventRemove(@event);
+            GenerateEventRemove(@event, delegateInstance);
 
             WriteCloseBraceIndent();
             NewLine();
 
-            GenerateEventRaiseWrapper(@event);
+            GenerateEventRaiseWrapper(@event, delegateInstance);
             PopBlock(NewLineKind.BeforeNextBlock);
         }
 
-        private void GenerateEventAdd(Event @event)
+        private void GenerateEventAdd(Event @event, string delegateRaise, string delegateName, string delegateInstance)
         {
             WriteLine("add");
             WriteStartBraceIndent();
@@ -1736,7 +1732,7 @@ namespace CppSharp.Generators.CSharp
             WriteCloseBraceIndent();
         }
 
-        private void GenerateEventRemove(Event @event)
+        private void GenerateEventRemove(ITypedDecl @event, string delegateInstance)
         {
             WriteLine("remove");
             WriteStartBraceIndent();
@@ -1747,7 +1743,7 @@ namespace CppSharp.Generators.CSharp
             WriteCloseBraceIndent();
         }
 
-        private void GenerateEventRaiseWrapper(Event @event)
+        private void GenerateEventRaiseWrapper(Event @event, string delegateInstance)
         {
             TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
             var args = TypePrinter.VisitParameters(@event.Parameters, hasNames: true);
