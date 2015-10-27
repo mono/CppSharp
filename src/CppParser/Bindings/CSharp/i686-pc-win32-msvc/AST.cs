@@ -265,6 +265,8 @@ namespace CppSharp
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
+
+                protected int __PointerAdjustment;
                 public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Type> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Type>();
                 protected void*[] __OriginalVTables;
 
@@ -307,7 +309,7 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = kind;
-                    Internal.ctor_0(__Instance, arg0);
+                    Internal.ctor_0((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public Type(CppSharp.Parser.AST.Type _0)
@@ -316,7 +318,7 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_1(__Instance, arg0);
+                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public void Dispose()
@@ -330,7 +332,8 @@ namespace CppSharp
                         throw new global::System.InvalidOperationException("Managed instances owned by native code cannot be disposed of.");
                     CppSharp.Parser.AST.Type __dummy;
                     NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                    Marshal.FreeHGlobal(__Instance);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.TypeKind Kind
@@ -381,6 +384,8 @@ namespace CppSharp
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
+
+                protected int __PointerAdjustment;
                 public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, TypeQualifiers> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, TypeQualifiers>();
                 protected void*[] __OriginalVTables;
 
@@ -443,7 +448,8 @@ namespace CppSharp
                         throw new global::System.InvalidOperationException("Managed instances owned by native code cannot be disposed of.");
                     CppSharp.Parser.AST.TypeQualifiers __dummy;
                     NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                    Marshal.FreeHGlobal(__Instance);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public bool IsConst
@@ -509,6 +515,8 @@ namespace CppSharp
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
+
+                protected int __PointerAdjustment;
                 public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, QualifiedType> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, QualifiedType>();
                 protected void*[] __OriginalVTables;
 
@@ -550,7 +558,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(8);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public QualifiedType(CppSharp.Parser.AST.QualifiedType _0)
@@ -572,7 +580,8 @@ namespace CppSharp
                         throw new global::System.InvalidOperationException("Managed instances owned by native code cannot be disposed of.");
                     CppSharp.Parser.AST.QualifiedType __dummy;
                     NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                    Marshal.FreeHGlobal(__Instance);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.Type Type
@@ -659,6 +668,7 @@ namespace CppSharp
                 protected TagType(TagType.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.Type.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -670,7 +680,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(12);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public TagType(CppSharp.Parser.AST.TagType _0)
@@ -680,7 +690,7 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public CppSharp.Parser.AST.Declaration Declaration
@@ -771,6 +781,7 @@ namespace CppSharp
                 protected ArrayType(ArrayType.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.Type.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -782,7 +793,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(28);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public ArrayType(CppSharp.Parser.AST.ArrayType _0)
@@ -792,7 +803,7 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public CppSharp.Parser.AST.QualifiedType QualifiedType
@@ -928,6 +939,7 @@ namespace CppSharp
                 protected FunctionType(FunctionType.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.Type.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -939,7 +951,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(32);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public FunctionType(CppSharp.Parser.AST.FunctionType _0)
@@ -949,12 +961,12 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public CppSharp.Parser.AST.Parameter getParameters(uint i)
                 {
-                    var __ret = Internal.getParameters_0(__Instance, i);
+                    var __ret = Internal.getParameters_0((__Instance + __PointerAdjustment), i);
                     CppSharp.Parser.AST.Parameter __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (CppSharp.Parser.AST.Parameter.NativeToManagedMap.ContainsKey(__ret))
@@ -966,19 +978,19 @@ namespace CppSharp
                 public void addParameters(CppSharp.Parser.AST.Parameter s)
                 {
                     var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
-                    Internal.addParameters_0(__Instance, arg0);
+                    Internal.addParameters_0((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public void clearParameters()
                 {
-                    Internal.clearParameters_0(__Instance);
+                    Internal.clearParameters_0((__Instance + __PointerAdjustment));
                 }
 
                 public uint ParametersCount
                 {
                     get
                     {
-                        var __ret = Internal.getParametersCount_0(__Instance);
+                        var __ret = Internal.getParametersCount_0((__Instance + __PointerAdjustment));
                         return __ret;
                     }
                 }
@@ -1073,6 +1085,7 @@ namespace CppSharp
                 protected PointerType(PointerType.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.Type.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -1084,7 +1097,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(20);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public PointerType(CppSharp.Parser.AST.PointerType _0)
@@ -1094,7 +1107,7 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public CppSharp.Parser.AST.QualifiedType QualifiedPointee
@@ -1176,6 +1189,7 @@ namespace CppSharp
                 protected MemberPointerType(MemberPointerType.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.Type.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -1187,7 +1201,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(16);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public MemberPointerType(CppSharp.Parser.AST.MemberPointerType _0)
@@ -1197,7 +1211,7 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public CppSharp.Parser.AST.QualifiedType Pointee
@@ -1266,6 +1280,7 @@ namespace CppSharp
                 protected TypedefType(TypedefType.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.Type.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -1277,7 +1292,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(12);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public TypedefType(CppSharp.Parser.AST.TypedefType _0)
@@ -1287,7 +1302,7 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public CppSharp.Parser.AST.TypedefDecl Declaration
@@ -1364,6 +1379,7 @@ namespace CppSharp
                 protected AttributedType(AttributedType.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.Type.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -1375,7 +1391,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(24);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public AttributedType(CppSharp.Parser.AST.AttributedType _0)
@@ -1385,7 +1401,7 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public CppSharp.Parser.AST.QualifiedType Modified
@@ -1473,6 +1489,7 @@ namespace CppSharp
                 protected DecayedType(DecayedType.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.Type.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -1484,7 +1501,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(32);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public DecayedType(CppSharp.Parser.AST.DecayedType _0)
@@ -1494,7 +1511,7 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public CppSharp.Parser.AST.QualifiedType Decayed
@@ -1578,6 +1595,8 @@ namespace CppSharp
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
+
+                protected int __PointerAdjustment;
                 public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, TemplateArgument> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, TemplateArgument>();
                 protected void*[] __OriginalVTables;
 
@@ -1619,7 +1638,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(20);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public TemplateArgument(CppSharp.Parser.AST.TemplateArgument _0)
@@ -1641,7 +1660,8 @@ namespace CppSharp
                         throw new global::System.InvalidOperationException("Managed instances owned by native code cannot be disposed of.");
                     CppSharp.Parser.AST.TemplateArgument __dummy;
                     NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                    Marshal.FreeHGlobal(__Instance);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.TemplateArgument.ArgumentKind Kind
@@ -1782,6 +1802,7 @@ namespace CppSharp
                 protected TemplateSpecializationType(TemplateSpecializationType.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.Type.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -1793,7 +1814,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(28);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public TemplateSpecializationType(CppSharp.Parser.AST.TemplateSpecializationType _0)
@@ -1803,32 +1824,32 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_1(__Instance, arg0);
+                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public CppSharp.Parser.AST.TemplateArgument getArguments(uint i)
                 {
                     var __ret = new CppSharp.Parser.AST.TemplateArgument.Internal();
-                    Internal.getArguments_0(__Instance, new IntPtr(&__ret), i);
+                    Internal.getArguments_0((__Instance + __PointerAdjustment), new IntPtr(&__ret), i);
                     return CppSharp.Parser.AST.TemplateArgument.__CreateInstance(__ret);
                 }
 
                 public void addArguments(CppSharp.Parser.AST.TemplateArgument s)
                 {
                     var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
-                    Internal.addArguments_0(__Instance, arg0);
+                    Internal.addArguments_0((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public void clearArguments()
                 {
-                    Internal.clearArguments_0(__Instance);
+                    Internal.clearArguments_0((__Instance + __PointerAdjustment));
                 }
 
                 public uint ArgumentsCount
                 {
                     get
                     {
-                        var __ret = Internal.getArgumentsCount_0(__Instance);
+                        var __ret = Internal.getArgumentsCount_0((__Instance + __PointerAdjustment));
                         return __ret;
                     }
                 }
@@ -1897,7 +1918,7 @@ namespace CppSharp
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="??8TemplateParameter@AST@CppParser@CppSharp@@QBE_NABV0123@@Z")]
                     [return: MarshalAsAttribute(UnmanagedType.I1)]
-                    internal static extern byte OperatorEqualEqual_0(global::System.IntPtr instance, global::System.IntPtr param);
+                    internal static extern bool OperatorEqualEqual_0(global::System.IntPtr instance, global::System.IntPtr param);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -1911,6 +1932,8 @@ namespace CppSharp
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
+
+                protected int __PointerAdjustment;
                 public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, TemplateParameter> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, TemplateParameter>();
                 protected void*[] __OriginalVTables;
 
@@ -1952,7 +1975,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(28);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public TemplateParameter(CppSharp.Parser.AST.TemplateParameter _0)
@@ -1961,7 +1984,7 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_1(__Instance, arg0);
+                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public void Dispose()
@@ -1975,8 +1998,9 @@ namespace CppSharp
                         throw new global::System.InvalidOperationException("Managed instances owned by native code cannot be disposed of.");
                     CppSharp.Parser.AST.TemplateParameter __dummy;
                     NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                    Internal.dtor_0(__Instance, 0);
-                    Marshal.FreeHGlobal(__Instance);
+                    Internal.dtor_0((__Instance + __PointerAdjustment), 0);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public static bool operator !=(CppSharp.Parser.AST.TemplateParameter __op, CppSharp.Parser.AST.TemplateParameter param)
@@ -1993,7 +2017,7 @@ namespace CppSharp
                     var arg0 = __op.__Instance;
                     var arg1 = param.__Instance;
                     var __ret = Internal.OperatorEqualEqual_0(arg0, arg1);
-                    return __ret != 0;
+                    return __ret;
                 }
 
                 public override bool Equals(object obj)
@@ -2012,14 +2036,14 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = Internal.getName_0(__Instance);
+                        var __ret = Internal.getName_0((__Instance + __PointerAdjustment));
                         return Marshal.PtrToStringAnsi(__ret);
                     }
 
                     set
                     {
                         var arg0 = Marshal.StringToHGlobalAnsi(value);
-                        Internal.setName_0(__Instance, arg0);
+                        Internal.setName_0((__Instance + __PointerAdjustment), arg0);
                         Marshal.FreeHGlobal(arg0);
                     }
                 }
@@ -2104,6 +2128,7 @@ namespace CppSharp
                 protected TemplateParameterType(TemplateParameterType.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.Type.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -2115,7 +2140,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(48);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public TemplateParameterType(CppSharp.Parser.AST.TemplateParameterType _0)
@@ -2125,7 +2150,7 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public CppSharp.Parser.AST.TemplateParameter Parameter
@@ -2233,6 +2258,7 @@ namespace CppSharp
                 protected TemplateParameterSubstitutionType(TemplateParameterSubstitutionType.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.Type.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -2244,7 +2270,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(16);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public TemplateParameterSubstitutionType(CppSharp.Parser.AST.TemplateParameterSubstitutionType _0)
@@ -2254,7 +2280,7 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public CppSharp.Parser.AST.QualifiedType Replacement
@@ -2326,6 +2352,7 @@ namespace CppSharp
                 protected InjectedClassNameType(InjectedClassNameType.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.Type.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -2337,7 +2364,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(16);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public InjectedClassNameType(CppSharp.Parser.AST.InjectedClassNameType _0)
@@ -2347,7 +2374,7 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public CppSharp.Parser.AST.TemplateSpecializationType TemplateSpecialization
@@ -2436,6 +2463,7 @@ namespace CppSharp
                 protected DependentNameType(DependentNameType.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.Type.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -2447,7 +2475,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(8);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public DependentNameType(CppSharp.Parser.AST.DependentNameType _0)
@@ -2457,7 +2485,7 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
             }
 
@@ -2510,6 +2538,7 @@ namespace CppSharp
                 protected PackExpansionType(PackExpansionType.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.Type.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -2521,7 +2550,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(8);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public PackExpansionType(CppSharp.Parser.AST.PackExpansionType _0)
@@ -2531,7 +2560,7 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
             }
 
@@ -2587,6 +2616,7 @@ namespace CppSharp
                 protected BuiltinType(BuiltinType.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.Type.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -2598,7 +2628,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(12);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public BuiltinType(CppSharp.Parser.AST.BuiltinType _0)
@@ -2608,7 +2638,7 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public CppSharp.Parser.AST.PrimitiveType Type
@@ -2651,6 +2681,8 @@ namespace CppSharp
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
+
+                protected int __PointerAdjustment;
                 public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, VTableComponent> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, VTableComponent>();
                 protected void*[] __OriginalVTables;
 
@@ -2692,7 +2724,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(12);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public VTableComponent(CppSharp.Parser.AST.VTableComponent _0)
@@ -2714,7 +2746,8 @@ namespace CppSharp
                         throw new global::System.InvalidOperationException("Managed instances owned by native code cannot be disposed of.");
                     CppSharp.Parser.AST.VTableComponent __dummy;
                     NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                    Marshal.FreeHGlobal(__Instance);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.VTableComponentKind Kind
@@ -2804,6 +2837,8 @@ namespace CppSharp
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
+
+                protected int __PointerAdjustment;
                 public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, VTableLayout> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, VTableLayout>();
                 protected void*[] __OriginalVTables;
 
@@ -2845,7 +2880,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(12);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public VTableLayout(CppSharp.Parser.AST.VTableLayout _0)
@@ -2854,7 +2889,7 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_1(__Instance, arg0);
+                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public void Dispose()
@@ -2868,33 +2903,34 @@ namespace CppSharp
                         throw new global::System.InvalidOperationException("Managed instances owned by native code cannot be disposed of.");
                     CppSharp.Parser.AST.VTableLayout __dummy;
                     NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                    Internal.dtor_0(__Instance, 0);
-                    Marshal.FreeHGlobal(__Instance);
+                    Internal.dtor_0((__Instance + __PointerAdjustment), 0);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.VTableComponent getComponents(uint i)
                 {
                     var __ret = new CppSharp.Parser.AST.VTableComponent.Internal();
-                    Internal.getComponents_0(__Instance, new IntPtr(&__ret), i);
+                    Internal.getComponents_0((__Instance + __PointerAdjustment), new IntPtr(&__ret), i);
                     return CppSharp.Parser.AST.VTableComponent.__CreateInstance(__ret);
                 }
 
                 public void addComponents(CppSharp.Parser.AST.VTableComponent s)
                 {
                     var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
-                    Internal.addComponents_0(__Instance, arg0);
+                    Internal.addComponents_0((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public void clearComponents()
                 {
-                    Internal.clearComponents_0(__Instance);
+                    Internal.clearComponents_0((__Instance + __PointerAdjustment));
                 }
 
                 public uint ComponentsCount
                 {
                     get
                     {
-                        var __ret = Internal.getComponentsCount_0(__Instance);
+                        var __ret = Internal.getComponentsCount_0((__Instance + __PointerAdjustment));
                         return __ret;
                     }
                 }
@@ -2934,6 +2970,8 @@ namespace CppSharp
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
+
+                protected int __PointerAdjustment;
                 public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, VFTableInfo> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, VFTableInfo>();
                 protected void*[] __OriginalVTables;
 
@@ -2975,7 +3013,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(32);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public VFTableInfo(CppSharp.Parser.AST.VFTableInfo _0)
@@ -2984,7 +3022,7 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_1(__Instance, arg0);
+                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public void Dispose()
@@ -2998,8 +3036,9 @@ namespace CppSharp
                         throw new global::System.InvalidOperationException("Managed instances owned by native code cannot be disposed of.");
                     CppSharp.Parser.AST.VFTableInfo __dummy;
                     NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                    Internal.dtor_0(__Instance, 0);
-                    Marshal.FreeHGlobal(__Instance);
+                    Internal.dtor_0((__Instance + __PointerAdjustment), 0);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public ulong VBTableIndex
@@ -3118,6 +3157,8 @@ namespace CppSharp
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
+
+                protected int __PointerAdjustment;
                 public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ClassLayout> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ClassLayout>();
                 protected void*[] __OriginalVTables;
 
@@ -3159,7 +3200,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(48);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public ClassLayout(CppSharp.Parser.AST.ClassLayout _0)
@@ -3168,7 +3209,7 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public void Dispose()
@@ -3182,33 +3223,34 @@ namespace CppSharp
                         throw new global::System.InvalidOperationException("Managed instances owned by native code cannot be disposed of.");
                     CppSharp.Parser.AST.ClassLayout __dummy;
                     NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                    Internal.dtor_0(__Instance, 0);
-                    Marshal.FreeHGlobal(__Instance);
+                    Internal.dtor_0((__Instance + __PointerAdjustment), 0);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.VFTableInfo getVFTables(uint i)
                 {
                     var __ret = new CppSharp.Parser.AST.VFTableInfo.Internal();
-                    Internal.getVFTables_0(__Instance, new IntPtr(&__ret), i);
+                    Internal.getVFTables_0((__Instance + __PointerAdjustment), new IntPtr(&__ret), i);
                     return CppSharp.Parser.AST.VFTableInfo.__CreateInstance(__ret);
                 }
 
                 public void addVFTables(CppSharp.Parser.AST.VFTableInfo s)
                 {
                     var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
-                    Internal.addVFTables_0(__Instance, arg0);
+                    Internal.addVFTables_0((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public void clearVFTables()
                 {
-                    Internal.clearVFTables_0(__Instance);
+                    Internal.clearVFTables_0((__Instance + __PointerAdjustment));
                 }
 
                 public uint VFTablesCount
                 {
                     get
                     {
-                        var __ret = Internal.getVFTablesCount_0(__Instance);
+                        var __ret = Internal.getVFTablesCount_0((__Instance + __PointerAdjustment));
                         return __ret;
                     }
                 }
@@ -3403,6 +3445,8 @@ namespace CppSharp
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
+
+                protected int __PointerAdjustment;
                 public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Declaration> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Declaration>();
                 protected void*[] __OriginalVTables;
 
@@ -3445,7 +3489,7 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = kind;
-                    Internal.ctor_0(__Instance, arg0);
+                    Internal.ctor_0((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public Declaration(CppSharp.Parser.AST.Declaration _0)
@@ -3454,7 +3498,7 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_1(__Instance, arg0);
+                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public void Dispose()
@@ -3468,13 +3512,14 @@ namespace CppSharp
                         throw new global::System.InvalidOperationException("Managed instances owned by native code cannot be disposed of.");
                     CppSharp.Parser.AST.Declaration __dummy;
                     NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                    Internal.dtor_0(__Instance, 0);
-                    Marshal.FreeHGlobal(__Instance);
+                    Internal.dtor_0((__Instance + __PointerAdjustment), 0);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.PreprocessedEntity getPreprocessedEntities(uint i)
                 {
-                    var __ret = Internal.getPreprocessedEntities_0(__Instance, i);
+                    var __ret = Internal.getPreprocessedEntities_0((__Instance + __PointerAdjustment), i);
                     CppSharp.Parser.AST.PreprocessedEntity __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (CppSharp.Parser.AST.PreprocessedEntity.NativeToManagedMap.ContainsKey(__ret))
@@ -3486,26 +3531,26 @@ namespace CppSharp
                 public void addPreprocessedEntities(CppSharp.Parser.AST.PreprocessedEntity s)
                 {
                     var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
-                    Internal.addPreprocessedEntities_0(__Instance, arg0);
+                    Internal.addPreprocessedEntities_0((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public void clearPreprocessedEntities()
                 {
-                    Internal.clearPreprocessedEntities_0(__Instance);
+                    Internal.clearPreprocessedEntities_0((__Instance + __PointerAdjustment));
                 }
 
                 public string Name
                 {
                     get
                     {
-                        var __ret = Internal.getName_0(__Instance);
+                        var __ret = Internal.getName_0((__Instance + __PointerAdjustment));
                         return Marshal.PtrToStringAnsi(__ret);
                     }
 
                     set
                     {
                         var arg0 = Marshal.StringToHGlobalAnsi(value);
-                        Internal.setName_0(__Instance, arg0);
+                        Internal.setName_0((__Instance + __PointerAdjustment), arg0);
                         Marshal.FreeHGlobal(arg0);
                     }
                 }
@@ -3514,14 +3559,14 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = Internal.getDebugText_0(__Instance);
+                        var __ret = Internal.getDebugText_0((__Instance + __PointerAdjustment));
                         return Marshal.PtrToStringAnsi(__ret);
                     }
 
                     set
                     {
                         var arg0 = Marshal.StringToHGlobalAnsi(value);
-                        Internal.setDebugText_0(__Instance, arg0);
+                        Internal.setDebugText_0((__Instance + __PointerAdjustment), arg0);
                         Marshal.FreeHGlobal(arg0);
                     }
                 }
@@ -3530,7 +3575,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = Internal.getPreprocessedEntitiesCount_0(__Instance);
+                        var __ret = Internal.getPreprocessedEntitiesCount_0((__Instance + __PointerAdjustment));
                         return __ret;
                     }
                 }
@@ -3954,6 +3999,7 @@ namespace CppSharp
                 protected DeclarationContext(DeclarationContext.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.Declaration.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -3966,7 +4012,7 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = kind;
-                    Internal.ctor_0(__Instance, arg0);
+                    Internal.ctor_0((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public DeclarationContext(CppSharp.Parser.AST.DeclarationContext _0)
@@ -3976,12 +4022,12 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public CppSharp.Parser.AST.Namespace getNamespaces(uint i)
                 {
-                    var __ret = Internal.getNamespaces_0(__Instance, i);
+                    var __ret = Internal.getNamespaces_0((__Instance + __PointerAdjustment), i);
                     CppSharp.Parser.AST.Namespace __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (CppSharp.Parser.AST.Namespace.NativeToManagedMap.ContainsKey(__ret))
@@ -3993,17 +4039,17 @@ namespace CppSharp
                 public void addNamespaces(CppSharp.Parser.AST.Namespace s)
                 {
                     var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
-                    Internal.addNamespaces_0(__Instance, arg0);
+                    Internal.addNamespaces_0((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public void clearNamespaces()
                 {
-                    Internal.clearNamespaces_0(__Instance);
+                    Internal.clearNamespaces_0((__Instance + __PointerAdjustment));
                 }
 
                 public CppSharp.Parser.AST.Enumeration getEnums(uint i)
                 {
-                    var __ret = Internal.getEnums_0(__Instance, i);
+                    var __ret = Internal.getEnums_0((__Instance + __PointerAdjustment), i);
                     CppSharp.Parser.AST.Enumeration __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (CppSharp.Parser.AST.Enumeration.NativeToManagedMap.ContainsKey(__ret))
@@ -4015,17 +4061,17 @@ namespace CppSharp
                 public void addEnums(CppSharp.Parser.AST.Enumeration s)
                 {
                     var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
-                    Internal.addEnums_0(__Instance, arg0);
+                    Internal.addEnums_0((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public void clearEnums()
                 {
-                    Internal.clearEnums_0(__Instance);
+                    Internal.clearEnums_0((__Instance + __PointerAdjustment));
                 }
 
                 public CppSharp.Parser.AST.Function getFunctions(uint i)
                 {
-                    var __ret = Internal.getFunctions_0(__Instance, i);
+                    var __ret = Internal.getFunctions_0((__Instance + __PointerAdjustment), i);
                     CppSharp.Parser.AST.Function __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (CppSharp.Parser.AST.Function.NativeToManagedMap.ContainsKey(__ret))
@@ -4037,17 +4083,17 @@ namespace CppSharp
                 public void addFunctions(CppSharp.Parser.AST.Function s)
                 {
                     var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
-                    Internal.addFunctions_0(__Instance, arg0);
+                    Internal.addFunctions_0((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public void clearFunctions()
                 {
-                    Internal.clearFunctions_0(__Instance);
+                    Internal.clearFunctions_0((__Instance + __PointerAdjustment));
                 }
 
                 public CppSharp.Parser.AST.Class getClasses(uint i)
                 {
-                    var __ret = Internal.getClasses_0(__Instance, i);
+                    var __ret = Internal.getClasses_0((__Instance + __PointerAdjustment), i);
                     CppSharp.Parser.AST.Class __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (CppSharp.Parser.AST.Class.NativeToManagedMap.ContainsKey(__ret))
@@ -4059,17 +4105,17 @@ namespace CppSharp
                 public void addClasses(CppSharp.Parser.AST.Class s)
                 {
                     var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
-                    Internal.addClasses_0(__Instance, arg0);
+                    Internal.addClasses_0((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public void clearClasses()
                 {
-                    Internal.clearClasses_0(__Instance);
+                    Internal.clearClasses_0((__Instance + __PointerAdjustment));
                 }
 
                 public CppSharp.Parser.AST.Template getTemplates(uint i)
                 {
-                    var __ret = Internal.getTemplates_0(__Instance, i);
+                    var __ret = Internal.getTemplates_0((__Instance + __PointerAdjustment), i);
                     CppSharp.Parser.AST.Template __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (CppSharp.Parser.AST.Template.NativeToManagedMap.ContainsKey(__ret))
@@ -4081,17 +4127,17 @@ namespace CppSharp
                 public void addTemplates(CppSharp.Parser.AST.Template s)
                 {
                     var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
-                    Internal.addTemplates_0(__Instance, arg0);
+                    Internal.addTemplates_0((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public void clearTemplates()
                 {
-                    Internal.clearTemplates_0(__Instance);
+                    Internal.clearTemplates_0((__Instance + __PointerAdjustment));
                 }
 
                 public CppSharp.Parser.AST.TypedefDecl getTypedefs(uint i)
                 {
-                    var __ret = Internal.getTypedefs_0(__Instance, i);
+                    var __ret = Internal.getTypedefs_0((__Instance + __PointerAdjustment), i);
                     CppSharp.Parser.AST.TypedefDecl __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (CppSharp.Parser.AST.TypedefDecl.NativeToManagedMap.ContainsKey(__ret))
@@ -4103,17 +4149,17 @@ namespace CppSharp
                 public void addTypedefs(CppSharp.Parser.AST.TypedefDecl s)
                 {
                     var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
-                    Internal.addTypedefs_0(__Instance, arg0);
+                    Internal.addTypedefs_0((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public void clearTypedefs()
                 {
-                    Internal.clearTypedefs_0(__Instance);
+                    Internal.clearTypedefs_0((__Instance + __PointerAdjustment));
                 }
 
                 public CppSharp.Parser.AST.Variable getVariables(uint i)
                 {
-                    var __ret = Internal.getVariables_0(__Instance, i);
+                    var __ret = Internal.getVariables_0((__Instance + __PointerAdjustment), i);
                     CppSharp.Parser.AST.Variable __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (CppSharp.Parser.AST.Variable.NativeToManagedMap.ContainsKey(__ret))
@@ -4125,17 +4171,17 @@ namespace CppSharp
                 public void addVariables(CppSharp.Parser.AST.Variable s)
                 {
                     var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
-                    Internal.addVariables_0(__Instance, arg0);
+                    Internal.addVariables_0((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public void clearVariables()
                 {
-                    Internal.clearVariables_0(__Instance);
+                    Internal.clearVariables_0((__Instance + __PointerAdjustment));
                 }
 
                 public CppSharp.Parser.AST.Friend getFriends(uint i)
                 {
-                    var __ret = Internal.getFriends_0(__Instance, i);
+                    var __ret = Internal.getFriends_0((__Instance + __PointerAdjustment), i);
                     CppSharp.Parser.AST.Friend __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (CppSharp.Parser.AST.Friend.NativeToManagedMap.ContainsKey(__ret))
@@ -4147,19 +4193,19 @@ namespace CppSharp
                 public void addFriends(CppSharp.Parser.AST.Friend s)
                 {
                     var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
-                    Internal.addFriends_0(__Instance, arg0);
+                    Internal.addFriends_0((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public void clearFriends()
                 {
-                    Internal.clearFriends_0(__Instance);
+                    Internal.clearFriends_0((__Instance + __PointerAdjustment));
                 }
 
                 public uint NamespacesCount
                 {
                     get
                     {
-                        var __ret = Internal.getNamespacesCount_0(__Instance);
+                        var __ret = Internal.getNamespacesCount_0((__Instance + __PointerAdjustment));
                         return __ret;
                     }
                 }
@@ -4168,7 +4214,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = Internal.getEnumsCount_0(__Instance);
+                        var __ret = Internal.getEnumsCount_0((__Instance + __PointerAdjustment));
                         return __ret;
                     }
                 }
@@ -4177,7 +4223,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = Internal.getFunctionsCount_0(__Instance);
+                        var __ret = Internal.getFunctionsCount_0((__Instance + __PointerAdjustment));
                         return __ret;
                     }
                 }
@@ -4186,7 +4232,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = Internal.getClassesCount_0(__Instance);
+                        var __ret = Internal.getClassesCount_0((__Instance + __PointerAdjustment));
                         return __ret;
                     }
                 }
@@ -4195,7 +4241,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = Internal.getTemplatesCount_0(__Instance);
+                        var __ret = Internal.getTemplatesCount_0((__Instance + __PointerAdjustment));
                         return __ret;
                     }
                 }
@@ -4204,7 +4250,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = Internal.getTypedefsCount_0(__Instance);
+                        var __ret = Internal.getTypedefsCount_0((__Instance + __PointerAdjustment));
                         return __ret;
                     }
                 }
@@ -4213,7 +4259,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = Internal.getVariablesCount_0(__Instance);
+                        var __ret = Internal.getVariablesCount_0((__Instance + __PointerAdjustment));
                         return __ret;
                     }
                 }
@@ -4222,7 +4268,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = Internal.getFriendsCount_0(__Instance);
+                        var __ret = Internal.getFriendsCount_0((__Instance + __PointerAdjustment));
                         return __ret;
                     }
                 }
@@ -4328,6 +4374,7 @@ namespace CppSharp
                 protected TypedefDecl(TypedefDecl.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.Declaration.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -4339,7 +4386,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(136);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public TypedefDecl(CppSharp.Parser.AST.TypedefDecl _0)
@@ -4349,7 +4396,7 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public CppSharp.Parser.AST.QualifiedType QualifiedType
@@ -4453,6 +4500,7 @@ namespace CppSharp
                 protected Friend(Friend.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.Declaration.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -4464,7 +4512,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(132);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public Friend(CppSharp.Parser.AST.Friend _0)
@@ -4474,7 +4522,7 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public CppSharp.Parser.AST.Declaration Declaration
@@ -4529,6 +4577,8 @@ namespace CppSharp
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
+
+                protected int __PointerAdjustment;
                 public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Statement> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Statement>();
                 protected void*[] __OriginalVTables;
 
@@ -4571,7 +4621,7 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public void Dispose()
@@ -4585,22 +4635,23 @@ namespace CppSharp
                         throw new global::System.InvalidOperationException("Managed instances owned by native code cannot be disposed of.");
                     CppSharp.Parser.AST.Statement __dummy;
                     NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                    Internal.dtor_0(__Instance, 0);
-                    Marshal.FreeHGlobal(__Instance);
+                    Internal.dtor_0((__Instance + __PointerAdjustment), 0);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public string String
                 {
                     get
                     {
-                        var __ret = Internal.getString_0(__Instance);
+                        var __ret = Internal.getString_0((__Instance + __PointerAdjustment));
                         return Marshal.PtrToStringAnsi(__ret);
                     }
 
                     set
                     {
                         var arg0 = Marshal.StringToHGlobalAnsi(value);
-                        Internal.setString_0(__Instance, arg0);
+                        Internal.setString_0((__Instance + __PointerAdjustment), arg0);
                         Marshal.FreeHGlobal(arg0);
                     }
                 }
@@ -4686,6 +4737,7 @@ namespace CppSharp
                 protected Expression(Expression.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.Statement.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -4698,7 +4750,7 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_1(__Instance, arg0);
+                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
                 }
             }
 
@@ -4767,6 +4819,7 @@ namespace CppSharp
                 protected BinaryOperator(BinaryOperator.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.Expression.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -4779,21 +4832,21 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public string OpcodeStr
                 {
                     get
                     {
-                        var __ret = Internal.getOpcodeStr_0(__Instance);
+                        var __ret = Internal.getOpcodeStr_0((__Instance + __PointerAdjustment));
                         return Marshal.PtrToStringAnsi(__ret);
                     }
 
                     set
                     {
                         var arg0 = Marshal.StringToHGlobalAnsi(value);
-                        Internal.setOpcodeStr_0(__Instance, arg0);
+                        Internal.setOpcodeStr_0((__Instance + __PointerAdjustment), arg0);
                         Marshal.FreeHGlobal(arg0);
                     }
                 }
@@ -4904,6 +4957,7 @@ namespace CppSharp
                 protected CXXConstructExpr(CXXConstructExpr.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.Expression.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -4916,12 +4970,12 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public CppSharp.Parser.AST.Expression getArguments(uint i)
                 {
-                    var __ret = Internal.getArguments_0(__Instance, i);
+                    var __ret = Internal.getArguments_0((__Instance + __PointerAdjustment), i);
                     CppSharp.Parser.AST.Expression __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (CppSharp.Parser.AST.Expression.NativeToManagedMap.ContainsKey(__ret))
@@ -4933,19 +4987,19 @@ namespace CppSharp
                 public void addArguments(CppSharp.Parser.AST.Expression s)
                 {
                     var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
-                    Internal.addArguments_0(__Instance, arg0);
+                    Internal.addArguments_0((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public void clearArguments()
                 {
-                    Internal.clearArguments_0(__Instance);
+                    Internal.clearArguments_0((__Instance + __PointerAdjustment));
                 }
 
                 public uint ArgumentsCount
                 {
                     get
                     {
-                        var __ret = Internal.getArgumentsCount_0(__Instance);
+                        var __ret = Internal.getArgumentsCount_0((__Instance + __PointerAdjustment));
                         return __ret;
                     }
                 }
@@ -5050,6 +5104,7 @@ namespace CppSharp
                 protected Parameter(Parameter.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.Declaration.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -5061,7 +5116,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(148);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public Parameter(CppSharp.Parser.AST.Parameter _0)
@@ -5071,7 +5126,7 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_1(__Instance, arg0);
+                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public CppSharp.Parser.AST.QualifiedType QualifiedType
@@ -5299,6 +5354,7 @@ namespace CppSharp
                 protected Function(Function.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.Declaration.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -5310,7 +5366,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(216);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public Function(CppSharp.Parser.AST.Function _0)
@@ -5320,12 +5376,12 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public CppSharp.Parser.AST.Parameter getParameters(uint i)
                 {
-                    var __ret = Internal.getParameters_0(__Instance, i);
+                    var __ret = Internal.getParameters_0((__Instance + __PointerAdjustment), i);
                     CppSharp.Parser.AST.Parameter __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (CppSharp.Parser.AST.Parameter.NativeToManagedMap.ContainsKey(__ret))
@@ -5337,26 +5393,26 @@ namespace CppSharp
                 public void addParameters(CppSharp.Parser.AST.Parameter s)
                 {
                     var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
-                    Internal.addParameters_0(__Instance, arg0);
+                    Internal.addParameters_0((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public void clearParameters()
                 {
-                    Internal.clearParameters_0(__Instance);
+                    Internal.clearParameters_0((__Instance + __PointerAdjustment));
                 }
 
                 public string Mangled
                 {
                     get
                     {
-                        var __ret = Internal.getMangled_0(__Instance);
+                        var __ret = Internal.getMangled_0((__Instance + __PointerAdjustment));
                         return Marshal.PtrToStringAnsi(__ret);
                     }
 
                     set
                     {
                         var arg0 = Marshal.StringToHGlobalAnsi(value);
-                        Internal.setMangled_0(__Instance, arg0);
+                        Internal.setMangled_0((__Instance + __PointerAdjustment), arg0);
                         Marshal.FreeHGlobal(arg0);
                     }
                 }
@@ -5365,14 +5421,14 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = Internal.getSignature_0(__Instance);
+                        var __ret = Internal.getSignature_0((__Instance + __PointerAdjustment));
                         return Marshal.PtrToStringAnsi(__ret);
                     }
 
                     set
                     {
                         var arg0 = Marshal.StringToHGlobalAnsi(value);
-                        Internal.setSignature_0(__Instance, arg0);
+                        Internal.setSignature_0((__Instance + __PointerAdjustment), arg0);
                         Marshal.FreeHGlobal(arg0);
                     }
                 }
@@ -5381,7 +5437,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = Internal.getParametersCount_0(__Instance);
+                        var __ret = Internal.getParametersCount_0((__Instance + __PointerAdjustment));
                         return __ret;
                     }
                 }
@@ -5672,6 +5728,7 @@ namespace CppSharp
                 protected Method(Method.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.Function.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -5683,7 +5740,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(244);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public Method(CppSharp.Parser.AST.Method _0)
@@ -5693,7 +5750,7 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_1(__Instance, arg0);
+                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public CppSharp.Parser.AST.AccessSpecifierDecl AccessDecl
@@ -6052,6 +6109,7 @@ namespace CppSharp
                     protected Item(Item.Internal* native, bool skipVTables = false)
                         : base((CppSharp.Parser.AST.Declaration.Internal*) null)
                     {
+                        __PointerAdjustment = 0;
                         if (native == null)
                             return;
                         __Instance = new global::System.IntPtr(native);
@@ -6063,7 +6121,7 @@ namespace CppSharp
                         __Instance = Marshal.AllocHGlobal(160);
                         __ownsNativeInstance = true;
                         NativeToManagedMap[__Instance] = this;
-                        Internal.ctor_0(__Instance);
+                        Internal.ctor_0((__Instance + __PointerAdjustment));
                     }
 
                     public Item(CppSharp.Parser.AST.Enumeration.Item _0)
@@ -6073,21 +6131,21 @@ namespace CppSharp
                         __ownsNativeInstance = true;
                         NativeToManagedMap[__Instance] = this;
                         var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                        Internal.cctor_1(__Instance, arg0);
+                        Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
                     }
 
                     public string Expression
                     {
                         get
                         {
-                            var __ret = Internal.getExpression_0(__Instance);
+                            var __ret = Internal.getExpression_0((__Instance + __PointerAdjustment));
                             return Marshal.PtrToStringAnsi(__ret);
                         }
 
                         set
                         {
                             var arg0 = Marshal.StringToHGlobalAnsi(value);
-                            Internal.setExpression_0(__Instance, arg0);
+                            Internal.setExpression_0((__Instance + __PointerAdjustment), arg0);
                             Marshal.FreeHGlobal(arg0);
                         }
                     }
@@ -6133,6 +6191,7 @@ namespace CppSharp
                 protected Enumeration(Enumeration.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.DeclarationContext.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -6144,7 +6203,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(260);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public Enumeration(CppSharp.Parser.AST.Enumeration _0)
@@ -6154,32 +6213,32 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public CppSharp.Parser.AST.Enumeration.Item getItems(uint i)
                 {
                     var __ret = new CppSharp.Parser.AST.Enumeration.Item.Internal();
-                    Internal.getItems_0(__Instance, new IntPtr(&__ret), i);
+                    Internal.getItems_0((__Instance + __PointerAdjustment), new IntPtr(&__ret), i);
                     return CppSharp.Parser.AST.Enumeration.Item.__CreateInstance(__ret);
                 }
 
                 public void addItems(CppSharp.Parser.AST.Enumeration.Item s)
                 {
                     var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
-                    Internal.addItems_0(__Instance, arg0);
+                    Internal.addItems_0((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public void clearItems()
                 {
-                    Internal.clearItems_0(__Instance);
+                    Internal.clearItems_0((__Instance + __PointerAdjustment));
                 }
 
                 public uint ItemsCount
                 {
                     get
                     {
-                        var __ret = Internal.getItemsCount_0(__Instance);
+                        var __ret = Internal.getItemsCount_0((__Instance + __PointerAdjustment));
                         return __ret;
                     }
                 }
@@ -6331,6 +6390,7 @@ namespace CppSharp
                 protected Variable(Variable.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.Declaration.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -6342,7 +6402,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(160);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public Variable(CppSharp.Parser.AST.Variable _0)
@@ -6352,21 +6412,21 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public string Mangled
                 {
                     get
                     {
-                        var __ret = Internal.getMangled_0(__Instance);
+                        var __ret = Internal.getMangled_0((__Instance + __PointerAdjustment));
                         return Marshal.PtrToStringAnsi(__ret);
                     }
 
                     set
                     {
                         var arg0 = Marshal.StringToHGlobalAnsi(value);
-                        Internal.setMangled_0(__Instance, arg0);
+                        Internal.setMangled_0((__Instance + __PointerAdjustment), arg0);
                         Marshal.FreeHGlobal(arg0);
                     }
                 }
@@ -6414,6 +6474,8 @@ namespace CppSharp
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
+
+                protected int __PointerAdjustment;
                 public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, BaseClassSpecifier> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, BaseClassSpecifier>();
                 protected void*[] __OriginalVTables;
 
@@ -6455,7 +6517,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(16);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public BaseClassSpecifier(CppSharp.Parser.AST.BaseClassSpecifier _0)
@@ -6477,7 +6539,8 @@ namespace CppSharp
                         throw new global::System.InvalidOperationException("Managed instances owned by native code cannot be disposed of.");
                     CppSharp.Parser.AST.BaseClassSpecifier __dummy;
                     NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                    Marshal.FreeHGlobal(__Instance);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.AccessSpecifier Access
@@ -6637,6 +6700,7 @@ namespace CppSharp
                 protected Field(Field.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.Declaration.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -6648,7 +6712,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(152);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public Field(CppSharp.Parser.AST.Field _0)
@@ -6658,7 +6722,7 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public CppSharp.Parser.AST.QualifiedType QualifiedType
@@ -6816,6 +6880,7 @@ namespace CppSharp
                 protected AccessSpecifierDecl(AccessSpecifierDecl.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.Declaration.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -6827,7 +6892,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(128);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public AccessSpecifierDecl(CppSharp.Parser.AST.AccessSpecifierDecl _0)
@@ -6837,7 +6902,7 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
             }
 
@@ -7038,6 +7103,7 @@ namespace CppSharp
                 protected Class(Class.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.DeclarationContext.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -7049,7 +7115,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(300);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public Class(CppSharp.Parser.AST.Class _0)
@@ -7059,12 +7125,12 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_1(__Instance, arg0);
+                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public CppSharp.Parser.AST.BaseClassSpecifier getBases(uint i)
                 {
-                    var __ret = Internal.getBases_0(__Instance, i);
+                    var __ret = Internal.getBases_0((__Instance + __PointerAdjustment), i);
                     CppSharp.Parser.AST.BaseClassSpecifier __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (CppSharp.Parser.AST.BaseClassSpecifier.NativeToManagedMap.ContainsKey(__ret))
@@ -7076,17 +7142,17 @@ namespace CppSharp
                 public void addBases(CppSharp.Parser.AST.BaseClassSpecifier s)
                 {
                     var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
-                    Internal.addBases_0(__Instance, arg0);
+                    Internal.addBases_0((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public void clearBases()
                 {
-                    Internal.clearBases_0(__Instance);
+                    Internal.clearBases_0((__Instance + __PointerAdjustment));
                 }
 
                 public CppSharp.Parser.AST.Field getFields(uint i)
                 {
-                    var __ret = Internal.getFields_0(__Instance, i);
+                    var __ret = Internal.getFields_0((__Instance + __PointerAdjustment), i);
                     CppSharp.Parser.AST.Field __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (CppSharp.Parser.AST.Field.NativeToManagedMap.ContainsKey(__ret))
@@ -7098,17 +7164,17 @@ namespace CppSharp
                 public void addFields(CppSharp.Parser.AST.Field s)
                 {
                     var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
-                    Internal.addFields_0(__Instance, arg0);
+                    Internal.addFields_0((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public void clearFields()
                 {
-                    Internal.clearFields_0(__Instance);
+                    Internal.clearFields_0((__Instance + __PointerAdjustment));
                 }
 
                 public CppSharp.Parser.AST.Method getMethods(uint i)
                 {
-                    var __ret = Internal.getMethods_0(__Instance, i);
+                    var __ret = Internal.getMethods_0((__Instance + __PointerAdjustment), i);
                     CppSharp.Parser.AST.Method __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (CppSharp.Parser.AST.Method.NativeToManagedMap.ContainsKey(__ret))
@@ -7120,17 +7186,17 @@ namespace CppSharp
                 public void addMethods(CppSharp.Parser.AST.Method s)
                 {
                     var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
-                    Internal.addMethods_0(__Instance, arg0);
+                    Internal.addMethods_0((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public void clearMethods()
                 {
-                    Internal.clearMethods_0(__Instance);
+                    Internal.clearMethods_0((__Instance + __PointerAdjustment));
                 }
 
                 public CppSharp.Parser.AST.AccessSpecifierDecl getSpecifiers(uint i)
                 {
-                    var __ret = Internal.getSpecifiers_0(__Instance, i);
+                    var __ret = Internal.getSpecifiers_0((__Instance + __PointerAdjustment), i);
                     CppSharp.Parser.AST.AccessSpecifierDecl __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (CppSharp.Parser.AST.AccessSpecifierDecl.NativeToManagedMap.ContainsKey(__ret))
@@ -7142,19 +7208,19 @@ namespace CppSharp
                 public void addSpecifiers(CppSharp.Parser.AST.AccessSpecifierDecl s)
                 {
                     var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
-                    Internal.addSpecifiers_0(__Instance, arg0);
+                    Internal.addSpecifiers_0((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public void clearSpecifiers()
                 {
-                    Internal.clearSpecifiers_0(__Instance);
+                    Internal.clearSpecifiers_0((__Instance + __PointerAdjustment));
                 }
 
                 public uint BasesCount
                 {
                     get
                     {
-                        var __ret = Internal.getBasesCount_0(__Instance);
+                        var __ret = Internal.getBasesCount_0((__Instance + __PointerAdjustment));
                         return __ret;
                     }
                 }
@@ -7163,7 +7229,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = Internal.getFieldsCount_0(__Instance);
+                        var __ret = Internal.getFieldsCount_0((__Instance + __PointerAdjustment));
                         return __ret;
                     }
                 }
@@ -7172,7 +7238,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = Internal.getMethodsCount_0(__Instance);
+                        var __ret = Internal.getMethodsCount_0((__Instance + __PointerAdjustment));
                         return __ret;
                     }
                 }
@@ -7181,7 +7247,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = Internal.getSpecifiersCount_0(__Instance);
+                        var __ret = Internal.getSpecifiersCount_0((__Instance + __PointerAdjustment));
                         return __ret;
                     }
                 }
@@ -7434,6 +7500,7 @@ namespace CppSharp
                 protected Template(Template.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.Declaration.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -7446,7 +7513,7 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = kind;
-                    Internal.ctor_0(__Instance, arg0);
+                    Internal.ctor_0((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public Template()
@@ -7455,7 +7522,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(144);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_1(__Instance);
+                    Internal.ctor_1((__Instance + __PointerAdjustment));
                 }
 
                 public Template(CppSharp.Parser.AST.Template _0)
@@ -7465,32 +7532,32 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_3(__Instance, arg0);
+                    Internal.cctor_3((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public CppSharp.Parser.AST.TemplateParameter getParameters(uint i)
                 {
                     var __ret = new CppSharp.Parser.AST.TemplateParameter.Internal();
-                    Internal.getParameters_0(__Instance, new IntPtr(&__ret), i);
+                    Internal.getParameters_0((__Instance + __PointerAdjustment), new IntPtr(&__ret), i);
                     return CppSharp.Parser.AST.TemplateParameter.__CreateInstance(__ret);
                 }
 
                 public void addParameters(CppSharp.Parser.AST.TemplateParameter s)
                 {
                     var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
-                    Internal.addParameters_0(__Instance, arg0);
+                    Internal.addParameters_0((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public void clearParameters()
                 {
-                    Internal.clearParameters_0(__Instance);
+                    Internal.clearParameters_0((__Instance + __PointerAdjustment));
                 }
 
                 public uint ParametersCount
                 {
                     get
                     {
-                        var __ret = Internal.getParametersCount_0(__Instance);
+                        var __ret = Internal.getParametersCount_0((__Instance + __PointerAdjustment));
                         return __ret;
                     }
                 }
@@ -7621,6 +7688,7 @@ namespace CppSharp
                 protected ClassTemplate(ClassTemplate.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.Template.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -7632,7 +7700,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(156);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public ClassTemplate(CppSharp.Parser.AST.ClassTemplate _0)
@@ -7642,12 +7710,12 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public CppSharp.Parser.AST.ClassTemplateSpecialization getSpecializations(uint i)
                 {
-                    var __ret = Internal.getSpecializations_0(__Instance, i);
+                    var __ret = Internal.getSpecializations_0((__Instance + __PointerAdjustment), i);
                     CppSharp.Parser.AST.ClassTemplateSpecialization __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (CppSharp.Parser.AST.ClassTemplateSpecialization.NativeToManagedMap.ContainsKey(__ret))
@@ -7659,19 +7727,19 @@ namespace CppSharp
                 public void addSpecializations(CppSharp.Parser.AST.ClassTemplateSpecialization s)
                 {
                     var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
-                    Internal.addSpecializations_0(__Instance, arg0);
+                    Internal.addSpecializations_0((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public void clearSpecializations()
                 {
-                    Internal.clearSpecializations_0(__Instance);
+                    Internal.clearSpecializations_0((__Instance + __PointerAdjustment));
                 }
 
                 public uint SpecializationsCount
                 {
                     get
                     {
-                        var __ret = Internal.getSpecializationsCount_0(__Instance);
+                        var __ret = Internal.getSpecializationsCount_0((__Instance + __PointerAdjustment));
                         return __ret;
                     }
                 }
@@ -7820,6 +7888,7 @@ namespace CppSharp
                 protected ClassTemplateSpecialization(ClassTemplateSpecialization.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.Class.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -7831,7 +7900,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(320);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public ClassTemplateSpecialization(CppSharp.Parser.AST.ClassTemplateSpecialization _0)
@@ -7841,32 +7910,32 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public CppSharp.Parser.AST.TemplateArgument getArguments(uint i)
                 {
                     var __ret = new CppSharp.Parser.AST.TemplateArgument.Internal();
-                    Internal.getArguments_0(__Instance, new IntPtr(&__ret), i);
+                    Internal.getArguments_0((__Instance + __PointerAdjustment), new IntPtr(&__ret), i);
                     return CppSharp.Parser.AST.TemplateArgument.__CreateInstance(__ret);
                 }
 
                 public void addArguments(CppSharp.Parser.AST.TemplateArgument s)
                 {
                     var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
-                    Internal.addArguments_0(__Instance, arg0);
+                    Internal.addArguments_0((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public void clearArguments()
                 {
-                    Internal.clearArguments_0(__Instance);
+                    Internal.clearArguments_0((__Instance + __PointerAdjustment));
                 }
 
                 public uint ArgumentsCount
                 {
                     get
                     {
-                        var __ret = Internal.getArgumentsCount_0(__Instance);
+                        var __ret = Internal.getArgumentsCount_0((__Instance + __PointerAdjustment));
                         return __ret;
                     }
                 }
@@ -8026,6 +8095,7 @@ namespace CppSharp
                 protected ClassTemplatePartialSpecialization(ClassTemplatePartialSpecialization.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.ClassTemplateSpecialization.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -8037,7 +8107,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(320);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public ClassTemplatePartialSpecialization(CppSharp.Parser.AST.ClassTemplatePartialSpecialization _0)
@@ -8047,7 +8117,7 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_1(__Instance, arg0);
+                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
                 }
             }
 
@@ -8158,6 +8228,7 @@ namespace CppSharp
                 protected FunctionTemplate(FunctionTemplate.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.Template.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -8169,7 +8240,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(156);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public FunctionTemplate(CppSharp.Parser.AST.FunctionTemplate _0)
@@ -8179,12 +8250,12 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public CppSharp.Parser.AST.FunctionTemplateSpecialization getSpecializations(uint i)
                 {
-                    var __ret = Internal.getSpecializations_0(__Instance, i);
+                    var __ret = Internal.getSpecializations_0((__Instance + __PointerAdjustment), i);
                     CppSharp.Parser.AST.FunctionTemplateSpecialization __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (CppSharp.Parser.AST.FunctionTemplateSpecialization.NativeToManagedMap.ContainsKey(__ret))
@@ -8196,19 +8267,19 @@ namespace CppSharp
                 public void addSpecializations(CppSharp.Parser.AST.FunctionTemplateSpecialization s)
                 {
                     var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
-                    Internal.addSpecializations_0(__Instance, arg0);
+                    Internal.addSpecializations_0((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public void clearSpecializations()
                 {
-                    Internal.clearSpecializations_0(__Instance);
+                    Internal.clearSpecializations_0((__Instance + __PointerAdjustment));
                 }
 
                 public uint SpecializationsCount
                 {
                     get
                     {
-                        var __ret = Internal.getSpecializationsCount_0(__Instance);
+                        var __ret = Internal.getSpecializationsCount_0((__Instance + __PointerAdjustment));
                         return __ret;
                     }
                 }
@@ -8265,6 +8336,8 @@ namespace CppSharp
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
+
+                protected int __PointerAdjustment;
                 public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, FunctionTemplateSpecialization> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, FunctionTemplateSpecialization>();
                 protected void*[] __OriginalVTables;
 
@@ -8306,7 +8379,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(24);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public FunctionTemplateSpecialization(CppSharp.Parser.AST.FunctionTemplateSpecialization _0)
@@ -8315,7 +8388,7 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public void Dispose()
@@ -8329,33 +8402,34 @@ namespace CppSharp
                         throw new global::System.InvalidOperationException("Managed instances owned by native code cannot be disposed of.");
                     CppSharp.Parser.AST.FunctionTemplateSpecialization __dummy;
                     NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                    Internal.dtor_0(__Instance, 0);
-                    Marshal.FreeHGlobal(__Instance);
+                    Internal.dtor_0((__Instance + __PointerAdjustment), 0);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.TemplateArgument getArguments(uint i)
                 {
                     var __ret = new CppSharp.Parser.AST.TemplateArgument.Internal();
-                    Internal.getArguments_0(__Instance, new IntPtr(&__ret), i);
+                    Internal.getArguments_0((__Instance + __PointerAdjustment), new IntPtr(&__ret), i);
                     return CppSharp.Parser.AST.TemplateArgument.__CreateInstance(__ret);
                 }
 
                 public void addArguments(CppSharp.Parser.AST.TemplateArgument s)
                 {
                     var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
-                    Internal.addArguments_0(__Instance, arg0);
+                    Internal.addArguments_0((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public void clearArguments()
                 {
-                    Internal.clearArguments_0(__Instance);
+                    Internal.clearArguments_0((__Instance + __PointerAdjustment));
                 }
 
                 public uint ArgumentsCount
                 {
                     get
                     {
-                        var __ret = Internal.getArgumentsCount_0(__Instance);
+                        var __ret = Internal.getArgumentsCount_0((__Instance + __PointerAdjustment));
                         return __ret;
                     }
                 }
@@ -8500,6 +8574,7 @@ namespace CppSharp
                 protected Namespace(Namespace.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.DeclarationContext.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -8511,7 +8586,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(240);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public Namespace(CppSharp.Parser.AST.Namespace _0)
@@ -8521,7 +8596,7 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_1(__Instance, arg0);
+                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public bool IsInline
@@ -8625,6 +8700,7 @@ namespace CppSharp
                 protected PreprocessedEntity(PreprocessedEntity.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.Declaration.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -8636,7 +8712,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(132);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public PreprocessedEntity(CppSharp.Parser.AST.PreprocessedEntity _0)
@@ -8646,7 +8722,7 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public CppSharp.Parser.AST.MacroLocation MacroLocation
@@ -8760,6 +8836,7 @@ namespace CppSharp
                 protected MacroDefinition(MacroDefinition.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.PreprocessedEntity.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -8771,7 +8848,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(156);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public MacroDefinition(CppSharp.Parser.AST.MacroDefinition _0)
@@ -8781,21 +8858,21 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public string Expression
                 {
                     get
                     {
-                        var __ret = Internal.getExpression_0(__Instance);
+                        var __ret = Internal.getExpression_0((__Instance + __PointerAdjustment));
                         return Marshal.PtrToStringAnsi(__ret);
                     }
 
                     set
                     {
                         var arg0 = Marshal.StringToHGlobalAnsi(value);
-                        Internal.setExpression_0(__Instance, arg0);
+                        Internal.setExpression_0((__Instance + __PointerAdjustment), arg0);
                         Marshal.FreeHGlobal(arg0);
                     }
                 }
@@ -8901,6 +8978,7 @@ namespace CppSharp
                 protected MacroExpansion(MacroExpansion.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.PreprocessedEntity.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -8912,7 +8990,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(160);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public MacroExpansion(CppSharp.Parser.AST.MacroExpansion _0)
@@ -8922,21 +9000,21 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public string Text
                 {
                     get
                     {
-                        var __ret = Internal.getText_0(__Instance);
+                        var __ret = Internal.getText_0((__Instance + __PointerAdjustment));
                         return Marshal.PtrToStringAnsi(__ret);
                     }
 
                     set
                     {
                         var arg0 = Marshal.StringToHGlobalAnsi(value);
-                        Internal.setText_0(__Instance, arg0);
+                        Internal.setText_0((__Instance + __PointerAdjustment), arg0);
                         Marshal.FreeHGlobal(arg0);
                     }
                 }
@@ -9083,6 +9161,7 @@ namespace CppSharp
                 protected TranslationUnit(TranslationUnit.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.Namespace.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -9094,7 +9173,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(280);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public TranslationUnit(CppSharp.Parser.AST.TranslationUnit _0)
@@ -9104,12 +9183,12 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public CppSharp.Parser.AST.MacroDefinition getMacros(uint i)
                 {
-                    var __ret = Internal.getMacros_0(__Instance, i);
+                    var __ret = Internal.getMacros_0((__Instance + __PointerAdjustment), i);
                     CppSharp.Parser.AST.MacroDefinition __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (CppSharp.Parser.AST.MacroDefinition.NativeToManagedMap.ContainsKey(__ret))
@@ -9121,26 +9200,26 @@ namespace CppSharp
                 public void addMacros(CppSharp.Parser.AST.MacroDefinition s)
                 {
                     var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
-                    Internal.addMacros_0(__Instance, arg0);
+                    Internal.addMacros_0((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public void clearMacros()
                 {
-                    Internal.clearMacros_0(__Instance);
+                    Internal.clearMacros_0((__Instance + __PointerAdjustment));
                 }
 
                 public string FileName
                 {
                     get
                     {
-                        var __ret = Internal.getFileName_0(__Instance);
+                        var __ret = Internal.getFileName_0((__Instance + __PointerAdjustment));
                         return Marshal.PtrToStringAnsi(__ret);
                     }
 
                     set
                     {
                         var arg0 = Marshal.StringToHGlobalAnsi(value);
-                        Internal.setFileName_0(__Instance, arg0);
+                        Internal.setFileName_0((__Instance + __PointerAdjustment), arg0);
                         Marshal.FreeHGlobal(arg0);
                     }
                 }
@@ -9149,7 +9228,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = Internal.getMacrosCount_0(__Instance);
+                        var __ret = Internal.getMacrosCount_0((__Instance + __PointerAdjustment));
                         return __ret;
                     }
                 }
@@ -9243,6 +9322,8 @@ namespace CppSharp
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
+
+                protected int __PointerAdjustment;
                 public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, NativeLibrary> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, NativeLibrary>();
                 protected void*[] __OriginalVTables;
 
@@ -9284,7 +9365,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(52);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public NativeLibrary(CppSharp.Parser.AST.NativeLibrary _0)
@@ -9293,7 +9374,7 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public void Dispose()
@@ -9307,58 +9388,59 @@ namespace CppSharp
                         throw new global::System.InvalidOperationException("Managed instances owned by native code cannot be disposed of.");
                     CppSharp.Parser.AST.NativeLibrary __dummy;
                     NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                    Internal.dtor_0(__Instance, 0);
-                    Marshal.FreeHGlobal(__Instance);
+                    Internal.dtor_0((__Instance + __PointerAdjustment), 0);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public string getSymbols(uint i)
                 {
-                    var __ret = Internal.getSymbols_0(__Instance, i);
+                    var __ret = Internal.getSymbols_0((__Instance + __PointerAdjustment), i);
                     return Marshal.PtrToStringAnsi(__ret);
                 }
 
                 public void addSymbols(string s)
                 {
                     var arg0 = Marshal.StringToHGlobalAnsi(s);
-                    Internal.addSymbols_0(__Instance, arg0);
+                    Internal.addSymbols_0((__Instance + __PointerAdjustment), arg0);
                     Marshal.FreeHGlobal(arg0);
                 }
 
                 public void clearSymbols()
                 {
-                    Internal.clearSymbols_0(__Instance);
+                    Internal.clearSymbols_0((__Instance + __PointerAdjustment));
                 }
 
                 public string getDependencies(uint i)
                 {
-                    var __ret = Internal.getDependencies_0(__Instance, i);
+                    var __ret = Internal.getDependencies_0((__Instance + __PointerAdjustment), i);
                     return Marshal.PtrToStringAnsi(__ret);
                 }
 
                 public void addDependencies(string s)
                 {
                     var arg0 = Marshal.StringToHGlobalAnsi(s);
-                    Internal.addDependencies_0(__Instance, arg0);
+                    Internal.addDependencies_0((__Instance + __PointerAdjustment), arg0);
                     Marshal.FreeHGlobal(arg0);
                 }
 
                 public void clearDependencies()
                 {
-                    Internal.clearDependencies_0(__Instance);
+                    Internal.clearDependencies_0((__Instance + __PointerAdjustment));
                 }
 
                 public string FileName
                 {
                     get
                     {
-                        var __ret = Internal.getFileName_0(__Instance);
+                        var __ret = Internal.getFileName_0((__Instance + __PointerAdjustment));
                         return Marshal.PtrToStringAnsi(__ret);
                     }
 
                     set
                     {
                         var arg0 = Marshal.StringToHGlobalAnsi(value);
-                        Internal.setFileName_0(__Instance, arg0);
+                        Internal.setFileName_0((__Instance + __PointerAdjustment), arg0);
                         Marshal.FreeHGlobal(arg0);
                     }
                 }
@@ -9367,7 +9449,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = Internal.getSymbolsCount_0(__Instance);
+                        var __ret = Internal.getSymbolsCount_0((__Instance + __PointerAdjustment));
                         return __ret;
                     }
                 }
@@ -9376,7 +9458,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = Internal.getDependenciesCount_0(__Instance);
+                        var __ret = Internal.getDependenciesCount_0((__Instance + __PointerAdjustment));
                         return __ret;
                     }
                 }
@@ -9437,6 +9519,8 @@ namespace CppSharp
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
+
+                protected int __PointerAdjustment;
                 public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ASTContext> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ASTContext>();
                 protected void*[] __OriginalVTables;
 
@@ -9478,7 +9562,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(12);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public ASTContext(CppSharp.Parser.AST.ASTContext _0)
@@ -9487,7 +9571,7 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public void Dispose()
@@ -9501,13 +9585,14 @@ namespace CppSharp
                         throw new global::System.InvalidOperationException("Managed instances owned by native code cannot be disposed of.");
                     CppSharp.Parser.AST.ASTContext __dummy;
                     NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                    Internal.dtor_0(__Instance, 0);
-                    Marshal.FreeHGlobal(__Instance);
+                    Internal.dtor_0((__Instance + __PointerAdjustment), 0);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.TranslationUnit getTranslationUnits(uint i)
                 {
-                    var __ret = Internal.getTranslationUnits_0(__Instance, i);
+                    var __ret = Internal.getTranslationUnits_0((__Instance + __PointerAdjustment), i);
                     CppSharp.Parser.AST.TranslationUnit __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (CppSharp.Parser.AST.TranslationUnit.NativeToManagedMap.ContainsKey(__ret))
@@ -9519,19 +9604,19 @@ namespace CppSharp
                 public void addTranslationUnits(CppSharp.Parser.AST.TranslationUnit s)
                 {
                     var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
-                    Internal.addTranslationUnits_0(__Instance, arg0);
+                    Internal.addTranslationUnits_0((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public void clearTranslationUnits()
                 {
-                    Internal.clearTranslationUnits_0(__Instance);
+                    Internal.clearTranslationUnits_0((__Instance + __PointerAdjustment));
                 }
 
                 public uint TranslationUnitsCount
                 {
                     get
                     {
-                        var __ret = Internal.getTranslationUnitsCount_0(__Instance);
+                        var __ret = Internal.getTranslationUnitsCount_0((__Instance + __PointerAdjustment));
                         return __ret;
                     }
                 }
@@ -9557,6 +9642,8 @@ namespace CppSharp
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
+
+                protected int __PointerAdjustment;
                 public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Comment> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Comment>();
                 protected void*[] __OriginalVTables;
 
@@ -9599,7 +9686,7 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = kind;
-                    Internal.ctor_0(__Instance, arg0);
+                    Internal.ctor_0((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public Comment(CppSharp.Parser.AST.Comment _0)
@@ -9621,7 +9708,8 @@ namespace CppSharp
                         throw new global::System.InvalidOperationException("Managed instances owned by native code cannot be disposed of.");
                     CppSharp.Parser.AST.Comment __dummy;
                     NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                    Marshal.FreeHGlobal(__Instance);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.CommentKind Kind
@@ -9689,6 +9777,7 @@ namespace CppSharp
                 protected BlockContentComment(BlockContentComment.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.Comment.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -9700,7 +9789,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(4);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public BlockContentComment(CppSharp.Parser.AST.CommentKind Kind)
@@ -9710,7 +9799,7 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = Kind;
-                    Internal.ctor_1(__Instance, arg0);
+                    Internal.ctor_1((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public BlockContentComment(CppSharp.Parser.AST.BlockContentComment _0)
@@ -9794,6 +9883,7 @@ namespace CppSharp
                 protected FullComment(FullComment.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.Comment.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -9805,7 +9895,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(16);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public FullComment(CppSharp.Parser.AST.FullComment _0)
@@ -9815,12 +9905,12 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public CppSharp.Parser.AST.BlockContentComment getBlocks(uint i)
                 {
-                    var __ret = Internal.getBlocks_0(__Instance, i);
+                    var __ret = Internal.getBlocks_0((__Instance + __PointerAdjustment), i);
                     CppSharp.Parser.AST.BlockContentComment __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (CppSharp.Parser.AST.BlockContentComment.NativeToManagedMap.ContainsKey(__ret))
@@ -9832,19 +9922,19 @@ namespace CppSharp
                 public void addBlocks(CppSharp.Parser.AST.BlockContentComment s)
                 {
                     var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
-                    Internal.addBlocks_0(__Instance, arg0);
+                    Internal.addBlocks_0((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public void clearBlocks()
                 {
-                    Internal.clearBlocks_0(__Instance);
+                    Internal.clearBlocks_0((__Instance + __PointerAdjustment));
                 }
 
                 public uint BlocksCount
                 {
                     get
                     {
-                        var __ret = Internal.getBlocksCount_0(__Instance);
+                        var __ret = Internal.getBlocksCount_0((__Instance + __PointerAdjustment));
                         return __ret;
                     }
                 }
@@ -9934,6 +10024,8 @@ namespace CppSharp
                     }
 
                     public global::System.IntPtr __Instance { get; protected set; }
+
+                    protected int __PointerAdjustment;
                     public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Argument> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Argument>();
                     protected void*[] __OriginalVTables;
 
@@ -9975,7 +10067,7 @@ namespace CppSharp
                         __Instance = Marshal.AllocHGlobal(24);
                         __ownsNativeInstance = true;
                         NativeToManagedMap[__Instance] = this;
-                        Internal.ctor_0(__Instance);
+                        Internal.ctor_0((__Instance + __PointerAdjustment));
                     }
 
                     public Argument(CppSharp.Parser.AST.BlockCommandComment.Argument _0)
@@ -9984,7 +10076,7 @@ namespace CppSharp
                         __ownsNativeInstance = true;
                         NativeToManagedMap[__Instance] = this;
                         var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                        Internal.cctor_2(__Instance, arg0);
+                        Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                     }
 
                     public void Dispose()
@@ -9998,22 +10090,23 @@ namespace CppSharp
                             throw new global::System.InvalidOperationException("Managed instances owned by native code cannot be disposed of.");
                         CppSharp.Parser.AST.BlockCommandComment.Argument __dummy;
                         NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                        Internal.dtor_0(__Instance, 0);
-                        Marshal.FreeHGlobal(__Instance);
+                        Internal.dtor_0((__Instance + __PointerAdjustment), 0);
+                        if (__ownsNativeInstance)
+                            Marshal.FreeHGlobal(__Instance);
                     }
 
                     public string Text
                     {
                         get
                         {
-                            var __ret = Internal.getText_0(__Instance);
+                            var __ret = Internal.getText_0((__Instance + __PointerAdjustment));
                             return Marshal.PtrToStringAnsi(__ret);
                         }
 
                         set
                         {
                             var arg0 = Marshal.StringToHGlobalAnsi(value);
-                            Internal.setText_0(__Instance, arg0);
+                            Internal.setText_0((__Instance + __PointerAdjustment), arg0);
                             Marshal.FreeHGlobal(arg0);
                         }
                     }
@@ -10046,6 +10139,7 @@ namespace CppSharp
                 protected BlockCommandComment(BlockCommandComment.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.BlockContentComment.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -10057,7 +10151,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(20);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public BlockCommandComment(CppSharp.Parser.AST.CommentKind Kind)
@@ -10067,7 +10161,7 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = Kind;
-                    Internal.ctor_1(__Instance, arg0);
+                    Internal.ctor_1((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public BlockCommandComment(CppSharp.Parser.AST.BlockCommandComment _0)
@@ -10077,32 +10171,32 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_3(__Instance, arg0);
+                    Internal.cctor_3((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public CppSharp.Parser.AST.BlockCommandComment.Argument getArguments(uint i)
                 {
                     var __ret = new CppSharp.Parser.AST.BlockCommandComment.Argument.Internal();
-                    Internal.getArguments_0(__Instance, new IntPtr(&__ret), i);
+                    Internal.getArguments_0((__Instance + __PointerAdjustment), new IntPtr(&__ret), i);
                     return CppSharp.Parser.AST.BlockCommandComment.Argument.__CreateInstance(__ret);
                 }
 
                 public void addArguments(CppSharp.Parser.AST.BlockCommandComment.Argument s)
                 {
                     var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
-                    Internal.addArguments_0(__Instance, arg0);
+                    Internal.addArguments_0((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public void clearArguments()
                 {
-                    Internal.clearArguments_0(__Instance);
+                    Internal.clearArguments_0((__Instance + __PointerAdjustment));
                 }
 
                 public uint ArgumentsCount
                 {
                     get
                     {
-                        var __ret = Internal.getArgumentsCount_0(__Instance);
+                        var __ret = Internal.getArgumentsCount_0((__Instance + __PointerAdjustment));
                         return __ret;
                     }
                 }
@@ -10188,6 +10282,7 @@ namespace CppSharp
                 protected ParamCommandComment(ParamCommandComment.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.BlockCommandComment.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -10199,7 +10294,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(28);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public ParamCommandComment(CppSharp.Parser.AST.ParamCommandComment _0)
@@ -10209,7 +10304,7 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_1(__Instance, arg0);
+                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public CppSharp.Parser.AST.ParamCommandComment.PassDirection Direction
@@ -10313,6 +10408,7 @@ namespace CppSharp
                 protected TParamCommandComment(TParamCommandComment.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.BlockCommandComment.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -10324,7 +10420,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(32);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public TParamCommandComment(CppSharp.Parser.AST.TParamCommandComment _0)
@@ -10334,12 +10430,12 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public uint getPosition(uint i)
                 {
-                    var __ret = Internal.getPosition_0(__Instance, i);
+                    var __ret = Internal.getPosition_0((__Instance + __PointerAdjustment), i);
                     return __ret;
                 }
 
@@ -10348,20 +10444,20 @@ namespace CppSharp
                     fixed (uint* __refParamPtr0 = &s)
                     {
                         var arg0 = __refParamPtr0;
-                        Internal.addPosition_0(__Instance, arg0);
+                        Internal.addPosition_0((__Instance + __PointerAdjustment), arg0);
                     }
                 }
 
                 public void clearPosition()
                 {
-                    Internal.clearPosition_0(__Instance);
+                    Internal.clearPosition_0((__Instance + __PointerAdjustment));
                 }
 
                 public uint PositionCount
                 {
                     get
                     {
-                        var __ret = Internal.getPositionCount_0(__Instance);
+                        var __ret = Internal.getPositionCount_0((__Instance + __PointerAdjustment));
                         return __ret;
                     }
                 }
@@ -10428,6 +10524,7 @@ namespace CppSharp
                 protected VerbatimBlockLineComment(VerbatimBlockLineComment.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.Comment.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -10439,7 +10536,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(28);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public VerbatimBlockLineComment(CppSharp.Parser.AST.VerbatimBlockLineComment _0)
@@ -10449,21 +10546,21 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public string Text
                 {
                     get
                     {
-                        var __ret = Internal.getText_0(__Instance);
+                        var __ret = Internal.getText_0((__Instance + __PointerAdjustment));
                         return Marshal.PtrToStringAnsi(__ret);
                     }
 
                     set
                     {
                         var arg0 = Marshal.StringToHGlobalAnsi(value);
-                        Internal.setText_0(__Instance, arg0);
+                        Internal.setText_0((__Instance + __PointerAdjustment), arg0);
                         Marshal.FreeHGlobal(arg0);
                     }
                 }
@@ -10543,6 +10640,7 @@ namespace CppSharp
                 protected VerbatimBlockComment(VerbatimBlockComment.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.BlockCommandComment.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -10554,7 +10652,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(32);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public VerbatimBlockComment(CppSharp.Parser.AST.VerbatimBlockComment _0)
@@ -10564,12 +10662,12 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public CppSharp.Parser.AST.VerbatimBlockLineComment getLines(uint i)
                 {
-                    var __ret = Internal.getLines_0(__Instance, i);
+                    var __ret = Internal.getLines_0((__Instance + __PointerAdjustment), i);
                     CppSharp.Parser.AST.VerbatimBlockLineComment __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (CppSharp.Parser.AST.VerbatimBlockLineComment.NativeToManagedMap.ContainsKey(__ret))
@@ -10581,19 +10679,19 @@ namespace CppSharp
                 public void addLines(CppSharp.Parser.AST.VerbatimBlockLineComment s)
                 {
                     var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
-                    Internal.addLines_0(__Instance, arg0);
+                    Internal.addLines_0((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public void clearLines()
                 {
-                    Internal.clearLines_0(__Instance);
+                    Internal.clearLines_0((__Instance + __PointerAdjustment));
                 }
 
                 public uint LinesCount
                 {
                     get
                     {
-                        var __ret = Internal.getLinesCount_0(__Instance);
+                        var __ret = Internal.getLinesCount_0((__Instance + __PointerAdjustment));
                         return __ret;
                     }
                 }
@@ -10663,6 +10761,7 @@ namespace CppSharp
                 protected VerbatimLineComment(VerbatimLineComment.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.BlockCommandComment.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -10674,7 +10773,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(44);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public VerbatimLineComment(CppSharp.Parser.AST.VerbatimLineComment _0)
@@ -10684,21 +10783,21 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public string Text
                 {
                     get
                     {
-                        var __ret = Internal.getText_0(__Instance);
+                        var __ret = Internal.getText_0((__Instance + __PointerAdjustment));
                         return Marshal.PtrToStringAnsi(__ret);
                     }
 
                     set
                     {
                         var arg0 = Marshal.StringToHGlobalAnsi(value);
-                        Internal.setText_0(__Instance, arg0);
+                        Internal.setText_0((__Instance + __PointerAdjustment), arg0);
                         Marshal.FreeHGlobal(arg0);
                     }
                 }
@@ -10755,6 +10854,7 @@ namespace CppSharp
                 protected InlineContentComment(InlineContentComment.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.Comment.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -10766,7 +10866,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(4);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public InlineContentComment(CppSharp.Parser.AST.CommentKind Kind)
@@ -10776,7 +10876,7 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = Kind;
-                    Internal.ctor_1(__Instance, arg0);
+                    Internal.ctor_1((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public InlineContentComment(CppSharp.Parser.AST.InlineContentComment _0)
@@ -10863,6 +10963,7 @@ namespace CppSharp
                 protected ParagraphComment(ParagraphComment.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.BlockContentComment.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -10874,7 +10975,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(20);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public ParagraphComment(CppSharp.Parser.AST.ParagraphComment _0)
@@ -10884,12 +10985,12 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public CppSharp.Parser.AST.InlineContentComment getContent(uint i)
                 {
-                    var __ret = Internal.getContent_0(__Instance, i);
+                    var __ret = Internal.getContent_0((__Instance + __PointerAdjustment), i);
                     CppSharp.Parser.AST.InlineContentComment __result0;
                     if (__ret == IntPtr.Zero) __result0 = null;
                     else if (CppSharp.Parser.AST.InlineContentComment.NativeToManagedMap.ContainsKey(__ret))
@@ -10901,19 +11002,19 @@ namespace CppSharp
                 public void addContent(CppSharp.Parser.AST.InlineContentComment s)
                 {
                     var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
-                    Internal.addContent_0(__Instance, arg0);
+                    Internal.addContent_0((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public void clearContent()
                 {
-                    Internal.clearContent_0(__Instance);
+                    Internal.clearContent_0((__Instance + __PointerAdjustment));
                 }
 
                 public uint ContentCount
                 {
                     get
                     {
-                        var __ret = Internal.getContentCount_0(__Instance);
+                        var __ret = Internal.getContentCount_0((__Instance + __PointerAdjustment));
                         return __ret;
                     }
                 }
@@ -11019,6 +11120,8 @@ namespace CppSharp
                     }
 
                     public global::System.IntPtr __Instance { get; protected set; }
+
+                    protected int __PointerAdjustment;
                     public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Argument> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Argument>();
                     protected void*[] __OriginalVTables;
 
@@ -11060,7 +11163,7 @@ namespace CppSharp
                         __Instance = Marshal.AllocHGlobal(24);
                         __ownsNativeInstance = true;
                         NativeToManagedMap[__Instance] = this;
-                        Internal.ctor_0(__Instance);
+                        Internal.ctor_0((__Instance + __PointerAdjustment));
                     }
 
                     public Argument(CppSharp.Parser.AST.InlineCommandComment.Argument _0)
@@ -11069,7 +11172,7 @@ namespace CppSharp
                         __ownsNativeInstance = true;
                         NativeToManagedMap[__Instance] = this;
                         var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                        Internal.cctor_2(__Instance, arg0);
+                        Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                     }
 
                     public void Dispose()
@@ -11083,22 +11186,23 @@ namespace CppSharp
                             throw new global::System.InvalidOperationException("Managed instances owned by native code cannot be disposed of.");
                         CppSharp.Parser.AST.InlineCommandComment.Argument __dummy;
                         NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                        Internal.dtor_0(__Instance, 0);
-                        Marshal.FreeHGlobal(__Instance);
+                        Internal.dtor_0((__Instance + __PointerAdjustment), 0);
+                        if (__ownsNativeInstance)
+                            Marshal.FreeHGlobal(__Instance);
                     }
 
                     public string Text
                     {
                         get
                         {
-                            var __ret = Internal.getText_0(__Instance);
+                            var __ret = Internal.getText_0((__Instance + __PointerAdjustment));
                             return Marshal.PtrToStringAnsi(__ret);
                         }
 
                         set
                         {
                             var arg0 = Marshal.StringToHGlobalAnsi(value);
-                            Internal.setText_0(__Instance, arg0);
+                            Internal.setText_0((__Instance + __PointerAdjustment), arg0);
                             Marshal.FreeHGlobal(arg0);
                         }
                     }
@@ -11131,6 +11235,7 @@ namespace CppSharp
                 protected InlineCommandComment(InlineCommandComment.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.InlineContentComment.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -11142,7 +11247,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(20);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public InlineCommandComment(CppSharp.Parser.AST.InlineCommandComment _0)
@@ -11152,32 +11257,32 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public CppSharp.Parser.AST.InlineCommandComment.Argument getArguments(uint i)
                 {
                     var __ret = new CppSharp.Parser.AST.InlineCommandComment.Argument.Internal();
-                    Internal.getArguments_0(__Instance, new IntPtr(&__ret), i);
+                    Internal.getArguments_0((__Instance + __PointerAdjustment), new IntPtr(&__ret), i);
                     return CppSharp.Parser.AST.InlineCommandComment.Argument.__CreateInstance(__ret);
                 }
 
                 public void addArguments(CppSharp.Parser.AST.InlineCommandComment.Argument s)
                 {
                     var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
-                    Internal.addArguments_0(__Instance, arg0);
+                    Internal.addArguments_0((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public void clearArguments()
                 {
-                    Internal.clearArguments_0(__Instance);
+                    Internal.clearArguments_0((__Instance + __PointerAdjustment));
                 }
 
                 public uint ArgumentsCount
                 {
                     get
                     {
-                        var __ret = Internal.getArgumentsCount_0(__Instance);
+                        var __ret = Internal.getArgumentsCount_0((__Instance + __PointerAdjustment));
                         return __ret;
                     }
                 }
@@ -11247,6 +11352,7 @@ namespace CppSharp
                 protected HTMLTagComment(HTMLTagComment.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.InlineContentComment.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -11258,7 +11364,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(4);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public HTMLTagComment(CppSharp.Parser.AST.CommentKind Kind)
@@ -11268,7 +11374,7 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = Kind;
-                    Internal.ctor_1(__Instance, arg0);
+                    Internal.ctor_1((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public HTMLTagComment(CppSharp.Parser.AST.HTMLTagComment _0)
@@ -11377,6 +11483,8 @@ namespace CppSharp
                     }
 
                     public global::System.IntPtr __Instance { get; protected set; }
+
+                    protected int __PointerAdjustment;
                     public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Attribute> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, Attribute>();
                     protected void*[] __OriginalVTables;
 
@@ -11418,7 +11526,7 @@ namespace CppSharp
                         __Instance = Marshal.AllocHGlobal(48);
                         __ownsNativeInstance = true;
                         NativeToManagedMap[__Instance] = this;
-                        Internal.ctor_0(__Instance);
+                        Internal.ctor_0((__Instance + __PointerAdjustment));
                     }
 
                     public Attribute(CppSharp.Parser.AST.HTMLStartTagComment.Attribute _0)
@@ -11427,7 +11535,7 @@ namespace CppSharp
                         __ownsNativeInstance = true;
                         NativeToManagedMap[__Instance] = this;
                         var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                        Internal.cctor_2(__Instance, arg0);
+                        Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                     }
 
                     public void Dispose()
@@ -11441,22 +11549,23 @@ namespace CppSharp
                             throw new global::System.InvalidOperationException("Managed instances owned by native code cannot be disposed of.");
                         CppSharp.Parser.AST.HTMLStartTagComment.Attribute __dummy;
                         NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                        Internal.dtor_0(__Instance, 0);
-                        Marshal.FreeHGlobal(__Instance);
+                        Internal.dtor_0((__Instance + __PointerAdjustment), 0);
+                        if (__ownsNativeInstance)
+                            Marshal.FreeHGlobal(__Instance);
                     }
 
                     public string Name
                     {
                         get
                         {
-                            var __ret = Internal.getName_0(__Instance);
+                            var __ret = Internal.getName_0((__Instance + __PointerAdjustment));
                             return Marshal.PtrToStringAnsi(__ret);
                         }
 
                         set
                         {
                             var arg0 = Marshal.StringToHGlobalAnsi(value);
-                            Internal.setName_0(__Instance, arg0);
+                            Internal.setName_0((__Instance + __PointerAdjustment), arg0);
                             Marshal.FreeHGlobal(arg0);
                         }
                     }
@@ -11465,14 +11574,14 @@ namespace CppSharp
                     {
                         get
                         {
-                            var __ret = Internal.getValue_0(__Instance);
+                            var __ret = Internal.getValue_0((__Instance + __PointerAdjustment));
                             return Marshal.PtrToStringAnsi(__ret);
                         }
 
                         set
                         {
                             var arg0 = Marshal.StringToHGlobalAnsi(value);
-                            Internal.setValue_0(__Instance, arg0);
+                            Internal.setValue_0((__Instance + __PointerAdjustment), arg0);
                             Marshal.FreeHGlobal(arg0);
                         }
                     }
@@ -11505,6 +11614,7 @@ namespace CppSharp
                 protected HTMLStartTagComment(HTMLStartTagComment.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.HTMLTagComment.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -11516,7 +11626,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(40);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public HTMLStartTagComment(CppSharp.Parser.AST.HTMLStartTagComment _0)
@@ -11526,39 +11636,39 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public CppSharp.Parser.AST.HTMLStartTagComment.Attribute getAttributes(uint i)
                 {
                     var __ret = new CppSharp.Parser.AST.HTMLStartTagComment.Attribute.Internal();
-                    Internal.getAttributes_0(__Instance, new IntPtr(&__ret), i);
+                    Internal.getAttributes_0((__Instance + __PointerAdjustment), new IntPtr(&__ret), i);
                     return CppSharp.Parser.AST.HTMLStartTagComment.Attribute.__CreateInstance(__ret);
                 }
 
                 public void addAttributes(CppSharp.Parser.AST.HTMLStartTagComment.Attribute s)
                 {
                     var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
-                    Internal.addAttributes_0(__Instance, arg0);
+                    Internal.addAttributes_0((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public void clearAttributes()
                 {
-                    Internal.clearAttributes_0(__Instance);
+                    Internal.clearAttributes_0((__Instance + __PointerAdjustment));
                 }
 
                 public string TagName
                 {
                     get
                     {
-                        var __ret = Internal.getTagName_0(__Instance);
+                        var __ret = Internal.getTagName_0((__Instance + __PointerAdjustment));
                         return Marshal.PtrToStringAnsi(__ret);
                     }
 
                     set
                     {
                         var arg0 = Marshal.StringToHGlobalAnsi(value);
-                        Internal.setTagName_0(__Instance, arg0);
+                        Internal.setTagName_0((__Instance + __PointerAdjustment), arg0);
                         Marshal.FreeHGlobal(arg0);
                     }
                 }
@@ -11567,7 +11677,7 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = Internal.getAttributesCount_0(__Instance);
+                        var __ret = Internal.getAttributesCount_0((__Instance + __PointerAdjustment));
                         return __ret;
                     }
                 }
@@ -11634,6 +11744,7 @@ namespace CppSharp
                 protected HTMLEndTagComment(HTMLEndTagComment.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.HTMLTagComment.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -11645,7 +11756,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(28);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public HTMLEndTagComment(CppSharp.Parser.AST.HTMLEndTagComment _0)
@@ -11655,21 +11766,21 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public string TagName
                 {
                     get
                     {
-                        var __ret = Internal.getTagName_0(__Instance);
+                        var __ret = Internal.getTagName_0((__Instance + __PointerAdjustment));
                         return Marshal.PtrToStringAnsi(__ret);
                     }
 
                     set
                     {
                         var arg0 = Marshal.StringToHGlobalAnsi(value);
-                        Internal.setTagName_0(__Instance, arg0);
+                        Internal.setTagName_0((__Instance + __PointerAdjustment), arg0);
                         Marshal.FreeHGlobal(arg0);
                     }
                 }
@@ -11736,6 +11847,7 @@ namespace CppSharp
                 protected TextComment(TextComment.Internal* native, bool skipVTables = false)
                     : base((CppSharp.Parser.AST.InlineContentComment.Internal*) null)
                 {
+                    __PointerAdjustment = 0;
                     if (native == null)
                         return;
                     __Instance = new global::System.IntPtr(native);
@@ -11747,7 +11859,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(28);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public TextComment(CppSharp.Parser.AST.TextComment _0)
@@ -11757,21 +11869,21 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public string Text
                 {
                     get
                     {
-                        var __ret = Internal.getText_0(__Instance);
+                        var __ret = Internal.getText_0((__Instance + __PointerAdjustment));
                         return Marshal.PtrToStringAnsi(__ret);
                     }
 
                     set
                     {
                         var arg0 = Marshal.StringToHGlobalAnsi(value);
-                        Internal.setText_0(__Instance, arg0);
+                        Internal.setText_0((__Instance + __PointerAdjustment), arg0);
                         Marshal.FreeHGlobal(arg0);
                     }
                 }
@@ -11825,6 +11937,8 @@ namespace CppSharp
                 }
 
                 public global::System.IntPtr __Instance { get; protected set; }
+
+                protected int __PointerAdjustment;
                 public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, RawComment> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, RawComment>();
                 protected void*[] __OriginalVTables;
 
@@ -11866,7 +11980,7 @@ namespace CppSharp
                     __Instance = Marshal.AllocHGlobal(56);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
-                    Internal.ctor_0(__Instance);
+                    Internal.ctor_0((__Instance + __PointerAdjustment));
                 }
 
                 public RawComment(CppSharp.Parser.AST.RawComment _0)
@@ -11875,7 +11989,7 @@ namespace CppSharp
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                    Internal.cctor_2(__Instance, arg0);
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
                 public void Dispose()
@@ -11889,22 +12003,23 @@ namespace CppSharp
                         throw new global::System.InvalidOperationException("Managed instances owned by native code cannot be disposed of.");
                     CppSharp.Parser.AST.RawComment __dummy;
                     NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                    Internal.dtor_0(__Instance, 0);
-                    Marshal.FreeHGlobal(__Instance);
+                    Internal.dtor_0((__Instance + __PointerAdjustment), 0);
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public string Text
                 {
                     get
                     {
-                        var __ret = Internal.getText_0(__Instance);
+                        var __ret = Internal.getText_0((__Instance + __PointerAdjustment));
                         return Marshal.PtrToStringAnsi(__ret);
                     }
 
                     set
                     {
                         var arg0 = Marshal.StringToHGlobalAnsi(value);
-                        Internal.setText_0(__Instance, arg0);
+                        Internal.setText_0((__Instance + __PointerAdjustment), arg0);
                         Marshal.FreeHGlobal(arg0);
                     }
                 }
@@ -11913,14 +12028,14 @@ namespace CppSharp
                 {
                     get
                     {
-                        var __ret = Internal.getBriefText_0(__Instance);
+                        var __ret = Internal.getBriefText_0((__Instance + __PointerAdjustment));
                         return Marshal.PtrToStringAnsi(__ret);
                     }
 
                     set
                     {
                         var arg0 = Marshal.StringToHGlobalAnsi(value);
-                        Internal.setBriefText_0(__Instance, arg0);
+                        Internal.setBriefText_0((__Instance + __PointerAdjustment), arg0);
                         Marshal.FreeHGlobal(arg0);
                     }
                 }

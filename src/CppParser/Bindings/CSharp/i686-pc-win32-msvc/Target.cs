@@ -171,6 +171,8 @@ namespace CppSharp
             }
 
             public global::System.IntPtr __Instance { get; protected set; }
+
+            protected int __PointerAdjustment;
             public static readonly System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ParserTargetInfo> NativeToManagedMap = new System.Collections.Concurrent.ConcurrentDictionary<IntPtr, ParserTargetInfo>();
             protected void*[] __OriginalVTables;
 
@@ -212,7 +214,7 @@ namespace CppSharp
                 __Instance = Marshal.AllocHGlobal(176);
                 __ownsNativeInstance = true;
                 NativeToManagedMap[__Instance] = this;
-                Internal.ctor_0(__Instance);
+                Internal.ctor_0((__Instance + __PointerAdjustment));
             }
 
             public ParserTargetInfo(CppSharp.Parser.ParserTargetInfo _0)
@@ -221,7 +223,7 @@ namespace CppSharp
                 __ownsNativeInstance = true;
                 NativeToManagedMap[__Instance] = this;
                 var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
-                Internal.cctor_2(__Instance, arg0);
+                Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
             }
 
             public void Dispose()
@@ -235,22 +237,23 @@ namespace CppSharp
                     throw new global::System.InvalidOperationException("Managed instances owned by native code cannot be disposed of.");
                 CppSharp.Parser.ParserTargetInfo __dummy;
                 NativeToManagedMap.TryRemove(__Instance, out __dummy);
-                Internal.dtor_0(__Instance, 0);
-                Marshal.FreeHGlobal(__Instance);
+                Internal.dtor_0((__Instance + __PointerAdjustment), 0);
+                if (__ownsNativeInstance)
+                    Marshal.FreeHGlobal(__Instance);
             }
 
             public string ABI
             {
                 get
                 {
-                    var __ret = Internal.getABI_0(__Instance);
+                    var __ret = Internal.getABI_0((__Instance + __PointerAdjustment));
                     return Marshal.PtrToStringAnsi(__ret);
                 }
 
                 set
                 {
                     var arg0 = Marshal.StringToHGlobalAnsi(value);
-                    Internal.setABI_0(__Instance, arg0);
+                    Internal.setABI_0((__Instance + __PointerAdjustment), arg0);
                     Marshal.FreeHGlobal(arg0);
                 }
             }

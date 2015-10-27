@@ -37,23 +37,23 @@ namespace CppSharp
             private SourceLocation.Internal __instance;
             public SourceLocation.Internal __Instance { get { return __instance; } }
 
-            public static SourceLocation __CreateInstance(global::System.IntPtr native)
+            public static SourceLocation __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
             {
-                return new SourceLocation((SourceLocation.Internal*) native);
+                return new SourceLocation((SourceLocation.Internal*) native, skipVTables);
             }
 
-            public static SourceLocation __CreateInstance(SourceLocation.Internal native)
+            public static SourceLocation __CreateInstance(SourceLocation.Internal native, bool skipVTables = false)
             {
-                return new SourceLocation(native);
+                return new SourceLocation(native, skipVTables);
             }
 
-            private SourceLocation(SourceLocation.Internal native)
+            private SourceLocation(SourceLocation.Internal native, bool skipVTables = false)
                 : this()
             {
                 __instance = native;
             }
 
-            private SourceLocation(SourceLocation.Internal* native, bool isInternalImpl = false) : this()
+            private SourceLocation(SourceLocation.Internal* native, bool skipVTables = false) : this()
             {
                 __instance = *native;
             }
