@@ -589,7 +589,7 @@ namespace CppSharp.Generators.CSharp
             return GetNestedQualifiedName(@enum);
         }
 
-        static private string GetNestedQualifiedName(Declaration decl)
+        private string GetNestedQualifiedName(Declaration decl)
         {
             var names = new List<string> { decl.Name };
 
@@ -603,6 +603,8 @@ namespace CppSharp.Generators.CSharp
             }
 
             names.Reverse();
+            if (names[0] == driver.Options.OutputNamespace)
+                names.RemoveAt(0);
             return string.Join(".", names);
         }
 

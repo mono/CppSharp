@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CppSharp.AST;
@@ -56,28 +55,10 @@ namespace CppSharp.Generators.CSharp
         public CSharpMarshalNativeToManagedPrinter(CSharpMarshalContext context)
             : base(context)
         {
+            typePrinter = new CSharpTypePrinter(context.Driver);
         }
 
         public bool MarshalsParameter { get; set; }
-
-        public static string QualifiedIdentifier(Declaration decl)
-        {
-            var names = new List<string> { decl.Name };
-
-            var ctx = decl.Namespace;
-            while (ctx != null)
-            {
-                if (!string.IsNullOrWhiteSpace(ctx.Name))
-                    names.Add(ctx.Name);
-                ctx = ctx.Namespace;
-            }
-
-            //if (Options.GenerateLibraryNamespace)
-            //    names.Add(Options.OutputNamespace);
-
-            names.Reverse();
-            return string.Join(".", names);
-        }
 
         public override bool VisitType(Type type, TypeQualifiers quals)
         {
@@ -269,10 +250,10 @@ namespace CppSharp.Generators.CSharp
             Type returnType = Context.ReturnType.Type.Desugar();
 
             // if the class is an abstract impl, use the original for the object map
-            var qualifiedClass = QualifiedIdentifier(originalClass);
+            var qualifiedClass = originalClass.Visit(typePrinter);
 
             if (returnType.IsAddress())
-                Context.Return.Write(HandleReturnedPointer(@class, qualifiedClass));
+                Context.Return.Write(HandleReturnedPointer(@class, qualifiedClass.Type));
             else
                 Context.Return.Write("{0}.{1}({2})", qualifiedClass, Helpers.CreateInstanceIdentifier, Context.ReturnVarName);
 
@@ -318,7 +299,7 @@ namespace CppSharp.Generators.CSharp
         {
             var originalClass = @class.OriginalClass ?? @class;
             var ret = Generator.GeneratedIdentifier("result") + Context.ParameterIndex;
-            var qualifiedIdentifier = QualifiedIdentifier(@class);
+            var qualifiedIdentifier = @class.Visit(typePrinter);
             Context.SupportBefore.WriteLine("{0} {1};", qualifiedIdentifier, ret);
             Context.SupportBefore.WriteLine("if ({0} == IntPtr.Zero) {1} = {2};", Context.ReturnVarName, ret,
                 originalClass.IsRefType ? "null" : string.Format("new {0}()", qualifiedClass));
@@ -351,6 +332,8 @@ namespace CppSharp.Generators.CSharp
             }
             return ret;
         }
+
+        private readonly CSharpTypePrinter typePrinter;
     }
 
     public class CSharpMarshalManagedToNativePrinter : CSharpMarshalPrinter
@@ -358,6 +341,7 @@ namespace CppSharp.Generators.CSharp
         public CSharpMarshalManagedToNativePrinter(CSharpMarshalContext context)
             : base(context)
         {
+            typePrinter = new CSharpTypePrinter(context.Driver);
         }
 
         public override bool VisitType(Type type, TypeQualifiers quals)
@@ -666,8 +650,7 @@ namespace CppSharp.Generators.CSharp
                 return;
             }
 
-            var qualifiedIdentifier = CSharpMarshalNativeToManagedPrinter.QualifiedIdentifier(
-                @class.OriginalClass ?? @class);
+            var qualifiedIdentifier = (@class.OriginalClass ?? @class).Visit(typePrinter);
             Context.Return.Write(
                 "ReferenceEquals({0}, null) ? new {1}.Internal() : *({1}.Internal*) ({0}.{2})", param,
                 qualifiedIdentifier, Helpers.InstanceIdentifier);
@@ -721,6 +704,8 @@ namespace CppSharp.Generators.CSharp
         {
             return template.TemplatedFunction.Visit(this);
         }
+
+        private readonly CSharpTypePrinter typePrinter;
     }
 
     public static class CSharpMarshalExtensions

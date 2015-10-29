@@ -23,6 +23,8 @@ namespace CppSharp.Passes
             }
             else if (unit.GenerationKind == GenerationKind.Generate)
             {
+                if (Driver.Options.IsCSharpGenerator)
+                    unit.Name = Driver.Options.OutputNamespace;
                 rootNamespaceRenames.Add(fileName, Driver.Options.OutputNamespace);
             }
             return true;

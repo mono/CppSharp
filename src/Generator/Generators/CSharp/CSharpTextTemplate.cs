@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Web.Util;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
+using CppSharp.Passes;
 using CppSharp.Types;
 using CppSharp.Utils;
 using Attribute = CppSharp.AST.Attribute;
@@ -110,42 +111,6 @@ namespace CppSharp.Generators.CSharp
         }
 
         #region Identifiers
-
-        // Takes a declaration (type, class etc.) that is referenced from a context, and the context.
-        // If the referenced name needs a qualification in the context, add it. Otherwise, return just the name.
-        private static string QualifiedIdentifierIfNeeded(Declaration reference)
-        {
-            var refNames = new Stack<string>();
-
-            var refCtx = reference;
-            while (refCtx != null)
-            {
-                if (!string.IsNullOrWhiteSpace(refCtx.Name))
-                    refNames.Push(refCtx.Name);
-                refCtx = refCtx.Namespace;
-            }
-
-            return string.Join(".", refNames);
-        }
-
-        public string QualifiedIdentifier(Declaration decl)
-        {
-            var names = new List<string> { decl.Name };
-
-            var ctx = decl.Namespace;
-            while (ctx != null)
-            {
-                if (!string.IsNullOrWhiteSpace(ctx.Name))
-                    names.Add(ctx.Name);
-                ctx = ctx.Namespace;
-            }
-
-            if (decl.GenerationKind == GenerationKind.Generate && Options.GenerateLibraryNamespace)
-                names.Add(Options.OutputNamespace);
-
-            names.Reverse();
-            return string.Join(".", names);
-        }
 
         public static string GeneratedIdentifier(string id)
         {
@@ -597,72 +562,6 @@ namespace CppSharp.Generators.CSharp
             return functions;
         }
 
-        private IEnumerable<Parameter> GatherInternalParams(Function function, bool useOriginalParamNames = true)
-        {
-            var @params = new List<Parameter>();
-
-            var method = function as Method;
-            var isInstanceMethod = method != null && !method.IsStatic;
-
-            var pointer = new QualifiedType(new PointerType(new QualifiedType(new BuiltinType(PrimitiveType.Void))));
-
-            if (isInstanceMethod && Options.IsMicrosoftAbi)
-            {
-                @params.Add(new Parameter
-                {
-                    QualifiedType = pointer,
-                    Name = "instance"
-                });
-            }
-
-            if (!function.HasIndirectReturnTypeParameter &&
-                isInstanceMethod && Options.IsItaniumLikeAbi)
-            {
-                @params.Add(new Parameter
-                {
-                    QualifiedType = pointer,
-                    Name = "instance"
-                });
-            }
-
-            var i = 0;
-            foreach (var param in function.Parameters.Where(p => p.Kind != ParameterKind.OperatorParameter))
-            {
-                @params.Add(new Parameter
-                {
-                    QualifiedType = param.QualifiedType,
-                    Kind = param.Kind,
-                    Usage = param.Usage,
-                    Name = useOriginalParamNames ? param.Name : "arg" + ++i
-                });
-
-                if (param.Kind == ParameterKind.IndirectReturnType &&
-                    isInstanceMethod && Options.IsItaniumLikeAbi)
-                {
-                    @params.Add(new Parameter
-                    {
-                        QualifiedType = pointer,
-                        Name = "instance"
-                    });
-                }
-            }
-
-            if (method != null && method.IsConstructor)
-            {
-                var @class = (Class) method.Namespace;
-                if (Options.IsMicrosoftAbi && @class.Layout.HasVirtualBases)
-                {
-                    @params.Add(new Parameter
-                    {
-                        QualifiedType = new QualifiedType(new BuiltinType(PrimitiveType.Int)),
-                        Name = GeneratedIdentifier("forBases")
-                    });
-                }
-            }
-
-            return @params;
-        }
-
         private IEnumerable<string> GatherInternalParams(Function function, out CSharpTypePrinterResult retType)
         {
             TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
@@ -670,7 +569,7 @@ namespace CppSharp.Generators.CSharp
             var retParam = new Parameter { QualifiedType = function.ReturnType };
             retType = retParam.CSharpType(TypePrinter);
 
-            var @params = GatherInternalParams(function).Select(p =>
+            var @params = function.GatherInternalParams(Driver.Options.IsItaniumLikeAbi).Select(p =>
                 string.Format("{0} {1}", p.CSharpType(TypePrinter), p.Name)).ToList();
 
             TypePrinter.PopContext();
@@ -722,7 +621,7 @@ namespace CppSharp.Generators.CSharp
                 bases.AddRange(
                     from @base in @class.Bases
                     where @base.IsClass
-                    select QualifiedIdentifierIfNeeded(@base.Class));
+                    select @base.Class.Visit(TypePrinter).Type);
             }
 
             if (@class.IsGenerated)
@@ -1602,18 +1501,14 @@ namespace CppSharp.Generators.CSharp
 
                 WriteLine("// {0}", cleanSig);
             }
-            WriteLine("[SuppressUnmanagedCodeSecurity]");
-            WriteLine("[UnmanagedFunctionPointerAttribute(global::System.Runtime.InteropServices.CallingConvention.{0})]",
-                method.CallingConvention.ToInteropCallConv());
 
             CSharpTypePrinterResult retType;
             var @params = GatherInternalParams(method, out retType);
 
             var vTableMethodDelegateName = GetVTableMethodDelegateName(method);
-            WriteLine("internal delegate {0} {1}({2});", retType, vTableMethodDelegateName,
-                string.Join(", ", @params));
 
-            WriteLine("private static {0} {0}Instance;", vTableMethodDelegateName);
+            WriteLine("private static {0} {1}Instance;", DelegatesPass.Delegates[method].Visit(TypePrinter),
+                vTableMethodDelegateName);
             NewLine();
 
             WriteLine("private static {0} {1}Hook({2})", retType, vTableMethodDelegateName,
@@ -1866,7 +1761,7 @@ namespace CppSharp.Generators.CSharp
 
                 // The local var must be of the exact type in the object map because of TryRemove
                 WriteLine("{0} {1};",
-                    QualifiedIdentifierIfNeeded(@interface ?? (@base.IsAbstractImpl ? @base.BaseClass : @base)),
+                    (@interface ?? (@base.IsAbstractImpl ? @base.BaseClass : @base)).Visit(TypePrinter),
                     Helpers.DummyIdentifier);
                 WriteLine("NativeToManagedMap.TryRemove({0}, out {1});",
                     Helpers.InstanceIdentifier, Helpers.DummyIdentifier);
@@ -1943,7 +1838,7 @@ namespace CppSharp.Generators.CSharp
 
             var hasBaseClass = @class.HasBaseClass && @class.BaseClass.IsRefType;
             if (hasBaseClass)
-                WriteLineIndent(": base(({0}.Internal*) null)", QualifiedIdentifierIfNeeded(@class.BaseClass));
+                WriteLineIndent(": base(({0}.Internal*) null)", @class.BaseClass.Visit(TypePrinter));
 
             WriteStartBraceIndent();
 
@@ -2013,7 +1908,7 @@ namespace CppSharp.Generators.CSharp
                     // Allocate memory for a new native object and call the ctor.
                     WriteLine("var ret = Marshal.AllocHGlobal({0});", @class.Layout.Size);
                     WriteLine("{0}.Internal.{1}(ret, new global::System.IntPtr(&native));",
-                        QualifiedIdentifierIfNeeded(@class), GetFunctionNativeIdentifier(copyCtorMethod));
+                        @class.Visit(TypePrinter), GetFunctionNativeIdentifier(copyCtorMethod));
                     WriteLine("return ({0}.Internal*) ret;", className);
                 }
                 else
@@ -2391,8 +2286,8 @@ namespace CppSharp.Generators.CSharp
             delegateId = Generator.GeneratedIdentifier(@delegate);
 
             virtualCallBuilder.AppendFormat(
-                "var {1} = ({0}) Marshal.GetDelegateForFunctionPointer(new IntPtr({2}), typeof({0}));",
-                @delegate, delegateId, Helpers.SlotIdentifier);
+                "var {0} = ({1}) Marshal.GetDelegateForFunctionPointer(new IntPtr({2}), typeof({1}));",
+                delegateId, DelegatesPass.Delegates[function].Visit(TypePrinter), Helpers.SlotIdentifier);
 
             virtualCallBuilder.AppendLine();
             return virtualCallBuilder.ToString();
@@ -2533,7 +2428,7 @@ namespace CppSharp.Generators.CSharp
                 if (construct == null)
                 {
                     WriteLine("var {0} = new {1}.Internal();", Helpers.ReturnIdentifier,
-                        QualifiedIdentifierIfNeeded(retClass.OriginalClass ?? retClass));
+                        (retClass.OriginalClass ?? retClass).Visit(TypePrinter));
                 }
                 else
                 {
@@ -2777,8 +2672,7 @@ namespace CppSharp.Generators.CSharp
                 Class @class;
                 if ((paramType.GetFinalPointee() ?? paramType).Desugar().TryGetClass(out @class))
                 {
-                    var qualifiedIdentifier = CSharpMarshalNativeToManagedPrinter.QualifiedIdentifier(
-                        @class.OriginalClass ?? @class);
+                    var qualifiedIdentifier = (@class.OriginalClass ?? @class).Visit(TypePrinter);
                     WriteLine("{0} = new {1}();", name, qualifiedIdentifier);
                 }
             }
@@ -2865,7 +2759,8 @@ namespace CppSharp.Generators.CSharp
                 var interopCallConv = callingConvention.ToInteropCallConv();
                 if (interopCallConv != System.Runtime.InteropServices.CallingConvention.Winapi)
                     WriteLine(
-                        "[UnmanagedFunctionPointerAttribute(global::System.Runtime.InteropServices.CallingConvention.{0})]",
+                        "[SuppressUnmanagedCodeSecurity, " +
+                        "UnmanagedFunctionPointerAttribute(global::System.Runtime.InteropServices.CallingConvention.{0})]",
                         interopCallConv);
                 WriteLine("{0}unsafe {1};",
                     Helpers.GetAccess(typedef.Access),
