@@ -319,6 +319,11 @@ const AbstractFoo& ReturnsAbstractFoo::getFoo()
     return i;
 }
 
+Ex2* DerivedException::clone()
+{
+    return 0;
+}
+
 void DefaultParameters::Foo(int a, int b)
 {
 }

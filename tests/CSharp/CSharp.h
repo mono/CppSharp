@@ -828,3 +828,11 @@ public:
     MultipleInheritanceFieldOffsets();
     int own;
 };
+
+class DLL_API VirtualDtorAddedInDerived : public Foo
+{
+public:
+    VirtualDtorAddedInDerived();
+    virtual ~VirtualDtorAddedInDerived();
+    static bool dtorCalled;
+};

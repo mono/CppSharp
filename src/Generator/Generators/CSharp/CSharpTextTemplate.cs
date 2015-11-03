@@ -1694,8 +1694,11 @@ namespace CppSharp.Generators.CSharp
             {
                 GenerateClassFinalizer(@class);
 
-                // Only root bases need a Dispose
-                if (ShouldGenerateClassNativeField(@class))
+                // ensure any virtual dtor in the chain is called
+                var dtor = @class.Destructors.FirstOrDefault(d => d.Access != AccessSpecifier.Private && d.IsVirtual);
+                var baseDtor = @class.BaseClass == null ? null :
+                    @class.BaseClass.Destructors.FirstOrDefault(d => !d.IsVirtual);
+                if (ShouldGenerateClassNativeField(@class) || (dtor != null && baseDtor != null))
                     GenerateDisposeMethods(@class);
             }
         }

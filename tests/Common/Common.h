@@ -231,7 +231,7 @@ struct DLL_API Exception
 
 struct DLL_API DerivedException : public Exception
 {
-    virtual Ex2* clone() override { return 0; }
+    virtual Ex2* clone() override;
 };
 
 // Tests for ambiguous call to native functions with default parameters
@@ -920,7 +920,7 @@ class AbstractTemplate
 {
 public:
     AbstractTemplate();
-    void abstractFunction() = 0;
+    virtual void abstractFunction() = 0;
 };
 
 template <typename T>

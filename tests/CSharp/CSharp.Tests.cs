@@ -495,4 +495,13 @@ public class CSharpTests : GeneratorTestFixture
             Assert.That(multipleInheritanceFieldOffsets.Own, Is.EqualTo(3));
         }
     }
+
+    [Test]
+    public void TestVirtualDtorAddedInDerived()
+    {
+        using (new VirtualDtorAddedInDerived())
+        {
+        }
+        Assert.IsTrue(VirtualDtorAddedInDerived.DtorCalled);
+    }
 }

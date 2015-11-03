@@ -906,3 +906,14 @@ MultipleInheritanceFieldOffsetsPrimaryBase::MultipleInheritanceFieldOffsetsPrima
 MultipleInheritanceFieldOffsets::MultipleInheritanceFieldOffsets() : own(3)
 {
 }
+
+VirtualDtorAddedInDerived::VirtualDtorAddedInDerived()
+{
+}
+
+VirtualDtorAddedInDerived::~VirtualDtorAddedInDerived()
+{
+    dtorCalled = true;
+}
+
+bool VirtualDtorAddedInDerived::dtorCalled = false;
