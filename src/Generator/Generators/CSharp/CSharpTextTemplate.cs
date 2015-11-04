@@ -513,7 +513,10 @@ namespace CppSharp.Generators.CSharp
                     return;
 
                 if (method.IsProxy ||
-                    (method.IsVirtual && !method.IsOperator && !(method.IsDestructor && @class.IsAbstract)))
+                    (method.IsVirtual && !method.IsOperator &&
+                    // virtual destructors in abstract classes may lack a pointer in the v-table
+                    // so they have to be called by symbol and therefore not ignored
+                    !(method.IsDestructor && @class.IsAbstract)))
                     return;
 
                 functions.Add(method);
@@ -1700,7 +1703,11 @@ namespace CppSharp.Generators.CSharp
                 var baseDtor = @class.BaseClass == null ? null :
                     @class.BaseClass.Destructors.FirstOrDefault(d => !d.IsVirtual);
                 if (ShouldGenerateClassNativeField(@class) || (dtor != null && baseDtor != null) ||
+                    // virtual destructors in abstract classes may lack a pointer in the v-table
+                    // so they have to be called by symbol; thus we need an explicit Dispose override
                     @class.IsAbstract ||
+                    // if the base type is abstract and the current type not,
+                    // we need the regular v-table call so we have to override Dispose again
                     (!@class.IsAbstractImpl && @class.BaseClass != null && @class.BaseClass.IsAbstract))
                     GenerateDisposeMethods(@class);
             }
