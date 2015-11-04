@@ -512,7 +512,8 @@ namespace CppSharp.Generators.CSharp
                     method.SynthKind != FunctionSynthKind.AdjustedMethod)
                     return;
 
-                if (method.IsProxy || (method.IsVirtual && !method.IsOperator))
+                if (method.IsProxy ||
+                    (method.IsVirtual && !method.IsOperator && !(method.IsDestructor && @class.IsAbstract)))
                     return;
 
                 functions.Add(method);
@@ -1390,7 +1391,7 @@ namespace CppSharp.Generators.CSharp
         {
             if (method.IsDestructor)
             {
-                WriteLine("{0}.Dispose(false);", Helpers.TargetIdentifier);
+                WriteLine("{0}.DisposeImpl(false);", Helpers.TargetIdentifier);
                 return;
             }
 
@@ -1698,7 +1699,9 @@ namespace CppSharp.Generators.CSharp
                 var dtor = @class.Destructors.FirstOrDefault(d => d.Access != AccessSpecifier.Private && d.IsVirtual);
                 var baseDtor = @class.BaseClass == null ? null :
                     @class.BaseClass.Destructors.FirstOrDefault(d => !d.IsVirtual);
-                if (ShouldGenerateClassNativeField(@class) || (dtor != null && baseDtor != null))
+                if (ShouldGenerateClassNativeField(@class) || (dtor != null && baseDtor != null) ||
+                    @class.IsAbstract ||
+                    (!@class.IsAbstractImpl && @class.BaseClass != null && @class.BaseClass.IsAbstract))
                     GenerateDisposeMethods(@class);
             }
         }
@@ -1722,21 +1725,6 @@ namespace CppSharp.Generators.CSharp
         {
             var hasBaseClass = @class.HasBaseClass && @class.BaseClass.IsRefType;
 
-            // Generate the IDispose Dispose() method.
-            if (!hasBaseClass)
-            {
-                PushBlock(CSharpBlockKind.Method);
-                WriteLine("public void Dispose()");
-                WriteStartBraceIndent();
-
-                WriteLine("Dispose(disposing: true);");
-                if (Options.GenerateFinalizers)
-                    WriteLine("GC.SuppressFinalize(this);");
-
-                WriteCloseBraceIndent();
-                PopBlock(NewLineKind.BeforeNextBlock);
-            }
-
             // Generate Dispose(bool) method
             PushBlock(CSharpBlockKind.Method);
             if (@class.IsValueType)
@@ -1751,6 +1739,43 @@ namespace CppSharp.Generators.CSharp
 
             WriteLine("void Dispose(bool disposing)");
             WriteStartBraceIndent();
+
+            var dtor = @class.Destructors.FirstOrDefault();
+            if (dtor != null && dtor.Access != AccessSpecifier.Private &&
+                @class.HasNonTrivialDestructor && !dtor.IsPure)
+            {
+                NativeLibrary library;
+                if (!Options.CheckSymbols ||
+                    Driver.Symbols.FindLibraryBySymbol(dtor.Mangled, out library))
+                {
+                    if (dtor.IsVirtual && !@class.IsAbstract)
+                        GenerateVirtualFunctionCall(dtor, @class, true);
+                    else
+                        GenerateInternalFunctionCall(dtor);
+                }
+            }
+
+            WriteCloseBraceIndent();
+            PopBlock(NewLineKind.BeforeNextBlock);
+
+            if (hasBaseClass) return;
+
+            // Generate the IDispose Dispose() method.
+            PushBlock(CSharpBlockKind.Method);
+            WriteLine("public void Dispose()");
+            WriteStartBraceIndent();
+
+            WriteLine("DisposeImpl(disposing: true);");
+            if (Options.GenerateFinalizers)
+                WriteLine("GC.SuppressFinalize(this);");
+
+            WriteCloseBraceIndent();
+            PopBlock(NewLineKind.BeforeNextBlock);
+
+            PushBlock(CSharpBlockKind.Method);
+            WriteLine("protected void DisposeImpl(bool disposing)");
+            WriteStartBraceIndent();
+
             WriteLine("if (!{0} && disposing)", Helpers.OwnsNativeInstanceIdentifier);
             WriteLineIndent("throw new global::System.InvalidOperationException" +
                 "(\"Managed instances owned by native code cannot be disposed of.\");");
@@ -1780,20 +1805,7 @@ namespace CppSharp.Generators.CSharp
                 }
             }
 
-            var dtor = @class.Destructors.FirstOrDefault();
-            if (dtor != null && dtor.Access != AccessSpecifier.Private &&
-                @class.HasNonTrivialDestructor && !dtor.IsPure)
-            {
-                NativeLibrary library;
-                if (!Options.CheckSymbols ||
-                    Driver.Symbols.FindLibraryBySymbol(dtor.Mangled, out library))
-                {
-                    if (dtor.IsVirtual)
-                        GenerateVirtualFunctionCall(dtor, @class);
-                    else
-                        GenerateInternalFunctionCall(dtor);
-                }
-            }
+            WriteLine("Dispose(disposing: true);");
 
             WriteLine("if ({0})", Helpers.OwnsNativeInstanceIdentifier);
             WriteLineIndent("Marshal.FreeHGlobal({0});", Helpers.InstanceIdentifier);
@@ -2233,14 +2245,11 @@ namespace CppSharp.Generators.CSharp
 
         private static AccessSpecifier GetValidPropertyAccess(Property property)
         {
-            switch (property.Access)
-            {
-                case AccessSpecifier.Public:
-                    return AccessSpecifier.Public;
-                default:
-                    return property.IsOverride ?
-                        ((Class) property.Namespace).GetBaseProperty(property).Access : property.Access;
-            }
+            if (property.Access == AccessSpecifier.Public)
+                return AccessSpecifier.Public;
+            return property.IsOverride
+                ? ((Class) property.Namespace).GetBaseProperty(property).Access
+                : property.Access;
         }
 
         private void GenerateVirtualPropertyCall(Function method, Class @class,
@@ -2250,7 +2259,8 @@ namespace CppSharp.Generators.CSharp
                 method.SynthKind != FunctionSynthKind.AbstractImplCall &&
                 @class.HasNonAbstractBaseProperty(property))
             {
-                WriteLine(parameters == null ? "return base.{0};" : "base.{0} = value;", property.Name);
+                WriteLine(parameters == null ?
+                    "return base.{0};" : "base.{0} = value;", property.Name);
             }
             else
             {
@@ -2260,9 +2270,10 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
-        private void GenerateVirtualFunctionCall(Method method, Class @class)
+        private void GenerateVirtualFunctionCall(Method method, Class @class,
+            bool forceVirtualCall = false)
         {
-            if (method.IsOverride && !method.IsPure &&
+            if (!forceVirtualCall && method.IsOverride && !method.IsPure &&
                 method.SynthKind != FunctionSynthKind.AbstractImplCall &&
                 @class.HasNonAbstractBaseMethod(method))
             {
@@ -2281,7 +2292,8 @@ namespace CppSharp.Generators.CSharp
         {
             var virtualCallBuilder = new StringBuilder();
             var i = VTables.GetVTableIndex(function.OriginalFunction ?? function, @class);
-            virtualCallBuilder.AppendFormat("var {0} = *(void**) ((IntPtr) __OriginalVTables[0] + {1} * {2});",
+            virtualCallBuilder.AppendFormat(
+                "var {0} = *(void**) ((IntPtr) __OriginalVTables[0] + {1} * {2});",
                 Helpers.SlotIdentifier, i, Driver.TargetInfo.PointerWidth / 8);
             virtualCallBuilder.AppendLine();
 

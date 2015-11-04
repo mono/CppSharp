@@ -555,5 +555,20 @@ public class CommonTests : GeneratorTestFixture
             Assert.That(hasProblematicFields.c, Is.EqualTo('a'));
         }
     }
+
+    [Test]
+    public void TestDisposingCustomDerivedFromVirtual()
+    {
+        using (new CustomDerivedFromVirtual())
+        {
+        }
+    }
+
+    private class CustomDerivedFromVirtual : AbstractWithVirtualDtor
+    {
+        public override void @abstract()
+        {
+        }
+    }
 }
  
