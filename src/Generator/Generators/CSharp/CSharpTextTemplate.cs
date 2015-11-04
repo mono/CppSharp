@@ -512,7 +512,11 @@ namespace CppSharp.Generators.CSharp
                     method.SynthKind != FunctionSynthKind.AdjustedMethod)
                     return;
 
-                if (method.IsProxy || (method.IsVirtual && !method.IsOperator))
+                if (method.IsProxy ||
+                    (method.IsVirtual && !method.IsOperator &&
+                    // virtual destructors in abstract classes may lack a pointer in the v-table
+                    // so they have to be called by symbol and therefore not ignored
+                    !(method.IsDestructor && @class.IsAbstract)))
                     return;
 
                 functions.Add(method);
@@ -797,7 +801,7 @@ namespace CppSharp.Generators.CSharp
 
                 var method = function as Method;
                 if (function.SynthKind == FunctionSynthKind.AbstractImplCall)
-                    GenerateVirtualPropertyCall(function, @class.BaseClass, property,
+                    GenerateVirtualPropertyCall(method, @class.BaseClass, property,
                         new List<Parameter> { param });
                 else if (method != null && method.IsVirtual)
                     GenerateVirtualPropertyCall(method, @class, property, new List<Parameter> { param });
@@ -1698,7 +1702,10 @@ namespace CppSharp.Generators.CSharp
                 var dtor = @class.Destructors.FirstOrDefault(d => d.Access != AccessSpecifier.Private && d.IsVirtual);
                 var baseDtor = @class.BaseClass == null ? null :
                     @class.BaseClass.Destructors.FirstOrDefault(d => !d.IsVirtual);
-                if (ShouldGenerateClassNativeField(@class) || (dtor != null && baseDtor != null))
+                if (ShouldGenerateClassNativeField(@class) || (dtor != null && baseDtor != null) ||
+                    // virtual destructors in abstract classes may lack a pointer in the v-table
+                    // so they have to be called by symbol; thus we need an explicit Dispose override
+                    @class.IsAbstract)
                     GenerateDisposeMethods(@class);
             }
         }
@@ -1789,7 +1796,17 @@ namespace CppSharp.Generators.CSharp
                     Driver.Symbols.FindLibraryBySymbol(dtor.Mangled, out library))
                 {
                     if (dtor.IsVirtual)
-                        GenerateVirtualFunctionCall(dtor, @class);
+                    {
+                        GenerateVirtualFunctionCall(dtor, @class, true);
+                        if (@class.IsAbstract)
+                        {
+                            WriteCloseBraceIndent();
+                            WriteLine("else");
+                            PushIndent();
+                            GenerateInternalFunctionCall(dtor);
+                            PopIndent();   
+                        }
+                    }
                     else
                         GenerateInternalFunctionCall(dtor);
                 }
@@ -1848,7 +1865,8 @@ namespace CppSharp.Generators.CSharp
             if (@class.IsRefType)
             {
                 if (@class.HasBaseClass)
-                    WriteLine("{0} = {1};", Helpers.PointerAdjustmentIdentifier, ClassExtensions.ComputeNonVirtualBaseClassOffsetTo(@class, @class.BaseClass));
+                    WriteLine("{0} = {1};", Helpers.PointerAdjustmentIdentifier,
+                        @class.ComputeNonVirtualBaseClassOffsetTo(@class.BaseClass));
                 if (!@class.IsAbstractImpl)
                 {
                     WriteLine("if (native == null)");
@@ -2233,36 +2251,35 @@ namespace CppSharp.Generators.CSharp
 
         private static AccessSpecifier GetValidPropertyAccess(Property property)
         {
-            switch (property.Access)
-            {
-                case AccessSpecifier.Public:
-                    return AccessSpecifier.Public;
-                default:
-                    return property.IsOverride ?
-                        ((Class) property.Namespace).GetBaseProperty(property).Access : property.Access;
-            }
+            if (property.Access == AccessSpecifier.Public)
+                return AccessSpecifier.Public;
+            return property.IsOverride
+                ? ((Class) property.Namespace).GetBaseProperty(property).Access
+                : property.Access;
         }
 
-        private void GenerateVirtualPropertyCall(Function method, Class @class,
+        private void GenerateVirtualPropertyCall(Method method, Class @class,
             Property property, List<Parameter> parameters = null)
         {
             if (property.IsOverride && !property.IsPure &&
                 method.SynthKind != FunctionSynthKind.AbstractImplCall &&
                 @class.HasNonAbstractBaseProperty(property))
             {
-                WriteLine(parameters == null ? "return base.{0};" : "base.{0} = value;", property.Name);
+                WriteLine(parameters == null ?
+                    "return base.{0};" : "base.{0} = value;", property.Name);
             }
             else
             {
                 string delegateId;
-                Write(GetVirtualCallDelegate(method, @class, out delegateId));
+                GetVirtualCallDelegate(method, @class, out delegateId);
                 GenerateFunctionCall(delegateId, parameters ?? method.Parameters, method);
             }
         }
 
-        private void GenerateVirtualFunctionCall(Method method, Class @class)
+        private void GenerateVirtualFunctionCall(Method method, Class @class,
+            bool forceVirtualCall = false)
         {
-            if (method.IsOverride && !method.IsPure &&
+            if (!forceVirtualCall && method.IsOverride && !method.IsPure &&
                 method.SynthKind != FunctionSynthKind.AbstractImplCall &&
                 @class.HasNonAbstractBaseMethod(method))
             {
@@ -2271,29 +2288,28 @@ namespace CppSharp.Generators.CSharp
             else
             {
                 string delegateId;
-                Write(GetVirtualCallDelegate(method, @class, out delegateId));
+                GetVirtualCallDelegate(method, @class, out delegateId);
                 GenerateFunctionCall(delegateId, method.Parameters, method);
             }
         }
 
-        public string GetVirtualCallDelegate(Function function, Class @class,
+        public void GetVirtualCallDelegate(Method method, Class @class,
             out string delegateId)
         {
-            var virtualCallBuilder = new StringBuilder();
-            var i = VTables.GetVTableIndex(function.OriginalFunction ?? function, @class);
-            virtualCallBuilder.AppendFormat("var {0} = *(void**) ((IntPtr) __OriginalVTables[0] + {1} * {2});",
+            var i = VTables.GetVTableIndex(method.OriginalFunction ?? method, @class);
+            WriteLine("var {0} = *(void**) ((IntPtr) __OriginalVTables[0] + {1} * {2});",
                 Helpers.SlotIdentifier, i, Driver.TargetInfo.PointerWidth / 8);
-            virtualCallBuilder.AppendLine();
+            if (method.IsDestructor && @class.IsAbstract)
+            {
+                WriteLine("if ({0} != null)", Helpers.SlotIdentifier);
+                WriteStartBraceIndent();
+            }
 
-            var @delegate = GetVTableMethodDelegateName(function.OriginalFunction ?? function);
+            var @delegate = GetVTableMethodDelegateName(method.OriginalFunction ?? method);
             delegateId = Generator.GeneratedIdentifier(@delegate);
 
-            virtualCallBuilder.AppendFormat(
-                "var {0} = ({1}) Marshal.GetDelegateForFunctionPointer(new IntPtr({2}), typeof({1}));",
-                delegateId, DelegatesPass.Delegates[function].Visit(TypePrinter), Helpers.SlotIdentifier);
-
-            virtualCallBuilder.AppendLine();
-            return virtualCallBuilder.ToString();
+            WriteLine("var {0} = ({1}) Marshal.GetDelegateForFunctionPointer(new IntPtr({2}), typeof({1}));",
+                delegateId, DelegatesPass.Delegates[method].Visit(TypePrinter), Helpers.SlotIdentifier);
         }
 
         private void GenerateOperator(Method method)

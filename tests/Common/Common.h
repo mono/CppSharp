@@ -933,3 +933,11 @@ AbstractTemplate<T>::AbstractTemplate()
 and therefore %HashBase pointers should never be used.
 */
 class DLL_API TestComments {};
+
+class DLL_API AbstractWithVirtualDtor
+{
+public:
+    AbstractWithVirtualDtor();
+    virtual ~AbstractWithVirtualDtor();
+    virtual void abstract() = 0;
+};
