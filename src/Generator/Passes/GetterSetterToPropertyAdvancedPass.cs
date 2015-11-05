@@ -147,7 +147,8 @@ namespace CppSharp.Passes
                             : AccessSpecifier.Protected,
                         Name = GetPropertyName(getter.Name),
                         Namespace = type,
-                        QualifiedType = getter.OriginalReturnType
+                        QualifiedType = getter.OriginalReturnType,
+                        OriginalNamespace = getter.OriginalNamespace
                     };
                     if (getter.IsOverride || (setter != null && setter.IsOverride))
                     {

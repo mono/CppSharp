@@ -2263,7 +2263,7 @@ namespace CppSharp.Generators.CSharp
         {
             if (property.IsOverride && !property.IsPure &&
                 method.SynthKind != FunctionSynthKind.AbstractImplCall &&
-                @class.HasNonAbstractBaseProperty(property))
+                @class.HasNonAbstractBasePropertyInPrimaryBase(property))
             {
                 WriteLine(parameters == null ?
                     "return base.{0};" : "base.{0} = value;", property.Name);
@@ -2281,7 +2281,7 @@ namespace CppSharp.Generators.CSharp
         {
             if (!forceVirtualCall && method.IsOverride && !method.IsPure &&
                 method.SynthKind != FunctionSynthKind.AbstractImplCall &&
-                @class.HasNonAbstractBaseMethod(method))
+                @class.HasNonAbstractBaseMethodInPrimaryBase(method))
             {
                 GenerateManagedCall(method, true);
             }
