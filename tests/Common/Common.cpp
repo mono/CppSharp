@@ -555,11 +555,3 @@ int OverridesNonDirectVirtual::retInt()
 {
     return 3;
 }
-
-AbstractWithVirtualDtor::AbstractWithVirtualDtor()
-{
-}
-
-AbstractWithVirtualDtor::~AbstractWithVirtualDtor()
-{
-}
