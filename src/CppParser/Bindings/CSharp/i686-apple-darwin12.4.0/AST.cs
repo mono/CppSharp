@@ -136,11 +136,12 @@ namespace CppSharp
             {
                 Any = 0,
                 BinaryOperator = 1,
-                DeclRefExprClass = 2,
-                CXXConstructExprClass = 3,
-                CXXOperatorCallExpr = 4,
-                ImplicitCastExpr = 5,
-                ExplicitCastExpr = 6
+                CallExprClass = 2,
+                DeclRefExprClass = 3,
+                CXXConstructExprClass = 4,
+                CXXOperatorCallExpr = 5,
+                ImplicitCastExpr = 6,
+                ExplicitCastExpr = 7
             }
 
             public enum TemplateSpecializationKind
@@ -4884,6 +4885,123 @@ namespace CppSharp
                     set
                     {
                         ((Internal*) __Instance)->RHS = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
+            }
+
+            public unsafe partial class CallExpr : CppSharp.Parser.AST.Expression, IDisposable
+            {
+                [StructLayout(LayoutKind.Explicit, Size = 32)]
+                public new partial struct Internal
+                {
+                    [FieldOffset(0)]
+                    public CppSharp.Parser.AST.StatementClass Class;
+
+                    [FieldOffset(4)]
+                    public global::System.IntPtr Decl;
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST8CallExprC2ERKS2_")]
+                    internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST8CallExprD2Ev")]
+                    internal static extern void dtor_0(global::System.IntPtr instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST8CallExpr12getArgumentsEj")]
+                    internal static extern global::System.IntPtr getArguments_0(global::System.IntPtr instance, uint i);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST8CallExpr12addArgumentsERPNS1_10ExpressionE")]
+                    internal static extern void addArguments_0(global::System.IntPtr instance, global::System.IntPtr s);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST8CallExpr14clearArgumentsEv")]
+                    internal static extern void clearArguments_0(global::System.IntPtr instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
+                        EntryPoint="_ZN8CppSharp9CppParser3AST8CallExpr17getArgumentsCountEv")]
+                    internal static extern uint getArgumentsCount_0(global::System.IntPtr instance);
+                }
+
+                public static new CallExpr __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                {
+                    return new CallExpr((CallExpr.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                }
+
+                public static CallExpr __CreateInstance(CallExpr.Internal native, bool skipVTables = false)
+                {
+                    return new CallExpr(native, skipVTables);
+                }
+
+                private static CallExpr.Internal* __CopyValue(CallExpr.Internal native)
+                {
+                    var ret = Marshal.AllocHGlobal(32);
+                    CppSharp.Parser.AST.CallExpr.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    return (CallExpr.Internal*) ret;
+                }
+
+                private CallExpr(CallExpr.Internal native, bool skipVTables = false)
+                    : this(__CopyValue(native), skipVTables)
+                {
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                }
+
+                protected CallExpr(CallExpr.Internal* native, bool skipVTables = false)
+                    : base((CppSharp.Parser.AST.Expression.Internal*) null)
+                {
+                    __PointerAdjustment = 0;
+                    if (native == null)
+                        return;
+                    __Instance = new global::System.IntPtr(native);
+                }
+
+                public CallExpr(CppSharp.Parser.AST.CallExpr _0)
+                    : this((Internal*) null)
+                {
+                    __Instance = Marshal.AllocHGlobal(32);
+                    __ownsNativeInstance = true;
+                    NativeToManagedMap[__Instance] = this;
+                    var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
+                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
+                }
+
+                public CppSharp.Parser.AST.Expression getArguments(uint i)
+                {
+                    var __ret = Internal.getArguments_0((__Instance + __PointerAdjustment), i);
+                    CppSharp.Parser.AST.Expression __result0;
+                    if (__ret == IntPtr.Zero) __result0 = null;
+                    else if (CppSharp.Parser.AST.Expression.NativeToManagedMap.ContainsKey(__ret))
+                        __result0 = (CppSharp.Parser.AST.Expression) CppSharp.Parser.AST.Expression.NativeToManagedMap[__ret];
+                    else __result0 = CppSharp.Parser.AST.Expression.__CreateInstance(__ret);
+                    return __result0;
+                }
+
+                public void addArguments(CppSharp.Parser.AST.Expression s)
+                {
+                    var arg0 = ReferenceEquals(s, null) ? global::System.IntPtr.Zero : s.__Instance;
+                    Internal.addArguments_0((__Instance + __PointerAdjustment), arg0);
+                }
+
+                public void clearArguments()
+                {
+                    Internal.clearArguments_0((__Instance + __PointerAdjustment));
+                }
+
+                public uint ArgumentsCount
+                {
+                    get
+                    {
+                        var __ret = Internal.getArgumentsCount_0((__Instance + __PointerAdjustment));
+                        return __ret;
                     }
                 }
             }

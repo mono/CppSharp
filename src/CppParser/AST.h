@@ -481,6 +481,7 @@ enum class StatementClass
 {
     Any,
     BinaryOperator,
+    CallExprClass,
     DeclRefExprClass,
     CXXConstructExprClass,
     CXXOperatorCallExpr,
@@ -510,6 +511,13 @@ public:
     Expression* LHS;
     Expression* RHS;
     STRING(OpcodeStr)
+};
+
+class CS_API CallExpr : public Expression
+{
+public:
+    CallExpr(const std::string& str, Declaration* decl);
+    VECTOR(Expression*, Arguments)
 };
 
 class CS_API CXXConstructExpr : public Expression

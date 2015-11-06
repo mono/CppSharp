@@ -2330,6 +2330,59 @@ void CppSharp::Parser::AST::BinaryOperator::RHS::set(CppSharp::Parser::AST::Expr
     ((::CppSharp::CppParser::AST::BinaryOperator*)NativePtr)->RHS = (::CppSharp::CppParser::AST::Expression*)value->NativePtr;
 }
 
+CppSharp::Parser::AST::CallExpr::CallExpr(::CppSharp::CppParser::AST::CallExpr* native)
+    : CppSharp::Parser::AST::Expression((::CppSharp::CppParser::AST::Expression*)native)
+{
+}
+
+CppSharp::Parser::AST::CallExpr^ CppSharp::Parser::AST::CallExpr::__CreateInstance(::System::IntPtr native)
+{
+    return ::CppSharp::Parser::AST::CallExpr::__CreateInstance(native, false);
+}
+
+CppSharp::Parser::AST::CallExpr^ CppSharp::Parser::AST::CallExpr::__CreateInstance(::System::IntPtr native, bool __ownsNativeInstance)
+{
+    ::CppSharp::Parser::AST::CallExpr^ result = gcnew ::CppSharp::Parser::AST::CallExpr((::CppSharp::CppParser::AST::CallExpr*) native.ToPointer());
+    result->__ownsNativeInstance = __ownsNativeInstance;
+    return result;
+}
+
+CppSharp::Parser::AST::CallExpr::~CallExpr()
+{
+}
+
+CppSharp::Parser::AST::Expression^ CppSharp::Parser::AST::CallExpr::getArguments(unsigned int i)
+{
+    auto __ret = ((::CppSharp::CppParser::AST::CallExpr*)NativePtr)->getArguments(i);
+    if (__ret == nullptr) return nullptr;
+    return (__ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::Expression((::CppSharp::CppParser::AST::Expression*)__ret);
+}
+
+void CppSharp::Parser::AST::CallExpr::addArguments(CppSharp::Parser::AST::Expression^ s)
+{
+    auto arg0 = (::CppSharp::CppParser::AST::Expression*)s->NativePtr;
+    ((::CppSharp::CppParser::AST::CallExpr*)NativePtr)->addArguments(arg0);
+}
+
+void CppSharp::Parser::AST::CallExpr::clearArguments()
+{
+    ((::CppSharp::CppParser::AST::CallExpr*)NativePtr)->clearArguments();
+}
+
+CppSharp::Parser::AST::CallExpr::CallExpr(CppSharp::Parser::AST::CallExpr^ _0)
+    : CppSharp::Parser::AST::Expression((::CppSharp::CppParser::AST::Expression*)nullptr)
+{
+    __ownsNativeInstance = true;
+    auto &arg0 = *(::CppSharp::CppParser::AST::CallExpr*)_0->NativePtr;
+    NativePtr = new ::CppSharp::CppParser::AST::CallExpr(arg0);
+}
+
+unsigned int CppSharp::Parser::AST::CallExpr::ArgumentsCount::get()
+{
+    auto __ret = ((::CppSharp::CppParser::AST::CallExpr*)NativePtr)->getArgumentsCount();
+    return __ret;
+}
+
 CppSharp::Parser::AST::CXXConstructExpr::CXXConstructExpr(::CppSharp::CppParser::AST::CXXConstructExpr* native)
     : CppSharp::Parser::AST::Expression((::CppSharp::CppParser::AST::Expression*)native)
 {

@@ -932,6 +932,16 @@ namespace CppSharp
                     expression = new AST.BinaryOperator(VisitStatement(binaryOperator.LHS),
                         VisitStatement(binaryOperator.RHS), binaryOperator.OpcodeStr);
                     break;
+                case StatementClass.CallExprClass:
+                    var callExpression = new AST.CallExpr();
+                    var callExpr = CallExpr.__CreateInstance(statement.__Instance);
+                    for (uint i = 0; i < callExpr.ArgumentsCount; i++)
+                    {
+                        var argument = VisitStatement(callExpr.getArguments(i));
+                        callExpression.Arguments.Add(argument);
+                    }
+                    expression = callExpression;
+                    break;
                 case StatementClass.DeclRefExprClass:
                     expression = new AST.BuiltinTypeExpression();
                     expression.Class = AST.StatementClass.DeclarationReference;

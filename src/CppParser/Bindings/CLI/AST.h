@@ -35,6 +35,7 @@ namespace CppSharp
             ref class BlockContentComment;
             ref class BuiltinType;
             ref class CXXConstructExpr;
+            ref class CallExpr;
             ref class Class;
             ref class ClassLayout;
             ref class ClassTemplate;
@@ -230,11 +231,12 @@ namespace CppSharp
             {
                 Any = 0,
                 BinaryOperator = 1,
-                DeclRefExprClass = 2,
-                CXXConstructExprClass = 3,
-                CXXOperatorCallExpr = 4,
-                ImplicitCastExpr = 5,
-                ExplicitCastExpr = 6
+                CallExprClass = 2,
+                DeclRefExprClass = 3,
+                CXXConstructExprClass = 4,
+                CXXOperatorCallExpr = 5,
+                ImplicitCastExpr = 6,
+                ExplicitCastExpr = 7
             };
 
             public enum struct TemplateSpecializationKind
@@ -1503,6 +1505,29 @@ namespace CppSharp
                     CppSharp::Parser::AST::Expression^ get();
                     void set(CppSharp::Parser::AST::Expression^);
                 }
+            };
+
+            public ref class CallExpr : CppSharp::Parser::AST::Expression
+            {
+            public:
+
+                CallExpr(::CppSharp::CppParser::AST::CallExpr* native);
+                static CallExpr^ __CreateInstance(::System::IntPtr native);
+                static CallExpr^ __CreateInstance(::System::IntPtr native, bool __ownsNativeInstance);
+                CallExpr(CppSharp::Parser::AST::CallExpr^ _0);
+
+                ~CallExpr();
+
+                property unsigned int ArgumentsCount
+                {
+                    unsigned int get();
+                }
+
+                CppSharp::Parser::AST::Expression^ getArguments(unsigned int i);
+
+                void addArguments(CppSharp::Parser::AST::Expression^ s);
+
+                void clearArguments();
             };
 
             public ref class CXXConstructExpr : CppSharp::Parser::AST::Expression

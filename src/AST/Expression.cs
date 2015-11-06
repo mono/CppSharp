@@ -42,9 +42,29 @@ namespace CppSharp.AST
         }
     }
 
-    public class CXXConstructExpr : Expression
+    public class BinaryOperator : Expression
     {
-        public CXXConstructExpr()
+        public BinaryOperator(Expression lhs, Expression rhs, string opcodeStr)
+        {
+            Class = StatementClass.BinaryOperator;
+            LHS = lhs;
+            RHS = rhs;
+            OpcodeStr = opcodeStr;
+        }
+
+        public Expression LHS { get; set; }
+        public Expression RHS { get; set; }
+        public string OpcodeStr { get; set; }
+
+        public override T Visit<T>(IExpressionVisitor<T> visitor)
+        {
+            return visitor.VisitExpression(this);
+        }
+    }
+
+    public class CallExpr : Expression
+    {
+        public CallExpr()
         {
             Arguments = new List<Expression>();
         }
@@ -57,19 +77,14 @@ namespace CppSharp.AST
         }
     }
 
-    public class BinaryOperator : Expression
+    public class CXXConstructExpr : Expression
     {
-        public BinaryOperator(Expression lhs, Expression rhs, string opcodeStr)
+        public CXXConstructExpr()
         {
-            Class = StatementClass.BinaryOperator;
-            this.LHS = lhs;
-            this.RHS = rhs;
-            this.OpcodeStr = opcodeStr;
+            Arguments = new List<Expression>();
         }
 
-        public Expression LHS { get; set; }
-        public Expression RHS { get; set; }
-        public string OpcodeStr { get; set; }
+        public List<Expression> Arguments { get; private set; }
 
         public override T Visit<T>(IExpressionVisitor<T> visitor)
         {

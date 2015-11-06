@@ -2625,6 +2625,17 @@ AST::Expression* Parser::WalkExpression(clang::Expr* Expr)
             WalkExpression(BinaryOperator->getLHS()), WalkExpression(BinaryOperator->getRHS()),
             BinaryOperator->getOpcodeStr().str());
     }
+    case Stmt::CallExprClass:
+    {
+        auto CallExpr = cast<clang::CallExpr>(Expr);
+        auto CallExpression = new AST::CallExpr(GetStringFromStatement(Expr),
+            WalkDeclaration(CallExpr->getCalleeDecl()));
+        for (auto arg : CallExpr->arguments())
+        {
+            CallExpression->Arguments.push_back(WalkExpression(arg));
+        }
+        return CallExpression;
+    }
     case Stmt::DeclRefExprClass:
         return new AST::Expression(GetStringFromStatement(Expr), StatementClass::DeclRefExprClass,
             WalkDeclaration(cast<DeclRefExpr>(Expr)->getDecl()));
@@ -2965,6 +2976,7 @@ Declaration* Parser::WalkDeclaration(clang::Decl* D,
         break;
     }
     case Decl::CXXConstructor:
+    case Decl::CXXMethod:
     {
         auto MD = cast<CXXMethodDecl>(D);
         Decl = WalkMethodCXX(MD);
@@ -2983,7 +2995,6 @@ Declaration* Parser::WalkDeclaration(clang::Decl* D,
     // a class already.
     case Decl::CXXDestructor:
     case Decl::CXXConversion:
-    case Decl::CXXMethod:
         break;
     case Decl::Empty:
     case Decl::AccessSpec:

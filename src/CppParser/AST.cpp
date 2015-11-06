@@ -488,6 +488,11 @@ BinaryOperator::BinaryOperator(const std::string& str, Expression* lhs, Expressi
 
 DEF_STRING(BinaryOperator, OpcodeStr)
 
+CallExpr::CallExpr(const std::string& str, Declaration* decl)
+    : Expression(str, StatementClass::CallExprClass, decl) {}
+
+DEF_VECTOR(CallExpr, Expression*, Arguments)
+
 CXXConstructExpr::CXXConstructExpr(const std::string& str, Declaration* decl)
     : Expression(str, StatementClass::CXXConstructExprClass, decl) {}
 
