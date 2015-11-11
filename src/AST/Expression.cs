@@ -31,8 +31,7 @@ namespace CppSharp.AST
         {
             var printAsHex = IsHexadecimal && Type.IsUnsigned;
             var format = printAsHex ? "x" : string.Empty;
-            var value = Type.IsUnsigned ? Value.ToString(format) :
-                ((long)Value).ToString(format);
+            var value = Value.ToString(format);
             return printAsHex ? "0x" + value : value;
         }
 
@@ -66,6 +65,7 @@ namespace CppSharp.AST
     {
         public CallExpr()
         {
+            Class = StatementClass.Call;
             Arguments = new List<Expression>();
         }
 
@@ -81,6 +81,7 @@ namespace CppSharp.AST
     {
         public CXXConstructExpr()
         {
+            Class = StatementClass.ConstructorReference;
             Arguments = new List<Expression>();
         }
 

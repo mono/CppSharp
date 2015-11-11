@@ -17,6 +17,8 @@ public:
     void setNoParams();
 
     static const int rename = 5;
+    static int makeFunctionCall();
+    static int propertyCall();
 
 protected:
     int P;
@@ -364,6 +366,8 @@ public:
     void defaultCtorWithMoreThanOneArg(QMargins m = QMargins(0, 0, 0, 0));
     void defaultWithComplexArgs(const QRect& rectangle = QRect(QPoint(0, 0), QSize(-1, -1)));
     void defaultWithRefManagedLong(long long* i = 0);
+    void defaultWithFunctionCall(int f = Foo::makeFunctionCall());
+    void defaultWithPropertyCall(int f = Foo::propertyCall());
     int getA();
 private:
     Foo m_foo;

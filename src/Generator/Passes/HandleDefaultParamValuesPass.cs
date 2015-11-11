@@ -66,6 +66,9 @@ namespace CppSharp.Passes
             if (CheckForDefaultPointer(desugared, ref result))
                 return true;
 
+            if (expression.Class == StatementClass.Call)
+                return expression.Declaration.Ignore ? false : (bool?) null;
+
             var defaultConstruct = CheckForDefaultConstruct(desugared, expression, ref result);
             if (defaultConstruct != false)
                 return defaultConstruct;

@@ -43,6 +43,16 @@ void Foo::setNoParams()
 
 const int Foo::rename;
 
+int Foo::makeFunctionCall()
+{
+    return 1;
+}
+
+int Foo::propertyCall()
+{
+    return 1;
+}
+
 const Foo& Bar::operator[](int i) const
 {
     return m_foo;
@@ -481,6 +491,14 @@ void MethodsWithDefaultValues::defaultWithComplexArgs(const QRect& rectangle)
 }
 
 void MethodsWithDefaultValues::defaultWithRefManagedLong(long long* i)
+{
+}
+
+void MethodsWithDefaultValues::defaultWithFunctionCall(int f)
+{
+}
+
+void MethodsWithDefaultValues::defaultWithPropertyCall(int f)
 {
 }
 

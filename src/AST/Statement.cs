@@ -5,6 +5,7 @@
         Any,
         BinaryOperator,
         DeclarationReference,
+        Call,
         ConstructorReference,
         CXXOperatorCall,
         ImplicitCast,

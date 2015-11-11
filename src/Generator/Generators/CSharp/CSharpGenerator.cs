@@ -12,7 +12,7 @@ namespace CppSharp.Generators.CSharp
         public CSharpGenerator(Driver driver) : base(driver)
         {
             typePrinter = new CSharpTypePrinter(driver);
-            expressionPrinter = new CSharpExpressionPrinter();
+            expressionPrinter = new CSharpExpressionPrinter(typePrinter);
             CppSharp.AST.Type.TypePrinterDelegate += type => type.Visit(typePrinter).Type;
         }
 

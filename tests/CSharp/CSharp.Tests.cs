@@ -197,6 +197,8 @@ public class CSharpTests : GeneratorTestFixture
             methodsWithDefaultValues.DefaultIntExpressionWithEnum();
             methodsWithDefaultValues.DefaultCtorWithMoreThanOneArg();
             methodsWithDefaultValues.DefaultWithRefManagedLong();
+            methodsWithDefaultValues.DefaultWithFunctionCall();
+            methodsWithDefaultValues.DefaultWithPropertyCall();
         }
     }
 
@@ -238,10 +240,14 @@ public class CSharpTests : GeneratorTestFixture
     public void TestImplicitCtor()
     {
         Foo foo = new Foo { A = 10 };
-        MethodsWithDefaultValues m = foo;
-        Assert.AreEqual(foo.A, m.A);
-        MethodsWithDefaultValues m1 = 5;
-        Assert.AreEqual(5, m1.A);
+        using (MethodsWithDefaultValues m = foo)
+        {
+            Assert.AreEqual(foo.A, m.A);
+        }
+        using (MethodsWithDefaultValues m1 = 5)
+        {
+            Assert.AreEqual(5, m1.A);
+        }
     }
 
     [Test]
