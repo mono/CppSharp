@@ -1426,7 +1426,17 @@ namespace CppSharp.Generators.CSharp
         private void GenerateVTableClassSetupCall(Class @class, bool destructorOnly = false)
         {
             if (@class.IsDynamic && GetUniqueVTableMethodEntries(@class).Count > 0)
-                WriteLine("SetupVTables({0});", destructorOnly ? "true" : string.Empty);
+            {
+                if (destructorOnly)
+                {
+                    WriteLine("SetupVTables(true);");
+                    return;
+                }
+                var typeFullName = TypePrinter.VisitClassDecl(@class);
+                if (!string.IsNullOrEmpty(Driver.Options.OutputNamespace))
+                    typeFullName = string.Format("{0}.{1}", Driver.Options.OutputNamespace, typeFullName);
+                WriteLine("SetupVTables(GetType().FullName == \"{0}\");", typeFullName);
+            }
         }
 
         private void GenerateVTableManagedCall(Method method)
