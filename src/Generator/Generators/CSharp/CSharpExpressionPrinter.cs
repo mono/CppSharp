@@ -50,11 +50,13 @@ namespace CppSharp.Generators.CSharp
                             };
                         case GenerationKind.Internal:
                             // a non-ctor can only be internal if it's been converted to a property
+                            var property = ((Class) callExpr.Declaration.Namespace).Properties.First(
+                                p => p.GetMethod == callExpr.Declaration);
                             return new CSharpExpressionPrinterResult
                             {
                                 Value = string.Format("{0}.{1}",
                                     typePrinter.VisitDeclaration(callExpr.Declaration.Namespace),
-                                    callExpr.Declaration.Name)
+                                    property.Name)
                             };
                         default:
                             return new CSharpExpressionPrinterResult { Value = expr.String };

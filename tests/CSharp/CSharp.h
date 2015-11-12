@@ -19,6 +19,7 @@ public:
     static const int rename = 5;
     static int makeFunctionCall();
     static int propertyCall();
+    static int getGetPropertyCall();
 
 protected:
     int P;
@@ -368,6 +369,7 @@ public:
     void defaultWithRefManagedLong(long long* i = 0);
     void defaultWithFunctionCall(int f = Foo::makeFunctionCall());
     void defaultWithPropertyCall(int f = Foo::propertyCall());
+    void defaultWithGetPropertyCall(int f = Foo::getGetPropertyCall());
     int getA();
 private:
     Foo m_foo;

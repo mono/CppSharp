@@ -53,6 +53,11 @@ int Foo::propertyCall()
     return 1;
 }
 
+int Foo::getGetPropertyCall()
+{
+    return 1;
+}
+
 const Foo& Bar::operator[](int i) const
 {
     return m_foo;
@@ -499,6 +504,10 @@ void MethodsWithDefaultValues::defaultWithFunctionCall(int f)
 }
 
 void MethodsWithDefaultValues::defaultWithPropertyCall(int f)
+{
+}
+
+void MethodsWithDefaultValues::defaultWithGetPropertyCall(int f)
 {
 }
 

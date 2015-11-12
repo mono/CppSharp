@@ -199,6 +199,7 @@ public class CSharpTests : GeneratorTestFixture
             methodsWithDefaultValues.DefaultWithRefManagedLong();
             methodsWithDefaultValues.DefaultWithFunctionCall();
             methodsWithDefaultValues.DefaultWithPropertyCall();
+            methodsWithDefaultValues.DefaultWithGetPropertyCall();
         }
     }
 
