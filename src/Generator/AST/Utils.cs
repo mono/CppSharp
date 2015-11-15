@@ -190,6 +190,7 @@ namespace CppSharp.AST
                 case CXXOperatorKind.Arrow:
                 case CXXOperatorKind.Call:
                 case CXXOperatorKind.Conditional:
+                case CXXOperatorKind.Coawait:
                 case CXXOperatorKind.New:
                 case CXXOperatorKind.Delete:
                 case CXXOperatorKind.Array_New:

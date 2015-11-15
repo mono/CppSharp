@@ -125,10 +125,6 @@ ConvertToClangTargetCXXABI(CppSharp::CppParser::AST::CppAbi abi)
     llvm_unreachable("Unsupported C++ ABI.");
 }
 
-// Defined in Targets.cpp
-clang::TargetInfo * CreateTargetInfo(clang::DiagnosticsEngine &Diags,
-    const std::shared_ptr<clang::TargetOptions> &Opts);
-
 void Parser::SetupHeader()
 {
     using namespace clang;
@@ -180,7 +176,7 @@ void Parser::SetupHeader()
     if (!Opts->TargetTriple.empty())
         TO->Triple = llvm::Triple::normalize(Opts->TargetTriple);
 
-    TargetInfo* TI = CreateTargetInfo(C->getDiagnostics(), TO);
+    TargetInfo* TI = TargetInfo::CreateTargetInfo(C->getDiagnostics(), TO);
     if (!TI)
     {
         // We might have no target info due to an invalid user-provided triple.
@@ -191,7 +187,6 @@ void Parser::SetupHeader()
 
     assert(TI && "Expected valid target info");
 
-    TI->setCXXABI(TargetABI);
     C->setTarget(TI);
 
     C->createFileManager();
@@ -3142,7 +3137,7 @@ ParserResult* Parser::ParseHeader(const std::string& File, ParserResult* res)
 
     auto FileEntry = C->getPreprocessor().getHeaderSearchInfo().LookupFile(File,
         clang::SourceLocation(), /*isAngled*/true,
-        nullptr, Dir, Includers, nullptr, nullptr, nullptr);
+        nullptr, Dir, Includers, nullptr, nullptr, nullptr, nullptr);
     if (!FileEntry)
     {
         res->Kind = ParserResultKind::FileNotFound;

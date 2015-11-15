@@ -214,7 +214,8 @@ namespace CppSharp
                 Arrow = 40,
                 Call = 41,
                 Subscript = 42,
-                Conditional = 43
+                Conditional = 43,
+                Coawait = 44
             };
 
             public enum struct CallingConvention

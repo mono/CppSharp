@@ -1139,6 +1139,8 @@ namespace CppSharp
                     return AST.CXXOperatorKind.Subscript;
                 case CXXOperatorKind.Conditional:
                     return AST.CXXOperatorKind.Conditional;
+                case CXXOperatorKind.Coawait:
+                    return AST.CXXOperatorKind.Coawait;
                 default:
                     throw new ArgumentOutOfRangeException("operatorKind");
             }

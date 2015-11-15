@@ -595,7 +595,8 @@ enum class CXXOperatorKind
     Arrow,
     Call,
     Subscript,
-    Conditional
+    Conditional,
+    Coawait
 };
 
 class FunctionTemplateSpecialization;
