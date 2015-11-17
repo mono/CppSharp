@@ -16,6 +16,7 @@ public class CommonTests : GeneratorTestFixture
         using (var foo = new Foo())
         {
             Bar bar = foo;
+            Assert.IsTrue(Bar.Item.Item1 == bar);
         }
         using (var overridesNonDirectVirtual = new OverridesNonDirectVirtual())
         {

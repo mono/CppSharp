@@ -73,7 +73,7 @@ struct DLL_API Bar
     Bar();
     Bar(Foo foo);
     explicit Bar(const Foo* foo);
-    Item RetItem1();
+    Item RetItem1() const;
     int A;
     float B;
 
@@ -81,6 +81,8 @@ struct DLL_API Bar
 
     bool operator ==(const Bar& other) const;
 };
+
+DLL_API bool operator ==(Bar::Item item, const Bar& bar);
 
 class DLL_API Foo2 : public Foo
 {

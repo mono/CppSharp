@@ -89,7 +89,7 @@ namespace CppSharp.Passes
             }
         }
 
-        void CreateIndexer(Class @class, Method @operator)
+        private void CreateIndexer(Class @class, Method @operator)
         {
             var property = new Property
                 {
@@ -103,7 +103,7 @@ namespace CppSharp.Passes
             var returnType = @operator.Type;
             if (returnType.IsAddress())
             {
-                var pointer = returnType as PointerType;
+                var pointer = (PointerType) returnType;
                 var qualifiedPointee = pointer.QualifiedPointee;
                 if (!qualifiedPointee.Qualifiers.IsConst)
                     property.SetMethod = @operator;
@@ -126,7 +126,7 @@ namespace CppSharp.Passes
             @operator.GenerationKind = GenerationKind.Internal;
         }
 
-        static void HandleMissingOperatorOverloadPair(Class @class, CXXOperatorKind op1,
+        private static void HandleMissingOperatorOverloadPair(Class @class, CXXOperatorKind op1,
             CXXOperatorKind op2)
         {
             foreach (var op in @class.Operators.Where(
@@ -134,7 +134,7 @@ namespace CppSharp.Passes
             {
                 int index;
                 var missingKind = CheckMissingOperatorOverloadPair(@class, out index, op1, op2,
-                                                                   op.Parameters.Last().Type);
+                    op.Parameters.First().Type, op.Parameters.Last().Type);
 
                 if (missingKind == CXXOperatorKind.None || !op.IsGenerated)
                     continue;
@@ -154,13 +154,13 @@ namespace CppSharp.Passes
             }
         }
 
-        static CXXOperatorKind CheckMissingOperatorOverloadPair(Class @class,
-            out int index, CXXOperatorKind op1, CXXOperatorKind op2, Type type)
+        static CXXOperatorKind CheckMissingOperatorOverloadPair(Class @class, out int index,
+            CXXOperatorKind op1, CXXOperatorKind op2, Type typeLeft, Type typeRight)
         {
             var first = @class.Operators.FirstOrDefault(o => o.OperatorKind == op1 &&
-                                                             o.Parameters.Last().Type.Equals(type));
+                o.Parameters.First().Type.Equals(typeLeft) && o.Parameters.Last().Type.Equals(typeRight));
             var second = @class.Operators.FirstOrDefault(o => o.OperatorKind == op2 &&
-                                                              o.Parameters.Last().Type.Equals(type));
+                o.Parameters.First().Type.Equals(typeLeft) && o.Parameters.Last().Type.Equals(typeRight));
 
             var hasFirst = first != null;
             var hasSecond = second != null;

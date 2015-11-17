@@ -67,7 +67,7 @@ Bar::Bar(const Foo* foo)
 {
 }
 
-Bar::Item Bar::RetItem1()
+Bar::Item Bar::RetItem1() const
 {
     return Bar::Item1;
 }
@@ -80,6 +80,11 @@ Bar* Bar::returnPointerToValueType()
 bool Bar::operator ==(const Bar& other) const
 {
     return A == other.A && B == other.B;
+}
+
+bool operator ==(Bar::Item item, const Bar& bar)
+{
+    return item == bar.RetItem1();
 }
 
 Bar2::Nested::operator int() const
