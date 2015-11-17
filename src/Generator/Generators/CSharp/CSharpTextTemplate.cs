@@ -1254,7 +1254,8 @@ namespace CppSharp.Generators.CSharp
             }
 
             WriteLine("private static void*[] __ManagedVTables;");
-            WriteLine("private static void*[] __ManagedVTablesDtorOnly;");
+            if (wrappedEntries.Any(e => e.Method.IsDestructor))
+                WriteLine("private static void*[] __ManagedVTablesDtorOnly;");
             WriteLine("private static void*[] _Thunks;");
             NewLine();
 
