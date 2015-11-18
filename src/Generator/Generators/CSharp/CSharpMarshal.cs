@@ -118,7 +118,7 @@ namespace CppSharp.Generators.CSharp
                     break;
                 case ArrayType.ArraySize.Incomplete:
                     // const char* and const char[] are the same so we can use a string
-                    if (array.Type.IsPrimitiveType(PrimitiveType.Char) &&
+                    if (array.Type.Desugar().IsPrimitiveType(PrimitiveType.Char) &&
                         array.QualifiedType.Qualifiers.IsConst)
                         return VisitPointerType(new PointerType
                             {

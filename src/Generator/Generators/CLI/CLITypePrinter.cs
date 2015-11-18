@@ -65,7 +65,7 @@ namespace CppSharp.Generators.CLI
         {
             // const char* and const char[] are the same so we can use a string
             if (array.SizeType == ArrayType.ArraySize.Incomplete &&
-                array.Type.IsPrimitiveType(PrimitiveType.Char) &&
+                array.Type.Desugar().IsPrimitiveType(PrimitiveType.Char) &&
                 array.QualifiedType.Qualifiers.IsConst)
                 return "System::String^";
 
