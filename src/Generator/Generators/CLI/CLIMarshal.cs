@@ -59,6 +59,16 @@ namespace CppSharp.Generators.CLI
                     supportBefore.WriteCloseBraceIndent();
                     Context.Return.Write(value);
                     break;
+                case ArrayType.ArraySize.Incomplete:
+                    // const char* and const char[] are the same so we can use a string
+                    if (array.Type.IsPrimitiveType(PrimitiveType.Char) &&
+                        array.QualifiedType.Qualifiers.IsConst)
+                        return VisitPointerType(new PointerType
+                            {
+                                QualifiedPointee = array.QualifiedType
+                            }, quals);
+                    goto case ArrayType.ArraySize.Variable;
+
                 case ArrayType.ArraySize.Variable:
                     Context.Return.Write("nullptr");
                     break;

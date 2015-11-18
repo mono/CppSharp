@@ -45,9 +45,10 @@ public:
     IgnoredType ignoredType;
     int fixedArray[3];
     void* ptr;
-    static const int unsafe = 10;
+    static const int unsafe;
+    static const char charArray[];
 
-	const char* GetANSI();
+    const char* GetANSI();
 
     // Not properly handled yet - ignore
     float nested_array[2][2];
@@ -61,6 +62,10 @@ public:
 
     bool operator ==(const Foo& other) const;
 };
+
+// HACK: do not move these to the cpp - C++/CLI is buggy and cannot link static fields initialised in the cpp
+const int Foo::unsafe = 10;
+const char Foo::charArray[] = "abc";
 
 struct DLL_API Bar
 {

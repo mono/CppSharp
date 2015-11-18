@@ -153,6 +153,12 @@ namespace CppSharp.Generators.CSharp
                 };
             }
 
+            // const char* and const char[] are the same so we can use a string
+            if (array.SizeType == ArrayType.ArraySize.Incomplete &&
+                array.Type.IsPrimitiveType(PrimitiveType.Char) &&
+                array.QualifiedType.Qualifiers.IsConst)
+                return "string";
+
             return string.Format("{0}[]", array.Type.Visit(this));
 
             // C# only supports fixed arrays in unsafe sections

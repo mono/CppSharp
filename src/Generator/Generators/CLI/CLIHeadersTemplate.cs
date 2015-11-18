@@ -561,7 +561,9 @@ namespace CppSharp.Generators.CLI
 
                 WriteLine("{0} get();", type);
 
-                if (!variable.QualifiedType.Qualifiers.IsConst)
+                var arrayType = type as ArrayType;
+                var qualifiedType = arrayType != null ? arrayType.QualifiedType : variable.QualifiedType;
+                if (!qualifiedType.Qualifiers.IsConst)
                     WriteLine("void set({0});", type);
 
                 WriteCloseBraceIndent();

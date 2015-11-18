@@ -565,6 +565,12 @@ public class CommonTests : GeneratorTestFixture
         }
     }
 
+    [Test]
+    public void TestIncompleteCharArray()
+    {
+        Assert.That(Foo.charArray, Is.EqualTo("abc"));
+    }
+
     private class CustomDerivedFromVirtual : AbstractWithVirtualDtor
     {
         public override void @abstract()

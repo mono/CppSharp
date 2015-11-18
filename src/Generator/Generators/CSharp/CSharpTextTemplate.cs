@@ -1017,9 +1017,14 @@ namespace CppSharp.Generators.CSharp
                 var location = string.Format("CppSharp.SymbolResolver.ResolveSymbol(\"{0}\", \"{1}\")",
                     libSymbol.Item1, libSymbol.Item2);
 
-                var isRefTypeArray = decl.Type is ArrayType && @class != null && @class.IsRefType;
+                var arrayType = decl.Type as ArrayType;
+                var isRefTypeArray = arrayType != null && @class != null && @class.IsRefType;
                 if (isRefTypeArray)
-                    WriteLine("var {0} = (byte*){1};", Generator.GeneratedIdentifier("ptr"), location);
+                    WriteLine("var {0} = {1}{2};", Generator.GeneratedIdentifier("ptr"),
+                        arrayType.Type.IsPrimitiveType(PrimitiveType.Char) &&
+                        arrayType.QualifiedType.Qualifiers.IsConst
+                            ? string.Empty : "(byte*)",
+                        location);
                 else
                     WriteLine("var {0} = ({1}*){2};", Generator.GeneratedIdentifier("ptr"),
                         @var.Type, location);

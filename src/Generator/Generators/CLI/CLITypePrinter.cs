@@ -63,6 +63,12 @@ namespace CppSharp.Generators.CLI
 
         public string VisitArrayType(ArrayType array, TypeQualifiers quals)
         {
+            // const char* and const char[] are the same so we can use a string
+            if (array.SizeType == ArrayType.ArraySize.Incomplete &&
+                array.Type.IsPrimitiveType(PrimitiveType.Char) &&
+                array.QualifiedType.Qualifiers.IsConst)
+                return "System::String^";
+
             return string.Format("cli::array<{0}>^", array.Type.Visit(this));
         }
 

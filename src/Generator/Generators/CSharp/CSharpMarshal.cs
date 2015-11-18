@@ -91,7 +91,6 @@ namespace CppSharp.Generators.CSharp
             if (!VisitType(array, quals))
                 return false;
 
-            Class @class;
             switch (array.SizeType)
             {
                 case ArrayType.ArraySize.Constant:
@@ -105,14 +104,28 @@ namespace CppSharp.Generators.CSharp
                     if (array.Type.IsPointerToPrimitiveType(PrimitiveType.Void))
                         supportBefore.WriteLineIndent("{0}[i] = new global::System.IntPtr({1}[i]);",
                             value, Context.ReturnVarName);
-                    else if (array.Type.Desugar().TryGetClass(out @class) && @class.IsRefType)
-                        supportBefore.WriteLineIndent("{0}[i] = {1}.{2}(*(({1}.Internal*)&({3}[i * sizeof({1}.Internal)])));", 
-                            value, array.Type, Helpers.CreateInstanceIdentifier, Context.ReturnVarName);
                     else
-                        supportBefore.WriteLineIndent("{0}[i] = {1}[i];", value, Context.ReturnVarName);
+                    {
+                        Class @class;
+                        if (array.Type.Desugar().TryGetClass(out @class) && @class.IsRefType)
+                            supportBefore.WriteLineIndent("{0}[i] = {1}.{2}(*(({1}.Internal*)&({3}[i * sizeof({1}.Internal)])));",
+                                value, array.Type, Helpers.CreateInstanceIdentifier, Context.ReturnVarName);
+                        else
+                            supportBefore.WriteLineIndent("{0}[i] = {1}[i];", value, Context.ReturnVarName);
+                    }
                     supportBefore.WriteCloseBraceIndent();
                     Context.Return.Write(value);
                     break;
+                case ArrayType.ArraySize.Incomplete:
+                    // const char* and const char[] are the same so we can use a string
+                    if (array.Type.IsPrimitiveType(PrimitiveType.Char) &&
+                        array.QualifiedType.Qualifiers.IsConst)
+                        return VisitPointerType(new PointerType
+                            {
+                                QualifiedPointee = array.QualifiedType
+                            }, quals);
+
+                    goto case ArrayType.ArraySize.Variable;
                 case ArrayType.ArraySize.Variable:
                     Context.Return.Write("null");
                     break;

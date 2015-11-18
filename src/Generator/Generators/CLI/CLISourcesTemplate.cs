@@ -623,7 +623,9 @@ namespace CppSharp.Generators.CLI
         {
             GeneratePropertyGetter(variable, @class, variable.Name, variable.Type);
 
-            if (!variable.QualifiedType.Qualifiers.IsConst)
+            var arrayType = variable.Type as ArrayType;
+            var qualifiedType = arrayType != null ? arrayType.QualifiedType : variable.QualifiedType;
+            if (!qualifiedType.Qualifiers.IsConst)
                 GeneratePropertySetter(variable, @class, variable.Name, variable.Type);
         }
 

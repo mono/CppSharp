@@ -14,11 +14,9 @@ Foo::Foo(Private p)
 {
 }
 
-const int Foo::unsafe;
-
 const char* Foo::GetANSI()
 {
-	return "ANSI";
+    return "ANSI";
 }
 
 void Foo::TakesTypedefedPtr(FooPtr date)
