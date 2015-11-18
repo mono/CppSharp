@@ -181,6 +181,10 @@ ForceCreationOfInterface::ForceCreationOfInterface()
 {
 }
 
+Baz::Baz(Bar::Items item)
+{
+}
+
 int Baz::takesQux(const Qux& qux)
 {
     return qux.farAwayFunc();
@@ -460,6 +464,10 @@ void MethodsWithDefaultValues::defaultImplicitCtorChar(Quux arg)
 }
 
 void MethodsWithDefaultValues::defaultImplicitCtorFoo(Quux arg)
+{
+}
+
+void MethodsWithDefaultValues::defaultImplicitCtorEnum(Baz arg)
 {
 }
 

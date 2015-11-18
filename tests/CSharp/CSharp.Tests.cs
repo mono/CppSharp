@@ -189,6 +189,7 @@ public class CSharpTests : GeneratorTestFixture
             methodsWithDefaultValues.DefaultImplicitCtorInt();
             methodsWithDefaultValues.DefaultImplicitCtorChar();
             methodsWithDefaultValues.DefaultImplicitCtorFoo();
+            methodsWithDefaultValues.DefaultImplicitCtorEnum();
             methodsWithDefaultValues.DefaultIntWithLongExpression();
             methodsWithDefaultValues.DefaultRefTypeEnumImplicitCtor();
             methodsWithDefaultValues.Rotate4x4Matrix(0, 0, 0);

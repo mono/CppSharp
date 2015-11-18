@@ -73,6 +73,11 @@ namespace CppSharp.Passes
             if (defaultConstruct != false)
                 return defaultConstruct;
 
+            return CheckForSimpleExpressions(expression, ref result, desugared);
+        }
+
+        private bool CheckForSimpleExpressions(Expression expression, ref string result, Type desugared)
+        {
             return CheckFloatSyntax(desugared, expression, ref result) ||
                 CheckForBinaryOperator(desugared, expression, ref result) ||
                 CheckForEnumValue(desugared, expression, ref result) ||
@@ -106,7 +111,7 @@ namespace CppSharp.Passes
             return true;
         }
 
-        private bool? CheckForDefaultConstruct(Type desugared, Statement statement,
+        private bool? CheckForDefaultConstruct(Type desugared, Expression expression,
             ref string result)
         {
             var type = desugared.GetFinalPointee() ?? desugared;
@@ -115,7 +120,7 @@ namespace CppSharp.Passes
             if (!type.TryGetClass(out decl))
                 return false;
 
-            var ctor = statement as CXXConstructExpr;
+            var ctor = expression as CXXConstructExpr;
 
             TypeMap typeMap;
 
@@ -147,12 +152,15 @@ namespace CppSharp.Passes
             }
 
             if (ctor == null)
+            {
+                CheckForSimpleExpressions(expression, ref result, desugared);
                 return decl.IsValueType ? (bool?) false : null;
+            }
 
-            var method = (Method) statement.Declaration;
+            var method = (Method) expression.Declaration;
             var expressionSupported = decl.IsValueType && method.Parameters.Count == 0;
 
-            if (statement.String.Contains('('))
+            if (expression.String.Contains('('))
             {
                 var argsBuilder = new StringBuilder("new ");
                 argsBuilder.Append(typePrinterResult);
@@ -177,7 +185,7 @@ namespace CppSharp.Passes
                     var paramType = method.Parameters[0].Type.SkipPointerRefs().Desugar();
                     Enumeration @enum;
                     if (paramType.TryGetEnum(out @enum))
-                        result = TranslateEnumExpression(method, paramType, statement.String);
+                        result = TranslateEnumExpression(method, paramType, expression.String);
                 }
             }
             return expressionSupported ? true : (bool?) null;
