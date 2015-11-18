@@ -2677,6 +2677,8 @@ AST::Expression* Parser::WalkExpression(clang::Expr* Expr)
         }
         return ConstructorExpression;
     }
+    case Stmt::CXXBindTemporaryExprClass:
+        return WalkExpression(cast<CXXBindTemporaryExpr>(Expr)->getSubExpr());
     case Stmt::MaterializeTemporaryExprClass:
         return WalkExpression(cast<MaterializeTemporaryExpr>(Expr)->GetTemporaryExpr());
     default:
