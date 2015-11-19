@@ -98,12 +98,12 @@ namespace CppSharp.Passes
 
         private static bool CheckConstnessForAmbiguity(Function function, Function overload)
         {
-            if (function is Method && overload is Method)
+            var method1 = function as Method;
+            var method2 = overload as Method;
+            if (method1 != null && method2 != null)
             {
-                var method1 = function as Method;
-                var method2 = overload as Method;
-
-                var sameParams = method1.Parameters.SequenceEqual(method2.Parameters, new ParameterTypeComparer());
+                var sameParams = method1.Parameters.SequenceEqual(method2.Parameters,
+                    ParameterTypeComparer.Instance);
 
                 if (method1.IsConst && !method2.IsConst && sameParams)
                 {

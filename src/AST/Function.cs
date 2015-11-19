@@ -78,6 +78,12 @@ namespace CppSharp.AST
 
     public class ParameterTypeComparer : IEqualityComparer<Parameter>
     {
+        public static readonly ParameterTypeComparer Instance = new ParameterTypeComparer();
+
+        private ParameterTypeComparer()
+        {
+        }
+
         public bool Equals(Parameter x, Parameter y)
         {
             return x.QualifiedType == y.QualifiedType;

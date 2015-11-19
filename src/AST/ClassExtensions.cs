@@ -62,7 +62,6 @@ namespace CppSharp.AST
         public static Method GetBaseMethod(this Class @class, Method @override,
             bool onlyPrimaryBase = false, bool getTopmost = false)
         {
-            var parameterTypeComparer = new ParameterTypeComparer();
             foreach (var @base in @class.Bases.Where(
                 b => b.IsClass && b.Class.OriginalClass != @class && (!onlyPrimaryBase || !b.Class.IsInterface)))
             {
@@ -75,7 +74,7 @@ namespace CppSharp.AST
                 }
 
                 baseMethod = (from method in @base.Class.Methods
-                    where @override.CanOverride(method, parameterTypeComparer)
+                    where @override.CanOverride(method)
                     select method).FirstOrDefault();
                 if (baseMethod != null)
                     return baseMethod;
@@ -100,7 +99,6 @@ namespace CppSharp.AST
         public static Property GetBaseProperty(this Class @class, Property @override,
             bool onlyFirstBase = false, bool getTopmost = false)
         {
-            var parameterTypeComparer = new ParameterTypeComparer();
             foreach (var @base in @class.Bases)
             {
                 if (!@base.IsClass || @base.Class.OriginalClass == @class ||
@@ -117,7 +115,8 @@ namespace CppSharp.AST
 
                 baseProperty = (from property in @base.Class.Properties
                     where property.OriginalName == @override.OriginalName &&
-                        property.Parameters.SequenceEqual(@override.Parameters, parameterTypeComparer)
+                        property.Parameters.SequenceEqual(@override.Parameters,
+                            ParameterTypeComparer.Instance)
                     select property).FirstOrDefault();
                 if (baseProperty != null)
                     return baseProperty;

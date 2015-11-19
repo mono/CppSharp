@@ -114,12 +114,12 @@ namespace CppSharp.Passes
         /// <param name="typedefs">The typedef list to search.</param>
         /// <param name="functionType">The function to match.</param>
         /// <returns>The matching typedef, or null if not found.</returns>
-        private TypedefDecl FindMatchingTypedef(List<Typedef> typedefs, FunctionType functionType)
+        private static TypedefDecl FindMatchingTypedef(IEnumerable<Typedef> typedefs, FunctionType functionType)
         {
             return (from typedef in typedefs
                 let type = (FunctionType)typedef.Declaration.Type.GetPointee()
                 where type.ReturnType == functionType.ReturnType &&
-                      type.Parameters.SequenceEqual(functionType.Parameters, new ParameterTypeComparer())
+                      type.Parameters.SequenceEqual(functionType.Parameters, ParameterTypeComparer.Instance)
                 select typedef.Declaration).SingleOrDefault();
         }
     }

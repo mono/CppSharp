@@ -146,12 +146,11 @@ namespace CppSharp.Passes
 
         private static void ImplementInterfaceMethods(Class @class, Class @interface)
         {
-            var parameterTypeComparer = new ParameterTypeComparer();
             foreach (var method in @interface.Methods)
             {
                 if (@class.Methods.Any(m => m.OriginalName == method.OriginalName &&
                         m.Parameters.SequenceEqual(method.Parameters.Where(p => !p.Ignore),
-                            parameterTypeComparer)))
+                            ParameterTypeComparer.Instance)))
                     continue;
                 var impl = new Method(method)
                     {
