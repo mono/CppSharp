@@ -54,7 +54,6 @@ namespace CppSharp.AST
             return GatherVTableMethodEntries(@class.Layout.Layout);
         }
 
-
         public static int GetVTableIndex(Function function, Class @class)
         {
             switch (@class.Layout.ABI)

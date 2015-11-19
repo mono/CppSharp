@@ -780,6 +780,13 @@ public:
     int property();
 };
 
+class DLL_API AbstractOverrideFromSecondaryBase : public Foo, public OverridePropertyFromIndirectPrimaryBaseBase
+{
+public:
+    AbstractOverrideFromSecondaryBase();
+    virtual void setProperty(int value) = 0;
+};
+
 class DLL_API QObject
 {
 public:

@@ -883,6 +883,10 @@ int OverridePropertyFromIndirectPrimaryBase::property()
     return 5;
 }
 
+AbstractOverrideFromSecondaryBase::AbstractOverrideFromSecondaryBase()
+{
+}
+
 QObject::QObject()
 {
 }

@@ -72,5 +72,15 @@ namespace CppSharp.AST
 
             return @params;
         }
+
+        public static bool CanOverride(this Method @override, Method method,
+            ParameterTypeComparer parameterTypeComparer = null)
+        {
+            parameterTypeComparer = parameterTypeComparer ?? new ParameterTypeComparer();
+            return (method.OriginalName == @override.OriginalName &&
+                method.ReturnType == @override.ReturnType &&
+                method.Parameters.SequenceEqual(@override.Parameters, parameterTypeComparer)) ||
+                (@override.IsDestructor && method.IsDestructor && method.IsVirtual);
+        }
     }
 }

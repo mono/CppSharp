@@ -75,10 +75,7 @@ namespace CppSharp.AST
                 }
 
                 baseMethod = (from method in @base.Class.Methods
-                    where (method.OriginalName == @override.OriginalName &&
-                        method.ReturnType == @override.ReturnType &&
-                        method.Parameters.SequenceEqual(@override.Parameters, parameterTypeComparer)) ||
-                        (@override.IsDestructor && method.IsDestructor && method.IsVirtual)
+                    where @override.CanOverride(method, parameterTypeComparer)
                     select method).FirstOrDefault();
                 if (baseMethod != null)
                     return baseMethod;

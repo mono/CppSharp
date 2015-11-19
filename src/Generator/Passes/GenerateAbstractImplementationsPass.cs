@@ -130,8 +130,14 @@ namespace CppSharp.Passes
         private static List<Method> GetAbstractMethods(Class @class)
         {
             var abstractMethods = @class.Methods.Where(m => m.IsPure).ToList();
-            foreach (var @base in @class.Bases)
-                abstractMethods.AddRange(GetAbstractMethods(@base.Class));
+            var abstractOverrides = abstractMethods.Where(a => a.IsOverride).ToList();
+            foreach (var baseAbstractMethods in @class.Bases.Select(b => GetAbstractMethods(b.Class)))
+            {
+                for (var i = baseAbstractMethods.Count - 1; i >= 0; i--)
+                    if (abstractOverrides.Any(a => a.CanOverride(baseAbstractMethods[i])))
+                        baseAbstractMethods.RemoveAt(i);
+                abstractMethods.AddRange(baseAbstractMethods);
+            }
 
             return abstractMethods;
         }
