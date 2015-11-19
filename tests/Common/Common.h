@@ -525,6 +525,12 @@ TestProperties::TestProperties() : Field(0) {}
 int TestProperties::getFieldValue() { return Field; }
 void TestProperties::setFieldValue(int Value) { Field = Value; }
 
+class DLL_API TypeMappedIndex
+{
+public:
+    TypeMappedIndex();
+};
+
 class DLL_API TestIndexedProperties
 {
 public:
@@ -544,6 +550,7 @@ public:
     // Should lead to a read-only indexer with argument type TestProperties
     foo_t operator[](TestProperties b);
     Bar& operator[](unsigned long i);
+    Bar& operator[](const TypeMappedIndex& key);
 private:
     foo_t p;
     TestProperties f;
@@ -559,6 +566,10 @@ TestProperties* TestIndexedProperties::operator[](unsigned char b) { return &f; 
 const TestProperties& TestIndexedProperties::operator[](short b) { return f; }
 foo_t TestIndexedProperties::operator[](TestProperties b) { return p; }
 Bar& TestIndexedProperties::operator[](unsigned long i)
+{
+    return bar;
+}
+Bar& TestIndexedProperties::operator[](const TypeMappedIndex& key)
 {
     return bar;
 }
@@ -584,7 +595,7 @@ void TestVariables::SetValue(int value) { VALUE = value; }
 typedef const wchar_t * LPCWSTR;
 struct DLL_API TestWideStrings
 {
-	LPCWSTR GetWidePointer();
+    LPCWSTR GetWidePointer();
 };
 
 LPCWSTR TestWideStrings::GetWidePointer() { return L"Hello"; }

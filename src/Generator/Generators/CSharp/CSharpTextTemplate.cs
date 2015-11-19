@@ -925,7 +925,7 @@ namespace CppSharp.Generators.CSharp
             Type type;
             function.Type.IsPointerTo(out type);
             PrimitiveType primitiveType;
-            string internalFunction = GetFunctionNativeIdentifier(function);
+            var internalFunction = GetFunctionNativeIdentifier(function);
             if (type.IsPrimitiveType(out primitiveType))
             {
                 WriteLine("*Internal.{0}({1}, {2}) = value;", internalFunction,
@@ -937,9 +937,10 @@ namespace CppSharp.Generators.CSharp
                 Class @class;
                 var isValueType = (type.GetFinalPointee() ?? type).TryGetClass(out @class) &&
                     @class.IsValueType;
+                var paramMarshal = GenerateFunctionParamMarshal(function.Parameters[0], 0, function);
                 WriteLine("*({0}.Internal*) Internal.{1}({2}, {3}) = {4}value.{5};",
                     typeString, internalFunction, GetInstanceParam(function),
-                    function.Parameters[0].Name,
+                    paramMarshal.Context == null ? paramMarshal.Name : paramMarshal.Context.Return,
                     isValueType ? string.Empty : string.Format("*({0}.Internal*) ", typeString),
                     Helpers.InstanceIdentifier);
             }

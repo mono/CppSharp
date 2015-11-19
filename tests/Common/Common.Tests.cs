@@ -331,33 +331,40 @@ public class CommonTests : GeneratorTestFixture
     }
 
     [Test]
-    public unsafe void TestIndexers()
+    public void TestIndexers()
     {
-        var indexedProperties = new TestIndexedProperties();
-        Assert.AreEqual(1, indexedProperties[0]);
-        Assert.AreEqual(1, indexedProperties["foo"]);
-        indexedProperties[0] = 2;
-        Assert.AreEqual(2, indexedProperties[0]);
-        indexedProperties[0f] = 3;
-        Assert.AreEqual(3, indexedProperties[0f]);
-        var properties = indexedProperties[(byte) 0];
-        Assert.AreEqual(0, properties.Field);
-        var newProperties = new TestProperties();
-        newProperties.Field = 4;
-        indexedProperties[(byte) 0] = newProperties;
-        Assert.AreEqual(4, indexedProperties[(byte) 0].Field);
-        newProperties = indexedProperties[(short) 0];
-        Assert.AreEqual(4, newProperties.Field);
-        newProperties.Field = 5;
-        Assert.AreEqual(5, indexedProperties[(byte) 0].Field);
+        using (var indexedProperties = new TestIndexedProperties())
+        {
+            Assert.AreEqual(1, indexedProperties[0]);
+            Assert.AreEqual(1, indexedProperties["foo"]);
+            indexedProperties[0] = 2;
+            Assert.AreEqual(2, indexedProperties[0]);
+            indexedProperties[0f] = 3;
+            Assert.AreEqual(3, indexedProperties[0f]);
+            var properties = indexedProperties[(byte) 0];
+            Assert.AreEqual(0, properties.Field);
+            var newProperties = new TestProperties();
+            newProperties.Field = 4;
+            indexedProperties[(byte) 0] = newProperties;
+            Assert.AreEqual(4, indexedProperties[(byte) 0].Field);
+            newProperties = indexedProperties[(short) 0];
+            Assert.AreEqual(4, newProperties.Field);
+            newProperties.Field = 5;
+            Assert.AreEqual(5, indexedProperties[(byte) 0].Field);
+            var bar = new Bar { A = 5 };
+            indexedProperties[0u] = bar;
+            Assert.That(bar.A, Is.EqualTo(indexedProperties[0u].A));
+            indexedProperties[(ushort) 0] = bar;
+            Assert.That(bar.A, Is.EqualTo(indexedProperties[(ushort) 0].A));
+        }
     }
 
     [Test]
-    public unsafe void TestOperators()
+    public void TestOperators()
     {
         var @class = new ClassWithOverloadedOperators();
         Assert.AreEqual(1, (char) @class);
-        Assert.AreEqual(2, (int) @class);
+        Assert.AreEqual(2, @class);
         Assert.AreEqual(3, (short) @class);
     }
 

@@ -27,7 +27,7 @@ namespace CppSharp.Tests
 
         public override string CSharpSignature(CSharpTypePrinterContext ctx)
         {
-            return this.CSharpSignatureType(ctx).ToString();
+            return CSharpSignatureType(ctx).ToString();
         }
 
         public override void CSharpMarshalToNative(MarshalContext ctx)
@@ -48,7 +48,7 @@ namespace CppSharp.Tests
         {
             get
             {
-                var type = (TemplateSpecializationType) this.Type;
+                var type = (TemplateSpecializationType) Type;
                 var pointeeType = type.Arguments[0].Type;
                 var checker = new TypeIgnoreChecker(TypeMapDatabase);
                 pointeeType.Visit(checker);
