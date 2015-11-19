@@ -527,8 +527,6 @@ void TestProperties::setFieldValue(int Value) { Field = Value; }
 
 class DLL_API TestIndexedProperties
 {
-    foo_t p;
-    TestProperties f;
 public:
     TestIndexedProperties();
     // Should lead to a read/write indexer with return type uint
@@ -545,6 +543,11 @@ public:
     const TestProperties& operator[](short b);
     // Should lead to a read-only indexer with argument type TestProperties
     foo_t operator[](TestProperties b);
+    Bar& operator[](unsigned long i);
+private:
+    foo_t p;
+    TestProperties f;
+    Bar bar;
 };
 
 TestIndexedProperties::TestIndexedProperties() : p(1), f() {}
@@ -555,6 +558,10 @@ const foo_t& TestIndexedProperties::operator[](double f) { return p; }
 TestProperties* TestIndexedProperties::operator[](unsigned char b) { return &f; }
 const TestProperties& TestIndexedProperties::operator[](short b) { return f; }
 foo_t TestIndexedProperties::operator[](TestProperties b) { return p; }
+Bar& TestIndexedProperties::operator[](unsigned long i)
+{
+    return bar;
+}
 
 struct DLL_API TestIndexedPropertiesInValueType
 {

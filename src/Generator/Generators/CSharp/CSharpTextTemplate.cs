@@ -933,9 +933,15 @@ namespace CppSharp.Generators.CSharp
             }
             else
             {
-                WriteLine("*({0}.Internal*) Internal.{1}({2}, {3}) = *({0}.Internal*) value.{4};",
-                    type.ToString(), internalFunction, GetInstanceParam(function),
-                    function.Parameters[0].Name, Helpers.InstanceIdentifier);
+                var typeString = type.ToString();
+                Class @class;
+                var isValueType = (type.GetFinalPointee() ?? type).TryGetClass(out @class) &&
+                    @class.IsValueType;
+                WriteLine("*({0}.Internal*) Internal.{1}({2}, {3}) = {4}value.{5};",
+                    typeString, internalFunction, GetInstanceParam(function),
+                    function.Parameters[0].Name,
+                    isValueType ? string.Empty : string.Format("*({0}.Internal*) ", typeString),
+                    Helpers.InstanceIdentifier);
             }
         }
 
