@@ -4,6 +4,8 @@ os:
   - linux
   - osx
 
+dist: trusty
+
 addons:
   apt:
     sources:
