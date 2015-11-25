@@ -1,0 +1,40 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+$script = <<SCRIPT
+SCRIPT
+
+Vagrant.configure(2) do |config|
+  # For a complete reference, please see the online documentation at
+  # https://docs.vagrantup.com.
+
+  config.vm.box = "ubuntu/trusty64"
+
+  #load external box config
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = 8192
+    vb.cpus = 4
+    vb.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate//cppsharp","1"]
+  end
+
+  config.vm.synced_folder "../..", "/cppsharp"
+
+  # this function fixes errors with ubuntu interactive shell
+  config.vm.provision "fix-no-tty", type: "shell" do |s|
+    s.privileged = false
+    s.inline = "sudo sed -i '/tty/!s/mesg n/tty -s \\&\\& mesg n/' /root/.profile"
+  end
+
+  #this section runs as root
+  config.vm.provision "shell", privileged: true , inline: <<-SHELL
+
+  cd /cppsharp/
+  sudo sh ./build/scripts/Provision.sh
+
+  SHELL
+
+  #this section runs as normal user
+  config.vm.provision "shell", privileged: false , inline: <<-SHELL
+
+  SHELL
+end
