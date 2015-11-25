@@ -11,8 +11,7 @@ dofile "Parser.lua"
 
 solution "CppSharp"
 
-  configurations { "Debug", "Release" }
-  platforms { "x32", "x64" }
+  configurations { "Release", "Debug" }
   flags { common_flags }
   
   location (builddir)
@@ -35,6 +34,7 @@ solution "CppSharp"
 
   configuration "windows"
     defines { "WINDOWS" }
+    architecture "x32"
 	
   configuration {}
     

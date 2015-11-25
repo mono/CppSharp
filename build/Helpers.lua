@@ -14,7 +14,7 @@ if _ARGS[1] then
     builddir = path.getabsolute("./" .. _ARGS[1]);
 end
 
-libdir = path.join(builddir, "lib", "%{cfg.buildcfg}_%{cfg.platform}");
+libdir = path.join(builddir, "lib", "%{cfg.buildcfg}");
 gendir = path.join(builddir, "gen");
 
 common_flags = { "Unicode", "Symbols" }
