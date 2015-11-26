@@ -1,3 +1,7 @@
+function string.is_empty(s)
+  return not s or s == ''
+end
+
 function cat(file)
   local file = assert(io.open(file, "r"))
   local output = file:read('*all')
@@ -5,32 +9,57 @@ function cat(file)
   return output
 end
 
-function execute(cmd)
+function execute(cmd, quiet)
   print(cmd)
-  local file = assert(io.popen(cmd, "r"))
-  local output = file:read('*all')
-  file:close()
-  return output
+  if not quiet then
+    return os.execute(cmd)
+  else
+    local file = assert(io.popen(cmd .. " 2>&1", "r"))
+    local output = file:read('*all')
+    file:close()
+    return output
+  end
 end
 
-local git = {}
+function sudo(cmd)
+  return os.execute("sudo " .. cmd)
+end
+
+function is_vagrant()
+  return os.isdir("/home/vagrant")
+end
+
+git = {}
+
+-- Remove once https://github.com/premake/premake-core/pull/307 is merged.
+local sep = os.is("windows") and "\\" or "/"
 
 function git.clone(dir, url, target)
-  local cmd = "git clone " .. url .. " " .. path.translate(dir) 
+  local cmd = "git clone " .. url .. " " .. path.translate(dir, sep) 
   if target ~= nil then
     cmd = cmd .. " " .. target
   end
-  execute(cmd)
+  return execute(cmd)
+end
+
+function git.pull_rebase(dir)
+  local cmd = "git -C " .. path.translate(dir, sep) .. " pull --rebase"
+  return execute(cmd)
+end
+
+function git.reset_hard(dir, rev)
+  local cmd = "git -C " .. path.translate(dir, sep) .. " reset --hard " .. rev
+  return execute(cmd)
 end
 
 function git.checkout(dir, rev)
-  local cmd = "git -C " .. path.translate(dir) .. " checkout " .. rev
-  execute(cmd)
+  local cmd = "git -C " .. path.translate(dir, sep) .. " checkout " .. rev
+  return execute(cmd)
 end
 
-function git.revision(dir)
-  local cmd = "git -C " .. path.translate(dir) .. " checkout " .. rev
-  execute(cmd)
+function git.rev_parse(dir, rev)
+  local cmd = "git -C " .. path.translate(dir, sep) .. " rev-parse " .. rev
+  return os.outputof(cmd)
 end
 
 function http.progress (total, curr)
@@ -42,12 +71,14 @@ function http.progress (total, curr)
 end
 
 function download(url, file)
-  print("Downloading file " .. file)
+  print("Downloading: " .. url)
   local res = http.download(url, file, http.progress)
 
-  if res == nil then
-    error("Error downloading file " .. file)
+  if res ~= "OK" then
+    os.remove(file)
+    error(res)
   end
+  return res
 end
 
 --

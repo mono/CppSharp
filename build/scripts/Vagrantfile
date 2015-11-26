@@ -4,6 +4,8 @@
 $script = <<SCRIPT
 SCRIPT
 
+is_windows = (RbConfig::CONFIG['host_os'] =~ /mswin|mingw|cygwin/)
+
 Vagrant.configure(2) do |config|
   # For a complete reference, please see the online documentation at
   # https://docs.vagrantup.com.
@@ -17,7 +19,9 @@ Vagrant.configure(2) do |config|
     vb.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate//cppsharp","1"]
   end
 
-  config.vm.synced_folder "../..", "/cppsharp"
+  config.vm.network "private_network", type: "dhcp"
+
+  config.vm.synced_folder "../..", "/cppsharp", nfs: !is_windows
 
   # this function fixes errors with ubuntu interactive shell
   config.vm.provision "fix-no-tty", type: "shell" do |s|
@@ -29,7 +33,7 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell", privileged: true , inline: <<-SHELL
 
   cd /cppsharp/
-  sudo sh ./build/scripts/Provision.sh
+  cd build/scripts && ../premake5-linux-64 --file=Provision.lua provision
 
   SHELL
 

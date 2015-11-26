@@ -15,13 +15,3 @@ if _ACTION == "nuget" then
   nuget()
   os.exit()
 end
-
-if _ACTION == "clone_llvm" then
-  clone_llvm()
-  os.exit()
-end
-
-if _ACTION == "download_llvm" then
-  download_llvm()
-  os.exit()
-end
