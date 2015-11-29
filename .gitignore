@@ -31,6 +31,8 @@ src/generator/generator
 *.ilk
 *.manifest
 *.tmp
+/build/scripts/llvm*
+/build/scripts/.vagrant
 /build/vs2012
 /build/vs2013
 /build/vs2015
