@@ -106,9 +106,9 @@ end
 
 function build_llvm(llvm_build)
 	local conf = get_llvm_configuration_name()
-	if os.is("windows") then
+	local use_msbuild = false
+	if os.is("windows") and use_msbuild then
 		cmake("Visual Studio 12 2013", conf)
-
 		local llvm_sln = path.join(llvm_build, "LLVM.sln")
 		msbuild(llvm_sln, conf)
 	else
@@ -120,6 +120,10 @@ end
 
 function package_llvm(conf, llvm, llvm_build)
 	local rev = git.rev_parse(llvm, "HEAD")
+	if string.is_empty(rev) then
+		rev = get_llvm_rev()
+	end
+
 	local out = get_llvm_package_name(rev, conf)
 
 	if os.isdir(out) then os.rmdir(out)	end
@@ -128,10 +132,12 @@ function package_llvm(conf, llvm, llvm_build)
 	os.copydir(llvm .. "/include", out .. "/include")
 	os.copydir(llvm_build .. "/include", out .. "/build/include")
 
-	local lib_dir =  os.is("windows") and "/" .. conf .. "/lib" or "/lib"
+	local llvm_msbuild_libdir = "/" .. conf .. "/lib"
+	local lib_dir =  os.is("windows") and os.isdir(llvm_msbuild_libdir)
+		and llvm_msbuild_libdir or "/lib"
 	local llvm_build_libdir = llvm_build .. lib_dir
 
-	if os.is("windows") then
+	if os.is("windows") and os.isdir(llvm_build_libdir) then
 		os.copydir(llvm_build_libdir, out .. "/build" .. lib_dir, "*.lib")
 	else
 		os.copydir(llvm_build_libdir, out .. "/build/lib", "*.a")
