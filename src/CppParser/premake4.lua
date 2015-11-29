@@ -37,6 +37,7 @@ project "CppSharp.CppParser"
     "*.lua"
   }
   
+  SearchLLVM()
   SetupLLVMIncludes()
   SetupLLVMLibs()
   

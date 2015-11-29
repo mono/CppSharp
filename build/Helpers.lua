@@ -2,6 +2,7 @@
 
 action = _ACTION or ""
 
+basedir = path.getdirectory(_PREMAKE_COMMAND)
 depsdir = path.getabsolute("../deps");
 srcdir = path.getabsolute("../src");
 incdir = path.getabsolute("../include");

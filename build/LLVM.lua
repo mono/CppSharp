@@ -1,9 +1,22 @@
 -- Setup the LLVM dependency directories
 
-LLVMRootDir = "../../deps/llvm/"
-LLVMBuildDir = "../../deps/llvm/build/"
+LLVMRootDir = depsdir .. "/llvm/"
+LLVMBuildDir = LLVMRootDir .. "llvm/build/"
 
--- TODO: Search for available system dependencies
+require "scripts/LLVM"
+
+function SearchLLVM()
+  local pkg_path = basedir .. "/scripts/" .. get_llvm_package_name()
+  print(path.getabsolute(pkg_path))
+  if os.isdir(pkg_path) then
+    LLVMRootDir = pkg_path
+  elseif os.isdir(LLVMRootDir) then
+  else
+    error("Error finding an LLVM build")
+  end
+
+  print("Using LLVM build: " .. LLVMRootDir)
+end
 
 function SetupLLVMIncludes()
   local c = configuration()

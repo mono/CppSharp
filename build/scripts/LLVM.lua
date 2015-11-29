@@ -1,7 +1,8 @@
 require "Build"
 require "Utils"
+require "../Helpers"
 
-local llvm = "../../deps/llvm"
+local llvm = basedir .. "/../../deps/llvm"
 
 -- If we are inside vagrant then clone and build LLVM outside the shared folder,
 -- otherwise file I/O performance will be terrible.
@@ -11,11 +12,19 @@ end
 
 local llvm_build = llvm .. "/" .. os.get()
 
+function get_llvm_rev()
+	return cat(basedir .. "/LLVM-commit")
+end
+
+function get_clang_rev()
+	return cat(basedir .. "/Clang-commit")
+end
+
 function clone_llvm()
-  local llvm_release = cat("../LLVM-commit")
+  local llvm_release = get_llvm_rev()
   print("LLVM release: " .. llvm_release)
 
-  local clang_release = cat("../Clang-commit")
+  local clang_release = get_clang_rev()
   print("Clang release: " .. clang_release)
 
   if os.isdir(llvm) and not os.isdir(llvm .. "/.git") then
@@ -42,7 +51,19 @@ function clone_llvm()
 end
 
 function get_llvm_package_name(rev, conf)
+  if not rev then
+  	rev = get_llvm_rev()
+  end
+  if not conf then
+  	conf = get_llvm_configuration_name()
+  end
+
+  rev = string.sub(rev, 0, 6)
   return table.concat({"llvm", rev, os.get(), conf}, "-")
+end
+
+function get_llvm_configuration_name()
+	return os.is("windows") and "RelWithDebInfo" or "Release"
 end
 
 function extract_7z(archive, dest_dir)
@@ -51,9 +72,7 @@ end
 
 function download_llvm()
   local base = "https://dl.dropboxusercontent.com/u/194502/CppSharp/llvm/"
-  local conf = os.is("windows") and "RelWithDebInfo" or "Release"
-  local rev = string.sub(cat("../LLVM-commit"), 0, 6)
-  local pkg_name = get_llvm_package_name(rev, conf)
+  local pkg_name = get_llvm_package_name()
   local archive = pkg_name .. ".7z"
 
   -- check if we already have the file downloaded
@@ -86,20 +105,21 @@ function clean_llvm(llvm_build)
 end
 
 function build_llvm(llvm_build)
+	local conf = get_llvm_configuration_name()
 	if os.is("windows") then
-		cmake("Visual Studio 12 2013", "RelWithDebInfo")
+		cmake("Visual Studio 12 2013", conf)
 
 		local llvm_sln = path.join(llvm_build, "LLVM.sln")
-		msbuild(llvm_sln, "RelWithDebInfo")
+		msbuild(llvm_sln, conf)
 	else
-		cmake("Ninja", "Release")
+		cmake("Ninja", conf)
 		execute("ninja")
 		execute("ninja clang-headers")
 	end
 end
 
 function package_llvm(conf, llvm, llvm_build)
-	local rev = string.sub(git.rev_parse(llvm, "HEAD"), 0, 6)
+	local rev = git.rev_parse(llvm, "HEAD")
 	local out = get_llvm_package_name(rev, conf)
 
 	if os.isdir(out) then os.rmdir(out)	end
@@ -159,7 +179,8 @@ if _ACTION == "build_llvm" then
 end
 
 if _ACTION == "package_llvm" then
-	local pkg = package_llvm("RelWithDebInfo", llvm, llvm_build)
+	local conf = get_llvm_configuration_name()
+	local pkg = package_llvm(conf, llvm, llvm_build)
 	archive_llvm(pkg)
   os.exit()
 end

@@ -25,7 +25,7 @@ function msbuild(sln, conf)
 	execute(cmd)
 end
 
-function premake(file, action)
+function run_premake(file, action)
 	-- search for file with extension Lua
 	if os.isfile(file .. ".lua") then
 		file = file .. ".lua"
@@ -37,15 +37,15 @@ end
 
 function build_cppsharp()
 	-- install dependencies
-	premake("Provision", "provision")
+	run_premake("Provision", "provision")
 
 	-- if there is an llvm git clone then use it
 	-- otherwise download and extract llvm/clang build
 
-	premake("LLVM", "download_llvm")
+	run_premake("LLVM", "download_llvm")
 
 	-- generate project files
-	premake("../premake4", "gmake")
+	run_premake("../premake4", "gmake")
 
 	-- build cppsharp
 	--[[BUILD_CONF=release_x32;

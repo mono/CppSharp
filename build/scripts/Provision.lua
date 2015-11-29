@@ -45,12 +45,23 @@ function download_cmake()
 	end
 end
 
+function download_nuget()
+  if not os.isfile("nuget.exe") then
+    download("https://nuget.org/nuget.exe", "nuget.exe")
+  end
+end
+
+function restore_nuget_packages()
+  local nugetexe = os.is("windows") and "NuGet.exe" or "mono ./NuGet.exe"
+  execute(nugetexe .. " restore packages.config -PackagesDirectory " .. depsdir)
+end
+
 local compile_llvm = is_vagrant()
 
 function provision_linux()
 	-- Add Repos
-	sudo("apt-key adv --keyserver http:////keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF")
-	sudo("echo \"deb http:////download.mono-project.com/repo/debian wheezy main\" | sudo tee /etc/apt/sources.list.d/mono-xamarin.list")
+	sudo("apt-key adv --keyserver http://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF")
+	sudo("echo \"deb http://download.mono-project.com/repo/debian wheezy main\" | sudo tee /etc/apt/sources.list.d/mono-xamarin.list")
 
 	if is_vagrant() then
 	 sudo("add-apt-repository -y ppa:george-edison55/cmake-3.x")
@@ -96,3 +107,5 @@ if _ACTION == "provision" then
   end
   os.exit()
 end
+
+
