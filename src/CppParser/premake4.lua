@@ -13,7 +13,7 @@ project "CppSharp.CppParser"
   language "C++"
   SetupNativeProject()
   flags { common_flags }
-  flags { "NoRTTI" }
+  rtti "Off"
 
   local copy = os.is_windows() and "xcopy /Q /E /Y /I" or "cp -rf";
   local headers = path.getabsolute(path.join(LLVMRootDir, "lib/"))
