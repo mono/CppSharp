@@ -1,7 +1,6 @@
 -- Setup the LLVM dependency directories
 
 LLVMRootDir = depsdir .. "/llvm/"
-LLVMBuildDir = LLVMRootDir .. "llvm/build/"
 
 require "scripts/LLVM"
 
@@ -18,9 +17,14 @@ function SearchLLVM()
   print("Using LLVM build: " .. LLVMRootDir)
 end
 
+function get_llvm_build_dir()
+  return path.join(LLVMRootDir, "build")
+end
+
 function SetupLLVMIncludes()
   local c = configuration()
 
+  local LLVMBuildDir = get_llvm_build_dir()
   includedirs
   {
     path.join(LLVMRootDir, "include"),
@@ -36,6 +40,7 @@ end
 function SetupLLVMLibs()
   local c = configuration()
 
+  local LLVMBuildDir = get_llvm_build_dir()
   libdirs { path.join(LLVMBuildDir, "lib") }
 
   configuration { "Debug", "vs*" }
