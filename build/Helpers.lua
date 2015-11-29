@@ -14,6 +14,7 @@ if _ARGS[1] then
     builddir = path.getabsolute("./" .. _ARGS[1]);
 end
 
+objsdir = path.join(builddir, "obj", "%{cfg.buildcfg}_%{cfg.platform}");
 libdir = path.join(builddir, "lib", "%{cfg.buildcfg}_%{cfg.platform}");
 gendir = path.join(builddir, "gen");
 

@@ -16,7 +16,7 @@ solution "CppSharp"
   flags { common_flags }
   
   location (builddir)
-  objdir (path.join(builddir, "obj"))
+  objdir (objsdir)
   targetdir (libdir)
   debugdir (bindir)
 
