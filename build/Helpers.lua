@@ -95,7 +95,7 @@ function IncludeDir(dir)
     fp = path.join(os.getcwd(), fp)
     
     if os.isfile(fp) then
-      print(string.format(" including %s", dep))
+      --print(string.format(" including %s", dep))
       include(dep)
     end
   end

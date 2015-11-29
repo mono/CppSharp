@@ -184,11 +184,11 @@ function SetupTestProjectsCLI(name, extraFiles)
 end
 
 function IncludeExamples()
-  print("Searching for examples...")
+  --print("Searching for examples...")
   IncludeDir(examplesdir)
 end
 
 function IncludeTests()
-  print("Searching for tests...")
+  --print("Searching for tests...")
   IncludeDir(testsdir)
 end
