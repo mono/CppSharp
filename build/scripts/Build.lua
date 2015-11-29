@@ -25,6 +25,14 @@ function msbuild(sln, conf)
 	execute(cmd)
 end
 
+function ninja(dir, action)
+	local cmd = "ninja -C " .. dir
+	if action then
+		cmd = cmd .. " " .. action
+	end
+	return execute(cmd)
+end
+
 function run_premake(file, action)
 	-- search for file with extension Lua
 	if os.isfile(file .. ".lua") then

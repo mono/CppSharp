@@ -2,7 +2,7 @@ require "Build"
 require "Utils"
 require "../Helpers"
 
-local llvm = basedir .. "/../../deps/llvm"
+local llvm = basedir .. "/../deps/llvm"
 
 -- If we are inside vagrant then clone and build LLVM outside the shared folder,
 -- otherwise file I/O performance will be terrible.
@@ -113,8 +113,8 @@ function build_llvm(llvm_build)
 		msbuild(llvm_sln, conf)
 	else
 		cmake("Ninja", conf)
-		execute("ninja")
-		execute("ninja clang-headers")
+		ninja(llvm_build)
+		ninja(llvm_build, "clang-headers")
 	end
 end
 
@@ -189,3 +189,4 @@ if _ACTION == "download_llvm" then
   download_llvm()
   os.exit()
 end
+
