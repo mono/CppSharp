@@ -42,8 +42,7 @@ init:
   - git config --global core.autocrlf true
 
 install:
-  - appveyor DownloadFile https://dl.dropboxusercontent.com/u/194502/CppSharp/llvm_windows_x86.7z
-  - 7z x llvm_windows_x86.7z -o%DEPS_PATH%\llvm -y > nul
+  - build\premake5.exe --file=build\scripts\LLVM.lua download_llvm
 
 build_script:
   - build\premake5.exe --file=build\premake4.lua %VS_VERSION%
