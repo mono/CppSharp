@@ -2407,7 +2407,8 @@ namespace CppSharp.Generators.CSharp
                 return;
             }
 
-            if (method.OperatorKind == CXXOperatorKind.EqualEqual)
+            if (method.OperatorKind == CXXOperatorKind.EqualEqual ||
+                method.OperatorKind == CXXOperatorKind.ExclaimEqual)
             {
                 WriteLine("bool {0}Null = ReferenceEquals({0}, null);",
                     method.Parameters[0].Name);
@@ -2415,8 +2416,10 @@ namespace CppSharp.Generators.CSharp
                     method.Parameters[1].Name);
                 WriteLine("if ({0}Null || {1}Null)",
                     method.Parameters[0].Name, method.Parameters[1].Name);
-                WriteLineIndent("return {0}Null && {1}Null;",
-                    method.Parameters[0].Name, method.Parameters[1].Name);
+                WriteLineIndent("return {0}{1}Null && {2}Null{3};",
+                    method.OperatorKind == CXXOperatorKind.EqualEqual ? string.Empty : "!(",
+                    method.Parameters[0].Name, method.Parameters[1].Name,
+                    method.OperatorKind == CXXOperatorKind.EqualEqual ? string.Empty : ")");
             }
 
             GenerateInternalFunctionCall(method);

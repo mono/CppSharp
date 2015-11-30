@@ -943,6 +943,21 @@ namespace CppSharp.Generators.CLI
         {
             CheckArgumentRange(function);
 
+            if (function.OperatorKind == CXXOperatorKind.EqualEqual ||
+                function.OperatorKind == CXXOperatorKind.ExclaimEqual)
+            {
+                WriteLine("bool {0}Null = ReferenceEquals({0}, nullptr);",
+                    function.Parameters[0].Name);
+                WriteLine("bool {0}Null = ReferenceEquals({0}, nullptr);",
+                    function.Parameters[1].Name);
+                WriteLine("if ({0}Null || {1}Null)",
+                    function.Parameters[0].Name, function.Parameters[1].Name);
+                WriteLineIndent("return {0}{1}Null && {2}Null{3};",
+                    function.OperatorKind == CXXOperatorKind.EqualEqual ? string.Empty : "!(",
+                    function.Parameters[0].Name, function.Parameters[1].Name,
+                    function.OperatorKind == CXXOperatorKind.EqualEqual ? string.Empty : ")");
+            }
+
             var retType = function.ReturnType;
             if (publicRetType == null)
                 publicRetType = retType.Type;

@@ -460,9 +460,18 @@ DLL_API const HasFriend operator-(const HasFriend& f1, const HasFriend& f2)
     return HasFriend(f1.m - f2.m);
 }
 
+DifferentConstOverloads::DifferentConstOverloads() : i(5)
+{
+}
+
 bool DifferentConstOverloads::operator ==(const DifferentConstOverloads& other)
 {
-    return true;
+    return i == other.i;
+}
+
+bool DifferentConstOverloads::operator !=(const DifferentConstOverloads& other)
+{
+    return i != other.i;
 }
 
 bool DifferentConstOverloads::operator ==(int number) const

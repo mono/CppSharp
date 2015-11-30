@@ -502,10 +502,22 @@ public class CommonTests : GeneratorTestFixture
     [Test]
     public void TestEqualityOperator()
     {
-        Assert.AreEqual(new Foo { A = 5, B = 5.5f }, new Foo { A = 5, B = 5.5f });
-        Assert.AreNotEqual(new Foo { A = 5, B = 5.6f }, new Foo { A = 5, B = 5.5f });
-        Assert.AreEqual(new Bar { A = 5, B = 5.5f }, new Bar { A = 5, B = 5.5f });
-        Assert.AreNotEqual(new Bar { A = 5, B = 5.6f }, new Bar { A = 5, B = 5.5f });
+        using (var foo = new Foo { A = 5, B = 5.5f })
+        {
+            Assert.IsTrue(foo == foo);
+            using (var notEqual = new Foo { A = 5, B = 5.6f })
+            {
+                Assert.IsTrue(notEqual != foo);
+            }
+            Assert.IsTrue(foo != null);
+        }
+        var bar = new Bar { A = 5, B = 5.5f };
+        Assert.IsTrue(bar == bar);
+        Assert.IsFalse(new Bar { A = 5, B = 5.6f } == bar);
+        using (var differentConstOverloads = new DifferentConstOverloads())
+        {
+            Assert.IsTrue(differentConstOverloads != null);
+        }
     }
 
     [Test]

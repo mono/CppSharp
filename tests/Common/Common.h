@@ -772,8 +772,12 @@ template<typename T> class FriendTemplate
 class DLL_API DifferentConstOverloads
 {
 public:
+    DifferentConstOverloads();
     bool operator ==(const DifferentConstOverloads& other);
+    bool operator !=(const DifferentConstOverloads& other);
     bool operator ==(int number) const;
+private:
+    int i;
 };
 
 class TestNamingAnonymousTypesInUnion
