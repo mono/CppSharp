@@ -9,6 +9,7 @@ function SearchLLVM()
   print(path.getabsolute(pkg_path))
   if os.isdir(pkg_path) then
     LLVMRootDir = pkg_path
+    LLVMBuildDir = LLVMRootDir .. "llvm/build/"    
   elseif os.isdir(LLVMRootDir) then
   else
     error("Error finding an LLVM build")
