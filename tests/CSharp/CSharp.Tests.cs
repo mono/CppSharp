@@ -103,17 +103,24 @@ public class CSharpTests : GeneratorTestFixture
         Assert.That(proprietor.Value, Is.EqualTo(20));
         proprietor.Prop = 50;
         Assert.That(proprietor.Prop, Is.EqualTo(50));
-        var p = new P((IQux) null) { Value = 20 };
-        Assert.That(p.Value, Is.EqualTo(30));
-        p.Prop = 50;
-        Assert.That(p.Prop, Is.EqualTo(150));
+        using (var qux = new Qux())
+        {
+            using (var p = new P((IQux) qux) { Value = 20 })
+            {
+                Assert.That(p.Value, Is.EqualTo(30));
+                p.Prop = 50;
+                Assert.That(p.Prop, Is.EqualTo(150));
 
-        ComplexType complexType = new ComplexType();
-        p.ComplexType = complexType;
-        Assert.That(p.ComplexType.Check(), Is.EqualTo(5));
+                using (var complexType = new ComplexType())
+                {
+                    p.ComplexType = complexType;
+                    Assert.That(p.ComplexType.Check(), Is.EqualTo(5));
+                }
 
-        Assert.That(p.Test, Is.True);
-        Assert.That(p.IsBool, Is.False);
+                Assert.That(p.Test, Is.True);
+                Assert.That(p.IsBool, Is.False);
+            }
+        }
     }
 
     [Test]

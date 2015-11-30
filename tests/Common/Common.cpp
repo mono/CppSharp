@@ -23,6 +23,11 @@ void Foo::TakesTypedefedPtr(FooPtr date)
 {
 }
 
+int Foo::TakesRef(const Foo &other)
+{
+    return other.A;
+}
+
 bool Foo::operator ==(const Foo& other) const
 {
     return A == other.A && B == other.B;

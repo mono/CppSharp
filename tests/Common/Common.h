@@ -59,6 +59,7 @@ public:
     typedef Foo* FooPtr;
 
     void TakesTypedefedPtr(FooPtr date);
+    int TakesRef(const Foo& other);
 
     bool operator ==(const Foo& other) const;
 };

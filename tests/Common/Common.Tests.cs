@@ -590,6 +590,15 @@ public class CommonTests : GeneratorTestFixture
         Assert.That(Foo.charArray, Is.EqualTo("abc"));
     }
 
+    [Test]
+    public void TestPassingNullToRef()
+    {
+        using (var foo = new Foo())
+        {
+            Assert.Catch<ArgumentNullException>(() => foo.TakesRef(null));
+        }
+    }
+
     private class CustomDerivedFromVirtual : AbstractWithVirtualDtor
     {
         public override void @abstract()

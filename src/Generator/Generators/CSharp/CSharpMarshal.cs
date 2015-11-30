@@ -654,12 +654,31 @@ namespace CppSharp.Generators.CSharp
                 if (type.TryGetClass(out decl) && decl.IsValueType)
                     Context.Return.Write("{0}.{1}", param, Helpers.InstanceIdentifier);
                 else
-                    Context.Return.Write("{0}{1}.{2}",
-                        method != null && method.OperatorKind == CXXOperatorKind.EqualEqual
-                            ? string.Empty
-                            : string.Format("ReferenceEquals({0}, null) ? global::System.IntPtr.Zero : ", param),
-                        param,
-                        Helpers.InstanceIdentifier, type);
+                {
+                    if (type.IsPointer())
+                    {
+                        Context.Return.Write("{0}{1}.{2}",
+                            method != null && method.OperatorKind == CXXOperatorKind.EqualEqual
+                                ? string.Empty
+                                : string.Format("ReferenceEquals({0}, null) ? global::System.IntPtr.Zero : ", param),
+                            param, Helpers.InstanceIdentifier, type);
+                    }
+                    else
+                    {
+                        if (method == null ||
+                            // redundant for comparison operators, they are handled in a special way
+                            (method.OperatorKind != CXXOperatorKind.EqualEqual &&
+                            method.OperatorKind != CXXOperatorKind.ExclaimEqual))
+                        {
+                            Context.SupportBefore.WriteLine("if (ReferenceEquals({0}, null))", param);
+                            Context.SupportBefore.WriteLineIndent(
+                                "throw new global::System.ArgumentNullException(\"{0}\", " +
+                                "\"{0} cannot be null because it is a C++ reference (&).\");",
+                                param);
+                        }
+                        Context.Return.Write("{0}.{1}", param, Helpers.InstanceIdentifier);
+                    }
+                }
                 return;
             }
 

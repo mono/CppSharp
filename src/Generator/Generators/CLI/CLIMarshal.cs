@@ -679,14 +679,28 @@ namespace CppSharp.Generators.CLI
 
         private void MarshalRefClass(Class @class)
         {
-            TypeMap typeMap = null;
+            TypeMap typeMap;
             if (Context.Driver.TypeDatabase.FindTypeMap(@class, out typeMap) && typeMap.DoesMarshalling)
             {
                 typeMap.CLIMarshalToNative(Context);
                 return;
             }
 
-            if (!Context.Parameter.Type.Desugar().SkipPointerRefs().IsPointer())
+            var type = Context.Parameter.Type.Desugar();
+            var method = Context.Function as Method;
+            if (type.IsReference() && (method == null ||
+                // redundant for comparison operators, they are handled in a special way
+                (method.OperatorKind != CXXOperatorKind.EqualEqual &&
+                method.OperatorKind != CXXOperatorKind.ExclaimEqual)))
+            {
+                Context.SupportBefore.WriteLine("if (ReferenceEquals({0}, nullptr))", Context.Parameter.Name);
+                Context.SupportBefore.WriteLineIndent(
+                    "throw gcnew ::System::ArgumentNullException(\"{0}\", " +
+                    "\"{0} cannot be null because it is a C++ reference (&).\");",
+                    Context.Parameter.Name);
+            }
+
+            if (!type.SkipPointerRefs().IsPointer())
             {
                 Context.Return.Write("*");
 
@@ -694,7 +708,6 @@ namespace CppSharp.Generators.CLI
                     VarPrefix.Write("&");
             }
 
-            var method = Context.Function as Method;
             if (method != null
                 && method.Conversion == MethodConversionKind.FunctionToInstanceMethod
                 && Context.ParameterIndex == 0)
