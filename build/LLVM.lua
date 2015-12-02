@@ -6,7 +6,6 @@ require "scripts/LLVM"
 
 function SearchLLVM()
   local pkg_path = basedir .. "/scripts/" .. get_llvm_package_name()
-  print(path.getabsolute(pkg_path))
   if os.isdir(pkg_path) then
     LLVMRootDir = pkg_path
   elseif os.isdir(LLVMRootDir) then
