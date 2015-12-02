@@ -173,7 +173,12 @@ function package_llvm(conf, llvm, llvm_build)
 end
 
 function archive_llvm(dir)
-	execute("7z a " .. dir .. ".7z " .. "./" .. dir .. "/*")
+	local archive = dir .. ".7z"
+	if os.isfile(archive) then os.remove(archive) end
+	local cwd = os.getcwd()
+	os.chdir(dir)
+	execute("7z a " .. path.join("..", archive) .. " *")
+	os.chdir(cwd)
 end
 
 if _ACTION == "clone_llvm" then
