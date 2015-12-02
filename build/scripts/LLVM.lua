@@ -86,7 +86,7 @@ function download_llvm()
   end
 end
 
-function cmake(gen, conf)
+function cmake(gen, conf, options)
 	local cwd = os.getcwd()
 	os.chdir(llvm_build)
 	local cmd = "cmake -G " .. '"' .. gen .. '"'
@@ -95,6 +95,7 @@ function cmake(gen, conf)
  		.. ' -DLLVM_INCLUDE_EXAMPLES=false -DLLVM_INCLUDE_DOCS=false -DLLVM_INCLUDE_TESTS=false'
  		.. ' -DLLVM_TARGETS_TO_BUILD="X86"'
  		.. ' -DCMAKE_BUILD_TYPE=' .. conf .. ' ..'
+ 		.. ' ' .. options
  	execute(cmd)
  	os.chdir(cwd)
 end
@@ -112,7 +113,9 @@ function build_llvm(llvm_build)
 		local llvm_sln = path.join(llvm_build, "LLVM.sln")
 		msbuild(llvm_sln, conf)
 	else
-		cmake("Ninja", conf)
+		local options = os.is("macosx") and
+			"-DLLVM_ENABLE_LIBCXX=true -DLLVM_BUILD_32_BITS=true" or "" 
+		cmake("Ninja", conf, options)
 		ninja(llvm_build)
 		ninja(llvm_build, "clang-headers")
 	end
