@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using CppSharp.AST;
@@ -265,9 +266,9 @@ namespace CppSharp.Generators
 
         public abstract void Process();
 
-        public string Generate()
+        public virtual void Generate(TextWriter textWriter)
         {
-            return RootBlock.Generate(Options);
+            textWriter.Write(RootBlock.Generate(Options));
         }
 
         #region Block helpers

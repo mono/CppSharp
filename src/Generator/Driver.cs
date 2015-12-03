@@ -343,7 +343,8 @@ namespace CppSharp
                     Diagnostics.Message("Generated '{0}'", fileRelativePath);
 
                     var file = Path.Combine(outputPath, fileRelativePath);
-                    File.WriteAllText(file, template.Generate());
+                    using (var streamWriter = new StreamWriter(file))
+                        template.Generate(streamWriter);
                     Options.CodeFiles.Add(file);
                 }
             }
