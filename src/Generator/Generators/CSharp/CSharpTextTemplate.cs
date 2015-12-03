@@ -1273,8 +1273,49 @@ namespace CppSharp.Generators.CSharp
 
             GenerateVTableClassSetup(@class, wrappedEntries);
 
+            GenerateVTableCleanup(@class, wrappedEntries);
+
             WriteLine("#endregion");
             PopBlock(NewLineKind.BeforeNextBlock);
+        }
+
+        private void GenerateVTableCleanup(Class @class, IList<VTableComponent> wrappedEntries)
+        {
+            WriteLine("private static readonly Destructor Finalise = new Destructor();");
+            WriteLine("private sealed class Destructor");
+            WriteStartBraceIndent();
+            WriteLine("~Destructor()");
+            WriteStartBraceIndent();
+            WriteLine("if (__ManagedVTables != null)");
+            WriteStartBraceIndent();
+            DeAllocateVTables(@class, wrappedEntries, false);
+            WriteCloseBraceIndent();
+            WriteCloseBraceIndent();
+            WriteCloseBraceIndent();
+        }
+
+        private void DeAllocateVTables(Class @class, IList<VTableComponent> wrappedEntries,
+            bool destructorOnly)
+        {
+            if (Options.IsMicrosoftAbi)
+                DeAllocateVTablesMS(@class, wrappedEntries, destructorOnly);
+            else
+                DeAllocateVTablesItanium(@class, wrappedEntries, destructorOnly);
+        }
+
+        private void DeAllocateVTablesMS(Class @class, IList<VTableComponent> wrappedEntries,
+            bool destructorOnly)
+        {
+            var managedVTables = destructorOnly ? "__ManagedVTablesDtorOnly" : "__ManagedVTables";
+            for (int tableIndex = 0; tableIndex < @class.Layout.VFTables.Count; tableIndex++)
+                WriteLine("Marshal.FreeHGlobal((System.IntPtr){0}[{1}]);", managedVTables, tableIndex);
+        }
+
+        private void DeAllocateVTablesItanium(Class @class, IList<VTableComponent> wrappedEntries,
+            bool destructorOnly)
+        {
+            var managedVTables = destructorOnly ? "__ManagedVTablesDtorOnly" : "__ManagedVTables";
+            WriteLine("Marshal.FreeHGlobal((System.IntPtr){0}[0]);", managedVTables);
         }
 
         private void GenerateVTableClassSetup(Class @class, IList<VTableComponent> wrappedEntries)
