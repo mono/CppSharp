@@ -1281,17 +1281,15 @@ namespace CppSharp.Generators.CSharp
 
         private void GenerateVTableCleanup(Class @class, IList<VTableComponent> wrappedEntries)
         {
-            WriteLine("private static readonly Destructor Finalise = new Destructor();");
+            WriteLine("private static readonly Destructor finalise = new Destructor();");
             WriteLine("private sealed class Destructor");
             WriteStartBraceIndent();
             WriteLine("~Destructor()");
             WriteStartBraceIndent();
-            WriteLine("if (__ManagedVTables != null)");
-            WriteStartBraceIndent();
             DeAllocateVTables(@class, wrappedEntries, false);
             WriteCloseBraceIndent();
             WriteCloseBraceIndent();
-            WriteCloseBraceIndent();
+            NewLine();
         }
 
         private void DeAllocateVTables(Class @class, IList<VTableComponent> wrappedEntries,
@@ -1306,16 +1304,35 @@ namespace CppSharp.Generators.CSharp
         private void DeAllocateVTablesMS(Class @class, IList<VTableComponent> wrappedEntries,
             bool destructorOnly)
         {
-            var managedVTables = destructorOnly ? "__ManagedVTablesDtorOnly" : "__ManagedVTables";
+            if (destructorOnly)
+            {
+                WriteLine("if (__ManagedVTablesDtorOnly != null)");
+                WriteStartBraceIndent();
+                for (int tableIndex = 0; tableIndex < @class.Layout.VFTables.Count; tableIndex++)
+                    WriteLine("Marshal.FreeHGlobal((System.IntPtr)__ManagedVTablesDtorOnly[{0}]);", tableIndex);
+                WriteCloseBraceIndent();
+            }
+            WriteLine("if (__ManagedVTables != null)");
+            WriteStartBraceIndent();
             for (int tableIndex = 0; tableIndex < @class.Layout.VFTables.Count; tableIndex++)
-                WriteLine("Marshal.FreeHGlobal((System.IntPtr){0}[{1}]);", managedVTables, tableIndex);
+                WriteLine("Marshal.FreeHGlobal((System.IntPtr)__ManagedVTables[{0}]);", tableIndex);
+            WriteCloseBraceIndent();
         }
 
         private void DeAllocateVTablesItanium(Class @class, IList<VTableComponent> wrappedEntries,
             bool destructorOnly)
         {
-            var managedVTables = destructorOnly ? "__ManagedVTablesDtorOnly" : "__ManagedVTables";
-            WriteLine("Marshal.FreeHGlobal((System.IntPtr){0}[0]);", managedVTables);
+            if (destructorOnly)
+            {
+                WriteLine("if (__ManagedVTablesDtorOnly != null)");
+                WriteStartBraceIndent();
+                WriteLine("Marshal.FreeHGlobal((System.IntPtr)__ManagedVTablesDtorOnly[0]);");
+                WriteCloseBraceIndent();
+            }
+            WriteLine("if (__ManagedVTables != null)");
+            WriteStartBraceIndent();
+            WriteLine("Marshal.FreeHGlobal((System.IntPtr)__ManagedVTables[0]);");
+            WriteCloseBraceIndent();
         }
 
         private void GenerateVTableClassSetup(Class @class, IList<VTableComponent> wrappedEntries)
