@@ -28,10 +28,10 @@ solution "CppSharp"
   end
 
   configuration "vs2013"
-    framework "4.0"
+    framework "4.5"
 
   configuration "vs2012"
-    framework "4.0"
+    framework "4.5"
 
   configuration "windows"
     defines { "WINDOWS" }
