@@ -524,9 +524,6 @@ public class CSharpTests : GeneratorTestFixture
     [Test]
     public void TestFreeHGlobalCalled()
     {
-        Bar b1 = new Bar();
-        Bar b2 = new Bar();
-        b1.Foos = new Foo[4];
-        b2.Foos = new Foo[4];
+       var v = new VirtualTableFreeTest();
     }
 }

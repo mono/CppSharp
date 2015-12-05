@@ -956,3 +956,7 @@ VirtualDtorAddedInDerived::~VirtualDtorAddedInDerived()
 }
 
 bool VirtualDtorAddedInDerived::dtorCalled = false;
+
+VirtualTableFreeTest::VirtualTableFreeTest()
+{
+}

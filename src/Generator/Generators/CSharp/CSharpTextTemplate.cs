@@ -1304,7 +1304,8 @@ namespace CppSharp.Generators.CSharp
         private void DeAllocateVTablesMS(Class @class, IList<VTableComponent> wrappedEntries,
             bool destructorOnly)
         {
-            if (destructorOnly)
+            var hasVirtualDtor = wrappedEntries.Any(e => e.Method.IsDestructor);
+            if (hasVirtualDtor)
             {
                 WriteLine("if (__ManagedVTablesDtorOnly != null)");
                 WriteStartBraceIndent();
@@ -1322,7 +1323,8 @@ namespace CppSharp.Generators.CSharp
         private void DeAllocateVTablesItanium(Class @class, IList<VTableComponent> wrappedEntries,
             bool destructorOnly)
         {
-            if (destructorOnly)
+            var hasVirtualDtor = wrappedEntries.Any(e => e.Method.IsDestructor);
+            if (hasVirtualDtor)
             {
                 WriteLine("if (__ManagedVTablesDtorOnly != null)");
                 WriteStartBraceIndent();
