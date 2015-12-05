@@ -855,9 +855,3 @@ public:
     virtual ~VirtualDtorAddedInDerived();
     static bool dtorCalled;
 };
-
-class DLL_API VirtualTableFreeTest : public Bar
-{
-public:
-	VirtualTableFreeTest();
-};
