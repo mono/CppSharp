@@ -139,16 +139,14 @@ namespace CppSharp.Generators.CSharp
                 {
                     return new CSharpTypePrinterResult()
                     {
-                        Type = "fixed byte",
+                        Type = "byte",
                         NameSuffix = string.Format("[{0}]", array.Size * @class.Layout.Size)
                     };
                 }
 
-                // Do not write the fixed keyword multiple times for nested array types
-                var fixedKeyword = array.Type is ArrayType ? string.Empty : "fixed ";
                 return new CSharpTypePrinterResult()
                 {
-                    Type = string.Format("{0}{1}", fixedKeyword, array.Type.Visit(this, quals)),
+                    Type = array.Type.Visit(this, quals).Type,
                     NameSuffix = string.Format("[{0}]", array.Size)
                 };
             }
