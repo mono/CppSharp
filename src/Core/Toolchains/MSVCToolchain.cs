@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Text.RegularExpressions;
 using CppSharp.Parser;
 using CppSharp.Parser.AST;
 using Microsoft.Win32;
+using ReadEnvSample;
 
 namespace CppSharp
 {
@@ -118,6 +120,46 @@ namespace CppSharp
             }
         }
 
+        private static string RunVCVarsScript(string input)
+        {
+            string ucrtVersion = null;
+            using (var process = new Process())
+            {
+                process.StartInfo.FileName = "cmd";
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.RedirectStandardError = true;
+                process.StartInfo.RedirectStandardOutput = true;
+                process.StartInfo.RedirectStandardInput = true;
+                process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                process.StartInfo.CreateNoWindow = true;
+                process.StartInfo.ErrorDialog = false;
+                process.StartInfo.WorkingDirectory = Environment.CurrentDirectory;
+                process.EnableRaisingEvents = true;
+                var emptyCommandPrompt = process.StartInfo.WorkingDirectory + ">";
+                process.OutputDataReceived += (o, e) =>
+                    {
+                        var p = (Process) o;
+                        if (e.Data == emptyCommandPrompt)
+                        {
+                            var envVars = p.ReadEnvironmentVariables();
+                            ucrtVersion = envVars["ucrtversion"] ?? envVars["UCRTVersion"];
+                            p.CancelOutputRead();
+                            p.CancelErrorRead();
+                            p.StandardInput.Close();
+                        }
+                    };
+                process.ErrorDataReceived += (o, e) => ((Process) o).StandardInput.Close();
+                process.Start();
+                process.BeginOutputReadLine();
+                process.BeginErrorReadLine();
+                process.StandardInput.WriteLine("\"{0}\"", input);
+                process.StandardInput.WriteLine();
+                process.WaitForExit();
+
+                return ucrtVersion;
+            }
+        }
+
         /// Gets the system include folders for the given Visual Studio version.
         public static List<string> GetSystemIncludes(VisualStudioVersion vsVersion)
         {
@@ -128,11 +170,6 @@ namespace CppSharp
 
             if (vsSdks.Count == 0)
                 throw new Exception("Could not find a valid Visual Studio toolchain");
-
-            // Clang cannot deal yet with VS 2015, so remove it from SDKs.
-            if (vsVersion == VisualStudioVersion.Latest)
-                vsSdks.Remove(vsSdks.Find(version =>
-                    (int) version.Version == GetVisualStudioVersion(vsVersion)));
 
             var vsSdk = (vsVersion == VisualStudioVersion.Latest)
                 ? vsSdks.Last()
@@ -151,8 +188,11 @@ namespace CppSharp
 
             int windowsSdkMajorVer = 0;
             string kitsRootKey = string.Empty;
+            string ucrtVersion = null;
             if (File.Exists(vcVarsPath))
             {
+                ucrtVersion = RunVCVarsScript(vcVarsPath);
+
                 var vcVarsFile = File.ReadAllText(vcVarsPath);
                 var match = Regex.Match(vcVarsFile, @"Windows\\v([1-9][0-9]*)\.?([0-9]*)");
                 if (match.Success)
@@ -164,7 +204,7 @@ namespace CppSharp
             }
 
             // Check vsvars32.bat to see location of the new Universal C runtime library.
-            string ucrtPaths = string.Empty;
+            var ucrtPaths = string.Empty;
             var vsVarsPath = Path.Combine(vsDir, @"Common7\Tools\vsvars32.bat");
             if (File.Exists(vsVarsPath))
             {
@@ -177,10 +217,10 @@ namespace CppSharp
             List<ToolchainVersion> windowSdks;
             GetWindowsSdks(out windowSdks);
 
-            var windowSdk = (windowsSdkMajorVer != 0)
-                ? windowSdks.Find(version =>
-                    (int)Math.Floor(version.Version) == windowsSdkMajorVer)
-                : windowSdks.Last();
+            var windowSdk = windowSdks.Find(version => (int) Math.Floor(version.Version) == windowsSdkMajorVer);
+
+            if (windowSdk.Directory == null)
+                windowSdk = windowSdks.Last();
 
             var windowSdkDir = windowSdk.Directory;
 
@@ -212,8 +252,14 @@ namespace CppSharp
 
             if (!string.IsNullOrWhiteSpace(ucrtPaths))
             {
+                const string ucrtVersionEnvVar = "%UCRTVersion%";
                 foreach (var path in ucrtPaths.Split(';'))
-                    includes.Add(Path.Combine(windowsKitSdk.Directory, path.TrimStart('\\')));
+                {
+                    var includeDir = path;
+                    if (ucrtVersion != null && path.Contains(ucrtVersionEnvVar))
+                        includeDir = includeDir.Replace(ucrtVersionEnvVar, ucrtVersion);
+                    includes.Add(Path.Combine(windowsKitSdk.Directory, includeDir));
+                }
             }
 
             return includes;
