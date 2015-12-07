@@ -129,11 +129,6 @@ namespace CppSharp
             if (vsSdks.Count == 0)
                 throw new Exception("Could not find a valid Visual Studio toolchain");
 
-            // Clang cannot deal yet with VS 2015, so remove it from SDKs.
-            if (vsVersion == VisualStudioVersion.Latest)
-                vsSdks.Remove(vsSdks.Find(version =>
-                    (int) version.Version == GetVisualStudioVersion(vsVersion)));
-
             var vsSdk = (vsVersion == VisualStudioVersion.Latest)
                 ? vsSdks.Last()
                 : vsSdks.Find(version =>
@@ -163,24 +158,13 @@ namespace CppSharp
                     kitsRootKey = match.Groups[0].Value;
             }
 
-            // Check vsvars32.bat to see location of the new Universal C runtime library.
-            string ucrtPaths = string.Empty;
-            var vsVarsPath = Path.Combine(vsDir, @"Common7\Tools\vsvars32.bat");
-            if (File.Exists(vsVarsPath))
-            {
-                var vsVarsFile = File.ReadAllText(vsVarsPath);
-                var match = Regex.Match(vsVarsFile, @"INCLUDE=%UniversalCRTSdkDir%(.+)%INCLUDE%");
-                if (match.Success)
-                    ucrtPaths = match.Groups[1].Value;
-            }
-
             List<ToolchainVersion> windowSdks;
             GetWindowsSdks(out windowSdks);
 
-            var windowSdk = (windowsSdkMajorVer != 0)
-                ? windowSdks.Find(version =>
-                    (int)Math.Floor(version.Version) == windowsSdkMajorVer)
-                : windowSdks.Last();
+            var windowSdk = windowSdks.Find(version => (int) Math.Floor(version.Version) == windowsSdkMajorVer);
+
+            if (windowSdk.Directory == null)
+                windowSdk = windowSdks.Last();
 
             var windowSdkDir = windowSdk.Directory;
 
@@ -210,10 +194,54 @@ namespace CppSharp
                 ? windowsKitsSdks.Find(version => version.Value == kitsRootKey)
                 : windowsKitsSdks.Last();
 
-            if (!string.IsNullOrWhiteSpace(ucrtPaths))
+            includes.AddRange(
+                CollectUniversalCRuntimeIncludeDirs(vsDir, windowsKitSdk, windowsSdkMajorVer));
+
+            return includes;
+        }
+
+        private static IEnumerable<string> CollectUniversalCRuntimeIncludeDirs(
+            string vsDir, ToolchainVersion windowsKitSdk, int windowsSdkMajorVer)
+        {
+            var includes = new List<string>();
+
+            // Check vsvars32.bat to see location of the new Universal C runtime library.
+            string ucrtPaths = string.Empty;
+            var vsVarsPath = Path.Combine(vsDir, @"Common7\Tools\vsvars32.bat");
+            if (File.Exists(vsVarsPath))
             {
-                foreach (var path in ucrtPaths.Split(';'))
-                    includes.Add(Path.Combine(windowsKitSdk.Directory, path.TrimStart('\\')));
+                var vsVarsFile = File.ReadAllText(vsVarsPath);
+                var match = Regex.Match(vsVarsFile, @"INCLUDE=%UniversalCRTSdkDir%(.+)%INCLUDE%");
+                if (match.Success)
+                    ucrtPaths = match.Groups[1].Value;
+            }
+
+            if (string.IsNullOrWhiteSpace(ucrtPaths)) return includes;
+
+            // like the rest of GetSystemIncludes, this is a hack
+            // which copies the logic in the vcvarsqueryregistry.bat
+            // the correct way would be to execute the script and collect the values
+            // there's a reference implementation in the 'get_MSVC_UCRTVersion_from_VS_batch_script' branch
+            // however, it cannot be used because it needs invoking an external process to run the .bat
+            // which is killed prematurely by VS when the pre-build events of wrapper projects are run
+            const string ucrtVersionEnvVar = "%UCRTVersion%";
+            foreach (var path in ucrtPaths.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                var index = path.IndexOf(ucrtVersionEnvVar, StringComparison.Ordinal);
+                if (index >= 0)
+                {
+                    var include = path.Substring(0, index);
+                    var parentIncludeDir = Path.Combine(windowsKitSdk.Directory, include);
+                    var dirPrefix = windowsSdkMajorVer + ".";
+                    var includeDir =
+                        (from dir in Directory.EnumerateDirectories(parentIncludeDir).OrderByDescending(d => d)
+                         where Path.GetFileName(dir).StartsWith(dirPrefix)
+                         select Path.Combine(windowsKitSdk.Directory, include, dir)).FirstOrDefault();
+                    if (!string.IsNullOrEmpty(includeDir))
+                        includes.Add(Path.Combine(includeDir, Path.GetFileName(path)));
+                }
+                else
+                    includes.Add(Path.Combine(windowsKitSdk.Directory, path));
             }
 
             return includes;
