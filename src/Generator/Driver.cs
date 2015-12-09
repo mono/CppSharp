@@ -14,6 +14,7 @@ using CppSharp.Passes;
 using CppSharp.Types;
 using Microsoft.CSharp;
 using CppSharp.Parser;
+using System.CodeDom;
 
 namespace CppSharp
 {
@@ -337,14 +338,24 @@ namespace CppSharp
                 if (Options.GenerateName != null)
                     fileBase = Options.GenerateName(output.TranslationUnit);
 
-                foreach (var template in output.Templates)
+                if (Options.IsCSharpGenerator && Options.CompileCode)
                 {
-                    var fileRelativePath = string.Format("{0}.{1}", fileBase, template.FileExtension);
-                    Diagnostics.Message("Generated '{0}'", fileRelativePath);
+                    compileUnits.AddRange(
+                        output.Templates.Select(t => new CodeSnippetCompileUnit(t.Generate())));
+                    compileUnits.AddRange(
+                        Options.CodeFiles.Select(c => new CodeSnippetCompileUnit(File.ReadAllText(c))));
+                }
+                else
+                {
+                    foreach (var template in output.Templates)
+                    {
+                        var fileRelativePath = string.Format("{0}.{1}", fileBase, template.FileExtension);
+                        Diagnostics.Message("Generated '{0}'", fileRelativePath);
 
-                    var file = Path.Combine(outputPath, fileRelativePath);
-                    File.WriteAllText(file, template.Generate());
-                    Options.CodeFiles.Add(file);
+                        var file = Path.Combine(outputPath, fileRelativePath);
+                        File.WriteAllText(file, template.Generate());
+                        Options.CodeFiles.Add(file);
+                    }
                 }
             }
         }
@@ -387,10 +398,13 @@ namespace CppSharp
                          !compilerParameters.ReferencedAssemblies.Contains(libraryMappings[d]))
                     .Select(l => libraryMappings[l])).ToArray());
 
-            var codeProvider = new CSharpCodeProvider(
-                new Dictionary<string, string> {{"CompilerVersion", "v4.0"}});
-            var compilerResults = codeProvider.CompileAssemblyFromFile(
-                compilerParameters, Options.CodeFiles.ToArray());
+            CompilerResults compilerResults;
+            using (var codeProvider = new CSharpCodeProvider(
+                new Dictionary<string, string> { { "CompilerVersion", "v4.0" } }))
+            {
+                compilerResults = codeProvider.CompileAssemblyFromDom(
+                    compilerParameters, compileUnits.ToArray());
+            }
 
             var errors = compilerResults.Errors.Cast<CompilerError>();
             foreach (var error in errors.Where(error => !error.IsWarning))
@@ -413,6 +427,8 @@ namespace CppSharp
         {
             GeneratorOutputPasses.AddPass(pass);
         }
+
+        private List<CodeSnippetCompileUnit> compileUnits = new List<CodeSnippetCompileUnit>();
     }
 
     public static class ConsoleDriver
