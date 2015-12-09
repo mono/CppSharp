@@ -4,12 +4,26 @@ using System.Text;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using CppSharp.Generators.CSharp;
+using System;
 
 namespace CppSharp.Passes
 {
     public class DelegatesPass : TranslationUnitPass
     {
         public const string DelegatesNamespace = "Delegates";
+
+        public class DelegateDefinition
+        {
+            public DelegateDefinition(string @namespace, string signature)
+            {
+                Namespace = @namespace;
+                Signature = signature;
+            }
+
+            public string Namespace { get; private set; }
+
+            public string Signature { get; private set; }
+        }
 
         public DelegatesPass()
         {
@@ -21,15 +35,10 @@ namespace CppSharp.Passes
             Options.VisitTemplateArguments = false;
         }
 
-        public static Dictionary<Function, TypedefDecl> Delegates
-        {
-            get { return delegates; }
-        }
-
         public override bool VisitLibrary(ASTContext context)
         {
             foreach (var library in Driver.Options.Libraries.Where(l => !libsDelegates.ContainsKey(l)))
-                libsDelegates.Add(library, new Dictionary<string, TypedefDecl>());
+                libsDelegates.Add(library, new Dictionary<string, DelegateDefinition>());
 
             var unit = context.TranslationUnits.Last(u => u.IsValid && u.IsGenerated &&
                 !u.IsSystemHeader && u.HasDeclarations);
@@ -50,12 +59,6 @@ namespace CppSharp.Passes
 
             var @params = method.GatherInternalParams(Driver.Options.IsItaniumLikeAbi, true).ToList();
             var delegateName = GenerateDelegateSignature(@params, method.ReturnType);
-            var existingDelegate = GetExistingDelegate(delegateName);
-            if (existingDelegate != null)
-            {
-                delegates.Add(method, existingDelegate);
-                return true;
-            }
 
             var @delegate = new TypedefDecl
                 {
@@ -72,24 +75,35 @@ namespace CppSharp.Passes
                                 }))),
                     Namespace = namespaceDelegates
                 };
-            delegates.Add(method, @delegate);
+
+            var delegateString = @delegate.Visit(TypePrinter).Type;
+            var existingDelegate = GetExistingDelegate(delegateString);
+            if (existingDelegate != null)
+            {
+                Driver.Delegates.Add(method, existingDelegate);
+                return true;
+            }
+
+            existingDelegate = new DelegateDefinition(Driver.Options.OutputNamespace, delegateString);
+            Driver.Delegates.Add(method, existingDelegate);
             foreach (var library in Driver.Options.Libraries)
-                libsDelegates[library].Add(delegateName, @delegate);
+                libsDelegates[library].Add(delegateString, existingDelegate);
 
             namespaceDelegates.Declarations.Add(@delegate);
 
             return true;
         }
 
-        private TypedefDecl GetExistingDelegate(string delegateName)
+        private DelegateDefinition GetExistingDelegate(string delegateString)
         {
-            TypedefDecl @delegate = null;
-
             if (Driver.Options.Libraries.Count == 0)
-                return @delegates.Values.FirstOrDefault(v => v.Name == delegateName);
+                return Driver.Delegates.Values.FirstOrDefault(t => t.Signature == delegateString);
 
-            if (Driver.Options.Libraries.Union(Driver.Symbols.Libraries.SelectMany(l => l.Dependencies)).Any(
-                l => libsDelegates.ContainsKey(l) && libsDelegates[l].TryGetValue(delegateName, out @delegate)))
+            DelegateDefinition @delegate = null;
+            if (Driver.Options.Libraries.Union(
+                Driver.Symbols.Libraries.SelectMany(l => l.Dependencies)).Any(
+                    l => libsDelegates.ContainsKey(l) &&
+                    libsDelegates[l].TryGetValue(delegateString, out @delegate)))
                 return @delegate;
 
             return null;
@@ -124,8 +138,22 @@ namespace CppSharp.Passes
             return delegateName;
         }
 
+        private CSharpTypePrinter TypePrinter
+        {
+            get
+            {
+                if (typePrinter == null)
+                {
+                    typePrinter = new CSharpTypePrinter(Driver);
+                    typePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+                }
+                return typePrinter;
+            }
+        }
+
         private Namespace namespaceDelegates;
-        private static readonly Dictionary<string, Dictionary<string, TypedefDecl>> libsDelegates = new Dictionary<string, Dictionary<string, TypedefDecl>>(); 
-        private static readonly Dictionary<Function, TypedefDecl> delegates = new Dictionary<Function, TypedefDecl>();
+        private CSharpTypePrinter typePrinter;
+        private static readonly Dictionary<string, Dictionary<string, DelegateDefinition>> libsDelegates =
+            new Dictionary<string, Dictionary<string, DelegateDefinition>>();
     }
 }

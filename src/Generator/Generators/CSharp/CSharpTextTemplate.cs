@@ -1573,7 +1573,7 @@ namespace CppSharp.Generators.CSharp
 
             var vTableMethodDelegateName = GetVTableMethodDelegateName(method);
 
-            WriteLine("private static {0} {1}Instance;", DelegatesPass.Delegates[method].Visit(TypePrinter),
+            WriteLine("private static {0} {1}Instance;", GetDelegateName(Driver.Delegates[method]),
                 vTableMethodDelegateName);
             NewLine();
 
@@ -2355,7 +2355,7 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
-        public void GetVirtualCallDelegate(Method method, Class @class,
+        private void GetVirtualCallDelegate(Method method, Class @class,
             out string delegateId)
         {
             var i = VTables.GetVTableIndex(method.OriginalFunction ?? method, @class);
@@ -2371,7 +2371,17 @@ namespace CppSharp.Generators.CSharp
             delegateId = Generator.GeneratedIdentifier(@delegate);
 
             WriteLine("var {0} = ({1}) Marshal.GetDelegateForFunctionPointer(new IntPtr({2}), typeof({1}));",
-                delegateId, DelegatesPass.Delegates[method].Visit(TypePrinter), Helpers.SlotIdentifier);
+                delegateId, GetDelegateName(Driver.Delegates[method]), Helpers.SlotIdentifier);
+        }
+
+        private string GetDelegateName(DelegatesPass.DelegateDefinition @delegate)
+        {
+            if (string.IsNullOrWhiteSpace(@delegate.Namespace) ||
+                Driver.Options.OutputNamespace == @delegate.Namespace)
+            {
+                return @delegate.Signature;
+            }
+            return string.Format("{0}.{1}", @delegate.Namespace, @delegate.Signature);
         }
 
         private void GenerateOperator(Method method)

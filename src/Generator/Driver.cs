@@ -14,6 +14,7 @@ using CppSharp.Types;
 using Microsoft.CSharp;
 using CppSharp.Parser;
 using System.CodeDom;
+using System;
 
 namespace CppSharp
 {
@@ -32,6 +33,8 @@ namespace CppSharp
         public ASTContext ASTContext { get; private set; }
         public SymbolContext Symbols { get; private set; }
 
+        public Dictionary<Function, DelegatesPass.DelegateDefinition> Delegates { get; private set; }
+
         public bool HasCompilationErrors { get; set; }
 
         private static readonly Dictionary<string, string> libraryMappings = new Dictionary<string, string>();
@@ -43,6 +46,7 @@ namespace CppSharp
             Project = new Project();
             ASTContext = new ASTContext();
             Symbols = new SymbolContext();
+            Delegates = new Dictionary<Function, DelegatesPass.DelegateDefinition>();
             TypeDatabase = new TypeMapDatabase();
             TranslationUnitPasses = new PassBuilder<TranslationUnitPass>(this);
             GeneratorOutputPasses = new PassBuilder<GeneratorOutputPass>(this);
@@ -429,7 +433,7 @@ namespace CppSharp
             GeneratorOutputPasses.AddPass(pass);
         }
 
-        private List<CodeSnippetCompileUnit> compileUnits = new List<CodeSnippetCompileUnit>();
+        private readonly List<CodeSnippetCompileUnit> compileUnits = new List<CodeSnippetCompileUnit>();
     }
 
     public static class ConsoleDriver
