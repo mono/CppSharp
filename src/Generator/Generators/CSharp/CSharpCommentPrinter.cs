@@ -6,15 +6,16 @@ namespace CppSharp.Generators.CSharp
 {
     public static class CSharpCommentPrinter
     {
-        public static string CommentToString(this Comment comment)
+        public static string CommentToString(this Comment comment, string commentPrefix)
         {
             var summaryAdded = false;
             var remarksAdded = false;
-            return CommentToString(comment, ref summaryAdded, ref remarksAdded).ToString();
+            return CommentToString(
+                comment, ref summaryAdded, ref remarksAdded, commentPrefix).ToString();
         }
 
         private static StringBuilder CommentToString(Comment comment,
-            ref bool summaryAdded, ref bool remarksAdded)
+            ref bool summaryAdded, ref bool remarksAdded, string commentPrefix)
         {
             var commentBuilder = new StringBuilder();
             switch (comment.Kind)
@@ -23,9 +24,9 @@ namespace CppSharp.Generators.CSharp
                     var fullComment = (FullComment) comment;
                     foreach (var block in fullComment.Blocks)
                         commentBuilder.Append(CommentToString(block,
-                            ref summaryAdded, ref remarksAdded));
+                            ref summaryAdded, ref remarksAdded, commentPrefix));
                     if (remarksAdded)
-                        commentBuilder.Append("</remarks>");
+                        commentBuilder.AppendFormat("{0} </remarks>", commentPrefix);
                     break;
                 case CommentKind.BlockCommandComment:
                     break;
@@ -41,7 +42,7 @@ namespace CppSharp.Generators.CSharp
                     var paragraphComment = (ParagraphComment) comment;
                     foreach (var inlineContentComment in paragraphComment.Content)
                         commentBuilder.Append(CommentToString(inlineContentComment,
-                            ref summaryAdded, ref remarksAdded));
+                            ref summaryAdded, ref remarksAdded, commentPrefix));
                     break;
                 case CommentKind.HTMLTagComment:
                     break;
@@ -51,16 +52,18 @@ namespace CppSharp.Generators.CSharp
                     break;
                 case CommentKind.TextComment:
                     if (!summaryAdded)
-                        commentBuilder.AppendLine("<summary>");
+                        commentBuilder.AppendFormat("{0} <summary>", commentPrefix).AppendLine();
                     if (summaryAdded && !remarksAdded)
                     {
-                        commentBuilder.AppendLine("<remarks>");
+                        commentBuilder.AppendFormat("{0} <remarks>", commentPrefix).AppendLine();
                         remarksAdded = true;
                     }
-                    commentBuilder.Append("<para>" + GetText(comment) + "</para>").AppendLine();
+                    commentBuilder.AppendFormat(
+                        "{0} <para>{1}</para>", commentPrefix, GetText(comment));
+                    commentBuilder.AppendLine();
                     if (!summaryAdded)
                     {
-                        commentBuilder.AppendLine("</summary>");
+                        commentBuilder.AppendFormat("{0} </summary>", commentPrefix).AppendLine();
                         summaryAdded = true;
                     }
                     break;

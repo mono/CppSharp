@@ -275,7 +275,7 @@ namespace CppSharp.Generators.CSharp
             if (comment.FullComment != null)
             {
                 PushBlock(BlockKind.BlockComment);
-                WriteLine(comment.FullComment.CommentToString());
+                WriteLine(comment.FullComment.CommentToString(Options.CommentPrefix));
                 PopBlock();
             }
             else
@@ -284,11 +284,11 @@ namespace CppSharp.Generators.CSharp
                     return;
 
                 PushBlock(BlockKind.BlockComment);
-                WriteLine("<summary>");
+                WriteLine("{0} <summary>", Options.CommentPrefix);
                 foreach (string line in HtmlEncoder.HtmlEncode(comment.BriefText).Split(
                                             Environment.NewLine.ToCharArray()))
-                    WriteLine("<para>{0}</para>", line);
-                WriteLine("</summary>");
+                    WriteLine("{0} <para>{1}</para>", Options.CommentPrefix, line);
+                WriteLine("{0} </summary>", Options.CommentPrefix);
                 PopBlock();
             }
         }
