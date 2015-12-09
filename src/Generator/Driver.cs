@@ -1,5 +1,4 @@
-﻿using System;
-using System.CodeDom.Compiler;
+﻿using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -32,6 +31,8 @@ namespace CppSharp
 
         public ASTContext ASTContext { get; private set; }
         public SymbolContext Symbols { get; private set; }
+
+        public bool HasCompilationErrors { get; set; }
 
         private static readonly Dictionary<string, string> libraryMappings = new Dictionary<string, string>();
 
@@ -398,6 +399,7 @@ namespace CppSharp
                          !compilerParameters.ReferencedAssemblies.Contains(libraryMappings[d]))
                     .Select(l => libraryMappings[l])).ToArray());
 
+            Diagnostics.Message("Compiling generated code...");
             CompilerResults compilerResults;
             using (var codeProvider = new CSharpCodeProvider(
                 new Dictionary<string, string> { { "CompilerVersion", "v4.0" } }))
@@ -405,16 +407,21 @@ namespace CppSharp
                 compilerResults = codeProvider.CompileAssemblyFromDom(
                     compilerParameters, compileUnits.ToArray());
             }
-
-            var errors = compilerResults.Errors.Cast<CompilerError>();
-            foreach (var error in errors.Where(error => !error.IsWarning))
+            
+            var errors = compilerResults.Errors.Cast<CompilerError>().Where(e => !e.IsWarning).ToList();
+            foreach (var error in errors)
                 Diagnostics.Error(error.ToString());
 
-            if (compilerResults.Errors.Count == 0)
+            if (errors.Count == 0)
             {
+                Diagnostics.Message("Compilation succeeded.");
                 var wrapper = Path.Combine(outputDir, assemblyFile);
                 foreach (var library in Options.Libraries)
                     libraryMappings[library] = wrapper;
+            }
+            else
+            {
+                HasCompilationErrors = true;
             }
         }
 
