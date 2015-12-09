@@ -318,7 +318,7 @@ namespace CppSharp
             return Generator.Generate();
         }
 
-        public void WriteCode(List<GeneratorOutput> outputs)
+        public void SaveCode(List<GeneratorOutput> outputs)
         {
             var outputPath = Path.GetFullPath(Options.OutputDir);
 
@@ -363,9 +363,6 @@ namespace CppSharp
 
         public void CompileCode()
         {
-            if (!Options.CompileCode)
-                return;
-
             var assemblyFile = string.IsNullOrEmpty(Options.LibraryName) ?
                 "out.dll" : Options.LibraryName + ".dll";
 
@@ -407,21 +404,18 @@ namespace CppSharp
                 compilerResults = codeProvider.CompileAssemblyFromDom(
                     compilerParameters, compileUnits.ToArray());
             }
-            
+
             var errors = compilerResults.Errors.Cast<CompilerError>().Where(e => !e.IsWarning).ToList();
             foreach (var error in errors)
                 Diagnostics.Error(error.ToString());
 
-            if (errors.Count == 0)
+            HasCompilationErrors = errors.Count > 0;
+            if (!HasCompilationErrors)
             {
                 Diagnostics.Message("Compilation succeeded.");
                 var wrapper = Path.Combine(outputDir, assemblyFile);
                 foreach (var library in Options.Libraries)
                     libraryMappings[library] = wrapper;
-            }
-            else
-            {
-                HasCompilationErrors = true;
             }
         }
 
@@ -497,10 +491,11 @@ namespace CppSharp
             }
 
             if (!driver.Options.DryRun)
-                driver.WriteCode(outputs);
-
-            if (driver.Options.IsCSharpGenerator)
-                driver.CompileCode();
+            {
+                driver.SaveCode(outputs);
+                if (driver.Options.IsCSharpGenerator && driver.Options.CompileCode)
+                    driver.CompileCode();
+            }
         }
     }
 }
