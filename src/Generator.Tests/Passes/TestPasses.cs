@@ -70,7 +70,7 @@ namespace CppSharp.Generator.Tests.Passes
         [Test]
         public void TestCaseRenamePass()
         {
-            Type.TypePrinterDelegate += type => type.Visit(new CSharpTypePrinter(Driver)).Type;
+            CppSharp.AST.Type.TypePrinterDelegate += TypePrinterDelegate;
 
             var c = AstContext.Class("TestRename");
 
@@ -82,6 +82,8 @@ namespace CppSharp.Generator.Tests.Passes
 
             Assert.That(method.Name, Is.EqualTo("LowerCaseMethod"));
             Assert.That(field.Name, Is.EqualTo("LowerCaseField"));
+
+            CppSharp.AST.Type.TypePrinterDelegate -= TypePrinterDelegate;
         }
 
         [Test]
@@ -201,6 +203,11 @@ namespace CppSharp.Generator.Tests.Passes
             passBuilder.AddPass(new CheckMacroPass());
             passBuilder.RunPasses(pass => pass.VisitLibrary(AstContext));
             Assert.AreEqual(method.Access , AccessSpecifier.Internal);
+        }
+
+        private string TypePrinterDelegate(CppSharp.AST.Type type)
+        {
+            return type.Visit(new CSharpTypePrinter(Driver)).Type;
         }
     }
 }

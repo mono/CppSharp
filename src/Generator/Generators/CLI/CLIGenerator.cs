@@ -14,7 +14,6 @@ namespace CppSharp.Generators.CLI
         public CLIGenerator(Driver driver) : base(driver)
         {
             typePrinter = new CLITypePrinter(driver);
-            Type.TypePrinterDelegate += type => type.Visit(typePrinter);
         }
 
         public override List<Template> Generate(IEnumerable<TranslationUnit> units)
@@ -44,6 +43,11 @@ namespace CppSharp.Generators.CLI
             if (@class.IsStatic)
                 return false;
             return @class.IsRefType && (!@class.HasBase || !@class.HasRefBase());
+        }
+
+        protected override string TypePrinterDelegate(Type type)
+        {
+            return type.Visit(typePrinter);
         }
     }
 }

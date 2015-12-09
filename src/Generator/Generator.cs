@@ -33,13 +33,14 @@ namespace CppSharp.Generators
     /// <summary>
     /// Generators are the base class for each language backend.
     /// </summary>
-    public abstract class Generator
+    public abstract class Generator : IDisposable
     {
         public Driver Driver { get; private set; }
 
         protected Generator(Driver driver)
         {
             Driver = driver;
+            CppSharp.AST.Type.TypePrinterDelegate += TypePrinterDelegate;
         }
 
         /// <summary>
@@ -119,9 +120,16 @@ namespace CppSharp.Generators
         /// </summary>
         public abstract List<Template> Generate(IEnumerable<TranslationUnit> units);
 
+        protected abstract string TypePrinterDelegate(CppSharp.AST.Type type);
+
         public static string GeneratedIdentifier(string id)
         {
             return "__" + id;
+        }
+
+        public void Dispose()
+        {
+            CppSharp.AST.Type.TypePrinterDelegate -= TypePrinterDelegate;
         }
     }
 }

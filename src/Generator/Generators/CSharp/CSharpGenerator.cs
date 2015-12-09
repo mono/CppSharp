@@ -13,7 +13,6 @@ namespace CppSharp.Generators.CSharp
         {
             typePrinter = new CSharpTypePrinter(driver);
             expressionPrinter = new CSharpExpressionPrinter(typePrinter);
-            CppSharp.AST.Type.TypePrinterDelegate += type => type.Visit(typePrinter).Type;
         }
 
         public override List<Template> Generate(IEnumerable<TranslationUnit> units)
@@ -36,6 +35,11 @@ namespace CppSharp.Generators.CSharp
             Driver.AddTranslationUnitPass(new CheckAbiParameters());
 
             return true;
+        }
+
+        protected override string TypePrinterDelegate(Type type)
+        {
+            return type.Visit(typePrinter).Type;
         }
     }
 }

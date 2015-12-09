@@ -496,6 +496,8 @@ namespace CppSharp
                 if (driver.Options.IsCSharpGenerator && driver.Options.CompileCode)
                     driver.CompileCode();
             }
+
+            driver.Generator.Dispose();
         }
     }
 }
