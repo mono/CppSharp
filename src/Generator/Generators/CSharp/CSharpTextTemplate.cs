@@ -2845,7 +2845,9 @@ namespace CppSharp.Generators.CSharp
                     : ((FunctionType) attributedType.Equivalent.Type).CallingConvention;
                 TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
                 var interopCallConv = callingConvention.ToInteropCallConv();
-                if (interopCallConv != System.Runtime.InteropServices.CallingConvention.Winapi)
+                if (interopCallConv == System.Runtime.InteropServices.CallingConvention.Winapi)
+                    WriteLine("[SuppressUnmanagedCodeSecurity]");
+                else
                     WriteLine(
                         "[SuppressUnmanagedCodeSecurity, " +
                         "UnmanagedFunctionPointerAttribute(global::System.Runtime.InteropServices.CallingConvention.{0})]",
@@ -2871,7 +2873,7 @@ namespace CppSharp.Generators.CSharp
             if (@enum.IsFlags)
                 WriteLine("[Flags]");
 
-            Write("{0} enum {1}", Helpers.GetAccess(@enum.Access), @enum.Name);
+            Write("{0}enum {1}", Helpers.GetAccess(@enum.Access), @enum.Name);
 
             var typeName = TypePrinter.VisitPrimitiveType(@enum.BuiltinType.Type,
                                                           new TypeQualifiers());
