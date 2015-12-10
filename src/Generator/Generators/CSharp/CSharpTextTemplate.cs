@@ -2871,7 +2871,7 @@ namespace CppSharp.Generators.CSharp
             if (@enum.IsFlags)
                 WriteLine("[Flags]");
 
-            Write("public enum {0}", @enum.Name);
+            Write("{0} enum {1}", Helpers.GetAccess(@enum.Access), @enum.Name);
 
             var typeName = TypePrinter.VisitPrimitiveType(@enum.BuiltinType.Type,
                                                           new TypeQualifiers());
