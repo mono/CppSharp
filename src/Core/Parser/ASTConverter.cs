@@ -139,8 +139,6 @@ namespace CppSharp
         public abstract TRet VisitClassTemplatePartialSpecialization(
             ClassTemplatePartialSpecialization decl);
         public abstract TRet VisitFunctionTemplate(FunctionTemplate decl);
-        public abstract TRet VisitMacroDefinition(MacroDefinition decl);
-        public abstract TRet VisitMacroExpansion(MacroExpansion decl);
 
         public virtual TRet Visit(Parser.AST.Declaration decl)
         {
@@ -230,16 +228,6 @@ namespace CppSharp
                     {
                         var _decl = FunctionTemplate.__CreateInstance(decl.__Instance);
                         return VisitFunctionTemplate(_decl);
-                    }
-                case DeclarationKind.MacroDefinition:
-                    {
-                        var _decl = MacroDefinition.__CreateInstance(decl.__Instance);
-                        return VisitMacroDefinition(_decl);
-                    }
-                case DeclarationKind.MacroExpansion:
-                    {
-                        var _decl = MacroExpansion.__CreateInstance(decl.__Instance);
-                        return VisitMacroExpansion(_decl);
                     }
             }
 
@@ -803,7 +791,7 @@ namespace CppSharp
             for (uint i = 0; i < decl.PreprocessedEntitiesCount; ++i)
             {
                 var entity = decl.getPreprocessedEntities(i);
-                var _entity = Visit(entity) as AST.PreprocessedEntity;
+                var _entity = VisitPreprocessedEntity(entity);
                 _decl.PreprocessedEntities.Add(_entity);
             }
 
@@ -882,7 +870,7 @@ namespace CppSharp
             for (uint i = 0; i < decl.MacrosCount; ++i)
             {
                 var macro = decl.getMacros(i);
-                var _macro = Visit(macro) as AST.MacroDefinition;
+                var _macro = VisitMacroDefinition(macro);
                 _unit.Macros.Add(_macro);
             }
 
@@ -1566,8 +1554,24 @@ namespace CppSharp
 
         void VisitPreprocessedEntity(PreprocessedEntity entity, AST.PreprocessedEntity _entity)
         {
-            VisitDeclaration(entity, _entity);
             _entity.MacroLocation = VisitMacroLocation(entity.MacroLocation);
+        }
+
+        private AST.PreprocessedEntity VisitPreprocessedEntity(PreprocessedEntity entity)
+        {
+            switch (entity.Kind)
+            {
+                case DeclarationKind.MacroDefinition:
+                    var macroDefinition = MacroDefinition.__CreateInstance(entity.__Instance);
+                    NativeObjects.Add(macroDefinition);
+                    return VisitMacroDefinition(macroDefinition);
+                case DeclarationKind.MacroExpansion:
+                    var macroExpansion = MacroExpansion.__CreateInstance(entity.__Instance);
+                    NativeObjects.Add(macroExpansion);
+                    return VisitMacroExpansion(macroExpansion);
+                default:
+                    throw new ArgumentOutOfRangeException("entity");
+            }
         }
 
         private AST.MacroLocation VisitMacroLocation(MacroLocation location)
@@ -1591,19 +1595,23 @@ namespace CppSharp
             }
         }
 
-        public override AST.Declaration VisitMacroDefinition(MacroDefinition decl)
+        public AST.MacroDefinition VisitMacroDefinition(MacroDefinition macroDefinition)
         {
             var _macro = new AST.MacroDefinition();
-            VisitPreprocessedEntity(decl, _macro);
-            _macro.Expression = decl.Expression;
+            VisitPreprocessedEntity(macroDefinition, _macro);
+            _macro.Name = macroDefinition.Name;
+            _macro.Expression = macroDefinition.Expression;
             return _macro;
         }
 
-        public override AST.Declaration VisitMacroExpansion(MacroExpansion decl)
+        public AST.MacroExpansion VisitMacroExpansion(MacroExpansion macroExpansion)
         {
             var _macro = new AST.MacroExpansion();
-            VisitPreprocessedEntity(decl, _macro);
-            _macro.Text = decl.Text;
+            VisitPreprocessedEntity(macroExpansion, _macro);
+            _macro.Name = macroExpansion.Name;
+            _macro.Text = macroExpansion.Text;
+            if (macroExpansion.Definition != null)
+                _macro.Definition = VisitMacroDefinition(macroExpansion.Definition);
             return _macro;
         }
     }

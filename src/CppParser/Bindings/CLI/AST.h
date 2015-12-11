@@ -2265,9 +2265,16 @@ namespace CppSharp
                 }
             };
 
-            public ref class PreprocessedEntity : CppSharp::Parser::AST::Declaration
+            public ref class PreprocessedEntity : ICppInstance
             {
             public:
+
+                property ::CppSharp::CppParser::AST::PreprocessedEntity* NativePtr;
+                property System::IntPtr __Instance
+                {
+                    virtual System::IntPtr get();
+                    virtual void set(System::IntPtr instance);
+                }
 
                 PreprocessedEntity(::CppSharp::CppParser::AST::PreprocessedEntity* native);
                 static PreprocessedEntity^ __CreateInstance(::System::IntPtr native);
@@ -2282,6 +2289,21 @@ namespace CppSharp
                     CppSharp::Parser::AST::MacroLocation get();
                     void set(CppSharp::Parser::AST::MacroLocation);
                 }
+
+                property ::System::IntPtr OriginalPtr
+                {
+                    ::System::IntPtr get();
+                    void set(::System::IntPtr);
+                }
+
+                property CppSharp::Parser::AST::DeclarationKind Kind
+                {
+                    CppSharp::Parser::AST::DeclarationKind get();
+                    void set(CppSharp::Parser::AST::DeclarationKind);
+                }
+
+                protected:
+                bool __ownsNativeInstance;
             };
 
             public ref class MacroDefinition : CppSharp::Parser::AST::PreprocessedEntity
@@ -2296,10 +2318,28 @@ namespace CppSharp
 
                 ~MacroDefinition();
 
+                property System::String^ Name
+                {
+                    System::String^ get();
+                    void set(System::String^);
+                }
+
                 property System::String^ Expression
                 {
                     System::String^ get();
                     void set(System::String^);
+                }
+
+                property int LineNumberStart
+                {
+                    int get();
+                    void set(int);
+                }
+
+                property int LineNumberEnd
+                {
+                    int get();
+                    void set(int);
                 }
             };
 
@@ -2314,6 +2354,12 @@ namespace CppSharp
                 MacroExpansion(CppSharp::Parser::AST::MacroExpansion^ _0);
 
                 ~MacroExpansion();
+
+                property System::String^ Name
+                {
+                    System::String^ get();
+                    void set(System::String^);
+                }
 
                 property System::String^ Text
                 {

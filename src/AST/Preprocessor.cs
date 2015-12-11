@@ -14,9 +14,11 @@
     /// Base class that describes a preprocessed entity, which may
     /// be a preprocessor directive or macro expansion.
     /// </summary>
-    public abstract class PreprocessedEntity : Declaration
+    public abstract class PreprocessedEntity
     {
         public MacroLocation MacroLocation = MacroLocation.Unknown;
+
+        public abstract T Visit<T>(IDeclVisitor<T> visitor);
     }
 
     /// <summary>
@@ -24,6 +26,8 @@
     /// </summary>
     public class MacroExpansion : PreprocessedEntity
     {
+        public string Name { get; set; }
+
         // Contains the macro expansion text.
         public string Text;
 
@@ -51,6 +55,8 @@
 
         // Backing enumeration if one was generated.
         public Enumeration Enumeration;
+
+        public string Name { get; set; }
 
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {

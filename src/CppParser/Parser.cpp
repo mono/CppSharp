@@ -2398,6 +2398,16 @@ SourceLocationKind Parser::GetLocationKind(const clang::SourceLocation& Loc)
     return SourceLocationKind::System;
 }
 
+void Parser::GetLineNumbersFromLocation(const clang::SourceLocation& StartLoc,
+    const clang::SourceLocation& EndLoc, int* LineNumberStart, int* LineNumberEnd)
+{
+    auto& SM = C->getSourceManager();
+    auto DecomposedLocStart = SM.getDecomposedLoc(StartLoc);
+    *LineNumberStart = SM.getLineNumber(DecomposedLocStart.first, DecomposedLocStart.second);
+    auto DecomposedLocEnd = SM.getDecomposedLoc(EndLoc);
+    *LineNumberEnd = SM.getLineNumber(DecomposedLocEnd.first, DecomposedLocEnd.second);
+}
+
 bool Parser::IsValidDeclaration(const clang::SourceLocation& Loc)
 {
     auto Kind = GetLocationKind(Loc);
@@ -2519,8 +2529,13 @@ PreprocessedEntity* Parser::WalkPreprocessedEntity(
     {
     case clang::PreprocessedEntity::MacroExpansionKind:
     {
-        auto MD = cast<clang::MacroExpansion>(PPEntity);
-        Entity = new MacroExpansion();
+        auto ME = cast<clang::MacroExpansion>(PPEntity);
+        auto Expansion = new MacroExpansion();
+        auto MD = ME->getDefinition();
+        if (MD && MD->getKind() != clang::PreprocessedEntity::InvalidKind)
+            Expansion->Definition = (MacroDefinition*)
+                WalkPreprocessedEntity(Decl, ME->getDefinition());
+        Entity = Expansion;
 
         std::string Text;
         GetDeclText(PPEntity->getSourceRange(), Text);
@@ -2565,6 +2580,8 @@ PreprocessedEntity* Parser::WalkPreprocessedEntity(
             break;
 
         auto Definition = new MacroDefinition();
+        GetLineNumbersFromLocation(MD->getLocation(), MD->getLocation(),
+            &Definition->LineNumberStart, &Definition->LineNumberEnd);
         Entity = Definition;
 
         Definition->Name = II->getName().trim();
@@ -2581,11 +2598,11 @@ PreprocessedEntity* Parser::WalkPreprocessedEntity(
         return nullptr;
 
     Entity->OriginalPtr = PPEntity;
-    Entity->_Namespace = GetTranslationUnit(PPEntity->getSourceRange().getBegin());
+    auto Namespace = GetTranslationUnit(PPEntity->getSourceRange().getBegin());
 
     if (Decl->Kind == CppSharp::CppParser::AST::DeclarationKind::TranslationUnit)
     {
-        Entity->_Namespace->PreprocessedEntities.push_back(Entity);
+        Namespace->PreprocessedEntities.push_back(Entity);
     }
     else
     {
@@ -2750,11 +2767,8 @@ void Parser::HandleDeclaration(clang::Decl* D, Declaration* Decl)
     Decl->OriginalPtr = (void*) D;
     Decl->USR = GetDeclUSR(D);
     Decl->Location = SourceLocation(D->getLocation().getRawEncoding());
-    auto& SM = C->getSourceManager();
-    auto DecomposedLocStart = SM.getDecomposedLoc(D->getLocation());
-    Decl->LineNumberStart = SM.getLineNumber(DecomposedLocStart.first, DecomposedLocStart.second);
-    auto DecomposedLocEnd = SM.getDecomposedLoc(D->getLocEnd());
-    Decl->LineNumberEnd = SM.getLineNumber(DecomposedLocEnd.first, DecomposedLocEnd.second);
+    GetLineNumbersFromLocation(D->getLocation(), D->getLocEnd(),
+        &Decl->LineNumberStart, &Decl->LineNumberEnd);
 
     if (Decl->PreprocessedEntities.empty() && !D->isImplicit())
     {

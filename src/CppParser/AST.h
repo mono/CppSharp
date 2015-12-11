@@ -823,24 +823,30 @@ enum class MacroLocation
     FunctionBody,
 };
 
-class CS_API PreprocessedEntity : public Declaration
+class CS_API PreprocessedEntity
 {
 public:
     PreprocessedEntity();
     MacroLocation MacroLocation;
+    void* OriginalPtr;
+    DeclarationKind Kind;
 };
 
 class CS_API MacroDefinition : public PreprocessedEntity
 {
 public:
     MacroDefinition();
+    STRING(Name)
     STRING(Expression)
+    int LineNumberStart;
+    int LineNumberEnd;
 };
 
 class CS_API MacroExpansion : public PreprocessedEntity
 {
 public:
     MacroExpansion();
+    STRING(Name)
     STRING(Text)
     MacroDefinition* Definition;
 };

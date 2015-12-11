@@ -667,15 +667,18 @@ Namespace::Namespace()
 }
 
 PreprocessedEntity::PreprocessedEntity()
-    : Declaration(DeclarationKind::PreprocessedEntity),
-      MacroLocation(AST::MacroLocation::Unknown) {}
+    : MacroLocation(AST::MacroLocation::Unknown),
+      OriginalPtr(0), Kind(DeclarationKind::PreprocessedEntity) {}
 
-MacroDefinition::MacroDefinition() { Kind = DeclarationKind::MacroDefinition; }
+MacroDefinition::MacroDefinition()
+    : LineNumberStart(0), LineNumberEnd(0) { Kind = DeclarationKind::MacroDefinition; }
 
+DEF_STRING(MacroDefinition, Name)
 DEF_STRING(MacroDefinition, Expression)
 
-MacroExpansion::MacroExpansion() { Kind = DeclarationKind::MacroExpansion; }
+MacroExpansion::MacroExpansion() : Definition(0) { Kind = DeclarationKind::MacroExpansion; }
 
+DEF_STRING(MacroExpansion, Name)
 DEF_STRING(MacroExpansion, Text)
 
 TranslationUnit::TranslationUnit() { Kind = DeclarationKind::TranslationUnit; }

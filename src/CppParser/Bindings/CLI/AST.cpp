@@ -3772,8 +3772,9 @@ void CppSharp::Parser::AST::Namespace::IsInline::set(bool value)
 }
 
 CppSharp::Parser::AST::PreprocessedEntity::PreprocessedEntity(::CppSharp::CppParser::AST::PreprocessedEntity* native)
-    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)native)
+    : __ownsNativeInstance(false)
 {
+    NativePtr = native;
 }
 
 CppSharp::Parser::AST::PreprocessedEntity^ CppSharp::Parser::AST::PreprocessedEntity::__CreateInstance(::System::IntPtr native)
@@ -3783,23 +3784,32 @@ CppSharp::Parser::AST::PreprocessedEntity^ CppSharp::Parser::AST::PreprocessedEn
 
 CppSharp::Parser::AST::PreprocessedEntity::~PreprocessedEntity()
 {
+    delete NativePtr;
 }
 
 CppSharp::Parser::AST::PreprocessedEntity::PreprocessedEntity()
-    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)nullptr)
 {
     __ownsNativeInstance = true;
     NativePtr = new ::CppSharp::CppParser::AST::PreprocessedEntity();
 }
 
 CppSharp::Parser::AST::PreprocessedEntity::PreprocessedEntity(CppSharp::Parser::AST::PreprocessedEntity^ _0)
-    : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)nullptr)
 {
     __ownsNativeInstance = true;
     if (ReferenceEquals(_0, nullptr))
         throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::PreprocessedEntity*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::PreprocessedEntity(arg0);
+}
+
+System::IntPtr CppSharp::Parser::AST::PreprocessedEntity::__Instance::get()
+{
+    return System::IntPtr(NativePtr);
+}
+
+void CppSharp::Parser::AST::PreprocessedEntity::__Instance::set(System::IntPtr object)
+{
+    NativePtr = (::CppSharp::CppParser::AST::PreprocessedEntity*)object.ToPointer();
 }
 
 CppSharp::Parser::AST::MacroLocation CppSharp::Parser::AST::PreprocessedEntity::MacroLocation::get()
@@ -3810,6 +3820,26 @@ CppSharp::Parser::AST::MacroLocation CppSharp::Parser::AST::PreprocessedEntity::
 void CppSharp::Parser::AST::PreprocessedEntity::MacroLocation::set(CppSharp::Parser::AST::MacroLocation value)
 {
     ((::CppSharp::CppParser::AST::PreprocessedEntity*)NativePtr)->MacroLocation = (::CppSharp::CppParser::AST::MacroLocation)value;
+}
+
+::System::IntPtr CppSharp::Parser::AST::PreprocessedEntity::OriginalPtr::get()
+{
+    return ::System::IntPtr(((::CppSharp::CppParser::AST::PreprocessedEntity*)NativePtr)->OriginalPtr);
+}
+
+void CppSharp::Parser::AST::PreprocessedEntity::OriginalPtr::set(::System::IntPtr value)
+{
+    ((::CppSharp::CppParser::AST::PreprocessedEntity*)NativePtr)->OriginalPtr = (void*)value;
+}
+
+CppSharp::Parser::AST::DeclarationKind CppSharp::Parser::AST::PreprocessedEntity::Kind::get()
+{
+    return (CppSharp::Parser::AST::DeclarationKind)((::CppSharp::CppParser::AST::PreprocessedEntity*)NativePtr)->Kind;
+}
+
+void CppSharp::Parser::AST::PreprocessedEntity::Kind::set(CppSharp::Parser::AST::DeclarationKind value)
+{
+    ((::CppSharp::CppParser::AST::PreprocessedEntity*)NativePtr)->Kind = (::CppSharp::CppParser::AST::DeclarationKind)value;
 }
 
 CppSharp::Parser::AST::MacroDefinition::MacroDefinition(::CppSharp::CppParser::AST::MacroDefinition* native)
@@ -3843,6 +3873,20 @@ CppSharp::Parser::AST::MacroDefinition::MacroDefinition(CppSharp::Parser::AST::M
     NativePtr = new ::CppSharp::CppParser::AST::MacroDefinition(arg0);
 }
 
+System::String^ CppSharp::Parser::AST::MacroDefinition::Name::get()
+{
+    auto __ret = ((::CppSharp::CppParser::AST::MacroDefinition*)NativePtr)->getName();
+    if (__ret == nullptr) return nullptr;
+    return clix::marshalString<clix::E_UTF8>(__ret);
+}
+
+void CppSharp::Parser::AST::MacroDefinition::Name::set(System::String^ s)
+{
+    auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
+    auto arg0 = _arg0.c_str();
+    ((::CppSharp::CppParser::AST::MacroDefinition*)NativePtr)->setName(arg0);
+}
+
 System::String^ CppSharp::Parser::AST::MacroDefinition::Expression::get()
 {
     auto __ret = ((::CppSharp::CppParser::AST::MacroDefinition*)NativePtr)->getExpression();
@@ -3855,6 +3899,26 @@ void CppSharp::Parser::AST::MacroDefinition::Expression::set(System::String^ s)
     auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
     auto arg0 = _arg0.c_str();
     ((::CppSharp::CppParser::AST::MacroDefinition*)NativePtr)->setExpression(arg0);
+}
+
+int CppSharp::Parser::AST::MacroDefinition::LineNumberStart::get()
+{
+    return ((::CppSharp::CppParser::AST::MacroDefinition*)NativePtr)->LineNumberStart;
+}
+
+void CppSharp::Parser::AST::MacroDefinition::LineNumberStart::set(int value)
+{
+    ((::CppSharp::CppParser::AST::MacroDefinition*)NativePtr)->LineNumberStart = value;
+}
+
+int CppSharp::Parser::AST::MacroDefinition::LineNumberEnd::get()
+{
+    return ((::CppSharp::CppParser::AST::MacroDefinition*)NativePtr)->LineNumberEnd;
+}
+
+void CppSharp::Parser::AST::MacroDefinition::LineNumberEnd::set(int value)
+{
+    ((::CppSharp::CppParser::AST::MacroDefinition*)NativePtr)->LineNumberEnd = value;
 }
 
 CppSharp::Parser::AST::MacroExpansion::MacroExpansion(::CppSharp::CppParser::AST::MacroExpansion* native)
@@ -3886,6 +3950,20 @@ CppSharp::Parser::AST::MacroExpansion::MacroExpansion(CppSharp::Parser::AST::Mac
         throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::MacroExpansion*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::MacroExpansion(arg0);
+}
+
+System::String^ CppSharp::Parser::AST::MacroExpansion::Name::get()
+{
+    auto __ret = ((::CppSharp::CppParser::AST::MacroExpansion*)NativePtr)->getName();
+    if (__ret == nullptr) return nullptr;
+    return clix::marshalString<clix::E_UTF8>(__ret);
+}
+
+void CppSharp::Parser::AST::MacroExpansion::Name::set(System::String^ s)
+{
+    auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
+    auto arg0 = _arg0.c_str();
+    ((::CppSharp::CppParser::AST::MacroExpansion*)NativePtr)->setName(arg0);
 }
 
 System::String^ CppSharp::Parser::AST::MacroExpansion::Text::get()

@@ -58,7 +58,7 @@ namespace CppSharp.AST
 
         public bool AlreadyVisited(Declaration decl)
         {
-            return  !Visited.Add(decl);
+            return !Visited.Add(decl);
         }
 
         #region Type Visitors
@@ -387,7 +387,7 @@ namespace CppSharp.AST
 
         public virtual bool VisitMacroDefinition(MacroDefinition macro)
         {
-            return VisitDeclaration(macro);
+            return false;
         }
 
         public virtual bool VisitNamespace(Namespace @namespace)

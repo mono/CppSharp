@@ -63,7 +63,6 @@ protected:
 
     // AST traversers
     void WalkAST();
-    void WalkMacros(clang::PreprocessingRecord* PR);
     Declaration* WalkDeclaration(clang::Decl* D,
         bool IgnoreSystemDecls = true, bool CanBeDefinition = false);
     Declaration* WalkDeclarationDef(clang::Decl* D);
@@ -103,6 +102,8 @@ protected:
 
     // Clang helpers
     SourceLocationKind GetLocationKind(const clang::SourceLocation& Loc);
+    void GetLineNumbersFromLocation(const clang::SourceLocation& StartLoc, const clang::SourceLocation& EndLoc,
+        int* LineNumberStart, int* LineNumberEnd);
     bool IsValidDeclaration(const clang::SourceLocation& Loc);
     std::string GetDeclMangledName(clang::Decl* D);
     std::string GetTypeName(const clang::Type* Type);
@@ -119,9 +120,6 @@ protected:
 
     DeclarationContext* GetNamespace(clang::Decl* D, clang::DeclContext* Ctx);
     DeclarationContext* GetNamespace(clang::Decl* D);
-
-    clang::CallingConv GetAbiCallConv(clang::CallingConv CC,
-        bool IsInstMethod, bool IsVariadic);
 
     void HandleDeclaration(clang::Decl* D, Declaration* Decl);
     void HandleOriginalText(clang::Decl* D, Declaration* Decl);
