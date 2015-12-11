@@ -36,6 +36,8 @@ CppSharp::Parser::ParserTargetInfo::ParserTargetInfo()
 CppSharp::Parser::ParserTargetInfo::ParserTargetInfo(CppSharp::Parser::ParserTargetInfo^ _0)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::ParserTargetInfo*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::ParserTargetInfo(arg0);
 }

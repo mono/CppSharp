@@ -152,6 +152,8 @@ void CppSharp::Parser::ParserOptions::clearLibraryDirs()
 CppSharp::Parser::ParserOptions::ParserOptions(CppSharp::Parser::ParserOptions^ _0)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::ParserOptions*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::ParserOptions(arg0);
 }
@@ -353,6 +355,8 @@ CppSharp::Parser::ParserDiagnostic::ParserDiagnostic()
 CppSharp::Parser::ParserDiagnostic::ParserDiagnostic(CppSharp::Parser::ParserDiagnostic^ _0)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::ParserDiagnostic*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::ParserDiagnostic(arg0);
 }
@@ -458,6 +462,8 @@ CppSharp::Parser::ParserResult::ParserResult()
 CppSharp::Parser::ParserResult::ParserResult(CppSharp::Parser::ParserResult^ _0)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::ParserResult*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::ParserResult(arg0);
 }
@@ -471,6 +477,8 @@ CppSharp::Parser::ParserDiagnostic^ CppSharp::Parser::ParserResult::getDiagnosti
 
 void CppSharp::Parser::ParserResult::addDiagnostics(CppSharp::Parser::ParserDiagnostic^ s)
 {
+    if (ReferenceEquals(s, nullptr))
+        throw gcnew ::System::ArgumentNullException("s", "s cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::ParserDiagnostic*)s->NativePtr;
     ((::CppSharp::CppParser::ParserResult*)NativePtr)->addDiagnostics(arg0);
 }
@@ -583,6 +591,8 @@ CppSharp::Parser::ClangParser::ClangParser()
 CppSharp::Parser::ClangParser::ClangParser(CppSharp::Parser::ClangParser^ _0)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::ClangParser*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::ClangParser(arg0);
 }

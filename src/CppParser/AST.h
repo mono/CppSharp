@@ -508,6 +508,7 @@ class CS_API BinaryOperator : public Expression
 {
 public:
     BinaryOperator(const std::string& str, Expression* lhs, Expression* rhs, const std::string& opcodeStr);
+    ~BinaryOperator();
     Expression* LHS;
     Expression* RHS;
     STRING(OpcodeStr)
@@ -517,6 +518,7 @@ class CS_API CallExpr : public Expression
 {
 public:
     CallExpr(const std::string& str, Declaration* decl);
+    ~CallExpr();
     VECTOR(Expression*, Arguments)
 };
 
@@ -524,6 +526,7 @@ class CS_API CXXConstructExpr : public Expression
 {
 public:
     CXXConstructExpr(const std::string& str, Declaration* decl = 0);
+    ~CXXConstructExpr();
     VECTOR(Expression*, Arguments)
 };
 

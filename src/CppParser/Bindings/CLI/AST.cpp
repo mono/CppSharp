@@ -37,6 +37,8 @@ CppSharp::Parser::AST::Type::Type(CppSharp::Parser::AST::TypeKind kind)
 CppSharp::Parser::AST::Type::Type(CppSharp::Parser::AST::Type^ _0)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::Type*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::Type(arg0);
 }
@@ -98,6 +100,8 @@ CppSharp::Parser::AST::TypeQualifiers::~TypeQualifiers()
 CppSharp::Parser::AST::TypeQualifiers::TypeQualifiers(CppSharp::Parser::AST::TypeQualifiers^ _0)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::TypeQualifiers*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::TypeQualifiers(arg0);
 }
@@ -181,6 +185,8 @@ CppSharp::Parser::AST::QualifiedType::QualifiedType()
 CppSharp::Parser::AST::QualifiedType::QualifiedType(CppSharp::Parser::AST::QualifiedType^ _0)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::QualifiedType*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::QualifiedType(arg0);
 }
@@ -247,6 +253,8 @@ CppSharp::Parser::AST::TagType::TagType(CppSharp::Parser::AST::TagType^ _0)
     : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::TagType*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::TagType(arg0);
 }
@@ -293,6 +301,8 @@ CppSharp::Parser::AST::ArrayType::ArrayType(CppSharp::Parser::AST::ArrayType^ _0
     : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::ArrayType*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::ArrayType(arg0);
 }
@@ -374,6 +384,8 @@ CppSharp::Parser::AST::Parameter^ CppSharp::Parser::AST::FunctionType::getParame
 
 void CppSharp::Parser::AST::FunctionType::addParameters(CppSharp::Parser::AST::Parameter^ s)
 {
+    if (ReferenceEquals(s, nullptr))
+        throw gcnew ::System::ArgumentNullException("s", "s cannot be null because it is a C++ reference (&).");
     auto arg0 = (::CppSharp::CppParser::AST::Parameter*)s->NativePtr;
     ((::CppSharp::CppParser::AST::FunctionType*)NativePtr)->addParameters(arg0);
 }
@@ -387,6 +399,8 @@ CppSharp::Parser::AST::FunctionType::FunctionType(CppSharp::Parser::AST::Functio
     : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::FunctionType*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::FunctionType(arg0);
 }
@@ -449,6 +463,8 @@ CppSharp::Parser::AST::PointerType::PointerType(CppSharp::Parser::AST::PointerTy
     : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::PointerType*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::PointerType(arg0);
 }
@@ -505,6 +521,8 @@ CppSharp::Parser::AST::MemberPointerType::MemberPointerType(CppSharp::Parser::AS
     : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::MemberPointerType*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::MemberPointerType(arg0);
 }
@@ -551,6 +569,8 @@ CppSharp::Parser::AST::TypedefType::TypedefType(CppSharp::Parser::AST::TypedefTy
     : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::TypedefType*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::TypedefType(arg0);
 }
@@ -597,6 +617,8 @@ CppSharp::Parser::AST::AttributedType::AttributedType(CppSharp::Parser::AST::Att
     : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::AttributedType*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::AttributedType(arg0);
 }
@@ -653,6 +675,8 @@ CppSharp::Parser::AST::DecayedType::DecayedType(CppSharp::Parser::AST::DecayedTy
     : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::DecayedType*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::DecayedType(arg0);
 }
@@ -720,6 +744,8 @@ CppSharp::Parser::AST::TemplateArgument::TemplateArgument()
 CppSharp::Parser::AST::TemplateArgument::TemplateArgument(CppSharp::Parser::AST::TemplateArgument^ _0)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::TemplateArgument*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::TemplateArgument(arg0);
 }
@@ -806,6 +832,8 @@ CppSharp::Parser::AST::TemplateSpecializationType::TemplateSpecializationType(Cp
     : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::TemplateSpecializationType*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::TemplateSpecializationType(arg0);
 }
@@ -819,6 +847,8 @@ CppSharp::Parser::AST::TemplateArgument^ CppSharp::Parser::AST::TemplateSpeciali
 
 void CppSharp::Parser::AST::TemplateSpecializationType::addArguments(CppSharp::Parser::AST::TemplateArgument^ s)
 {
+    if (ReferenceEquals(s, nullptr))
+        throw gcnew ::System::ArgumentNullException("s", "s cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::TemplateArgument*)s->NativePtr;
     ((::CppSharp::CppParser::AST::TemplateSpecializationType*)NativePtr)->addArguments(arg0);
 }
@@ -887,12 +917,18 @@ CppSharp::Parser::AST::TemplateParameter::TemplateParameter()
 CppSharp::Parser::AST::TemplateParameter::TemplateParameter(CppSharp::Parser::AST::TemplateParameter^ _0)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::TemplateParameter*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::TemplateParameter(arg0);
 }
 
 bool CppSharp::Parser::AST::TemplateParameter::operator==(CppSharp::Parser::AST::TemplateParameter^ __op, CppSharp::Parser::AST::TemplateParameter^ param)
 {
+    bool __opNull = ReferenceEquals(__op, nullptr);
+    bool paramNull = ReferenceEquals(param, nullptr);
+    if (__opNull || paramNull)
+        return __opNull && paramNull;
     auto &arg0 = *(::CppSharp::CppParser::AST::TemplateParameter*)__op->NativePtr;
     auto &arg1 = *(::CppSharp::CppParser::AST::TemplateParameter*)param->NativePtr;
     auto __ret = arg0 == arg1;
@@ -970,6 +1006,8 @@ CppSharp::Parser::AST::TemplateParameterType::TemplateParameterType(CppSharp::Pa
     : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::TemplateParameterType*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::TemplateParameterType(arg0);
 }
@@ -1046,6 +1084,8 @@ CppSharp::Parser::AST::TemplateParameterSubstitutionType::TemplateParameterSubst
     : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::TemplateParameterSubstitutionType*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::TemplateParameterSubstitutionType(arg0);
 }
@@ -1092,6 +1132,8 @@ CppSharp::Parser::AST::InjectedClassNameType::InjectedClassNameType(CppSharp::Pa
     : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::InjectedClassNameType*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::InjectedClassNameType(arg0);
 }
@@ -1148,6 +1190,8 @@ CppSharp::Parser::AST::DependentNameType::DependentNameType(CppSharp::Parser::AS
     : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::DependentNameType*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::DependentNameType(arg0);
 }
@@ -1184,6 +1228,8 @@ CppSharp::Parser::AST::PackExpansionType::PackExpansionType(CppSharp::Parser::AS
     : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::PackExpansionType*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::PackExpansionType(arg0);
 }
@@ -1220,6 +1266,8 @@ CppSharp::Parser::AST::BuiltinType::BuiltinType(CppSharp::Parser::AST::BuiltinTy
     : CppSharp::Parser::AST::Type((::CppSharp::CppParser::AST::Type*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::BuiltinType*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::BuiltinType(arg0);
 }
@@ -1267,6 +1315,8 @@ CppSharp::Parser::AST::VTableComponent::VTableComponent()
 CppSharp::Parser::AST::VTableComponent::VTableComponent(CppSharp::Parser::AST::VTableComponent^ _0)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::VTableComponent*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::VTableComponent(arg0);
 }
@@ -1344,6 +1394,8 @@ CppSharp::Parser::AST::VTableLayout::VTableLayout()
 CppSharp::Parser::AST::VTableLayout::VTableLayout(CppSharp::Parser::AST::VTableLayout^ _0)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::VTableLayout*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::VTableLayout(arg0);
 }
@@ -1357,6 +1409,8 @@ CppSharp::Parser::AST::VTableComponent^ CppSharp::Parser::AST::VTableLayout::get
 
 void CppSharp::Parser::AST::VTableLayout::addComponents(CppSharp::Parser::AST::VTableComponent^ s)
 {
+    if (ReferenceEquals(s, nullptr))
+        throw gcnew ::System::ArgumentNullException("s", "s cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::VTableComponent*)s->NativePtr;
     ((::CppSharp::CppParser::AST::VTableLayout*)NativePtr)->addComponents(arg0);
 }
@@ -1415,6 +1469,8 @@ CppSharp::Parser::AST::VFTableInfo::VFTableInfo()
 CppSharp::Parser::AST::VFTableInfo::VFTableInfo(CppSharp::Parser::AST::VFTableInfo^ _0)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::VFTableInfo*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::VFTableInfo(arg0);
 }
@@ -1508,6 +1564,8 @@ CppSharp::Parser::AST::VFTableInfo^ CppSharp::Parser::AST::ClassLayout::getVFTab
 
 void CppSharp::Parser::AST::ClassLayout::addVFTables(CppSharp::Parser::AST::VFTableInfo^ s)
 {
+    if (ReferenceEquals(s, nullptr))
+        throw gcnew ::System::ArgumentNullException("s", "s cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::VFTableInfo*)s->NativePtr;
     ((::CppSharp::CppParser::AST::ClassLayout*)NativePtr)->addVFTables(arg0);
 }
@@ -1520,6 +1578,8 @@ void CppSharp::Parser::AST::ClassLayout::clearVFTables()
 CppSharp::Parser::AST::ClassLayout::ClassLayout(CppSharp::Parser::AST::ClassLayout^ _0)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::ClassLayout*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::ClassLayout(arg0);
 }
@@ -1644,6 +1704,8 @@ CppSharp::Parser::AST::Declaration::Declaration(CppSharp::Parser::AST::Declarati
 CppSharp::Parser::AST::Declaration::Declaration(CppSharp::Parser::AST::Declaration^ _0)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::Declaration*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::Declaration(arg0);
 }
@@ -1657,6 +1719,8 @@ CppSharp::Parser::AST::PreprocessedEntity^ CppSharp::Parser::AST::Declaration::g
 
 void CppSharp::Parser::AST::Declaration::addPreprocessedEntities(CppSharp::Parser::AST::PreprocessedEntity^ s)
 {
+    if (ReferenceEquals(s, nullptr))
+        throw gcnew ::System::ArgumentNullException("s", "s cannot be null because it is a C++ reference (&).");
     auto arg0 = (::CppSharp::CppParser::AST::PreprocessedEntity*)s->NativePtr;
     ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->addPreprocessedEntities(arg0);
 }
@@ -1870,6 +1934,8 @@ CppSharp::Parser::AST::Namespace^ CppSharp::Parser::AST::DeclarationContext::get
 
 void CppSharp::Parser::AST::DeclarationContext::addNamespaces(CppSharp::Parser::AST::Namespace^ s)
 {
+    if (ReferenceEquals(s, nullptr))
+        throw gcnew ::System::ArgumentNullException("s", "s cannot be null because it is a C++ reference (&).");
     auto arg0 = (::CppSharp::CppParser::AST::Namespace*)s->NativePtr;
     ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->addNamespaces(arg0);
 }
@@ -1888,6 +1954,8 @@ CppSharp::Parser::AST::Enumeration^ CppSharp::Parser::AST::DeclarationContext::g
 
 void CppSharp::Parser::AST::DeclarationContext::addEnums(CppSharp::Parser::AST::Enumeration^ s)
 {
+    if (ReferenceEquals(s, nullptr))
+        throw gcnew ::System::ArgumentNullException("s", "s cannot be null because it is a C++ reference (&).");
     auto arg0 = (::CppSharp::CppParser::AST::Enumeration*)s->NativePtr;
     ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->addEnums(arg0);
 }
@@ -1906,6 +1974,8 @@ CppSharp::Parser::AST::Function^ CppSharp::Parser::AST::DeclarationContext::getF
 
 void CppSharp::Parser::AST::DeclarationContext::addFunctions(CppSharp::Parser::AST::Function^ s)
 {
+    if (ReferenceEquals(s, nullptr))
+        throw gcnew ::System::ArgumentNullException("s", "s cannot be null because it is a C++ reference (&).");
     auto arg0 = (::CppSharp::CppParser::AST::Function*)s->NativePtr;
     ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->addFunctions(arg0);
 }
@@ -1924,6 +1994,8 @@ CppSharp::Parser::AST::Class^ CppSharp::Parser::AST::DeclarationContext::getClas
 
 void CppSharp::Parser::AST::DeclarationContext::addClasses(CppSharp::Parser::AST::Class^ s)
 {
+    if (ReferenceEquals(s, nullptr))
+        throw gcnew ::System::ArgumentNullException("s", "s cannot be null because it is a C++ reference (&).");
     auto arg0 = (::CppSharp::CppParser::AST::Class*)s->NativePtr;
     ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->addClasses(arg0);
 }
@@ -1942,6 +2014,8 @@ CppSharp::Parser::AST::Template^ CppSharp::Parser::AST::DeclarationContext::getT
 
 void CppSharp::Parser::AST::DeclarationContext::addTemplates(CppSharp::Parser::AST::Template^ s)
 {
+    if (ReferenceEquals(s, nullptr))
+        throw gcnew ::System::ArgumentNullException("s", "s cannot be null because it is a C++ reference (&).");
     auto arg0 = (::CppSharp::CppParser::AST::Template*)s->NativePtr;
     ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->addTemplates(arg0);
 }
@@ -1960,6 +2034,8 @@ CppSharp::Parser::AST::TypedefDecl^ CppSharp::Parser::AST::DeclarationContext::g
 
 void CppSharp::Parser::AST::DeclarationContext::addTypedefs(CppSharp::Parser::AST::TypedefDecl^ s)
 {
+    if (ReferenceEquals(s, nullptr))
+        throw gcnew ::System::ArgumentNullException("s", "s cannot be null because it is a C++ reference (&).");
     auto arg0 = (::CppSharp::CppParser::AST::TypedefDecl*)s->NativePtr;
     ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->addTypedefs(arg0);
 }
@@ -1978,6 +2054,8 @@ CppSharp::Parser::AST::Variable^ CppSharp::Parser::AST::DeclarationContext::getV
 
 void CppSharp::Parser::AST::DeclarationContext::addVariables(CppSharp::Parser::AST::Variable^ s)
 {
+    if (ReferenceEquals(s, nullptr))
+        throw gcnew ::System::ArgumentNullException("s", "s cannot be null because it is a C++ reference (&).");
     auto arg0 = (::CppSharp::CppParser::AST::Variable*)s->NativePtr;
     ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->addVariables(arg0);
 }
@@ -1996,6 +2074,8 @@ CppSharp::Parser::AST::Friend^ CppSharp::Parser::AST::DeclarationContext::getFri
 
 void CppSharp::Parser::AST::DeclarationContext::addFriends(CppSharp::Parser::AST::Friend^ s)
 {
+    if (ReferenceEquals(s, nullptr))
+        throw gcnew ::System::ArgumentNullException("s", "s cannot be null because it is a C++ reference (&).");
     auto arg0 = (::CppSharp::CppParser::AST::Friend*)s->NativePtr;
     ((::CppSharp::CppParser::AST::DeclarationContext*)NativePtr)->addFriends(arg0);
 }
@@ -2009,6 +2089,8 @@ CppSharp::Parser::AST::DeclarationContext::DeclarationContext(CppSharp::Parser::
     : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::DeclarationContext*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::DeclarationContext(arg0);
 }
@@ -2103,6 +2185,8 @@ CppSharp::Parser::AST::TypedefDecl::TypedefDecl(CppSharp::Parser::AST::TypedefDe
     : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::TypedefDecl*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::TypedefDecl(arg0);
 }
@@ -2149,6 +2233,8 @@ CppSharp::Parser::AST::Friend::Friend(CppSharp::Parser::AST::Friend^ _0)
     : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::Friend*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::Friend(arg0);
 }
@@ -2190,6 +2276,8 @@ CppSharp::Parser::AST::Statement::~Statement()
 CppSharp::Parser::AST::Statement::Statement(CppSharp::Parser::AST::Statement^ _0)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::Statement*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::Statement(arg0);
 }
@@ -2263,6 +2351,8 @@ CppSharp::Parser::AST::Expression::Expression(CppSharp::Parser::AST::Expression^
     : CppSharp::Parser::AST::Statement((::CppSharp::CppParser::AST::Statement*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::Expression*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::Expression(arg0);
 }
@@ -2292,6 +2382,8 @@ CppSharp::Parser::AST::BinaryOperator::BinaryOperator(CppSharp::Parser::AST::Bin
     : CppSharp::Parser::AST::Expression((::CppSharp::CppParser::AST::Expression*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::BinaryOperator*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::BinaryOperator(arg0);
 }
@@ -2360,6 +2452,8 @@ CppSharp::Parser::AST::Expression^ CppSharp::Parser::AST::CallExpr::getArguments
 
 void CppSharp::Parser::AST::CallExpr::addArguments(CppSharp::Parser::AST::Expression^ s)
 {
+    if (ReferenceEquals(s, nullptr))
+        throw gcnew ::System::ArgumentNullException("s", "s cannot be null because it is a C++ reference (&).");
     auto arg0 = (::CppSharp::CppParser::AST::Expression*)s->NativePtr;
     ((::CppSharp::CppParser::AST::CallExpr*)NativePtr)->addArguments(arg0);
 }
@@ -2373,6 +2467,8 @@ CppSharp::Parser::AST::CallExpr::CallExpr(CppSharp::Parser::AST::CallExpr^ _0)
     : CppSharp::Parser::AST::Expression((::CppSharp::CppParser::AST::Expression*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::CallExpr*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::CallExpr(arg0);
 }
@@ -2413,6 +2509,8 @@ CppSharp::Parser::AST::Expression^ CppSharp::Parser::AST::CXXConstructExpr::getA
 
 void CppSharp::Parser::AST::CXXConstructExpr::addArguments(CppSharp::Parser::AST::Expression^ s)
 {
+    if (ReferenceEquals(s, nullptr))
+        throw gcnew ::System::ArgumentNullException("s", "s cannot be null because it is a C++ reference (&).");
     auto arg0 = (::CppSharp::CppParser::AST::Expression*)s->NativePtr;
     ((::CppSharp::CppParser::AST::CXXConstructExpr*)NativePtr)->addArguments(arg0);
 }
@@ -2426,6 +2524,8 @@ CppSharp::Parser::AST::CXXConstructExpr::CXXConstructExpr(CppSharp::Parser::AST:
     : CppSharp::Parser::AST::Expression((::CppSharp::CppParser::AST::Expression*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::CXXConstructExpr*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::CXXConstructExpr(arg0);
 }
@@ -2468,6 +2568,8 @@ CppSharp::Parser::AST::Parameter::Parameter(CppSharp::Parser::AST::Parameter^ _0
     : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::Parameter*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::Parameter(arg0);
 }
@@ -2559,6 +2661,8 @@ CppSharp::Parser::AST::Parameter^ CppSharp::Parser::AST::Function::getParameters
 
 void CppSharp::Parser::AST::Function::addParameters(CppSharp::Parser::AST::Parameter^ s)
 {
+    if (ReferenceEquals(s, nullptr))
+        throw gcnew ::System::ArgumentNullException("s", "s cannot be null because it is a C++ reference (&).");
     auto arg0 = (::CppSharp::CppParser::AST::Parameter*)s->NativePtr;
     ((::CppSharp::CppParser::AST::Function*)NativePtr)->addParameters(arg0);
 }
@@ -2572,6 +2676,8 @@ CppSharp::Parser::AST::Function::Function(CppSharp::Parser::AST::Function^ _0)
     : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::Function*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::Function(arg0);
 }
@@ -2742,6 +2848,8 @@ CppSharp::Parser::AST::Method::Method(CppSharp::Parser::AST::Method^ _0)
     : CppSharp::Parser::AST::Function((::CppSharp::CppParser::AST::Function*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::Method*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::Method(arg0);
 }
@@ -2898,6 +3006,8 @@ CppSharp::Parser::AST::Enumeration::Item::Item(CppSharp::Parser::AST::Enumeratio
     : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::Enumeration::Item*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::Enumeration::Item(arg0);
 }
@@ -2963,6 +3073,8 @@ CppSharp::Parser::AST::Enumeration::Item^ CppSharp::Parser::AST::Enumeration::ge
 
 void CppSharp::Parser::AST::Enumeration::addItems(CppSharp::Parser::AST::Enumeration::Item^ s)
 {
+    if (ReferenceEquals(s, nullptr))
+        throw gcnew ::System::ArgumentNullException("s", "s cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::Enumeration::Item*)s->NativePtr;
     ((::CppSharp::CppParser::AST::Enumeration*)NativePtr)->addItems(arg0);
 }
@@ -2976,6 +3088,8 @@ CppSharp::Parser::AST::Enumeration::Enumeration(CppSharp::Parser::AST::Enumerati
     : CppSharp::Parser::AST::DeclarationContext((::CppSharp::CppParser::AST::DeclarationContext*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::Enumeration*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::Enumeration(arg0);
 }
@@ -3048,6 +3162,8 @@ CppSharp::Parser::AST::Variable::Variable(CppSharp::Parser::AST::Variable^ _0)
     : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::Variable*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::Variable(arg0);
 }
@@ -3109,6 +3225,8 @@ CppSharp::Parser::AST::BaseClassSpecifier::BaseClassSpecifier()
 CppSharp::Parser::AST::BaseClassSpecifier::BaseClassSpecifier(CppSharp::Parser::AST::BaseClassSpecifier^ _0)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::BaseClassSpecifier*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::BaseClassSpecifier(arg0);
 }
@@ -3195,6 +3313,8 @@ CppSharp::Parser::AST::Field::Field(CppSharp::Parser::AST::Field^ _0)
     : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::Field*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::Field(arg0);
 }
@@ -3281,6 +3401,8 @@ CppSharp::Parser::AST::AccessSpecifierDecl::AccessSpecifierDecl(CppSharp::Parser
     : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::AccessSpecifierDecl*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::AccessSpecifierDecl(arg0);
 }
@@ -3322,6 +3444,8 @@ CppSharp::Parser::AST::BaseClassSpecifier^ CppSharp::Parser::AST::Class::getBase
 
 void CppSharp::Parser::AST::Class::addBases(CppSharp::Parser::AST::BaseClassSpecifier^ s)
 {
+    if (ReferenceEquals(s, nullptr))
+        throw gcnew ::System::ArgumentNullException("s", "s cannot be null because it is a C++ reference (&).");
     auto arg0 = (::CppSharp::CppParser::AST::BaseClassSpecifier*)s->NativePtr;
     ((::CppSharp::CppParser::AST::Class*)NativePtr)->addBases(arg0);
 }
@@ -3340,6 +3464,8 @@ CppSharp::Parser::AST::Field^ CppSharp::Parser::AST::Class::getFields(unsigned i
 
 void CppSharp::Parser::AST::Class::addFields(CppSharp::Parser::AST::Field^ s)
 {
+    if (ReferenceEquals(s, nullptr))
+        throw gcnew ::System::ArgumentNullException("s", "s cannot be null because it is a C++ reference (&).");
     auto arg0 = (::CppSharp::CppParser::AST::Field*)s->NativePtr;
     ((::CppSharp::CppParser::AST::Class*)NativePtr)->addFields(arg0);
 }
@@ -3358,6 +3484,8 @@ CppSharp::Parser::AST::Method^ CppSharp::Parser::AST::Class::getMethods(unsigned
 
 void CppSharp::Parser::AST::Class::addMethods(CppSharp::Parser::AST::Method^ s)
 {
+    if (ReferenceEquals(s, nullptr))
+        throw gcnew ::System::ArgumentNullException("s", "s cannot be null because it is a C++ reference (&).");
     auto arg0 = (::CppSharp::CppParser::AST::Method*)s->NativePtr;
     ((::CppSharp::CppParser::AST::Class*)NativePtr)->addMethods(arg0);
 }
@@ -3376,6 +3504,8 @@ CppSharp::Parser::AST::AccessSpecifierDecl^ CppSharp::Parser::AST::Class::getSpe
 
 void CppSharp::Parser::AST::Class::addSpecifiers(CppSharp::Parser::AST::AccessSpecifierDecl^ s)
 {
+    if (ReferenceEquals(s, nullptr))
+        throw gcnew ::System::ArgumentNullException("s", "s cannot be null because it is a C++ reference (&).");
     auto arg0 = (::CppSharp::CppParser::AST::AccessSpecifierDecl*)s->NativePtr;
     ((::CppSharp::CppParser::AST::Class*)NativePtr)->addSpecifiers(arg0);
 }
@@ -3389,6 +3519,8 @@ CppSharp::Parser::AST::Class::Class(CppSharp::Parser::AST::Class^ _0)
     : CppSharp::Parser::AST::DeclarationContext((::CppSharp::CppParser::AST::DeclarationContext*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::Class*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::Class(arg0);
 }
@@ -3562,6 +3694,8 @@ CppSharp::Parser::AST::TemplateParameter^ CppSharp::Parser::AST::Template::getPa
 
 void CppSharp::Parser::AST::Template::addParameters(CppSharp::Parser::AST::TemplateParameter^ s)
 {
+    if (ReferenceEquals(s, nullptr))
+        throw gcnew ::System::ArgumentNullException("s", "s cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::TemplateParameter*)s->NativePtr;
     ((::CppSharp::CppParser::AST::Template*)NativePtr)->addParameters(arg0);
 }
@@ -3575,6 +3709,8 @@ CppSharp::Parser::AST::Template::Template(CppSharp::Parser::AST::Template^ _0)
     : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::Template*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::Template(arg0);
 }
@@ -3632,6 +3768,8 @@ CppSharp::Parser::AST::ClassTemplateSpecialization^ CppSharp::Parser::AST::Class
 
 void CppSharp::Parser::AST::ClassTemplate::addSpecializations(CppSharp::Parser::AST::ClassTemplateSpecialization^ s)
 {
+    if (ReferenceEquals(s, nullptr))
+        throw gcnew ::System::ArgumentNullException("s", "s cannot be null because it is a C++ reference (&).");
     auto arg0 = (::CppSharp::CppParser::AST::ClassTemplateSpecialization*)s->NativePtr;
     ((::CppSharp::CppParser::AST::ClassTemplate*)NativePtr)->addSpecializations(arg0);
 }
@@ -3645,6 +3783,8 @@ CppSharp::Parser::AST::ClassTemplate::ClassTemplate(CppSharp::Parser::AST::Class
     : CppSharp::Parser::AST::Template((::CppSharp::CppParser::AST::Template*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::ClassTemplate*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::ClassTemplate(arg0);
 }
@@ -3692,6 +3832,8 @@ CppSharp::Parser::AST::TemplateArgument^ CppSharp::Parser::AST::ClassTemplateSpe
 
 void CppSharp::Parser::AST::ClassTemplateSpecialization::addArguments(CppSharp::Parser::AST::TemplateArgument^ s)
 {
+    if (ReferenceEquals(s, nullptr))
+        throw gcnew ::System::ArgumentNullException("s", "s cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::TemplateArgument*)s->NativePtr;
     ((::CppSharp::CppParser::AST::ClassTemplateSpecialization*)NativePtr)->addArguments(arg0);
 }
@@ -3705,6 +3847,8 @@ CppSharp::Parser::AST::ClassTemplateSpecialization::ClassTemplateSpecialization(
     : CppSharp::Parser::AST::Class((::CppSharp::CppParser::AST::Class*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::ClassTemplateSpecialization*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::ClassTemplateSpecialization(arg0);
 }
@@ -3767,6 +3911,8 @@ CppSharp::Parser::AST::ClassTemplatePartialSpecialization::ClassTemplatePartialS
     : CppSharp::Parser::AST::ClassTemplateSpecialization((::CppSharp::CppParser::AST::ClassTemplateSpecialization*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::ClassTemplatePartialSpecialization*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::ClassTemplatePartialSpecialization(arg0);
 }
@@ -3808,6 +3954,8 @@ CppSharp::Parser::AST::FunctionTemplateSpecialization^ CppSharp::Parser::AST::Fu
 
 void CppSharp::Parser::AST::FunctionTemplate::addSpecializations(CppSharp::Parser::AST::FunctionTemplateSpecialization^ s)
 {
+    if (ReferenceEquals(s, nullptr))
+        throw gcnew ::System::ArgumentNullException("s", "s cannot be null because it is a C++ reference (&).");
     auto arg0 = (::CppSharp::CppParser::AST::FunctionTemplateSpecialization*)s->NativePtr;
     ((::CppSharp::CppParser::AST::FunctionTemplate*)NativePtr)->addSpecializations(arg0);
 }
@@ -3821,6 +3969,8 @@ CppSharp::Parser::AST::FunctionTemplate::FunctionTemplate(CppSharp::Parser::AST:
     : CppSharp::Parser::AST::Template((::CppSharp::CppParser::AST::Template*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::FunctionTemplate*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::FunctionTemplate(arg0);
 }
@@ -3870,6 +4020,8 @@ CppSharp::Parser::AST::TemplateArgument^ CppSharp::Parser::AST::FunctionTemplate
 
 void CppSharp::Parser::AST::FunctionTemplateSpecialization::addArguments(CppSharp::Parser::AST::TemplateArgument^ s)
 {
+    if (ReferenceEquals(s, nullptr))
+        throw gcnew ::System::ArgumentNullException("s", "s cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::TemplateArgument*)s->NativePtr;
     ((::CppSharp::CppParser::AST::FunctionTemplateSpecialization*)NativePtr)->addArguments(arg0);
 }
@@ -3882,6 +4034,8 @@ void CppSharp::Parser::AST::FunctionTemplateSpecialization::clearArguments()
 CppSharp::Parser::AST::FunctionTemplateSpecialization::FunctionTemplateSpecialization(CppSharp::Parser::AST::FunctionTemplateSpecialization^ _0)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::FunctionTemplateSpecialization*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::FunctionTemplateSpecialization(arg0);
 }
@@ -3964,6 +4118,8 @@ CppSharp::Parser::AST::Namespace::Namespace(CppSharp::Parser::AST::Namespace^ _0
     : CppSharp::Parser::AST::DeclarationContext((::CppSharp::CppParser::AST::DeclarationContext*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::Namespace*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::Namespace(arg0);
 }
@@ -4010,6 +4166,8 @@ CppSharp::Parser::AST::PreprocessedEntity::PreprocessedEntity(CppSharp::Parser::
     : CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::PreprocessedEntity*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::PreprocessedEntity(arg0);
 }
@@ -4056,6 +4214,8 @@ CppSharp::Parser::AST::MacroDefinition::MacroDefinition(CppSharp::Parser::AST::M
     : CppSharp::Parser::AST::PreprocessedEntity((::CppSharp::CppParser::AST::PreprocessedEntity*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::MacroDefinition*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::MacroDefinition(arg0);
 }
@@ -4106,6 +4266,8 @@ CppSharp::Parser::AST::MacroExpansion::MacroExpansion(CppSharp::Parser::AST::Mac
     : CppSharp::Parser::AST::PreprocessedEntity((::CppSharp::CppParser::AST::PreprocessedEntity*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::MacroExpansion*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::MacroExpansion(arg0);
 }
@@ -4171,6 +4333,8 @@ CppSharp::Parser::AST::MacroDefinition^ CppSharp::Parser::AST::TranslationUnit::
 
 void CppSharp::Parser::AST::TranslationUnit::addMacros(CppSharp::Parser::AST::MacroDefinition^ s)
 {
+    if (ReferenceEquals(s, nullptr))
+        throw gcnew ::System::ArgumentNullException("s", "s cannot be null because it is a C++ reference (&).");
     auto arg0 = (::CppSharp::CppParser::AST::MacroDefinition*)s->NativePtr;
     ((::CppSharp::CppParser::AST::TranslationUnit*)NativePtr)->addMacros(arg0);
 }
@@ -4184,6 +4348,8 @@ CppSharp::Parser::AST::TranslationUnit::TranslationUnit(CppSharp::Parser::AST::T
     : CppSharp::Parser::AST::Namespace((::CppSharp::CppParser::AST::Namespace*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::TranslationUnit*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::TranslationUnit(arg0);
 }
@@ -4289,6 +4455,8 @@ void CppSharp::Parser::AST::NativeLibrary::clearDependencies()
 CppSharp::Parser::AST::NativeLibrary::NativeLibrary(CppSharp::Parser::AST::NativeLibrary^ _0)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::NativeLibrary*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::NativeLibrary(arg0);
 }
@@ -4378,6 +4546,8 @@ CppSharp::Parser::AST::TranslationUnit^ CppSharp::Parser::AST::ASTContext::getTr
 
 void CppSharp::Parser::AST::ASTContext::addTranslationUnits(CppSharp::Parser::AST::TranslationUnit^ s)
 {
+    if (ReferenceEquals(s, nullptr))
+        throw gcnew ::System::ArgumentNullException("s", "s cannot be null because it is a C++ reference (&).");
     auto arg0 = (::CppSharp::CppParser::AST::TranslationUnit*)s->NativePtr;
     ((::CppSharp::CppParser::AST::ASTContext*)NativePtr)->addTranslationUnits(arg0);
 }
@@ -4390,6 +4560,8 @@ void CppSharp::Parser::AST::ASTContext::clearTranslationUnits()
 CppSharp::Parser::AST::ASTContext::ASTContext(CppSharp::Parser::AST::ASTContext^ _0)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::ASTContext*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::ASTContext(arg0);
 }
@@ -4444,6 +4616,8 @@ CppSharp::Parser::AST::Comment::Comment(CppSharp::Parser::AST::CommentKind kind)
 CppSharp::Parser::AST::Comment::Comment(CppSharp::Parser::AST::Comment^ _0)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::Comment*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::Comment(arg0);
 }
@@ -4508,6 +4682,8 @@ CppSharp::Parser::AST::BlockContentComment::BlockContentComment(CppSharp::Parser
     : CppSharp::Parser::AST::Comment((::CppSharp::CppParser::AST::Comment*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::BlockContentComment*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::BlockContentComment(arg0);
 }
@@ -4549,6 +4725,8 @@ CppSharp::Parser::AST::BlockContentComment^ CppSharp::Parser::AST::FullComment::
 
 void CppSharp::Parser::AST::FullComment::addBlocks(CppSharp::Parser::AST::BlockContentComment^ s)
 {
+    if (ReferenceEquals(s, nullptr))
+        throw gcnew ::System::ArgumentNullException("s", "s cannot be null because it is a C++ reference (&).");
     auto arg0 = (::CppSharp::CppParser::AST::BlockContentComment*)s->NativePtr;
     ((::CppSharp::CppParser::AST::FullComment*)NativePtr)->addBlocks(arg0);
 }
@@ -4562,6 +4740,8 @@ CppSharp::Parser::AST::FullComment::FullComment(CppSharp::Parser::AST::FullComme
     : CppSharp::Parser::AST::Comment((::CppSharp::CppParser::AST::Comment*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::FullComment*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::FullComment(arg0);
 }
@@ -4605,6 +4785,8 @@ CppSharp::Parser::AST::BlockCommandComment::Argument::Argument()
 CppSharp::Parser::AST::BlockCommandComment::Argument::Argument(CppSharp::Parser::AST::BlockCommandComment::Argument^ _0)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::BlockCommandComment::Argument*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::BlockCommandComment::Argument(arg0);
 }
@@ -4678,6 +4860,8 @@ CppSharp::Parser::AST::BlockCommandComment::Argument^ CppSharp::Parser::AST::Blo
 
 void CppSharp::Parser::AST::BlockCommandComment::addArguments(CppSharp::Parser::AST::BlockCommandComment::Argument^ s)
 {
+    if (ReferenceEquals(s, nullptr))
+        throw gcnew ::System::ArgumentNullException("s", "s cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::BlockCommandComment::Argument*)s->NativePtr;
     ((::CppSharp::CppParser::AST::BlockCommandComment*)NativePtr)->addArguments(arg0);
 }
@@ -4691,6 +4875,8 @@ CppSharp::Parser::AST::BlockCommandComment::BlockCommandComment(CppSharp::Parser
     : CppSharp::Parser::AST::BlockContentComment((::CppSharp::CppParser::AST::BlockContentComment*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::BlockCommandComment*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::BlockCommandComment(arg0);
 }
@@ -4743,6 +4929,8 @@ CppSharp::Parser::AST::ParamCommandComment::ParamCommandComment(CppSharp::Parser
     : CppSharp::Parser::AST::BlockCommandComment((::CppSharp::CppParser::AST::BlockCommandComment*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::ParamCommandComment*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::ParamCommandComment(arg0);
 }
@@ -4817,6 +5005,8 @@ CppSharp::Parser::AST::TParamCommandComment::TParamCommandComment(CppSharp::Pars
     : CppSharp::Parser::AST::BlockCommandComment((::CppSharp::CppParser::AST::BlockCommandComment*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::TParamCommandComment*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::TParamCommandComment(arg0);
 }
@@ -4859,6 +5049,8 @@ CppSharp::Parser::AST::VerbatimBlockLineComment::VerbatimBlockLineComment(CppSha
     : CppSharp::Parser::AST::Comment((::CppSharp::CppParser::AST::Comment*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::VerbatimBlockLineComment*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::VerbatimBlockLineComment(arg0);
 }
@@ -4914,6 +5106,8 @@ CppSharp::Parser::AST::VerbatimBlockLineComment^ CppSharp::Parser::AST::Verbatim
 
 void CppSharp::Parser::AST::VerbatimBlockComment::addLines(CppSharp::Parser::AST::VerbatimBlockLineComment^ s)
 {
+    if (ReferenceEquals(s, nullptr))
+        throw gcnew ::System::ArgumentNullException("s", "s cannot be null because it is a C++ reference (&).");
     auto arg0 = (::CppSharp::CppParser::AST::VerbatimBlockLineComment*)s->NativePtr;
     ((::CppSharp::CppParser::AST::VerbatimBlockComment*)NativePtr)->addLines(arg0);
 }
@@ -4927,6 +5121,8 @@ CppSharp::Parser::AST::VerbatimBlockComment::VerbatimBlockComment(CppSharp::Pars
     : CppSharp::Parser::AST::BlockCommandComment((::CppSharp::CppParser::AST::BlockCommandComment*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::VerbatimBlockComment*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::VerbatimBlockComment(arg0);
 }
@@ -4969,6 +5165,8 @@ CppSharp::Parser::AST::VerbatimLineComment::VerbatimLineComment(CppSharp::Parser
     : CppSharp::Parser::AST::BlockCommandComment((::CppSharp::CppParser::AST::BlockCommandComment*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::VerbatimLineComment*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::VerbatimLineComment(arg0);
 }
@@ -5027,6 +5225,8 @@ CppSharp::Parser::AST::InlineContentComment::InlineContentComment(CppSharp::Pars
     : CppSharp::Parser::AST::Comment((::CppSharp::CppParser::AST::Comment*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::InlineContentComment*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::InlineContentComment(arg0);
 }
@@ -5068,6 +5268,8 @@ CppSharp::Parser::AST::InlineContentComment^ CppSharp::Parser::AST::ParagraphCom
 
 void CppSharp::Parser::AST::ParagraphComment::addContent(CppSharp::Parser::AST::InlineContentComment^ s)
 {
+    if (ReferenceEquals(s, nullptr))
+        throw gcnew ::System::ArgumentNullException("s", "s cannot be null because it is a C++ reference (&).");
     auto arg0 = (::CppSharp::CppParser::AST::InlineContentComment*)s->NativePtr;
     ((::CppSharp::CppParser::AST::ParagraphComment*)NativePtr)->addContent(arg0);
 }
@@ -5081,6 +5283,8 @@ CppSharp::Parser::AST::ParagraphComment::ParagraphComment(CppSharp::Parser::AST:
     : CppSharp::Parser::AST::BlockContentComment((::CppSharp::CppParser::AST::BlockContentComment*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::ParagraphComment*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::ParagraphComment(arg0);
 }
@@ -5134,6 +5338,8 @@ CppSharp::Parser::AST::InlineCommandComment::Argument::Argument()
 CppSharp::Parser::AST::InlineCommandComment::Argument::Argument(CppSharp::Parser::AST::InlineCommandComment::Argument^ _0)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::InlineCommandComment::Argument*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::InlineCommandComment::Argument(arg0);
 }
@@ -5199,6 +5405,8 @@ CppSharp::Parser::AST::InlineCommandComment::Argument^ CppSharp::Parser::AST::In
 
 void CppSharp::Parser::AST::InlineCommandComment::addArguments(CppSharp::Parser::AST::InlineCommandComment::Argument^ s)
 {
+    if (ReferenceEquals(s, nullptr))
+        throw gcnew ::System::ArgumentNullException("s", "s cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::InlineCommandComment::Argument*)s->NativePtr;
     ((::CppSharp::CppParser::AST::InlineCommandComment*)NativePtr)->addArguments(arg0);
 }
@@ -5212,6 +5420,8 @@ CppSharp::Parser::AST::InlineCommandComment::InlineCommandComment(CppSharp::Pars
     : CppSharp::Parser::AST::InlineContentComment((::CppSharp::CppParser::AST::InlineContentComment*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::InlineCommandComment*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::InlineCommandComment(arg0);
 }
@@ -5272,6 +5482,8 @@ CppSharp::Parser::AST::HTMLTagComment::HTMLTagComment(CppSharp::Parser::AST::HTM
     : CppSharp::Parser::AST::InlineContentComment((::CppSharp::CppParser::AST::InlineContentComment*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::HTMLTagComment*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::HTMLTagComment(arg0);
 }
@@ -5309,6 +5521,8 @@ CppSharp::Parser::AST::HTMLStartTagComment::Attribute::Attribute()
 CppSharp::Parser::AST::HTMLStartTagComment::Attribute::Attribute(CppSharp::Parser::AST::HTMLStartTagComment::Attribute^ _0)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::HTMLStartTagComment::Attribute*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::HTMLStartTagComment::Attribute(arg0);
 }
@@ -5388,6 +5602,8 @@ CppSharp::Parser::AST::HTMLStartTagComment::Attribute^ CppSharp::Parser::AST::HT
 
 void CppSharp::Parser::AST::HTMLStartTagComment::addAttributes(CppSharp::Parser::AST::HTMLStartTagComment::Attribute^ s)
 {
+    if (ReferenceEquals(s, nullptr))
+        throw gcnew ::System::ArgumentNullException("s", "s cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::HTMLStartTagComment::Attribute*)s->NativePtr;
     ((::CppSharp::CppParser::AST::HTMLStartTagComment*)NativePtr)->addAttributes(arg0);
 }
@@ -5401,6 +5617,8 @@ CppSharp::Parser::AST::HTMLStartTagComment::HTMLStartTagComment(CppSharp::Parser
     : CppSharp::Parser::AST::HTMLTagComment((::CppSharp::CppParser::AST::HTMLTagComment*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::HTMLStartTagComment*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::HTMLStartTagComment(arg0);
 }
@@ -5457,6 +5675,8 @@ CppSharp::Parser::AST::HTMLEndTagComment::HTMLEndTagComment(CppSharp::Parser::AS
     : CppSharp::Parser::AST::HTMLTagComment((::CppSharp::CppParser::AST::HTMLTagComment*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::HTMLEndTagComment*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::HTMLEndTagComment(arg0);
 }
@@ -5507,6 +5727,8 @@ CppSharp::Parser::AST::TextComment::TextComment(CppSharp::Parser::AST::TextComme
     : CppSharp::Parser::AST::InlineContentComment((::CppSharp::CppParser::AST::InlineContentComment*)nullptr)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::TextComment*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::TextComment(arg0);
 }
@@ -5558,6 +5780,8 @@ CppSharp::Parser::AST::RawComment::RawComment()
 CppSharp::Parser::AST::RawComment::RawComment(CppSharp::Parser::AST::RawComment^ _0)
 {
     __ownsNativeInstance = true;
+    if (ReferenceEquals(_0, nullptr))
+        throw gcnew ::System::ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
     auto &arg0 = *(::CppSharp::CppParser::AST::RawComment*)_0->NativePtr;
     NativePtr = new ::CppSharp::CppParser::AST::RawComment(arg0);
 }

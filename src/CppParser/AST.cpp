@@ -486,15 +486,33 @@ Expression::Expression(const std::string& str, StatementClass stmtClass, Declara
 BinaryOperator::BinaryOperator(const std::string& str, Expression* lhs, Expression* rhs, const std::string& opcodeStr)
     : Expression(str, StatementClass::BinaryOperator), LHS(lhs), RHS(rhs), OpcodeStr(opcodeStr) {}
 
+BinaryOperator::~BinaryOperator()
+{
+    delete LHS;
+    delete RHS;
+}
+
 DEF_STRING(BinaryOperator, OpcodeStr)
 
 CallExpr::CallExpr(const std::string& str, Declaration* decl)
     : Expression(str, StatementClass::CallExprClass, decl) {}
 
+CallExpr::~CallExpr()
+{
+    for (auto& arg : Arguments)
+        delete arg;
+}
+
 DEF_VECTOR(CallExpr, Expression*, Arguments)
 
 CXXConstructExpr::CXXConstructExpr(const std::string& str, Declaration* decl)
     : Expression(str, StatementClass::CXXConstructExprClass, decl) {}
+
+CXXConstructExpr::~CXXConstructExpr()
+{
+    for (auto& arg : Arguments)
+        delete arg;
+}
 
 DEF_VECTOR(CXXConstructExpr, Expression*, Arguments)
 

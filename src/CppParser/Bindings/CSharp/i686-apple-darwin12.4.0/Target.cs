@@ -222,7 +222,9 @@ namespace CppSharp
                 __Instance = Marshal.AllocHGlobal(164);
                 __ownsNativeInstance = true;
                 NativeToManagedMap[__Instance] = this;
-                var arg0 = ReferenceEquals(_0, null) ? global::System.IntPtr.Zero : _0.__Instance;
+                if (ReferenceEquals(_0, null))
+                    throw new global::System.ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
+                var arg0 = _0.__Instance;
                 Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
             }
 
