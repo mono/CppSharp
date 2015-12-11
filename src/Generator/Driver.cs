@@ -237,6 +237,8 @@ namespace CppSharp
                     continue;
 
                 Symbols.Libraries.Add(ClangParser.ConvertLibrary(res.Library));
+
+                res.Dispose();
             }
 
             return true;
@@ -502,6 +504,7 @@ namespace CppSharp
             }
 
             driver.Generator.Dispose();
+            driver.TargetInfo.Dispose();
         }
     }
 }
