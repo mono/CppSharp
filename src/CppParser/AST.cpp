@@ -744,7 +744,19 @@ DEF_STRING(RawComment, BriefText)
 
 RawComment::RawComment() : FullCommentBlock(0) {}
 
+RawComment::~RawComment()
+{
+    if (FullCommentBlock)
+        delete FullCommentBlock;
+}
+
 FullComment::FullComment() : Comment(CommentKind::FullComment) {}
+
+FullComment::~FullComment()
+{
+    for (auto& block : Blocks)
+        delete block;
+}
 
 DEF_VECTOR(FullComment, BlockContentComment*, Blocks)
 
@@ -770,6 +782,12 @@ DEF_VECTOR(TParamCommandComment, unsigned, Position)
 
 VerbatimBlockComment::VerbatimBlockComment() : BlockCommandComment(CommentKind::VerbatimBlockComment) {}
 
+VerbatimBlockComment::~VerbatimBlockComment()
+{
+    for (auto& line : Lines)
+        delete line;
+}
+
 DEF_VECTOR(VerbatimBlockComment, VerbatimBlockLineComment*, Lines)
 
 VerbatimLineComment::VerbatimLineComment() : BlockCommandComment(CommentKind::VerbatimLineComment) {}
@@ -777,6 +795,12 @@ VerbatimLineComment::VerbatimLineComment() : BlockCommandComment(CommentKind::Ve
 DEF_STRING(VerbatimLineComment, Text)
 
 ParagraphComment::ParagraphComment() : BlockContentComment(CommentKind::ParagraphComment), IsWhitespace(false) {}
+
+ParagraphComment::~ParagraphComment()
+{
+    for (auto& content : Content)
+        delete content;
+}
 
 DEF_VECTOR(ParagraphComment, InlineContentComment*, Content)
 

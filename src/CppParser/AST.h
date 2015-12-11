@@ -920,6 +920,7 @@ class CS_API FullComment : public Comment
 {
 public:
     FullComment();
+    ~FullComment();
     VECTOR(BlockContentComment*, Blocks)
 };
 
@@ -970,6 +971,7 @@ class CS_API VerbatimBlockComment : public BlockCommandComment
 {
 public:
     VerbatimBlockComment();
+    ~VerbatimBlockComment();
     VECTOR(VerbatimBlockLineComment*, Lines)
 };
 
@@ -991,6 +993,7 @@ class CS_API ParagraphComment : public BlockContentComment
 {
 public:
     ParagraphComment();
+    ~ParagraphComment();
     bool IsWhitespace;
     VECTOR(InlineContentComment*, Content)
 };
@@ -1068,6 +1071,7 @@ class CS_API RawComment
 {
 public:
     RawComment();
+    ~RawComment();
     RawCommentKind Kind;
     STRING(Text)
     STRING(BriefText)
