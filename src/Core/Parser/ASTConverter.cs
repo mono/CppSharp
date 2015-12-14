@@ -734,8 +734,6 @@ namespace CppSharp
                 _rawComment.FullComment = commentConverter.Visit(rawComment.FullCommentBlock)
                     as AST.FullComment;
 
-            NativeObjects.Add(rawComment);
-
             return _rawComment;
         }
 
