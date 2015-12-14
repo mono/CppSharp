@@ -351,8 +351,6 @@ namespace CppSharp
             foreach (var nativeObject in declConverter.NativeObjects)
                 nativeObject.Dispose();
 
-            Context.Dispose();
-
             return _ctx;
         }
     }

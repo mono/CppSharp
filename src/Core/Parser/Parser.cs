@@ -48,7 +48,7 @@ namespace CppSharp
         /// <summary>
         /// Parses a C++ source file to a translation unit.
         /// </summary>
-        public void ParseSourceFile(SourceFile file)
+        public ParserResult ParseSourceFile(SourceFile file)
         {
             var options = file.Options;
             options.ASTContext = ASTContext;
@@ -56,7 +56,8 @@ namespace CppSharp
 
             var result = Parser.ClangParser.ParseHeader(options);
             SourceParsed(file, result);
-            result.Dispose();
+
+            return result;
         }
 
         /// <summary>
