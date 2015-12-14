@@ -381,9 +381,6 @@ namespace CppSharp.Generators.CLI
             WriteLine("{0}({1} native);", @class.Name, nativeType);
             WriteLine("static {0}^ {1}(::System::IntPtr native);",
                 @class.Name, Helpers.CreateInstanceIdentifier);
-            if (@class.IsRefType)
-                WriteLine("static {0}^ {1}(::System::IntPtr native, bool {2});",
-                    @class.Name, Helpers.CreateInstanceIdentifier, Helpers.OwnsNativeInstanceIdentifier);
 
             foreach (var ctor in @class.Constructors)
             {

@@ -1820,9 +1820,6 @@ namespace CppSharp.Generators.CSharp
 
             WriteLine("void Dispose(bool disposing)");
             WriteStartBraceIndent();
-            WriteLine("if (!{0} && disposing)", Helpers.OwnsNativeInstanceIdentifier);
-            WriteLineIndent("throw new global::System.InvalidOperationException" +
-                "(\"Managed instances owned by native code cannot be disposed of.\");");
 
             if (@class.IsRefType)
             {
@@ -1897,16 +1894,11 @@ namespace CppSharp.Generators.CSharp
             if (!@class.IsAbstractImpl)
             {
                 PushBlock(CSharpBlockKind.Method);
-                WriteLine("public static {0}{1} {2}(global::System.IntPtr native{3}{4})",
+                WriteLine("public static {0}{1} {2}(global::System.IntPtr native, bool skipVTables = false)",
                     @class.NeedsBase && !@class.BaseClass.IsInterface ? "new " : string.Empty,
-                    @class.Name, Helpers.CreateInstanceIdentifier,
-                    @class.IsRefType ? ", bool ownsNativeInstance = false" : string.Empty,
-                    ", bool skipVTables = false");
+                    @class.Name, Helpers.CreateInstanceIdentifier);
                 WriteStartBraceIndent();
-                WriteLine("return new {0}(({1}.Internal*) native, skipVTables){2};", ctorCall, className,
-                    @class.IsRefType
-                        ? string.Format(" {{ {0} = ownsNativeInstance }}", Helpers.OwnsNativeInstanceIdentifier)
-                        : string.Empty);
+                WriteLine("return new {0}(({1}.Internal*) native, skipVTables);", ctorCall, className);
                 WriteCloseBraceIndent();
                 PopBlock(NewLineKind.BeforeNextBlock);
             }

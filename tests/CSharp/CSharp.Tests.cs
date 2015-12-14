@@ -324,19 +324,6 @@ public class CSharpTests : GeneratorTestFixture
     }
 
     [Test]
-    public void TestNotDestroyingForeignObjects()
-    {
-        using (var testNativeToManagedMap = new TestNativeToManagedMap())
-        {
-            var hasVirtualDtor2 = testNativeToManagedMap.HasVirtualDtor2;
-            Assert.Catch<InvalidOperationException>(hasVirtualDtor2.Dispose);
-            var hasVirtualDtor1 = hasVirtualDtor2.HasVirtualDtor1;
-            Assert.AreEqual(5, hasVirtualDtor1.TestField);
-            Assert.Catch<InvalidOperationException>(hasVirtualDtor1.Dispose);
-        }
-    }
-
-    [Test]
     public void TestCallingVirtualDtor()
     {
         var callDtorVirtually = new CallDtorVirtually();

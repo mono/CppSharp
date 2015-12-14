@@ -11,20 +11,12 @@ CppSharp::Parser::ParserTargetInfo::ParserTargetInfo(::CppSharp::CppParser::Pars
 
 CppSharp::Parser::ParserTargetInfo^ CppSharp::Parser::ParserTargetInfo::__CreateInstance(::System::IntPtr native)
 {
-    return ::CppSharp::Parser::ParserTargetInfo::__CreateInstance(native, false);
-}
-
-CppSharp::Parser::ParserTargetInfo^ CppSharp::Parser::ParserTargetInfo::__CreateInstance(::System::IntPtr native, bool __ownsNativeInstance)
-{
-    ::CppSharp::Parser::ParserTargetInfo^ result = gcnew ::CppSharp::Parser::ParserTargetInfo((::CppSharp::CppParser::ParserTargetInfo*) native.ToPointer());
-    result->__ownsNativeInstance = __ownsNativeInstance;
-    return result;
+    return gcnew ::CppSharp::Parser::ParserTargetInfo((::CppSharp::CppParser::ParserTargetInfo*) native.ToPointer());
 }
 
 CppSharp::Parser::ParserTargetInfo::~ParserTargetInfo()
 {
-    if (__ownsNativeInstance)
-        delete NativePtr;
+    delete NativePtr;
 }
 
 CppSharp::Parser::ParserTargetInfo::ParserTargetInfo()

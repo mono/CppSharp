@@ -178,9 +178,9 @@ namespace CppSharp
 
             protected bool __ownsNativeInstance;
 
-            public static ParserTargetInfo __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+            public static ParserTargetInfo __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
             {
-                return new ParserTargetInfo((ParserTargetInfo.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                return new ParserTargetInfo((ParserTargetInfo.Internal*) native, skipVTables);
             }
 
             public static ParserTargetInfo __CreateInstance(ParserTargetInfo.Internal native, bool skipVTables = false)
@@ -235,8 +235,6 @@ namespace CppSharp
 
             protected virtual void Dispose(bool disposing)
             {
-                if (!__ownsNativeInstance && disposing)
-                    throw new global::System.InvalidOperationException("Managed instances owned by native code cannot be disposed of.");
                 CppSharp.Parser.ParserTargetInfo __dummy;
                 NativeToManagedMap.TryRemove(__Instance, out __dummy);
                 Internal.dtor_0((__Instance + __PointerAdjustment), 0);

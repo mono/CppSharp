@@ -274,9 +274,9 @@ namespace CppSharp
 
                 protected bool __ownsNativeInstance;
 
-                public static Type __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static Type __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new Type((Type.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new Type((Type.Internal*) native, skipVTables);
                 }
 
                 public static Type __CreateInstance(Type.Internal native, bool skipVTables = false)
@@ -332,8 +332,6 @@ namespace CppSharp
 
                 protected virtual void Dispose(bool disposing)
                 {
-                    if (!__ownsNativeInstance && disposing)
-                        throw new global::System.InvalidOperationException("Managed instances owned by native code cannot be disposed of.");
                     CppSharp.Parser.AST.Type __dummy;
                     NativeToManagedMap.TryRemove(__Instance, out __dummy);
                     if (__ownsNativeInstance)
@@ -395,9 +393,9 @@ namespace CppSharp
 
                 protected bool __ownsNativeInstance;
 
-                public static TypeQualifiers __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static TypeQualifiers __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new TypeQualifiers((TypeQualifiers.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new TypeQualifiers((TypeQualifiers.Internal*) native, skipVTables);
                 }
 
                 public static TypeQualifiers __CreateInstance(TypeQualifiers.Internal native, bool skipVTables = false)
@@ -448,8 +446,6 @@ namespace CppSharp
 
                 protected virtual void Dispose(bool disposing)
                 {
-                    if (!__ownsNativeInstance && disposing)
-                        throw new global::System.InvalidOperationException("Managed instances owned by native code cannot be disposed of.");
                     CppSharp.Parser.AST.TypeQualifiers __dummy;
                     NativeToManagedMap.TryRemove(__Instance, out __dummy);
                     if (__ownsNativeInstance)
@@ -526,9 +522,9 @@ namespace CppSharp
 
                 protected bool __ownsNativeInstance;
 
-                public static QualifiedType __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static QualifiedType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new QualifiedType((QualifiedType.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new QualifiedType((QualifiedType.Internal*) native, skipVTables);
                 }
 
                 public static QualifiedType __CreateInstance(QualifiedType.Internal native, bool skipVTables = false)
@@ -580,8 +576,6 @@ namespace CppSharp
 
                 protected virtual void Dispose(bool disposing)
                 {
-                    if (!__ownsNativeInstance && disposing)
-                        throw new global::System.InvalidOperationException("Managed instances owned by native code cannot be disposed of.");
                     CppSharp.Parser.AST.QualifiedType __dummy;
                     NativeToManagedMap.TryRemove(__Instance, out __dummy);
                     if (__ownsNativeInstance)
@@ -645,9 +639,9 @@ namespace CppSharp
                     internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                public static new TagType __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new TagType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new TagType((TagType.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new TagType((TagType.Internal*) native, skipVTables);
                 }
 
                 public static TagType __CreateInstance(TagType.Internal native, bool skipVTables = false)
@@ -760,9 +754,9 @@ namespace CppSharp
                     Incomplete = 3
                 }
 
-                public static new ArrayType __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new ArrayType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new ArrayType((ArrayType.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new ArrayType((ArrayType.Internal*) native, skipVTables);
                 }
 
                 public static ArrayType __CreateInstance(ArrayType.Internal native, bool skipVTables = false)
@@ -920,9 +914,9 @@ namespace CppSharp
                     internal static extern uint getParametersCount_0(global::System.IntPtr instance);
                 }
 
-                public static new FunctionType __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new FunctionType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new FunctionType((FunctionType.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new FunctionType((FunctionType.Internal*) native, skipVTables);
                 }
 
                 public static FunctionType __CreateInstance(FunctionType.Internal native, bool skipVTables = false)
@@ -1070,9 +1064,9 @@ namespace CppSharp
                     RVReference = 3
                 }
 
-                public static new PointerType __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new PointerType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new PointerType((PointerType.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new PointerType((PointerType.Internal*) native, skipVTables);
                 }
 
                 public static PointerType __CreateInstance(PointerType.Internal native, bool skipVTables = false)
@@ -1176,9 +1170,9 @@ namespace CppSharp
                     internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                public static new MemberPointerType __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new MemberPointerType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new MemberPointerType((MemberPointerType.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new MemberPointerType((MemberPointerType.Internal*) native, skipVTables);
                 }
 
                 public static MemberPointerType __CreateInstance(MemberPointerType.Internal native, bool skipVTables = false)
@@ -1269,9 +1263,9 @@ namespace CppSharp
                     internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                public static new TypedefType __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new TypedefType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new TypedefType((TypedefType.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new TypedefType((TypedefType.Internal*) native, skipVTables);
                 }
 
                 public static TypedefType __CreateInstance(TypedefType.Internal native, bool skipVTables = false)
@@ -1370,9 +1364,9 @@ namespace CppSharp
                     internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                public static new AttributedType __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new AttributedType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new AttributedType((AttributedType.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new AttributedType((AttributedType.Internal*) native, skipVTables);
                 }
 
                 public static AttributedType __CreateInstance(AttributedType.Internal native, bool skipVTables = false)
@@ -1482,9 +1476,9 @@ namespace CppSharp
                     internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                public static new DecayedType __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new DecayedType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new DecayedType((DecayedType.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new DecayedType((DecayedType.Internal*) native, skipVTables);
                 }
 
                 public static DecayedType __CreateInstance(DecayedType.Internal native, bool skipVTables = false)
@@ -1624,9 +1618,9 @@ namespace CppSharp
 
                 protected bool __ownsNativeInstance;
 
-                public static TemplateArgument __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static TemplateArgument __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new TemplateArgument((TemplateArgument.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new TemplateArgument((TemplateArgument.Internal*) native, skipVTables);
                 }
 
                 public static TemplateArgument __CreateInstance(TemplateArgument.Internal native, bool skipVTables = false)
@@ -1678,8 +1672,6 @@ namespace CppSharp
 
                 protected virtual void Dispose(bool disposing)
                 {
-                    if (!__ownsNativeInstance && disposing)
-                        throw new global::System.InvalidOperationException("Managed instances owned by native code cannot be disposed of.");
                     CppSharp.Parser.AST.TemplateArgument __dummy;
                     NativeToManagedMap.TryRemove(__Instance, out __dummy);
                     if (__ownsNativeInstance)
@@ -1797,9 +1789,9 @@ namespace CppSharp
                     internal static extern uint getArgumentsCount_0(global::System.IntPtr instance);
                 }
 
-                public static new TemplateSpecializationType __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new TemplateSpecializationType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new TemplateSpecializationType((TemplateSpecializationType.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new TemplateSpecializationType((TemplateSpecializationType.Internal*) native, skipVTables);
                 }
 
                 public static TemplateSpecializationType __CreateInstance(TemplateSpecializationType.Internal native, bool skipVTables = false)
@@ -1965,9 +1957,9 @@ namespace CppSharp
 
                 protected bool __ownsNativeInstance;
 
-                public static TemplateParameter __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static TemplateParameter __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new TemplateParameter((TemplateParameter.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new TemplateParameter((TemplateParameter.Internal*) native, skipVTables);
                 }
 
                 public static TemplateParameter __CreateInstance(TemplateParameter.Internal native, bool skipVTables = false)
@@ -2022,8 +2014,6 @@ namespace CppSharp
 
                 protected virtual void Dispose(bool disposing)
                 {
-                    if (!__ownsNativeInstance && disposing)
-                        throw new global::System.InvalidOperationException("Managed instances owned by native code cannot be disposed of.");
                     CppSharp.Parser.AST.TemplateParameter __dummy;
                     NativeToManagedMap.TryRemove(__Instance, out __dummy);
                     Internal.dtor_0((__Instance + __PointerAdjustment));
@@ -2129,9 +2119,9 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
-                public static new TemplateParameterType __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new TemplateParameterType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new TemplateParameterType((TemplateParameterType.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new TemplateParameterType((TemplateParameterType.Internal*) native, skipVTables);
                 }
 
                 public static TemplateParameterType __CreateInstance(TemplateParameterType.Internal native, bool skipVTables = false)
@@ -2261,9 +2251,9 @@ namespace CppSharp
                     internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                public static new TemplateParameterSubstitutionType __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new TemplateParameterSubstitutionType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new TemplateParameterSubstitutionType((TemplateParameterSubstitutionType.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new TemplateParameterSubstitutionType((TemplateParameterSubstitutionType.Internal*) native, skipVTables);
                 }
 
                 public static TemplateParameterSubstitutionType __CreateInstance(TemplateParameterSubstitutionType.Internal native, bool skipVTables = false)
@@ -2357,9 +2347,9 @@ namespace CppSharp
                     internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                public static new InjectedClassNameType __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new InjectedClassNameType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new InjectedClassNameType((InjectedClassNameType.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new InjectedClassNameType((InjectedClassNameType.Internal*) native, skipVTables);
                 }
 
                 public static InjectedClassNameType __CreateInstance(InjectedClassNameType.Internal native, bool skipVTables = false)
@@ -2470,9 +2460,9 @@ namespace CppSharp
                     internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                public static new DependentNameType __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new DependentNameType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new DependentNameType((DependentNameType.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new DependentNameType((DependentNameType.Internal*) native, skipVTables);
                 }
 
                 public static DependentNameType __CreateInstance(DependentNameType.Internal native, bool skipVTables = false)
@@ -2547,9 +2537,9 @@ namespace CppSharp
                     internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                public static new PackExpansionType __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new PackExpansionType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new PackExpansionType((PackExpansionType.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new PackExpansionType((PackExpansionType.Internal*) native, skipVTables);
                 }
 
                 public static PackExpansionType __CreateInstance(PackExpansionType.Internal native, bool skipVTables = false)
@@ -2627,9 +2617,9 @@ namespace CppSharp
                     internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                public static new BuiltinType __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new BuiltinType __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new BuiltinType((BuiltinType.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new BuiltinType((BuiltinType.Internal*) native, skipVTables);
                 }
 
                 public static BuiltinType __CreateInstance(BuiltinType.Internal native, bool skipVTables = false)
@@ -2728,9 +2718,9 @@ namespace CppSharp
 
                 protected bool __ownsNativeInstance;
 
-                public static VTableComponent __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static VTableComponent __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new VTableComponent((VTableComponent.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new VTableComponent((VTableComponent.Internal*) native, skipVTables);
                 }
 
                 public static VTableComponent __CreateInstance(VTableComponent.Internal native, bool skipVTables = false)
@@ -2782,8 +2772,6 @@ namespace CppSharp
 
                 protected virtual void Dispose(bool disposing)
                 {
-                    if (!__ownsNativeInstance && disposing)
-                        throw new global::System.InvalidOperationException("Managed instances owned by native code cannot be disposed of.");
                     CppSharp.Parser.AST.VTableComponent __dummy;
                     NativeToManagedMap.TryRemove(__Instance, out __dummy);
                     if (__ownsNativeInstance)
@@ -2884,9 +2872,9 @@ namespace CppSharp
 
                 protected bool __ownsNativeInstance;
 
-                public static VTableLayout __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static VTableLayout __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new VTableLayout((VTableLayout.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new VTableLayout((VTableLayout.Internal*) native, skipVTables);
                 }
 
                 public static VTableLayout __CreateInstance(VTableLayout.Internal native, bool skipVTables = false)
@@ -2941,8 +2929,6 @@ namespace CppSharp
 
                 protected virtual void Dispose(bool disposing)
                 {
-                    if (!__ownsNativeInstance && disposing)
-                        throw new global::System.InvalidOperationException("Managed instances owned by native code cannot be disposed of.");
                     CppSharp.Parser.AST.VTableLayout __dummy;
                     NativeToManagedMap.TryRemove(__Instance, out __dummy);
                     Internal.dtor_0((__Instance + __PointerAdjustment));
@@ -3021,9 +3007,9 @@ namespace CppSharp
 
                 protected bool __ownsNativeInstance;
 
-                public static VFTableInfo __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static VFTableInfo __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new VFTableInfo((VFTableInfo.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new VFTableInfo((VFTableInfo.Internal*) native, skipVTables);
                 }
 
                 public static VFTableInfo __CreateInstance(VFTableInfo.Internal native, bool skipVTables = false)
@@ -3078,8 +3064,6 @@ namespace CppSharp
 
                 protected virtual void Dispose(bool disposing)
                 {
-                    if (!__ownsNativeInstance && disposing)
-                        throw new global::System.InvalidOperationException("Managed instances owned by native code cannot be disposed of.");
                     CppSharp.Parser.AST.VFTableInfo __dummy;
                     NativeToManagedMap.TryRemove(__Instance, out __dummy);
                     Internal.dtor_0((__Instance + __PointerAdjustment));
@@ -3210,9 +3194,9 @@ namespace CppSharp
 
                 protected bool __ownsNativeInstance;
 
-                public static ClassLayout __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static ClassLayout __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new ClassLayout((ClassLayout.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new ClassLayout((ClassLayout.Internal*) native, skipVTables);
                 }
 
                 public static ClassLayout __CreateInstance(ClassLayout.Internal native, bool skipVTables = false)
@@ -3267,8 +3251,6 @@ namespace CppSharp
 
                 protected virtual void Dispose(bool disposing)
                 {
-                    if (!__ownsNativeInstance && disposing)
-                        throw new global::System.InvalidOperationException("Managed instances owned by native code cannot be disposed of.");
                     CppSharp.Parser.AST.ClassLayout __dummy;
                     NativeToManagedMap.TryRemove(__Instance, out __dummy);
                     Internal.dtor_0((__Instance + __PointerAdjustment));
@@ -3502,9 +3484,9 @@ namespace CppSharp
 
                 protected bool __ownsNativeInstance;
 
-                public static Declaration __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static Declaration __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new Declaration((Declaration.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new Declaration((Declaration.Internal*) native, skipVTables);
                 }
 
                 public static Declaration __CreateInstance(Declaration.Internal native, bool skipVTables = false)
@@ -3560,8 +3542,6 @@ namespace CppSharp
 
                 protected virtual void Dispose(bool disposing)
                 {
-                    if (!__ownsNativeInstance && disposing)
-                        throw new global::System.InvalidOperationException("Managed instances owned by native code cannot be disposed of.");
                     CppSharp.Parser.AST.Declaration __dummy;
                     NativeToManagedMap.TryRemove(__Instance, out __dummy);
                     Internal.dtor_0((__Instance + __PointerAdjustment));
@@ -4026,9 +4006,9 @@ namespace CppSharp
                     internal static extern uint getFriendsCount_0(global::System.IntPtr instance);
                 }
 
-                public static new DeclarationContext __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new DeclarationContext __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new DeclarationContext((DeclarationContext.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new DeclarationContext((DeclarationContext.Internal*) native, skipVTables);
                 }
 
                 public static DeclarationContext __CreateInstance(DeclarationContext.Internal native, bool skipVTables = false)
@@ -4419,9 +4399,9 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
-                public static new TypedefDecl __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new TypedefDecl __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new TypedefDecl((TypedefDecl.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new TypedefDecl((TypedefDecl.Internal*) native, skipVTables);
                 }
 
                 public static TypedefDecl __CreateInstance(TypedefDecl.Internal native, bool skipVTables = false)
@@ -4547,9 +4527,9 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
-                public static new Friend __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new Friend __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new Friend((Friend.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new Friend((Friend.Internal*) native, skipVTables);
                 }
 
                 public static Friend __CreateInstance(Friend.Internal native, bool skipVTables = false)
@@ -4660,9 +4640,9 @@ namespace CppSharp
 
                 protected bool __ownsNativeInstance;
 
-                public static Statement __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static Statement __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new Statement((Statement.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new Statement((Statement.Internal*) native, skipVTables);
                 }
 
                 public static Statement __CreateInstance(Statement.Internal native, bool skipVTables = false)
@@ -4709,8 +4689,6 @@ namespace CppSharp
 
                 protected virtual void Dispose(bool disposing)
                 {
-                    if (!__ownsNativeInstance && disposing)
-                        throw new global::System.InvalidOperationException("Managed instances owned by native code cannot be disposed of.");
                     CppSharp.Parser.AST.Statement __dummy;
                     NativeToManagedMap.TryRemove(__Instance, out __dummy);
                     Internal.dtor_0((__Instance + __PointerAdjustment));
@@ -4788,9 +4766,9 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
-                public static new Expression __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new Expression __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new Expression((Expression.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new Expression((Expression.Internal*) native, skipVTables);
                 }
 
                 public static Expression __CreateInstance(Expression.Internal native, bool skipVTables = false)
@@ -4872,9 +4850,9 @@ namespace CppSharp
                     internal static extern void setOpcodeStr_0(global::System.IntPtr instance, global::System.IntPtr s);
                 }
 
-                public static new BinaryOperator __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new BinaryOperator __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new BinaryOperator((BinaryOperator.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new BinaryOperator((BinaryOperator.Internal*) native, skipVTables);
                 }
 
                 public static BinaryOperator __CreateInstance(BinaryOperator.Internal native, bool skipVTables = false)
@@ -5012,9 +4990,9 @@ namespace CppSharp
                     internal static extern uint getArgumentsCount_0(global::System.IntPtr instance);
                 }
 
-                public static new CallExpr __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new CallExpr __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new CallExpr((CallExpr.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new CallExpr((CallExpr.Internal*) native, skipVTables);
                 }
 
                 public static CallExpr __CreateInstance(CallExpr.Internal native, bool skipVTables = false)
@@ -5133,9 +5111,9 @@ namespace CppSharp
                     internal static extern uint getArgumentsCount_0(global::System.IntPtr instance);
                 }
 
-                public static new CXXConstructExpr __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new CXXConstructExpr __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new CXXConstructExpr((CXXConstructExpr.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new CXXConstructExpr((CXXConstructExpr.Internal*) native, skipVTables);
                 }
 
                 public static CXXConstructExpr __CreateInstance(CXXConstructExpr.Internal native, bool skipVTables = false)
@@ -5284,9 +5262,9 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
-                public static new Parameter __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new Parameter __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new Parameter((Parameter.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new Parameter((Parameter.Internal*) native, skipVTables);
                 }
 
                 public static Parameter __CreateInstance(Parameter.Internal native, bool skipVTables = false)
@@ -5536,9 +5514,9 @@ namespace CppSharp
                     internal static extern uint getParametersCount_0(global::System.IntPtr instance);
                 }
 
-                public static new Function __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new Function __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new Function((Function.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new Function((Function.Internal*) native, skipVTables);
                 }
 
                 public static Function __CreateInstance(Function.Internal native, bool skipVTables = false)
@@ -5914,9 +5892,9 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
-                public static new Method __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new Method __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new Method((Method.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new Method((Method.Internal*) native, skipVTables);
                 }
 
                 public static Method __CreateInstance(Method.Internal native, bool skipVTables = false)
@@ -6297,9 +6275,9 @@ namespace CppSharp
                         internal static extern void setExpression_0(global::System.IntPtr instance, global::System.IntPtr s);
                     }
 
-                    public static new Item __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                    public static new Item __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                     {
-                        return new Item((Item.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                        return new Item((Item.Internal*) native, skipVTables);
                     }
 
                     public static Item __CreateInstance(Item.Internal native, bool skipVTables = false)
@@ -6381,9 +6359,9 @@ namespace CppSharp
                     }
                 }
 
-                public static new Enumeration __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new Enumeration __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new Enumeration((Enumeration.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new Enumeration((Enumeration.Internal*) native, skipVTables);
                 }
 
                 public static Enumeration __CreateInstance(Enumeration.Internal native, bool skipVTables = false)
@@ -6584,9 +6562,9 @@ namespace CppSharp
                     internal static extern void setMangled_0(global::System.IntPtr instance, global::System.IntPtr s);
                 }
 
-                public static new Variable __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new Variable __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new Variable((Variable.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new Variable((Variable.Internal*) native, skipVTables);
                 }
 
                 public static Variable __CreateInstance(Variable.Internal native, bool skipVTables = false)
@@ -6704,9 +6682,9 @@ namespace CppSharp
 
                 protected bool __ownsNativeInstance;
 
-                public static BaseClassSpecifier __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static BaseClassSpecifier __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new BaseClassSpecifier((BaseClassSpecifier.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new BaseClassSpecifier((BaseClassSpecifier.Internal*) native, skipVTables);
                 }
 
                 public static BaseClassSpecifier __CreateInstance(BaseClassSpecifier.Internal native, bool skipVTables = false)
@@ -6758,8 +6736,6 @@ namespace CppSharp
 
                 protected virtual void Dispose(bool disposing)
                 {
-                    if (!__ownsNativeInstance && disposing)
-                        throw new global::System.InvalidOperationException("Managed instances owned by native code cannot be disposed of.");
                     CppSharp.Parser.AST.BaseClassSpecifier __dummy;
                     NativeToManagedMap.TryRemove(__Instance, out __dummy);
                     if (__ownsNativeInstance)
@@ -6896,9 +6872,9 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
-                public static new Field __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new Field __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new Field((Field.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new Field((Field.Internal*) native, skipVTables);
                 }
 
                 public static Field __CreateInstance(Field.Internal native, bool skipVTables = false)
@@ -7078,9 +7054,9 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
-                public static new AccessSpecifierDecl __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new AccessSpecifierDecl __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new AccessSpecifierDecl((AccessSpecifierDecl.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new AccessSpecifierDecl((AccessSpecifierDecl.Internal*) native, skipVTables);
                 }
 
                 public static AccessSpecifierDecl __CreateInstance(AccessSpecifierDecl.Internal native, bool skipVTables = false)
@@ -7303,9 +7279,9 @@ namespace CppSharp
                     internal static extern uint getSpecifiersCount_0(global::System.IntPtr instance);
                 }
 
-                public static new Class __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new Class __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new Class((Class.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new Class((Class.Internal*) native, skipVTables);
                 }
 
                 public static Class __CreateInstance(Class.Internal native, bool skipVTables = false)
@@ -7710,9 +7686,9 @@ namespace CppSharp
                     internal static extern uint getParametersCount_0(global::System.IntPtr instance);
                 }
 
-                public static new Template __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new Template __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new Template((Template.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new Template((Template.Internal*) native, skipVTables);
                 }
 
                 public static Template __CreateInstance(Template.Internal native, bool skipVTables = false)
@@ -7902,9 +7878,9 @@ namespace CppSharp
                     internal static extern uint getSpecializationsCount_0(global::System.IntPtr instance);
                 }
 
-                public static new ClassTemplate __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new ClassTemplate __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new ClassTemplate((ClassTemplate.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new ClassTemplate((ClassTemplate.Internal*) native, skipVTables);
                 }
 
                 public static ClassTemplate __CreateInstance(ClassTemplate.Internal native, bool skipVTables = false)
@@ -8106,9 +8082,9 @@ namespace CppSharp
                     internal static extern uint getArgumentsCount_0(global::System.IntPtr instance);
                 }
 
-                public static new ClassTemplateSpecialization __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new ClassTemplateSpecialization __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new ClassTemplateSpecialization((ClassTemplateSpecialization.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new ClassTemplateSpecialization((ClassTemplateSpecialization.Internal*) native, skipVTables);
                 }
 
                 public static ClassTemplateSpecialization __CreateInstance(ClassTemplateSpecialization.Internal native, bool skipVTables = false)
@@ -8317,9 +8293,9 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
-                public static new ClassTemplatePartialSpecialization __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new ClassTemplatePartialSpecialization __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new ClassTemplatePartialSpecialization((ClassTemplatePartialSpecialization.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new ClassTemplatePartialSpecialization((ClassTemplatePartialSpecialization.Internal*) native, skipVTables);
                 }
 
                 public static ClassTemplatePartialSpecialization __CreateInstance(ClassTemplatePartialSpecialization.Internal native, bool skipVTables = false)
@@ -8452,9 +8428,9 @@ namespace CppSharp
                     internal static extern uint getSpecializationsCount_0(global::System.IntPtr instance);
                 }
 
-                public static new FunctionTemplate __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new FunctionTemplate __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new FunctionTemplate((FunctionTemplate.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new FunctionTemplate((FunctionTemplate.Internal*) native, skipVTables);
                 }
 
                 public static FunctionTemplate __CreateInstance(FunctionTemplate.Internal native, bool skipVTables = false)
@@ -8598,9 +8574,9 @@ namespace CppSharp
 
                 protected bool __ownsNativeInstance;
 
-                public static FunctionTemplateSpecialization __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static FunctionTemplateSpecialization __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new FunctionTemplateSpecialization((FunctionTemplateSpecialization.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new FunctionTemplateSpecialization((FunctionTemplateSpecialization.Internal*) native, skipVTables);
                 }
 
                 public static FunctionTemplateSpecialization __CreateInstance(FunctionTemplateSpecialization.Internal native, bool skipVTables = false)
@@ -8655,8 +8631,6 @@ namespace CppSharp
 
                 protected virtual void Dispose(bool disposing)
                 {
-                    if (!__ownsNativeInstance && disposing)
-                        throw new global::System.InvalidOperationException("Managed instances owned by native code cannot be disposed of.");
                     CppSharp.Parser.AST.FunctionTemplateSpecialization __dummy;
                     NativeToManagedMap.TryRemove(__Instance, out __dummy);
                     Internal.dtor_0((__Instance + __PointerAdjustment));
@@ -8806,9 +8780,9 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
-                public static new Namespace __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new Namespace __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new Namespace((Namespace.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new Namespace((Namespace.Internal*) native, skipVTables);
                 }
 
                 public static Namespace __CreateInstance(Namespace.Internal native, bool skipVTables = false)
@@ -8934,9 +8908,9 @@ namespace CppSharp
                     internal static extern void dtor_0(global::System.IntPtr instance);
                 }
 
-                public static new PreprocessedEntity __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new PreprocessedEntity __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new PreprocessedEntity((PreprocessedEntity.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new PreprocessedEntity((PreprocessedEntity.Internal*) native, skipVTables);
                 }
 
                 public static PreprocessedEntity __CreateInstance(PreprocessedEntity.Internal native, bool skipVTables = false)
@@ -9072,9 +9046,9 @@ namespace CppSharp
                     internal static extern void setExpression_0(global::System.IntPtr instance, global::System.IntPtr s);
                 }
 
-                public static new MacroDefinition __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new MacroDefinition __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new MacroDefinition((MacroDefinition.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new MacroDefinition((MacroDefinition.Internal*) native, skipVTables);
                 }
 
                 public static MacroDefinition __CreateInstance(MacroDefinition.Internal native, bool skipVTables = false)
@@ -9216,9 +9190,9 @@ namespace CppSharp
                     internal static extern void setText_0(global::System.IntPtr instance, global::System.IntPtr s);
                 }
 
-                public static new MacroExpansion __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new MacroExpansion __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new MacroExpansion((MacroExpansion.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new MacroExpansion((MacroExpansion.Internal*) native, skipVTables);
                 }
 
                 public static MacroExpansion __CreateInstance(MacroExpansion.Internal native, bool skipVTables = false)
@@ -9401,9 +9375,9 @@ namespace CppSharp
                     internal static extern uint getMacrosCount_0(global::System.IntPtr instance);
                 }
 
-                public static new TranslationUnit __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new TranslationUnit __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new TranslationUnit((TranslationUnit.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new TranslationUnit((TranslationUnit.Internal*) native, skipVTables);
                 }
 
                 public static TranslationUnit __CreateInstance(TranslationUnit.Internal native, bool skipVTables = false)
@@ -9600,9 +9574,9 @@ namespace CppSharp
 
                 protected bool __ownsNativeInstance;
 
-                public static NativeLibrary __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static NativeLibrary __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new NativeLibrary((NativeLibrary.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new NativeLibrary((NativeLibrary.Internal*) native, skipVTables);
                 }
 
                 public static NativeLibrary __CreateInstance(NativeLibrary.Internal native, bool skipVTables = false)
@@ -9657,8 +9631,6 @@ namespace CppSharp
 
                 protected virtual void Dispose(bool disposing)
                 {
-                    if (!__ownsNativeInstance && disposing)
-                        throw new global::System.InvalidOperationException("Managed instances owned by native code cannot be disposed of.");
                     CppSharp.Parser.AST.NativeLibrary __dummy;
                     NativeToManagedMap.TryRemove(__Instance, out __dummy);
                     Internal.dtor_0((__Instance + __PointerAdjustment));
@@ -9799,9 +9771,9 @@ namespace CppSharp
 
                 protected bool __ownsNativeInstance;
 
-                public static ASTContext __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static ASTContext __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new ASTContext((ASTContext.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new ASTContext((ASTContext.Internal*) native, skipVTables);
                 }
 
                 public static ASTContext __CreateInstance(ASTContext.Internal native, bool skipVTables = false)
@@ -9856,8 +9828,6 @@ namespace CppSharp
 
                 protected virtual void Dispose(bool disposing)
                 {
-                    if (!__ownsNativeInstance && disposing)
-                        throw new global::System.InvalidOperationException("Managed instances owned by native code cannot be disposed of.");
                     CppSharp.Parser.AST.ASTContext __dummy;
                     NativeToManagedMap.TryRemove(__Instance, out __dummy);
                     Internal.dtor_0((__Instance + __PointerAdjustment));
@@ -9926,9 +9896,9 @@ namespace CppSharp
 
                 protected bool __ownsNativeInstance;
 
-                public static Comment __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static Comment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new Comment((Comment.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new Comment((Comment.Internal*) native, skipVTables);
                 }
 
                 public static Comment __CreateInstance(Comment.Internal native, bool skipVTables = false)
@@ -9981,8 +9951,6 @@ namespace CppSharp
 
                 protected virtual void Dispose(bool disposing)
                 {
-                    if (!__ownsNativeInstance && disposing)
-                        throw new global::System.InvalidOperationException("Managed instances owned by native code cannot be disposed of.");
                     CppSharp.Parser.AST.Comment __dummy;
                     NativeToManagedMap.TryRemove(__Instance, out __dummy);
                     if (__ownsNativeInstance)
@@ -10027,9 +9995,9 @@ namespace CppSharp
                     internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                public static new BlockContentComment __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new BlockContentComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new BlockContentComment((BlockContentComment.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new BlockContentComment((BlockContentComment.Internal*) native, skipVTables);
                 }
 
                 public static BlockContentComment __CreateInstance(BlockContentComment.Internal native, bool skipVTables = false)
@@ -10133,9 +10101,9 @@ namespace CppSharp
                     internal static extern uint getBlocksCount_0(global::System.IntPtr instance);
                 }
 
-                public static new FullComment __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new FullComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new FullComment((FullComment.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new FullComment((FullComment.Internal*) native, skipVTables);
                 }
 
                 public static FullComment __CreateInstance(FullComment.Internal native, bool skipVTables = false)
@@ -10312,9 +10280,9 @@ namespace CppSharp
 
                     protected bool __ownsNativeInstance;
 
-                    public static Argument __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                    public static Argument __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                     {
-                        return new Argument((Argument.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                        return new Argument((Argument.Internal*) native, skipVTables);
                     }
 
                     public static Argument __CreateInstance(Argument.Internal native, bool skipVTables = false)
@@ -10369,8 +10337,6 @@ namespace CppSharp
 
                     protected virtual void Dispose(bool disposing)
                     {
-                        if (!__ownsNativeInstance && disposing)
-                            throw new global::System.InvalidOperationException("Managed instances owned by native code cannot be disposed of.");
                         CppSharp.Parser.AST.BlockCommandComment.Argument __dummy;
                         NativeToManagedMap.TryRemove(__Instance, out __dummy);
                         Internal.dtor_0((__Instance + __PointerAdjustment));
@@ -10395,9 +10361,9 @@ namespace CppSharp
                     }
                 }
 
-                public static new BlockCommandComment __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new BlockCommandComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new BlockCommandComment((BlockCommandComment.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new BlockCommandComment((BlockCommandComment.Internal*) native, skipVTables);
                 }
 
                 public static BlockCommandComment __CreateInstance(BlockCommandComment.Internal native, bool skipVTables = false)
@@ -10542,9 +10508,9 @@ namespace CppSharp
                     InOut = 2
                 }
 
-                public static new ParamCommandComment __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new ParamCommandComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new ParamCommandComment((ParamCommandComment.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new ParamCommandComment((ParamCommandComment.Internal*) native, skipVTables);
                 }
 
                 public static ParamCommandComment __CreateInstance(ParamCommandComment.Internal native, bool skipVTables = false)
@@ -10670,9 +10636,9 @@ namespace CppSharp
                     internal static extern uint getPositionCount_0(global::System.IntPtr instance);
                 }
 
-                public static new TParamCommandComment __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new TParamCommandComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new TParamCommandComment((TParamCommandComment.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new TParamCommandComment((TParamCommandComment.Internal*) native, skipVTables);
                 }
 
                 public static TParamCommandComment __CreateInstance(TParamCommandComment.Internal native, bool skipVTables = false)
@@ -10788,9 +10754,9 @@ namespace CppSharp
                     internal static extern void setText_0(global::System.IntPtr instance, global::System.IntPtr s);
                 }
 
-                public static new VerbatimBlockLineComment __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new VerbatimBlockLineComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new VerbatimBlockLineComment((VerbatimBlockLineComment.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new VerbatimBlockLineComment((VerbatimBlockLineComment.Internal*) native, skipVTables);
                 }
 
                 public static VerbatimBlockLineComment __CreateInstance(VerbatimBlockLineComment.Internal native, bool skipVTables = false)
@@ -10906,9 +10872,9 @@ namespace CppSharp
                     internal static extern uint getLinesCount_0(global::System.IntPtr instance);
                 }
 
-                public static new VerbatimBlockComment __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new VerbatimBlockComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new VerbatimBlockComment((VerbatimBlockComment.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new VerbatimBlockComment((VerbatimBlockComment.Internal*) native, skipVTables);
                 }
 
                 public static VerbatimBlockComment __CreateInstance(VerbatimBlockComment.Internal native, bool skipVTables = false)
@@ -11031,9 +10997,9 @@ namespace CppSharp
                     internal static extern void setText_0(global::System.IntPtr instance, global::System.IntPtr s);
                 }
 
-                public static new VerbatimLineComment __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new VerbatimLineComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new VerbatimLineComment((VerbatimLineComment.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new VerbatimLineComment((VerbatimLineComment.Internal*) native, skipVTables);
                 }
 
                 public static VerbatimLineComment __CreateInstance(VerbatimLineComment.Internal native, bool skipVTables = false)
@@ -11126,9 +11092,9 @@ namespace CppSharp
                     internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                public static new InlineContentComment __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new InlineContentComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new InlineContentComment((InlineContentComment.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new InlineContentComment((InlineContentComment.Internal*) native, skipVTables);
                 }
 
                 public static InlineContentComment __CreateInstance(InlineContentComment.Internal native, bool skipVTables = false)
@@ -11235,9 +11201,9 @@ namespace CppSharp
                     internal static extern uint getContentCount_0(global::System.IntPtr instance);
                 }
 
-                public static new ParagraphComment __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new ParagraphComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new ParagraphComment((ParagraphComment.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new ParagraphComment((ParagraphComment.Internal*) native, skipVTables);
                 }
 
                 public static ParagraphComment __CreateInstance(ParagraphComment.Internal native, bool skipVTables = false)
@@ -11430,9 +11396,9 @@ namespace CppSharp
 
                     protected bool __ownsNativeInstance;
 
-                    public static Argument __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                    public static Argument __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                     {
-                        return new Argument((Argument.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                        return new Argument((Argument.Internal*) native, skipVTables);
                     }
 
                     public static Argument __CreateInstance(Argument.Internal native, bool skipVTables = false)
@@ -11487,8 +11453,6 @@ namespace CppSharp
 
                     protected virtual void Dispose(bool disposing)
                     {
-                        if (!__ownsNativeInstance && disposing)
-                            throw new global::System.InvalidOperationException("Managed instances owned by native code cannot be disposed of.");
                         CppSharp.Parser.AST.InlineCommandComment.Argument __dummy;
                         NativeToManagedMap.TryRemove(__Instance, out __dummy);
                         Internal.dtor_0((__Instance + __PointerAdjustment));
@@ -11513,9 +11477,9 @@ namespace CppSharp
                     }
                 }
 
-                public static new InlineCommandComment __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new InlineCommandComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new InlineCommandComment((InlineCommandComment.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new InlineCommandComment((InlineCommandComment.Internal*) native, skipVTables);
                 }
 
                 public static InlineCommandComment __CreateInstance(InlineCommandComment.Internal native, bool skipVTables = false)
@@ -11634,9 +11598,9 @@ namespace CppSharp
                     internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
                 }
 
-                public static new HTMLTagComment __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new HTMLTagComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new HTMLTagComment((HTMLTagComment.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new HTMLTagComment((HTMLTagComment.Internal*) native, skipVTables);
                 }
 
                 public static HTMLTagComment __CreateInstance(HTMLTagComment.Internal native, bool skipVTables = false)
@@ -11799,9 +11763,9 @@ namespace CppSharp
 
                     protected bool __ownsNativeInstance;
 
-                    public static Attribute __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                    public static Attribute __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                     {
-                        return new Attribute((Attribute.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                        return new Attribute((Attribute.Internal*) native, skipVTables);
                     }
 
                     public static Attribute __CreateInstance(Attribute.Internal native, bool skipVTables = false)
@@ -11856,8 +11820,6 @@ namespace CppSharp
 
                     protected virtual void Dispose(bool disposing)
                     {
-                        if (!__ownsNativeInstance && disposing)
-                            throw new global::System.InvalidOperationException("Managed instances owned by native code cannot be disposed of.");
                         CppSharp.Parser.AST.HTMLStartTagComment.Attribute __dummy;
                         NativeToManagedMap.TryRemove(__Instance, out __dummy);
                         Internal.dtor_0((__Instance + __PointerAdjustment));
@@ -11898,9 +11860,9 @@ namespace CppSharp
                     }
                 }
 
-                public static new HTMLStartTagComment __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new HTMLStartTagComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new HTMLStartTagComment((HTMLStartTagComment.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new HTMLStartTagComment((HTMLStartTagComment.Internal*) native, skipVTables);
                 }
 
                 public static HTMLStartTagComment __CreateInstance(HTMLStartTagComment.Internal native, bool skipVTables = false)
@@ -12032,9 +11994,9 @@ namespace CppSharp
                     internal static extern void setTagName_0(global::System.IntPtr instance, global::System.IntPtr s);
                 }
 
-                public static new HTMLEndTagComment __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new HTMLEndTagComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new HTMLEndTagComment((HTMLEndTagComment.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new HTMLEndTagComment((HTMLEndTagComment.Internal*) native, skipVTables);
                 }
 
                 public static HTMLEndTagComment __CreateInstance(HTMLEndTagComment.Internal native, bool skipVTables = false)
@@ -12137,9 +12099,9 @@ namespace CppSharp
                     internal static extern void setText_0(global::System.IntPtr instance, global::System.IntPtr s);
                 }
 
-                public static new TextComment __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static new TextComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new TextComment((TextComment.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new TextComment((TextComment.Internal*) native, skipVTables);
                 }
 
                 public static TextComment __CreateInstance(TextComment.Internal native, bool skipVTables = false)
@@ -12263,9 +12225,9 @@ namespace CppSharp
 
                 protected bool __ownsNativeInstance;
 
-                public static RawComment __CreateInstance(global::System.IntPtr native, bool ownsNativeInstance = false, bool skipVTables = false)
+                public static RawComment __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
                 {
-                    return new RawComment((RawComment.Internal*) native, skipVTables) { __ownsNativeInstance = ownsNativeInstance };
+                    return new RawComment((RawComment.Internal*) native, skipVTables);
                 }
 
                 public static RawComment __CreateInstance(RawComment.Internal native, bool skipVTables = false)
@@ -12320,8 +12282,6 @@ namespace CppSharp
 
                 protected virtual void Dispose(bool disposing)
                 {
-                    if (!__ownsNativeInstance && disposing)
-                        throw new global::System.InvalidOperationException("Managed instances owned by native code cannot be disposed of.");
                     CppSharp.Parser.AST.RawComment __dummy;
                     NativeToManagedMap.TryRemove(__Instance, out __dummy);
                     Internal.dtor_0((__Instance + __PointerAdjustment));

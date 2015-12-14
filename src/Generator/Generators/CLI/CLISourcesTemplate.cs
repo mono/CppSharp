@@ -257,8 +257,7 @@ namespace CppSharp.Generators.CLI
 
             if (CLIGenerator.ShouldGenerateClassNativeField(@class))
             {
-                WriteLine("if ({0})", Helpers.OwnsNativeInstanceIdentifier);
-                WriteLineIndent("delete NativePtr;");
+                WriteLine("delete NativePtr;");
             }
 
             WriteCloseBraceIndent();
@@ -671,26 +670,7 @@ namespace CppSharp.Generators.CLI
 
             WriteStartBraceIndent();
 
-            if (@class.IsRefType)
-            {
-                WriteLine("return ::{0}::{1}(native, false);",
-                    qualifiedIdentifier, Helpers.CreateInstanceIdentifier);
-                WriteCloseBraceIndent();
-                NewLine();
-
-                WriteLine("{0}^ {0}::{1}(::System::IntPtr native, bool {2})",
-                    qualifiedIdentifier, Helpers.CreateInstanceIdentifier, Helpers.OwnsNativeInstanceIdentifier);
-
-                WriteStartBraceIndent();
-                WriteLine("::{0}^ result = gcnew ::{0}(({1}) native.ToPointer());", qualifiedIdentifier, nativeType);
-                if (@class.IsRefType)
-                    WriteLine("result->{0} = {0};", Helpers.OwnsNativeInstanceIdentifier);
-                WriteLine("return result;");
-            }
-            else
-            {
-                WriteLine("return gcnew ::{0}(({1}) native.ToPointer());", qualifiedIdentifier, nativeType);
-            }
+            WriteLine("return gcnew ::{0}(({1}) native.ToPointer());", qualifiedIdentifier, nativeType);
 
             WriteCloseBraceIndent();
             NewLine();
