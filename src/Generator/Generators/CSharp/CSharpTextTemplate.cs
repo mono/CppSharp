@@ -1308,14 +1308,26 @@ namespace CppSharp.Generators.CSharp
                 WriteLine("if (__ManagedVTablesDtorOnly != null)");
                 WriteStartBraceIndent();
                 for (int tableIndex = 0; tableIndex < @class.Layout.VFTables.Count; tableIndex++)
+                {
+                    WriteLine("if (__ManagedVTablesDtorOnly[{0}] != null)", tableIndex);
+                    WriteStartBraceIndent();
                     WriteLine("Marshal.FreeHGlobal((System.IntPtr)__ManagedVTablesDtorOnly[{0}]);", tableIndex);
+                    WriteLine("__ManagedVTablesDtorOnly[{0}] = null;", tableIndex);
+                    WriteCloseBraceIndent();
+                }
                 WriteLine("__ManagedVTablesDtorOnly = null;");
                 WriteCloseBraceIndent();
             }
             WriteLine("if (__ManagedVTables != null)");
             WriteStartBraceIndent();
             for (int tableIndex = 0; tableIndex < @class.Layout.VFTables.Count; tableIndex++)
+            {
+                WriteLine("if (__ManagedVTables[{0}] != null)", tableIndex);
+                WriteStartBraceIndent();
                 WriteLine("Marshal.FreeHGlobal((System.IntPtr)__ManagedVTables[{0}]);", tableIndex);
+                WriteLine("__ManagedVTables[{0}] = null;", tableIndex);
+                WriteCloseBraceIndent();
+            }
             WriteLine("__ManagedVTables = null;");
             WriteCloseBraceIndent();
         }
@@ -1327,13 +1339,21 @@ namespace CppSharp.Generators.CSharp
             {
                 WriteLine("if (__ManagedVTablesDtorOnly != null)");
                 WriteStartBraceIndent();
+                WriteLine("if (__ManagedVTablesDtorOnly[0] != null)");
+                WriteStartBraceIndent();
                 WriteLine("Marshal.FreeHGlobal((System.IntPtr)__ManagedVTablesDtorOnly[0]);");
+                WriteLine("__ManagedVTablesDtorOnly[0] = null;");
+                WriteCloseBraceIndent();
                 WriteLine("__ManagedVTablesDtorOnly = null;");
                 WriteCloseBraceIndent();
             }
             WriteLine("if (__ManagedVTables != null)");
             WriteStartBraceIndent();
+            WriteLine("if (__ManagedVTables[0] != null)");
+            WriteStartBraceIndent();
             WriteLine("Marshal.FreeHGlobal((System.IntPtr)__ManagedVTables[0]);");
+            WriteLine("__ManagedVTables[0] = null;");
+            WriteCloseBraceIndent();
             WriteLine("__ManagedVTables = null;");
             WriteCloseBraceIndent();
         }
