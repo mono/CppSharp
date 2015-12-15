@@ -1272,9 +1272,89 @@ namespace CppSharp.Generators.CSharp
             NewLine();
 
             GenerateVTableClassSetup(@class, wrappedEntries);
+            GenerateVTableCleanup(@class, wrappedEntries);
 
             WriteLine("#endregion");
             PopBlock(NewLineKind.BeforeNextBlock);
+        }
+
+        private void GenerateVTableCleanup(Class @class, IList<VTableComponent> wrappedEntries)
+        {
+            WriteLine("private static readonly Destructor finalise = new Destructor();");
+            WriteLine("private sealed class Destructor");
+            WriteStartBraceIndent();
+            WriteLine("~Destructor()");
+            WriteStartBraceIndent();
+            DeAllocateVTables(@class, wrappedEntries);
+            WriteCloseBraceIndent();
+            WriteCloseBraceIndent();
+            NewLine();
+        }
+
+        private void DeAllocateVTables(Class @class, IList<VTableComponent> wrappedEntries)
+        {
+            if (Options.IsMicrosoftAbi)
+                DeAllocateVTablesMS(@class, wrappedEntries);
+            else
+                DeAllocateVTablesItanium(@class, wrappedEntries);
+        }
+
+        private void DeAllocateVTablesMS(Class @class, IList<VTableComponent> wrappedEntries)
+        {
+            var hasVirtualDtor = wrappedEntries.Any(e => e.Method.IsDestructor);
+            if (hasVirtualDtor)
+            {
+                WriteLine("if (__ManagedVTablesDtorOnly != null)");
+                WriteStartBraceIndent();
+                for (int tableIndex = 0; tableIndex < @class.Layout.VFTables.Count; tableIndex++)
+                {
+                    WriteLine("if (__ManagedVTablesDtorOnly[{0}] != null)", tableIndex);
+                    WriteStartBraceIndent();
+                    WriteLine("Marshal.FreeHGlobal((System.IntPtr)__ManagedVTablesDtorOnly[{0}]);", tableIndex);
+                    WriteLine("__ManagedVTablesDtorOnly[{0}] = null;", tableIndex);
+                    WriteCloseBraceIndent();
+                }
+                WriteLine("__ManagedVTablesDtorOnly = null;");
+                WriteCloseBraceIndent();
+            }
+            WriteLine("if (__ManagedVTables != null)");
+            WriteStartBraceIndent();
+            for (int tableIndex = 0; tableIndex < @class.Layout.VFTables.Count; tableIndex++)
+            {
+                WriteLine("if (__ManagedVTables[{0}] != null)", tableIndex);
+                WriteStartBraceIndent();
+                WriteLine("Marshal.FreeHGlobal((System.IntPtr)__ManagedVTables[{0}]);", tableIndex);
+                WriteLine("__ManagedVTables[{0}] = null;", tableIndex);
+                WriteCloseBraceIndent();
+            }
+            WriteLine("__ManagedVTables = null;");
+            WriteCloseBraceIndent();
+        }
+
+        private void DeAllocateVTablesItanium(Class @class, IList<VTableComponent> wrappedEntries)
+        {
+            var hasVirtualDtor = wrappedEntries.Any(e => e.Method.IsDestructor);
+            if (hasVirtualDtor)
+            {
+                WriteLine("if (__ManagedVTablesDtorOnly != null)");
+                WriteStartBraceIndent();
+                WriteLine("if (__ManagedVTablesDtorOnly[0] != null)");
+                WriteStartBraceIndent();
+                WriteLine("Marshal.FreeHGlobal((System.IntPtr)__ManagedVTablesDtorOnly[0]);");
+                WriteLine("__ManagedVTablesDtorOnly[0] = null;");
+                WriteCloseBraceIndent();
+                WriteLine("__ManagedVTablesDtorOnly = null;");
+                WriteCloseBraceIndent();
+            }
+            WriteLine("if (__ManagedVTables != null)");
+            WriteStartBraceIndent();
+            WriteLine("if (__ManagedVTables[0] != null)");
+            WriteStartBraceIndent();
+            WriteLine("Marshal.FreeHGlobal((System.IntPtr)__ManagedVTables[0]);");
+            WriteLine("__ManagedVTables[0] = null;");
+            WriteCloseBraceIndent();
+            WriteLine("__ManagedVTables = null;");
+            WriteCloseBraceIndent();
         }
 
         private void GenerateVTableClassSetup(Class @class, IList<VTableComponent> wrappedEntries)
