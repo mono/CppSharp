@@ -42,4 +42,6 @@ ParserTargetInfo::ParserTargetInfo() :
 {
 }
 
+ParserTargetInfo::~ParserTargetInfo() {}
+
 } }

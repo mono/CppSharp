@@ -351,6 +351,8 @@ namespace CppSharp
             foreach (var nativeObject in declConverter.NativeObjects)
                 nativeObject.Dispose();
 
+            Context.Dispose();
+
             return _ctx;
         }
     }
@@ -513,6 +515,7 @@ namespace CppSharp
             _arg.Type = VisitQualified(arg.Type);
             _arg.Declaration = declConverter.Visit(arg.Declaration);
             _arg.Integral = arg.Integral;
+            NativeObjects.Add(arg);
             return _arg;
         }
 
@@ -733,6 +736,8 @@ namespace CppSharp
             if (rawComment.FullCommentBlock != null)
                 _rawComment.FullComment = commentConverter.Visit(rawComment.FullCommentBlock)
                     as AST.FullComment;
+
+            NativeObjects.Add(rawComment);
 
             return _rawComment;
         }
@@ -1477,6 +1482,7 @@ namespace CppSharp
             _arg.Type = typeConverter.VisitQualified(arg.Type);
             _arg.Declaration = Visit(arg.Declaration);
             _arg.Integral = arg.Integral;
+            NativeObjects.Add(arg);
             return _arg;
         }
 

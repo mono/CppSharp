@@ -875,6 +875,7 @@ class CS_API ASTContext
 {
 public:
     ASTContext();
+    ~ASTContext();
     TranslationUnit* FindOrCreateModule(std::string File);
     VECTOR(TranslationUnit*, TranslationUnits)
 };

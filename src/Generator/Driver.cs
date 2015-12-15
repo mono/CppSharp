@@ -231,12 +231,15 @@ namespace CppSharp
                 var parser = new ClangParser();
                 parser.LibraryParsed += OnFileParsed;
 
-                var res = parser.ParseLibrary(library, Options);
+                using (var res = parser.ParseLibrary(library, Options))
+                {
+                    if (res.Kind != ParserResultKind.Success)
+                        continue;
 
-                if (res.Kind != ParserResultKind.Success)
-                    continue;
+                    Symbols.Libraries.Add(ClangParser.ConvertLibrary(res.Library));
 
-                Symbols.Libraries.Add(ClangParser.ConvertLibrary(res.Library));
+                    res.Library.Dispose();
+                }
             }
 
             return true;
@@ -502,6 +505,7 @@ namespace CppSharp
             }
 
             driver.Generator.Dispose();
+            driver.TargetInfo.Dispose();
         }
     }
 }

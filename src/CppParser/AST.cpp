@@ -717,6 +717,8 @@ ClassTemplatePartialSpecialization* ClassTemplate::FindPartialSpecialization(con
 
 ASTContext::ASTContext() {}
 
+ASTContext::~ASTContext() {}
+
 TranslationUnit* ASTContext::FindOrCreateModule(std::string File)
 {
     auto normalizedFile = normalizePath(File);
