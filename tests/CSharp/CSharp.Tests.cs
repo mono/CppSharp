@@ -507,4 +507,18 @@ public class CSharpTests : GeneratorTestFixture
         }
         Assert.IsTrue(VirtualDtorAddedInDerived.DtorCalled);
     }
+
+    public class FreeHGlobalTest : Bar
+    {
+        public FreeHGlobalTest()
+        {
+        }
+    }
+
+    [Test]
+    public void TestFreeHGlobalCalled()
+    {
+       var v1 = new FreeHGlobalTest();
+       var v2 = new FreeHGlobalTest();
+    }
 }
