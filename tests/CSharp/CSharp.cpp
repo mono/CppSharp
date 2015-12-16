@@ -956,3 +956,7 @@ VirtualDtorAddedInDerived::~VirtualDtorAddedInDerived()
 }
 
 bool VirtualDtorAddedInDerived::dtorCalled = false;
+
+void NamespaceB::B::Function(CS_OUT NamespaceA::A &a)
+{
+}

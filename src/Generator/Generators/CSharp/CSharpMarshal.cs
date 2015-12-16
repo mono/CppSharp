@@ -501,8 +501,9 @@ namespace CppSharp.Generators.CSharp
             {
                 if (Context.Parameter.Usage == ParameterUsage.Out)
                 {
+                    var qualifiedIdentifier = (@class.OriginalClass ?? @class).Visit(typePrinter);
                     Context.SupportBefore.WriteLine("var {0} = new {1}.Internal();",
-                        Generator.GeneratedIdentifier(Context.ArgName), @class.Name);
+                        Generator.GeneratedIdentifier(Context.ArgName), qualifiedIdentifier);
                 }
                 else
                 {
