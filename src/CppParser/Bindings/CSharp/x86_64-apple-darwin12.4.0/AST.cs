@@ -6178,11 +6178,11 @@ namespace CppSharp
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                         EntryPoint="_ZN8CppSharp9CppParser3AST11Enumeration8getItemsEj")]
-                    internal static extern void getItems_0(global::System.IntPtr @return, global::System.IntPtr instance, uint i);
+                    internal static extern global::System.IntPtr getItems_0(global::System.IntPtr instance, uint i);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
-                        EntryPoint="_ZN8CppSharp9CppParser3AST11Enumeration8addItemsERNS2_4ItemE")]
+                        EntryPoint="_ZN8CppSharp9CppParser3AST11Enumeration8addItemsERPNS2_4ItemE")]
                     internal static extern void addItems_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
@@ -6414,9 +6414,13 @@ namespace CppSharp
 
                 public CppSharp.Parser.AST.Enumeration.Item getItems(uint i)
                 {
-                    var __ret = new CppSharp.Parser.AST.Enumeration.Item.Internal();
-                    Internal.getItems_0(new IntPtr(&__ret), (__Instance + __PointerAdjustment), i);
-                    return CppSharp.Parser.AST.Enumeration.Item.__CreateInstance(__ret);
+                    var __ret = Internal.getItems_0((__Instance + __PointerAdjustment), i);
+                    CppSharp.Parser.AST.Enumeration.Item __result0;
+                    if (__ret == IntPtr.Zero) __result0 = null;
+                    else if (CppSharp.Parser.AST.Enumeration.Item.NativeToManagedMap.ContainsKey(__ret))
+                        __result0 = (CppSharp.Parser.AST.Enumeration.Item) CppSharp.Parser.AST.Enumeration.Item.NativeToManagedMap[__ret];
+                    else __result0 = CppSharp.Parser.AST.Enumeration.Item.__CreateInstance(__ret);
+                    return __result0;
                 }
 
                 public void addItems(CppSharp.Parser.AST.Enumeration.Item s)

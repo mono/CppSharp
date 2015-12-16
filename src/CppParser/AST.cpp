@@ -557,7 +557,7 @@ Method::Method()
 Enumeration::Enumeration() : DeclarationContext(DeclarationKind::Enumeration),
     Modifiers((EnumModifiers)0), Type(0), BuiltinType(0) {}
 
-DEF_VECTOR(Enumeration, Enumeration::Item, Items)
+DEF_VECTOR(Enumeration, Enumeration::Item*, Items)
 
 Enumeration::Item::Item() : Declaration(DeclarationKind::EnumerationItem) {}
 
@@ -569,9 +569,9 @@ DEF_STRING(Enumeration::Item, Expression)
 Enumeration::Item* Enumeration::FindItemByName(const std::string& Name)
 {
     auto foundEnumItem = std::find_if(Items.begin(), Items.end(),
-        [&](Item _item) { return _item.Name == Name; });
+        [&](Item* _item) { return _item->Name == Name; });
     if (foundEnumItem != Items.end())
-        return &*foundEnumItem;
+        return *foundEnumItem;
     return nullptr;
 }
 

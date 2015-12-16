@@ -2790,15 +2790,15 @@ CppSharp::Parser::AST::Enumeration::Enumeration()
 CppSharp::Parser::AST::Enumeration::Item^ CppSharp::Parser::AST::Enumeration::getItems(unsigned int i)
 {
     auto __ret = ((::CppSharp::CppParser::AST::Enumeration*)NativePtr)->getItems(i);
-    auto ____ret = new ::CppSharp::CppParser::AST::Enumeration::Item(__ret);
-    return (____ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::Enumeration::Item((::CppSharp::CppParser::AST::Enumeration::Item*)____ret);
+    if (__ret == nullptr) return nullptr;
+    return (__ret == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::Enumeration::Item((::CppSharp::CppParser::AST::Enumeration::Item*)__ret);
 }
 
 void CppSharp::Parser::AST::Enumeration::addItems(CppSharp::Parser::AST::Enumeration::Item^ s)
 {
     if (ReferenceEquals(s, nullptr))
         throw gcnew ::System::ArgumentNullException("s", "s cannot be null because it is a C++ reference (&).");
-    auto &arg0 = *(::CppSharp::CppParser::AST::Enumeration::Item*)s->NativePtr;
+    auto arg0 = (::CppSharp::CppParser::AST::Enumeration::Item*)s->NativePtr;
     ((::CppSharp::CppParser::AST::Enumeration*)NativePtr)->addItems(arg0);
 }
 

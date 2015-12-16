@@ -2130,7 +2130,7 @@ Enumeration* Parser::WalkEnum(clang::EnumDecl* ED)
     E->IsIncomplete = false;
     for(auto it = ED->enumerator_begin(); it != ED->enumerator_end(); ++it)
     {
-        E->Items.push_back(*WalkEnumItem(*it));
+        E->Items.push_back(WalkEnumItem(*it));
     }
 
     return E;
@@ -2921,7 +2921,9 @@ Declaration* Parser::WalkDeclaration(clang::Decl* D,
     case Decl::EnumConstant:
     {
         auto ED = cast<EnumConstantDecl>(D);
-        Decl = WalkEnumItem(ED);
+        auto E = cast<Enumeration>(GetNamespace(ED));
+        assert(E && "Expected a valid enumeration");
+        Decl = E->FindItemByName(ED->getNameAsString());
         break;
     }
     case Decl::Function:

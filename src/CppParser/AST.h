@@ -675,7 +675,7 @@ public:
     EnumModifiers Modifiers;
     CppSharp::CppParser::AST::Type* Type;
     CppSharp::CppParser::AST::BuiltinType* BuiltinType;
-    VECTOR(Item, Items)
+    VECTOR(Item*, Items)
 
     Item* FindItemByName(const std::string& Name);
 };
