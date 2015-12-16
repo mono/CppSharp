@@ -24,4 +24,4 @@
 
 #define CS_OUT
 #define CS_IN_OUT
-#define CS_VALUETYPE
+#define CS_VALUE_TYPE

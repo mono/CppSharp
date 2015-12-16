@@ -855,3 +855,19 @@ public:
     virtual ~VirtualDtorAddedInDerived();
     static bool dtorCalled;
 };
+
+namespace NamespaceA
+{
+	CS_VALUE_TYPE class DLL_API A
+	{
+	};
+}
+
+namespace NamespaceB
+{
+	class DLL_API B
+	{
+	public:
+		void Function(CS_OUT NamespaceA::A &a);
+	};
+}
