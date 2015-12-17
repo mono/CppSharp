@@ -3357,10 +3357,6 @@ ParserResult* Parser::ParseLibrary(const std::string& File, ParserResult* res)
         return res;
     }
 
-    C.reset(new clang::CompilerInstance());
-    C->createFileManager();
-
-    auto &FM = C->getFileManager();
     llvm::StringRef FileEntry;
 
     for (unsigned I = 0, E = Opts->LibraryDirs.size(); I != E; ++I)
