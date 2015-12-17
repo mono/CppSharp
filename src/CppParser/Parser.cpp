@@ -3379,27 +3379,20 @@ ParserResult* Parser::ParseLibrary(const std::string& File, ParserResult* res)
         return res;
     }
 
-    auto Buffer = FM.getBufferForFile(FileEntry);
-    if (Buffer.getError())
-    {
-        res->Kind = ParserResultKind::Error;
-        return res;
-    }
-    std::unique_ptr<llvm::MemoryBuffer> FileBuf(std::move(Buffer.get()));
-    auto BinaryOrErr = llvm::object::createBinary(FileBuf->getMemBufferRef(),
-        &llvm::getGlobalContext());
+    auto BinaryOrErr = llvm::object::createBinary(FileEntry);
     if (BinaryOrErr.getError())
     {
         res->Kind = ParserResultKind::Error;
         return res;
     }
-    std::unique_ptr<llvm::object::Binary> Bin(std::move(BinaryOrErr.get()));
-    if (auto Archive = llvm::dyn_cast<llvm::object::Archive>(Bin.get())) {
+    auto OwningBinary = std::move(BinaryOrErr.get());
+    auto Bin = OwningBinary.getBinary();
+    if (auto Archive = llvm::dyn_cast<llvm::object::Archive>(Bin)) {
         res->Kind = ParseArchive(File, Archive, res->Library);
         if (res->Kind == ParserResultKind::Success)
             return res;
     }
-    if (auto ObjectFile = llvm::dyn_cast<llvm::object::ObjectFile>(Bin.get()))
+    if (auto ObjectFile = llvm::dyn_cast<llvm::object::ObjectFile>(Bin))
     {
         res->Kind = ParseSharedLib(File, ObjectFile, res->Library);
         if (res->Kind == ParserResultKind::Success)
