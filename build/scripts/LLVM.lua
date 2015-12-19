@@ -7,7 +7,7 @@ local llvm = basedir .. "/../deps/llvm"
 -- If we are inside vagrant then clone and build LLVM outside the shared folder,
 -- otherwise file I/O performance will be terrible.
 if is_vagrant() then
-	llvm = "~/llvm"
+	llvm = os.getenv("HOME") .. "/llvm"
 end
 
 local llvm_build = llvm .. "/" .. os.get()
@@ -90,9 +90,14 @@ function cmake(gen, conf, options)
 	local cwd = os.getcwd()
 	os.chdir(llvm_build)
 	local cmd = "cmake -G " .. '"' .. gen .. '"'
-		.. ' -DCLANG_BUILD_EXAMPLES=false -DCLANG_INCLUDE_DOCS=false -DCLANG_INCLUDE_TESTS=false'
-		.. ' -DCLANG_ENABLE_ARCMT=false -DCLANG_ENABLE_REWRITER=false -DCLANG_ENABLE_STATIC_ANALYZER=false'
- 		.. ' -DLLVM_INCLUDE_EXAMPLES=false -DLLVM_INCLUDE_DOCS=false -DLLVM_INCLUDE_TESTS=false'
+		.. ' -DCLANG_BUILD_EXAMPLES=false '
+		.. ' -DCLANG_INCLUDE_DOCS=false '
+		.. ' -DCLANG_INCLUDE_TESTS=false'
+		.. ' -DCLANG_ENABLE_ARCMT=false'
+		.. ' -DCLANG_ENABLE_STATIC_ANALYZER=false'
+ 		.. ' -DLLVM_INCLUDE_EXAMPLES=false '
+ 		.. ' -DLLVM_INCLUDE_DOCS=false '
+ 		.. ' -DLLVM_INCLUDE_TESTS=false'
 		.. ' -DLLVM_TOOL_BUGPOINT_BUILD=false'
  		.. ' -DLLVM_TOOL_BUGPOINT_PASSES_BUILD=false'
  		.. ' -DLLVM_TOOL_CLANG_TOOLS_EXTRA_BUILD=false'
@@ -163,7 +168,7 @@ function cmake(gen, conf, options)
 end
 
 function clean_llvm(llvm_build)
-	if os.isdir(llvm_build) then os.rmdir(llvm_build)	end
+	if os.isdir(llvm_build) then os.rmdir(llvm_build) end
 	os.mkdir(llvm_build)
 end
 
@@ -241,6 +246,9 @@ function archive_llvm(dir)
 	os.chdir(dir)
 	execute("7z a " .. path.join("..", archive) .. " *")
 	os.chdir(cwd)
+	if is_vagrant() then
+		os.copyfile(archive, "/cppsharp")
+	end
 end
 
 if _ACTION == "clone_llvm" then
