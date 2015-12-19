@@ -30,15 +30,14 @@ install:
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then PREMAKE=build/premake5-linux-64; else PREMAKE=build/premake5-osx; fi
   - $PREMAKE --file=build/scripts/LLVM.lua download_llvm
 
-script:
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then PREMAKE=build/premake5-linux-64; else PREMAKE=build/premake5-osx; fi
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then BUILD_CONF=release_x64; else BUILD_CONF=release_x32; fi
-  - $PREMAKE --file=build/premake4.lua gmake
-  - config=$BUILD_CONF make -C build/gmake/
-  # HACK - work around the native libNamespacesDerived being unable to find its dependency
-  - BUILD_DIR=`ls build/gmake/lib`
-  - mkdir -p "$PWD"/build/gmake/lib/lib/"$BUILD_DIR"
-  - cp "$PWD"/build/gmake/lib/"$BUILD_DIR"/libNamespacesBase.* "$PWD"/build/gmake/lib/lib/"$BUILD_DIR"
-  - TEST_RESULT=0
-  - for test in build/gmake/lib/Release_*/*.Tests.*.dll; do MONO_PATH=deps/NUnit.Runners.2.6.4/tools mono deps/NUnit.Runners.2.6.4/tools/nunit-console.exe -nologo $test || TEST_RESULT=$?; done
-  - exit "$TEST_RESULT"
+script: |
+  if [ "$TRAVIS_OS_NAME" = "linux" ]; then PREMAKE=build/premake5-linux-64; else PREMAKE=build/premake5-osx; fi &&
+  if [ "$TRAVIS_OS_NAME" = "linux" ]; then BUILD_CONF=release_x64; else BUILD_CONF=release_x32; fi &&
+  $PREMAKE --file=build/premake4.lua gmake &&
+  config=$BUILD_CONF make -C build/gmake/ &&
+  BUILD_DIR=`ls build/gmake/lib` &&
+  mkdir -p "$PWD"/build/gmake/lib/lib/"$BUILD_DIR" &&
+  cp "$PWD"/build/gmake/lib/"$BUILD_DIR"/libNamespacesBase.* "$PWD"/build/gmake/lib/lib/"$BUILD_DIR" &&
+  TEST_RESULT=0 &&
+  for test in build/gmake/lib/Release_*/*.Tests.*.dll; do MONO_PATH=deps/NUnit.Runners.2.6.4/tools mono deps/NUnit.Runners.2.6.4/tools/nunit-console.exe -nologo $test || TEST_RESULT=$?; done &&
+  exit "$TEST_RESULT"
