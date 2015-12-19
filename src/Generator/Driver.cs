@@ -110,6 +110,7 @@ namespace CppSharp
                     break;
                 case ParserResultKind.Error:
                     Diagnostics.Error("Error parsing '{0}'", file);
+                    hasParsingErrors = true;
                     break;
                 case ParserResultKind.FileNotFound:
                     Diagnostics.Error("File '{0}' was not found", file);
@@ -207,7 +208,7 @@ namespace CppSharp
 
             ASTContext = ClangParser.ConvertASTContext(parser.ASTContext);
 
-            return true;
+            return !hasParsingErrors;
         }
 
         public void BuildParseOptions()
@@ -437,6 +438,7 @@ namespace CppSharp
         }
 
         private readonly List<CodeSnippetCompileUnit> compileUnits = new List<CodeSnippetCompileUnit>();
+        private bool hasParsingErrors;
     }
 
     public static class ConsoleDriver
@@ -471,7 +473,10 @@ namespace CppSharp
             driver.BuildParseOptions();
 
             if (!driver.ParseCode())
+            {
+                Log.Error("CppSharp has encountered an error while parsing code.");
                 return;
+            }
 
             if (!options.Quiet)
                 Log.Message("Processing code...");
