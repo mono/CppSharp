@@ -1,3 +1,4 @@
+using System;
 using CppSharp.AST;
 using CppSharp.Generators;
 using CppSharp.Passes;
@@ -40,10 +41,18 @@ namespace CppSharp.Tests
 
     public class NamespacesDerived {
 
-        public static void Main(string[] args)
+        public static int Main(string[] args)
         {
-            ConsoleDriver.Run(new NamespacesBaseTests(GeneratorKind.CSharp));
-            ConsoleDriver.Run(new NamespacesDerivedTests(GeneratorKind.CSharp));
+            try
+            {
+                ConsoleDriver.Run(new NamespacesBaseTests(GeneratorKind.CSharp));
+                ConsoleDriver.Run(new NamespacesDerivedTests(GeneratorKind.CSharp));
+                return 0;
+            }
+            catch (ArgumentException)
+            {
+                return 1;
+            }
         }
 
     }

@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using CppSharp.AST;
 using CppSharp.Generators;
@@ -22,9 +23,17 @@ namespace CppSharp.Tests
 
         }
 
-        public static void Main(string[] args)
+        public static int Main(string[] args)
         {
-            ConsoleDriver.Run(new EncodingsTestsGenerator(GeneratorKind.CSharp));
+            try
+            {
+                ConsoleDriver.Run(new EncodingsTestsGenerator(GeneratorKind.CSharp));
+                return 0;
+            }
+            catch (ArgumentException)
+            {
+                return 1;
+            }
         }
     }
 }

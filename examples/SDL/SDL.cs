@@ -1,4 +1,5 @@
-﻿using CppSharp.AST;
+﻿using System;
+using CppSharp.AST;
 using CppSharp.Passes;
 
 namespace CppSharp
@@ -66,9 +67,17 @@ namespace CppSharp
 
         static class Program
         {
-            public static void Main(string[] args)
+            public static int Main(string[] args)
             {
-                ConsoleDriver.Run(new SDL());
+                try
+                {
+                    ConsoleDriver.Run(new SDL());
+                    return 0;
+                }
+                catch (ArgumentException)
+                {
+                    return 1;
+                }
             }
         }
     }

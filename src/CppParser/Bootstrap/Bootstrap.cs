@@ -75,11 +75,19 @@ namespace CppSharp
         {
         }
 
-        public static void Main(string[] args)
+        public static int Main(string[] args)
         {
-            Console.WriteLine("Generating parser bootstrap code...");
-            ConsoleDriver.Run(new Bootstrap());
-            Console.WriteLine();
+            try
+            {
+                Console.WriteLine("Generating parser bootstrap code...");
+                ConsoleDriver.Run(new Bootstrap());
+                Console.WriteLine();
+                return 0;
+            }
+            catch (ArgumentException)
+            {
+                return 1;
+            }
         }
     }
 

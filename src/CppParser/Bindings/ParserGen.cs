@@ -149,42 +149,51 @@ namespace CppSharp
         {
         }
 
-        public static void Main(string[] args)
+        public static int Main(string[] args)
         {
-            if (Platform.IsWindows)
+            try
             {
-                Console.WriteLine("Generating the C++/CLI parser bindings for Windows...");
-                ConsoleDriver.Run(new ParserGen(GeneratorKind.CLI, "i686-pc-win32-msvc",
-                    CppAbi.Microsoft));
-                Console.WriteLine();
+                if (Platform.IsWindows)
+                {
+                    Console.WriteLine("Generating the C++/CLI parser bindings for Windows...");
+                    ConsoleDriver.Run(new ParserGen(GeneratorKind.CLI, "i686-pc-win32-msvc",
+                        CppAbi.Microsoft));
+                    Console.WriteLine();
 
-                Console.WriteLine("Generating the C# parser bindings for Windows...");
-                ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "i686-pc-win32-msvc",
-                    CppAbi.Microsoft));
-                Console.WriteLine();
+                    Console.WriteLine("Generating the C# parser bindings for Windows...");
+                    ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "i686-pc-win32-msvc",
+                        CppAbi.Microsoft));
+                    Console.WriteLine();
+                }
+
+                var osxHeadersPath = Path.Combine(GetSourceDirectory("build"), @"headers\osx");
+                if (Directory.Exists(osxHeadersPath) || Platform.IsMacOS)
+                {
+                    Console.WriteLine("Generating the C# parser bindings for OSX...");
+                    ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "i686-apple-darwin12.4.0",
+                        CppAbi.Itanium));
+                    Console.WriteLine();
+
+                    Console.WriteLine("Generating the C# parser bindings for OSX...");
+                    ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "x86_64-apple-darwin12.4.0",
+                        CppAbi.Itanium));
+                    Console.WriteLine();
+                }
+
+
+                if (Directory.Exists(LINUX_INCLUDE_BASE_DIR))
+                {
+                    Console.WriteLine("Generating the C# parser bindings for Linux...");
+                    ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "x86_64-linux-gnu",
+                         CppAbi.Itanium));
+                    Console.WriteLine();
+                }
+
+                return 0;
             }
-
-            var osxHeadersPath = Path.Combine(GetSourceDirectory("build"), @"headers\osx");
-            if (Directory.Exists(osxHeadersPath) || Platform.IsMacOS)
+            catch (ArgumentException)
             {
-                Console.WriteLine("Generating the C# parser bindings for OSX...");
-                ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "i686-apple-darwin12.4.0",
-                    CppAbi.Itanium));
-                Console.WriteLine();
-
-                Console.WriteLine("Generating the C# parser bindings for OSX...");
-                ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "x86_64-apple-darwin12.4.0",
-                    CppAbi.Itanium));
-                Console.WriteLine();
-            }
-
-
-            if (Directory.Exists(LINUX_INCLUDE_BASE_DIR))
-            {
-                Console.WriteLine("Generating the C# parser bindings for Linux...");
-                ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "x86_64-linux-gnu",
-                     CppAbi.Itanium));
-                Console.WriteLine();
+                return 1;
             }
         }
     }

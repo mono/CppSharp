@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using CppSharp.AST;
 using CppSharp.Generators;
@@ -27,10 +28,18 @@ namespace CppSharp.Tests
             ctx.IgnoreClassWithName("IgnoredType");
         }
 
-        public static void Main(string[] args)
+        public static int Main(string[] args)
         {
-            ConsoleDriver.Run(new TypeMaps(GeneratorKind.CLI));
-            ConsoleDriver.Run(new TypeMaps(GeneratorKind.CSharp));
+            try
+            {
+                ConsoleDriver.Run(new TypeMaps(GeneratorKind.CLI));
+                ConsoleDriver.Run(new TypeMaps(GeneratorKind.CSharp));
+                return 0;
+            }
+            catch (ArgumentException)
+            {
+                return 1;
+            }
         }
     }
 }
