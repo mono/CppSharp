@@ -653,6 +653,8 @@ namespace CppSharp
         readonly CommentConverter commentConverter;
 
         readonly Dictionary<IntPtr, AST.Declaration> Declarations;
+        readonly Dictionary<IntPtr, AST.PreprocessedEntity> PreprocessedEntities;
+        readonly Dictionary<IntPtr, AST.FunctionTemplateSpecialization> FunctionTemplateSpecializations;
 
         public DeclConverter(TypeConverter type, CommentConverter comment)
         {
@@ -660,6 +662,8 @@ namespace CppSharp
             typeConverter = type;
             commentConverter = comment;
             Declarations = new Dictionary<IntPtr, AST.Declaration>();
+            PreprocessedEntities = new Dictionary<IntPtr, AST.PreprocessedEntity>();
+            FunctionTemplateSpecializations = new Dictionary<IntPtr, AST.FunctionTemplateSpecialization>();
         }
 
         public HashSet<IDisposable> NativeObjects { get; private set; }
@@ -957,7 +961,7 @@ namespace CppSharp
                     expression = new AST.BuiltinTypeExpression();
                     break;
             }
-            expression.Declaration = typeConverter.declConverter.Visit(statement.Decl);
+            expression.Declaration = Visit(statement.Decl);
             expression.String = statement.String;
 
             return expression;
@@ -1540,6 +1544,9 @@ namespace CppSharp
 
         private AST.FunctionTemplateSpecialization VisitFunctionTemplateSpecialization(FunctionTemplateSpecialization spec)
         {
+            if (FunctionTemplateSpecializations.ContainsKey(spec.__Instance))
+                return FunctionTemplateSpecializations[spec.__Instance];
+
             var _spec = new AST.FunctionTemplateSpecialization();
             _spec.Template = (AST.FunctionTemplate)Visit(spec.Template);
             _spec.SpecializedFunction = (AST.Function)Visit(spec.SpecializedFunction);
@@ -1549,12 +1556,22 @@ namespace CppSharp
                 var _arg = VisitTemplateArgument(spec.getArguments(i));
                 _spec.Arguments.Add(_arg);
             }
+            FunctionTemplateSpecializations.Add(spec.__Instance, _spec);
+            NativeObjects.Add(spec);
             return _spec;
         }
 
         void VisitPreprocessedEntity(PreprocessedEntity entity, AST.PreprocessedEntity _entity)
         {
+            if (PreprocessedEntities.ContainsKey(entity.__Instance))
+            {
+                _entity.MacroLocation = PreprocessedEntities[entity.__Instance].MacroLocation;
+                return;
+            }
+
             _entity.MacroLocation = VisitMacroLocation(entity.MacroLocation);
+            PreprocessedEntities.Add(entity.__Instance, _entity);
+            NativeObjects.Add(entity);
         }
 
         private AST.PreprocessedEntity VisitPreprocessedEntity(PreprocessedEntity entity)
@@ -1563,11 +1580,9 @@ namespace CppSharp
             {
                 case DeclarationKind.MacroDefinition:
                     var macroDefinition = MacroDefinition.__CreateInstance(entity.__Instance);
-                    NativeObjects.Add(macroDefinition);
                     return VisitMacroDefinition(macroDefinition);
                 case DeclarationKind.MacroExpansion:
                     var macroExpansion = MacroExpansion.__CreateInstance(entity.__Instance);
-                    NativeObjects.Add(macroExpansion);
                     return VisitMacroExpansion(macroExpansion);
                 default:
                     throw new ArgumentOutOfRangeException("entity");
