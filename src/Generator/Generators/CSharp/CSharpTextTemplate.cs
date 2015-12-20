@@ -1761,10 +1761,11 @@ namespace CppSharp.Generators.CSharp
                 GenerateClassFinalizer(@class);
 
                 // ensure any virtual dtor in the chain is called
-                var dtor = @class.Destructors.FirstOrDefault(d => d.Access != AccessSpecifier.Private && d.IsVirtual);
+                var dtor = @class.Destructors.FirstOrDefault(d => d.Access != AccessSpecifier.Private);
                 var baseDtor = @class.BaseClass == null ? null :
                     @class.BaseClass.Destructors.FirstOrDefault(d => !d.IsVirtual);
-                if (ShouldGenerateClassNativeField(@class) || (dtor != null && baseDtor != null) ||
+                if (ShouldGenerateClassNativeField(@class) ||
+                    ((dtor != null && (dtor.IsVirtual || @class.HasNonTrivialDestructor)) && baseDtor != null) ||
                     // virtual destructors in abstract classes may lack a pointer in the v-table
                     // so they have to be called by symbol; thus we need an explicit Dispose override
                     @class.IsAbstract)

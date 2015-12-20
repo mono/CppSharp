@@ -67,6 +67,9 @@ TagType::TagType() : Type(TypeKind::Tag) {}
 ArrayType::ArrayType() : Type(TypeKind::Array) {}
 
 FunctionType::FunctionType() : Type(TypeKind::Function) {}
+
+FunctionType::~FunctionType() {}
+
 DEF_VECTOR(FunctionType, Parameter*, Parameters)
 
 PointerType::PointerType() : Type(TypeKind::Pointer) {}
@@ -90,6 +93,8 @@ TemplateSpecializationType::TemplateSpecializationType(
     const TemplateSpecializationType& rhs) : Type(rhs),
     Arguments(rhs.Arguments), Template(rhs.Template), Desugared(rhs.Desugared) {}
 
+TemplateSpecializationType::~TemplateSpecializationType() {}
+
 DEF_VECTOR(TemplateSpecializationType, TemplateArgument, Arguments)
 
 // TemplateParameter
@@ -107,6 +112,8 @@ TemplateParameter::TemplateParameter(const TemplateParameter& rhs)
 DEF_STRING(TemplateParameter, Name)
 
 TemplateParameterType::TemplateParameterType() : Type(TypeKind::TemplateParameter) {}
+
+TemplateParameterType::~TemplateParameterType() {}
 
 TemplateParameterSubstitutionType::TemplateParameterSubstitutionType()
     : Type(TypeKind::TemplateParameterSubstitution) {}
@@ -474,7 +481,11 @@ Friend* DeclarationContext::FindFriend(const std::string& USR)
 
 TypedefDecl::TypedefDecl() : Declaration(DeclarationKind::Typedef) {}
 
+TypedefDecl::~TypedefDecl() {}
+
 Friend::Friend() : CppSharp::CppParser::AST::Declaration(DeclarationKind::Friend), Declaration(0) {}
+
+Friend::~Friend() {}
 
 DEF_STRING(Statement, String)
 
@@ -532,6 +543,8 @@ Function::Function()
 {
 }
 
+Function::~Function() {}
+
 DEF_STRING(Function, Mangled)
 DEF_STRING(Function, Signature)
 DEF_VECTOR(Function, Parameter*, Parameters)
@@ -552,10 +565,14 @@ Method::Method()
     Kind = DeclarationKind::Method; 
 }
 
+Method::~Method() {}
+
 // Enumeration
 
 Enumeration::Enumeration() : DeclarationContext(DeclarationKind::Enumeration),
     Modifiers((EnumModifiers)0), Type(0), BuiltinType(0) {}
+
+Enumeration::~Enumeration() {}
 
 DEF_VECTOR(Enumeration, Enumeration::Item*, Items)
 
@@ -563,6 +580,8 @@ Enumeration::Item::Item() : Declaration(DeclarationKind::EnumerationItem) {}
 
 Enumeration::Item::Item(const Item& rhs) : Declaration(rhs),
     Expression(rhs.Expression), Value(rhs.Value) {}
+
+Enumeration::Item::~Item() {}
 
 DEF_STRING(Enumeration::Item, Expression)
 
@@ -577,6 +596,8 @@ Enumeration::Item* Enumeration::FindItemByName(const std::string& Name)
 
 Variable::Variable() : Declaration(DeclarationKind::Variable) {}
 
+Variable::~Variable() {}
+
 DEF_STRING(Variable, Mangled)
 
 BaseClassSpecifier::BaseClassSpecifier() : Type(0), Offset(0) {}
@@ -584,8 +605,12 @@ BaseClassSpecifier::BaseClassSpecifier() : Type(0), Offset(0) {}
 Field::Field() : Declaration(DeclarationKind::Field), Class(0),
     IsBitField(false), BitWidth(0) {}
 
+Field::~Field() {}
+
 AccessSpecifierDecl::AccessSpecifierDecl()
     : Declaration(DeclarationKind::AccessSpecifier) {}
+
+AccessSpecifierDecl::~AccessSpecifierDecl() {}
 
 Class::Class()
     : DeclarationContext(DeclarationKind::Class)
@@ -620,6 +645,8 @@ DEF_VECTOR(Template, TemplateParameter, Parameters)
 
 ClassTemplate::ClassTemplate() : Template(DeclarationKind::ClassTemplate) {}
 
+ClassTemplate::~ClassTemplate() {}
+
 DEF_VECTOR(ClassTemplate, ClassTemplateSpecialization*, Specializations)
 
 ClassTemplateSpecialization::ClassTemplateSpecialization() 
@@ -629,6 +656,8 @@ ClassTemplateSpecialization::ClassTemplateSpecialization()
     Kind = DeclarationKind::ClassTemplateSpecialization; 
 }
 
+ClassTemplateSpecialization::~ClassTemplateSpecialization() {}
+
 DEF_VECTOR(ClassTemplateSpecialization, TemplateArgument, Arguments)
 
 ClassTemplatePartialSpecialization::ClassTemplatePartialSpecialization()
@@ -637,7 +666,11 @@ ClassTemplatePartialSpecialization::ClassTemplatePartialSpecialization()
     Kind = DeclarationKind::ClassTemplatePartialSpecialization; 
 }
 
+ClassTemplatePartialSpecialization::~ClassTemplatePartialSpecialization() {}
+
 FunctionTemplate::FunctionTemplate() : Template(DeclarationKind::FunctionTemplate) {}
+
+FunctionTemplate::~FunctionTemplate() {}
 
 DEF_VECTOR(FunctionTemplate, FunctionTemplateSpecialization*, Specializations)
 
@@ -666,6 +699,8 @@ Namespace::Namespace()
 {
 }
 
+Namespace::~Namespace() {}
+
 PreprocessedEntity::PreprocessedEntity()
     : MacroLocation(AST::MacroLocation::Unknown),
       OriginalPtr(0), Kind(DeclarationKind::PreprocessedEntity) {}
@@ -673,15 +708,21 @@ PreprocessedEntity::PreprocessedEntity()
 MacroDefinition::MacroDefinition()
     : LineNumberStart(0), LineNumberEnd(0) { Kind = DeclarationKind::MacroDefinition; }
 
+MacroDefinition::~MacroDefinition() {}
+
 DEF_STRING(MacroDefinition, Name)
 DEF_STRING(MacroDefinition, Expression)
 
 MacroExpansion::MacroExpansion() : Definition(0) { Kind = DeclarationKind::MacroExpansion; }
 
+MacroExpansion::~MacroExpansion() {}
+
 DEF_STRING(MacroExpansion, Name)
 DEF_STRING(MacroExpansion, Text)
 
 TranslationUnit::TranslationUnit() { Kind = DeclarationKind::TranslationUnit; }
+
+TranslationUnit::~TranslationUnit() {}
 
 DEF_STRING(TranslationUnit, FileName)
 DEF_VECTOR(TranslationUnit, MacroDefinition*, Macros)

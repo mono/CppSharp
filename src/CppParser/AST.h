@@ -102,6 +102,7 @@ enum class CallingConvention
 class CS_API FunctionType : public Type
 {
 public:
+    ~FunctionType();
     DECLARE_TYPE_KIND(Function)
     QualifiedType ReturnType;
     CppSharp::CppParser::AST::CallingConvention CallingConvention;
@@ -186,6 +187,7 @@ class CS_API TemplateSpecializationType : public Type
 public:
     TemplateSpecializationType();
     TemplateSpecializationType(const TemplateSpecializationType&);
+    ~TemplateSpecializationType();
 
     VECTOR(TemplateArgument, Arguments)
     CppSharp::CppParser::AST::Template* Template;
@@ -210,6 +212,7 @@ public:
 class CS_API TemplateParameterType : public Type
 {
 public:
+    ~TemplateParameterType();
     DECLARE_TYPE_KIND(TemplateParameter)
     TemplateParameter Parameter;
     unsigned int Depth;
@@ -467,6 +470,7 @@ class CS_API TypedefDecl : public Declaration
 {
 public:
     DECLARE_DECL_KIND(TypedefDecl, Typedef)
+    ~TypedefDecl();
     CppSharp::CppParser::AST::QualifiedType QualifiedType;
 };
 
@@ -474,6 +478,7 @@ class CS_API Friend : public Declaration
 {
 public:
     DECLARE_DECL_KIND(Friend, Friend)
+    ~Friend();
     CppSharp::CppParser::AST::Declaration* Declaration;
 };
 
@@ -608,6 +613,7 @@ class CS_API Function : public Declaration
 {
 public:
     Function();
+    ~Function();
 
     QualifiedType ReturnType;
     bool IsReturnIndirect;
@@ -631,6 +637,7 @@ class CS_API Method : public Function
 {
 public:
     Method();
+    ~Method();
 
     AccessSpecifierDecl* AccessDecl;
 
@@ -654,12 +661,14 @@ class CS_API Enumeration : public DeclarationContext
 {
 public:
     DECLARE_DECL_KIND(Enumeration, Enumeration)
+    ~Enumeration();
 
     class CS_API Item : public Declaration
     {
     public:
         DECLARE_DECL_KIND(Item, EnumerationItem)
         Item(const Item&);
+        ~Item();
 
         STRING(Expression)
         uint64_t Value;
@@ -684,7 +693,7 @@ class CS_API Variable : public Declaration
 {
 public:
     DECLARE_DECL_KIND(Variable, Variable)
-
+    ~Variable();
     STRING(Mangled)
     CppSharp::CppParser::AST::QualifiedType QualifiedType;
 };
@@ -706,6 +715,7 @@ class CS_API Field : public Declaration
 {
 public:
     DECLARE_DECL_KIND(Field, Field)
+    ~Field();
     CppSharp::CppParser::AST::QualifiedType QualifiedType;
     unsigned Offset;
     CppSharp::CppParser::AST::Class* Class;
@@ -717,6 +727,7 @@ class CS_API AccessSpecifierDecl : public Declaration
 {
 public:
     DECLARE_DECL_KIND(AccessSpecifierDecl, AccessSpecifier)
+    ~AccessSpecifierDecl();
 };
 
 class CS_API Class : public DeclarationContext
@@ -759,6 +770,7 @@ class CS_API ClassTemplate : public Template
 {
 public:
     ClassTemplate();
+    ~ClassTemplate();
     VECTOR(ClassTemplateSpecialization*, Specializations)
     ClassTemplateSpecialization* FindSpecialization(const std::string& usr);
     ClassTemplatePartialSpecialization* FindPartialSpecialization(const std::string& usr);
@@ -777,6 +789,7 @@ class CS_API ClassTemplateSpecialization : public Class
 {
 public:
     ClassTemplateSpecialization();
+    ~ClassTemplateSpecialization();
     ClassTemplate* TemplatedDecl;
     VECTOR(TemplateArgument, Arguments)
     TemplateSpecializationKind SpecializationKind;
@@ -786,12 +799,14 @@ class CS_API ClassTemplatePartialSpecialization : public ClassTemplateSpecializa
 {
 public:
     ClassTemplatePartialSpecialization();
+    ~ClassTemplatePartialSpecialization();
 };
 
 class CS_API FunctionTemplate : public Template
 {
 public:
     FunctionTemplate();
+    ~FunctionTemplate();
     VECTOR(FunctionTemplateSpecialization*, Specializations)
     FunctionTemplateSpecialization* FindSpecialization(const std::string& usr);
 };
@@ -810,6 +825,7 @@ class CS_API Namespace : public DeclarationContext
 {
 public:
     Namespace();
+    ~Namespace();
     bool IsInline;
 };
 
@@ -836,6 +852,7 @@ class CS_API MacroDefinition : public PreprocessedEntity
 {
 public:
     MacroDefinition();
+    ~MacroDefinition();
     STRING(Name)
     STRING(Expression)
     int LineNumberStart;
@@ -846,6 +863,7 @@ class CS_API MacroExpansion : public PreprocessedEntity
 {
 public:
     MacroExpansion();
+    ~MacroExpansion();
     STRING(Name)
     STRING(Text)
     MacroDefinition* Definition;
@@ -855,6 +873,7 @@ class CS_API TranslationUnit : public Namespace
 {
 public:
     TranslationUnit();
+    ~TranslationUnit();
     STRING(FileName)
     bool IsSystemHeader;
     VECTOR(MacroDefinition*, Macros)

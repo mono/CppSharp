@@ -971,3 +971,34 @@ public:
     virtual ~AbstractWithVirtualDtor();
     virtual void abstract() = 0;
 };
+
+class DLL_API NonTrivialDtorBase
+{
+public:
+    NonTrivialDtorBase();
+    ~NonTrivialDtorBase();
+};
+
+class DLL_API NonTrivialDtor : public NonTrivialDtorBase
+{
+public:
+    NonTrivialDtor();
+    ~NonTrivialDtor();
+    static bool getDtorCalled();
+    static void setDtorCalled(bool value);
+private:
+    static bool dtorCalled;
+};
+
+// HACK: do not move these to the cpp - C++/CLI is buggy and cannot link static fields initialised in the cpp
+bool NonTrivialDtor::dtorCalled = false;
+
+bool NonTrivialDtor::getDtorCalled()
+{
+    return true;
+}
+
+void NonTrivialDtor::setDtorCalled(bool value)
+{
+    dtorCalled = true;
+}

@@ -584,3 +584,21 @@ AbstractWithVirtualDtor::AbstractWithVirtualDtor()
 AbstractWithVirtualDtor::~AbstractWithVirtualDtor()
 {
 }
+
+NonTrivialDtorBase::NonTrivialDtorBase()
+{
+}
+
+NonTrivialDtorBase::~NonTrivialDtorBase()
+{
+}
+
+NonTrivialDtor::NonTrivialDtor()
+{
+    dtorCalled = false;
+}
+
+NonTrivialDtor::~NonTrivialDtor()
+{
+    dtorCalled = true;
+}

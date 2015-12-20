@@ -259,6 +259,15 @@ namespace CppSharp.Generators.CLI
             {
                 WriteLine("delete NativePtr;");
             }
+            else if (@class.HasNonTrivialDestructor)
+            {
+                WriteLine("if (NativePtr)");
+                WriteStartBraceIndent();
+                WriteLine("auto __nativePtr = NativePtr;");
+                WriteLine("NativePtr = 0;");
+                WriteLine("delete (::{0}*) __nativePtr;", @class.QualifiedOriginalName);
+                WriteCloseBraceIndent();
+            }
 
             WriteCloseBraceIndent();
 

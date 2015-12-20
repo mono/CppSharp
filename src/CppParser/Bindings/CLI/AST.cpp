@@ -321,6 +321,12 @@ CppSharp::Parser::AST::FunctionType^ CppSharp::Parser::AST::FunctionType::__Crea
 
 CppSharp::Parser::AST::FunctionType::~FunctionType()
 {
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::FunctionType*) __nativePtr;
+    }
 }
 
 CppSharp::Parser::AST::FunctionType::FunctionType()
@@ -724,6 +730,12 @@ CppSharp::Parser::AST::TemplateSpecializationType^ CppSharp::Parser::AST::Templa
 
 CppSharp::Parser::AST::TemplateSpecializationType::~TemplateSpecializationType()
 {
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::TemplateSpecializationType*) __nativePtr;
+    }
 }
 
 CppSharp::Parser::AST::TemplateSpecializationType::TemplateSpecializationType()
@@ -883,6 +895,12 @@ CppSharp::Parser::AST::TemplateParameterType^ CppSharp::Parser::AST::TemplatePar
 
 CppSharp::Parser::AST::TemplateParameterType::~TemplateParameterType()
 {
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::TemplateParameterType*) __nativePtr;
+    }
 }
 
 CppSharp::Parser::AST::TemplateParameterType::TemplateParameterType()
@@ -1723,6 +1741,12 @@ CppSharp::Parser::AST::DeclarationContext^ CppSharp::Parser::AST::DeclarationCon
 
 CppSharp::Parser::AST::DeclarationContext::~DeclarationContext()
 {
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::DeclarationContext*) __nativePtr;
+    }
 }
 
 CppSharp::Parser::AST::DeclarationContext::DeclarationContext(CppSharp::Parser::AST::DeclarationKind kind)
@@ -1973,6 +1997,12 @@ CppSharp::Parser::AST::TypedefDecl^ CppSharp::Parser::AST::TypedefDecl::__Create
 
 CppSharp::Parser::AST::TypedefDecl::~TypedefDecl()
 {
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::TypedefDecl*) __nativePtr;
+    }
 }
 
 CppSharp::Parser::AST::TypedefDecl::TypedefDecl()
@@ -2014,6 +2044,12 @@ CppSharp::Parser::AST::Friend^ CppSharp::Parser::AST::Friend::__CreateInstance(:
 
 CppSharp::Parser::AST::Friend::~Friend()
 {
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::Friend*) __nativePtr;
+    }
 }
 
 CppSharp::Parser::AST::Friend::Friend()
@@ -2124,6 +2160,12 @@ CppSharp::Parser::AST::Expression^ CppSharp::Parser::AST::Expression::__CreateIn
 
 CppSharp::Parser::AST::Expression::~Expression()
 {
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::Expression*) __nativePtr;
+    }
 }
 
 CppSharp::Parser::AST::Expression::Expression(CppSharp::Parser::AST::Expression^ _0)
@@ -2148,6 +2190,12 @@ CppSharp::Parser::AST::BinaryOperator^ CppSharp::Parser::AST::BinaryOperator::__
 
 CppSharp::Parser::AST::BinaryOperator::~BinaryOperator()
 {
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::BinaryOperator*) __nativePtr;
+    }
 }
 
 CppSharp::Parser::AST::BinaryOperator::BinaryOperator(CppSharp::Parser::AST::BinaryOperator^ _0)
@@ -2206,6 +2254,12 @@ CppSharp::Parser::AST::CallExpr^ CppSharp::Parser::AST::CallExpr::__CreateInstan
 
 CppSharp::Parser::AST::CallExpr::~CallExpr()
 {
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::CallExpr*) __nativePtr;
+    }
 }
 
 CppSharp::Parser::AST::Expression^ CppSharp::Parser::AST::CallExpr::getArguments(unsigned int i)
@@ -2256,6 +2310,12 @@ CppSharp::Parser::AST::CXXConstructExpr^ CppSharp::Parser::AST::CXXConstructExpr
 
 CppSharp::Parser::AST::CXXConstructExpr::~CXXConstructExpr()
 {
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::CXXConstructExpr*) __nativePtr;
+    }
 }
 
 CppSharp::Parser::AST::Expression^ CppSharp::Parser::AST::CXXConstructExpr::getArguments(unsigned int i)
@@ -2306,6 +2366,12 @@ CppSharp::Parser::AST::Parameter^ CppSharp::Parser::AST::Parameter::__CreateInst
 
 CppSharp::Parser::AST::Parameter::~Parameter()
 {
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::Parameter*) __nativePtr;
+    }
 }
 
 CppSharp::Parser::AST::Parameter::Parameter()
@@ -2387,6 +2453,12 @@ CppSharp::Parser::AST::Function^ CppSharp::Parser::AST::Function::__CreateInstan
 
 CppSharp::Parser::AST::Function::~Function()
 {
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::Function*) __nativePtr;
+    }
 }
 
 CppSharp::Parser::AST::Function::Function()
@@ -2572,6 +2644,12 @@ CppSharp::Parser::AST::Method^ CppSharp::Parser::AST::Method::__CreateInstance(:
 
 CppSharp::Parser::AST::Method::~Method()
 {
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::Method*) __nativePtr;
+    }
 }
 
 CppSharp::Parser::AST::Method::Method()
@@ -2723,6 +2801,12 @@ CppSharp::Parser::AST::Enumeration::Item^ CppSharp::Parser::AST::Enumeration::It
 
 CppSharp::Parser::AST::Enumeration::Item::~Item()
 {
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::Enumeration::Item*) __nativePtr;
+    }
 }
 
 CppSharp::Parser::AST::Enumeration::Item::Item()
@@ -2778,6 +2862,12 @@ CppSharp::Parser::AST::Enumeration^ CppSharp::Parser::AST::Enumeration::__Create
 
 CppSharp::Parser::AST::Enumeration::~Enumeration()
 {
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::Enumeration*) __nativePtr;
+    }
 }
 
 CppSharp::Parser::AST::Enumeration::Enumeration()
@@ -2865,6 +2955,12 @@ CppSharp::Parser::AST::Variable^ CppSharp::Parser::AST::Variable::__CreateInstan
 
 CppSharp::Parser::AST::Variable::~Variable()
 {
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::Variable*) __nativePtr;
+    }
 }
 
 CppSharp::Parser::AST::Variable::Variable()
@@ -3001,6 +3097,12 @@ CppSharp::Parser::AST::Field^ CppSharp::Parser::AST::Field::__CreateInstance(::S
 
 CppSharp::Parser::AST::Field::~Field()
 {
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::Field*) __nativePtr;
+    }
 }
 
 CppSharp::Parser::AST::Field::Field()
@@ -3082,6 +3184,12 @@ CppSharp::Parser::AST::AccessSpecifierDecl^ CppSharp::Parser::AST::AccessSpecifi
 
 CppSharp::Parser::AST::AccessSpecifierDecl::~AccessSpecifierDecl()
 {
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::AccessSpecifierDecl*) __nativePtr;
+    }
 }
 
 CppSharp::Parser::AST::AccessSpecifierDecl::AccessSpecifierDecl()
@@ -3113,6 +3221,12 @@ CppSharp::Parser::AST::Class^ CppSharp::Parser::AST::Class::__CreateInstance(::S
 
 CppSharp::Parser::AST::Class::~Class()
 {
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::Class*) __nativePtr;
+    }
 }
 
 CppSharp::Parser::AST::Class::Class()
@@ -3348,6 +3462,12 @@ CppSharp::Parser::AST::Template^ CppSharp::Parser::AST::Template::__CreateInstan
 
 CppSharp::Parser::AST::Template::~Template()
 {
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::Template*) __nativePtr;
+    }
 }
 
 CppSharp::Parser::AST::Template::Template(CppSharp::Parser::AST::DeclarationKind kind)
@@ -3423,6 +3543,12 @@ CppSharp::Parser::AST::ClassTemplate^ CppSharp::Parser::AST::ClassTemplate::__Cr
 
 CppSharp::Parser::AST::ClassTemplate::~ClassTemplate()
 {
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::ClassTemplate*) __nativePtr;
+    }
 }
 
 CppSharp::Parser::AST::ClassTemplate::ClassTemplate()
@@ -3480,6 +3606,12 @@ CppSharp::Parser::AST::ClassTemplateSpecialization^ CppSharp::Parser::AST::Class
 
 CppSharp::Parser::AST::ClassTemplateSpecialization::~ClassTemplateSpecialization()
 {
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::ClassTemplateSpecialization*) __nativePtr;
+    }
 }
 
 CppSharp::Parser::AST::ClassTemplateSpecialization::ClassTemplateSpecialization()
@@ -3557,6 +3689,12 @@ CppSharp::Parser::AST::ClassTemplatePartialSpecialization^ CppSharp::Parser::AST
 
 CppSharp::Parser::AST::ClassTemplatePartialSpecialization::~ClassTemplatePartialSpecialization()
 {
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::ClassTemplatePartialSpecialization*) __nativePtr;
+    }
 }
 
 CppSharp::Parser::AST::ClassTemplatePartialSpecialization::ClassTemplatePartialSpecialization()
@@ -3588,6 +3726,12 @@ CppSharp::Parser::AST::FunctionTemplate^ CppSharp::Parser::AST::FunctionTemplate
 
 CppSharp::Parser::AST::FunctionTemplate::~FunctionTemplate()
 {
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::FunctionTemplate*) __nativePtr;
+    }
 }
 
 CppSharp::Parser::AST::FunctionTemplate::FunctionTemplate()
@@ -3742,6 +3886,12 @@ CppSharp::Parser::AST::Namespace^ CppSharp::Parser::AST::Namespace::__CreateInst
 
 CppSharp::Parser::AST::Namespace::~Namespace()
 {
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::Namespace*) __nativePtr;
+    }
 }
 
 CppSharp::Parser::AST::Namespace::Namespace()
@@ -3854,6 +4004,12 @@ CppSharp::Parser::AST::MacroDefinition^ CppSharp::Parser::AST::MacroDefinition::
 
 CppSharp::Parser::AST::MacroDefinition::~MacroDefinition()
 {
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::MacroDefinition*) __nativePtr;
+    }
 }
 
 CppSharp::Parser::AST::MacroDefinition::MacroDefinition()
@@ -3933,6 +4089,12 @@ CppSharp::Parser::AST::MacroExpansion^ CppSharp::Parser::AST::MacroExpansion::__
 
 CppSharp::Parser::AST::MacroExpansion::~MacroExpansion()
 {
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::MacroExpansion*) __nativePtr;
+    }
 }
 
 CppSharp::Parser::AST::MacroExpansion::MacroExpansion()
@@ -4002,6 +4164,12 @@ CppSharp::Parser::AST::TranslationUnit^ CppSharp::Parser::AST::TranslationUnit::
 
 CppSharp::Parser::AST::TranslationUnit::~TranslationUnit()
 {
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::TranslationUnit*) __nativePtr;
+    }
 }
 
 CppSharp::Parser::AST::TranslationUnit::TranslationUnit()
@@ -4356,6 +4524,12 @@ CppSharp::Parser::AST::FullComment^ CppSharp::Parser::AST::FullComment::__Create
 
 CppSharp::Parser::AST::FullComment::~FullComment()
 {
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::FullComment*) __nativePtr;
+    }
 }
 
 CppSharp::Parser::AST::FullComment::FullComment()
@@ -4468,6 +4642,12 @@ CppSharp::Parser::AST::BlockCommandComment^ CppSharp::Parser::AST::BlockCommandC
 
 CppSharp::Parser::AST::BlockCommandComment::~BlockCommandComment()
 {
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::BlockCommandComment*) __nativePtr;
+    }
 }
 
 CppSharp::Parser::AST::BlockCommandComment::BlockCommandComment()
@@ -4543,6 +4723,12 @@ CppSharp::Parser::AST::ParamCommandComment^ CppSharp::Parser::AST::ParamCommandC
 
 CppSharp::Parser::AST::ParamCommandComment::~ParamCommandComment()
 {
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::ParamCommandComment*) __nativePtr;
+    }
 }
 
 CppSharp::Parser::AST::ParamCommandComment::ParamCommandComment()
@@ -4594,6 +4780,12 @@ CppSharp::Parser::AST::TParamCommandComment^ CppSharp::Parser::AST::TParamComman
 
 CppSharp::Parser::AST::TParamCommandComment::~TParamCommandComment()
 {
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::TParamCommandComment*) __nativePtr;
+    }
 }
 
 CppSharp::Parser::AST::TParamCommandComment::TParamCommandComment()
@@ -4649,6 +4841,12 @@ CppSharp::Parser::AST::VerbatimBlockLineComment^ CppSharp::Parser::AST::Verbatim
 
 CppSharp::Parser::AST::VerbatimBlockLineComment::~VerbatimBlockLineComment()
 {
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::VerbatimBlockLineComment*) __nativePtr;
+    }
 }
 
 CppSharp::Parser::AST::VerbatimBlockLineComment::VerbatimBlockLineComment()
@@ -4694,6 +4892,12 @@ CppSharp::Parser::AST::VerbatimBlockComment^ CppSharp::Parser::AST::VerbatimBloc
 
 CppSharp::Parser::AST::VerbatimBlockComment::~VerbatimBlockComment()
 {
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::VerbatimBlockComment*) __nativePtr;
+    }
 }
 
 CppSharp::Parser::AST::VerbatimBlockComment::VerbatimBlockComment()
@@ -4751,6 +4955,12 @@ CppSharp::Parser::AST::VerbatimLineComment^ CppSharp::Parser::AST::VerbatimLineC
 
 CppSharp::Parser::AST::VerbatimLineComment::~VerbatimLineComment()
 {
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::VerbatimLineComment*) __nativePtr;
+    }
 }
 
 CppSharp::Parser::AST::VerbatimLineComment::VerbatimLineComment()
@@ -4835,6 +5045,12 @@ CppSharp::Parser::AST::ParagraphComment^ CppSharp::Parser::AST::ParagraphComment
 
 CppSharp::Parser::AST::ParagraphComment::~ParagraphComment()
 {
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::ParagraphComment*) __nativePtr;
+    }
 }
 
 CppSharp::Parser::AST::ParagraphComment::ParagraphComment()
@@ -4957,6 +5173,12 @@ CppSharp::Parser::AST::InlineCommandComment^ CppSharp::Parser::AST::InlineComman
 
 CppSharp::Parser::AST::InlineCommandComment::~InlineCommandComment()
 {
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::InlineCommandComment*) __nativePtr;
+    }
 }
 
 CppSharp::Parser::AST::InlineCommandComment::InlineCommandComment()
@@ -5132,6 +5354,12 @@ CppSharp::Parser::AST::HTMLStartTagComment^ CppSharp::Parser::AST::HTMLStartTagC
 
 CppSharp::Parser::AST::HTMLStartTagComment::~HTMLStartTagComment()
 {
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::HTMLStartTagComment*) __nativePtr;
+    }
 }
 
 CppSharp::Parser::AST::HTMLStartTagComment::HTMLStartTagComment()
@@ -5203,6 +5431,12 @@ CppSharp::Parser::AST::HTMLEndTagComment^ CppSharp::Parser::AST::HTMLEndTagComme
 
 CppSharp::Parser::AST::HTMLEndTagComment::~HTMLEndTagComment()
 {
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::HTMLEndTagComment*) __nativePtr;
+    }
 }
 
 CppSharp::Parser::AST::HTMLEndTagComment::HTMLEndTagComment()
@@ -5248,6 +5482,12 @@ CppSharp::Parser::AST::TextComment^ CppSharp::Parser::AST::TextComment::__Create
 
 CppSharp::Parser::AST::TextComment::~TextComment()
 {
+    if (NativePtr)
+    {
+        auto __nativePtr = NativePtr;
+        NativePtr = 0;
+        delete (::CppSharp::CppParser::AST::TextComment*) __nativePtr;
+    }
 }
 
 CppSharp::Parser::AST::TextComment::TextComment()

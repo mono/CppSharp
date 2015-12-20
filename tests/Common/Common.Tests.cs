@@ -599,6 +599,15 @@ public class CommonTests : GeneratorTestFixture
         }
     }
 
+    [Test]
+    public void TestNonTrivialDtorInvocation()
+    {
+        using (var nonTrivialDtor = new NonTrivialDtor())
+        {
+        }
+        Assert.IsTrue(NonTrivialDtor.DtorCalled);
+    }
+
     private class CustomDerivedFromVirtual : AbstractWithVirtualDtor
     {
         public override void @abstract()

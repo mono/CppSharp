@@ -886,7 +886,7 @@ namespace CppSharp
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
                         EntryPoint="_ZN8CppSharp9CppParser3AST12FunctionTypeC2ERKS2_")]
-                    internal static extern void cctor_2(global::System.IntPtr instance, global::System.IntPtr _0);
+                    internal static extern void cctor_1(global::System.IntPtr instance, global::System.IntPtr _0);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -927,7 +927,7 @@ namespace CppSharp
                 private static FunctionType.Internal* __CopyValue(FunctionType.Internal native)
                 {
                     var ret = Marshal.AllocHGlobal(56);
-                    CppSharp.Parser.AST.FunctionType.Internal.cctor_2(ret, new global::System.IntPtr(&native));
+                    CppSharp.Parser.AST.FunctionType.Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return (FunctionType.Internal*) ret;
                 }
 
@@ -965,7 +965,16 @@ namespace CppSharp
                     if (ReferenceEquals(_0, null))
                         throw new global::System.ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
                     var arg0 = _0.__Instance;
-                    Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
+                    Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                }
+
+                protected override void Dispose(bool disposing)
+                {
+                    CppSharp.Parser.AST.Type __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    Internal.dtor_0((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.Parameter getParameters(uint i)
@@ -1843,6 +1852,15 @@ namespace CppSharp
                     Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
                 }
 
+                protected override void Dispose(bool disposing)
+                {
+                    CppSharp.Parser.AST.Type __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    Internal.dtor_0((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
+                }
+
                 public CppSharp.Parser.AST.TemplateArgument getArguments(uint i)
                 {
                     var __ret = new CppSharp.Parser.AST.TemplateArgument.Internal();
@@ -2171,6 +2189,15 @@ namespace CppSharp
                         throw new global::System.ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
                     var arg0 = _0.__Instance;
                     Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                }
+
+                protected override void Dispose(bool disposing)
+                {
+                    CppSharp.Parser.AST.Type __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    Internal.dtor_0((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.TemplateParameter Parameter
@@ -4060,6 +4087,15 @@ namespace CppSharp
                     Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
                 }
 
+                protected override void Dispose(bool disposing)
+                {
+                    CppSharp.Parser.AST.Declaration __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    Internal.dtor_0((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
+                }
+
                 public CppSharp.Parser.AST.Namespace getNamespaces(uint i)
                 {
                     var __ret = Internal.getNamespaces_0((__Instance + __PointerAdjustment), i);
@@ -4452,6 +4488,15 @@ namespace CppSharp
                     Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
                 }
 
+                protected override void Dispose(bool disposing)
+                {
+                    CppSharp.Parser.AST.Declaration __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    Internal.dtor_0((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
+                }
+
                 public CppSharp.Parser.AST.QualifiedType QualifiedType
                 {
                     get
@@ -4578,6 +4623,15 @@ namespace CppSharp
                         throw new global::System.ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
                     var arg0 = _0.__Instance;
                     Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                }
+
+                protected override void Dispose(bool disposing)
+                {
+                    CppSharp.Parser.AST.Declaration __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    Internal.dtor_0((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.Declaration Declaration
@@ -4809,6 +4863,15 @@ namespace CppSharp
                     var arg0 = _0.__Instance;
                     Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
                 }
+
+                protected override void Dispose(bool disposing)
+                {
+                    CppSharp.Parser.AST.Statement __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    Internal.dtor_0((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
+                }
             }
 
             public unsafe partial class BinaryOperator : CppSharp.Parser.AST.Expression, IDisposable
@@ -4892,6 +4955,15 @@ namespace CppSharp
                         throw new global::System.ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
                     var arg0 = _0.__Instance;
                     Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                }
+
+                protected override void Dispose(bool disposing)
+                {
+                    CppSharp.Parser.AST.Statement __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    Internal.dtor_0((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public string OpcodeStr
@@ -5034,6 +5106,15 @@ namespace CppSharp
                     Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
                 }
 
+                protected override void Dispose(bool disposing)
+                {
+                    CppSharp.Parser.AST.Statement __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    Internal.dtor_0((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
+                }
+
                 public CppSharp.Parser.AST.Expression getArguments(uint i)
                 {
                     var __ret = Internal.getArguments_0((__Instance + __PointerAdjustment), i);
@@ -5153,6 +5234,15 @@ namespace CppSharp
                         throw new global::System.ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
                     var arg0 = _0.__Instance;
                     Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                }
+
+                protected override void Dispose(bool disposing)
+                {
+                    CppSharp.Parser.AST.Statement __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    Internal.dtor_0((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.Expression getArguments(uint i)
@@ -5313,6 +5403,15 @@ namespace CppSharp
                         throw new global::System.ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
                     var arg0 = _0.__Instance;
                     Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                }
+
+                protected override void Dispose(bool disposing)
+                {
+                    CppSharp.Parser.AST.Declaration __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    Internal.dtor_0((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.QualifiedType QualifiedType
@@ -5565,6 +5664,15 @@ namespace CppSharp
                         throw new global::System.ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
                     var arg0 = _0.__Instance;
                     Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                }
+
+                protected override void Dispose(bool disposing)
+                {
+                    CppSharp.Parser.AST.Declaration __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    Internal.dtor_0((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.Parameter getParameters(uint i)
@@ -5943,6 +6051,15 @@ namespace CppSharp
                         throw new global::System.ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
                     var arg0 = _0.__Instance;
                     Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                }
+
+                protected override void Dispose(bool disposing)
+                {
+                    CppSharp.Parser.AST.Declaration __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    Internal.dtor_0((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.AccessSpecifierDecl AccessDecl
@@ -6328,6 +6445,15 @@ namespace CppSharp
                         Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
                     }
 
+                    protected override void Dispose(bool disposing)
+                    {
+                        CppSharp.Parser.AST.Declaration __dummy;
+                        NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                        Internal.dtor_0((__Instance + __PointerAdjustment));
+                        if (__ownsNativeInstance)
+                            Marshal.FreeHGlobal(__Instance);
+                    }
+
                     public string Expression
                     {
                         get
@@ -6410,6 +6536,15 @@ namespace CppSharp
                         throw new global::System.ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
                     var arg0 = _0.__Instance;
                     Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                }
+
+                protected override void Dispose(bool disposing)
+                {
+                    CppSharp.Parser.AST.Declaration __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    Internal.dtor_0((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.Enumeration.Item getItems(uint i)
@@ -6617,6 +6752,15 @@ namespace CppSharp
                         throw new global::System.ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
                     var arg0 = _0.__Instance;
                     Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                }
+
+                protected override void Dispose(bool disposing)
+                {
+                    CppSharp.Parser.AST.Declaration __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    Internal.dtor_0((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public string Mangled
@@ -6929,6 +7073,15 @@ namespace CppSharp
                     Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
                 }
 
+                protected override void Dispose(bool disposing)
+                {
+                    CppSharp.Parser.AST.Declaration __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    Internal.dtor_0((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
+                }
+
                 public CppSharp.Parser.AST.QualifiedType QualifiedType
                 {
                     get
@@ -7109,6 +7262,15 @@ namespace CppSharp
                         throw new global::System.ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
                     var arg0 = _0.__Instance;
                     Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                }
+
+                protected override void Dispose(bool disposing)
+                {
+                    CppSharp.Parser.AST.Declaration __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    Internal.dtor_0((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
             }
 
@@ -7334,6 +7496,15 @@ namespace CppSharp
                         throw new global::System.ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
                     var arg0 = _0.__Instance;
                     Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                }
+
+                protected override void Dispose(bool disposing)
+                {
+                    CppSharp.Parser.AST.Declaration __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    Internal.dtor_0((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.BaseClassSpecifier getBases(uint i)
@@ -7753,6 +7924,15 @@ namespace CppSharp
                     Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
+                protected override void Dispose(bool disposing)
+                {
+                    CppSharp.Parser.AST.Declaration __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    Internal.dtor_0((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
+                }
+
                 public CppSharp.Parser.AST.TemplateParameter getParameters(uint i)
                 {
                     var __ret = new CppSharp.Parser.AST.TemplateParameter.Internal();
@@ -7933,6 +8113,15 @@ namespace CppSharp
                         throw new global::System.ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
                     var arg0 = _0.__Instance;
                     Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                }
+
+                protected override void Dispose(bool disposing)
+                {
+                    CppSharp.Parser.AST.Declaration __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    Internal.dtor_0((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.ClassTemplateSpecialization getSpecializations(uint i)
@@ -8137,6 +8326,15 @@ namespace CppSharp
                         throw new global::System.ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
                     var arg0 = _0.__Instance;
                     Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                }
+
+                protected override void Dispose(bool disposing)
+                {
+                    CppSharp.Parser.AST.Declaration __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    Internal.dtor_0((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.TemplateArgument getArguments(uint i)
@@ -8349,6 +8547,15 @@ namespace CppSharp
                     var arg0 = _0.__Instance;
                     Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
                 }
+
+                protected override void Dispose(bool disposing)
+                {
+                    CppSharp.Parser.AST.Declaration __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    Internal.dtor_0((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
+                }
             }
 
             public unsafe partial class FunctionTemplate : CppSharp.Parser.AST.Template, IDisposable
@@ -8483,6 +8690,15 @@ namespace CppSharp
                         throw new global::System.ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
                     var arg0 = _0.__Instance;
                     Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                }
+
+                protected override void Dispose(bool disposing)
+                {
+                    CppSharp.Parser.AST.Declaration __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    Internal.dtor_0((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.FunctionTemplateSpecialization getSpecializations(uint i)
@@ -8837,6 +9053,15 @@ namespace CppSharp
                     Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
                 }
 
+                protected override void Dispose(bool disposing)
+                {
+                    CppSharp.Parser.AST.Declaration __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    Internal.dtor_0((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
+                }
+
                 public bool IsInline
                 {
                     get
@@ -9094,6 +9319,15 @@ namespace CppSharp
                     Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
                 }
 
+                protected override void Dispose(bool disposing)
+                {
+                    CppSharp.Parser.AST.PreprocessedEntity __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    Internal.dtor_0((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
+                }
+
                 public string Name
                 {
                     get
@@ -9258,6 +9492,15 @@ namespace CppSharp
                         throw new global::System.ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
                     var arg0 = _0.__Instance;
                     Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                }
+
+                protected override void Dispose(bool disposing)
+                {
+                    CppSharp.Parser.AST.PreprocessedEntity __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    Internal.dtor_0((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public string Name
@@ -9459,6 +9702,15 @@ namespace CppSharp
                         throw new global::System.ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
                     var arg0 = _0.__Instance;
                     Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                }
+
+                protected override void Dispose(bool disposing)
+                {
+                    CppSharp.Parser.AST.Declaration __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    Internal.dtor_0((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.MacroDefinition getMacros(uint i)
@@ -10187,6 +10439,15 @@ namespace CppSharp
                     Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
                 }
 
+                protected override void Dispose(bool disposing)
+                {
+                    CppSharp.Parser.AST.Comment __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    Internal.dtor_0((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
+                }
+
                 public CppSharp.Parser.AST.BlockContentComment getBlocks(uint i)
                 {
                     var __ret = Internal.getBlocks_0((__Instance + __PointerAdjustment), i);
@@ -10457,6 +10718,15 @@ namespace CppSharp
                     Internal.cctor_3((__Instance + __PointerAdjustment), arg0);
                 }
 
+                protected override void Dispose(bool disposing)
+                {
+                    CppSharp.Parser.AST.Comment __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    Internal.dtor_0((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
+                }
+
                 public CppSharp.Parser.AST.BlockCommandComment.Argument getArguments(uint i)
                 {
                     var __ret = new CppSharp.Parser.AST.BlockCommandComment.Argument.Internal();
@@ -10594,6 +10864,15 @@ namespace CppSharp
                     Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
                 }
 
+                protected override void Dispose(bool disposing)
+                {
+                    CppSharp.Parser.AST.Comment __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    Internal.dtor_0((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
+                }
+
                 public CppSharp.Parser.AST.ParamCommandComment.PassDirection Direction
                 {
                     get
@@ -10722,6 +11001,15 @@ namespace CppSharp
                     Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
                 }
 
+                protected override void Dispose(bool disposing)
+                {
+                    CppSharp.Parser.AST.Comment __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    Internal.dtor_0((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
+                }
+
                 public uint getPosition(uint i)
                 {
                     var __ret = Internal.getPosition_0((__Instance + __PointerAdjustment), i);
@@ -10840,6 +11128,15 @@ namespace CppSharp
                     Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
                 }
 
+                protected override void Dispose(bool disposing)
+                {
+                    CppSharp.Parser.AST.Comment __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    Internal.dtor_0((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
+                }
+
                 public string Text
                 {
                     get
@@ -10956,6 +11253,15 @@ namespace CppSharp
                         throw new global::System.ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
                     var arg0 = _0.__Instance;
                     Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                }
+
+                protected override void Dispose(bool disposing)
+                {
+                    CppSharp.Parser.AST.Comment __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    Internal.dtor_0((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.VerbatimBlockLineComment getLines(uint i)
@@ -11081,6 +11387,15 @@ namespace CppSharp
                         throw new global::System.ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
                     var arg0 = _0.__Instance;
                     Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                }
+
+                protected override void Dispose(bool disposing)
+                {
+                    CppSharp.Parser.AST.Comment __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    Internal.dtor_0((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public string Text
@@ -11285,6 +11600,15 @@ namespace CppSharp
                         throw new global::System.ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
                     var arg0 = _0.__Instance;
                     Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                }
+
+                protected override void Dispose(bool disposing)
+                {
+                    CppSharp.Parser.AST.Comment __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    Internal.dtor_0((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.InlineContentComment getContent(uint i)
@@ -11561,6 +11885,15 @@ namespace CppSharp
                         throw new global::System.ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
                     var arg0 = _0.__Instance;
                     Internal.cctor_2((__Instance + __PointerAdjustment), arg0);
+                }
+
+                protected override void Dispose(bool disposing)
+                {
+                    CppSharp.Parser.AST.Comment __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    Internal.dtor_0((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public CppSharp.Parser.AST.InlineCommandComment.Argument getArguments(uint i)
@@ -11946,6 +12279,15 @@ namespace CppSharp
                     Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
                 }
 
+                protected override void Dispose(bool disposing)
+                {
+                    CppSharp.Parser.AST.Comment __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    Internal.dtor_0((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
+                }
+
                 public CppSharp.Parser.AST.HTMLStartTagComment.Attribute getAttributes(uint i)
                 {
                     var __ret = new CppSharp.Parser.AST.HTMLStartTagComment.Attribute.Internal();
@@ -12080,6 +12422,15 @@ namespace CppSharp
                     Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
                 }
 
+                protected override void Dispose(bool disposing)
+                {
+                    CppSharp.Parser.AST.Comment __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    Internal.dtor_0((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
+                }
+
                 public string TagName
                 {
                     get
@@ -12183,6 +12534,15 @@ namespace CppSharp
                         throw new global::System.ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
                     var arg0 = _0.__Instance;
                     Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
+                }
+
+                protected override void Dispose(bool disposing)
+                {
+                    CppSharp.Parser.AST.Comment __dummy;
+                    NativeToManagedMap.TryRemove(__Instance, out __dummy);
+                    Internal.dtor_0((__Instance + __PointerAdjustment));
+                    if (__ownsNativeInstance)
+                        Marshal.FreeHGlobal(__Instance);
                 }
 
                 public string Text
