@@ -3431,9 +3431,6 @@ ParserTargetInfo* Parser::GetTargetInfo()
 {
     assert(Opts->ASTContext && "Expected a valid ASTContext");
 
-    auto res = new ParserResult();
-    res->ASTContext = Lib;
-
     SetupHeader();
 
     std::unique_ptr<clang::SemaConsumer> SC(new clang::SemaConsumer());
