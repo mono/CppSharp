@@ -33,17 +33,9 @@ namespace CppSharp.Tests
     }
     public class NamespacesBase {
 
-        public static int Main(string[] args)
+        public static void Main(string[] args)
         {
-            try
-            {
-                ConsoleDriver.Run(new NamespacesBaseTests(GeneratorKind.CSharp));
-                return 0;
-            }
-            catch (ArgumentException)
-            {
-                return 1;
-            }
+            ConsoleDriver.Run(new NamespacesBaseTests(GeneratorKind.CSharp));
         }
     }
 }

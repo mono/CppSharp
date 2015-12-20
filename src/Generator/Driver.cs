@@ -14,6 +14,7 @@ using CppSharp.Types;
 using Microsoft.CSharp;
 using CppSharp.Parser;
 using System.CodeDom;
+using System;
 
 namespace CppSharp
 {
@@ -474,7 +475,7 @@ namespace CppSharp
             if (!driver.ParseCode())
             {
                 Log.Error("CppSharp has encountered an error while parsing code.");
-                throw new ParserException("Error parsing code.");
+                return;
             }
 
             if (!options.Quiet)

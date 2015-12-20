@@ -1,4 +1,3 @@
-using System;
 using CppSharp.AST;
 using CppSharp.Generators;
 using CppSharp.Utils;
@@ -17,17 +16,9 @@ namespace CppSharp.Tests
             ctx.SetClassAsValueType("IntWrapperValueType");
         }
 
-        public static int Main(string[] args)
+        public static void Main(string[] args)
         {
-            try
-            {
-                ConsoleDriver.Run(new StandardLibTestsGenerator(GeneratorKind.CLI));
-                return 0;
-            }
-            catch (ArgumentException)
-            {
-                return 1;
-            }
+            ConsoleDriver.Run(new StandardLibTestsGenerator(GeneratorKind.CLI));
         }
     }
 }

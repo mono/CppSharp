@@ -157,17 +157,9 @@ namespace CppSharp.Tests
                 RenameCasePattern.UpperCamelCase).VisitLibrary(driver.ASTContext);
         }
 
-        public static int Main(string[] args)
+        public static void Main(string[] args)
         {
-            try
-            {
-                ConsoleDriver.Run(new CSharpTestsGenerator(GeneratorKind.CSharp));
-                return 0;
-            }
-            catch (ArgumentException)
-            {
-                return 1;
-            }
+            ConsoleDriver.Run(new CSharpTestsGenerator(GeneratorKind.CSharp));
         }
     }
 }

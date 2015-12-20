@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using CppSharp.AST;
 using CppSharp.Generators;
@@ -79,18 +78,10 @@ namespace CppSharp.Tests
                 e => string.IsNullOrEmpty(e.Name)).Name = "RenamedEmptyEnum";
         }
 
-        public static int Main(string[] args)
+        public static void Main(string[] args)
         {
-            try
-            {
-                ConsoleDriver.Run(new CommonTestsGenerator(GeneratorKind.CLI));
-                ConsoleDriver.Run(new CommonTestsGenerator(GeneratorKind.CSharp));
-                return 0;
-            }
-            catch (ArgumentException)
-            {
-                return 1;
-            }
+            ConsoleDriver.Run(new CommonTestsGenerator(GeneratorKind.CLI));
+            ConsoleDriver.Run(new CommonTestsGenerator(GeneratorKind.CSharp));
         }
     }
 }
