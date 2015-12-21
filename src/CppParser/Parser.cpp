@@ -663,7 +663,7 @@ Class* Parser::GetRecord(clang::RecordDecl* Record, bool& Process)
 
     Process = true;
     return RC;
- }
+}
 
 Class* Parser::WalkRecord(clang::RecordDecl* Record)
 {

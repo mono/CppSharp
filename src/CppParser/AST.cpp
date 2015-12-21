@@ -321,10 +321,17 @@ Class* DeclarationContext::FindClass(const std::string& Name, bool IsComplete,
     // Replace the incomplete declaration with the complete one.
     if (_class->IsIncomplete)
     {
-        _class->CompleteDeclaration = newClass;
-
+        bool Found = false;
         std::replace_if(Classes.begin(), Classes.end(),
-            [&](Class* klass) { return klass == _class; }, newClass);
+            [&](Class* klass)
+            {
+                Found |= (klass == _class);
+                return klass == _class;
+            }, newClass);
+        if (Found)
+            delete _class;
+        else
+            _class->CompleteDeclaration = newClass;
     }
 
     return newClass;

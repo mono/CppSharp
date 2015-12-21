@@ -789,6 +789,8 @@ namespace CppSharp
             _decl.IsIncomplete = decl.IsIncomplete;
             _decl.IsDependent = decl.IsDependent;
             _decl.DefinitionOrder = decl.DefinitionOrder;
+            if (decl.CompleteDeclaration != null)
+                _decl.CompleteDeclaration = Visit(decl.CompleteDeclaration);
             if (decl.Comment != null)
                 _decl.Comment = VisitRawComment(decl.Comment);
 
