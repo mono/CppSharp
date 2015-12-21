@@ -72,8 +72,6 @@ function provision_linux()
 	-- Build tools
 	sudo("apt-get install -y git build-essential clang")
 
-	sudo("apt-get install -y p7zip-full")
-
 	-- Mono
 	sudo("apt-get install -y mono-devel")
 
@@ -92,8 +90,6 @@ function brew_install(pkg)
 end
 
 function provision_osx()
-	brew_install("p7zip")
-
 	if compile_llvm then
 		execute("brew cask install virtualbox vagrant")
 	end

@@ -70,10 +70,18 @@ function extract_7z(archive, dest_dir)
 	return execute(string.format("7z x %s -o%s -y", archive, dest_dir), true)
 end
 
+function extract_tar_xz(archive, dest_dir)
+	execute("mkdir -p " .. dest_dir, true)
+	return execute(string.format("tar xJf %s -C %s", archive, dest_dir), true)
+end
+
+local use_7zip = os.is("windows")
+local archive_ext = use_7zip and ".7z" or ".tar.xz"
+
 function download_llvm()
   local base = "https://dl.dropboxusercontent.com/u/194502/CppSharp/llvm/"
   local pkg_name = get_llvm_package_name()
-  local archive = pkg_name .. ".7z"
+  local archive = pkg_name .. archive_ext
 
   -- check if we already have the file downloaded
   if not os.isfile(archive) then
@@ -82,7 +90,11 @@ function download_llvm()
 
   -- extract the package
   if not os.isdir(pkg_name) then
-  	extract_7z(archive, pkg_name)
+  	if use_7zip then
+  		extract_7z(archive, pkg_name)
+  	else
+  		extract_tar_xz(archive, pkg_name)
+  	end
   end
 end
 
@@ -240,11 +252,15 @@ function package_llvm(conf, llvm, llvm_build)
 end
 
 function archive_llvm(dir)
-	local archive = dir .. ".7z"
+	local archive = dir .. archive_ext
 	if os.isfile(archive) then os.remove(archive) end
 	local cwd = os.getcwd()
 	os.chdir(dir)
-	execute("7z a " .. path.join("..", archive) .. " *")
+	if use_7zip then
+		execute("7z a " .. path.join("..", archive) .. " *")
+	else
+		execute("tar cJf " .. path.join("..", archive) .. " *")
+	end
 	os.chdir(cwd)
 	if is_vagrant() then
 		os.copyfile(archive, "/cppsharp")
