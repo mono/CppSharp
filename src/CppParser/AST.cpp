@@ -498,6 +498,8 @@ DEF_STRING(Statement, String)
 
 Statement::Statement(const std::string& str, StatementClass stmtClass, Declaration* decl) : String(str), Class(stmtClass), Decl(decl) {}
 
+Statement::~Statement() {}
+
 Expression::Expression(const std::string& str, StatementClass stmtClass, Declaration* decl)
     : Statement(str, stmtClass, decl) {}
 

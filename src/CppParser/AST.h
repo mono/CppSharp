@@ -498,6 +498,7 @@ class CS_API Statement
 {
 public:
     Statement(const std::string& str, StatementClass Class = StatementClass::Any, Declaration* decl = 0);
+    virtual ~Statement();
     StatementClass Class;
     Declaration* Decl;
     STRING(String)
