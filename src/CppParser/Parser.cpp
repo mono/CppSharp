@@ -2666,8 +2666,6 @@ AST::Expression* Parser::WalkExpression(clang::Expr* Expr)
     case Stmt::CXXTemporaryObjectExprClass:
     {
         auto ConstructorExpr = cast<clang::CXXConstructExpr>(Expr);
-        auto ConstructorExpression = new AST::CXXConstructExpr(GetStringFromStatement(Expr),
-            WalkDeclaration(ConstructorExpr->getConstructor()));
         if (ConstructorExpr->getNumArgs() == 1)
         {
             auto Arg = ConstructorExpr->getArg(0);
@@ -2680,12 +2678,11 @@ AST::Expression* Parser::WalkExpression(clang::Expr* Expr)
                     return WalkExpression(SubTemporaryExpr);
             }
         }
-        else
+        auto ConstructorExpression = new AST::CXXConstructExpr(GetStringFromStatement(Expr),
+            WalkDeclaration(ConstructorExpr->getConstructor()));
+        for (clang::Expr* arg : ConstructorExpr->arguments())
         {
-            for (clang::Expr* arg : ConstructorExpr->arguments())
-            {
-                ConstructorExpression->Arguments.push_back(WalkExpression(arg));
-            }
+            ConstructorExpression->Arguments.push_back(WalkExpression(arg));
         }
         return ConstructorExpression;
     }
