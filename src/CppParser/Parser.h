@@ -79,7 +79,7 @@ protected:
     WalkClassTemplateSpecialization(clang::ClassTemplateSpecializationDecl* CTS);
     ClassTemplatePartialSpecialization*
     WalkClassTemplatePartialSpecialization(clang::ClassTemplatePartialSpecializationDecl* CTS);
-    Method* WalkMethodCXX(clang::CXXMethodDecl* MD, bool AddToClass = true);
+    Method* WalkMethodCXX(clang::CXXMethodDecl* MD);
     Field* WalkFieldCXX(clang::FieldDecl* FD, Class* Class);
     ClassTemplate* WalkClassTemplate(clang::ClassTemplateDecl* TD);
     FunctionTemplate* WalkFunctionTemplate(clang::FunctionTemplateDecl* TD);

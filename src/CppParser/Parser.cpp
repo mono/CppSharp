@@ -525,28 +525,28 @@ Parser::WalkVTableComponent(const clang::VTableComponent& Component)
     {
         VTC.Kind = VTableComponentKind::FunctionPointer;
         auto MD = const_cast<CXXMethodDecl*>(Component.getFunctionDecl());
-        VTC.Declaration = WalkMethodCXX(MD, /*AddToClass=*/false);
+        VTC.Declaration = WalkMethodCXX(MD);
         break;
     }
     case clang::VTableComponent::CK_CompleteDtorPointer:
     {
         VTC.Kind = VTableComponentKind::CompleteDtorPointer;
         auto MD = const_cast<CXXDestructorDecl*>(Component.getDestructorDecl());
-        VTC.Declaration = WalkMethodCXX(MD, /*AddToClass=*/false);
+        VTC.Declaration = WalkMethodCXX(MD);
         break;
     }
     case clang::VTableComponent::CK_DeletingDtorPointer:
     {
         VTC.Kind = VTableComponentKind::DeletingDtorPointer;
         auto MD = const_cast<CXXDestructorDecl*>(Component.getDestructorDecl());
-        VTC.Declaration = WalkMethodCXX(MD, /*AddToClass=*/false);
+        VTC.Declaration = WalkMethodCXX(MD);
         break;
     }
     case clang::VTableComponent::CK_UnusedFunctionPointer:
     {
         VTC.Kind = VTableComponentKind::UnusedFunctionPointer;
         auto MD = const_cast<CXXMethodDecl*>(Component.getUnusedFunctionDecl());
-        VTC.Declaration = WalkMethodCXX(MD, /*AddToClass=*/false);
+        VTC.Declaration = WalkMethodCXX(MD);
         break;
     }
     default:
@@ -1145,7 +1145,7 @@ FunctionTemplate* Parser::WalkFunctionTemplate(clang::FunctionTemplateDecl* TD)
     auto TemplatedDecl = TD->getTemplatedDecl();
 
     if (auto MD = dyn_cast<CXXMethodDecl>(TemplatedDecl))
-        Function = WalkMethodCXX(MD, /*AddToClass=*/false);
+        Function = WalkMethodCXX(MD);
     else
         Function = WalkFunction(TemplatedDecl, /*IsDependent=*/true,
                                             /*AddToNamespace=*/false);
@@ -1230,13 +1230,13 @@ static CXXOperatorKind GetOperatorKindFromDecl(clang::DeclarationName Name)
     llvm_unreachable("Unknown OverloadedOperator");
 }
 
-Method* Parser::WalkMethodCXX(clang::CXXMethodDecl* MD, bool AddToClass)
+Method* Parser::WalkMethodCXX(clang::CXXMethodDecl* MD)
 {
     using namespace clang;
 
     // We could be in a redeclaration, so process the primary context.
     if (MD->getPrimaryContext() != MD)
-        return WalkMethodCXX(cast<CXXMethodDecl>(MD->getPrimaryContext()), AddToClass);
+        return WalkMethodCXX(cast<CXXMethodDecl>(MD->getPrimaryContext()));
 
     auto RD = MD->getParent();
     auto Decl = WalkDeclaration(RD, /*IgnoreSystemDecls=*/false);
@@ -1287,9 +1287,8 @@ Method* Parser::WalkMethodCXX(clang::CXXMethodDecl* MD, bool AddToClass)
         auto ConvTy = WalkType(CD->getConversionType(), &RTL);
         Method->ConversionType = GetQualifiedType(CD->getConversionType(), ConvTy);
     }
-
-    if (AddToClass)
-        Class->Methods.push_back(Method);
+    
+    Class->Methods.push_back(Method);
 
     return Method;
 }
