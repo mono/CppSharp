@@ -713,6 +713,8 @@ namespace CppSharp
                 Offset = @base.Offset
             };
 
+            NativeObjects.Add(@base);
+
             return _base;
         }
 
