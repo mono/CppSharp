@@ -2675,6 +2675,8 @@ AST::Expression* Parser::WalkExpression(clang::Expr* Expr)
                 auto Cast = dyn_cast<CastExpr>(SubTemporaryExpr);
                 if (!Cast || Cast->getSubExprAsWritten()->getStmtClass() != Stmt::IntegerLiteralClass)
                     return WalkExpression(SubTemporaryExpr);
+                return new AST::CXXConstructExpr(GetStringFromStatement(Expr),
+                    WalkDeclaration(ConstructorExpr->getConstructor()));
             }
         }
         auto ConstructorExpression = new AST::CXXConstructExpr(GetStringFromStatement(Expr),

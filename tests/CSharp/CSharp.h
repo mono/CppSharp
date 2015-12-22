@@ -274,7 +274,7 @@ enum UntypedFlags
 
 UntypedFlags operator|(UntypedFlags lhs, UntypedFlags rhs);
 
-struct QGenericArgument
+struct DLL_API QGenericArgument
 {
 public:
     QGenericArgument(const char* name = 0);
