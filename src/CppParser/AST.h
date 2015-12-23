@@ -933,6 +933,7 @@ class CS_API CS_ABSTRACT Comment
 {
 public:
     Comment(CommentKind kind);
+    virtual ~Comment();
     CommentKind Kind;
 };
 

@@ -794,6 +794,8 @@ TranslationUnit* ASTContext::FindOrCreateModule(std::string File)
 // Comments
 Comment::Comment(CommentKind kind) : Kind(kind) {}
 
+Comment::~Comment() {}
+
 DEF_STRING(RawComment, Text)
 DEF_STRING(RawComment, BriefText)
 
