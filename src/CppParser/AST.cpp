@@ -498,8 +498,6 @@ DEF_STRING(Statement, String)
 
 Statement::Statement(const std::string& str, StatementClass stmtClass, Declaration* decl) : String(str), Class(stmtClass), Decl(decl) {}
 
-Statement::~Statement() {}
-
 Expression::Expression(const std::string& str, StatementClass stmtClass, Declaration* decl)
     : Statement(str, stmtClass, decl) {}
 
@@ -542,7 +540,24 @@ Parameter::Parameter() : Declaration(DeclarationKind::Parameter),
 Parameter::~Parameter()
 {
     if (DefaultArgument)
-        delete DefaultArgument;
+    {
+        // HACK: see https://github.com/mono/CppSharp/issues/598
+        switch (DefaultArgument->Class)
+        {
+        case StatementClass::BinaryOperator:
+            delete static_cast<BinaryOperator*>(DefaultArgument);
+            break;
+        case StatementClass::CallExprClass:
+            delete static_cast<CallExpr*>(DefaultArgument);
+            break;
+        case StatementClass::CXXConstructExprClass:
+            delete static_cast<CXXConstructExpr*>(DefaultArgument);
+            break;
+        default:
+            delete DefaultArgument;
+            break;
+        }
+    }
 }
 
 Function::Function() 
