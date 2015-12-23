@@ -809,8 +809,6 @@ TranslationUnit* ASTContext::FindOrCreateModule(std::string File)
 // Comments
 Comment::Comment(CommentKind kind) : Kind(kind) {}
 
-Comment::~Comment() {}
-
 DEF_STRING(RawComment, Text)
 DEF_STRING(RawComment, BriefText)
 
@@ -827,7 +825,33 @@ FullComment::FullComment() : Comment(CommentKind::FullComment) {}
 FullComment::~FullComment()
 {
     for (auto& block : Blocks)
-        delete block;
+    {
+        // HACK: see https://github.com/mono/CppSharp/issues/599
+        switch (block->Kind)
+        {
+        case CommentKind::BlockCommandComment:
+            delete static_cast<BlockCommandComment*>(block);
+            break;
+        case CommentKind::ParamCommandComment:
+            delete static_cast<ParamCommandComment*>(block);
+            break;
+        case CommentKind::TParamCommandComment:
+            delete static_cast<TParamCommandComment*>(block);
+            break;
+        case CommentKind::VerbatimBlockComment:
+            delete static_cast<VerbatimBlockComment*>(block);
+            break;
+        case CommentKind::VerbatimLineComment:
+            delete static_cast<VerbatimLineComment*>(block);
+            break;
+        case CommentKind::ParagraphComment:
+            delete static_cast<ParagraphComment*>(block);
+            break;
+        default:
+            delete block;
+            break;
+        }
+    }
 }
 
 DEF_VECTOR(FullComment, BlockContentComment*, Blocks)
@@ -871,7 +895,30 @@ ParagraphComment::ParagraphComment() : BlockContentComment(CommentKind::Paragrap
 ParagraphComment::~ParagraphComment()
 {
     for (auto& content : Content)
-        delete content;
+    {
+        // HACK: see https://github.com/mono/CppSharp/issues/599
+        switch (content->Kind)
+        {
+        case CommentKind::InlineCommandComment:
+            delete static_cast<InlineCommandComment*>(content);
+            break;
+        case CommentKind::HTMLTagComment:
+            delete static_cast<HTMLTagComment*>(content);
+            break;
+        case CommentKind::HTMLStartTagComment:
+            delete static_cast<HTMLStartTagComment*>(content);
+            break;
+        case CommentKind::HTMLEndTagComment:
+            delete static_cast<HTMLEndTagComment*>(content);
+            break;
+        case CommentKind::TextComment:
+            delete static_cast<TextComment*>(content);
+            break;
+        default:
+            delete content;
+            break;
+        }
+    }
 }
 
 DEF_VECTOR(ParagraphComment, InlineContentComment*, Content)
