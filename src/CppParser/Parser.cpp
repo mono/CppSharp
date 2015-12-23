@@ -2849,7 +2849,8 @@ Declaration* Parser::WalkDeclaration(clang::Decl* D,
         // soon as they are referenced and we need to know the original order
         // of the declarations.
 
-        if (CanBeDefinition && Record->DefinitionOrder == 0)
+        if (CanBeDefinition && Record->DefinitionOrder == 0 &&
+            RD->isCompleteDefinition())
         {
             Record->DefinitionOrder = Index++;
             //Debug("%d: %s\n", Index++, GetTagDeclName(RD).c_str());
@@ -2869,7 +2870,8 @@ Declaration* Parser::WalkDeclaration(clang::Decl* D,
         // soon as they are referenced and we need to know the original order
         // of the declarations.
 
-        if (CanBeDefinition && Class->DefinitionOrder == 0)
+        if (CanBeDefinition && Class->DefinitionOrder == 0 &&
+            RD->isCompleteDefinition())
         {
             Class->DefinitionOrder = Index++;
             //Debug("%d: %s\n", Index++, GetTagDeclName(RD).c_str());

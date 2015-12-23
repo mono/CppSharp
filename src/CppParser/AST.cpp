@@ -310,7 +310,7 @@ Class* DeclarationContext::FindClass(const std::string& Name, bool IsComplete,
         return _class;
     }
 
-    if (_class->IsIncomplete == !IsComplete)
+    if (!_class->IsIncomplete || !IsComplete)
         return _class;
 
     if (!Create)
