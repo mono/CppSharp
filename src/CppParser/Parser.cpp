@@ -1270,6 +1270,15 @@ Method* Parser::WalkMethodCXX(clang::CXXMethodDecl* MD)
 
     WalkFunction(MD, Method);
 
+    for (auto& M : Class->Methods)
+    {
+        if (M->USR == USR)
+        {
+            delete Method;
+            return M;
+        }
+    }
+
     if (const CXXConstructorDecl* CD = dyn_cast<CXXConstructorDecl>(MD))
     {
         Method->IsDefaultConstructor = CD->isDefaultConstructor();
