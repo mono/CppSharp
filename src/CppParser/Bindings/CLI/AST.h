@@ -1672,12 +1672,6 @@ namespace CppSharp
 
                 ~Method();
 
-                property CppSharp::Parser::AST::AccessSpecifierDecl^ AccessDecl
-                {
-                    CppSharp::Parser::AST::AccessSpecifierDecl^ get();
-                    void set(CppSharp::Parser::AST::AccessSpecifierDecl^);
-                }
-
                 property bool IsVirtual
                 {
                     bool get();

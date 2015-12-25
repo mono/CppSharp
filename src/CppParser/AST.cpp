@@ -575,7 +575,6 @@ DEF_VECTOR(Function, Parameter*, Parameters)
 
 Method::Method() 
     : Function()
-    , AccessDecl(0)
     , IsVirtual(false)
     , IsStatic(false)
     , IsConst(false)

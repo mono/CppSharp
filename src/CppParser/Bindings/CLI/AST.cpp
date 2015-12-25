@@ -2669,16 +2669,6 @@ CppSharp::Parser::AST::Method::Method(CppSharp::Parser::AST::Method^ _0)
     NativePtr = new ::CppSharp::CppParser::AST::Method(arg0);
 }
 
-CppSharp::Parser::AST::AccessSpecifierDecl^ CppSharp::Parser::AST::Method::AccessDecl::get()
-{
-    return (((::CppSharp::CppParser::AST::Method*)NativePtr)->AccessDecl == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::AccessSpecifierDecl((::CppSharp::CppParser::AST::AccessSpecifierDecl*)((::CppSharp::CppParser::AST::Method*)NativePtr)->AccessDecl);
-}
-
-void CppSharp::Parser::AST::Method::AccessDecl::set(CppSharp::Parser::AST::AccessSpecifierDecl^ value)
-{
-    ((::CppSharp::CppParser::AST::Method*)NativePtr)->AccessDecl = (::CppSharp::CppParser::AST::AccessSpecifierDecl*)value->NativePtr;
-}
-
 bool CppSharp::Parser::AST::Method::IsVirtual::get()
 {
     return ((::CppSharp::CppParser::AST::Method*)NativePtr)->IsVirtual;

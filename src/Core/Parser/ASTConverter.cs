@@ -1008,7 +1008,6 @@ namespace CppSharp
             var _method = new AST.Method();
             VisitFunction(decl, _method);
 
-            _method.AccessDecl = Visit(decl.AccessDecl) as AST.AccessSpecifierDecl;
             _method.IsVirtual = decl.IsVirtual;
             _method.IsStatic = decl.IsStatic;
             _method.IsConst = decl.IsConst;

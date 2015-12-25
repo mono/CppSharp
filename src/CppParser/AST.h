@@ -639,8 +639,6 @@ public:
     Method();
     ~Method();
 
-    AccessSpecifierDecl* AccessDecl;
-
     bool IsVirtual;
     bool IsStatic;
     bool IsConst;

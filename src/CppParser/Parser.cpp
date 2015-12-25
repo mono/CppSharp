@@ -730,8 +730,6 @@ void Parser::WalkRecord(clang::RecordDecl* Record, Class* RC)
         RC->Layout->DataSize = (int)Layout->getDataSize().getQuantity();
     }
 
-    AccessSpecifierDecl* AccessDecl = nullptr;
-
     for(auto it = Record->decls_begin(); it != Record->decls_end(); ++it)
     {
         auto D = *it;
@@ -744,8 +742,7 @@ void Parser::WalkRecord(clang::RecordDecl* Record, Class* RC)
         case Decl::CXXMethod:
         {
             auto MD = cast<CXXMethodDecl>(D);
-            auto Method = WalkMethodCXX(MD);
-            Method->AccessDecl = AccessDecl;
+            WalkMethodCXX(MD);
             break;
         }
         case Decl::Field:
@@ -762,7 +759,7 @@ void Parser::WalkRecord(clang::RecordDecl* Record, Class* RC)
         {
             AccessSpecDecl* AS = cast<AccessSpecDecl>(D);
 
-            AccessDecl = new AccessSpecifierDecl();
+            auto AccessDecl = new AccessSpecifierDecl();
             HandleDeclaration(AS, AccessDecl);
 
             AccessDecl->Access = ConvertToAccess(AS->getAccess());
@@ -775,7 +772,7 @@ void Parser::WalkRecord(clang::RecordDecl* Record, Class* RC)
             break;
         default:
         {
-            auto Decl = WalkDeclaration(D);
+            WalkDeclaration(D);
             break;
         } }
     }

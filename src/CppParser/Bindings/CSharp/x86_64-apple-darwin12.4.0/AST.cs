@@ -5878,7 +5878,7 @@ namespace CppSharp
 
             public unsafe partial class Method : CppSharp.Parser.AST.Function, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 328)]
+                [StructLayout(LayoutKind.Explicit, Size = 320)]
                 public new partial struct Internal
                 {
                     [FieldOffset(0)]
@@ -5948,39 +5948,36 @@ namespace CppSharp
                     public global::System.IntPtr SpecializationInfo;
 
                     [FieldOffset(288)]
-                    public global::System.IntPtr AccessDecl;
-
-                    [FieldOffset(296)]
                     public byte IsVirtual;
 
-                    [FieldOffset(297)]
+                    [FieldOffset(289)]
                     public byte IsStatic;
 
-                    [FieldOffset(298)]
+                    [FieldOffset(290)]
                     public byte IsConst;
 
-                    [FieldOffset(299)]
+                    [FieldOffset(291)]
                     public byte IsImplicit;
 
-                    [FieldOffset(300)]
+                    [FieldOffset(292)]
                     public byte IsExplicit;
 
-                    [FieldOffset(301)]
+                    [FieldOffset(293)]
                     public byte IsOverride;
 
-                    [FieldOffset(304)]
+                    [FieldOffset(296)]
                     public CppSharp.Parser.AST.CXXMethodKind MethodKind;
 
-                    [FieldOffset(308)]
+                    [FieldOffset(300)]
                     public byte IsDefaultConstructor;
 
-                    [FieldOffset(309)]
+                    [FieldOffset(301)]
                     public byte IsCopyConstructor;
 
-                    [FieldOffset(310)]
+                    [FieldOffset(302)]
                     public byte IsMoveConstructor;
 
-                    [FieldOffset(312)]
+                    [FieldOffset(304)]
                     public CppSharp.Parser.AST.QualifiedType.Internal ConversionType;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -6011,7 +6008,7 @@ namespace CppSharp
 
                 private static Method.Internal* __CopyValue(Method.Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(328);
+                    var ret = Marshal.AllocHGlobal(320);
                     CppSharp.Parser.AST.Method.Internal.cctor_1(ret, new global::System.IntPtr(&native));
                     return (Method.Internal*) ret;
                 }
@@ -6035,7 +6032,7 @@ namespace CppSharp
                 public Method()
                     : this((Internal*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(328);
+                    __Instance = Marshal.AllocHGlobal(320);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -6044,7 +6041,7 @@ namespace CppSharp
                 public Method(CppSharp.Parser.AST.Method _0)
                     : this((Internal*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(328);
+                    __Instance = Marshal.AllocHGlobal(320);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -6060,24 +6057,6 @@ namespace CppSharp
                     Internal.dtor_0((__Instance + __PointerAdjustment));
                     if (__ownsNativeInstance)
                         Marshal.FreeHGlobal(__Instance);
-                }
-
-                public CppSharp.Parser.AST.AccessSpecifierDecl AccessDecl
-                {
-                    get
-                    {
-                        CppSharp.Parser.AST.AccessSpecifierDecl __result0;
-                        if (((Internal*) __Instance)->AccessDecl == IntPtr.Zero) __result0 = null;
-                        else if (CppSharp.Parser.AST.AccessSpecifierDecl.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->AccessDecl))
-                            __result0 = (CppSharp.Parser.AST.AccessSpecifierDecl) CppSharp.Parser.AST.AccessSpecifierDecl.NativeToManagedMap[((Internal*) __Instance)->AccessDecl];
-                        else __result0 = CppSharp.Parser.AST.AccessSpecifierDecl.__CreateInstance(((Internal*) __Instance)->AccessDecl);
-                        return __result0;
-                    }
-
-                    set
-                    {
-                        ((Internal*) __Instance)->AccessDecl = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
-                    }
                 }
 
                 public bool IsVirtual

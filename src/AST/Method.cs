@@ -83,7 +83,6 @@ namespace CppSharp.AST
             : base(method)
         {
             Access = method.Access;
-            AccessDecl = method.AccessDecl;
             IsVirtual = method.IsVirtual;
             IsConst = method.IsConst;
             IsImplicit = method.IsImplicit;
@@ -104,8 +103,6 @@ namespace CppSharp.AST
         {
             
         }
-
-        public AccessSpecifierDecl AccessDecl { get; set; }
 
         public bool IsVirtual { get; set; }
         public bool IsStatic { get; set; }
