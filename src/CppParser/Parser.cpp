@@ -2407,10 +2407,8 @@ void Parser::GetLineNumbersFromLocation(const clang::SourceLocation& StartLoc,
     const clang::SourceLocation& EndLoc, int* LineNumberStart, int* LineNumberEnd)
 {
     auto& SM = C->getSourceManager();
-    auto DecomposedLocStart = SM.getDecomposedLoc(StartLoc);
-    *LineNumberStart = SM.getLineNumber(DecomposedLocStart.first, DecomposedLocStart.second);
-    auto DecomposedLocEnd = SM.getDecomposedLoc(EndLoc);
-    *LineNumberEnd = SM.getLineNumber(DecomposedLocEnd.first, DecomposedLocEnd.second);
+    *LineNumberStart = StartLoc.isInvalid() ? -1 : SM.getExpansionLineNumber(StartLoc);
+    *LineNumberEnd = EndLoc.isInvalid() ? -1 : SM.getExpansionLineNumber(EndLoc);
 }
 
 bool Parser::IsValidDeclaration(const clang::SourceLocation& Loc)
@@ -2771,7 +2769,7 @@ void Parser::HandleDeclaration(clang::Decl* D, Declaration* Decl)
     Decl->OriginalPtr = (void*) D;
     Decl->USR = GetDeclUSR(D);
     Decl->Location = SourceLocation(D->getLocation().getRawEncoding());
-    GetLineNumbersFromLocation(D->getLocation(), D->getLocEnd(),
+    GetLineNumbersFromLocation(D->getLocStart(), D->getLocEnd(),
         &Decl->LineNumberStart, &Decl->LineNumberEnd);
 
     if (Decl->PreprocessedEntities.empty() && !D->isImplicit())
