@@ -2403,14 +2403,6 @@ SourceLocationKind Parser::GetLocationKind(const clang::SourceLocation& Loc)
     return SourceLocationKind::System;
 }
 
-void Parser::GetLineNumbersFromLocation(const clang::SourceLocation& StartLoc,
-    const clang::SourceLocation& EndLoc, int* LineNumberStart, int* LineNumberEnd)
-{
-    auto& SM = C->getSourceManager();
-    *LineNumberStart = StartLoc.isInvalid() ? -1 : SM.getExpansionLineNumber(StartLoc);
-    *LineNumberEnd = EndLoc.isInvalid() ? -1 : SM.getExpansionLineNumber(EndLoc);
-}
-
 bool Parser::IsValidDeclaration(const clang::SourceLocation& Loc)
 {
     auto Kind = GetLocationKind(Loc);
@@ -2583,8 +2575,8 @@ PreprocessedEntity* Parser::WalkPreprocessedEntity(
             break;
 
         auto Definition = new MacroDefinition();
-        GetLineNumbersFromLocation(MD->getLocation(), MD->getLocation(),
-            &Definition->LineNumberStart, &Definition->LineNumberEnd);
+        Definition->LineNumberStart = SM.getExpansionLineNumber(MD->getLocation());
+        Definition->LineNumberEnd = SM.getExpansionLineNumber(MD->getLocation());
         Entity = Definition;
 
         Definition->Name = II->getName().trim();
@@ -2769,8 +2761,8 @@ void Parser::HandleDeclaration(clang::Decl* D, Declaration* Decl)
     Decl->OriginalPtr = (void*) D;
     Decl->USR = GetDeclUSR(D);
     Decl->Location = SourceLocation(D->getLocation().getRawEncoding());
-    GetLineNumbersFromLocation(D->getLocStart(), D->getLocEnd(),
-        &Decl->LineNumberStart, &Decl->LineNumberEnd);
+    Decl->LineNumberStart = C->getSourceManager().getExpansionLineNumber(D->getLocStart());
+    Decl->LineNumberEnd = C->getSourceManager().getExpansionLineNumber(D->getLocEnd());
 
     if (Decl->PreprocessedEntities.empty() && !D->isImplicit())
     {

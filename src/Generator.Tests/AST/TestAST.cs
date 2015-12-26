@@ -237,13 +237,13 @@ namespace CppSharp.Generator.Tests.AST
         [Test]
         public void TestLineNumber()
         {
-            Assert.AreEqual(63, AstContext.FindClass("HiddenInNamespace").First().LineNumberStart);
+            Assert.AreEqual(65, AstContext.FindClass("HiddenInNamespace").First().LineNumberStart);
         }
 
         [Test]
         public void TestLineNumberOfFriend()
         {
-            Assert.AreEqual(86, AstContext.FindFunction("operator+").First().LineNumberStart);
+            Assert.AreEqual(88, AstContext.FindFunction("operator+").First().LineNumberStart);
         }
 
         [Test]
@@ -274,6 +274,12 @@ namespace CppSharp.Generator.Tests.AST
             var type = AstContext.FindClass("Atomics").Single().Fields
                 .Find(f => f.Name == "AtomicInt").Type as BuiltinType;
             Assert.IsTrue(type != null && type.IsPrimitiveType(PrimitiveType.Int));
+        }
+
+        [Test]
+        public void TestMacroLineNumber()
+        {
+            Assert.AreEqual(98, AstContext.FindClass("HasAmbiguousFunctions").First().Specifiers.Last().LineNumberStart);
         }
     }
 }

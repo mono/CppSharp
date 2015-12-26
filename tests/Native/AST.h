@@ -1,3 +1,5 @@
+#define Q_SIGNALS protected
+
 // Tests assignment of AST.Parameter properties
 void TestParameterProperties(bool a, const short& b, int* c = nullptr) {};
 
@@ -93,6 +95,7 @@ class HasAmbiguousFunctions
 public:
     void ambiguous();
     void ambiguous() const;
+Q_SIGNALS:
 };
 
 class Atomics

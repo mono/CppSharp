@@ -102,8 +102,6 @@ protected:
 
     // Clang helpers
     SourceLocationKind GetLocationKind(const clang::SourceLocation& Loc);
-    void GetLineNumbersFromLocation(const clang::SourceLocation& StartLoc, const clang::SourceLocation& EndLoc,
-        int* LineNumberStart, int* LineNumberEnd);
     bool IsValidDeclaration(const clang::SourceLocation& Loc);
     std::string GetDeclMangledName(clang::Decl* D);
     std::string GetTypeName(const clang::Type* Type);
