@@ -143,6 +143,10 @@ Bar::Bar(Qux qux)
 {
 }
 
+Bar::Bar(Items item)
+{
+}
+
 int Bar::method()
 {
     return 2;
@@ -468,6 +472,10 @@ void MethodsWithDefaultValues::defaultImplicitCtorFoo(Quux arg)
 }
 
 void MethodsWithDefaultValues::defaultImplicitCtorEnum(Baz arg)
+{
+}
+
+void MethodsWithDefaultValues::defaultImplicitCtorEnumTwo(Bar arg)
 {
 }
 

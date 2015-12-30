@@ -63,6 +63,7 @@ public:
     };
     Bar();
     Bar(Qux qux);
+    Bar(Items item);
     int method();
     const Foo& operator[](int i) const;
     Foo& operator[](int i);
@@ -364,6 +365,7 @@ public:
     // in this case the arg is a MaterializeTemporaryExpr, in the other not
     // I cannot see the difference but it's there so we need both tests
     void defaultImplicitCtorEnum(Baz arg = Bar::Item1);
+    void defaultImplicitCtorEnumTwo(Bar arg = Bar::Items::Item1);
     void defaultIntWithLongExpression(unsigned int i = DEFAULT_INT);
     void defaultRefTypeEnumImplicitCtor(const QColor &fillColor = Qt::white);
     void rotate4x4Matrix(float angle, float x, float y, float z = 0.0f);
