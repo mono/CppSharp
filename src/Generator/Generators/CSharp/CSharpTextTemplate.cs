@@ -2202,9 +2202,11 @@ namespace CppSharp.Generators.CSharp
 
         private string OverloadParamNameWithDefValue(Parameter p, ref int index)
         {
+            Class @class;
             return p.Type.IsPointerToPrimitiveType() && p.Usage == ParameterUsage.InOut && p.HasDefaultValue
                 ? "ref param" + index++
-                : ExpressionPrinter.VisitExpression(p.DefaultArgument).Value;
+                : (( p.Type.TryGetClass(out @class) && @class.IsInterface) ? "param" + index++ 
+                     : ExpressionPrinter.VisitExpression(p.DefaultArgument).Value);
         }
 
         private void GenerateOverloadCall(Function function)
@@ -2220,6 +2222,14 @@ namespace CppSharp.Generators.CSharp
                     var pointeeType = ((PointerType) parameter.Type).Pointee.ToString();
                     WriteLine("{0} param{1} = {2};", pointeeType, j++,
                         primitiveType == PrimitiveType.Bool ? "false" : "0");
+                }
+                Class @class;
+                if (parameter.Kind == ParameterKind.Regular && parameter.Ignore &&
+                    parameter.Type.Desugar().TryGetClass(out @class) && @class.IsInterface &&
+                    parameter.HasDefaultValue)
+                {
+                    WriteLine("var param{0} = ({1}) {2};",  j++, @class.OriginalClass.OriginalName,
+                        ExpressionPrinter.VisitExpression(parameter.DefaultArgument).Value);
                 }
             }
 
