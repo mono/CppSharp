@@ -19,7 +19,7 @@ namespace CppSharp.Types
         public bool PrintLogicalNames;
         public bool PrintTypeQualifiers;
 
-        public CppTypePrinter(ITypeMapDatabase database, bool printTypeQualifiers = true)
+        public CppTypePrinter(bool printTypeQualifiers = true)
         {
             PrintScopeKind = CppTypePrintScopeKind.GlobalQualified;
             PrintTypeQualifiers = printTypeQualifiers;

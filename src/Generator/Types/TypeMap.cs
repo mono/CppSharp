@@ -165,8 +165,8 @@ namespace CppSharp.Types
             // We try to find type maps from the most qualified to less qualified
             // types. Example: '::std::vector', 'std::vector' and 'vector'
 
-            var typePrinter = new CppTypePrinter(this)
-                {
+            var typePrinter = new CppTypePrinter()
+            {
                     PrintScopeKind = CppTypePrintScopeKind.GlobalQualified,
                     PrintLogicalNames = true
                 };
@@ -196,7 +196,7 @@ namespace CppSharp.Types
 
         public bool FindTypeMap(Type type, out TypeMap typeMap)
         {
-            var typePrinter = new CppTypePrinter(this);
+            var typePrinter = new CppTypePrinter();
 
             var template = type as TemplateSpecializationType;
             if (template != null)

@@ -218,7 +218,7 @@ namespace CppSharp
 
         private bool IsStdType(QualifiedType type)
         {
-            var typePrinter = new CppTypePrinter(Driver.TypeDatabase);
+            var typePrinter = new CppTypePrinter();
             var typeName = type.Visit(typePrinter);
 
             return typeName.Contains("std::");

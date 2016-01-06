@@ -547,7 +547,7 @@ namespace CppSharp.Generators.CLI
             WriteLine("if (!{0}Instance)", delegateName);
             WriteStartBraceIndent();
 
-            var typePrinter = new CppTypePrinter(Driver.TypeDatabase);
+            var typePrinter = new CppTypePrinter();
             var args = typePrinter.VisitParameters(@event.Parameters, hasNames: false);
 
             WriteLine("{0}Instance = gcnew {0}(this, &{1}::_{2}Raise);",
@@ -597,7 +597,7 @@ namespace CppSharp.Generators.CLI
 
         private void GenerateEventRaiseWrapper(Event @event, Class @class)
         {
-            var typePrinter = new CppTypePrinter(Driver.TypeDatabase);
+            var typePrinter = new CppTypePrinter();
             var args = typePrinter.VisitParameters(@event.Parameters, hasNames: true);
 
             WriteLine("void {0}::_{1}Raise({2})", QualifiedIdentifier(@class),
@@ -735,7 +735,7 @@ namespace CppSharp.Generators.CLI
 
                 // We cast the value to the base clas type since otherwise there
                 // could be ambiguous call to overloaded constructors.
-                var cppTypePrinter = new CppTypePrinter(Driver.TypeDatabase);
+                var cppTypePrinter = new CppTypePrinter();
                 var nativeTypeName = baseClass.Visit(cppTypePrinter);
                 Write("({0}*)", nativeTypeName);
 
@@ -985,7 +985,7 @@ namespace CppSharp.Generators.CLI
                 function.OperatorKind == CXXOperatorKind.ExplicitConversion)
             {
                 var method = function as Method;
-                var typePrinter = new CppTypePrinter(Driver.TypeDatabase);
+                var typePrinter = new CppTypePrinter();
                 var typeName = method.ConversionType.Visit(typePrinter);
                 WriteLine("({0}) {1};", typeName, @params[0].Name);
             }
@@ -1196,7 +1196,7 @@ namespace CppSharp.Generators.CLI
 
             if (isRef)
             {
-                var typePrinter = new CppTypePrinter(Driver.TypeDatabase);
+                var typePrinter = new CppTypePrinter();
                 var type = paramType.Visit(typePrinter);
 
                 if (param.IsInOut)

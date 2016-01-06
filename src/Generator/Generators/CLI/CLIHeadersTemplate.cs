@@ -468,7 +468,7 @@ namespace CppSharp.Generators.CLI
             {
                 if (!@event.IsGenerated) continue;
 
-                var cppTypePrinter = new CppTypePrinter(Driver.TypeDatabase);
+                var cppTypePrinter = new CppTypePrinter();
                 var cppArgs = cppTypePrinter.VisitParameters(@event.Parameters, hasNames: true);
 
                 WriteLine("private:");
