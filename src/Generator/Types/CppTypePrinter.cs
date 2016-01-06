@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using CppSharp.AST;
+using CppSharp.AST.Extensions;
 using Type = CppSharp.AST.Type;
 
 namespace CppSharp.Types
@@ -24,6 +25,8 @@ namespace CppSharp.Types
             PrintScopeKind = CppTypePrintScopeKind.GlobalQualified;
             PrintTypeQualifiers = printTypeQualifiers;
         }
+
+        public bool ResolveTypedefs { get; set; }
 
         public string VisitTagType(TagType tag, TypeQualifiers quals)
         {
@@ -126,6 +129,12 @@ namespace CppSharp.Types
 
         public string VisitTypedefType(TypedefType typedef, TypeQualifiers quals)
         {
+            if (ResolveTypedefs)
+            {
+                var decl = typedef.Declaration;
+                FunctionType func;
+                return decl.Type.IsPointerTo(out func) ? VisitDeclaration(decl) : decl.Type.Visit(this);
+            }
             return GetDeclName(typedef.Declaration);
         }
 
