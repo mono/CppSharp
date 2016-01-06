@@ -162,6 +162,11 @@ namespace CppSharp
                 ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "i686-pc-win32-msvc",
                     CppAbi.Microsoft));
                 Console.WriteLine();
+
+                Console.WriteLine("Generating the C# 64-bit parser bindings for Windows...");
+                ConsoleDriver.Run(new ParserGen(GeneratorKind.CSharp, "x86_64-pc-win32-msvc",
+                    CppAbi.Microsoft));
+                Console.WriteLine();
             }
 
             var osxHeadersPath = Path.Combine(GetSourceDirectory("build"), @"headers\osx");
