@@ -91,7 +91,15 @@ function IncludeDir(dir)
   local deps = os.matchdirs(dir .. "/*")
   
   for i,dep in ipairs(deps) do
-    local fp = path.join(dep, "premake4.lua")
+    local fp = path.join(dep, "premake5.lua")
+    fp = path.join(os.getcwd(), fp)
+    
+    if os.isfile(fp) then
+      include(dep)
+      return
+    end    
+
+    fp = path.join(dep, "premake4.lua")
     fp = path.join(os.getcwd(), fp)
     
     if os.isfile(fp) then
