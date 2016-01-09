@@ -2917,7 +2917,7 @@ Declaration* Parser::WalkDeclaration(clang::Decl* D,
     case Decl::EnumConstant:
     {
         auto ED = cast<EnumConstantDecl>(D);
-        auto E = cast<Enumeration>(GetNamespace(ED));
+        auto E = static_cast<Enumeration*>(GetNamespace(ED));
         assert(E && "Expected a valid enumeration");
         Decl = E->FindItemByName(ED->getNameAsString());
         break;
