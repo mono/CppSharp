@@ -10,8 +10,6 @@ if is_vagrant() then
 	llvm = os.getenv("HOME") .. "/llvm"
 end
 
-local llvm_build = llvm .. "/" .. os.get()
-
 function get_llvm_rev()
 	return cat(basedir .. "/LLVM-commit")
 end
@@ -62,7 +60,10 @@ function get_llvm_package_name(rev, conf)
   return table.concat({"llvm", rev, os.get(), conf}, "-")
 end
 
-function get_llvm_configuration_name()
+function get_llvm_configuration_name(debug)
+	if debug == true then
+		return "Debug"
+	end
 	return os.is("windows") and "RelWithDebInfo" or "Release"
 end
 
@@ -273,6 +274,7 @@ if _ACTION == "clone_llvm" then
 end
 
 if _ACTION == "build_llvm" then
+	local llvm_build = path.join(llvm, get_llvm_package_name())	
 	clean_llvm(llvm_build)
 	build_llvm(llvm_build)
   os.exit()
@@ -280,6 +282,7 @@ end
 
 if _ACTION == "package_llvm" then
 	local conf = get_llvm_configuration_name()
+	local llvm_build = path.join(llvm, get_llvm_package_name())	
 	local pkg = package_llvm(conf, llvm, llvm_build)
 	archive_llvm(pkg)
   os.exit()
