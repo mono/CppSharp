@@ -888,6 +888,7 @@ class CS_API NativeLibrary
 {
 public:
     NativeLibrary();
+    ~NativeLibrary();
     STRING(FileName)
     ArchType ArchType;
     VECTOR_STRING(Symbols)

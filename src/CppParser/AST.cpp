@@ -732,6 +732,10 @@ NativeLibrary::NativeLibrary()
 {
 }
 
+NativeLibrary::~NativeLibrary()
+{
+}
+
 // NativeLibrary
 DEF_STRING(NativeLibrary, FileName)
 DEF_VECTOR_STRING(NativeLibrary, Symbols)
