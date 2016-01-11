@@ -1699,6 +1699,16 @@ void CppSharp::Parser::AST::Declaration::IsDependent::set(bool value)
     ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->IsDependent = value;
 }
 
+bool CppSharp::Parser::AST::Declaration::IsImplicit::get()
+{
+    return ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->IsImplicit;
+}
+
+void CppSharp::Parser::AST::Declaration::IsImplicit::set(bool value)
+{
+    ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->IsImplicit = value;
+}
+
 CppSharp::Parser::AST::Declaration^ CppSharp::Parser::AST::Declaration::CompleteDeclaration::get()
 {
     return (((::CppSharp::CppParser::AST::Declaration*)NativePtr)->CompleteDeclaration == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::Declaration((::CppSharp::CppParser::AST::Declaration*)((::CppSharp::CppParser::AST::Declaration*)NativePtr)->CompleteDeclaration);
@@ -2697,16 +2707,6 @@ bool CppSharp::Parser::AST::Method::IsConst::get()
 void CppSharp::Parser::AST::Method::IsConst::set(bool value)
 {
     ((::CppSharp::CppParser::AST::Method*)NativePtr)->IsConst = value;
-}
-
-bool CppSharp::Parser::AST::Method::IsImplicit::get()
-{
-    return ((::CppSharp::CppParser::AST::Method*)NativePtr)->IsImplicit;
-}
-
-void CppSharp::Parser::AST::Method::IsImplicit::set(bool value)
-{
-    ((::CppSharp::CppParser::AST::Method*)NativePtr)->IsImplicit = value;
 }
 
 bool CppSharp::Parser::AST::Method::IsExplicit::get()

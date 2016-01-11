@@ -3437,6 +3437,9 @@ namespace CppSharp
                     [FieldOffset(57)]
                     public byte IsDependent;
 
+                    [FieldOffset(58)]
+                    public byte IsImplicit;
+
                     [FieldOffset(64)]
                     public global::System.IntPtr CompleteDeclaration;
 
@@ -3767,6 +3770,19 @@ namespace CppSharp
                     }
                 }
 
+                public bool IsImplicit
+                {
+                    get
+                    {
+                        return ((Internal*) __Instance)->IsImplicit != 0;
+                    }
+
+                    set
+                    {
+                        ((Internal*) __Instance)->IsImplicit = (byte) (value ? 1 : 0);
+                    }
+                }
+
                 public CppSharp.Parser.AST.Declaration CompleteDeclaration
                 {
                     get
@@ -3843,6 +3859,9 @@ namespace CppSharp
 
                     [FieldOffset(57)]
                     public byte IsDependent;
+
+                    [FieldOffset(58)]
+                    public byte IsImplicit;
 
                     [FieldOffset(64)]
                     public global::System.IntPtr CompleteDeclaration;
@@ -4406,6 +4425,9 @@ namespace CppSharp
                     [FieldOffset(57)]
                     public byte IsDependent;
 
+                    [FieldOffset(58)]
+                    public byte IsImplicit;
+
                     [FieldOffset(64)]
                     public global::System.IntPtr CompleteDeclaration;
 
@@ -4542,6 +4564,9 @@ namespace CppSharp
 
                     [FieldOffset(57)]
                     public byte IsDependent;
+
+                    [FieldOffset(58)]
+                    public byte IsImplicit;
 
                     [FieldOffset(64)]
                     public global::System.IntPtr CompleteDeclaration;
@@ -5311,6 +5336,9 @@ namespace CppSharp
                     [FieldOffset(57)]
                     public byte IsDependent;
 
+                    [FieldOffset(58)]
+                    public byte IsImplicit;
+
                     [FieldOffset(64)]
                     public global::System.IntPtr CompleteDeclaration;
 
@@ -5516,6 +5544,9 @@ namespace CppSharp
 
                     [FieldOffset(57)]
                     public byte IsDependent;
+
+                    [FieldOffset(58)]
+                    public byte IsImplicit;
 
                     [FieldOffset(64)]
                     public global::System.IntPtr CompleteDeclaration;
@@ -5908,6 +5939,9 @@ namespace CppSharp
                     [FieldOffset(57)]
                     public byte IsDependent;
 
+                    [FieldOffset(58)]
+                    public byte IsImplicit;
+
                     [FieldOffset(64)]
                     public global::System.IntPtr CompleteDeclaration;
 
@@ -5957,12 +5991,9 @@ namespace CppSharp
                     public byte IsConst;
 
                     [FieldOffset(211)]
-                    public byte IsImplicit;
-
-                    [FieldOffset(212)]
                     public byte IsExplicit;
 
-                    [FieldOffset(213)]
+                    [FieldOffset(212)]
                     public byte IsOverride;
 
                     [FieldOffset(216)]
@@ -6098,19 +6129,6 @@ namespace CppSharp
                     }
                 }
 
-                public bool IsImplicit
-                {
-                    get
-                    {
-                        return ((Internal*) __Instance)->IsImplicit != 0;
-                    }
-
-                    set
-                    {
-                        ((Internal*) __Instance)->IsImplicit = (byte) (value ? 1 : 0);
-                    }
-                }
-
                 public bool IsExplicit
                 {
                     get
@@ -6235,6 +6253,9 @@ namespace CppSharp
                     [FieldOffset(57)]
                     public byte IsDependent;
 
+                    [FieldOffset(58)]
+                    public byte IsImplicit;
+
                     [FieldOffset(64)]
                     public global::System.IntPtr CompleteDeclaration;
 
@@ -6331,6 +6352,9 @@ namespace CppSharp
 
                         [FieldOffset(57)]
                         public byte IsDependent;
+
+                        [FieldOffset(58)]
+                        public byte IsImplicit;
 
                         [FieldOffset(64)]
                         public global::System.IntPtr CompleteDeclaration;
@@ -6640,6 +6664,9 @@ namespace CppSharp
 
                     [FieldOffset(57)]
                     public byte IsDependent;
+
+                    [FieldOffset(58)]
+                    public byte IsImplicit;
 
                     [FieldOffset(64)]
                     public global::System.IntPtr CompleteDeclaration;
@@ -6958,6 +6985,9 @@ namespace CppSharp
                     [FieldOffset(57)]
                     public byte IsDependent;
 
+                    [FieldOffset(58)]
+                    public byte IsImplicit;
+
                     [FieldOffset(64)]
                     public global::System.IntPtr CompleteDeclaration;
 
@@ -7164,6 +7194,9 @@ namespace CppSharp
                     [FieldOffset(57)]
                     public byte IsDependent;
 
+                    [FieldOffset(58)]
+                    public byte IsImplicit;
+
                     [FieldOffset(64)]
                     public global::System.IntPtr CompleteDeclaration;
 
@@ -7284,6 +7317,9 @@ namespace CppSharp
 
                     [FieldOffset(57)]
                     public byte IsDependent;
+
+                    [FieldOffset(58)]
+                    public byte IsImplicit;
 
                     [FieldOffset(64)]
                     public global::System.IntPtr CompleteDeclaration;
@@ -7786,6 +7822,9 @@ namespace CppSharp
                     [FieldOffset(57)]
                     public byte IsDependent;
 
+                    [FieldOffset(58)]
+                    public byte IsImplicit;
+
                     [FieldOffset(64)]
                     public global::System.IntPtr CompleteDeclaration;
 
@@ -7992,6 +8031,9 @@ namespace CppSharp
                     [FieldOffset(57)]
                     public byte IsDependent;
 
+                    [FieldOffset(58)]
+                    public byte IsImplicit;
+
                     [FieldOffset(64)]
                     public global::System.IntPtr CompleteDeclaration;
 
@@ -8168,6 +8210,9 @@ namespace CppSharp
 
                     [FieldOffset(57)]
                     public byte IsDependent;
+
+                    [FieldOffset(58)]
+                    public byte IsImplicit;
 
                     [FieldOffset(64)]
                     public global::System.IntPtr CompleteDeclaration;
@@ -8409,6 +8454,9 @@ namespace CppSharp
                     [FieldOffset(57)]
                     public byte IsDependent;
 
+                    [FieldOffset(58)]
+                    public byte IsImplicit;
+
                     [FieldOffset(64)]
                     public global::System.IntPtr CompleteDeclaration;
 
@@ -8568,6 +8616,9 @@ namespace CppSharp
 
                     [FieldOffset(57)]
                     public byte IsDependent;
+
+                    [FieldOffset(58)]
+                    public byte IsImplicit;
 
                     [FieldOffset(64)]
                     public global::System.IntPtr CompleteDeclaration;
@@ -8946,6 +8997,9 @@ namespace CppSharp
 
                     [FieldOffset(57)]
                     public byte IsDependent;
+
+                    [FieldOffset(58)]
+                    public byte IsImplicit;
 
                     [FieldOffset(64)]
                     public global::System.IntPtr CompleteDeclaration;
@@ -9564,6 +9618,9 @@ namespace CppSharp
 
                     [FieldOffset(57)]
                     public byte IsDependent;
+
+                    [FieldOffset(58)]
+                    public byte IsImplicit;
 
                     [FieldOffset(64)]
                     public global::System.IntPtr CompleteDeclaration;
