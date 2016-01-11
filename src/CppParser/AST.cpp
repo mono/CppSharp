@@ -258,7 +258,7 @@ Namespace* DeclarationContext::FindCreateNamespace(const std::string& Name)
     return _namespace;
 }
 
-Class* DeclarationContext::FindClass(const std::string& Name)
+Class* DeclarationContext::FindClass(const std::string& Name, bool IsComplete)
 {
     if (Name.empty()) return nullptr;
 
@@ -267,7 +267,8 @@ Class* DeclarationContext::FindClass(const std::string& Name)
     if (entries.size() == 1)
     {
         auto _class = std::find_if(Classes.begin(), Classes.end(),
-            [&](Class* klass) { return klass->Name == Name; });
+            [&](Class* klass) { return klass->Name == Name &&
+                (!klass->IsIncomplete || !IsComplete); });
 
         return _class != Classes.end() ? *_class : nullptr;
     }
@@ -281,7 +282,7 @@ Class* DeclarationContext::FindClass(const std::string& Name)
     if (!_namespace)
         return nullptr;
 
-    return _namespace->FindClass(className);
+    return _namespace->FindClass(className, IsComplete);
 }
 
 Class* DeclarationContext::CreateClass(std::string Name, bool IsComplete)
@@ -297,7 +298,7 @@ Class* DeclarationContext::CreateClass(std::string Name, bool IsComplete)
 Class* DeclarationContext::FindClass(const std::string& Name, bool IsComplete,
         bool Create)
 {
-    auto _class = FindClass(Name);
+    auto _class = FindClass(Name, IsComplete);
 
     if (!_class)
     {
@@ -310,31 +311,7 @@ Class* DeclarationContext::FindClass(const std::string& Name, bool IsComplete,
         return _class;
     }
 
-    if (!_class->IsIncomplete || !IsComplete)
-        return _class;
-
-    if (!Create)
-        return nullptr;
-
-    auto newClass = CreateClass(Name, IsComplete);
-
-    // Replace the incomplete declaration with the complete one.
-    if (_class->IsIncomplete)
-    {
-        bool Found = false;
-        std::replace_if(Classes.begin(), Classes.end(),
-            [&](Class* klass)
-            {
-                Found |= (klass == _class);
-                return klass == _class;
-            }, newClass);
-        if (Found)
-            delete _class;
-        else
-            _class->CompleteDeclaration = newClass;
-    }
-
-    return newClass;
+    return _class;
 }
 
 Enumeration* DeclarationContext::FindEnum(void* OriginalPtr)

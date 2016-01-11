@@ -1002,3 +1002,18 @@ void NonTrivialDtor::setDtorCalled(bool value)
 {
     dtorCalled = true;
 }
+
+template <class T> class ForwardedTemplate;
+
+ForwardedTemplate<int> returnsForwardedTemplate();
+
+template <class T> class ForwardedTemplate
+{
+    ForwardedTemplate<T> functionInForwardedTemplate() const;
+};
+
+template <class T>
+ForwardedTemplate<T> ForwardedTemplate<T>::functionInForwardedTemplate() const
+{
+    return ForwardedTemplate<T>();
+}
