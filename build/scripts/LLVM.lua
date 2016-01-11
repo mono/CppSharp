@@ -85,12 +85,16 @@ function download_llvm()
   local archive = pkg_name .. archive_ext
 
   -- check if we already have the file downloaded
-  if not os.isfile(archive) then
+  if os.isfile(archive) then
+  	  print("Archive " .. archive .. " already exists.")
+  else
 	  download(base .. archive, archive)
   end
 
   -- extract the package
-  if not os.isdir(pkg_name) then
+  if os.isdir(pkg_name) then
+  	print("Directory " .. pkg_name .. " already exists.")
+  else
   	if use_7zip then
   		extract_7z(archive, pkg_name)
   	else
