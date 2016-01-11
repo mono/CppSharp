@@ -57,6 +57,7 @@ namespace CppSharp.AST
 
         public int LineNumberStart { get; set; }
         public int LineNumberEnd { get; set; }
+        public bool IsImplicit { get; set; }
 
         private DeclarationContext @namespace;
         public DeclarationContext OriginalNamespace;
@@ -346,6 +347,7 @@ namespace CppSharp.AST
             OriginalPtr = declaration.OriginalPtr;
             LineNumberStart = declaration.LineNumberStart;
             LineNumberEnd = declaration.LineNumberEnd;
+            IsImplicit = declaration.IsImplicit;
         }
 
         public override string ToString()

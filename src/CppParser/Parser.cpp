@@ -2760,6 +2760,7 @@ void Parser::HandleDeclaration(clang::Decl* D, Declaration* Decl)
 
     Decl->OriginalPtr = (void*) D;
     Decl->USR = GetDeclUSR(D);
+    Decl->IsImplicit = D->isImplicit();
     Decl->Location = SourceLocation(D->getLocation().getRawEncoding());
     Decl->LineNumberStart = C->getSourceManager().getExpansionLineNumber(D->getLocStart());
     Decl->LineNumberEnd = C->getSourceManager().getExpansionLineNumber(D->getLocEnd());
