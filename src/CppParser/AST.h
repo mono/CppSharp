@@ -403,6 +403,7 @@ public:
     STRING(DebugText)
     bool IsIncomplete;
     bool IsDependent;
+    bool IsImplicit;
     Declaration* CompleteDeclaration;
     unsigned DefinitionOrder;
     VECTOR(PreprocessedEntity*, PreprocessedEntities)
@@ -642,7 +643,6 @@ public:
     bool IsVirtual;
     bool IsStatic;
     bool IsConst;
-    bool IsImplicit;
     bool IsExplicit;
     bool IsOverride;
 

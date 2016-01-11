@@ -281,5 +281,12 @@ namespace CppSharp.Generator.Tests.AST
         {
             Assert.AreEqual(98, AstContext.FindClass("HasAmbiguousFunctions").First().Specifiers.Last().LineNumberStart);
         }
+
+        [Test]
+        public void TestImplicitDeclaration()
+        {
+            Assert.IsTrue(AstContext.FindClass("ImplicitCtor").First().Constructors.First(
+                c => c.Parameters.Count == 0).IsImplicit);
+        }
     }
 }
