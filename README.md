@@ -35,7 +35,7 @@ or add scripting support to a native codebase.
 
 Mirrors the Clang's C++ AST and type system classes in C# APIs.
 
-Check out [_Clang's AST introduction docs_](http://clang.llvm.org/docs/IntroductionToTheClangAST.html) if you're not familiar with the architecture. 
+Check out [_Clang's AST introduction docs_](http://clang.llvm.org/docs/IntroductionToTheClangAST.html) for more details about its architecture. 
  
  * C++ declarations
  * C++ types
@@ -64,16 +64,31 @@ Please see the following resources for more information:
 
 ## Community
 
+Feel free to open up issues on Github with any questions
+
 Mailing list: [Google group](https://groups.google.com/forum/#!forum/cppsharp-list)
 
-## News
+## Users
 
-2nd, June 2015: We're having three students contributing to the project this summer,
-as part of Google Summer of Code.
+CppSharp is used by the following projects:
 
-* Alexandre Esteves (@afesteves)
-* Dimitar Dobrev (@ddobrev)
-* Abhinav Tripathi (@genuinelucifer)
+[QtSharp](https://github.com/ddobrev/QtSharp)
+
+[MonoGame](https://github.com/mono/MonoGame)
+
+[LLDBSharp](https://github.com/tritao/LLDBSharp)
+
+[Xamarin](http://xamarin.com/)
+
+[FFMPEG.net](https://github.com/crazyender/FFMPEG.net)
+
+[FFmpeg bindings](https://github.com/InitialForce/FFmpeg_bindings)
+
+[Tizen bindings](https://github.com/kitsilanosoftware/CppSharpTizen)
+
+[libgd bindings](https://github.com/imazen/deprecated-gd-bindings-generator-old)
+
+Please feel free to send us a pull request adding your own projects to the list above.
 
 ## Support
 
