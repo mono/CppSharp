@@ -597,9 +597,11 @@ typedef const wchar_t * LPCWSTR;
 struct DLL_API TestWideStrings
 {
     LPCWSTR GetWidePointer();
+    LPCWSTR GetWideNullPointer();
 };
 
 LPCWSTR TestWideStrings::GetWidePointer() { return L"Hello"; }
+LPCWSTR TestWideStrings::GetWideNullPointer() { return 0; }
 
 enum struct MyEnum { A, B, C };
 
