@@ -20,6 +20,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
 using System;
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace CppSharp
@@ -30,15 +31,15 @@ namespace CppSharp
         static readonly Func<string, IntPtr> loadImage;
         static readonly Func<IntPtr, string, IntPtr> resolveSymbol;
 
-        static SymbolResolver ()
+        static SymbolResolver()
         {
             switch (Environment.OSVersion.Platform)
             {
-            case PlatformID.Unix:
-            case PlatformID.MacOSX:
-                loadImage = dlopen;
-                resolveSymbol = dlsym;
-                formats = new[] {
+                case PlatformID.Unix:
+                case PlatformID.MacOSX:
+                    loadImage = dlopen;
+                    resolveSymbol = dlsym;
+                    formats = new[] {
                     "{0}",
                     "{0}.so",
                     "{0}.dylib",
@@ -46,25 +47,48 @@ namespace CppSharp
                     "lib{0}.dylib",
                     "{0}.bundle"
                 };
-                break;
-            default:
-                loadImage = LoadLibrary;
-                resolveSymbol = GetProcAddress;
-                formats = new[] { "{0}", "{0}.dll" };
-                break;
+                    break;
+                default:
+                    loadImage = LoadLibrary;
+                    resolveSymbol = GetProcAddress;
+                    formats = new[] { "{0}", "{0}.dll" };
+                    break;
             }
         }
 
-        public static IntPtr LoadImage (ref string name)
+        public static IntPtr LoadImage(ref string name, string searchdir = null)
         {
+            if (searchdir == null)
+                searchdir = Environment.CurrentDirectory;
+
             foreach (var format in formats)
             {
-                var attempted = System.IO.Path.Combine(Environment.CurrentDirectory, string.Format (format, name));
-                var ptr = loadImage (attempted);
+                // Search the Current or specified directory for the library
+                string filename = string.Format(format, name);
+                string attempted = Path.Combine(searchdir, filename);
+                if (File.Exists(attempted) == false)
+                {
+                    // Search the Path directories for the library
+                    var pathvalues = Environment.GetEnvironmentVariable("PATH");
+                    if (pathvalues == null)
+                        continue;
 
+                    foreach (var path in pathvalues.Split(Path.PathSeparator))
+                    {
+                        var fullPath = Path.Combine(path, filename);
+                        if (File.Exists(fullPath))
+                        {
+                            attempted = fullPath;
+                            break;
+                        }
+
+                    }
+                }
+                if (File.Exists(attempted) == false) continue;
+
+                var ptr = loadImage(attempted);
                 if (ptr == IntPtr.Zero)
                     continue;
-
                 name = attempted;
                 return ptr;
             }
@@ -72,44 +96,44 @@ namespace CppSharp
             return IntPtr.Zero;
         }
 
-        public static IntPtr ResolveSymbol (string name, string symbol)
+        public static IntPtr ResolveSymbol(string name, string symbol, string searchdir = null)
         {
-            var image = LoadImage(ref name);
+            var image = LoadImage(ref name, searchdir);
             return ResolveSymbol(image, symbol);
         }
 
-        public static IntPtr ResolveSymbol (IntPtr image, string symbol)
+        public static IntPtr ResolveSymbol(IntPtr image, string symbol)
         {
             if (image != IntPtr.Zero)
-                return resolveSymbol (image, symbol);
+                return resolveSymbol(image, symbol);
 
             return IntPtr.Zero;
         }
 
         #region POSIX
-		
+
         private const int RTLD_LAZY = 0x1;
 
-        static IntPtr dlopen (string path)
+        static IntPtr dlopen(string path)
         {
-            return dlopen (path, RTLD_LAZY);
+            return dlopen(path, RTLD_LAZY);
         }
 
-        [DllImport ("dl", CharSet=CharSet.Ansi)]
-        static extern IntPtr dlopen (string path, int flags);
+        [DllImport("dl", CharSet = CharSet.Ansi)]
+        static extern IntPtr dlopen(string path, int flags);
 
-        [DllImport ("dl", CharSet=CharSet.Ansi)]
-        static extern IntPtr dlsym (IntPtr handle, string symbol);
+        [DllImport("dl", CharSet = CharSet.Ansi)]
+        static extern IntPtr dlsym(IntPtr handle, string symbol);
 
         #endregion
 
         #region Win32
 
-        [DllImport("kernel32", SetLastError=true)]
-        static extern IntPtr LoadLibrary (string lpFileName);
+        [DllImport("kernel32", SetLastError = true)]
+        static extern IntPtr LoadLibrary(string lpFileName);
 
-        [DllImport("kernel32", CharSet=CharSet.Ansi, ExactSpelling=true, SetLastError=true)]
-        static extern IntPtr GetProcAddress (IntPtr hModule, string procName);
+        [DllImport("kernel32", CharSet = CharSet.Ansi, ExactSpelling = true, SetLastError = true)]
+        static extern IntPtr GetProcAddress(IntPtr hModule, string procName);
 
         #endregion
 
