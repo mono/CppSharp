@@ -180,7 +180,9 @@ namespace CppSharp.Generators.CLI
                 throw new NotSupportedException(string.Format("{0} is not supported yet.",
                     Context.Driver.Options.Encoding.EncodingName));
 
-            return string.Format("clix::marshalString<clix::{1}>({0})", varName, param);
+            return string.Format(
+                "({0} == 0 ? nullptr : clix::marshalString<clix::{1}>({0}))",
+                varName, param);
         }
 
         public override bool VisitMemberPointerType(MemberPointerType member,
