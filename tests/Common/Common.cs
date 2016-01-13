@@ -64,6 +64,7 @@ namespace CppSharp.Tests
             driver.Options.GenerateProperties = true;
             driver.Options.GenerateConversionOperators = true;
             driver.Options.GenerateDefaultValuesForArguments = true;
+            driver.Options.Verbose = true;
         }
 
         public override void Preprocess(Driver driver, ASTContext ctx)
