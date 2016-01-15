@@ -48,6 +48,11 @@ namespace CppSharp.Utils
             var path = Path.GetFullPath(GetTestsDirectory(name));
             options.addIncludeDirs(path);
 
+            // Remove this hardcoded path once we update our LLVM binary packages to bundle
+            // the built-in Clang includes.
+            if (Environment.GetEnvironmentVariable("TRAVIS_OS_NAME") == "linux")
+                options.addSystemIncludeDirs("/usr/lib/gcc/x86_64-linux-gnu/4.8/include");
+
 #if BROKEN
             var foundClangResourceDir = false;
             for (uint i = 0; i < options.SystemIncludeDirsCount; ++i)
