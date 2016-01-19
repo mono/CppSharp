@@ -48,7 +48,7 @@ System::String^ CppSharp::Parser::ParserTargetInfo::ABI::get()
 {
     auto __ret = ((::CppSharp::CppParser::ParserTargetInfo*)NativePtr)->getABI();
     if (__ret == nullptr) return nullptr;
-    return clix::marshalString<clix::E_UTF8>(__ret);
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
 }
 
 void CppSharp::Parser::ParserTargetInfo::ABI::set(System::String^ s)
