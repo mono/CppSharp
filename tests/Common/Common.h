@@ -597,9 +597,11 @@ typedef const wchar_t * LPCWSTR;
 struct DLL_API TestWideStrings
 {
     LPCWSTR GetWidePointer();
+    LPCWSTR GetWideNullPointer();
 };
 
 LPCWSTR TestWideStrings::GetWidePointer() { return L"Hello"; }
+LPCWSTR TestWideStrings::GetWideNullPointer() { return 0; }
 
 enum struct MyEnum { A, B, C };
 
@@ -1001,4 +1003,19 @@ bool NonTrivialDtor::getDtorCalled()
 void NonTrivialDtor::setDtorCalled(bool value)
 {
     dtorCalled = true;
+}
+
+template <class T> class ForwardedTemplate;
+
+ForwardedTemplate<int> returnsForwardedTemplate();
+
+template <class T> class ForwardedTemplate
+{
+    ForwardedTemplate<T> functionInForwardedTemplate() const;
+};
+
+template <class T>
+ForwardedTemplate<T> ForwardedTemplate<T>::functionInForwardedTemplate() const
+{
+    return ForwardedTemplate<T>();
 }

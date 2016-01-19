@@ -85,7 +85,6 @@ namespace CppSharp.AST
             Access = method.Access;
             IsVirtual = method.IsVirtual;
             IsConst = method.IsConst;
-            IsImplicit = method.IsImplicit;
             IsOverride = method.IsOverride;
             IsProxy = method.IsProxy;
             IsStatic = method.IsStatic;
@@ -107,7 +106,6 @@ namespace CppSharp.AST
         public bool IsVirtual { get; set; }
         public bool IsStatic { get; set; }
         public bool IsConst { get; set; }
-        public bool IsImplicit { get; set; }
         public bool IsExplicit { get; set; }
         public bool IsOverride { get; set; }
         public bool IsProxy { get; set; }

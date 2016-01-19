@@ -403,6 +403,7 @@ public:
     STRING(DebugText)
     bool IsIncomplete;
     bool IsDependent;
+    bool IsImplicit;
     Declaration* CompleteDeclaration;
     unsigned DefinitionOrder;
     VECTOR(PreprocessedEntity*, PreprocessedEntities)
@@ -433,9 +434,9 @@ public:
     CS_IGNORE CppSharp::CppParser::AST::Namespace* FindCreateNamespace(const std::string& Name);
 
     CS_IGNORE Class* CreateClass(std::string Name, bool IsComplete);
-    CS_IGNORE Class* FindClass(const std::string& Name);
+    CS_IGNORE Class* FindClass(const std::string& Name, bool IsComplete);
     CS_IGNORE Class* FindClass(const std::string& Name, bool IsComplete,
-        bool Create = false);
+        bool Create);
 
     CS_IGNORE ClassTemplate* FindClassTemplate(const std::string& USR);
     CS_IGNORE FunctionTemplate* FindFunctionTemplate(const std::string& USR);
@@ -642,7 +643,6 @@ public:
     bool IsVirtual;
     bool IsStatic;
     bool IsConst;
-    bool IsImplicit;
     bool IsExplicit;
     bool IsOverride;
 
@@ -888,6 +888,7 @@ class CS_API NativeLibrary
 {
 public:
     NativeLibrary();
+    ~NativeLibrary();
     STRING(FileName)
     ArchType ArchType;
     VECTOR_STRING(Symbols)

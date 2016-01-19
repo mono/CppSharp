@@ -158,33 +158,17 @@ namespace CppSharp
                     kitsRootKey = match.Groups[0].Value;
             }
 
-            List<ToolchainVersion> windowSdks;
-            GetWindowsSdks(out windowSdks);
-
-            var windowSdk = windowSdks.Find(version => (int) Math.Floor(version.Version) == windowsSdkMajorVer);
-
-            if (windowSdk.Directory == null)
-                windowSdk = windowSdks.Last();
-
-            var windowSdkDir = windowSdk.Directory;
+            List<ToolchainVersion> windowsSdks;
+            GetWindowsSdks(out windowsSdks);
 
             // Older Visual Studio versions provide their own Windows SDK.
-            if (windowSdks.Count == 0)
+            if (windowsSdks.Count == 0)
             {
                 includes.Add(Path.Combine(vsDir, @"\VC\PlatformSDK\Include"));
             }
             else
             {
-                if (windowsSdkMajorVer >= 8)
-                {
-                    includes.Add(Path.Combine(windowSdkDir, @"include\shared"));
-                    includes.Add(Path.Combine(windowSdkDir, @"include\um"));
-                    includes.Add(Path.Combine(windowSdkDir, @"include\winrt"));
-                }
-                else
-                {
-                    includes.Add(Path.Combine(windowSdkDir, "include"));
-                }
+                includes.AddRange(GetIncludeDirsFromWindowsSdks(windowsSdkMajorVer, windowsSdks));
             }
 
             List<ToolchainVersion> windowsKitsSdks;
@@ -198,6 +182,36 @@ namespace CppSharp
                 CollectUniversalCRuntimeIncludeDirs(vsDir, windowsKitSdk, windowsSdkMajorVer));
 
             return includes;
+        }
+
+        private static IEnumerable<string> GetIncludeDirsFromWindowsSdks(
+            int windowsSdkMajorVer, List<ToolchainVersion> windowsSdks)
+        {
+            var includes = new List<string>();
+            var majorWindowsSdk = windowsSdks.Find(
+                version => (int) Math.Floor(version.Version) == windowsSdkMajorVer);
+            var windowsSdkDirs = majorWindowsSdk.Directory != null ?
+                new[] { majorWindowsSdk.Directory } :
+                windowsSdks.Select(w => w.Directory).Reverse();
+            foreach (var windowsSdkDir in windowsSdkDirs)
+            {
+                if (windowsSdkMajorVer >= 8)
+                {
+                    var shared = Path.Combine(windowsSdkDir, "include", "shared");
+                    var um = Path.Combine(windowsSdkDir, "include", "um");
+                    var winrt = Path.Combine(windowsSdkDir, "include", "winrt");
+                    if (Directory.Exists(shared) && Directory.Exists(um) &&
+                        Directory.Exists(winrt))
+                        return new[] { shared, um, winrt };
+                }
+                else
+                {
+                    var include = Path.Combine(windowsSdkDir, "include");
+                    if (Directory.Exists(include))
+                        return new[] { include };
+                }
+            }
+            return new string[0];
         }
 
         private static IEnumerable<string> CollectUniversalCRuntimeIncludeDirs(

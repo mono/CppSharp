@@ -106,3 +106,7 @@ class Atomics
 # endif
 #endif
 };
+
+class ImplicitCtor
+{
+};

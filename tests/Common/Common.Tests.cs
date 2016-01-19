@@ -406,6 +406,7 @@ public class CommonTests : GeneratorTestFixture
         var ws = new TestWideStrings();
         var s = ws.WidePointer;
         Assert.That(ws.WidePointer, Is.EqualTo("Hello"));
+        Assert.That(ws.WideNullPointer, Is.EqualTo(null));
     }
 
     [Test]

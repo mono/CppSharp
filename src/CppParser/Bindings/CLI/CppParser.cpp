@@ -31,7 +31,7 @@ System::String^ CppSharp::Parser::ParserOptions::getArguments(unsigned int i)
 {
     auto __ret = ((::CppSharp::CppParser::ParserOptions*)NativePtr)->getArguments(i);
     if (__ret == nullptr) return nullptr;
-    return clix::marshalString<clix::E_UTF8>(__ret);
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
 }
 
 void CppSharp::Parser::ParserOptions::addArguments(System::String^ s)
@@ -50,7 +50,7 @@ System::String^ CppSharp::Parser::ParserOptions::getIncludeDirs(unsigned int i)
 {
     auto __ret = ((::CppSharp::CppParser::ParserOptions*)NativePtr)->getIncludeDirs(i);
     if (__ret == nullptr) return nullptr;
-    return clix::marshalString<clix::E_UTF8>(__ret);
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
 }
 
 void CppSharp::Parser::ParserOptions::addIncludeDirs(System::String^ s)
@@ -69,7 +69,7 @@ System::String^ CppSharp::Parser::ParserOptions::getSystemIncludeDirs(unsigned i
 {
     auto __ret = ((::CppSharp::CppParser::ParserOptions*)NativePtr)->getSystemIncludeDirs(i);
     if (__ret == nullptr) return nullptr;
-    return clix::marshalString<clix::E_UTF8>(__ret);
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
 }
 
 void CppSharp::Parser::ParserOptions::addSystemIncludeDirs(System::String^ s)
@@ -88,7 +88,7 @@ System::String^ CppSharp::Parser::ParserOptions::getDefines(unsigned int i)
 {
     auto __ret = ((::CppSharp::CppParser::ParserOptions*)NativePtr)->getDefines(i);
     if (__ret == nullptr) return nullptr;
-    return clix::marshalString<clix::E_UTF8>(__ret);
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
 }
 
 void CppSharp::Parser::ParserOptions::addDefines(System::String^ s)
@@ -107,7 +107,7 @@ System::String^ CppSharp::Parser::ParserOptions::getUndefines(unsigned int i)
 {
     auto __ret = ((::CppSharp::CppParser::ParserOptions*)NativePtr)->getUndefines(i);
     if (__ret == nullptr) return nullptr;
-    return clix::marshalString<clix::E_UTF8>(__ret);
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
 }
 
 void CppSharp::Parser::ParserOptions::addUndefines(System::String^ s)
@@ -126,7 +126,7 @@ System::String^ CppSharp::Parser::ParserOptions::getLibraryDirs(unsigned int i)
 {
     auto __ret = ((::CppSharp::CppParser::ParserOptions*)NativePtr)->getLibraryDirs(i);
     if (__ret == nullptr) return nullptr;
-    return clix::marshalString<clix::E_UTF8>(__ret);
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
 }
 
 void CppSharp::Parser::ParserOptions::addLibraryDirs(System::String^ s)
@@ -170,7 +170,7 @@ System::String^ CppSharp::Parser::ParserOptions::FileName::get()
 {
     auto __ret = ((::CppSharp::CppParser::ParserOptions*)NativePtr)->getFileName();
     if (__ret == nullptr) return nullptr;
-    return clix::marshalString<clix::E_UTF8>(__ret);
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
 }
 
 void CppSharp::Parser::ParserOptions::FileName::set(System::String^ s)
@@ -214,7 +214,7 @@ System::String^ CppSharp::Parser::ParserOptions::TargetTriple::get()
 {
     auto __ret = ((::CppSharp::CppParser::ParserOptions*)NativePtr)->getTargetTriple();
     if (__ret == nullptr) return nullptr;
-    return clix::marshalString<clix::E_UTF8>(__ret);
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
 }
 
 void CppSharp::Parser::ParserOptions::TargetTriple::set(System::String^ s)
@@ -359,7 +359,7 @@ System::String^ CppSharp::Parser::ParserDiagnostic::FileName::get()
 {
     auto __ret = ((::CppSharp::CppParser::ParserDiagnostic*)NativePtr)->getFileName();
     if (__ret == nullptr) return nullptr;
-    return clix::marshalString<clix::E_UTF8>(__ret);
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
 }
 
 void CppSharp::Parser::ParserDiagnostic::FileName::set(System::String^ s)
@@ -373,7 +373,7 @@ System::String^ CppSharp::Parser::ParserDiagnostic::Message::get()
 {
     auto __ret = ((::CppSharp::CppParser::ParserDiagnostic*)NativePtr)->getMessage();
     if (__ret == nullptr) return nullptr;
-    return clix::marshalString<clix::E_UTF8>(__ret);
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
 }
 
 void CppSharp::Parser::ParserDiagnostic::Message::set(System::String^ s)

@@ -170,15 +170,19 @@ namespace CppSharp.Generators.CLI
             if (Equals(encoding, Encoding.ASCII))
                 encoding = Context.Driver.Options.Encoding;
 
+            string param;
             if (Equals(encoding, Encoding.ASCII))
-                return string.Format("clix::marshalString<clix::E_UTF8>({0})", varName);
+                param = "E_UTF8";
+            else if (Equals(encoding, Encoding.Unicode) ||
+                     Equals(encoding, Encoding.BigEndianUnicode))
+                param = "E_UTF16";
+            else
+                throw new NotSupportedException(string.Format("{0} is not supported yet.",
+                    Context.Driver.Options.Encoding.EncodingName));
 
-            if (Equals(encoding, Encoding.Unicode) ||
-                Equals(encoding, Encoding.BigEndianUnicode))
-                return string.Format("clix::marshalString<clix::E_UTF16>({0})", varName);
-
-            throw new NotSupportedException(string.Format("{0} is not supported yet.",
-                Context.Driver.Options.Encoding.EncodingName));
+            return string.Format(
+                "({0} == 0 ? nullptr : clix::marshalString<clix::{1}>({0}))",
+                varName, param);
         }
 
         public override bool VisitMemberPointerType(MemberPointerType member,

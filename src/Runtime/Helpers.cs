@@ -9,6 +9,9 @@ namespace CppSharp.Runtime
     {
         public static string MarshalEncodedString(IntPtr ptr, Encoding encoding)
         {
+            if (ptr == IntPtr.Zero)
+                return null;
+
             var size = 0;
             while (Marshal.ReadInt32(ptr, size) != 0)
                 size += sizeof(int);

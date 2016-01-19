@@ -2760,6 +2760,7 @@ void Parser::HandleDeclaration(clang::Decl* D, Declaration* Decl)
 
     Decl->OriginalPtr = (void*) D;
     Decl->USR = GetDeclUSR(D);
+    Decl->IsImplicit = D->isImplicit();
     Decl->Location = SourceLocation(D->getLocation().getRawEncoding());
     Decl->LineNumberStart = C->getSourceManager().getExpansionLineNumber(D->getLocStart());
     Decl->LineNumberEnd = C->getSourceManager().getExpansionLineNumber(D->getLocEnd());
@@ -2917,7 +2918,7 @@ Declaration* Parser::WalkDeclaration(clang::Decl* D,
     case Decl::EnumConstant:
     {
         auto ED = cast<EnumConstantDecl>(D);
-        auto E = cast<Enumeration>(GetNamespace(ED));
+        auto E = static_cast<Enumeration*>(GetNamespace(ED));
         assert(E && "Expected a valid enumeration");
         Decl = E->FindItemByName(ED->getNameAsString());
         break;

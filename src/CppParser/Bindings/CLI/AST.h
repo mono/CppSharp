@@ -1225,6 +1225,12 @@ namespace CppSharp
                     void set(bool);
                 }
 
+                property bool IsImplicit
+                {
+                    bool get();
+                    void set(bool);
+                }
+
                 property CppSharp::Parser::AST::Declaration^ CompleteDeclaration
                 {
                     CppSharp::Parser::AST::Declaration^ get();
@@ -1685,12 +1691,6 @@ namespace CppSharp
                 }
 
                 property bool IsConst
-                {
-                    bool get();
-                    void set(bool);
-                }
-
-                property bool IsImplicit
                 {
                     bool get();
                     void set(bool);

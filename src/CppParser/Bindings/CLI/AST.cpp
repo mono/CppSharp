@@ -863,7 +863,7 @@ System::String^ CppSharp::Parser::AST::TemplateParameter::Name::get()
 {
     auto __ret = ((::CppSharp::CppParser::AST::TemplateParameter*)NativePtr)->getName();
     if (__ret == nullptr) return nullptr;
-    return clix::marshalString<clix::E_UTF8>(__ret);
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
 }
 
 void CppSharp::Parser::AST::TemplateParameter::Name::set(System::String^ s)
@@ -1577,7 +1577,7 @@ System::String^ CppSharp::Parser::AST::Declaration::Name::get()
 {
     auto __ret = ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->getName();
     if (__ret == nullptr) return nullptr;
-    return clix::marshalString<clix::E_UTF8>(__ret);
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
 }
 
 void CppSharp::Parser::AST::Declaration::Name::set(System::String^ s)
@@ -1591,7 +1591,7 @@ System::String^ CppSharp::Parser::AST::Declaration::DebugText::get()
 {
     auto __ret = ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->getDebugText();
     if (__ret == nullptr) return nullptr;
-    return clix::marshalString<clix::E_UTF8>(__ret);
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
 }
 
 void CppSharp::Parser::AST::Declaration::DebugText::set(System::String^ s)
@@ -1697,6 +1697,16 @@ bool CppSharp::Parser::AST::Declaration::IsDependent::get()
 void CppSharp::Parser::AST::Declaration::IsDependent::set(bool value)
 {
     ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->IsDependent = value;
+}
+
+bool CppSharp::Parser::AST::Declaration::IsImplicit::get()
+{
+    return ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->IsImplicit;
+}
+
+void CppSharp::Parser::AST::Declaration::IsImplicit::set(bool value)
+{
+    ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->IsImplicit = value;
 }
 
 CppSharp::Parser::AST::Declaration^ CppSharp::Parser::AST::Declaration::CompleteDeclaration::get()
@@ -2118,7 +2128,7 @@ System::String^ CppSharp::Parser::AST::Statement::String::get()
 {
     auto __ret = ((::CppSharp::CppParser::AST::Statement*)NativePtr)->getString();
     if (__ret == nullptr) return nullptr;
-    return clix::marshalString<clix::E_UTF8>(__ret);
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
 }
 
 void CppSharp::Parser::AST::Statement::String::set(System::String^ s)
@@ -2212,7 +2222,7 @@ System::String^ CppSharp::Parser::AST::BinaryOperator::OpcodeStr::get()
 {
     auto __ret = ((::CppSharp::CppParser::AST::BinaryOperator*)NativePtr)->getOpcodeStr();
     if (__ret == nullptr) return nullptr;
-    return clix::marshalString<clix::E_UTF8>(__ret);
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
 }
 
 void CppSharp::Parser::AST::BinaryOperator::OpcodeStr::set(System::String^ s)
@@ -2502,7 +2512,7 @@ System::String^ CppSharp::Parser::AST::Function::Mangled::get()
 {
     auto __ret = ((::CppSharp::CppParser::AST::Function*)NativePtr)->getMangled();
     if (__ret == nullptr) return nullptr;
-    return clix::marshalString<clix::E_UTF8>(__ret);
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
 }
 
 void CppSharp::Parser::AST::Function::Mangled::set(System::String^ s)
@@ -2516,7 +2526,7 @@ System::String^ CppSharp::Parser::AST::Function::Signature::get()
 {
     auto __ret = ((::CppSharp::CppParser::AST::Function*)NativePtr)->getSignature();
     if (__ret == nullptr) return nullptr;
-    return clix::marshalString<clix::E_UTF8>(__ret);
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
 }
 
 void CppSharp::Parser::AST::Function::Signature::set(System::String^ s)
@@ -2699,16 +2709,6 @@ void CppSharp::Parser::AST::Method::IsConst::set(bool value)
     ((::CppSharp::CppParser::AST::Method*)NativePtr)->IsConst = value;
 }
 
-bool CppSharp::Parser::AST::Method::IsImplicit::get()
-{
-    return ((::CppSharp::CppParser::AST::Method*)NativePtr)->IsImplicit;
-}
-
-void CppSharp::Parser::AST::Method::IsImplicit::set(bool value)
-{
-    ((::CppSharp::CppParser::AST::Method*)NativePtr)->IsImplicit = value;
-}
-
 bool CppSharp::Parser::AST::Method::IsExplicit::get()
 {
     return ((::CppSharp::CppParser::AST::Method*)NativePtr)->IsExplicit;
@@ -2820,7 +2820,7 @@ System::String^ CppSharp::Parser::AST::Enumeration::Item::Expression::get()
 {
     auto __ret = ((::CppSharp::CppParser::AST::Enumeration::Item*)NativePtr)->getExpression();
     if (__ret == nullptr) return nullptr;
-    return clix::marshalString<clix::E_UTF8>(__ret);
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
 }
 
 void CppSharp::Parser::AST::Enumeration::Item::Expression::set(System::String^ s)
@@ -2974,7 +2974,7 @@ System::String^ CppSharp::Parser::AST::Variable::Mangled::get()
 {
     auto __ret = ((::CppSharp::CppParser::AST::Variable*)NativePtr)->getMangled();
     if (__ret == nullptr) return nullptr;
-    return clix::marshalString<clix::E_UTF8>(__ret);
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
 }
 
 void CppSharp::Parser::AST::Variable::Mangled::set(System::String^ s)
@@ -4023,7 +4023,7 @@ System::String^ CppSharp::Parser::AST::MacroDefinition::Name::get()
 {
     auto __ret = ((::CppSharp::CppParser::AST::MacroDefinition*)NativePtr)->getName();
     if (__ret == nullptr) return nullptr;
-    return clix::marshalString<clix::E_UTF8>(__ret);
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
 }
 
 void CppSharp::Parser::AST::MacroDefinition::Name::set(System::String^ s)
@@ -4037,7 +4037,7 @@ System::String^ CppSharp::Parser::AST::MacroDefinition::Expression::get()
 {
     auto __ret = ((::CppSharp::CppParser::AST::MacroDefinition*)NativePtr)->getExpression();
     if (__ret == nullptr) return nullptr;
-    return clix::marshalString<clix::E_UTF8>(__ret);
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
 }
 
 void CppSharp::Parser::AST::MacroDefinition::Expression::set(System::String^ s)
@@ -4108,7 +4108,7 @@ System::String^ CppSharp::Parser::AST::MacroExpansion::Name::get()
 {
     auto __ret = ((::CppSharp::CppParser::AST::MacroExpansion*)NativePtr)->getName();
     if (__ret == nullptr) return nullptr;
-    return clix::marshalString<clix::E_UTF8>(__ret);
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
 }
 
 void CppSharp::Parser::AST::MacroExpansion::Name::set(System::String^ s)
@@ -4122,7 +4122,7 @@ System::String^ CppSharp::Parser::AST::MacroExpansion::Text::get()
 {
     auto __ret = ((::CppSharp::CppParser::AST::MacroExpansion*)NativePtr)->getText();
     if (__ret == nullptr) return nullptr;
-    return clix::marshalString<clix::E_UTF8>(__ret);
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
 }
 
 void CppSharp::Parser::AST::MacroExpansion::Text::set(System::String^ s)
@@ -4203,7 +4203,7 @@ System::String^ CppSharp::Parser::AST::TranslationUnit::FileName::get()
 {
     auto __ret = ((::CppSharp::CppParser::AST::TranslationUnit*)NativePtr)->getFileName();
     if (__ret == nullptr) return nullptr;
-    return clix::marshalString<clix::E_UTF8>(__ret);
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
 }
 
 void CppSharp::Parser::AST::TranslationUnit::FileName::set(System::String^ s)
@@ -4255,7 +4255,7 @@ System::String^ CppSharp::Parser::AST::NativeLibrary::getSymbols(unsigned int i)
 {
     auto __ret = ((::CppSharp::CppParser::AST::NativeLibrary*)NativePtr)->getSymbols(i);
     if (__ret == nullptr) return nullptr;
-    return clix::marshalString<clix::E_UTF8>(__ret);
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
 }
 
 void CppSharp::Parser::AST::NativeLibrary::addSymbols(System::String^ s)
@@ -4274,7 +4274,7 @@ System::String^ CppSharp::Parser::AST::NativeLibrary::getDependencies(unsigned i
 {
     auto __ret = ((::CppSharp::CppParser::AST::NativeLibrary*)NativePtr)->getDependencies(i);
     if (__ret == nullptr) return nullptr;
-    return clix::marshalString<clix::E_UTF8>(__ret);
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
 }
 
 void CppSharp::Parser::AST::NativeLibrary::addDependencies(System::String^ s)
@@ -4312,7 +4312,7 @@ System::String^ CppSharp::Parser::AST::NativeLibrary::FileName::get()
 {
     auto __ret = ((::CppSharp::CppParser::AST::NativeLibrary*)NativePtr)->getFileName();
     if (__ret == nullptr) return nullptr;
-    return clix::marshalString<clix::E_UTF8>(__ret);
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
 }
 
 void CppSharp::Parser::AST::NativeLibrary::FileName::set(System::String^ s)
@@ -4610,7 +4610,7 @@ System::String^ CppSharp::Parser::AST::BlockCommandComment::Argument::Text::get(
 {
     auto __ret = ((::CppSharp::CppParser::AST::BlockCommandComment::Argument*)NativePtr)->getText();
     if (__ret == nullptr) return nullptr;
-    return clix::marshalString<clix::E_UTF8>(__ret);
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
 }
 
 void CppSharp::Parser::AST::BlockCommandComment::Argument::Text::set(System::String^ s)
@@ -4860,7 +4860,7 @@ System::String^ CppSharp::Parser::AST::VerbatimBlockLineComment::Text::get()
 {
     auto __ret = ((::CppSharp::CppParser::AST::VerbatimBlockLineComment*)NativePtr)->getText();
     if (__ret == nullptr) return nullptr;
-    return clix::marshalString<clix::E_UTF8>(__ret);
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
 }
 
 void CppSharp::Parser::AST::VerbatimBlockLineComment::Text::set(System::String^ s)
@@ -4974,7 +4974,7 @@ System::String^ CppSharp::Parser::AST::VerbatimLineComment::Text::get()
 {
     auto __ret = ((::CppSharp::CppParser::AST::VerbatimLineComment*)NativePtr)->getText();
     if (__ret == nullptr) return nullptr;
-    return clix::marshalString<clix::E_UTF8>(__ret);
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
 }
 
 void CppSharp::Parser::AST::VerbatimLineComment::Text::set(System::String^ s)
@@ -5141,7 +5141,7 @@ System::String^ CppSharp::Parser::AST::InlineCommandComment::Argument::Text::get
 {
     auto __ret = ((::CppSharp::CppParser::AST::InlineCommandComment::Argument*)NativePtr)->getText();
     if (__ret == nullptr) return nullptr;
-    return clix::marshalString<clix::E_UTF8>(__ret);
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
 }
 
 void CppSharp::Parser::AST::InlineCommandComment::Argument::Text::set(System::String^ s)
@@ -5308,7 +5308,7 @@ System::String^ CppSharp::Parser::AST::HTMLStartTagComment::Attribute::Name::get
 {
     auto __ret = ((::CppSharp::CppParser::AST::HTMLStartTagComment::Attribute*)NativePtr)->getName();
     if (__ret == nullptr) return nullptr;
-    return clix::marshalString<clix::E_UTF8>(__ret);
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
 }
 
 void CppSharp::Parser::AST::HTMLStartTagComment::Attribute::Name::set(System::String^ s)
@@ -5322,7 +5322,7 @@ System::String^ CppSharp::Parser::AST::HTMLStartTagComment::Attribute::Value::ge
 {
     auto __ret = ((::CppSharp::CppParser::AST::HTMLStartTagComment::Attribute*)NativePtr)->getValue();
     if (__ret == nullptr) return nullptr;
-    return clix::marshalString<clix::E_UTF8>(__ret);
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
 }
 
 void CppSharp::Parser::AST::HTMLStartTagComment::Attribute::Value::set(System::String^ s)
@@ -5393,7 +5393,7 @@ System::String^ CppSharp::Parser::AST::HTMLStartTagComment::TagName::get()
 {
     auto __ret = ((::CppSharp::CppParser::AST::HTMLStartTagComment*)NativePtr)->getTagName();
     if (__ret == nullptr) return nullptr;
-    return clix::marshalString<clix::E_UTF8>(__ret);
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
 }
 
 void CppSharp::Parser::AST::HTMLStartTagComment::TagName::set(System::String^ s)
@@ -5450,7 +5450,7 @@ System::String^ CppSharp::Parser::AST::HTMLEndTagComment::TagName::get()
 {
     auto __ret = ((::CppSharp::CppParser::AST::HTMLEndTagComment*)NativePtr)->getTagName();
     if (__ret == nullptr) return nullptr;
-    return clix::marshalString<clix::E_UTF8>(__ret);
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
 }
 
 void CppSharp::Parser::AST::HTMLEndTagComment::TagName::set(System::String^ s)
@@ -5501,7 +5501,7 @@ System::String^ CppSharp::Parser::AST::TextComment::Text::get()
 {
     auto __ret = ((::CppSharp::CppParser::AST::TextComment*)NativePtr)->getText();
     if (__ret == nullptr) return nullptr;
-    return clix::marshalString<clix::E_UTF8>(__ret);
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
 }
 
 void CppSharp::Parser::AST::TextComment::Text::set(System::String^ s)
@@ -5556,7 +5556,7 @@ System::String^ CppSharp::Parser::AST::RawComment::Text::get()
 {
     auto __ret = ((::CppSharp::CppParser::AST::RawComment*)NativePtr)->getText();
     if (__ret == nullptr) return nullptr;
-    return clix::marshalString<clix::E_UTF8>(__ret);
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
 }
 
 void CppSharp::Parser::AST::RawComment::Text::set(System::String^ s)
@@ -5570,7 +5570,7 @@ System::String^ CppSharp::Parser::AST::RawComment::BriefText::get()
 {
     auto __ret = ((::CppSharp::CppParser::AST::RawComment*)NativePtr)->getBriefText();
     if (__ret == nullptr) return nullptr;
-    return clix::marshalString<clix::E_UTF8>(__ret);
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
 }
 
 void CppSharp::Parser::AST::RawComment::BriefText::set(System::String^ s)
