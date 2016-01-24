@@ -22,6 +22,9 @@ public class CommonTests : GeneratorTestFixture
         {
             Assert.That(overridesNonDirectVirtual.retInt(), Is.EqualTo(3));
         }
+        using (var derivedFromTemplateInstantiationWithVirtual = new DerivedFromTemplateInstantiationWithVirtual())
+        {
+        }
     }
 
     [Test]

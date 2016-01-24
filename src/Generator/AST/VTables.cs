@@ -73,7 +73,9 @@ namespace CppSharp.AST
             return entry.Method != null &&
                    (entry.Method.IsOperator ||
                     (!entry.Method.IsDeclared &&
-                     ((Class) entry.Method.Namespace).GetPropertyByConstituentMethod(entry.Method) == null));
+                     ((Class) entry.Method.Namespace).GetPropertyByConstituentMethod(entry.Method) == null) ||
+                     // virtuals defined in templates are not yet supported
+                     entry.Method.Namespace is ClassTemplateSpecialization);
         }
     }
 }

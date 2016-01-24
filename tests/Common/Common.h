@@ -1019,3 +1019,27 @@ ForwardedTemplate<T> ForwardedTemplate<T>::functionInForwardedTemplate() const
 {
     return ForwardedTemplate<T>();
 }
+
+template <typename T>
+class TemplateWithVirtual
+{
+public:
+    TemplateWithVirtual();
+    virtual void v();
+};
+
+template <class T>
+TemplateWithVirtual<T>::TemplateWithVirtual()
+{
+}
+
+template <class T>
+void TemplateWithVirtual<T>::v()
+{
+}
+
+class DLL_API DerivedFromTemplateInstantiationWithVirtual : public TemplateWithVirtual<int>
+{
+public:
+    DerivedFromTemplateInstantiationWithVirtual();
+};

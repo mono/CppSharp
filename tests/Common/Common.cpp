@@ -602,3 +602,7 @@ NonTrivialDtor::~NonTrivialDtor()
 {
     dtorCalled = true;
 }
+
+DerivedFromTemplateInstantiationWithVirtual::DerivedFromTemplateInstantiationWithVirtual()
+{
+}
