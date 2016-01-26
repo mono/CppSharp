@@ -873,3 +873,18 @@ namespace NamespaceB
 		void Function(CS_OUT NamespaceA::A &a);
 	};
 }
+
+class DLL_API CheckMarshllingOfCharPtr
+{
+	char* str;
+	wchar_t* wstr;
+public:
+	CheckMarshllingOfCharPtr();
+	~CheckMarshllingOfCharPtr();
+	void funcWithCharPtr(char* ptr);
+	void funcWithWideCharPtr(wchar_t* ptr);
+	char* funcRetCharPtr();
+	wchar_t* funcRetWideCharPtr();
+};
+
+DLL_API char* freeFuncWithCharPtrRet(char* ptr);

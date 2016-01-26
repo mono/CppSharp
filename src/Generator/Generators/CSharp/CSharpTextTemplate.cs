@@ -127,6 +127,7 @@ namespace CppSharp.Generators.CSharp
             WriteLine("using System;");
             WriteLine("using System.Runtime.InteropServices;");
             WriteLine("using System.Security;");
+            WriteLine("using System.Text;");
             foreach (var customUsingStatement in Options.DependentNameSpaces)
             {
                 WriteLine(string.Format("using {0};", customUsingStatement));
@@ -566,6 +567,17 @@ namespace CppSharp.Generators.CSharp
             return functions;
         }
 
+        private string GatherMarshalledParameter(Parameter param)
+        {
+            var isNonConstParam = IsNonConstCharPtrParam(param);
+            if (isNonConstParam && param.Type.IsPointerToPrimitiveType(PrimitiveType.Char))
+                return string.Format("[MarshalAs(UnmanagedType.LPStr)]{0} {1}", "StringBuilder", param.Name);
+            else if (isNonConstParam && param.Type.IsPointerToPrimitiveType(PrimitiveType.WideChar))
+                return string.Format("[MarshalAs(UnmanagedType.LPWStr)]{0} {1}", "StringBuilder", param.Name);
+            
+            return string.Format("{0} {1}", param.CSharpType(TypePrinter), param.Name);
+        }
+
         private IEnumerable<string> GatherInternalParams(Function function, out CSharpTypePrinterResult retType)
         {
             TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
@@ -574,8 +586,8 @@ namespace CppSharp.Generators.CSharp
             retType = retParam.CSharpType(TypePrinter);
 
             var @params = function.GatherInternalParams(Driver.Options.IsItaniumLikeAbi).Select(p =>
-                string.Format("{0} {1}", p.CSharpType(TypePrinter), p.Name)).ToList();
-
+                GatherMarshalledParameter(p)).ToList();
+            
             TypePrinter.PopContext();
 
             return @params;
@@ -878,7 +890,10 @@ namespace CppSharp.Generators.CSharp
             var arrPtr = arrPtrIden;
             var finalElementType = (arrayType.Type.GetFinalPointee() ?? arrayType.Type);
             var isChar = finalElementType.IsPrimitiveType(PrimitiveType.Char);
-
+            /*TO BE ADDED LATER IN THE SAME PR
+             * 
+             * if (arrayType.Type.IsPointerToPrimitiveType() && isChar || finalElementType.IsPrimitiveType(PrimitiveType.Short))
+                return arrPtr;*/
             string type;
             if (Driver.Options.MarshalCharAsManagedChar && isChar)
             {
@@ -892,12 +907,20 @@ namespace CppSharp.Generators.CSharp
                 type = originalType.ToString();
             }
 
+            /** TEMP SOLUTION */
+            if (type.Equals("StringBuilder"))
+                type = "sbyte*";
+            string originalTypeStr = originalType.ToString();
+            if (originalTypeStr.Equals("StringBuilder"))
+                originalTypeStr = "char*";
+            /* */
+
             WriteLine(string.Format("fixed ({0} {1} = {2}.{3})",
                 type, arrPtrIden, Helpers.InstanceField,
                 Helpers.SafeIdentifier(field.InternalName)));
             WriteStartBraceIndent();
             if (Driver.Options.MarshalCharAsManagedChar && isChar)
-                WriteLine("var {0} = ({1}) {2};", arrPtr, originalType, arrPtrIden);
+                WriteLine("var {0} = ({1}) {2};", arrPtr, originalTypeStr, arrPtrIden);
             return arrPtr;
         }
 
@@ -2748,7 +2771,8 @@ namespace CppSharp.Generators.CSharp
             PrimitiveType primitive;
             // Do not delete instance in MS ABI.
             var name = param.Kind == ParameterKind.ImplicitDestructorParameter ? "0" : param.Name;
-            if (param.Type.IsPrimitiveType(out primitive) && primitive != PrimitiveType.Char)
+            if( (param.Type.IsPrimitiveType(out primitive) && primitive != PrimitiveType.Char) || param.Type.IsPointerToPrimitiveType(PrimitiveType.Char)
+                    || param.Type.IsPointerToPrimitiveType(PrimitiveType.WideChar) )
             {
                 return new ParamMarshal { Name = name, Param = param };
             }
@@ -2808,12 +2832,33 @@ namespace CppSharp.Generators.CSharp
             }
         }
 
+        private bool IsNonConstCharPtrType(Type type)
+         {
+             var ptrType = type as PointerType;
+             var isConst = (ptrType == null ? false : CSharpTypePrinter.IsConstCharString(ptrType));
+             return !isConst && (ptrType.IsPointerToPrimitiveType(PrimitiveType.Char) ||
+                     ptrType.IsPointerToPrimitiveType(PrimitiveType.WideChar));
+         }
+ 
+         private bool IsNonConstCharPtrParam(Parameter param)
+         {
+             return IsNonConstCharPtrType(param.Type);
+         }
+ 
+         private string ReturnMethodParamType(Parameter param)
+         {
+             string type = param.CSharpType(TypePrinter).ToString();
+             if (IsNonConstCharPtrParam(param))
+                 type = "StringBuilder";
+             return type;
+         }
+
         private string FormatMethodParameters(IEnumerable<Parameter> @params)
         {
             return string.Join(", ",
                 from param in @params
                 where param.Kind != ParameterKind.IndirectReturnType && !param.Ignore
-                let typeName = param.CSharpType(TypePrinter)
+                let typeName = ReturnMethodParamType(param)
                 select string.Format("{0}{1} {2}", GetParameterUsage(param.Usage),
                     typeName, param.Name +
                         (param.DefaultArgument == null || !Options.GenerateDefaultValuesForArguments ?
@@ -2991,7 +3036,7 @@ namespace CppSharp.Generators.CSharp
             Write("[DllImport(\"{0}\", ", libName);
 
             var callConv = function.CallingConvention.ToInteropCallConv();
-            WriteLine("CallingConvention = global::System.Runtime.InteropServices.CallingConvention.{0},",
+            WriteLine("CallingConvention = global::System.Runtime.InteropServices.CallingConvention.{0}, CharSet=CharSet.Ansi,",
                 callConv);
 
             WriteLineIndent("EntryPoint=\"{0}\")]", function.Mangled);

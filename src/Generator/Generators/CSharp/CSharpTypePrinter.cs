@@ -201,14 +201,36 @@ namespace CppSharp.Generators.CSharp
             return string.Format("Func<{0}{1}>", returnTypePrinterResult, args);
         }
 
+        public static bool IsCharString(Type pointee)
+        {
+            return (pointee.IsPrimitiveType(PrimitiveType.Char) ||
+                    pointee.IsPrimitiveType(PrimitiveType.Char16) ||
+                    pointee.IsPrimitiveType(PrimitiveType.WideChar));
+        }
+
+        public static bool IsNonConstCharString(PointerType pointer)
+        {
+            var pointee = pointer.Pointee.Desugar();
+
+            return IsCharString(pointee) && !pointer.QualifiedPointee.Qualifiers.IsConst;
+        }
+
         public static bool IsConstCharString(PointerType pointer)
         {
             var pointee = pointer.Pointee.Desugar();
 
-            return (pointee.IsPrimitiveType(PrimitiveType.Char) ||
-                    pointee.IsPrimitiveType(PrimitiveType.Char16) ||
-                    pointee.IsPrimitiveType(PrimitiveType.WideChar)) &&
-                    pointer.QualifiedPointee.Qualifiers.IsConst;
+            return IsCharString(pointee) && pointer.QualifiedPointee.Qualifiers.IsConst;
+        }
+
+        public static bool IsNonConstCharString(Type type)
+        {
+            var desugared = type.Desugar();
+
+            if (!(desugared is PointerType))
+                return false;
+
+            var pointer = desugared as PointerType;
+            return IsNonConstCharString(pointer);
         }
 
         public static bool IsConstCharString(Type type)
@@ -242,6 +264,8 @@ namespace CppSharp.Generators.CSharp
 
             var isManagedContext = ContextKind == CSharpTypePrinterContextKind.Managed;
 
+            if (allowStrings && IsNonConstCharString(pointer))
+                return "StringBuilder";
             if (allowStrings && IsConstCharString(pointer))
                 return isManagedContext ? "string" : "global::System.IntPtr";
 

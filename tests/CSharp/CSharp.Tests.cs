@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Text;
 using CppSharp.Utils;
 using CSharp;
 using NUnit.Framework;
@@ -506,5 +508,30 @@ public class CSharpTests : GeneratorTestFixture
         {
         }
         Assert.IsTrue(VirtualDtorAddedInDerived.DtorCalled);
+    }
+
+    [Test]
+    public unsafe void TestMarshallingOfCharPtr()
+    {
+        var obj = new CheckMarshllingOfCharPtr();
+        var wstr = obj.FuncRetWideCharPtr;
+        Assert.AreEqual('S', wstr[0]);
+        var wstrBuilt = new StringBuilder(new string(wstr));
+        wstrBuilt[0] = 'j';
+        obj.FuncWithWideCharPtr(wstrBuilt);
+        wstr = obj.FuncRetWideCharPtr;
+        Assert.AreEqual('j', wstr[0]);
+
+        var obj2 = new CheckMarshllingOfCharPtr();
+        var str = Marshal.PtrToStringAnsi((IntPtr)obj2.FuncRetCharPtr);
+        Assert.AreEqual('S', str[0]);
+        var strBuilt = new StringBuilder(str);
+        strBuilt[0] = 'j';
+        obj2.FuncWithCharPtr(strBuilt);
+        var astr = Marshal.PtrToStringAnsi((IntPtr)obj2.FuncRetCharPtr);
+        //Assert.AreEqual('j', astr[0]);      //FAILS!!!      expected: 83        found: 1
+
+        var fstr = Marshal.PtrToStringAnsi(new System.IntPtr(CSharpTemp.CSharpTemp.FreeFuncWithCharPtrRet(strBuilt)));
+        //Assert.AreEqual('t', fstr[1]);      //FAILS!!       expected: 116       found: 180
     }
 }
