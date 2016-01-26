@@ -587,7 +587,7 @@ namespace CppSharp.Generators.CSharp
 
             var @params = function.GatherInternalParams(Driver.Options.IsItaniumLikeAbi).Select(p =>
                 GatherMarshalledParameter(p)).ToList();
-            
+
             TypePrinter.PopContext();
 
             return @params;
@@ -2771,8 +2771,7 @@ namespace CppSharp.Generators.CSharp
             PrimitiveType primitive;
             // Do not delete instance in MS ABI.
             var name = param.Kind == ParameterKind.ImplicitDestructorParameter ? "0" : param.Name;
-            if( (param.Type.IsPrimitiveType(out primitive) && primitive != PrimitiveType.Char) || param.Type.IsPointerToPrimitiveType(PrimitiveType.Char)
-                    || param.Type.IsPointerToPrimitiveType(PrimitiveType.WideChar) )
+            if (param.Type.IsPrimitiveType(out primitive) && primitive != PrimitiveType.Char)
             {
                 return new ParamMarshal { Name = name, Param = param };
             }
