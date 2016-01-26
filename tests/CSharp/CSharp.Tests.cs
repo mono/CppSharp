@@ -516,22 +516,23 @@ public class CSharpTests : GeneratorTestFixture
         var obj = new CheckMarshllingOfCharPtr();
         var wstr = obj.FuncRetWideCharPtr;
         Assert.AreEqual('S', wstr[0]);
-        var wstrBuilt = new StringBuilder(new string(wstr));
+        var wstrBuilt = wstr;
         wstrBuilt[0] = 'j';
         obj.FuncWithWideCharPtr(wstrBuilt);
         wstr = obj.FuncRetWideCharPtr;
         Assert.AreEqual('j', wstr[0]);
 
-        var obj2 = new CheckMarshllingOfCharPtr();
+        /*var obj2 = new CheckMarshllingOfCharPtr();
         var str = Marshal.PtrToStringAnsi((IntPtr)obj2.FuncRetCharPtr);
         Assert.AreEqual('S', str[0]);
         var strBuilt = new StringBuilder(str);
         strBuilt[0] = 'j';
         obj2.FuncWithCharPtr(strBuilt);
-        var astr = Marshal.PtrToStringAnsi((IntPtr)obj2.FuncRetCharPtr);
+        var astr = Marshal.PtrToStringAnsi((IntPtr)obj2.FuncRetCharPtr);*/
         //Assert.AreEqual('j', astr[0]);      //FAILS!!!      expected: 83        found: 1
-
-        var fstr = Marshal.PtrToStringAnsi(new System.IntPtr(CSharpTemp.CSharpTemp.FreeFuncWithCharPtrRet(strBuilt)));
-        //Assert.AreEqual('t', fstr[1]);      //FAILS!!       expected: 116       found: 180
+        StringBuilder strBuilt = new StringBuilder();
+        //var fstr = Marshal.PtrToStringAnsi(new System.IntPtr(CSharp.CSharp.FreeFuncWithCharPtrRet(strBuilt)));
+        var fstr = CSharp.CSharp.FreeFuncWithCharPtrRet(strBuilt);
+        Assert.AreEqual('t', fstr[1]);      //FAILS!!       expected: 116       found: 180
     }
 }

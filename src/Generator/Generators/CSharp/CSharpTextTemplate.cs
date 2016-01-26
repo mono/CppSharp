@@ -704,6 +704,12 @@ namespace CppSharp.Generators.CSharp
             if (!string.IsNullOrWhiteSpace(fieldTypePrinted.NameSuffix))
                 typeName += fieldTypePrinted.NameSuffix;
 
+            /**Again a temp solution
+             * */
+            if (fieldTypePrinted.Type.Equals("StringBuilder"))
+                fieldTypePrinted.Type = "char*";
+            /* */
+
             var access = @class != null && !@class.IsGenerated ? "internal" : "public";
             if (field.Expression != null)
             {
