@@ -972,8 +972,13 @@ void NamespaceB::B::Function(CS_OUT NamespaceA::A &a)
 void CheckMarshllingOfCharPtr::funcWithCharPtr(char* ptr)
 {
 	delete str;
-	//str = new char[sizeof(ptr)/sizeof(char)];
-	str = ptr;
+	int sz = 0;
+	while (ptr[sz] != '\0')
+		++sz;
+	str = new char[sz + 1];
+	for (int i = 0; i < sz; ++i)
+		str[i] = ptr[i];
+	str[sz] = '\0';
 }
 
 char* CheckMarshllingOfCharPtr::funcRetCharPtr()
@@ -984,7 +989,13 @@ char* CheckMarshllingOfCharPtr::funcRetCharPtr()
 void CheckMarshllingOfCharPtr::funcWithWideCharPtr(wchar_t* ptr)
 {
 	delete wstr;
-	wstr = ptr;
+	int sz = 0;
+	while (ptr[sz] != '\0')
+		++sz;
+	wstr = new wchar_t[sz + 1];
+	for (int i = 0; i < sz; ++i)
+		wstr[i] = ptr[i];
+	wstr[sz] = '\0';
 }
 
 wchar_t* CheckMarshllingOfCharPtr::funcRetWideCharPtr()
@@ -1018,10 +1029,14 @@ CheckMarshllingOfCharPtr::~CheckMarshllingOfCharPtr()
 	delete wstr;
 }
 
-char* freeFuncWithCharPtrRet(char* ptr)
+char* freeFuncWithCharPtrRet(char* p)
 {
-	ptr[0] = 'p';
-	ptr[1] = 't';
-	ptr[2] = 'r';
+	int sz = 0;
+	while (p[sz] != '\0')
+		++sz;
+	char* ptr = new char[sz + 1];
+	for (int i = 0; i < sz; ++i)
+		ptr[i] = p[i];
+	ptr[sz] = '\0';
 	return ptr;
 }

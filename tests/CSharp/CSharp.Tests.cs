@@ -515,26 +515,24 @@ public class CSharpTests : GeneratorTestFixture
     {
         var obj = new CheckMarshllingOfCharPtr();
         var wstr = obj.FuncRetWideCharPtr;
-        Assert.AreEqual('S', wstr[0]);
+        Assert.AreEqual('r', wstr[2]);
         var wstrBuilt = wstr;
-        wstrBuilt[0] = 'j';
+        wstrBuilt[2] = 'j';
         obj.FuncWithWideCharPtr(wstrBuilt);
         wstr = obj.FuncRetWideCharPtr;
-        //Assert.AreEqual('j', wstr[0]);            //FAILS!!  Expected : 106   found : 172
+        Assert.AreEqual('j', wstr[2]);
 
         var obj2 = new CheckMarshllingOfCharPtr();
         var str = obj2.FuncRetCharPtr;
-        Assert.AreEqual('S', str[0]);
+        Assert.AreEqual('g', str[5]);
         var strBuilt = str;
-        strBuilt[0] = 'j';
+        strBuilt[4] = 'j';
         obj2.FuncWithCharPtr(strBuilt);
         var astr = obj2.FuncRetCharPtr;
-        //Assert.AreEqual('j', astr[0]);      //FAILS!!!      expected: 106       found: 52
+        Assert.AreEqual('j', astr[4]);
         
-        /** This part doesn't even run and causes SIGABART */
-        //StringBuilder strBuilt = new StringBuilder(5);
-        //var fstr = Marshal.PtrToStringAnsi(new System.IntPtr(CSharp.CSharp.FreeFuncWithCharPtrRet(strBuilt)));
-        //var fstr = CSharp.CSharp.FreeFuncWithCharPtrRet(strBuilt);
-        //Assert.AreEqual('t', fstr[1]);
+        StringBuilder strB = astr;
+        var fstr = CSharp.CSharp.FreeFuncWithCharPtrRet(strB);
+        Assert.AreEqual('j', fstr[4]);
     }
 }

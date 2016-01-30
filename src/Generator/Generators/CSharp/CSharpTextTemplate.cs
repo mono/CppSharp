@@ -3040,9 +3040,18 @@ namespace CppSharp.Generators.CSharp
 
             Write("[DllImport(\"{0}\", ", libName);
 
+            string charSet = string.Empty;
+            if (function.ReturnType.Type.IsPointerToPrimitiveType(PrimitiveType.Char) ||
+                function.ReturnType.Type.IsPointerToPrimitiveType(PrimitiveType.UChar))
+                charSet = " CharSet=CharSet.Ansi,";
+            else if (function.ReturnType.Type.IsPointerToPrimitiveType(PrimitiveType.WideChar) ||
+                function.ReturnType.Type.IsPointerToPrimitiveType(PrimitiveType.Char16))
+                charSet = " CharSet=CharSet.Unicode,";
+
+
             var callConv = function.CallingConvention.ToInteropCallConv();
-            WriteLine("CallingConvention = global::System.Runtime.InteropServices.CallingConvention.{0}, CharSet=CharSet.Ansi,",
-                callConv);
+            WriteLine("CallingConvention = global::System.Runtime.InteropServices.CallingConvention.{0},{1}",
+                callConv, charSet);
 
             WriteLineIndent("EntryPoint=\"{0}\")]", function.Mangled);
 
