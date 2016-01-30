@@ -704,11 +704,9 @@ namespace CppSharp.Generators.CSharp
             if (!string.IsNullOrWhiteSpace(fieldTypePrinted.NameSuffix))
                 typeName += fieldTypePrinted.NameSuffix;
 
-            /**Again a temp solution
-             * */
+            //To block fields from getting marshalled
             if (fieldTypePrinted.Type.Equals("StringBuilder"))
                 fieldTypePrinted.Type = "char*";
-            /* */
 
             var access = @class != null && !@class.IsGenerated ? "internal" : "public";
             if (field.Expression != null)
@@ -896,10 +894,12 @@ namespace CppSharp.Generators.CSharp
             var arrPtr = arrPtrIden;
             var finalElementType = (arrayType.Type.GetFinalPointee() ?? arrayType.Type);
             var isChar = finalElementType.IsPrimitiveType(PrimitiveType.Char);
-            /*TO BE ADDED LATER IN THE SAME PR
+
+            /*Doesn't work
              * 
-             * if (arrayType.Type.IsPointerToPrimitiveType() && isChar || finalElementType.IsPrimitiveType(PrimitiveType.Short))
+             * if (arrayType.Type.IsPointerToPrimitiveType() && (isChar || finalElementType.IsPrimitiveType(PrimitiveType.Short)))
                 return arrPtr;*/
+
             string type;
             if (Driver.Options.MarshalCharAsManagedChar && isChar)
             {
@@ -913,13 +913,12 @@ namespace CppSharp.Generators.CSharp
                 type = originalType.ToString();
             }
 
-            /** TEMP SOLUTION */
+            ///Don't marshal fields
             if (type.Equals("StringBuilder"))
                 type = "sbyte*";
             string originalTypeStr = originalType.ToString();
             if (originalTypeStr.Equals("StringBuilder"))
                 originalTypeStr = "char*";
-            /* */
 
             WriteLine(string.Format("fixed ({0} {1} = {2}.{3})",
                 type, arrPtrIden, Helpers.InstanceField,
@@ -3047,7 +3046,6 @@ namespace CppSharp.Generators.CSharp
             else if (function.ReturnType.Type.IsPointerToPrimitiveType(PrimitiveType.WideChar) ||
                 function.ReturnType.Type.IsPointerToPrimitiveType(PrimitiveType.Char16))
                 charSet = " CharSet=CharSet.Unicode,";
-
 
             var callConv = function.CallingConvention.ToInteropCallConv();
             WriteLine("CallingConvention = global::System.Runtime.InteropServices.CallingConvention.{0},{1}",
