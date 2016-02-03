@@ -239,8 +239,9 @@ namespace CppSharp
             // however, it cannot be used because it needs invoking an external process to run the .bat
             // which is killed prematurely by VS when the pre-build events of wrapper projects are run
             const string ucrtVersionEnvVar = "%UCRTVersion%";
-            foreach (var path in ucrtPaths.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries))
+            foreach (var splitPath in ucrtPaths.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries))
             {
+                var path = splitPath.TrimStart('\\');
                 var index = path.IndexOf(ucrtVersionEnvVar, StringComparison.Ordinal);
                 if (index >= 0)
                 {
