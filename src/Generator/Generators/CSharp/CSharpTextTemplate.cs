@@ -571,9 +571,9 @@ namespace CppSharp.Generators.CSharp
         {
             var isNonConstParam = IsNonConstCharPtrParam(param);
             if (isNonConstParam && param.Type.IsPointerToPrimitiveType(PrimitiveType.Char))
-                return string.Format("[MarshalAs(UnmanagedType.AnsiBStr)]{0} {1}", "String", param.Name);
+                return string.Format("[MarshalAs(UnmanagedType.LPStr)]{0} {1}", "String", param.Name);
             else if (isNonConstParam && param.Type.IsPointerToPrimitiveType(PrimitiveType.WideChar))
-                return string.Format("[MarshalAs(UnmanagedType.BStr)]{0} {1}", "String", param.Name);
+                return string.Format("[MarshalAs(UnmanagedType.LPWStr)]{0} {1}", "String", param.Name);
             
             return string.Format("{0} {1}", param.CSharpType(TypePrinter), param.Name);
         }
