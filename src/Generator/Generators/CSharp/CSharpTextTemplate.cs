@@ -571,9 +571,9 @@ namespace CppSharp.Generators.CSharp
         {
             var isNonConstParam = IsNonConstCharPtrParam(param);
             if (isNonConstParam && param.Type.IsPointerToPrimitiveType(PrimitiveType.Char))
-                return string.Format("[MarshalAs(UnmanagedType.LPStr)]{0} {1}", "StringBuilder", param.Name);
+                return string.Format("[MarshalAs(UnmanagedType.AnsiBStr)]{0} {1}", "String", param.Name);
             else if (isNonConstParam && param.Type.IsPointerToPrimitiveType(PrimitiveType.WideChar))
-                return string.Format("[MarshalAs(UnmanagedType.LPWStr)]{0} {1}", "StringBuilder", param.Name);
+                return string.Format("[MarshalAs(UnmanagedType.BStr)]{0} {1}", "String", param.Name);
             
             return string.Format("{0} {1}", param.CSharpType(TypePrinter), param.Name);
         }
@@ -705,7 +705,7 @@ namespace CppSharp.Generators.CSharp
                 typeName += fieldTypePrinted.NameSuffix;
 
             //To block fields from getting marshalled
-            if (fieldTypePrinted.Type.Equals("StringBuilder"))
+            if (fieldTypePrinted.Type.Equals("String"))
                 fieldTypePrinted.Type = "char*";
 
             var access = @class != null && !@class.IsGenerated ? "internal" : "public";
@@ -914,10 +914,10 @@ namespace CppSharp.Generators.CSharp
             }
 
             ///Don't marshal fields
-            if (type.Equals("StringBuilder"))
+            if (/*type.Equals("StringBuilder") ||*/ type.Equals("String"))
                 type = "sbyte*";
             string originalTypeStr = originalType.ToString();
-            if (originalTypeStr.Equals("StringBuilder"))
+            if (/*originalTypeStr.Equals("StringBuilder") ||*/ originalTypeStr.Equals("String"))
                 originalTypeStr = "char*";
 
             WriteLine(string.Format("fixed ({0} {1} = {2}.{3})",
@@ -2853,7 +2853,7 @@ namespace CppSharp.Generators.CSharp
          {
              string type = param.CSharpType(TypePrinter).ToString();
              if (IsNonConstCharPtrParam(param))
-                 type = "StringBuilder";
+                 type = "string";
              return type;
          }
 

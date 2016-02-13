@@ -265,7 +265,7 @@ namespace CppSharp.Generators.CSharp
             var isManagedContext = ContextKind == CSharpTypePrinterContextKind.Managed;
 
             if (allowStrings && IsNonConstCharString(pointer))
-                return "StringBuilder";
+                return "String";
             if (allowStrings && IsConstCharString(pointer))
                 return isManagedContext ? "string" : "global::System.IntPtr";
 
