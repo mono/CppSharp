@@ -873,7 +873,7 @@ namespace NamespaceB
 		void Function(CS_OUT NamespaceA::A &a);
 	};
 }
-
+/*
 class DLL_API CheckMarshllingOfCharPtr
 {
 	char* str;
@@ -888,3 +888,4 @@ public:
 };
 
 DLL_API char* freeFuncWithCharPtrRet(char* ptr);
+*/

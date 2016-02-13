@@ -968,7 +968,7 @@ bool VirtualDtorAddedInDerived::dtorCalled = false;
 void NamespaceB::B::Function(CS_OUT NamespaceA::A &a)
 {
 }
-
+/*
 void CheckMarshllingOfCharPtr::funcWithCharPtr(char* ptr)
 {
 	delete str;
@@ -1040,3 +1040,4 @@ char* freeFuncWithCharPtrRet(char* p)
 	ptr[sz] = '\0';
 	return ptr;
 }
+*/
