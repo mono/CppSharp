@@ -17,7 +17,9 @@ function execute(cmd, quiet)
     local file = assert(io.popen(cmd .. " 2>&1", "r"))
     local output = file:read('*all')
     file:close()
-    return output
+    -- FIXME: Lua 5.2 returns the process exit code from close()
+    -- Update this once Premake upgrades from Lua 5.1
+    return 0
   end
 end
 
