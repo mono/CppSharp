@@ -83,7 +83,7 @@ end
 
 function brew_install(pkg)
 	-- check if package is already installed
-	local res = os.outputof("brew ls --versions " .. pkg)
+	local res = outputof("brew ls --versions " .. pkg)
 	if string.is_empty(res) then
 		execute("brew install " .. pkg)
 	end 

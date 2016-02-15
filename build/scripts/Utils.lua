@@ -9,6 +9,13 @@ function cat(file)
   return output
 end
 
+function outputof(cmd, quiet)
+    local file = assert(io.popen(cmd .. " 2>&1", "r"))
+    local output = file:read('*all')
+    file:close()
+    return output
+end
+
 function execute(cmd, quiet)
   print(cmd)
   if not quiet then
@@ -69,7 +76,7 @@ end
 
 function git.rev_parse(dir, rev)
   local cmd = "git -C " .. path.translate(dir, sep) .. " rev-parse " .. rev
-  return os.outputof(cmd)
+  return outputof(cmd)
 end
 
 function http.progress (total, curr)
