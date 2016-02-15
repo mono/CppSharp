@@ -2,7 +2,7 @@ require "Build"
 require "Utils"
 require "../Helpers"
 
-local llvm = basedir .. "/../deps/llvm"
+local llvm = path.getabsolute(basedir .. "/../deps/llvm")
 
 -- If we are inside vagrant then clone and build LLVM outside the shared folder,
 -- otherwise file I/O performance will be terrible.
@@ -103,9 +103,9 @@ function download_llvm()
   end
 end
 
-function cmake(gen, conf, options)
+function cmake(gen, conf, builddir, options)
 	local cwd = os.getcwd()
-	os.chdir(llvm_build)
+	os.chdir(builddir)
 	local cmd = "cmake -G " .. '"' .. gen .. '"'
 		.. ' -DCLANG_BUILD_EXAMPLES=false '
 		.. ' -DCLANG_INCLUDE_DOCS=false '
@@ -186,20 +186,26 @@ end
 
 function clean_llvm(llvm_build)
 	if os.isdir(llvm_build) then os.rmdir(llvm_build) end
-	os.mkdir(llvm_build)
 end
 
 function build_llvm(llvm_build)
+	if not os.isdir(llvm) then
+		print("LLVM/Clang directory does not exist, cloning...")
+		clone_llvm()
+	end
+
+	os.mkdir(llvm_build)
+
 	local conf = get_llvm_configuration_name()
 	local use_msbuild = false
 	if os.is("windows") and use_msbuild then
-		cmake("Visual Studio 12 2013", conf)
+		cmake("Visual Studio 12 2013", conf, llvm_build)
 		local llvm_sln = path.join(llvm_build, "LLVM.sln")
 		msbuild(llvm_sln, conf)
 	else
 		local options = os.is("macosx") and
 			"-DLLVM_ENABLE_LIBCXX=true -DLLVM_BUILD_32_BITS=true" or "" 
-		cmake("Ninja", conf, options)
+		cmake("Ninja", conf, llvm_build, options)
 		ninja(llvm_build)
 		ninja(llvm_build, "clang-headers")
 	end
