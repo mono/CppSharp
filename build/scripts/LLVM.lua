@@ -68,12 +68,12 @@ function get_llvm_configuration_name(debug)
 end
 
 function extract_7z(archive, dest_dir)
-	return execute(string.format("7z x %s -o%s -y", archive, dest_dir), true)
+	return execute_or_die(string.format("7z x %s -o%s -y", archive, dest_dir), true)
 end
 
 function extract_tar_xz(archive, dest_dir)
 	execute("mkdir -p " .. dest_dir, true)
-	return execute(string.format("tar xJf %s -C %s", archive, dest_dir), true)
+	return execute_or_die(string.format("tar xJf %s -C %s", archive, dest_dir), true)
 end
 
 local use_7zip = os.is("windows")
@@ -180,7 +180,7 @@ function cmake(gen, conf, options)
  		.. ' -DLLVM_TARGETS_TO_BUILD="X86"'
  		.. ' -DCMAKE_BUILD_TYPE=' .. conf .. ' ..'
  		.. ' ' .. options
- 	execute(cmd)
+ 	execute_or_die(cmd)
  	os.chdir(cwd)
 end
 
@@ -262,9 +262,9 @@ function archive_llvm(dir)
 	local cwd = os.getcwd()
 	os.chdir(dir)
 	if use_7zip then
-		execute("7z a " .. path.join("..", archive) .. " *")
+		execute_or_die("7z a " .. path.join("..", archive) .. " *")
 	else
-		execute("tar cJf " .. path.join("..", archive) .. " *")
+		execute_or_die("tar cJf " .. path.join("..", archive) .. " *")
 	end
 	os.chdir(cwd)
 	if is_vagrant() then

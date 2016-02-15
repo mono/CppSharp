@@ -22,7 +22,7 @@ function msbuild(sln, conf)
 		cmd = cmd .. " /p:Configuration=" .. conf
 	end
 
-	execute(cmd)
+	execute_or_die(cmd)
 end
 
 function ninja(dir, action)
@@ -30,7 +30,7 @@ function ninja(dir, action)
 	if action then
 		cmd = cmd .. " " .. action
 	end
-	return execute(cmd)
+	return execute_or_die(cmd)
 end
 
 function run_premake(file, action)
@@ -40,7 +40,7 @@ function run_premake(file, action)
 	end
 
 	local cmd = string.format("%s --file=%s %s", _PREMAKE_COMMAND, file, action)
-	return execute(cmd)
+	return execute_or_die(cmd)
 end
 
 function build_cppsharp()

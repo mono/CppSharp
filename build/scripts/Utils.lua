@@ -21,6 +21,14 @@ function execute(cmd, quiet)
   end
 end
 
+function execute_or_die(cmd, quiet)
+  local res = execute(cmd, quiet)
+  if res > 0 then
+    error("Error executing shell command, aborting...")
+  end
+  return res
+end
+
 function sudo(cmd)
   return os.execute("sudo " .. cmd)
 end
@@ -39,22 +47,22 @@ function git.clone(dir, url, target)
   if target ~= nil then
     cmd = cmd .. " " .. target
   end
-  return execute(cmd)
+  return execute_or_die(cmd)
 end
 
 function git.pull_rebase(dir)
   local cmd = "git -C " .. path.translate(dir, sep) .. " pull --rebase"
-  return execute(cmd)
+  return execute_or_die(cmd)
 end
 
 function git.reset_hard(dir, rev)
   local cmd = "git -C " .. path.translate(dir, sep) .. " reset --hard " .. rev
-  return execute(cmd)
+  return execute_or_die(cmd)
 end
 
 function git.checkout(dir, rev)
   local cmd = "git -C " .. path.translate(dir, sep) .. " checkout " .. rev
-  return execute(cmd)
+  return execute_or_die(cmd)
 end
 
 function git.rev_parse(dir, rev)
