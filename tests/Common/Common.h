@@ -1038,6 +1038,11 @@ void TemplateWithVirtual<T>::v()
 {
 }
 
+template <typename T>
+int FunctionTemplateWithDependentTypeDefaultExpr(size_t size = sizeof(T)) {
+	return size;
+}
+
 class DLL_API DerivedFromTemplateInstantiationWithVirtual : public TemplateWithVirtual<int>
 {
 public:

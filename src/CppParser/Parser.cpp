@@ -2693,6 +2693,7 @@ AST::Expression* Parser::WalkExpression(clang::Expr* Expr)
     llvm::APSInt integer;
     if (Expr->getStmtClass() != Stmt::CharacterLiteralClass &&
         Expr->getStmtClass() != Stmt::CXXBoolLiteralExprClass &&
+        Expr->getStmtClass() != Stmt::UnaryExprOrTypeTraitExprClass &&
         Expr->EvaluateAsInt(integer, C->getASTContext()))
         return new AST::Expression(integer.toString(10));
     return new AST::Expression(GetStringFromStatement(Expr));
