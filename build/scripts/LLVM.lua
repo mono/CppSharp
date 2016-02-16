@@ -48,16 +48,55 @@ function clone_llvm()
   git.reset_hard(clang, clang_release)
 end
 
-function get_llvm_package_name(rev, conf)
+function get_toolset_configuration_name()
+  if os.is("windows") then
+    local function get_vs_version(ver)
+      if     ver == "19" then return "vs2015"
+      elseif ver == "18" then return "vs2013"
+      elseif ver == "17" then return "vs2012"
+      else error("Unknown MSVC compiler version, run in VS command prompt.") end
+    end
+
+    local vsver = _ACTION
+    local arch = "x86"
+
+    if not string.starts(vsver, "vs") then
+      local out = outputof("cl")
+      local ver, arch = string.match(out, 'Version (%d+)%.%d+%.%d+ for (%w+)')
+      vsver = get_vs_version(ver)
+    end
+
+    return table.concat({vsver, arch}, "-")
+  end
+  -- FIXME: Implement for non-Windows platforms
+  return nil
+end
+
+-- Returns a string describing the package configuration.
+-- Example: llvm-f79c5c-windows-vs2015-x86-Debug
+function get_llvm_package_name(rev, conf, toolset)
   if not rev then
   	rev = get_llvm_rev()
   end
+  rev = string.sub(rev, 0, 6)
+
   if not conf then
   	conf = get_llvm_configuration_name()
   end
 
-  rev = string.sub(rev, 0, 6)
-  return table.concat({"llvm", rev, os.get(), conf}, "-")
+  if not toolset then
+    toolset = get_toolset_configuration_name()
+  end
+
+  local components = {"llvm", rev, os.get()}
+
+  if toolset then
+    table.insert(components, toolset)
+  end
+
+  table.insert(components, conf)
+
+  return table.concat(components, "-")
 end
 
 function get_llvm_configuration_name(debug)
@@ -199,7 +238,7 @@ function build_llvm(llvm_build)
 	local conf = get_llvm_configuration_name()
 	local use_msbuild = false
 	if os.is("windows") and use_msbuild then
-		cmake("Visual Studio 12 2013", conf, llvm_build)
+		cmake("Visual Studio 14 2015", conf, llvm_build)
 		local llvm_sln = path.join(llvm_build, "LLVM.sln")
 		msbuild(llvm_sln, conf)
 	else
@@ -302,4 +341,3 @@ if _ACTION == "download_llvm" then
   download_llvm()
   os.exit()
 end
-
