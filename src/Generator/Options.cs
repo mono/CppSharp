@@ -150,7 +150,6 @@ namespace CppSharp
 
         public Encoding Encoding { get; set; }
 
-        private string inlinesLibraryName;
         public string InlinesLibraryName
         {
             get
@@ -162,6 +161,19 @@ namespace CppSharp
                 return inlinesLibraryName;
             }
             set { inlinesLibraryName = value; }
+        }
+
+        public string TemplatesLibraryName
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(templatesLibraryName))
+                {
+                    return string.Format("{0}-templates", OutputNamespace);
+                }
+                return templatesLibraryName;
+            }
+            set { templatesLibraryName = value; }
         }
 
         public bool IsCSharpGenerator
@@ -193,6 +205,9 @@ namespace CppSharp
         /// C# end only: force patching of the virtual entries of the functions in this list.
         /// </summary>
         public List<string> ExplicitlyPatchedVirtualFunctions { get; private set; }
+
+        private string inlinesLibraryName;
+        private string templatesLibraryName;
     }
 
     public class InvalidOptionException : Exception
