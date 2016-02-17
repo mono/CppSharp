@@ -42,6 +42,7 @@ init:
   - git config --global core.autocrlf true
 
 install:
+  - call "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat" x86
   - build\premake5.exe --file=build\scripts\LLVM.lua download_llvm
 
 build_script:
