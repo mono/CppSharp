@@ -873,3 +873,19 @@ namespace NamespaceB
 		void Function(CS_OUT NamespaceA::A &a);
 	};
 }
+
+typedef DLL_API union {
+	int c;
+	int d[10];
+} union_t;
+struct DLL_API struct_t {
+	int b;
+	union_t u;
+};
+int DLL_API func_union(union_t u) {
+	return u.c;
+}
+
+int DLL_API func_struct_union(struct struct_t *p) {
+	return p->u.c;
+}
