@@ -1,5 +1,5 @@
 #include "ClassY.h"
 
-class ClassB
+class DLL_API ClassB
 {
 };

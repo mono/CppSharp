@@ -1,7 +1,8 @@
-#ifndef __CLASS_Y__H__
-#define __CLASS_Y__H__
+#pragma once
 
-class ClassY
+#include "../Tests.h"
+
+class DLL_API ClassY
 {
 public:
 	void init();
@@ -10,5 +11,3 @@ public:
 void ClassY::init()
 {
 }
-
-#endif
