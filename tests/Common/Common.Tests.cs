@@ -618,5 +618,14 @@ public class CommonTests : GeneratorTestFixture
         {
         }
     }
+
+    [Test]
+    public void TestFuncWithUnionParam()
+    {
+        var ut = new union_t();
+        ut.c = 20;
+        var v = common.func_union(ut);
+        Assert.AreEqual(20, v);
+    }
 }
  
