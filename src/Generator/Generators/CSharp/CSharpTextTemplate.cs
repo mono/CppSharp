@@ -1360,9 +1360,9 @@ namespace CppSharp.Generators.CSharp
         {
             if (Driver.Options.IsMicrosoftAbi)
                 WriteLine("__OriginalVTables = new void*[] {{ {0} }};",
-                    string.Join(", ", vfTables.Select((v, i) => string.Format("native->vfptr{0}.ToPointer()", i))));
+                    string.Join(", ", vfTables.Select((v, i) => string.Format("((Internal*) native)->vfptr{0}.ToPointer()", i))));
             else
-                WriteLine("__OriginalVTables = new void*[] { native->vfptr0.ToPointer() };");
+                WriteLine("__OriginalVTables = new void*[] { ((Internal*) native)->vfptr0.ToPointer() };");
         }
 
         private void AllocateNewVTablesMS(Class @class, IList<VTableComponent> wrappedEntries,
@@ -1899,7 +1899,7 @@ namespace CppSharp.Generators.CSharp
                     @class.NeedsBase && !@class.BaseClass.IsInterface ? "new " : string.Empty,
                     @class.Name, Helpers.CreateInstanceIdentifier);
                 WriteStartBraceIndent();
-                WriteLine("return new {0}(({1}.Internal*) native, skipVTables);", ctorCall, className);
+                WriteLine("return new {0}(native.ToPointer(), skipVTables);", ctorCall);
                 WriteCloseBraceIndent();
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
@@ -1907,13 +1907,13 @@ namespace CppSharp.Generators.CSharp
             GenerateNativeConstructorByValue(@class, className, ctorCall);
 
             PushBlock(CSharpBlockKind.Method);
-            WriteLine("{0} {1}({2}.Internal* native, bool skipVTables = false){3}",
+            WriteLine("{0} {1}(void* native, bool skipVTables = false){2}",
                 @class.IsAbstractImpl ? "internal" : (@class.IsRefType ? "protected" : "private"),
-                @class.Name, className, @class.IsValueType ? " : this()" : string.Empty);
+                @class.Name, @class.IsValueType ? " : this()" : string.Empty);
 
             var hasBaseClass = @class.HasBaseClass && @class.BaseClass.IsRefType;
             if (hasBaseClass)
-                WriteLineIndent(": base(({0}.Internal*) null)", @class.BaseClass.Visit(TypePrinter));
+                WriteLineIndent(": base((void*) null)", @class.BaseClass.Visit(TypePrinter));
 
             WriteStartBraceIndent();
 
@@ -1952,7 +1952,7 @@ namespace CppSharp.Generators.CSharp
             }
             else
             {
-                WriteLine("{0} = *native;", Helpers.InstanceField);
+                WriteLine("{0} = *(Internal*) native;", Helpers.InstanceField);
             }
 
             WriteCloseBraceIndent();
@@ -1975,7 +1975,7 @@ namespace CppSharp.Generators.CSharp
             if (@class.IsRefType && !@class.IsAbstract)
             {
                 PushBlock(CSharpBlockKind.Method);
-                WriteLine("private static {0}.Internal* __CopyValue({0}.Internal native)", className);
+                WriteLine("private static void* __CopyValue({0}.Internal native)", className);
                 WriteStartBraceIndent();
                 var copyCtorMethod = @class.Methods.FirstOrDefault(method =>
                     method.IsCopyConstructor);
@@ -1985,14 +1985,14 @@ namespace CppSharp.Generators.CSharp
                     WriteLine("var ret = Marshal.AllocHGlobal({0});", @class.Layout.Size);
                     WriteLine("{0}.Internal.{1}(ret, new global::System.IntPtr(&native));",
                         @class.Visit(TypePrinter), GetFunctionNativeIdentifier(copyCtorMethod));
-                    WriteLine("return ({0}.Internal*) ret;", className);
+                    WriteLine("return ret.ToPointer();", className);
                 }
                 else
                 {
-                    WriteLine("var ret = ({0}.Internal*) Marshal.AllocHGlobal({1});",
+                    WriteLine("var ret = Marshal.AllocHGlobal({1});",
                         className, @class.Layout.Size);
-                    WriteLine("*ret = native;", className);
-                    WriteLine("return ret;");
+                    WriteLine("*({0}.Internal*) ret = native;", className);
+                    WriteLine("return ret.ToPointer();");
                 }
                 WriteCloseBraceIndent();
                 PopBlock(NewLineKind.BeforeNextBlock);
@@ -2027,7 +2027,7 @@ namespace CppSharp.Generators.CSharp
                 PushIndent();
                 Write(": this(");
 
-                Write(method != null ? "(Internal*) null" : "native");
+                Write(method != null ? "(void*) null" : "native");
 
                 WriteLine(")");
                 PopIndent();
