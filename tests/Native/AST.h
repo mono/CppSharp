@@ -110,3 +110,15 @@ class Atomics
 class ImplicitCtor
 {
 };
+
+template <typename T>
+class TestSpecializationArguments
+{
+public:
+    TestSpecializationArguments() {}
+};
+
+void instantiatesTemplate(TestSpecializationArguments<int> t)
+{
+}
+

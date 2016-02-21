@@ -100,14 +100,28 @@ namespace CppSharp.AST
         /// Finds an existing declaration by name.
         public IEnumerable<T> FindDecl<T>(string name) where T : Declaration
         {
-            foreach (var module in TranslationUnits)
+            switch (typeof(T).Name)
             {
-                if (module.FindEnum(name) as T != null)
-                    yield return module.FindEnum(name) as T;
-                else if (module.FindClass(name) as T != null)
-                    yield return module.FindClass(name) as T;
-                else if (module.FindFunction(name) as T != null)
-                    yield return module.FindFunction(name) as T;
+                case "Enumeration":
+                    foreach (var module in TranslationUnits)
+                        yield return module.FindEnum(name) as T;
+                    break;
+                case "Class":
+                    foreach (var module in TranslationUnits)
+                        yield return module.FindClass(name) as T;
+                    break;
+                case "ClassTemplate":
+                    foreach (var module in TranslationUnits)
+                        yield return module.FindClassTemplate(name) as T;
+                    break;
+                case "Function":
+                    foreach (var module in TranslationUnits)
+                        yield return module.FindFunction(name) as T;
+                    break;
+                default:
+                    foreach (var module in TranslationUnits)
+                        yield return module.Declarations.FirstOrDefault(d => d.Name == name) as T;
+                    break;
             }
         }
 

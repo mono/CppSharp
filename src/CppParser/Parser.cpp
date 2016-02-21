@@ -894,11 +894,16 @@ Parser::WalkClassTemplateSpecialization(clang::ClassTemplateSpecializationDecl* 
     TS->TemplatedDecl = CT;
     TS->SpecializationKind = WalkTemplateSpecializationKind(CTS->getSpecializationKind());
     auto &TAL = CTS->getTemplateArgs();
-    if (auto TSI = CTS->getTypeAsWritten())
+    auto TSI = CTS->getTypeAsWritten();
+    if (TSI)
     {
         auto TL = TSI->getTypeLoc();
         auto TSL = TL.getAs<TemplateSpecializationTypeLoc>();
         TS->Arguments = WalkTemplateArgumentList(&TAL, &TSL);
+    }
+    else
+    {
+        TS->Arguments = WalkTemplateArgumentList(&TAL, (clang::TemplateSpecializationTypeLoc*) 0);
     }
     CT->Specializations.push_back(TS);
 

@@ -288,5 +288,12 @@ namespace CppSharp.Generator.Tests.AST
             Assert.IsTrue(AstContext.FindClass("ImplicitCtor").First().Constructors.First(
                 c => c.Parameters.Count == 0).IsImplicit);
         }
+
+        [Test]
+        public void TestSpecializationArguments()
+        {
+            var classTemplate = AstContext.FindDecl<ClassTemplate>("TestSpecializationArguments").FirstOrDefault();
+            Assert.IsTrue(classTemplate.Specializations[0].Arguments[0].Type.Type.IsPrimitiveType(PrimitiveType.Int));
+        }
     }
 }
