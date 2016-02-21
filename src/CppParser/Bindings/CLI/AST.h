@@ -1659,6 +1659,12 @@ namespace CppSharp
                     void set(CppSharp::Parser::AST::FunctionTemplateSpecialization^);
                 }
 
+                property CppSharp::Parser::AST::Function^ InstantiatedFrom
+                {
+                    CppSharp::Parser::AST::Function^ get();
+                    void set(CppSharp::Parser::AST::Function^);
+                }
+
                 CppSharp::Parser::AST::Parameter^ getParameters(unsigned int i);
 
                 void addParameters(CppSharp::Parser::AST::Parameter^ s);

@@ -987,6 +987,8 @@ namespace CppSharp
             _function.Mangled = function.Mangled;
             _function.Signature = function.Signature;
             _function.CallingConvention = VisitCallingConvention(function.CallingConvention);
+            if (function.InstantiatedFrom != null)
+                _function.InstantiatedFrom = (AST.Function) Visit(function.InstantiatedFrom);
 
             for (uint i = 0; i < function.ParametersCount; ++i)
             {

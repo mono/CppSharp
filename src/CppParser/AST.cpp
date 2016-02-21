@@ -543,6 +543,7 @@ Function::Function()
     : Declaration(DeclarationKind::Function)
     , IsReturnIndirect(false)
     , SpecializationInfo(0)
+    , InstantiatedFrom(0)
 {
 }
 

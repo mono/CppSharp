@@ -2220,6 +2220,8 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, Function* F,
     F->IsDependent = FD->isDependentContext();
     F->IsPure = FD->isPure();
     F->IsDeleted = FD->isDeleted();
+    if (auto InstantiatedFrom = FD->getInstantiatedFromMemberFunction())
+        F->InstantiatedFrom = static_cast<Function*>(WalkDeclaration(InstantiatedFrom));
 
     auto CC = FT->getCallConv();
     F->CallingConvention = ConvertCallConv(CC);

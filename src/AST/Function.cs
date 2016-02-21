@@ -160,6 +160,8 @@ namespace CppSharp.AST
 
         public FunctionTemplateSpecialization SpecializationInfo { get; set; }
 
+        public Function InstantiatedFrom { get; set; }
+
         public bool IsThisCall
         {
             get { return CallingConvention == CallingConvention.ThisCall; }

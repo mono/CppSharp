@@ -630,6 +630,7 @@ public:
     CppSharp::CppParser::AST::CallingConvention CallingConvention;
     VECTOR(Parameter*, Parameters)
     FunctionTemplateSpecialization* SpecializationInfo;
+    Function* InstantiatedFrom;
 };
 
 class AccessSpecifierDecl;

@@ -295,5 +295,14 @@ namespace CppSharp.Generator.Tests.AST
             var classTemplate = AstContext.FindDecl<ClassTemplate>("TestSpecializationArguments").FirstOrDefault();
             Assert.IsTrue(classTemplate.Specializations[0].Arguments[0].Type.Type.IsPrimitiveType(PrimitiveType.Int));
         }
+
+        [Test]
+        public void TestFunctionInstantiatedFrom()
+        {
+            var classTemplate = AstContext.FindDecl<ClassTemplate>("TestSpecializationArguments").FirstOrDefault();
+            Assert.AreEqual(classTemplate.Specializations[0].Constructors.First(
+                c => !c.IsCopyConstructor && !c.IsMoveConstructor).InstantiatedFrom,
+                classTemplate.TemplatedClass.Constructors.First(c => !c.IsCopyConstructor && !c.IsMoveConstructor));
+        }
     }
 }

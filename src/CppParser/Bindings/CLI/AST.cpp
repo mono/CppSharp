@@ -2642,6 +2642,16 @@ void CppSharp::Parser::AST::Function::SpecializationInfo::set(CppSharp::Parser::
     ((::CppSharp::CppParser::AST::Function*)NativePtr)->SpecializationInfo = (::CppSharp::CppParser::AST::FunctionTemplateSpecialization*)value->NativePtr;
 }
 
+CppSharp::Parser::AST::Function^ CppSharp::Parser::AST::Function::InstantiatedFrom::get()
+{
+    return (((::CppSharp::CppParser::AST::Function*)NativePtr)->InstantiatedFrom == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::Function((::CppSharp::CppParser::AST::Function*)((::CppSharp::CppParser::AST::Function*)NativePtr)->InstantiatedFrom);
+}
+
+void CppSharp::Parser::AST::Function::InstantiatedFrom::set(CppSharp::Parser::AST::Function^ value)
+{
+    ((::CppSharp::CppParser::AST::Function*)NativePtr)->InstantiatedFrom = (::CppSharp::CppParser::AST::Function*)value->NativePtr;
+}
+
 CppSharp::Parser::AST::Method::Method(::CppSharp::CppParser::AST::Method* native)
     : CppSharp::Parser::AST::Function((::CppSharp::CppParser::AST::Function*)native)
 {
