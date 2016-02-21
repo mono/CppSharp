@@ -243,7 +243,7 @@ namespace CppSharp
 
             public static ParserOptions __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
             {
-                return new ParserOptions((ParserOptions.Internal*) native, skipVTables);
+                return new ParserOptions(native.ToPointer(), skipVTables);
             }
 
             public static ParserOptions __CreateInstance(ParserOptions.Internal native, bool skipVTables = false)
@@ -251,11 +251,11 @@ namespace CppSharp
                 return new ParserOptions(native, skipVTables);
             }
 
-            private static ParserOptions.Internal* __CopyValue(ParserOptions.Internal native)
+            private static void* __CopyValue(ParserOptions.Internal native)
             {
                 var ret = Marshal.AllocHGlobal(232);
                 CppSharp.Parser.ParserOptions.Internal.cctor_2(ret, new global::System.IntPtr(&native));
-                return (ParserOptions.Internal*) ret;
+                return ret.ToPointer();
             }
 
             private ParserOptions(ParserOptions.Internal native, bool skipVTables = false)
@@ -265,7 +265,7 @@ namespace CppSharp
                 NativeToManagedMap[__Instance] = this;
             }
 
-            protected ParserOptions(ParserOptions.Internal* native, bool skipVTables = false)
+            protected ParserOptions(void* native, bool skipVTables = false)
             {
                 if (native == null)
                     return;
@@ -687,7 +687,7 @@ namespace CppSharp
 
             public static ParserDiagnostic __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
             {
-                return new ParserDiagnostic((ParserDiagnostic.Internal*) native, skipVTables);
+                return new ParserDiagnostic(native.ToPointer(), skipVTables);
             }
 
             public static ParserDiagnostic __CreateInstance(ParserDiagnostic.Internal native, bool skipVTables = false)
@@ -695,11 +695,11 @@ namespace CppSharp
                 return new ParserDiagnostic(native, skipVTables);
             }
 
-            private static ParserDiagnostic.Internal* __CopyValue(ParserDiagnostic.Internal native)
+            private static void* __CopyValue(ParserDiagnostic.Internal native)
             {
                 var ret = Marshal.AllocHGlobal(64);
                 CppSharp.Parser.ParserDiagnostic.Internal.cctor_1(ret, new global::System.IntPtr(&native));
-                return (ParserDiagnostic.Internal*) ret;
+                return ret.ToPointer();
             }
 
             private ParserDiagnostic(ParserDiagnostic.Internal native, bool skipVTables = false)
@@ -709,7 +709,7 @@ namespace CppSharp
                 NativeToManagedMap[__Instance] = this;
             }
 
-            protected ParserDiagnostic(ParserDiagnostic.Internal* native, bool skipVTables = false)
+            protected ParserDiagnostic(void* native, bool skipVTables = false)
             {
                 if (native == null)
                     return;
@@ -884,7 +884,7 @@ namespace CppSharp
 
             public static ParserResult __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
             {
-                return new ParserResult((ParserResult.Internal*) native, skipVTables);
+                return new ParserResult(native.ToPointer(), skipVTables);
             }
 
             public static ParserResult __CreateInstance(ParserResult.Internal native, bool skipVTables = false)
@@ -892,11 +892,11 @@ namespace CppSharp
                 return new ParserResult(native, skipVTables);
             }
 
-            private static ParserResult.Internal* __CopyValue(ParserResult.Internal native)
+            private static void* __CopyValue(ParserResult.Internal native)
             {
                 var ret = Marshal.AllocHGlobal(56);
                 CppSharp.Parser.ParserResult.Internal.cctor_1(ret, new global::System.IntPtr(&native));
-                return (ParserResult.Internal*) ret;
+                return ret.ToPointer();
             }
 
             private ParserResult(ParserResult.Internal native, bool skipVTables = false)
@@ -906,7 +906,7 @@ namespace CppSharp
                 NativeToManagedMap[__Instance] = this;
             }
 
-            protected ParserResult(ParserResult.Internal* native, bool skipVTables = false)
+            protected ParserResult(void* native, bool skipVTables = false)
             {
                 if (native == null)
                     return;
@@ -1061,7 +1061,7 @@ namespace CppSharp
 
             public static ClangParser __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
             {
-                return new ClangParser((ClangParser.Internal*) native, skipVTables);
+                return new ClangParser(native.ToPointer(), skipVTables);
             }
 
             public static ClangParser __CreateInstance(ClangParser.Internal native, bool skipVTables = false)
@@ -1069,11 +1069,11 @@ namespace CppSharp
                 return new ClangParser(native, skipVTables);
             }
 
-            private static ClangParser.Internal* __CopyValue(ClangParser.Internal native)
+            private static void* __CopyValue(ClangParser.Internal native)
             {
-                var ret = (ClangParser.Internal*) Marshal.AllocHGlobal(0);
-                *ret = native;
-                return ret;
+                var ret = Marshal.AllocHGlobal(0);
+                *(ClangParser.Internal*) ret = native;
+                return ret.ToPointer();
             }
 
             private ClangParser(ClangParser.Internal native, bool skipVTables = false)
@@ -1083,7 +1083,7 @@ namespace CppSharp
                 NativeToManagedMap[__Instance] = this;
             }
 
-            protected ClangParser(ClangParser.Internal* native, bool skipVTables = false)
+            protected ClangParser(void* native, bool skipVTables = false)
             {
                 if (native == null)
                     return;

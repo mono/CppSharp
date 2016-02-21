@@ -39,7 +39,7 @@ namespace CppSharp
 
             public static SourceLocation __CreateInstance(global::System.IntPtr native, bool skipVTables = false)
             {
-                return new SourceLocation((SourceLocation.Internal*) native, skipVTables);
+                return new SourceLocation(native.ToPointer(), skipVTables);
             }
 
             public static SourceLocation __CreateInstance(SourceLocation.Internal native, bool skipVTables = false)
@@ -53,9 +53,9 @@ namespace CppSharp
                 __instance = native;
             }
 
-            private SourceLocation(SourceLocation.Internal* native, bool skipVTables = false) : this()
+            private SourceLocation(void* native, bool skipVTables = false) : this()
             {
-                __instance = *native;
+                __instance = *(Internal*) native;
             }
 
             public SourceLocation(uint ID)
