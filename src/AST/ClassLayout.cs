@@ -84,6 +84,7 @@ namespace CppSharp.AST
 
         public ClassLayout()
         {
+            Layout = new VTableLayout();
             VFTables = new List<VFTableInfo>();
         }
 
@@ -101,7 +102,6 @@ namespace CppSharp.AST
             VFTables.AddRange(classLayout.VFTables);
             if (classLayout.Layout != null)
             {
-                Layout = new VTableLayout();
                 Layout.Components.AddRange(classLayout.Layout.Components);
             }
         }

@@ -213,7 +213,7 @@
             var memberPtr = t as MemberPointerType;
             if (memberPtr != null)
                 return memberPtr.QualifiedPointee.Type;
-            return null;
+            return null;           
         }
 
         /// <summary>

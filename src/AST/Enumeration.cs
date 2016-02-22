@@ -30,9 +30,8 @@ namespace CppSharp.AST
                 get
                 {
                     if (Expression == null)
-                    {
                         return false;
-                    }
+                    
                     return Expression.Contains("0x") || Expression.Contains("0X");
                 }
             }

@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace CppSharp.AST
@@ -28,40 +30,50 @@ namespace CppSharp.AST
 
         public QualifiedType QualifiedType { get; set; }
 
+
+        public bool MemberVerifies<M>(M m, Predicate<M> pred) where M:Declaration, IMember<M>
+        {
+            return m != null && pred(m);
+        }
+
+        public bool FieldVerifies(Predicate<Field> pred) 
+        {
+            return MemberVerifies(Field, pred);
+        }
+
+        public bool GetterVerifies(Predicate<Method> pred) 
+        {
+            return MemberVerifies(GetMethod, pred);
+        }
+
+        public bool SetterVerifies(Predicate<Method> pred) 
+        {
+            return MemberVerifies(SetMethod, pred);
+        }
+
+        public bool AccessorVerifies(Predicate<Method> pred) 
+        {
+            return GetterVerifies(pred) || SetterVerifies(pred);
+        }
+
         public bool IsStatic
         {
-            get
-            {
-                return (GetMethod != null && GetMethod.IsStatic) ||
-                       (SetMethod != null && SetMethod.IsStatic);
-            }
+            get { return AccessorVerifies(m => m.IsStatic); }
         }
 
         public bool IsPure
         {
-            get
-            {
-                return (GetMethod != null && GetMethod.IsPure) ||
-                       (SetMethod != null && SetMethod.IsPure);
-            }
+            get { return AccessorVerifies(m => m.IsPure); }
         }
 
         public bool IsVirtual
         {
-            get
-            {
-                return (GetMethod != null && GetMethod.IsVirtual) ||
-                       (SetMethod != null && SetMethod.IsVirtual);
-            }
+            get { return AccessorVerifies(m => m.IsVirtual); }
         }
 
         public bool IsOverride
         {
-            get
-            {
-                return (GetMethod != null && GetMethod.IsOverride) ||
-                       (SetMethod != null && SetMethod.IsOverride);
-            }
+            get { return AccessorVerifies(m => m.IsOverride); }
         }
 
         public Method GetMethod { get; set; }
@@ -72,10 +84,8 @@ namespace CppSharp.AST
         {
             get
             {
-                return (GetMethod != null &&
-                        GetMethod.GenerationKind != GenerationKind.None) ||
-                       (Field != null &&
-                        Field.GenerationKind != GenerationKind.None);
+                return GetterVerifies(g => g.GenerationKind != GenerationKind.None) 
+                    || FieldVerifies(f => f.GenerationKind != GenerationKind.None);
             }
         }
 
@@ -83,11 +93,9 @@ namespace CppSharp.AST
         {
             get
             {
-                return (SetMethod != null && 
-                        SetMethod.GenerationKind != GenerationKind.None) ||
-                       (Field != null && 
-                        !Field.QualifiedType.Qualifiers.IsConst && 
-                        Field.GenerationKind != GenerationKind.None);
+                return SetterVerifies(s => s.GenerationKind != GenerationKind.None) 
+                    || FieldVerifies(f => f.GenerationKind != GenerationKind.None
+                                      && !f.QualifiedType.Qualifiers.IsConst); 
             }
         }
 
@@ -108,22 +116,17 @@ namespace CppSharp.AST
 
         public bool IsIndexer
         {
-            get
-            {
-                return GetMethod != null &&
-                       GetMethod.OperatorKind == CXXOperatorKind.Subscript;
-            }
+            get { return GetterVerifies(g => g.OperatorKind == CXXOperatorKind.Subscript); }
         }
 
         public bool IsSynthetized
         {
-            get { return GetMethod != null && GetMethod.IsSynthetized; }
+            get { return GetterVerifies(g => g.IsSynthetized); }
         }
 
         public override T Visit<T>(IDeclVisitor<T> visitor)
         {
             return visitor.VisitProperty(this);
         }
-
     }
 }

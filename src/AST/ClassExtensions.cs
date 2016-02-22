@@ -156,20 +156,13 @@ namespace CppSharp.AST
 
         public static Property GetPropertyByConstituentMethod(this Class @class, Method method)
         {
-            var property = @class.Properties.FirstOrDefault(p => p.GetMethod == method);
-            if (property != null)
-                return property;
-            property = @class.Properties.FirstOrDefault(p => p.SetMethod == method);
-            if (property != null)
-                return property;
+            var getters = @class.Properties.Where(p => p.GetMethod == method);
+            var setters = @class.Properties.Where(p => p.SetMethod == method);
+            var baseProps = @class.Bases
+                .Where(b => b.Type.IsClass())
+                .Select(b => b.Class.GetPropertyByConstituentMethod(method));
 
-            foreach (BaseClassSpecifier @base in @class.Bases.Where(b => b.Type.IsClass()))
-            {
-                property = @base.Class.GetPropertyByConstituentMethod(method);
-                if (property != null)
-                    return property;
-            }
-            return null;
+            return getters.Concat(setters).Concat(baseProps).FirstOrDefault();
         }
 
         public static Method GetMethodByName(this Class @class, string methodName)
@@ -189,14 +182,10 @@ namespace CppSharp.AST
 
         public static bool HasRefBase(this Class @class)
         {
-            Class @base = null;
-
-            if (@class.HasBaseClass)
-                @base = @class.Bases[0].Class;
-
-            var hasRefBase = @base != null && @base.IsRefType && @base.IsDeclared;
-
-            return hasRefBase;
+            return @class.HasBaseClass && @class.Bases
+                .Take(1)
+                .Select(b => b.Class)
+                .Any(c => c != null && c.IsRefType && c.IsDeclared);
         }
 
         private static bool ComputeClassPath(this Class current, Class target,

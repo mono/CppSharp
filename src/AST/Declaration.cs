@@ -78,9 +78,7 @@ namespace CppSharp.AST
         {
             get
             {
-                if (this is TranslationUnit)
-                    return this as TranslationUnit;
-                return Namespace.TranslationUnit;
+                return (this as TranslationUnit) ?? Namespace.TranslationUnit;
             }
         }
 
@@ -123,17 +121,16 @@ namespace CppSharp.AST
         public string GetQualifiedName(Func<Declaration, string> getName,
             Func<Declaration, DeclarationContext> getNamespace)
         {
-            if (Namespace == null)
-                return getName(this);
 
-            if (Namespace.IsRoot)
-                return getName(this);
+            var thisName = getName(this);
+            if (Namespace == null || Namespace.IsRoot)
+                return thisName;
 
             var namespaces = GatherNamespaces(getNamespace(this));
             namespaces.Reverse();
 
             var names = namespaces.Select(getName).ToList();
-            names.Add(getName(this));
+            names.Add(thisName);
             names = names.Where(s => !string.IsNullOrWhiteSpace(s)).ToList();
 
             return string.Join("::", names);

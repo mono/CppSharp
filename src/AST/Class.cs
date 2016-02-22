@@ -250,7 +250,7 @@ namespace CppSharp.AST
                 return Methods.Where(fn => fn.OperatorKind == function.OperatorKind);
 
             var methods = Methods.Where(m => m.Name == function.Name).ToList();
-            if (methods.Count != 0)
+            if (methods.Any())
                 return methods;
 
             return base.GetOverloads(function);

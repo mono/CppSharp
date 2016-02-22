@@ -16,12 +16,12 @@ namespace CppSharp.AST
 
         public int Count
         {
-            get { return Declarations.OfType<T>().ToArray().Length; }
+            get { return Declarations.OfType<T>().Count(); }
         }
 
         public T this[int index]
         {
-            get { return Declarations.OfType<T>().ToArray()[index]; }
+            get { return Declarations.OfType<T>().ElementAt(index); }
         }
 
         public void Add(T declaration)

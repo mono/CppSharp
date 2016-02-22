@@ -161,6 +161,39 @@ namespace CppSharp.Generators.CSharp
             WriteLine("//----------------------------------------------------------------------------");
             PopBlock();
         }
+            
+        public void GenerateFunctions(DeclarationContext context)
+        {
+            PushBlock(CSharpBlockKind.Functions);
+
+            WriteLine("namespace Globals");
+            WriteStartBraceIndent ();
+
+            WriteLine("public unsafe partial class {0}",
+                context.TranslationUnit.FileNameWithoutExtension);
+            WriteStartBraceIndent();
+
+            PushBlock(CSharpBlockKind.InternalsClass);
+            GenerateClassInternalHead();
+            WriteStartBraceIndent();
+
+            // Generate all the internal function declarations.
+            foreach (var function in context.Functions)
+            {
+                if ((!function.IsGenerated && !function.IsInternal) || function.IsSynthetized) continue;
+
+                GenerateInternalFunction(function);
+            }
+
+            WriteCloseBraceIndent();
+            PopBlock(NewLineKind.BeforeNextBlock);
+
+            context.Functions.Where(f => f.IsGenerated).ToList().ForEach(GenerateFunction);
+
+            WriteCloseBraceIndent();
+            WriteCloseBraceIndent();
+            PopBlock(NewLineKind.BeforeNextBlock);
+        }
 
         private void GenerateDeclContext(DeclarationContext context)
         {
@@ -204,37 +237,8 @@ namespace CppSharp.Generators.CSharp
             }
 
             if (context.HasFunctions)
-            {
-                PushBlock(CSharpBlockKind.Functions);
-                WriteLine("public unsafe partial class {0}",
-                    context.TranslationUnit.FileNameWithoutExtension);
-                WriteStartBraceIndent();
+                GenerateFunctions(context);
 
-                PushBlock(CSharpBlockKind.InternalsClass);
-                GenerateClassInternalHead();
-                WriteStartBraceIndent();
-
-                // Generate all the internal function declarations.
-                foreach (var function in context.Functions)
-                {
-                    if ((!function.IsGenerated && !function.IsInternal) || function.IsSynthetized) continue;
-
-                    GenerateInternalFunction(function);
-                }
-
-                WriteCloseBraceIndent();
-                PopBlock(NewLineKind.BeforeNextBlock);
-
-                foreach (var function in context.Functions)
-                {
-                    if (!function.IsGenerated) continue;
-
-                    GenerateFunction(function);
-                }
-
-                WriteCloseBraceIndent();
-                PopBlock(NewLineKind.BeforeNextBlock);
-            }
 
             foreach (var @event in context.Events)
             {
@@ -648,6 +652,10 @@ namespace CppSharp.Generators.CSharp
         {
             foreach (var @base in @class.Bases.Where(b => b.Class != null))
             {
+                //FIXME: @base.Class for ConcreteTypeLoc (and subclasses) is null
+                // https://github.com/llvm-mirror/clang/blob/master/include/clang/AST/TypeLoc.h#L324 
+                if (@base.Class == null) continue;
+
                 TypeMap typeMap;
                 if ((!Driver.TypeDatabase.FindTypeMap(@base.Type, out typeMap) && !@base.Class.IsDeclared) ||
                     @base.Class.OriginalClass == @class)

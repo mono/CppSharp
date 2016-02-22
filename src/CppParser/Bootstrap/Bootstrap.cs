@@ -1,7 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using CppSharp.AST;
+using CppSharp.Generators;
+using CppAbi = CppSharp.Parser.AST.CppAbi;
 
 namespace CppSharp
 {
@@ -10,6 +11,20 @@ namespace CppSharp
     /// </summary>
     class Bootstrap : ILibrary
     {
+
+        const string LINUX_INCLUDE_BASE_DIR = "../../../../build/headers/x86_64-linux-gnu";
+
+        internal readonly GeneratorKind Kind;
+        internal readonly string Triple;
+        internal readonly CppAbi Abi;
+
+        public Bootstrap(GeneratorKind kind, string triple, CppAbi abi)
+        {
+            Kind = kind;
+            Triple = triple;
+            Abi = abi;
+        }
+
         static string GetSourceDirectory(string dir)
         {
             var directory = Directory.GetParent(Directory.GetCurrentDirectory());
@@ -32,26 +47,34 @@ namespace CppSharp
         {
             var options = driver.Options;
             options.LibraryName = "CppSharp";
-            options.DryRun = true;
+
             options.Headers.AddRange(new string[]
             {
+                "CppParser.h",
                 "clang/AST/Expr.h",
             });
-
             options.SetupXcode();
             options.MicrosoftMode = false;
-            options.TargetTriple = "i686-apple-darwin12.4.0";
+
+            options.Abi = Abi;
+            options.GeneratorKind = Kind;
+            options.TargetTriple = Triple;
 
             options.addDefines ("__STDC_LIMIT_MACROS");
             options.addDefines ("__STDC_CONSTANT_MACROS");
 
-            var llvmPath = Path.Combine (GetSourceDirectory ("deps"), "llvm");
+            var parserPath = Path.Combine(GetSourceDirectory("src"), "CppParser");
+            var bootstrapPath = Path.Combine(parserPath, "Bootstrap");
+            var llvmPath = Path.Combine(GetSourceDirectory("deps"), "llvm");
             var clangPath = Path.Combine(llvmPath, "tools", "clang");
 
+            options.addIncludeDirs(parserPath);
             options.addIncludeDirs(Path.Combine(llvmPath, "include"));
             options.addIncludeDirs(Path.Combine(llvmPath, "build", "include"));
-            options.addIncludeDirs (Path.Combine (llvmPath, "build", "tools", "clang", "include"));
+            options.addIncludeDirs(Path.Combine(llvmPath, "build", "tools", "clang", "include"));
             options.addIncludeDirs(Path.Combine(clangPath, "include"));
+
+            options.OutputDir = Path.Combine(bootstrapPath, Kind.ToString(), options.TargetTriple);
         }
 
         public void SetupPasses(Driver driver)
@@ -60,15 +83,6 @@ namespace CppSharp
 
         public void Preprocess(Driver driver, ASTContext ctx)
         {
-            ctx.RenameNamespace("CppSharp::CppParser", "Parser");
-
-            var exprClass = ctx.FindCompleteClass ("clang::Expr");
-
-            var exprUnit = ctx.TranslationUnits [0];
-            var subclassVisitor = new SubclassVisitor (exprClass);
-            exprUnit.Visit (subclassVisitor);
-
-            var subclasses = subclassVisitor.Classes;
         }
 
         public void Postprocess(Driver driver, ASTContext ctx)
@@ -78,39 +92,41 @@ namespace CppSharp
         public static void Main(string[] args)
         {
             Console.WriteLine("Generating parser bootstrap code...");
-            ConsoleDriver.Run(new Bootstrap());
-            Console.WriteLine();
-        }
-    }
 
-    class SubclassVisitor : AstVisitor
-    {
-        public HashSet<Class> Classes;
-        Class expressionClass;
+            if (Platform.IsWindows)
+            {
+                Console.WriteLine("Generating the C++/CLI parser bindings for Windows...");
+                ConsoleDriver.Run(new Bootstrap(GeneratorKind.CLI, "i686-pc-win32-msvc",
+                    CppAbi.Microsoft));
+                Console.WriteLine();
 
-        public SubclassVisitor (Class expression)
-        {
-            expressionClass = expression;
-            Classes = new HashSet<Class> ();
-        }
+                Console.WriteLine("Generating the C# parser bindings for Windows...");
+                ConsoleDriver.Run(new Bootstrap(GeneratorKind.CSharp, "i686-pc-win32-msvc",
+                    CppAbi.Microsoft));
+                Console.WriteLine();
+            }
 
-        static bool IsDerivedFrom(Class subclass, Class superclass)
-        {
-            if (subclass == null)
-                return false;
+            var osxHeadersPath = Path.Combine(GetSourceDirectory("build"), @"headers\osx");
+            if (Directory.Exists(osxHeadersPath) || Platform.IsMacOS)
+            {
+                Console.WriteLine("Generating the C# parser bindings for OSX...");
+                ConsoleDriver.Run(new Bootstrap(GeneratorKind.CSharp, "i686-apple-darwin12.4.0",
+                    CppAbi.Itanium));
+                Console.WriteLine();
 
-            if (subclass == superclass)
-                return true;
-
-            return IsDerivedFrom (subclass.BaseClass, superclass);
-        }
-
-        public override bool VisitClassDecl (Class @class)
-        {
-            if (!@class.IsIncomplete && IsDerivedFrom (@class, expressionClass))
-                Classes.Add (@class);
-
-            return base.VisitClassDecl (@class);
+                Console.WriteLine("Generating the C# parser bindings for OSX...");
+                ConsoleDriver.Run(new Bootstrap(GeneratorKind.CSharp, "x86_64-apple-darwin12.4.0",
+                    CppAbi.Itanium));
+                Console.WriteLine();
+            }
+                
+            if (Directory.Exists(LINUX_INCLUDE_BASE_DIR))
+            {
+                Console.WriteLine("Generating the C# parser bindings for Linux...");
+                ConsoleDriver.Run(new Bootstrap(GeneratorKind.CSharp, "x86_64-linux-gnu",
+                    CppAbi.Itanium));
+                Console.WriteLine();
+            }
         }
     }
 }

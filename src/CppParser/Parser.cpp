@@ -257,6 +257,8 @@ void Parser::SetupHeader()
     case llvm::Triple::Linux:
       TC = new clang::driver::toolchains::Linux(D, Target, Args);
       break;
+    default:
+      break;
     }
 
     if (TC && !Opts->NoStandardIncludes) {
@@ -3128,6 +3130,7 @@ void Parser::HandleDiagnostics(ParserResult* res)
     }
 }
 
+clang::ASTContext* ClangParser::ClangAST;
 ParserResult* Parser::ParseHeader(const std::string& File, ParserResult* res)
 {
     assert(Opts->ASTContext && "Expected a valid ASTContext");
@@ -3222,6 +3225,7 @@ ParserResult* Parser::ParseHeader(const std::string& File, ParserResult* res)
     WalkAST();
 
     res->Kind = ParserResultKind::Success;
+    ClangParser::ClangAST = AST;
     return res;
  }
 

@@ -284,9 +284,15 @@ namespace CppSharp.Passes
 
         private static Stream GetResourceStream(Assembly assembly)
         {
-            var stream = assembly.GetManifestResourceStream("CppSharp.Generator.Passes.verbs.txt");
             // HACK: a bug in premake for OS X causes resources to be embedded with an incorrect location
-            return stream ?? assembly.GetManifestResourceStream("verbs.txt");
+            var paths = new[] 
+            {
+                "verbs.txt",
+                "CppSharp.Generator.Passes.verbs.txt",
+                "CppSharp.Generator.src.Generator.Passes.verbs.txt"
+            };
+
+            return paths.Select(assembly.GetManifestResourceStream).FirstOrDefault(r => r != null);
         }
 
 
