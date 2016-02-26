@@ -1,2 +1,2 @@
-group "Tests/Empty"
-  SetupTestProject("Empty")
+--group "Tests/Empty"
+--  SetupTestProject("Empty")
