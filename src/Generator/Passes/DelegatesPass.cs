@@ -40,8 +40,12 @@ namespace CppSharp.Passes
             foreach (var library in Driver.Options.Libraries.Where(l => !libsDelegates.ContainsKey(l)))
                 libsDelegates.Add(library, new Dictionary<string, DelegateDefinition>());
 
-            var unit = context.TranslationUnits.Last(u => u.IsValid && u.IsGenerated &&
+            var unit = context.TranslationUnits.LastOrDefault(u => u.IsValid && u.IsGenerated &&
                 !u.IsSystemHeader && u.HasDeclarations);
+
+            if (unit == null)
+                return false;
+
             namespaceDelegates = new Namespace { Name = DelegatesNamespace, Namespace = unit };
 
             var result = base.VisitLibrary(context);
