@@ -64,12 +64,13 @@ function SetupTestGeneratorProject(name, depends)
 end
 
 function SetupTestGeneratorBuildEvent(name)
+  local runtimeExe = os.is("windows") and "" or "mono --debug "
   if string.starts(action, "vs") then
     local exePath = SafePath("$(TargetDir)" .. name .. ".Gen.exe")
-    prebuildcommands { exePath }
+    prebuildcommands { runtimeExe .. exePath }
   else
     local exePath = SafePath("%{cfg.buildtarget.directory}/" .. name .. ".Gen.exe")
-    prebuildcommands { "mono --debug " .. exePath }
+    prebuildcommands { runtimeExe .. exePath }
   end
 end
 
