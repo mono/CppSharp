@@ -1216,8 +1216,15 @@ namespace CppSharp.Generators.CSharp
 
         private string GetPropertyName(Property prop)
         {
-            return prop.Parameters.Count == 0 ? prop.Name
-                : string.Format("this[{0}]", FormatMethodParameters(prop.Parameters));
+            var isIndexer = prop.Parameters.Count != 0;
+            var @params = prop.Parameters.Select(param => {
+                var p = new Parameter(param);
+                if (isIndexer)
+                    p.Usage = ParameterUsage.In;
+                return p;
+            });
+            return !isIndexer ? prop.Name
+                : string.Format("this[{0}]", FormatMethodParameters(@params));
         }
 
         private void GenerateVariable(Class @class, Type type, Variable variable)

@@ -556,6 +556,9 @@ public:
     foo_t operator[](TestProperties b);
     Bar& operator[](unsigned long i);
     Bar& operator[](const TypeMappedIndex& key);
+    // Test that we do not generate 'ref int' parameters as C# does not allow it
+    int operator[](CS_OUT char key);
+
 private:
     foo_t p;
     TestProperties f;
@@ -578,6 +581,11 @@ Bar& TestIndexedProperties::operator[](const TypeMappedIndex& key)
 {
     return bar;
 }
+int TestIndexedProperties::operator[](CS_OUT char key)
+{
+    return key;
+}
+
 
 struct DLL_API TestIndexedPropertiesInValueType
 {
