@@ -957,6 +957,7 @@ public:
     {
     public:
         Argument();
+        Argument(const Argument&);
         STRING(Text)
     };
     BlockCommandComment();

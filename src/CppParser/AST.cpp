@@ -844,6 +844,8 @@ BlockContentComment::BlockContentComment(CommentKind Kind) : Comment(Kind) {}
 
 BlockCommandComment::Argument::Argument() {}
 
+BlockCommandComment::Argument::Argument(const Argument& rhs) : Text(rhs.Text) {}
+
 DEF_STRING(BlockCommandComment::Argument, Text)
 
 BlockCommandComment::BlockCommandComment() : BlockContentComment(CommentKind::BlockCommandComment), CommandId(0) {}
