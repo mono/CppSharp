@@ -207,7 +207,7 @@ namespace CppSharp.Generators.CSharp
             {
                 PushBlock(CSharpBlockKind.Functions);
                 WriteLine("public unsafe partial class {0}",
-                    context.TranslationUnit.FileNameWithoutExtension);
+                    Helpers.SafeIdentifier(context.TranslationUnit.FileNameWithoutExtension));
                 WriteStartBraceIndent();
 
                 PushBlock(CSharpBlockKind.InternalsClass);
@@ -616,7 +616,7 @@ namespace CppSharp.Generators.CSharp
                 Write("partial ");
 
             Write(@class.IsInterface ? "interface " : (@class.IsValueType ? "struct " : "class "));
-            Write("{0}", @class.Name);
+            Write("{0}", Helpers.SafeIdentifier(@class.Name));
 
             var bases = new List<string>();
 
