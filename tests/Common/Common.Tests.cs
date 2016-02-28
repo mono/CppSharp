@@ -94,6 +94,7 @@ public class CommonTests : GeneratorTestFixture
         str = "Hello";
         hello.StringInOutRef(ref str);
         Assert.That(str, Is.EqualTo("StringInOutRef"));
+        hello.StringTypedef(str);
     }
 
     [Test]

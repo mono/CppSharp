@@ -142,6 +142,8 @@ enum Enum
     F = -9
 };
 
+typedef char TypedefChar;
+
 class DLL_API Hello
 {
     union NestedPrivate {
@@ -193,6 +195,8 @@ public:
     void StringOutRef(CS_OUT const char*& str);
     void StringInOut(CS_IN_OUT const char** str);
     void StringInOutRef(CS_IN_OUT const char*& str);
+
+    void StringTypedef(const TypedefChar* str);
 };
 
 class DLL_API AbstractFoo
@@ -1048,3 +1052,4 @@ class DLL_API DerivedFromTemplateInstantiationWithVirtual : public TemplateWithV
 public:
     DerivedFromTemplateInstantiationWithVirtual();
 };
+

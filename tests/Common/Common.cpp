@@ -270,6 +270,10 @@ void Hello::StringInOutRef(CS_IN_OUT const char*& str)
 		str = "Failed";
 }
 
+void Hello::StringTypedef(const TypedefChar* str)
+{
+}
+
 int unsafeFunction(const Bar& ret, char* testForString, void (*foo)(int))
 {
     return ret.A;

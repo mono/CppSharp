@@ -148,7 +148,7 @@ namespace CppSharp.Generators.CSharp
             if (CSharpTypePrinter.IsConstCharString(pointer) || marshalPointeeAsString)
             {
                 Context.Return.Write(MarshalStringToManaged(Context.ReturnVarName,
-                    pointer.GetFinalPointee() as BuiltinType));
+                    pointer.GetFinalPointee().Desugar() as BuiltinType));
                 return true;
             }
 
