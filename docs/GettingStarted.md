@@ -33,13 +33,13 @@ premake5-osx --file=scripts/LLVM.lua download_llvm # on OSX
 premake5-linux-64 --file=scripts/LLVM.lua download_llvm # on Linux
 ```
 
+Alternatively, if on Windows, just double click on `<CppSharp>/build/DownloadDeps.bat`.
+
 After this, you should end up with one or multiple `<CppSharp>/build/scripts/llvm-<revision>-<os>-<configuration>` folders
 containing the headers and libraries for LLVM.
 
 If you do not end up with the folder, which can happen due to, for instance, not having 7-Zip on the path on Windows,
 then you can manually extract the .7z archives in `<CppSharp>/build/scripts` to their respective folders.
-
-Alternatively, if on Windows, you can just double click on `<CppSharp>/build/DownloadDeps.bat`.
 
 ### Building LLVM and Clang from source
 
@@ -77,7 +77,8 @@ a 32-bit VM will only be able to load 32-bit shared libraries and vice-versa for
 
 Only 64-bits builds are supported at the moment. 
 
-We depend on a somewhat recent version of Mono (.NET 4.5). Ubuntu 14.04 contains recent enough Mono by default, which you can install with:
+We depend on a somewhat recent version of Mono (.NET 4.5).
+Ubuntu 14.04 contains recent enough Mono by default, which you can install with:
 
 ```shell
 sudo apt-get install mono-devel
@@ -97,6 +98,12 @@ If you need more verbosity from the builds invoke `make` as:
 
 ```shell
 verbose=true make -C gmake config=release_x64
+```
+
+If you get the following error, please see [issue #625](https://github.com/mono/CppSharp/issues/625#issuecomment-189283549):
+
+```
+/usr/include/wchar.h(39,11): fatal: 'stdarg.h' file not found CppSharp has encountered an error while parsing code.
 ```
 
 # Generating bindings
