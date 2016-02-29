@@ -674,7 +674,7 @@ namespace CppSharp.Generators.CSharp
                             Context.SupportBefore.WriteLine("if (ReferenceEquals({0}, null))", param);
                             Context.SupportBefore.WriteLineIndent(
                                 "throw new global::System.ArgumentNullException(\"{0}\", " +
-                                "\"{0} cannot be null because it is a C++ reference (&).\");",
+                                "\"Cannot be null because it is a C++ reference (&).\");",
                                 param);
                         }
                         Context.Return.Write("{0}.{1}", param, Helpers.InstanceIdentifier);

@@ -700,7 +700,7 @@ namespace CppSharp.Generators.CLI
                 Context.SupportBefore.WriteLine("if (ReferenceEquals({0}, nullptr))", Context.Parameter.Name);
                 Context.SupportBefore.WriteLineIndent(
                     "throw gcnew ::System::ArgumentNullException(\"{0}\", " +
-                    "\"{0} cannot be null because it is a C++ reference (&).\");",
+                    "\"Cannot be null because it is a C++ reference (&).\");",
                     Context.Parameter.Name);
             }
 
