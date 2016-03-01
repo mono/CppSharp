@@ -617,6 +617,17 @@ LPCWSTR TestWideStrings::GetWideNullPointer() { return 0; }
 
 enum struct MyEnum { A, B, C };
 
+typedef void (*VoidPtrRetFunctionTypedef) ();
+
+class DLL_API TestFixedArrays
+{
+public:
+    TestFixedArrays();
+    VoidPtrRetFunctionTypedef Array[10];    
+};
+
+TestFixedArrays::TestFixedArrays() {}
+
 class DLL_API TestArraysPointers
 {
 public:

@@ -126,8 +126,10 @@ namespace CppSharp.Generators.CSharp
                 array.SizeType == ArrayType.ArraySize.Constant)
             {
                 Type arrayType = array.Type.Desugar();
+
                 PrimitiveType primitiveType;
-                if (arrayType.IsPointerToPrimitiveType(out primitiveType))
+                if (arrayType.IsPointerToPrimitiveType(out primitiveType) &&
+                    !(arrayType is FunctionType)) 
                 {
                     if (primitiveType == PrimitiveType.Void)
                     {
@@ -146,11 +148,18 @@ namespace CppSharp.Generators.CSharp
                     };
                 }
 
+                var arrayElemType = array.Type.Visit(this, quals).ToString();
+
+                // C# does not support fixed arrays of machine pointer type (void* or IntPtr).
+                // In that case, replace it by a pointer to an integer type of the same size.
+                if (arrayElemType == IntPtrType)
+                    arrayElemType = driver.TargetInfo.PointerWidth == 64 ? "long" : "int";
+
                 // Do not write the fixed keyword multiple times for nested array types
                 var fixedKeyword = array.Type is ArrayType ? string.Empty : "fixed ";
                 return new CSharpTypePrinterResult()
                 {
-                    Type = string.Format("{0}{1}", fixedKeyword, array.Type.Visit(this, quals)),
+                    Type = string.Format("{0}{1}", fixedKeyword, arrayElemType),
                     NameSuffix = string.Format("[{0}]", array.Size)
                 };
             }
