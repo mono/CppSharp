@@ -109,6 +109,33 @@ namespace CppSharp
             Ignore();
             return base.VisitTemplateSpecializationType(template, quals);
         }
+
+        public override bool VisitArrayType(ArrayType array, TypeQualifiers quals)
+        {
+            TypeMap typeMap;
+            if (TypeMapDatabase.FindTypeMap(array, out typeMap) && typeMap.IsIgnored)
+            {
+                Ignore();
+                return false;
+            }
+
+            if (array.SizeType != ArrayType.ArraySize.Constant)
+                return true;
+
+            var arrayElemType = array.Type.Desugar();
+
+            Class @class;
+            if (arrayElemType.TryGetClass(out @class) && @class.IsRefType)
+                return true;
+
+            PrimitiveType primitive;
+            if (arrayElemType.IsPrimitiveType(out primitive) ||
+                arrayElemType.IsPointerToPrimitiveType())
+                return true;
+
+            Ignore();
+            return false;
+        }
     }
 
 }
