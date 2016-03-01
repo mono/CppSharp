@@ -507,4 +507,18 @@ public class CSharpTests : GeneratorTestFixture
         }
         Assert.IsTrue(VirtualDtorAddedInDerived.DtorCalled);
     }
+
+    [Test]
+    public void TestFuncWithUnionParam()
+    {
+        Union_t ut = new Union_t();
+        ut.C = 20;
+        var v = CSharp.CSharp.Func_union(ut);
+        Assert.AreEqual(20, v);
+
+        Struct_t st = new Struct_t();
+        st.U = ut;
+        var vv = CSharp.CSharp.Func_struct_union(st);
+        Assert.AreEqual(20, vv);
+    }
 }
