@@ -46,5 +46,4 @@ project "SDL.Tests"
       libdir .. "/SDL/SDL_video.cs",
       "*.lua"
   }
-
 end
