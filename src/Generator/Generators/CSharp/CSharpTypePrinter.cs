@@ -41,6 +41,8 @@ namespace CppSharp.Generators.CSharp
     public class CSharpTypePrinter : ITypePrinter<CSharpTypePrinterResult>,
         IDeclVisitor<CSharpTypePrinterResult>
     {
+        public static string IntPtrType = "global::System.IntPtr";
+
         private readonly Driver driver;
 
         private readonly Stack<CSharpTypePrinterContextKind> contexts;
@@ -180,7 +182,7 @@ namespace CppSharp.Generators.CSharp
             PopMarshalKind();
 
             if (ContextKind != CSharpTypePrinterContextKind.Managed)
-                return "global::System.IntPtr";
+                return IntPtrType;
 
             if (returnType.Type.IsPrimitiveType(PrimitiveType.Void))
             {
@@ -243,7 +245,7 @@ namespace CppSharp.Generators.CSharp
             var isManagedContext = ContextKind == CSharpTypePrinterContextKind.Managed;
 
             if (allowStrings && IsConstCharString(pointer))
-                return isManagedContext ? "string" : "global::System.IntPtr";
+                return isManagedContext ? "string" : IntPtrType;
 
             var desugared = pointee.Desugar();
 
@@ -273,7 +275,7 @@ namespace CppSharp.Generators.CSharp
                 var result = pointee.Visit(this, quals);
                 allowStrings = true;
 
-                return !isRefParam && result.Type == "global::System.IntPtr" ? "void**" : result + "*";
+                return !isRefParam && result.Type == IntPtrType ? "void**" : result + "*";
             }
 
             Enumeration @enum;
@@ -293,7 +295,7 @@ namespace CppSharp.Generators.CSharp
                 (desugared is ArrayType && Context.Parameter != null))
                 && ContextKind == CSharpTypePrinterContextKind.Native)
             {
-                return "global::System.IntPtr";
+                return IntPtrType;
             }
 
             return pointee.Visit(this, quals);
@@ -308,7 +310,7 @@ namespace CppSharp.Generators.CSharp
 
             // TODO: Non-function member pointer types are tricky to support.
             // Re-visit this.
-            return "global::System.IntPtr";
+            return IntPtrType;
         }
 
         public CSharpTypePrinterResult VisitBuiltinType(BuiltinType builtin,
@@ -345,7 +347,7 @@ namespace CppSharp.Generators.CSharp
             if (decl.Type.IsPointerTo(out func))
             {
                 if (ContextKind == CSharpTypePrinterContextKind.Native)
-                    return "global::System.IntPtr";
+                    return IntPtrType;
                 // TODO: Use SafeIdentifier()
                 return VisitDeclaration(decl);
             }
@@ -528,7 +530,7 @@ namespace CppSharp.Generators.CSharp
                     return GetIntString(primitive, driver.TargetInfo);
                 case PrimitiveType.Float: return "float";
                 case PrimitiveType.Double: return "double";
-                case PrimitiveType.IntPtr: return "global::System.IntPtr";
+                case PrimitiveType.IntPtr: return IntPtrType;
                 case PrimitiveType.UIntPtr: return "global::System.UIntPtr";
                 case PrimitiveType.Null: return "void*";
             }
@@ -576,7 +578,7 @@ namespace CppSharp.Generators.CSharp
             var paramType = parameter.Type;
 
             if (parameter.Kind == ParameterKind.IndirectReturnType)
-                return "global::System.IntPtr";
+                return IntPtrType;
 
             Context.Parameter = parameter;
             var ret = paramType.Visit(this);
