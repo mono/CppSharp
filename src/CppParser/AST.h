@@ -1039,6 +1039,7 @@ public:
     {
     public:
         Argument();
+        Argument(const Argument&);
         STRING(Text)
     };
     InlineCommandComment();
@@ -1060,6 +1061,7 @@ public:
     {
     public:
         Attribute();
+        Attribute(const Attribute&);
         STRING(Name)
         STRING(Value)
     };

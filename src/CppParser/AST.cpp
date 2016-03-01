@@ -913,6 +913,8 @@ HTMLTagComment::HTMLTagComment(CommentKind Kind) : InlineContentComment(Kind) {}
 
 HTMLStartTagComment::Attribute::Attribute() {}
 
+HTMLStartTagComment::Attribute::Attribute(const Attribute& rhs) : Name(rhs.Name), Value(rhs.Value) {}
+
 DEF_STRING(HTMLStartTagComment::Attribute, Name)
 
 DEF_STRING(HTMLStartTagComment::Attribute, Value)
@@ -936,6 +938,8 @@ TextComment::TextComment() : InlineContentComment(CommentKind::TextComment) {}
 DEF_STRING(TextComment, Text)
 
 InlineCommandComment::Argument::Argument() {}
+
+InlineCommandComment::Argument::Argument(const Argument& rhs) : Text(rhs.Text) {}
 
 DEF_STRING(InlineCommandComment::Argument, Text)
 
