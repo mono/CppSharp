@@ -968,3 +968,76 @@ bool VirtualDtorAddedInDerived::dtorCalled = false;
 void NamespaceB::B::Function(CS_OUT NamespaceA::A &a)
 {
 }
+
+void CheckMarshllingOfCharPtr::funcWithCharPtr(char* ptr)
+{
+	delete str;
+	int sz = 0;
+	while (ptr[sz] != '\0')
+		++sz;
+	str = new char[sz + 1];
+	for (int i = 0; i < sz; ++i)
+		str[i] = ptr[i];
+	str[sz] = '\0';
+}
+
+char* CheckMarshllingOfCharPtr::funcRetCharPtr()
+{
+	return str;
+}
+
+void CheckMarshllingOfCharPtr::funcWithWideCharPtr(wchar_t* ptr)
+{
+	delete wstr;
+	int sz = 0;
+	while (ptr[sz] != '\0')
+		++sz;
+	wstr = new wchar_t[sz + 1];
+	for (int i = 0; i < sz; ++i)
+		wstr[i] = ptr[i];
+	wstr[sz] = '\0';
+}
+
+wchar_t* CheckMarshllingOfCharPtr::funcRetWideCharPtr()
+{
+	return wstr;
+}
+
+CheckMarshllingOfCharPtr::CheckMarshllingOfCharPtr()
+{
+	str = new char[25];
+	str[0] = 'S';
+	str[1] = 't';
+	str[2] = 'r';
+	str[3] = 'i';
+	str[4] = 'n';
+	str[5] = 'g';
+	str[6] = '\0';
+	wstr = new wchar_t[25];
+	wstr[0] = 'S';
+	wstr[1] = 't';
+	wstr[2] = 'r';
+	wstr[3] = 'i';
+	wstr[4] = 'n';
+	wstr[5] = 'g';
+	wstr[6] = '\0';
+}
+
+CheckMarshllingOfCharPtr::~CheckMarshllingOfCharPtr()
+{
+	delete str;
+	delete wstr;
+}
+/*
+char* freeFuncWithCharPtrRet(char* p)
+{
+	int sz = 0;
+	while (p[sz] != '\0')
+		++sz;
+	char* ptr = new char[sz + 1];
+	for (int i = 0; i < sz; ++i)
+		ptr[i] = p[i];
+	ptr[sz] = '\0';
+	return ptr;
+}
+*/

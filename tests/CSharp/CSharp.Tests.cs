@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Text;
 using CppSharp.Utils;
 using CSharp;
 using NUnit.Framework;
@@ -506,5 +508,31 @@ public class CSharpTests : GeneratorTestFixture
         {
         }
         Assert.IsTrue(VirtualDtorAddedInDerived.DtorCalled);
+    }
+
+    [Test]
+    public unsafe void TestMarshallingOfCharPtr()
+    {
+        var obj = new CheckMarshllingOfCharPtr();
+        var wstr = obj.FuncRetWideCharPtr;
+        Assert.AreEqual('r', wstr[2]);
+        /*var wstrBuilt = wstr;
+        wstrBuilt[2] = 'j';
+        obj.FuncWithWideCharPtr(wstrBuilt);
+        wstr = obj.FuncRetWideCharPtr;
+        Assert.AreEqual('j', wstr[2]);
+        */
+        /*var obj2 = new CheckMarshllingOfCharPtr();
+        var str = obj2.FuncRetCharPtr;
+        Assert.AreEqual('g', str[5]);
+        var strBuilt = str;
+        strBuilt[4] = 'j';
+        obj2.FuncWithCharPtr(strBuilt);
+        var astr = obj2.FuncRetCharPtr;
+        Assert.AreEqual('j', astr[4]);
+        
+        StringBuilder strB = astr;
+        var fstr = CSharp.CSharp.FreeFuncWithCharPtrRet(strB);
+        Assert.AreEqual('j', fstr[4]);*/
     }
 }
