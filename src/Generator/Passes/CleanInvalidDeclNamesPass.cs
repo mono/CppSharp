@@ -108,25 +108,6 @@ namespace CppSharp.Passes
             return ret;
         }
 
-        public override bool VisitTypedefDecl(TypedefDecl typedef)
-        {
-            if (base.VisitTypedefDecl(typedef))
-                return false;
-
-            var @class = typedef.Namespace.FindClass(typedef.Name);
-
-            // Clang will walk the typedef'd tag decl and the typedef decl,
-            // so we ignore the class and process just the typedef.
-
-            if (@class != null)
-                typedef.ExplicitlyIgnore();
-
-            if (typedef.Type == null)
-                typedef.ExplicitlyIgnore();
-
-            return true;
-        }
-
         private void CheckEnumName(Enumeration @enum)
         {
             // If we still do not have a valid name, then try to guess one
