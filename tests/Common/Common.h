@@ -1072,3 +1072,10 @@ public:
     DerivedFromTemplateInstantiationWithVirtual();
 };
 
+typedef DLL_API union {
+    int c;
+} union_t;
+
+int DLL_API func_union(union_t u) {
+    return u.c;
+}
