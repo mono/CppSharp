@@ -178,6 +178,11 @@ namespace CppSharp
                 ? windowsKitsSdks.Find(version => version.Value == kitsRootKey)
                 : windowsKitsSdks.Last();
 
+            // If for some reason we cannot find the SDK version reported by VS
+            // in the system, then fallback to the latest version found.
+            if (windowsKitSdk.Value == null)
+                windowsKitSdk = windowsKitsSdks.Last();
+
             includes.AddRange(
                 CollectUniversalCRuntimeIncludeDirs(vsDir, windowsKitSdk, windowsSdkMajorVer));
 
