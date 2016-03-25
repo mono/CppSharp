@@ -19,6 +19,7 @@
 #include <llvm/Object/COFF.h>
 #include <llvm/Object/ObjectFile.h>
 #include <llvm/Object/ELFObjectFile.h>
+#include <llvm/Object/MachO.h>
 #include <llvm/Option/ArgList.h>
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/Module.h>
@@ -3302,31 +3303,48 @@ ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
         {
             ReadELFDependencies(ELFObjectFile->getELFFile(), NativeLib);
         }
-    }
-    else
-    {
-        if (auto COFFObjectFile = llvm::dyn_cast<llvm::object::COFFObjectFile>(ObjectFile))
-        {
-            for (auto ExportedSymbol : COFFObjectFile->export_directories())
-            {
-                llvm::StringRef Symbol;
-                if (!ExportedSymbol.getSymbolName(Symbol))
-                    NativeLib->Symbols.push_back(Symbol);
-            }
-            for (auto ImportedSymbol : COFFObjectFile->import_directories())
-            {
-                llvm::StringRef Name;
-                if (!ImportedSymbol.getName(Name) && (Name.endswith(".dll") || Name.endswith(".DLL")))
-                    NativeLib->Dependencies.push_back(Name);
-            }
-        }
-        else
-        {
-            return ParserResultKind::Error;
-        }
+        return ParserResultKind::Success;
     }
 
-    return ParserResultKind::Success;
+    if (ObjectFile->isCOFF())
+    {
+        auto COFFObjectFile = static_cast<llvm::object::COFFObjectFile*>(ObjectFile);
+        for (auto ExportedSymbol : COFFObjectFile->export_directories())
+        {
+            llvm::StringRef Symbol;
+            if (!ExportedSymbol.getSymbolName(Symbol))
+                NativeLib->Symbols.push_back(Symbol);
+        }
+        for (auto ImportedSymbol : COFFObjectFile->import_directories())
+        {
+            llvm::StringRef Name;
+            if (!ImportedSymbol.getName(Name) && (Name.endswith(".dll") || Name.endswith(".DLL")))
+                NativeLib->Dependencies.push_back(Name);
+        }
+        return ParserResultKind::Success;
+    }
+
+    if (ObjectFile->isMachO())
+    {
+        auto MachOObjectFile = static_cast<llvm::object::MachOObjectFile*>(ObjectFile);
+        for (const auto &Load : MachOObjectFile->load_commands())
+        {
+            if (Load.C.cmd == llvm::MachO::LC_ID_DYLIB ||
+                Load.C.cmd == llvm::MachO::LC_LOAD_DYLIB ||
+                Load.C.cmd == llvm::MachO::LC_LOAD_WEAK_DYLIB ||
+                Load.C.cmd == llvm::MachO::LC_REEXPORT_DYLIB ||
+                Load.C.cmd == llvm::MachO::LC_LAZY_LOAD_DYLIB ||
+                Load.C.cmd == llvm::MachO::LC_LOAD_UPWARD_DYLIB)
+            {
+                auto dl = MachOObjectFile->getDylibIDLoadCommand(Load);
+                auto lib = llvm::sys::path::filename(Load.Ptr + dl.dylib.name);
+                NativeLib->Dependencies.push_back(lib);
+            }
+        }
+        return ParserResultKind::Success;
+    }
+
+    return ParserResultKind::Error;
 }
 
 ParserResultKind Parser::ReadSymbols(llvm::StringRef File,
