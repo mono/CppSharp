@@ -1072,10 +1072,25 @@ public:
     DerivedFromTemplateInstantiationWithVirtual();
 };
 
-typedef DLL_API union {
+typedef DLL_API union
+{
     int c;
 } union_t;
 
-int DLL_API func_union(union_t u) {
+int DLL_API func_union(union_t u)
+{
     return u.c;
 }
+
+class DLL_API HasProtectedEnum
+{
+public:
+    HasProtectedEnum();
+protected:
+    enum class ProtectedEnum
+    {
+        Member1,
+        Member2
+    };
+    void function(ProtectedEnum param);
+};

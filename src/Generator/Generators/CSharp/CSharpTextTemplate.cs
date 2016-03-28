@@ -2885,7 +2885,11 @@ namespace CppSharp.Generators.CSharp
             if (@enum.IsFlags)
                 WriteLine("[Flags]");
 
-            Write("{0}enum {1}", Helpers.GetAccess(@enum.Access), @enum.Name);
+            Write(Helpers.GetAccess(@enum.Access)); 
+            // internal P/Invoke declarations must see protected enums
+            if (@enum.Access == AccessSpecifier.Protected)
+                Write("internal ");
+            Write("enum {0}", @enum.Name);
 
             var typeName = TypePrinter.VisitPrimitiveType(@enum.BuiltinType.Type,
                                                           new TypeQualifiers());

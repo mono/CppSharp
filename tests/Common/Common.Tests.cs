@@ -25,6 +25,9 @@ public class CommonTests : GeneratorTestFixture
         using (var derivedFromTemplateInstantiationWithVirtual = new DerivedFromTemplateInstantiationWithVirtual())
         {
         }
+        using (var hasProtectedEnum = new HasProtectedEnum())
+        {
+        }
     }
 
     [Test]

@@ -610,3 +610,11 @@ NonTrivialDtor::~NonTrivialDtor()
 DerivedFromTemplateInstantiationWithVirtual::DerivedFromTemplateInstantiationWithVirtual()
 {
 }
+
+HasProtectedEnum::HasProtectedEnum()
+{
+}
+
+void HasProtectedEnum::function(ProtectedEnum param)
+{
+}
