@@ -286,7 +286,7 @@ namespace CppSharp
                 __ownsNativeInstance = true;
                 NativeToManagedMap[__Instance] = this;
                 if (ReferenceEquals(_0, null))
-                    throw new global::System.ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
+                    throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
                 var arg0 = _0.__Instance;
                 Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
             }
@@ -730,7 +730,7 @@ namespace CppSharp
                 __ownsNativeInstance = true;
                 NativeToManagedMap[__Instance] = this;
                 if (ReferenceEquals(_0, null))
-                    throw new global::System.ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
+                    throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
                 var arg0 = _0.__Instance;
                 Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
             }
@@ -927,7 +927,7 @@ namespace CppSharp
                 __ownsNativeInstance = true;
                 NativeToManagedMap[__Instance] = this;
                 if (ReferenceEquals(_0, null))
-                    throw new global::System.ArgumentNullException("_0", "_0 cannot be null because it is a C++ reference (&).");
+                    throw new global::System.ArgumentNullException("_0", "Cannot be null because it is a C++ reference (&).");
                 var arg0 = _0.__Instance;
                 Internal.cctor_1((__Instance + __PointerAdjustment), arg0);
             }
@@ -956,7 +956,7 @@ namespace CppSharp
             public void addDiagnostics(CppSharp.Parser.ParserDiagnostic s)
             {
                 if (ReferenceEquals(s, null))
-                    throw new global::System.ArgumentNullException("s", "s cannot be null because it is a C++ reference (&).");
+                    throw new global::System.ArgumentNullException("s", "Cannot be null because it is a C++ reference (&).");
                 var arg0 = s.__Instance;
                 Internal.addDiagnostics_0((__Instance + __PointerAdjustment), arg0);
             }
