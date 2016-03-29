@@ -174,6 +174,8 @@ namespace CppSharp.AST
             get { return (CommentCommandKind) CommandId; }
         }
 
+        public ParagraphComment ParagraphComment { get; set; }
+
         public List<Argument> Arguments;
 
         public BlockCommandComment()

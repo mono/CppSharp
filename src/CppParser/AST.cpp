@@ -848,9 +848,14 @@ BlockCommandComment::Argument::Argument(const Argument& rhs) : Text(rhs.Text) {}
 
 DEF_STRING(BlockCommandComment::Argument, Text)
 
-BlockCommandComment::BlockCommandComment() : BlockContentComment(CommentKind::BlockCommandComment), CommandId(0) {}
+BlockCommandComment::BlockCommandComment() : BlockContentComment(CommentKind::BlockCommandComment), CommandId(0), ParagraphComment(0) {}
 
-BlockCommandComment::BlockCommandComment(CommentKind Kind) : BlockContentComment(Kind) {}
+BlockCommandComment::BlockCommandComment(CommentKind Kind) : BlockContentComment(Kind), CommandId(0), ParagraphComment(0) {}
+
+BlockCommandComment::~BlockCommandComment()
+{
+    delete ParagraphComment;
+}
 
 DEF_VECTOR(BlockCommandComment, BlockCommandComment::Argument, Arguments)
 

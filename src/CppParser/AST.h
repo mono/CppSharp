@@ -950,6 +950,22 @@ public:
     VECTOR(BlockContentComment*, Blocks)
 };
 
+class CS_API InlineContentComment : public Comment
+{
+public:
+    InlineContentComment();
+    InlineContentComment(CommentKind Kind);
+};
+
+class CS_API ParagraphComment : public BlockContentComment
+{
+public:
+    ParagraphComment();
+    ~ParagraphComment();
+    bool IsWhitespace;
+    VECTOR(InlineContentComment*, Content)
+};
+
 class CS_API BlockCommandComment : public BlockContentComment
 {
 public:
@@ -962,7 +978,9 @@ public:
     };
     BlockCommandComment();
     BlockCommandComment(CommentKind Kind);
+    ~BlockCommandComment();
     unsigned CommandId;
+    ParagraphComment* ParagraphComment;
     VECTOR(Argument, Arguments)
 };
 
@@ -1007,22 +1025,6 @@ class CS_API VerbatimLineComment : public BlockCommandComment
 public:
     VerbatimLineComment();
     STRING(Text)
-};
-
-class CS_API InlineContentComment : public Comment
-{
-public:
-    InlineContentComment();
-    InlineContentComment(CommentKind Kind);
-};
-
-class CS_API ParagraphComment : public BlockContentComment
-{
-public:
-    ParagraphComment();
-    ~ParagraphComment();
-    bool IsWhitespace;
-    VECTOR(InlineContentComment*, Content)
 };
 
 class CS_API InlineCommandComment : public InlineContentComment

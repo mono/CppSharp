@@ -1670,6 +1670,7 @@ namespace CppSharp
                     break;
             }
             paramCommandComment.ParamIndex = comment.ParamIndex;
+            VisitBlockCommandComment(paramCommandComment, comment);
             return paramCommandComment;
         }
 
@@ -1748,9 +1749,10 @@ namespace CppSharp
             return new AST.VerbatimBlockLineComment { Text = comment.Text };
         }
 
-        private static void VisitBlockCommandComment(AST.BlockCommandComment blockCommandComment, BlockCommandComment comment)
+        private void VisitBlockCommandComment(AST.BlockCommandComment blockCommandComment, BlockCommandComment comment)
         {
             blockCommandComment.CommandId = comment.CommandId;
+            blockCommandComment.ParagraphComment = (AST.ParagraphComment) Visit(comment.ParagraphComment);
             for (uint i = 0; i < comment.ArgumentsCount; i++)
             {
                 var argument = new AST.BlockCommandComment.Argument { Text = comment.getArguments(i).Text };

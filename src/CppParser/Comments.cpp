@@ -121,6 +121,7 @@ static Comment* ConvertCommentBlock(clang::comments::Comment* C)
         auto BC = new BlockCommandComment();
         _Comment = BC;
         HandleBlockCommand(CK, BC);
+        BC->ParagraphComment = static_cast<ParagraphComment*>(ConvertCommentBlock(CK->getParagraph()));
         break;
     }
     case Comment::ParamCommandCommentKind:
@@ -132,6 +133,7 @@ static Comment* ConvertCommentBlock(clang::comments::Comment* C)
         PC->Direction = ConvertParamPassDirection(CK->getDirection());
         if (CK->isParamIndexValid() && !CK->isVarArgParam())
             PC->ParamIndex = CK->getParamIndex();
+        PC->ParagraphComment = static_cast<ParagraphComment*>(ConvertCommentBlock(CK->getParagraph()));
         break;
     }
     case Comment::TParamCommandCommentKind:
@@ -144,6 +146,7 @@ static Comment* ConvertCommentBlock(clang::comments::Comment* C)
         if (CK->isPositionValid())
             for (unsigned I = 0, E = CK->getDepth(); I != E; ++I)
                 TC->Position.push_back(CK->getIndex(I));
+        TC->ParagraphComment = static_cast<ParagraphComment*>(ConvertCommentBlock(CK->getParagraph()));
         break;
     }
     case Comment::VerbatimBlockCommentKind:

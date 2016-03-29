@@ -2569,6 +2569,51 @@ namespace CppSharp
                 void clearBlocks();
             };
 
+            public ref class InlineContentComment : CppSharp::Parser::AST::Comment
+            {
+            public:
+
+                InlineContentComment(::CppSharp::CppParser::AST::InlineContentComment* native);
+                static InlineContentComment^ __CreateInstance(::System::IntPtr native);
+                InlineContentComment();
+
+                InlineContentComment(CppSharp::Parser::AST::CommentKind Kind);
+
+                InlineContentComment(CppSharp::Parser::AST::InlineContentComment^ _0);
+
+                ~InlineContentComment();
+            };
+
+            public ref class ParagraphComment : CppSharp::Parser::AST::BlockContentComment
+            {
+            public:
+
+                ParagraphComment(::CppSharp::CppParser::AST::ParagraphComment* native);
+                static ParagraphComment^ __CreateInstance(::System::IntPtr native);
+                ParagraphComment();
+
+                ParagraphComment(CppSharp::Parser::AST::ParagraphComment^ _0);
+
+                ~ParagraphComment();
+
+                property unsigned int ContentCount
+                {
+                    unsigned int get();
+                }
+
+                property bool IsWhitespace
+                {
+                    bool get();
+                    void set(bool);
+                }
+
+                CppSharp::Parser::AST::InlineContentComment^ getContent(unsigned int i);
+
+                void addContent(CppSharp::Parser::AST::InlineContentComment^ s);
+
+                void clearContent();
+            };
+
             public ref class BlockCommandComment : CppSharp::Parser::AST::BlockContentComment
             {
             public:
@@ -2621,6 +2666,12 @@ namespace CppSharp
                 {
                     unsigned int get();
                     void set(unsigned int);
+                }
+
+                property CppSharp::Parser::AST::ParagraphComment^ ParagraphComment
+                {
+                    CppSharp::Parser::AST::ParagraphComment^ get();
+                    void set(CppSharp::Parser::AST::ParagraphComment^);
                 }
 
                 CppSharp::Parser::AST::BlockCommandComment::Argument^ getArguments(unsigned int i);
@@ -2746,51 +2797,6 @@ namespace CppSharp
                     System::String^ get();
                     void set(System::String^);
                 }
-            };
-
-            public ref class InlineContentComment : CppSharp::Parser::AST::Comment
-            {
-            public:
-
-                InlineContentComment(::CppSharp::CppParser::AST::InlineContentComment* native);
-                static InlineContentComment^ __CreateInstance(::System::IntPtr native);
-                InlineContentComment();
-
-                InlineContentComment(CppSharp::Parser::AST::CommentKind Kind);
-
-                InlineContentComment(CppSharp::Parser::AST::InlineContentComment^ _0);
-
-                ~InlineContentComment();
-            };
-
-            public ref class ParagraphComment : CppSharp::Parser::AST::BlockContentComment
-            {
-            public:
-
-                ParagraphComment(::CppSharp::CppParser::AST::ParagraphComment* native);
-                static ParagraphComment^ __CreateInstance(::System::IntPtr native);
-                ParagraphComment();
-
-                ParagraphComment(CppSharp::Parser::AST::ParagraphComment^ _0);
-
-                ~ParagraphComment();
-
-                property unsigned int ContentCount
-                {
-                    unsigned int get();
-                }
-
-                property bool IsWhitespace
-                {
-                    bool get();
-                    void set(bool);
-                }
-
-                CppSharp::Parser::AST::InlineContentComment^ getContent(unsigned int i);
-
-                void addContent(CppSharp::Parser::AST::InlineContentComment^ s);
-
-                void clearContent();
             };
 
             public ref class InlineCommandComment : CppSharp::Parser::AST::InlineContentComment
