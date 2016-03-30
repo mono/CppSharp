@@ -37,6 +37,13 @@ namespace CppSharp.Generators.CSharp
                     break;
                 case CommentKind.ParamCommandComment:
                     var paramCommandComment = (ParamCommandComment) comment;
+                    var param = new Section(CommentElement.Param);
+                    sections.Add(param);
+                    if (paramCommandComment.Arguments.Count > 0)
+                        param.Attributes.Add(
+                            string.Format("name=\"{0}\"", paramCommandComment.Arguments[0].Text));
+                    foreach (var inlineContentComment in paramCommandComment.ParagraphComment.Content)
+                        inlineContentComment.GetCommentSections(sections);
                     break;
                 case CommentKind.TParamCommandComment:
                     break;
@@ -63,7 +70,9 @@ namespace CppSharp.Generators.CSharp
                 case CommentKind.HTMLEndTagComment:
                     break;
                 case CommentKind.TextComment:
-                    sections.Last().Lines.Add(GetText(comment, sections.Last().Type == CommentElement.Returns));
+                    var section = sections.Last();
+                    sections.Last().Lines.Add(GetText(comment,
+                        section.Type == CommentElement.Returns || section.Type == CommentElement.Param));
                     if (sections.Count == 1)
                         sections.Add(new Section(CommentElement.Remarks));
                     break;
@@ -110,7 +119,9 @@ namespace CppSharp.Generators.CSharp
             foreach (var section in sections.Where(s => s.Lines.Count > 0))
             {
                 var tag = section.Type.ToString().ToLowerInvariant();
-                commentBuilder.AppendFormat("<{0}>", tag);
+                commentBuilder.AppendFormat("<{0}{1}>",
+                    tag + (section.Attributes.Count == 0 ? string.Empty : " "),
+                    string.Join(" ", section.Attributes));
                 commentBuilder.AppendLine();
                 foreach (var line in section.Lines)
                 {
@@ -133,10 +144,13 @@ namespace CppSharp.Generators.CSharp
             public Section(CommentElement type)
             {
                 Type = type;
+                Attributes = new List<string>();
                 Lines = new List<string>();
             }
 
             public CommentElement Type { get; set; }
+
+            public List<string> Attributes { get; set; }
 
             public List<string> Lines { get; private set; }
         }
