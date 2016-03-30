@@ -134,16 +134,9 @@ namespace CppSharp.Generators
                     if (!string.IsNullOrWhiteSpace(line))
                         builder.Append(new string(' ', (int)totalIndent));
 
-
-                    if (childBlock.Kind == BlockKind.BlockComment &&
-                        !line.StartsWith(options.CommentPrefix))
-                    {
-                        builder.Append(options.CommentPrefix);
-                        builder.Append(' ');
-                    }
                     builder.Append(line);
 
-                    if (!line.EndsWith(Environment.NewLine))
+                    if (!line.EndsWith(Environment.NewLine, StringComparison.Ordinal))
                         builder.AppendLine();
                 }
 

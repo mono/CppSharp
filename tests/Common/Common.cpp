@@ -581,11 +581,6 @@ int OverridesNonDirectVirtual::retInt()
     return 3;
 }
 
-const char * TestComments::GetIOHandlerControlSequence(char ch)
-{
-    return 0;
-}
-
 AbstractWithVirtualDtor::AbstractWithVirtualDtor()
 {
 }

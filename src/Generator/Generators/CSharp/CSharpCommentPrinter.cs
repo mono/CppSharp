@@ -71,7 +71,7 @@ namespace CppSharp.Generators.CSharp
                     break;
                 case CommentKind.TextComment:
                     var section = sections.Last();
-                    sections.Last().Lines.Add(GetText(comment,
+                    section.Lines.Add(GetText(comment,
                         section.Type == CommentElement.Returns || section.Type == CommentElement.Param));
                     if (sections.Count == 1)
                         sections.Add(new Section(CommentElement.Remarks));
@@ -119,7 +119,7 @@ namespace CppSharp.Generators.CSharp
             foreach (var section in sections.Where(s => s.Lines.Count > 0))
             {
                 var tag = section.Type.ToString().ToLowerInvariant();
-                commentBuilder.AppendFormat("<{0}{1}>",
+                commentBuilder.AppendFormat("{0} <{1}{2}>", commentPrefix,
                     tag + (section.Attributes.Count == 0 ? string.Empty : " "),
                     string.Join(" ", section.Attributes));
                 commentBuilder.AppendLine();
@@ -128,7 +128,7 @@ namespace CppSharp.Generators.CSharp
                     commentBuilder.AppendFormat("{0} <para>{1}</para>", commentPrefix, line);
                     commentBuilder.AppendLine();
                 }
-                commentBuilder.AppendFormat("</{0}>", tag);
+                commentBuilder.AppendFormat("{0} </{1}>", commentPrefix, tag);
                 commentBuilder.AppendLine();
             }
             if (commentBuilder.Length > 0)

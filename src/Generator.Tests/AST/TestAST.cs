@@ -3,6 +3,7 @@ using CppSharp.Passes;
 using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using NUnit.Framework;
+using CppSharp.Generators.CSharp;
 
 namespace CppSharp.Generator.Tests.AST
 {
@@ -36,10 +37,10 @@ namespace CppSharp.Generator.Tests.AST
                         Modifier = PointerType.TypeModifier.LVReference,
                         QualifiedPointee = new QualifiedType(
                             new BuiltinType(PrimitiveType.Short), 
-                            new TypeQualifiers() { IsConst = true })
+                            new TypeQualifiers { IsConst = true })
                     }),
                 new QualifiedType(
-                    new PointerType()
+                    new PointerType
                     {
                         Modifier = PointerType.TypeModifier.Pointer,
                         QualifiedPointee = new QualifiedType(new BuiltinType(PrimitiveType.Int))
@@ -303,6 +304,39 @@ namespace CppSharp.Generator.Tests.AST
             Assert.AreEqual(classTemplate.Specializations[0].Constructors.First(
                 c => !c.IsCopyConstructor && !c.IsMoveConstructor).InstantiatedFrom,
                 classTemplate.TemplatedClass.Constructors.First(c => !c.IsCopyConstructor && !c.IsMoveConstructor));
+        }
+
+        [Test]
+        public void TestComments()
+        {
+            var @class = AstContext.FindCompleteClass("TestComments");
+            var commentClass = @class.Comment.FullComment.CommentToString(Options.CommentPrefix);
+            Assert.AreEqual(@"/// <summary>
+/// <para>Hash set/map base class.</para>
+/// <para>Note that to prevent extra memory use due to vtable pointer, %HashBase intentionally does not declare a virtual destructor</para>
+/// <para>and therefore %HashBase pointers should never be used.</para>
+/// </summary>".Replace("\r", string.Empty), commentClass.Replace("\r", string.Empty));
+
+            var method = @class.Methods.First(m => m.Name == "GetIOHandlerControlSequence");
+            var commentMethod = method.Comment.FullComment.CommentToString(Options.CommentPrefix);
+            Assert.AreEqual(@"/// <summary>
+/// <para>Get the string that needs to be written to the debugger stdin file</para>
+/// <para>handle when a control character is typed.</para>
+/// </summary>
+/// <remarks>
+/// <para>Some GUI programs will intercept &quot;control + char&quot; sequences and want</para>
+/// <para>to have them do what normally would happen when using a real</para>
+/// <para>terminal, so this function allows GUI programs to emulate this</para>
+/// <para>functionality.</para>
+/// </remarks>
+/// <param name=""ch"">
+/// <para>The character that was typed along with the control key</para>
+/// </param>
+/// <returns>
+/// <para>The string that should be written into the file handle that is</para>
+/// <para>feeding the input stream for the debugger, or NULL if there is</para>
+/// <para>no string for this control key.</para>
+/// </returns>".Replace("\r", string.Empty), commentMethod.Replace("\r", string.Empty));
         }
     }
 }
