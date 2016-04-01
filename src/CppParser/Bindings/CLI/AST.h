@@ -2582,6 +2582,12 @@ namespace CppSharp
                 InlineContentComment(CppSharp::Parser::AST::InlineContentComment^ _0);
 
                 ~InlineContentComment();
+
+                property bool HasTrailingNewline
+                {
+                    bool get();
+                    void set(bool);
+                }
             };
 
             public ref class ParagraphComment : CppSharp::Parser::AST::BlockContentComment
@@ -2851,6 +2857,12 @@ namespace CppSharp
                 property unsigned int ArgumentsCount
                 {
                     unsigned int get();
+                }
+
+                property unsigned int CommandId
+                {
+                    unsigned int get();
+                    void set(unsigned int);
                 }
 
                 property CppSharp::Parser::AST::InlineCommandComment::RenderKind CommentRenderKind

@@ -332,6 +332,8 @@ namespace CppSharp.AST
         {
             Kind = CommentKind.InlineContentComment;
         }
+
+        public bool HasTrailingNewline { get; set; }
     }
 
     /// <summary>
@@ -424,6 +426,13 @@ namespace CppSharp.AST
             RenderBold,
             RenderMonospaced, 
             RenderEmphasized
+        }
+
+        public uint CommandId { get; set; }
+
+        public CommentCommandKind CommandKind
+        {
+            get { return (CommentCommandKind) CommandId; }
         }
 
         public RenderKind CommentRenderKind;

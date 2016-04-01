@@ -934,9 +934,9 @@ HTMLEndTagComment::HTMLEndTagComment() : HTMLTagComment(CommentKind::HTMLEndTagC
 
 DEF_STRING(HTMLEndTagComment, TagName)
 
-InlineContentComment::InlineContentComment() : Comment(CommentKind::InlineContentComment) {}
+InlineContentComment::InlineContentComment() : Comment(CommentKind::InlineContentComment), HasTrailingNewline(false) {}
 
-InlineContentComment::InlineContentComment(CommentKind Kind) : Comment(Kind) {}
+InlineContentComment::InlineContentComment(CommentKind Kind) : Comment(Kind), HasTrailingNewline(false) {}
 
 TextComment::TextComment() : InlineContentComment(CommentKind::TextComment) {}
 
@@ -948,7 +948,8 @@ InlineCommandComment::Argument::Argument(const Argument& rhs) : Text(rhs.Text) {
 
 DEF_STRING(InlineCommandComment::Argument, Text)
 
-InlineCommandComment::InlineCommandComment() : InlineContentComment(CommentKind::InlineCommandComment), CommentRenderKind(RenderNormal) {}
+InlineCommandComment::InlineCommandComment()
+    : InlineContentComment(CommentKind::InlineCommandComment), CommandId(0), CommentRenderKind(RenderNormal) {}
 
 DEF_VECTOR(InlineCommandComment, InlineCommandComment::Argument, Arguments)
 

@@ -1720,22 +1720,33 @@ namespace CppSharp
                 htmlStartTagComment.Attributes.Add(attribute);
             }
             htmlStartTagComment.TagName = comment.TagName;
+            htmlStartTagComment.HasTrailingNewline = comment.HasTrailingNewline;
             return htmlStartTagComment;
         }
 
         protected override AST.Comment VisitHTMLEndTagComment(HTMLEndTagComment comment)
         {
-            return new AST.HTMLEndTagComment { TagName = comment.TagName };
+            return new AST.HTMLEndTagComment
+            {
+                TagName = comment.TagName,
+                HasTrailingNewline = comment.HasTrailingNewline
+            };
         }
 
         protected override AST.Comment VisitTextComment(TextComment comment)
         {
-            return new AST.TextComment { Text = comment.Text };
+            return new AST.TextComment
+            {
+                Text = comment.Text,
+                HasTrailingNewline = comment.HasTrailingNewline
+            };
         }
 
         protected override AST.Comment VisitInlineCommandComment(InlineCommandComment comment)
         {
             var inlineCommandComment = new AST.InlineCommandComment();
+            inlineCommandComment.HasTrailingNewline = comment.HasTrailingNewline;
+            inlineCommandComment.CommandId = comment.CommandId;
             for (uint i = 0; i < comment.ArgumentsCount; i++)
             {
                 var argument = new AST.InlineCommandComment.Argument { Text = comment.getArguments(i).Text };

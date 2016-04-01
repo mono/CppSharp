@@ -81,6 +81,12 @@ ConvertParamPassDirection(clang::comments::ParamCommandComment::PassDirection Di
     llvm_unreachable("Unknown parameter pass direction");
 }
 
+static void HandleInlineContent(const clang::comments::InlineContentComment *CK,
+    InlineContentComment* IC)
+{
+    IC->HasTrailingNewline = CK->hasTrailingNewline();
+}
+
 static void HandleBlockCommand(const clang::comments::BlockCommandComment *CK,
                                BlockCommandComment* BC)
 {
@@ -187,6 +193,7 @@ static Comment* ConvertCommentBlock(clang::comments::Comment* C)
         auto CK = cast<clang::comments::HTMLStartTagComment>(C);
         auto TC = new HTMLStartTagComment();
         _Comment = TC;
+        HandleInlineContent(CK, TC);
         TC->TagName = CK->getTagName();
         for (unsigned I = 0, E = CK->getNumAttrs(); I != E; ++I)
         {
@@ -203,6 +210,7 @@ static Comment* ConvertCommentBlock(clang::comments::Comment* C)
         auto CK = cast<clang::comments::HTMLEndTagComment>(C);
         auto TC = new HTMLEndTagComment();
         _Comment = TC;
+        HandleInlineContent(CK, TC);
         TC->TagName = CK->getTagName();
         break;
     }
@@ -211,6 +219,7 @@ static Comment* ConvertCommentBlock(clang::comments::Comment* C)
         auto CK = cast<clang::comments::TextComment>(C);
         auto TC = new TextComment();
         _Comment = TC;
+        HandleInlineContent(CK, TC);
         TC->Text = CK->getText();
         break;
     }
@@ -219,6 +228,8 @@ static Comment* ConvertCommentBlock(clang::comments::Comment* C)
         auto CK = cast<clang::comments::InlineCommandComment>(C);
         auto IC = new InlineCommandComment();
         _Comment = IC;
+        HandleInlineContent(CK, IC);
+        IC->CommandId = CK->getCommandID();
         IC->CommentRenderKind = ConvertRenderKind(CK->getRenderKind());
         for (unsigned I = 0, E = CK->getNumArgs(); I != E; ++I)
         {

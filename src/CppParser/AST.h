@@ -955,6 +955,7 @@ class CS_API InlineContentComment : public Comment
 public:
     InlineContentComment();
     InlineContentComment(CommentKind Kind);
+    bool HasTrailingNewline;
 };
 
 class CS_API ParagraphComment : public BlockContentComment
@@ -1045,6 +1046,7 @@ public:
         STRING(Text)
     };
     InlineCommandComment();
+    unsigned CommandId;
     RenderKind CommentRenderKind;
     VECTOR(Argument, Arguments)
 };

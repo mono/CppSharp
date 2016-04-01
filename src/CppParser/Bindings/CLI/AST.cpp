@@ -4614,6 +4614,16 @@ CppSharp::Parser::AST::InlineContentComment::InlineContentComment(CppSharp::Pars
     NativePtr = new ::CppSharp::CppParser::AST::InlineContentComment(arg0);
 }
 
+bool CppSharp::Parser::AST::InlineContentComment::HasTrailingNewline::get()
+{
+    return ((::CppSharp::CppParser::AST::InlineContentComment*)NativePtr)->HasTrailingNewline;
+}
+
+void CppSharp::Parser::AST::InlineContentComment::HasTrailingNewline::set(bool value)
+{
+    ((::CppSharp::CppParser::AST::InlineContentComment*)NativePtr)->HasTrailingNewline = value;
+}
+
 CppSharp::Parser::AST::ParagraphComment::ParagraphComment(::CppSharp::CppParser::AST::ParagraphComment* native)
     : CppSharp::Parser::AST::BlockContentComment((::CppSharp::CppParser::AST::BlockContentComment*)native)
 {
@@ -5232,6 +5242,16 @@ unsigned int CppSharp::Parser::AST::InlineCommandComment::ArgumentsCount::get()
 {
     auto __ret = ((::CppSharp::CppParser::AST::InlineCommandComment*)NativePtr)->getArgumentsCount();
     return __ret;
+}
+
+unsigned int CppSharp::Parser::AST::InlineCommandComment::CommandId::get()
+{
+    return ((::CppSharp::CppParser::AST::InlineCommandComment*)NativePtr)->CommandId;
+}
+
+void CppSharp::Parser::AST::InlineCommandComment::CommandId::set(unsigned int value)
+{
+    ((::CppSharp::CppParser::AST::InlineCommandComment*)NativePtr)->CommandId = value;
 }
 
 CppSharp::Parser::AST::InlineCommandComment::RenderKind CppSharp::Parser::AST::InlineCommandComment::CommentRenderKind::get()

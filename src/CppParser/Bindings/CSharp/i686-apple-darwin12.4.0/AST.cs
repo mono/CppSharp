@@ -10545,11 +10545,14 @@ namespace CppSharp
 
             public unsafe partial class InlineContentComment : CppSharp.Parser.AST.Comment, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 4)]
+                [StructLayout(LayoutKind.Explicit, Size = 8)]
                 public new partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.CommentKind Kind;
+
+                    [FieldOffset(4)]
+                    public byte HasTrailingNewline;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -10579,7 +10582,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(InlineContentComment.Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(4);
+                    var ret = Marshal.AllocHGlobal(8);
                     *(InlineContentComment.Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -10603,7 +10606,7 @@ namespace CppSharp
                 public InlineContentComment()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(4);
+                    __Instance = Marshal.AllocHGlobal(8);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -10612,7 +10615,7 @@ namespace CppSharp
                 public InlineContentComment(CppSharp.Parser.AST.CommentKind Kind)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(4);
+                    __Instance = Marshal.AllocHGlobal(8);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = Kind;
@@ -10622,10 +10625,23 @@ namespace CppSharp
                 public InlineContentComment(CppSharp.Parser.AST.InlineContentComment _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(4);
+                    __Instance = Marshal.AllocHGlobal(8);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     *((InlineContentComment.Internal*) __Instance) = *((InlineContentComment.Internal*) _0.__Instance);
+                }
+
+                public bool HasTrailingNewline
+                {
+                    get
+                    {
+                        return ((Internal*) __Instance)->HasTrailingNewline != 0;
+                    }
+
+                    set
+                    {
+                        ((Internal*) __Instance)->HasTrailingNewline = (byte) (value ? 1 : 0);
+                    }
                 }
             }
 
@@ -11754,13 +11770,19 @@ namespace CppSharp
 
             public unsafe partial class InlineCommandComment : CppSharp.Parser.AST.InlineContentComment, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 20)]
+                [StructLayout(LayoutKind.Explicit, Size = 28)]
                 public new partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.CommentKind Kind;
 
                     [FieldOffset(4)]
+                    public byte HasTrailingNewline;
+
+                    [FieldOffset(8)]
+                    public uint CommandId;
+
+                    [FieldOffset(12)]
                     public CppSharp.Parser.AST.InlineCommandComment.RenderKind CommentRenderKind;
 
                     [SuppressUnmanagedCodeSecurity]
@@ -11939,7 +11961,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(InlineCommandComment.Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(20);
+                    var ret = Marshal.AllocHGlobal(28);
                     CppSharp.Parser.AST.InlineCommandComment.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -11963,7 +11985,7 @@ namespace CppSharp
                 public InlineCommandComment()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(20);
+                    __Instance = Marshal.AllocHGlobal(28);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -11972,7 +11994,7 @@ namespace CppSharp
                 public InlineCommandComment(CppSharp.Parser.AST.InlineCommandComment _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(20);
+                    __Instance = Marshal.AllocHGlobal(28);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -12019,6 +12041,19 @@ namespace CppSharp
                     }
                 }
 
+                public uint CommandId
+                {
+                    get
+                    {
+                        return ((Internal*) __Instance)->CommandId;
+                    }
+
+                    set
+                    {
+                        ((Internal*) __Instance)->CommandId = value;
+                    }
+                }
+
                 public CppSharp.Parser.AST.InlineCommandComment.RenderKind CommentRenderKind
                 {
                     get
@@ -12035,11 +12070,14 @@ namespace CppSharp
 
             public unsafe partial class HTMLTagComment : CppSharp.Parser.AST.InlineContentComment, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 4)]
+                [StructLayout(LayoutKind.Explicit, Size = 8)]
                 public new partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.CommentKind Kind;
+
+                    [FieldOffset(4)]
+                    public byte HasTrailingNewline;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -12069,7 +12107,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(HTMLTagComment.Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(4);
+                    var ret = Marshal.AllocHGlobal(8);
                     *(HTMLTagComment.Internal*) ret = native;
                     return ret.ToPointer();
                 }
@@ -12093,7 +12131,7 @@ namespace CppSharp
                 public HTMLTagComment()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(4);
+                    __Instance = Marshal.AllocHGlobal(8);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -12102,7 +12140,7 @@ namespace CppSharp
                 public HTMLTagComment(CppSharp.Parser.AST.CommentKind Kind)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(4);
+                    __Instance = Marshal.AllocHGlobal(8);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     var arg0 = Kind;
@@ -12112,7 +12150,7 @@ namespace CppSharp
                 public HTMLTagComment(CppSharp.Parser.AST.HTMLTagComment _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(4);
+                    __Instance = Marshal.AllocHGlobal(8);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     *((HTMLTagComment.Internal*) __Instance) = *((HTMLTagComment.Internal*) _0.__Instance);
@@ -12121,11 +12159,14 @@ namespace CppSharp
 
             public unsafe partial class HTMLStartTagComment : CppSharp.Parser.AST.HTMLTagComment, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 28)]
+                [StructLayout(LayoutKind.Explicit, Size = 32)]
                 public new partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.CommentKind Kind;
+
+                    [FieldOffset(4)]
+                    public byte HasTrailingNewline;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -12331,7 +12372,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(HTMLStartTagComment.Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(28);
+                    var ret = Marshal.AllocHGlobal(32);
                     CppSharp.Parser.AST.HTMLStartTagComment.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -12355,7 +12396,7 @@ namespace CppSharp
                 public HTMLStartTagComment()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(28);
+                    __Instance = Marshal.AllocHGlobal(32);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -12364,7 +12405,7 @@ namespace CppSharp
                 public HTMLStartTagComment(CppSharp.Parser.AST.HTMLStartTagComment _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(28);
+                    __Instance = Marshal.AllocHGlobal(32);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -12430,11 +12471,14 @@ namespace CppSharp
 
             public unsafe partial class HTMLEndTagComment : CppSharp.Parser.AST.HTMLTagComment, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 16)]
+                [StructLayout(LayoutKind.Explicit, Size = 20)]
                 public new partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.CommentKind Kind;
+
+                    [FieldOffset(4)]
+                    public byte HasTrailingNewline;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -12474,7 +12518,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(HTMLEndTagComment.Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(16);
+                    var ret = Marshal.AllocHGlobal(20);
                     CppSharp.Parser.AST.HTMLEndTagComment.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -12498,7 +12542,7 @@ namespace CppSharp
                 public HTMLEndTagComment()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(16);
+                    __Instance = Marshal.AllocHGlobal(20);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -12507,7 +12551,7 @@ namespace CppSharp
                 public HTMLEndTagComment(CppSharp.Parser.AST.HTMLEndTagComment _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(16);
+                    __Instance = Marshal.AllocHGlobal(20);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
@@ -12544,11 +12588,14 @@ namespace CppSharp
 
             public unsafe partial class TextComment : CppSharp.Parser.AST.InlineContentComment, IDisposable
             {
-                [StructLayout(LayoutKind.Explicit, Size = 16)]
+                [StructLayout(LayoutKind.Explicit, Size = 20)]
                 public new partial struct Internal
                 {
                     [FieldOffset(0)]
                     public CppSharp.Parser.AST.CommentKind Kind;
+
+                    [FieldOffset(4)]
+                    public byte HasTrailingNewline;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.Cdecl,
@@ -12588,7 +12635,7 @@ namespace CppSharp
 
                 private static void* __CopyValue(TextComment.Internal native)
                 {
-                    var ret = Marshal.AllocHGlobal(16);
+                    var ret = Marshal.AllocHGlobal(20);
                     CppSharp.Parser.AST.TextComment.Internal.cctor_2(ret, new global::System.IntPtr(&native));
                     return ret.ToPointer();
                 }
@@ -12612,7 +12659,7 @@ namespace CppSharp
                 public TextComment()
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(16);
+                    __Instance = Marshal.AllocHGlobal(20);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     Internal.ctor_0((__Instance + __PointerAdjustment));
@@ -12621,7 +12668,7 @@ namespace CppSharp
                 public TextComment(CppSharp.Parser.AST.TextComment _0)
                     : this((void*) null)
                 {
-                    __Instance = Marshal.AllocHGlobal(16);
+                    __Instance = Marshal.AllocHGlobal(20);
                     __ownsNativeInstance = true;
                     NativeToManagedMap[__Instance] = this;
                     if (ReferenceEquals(_0, null))
