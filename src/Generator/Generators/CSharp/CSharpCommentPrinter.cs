@@ -29,7 +29,8 @@ namespace CppSharp.Generators.CSharp
                     break;
                 case CommentKind.BlockCommandComment:
                     var blockCommandComment = (BlockCommandComment) comment;
-                    if (blockCommandComment.CommandKind == CommentCommandKind.Return)
+                    if (blockCommandComment.CommandKind == CommentCommandKind.Return &&
+                        blockCommandComment.ParagraphComment != null)
                     {
                         sections.Add(new Section(CommentElement.Returns));
                         blockCommandComment.ParagraphComment.GetCommentSections(sections);
@@ -42,8 +43,9 @@ namespace CppSharp.Generators.CSharp
                     if (paramCommandComment.Arguments.Count > 0)
                         param.Attributes.Add(
                             string.Format("name=\"{0}\"", paramCommandComment.Arguments[0].Text));
-                    foreach (var inlineContentComment in paramCommandComment.ParagraphComment.Content)
-                        inlineContentComment.GetCommentSections(sections);
+                    if (paramCommandComment.ParagraphComment != null)
+                        foreach (var inlineContentComment in paramCommandComment.ParagraphComment.Content)
+                            inlineContentComment.GetCommentSections(sections);
                     break;
                 case CommentKind.TParamCommandComment:
                     break;

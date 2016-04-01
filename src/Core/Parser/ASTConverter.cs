@@ -1752,7 +1752,8 @@ namespace CppSharp
         private void VisitBlockCommandComment(AST.BlockCommandComment blockCommandComment, BlockCommandComment comment)
         {
             blockCommandComment.CommandId = comment.CommandId;
-            blockCommandComment.ParagraphComment = (AST.ParagraphComment) Visit(comment.ParagraphComment);
+            if (comment.ParagraphComment != null)
+                blockCommandComment.ParagraphComment = (AST.ParagraphComment) Visit(comment.ParagraphComment);
             for (uint i = 0; i < comment.ArgumentsCount; i++)
             {
                 var argument = new AST.BlockCommandComment.Argument { Text = comment.getArguments(i).Text };
