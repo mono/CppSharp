@@ -392,7 +392,7 @@ static clang::Decl* GetPreviousDeclInContext(const clang::Decl* D)
 static clang::SourceLocation GetDeclStartLocation(clang::CompilerInstance* C,
                                                   const clang::Decl* D)
 {
-    auto &SM = C->getSourceManager();
+    auto& SM = C->getSourceManager();
     auto startLoc = SM.getExpansionLoc(D->getLocStart());
     auto startOffset = SM.getFileOffset(startLoc);
 
@@ -711,7 +711,7 @@ void Parser::WalkRecord(clang::RecordDecl* Record, Class* RC)
     HandlePreprocessedEntities(RC, headRange, MacroLocation::ClassHead);
     HandlePreprocessedEntities(RC, bodyRange, MacroLocation::ClassBody);
 
-    auto &Sema = C->getSema();
+    auto& Sema = C->getSema();
 
     RC->IsUnion = Record->isUnion();
     RC->IsDependent = Record->isDependentType();
@@ -798,7 +798,7 @@ void Parser::WalkRecordCXX(clang::CXXRecordDecl* Record, Class* RC)
 {
     using namespace clang;
 
-    auto &Sema = C->getSema();
+    auto& Sema = C->getSema();
     Sema.ForceDeclarationOfImplicitMembers(Record);
 
     WalkRecord(Record, RC);
@@ -828,7 +828,7 @@ void Parser::WalkRecordCXX(clang::CXXRecordDecl* Record, Class* RC)
     // Iterate through the record bases.
     for(auto it = Record->bases_begin(); it != Record->bases_end(); ++it)
     {
-        clang::CXXBaseSpecifier &BS = *it;
+        auto& BS = *it;
 
         BaseClassSpecifier* Base = new BaseClassSpecifier();
         Base->Access = ConvertToAccess(BS.getAccessSpecifier());
@@ -894,7 +894,7 @@ Parser::WalkClassTemplateSpecialization(clang::ClassTemplateSpecializationDecl* 
     TS->Name = CTS->getName();
     TS->TemplatedDecl = CT;
     TS->SpecializationKind = WalkTemplateSpecializationKind(CTS->getSpecializationKind());
-    auto &TAL = CTS->getTemplateArgs();
+    auto& TAL = CTS->getTemplateArgs();
     auto TSI = CTS->getTypeAsWritten();
     if (TSI)
     {
@@ -938,7 +938,7 @@ Parser::WalkClassTemplatePartialSpecialization(clang::ClassTemplatePartialSpecia
 
     TS->TemplatedDecl = CT;
     TS->SpecializationKind = WalkTemplateSpecializationKind(CTS->getSpecializationKind());
-    auto &TAL = CTS->getTemplateArgs();
+    auto& TAL = CTS->getTemplateArgs();
     if (auto TSI = CTS->getTypeAsWritten())
     {
         auto TL = TSI->getTypeLoc();
@@ -2237,7 +2237,7 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, Function* F,
         {
             RTL = FTL.getReturnLoc();
 
-            auto &SM = C->getSourceManager();
+            auto& SM = C->getSourceManager();
             auto headStartLoc = GetDeclStartLocation(C.get(), FD);
             auto headEndLoc = SM.getExpansionLoc(FTL.getLParenLoc());
             auto headRange = clang::SourceRange(headStartLoc, headEndLoc);
@@ -2750,8 +2750,8 @@ void Parser::HandlePreprocessedEntities(Declaration* Decl,
 
 void Parser::HandleOriginalText(clang::Decl* D, Declaration* Decl)
 {
-    auto &SM = C->getSourceManager();
-    auto &LangOpts = C->getLangOpts();
+    auto& SM = C->getSourceManager();
+    auto& LangOpts = C->getLangOpts();
 
     auto Range = clang::CharSourceRange::getTokenRange(D->getSourceRange());
 
@@ -3030,7 +3030,7 @@ Declaration* Parser::WalkDeclaration(clang::Decl* D,
     {
         Debug("Unhandled declaration kind: %s\n", D->getDeclKindName());
 
-        auto &SM = C->getSourceManager();
+        auto& SM = C->getSourceManager();
         auto Loc = D->getLocation();
         auto FileName = SM.getFilename(Loc);
         auto Offset = SM.getFileOffset(Loc);
@@ -3079,7 +3079,7 @@ struct DiagnosticConsumer : public clang::DiagnosticConsumer
 void Parser::HandleDiagnostics(ParserResult* res)
 {
     auto DiagClient = (DiagnosticConsumer&) C->getDiagnosticClient();
-    auto &Diags = DiagClient.Diagnostics;
+    auto& Diags = DiagClient.Diagnostics;
 
     // Convert the diagnostics to the managed types
     for (unsigned I = 0, E = Diags.size(); I != E; ++I)
@@ -3174,7 +3174,7 @@ ParserResult* Parser::ParseHeader(const std::string& File, ParserResult* res)
     str += "\0";
 
     auto buffer = llvm::MemoryBuffer::getMemBuffer(str);
-    auto &SM = C->getSourceManager();
+    auto& SM = C->getSourceManager();
     SM.setMainFileID(SM.createFileID(std::move(buffer)));
 
     clang::DiagnosticConsumer* client = C->getDiagnostics().getClient();
@@ -3259,7 +3259,7 @@ template<class ELFT>
 static void ReadELFDependencies(const llvm::object::ELFFile<ELFT>* ELFFile, CppSharp::CppParser::NativeLibrary*& NativeLib)
 {
     ELFDumper<ELFT> ELFDumper(ELFFile);
-    for (const auto &Dependency : ELFDumper.getNeededLibraries())
+    for (const auto& Dependency : ELFDumper.getNeededLibraries())
         NativeLib->Dependencies.push_back(Dependency);
 }
 
@@ -3327,7 +3327,7 @@ ParserResultKind Parser::ParseSharedLib(llvm::StringRef File,
     if (ObjectFile->isMachO())
     {
         auto MachOObjectFile = static_cast<llvm::object::MachOObjectFile*>(ObjectFile);
-        for (const auto &Load : MachOObjectFile->load_commands())
+        for (const auto& Load : MachOObjectFile->load_commands())
         {
             if (Load.C.cmd == llvm::MachO::LC_ID_DYLIB ||
                 Load.C.cmd == llvm::MachO::LC_LOAD_DYLIB ||

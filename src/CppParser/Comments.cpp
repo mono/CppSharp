@@ -38,7 +38,7 @@ RawComment* Parser::WalkRawComment(const clang::RawComment* RC)
 {
     using namespace clang;
 
-    auto &SM = C->getSourceManager();
+    auto& SM = C->getSourceManager();
     auto Comment = new RawComment();
     Comment->Kind = ConvertRawCommentKind(RC->getKind());
     Comment->Text = RC->getRawText(SM);
