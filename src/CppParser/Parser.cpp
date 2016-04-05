@@ -3392,7 +3392,7 @@ ParserResult* Parser::ParseLibrary(const std::string& File, ParserResult* res)
         llvm::SmallString<256> Path(LibDir);
         llvm::sys::path::append(Path, File);
 
-        if (!(FileEntry = Path.str()).empty())
+        if (!(FileEntry = Path.str()).empty() && llvm::sys::fs::exists(FileEntry))
             break;
     }
 
