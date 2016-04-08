@@ -137,9 +137,11 @@ void Parser::SetupHeader()
     {
     case CppParser::LanguageVersion::C:
         args.push_back("-xc");
+        break;
     case CppParser::LanguageVersion::CPlusPlus98:
     case CppParser::LanguageVersion::CPlusPlus11:
         args.push_back("-xc++");
+        break;
     }
 
     switch (Opts->LanguageVersion)
