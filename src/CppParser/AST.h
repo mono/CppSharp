@@ -814,6 +814,7 @@ class CS_API FunctionTemplateSpecialization
 {
 public:
     FunctionTemplateSpecialization();
+    ~FunctionTemplateSpecialization();
     FunctionTemplate* Template;
     VECTOR(TemplateArgument, Arguments)
     Function* SpecializedFunction;

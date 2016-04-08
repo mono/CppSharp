@@ -693,6 +693,10 @@ FunctionTemplateSpecialization::FunctionTemplateSpecialization()
 {
 }
 
+FunctionTemplateSpecialization::~FunctionTemplateSpecialization()
+{
+}
+
 DEF_VECTOR(FunctionTemplateSpecialization, TemplateArgument, Arguments)
 
 Namespace::Namespace() 
