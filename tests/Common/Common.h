@@ -1088,3 +1088,8 @@ protected:
     };
     void function(ProtectedEnum param);
 };
+
+struct TestsTypes
+{
+    int(*FunctionNoProto)();
+};

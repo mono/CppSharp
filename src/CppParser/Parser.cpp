@@ -1809,6 +1809,36 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         Ty = A;
         break;
     }
+    case clang::Type::FunctionNoProto:
+    {
+        auto FP = Type->getAs<clang::FunctionNoProtoType>();
+
+        FunctionNoProtoTypeLoc FTL;
+        TypeLoc RL;
+        TypeLoc Next;
+        if (TL && !TL->isNull())
+        {
+            while (!TL->isNull() && TL->getTypeLocClass() != TypeLoc::FunctionNoProto)
+            {
+                Next = TL->getNextTypeLoc();
+                TL = &Next;
+            }
+
+            if (!TL->isNull() && TL->getTypeLocClass() == TypeLoc::FunctionNoProto)
+            {
+                FTL = TL->getAs<FunctionNoProtoTypeLoc>();
+                RL = FTL.getReturnLoc();
+            }
+        }
+
+        auto F = new FunctionType();
+        F->ReturnType = GetQualifiedType(FP->getReturnType(),
+            WalkType(FP->getReturnType(), &RL));
+        F->CallingConvention = ConvertCallConv(FP->getCallConv());
+
+        Ty = F;
+        break;
+    }
     case clang::Type::FunctionProto:
     {
         auto FP = Type->getAs<clang::FunctionProtoType>();
