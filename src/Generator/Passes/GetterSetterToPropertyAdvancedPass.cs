@@ -38,7 +38,7 @@ namespace CppSharp.Passes
                 foreach (Method getter in
                     from getter in getters
                     where (getter.IsGenerated || getter.GenerationKind == GenerationKind.Link) &&
-                          ((Class) getter.Namespace).Methods.All(m => m == getter || m.Ignore || m.Name != getter.Name)
+                          ((Class) getter.Namespace).Methods.All(m => m == getter || !m.IsGenerated || m.Name != getter.Name)
                     select getter)
                 {
                     // Make it a read-only property
