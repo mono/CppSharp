@@ -417,7 +417,9 @@ namespace CppSharp
                     compilerParameters, compileUnits.ToArray());
             }
 
-            var errors = compilerResults.Errors.Cast<CompilerError>().Where(e => !e.IsWarning).ToList();
+            var errors = compilerResults.Errors.Cast<CompilerError>().Where(e => !e.IsWarning &&
+                // HACK: auto-compiling on OS X produces "errors" which do not affect compilation so we ignore them
+                (!Platform.IsMacOS || !e.ErrorText.EndsWith("(Location of the symbol related to previous warning)", StringComparison.Ordinal))).ToList();
             foreach (var error in errors)
                 Diagnostics.Error(error.ToString());
 
