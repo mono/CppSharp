@@ -2991,7 +2991,8 @@ namespace CppSharp.Generators.CSharp
                 if (library != null)
                     libName = Path.GetFileNameWithoutExtension(library.FileName);
             }
-            if (Options.StripLibPrefix && libName != null && libName.Length > 3 && libName.StartsWith("lib"))
+            if (Options.StripLibPrefix && libName != null && libName.Length > 3 &&
+                libName.StartsWith("lib", StringComparison.Ordinal))
             {
                 libName = libName.Substring(3);
             }
@@ -3000,6 +3001,20 @@ namespace CppSharp.Generators.CSharp
 
             if (Options.GenerateInternalImports)
                 libName = "__Internal";
+
+            if (Platform.IsMacOS)
+            {
+                var framework = libName + ".framework";
+                for (uint i = 0; i < Driver.Options.LibraryDirsCount; i++)
+                {
+                    var libDir = Driver.Options.getLibraryDirs(i);
+                    if (Path.GetFileName(libDir) == framework && File.Exists(Path.Combine(libDir, libName)))
+                    {
+                        libName = string.Format("@executable_path/../Frameworks/{0}/{1}", framework, libName);
+                        break;
+                    }
+                }
+            }
 
             Write("[DllImport(\"{0}\", ", libName);
 
