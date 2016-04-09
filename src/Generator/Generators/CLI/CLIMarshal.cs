@@ -79,8 +79,15 @@ namespace CppSharp.Generators.CLI
 
         public override bool VisitFunctionType(FunctionType function, TypeQualifiers quals)
         {
-            var returnType = function.ReturnType;
-            return returnType.Visit(this);
+            var delegateType = function.ToString();
+
+            Context.Return.Write("safe_cast<{0}>(", delegateType + "^");
+            Context.Return.Write("System::Runtime::InteropServices::Marshal::");
+            Context.Return.Write("GetDelegateForFunctionPointer(");
+            Context.Return.Write("System::IntPtr({0}), {1}::typeid))", Context.ReturnVarName,
+                delegateType.TrimEnd('^'));
+
+            return true;
         }
 
         public override bool VisitPointerType(PointerType pointer, TypeQualifiers quals)
