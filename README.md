@@ -7,6 +7,10 @@ managed languages like C#.
 This can be used to consume an existing native library in your managed code
 or add scripting support to a native codebase.
 
+## Support
+
+For building wrappers and priority support please contact @ddobrev (dpldobrev at protonmail dot com).
+
 ## Build Status
 
 | windows-vs-x86            | linux-gcc-x86_64            | osx-clang-x86               |
@@ -90,6 +94,3 @@ CppSharp is used by the following projects:
 
 Please feel free to send us a pull request adding your own projects to the list above.
 
-## Support
-
-For professional services related to building custom wrappers and consulting please contact @ddobrev (dpldobrev at yahoo dot com).
