@@ -76,7 +76,7 @@ Mailing list: [Google group](https://groups.google.com/forum/#!forum/cppsharp-li
 
 ## Support
 
-For building wrappers and priority support please contact @ddobrev (dpldobrev at protonmail dot com).
+For building wrappers and priority support please contact @ddobrev <&#100;&#112;&#108;&#100;&#111;&#98;&#114;&#101;&#118;&#64;&#112;&#114;&#111;&#116;&#111;&#110;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;>.
 
 ## Users
 
