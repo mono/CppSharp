@@ -7,6 +7,12 @@ managed languages like C#.
 This can be used to consume an existing native library in your managed code
 or add scripting support to a native codebase.
 
+1. [Libraries](#libraries)
+2. [Documentation](#documentation)
+3. [Community](#community)
+4. [Support](#support)
+5. [Users](#users)
+
 ## Build Status
 
 | windows-vs-x86            | linux-gcc-x86_64            | osx-clang-x86               |
@@ -68,11 +74,15 @@ Feel free to open up issues on Github with any questions
 
 Mailing list: [Google group](https://groups.google.com/forum/#!forum/cppsharp-list)
 
+## Support
+
+For building wrappers and priority support please contact @ddobrev (dpldobrev at protonmail dot com).
+
 ## Users
 
 CppSharp is used by the following projects:
 
-[QtSharp](https://github.com/ddobrev/QtSharp)
+[QtSharp](https://gitlab.com/ddobrev/QtSharp)
 
 [MonoGame](https://github.com/mono/MonoGame)
 
@@ -89,7 +99,3 @@ CppSharp is used by the following projects:
 [libgd bindings](https://github.com/imazen/deprecated-gd-bindings-generator-old)
 
 Please feel free to send us a pull request adding your own projects to the list above.
-
-## Support
-
-For professional services related to building custom wrappers and consulting please contact @ddobrev (dpldobrev at yahoo dot com).
