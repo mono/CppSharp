@@ -66,6 +66,43 @@ namespace CppSharp.Generators.CSharp
                     return "public ";
             }
         }
+
+        public static StringBuilder FormatTypesStringForIdentifier(StringBuilder types)
+        {
+            return types.Replace("global::System.", string.Empty).Replace("*", "Ptr").Replace('.', '_');
+        }
+
+        public static string GetSuffixForInternal(ClassTemplateSpecialization templateSpecialization,
+            CSharpTypePrinter typePrinter)
+        {
+            return templateSpecialization == null ? string.Empty :
+                GetSuffixForInternal(templateSpecialization.TemplatedDecl.TemplatedDecl,
+                    templateSpecialization.Arguments, typePrinter);
+        }
+
+        public static string GetSuffixForInternal(Declaration template,
+            IEnumerable<TemplateArgument> args, CSharpTypePrinter typePrinter)
+        {
+            if (((Class) template).Fields.All(f => !f.IsDependent || f.Type.IsAddress()))
+                return string.Empty;
+
+            if (args.All(a => a.Type.Type != null && a.Type.Type.IsAddress()))
+                return "_Ptr";
+
+            // we don't want internals in the names of internals :)
+            typePrinter.PushContext(CSharpTypePrinterContextKind.Managed);
+            var suffix = new StringBuilder();
+            foreach (var argType in from argType in args
+                                    where argType.Type.Type != null
+                                    select argType.Type.ToString())
+            {
+                suffix.Append('_');
+                suffix.Append(argType);
+            }
+            typePrinter.PopContext();
+            FormatTypesStringForIdentifier(suffix);
+            return suffix.ToString();
+        }
     }
 
     public class CSharpBlockKind
@@ -191,16 +228,36 @@ namespace CppSharp.Generators.CSharp
                 GenerateTypedef(typedef);
             }
 
-            // Generate all the struct/class declarations.
-            foreach (var @class in context.Classes)
-            {
-                if (@class.IsIncomplete)
-                    continue;
+            var templateGroups = (from template in context.Templates.OfType<ClassTemplate>()
+                                  where template.Specializations.Count > 0
+                                  group template by context.Classes.Contains(template.TemplatedClass)
+                                  into @group
+                                  select @group).ToList();
 
+            if (templateGroups.Count > 0 && !templateGroups[0].Key)
+                foreach (var classTemplate in templateGroups[0])
+                    GenerateClassTemplateSpecializationInternal(classTemplate);
+
+            var classTemplates = templateGroups.Where(g => g.Key).SelectMany(g => g).ToList();
+
+            // Generate all the struct/class declarations.
+            foreach (var @class in context.Classes.Where(c => !c.IsIncomplete))
+            {
                 if (@class.IsInterface)
                     GenerateInterface(@class);
                 else
-                    GenerateClass(@class);
+                {
+                    var classTemplate = classTemplates.FirstOrDefault(t => t.TemplatedDecl == @class);
+                    if (classTemplate != null)
+                    {
+                        GenerateClassTemplateSpecializationInternal(classTemplate);
+                        classTemplates.Remove(classTemplate);
+                    }
+                    else if (!@class.IsDependent)
+                    {
+                        GenerateClass(@class);
+                    }
+                }
             }
 
             if (context.HasFunctions)
@@ -251,6 +308,20 @@ namespace CppSharp.Generators.CSharp
                 WriteCloseBraceIndent();
                 PopBlock(NewLineKind.BeforeNextBlock);
             }
+        }
+
+        private void GenerateClassTemplateSpecializationInternal(ClassTemplate classTemplate)
+        {
+            PushBlock(CSharpBlockKind.Namespace);
+            WriteLine("namespace {0}", classTemplate.Name);
+            WriteStartBraceIndent();
+            if (classTemplate.TemplatedClass.Fields.Any(f => f.IsDependent && !f.Type.IsAddress()))
+                foreach (var specialization in classTemplate.Specializations)
+                    GenerateClassInternals(specialization);
+            else
+                GenerateClassInternals(classTemplate.Specializations[0]);
+            WriteCloseBraceIndent();
+            PopBlock(NewLineKind.BeforeNextBlock);
         }
 
         public void GenerateDeclarationCommon(Declaration decl)
@@ -483,7 +554,7 @@ namespace CppSharp.Generators.CSharp
             if (@class.IsDynamic)
                 GenerateVTablePointers(@class);
             GenerateClassFields(@class, @class, GenerateClassInternalsField, true);
-            if (@class.IsGenerated)
+            if (@class.IsGenerated && !(@class is ClassTemplateSpecialization))
             {
                 var functions = GatherClassInternalFunctions(@class);
 
@@ -584,10 +655,13 @@ namespace CppSharp.Generators.CSharp
         {
             Write("public ");
 
-            if (@class != null && @class.NeedsBase && !@class.BaseClass.IsInterface)
+            if (@class != null && @class.NeedsBase && !@class.BaseClass.IsInterface && !@class.IsDependent)
                 Write("new ");
 
-            WriteLine("partial struct Internal");
+            var templateSpecialization = @class as ClassTemplateSpecialization;
+            var suffix = Helpers.GetSuffixForInternal(templateSpecialization, TypePrinter);
+            WriteLine("{0}partial struct Internal{1}",
+                templateSpecialization != null ? "unsafe " : string.Empty, suffix);
         }
 
         public static bool ShouldGenerateClassNativeField(Class @class)
@@ -687,7 +761,7 @@ namespace CppSharp.Generators.CSharp
             var fieldTypePrinted = field.QualifiedType.CSharpType(TypePrinter);
             TypePrinter.PopMarshalKind();
 
-            var fieldType = field.Type.IsAddress() ?
+            var fieldType = field.Type.Desugar().IsAddress() ?
                 CSharpTypePrinter.IntPtrType : fieldTypePrinted.Type;
 
             var fieldName = safeIdentifier;
@@ -2491,8 +2565,13 @@ namespace CppSharp.Generators.CSharp
             if (parameters == null)
                 parameters = function.Parameters;
 
+            var templateSpecialization = function.Namespace as ClassTemplateSpecialization;
+
+            string @namespace = templateSpecialization != null ?
+                (function.Namespace.OriginalName + '.') : string.Empty;
+
             CheckArgumentRange(function);
-            var functionName = string.Format("Internal.{0}",
+            var functionName = string.Format("{0}Internal.{1}", @namespace,
                 GetFunctionNativeIdentifier(function.OriginalFunction ?? function));
             GenerateFunctionCall(functionName, parameters, function, returnType);
         }

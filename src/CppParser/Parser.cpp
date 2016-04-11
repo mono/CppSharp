@@ -1621,6 +1621,16 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
     if (QualType.isNull())
         return nullptr;
 
+    // we cannot get a location in some cases of template arguments
+    const RecordType* RT;
+    if (!(RT = QualType->getAs<RecordType>()) ||
+        !dyn_cast<ClassTemplateSpecializationDecl>(RT->getDecl()) ||
+        (TL && !TL->isNull()))
+    {
+        C->getSema().RequireCompleteType(
+            TL && !TL->isNull() ? TL->getLocStart() : clang::SourceLocation(), QualType, 1);
+    }
+
     const clang::Type* Type = QualType.getTypePtr();
 
     if (DesugarType)
@@ -1940,7 +1950,7 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         TST->Template = static_cast<Template*>(WalkDeclaration(
             Name.getAsTemplateDecl(), 0, /*IgnoreSystemDecls=*/false));
         if (TS->isSugared())
-            TST->Desugared = WalkType(TS->desugar());
+            TST->Desugared = WalkType(TS->desugar(), TL);
 
         TypeLoc UTL, ETL, ITL;
 
@@ -2099,7 +2109,7 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
     case clang::Type::Decltype:
     {
         auto DT = Type->getAs<clang::DecltypeType>();
-        Ty = WalkType(DT->getUnderlyingType());
+        Ty = WalkType(DT->getUnderlyingType(), TL);
         break;
     }
     default:
@@ -2236,7 +2246,7 @@ static bool CanCheckCodeGenInfo(clang::Sema& S,
     {
         if (auto MPT = Ty->getAs<clang::MemberPointerType>())
             if (!MPT->isDependentType())
-                S.RequireCompleteType(clang::SourceLocation(), clang::QualType(Ty, 0), 0);
+                S.RequireCompleteType(clang::SourceLocation(), clang::QualType(Ty, 0), 1);
     }
 
     return CheckCodeGenInfo;
@@ -2283,8 +2293,6 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, Function* F,
 
             HandlePreprocessedEntities(F, headRange, MacroLocation::FunctionHead);
             HandlePreprocessedEntities(F, FTL.getParensRange(), MacroLocation::FunctionParameters);
-            //auto bodyRange = clang::SourceRange(FTL.getRParenLoc(), FD->getLocEnd());
-            //HandlePreprocessedEntities(F, bodyRange, MacroLocation::FunctionBody);
         }
     }
 
@@ -2526,9 +2534,6 @@ Friend* Parser::WalkFriend(clang::FriendDecl *FD)
         F->Declaration = GetDeclarationFromFriend(FriendDecl);
     }
 
-    //auto TL = FD->getFriendType()->getTypeLoc();
-    //F->QualifiedType = GetQualifiedType(VD->getType(), WalkType(FD->getFriendType(), &TL));
-
     NS->Friends.push_back(F);
 
     return F;
@@ -2683,7 +2688,7 @@ AST::Expression* Parser::WalkExpression(clang::Expr* Expr)
     {
         auto CallExpr = cast<clang::CallExpr>(Expr);
         auto CallExpression = new AST::CallExpr(GetStringFromStatement(Expr),
-            WalkDeclaration(CallExpr->getCalleeDecl()));
+            CallExpr->getCalleeDecl() ? WalkDeclaration(CallExpr->getCalleeDecl()) : 0);
         for (auto arg : CallExpr->arguments())
         {
             CallExpression->Arguments.push_back(WalkExpression(arg));

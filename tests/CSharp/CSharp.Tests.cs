@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using CppSharp.Utils;
 using CSharp;
 using NUnit.Framework;
@@ -286,12 +287,6 @@ public class CSharpTests : GeneratorTestFixture
     }
 
     [Test]
-    public void TestInnerClasses()
-    {
-        QMap.Iterator test_iter;
-    }
-
-    [Test]
     public void TestNativeToManagedMapWithForeignObjects()
     {
         IntPtr native1;
@@ -506,5 +501,39 @@ public class CSharpTests : GeneratorTestFixture
         {
         }
         Assert.IsTrue(VirtualDtorAddedInDerived.DtorCalled);
+    }
+
+    [Test]
+    public void TestTemplateInternals()
+    {
+        foreach (var internalType in new[]
+            {
+                typeof(CSharp.IndependentFields.Internal),
+                typeof(CSharp.DependentValueFields.Internal_int),
+                typeof(CSharp.DependentValueFields.Internal_float),
+                typeof(CSharp.DependentPointerFields.Internal),
+                typeof(CSharp.DependentValueFields.Internal_Ptr),
+                typeof(CSharp.HasDefaultTemplateArgument.Internal_int_IndependentFields)
+            })
+        {
+            var independentFields = internalType.GetFields();
+            Assert.That(independentFields.Length, Is.EqualTo(1));
+            var fieldOffset = (FieldOffsetAttribute) independentFields[0].GetCustomAttribute(typeof(FieldOffsetAttribute));
+            Assert.That(fieldOffset.Value, Is.EqualTo(0));
+        }
+        foreach (var internalType in new[]
+            {
+                typeof(CSharp.TwoTemplateArgs.Internal_Ptr),
+                typeof(CSharp.TwoTemplateArgs.Internal_intPtr_int),
+                typeof(CSharp.TwoTemplateArgs.Internal_intPtr_float)
+            })
+        {
+            var independentFields = internalType.GetFields();
+            Assert.That(independentFields.Length, Is.EqualTo(2));
+            var fieldOffsetKey = (FieldOffsetAttribute) independentFields[0].GetCustomAttribute(typeof(FieldOffsetAttribute));
+            Assert.That(fieldOffsetKey.Value, Is.EqualTo(0));
+            var fieldOffsetValue = (FieldOffsetAttribute) independentFields[1].GetCustomAttribute(typeof(FieldOffsetAttribute));
+            Assert.That(fieldOffsetValue.Value, Is.EqualTo(Marshal.SizeOf(IntPtr.Zero)));
+        }
     }
 }

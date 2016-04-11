@@ -145,30 +145,28 @@ namespace CppSharp.Passes
 
         private string GenerateDelegateSignature(IEnumerable<Parameter> @params, QualifiedType returnType)
         {
-            var typePrinter = new CSharpTypePrinter(Driver);
-            typePrinter.PushContext(CSharpTypePrinterContextKind.Native);
+            TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
 
             var typesBuilder = new StringBuilder();
             if (!returnType.Type.IsPrimitiveType(PrimitiveType.Void))
             {
-                typesBuilder.Insert(0, returnType.Type.CSharpType(typePrinter));
+                typesBuilder.Insert(0, returnType.Type.CSharpType(TypePrinter));
                 typesBuilder.Append('_');
             }
             foreach (var parameter in @params)
             {
-                typesBuilder.Append(parameter.CSharpType(typePrinter));
+                typesBuilder.Append(parameter.CSharpType(TypePrinter));
                 typesBuilder.Append('_');
             }
             if (typesBuilder.Length > 0)
                 typesBuilder.Remove(typesBuilder.Length - 1, 1);
-            var delegateName = typesBuilder.Replace("global::System.", string.Empty).Replace(
-                "*", "Ptr").Replace('.', '_').ToString();
+            var delegateName = Helpers.FormatTypesStringForIdentifier(typesBuilder).ToString();
             if (returnType.Type.IsPrimitiveType(PrimitiveType.Void))
                 delegateName = "Action_" + delegateName;
             else
                 delegateName = "Func_" + delegateName;
 
-            typePrinter.PopContext();
+            TypePrinter.PopContext();
             return delegateName;
         }
 
