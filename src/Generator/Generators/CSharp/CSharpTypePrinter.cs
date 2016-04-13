@@ -276,7 +276,7 @@ namespace CppSharp.Generators.CSharp
 
                 if (MarshalKind == CSharpMarshalKind.GenericDelegate ||
                     pointee.IsPrimitiveType(PrimitiveType.Void))
-                    return "global::System.IntPtr";
+                    return IntPtrType;
 
                 // Do not allow strings inside primitive arrays case, else we'll get invalid types
                 // like string* for const char **.

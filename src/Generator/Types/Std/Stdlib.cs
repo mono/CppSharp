@@ -352,7 +352,7 @@ namespace CppSharp.Types.Std
     {
         public override string CSharpSignature(CSharpTypePrinterContext ctx)
         {
-            return "global::System.IntPtr";
+            return CSharpTypePrinter.IntPtrType;
         }
 
         public override void CSharpMarshalToNative(MarshalContext ctx)

@@ -360,7 +360,7 @@ namespace CppSharp.Generators.CSharp
                     else
                     {
                         WriteLine("public {0} {1} {{ get; protected set; }}",
-                            "global::System.IntPtr", Helpers.InstanceIdentifier);
+                            CSharpTypePrinter.IntPtrType, Helpers.InstanceIdentifier);
 
                         PopBlock(NewLineKind.BeforeNextBlock);
 
@@ -688,19 +688,22 @@ namespace CppSharp.Generators.CSharp
             var fieldTypePrinted = field.QualifiedType.CSharpType(TypePrinter);
             TypePrinter.PopMarshalKind();
 
-            var typeName = safeIdentifier;
+            var fieldType = field.Type.IsAddress() ?
+                CSharpTypePrinter.IntPtrType : fieldTypePrinted.Type;
+
+            var fieldName = safeIdentifier;
             if (!string.IsNullOrWhiteSpace(fieldTypePrinted.NameSuffix))
-                typeName += fieldTypePrinted.NameSuffix;
+                fieldName += fieldTypePrinted.NameSuffix;
 
             var access = @class != null && !@class.IsGenerated ? "internal" : "public";
             if (field.Expression != null)
             {
                 var fieldValuePrinted = field.Expression.CSharpValue(ExpressionPrinter);
-                Write("{0} {1} {2} = {3};", access, fieldTypePrinted.Type, typeName, fieldValuePrinted);
+                Write("{0} {1} {2} = {3};", access, fieldType, fieldName, fieldValuePrinted);
             }
             else
             {
-                Write("{0} {1} {2};", access, fieldTypePrinted.Type, typeName);
+                Write("{0} {1} {2};", access, fieldType, fieldName);
             }
 
             PopBlock(NewLineKind.BeforeNextBlock);
@@ -859,7 +862,11 @@ namespace CppSharp.Generators.CSharp
 
                 if (marshal.Context.Return.StringBuilder.Length > 0)
                 {
-                    WriteLine("{0} = {1};", ctx.ReturnVarName, marshal.Context.Return);
+                    WriteLine("{0} = {1}{2};", ctx.ReturnVarName,
+                        field.Type.IsPointer() && field.Type.GetFinalPointee().IsPrimitiveType() ?
+                            string.Format("({0}) ", CSharpTypePrinter.IntPtrType) :
+                            string.Empty,
+                        marshal.Context.Return);
                 }
 
                 if (arrayType != null && @class.IsValueType)
@@ -1007,7 +1014,15 @@ namespace CppSharp.Generators.CSharp
                 if (!string.IsNullOrWhiteSpace(marshal.Context.SupportBefore))
                     Write(marshal.Context.SupportBefore);
 
-                WriteLine("return {0};", marshal.Context.Return);
+                var @return = marshal.Context.Return.ToString();
+                if (field.Type.IsPointer())
+                {
+                    var final = field.Type.GetFinalPointee().Desugar();
+                    if (final.IsPrimitiveType() && !final.IsPrimitiveType(PrimitiveType.Void) &&
+                        !final.IsPrimitiveType(PrimitiveType.Char))
+                        @return = string.Format("({0}*) {1}", field.Type.GetPointee().Desugar(), @return);
+                }
+                WriteLine("return {0};", @return);
 
                 if (arrayType != null && @class.IsValueType)
                     WriteCloseBraceIndent();
