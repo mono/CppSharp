@@ -480,12 +480,11 @@ namespace CppSharp.Generators.CSharp
 
             TypePrinter.PushContext(CSharpTypePrinterContextKind.Native);
 
+            if (@class.IsDynamic)
+                GenerateVTablePointers(@class);
             GenerateClassFields(@class, @class, GenerateClassInternalsField, true);
             if (@class.IsGenerated)
             {
-                if (@class.IsDynamic)
-                    GenerateVTablePointers(@class);
-
                 var functions = GatherClassInternalFunctions(@class);
 
                 foreach (var function in functions)
