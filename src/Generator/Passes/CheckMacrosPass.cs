@@ -203,40 +203,34 @@ namespace CppSharp.Passes
 
         public override bool VisitClassTemplateDecl(ClassTemplate template)
         {
-            var expansions = template.PreprocessedEntities.OfType<MacroExpansion>();
-
-            var expansion = expansions.FirstOrDefault(e => e.Text.StartsWith(Prefix + "_CONSTRAINT"));
-            if (expansion != null)
-            {
-                var args = GetArguments(expansion.Text);
-                for (var i = 0; i < template.Parameters.Count && i < args.Length; ++i)
-                {
-                    var param = template.Parameters[i];
-                    param.Constraint = args[i];
-                    template.Parameters[i] = param;
-                }
-            }
+            CheckForTemplateConstraints(template);
 
             return base.VisitClassTemplateDecl(template);
         }
 
         public override bool VisitFunctionTemplateDecl(FunctionTemplate template)
         {
+            CheckForTemplateConstraints(template);
+
+            return base.VisitFunctionTemplateDecl(template);
+        }
+
+        private void CheckForTemplateConstraints(Template template)
+        {
             var expansions = template.PreprocessedEntities.OfType<MacroExpansion>();
 
-            var expansion = expansions.FirstOrDefault(e => e.Text.StartsWith(Prefix + "_CONSTRAINT"));
+            var expansion = expansions.FirstOrDefault(
+                e => e.Text.StartsWith(Prefix + "_CONSTRAINT", StringComparison.Ordinal));
             if (expansion != null)
             {
                 var args = GetArguments(expansion.Text);
                 for (var i = 0; i < template.Parameters.Count && i < args.Length; ++i)
                 {
-                    var param = template.Parameters[i];
-                    param.Constraint = args[i];
-                    template.Parameters[i] = param;
+                    var templateParam = template.Parameters[i] as TypeTemplateParameter;
+                    if (templateParam != null)
+                        templateParam.Constraint = args[i];
                 }
             }
-
-            return base.VisitFunctionTemplateDecl(template);
         }
 
         private static string[] GetArguments(string str)

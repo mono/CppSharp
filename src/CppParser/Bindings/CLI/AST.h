@@ -67,6 +67,7 @@ namespace CppSharp
             ref class Method;
             ref class Namespace;
             ref class NativeLibrary;
+            ref class NonTypeTemplateParameter;
             ref class PackExpansionType;
             ref class ParagraphComment;
             ref class ParamCommandComment;
@@ -88,6 +89,7 @@ namespace CppSharp
             ref class TranslationUnit;
             ref class Type;
             ref class TypeQualifiers;
+            ref class TypeTemplateParameter;
             ref class TypedefDecl;
             ref class TypedefType;
             ref class VFTableInfo;
@@ -149,7 +151,9 @@ namespace CppSharp
                 MacroDefinition = 18,
                 MacroExpansion = 19,
                 TranslationUnit = 20,
-                Friend = 21
+                Friend = 21,
+                TemplateTypeParm = 22,
+                NonTypeTemplateParm = 23
             };
 
             public enum struct AccessSpecifier
@@ -772,45 +776,6 @@ namespace CppSharp
                 void clearArguments();
             };
 
-            public ref class TemplateParameter : ICppInstance
-            {
-            public:
-
-                property ::CppSharp::CppParser::AST::TemplateParameter* NativePtr;
-                property System::IntPtr __Instance
-                {
-                    virtual System::IntPtr get();
-                    virtual void set(System::IntPtr instance);
-                }
-
-                TemplateParameter(::CppSharp::CppParser::AST::TemplateParameter* native);
-                static TemplateParameter^ __CreateInstance(::System::IntPtr native);
-                TemplateParameter();
-
-                TemplateParameter(CppSharp::Parser::AST::TemplateParameter^ _0);
-
-                ~TemplateParameter();
-
-                property System::String^ Name
-                {
-                    System::String^ get();
-                    void set(System::String^);
-                }
-
-                property bool IsTypeParameter
-                {
-                    bool get();
-                    void set(bool);
-                }
-
-                static bool operator==(CppSharp::Parser::AST::TemplateParameter^ __op, CppSharp::Parser::AST::TemplateParameter^ param);
-
-                virtual bool Equals(::System::Object^ obj) override;
-
-                protected:
-                bool __ownsNativeInstance;
-            };
-
             public ref class TemplateParameterType : CppSharp::Parser::AST::Type
             {
             public:
@@ -823,10 +788,10 @@ namespace CppSharp
 
                 ~TemplateParameterType();
 
-                property CppSharp::Parser::AST::TemplateParameter^ Parameter
+                property CppSharp::Parser::AST::TypeTemplateParameter^ Parameter
                 {
-                    CppSharp::Parser::AST::TemplateParameter^ get();
-                    void set(CppSharp::Parser::AST::TemplateParameter^);
+                    CppSharp::Parser::AST::TypeTemplateParameter^ get();
+                    void set(CppSharp::Parser::AST::TypeTemplateParameter^);
                 }
 
                 property unsigned int Depth
@@ -2090,11 +2055,98 @@ namespace CppSharp
                     void set(CppSharp::Parser::AST::Declaration^);
                 }
 
-                CppSharp::Parser::AST::TemplateParameter^ getParameters(unsigned int i);
+                CppSharp::Parser::AST::Declaration^ getParameters(unsigned int i);
 
-                void addParameters(CppSharp::Parser::AST::TemplateParameter^ s);
+                void addParameters(CppSharp::Parser::AST::Declaration^ s);
 
                 void clearParameters();
+            };
+
+            public ref class TemplateParameter : CppSharp::Parser::AST::Declaration
+            {
+            public:
+
+                TemplateParameter(::CppSharp::CppParser::AST::TemplateParameter* native);
+                static TemplateParameter^ __CreateInstance(::System::IntPtr native);
+                TemplateParameter(CppSharp::Parser::AST::DeclarationKind kind);
+
+                TemplateParameter(CppSharp::Parser::AST::TemplateParameter^ _0);
+
+                ~TemplateParameter();
+
+                property unsigned int Depth
+                {
+                    unsigned int get();
+                    void set(unsigned int);
+                }
+
+                property unsigned int Index
+                {
+                    unsigned int get();
+                    void set(unsigned int);
+                }
+
+                property bool IsParameterPack
+                {
+                    bool get();
+                    void set(bool);
+                }
+            };
+
+            public ref class TypeTemplateParameter : CppSharp::Parser::AST::TemplateParameter
+            {
+            public:
+
+                TypeTemplateParameter(::CppSharp::CppParser::AST::TypeTemplateParameter* native);
+                static TypeTemplateParameter^ __CreateInstance(::System::IntPtr native);
+                TypeTemplateParameter();
+
+                TypeTemplateParameter(CppSharp::Parser::AST::TypeTemplateParameter^ _0);
+
+                ~TypeTemplateParameter();
+
+                property CppSharp::Parser::AST::QualifiedType^ DefaultArgument
+                {
+                    CppSharp::Parser::AST::QualifiedType^ get();
+                    void set(CppSharp::Parser::AST::QualifiedType^);
+                }
+            };
+
+            public ref class NonTypeTemplateParameter : CppSharp::Parser::AST::TemplateParameter
+            {
+            public:
+
+                NonTypeTemplateParameter(::CppSharp::CppParser::AST::NonTypeTemplateParameter* native);
+                static NonTypeTemplateParameter^ __CreateInstance(::System::IntPtr native);
+                NonTypeTemplateParameter();
+
+                NonTypeTemplateParameter(CppSharp::Parser::AST::NonTypeTemplateParameter^ _0);
+
+                ~NonTypeTemplateParameter();
+
+                property CppSharp::Parser::AST::Expression^ DefaultArgument
+                {
+                    CppSharp::Parser::AST::Expression^ get();
+                    void set(CppSharp::Parser::AST::Expression^);
+                }
+
+                property unsigned int Position
+                {
+                    unsigned int get();
+                    void set(unsigned int);
+                }
+
+                property bool IsPackExpansion
+                {
+                    bool get();
+                    void set(bool);
+                }
+
+                property bool IsExpandedParameterPack
+                {
+                    bool get();
+                    void set(bool);
+                }
             };
 
             public ref class ClassTemplate : CppSharp::Parser::AST::Template

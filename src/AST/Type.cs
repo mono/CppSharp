@@ -665,7 +665,7 @@ namespace CppSharp.AST
     /// </summary>
     public class TemplateParameterType : Type
     {
-        public TemplateParameter Parameter;
+        public TypeTemplateParameter Parameter;
         public uint Depth;
         public uint Index;
         public bool IsParameterPack;
@@ -677,10 +677,9 @@ namespace CppSharp.AST
         public TemplateParameterType(TemplateParameterType type)
             : base(type)
         {
-            Parameter = new TemplateParameter
+            Parameter = new TypeTemplateParameter
             {
                 Constraint = type.Parameter.Constraint,
-                IsTypeParameter = type.Parameter.IsTypeParameter,
                 Name = type.Parameter.Name
             };
             Depth = type.Depth;

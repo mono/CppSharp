@@ -29,7 +29,6 @@
 #include <clang/AST/ASTContext.h>
 #include <clang/AST/Comment.h>
 #include <clang/AST/DeclFriend.h>
-#include <clang/AST/DeclTemplate.h>
 #include <clang/AST/ExprCXX.h>
 #include <clang/Lex/DirectoryLookup.h>
 #include <clang/Lex/HeaderSearch.h>
@@ -957,41 +956,14 @@ Parser::WalkClassTemplatePartialSpecialization(clang::ClassTemplatePartialSpecia
 
 //-----------------------------------//
 
-CppSharp::CppParser::TemplateParameter
-WalkTemplateParameter(const clang::NamedDecl* D)
+std::vector<Declaration*> Parser::WalkTemplateParameterList(const clang::TemplateParameterList* TPL)
 {
-    using namespace clang;
-
-    auto TP = CppSharp::CppParser::TemplateParameter();
-    if (D == nullptr)
-        return TP;
-
-    TP.Name = GetDeclName(D);
-    switch (D->getKind())
-    {
-    case Decl::TemplateTypeParm:
-    {
-        auto TTPD = cast<TemplateTypeParmDecl>(D);
-        TP.IsTypeParameter = true;
-        break;
-    }
-    default:
-        break;
-    }
-    return TP;
-}
-
-//-----------------------------------//
-
-static std::vector<CppSharp::CppParser::TemplateParameter>
-WalkTemplateParameterList(const clang::TemplateParameterList* TPL)
-{
-    auto params = std::vector<CppSharp::CppParser::TemplateParameter>();
+    auto params = std::vector<CppSharp::CppParser::Declaration*>();
 
     for (auto it = TPL->begin(); it != TPL->end(); ++it)
     {
         auto ND = *it;
-        auto TP = WalkTemplateParameter(ND);
+        auto TP = WalkDeclaration(ND, /*IgnoreSystemDecls=*/false);
         params.push_back(TP);
     }
 
@@ -1027,6 +999,41 @@ ClassTemplate* Parser::WalkClassTemplate(clang::ClassTemplateDecl* TD)
     CT->Parameters = WalkTemplateParameterList(TD->getTemplateParameters());
 
     return CT;
+}
+
+//-----------------------------------//
+
+TypeTemplateParameter* Parser::WalkTypeTemplateParameter(clang::TemplateTypeParmDecl* TTPD)
+{
+    using namespace clang;
+
+    auto TP = new CppSharp::CppParser::TypeTemplateParameter();
+    TP->Name = GetDeclName(TTPD);
+    HandleDeclaration(TTPD, TP);
+    if (TTPD->hasDefaultArgument())
+        TP->DefaultArgument = GetQualifiedType(
+            TTPD->getDefaultArgument(), WalkType(TTPD->getDefaultArgument()));
+    TP->Depth = TTPD->getDepth();
+    TP->Index = TTPD->getIndex();
+    TP->IsParameterPack = TTPD->isParameterPack();
+    return TP;
+}
+
+//-----------------------------------//
+
+NonTypeTemplateParameter* Parser::WalkNonTypeTemplateParameter(clang::NonTypeTemplateParmDecl* NTTPD)
+{
+    using namespace clang;
+
+    auto NTP = new CppSharp::CppParser::NonTypeTemplateParameter();
+    NTP->Name = GetDeclName(NTTPD);
+    HandleDeclaration(NTTPD, NTP);
+    if (NTTPD->hasDefaultArgument())
+        NTP->DefaultArgument = WalkExpression(NTTPD->getDefaultArgument());
+    NTP->Depth = NTTPD->getDepth();
+    NTP->Index = NTTPD->getIndex();
+    NTP->IsParameterPack = NTTPD->isParameterPack();
+    return NTP;
 }
 
 //-----------------------------------//
@@ -1977,7 +1984,7 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         auto TPT = new CppSharp::CppParser::TemplateParameterType();
 
         if (auto Ident = TP->getIdentifier())
-            TPT->Parameter.Name = Ident->getName();
+            TPT->Parameter->Name = Ident->getName();
 
         TypeLoc UTL, ETL, ITL, Next;
 
@@ -2005,7 +2012,7 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
             assert(TL->getTypeLocClass() == TypeLoc::TemplateTypeParm);
             auto TTTL = TL->getAs<TemplateTypeParmTypeLoc>();
 
-            TPT->Parameter = WalkTemplateParameter(TTTL.getDecl());
+            TPT->Parameter = WalkTypeTemplateParameter(TTTL.getDecl());
         }
         TPT->Depth = TP->getDepth();
         TPT->Index = TP->getIndex();
@@ -2734,6 +2741,7 @@ AST::Expression* Parser::WalkExpression(clang::Expr* Expr)
     if (Expr->getStmtClass() != Stmt::CharacterLiteralClass &&
         Expr->getStmtClass() != Stmt::CXXBoolLiteralExprClass &&
         Expr->getStmtClass() != Stmt::UnaryExprOrTypeTraitExprClass &&
+        !Expr->isValueDependent() &&
         Expr->EvaluateAsInt(integer, C->getASTContext()))
         return new AST::Expression(integer.toString(10));
     return new AST::Expression(GetStringFromStatement(Expr));
@@ -3040,6 +3048,18 @@ Declaration* Parser::WalkDeclaration(clang::Decl* D,
     {
         auto FD = cast<FriendDecl>(D);
         Decl = WalkFriend(FD);
+        break;
+    }
+    case Decl::TemplateTypeParm:
+    {
+        auto TTPD = cast<TemplateTypeParmDecl>(D);
+        Decl = WalkTypeTemplateParameter(TTPD);
+        break;
+    }
+    case Decl::NonTypeTemplateParm:
+    {
+        auto NTTPD = cast<NonTypeTemplateParmDecl>(D);
+        Decl = WalkNonTypeTemplateParameter(NTTPD);
         break;
     }
     // Ignore these declarations since they must have been declared in

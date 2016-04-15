@@ -347,7 +347,7 @@ namespace CppSharp.Generators.CLI
 
                 // Process the generic type constraints
                 var constraints = new List<string>();
-                foreach (var param in template.Parameters)
+                foreach (var param in template.Parameters.OfType<TypeTemplateParameter>())
                 {
                     if (string.IsNullOrWhiteSpace(param.Constraint))
                         continue;

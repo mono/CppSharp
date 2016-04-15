@@ -4,6 +4,7 @@ using CppSharp.AST;
 using CppSharp.AST.Extensions;
 using NUnit.Framework;
 using CppSharp.Generators.CSharp;
+using System;
 
 namespace CppSharp.Generator.Tests.AST
 {
@@ -149,6 +150,16 @@ namespace CppSharp.Generator.Tests.AST
             {
                 throw new System.NotImplementedException();
             }
+
+            public bool VisitTemplateParameter(TypeTemplateParameter templateParameter)
+            {
+                throw new NotImplementedException();
+            }
+
+            public bool VisitNonTypeTemplateParameter(NonTypeTemplateParameter nonTypeTemplateParameter)
+            {
+                throw new NotImplementedException();
+            }
         }
         #endregion
 
@@ -184,8 +195,6 @@ namespace CppSharp.Generator.Tests.AST
             Assert.AreEqual(2, twoParamMethodTemplate.Parameters.Count);
             Assert.AreEqual("T", twoParamMethodTemplate.Parameters[0].Name);
             Assert.AreEqual("S", twoParamMethodTemplate.Parameters[1].Name);
-            Assert.IsTrue(twoParamMethodTemplate.Parameters[0].IsTypeParameter);
-            Assert.IsTrue(twoParamMethodTemplate.Parameters[1].IsTypeParameter);
             var twoParamMethod = twoParamMethodTemplate.TemplatedFunction as Method;
             Assert.IsNotNull(twoParamMethod);
             Assert.IsInstanceOf<TemplateParameterType>(twoParamMethod.Parameters[0].Type);

@@ -194,27 +194,14 @@ public:
     Type* Desugared;
 };
 
-class CS_API TemplateParameter
-{
-public:
-    TemplateParameter();
-    TemplateParameter(const TemplateParameter&);
-
-    bool operator==(const TemplateParameter& param) const
-    {
-        return Name == param.Name;
-    }
-
-    STRING(Name)
-    bool IsTypeParameter;
-};
+class TypeTemplateParameter;
 
 class CS_API TemplateParameterType : public Type
 {
 public:
-    ~TemplateParameterType();
     DECLARE_TYPE_KIND(TemplateParameter)
-    TemplateParameter Parameter;
+    ~TemplateParameterType();
+    TypeTemplateParameter* Parameter;
     unsigned int Depth;
     unsigned int Index;
     bool IsParameterPack;
@@ -369,6 +356,8 @@ enum class DeclarationKind
     MacroExpansion,
     TranslationUnit,
     Friend,
+    TemplateTypeParm,
+    NonTypeTemplateParm
 };
 
 #define DECLARE_DECL_KIND(klass, kind) \
@@ -759,7 +748,40 @@ public:
     Template(DeclarationKind kind);
     DECLARE_DECL_KIND(Template, Template)
     Declaration* TemplatedDecl;
-    VECTOR(TemplateParameter, Parameters)
+    VECTOR(Declaration*, Parameters)
+};
+
+class CS_API TemplateParameter : public Declaration
+{
+public:
+    TemplateParameter(DeclarationKind kind);
+    ~TemplateParameter();
+    unsigned int Depth;
+    unsigned int Index;
+    bool IsParameterPack;
+};
+
+class CS_API TypeTemplateParameter : public TemplateParameter
+{
+public:
+    TypeTemplateParameter();
+    TypeTemplateParameter(const TypeTemplateParameter&);
+    ~TypeTemplateParameter();
+
+    QualifiedType DefaultArgument;
+};
+
+class CS_API NonTypeTemplateParameter : public TemplateParameter
+{
+public:
+    NonTypeTemplateParameter();
+    NonTypeTemplateParameter(const NonTypeTemplateParameter&);
+    ~NonTypeTemplateParameter();
+
+    Expression* DefaultArgument;
+    unsigned int Position;
+    bool IsPackExpansion;
+    bool IsExpandedParameterPack;
 };
 
 class ClassTemplateSpecialization;

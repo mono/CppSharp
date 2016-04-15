@@ -374,14 +374,20 @@ namespace CppSharp.AST
             if (!VisitDeclaration(template))
                 return false;
 
+            foreach (var templateParameter in template.Parameters)
+                templateParameter.Visit(this);
+
             return true;
         }
 
         public virtual bool VisitFunctionTemplateDecl(FunctionTemplate template)
         {
             if (!VisitDeclaration(template))
-                return false; 
-            
+                return false;
+
+            foreach (var templateParameter in template.Parameters)
+                templateParameter.Visit(this);
+
             return template.TemplatedFunction.Visit(this);
         }
 
@@ -439,6 +445,22 @@ namespace CppSharp.AST
 
             foreach (var param in @event.Parameters)
                 param.Visit(this);
+
+            return true;
+        }
+
+        public virtual bool VisitTemplateParameter(TypeTemplateParameter templateParameter)
+        {
+            if (!VisitDeclaration(templateParameter))
+                return false;
+
+            return true;
+        }
+
+        public bool VisitNonTypeTemplateParameter(NonTypeTemplateParameter nonTypeTemplateParameter)
+        {
+            if (!VisitDeclaration(nonTypeTemplateParameter))
+                return false;
 
             return true;
         }

@@ -702,6 +702,16 @@ namespace CppSharp.Generators.CSharp
         {
             return type.Visit(this).Type;
         }
+
+        public CSharpTypePrinterResult VisitTemplateParameter(TypeTemplateParameter templateParameter)
+        {
+            return templateParameter.Name;
+        }
+
+        public CSharpTypePrinterResult VisitNonTypeTemplateParameter(NonTypeTemplateParameter nonTypeTemplateParameter)
+        {
+            return nonTypeTemplateParameter.Name;
+        }
     }
 
     public static class CSharpTypePrinterExtensions

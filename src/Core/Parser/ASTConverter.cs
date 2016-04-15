@@ -139,6 +139,8 @@ namespace CppSharp
         public abstract TRet VisitClassTemplatePartialSpecialization(
             ClassTemplatePartialSpecialization decl);
         public abstract TRet VisitFunctionTemplate(FunctionTemplate decl);
+        public abstract TRet VisitTemplateParameter(TypeTemplateParameter decl);
+        public abstract TRet VisitNonTypeTemplateParameter(NonTypeTemplateParameter decl);
 
         public virtual TRet Visit(Parser.AST.Declaration decl)
         {
@@ -228,6 +230,16 @@ namespace CppSharp
                     {
                         var _decl = FunctionTemplate.__CreateInstance(decl.__Instance);
                         return VisitFunctionTemplate(_decl);
+                    }
+                case DeclarationKind.TemplateTypeParm:
+                    {
+                        var _decl = TypeTemplateParameter.__CreateInstance(decl.__Instance);
+                        return VisitTemplateParameter(_decl);
+                    }
+                case DeclarationKind.NonTypeTemplateParm:
+                    {
+                        var _decl = NonTypeTemplateParameter.__CreateInstance(decl.__Instance);
+                        return VisitNonTypeTemplateParameter(_decl);
                     }
             }
 
@@ -554,7 +566,8 @@ namespace CppSharp
         public override AST.Type VisitTemplateParameter(TemplateParameterType type)
         {
             var _type = new AST.TemplateParameterType();
-            _type.Parameter = DeclConverter.VisitTemplateParameter(type.Parameter);
+            if (type.Parameter != null)
+                _type.Parameter = (AST.TypeTemplateParameter) declConverter.Visit(type.Parameter);
             _type.Depth = type.Depth;
             _type.Index = type.Index;
             _type.IsParameterPack = type.IsParameterPack;
@@ -1426,17 +1439,9 @@ namespace CppSharp
             for (uint i = 0; i < template.ParametersCount; ++i)
             {
                 var param = template.getParameters(i);
-                var _param = VisitTemplateParameter(param);
+                var _param = (AST.TemplateParameter) Visit(param);
                 _template.Parameters.Add(_param);
             }
-        }
-
-        public static AST.TemplateParameter VisitTemplateParameter(TemplateParameter param)
-        {
-            var _param = new AST.TemplateParameter();
-            _param.Name = param.Name;
-            _param.IsTypeParameter = param.IsTypeParameter;
-            return _param;
         }
 
         public override AST.Declaration VisitClassTemplate(ClassTemplate decl)
@@ -1634,6 +1639,31 @@ namespace CppSharp
             if (macroExpansion.Definition != null)
                 _macro.Definition = VisitMacroDefinition(macroExpansion.Definition);
             return _macro;
+        }
+
+        public override AST.Declaration VisitTemplateParameter(TypeTemplateParameter decl)
+        {
+            var templateParameter = new AST.TypeTemplateParameter();
+            VisitDeclaration(decl, templateParameter);
+            templateParameter.DefaultArgument = typeConverter.VisitQualified(decl.DefaultArgument);
+            templateParameter.Depth = decl.Depth;
+            templateParameter.Index = decl.Index;
+            templateParameter.IsParameterPack = decl.IsParameterPack;
+            return templateParameter;
+        }
+
+        public override AST.Declaration VisitNonTypeTemplateParameter(NonTypeTemplateParameter decl)
+        {
+            var nonTypeTemplateParameter = new AST.NonTypeTemplateParameter();
+            VisitDeclaration(decl, nonTypeTemplateParameter);
+            nonTypeTemplateParameter.DefaultArgument = VisitStatement(decl.DefaultArgument);
+            nonTypeTemplateParameter.Depth = decl.Depth;
+            nonTypeTemplateParameter.Position = decl.Position;
+            nonTypeTemplateParameter.Index = decl.Index;
+            nonTypeTemplateParameter.IsParameterPack = decl.IsParameterPack;
+            nonTypeTemplateParameter.IsPackExpansion = decl.IsPackExpansion;
+            nonTypeTemplateParameter.IsExpandedParameterPack = decl.IsExpandedParameterPack;
+            return nonTypeTemplateParameter;
         }
     }
 

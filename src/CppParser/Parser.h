@@ -12,6 +12,7 @@
 #include <llvm/Object/SymbolicFile.h>
 
 #include <clang/AST/ASTFwd.h>
+#include <clang/AST/DeclTemplate.h>
 #include <clang/AST/Type.h>
 #include <clang/Basic/TargetInfo.h>
 #include <clang/Frontend/CompilerInstance.h>
@@ -81,8 +82,6 @@ protected:
     WalkClassTemplatePartialSpecialization(clang::ClassTemplatePartialSpecializationDecl* CTS);
     Method* WalkMethodCXX(clang::CXXMethodDecl* MD);
     Field* WalkFieldCXX(clang::FieldDecl* FD, Class* Class);
-    ClassTemplate* WalkClassTemplate(clang::ClassTemplateDecl* TD);
-    FunctionTemplate* WalkFunctionTemplate(clang::FunctionTemplateDecl* TD);
     FunctionTemplateSpecialization* WalkFunctionTemplateSpec(clang::FunctionTemplateSpecializationInfo* FTS, Function* Function);
     Variable* WalkVariable(clang::VarDecl* VD);
     Friend* WalkFriend(clang::FriendDecl* FD);
@@ -90,6 +89,11 @@ protected:
     Type* WalkType(clang::QualType QualType, clang::TypeLoc* TL = 0,
       bool DesugarType = false);
     TemplateArgument WalkTemplateArgument(const clang::TemplateArgument& TA, clang::TemplateArgumentLoc* ArgLoc);
+    TypeTemplateParameter* WalkTypeTemplateParameter(clang::TemplateTypeParmDecl* TTPD);
+    NonTypeTemplateParameter* WalkNonTypeTemplateParameter(clang::NonTypeTemplateParmDecl* TTPD);
+    std::vector<Declaration*> WalkTemplateParameterList(const clang::TemplateParameterList* TPL);
+    ClassTemplate* WalkClassTemplate(clang::ClassTemplateDecl* TD);
+    FunctionTemplate* WalkFunctionTemplate(clang::FunctionTemplateDecl* TD);
     std::vector<TemplateArgument> WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL, clang::TemplateSpecializationTypeLoc* TSTL);
     std::vector<TemplateArgument> WalkTemplateArgumentList(const clang::TemplateArgumentList* TAL, const clang::ASTTemplateArgumentListInfo* TSTL);
     void WalkVTable(clang::CXXRecordDecl* RD, Class* C);

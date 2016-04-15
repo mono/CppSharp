@@ -342,5 +342,23 @@ namespace CppSharp.Types
         {
             return type.Visit(this);
         }
+
+        public string VisitTemplateParameter(TypeTemplateParameter templateParameter)
+        {
+            if (templateParameter.DefaultArgument.Type == null)
+                return templateParameter.Name;
+
+            return string.Format("{0} = {1}", templateParameter.Name,
+                templateParameter.DefaultArgument.Visit(this));
+        }
+
+        public string VisitNonTypeTemplateParameter(NonTypeTemplateParameter nonTypeTemplateParameter)
+        {
+            if (nonTypeTemplateParameter.DefaultArgument == null)
+                return nonTypeTemplateParameter.Name;
+
+            return string.Format("{0} = {1}",  nonTypeTemplateParameter.Name,
+                nonTypeTemplateParameter.DefaultArgument.String);
+        }
     }
 }

@@ -391,5 +391,7 @@ namespace CppSharp.AST
         T VisitEvent(Event @event);
         T VisitProperty(Property @property);
         T VisitFriend(Friend friend);
+        T VisitTemplateParameter(TypeTemplateParameter templateParameter);
+        T VisitNonTypeTemplateParameter(NonTypeTemplateParameter nonTypeTemplateParameter);
     }
 }

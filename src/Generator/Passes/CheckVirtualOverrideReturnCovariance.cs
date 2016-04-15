@@ -242,6 +242,16 @@ namespace CppSharp.Passes
             return false;
         }
 
+        public bool VisitTemplateParameter(TypeTemplateParameter templateParameter)
+        {
+            return false;
+        }
+
+        public bool VisitNonTypeTemplateParameter(NonTypeTemplateParameter nonTypeTemplateParameter)
+        {
+            return false;
+        }
+
         #endregion
     }
 

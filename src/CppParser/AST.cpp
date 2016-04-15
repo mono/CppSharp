@@ -85,6 +85,52 @@ DecayedType::DecayedType() : Type(TypeKind::Decayed) {}
 // Template
 Template::Template(DeclarationKind kind) : Declaration(kind) {}
 
+TemplateParameter::TemplateParameter(DeclarationKind kind)
+    : Declaration(kind)
+    , Depth(0)
+    , Index(0)
+    , IsParameterPack(false)
+{
+}
+
+TemplateParameter::~TemplateParameter()
+{
+}
+
+// TemplateParameter
+TypeTemplateParameter::TypeTemplateParameter()
+    : TemplateParameter(DeclarationKind::TemplateTypeParm)
+{
+}
+
+TypeTemplateParameter::TypeTemplateParameter(const TypeTemplateParameter& rhs)
+    : TemplateParameter(rhs.Kind)
+    , DefaultArgument(rhs.DefaultArgument)
+{
+}
+
+TypeTemplateParameter::~TypeTemplateParameter() {}
+
+NonTypeTemplateParameter::NonTypeTemplateParameter()
+    : TemplateParameter(DeclarationKind::NonTypeTemplateParm)
+    , DefaultArgument(0)
+    , Position(0)
+    , IsPackExpansion(false)
+    , IsExpandedParameterPack(false)
+{
+}
+
+NonTypeTemplateParameter::NonTypeTemplateParameter(const NonTypeTemplateParameter& rhs)
+    : TemplateParameter(rhs.Kind)
+    , DefaultArgument(rhs.DefaultArgument)
+    , Position(rhs.Position)
+    , IsPackExpansion(rhs.IsPackExpansion)
+    , IsExpandedParameterPack(rhs.IsExpandedParameterPack)
+{
+}
+
+NonTypeTemplateParameter::~NonTypeTemplateParameter() {}
+
 TemplateArgument::TemplateArgument() : Declaration(0) {}
 
 TemplateSpecializationType::TemplateSpecializationType()
@@ -97,21 +143,7 @@ TemplateSpecializationType::~TemplateSpecializationType() {}
 
 DEF_VECTOR(TemplateSpecializationType, TemplateArgument, Arguments)
 
-// TemplateParameter
-TemplateParameter::TemplateParameter() 
-    : IsTypeParameter(false)
-{
-}
-
-TemplateParameter::TemplateParameter(const TemplateParameter& rhs)
-    : Name(rhs.Name)
-    , IsTypeParameter(rhs.IsTypeParameter)
-{
-}
-
-DEF_STRING(TemplateParameter, Name)
-
-TemplateParameterType::TemplateParameterType() : Type(TypeKind::TemplateParameter) {}
+TemplateParameterType::TemplateParameterType() : Type(TypeKind::TemplateParameter), Parameter(0) {}
 
 TemplateParameterType::~TemplateParameterType() {}
 
@@ -643,7 +675,7 @@ DEF_VECTOR(Class, AccessSpecifierDecl*, Specifiers)
 Template::Template() : Declaration(DeclarationKind::Template),
     TemplatedDecl(0) {}
 
-DEF_VECTOR(Template, TemplateParameter, Parameters)
+DEF_VECTOR(Template, Declaration*, Parameters)
 
 ClassTemplate::ClassTemplate() : Template(DeclarationKind::ClassTemplate) {}
 
