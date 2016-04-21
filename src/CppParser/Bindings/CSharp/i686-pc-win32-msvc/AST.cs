@@ -200,6 +200,16 @@ namespace CppSharp
                 IntPtr = 16
             }
 
+            public enum MacroLocation
+            {
+                Unknown = 0,
+                ClassHead = 1,
+                ClassBody = 2,
+                FunctionHead = 3,
+                FunctionParameters = 4,
+                FunctionBody = 5
+            }
+
             public enum RawCommentKind
             {
                 Invalid = 0,
@@ -229,16 +239,6 @@ namespace CppSharp
                 InlineContentComment = 12,
                 InlineCommandComment = 13,
                 VerbatimBlockLineComment = 14
-            }
-
-            public enum MacroLocation
-            {
-                Unknown = 0,
-                ClassHead = 1,
-                ClassBody = 2,
-                FunctionHead = 3,
-                FunctionParameters = 4,
-                FunctionBody = 5
             }
 
             public enum ArchType
@@ -3262,26 +3262,26 @@ namespace CppSharp
                     [FieldOffset(20)]
                     public int LineNumberEnd;
 
-                    [FieldOffset(48)]
-                    public global::System.IntPtr Comment;
-
-                    [FieldOffset(76)]
+                    [FieldOffset(96)]
                     public byte IsIncomplete;
 
-                    [FieldOffset(77)]
+                    [FieldOffset(97)]
                     public byte IsDependent;
 
-                    [FieldOffset(78)]
+                    [FieldOffset(98)]
                     public byte IsImplicit;
 
-                    [FieldOffset(80)]
+                    [FieldOffset(100)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(84)]
+                    [FieldOffset(104)]
                     public uint DefinitionOrder;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(120)]
                     public global::System.IntPtr OriginalPtr;
+
+                    [FieldOffset(124)]
+                    public global::System.IntPtr Comment;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -3322,6 +3322,16 @@ namespace CppSharp
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
                         EntryPoint="?setName@Declaration@AST@CppParser@CppSharp@@QAEXPBD@Z")]
                     internal static extern void setName_0(global::System.IntPtr instance, global::System.IntPtr s);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                        EntryPoint="?getUSR@Declaration@AST@CppParser@CppSharp@@QAEPBDXZ")]
+                    internal static extern global::System.IntPtr getUSR_0(global::System.IntPtr instance);
+
+                    [SuppressUnmanagedCodeSecurity]
+                    [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
+                        EntryPoint="?setUSR@Declaration@AST@CppParser@CppSharp@@QAEXPBD@Z")]
+                    internal static extern void setUSR_0(global::System.IntPtr instance, global::System.IntPtr s);
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -3452,6 +3462,22 @@ namespace CppSharp
                     }
                 }
 
+                public string USR
+                {
+                    get
+                    {
+                        var __ret = Internal.getUSR_0((__Instance + __PointerAdjustment));
+                        return Marshal.PtrToStringAnsi(__ret);
+                    }
+
+                    set
+                    {
+                        var arg0 = Marshal.StringToHGlobalAnsi(value);
+                        Internal.setUSR_0((__Instance + __PointerAdjustment), arg0);
+                        Marshal.FreeHGlobal(arg0);
+                    }
+                }
+
                 public string DebugText
                 {
                     get
@@ -3560,24 +3586,6 @@ namespace CppSharp
                     }
                 }
 
-                public CppSharp.Parser.AST.RawComment Comment
-                {
-                    get
-                    {
-                        CppSharp.Parser.AST.RawComment __result0;
-                        if (((Internal*) __Instance)->Comment == IntPtr.Zero) __result0 = null;
-                        else if (CppSharp.Parser.AST.RawComment.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->Comment))
-                            __result0 = (CppSharp.Parser.AST.RawComment) CppSharp.Parser.AST.RawComment.NativeToManagedMap[((Internal*) __Instance)->Comment];
-                        else __result0 = CppSharp.Parser.AST.RawComment.__CreateInstance(((Internal*) __Instance)->Comment);
-                        return __result0;
-                    }
-
-                    set
-                    {
-                        ((Internal*) __Instance)->Comment = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
-                    }
-                }
-
                 public bool IsIncomplete
                 {
                     get
@@ -3660,6 +3668,24 @@ namespace CppSharp
                         ((Internal*) __Instance)->OriginalPtr = (global::System.IntPtr) value;
                     }
                 }
+
+                public CppSharp.Parser.AST.RawComment Comment
+                {
+                    get
+                    {
+                        CppSharp.Parser.AST.RawComment __result0;
+                        if (((Internal*) __Instance)->Comment == IntPtr.Zero) __result0 = null;
+                        else if (CppSharp.Parser.AST.RawComment.NativeToManagedMap.ContainsKey(((Internal*) __Instance)->Comment))
+                            __result0 = (CppSharp.Parser.AST.RawComment) CppSharp.Parser.AST.RawComment.NativeToManagedMap[((Internal*) __Instance)->Comment];
+                        else __result0 = CppSharp.Parser.AST.RawComment.__CreateInstance(((Internal*) __Instance)->Comment);
+                        return __result0;
+                    }
+
+                    set
+                    {
+                        ((Internal*) __Instance)->Comment = ReferenceEquals(value, null) ? global::System.IntPtr.Zero : value.__Instance;
+                    }
+                }
             }
 
             public unsafe partial class DeclarationContext : CppSharp.Parser.AST.Declaration, IDisposable
@@ -3685,26 +3711,26 @@ namespace CppSharp
                     [FieldOffset(20)]
                     public int LineNumberEnd;
 
-                    [FieldOffset(48)]
-                    public global::System.IntPtr Comment;
-
-                    [FieldOffset(76)]
+                    [FieldOffset(96)]
                     public byte IsIncomplete;
 
-                    [FieldOffset(77)]
+                    [FieldOffset(97)]
                     public byte IsDependent;
 
-                    [FieldOffset(78)]
+                    [FieldOffset(98)]
                     public byte IsImplicit;
 
-                    [FieldOffset(80)]
+                    [FieldOffset(100)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(84)]
+                    [FieldOffset(104)]
                     public uint DefinitionOrder;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(120)]
                     public global::System.IntPtr OriginalPtr;
+
+                    [FieldOffset(124)]
+                    public global::System.IntPtr Comment;
 
                     [FieldOffset(232)]
                     public byte IsAnonymous;
@@ -4250,26 +4276,26 @@ namespace CppSharp
                     [FieldOffset(20)]
                     public int LineNumberEnd;
 
-                    [FieldOffset(48)]
-                    public global::System.IntPtr Comment;
-
-                    [FieldOffset(76)]
+                    [FieldOffset(96)]
                     public byte IsIncomplete;
 
-                    [FieldOffset(77)]
+                    [FieldOffset(97)]
                     public byte IsDependent;
 
-                    [FieldOffset(78)]
+                    [FieldOffset(98)]
                     public byte IsImplicit;
 
-                    [FieldOffset(80)]
+                    [FieldOffset(100)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(84)]
+                    [FieldOffset(104)]
                     public uint DefinitionOrder;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(120)]
                     public global::System.IntPtr OriginalPtr;
+
+                    [FieldOffset(124)]
+                    public global::System.IntPtr Comment;
 
                     [FieldOffset(128)]
                     public CppSharp.Parser.AST.QualifiedType.Internal QualifiedType;
@@ -4390,26 +4416,26 @@ namespace CppSharp
                     [FieldOffset(20)]
                     public int LineNumberEnd;
 
-                    [FieldOffset(48)]
-                    public global::System.IntPtr Comment;
-
-                    [FieldOffset(76)]
+                    [FieldOffset(96)]
                     public byte IsIncomplete;
 
-                    [FieldOffset(77)]
+                    [FieldOffset(97)]
                     public byte IsDependent;
 
-                    [FieldOffset(78)]
+                    [FieldOffset(98)]
                     public byte IsImplicit;
 
-                    [FieldOffset(80)]
+                    [FieldOffset(100)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(84)]
+                    [FieldOffset(104)]
                     public uint DefinitionOrder;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(120)]
                     public global::System.IntPtr OriginalPtr;
+
+                    [FieldOffset(124)]
+                    public global::System.IntPtr Comment;
 
                     [FieldOffset(128)]
                     public global::System.IntPtr Declaration;
@@ -5161,26 +5187,26 @@ namespace CppSharp
                     [FieldOffset(20)]
                     public int LineNumberEnd;
 
-                    [FieldOffset(48)]
-                    public global::System.IntPtr Comment;
-
-                    [FieldOffset(76)]
+                    [FieldOffset(96)]
                     public byte IsIncomplete;
 
-                    [FieldOffset(77)]
+                    [FieldOffset(97)]
                     public byte IsDependent;
 
-                    [FieldOffset(78)]
+                    [FieldOffset(98)]
                     public byte IsImplicit;
 
-                    [FieldOffset(80)]
+                    [FieldOffset(100)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(84)]
+                    [FieldOffset(104)]
                     public uint DefinitionOrder;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(120)]
                     public global::System.IntPtr OriginalPtr;
+
+                    [FieldOffset(124)]
+                    public global::System.IntPtr Comment;
 
                     [FieldOffset(128)]
                     public CppSharp.Parser.AST.QualifiedType.Internal QualifiedType;
@@ -5370,26 +5396,26 @@ namespace CppSharp
                     [FieldOffset(20)]
                     public int LineNumberEnd;
 
-                    [FieldOffset(48)]
-                    public global::System.IntPtr Comment;
-
-                    [FieldOffset(76)]
+                    [FieldOffset(96)]
                     public byte IsIncomplete;
 
-                    [FieldOffset(77)]
+                    [FieldOffset(97)]
                     public byte IsDependent;
 
-                    [FieldOffset(78)]
+                    [FieldOffset(98)]
                     public byte IsImplicit;
 
-                    [FieldOffset(80)]
+                    [FieldOffset(100)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(84)]
+                    [FieldOffset(104)]
                     public uint DefinitionOrder;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(120)]
                     public global::System.IntPtr OriginalPtr;
+
+                    [FieldOffset(124)]
+                    public global::System.IntPtr Comment;
 
                     [FieldOffset(128)]
                     public CppSharp.Parser.AST.QualifiedType.Internal ReturnType;
@@ -5785,26 +5811,26 @@ namespace CppSharp
                     [FieldOffset(20)]
                     public int LineNumberEnd;
 
-                    [FieldOffset(48)]
-                    public global::System.IntPtr Comment;
-
-                    [FieldOffset(76)]
+                    [FieldOffset(96)]
                     public byte IsIncomplete;
 
-                    [FieldOffset(77)]
+                    [FieldOffset(97)]
                     public byte IsDependent;
 
-                    [FieldOffset(78)]
+                    [FieldOffset(98)]
                     public byte IsImplicit;
 
-                    [FieldOffset(80)]
+                    [FieldOffset(100)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(84)]
+                    [FieldOffset(104)]
                     public uint DefinitionOrder;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(120)]
                     public global::System.IntPtr OriginalPtr;
+
+                    [FieldOffset(124)]
+                    public global::System.IntPtr Comment;
 
                     [FieldOffset(128)]
                     public CppSharp.Parser.AST.QualifiedType.Internal ReturnType;
@@ -6102,26 +6128,26 @@ namespace CppSharp
                     [FieldOffset(20)]
                     public int LineNumberEnd;
 
-                    [FieldOffset(48)]
-                    public global::System.IntPtr Comment;
-
-                    [FieldOffset(76)]
+                    [FieldOffset(96)]
                     public byte IsIncomplete;
 
-                    [FieldOffset(77)]
+                    [FieldOffset(97)]
                     public byte IsDependent;
 
-                    [FieldOffset(78)]
+                    [FieldOffset(98)]
                     public byte IsImplicit;
 
-                    [FieldOffset(80)]
+                    [FieldOffset(100)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(84)]
+                    [FieldOffset(104)]
                     public uint DefinitionOrder;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(120)]
                     public global::System.IntPtr OriginalPtr;
+
+                    [FieldOffset(124)]
+                    public global::System.IntPtr Comment;
 
                     [FieldOffset(232)]
                     public byte IsAnonymous;
@@ -6202,26 +6228,26 @@ namespace CppSharp
                         [FieldOffset(20)]
                         public int LineNumberEnd;
 
-                        [FieldOffset(48)]
-                        public global::System.IntPtr Comment;
-
-                        [FieldOffset(76)]
+                        [FieldOffset(96)]
                         public byte IsIncomplete;
 
-                        [FieldOffset(77)]
+                        [FieldOffset(97)]
                         public byte IsDependent;
 
-                        [FieldOffset(78)]
+                        [FieldOffset(98)]
                         public byte IsImplicit;
 
-                        [FieldOffset(80)]
+                        [FieldOffset(100)]
                         public global::System.IntPtr CompleteDeclaration;
 
-                        [FieldOffset(84)]
+                        [FieldOffset(104)]
                         public uint DefinitionOrder;
 
-                        [FieldOffset(100)]
+                        [FieldOffset(120)]
                         public global::System.IntPtr OriginalPtr;
+
+                        [FieldOffset(124)]
+                        public global::System.IntPtr Comment;
 
                         [FieldOffset(152)]
                         public ulong Value;
@@ -6514,26 +6540,26 @@ namespace CppSharp
                     [FieldOffset(20)]
                     public int LineNumberEnd;
 
-                    [FieldOffset(48)]
-                    public global::System.IntPtr Comment;
-
-                    [FieldOffset(76)]
+                    [FieldOffset(96)]
                     public byte IsIncomplete;
 
-                    [FieldOffset(77)]
+                    [FieldOffset(97)]
                     public byte IsDependent;
 
-                    [FieldOffset(78)]
+                    [FieldOffset(98)]
                     public byte IsImplicit;
 
-                    [FieldOffset(80)]
+                    [FieldOffset(100)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(84)]
+                    [FieldOffset(104)]
                     public uint DefinitionOrder;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(120)]
                     public global::System.IntPtr OriginalPtr;
+
+                    [FieldOffset(124)]
+                    public global::System.IntPtr Comment;
 
                     [FieldOffset(152)]
                     public CppSharp.Parser.AST.QualifiedType.Internal QualifiedType;
@@ -6834,26 +6860,26 @@ namespace CppSharp
                     [FieldOffset(20)]
                     public int LineNumberEnd;
 
-                    [FieldOffset(48)]
-                    public global::System.IntPtr Comment;
-
-                    [FieldOffset(76)]
+                    [FieldOffset(96)]
                     public byte IsIncomplete;
 
-                    [FieldOffset(77)]
+                    [FieldOffset(97)]
                     public byte IsDependent;
 
-                    [FieldOffset(78)]
+                    [FieldOffset(98)]
                     public byte IsImplicit;
 
-                    [FieldOffset(80)]
+                    [FieldOffset(100)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(84)]
+                    [FieldOffset(104)]
                     public uint DefinitionOrder;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(120)]
                     public global::System.IntPtr OriginalPtr;
+
+                    [FieldOffset(124)]
+                    public global::System.IntPtr Comment;
 
                     [FieldOffset(128)]
                     public CppSharp.Parser.AST.QualifiedType.Internal QualifiedType;
@@ -7043,26 +7069,26 @@ namespace CppSharp
                     [FieldOffset(20)]
                     public int LineNumberEnd;
 
-                    [FieldOffset(48)]
-                    public global::System.IntPtr Comment;
-
-                    [FieldOffset(76)]
+                    [FieldOffset(96)]
                     public byte IsIncomplete;
 
-                    [FieldOffset(77)]
+                    [FieldOffset(97)]
                     public byte IsDependent;
 
-                    [FieldOffset(78)]
+                    [FieldOffset(98)]
                     public byte IsImplicit;
 
-                    [FieldOffset(80)]
+                    [FieldOffset(100)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(84)]
+                    [FieldOffset(104)]
                     public uint DefinitionOrder;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(120)]
                     public global::System.IntPtr OriginalPtr;
+
+                    [FieldOffset(124)]
+                    public global::System.IntPtr Comment;
 
                     [SuppressUnmanagedCodeSecurity]
                     [DllImport("CppSharp.CppParser.dll", CallingConvention = global::System.Runtime.InteropServices.CallingConvention.ThisCall,
@@ -7167,26 +7193,26 @@ namespace CppSharp
                     [FieldOffset(20)]
                     public int LineNumberEnd;
 
-                    [FieldOffset(48)]
-                    public global::System.IntPtr Comment;
-
-                    [FieldOffset(76)]
+                    [FieldOffset(96)]
                     public byte IsIncomplete;
 
-                    [FieldOffset(77)]
+                    [FieldOffset(97)]
                     public byte IsDependent;
 
-                    [FieldOffset(78)]
+                    [FieldOffset(98)]
                     public byte IsImplicit;
 
-                    [FieldOffset(80)]
+                    [FieldOffset(100)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(84)]
+                    [FieldOffset(104)]
                     public uint DefinitionOrder;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(120)]
                     public global::System.IntPtr OriginalPtr;
+
+                    [FieldOffset(124)]
+                    public global::System.IntPtr Comment;
 
                     [FieldOffset(232)]
                     public byte IsAnonymous;
@@ -7671,26 +7697,26 @@ namespace CppSharp
                     [FieldOffset(20)]
                     public int LineNumberEnd;
 
-                    [FieldOffset(48)]
-                    public global::System.IntPtr Comment;
-
-                    [FieldOffset(76)]
+                    [FieldOffset(96)]
                     public byte IsIncomplete;
 
-                    [FieldOffset(77)]
+                    [FieldOffset(97)]
                     public byte IsDependent;
 
-                    [FieldOffset(78)]
+                    [FieldOffset(98)]
                     public byte IsImplicit;
 
-                    [FieldOffset(80)]
+                    [FieldOffset(100)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(84)]
+                    [FieldOffset(104)]
                     public uint DefinitionOrder;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(120)]
                     public global::System.IntPtr OriginalPtr;
+
+                    [FieldOffset(124)]
+                    public global::System.IntPtr Comment;
 
                     [FieldOffset(128)]
                     public global::System.IntPtr TemplatedDecl;
@@ -7884,26 +7910,26 @@ namespace CppSharp
                     [FieldOffset(20)]
                     public int LineNumberEnd;
 
-                    [FieldOffset(48)]
-                    public global::System.IntPtr Comment;
-
-                    [FieldOffset(76)]
+                    [FieldOffset(96)]
                     public byte IsIncomplete;
 
-                    [FieldOffset(77)]
+                    [FieldOffset(97)]
                     public byte IsDependent;
 
-                    [FieldOffset(78)]
+                    [FieldOffset(98)]
                     public byte IsImplicit;
 
-                    [FieldOffset(80)]
+                    [FieldOffset(100)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(84)]
+                    [FieldOffset(104)]
                     public uint DefinitionOrder;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(120)]
                     public global::System.IntPtr OriginalPtr;
+
+                    [FieldOffset(124)]
+                    public global::System.IntPtr Comment;
 
                     [FieldOffset(128)]
                     public uint Depth;
@@ -8057,26 +8083,26 @@ namespace CppSharp
                     [FieldOffset(20)]
                     public int LineNumberEnd;
 
-                    [FieldOffset(48)]
-                    public global::System.IntPtr Comment;
-
-                    [FieldOffset(76)]
+                    [FieldOffset(96)]
                     public byte IsIncomplete;
 
-                    [FieldOffset(77)]
+                    [FieldOffset(97)]
                     public byte IsDependent;
 
-                    [FieldOffset(78)]
+                    [FieldOffset(98)]
                     public byte IsImplicit;
 
-                    [FieldOffset(80)]
+                    [FieldOffset(100)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(84)]
+                    [FieldOffset(104)]
                     public uint DefinitionOrder;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(120)]
                     public global::System.IntPtr OriginalPtr;
+
+                    [FieldOffset(124)]
+                    public global::System.IntPtr Comment;
 
                     [FieldOffset(128)]
                     public uint Depth;
@@ -8206,26 +8232,26 @@ namespace CppSharp
                     [FieldOffset(20)]
                     public int LineNumberEnd;
 
-                    [FieldOffset(48)]
-                    public global::System.IntPtr Comment;
-
-                    [FieldOffset(76)]
+                    [FieldOffset(96)]
                     public byte IsIncomplete;
 
-                    [FieldOffset(77)]
+                    [FieldOffset(97)]
                     public byte IsDependent;
 
-                    [FieldOffset(78)]
+                    [FieldOffset(98)]
                     public byte IsImplicit;
 
-                    [FieldOffset(80)]
+                    [FieldOffset(100)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(84)]
+                    [FieldOffset(104)]
                     public uint DefinitionOrder;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(120)]
                     public global::System.IntPtr OriginalPtr;
+
+                    [FieldOffset(124)]
+                    public global::System.IntPtr Comment;
 
                     [FieldOffset(128)]
                     public uint Depth;
@@ -8408,26 +8434,26 @@ namespace CppSharp
                     [FieldOffset(20)]
                     public int LineNumberEnd;
 
-                    [FieldOffset(48)]
-                    public global::System.IntPtr Comment;
-
-                    [FieldOffset(76)]
+                    [FieldOffset(96)]
                     public byte IsIncomplete;
 
-                    [FieldOffset(77)]
+                    [FieldOffset(97)]
                     public byte IsDependent;
 
-                    [FieldOffset(78)]
+                    [FieldOffset(98)]
                     public byte IsImplicit;
 
-                    [FieldOffset(80)]
+                    [FieldOffset(100)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(84)]
+                    [FieldOffset(104)]
                     public uint DefinitionOrder;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(120)]
                     public global::System.IntPtr OriginalPtr;
+
+                    [FieldOffset(124)]
+                    public global::System.IntPtr Comment;
 
                     [FieldOffset(128)]
                     public global::System.IntPtr TemplatedDecl;
@@ -8588,26 +8614,26 @@ namespace CppSharp
                     [FieldOffset(20)]
                     public int LineNumberEnd;
 
-                    [FieldOffset(48)]
-                    public global::System.IntPtr Comment;
-
-                    [FieldOffset(76)]
+                    [FieldOffset(96)]
                     public byte IsIncomplete;
 
-                    [FieldOffset(77)]
+                    [FieldOffset(97)]
                     public byte IsDependent;
 
-                    [FieldOffset(78)]
+                    [FieldOffset(98)]
                     public byte IsImplicit;
 
-                    [FieldOffset(80)]
+                    [FieldOffset(100)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(84)]
+                    [FieldOffset(104)]
                     public uint DefinitionOrder;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(120)]
                     public global::System.IntPtr OriginalPtr;
+
+                    [FieldOffset(124)]
+                    public global::System.IntPtr Comment;
 
                     [FieldOffset(232)]
                     public byte IsAnonymous;
@@ -8831,26 +8857,26 @@ namespace CppSharp
                     [FieldOffset(20)]
                     public int LineNumberEnd;
 
-                    [FieldOffset(48)]
-                    public global::System.IntPtr Comment;
-
-                    [FieldOffset(76)]
+                    [FieldOffset(96)]
                     public byte IsIncomplete;
 
-                    [FieldOffset(77)]
+                    [FieldOffset(97)]
                     public byte IsDependent;
 
-                    [FieldOffset(78)]
+                    [FieldOffset(98)]
                     public byte IsImplicit;
 
-                    [FieldOffset(80)]
+                    [FieldOffset(100)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(84)]
+                    [FieldOffset(104)]
                     public uint DefinitionOrder;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(120)]
                     public global::System.IntPtr OriginalPtr;
+
+                    [FieldOffset(124)]
+                    public global::System.IntPtr Comment;
 
                     [FieldOffset(232)]
                     public byte IsAnonymous;
@@ -8994,26 +9020,26 @@ namespace CppSharp
                     [FieldOffset(20)]
                     public int LineNumberEnd;
 
-                    [FieldOffset(48)]
-                    public global::System.IntPtr Comment;
-
-                    [FieldOffset(76)]
+                    [FieldOffset(96)]
                     public byte IsIncomplete;
 
-                    [FieldOffset(77)]
+                    [FieldOffset(97)]
                     public byte IsDependent;
 
-                    [FieldOffset(78)]
+                    [FieldOffset(98)]
                     public byte IsImplicit;
 
-                    [FieldOffset(80)]
+                    [FieldOffset(100)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(84)]
+                    [FieldOffset(104)]
                     public uint DefinitionOrder;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(120)]
                     public global::System.IntPtr OriginalPtr;
+
+                    [FieldOffset(124)]
+                    public global::System.IntPtr Comment;
 
                     [FieldOffset(128)]
                     public global::System.IntPtr TemplatedDecl;
@@ -9375,26 +9401,26 @@ namespace CppSharp
                     [FieldOffset(20)]
                     public int LineNumberEnd;
 
-                    [FieldOffset(48)]
-                    public global::System.IntPtr Comment;
-
-                    [FieldOffset(76)]
+                    [FieldOffset(96)]
                     public byte IsIncomplete;
 
-                    [FieldOffset(77)]
+                    [FieldOffset(97)]
                     public byte IsDependent;
 
-                    [FieldOffset(78)]
+                    [FieldOffset(98)]
                     public byte IsImplicit;
 
-                    [FieldOffset(80)]
+                    [FieldOffset(100)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(84)]
+                    [FieldOffset(104)]
                     public uint DefinitionOrder;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(120)]
                     public global::System.IntPtr OriginalPtr;
+
+                    [FieldOffset(124)]
+                    public global::System.IntPtr Comment;
 
                     [FieldOffset(232)]
                     public byte IsAnonymous;
@@ -9996,26 +10022,26 @@ namespace CppSharp
                     [FieldOffset(20)]
                     public int LineNumberEnd;
 
-                    [FieldOffset(48)]
-                    public global::System.IntPtr Comment;
-
-                    [FieldOffset(76)]
+                    [FieldOffset(96)]
                     public byte IsIncomplete;
 
-                    [FieldOffset(77)]
+                    [FieldOffset(97)]
                     public byte IsDependent;
 
-                    [FieldOffset(78)]
+                    [FieldOffset(98)]
                     public byte IsImplicit;
 
-                    [FieldOffset(80)]
+                    [FieldOffset(100)]
                     public global::System.IntPtr CompleteDeclaration;
 
-                    [FieldOffset(84)]
+                    [FieldOffset(104)]
                     public uint DefinitionOrder;
 
-                    [FieldOffset(100)]
+                    [FieldOffset(120)]
                     public global::System.IntPtr OriginalPtr;
+
+                    [FieldOffset(124)]
+                    public global::System.IntPtr Comment;
 
                     [FieldOffset(232)]
                     public byte IsAnonymous;

@@ -388,7 +388,7 @@ public:
     int LineNumberStart;
     int LineNumberEnd;
     STRING(Name)
-    RawComment* Comment;
+    STRING(USR)
     STRING(DebugText)
     bool IsIncomplete;
     bool IsDependent;
@@ -397,7 +397,7 @@ public:
     unsigned DefinitionOrder;
     VECTOR(PreprocessedEntity*, PreprocessedEntities)
     void* OriginalPtr;
-    std::string USR;
+    RawComment* Comment;
 };
 
 class Class;

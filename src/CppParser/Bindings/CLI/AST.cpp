@@ -1505,6 +1505,20 @@ void CppSharp::Parser::AST::Declaration::Name::set(System::String^ s)
     ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->setName(arg0);
 }
 
+System::String^ CppSharp::Parser::AST::Declaration::USR::get()
+{
+    auto __ret = ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->getUSR();
+    if (__ret == nullptr) return nullptr;
+    return (__ret == 0 ? nullptr : clix::marshalString<clix::E_UTF8>(__ret));
+}
+
+void CppSharp::Parser::AST::Declaration::USR::set(System::String^ s)
+{
+    auto _arg0 = clix::marshalString<clix::E_UTF8>(s);
+    auto arg0 = _arg0.c_str();
+    ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->setUSR(arg0);
+}
+
 System::String^ CppSharp::Parser::AST::Declaration::DebugText::get()
 {
     auto __ret = ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->getDebugText();
@@ -1587,16 +1601,6 @@ void CppSharp::Parser::AST::Declaration::LineNumberEnd::set(int value)
     ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->LineNumberEnd = value;
 }
 
-CppSharp::Parser::AST::RawComment^ CppSharp::Parser::AST::Declaration::Comment::get()
-{
-    return (((::CppSharp::CppParser::AST::Declaration*)NativePtr)->Comment == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::RawComment((::CppSharp::CppParser::AST::RawComment*)((::CppSharp::CppParser::AST::Declaration*)NativePtr)->Comment);
-}
-
-void CppSharp::Parser::AST::Declaration::Comment::set(CppSharp::Parser::AST::RawComment^ value)
-{
-    ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->Comment = (::CppSharp::CppParser::AST::RawComment*)value->NativePtr;
-}
-
 bool CppSharp::Parser::AST::Declaration::IsIncomplete::get()
 {
     return ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->IsIncomplete;
@@ -1655,6 +1659,16 @@ void CppSharp::Parser::AST::Declaration::DefinitionOrder::set(unsigned int value
 void CppSharp::Parser::AST::Declaration::OriginalPtr::set(::System::IntPtr value)
 {
     ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->OriginalPtr = (void*)value;
+}
+
+CppSharp::Parser::AST::RawComment^ CppSharp::Parser::AST::Declaration::Comment::get()
+{
+    return (((::CppSharp::CppParser::AST::Declaration*)NativePtr)->Comment == nullptr) ? nullptr : gcnew CppSharp::Parser::AST::RawComment((::CppSharp::CppParser::AST::RawComment*)((::CppSharp::CppParser::AST::Declaration*)NativePtr)->Comment);
+}
+
+void CppSharp::Parser::AST::Declaration::Comment::set(CppSharp::Parser::AST::RawComment^ value)
+{
+    ((::CppSharp::CppParser::AST::Declaration*)NativePtr)->Comment = (::CppSharp::CppParser::AST::RawComment*)value->NativePtr;
 }
 
 CppSharp::Parser::AST::DeclarationContext::DeclarationContext(::CppSharp::CppParser::AST::DeclarationContext* native)

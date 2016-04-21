@@ -795,6 +795,7 @@ namespace CppSharp
 
             _decl.Access = VisitAccessSpecifier(decl.Access);
             _decl.Name = decl.Name;
+            _decl.USR = decl.USR;
             _decl.Namespace = Visit(decl._Namespace) as AST.DeclarationContext;
             _decl.Location = new SourceLocation(decl.Location.ID);
             _decl.LineNumberStart = decl.LineNumberStart;

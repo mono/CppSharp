@@ -295,6 +295,16 @@ namespace CppSharp
                 IntPtr = 16
             };
 
+            public enum struct MacroLocation
+            {
+                Unknown = 0,
+                ClassHead = 1,
+                ClassBody = 2,
+                FunctionHead = 3,
+                FunctionParameters = 4,
+                FunctionBody = 5
+            };
+
             public enum struct RawCommentKind
             {
                 Invalid = 0,
@@ -324,16 +334,6 @@ namespace CppSharp
                 InlineContentComment = 12,
                 InlineCommandComment = 13,
                 VerbatimBlockLineComment = 14
-            };
-
-            public enum struct MacroLocation
-            {
-                Unknown = 0,
-                ClassHead = 1,
-                ClassBody = 2,
-                FunctionHead = 3,
-                FunctionParameters = 4,
-                FunctionBody = 5
             };
 
             public enum struct ArchType
@@ -1125,6 +1125,12 @@ namespace CppSharp
                     void set(System::String^);
                 }
 
+                property System::String^ USR
+                {
+                    System::String^ get();
+                    void set(System::String^);
+                }
+
                 property System::String^ DebugText
                 {
                     System::String^ get();
@@ -1172,12 +1178,6 @@ namespace CppSharp
                     void set(int);
                 }
 
-                property CppSharp::Parser::AST::RawComment^ Comment
-                {
-                    CppSharp::Parser::AST::RawComment^ get();
-                    void set(CppSharp::Parser::AST::RawComment^);
-                }
-
                 property bool IsIncomplete
                 {
                     bool get();
@@ -1212,6 +1212,12 @@ namespace CppSharp
                 {
                     ::System::IntPtr get();
                     void set(::System::IntPtr);
+                }
+
+                property CppSharp::Parser::AST::RawComment^ Comment
+                {
+                    CppSharp::Parser::AST::RawComment^ get();
+                    void set(CppSharp::Parser::AST::RawComment^);
                 }
 
                 CppSharp::Parser::AST::PreprocessedEntity^ getPreprocessedEntities(unsigned int i);
