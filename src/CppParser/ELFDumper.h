@@ -40,7 +40,7 @@ private:
     llvm::StringRef getDynamicString(uint64_t Offset) const;
     const Elf_Dyn *dynamic_table_begin() const;
     const Elf_Dyn *dynamic_table_end() const;
-    Elf_Dyn_Range dynamic_table() const {
+    llvm::iterator_range<const Elf_Dyn*> dynamic_table() const {
         return llvm::make_range(dynamic_table_begin(), dynamic_table_end());
     }
 

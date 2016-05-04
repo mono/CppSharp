@@ -24,7 +24,6 @@
 typedef std::string String;
 
 namespace clang {
-  class TargetCodeGenInfo;
   namespace CodeGen {
     class CodeGenTypes;
   }
@@ -134,7 +133,6 @@ protected:
     std::unique_ptr<clang::CompilerInstance> C;
     clang::ASTContext* AST;
     clang::TargetCXXABI::Kind TargetABI;
-    clang::TargetCodeGenInfo* CodeGenInfo;
     clang::CodeGen::CodeGenTypes* CodeGenTypes;
 
 private:

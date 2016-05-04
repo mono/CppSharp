@@ -3274,7 +3274,6 @@ ParserResult* Parser::ParseHeader(const std::string& File, ParserResult* res)
     std::unique_ptr<clang::CodeGen::CodeGenTypes> CGT(
         new clang::CodeGen::CodeGenTypes(*CGM.get()));
 
-    CodeGenInfo = (clang::TargetCodeGenInfo*) &CGM->getTargetCodeGenInfo();
     CodeGenTypes = CGT.get();
 
     WalkAST();
@@ -3541,7 +3540,6 @@ ParserTargetInfo* Parser::GetTargetInfo()
     std::unique_ptr<clang::CodeGen::CodeGenTypes> CGT(
         new clang::CodeGen::CodeGenTypes(*CGM.get()));
 
-    CodeGenInfo = (clang::TargetCodeGenInfo*) &CGM->getTargetCodeGenInfo();
     CodeGenTypes = CGT.get();
 
     auto parserTargetInfo = new ParserTargetInfo();
