@@ -8,14 +8,21 @@ namespace CppSharp.Passes
     {
         public override bool VisitClassTemplateDecl(ClassTemplate template)
         {
-            if (!base.VisitClassTemplateDecl(template) ||
-                template.Specializations.Count == 0)
+            if (!base.VisitClassTemplateDecl(template))
                 return false;
 
-            var lastGroup = (from specialization in template.Specializations
-                             group specialization by specialization.Arguments.All(
-                                 a => a.Type.Type != null && a.Type.Type.IsAddress()) into @group
-                             select @group).Last();
+            template.Specializations.RemoveAll(
+                s => s.Fields.Any(f => f.Type.IsPrimitiveType(PrimitiveType.Void)));
+
+            if (template.Specializations.Count == 0)
+                return false;
+
+            var groups = (from specialization in template.Specializations
+                          group specialization by specialization.Arguments.All(
+                              a => a.Type.Type != null && a.Type.Type.IsAddress()) into @group
+                          select @group).ToList();
+
+            var lastGroup = groups.Last();
             if (lastGroup.Key)
             {
                 foreach (var specialization in lastGroup.Skip(1))

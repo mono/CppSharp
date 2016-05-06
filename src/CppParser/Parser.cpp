@@ -2229,17 +2229,41 @@ static const clang::CodeGen::CGFunctionInfo& GetCodeGenFuntionInfo(
     return CodeGenTypes->arrangeFunctionDeclaration(FD);
 }
 
+static const clang::Type* GetFinalType(const clang::Type* Ty)
+{
+    auto FinalType = Ty;
+    while (true)
+    {
+        FinalType = FinalType->getUnqualifiedDesugaredType();
+        if (FinalType->getPointeeType().isNull())
+            return FinalType;
+        FinalType = FinalType->getPointeeType().getTypePtr();
+    }
+}
+
 static bool CanCheckCodeGenInfo(clang::Sema& S, const clang::Type* Ty)
 {
-    bool CheckCodeGenInfo = true;
+    auto FinalType = GetFinalType(Ty);
 
-    if (auto RT = Ty->getAs<clang::RecordType>())
-        CheckCodeGenInfo &= RT->getDecl()->getDefinition() != 0;
+    if (FinalType->isDependentType() || FinalType->isInstantiationDependentType())
+        return false;
 
-    if (auto RD = Ty->getAsCXXRecordDecl())
-        CheckCodeGenInfo &= RD->hasDefinition();
+    if (auto RT = FinalType->getAs<clang::RecordType>())
+    {
+        if (RT->getDecl()->isInvalidDecl() || RT->getDecl()->isDependentContext() ||
+            !RT->getDecl()->getDefinition())
+            return false;
 
-    return CheckCodeGenInfo;
+        for (const auto& F : RT->getDecl()->fields())
+        {
+            auto FT = GetFinalType(F->getType().getTypePtr());
+            const clang::RecordType* FR;
+            if ((FR = FT->getAs<clang::RecordType>()) && FR->getDecl()->isInvalidDecl())
+                return false;
+        }
+    }
+
+    return true;
 }
 
 void Parser::WalkFunction(clang::FunctionDecl* FD, Function* F,
@@ -2322,10 +2346,8 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, Function* F,
     if (GetDeclText(Range, Sig))
         F->Signature = Sig;
 
-    for(auto it = FD->param_begin(); it != FD->param_end(); ++it)
+    for (const auto& VD : FD->parameters())
     {
-        ParmVarDecl* VD = (*it);
-        
         auto P = new Parameter();
         P->Name = VD->getNameAsString();
 
@@ -2367,30 +2389,34 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, Function* F,
 
     F->HasThisReturn = HasThisReturn;
 
-    bool CheckCodeGenInfo = !FD->isDependentContext() && !FD->isInvalidDecl();
-    CheckCodeGenInfo &= CanCheckCodeGenInfo(C->getSema(), FD->getReturnType().getTypePtr());
-    for (auto I = FD->param_begin(), E = FD->param_end(); I != E; ++I)
-        CheckCodeGenInfo &= CanCheckCodeGenInfo(C->getSema(), (*I)->getType().getTypePtr());
-
-    if (CheckCodeGenInfo)
-    {
-        auto& CGInfo = GetCodeGenFuntionInfo(CodeGenTypes, FD);
-        F->IsReturnIndirect = CGInfo.getReturnInfo().isIndirect();
-
-        unsigned Index = 0;
-        for (auto I = CGInfo.arg_begin(), E = CGInfo.arg_end(); I != E; I++)
-        {
-            // Skip the first argument as it's the return type.
-            if (I == CGInfo.arg_begin())
-                continue;
-            if (Index >= F->Parameters.size())
-                continue;
-            F->Parameters[Index++]->IsIndirect = I->info.isIndirect();
-        }
-    }
-
     if (auto FTSI = FD->getTemplateSpecializationInfo())
         F->SpecializationInfo = WalkFunctionTemplateSpec(FTSI, F);
+
+    CXXMethodDecl* MD;
+    if ((MD = dyn_cast<CXXMethodDecl>(FD)) && !MD->isStatic() &&
+        !CanCheckCodeGenInfo(C->getSema(), MD->getThisType(C->getASTContext()).getTypePtr()))
+        return;
+
+    if (!CanCheckCodeGenInfo(C->getSema(), FD->getReturnType().getTypePtr()))
+        return;
+
+    for (auto I = FD->param_begin(), E = FD->param_end(); I != E; ++I)
+        if (!CanCheckCodeGenInfo(C->getSema(), (*I)->getType().getTypePtr()))
+            return;
+
+    auto& CGInfo = GetCodeGenFuntionInfo(CodeGenTypes, FD);
+    F->IsReturnIndirect = CGInfo.getReturnInfo().isIndirect();
+
+    unsigned Index = 0;
+    for (auto I = CGInfo.arg_begin(), E = CGInfo.arg_end(); I != E; I++)
+    {
+        // Skip the first argument as it's the return type.
+        if (I == CGInfo.arg_begin())
+            continue;
+        if (Index >= F->Parameters.size())
+            continue;
+        F->Parameters[Index++]->IsIndirect = I->info.isIndirect();
+    }
 }
 
 Function* Parser::WalkFunction(clang::FunctionDecl* FD, bool IsDependent,

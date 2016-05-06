@@ -1093,3 +1093,16 @@ struct TestsTypes
 {
     int(*FunctionNoProto)();
 };
+
+template <class T>
+struct SpecialisesVoid
+{
+private:
+    T t;
+};
+
+class UsesSpecialisationOfVoid
+{
+private:
+    SpecialisesVoid<void>* s;
+};
