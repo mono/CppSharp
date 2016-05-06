@@ -1101,8 +1101,17 @@ private:
     T t;
 };
 
+template <class T>
+class SpecialisesVoidInUnion
+{
+    union {
+        SpecialisesVoid<T>* e;
+    }* u;
+};
+
 class UsesSpecialisationOfVoid
 {
 private:
     SpecialisesVoid<void>* s;
+    SpecialisesVoidInUnion<void>* h;
 };

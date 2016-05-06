@@ -2241,14 +2241,9 @@ static const clang::Type* GetFinalType(const clang::Type* Ty)
     }
 }
 
-static bool CanCheckCodeGenInfo(clang::Sema& S, const clang::Type* Ty)
+static bool CheckTypeIfRecord(const clang::Type* Ty)
 {
-    auto FinalType = GetFinalType(Ty);
-
-    if (FinalType->isDependentType() || FinalType->isInstantiationDependentType())
-        return false;
-
-    if (auto RT = FinalType->getAs<clang::RecordType>())
+    if (auto RT = Ty->getAs<clang::RecordType>())
     {
         if (RT->getDecl()->isInvalidDecl() || RT->getDecl()->isDependentContext() ||
             !RT->getDecl()->getDefinition())
@@ -2257,13 +2252,21 @@ static bool CanCheckCodeGenInfo(clang::Sema& S, const clang::Type* Ty)
         for (const auto& F : RT->getDecl()->fields())
         {
             auto FT = GetFinalType(F->getType().getTypePtr());
-            const clang::RecordType* FR;
-            if ((FR = FT->getAs<clang::RecordType>()) && FR->getDecl()->isInvalidDecl())
+            if (FT != Ty && !CheckTypeIfRecord(FT))
                 return false;
         }
     }
-
     return true;
+}
+
+static bool CanCheckCodeGenInfo(clang::Sema& S, const clang::Type* Ty)
+{
+    auto FinalType = GetFinalType(Ty);
+
+    if (FinalType->isDependentType() || FinalType->isInstantiationDependentType())
+        return false;
+
+    return CheckTypeIfRecord(FinalType);
 }
 
 void Parser::WalkFunction(clang::FunctionDecl* FD, Function* F,
