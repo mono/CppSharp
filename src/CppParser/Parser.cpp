@@ -1613,6 +1613,18 @@ static ParserIntType ConvertIntType(clang::TargetInfo::IntType IT)
     llvm_unreachable("Unknown parser integer type");
 }
 
+static const clang::Type* GetFinalType(const clang::Type* Ty)
+{
+    auto FinalType = Ty;
+    while (true)
+    {
+        FinalType = FinalType->getUnqualifiedDesugaredType();
+        if (FinalType->getPointeeType().isNull())
+            return FinalType;
+        FinalType = FinalType->getPointeeType().getTypePtr();
+    }
+}
+
 Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
     bool DesugarType)
 {
@@ -1621,14 +1633,27 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
     if (QualType.isNull())
         return nullptr;
 
+    auto LocValid = TL && !TL->isNull();
+
     // we cannot get a location in some cases of template arguments
     const RecordType* RT;
     if (!(RT = QualType->getAs<RecordType>()) ||
         !dyn_cast<ClassTemplateSpecializationDecl>(RT->getDecl()) ||
-        (TL && !TL->isNull()))
+        LocValid)
     {
-        C->getSema().RequireCompleteType(
-            TL && !TL->isNull() ? TL->getLocStart() : clang::SourceLocation(), QualType, 1);
+        auto FinalType = GetFinalType(QualType.getTypePtr());
+        if (auto TagDecl = FinalType->getAsTagDecl())
+        {
+            auto Unit = GetTranslationUnit(TagDecl);
+            if (!Unit->IsSystemHeader)
+                C->getSema().RequireCompleteType(
+                    LocValid ? TL->getLocStart() : clang::SourceLocation(), QualType, 1);
+        }
+        else
+        {
+            C->getSema().RequireCompleteType(
+                LocValid ? TL->getLocStart() : clang::SourceLocation(), QualType, 1);
+        }
     }
 
     const clang::Type* Type = QualType.getTypePtr();
@@ -1651,7 +1676,7 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         assert(Atomic && "Expected an atomic type");
 
         TypeLoc Next;
-        if (TL && !TL->isNull()) Next = TL->getNextTypeLoc();
+        if (LocValid) Next = TL->getNextTypeLoc();
 
         Ty = WalkType(Atomic->getValueType(), &Next);
         break;
@@ -1662,7 +1687,7 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         assert(Attributed && "Expected an attributed type");
 
         TypeLoc Next;
-        if (TL && !TL->isNull()) Next = TL->getNextTypeLoc();
+        if (LocValid) Next = TL->getNextTypeLoc();
 
         auto AT = new AttributedType();
 
@@ -1705,7 +1730,7 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         P->Modifier = PointerType::TypeModifier::Pointer;
 
         TypeLoc Next;
-        if (TL && !TL->isNull()) Next = TL->getNextTypeLoc();
+        if (LocValid) Next = TL->getNextTypeLoc();
 
         auto Pointee = Pointer->getPointeeType();
         P->QualifiedPointee = GetQualifiedType(Pointee, WalkType(Pointee, &Next));
@@ -1733,7 +1758,7 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         auto DT = Type->getAs<clang::DecayedType>();
 
         TypeLoc Next;
-        if (TL && !TL->isNull()) Next = TL->getNextTypeLoc();
+        if (LocValid) Next = TL->getNextTypeLoc();
 
         auto Type = new DecayedType();
         Type->Decayed = GetQualifiedType(DT->getDecayedType(),
@@ -1751,7 +1776,7 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         auto ET = Type->getAs<clang::ElaboratedType>();
 
         TypeLoc Next;
-        if (TL && !TL->isNull()) Next = TL->getNextTypeLoc();
+        if (LocValid) Next = TL->getNextTypeLoc();
 
         Ty = WalkType(ET->getNamedType(), &Next);
         break;
@@ -1772,7 +1797,7 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         auto PT = Type->getAs<clang::ParenType>();
 
         TypeLoc Next;
-        if (TL && !TL->isNull()) Next = TL->getNextTypeLoc();
+        if (LocValid) Next = TL->getNextTypeLoc();
 
         Ty = WalkType(PT->getInnerType(), &Next);
         break;
@@ -1782,7 +1807,7 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         auto AT = AST->getAsConstantArrayType(QualType);
 
         TypeLoc Next;
-        if (TL && !TL->isNull()) Next = TL->getNextTypeLoc();
+        if (LocValid) Next = TL->getNextTypeLoc();
 
         auto A = new ArrayType();
         auto ElemTy = AT->getElementType();
@@ -1800,7 +1825,7 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         auto AT = AST->getAsIncompleteArrayType(QualType);
 
         TypeLoc Next;
-        if (TL && !TL->isNull()) Next = TL->getNextTypeLoc();
+        if (LocValid) Next = TL->getNextTypeLoc();
 
         auto A = new ArrayType();
         A->QualifiedType = GetQualifiedType(AT->getElementType(),
@@ -1815,7 +1840,7 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         auto AT = AST->getAsDependentSizedArrayType(QualType);
 
         TypeLoc Next;
-        if (TL && !TL->isNull()) Next = TL->getNextTypeLoc();
+        if (LocValid) Next = TL->getNextTypeLoc();
 
         auto A = new ArrayType();
         A->QualifiedType = GetQualifiedType(AT->getElementType(),
@@ -1833,7 +1858,7 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         FunctionNoProtoTypeLoc FTL;
         TypeLoc RL;
         TypeLoc Next;
-        if (TL && !TL->isNull())
+        if (LocValid)
         {
             while (!TL->isNull() && TL->getTypeLocClass() != TypeLoc::FunctionNoProto)
             {
@@ -1863,7 +1888,7 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         FunctionProtoTypeLoc FTL;
         TypeLoc RL;
         TypeLoc Next;
-        if (TL && !TL->isNull())
+        if (LocValid)
         {
             while (!TL->isNull() && TL->getTypeLocClass() != TypeLoc::FunctionProto)
             {
@@ -1932,7 +1957,7 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         auto MP = Type->getAs<clang::MemberPointerType>();
 
         TypeLoc Next;
-        if (TL && !TL->isNull()) Next = TL->getNextTypeLoc();
+        if (LocValid) Next = TL->getNextTypeLoc();
 
         auto MPT = new MemberPointerType();
         MPT->Pointee = GetQualifiedType(MP->getPointeeType(),
@@ -1954,7 +1979,7 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
 
         TypeLoc UTL, ETL, ITL;
 
-        if (TL && !TL->isNull())
+        if (LocValid)
         {
             auto TypeLocClass = TL->getTypeLocClass();
             if (TypeLocClass == TypeLoc::Qualified)
@@ -1974,7 +1999,7 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
 
         TemplateSpecializationTypeLoc TSpecTL;
         TemplateSpecializationTypeLoc *TSTL = 0;
-        if (TL && !TL->isNull())
+        if (LocValid)
         {
             TSpecTL = TL->getAs<TemplateSpecializationTypeLoc>();
             TSTL = &TSpecTL;
@@ -1998,7 +2023,7 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
 
         TypeLoc UTL, ETL, ITL, Next;
 
-        if (TL && !TL->isNull())
+        if (LocValid)
         {
             auto TypeLocClass = TL->getTypeLocClass();
             if (TypeLocClass == TypeLoc::Qualified)
@@ -2037,7 +2062,7 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         auto TPT = new TemplateParameterSubstitutionType();
 
         TypeLoc Next;
-        if (TL && !TL->isNull()) Next = TL->getNextTypeLoc();
+        if (LocValid) Next = TL->getNextTypeLoc();
 
         auto RepTy = TP->getReplacementType();
         TPT->Replacement = GetQualifiedType(RepTy, WalkType(RepTy, &Next));
@@ -2071,7 +2096,7 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         P->Modifier = PointerType::TypeModifier::LVReference;
 
         TypeLoc Next;
-        if (TL && !TL->isNull()) Next = TL->getNextTypeLoc();
+        if (LocValid) Next = TL->getNextTypeLoc();
 
         auto Pointee = LR->getPointeeType();
         P->QualifiedPointee = GetQualifiedType(Pointee, WalkType(Pointee, &Next));
@@ -2087,7 +2112,7 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
         P->Modifier = PointerType::TypeModifier::RVReference;
 
         TypeLoc Next;
-        if (TL && !TL->isNull()) Next = TL->getNextTypeLoc();
+        if (LocValid) Next = TL->getNextTypeLoc();
 
         auto Pointee = LR->getPointeeType();
         P->QualifiedPointee = GetQualifiedType(Pointee, WalkType(Pointee, &Next));
@@ -2227,18 +2252,6 @@ static const clang::CodeGen::CGFunctionInfo& GetCodeGenFuntionInfo(
     }
 
     return CodeGenTypes->arrangeFunctionDeclaration(FD);
-}
-
-static const clang::Type* GetFinalType(const clang::Type* Ty)
-{
-    auto FinalType = Ty;
-    while (true)
-    {
-        FinalType = FinalType->getUnqualifiedDesugaredType();
-        if (FinalType->getPointeeType().isNull())
-            return FinalType;
-        FinalType = FinalType->getPointeeType().getTypePtr();
-    }
 }
 
 static bool CheckTypeIfRecord(const clang::Type* Ty,
