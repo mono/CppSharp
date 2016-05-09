@@ -85,6 +85,7 @@ protected:
     Variable* WalkVariable(clang::VarDecl* VD);
     Friend* WalkFriend(clang::FriendDecl* FD);
     RawComment* WalkRawComment(const clang::RawComment* RC);
+    bool ShouldCompleteType(const clang::QualType& QualType, bool LocValid);
     Type* WalkType(clang::QualType QualType, clang::TypeLoc* TL = 0,
       bool DesugarType = false);
     TemplateArgument WalkTemplateArgument(const clang::TemplateArgument& TA, clang::TemplateArgumentLoc* ArgLoc);

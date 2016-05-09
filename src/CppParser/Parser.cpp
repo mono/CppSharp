@@ -1625,6 +1625,39 @@ static const clang::Type* GetFinalType(const clang::Type* Ty)
     }
 }
 
+bool Parser::ShouldCompleteType(const clang::QualType& QualType, bool LocValid)
+{
+    auto FinalType = GetFinalType(QualType.getTypePtr());
+    if (auto Tag = FinalType->getAsTagDecl())
+    {
+        if (auto CTS = llvm::dyn_cast<clang::ClassTemplateSpecializationDecl>(Tag))
+        {
+            // we cannot get a location in some cases of template arguments
+            if (!LocValid)
+                return false;
+
+            auto TAL = &CTS->getTemplateArgs();
+            for (size_t i = 0; i < TAL->size(); i++)
+            {
+                auto TA = TAL->get(i);
+                if (TA.getKind() == clang::TemplateArgument::ArgKind::Type)
+                {
+                    auto Type = TA.getAsType();
+                    if (Type->isVoidType())
+                        return false;
+                }
+            }
+        }
+        auto Unit = GetTranslationUnit(Tag);
+        // HACK: completing all system types overflows the managed stack
+        // while running the AST converter since the latter is a giant indirect recursion
+        // this solution is a hack because we might need to complete system template specialisations
+        // such as std:string or std::vector in order to represent them in the target language
+        return !Unit->IsSystemHeader;
+    }
+    return true;
+}
+
 Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
     bool DesugarType)
 {
@@ -1635,26 +1668,10 @@ Type* Parser::WalkType(clang::QualType QualType, clang::TypeLoc* TL,
 
     auto LocValid = TL && !TL->isNull();
 
-    // we cannot get a location in some cases of template arguments
-    const RecordType* RT;
-    if (!(RT = QualType->getAs<RecordType>()) ||
-        !dyn_cast<ClassTemplateSpecializationDecl>(RT->getDecl()) ||
-        LocValid)
-    {
-        auto FinalType = GetFinalType(QualType.getTypePtr());
-        if (auto TagDecl = FinalType->getAsTagDecl())
-        {
-            auto Unit = GetTranslationUnit(TagDecl);
-            if (!Unit->IsSystemHeader)
-                C->getSema().RequireCompleteType(
-                    LocValid ? TL->getLocStart() : clang::SourceLocation(), QualType, 1);
-        }
-        else
-        {
-            C->getSema().RequireCompleteType(
-                LocValid ? TL->getLocStart() : clang::SourceLocation(), QualType, 1);
-        }
-    }
+    auto CompleteType = ShouldCompleteType(QualType, LocValid);
+    if (CompleteType)
+        C->getSema().RequireCompleteType(
+            LocValid ? TL->getLocStart() : clang::SourceLocation(), QualType, 1);
 
     const clang::Type* Type = QualType.getTypePtr();
 
@@ -2254,30 +2271,6 @@ static const clang::CodeGen::CGFunctionInfo& GetCodeGenFuntionInfo(
     return CodeGenTypes->arrangeFunctionDeclaration(FD);
 }
 
-static bool CheckTypeIfRecord(const clang::Type* Ty,
-    std::vector<const clang::Type*>& TypesCache)
-{
-    if (std::find(TypesCache.begin(), TypesCache.end(), Ty) != TypesCache.end())
-        return true;
-
-    if (auto RT = Ty->getAs<clang::RecordType>())
-    {
-        if (RT->getDecl()->isInvalidDecl() || RT->getDecl()->isDependentContext() ||
-            !RT->getDecl()->getDefinition())
-            return false;
-
-        TypesCache.push_back(Ty);
-
-        for (const auto& F : RT->getDecl()->fields())
-        {
-            auto FT = GetFinalType(F->getType().getTypePtr());
-            if (!CheckTypeIfRecord(FT, TypesCache))
-                return false;
-        }
-    }
-    return true;
-}
-
 static bool CanCheckCodeGenInfo(clang::Sema& S, const clang::Type* Ty)
 {
     auto FinalType = GetFinalType(Ty);
@@ -2285,8 +2278,10 @@ static bool CanCheckCodeGenInfo(clang::Sema& S, const clang::Type* Ty)
     if (FinalType->isDependentType() || FinalType->isInstantiationDependentType())
         return false;
 
-    std::vector<const clang::Type*> TypesCache;
-    return CheckTypeIfRecord(FinalType, TypesCache);
+    if (auto RT = FinalType->getAs<clang::RecordType>())
+        return RT->getDecl()->getDefinition() != 0;
+
+    return true;
 }
 
 void Parser::WalkFunction(clang::FunctionDecl* FD, Function* F,
@@ -2423,8 +2418,8 @@ void Parser::WalkFunction(clang::FunctionDecl* FD, Function* F,
     if (!CanCheckCodeGenInfo(C->getSema(), FD->getReturnType().getTypePtr()))
         return;
 
-    for (auto I = FD->param_begin(), E = FD->param_end(); I != E; ++I)
-        if (!CanCheckCodeGenInfo(C->getSema(), (*I)->getType().getTypePtr()))
+    for (const auto& P : FD->parameters())
+        if (!CanCheckCodeGenInfo(C->getSema(), P->getType().getTypePtr()))
             return;
 
     auto& CGInfo = GetCodeGenFuntionInfo(CodeGenTypes, FD);
