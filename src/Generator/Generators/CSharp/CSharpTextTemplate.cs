@@ -655,7 +655,8 @@ namespace CppSharp.Generators.CSharp
         {
             Write("public ");
 
-            if (@class != null && @class.NeedsBase && !@class.BaseClass.IsInterface && !@class.IsDependent)
+            if (@class != null && @class.NeedsBase && !@class.BaseClass.IsInterface &&
+                !(@class is ClassTemplateSpecialization))
                 Write("new ");
 
             var templateSpecialization = @class as ClassTemplateSpecialization;

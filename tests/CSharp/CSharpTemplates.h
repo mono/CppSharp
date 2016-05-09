@@ -9,7 +9,7 @@ class DLL_API T2
 };
 
 template <typename T>
-class DLL_API IndependentFields
+class DLL_API IndependentFields : public T1
 {
 private:
     int field;
